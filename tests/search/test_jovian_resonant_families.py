@@ -323,6 +323,105 @@ def test_flyby_rotation_seed_backs_off_from_the_singularity() -> None:
     assert seed.x0 == pytest.approx(0.99)
 
 
+# ---------------------------------------------------------------------------
+# (10) #756: relaxed-period-criterion search for 5:6-LO. The coordinating
+# session's #755 reviewer ruling (3:4-LO CONFIRMED despite a 2.1% period
+# offset) raised the hypothesis that #755's own 5:6-LO search implicitly
+# favored period_over_2pi near q=6 while scanning. #756 redid the search
+# ranking candidates PURELY by eigenvalue closeness, with period treated
+# as a secondary corroboration signal. HONEST RESULT: this did not find a
+# better candidate than #753's pre-existing one, and NEITHER the
+# pre-existing candidate NOR any of #756's new near-misses has a plausible
+# period OR a close Europa approach (unlike 3:4-LO's genuine corroboration
+# on both counts) -- a well-evidenced, continued negative, not a silently
+# dropped claim (see the module docstring's #756 update and the results
+# note for the full search log, 159 candidates, checkpointed at
+# data/found/756_jupiter_europa_5_6_lo_relaxed_period/candidates.jsonl).
+# ---------------------------------------------------------------------------
+
+
+def test_europa_closest_approach_confirms_3_4_lo_close_flyby(system: object) -> None:
+    """3:4-LO's confirmed candidate makes a genuine close Europa flyby
+    (~1641 km, matching the paper's own attributed instability mechanism,
+    p.177-178) -- the positive control for :func:`europa_closest_approach`
+    itself."""
+    cand = jrf.recover_table1_candidate("3:4-LO", system)  # type: ignore[arg-type]
+    dist = jrf.europa_closest_approach(system, cand.x0, cand.ydot0, cand.period)  # type: ignore[arg-type]
+    assert dist == pytest.approx(0.002445, abs=2e-5)
+
+
+@pytest.mark.parametrize("label", sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES))
+def test_756_near_miss_converges_and_reproduces_recorded_eigenvalue(
+    label: str, system: object
+) -> None:
+    """Standing regression: each #756 near-miss seed still converges to a
+    tightly-residual, real-unstable orbit at its own recorded eigenvalue --
+    a genuine periodic orbit, just not a 5:6-LO match (see the module's own
+    per-seed comments for the recorded target values)."""
+    cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
+    assert cand.crossing_residual < 1e-9
+    assert cand.is_real_unstable
+    assert cand.jacobi == pytest.approx(jrf.ANDERSON_LO_C_FLYBY, abs=1e-8)
+    # Barden vs planar_floquet cross-check (feedback_orbit_closure_discipline).
+    rel = abs(cand.max_eigenvalue - cand.planar_floquet_eigenvalue) / cand.max_eigenvalue
+    assert rel < 1e-4, f"{label}: barden={cand.max_eigenvalue} pf={cand.planar_floquet_eigenvalue}"
+
+
+def test_756_relaxed_search_near_misses_do_not_beat_pre_existing_candidate(
+    system: object,
+) -> None:
+    """The core #756 finding: relaxing the period-proximity search
+    criterion and ranking purely by eigenvalue closeness did NOT surface
+    anything better than #753's own pre-existing 5:6-LO candidate
+    (rel_err=1.98%). Asserted as a standing negative so a future
+    accidental improvement is caught (and celebrated), not silently
+    ignored."""
+    target = jrf.TABLE1_TARGETS["5:6-LO"]
+    pre_existing = jrf.recover_table1_candidate("5:6-LO", system)  # type: ignore[arg-type]
+    pre_existing_rel_err = abs(pre_existing.max_eigenvalue - target) / target
+    assert pre_existing_rel_err == pytest.approx(0.0198, abs=1e-3)
+
+    for label in sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES):
+        cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
+        rel_err = abs(cand.max_eigenvalue - target) / target
+        assert rel_err > pre_existing_rel_err, (
+            f"{label} rel_err={rel_err} unexpectedly beat the pre-existing "
+            f"candidate's {pre_existing_rel_err} -- if a real improvement was "
+            "found, update this test and the #756 results note, don't just "
+            "loosen this assertion"
+        )
+
+
+def test_756_near_misses_lack_close_europa_approach_corroboration(system: object) -> None:
+    """Unlike 3:4-LO (0.00245 nondim, a genuine close flyby), NEITHER the
+    pre-existing 5:6-LO candidate NOR any #756 near-miss gets anywhere
+    close to Europa -- all stay an order of magnitude farther away, with
+    no qualitative close-flyby signature to corroborate family lineage."""
+    pre_existing = jrf.recover_table1_candidate("5:6-LO", system)  # type: ignore[arg-type]
+    pre_existing_dist = jrf.europa_closest_approach(
+        system,  # type: ignore[arg-type]
+        pre_existing.x0,
+        pre_existing.ydot0,
+        pre_existing.period,
+    )
+    assert pre_existing_dist > 0.01
+
+    for label in sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES):
+        cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
+        dist = jrf.europa_closest_approach(system, cand.x0, cand.ydot0, cand.period)  # type: ignore[arg-type]
+        assert dist > 0.01, f"{label}: unexpectedly close Europa approach {dist}"
+
+
+def test_756_near_misses_lack_plausible_period(system: object) -> None:
+    """None of #756's near-miss candidates has a period even loosely near
+    the clean q=6 multiple (unlike 3:4-LO's 2.1% offset) -- all are 2x+
+    the naive value, a qualitatively different (much weaker) situation."""
+    for label in sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES):
+        cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
+        period_rel_err = abs(cand.period_over_2pi - 6.0) / 6.0
+        assert period_rel_err > 0.5, f"{label}: period_over_2pi={cand.period_over_2pi}"
+
+
 def test_flyby_rotation_symmetric_seed_runs_quickly(system: object) -> None:
     """Propagating the (backed-off) post-flyby state forward to its next
     perpendicular crossing must complete quickly (not grind through a

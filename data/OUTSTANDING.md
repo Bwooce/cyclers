@@ -108,11 +108,22 @@ unchanged. See `git log` around this date for the corrected commit.
   off on BOTH eigenvalue and period simultaneously). The module's own strict quantitative gate is
   NOT retroactively loosened to force this — it correctly still reports `FAIL`; this is a
   qualitative reviewer judgment layered on top, documented in `#755`'s own results note under
-  "Reviewer verdict." `5:6-LO` remains genuinely unconfirmed; the ruling also implies its own
-  search should relax the period-proximity criterion, not just the eigenvalue-magnitude one (not
-  yet attempted). Task B (`#754`) now needs only `5:6-LO` (or a re-scope around
-  `3:4-LO`+`5:6-LI`) before its Table 2/3 gate is in reach; see `#753`'s and `#755`'s own bullets
-  + results notes for full reasoning.
+  "Reviewer verdict." `5:6-LO` remains genuinely unconfirmed; the ruling also implied its own
+  search should relax the period-proximity criterion, not just the eigenvalue-magnitude one —
+  `#756` (2026-07-28, DONE, direct continuation of `#755`) did exactly that: a much wider sweep
+  (`x0 ∈ [-1.9, 1.7]`, both `ydot0` signs, `half_crossings` 2-8, 159 candidates checkpointed),
+  ranked purely by eigenvalue closeness with period checked only as after-the-fact corroboration.
+  **Result: unchanged, and this time not even a close call.** No candidate beats the pre-existing
+  1.98%-eigenvalue-error seed, and — unlike `3:4-LO` — neither the pre-existing candidate nor any
+  new near-miss has a plausible period (all 2.2x-4.7x `q=6`, not a few-percent offset) or a close
+  Europa approach (`europa_closest_approach()`, new: all 12,000-28,000 km away vs 3:4-LO's genuine
+  ~1,641 km). So this is not "candidate found, reviewer judgment needed" the way 3:4-LO was — the
+  evidence itself doesn't clear that bar on any axis. Task B (`#754`) still needs `5:6-LO` (or a
+  re-scope around `3:4-LO`+`5:6-LI` only) before its Table 2/3 gate is in reach; the live path
+  forward for `5:6-LO`, per `#756`'s own opinion, is a genuinely different seed strategy (e.g.
+  completing the multi-patchpoint flyby-vector-rotation refinement `#755` started), not more
+  grid+bisection at `C_flyby` directly, which three tasks have now applied at length. See
+  `#753`'s, `#755`'s, and `#756`'s own bullets + results notes for full reasoning.
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
@@ -292,17 +303,30 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
-- `#756` — dispatched 2026-07-28, user-authorized ("a" — one more targeted search): find 5:6-LO
-  (target `|λ|=4445.387515`) with the PERIOD-PROXIMITY search criterion relaxed, not just the
-  eigenvalue-magnitude one — per the coordinating session's own `#755` reviewer ruling (3:4-LO
-  confirmed despite a 2.1% period offset, on the grounds that Anderson-Lo 2011 p.171 Eq. 6
-  explicitly defines CR3BP resonance as approximate, `p*n_p ≈ q*n_q`, not exact, especially for
-  strongly unstable families far from the two-body limit). `#755`'s own 5:6-LO search implicitly
-  favored `period/2π` near an integer while scanning; this task should widen that net (e.g. accept
-  candidates with `period/2π` several percent off 6, the way 3:4-LO's confirmed candidate was
-  ~2.1% off 4) while still requiring the eigenvalue match and a plausible q=6-family lineage
-  (shape/close-approach corroboration, not period alone). Same honesty discipline: a continued
-  non-confirmation is acceptable and reportable, do not fudge either criterion to force a match.
+- `#756` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest CLEAN NEGATIVE, direct
+  continuation of `#755`): redid the 5:6-LO search (target `|λ|=4445.387515`) with the
+  period-proximity criterion relaxed during the search itself, not just at the final gate — per
+  `#755`'s own reviewer ruling's suggestion that its search implicitly favored `period/2π` near an
+  integer while scanning. Checked the actual scan code first: `survey_candidates` itself does NOT
+  filter by period at all (the bias was a search-time judgment call in `#755`'s own narrative, not
+  a code-level filter). Ran a much wider sweep than `#755` — `x0 ∈ [-1.9, 1.7]` (both sides of the
+  secondary, not just the `x0≈-1.42` hotspot), both `ydot0` signs, `half_crossings ∈ {2,4,5,6,7,8}`
+  — logging all 159 converged candidates found (checkpointed at
+  `data/found/756_jupiter_europa_5_6_lo_relaxed_period/candidates.jsonl`) and ranking PURELY by
+  eigenvalue closeness, with period and a new `europa_closest_approach()` corroboration check
+  applied only afterward. **Result: relaxing the criterion changes nothing.** No candidate beats
+  the pre-existing `#753` candidate's 1.98% eigenvalue error (best new find: 15.4%), and — unlike
+  `3:4-LO` — NEITHER the pre-existing candidate NOR any new near-miss has a plausible period (all
+  2.2x-4.7x the naive `q=6` value, not a few-percent offset) OR a close Europa approach (all
+  12,000-28,000 km away, vs 3:4-LO's genuine ~1,641 km close flyby). Unlike `3:4-LO`'s case, this
+  is not a close call needing reviewer judgment — the evidence itself (eigenvalue precision 5-6
+  orders of magnitude weaker than 3:4-LO's, no corroboration on any axis) doesn't clear that bar.
+  32-test suite (up from 25), `ruff`/`mypy src tests` clean. Full search log:
+  `docs/notes/2026-07-28-756-jupiter-europa-5-6-lo-relaxed-period-search.md`. Opinion (not
+  decision) on `#754`: still does not clear `#753`'s own dispatch bar (needs both rows' manifolds);
+  the live options remain a genuinely different 5:6-LO seed strategy (e.g. completing the
+  multi-patchpoint flyby-vector-rotation refinement `#755` started) or re-scoping `#754` around
+  only the two confirmed families (`5:6-LI`, `3:4-LO`) — `#754` stays HELD.
 - `#755` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result, direct
   continuation of `#753`): targeted search for the 2 remaining unconfirmed Table-1 families,
   3:4-LO (target `|λ|=1036.116088`) and 5:6-LO (target `|λ|=4445.387515`). **3:4-LO**: a finer

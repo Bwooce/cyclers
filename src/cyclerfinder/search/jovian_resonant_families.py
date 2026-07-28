@@ -101,6 +101,50 @@ construction. See
 ``docs/notes/2026-07-28-755-jupiter-europa-3-4-lo-5-6-lo-targeted-search.md``
 for the full search log and reasoning.
 
+#756 UPDATE (2026-07-28, direct continuation of #755): the coordinating
+session's own reviewer ruling on #755 (CONFIRMED 3:4-LO despite a 2.1%
+period offset, on the grounds that Anderson & Lo's own p.171 text defines
+CR3BP resonance as only APPROXIMATE, "a precise relationship does not
+exist," for orbits far from the two-body integrable limit) raised a
+follow-up hypothesis: #755's own 5:6-LO search may have implicitly favored
+candidates with ``period_over_2pi`` near the integer ``q=6`` while
+scanning, filtering out the very candidate it needed. This task redid the
+5:6-LO search with that implicit period bias explicitly removed: every
+converged candidate across a WIDE ``(x0, ydot0_sign, half_crossings)``
+sweep (``x0`` in [-1.9, 1.7] on BOTH sides of the secondary, ``ydot0_sign``
+both signs, ``half_crossings`` 2-8, checkpointed at
+``data/found/756_jupiter_europa_5_6_lo_relaxed_period/candidates.jsonl``,
+159 candidates total) was ranked PURELY by eigenvalue closeness to the
+5:6-LO target (4445.387515), with period treated as a secondary,
+after-the-fact corroboration signal rather than a search-time filter.
+
+HONEST RESULT: this did NOT surface a better candidate than the one
+#753 already had. The pre-existing hardcoded seed (``x0=0.81360506``,
+``half_crossings=2``) remains the single best-known eigenvalue match
+(recovered 4533.602947, rel_err=1.98%) across ALL three tasks' combined
+search effort -- #756's own new relaxed-period sweep found nothing closer
+than a 15.4% eigenvalue match (:data:`_756_RELAXED_SEARCH_NEAR_MISSES`).
+Critically, NEITHER the pre-existing candidate NOR any of #756's new
+near-misses has a period anywhere near the clean ``q=6`` multiple (all are
+2.2x-4.7x the naive ``2*pi*6`` value, not a plausible few-percent-to-20%
+offset the way #755's confirmed 3:4-LO was only 2.1% off) -- a
+qualitatively different, much weaker situation than 3:4-LO's. Also unlike
+3:4-LO, NONE of these candidates make a close Europa approach: the
+confirmed 3:4-LO orbit's closest Europa approach is 0.00245 nondim (~1641
+km, a genuine close flyby, the paper's own attributed instability
+mechanism -- see :func:`europa_closest_approach`), while every 5:6-LO
+candidate examined here -- the pre-existing best AND all three new near-
+misses -- stays 0.018-0.042 nondim away (12,000-28,000 km), an order of
+magnitude farther, with no qualitative "close flyby" signature at all. So
+relaxing the period-proximity criterion, exactly as the #755 ruling
+recommended, does NOT change the verdict: 5:6-LO remains a genuine,
+well-evidenced, NOT-CONFIRMED negative, now checked against BOTH
+criteria the #755 ruling itself used to confirm 3:4-LO (eigenvalue
+precision, and independent shape/close-approach corroboration) rather
+than just the mandatory dual quantitative gate. See
+``docs/notes/2026-07-28-756-jupiter-europa-5-6-lo-relaxed-period-search.md``
+for the full search log.
+
 Pure: math/numpy/scipy + :mod:`cyclerfinder.core.cr3bp`,
 :mod:`cyclerfinder.search.cr3bp_periodic`,
 :mod:`cyclerfinder.search.cr3bp_continuation`,
@@ -755,6 +799,131 @@ _TABLE1_CANDIDATE_SEEDS: dict[str, tuple[float, float, int | None, float]] = {
 }
 
 
+def europa_closest_approach(
+    system: cr3bp.CR3BPSystem,
+    x0: float,
+    ydot0: float,
+    period: float,
+    *,
+    n_samples: int = 6000,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+    max_step: float = 0.05,
+) -> float:
+    """Minimum nondimensional distance from a symmetric periodic orbit to the
+    secondary (Europa) over one full period.
+
+    This is the qualitative "close flyby" corroboration check -- Anderson &
+    Lo's own text (p.177-178) attributes these resonant families' extreme
+    instability specifically to a close encounter with Europa ("much of the
+    unstable characteristics of this trajectory arise from the fact that it
+    is performing a close flyby of Europa"), and #755's own 3:4-LO
+    confirmation used exactly this check (a 97 km/0.00245 nondim closest
+    approach) as independent corroboration beyond the eigenvalue match
+    alone. #756 uses it the same way to check 5:6-LO candidates: a genuine
+    member of this family should get much closer to Europa than a
+    coincidental, unrelated periodic orbit that merely happens to have a
+    similar-order-of-magnitude eigenvalue (see the module docstring's #756
+    update and :data:`_756_RELAXED_SEARCH_NEAR_MISSES`, none of which come
+    remotely close).
+
+    Multiply the return value by ``system.l_km`` for a physical distance in
+    km (Europa's own radius, ~1560 km, is a natural reference scale for
+    what counts as a genuinely close approach vs. a merely-nearby one).
+    """
+    state0 = np.array([x0, 0.0, 0.0, 0.0, ydot0, 0.0])
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, period),
+        state0,
+        args=(system.mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=max_step,
+        dense_output=True,
+    )
+    ts = np.linspace(0.0, period, n_samples)
+    if sol.sol is None:
+        raise RuntimeError("solve_ivp did not produce a dense-output interpolant")
+    ys = sol.sol(ts)
+    x_secondary = 1.0 - system.mu
+    dist = np.hypot(ys[0] - x_secondary, ys[1])
+    return float(dist.min())
+
+
+# ---------------------------------------------------------------------------
+# #756: additional 5:6-LO near-miss candidates from a RELAXED-period-
+# criterion search (see the module docstring's #756 update for the full
+# rationale and search-log summary; the raw 159-candidate sweep is
+# checkpointed at
+# data/found/756_jupiter_europa_5_6_lo_relaxed_period/candidates.jsonl).
+#
+# These are the best-eigenvalue-match candidates found across a wide
+# (x0 in [-1.9, 1.7], both ydot0_sign, half_crossings 2-8) sweep at
+# ANDERSON_LO_C_FLYBY, ranked PURELY by |lambda - 4445.387515| with NO
+# period-proximity filtering applied during the search itself (unlike
+# #755's own 5:6-LO search, which implicitly favored period_over_2pi near
+# 6 while scanning -- see the #755 reviewer verdict). None of these beats
+# the pre-existing #753 candidate (_TABLE1_CANDIDATE_SEEDS["5:6-LO"],
+# rel_err=1.98%) on eigenvalue, and none has a period anywhere near the
+# clean q=6 multiple OR a close Europa approach (see
+# test_756_relaxed_search_near_misses_do_not_confirm) -- kept here as a
+# standing, honestly-negative regression, not a claimed improvement.
+#
+# Each tuple is (x0_guess, ydot0_sign, half_crossings, period_guess).
+# ---------------------------------------------------------------------------
+
+_756_RELAXED_SEARCH_NEAR_MISSES: dict[str, tuple[float, float, int | None, float]] = {
+    # Best eigenvalue match found in #756's entire relaxed sweep (rel_err vs
+    # 5:6-LO's target = 15.4%) -- still 8x worse than the pre-existing
+    # candidate's 1.98%, and period_over_2pi=25.02 (4.2x the naive q=6
+    # value, not a plausible offset). Europa closest approach 0.0423 nondim
+    # (~28,400 km) -- no close-flyby signature.
+    "756-nm-1": (1.370014, -1.0, 5, 100.0),
+    # rel_err=54.4%, period_over_2pi=28.04 (4.7x). Europa closest approach
+    # 0.0241 nondim (~16,200 km).
+    "756-nm-2": (-1.384961, 1.0, 6, 90.0),
+    # rel_err=68.0%, period_over_2pi=13.02 (2.2x). Europa closest approach
+    # 0.0199 nondim (~13,400 km). Notable only because the corrector
+    # wandered here from a seed inside [-1.5,-1.35] during the sweep --
+    # itself a real, tightly-converged (residual 7.2e-14) orbit, just not
+    # a 5:6-LO match.
+    "756-nm-3": (-1.721452, 1.0, 7, 90.0),
+}
+
+
+def recover_756_near_miss(
+    label: str, system: cr3bp.CR3BPSystem | None = None
+) -> ResonantFamilyCandidate:
+    """Converge+classify one of :data:`_756_RELAXED_SEARCH_NEAR_MISSES`'s
+    documented (honestly negative) candidates. Same pattern as
+    :func:`recover_table1_candidate`, kept as a separate function/table
+    since these are NOT Table 1 rows -- they are #756's own search
+    artifacts, preserved for their negative-result evidentiary value (per
+    this project's negative-results-registry discipline), not treated as
+    confirmed family members.
+    """
+    if label not in _756_RELAXED_SEARCH_NEAR_MISSES:
+        raise ValueError(
+            f"label must be one of {sorted(_756_RELAXED_SEARCH_NEAR_MISSES)}; got {label!r}"
+        )
+    sys_ = system if system is not None else jupiter_europa_system()
+    x0_guess, ydot0_sign, half_crossings, period_guess = _756_RELAXED_SEARCH_NEAR_MISSES[label]
+    cand = converge_candidate(
+        sys_,
+        label,
+        x0_guess,
+        ANDERSON_LO_C_FLYBY,
+        period_guess,
+        ydot0_sign=ydot0_sign,
+        half_crossings=half_crossings,
+    )
+    if cand is None:
+        raise ValueError(f"hardcoded #756 near-miss seed for {label!r} failed to converge")
+    return cand
+
+
 def recover_table1_candidate(
     label: str, system: cr3bp.CR3BPSystem | None = None
 ) -> ResonantFamilyCandidate:
@@ -913,9 +1082,11 @@ __all__ = [
     "TwoBodySeed",
     "continue_candidate_toward_c_flyby",
     "converge_candidate",
+    "europa_closest_approach",
     "flyby_rotation_symmetric_seed",
     "gate_report",
     "jupiter_europa_system",
+    "recover_756_near_miss",
     "recover_table1_candidate",
     "survey_candidates",
     "two_body_flyby_rotation_seed",
