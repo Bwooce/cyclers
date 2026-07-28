@@ -205,10 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#739`/`#740` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
-  row V0->V1, user-requested; `#739`: cheap GMOS-vs-PDE torus-corrector comparison on stable
-  parent orbits; `#740`: investigate the `#347`-lineage branch-selection nondeterminism `#736`'s
-  own review found. See each's own bullet entry.
+- `#738`/`#739`/`#740`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the
+  N=5 torus row V0->V1, user-requested; `#739`: cheap GMOS-vs-PDE torus-corrector comparison on
+  stable parent orbits; `#740`: investigate the `#347`-lineage branch-selection nondeterminism
+  `#736`'s own review found; `#741`: process 3 user-supplied `#730` backlog papers + correct 2
+  real DOI errors found in the master list. See each's own bullet entry.
 - `#736` — REMOVED from this list 2026-07-28, CLOSED: schema v5.4 + catalogue
   writeback landed — the catalogue's THIRD genuinely novel finding. Original implementing agent
   stalled silently; coordinating session independently verified and completed the commit itself
@@ -1566,7 +1567,14 @@ parent orbits, the regime this project's own PDE corrector was built to handle, 
 may still argue for preferring GMOS on the stable cases this project also has). #740 for
 investigating the #347-lineage branch-selection nondeterminism found via #736's own review
 (data/floquet_phase1_reproduction.jsonl rewrites to a different bifurcation branch, k=(4,3) vs
-the committed k=(3,3), across repeated test runs of the same fixed seed/inputs). #741
+the committed k=(3,3), across repeated test runs of the same fixed seed/inputs). #741 for
+processing 3 user-supplied #730 backlog papers (Iuliano 2016 MS thesis, Gonzalez & Mireles James
+2017, Calleja/del-Castillo-Negrete/Martinez-del-Rio/Olvera 2021) plus correcting 2 real DOI
+errors #741 itself found in the #730 master list -- 2 of the 5 uploaded PDFs turned out to be
+completely different, unrelated papers than intended, both at "standard-pattern, not
+independently re-verified" DOIs the list had explicitly flagged as uncertain; correct DOIs found
+via fresh WebSearch for Calleja & de la Llave 2010 (10.1088/0951-7715/23/9/001, not ...003) and
+Cabre/Fontich/de la Llave 2005 (10.1016/j.jde.2004.12.003, not ...10.029). #742
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15721,6 +15729,34 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   basin split, or similar) and either fix the nondeterminism or document why it's expected/benign
   with the same specific, evidence-cited discipline this project applies elsewhere (`#584`'s own
   precedent) — do not just re-run and hope for the "right" branch.
+- **#741 (dispatched 2026-07-28) -- process ALL 5 top-10 `#730` backlog papers, user-supplied
+  (including 2 re-supplied after a DOI-correction round).** All 7 uploaded PDFs individually
+  verified by the coordinating session (page 1 each) — 2 of the first 5 were mismatches (see
+  below), user then supplied the 2 CORRECT-DOI replacements, now all 5 confirmed correct:
+  **Iuliano, J.R., "A Solution to the Circular Restricted N Body Problem in Planetary Systems,"**
+  MS thesis, Cal Poly San Luis Obispo (2016) — item 6, no DOI, free at
+  `digitalcommons.calpoly.edu/theses/1612`. **Gonzalez, J.L. & Mireles James, J.D., "High-Order
+  Parameterization of Stable/Unstable Manifolds for Long Periodic Orbits of Maps,"** *SIAM J.
+  Applied Dynamical Systems* 16(3):1748–1795 (2017) — item 10, DOI `10.1137/16M1090041`.
+  **Calleja, R., del-Castillo-Negrete, D., Martínez-del-Río, D. & Olvera, A., "A new method to
+  compute periodic orbits in general symplectic maps,"** *Commun. Nonlinear Sci. Numer. Simulat.*
+  99:105838 (2021) — item 7, DOI `10.1016/j.cnsns.2021.105838`. **Calleja, R. & de la Llave, R.,
+  "A numerically accessible criterion for the breakdown of quasi-periodic solutions and its
+  rigorous justification,"** *Nonlinearity* 23:2029–2058 (2010) — item 8, CORRECTED DOI
+  `10.1088/0951-7715/23/9/001` (the master list's own original guess, `...003`, was wrong — the
+  first uploaded file for this item resolved instead to an unrelated Matthes & Toscani kinetic-
+  theory paper). **Cabré, X., Fontich, E. & de la Llave, R., "The parameterization method for
+  invariant manifolds III: overview and applications,"** *J. Differential Equations* 218:444–515
+  (2005) — item 9, CORRECTED DOI `10.1016/j.jde.2004.12.003` (the master list's own original
+  guess, `...10.029`, was wrong — the first uploaded file for this item resolved instead to an
+  unrelated Azevêdo & Ontaneda paper). Both DOI errors originated from exactly the master list's
+  own explicitly-flagged "standard-pattern, not independently re-verified" category — a real,
+  useful confirmation that flag was doing its job. Scope: (1) file+digest+citation-mine+index all
+  5 confirmed-correct papers per `[[feedback_corpus_document_policy]]`; (2) correct the 2 wrong
+  DOIs in `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` itself (items 8/9) to
+  the correct values above, with a note explaining the correction, AND mark all 5 items 6-10
+  ACQUIRED in the same document (matching `#732`/`#733`'s own precedent for updating this list
+  as items get acquired).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
