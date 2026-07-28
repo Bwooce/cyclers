@@ -205,9 +205,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#742` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
-  V0->V1, user-requested; `#742`: process 4 more user-supplied `#730` backlog papers (items 11,
-  24, 25, 44). See each's own bullet entry.
+- `#738`/`#742`/`#743` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
+  row V0->V1, user-requested; `#742`: process 4 more user-supplied `#730` backlog papers (items
+  11, 24, 25, 44); `#743`: Fable DOI-accuracy audit + free-acquisition sweep over the remaining
+  backlog, user-requested. See each's own bullet entry.
 - `#741` — REMOVED from this list 2026-07-28, CLOSED: all 5 papers processed, 2 DOIs corrected in
   the master list, a real mischaracterization found and fixed in an already-acquired digest
   (Kumar 2025's own description of Gonzalez & Mireles James 2017). See its own bullet entry.
@@ -1586,7 +1587,14 @@ Cabre/Fontich/de la Llave 2005 (10.1016/j.jde.2004.12.003, not ...10.029). #742 
 4 more user-supplied #730 backlog papers, all verified page-1-exact: Anderson/Campagnola/Koh/
 McElrath/Woollands 2021 Europa Lander endgame study (item 11), Barrabes/Mondelo/Olle 2009
 homoclinic-continuation paper (item 24), Barrabes/Gomez 2002 spatial p-q resonant orbits (item
-25), Franz & Russell 2022 lunar periodic-orbit database (item 44). #743
+25), Franz & Russell 2022 lunar periodic-orbit database (item 44). #743 for a Fable DOI-accuracy-
+audit + free-acquisition sweep over the remaining #730 backlog, user-requested 2026-07-28 --
+independently re-verify every "no DOI found this pass"/"standard-pattern, not independently
+re-verified" entry against real bibliographic sources (not pattern-guessing, per #741's own
+finding that 2 of the 5 guessed DOIs it inherited were flat wrong), and directly download any
+paper that turns out to be genuinely freely available (arXiv, NTRS, institutional repositories,
+Unpaywall-confirmed OA) -- reports back to the coordinating session for the standard
+file+digest+citation-mine+index pipeline, does not run that pipeline itself. #744
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15806,6 +15814,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration for all 4; update
   `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` marking items 11/24/25/44
   ACQUIRED, matching `#732`/`#733`/`#741`'s own precedent.
+- **#743 (dispatched 2026-07-28, Fable) -- DOI-accuracy audit + free-acquisition sweep over the
+  remaining `#730` backlog, user-requested.** `#741` found a real, concrete reason to distrust
+  "standard-pattern" DOI guesses: 2 of 5 guessed DOIs it inherited from the master list turned out
+  to resolve to completely different, unrelated papers when actually downloaded. Scope: (1) read
+  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` in full, noting current
+  acquisition status (items 1-11, 24, 25, 44 now ACQUIRED per `#732`/`#733`/`#741`/`#742` — skip
+  those); (2) for every remaining NOT-acquired item, especially ones marked "no DOI found this
+  pass" or "standard-pattern, not independently re-verified" — independently re-verify against
+  REAL bibliographic sources (CrossRef, publisher pages, Semantic Scholar author profiles, Google
+  Scholar) rather than pattern-guessing a DOI from a journal's usual prefix; confirm author/title/
+  year match, not just DOI plausibility, before treating a DOI as confirmed; (3) for any paper
+  that turns out to be genuinely freely available (arXiv, NASA NTRS, an institutional repository,
+  Unpaywall-confirmed open access, an author's own personal/lab page hosting a PDF) — download it
+  directly; (4) do NOT attempt the full acquisition pipeline (filing to the private corpus,
+  digesting, citation-mining, `CORPUS_INDEX.md` registration) — that stays the coordinating
+  session's own job; this task's deliverable is a clear report (paper, corrected/confirmed DOI,
+  downloaded-or-not, file location if downloaded, genuinely-paywalled-with-no-OA-route if not) for
+  the coordinating session to process. Prioritize by the master list's own ranking (recurring-HIGH
+  first) — if the full remaining backlog (~50 items) can't reasonably be swept in one dispatch,
+  stop and report what's done rather than rushing the rest. Do NOT attempt to bypass a genuine
+  paywall (no scraping paywalled full-text, no using someone else's institutional credentials) —
+  a confirmed-paywalled-no-free-copy result is a legitimate, useful outcome, same as `#713`'s own
+  precedent.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
