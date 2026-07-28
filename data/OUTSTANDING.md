@@ -87,11 +87,26 @@ unchanged. See `git log` around this date for the corrected commit.
   `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
   targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
   self-dispatched — awaiting user authorization since it reopens capability-building.
-- `#754` — registered 2026-07-28, still HELD (not dispatched): `#752`'s own "Task B" — generalize
-  `heteroclinic_cycle.correct_connection` to a resonant-member node type + homoclinic A=B mode +
-  one-sided `{y=0}` section, gated on Anderson-Lo 2011 Tables 2/3 connection states; folds in
-  `#751`'s deferred Lyapunov homoclinic-connection-finder primitive. User explicitly chose
-  "Task A only for now" (2026-07-28) — `#753` reported (2026-07-28, DONE, PARTIAL: 1/4 Table-1
+- `#754` — RE-SCOPED by `#757` (2026-07-28, see `#757`'s own bullet + full spec in
+  `docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md`): the original single "Task B"
+  (Tables 2 AND 3 gates) is now SPLIT on what the paper actually requires. **Table-2 half —
+  dispatchable NOW**: the paper's Table 2 is a homoclinic self-connection of 3:4-LO ALONE
+  (confirmed directly against PDF pp. 190-191, not just `#745`'s digest), so with 3:4-LO
+  reviewer-confirmed it is buildable with confirmed families only; spec-complete task in the
+  `#757` note §5 (ResonantNode adapter + `x_sign` section filter + homoclinic trivial-solution
+  ghost guard + Table-2 state gate (−1.28427733, 0.0, 0.00000009, 0.46372205) at 1e-4, tolerance
+  justified by the paper's own interpolation-not-Newton intersection method; bonus: the gate
+  independently stress-tests the `#755` reviewer ruling on a third, orthogonal axis). **Table-3
+  half — still BLOCKED**: the paper's Table 3 heteroclinic is Wu(3:4-LO)∩Ws(**5:6-LO**)
+  specifically (footnote 4 p. 184: "The 3:4-LO and 5:6-LO resonant orbits will be referred to as
+  the 3:4 and 5:6 resonant orbits hereafter"; 5:6-LI was explicitly "removed from consideration"
+  by the paper, p. 183-184) — NOT reachable while 5:6-LO stays a clean negative; do NOT
+  substitute 5:6-LI (non-reproductive AND computationally infeasible: λ=1.000008 ⇒ manifold
+  e-folding ~4.7e6 time units — the paper discarded it for exactly this reason). Gate-keeper for
+  the Table-3 half is `#758` (below). `#751`'s deferred Lyapunov homoclinic-connection-finder
+  primitive still folds into the Table-2 half's homoclinic mode. Awaiting user authorization to
+  dispatch the re-scoped Table-2 build. Prior history: user chose "Task A only for now"
+  (2026-07-28) — `#753` reported (2026-07-28, DONE, PARTIAL: 1/4 Table-1
   families confirmed, 3/4 not), and `#755` (2026-07-28, DONE, direct continuation of `#753`)
   followed up with a targeted further search on the two families Task B's own gate needs (3:4-LO,
   5:6-LO) — still HELD, awaiting user review. `#755`'s result: 3:4-LO's eigenvalue now matches to
@@ -124,6 +139,21 @@ unchanged. See `git log` around this date for the corrected commit.
   completing the multi-patchpoint flyby-vector-rotation refinement `#755` started), not more
   grid+bisection at `C_flyby` directly, which three tasks have now applied at length. See
   `#753`'s, `#755`'s, and `#756`'s own bullets + results notes for full reasoning.
+- `#758` — registered 2026-07-28 by `#757` (not dispatched, awaiting user authorization): 5:6-LO
+  recovery from a NEW digit-grade sourced seed that `#757`'s direct paper read surfaced — Table 2's
+  homoclinic intersection state (x=−1.28427733, ẋ=0.00000009, ẏ=+0.46372205) lies "almost exactly
+  at the location of the 5:6 orbit" with Δx ≈ 8.0e-5 (p. 184 + p. 190), pinning the 5:6-LO orbit's
+  OWN section point at x ≈ −1.28427733 ± ~8e-5, ẏ>0, small |ẋ| — coordinates no prior pass had
+  (`#753`/`#755`/`#756` all worked the x0≈−1.42/−1.43 hotspot or coarse wide grids; `#756`'s
+  159-candidate checkpoint has NOTHING in x0 ∈ (−1.35, −1.20) except neutral λ≈1 islands — checked
+  directly this pass). Spec (full detail in the `#757` note §5): dense symmetric-corrector sweep
+  x0 ∈ −1.28427733 ± 2e-4, `ydot0_sign=+1`, `half_crossings` 1-12, NO period filtering during
+  search (`#756` discipline); fallback to the general asymmetric fixed-C corrector seeded at the
+  full pinned 4-state if the crossing is non-perpendicular; gate on Table-1's 4445.387515 at the
+  existing 1e-3 rel tol, period + `europa_closest_approach` as corroboration only. This is exactly
+  the "genuinely different seed strategy" `#756`'s closing opinion called for — and it is the sole
+  gate-keeper for `#754`'s Table-3 half: pass ⇒ Table 3 unlocks at original scope; fail ⇒ Table 3
+  stays honestly unreachable (no 5:6-LI substitution).
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
@@ -303,18 +333,30 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
-- `#757` — dispatched 2026-07-28, user-authorized ("continue with b" — re-scope Task B around the
-  2 confirmed families, 5:6-LI + 3:4-LO, since 5:6-LO is now a clean negative after 3 search
-  passes (`#753`/`#755`/`#756`)). Fable, research/scoping only, no code. `#745`'s own digest
-  (lines 89-102) already established the paper's Table 2 is a HOMOCLINIC self-connection of
-  3:4-LO ALONE (does not need any 5:6 family at all — already buildable with just the confirmed
-  3:4-LO!), while Table 3 is a HETEROCLINIC 3:4<->5:6 connection whose specific 5:6 flavor
-  (LI/LO/NO) was not pinned down by any digest so far. Determine: (a) confirm Table 2's homoclinic
-  gate is genuinely reachable now with only 3:4-LO in hand, and produce a concrete buildable task
-  spec for it; (b) read the paper directly to determine which 5:6 flavor Table 3's heteroclinic
-  connection actually uses — if 5:6-LI (the confirmed family), Task B may proceed on its ORIGINAL
-  full scope; if 5:6-LO/NO specifically, Table 3 is not reachable with confirmed families alone,
-  and should be reported as such (not force-fit onto 5:6-LI as a substitute without saying so).
+- `#757` — REMOVED from "In progress" 2026-07-28, ✓ DONE (Fable, research/scoping only, no code;
+  dispatched same day, user-authorized "continue with b"). Question: re-scope Task B (`#754`)
+  around the 2 confirmed families (5:6-LI + 3:4-LO), 5:6-LO being a clean negative after 3 search
+  passes. **Answer (full findings + both task specs in
+  `docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md`, from a direct read of the
+  paper's pp. 170-171/183-184/190-191 text layer CONFIRMED against the rendered PDF pages, plus
+  full reads of `heteroclinic_cycle.py` and `jovian_resonant_families.py`):** (a) **Table 2 is
+  buildable NOW** — independently re-confirmed (not just trusting `#745`) that it is a homoclinic
+  self-connection of 3:4-LO alone (both integration directions re-approach the 3:4 orbit, Fig.
+  25); connection state = (x, 0, ẋ, ẏ) = (−1.28427733, 0.0, 0.00000009, 0.46372205) on the
+  one-sided {y=0, x<0, ẏ>0} section at C_flyby, computed by the paper via INTERPOLATION (not
+  Newton) — so a 1e-4 gate tolerance is the honest bound; spec-complete build task written
+  (`#754`'s re-scoped Table-2 half — see its bullet). Code delta is small: `correct_connection`
+  is duck-typed (never calls `from_libration`), so a `ResonantNode` adapter + an `x_sign` section
+  filter + a homoclinic trivial-solution ghost guard suffice; `ResonantFamilyCandidate` lacks
+  eigenvectors but they're deterministically recomputable from stored `(x0, ydot0, period)` via
+  `_planar_floquet_pair` — no schema change. (b) **Table 3 uses 5:6-LO specifically** (footnote 4,
+  p. 184; 5:6-LI explicitly "removed from consideration" p. 183-184 — the one flavor we confirmed
+  is the one the paper discarded) — NOT reachable with confirmed families; no 5:6-LI substitute
+  (also computationally infeasible, λ=1.000008 ⇒ ~4.7e6-time-unit manifold e-folding). (c) BONUS
+  finding: Table 2 + the p. 184 "Δx≈8e-5" prose pin the 5:6-LO orbit's own section point at
+  x ≈ −1.28427733 ± 8e-5 — a digit-grade sourced seed no prior search had (verified unexplored in
+  `#756`'s checkpoint), registered as `#758`. Recommendation: dispatch re-scoped `#754` (Table-2
+  homoclinic) + `#758` (5:6-LO seed retry) in parallel; hold the Table-3 gate on `#758`'s outcome.
 - `#756` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest CLEAN NEGATIVE, direct
   continuation of `#755`): redid the 5:6-LO search (target `|λ|=4445.387515`) with the
   period-proximity criterion relaxed during the search itself, not just at the final gate — per
