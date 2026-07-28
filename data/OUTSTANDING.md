@@ -34,25 +34,36 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#762` — registered 2026-07-28, dispatched: cyclers.space (separate repo, `/Users/bruce/dev/
-  cyclers.space`) explainer for `quasi_periodic_torus`/`torus_homoclinic`, using
-  `europa-3-4-crnbp-torus-jupiter-2026` as the concrete example, per user request ("add this
-  explanation to the website with an example"). Confirmed this session: the site's own
-  `OrbitClass` type + `ORBIT_CLASS_LABEL`/`ORBIT_CLASS_LONG_LABEL` (`src/lib/catalogue.ts`) do NOT
-  yet include either value (only cover cycler/quasi_cycler/precursor_mga/mga_tour/resonant_po) —
-  a real gap, not just missing prose. Scope: (1) add both enum values to the `OrbitClass` type +
-  label maps, mirroring the existing pattern exactly; (2) a short explainer (mirroring the
-  existing `/about#cycler-cost` section's style) covering what a quasi-periodic invariant torus
-  is (a 2-D confined surface vs a single closed loop), why it's materially useful in a
-  cycler-like way (reservoir of nearby trajectories, low station-keeping per the row's own
-  real-ephemeris consistency evidence) despite having no alternating named-body encounter
-  sequence, and what's still missing for genuine transport-node status (a computed departure/
-  arrival connection — see `#761`); (3) sync the site's local catalogue (`npm run
-  sync:catalogue`, pulls from `raw.githubusercontent.com/Bwooce/cyclers/main/data/catalogue.yaml`
-  — note this is the PUBLISHED main branch, so this row must already be pushed to origin for the
-  sync to pick it up) so the row's own detail page renders correctly. Note per
-  `[[reference_cyclers_space_website]]`: does NOT auto-sync from this repo, work lands in the
-  separate `cyclers.space` repo, not here.
+- `#762` — ✓ DONE 2026-07-28 (cyclers.space repo, commit `a3295ee`). Added `torus_homoclinic` +
+  `quasi_periodic_torus` to the site's `OrbitClass` type, `ORBIT_CLASS_LABEL`/
+  `ORBIT_CLASS_LONG_LABEL` (`src/lib/catalogue.ts`), the class-filter dropdown, and badge CSS
+  (all previously missing both values). Also extended `ModelAssumption` with `ccr4bp`/`crnbp`
+  (the two new rows' actual model — was previously absent too, which silently mislabeled the
+  orbit-view fidelity badge as "idealized coplanar ellipse"; fixed) and fixed the hero-scene
+  Uranian-scene curve builder, which — before this fix — would have drawn a fabricated
+  Umbriel<->Titania Hohmann-transfer curve for the torus row on the homepage (it only checked
+  `bodies[]`/`primary`, not `orbit_class`; now gated on `orbit_class === "quasi_cycler"`, torus
+  rows render as an honest badge instead). Added a new `/about#quasi-periodic-torus` explainer
+  section covering the structural distinction from a strict cycler (2-D invariant-torus surface,
+  two incommensurate frequencies, vs one closed loop), why it's still cycler-like useful
+  (reservoir of nearby trajectories, like real libration-point missions flying a nearby
+  quasi-halo torus member; confirmed real-ephemeris persistence — the recurring ~500-2,000 km
+  narrow near-miss window across all 10 tested epochs 2000-2083, against a 5,000 km gate), and
+  what's still missing (a computed manifold connection — this row has none, `#761`), contrasted
+  against the sibling `torus_homoclinic` row which DOES have one (departs unstable / returns
+  stable to ~5.7e-10 km, cross-checked to ~1.1e-7 km). Updated 5 existing site tests
+  (`catalogue-class`, `catalogue-real-shape`, `hero-data`, `hero-scenes` ×2) whose hardcoded
+  orbit-class/Uranian-row-count enumerations were stale against the newly-synced
+  `umbriel-1-2-torus-homoclinic-uranus-2026` row. Full site test suite (160 tests), `astro check`
+  (10 pre-existing unrelated errors, unchanged count before/after), and `astro build` (388 pages)
+  all clean. **Sync outcome**: `umbriel-1-2-torus-homoclinic-uranus-2026`
+  (`torus_homoclinic`) synced from `origin/main` and its detail page verified rendering
+  correctly. `europa-3-4-crnbp-torus-jupiter-2026` (the `quasi_periodic_torus` example) is
+  **NOT yet in `origin/main`** of this repo (local `HEAD` is 70 commits ahead of `origin/main`
+  at dispatch time) — its own detail page could not be verified live on the site. No push was
+  made (not this task's call); re-run `npm run sync:catalogue` in `cyclers.space` once this
+  repo's relevant commits reach `origin/main` to pick it up — the label/explainer code is
+  already in place and needs no further change.
 - `#761` — registered 2026-07-28, HELD (not dispatched, pending `#759`/`#750`): investigate
   whether `europa-3-4-crnbp-torus-jupiter-2026` (or a resonance-hop trajectory built via `#759`'s
   own connection machinery) can be given genuine demonstrated transport utility — a computed
