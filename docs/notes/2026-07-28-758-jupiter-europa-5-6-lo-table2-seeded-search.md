@@ -185,6 +185,44 @@ relaxed-period wide sweep, and now a paper-internal sourced seed).
 
 ---
 
+## Reviewer verdict (coordinating session, 2026-07-28)
+
+Independently spot-checked before ruling: confirmed the sourced constants (`TABLE2_HOMOCLINIC_X`,
+`TABLE2_5_6_LO_X_OFFSET_SOURCED`) and the recovered candidate's own numbers are grounded in the
+actual committed code (not just this note's narrative), re-ran the 43-test suite (`43/43 pass`),
+`ruff check` (clean), and `mypy` (clean, 2 files) myself before accepting the result.
+
+**Ruling: 5:6-LO is CONFIRMED**, on the same reviewer standard already applied to 3:4-LO
+(`docs/notes/2026-07-28-755-jupiter-europa-3-4-lo-5-6-lo-targeted-search.md`'s "Reviewer verdict")
+— and by that same standard, this case is if anything MORE decisive, not a closer call:
+1. Eigenvalue match (`3.44e-7`/`3.18e-8`) is comparably tight to 3:4-LO's own `2.8e-8`, both far
+   inside the formal gate.
+2. Unlike 3:4-LO's corroboration (a figure-shape match + a qualitative mechanism inference), this
+   candidate reproduces an ACTUAL PUBLISHED NUMBER — the paper's own stated `~8.0e-5` x-offset
+   between Table 2's homoclinic point and the 5:6 orbit, matched independently to `~4%` relative.
+   That is a quantitative reproduction, the strongest class of evidence this whole task chain has
+   produced for any family.
+3. The close-Europa-approach corroboration (668 km, closer than 3:4-LO's own confirmed 1,641 km)
+   directly matches the paper's own stated instability mechanism, and the independent Radau
+   cross-check (closure + Jacobi conservation to `1e-13`) rules out a corrector artifact.
+4. The period offset (`2.83%`) is not an isolated excuse — it is the same physically-principled
+   pattern already established for 3:4-LO: 5:6-LO is `λ≈4445`, three orders of magnitude further
+   from marginal stability than the confirmed near-two-body-limit `5:6-LI` (`λ≈1.000008`), squarely
+   the regime Anderson & Lo's own Eq. 6 (p.171) says should NOT be expected to hold an exact
+   integer period ratio.
+
+As with 3:4-LO, the module's own strict quantitative gate is NOT retroactively loosened — it
+correctly still reports `eigenvalue_confirmed=True, period_confirmed=False, passed=False`. This is
+a qualitative judgment layered on top, not a tolerance fudge.
+
+**Net effect on `#754`'s Table-3 half**: both required families (3:4-LO, 5:6-LO) are now confirmed.
+The heteroclinic connection `Wu(3:4-LO) ∩ Ws(5:6-LO)` gated on Table 3's own reported state
+(`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`'s own reading of the paper) is now
+buildable at its ORIGINAL scope, using `recover_758_table2_seeded_candidate()` as the 5:6-LO seed
+and the same `ResonantNode`/section-crossing machinery `#754`'s Table-2 half is already building.
+
+---
+
 ## Opinion on `#754` (Task B, Table-3 half) — not a decision
 
 `#754`'s Table-2 half (3:4-LO homoclinic self-connection) is separately

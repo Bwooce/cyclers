@@ -98,13 +98,25 @@ unchanged. See `git log` around this date for the corrected commit.
   ghost guard + Table-2 state gate (−1.28427733, 0.0, 0.00000009, 0.46372205) at 1e-4, tolerance
   justified by the paper's own interpolation-not-Newton intersection method; bonus: the gate
   independently stress-tests the `#755` reviewer ruling on a third, orthogonal axis). **Table-3
-  half — still BLOCKED**: the paper's Table 3 heteroclinic is Wu(3:4-LO)∩Ws(**5:6-LO**)
-  specifically (footnote 4 p. 184: "The 3:4-LO and 5:6-LO resonant orbits will be referred to as
-  the 3:4 and 5:6 resonant orbits hereafter"; 5:6-LI was explicitly "removed from consideration"
-  by the paper, p. 183-184) — NOT reachable while 5:6-LO stays a clean negative; do NOT
-  substitute 5:6-LI (non-reproductive AND computationally infeasible: λ=1.000008 ⇒ manifold
-  e-folding ~4.7e6 time units — the paper discarded it for exactly this reason). Gate-keeper for
-  the Table-3 half is `#758` (below). `#751`'s deferred Lyapunov homoclinic-connection-finder
+  half — status changed by `#758` (2026-07-28, DONE, see its own bullet below): NOT a clean
+  negative anymore.** The paper's Table 3 heteroclinic is Wu(3:4-LO)∩Ws(**5:6-LO**) specifically
+  (footnote 4 p. 184: "The 3:4-LO and 5:6-LO resonant orbits will be referred to as the 3:4 and
+  5:6 resonant orbits hereafter"; 5:6-LI was explicitly "removed from consideration" by the
+  paper, p. 183-184) — do NOT substitute 5:6-LI (non-reproductive AND computationally
+  infeasible: λ=1.000008 ⇒ manifold e-folding ~4.7e6 time units — the paper discarded it for
+  exactly this reason; this still stands unconditionally). `#758` found a STRONG 5:6-LO
+  candidate (eigenvalue rel_err 3.4e-7, six orders of magnitude tighter than the prior best
+  1.98%, plus three independent corroborating signals — see `#758`'s own bullet) but flagged it
+  "candidate found, reviewer judgment invited" rather than self-declaring CONFIRMED (its period
+  is a real ~2.83% off `q=6`, the same open question 3:4-LO's own confirmation already
+  navigated). **Reviewer verdict (coordinating session, 2026-07-28): 5:6-LO CONFIRMED** — see
+  `#758`'s own bullet + its results note's "Reviewer verdict" section for the full reasoning
+  (if anything more decisive than 3:4-LO's own case: an actual reproduced published number, not
+  just shape/mechanism corroboration). **BOTH required families are now in hand — the Table-3
+  half is buildable at its ORIGINAL scope**, seeded from `recover_758_table2_seeded_candidate()`,
+  using the same `ResonantNode`/section-crossing machinery the Table-2 half is building, gated on
+  Table 3's own reported state (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`).
+  `#751`'s deferred Lyapunov homoclinic-connection-finder
   primitive still folds into the Table-2 half's homoclinic mode. Awaiting user authorization to
   dispatch the re-scoped Table-2 build. Prior history: user chose "Task A only for now"
   (2026-07-28) — `#753` reported (2026-07-28, DONE, PARTIAL: 1/4 Table-1
@@ -140,21 +152,55 @@ unchanged. See `git log` around this date for the corrected commit.
   completing the multi-patchpoint flyby-vector-rotation refinement `#755` started), not more
   grid+bisection at `C_flyby` directly, which three tasks have now applied at length. See
   `#753`'s, `#755`'s, and `#756`'s own bullets + results notes for full reasoning.
-- `#758` — DISPATCHED 2026-07-28 (user: "go"), registered by `#757`: 5:6-LO
-  recovery from a NEW digit-grade sourced seed that `#757`'s direct paper read surfaced — Table 2's
-  homoclinic intersection state (x=−1.28427733, ẋ=0.00000009, ẏ=+0.46372205) lies "almost exactly
-  at the location of the 5:6 orbit" with Δx ≈ 8.0e-5 (p. 184 + p. 190), pinning the 5:6-LO orbit's
-  OWN section point at x ≈ −1.28427733 ± ~8e-5, ẏ>0, small |ẋ| — coordinates no prior pass had
+- `#758` — REMOVED from "Ready to dispatch" 2026-07-28, ✓ DONE (direct continuation of `#756`,
+  fourth attempt at 5:6-LO, this time from a genuinely new sourced seed): `#757`'s direct paper
+  read surfaced Table 2's homoclinic intersection state (x=−1.28427733, ẋ=0.00000009,
+  ẏ=+0.46372205, p. 190), which the paper itself says lies "almost exactly at the location of the
+  5:6 orbit" with Δx ≈ 8.0e-5 (p. 184) — pinning a narrow seed window no prior task had worked
   (`#753`/`#755`/`#756` all worked the x0≈−1.42/−1.43 hotspot or coarse wide grids; `#756`'s
-  159-candidate checkpoint has NOTHING in x0 ∈ (−1.35, −1.20) except neutral λ≈1 islands — checked
-  directly this pass). Spec (full detail in the `#757` note §5): dense symmetric-corrector sweep
-  x0 ∈ −1.28427733 ± 2e-4, `ydot0_sign=+1`, `half_crossings` 1-12, NO period filtering during
-  search (`#756` discipline); fallback to the general asymmetric fixed-C corrector seeded at the
-  full pinned 4-state if the crossing is non-perpendicular; gate on Table-1's 4445.387515 at the
-  existing 1e-3 rel tol, period + `europa_closest_approach` as corroboration only. This is exactly
-  the "genuinely different seed strategy" `#756`'s closing opinion called for — and it is the sole
-  gate-keeper for `#754`'s Table-3 half: pass ⇒ Table 3 unlocks at original scope; fail ⇒ Table 3
-  stays honestly unreachable (no 5:6-LI substitution).
+  159-candidate checkpoint confirmed NOTHING in x0 ∈ (−1.35, −1.20) except neutral λ≈1 islands —
+  re-checked directly this task). **Result: STRONG CANDIDATE FOUND.** Direct symmetric-corrector
+  convergence at `x0=-1.28420033, ydot0_sign=+1, half_crossings=2` (no fallback to the general
+  asymmetric corrector needed — the symmetric crossing converged cleanly, residual ~6e-12) recovers
+  `|λ|=4445.389044` vs Table 1's target `4445.387515` — **rel_err 3.4e-7**, six orders of magnitude
+  tighter than the pre-existing `#753` seed's 1.98% (now superseded in the module's own seed
+  table), cross-checked between `barden_stability` and `_planar_floquet` to 3.0e-7 relative.
+  THREE independent corroborating signals, all stronger than 3:4-LO's own confirmed case: (1)
+  recovered `x0` sits 7.7e-5 from Table 2's own homoclinic x — matching the paper's stated ~8.0e-5
+  offset to ~4% relative, an actual published NUMBER this candidate reproduces (not just a
+  qualitative shape/mechanism inference); (2) Europa closest approach 668 km — CLOSER than the
+  CONFIRMED 3:4-LO orbit's own 1,641 km, strongly matching the paper's attributed close-flyby
+  instability mechanism; (3) independent Radau cross-check (closure + Jacobi conservation) passes
+  at the 1e-13 level. Basin-robustness checked: 32/41 evenly-spaced seeds across the full
+  `±2e-4` window converge Newton-directly to this exact point (not an isolated fluke) — though
+  `survey_candidates`' own bracket/sign-flip scan does NOT detect this root at coarse grid
+  resolution here either, the same tooling nuance `#756` already documented for the old seed;
+  direct Newton convergence is the ground truth. What does NOT confirm: `period_over_2π=6.169686`,
+  a real, tightly-converged ~2.83% offset from the clean `q=6` multiple (fails
+  `TABLE1_PERIOD_REL_TOL`) — the SAME pattern the `#755` reviewer ruling already accepted for
+  3:4-LO's own comparable (2.1%) period offset, on the paper's own Eq. 6 grounds that a precise
+  `2πq` period is not expected for strongly unstable, far-from-two-body-limit families. Per this
+  task's own mandate, NOT unilaterally declared CONFIRMED — flagged as "candidate found, reviewer
+  judgment invited," with evidence arguably even stronger than 3:4-LO's original submission
+  (which was subsequently confirmed). `_TABLE1_CANDIDATE_SEEDS["5:6-LO"]` updated to this new seed
+  (old value's provenance preserved in the `#753`/`#755`/`#756` results notes and this module's own
+  comments, not re-litigated here); `gate_report()`'s strict dual-criterion gate honestly still
+  reports `5:6-LO` as `passed=False` (eigenvalue_confirmed=True, period_confirmed=False) pending
+  that reviewer call — same as 3:4-LO's own row. Code:
+  `src/cyclerfinder/search/jovian_resonant_families.py` (extended — `TABLE2_HOMOCLINIC_X/XDOT/YDOT`,
+  `TABLE2_5_6_LO_X_OFFSET_SOURCED`, `basin_robustness_scan`, `recover_758_table2_seeded_candidate`)
+  + `tests/search/test_jovian_resonant_families.py` (14 new/updated tests, 43/43 passing); `ruff`
+  clean, full-project `mypy src tests` clean (822 files). Results note:
+  `docs/notes/2026-07-28-758-jupiter-europa-5-6-lo-table2-seeded-search.md`. **Reviewer verdict
+  (coordinating session, 2026-07-28), independently re-verified the sourced constants against the
+  actual code + re-ran the 43-test suite/ruff/mypy before ruling: 5:6-LO CONFIRMED** — by the same
+  standard already applied to 3:4-LO, if anything MORE decisive (the ~8.0e-5 x-offset match is an
+  actual reproduced PUBLISHED NUMBER, not just a shape/mechanism inference; closer Europa flyby
+  than 3:4-LO's own confirmed 668 km vs 1,641 km; independent Radau cross-check to 1e-13). Same
+  non-fudging discipline as 3:4-LO: the module's own strict gate is NOT loosened, still correctly
+  reports `passed=False`; this is a qualitative judgment layered on top, documented in this note's
+  own "Reviewer verdict" section. **Net effect on `#754`: BOTH required families (3:4-LO, 5:6-LO)
+  are now confirmed — the Table-3 heteroclinic gate is buildable at its ORIGINAL scope.**
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
