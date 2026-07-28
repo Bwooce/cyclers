@@ -1,17 +1,20 @@
 """Tests for the #754 Jupiter-Europa 3:4-LO homoclinic connection + Anderson & Lo
 2011 Table 2 gate (docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md
-Sec. 5, docs/notes/2026-07-28-754-jupiter-europa-3-4-lo-homoclinic-table2-gate.md).
+Sec. 5, docs/notes/2026-07-28-754-jupiter-europa-3-4-lo-homoclinic-table2-gate.md),
+and the #759 Table-3 heteroclinic gate (Wu(3:4-LO) intersect Ws(5:6-LO),
+docs/notes/2026-07-28-759-jupiter-europa-3-4-lo-5-6-lo-heteroclinic-table3-gate.md).
 
-Sourced-golden discipline: :data:`jrc.TABLE2_STATE` traces verbatim to Anderson & Lo
-2011 Table 2 (p.190); the gate tolerance (:data:`jrc.TABLE2_GATE_ABS_TOL`) is
-justified in the module docstring (the paper's own state is interpolation-limited,
-not Newton-corrected). The Table-2 gate test is deliberately NOT marked
-``@pytest.mark.slow`` (``feedback_delegation_fresh_agent_not_fork``: a discovery-
-verdict-bearing evidence test must not be silently skipped by CI) -- it uses the
-ONE (branch_u, branch_s, k_u, k_s) combination this task's own coarse scan found to
-converge (documented in the results note), not a re-run of the full scan, to keep
-runtime bounded while still exercising the real ``correct_connection``/
-``crosscheck_cycle``/``gate_table2`` code paths end-to-end.
+Sourced-golden discipline: :data:`jrc.TABLE2_STATE`/:data:`jrc.TABLE3_STATE` trace
+verbatim to Anderson & Lo 2011 Tables 2/3 (p.190-191); the gate tolerances
+(:data:`jrc.TABLE2_GATE_ABS_TOL`/:data:`jrc.TABLE3_GATE_ABS_TOL`) are justified in
+the module docstring (the paper's own states are interpolation-limited, not
+Newton-corrected). The gate tests are deliberately NOT marked ``@pytest.mark.slow``
+(``feedback_delegation_fresh_agent_not_fork``: a discovery-verdict-bearing evidence
+test must not be silently skipped by CI) -- they use the ONE (branch_u, branch_s,
+k_u, k_s) combination each task's own coarse scan found (documented in the results
+notes), not a re-run of the full scan, to keep runtime bounded while still
+exercising the real ``correct_connection``/``crosscheck_cycle``/``gate_table2``/
+``gate_table3`` code paths end-to-end.
 """
 
 from __future__ import annotations
@@ -22,7 +25,10 @@ import pytest
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.jovian_resonant_connections as jrc
 from cyclerfinder.genome.heteroclinic_cycle import (
+    HeteroclinicCycle,
     _planar_floquet_pair,
+    _section_crossing,
+    _seed_on_manifold,
     assemble_cycle,
     correct_connection,
     crosscheck_cycle,
@@ -38,6 +44,12 @@ def system() -> cr3bp.CR3BPSystem:
 @pytest.fixture(scope="module")
 def node_34lo(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
     _sys, node = jrc.build_3_4_lo_node(system)
+    return node
+
+
+@pytest.fixture(scope="module")
+def node_56lo(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
+    _sys, node = jrc.build_5_6_lo_node(system)
     return node
 
 
@@ -306,3 +318,249 @@ def test_gate_table2_reports_clean_fail_on_empty_candidates(
     assert not gate.passed
     assert gate.candidate is None
     assert gate.notes
+
+
+# ---------------------------------------------------------------------------
+# (5) #759: the Table-3 HETEROCLINIC connection Wu(3:4-LO) -> Ws(5:6-LO).
+# ---------------------------------------------------------------------------
+
+
+def test_table3_state_matches_paper_p191() -> None:
+    """Anderson & Lo 2011 Table 3, p.191, verbatim."""
+    assert jrc.TABLE3_STATE == {
+        "x": -1.43029175,
+        "xdot": 0.00018678,
+        "ydot": 0.67262261,
+    }
+    assert jrc.TABLE3_STATE["x"] < 0
+    assert jrc.TABLE3_STATE["ydot"] > 0
+
+
+def test_5_6_lo_node_builds_from_758_candidate(
+    system: cr3bp.CR3BPSystem, node_56lo: jrc.ResonantNode
+) -> None:
+    """build_5_6_lo_node uses #758's reviewer-confirmed candidate, and shares the
+    SAME Jacobi constant as 3:4-LO (both evaluated at ANDERSON_LO_C_FLYBY) -- the
+    precondition ``correct_connection`` requires for any connection between them.
+    """
+    assert node_56lo.label == "758-table2-seeded-5:6-LO"
+    assert node_56lo.converged
+    assert abs(node_56lo.jacobi - jrc.ANDERSON_LO_C_FLYBY) < 1e-9
+
+
+def test_own_section_points_5_6_lo_is_its_own_ic(node_56lo: jrc.ResonantNode) -> None:
+    system = jrc.jupiter_europa_system()
+    pts = jrc.own_section_points(system, node_56lo)
+    assert len(pts) == 1
+    assert abs(float(pts[0][0]) - node_56lo.state0[0]) < 1e-9
+    assert abs(float(pts[0][1])) < 1e-9
+
+
+def test_hetero_ghost_guard_rejects_near_degenerate_accepts_genuine(
+    node_34lo: jrc.ResonantNode, node_56lo: jrc.ResonantNode
+) -> None:
+    """HETERO_GHOST_GUARD_DELTA correctly separates a near-zero-propagation
+    degenerate crossing (numerically indistinguishable from an orbit's own IC --
+    e.g. the (branch_u=-1, k_u=1) combination this task's own scan found landing
+    at x=-1.430408617, only ~6e-7 from 3:4-LO's own IC) from a genuine, converged
+    heteroclinic candidate (the (branch=+1,+1, k=4,4) hit this task's scan
+    certified, ~0.037-0.127 away from either orbit's own point).
+    """
+    system = jrc.jupiter_europa_system()
+    own34 = jrc.own_section_points(system, node_34lo)
+    own56 = jrc.own_section_points(system, node_56lo)
+
+    degenerate = np.array([-1.430408617159821, -1.2679107888463603e-06])
+    genuine = np.array([-1.3068706902782006, 0.02869075783271665])
+
+    d_degenerate = min(
+        jrc._ghost_distance(degenerate, own34), jrc._ghost_distance(degenerate, own56)
+    )
+    d_genuine = min(jrc._ghost_distance(genuine, own34), jrc._ghost_distance(genuine, own56))
+
+    assert d_degenerate < jrc.HETERO_GHOST_GUARD_DELTA
+    assert d_genuine > jrc.HETERO_GHOST_GUARD_DELTA
+    # And landing CLOSE to (but numerically distinct from) 3:4-LO's own point is NOT,
+    # by itself, degenerate -- the paper's own text (p.191) says the genuine Table-3
+    # intersection sits "near the 3:4 orbit" (#757's own ~1.16e-4 margin finding).
+    near_but_genuine = np.array([jrc.TABLE3_STATE["x"], jrc.TABLE3_STATE["xdot"]])
+    assert jrc._ghost_distance(near_but_genuine, own34) > jrc.HETERO_GHOST_GUARD_DELTA
+
+
+# The one (branch_u, branch_s, k_u, k_s) combination this task's own systematic
+# 144-combination coarse scan (branch_u, branch_s in {+1,-1}, k_u, k_s in 1..6)
+# found to converge Newton-cleanly AND land closest to Table 3's own state -- see
+# the results note for the full scan log (5 combinations converged in total; every
+# other combination either failed to reach the section, or converged to a point
+# considerably farther from Table 3's own state).
+_KNOWN_HIT_T3 = {"branch_u": +1, "branch_s": +1, "k_u": 4, "k_s": 4}
+
+
+def test_find_heteroclinic_returns_known_combo(
+    system: cr3bp.CR3BPSystem, node_34lo: jrc.ResonantNode, node_56lo: jrc.ResonantNode
+) -> None:
+    """find_heteroclinic's own scan/ghost-guard/ranking plumbing, restricted to the
+    ONE known-converging combination (for runtime) -- verifies the function returns
+    exactly this candidate, ghost-guard-passed, ranked/reported correctly.
+    """
+    candidates = jrc.find_heteroclinic(
+        system,
+        node_34lo,
+        node_56lo,
+        branches=(_KNOWN_HIT_T3["branch_u"],),
+        k_range=range(_KNOWN_HIT_T3["k_u"], _KNOWN_HIT_T3["k_u"] + 1),
+        max_time_factor=3.0,
+        scan_n=8,
+        tol=1e-7,
+        max_iter=20,
+    )
+    assert len(candidates) == 1
+    cand = candidates[0]
+    assert cand.connection.converged
+    assert cand.connection.residual < 1e-7
+    assert cand.ghost_distance > jrc.HETERO_GHOST_GUARD_DELTA
+    assert abs(float(cand.connection.crossing_xv[0]) - (-1.3068706902782006)) < 1e-6
+    assert abs(float(cand.connection.crossing_xv[1]) - 0.02869075783271665) < 1e-6
+
+
+def test_table3_gate_honest_result(
+    system: cr3bp.CR3BPSystem, node_34lo: jrc.ResonantNode, node_56lo: jrc.ResonantNode
+) -> None:
+    """End-to-end Table-3 gate on the best converged heteroclinic candidate this
+    task's own systematic scan found.
+
+    Reports the HONEST result: Newton-converged (residual ~1.2e-8), ghost-guard-
+    passed (well clear of either orbit's own section point), independently
+    Radau-cross-checked -- but its (x, xdot) misses Anderson & Lo's own Table 3
+    state by roughly two orders of magnitude MORE than Table 2's own honest miss
+    (#754: 1.13e-3 in x). This is reported plainly, not fudged -- see the results
+    note for the striking, separately-documented corroborating evidence that
+    Wu(3:4-LO) ALONE (without a certified Ws(5:6-LO) match) reproduces Table 3's
+    own state to ~4.5e-7, far inside tolerance -- just not as part of a certified
+    two-manifold connection.
+    """
+    conn = correct_connection(
+        system,
+        node_34lo,
+        node_56lo,
+        epsilon=jrc.ANDERSON_LO_EPSILON,
+        branch_u=_KNOWN_HIT_T3["branch_u"],
+        branch_s=_KNOWN_HIT_T3["branch_s"],
+        k_u=_KNOWN_HIT_T3["k_u"],
+        k_s=_KNOWN_HIT_T3["k_s"],
+        ydot_sign_u=jrc.SECTION_YDOT_SIGN,
+        ydot_sign_s=jrc.SECTION_YDOT_SIGN,
+        x_sign_u=jrc.SECTION_X_SIGN,
+        x_sign_s=jrc.SECTION_X_SIGN,
+        max_time_factor=3.0,
+        scan_n=8,
+        tol=1e-7,
+        max_iter=20,
+    )
+    assert conn.converged, f"expected the known-hit combo to converge; notes={conn.notes}"
+    assert conn.residual < 1e-7
+
+    own34 = jrc.own_section_points(system, node_34lo)
+    own56 = jrc.own_section_points(system, node_56lo)
+    d_ghost = min(
+        jrc._ghost_distance(conn.crossing_xv, own34), jrc._ghost_distance(conn.crossing_xv, own56)
+    )
+    assert d_ghost > jrc.HETERO_GHOST_GUARD_DELTA
+
+    # Independent Radau re-derivation -- a manual one-leg (non-wraparound) "cycle",
+    # since Table 3 is a one-way connection, not a closed cycle (assemble_cycle's
+    # own wraparound would incorrectly also try to certify the UNSCANNED reverse
+    # leg Ws(3:4-LO)<-Wu(5:6-LO), which this task never scanned for).
+    cycle = HeteroclinicCycle(
+        orbits=[node_34lo.label, node_56lo.label],
+        connections=[conn],
+        jacobi=node_34lo.jacobi,
+        closed=conn.converged,
+        max_leg_residual=conn.residual,
+        independent_residual=float("nan"),
+        symbol_sequence=[node_34lo.label, node_56lo.label],
+        notes="",
+    )
+    checked = crosscheck_cycle(
+        system,
+        [node_34lo, node_56lo],
+        cycle,
+        method="Radau",
+        rtol=1e-11,
+        atol=1e-11,
+        max_time_factor=3.0,
+    )
+    assert checked.independent_residual < 1e-6, (
+        f"DOP853 vs Radau disagreement {checked.independent_residual:.3e} exceeds 1e-6"
+    )
+
+    candidate = jrc.HeteroclinicCandidate(
+        connection=conn,
+        ghost_distance=d_ghost,
+        dist_to_table3=float(
+            np.linalg.norm(
+                conn.crossing_xv - np.array([jrc.TABLE3_STATE["x"], jrc.TABLE3_STATE["xdot"]])
+            )
+        ),
+    )
+    gate = jrc.gate_table3(system, [candidate])
+
+    # Honest report: both x and xdot miss tolerance badly -- overall gate FAILS.
+    assert gate.candidate is not None
+    assert gate.x_err > 0.1, f"x_err={gate.x_err:.3e} unexpectedly small for the known result"
+    assert not gate.x_passed
+    assert not gate.xdot_passed
+    assert not gate.passed
+
+
+def test_gate_table3_reports_clean_fail_on_empty_candidates(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """No surviving candidates -> an honest, explicit FAIL, never a fabricated pass."""
+    gate = jrc.gate_table3(system, [])
+    assert not gate.passed
+    assert gate.candidate is None
+    assert gate.notes
+
+
+def test_wu_3_4_lo_alone_reproduces_table3_state_almost_exactly(
+    system: cr3bp.CR3BPSystem, node_34lo: jrc.ResonantNode
+) -> None:
+    """Striking, honestly-caveated corroborating finding (NOT a certified two-
+    manifold connection -- see the results note): tracing Wu(3:4-LO)'s OWN section
+    curve directly (branch=+1, k=1) -- the SAME interpolation method the paper
+    itself used (p.190-191) -- at phase tau=12.74694 lands within ~4.5e-7 of
+    Anderson & Lo's own published Table-3 state, an order of magnitude tighter
+    than even this module's own 1e-4 gate tolerance. This does NOT by itself
+    certify a heteroclinic connection (Ws(5:6-LO) must ALSO be shown to pass
+    through this point, which this task's own extensive search could not certify
+    to Newton-convergence -- see :func:`test_table3_gate_honest_result` and the
+    results note) -- but it is strong, quantitative, independently-computed
+    evidence that the genuine intersection sits almost exactly where the paper
+    says, and a fourth independent corroborating axis (beyond #755's eigenvalue
+    match, #755's shape/close-approach match, and #754's homoclinic Table-2 match)
+    for the #755-confirmed 3:4-LO identification.
+    """
+    tau = 12.74694
+    max_time = 3.0 * max(node_34lo.period, 38.76527763438627)
+    seed = _seed_on_manifold(
+        system, node_34lo, tau=tau, direction="unstable", branch=+1, epsilon=jrc.ANDERSON_LO_EPSILON
+    )
+    p = _section_crossing(
+        system,
+        seed,
+        direction="unstable",
+        k=1,
+        max_time=max_time,
+        ydot_sign=jrc.SECTION_YDOT_SIGN,
+        x_sign=jrc.SECTION_X_SIGN,
+    )
+    assert p is not None
+    target = np.array([jrc.TABLE3_STATE["x"], jrc.TABLE3_STATE["xdot"]])
+    x_err = abs(float(p[0]) - target[0])
+    xdot_err = abs(float(p[1]) - target[1])
+    assert x_err < 1e-5, f"x_err={x_err:.3e}"
+    assert xdot_err < 1e-5, f"xdot_err={xdot_err:.3e}"
+    # far inside the module's own formal Table-3 gate tolerance
+    assert x_err < jrc.TABLE3_GATE_ABS_TOL
+    assert xdot_err < jrc.TABLE3_GATE_ABS_TOL

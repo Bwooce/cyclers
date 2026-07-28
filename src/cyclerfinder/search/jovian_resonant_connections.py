@@ -40,6 +40,36 @@ provenance):
   (``C = x^2+y^2 + 2(1-mu)/r1 + 2*mu/r2 - v^2``, y=0 here) -- so ``ydot`` is a
   DERIVED consistency check, not an independent third gate coordinate; the real
   gate is on ``(x, xdot)`` alone.
+
+#759 UPDATE (2026-07-28, direct continuation of #754/#757/#758): with 5:6-LO
+now ALSO reviewer-confirmed (docs/notes/2026-07-28-758-jupiter-europa-5-6-lo-table2-seeded-search.md
+"Reviewer verdict"), Table 3 (p.191, "Heteroclinic Trajectory State at
+Intersection") is buildable: it is ``Wu(3:4-LO) ∩ Ws(5:6-LO)``, "an
+intersection of the unstable manifold of the 3:4 orbit and the stable
+manifold of the 5:6 orbit **near the 3:4 orbit**" (p.191, verbatim -- the
+paper explicitly selected the intersection nearest 3:4-LO's own section
+point out of the several that exist, so a converged connection landing close
+to 3:4-LO's own IC is the EXPECTED, sourced geometry here, not a red flag).
+Re-verified directly against the paper's text layer (line ~1591 of the
+``.txt`` sidecar) that Table 3, like Table 2, was "computed as before by
+using interpolation between the closest points on the invariant manifolds in
+the Poincare section" -- the SAME interpolation-not-Newton method, so the
+same :data:`TABLE2_GATE_ABS_TOL`-class (``1e-4``) tolerance justification
+applies verbatim; see :data:`TABLE3_GATE_ABS_TOL`.
+
+:func:`find_heteroclinic` generalizes :func:`find_homoclinic` to two
+DIFFERENT :class:`ResonantNode` endpoints (built via the same
+``ResonantNode.from_candidate`` adapter, one from 3:4-LO's confirmed
+candidate, one from 5:6-LO's --
+:func:`~cyclerfinder.search.jovian_resonant_families.recover_758_table2_seeded_candidate`).
+Since ``node_from != node_to`` there is no self-shadow trivial solution the
+way homoclinic A=B has -- but :data:`HETERO_GHOST_GUARD_DELTA` still guards
+against a genuinely degenerate corrector output (a "converged" crossing that
+is really just the epsilon-scale seed offset with no real multi-crossing
+manifold excursion), calibrated much tighter than :data:`GHOST_GUARD_DELTA`
+precisely because landing close to 3:4-LO's own point is expected, not
+degenerate, for this table (see that constant's own docstring for the full
+reasoning and the specific numeric margin this task found).
 """
 
 from __future__ import annotations
@@ -62,6 +92,7 @@ from cyclerfinder.search.jovian_resonant_families import (
     ANDERSON_LO_C_FLYBY,
     ResonantFamilyCandidate,
     jupiter_europa_system,
+    recover_758_table2_seeded_candidate,
     recover_table1_candidate,
 )
 
@@ -110,6 +141,46 @@ ANDERSON_LO_EPSILON = 0.5e-5
 #: the negative x-axis opposite Europa (x<0), ydot>0 half only.
 SECTION_YDOT_SIGN = +1
 SECTION_X_SIGN = -1
+
+#: Table 3 (p.191), "Heteroclinic Trajectory State at Intersection" -- verbatim.
+#: Wu(3:4-LO) ∩ Ws(5:6-LO), "near the 3:4 orbit" (p.191): the paper explicitly
+#: selected the intersection nearest 3:4-LO's own section point out of the
+#: several heteroclinic intersections that exist at this energy.
+TABLE3_STATE: dict[str, float] = {
+    "x": -1.43029175,
+    "xdot": 0.00018678,
+    "ydot": 0.67262261,
+}
+
+#: Gate tolerance on the Table-3 (x, xdot) match. Re-verified directly (this
+#: task, #759) against the paper's own text (line ~1591 of the .txt sidecar):
+#: Table 3, like Table 2, was "computed as before by using interpolation
+#: between the closest points on the invariant manifolds" -- NOT a
+#: Newton-corrected exact intersection -- so the SAME tolerance class as
+#: :data:`TABLE2_GATE_ABS_TOL` applies, for the same reason (chasing tighter
+#: agreement than the source's own interpolation-limited digits would not be
+#: an honest gate).
+TABLE3_GATE_ABS_TOL = 1e-4
+
+#: Heteroclinic-connection ghost-guard radius (nondimensional, (x, xdot) Euclidean
+#: norm) -- see the module's #759 docstring update for the full reasoning. MUCH
+#: tighter than :data:`GHOST_GUARD_DELTA` (1e-3, calibrated for the Table-2
+#: HOMOCLINIC self-connection, where the genuine intersection sits ~0.146 away
+#: from 3:4-LO's own section point -- a huge margin with room for a coarse
+#: guard). Table 3 connects TWO DIFFERENT orbits, and the paper's own text
+#: (p.191) explicitly selected an intersection "near the 3:4 orbit" -- #757's
+#: own scoping note already found 3:4-LO's own IC sits only ~1.16e-4 from the
+#: PUBLISHED Table-3 x, so landing close to 3:4-LO's own point is the EXPECTED
+#: geometry here, not a red flag, and a 1e-3-scale guard would risk wrongly
+#: rejecting the genuine answer. This guard instead targets the much smaller,
+#: genuinely-degenerate case: a "converged" crossing indistinguishable (to a
+#: few manifold-epsilon) from EITHER orbit's own unperturbed section point --
+#: i.e. the corrector found a trivial near-zero-net-propagation solution (the
+#: seed's own epsilon offset, not a real multi-crossing manifold excursion).
+#: Set to 4x the paper's own manifold offset (:data:`ANDERSON_LO_EPSILON` =
+#: 0.5e-5 -> 2e-5), comfortably below the ~1.16e-4 expected genuine margin to
+#: 3:4-LO's own point.
+HETERO_GHOST_GUARD_DELTA = 4.0 * ANDERSON_LO_EPSILON
 
 
 def ydot_from_section_eq7(system: cr3bp.CR3BPSystem, x: float, xdot: float, jacobi: float) -> float:
@@ -435,22 +506,216 @@ def run_table2_gate(
     return gate_table2(sys_, candidates)
 
 
+# ---------------------------------------------------------------------------
+# #759: heteroclinic connection Wu(3:4-LO) ∩ Ws(5:6-LO) -- Anderson & Lo 2011
+# Table 3 (p.191).
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class HeteroclinicCandidate:
+    """One surviving (ghost-guard-passed, converged) heteroclinic connection
+    Wu(node_from) -> Ws(node_to), i.e. two DIFFERENT resonant orbits."""
+
+    connection: HeteroclinicConnection
+    ghost_distance: float
+    dist_to_table3: float
+
+
+def find_heteroclinic(
+    system: cr3bp.CR3BPSystem,
+    node_from: ResonantNode,
+    node_to: ResonantNode,
+    *,
+    epsilon: float = ANDERSON_LO_EPSILON,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    x_sign: int = SECTION_X_SIGN,
+    ghost_guard_delta: float = HETERO_GHOST_GUARD_DELTA,
+    max_time_factor: float = 3.0,
+    k_range: range = range(1, 7),
+    branches: tuple[int, ...] = (+1, -1),
+    tol: float = 1e-7,
+    scan_n: int = 12,
+    max_iter: int = 40,
+) -> list[HeteroclinicCandidate]:
+    """Coarse scan over ``(branch_u, branch_s, k_u, k_s)`` for
+    ``Wu(node_from) ∩ Ws(node_to)`` -- the heteroclinic analogue of
+    :func:`find_homoclinic`, generalized to two DIFFERENT orbits
+    (``node_from != node_to``, unlike the homoclinic self-connection).
+
+    Reuses the exact same :func:`~cyclerfinder.genome.heteroclinic_cycle.correct_connection`
+    machinery, the same one-sided section filters (``x_sign``, ``ydot_sign``),
+    and the same discrete-scan discipline (the paper gives no ``(branch, k)``
+    for the specific published intersection -- see :func:`find_homoclinic`'s
+    own docstring). The ghost guard here is :data:`HETERO_GHOST_GUARD_DELTA`
+    (NOT :data:`GHOST_GUARD_DELTA` -- see that constant's own docstring for
+    why a homoclinic-scale guard would be wrong for this table): it checks the
+    converged crossing against BOTH orbits' own qualifying section points
+    (:func:`own_section_points`) and rejects only a crossing indistinguishable
+    (to within the guard radius) from either orbit's own unperturbed point --
+    a genuinely degenerate near-zero-propagation solution, not a real
+    manifold intersection. Landing CLOSE to (but numerically distinct from)
+    3:4-LO's own point is the paper's own stated expected geometry (p.191:
+    "near the 3:4 orbit") and is explicitly NOT rejected by this guard at its
+    calibrated radius.
+
+    Returns ALL surviving candidates, ranked by distance to
+    :data:`TABLE3_STATE` (closest first).
+    """
+    own_pts_from = own_section_points(system, node_from, ydot_sign=ydot_sign, x_sign=x_sign)
+    own_pts_to = own_section_points(system, node_to, ydot_sign=ydot_sign, x_sign=x_sign)
+    target = np.array([TABLE3_STATE["x"], TABLE3_STATE["xdot"]], dtype=np.float64)
+    out: list[HeteroclinicCandidate] = []
+    for branch_u, branch_s, k_u, k_s in product(branches, branches, k_range, k_range):
+        conn = correct_connection(
+            system,
+            node_from,
+            node_to,
+            k_u=k_u,
+            k_s=k_s,
+            epsilon=epsilon,
+            branch_u=branch_u,
+            branch_s=branch_s,
+            ydot_sign_u=ydot_sign,
+            ydot_sign_s=ydot_sign,
+            x_sign_u=x_sign,
+            x_sign_s=x_sign,
+            max_time_factor=max_time_factor,
+            scan_n=scan_n,
+            tol=tol,
+            max_iter=max_iter,
+        )
+        if not conn.converged:
+            continue
+        d_from = _ghost_distance(conn.crossing_xv, own_pts_from)
+        d_to = _ghost_distance(conn.crossing_xv, own_pts_to)
+        d_ghost = min(d_from, d_to)
+        if d_ghost < ghost_guard_delta:
+            continue  # degenerate near-zero-propagation solution, not a genuine connection
+        d_t3 = float(np.linalg.norm(conn.crossing_xv - target))
+        out.append(
+            HeteroclinicCandidate(connection=conn, ghost_distance=d_ghost, dist_to_table3=d_t3)
+        )
+    out.sort(key=lambda h: h.dist_to_table3)
+    return out
+
+
+@dataclass(frozen=True)
+class Table3GateResult:
+    """Result of gating a heteroclinic candidate against Anderson & Lo's Table 3."""
+
+    candidate: HeteroclinicCandidate | None
+    x: float
+    xdot: float
+    ydot_recovered: float
+    x_err: float
+    xdot_err: float
+    ydot_err: float
+    x_passed: bool
+    xdot_passed: bool
+    ydot_passed: bool
+    passed: bool
+    notes: str = ""
+
+
+def gate_table3(
+    system: cr3bp.CR3BPSystem,
+    candidates: list[HeteroclinicCandidate],
+    *,
+    abs_tol: float = TABLE3_GATE_ABS_TOL,
+) -> Table3GateResult:
+    """Gate the best (closest-to-Table-3) surviving candidate against the paper's
+    own published state. Same structure as :func:`gate_table2` -- the real gate
+    is on ``(x, xdot)``; ``ydot`` is Jacobi-redundant (Eq. 7) and reported for
+    honesty, not gated on its own. Honest FAIL if ``candidates`` is empty or the
+    closest candidate misses tolerance -- never fudged, never loosened.
+    """
+    if not candidates:
+        return Table3GateResult(
+            candidate=None,
+            x=float("nan"),
+            xdot=float("nan"),
+            ydot_recovered=float("nan"),
+            x_err=float("inf"),
+            xdot_err=float("inf"),
+            ydot_err=float("inf"),
+            x_passed=False,
+            xdot_passed=False,
+            ydot_passed=False,
+            passed=False,
+            notes="no surviving (converged, ghost-guard-passed) heteroclinic candidate found",
+        )
+    best = candidates[0]
+    x, xdot = float(best.connection.crossing_xv[0]), float(best.connection.crossing_xv[1])
+    ydot_rec = ydot_from_section_eq7(system, x, xdot, best.connection.jacobi)
+    x_err = abs(x - TABLE3_STATE["x"])
+    xdot_err = abs(xdot - TABLE3_STATE["xdot"])
+    ydot_err = abs(ydot_rec - TABLE3_STATE["ydot"])
+    x_passed = x_err <= abs_tol
+    xdot_passed = xdot_err <= abs_tol
+    ydot_passed = ydot_err <= abs_tol
+    passed = x_passed and xdot_passed
+    return Table3GateResult(
+        candidate=best,
+        x=x,
+        xdot=xdot,
+        ydot_recovered=ydot_rec,
+        x_err=x_err,
+        xdot_err=xdot_err,
+        ydot_err=ydot_err,
+        x_passed=x_passed,
+        xdot_passed=xdot_passed,
+        ydot_passed=ydot_passed,
+        passed=passed,
+        notes="" if passed else "closest surviving candidate misses (x, xdot) tolerance",
+    )
+
+
+def build_5_6_lo_node(
+    system: cr3bp.CR3BPSystem | None = None,
+) -> tuple[cr3bp.CR3BPSystem, ResonantNode]:
+    """Convenience: recover the confirmed `5:6-LO` candidate (#758) and build its node."""
+    sys_ = system if system is not None else jupiter_europa_system()
+    cand = recover_758_table2_seeded_candidate(sys_)
+    node = ResonantNode.from_candidate(sys_, cand)
+    return sys_, node
+
+
+def run_table3_gate(
+    system: cr3bp.CR3BPSystem | None = None, **scan_kwargs: object
+) -> Table3GateResult:
+    """End-to-end: build both nodes, scan for heteroclinic candidates, gate Table 3."""
+    sys_, node_34lo = build_3_4_lo_node(system)
+    _sys2, node_56lo = build_5_6_lo_node(sys_)
+    candidates = find_heteroclinic(sys_, node_34lo, node_56lo, **scan_kwargs)  # type: ignore[arg-type]
+    return gate_table3(sys_, candidates)
+
+
 __all__ = [
     "ANDERSON_LO_C_FLYBY",
     "ANDERSON_LO_EPSILON",
     "GHOST_GUARD_DELTA",
+    "HETERO_GHOST_GUARD_DELTA",
     "SECTION_X_SIGN",
     "SECTION_YDOT_SIGN",
     "TABLE2_GATE_ABS_TOL",
     "TABLE2_STATE",
+    "TABLE3_GATE_ABS_TOL",
+    "TABLE3_STATE",
+    "HeteroclinicCandidate",
     "HomoclinicCandidate",
     "ResonantNode",
     "Table2GateResult",
+    "Table3GateResult",
     "build_3_4_lo_node",
+    "build_5_6_lo_node",
+    "find_heteroclinic",
     "find_homoclinic",
     "gate_table2",
+    "gate_table3",
     "jupiter_europa_system",
     "own_section_points",
     "run_table2_gate",
+    "run_table3_gate",
     "ydot_from_section_eq7",
 ]
