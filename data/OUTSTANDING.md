@@ -214,10 +214,6 @@ unchanged. See `git log` around this date for the corrected commit.
   and 13 (Anderson & Lo, "A Dynamical Systems Analysis of Resonant Flybys: Ballistic Case," JAS
   58(2):167-194 (2011), identity confirmed page-1-exact) — full file+digest+citation-mine+index
   pipeline, both freely user-supplied (not a paywall acquisition).
-- `#746` — registered 2026-07-28: investigate whether Barrabés/Mondelo/Ollé 2009's own
-  multiple-shooting extension (found by `#742`, item 24) applies to/would improve Casoliva's own
-  long-TOF He1 regime — flagged as a real omission (never mentioned by Casoliva's papers or the
-  `#725` digest), not yet investigated.
 - `#747` — registered 2026-07-28: cross-check Casoliva's 6 symmetric Class-1 p-q rows against
   Franz & Russell 2022's public Zenodo periodic-orbit dataset (found by `#742`, item 44) — flagged
   as a genuine, unexecuted cross-check candidate, not yet run.
@@ -242,6 +238,11 @@ unchanged. See `git log` around this date for the corrected commit.
   separate top-level session — it can be an internal sub-agent of a task already dispatched; check
   the dispatching agent's own tool-call history (or the committed file's `git log`) before
   concluding a real collision exists. No data was lost and nothing was actually duplicated.
+- `#746` — REMOVED from this list 2026-07-28, CLOSED: clean negative, both at the paper level
+  (BMO 2009's own text scopes the multiple-shooting motivation to its L3/Sun-Jupiter case, not the
+  L1/Earth-Moon case He1 lives in) and the project-code level (this repo's own homoclinic-search
+  tool is architecturally unrelated to BMO/Casoliva's continuation method, so nothing to port to).
+  See its own bullet entry.
 - `#744` — REMOVED from this list 2026-07-28, CLOSED: 13 of 14 downloaded PDFs filed cleanly
   (items 21, 26, 32-35, 37-42, 48). One real identity nuance found: item 22 (Leiva & Briozzo "Full
   Atlas") is NOT a preprint of the Acta Astronautica "Control of Chaos" paper as `#743` had
@@ -15919,6 +15920,38 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   confirmed-genuinely-no-DOI items (14, 21, 27, 45, 46, 47) as settled rather than still-uncertain.
   This is a large, careful bookkeeping pass on the master list itself, not just marking items
   acquired — take the time to get every field right.
+- **#746 ✓ DONE (2026-07-28) -- does BMO 2009's own multiple-shooting extension apply to
+  Casoliva's He1 (113.6-day connection)? Clean negative, both at the paper level and the
+  project-code level.** Read BMO 2009 in full (`pdftotext`'d for the first time — no prior `.txt`
+  sidecar existed) plus both Casoliva papers in full, not just the `#725`/`#742` digests. BMO's
+  own paper states NO explicit numeric threshold anywhere (grepped for "condition number",
+  "precision", "single shoot" — zero hits); its only concrete statement is in §2.2: "the
+  integration times `T^u`, `T^s` may become large (**this is the case in section 3.2**)" —
+  section 3.2 is BMO's own L3/**Sun-Jupiter** horseshoe-orbit case, a different libration point
+  and mass ratio from He1. He1 itself lives in BMO's own §3.1.2 (L1/L2, **Earth-Moon** — the exact
+  `He_j`/`Hm_j`/`Hi_j` family labels Casoliva reuses verbatim), which BMO's own paper never flags
+  as needing the augmentation. Casoliva's own Table 4 numbers (`T^u`=27.686, `T^s`=-27.330
+  nondim, ≈4.1-4.4 multiples of the 29.164-day p.o. period) are unremarkable relative to BMO's own
+  L3 case (repeated horseshoe loops, "an infinite number" of higher-order homoclinics near the
+  tangency energy). Casoliva's own text reports growing CPU cost for the He1 family (121s to 5h20m
+  across increasing energy) attributed explicitly to "decreasing perigee distance," not
+  integration-time/conditioning loss — no convergence caveat anywhere near the He1 discussion.
+  **No correction needed to `#725`'s golden numeric table** (113.6319-day connection flight time
+  independently reverified against Casoliva's own Table 4/5, p.1635-1636). **Project-code check**:
+  `src/cyclerfinder/search/ccr4bp_heteroclinic_search.py` (this project's actual
+  homoclinic/heteroclinic search tool, used for the `#701`/`#702` Uranus discovery) is
+  architecturally NOT a port of BMO/Casoliva's Newton-continuation system at all — its own
+  docstring documents a deliberate from-scratch `scipy.optimize.least_squares` 4-unknown
+  single-candidate refine instead of reusing `cr3bp_multiple_shooting.py`'s N-node periodicity-loop
+  formulation (that module + `genome/multi_shooting.py`/`genome/family_switch.py` exist for a
+  different problem, closing periodic orbits near NRHO bifurcations, not continuing homoclinic
+  connection families). So there is no corrector in this codebase that BMO's extension would even
+  apply to. No code change made (research/verification task only, per scope). One deferred idea
+  flagged for a possible future task (not registered): if this project ever builds a literal
+  Casoliva/BMO-style homoclinic-connection-family continuator (the `#725` digest's own "first
+  sourced numeric target" idea), port BMO's multiple-shooting augmentation alongside the
+  single-shooting baseline as a documented option — not urgent, nothing found here shows current
+  need. Finding note: `docs/notes/2026-07-28-746-bmo-multishooting-casoliva-he1-crosscheck.md`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
