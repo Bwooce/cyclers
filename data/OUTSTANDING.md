@@ -216,13 +216,34 @@ unchanged. See `git log` around this date for the corrected commit.
 - `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
   V0->V1, user-requested. Background agent `a11d61508dddf2269` confirmed still running (tests/data
   ratchet suite) as of last check; do not duplicate-dispatch, poll/wait for its own report.
-- `#749` — dispatched 2026-07-28, user-supplied PDFs: process `#730` items 28 (Llibre, Martínez &
-  Simó, "Transversality of the invariant manifolds associated to the Lyapunov family of periodic
-  orbits near L2 in the RTBP," J. Diff. Eq. 58:104-156 (1985), DOI `10.1016/0022-0396(85)90024-5`,
-  identity confirmed page-1-exact) and 43 (Doedel, Romanov, Paffenroth, Keller, Dichmann,
-  Galán-Vioque & Vanderbauwhede, "Elemental Periodic Orbits Associated with the Libration Points
-  in the CR3BP," IJBC 17(8):2625-2677 (2007), DOI `10.1142/S0218127407018671`, identity confirmed
-  page-1-exact) — full file+digest+citation-mine+index pipeline, both freely user-supplied.
+- `#749` — REMOVED from this list 2026-07-28, ✓ DONE: both `#730` §4 item 28 (Llibre, Martínez &
+  Simó 1985, "Transversality of the Invariant Manifolds Associated to the Lyapunov Family of
+  Periodic Orbits near L2 in the RTBP," J. Diff. Eq. 58:104-156, DOI
+  `10.1016/0022-0396(85)90024-5`) and §6 item 43 (Doedel, Romanov, Paffenroth, Keller, Dichmann,
+  Galán-Vioque & Vanderbauwhede 2007, "Elemental Periodic Orbits Associated with the Libration
+  Points in the CR3BP," IJBC 17(8):2625-2677, DOI `10.1142/S0218127407018671`) filed, digested,
+  citation-mined, indexed. Llibre-Martínez-Simó proves transversal existence of symmetric
+  homoclinic orbits to the planar L2 Lyapunov family at a countable mass-ratio sequence
+  `mu_k ~ 1/(N(inf)^3 k^3)` (Theorems A/B) plus a Bernoulli-shift symbolic-dynamics theorem
+  (Theorem C, quasirandom Sun<->Jupiter shuttling orbits) — the theoretical-existence machinery
+  underlying the already-acquired `#725` Casoliva Class 2 (He1-4/Hm1-2) homoclinic-shadowing
+  cyclers; no code anywhere in `cyclerfinder` computes an L2-Lyapunov-family homoclinic orbit
+  (`genome/transit_manifold.py`, `#547`, targets transit classification, not transversality),
+  confirming the same general homoclinic-continuation gap `#742`'s BMO cross-check already
+  flagged, now independently confirmed from the L2-specific analytical side; no correction to
+  `#725`'s digest needed. Doedel et al. is an AUTO-continuation survey of all elemental L1-L5
+  periodic-orbit families (Lyapunov/Vertical/Halo/Axial/Backflip/Circular/D1/E1/R2 +
+  mu-near-1/2 exotica) across the full mass-ratio range, with branch points tracked as
+  continuable loci in mu; this project's `search/pseudo_arclength.py` independently implements
+  the same general pseudo-arclength method (not AUTO-derived) and `bifurcation_detector.py`
+  detects bifurcation brackets at fixed mu only — no code here continues a branch-point locus in
+  mu the way this paper does; confirms (does not contradict) `#728` Kumar & Moreno 2025's own
+  "stepping stone predecessor" framing, and confirms the already-corpused Howell 1984 halo
+  survey is exactly the paper Doedel's own text credits as predecessor. Citation-mining across
+  both papers surfaced ~10 new candidates (none acquired), strongest being the two direct Llibre
+  & Simó 1980 predecessor papers and the Gómez-Llibre-Martínez-Simó two-volume libration-point
+  mission-design book series (2001a/2001b), independently motivated by both papers this task
+  read. See `docs/notes/2026-07-28-749-llibre-martinez-simo-doedel-libration-orbits-digest.md`.
 - `#745` — REMOVED from this list 2026-07-28, CLOSED: both `#730` §3 items 12/13 (Anderson & Lo
   2010 planar Europa orbiter, JGCD 33(6):1899-1912, DOI `10.2514/1.45060`; Anderson & Lo 2011
   resonant flybys ballistic case, JAS 58(2):167-194, DOI `10.1007/BF03321164`) filed, digested,
