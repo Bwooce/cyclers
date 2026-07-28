@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Protocol, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
@@ -28,6 +29,35 @@ import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 
 _PLANAR_IDX = [0, 1, 3, 4]  # (x, y, xdot, ydot) block of the 6x6 STM
+
+
+@runtime_checkable
+class ConnectionNode(Protocol):
+    """Structural type for anything ``correct_connection`` can operate on.
+
+    ``correct_connection``/``_seed_on_manifold``/``assemble_cycle``/``crosscheck_cycle``
+    are duck-typed on exactly these six attributes -- they never call
+    ``LyapunovNode.from_libration`` or any other libration-specific method. Any node
+    type (e.g. ``search.jovian_resonant_connections.ResonantNode``, built from a
+    resonant periodic orbit rather than a libration-point Lyapunov orbit) that provides
+    these six fields is a drop-in connection endpoint. ``LyapunovNode`` below satisfies
+    this Protocol structurally (frozen dataclass fields are instance attributes).
+    """
+
+    @property
+    def label(self) -> str: ...
+    @property
+    def state0(self) -> NDArray[np.float64]: ...
+    @property
+    def period(self) -> float: ...
+    @property
+    def jacobi(self) -> float: ...
+    @property
+    def unstable_eigvec(self) -> NDArray[np.float64]: ...
+    @property
+    def stable_eigvec(self) -> NDArray[np.float64]: ...
+    @property
+    def converged(self) -> bool: ...
 
 
 @dataclass(frozen=True)
@@ -134,7 +164,7 @@ def _planar_floquet_pair(
 
 def _seed_on_manifold(
     system: cr3bp.CR3BPSystem,
-    node: LyapunovNode,
+    node: ConnectionNode,
     *,
     tau: float,
     direction: str,
@@ -181,6 +211,7 @@ def _section_crossing(
     max_time: float,
     section_y: float = 0.0,
     ydot_sign: int | None = None,
+    x_sign: int | None = None,
     rtol: float = 1e-12,
     atol: float = 1e-12,
     method: str = "DOP853",
@@ -189,9 +220,12 @@ def _section_crossing(
 
     Forward in time for ``direction="unstable"``, backward for ``"stable"``.
     ``ydot_sign`` (if given) restricts to the Theta+/Theta- half of the section
-    (sign of ydot at the crossing). Returns the section point ``(x, xdot)`` at the
-    k-th crossing (1-based), or ``None`` if fewer than ``k`` qualifying crossings
-    occur within ``max_time`` (bounded — never hangs, never fabricates a crossing).
+    (sign of ydot at the crossing). ``x_sign`` (if given) additionally restricts
+    to the positive- or negative-x half of the section (e.g. Anderson & Lo 2011's
+    own section convention, {y=0} along the negative x-axis only, `x_sign=-1`).
+    Returns the section point ``(x, xdot)`` at the k-th crossing (1-based), or
+    ``None`` if fewer than ``k`` qualifying crossings occur within ``max_time``
+    (bounded — never hangs, never fabricates a crossing).
     """
     if direction not in {"stable", "unstable"}:
         raise ValueError(f"direction must be 'stable' or 'unstable'; got {direction!r}")
@@ -224,6 +258,8 @@ def _section_crossing(
             continue  # skip the t~0 root at the seed
         if ydot_sign is not None and int(np.sign(float(y_ev[4]))) != ydot_sign:
             continue
+        if x_sign is not None and int(np.sign(float(y_ev[0]))) != x_sign:
+            continue
         count += 1
         if count == k:
             return np.array([float(y_ev[0]), float(y_ev[3])], dtype=np.float64)
@@ -248,12 +284,18 @@ class HeteroclinicConnection:
     converged: bool
     n_iter: int
     notes: str = ""
+    # Section filters used to select the crossing (persisted so crosscheck_cycle's
+    # independent re-derivation restricts to the SAME crossing, not an unfiltered one).
+    ydot_sign_u: int | None = None
+    ydot_sign_s: int | None = None
+    x_sign_u: int | None = None
+    x_sign_s: int | None = None
 
 
 def _connection_residual(
     system: cr3bp.CR3BPSystem,
-    a: LyapunovNode,
-    b: LyapunovNode,
+    a: ConnectionNode,
+    b: ConnectionNode,
     *,
     tau_u: float,
     tau_s: float,
@@ -265,6 +307,8 @@ def _connection_residual(
     max_time: float,
     ydot_sign_u: int | None,
     ydot_sign_s: int | None,
+    x_sign_u: int | None = None,
+    x_sign_s: int | None = None,
     method: str = "DOP853",
 ) -> tuple[NDArray[np.float64] | None, NDArray[np.float64] | None]:
     """Return ``(residual2, crossing_xv)`` or ``(None, None)`` if a leg misses the section."""
@@ -278,6 +322,7 @@ def _connection_residual(
         k=k_u,
         max_time=max_time,
         ydot_sign=ydot_sign_u,
+        x_sign=x_sign_u,
         method=method,
     )
     seed_s = _seed_on_manifold(
@@ -290,6 +335,7 @@ def _connection_residual(
         k=k_s,
         max_time=max_time,
         ydot_sign=ydot_sign_s,
+        x_sign=x_sign_s,
         method=method,
     )
     if p_u is None or p_s is None:
@@ -338,8 +384,8 @@ def _scan_starts(
 
 def correct_connection(
     system: cr3bp.CR3BPSystem,
-    orbit_from: LyapunovNode,
-    orbit_to: LyapunovNode,
+    orbit_from: ConnectionNode,
+    orbit_to: ConnectionNode,
     *,
     k_u: int = 3,
     k_s: int = 4,
@@ -350,6 +396,8 @@ def correct_connection(
     tau_s0: float | None = None,
     ydot_sign_u: int | None = None,
     ydot_sign_s: int | None = None,
+    x_sign_u: int | None = None,
+    x_sign_s: int | None = None,
     tol: float = 1e-7,
     max_iter: int = 40,
     fd_step: float = 1e-6,
@@ -363,6 +411,11 @@ def correct_connection(
     Jacobian finite-differenced (2x2); Newton step damped by backtracking. Raises
     ``ValueError`` on an energy mismatch. A leg that never reaches the section ->
     ``converged=False`` with a diagnostic note (never a fabricated closure).
+
+    ``x_sign_u``/``x_sign_s`` (if given) additionally restrict each leg's qualifying
+    crossings to the positive- or negative-x half of the section -- e.g. Anderson &
+    Lo 2011's own {y=0} section is one-sided in BOTH ydot (>0) and x (<0). ``None``
+    (default) leaves the section unrestricted in x, matching prior behaviour exactly.
 
     When ``tau_u0``/``tau_s0`` are not supplied, a coarse ``scan_n``-by-``scan_n`` grid
     over the two phases seeds Newton at the cell of least section gap (the codim-1
@@ -410,6 +463,8 @@ def correct_connection(
             max_time=max_time,
             ydot_sign_u=ydot_sign_u,
             ydot_sign_s=ydot_sign_s,
+            x_sign_u=x_sign_u,
+            x_sign_s=x_sign_s,
         )
 
     if tau_u0 is not None and tau_s0 is not None:
@@ -445,6 +500,10 @@ def correct_connection(
                 False,
                 n_iter,
                 notes="manifold leg did not reach the section",
+                ydot_sign_u=ydot_sign_u,
+                ydot_sign_s=ydot_sign_s,
+                x_sign_u=x_sign_u,
+                x_sign_s=x_sign_s,
             )
         rn = float(np.linalg.norm(res))
         if rn < tol:
@@ -473,6 +532,10 @@ def correct_connection(
                 False,
                 n_iter,
                 notes="FD-Jacobian probe left the manifold's section branch",
+                ydot_sign_u=ydot_sign_u,
+                ydot_sign_s=ydot_sign_s,
+                x_sign_u=x_sign_u,
+                x_sign_s=x_sign_s,
             )
         try:
             step = np.linalg.solve(jac, -res)
@@ -508,6 +571,10 @@ def correct_connection(
         converged=converged,
         n_iter=n_iter,
         notes="" if converged else "did not reach tol",
+        ydot_sign_u=ydot_sign_u,
+        ydot_sign_s=ydot_sign_s,
+        x_sign_u=x_sign_u,
+        x_sign_s=x_sign_s,
     )
 
 
@@ -533,7 +600,7 @@ class HeteroclinicCycle:
 
 def assemble_cycle(
     system: cr3bp.CR3BPSystem,
-    nodes: list[LyapunovNode],
+    nodes: list[ConnectionNode],
     *,
     tol: float = 1e-7,
     jacobi_tol: float = 1e-6,
@@ -587,7 +654,7 @@ def assemble_cycle(
 
 def crosscheck_cycle(
     system: cr3bp.CR3BPSystem,
-    nodes: list[LyapunovNode],
+    nodes: list[ConnectionNode],
     cycle: HeteroclinicCycle,
     *,
     method: str = "Radau",
@@ -625,6 +692,8 @@ def crosscheck_cycle(
             direction="unstable",
             k=conn.k_u,
             max_time=max_time,
+            ydot_sign=conn.ydot_sign_u,
+            x_sign=conn.x_sign_u,
             method=method,
             rtol=rtol,
             atol=atol,
@@ -635,6 +704,8 @@ def crosscheck_cycle(
             direction="stable",
             k=conn.k_s,
             max_time=max_time,
+            ydot_sign=conn.ydot_sign_s,
+            x_sign=conn.x_sign_s,
             method=method,
             rtol=rtol,
             atol=atol,
