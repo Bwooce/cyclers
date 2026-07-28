@@ -205,20 +205,40 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#744` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
-  V0->V1, user-requested; `#744`: process 14 PDFs `#743` already downloaded + apply all its DOI
-  findings to the master list. See each's own bullet entry.
-- **TASK-NUMBER COLLISION NOTED 2026-07-28**: a separate concurrent session ALSO used `#744` for
-  its own, differently-scoped task — a symplectic-invariant/periapse-map paper digest (Frauenfelder/
-  Koh/Moreno 2023, Frauenfelder & Moreno 2023, Aydin & Batkhin 2025 — items 40/41/42, directly
-  overlapping this session's own `#744` scope — plus Howell/Davis/Haapala 2012, not in this
-  session's own list). Their result:
-  `docs/notes/2026-07-28-744-symplectic-invariant-periapse-maps-digest.md` (uncommitted at time of
-  discovery). Spot-checked and looks like real, correct work. Messaged this session's own `#744`
-  agent to avoid duplicating items 40/41/42 and fold in the other session's findings instead of
-  re-digesting — resolution in progress, not yet confirmed complete. If you are that other
-  session: this repo's task numbers are sequential-next-unused with no shared registry (see
-  `[[project_task_numbering_convention]]`); the next-unused number as of this note is `#745`.
+- `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
+  V0->V1, user-requested. Background agent `a11d61508dddf2269` confirmed still running (tests/data
+  ratchet suite) as of last check; do not duplicate-dispatch, poll/wait for its own report.
+- **TASK-NUMBER COLLISION NOTE RETRACTED 2026-07-28**: the note previously here, claiming a
+  separate concurrent session ALSO used `#744`, was WRONG. Corrected after `#744`'s own agent
+  investigated `git log`/reflog/stash/all worktree branches on request and found no evidence of any
+  second author. What actually happened: this session's own `#744` agent internally dispatched its
+  OWN sub-agent/fork to digest the Howell/Davis/Haapala 2012 section of the symplectic-invariant/
+  periapse-map cluster digest; that sub-agent stalled and its completion surfaced to this top-level
+  session as a task-notification under a DIFFERENT agent id (`a62ddf477afb9bd76`), which I mistook
+  for an independent concurrent session's own top-level dispatch. `#744`'s own agent completed that
+  section itself directly when its sub-agent failed to return in time, so the committed digest has
+  a single correct author — confirmed via `git log` showing exactly one commit (`9b550c8`) ever
+  touching `docs/notes/2026-07-28-744-symplectic-invariant-periapse-maps-digest.md`. My claim that
+  "item 48 wasn't in the original list" was also wrong — item 48 was in the original `#744`
+  dispatch. Lesson: an unfamiliar agent id in a task-notification does not by itself mean a
+  separate top-level session — it can be an internal sub-agent of a task already dispatched; check
+  the dispatching agent's own tool-call history (or the committed file's `git log`) before
+  concluding a real collision exists. No data was lost and nothing was actually duplicated.
+- `#744` — REMOVED from this list 2026-07-28, CLOSED: 13 of 14 downloaded PDFs filed cleanly
+  (items 21, 26, 32-35, 37-42, 48). One real identity nuance found: item 22 (Leiva & Briozzo "Full
+  Atlas") is NOT a preprint of the Acta Astronautica "Control of Chaos" paper as `#743` had
+  labeled it — verified via 3 independent lines of evidence in the PDF's own text (submitted to
+  CMDA not Acta Astronautica; cites the Acta paper as separate prior work with a different orbit
+  count; self-cites as "2006b...(submitted)"). It's a genuine, correctly-authored companion paper,
+  filed under its own correct identity; the original item 22 (Acta Astronautica) remains
+  paywalled/unacquired, only its DOI was corrected. Wrote 3 cluster digests (Earth-Moon lineage,
+  whiskered-tori/parameterization lineage, symplectic-invariant/periapse-maps), ran the mandatory
+  citation-mining pass (~60 new candidates flagged, none acquired). Master list: 3 wrong DOIs
+  corrected (items 22/40/42), 3 status upgrades (19/30/39, incl. an author-name fix), ~20 DOIs
+  independently CrossRef-reconfirmed, 6 items marked confirmed-no-DOI/settled, 13 marked ACQUIRED.
+  Commits: `cyclers_pdf` `fe8a107`/`13d9d4a`, public repo `6d0773b`/`9b550c8`. See the retracted
+  collision note above for the one process hiccup this task surfaced (no data loss, no actual
+  duplication).
 - `#743` — REMOVED from this list 2026-07-28, CLOSED: all 34 remaining §3-§7 items swept, 3 more
   wrong DOIs corrected, 14 free PDFs downloaded. See its own bullet entry.
 - `#742` — REMOVED from this list 2026-07-28, CLOSED: 4 more papers processed, all cross-checks
