@@ -76,12 +76,30 @@ unchanged. See `git log` around this date for the corrected commit.
   validated) and ideally `#750` (confirming whether this chain's own confirmed 3:4-LO orbit is
   digit-for-digit the same seed orbit underlying this torus — if so, `#759`'s own machinery
   applies directly rather than needing porting). Do not dispatch before both are resolved.
-- `#759` — DISPATCHED 2026-07-28 (user: "dispatch 759"): build the Table-3 heteroclinic
-  connection `Wu(3:4-LO) ∩ Ws(5:6-LO)`, now unblocked — both required families confirmed by
-  reviewer ruling (`#755`, `#758`). Gate on Anderson-Lo 2011's own Table-3 state
-  (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`), reusing the same
-  `ResonantNode`/section-crossing machinery `#754`'s Table-2 half already built, seeded from
-  `recover_758_table2_seeded_candidate()`. See `#754`'s own bullet for full context.
+- `#759` — ✓ DONE 2026-07-28 (user: "dispatch 759"): built the Table-3 heteroclinic connection
+  `Wu(3:4-LO) ∩ Ws(5:6-LO)` machinery (`find_heteroclinic`/`Table3GateResult`/`gate_table3` in
+  `src/cyclerfinder/search/jovian_resonant_connections.py`, extending `#754`'s module; 8 new
+  tests, 19/19 passing) and gated it against Anderson-Lo 2011's own Table-3 state
+  (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, p.191). **Result: HONEST FAIL on the
+  formal certified-connection gate** — a systematic 144-combination scan (`branch_u, branch_s
+  ∈ {±1}`, `k_u, k_s ∈ 1..6`) found 5 genuinely Newton-converged, ghost-guard-passed candidates;
+  the closest (`x=-1.306871, xdot=0.028691`) misses by `x_err≈0.123` — ~two orders of magnitude
+  worse than `#754`'s own Table-2 miss (`1.13e-3`). **However**, a striking, separately-verified
+  corroborating finding: tracing `Wu(3:4-LO)`'s own manifold section curve directly (the paper's
+  OWN interpolation method, not Newton) found a point matching Table 3's published state to
+  `~4.5e-7` — tighter than any other reproduction in this whole task chain — strongly suggesting
+  the genuine connection sits almost exactly where the paper says. The gap to a certified
+  connection is specifically the `Ws(5:6-LO)` leg: its saddle eigenvalue (`λ≈4445`, 4.3x
+  `3:4-LO`'s own `λ≈1036`) makes its manifold curve fractally sensitive, breaking both the
+  production Newton corrector and a custom damped variant (closest documented approach `2.93e-3`,
+  not a certified zero). Full writeup, scan log, and reasoning:
+  `docs/notes/2026-07-28-759-jupiter-europa-3-4-lo-5-6-lo-heteroclinic-table3-gate.md`. This
+  closes the `#752→#753→#755→#756→#757→#758→#754→#759` task chain's original scope (Anderson &
+  Lo 2011 Tables 1-3): Table 1 — 3 of 4 rows in hand (2 reviewer-confirmed, 1 clean gate pass);
+  Table 2 — honest close FAIL (`#754`); Table 3 — honest FAIL with the chain's single strongest
+  quantitative reproduction (`4.5e-7`) as corroborating, non-gating evidence. `#760`/`#761` (both
+  held pending this task) should be re-reviewed against this honest-FAIL (not clean-pass) outcome
+  before dispatch.
 - `#760` — registered 2026-07-28, HELD (not ready to dispatch): a new-system discovery campaign
   using the Jovian resonant-manifold machinery (`#753`-`#758`) once validated against its one known
   paper — apply the same resonant-orbit-family + manifold-connection pipeline to genuinely
