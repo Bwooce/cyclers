@@ -34,6 +34,18 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#751`/`#752` — dispatched 2026-07-28 (Fable, research/scoping only, no code): two new-capability
+  scoping passes, both flagged by user question following the `#749` digest. `#751`: does
+  Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
+  quasirandom Sun<->Jupiter L2-homoclinic shuttling orbits) represent a genuinely distinct
+  construction method from this project's existing "binary-cycler genome" tool, or is it the same
+  ground under different formalism? `#752`: how large a lift would classical CR3BP resonant-orbit-
+  manifold/homoclinic-continuation tour-design machinery (Anderson/Lo lineage, `#742`/`#745`/`#749`
+  all independently confirmed this project has none — `core/flyby.py`/`search/resonant_conic.py`/
+  `search/ieg_seed.py` remain patched-conic/Lambert) actually be, and is it worth reopening
+  capability-building for (see `[[project_capability_frontier_complete]]` — the project explicitly
+  pivoted away from capability-building to running discovery; both tasks must report a real
+  go/no-go recommendation, not just describe the opportunity).
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
