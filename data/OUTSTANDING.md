@@ -205,10 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#742`/`#743` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
-  row V0->V1, user-requested; `#742`: process 4 more user-supplied `#730` backlog papers (items
-  11, 24, 25, 44); `#743`: Fable DOI-accuracy audit + free-acquisition sweep over the remaining
-  backlog, user-requested. See each's own bullet entry.
+- `#738`/`#743` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
+  V0->V1, user-requested; `#743`: Fable DOI-accuracy audit + free-acquisition sweep over the
+  remaining backlog, user-requested. See each's own bullet entry.
+- `#742` — REMOVED from this list 2026-07-28, CLOSED: 4 more papers processed, all cross-checks
+  confirmed, one real omission flagged (BMO's own multiple-shooting extension, relevant to
+  Casoliva's own long connection, never mentioned in our digest). See its own bullet entry.
 - `#741` — REMOVED from this list 2026-07-28, CLOSED: all 5 papers processed, 2 DOIs corrected in
   the master list, a real mischaracterization found and fixed in an already-acquired digest
   (Kumar 2025's own description of Gonzalez & Mireles James 2017). See its own bullet entry.
@@ -15793,27 +15795,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   implication — Kumar's own real, narrower gap still stands). Citation-mining flagged (not
   acquired) a rigorous-numerics CR4BP pair (Burgos-García/Lessard/Mireles-James 2019, Castelli/
   Lessard/Mireles-James 2017) and two Calleja/de la Llave 2009 numerical companion papers.
-- **#742 (dispatched 2026-07-28) -- process 4 more user-supplied `#730` backlog papers, all
-  verified page-1-exact by the coordinating session.** **Anderson, R.L., Campagnola, S., Koh, D.,
-  McElrath, T.P. & Woollands, R.M., "Endgame Design for Europa Lander: Ganymede to Europa
-  Approach,"** *J. Astronaut. Sci.* 68:96–119 (2021), DOI `10.1007/s40295-021-00250-7` — item 11,
-  the sourced positive-control DeltaV(~150 m/s)/TOF(~40 days) numbers the already-acquired Kumar/
-  Anderson/de la Llave 2023 CCR4BP mesh-search paper explicitly benchmarks against. **Barrabés,
-  E., Mondelo, J.M. & Ollé, M., "Numerical continuation of families of homoclinic connections of
-  periodic orbits in the RTBP,"** *Nonlinearity* 22:2901 (2009), DOI `10.1088/0951-7715/22/12/006`
-  — item 24, the actual continuation algorithm underlying the already-acquired Casoliva Class 2
-  He1-He4/Hm1-Hm2 homoclinic-cycler family. **Barrabés, E. & Gómez, G., "Spatial p-q Resonant
-  Orbits of the RTBP,"** *CMDA* 84:387–407 (2002), DOI `10.1023/A:1021137127909` — item 25, the
-  analytic in/out-map matched-asymptotics seed-generation method the already-acquired Casoliva
-  papers reproduce verbatim. **Franz, C.J. & Russell, R.P., "Database of Planar and Three-
-  Dimensional Periodic Orbits and Families Near the Moon,"** *J. Astronaut. Sci.* 69:1573–1612
-  (2022), DOI `10.1007/s40295-022-00361-9` — item 44, a 13-million-solution lunar periodic-orbit
-  database, EXPLICITLY described by its own abstract as "a modern update to Broucke's seminal
-  database" (item 21, Broucke 1968 — still on the backlog; the digest should note this direct
-  lineage). Full OCR-if-needed + digest + the mandatory citation-mining pass per
-  `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration for all 4; update
-  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` marking items 11/24/25/44
-  ACQUIRED, matching `#732`/`#733`/`#741`'s own precedent.
+- **#742 ✓ DONE (2026-07-28) -- 4 more backlog papers processed (items 11, 24, 25, 44), all
+  cross-checks confirmed, one real omission flagged.** Filed (private `cyclers_pdf` commit
+  `513e657`), digested + indexed (public commit `d05f961`), master list updated marking all 4
+  ACQUIRED. **Anderson 2021 vs `#727` Kumar 2023**: confirmed directly — Anderson's own Table 2/
+  Conclusions give DeltaV = 146.71 m/s (CRTBP) / 135.04 m/s (COSMIC-optimized), both genuinely
+  "a little less than 150 m/s" as Kumar 2023 §5.3 claims; the "~40 days" TOF is Kumar's own
+  paraphrase/rounding (no single total-TOF number is printed verbatim in Anderson's own text, only
+  two burn times, 14.45/27.45 days) — no correction needed. Bonus: resolves a previously-flagged
+  ambiguity in `#730` §1 — confirms "Campagnola & Russell 2010" IS the JGCD journal twin of the
+  already-corpused AAS-09-227 paper. **Barrabés-Mondelo-Ollé 2009 vs Casoliva's Eq. 20**:
+  confirmed term-for-term match. Found one real omission: BMO's own paper explicitly provides a
+  multiple-shooting extension motivated for long integration times — exactly the regime Casoliva's
+  own 113.6-day He1 connection falls into — but neither Casoliva's papers nor the `#725` digest
+  mention it; flagged as an omission worth noting, not an error. **Barrabés-Gómez 2002 vs
+  Casoliva's Eqs. 14-18**: confirmed — Casoliva's planar seed formulas are exactly this paper's own
+  documented planar (phi0=0) special case of its spatial in/out-map construction, no discrepancy.
+  **Franz-Russell 2022**: confirmed verbatim self-description as a modern Broucke update;
+  independently re-flags Broucke 1968 a 4TH TIME — now the single most-corroborated unacquired gap
+  in the whole `#730` backlog. Citation-mining across all 4 surfaced ~35 new candidates (flagged,
+  not acquired), with Lantoine/Russell/Campagnola 2011 independently cited by 2 of the 4 papers in
+  this single pass.
 - **#743 (dispatched 2026-07-28, Fable) -- DOI-accuracy audit + free-acquisition sweep over the
   remaining `#730` backlog, user-requested.** `#741` found a real, concrete reason to distrust
   "standard-pattern" DOI guesses: 2 of 5 guessed DOIs it inherited from the master list turned out
