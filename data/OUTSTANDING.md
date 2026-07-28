@@ -205,8 +205,9 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738` — dispatched 2026-07-28, Radau re-closure to upgrade the N=5 torus row V0->V1,
-  user-requested. See its own bullet entry.
+- `#738`/`#742` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
+  V0->V1, user-requested; `#742`: process 4 more user-supplied `#730` backlog papers (items 11,
+  24, 25, 44). See each's own bullet entry.
 - `#741` — REMOVED from this list 2026-07-28, CLOSED: all 5 papers processed, 2 DOIs corrected in
   the master list, a real mischaracterization found and fixed in an already-acquired digest
   (Kumar 2025's own description of Gonzalez & Mireles James 2017). See its own bullet entry.
@@ -1581,7 +1582,11 @@ errors #741 itself found in the #730 master list -- 2 of the 5 uploaded PDFs tur
 completely different, unrelated papers than intended, both at "standard-pattern, not
 independently re-verified" DOIs the list had explicitly flagged as uncertain; correct DOIs found
 via fresh WebSearch for Calleja & de la Llave 2010 (10.1088/0951-7715/23/9/001, not ...003) and
-Cabre/Fontich/de la Llave 2005 (10.1016/j.jde.2004.12.003, not ...10.029). #742
+Cabre/Fontich/de la Llave 2005 (10.1016/j.jde.2004.12.003, not ...10.029). #742 for processing
+4 more user-supplied #730 backlog papers, all verified page-1-exact: Anderson/Campagnola/Koh/
+McElrath/Woollands 2021 Europa Lander endgame study (item 11), Barrabes/Mondelo/Olle 2009
+homoclinic-continuation paper (item 24), Barrabes/Gomez 2002 spatial p-q resonant orbits (item
+25), Franz & Russell 2022 lunar periodic-orbit database (item 44). #743
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15780,6 +15785,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   implication — Kumar's own real, narrower gap still stands). Citation-mining flagged (not
   acquired) a rigorous-numerics CR4BP pair (Burgos-García/Lessard/Mireles-James 2019, Castelli/
   Lessard/Mireles-James 2017) and two Calleja/de la Llave 2009 numerical companion papers.
+- **#742 (dispatched 2026-07-28) -- process 4 more user-supplied `#730` backlog papers, all
+  verified page-1-exact by the coordinating session.** **Anderson, R.L., Campagnola, S., Koh, D.,
+  McElrath, T.P. & Woollands, R.M., "Endgame Design for Europa Lander: Ganymede to Europa
+  Approach,"** *J. Astronaut. Sci.* 68:96–119 (2021), DOI `10.1007/s40295-021-00250-7` — item 11,
+  the sourced positive-control DeltaV(~150 m/s)/TOF(~40 days) numbers the already-acquired Kumar/
+  Anderson/de la Llave 2023 CCR4BP mesh-search paper explicitly benchmarks against. **Barrabés,
+  E., Mondelo, J.M. & Ollé, M., "Numerical continuation of families of homoclinic connections of
+  periodic orbits in the RTBP,"** *Nonlinearity* 22:2901 (2009), DOI `10.1088/0951-7715/22/12/006`
+  — item 24, the actual continuation algorithm underlying the already-acquired Casoliva Class 2
+  He1-He4/Hm1-Hm2 homoclinic-cycler family. **Barrabés, E. & Gómez, G., "Spatial p-q Resonant
+  Orbits of the RTBP,"** *CMDA* 84:387–407 (2002), DOI `10.1023/A:1021137127909` — item 25, the
+  analytic in/out-map matched-asymptotics seed-generation method the already-acquired Casoliva
+  papers reproduce verbatim. **Franz, C.J. & Russell, R.P., "Database of Planar and Three-
+  Dimensional Periodic Orbits and Families Near the Moon,"** *J. Astronaut. Sci.* 69:1573–1612
+  (2022), DOI `10.1007/s40295-022-00361-9` — item 44, a 13-million-solution lunar periodic-orbit
+  database, EXPLICITLY described by its own abstract as "a modern update to Broucke's seminal
+  database" (item 21, Broucke 1968 — still on the backlog; the digest should note this direct
+  lineage). Full OCR-if-needed + digest + the mandatory citation-mining pass per
+  `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration for all 4; update
+  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` marking items 11/24/25/44
+  ACQUIRED, matching `#732`/`#733`/`#741`'s own precedent.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
