@@ -205,10 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#740`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
-  row V0->V1, user-requested; `#740`: investigate the `#347`-lineage branch-selection
-  nondeterminism `#736`'s own review found; `#741`: process 5 user-supplied `#730` backlog papers
-  + correct 2 real DOI errors found in the master list. See each's own bullet entry.
+- `#738`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
+  V0->V1, user-requested; `#741`: process 5 user-supplied `#730` backlog papers + correct 2 real
+  DOI errors found in the master list. See each's own bullet entry.
+- `#740` — REMOVED from this list 2026-07-28, CLOSED: same documented BLAS-platform sensitivity
+  class as `#584`/`#631`/`#632`, root cause located, documented with a lock-in test guard rather
+  than fixed (nothing algorithmically wrong to fix). See its own bullet entry.
 - `#739` — REMOVED from this list 2026-07-28, CLOSED: found the "stable" test case wasn't
   actually stable, and that GMOS isn't clearly faster/more accurate in this codebase (traced to a
   real implementation-maturity gap, not necessarily an intrinsic per-method result). See its own
@@ -15731,20 +15733,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   corrector fully converged at these parameters so the residual numbers are platform/BLAS-
   sensitive). Digest: `docs/notes/2026-07-28-739-gmos-vs-pde-torus-corrector-comparison.md`.
   Commit `ff22557`.
-- **#740 (dispatched 2026-07-28) -- investigate the `#347`-lineage branch-selection
-  nondeterminism found via `#736`'s own review.** `data/floquet_phase1_reproduction.jsonl`
-  (last legitimately updated by `#347` Phase 1.5) was found REWRITTEN to a DIFFERENT bifurcation
-  branch (`k=(4,3)`, Jacobi -0.75) by a routine test run of
-  `tests/genome/test_floquet_phase1_reproduction.py::test_phase1_end_to_end_reproduction`, when
-  the file's own committed content records `k=(3,3)`, Jacobi +3.80 — i.e. the SAME test, same
-  fixed inputs, produces a DIFFERENT converged branch across separate runs. This is a genuine
-  nondeterminism in the underlying `_select_saddle_center_eigenvector`/corrector machinery (not
-  merely a numeric-precision flip — a qualitatively different bifurcation family), already flagged
-  by `#736`'s own reviewer as "its own follow-up candidate," not investigated further at the time.
-  Determine root cause (a degenerate/near-degenerate eigenvalue selection point, a seed-dependent
-  basin split, or similar) and either fix the nondeterminism or document why it's expected/benign
-  with the same specific, evidence-cited discipline this project applies elsewhere (`#584`'s own
-  precedent) — do not just re-run and hope for the "right" branch.
+- **#740 ✓ DONE (2026-07-28) -- `#347`-lineage branch-selection: same documented BLAS-platform
+  sensitivity class as `#584`/`#631`/`#632`, NOT true per-run nondeterminism.** Ruled out an
+  unseeded RNG (the test's own inputs are a fixed pre-computed artifact, no RNG anywhere) and
+  ruled out "stale committed output from before a real fix" (`git log -p` shows the committed
+  `(3,3)`/`jacobi=+3.797487` value stable across every commit since the `#347` Gram-Schmidt fix).
+  Reproduced live 5/5 runs on this Mac, including 3 runs at different `VECLIB_MAXIMUM_THREADS`/
+  `OMP_NUM_THREADS`/`OPENBLAS_NUM_THREADS` settings — all bit-identical `(4,3)`/`jacobi=-0.7534` —
+  ruling out thread-scheduling races: it's deterministic PER ENVIRONMENT, just different ACROSS
+  environments. **Root cause located**: `src/cyclerfinder/genome/asymmetric_branch.py`'s
+  `_select_saddle_center_eigenvector` — the saddle-center's secondary monodromy eigenvalue
+  (~0.9742447) sits close enough to +1 that an ~1e-8-relative difference in `np.linalg.eig`'s own
+  output (Apple Accelerate vs whatever OpenBLAS/Linux CI historically produced) perturbs the seeded
+  IC across a basin boundary in the Newton corrector, landing on a qualitatively different but
+  EQUALLY LEGITIMATE converged branch — both pass every Phase 1 gate (residual <1e-10, independent
+  closure <1e-6, topology changed). **Disposition: documented, not "fixed"** (nothing
+  algorithmically wrong to fix) — detailed writeup added to `asymmetric_branch.py`'s own module
+  docstring + the test's own docstring, matching `#584`'s own evidence-cited style; added a
+  `_KNOWN_BRANCH_TOPOLOGIES` set + assertion locking in the two currently-known valid outcomes
+  `(3,3)` [Linux/OpenBLAS] and `(4,3)` [Mac/Accelerate] — a genuinely NEW third branch will now
+  fail loudly instead of silently overwriting the artifact. `data/floquet_phase1_reproduction.jsonl`
+  left at its committed Linux/CI-produced value. Verified: ruff/mypy clean, all 12 relevant tests
+  pass. Commit `7bc314e`.
 - **#741 (dispatched 2026-07-28) -- process ALL 5 top-10 `#730` backlog papers, user-supplied
   (including 2 re-supplied after a DOI-correction round).** All 7 uploaded PDFs individually
   verified by the coordinating session (page 1 each) — 2 of the first 5 were mismatches (see
