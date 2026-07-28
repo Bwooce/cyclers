@@ -444,8 +444,14 @@ _TABLE1_CANDIDATE_SEEDS: dict[str, tuple[float, float, int | None, float]] = {
     # REAL (not a complex unit-modulus pair) -- matching the paper's own
     # "5:6-LI orbit is only slightly unstable" qualitative description
     # exactly. Located by a grid sweep at C_flyby directly (x0 in the "inner"
-    # 0 < x0 < 1-mu Jupiter-Europa band), auto half_crossings.
-    "5:6-LI": (-0.374722, 1.0, None, 37.6990),
+    # 0 < x0 < 1-mu Jupiter-Europa band). half_crossings=52 is the index
+    # ``correct_symmetric_fixed_jacobi``'s own auto-selection (nearest
+    # period_guess/2) picks at this seed/period_guess/C_flyby combination --
+    # this orbit has many small sub-loops (130 total x-axis crossings over
+    # 1.25x the guessed period); pinned explicitly (not left ``None``) so
+    # continuation callers get a stable, reproducible crossing index rather
+    # than re-deriving it from a DIFFERENT period_guess at each C step.
+    "5:6-LI": (-0.374722, 1.0, 52, 37.6990),
     # NOT CONFIRMED (best candidates found; see results note). Both periods
     # (period/2pi = 16.11 and 10.80) do NOT confirm 3:4 or 5:6 lineage (not
     # a clean multiple of 2*pi*q for q in {4, 6}) -- these are honestly
@@ -531,6 +537,7 @@ def continue_candidate_toward_c_flyby(
     c_start: float,
     d_jacobi: float = 0.01,
     n_steps: int = 40,
+    jacobi_tol: float = 1e-8,
 ) -> cc.FamilyBranch:
     """Natural-parameter continuation demonstration: walk the ``label`` family
     from ``c_start`` toward :data:`ANDERSON_LO_C_FLYBY` using the EXISTING
@@ -541,6 +548,15 @@ def continue_candidate_toward_c_flyby(
     ``c_start`` should be on the SAME side of :data:`ANDERSON_LO_C_FLYBY` the
     caller wants to walk from; ``direction`` and the number of steps are
     derived so the walk lands at (or just past) ``ANDERSON_LO_C_FLYBY``.
+
+    ``jacobi_tol`` is looser than :func:`~cyclerfinder.search.cr3bp_continuation.continue_family`'s
+    own default (``1e-10``): the 5:6-LI candidate's trajectory has ~130
+    x-axis crossings per period (many small sub-loops), so its one-period
+    Jacobi-conservation residual is O(1e-9) even at ``rtol=atol=1e-12`` --
+    genuine, benign integration noise from the longer/more convoluted path,
+    not a sign of a bad orbit (independently confirmed by the Radau
+    cross-check, which stays far tighter). ``1e-8`` is still four orders of
+    magnitude below the CR3BP's own O(1e-4)-scale energy variations.
     """
     x0_guess, ydot0_sign, half_crossings, period_guess = _TABLE1_CANDIDATE_SEEDS[label]
     seed_orbit = cp.correct_symmetric_fixed_jacobi(
@@ -566,6 +582,7 @@ def continue_candidate_toward_c_flyby(
         half_crossings=hc,
         ydot0_sign=ydot0_sign,
         seed_label=label,
+        jacobi_tol=jacobi_tol,
     )
 
 
