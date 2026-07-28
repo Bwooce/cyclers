@@ -87,11 +87,17 @@ unchanged. See `git log` around this date for the corrected commit.
   `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
   targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
   self-dispatched — awaiting user authorization since it reopens capability-building.
-- `#754` — registered 2026-07-28, HELD (not dispatched): `#752`'s own "Task B" — generalize
+- `#754` — registered 2026-07-28, still HELD (not dispatched): `#752`'s own "Task B" — generalize
   `heteroclinic_cycle.correct_connection` to a resonant-member node type + homoclinic A=B mode +
   one-sided `{y=0}` section, gated on Anderson-Lo 2011 Tables 2/3 connection states; folds in
   `#751`'s deferred Lyapunov homoclinic-connection-finder primitive. User explicitly chose
-  "Task A only for now" (2026-07-28) — dispatch only after `#753` reports and is reviewed.
+  "Task A only for now" (2026-07-28) — `#753` has now reported (2026-07-28, DONE, PARTIAL: 1/4
+  Table-1 families confirmed, 3/4 not) and is awaiting user review before any Task B dispatch
+  decision. Note Task B's own gate (Tables 2/3) needs the 3:4-LO and 5:6-LO orbits' invariant
+  manifolds — the two families `#753` did NOT confirm — so the dispatching session's assessment is
+  that Task B is not yet well-founded without either further `3:4-LO`/`5:6-LO` search or a
+  re-scope; see `#753`'s own bullet + results note for the full reasoning (opinion, not a
+  decision).
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
@@ -271,13 +277,25 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
-- `#753` — dispatched 2026-07-28, user-authorized ("Task A only for now"): "Jupiter-Europa 3:4/5:6
-  unstable resonant families + Anderson-Lo Table-1 gate," per `#752`'s spec-complete Task A. Build
-  a resonant-orbit seed sweep for Jupiter-Europa planar CR3BP (µ=2.5266448850435e-5, p:q ∈
-  {3:4, 5:6}, both branch signs), converge via existing `correct_symmetric_fixed_jacobi`, continue
-  to C=2.99163956830415, classify via existing `_planar_floquet`/`barden_stability`. Gate: recover
-  ≥4 Table-1 families, match max monodromy eigenvalues (1036.116088 / 1.000008 / 4445.387515 /
-  28178.258323) to ~1e-3 relative. `#754` (Task B) HELD pending this task's result + review.
+- `#753` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result — 1/4 Table-1
+  families gate-passed, 3/4 not confirmed): built `search.jovian_resonant_families` retargeting
+  the cislunar resonant-orbit pipeline (`resonance_network.py`, `#267`) to Jupiter-Europa at
+  Anderson-Lo 2011's own sourced µ=2.5266448850435e-5 (p.169) and Cflyby=2.99163956830415 (p.179),
+  reusing the existing `correct_symmetric_fixed_jacobi` corrector, `continue_family` natural-
+  parameter continuation, and `barden_stability`/`_planar_floquet` classification. **Gate result**:
+  `5:6-LI` CONFIRMED (recovered 1.0001036 vs target 1.000008, rel_err=9.6e-5, period/2π=5.999985≈6
+  independently confirming genuine 5:6 lineage, real Barden eigenvalue matching the paper's own
+  "only slightly unstable" description); `3:4-LO`/`5:6-LO`/`5:6-NO` NOT confirmed despite extensive
+  grid+bisection search + continuation-from-higher-C exploration (best candidates 1.98%-27% off,
+  none with a period confirming correct resonance lineage — honestly reported as unconfirmed near-
+  misses, not partial matches, per the mandatory no-fudging discipline). Also surfaced a real
+  methodological finding: `_planar_floquet`'s largest-eigenvalue heuristic silently picks the
+  trivial time-translation eigenvalue near `\|λ\|≈1`; `barden_stability` is authoritative there
+  (now documented + regression-tested). 20-test suite, `ruff`/`mypy src tests` clean. Full search
+  history + honest gate table: `docs/notes/2026-07-28-753-jupiter-europa-resonant-families-table1-
+  gate.md`. Opinion (not decision) on `#754`: recommend AGAINST dispatching Task B until 3:4-LO/
+  5:6-LO are confirmed (Task B's own gate needs their manifolds) or Task B is re-scoped around the
+  one confirmed family — `#754` stays HELD pending user review of this result.
 - `#738` — REMOVED from this list 2026-07-28, ✓ DONE: N=5 CRNBP torus row
   (`europa-3-4-crnbp-torus-jupiter-2026`) promoted `validation_level: V0 -> V1`. Built
   `search.crnbp_torus_ghost_guard.radau_ghost_guard`, an independent Radau-vs-DOP853
