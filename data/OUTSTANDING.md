@@ -91,12 +91,17 @@ unchanged. See `git log` around this date for the corrected commit.
   `heteroclinic_cycle.correct_connection` to a resonant-member node type + homoclinic A=B mode +
   one-sided `{y=0}` section, gated on Anderson-Lo 2011 Tables 2/3 connection states; folds in
   `#751`'s deferred Lyapunov homoclinic-connection-finder primitive. User explicitly chose
-  "Task A only for now" (2026-07-28) — `#753` has now reported (2026-07-28, DONE, PARTIAL: 1/4
-  Table-1 families confirmed, 3/4 not) and is awaiting user review before any Task B dispatch
-  decision. Note Task B's own gate (Tables 2/3) needs the 3:4-LO and 5:6-LO orbits' invariant
-  manifolds — the two families `#753` did NOT confirm — so the dispatching session's assessment is
-  that Task B is not yet well-founded without either further `3:4-LO`/`5:6-LO` search or a
-  re-scope; see `#753`'s own bullet + results note for the full reasoning (opinion, not a
+  "Task A only for now" (2026-07-28) — `#753` reported (2026-07-28, DONE, PARTIAL: 1/4 Table-1
+  families confirmed, 3/4 not), and `#755` (2026-07-28, DONE, direct continuation of `#753`)
+  followed up with a targeted further search on the two families Task B's own gate needs (3:4-LO,
+  5:6-LO) — still HELD, awaiting user review. `#755`'s result: 3:4-LO's eigenvalue now matches to
+  near-machine precision (rel_err 2.8e-8, independently corroborated by shape + close-approach
+  mechanism) but its period misses the mandated clean-multiple check by ~2.1%, raising a genuine
+  open question (not resolved by either task) about whether period-exactness is even the right
+  test for a family this far from the two-body limit; 5:6-LO remains a clean, unchanged negative
+  despite substantial further targeted search. Task B is therefore STILL not well-founded without
+  either a decision on the 3:4-LO period-criterion question, further 5:6-LO search, or a re-scope;
+  see `#753`'s and `#755`'s own bullets + results notes for the full reasoning (opinion, not a
   decision).
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
@@ -277,18 +282,35 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
-- `#755` — dispatched 2026-07-28, user-authorized ("continue with a" — targeted further search):
-  find and confirm `#753`'s 2 remaining unconfirmed Table-1 families, 3:4-LO
-  (target `|λ|=1036.116088`) and 5:6-LO (target `|λ|=4445.387515`), needed as `#754` (Task B)'s own
-  prerequisite manifolds. Per `#753`'s own results note recommendation: try (i) a finer C-grid
-  around the fold boundaries found in search-history step 4 (families hit a fold at
-  `C≈3.07`-`3.25`, short of `C_flyby=2.9916` — a denser C-step or a different simple-loop starting
-  family might extend further), and (ii) a seed derived from Anderson & Lo's own "Designing Flybys
-  Using Two-Body Approximations" section (two-body flyby-vector-rotation construction) rather than
-  the plain two-body resonant ellipse already tried and confirmed NOT to work directly. Same
-  honesty discipline as `#753`: a continued non-confirmation is an acceptable, reportable outcome,
-  not a task failure — do not fudge tolerances or accept a candidate lacking period confirmation
-  of correct `p:q` resonance lineage.
+- `#755` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result, direct
+  continuation of `#753`): targeted search for the 2 remaining unconfirmed Table-1 families,
+  3:4-LO (target `|λ|=1036.116088`) and 5:6-LO (target `|λ|=4445.387515`). **3:4-LO**: a finer
+  `(x0, half_crossings)` grid at `C_flyby` in the same `x0≈-1.43` "fractal sensitivity" hotspot
+  `#753` had already flagged located an eigenvalue match to essentially machine/paper precision
+  (recovered 1036.116117, rel_err=2.8e-8 — Barden/`_planar_floquet` agree to <1e-7), independently
+  corroborated by the trajectory's spatial envelope matching Fig. 16(a)'s plotted orbit almost
+  exactly and a genuine close Europa approach (97 km altitude) matching the paper's own
+  instability mechanism — BUT period/2π=4.0859, a real ~2.1% offset from the clean q=4 multiple
+  (not tolerance noise, crossing_residual=2e-13). Reported honestly as NOT CONFIRMED under the
+  mandatory dual criterion (eigenvalue AND period), but flagged as a qualitatively much stronger,
+  better-evidenced near-miss than any of `#753`'s own three original misses (which failed on
+  eigenvalue itself, 2%-27% off, with no plausible period relationship at all) — raises a genuine,
+  unresolved question (grounded in the paper's own Murray-Dermott "a precise relationship does not
+  exist" text, p.171) about whether period-exactness is even the right confirmatory test for a
+  family this far from the two-body integrable limit, not resolved unilaterally by this task.
+  **5:6-LO**: applied the identical strategy at length (wide + repeated fine-grid, up to
+  `n_grid=4000`, around the analogous hotspot) and found NOTHING within an order of magnitude of
+  the target eigenvalue with a period anywhere near q=6 — closest simultaneous approach 223x too
+  big on eigenvalue. Genuinely unchanged clean negative, not a symmetric partner finding. Also
+  implemented (per the dispatch's strategy 2) Anderson & Lo's own two-body flyby-VECTOR-ROTATION
+  seed construction (`two_body_flyby_rotation_seed`/`flyby_rotation_symmetric_seed`, pp.172-174,
+  Fig. 2) — geometrically verified (V∞ magnitude preserved under rotation) but did not itself
+  locate a Table-1 match in the time available; kept as a documented, tested, reusable alternative
+  seed strategy. 25-test suite (up from 20), `ruff`/`mypy src tests` clean. Full search log +
+  reasoning: `docs/notes/2026-07-28-755-jupiter-europa-3-4-lo-5-6-lo-targeted-search.md`. Opinion
+  (not decision) on `#754`: does not yet clear `#753`'s own bar for dispatch (needs BOTH rows'
+  manifolds; 5:6-LO remains fully unconfirmed and 3:4-LO's status hinges on the unresolved
+  period-criterion question above) — `#754` stays HELD pending user review of this result.
 - `#753` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result — 1/4 Table-1
   families gate-passed, 3/4 not confirmed): built `search.jovian_resonant_families` retargeting
   the cislunar resonant-orbit pipeline (`resonance_network.py`, `#267`) to Jupiter-Europa at

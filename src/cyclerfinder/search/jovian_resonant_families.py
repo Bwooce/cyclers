@@ -73,6 +73,34 @@ every candidate with |lambda| >> 1 is cross-checked against BOTH functions
 (they agree to <1e-6 relative in every large-eigenvalue case found this
 task -- see the module test suite).
 
+#755 UPDATE (2026-07-28, direct continuation of #753 -- targeted search for
+the two remaining unconfirmed rows, 3:4-LO and 5:6-LO): tried both of #753's
+own recommended strategies. (1) A finer (x0, half_crossings) grid at
+``ANDERSON_LO_C_FLYBY`` directly, in previously under-sampled resolution
+around the same x0~-1.42/-1.43 region #753 flagged as a "fractal
+sensitivity" hotspot, LOCATED 3:4-LO's eigenvalue to essentially machine/
+paper precision (rel_err ~2.8e-8) -- see :data:`_TABLE1_CANDIDATE_SEEDS`'s
+own comment for the full finding, including the honest open question about
+whether the period should be expected to land on a clean ``2*pi*q``
+multiple for a family this far from the two-body integrable limit (this
+module does NOT unilaterally resolve that question -- :data:`GateRow.passed`
+stays strict/dual-criterion, so this row still reports as NOT CONFIRMED).
+The SAME strategy, applied at length to 5:6-LO (wide scans plus repeated
+fine-grid refinement around the analogous x0~-1.42 hotspot), did NOT find
+anything within an order of magnitude of the target eigenvalue while also
+having a period anywhere near the 5:6 resonance's ``q=6`` -- an honest,
+unchanged non-confirmation. (2) Implemented the paper's own two-body
+flyby-VECTOR-ROTATION seed construction (Section "Designing Flybys Using
+the Two-Body Approximations", pp.172-174, Fig. 2) as
+:func:`two_body_flyby_rotation_seed` / :func:`flyby_rotation_symmetric_seed`
+-- geometrically verified (V-infinity magnitude preserved under rotation)
+but did not itself locate a Table-1 match in the time available; kept as a
+documented, tested, reusable alternative seed strategy distinct from the
+plain resonant-ellipse seed, per the paper's own more sophisticated
+construction. See
+``docs/notes/2026-07-28-755-jupiter-europa-3-4-lo-5-6-lo-targeted-search.md``
+for the full search log and reasoning.
+
 Pure: math/numpy/scipy + :mod:`cyclerfinder.core.cr3bp`,
 :mod:`cyclerfinder.search.cr3bp_periodic`,
 :mod:`cyclerfinder.search.cr3bp_continuation`,
@@ -124,6 +152,31 @@ TABLE1_TARGETS: dict[str, float] = {
 #: this task, 1.98% off, is a genuine FAIL under this tolerance, correctly
 #: distinguishing a near-miss from a reproduction).
 TABLE1_GATE_REL_TOL = 1e-3
+
+#: The integer ``q`` (rotating-frame closure period ``T_full = 2*pi*q``, see
+#: :func:`two_body_resonant_seed`'s docstring) each Table 1 label's own name
+#: implies -- "p:q" labels give ``q`` directly; derived programmatically
+#: (not hand-duplicated) from :data:`TABLE1_TARGETS`'s own keys so this
+#: cannot silently drift out of sync with the label spelling.
+_LABEL_Q: dict[str, int] = {
+    label: int(label.split(":")[1].split("-")[0]) for label in TABLE1_TARGETS
+}
+
+#: Gate tolerance on ``period_over_2pi`` vs the label's own integer ``q``,
+#: relative. #753's mandatory dual-criterion gate (eigenvalue AND period)
+#: requires this SEPARATELY from :data:`TABLE1_GATE_REL_TOL` -- an
+#: eigenvalue-only match is explicitly NOT sufficient (see #753/#755 results
+#: notes). 5:6-LI recovers period/2pi = 5.999985 (rel_err ~2.5e-6 from 6),
+#: trivially inside this tolerance; #753's three original near-misses
+#: (period/2pi = 21.01, 16.11, 16.04) are not remotely close to ANY
+#: plausible integer q, failing by orders of magnitude more than this
+#: tolerance either way. #755's 3:4-LO candidate (period/2pi = 4.0859, a
+#: genuine, tightly-converged ~2.1% offset from 4) is the one row where this
+#: tolerance is actually load-bearing/discriminating rather than trivially
+#: one-sided -- see that row's own seed-table comment and the #755 results
+#: note for the full reasoning on whether 1e-2 is the RIGHT line to draw
+#: here (a real open question this module does not resolve unilaterally).
+TABLE1_PERIOD_REL_TOL = 1e-2
 
 #: Jupiter-Europa characteristic length (Europa's own SMA about Jupiter,
 #: ``core.satellites`` registry, JPL SSD) -- used ONLY for period-in-days
@@ -229,6 +282,206 @@ def two_body_resonant_seed(p: int, q: int, *, x0_sign: int = -1) -> TwoBodySeed:
         semi_major_axis=a,
         eccentricity=e,
     )
+
+
+# ---------------------------------------------------------------------------
+# Two-body flyby-VECTOR-ROTATION seed (Anderson & Lo "Designing Flybys Using
+# the Two-Body Approximations", pp.172-174, Fig. 2) -- #755 strategy 2.
+#
+# Distinct from (and more sophisticated than) :func:`two_body_resonant_seed`'s
+# plain resonant ellipse: the paper's own flyby model treats the secondary
+# encounter as a two-body HYPERBOLIC flyby that ROTATES the spacecraft's
+# hyperbolic excess velocity (V-infinity, relative to the secondary) by the
+# turn angle implied by the chosen periapsis radius, producing a NEW
+# two-body orbit about the primary in a different (or the same) resonance.
+# This is literally how the paper constructs its own cycling 3:4<->5:6
+# flyby trajectory (p.174: "a two-body orbit in resonance with the
+# secondary... performs a flyby... to rotate V-infinity such that the new
+# two-body orbit is in a new resonance").
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class FlybyRotationSeed:
+    """Post-flyby two-body state from Anderson & Lo's flyby-vector-rotation
+    construction (Fig. 2), barycentric GM=1 nondim, at the encounter point
+    (periapsis, ``x = +1.0, y = 0``, matching :func:`two_body_resonant_seed`'s
+    own periapsis-at-secondary-radius convention).
+
+    ``xdot``/``ydot`` are the ROTATING-FRAME velocity components immediately
+    after the flyby -- UNLIKE :func:`two_body_resonant_seed`'s simple
+    ellipse, this is generally NOT a symmetric (``xdot = 0``) IC: the
+    rotation mixes the two velocity components. Per the paper's own text
+    (p.174-175: the raw patched two-body flyby state "does not match the
+    two-body orbits very well" once integrated in the CRTBP, needing
+    further patchpoint refinement), this state is not itself a usable
+    :func:`~cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+    seed -- see :func:`flyby_rotation_symmetric_seed`, which propagates it
+    forward to its next perpendicular x-axis crossing to obtain one.
+    """
+
+    p_before: int
+    q_before: int
+    p_after: int
+    q_after: int
+    r_periapsis: float
+    turn_angle: float
+    v_infinity: float
+    x0: float
+    y0: float
+    xdot: float
+    ydot: float
+
+
+def two_body_flyby_rotation_seed(
+    p_before: int,
+    q_before: int,
+    p_after: int,
+    q_after: int,
+    *,
+    r_periapsis: float = 1.0,
+    mu: float = ANDERSON_LO_MU,
+    turn_sign: int = 1,
+    safety_margin: float = 0.01,
+) -> FlybyRotationSeed:
+    """Construct the post-flyby state from the paper's own two-body
+    flyby-vector-rotation model (Fig. 2, p.172-174).
+
+    A spacecraft on a ``p_before:q_before`` two-body resonant ellipse
+    (periapsis at the secondary's own radius, ``r = 1``, matching
+    :func:`two_body_resonant_seed`) encounters the secondary at periapsis
+    with hyperbolic excess velocity ``V_infinity`` (the two-body relative
+    velocity at that point, purely tangential since it is a periapsis of
+    both the spacecraft's and the secondary's own circular orbit). The
+    flyby is modeled as a two-body hyperbola about the secondary
+    (``GM = mu``) with closest approach ``r_periapsis``; standard
+    patched-conic flyby geometry (e.g. Anderson & Lo Eq./Fig. 2, or any
+    gravity-assist reference) gives the turn angle
+
+        ``delta = 2 * arcsin(1 / (1 + r_periapsis * V_infinity**2 / mu))``
+
+    ``V_infinity`` is rotated by ``turn_sign * delta`` (``turn_sign`` picks
+    which side of the secondary the spacecraft passes -- the paper's own
+    cycling trajectory uses BOTH signs, one per flyby, to rotate the orbit
+    back and forth between the 3:4 and 5:6 resonances) to get the NEW
+    two-body velocity relative to the secondary; adding back the
+    secondary's own (unit, tangential) two-body velocity gives the
+    post-flyby velocity relative to the primary.
+
+    ``p_after``/``q_after`` are accepted (not used in the construction
+    itself, which only needs ``p_before``/``q_before`` to get the
+    PRE-flyby ellipse) purely for provenance/labeling -- the ACTUAL
+    post-flyby resonance is whatever the geometry produces, and confirming
+    it actually matches ``p_after:q_after`` is exactly the kind of
+    self-consistency check this project's own discipline requires
+    (``feedback_constructed_tour_per_encounter_self_consistency``); left to
+    the caller (see the module test suite for one such check).
+
+    ``safety_margin``: the exact periapsis point (``x = 1.0`` barycentric,
+    only ``mu`` away from the CRTBP's own singularity at ``1 - mu``) is the
+    SAME numerically hazardous close-approach the paper's own text
+    describes hitting with its "crudest method" (p.174: "the close
+    approaches to the singularity at Europa generally kept the differential
+    corrector from converging") and its own fix ("slightly modifying the
+    patchpoints just prior to Europa approach to avoid the singularity").
+    This function applies the same fix: the returned state is backed off by
+    ``safety_margin`` from the exact periapsis (``x0 = 1.0 - safety_margin``)
+    so a caller integrating it forward does not immediately grind through a
+    near-singular close approach.
+    """
+    if p_before <= 0 or q_before <= 0 or p_after <= 0 or q_after <= 0:
+        raise ValueError("p_before, q_before, p_after, q_after must all be positive integers")
+    if turn_sign not in (+1, -1):
+        raise ValueError(f"turn_sign must be +1 or -1; got {turn_sign}")
+    seed_before = two_body_resonant_seed(p_before, q_before, x0_sign=+1)
+    v_before = seed_before.ydot0 + seed_before.x0  # inertial tangential speed at periapsis
+    v_infinity = v_before - 1.0  # secondary's own two-body speed at r=1 is 1.0
+    turn_angle = 2.0 * math.asin(1.0 / (1.0 + r_periapsis * v_infinity**2 / mu))
+    delta = float(turn_sign) * turn_angle
+    # V_infinity (inertial, relative to secondary) is purely tangential (y) at periapsis.
+    vinf_before = np.array([0.0, v_infinity])
+    cos_d, sin_d = math.cos(delta), math.sin(delta)
+    rot = np.array([[cos_d, -sin_d], [sin_d, cos_d]])
+    vinf_after = rot @ vinf_before
+    v_sc_after_inertial = np.array([0.0, 1.0]) + vinf_after  # + secondary's own velocity
+    x0, y0 = 1.0 - safety_margin, 0.0
+    # Rotating-frame velocity: v_rot = v_inertial - omega x r, omega=(0,0,1), r=(x0,y0,0).
+    xdot = float(v_sc_after_inertial[0] + y0)
+    ydot = float(v_sc_after_inertial[1] - x0)
+    return FlybyRotationSeed(
+        p_before=p_before,
+        q_before=q_before,
+        p_after=p_after,
+        q_after=q_after,
+        r_periapsis=r_periapsis,
+        turn_angle=turn_angle,
+        v_infinity=v_infinity,
+        x0=x0,
+        y0=y0,
+        xdot=xdot,
+        ydot=ydot,
+    )
+
+
+def flyby_rotation_symmetric_seed(
+    system: cr3bp.CR3BPSystem,
+    seed: FlybyRotationSeed,
+    *,
+    t_hi: float,
+    rtol: float = 1e-10,
+    atol: float = 1e-10,
+    max_step: float = 0.01,
+) -> tuple[float, float] | None:
+    """Propagate a :class:`FlybyRotationSeed`'s (generally non-symmetric)
+    post-flyby state forward to its first perpendicular (``xdot ~ 0``)
+    x-axis crossing, returning ``(x0, jacobi)`` usable as a
+    :func:`converge_candidate`/:func:`survey_candidates` seed -- or
+    ``None`` if no such crossing occurs within ``t_hi``.
+
+    This is the step the paper's own text describes doing by hand via
+    "several intermediate steps" of patchpoint refinement (p.175-176); here
+    it is a single forward integration to the nearest perpendicular
+    crossing, a deliberately simpler (fully automatable) stand-in that
+    still captures the qualitative idea: seed the corrector from a state
+    that has ALREADY been rotated by a genuine flyby encounter, rather than
+    the plain unperturbed resonant ellipse.
+
+    WARNING (same hazard :func:`survey_candidates` documents): the seed
+    state sits AT the secondary's own orbital radius (``x0 = 1.0``, only
+    ``mu`` away from the actual CRTBP singularity at ``1 - mu``), and for
+    near-1:1 resonances ``v_infinity`` is small, so the post-flyby state can
+    linger near the secondary for a long, numerically expensive time before
+    departing -- ``max_step`` bounds the integrator's step size to keep this
+    from grinding indefinitely; callers integrating a long ``t_hi`` for a
+    near-1:1 ``p_before:q_before`` should expect this to be slow.
+    """
+    state0 = np.array([seed.x0, seed.y0, 0.0, seed.xdot, seed.ydot, 0.0])
+    jacobi = cr3bp.jacobi_constant(state0, system.mu)
+
+    def _xdot_event(t: float, y: NDArray[np.float64], _mu: float) -> float:
+        return float(y[3])
+
+    _xdot_event.terminal = False  # type: ignore[attr-defined]
+    _xdot_event.direction = 0.0  # type: ignore[attr-defined]
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, t_hi),
+        state0,
+        args=(system.mu,),  # type: ignore[call-overload]
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=max_step,
+        events=_xdot_event,
+    )
+    t_events = sol.t_events[0] if sol.t_events is not None else np.array([])
+    y_events = sol.y_events[0] if sol.y_events is not None else []
+    t_lo = 1e-6 * t_hi
+    pairs = [(t, y) for t, y in zip(t_events, y_events, strict=True) if t > t_lo]
+    if not pairs:
+        return None
+    _t, y = pairs[0]
+    return float(y[0]), jacobi
 
 
 # ---------------------------------------------------------------------------
@@ -452,15 +705,53 @@ _TABLE1_CANDIDATE_SEEDS: dict[str, tuple[float, float, int | None, float]] = {
     # continuation callers get a stable, reproducible crossing index rather
     # than re-deriving it from a DIFFERENT period_guess at each C step.
     "5:6-LI": (-0.374722, 1.0, 52, 37.6990),
+    # #755: EIGENVALUE MATCH essentially exact (recovered 1036.116117 vs
+    # target 1036.116088, rel_err ~2.8e-8 -- FAR inside the 1e-3 gate, and
+    # agreeing between barden_stability and _planar_floquet to <1e-7
+    # relative) but period/2pi = 4.0859, NOT the clean q=4 multiple (a real,
+    # reproducible ~2.1% offset from exactly 4.0 -- crossing_residual is
+    # 2e-13, this is a tightly converged, distinct orbit, not tolerance
+    # noise). Located by a #753-recommended finer x0/half_crossings grid at
+    # C_flyby directly (x0 in [-1.47,-1.38], n_grid=2500, half_crossings in
+    # 1-8) after a wide scan ([-1.6,-0.85], half_crossings 1-40) found the
+    # same x0~-1.43 neighborhood harbors huge, wildly x0-sensitive
+    # eigenvalues (the #753-documented "fractal sensitivity") but this
+    # specific point is the one where the recovered eigenvalue actually
+    # lands on the paper's own digits. Independently corroborated
+    # (NOT part of the formal digit gate, but strong supporting evidence):
+    # the trajectory's spatial envelope is x in [-1.430, 1.258], y in
+    # [-1.384, 1.384] -- matching Fig. 16(a)'s plotted "flower" orbit
+    # (axes -1.5 to 1.5) almost exactly -- and it makes a genuine close
+    # Europa approach (min distance 0.00247 nondim =~ 1657 km, ~97 km
+    # surface altitude), the qualitative "close flyby" instability mechanism
+    # the paper's own text attributes to these families. See the #755
+    # results note for the full reasoning on why period-exactness may not
+    # be the right confirmatory test for a STRONGLY unstable (far from the
+    # 2-body integrable limit) family the way it is for the weakly-unstable
+    # 5:6-LI -- and why this module nonetheless keeps the strict dual-
+    # criterion gate (does NOT report this row as "passed") pending that
+    # question being resolved by a human reviewer.
+    "3:4-LO": (-1.430408, 1.0, 6, 25.6725),
     # NOT CONFIRMED (best candidates found; see results note). Both periods
     # (period/2pi = 16.11 and 10.80) do NOT confirm 3:4 or 5:6 lineage (not
     # a clean multiple of 2*pi*q for q in {4, 6}) -- these are honestly
     # reported as unconfirmed near-misses in eigenvalue magnitude only, not
     # verified family reproductions. Kept here (rather than discarded) so
     # the gate report can show the closest approach found per row.
+    #
+    # #755 STILL NOT CONFIRMED despite extensive further targeted search
+    # (unlike 3:4-LO above): wide scans (x0 in [-1.6,-0.85], half_crossings
+    # 1-25, both signs) and repeated fine-grid refinements (n_grid up to
+    # 4000) around the same x0~-1.42 "fractal hotspot" that yielded 3:4-LO's
+    # match found many candidates with huge, wildly x0-sensitive
+    # eigenvalues (10^2 to 10^6) but NONE within an order of magnitude of
+    # the target 4445.387515 while ALSO having period/2pi anywhere near 6 --
+    # the closest simultaneous approach was x0=-1.4245, lam=982457 (223x too
+    # big) at period/2pi=6.25. Genuinely different outcome from 3:4-LO, not
+    # a symmetric near-miss -- see the #755 results note for the full search
+    # log. Kept as the best pre-#755 candidate (unchanged from #753).
     "5:6-LO": (0.81360506, 1.0, 2, 101.2145),
     "5:6-NO": (1.4975176, -1.0, 4, 100.7808),
-    "3:4-LO": (1.2567322, -1.0, 3, 132.0396),
 }
 
 
@@ -494,7 +785,18 @@ def recover_table1_candidate(
 
 @dataclass(frozen=True)
 class GateRow:
-    """One row of the Table 1 gate report."""
+    """One row of the Table 1 gate report.
+
+    ``passed`` is the #753/#755-mandated DUAL criterion: eigenvalue match
+    (``eigenvalue_confirmed``) AND period landing on the label's own clean
+    ``2*pi*q`` multiple (``period_confirmed``). An eigenvalue-only match is
+    NOT sufficient (see :data:`TABLE1_PERIOD_REL_TOL`'s own docstring) --
+    ``eigenvalue_confirmed`` is kept as its own field precisely so a row like
+    #755's ``3:4-LO`` (near-exact eigenvalue, non-conforming period) is
+    visible as a real, well-evidenced near-miss rather than collapsing into
+    an undifferentiated ``passed=False`` alongside a row with no eigenvalue
+    match at all.
+    """
 
     label: str
     target_eigenvalue: float
@@ -502,20 +804,30 @@ class GateRow:
     is_real_unstable: bool
     period_over_2pi: float
     rel_err: float
+    eigenvalue_confirmed: bool
+    period_rel_err: float
+    period_confirmed: bool
     passed: bool
 
 
 def gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
     """Recover all four Table 1 candidates and check each against
-    :data:`TABLE1_TARGETS` at :data:`TABLE1_GATE_REL_TOL`. Honest: does not
-    fudge or hide a failing row.
+    :data:`TABLE1_TARGETS` at :data:`TABLE1_GATE_REL_TOL`, AND against the
+    label's own clean ``2*pi*q`` period multiple at
+    :data:`TABLE1_PERIOD_REL_TOL` (the #753-mandated dual criterion -- see
+    :class:`GateRow`'s docstring). Honest: does not fudge or hide a failing
+    row on either criterion.
     """
     sys_ = system if system is not None else jupiter_europa_system()
     rows: list[GateRow] = []
     for label, target in TABLE1_TARGETS.items():
         cand = recover_table1_candidate(label, sys_)
         rel_err = abs(cand.max_eigenvalue - target) / target
-        passed = rel_err < TABLE1_GATE_REL_TOL
+        eigenvalue_confirmed = rel_err < TABLE1_GATE_REL_TOL
+        q = _LABEL_Q[label]
+        period_rel_err = abs(cand.period_over_2pi - q) / q
+        period_confirmed = period_rel_err < TABLE1_PERIOD_REL_TOL
+        passed = eigenvalue_confirmed and period_confirmed
         rows.append(
             GateRow(
                 label=label,
@@ -524,6 +836,9 @@ def gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
                 is_real_unstable=cand.is_real_unstable,
                 period_over_2pi=cand.period_over_2pi,
                 rel_err=rel_err,
+                eigenvalue_confirmed=eigenvalue_confirmed,
+                period_rel_err=period_rel_err,
+                period_confirmed=period_confirmed,
                 passed=passed,
             )
         )
@@ -590,15 +905,19 @@ __all__ = [
     "ANDERSON_LO_C_FLYBY",
     "ANDERSON_LO_MU",
     "TABLE1_GATE_REL_TOL",
+    "TABLE1_PERIOD_REL_TOL",
     "TABLE1_TARGETS",
+    "FlybyRotationSeed",
     "GateRow",
     "ResonantFamilyCandidate",
     "TwoBodySeed",
     "continue_candidate_toward_c_flyby",
     "converge_candidate",
+    "flyby_rotation_symmetric_seed",
     "gate_report",
     "jupiter_europa_system",
     "recover_table1_candidate",
     "survey_candidates",
+    "two_body_flyby_rotation_seed",
     "two_body_resonant_seed",
 ]

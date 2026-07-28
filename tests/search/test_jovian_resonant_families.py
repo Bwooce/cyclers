@@ -202,15 +202,18 @@ def test_table1_gate_honest_report(system: object) -> None:
     rows = {r.label: r for r in jrf.gate_report(system)}  # type: ignore[arg-type]
     assert set(rows) == set(jrf.TABLE1_TARGETS)
 
-    # CONFIRMED: 5:6-LI recovers to well within the 1e-3 gate tolerance.
+    # CONFIRMED: 5:6-LI recovers to well within the 1e-3 gate tolerance AND
+    # its period lands on the clean q=6 multiple (dual criterion, #753/#755).
     assert rows["5:6-LI"].passed, rows["5:6-LI"]
     assert rows["5:6-LI"].rel_err < 1e-3
+    assert rows["5:6-LI"].eigenvalue_confirmed
+    assert rows["5:6-LI"].period_confirmed
 
-    # NOT CONFIRMED (documented negative -- see results note): none of these
-    # three reach gate precision despite extensive search. Asserted FALSE
-    # deliberately, so this stays an honest, tracked negative rather than a
-    # silently-dropped claim; a future fix that finds the true families
-    # should update this test, not work around it.
+    # NOT CONFIRMED under the dual-criterion gate (documented negative --
+    # see the #755 results note). Asserted FALSE deliberately, so this stays
+    # an honest, tracked negative rather than a silently-dropped claim; a
+    # future fix that finds the true families should update this test, not
+    # work around it.
     for label in ("3:4-LO", "5:6-LO", "5:6-NO"):
         assert not rows[label].passed, (
             f"{label} unexpectedly passed ({rows[label]}) -- if a real fix "
@@ -220,6 +223,27 @@ def test_table1_gate_honest_report(system: object) -> None:
 
     n_passed = sum(r.passed for r in rows.values())
     assert n_passed == 1
+
+    # #755's own striking finding, encoded as a standing regression: 3:4-LO's
+    # RECOVERED EIGENVALUE matches to near-machine precision (a MUCH tighter
+    # match than any of #753's original near-misses, which were 2-27% off)
+    # -- but its period does NOT land on the clean q=4 multiple (a real,
+    # reproducible ~2% offset, not tolerance noise). This is a qualitatively
+    # different, stronger candidate than a plain near-miss; kept as its own
+    # assertion so a future reviewer/fix does not conflate it with the
+    # 5:6-LO/5:6-NO rows (which fail on EIGENVALUE, not just period).
+    row_34lo = rows["3:4-LO"]
+    assert row_34lo.eigenvalue_confirmed, row_34lo
+    assert row_34lo.rel_err < 1e-6, row_34lo
+    assert not row_34lo.period_confirmed, row_34lo
+    assert row_34lo.period_rel_err > 1e-2, row_34lo
+    assert not row_34lo.passed
+
+    # 5:6-LO and 5:6-NO fail on EIGENVALUE too (unlike 3:4-LO) -- #755 spent
+    # substantial additional targeted search on 5:6-LO specifically and
+    # found nothing closer than #753's original candidate.
+    assert not rows["5:6-LO"].eigenvalue_confirmed
+    assert not rows["5:6-NO"].eigenvalue_confirmed
 
 
 # ---------------------------------------------------------------------------
@@ -248,3 +272,70 @@ def test_5_6_li_continues_smoothly_toward_c_flyby(system: object) -> None:
     )
     last = branch.members[-1]
     assert abs(last.jacobi - jrf.ANDERSON_LO_C_FLYBY) < 0.01
+
+
+# ---------------------------------------------------------------------------
+# (9) #755 strategy 2: the two-body flyby-VECTOR-ROTATION seed (Anderson &
+# Lo "Designing Flybys Using the Two-Body Approximations", pp.172-174,
+# Fig. 2) -- distinct from and more sophisticated than the plain resonant-
+# ellipse seed in (2)/(3) above. Did not itself locate a Table-1 match in
+# the time available (see the #755 results note) but is a genuine,
+# geometrically-verified, reusable alternative seed strategy.
+# ---------------------------------------------------------------------------
+
+
+def test_flyby_rotation_seed_preserves_v_infinity_magnitude() -> None:
+    """The hyperbolic flyby only ROTATES V-infinity; its magnitude (the
+    two-body hyperbolic excess speed relative to the secondary) must be
+    identical before and after, for any turn_sign/r_periapsis."""
+    seed = jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, r_periapsis=0.01, turn_sign=1)
+    # Reconstruct v_infinity_after from the returned rotating-frame state:
+    # v_inertial = v_rot + omega x r: (vx_rot - y, vy_rot + x0); secondary's
+    # own inertial velocity there is (0, 1).
+    vx_inertial = seed.xdot - seed.y0
+    vy_inertial = seed.ydot + seed.x0
+    vinf_after = math.hypot(vx_inertial - 0.0, vy_inertial - 1.0)
+    assert vinf_after == pytest.approx(abs(seed.v_infinity), rel=1e-9)
+
+
+def test_flyby_rotation_seed_turn_angle_decreases_with_periapsis_radius() -> None:
+    """Standard hyperbolic-flyby geometry: a MORE DISTANT closest approach
+    produces a SMALLER turn angle (weaker gravitational deflection)."""
+    seed_close = jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, r_periapsis=0.01)
+    seed_far = jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, r_periapsis=0.1)
+    assert 0.0 < seed_far.turn_angle < seed_close.turn_angle < math.pi
+
+
+def test_flyby_rotation_seed_rejects_bad_pq() -> None:
+    with pytest.raises(ValueError, match="positive integers"):
+        jrf.two_body_flyby_rotation_seed(0, 4, 5, 6)
+    with pytest.raises(ValueError, match="turn_sign"):
+        jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, turn_sign=0)
+
+
+def test_flyby_rotation_seed_backs_off_from_the_singularity() -> None:
+    """The exact periapsis (x=1.0 barycentric) is only ``mu`` away from the
+    CRTBP's own singularity at ``1-mu`` -- the paper's own text (p.174)
+    documents this exact close-approach hazard for its "crudest method" and
+    fixes it by backing the patchpoints off slightly; this module does the
+    same (see the function's own docstring)."""
+    seed = jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, safety_margin=0.01)
+    assert seed.x0 == pytest.approx(0.99)
+
+
+def test_flyby_rotation_symmetric_seed_runs_quickly(system: object) -> None:
+    """Propagating the (backed-off) post-flyby state forward to its next
+    perpendicular crossing must complete quickly (not grind through a
+    near-singular close approach -- see the function's own ``max_step``
+    docstring note) and return a sensible ``(x0, jacobi)`` pair or ``None``.
+    """
+    seed = jrf.two_body_flyby_rotation_seed(3, 4, 5, 6, r_periapsis=0.01)
+    result = jrf.flyby_rotation_symmetric_seed(
+        system,  # type: ignore[arg-type]
+        seed,
+        t_hi=2.0 * math.pi * 6.0 * 1.25,
+    )
+    assert result is not None, "expected a perpendicular crossing within t_hi"
+    x0, jacobi = result
+    assert -2.0 < x0 < 2.0
+    assert math.isfinite(jacobi)
