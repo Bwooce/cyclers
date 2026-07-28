@@ -34,6 +34,20 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#759` — registered 2026-07-28, ready to dispatch (not yet fired): build the Table-3 heteroclinic
+  connection `Wu(3:4-LO) ∩ Ws(5:6-LO)`, now unblocked — both required families confirmed by
+  reviewer ruling (`#755`, `#758`). Gate on Anderson-Lo 2011's own Table-3 state
+  (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`), reusing the same
+  `ResonantNode`/section-crossing machinery `#754`'s Table-2 half already built, seeded from
+  `recover_758_table2_seeded_candidate()`. See `#754`'s own bullet for full context.
+- `#760` — registered 2026-07-28, HELD (not ready to dispatch): a new-system discovery campaign
+  using the Jovian resonant-manifold machinery (`#753`-`#758`) once validated against its one known
+  paper — apply the same resonant-orbit-family + manifold-connection pipeline to genuinely
+  unstudied systems (Saturn-Titan/Enceladus, Neptune-Triton, Pluto-Charon; per-system tasks, each
+  gated by the same machinery + the mandatory `literature_check.py` novelty gate). Held pending
+  `#759` (Table-3 build) landing and `#750` (unrun provenance check on whether this chain's own
+  3:4-LO is digit-for-digit the same family that seeds the catalogued N=5 CRNBP torus) — dispatch
+  only once the machinery itself is fully validated, not before.
 - `#751` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; dispatched same day with
   `#752`, both flagged by user question following the `#749` digest). Question: does
   Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
