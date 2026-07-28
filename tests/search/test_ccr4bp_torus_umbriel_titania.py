@@ -304,6 +304,14 @@ def test_physical_mass_thin_torus(
     assert phys.rho_strob == pytest.approx(expected, rel=1e-3)
 
 
+# #763: hit CI's global 600s pytest-timeout cap (run 30360261381) despite
+# measuring only ~16s LOCALLY -- this file is cited directly in
+# umbriel-1-2-torus-homoclinic-uranus-2026's own V1 evidence
+# (validate.py's _LEVEL_EVIDENCE). A per-test @pytest.mark.timeout(1800)
+# override (established precedent: tests/search/test_png_lane_recovery.py's
+# @pytest.mark.timeout(1200)) gives generous margin over the local
+# measurement without touching the pinned solver settings.
+@pytest.mark.timeout(1800)
 def test_continue_ccr4bp_torus_mass_reaches_physical(
     system: ccr4bp.CCR4BPSystem, orbit_12: tuple[np.ndarray, float]
 ) -> None:

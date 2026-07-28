@@ -328,6 +328,18 @@ def test_physical_mass_thin_torus(
     assert phys.rho_strob == pytest.approx(expected, rel=1e-3)
 
 
+# #763: hit CI's global 600s pytest-timeout cap (run 30360261381) despite
+# measuring only ~16s LOCALLY. NOT V-gauntlet evidence for any catalogue row
+# (grepped validate.py's _LEVEL_EVIDENCE + catalogue.yaml: this file is never
+# cited -- it's a construction/unit test for the general Europa-Ganymede
+# system, distinct from test_ccr4bp_torus_umbriel_titania.py's own
+# same-named function which IS cited). This project's CI has no separate
+# `-m slow` job/cadence (.github/workflows/ci.yml runs only the default
+# `uv run pytest`, i.e. `-m 'not slow'`), so @pytest.mark.slow would be a
+# pure coverage loss, not a relocation -- a per-test
+# @pytest.mark.timeout(1800) override is used instead, same fix as this
+# repo's evidence-tied #763 siblings.
+@pytest.mark.timeout(1800)
 def test_continue_ccr4bp_torus_mass_reaches_physical(
     system: ccr4bp.CCR4BPSystem, orbit_34: tuple[np.ndarray, float]
 ) -> None:

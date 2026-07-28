@@ -34,24 +34,66 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#763` — DISPATCHED 2026-07-29 (user: "sure"): fix 7 CI-only test timeouts (>600s,
-  pytest-timeout) discovered on the `#736`/`#738` push to `origin/main` (CI run `30360261381`,
-  triggered by `f5ba90b`) — `tests/search/test_crnbp_torus_ghost_guard.py::
-  test_physical_torus_reproduces_the_catalogued_provenance_numbers`,
-  `::test_radau_ghost_guard_passes_the_physical_n5_torus_with_a_comfortable_margin`,
-  `tests/search/test_variational_crnbp_torus.py` (3 tests), `tests/search/
-  test_ccr4bp_torus_umbriel_titania.py::test_continue_ccr4bp_torus_mass_reaches_physical`,
-  `tests/search/test_variational_ccr4bp_torus.py::test_continue_ccr4bp_torus_mass_reaches_physical`.
-  **Critical constraint**: the two `test_crnbp_torus_ghost_guard.py` tests are literally today's
-  own `#738` V1-promotion evidence for `europa-3-4-crnbp-torus-jupiter-2026` — per
-  `[[feedback_delegation_fresh_agent_not_fork]]`'s own established rule, do NOT mark a V-gauntlet
-  evidence test `@pytest.mark.slow` (CI would silently skip it, leaving the V1 claim
-  unverified-in-CI even though it's honestly documented locally). Investigate whether these are
-  genuinely CI-runner-slower (raise the per-test `pytest.mark.timeout(N)` override instead of
-  skipping) or whether there's a real optimization opportunity in the underlying continuation/
-  ghost-guard computation. Passed locally on this Mac every time this session; CI (Linux/GHA
-  runner) is evidently much slower for this specific numerical workload. Fix per-test, don't
-  broaden a blanket timeout config change without checking each test's own evidence status first.
+- `#763` — ✓ DONE 2026-07-29: fixed **8** CI-only test timeouts (>600s, pytest-timeout) on the
+  `#736`/`#738` push to `origin/main` (CI run `30360261381`, triggered by `f5ba90b`) — corrected
+  from the originally-logged **7**; `gh run view 30360261381 --log-failed` confirms 8
+  `Failed: Timeout (>600.0s) from pytest-timeout` entries (a 9th failure in the same run,
+  `tests/test_catalogue_rediscovery.py::test_census_breakdown_matches_frozen_ratchet`, was an
+  unrelated census-ratchet mismatch already fixed by `09d11f8`, not a timeout, out of scope here).
+  **Evidence-tied check** (grepped `validate.py`'s `_LEVEL_EVIDENCE` dict + `catalogue.yaml`'s
+  `method`/`crnbp_provenance`/`ccr4bp_provenance` fields for every test file/function): **7 of 8
+  ARE cited as V-gauntlet evidence**, 1 is not —
+  - `tests/search/test_crnbp_torus_ghost_guard.py::test_physical_torus_reproduces_the_catalogued_provenance_numbers`
+    + `::test_radau_ghost_guard_passes_the_physical_n5_torus_with_a_comfortable_margin` —
+    EVIDENCE-TIED: `europa-3-4-crnbp-torus-jupiter-2026`'s own V1 entry cites this file directly
+    ("tests/search/test_crnbp_torus_ghost_guard.py (ghost-guard machinery + the physical-torus
+    positive control)").
+  - `tests/search/test_variational_crnbp_torus.py`'s 4 failing tests
+    (`test_continuation_reaches_physical_mu_io_at_n1_2`,
+    `test_one_shot_direct_to_physical_matches_continuation`,
+    `test_mu_io_zero_residual_function_bit_identical_to_ccr4bp`,
+    `test_n1_1_cannot_represent_ios_second_harmonic_forcing`) — EVIDENCE-TIED: the SAME V1 entry
+    cites this whole file too ("+ tests/search/test_variational_crnbp_torus.py (#720/#723/#724's
+    own torus construction this check is applied to)").
+  - `tests/search/test_ccr4bp_torus_umbriel_titania.py::test_continue_ccr4bp_torus_mass_reaches_physical`
+    — EVIDENCE-TIED: `umbriel-1-2-torus-homoclinic-uranus-2026`'s own V1 entry cites this file
+    directly.
+  - `tests/search/test_variational_ccr4bp_torus.py::test_continue_ccr4bp_torus_mass_reaches_physical`
+    — NOT evidence-tied: grepped `_LEVEL_EVIDENCE` and `catalogue.yaml` for this exact filename,
+    zero hits anywhere. General Europa-Ganymede construction/unit test (`n1=1, n2=20`) for
+    `search.variational_ccr4bp_torus`, distinct from the umbriel-titania file's own same-named
+    function which IS cited.
+  **Fix applied to all 8**: a per-test `@pytest.mark.timeout(1800)` override, NOT
+  `@pytest.mark.slow` — confirmed `.github/workflows/ci.yml` runs only a single default
+  `uv run pytest` job (`addopts` in `pyproject.toml` is `-m 'not slow'`, no separate `-m slow`
+  cadence exists anywhere), so slow-marking would be a PURE, PERMANENT coverage loss, forbidden
+  for the 7 evidence-tied tests per `[[feedback_delegation_fresh_agent_not_fork]]` and unjustified
+  even for the 1 non-evidence test. No algorithmic speedup was applied: all 8 use
+  `least_squares(tr_solver="exact", ...)` with solver settings (`gauge_weight=30.0`,
+  `rho_weight=100.0`, `max_nfev=600`) explicitly pinned by the tests' own docstrings as regression
+  guards against drift in the catalogued provenance numbers — changing them was out of scope and
+  would have risked altering the very numbers under test. Local timing (solo / all-8-run-
+  concurrently-on-this-8-core-Mac, deliberately reproducing CI's own `-n auto` contention
+  pattern): ghost-guard reproduce 37s/127s, ghost-guard radau 41s/128s, n1=2 continuation
+  39s/163s, umbriel-titania continuation 16s/63s, non-evidence ccr4bp continuation 17s/83s,
+  one-shot 17s/88s, bit-identical residual 14s/72s, n1=1 wall (heaviest) 126s/237s — all passed
+  with `1800s` giving >=7.6x margin over the worst concurrent measurement, comfortably inside GH
+  Actions' 360-min default job cap (no `timeout-minutes` set in `ci.yml`). The wide local-solo-
+  vs-CI-600s-timeout gap even for the CHEAPEST tests (14-17s solo) is best explained by CI's
+  `-n auto` xdist contention on `ubuntu-latest`'s 2 cores (this project's own documented
+  BLAS/DOP853 platform-slowness note) rather than a uniform per-test slowdown factor — the
+  8-tests-concurrently-on-this-Mac reproduction above shows the same 3-6x inflation pattern.
+  **Verification**: `uv run pytest tests/data -q` clean (2 pre-existing xfails, task #54,
+  unrelated); `uv run pytest tests/search -q` (chunked, 5×39 files) all clean except two
+  PRE-EXISTING, UNRELATED failures confirmed deterministic-in-isolation and zero import
+  relationship to any of the 4 changed files:
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33` ((3,3) topology check, own verdict doc
+  `docs/notes/2026-07-01-504-pluto-charon-kk-sweep-verdict.md`) and
+  `test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface` (Io_out V∞ 0.067
+  km/s outside the 0.05 gate) — both left untouched, out of scope for this task, flagged here for
+  a future task to pick up. `uv run pytest tests/data/test_outstanding_structure.py
+  tests/data/test_outstanding_header_body_consistency.py -q` clean. `ruff check` + `ruff format
+  --check` + full `uv run mypy src tests` (823 files) all clean. Commit `[[SHA]]`.
 - `#762` — ✓ DONE 2026-07-28 (cyclers.space repo, commit `a3295ee`). Added `torus_homoclinic` +
   `quasi_periodic_torus` to the site's `OrbitClass` type, `ORBIT_CLASS_LABEL`/
   `ORBIT_CLASS_LONG_LABEL` (`src/lib/catalogue.ts`), the class-filter dropdown, and badge CSS

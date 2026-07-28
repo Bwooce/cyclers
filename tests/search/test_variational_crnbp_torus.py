@@ -259,6 +259,18 @@ def _ccr4bp_seed_n1_2(
     )
 
 
+# #763: all four tests below (the file cited whole in the europa-3-4-crnbp-
+# torus-jupiter-2026 row's own V1 evidence, validate.py's _LEVEL_EVIDENCE)
+# hit the global 600s pytest-timeout cap in CI (run 30360261381) despite
+# measuring only 12-124s LOCALLY -- a CI runner that is both slower per-core
+# (documented BLAS/DOP853 platform gap) and contended (2-core runner, -n
+# auto xdist) for these SVD-heavy least_squares(tr_solver="exact") solves.
+# Per-test @pytest.mark.timeout(1800) overrides raise each test's own budget
+# (established pattern: tests/search/test_png_lane_recovery.py's
+# @pytest.mark.timeout(1200)) with real margin over the worst local
+# measurement (124s, ~14.5x) rather than touching the pinned solver settings
+# these tests exist to regression-guard.
+@pytest.mark.timeout(1800)
 def test_mu_io_zero_residual_function_bit_identical_to_ccr4bp(
     ccr4bp_system: ccr4bp.CCR4BPSystem,
     crnbp_target: crnbp.CRNBPSystem,
@@ -370,6 +382,7 @@ def test_mu_io_zero_seed_reproduces_ccr4bp_residual(
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.timeout(1800)  # #763: see the file-level note above
 def test_n1_1_cannot_represent_ios_second_harmonic_forcing(
     ccr4bp_system: ccr4bp.CCR4BPSystem,
     crnbp_target: crnbp.CRNBPSystem,
@@ -444,6 +457,7 @@ def test_n1_1_cannot_represent_ios_second_harmonic_forcing(
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.timeout(1800)  # #763: see the file-level note above
 def test_continuation_reaches_physical_mu_io_at_n1_2(
     ccr4bp_system: ccr4bp.CCR4BPSystem,
     crnbp_target: crnbp.CRNBPSystem,
@@ -515,6 +529,7 @@ def test_continuation_reaches_physical_mu_io_at_n1_2(
     assert k2_final > k2_seed
 
 
+@pytest.mark.timeout(1800)  # #763: see the file-level note above
 def test_one_shot_direct_to_physical_matches_continuation(
     ccr4bp_system: ccr4bp.CCR4BPSystem,
     crnbp_target: crnbp.CRNBPSystem,

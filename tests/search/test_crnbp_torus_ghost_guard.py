@@ -225,6 +225,20 @@ def physical_n5_torus() -> vc.CRNBPTorusVariationalResult:
     return steps[-1]
 
 
+# #763: this test and the one below hit CI's global 600s pytest-timeout cap
+# (run 30360261381) despite measuring only ~37-41s LOCALLY -- both are
+# _LEVEL_EVIDENCE V1 evidence for europa-3-4-crnbp-torus-jupiter-2026 (this
+# file is cited directly: "physical-torus positive control" / the ghost-
+# guard gate itself). The ``physical_n5_torus`` module fixture rebuilds
+# independently per xdist worker (each test can land on a different
+# worker), so BOTH tests bear the full construction cost under -n auto, not
+# just the first. A per-test @pytest.mark.timeout(1800) override (matching
+# tests/search/test_variational_crnbp_torus.py's #763 fix, established
+# precedent: tests/search/test_png_lane_recovery.py's
+# @pytest.mark.timeout(1200)) gives ~44x margin over the local measurement
+# without touching the pinned solver settings this fixture exists to
+# regression-guard.
+@pytest.mark.timeout(1800)
 def test_physical_torus_reproduces_the_catalogued_provenance_numbers(
     physical_n5_torus: vc.CRNBPTorusVariationalResult,
 ) -> None:
@@ -241,6 +255,7 @@ def test_physical_torus_reproduces_the_catalogued_provenance_numbers(
     assert physical_n5_torus.rotation_number == pytest.approx(0.4964682691957192, rel=1e-5)
 
 
+@pytest.mark.timeout(1800)  # #763: see the note above
 def test_radau_ghost_guard_passes_the_physical_n5_torus_with_a_comfortable_margin(
     physical_n5_torus: vc.CRNBPTorusVariationalResult,
 ) -> None:
