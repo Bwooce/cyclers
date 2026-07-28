@@ -34,7 +34,7 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#759` — registered 2026-07-28, ready to dispatch (not yet fired): build the Table-3 heteroclinic
+- `#759` — DISPATCHED 2026-07-28 (user: "dispatch 759"): build the Table-3 heteroclinic
   connection `Wu(3:4-LO) ∩ Ws(5:6-LO)`, now unblocked — both required families confirmed by
   reviewer ruling (`#755`, `#758`). Gate on Anderson-Lo 2011's own Table-3 state
   (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`), reusing the same
