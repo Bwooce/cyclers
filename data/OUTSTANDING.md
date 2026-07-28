@@ -34,6 +34,37 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#762` — registered 2026-07-28, dispatched: cyclers.space (separate repo, `/Users/bruce/dev/
+  cyclers.space`) explainer for `quasi_periodic_torus`/`torus_homoclinic`, using
+  `europa-3-4-crnbp-torus-jupiter-2026` as the concrete example, per user request ("add this
+  explanation to the website with an example"). Confirmed this session: the site's own
+  `OrbitClass` type + `ORBIT_CLASS_LABEL`/`ORBIT_CLASS_LONG_LABEL` (`src/lib/catalogue.ts`) do NOT
+  yet include either value (only cover cycler/quasi_cycler/precursor_mga/mga_tour/resonant_po) —
+  a real gap, not just missing prose. Scope: (1) add both enum values to the `OrbitClass` type +
+  label maps, mirroring the existing pattern exactly; (2) a short explainer (mirroring the
+  existing `/about#cycler-cost` section's style) covering what a quasi-periodic invariant torus
+  is (a 2-D confined surface vs a single closed loop), why it's materially useful in a
+  cycler-like way (reservoir of nearby trajectories, low station-keeping per the row's own
+  real-ephemeris consistency evidence) despite having no alternating named-body encounter
+  sequence, and what's still missing for genuine transport-node status (a computed departure/
+  arrival connection — see `#761`); (3) sync the site's local catalogue (`npm run
+  sync:catalogue`, pulls from `raw.githubusercontent.com/Bwooce/cyclers/main/data/catalogue.yaml`
+  — note this is the PUBLISHED main branch, so this row must already be pushed to origin for the
+  sync to pick it up) so the row's own detail page renders correctly. Note per
+  `[[reference_cyclers_space_website]]`: does NOT auto-sync from this repo, work lands in the
+  separate `cyclers.space` repo, not here.
+- `#761` — registered 2026-07-28, HELD (not dispatched, pending `#759`/`#750`): investigate
+  whether `europa-3-4-crnbp-torus-jupiter-2026` (or a resonance-hop trajectory built via `#759`'s
+  own connection machinery) can be given genuine demonstrated transport utility — a computed
+  departure/arrival connection to/from the torus, the property this row explicitly lacks
+  (`orbit_class=quasi_periodic_torus` was chosen specifically because no manifold connection is
+  computed for this object, per `#735`'s own schema design note). Motivated by a user question
+  ("are quasi-periodic tori materially useful similar to a cycler? I think they would be") —
+  answered per the torus's own reservoir/low-station-keeping properties, but flagged as missing
+  the connection piece a real cycler has. Depends on: `#759` (Table-3 connection machinery landing
+  validated) and ideally `#750` (confirming whether this chain's own confirmed 3:4-LO orbit is
+  digit-for-digit the same seed orbit underlying this torus — if so, `#759`'s own machinery
+  applies directly rather than needing porting). Do not dispatch before both are resolved.
 - `#759` — DISPATCHED 2026-07-28 (user: "dispatch 759"): build the Table-3 heteroclinic
   connection `Wu(3:4-LO) ∩ Ws(5:6-LO)`, now unblocked — both required families confirmed by
   reviewer ruling (`#755`, `#758`). Gate on Anderson-Lo 2011's own Table-3 state
