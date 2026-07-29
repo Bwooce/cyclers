@@ -148,8 +148,17 @@ unchanged. See `git log` around this date for the corrected commit.
   confirmation) a connection — not specifically reproducing Anderson-Lo's own Table 3 — a
   homoclinic self-connection mirroring `#754`'s Table-2 approach (giving the torus a
   departure/return path analogous to the sibling `torus_homoclinic` Umbriel-Titania row) is the
-  more directly relevant and more tractable path, not the heteroclinic 5:6-LO route. Still HELD
-  pending `#750`.
+  more directly relevant and more tractable path, not the heteroclinic 5:6-LO route.
+  **`#750` reported 2026-07-29: NOT the same specific orbit** (Kumar 2021's own torus seed sits at
+  Jacobi constant 3.0041, ~22,000 km Europa approach, explicitly called "arbitrary" by its own
+  text; the confirmed 3:4-LO sits at C=2.9916, ~1,657 km approach — over an order of magnitude
+  apart). Whether they share the same continuous family is genuinely indeterminate; a brief
+  continuation attempt hit the same fractal branch-jump fragility documented elsewhere in this
+  chain. **`#761` is therefore DISPATCHED 2026-07-29 (user: "get a fable subagent to do the
+  investigation into 761") as its own mini-investigation, not a direct application of existing
+  machinery**: first determine whether continuation between Kumar's seed point and the confirmed
+  3:4-LO is even numerically tractable, before any connection-building is attempted. See its own
+  results note once filed.
 - `#759` — ✓ DONE 2026-07-28 (user: "dispatch 759"): built the Table-3 heteroclinic connection
   `Wu(3:4-LO) ∩ Ws(5:6-LO)` machinery (`find_heteroclinic`/`Table3GateResult`/`gate_table3` in
   `src/cyclerfinder/search/jovian_resonant_connections.py`, extending `#754`'s module; 8 new
