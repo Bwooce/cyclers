@@ -194,7 +194,27 @@ unchanged. See `git log` around this date for the corrected commit.
   eigenvalues should expect the same tractability wall, and may need the paper's own denser
   manifold-interpolation method rather than pure Newton shooting. Still HELD pending `#750`, and
   pending explicit user go-ahead given this reopens capability-building at genuine multi-task
-  scale (per-system).
+  scale (per-system). **User go-ahead given 2026-07-29 ("go on 760")**: first concrete step is
+  `#764` (below), a scoping pass to pick the target system + find a validation anchor, before any
+  actual per-system build is dispatched — mirrors how `#752` itself worked before `#753` built
+  anything.
+- `#764` — DISPATCHED 2026-07-29 (user: "go on 760"): scoping pass for `#760`'s new-system
+  discovery campaign. Determine, for each candidate system (Saturn-Titan/Enceladus,
+  Neptune-Triton, Pluto-Charon): (a) does a published resonant-orbit-family paper exist for that
+  system analogous to Anderson & Lo 2011 (i.e. a source with digit-grade Table-1-style
+  eigenvalues/Jacobi constants this project's own corrector could gate against, the exact pattern
+  that made the Jovian chain tractable to validate) — a system with NO such anchor is much
+  riskier to pursue first, mirroring the lesson that `#753`'s own search took multiple attempts
+  even WITH Anderson-Lo's own numbers to aim for; (b) can `jovian_resonant_families.py`'s existing
+  pipeline (seed generation, `correct_symmetric_fixed_jacobi`, continuation, Floquet/Barden
+  classification) be directly repurposed by just changing the mass ratio + seed geometry, or does
+  the target system's own physical configuration (e.g. Saturn-Titan-Enceladus's own mass-ratio
+  hierarchy, or Pluto-Charon's near-equal-mass binary nature) require real structural changes; (c)
+  carry forward `#759`'s own generalizable finding — any resonant family with a comparably extreme
+  eigenvalue (in the thousands+) should expect the same Newton-shooting fragility found for
+  5:6-LO, and may need the source paper's own denser manifold-interpolation method instead.
+  Recommend ONE system to start with (not all three at once) plus a concrete, spec-complete first
+  task, mirroring `#752`'s own format. Research/scoping only, no code.
 - `#751` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; dispatched same day with
   `#752`, both flagged by user question following the `#749` digest). Question: does
   Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
