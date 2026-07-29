@@ -206,24 +206,54 @@ unchanged. See `git log` around this date for the corrected commit.
   scale (per-system). **User go-ahead given 2026-07-29 ("go on 760")**: first concrete step is
   `#764` (below), a scoping pass to pick the target system + find a validation anchor, before any
   actual per-system build is dispatched — mirrors how `#752` itself worked before `#753` built
-  anything.
-- `#764` — DISPATCHED 2026-07-29 (user: "go on 760"): scoping pass for `#760`'s new-system
-  discovery campaign. Determine, for each candidate system (Saturn-Titan/Enceladus,
-  Neptune-Triton, Pluto-Charon): (a) does a published resonant-orbit-family paper exist for that
-  system analogous to Anderson & Lo 2011 (i.e. a source with digit-grade Table-1-style
-  eigenvalues/Jacobi constants this project's own corrector could gate against, the exact pattern
-  that made the Jovian chain tractable to validate) — a system with NO such anchor is much
-  riskier to pursue first, mirroring the lesson that `#753`'s own search took multiple attempts
-  even WITH Anderson-Lo's own numbers to aim for; (b) can `jovian_resonant_families.py`'s existing
-  pipeline (seed generation, `correct_symmetric_fixed_jacobi`, continuation, Floquet/Barden
-  classification) be directly repurposed by just changing the mass ratio + seed geometry, or does
-  the target system's own physical configuration (e.g. Saturn-Titan-Enceladus's own mass-ratio
-  hierarchy, or Pluto-Charon's near-equal-mass binary nature) require real structural changes; (c)
-  carry forward `#759`'s own generalizable finding — any resonant family with a comparably extreme
-  eigenvalue (in the thousands+) should expect the same Newton-shooting fragility found for
-  5:6-LO, and may need the source paper's own denser manifold-interpolation method instead.
-  Recommend ONE system to start with (not all three at once) plus a concrete, spec-complete first
-  task, mirroring `#752`'s own format. Research/scoping only, no code.
+  anything. **`#764` landed 2026-07-29 (see its own bullet below): recommendation is
+  Saturn-Titan first** (the only candidate with a digit-grade Table-1-style anchor — Vaquero
+  2013 Table 4.1: ICs + periods + unstable eigenvalues for the 3:4/6:5 resonant families and
+  L1/L2 Lyapunovs at C=3.010000, µ≈2.3658e-4, plus a published 3:4↔6:5 resonant-chain family
+  as connection-stage structural anchor); Neptune-Triton second (families published,
+  Miceli/Bosanac, but no numeric tables); Saturn-Enceladus and Pluto-Charon deferred (no
+  resonant anchor; Pluto-Charon's µ≈0.109 additionally breaks the two-body seed construction —
+  real structural work, not a parameter change). The concrete next step is registered as
+  `#765` (see its own bullet below): spec-complete per-system first task for Saturn-Titan,
+  deliberately NOT dispatched here — dispatch is the coordinating session's call.
+- `#765` — registered 2026-07-29 by `#764` (below), awaiting the coordinating session's dispatch
+  decision: "Saturn-Titan 3:4/6:5 unstable resonant families + L1/L2 Lyapunov + Vaquero
+  Table-4.1 gate" — the recommended first per-system task of the `#760` campaign, spec-complete
+  in `docs/notes/2026-07-29-764-new-system-discovery-scoping.md` §6 (acquire+register the
+  Vaquero 2013 Purdue thesis, thin `search/saturn_titan_resonant_families.py` sibling module at
+  the thesis's own µ≈2.3658e-4, seed from Table 4.1's own printed ICs, dual-criterion gate on
+  the dimensionless unstable eigenvalues {3:4: 2129.81, 6:5: 191.641} + L1/L2 Lyapunov positive
+  controls {1004.72, 892.850} at C=3.010000; connection stage explicitly out of scope, its own
+  Task-B analog later). Sonnet-tier per `[[feedback_subagent_model_tiering]]`.
+- `#764` — ✓ DONE 2026-07-29 (Fable, research/scoping only, no code; dispatched by "go on 760"):
+  scoping pass for `#760`'s new-system discovery campaign — per-system validation-anchor search
+  (corpus + catalogue + fresh literature), pipeline-repurposability assessment, and a single
+  recommendation. **Answer (full reasoning + per-system table in
+  `docs/notes/2026-07-29-764-new-system-discovery-scoping.md`): Saturn-Titan first — it is the
+  ONLY candidate with a genuine digit-grade Anderson-Lo-Table-1-style anchor.** Vaquero 2013
+  (Purdue PhD, Howell; freely downloadable, downloaded + text-verified first-hand this pass;
+  JSR companion DOI `10.2514/1.A32412`) Table 4.1 prints ICs + periods + unstable eigenvalues
+  for Saturn-Titan 3:4 (λu=2,129.81) and 6:5 (λu=191.641) resonant orbits plus L1/L2 Lyapunovs
+  (1,004.72/892.850) at C=3.010000, µ≈2.3658e-4 — and even prints the seed ICs Anderson-Lo
+  never did; it ALSO publishes (figures + a falsifiable C<3.01400 termination claim, no state
+  tables) a homoclinic 3:4 connection and a 3:4↔6:5 periodic resonant-chain family — i.e. the
+  Anderson-Lo-style resonance cycler in Saturn-Titan is published prior art (novelty ledger),
+  and the anchor eigenvalues sit in the Newton-tractable band (`#759` carry-forward: λ≈1036
+  worked, λ≈4445 broke; 2,130 is the one moderate-risk point, with the thesis's own manifold
+  parameters as the sourced densification fallback). Other candidates: Neptune-Triton
+  (Miceli/Bosanac AIAA-2024 + JAS-2026, µ=0.00020895, many resonant families via literally this
+  pipeline's own seed construction, but NO IC/eigenvalue tables — one 6-digit C_J=1.75598;
+  structural-grade gate only, second choice); Saturn-Enceladus (µ=1.9e-7; published anchors are
+  halo/DPO bifurcation structure not resonant families, close-flyby instability shell is
+  razor-thin above the surface — Hill radius ≈948 km vs 252 km radius — deprioritize);
+  Pluto-Charon (µ=0.109: NO unstable-resonant/manifold source found; Ross-RT 2026 Table I is
+  digit-grade but STABLE cyclers, already reproduced `#494`/`#505`; `two_body_resonant_seed`'s
+  µ<<1 construction genuinely breaks — needs a µ-continuation seed-strategy build with no gate
+  at the far end — do NOT attempt first). Module reads confirmed the pipeline is a THIN
+  re-instantiation for any small-µ system: every solver/scan/classification function already
+  takes a `system` argument; only the sourced constants, seeds, gate tolerances, and section
+  convention are Jupiter-Europa-specific. Concrete first task registered as `#765` (above),
+  spec-complete, NOT dispatched (coordinating session's call).
 - `#751` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; dispatched same day with
   `#752`, both flagged by user question following the `#749` digest). Question: does
   Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
