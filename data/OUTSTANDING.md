@@ -34,6 +34,62 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#767` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
+  Saturn-Titan Task-B analog — build the homoclinic connection of the confirmed 3:4 resonant
+  orbit (Vaquero 2013 Fig. 4.9), mirroring `#754`'s Jovian Table-2 approach and reusing the same
+  `ResonantNode`/`correct_connection`/homoclinic-ghost-guard machinery. No state table exists for
+  this connection (figures + prose only, per `#765`'s own note), so — same honesty framing as
+  `#766` — the gate here is necessarily self-consistency (Newton residual, ghost-guard margin,
+  independent Radau cross-check, forward/backward re-approach), not a reproduction claim.
+  `#765`'s own recommendation: 3:4 and L1 both confirmed to near-machine precision gives a strong
+  foundation, unlike the Jovian chain where Task B was held pending TWO unconfirmed families.
+- `#768` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
+  reproduce Vaquero 2013's own published periodic 3:4↔6:5 "resonant chain" family (Fig. 4.10,
+  continued in Jacobi constant in Fig. 4.11) — a periodic cycler-like trajectory alternating
+  between the 3:4 and 6:5 Saturn-Titan resonances, analogous to Anderson & Lo 2011's own
+  3:4↔5:6 Jupiter-Europa construction this whole session's chain is built on. Includes a
+  falsifiable, testable published claim: "it is suspected that this family of periodic resonant
+  chains ends for a value of Jacobi constant C < 3.01400" (Fig. 4.12) — a genuine
+  confirm-or-refute target, not just a reproduction. Depends on `#767` (needs the 3:4 homoclinic
+  connection built first) and presumably a parallel 6:5-side connection. If reproduced, this
+  object may be independently catalogue-eligible (a genuine published Saturn-Titan cycler) —
+  subject to the mandatory `literature_check.py` novelty gate before any such claim, per
+  `[[feedback_literature_novelty_check_baseline]]`.
+- `#769` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
+  attempt to close `#765`'s own honest 6:5 eigenvalue miss (2.34e-3 vs the `1e-3` gate). `#765`'s
+  own note characterizes this as a small, well-explained near-miss (eigenvalue-magnitude-scaled
+  sensitivity to the thesis's own 5-sig-fig `µ` display) — try Vaquero's own more precise internal
+  manifold parameters (if extractable from the thesis beyond Table 4.1's summary row) or a
+  `µ`-refinement pass, per `#764`'s own flagged "moderate risk" fallback. Low priority — the miss
+  is already honestly characterized and not blocking `#767`/`#768`, which only need 3:4 and 6:5's
+  own IC/period (both already tight), not 6:5's own eigenvalue specifically.
+- `#770` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched: DESIGN
+  SCOPING ONLY (mirroring `#707`/`#735`'s own "present before build" pattern) for whether/how
+  `#766`'s confirmed homoclinic self-connection at C=3.0041 should be written back into
+  `europa-3-4-crnbp-torus-jupiter-2026`'s own catalogue row. Open questions to scope, not decide
+  here: does adding a real connection change the row's own `orbit_class` classification (currently
+  `quasi_periodic_torus`, chosen specifically because no connection existed — does a self-
+  consistency-only connection, with no published state to gate against, meet the bar the sibling
+  `torus_homoclinic` class was designed around, or does it need its own additive schema field
+  instead of a reclassification)? Does the `validation_level` change? User-approval-gated per this
+  project's own schema-design convention — do not write back without it.
+- `#771` — registered 2026-07-29 (user: "register all possible tasks"), HELD (not ready): Neptune-
+  Triton as the SECOND `#760` per-system candidate, per `#764`'s own ranking — real recent
+  literature (Miceli/Bosanac AIAA-2024 + JAS-2026, µ=0.00020895, resonant families built with
+  literally this project's own two-body seed construction) but no IC/eigenvalue table (only one
+  6-digit `C_J=1.75598`) — structural-grade validation only, weaker than Saturn-Titan's own
+  digit-grade anchor. Held until the Saturn-Titan thread (`#765`/`#767`/`#768`/`#769`) settles;
+  dispatch as its own scoping pass first (mirroring `#764`), not a direct build.
+- `#772` — registered 2026-07-29 (user: "register all possible tasks"), PARKED (not planned to
+  dispatch, kept for completeness per `#764`'s own reasoning): Saturn-Enceladus and Pluto-Charon,
+  the two lowest-ranked `#760` candidates. Saturn-Enceladus has no published resonant-orbit anchor
+  at all (existing work is halo/DPO bifurcation structure) and a physically razor-thin
+  close-flyby instability shell (Hill radius ≈948 km vs a 252 km moon radius). Pluto-Charon has no
+  unstable-resonant/manifold source (Ross-RT 2026's own digit-grade Table I is STABLE cyclers,
+  already reproduced in-repo by `#494`/`#505`), and `two_body_resonant_seed`'s own `µ<<1`
+  construction genuinely breaks at Pluto-Charon's near-equal-mass `µ=0.109`. Full reasoning in
+  `docs/notes/2026-07-29-764-new-system-discovery-scoping.md`. Revisit only if a new published
+  anchor surfaces for either system.
 - `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
   energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
   saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:
