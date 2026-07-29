@@ -261,15 +261,38 @@ unchanged. See `git log` around this date for the corrected commit.
   real structural work, not a parameter change). The concrete next step is registered as
   `#765` (see its own bullet below): spec-complete per-system first task for Saturn-Titan,
   deliberately NOT dispatched here — dispatch is the coordinating session's call.
-- `#765` — DISPATCHED 2026-07-29 (user: "register everything as we go... numbers are free"),
-  registered by `#764` (below): "Saturn-Titan 3:4/6:5 unstable resonant families + L1/L2 Lyapunov + Vaquero
-  Table-4.1 gate" — the recommended first per-system task of the `#760` campaign, spec-complete
-  in `docs/notes/2026-07-29-764-new-system-discovery-scoping.md` §6 (acquire+register the
-  Vaquero 2013 Purdue thesis, thin `search/saturn_titan_resonant_families.py` sibling module at
-  the thesis's own µ≈2.3658e-4, seed from Table 4.1's own printed ICs, dual-criterion gate on
-  the dimensionless unstable eigenvalues {3:4: 2129.81, 6:5: 191.641} + L1/L2 Lyapunov positive
-  controls {1004.72, 892.850} at C=3.010000; connection stage explicitly out of scope, its own
-  Task-B analog later). Sonnet-tier per `[[feedback_subagent_model_tiering]]`.
+- `#765` — ✓ DONE 2026-07-29 (dispatched same day, "register everything as we go... numbers are
+  free"), registered by `#764` (below): "Saturn-Titan 3:4/6:5 unstable resonant families + L1/L2
+  Lyapunov + Vaquero Table-4.1 gate" — the recommended first per-system task of the `#760`
+  campaign, spec-complete in `docs/notes/2026-07-29-764-new-system-discovery-scoping.md` §6.
+  **Acquired + digested + citation-mined** the Vaquero 2013 Purdue thesis (freely downloaded,
+  md5 `fdcbf871322b87cd1dd3448059cb2596`, matches `#764`'s own scoping-note md5 exactly; filed
+  `cyclers_pdf/papers/`, `CORPUS_INDEX.md` updated, digest at
+  `docs/notes/2026-07-29-765-vaquero-2013-digest.md`; citation-mining surfaced one new backlog
+  candidate, Bevilacqua et al. 1980 Titan-Hyperion resonance paper, `#730` backlog item 95; the
+  JSR companion DOI `10.2514/1.A32412` confirmed PAYWALLED, not independently acquired, recorded
+  as a citable-venue-only pointer). Table 4.1's own printed ICs/eigenvalues re-verified directly
+  against the PDF text layer AND a rendered page-image (vision) read, not inherited unverified.
+  **Built** `src/cyclerfinder/search/saturn_titan_resonant_families.py` (thin sibling of
+  `jovian_resonant_families.py`, reusing its corrector/classification machinery directly — no
+  reimplementation) + `tests/search/test_saturn_titan_resonant_families.py` (27 tests, all
+  passing); `ruff`/`mypy` clean. Led with Table 4.1's own sourced seeds (no blind grid search
+  needed, per `#758`'s own lesson); derived Saturn-Titan `l*`/`t*` from the DE440 registry and
+  self-validated the choice (all four rows reproduce the stated C=3.010000 to ≤1.6e-5 relative).
+  **Honest gate result: 2/4 rows fully pass** (3:4: eigenvalue rel_err 1.07e-6, period rel_err
+  1.7e-4; L1 Lyapunov: eigenvalue rel_err 4.56e-6, period rel_err 1.8e-4 — both near-machine-
+  precision reproductions on every axis). **6:5 FAILS on eigenvalue only** (rel_err 2.34e-3,
+  just outside the 1e-3 gate, despite IC/period matching to <0.02% — a real, small,
+  measured-not-assumed near-miss, see the results note's mu-sensitivity analysis). **L2
+  Lyapunov FAILS on period only** (its own printed T=79.7260 days is flagged, with evidence, as
+  a likely SOURCE TRANSCRIPTION ERROR — the same seed reproduces its eigenvalue to 2.7e-6 and
+  its IC to <0.01% at a self-consistent period of 8.603 days, not 79.7260; kept exactly as
+  printed in the sourced-constant table per sourced-only discipline, not silently "corrected").
+  No fudging, no loosened tolerances — every row reported honestly. Full results:
+  `docs/notes/2026-07-29-765-saturn-titan-resonant-families-vaquero-gate.md`. Connection stage
+  (homoclinic 3:4, published 3:4↔6:5 resonant chain) explicitly OUT OF SCOPE, registered as a
+  later Task-B-analog candidate, not dispatched here (my opinion only — 3:4/L1 both confirming
+  gives a strong foundation; a decision for the coordinating session).
 - `#764` — ✓ DONE 2026-07-29 (Fable, research/scoping only, no code; dispatched by "go on 760"):
   scoping pass for `#760`'s new-system discovery campaign — per-system validation-anchor search
   (corpus + catalogue + fresh literature), pipeline-repurposability assessment, and a single
