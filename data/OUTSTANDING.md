@@ -34,6 +34,20 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#766` — DISPATCHED 2026-07-29 (user: "register everything as we go... numbers are free"):
+  build a homoclinic self-connection at the torus's own actual seed energy, C=3.0041 (Kumar et
+  al. 2021's own value), now that `#761` confirmed this is a genuine saddle point on the same
+  continuous family as the already-confirmed 3:4-LO. Mirrors `#754`'s Table-2 approach exactly
+  (`ResonantNode`/`correct_connection`/homoclinic ghost guard, all already built and reusable) but
+  at a DIFFERENT Jacobi constant — `#754`'s own connection was computed at C=2.99163956830415,
+  not at the torus's own C=3.0041, so this is genuinely new work, not a re-run. No published
+  Table-2-style gate exists at this specific energy (Kumar 2021 doesn't report a connection state
+  the way Anderson-Lo's Table 2 did) — the honest gate here is self-consistency (Radau
+  cross-check, ghost-guard margin, forward/backward re-approach to the orbit) rather than a
+  literal digit-match to a paper. If this succeeds, it is the concrete piece that gives
+  `europa-3-4-crnbp-torus-jupiter-2026` genuine demonstrated transport utility (mirroring the
+  sibling `torus_homoclinic` Umbriel-Titania row) — but this task does NOT touch `catalogue.yaml`
+  itself; any writeback is a separate, later decision.
 - `#763` — ✓ DONE 2026-07-29: fixed **8** CI-only test timeouts (>600s, pytest-timeout) on the
   `#736`/`#738` push to `origin/main` (CI run `30360261381`, triggered by `21d8d2f`) — corrected
   from the originally-logged **7**; `gh run view 30360261381 --log-failed` confirms 8
@@ -238,8 +252,8 @@ unchanged. See `git log` around this date for the corrected commit.
   real structural work, not a parameter change). The concrete next step is registered as
   `#765` (see its own bullet below): spec-complete per-system first task for Saturn-Titan,
   deliberately NOT dispatched here — dispatch is the coordinating session's call.
-- `#765` — registered 2026-07-29 by `#764` (below), awaiting the coordinating session's dispatch
-  decision: "Saturn-Titan 3:4/6:5 unstable resonant families + L1/L2 Lyapunov + Vaquero
+- `#765` — DISPATCHED 2026-07-29 (user: "register everything as we go... numbers are free"),
+  registered by `#764` (below): "Saturn-Titan 3:4/6:5 unstable resonant families + L1/L2 Lyapunov + Vaquero
   Table-4.1 gate" — the recommended first per-system task of the `#760` campaign, spec-complete
   in `docs/notes/2026-07-29-764-new-system-discovery-scoping.md` §6 (acquire+register the
   Vaquero 2013 Purdue thesis, thin `search/saturn_titan_resonant_families.py` sibling module at
