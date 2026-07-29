@@ -12,6 +12,7 @@ for the full search history.
 
 from __future__ import annotations
 
+import itertools
 import math
 
 import pytest
@@ -673,3 +674,60 @@ def test_survey_candidates_bracket_scan_misses_758_root_at_coarse_resolution(
         label_prefix="758_scan_test_",
     )
     assert len(found) == 0
+
+
+# ---------------------------------------------------------------------------
+# (13) #761: the confirmed 3:4-LO and Kumar et al. 2021's own "arbitrarily
+# chosen" 3:4 seed (C=3.0041) are the SAME continuous family -- established
+# by a clean, fold-free, gauntlet-validated continuation between the two
+# paper-anchored endpoints, corroborated by Kumar 2021's own published
+# closest-approach number. See the module docstring's #761 update and
+# docs/notes/2026-07-29-761-torus-seed-continuation-tractability.md.
+# ---------------------------------------------------------------------------
+
+
+def test_761_kumar_constants_match_paper_p8() -> None:
+    """Kumar et al. 2021 (AAS 21-651) p.8, verbatim: Jacobi constant 3.0041
+    ("arbitrarily chosen") and a 22052 km Europa closest approach at mu3=0."""
+    assert jrf.KUMAR_2021_C == 3.0041
+    assert jrf.KUMAR_2021_CLOSEST_APPROACH_KM == 22052.0
+
+
+def test_761_continuation_connects_3_4_lo_to_kumar_2021_seed(system: object) -> None:
+    """The #761 finding as a standing regression: the confirmed 3:4-LO
+    continues smoothly (no fold, no branch/topology jump, every member
+    through the full continue_family gauntlet) from C_flyby up to Kumar
+    2021's own C=3.0041, and the endpoint member reproduces the paper's own
+    published 22,052 km Europa closest approach (the mu3=0 PCRTBP value,
+    exactly this model) to <0.2% relative -- independent, published-number
+    evidence that the two papers' points lie on one continuous family."""
+    branch, endpoint = jrf.continue_34lo_to_kumar_c(system)  # type: ignore[arg-type]
+
+    # The walk reached the Jacobi bound (not a fold/no-converge/jump stop),
+    # with a genuinely resolved path, monotone in x0 (smooth family, no
+    # back-tracking or basin hopping along the way).
+    assert len(branch.members) >= 20
+    x0s = [m.x0 for m in branch.members]
+    assert all(b > a for a, b in itertools.pairwise(x0s))
+
+    # Endpoint: a tightly-converged, genuinely saddle-unstable member at
+    # exactly Kumar's stated Jacobi constant (values recorded #761;
+    # |lambda|~54.59 -- far weaker than 3:4-LO's own 1036 at C_flyby, the
+    # smooth |lambda| decay along the branch is part of the finding).
+    assert endpoint.jacobi == pytest.approx(jrf.KUMAR_2021_C, abs=1e-9)
+    assert endpoint.crossing_residual < 1e-10
+    assert endpoint.is_real_unstable
+    assert endpoint.max_eigenvalue == pytest.approx(54.5898, rel=1e-3)
+    assert endpoint.x0 == pytest.approx(-1.3852484456, abs=1e-8)
+
+    # Sourced golden corroboration (Kumar 2021 p.8's own number; expected
+    # side is published, never our own computation -- reproduced #761 at
+    # 22,035.8 km, 0.073% relative).
+    import cyclerfinder.core.cr3bp as cr3bp
+
+    assert isinstance(system, cr3bp.CR3BPSystem)
+    ca_km = (
+        jrf.europa_closest_approach(system, endpoint.x0, endpoint.ydot0, endpoint.period)
+        * system.l_km
+    )
+    assert ca_km == pytest.approx(jrf.KUMAR_2021_CLOSEST_APPROACH_KM, rel=2e-3)

@@ -205,6 +205,38 @@ notes). See
 for the full search log, basin-robustness data, and reviewer-facing
 evidence summary.
 
+#761 UPDATE (2026-07-29): resolved the "same continuous family?" question
+#750 left genuinely indeterminate between Kumar, Anderson, de la Llave &
+Gunter 2021's (AAS 21-651) own "arbitrarily chosen" Jupiter-Europa 3:4
+exterior resonant seed (Jacobi constant 3.0041, ~22,052 km Europa closest
+approach, no IC table published) and this module's confirmed 3:4-LO
+(:data:`ANDERSON_LO_C_FLYBY`, ~1,641 km approach). ANSWER: SAME CONTINUOUS
+FAMILY. :func:`continue_34lo_to_kumar_c` walks the confirmed 3:4-LO seed
+from ``C_flyby`` up to :data:`KUMAR_2021_C` through the full
+:func:`~cyclerfinder.search.cr3bp_continuation.continue_family` gauntlet
+(24 steps at ``d_jacobi=5e-4``, every member passing closure / period
+bounds / equilibrium / Jacobi-conservation / independent-Radau / fold and
+topology-jump detection; ``x0``, period and |lambda| all vary smoothly,
+|lambda| 1036 -> 55 with NO fold and NO branch jump), then converges the
+member at exactly ``C=3.0041``. That endpoint's Europa closest approach is
+22,035.8 km -- matching Kumar 2021's OWN published 22,052 km (p.8, the
+``mu3=0`` PCRTBP value, i.e. exactly this model) to 0.073% relative: an
+independent, published-number corroboration that the continued member IS
+the paper's own seed orbit, not merely some same-energy orbit. The reverse
+walk (3.0041 -> C_flyby, ``d_jacobi=1e-4``) re-lands on the confirmed
+3:4-LO ``x0`` to 2.4e-15 (machine precision) -- no hysteresis; and the
+family continues smoothly PAST 3.0041 to at least C=3.0141 (|lambda| -> 5.5),
+so Kumar's point is an interior family member, not an endpoint. HONEST
+numerical caveat (the #750/#753 "fractal branch-jump" hazard, now
+characterized rather than just feared): a COLD-started walk away from the
+``C~3.004`` end at ``d_jacobi >= 2.5e-4`` jumps basins on its very FIRST
+step (the zeroth-order predictor lands the corrector on a different root,
+``x0~-1.58``, ``T~18.85`` -- caught by ``continue_family``'s own
+topology-jump gate, not silently accepted); ``d_jacobi=1e-4`` resolves it.
+So the previously-observed fragility is a first-step predictor/basin-width
+issue near the weakly-unstable end, NOT a break in the family. Full
+evidence: ``docs/notes/2026-07-29-761-torus-seed-continuation-tractability.md``.
+
 Pure: math/numpy/scipy + :mod:`cyclerfinder.core.cr3bp`,
 :mod:`cyclerfinder.search.cr3bp_periodic`,
 :mod:`cyclerfinder.search.cr3bp_continuation`,
@@ -300,6 +332,28 @@ TABLE2_HOMOCLINIC_YDOT = 0.46372205
 #: relative (7.7e-5 found vs 8.0e-5 stated) -- independent, paper-sourced
 #: numeric corroboration of the family identification.
 TABLE2_5_6_LO_X_OFFSET_SOURCED = 8.0e-5
+
+#: Kumar, Anderson, de la Llave & Gunter 2021 (AAS 21-651, arXiv:2109.14815)
+#: p.8, verbatim: "Starting from a periodic orbit with Jacobi constant value
+#: 3.0041 ... (arbitrarily chosen)" -- the Jacobi constant of the paper's own
+#: Jupiter-Europa 3:4 exterior resonant periodic-orbit seed (the ONLY numeric
+#: anchor the paper gives for it; no IC table exists anywhere in the paper --
+#: see the #750 provenance note). This is the seed the catalogued
+#: ``europa-3-4-crnbp-torus-jupiter-2026`` torus's own cited lineage points
+#: at. NOTE: Kumar 2021 uses the bit-identical Jupiter-Europa mass ratio as
+#: Anderson & Lo 2011 (:data:`ANDERSON_LO_MU`; #750 SS2 derived it from the
+#: paper's own Table 1 Gm values), so continuation between the two papers'
+#: points is a true same-system comparison.
+KUMAR_2021_C = 3.0041
+
+#: Kumar et al. 2021 p.8, verbatim: "the closest approach to Europa decreases
+#: from 22052 km to 18721 km" as Ganymede's mass ratio mu3 is continued from
+#: 0 to its physical value -- i.e. 22052 km is the paper's own stated Europa
+#: closest approach of its 3:4 seed orbit AT mu3=0, which is exactly the
+#: planar Jupiter-Europa CR3BP this module works in. This is the one
+#: published number available to corroborate a continuation landing on the
+#: paper's own orbit (#761: reproduced at 22,035.8 km, 0.073% relative).
+KUMAR_2021_CLOSEST_APPROACH_KM = 22052.0
 
 #: Jupiter-Europa characteristic length (Europa's own SMA about Jupiter,
 #: ``core.satellites`` registry, JPL SSD) -- used ONLY for period-in-days
@@ -1277,9 +1331,105 @@ def continue_candidate_toward_c_flyby(
     )
 
 
+def continue_34lo_to_kumar_c(
+    system: cr3bp.CR3BPSystem | None = None,
+    *,
+    d_jacobi: float = 5e-4,
+    jacobi_tol: float = 1e-8,
+) -> tuple[cc.FamilyBranch, ResonantFamilyCandidate]:
+    """Continue the CONFIRMED 3:4-LO family member from
+    :data:`ANDERSON_LO_C_FLYBY` up to Kumar et al. 2021's own seed energy
+    :data:`KUMAR_2021_C`, and converge the family member at exactly that
+    Jacobi constant (#761).
+
+    Returns ``(branch, endpoint)``: ``branch`` is the full gauntlet-validated
+    :class:`~cyclerfinder.search.cr3bp_continuation.FamilyBranch` from
+    ``C_flyby`` to the Jacobi bound just short of :data:`KUMAR_2021_C`, and
+    ``endpoint`` is the converged+classified member AT ``C=3.0041`` (secant-
+    extrapolated from the branch's last two members, then Newton-corrected).
+
+    FINDING (#761, 2026-07-29 -- see the module docstring's #761 update and
+    the results note for the full evidence): this walk succeeds cleanly --
+    Kumar 2021's "arbitrarily chosen" seed point and Anderson & Lo 2011's
+    3:4-LO are the SAME continuous family, and the endpoint's Europa closest
+    approach (:func:`europa_closest_approach`, 22,035.8 km) reproduces Kumar
+    2021's own published :data:`KUMAR_2021_CLOSEST_APPROACH_KM` (22,052 km,
+    the mu3=0 value) to 0.073% relative.
+
+    Numerical caveats (characterized #761, worth knowing before reusing):
+
+    * The FORWARD walk (this function's direction) is robust at the default
+      ``d_jacobi=5e-4`` -- 24 steps, no fold, no rejection.
+    * A COLD-started walk away from the ``C~3.004`` end (the reverse
+      direction, or extending past Kumar's point) at ``d_jacobi >= 2.5e-4``
+      jumps basins on its very first step: with no secant history the
+      zeroth-order ``x0`` predictor lands
+      :func:`~cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+      on a DIFFERENT root (``x0~-1.58``, ``T~18.85``), which
+      ``continue_family``'s topology-jump gate correctly rejects.
+      ``d_jacobi=1e-4`` resolves it (validated: the reverse walk then
+      re-lands on the confirmed 3:4-LO ``x0`` to 2.4e-15). This is the
+      #750/#753-documented "fractal" fragility in characterized form -- a
+      first-step basin-width artifact, not a family break.
+
+    Raises ``ValueError`` if the continuation does not reach the Jacobi
+    bound cleanly or the endpoint correction fails (regression signals --
+    both succeed as of #761).
+    """
+    sys_ = system if system is not None else jupiter_europa_system()
+    x0_guess, ydot0_sign, half_crossings, period_guess = _TABLE1_CANDIDATE_SEEDS["3:4-LO"]
+    seed = cp.correct_symmetric_fixed_jacobi(
+        sys_,
+        x0_guess,
+        ANDERSON_LO_C_FLYBY,
+        period_guess,
+        ydot0_sign=ydot0_sign,
+        half_crossings=half_crossings,
+    )
+    if not seed.converged:
+        raise ValueError("confirmed 3:4-LO seed failed to converge at C_flyby -- regression")
+    hc = half_crossings if half_crossings is not None else 1
+    n_steps = math.ceil((KUMAR_2021_C - ANDERSON_LO_C_FLYBY) / abs(d_jacobi)) + 2
+    branch = cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=ANDERSON_LO_C_FLYBY - 1e-6,
+        max_jacobi=KUMAR_2021_C + 1e-6,
+        half_crossings=hc,
+        ydot0_sign=ydot0_sign,
+        seed_label="3:4-LO->kumar-2021-c",
+        jacobi_tol=jacobi_tol,
+    )
+    if branch.stop_reason is not cc.StopReason.JACOBI_BOUND or len(branch.members) < 2:
+        raise ValueError(
+            f"continuation toward KUMAR_2021_C did not reach the Jacobi bound cleanly: "
+            f"stop_reason={branch.stop_reason}, members={len(branch.members)}"
+        )
+    m_prev, m_last = branch.members[-2], branch.members[-1]
+    slope = (m_last.x0 - m_prev.x0) / (m_last.jacobi - m_prev.jacobi)
+    x0_pred = m_last.x0 + slope * (KUMAR_2021_C - m_last.jacobi)
+    endpoint = converge_candidate(
+        sys_,
+        "3:4-LO@kumar-2021-c",
+        x0_pred,
+        KUMAR_2021_C,
+        m_last.period,
+        ydot0_sign=ydot0_sign,
+        half_crossings=hc,
+    )
+    if endpoint is None:
+        raise ValueError("endpoint correction at KUMAR_2021_C failed to converge -- regression")
+    return branch, endpoint
+
+
 __all__ = [
     "ANDERSON_LO_C_FLYBY",
     "ANDERSON_LO_MU",
+    "KUMAR_2021_C",
+    "KUMAR_2021_CLOSEST_APPROACH_KM",
     "TABLE1_GATE_REL_TOL",
     "TABLE1_PERIOD_REL_TOL",
     "TABLE1_TARGETS",
@@ -1292,6 +1442,7 @@ __all__ = [
     "ResonantFamilyCandidate",
     "TwoBodySeed",
     "basin_robustness_scan",
+    "continue_34lo_to_kumar_c",
     "continue_candidate_toward_c_flyby",
     "converge_candidate",
     "europa_closest_approach",

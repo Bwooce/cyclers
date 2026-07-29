@@ -124,7 +124,8 @@ unchanged. See `git log` around this date for the corrected commit.
   made (not this task's call); re-run `npm run sync:catalogue` in `cyclers.space` once this
   repo's relevant commits reach `origin/main` to pick it up — the label/explainer code is
   already in place and needs no further change.
-- `#761` — registered 2026-07-28, HELD (not dispatched, pending `#759`/`#750`): investigate
+- `#761` — ✓ DONE 2026-07-29 (registered 2026-07-28; HELD pending `#759`/`#750`, then dispatched
+  — see the dispatch/verdict trail at the end of this bullet): investigate
   whether `europa-3-4-crnbp-torus-jupiter-2026` (or a resonance-hop trajectory built via `#759`'s
   own connection machinery) can be given genuine demonstrated transport utility — a computed
   departure/arrival connection to/from the torus, the property this row explicitly lacks
@@ -157,8 +158,29 @@ unchanged. See `git log` around this date for the corrected commit.
   chain. **`#761` is therefore DISPATCHED 2026-07-29 (user: "get a fable subagent to do the
   investigation into 761") as its own mini-investigation, not a direct application of existing
   machinery**: first determine whether continuation between Kumar's seed point and the confirmed
-  3:4-LO is even numerically tractable, before any connection-building is attempted. See its own
-  results note once filed.
+  3:4-LO is even numerically tractable, before any connection-building is attempted.
+  **✓ DONE 2026-07-29 — VERDICT: SAME CONTINUOUS FAMILY.** Continuation between the two
+  paper-anchored endpoints succeeds cleanly at the papers' own shared `μ` (bit-identical per
+  `#750` §2): the confirmed 3:4-LO (`C=2.99163956830415`, `x0=-1.4304078294961569`, `|λ|=1036`)
+  walks smoothly up to Kumar's `C=3.0041` in 24 gauntlet-validated `ΔC=5e-4` steps (no fold, no
+  branch jump; `|λ|` decays smoothly 1036→55), and the member at exactly `C=3.0041`
+  (`x0=-1.3852484456241585`, real saddle `|λ|=54.59`, residual 5e-14, Radau-cross-checked)
+  reproduces Kumar 2021's OWN published 22,052 km Europa closest approach (p.8, `μ₃=0` value) at
+  22,035.8 km — **0.073% relative**, an independent published-number corroboration. Reverse walk
+  (`ΔC=1e-4`) re-lands on the confirmed 3:4-LO `x0` to 2.4e-15 (no hysteresis); family continues
+  smoothly past 3.0041 to ≥3.0141 (interior point). The `#750`/`#753` "fractal branch-jump"
+  hazard is characterized as a benign cold-start first-step basin artifact (`ΔC≥2.5e-4` from the
+  weakly-unstable end jumps roots on step 1, caught by the topology-jump gate; `ΔC=1e-4` fixes
+  it) — NOT a family break. Delivered: `continue_34lo_to_kumar_c()` + sourced `KUMAR_2021_C` /
+  `KUMAR_2021_CLOSEST_APPROACH_KM` constants in `search/jovian_resonant_families.py` + 2 standing
+  regression tests (45/45 module tests pass; full mypy 823 files clean). **Practical
+  consequence**: a homoclinic connection AT the torus seed's own energy (`C=3.0041`, now an
+  exactly-known genuine saddle) is worth attempting via `#754`'s Table-2-style machinery — but
+  must be built FRESH at that energy (`#754`'s existing connection was computed at `C_flyby`),
+  and the catalogued torus's own numerical proxy seed (`C=2.9040` at project `μ`, `#750`'s third
+  object) remains unverified on this branch — connection work should target the `C=3.0041` member
+  directly. No catalogue changes. Full evidence:
+  `docs/notes/2026-07-29-761-torus-seed-continuation-tractability.md`.
 - `#759` — ✓ DONE 2026-07-28 (user: "dispatch 759"): built the Table-3 heteroclinic connection
   `Wu(3:4-LO) ∩ Ws(5:6-LO)` machinery (`find_heteroclinic`/`Table3GateResult`/`gate_table3` in
   `src/cyclerfinder/search/jovian_resonant_connections.py`, extending `#754`'s module; 8 new
