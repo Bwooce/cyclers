@@ -1,5 +1,28 @@
 # #730 — Consolidated citation-mining acquisition backlog (master list)
 
+**Update 2026-07-29 (`#765`):** citation-mining pass over Vaquero 2013's own
+§1.1 "Previous Contributions" + reference list (the newly-acquired Saturn-Titan
+resonant-family validation anchor, see
+`docs/notes/2026-07-29-765-saturn-titan-resonant-families-vaquero-gate.md`),
+per `[[feedback_corpus_document_policy]]`. One genuinely new candidate found,
+not previously flagged anywhere in this backlog or `CORPUS_INDEX.md`:
+
+| # | Citation | DOI status | Priority | Flagged by | Why relevant |
+|---|---|---|---|---|---|
+| 95 | Bevilacqua, R., Menchi, O., Milani, A., Nobili, A.M. & Farinella, P., "Resonances and Close Approaches. I. The Titan-Hyperion Case," *The Moon and the Planets* 22(2):141–152 (1980) | **DOI `10.1007/BF00898423`** (WebSearch-confirmed) | Medium | `#765` (Vaquero 2013 thesis ref [80], p.194) | The FOUNDATIONAL planar-RTBP study of the actual 3:4 (order-1) Titan-Hyperion mean-motion resonance -- the exact physical resonance Vaquero 2013's own Ch.4 Hyperion-access application (its own real-world payoff for the 3:4/6:5 resonant-family machinery `#765` just built) exploits. Not previously in this corpus or backlog under any author. Lower urgency than a digit-grade anchor (the resonance itself, not a specific orbit/IC table) but directly on-point background for any future Hyperion-access follow-on task.
+
+Everything else cross-referenced from Vaquero 2013's own background section is
+already covered: Anderson-Lo 2011 (`#753`'s own anchor, in corpus), Davis-Howell
+2011 (in corpus, digested), Paskowitz-Scheeres 2006 x2 (already backlog items
+77-78), Vaquero-Howell 2014 Acta Astronautica (already backlog item 85 — same
+author/lineage, cross-corroborated again this pass). The JSR companion paper
+itself (Vaquero & Howell, *J. Spacecraft & Rockets* 50(5):1069-1085 (2013),
+DOI `10.2514/1.A32412`) was checked directly for free availability this pass
+(`arc.aiaa.org` returns HTTP 403; no free PDF mirror found via WebSearch/
+ResearchGate) — **confirmed paywalled, NOT independently acquired**; recorded
+in `CORPUS_INDEX.md` as a DOI-only citable-venue pointer to the already-
+acquired dissertation (same content class, per `#764`'s own scoping note).
+
 **Update 2026-07-27 (`#732`):** the user directly supplied PDFs for the top
 three items of §2's ranking — **item 1 (Blazevski & Ocampo 2012), item 4
 (Baresi, Olikara & Scheeres 2018), and item 5 (Negri & Prado 2020)**. All
