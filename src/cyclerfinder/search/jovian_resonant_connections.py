@@ -70,6 +70,32 @@ manifold excursion), calibrated much tighter than :data:`GHOST_GUARD_DELTA`
 precisely because landing close to 3:4-LO's own point is expected, not
 degenerate, for this table (see that constant's own docstring for the full
 reasoning and the specific numeric margin this task found).
+
+#766 UPDATE (2026-07-29, direct continuation of #761): `#761` proved the
+catalogued ``europa-3-4-crnbp-torus-jupiter-2026`` torus's own cited lineage
+-- Kumar, Anderson, de la Llave & Gunter 2021's "arbitrarily chosen" seed
+orbit at Jacobi constant :data:`~cyclerfinder.search.jovian_resonant_families.KUMAR_2021_C`
+(= 3.0041) -- is a genuine real saddle on the SAME continuous family as the
+confirmed 3:4-LO, via
+:func:`~cyclerfinder.search.jovian_resonant_families.continue_34lo_to_kumar_c`.
+This task builds a homoclinic SELF-connection AT that energy (NOT at
+``ANDERSON_LO_C_FLYBY``, where :func:`find_homoclinic`'s own hit was already
+found by `#754`) -- :func:`build_34lo_kumar_c_node` wraps the continuation's
+own endpoint candidate into a :class:`ResonantNode` (reusing
+``ResonantNode.from_candidate`` unchanged), and :func:`find_homoclinic` is
+extended with an optional ``target``/``rank_by_residual`` pair of keyword
+arguments so a caller scanning an energy with NO published Table-2-style
+state (this task's honest situation -- Kumar 2021 reports no homoclinic
+connection state for its own seed orbit) can rank surviving candidates by
+Newton-residual tightness instead of distance to a nonexistent published
+target. Existing callers (the Table-2/Table-3 gates above) are unaffected --
+``target=None`` (the new default) still falls back to :data:`TABLE2_STATE`
+exactly as before. See the results note
+(``docs/notes/2026-07-29-766-torus-seed-homoclinic-connection-c30041.md``)
+for the full scan log and self-consistency evidence (this task's own gate is
+necessarily a self-consistency check -- Newton residual, ghost-guard margin,
+independent Radau cross-check, forward/backward re-approach -- never a
+reproduction claim, since no published number exists to reproduce here).
 """
 
 from __future__ import annotations
@@ -86,11 +112,13 @@ import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.genome.heteroclinic_cycle import (
     HeteroclinicConnection,
     _planar_floquet_pair,
+    _seed_on_manifold,
     correct_connection,
 )
 from cyclerfinder.search.jovian_resonant_families import (
     ANDERSON_LO_C_FLYBY,
     ResonantFamilyCandidate,
+    continue_34lo_to_kumar_c,
     jupiter_europa_system,
     recover_758_table2_seeded_candidate,
     recover_table1_candidate,
@@ -362,6 +390,8 @@ def find_homoclinic(
     tol: float = 1e-7,
     scan_n: int = 12,
     max_iter: int = 40,
+    target: NDArray[np.float64] | None = None,
+    rank_by_residual: bool = False,
 ) -> list[HomoclinicCandidate]:
     """Coarse scan over ``(branch_u, branch_s, k_u, k_s)`` for Wu(node) ∩ Ws(node).
 
@@ -376,10 +406,28 @@ def find_homoclinic(
     (:func:`own_section_points` + :data:`GHOST_GUARD_DELTA`) BEFORE being kept --
     a converged "connection" landing on the orbit's own section point is rejected
     as the trivial non-connection, not reported as a hit. Returns ALL surviving
-    candidates, ranked by distance to :data:`TABLE2_STATE` (closest first).
+    candidates.
+
+    ``target``/``rank_by_residual`` (#766): the original (Anderson & Lo 2011,
+    Table 2) use of this function ranks surviving candidates by distance to a
+    PUBLISHED state (:data:`TABLE2_STATE`, the default when ``target`` is
+    ``None`` and ``rank_by_residual`` is ``False`` -- unchanged behaviour for
+    every pre-existing caller). A caller scanning a DIFFERENT node/energy with
+    no published homoclinic state to compare against (e.g. Kumar 2021's own
+    seed orbit at ``C=3.0041`` -- the paper reports no such state) should pass
+    ``rank_by_residual=True`` to rank by Newton-residual tightness instead
+    (the only honest ranking criterion when there is nothing published to
+    target); ``dist_to_table2`` is then reported as ``nan`` on every returned
+    candidate rather than a distance to an irrelevant target. Passing an
+    explicit ``target`` (a different published/derived 2-vector) ranks by
+    distance to THAT target instead of :data:`TABLE2_STATE`.
     """
     own_pts = own_section_points(system, node, ydot_sign=ydot_sign, x_sign=x_sign)
-    target = np.array([TABLE2_STATE["x"], TABLE2_STATE["xdot"]], dtype=np.float64)
+    target_arr = (
+        target
+        if target is not None
+        else np.array([TABLE2_STATE["x"], TABLE2_STATE["xdot"]], dtype=np.float64)
+    )
     out: list[HomoclinicCandidate] = []
     for branch_u, branch_s, k_u, k_s in product(branches, branches, k_range, k_range):
         conn = correct_connection(
@@ -405,11 +453,18 @@ def find_homoclinic(
         d_ghost = _ghost_distance(conn.crossing_xv, own_pts)
         if d_ghost < ghost_guard_delta:
             continue  # trivial self-shadow: orbit's own section point, not a genuine intersection
-        d_t2 = float(np.linalg.norm(conn.crossing_xv - target))
+        d_t2 = (
+            float("nan")
+            if rank_by_residual
+            else float(np.linalg.norm(conn.crossing_xv - target_arr))
+        )
         out.append(
             HomoclinicCandidate(connection=conn, ghost_distance=d_ghost, dist_to_table2=d_t2)
         )
-    out.sort(key=lambda h: h.dist_to_table2)
+    if rank_by_residual:
+        out.sort(key=lambda h: h.connection.residual)
+    else:
+        out.sort(key=lambda h: h.dist_to_table2)
     return out
 
 
@@ -504,6 +559,235 @@ def run_table2_gate(
     sys_, node = build_3_4_lo_node(system)
     candidates = find_homoclinic(sys_, node, **scan_kwargs)  # type: ignore[arg-type]
     return gate_table2(sys_, candidates)
+
+
+def build_34lo_kumar_c_node(
+    system: cr3bp.CR3BPSystem | None = None,
+) -> tuple[cr3bp.CR3BPSystem, ResonantNode, ResonantFamilyCandidate]:
+    """#766: build a node from the confirmed 3:4-LO family's member AT Kumar et al.
+    2021's own seed energy (``KUMAR_2021_C`` = 3.0041), via `#761`'s
+    :func:`~cyclerfinder.search.jovian_resonant_families.continue_34lo_to_kumar_c`.
+
+    Same pattern as :func:`build_3_4_lo_node`/:func:`build_5_6_lo_node`, but the
+    candidate comes from a continuation endpoint rather than a hardcoded seed --
+    ``continue_34lo_to_kumar_c`` re-runs its own ~8s continuation gauntlet each
+    call (closure/period/equilibrium/Jacobi/Radau/fold checks all inherited for
+    free), so this is NOT a cached/hardcoded shortcut: every call is a fresh,
+    independently-gauntlet-validated re-derivation of the C=3.0041 member.
+
+    Returns ``(system, node, endpoint_candidate)`` -- the candidate is returned
+    alongside the node since it carries diagnostic fields (e.g.
+    ``max_eigenvalue``, ``period_over_2pi``) not stored on ``ResonantNode`` itself,
+    useful for reporting (e.g.
+    :func:`~cyclerfinder.search.jovian_resonant_families.europa_closest_approach`
+    needs the raw ``(x0, ydot0, period)``).
+    """
+    sys_ = system if system is not None else jupiter_europa_system()
+    _branch, endpoint = continue_34lo_to_kumar_c(sys_)
+    node = ResonantNode.from_candidate(sys_, endpoint)
+    return sys_, node, endpoint
+
+
+# ---------------------------------------------------------------------------
+# #766: self-consistency evidence for a homoclinic candidate at an energy with
+# NO published Table-2-style state to gate against (Kumar 2021's own C=3.0041
+# seed orbit -- the paper reports no homoclinic connection state for its own
+# orbit). Unlike gate_table2/gate_table3, this is honestly NOT a reproduction
+# claim: it corroborates that a found candidate is a GENUINE homoclinic point
+# (not a numerical artifact) via an independent Radau cross-check (reusing
+# assemble_cycle/crosscheck_cycle, exactly as #754's own Table-2 gate does)
+# plus a forward/backward re-approach check specific to this module: the
+# found intersection state, propagated BACKWARD by the unstable leg's own
+# elapsed transit time, must reproduce the epsilon-scale unstable-manifold
+# seed it was found from (and symmetrically forward for the stable leg) --
+# the numerical evidence that this state genuinely lies on both manifolds,
+# not merely a close pass. #754's own results note did the same check with a
+# fixed "3 orbital periods" horizon because its k=3 crossing developed
+# quickly (strong instability, |lambda|~1036); at C=3.0041 (|lambda|~54.6,
+# ~19x weaker) the manifold takes far longer to grow away from the orbit, so
+# a fixed period count is NOT the right horizon here -- the elapsed transit
+# time is read back from the connection's own manifold-seed derivation
+# instead of guessed.
+# ---------------------------------------------------------------------------
+
+
+def _full_state_crossing(
+    system: cr3bp.CR3BPSystem,
+    seed: NDArray[np.float64],
+    *,
+    direction: str,
+    k: int,
+    max_time: float,
+    ydot_sign: int | None,
+    x_sign: int | None,
+    section_y: float = 0.0,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> tuple[float, NDArray[np.float64]] | None:
+    """Like ``heteroclinic_cycle._section_crossing`` but returns
+    ``(elapsed_time, full_6vector)`` at the k-th qualifying crossing instead of
+    just the ``(x, xdot)`` section-plane point -- needed for the #766
+    forward/backward re-approach check below, which must re-propagate the
+    FULL state for exactly the time already elapsed reaching it (not just
+    know where it crossed the section).
+    """
+    if direction not in {"stable", "unstable"}:
+        raise ValueError(f"direction must be 'stable' or 'unstable'; got {direction!r}")
+    horizon = abs(float(max_time))
+    t_span = (0.0, horizon) if direction == "unstable" else (0.0, -horizon)
+
+    def _y_event(t: float, y: NDArray[np.float64], _mu: float) -> float:
+        return float(y[1] - section_y)
+
+    _y_event.terminal = False  # type: ignore[attr-defined]
+    _y_event.direction = 0.0  # type: ignore[attr-defined]
+
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        t_span,
+        np.asarray(seed, float),
+        args=(system.mu,),  # type: ignore[call-overload]
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        events=_y_event,
+        max_step=horizon / 1000.0,
+    )
+    t_events = sol.t_events[0] if sol.t_events is not None else np.array([])
+    y_events = sol.y_events[0] if sol.y_events is not None else []
+    t_floor = 1e-6 * horizon
+    count = 0
+    for t_ev, y_ev in zip(t_events, y_events, strict=False):
+        if abs(float(t_ev)) <= t_floor:
+            continue
+        if ydot_sign is not None and int(np.sign(float(y_ev[4]))) != ydot_sign:
+            continue
+        if x_sign is not None and int(np.sign(float(y_ev[0]))) != x_sign:
+            continue
+        count += 1
+        if count == k:
+            return float(t_ev), np.asarray(y_ev, dtype=np.float64)
+    return None
+
+
+@dataclass(frozen=True)
+class HomoclinicReapproachResult:
+    """#766 forward/backward re-approach self-consistency evidence.
+
+    ``backward_distance``: distance between (the found intersection state,
+    propagated BACKWARD by the unstable leg's own elapsed transit time
+    ``t_u``) and the ORIGINAL epsilon-scale unstable-manifold seed at
+    ``tau_u`` -- should be small (genuine homoclinic behavior: retracing the
+    unstable leg backward returns to where it started, near the orbit).
+    ``forward_distance`` is the symmetric check on the stable leg (propagate
+    forward by ``|t_s|``, compare to the stable-manifold seed at ``tau_s``).
+    Both distances are expected to be small relative to the O(1) trajectory
+    scale but NOT epsilon-scale themselves: re-propagating a hyperbolic
+    trajectory over its own many-period growth accumulates roundoff amplified
+    by the same Floquet factor that grew the original epsilon perturbation,
+    so exact machine-precision reproduction is not expected (see the results
+    note for the specific numeric interpretation).
+    """
+
+    t_u: float
+    t_s: float
+    backward_distance: float
+    forward_distance: float
+
+
+def homoclinic_reapproach_check(
+    system: cr3bp.CR3BPSystem,
+    node: ResonantNode,
+    candidate: HomoclinicCandidate,
+    *,
+    epsilon: float = ANDERSON_LO_EPSILON,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    x_sign: int = SECTION_X_SIGN,
+    max_time_factor: float = 8.0,
+    rtol: float = 1e-13,
+    atol: float = 1e-14,
+) -> HomoclinicReapproachResult:
+    """#766: forward/backward re-approach evidence for a homoclinic self-connection.
+
+    Re-derives the FULL state at the found intersection (via
+    :func:`_full_state_crossing`, using the candidate's own stored
+    ``tau_u``/``tau_s``/``k_u``/``k_s``/``branch_u``/``branch_s`` -- not
+    re-guessed), then:
+
+    1. Propagates that state BACKWARD by exactly the unstable leg's own
+       elapsed transit time ``t_u`` and compares to the ORIGINAL
+       epsilon-scale unstable-manifold seed at ``tau_u`` (should be close: a
+       genuine homoclinic trajectory, run backward, retraces the same path it
+       was found on).
+    2. Propagates FORWARD by ``|t_s|`` and compares to the stable-manifold
+       seed at ``tau_s`` (the symmetric check).
+
+    Raises ``ValueError`` if either leg fails to re-reach its own crossing
+    within ``max_time_factor * node.period`` (should not happen for an
+    already-converged candidate; a regression signal if it does).
+    """
+    conn = candidate.connection
+    seed_u = _seed_on_manifold(
+        system, node, tau=conn.tau_u, direction="unstable", branch=conn.branch_u, epsilon=epsilon
+    )
+    seed_s = _seed_on_manifold(
+        system, node, tau=conn.tau_s, direction="stable", branch=conn.branch_s, epsilon=epsilon
+    )
+    max_time = max_time_factor * node.period
+    hit_u = _full_state_crossing(
+        system,
+        seed_u,
+        direction="unstable",
+        k=conn.k_u,
+        max_time=max_time,
+        ydot_sign=ydot_sign,
+        x_sign=x_sign,
+    )
+    hit_s = _full_state_crossing(
+        system,
+        seed_s,
+        direction="stable",
+        k=conn.k_s,
+        max_time=max_time,
+        ydot_sign=ydot_sign,
+        x_sign=x_sign,
+    )
+    if hit_u is None or hit_s is None:
+        raise ValueError(
+            "homoclinic_reapproach_check: a leg did not re-reach its own crossing "
+            f"within max_time_factor={max_time_factor} -- regression"
+        )
+    t_u, y_u = hit_u
+    t_s, _y_s = hit_s
+    hit_state = y_u  # matches y_s to the connection's own residual precision
+
+    sol_back = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, -t_u),
+        hit_state,
+        args=(system.mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=abs(t_u) / 5000.0,
+    )
+    d_back = float(np.linalg.norm(sol_back.y[:, -1] - seed_u))
+
+    sol_fwd = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, abs(t_s)),
+        hit_state,
+        args=(system.mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=abs(t_s) / 5000.0,
+    )
+    d_fwd = float(np.linalg.norm(sol_fwd.y[:, -1] - seed_s))
+
+    return HomoclinicReapproachResult(
+        t_u=t_u, t_s=t_s, backward_distance=d_back, forward_distance=d_fwd
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -704,15 +988,18 @@ __all__ = [
     "TABLE3_STATE",
     "HeteroclinicCandidate",
     "HomoclinicCandidate",
+    "HomoclinicReapproachResult",
     "ResonantNode",
     "Table2GateResult",
     "Table3GateResult",
     "build_3_4_lo_node",
     "build_5_6_lo_node",
+    "build_34lo_kumar_c_node",
     "find_heteroclinic",
     "find_homoclinic",
     "gate_table2",
     "gate_table3",
+    "homoclinic_reapproach_check",
     "jupiter_europa_system",
     "own_section_points",
     "run_table2_gate",

@@ -34,20 +34,29 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#766` — DISPATCHED 2026-07-29 (user: "register everything as we go... numbers are free"):
-  build a homoclinic self-connection at the torus's own actual seed energy, C=3.0041 (Kumar et
-  al. 2021's own value), now that `#761` confirmed this is a genuine saddle point on the same
-  continuous family as the already-confirmed 3:4-LO. Mirrors `#754`'s Table-2 approach exactly
-  (`ResonantNode`/`correct_connection`/homoclinic ghost guard, all already built and reusable) but
-  at a DIFFERENT Jacobi constant — `#754`'s own connection was computed at C=2.99163956830415,
-  not at the torus's own C=3.0041, so this is genuinely new work, not a re-run. No published
-  Table-2-style gate exists at this specific energy (Kumar 2021 doesn't report a connection state
-  the way Anderson-Lo's Table 2 did) — the honest gate here is self-consistency (Radau
-  cross-check, ghost-guard margin, forward/backward re-approach to the orbit) rather than a
-  literal digit-match to a paper. If this succeeds, it is the concrete piece that gives
-  `europa-3-4-crnbp-torus-jupiter-2026` genuine demonstrated transport utility (mirroring the
-  sibling `torus_homoclinic` Umbriel-Titania row) — but this task does NOT touch `catalogue.yaml`
-  itself; any writeback is a separate, later decision.
+- `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
+  energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
+  saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:
+  a genuine, non-trivial homoclinic self-intersection at `(branch_u=+1, branch_s=+1, k_u=6, k_s=6)`
+  — Newton residual `1.97e-10`, ghost-guard margin `37x` the guard threshold, independent Radau
+  cross-check agreement `2.42e-8`, forward/backward re-approach `5.6e-8`/`2.3e-5` — plus a second,
+  independent mirror-pair hit at `(k_u=5,k_s=6)`/`(6,5)` corroborating it. Notably, `#754`'s OWN
+  connection branch (`branch_u=+1,branch_s=-1,k_u=3,k_s=3`, found at C_flyby) does NOT survive
+  continuously to C=3.0041 — direct continuation of that specific solution hits an apparent
+  fold/tangency around `C≈2.99941`; the genuine C=3.0041 connection is a DIFFERENT `(branch,k)`
+  index (`k=6` vs `k=3`), consistent with the ~19x weaker instability at this energy needing more
+  crossings/elapsed time (~5.3 orbital periods vs ~2) to develop. No published Table-2-style state
+  exists at this energy to gate against (Kumar 2021 reports no connection state for its own seed
+  orbit) — per the dispatch note's own framing, this is honestly reported as a self-consistency
+  result throughout, never a reproduction claim. Code:
+  `src/cyclerfinder/search/jovian_resonant_connections.py` (`build_34lo_kumar_c_node`,
+  `find_homoclinic`'s new `target`/`rank_by_residual` params, `homoclinic_reapproach_check` +
+  `HomoclinicReapproachResult`, `_full_state_crossing`); tests:
+  `tests/search/test_jovian_resonant_connections.py` (9 new tests, 27/27 total pass, not marked
+  slow); results note:
+  `docs/notes/2026-07-29-766-torus-seed-homoclinic-connection-c30041.md`. Per the dispatch note,
+  `catalogue.yaml` was NOT touched — whether/how to write this finding back into
+  `europa-3-4-crnbp-torus-jupiter-2026` is a separate, later decision for the coordinating session.
 - `#763` — ✓ DONE 2026-07-29: fixed **8** CI-only test timeouts (>600s, pytest-timeout) on the
   `#736`/`#738` push to `origin/main` (CI run `30360261381`, triggered by `21d8d2f`) — corrected
   from the originally-logged **7**; `gh run view 30360261381 --log-failed` confirms 8

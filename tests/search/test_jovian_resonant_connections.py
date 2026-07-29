@@ -1,8 +1,10 @@
 """Tests for the #754 Jupiter-Europa 3:4-LO homoclinic connection + Anderson & Lo
 2011 Table 2 gate (docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md
 Sec. 5, docs/notes/2026-07-28-754-jupiter-europa-3-4-lo-homoclinic-table2-gate.md),
-and the #759 Table-3 heteroclinic gate (Wu(3:4-LO) intersect Ws(5:6-LO),
-docs/notes/2026-07-28-759-jupiter-europa-3-4-lo-5-6-lo-heteroclinic-table3-gate.md).
+the #759 Table-3 heteroclinic gate (Wu(3:4-LO) intersect Ws(5:6-LO),
+docs/notes/2026-07-28-759-jupiter-europa-3-4-lo-5-6-lo-heteroclinic-table3-gate.md),
+and the #766 homoclinic self-connection AT Kumar et al. 2021's own seed energy
+(C=3.0041, docs/notes/2026-07-29-766-torus-seed-homoclinic-connection-c30041.md).
 
 Sourced-golden discipline: :data:`jrc.TABLE2_STATE`/:data:`jrc.TABLE3_STATE` trace
 verbatim to Anderson & Lo 2011 Tables 2/3 (p.190-191); the gate tolerances
@@ -15,6 +17,12 @@ k_u, k_s) combination each task's own coarse scan found (documented in the resul
 notes), not a re-run of the full scan, to keep runtime bounded while still
 exercising the real ``correct_connection``/``crosscheck_cycle``/``gate_table2``/
 ``gate_table3`` code paths end-to-end.
+
+The #766 tests are NOT gated against a published state (Kumar 2021 reports no
+homoclinic connection state for its own seed orbit) -- they instead assert the
+SELF-CONSISTENCY evidence directly (Newton residual, ghost-guard margin,
+independent Radau cross-check, forward/backward re-approach), per that task's
+own honest framing.
 """
 
 from __future__ import annotations
@@ -25,6 +33,7 @@ import pytest
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.jovian_resonant_connections as jrc
 from cyclerfinder.genome.heteroclinic_cycle import (
+    HeteroclinicConnection,
     HeteroclinicCycle,
     _planar_floquet_pair,
     _section_crossing,
@@ -50,6 +59,12 @@ def node_34lo(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
 @pytest.fixture(scope="module")
 def node_56lo(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
     _sys, node = jrc.build_5_6_lo_node(system)
+    return node
+
+
+@pytest.fixture(scope="module")
+def node_kumar_c(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
+    _sys, node, _endpoint = jrc.build_34lo_kumar_c_node(system)
     return node
 
 
@@ -564,3 +579,276 @@ def test_wu_3_4_lo_alone_reproduces_table3_state_almost_exactly(
     # far inside the module's own formal Table-3 gate tolerance
     assert x_err < jrc.TABLE3_GATE_ABS_TOL
     assert xdot_err < jrc.TABLE3_GATE_ABS_TOL
+
+
+# ---------------------------------------------------------------------------
+# (6) #766: homoclinic self-connection AT Kumar et al. 2021's own seed energy
+# (C=3.0041) -- self-consistency evidence only, NO published state to gate
+# against (see docs/notes/2026-07-29-766-torus-seed-homoclinic-connection-c30041.md).
+# ---------------------------------------------------------------------------
+
+
+def test_build_34lo_kumar_c_node_matches_761_finding(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """The continued 3:4-LO member AT KUMAR_2021_C reproduces #761's own
+    recorded numbers (docs/notes/2026-07-29-761-torus-seed-continuation-tractability.md):
+    x0=-1.3852484456241585, period=25.31211964876615, |lambda|~54.5898, a
+    genuine real saddle -- NOT a re-derivation of a hardcoded seed, a fresh
+    continuation gauntlet re-run every call (see build_34lo_kumar_c_node's
+    own docstring).
+    """
+    import cyclerfinder.search.jovian_resonant_families as jrf
+
+    _sys, node, endpoint = jrc.build_34lo_kumar_c_node(system)
+    assert abs(node.jacobi - jrf.KUMAR_2021_C) < 1e-9
+    assert abs(float(node.state0[0]) - (-1.3852484456241585)) < 1e-6
+    assert abs(node.period - 25.31211964876615) < 1e-5
+    assert endpoint.is_real_unstable
+    assert abs(endpoint.max_eigenvalue - 54.589750588974) < 1e-3
+    # And node_kumar_c (the module-scoped fixture) matches, confirming
+    # reproducibility across independent calls.
+    assert abs(node.jacobi - node_kumar_c.jacobi) < 1e-12
+    assert abs(float(node.state0[0]) - float(node_kumar_c.state0[0])) < 1e-9
+
+
+def test_own_section_points_kumar_c_is_its_own_ic(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """Same structural check as the C_flyby node: the C=3.0041 member's own
+    qualifying section point is its own IC."""
+    pts = jrc.own_section_points(system, node_kumar_c)
+    assert len(pts) == 1
+    assert abs(float(pts[0][0]) - node_kumar_c.state0[0]) < 1e-9
+    assert abs(float(pts[0][1])) < 1e-9
+
+
+# The one (branch_u, branch_s, k_u, k_s) combination this task's own coarse scan
+# (branch_u, branch_s in {+1,-1}, k_u, k_s in 1..8, max_time_factor=8.0 -- needed
+# because the ~19x weaker instability at this energy, |lambda|~54.6 vs the
+# C_flyby family's own 1036, makes the manifold grow away from the orbit far
+# more slowly than #754's own scan needed) found to converge Newton-cleanly to
+# a genuine (ghost-guard-passed) homoclinic self-intersection -- see the
+# results note for the full scan log. Structurally analogous to Anderson & Lo's
+# own Table-2 self-connection (#754): xdot lands at ~0, the on-symmetry-axis
+# case (branch_u == branch_s, k_u == k_s).
+_KNOWN_HIT_766 = {"branch_u": +1, "branch_s": +1, "k_u": 6, "k_s": 6}
+_KNOWN_HIT_766_TAU = {"tau_u": 10.72913431175392, "tau_s": 14.582984371438714}
+
+# A mirror pair the same scan also found (k_u, k_s swapped, off-symmetry-axis
+# xdot != 0) -- additional independent corroboration that genuine transversal
+# homoclinic self-intersections exist at this energy (not just an isolated
+# fluke at one specific (k_u, k_s)).
+_MIRROR_HIT_766_A = {"k_u": 5, "k_s": 6, "tau_u": 6.991901899057191, "tau_s": 19.244249476652467}
+_MIRROR_HIT_766_B = {"k_u": 6, "k_s": 5, "tau_u": 6.067870972987947, "tau_s": 18.32021607044972}
+
+
+def _correct_known_hit_766(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    k_u: int,
+    k_s: int,
+    tau_u: float,
+    tau_s: float,
+) -> HeteroclinicConnection:
+    return correct_connection(
+        system,
+        node,
+        node,
+        k_u=k_u,
+        k_s=k_s,
+        epsilon=jrc.ANDERSON_LO_EPSILON,
+        branch_u=+1,
+        branch_s=+1,
+        tau_u0=tau_u,
+        tau_s0=tau_s,
+        ydot_sign_u=jrc.SECTION_YDOT_SIGN,
+        ydot_sign_s=jrc.SECTION_YDOT_SIGN,
+        x_sign_u=jrc.SECTION_X_SIGN,
+        x_sign_s=jrc.SECTION_X_SIGN,
+        max_time_factor=8.0,
+        tol=1e-9,
+        max_iter=40,
+    )
+
+
+def test_kumar_c_homoclinic_known_hit_converges_with_real_ghost_margin(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """The (branch_u=+1, branch_s=+1, k_u=6, k_s=6) combination converges to a
+    Newton residual far tighter than this chain's own demonstrated corrector
+    precision elsewhere (<=1e-9), and the crossing sits well clear of the
+    orbit's own trivial section point -- a REAL margin (>10x the
+    GHOST_GUARD_DELTA=1e-3 threshold), not a razor-thin one.
+    """
+    conn = _correct_known_hit_766(
+        system, node_kumar_c, _KNOWN_HIT_766["k_u"], _KNOWN_HIT_766["k_s"], **_KNOWN_HIT_766_TAU
+    )
+    assert conn.converged, f"expected the known-hit combo to converge; notes={conn.notes}"
+    assert conn.residual < 1e-9, f"residual={conn.residual:.3e}"
+
+    own_pts = jrc.own_section_points(system, node_kumar_c)
+    d_ghost = jrc._ghost_distance(conn.crossing_xv, own_pts)
+    assert d_ghost > jrc.GHOST_GUARD_DELTA, (
+        f"converged crossing at {conn.crossing_xv} is within the ghost-guard radius "
+        f"of the orbit's own section point(s) {own_pts} (d={d_ghost:.3e})"
+    )
+    # A REAL margin -- an order of magnitude past the guard threshold, not a
+    # borderline pass (feedback_verify_automated_ghost_guard_booleans).
+    assert d_ghost > 10 * jrc.GHOST_GUARD_DELTA, f"d_ghost={d_ghost:.3e} -- margin too thin"
+    # Structurally the same on-symmetry-axis type as #754's own Table-2 point:
+    # xdot lands at ~0.
+    assert abs(float(conn.crossing_xv[1])) < 1e-6
+
+
+def test_kumar_c_homoclinic_independent_radau_crosscheck(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """Independent Radau re-derivation of the known #766 hit (mandatory before
+    trusting the crossing, per this chain's own orbit-closure discipline).
+    """
+    conn = _correct_known_hit_766(
+        system, node_kumar_c, _KNOWN_HIT_766["k_u"], _KNOWN_HIT_766["k_s"], **_KNOWN_HIT_766_TAU
+    )
+    assert conn.converged
+
+    cycle = assemble_cycle(
+        system,
+        [node_kumar_c],
+        tol=1e-9,
+        connection_kwargs={
+            "epsilon": jrc.ANDERSON_LO_EPSILON,
+            "branch_u": _KNOWN_HIT_766["branch_u"],
+            "branch_s": _KNOWN_HIT_766["branch_s"],
+            "k_u": _KNOWN_HIT_766["k_u"],
+            "k_s": _KNOWN_HIT_766["k_s"],
+            "tau_u0": conn.tau_u,
+            "tau_s0": conn.tau_s,
+            "ydot_sign_u": jrc.SECTION_YDOT_SIGN,
+            "ydot_sign_s": jrc.SECTION_YDOT_SIGN,
+            "x_sign_u": jrc.SECTION_X_SIGN,
+            "x_sign_s": jrc.SECTION_X_SIGN,
+            "max_time_factor": 8.0,
+            "max_iter": 40,
+        },
+    )
+    assert cycle.closed
+    checked = crosscheck_cycle(
+        system, [node_kumar_c], cycle, method="Radau", rtol=1e-11, atol=1e-11, max_time_factor=8.0
+    )
+    assert checked.independent_residual < 1e-6, (
+        f"DOP853 vs Radau disagreement {checked.independent_residual:.3e} exceeds 1e-6"
+    )
+
+
+def test_kumar_c_homoclinic_forward_backward_reapproach(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """Forward/backward re-approach self-consistency (#766's own honest gate,
+    since no published state exists to reproduce here): the found intersection
+    state, propagated BACKWARD by the unstable leg's own elapsed transit time,
+    reproduces the epsilon-scale unstable-manifold seed it was found from --
+    genuine homoclinic behaviour, not a numerical artifact. Symmetric forward
+    check on the stable leg.
+    """
+    conn = _correct_known_hit_766(
+        system, node_kumar_c, _KNOWN_HIT_766["k_u"], _KNOWN_HIT_766["k_s"], **_KNOWN_HIT_766_TAU
+    )
+    assert conn.converged
+    own_pts = jrc.own_section_points(system, node_kumar_c)
+    d_ghost = jrc._ghost_distance(conn.crossing_xv, own_pts)
+    candidate = jrc.HomoclinicCandidate(
+        connection=conn, ghost_distance=d_ghost, dist_to_table2=float("nan")
+    )
+    reap = jrc.homoclinic_reapproach_check(system, node_kumar_c, candidate, max_time_factor=8.0)
+    # Both legs took ~5.3 orbital periods to develop (weak instability at this
+    # energy) -- reported plainly, not assumed to be a fixed "3 periods" the
+    # way #754's own (much more strongly unstable) case used.
+    assert reap.t_u > 5.0 * node_kumar_c.period
+    assert abs(reap.t_s) > 5.0 * node_kumar_c.period
+    assert reap.backward_distance < 1e-5, f"backward_distance={reap.backward_distance:.3e}"
+    assert reap.forward_distance < 1e-3, f"forward_distance={reap.forward_distance:.3e}"
+
+
+def test_kumar_c_homoclinic_mirror_pair_also_converges(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """A second, independent (k_u, k_s)-swapped mirror pair ((5,6) and (6,5))
+    ALSO converges to a genuine, ghost-guard-passed homoclinic point --
+    corroborating that C=3.0041 genuinely supports transversal homoclinic
+    self-intersections, not just a single isolated fluke at (6,6).
+    """
+    own_pts = jrc.own_section_points(system, node_kumar_c)
+    conns = []
+    for hit in (_MIRROR_HIT_766_A, _MIRROR_HIT_766_B):
+        conn = _correct_known_hit_766(
+            system,
+            node_kumar_c,
+            int(hit["k_u"]),
+            int(hit["k_s"]),
+            float(hit["tau_u"]),
+            float(hit["tau_s"]),
+        )
+        assert conn.converged, f"expected {hit} to converge; notes={conn.notes}"
+        assert conn.residual < 1e-8
+        d_ghost = jrc._ghost_distance(conn.crossing_xv, own_pts)
+        assert d_ghost > 10 * jrc.GHOST_GUARD_DELTA
+        conns.append(conn)
+    # The two mirror hits land at (x, +-xdot) of each other (reflection
+    # symmetry), not the same point twice.
+    conn_a, conn_b = conns
+    assert abs(float(conn_a.crossing_xv[0]) - float(conn_b.crossing_xv[0])) < 1e-6
+    assert abs(float(conn_a.crossing_xv[1]) + float(conn_b.crossing_xv[1])) < 1e-6
+
+
+def test_find_homoclinic_rank_by_residual_reports_nan_distance(
+    system: cr3bp.CR3BPSystem, node_kumar_c: jrc.ResonantNode
+) -> None:
+    """find_homoclinic's #766 extension: rank_by_residual=True (the honest
+    ranking when no published target exists at this energy) restricts the
+    scan to the known combination (for runtime) and reports dist_to_table2 as
+    nan rather than a distance to an irrelevant Table-2 target.
+    """
+    candidates = jrc.find_homoclinic(
+        system,
+        node_kumar_c,
+        branches=(_KNOWN_HIT_766["branch_u"],),
+        k_range=range(_KNOWN_HIT_766["k_u"], _KNOWN_HIT_766["k_u"] + 1),
+        max_time_factor=8.0,
+        scan_n=8,
+        max_iter=20,
+        tol=1e-7,
+        rank_by_residual=True,
+    )
+    assert len(candidates) == 1
+    cand = candidates[0]
+    assert cand.connection.converged
+    assert np.isnan(cand.dist_to_table2)
+    assert cand.ghost_distance > jrc.GHOST_GUARD_DELTA
+
+
+def test_find_homoclinic_default_target_unchanged(system: cr3bp.CR3BPSystem) -> None:
+    """The #766 target/rank_by_residual extension must not change ANY
+    pre-existing caller's behaviour: default (target=None, rank_by_residual=False)
+    still ranks by distance to TABLE2_STATE, exactly as before #766.
+    """
+    _sys, node = jrc.build_3_4_lo_node(system)
+    candidates = jrc.find_homoclinic(
+        system,
+        node,
+        branches=(+1, -1),
+        k_range=range(3, 4),
+        max_time_factor=3.0,
+        scan_n=8,
+        max_iter=20,
+        tol=1e-7,
+    )
+    assert len(candidates) == 1
+    assert not np.isnan(candidates[0].dist_to_table2)
+    expected = float(
+        np.linalg.norm(
+            candidates[0].connection.crossing_xv
+            - np.array([jrc.TABLE2_STATE["x"], jrc.TABLE2_STATE["xdot"]])
+        )
+    )
+    assert abs(candidates[0].dist_to_table2 - expected) < 1e-12
