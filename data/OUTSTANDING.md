@@ -184,9 +184,11 @@ unchanged. See `git log` around this date for the corrected commit.
   Ranking vs `#772`'s parked candidates unchanged. Nothing filed into `cyclers_pdf/` yet — filing
   + digests are Step 0 of `#776`. Full findings, verification numbers, and the spec-complete
   `#776` task in `docs/notes/2026-08-01-771-neptune-triton-scoping.md`.
-- `#776` — registered 2026-08-01 by `#771`'s own scoping pass, ready to dispatch (family
-  confirmation ONLY, mirroring `#765`'s own Task-A-only scope — connections/chains/retrograde/
-  catalogue writebacks all explicitly out of scope): build
+- `#776` — DISPATCHED 2026-08-01 (user: "sure option 1"), registered by `#771`'s own scoping pass
+  (family confirmation ONLY, mirroring `#765`'s own Task-A-only scope — connections/chains/
+  retrograde/catalogue writebacks all explicitly out of scope; the remaining ~40 dataset rows are
+  an explicit follow-up once this narrow ~10-row version proves out, per the user's own "option
+  1" choice): build
   `search/neptune_triton_resonant_families.py` as a thin sibling of
   `saturn_titan_resonant_families.py` at the SOURCE's own 16-digit `µ`, vendor ~10 sourced gate
   rows verbatim from the Miceli-Bosanac JAS-2026 supplementary data files (the three
@@ -251,30 +253,23 @@ unchanged. See `git log` around this date for the corrected commit.
   hand-copying a truncated literal was found to change outcomes at the 8th significant digit).
   `catalogue.yaml` not touched. Results note:
   `docs/notes/2026-08-01-773-resonant-chain-periodicity-closure.md`.
-- `#774` — registered 2026-07-31 (follow-up from `#768`'s own explicitly-out-of-scope Step 3),
-  BLOCKED on `#773`/`#775` (still no converged chain orbit to continue from): once a chain orbit
-  converges at Vaquero's own `C=3.010000`, run the continuation-in-Jacobi-constant campaign needed
-  to confirm or refute her own falsifiable claim ("it is suspected that this family of periodic
-  resonant chains ends for a value of Jacobi constant C < 3.01400", Fig. 4.12) — track the chain
-  family up toward `3.01400` and check whether the underlying `Wu(3:4)`/`Ws(3:4)` manifold
-  intersection near 6:5's own fixed point survives or vanishes at each step. Explicitly NOT
-  attempted by `#768` itself (too large for that task's own scope per its own dispatch note's
-  escape valve). **RECOMMENDATION (from `#775`'s own honest technical assessment, 2026-08-01 —
-  a judgment call for the coordinating session to weigh, not a decision made here): consider this
-  task closed-out/abandoned AS CURRENTLY SCOPED rather than merely "blocked."** Three independent
-  technique classes across `#773`/`#775` (single-shooting, multiple-shooting, artificial-homotopy
-  continuation from `#767`'s own already-converged homoclinic candidate) have now all failed to
-  produce the gating converged chain orbit, each failing more decisively than the last — `#775`'s
-  own homotopy attempt made literally ZERO accepted steps at any tested scale across ~10 orders of
-  magnitude, with a direct diagnostic showing this seed's own periodicity map has no numerically
-  resolvable step-size window at all. If revisited, `#775`'s own results note recommends scoping
-  it as a genuinely NEW undertaking — either Lo & Parker's own multi-patchpoint iterative
-  refinement technique (a new corrector architecture, not a further attempt with existing tools),
-  or directly investigating node's own 3:4 family's `C=3.014` topology-jump coincidence found by
-  `#775`'s own Jacobi-sensitivity survey (suggestively, but not provenly, the same value as
-  Vaquero's own claimed termination bound) — not a natural next increment of `#767`-`#775`'s own
-  work. See `docs/notes/2026-08-01-775-resonant-chain-continuation-closure.md` for the full
-  reasoning.
+- `#774` — ✗ CLOSED 2026-08-01 (user: "we can close 774?" — confirmed): the continuation-in-
+  Jacobi-constant campaign to confirm/refute Vaquero's own falsifiable termination claim
+  ("...ends for a value of Jacobi constant C < 3.01400", Fig. 4.12) never became executable —
+  three independent technique classes across `#773`/`#775` (single-shooting, multiple-shooting,
+  artificial-homotopy continuation from `#767`'s own already-converged homoclinic candidate) all
+  failed to produce the gating converged chain orbit this campaign needed as its own starting
+  point, each failing more decisively than the last (`#775`'s own homotopy attempt made literally
+  ZERO accepted steps at any tested scale across ~10 orders of magnitude — no numerically
+  resolvable step-size window exists for this seed's own periodicity map). Closed as-scoped, not
+  as "proven impossible" — `#775`'s own results note flags two candidate future directions if
+  ever revisited: Lo & Parker's own multi-patchpoint iterative-refinement corrector architecture
+  (a genuinely new technique, not a further attempt with the existing toolkit), or directly
+  investigating node's own 3:4 family's `C=3.014` topology-jump coincidence found by `#775`'s own
+  Jacobi-sensitivity survey (suggestively, not provenly, the same value as Vaquero's own claimed
+  termination bound). Neither is a natural next increment of `#767`-`#775`'s own work; both would
+  need their own fresh dispatch if picked up later. See
+  `docs/notes/2026-08-01-775-resonant-chain-continuation-closure.md` for the full reasoning.
 - `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
   energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
   saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:
