@@ -614,6 +614,22 @@ Campagnola cluster, and the Casoliva/Barrabés cluster) would be reasonable cand
 individual DOI-resolution pass if this backlog is revisited, but were judged lower-value than the
 93 items tabulated in §2-§8 given this pass's own time budget.
 
+**Added `#776`, 2026-08-01 — 2 candidates from the Miceli & Bosanac 2026 JAS-2026
+Neptune-Triton paper's own reference list** (full reference list read, pp.42-43 of the PDF;
+see `docs/notes/2026-08-01-776-miceli-bosanac-2026-neptune-triton-digest.md`): Restrepo, R.L. &
+Russell, R.P. (2018), "A database of planar axisymmetric periodic orbits for the solar system,"
+*Celest. Mech. Dyn. Astron.* 130(7):49, DOI `10.1007/s10569-018-9844-6` — a multi-system
+(not Neptune-Triton-specific) planar periodic-orbit database, methodologically adjacent to this
+project's own resonant-family work across systems; **medium priority**, not acquired this pass
+(out of `#776`'s own narrow family-confirmation scope). Marley, D.M.L. (2010), "Planetary
+Science Decadal Survey JPL Rapid Mission Architecture Neptune-Triton-KBO Study Final Report,"
+NASA JPL technical report — Neptune-Triton-specific mission-architecture background, no DOI
+(technical report); **low priority**, background/motivation only, not a resonant-orbit/
+IC-table source. Everything else topically on-point in the reference list (Vaquero 2013 [36],
+already corpus per `#765`; the AIAA-2024 precursor [62], already flagged paywalled/superseded
+by `#771`; Gillespie/Miceli/Bosanac 2025 AAS [27], already flagged not-found-open by `#771`)
+was already known to this backlog or the corpus.
+
 ---
 
 ## Methodology notes
