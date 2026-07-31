@@ -143,20 +143,47 @@ unchanged. See `git log` around this date for the corrected commit.
   construction genuinely breaks at Pluto-Charon's near-equal-mass `µ=0.109`. Full reasoning in
   `docs/notes/2026-07-29-764-new-system-discovery-scoping.md`. Revisit only if a new published
   anchor surfaces for either system.
-- `#773` — DISPATCHED 2026-08-01 (user: "continue"), follow-up from `#768`'s own honest Step 2b
-  Newton stall: close the periodicity-correction gap `#768` left open — attempting to correct
-  the near-6:5 homoclinic excursion of the 3:4 orbit (`dist_to_65=0.094`, residual `<1e-9`,
-  `#768`'s own Step 2a) into an exact NEW periodic "resonant chain" orbit (Vaquero 2013
-  Fig. 4.10) via a bounded STM-based 2-D single-shooting Newton corrector made real ~40x
-  progress (residual `0.253`→`0.0063`) but stalled before machine precision — a compounded-
-  instability conditioning problem (`~1.2e14` effective growth over the `~4.2`-period loop), not
-  a wrong-seed or wrong-method-family problem. Two candidate fixes registered, either is in
-  scope: (a) a genuinely better seed (digitize Vaquero's own Fig. 4.10(a) plotted trajectory for
-  a much closer starting `(x, xdot)`), or (b) replace single-shooting with multiple-shooting
-  (many patch points along the loop, each individually well-conditioned) — the standard fix for
-  this class of severely-unstable multi-revolution closure. See
-  `docs/notes/2026-07-31-768-saturn-titan-resonant-chain.md` (Step 2b) for the full account,
-  including the shipped `attempt_chain_closure` corrector this task should extend, not replace.
+- `#773` — ✓ DONE 2026-08-01 (honest, well-evidenced continued NEGATIVE — both registered fixes
+  tried, neither closes the chain, but a genuine, useful correction to `#768`'s own evidence was
+  found along the way): tried BOTH candidate fixes for `#768`'s own Step 2b Newton stall.
+  **Finding 0 (the header result)**: direct instrumentation found `#768`'s own reported
+  "`0.253→0.0063` genuine progress" was itself a wrong-branch artifact — the very first (damped,
+  backtracked) Newton step silently jumped the fixed `crossing_index` onto a genuine but totally
+  UNRELATED, much-shorter-period orbit family (qualifying-crossing count `16→299` in the horizon,
+  crossing time `106.5→5.8` nondim, nowhere near `t_target=110.5`); Newton was converging toward
+  THAT orbit's fixed point, not the resonant chain. **Fix (a)** (better seed — the `#768` near-6:5
+  homoclinic candidate's own crossing point, `(0.91407251, -0.09173657)`, instead of the 3:4
+  orbit's plain IC): FIRST attempt showed an apparent "convergence" to residual `8.4e-15` — caught
+  as a false positive by the SAME wrong-branch pathology (re-verified `t_cross=4.18`, `355`
+  crossings vs `13` at the seed) before being trusted, per this chain's own "it converged!" danger
+  discipline. Built a permanent fix: `ChainClosureResult` gained a `t_cross` field and
+  `attempt_chain_closure` gained a `max_t_cross_drift` branch-drift guard (default
+  `0.5*node.period`) that rejects any trial step whose crossing time drifts too far, even if its
+  residual is lower. With the guard active, this seed makes real, VERIFIED on-branch progress
+  (down to residual `~0.0012` with a loosened cap) but genuinely stalls, never converging. An
+  alpha-scan along the Newton direction found the map is sensitive at the `~1e-6` (8th
+  significant digit) scale — the real root-cause diagnosis, sharper than `#768`'s own
+  "compounded conditioning" framing. **Fix (b)** (multiple shooting): found and reused this
+  project's OWN existing `#687` general CR3BP multiple-shooting utility
+  (`cr3bp_multiple_shooting.correct_multiple_shooting`) directly, not reimplemented — confirmed
+  per-segment growth drops to a tame `~57x` (from `1.2e14` in one arc) for an 8-way split, but
+  Newton (both the shipped LM solver and a custom SVD/lstsq driver, both `n_segments=8` and `16`)
+  shows real but DECELERATING (never accelerating) progress (`1.62→~0.5` over dozens-hundreds of
+  iterations, backtracking `alpha` locking to a small fixed value) — an honest stall, not a
+  forced convergence. **Honest technique assessment**: plain Newton/shooting (single OR multiple)
+  from a cold-start seed is likely not well suited to this specific `~4.2`-period loop at this
+  instability regardless of formulation; a continuation-from-an-already-converged-solution
+  approach (per Lo & Parker's own "chains" methodology Vaquero cites) is the recommended next
+  attempt, registered as a candidate for a future task, not attempted here. `#774` remains
+  BLOCKED (still no converged chain orbit to continue from). Code: extended
+  `src/cyclerfinder/search/saturn_titan_resonant_connections.py` (`ChainClosureResult.t_cross`,
+  `attempt_chain_closure`'s `max_t_cross_drift` guard, `build_chain_multi_shooting_seed`,
+  `attempt_chain_closure_multiple_shooting`); tests:
+  `tests/search/test_saturn_titan_resonant_connections.py` (all pass, not marked slow, including
+  a new shared `near65_crossing_xv` fixture deriving the candidate seed programmatically —
+  hand-copying a truncated literal was found to change outcomes at the 8th significant digit).
+  `catalogue.yaml` not touched. Results note:
+  `docs/notes/2026-08-01-773-resonant-chain-periodicity-closure.md`.
 - `#774` — registered 2026-07-31 (follow-up from `#768`'s own explicitly-out-of-scope Step 3),
   BLOCKED on `#773`: once `#773` produces a converged periodic "resonant chain" orbit at
   Vaquero's own `C=3.010000`, run the continuation-in-Jacobi-constant campaign needed to confirm
