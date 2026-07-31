@@ -184,24 +184,42 @@ unchanged. See `git log` around this date for the corrected commit.
   Ranking vs `#772`'s parked candidates unchanged. Nothing filed into `cyclers_pdf/` yet — filing
   + digests are Step 0 of `#776`. Full findings, verification numbers, and the spec-complete
   `#776` task in `docs/notes/2026-08-01-771-neptune-triton-scoping.md`.
-- `#776` — DISPATCHED 2026-08-01 (user: "sure option 1"), registered by `#771`'s own scoping pass
-  (family confirmation ONLY, mirroring `#765`'s own Task-A-only scope — connections/chains/
-  retrograde/catalogue writebacks all explicitly out of scope; the remaining ~40 dataset rows are
-  an explicit follow-up once this narrow ~10-row version proves out, per the user's own "option
-  1" choice): build
-  `search/neptune_triton_resonant_families.py` as a thin sibling of
-  `saturn_titan_resonant_families.py` at the SOURCE's own 16-digit `µ`, vendor ~10 sourced gate
-  rows verbatim from the Miceli-Bosanac JAS-2026 supplementary data files (the three
-  scenario-defining orbits incl. the 1:7 target at `C_J=1.806962818639`, Lyapunov/DPO/LPO
-  controls, and saddle-class resonant members incl. the `|λ|≈1.5e4` 4:7 stress row), and gate on
-  (a) periodicity self-consistency, (b) our-corrector reproduction of the 12-decimal
-  IC/period/`C_J`, (c) Barden vs `_planar_floquet` cross-check (computed eigenvalues labelled
-  internally-cross-checked, never "reproduced" — no published targets), (d) `two_body_resonant_seed`
-  lineage + continuation-in-`C_J` onto at least two multi-member families, plus the dissertation
-  Table 2.1 equilibrium-point positive control. Step 0: file both papers + all four ESM data files
-  into `cyclers_pdf/papers/` + `CORPUS_INDEX.md` + digest todos, re-verifying md5s and every gate
-  number against the files directly. Full spec in
-  `docs/notes/2026-08-01-771-neptune-triton-scoping.md` §6.
+- `#776` — ✓ DONE 2026-08-01 (family confirmation ONLY, mirroring `#765`'s own Task-A-only scope
+  — connections/chains/retrograde/catalogue writebacks all explicitly out of scope, per plan;
+  honest CLEAN 10/10 sweep, unlike `#765`'s own two honest partial fails, explained by this
+  source's own already-nondimensional 12-decimal data (no unit-conversion loss like Vaquero's
+  km/s table)): built `search/neptune_triton_resonant_families.py` (thin sibling of
+  `saturn_titan_resonant_families.py`, no reimplementation) at the source's own 16-digit
+  `µ=2.089503183689124e-04`; vendored ten sourced gate rows verbatim from the raw ESM text files
+  (the 1:7 target at `C_J=1.806962818639`, 3:2-start, L2-Lyapunov-target, ESM2's L1/L2 Lyapunov
+  pair, a DPO, an LPO, the 4:5 manifold-source saddle `|λ|≈105`, the 4:7 stress row `|λ|≈1.46e4`,
+  and a 4:3 saddle) plus 6 more continuation-only rows (~16 total, still far short of the full
+  ~50-row dataset per the deliberate narrow scope). Gate: (a) periodicity self-consistency — all
+  10 pass, worst residual 9.8e-8; (b) reproduction (x0/ẏ0/period vs the printed 12-decimal
+  values) — all 10 pass, worst rel. err 5.8e-11; (c) Barden vs `_planar_floquet` — all 10 pass,
+  worst rel. err 6.5e-7, correctly labelled internally-cross-checked (no published eigenvalue
+  table exists for this system); (d) `two_body_resonant_seed(4,3)`/`(2,3)` lineage — HONEST
+  NEGATIVE, both converge cleanly but to the wrong resonance topology (a third independent
+  confirmation of Anderson&Lo's/Vaquero's own analogous findings); continuation-in-`C_J` onto two
+  multi-member families — the 2:3 family (`continue_23_family`) and the 4:3 family's own
+  genuine-saddle half (`continue_43_saddle_family`) BOTH reach `JACOBI_BOUND` cleanly and land on
+  printed members to ≤1e-4 relative, while the 4:3 family's OTHER (near-unit) half hits an honest
+  `FOLD_REVERSAL` short of its own target — a genuine family-mixing finding (two topologically
+  distinct branches share the "4:3" label at nearby C), not a bug; equilibrium-point positive
+  control (dissertation Table 2.1, L1–L5) — all 5 pass to <5e-7 relative. 47/47 new tests pass;
+  `ruff`/`ruff format`/canonical `uv run mypy src tests` (829 files) all clean. Papers filed +
+  digested + citation-mined (2 new low/medium-priority candidates registered in `#730`'s
+  backlog, neither acquired). Follow-up (registered, NOT dispatched): `#777`, vendor the
+  remaining ~34 dataset rows once this narrow version proved out, per the user's own "option 1"
+  choice. Full results in `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`;
+  digest in `docs/notes/2026-08-01-776-miceli-bosanac-2026-neptune-triton-digest.md`.
+- `#777` — registered 2026-08-01 by `#776`'s own closure (NOT dispatched, an explicit deliberate
+  follow-up per the user's own "option 1"/"prove narrow first" choice): vendor the remaining ~34
+  rows of the Miceli & Bosanac 2026 ESM dataset not already covered by `#776`'s own ~16-row
+  subset (the full dataset spans ~20 resonant labels 1:2…4:7 plus additional DPO/manifold-arc
+  primitives), extending `search/neptune_triton_resonant_families.py`'s own gate to
+  near-complete dataset coverage. See `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`'s
+  own "Registered follow-up" section.
 - `#772` — registered 2026-07-29 (user: "register all possible tasks"), PARKED (not planned to
   dispatch, kept for completeness per `#764`'s own reasoning): Saturn-Enceladus and Pluto-Charon,
   the two lowest-ranked `#760` candidates. Saturn-Enceladus has no published resonant-orbit anchor
