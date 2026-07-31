@@ -34,7 +34,7 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#767` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
+- `#767` — DISPATCHED 2026-07-31 (user: "continue"):
   Saturn-Titan Task-B analog — build the homoclinic connection of the confirmed 3:4 resonant
   orbit (Vaquero 2013 Fig. 4.9), mirroring `#754`'s Jovian Table-2 approach and reusing the same
   `ResonantNode`/`correct_connection`/homoclinic-ghost-guard machinery. No state table exists for
@@ -63,7 +63,7 @@ unchanged. See `git log` around this date for the corrected commit.
   `µ`-refinement pass, per `#764`'s own flagged "moderate risk" fallback. Low priority — the miss
   is already honestly characterized and not blocking `#767`/`#768`, which only need 3:4 and 6:5's
   own IC/period (both already tight), not 6:5's own eigenvalue specifically.
-- `#770` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched: DESIGN
+- `#770` — DISPATCHED 2026-07-31 (user: "continue"): DESIGN
   SCOPING ONLY (mirroring `#707`/`#735`'s own "present before build" pattern) for whether/how
   `#766`'s confirmed homoclinic self-connection at C=3.0041 should be written back into
   `europa-3-4-crnbp-torus-jupiter-2026`'s own catalogue row. Open questions to scope, not decide
