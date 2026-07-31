@@ -34,7 +34,22 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#767` — ✓ DONE 2026-07-31: Saturn-Titan Task-B analog — built the homoclinic self-connection
+- `#775` — DISPATCHED 2026-08-01 (user: "Continue"), registered same turn: attempt the resonant-
+  chain periodicity closure `#773` left open via CONTINUATION from an already-converged solution,
+  not cold-start Newton/shooting — `#773`'s own explicit recommendation after both registered
+  fixes (better seed, multiple-shooting) honestly stalled (the underlying Poincaré map is
+  sensitive at the ~1e-6/8th-significant-digit scale; per-segment multiple-shooting growth tamed
+  to ~57x but progress stayed decelerating, never accelerating). Concrete approach: start from a
+  member of the SAME family that's easier to close (e.g. a lower-instability/shorter-loop member,
+  or continue in a parameter — Jacobi constant, or the homoclinic excursion's own free parameter
+  — from a point closer to an already-known-converged state) and step toward the true resonant-
+  chain target incrementally, the same general strategy that worked for `#753`'s own family
+  continuation and `#761`'s own C=3.0041 continuation, rather than a blind cold start. See
+  `docs/notes/2026-08-01-773-resonant-chain-periodicity-closure.md` for the full stall account
+  and the corrector/guard machinery (`attempt_chain_closure`, the `t_cross`-drift guard,
+  `attempt_chain_closure_multiple_shooting`) to build on, not replace. A genuine continued
+  negative remains a fully acceptable outcome — `#774` (the C<3.01400 termination-claim campaign)
+  stays blocked either way until this closes or is conclusively judged intractable.
   of `#765`'s confirmed 3:4 resonant orbit (Vaquero 2013 Fig. 4.9, `C=3.010000`). **POSITIVE
   RESULT, richer than either Jovian-chain precedent**: FOUR independent, ghost-guard-passed,
   Newton-converged (`<1e-8` residual, three `<1e-9`) homoclinic self-intersections found across
@@ -126,13 +141,15 @@ unchanged. See `git log` around this date for the corrected commit.
   companion notes/data_gaps touch-ups, and options (a)/(b)/(c1)/(c2) with tradeoffs in
   `docs/notes/2026-07-31-770-torus-connection-writeback-design.md`. Implementation (if approved)
   is a small separate writeback task, exactly as `#707`→`#708` and `#735`→`#736` were handled.
-- `#771` — registered 2026-07-29 (user: "register all possible tasks"), HELD (not ready): Neptune-
-  Triton as the SECOND `#760` per-system candidate, per `#764`'s own ranking — real recent
+- `#771` — DISPATCHED 2026-08-01 (user: "Continue") as its own scoping pass, mirroring `#764`:
+  Neptune-Triton as the SECOND `#760` per-system candidate, per `#764`'s own ranking — real recent
   literature (Miceli/Bosanac AIAA-2024 + JAS-2026, µ=0.00020895, resonant families built with
   literally this project's own two-body seed construction) but no IC/eigenvalue table (only one
   6-digit `C_J=1.75598`) — structural-grade validation only, weaker than Saturn-Titan's own
-  digit-grade anchor. Held until the Saturn-Titan thread (`#765`/`#767`/`#768`/`#769`) settles;
-  dispatch as its own scoping pass first (mirroring `#764`), not a direct build.
+  digit-grade anchor. The Saturn-Titan thread's own tractable work is done (`#765`/`#767` clean
+  positive results, `#768`/`#773` honest stalls on the harder chain-closure problem, now with its
+  own continuation-based follow-up `#775` in flight) — judged settled enough to move the broader
+  campaign forward rather than wait on `#775`'s own result first.
 - `#772` — registered 2026-07-29 (user: "register all possible tasks"), PARKED (not planned to
   dispatch, kept for completeness per `#764`'s own reasoning): Saturn-Enceladus and Pluto-Charon,
   the two lowest-ranked `#760` candidates. Saturn-Enceladus has no published resonant-orbit anchor
