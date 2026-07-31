@@ -414,3 +414,125 @@ def test_gate_table2_style_empty_scan_is_honest() -> None:
 def test_epsilon_and_ghost_guard_reuse_jovian_module_values() -> None:
     assert stc.EPSILON == jrc.ANDERSON_LO_EPSILON
     assert stc.GHOST_GUARD_DELTA == jrc.GHOST_GUARD_DELTA
+
+
+# ---------------------------------------------------------------------------
+# `#768`: the periodic 3:4<->6:5 "resonant chain" (Vaquero 2013 Fig. 4.9-4.10).
+#
+# Step 1 finding (see the `#768` results note): the "chain" is a HOMOCLINIC
+# self-connection of 3:4 alone (`#767`'s own machinery), whose crossing is
+# selected near 6:5's own fixed point -- so this needs 6:5's own IC location
+# only, not its eigenvalue/manifold structure. Step 2's own further
+# periodicity-correction attempt (`attempt_chain_closure`) is an HONEST
+# PARTIAL/NEGATIVE result (see the results note) -- tests below assert the
+# exact, reproducible, bounded behaviour observed, not a forced convergence.
+# ---------------------------------------------------------------------------
+
+
+def test_resonant_chain_target_point_is_65_ic_with_honest_gate_row(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """6:5's own {y=0, ydot>0} fixed point, per #765's own recovered IC
+    (x0=0.9347726861768341) -- the gate row is included and its own
+    eigenvalue criterion is honestly FALSE (2.34e-3 miss, #765), NOT silently
+    hidden by this convenience function.
+    """
+    _sys, target, row = stc.resonant_chain_target_point(system)
+    assert row.label == "6:5"
+    assert not row.eigenvalue_confirmed
+    assert abs(row.eigenvalue_rel_err - 2.3387e-3) < 1e-4
+    assert abs(float(target[0]) - 0.9347726861768341) < 1e-8
+    assert float(target[1]) == 0.0
+
+
+def test_rank_by_proximity_to_65_finds_a_much_closer_hit_than_767s_own(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
+) -> None:
+    """A direct re-scan of the two `(-1,-1)`-branch homoclinic self-
+    connections (the `#767` results note's own MIRROR pair combination)
+    converges to a genuine hit at `dist_to_65 ~= 0.094` -- notably closer to
+    6:5's own fixed point than `#767`'s own originally-reported MIRROR pair
+    (`~0.146`, a different local root of the same (branch, k) residual
+    equation found by a different scan seed), and dramatically closer than
+    the PRIMARY/TERTIARY hits (`>2.0`) -- directly corroborating Vaquero's own
+    qualitative Fig. 4.9 description ("the intersection...is selected to be
+    near the fixed point corresponding to the 6:5 resonant orbit").
+    """
+    _sys, target65, _row = stc.resonant_chain_target_point(system)
+    own_pts = stc.own_section_points(system, node)
+    hits = []
+    for branch_u, branch_s, k_u, k_s in [(-1, -1, 4, 5), (-1, -1, 5, 4)]:
+        conn = correct_connection(
+            system,
+            node,
+            node,
+            k_u=k_u,
+            k_s=k_s,
+            epsilon=stc.EPSILON,
+            branch_u=branch_u,
+            branch_s=branch_s,
+            ydot_sign_u=stc.SECTION_YDOT_SIGN,
+            ydot_sign_s=stc.SECTION_YDOT_SIGN,
+            x_sign_u=None,
+            x_sign_s=None,
+            max_time_factor=3.0,
+            scan_n=12,
+            tol=1e-9,
+            max_iter=60,
+            fd_step=1e-7,
+        )
+        assert conn.converged
+        d_ghost = jrc._ghost_distance(conn.crossing_xv, own_pts)
+        assert d_ghost >= stc.GHOST_GUARD_DELTA
+        hits.append(stc.HomoclinicCandidate(connection=conn, ghost_distance=d_ghost))
+
+    ranked = stc.rank_by_proximity_to_65(hits, target65)
+    assert len(ranked) == 2
+    # Both are the reflection-symmetric mirror pair -- same distance.
+    assert abs(ranked[0].dist_to_65 - ranked[1].dist_to_65) < 1e-6
+    assert ranked[0].dist_to_65 < 0.10  # closer than #767's own 0.146 MIRROR pair
+    for r in ranked:
+        assert r.candidate.connection.residual < 1e-8
+
+
+def test_attempt_chain_closure_seed_residual_matches_expected(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
+) -> None:
+    """A single Newton evaluation at the seed (node's own IC, xdot=0), fixed
+    crossing index nearest `t_target ~= t_u+|t_s| = 110.4996` (the total
+    unstable+stable transit time of the near-6:5 candidate above, per the
+    `#768` results note) -- reproduces the exact seed residual/crossing-count
+    found by this task's own exploratory script, an honest, un-converged FAIL
+    (`max_iter=1` never even attempts a Newton step).
+    """
+    res = stc.attempt_chain_closure(system, node, t_target=110.4996, max_iter=1)
+    assert not res.converged
+    assert res.n_iter == 1
+    assert res.n_events_seed == 16
+    assert abs(res.residual - 0.2534297910848558) < 1e-6
+    assert "exhausted" in res.notes
+
+
+def test_attempt_chain_closure_makes_progress_but_does_not_converge(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
+) -> None:
+    """With a real (if bounded) Newton effort, the residual drops by roughly
+    two orders of magnitude (0.253 -> ~0.006) over a handful of damped,
+    backtracked iterations -- genuine, monotonic progress, not a wild
+    divergence -- but the line search stalls before reaching the `1e-9`
+    convergence tolerance: a genuine Newton stall, not a forced convergence,
+    mirroring `#759`'s own documented Table-3 stall for `Ws(5:6-LO)`'s severe
+    manifold sensitivity ("the residual plateaus...without converging").
+    """
+    res = stc.attempt_chain_closure(system, node, t_target=110.4996, max_iter=8, max_backtrack=6)
+    assert not res.converged
+    assert res.residual < 0.02  # real progress from the seed's own 0.253
+    assert res.n_iter >= 2
+
+
+def test_chain_ydot_negative_radicand_is_none(system: cr3bp.CR3BPSystem) -> None:
+    """A physically inadmissible (x, xdot) pair at Vaquero's own Jacobi
+    constant -- an honest `None`, never a fabricated/complex `ydot`.
+    """
+    ydot = stc._chain_ydot(0.0, 100.0, stf.VAQUERO_C, system.mu)
+    assert ydot is None
