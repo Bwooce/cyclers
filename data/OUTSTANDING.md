@@ -61,19 +61,40 @@ unchanged. See `git log` around this date for the corrected commit.
   marked slow); results note:
   `docs/notes/2026-07-31-767-saturn-titan-homoclinic-connection.md`. `catalogue.yaml` not
   touched. Unblocks `#768` (needed this connection built first).
-- `#768` — DISPATCHED 2026-07-31 (user: "continue"):
-  reproduce Vaquero 2013's own published periodic 3:4↔6:5 "resonant chain" family (Fig. 4.10,
-  continued in Jacobi constant in Fig. 4.11) — a periodic cycler-like trajectory alternating
-  between the 3:4 and 6:5 Saturn-Titan resonances, analogous to Anderson & Lo 2011's own
-  3:4↔5:6 Jupiter-Europa construction this whole session's chain is built on. Includes a
-  falsifiable, testable published claim: "it is suspected that this family of periodic resonant
-  chains ends for a value of Jacobi constant C < 3.01400" (Fig. 4.12) — a genuine
-  confirm-or-refute target, not just a reproduction. `#767` (needed the 3:4 homoclinic
-  connection built first) is now ✓ DONE 2026-07-31 — this task's own blocker is cleared; still
-  presumably needs a parallel 6:5-side connection too. If reproduced, this
-  object may be independently catalogue-eligible (a genuine published Saturn-Titan cycler) —
-  subject to the mandatory `literature_check.py` novelty gate before any such claim, per
-  `[[feedback_literature_novelty_check_baseline]]`.
+- `#768` — ✓ DONE 2026-07-31 (honest PARTIAL result — Step 1/2a positive, Step 2b honest stall,
+  Step 3 explicitly out of scope): re-reading Vaquero 2013 Sec. 4.3.1 pp.113-117 directly (not
+  assumed) found the "resonant chain" is NOT a heteroclinic connection between two orbits'
+  manifolds — it is a **homoclinic self-connection of the 3:4 orbit alone** (`#767`'s own
+  machinery), whose Poincare-map crossing is deliberately selected near 6:5's own fixed point
+  ("the intersection...is selected to be near the fixed point corresponding to the 6:5 resonant
+  orbit", p.115), so no `Wu(6:5)`/`Ws(6:5)` construction is needed at all. **Step 1 (6:5
+  readiness)**: judged NOT a genuinely ambiguous call for this narrower, IC-location-only use
+  (`#765`'s own eigenvalue gate FAIL is unchanged, NOT overridden) — new evidence this task: an
+  independent Radau cross-check shows 6:5's own IC is at least as tightly self-consistent as
+  3:4's own (closure `6.8e-11`/Jacobi drift `6.1e-14` vs 3:4's `4.7e-10`/`8.9e-16`), plus the
+  thesis's own text confirms 6:5's own seed was itself derived from 3:4's own Poincare map
+  (p.108-109). **Step 2a (positive)**: an independently re-scanned `(-1,-1,k=4,5)`/`(5,4)`
+  homoclinic self-connection of 3:4 lands `36%` closer to 6:5's own fixed point (`dist=0.094`)
+  than `#767`'s own originally-reported MIRROR pair (`0.146`) — residual `<1e-9`, ghost margin
+  `148x`, forward/backward re-approach `0.0053`/`1.27e-9` — the strongest available
+  self-consistency corroboration of Vaquero's own Fig. 4.9 geometry. **Step 2b (honest
+  negative)**: a new bounded STM-based 2-D Poincare-map Newton corrector
+  (`attempt_chain_closure`, built because the existing `correct_connection` machinery is not
+  suited to a genuine map-fixed-point search) made real, ~40x monotonic progress (residual
+  `0.253`→`0.0063` over 7 damped iterations) attempting to correct this excursion into an exact
+  new periodic "chain" orbit (Fig. 4.10), but stalled before machine precision — an honest
+  Newton stall (compounded instability `exp(ln(2129.8)/26.14 * 110.5) ≈ 1.2e14` over the
+  `~4.2`-period loop), the same class of limitation `#759` already documented for `Ws(5:6-LO)`.
+  **Step 3** (Vaquero's own falsifiable `C < 3.01400` termination claim, Fig. 4.12): explicitly
+  out of scope — gated on Step 2b's own unresolved closure, registered as follow-up `#773`
+  (better seed / multiple shooting to close Step 2b) and `#774` (the continuation-in-`C`
+  campaign itself). No catalogue writeback or novelty claim made — no chain orbit fully
+  converged yet, so no catalogue-eligibility question actually arises. Code: extended
+  `src/cyclerfinder/search/saturn_titan_resonant_connections.py` (`resonant_chain_target_point`,
+  `ChainProximityCandidate`/`rank_by_proximity_to_65`, `ChainClosureResult`/
+  `attempt_chain_closure` + private STM-based helpers); tests:
+  `tests/search/test_saturn_titan_resonant_connections.py` (28/28 pass, up from 23, not marked
+  slow); results note: `docs/notes/2026-07-31-768-saturn-titan-resonant-chain.md`.
 - `#769` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
   attempt to close `#765`'s own honest 6:5 eigenvalue miss (2.34e-3 vs the `1e-3` gate). `#765`'s
   own note characterizes this as a small, well-explained near-miss (eigenvalue-magnitude-scaled
@@ -122,6 +143,28 @@ unchanged. See `git log` around this date for the corrected commit.
   construction genuinely breaks at Pluto-Charon's near-equal-mass `µ=0.109`. Full reasoning in
   `docs/notes/2026-07-29-764-new-system-discovery-scoping.md`. Revisit only if a new published
   anchor surfaces for either system.
+- `#773` — registered 2026-07-31 (follow-up from `#768`'s own honest Step 2b Newton stall), not
+  yet dispatched: close the periodicity-correction gap `#768` left open — attempting to correct
+  the near-6:5 homoclinic excursion of the 3:4 orbit (`dist_to_65=0.094`, residual `<1e-9`,
+  `#768`'s own Step 2a) into an exact NEW periodic "resonant chain" orbit (Vaquero 2013
+  Fig. 4.10) via a bounded STM-based 2-D single-shooting Newton corrector made real ~40x
+  progress (residual `0.253`→`0.0063`) but stalled before machine precision — a compounded-
+  instability conditioning problem (`~1.2e14` effective growth over the `~4.2`-period loop), not
+  a wrong-seed or wrong-method-family problem. Two candidate fixes registered, either is in
+  scope: (a) a genuinely better seed (digitize Vaquero's own Fig. 4.10(a) plotted trajectory for
+  a much closer starting `(x, xdot)`), or (b) replace single-shooting with multiple-shooting
+  (many patch points along the loop, each individually well-conditioned) — the standard fix for
+  this class of severely-unstable multi-revolution closure. See
+  `docs/notes/2026-07-31-768-saturn-titan-resonant-chain.md` (Step 2b) for the full account,
+  including the shipped `attempt_chain_closure` corrector this task should extend, not replace.
+- `#774` — registered 2026-07-31 (follow-up from `#768`'s own explicitly-out-of-scope Step 3),
+  BLOCKED on `#773`: once `#773` produces a converged periodic "resonant chain" orbit at
+  Vaquero's own `C=3.010000`, run the continuation-in-Jacobi-constant campaign needed to confirm
+  or refute her own falsifiable claim ("it is suspected that this family of periodic resonant
+  chains ends for a value of Jacobi constant C < 3.01400", Fig. 4.12) — track the chain family
+  up toward `3.01400` and check whether the underlying `Wu(3:4)`/`Ws(3:4)` manifold intersection
+  near 6:5's own fixed point survives or vanishes at each step. Explicitly NOT attempted by
+  `#768` itself (too large for that task's own scope per its own dispatch note's escape valve).
 - `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
   energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
   saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:
