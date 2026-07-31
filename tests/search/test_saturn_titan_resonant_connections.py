@@ -737,3 +737,67 @@ def test_attempt_chain_closure_multiple_shooting_makes_progress_but_does_not_con
     assert res.closure_residual > 1e-6  # honestly nowhere near converged
     assert len(res.nodes) == 8
     assert abs(res.period - 110.4996) < 5.0  # segment times may float, but stay in the ballpark
+
+
+# ---------------------------------------------------------------------------
+# `#775`: genuine continuation via an artificial homotopy in the periodicity-
+# map's own residual TARGET (`#773`'s own final recommendation, tried in good
+# faith -- see the module docstring and the results note for the full
+# account). Two things to establish: (1) the machinery itself is correct
+# (a positive control: a trivially-already-periodic seed converges
+# immediately), and (2) the REAL near-6:5 seed makes genuinely ZERO progress
+# at every tested step size -- a sharper, more decisive negative than `#773`'s
+# own "decelerating crawl"/"line search exhausted" findings.
+# ---------------------------------------------------------------------------
+
+
+def test_continue_chain_closure_homotopy_positive_control_trivial_seed(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
+) -> None:
+    """Positive control confirming the homotopy machinery itself is correct
+    (not merely always failing): seeding at `node`'s own IC with
+    ``t_target = node.period`` starts with an ALREADY near-zero residual
+    (``node`` is itself exactly periodic), so the walk should sail through
+    ``s=0..1`` trivially and report genuine convergence.
+    """
+    res = stc.continue_chain_closure_homotopy(
+        system,
+        node,
+        t_target=node.period,
+        x0_seed=float(node.state0[0]),
+        xdot0_seed=0.0,
+    )
+    assert res.converged
+    assert res.stop_reason is stc.ChainHomotopyStopReason.REACHED_TARGET
+    assert res.s_reached == 1.0
+    assert len(res.steps) > 1
+    assert res.steps[0].residual_norm < 1e-8  # the seed itself is already ~periodic
+    assert res.steps[-1].residual_norm < 1e-9
+
+
+def test_continue_chain_closure_homotopy_near65_seed_makes_zero_progress(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode, near65_crossing_xv: np.ndarray
+) -> None:
+    """`#775`'s own headline finding: starting from `#767`'s own already-
+    converged near-6:5 homoclinic candidate (the SAME seed `#773`'s single-
+    and multiple-shooting attempts used), the homotopy walk cannot accept a
+    SINGLE step at ANY tested step size -- not merely an eventual stall after
+    partial progress, but zero progress from the very first attempt. The
+    results note's own more thorough run (``ds_min=1e-9``) confirms this
+    holds across nearly 10 orders of magnitude of step size; this test uses a
+    looser ``ds_min`` to keep CI runtime bounded while asserting the SAME
+    honest, qualitative, regression-guarded conclusion.
+    """
+    res = stc.continue_chain_closure_homotopy(
+        system,
+        node,
+        t_target=110.4996,
+        x0_seed=float(near65_crossing_xv[0]),
+        xdot0_seed=float(near65_crossing_xv[1]),
+        ds_min=1e-3,
+    )
+    assert not res.converged
+    assert res.stop_reason is stc.ChainHomotopyStopReason.STEP_FLOOR
+    assert res.s_reached == 0.0
+    assert len(res.steps) == 1  # only the seed -- not a single step was ever accepted
+    assert np.isfinite(res.steps[0].residual_norm)

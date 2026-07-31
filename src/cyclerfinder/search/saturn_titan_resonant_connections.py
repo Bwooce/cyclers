@@ -104,6 +104,7 @@ Jupiter-Europa-coupled), :mod:`cyclerfinder.search.saturn_titan_resonant_familie
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import StrEnum
 from itertools import product
 
 import numpy as np
@@ -910,17 +911,307 @@ def attempt_chain_closure_multiple_shooting(
     )
 
 
+# ---------------------------------------------------------------------------
+# `#775`: genuine CONTINUATION, per `#773`'s own final recommendation ("start
+# from an ALREADY-converged...nearby periodic solution...and continue in
+# whatever parameter increases the instability up to this regime, rather than
+# a single/multiple-shooting Newton attempt from a cold seed"). Two avenues
+# were tried in good faith (see the `#775` results note for the full
+# quantitative account); both are honest, well-evidenced NEGATIVES, but
+# materially SHARPER and more decisive than `#773`'s own "decelerating
+# crawl"/"line search exhausted" characterizations:
+#
+# (1) An artificial homotopy in the periodicity-map's own residual TARGET
+#     (:func:`continue_chain_closure_homotopy` below): anchor at `#767`'s own
+#     already-converged, ghost-guard-passed near-6:5 homoclinic candidate
+#     (whose periodicity-map residual is R0, nonzero -- it is a genuine
+#     Wu/Ws matching solution, not a periodicity solution), and walk a
+#     parameter `s in [0, 1]` that shrinks the REQUIRED residual from R0
+#     (trivially satisfied at `s=0`, no correction needed) down to 0 (genuine
+#     periodicity, `s=1`) via a sequence of small, warm-started Newton
+#     corrections -- reusing :func:`_chain_map_step`'s own STM-based Jacobian
+#     and the SAME `#773` t_cross branch-drift guard at every micro-step, not
+#     a single Newton attempt with a shrunken tolerance.
+#
+#     FINDING: NOT ONE step -- at ANY tested step size from `ds=0.05` down to
+#     `ds~7.5e-10` (nearly 10 orders of magnitude) -- was ever accepted. This
+#     is a sharper diagnosis than `#773`'s own "map sensitive at the 8th
+#     significant digit" finding: it is not merely that Newton eventually
+#     stalls after real progress, it is that the periodicity map has NO
+#     usable step-size window at all near this seed -- steps large enough to
+#     matter (>~1e-5) already produce residual changes ~100x-700x worse than
+#     the local linear (Jacobian) prediction (direct numeric check, `#775`
+#     results note), while steps small enough to stay inside any plausible
+#     linear regime (<~1e-7) are already swamped by this problem's own
+#     `rtol=atol=1e-13/1e-14` integration-noise floor. There is no scale at
+#     which this specific Newton-based local continuation can make progress.
+#
+# (2) A Jacobi-constant (`C`) sensitivity survey of node's OWN 3:4 family
+#     (reusing :func:`~cyclerfinder.search.cr3bp_continuation.continue_family`
+#     directly, no new code needed -- see the results note for the full
+#     table): across the ENTIRE topologically-connected range this task
+#     could reach (`C in [2.990, 3.014]`; the family folds/topology-jumps at
+#     `C=3.014` in the `+C` direction -- coincidentally the EXACT value of
+#     Vaquero's own claimed chain-family termination bound, flagged as a
+#     suggestive structural coincidence, not proven), node's own `|lambda|`
+#     only varies mildly (`2129.8` down to a shallow minimum `~1300` near
+#     `C~2.992`, then back up) -- nowhere in the reachable range is this
+#     orbit's own instability an order of magnitude gentler than at
+#     `C=3.010000`. There is no "easier nearby C" to bootstrap a
+#     less-unstable converged chain from, within this family's own connected
+#     branch.
+# ---------------------------------------------------------------------------
+
+
+class ChainHomotopyStopReason(StrEnum):
+    """Why :func:`continue_chain_closure_homotopy` stopped."""
+
+    REACHED_TARGET = "reached_target"  # s=1 AND residual < tol -- genuine closure
+    STEP_FLOOR = "step_floor"  # ds shrank below ds_min without any accepted step
+    MAP_STEP_FAILED = "map_step_failed"  # _chain_map_step returned None (bad radicand etc.)
+    SINGULAR_JACOBIAN = "singular_jacobian"
+    MAX_OUTER_STEPS = "max_outer_steps"  # bounded-effort budget exhausted (not a physical edge)
+
+
+@dataclass(frozen=True)
+class ChainHomotopyStep:
+    """One ACCEPTED step of :func:`continue_chain_closure_homotopy`'s own
+    walk (the seed itself is step 0, ``s=0.0``).
+    """
+
+    s: float
+    x0: float
+    xdot0: float
+    residual_norm: float
+    t_cross: float
+    n_events: int
+
+
+@dataclass(frozen=True)
+class ChainHomotopyResult:
+    """Result of :func:`continue_chain_closure_homotopy`. ``steps`` is the
+    full ACCEPTED sequence (always includes the seed at ``s=0.0``); a
+    genuinely-stalled walk has ``len(steps) == 1`` (no step at ANY tested
+    step size was ever accepted -- see the `#775` results note for why this
+    is exactly what happened from `#767`'s own near-6:5 candidate).
+    """
+
+    seed_x0: float
+    seed_xdot0: float
+    t_target: float
+    crossing_index: int
+    steps: tuple[ChainHomotopyStep, ...]
+    converged: bool
+    stop_reason: ChainHomotopyStopReason
+    s_reached: float
+
+
+def continue_chain_closure_homotopy(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    t_target: float,
+    x0_seed: float,
+    xdot0_seed: float,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    ds_init: float = 0.05,
+    ds_min: float = 1e-9,
+    max_outer_steps: int = 200,
+    max_inner_iter: int = 8,
+    max_backtrack: int = 8,
+    tol: float = 1e-9,
+    rtol: float = 1e-13,
+    atol: float = 1e-14,
+    max_t_cross_drift: float | None = None,
+) -> ChainHomotopyResult:
+    """`#775`: genuine continuation in an artificial homotopy parameter ``s``
+    that shrinks the periodicity-map's own REQUIRED residual from the seed's
+    own (generally nonzero) residual ``R0`` down to ``0`` (true periodicity),
+    rather than a single cold-start Newton attempt at the full target (which
+    `#773` already tried, both single- and multiple-shooting, and found an
+    honest stall for).
+
+    At ``s=0`` the seed trivially satisfies "residual == R0" (no correction
+    needed -- this is where the walk starts, warm from ``(x0_seed,
+    xdot0_seed)``, e.g. `#767`'s own already-converged near-6:5 homoclinic
+    candidate). Each outer step proposes ``s_try = s + ds``, sets
+    ``target_residual = (1 - s_try) * R0``, and runs a SMALL, bounded inner
+    Newton loop (reusing :func:`_chain_map_step`'s own STM-based Jacobian,
+    damped backtracking, and the SAME `#773` ``max_t_cross_drift`` branch-
+    guard) to re-converge onto that intermediate target from the PREVIOUS
+    step's own converged state. If the inner loop converges, the step is
+    accepted (``ds`` grows back toward ``ds_init``, capped); if not, ``ds``
+    is halved and retried. The walk stops at ``s=1`` (genuine convergence,
+    ``STOP_REASON.REACHED_TARGET``) or when ``ds`` shrinks below ``ds_min``
+    without EVER accepting a step at that scale (``STOP_REASON.STEP_FLOOR`` --
+    a genuine fold/stall, not a bug: see the `#775` results note for the
+    direct numeric evidence that this specific seed has NO usable step-size
+    window at all, from ``ds=0.05`` down past ``7.5e-10``).
+
+    ``crossing_index`` is determined ONCE from the seed (nearest
+    ``t_target``) and held fixed for the entire walk -- same single-branch
+    discipline as :func:`attempt_chain_closure`.
+
+    Raises ``ValueError`` if the seed itself has no valid Jacobi solution or
+    reaches no ``{y=0}`` crossing within the horizon.
+    """
+    horizon = t_target + 0.5 * node.period
+    drift_cap = float(max_t_cross_drift) if max_t_cross_drift is not None else 0.5 * node.period
+
+    seed = _chain_crossings(
+        system,
+        x0_seed,
+        xdot0_seed,
+        node.jacobi,
+        horizon,
+        sign=float(ydot_sign),
+        rtol=rtol,
+        atol=atol,
+    )
+    if seed is None:
+        raise ValueError("continue_chain_closure_homotopy: seed has no valid Jacobi solution")
+    seed_events, _ = seed
+    if not seed_events:
+        raise ValueError(
+            "continue_chain_closure_homotopy: seed reaches no {y=0} crossing within horizon"
+        )
+    crossing_index = int(np.argmin([abs(t - t_target) for t, _ in seed_events])) + 1
+
+    def _map(
+        x: float, xdot: float
+    ) -> tuple[NDArray[np.float64], NDArray[np.float64], float, int] | None:
+        return _chain_map_step(
+            system,
+            x,
+            xdot,
+            node.jacobi,
+            crossing_index,
+            horizon,
+            sign=float(ydot_sign),
+            rtol=rtol,
+            atol=atol,
+        )
+
+    out0 = _map(x0_seed, xdot0_seed)
+    if out0 is None:
+        return ChainHomotopyResult(
+            seed_x0=x0_seed,
+            seed_xdot0=xdot0_seed,
+            t_target=t_target,
+            crossing_index=crossing_index,
+            steps=(),
+            converged=False,
+            stop_reason=ChainHomotopyStopReason.MAP_STEP_FAILED,
+            s_reached=0.0,
+        )
+    r0, _jac0, t_cross0, n_events0 = out0
+    steps: list[ChainHomotopyStep] = [
+        ChainHomotopyStep(
+            s=0.0,
+            x0=x0_seed,
+            xdot0=xdot0_seed,
+            residual_norm=float(np.linalg.norm(r0)),
+            t_cross=t_cross0,
+            n_events=n_events0,
+        )
+    ]
+
+    x, xdot = x0_seed, xdot0_seed
+    s = 0.0
+    ds = ds_init
+    stop_reason = ChainHomotopyStopReason.MAX_OUTER_STEPS
+    n_outer = 0
+    while s < 1.0 - 1e-12 and n_outer < max_outer_steps:
+        n_outer += 1
+        s_try = min(1.0, s + ds)
+        target_res = (1.0 - s_try) * r0
+        x_try, xdot_try = x, xdot
+        inner_converged = False
+        last: tuple[NDArray[np.float64], float, int] | None = None
+        for _inner in range(max_inner_iter):
+            out = _map(x_try, xdot_try)
+            if out is None:
+                stop_reason = ChainHomotopyStopReason.MAP_STEP_FAILED
+                break
+            residual, jac, t_cross_t, n_events_t = out
+            mod_res = residual - target_res
+            mod_norm = float(np.linalg.norm(mod_res))
+            last = (residual, t_cross_t, n_events_t)
+            if mod_norm < tol:
+                inner_converged = True
+                break
+            try:
+                step = np.linalg.solve(jac, -mod_res)
+            except np.linalg.LinAlgError:
+                stop_reason = ChainHomotopyStopReason.SINGULAR_JACOBIAN
+                break
+            alpha = 1.0
+            improved = False
+            for _bt in range(max_backtrack):
+                x_cand = x_try + alpha * float(step[0])
+                xdot_cand = xdot_try + alpha * float(step[1])
+                out_c = _map(x_cand, xdot_cand)
+                if out_c is not None:
+                    residual_c, _jac_c, t_cross_c, _n_c = out_c
+                    mod_c = float(np.linalg.norm(residual_c - target_res))
+                    if mod_c < mod_norm and abs(t_cross_c - t_target) <= drift_cap:
+                        x_try, xdot_try = x_cand, xdot_cand
+                        improved = True
+                        break
+                alpha *= 0.5
+            if not improved:
+                break
+        if inner_converged and last is not None:
+            s = s_try
+            x, xdot = x_try, xdot_try
+            residual, t_cross_t, n_events_t = last
+            steps.append(
+                ChainHomotopyStep(
+                    s=s,
+                    x0=x,
+                    xdot0=xdot,
+                    residual_norm=float(np.linalg.norm(residual)),
+                    t_cross=t_cross_t,
+                    n_events=n_events_t,
+                )
+            )
+            ds = min(ds_init, ds * 1.5)
+        else:
+            ds *= 0.5
+            if ds < ds_min:
+                stop_reason = ChainHomotopyStopReason.STEP_FLOOR
+                break
+
+    converged = s >= 1.0 - 1e-12 and steps[-1].residual_norm < tol
+    if converged:
+        stop_reason = ChainHomotopyStopReason.REACHED_TARGET
+    return ChainHomotopyResult(
+        seed_x0=x0_seed,
+        seed_xdot0=xdot0_seed,
+        t_target=t_target,
+        crossing_index=crossing_index,
+        steps=tuple(steps),
+        converged=converged,
+        stop_reason=stop_reason,
+        s_reached=s,
+    )
+
+
 __all__ = [
     "EPSILON",
     "GHOST_GUARD_DELTA",
     "SECTION_YDOT_SIGN",
     "ChainClosureResult",
+    "ChainHomotopyResult",
+    "ChainHomotopyStep",
+    "ChainHomotopyStopReason",
     "ChainProximityCandidate",
     "HomoclinicCandidate",
     "attempt_chain_closure",
     "attempt_chain_closure_multiple_shooting",
     "build_34_node",
     "build_chain_multi_shooting_seed",
+    "continue_chain_closure_homotopy",
     "find_homoclinic",
     "homoclinic_reapproach_check",
     "own_section_points",
