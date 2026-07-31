@@ -61,7 +61,7 @@ unchanged. See `git log` around this date for the corrected commit.
   marked slow); results note:
   `docs/notes/2026-07-31-767-saturn-titan-homoclinic-connection.md`. `catalogue.yaml` not
   touched. Unblocks `#768` (needed this connection built first).
-- `#768` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
+- `#768` — DISPATCHED 2026-07-31 (user: "continue"):
   reproduce Vaquero 2013's own published periodic 3:4↔6:5 "resonant chain" family (Fig. 4.10,
   continued in Jacobi constant in Fig. 4.11) — a periodic cycler-like trajectory alternating
   between the 3:4 and 6:5 Saturn-Titan resonances, analogous to Anderson & Lo 2011's own
