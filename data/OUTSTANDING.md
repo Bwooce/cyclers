@@ -141,15 +141,41 @@ unchanged. See `git log` around this date for the corrected commit.
   companion notes/data_gaps touch-ups, and options (a)/(b)/(c1)/(c2) with tradeoffs in
   `docs/notes/2026-07-31-770-torus-connection-writeback-design.md`. Implementation (if approved)
   is a small separate writeback task, exactly as `#707`→`#708` and `#735`→`#736` were handled.
-- `#771` — DISPATCHED 2026-08-01 (user: "Continue") as its own scoping pass, mirroring `#764`:
-  Neptune-Triton as the SECOND `#760` per-system candidate, per `#764`'s own ranking — real recent
-  literature (Miceli/Bosanac AIAA-2024 + JAS-2026, µ=0.00020895, resonant families built with
-  literally this project's own two-body seed construction) but no IC/eigenvalue table (only one
-  6-digit `C_J=1.75598`) — structural-grade validation only, weaker than Saturn-Titan's own
-  digit-grade anchor. The Saturn-Titan thread's own tractable work is done (`#765`/`#767` clean
-  positive results, `#768`/`#773` honest stalls on the harder chain-closure problem, now with its
-  own continuation-based follow-up `#775` in flight) — judged settled enough to move the broader
-  campaign forward rather than wait on `#775`'s own result first.
+- `#771` — ✓ DONE 2026-08-01 (scoping pass, mirroring `#764`; **recommendation: GO**, first task
+  registered as `#776`): the deeper Neptune-Triton pass **OVERTURNED `#764`'s own "no IC/eigenvalue
+  table" finding** — the journal version (Miceli & Bosanac, *J. Astronaut. Sci.* 73:11, 2026, DOI
+  `10.1007/s40295-025-00545-z`, open access CC-BY 4.0) ships supplementary Online Resources 2/3/4:
+  machine-readable text files with **12-decimal nondimensional ICs, full periods, and Jacobi
+  constants for ~50 planar Neptune-Triton CR3BP periodic orbits** (~20 resonant labels 1:2…4:7,
+  prograde only, plus L1/L2 Lyapunov, DPO, LPO) under a 16-digit `µ = 2.089503183689124e-04` —
+  stronger on the IC axis than Vaquero's own Table 4.1 anchor (`#765`), weaker only in having no
+  published per-orbit eigenvalues. Verified first-hand at scoping (scratchpad only, no repo code):
+  Jacobi convention matches this repo's to `≤3.1e-12` across all three files; row ICs propagate
+  periodically to `1.4e-12`–`1.9e-9` under our own dynamics; eigenvalue survey of all 53
+  periodic-orbit rows finds a mix of near-unit members and genuine saddles (`|λ|` up to `1.5e4`,
+  4:5 manifold-source family `≈105`) — all family-stage tractable. Also acquired: Miceli's own CU
+  Boulder PhD dissertation (2025, free on the Bosanac group site — adds a third design scenario +
+  equilibrium-point positive-control table); AIAA-2024 (`10.2514/6.2024-1280`) confirmed paywalled
+  (403) and superseded by the JAS version. Catalogue re-check: still zero Neptune-Triton rows.
+  Ranking vs `#772`'s parked candidates unchanged. Nothing filed into `cyclers_pdf/` yet — filing
+  + digests are Step 0 of `#776`. Full findings, verification numbers, and the spec-complete
+  `#776` task in `docs/notes/2026-08-01-771-neptune-triton-scoping.md`.
+- `#776` — registered 2026-08-01 by `#771`'s own scoping pass, ready to dispatch (family
+  confirmation ONLY, mirroring `#765`'s own Task-A-only scope — connections/chains/retrograde/
+  catalogue writebacks all explicitly out of scope): build
+  `search/neptune_triton_resonant_families.py` as a thin sibling of
+  `saturn_titan_resonant_families.py` at the SOURCE's own 16-digit `µ`, vendor ~10 sourced gate
+  rows verbatim from the Miceli-Bosanac JAS-2026 supplementary data files (the three
+  scenario-defining orbits incl. the 1:7 target at `C_J=1.806962818639`, Lyapunov/DPO/LPO
+  controls, and saddle-class resonant members incl. the `|λ|≈1.5e4` 4:7 stress row), and gate on
+  (a) periodicity self-consistency, (b) our-corrector reproduction of the 12-decimal
+  IC/period/`C_J`, (c) Barden vs `_planar_floquet` cross-check (computed eigenvalues labelled
+  internally-cross-checked, never "reproduced" — no published targets), (d) `two_body_resonant_seed`
+  lineage + continuation-in-`C_J` onto at least two multi-member families, plus the dissertation
+  Table 2.1 equilibrium-point positive control. Step 0: file both papers + all four ESM data files
+  into `cyclers_pdf/papers/` + `CORPUS_INDEX.md` + digest todos, re-verifying md5s and every gate
+  number against the files directly. Full spec in
+  `docs/notes/2026-08-01-771-neptune-triton-scoping.md` §6.
 - `#772` — registered 2026-07-29 (user: "register all possible tasks"), PARKED (not planned to
   dispatch, kept for completeness per `#764`'s own reasoning): Saturn-Enceladus and Pluto-Charon,
   the two lowest-ranked `#760` candidates. Saturn-Enceladus has no published resonant-orbit anchor
