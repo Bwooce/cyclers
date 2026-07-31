@@ -34,15 +34,33 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#767` — DISPATCHED 2026-07-31 (user: "continue"):
-  Saturn-Titan Task-B analog — build the homoclinic connection of the confirmed 3:4 resonant
-  orbit (Vaquero 2013 Fig. 4.9), mirroring `#754`'s Jovian Table-2 approach and reusing the same
-  `ResonantNode`/`correct_connection`/homoclinic-ghost-guard machinery. No state table exists for
-  this connection (figures + prose only, per `#765`'s own note), so — same honesty framing as
-  `#766` — the gate here is necessarily self-consistency (Newton residual, ghost-guard margin,
-  independent Radau cross-check, forward/backward re-approach), not a reproduction claim.
-  `#765`'s own recommendation: 3:4 and L1 both confirmed to near-machine precision gives a strong
-  foundation, unlike the Jovian chain where Task B was held pending TWO unconfirmed families.
+- `#767` — ✓ DONE 2026-07-31: Saturn-Titan Task-B analog — built the homoclinic self-connection
+  of `#765`'s confirmed 3:4 resonant orbit (Vaquero 2013 Fig. 4.9, `C=3.010000`). **POSITIVE
+  RESULT, richer than either Jovian-chain precedent**: FOUR independent, ghost-guard-passed,
+  Newton-converged (`<1e-8` residual, three `<1e-9`) homoclinic self-intersections found across
+  THREE different `(branch_u, branch_s)` sign combinations — `(+1,+1,k=5,5)` on the symmetry axis
+  (residual `7.18e-10`, ghost margin `307x`, Radau cross-check `1.92e-8`, chosen as PRIMARY),
+  plus a genuine reflection-symmetric mirror pair `(-1,-1,k=4,5)`/`(5,4)` (ghost margin `219x`
+  each), plus a fourth independent hit `(+1,-1,k=4,4)` (ghost margin `274x`, Radau `4.67e-7`).
+  Forward/backward re-approach is honestly asymmetric (backward `<5e-8` for all four; forward
+  `0.011`-`0.080`, still well below the O(1-2) trajectory scale) — explained by this orbit's own
+  eigenvalue (`|lambda|~2129.8`) being the STRONGEST instability of any self-connection this task
+  chain has built (`#754`'s `C_flyby`: 1036; `#766`'s `C=3.0041`: 54.6), which amplifies the
+  corrector's own finite residual floor over the re-propagation horizon. The section convention
+  had to be independently derived (NOT Anderson & Lo's own `x<0` choice — this orbit's own IC
+  sits at POSITIVE `x`, so blindly reusing that convention would have silently emptied the
+  ghost-guard reference set); this orbit's section is `{y=0, ydot>0}`, `x` UNRESTRICTED, keeping
+  BOTH of the orbit's own two perpendicular axis-crossing points as ghost-guard references. No
+  published Table-2-style state exists at this energy (Vaquero's own Fig. 4.9 is a figure only) —
+  honestly reported throughout as a self-consistency result, never a reproduction claim. Code:
+  new sibling module `src/cyclerfinder/search/saturn_titan_resonant_connections.py` (not an
+  edit to `jovian_resonant_connections.py`, whose own machinery — `ResonantNode`,
+  `own_section_points`, `correct_connection`, `_full_state_crossing`, `_ghost_distance`,
+  `HomoclinicReapproachResult` — is reused unchanged, confirming `#764`'s system-agnostic
+  finding); tests: `tests/search/test_saturn_titan_resonant_connections.py` (23/23 pass, not
+  marked slow); results note:
+  `docs/notes/2026-07-31-767-saturn-titan-homoclinic-connection.md`. `catalogue.yaml` not
+  touched. Unblocks `#768` (needed this connection built first).
 - `#768` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
   reproduce Vaquero 2013's own published periodic 3:4↔6:5 "resonant chain" family (Fig. 4.10,
   continued in Jacobi constant in Fig. 4.11) — a periodic cycler-like trajectory alternating
@@ -50,8 +68,9 @@ unchanged. See `git log` around this date for the corrected commit.
   3:4↔5:6 Jupiter-Europa construction this whole session's chain is built on. Includes a
   falsifiable, testable published claim: "it is suspected that this family of periodic resonant
   chains ends for a value of Jacobi constant C < 3.01400" (Fig. 4.12) — a genuine
-  confirm-or-refute target, not just a reproduction. Depends on `#767` (needs the 3:4 homoclinic
-  connection built first) and presumably a parallel 6:5-side connection. If reproduced, this
+  confirm-or-refute target, not just a reproduction. `#767` (needed the 3:4 homoclinic
+  connection built first) is now ✓ DONE 2026-07-31 — this task's own blocker is cleared; still
+  presumably needs a parallel 6:5-side connection too. If reproduced, this
   object may be independently catalogue-eligible (a genuine published Saturn-Titan cycler) —
   subject to the mandatory `literature_check.py` novelty gate before any such claim, per
   `[[feedback_literature_novelty_check_baseline]]`.
