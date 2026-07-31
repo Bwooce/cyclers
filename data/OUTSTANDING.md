@@ -143,8 +143,8 @@ unchanged. See `git log` around this date for the corrected commit.
   construction genuinely breaks at Pluto-Charon's near-equal-mass `µ=0.109`. Full reasoning in
   `docs/notes/2026-07-29-764-new-system-discovery-scoping.md`. Revisit only if a new published
   anchor surfaces for either system.
-- `#773` — registered 2026-07-31 (follow-up from `#768`'s own honest Step 2b Newton stall), not
-  yet dispatched: close the periodicity-correction gap `#768` left open — attempting to correct
+- `#773` — DISPATCHED 2026-08-01 (user: "continue"), follow-up from `#768`'s own honest Step 2b
+  Newton stall: close the periodicity-correction gap `#768` left open — attempting to correct
   the near-6:5 homoclinic excursion of the 3:4 orbit (`dist_to_65=0.094`, residual `<1e-9`,
   `#768`'s own Step 2a) into an exact NEW periodic "resonant chain" orbit (Vaquero 2013
   Fig. 4.10) via a bounded STM-based 2-D single-shooting Newton corrector made real ~40x
