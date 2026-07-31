@@ -111,6 +111,7 @@ from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
+import cyclerfinder.search.cr3bp_multiple_shooting as cms
 import cyclerfinder.search.jovian_resonant_connections as jrc
 import cyclerfinder.search.saturn_titan_resonant_families as stf
 from cyclerfinder.genome.heteroclinic_cycle import (
@@ -580,6 +581,23 @@ class ChainClosureResult:
     demonstrates it exists; this module's own bounded effort with a
     single-shooting method is simply not equal to the task at this
     instability/horizon combination -- see ``notes``).
+
+    `#773` extends this with a branch-drift guard: ``t_cross`` is the final
+    iterate's own elapsed time to the fixed ``crossing_index``-th ``{y=0}``
+    crossing. A seed closer to the desired excursion (e.g. the `#768` near-6:5
+    homoclinic candidate's own crossing point, rather than ``node``'s plain
+    IC) can converge to a Newton residual near machine precision WHILE having
+    silently jumped onto a genuine but dynamically-UNRELATED, much
+    shorter-period orbit family (`#773`'s own finding: seeding at
+    ``(x=0.91407251, xdot=-0.091737)`` "converges" to residual ``8.4e-15`` at
+    ``(x0=-0.249664, xdot0=~0)`` whose OWN ``t_cross`` is ``4.176`` nondim --
+    nowhere near ``t_target=110.4996`` -- a real periodic orbit, just not the
+    resonant chain). The line search below rejects any trial step whose
+    ``t_cross`` drifts past ``max_t_cross_drift`` of ``t_target``, even if its
+    residual is lower -- a *fast-converging* result is therefore NOT
+    sufficient evidence of a genuine chain closure by itself; ``t_cross``
+    must also be checked against ``t_target`` (this is why every reported
+    convergence in the `#773` results note explicitly quotes ``t_cross``).
     """
 
     x0: float
@@ -589,6 +607,7 @@ class ChainClosureResult:
     n_iter: int
     n_events_seed: int
     n_events_after_first_step: int
+    t_cross: float
     notes: str
 
 
@@ -605,6 +624,7 @@ def attempt_chain_closure(
     tol: float = 1e-9,
     rtol: float = 1e-13,
     atol: float = 1e-14,
+    max_t_cross_drift: float | None = None,
 ) -> ChainClosureResult:
     """Attempt an STM-based 2-D Newton (Poincare-map fixed-point) correction
     of a near-``node``-IC seed into a periodic "resonant chain" orbit that
@@ -629,8 +649,22 @@ def attempt_chain_closure(
     crossing count within the horizon explodes from a few dozen to hundreds),
     so additional iterations do not change the qualitative (honest-FAIL)
     verdict, only the wall-clock cost.
+
+    `#773` branch-drift guard (``max_t_cross_drift``, default
+    ``0.5 * node.period`` if ``None``): a trial step is accepted only if BOTH
+    its residual is lower AND its own ``t_cross`` (the fixed
+    ``crossing_index``-th crossing's own elapsed time) stays within
+    ``max_t_cross_drift`` of ``t_target``. Without this guard, a seed close
+    to the desired excursion (rather than ``node``'s own plain IC) can
+    Newton-converge to residual near machine precision while having silently
+    jumped onto an entirely different, genuine-but-unrelated, much
+    shorter-period orbit family whose ``crossing_index``-th crossing happens
+    to occur nearby in (x, xdot) but at a wildly different elapsed time --
+    see the class docstring and the `#773` results note for the concrete
+    numeric example this guard was built to catch.
     """
     horizon = t_target + 0.5 * node.period
+    drift_cap = float(max_t_cross_drift) if max_t_cross_drift is not None else 0.5 * node.period
     x0 = float(x0_guess) if x0_guess is not None else float(node.state0[0])
     xdot0 = float(xdot0_guess)
 
@@ -642,6 +676,7 @@ def attempt_chain_closure(
         raise ValueError("attempt_chain_closure: seed reaches no {y=0} crossing within horizon")
     crossing_index = int(np.argmin([abs(t - t_target) for t, _ in seed_events])) + 1
     n_events_seed = len(seed_events)
+    t_cross_cur = seed_events[crossing_index - 1][0]
 
     x, xdot = x0, xdot0
     residual_norm = float("inf")
@@ -668,9 +703,10 @@ def attempt_chain_closure(
                 n_iter=n_iter,
                 n_events_seed=n_events_seed,
                 n_events_after_first_step=n_events_after_first_step,
+                t_cross=t_cross_cur,
                 notes="map step failed (radicand<0, crossing index exceeded, or singular section)",
             )
-        residual, jac, _t_cross, n_events = out
+        residual, jac, t_cross_cur, n_events = out
         residual_norm = float(np.linalg.norm(residual))
         if n_iter == 1:
             n_events_after_first_step = n_events
@@ -683,6 +719,7 @@ def attempt_chain_closure(
                 n_iter=n_iter,
                 n_events_seed=n_events_seed,
                 n_events_after_first_step=n_events_after_first_step,
+                t_cross=t_cross_cur,
                 notes="converged",
             )
         try:
@@ -696,10 +733,12 @@ def attempt_chain_closure(
                 n_iter=n_iter,
                 n_events_seed=n_events_seed,
                 n_events_after_first_step=n_events_after_first_step,
+                t_cross=t_cross_cur,
                 notes="singular Jacobian",
             )
         alpha = 1.0
         improved = False
+        branch_drift_blocked = False
         for _bt in range(max_backtrack):
             x_t = x + alpha * float(step[0])
             xdot_t = xdot + alpha * float(step[1])
@@ -714,12 +753,23 @@ def attempt_chain_closure(
                 rtol=rtol,
                 atol=atol,
             )
-            if out_t is not None and float(np.linalg.norm(out_t[0])) < residual_norm:
-                x, xdot = x_t, xdot_t
-                improved = True
-                break
+            if out_t is not None:
+                residual_t, _jac_t, t_cross_t, _n_events_t = out_t
+                if float(np.linalg.norm(residual_t)) < residual_norm:
+                    if abs(t_cross_t - t_target) <= drift_cap:
+                        x, xdot = x_t, xdot_t
+                        improved = True
+                        break
+                    branch_drift_blocked = True
             alpha *= 0.5
         if not improved:
+            notes = (
+                "line search exhausted -- an improving step existed but was rejected: "
+                f"its t_cross drifted past max_t_cross_drift={drift_cap:.6f} of "
+                f"t_target={t_target} (see #773's branch-drift guard)"
+                if branch_drift_blocked
+                else "line search exhausted -- no improving step found"
+            )
             return ChainClosureResult(
                 x0=x,
                 xdot0=xdot,
@@ -728,7 +778,8 @@ def attempt_chain_closure(
                 n_iter=n_iter,
                 n_events_seed=n_events_seed,
                 n_events_after_first_step=n_events_after_first_step,
-                notes="line search exhausted -- no improving step found",
+                t_cross=t_cross_cur,
+                notes=notes,
             )
     return ChainClosureResult(
         x0=x,
@@ -738,7 +789,124 @@ def attempt_chain_closure(
         n_iter=n_iter,
         n_events_seed=n_events_seed,
         n_events_after_first_step=n_events_after_first_step,
+        t_cross=t_cross_cur,
         notes=f"max_iter={max_iter} exhausted without converging",
+    )
+
+
+# ---------------------------------------------------------------------------
+# `#773` fix (b): multiple shooting, reusing the project's own #687 general
+# CR3BP multiple-shooting utility (:mod:`cyclerfinder.search.cr3bp_multiple_shooting`)
+# directly rather than writing a new corrector. See the `#773` results note
+# for the full account of why this was tried (the single-shooting scheme
+# above compounds ~1.2e14 of growth over the whole ~4.2-period loop into ONE
+# STM; multiple shooting keeps each segment's own growth modest, ~57x for an
+# 8-way split) and why it is ALSO an honest, non-forced partial/negative (real
+# but decelerating progress, not a wild divergence, not a forced convergence).
+# ---------------------------------------------------------------------------
+
+
+def build_chain_multi_shooting_seed(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    x0_guess: float,
+    xdot0_guess: float,
+    t_target: float,
+    n_segments: int,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> tuple[list[NDArray[np.float64]], list[float]]:
+    """Build an ``n_segments``-node multiple-shooting seed for
+    :func:`attempt_chain_closure_multiple_shooting` by propagating the single
+    6-state derived from ``(x0_guess, xdot0_guess)`` (via :func:`_chain_state0`,
+    same Jacobi-slaved-``ydot`` convention as the single-shooting corrector
+    above) forward for ``t_target`` nondim time, split into ``n_segments``
+    equal-duration arcs.
+
+    By construction every INTERNAL segment's own continuity defect is ~0 (all
+    nodes lie on the SAME unperturbed trajectory) -- only the final
+    wrap-around segment (node ``n_segments - 1`` back to node ``0``) carries
+    a genuine defect. This is the honest, most natural starting seed for
+    :func:`~cyclerfinder.search.cr3bp_multiple_shooting.correct_multiple_shooting`;
+    see the `#773` results note for the per-segment residual breakdown that
+    confirms this (all internal blocks ``~1e-9``, all discrepancy in the last
+    block).
+
+    Raises ``ValueError`` if ``(x0_guess, xdot0_guess)`` has no valid Jacobi
+    solution (see :func:`_chain_state0`).
+    """
+    state0, _ydot0 = _chain_state0(x0_guess, xdot0_guess, node.jacobi, system.mu, float(ydot_sign))
+    if state0 is None:
+        raise ValueError("build_chain_multi_shooting_seed: seed state has no valid Jacobi solution")
+    seg_t = t_target / n_segments
+    nodes = [state0]
+    cur = state0
+    for _ in range(n_segments - 1):
+        arc = cr3bp.propagate(system, cur, seg_t, with_stm=False, rtol=rtol, atol=atol)
+        cur = arc.state_f
+        nodes.append(cur)
+    return nodes, [seg_t] * n_segments
+
+
+def attempt_chain_closure_multiple_shooting(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    x0_guess: float,
+    xdot0_guess: float,
+    t_target: float,
+    n_segments: int = 8,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    tol: float = 1e-9,
+    max_iter: int = 40,
+    lm: float = 1e-8,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> cms.MultipleShootingOrbit:
+    """Attempt to close the resonant-chain loop via multiple shooting instead
+    of the fixed-crossing-index single-shooting scheme above -- `#773` fix
+    (b). Builds the seed via :func:`build_chain_multi_shooting_seed` then
+    hands it directly to
+    :func:`~cyclerfinder.search.cr3bp_multiple_shooting.correct_multiple_shooting`
+    (`#687`'s own general full-6D-state, free-segment-duration corrector,
+    reused verbatim -- not reimplemented here).
+
+    **Honest result (see the `#773` results note for the full numeric
+    account)**: from the `#768` near-6:5 homoclinic candidate's own crossing
+    state (``x0_guess=0.91407251, xdot0_guess=-0.091737``), both ``n_segments=8``
+    and ``n_segments=16`` make real, monotonically-decreasing progress
+    (closure residual ``1.62`` -> ``~0.49``-``0.55`` over dozens to hundreds of
+    damped Newton iterations) but the backtracking step size locks onto a
+    small fixed value (``alpha ~ 1e-3``-``4e-3``) and the residual decreases
+    at a DECELERATING (not accelerating) rate -- an honest stall, clearly not
+    on track to reach ``tol`` within any practical iteration budget, not a
+    forced convergence. This is a genuinely different failure signature than
+    the single-shooting corrector's own abrupt "line search exhausted" halt
+    (a slow decelerating crawl vs. a sharp stop), but the same qualitative,
+    honest conclusion: real progress, no closure.
+    """
+    nodes, seg_times = build_chain_multi_shooting_seed(
+        system,
+        node,
+        x0_guess=x0_guess,
+        xdot0_guess=xdot0_guess,
+        t_target=t_target,
+        n_segments=n_segments,
+        ydot_sign=ydot_sign,
+        rtol=rtol,
+        atol=atol,
+    )
+    return cms.correct_multiple_shooting(
+        system,
+        nodes,
+        seg_times,
+        tol=tol,
+        max_iter=max_iter,
+        lm=lm,
+        rtol=rtol,
+        atol=atol,
     )
 
 
@@ -750,7 +918,9 @@ __all__ = [
     "ChainProximityCandidate",
     "HomoclinicCandidate",
     "attempt_chain_closure",
+    "attempt_chain_closure_multiple_shooting",
     "build_34_node",
+    "build_chain_multi_shooting_seed",
     "find_homoclinic",
     "homoclinic_reapproach_check",
     "own_section_points",

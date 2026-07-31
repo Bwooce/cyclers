@@ -18,6 +18,7 @@ import numpy as np
 import pytest
 
 import cyclerfinder.core.cr3bp as cr3bp
+import cyclerfinder.search.cr3bp_multiple_shooting as cms
 import cyclerfinder.search.jovian_resonant_connections as jrc
 import cyclerfinder.search.saturn_titan_resonant_connections as stc
 import cyclerfinder.search.saturn_titan_resonant_families as stf
@@ -38,6 +39,46 @@ def system() -> cr3bp.CR3BPSystem:
 def node(system: cr3bp.CR3BPSystem) -> jrc.ResonantNode:
     _sys, nd, _row = stc.build_34_node(system)
     return nd
+
+
+@pytest.fixture(scope="module")
+def near65_crossing_xv(system: cr3bp.CR3BPSystem, node: jrc.ResonantNode) -> np.ndarray:
+    """`#768`'s own closer near-6:5 homoclinic candidate's exact crossing
+    ``(x, xdot)``, at full float64 precision -- shared across the `#773`
+    tests below (avoids re-running the ~40s scan per test, AND avoids ever
+    hardcoding a manually-truncated literal: `#773`'s own results note found
+    this system's compounded instability (`~1.2e14` over the `~4.2`-period
+    loop) is sensitive even to 8th-significant-digit truncation of this exact
+    value, so every downstream test must derive it programmatically, never
+    retype a rounded copy).
+    """
+    own_pts = stc.own_section_points(system, node)
+    hits = []
+    for branch_u, branch_s, k_u, k_s in [(-1, -1, 4, 5), (-1, -1, 5, 4)]:
+        conn = correct_connection(
+            system,
+            node,
+            node,
+            k_u=k_u,
+            k_s=k_s,
+            epsilon=stc.EPSILON,
+            branch_u=branch_u,
+            branch_s=branch_s,
+            ydot_sign_u=stc.SECTION_YDOT_SIGN,
+            ydot_sign_s=stc.SECTION_YDOT_SIGN,
+            x_sign_u=None,
+            x_sign_s=None,
+            max_time_factor=3.0,
+            scan_n=12,
+            tol=1e-9,
+            max_iter=60,
+            fd_step=1e-7,
+        )
+        d_ghost = jrc._ghost_distance(conn.crossing_xv, own_pts)
+        hits.append(stc.HomoclinicCandidate(connection=conn, ghost_distance=d_ghost))
+    _sys, target65, _row = stc.resonant_chain_target_point(system)
+    ranked = stc.rank_by_proximity_to_65(hits, target65)
+    return np.asarray(ranked[0].candidate.connection.crossing_xv, dtype=np.float64)
 
 
 # ---------------------------------------------------------------------------
@@ -513,21 +554,99 @@ def test_attempt_chain_closure_seed_residual_matches_expected(
     assert "exhausted" in res.notes
 
 
-def test_attempt_chain_closure_makes_progress_but_does_not_converge(
+def test_attempt_chain_closure_default_seed_first_step_is_branch_drift_rejected(
     system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
 ) -> None:
-    """With a real (if bounded) Newton effort, the residual drops by roughly
-    two orders of magnitude (0.253 -> ~0.006) over a handful of damped,
-    backtracked iterations -- genuine, monotonic progress, not a wild
-    divergence -- but the line search stalls before reaching the `1e-9`
-    convergence tolerance: a genuine Newton stall, not a forced convergence,
-    mirroring `#759`'s own documented Table-3 stall for `Ws(5:6-LO)`'s severe
-    manifold sensitivity ("the residual plateaus...without converging").
+    """`#773` CORRECTS `#768`'s own "genuine 0.253 -> 0.0063 progress" claim:
+    direct instrumentation this task found the VERY FIRST Newton step from
+    `node`'s own plain IC -- even though it genuinely reduces the (x, xdot)
+    residual -- silently jumps the fixed ``crossing_index`` onto an entirely
+    different, unrelated, much shorter-period orbit family (the qualifying
+    ``{y=0}`` crossing count within the horizon explodes `16` -> `299`, and
+    the crossing's own elapsed time collapses `106.48` -> `5.81` nondim,
+    nowhere near ``t_target=110.4996``). What `#768` reported as a "genuine
+    Newton stall" at residual `0.0063` was Newton actually converging toward
+    THAT unrelated orbit's own fixed point, not toward the resonant chain.
+    `#773`'s own branch-drift guard (default ``max_t_cross_drift =
+    0.5 * node.period``) now catches this at the FIRST step and correctly
+    refuses to report it as progress: the returned point stays exactly at
+    the seed (no false progress claimed).
     """
     res = stc.attempt_chain_closure(system, node, t_target=110.4996, max_iter=8, max_backtrack=6)
     assert not res.converged
-    assert res.residual < 0.02  # real progress from the seed's own 0.253
-    assert res.n_iter >= 2
+    assert res.n_iter == 1
+    assert abs(res.residual - 0.2534297910848558) < 1e-6  # unchanged from the seed
+    assert abs(res.x0 - float(node.state0[0])) < 1e-12
+    assert res.xdot0 == 0.0
+    assert "drifted past max_t_cross_drift" in res.notes
+
+
+def test_attempt_chain_closure_t_cross_field_matches_seed_at_max_iter_1(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode
+) -> None:
+    """`#773` adds a ``t_cross`` field to ``ChainClosureResult`` -- the fixed
+    ``crossing_index``-th crossing's own elapsed time, the diagnostic the new
+    branch-drift guard checks. At ``max_iter=1`` (no Newton step attempted)
+    it must equal the seed's own crossing time, well inside the default
+    ``0.5 * node.period`` drift cap of ``t_target``.
+    """
+    res = stc.attempt_chain_closure(system, node, t_target=110.4996, max_iter=1)
+    assert abs(res.t_cross - 106.48304721813922) < 1e-4
+    assert abs(res.t_cross - 110.4996) < 0.5 * node.period
+
+
+def test_attempt_chain_closure_near65_seed_default_cap_honest_stall(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode, near65_crossing_xv: np.ndarray
+) -> None:
+    """`#773` fix (a): seeding at the `#768` near-6:5 homoclinic candidate's
+    own crossing point (rather than `node`'s plain IC) -- with the default,
+    conservative branch-drift cap active. This seed is genuinely closer to
+    the desired excursion, but `#773`'s own results note found this specific
+    system's compounded instability makes the outcome exquisitely sensitive
+    to the seed's exact digits (varying with which local root the `#767`
+    scan converges to across environments) -- so this test asserts only the
+    honest, robust, qualitative outcome: a real, bounded, non-forced FAIL,
+    never a spuriously "converged" result smuggled through by the guard.
+    """
+    res = stc.attempt_chain_closure(
+        system,
+        node,
+        t_target=110.4996,
+        x0_guess=float(near65_crossing_xv[0]),
+        xdot0_guess=float(near65_crossing_xv[1]),
+        max_iter=8,
+        max_backtrack=6,
+    )
+    assert not res.converged
+    assert res.n_iter >= 1
+    assert np.isfinite(res.residual)
+    assert "line search exhausted" in res.notes
+
+
+def test_attempt_chain_closure_near65_seed_loose_cap_still_does_not_converge(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode, near65_crossing_xv: np.ndarray
+) -> None:
+    """`#773`: loosening ``max_t_cross_drift`` to ``2 * node.period`` lets the
+    near-6:5 seed make MORE genuine (verified on-branch: ``n_events`` never
+    explodes past the seed's own count) Newton progress before a real stall
+    (line search exhausted with no improving step at all, not merely a
+    drift-blocked rejection) -- still an honest, non-forced FAIL, never
+    converging to ``tol=1e-9`` within a generous iteration budget.
+    """
+    cap = 2.0 * node.period
+    res = stc.attempt_chain_closure(
+        system,
+        node,
+        t_target=110.4996,
+        x0_guess=float(near65_crossing_xv[0]),
+        xdot0_guess=float(near65_crossing_xv[1]),
+        max_iter=20,
+        max_backtrack=10,
+        max_t_cross_drift=cap,
+    )
+    assert not res.converged
+    assert res.n_events_after_first_step <= 4 * res.n_events_seed  # no branch explosion
+    assert np.isfinite(res.residual)
 
 
 def test_chain_ydot_negative_radicand_is_none(system: cr3bp.CR3BPSystem) -> None:
@@ -536,3 +655,85 @@ def test_chain_ydot_negative_radicand_is_none(system: cr3bp.CR3BPSystem) -> None
     """
     ydot = stc._chain_ydot(0.0, 100.0, stf.VAQUERO_C, system.mu)
     assert ydot is None
+
+
+# ---------------------------------------------------------------------------
+# `#773` fix (b): multiple shooting, reusing `#687`'s own
+# `cr3bp_multiple_shooting.correct_multiple_shooting` utility directly.
+# ---------------------------------------------------------------------------
+
+
+def test_build_chain_multi_shooting_seed_internal_continuity(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode, near65_crossing_xv: np.ndarray
+) -> None:
+    """The seed built for multiple shooting is a single unperturbed
+    trajectory chopped into ``n_segments`` equal-time pieces, so EVERY
+    internal segment's own continuity defect is ~0 by construction, and the
+    entire genuine loop-closure defect is concentrated in the final
+    wrap-around segment -- the structural finding `#773`'s own results note
+    reports (per-segment residual breakdown).
+    """
+    nodes, seg_times = stc.build_chain_multi_shooting_seed(
+        system,
+        node,
+        x0_guess=float(near65_crossing_xv[0]),
+        xdot0_guess=float(near65_crossing_xv[1]),
+        t_target=110.4996,
+        n_segments=8,
+    )
+    assert len(nodes) == 8
+    assert len(seg_times) == 8
+    assert abs(sum(seg_times) - 110.4996) < 1e-9
+
+    f_vec, _jac, _stms = cms._residual_and_jacobian(
+        system, nodes, seg_times, rtol=1e-12, atol=1e-12
+    )
+    seg_norms = [float(np.linalg.norm(f_vec[6 * i : 6 * i + 6])) for i in range(8)]
+    for internal_norm in seg_norms[:-1]:
+        assert internal_norm < 1e-6
+    assert seg_norms[-1] > 0.01  # the genuine, unclosed loop defect
+
+
+def test_attempt_chain_closure_multiple_shooting_makes_progress_but_does_not_converge(
+    system: cr3bp.CR3BPSystem, node: jrc.ResonantNode, near65_crossing_xv: np.ndarray
+) -> None:
+    """`#773` fix (b): reusing `#687`'s own general multiple-shooting
+    corrector directly (not reimplemented) from the near-6:5 candidate's own
+    seed. `#773`'s own results note found real, monotonically-decreasing
+    progress over dozens-to-hundreds of iterations, but a DECELERATING
+    (never accelerating) rate -- a small, bounded iteration budget here
+    reproduces the same honest, non-forced qualitative signature (real
+    improvement, no convergence), without paying the full multi-minute cost
+    of chasing the eventual stall.
+    """
+    seed_nodes, seed_seg_times = stc.build_chain_multi_shooting_seed(
+        system,
+        node,
+        x0_guess=float(near65_crossing_xv[0]),
+        xdot0_guess=float(near65_crossing_xv[1]),
+        t_target=110.4996,
+        n_segments=8,
+    )
+    seed_residual = float(
+        np.linalg.norm(
+            cms._residual_and_jacobian(system, seed_nodes, seed_seg_times, rtol=1e-12, atol=1e-12)[
+                0
+            ]
+        )
+    )
+
+    res = stc.attempt_chain_closure_multiple_shooting(
+        system,
+        node,
+        x0_guess=float(near65_crossing_xv[0]),
+        xdot0_guess=float(near65_crossing_xv[1]),
+        t_target=110.4996,
+        n_segments=8,
+        max_iter=3,
+    )
+    assert not res.converged
+    assert res.n_iter >= 1
+    assert res.closure_residual < seed_residual  # genuine, real progress
+    assert res.closure_residual > 1e-6  # honestly nowhere near converged
+    assert len(res.nodes) == 8
+    assert abs(res.period - 110.4996) < 5.0  # segment times may float, but stay in the ballpark
