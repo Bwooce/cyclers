@@ -63,16 +63,29 @@ unchanged. See `git log` around this date for the corrected commit.
   `µ`-refinement pass, per `#764`'s own flagged "moderate risk" fallback. Low priority — the miss
   is already honestly characterized and not blocking `#767`/`#768`, which only need 3:4 and 6:5's
   own IC/period (both already tight), not 6:5's own eigenvalue specifically.
-- `#770` — DISPATCHED 2026-07-31 (user: "continue"): DESIGN
+- `#770` — ✓ DONE 2026-07-31 (design proposal delivered — **AWAITING USER APPROVAL before any
+  implementation**; nothing was written to `catalogue.yaml` or `catalogue.schema.json`): DESIGN
   SCOPING ONLY (mirroring `#707`/`#735`'s own "present before build" pattern) for whether/how
   `#766`'s confirmed homoclinic self-connection at C=3.0041 should be written back into
-  `europa-3-4-crnbp-torus-jupiter-2026`'s own catalogue row. Open questions to scope, not decide
-  here: does adding a real connection change the row's own `orbit_class` classification (currently
-  `quasi_periodic_torus`, chosen specifically because no connection existed — does a self-
-  consistency-only connection, with no published state to gate against, meet the bar the sibling
-  `torus_homoclinic` class was designed around, or does it need its own additive schema field
-  instead of a reclassification)? Does the `validation_level` change? User-approval-gated per this
-  project's own schema-design convention — do not write back without it.
+  `europa-3-4-crnbp-torus-jupiter-2026`'s own catalogue row. **Recommendation: option (b) — keep
+  `orbit_class: quasi_periodic_torus` (do NOT reclassify to `torus_homoclinic`), keep
+  `validation_level: V1`, and add an OPTIONAL, non-gating
+  `crnbp_provenance.torus.seed_orbit_homoclinic{}` sub-block (row-side, following `#738`'s own
+  `radau_cross_check` no-schema-bump precedent) carrying `#766`'s full connection data as
+  supplementary SEED-LINEAGE evidence.** Key reasoning: the `#735` condition ("no computed
+  manifold connection for THIS object") is object-scoped and STILL TRUE — `#766`'s connection
+  attaches to the CR3BP seed periodic orbit at the papers' own `mu` (2.5266448850435e-5), not to
+  the catalogued N=5 CRNBP torus (project `mu`, manifolds still uncomputed, `#724` qualifier
+  unchanged); `torus_homoclinic` additionally presupposes real-ephemeris recurrence evidence
+  (`#704`/`#705`-style) that `#766` has none of, and ~half of `ccr4bp_provenance.connection{}`'s
+  fields have no referent (torus phases, quasi-Jacobi gap). NOT an evidence-strength rejection:
+  `#766`'s independence-gated self-consistency package (Radau 2.42e-8, 37x ghost margin,
+  re-approach, mirror pair) is the same class as the sibling row's own V1 basis. V2+ stays out of
+  reach even in principle (a homoclinic SELF-connection has no laps; a chained multi-excursion
+  orbit would be a NEW object/row, cf. `#768`). Full field-by-field analysis, draft YAML block,
+  companion notes/data_gaps touch-ups, and options (a)/(b)/(c1)/(c2) with tradeoffs in
+  `docs/notes/2026-07-31-770-torus-connection-writeback-design.md`. Implementation (if approved)
+  is a small separate writeback task, exactly as `#707`→`#708` and `#735`→`#736` were handled.
 - `#771` — registered 2026-07-29 (user: "register all possible tasks"), HELD (not ready): Neptune-
   Triton as the SECOND `#760` per-system candidate, per `#764`'s own ranking — real recent
   literature (Miceli/Bosanac AIAA-2024 + JAS-2026, µ=0.00020895, resonant families built with
