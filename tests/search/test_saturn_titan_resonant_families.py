@@ -229,13 +229,18 @@ def test_eigenvalue_sensitivity_to_mu_is_measured_not_assumed(
     system: cr3bp.CR3BPSystem,
 ) -> None:
     """Measures (not assumes) how sensitive each row's recovered eigenvalue
-    is to a small mu perturbation, to justify TABLE41_EIGENVALUE_GATE_REL_TOL
-    honestly. A +0.1% mu shift should move EVERY row's eigenvalue by a
-    comparable, small relative amount if this module's mu/l*/t* choice is
-    dominating the precision floor (rather than some row-specific search
-    error) -- confirms 6:5's own near-miss (module docstring finding 2) is
-    a real, physically-explicable small effect, not a fluke of this specific
-    seed."""
+    is to a small mu perturbation. A +0.1% mu shift moves every row's
+    eigenvalue by a comparable RELATIVE amount (not absolute -- see below).
+
+    `#769` (``docs/notes/2026-08-05-769-saturn-titan-65-eigenvalue.md``) used
+    exactly this comparable-relative-sensitivity result, plus 3:4's shift
+    running in the OPPOSITE direction from 6:5/L1/L2's, to EXCLUDE mu
+    imprecision as the cause of 6:5's own near-miss (module docstring
+    finding 2) -- a fixed mu precision floor would produce a comparable
+    RELATIVE eigenvalue error in ALL four rows, not the observed 1e-6-level
+    match in three rows and 2.3e-3 miss in the fourth. See the module
+    docstring finding 2 for the follow-up (C-sensitivity) explanation that
+    #769 found better-supported, kept diagnostic-only (not adopted)."""
     mu_perturbed = stf.VAQUERO_MU * 1.001
     perturbed_system = cr3bp.CR3BPSystem(
         mu=mu_perturbed,
@@ -244,6 +249,7 @@ def test_eigenvalue_sensitivity_to_mu_is_measured_not_assumed(
         l_km=system.l_km,
         t_s=system.t_s,
     )
+    rel_shifts: dict[str, float] = {}
     for label, target in stf.TABLE41_TARGETS.items():
         baseline = stf.recover_table41_candidate(label, system)
         perturbed = stf.recover_table41_candidate(label, perturbed_system)
@@ -255,6 +261,17 @@ def test_eigenvalue_sensitivity_to_mu_is_measured_not_assumed(
         # real, and a huge shift would mean the seed sits in a genuinely
         # unstable/chaotic basin, invalidating the whole comparison.
         assert 1e-5 < shift < 0.5, f"{label}: mu-sensitivity shift={shift:.2e} (target {target})"
+        rel_shifts[label] = shift
+    # Regression guard for #769's own finding: relative mu-sensitivity is
+    # comparable ACROSS rows (this is the fact that excludes mu-imprecision
+    # as 6:5's root cause -- see docstring above). Generous bounds (not
+    # tuned tight) so this doesn't become brittle to minor corrector
+    # changes; it only needs to keep catching a return to the "6:5 is
+    # uniquely mu-sensitive" hypothesis this module's docstring used to make.
+    max_shift, min_shift = max(rel_shifts.values()), min(rel_shifts.values())
+    assert max_shift / min_shift < 5.0, (
+        f"relative mu-sensitivity spread across rows grew unexpectedly large: {rel_shifts}"
+    )
 
 
 # ---------------------------------------------------------------------------

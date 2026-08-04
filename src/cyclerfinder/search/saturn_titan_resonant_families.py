@@ -95,19 +95,47 @@ HONEST FINDINGS (load-bearing, read before trusting any single row):
 2. **6:5 is a genuine, real, SMALL near-miss on eigenvalue only**
    (rel_err = 2.34e-3, just outside :data:`TABLE41_EIGENVALUE_GATE_REL_TOL`)
    despite its OWN dimensional IC and period matching Table 4.1 to <0.02%
-   relative, as tight as 3:4/L1. A systematic mu-sensitivity sweep (module
-   test suite, ``test_eigenvalue_sensitivity_to_mu_is_measured_not_assumed``)
-   found the SAME +/-0.1% mu perturbation shifts 3:4/L1/L2's eigenvalues by
-   a comparable ~0.03-0.05% each (consistent with their own near-exact match
-   AT the thesis's stated mu), but shifts 6:5's eigenvalue by a materially
-   larger amount for the same absolute mu error -- because 6:5's own
-   unstable eigenvalue (191.6) is an order of magnitude SMALLER than 3:4's
-   (2129.8), the SAME absolute sensitivity floor (from the thesis's own
-   5-digit mu rounding) shows up as a LARGER relative error for the smaller
-   eigenvalue. This is reported HONESTLY as a FAIL under
-   :data:`TABLE41_EIGENVALUE_GATE_REL_TOL` -- not fudged, not silently
-   loosened -- while noting it is a well-characterized, small, physically
-   explicable miss, not a wild one.
+   relative, as tight as 3:4/L1. `#769` (see
+   ``docs/notes/2026-08-05-769-saturn-titan-65-eigenvalue.md``) followed up
+   on this and found the mu-precision mechanism ORIGINALLY proposed here
+   (an earlier draft of this finding) does NOT hold up under closer
+   measurement, and identified a better-supported alternative:
+
+   - **mu is EXCLUDED as the cause.** The measured +0.1% mu perturbation
+     shifts ALL FOUR rows' eigenvalues by a comparable RELATIVE amount
+     (+0.096% for 3:4, -0.109% for 6:5, -0.093% for L1, -0.096% for L2 --
+     NOT a comparable absolute amount as an earlier draft of this finding
+     claimed; absolute shifts instead scale with each row's own eigenvalue
+     magnitude). Note 3:4 shifts in the OPPOSITE direction from 6:5/L1/L2.
+     Because relative mu-sensitivity is comparable across rows, a mu
+     precision floor would produce a comparable RELATIVE eigenvalue error
+     in all four rows -- not the observed 1e-6-level match in three rows
+     and a 2.3e-3 miss in the fourth. Confirmed directly: bisecting mu to
+     hit 6:5's target eigenvalue (191.641) exactly requires mu =
+     2.36068e-4, a -0.216% shift from the thesis's stated 2.3658e-4 --
+     three orders of magnitude larger than the +0.1% sensitivity probe --
+     and at that mu, 3:4/L1/L2 are all pushed OUT of gate to ~2.1e-3 each
+     (worse than baseline). No single mu value reconciles all four rows.
+   - **C (Jacobi constant) is a much better-supported explanation.** 6:5's
+     eigenvalue is disproportionately sensitive to C relative to the other
+     three rows -- measured sensitivity coefficients (relative
+     eigenvalue shift per relative C shift, at fixed IC) of ~1569 for 6:5
+     vs. only ~3-452 for 3:4/L1/L2. A bisected DeltaC of just 1.5e-6
+     relative (vs. mu's required -0.216%) reconciles 6:5's eigenvalue
+     exactly, and at that C ALL FOUR rows land inside the 1e-3 gate. This
+     DeltaC is the same order of magnitude as this module's own
+     already-measured ~1e-6-5e-6 relative C self-validation floor (see
+     ``test_table41_ic_reproduces_stated_jacobi_constant``) -- i.e. well
+     within this module's own derived l*/t*/C precision, not a large or
+     implausible correction.
+   - This C finding is reported as a DIAGNOSTIC explanation only, NOT
+     adopted as a correction: Table 4.1 prints ``C = 3.010000`` unqualified
+     (no "~", unlike mu's own qualified display), so there is no sourced
+     basis for a different C value -- :data:`VAQUERO_C` is kept EXACTLY as
+     printed (sourced-only discipline). This is reported HONESTLY as a FAIL
+     under :data:`TABLE41_EIGENVALUE_GATE_REL_TOL` -- not fudged, not
+     silently loosened -- while noting it is a well-characterized, small,
+     now better-explained miss, not a wild or unexplained one.
 3. **L2's own printed period (T = 79.7260 days) is very likely a
    transcription/typesetting error in the thesis's own Table 4.1**, flagged
    per this project's respectful-errata-framing discipline (evidence-first,

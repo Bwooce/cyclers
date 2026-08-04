@@ -134,14 +134,29 @@ unchanged. See `git log` around this date for the corrected commit.
   `attempt_chain_closure` + private STM-based helpers); tests:
   `tests/search/test_saturn_titan_resonant_connections.py` (28/28 pass, up from 23, not marked
   slow); results note: `docs/notes/2026-07-31-768-saturn-titan-resonant-chain.md`.
-- `#769` — registered 2026-07-29 (user: "register all possible tasks"), not yet dispatched:
-  attempt to close `#765`'s own honest 6:5 eigenvalue miss (2.34e-3 vs the `1e-3` gate). `#765`'s
-  own note characterizes this as a small, well-explained near-miss (eigenvalue-magnitude-scaled
-  sensitivity to the thesis's own 5-sig-fig `µ` display) — try Vaquero's own more precise internal
-  manifold parameters (if extractable from the thesis beyond Table 4.1's summary row) or a
-  `µ`-refinement pass, per `#764`'s own flagged "moderate risk" fallback. Low priority — the miss
-  is already honestly characterized and not blocking `#767`/`#768`, which only need 3:4 and 6:5's
-  own IC/period (both already tight), not 6:5's own eigenvalue specifically.
+- `#769` — ✓ DONE 2026-08-05: attempted to close `#765`'s own honest 6:5 eigenvalue miss (2.34e-3
+  vs the `1e-3` gate); CLEAN NEGATIVE on the fix, but with a genuinely better-supported diagnosis.
+  **Path 1** (search the thesis for a more precise `µ`): grepped the full OCR text — the ONLY
+  numeric Saturn-Titan `µ` anywhere in the thesis (p.132) is the SAME `2.3658e-4` the module
+  already uses; no higher-precision value exists to find. **Path 2** (diagnostic sensitivity
+  fit, not adopted): bisecting `µ` to exactly match 6:5's eigenvalue requires a -0.216% shift
+  that pushes 3:4/L1/L2 OUT of gate to ~2.1e-3 each — worse than baseline, so no single `µ` value
+  reconciles all four rows. Measuring the actual +0.1% `µ`-sensitivity shows it is comparable in
+  RELATIVE terms across all four rows (not absolute, as `#765`'s own docstring originally
+  claimed) — this EXCLUDES `µ` imprecision as 6:5's root cause. A parallel `C` (Jacobi constant)
+  bisection found a much better-supported diagnostic story instead: 6:5's eigenvalue is
+  ~350-500x more `C`-sensitive than the other three rows, and a tiny `ΔC` of only 1.5e-6
+  relative — the same order as this module's own already-measured C self-validation floor —
+  reconciles ALL FOUR rows inside gate. Not adopted (Table 4.1 prints `C = 3.010000` unqualified,
+  no sourced basis for a different value); `VAQUERO_MU`/`VAQUERO_C`/gate tolerances unchanged,
+  6:5 still honestly reports FAIL. `#765`'s own module docstring finding 2 (which proposed the
+  now-empirically-excluded `µ`-mechanism) was corrected in place, and a regression-guard
+  assertion was added to the existing `µ`-sensitivity test so the excluded mechanism can't
+  silently reappear unnoticed. Results note:
+  `docs/notes/2026-08-05-769-saturn-titan-65-eigenvalue.md`. Verification: 27/27 module tests
+  pass, `tests/data tests/search -q` green (except the two pre-existing, documented, unrelated
+  Mac-local BLAS-sensitivity failures also seen throughout this file), ruff clean, `mypy src
+  tests` clean (829 files).
 - `#770` — ✓ DONE 2026-07-31 (design proposal delivered — **AWAITING USER APPROVAL before any
   implementation**; nothing was written to `catalogue.yaml` or `catalogue.schema.json`): DESIGN
   SCOPING ONLY (mirroring `#707`/`#735`'s own "present before build" pattern) for whether/how
