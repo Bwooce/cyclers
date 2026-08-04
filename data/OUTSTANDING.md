@@ -213,6 +213,27 @@ unchanged. See `git log` around this date for the corrected commit.
   remaining ~34 dataset rows once this narrow version proved out, per the user's own "option 1"
   choice. Full results in `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`;
   digest in `docs/notes/2026-08-01-776-miceli-bosanac-2026-neptune-triton-digest.md`.
+- `#778` — ✓ DONE 2026-08-04 (registered + completed same-turn, per user's own "register
+  everything, numbers are free" rule; honest, well-evidenced NEGATIVE on tool adoption): user
+  found a machine-wide memory (`~/.claude/memory/pdf_inspector_tool.md`, outside this repo)
+  documenting a `pdf-inspect` CLI installed 2026-08-02 during an unrelated session, and asked to
+  reprocess the whole `cyclers_pdf/papers/` corpus (251 files) with it looking for digest
+  improvements. Before mass-reprocessing (which would touch many existing sourced digests), ran a
+  mechanical sweep of all 251 files (`pdf-inspect FILE --pages 1`, stdout bytes + stderr
+  diagnostics + `pdfinfo` Producer, no LLM tokens) plus 3 targeted head-to-head comparisons
+  against `pdftotext -layout` on content already independently verified this session. Result:
+  **41/251 (16%) produce empty/near-empty output; 24/251 (9.6%) do so while self-reporting
+  `confidence=1.0` — a silent false-confidence failure**, hitting foundational papers (Howell
+  1984, Richardson 1980, Russell 2004 dissertation, Vallado 1991). Where it DOES produce output,
+  it corrupted Vaquero 2013's Table 4.1 (dropped `×10^exponent` notation, dropped an `fi`
+  ligature — systematic per-font, not a typo) and silently deleted the mass-ratio symbol μ from
+  Anderson & Lo 2010's own equations of motion — both independently cross-checked clean via
+  `pdftotext -layout`. One genuine narrow positive: better reading-order reconstruction than
+  `pdftotext -layout` on a complex two-column layout with an interleaved rotated watermark (nav
+  use only, not fidelity). **Verdict: do NOT use for digest reprocessing** — machine-wide memory
+  updated with full findings (description field corrected). Did not audit any digest's existing
+  content — this evaluated the instrument only. Full evidence in
+  `docs/notes/2026-08-04-778-pdf-inspector-corpus-evaluation.md`.
 - `#777` — registered 2026-08-01 by `#776`'s own closure (NOT dispatched, an explicit deliberate
   follow-up per the user's own "option 1"/"prove narrow first" choice): vendor the remaining ~34
   rows of the Miceli & Bosanac 2026 ESM dataset not already covered by `#776`'s own ~16-row
