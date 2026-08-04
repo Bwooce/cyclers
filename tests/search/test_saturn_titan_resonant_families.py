@@ -239,8 +239,11 @@ def test_eigenvalue_sensitivity_to_mu_is_measured_not_assumed(
     finding 2) -- a fixed mu precision floor would produce a comparable
     RELATIVE eigenvalue error in ALL four rows, not the observed 1e-6-level
     match in three rows and 2.3e-3 miss in the fourth. See the module
-    docstring finding 2 for the follow-up (C-sensitivity) explanation that
-    #769 found better-supported, kept diagnostic-only (not adopted)."""
+    docstring finding 2: a follow-up C-sensitivity check was ALSO
+    adversarially reviewed and found not to reconcile all four rows either
+    (L1/L2's own baselines pin C far tighter than 6:5 would need) -- the
+    miss is best characterized as row-specific/source-side, not a single
+    shared-parameter correction of any kind."""
     mu_perturbed = stf.VAQUERO_MU * 1.001
     perturbed_system = cr3bp.CR3BPSystem(
         mu=mu_perturbed,

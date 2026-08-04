@@ -116,26 +116,57 @@ HONEST FINDINGS (load-bearing, read before trusting any single row):
      three orders of magnitude larger than the +0.1% sensitivity probe --
      and at that mu, 3:4/L1/L2 are all pushed OUT of gate to ~2.1e-3 each
      (worse than baseline). No single mu value reconciles all four rows.
-   - **C (Jacobi constant) is a much better-supported explanation.** 6:5's
-     eigenvalue is disproportionately sensitive to C relative to the other
-     three rows -- measured sensitivity coefficients (relative
-     eigenvalue shift per relative C shift, at fixed IC) of ~1569 for 6:5
-     vs. only ~3-452 for 3:4/L1/L2. A bisected DeltaC of just 1.5e-6
-     relative (vs. mu's required -0.216%) reconciles 6:5's eigenvalue
-     exactly, and at that C ALL FOUR rows land inside the 1e-3 gate. This
-     DeltaC is the same order of magnitude as this module's own
-     already-measured ~1e-6-5e-6 relative C self-validation floor (see
-     ``test_table41_ic_reproduces_stated_jacobi_constant``) -- i.e. well
-     within this module's own derived l*/t*/C precision, not a large or
-     implausible correction.
-   - This C finding is reported as a DIAGNOSTIC explanation only, NOT
-     adopted as a correction: Table 4.1 prints ``C = 3.010000`` unqualified
-     (no "~", unlike mu's own qualified display), so there is no sourced
-     basis for a different C value -- :data:`VAQUERO_C` is kept EXACTLY as
-     printed (sourced-only discipline). This is reported HONESTLY as a FAIL
-     under :data:`TABLE41_EIGENVALUE_GATE_REL_TOL` -- not fudged, not
-     silently loosened -- while noting it is a well-characterized, small,
-     now better-explained miss, not a wild or unexplained one.
+   - **A single global C (Jacobi constant) offset does NOT explain the
+     table either -- adversarially reviewed and REFUTED, not just
+     "not adopted."** An earlier draft of this finding claimed C was "a
+     much better-supported explanation" than mu, citing a bisected DeltaC
+     of 1.5e-6 relative that reconciles 6:5's eigenvalue while leaving all
+     four rows inside the 1e-3 gate. A Fable adversarial review (2026-08-05)
+     found that framing overclaimed on two counts: (a) the "~1569 for 6:5
+     vs ~3-452 for the others" sensitivity coefficients mean 6:5 is only
+     ~3.5x more C-sensitive than L1/L2 specifically (1569/452, 1569/446),
+     not "~350-500x" as an earlier draft of this note claimed for all three
+     -- that 500x figure only holds against 3:4, whose own coefficient is
+     itself ill-determined (a ~45% spread between +/- probes). (b)
+     Inverting each row's OWN baseline eigenvalue error through its OWN
+     measured C-coefficient gives the implied (C_true - C_printed)/C each
+     row would need: 6:5 wants -1.49e-6, but L1 wants only -1.0e-8 and L2
+     only -6.1e-9 -- L1/L2 pin Vaquero's effective C to the printed
+     3.010000 to ~1e-8 relative, ~150x tighter than what 6:5 would need. A
+     single shared C offset is excluded by the SAME logic (and by a wider
+     margin) that excluded mu: at the bisected C_fit, L1/L2's own
+     eigenvalue errors get 146x/242x WORSE (4.6e-6/2.7e-6 -> 6.66e-4/6.59e-4)
+     -- "still inside the 1e-3 gate" is a threshold artifact, not evidence
+     FOR a shared-C explanation. Display-rounding cannot rescue it either:
+     a correctly-rounded ``C = 3.010000`` (6 dp) bounds any true C within
+     5e-7 absolute (1.66e-7 relative) of the printed value, which at 6:5's
+     own C-coefficient explains at most ~2.6e-4 of eigenvalue error --
+     an order of magnitude short of the observed 2.34e-3 miss. (The
+     earlier draft's "plausibility" argument -- that the required DeltaC
+     sits within this module's own C self-validation floor,
+     ``test_table41_ic_reproduces_stated_jacobi_constant`` -- was also a
+     category error: that residual measures THIS module's own l*/t*
+     round-trip noise reproducing the PRINTED C, not any evidence about
+     whether Vaquero's own internal C differed from what she printed; it
+     never even enters the eigenvalue corrector, which holds C exactly at
+     the printed value throughout.)
+   - **What the evidence actually supports**: 6:5's own eigenvalue genuinely
+     is far more C-sensitive than the other three rows' (confirmed smooth
+     and monotone over a wide C window, not a fold/bifurcation artifact or
+     bisection noise) -- but no single shared parameter (mu, C, or a joint
+     mu+C offset checked against the full sensitivity matrix) reconciles
+     all four rows simultaneously, and this row's own numerics are
+     independently verified rock-solid on our side (Newton residual 3.6e-12,
+     eigenvalue stable to 1.8e-10 across a 100x rtol sweep, Barden vs
+     Floquet agree to 7e-10). The best-supported honest account is that the
+     miss is ROW-SPECIFIC and SOURCE-SIDE -- a transcription/precision
+     issue specific to 6:5's own printed 191.641 (this table already
+     carries one other demonstrated erratum, L2's period, see finding 3
+     below) amplified through 6:5's own unusually steep C-sensitivity --
+     not a coherent single-parameter correction. This is reported HONESTLY
+     as a FAIL under :data:`TABLE41_EIGENVALUE_GATE_REL_TOL` -- not fudged,
+     not silently loosened -- while noting it is a well-characterized,
+     small, genuinely-investigated miss, not a wild or unexplained one.
 3. **L2's own printed period (T = 79.7260 days) is very likely a
    transcription/typesetting error in the thesis's own Table 4.1**, flagged
    per this project's respectful-errata-framing discipline (evidence-first,

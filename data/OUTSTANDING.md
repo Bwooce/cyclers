@@ -144,15 +144,25 @@ unchanged. See `git log` around this date for the corrected commit.
   reconciles all four rows. Measuring the actual +0.1% `µ`-sensitivity shows it is comparable in
   RELATIVE terms across all four rows (not absolute, as `#765`'s own docstring originally
   claimed) — this EXCLUDES `µ` imprecision as 6:5's root cause. A parallel `C` (Jacobi constant)
-  bisection found a much better-supported diagnostic story instead: 6:5's eigenvalue is
-  ~350-500x more `C`-sensitive than the other three rows, and a tiny `ΔC` of only 1.5e-6
-  relative — the same order as this module's own already-measured C self-validation floor —
-  reconciles ALL FOUR rows inside gate. Not adopted (Table 4.1 prints `C = 3.010000` unqualified,
-  no sourced basis for a different value); `VAQUERO_MU`/`VAQUERO_C`/gate tolerances unchanged,
-  6:5 still honestly reports FAIL. `#765`'s own module docstring finding 2 (which proposed the
-  now-empirically-excluded `µ`-mechanism) was corrected in place, and a regression-guard
-  assertion was added to the existing `µ`-sensitivity test so the excluded mechanism can't
-  silently reappear unnoticed. Results note:
+  bisection initially looked like a much better-supported diagnostic story (a tiny `ΔC` of
+  1.5e-6 relative reconciling all four rows inside gate) — **but a Fable adversarial review
+  (2026-08-05, dispatched at the user's explicit request — "review 769 with Fable, this is
+  inconsistent and should be drilled into") found that story does NOT survive scrutiny either**:
+  L1/L2's own baseline errors pin Vaquero's effective `C` to the printed value ~150x tighter
+  than 6:5 alone would need (a single shared `C` offset is excluded by the same cross-row
+  logic that excluded `µ`), the claimed "~350-500x more C-sensitive" figure was a factual error
+  (true ratio vs L1/L2 is only ~3.5x), and the "plausibility" argument citing this module's own
+  C self-validation floor was a category error (that floor measures this codebase's own
+  numerical noise, not evidence about Vaquero's own C precision). No single shared parameter
+  reconciles all four rows; the best-supported account is a row-specific, source-side issue in
+  6:5's own printed eigenvalue, amplified by 6:5's own genuinely steep (and independently
+  confirmed real, non-artifactual) `C`-sensitivity. Not adopted either way (Table 4.1 prints
+  `C = 3.010000` unqualified, no sourced basis for a different value); `VAQUERO_MU`/`VAQUERO_C`/
+  gate tolerances unchanged, 6:5 still honestly reports FAIL. `#765`'s own module docstring
+  finding 2 was corrected TWICE — once to exclude the now-falsified `µ`-mechanism, once more
+  after the adversarial review to walk back the overclaimed `C`-mechanism — and a
+  regression-guard assertion was added to the existing `µ`-sensitivity test so the originally
+  -excluded mechanism can't silently reappear unnoticed. Results note:
   `docs/notes/2026-08-05-769-saturn-titan-65-eigenvalue.md`. Verification: 27/27 module tests
   pass, `tests/data tests/search -q` green (except the two pre-existing, documented, unrelated
   Mac-local BLAS-sensitivity failures also seen throughout this file), ruff clean, `mypy src
