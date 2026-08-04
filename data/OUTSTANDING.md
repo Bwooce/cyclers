@@ -213,6 +213,14 @@ unchanged. See `git log` around this date for the corrected commit.
   remaining ~34 dataset rows once this narrow version proved out, per the user's own "option 1"
   choice. Full results in `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`;
   digest in `docs/notes/2026-08-01-776-miceli-bosanac-2026-neptune-triton-digest.md`.
+- `#779` — registered 2026-08-04 (user: "approve 770"), dispatched: implement `#770`'s
+  RECOMMENDED option (b) — add the OPTIONAL, non-gating
+  `crnbp_provenance.torus.seed_orbit_homoclinic{}` sub-block to `europa-3-4-crnbp-torus-jupiter-2026`
+  per the design note's full draft YAML (`docs/notes/2026-07-31-770-torus-connection-writeback-design.md`
+  §4), re-deriving TBD full-precision values (`t_u_tu`, `radau_crosscheck`) fresh from the
+  producing functions rather than copying rounded numbers from the note. `orbit_class` stays
+  `quasi_periodic_torus`, `validation_level` stays V1 — NOT a promotion, NOT a reclassification,
+  per `#707`/`#735` "design then small writeback task" precedent (mirrors `#708`/`#736`).
 - `#778` — ✓ DONE 2026-08-04 (registered + completed same-turn, per user's own "register
   everything, numbers are free" rule; honest, well-evidenced NEGATIVE on tool adoption): user
   found a machine-wide memory (`~/.claude/memory/pdf_inspector_tool.md`, outside this repo)
@@ -234,8 +242,8 @@ unchanged. See `git log` around this date for the corrected commit.
   updated with full findings (description field corrected). Did not audit any digest's existing
   content — this evaluated the instrument only. Full evidence in
   `docs/notes/2026-08-04-778-pdf-inspector-corpus-evaluation.md`.
-- `#777` — registered 2026-08-01 by `#776`'s own closure (NOT dispatched, an explicit deliberate
-  follow-up per the user's own "option 1"/"prove narrow first" choice): vendor the remaining ~34
+- `#777` — registered 2026-08-01 by `#776`'s own closure, DISPATCHED 2026-08-04 (user: "dispatch
+  777"): vendor the remaining ~34
   rows of the Miceli & Bosanac 2026 ESM dataset not already covered by `#776`'s own ~16-row
   subset (the full dataset spans ~20 resonant labels 1:2…4:7 plus additional DPO/manifold-arc
   primitives), extending `search/neptune_triton_resonant_families.py`'s own gate to
