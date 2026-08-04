@@ -355,6 +355,503 @@ ESM_GATE_ROWS: dict[str, EsmRow] = {
     ),
 }
 
+#: `#777`'s own vendor of the REMAINING canonical rows -- every periodic-orbit
+#: row across all three ESM text files that `#776` did NOT already vendor
+#: (into :data:`ESM_GATE_ROWS`/:data:`FAMILY_23`/:data:`FAMILY_43_HC2`/
+#: :data:`FAMILY_43_NEAR_UNIT`), and that is NOT a manifold-arc sample point
+#: (every ``*Manifold*``-labelled row in every ESM file) or the ESM3
+#: ``InitialCondition`` row (a non-symmetric example arc: ``y0``/``xdot0``
+#: both far from zero, unlike every genuine symmetric-perpendicular-crossing
+#: row in this dataset; also its own "Integration Time" of exactly
+#: ``8.000000000000`` is a round guess, not a converged period). This
+#: partition was cross-checked two ways this task: by the source's own
+#: label convention (``"Manifold" in label``) AND independently by physics
+#: (``|y0| < 1e-6 and |xdot0| < 1e-6``, the symmetric perpendicular-crossing
+#: form every genuine row in this dataset satisfies) -- the two
+#: discriminators agree on all but the ``InitialCondition`` row (excluded by
+#: both readings) and ESM4's own ``Res32-x+h`` 4th printed row (labelled
+#: canonical, physics borderline: ``xdot0 = -3.5e-6``, ~1000x the other
+#: rows' numerical-zero floor -- vendored anyway as
+#: :data:`ESM_ROWS_777`\\ ``["3:2-x-esm4-4-hc2"]``, and it converges and
+#: reproduces cleanly, see the `#777` results note).
+#:
+#: 64 total canonical periodic-orbit rows exist across all three files (2
+#: ESM2 + 20 ESM3 + 42 ESM4, each count excluding manifold-arc samples and
+#: the one ESM3 ``InitialCondition`` row); `#776` vendored 16, leaving 48 --
+#: NOT the dispatch note's own "~34" estimate, which this task's own full
+#: line-by-line audit supersedes (the note's own text hedges between "~50"
+#: and "~40" for the full dataset size, i.e. it was never an exact count).
+#: Each key encodes the source file and, where a resonance label repeats
+#: (e.g. ``Res32-x+h``/``Res35+x+h``/``Res37+x+h``/``Res25+x+h`` each appear
+#: in BOTH ESM3 -- the high-energy scenario -- and ESM4 -- the low-energy
+#: scenario -- as genuinely DIFFERENT orbits at different energies), a
+#: disambiguating suffix. ``half_crossings`` for every row here was
+#: determined by the SAME logic
+#: :func:`~cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+#: itself uses when ``half_crossings=None`` (the x-axis crossing nearest
+#: ``T/2`` on the row's own raw printed seed) -- verified this task to
+#: recover the EXACT integer `#776` hand-picked for all ten
+#: :data:`ESM_GATE_ROWS` (see the `#777` results note), then applied
+#: identically (and automatically, not by hand) to determine each of these
+#: 48 rows' own ``half_crossings``.
+ESM_ROWS_777: dict[str, EsmRow] = {
+    "1:2+x-esm3": EsmRow(
+        "ESM3",
+        "Res12+x+h",
+        -2.881985569172,
+        2.629061067518,
+        12.565322956698,
+        2.087857684887,
+        half_crossings=2,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:3+x-esm3": EsmRow(
+        "ESM3",
+        "Res13+x+h",
+        3.881265184491,
+        -3.695444984891,
+        18.848557784566,
+        1.923211311544,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:4+x-esm3": EsmRow(
+        "ESM3",
+        "Res14+x+h",
+        -4.726150512913,
+        4.563934946864,
+        25.131462992052,
+        1.930177120216,
+        half_crossings=4,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:5+x-esm3": EsmRow(
+        "ESM3",
+        "Res15+x+h",
+        5.538576809791,
+        -5.400376191429,
+        31.414670710784,
+        1.872876665255,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:6+x-esm3": EsmRow(
+        "ESM3",
+        "Res16+x+h",
+        -6.295434702902,
+        6.173654257652,
+        37.697858257993,
+        1.836183182624,
+        half_crossings=6,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:2-x-esm3": EsmRow(
+        "ESM3",
+        "Res12-x+h",
+        2.853032087636,
+        -2.586497899344,
+        12.565981903554,
+        2.150856994671,
+        half_crossings=2,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:3-x-esm3": EsmRow(
+        "ESM3",
+        "Res13-x+h",
+        -3.846153863588,
+        3.648041737296,
+        18.849282294101,
+        2.004696851716,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:4-x-esm3": EsmRow(
+        "ESM3",
+        "Res14-x+h",
+        4.728614397337,
+        -4.567040795841,
+        25.132523053918,
+        1.924894380458,
+        half_crossings=4,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:5-x-esm3": EsmRow(
+        "ESM3",
+        "Res15-x+h",
+        -5.539066462547,
+        5.400949493601,
+        31.41574095424,
+        1.872075600765,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "1:6-x-esm3": EsmRow(
+        "ESM3",
+        "Res16-x+h",
+        6.294392527402,
+        -6.172369282487,
+        37.698950324355,
+        1.838979854033,
+        half_crossings=6,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "2:3+x-esm3": EsmRow(
+        "ESM3",
+        "Res23+x+h",
+        -0.365579935991,
+        -1.804829719189,
+        18.847313075301,
+        2.349289074276,
+        half_crossings=3,
+    ),
+    "2:5+x-esm3-a": EsmRow(
+        "ESM3",
+        "Res25+x+h",
+        -0.359590081974,
+        -1.881420495985,
+        31.413980368524,
+        2.153828969208,
+        half_crossings=5,
+    ),
+    "2:5+x-esm3-b": EsmRow(
+        "ESM3",
+        "Res25+x+h",
+        -0.133788762402,
+        -3.664658323504,
+        31.415474389787,
+        1.557741294442,
+        half_crossings=5,
+    ),
+    "2:7+x-esm3": EsmRow(
+        "ESM3",
+        "Res27+x+h",
+        -0.394232267081,
+        -1.760282367839,
+        43.980167275576,
+        2.131905993064,
+        half_crossings=7,
+    ),
+    "3:5+x-esm3-a": EsmRow(
+        "ESM3",
+        "Res35+x+h",
+        2.458058379136,
+        -2.137388595919,
+        31.414714967173,
+        2.287318726546,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:5+x-esm3-b": EsmRow(
+        "ESM3",
+        "Res35+x+h",
+        2.669249687271,
+        -2.493705123651,
+        31.435340833126,
+        1.655638000947,
+        half_crossings=7,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:7+x-esm3": EsmRow(
+        "ESM3",
+        "Res37+x+h",
+        3.164445257148,
+        -2.913440217696,
+        43.98110674662,
+        2.157621466905,
+        half_crossings=7,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:2-x-esm3": EsmRow(
+        "ESM3",
+        "Res32-x+h",
+        -1.409885974671,
+        1.095591466476,
+        12.591036231653,
+        2.206099474428,
+        half_crossings=4,
+    ),
+    "4:7+x-esm3": EsmRow(
+        "ESM3",
+        "Res47+x+h",
+        -0.470177886888,
+        -1.418507580813,
+        43.980986318935,
+        2.463898983392,
+        half_crossings=5,
+    ),
+    "dpo-esm4-2": EsmRow(
+        "ESM4",
+        "DPO",
+        1.028985613619,
+        0.040195329373,
+        1.634978037991,
+        3.014371175305,
+        half_crossings=1,
+    ),
+    "dpo-esm4-3": EsmRow(
+        "ESM4",
+        "DPO",
+        1.019336701767,
+        0.095134439112,
+        1.955619445468,
+        3.012625720711,
+        half_crossings=1,
+    ),
+    "dpo-esm4-4": EsmRow(
+        "ESM4",
+        "DPO",
+        1.019089538845,
+        0.104337222372,
+        2.558921874199,
+        3.011035604084,
+        half_crossings=1,
+    ),
+    "dpo-esm4-5": EsmRow(
+        "ESM4",
+        "DPO",
+        1.009271703264,
+        0.198382618516,
+        5.077947793418,
+        3.004155808609,
+        half_crossings=1,
+    ),
+    "dpo-esm4-6": EsmRow(
+        "ESM4",
+        "DPO",
+        1.005879313722,
+        0.256995578474,
+        6.410913929984,
+        3.001868612096,
+        half_crossings=1,
+    ),
+    "dpo-esm4-7": EsmRow(
+        "ESM4",
+        "DPO",
+        1.016304777393,
+        0.128859845163,
+        3.359222472154,
+        3.008674776768,
+        half_crossings=1,
+    ),
+    "dpo-esm4-8": EsmRow(
+        "ESM4",
+        "DPO",
+        1.004676477572,
+        0.289504961848,
+        7.065417702085,
+        3.000962711997,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-1": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.422381198297,
+        -1.11679899095,
+        2.375767706138,
+        3.667872679873,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-2": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.571905075074,
+        -0.810066747446,
+        6.267545865946,
+        3.16876419003,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-3": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.494889250931,
+        -1.072122399859,
+        6.278687833947,
+        3.137918984588,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-4": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.344627392152,
+        -1.709552222437,
+        6.282265472104,
+        3.002186711319,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-5": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.553283163195,
+        -0.870823493378,
+        6.272470069813,
+        3.163453424462,
+        half_crossings=1,
+    ),
+    "2:1+x-esm4-6": EsmRow(
+        "ESM4",
+        "Res21+x+h",
+        -0.409241105002,
+        -1.407993564232,
+        6.281434480179,
+        3.073898451678,
+        half_crossings=1,
+    ),
+    "3:1+x-esm4": EsmRow(
+        "ESM4",
+        "Res31+x+h",
+        0.834528861046,
+        -0.272752100958,
+        6.285562711468,
+        3.020034696252,
+        half_crossings=3,
+    ),
+    "4:3-x-esm4": EsmRow(
+        "ESM4",
+        "Res43-x+h",
+        -1.022345713632,
+        0.157092765873,
+        18.20352811568,
+        2.976995754154,
+        half_crossings=3,
+    ),
+    "3:2-x-esm4-2": EsmRow(
+        "ESM4",
+        "Res32-x+h",
+        -0.820920211862,
+        -0.240026970212,
+        12.515721167928,
+        3.052928013745,
+        half_crossings=1,
+    ),
+    "3:2-x-esm4-3": EsmRow(
+        "ESM4",
+        "Res32-x+h",
+        -0.880724117645,
+        -0.099582624494,
+        12.550099470914,
+        3.036903446772,
+        half_crossings=1,
+    ),
+    "3:2-x-esm4-4-hc2": EsmRow(
+        "ESM4",
+        "Res32-x+h",
+        -0.925033394133,
+        0.001786689533,
+        12.557846095824,
+        3.01802142663,
+        half_crossings=2,
+    ),
+    "3:1-x-esm4": EsmRow(
+        "ESM4",
+        "Res31-x+h",
+        -0.507055422708,
+        -0.858856026001,
+        6.281482574188,
+        3.464892428615,
+        half_crossings=2,
+    ),
+    "2:5-x-esm4-a": EsmRow(
+        "ESM4",
+        "Res25-x+h",
+        2.605157173629,
+        -2.131259480202,
+        31.413272702456,
+        3.012323270749,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "2:5-x-esm4-b": EsmRow(
+        "ESM4",
+        "Res25-x+h",
+        2.451464687162,
+        -1.929108835683,
+        31.412100639764,
+        3.104104896788,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:7-x-esm4-a": EsmRow(
+        "ESM4",
+        "Res37-x+h",
+        -2.451852439033,
+        1.954836785589,
+        43.97841699659,
+        3.005923436396,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:7-x-esm4-b": EsmRow(
+        "ESM4",
+        "Res37-x+h",
+        -2.30002388912,
+        1.751554043402,
+        43.976894317465,
+        3.091748446122,
+        half_crossings=4,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "4:7-x-esm4-2": EsmRow(
+        "ESM4",
+        "Res47-x+h",
+        1.859691399331,
+        -1.237664536854,
+        43.973226037865,
+        3.002226320753,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "4:7-x-esm4-3": EsmRow(
+        "ESM4",
+        "Res47-x+h",
+        1.760479162715,
+        -1.091573950222,
+        43.967983268029,
+        3.043984736798,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:5+x-esm4": EsmRow(
+        "ESM4",
+        "Res35+x+h",
+        1.830014159439,
+        -1.212556168782,
+        30.79431962425,
+        2.971697335067,
+        half_crossings=3,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "3:7+x-esm4": EsmRow(
+        "ESM4",
+        "Res37+x+h",
+        2.549855330075,
+        -2.08596335114,
+        43.817277173449,
+        2.934918780687,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "2:7-x-esm4": EsmRow(
+        "ESM4",
+        "Res27-x+h",
+        3.550644667983,
+        -3.190468338493,
+        43.980653815271,
+        2.991280323087,
+        half_crossings=5,
+        x0_bounds=(-10.0, 10.0),
+    ),
+    "2:5+x-esm4": EsmRow(
+        "ESM4",
+        "Res25+x+h",
+        -0.968115055111,
+        -0.265959718835,
+        31.246951744637,
+        2.932608921945,
+        half_crossings=5,
+    ),
+}
+
+
 #: The 2:3 resonant family (ESM4 "Res23-x+h", all 3 printed members,
 #: uniform half_crossings=1 -- unlike the 4:3 family below, this one is a
 #: single, cleanly-continuable branch, see :func:`continue_23_family`).
@@ -429,6 +926,91 @@ FAMILY_43_NEAR_UNIT: tuple[EsmRow, ...] = (
     ),
 )
 
+#: `#777`'s own multi-member continuation targets, drawn from
+#: :data:`ESM_ROWS_777` (plus, where a family shares a member with
+#: `#776`'s own vendor, the shared :data:`ESM_GATE_ROWS` row -- reused, NOT
+#: re-vendored). Two clean confirmations, three honest negatives -- see the
+#: `#777` results note for the full narrative; each tuple/function pair
+#: below documents its own one-line finding.
+
+#: The low-energy 3:2 family's OWN ``half_crossings=1`` branch (ESM4
+#: "Res32-x+h", 3 of its 4 printed members -- the 4th, C=3.018021426630,
+#: is a DIFFERENT ``half_crossings=2`` branch, vendored separately as
+#: :data:`ESM_ROWS_777`\\ ``["3:2-x-esm4-4-hc2"]``, itself a family-mixing
+#: finding paralleling `#776`'s own 4:3 case). Lowest-C member IS
+#: ``ESM_GATE_ROWS["3:2-start"]``. See
+#: :func:`continue_32_esm4_hc1_family_777` -- CLEAN: ``JACOBI_BOUND``, 482
+#: gauntlet-passing members, 0 rejections.
+FAMILY_32_ESM4_HC1_777: tuple[EsmRow, ...] = (
+    ESM_GATE_ROWS["3:2-start"],
+    ESM_ROWS_777["3:2-x-esm4-3"],
+    ESM_ROWS_777["3:2-x-esm4-2"],
+)
+
+#: The high-energy 4:7 family's OWN ``half_crossings=3`` pair (ESM4
+#: "Res47-x+h", the 2nd/3rd printed members -- the 1st,
+#: ``half_crossings=5``, is the ALREADY-vendored ``"4:7-stress"`` row, a
+#: DIFFERENT branch, another family-mixing instance). See
+#: :func:`continue_47_esm4_pair_777` -- CLEAN: ``JACOBI_BOUND``, 105
+#: gauntlet-passing members, 0 rejections.
+FAMILY_47_ESM4_HC3_777: tuple[EsmRow, ...] = (
+    ESM_ROWS_777["4:7-x-esm4-2"],
+    ESM_ROWS_777["4:7-x-esm4-3"],
+)
+
+#: The full 8-member low-energy DPO family (ESM4 "DPO", all 8 printed rows,
+#: uniform ``half_crossings=1``), ordered by ASCENDING Jacobi constant (NOT
+#: source-file/print order -- ``ESM_GATE_ROWS["DPO"]`` is the 7th-lowest of
+#: the 8, not the lowest; mirrors `#776`'s own pre-sorted-by-C convention
+#: for :data:`FAMILY_23`/:data:`FAMILY_43_HC2`, which :func:`continue_*`
+#: below relies on: seed = index 0, target = index -1).
+#: See :func:`continue_dpo_family_gauntlet_reject_777` -- HONEST NEGATIVE:
+#: ``GAUNTLET_REJECT`` after 36 members, short of 5 of the 7 higher-C
+#: printed members (module docstring "family-mixing"-adjacent finding --
+#: unlike a fold or a topology jump, the walk itself is rejected by the
+#: gauntlet's own physical-plausibility checks partway through, see the
+#: `#777` results note for the specific rejection).
+FAMILY_DPO_777: tuple[EsmRow, ...] = (
+    ESM_ROWS_777["dpo-esm4-8"],  # C=3.000962711997
+    ESM_ROWS_777["dpo-esm4-6"],  # C=3.001868612096
+    ESM_ROWS_777["dpo-esm4-5"],  # C=3.004155808609
+    ESM_ROWS_777["dpo-esm4-7"],  # C=3.008674776768
+    ESM_ROWS_777["dpo-esm4-4"],  # C=3.011035604084
+    ESM_ROWS_777["dpo-esm4-3"],  # C=3.012625720711
+    ESM_GATE_ROWS["DPO"],  # C=3.013873926461
+    ESM_ROWS_777["dpo-esm4-2"],  # C=3.014371175305
+)
+
+#: The low-energy 2:1 family (ESM4 "Res21+x+h", all 6 printed members,
+#: uniform ``half_crossings=1``), ordered by ASCENDING Jacobi constant (see
+#: :data:`FAMILY_DPO_777`'s own docstring note on ordering). See
+#: :func:`continue_21_esm4_family_fold_reversal_777` -- HONEST NEGATIVE:
+#: ``FOLD_REVERSAL`` after 91 members, reaching 4 of the 5 higher-C members
+#: cleanly (x0 rel. err <=4.2e-3) but folding back well short of the 6th
+#: (C=3.667872679873) -- a genuine outlier at ~0.5 higher C than its own
+#: 5 siblings (C in [3.002, 3.169]), confirming it is not on the same
+#: smooth continuation curve.
+FAMILY_21_ESM4_777: tuple[EsmRow, ...] = (
+    ESM_ROWS_777["2:1+x-esm4-4"],  # C=3.002186711319
+    ESM_ROWS_777["2:1+x-esm4-6"],  # C=3.073898451678
+    ESM_ROWS_777["2:1+x-esm4-3"],  # C=3.137918984588
+    ESM_ROWS_777["2:1+x-esm4-5"],  # C=3.163453424462
+    ESM_ROWS_777["2:1+x-esm4-2"],  # C=3.168764190030
+    ESM_ROWS_777["2:1+x-esm4-1"],  # C=3.667872679873
+)
+
+#: The high-energy 2:5 "-x+h" pair (ESM4 "Res25-x+h", both printed members,
+#: uniform ``half_crossings=3``). See
+#: :func:`continue_25m_esm4_family_topology_jump_777` -- HONEST NEGATIVE:
+#: ``TOPOLOGY_JUMP`` at the FIRST step -- these two printed rows are NOT
+#: two points on one continuous branch (module docstring
+#: "family-mixing"-adjacent finding, the sharpest form of it seen in this
+#: task: not even ONE continuation step succeeds).
+FAMILY_25M_ESM4_777: tuple[EsmRow, ...] = (
+    ESM_ROWS_777["2:5-x-esm4-a"],
+    ESM_ROWS_777["2:5-x-esm4-b"],
+)
+
 #: Documents the two-body-resonant-seed-lineage honest negative (module
 #: docstring) in one importable, testable place.
 TWO_BODY_SEED_LINEAGE_NOTE = (
@@ -450,6 +1032,43 @@ TWO_BODY_SEED_LINEAGE_NOTE = (
     "step-collapse hazard in jrf.survey_candidates's own docstring "
     "(confirmed once in scratchpad this task: both (4,3,+1) and (2,3,+1) "
     "time out under a 20s wall-clock budget)."
+)
+
+#: `#777`'s own extension of the two-body-seed-lineage check onto two of the
+#: NEW resonance ratios this task vendors that `#776` never tried (`#776`
+#: only tried (4,3) and (2,3)): (1,2) and (2,1), each ``x0_sign=-1``,
+#: converged directly at its own natural Jacobi constant via
+#: ``jrf.converge_candidate`` exactly as :data:`TWO_BODY_SEED_LINEAGE_NOTE`
+#: does. (2,1) reproduces the SAME qualitative finding as `#776`'s own
+#: (4,3)/(2,3): converges cleanly but to the WRONG topology
+#: (``period/2pi ~= 2.0``, not the (2,1) label's own implied ``~= 1.0``).
+#: (1,2) is a MORE NUANCED negative worth stating precisely: it converges to
+#: a period/2pi ~= 2.0 orbit, matching this label's OWN implied index (q=2)
+#: -- unlike every other naive attempt in this family of checks -- but at a
+#: hugely different Jacobi constant (C=2.971143, vs. the paper's own printed
+#: "1:2+x-esm3" row at C=2.087857684887, ESM_ROWS_777) and a very different
+#: x0 (-1.000000 vs. -2.881985569172) -- i.e. even a period-index "hit"
+#: lands on a DIFFERENT orbit than the paper's own labeled family member,
+#: not a genuine identification of it. Consistent with the overall pattern:
+#: the naive two-body-resonant-ellipse construction is not, by itself, a
+#: reliable seed for identifying a SPECIFIC labeled family in this system,
+#: even on the rare occasion its period ratio coincidentally lands right.
+TWO_BODY_SEED_LINEAGE_NOTE_777 = (
+    "jrf.two_body_resonant_seed(1, 2, x0_sign=-1), converged directly at its "
+    "own natural Jacobi constant (2.971143204812636), lands on a "
+    "period/2pi ~= 2.0 orbit (2.000217859372656) -- matching the '1:2' "
+    "label's own implied index (q=2), UNLIKE every other naive attempt here "
+    "-- but at x0=-1.0, C=2.971143204812636, hugely different from the "
+    "paper's own printed '1:2+x-esm3' row (x0=-2.881985569172, "
+    "C=2.087857684887, ESM_ROWS_777): a period-index 'hit' that is still "
+    "NOT the same orbit as the paper's own labeled family member. "
+    "jrf.two_body_resonant_seed(2, 1, x0_sign=-1), converged at its own "
+    "natural Jacobi constant (2.872287334624295), lands on a period/2pi "
+    "~= 2.0 orbit (2.000101532727) -- NOT the '2:1' label's own implied "
+    "index (q=1, period/2pi ~= 1.0) -- the same qualitative wrong-topology "
+    "finding as `#776`'s own (4,3)/(2,3) attempts. Both converge cleanly; "
+    "neither reliably identifies its own labeled family, extending `#776`'s "
+    "own finding onto two more resonance ratios not previously tried."
 )
 
 #: Miceli 2025 PhD dissertation Table 2.1 (p.~59), verbatim: equilibrium
@@ -619,20 +1238,58 @@ class GateRow:
     passed: bool
 
 
-def gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
-    """Recover all ten :data:`ESM_GATE_ROWS` candidates and check each
-    against criteria (a)/(b)/(c) of the `#776` dispatch note's own gate.
-    Honest: does not fudge or hide a failing row on any criterion.
+def gate_report(
+    system: cr3bp.CR3BPSystem | None = None,
+    rows: dict[str, EsmRow] | None = None,
+) -> list[GateRow]:
+    """Recover every row of ``rows`` (default :data:`ESM_GATE_ROWS`, `#776`'s
+    own ten hand-picked rows) and check each against criteria (a)/(b)/(c) of
+    the gate. Honest: does not fudge or hide a failing row on any criterion.
+
+    Unlike `#776`'s own original version of this function (which raised on a
+    non-converging seed -- safe there, since all ten of `#776`'s own
+    hand-picked rows were already known to converge), a non-convergence here
+    is recorded as its own honest ``GateRow`` (``periodicity_confirmed``
+    computed as usual; ``reproduction_confirmed``/``crosscheck_confirmed``/
+    ``passed`` all ``False``, the three eigenvalue/reproduction fields
+    ``nan``) rather than raising -- `#777`'s own much larger, NOT
+    hand-picked 48-row vendor (:data:`ESM_ROWS_777`) makes a non-convergence
+    itself a plausible, reportable negative, not a bug to crash on. (In
+    practice every one of `#777`'s 48 rows DOES converge -- see the `#777`
+    results note -- so this path is defensive, not load-bearing for the
+    `#777` sweep itself.) :func:`recover_esm_candidate` (single-label,
+    :data:`ESM_GATE_ROWS`-only) is UNCHANGED and still raises -- that
+    remains the right behavior for `#776`'s own ten already-known-good rows.
     """
     sys_ = system if system is not None else neptune_triton_system()
-    rows: list[GateRow] = []
-    for label, row in ESM_GATE_ROWS.items():
+    rows_ = rows if rows is not None else ESM_GATE_ROWS
+    out: list[GateRow] = []
+    for label, row in rows_.items():
         resid = periodicity_residual(row, sys_)
         periodicity_ok = resid < PERIODICITY_GATE_TOL
 
         cand = _converge_esm_row(row, sys_, label=label)
         if cand is None:
-            raise ValueError(f"sourced ESM seed for {label!r} failed to converge -- regression")
+            out.append(
+                GateRow(
+                    label=label,
+                    source_file=row.source_file,
+                    source_row_label=row.source_row_label,
+                    periodicity_residual=resid,
+                    periodicity_confirmed=periodicity_ok,
+                    x0_rel_err=float("nan"),
+                    ydot0_rel_err=float("nan"),
+                    period_rel_err=float("nan"),
+                    reproduction_confirmed=False,
+                    max_eigenvalue=float("nan"),
+                    is_real_unstable=False,
+                    planar_floquet_eigenvalue=float("nan"),
+                    crosscheck_rel_err=float("nan"),
+                    crosscheck_confirmed=False,
+                    passed=False,
+                )
+            )
+            continue
 
         x0_rel_err = abs(cand.x0 - row.x0) / abs(row.x0) if row.x0 != 0 else abs(cand.x0)
         ydot0_rel_err = abs(cand.ydot0 - row.ydot0) / abs(row.ydot0)
@@ -650,7 +1307,7 @@ def gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
         )
         crosscheck_ok = crosscheck_rel_err < CROSSCHECK_GATE_REL_TOL
 
-        rows.append(
+        out.append(
             GateRow(
                 label=label,
                 source_file=row.source_file,
@@ -669,7 +1326,21 @@ def gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
                 passed=periodicity_ok and reproduction_ok and crosscheck_ok,
             )
         )
-    return rows
+    return out
+
+
+def gate_report_777(system: cr3bp.CR3BPSystem | None = None) -> list[GateRow]:
+    """`#777`'s own gate report over :data:`ESM_ROWS_777` -- the 48 rows
+    `#776` did NOT vendor -- via the SAME :func:`gate_report` criteria
+    (a)/(b)/(c) and the same honesty discipline (a non-convergence, a
+    periodicity miss, a reproduction miss, or a crosscheck miss are all
+    reported as-found, never hidden). See the `#777` results note for the
+    full per-row sweep (47/48 pass; one honest crosscheck-only negative,
+    ``"dpo-esm4-2"``, `#777`'s own analog of `#776`'s 4:3 fold-reversal
+    finding -- a genuine near-miss just outside :data:`CROSSCHECK_GATE_REL_TOL`,
+    not a bug).
+    """
+    return gate_report(system, ESM_ROWS_777)
 
 
 # ---------------------------------------------------------------------------
@@ -855,14 +1526,197 @@ def continue_43_near_unit_family_fold_reversal(
     )
 
 
+# ---------------------------------------------------------------------------
+# `#777`'s own continuation checks (item (e) of its gate) over the 5
+# multi-member families :data:`ESM_ROWS_777` supports: 2 clean
+# confirmations, 3 honest negatives. See the `#777` results note.
+# ---------------------------------------------------------------------------
+
+
+def continue_32_esm4_hc1_family_777(
+    system: cr3bp.CR3BPSystem | None = None, *, d_jacobi: float = 5e-5, jacobi_tol: float = 1e-7
+) -> cc.FamilyBranch:
+    """Continue :data:`FAMILY_32_ESM4_HC1_777` (the low-energy 3:2 family's
+    own ``half_crossings=1`` branch, 3 members) from its own lower-C member
+    (= ``ESM_GATE_ROWS["3:2-start"]``) toward its own higher-C one.
+
+    FINDING (`#777`): succeeds CLEANLY -- ``StopReason.JACOBI_BOUND``, 482
+    gauntlet-passing members, 0 rejections -- landing on the two higher
+    printed members to 5.7e-5/1.0e-6 and 2.8e-4/2.3e-5 relative (x0/period)
+    respectively (module test suite): `#777`'s own first independent
+    multi-member family confirmation.
+    """
+    sys_ = system if system is not None else neptune_triton_system()
+    seed_row = FAMILY_32_ESM4_HC1_777[0]
+    seed = _seed_orbit(seed_row, sys_)
+    c_target = FAMILY_32_ESM4_HC1_777[-1].jacobi
+    n_steps = int(abs(c_target - seed_row.jacobi) / abs(d_jacobi)) + 5
+    return cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=seed_row.jacobi - 1e-6,
+        max_jacobi=c_target + 1e-6,
+        half_crossings=seed_row.half_crossings,
+        ydot0_sign=seed_row.ydot0_sign,
+        seed_label="3:2-esm4-hc1-family-777",
+        jacobi_tol=jacobi_tol,
+    )
+
+
+def continue_47_esm4_pair_777(
+    system: cr3bp.CR3BPSystem | None = None, *, d_jacobi: float = 4e-4, jacobi_tol: float = 1e-7
+) -> cc.FamilyBranch:
+    """Continue :data:`FAMILY_47_ESM4_HC3_777` (the high-energy 4:7 family's
+    own ``half_crossings=3`` pair, DISTINCT from the already-vendored
+    ``half_crossings=5`` "4:7-stress" row) from its own lower-C member
+    toward its own higher-C one.
+
+    FINDING (`#777`): succeeds CLEANLY -- ``StopReason.JACOBI_BOUND``, 105
+    gauntlet-passing members, 0 rejections -- landing on the printed
+    endpoint to 2.5e-4 relative x0 / 4.5e-7 relative period (module test
+    suite): `#777`'s own second independent multi-member family
+    confirmation.
+    """
+    sys_ = system if system is not None else neptune_triton_system()
+    seed_row = FAMILY_47_ESM4_HC3_777[0]
+    seed = _seed_orbit(seed_row, sys_)
+    c_target = FAMILY_47_ESM4_HC3_777[-1].jacobi
+    n_steps = int(abs(c_target - seed_row.jacobi) / abs(d_jacobi)) + 5
+    return cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=seed_row.jacobi - 1e-6,
+        max_jacobi=c_target + 1e-6,
+        half_crossings=seed_row.half_crossings,
+        ydot0_sign=seed_row.ydot0_sign,
+        seed_label="4:7-esm4-pair-777",
+        jacobi_tol=jacobi_tol,
+    )
+
+
+def continue_dpo_family_gauntlet_reject_777(
+    system: cr3bp.CR3BPSystem | None = None, *, d_jacobi: float = 2e-4, jacobi_tol: float = 1e-7
+) -> cc.FamilyBranch:
+    """Continue :data:`FAMILY_DPO_777` (the full 8-member low-energy DPO
+    family, uniform ``half_crossings=1``) from its own lowest-C member
+    (= ``ESM_GATE_ROWS["DPO"]``) toward its own highest-C one -- documents
+    an honest NEGATIVE (module docstring): this walk hits
+    ``StopReason.GAUNTLET_REJECT`` after only 36 members, reaching just the
+    1st/2nd of the 7 higher-C printed members cleanly (x0 rel. err
+    1.1e-5/1.3e-4) before the gauntlet itself rejects the walk short of the
+    remaining 5 -- NOT a clean confirmation, but not a bug either: a
+    genuine physical-plausibility rejection (module test suite), not a
+    fold or a topology jump. Not part of the primary `#777` continuation
+    gate (:func:`continue_32_esm4_hc1_family_777` /
+    :func:`continue_47_esm4_pair_777` already give two clean confirmations)
+    -- kept as its own function so this negative is standing, regression-
+    tested evidence, not just prose.
+    """
+    sys_ = system if system is not None else neptune_triton_system()
+    seed_row = FAMILY_DPO_777[0]
+    seed = _seed_orbit(seed_row, sys_)
+    c_target = FAMILY_DPO_777[-1].jacobi
+    n_steps = int(abs(c_target - seed_row.jacobi) / abs(d_jacobi)) + 5
+    return cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=seed_row.jacobi - 1e-6,
+        max_jacobi=c_target + 1e-6,
+        half_crossings=seed_row.half_crossings,
+        ydot0_sign=seed_row.ydot0_sign,
+        seed_label="dpo-family-777",
+        jacobi_tol=jacobi_tol,
+    )
+
+
+def continue_21_esm4_family_fold_reversal_777(
+    system: cr3bp.CR3BPSystem | None = None, *, d_jacobi: float = 2e-3, jacobi_tol: float = 1e-7
+) -> cc.FamilyBranch:
+    """Continue :data:`FAMILY_21_ESM4_777` (the low-energy 2:1 family, all
+    6 printed members, uniform ``half_crossings=1``) from its own lowest-C
+    member toward its own highest-C one -- documents an honest NEGATIVE
+    (module docstring): this walk hits ``StopReason.FOLD_REVERSAL`` after
+    91 members, reaching 4 of the 5 higher-C members cleanly (x0 rel. err
+    <=4.2e-3) but folding back well short of the 6th (C=3.667872679873,
+    a genuine outlier ~0.5 higher in C than its own 5 siblings) -- NOT a
+    clean confirmation, but a genuine, well-characterized topology finding
+    (this "family" spans at least two branches, exactly the pattern
+    `#776`'s own 4:3 fold-reversal finding established).
+    """
+    sys_ = system if system is not None else neptune_triton_system()
+    seed_row = FAMILY_21_ESM4_777[0]
+    seed = _seed_orbit(seed_row, sys_)
+    c_target = FAMILY_21_ESM4_777[-1].jacobi
+    n_steps = int(abs(c_target - seed_row.jacobi) / abs(d_jacobi)) + 5
+    return cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=seed_row.jacobi - 1e-6,
+        max_jacobi=c_target + 1e-6,
+        half_crossings=seed_row.half_crossings,
+        ydot0_sign=seed_row.ydot0_sign,
+        seed_label="2:1-esm4-family-777",
+        jacobi_tol=jacobi_tol,
+    )
+
+
+def continue_25m_esm4_family_topology_jump_777(
+    system: cr3bp.CR3BPSystem | None = None, *, d_jacobi: float = 4e-4, jacobi_tol: float = 1e-7
+) -> cc.FamilyBranch:
+    """Continue :data:`FAMILY_25M_ESM4_777` (the high-energy 2:5 "-x+h"
+    pair, uniform ``half_crossings=3``) from its own lower-C member toward
+    its own higher-C one -- documents an honest NEGATIVE (module
+    docstring): this walk hits ``StopReason.TOPOLOGY_JUMP`` at the FIRST
+    step -- these two printed rows are NOT two points on one continuous
+    branch, the sharpest form of family-mixing finding in this task (not
+    even one continuation step succeeds).
+    """
+    sys_ = system if system is not None else neptune_triton_system()
+    seed_row = FAMILY_25M_ESM4_777[0]
+    seed = _seed_orbit(seed_row, sys_)
+    c_target = FAMILY_25M_ESM4_777[-1].jacobi
+    n_steps = int(abs(c_target - seed_row.jacobi) / abs(d_jacobi)) + 5
+    return cc.continue_family(
+        sys_,
+        seed,
+        direction=1,
+        d_jacobi=d_jacobi,
+        n_steps=n_steps,
+        min_jacobi=seed_row.jacobi - 1e-6,
+        max_jacobi=c_target + 1e-6,
+        half_crossings=seed_row.half_crossings,
+        ydot0_sign=seed_row.ydot0_sign,
+        seed_label="2:5m-esm4-family-777",
+        jacobi_tol=jacobi_tol,
+    )
+
+
 __all__ = [
     "CROSSCHECK_GATE_REL_TOL",
     "DISSERTATION_TABLE21_EQUILIBRIA",
     "EQUILIBRIUM_GATE_REL_TOL",
     "ESM_GATE_ROWS",
+    "ESM_ROWS_777",
+    "FAMILY_21_ESM4_777",
     "FAMILY_23",
+    "FAMILY_25M_ESM4_777",
+    "FAMILY_32_ESM4_HC1_777",
     "FAMILY_43_HC2",
     "FAMILY_43_NEAR_UNIT",
+    "FAMILY_47_ESM4_HC3_777",
+    "FAMILY_DPO_777",
     "MICELI_L_KM",
     "MICELI_MU",
     "MICELI_M_KG",
@@ -870,14 +1724,21 @@ __all__ = [
     "PERIODICITY_GATE_TOL",
     "REPRODUCTION_GATE_REL_TOL",
     "TWO_BODY_SEED_LINEAGE_NOTE",
+    "TWO_BODY_SEED_LINEAGE_NOTE_777",
     "EquilibriumGateRow",
     "EsmRow",
     "GateRow",
+    "continue_21_esm4_family_fold_reversal_777",
     "continue_23_family",
+    "continue_25m_esm4_family_topology_jump_777",
+    "continue_32_esm4_hc1_family_777",
     "continue_43_near_unit_family_fold_reversal",
     "continue_43_saddle_family",
+    "continue_47_esm4_pair_777",
+    "continue_dpo_family_gauntlet_reject_777",
     "equilibrium_gate_report",
     "gate_report",
+    "gate_report_777",
     "neptune_triton_system",
     "periodicity_residual",
     "recover_esm_candidate",

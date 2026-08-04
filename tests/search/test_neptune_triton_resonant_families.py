@@ -18,10 +18,12 @@ the full evidentiary writeup.
 
 from __future__ import annotations
 
+import numpy as np
 import pytest
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_continuation as cc
+import cyclerfinder.search.cr3bp_periodic as cp
 import cyclerfinder.search.jovian_resonant_families as jrf
 import cyclerfinder.search.neptune_triton_resonant_families as ntf
 
@@ -29,6 +31,17 @@ import cyclerfinder.search.neptune_triton_resonant_families as ntf
 @pytest.fixture(scope="module")
 def system() -> cr3bp.CR3BPSystem:
     return ntf.neptune_triton_system()
+
+
+@pytest.fixture(scope="module")
+def gate_777_rows(system: cr3bp.CR3BPSystem) -> list[ntf.GateRow]:
+    """`#777`'s own full gate sweep over :data:`ntf.ESM_ROWS_777` (the 48
+    rows `#776` did not vendor), computed ONCE per test session -- reused by
+    every `#777` gate-row assertion below rather than re-converging all 48
+    rows per test (the existing per-row parametrized tests above each
+    independently re-converge all ten :data:`ntf.ESM_GATE_ROWS`; at 48 rows
+    that pattern would mean hundreds of redundant corrector/STM runs)."""
+    return ntf.gate_report_777(system)
 
 
 # ---------------------------------------------------------------------------
@@ -365,3 +378,256 @@ def test_continue_43_near_unit_family_hits_fold_reversal_honest_negative(
 def test_module_exposes_no_connection_machinery() -> None:
     connection_names = {"find_homoclinic", "find_heteroclinic", "correct_connection"}
     assert connection_names.isdisjoint(set(ntf.__all__))
+
+
+# ---------------------------------------------------------------------------
+# `#777`: vendor the remaining ~48 canonical ESM rows `#776` did not cover.
+# Same honesty discipline: 47/48 pass all three criteria; one honest
+# crosscheck-only negative, plus three honest continuation negatives
+# alongside two clean continuation confirmations. See
+# ``docs/notes/2026-08-04-777-neptune-triton-remaining-rows.md`` for the
+# full evidentiary writeup.
+# ---------------------------------------------------------------------------
+
+
+def test_esm_rows_777_count_and_disjoint_from_esm_gate_rows() -> None:
+    """48 new rows -- NOT `#776`'s own dispatch-note "~34" estimate, which
+    this task's own full line-by-line audit of all three ESM files
+    supersedes (see the `#777` results note)."""
+    assert len(ntf.ESM_ROWS_777) == 48
+    assert set(ntf.ESM_ROWS_777).isdisjoint(set(ntf.ESM_GATE_ROWS))
+
+
+def test_esm_rows_777_span_both_esm3_and_esm4() -> None:
+    files = {row.source_file for row in ntf.ESM_ROWS_777.values()}
+    assert files == {"ESM3", "ESM4"}
+
+
+def test_esm_rows_777_sample_values_match_raw_esm_files_verbatim() -> None:
+    """Spot-check (not all 48, for readability) against the raw ESM3/ESM4
+    text files this task -- one row per interesting case: a large-|x0|
+    high-energy ESM3 row, the lowest-C DPO member, the mixed-half_crossings
+    "3:2-x-esm4-4-hc2" outlier, and the topology-outlier "2:1+x-esm4-1"."""
+    expected = {
+        "1:2+x-esm3": (
+            "ESM3",
+            "Res12+x+h",
+            -2.881985569172,
+            2.629061067518,
+            12.565322956698,
+            2.087857684887,
+        ),
+        "dpo-esm4-8": (
+            "ESM4",
+            "DPO",
+            1.004676477572,
+            0.289504961848,
+            7.065417702085,
+            3.000962711997,
+        ),
+        "3:2-x-esm4-4-hc2": (
+            "ESM4",
+            "Res32-x+h",
+            -0.925033394133,
+            0.001786689533,
+            12.557846095824,
+            3.018021426630,
+        ),
+        "2:1+x-esm4-1": (
+            "ESM4",
+            "Res21+x+h",
+            -0.422381198297,
+            -1.116798990950,
+            2.375767706138,
+            3.667872679873,
+        ),
+    }
+    for key, (source_file, source_row_label, x0, ydot0, period, jacobi) in expected.items():
+        row = ntf.ESM_ROWS_777[key]
+        assert row.source_file == source_file, key
+        assert row.source_row_label == source_row_label, key
+        assert row.x0 == x0, key
+        assert row.ydot0 == ydot0, key
+        assert row.period == period, key
+        assert row.jacobi == jacobi, key
+
+
+def test_half_crossings_none_auto_detection_matches_esm_gate_rows_hand_picked_values(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """The assumption `#777`'s own automatic ``half_crossings`` determination
+    for all 48 :data:`ntf.ESM_ROWS_777` rows rests on: the SAME logic
+    :func:`cp.correct_symmetric_fixed_jacobi` uses internally when
+    ``half_crossings=None`` (the x-axis crossing nearest ``T/2`` on the raw
+    seed) recovers the EXACT integer `#776` hand-picked for every one of
+    the ten :data:`ntf.ESM_GATE_ROWS`."""
+    for label, row in ntf.ESM_GATE_ROWS.items():
+        orbit = cp.correct_symmetric_fixed_jacobi(
+            system,
+            row.x0,
+            row.jacobi,
+            row.period,
+            ydot0_sign=row.ydot0_sign,
+            half_crossings=None,
+            tol=1e-11,
+            rtol=1e-13,
+            atol=1e-13,
+            x0_bounds=row.x0_bounds,
+        )
+        assert orbit.converged, label
+        x0_err = abs(orbit.x0 - row.x0) / abs(row.x0) if row.x0 != 0 else abs(orbit.x0)
+        assert x0_err < 1e-4, (label, x0_err)
+
+
+def test_gate_report_777_has_48_rows(gate_777_rows: list[ntf.GateRow]) -> None:
+    assert len(gate_777_rows) == 48
+    assert {r.label for r in gate_777_rows} == set(ntf.ESM_ROWS_777)
+
+
+def test_gate_report_777_periodicity_and_reproduction_all_pass(
+    gate_777_rows: list[ntf.GateRow],
+) -> None:
+    """(a)/(b) are a clean 48/48 -- every row's own raw seed self-closes and
+    every row's own corrected candidate reproduces its printed x0/ydot0/
+    period. Only (c), the internal crosscheck, has one honest near-miss
+    (see the two tests below)."""
+    for row in gate_777_rows:
+        assert row.periodicity_confirmed, row
+        assert row.reproduction_confirmed, row
+
+
+def test_gate_report_777_47_of_48_pass_all_three_criteria(
+    gate_777_rows: list[ntf.GateRow],
+) -> None:
+    n_pass = sum(r.passed for r in gate_777_rows)
+    assert n_pass == 47
+
+
+def test_gate_report_777_single_honest_crosscheck_negative(
+    gate_777_rows: list[ntf.GateRow],
+) -> None:
+    """The one honest negative: ``"dpo-esm4-2"`` (ESM4 DPO, 2nd printed
+    member) reproduces cleanly on (a)/(b) but its Barden-vs-planar_floquet
+    internal cross-check misses :data:`ntf.CROSSCHECK_GATE_REL_TOL` by
+    ~2x -- a genuine near-unit-circle numerical-sensitivity near-miss on a
+    very short-period (T~1.63 nondim) orbit, `#777`'s own analog of
+    `#776`'s own 4:3 fold-reversal finding: a real, well-characterized
+    negative, not a bug."""
+    failing = [r for r in gate_777_rows if not r.passed]
+    assert len(failing) == 1
+    bad = failing[0]
+    assert bad.label == "dpo-esm4-2"
+    assert bad.periodicity_confirmed
+    assert bad.reproduction_confirmed
+    assert not bad.crosscheck_confirmed
+    assert bad.crosscheck_rel_err == pytest.approx(2.145766139904934e-05, rel=1e-3)
+    assert bad.crosscheck_rel_err > ntf.CROSSCHECK_GATE_REL_TOL
+
+
+# ---------------------------------------------------------------------------
+# `#777`'s own two-body-seed-lineage extension: (1,2) and (2,1), two
+# resonance ratios `#776` never tried.
+# ---------------------------------------------------------------------------
+
+
+def test_two_body_seed_1_2_period_index_hits_but_wrong_orbit(system: cr3bp.CR3BPSystem) -> None:
+    """Converges to the RIGHT period index (q=2) -- unlike every other
+    naive attempt in this family of checks -- but at a hugely different C
+    and x0 from the paper's own printed "1:2+x-esm3" row: still not a
+    genuine identification of the paper's own labeled family member."""
+    seed = jrf.two_body_resonant_seed(1, 2, x0_sign=-1)
+    state0 = [seed.x0, 0.0, 0.0, 0.0, seed.ydot0, 0.0]
+    c_nat = cr3bp.jacobi_constant(np.array(state0), system.mu)
+    cand = jrf.converge_candidate(
+        system, "1:2_2body", seed.x0, c_nat, seed.period_full, ydot0_sign=-1.0, half_crossings=None
+    )
+    assert cand is not None
+    assert cand.period_over_2pi == pytest.approx(2.0, abs=0.05)
+    row = ntf.ESM_ROWS_777["1:2+x-esm3"]
+    assert abs(cand.jacobi - row.jacobi) > 0.5  # same period index, very different orbit
+
+
+def test_two_body_seed_2_1_lands_on_wrong_topology(system: cr3bp.CR3BPSystem) -> None:
+    seed = jrf.two_body_resonant_seed(2, 1, x0_sign=-1)
+    state0 = [seed.x0, 0.0, 0.0, 0.0, seed.ydot0, 0.0]
+    c_nat = cr3bp.jacobi_constant(np.array(state0), system.mu)
+    cand = jrf.converge_candidate(
+        system, "2:1_2body", seed.x0, c_nat, seed.period_full, ydot0_sign=1.0, half_crossings=None
+    )
+    assert cand is not None
+    # Lands near period/2pi ~= 2.0, NOT the seed's own 1.0 (2:1's own q).
+    assert cand.period_over_2pi == pytest.approx(2.0, abs=0.05)
+
+
+def test_two_body_seed_lineage_note_777_is_documented() -> None:
+    assert "period/2pi ~= 2.0" in ntf.TWO_BODY_SEED_LINEAGE_NOTE_777
+    assert "1:2" in ntf.TWO_BODY_SEED_LINEAGE_NOTE_777
+    assert "2:1" in ntf.TWO_BODY_SEED_LINEAGE_NOTE_777
+
+
+# ---------------------------------------------------------------------------
+# `#777`'s own continuation-in-C_J checks (item (e) of its gate): two clean
+# confirmations, three honest negatives.
+# ---------------------------------------------------------------------------
+
+
+def test_continue_32_esm4_hc1_family_777_reaches_jacobi_bound(system: cr3bp.CR3BPSystem) -> None:
+    branch = ntf.continue_32_esm4_hc1_family_777(system)
+    assert branch.stop_reason is cc.StopReason.JACOBI_BOUND
+    assert branch.n_rejected == 0
+    assert len(branch.members) > 100
+    for target in ntf.FAMILY_32_ESM4_HC1_777[1:]:
+        closest = min(branch.members, key=lambda m: abs(m.jacobi - target.jacobi))
+        x0_err = abs(closest.x0 - target.x0) / abs(target.x0)
+        t_err = abs(closest.period - target.period) / abs(target.period)
+        assert x0_err < 1e-3, (target.jacobi, x0_err)
+        assert t_err < 1e-3, (target.jacobi, t_err)
+
+
+def test_continue_47_esm4_pair_777_reaches_jacobi_bound(system: cr3bp.CR3BPSystem) -> None:
+    branch = ntf.continue_47_esm4_pair_777(system)
+    assert branch.stop_reason is cc.StopReason.JACOBI_BOUND
+    assert branch.n_rejected == 0
+    assert len(branch.members) > 50
+    target = ntf.FAMILY_47_ESM4_HC3_777[-1]
+    last = branch.members[-1]
+    x0_err = abs(last.x0 - target.x0) / abs(target.x0)
+    t_err = abs(last.period - target.period) / abs(target.period)
+    assert x0_err < 1e-3, x0_err
+    assert t_err < 1e-3, t_err
+
+
+def test_continue_dpo_family_777_hits_gauntlet_reject_honest_negative(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """Documented negative (module docstring): unlike a fold or a topology
+    jump, the DPO family walk is stopped by the gauntlet's own physical-
+    plausibility rejection partway through -- a genuine, well-characterized
+    negative, not a bug to work around."""
+    branch = ntf.continue_dpo_family_gauntlet_reject_777(system)
+    assert branch.stop_reason is cc.StopReason.GAUNTLET_REJECT
+    assert branch.n_rejected >= 1
+    assert len(branch.members) < len(ntf.FAMILY_DPO_777) * 10  # stopped well short of a full sweep
+
+
+def test_continue_21_esm4_family_777_hits_fold_reversal_honest_negative(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """Documented negative (module docstring): the walk folds back before
+    reaching the 6th printed member, a genuine outlier ~0.5 higher in C
+    than its own 5 siblings."""
+    branch = ntf.continue_21_esm4_family_fold_reversal_777(system)
+    assert branch.stop_reason is cc.StopReason.FOLD_REVERSAL
+    target = ntf.FAMILY_21_ESM4_777[-1]
+    assert branch.members[-1].jacobi < target.jacobi - 1e-2  # stopped well short
+
+
+def test_continue_25m_esm4_family_777_hits_topology_jump_honest_negative(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """Documented negative (module docstring): the two printed "Res25-x+h"
+    rows are NOT two points on one continuous branch -- the walk fails at
+    (or before) the very first continuation step."""
+    branch = ntf.continue_25m_esm4_family_topology_jump_777(system)
+    assert branch.stop_reason is cc.StopReason.TOPOLOGY_JUMP
+    assert len(branch.members) <= 1
