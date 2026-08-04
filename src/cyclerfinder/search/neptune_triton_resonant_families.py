@@ -1107,13 +1107,16 @@ EQUILIBRIUM_GATE_REL_TOL = 1e-5
 #: unstable direction -- observed up to 9.79e-8 for `#776`'s own 4:7-stress
 #: row, |lambda|~1.5e4, an order of magnitude inside this tolerance; every
 #: other `#776` row is <=2.4e-9). `#777`'s own 48-row sweep pushes this
-#: closer, but does not breach, the tolerance: the two worst are both DPO
-#: family members, `ESM_ROWS_777["dpo-esm4-6"]` (7.19e-7, |lambda|~=3062)
-#: and `ESM_ROWS_777["dpo-esm4-8"]` (5.69e-7, |lambda|~=3671) -- only a
-#: ~1.4x margin, not an order of magnitude, but the SAME mechanism this
-#: docstring already names (strongly unstable, amplifies DOP853 residual
-#: noise); every other `#777` row is <=1.9e-7. Reported honestly, not
-#: loosened.
+#: closer, but does not breach, the tolerance: the FOUR worst are all
+#: strongly-unstable DPO/2:5 family members --
+#: `ESM_ROWS_777["dpo-esm4-6"]` (7.19e-7, |lambda|~=3062),
+#: `ESM_ROWS_777["dpo-esm4-8"]` (5.69e-7, |lambda|~=3671),
+#: `ESM_ROWS_777["2:5+x-esm3-b"]` (1.83e-7), and
+#: `ESM_ROWS_777["dpo-esm4-5"]` (1.41e-7) -- `dpo-esm4-6`'s own 7.19e-7 is
+#: only a ~1.4x margin, not an order of magnitude, but the SAME mechanism
+#: this docstring already names (strongly unstable, amplifies DOP853
+#: residual noise); every other `#777` row is <=5.1e-9. Reported honestly,
+#: not loosened.
 PERIODICITY_GATE_TOL = 1e-6
 
 #: (b) Reproduction gate: relative error on x0/ydot0/period a candidate
