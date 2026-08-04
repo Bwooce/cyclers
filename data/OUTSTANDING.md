@@ -213,14 +213,41 @@ unchanged. See `git log` around this date for the corrected commit.
   remaining ~34 dataset rows once this narrow version proved out, per the user's own "option 1"
   choice. Full results in `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`;
   digest in `docs/notes/2026-08-01-776-miceli-bosanac-2026-neptune-triton-digest.md`.
-- `#779` — registered 2026-08-04 (user: "approve 770"), dispatched: implement `#770`'s
-  RECOMMENDED option (b) — add the OPTIONAL, non-gating
-  `crnbp_provenance.torus.seed_orbit_homoclinic{}` sub-block to `europa-3-4-crnbp-torus-jupiter-2026`
-  per the design note's full draft YAML (`docs/notes/2026-07-31-770-torus-connection-writeback-design.md`
-  §4), re-deriving TBD full-precision values (`t_u_tu`, `radau_crosscheck`) fresh from the
-  producing functions rather than copying rounded numbers from the note. `orbit_class` stays
-  `quasi_periodic_torus`, `validation_level` stays V1 — NOT a promotion, NOT a reclassification,
-  per `#707`/`#735` "design then small writeback task" precedent (mirrors `#708`/`#736`).
+- `#779` ✓ DONE (2026-08-05) — implemented `#770`'s RECOMMENDED option (b): added the
+  OPTIONAL, non-gating `crnbp_provenance.torus.seed_orbit_homoclinic{}` sub-block to
+  `europa-3-4-crnbp-torus-jupiter-2026` per the design note's full draft YAML
+  (`docs/notes/2026-07-31-770-torus-connection-writeback-design.md` §4), row-side under
+  `crnbp_provenance.torus` (the `#738` `radau_cross_check` precedent — no schema bump;
+  `additionalProperties: true` on both `crnbp_provenance` and `torus{}` confirmed by
+  reading the schema directly). Re-derived the design note's two `TBD`-placeholder
+  values fresh from the producing functions rather than copying rounded numbers:
+  `connection.t_u_tu = 134.26929450801416` and `connection.radau_crosscheck =
+  2.4222186781124212e-08`, both matching the note's rounded values, no correction
+  needed. All other re-derived numbers (orbit `x0`/`ydot0`/`period_nd`/`lambda_max`;
+  connection `crossing_x`/`crossing_xdot`/`newton_residual`/`ghost_distance`) came back
+  bit-identical to `#766`'s own recorded values. One honesty nuance documented in the
+  block's own comment (caught by an advisor review before commit): the corrector,
+  reseeded at `#766`'s own `(tau_u0, tau_s0)` with `tol=1e-9`, accepted that seed
+  unmoved (residual already inside tol, zero iterations) — so `tau_u`/`tau_s` are
+  `#766`'s own values carried forward, not independently re-solved at this tolerance;
+  a separate un-seeded `find_homoclinic(rank_by_residual=True)` grid-scan independently
+  re-landed on the same root (agreeing to 9-10 significant digits on
+  `ghost_distance`/`crossing_x`), recorded alongside as genuine independent
+  corroboration. Companion edits: extended `notes`' "Discovery + verification chain"
+  with `-> #750 -> #761 -> #766 -> #770 (design) -> #779 (writeback)` plus a new
+  "Seed-lineage standing" paragraph; appended one sentence each to the
+  `stability_index`/`jacobi_constant` `data_gaps` entries (verbatim originals kept
+  intact). `orbit_class` stays `quasi_periodic_torus`, `validation_level` stays V1,
+  `epoch_locked`/`n_returns`/`model_assumption` untouched — NOT a promotion, NOT a
+  reclassification, per `#707`/`#735` "design then small writeback task" precedent
+  (mirrors `#708`/`#736`). Full `tests/ -q` run twice (once pre-, once post- a
+  comment wording fix); the handful of failures seen were confirmed pre-existing and
+  unrelated via a stash-based baseline comparison (4 genuine pre-existing failures
+  reproduce identically with `#779`'s catalogue edit stashed out; the rest were
+  CPU-contention flakes under 8-way `xdist`, all passing in isolation) — zero new
+  failures traceable to this change. `ruff`/`ruff format`/canonical `uv run mypy src
+  tests` (829 files) all clean. Full results in
+  `docs/notes/2026-08-05-779-torus-writeback.md`.
 - `#778` — ✓ DONE 2026-08-04 (registered + completed same-turn, per user's own "register
   everything, numbers are free" rule; honest, well-evidenced NEGATIVE on tool adoption): user
   found a machine-wide memory (`~/.claude/memory/pdf_inspector_tool.md`, outside this repo)

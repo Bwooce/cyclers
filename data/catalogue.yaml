@@ -56252,6 +56252,57 @@
         radau_consistent: true   # SOURCED: same, .check.radau_consistent
         genuine: true   # SOURCED: same, .check.genuine
         method: "search.crnbp_torus_ghost_guard.radau_ghost_guard (src/cyclerfinder/search/crnbp_torus_ghost_guard.py); tests/search/test_crnbp_torus_ghost_guard.py; data/found/738_crnbp_torus_radau_ghost_guard/result.json"
+      seed_orbit_homoclinic:   # #770 design / #779 writeback: SUPPLEMENTARY, NON-GATING
+        # seed-lineage evidence. This is a connection of the SEED ORBIT in ITS OWN base
+        # model -- NOT a connection of this row's N=5 torus, whose manifolds remain
+        # uncomputed (#724 mandatory qualifier unchanged; orbit_class stays
+        # quasi_periodic_torus per #770's design note). Not a promotion gate
+        # (validation_level V1 basis is torus.radau_cross_check, unchanged).
+        object: >
+          Planar-CR3BP homoclinic self-connection (Wu ∩ Ws) of the 3:4-LO family member
+          at the seed's own cited energy C=3.0041 -- Kumar et al. 2021's "arbitrarily
+          chosen" seed point, confirmed by #761 to be a genuine interior saddle on the
+          SAME continuous family as the confirmed Anderson-Lo 3:4-LO.
+        model: "planar CR3BP, mu = 2.5266448850435e-5 (ANDERSON_LO_MU -- the papers' own bit-identical value; NOT this row's project mu 2.528017724591319e-05, 0.054% apart)"
+        orbit:   # SOURCED: continue_34lo_to_kumar_c() endpoint, re-derived fresh by #779 (bit-identical to #766's own recorded values)
+          x0: -1.385248445624164   # run-to-run float noise vs #761's -1.3852484456241585 documented in #766 Sec 1; #779's own fresh re-derivation matches #766's -1.3852484456241640 exactly
+          ydot0: 0.5988394002678391
+          period_nd: 25.312119648766764
+          jacobi_constant: 3.0041          # EXACT (the CR3BP has a conserved quantity, unlike this row's CRNBP)
+          lambda_max: 54.589750588953734   # real saddle; ~19x weaker instability than the C_flyby member's 1036
+          family_membership: "#761: 24-step continuation from the confirmed C_flyby member, bidirectional (reverse re-lands to 2.4e-15); closest approach 22,035.8 km vs Kumar 2021's published 22,052 km (0.073%)"
+        connection:   # SOURCED: #779 re-derivation via search.jovian_resonant_connections.correct_connection, seeded at #766's own recorded (tau_u0, tau_s0). At tol=1e-9 the corrector accepts the seed unmoved (its residual 1.97e-10 was already inside tol, zero Newton iterations) -- so tau_u/tau_s below are #766's OWN recorded values carried forward, not an independently re-solved root (confirmed: re-run at tol=1e-12 DOES move tau_u to 10.729134321384189, tau_s to 14.582984370878199, residual 2.60e-12 -- the seed is a genuine near-root, just not re-derived at this tol). crossing_x/crossing_xdot/newton_residual/ghost_distance ARE freshly integrated from that seed (not echoed). Independent corroboration: a SEPARATE, un-seeded find_homoclinic(rank_by_residual=True) grid-scan re-lands on the same root from scratch -- tau_u=10.729134301732879, tau_s=14.582984363185206 (~1e-8 from #766's), crossing_x=-1.4220714951677023, residual=1.1606645550029221e-10, ghost_distance=0.03682304954353821, radau_crosscheck=2.4064910829886726e-08 -- agreeing to 9-10 significant digits on ghost_distance/crossing_x from an independent search path, not merely re-affirming the handed-in seed.
+          branch_u: 1
+          branch_s: 1
+          k_u: 6
+          k_s: 6
+          tau_u: 10.72913431175392         # #766's own recorded value, carried forward unmoved by the #779 corrector call (see connection: comment above) -- NOT an independent re-solve at this tol
+          tau_s: 14.582984371438714        # same caveat
+          t_u_tu: 134.26929450801416       # ~5.31 orbital periods; |t_s|=134.26929354447384, agreeing to 9.6e-7 absolute (7e-9 relative) -- expected forward/backward integration asymmetry, not a discrepancy
+          crossing_x: -1.4220714951697728
+          crossing_xdot: -2.016580027963677e-10   # on the symmetry axis -- same structural type as Anderson & Lo's own Table-2 point
+          newton_residual: 1.9723783076056544e-10
+          ghost_distance: 0.03682304954560878     # nondim section-plane distance from the orbit's own trivial point
+          ghost_guard_delta: 1.0e-3               # 37x margin -- real, not razor-thin (#766 Sec 4 discusses why smaller than #754's 145x)
+          radau_crosscheck: 2.4222186781124212e-08   # DOP853-vs-Radau via crosscheck_cycle, <=1e-6 mandate
+          backward_reapproach: 5.638445571711433e-08   # homoclinic_reapproach_check: re-traces the unstable leg to its epsilon seed
+          forward_reapproach: 2.2523590122573838e-05   # and the stable leg forward (roundoff amplified ~|lambda|^5.3; see #766 Sec 5)
+          mirror_pair_note: "(k_u,k_s)=(5,6)/(6,5) independently converged (residuals 3.33e-10/6.80e-10, ghost 0.0670 = 67x each, reflection-symmetric to <1e-6) -- transversality at this energy is corroborated, not an isolated index fluke"
+        evidence_class: >
+          SELF-CONSISTENCY ONLY: no published state exists at this energy to gate against
+          (Kumar 2021 reports no connection for its own seed orbit) -- never a
+          reproduction claim, and NOT novelty-bearing (Anderson & Lo 2011 publish
+          homoclinic connections of this same family at other energies; this extends a
+          published family to an unpublished energy).
+        caveats: >
+          #754's own (k_u=3,k_s=3) C_flyby connection branch does NOT continue to this
+          energy (fold/tangency at C~2.99941; #766 Sec 3) -- this is a genuinely
+          different (branch,k) combination. The torus's own NUMERICAL seed remains the
+          project's two-body-limit proxy (C=2.9040 at project mu); whether the proxy
+          seed's family connects onto this branch is still open (#750/#761/#766's
+          unchanged honest gap) -- this block certifies the CITED lineage's energy, not
+          the numerical seed's.
+        method: "search.jovian_resonant_families.continue_34lo_to_kumar_c + search.jovian_resonant_connections.{build_34lo_kumar_c_node, find_homoclinic(rank_by_residual=True), homoclinic_reapproach_check}; tests/search/test_jovian_resonant_connections.py (27/27, not slow-marked); docs/notes/2026-07-29-76{1,6}-*.md"
     real_ephemeris_evidence:
       check_type: "model-shadowing over one Ganymede-synodic forcing period: idealized-CRNBP forward flow (propagate_crnbp) of a chosen torus point vs real-SPICE propagation of the same departure state (search.crnbp_real_ephemeris_consistency.check_torus_survives_real_ephemeris, #726; NOT a connection-quality metric -- no manifold pair exists for this object)"
       force_model: "Jupiter point-mass (system-GM) central term + Europa + Io + Ganymede REAL SPICE (jup365.bsp) third-body perturbations, Jupiter-centred J2000 inertial frame -- verbatim per data/found/729_crnbp_epoch_torus_robustness_scan/result.json:force_model_notes (identical to #726's own force model)"
@@ -56521,11 +56572,11 @@
     todo_ref: "#736"
   - path: "orbit_elements.cr3bp.jacobi_constant"
     kind: "not-applicable"
-    note: "The CRNBP (two simultaneous time-periodic forcings, Io+Ganymede) has NO exact conserved quantity; unlike the #708 row there is not even a quasi-Jacobi connection-endpoint gap to report (no connection exists for this object)."
+    note: "The CRNBP (two simultaneous time-periodic forcings, Io+Ganymede) has NO exact conserved quantity; unlike the #708 row there is not even a quasi-Jacobi connection-endpoint gap to report (no connection exists for this object). See crnbp_provenance.torus.seed_orbit_homoclinic.orbit.jacobi_constant for the SEED orbit's own exact C=3.0041 (a different object, in the planar CR3BP -- #770/#779)."
     todo_ref: "#736"
   - path: "orbit_elements.cr3bp.stability_index"
     kind: "unknown"
-    note: "No Floquet/stability, manifold, or transfer computation exists for this object (#724 mandatory qualifier; TCP has all three for THEIR Lyapunov-substitute tori -- this row must not imply parity). #714 shortlist item 3 (manifold/connection work) is gated and not dispatched."
+    note: "No Floquet/stability, manifold, or transfer computation exists for this object (#724 mandatory qualifier; TCP has all three for THEIR Lyapunov-substitute tori -- this row must not imply parity). #714 shortlist item 3 (manifold/connection work) is gated and not dispatched. The seed orbit's OWN CR3BP saddle character is now established (#761: real saddle, |lambda|=54.59 at C=3.0041) -- the gap is specifically the N=5 torus object's own Floquet/manifold work, not total ignorance of the lineage (#770/#779)."
     todo_ref: "#736"
   - path: "validity_window.synodic_duty_cycle_pct"
     kind: "unknown"
@@ -56627,6 +56678,22 @@
     this object class (orthogonal to validation_level, which gates mechanical correctness
     not novelty).
 
+    Seed-lineage standing (#761/#766, writeback #770/#779): the row's own seed_lineage cites
+    Kumar et al. 2021's "arbitrarily chosen" C=3.0041 seed orbit. #761 confirmed that orbit
+    is a genuine, family-confirmed, real-saddle interior member of the SAME continuous 3:4-LO
+    family as the confirmed Anderson-Lo orbit (24-step continuation, bidirectional, closest
+    approach reproduced to 0.073%). #766 then found a genuine, transversal, independently
+    corroborated (Radau cross-check, ghost guard, forward/backward re-approach, a mirror-pair
+    second hit) homoclinic self-connection of that SAME seed orbit AT its own cited energy
+    (crnbp_provenance.torus.seed_orbit_homoclinic). This is SELF-CONSISTENCY-grade evidence
+    about the seed periodic orbit in the planar CR3BP at the papers' own mass ratio -- it is
+    NOT a connection of this row's N=5 torus (whose manifolds remain uncomputed, #724's
+    qualifier unchanged), NOT a promotion of validation_level (still V1 on the #738 basis),
+    and NOT novelty-bearing (an unpublished-energy extension of Anderson & Lo 2011's own
+    published homoclinic-connection family). #770 (design, user-approved) reasoned through
+    orbit_class/validation_level/field-placement in full before this writeback; see that note
+    for the complete argument.
+
     Schema: admitted under schema v5.4 (task #735/#736), which added orbit_class=
     quasi_periodic_torus, model_assumption=crnbp, and the additive crnbp_provenance block
     (a NEW block, not an extension of ccr4bp_provenance, since it needs an N-body
@@ -56643,7 +56710,7 @@
     torus-point) robustness scan, found the recurring narrow window) -> #735 (catalogue
     schema design proposal, user-approved) -> #736 (writeback: schema implementation +
     row, validation_level=V0) -> #738 (Radau independent-integrator cross-check,
-    validation_level V0 -> V1).
+    validation_level V0 -> V1) -> #750 -> #761 -> #766 -> #770 (design) -> #779 (writeback).
   source_quotes:
     "crnbp_provenance.torus.residual_rms": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_residual_rms = 0.00012343143649488024; independently re-reproduced this session (scripts/verify_724_rerun_continuation.py, extended) to 1.2343143649480972e-04, matching #723/#724's own quoted 1.2343143649e-04 to 4e-11 relative."
     "crnbp_provenance.real_ephemeris_evidence.generic_collapse_reference.pos_gap_km": "data/OUTSTANDING.md #726 entry: 'Headline result: a real, GENERIC COLLAPSE (torus point theta1=theta2=0, epoch 2030-01-01, one Ganymede-synodic period = 12.478 TU/7.05 days): pos_gap=3.68e5 km, vel_gap=8.19 km/s -- comparable to Ganymede's own orbital radius (1.07e6 km).'"
