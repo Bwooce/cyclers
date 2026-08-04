@@ -243,12 +243,32 @@ unchanged. See `git log` around this date for the corrected commit.
   content — this evaluated the instrument only. Full evidence in
   `docs/notes/2026-08-04-778-pdf-inspector-corpus-evaluation.md`.
 - `#777` — registered 2026-08-01 by `#776`'s own closure, DISPATCHED 2026-08-04 (user: "dispatch
-  777"): vendor the remaining ~34
-  rows of the Miceli & Bosanac 2026 ESM dataset not already covered by `#776`'s own ~16-row
-  subset (the full dataset spans ~20 resonant labels 1:2…4:7 plus additional DPO/manifold-arc
-  primitives), extending `search/neptune_triton_resonant_families.py`'s own gate to
-  near-complete dataset coverage. See `docs/notes/2026-08-01-776-neptune-triton-resonant-families-gate.md`'s
-  own "Registered follow-up" section.
+  777"), ✓ DONE 2026-08-05: full audit found `#776`'s own "~34 remaining rows" estimate was wrong
+  — a programmatic, dual-discriminator (label AND physics: `|y0|<1e-6 and |xdot0|<1e-6`) line-by-line
+  sweep of all three ESM files found **64 total canonical periodic-orbit rows** (2 ESM2 + 20 ESM3 +
+  42 ESM4), of which `#776` vendored 16, leaving **48**, not ~34 — vendored ALL 48 into a new
+  `ESM_ROWS_777` dict (unique keys encoding source file + member, since several resonance labels
+  e.g. `Res32-x+h`/`Res35-x+h`/`Res37-x+h`/`Res25-x+h` repeat across BOTH ESM3 and ESM4 as
+  genuinely different orbits). `half_crossings` determined AUTOMATICALLY for all 48 (the same
+  crossing-nearest-T/2 logic `correct_symmetric_fixed_jacobi` itself uses internally), verified
+  this task to recover `#776`'s own ten hand-picked values exactly. Gate: (a) periodicity — 48/48
+  pass; (b) reproduction — 48/48 pass; (c) Barden vs `_planar_floquet` internal crosscheck — **47/48
+  pass**, one honest negative (`dpo-esm4-2`, a near-unit-circle short-period DPO member, misses by
+  ~2x, `#777`'s own analog of `#776`'s 4:3 fold-reversal finding); `gate_report()` generalized to
+  accept a `rows` param and no longer raises on non-convergence (defensive; all 48 converge in
+  practice) — `#776`'s own `ESM_GATE_ROWS`/tests untouched. (d) `two_body_resonant_seed` lineage
+  extended onto two NEW resonance ratios `#776` never tried — (2,1): same wrong-topology honest
+  negative pattern (5th confirmation project-wide); (1,2): a more nuanced negative — coincidentally
+  hits the RIGHT period index but at a hugely different C_J/x0 than the paper's own row, still not a
+  genuine identification. (e) continuation-in-`C_J`: **two clean confirmations** (low-energy 3:2
+  HC1 branch — `JACOBI_BOUND`, 482 members, 0 rejected; high-energy 4:7 HC3 pair — `JACOBI_BOUND`,
+  105 members, 0 rejected) plus **three honest negatives**, three DIFFERENT failure modes (DPO
+  family: `GAUNTLET_REJECT` after 36 members; 2:1 family: `FOLD_REVERSAL` after 91 members, a
+  genuine C_J outlier confirmed; 2:5 "-x+h" pair: `TOPOLOGY_JUMP` at the very first step). Tests
+  extended 47→63 passing (16 new); `ruff`/`ruff format`/canonical `uv run mypy src tests` all
+  clean. No catalogue writeback (unchanged out-of-scope framing from `#776`); no new corpus
+  acquisition (same three ESM files `#776` already filed/indexed). Full results in
+  `docs/notes/2026-08-05-777-neptune-triton-remaining-rows.md`.
 - `#772` — registered 2026-07-29 (user: "register all possible tasks"), PARKED (not planned to
   dispatch, kept for completeness per `#764`'s own reasoning): Saturn-Enceladus and Pluto-Charon,
   the two lowest-ranked `#760` candidates. Saturn-Enceladus has no published resonant-orbit anchor
