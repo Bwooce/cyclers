@@ -631,3 +631,51 @@ def test_continue_25m_esm4_family_777_hits_topology_jump_honest_negative(
     branch = ntf.continue_25m_esm4_family_topology_jump_777(system)
     assert branch.stop_reason is cc.StopReason.TOPOLOGY_JUMP
     assert len(branch.members) <= 1
+
+
+# ---------------------------------------------------------------------------
+# Family-tuple invariant guard: every ``continue_*`` function (both `#776`'s
+# own and `#777`'s new ones) takes ``FAMILY[0]`` as its seed and
+# ``FAMILY[-1]`` as its own target C, assuming the tuple is pre-sorted by
+# ASCENDING Jacobi constant with a UNIFORM ``half_crossings`` -- an
+# assumption this task's own `FAMILY_DPO_777`/`FAMILY_21_ESM4_777` violated
+# on the first attempt (source-file order, not C order) until an assertion
+# caught it (module docstring note on ``FAMILY_DPO_777``). Guarded here so
+# a future family tuple cannot silently repeat that mistake.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "family",
+    [
+        ntf.FAMILY_23,
+        ntf.FAMILY_43_HC2,
+        ntf.FAMILY_43_NEAR_UNIT,
+        ntf.FAMILY_32_ESM4_HC1_777,
+        ntf.FAMILY_47_ESM4_HC3_777,
+        ntf.FAMILY_DPO_777,
+        ntf.FAMILY_21_ESM4_777,
+        ntf.FAMILY_25M_ESM4_777,
+    ],
+    ids=[
+        "FAMILY_23",
+        "FAMILY_43_HC2",
+        "FAMILY_43_NEAR_UNIT",
+        "FAMILY_32_ESM4_HC1_777",
+        "FAMILY_47_ESM4_HC3_777",
+        "FAMILY_DPO_777",
+        "FAMILY_21_ESM4_777",
+        "FAMILY_25M_ESM4_777",
+    ],
+)
+def test_family_tuples_are_c_ascending_with_uniform_half_crossings(
+    family: tuple[ntf.EsmRow, ...],
+) -> None:
+    jacobis = [row.jacobi for row in family]
+    assert jacobis == sorted(jacobis), (
+        "family tuple must be pre-sorted by ascending Jacobi constant"
+    )
+    half_crossings = {row.half_crossings for row in family}
+    assert len(half_crossings) == 1, (
+        f"family tuple must share one half_crossings, got {half_crossings}"
+    )

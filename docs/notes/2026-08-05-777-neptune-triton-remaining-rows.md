@@ -82,10 +82,13 @@ cross-check** -- run via `gate_report_777()` (a new `rows` parameter on the exis
 defaulting to `ESM_GATE_ROWS` so `#776`'s own behavior and its own `test_gate_report_all_ten_rows_pass`
 are completely unaffected):
 
-* **(a) periodicity**: 48/48 pass. Worst observed residual 7.19e-7 (a DPO family member,
-  `dpo-esm4-6`), still inside `PERIODICITY_GATE_TOL=1e-6`... actually the single worst rows
-  (`dpo-esm4-6`=7.19e-7, `dpo-esm4-8`=5.69e-7) sit closer to the tolerance than any of `#776`'s own
-  ten, but still pass; every other row is <=5e-9.
+* **(a) periodicity**: 48/48 pass, but the margin is tighter than any of `#776`'s own ten. The four
+  worst are all strongly-unstable DPO/2:5 family members: `dpo-esm4-6` (7.19e-7, |λ|≈3062),
+  `dpo-esm4-8` (5.69e-7, |λ|≈3671), ESM3's own `2:5+x-esm3-b` (1.83e-7), and `dpo-esm4-5` (1.41e-7)
+  -- `dpo-esm4-6`'s own 7.19e-7 is only a ~1.4x margin inside `PERIODICITY_GATE_TOL=1e-6`, not the
+  order-of-magnitude margin `#776`'s own ten enjoyed, though the SAME mechanism this module's own
+  docstring already names (DOP853 residual-noise amplification along a strongly unstable direction)
+  explains it -- these are the module's own most unstable rows. Every other row is <=5.1e-9.
 * **(b) reproduction**: 48/48 pass. Worst observed relative error 4.70e-8 (`3:2-x-esm4-4-hc2`, the
   physics-borderline row flagged above -- its own raw `xdot0=-3.5e-6` propagates into a
   correspondingly looser (but still passing, four+ orders of magnitude inside
@@ -127,9 +130,11 @@ check did.
 
 * **(2,1)**: converges cleanly but to the WRONG topology (`period/2pi≈2.000102`, not the label's
   own implied `q=1`, i.e. `period/2pi≈1.0`) -- the same qualitative finding as `#776`'s own
-  (4,3)/(2,3) attempts and Anderson & Lo's/Vaquero's own analogous results. A fourth and fifth
-  independent confirmation (across this whole project, this is now the 5th time this exact finding
-  reproduces across Jovian/Saturn-Titan/Neptune-Triton).
+  (4,3)/(2,3) attempts and Anderson & Lo's/Vaquero's own analogous results. Counting by
+  system/task (this project's own established convention -- `#776`'s own (4,3)+(2,3) pair together
+  counted as ONE "third, independent confirmation"), this is the **4th** independent confirmation:
+  Anderson & Lo (Jupiter-Europa) 1st, Vaquero (Saturn-Titan) 2nd, `#776` (Neptune-Triton, (4,3)+(2,3))
+  3rd, `#777`'s own (2,1) 4th.
 * **(1,2)**: a MORE NUANCED negative, stated precisely rather than folded into the same bucket:
   it converges to `period/2pi≈2.000218`, matching the "1:2" label's OWN implied index (`q=2`) --
   unlike every other naive attempt in this whole family of checks, across all three systems. But it

@@ -285,7 +285,7 @@ unchanged. See `git log` around this date for the corrected commit.
   accept a `rows` param and no longer raises on non-convergence (defensive; all 48 converge in
   practice) — `#776`'s own `ESM_GATE_ROWS`/tests untouched. (d) `two_body_resonant_seed` lineage
   extended onto two NEW resonance ratios `#776` never tried — (2,1): same wrong-topology honest
-  negative pattern (5th confirmation project-wide); (1,2): a more nuanced negative — coincidentally
+  negative pattern (4th confirmation project-wide, counting by system/task); (1,2): a more nuanced negative — coincidentally
   hits the RIGHT period index but at a hugely different C_J/x0 than the paper's own row, still not a
   genuine identification. (e) continuation-in-`C_J`: **two clean confirmations** (low-energy 3:2
   HC1 branch — `JACOBI_BOUND`, 482 members, 0 rejected; high-energy 4:7 HC3 pair — `JACOBI_BOUND`,

@@ -96,11 +96,20 @@ scoping note without re-checking, per
     members used for :func:`continue_43_saddle_family`'s own continuation
     confirmation.
 
-  This is a DELIBERATELY NARROW ~10-row vendor, per the `#776` dispatch
+  This was a DELIBERATELY NARROW ~10-row vendor, per the `#776` dispatch
   note's own explicit instruction (the user's own "prove narrow first"
-  choice) -- NOT the full ~50-row dataset; see the module's own
-  ``__all__``-adjacent follow-up-task note and the results note for the
-  registered (not-dispatched) follow-up task number for the remaining rows.
+  choice) -- NOT the full ~50-row dataset. `#777` (2026-08-05) vendored the
+  REMAINING rows: a full line-by-line audit of all three ESM files found 64
+  total canonical periodic-orbit rows (not `#776`'s own "~34 remaining"
+  guess), of which `#776` vendored 16 (the ten above plus
+  :data:`FAMILY_23`/:data:`FAMILY_43_HC2`/:data:`FAMILY_43_NEAR_UNIT`
+  below) -- `#777` vendored all 48 that remained, into
+  :data:`ESM_ROWS_777`, with the SAME gate (47/48 pass; one honest
+  crosscheck-only negative) and its own continuation/two-body-seed-lineage
+  checks (see :data:`ESM_ROWS_777`'s own docstring and
+  ``docs/notes/2026-08-05-777-neptune-triton-remaining-rows.md`` for the
+  full sweep). All 64 canonical rows across the dataset are now vendored --
+  no further "vendor more rows" follow-up remains registered.
 
 * :data:`FAMILY_23` (3 rows, ESM4 ``Res23-x+h``) and :data:`FAMILY_43_HC2`
   (2 rows, ESM4 ``Res43+x+h``, one of which duplicates ``"4:3-saddle"``
@@ -1095,28 +1104,46 @@ EQUILIBRIUM_GATE_REL_TOL = 1e-5
 #: (Sec. 3, cited by `#771`'s own scoping note) PLUS this module's own
 #: independent re-integration (a different integrator, DOP853 at
 #: rtol=atol=1e-13, which can amplify residual noise along a strongly
-#: unstable direction -- observed up to 9.79e-8 for the 4:7-stress row,
-#: |lambda|~1.5e4, an order of magnitude inside this tolerance; every other
-#: row is <=2.4e-9).
+#: unstable direction -- observed up to 9.79e-8 for `#776`'s own 4:7-stress
+#: row, |lambda|~1.5e4, an order of magnitude inside this tolerance; every
+#: other `#776` row is <=2.4e-9). `#777`'s own 48-row sweep pushes this
+#: closer, but does not breach, the tolerance: the two worst are both DPO
+#: family members, `ESM_ROWS_777["dpo-esm4-6"]` (7.19e-7, |lambda|~=3062)
+#: and `ESM_ROWS_777["dpo-esm4-8"]` (5.69e-7, |lambda|~=3671) -- only a
+#: ~1.4x margin, not an order of magnitude, but the SAME mechanism this
+#: docstring already names (strongly unstable, amplifies DOP853 residual
+#: noise); every other `#777` row is <=1.9e-7. Reported honestly, not
+#: loosened.
 PERIODICITY_GATE_TOL = 1e-6
 
 #: (b) Reproduction gate: relative error on x0/ydot0/period a candidate
 #: re-converged by THIS module's own corrector, seeded at the row's own
 #: printed IC, must beat against the row's own printed values. Justified by
-#: the observed match quality (module test suite): every one of the ten
-#: gate rows reproduces to <=5.8e-11 relative on every one of the three
-#: axes -- four+ orders of magnitude inside this tolerance. Tighter than
-#: the Saturn-Titan module's own 1e-3 (TABLE41_EIGENVALUE_GATE_REL_TOL)
+#: the observed match quality (module test suite): every one of `#776`'s
+#: own ten gate rows reproduces to <=5.8e-11 relative on every one of the
+#: three axes -- four+ orders of magnitude inside this tolerance. Tighter
+#: than the Saturn-Titan module's own 1e-3 (TABLE41_EIGENVALUE_GATE_REL_TOL)
 #: because this data carries NO unit-conversion/rounding loss (already
 #: nondimensional to 12 decimals), unlike Vaquero's own dimensional km/s
-#: table.
+#: table. `#777`'s own 48 rows reproduce similarly tightly -- worst
+#: observed 4.70e-8 (`ESM_ROWS_777["3:2-x-esm4-4-hc2"]`, the
+#: physics-borderline row whose own raw `xdot0=-3.5e-6` is not exactly
+#: zero -- module docstring), still more than an order of magnitude inside
+#: this tolerance.
 REPRODUCTION_GATE_REL_TOL = 1e-6
 
 #: (c) Barden-vs-planar_floquet INTERNAL cross-check gate (NOT a
 #: reproduction -- no published eigenvalue target exists for this system,
 #: per `#771`'s own scoping note; see module docstring). Justified by the
-#: observed match quality: every row agrees to <=6.5e-7 relative -- more
-#: than an order of magnitude inside this tolerance.
+#: observed match quality: every one of `#776`'s own ten gate rows agrees
+#: to <=6.5e-7 relative -- more than an order of magnitude inside this
+#: tolerance. `#777`'s own 48-row sweep has ONE honest miss:
+#: `ESM_ROWS_777["dpo-esm4-2"]` agrees to only 2.15e-5 relative (just over
+#: 2x this tolerance, though <=2.2e-5 in absolute terms -- both eigenvalues
+#: sit within that of exactly 1.0, a near-unit-circle short-period orbit,
+#: T~1.63 nondim, the shortest vendored row in this whole module) -- see
+#: the `#777` results note. Every other `#777` row is <=8.2e-6, inside this
+#: tolerance.
 CROSSCHECK_GATE_REL_TOL = 1e-5
 
 
