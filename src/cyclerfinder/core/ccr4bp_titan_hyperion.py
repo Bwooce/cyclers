@@ -19,10 +19,10 @@ L_KM = SATELLITES["Titan"].sma_km
 def saturn_titan_hyperion_default() -> CCR4BPSystem:
     """CCR4BP parameters for Saturn-Titan-Hyperion from the JPL SSD registry (`#716`).
 
-      * mu        = GM_Titan / (GM_Saturn_sys + GM_Titan)
-      * mu_gan    = GM_Hyperion / (GM_Saturn_sys + GM_Titan)
-      * a_gan     = SMA_Hyperion / SMA_Titan                     (~1.212)
-      * omega_gan = two_body_synodic_rate
+    * mu        = GM_Titan / (GM_Saturn_sys + GM_Titan)
+    * mu_gan    = GM_Hyperion / (GM_Saturn_sys + GM_Titan)
+    * a_gan     = SMA_Hyperion / SMA_Titan                     (~1.212)
+    * omega_gan = two_body_synodic_rate
     """
     gm_s = PRIMARIES["Saturn"]
     gm_titan = SATELLITES["Titan"].mu_km3_s2
