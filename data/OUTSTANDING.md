@@ -95,16 +95,23 @@ unchanged. See `git log` around this date for the corrected commit.
   Neptune-Triton 4:5 homoclinic connection (validate the method on known cases first, then go
   looking for something new). Casoliva 2008/2010 document six homoclinic connections total
   (He1-4, Hm1-2 families) at specific energies — the surrounding energy range is unexplored the
-  same way Neptune-Triton's 4:5/4:7 orbits were before `#781`. Also consider Class 1's own
-  resonant families (Table 3, all 16 rows already vendored by `#780`) — Casoliva's own paper
-  builds Class 1 via a different (second-species/generating-family) method than Class 2's
-  homoclinic-shadowing construction, and this project's own resonant-connection machinery
-  (`jovian_resonant_connections.py`-style Poincaré-shooting, not Barrabés-Mondelo-Ollé) has never
-  been pointed at Earth-Moon's own resonant orbits at all — a second, structurally distinct
-  novelty avenue worth scoping alongside the Class 2 energy-range extension (this second avenue
-  does NOT depend on `#783`'s own connection-reproduction result and could be dispatched
-  independently). Mandatory `literature_check.py` novelty gate before any
-  discovery claim, same discipline as every other task in this campaign.
+  same way Neptune-Triton's 4:5/4:7 orbits were before `#781`. The Class-1-resonant-family avenue
+  originally scoped alongside this one has been SPLIT OUT as `#786` (below) since it does not
+  depend on `#783`'s own connection-reproduction result and is dispatchable now. Mandatory
+  `literature_check.py` novelty gate before any discovery claim, same discipline as every other
+  task in this campaign.
+- `#786` — registered + DISPATCHED 2026-08-08 (split from `#785`'s own second avenue, per
+  `#783`'s own note that it does NOT depend on `#783`'s connection-reproduction result): apply
+  this project's own already-validated Poincaré-section Newton-shooting connection machinery
+  (`jovian_resonant_connections.py`-style — the SAME method already used for Jupiter-Europa
+  `#754`, Saturn-Titan `#767`, and Neptune-Triton `#781`; explicitly NOT the Barrabés-Mondelo-Ollé
+  method `#783` used and found intractable) to Earth-Moon's own Class 1 resonant families
+  (`#780`'s own Table 3, all 16 rows already vendored, 12/16 fully reproducing Casoliva's own
+  printed values). Casoliva's own paper builds Class 1 via a different (second-species/
+  generating-family) method than Class 2's homoclinic-shadowing construction — this project's own
+  resonant-connection machinery has never been pointed at Earth-Moon's own resonant orbits at all,
+  a genuinely unexplored avenue, structurally distinct from `#783`'s own attempt. Mandatory
+  `literature_check.py` novelty gate before any discovery claim.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
