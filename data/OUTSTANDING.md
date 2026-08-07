@@ -34,6 +34,23 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#782` — registered + DISPATCHED 2026-08-07 (user: "you can reopen 774"): REOPEN `#774`
+  (Saturn-Titan resonant-chain closure, formally CLOSED 2026-08-01 after `#773`/`#775`'s three
+  independent technique classes all failed to produce the gating converged chain orbit) using the
+  genuinely new technique `#775`'s own closure note flagged as the untried escape hatch: a
+  multiple-shooting corrector with patchpoints placed at NATURAL DYNAMICAL WAYPOINTS (orbit x-axis
+  crossings + near-connection states), not uniform time subdivision — per Parker, Davis & Born 2010
+  (`10.1016/j.actaastro.2010.04.003`, `#730` backlog item 96, filed + digested this session,
+  `docs/notes/2026-08-07-parker-davis-born-2010-chaining-orbits-digest.md`; = Vaquero 2013's own ref
+  [69], companion to her ref [68] which remains unacquired/no DOI). This is a genuinely new
+  corrector architecture, not a further attempt with `#773`'s own existing multiple-shooting tool
+  (whose UNIFORM resegmentation `n_segments=8->16` test already found no help) — the paper's own
+  worked example (states A/B/E/F at periodic-orbit crossings, C/D/G/H at near-connection points,
+  assembled into an itinerary sequence and corrected as one simultaneous multi-point BVP) is the
+  concrete template. Two deeper-technique references remain unacquired (`#730` items 97/98: Howell &
+  Pernicka 1988, `10.1007/BF01238756`; Wilson 2003 JPL IOM 312.I-03-002, no DOI, likely not publicly
+  available) — not required to attempt this task per the digest's own assessment, but available if
+  the corrector's convergence behavior needs sharpening.
 - `#780` — registered + DISPATCHED 2026-08-07 (user: "start the two paths in parallel, assign new
   task numbers", following the discovery-menu survey below): Earth-Moon resonant-family +
   homoclinic-connection lane, anchored on Casoliva 2008/2010 (digested `#725`,
