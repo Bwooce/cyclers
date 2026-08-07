@@ -78,6 +78,22 @@ unchanged. See `git log` around this date for the corrected commit.
   (`tests/search/test_saturn_titan_resonant_connections.py`, pre-existing from `#773`, unrelated
   to this push) were independently verified clean on this Mac too and handed to `#782` (already
   active in that exact file) to fold into its own commit, per the same established pattern.
+- `#785` — registered 2026-08-08 (user: "we were looking for something new between the earth and
+  moon as well?"), **NOT dispatched — gated on `#783` landing first**: once `#783` proves the
+  Barrabés-Mondelo-Ollé connection-finding method actually works by reproducing Casoliva's own
+  published He1 connection, extend it BEYOND her own published set to look for genuinely novel
+  content — mirroring exactly the `#776`->`#777`->`#781` arc that found the Neptune-Triton 4:5
+  homoclinic connection (validate the method on known cases first, then go looking for something
+  new). Casoliva 2008/2010 document six homoclinic connections total (He1-4, Hm1-2 families) at
+  specific energies — the surrounding energy range is unexplored the same way Neptune-Triton's
+  4:5/4:7 orbits were before `#781`. Also consider Class 1's own resonant families (Table 3, all
+  16 rows already vendored by `#780`) — Casoliva's own paper builds Class 1 via a different
+  (second-species/generating-family) method than Class 2's homoclinic-shadowing construction, and
+  this project's own resonant-connection machinery (`jovian_resonant_connections.py`-style
+  Poincaré-shooting, not Barrabés-Mondelo-Ollé) has never been pointed at Earth-Moon's own
+  resonant orbits at all — a second, structurally distinct novelty avenue worth scoping alongside
+  the Class 2 energy-range extension. Mandatory `literature_check.py` novelty gate before any
+  discovery claim, same discipline as every other task in this campaign.
 - `#783` — registered 2026-08-08 (follow-up from `#780`'s own results note), DISPATCHED 2026-08-08
   (user: "both"):
   Earth-Moon homoclinic-connection stage — Class 2's actual He1-4/Hm1-2 discrete connection
