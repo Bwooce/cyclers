@@ -34,6 +34,31 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#780` — registered + DISPATCHED 2026-08-07 (user: "start the two paths in parallel, assign new
+  task numbers", following the discovery-menu survey below): Earth-Moon resonant-family +
+  homoclinic-connection lane, anchored on Casoliva 2008/2010 (digested `#725`,
+  `docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`). Earth-Moon has never
+  had a resonant-family sweep despite being the catalogue's flagship system. Casoliva's Class 1
+  (p-q resonant families, stable + unstable members) and Class 2 (L1-Lyapunov homoclinic-shadowing
+  cyclers) are entirely uncatalogued. Golden numeric anchor as strong as Vaquero's: He1 family
+  L1-Lyapunov homoclinic connection at `h=-1.450162`, period 29.1640 d, connection ToF 113.6319 d,
+  LEO ΔV 703-718 m/s, cross-checked between the two Casoliva papers. Mirrors `#765`'s own
+  family-gate-first, connection-second staging; the homoclinic-continuation-in-energy primitive
+  (Barrabés-Mondelo-Ollé) is the one genuinely new build, with Casoliva Tables 4-6 as sourced
+  goldens. Llibre/Martínez/Simó/Doedel 1985 (`#749`, already acquired) provides the theoretical
+  transversality backing for the Class 2 construction. Mandatory `literature_check.py` novelty
+  gate before any discovery claim, per standing discipline.
+- `#781` — registered + DISPATCHED 2026-08-07 (user: "start the two paths in parallel, assign new
+  task numbers", following the discovery-menu survey below): Neptune-Triton homoclinic/heteroclinic
+  connection stage — the missing half of a pipeline already built twice (`jovian_resonant_connections.py`
+  `#754`, `saturn_titan_resonant_connections.py` `#767`). `#776`/`#777` vendored the family gate (all
+  64 canonical Miceli & Bosanac 2026 ESM rows) but never built the connection module. Named seed:
+  the 4:5 saddle at `|λ|≈105`, comfortably inside the demonstrated Newton-tractable band (`|λ|≈1036`
+  worked in `#754`, `|λ|≈4445` broke in `#759`). No published Neptune-Triton homoclinic/heteroclinic
+  connection state exists anywhere — genuinely novel-shaped, unlike the family gate's reproduction
+  framing. Mandatory `literature_check.py` gate (Miceli & Bosanac's own motion-primitive/graph-search
+  transfers are adjacent prior art that may narrow the claim); expect the 4:7 row (`|λ|≈1.46e4`) to
+  hit the same tractability wall `#759` documented.
 - `#775` — ✓ DONE 2026-08-01 (honest, SHARPLY-evidenced continued NEGATIVE — genuine continuation
   tried in good faith, per `#773`'s own explicit recommendation, and fails more decisively than
   either of `#773`'s own cold-start attempts): built and ran an artificial-parameter Newton
