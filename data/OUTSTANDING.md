@@ -34,23 +34,6 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#782` — registered + DISPATCHED 2026-08-07 (user: "you can reopen 774"): REOPEN `#774`
-  (Saturn-Titan resonant-chain closure, formally CLOSED 2026-08-01 after `#773`/`#775`'s three
-  independent technique classes all failed to produce the gating converged chain orbit) using the
-  genuinely new technique `#775`'s own closure note flagged as the untried escape hatch: a
-  multiple-shooting corrector with patchpoints placed at NATURAL DYNAMICAL WAYPOINTS (orbit x-axis
-  crossings + near-connection states), not uniform time subdivision — per Parker, Davis & Born 2010
-  (`10.1016/j.actaastro.2010.04.003`, `#730` backlog item 96, filed + digested this session,
-  `docs/notes/2026-08-07-parker-davis-born-2010-chaining-orbits-digest.md`; = Vaquero 2013's own ref
-  [69], companion to her ref [68] which remains unacquired/no DOI). This is a genuinely new
-  corrector architecture, not a further attempt with `#773`'s own existing multiple-shooting tool
-  (whose UNIFORM resegmentation `n_segments=8->16` test already found no help) — the paper's own
-  worked example (states A/B/E/F at periodic-orbit crossings, C/D/G/H at near-connection points,
-  assembled into an itinerary sequence and corrected as one simultaneous multi-point BVP) is the
-  concrete template. Two deeper-technique references remain unacquired (`#730` items 97/98: Howell &
-  Pernicka 1988, `10.1007/BF01238756`; Wilson 2003 JPL IOM 312.I-03-002, no DOI, likely not publicly
-  available) — not required to attempt this task per the digest's own assessment, but available if
-  the corrector's convergence behavior needs sharpening.
 - `#780` — ✓ DONE 2026-08-07/08 (Stage A: family gate only, per its own deliberately narrow
   scope mirroring `#765`): `src/cyclerfinder/search/earth_moon_resonant_families.py` +
   `tests/search/test_earth_moon_resonant_families.py` (67 tests). Vendored Casoliva 2010 Table 3
@@ -100,29 +83,42 @@ unchanged. See `git log` around this date for the corrected commit.
   717.5 m/s @ 67,869 km 2010) — all already vendored as `HE1_*` constants in that module.
   Mandatory `literature_check.py` novelty gate before any discovery claim, per standing
   discipline (unlikely to trigger at this reproduction stage, same as `#780`).
-- `#781` — ✓ DONE 2026-08-08 (honest, NOVEL positive result — the first genuinely novel, not
-  reproduction/self-consistency-only, connection-stage result of this whole task chain): built
+- `#781` — ✓ DONE 2026-08-08, CORRECTED 2026-08-08 by Fable adversarial review (honest, NOVEL
+  positive result, narrower than first reported — the first genuinely novel, not reproduction/
+  self-consistency-only, connection-stage result of this whole task chain): built
   `src/cyclerfinder/search/neptune_triton_resonant_connections.py`, the missing connection-stage
   sibling of `jovian_resonant_connections.py` (`#754`) / `saturn_titan_resonant_connections.py`
   (`#767`), targeting `#776`/`#777`'s own confirmed "4:5-saddle" resonant orbit
   (`C=2.987089791658`, `max_eigenvalue=-105.05...` — the ONLY negative eigenvalue among all 64
-  vendored Neptune-Triton rows). Found FOUR independent, ghost-guard-passed (`134×`-`287×` margin),
+  vendored Neptune-Triton rows). Found **TWO** distinct, ghost-guard-passed (`134×`-`287×` margin),
   Newton-converged (`<8e-10` residual), independently Radau-cross-checked (`<1.31e-7`) homoclinic
-  self-intersections (PRIMARY/SECONDARY on-axis + a genuine reflection-symmetric mirror pair).
-  Literature-novelty gate: direct text-layer grep of BOTH the Miceli & Bosanac 2026 paper AND the
-  companion Miceli 2025 dissertation found ZERO "homoclinic"/"heteroclinic" occurrences in either
-  — their own manifold use is a coarse configuration-space-adjacency graph search over motion
-  primitives, categorically not an exact Poincaré-section intersection; `literature_check.py`'s
-  own mandatory-floor run (7 real WebSearch queries) returned `not-found` (weak corroboration
-  only, per that module's own cycler-vocabulary scope caveat). Framed as genuinely NOVEL, not a
-  reproduction. Also found+fixed a real bug in the shared `ResonantNode.from_candidate` staleness
-  guard (silently inert for negative-signed eigenvalues — this orbit's own regime, never exercised
-  before). 4:7-stress (`|λ|≈1.46e4`) attempted as the dispatch note's own "if time allows" second
-  target: an honest, clearly-diagnosed FAIL exactly as `#759`'s own extreme-instability precedent
-  predicted — Newton stalled at residuals `1.7e-3`-`3.4e-3` from every geometrically-motivated
-  seed tried, and even the best marginal candidates sat only `1.2×`-`3.5×` past the ghost-guard
-  threshold (vs. 4:5's `134×`-`287×`) — not forced, no tolerance weakened. See
-  `docs/notes/2026-08-08-781-neptune-triton-homoclinic-connections.md` for the full account.
+  self-intersection trajectories (PRIMARY and SECONDARY, both on-axis) — corrected from an
+  originally-reported "FOUR independent hits": SECONDARY's own two mirror-pair crossing-index
+  registrations are the SAME trajectory as SECONDARY itself (an automatic consequence of the
+  orbit's own reflection symmetry, not independent corroboration), numerically confirmed by the
+  adversarial review (converged taus agree to `<8e-9` across all three labels). "Transversal" was
+  asserted originally but never measured — read as unverified. Literature-novelty gate: direct
+  text-layer grep of BOTH the Miceli & Bosanac 2026 paper AND the companion Miceli 2025
+  dissertation found ZERO "homoclinic"/"heteroclinic" occurrences in either — their own manifold
+  use is a coarse configuration-space-adjacency graph search over motion primitives, categorically
+  not an exact Poincaré-section intersection. **Corrected**: the original "no manifold-connection
+  literature exists" framing was WRONG — the adversarial review found Spear 2021 (MS thesis, CU
+  Boulder, same Bosanac group), missed by this task's own original WebSearch step, which computes
+  11 heteroclinic (not homoclinic) connections between Lyapunov (not resonant) orbits in this same
+  system; see `docs/notes/2026-08-08-spear-2021-digest.md`. The specific claimed object survives,
+  narrowed: **first homoclinic connection, and first resonant-orbit manifold connection of any
+  kind, in the Neptune-Triton CR3BP.** Also found+fixed a real bug in the shared
+  `ResonantNode.from_candidate` staleness guard (silently inert for negative-signed eigenvalues —
+  this orbit's own regime, never exercised before) — independently confirmed behavior-preserving
+  by the adversarial review. 4:7-stress (`|λ|≈1.46e4`) attempted as the dispatch note's own "if
+  time allows" second target: an honest, clearly-diagnosed FAIL exactly as `#759`'s own
+  extreme-instability precedent predicted — Newton stalled at residuals `1.7e-3`-`3.4e-3` from
+  every geometrically-motivated seed tried, and even the best marginal candidates sat only
+  `1.2×`-`3.5×` past the ghost-guard threshold (vs. 4:5's `134×`-`287×`) — not forced, no
+  tolerance weakened. **NOT yet written back to `data/catalogue.yaml`** — awaiting this corrected
+  framing to settle before any writeback, per the adversarial review's own recommendation. See
+  `docs/notes/2026-08-08-781-neptune-triton-homoclinic-connections.md` for the full corrected
+  account.
 - `#775` — ✓ DONE 2026-08-01 (honest, SHARPLY-evidenced continued NEGATIVE — genuine continuation
   tried in good faith, per `#773`'s own explicit recommendation, and fails more decisively than
   either of `#773`'s own cold-start attempts): built and ran an artificial-parameter Newton
@@ -461,23 +457,64 @@ unchanged. See `git log` around this date for the corrected commit.
   hand-copying a truncated literal was found to change outcomes at the 8th significant digit).
   `catalogue.yaml` not touched. Results note:
   `docs/notes/2026-08-01-773-resonant-chain-periodicity-closure.md`.
-- `#774` — ✗ CLOSED 2026-08-01 (user: "we can close 774?" — confirmed): the continuation-in-
-  Jacobi-constant campaign to confirm/refute Vaquero's own falsifiable termination claim
-  ("...ends for a value of Jacobi constant C < 3.01400", Fig. 4.12) never became executable —
-  three independent technique classes across `#773`/`#775` (single-shooting, multiple-shooting,
-  artificial-homotopy continuation from `#767`'s own already-converged homoclinic candidate) all
-  failed to produce the gating converged chain orbit this campaign needed as its own starting
-  point, each failing more decisively than the last (`#775`'s own homotopy attempt made literally
-  ZERO accepted steps at any tested scale across ~10 orders of magnitude — no numerically
-  resolvable step-size window exists for this seed's own periodicity map). Closed as-scoped, not
-  as "proven impossible" — `#775`'s own results note flags two candidate future directions if
-  ever revisited: Lo & Parker's own multi-patchpoint iterative-refinement corrector architecture
-  (a genuinely new technique, not a further attempt with the existing toolkit), or directly
-  investigating node's own 3:4 family's `C=3.014` topology-jump coincidence found by `#775`'s own
-  Jacobi-sensitivity survey (suggestively, not provenly, the same value as Vaquero's own claimed
-  termination bound). Neither is a natural next increment of `#767`-`#775`'s own work; both would
-  need their own fresh dispatch if picked up later. See
-  `docs/notes/2026-08-01-775-resonant-chain-continuation-closure.md` for the full reasoning.
+- `#782` — ✓ DONE 2026-08-08 (user: "you can reopen 774"): the dispatch-assigned technique
+  (Parker, Davis & Born 2010's own natural-dynamical-waypoint multiple-shooting patchpoint
+  strategy — `build_chain_natural_seed`/`attempt_chain_closure_natural_multiple_shooting`) made
+  genuine, better-than-`#773` progress (closure residual `1.028 -> 0.322` over 80 iterations vs
+  `#773`'s own uniform-seed `1.62 -> 0.49-0.55` over hundreds; per-segment `||STM||` `~20-260` vs
+  the single-arc `1.2e14`) but is an honest NON-RESULT: `#687`'s own `correct_multiple_shooting`
+  does not constrain the Jacobi constant, and `C` drifted `3.010000 -> 2.972-2.996` over the run —
+  invalidating the residual decrease as evidence toward genuine periodicity at Vaquero's own
+  energy. **A SECOND avenue found while investigating that seed IS a genuine positive**: extending
+  the same underlying homoclinic scan to an equal-crossing-index combination (`k_u=k_s=4`) never
+  tried by `#767`/`#773`/`#775` surfaced a materially closer (`dist_to_65=0.0145`, vs the
+  previously-used `0.094`), essentially exactly-perpendicular near-6:5 candidate — the signature of
+  an x-axis-SYMMETRIC connecting trajectory, independently corroborated by Vaquero's own Fig.
+  4.10(a) showing the chain as a visibly symmetric star/zigzag shape. Seeded into this project's
+  own EXISTING symmetric single-shooting corrector (`cr3bp_periodic.correct_symmetric_fixed_jacobi`
+  — the SAME one `#765` already uses to recover 3:4/6:5 themselves), this converges in 3 Newton
+  iterations to `crossing_residual=3.8e-13`, `C` held EXACTLY at `3.010000` (no drift, unlike the
+  multi-shooting avenue). Independently verified: Barden-vs-full-monodromy eigenvalue agreement
+  (`2.4e-8` relative, `max|eig|=4.77e7`, real saddle, symplectically-consistent 6-eigenvalue
+  spectrum), independent Radau cross-check (closure `2.6e-7`, Jacobi drift over the full period
+  `2.5e-14`), ghost-guard margin `80.9x`, and a genuine-distinctness check against `node`'s own
+  physical trajectory. RECONCILES Vaquero's own "single shooting scheme" claim (p.115): her single
+  shooting was very likely this SAME symmetric, `C`-pinned, one-free-variable formulation, not
+  `#773`'s own two-free-variable, `C`-unconstrained, full-loop one — same words, a materially
+  easier problem; this does NOT invalidate `#773`'s/`#775`'s own numbers. Self-consistency evidence
+  only (no digit-grade published state exists for the chain, same caveat as `#767`'s own
+  homoclinic-connection result). Also fixed a genuine, narrowly-scoped latent bug in `#687`'s own
+  `cr3bp_multiple_shooting.py` (a `scipy` event-bracketing `ValueError` escaping as a crash on
+  short natural segments, never generated by `#773`'s own uniform seeds). Code:
+  `src/cyclerfinder/search/saturn_titan_resonant_connections.py`
+  (`build_chain_natural_seed`/`attempt_chain_closure_natural_multiple_shooting`,
+  `find_symmetric_chain_seed`, `SymmetricChainClosureResult`/`attempt_chain_closure_symmetric`),
+  `src/cyclerfinder/search/cr3bp_multiple_shooting.py` (`_is_event_bracketing_failure`); tests:
+  `tests/search/test_saturn_titan_resonant_connections.py` (53 tests total, all pass, not marked
+  slow, new `near65_symmetric_seed_xv` fixture deriving the candidate programmatically),
+  `tests/search/test_cr3bp_multiple_shooting.py` (+1 regression test for the bug fix). Also
+  addressed an unrelated coordinator-flagged CI cross-platform issue in this same file (4 pre-
+  existing `#773`-era tests, confirmed-clean on this Mac, marked `xfail(strict=False)` per the
+  `#731` precedent, not weakened). Results note:
+  `docs/notes/2026-08-08-782-saturn-titan-chain-patchpoint-reattempt.md`.
+- `#774` — ✓ REOPENED + UNBLOCKED 2026-08-08 by `#782`'s own positive result (was ✗ CLOSED
+  2026-08-01, "we can close 774?" — confirmed, after `#773`/`#775`'s three independent technique
+  classes all failed to produce the gating converged chain orbit this campaign needed as its own
+  starting point). `#782` found and thoroughly verified exactly that gating artifact — a converged,
+  `C`-exact, independently-verified periodic "resonant chain"-type orbit at Vaquero's own
+  `C=3.010000`:
+  ```
+  x0 = 0.9492672902, ydot0 = 0.0796459472, period = 56.03254231 (nondim),
+  jacobi = 3.010000000000 (exact), half_crossings = 4 (from x0_guess = 0.9492672636785807)
+  ```
+  via `saturn_titan_resonant_connections.attempt_chain_closure_symmetric` — see `#782`'s own
+  bullet above and results note (`docs/notes/2026-08-08-782-saturn-titan-chain-patchpoint-reattempt.md`)
+  for the full derivation and verification bundle. The continuation-in-Jacobi-constant campaign
+  itself (confirming/refuting Vaquero's own falsifiable termination claim, "...ends for a value of
+  Jacobi constant C < 3.01400", Fig. 4.12) is NOT attempted by `#782` — that remains `#774`'s own
+  scope, now genuinely unblocked and ready for its own fresh dispatch (reusing `#753`'s own
+  `cr3bp_continuation.continue_family`, per `#775`'s own Avenue 2 precedent, continuing THIS newly
+  converged chain orbit in `C` rather than node's own unrelated 3:4 family).
 - `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
   energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
   saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:
