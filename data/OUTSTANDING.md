@@ -138,8 +138,11 @@ unchanged. See `git log` around this date for the corrected commit.
   continuation-in-energy from easier starting points, whereas this task attempted a COLD start
   at the family's own hardest member. Per this project's own "never give up reproducing papers"
   discipline, real escalation was attempted (period-targeting already exact, all-signs/branches
-  scanned, single- then multiple-shooting, `solve` vs `lstsq`, an enlarged-unknowns diagnostic)
-  before concluding this is a genuine hard limit, not a shortcut. Table 5/6 pericenter/apocenter
+  scanned, single- then multiple-shooting, `solve` vs `lstsq`, and the frozen-orbit-defect
+  premise — held fixed rather than re-solved jointly with the connection — MEASURED directly
+  rather than assumed: closure `~7.5e-12`, eigenvector spread `~1.9e-10`, ruling it out as the
+  cause without needing to build the full enlarged-unknowns system) before concluding this is a
+  genuine hard limit, not a shortcut. Table 5/6 pericenter/apocenter
   elements and the ΔV figure were deliberately NOT computed from the unconverged trajectory
   (would look plausible, mean nothing — the exact "it closed!" failure mode this project's own
   discipline warns against). Literature novelty gate: NOT triggered (pure reproduction attempt,

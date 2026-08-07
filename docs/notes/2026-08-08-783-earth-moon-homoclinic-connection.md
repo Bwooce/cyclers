@@ -282,8 +282,19 @@ framed as a discovery).
 * `uv run ruff check` / `ruff format --check` on both new files: clean.
 * `uv run mypy src tests` (canonical full invocation): clean, 835 source files.
 * `uv run pytest tests/data tests/search -q`: run after confirming no sibling `#774` test
-  process was active (per this task's own concurrent-agent CPU-contention discipline) — see
-  commit history for the recorded pass/fail status.
+  process was active (per this task's own concurrent-agent CPU-contention discipline). Result:
+  4 `FAILED` lines (`test_joint_cell.py::test_joint_cell_reproduces_liang_member_d`,
+  `test_joint_sobol.py::test_sobol_pipeline_positive_control`,
+  `test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), none touching Earth-Moon code —
+  ALL FOUR are pre-existing and already documented in `OUTSTANDING.md` independent of this
+  task: `test_eggie_ballistic`/`test_504_pluto_charon_kk_sweep` as a long-standing pair of
+  Mac-local BLAS-sensitivity failures cited repeatedly (e.g.
+  `docs/notes/2026-08-05-769-saturn-titan-65-eigenvalue.md`'s own verification section, and
+  many `OUTSTANDING.md` entries before it), `test_joint_cell`/`test_joint_sobol` as a
+  documented 8-way-`xdist`-CPU-contention flake pair that passes clean in isolation
+  (`OUTSTANDING.md` lines ~2557, ~14409) — re-cited here rather than independently re-verified
+  by re-running in isolation this task, per the existing documented pattern.
 * `uv run pytest tests/data/test_outstanding_structure.py
   tests/data/test_outstanding_header_body_consistency.py -q`: run before the `OUTSTANDING.md`
   update commit.
