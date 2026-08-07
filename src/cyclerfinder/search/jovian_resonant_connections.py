@@ -271,11 +271,31 @@ class ResonantNode:
 
         Raises ``ValueError`` if ``cand.is_real_unstable`` is ``False`` (the
         ``_planar_floquet_pair`` magnitude-only convention is only valid for a
-        genuine positive-real saddle pair -- see that function's own docstring
+        genuine real saddle pair -- see that function's own docstring
         caveat) or if the recomputed unstable eigenvalue disagrees with the
         candidate's own stored ``max_eigenvalue`` by more than
         ``eigenvalue_rel_tol`` relative (a stale/mismatched candidate should fail
         loudly, not silently build a node from inconsistent data).
+
+        #781 FIX: ``rel_err`` is computed against ``abs(cand.max_eigenvalue)``,
+        not the signed value. ``_planar_floquet_pair``'s own ``lam_u`` is
+        MAGNITUDE-only by construction (its docstring caveat, quoted above), so
+        comparing it to a signed ``cand.max_eigenvalue`` is only correct when
+        that stored value happens to be positive -- true for every candidate
+        this project built a node from before `#781` (Jovian/Saturn-Titan;
+        Neptune-Triton's own L2-lyapunov/L1-lyapunov/etc.), but FALSE for
+        Neptune-Triton's own "4:5-saddle" row, whose Barden-convention
+        ``max_eigenvalue`` is genuinely NEGATIVE real (``-105.05...`` --
+        see ``neptune_triton_resonant_connections.py``'s own module docstring
+        for the physical interpretation). The un-fixed formula divided by a
+        negative denominator, silently making ``rel_err`` negative and the
+        staleness guard permanently inert for any such candidate (never
+        raising, regardless of actual disagreement) -- a real, if previously
+        unexercised, correctness gap, not a latent no-op. Comparing magnitudes
+        is unchanged (byte-for-byte identical arithmetic) for every
+        already-positive ``max_eigenvalue`` this project has ever built a node
+        from, so this fix is behavior-preserving there and newly-correct for
+        the negative case.
         """
         if not cand.is_real_unstable:
             raise ValueError(
@@ -286,7 +306,7 @@ class ResonantNode:
             )
         state0 = np.array([cand.x0, 0.0, 0.0, 0.0, cand.ydot0, 0.0], dtype=np.float64)
         lam_u, v_u, _lam_s, v_s = _planar_floquet_pair(system, state0, cand.period)
-        rel_err = abs(lam_u - cand.max_eigenvalue) / cand.max_eigenvalue
+        rel_err = abs(lam_u - abs(cand.max_eigenvalue)) / abs(cand.max_eigenvalue)
         if rel_err > eigenvalue_rel_tol:
             raise ValueError(
                 f"{cand.label}: recomputed _planar_floquet_pair unstable eigenvalue "
