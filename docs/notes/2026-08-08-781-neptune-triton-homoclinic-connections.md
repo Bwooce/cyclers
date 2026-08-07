@@ -11,31 +11,60 @@ resonant orbit (Miceli & Bosanac 2026 ESM4 `Res45+x+h`, `C=2.987089791658`).
 
 ## Verdict (read this first)
 
+**CORRECTED 2026-08-08 by a Fable adversarial review, dispatched at the coordinating session's own
+initiative given this task's "novel" framing — the highest-stakes claim class this project makes.
+Two genuine problems were found and are corrected below: an inflated hit count, and missed prior
+art. The underlying result survives, narrowed. Do not trust the ORIGINAL wording of this section as
+first committed (preserved nowhere but git history) — read this corrected version.**
+
 **A genuine, non-trivial homoclinic self-intersection EXISTS at the 4:5-saddle orbit's own
-`C=2.987089791658` and was found — FOUR independent hits, all Newton-converged to residuals
-`<1e-8` (three below `1e-9`), independently Radau-cross-checked to `<1.31e-7` (comfortably
-inside the `<=1e-6` mandate), and landing `134x`–`287x` past the ghost-guard threshold
-(`GHOST_GUARD_DELTA=1e-3`) — a real, non-delicate margin.** Two sit exactly ON the reflection
-symmetry axis (`xdot~0`, PRIMARY and SECONDARY, at different `k`); the other two are a genuine
-reflection-symmetric mirror pair. Forward/backward re-approach is honest: backward is tight for
-all four (`<5.4e-8`), forward is tight for three (`~1.7e-3`) but notably looser for PRIMARY
-(`0.157`) — reported as-is, not fudged, with a plausible explanation below.
+`C=2.987089791658`.** The honest count, independently re-derived by the adversarial review: **TWO
+distinct homoclinic trajectories**, not four independent hits. PRIMARY (`k_u=k_s=13`) is one
+trajectory; SECONDARY/MIRROR_A/MIRROR_B (`k=15`/`(13,17)`/`(17,13)`) are the SAME single
+trajectory, registered at three different crossing indices — confirmed by propagating SECONDARY's
+own converged unstable-manifold seed once and finding its own section crossings land exactly on
+MIRROR_A (`k=13`) and MIRROR_B (`k=17`) as well as SECONDARY itself (`k=15`), with converged
+`tau_u`/`tau_s` agreeing to `<8e-9` across all three labels. The "mirror pair" is an automatic
+consequence of a symmetric orbit's on-axis perpendicular crossing (a `k=15±2` reflection pair
+exists BY CONSTRUCTION for any such crossing) — NOT independent corroborating evidence, and PRIMARY
+has an exactly analogous, previously-unreported mirror pair at `k=12/14`. All four originally-
+reported numeric hits are still real, Newton-converged, ghost-guard-passed results (residuals
+`<1e-8`, Radau cross-check `<1.31e-7`, `134x`–`287x` past the ghost-guard threshold) — nothing was
+fabricated — but they represent two distinct trajectories, not four. "Transversal" was asserted in
+the original write-up but never actually measured anywhere in this task's own code; that adjective
+should be read as unverified pending a dedicated transversality computation, not as an established
+fact. Forward/backward re-approach is honest: backward is tight for both trajectories (`<5.4e-8`),
+forward is tight for the SECONDARY trajectory (`~1.7e-3`) but notably looser for PRIMARY (`0.157`)
+— reported as-is, not fudged, with a plausible explanation below.
 
 **Literature-novelty framing (the load-bearing gate for this task, read in full before trusting
-"novel"): this is genuinely NOVEL content, not a reproduction or self-consistency-only result.**
-Miceli & Bosanac 2026 publishes zero homoclinic/heteroclinic manifold-intersection content of any
-kind for this system — independently re-verified this task by grepping BOTH the paper's own text
+"novel"): the SPECIFIC object is still novel, but the original "no manifold-connection literature
+exists for Neptune-Triton" framing was WRONG and is corrected here.** A Fable adversarial review
+found prior art this task's own literature-check pass missed: Spear 2021 (MS thesis, CU Boulder,
+same Bosanac group as Miceli & Bosanac 2026 — see `docs/notes/2026-08-08-spear-2021-digest.md`)
+computes 11 planar HETEROCLINIC connections in the Neptune-Triton CR3BP between L1/L2 Lyapunov
+orbits. This falsifies "no manifold-connection literature exists" as originally stated. What
+survives, independently confirmed in the digest above: Spear 2021 contains ZERO homoclinic content
+of its own, computes 12 resonant families none of which is a 4:5 or 4:7 ratio (this task's own
+object is genuinely absent from it), and its own future-work section names resonant-orbit
+connection design as explicitly NOT YET DONE. The corrected, defensible claim is narrower than
+originally stated: **first published homoclinic connection, and first resonant-orbit manifold
+connection of any kind, in the Neptune-Triton CR3BP** — not "the first manifold-connection work of
+any kind in this system." Miceli & Bosanac 2026 itself still publishes zero homoclinic/heteroclinic
+manifold-intersection content — independently re-verified by grepping BOTH the paper's own text
 layer and the companion Miceli 2025 dissertation's text layer for "homoclinic"/"heteroclinic":
 **zero hits in either document.** The paper's own manifold use (Sec. 3.1.4/3.2) is confined to (a)
 sampling arcs along a SINGLE orbit's own stable/unstable manifold as coarse "motion primitives"
 and (b) an approximate, discretized configuration-space-adjacency graph search connecting those
 primitives — categorically NOT an exact Newton-corrected Poincaré-section `Wu ∩ Ws` intersection.
 `search/literature_check.py`'s own mandatory-floor run (Sec. 5 below) returned `not-found`
-(confidence 0.4) — necessary-not-sufficient, and honestly weak corroboration here since that
-module's own cycler-vocabulary queries are further still from this raw manifold-connection
-content than the raw-periodic-orbit case its own docstring already excludes. The paper/dissertation
-text grep is the load-bearing evidence; the formal gate is the mandatory floor on top of it, not
-the primary grounding.
+(confidence 0.4) — necessary-not-sufficient, and the adversarial review found this specific gate's
+`not-found` carries NEAR-ZERO evidentiary weight for this claim type (its own cycler-vocabulary
+queries cannot express "homoclinic manifold intersection" as a concept at all, which is exactly why
+it missed nothing about Spear 2021 either way — the miss there was a WebSearch-query-phrasing gap,
+not a `literature_check.py` gap). The paper/dissertation text grep plus the Spear 2021 digest are
+the load-bearing evidence; the formal gate is at most a very weak floor on top of it, not
+meaningful corroboration on its own.
 
 The 4:7-stress attempt (Sec. 6) is an **honest, diagnosed FAIL**, exactly as `#759`'s own
 extreme-instability precedent predicted: at this task's own bounded effort, Newton stalls at
@@ -162,12 +191,25 @@ converge (residuals plateaued `1.4e-3`–`3.1e-3`, well short of `tol=1e-9`) —
 consistent with Sec. 2's own physical explanation (the negative eigenvalue's own branch-flip
 makes opposite-sign the natural convergent combination here), not suppressed or hidden.
 
-PRIMARY (`k_u=k_s=13`) and SECONDARY (`k_u=k_s=15`) both sit ON the symmetry axis
-(`xdot~0` to `<4e-10`) — structurally the same point-type as Anderson & Lo's own published Table 2
-state and `#766`'s/`#767`'s own primary hits. MIRROR_A/MIRROR_B (`(13,17)`/`(17,13)`) are a
-genuine reflection-symmetric pair (`x` equal to `<1e-6`, `xdot` sign-flipped) — independent
-corroboration that this energy supports transversal self-intersections beyond one isolated
-`(branch, k)` choice.
+**CORRECTED (adversarial review, 2026-08-08): the four rows above are TWO distinct homoclinic
+trajectories, not four independent hits.** PRIMARY (`k_u=k_s=13`) is one trajectory, sitting ON the
+symmetry axis (`xdot~0` to `<4e-10`) — structurally the same point-type as Anderson & Lo's own
+published Table 2 state and `#766`'s/`#767`'s own primary hits. SECONDARY (`k_u=k_s=15`) is a
+SECOND, distinct trajectory (`tau_u` differs from PRIMARY's by `16.3`, and PRIMARY's own crossing
+appears nowhere in SECONDARY's own `k=1..21` crossing list — genuinely independent), also on-axis.
+MIRROR_A (`13,17`) and MIRROR_B (`17,13`) are NOT a third and fourth independent trajectory — they
+are SECONDARY's own trajectory, registered at two more of its own crossing indices (`k=13` and
+`k=17`, straddling SECONDARY's own `k=15` on-axis point): propagating SECONDARY's own converged
+unstable-manifold seed forward once produces crossings at `k=13` (= MIRROR_A's point), `k=15` (=
+SECONDARY's own point), and `k=17` (= MIRROR_B's point), with all three sharing `tau_u≈18.30074707`
+to `<8e-9`. This reflection-pair structure (`k=15±2` mirroring each other) is an AUTOMATIC
+consequence of a symmetric orbit's own on-axis perpendicular crossing, not independent evidence of
+"transversal self-intersections beyond one isolated choice" — PRIMARY has the exact same structure
+at its own `k=12/14`, simply never reported in the original write-up. The honest count is: **two
+distinct homoclinic trajectories exist at this energy** (PRIMARY and SECONDARY), each internally
+symmetric, with SECONDARY's own symmetry producing three crossing-index registrations of the same
+underlying orbit. See also `#767`'s own note (Saturn-Titan) for an analogous, pre-existing framing
+weakness in this task chain — not unique to `#781`, but most pronounced here.
 
 ## 5. Verification of all four hits
 
@@ -236,17 +278,21 @@ The dissertation's own `Poincaré`/`Poincare` hits (lines 989-1025, 3616-3622) a
 dynamical-systems-theory background (what a Poincaré map is, how it's used for visualization) —
 not a Neptune-Triton-specific manifold-intersection computation.
 
-**Step 2 — supplementary WebSearch (weak corroboration only, per the module docstring's own
-scope caveat).** Two targeted queries ("Neptune Triton homoclinic connection CR3BP resonant
+**Step 2 — supplementary WebSearch — CORRECTED, this task's own execution of this step was
+inadequate.** Two targeted queries ("Neptune Triton homoclinic connection CR3BP resonant
 orbit"; `"Neptune" "Triton" invariant manifold intersection Poincare section Wu Ws periodic
-orbit`) surfaced only: the SAME Miceli & Bosanac work (its 2024 AIAA SciTech conference
-precursor, not locally filed — presumed to share the JAS-2026 paper's own motion-primitive/graph
-method per the corpus digest's own note that the journal paper supersedes it, not independently
-re-verified this task since it is not in `cyclers_pdf`), general CR3BP manifold-computation
+orbit`) surfaced only: the SAME Miceli & Bosanac work, general CR3BP manifold-computation
 background (Koon-Lo-Marsden-Ross, arXiv 1111.0032), and a 2007 ScienceDirect paper on Neptune-
-Triton Lagrangian-point (L1/L2) normalization/center-manifold dynamics — a DIFFERENT topological
-class of orbit (libration-point Lissajous/halo families, not `p:q` resonant periodic orbits far
-from the libration points) with no overlap to this task's own 4:5-saddle result.
+Triton Lagrangian-point (L1/L2) normalization/center-manifold dynamics with no overlap to this
+task's own result. **This was NOT sufficient.** A Fable adversarial review's very first query
+("Neptune Triton CR3BP homoclinic connection resonant orbit invariant manifold" — essentially a
+rephrasing of this task's own first query) surfaced as its #1 result: **Spear 2021, "Planar
+Heteroclinic Connections in the Neptune-Triton Circular Restricted Three Body Problem" (MS thesis,
+CU Boulder, Bosanac advisor)** — genuine, on-point Neptune-Triton CR3BP manifold-connection prior
+art that this task's own search entirely missed. See `docs/notes/2026-08-08-spear-2021-digest.md`
+for the full digest and its implications (summarized in the corrected Verdict section above). This
+was a real execution gap in this task's own search step, not an inherent limitation of the search
+tools available — the Verdict section above records the corrected novelty scope.
 
 **Step 3 — `search/literature_check.py`'s own mandatory-floor gate, run with the real WebSearch
 tool wired.** Signature: `CandidateSignature(primary="Neptune", sequence=("Triton",),
@@ -374,16 +420,29 @@ bundled into `#781`'s own scope.
 
 ## 11. Net effect on `#781`
 
-**DONE — a genuine, honestly-evidenced, NOVEL positive result** (the first novel — not
-reproduction, not self-consistency-only — connection-stage result of this whole `#754`/`#759`/
-`#766`/`#767`/`#781` task chain, per `#776`'s own note anticipating this exact possibility). Four
-independent, ghost-guard-passed, Newton-converged (`<1e-8` residual, three `<1e-9`), independently
-Radau-cross-checked (`<1.31e-7`) homoclinic self-intersections of the Neptune-Triton 4:5-saddle
-resonant orbit exist at Miceli & Bosanac's own `C=2.987089791658`, including a genuine
-reflection-symmetric mirror pair and two independent on-axis hits at different `k`. Forward/
-backward re-approach is honestly reported including an unexplained PRIMARY-specific asymmetry,
-not smoothed over. The 4:7-stress attempt is an honest, clearly-diagnosed FAIL matching `#759`'s
-own extreme-instability precedent — not forced. This task also fixed a real (if previously
+**DONE — a genuine, honestly-evidenced, NOVEL positive result, CORRECTED 2026-08-08 by adversarial
+review** (still the first novel — not reproduction, not self-consistency-only — connection-stage
+result of this whole `#754`/`#759`/`#766`/`#767`/`#781` task chain, per `#776`'s own note
+anticipating this exact possibility, but narrower in scope than originally claimed). **Two**
+distinct, ghost-guard-passed, Newton-converged (`<1e-8` residual, three of the four crossing-index
+registrations `<1e-9`), independently Radau-cross-checked (`<1.31e-7`) homoclinic self-intersection
+trajectories of the Neptune-Triton 4:5-saddle resonant orbit exist at Miceli & Bosanac's own
+`C=2.987089791658` (PRIMARY and SECONDARY) — not four independent hits as originally reported;
+SECONDARY's own on-axis reflection symmetry produces two further crossing-index registrations
+(MIRROR_A/MIRROR_B) of the SAME trajectory, an automatic consequence of the symmetry, not
+independent corroboration. "Transversal" was asserted but never measured — read as unverified.
+Forward/backward re-approach is honestly reported including an unexplained PRIMARY-specific
+asymmetry, not smoothed over. The novelty claim itself is narrower than first stated: prior art
+(Spear 2021, missed by this task's own original WebSearch step, found by adversarial review) rules
+out "no Neptune-Triton manifold-connection literature exists," but that thesis's own object (11
+heteroclinic connections between Lyapunov orbits, zero homoclinic content, no 4:5/4:7 resonant
+families) is genuinely distinct from this task's own — the corrected claim is **first homoclinic
+connection, and first resonant-orbit manifold connection of any kind, in the Neptune-Triton
+CR3BP**. The 4:7-stress attempt is an honest, clearly-diagnosed FAIL matching `#759`'s own
+extreme-instability precedent — not forced. This task also fixed a real (if previously
 unexercised) bug in the shared `ResonantNode.from_candidate` staleness guard, exposed by this
 orbit's own genuinely negative saddle eigenvalue — the first such orbit this whole task chain has
-built a node from.
+built a node from; independently confirmed behavior-preserving by the adversarial review as well
+as this task's own regression suite. **Not yet written back to `data/catalogue.yaml`** — per the
+adversarial review's own recommendation, any catalogue writeback should wait for this corrected
+framing, not the original.

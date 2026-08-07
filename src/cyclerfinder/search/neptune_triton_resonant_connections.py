@@ -32,6 +32,24 @@ homoclinic-connection task chain: `#776`'s own note already flagged this
 explicitly ("a future connection-stage task here would be genuinely
 NOVEL-territory work").
 
+CORRECTED 2026-08-08 BY FABLE ADVERSARIAL REVIEW (read before trusting "four independent hits"
+anywhere below or in the results note): the four numerically-converged crossings this module
+finds (labelled PRIMARY/SECONDARY/MIRROR_A/MIRROR_B in the results note and test file) are TWO
+distinct homoclinic trajectories, not four independent ones. SECONDARY/MIRROR_A/MIRROR_B share
+converged ``tau_u``/``tau_s`` to <8e-9 -- they are the SAME trajectory registered at three
+different crossing indices (``k=13/15/17``), an automatic consequence of this symmetric orbit's
+own on-axis perpendicular crossing producing a ``k=15+-2`` reflection pair BY CONSTRUCTION, not
+independent corroboration. PRIMARY has an exactly analogous (previously unreported) mirror pair
+at its own ``k=12/14``. Each individual numeric result (residual, ghost distance, Radau
+cross-check) is still a real, independently-converged value -- nothing was fabricated -- but read
+"mirror pair" throughout this module and the results note as "the same trajectory's own
+reflection symmetry," not as a second independent confirmation. "Transversal" is asserted
+informally in prose below but never actually measured by any function in this module -- treat it
+as an unverified adjective, not an established fact. The adversarial review also found prior art
+(Spear 2021, a CU Boulder MS thesis under the same Bosanac group) this task's own literature
+search missed; see ``docs/notes/2026-08-08-spear-2021-digest.md`` and the results note's own
+corrected Verdict section for the narrowed (still standing) novelty claim.
+
 SECTION CONVENTION -- WHY THIS MODULE GENERALIZES EVEN FURTHER THAN
 SATURN-TITAN'S OWN ``x``-UNRESTRICTED CHOICE:
 

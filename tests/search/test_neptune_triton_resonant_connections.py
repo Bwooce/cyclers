@@ -154,32 +154,45 @@ def test_single_ydot_sign_choice_would_drop_one_perpendicular_point(
 
 
 # ---------------------------------------------------------------------------
-# (3) The four genuine, independently-converged, ghost-guard-passed hits this
+# (3) Four genuine, independently-converged, ghost-guard-passed CROSSINGS this
 # task's own targeted geometric-seed scan found (all opposite-branch-sign,
 # `branch_u=+1, branch_s=-1` -- see module docstring for why the negative
 # eigenvalue's own period-to-period branch flip makes this the natural
 # convergent combination; same-sign seeds were explored and did NOT converge
 # cleanly, an honest negative, not suppressed). All four sit at 134x-287x the
 # GHOST_GUARD_DELTA=1e-3 threshold -- a real, non-delicate margin.
+#
+# CORRECTED 2026-08-08 (Fable adversarial review): these four crossings are
+# TWO distinct homoclinic trajectories, not four independent hits -- see the
+# module's own top-of-file correction note. SECONDARY/MIRROR_A/MIRROR_B share
+# converged tau_u/tau_s to <8e-9 (visible directly in the constants below) --
+# they are the SAME trajectory at three crossing indices, not three separate
+# results. PRIMARY is the other, genuinely distinct trajectory.
 # ---------------------------------------------------------------------------
 
 # On-symmetry-axis (xdot~0) -- structurally the SAME point-type as Anderson &
 # Lo's own Table 2 state and #766's/#767's own primary hits. Tightest
-# evidence bundle of the four -- reported as this task's PRIMARY result.
+# evidence bundle -- reported as this task's PRIMARY trajectory.
 _PRIMARY = {"branch_u": +1, "branch_s": -1, "k_u": 13, "k_s": 13}
 _PRIMARY_TAU = {"tau_u": 1.9994947221216297, "tau_s": 28.39892348910753}
 
-# A SECOND, independently-found on-axis hit at a different k -- corroborates
-# that the axis-crossing family of intersections is not a one-off.
+# A SECOND, genuinely distinct on-axis trajectory (tau_u differs from
+# PRIMARY's by ~16.3; PRIMARY's own crossing does not appear anywhere in this
+# trajectory's own k=1..21 crossing list).
 _SECONDARY = {"branch_u": +1, "branch_s": -1, "k_u": 15, "k_s": 15}
 _SECONDARY_TAU = {"tau_u": 18.3007470738707, "tau_s": 12.097671673053219}
 
-# A genuine mirror pair (k_u, k_s swapped, off-symmetry-axis xdot != 0,
-# reflection-symmetric (x, +-xdot)) -- independent corroboration that this
-# energy supports transversal homoclinic self-intersections beyond one
-# isolated (branch, k) choice.
+# NOT an independent hit: this is SECONDARY's own trajectory registered at a
+# different crossing index (k=13 instead of k=15) -- an automatic consequence
+# of SECONDARY's own on-axis reflection symmetry (a k=15-2 mirror of its own
+# k=15 point), not a separate result. Note tau_u/tau_s match _SECONDARY_TAU
+# to <8e-9.
 _MIRROR_A = {"branch_u": +1, "branch_s": -1, "k_u": 13, "k_s": 17}
 _MIRROR_A_TAU = {"tau_u": 18.300747081815683, "tau_s": 12.097671665527479}
+# Same trajectory as _SECONDARY/_MIRROR_A, registered at k=17 (the k=15+2
+# mirror of SECONDARY's own k=15 point). Kept as a separate regression target
+# because it independently exercises the scan/refinement code path at a
+# different (k_u, k_s) pair, not because it is evidence of a fourth orbit.
 _MIRROR_B = {"branch_u": +1, "branch_s": -1, "k_u": 17, "k_s": 13}
 _MIRROR_B_TAU = {"tau_u": 18.30074707058968, "tau_s": 12.09767166644772}
 
