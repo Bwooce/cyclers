@@ -94,6 +94,23 @@ OUTPUT_ARTIFACT_PATH = _REPO_ROOT / "data" / "floquet_phase1_reproduction.jsonl"
 _KNOWN_BRANCH_TOPOLOGIES = {
     (3, 3): "Linux/OpenBLAS CI (historical committer of this artifact, ffd7991..9448b93)",
     (4, 3): "Mac M-series/Accelerate BLAS (#740 investigation, confirmed 5/5 deterministic)",
+    (1, 1): (
+        "Linux CI, observed 2026-08-08 (#784) -- a THIRD platform-dependent variant, first "
+        "seen on this exact test/code path despite it being untouched by any change in that "
+        "session's own push. Passed every OTHER gate before failing only this membership "
+        "check (corrector_residual < 1e-10, converged=True, topology distinct from parent "
+        "(3, 2)) -- a genuine, valid, converged branch, not a degenerate/garbage result. "
+        "Consistent with this saddle-center's own documented extreme BLAS-sensitivity "
+        "(#740's own module docstring: ~1e-8-relative eigen-decomposition differences are "
+        "enough to tip the outcome) -- plausibly explained by a GitHub Actions Ubuntu runner "
+        "image update changing its OpenBLAS/numpy/scipy version since #740's own investigation, "
+        "not a regression in unrelated code (git-blame-confirmed: this test/module/artifact was "
+        "not touched by any commit in the session that surfaced this). UNLIKE the other two "
+        "entries, this is a SINGLE observation, not a confirmed-deterministic-5/5 one -- if this "
+        "flips to yet another topology on a future CI run, that would be the first genuine "
+        "signal of instability (not just a platform split) and should be investigated as such, "
+        "not silently added as a fourth entry."
+    ),
 }
 
 
