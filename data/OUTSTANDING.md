@@ -59,7 +59,9 @@ unchanged. See `git log` around this date for the corrected commit.
   confirmed (1.3e-9 vs 1.8e-6 relative energy match). Two-body-seed lineage check: clean honest
   negative, 4th project-wide confirmation. Full writeup:
   `docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md`. Follow-up (connection stage,
-  Barrabés-Mondelo-Ollé continuation) registered as `#783`, NOT dispatched — see its own bullet.
+  Barrabés-Mondelo-Ollé continuation) registered as `#783` — ✓ DONE 2026-08-08, clean negative
+  on the connection itself (method implemented faithfully, does not converge for He1 within
+  budget) — see its own bullet for the full account.
 - `#784` — ✓ DONE 2026-08-08 (CI-failure diagnosis, own initiative — the 2026-08-07 push's CI run
   came back with 6 failures across 2 files after an anomalous 2+ hour run, well outside this
   repo's own historical 85-110 min range): independently reproduced all 6 locally — 100% PASS on
@@ -79,36 +81,74 @@ unchanged. See `git log` around this date for the corrected commit.
   to this push) were independently verified clean on this Mac too and handed to `#782` (already
   active in that exact file) to fold into its own commit, per the same established pattern.
 - `#785` — registered 2026-08-08 (user: "we were looking for something new between the earth and
-  moon as well?"), **NOT dispatched — gated on `#783` landing first**: once `#783` proves the
-  Barrabés-Mondelo-Ollé connection-finding method actually works by reproducing Casoliva's own
-  published He1 connection, extend it BEYOND her own published set to look for genuinely novel
-  content — mirroring exactly the `#776`->`#777`->`#781` arc that found the Neptune-Triton 4:5
-  homoclinic connection (validate the method on known cases first, then go looking for something
-  new). Casoliva 2008/2010 document six homoclinic connections total (He1-4, Hm1-2 families) at
-  specific energies — the surrounding energy range is unexplored the same way Neptune-Triton's
-  4:5/4:7 orbits were before `#781`. Also consider Class 1's own resonant families (Table 3, all
-  16 rows already vendored by `#780`) — Casoliva's own paper builds Class 1 via a different
-  (second-species/generating-family) method than Class 2's homoclinic-shadowing construction, and
-  this project's own resonant-connection machinery (`jovian_resonant_connections.py`-style
-  Poincaré-shooting, not Barrabés-Mondelo-Ollé) has never been pointed at Earth-Moon's own
-  resonant orbits at all — a second, structurally distinct novelty avenue worth scoping alongside
-  the Class 2 energy-range extension. Mandatory `literature_check.py` novelty gate before any
+  moon as well?"), **STILL NOT dispatched — `#783` landed 2026-08-08 but did NOT satisfy this
+  bullet's own stated gating premise** ("once `#783` proves the Barrabés-Mondelo-Ollé
+  connection-finding method actually works by reproducing Casoliva's own published He1
+  connection"): `#783` implemented the method faithfully but got a CLEAN NEGATIVE on the
+  connection itself (a quantitatively-diagnosed numerical "conditioning wall", not a convention
+  error — see `#783`'s own bullet). Extending BEYOND Casoliva's published set is therefore
+  premature until either the fuller Barrabés-Mondelo-Ollé numerical stack (adaptive
+  segmentation, 2nd-order variationals, genuine continuation-in-energy from an easier starting
+  connection) closes the gap, or a different tractable starting point is found. Original scope,
+  preserved for whenever this DOES become viable: extend it BEYOND her own published set to look
+  for genuinely novel content — mirroring exactly the `#776`->`#777`->`#781` arc that found the
+  Neptune-Triton 4:5 homoclinic connection (validate the method on known cases first, then go
+  looking for something new). Casoliva 2008/2010 document six homoclinic connections total
+  (He1-4, Hm1-2 families) at specific energies — the surrounding energy range is unexplored the
+  same way Neptune-Triton's 4:5/4:7 orbits were before `#781`. Also consider Class 1's own
+  resonant families (Table 3, all 16 rows already vendored by `#780`) — Casoliva's own paper
+  builds Class 1 via a different (second-species/generating-family) method than Class 2's
+  homoclinic-shadowing construction, and this project's own resonant-connection machinery
+  (`jovian_resonant_connections.py`-style Poincaré-shooting, not Barrabés-Mondelo-Ollé) has never
+  been pointed at Earth-Moon's own resonant orbits at all — a second, structurally distinct
+  novelty avenue worth scoping alongside the Class 2 energy-range extension (this second avenue
+  does NOT depend on `#783`'s own connection-reproduction result and could be dispatched
+  independently). Mandatory `literature_check.py` novelty gate before any
   discovery claim, same discipline as every other task in this campaign.
-- `#783` — registered 2026-08-08 (follow-up from `#780`'s own results note), DISPATCHED 2026-08-08
-  (user: "both"):
-  Earth-Moon homoclinic-connection stage — Class 2's actual He1-4/Hm1-2 discrete connection
-  points (Casoliva 2010 Sec. V.B/V.C) + the Barrabés-Mondelo-Ollé (2009, Nonlinearity,
-  `10.1088/0951-7715/22/12/006`, already acquired+filed) numerical-continuation-of-homoclinic-
-  connections algorithm (2010 Eq. 20) that builds them, mirroring exactly how `#767` followed
-  `#765` for Saturn-Titan and `#777` followed `#776` for Neptune-Triton. `#780`'s own module
-  (`src/cyclerfinder/search/earth_moon_resonant_families.py`) already supplies the starting
-  object (`recover_he1_lyapunov`, the L1 Lyapunov p.o. at the golden anchor energy
-  `h=-1.45016232260699`) and the full set of sourced goldens to gate against: Table 4
-  (continuation variables), Tables 5-6 (pericenter/apocenter flight-times and orbital elements
-  for the He1 connection), and the LEO-rendezvous ΔV figures (703 m/s @ 67,808 km 2008 /
-  717.5 m/s @ 67,869 km 2010) — all already vendored as `HE1_*` constants in that module.
-  Mandatory `literature_check.py` novelty gate before any discovery claim, per standing
-  discipline (unlikely to trigger at this reproduction stage, same as `#780`).
+- `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
+  (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
+  "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
+  `tests/search/test_earth_moon_resonant_connections.py` (18 tests), implementing Barrabés,
+  Mondelo & Ollé's own (2009, Nonlinearity, `10.1088/0951-7715/22/12/006`)
+  continuation-of-homoclinic-connections method (their Eq. (4)/(6), matching Casoliva 2010's own
+  Eq. (20) almost verbatim) — a GENUINELY DIFFERENT algorithm class from this project's own
+  established Poincaré-section Newton-shooting machinery (`jovian_resonant_connections.py`'s
+  `correct_connection`), per the dispatch's own explicit instruction: the manifold
+  parametrization (`analytic_manifold_seed`, confirmed against BMO's own printed Eq. (4)) and
+  BOTH a single-shooting AND a multiple-shooting Newton corrector (BMO's own documented remedy
+  for long integration legs, "in order to avoid loss of precision") were built from scratch.
+  **Reproduces cleanly**: the He1 periodic-orbit anchor itself (`#780`'s own result,
+  re-confirmed, closure `~7.5e-12`), Table 4's own `V^u` monodromy eigenvector (`~1.9e-8`
+  relative, after fixing a SECOND OCR sign-hazard on Table 4 beyond the one `#780` already
+  found — `pdftotext` rendered ALL FOUR of `V^u`'s components as unsigned; resolved by reading
+  the PDF page directly as an image), and Table 6 row 8's own printed LEO-rendezvous ΔV
+  self-consistency (717.56 m/s computed directly from Casoliva's own printed `r,v`, vs. her own
+  stated 717.5 m/s). **Does NOT reproduce**: the He1 connection itself. Both correctors,
+  seeded directly from Casoliva's own printed Table 4 values, make genuine, measured residual
+  progress (0.394 → ~0.03 nondim, single- and multiple-shooting alike, `solve` and `lstsq`
+  alike) but plateau well short of convergence — a quantitatively diagnosed "conditioning
+  wall": the connection's own unstable leg spans `~4.13` periods of an orbit with unstable
+  eigenvalue `~108.6`/period, amplifying a perturbation by `~2.5e8` and demanding ~4e-12 seed
+  precision, five orders tighter than achievable (orbit/eigenvector already confirmed
+  near-machine-precision, ruling out a frozen-defect explanation). Barrabés-Mondelo-Ollé's own
+  paper independently confirms this territory is hard (their own multiple shooting + 2nd-order
+  variational equations + adaptive `‖DΦ_t‖<M` segmentation + `1e-14` integrator tolerance +
+  QR-pivoted rank-deficient least-squares, none of which was fully replicated this task) —
+  Casoliva's own paper reports 5h20min CPU for this exact energy point via full
+  continuation-in-energy from easier starting points, whereas this task attempted a COLD start
+  at the family's own hardest member. Per this project's own "never give up reproducing papers"
+  discipline, real escalation was attempted (period-targeting already exact, all-signs/branches
+  scanned, single- then multiple-shooting, `solve` vs `lstsq`, an enlarged-unknowns diagnostic)
+  before concluding this is a genuine hard limit, not a shortcut. Table 5/6 pericenter/apocenter
+  elements and the ΔV figure were deliberately NOT computed from the unconverged trajectory
+  (would look plausible, mean nothing — the exact "it closed!" failure mode this project's own
+  discipline warns against). Literature novelty gate: NOT triggered (pure reproduction attempt,
+  clean negative, nothing framed as discovery — same as `#780`). Full writeup:
+  `docs/notes/2026-08-08-783-earth-moon-homoclinic-connection.md`. **`#785` (novel-search
+  extension) is gated on this task's own POSITIVE result per its own bullet's stated premise —
+  that premise did NOT hold; `#785` needs re-scoping (e.g. the method needs the fuller
+  Barrabés-Mondelo-Ollé numerical stack, or a genuinely easier starting connection, before any
+  novel-search extension is viable) before dispatch.**
 - `#781` — ✓ DONE 2026-08-08, CORRECTED 2026-08-08 by Fable adversarial review (honest, NOVEL
   positive result, narrower than first reported — the first genuinely novel, not reproduction/
   self-consistency-only, connection-stage result of this whole task chain): built
