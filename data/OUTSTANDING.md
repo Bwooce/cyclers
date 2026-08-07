@@ -34,15 +34,29 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#774` — ✓ REOPENED + UNBLOCKED 2026-08-08 by `#782`'s own positive result: the Saturn-Titan
-  continuation-in-Jacobi-constant campaign (confirm/refute Vaquero's own falsifiable termination
-  claim, "...ends for a value of Jacobi constant C < 3.01400", Fig. 4.12), previously CLOSED
-  2026-08-01 for lack of a converged chain orbit to continue from. `#782` found and thoroughly
-  verified exactly that gating artifact (a `C`-exact, independently-verified periodic
-  "resonant chain"-type orbit at Vaquero's own `C=3.010000`, `x0=0.9492672902`,
-  `ydot0=0.0796459472`, `period=56.03254231`) — see `#774`'s own bullet (below, in its original
-  TASK ALLOCATIONS position) and `#782`'s own bullet for the full derivation. DISPATCHED 2026-08-08
-  (user: "both"), reusing `#753`'s own `cr3bp_continuation.continue_family`.
+- `#774` — ✓ DONE 2026-08-08: continued `#782`'s own converged chain orbit in INCREASING Jacobi
+  constant (`#753`'s own `cr3bp_continuation.continue_family`, unmodified, reused as the per-step
+  corrector+gauntlet inside an outer step-size-adaptation loop) toward Vaquero's own claimed
+  `C=3.01400` termination boundary. **Verdict: INCONCLUSIVE on her specific claim, but a genuine,
+  independently-confirmed positive finding of a different kind.** The continuation found a real
+  tangent (fold) bifurcation — the branch's own leading monodromy eigenvalue collapses smoothly
+  and monotonically from `4.77e7` (at `C=3.010000`) to exactly `1.000000` at `C=3.0100696797` —
+  confirmed genuine (not a corrector-basin artifact) by a two-root coalescence test (exactly two
+  distinct roots below the fold, spread shrinking as `sqrt(delta)` — the textbook saddle-node
+  signature — none above it). But this fold sits at `ΔC≈7.0e-5` from the `C=3.01` anchor, `~57x`
+  CLOSER than Vaquero's own claimed `ΔC≈4.0e-3` (`C=3.01400`) — only `1.7%` of the distance
+  covered. Cannot establish this `half_crossings=4` branch is the same family object she plots in
+  Fig. 4.11/4.12. The `#775`-flagged `C=3.014` coincidence (the UNRELATED plain 3:4 family's own
+  topology-jump) is WEAKENED, not strengthened — a different value, not a matching one. A branch-
+  hop artifact was found and diagnosed mid-task (an aggressive-step-growth version of the walk
+  jumped onto a nearby root undetected by the default `period_step_frac=0.10` gate; the headline
+  result comes from a second, independent run with `d_jacobi` hard-capped and `period_step_frac`
+  tightened to `0.01`, which converges to the SAME terminal point to 9 significant figures — cross-
+  validated). Decreasing-`C` direction NOT established (showed the same off-family-drift signature,
+  not re-run under the corrected methodology; time-budgeted). Full account, including the
+  advisor-directed two-root test and the branch-hop diagnosis: `#774`'s own bullet (below, in its
+  original TASK ALLOCATIONS position) and results note
+  `docs/notes/2026-08-08-774-saturn-titan-chain-continuation-verdict.md`.
 - `#780` — ✓ DONE 2026-08-07/08 (Stage A: family gate only, per its own deliberately narrow
   scope mirroring `#765`): `src/cyclerfinder/search/earth_moon_resonant_families.py` +
   `tests/search/test_earth_moon_resonant_families.py` (67 tests). Vendored Casoliva 2010 Table 3
@@ -592,6 +606,44 @@ unchanged. See `git log` around this date for the corrected commit.
   scope, now genuinely unblocked and ready for its own fresh dispatch (reusing `#753`'s own
   `cr3bp_continuation.continue_family`, per `#775`'s own Avenue 2 precedent, continuing THIS newly
   converged chain orbit in `C` rather than node's own unrelated 3:4 family).
+
+  **`#774` ✓ DONE 2026-08-08** (same-day fresh dispatch): ran the continuation-in-`C` campaign,
+  reusing `#753`'s own `continue_family` unmodified as the per-step corrector+gauntlet (it takes a
+  single fixed step size; this task wrapped it in an outer step-size-adaptation loop, since the
+  demonstrated basin sensitivity — a `1e-4` perturbation jumps to a totally different branch, per
+  `#782`'s own note — makes any single fixed step either too large or too small to cover any
+  useful distance). Direction resolved from the dispatch note's own internal contradiction
+  ("downward... toward 3.01400" — self-contradictory, since `3.014>3.01`; INCREASING `C` is the
+  direction that actually approaches the claimed boundary). **Result: a genuine tangent (fold)
+  bifurcation** — the branch's own leading monodromy eigenvalue collapses smoothly, monotonically
+  from `4.77e7` at `C=3.010000` to exactly `1.000000` at `C=3.0100696797`, confirmed genuine (not
+  a Newton-basin artifact) by an advisor-directed two-root coalescence test: exactly two distinct
+  roots exist strictly below the fold at every tested `delta` (`1e-6` down to `1e-9`), spread
+  shrinking as `sqrt(delta)` (the textbook saddle-node local-normal-form scaling), midpoint
+  converging to the fold point; zero solutions of the same branch exist above it. **This fold sits
+  at `ΔC≈7.0e-5` from the `C=3.01` anchor — `~57x` CLOSER than Vaquero's own claimed `ΔC≈4.0e-3`
+  (`C=3.01400`)** — only `1.7%` of the distance to her claimed value was covered before hitting
+  this feature. **Verdict: INCONCLUSIVE on her specific `C<3.01400` claim.** The mechanism (a fold)
+  matches her claim IN KIND, but the value does not match, and this task cannot establish that
+  `#782`'s own `half_crossings=4` branch is the same family object she plots (an unexplored
+  `half_crossings=6` sibling exists per `#782`'s own note; this orbit also shadows 3:4's own
+  physical path for `~94%` of its period). The `#775`-flagged `C=3.014` coincidence (the plain,
+  UNRELATED 3:4 family's own topology-jump) is therefore WEAKENED, not strengthened — a
+  materially different value, reported directly per the dispatch note's own anti-overclaiming
+  instruction. A branch-hop artifact was found mid-task (an early, aggressive free-growing version
+  of the step-size wrapper took one oversized step that jumped onto a nearby-but-distinct Newton
+  root, undetected by the default `period_step_frac=0.10` gate — diagnosed via a direct continuity
+  re-walk); the headline result above comes from a SECOND, independent run with `d_jacobi`
+  hard-capped at `1e-6` and `period_step_frac` tightened to `0.01`, which — reassuringly —
+  converges to the SAME terminal `C` as the hop-affected walk, to 9 significant figures
+  (cross-validation that the terminal point is a genuine dynamical feature, not a step-schedule
+  artifact). The DECREASING-`C` direction showed the same off-family-drift signature (period/
+  eigenvalue swinging non-monotonically) and was NOT re-run under the corrected methodology
+  (time-budgeted; reported honestly as NOT established, neither confirmed nor refuted). No
+  production code changes (`continue_family` reused unmodified, per the dispatch note's explicit
+  mandate); `tests/search/test_saturn_titan_resonant_connections.py` gained 2 fast (`~25s`)
+  regression tests anchoring the fold point and its two-root signature. Full account: results note
+  `docs/notes/2026-08-08-774-saturn-titan-chain-continuation-verdict.md`.
 - `#766` — ✓ DONE 2026-07-29: built the homoclinic self-connection at the torus's own actual seed
   energy, C=3.0041 (Kumar et al. 2021's own value), now that `#761` confirmed this is a genuine
   saddle point on the same continuous family as the already-confirmed 3:4-LO. **POSITIVE RESULT**:

@@ -19,6 +19,7 @@ import pytest
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_multiple_shooting as cms
+import cyclerfinder.search.cr3bp_periodic as cp
 import cyclerfinder.search.jovian_resonant_connections as jrc
 import cyclerfinder.search.saturn_titan_resonant_connections as stc
 import cyclerfinder.search.saturn_titan_resonant_families as stf
@@ -1097,3 +1098,109 @@ def test_attempt_chain_closure_symmetric_branch_guard_catches_basin_sensitivity(
     assert res.converged  # Newton finds SOME nearby fixed point...
     assert res.x0_drift > 0.01  # ...but it drifted well past the guard's default cap...
     assert not res.branch_ok  # ...so it is correctly flagged as untrustworthy.
+
+
+# `#774`: continuing `#782`'s own `half_crossings=4` chain branch in INCREASING Jacobi
+# constant (cr3bp_continuation.continue_family, `#753`'s own tool, wrapped in an outer
+# step-size-adaptation loop since that function itself takes a single fixed step size --
+# see the results note, docs/notes/2026-08-08-774-saturn-titan-chain-continuation-verdict.md,
+# for the full multi-hour continuation account) finds a genuine tangent (fold) bifurcation:
+# the branch's own nontrivial monodromy eigenvalue collapses smoothly and monotonically from
+# `4.77e7` (at Vaquero's own C=3.010000) to exactly `1` at `C=3.0100696797` -- ~57x CLOSER to
+# the C=3.01 anchor than Vaquero's own claimed `C=3.01400` termination boundary. This does
+# NOT confirm her specific claim (see the note for the full, precise verdict); it is a
+# genuine, independently-verified finding in its own right. The two tests below anchor the
+# fold point as a durable, FAST, independently-reproducible fact -- single/few Newton
+# corrections from the already-known answer, not a rerun of the original multi-hour walk.
+
+_C774_FOLD_C = 3.0100696796878963
+_C774_FOLD_X0 = 0.9494356926458897
+_C774_FOLD_PERIOD_GUESS = 55.69476136272944
+
+
+def test_c774_chain_branch_fold_eigenvalue_reaches_unity(system: cr3bp.CR3BPSystem) -> None:
+    """The fold point re-converges cleanly (already the answer -- 1 Newton
+    iteration) and its full-period monodromy's leading eigenvalue is
+    `1` to within `1e-4` -- the standard eigenvalue signature of a
+    saddle-node (tangent) periodic-orbit bifurcation. See
+    ``test_c774_chain_branch_fold_two_root_coalescence`` below for the
+    decisive fold-vs-corrector-basin-artifact discriminator.
+    """
+    orbit = cp.correct_symmetric_fixed_jacobi(
+        system,
+        _C774_FOLD_X0,
+        _C774_FOLD_C,
+        _C774_FOLD_PERIOD_GUESS,
+        ydot0_sign=1.0,
+        half_crossings=4,
+        tol=1e-12,
+        max_iter=40,
+        rtol=1e-13,
+        atol=1e-14,
+    )
+    assert orbit.converged
+    assert orbit.crossing_residual < 1e-9
+    assert abs(orbit.x0 - _C774_FOLD_X0) < 1e-6  # already essentially the answer
+    assert abs(orbit.jacobi - _C774_FOLD_C) < 1e-9
+
+    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0], dtype=np.float64)
+    arc = cr3bp.propagate(system, state0, orbit.period, with_stm=True, rtol=1e-13, atol=1e-14)
+    assert arc.stm is not None
+    eigs = np.linalg.eigvals(arc.stm)
+    max_eig = float(np.max(np.abs(eigs)))
+    assert abs(max_eig - 1.0) < 1e-4  # essentially exactly 1 -- the fold signature
+
+
+def test_c774_chain_branch_fold_two_root_coalescence(system: cr3bp.CR3BPSystem) -> None:
+    """The decisive discriminator between a genuine fold (the family turns
+    around in x0 vs C, two branches merging) and a mere corrector-basin
+    artifact (Newton's own basin shrinks to nothing regardless of whether a
+    second solution exists): strictly BELOW the fold (``C_fold - 1e-6``),
+    seeding near each of two independently-located points recovers TWO
+    DISTINCT roots on the target ~55.69-period branch; strictly ABOVE the
+    fold (``C_fold + 1e-6``), no seed recovers anything close to that
+    period -- Newton still "converges" (this system's own well-documented
+    basin sensitivity finds SOME nearby root), but never onto the target
+    branch (periods 2.96/5.02/68.58 instead of ~55.69, confirmed this task
+    directly). A full 25-point x0 grid x 4-delta version of this same test
+    (not run in CI -- too slow) shows the root spread below the fold shrinks
+    as sqrt(delta), the textbook local-normal-form signature of a
+    saddle-node bifurcation; see the results note for that full account.
+    """
+    delta = 1e-6
+
+    below_x0s = []
+    for x0_guess in (_C774_FOLD_X0 - 3e-5, _C774_FOLD_X0 + 3e-5):
+        orbit = cp.correct_symmetric_fixed_jacobi(
+            system,
+            x0_guess,
+            _C774_FOLD_C - delta,
+            _C774_FOLD_PERIOD_GUESS,
+            ydot0_sign=1.0,
+            half_crossings=4,
+            tol=1e-12,
+            max_iter=40,
+            rtol=1e-13,
+            atol=1e-14,
+        )
+        assert orbit.converged
+        assert abs(orbit.period - _C774_FOLD_PERIOD_GUESS) < 1.0  # on the target branch
+        below_x0s.append(orbit.x0)
+    assert abs(below_x0s[0] - below_x0s[1]) > 1e-5  # two GENUINELY DISTINCT roots
+
+    for x0_guess in (_C774_FOLD_X0, _C774_FOLD_X0 - 3e-5, _C774_FOLD_X0 + 3e-5):
+        orbit = cp.correct_symmetric_fixed_jacobi(
+            system,
+            x0_guess,
+            _C774_FOLD_C + delta,
+            _C774_FOLD_PERIOD_GUESS,
+            ydot0_sign=1.0,
+            half_crossings=4,
+            tol=1e-12,
+            max_iter=40,
+            rtol=1e-13,
+            atol=1e-14,
+        )
+        # Newton may still "converge" (finds SOME root elsewhere), but never on
+        # the target ~55.69-period branch -- no solution of THIS family exists here.
+        assert not (orbit.converged and abs(orbit.period - _C774_FOLD_PERIOD_GUESS) < 1.0)
