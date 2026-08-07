@@ -1,6 +1,7 @@
-# Triage: two ML/orbit-estimation papers, both OUT-OF-SCOPE
+# Triage: ML/orbit-estimation/GNC-navigation papers, all OUT-OF-SCOPE
 
-Two papers uploaded by the user 2026-08-07, both landing in the same subfield — triaged together.
+Three papers uploaded by the user 2026-08-07, all landing in the same broad subfield (state
+estimation/navigation, not trajectory design) — triaged together.
 
 ## Peng & Bai 2021, "Fusion of a machine learning approach and classical orbit predictions"
 
@@ -42,5 +43,24 @@ own scope ever expanded into estimation — noted here rather than silently disc
 citation-mined this pass (mining a triaged-out-of-scope survey is not this project's own established
 practice; citation-mining is reserved for on-topic digested papers).
 
+## Sarang & Capannolo 2025, "Higher Order Filtering Using Angles-Only Measurements in Cislunar Space"
+
+**Source:** A. Sarang & A. Capannolo, AAS preprint (paper number not yet assigned — "AAS XX-XXX" in
+its own header, no DOI/arXiv ID found anywhere in the text, including its own reference list). Filed
+at `cyclers_pdf/papers/sarang-capannolo-2025-higher-order-filtering-angles-only-cislunar-AAS-preprint.pdf`
+(md5 `3dbaa6eeff15e95af89e771f7016b8e4`), text-layer (LaTeX/pdfTeX), 21 pages.
+
+**Verdict: OUT-OF-SCOPE — triaged, not digested.** Compares EKF/EKF2/UKF filters for angles-only
+relative navigation of a chaser satellite tracking a Lunar Gateway target in a QPO — spacecraft
+relative-navigation/GNC filtering, not trajectory design. Same out-of-scope reasoning as the two
+papers above.
+
+## Pattern note
+
+All three papers uploaded this session sit in the same adjacent-but-distinct subfield: orbit
+estimation / navigation filtering / GNC, not orbit design. None extend this project's own catalogue,
+search machinery, or discovery campaigns. Flagged to the user directly (not just filed silently) in
+case there's a reason to expect more in this vein, or to reconsider scope.
+
 **Registration:** `CORPUS_INDEX.md`'s "ML / surrogate / GNC background (triaged sweep)" table updated
-in the same session, for both papers.
+in the same session, for all three papers.
