@@ -34,6 +34,15 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#774` — ✓ REOPENED + UNBLOCKED 2026-08-08 by `#782`'s own positive result: the Saturn-Titan
+  continuation-in-Jacobi-constant campaign (confirm/refute Vaquero's own falsifiable termination
+  claim, "...ends for a value of Jacobi constant C < 3.01400", Fig. 4.12), previously CLOSED
+  2026-08-01 for lack of a converged chain orbit to continue from. `#782` found and thoroughly
+  verified exactly that gating artifact (a `C`-exact, independently-verified periodic
+  "resonant chain"-type orbit at Vaquero's own `C=3.010000`, `x0=0.9492672902`,
+  `ydot0=0.0796459472`, `period=56.03254231`) — see `#774`'s own bullet (below, in its original
+  TASK ALLOCATIONS position) and `#782`'s own bullet for the full derivation. Not yet dispatched
+  as its own task — ready for a fresh dispatch reusing `#753`'s own `cr3bp_continuation.continue_family`.
 - `#780` — ✓ DONE 2026-08-07/08 (Stage A: family gate only, per its own deliberately narrow
   scope mirroring `#765`): `src/cyclerfinder/search/earth_moon_resonant_families.py` +
   `tests/search/test_earth_moon_resonant_families.py` (67 tests). Vendored Casoliva 2010 Table 3
@@ -490,8 +499,9 @@ unchanged. See `git log` around this date for the corrected commit.
   (`build_chain_natural_seed`/`attempt_chain_closure_natural_multiple_shooting`,
   `find_symmetric_chain_seed`, `SymmetricChainClosureResult`/`attempt_chain_closure_symmetric`),
   `src/cyclerfinder/search/cr3bp_multiple_shooting.py` (`_is_event_bracketing_failure`); tests:
-  `tests/search/test_saturn_titan_resonant_connections.py` (53 tests total, all pass, not marked
-  slow, new `near65_symmetric_seed_xv` fixture deriving the candidate programmatically),
+  `tests/search/test_saturn_titan_resonant_connections.py` (41 tests total, up from `#775`'s own
+  recorded 35, all pass, not marked slow, new `near65_symmetric_seed_xv` fixture deriving the
+  candidate programmatically),
   `tests/search/test_cr3bp_multiple_shooting.py` (+1 regression test for the bug fix). Also
   addressed an unrelated coordinator-flagged CI cross-platform issue in this same file (4 pre-
   existing `#773`-era tests, confirmed-clean on this Mac, marked `xfail(strict=False)` per the

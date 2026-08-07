@@ -244,14 +244,16 @@ genuinely harder version of the same physical question.
   "converged" result from a MEANINGFULLY perturbed seed is NOT automatically the same, trustworthy
   orbit, and the guard catches this directly (tested: seeding `1e-3` off the reference candidate
   converges, but `x0_drift=0.20 >> max_x0_drift=0.01`, correctly flagged `branch_ok=False`).
-- **A related family member exists at `half_crossings=6`** (period `82.17`, using `node`'s OTHER
-  perpendicular point `-1.3666368` as the return target instead of a near-6:5 return) — converged
-  to `residual=5.4e-12`, just short of the `1e-12` tolerance used here (a looser tolerance or a few
-  more iterations would very likely close it). Not chased further — the `half_crossings=4` member
-  is the primary result (closest to Vaquero's own stated "near the fixed point corresponding to
-  the 6:5 resonant orbit" selection criterion) and is independently, thoroughly verified above;
-  registering the existence of at least one other family member as a lead for any future
-  investigation of the family's own extent (relevant to `#774`'s own original C-continuation
+- **A related candidate exists at `half_crossings=6`** (period `82.17`, using `node`'s OTHER
+  perpendicular point `-1.3666368` as the return target instead of a near-6:5 return) — the
+  crossing-residual Newton loop reports `5.4e-12`, just short of the `1e-12` tolerance used here,
+  but the independent full-period DOP853 re-propagation closure is `2.258e-6` — **three orders of
+  magnitude looser** than the `half_crossings=4` member's own `1.861e-9`, i.e. genuinely less
+  well-converged, not simply "one tolerance notch away." Not chased further to tighter convergence
+  — the `half_crossings=4` member is the primary result (closest to Vaquero's own stated "near the
+  fixed point corresponding to the 6:5 resonant orbit" selection criterion) and is independently,
+  thoroughly verified above; registering the existence of at least one other candidate as a lead
+  for any future investigation of the family's own extent (relevant to `#774`'s own original C-continuation
   question), not pursued as part of this task's own scope.
 - **A wider `find_homoclinic` scan (beyond `k_range=range(4,6)`) was not completed** — an
   exploratory wider scan (`k_range=range(1,8)`, all `k_u`/`k_s` combinations) was started but
@@ -279,8 +281,8 @@ genuinely harder version of the same physical question.
   widened `except` clauses at both `_residual_and_jacobian` call sites in
   `correct_multiple_shooting`, fixing the latent `ValueError`-escapes-as-a-crash bug avenue (a)'s
   own short natural segments surfaced.
-* `tests/search/test_saturn_titan_resonant_connections.py` (extended, 53 tests, up from 47 before
-  this task minus the 4 xfail'd — see below): a new `near65_symmetric_seed_xv` module-scoped
+* `tests/search/test_saturn_titan_resonant_connections.py` (extended, 41 tests, up from `#775`'s
+  own recorded 35 — 6 new tests this task): a new `near65_symmetric_seed_xv` module-scoped
   fixture (derives the `k_u=k_s=4` candidate programmatically via a single `correct_connection`
   call, confirmed to reproduce the same root as this task's own original discovery scan — never a
   hand-copied literal); tests for `build_chain_natural_seed`'s own non-uniform structure,

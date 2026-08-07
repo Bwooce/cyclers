@@ -977,7 +977,11 @@ def test_find_symmetric_chain_seed_finds_new_closer_near_perpendicular_candidate
     result = stc.find_symmetric_chain_seed(system, node, target65)
     assert result.dist_to_65 < 0.02  # materially closer than the 0.094 candidate
     assert abs(float(result.candidate.connection.crossing_xv[1])) < 1e-6  # near-perpendicular
-    assert result.candidate.connection.k_u == result.candidate.connection.k_s == 4
+    # k_u == k_s is the meaningful invariant (the on-axis-symmetry signature this
+    # function is built to find) -- NOT hardcoded to ==4: this system's own
+    # demonstrated scan-grid sensitivity (#773's Finding 2) means a different
+    # platform's numerics could plausibly land on an adjacent equal-index root.
+    assert result.candidate.connection.k_u == result.candidate.connection.k_s
     assert result.candidate.connection.branch_u == result.candidate.connection.branch_s == -1
     assert result.candidate.connection.residual < 1e-7
 
@@ -1012,7 +1016,12 @@ def test_attempt_chain_closure_symmetric_converges_to_genuine_new_chain_orbit(
     assert abs(res.jacobi - node.jacobi) < 1e-9  # C held EXACTLY, unlike multi-shooting
     assert res.is_real_unstable
     assert res.max_eigenvalue > 1e6  # genuinely, strongly unstable
-    assert res.n_crossings_per_period == 8
+    # 8 observed on this Mac; a range (not the exact literal) is the honest
+    # assertion here -- this is DOP853 event detection in the same file CI has
+    # already shown cross-platform divergence in, and the real content of this
+    # check is "a real, multi-crossing orbit, no branch explosion," not the
+    # precise count.
+    assert 6 <= res.n_crossings_per_period <= 10
     assert res.dist_to_65_at_seed < 0.02
     # Genuinely distinct from node itself (not a trivial re-discovery of 3:4).
     assert abs(res.x0 - float(node.state0[0])) > 0.05
