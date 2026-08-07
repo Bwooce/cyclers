@@ -65,17 +65,29 @@ unchanged. See `git log` around this date for the corrected commit.
   goldens. Llibre/Martínez/Simó/Doedel 1985 (`#749`, already acquired) provides the theoretical
   transversality backing for the Class 2 construction. Mandatory `literature_check.py` novelty
   gate before any discovery claim, per standing discipline.
-- `#781` — registered + DISPATCHED 2026-08-07 (user: "start the two paths in parallel, assign new
-  task numbers", following the discovery-menu survey below): Neptune-Triton homoclinic/heteroclinic
-  connection stage — the missing half of a pipeline already built twice (`jovian_resonant_connections.py`
-  `#754`, `saturn_titan_resonant_connections.py` `#767`). `#776`/`#777` vendored the family gate (all
-  64 canonical Miceli & Bosanac 2026 ESM rows) but never built the connection module. Named seed:
-  the 4:5 saddle at `|λ|≈105`, comfortably inside the demonstrated Newton-tractable band (`|λ|≈1036`
-  worked in `#754`, `|λ|≈4445` broke in `#759`). No published Neptune-Triton homoclinic/heteroclinic
-  connection state exists anywhere — genuinely novel-shaped, unlike the family gate's reproduction
-  framing. Mandatory `literature_check.py` gate (Miceli & Bosanac's own motion-primitive/graph-search
-  transfers are adjacent prior art that may narrow the claim); expect the 4:7 row (`|λ|≈1.46e4`) to
-  hit the same tractability wall `#759` documented.
+- `#781` — ✓ DONE 2026-08-08 (honest, NOVEL positive result — the first genuinely novel, not
+  reproduction/self-consistency-only, connection-stage result of this whole task chain): built
+  `src/cyclerfinder/search/neptune_triton_resonant_connections.py`, the missing connection-stage
+  sibling of `jovian_resonant_connections.py` (`#754`) / `saturn_titan_resonant_connections.py`
+  (`#767`), targeting `#776`/`#777`'s own confirmed "4:5-saddle" resonant orbit
+  (`C=2.987089791658`, `max_eigenvalue=-105.05...` — the ONLY negative eigenvalue among all 64
+  vendored Neptune-Triton rows). Found FOUR independent, ghost-guard-passed (`134×`-`287×` margin),
+  Newton-converged (`<8e-10` residual), independently Radau-cross-checked (`<1.31e-7`) homoclinic
+  self-intersections (PRIMARY/SECONDARY on-axis + a genuine reflection-symmetric mirror pair).
+  Literature-novelty gate: direct text-layer grep of BOTH the Miceli & Bosanac 2026 paper AND the
+  companion Miceli 2025 dissertation found ZERO "homoclinic"/"heteroclinic" occurrences in either
+  — their own manifold use is a coarse configuration-space-adjacency graph search over motion
+  primitives, categorically not an exact Poincaré-section intersection; `literature_check.py`'s
+  own mandatory-floor run (7 real WebSearch queries) returned `not-found` (weak corroboration
+  only, per that module's own cycler-vocabulary scope caveat). Framed as genuinely NOVEL, not a
+  reproduction. Also found+fixed a real bug in the shared `ResonantNode.from_candidate` staleness
+  guard (silently inert for negative-signed eigenvalues — this orbit's own regime, never exercised
+  before). 4:7-stress (`|λ|≈1.46e4`) attempted as the dispatch note's own "if time allows" second
+  target: an honest, clearly-diagnosed FAIL exactly as `#759`'s own extreme-instability precedent
+  predicted — Newton stalled at residuals `1.7e-3`-`3.4e-3` from every geometrically-motivated
+  seed tried, and even the best marginal candidates sat only `1.2×`-`3.5×` past the ghost-guard
+  threshold (vs. 4:5's `134×`-`287×`) — not forced, no tolerance weakened. See
+  `docs/notes/2026-08-08-781-neptune-triton-homoclinic-connections.md` for the full account.
 - `#775` — ✓ DONE 2026-08-01 (honest, SHARPLY-evidenced continued NEGATIVE — genuine continuation
   tried in good faith, per `#773`'s own explicit recommendation, and fails more decisively than
   either of `#773`'s own cold-start attempts): built and ran an artificial-parameter Newton
