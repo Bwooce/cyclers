@@ -95,3 +95,27 @@ def test_length_mismatch_raises() -> None:
     except ValueError:
         return
     raise AssertionError("expected ValueError on nodes/seg_times length mismatch")
+
+
+def test_is_event_bracketing_failure_matches_only_the_known_scipy_message() -> None:
+    """`#782`: a non-uniform (natural-x-axis-crossing) multiple-shooting seed
+    can legitimately produce segments as short as ~1 nondim time unit near a
+    turning point -- something this module's own original UNIFORM-time-
+    sliced seeds never generated. On such a short segment, ``solve_ivp``'s
+    own event-bracketing (``scipy.optimize.brentq``, inside the
+    close-secondary-encounter terminal event) can raise
+    ``ValueError: f(a) and f(b) must have different signs`` when the
+    trajectory grazes the encounter threshold in a numerically ambiguous way
+    across a single adaptive step -- confirmed directly, reproducibly, on
+    `#782`'s own natural-crossing chain seed (see the results note). This
+    module's own docstring already documents the INTENDED contract
+    ("Propagation failures... treated as a non-convergence rather than a
+    crash") for exactly this class of failure; :func:`correct_multiple_shooting`
+    now catches this specific ``ValueError`` (matched narrowly on message,
+    re-raised otherwise) at both call sites. This test guards the matcher
+    itself: it must catch the KNOWN scipy message and MUST NOT swallow an
+    unrelated ``ValueError`` (a genuine bug elsewhere).
+    """
+    assert ms._is_event_bracketing_failure(ValueError("f(a) and f(b) must have different signs"))
+    assert not ms._is_event_bracketing_failure(ValueError("some unrelated error"))
+    assert not ms._is_event_bracketing_failure(ValueError(""))

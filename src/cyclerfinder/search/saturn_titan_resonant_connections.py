@@ -113,6 +113,7 @@ from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_multiple_shooting as cms
+import cyclerfinder.search.cr3bp_periodic as cp
 import cyclerfinder.search.jovian_resonant_connections as jrc
 import cyclerfinder.search.saturn_titan_resonant_families as stf
 from cyclerfinder.genome.heteroclinic_cycle import (
@@ -1197,6 +1198,396 @@ def continue_chain_closure_homotopy(
     )
 
 
+# ---------------------------------------------------------------------------
+# `#782`: reopening `#774` with a genuinely new technique (Parker, Davis &
+# Born 2010, "Chaining periodic three-body orbits in the Earth-Moon system",
+# Acta Astronautica 67:623-638 -- Vaquero's own ref [69]), per the digest at
+# `docs/notes/2026-08-07-parker-davis-born-2010-chaining-orbits-digest.md`:
+# patchpoints at NATURAL DYNAMICAL WAYPOINTS (orbit x-axis crossings + the
+# crossings nearest a theoretical connection), not uniform time subdivision
+# (which `#773`'s own `n_segments=8->16` test already found does not help).
+# Two avenues, full account in the `#782` results note:
+#
+# (a) `build_chain_natural_seed`/`attempt_chain_closure_natural_multiple_shooting`
+#     -- the technique the dispatch note names explicitly. Natural {y=0}
+#     crossings of `#767`/`#775`'s own near-6:5 candidate's own trajectory
+#     (unequal, dynamically-placed segment durations, spanning ~1.1-11.7
+#     nondim time each, vs `#773`'s own uniform ~8.5-nondim slices) fed to
+#     `#687`'s existing `cr3bp_multiple_shooting.correct_multiple_shooting`
+#     UNCHANGED. Genuine, better-than-`#773` progress (closure residual
+#     1.028 -> 0.322 over 80 warm-started iterations, vs `#773`'s own
+#     uniform-seed 1.62 -> 0.49-0.55 over hundreds) confirming the natural
+#     segmentation is genuinely better-conditioned (per-segment ||STM|| ~
+#     20-260, vs the single-arc 1.2e14) -- BUT the progress is INVALIDATED
+#     as a periodicity result by Jacobi drift (2.9715 at iteration 80, vs
+#     the required 3.010000 exactly): `#687`'s own corrector does not
+#     constrain C, and the 7N-vs-6N free-variable slack is spent partly
+#     sliding downhill in energy rather than toward genuine periodicity at
+#     Vaquero's own energy. An honest non-result -- real progress, wrong
+#     question. This also surfaced a genuine, narrowly-scoped LATENT BUG in
+#     `#687`'s own `cr3bp_multiple_shooting.py` (a `ValueError` from
+#     `scipy`'s own event-bracketing on a short natural segment, escaping
+#     the module's own documented "propagation failures become
+#     non-convergence" contract) -- fixed there directly (see that module's
+#     own `_is_event_bracketing_failure`), a real, useful, narrowly-scoped
+#     deliverable independent of this avenue's own non-result.
+#
+# (b) `find_symmetric_chain_seed`/`attempt_chain_closure_symmetric` -- the
+#     result that actually closes the loop. Extending `find_homoclinic`'s
+#     own scan to include EQUAL crossing-index (`k_u == k_s`) combinations
+#     -- never tried by `#767`/`#773`/`#775` (their own `near65_crossing_xv`
+#     fixture only ever checked mismatched `(k_u, k_s)` in `{(4,5), (5,4)}`)
+#     -- surfaces a genuinely NEW, materially CLOSER (`dist_to_65=0.0145`,
+#     vs the previously-used `0.094`) homoclinic self-connection that is
+#     also essentially EXACTLY perpendicular (`xdot ~ -2.7e-9`) -- the
+#     signature of an x-axis-SYMMETRIC connecting trajectory. Vaquero 2013
+#     Fig. 4.10(a) itself shows the resonant chain as a visibly
+#     x-axis-symmetric star/zigzag shape (its own "Perpendicular Crossings"
+#     label marks several vertices), consistent with the chain being a
+#     genuine symmetric periodic orbit -- NOT requiring `#773`'s own general
+#     2-free-variable, C-unconstrained Poincare-fixed-point Newton over the
+#     WHOLE ~110.5-nondim loop. Seeding this project's own EXISTING
+#     `cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+#     (the SAME corrector that already recovers 3:4/6:5 themselves, `#765`
+#     -- reused directly, not reimplemented) at this near-perpendicular
+#     candidate, with `half_crossings=4` (one HALF of the loop, ~56 nondim
+#     time instead of ~110.5), converges in 3 Newton iterations to
+#     `crossing_residual=3.8e-13`, `C` held EXACTLY at `3.010000` by
+#     construction (no Jacobi-drift escape hatch -- `ydot0` is re-derived
+#     from the Jacobi constraint every iteration). Independently confirmed:
+#     a Radau cross-check (closure `2.6e-7`, Jacobi drift over the full
+#     period `2.5e-14`), Barden-vs-full-monodromy eigenvalue agreement
+#     (`2.4e-8` relative, `max|eig|=4.77e7`, real saddle), a symplectically-
+#     consistent full 6-eigenvalue spectrum (reciprocal pairs confirmed to
+#     `<1e-5` relative), ghost-guard margin `80.9x` past `GHOST_GUARD_DELTA`,
+#     and a genuine-distinctness check against `node`'s own trajectory in
+#     physical `(x,y)` space (max separation `0.081` nondim, `~99,000 km` --
+#     the new orbit is NOT a re-discovery of `node` itself, though it does
+#     spend most of its own period within a geometrically tight tube of
+#     `node`'s own path, consistent with Fig. 4.10(a)'s own nested
+#     "Exterior 3:4"/"Interior 6:5" loop geometry). This RECONCILES
+#     Vaquero's own "it is necessary to numerically correct this path via a
+#     single shooting scheme" claim (p.115): her single shooting was very
+#     likely this SAME symmetric, C-pinned, one-free-variable formulation --
+#     not `#773`'s own two-free-variable, C-unconstrained, full-loop one.
+#     Same words, a materially easier, well-conditioned problem; this does
+#     NOT contradict `#773`'s or `#775`'s own numbers, which remain valid
+#     reports on a genuinely harder formulation of the same physical
+#     question. See the `#782` results note for the full verification
+#     bundle and honesty framing (self-consistency evidence only -- Fig.
+#     4.10 has no digit-grade state table, same caveat as `#767`'s own
+#     homoclinic-connection result).
+# ---------------------------------------------------------------------------
+
+
+def build_chain_natural_seed(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    x0_guess: float,
+    xdot0_guess: float,
+    t_target: float,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    rtol: float = 1e-13,
+    atol: float = 1e-14,
+) -> tuple[list[NDArray[np.float64]], list[float], int]:
+    """`#782`: Parker, Davis & Born 2010's own patchpoint-selection strategy
+    (see module docstring, "`#782`") -- multiple-shooting nodes placed at
+    this seed trajectory's own NATURAL ``{y=0}`` x-axis crossings (unequal
+    segment durations, following the trajectory's own dynamics), NOT
+    `#773`'s own UNIFORM time-sliced :func:`build_chain_multi_shooting_seed`.
+
+    Reuses :func:`_chain_crossings` directly (no new propagation code) to
+    find the natural crossing list, then assembles ``crossing_index`` nodes:
+    node 0 is the seed's own state at ``t=0``; nodes ``1..crossing_index-1``
+    are the FULL 6-states at the first ``crossing_index-1`` natural
+    crossings; the final (wrap-around) segment duration is the time from the
+    ``(crossing_index-1)``-th to the ``crossing_index``-th natural crossing
+    -- i.e. the corrector's own periodicity constraint
+    (``phi(node[-1], seg[-1]) == node[0]``) is EXACTLY the same "does the
+    ``crossing_index``-th return match the seed" condition
+    :func:`attempt_chain_closure` targets, just broken into
+    ``crossing_index`` naturally-placed segments instead of one.
+
+    Returns ``(nodes, seg_times, crossing_index)``.
+
+    Raises ``ValueError`` if the seed state has no valid Jacobi solution, or
+    reaches fewer than 2 qualifying ``{y=0}`` crossings before ``t_target``
+    (need at least one internal natural crossing besides the final one).
+    """
+    horizon = t_target + 0.5 * node.period
+    res = _chain_crossings(
+        system,
+        x0_guess,
+        xdot0_guess,
+        node.jacobi,
+        horizon,
+        sign=float(ydot_sign),
+        rtol=rtol,
+        atol=atol,
+    )
+    if res is None:
+        raise ValueError("build_chain_natural_seed: seed state has no valid Jacobi solution")
+    events, _ydot0 = res
+    if not events:
+        raise ValueError("build_chain_natural_seed: seed reaches no {y=0} crossing within horizon")
+    crossing_index = int(np.argmin([abs(t - t_target) for t, _ in events])) + 1
+    if crossing_index < 2:
+        raise ValueError(
+            "build_chain_natural_seed: crossing_index < 2 -- need at least one internal "
+            "natural crossing before the target return"
+        )
+    state0, _ = _chain_state0(x0_guess, xdot0_guess, node.jacobi, system.mu, float(ydot_sign))
+    if state0 is None:
+        raise ValueError("build_chain_natural_seed: seed state has no valid Jacobi solution")
+    nodes = [state0] + [events[i][1][:6] for i in range(crossing_index - 1)]
+    seg_times = [events[0][0]]
+    for i in range(1, crossing_index - 1):
+        seg_times.append(events[i][0] - events[i - 1][0])
+    seg_times.append(events[crossing_index - 1][0] - events[crossing_index - 2][0])
+    return nodes, seg_times, crossing_index
+
+
+def attempt_chain_closure_natural_multiple_shooting(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    x0_guess: float,
+    xdot0_guess: float,
+    t_target: float,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    tol: float = 1e-9,
+    max_iter: int = 80,
+    lm: float = 1e-8,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> cms.MultipleShootingOrbit:
+    """`#782` (the technique the dispatch note names explicitly): builds the
+    natural-crossing seed via :func:`build_chain_natural_seed` (Parker,
+    Davis & Born 2010's own patchpoint strategy -- see module docstring),
+    then hands it directly to
+    :func:`~cyclerfinder.search.cr3bp_multiple_shooting.correct_multiple_shooting`
+    (`#687`'s own general corrector, reused verbatim -- not reimplemented).
+
+    **Honest result (see the `#782` results note for the full numeric
+    account)**: from `#767`/`#775`'s own near-6:5 candidate, this makes
+    genuinely BETTER progress than `#773`'s own uniform-time-sliced seed
+    (closure residual ``1.028 -> 0.322`` over 80 iterations here, vs
+    `#773`'s own ``1.62 -> 0.49-0.55`` over hundreds) -- per-segment
+    ``||STM||`` stays ``~20-260`` (vs the single-arc ``1.2e14``), confirming
+    the natural, non-uniform segmentation is genuinely better-conditioned.
+    BUT this module's own `#687` corrector does not constrain the Jacobi
+    constant, and the reported progress is INVALIDATED as a periodicity
+    result by Jacobi drift (``2.9715`` at iteration 80, vs the required
+    ``3.010000`` exactly) -- part of the residual decrease is the corrector
+    sliding downhill in energy, not converging toward genuine periodicity at
+    Vaquero's own C. Callers MUST check
+    ``cyclerfinder.core.cr3bp.jacobi_constant(orbit.nodes[0], system.mu)``
+    against ``node.jacobi`` before treating ANY residual number from this
+    function as progress toward the chain -- an honest non-result, not a
+    positive (see :func:`attempt_chain_closure_symmetric` for the technique
+    that actually closes the loop at the correct energy).
+    """
+    nodes, seg_times, _crossing_index = build_chain_natural_seed(
+        system,
+        node,
+        x0_guess=x0_guess,
+        xdot0_guess=xdot0_guess,
+        t_target=t_target,
+        ydot_sign=ydot_sign,
+        rtol=1e-13,
+        atol=1e-14,
+    )
+    return cms.correct_multiple_shooting(
+        system, nodes, seg_times, tol=tol, max_iter=max_iter, lm=lm, rtol=rtol, atol=atol
+    )
+
+
+def find_symmetric_chain_seed(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    target_65: NDArray[np.float64],
+    *,
+    branches: tuple[int, ...] = (-1,),
+    k_range: range = range(4, 6),
+    perp_tol: float = 1e-3,
+    epsilon: float = EPSILON,
+    ydot_sign: int = SECTION_YDOT_SIGN,
+    ghost_guard_delta: float = GHOST_GUARD_DELTA,
+    max_time_factor: float = 3.0,
+    tol: float = 1e-9,
+    scan_n: int = 12,
+    max_iter: int = 40,
+    fd_step: float = 1e-6,
+) -> ChainProximityCandidate:
+    """`#782`: scan for an EQUAL-crossing-index (``k_u == k_s``) homoclinic
+    self-connection of ``node`` -- a genuine on-axis (perpendicular,
+    ``xdot ~ 0``) intersection, the signature of an x-axis-SYMMETRIC
+    connecting trajectory (see module docstring, "`#782`"). Never tried by
+    `#767`/`#773`/`#775` -- their own scans/fixtures only ever checked
+    MISMATCHED ``(k_u, k_s)`` pairs like ``(4,5)``/``(5,4)``.
+
+    Returns the single closest-to-6:5, near-perpendicular
+    (``|xdot| < perp_tol``) candidate found by :func:`find_homoclinic` over
+    ``branches``/``k_range`` (default: ``branches=(-1,)``, ``k_range=range(4,
+    6)`` -- a narrow, cheap window that already contains the confirmed
+    `#782` candidate; a wider scan is a possible but NOT required follow-up,
+    see the results note).
+
+    Raises ``ValueError`` if no near-perpendicular candidate is found in
+    that window.
+    """
+    hits = find_homoclinic(
+        system,
+        node,
+        epsilon=epsilon,
+        ydot_sign=ydot_sign,
+        ghost_guard_delta=ghost_guard_delta,
+        max_time_factor=max_time_factor,
+        k_range=k_range,
+        branches=branches,
+        tol=tol,
+        scan_n=scan_n,
+        max_iter=max_iter,
+        fd_step=fd_step,
+    )
+    ranked = rank_by_proximity_to_65(hits, target_65)
+    perp = [r for r in ranked if abs(float(r.candidate.connection.crossing_xv[1])) < perp_tol]
+    if not perp:
+        raise ValueError(
+            "find_symmetric_chain_seed: no near-perpendicular (|xdot|<"
+            f"{perp_tol}) homoclinic candidate found in branches={branches}, "
+            f"k_range={k_range}"
+        )
+    perp.sort(key=lambda r: r.dist_to_65)
+    return perp[0]
+
+
+@dataclass(frozen=True)
+class SymmetricChainClosureResult:
+    """Result of :func:`attempt_chain_closure_symmetric` -- `#782`'s own
+    symmetric single-shooting closure of the resonant chain (see module
+    docstring, "`#782`").
+
+    ``branch_ok`` is this task's own branch-drift guard (the symmetric-orbit
+    analogue of `#773`'s ``max_t_cross_drift``, mandated by the dispatch
+    note): the demonstrated basin sensitivity of this map (a perturbation of
+    ``1e-4`` in ``x0_seed`` can converge to a period-``5.0`` or period-``72``
+    orbit instead of this one -- see the results note) means a "converged"
+    result is only trustworthy if ``x0`` did not drift far from the seed.
+    ``branch_ok`` is ``False`` (even when ``converged`` is ``True``) if
+    ``|x0 - x0_seed| > max_x0_drift``.
+    """
+
+    x0: float
+    ydot0: float
+    period: float
+    jacobi: float
+    converged: bool
+    crossing_residual: float
+    n_iter: int
+    half_crossings: int
+    x0_seed: float
+    x0_drift: float
+    branch_ok: bool
+    n_crossings_per_period: int
+    max_eigenvalue: float
+    is_real_unstable: bool
+    dist_to_65_at_seed: float
+    notes: str
+
+
+def attempt_chain_closure_symmetric(
+    system: cr3bp.CR3BPSystem,
+    node: jrc.ResonantNode,
+    *,
+    x0_seed: float,
+    half_crossings: int,
+    target_65: NDArray[np.float64],
+    period_guess: float,
+    ydot0_sign: float = 1.0,
+    max_x0_drift: float = 0.01,
+    tol: float = 1e-12,
+    max_iter: int = 40,
+    rtol: float = 1e-13,
+    atol: float = 1e-14,
+) -> SymmetricChainClosureResult:
+    """`#782`: symmetric single-shooting closure of the resonant chain (see
+    module docstring, "`#782`") -- reuses
+    :func:`~cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+    directly (the SAME corrector that already recovers 3:4/6:5 themselves,
+    `#765`), NOT reimplemented. ``ydot0`` (hence the Jacobi constant) is
+    re-derived from the Jacobi constraint every Newton iteration -- ``C`` is
+    held EXACTLY at ``node.jacobi`` throughout, unlike
+    :func:`attempt_chain_closure_natural_multiple_shooting`'s own
+    Jacobi-drift failure mode.
+
+    Also computes the full-period monodromy eigenvalue (real-saddle check,
+    same discipline as `#765`'s own Table 4.1 gate), the natural ``{y=0}``
+    crossing count over the recovered period (a coarse branch-explosion
+    sanity check, in the spirit of `#773`'s own ``t_cross``/
+    ``n_events_after_first_step`` diagnostics), and ``x0_drift``/
+    ``branch_ok`` (see the class docstring).
+    """
+    dist65 = float(np.linalg.norm(np.array([x0_seed, 0.0], dtype=np.float64) - target_65))
+    orbit = cp.correct_symmetric_fixed_jacobi(
+        system,
+        x0_seed,
+        node.jacobi,
+        period_guess,
+        ydot0_sign=ydot0_sign,
+        half_crossings=half_crossings,
+        tol=tol,
+        max_iter=max_iter,
+        rtol=rtol,
+        atol=atol,
+    )
+    x0_drift = abs(orbit.x0 - x0_seed)
+    branch_ok = x0_drift <= max_x0_drift
+
+    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0], dtype=np.float64)
+    arc = cr3bp.propagate(system, state0, orbit.period, with_stm=True, rtol=rtol, atol=atol)
+    assert arc.stm is not None
+    eigs = np.linalg.eigvals(arc.stm)
+    idx = int(np.argmax(np.abs(eigs)))
+    lead = eigs[idx]
+    max_eigenvalue = float(np.abs(lead))
+    is_real_unstable = bool(
+        abs(lead.imag) < 1e-6 * max(1.0, abs(lead.real)) and max_eigenvalue > 1.0 + 1e-9
+    )
+
+    times_x, _states_x = cp._xaxis_crossings(
+        system, state0, orbit.period * 1.05, with_stm=False, rtol=rtol, atol=atol
+    )
+    n_crossings = int(np.sum(np.asarray(times_x) <= orbit.period * 1.0001))
+
+    if orbit.converged and branch_ok:
+        notes = "converged"
+    elif orbit.converged:
+        notes = "converged but branch-drift-rejected (x0_drift exceeds max_x0_drift)"
+    else:
+        notes = "did not converge"
+
+    return SymmetricChainClosureResult(
+        x0=orbit.x0,
+        ydot0=orbit.ydot0,
+        period=orbit.period,
+        jacobi=orbit.jacobi,
+        converged=orbit.converged,
+        crossing_residual=orbit.crossing_residual,
+        n_iter=orbit.n_iter,
+        half_crossings=half_crossings,
+        x0_seed=x0_seed,
+        x0_drift=x0_drift,
+        branch_ok=branch_ok,
+        n_crossings_per_period=n_crossings,
+        max_eigenvalue=max_eigenvalue,
+        is_real_unstable=is_real_unstable,
+        dist_to_65_at_seed=dist65,
+        notes=notes,
+    )
+
+
 __all__ = [
     "EPSILON",
     "GHOST_GUARD_DELTA",
@@ -1207,12 +1598,17 @@ __all__ = [
     "ChainHomotopyStopReason",
     "ChainProximityCandidate",
     "HomoclinicCandidate",
+    "SymmetricChainClosureResult",
     "attempt_chain_closure",
     "attempt_chain_closure_multiple_shooting",
+    "attempt_chain_closure_natural_multiple_shooting",
+    "attempt_chain_closure_symmetric",
     "build_34_node",
     "build_chain_multi_shooting_seed",
+    "build_chain_natural_seed",
     "continue_chain_closure_homotopy",
     "find_homoclinic",
+    "find_symmetric_chain_seed",
     "homoclinic_reapproach_check",
     "own_section_points",
     "rank_by_proximity_to_65",

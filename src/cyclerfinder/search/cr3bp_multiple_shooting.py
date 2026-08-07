@@ -54,6 +54,29 @@ from numpy.typing import NDArray
 
 import cyclerfinder.core.cr3bp as cr3bp
 
+#: `#782`: a non-uniform (natural-x-axis-crossing) multiple-shooting seed can
+#: legitimately produce segments as short as ~1 nondim time unit near a
+#: turning point -- something the module's own original UNIFORM-time-sliced
+#: seeds (`#773`'s `build_chain_multi_shooting_seed`) never generated. On such
+#: a short segment, ``solve_ivp``'s own event-bracketing (``scipy.optimize.
+#: brentq``, inside the close-secondary-encounter terminal event,
+#: :class:`cyclerfinder.core.cr3bp.CR3BPCloseEncounterError`) can hit a
+#: `ValueError: f(a) and f(b) must have different signs` when the trajectory
+#: grazes the encounter threshold in a numerically ambiguous way across a
+#: single adaptive step -- confirmed directly, reproducibly, on `#782`'s own
+#: natural-crossing chain seed. This module's own docstring already documents
+#: the INTENDED contract ("Propagation failures... treated as a
+#: non-convergence rather than a crash") for exactly this class of failure;
+#: the two ``except RuntimeError`` sites below did not yet cover this
+#: particular scipy-internal ValueError. Matched narrowly on the known
+#: ``brentq`` message and re-raised otherwise -- this must never silently
+#: swallow an unrelated ``ValueError`` from a genuine bug elsewhere.
+_EVENT_BRACKETING_FAILURE_MSG = "f(a) and f(b) must have different signs"
+
+
+def _is_event_bracketing_failure(exc: ValueError) -> bool:
+    return _EVENT_BRACKETING_FAILURE_MSG in str(exc)
+
 
 @dataclass(frozen=True)
 class MultipleShootingOrbit:
@@ -167,6 +190,10 @@ def correct_multiple_shooting(
         f_vec, jac, _ = _residual_and_jacobian(system, nodes, seg, rtol=rtol, atol=atol)
     except RuntimeError:
         return _package(system, nodes, seg, float("inf"), 0)
+    except ValueError as e:
+        if not _is_event_bracketing_failure(e):
+            raise
+        return _package(system, nodes, seg, float("inf"), 0)
     res = float(np.linalg.norm(f_vec))
 
     n_iter = 0
@@ -194,6 +221,11 @@ def correct_multiple_shooting(
                     system, trial_nodes, trial_seg, rtol=rtol, atol=atol
                 )
             except RuntimeError:
+                alpha *= 0.5
+                continue
+            except ValueError as e:
+                if not _is_event_bracketing_failure(e):
+                    raise
                 alpha *= 0.5
                 continue
             res_try = float(np.linalg.norm(f_try))
