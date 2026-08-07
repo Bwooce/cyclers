@@ -41,8 +41,8 @@ unchanged. See `git log` around this date for the corrected commit.
   verified exactly that gating artifact (a `C`-exact, independently-verified periodic
   "resonant chain"-type orbit at Vaquero's own `C=3.010000`, `x0=0.9492672902`,
   `ydot0=0.0796459472`, `period=56.03254231`) — see `#774`'s own bullet (below, in its original
-  TASK ALLOCATIONS position) and `#782`'s own bullet for the full derivation. Not yet dispatched
-  as its own task — ready for a fresh dispatch reusing `#753`'s own `cr3bp_continuation.continue_family`.
+  TASK ALLOCATIONS position) and `#782`'s own bullet for the full derivation. DISPATCHED 2026-08-08
+  (user: "both"), reusing `#753`'s own `cr3bp_continuation.continue_family`.
 - `#780` — ✓ DONE 2026-08-07/08 (Stage A: family gate only, per its own deliberately narrow
   scope mirroring `#765`): `src/cyclerfinder/search/earth_moon_resonant_families.py` +
   `tests/search/test_earth_moon_resonant_families.py` (67 tests). Vendored Casoliva 2010 Table 3
@@ -78,7 +78,8 @@ unchanged. See `git log` around this date for the corrected commit.
   (`tests/search/test_saturn_titan_resonant_connections.py`, pre-existing from `#773`, unrelated
   to this push) were independently verified clean on this Mac too and handed to `#782` (already
   active in that exact file) to fold into its own commit, per the same established pattern.
-- `#783` — registered 2026-08-08 (follow-up from `#780`'s own results note), **NOT dispatched**:
+- `#783` — registered 2026-08-08 (follow-up from `#780`'s own results note), DISPATCHED 2026-08-08
+  (user: "both"):
   Earth-Moon homoclinic-connection stage — Class 2's actual He1-4/Hm1-2 discrete connection
   points (Casoliva 2010 Sec. V.B/V.C) + the Barrabés-Mondelo-Ollé (2009, Nonlinearity,
   `10.1088/0951-7715/22/12/006`, already acquired+filed) numerical-continuation-of-homoclinic-
