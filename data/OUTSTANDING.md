@@ -51,20 +51,37 @@ unchanged. See `git log` around this date for the corrected commit.
   Pernicka 1988, `10.1007/BF01238756`; Wilson 2003 JPL IOM 312.I-03-002, no DOI, likely not publicly
   available) — not required to attempt this task per the digest's own assessment, but available if
   the corrector's convergence behavior needs sharpening.
-- `#780` — registered + DISPATCHED 2026-08-07 (user: "start the two paths in parallel, assign new
-  task numbers", following the discovery-menu survey below): Earth-Moon resonant-family +
-  homoclinic-connection lane, anchored on Casoliva 2008/2010 (digested `#725`,
-  `docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`). Earth-Moon has never
-  had a resonant-family sweep despite being the catalogue's flagship system. Casoliva's Class 1
-  (p-q resonant families, stable + unstable members) and Class 2 (L1-Lyapunov homoclinic-shadowing
-  cyclers) are entirely uncatalogued. Golden numeric anchor as strong as Vaquero's: He1 family
-  L1-Lyapunov homoclinic connection at `h=-1.450162`, period 29.1640 d, connection ToF 113.6319 d,
-  LEO ΔV 703-718 m/s, cross-checked between the two Casoliva papers. Mirrors `#765`'s own
-  family-gate-first, connection-second staging; the homoclinic-continuation-in-energy primitive
-  (Barrabés-Mondelo-Ollé) is the one genuinely new build, with Casoliva Tables 4-6 as sourced
-  goldens. Llibre/Martínez/Simó/Doedel 1985 (`#749`, already acquired) provides the theoretical
-  transversality backing for the Class 2 construction. Mandatory `literature_check.py` novelty
-  gate before any discovery claim, per standing discipline.
+- `#780` — ✓ DONE 2026-08-07/08 (Stage A: family gate only, per its own deliberately narrow
+  scope mirroring `#765`): `src/cyclerfinder/search/earth_moon_resonant_families.py` +
+  `tests/search/test_earth_moon_resonant_families.py` (67 tests). Vendored Casoliva 2010 Table 3
+  (Class 1, ALL 16 p-q resonant rows, verbatim, incl. footnote flags) and Table 4 (Class 2 He1
+  golden Lyapunov-orbit anchor, `h=-1.45016232260699`). Gate: 12/16 Table 3 rows fully pass
+  (IC/period/Jacobi/stability-index all reproduce Casoliva's own printed values); 4 honest
+  misses (1-2e, 3-2a, 7-3a, 7-3d), all on the stability index only (3 of the 4 still match
+  IC/period/Jacobi tightly) — required decoding Casoliva's own Eq. 8 stability convention
+  (`k = max(|k_in-plane|, |k_out-of-plane|)`, not the naive in-plane-only read) to get from a
+  5/16 to a 12/16 match. Class 2 golden anchor passes on its primary (eigenvalue) criterion,
+  5.3e-8 relative — required resolving a real OCR sign-misread on Table 4's momentum component,
+  caught during an `advisor()` review before being vendored. Registry mu used throughout (per
+  explicit task instruction, not Casoliva's own displayed mu) — numerically the BETTER choice,
+  confirmed (1.3e-9 vs 1.8e-6 relative energy match). Two-body-seed lineage check: clean honest
+  negative, 4th project-wide confirmation. Full writeup:
+  `docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md`. Follow-up (connection stage,
+  Barrabés-Mondelo-Ollé continuation) registered as `#783`, NOT dispatched — see its own bullet.
+- `#783` — registered 2026-08-08 (follow-up from `#780`'s own results note), **NOT dispatched**:
+  Earth-Moon homoclinic-connection stage — Class 2's actual He1-4/Hm1-2 discrete connection
+  points (Casoliva 2010 Sec. V.B/V.C) + the Barrabés-Mondelo-Ollé (2009, Nonlinearity,
+  `10.1088/0951-7715/22/12/006`, already acquired+filed) numerical-continuation-of-homoclinic-
+  connections algorithm (2010 Eq. 20) that builds them, mirroring exactly how `#767` followed
+  `#765` for Saturn-Titan and `#777` followed `#776` for Neptune-Triton. `#780`'s own module
+  (`src/cyclerfinder/search/earth_moon_resonant_families.py`) already supplies the starting
+  object (`recover_he1_lyapunov`, the L1 Lyapunov p.o. at the golden anchor energy
+  `h=-1.45016232260699`) and the full set of sourced goldens to gate against: Table 4
+  (continuation variables), Tables 5-6 (pericenter/apocenter flight-times and orbital elements
+  for the He1 connection), and the LEO-rendezvous ΔV figures (703 m/s @ 67,808 km 2008 /
+  717.5 m/s @ 67,869 km 2010) — all already vendored as `HE1_*` constants in that module.
+  Mandatory `literature_check.py` novelty gate before any discovery claim, per standing
+  discipline (unlikely to trigger at this reproduction stage, same as `#780`).
 - `#781` — ✓ DONE 2026-08-08 (honest, NOVEL positive result — the first genuinely novel, not
   reproduction/self-consistency-only, connection-stage result of this whole task chain): built
   `src/cyclerfinder/search/neptune_triton_resonant_connections.py`, the missing connection-stage
