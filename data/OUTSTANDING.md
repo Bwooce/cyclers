@@ -62,9 +62,36 @@ unchanged. See `git log` around this date for the corrected commit.
   — every long-running script in this project today is "re-invoke by hand until done." Build:
   a parallel pool + durable per-cell results + resume-from-checkpoint + `empty_regions.jsonl`
   emission, generic enough for any (system × parameter) grid. Directly matches the user's own
-  "restartable segments over weeks/months" requirement. Estimated ~days, not weeks. See
-  the survey's own full writeup (not yet filed as a dated note — register a follow-up to file one
-  if this is dispatched) for the concrete design sketch.
+  "restartable segments over weeks/months" requirement. **DONE 2026-08-08**: built
+  `search/campaign_runner.py` (`run_grid_campaign` + `CellOutcome`/`CampaignRunnerConfig`/
+  `CampaignRunnerRouting`/`EmptyRegionSpec`/`GridCampaignStats`) — generic over any picklable
+  cell/worker pair, batches pending cells through `parallel_sweep` (one process, parallel across
+  cores, no more hand-launched sibling processes), and collapses checkpoint+result into ONE
+  self-describing `results.jsonl` (an index counts as "done" iff a complete JSON line for it
+  exists), eliminating the two-file race `discovery_campaign.py`'s own scheme accepts.
+  `discovery_campaign.py` itself is UNCHANGED (format genuinely differs, tested/stable, no
+  extractable shared logic beyond `data.empty_regions`/`data.method_capability`, both reused
+  directly). Detects+refuses the whole-batch joblib/executor failure mode (a worker
+  OOM-killed/segfaulted) so never-evaluated cells can never be durably mis-recorded as errors —
+  verified with a real `os._exit(1)` inside a worker process, not a mock. Empty-region emission is
+  an aggregate (one record per fully-swept, all-miss, zero-error grid, capability-subsumption
+  gated via the existing `should_sweep`), matching `discovery_campaign.py`'s own convention.
+  **Kill/resume genuinely proven, not assumed**: `tests/search/test_campaign_runner.py::
+  test_resume_after_real_sigkill` spawns a real subprocess, polls until a genuine partial
+  checkpoint state is observed, sends a real `SIGKILL`, then launches a second independent
+  subprocess and asserts exact completion with zero duplicate/missing indices, cross-checked via
+  an independent worker-side PID log proving no already-durable index was ever re-processed;
+  passed on every run during development (no flakes observed). 9/9 new tests pass
+  (`tests/search/test_campaign_runner.py`); `uv run ruff check .`/`ruff format --check .` clean;
+  `uv run mypy src tests` clean (0 errors, full canonical invocation); `uv run pytest tests/data
+  tests/search -q` ratchet run clean for every test this task's diff can affect (2 unrelated
+  failures observed in that run, `test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_
+  subsurface` and `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, neither importing
+  anything this task touched — traced to the concurrently-running `#793` session's own
+  uncommitted mid-edit of `lambert.py`/`catalogue.yaml` at the moment the suite ran, not this
+  task's diff). Full writeup + worked example + the real kill/resume transcript:
+  `docs/notes/2026-08-08-788-campaign-runner-infrastructure.md`. `#795` registered as the
+  follow-on (a CLI wrapper script for the first real campaign to use, once `#789`+ needs one).
 - `#789` — registered 2026-08-08 (Campaign 1 of the combinatorial-search survey, "the Resonant
   Atlas"), **gated on `#788` landing first**: sweep (system x p:q resonance x energy) using the
   family+connection pipeline validated across Jupiter-Europa/`#754`, Saturn-Titan/`#767`,
@@ -119,6 +146,15 @@ unchanged. See `git log` around this date for the corrected commit.
   violating it. Already scoped at ~1-2 weeks. Fold in `#549`'s own leftovers too: 4 real-binary
   cases left inconclusive at a 240s/job cap — a few hours of CPU to settle, much smaller than the
   main census.
+- `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched): a small `argparse` CLI
+  wrapper / worked example script demonstrating `search/campaign_runner.py::run_grid_campaign`
+  end-to-end (grid + worker + routing + `EmptyRegionSpec`) under `scripts/`, matching the shape of
+  `scripts/discovery_campaign_daemon.py` today but without its hand-launched `for w in 0 1 2 3;
+  do ... & done` sharding loop. Deliberately NOT built as part of `#788` itself (that task's own
+  scope explicitly said "demonstrated with a toy/example worker function" = the test suite, not a
+  new script; a new `scripts/run_*.py` file would also trip the `tests/scripts` preflight AST
+  ratchet, outside `#788`'s mandated verification scope). Best dispatched alongside whichever of
+  `#789`-`#792` runs first, wired to that campaign's real grid rather than a toy one.
 - `#774` — ✓ DONE 2026-08-08: continued `#782`'s own converged chain orbit in INCREASING Jacobi
   constant (`#753`'s own `cr3bp_continuation.continue_family`, unmodified, reused as the per-step
   corrector+gauntlet inside an outer step-size-adaptation loop) toward Vaquero's own claimed
