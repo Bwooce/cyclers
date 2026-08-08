@@ -153,6 +153,18 @@ DOI_ALLOWLIST: dict[str, str] = {
         "Logistics' -- modern cislunar cycler architecture paper, not yet "
         "anchored."
     ),
+    "10.2514/1.46856": (
+        "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle 2010, 'Two "
+        "Classes of Cycler Trajectories in the Earth-Moon System,' JGCD "
+        "33(5) -- a genuine Earth-Moon p:q resonant cycler paper (#797's "
+        "own catalogue writeback source, 7 new rows), directly analogous to "
+        "the already-anchored Braik-Ross/Roberts-Tsoukkas Earth-Moon "
+        "cycler-network anchors above. A real KNOWN_CORPUS anchor candidate "
+        "-- not added here to keep #797's own writeback scope tight and "
+        "avoid mis-specifying the citation-integrity-ratchet fields "
+        "(topology_label/system/provenance grounding, #485/#486) under time "
+        "pressure; tracked as a dedicated follow-on, #802."
+    ),
 }
 
 

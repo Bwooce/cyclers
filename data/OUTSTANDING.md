@@ -353,32 +353,37 @@ unchanged. See `git log` around this date for the corrected commit.
   already-published content, per the dispatch's own explicit instruction).
   `tests/data/test_outstanding_structure.py`/`test_outstanding_header_body_consistency.py` run
   clean after this file's own edits.
-- `#797` — registered 2026-08-08 (found during `#787`'s own cross-check against
-  `data/catalogue.yaml`, not dispatched): the Casoliva 2008/2010 (`#725` digest, `#780` gate
-  module) / Vaquero 2013 Sec. 4.4 (`#787`) two-body-seeded p:q-resonant Earth-Moon "cycler"
-  lineage has ZERO catalogue rows, despite `#780` building a full validation gate module
-  (`search/earth_moon_resonant_families.py`, all 16 Casoliva Table 3 rows reproduced) and
-  `#786` attempting (clean negative) a connection search on two of its rows. By contrast the
-  Braik-Ross/Ross-Roberts-Tsoukkas manifold-tube-intersection lineage has 18 catalogue rows.
-  Proposed scope: a dedicated writeback task selecting the strongest-sourced Casoliva Table 3
-  members (e.g. the already-gated `1-2c/d/e`, `2-1a/b`, `3-2c`, `7-3a/b/c/d` rows, all with
-  digit-grade `(x_i, u_i, C_J, T, k)` from `#780`'s own extraction) as `quasi_cycler`/`cycler`
-  catalogue rows — mirroring the `#707`→`#708`/`#735`→`#736`/`#770`→`#779` staged digest→design→
-  writeback pattern. **Two open items any dispatch of this task must resolve, not assume**: (a)
-  that row list is only a candidate filter, not a verified admission set — 5 of Casoliva's own 16
-  Table 3 rows carry `satisfies_resonance=False` (`1-2a`, `1-2b`, `2-1c`, `3-2a`, `7-3d`) and 2
-  carry `exists_in_em_system=False` (`2-1c`, `2-1d`, per `#780`'s own gate report/`#786`'s note) —
-  a row failing either its own labelled resonance or physical existence is not a cycler candidate
-  at all, and this needs re-confirming at dispatch time, not inherited from this bullet; (b) the
-  `orbit_class` (`cycler` vs. `quasi_cycler`) is itself unresolved — the Braik-Ross corridor rows
-  already establish `quasi_cycler` as the schema v5.2 carve-out for an epoch-free CR3BP periodic
-  orbit with `n_returns: infinite`, which is the most likely fit here too, but this has not been
-  checked against Casoliva's own specific orbits' own properties. Vaquero's OWN 2:1/3:1
-  "Earth-Moon Periodic Cyclers" (Sec. 4.4.7) are explicitly NOT writeback-ready on their own (no
-  digit-grade IC anywhere, graph-only per `#787`) — any writeback for THAT specific family would
-  need either digitizing Fig. 4.44 (imprecise) or independently reproducing it via CR3BP family
-  continuation seeded from her own stated `(C, TOF)` constraints (a genuine, non-trivial
-  computation task, not a transcription one).
+- `#797` — ✓ DONE 2026-08-08: resolved both open items live (not inherited from the
+  registration bullet) and wrote back 7 new catalogue rows. **(a) Admission**: re-ran
+  `#780`'s own `table3_gate_report()`/`TABLE3_ROWS` live, confirming the raw
+  `satisfies_resonance`/`exists_in_em_system` filter admits 9 of 16 rows, THEN applied a
+  stricter self-consistency bar (`table3_gate_report().passed`, requiring x0/period/Jacobi
+  AND the stability index `k` to all reproduce Casoliva's own printed values) — 2 of the 9
+  (`1-2e`, `7-3a`) fail on `k` reproduction only (an honest, unresolved `#780` miss; IC/
+  period/Jacobi still match tightly) and are EXCLUDED, leaving **7 admitted rows**: `1-2c`,
+  `1-2d`, `2-1a`, `2-1b`, `3-2c`, `7-3b`, `7-3c`. **(b) `orbit_class`**: the registration
+  bullet's `quasi_cycler` guess was WRONG (that class needs either a real-ephemeris
+  `validity_window` or the narrow epoch-free CR3BP KAM-corridor carve-out, neither of which
+  applies to base orbits like these). The real per-row discriminator is `cycler`'s own
+  "transports between encounters" vs. `resonant_po`'s "never encounters the secondary" —
+  checked via Casoliva's own printed periselene `r_pM` column AND an independent DERIVE
+  cross-check (dense propagation over one period) against the lunar SOI (66,183 km)/Hill
+  radius (61,524 km): only `7-3b`/`7-3c` (periselene ~13,200 km, well inside) are genuine
+  `cycler`s; the other 5 (`1-2c`/`1-2d`/`2-1a`/`2-1b`/`3-2c`, periselene 84,000-604,000 km,
+  1.27x-9.1x the SOI) satisfy their own p-q Earth-resonance but never encounter the Moon —
+  `resonant_po`, mirroring `em-cycler-21-3d-spatial-2026`'s identical reasoning. Also found:
+  Casoliva's own printed IC point is a general asymmetric Poincaré crossing, so this
+  catalogue's usual Barden-nu `stability_index` convention does not apply — each row instead
+  uses Casoliva's OWN full-period Eq. 6-8 `k` convention, stated explicitly (NOT
+  number-comparable to other rows' `stability_index`). All 7 rows `validation_level: V1`
+  (new `_LEVEL_EVIDENCE` entries in `src/cyclerfinder/data/validate.py`, mirroring
+  `braik-ross-c11a-cycler-2026`'s own V1 precedent: same-model reproduction + independent
+  Radau cross-check). Every field traces to Casoliva 2010 Table 3 (SOURCED) or is
+  `#797`-cited DERIVE. Spawned `#801` (resolve the `1-2e`/`7-3a` `k`-reproduction miss, not
+  dispatched). Vaquero's own 2:1/3:1 Sec. 4.4.7 families remain out of scope (no digit-grade
+  IC, tracked as `#799`). Full `tests/data tests/search -q` / `ruff`/`ruff format`/
+  `mypy src tests` all clean. Full writeup:
+  `docs/notes/2026-08-08-797-casoliva-em-resonant-family-writeback.md`.
 - `#798` — ✓ DONE 2026-08-08: **RULED OUT, decisively.** Direct full-period propagation of
   `braik-ross-planar-r31-s-corridor`'s own already-catalogued IC in this project's own CR3BP
   core (`cyclerfinder.core.cr3bp.cr3bp_eom`, DOP853 `rtol=atol=1e-13`, 400k-sample full-period
@@ -434,6 +439,19 @@ unchanged. See `git log` around this date for the corrected commit.
   Full account: `docs/notes/2026-08-08-800-campaign-runner-thermal-throttle.md`. Recommended
   config for `#789`-`#792`'s actual dispatch: `n_workers=4, pause_seconds_per_batch=30.0,
   thermal_backoff_seconds=120.0`.
+- `#801` — registered 2026-08-08 (found during `#797`'s own writeback, not dispatched): resolve
+  the `1-2e`/`7-3a` Casoliva 2010 Table 3 stability-index (`k`) reproduction miss `#780`'s own
+  gate module documented and left unresolved — both rows reproduce IC/period/Jacobi to
+  `1e-5`-`2e-5` relative (genuinely the same orbit) but the recovered full-period stability
+  index `k` is wildly wrong in both sign and magnitude vs. Casoliva's own printed value.
+  `#780`'s own module docstring considered and did not confirm two hypotheses: a return-map/
+  sub-period stability convention, or a different eigenvalue-pair selection specific to the
+  asymmetric printed IC point (`planar_stability_index`'s `max(|kappa_par|,|kappa_perp|)`
+  selection, `StabilityIndex` docstring). If resolved, both rows become writeback-eligible
+  under `#797`'s same admission bar (both would land `resonant_po`, not `cycler`: `1-2e`'s own
+  printed `r_pM≈1.67` LU/`~642,000` km, `7-3a`'s own printed `r_pM≈1.41` LU/`~541,000` km, both
+  far outside the lunar SOI `66,183` km). Low priority — a 2-row completeness gap, not a
+  blocker for anything else.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).

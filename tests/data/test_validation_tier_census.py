@@ -208,7 +208,16 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 'unvalidated' on the source-pair tier axis. Its validation_level=V0 (honest -- no
     # second-integrator cross-check has been run for this torus) lives on the
     # orthogonal validation_level axis; see the row's own data_gaps entry.
-    "unvalidated": 104,
+    # 104 -> 111 (2026-08-08, #797): +7 Casoliva 2010 Table 3 Class 1 p-q resonant
+    # Earth-Moon periodic orbit rows. These carry NO orbit_source/vinf_source
+    # provenance tags at all (Casoliva 2010 is not a SOURCE_REGISTRY key; their
+    # identity is a Jacobi/period/state tuple, not the heliocentric orbit/vinf-
+    # multiset pair this tier classifier reads) -> 'unvalidated' on the source-pair
+    # tier axis, exactly the same convention as ross-rt-em-cycler-*/braik-ross-*-
+    # cycler-2026 above. Their real evidence (validation_level=V1, same-model CR3BP
+    # reproduction + independent Radau cross-check) lives on the orthogonal
+    # validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
+    "unvalidated": 111,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

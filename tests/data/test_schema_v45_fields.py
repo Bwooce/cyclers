@@ -183,7 +183,7 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     lesson adapted: no eigenvector here, so the guarded hazard is a mismatched sample
     set, not a sign flip), agreeing to integrator_delta_max_km~7.11e-8 km. NOT V2/V3 (no
     multi-lap periodic structure or connection to correct for a bare torus).
-    (V1=28, V2=8, V3=2, V4=6.)"""
+    (V1=35, V2=8, V3=2, V4=6 -- #797 (2026-08-08) added 7 new V1 rows, 28->35.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -331,6 +331,18 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # same V1-EQUIVALENT class as the Umbriel-Titania row above, adapted for
         # an object with no manifold connection to cross-check).
         "europa-3-4-crnbp-torus-jupiter-2026": "V1",
+        # #797 (2026-08-08): 7 new rows writing back Casoliva 2010 Table 3 Class 1
+        # p-q resonant Earth-Moon periodic orbits, each V1 -- same-model CR3BP
+        # full-state Newton reproduction (#780's own gate module) of Casoliva's
+        # own printed x0/period/Jacobi/stability-index AND an independent Radau
+        # integrator cross-check, per the new _LEVEL_EVIDENCE entries.
+        "casoliva-1-2c-em-resonant-po-2010": "V1",
+        "casoliva-1-2d-em-resonant-po-2010": "V1",
+        "casoliva-2-1a-em-resonant-po-2010": "V1",
+        "casoliva-2-1b-em-resonant-po-2010": "V1",
+        "casoliva-3-2c-em-resonant-po-2010": "V1",
+        "casoliva-7-3b-em-cycler-2010": "V1",
+        "casoliva-7-3c-em-cycler-2010": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

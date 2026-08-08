@@ -544,10 +544,24 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # quasi-periodic torus (Fourier coefficient array, rotating-frame, base-CR3BP
         # identity tuple), not a chain of Kepler/Lambert arcs. non-keplerian 39->40.
         "europa-3-4-crnbp-torus-jupiter-2026",
+        # #797 (2026-08-08): 7 new rows writing back Casoliva 2010 Table 3 Class 1
+        # p-q resonant Earth-Moon periodic orbits (genuine planar CR3BP periodic
+        # orbits, rotating-frame, Jacobi-constant identity -- reproduced via #780's
+        # own gate module). 5 orbit_class=resonant_po (satisfy their own p-q
+        # Earth-resonance but never encounter the Moon, periselene outside the
+        # lunar SOI/Hill radius) + 2 orbit_class=cycler (genuine lunar encounter,
+        # periselene well inside the SOI/Hill radius). non-keplerian 40->47.
+        "casoliva-1-2c-em-resonant-po-2010",
+        "casoliva-1-2d-em-resonant-po-2010",
+        "casoliva-2-1a-em-resonant-po-2010",
+        "casoliva-2-1b-em-resonant-po-2010",
+        "casoliva-3-2c-em-resonant-po-2010",
+        "casoliva-7-3b-em-cycler-2010",
+        "casoliva-7-3c-em-cycler-2010",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 40
+assert len(NON_KEPLERIAN_IDS) == 47
 
 
 # ---------------------------------------------------------------------------
@@ -640,10 +654,16 @@ def test_census_distribution() -> None:
     rotating-frame with a base-CR3BP identity tuple, NOT a computed manifold
     connection -- no connection has been attempted for this object): non-keplerian
     39->40.
+
+    #797 (2026-08-08) admitted 7 new rows writing back Casoliva 2010 Table 3 Class 1
+    p-q resonant Earth-Moon periodic orbits reproduced via #780's own gate module
+    (5 orbit_class=resonant_po + 2 orbit_class=cycler, all cycler_class=non-keplerian
+    genuine planar CR3BP periodic orbits, rotating-frame with a Jacobi-constant
+    identity): non-keplerian 40->47.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 40}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 47}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
