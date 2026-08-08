@@ -524,6 +524,35 @@ unchanged. See `git log` around this date for the corrected commit.
   directly, removing the micro-multistart's reach as a lane fragility and shrinking the
   machine-dependence `#804` characterized (3e-5 Linux vs 2.8e-4 macOS for P5g'). Low priority:
   the lane closes end-to-end on both machines today (`test_png_lane_recovery` passes).
+- `#806` — registered 2026-08-09 (user: "fix the known test failures while we know them" —
+  the self-hosted CI runner set up earlier tonight is THIS Mac, so the reasoning that closed
+  `#584` no longer holds, see note), not dispatched: root-cause and fix
+  `tests/search/test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`'s
+  `Io_out` V∞ threshold-edge miss (`abs(8.313346200993646 - 8.38) = 0.0667` vs the `< 0.05` gate,
+  ~33% over). `#584` (2026-07-14) investigated this and CLOSED it as a local-Mac-only BLAS/
+  Accelerate-vs-Linux rounding artifact, NOT a real regression — decisively confirmed at the
+  time because GitHub-hosted Linux CI stayed green on the identical tree (run `29323181595`).
+  **That confirmation no longer applies**: CI now runs on this same Mac, so this failure will
+  recur on every future push with no independent backstop to lean on. Needs either a genuine
+  fix (a more robust/converged corrector, matching `#803`'s ULP-derivation rigor rather than a
+  blind tolerance loosening) or, if the miss is provably irreducible, a properly-derived
+  tolerance with the derivation shown (not just widened until it passes). See `#584`'s own
+  bullet (search this file) for the full prior investigation to build on, not repeat.
+- `#807` — registered 2026-08-09 (same trigger as `#806`), not dispatched: root-cause and fix
+  `tests/search/test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`'s (3,3) topology
+  misclassification — a corrector-found periodic orbit that is otherwise healthy
+  (`stable_found=True`, `crosscheck_ok=True`, `crosscheck_dj=2.6e-12`) fails the INTEGER
+  winding-number check (`topo.k1 == k1 and topo.k2 == k2` in `pluto_charon_kk_sweep.py`).
+  `#584` (2026-07-14) CLOSED this the same way as `#806` (Linux CI green on the identical tree
+  = local-Mac-only artifact) — same reasoning gap now that CI is this Mac. The original 2026-07-01
+  verdict (`docs/notes/2026-07-01-504-pluto-charon-kk-sweep-verdict.md`) recorded (3,3) as a
+  CLEAN NEGATIVE ("mu-continuation failed, mu-step diverges before PC mu") — by `#584`'s time
+  (2026-07-13) the SAME sweep instead converges to a stable orbit whose topology classification
+  flips at a boundary, a materially different intermediate state than the original verdict
+  describes (worth reconciling, not just re-explaining as noise). Needs either a fix to the
+  winding-number classifier's own basin robustness, or a properly-derived tolerance/hysteresis
+  band if the flip is provably a genuine discretization boundary artifact on a continuous
+  quantity.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
