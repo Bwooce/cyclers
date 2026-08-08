@@ -298,20 +298,37 @@ def refine(
     departure V∞ toward the sourced Table-4 levels (then re-evaluates the core
     ballistic closure). ``include_seam=False`` drops the Europa periodicity seam so the
     corrector isolates the interior G->G->I sub-tour. Deterministic given the seed.
+
+    Weight continuation (#806): with ``target_w`` > 0 the pull weight is reduced
+    geometrically (x0.1 per stage, down to 1e-5) rather than solved once at
+    ``target_w`` and then projected. A single pull at w=0.5 leaves the iterate
+    ~4e-3*w^2 ~ 1e-3 km/s off-manifold, and the subsequent pure-projection solve is
+    UNDERDETERMINED (5 core residuals, 6 unknowns, a 1-D on-manifold solution family;
+    4x6 / 2-D without the seam) — trf then wanders along the family tangent before
+    converging, and the landing point is solver-path (BLAS-backend) dependent:
+    measured 0.064 km/s of Io-V∞ slide on macOS Accelerate vs Linux OpenBLAS, which
+    is what made ``test_gate_b_table4_vinf_reached_but_subsurface`` machine-dependent
+    (#584). Under continuation each stage stays OVERDETERMINED (core + pull residuals)
+    and the core resnorm contracts as ~w^2 to the Lambert/solver floor (~1e-11 km/s),
+    so the final pure-projection solve starts already on-manifold and does not move
+    (measured dx = 0). See ``docs/notes/2026-08-09-806-eggie-projection-wander.md``.
     """
     x0 = np.asarray(seed_x, dtype=np.float64)
     if target_w:
-        r1 = least_squares(
-            ballistic_residual,
-            x0,
-            args=(plan, target_w),
-            kwargs={"include_seam": include_seam},
-            method="trf",
-            max_nfev=max_nfev,
-            xtol=1e-14,
-            ftol=1e-14,
-        )
-        x0 = np.asarray(r1.x, dtype=np.float64)
+        w = float(target_w)
+        while w > 1.0e-5:
+            r1 = least_squares(
+                ballistic_residual,
+                x0,
+                args=(plan, w),
+                kwargs={"include_seam": include_seam},
+                method="trf",
+                max_nfev=max_nfev,
+                xtol=1e-14,
+                ftol=1e-14,
+            )
+            x0 = np.asarray(r1.x, dtype=np.float64)
+            w *= 0.1
     sol = least_squares(
         ballistic_residual,
         x0,

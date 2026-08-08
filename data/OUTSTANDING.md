@@ -524,20 +524,27 @@ unchanged. See `git log` around this date for the corrected commit.
   directly, removing the micro-multistart's reach as a lane fragility and shrinking the
   machine-dependence `#804` characterized (3e-5 Linux vs 2.8e-4 macOS for P5g'). Low priority:
   the lane closes end-to-end on both machines today (`test_png_lane_recovery` passes).
-- `#806` — registered 2026-08-09 (user: "fix the known test failures while we know them" —
-  the self-hosted CI runner set up earlier tonight is THIS Mac, so the reasoning that closed
-  `#584` no longer holds, see note), not dispatched: root-cause and fix
+- `#806` — ✓ DONE 2026-08-09 (registered 2026-08-09, user: "fix the known test failures while
+  we know them" — the self-hosted CI runner set up earlier tonight is THIS Mac, so the reasoning
+  that closed `#584` no longer holds): root-caused and FIXED IN THE SOURCE
   `tests/search/test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`'s
-  `Io_out` V∞ threshold-edge miss (`abs(8.313346200993646 - 8.38) = 0.0667` vs the `< 0.05` gate,
-  ~33% over). `#584` (2026-07-14) investigated this and CLOSED it as a local-Mac-only BLAS/
-  Accelerate-vs-Linux rounding artifact, NOT a real regression — decisively confirmed at the
-  time because GitHub-hosted Linux CI stayed green on the identical tree (run `29323181595`).
-  **That confirmation no longer applies**: CI now runs on this same Mac, so this failure will
-  recur on every future push with no independent backstop to lean on. Needs either a genuine
-  fix (a more robust/converged corrector, matching `#803`'s ULP-derivation rigor rather than a
-  blind tolerance loosening) or, if the miss is provably irreducible, a properly-derived
-  tolerance with the derivation shown (not just widened until it passes). See `#584`'s own
-  bullet (search this file) for the full prior investigation to build on, not repeat.
+  `Io_out` V∞ miss (`abs(8.313346 - 8.38) = 0.0667` vs the `< 0.05` gate). **Genuine
+  corrector-robustness defect, not noise and not a model floor**: `eggie_ballistic.refine`'s
+  stage-2 pure-projection solve is UNDERDETERMINED (5 core residuals, 6 unknowns → 1-D
+  on-manifold family), and started ~1e-3 off-manifold (the stage-1 `w=0.5` compromise) trf
+  wandered 0.064 km/s ALONG the family tangent before converging — the landing point is
+  solver-path/BLAS-backend dependent, which is the actual mechanism behind `#584`'s
+  Linux-green/Mac-red split (directionally right about the trigger, wrong to call it
+  irreducible). Fixed by geometric weight continuation (`w *= 0.1` per stage down to 1e-5):
+  every stage stays overdetermined, core resnorm contracts as `~w^2` to the solver floor
+  (1.2e-11 km/s), and the final projection measurably moves dx = 0 exactly — wander
+  eliminated, no test tolerance or golden value changed. Post-fix Io_out = 8.3773 (0.0027
+  from the sourced 8.38, 20x inside the gate); all three constructions keep their documented
+  `#480` regimes (Gate-B still sub-surface, interior sub-tour now hits Table-4 exactly, Gate-A
+  `target_w=0` path untouched). Invalidation sweep clean: `refine`'s `target_w>0` path has no
+  callers outside this module's two test-only constructions; `eige_ballistic`/`ll2011_ballistic`
+  use single always-overdetermined solves (defect class absent). 3/3 test file + tests/search +
+  ruff + mypy clean. Note: `docs/notes/2026-08-09-806-eggie-projection-wander.md`.
 - `#807` — ✓ DONE 2026-08-09 (registered 2026-08-09, same trigger as `#806`): root-caused and
   FIXED `test_504_sweep_33`. NOT a knife-edge integer-classification wobble and NOT a (3,3)
   orbit at all: the mu-continuation loses the (3,3) branch at the very FIRST mu step
