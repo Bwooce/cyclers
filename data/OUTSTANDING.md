@@ -33,6 +33,15 @@ its own DONE entry, and a leftover already-executed `#144` TODO. One flagged ite
 cited as evidence) was checked and found to be a real commit in a different repository — left
 unchanged. See `git log` around this date for the corrected commit.
 
+- `#796` — registered + DISPATCHED 2026-08-08 (split from `#793`'s own item (c), which was in
+  that task's original registration but got dropped from its actual dispatch instructions):
+  persist the already-computed Floquet-derived `stability_index` scalar on the 29 corridor rows
+  whose `data_gaps` entry cites it as missing — `src/cyclerfinder/ml/seed_generation.py`'s own
+  `stability_index` function already computes this value as a side effect of the census work
+  those rows came from; this is pure serialization (read the already-computed value, write it to
+  the row, remove the gap entry), not new computation. Mandatory: any `catalogue.yaml` change
+  needs the FULL `tests/ -q` tree before committing, not the narrower habit — per
+  `[[feedback_verify_scope_must_include_tests_scripts]]`.
 - `#793` — ✓ DONE 2026-08-08 (partial, honest-scope-boundary — registered 2026-08-08, user: "let's
   pick the small possible things to close out first"): catalogue data-gap execution sprint against
   the ~415 `todo_ref: "#54"` `data_gaps` entries an earlier Fable survey flagged as
