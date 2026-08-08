@@ -53704,7 +53704,7 @@
       libration_point:
       jacobi_constant: 2.146605137800207   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 18.821996614085197   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000011802616242   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.3075128554582373, 0.0, -0.6449163295108228, 0.0, 0.8477605543863065, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -53722,11 +53722,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=5.233980626243559e-14, independent_closure_residual=4.4010794339135895e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -53825,7 +53820,7 @@
       libration_point:
       jacobi_constant: 2.4689950182924507   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 18.794003681913004   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000000000006097   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.4475158628611522, 0.0, -0.5570592403116884, 0.0, 0.7058067192968843, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -53843,11 +53838,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=8.632619729018344e-12, independent_closure_residual=8.171253844565691e-12). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -53946,7 +53936,7 @@
       libration_point:
       jacobi_constant: 2.7419806649535277   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 18.736191704721254   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.000001042942155   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.5690531219955208, 0.0, -0.4380780046554032, 0.0, 0.5800962788489663, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -53964,11 +53954,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.407362444275163e-14, independent_closure_residual=4.396548518123386e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54067,7 +54052,7 @@
       libration_point:
       jacobi_constant: 2.923022213334797   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 18.611268269228876   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000011947939065   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.6562628932221191, 0.0, -0.31490065180211235, 0.0, 0.48448160913362276, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54085,11 +54070,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.516539934777615e-14, independent_closure_residual=2.9005695852338504e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54188,7 +54168,7 @@
       libration_point:
       jacobi_constant: 3.001381314571766   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 18.423252140352428   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.000002179166843   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.7053179623948165, 0.0, -0.2365597944865001, 0.0, 0.42102518892826085, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54206,11 +54186,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.41614684815405e-14, independent_closure_residual=8.558275024554725e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54309,7 +54284,7 @@
       libration_point:
       jacobi_constant: 2.6804734895124325   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 31.23721595063116   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000038716502904   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.14915036618878655, 0.0, 0.14199914046059706, 0.0, -2.7158726413255523, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54327,11 +54302,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.404070414719334e-11, independent_closure_residual=5.319467664705131e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54430,7 +54400,7 @@
       libration_point:
       jacobi_constant: 2.7733507239075204   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 31.23922868624955   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000000000135296   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.18324633612410285, 0.0, 0.1624039796975507, 0.0, -2.3782213279501465, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54448,11 +54418,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=7.974285644975021e-12, independent_closure_residual=2.1382264123201846e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54551,7 +54516,7 @@
       libration_point:
       jacobi_constant: 2.8693486749129837   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 31.248680556241414   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000000000183842   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.22602100673566233, 0.0, 0.18616130804949962, 0.0, -2.041917074907228, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54569,11 +54534,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.1396204087114543e-11, independent_closure_residual=2.1453896140173066e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54672,7 +54632,7 @@
       libration_point:
       jacobi_constant: 3.0343588395943266   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 31.30022463094027   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000000001409557   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.34605000132123853, 0.0, 0.2535172153966088, 0.0, -1.3475510223283227, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54690,11 +54650,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=3.848099538567463e-14, independent_closure_residual=5.424156673743186e-11). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54793,7 +54748,7 @@
       libration_point:
       jacobi_constant: 3.0602516947803338   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 31.317958757874642   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      stability_index: 1.0000000000628415   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.4167917988975548, 0.0, 0.3029502748607806, 0.0, -1.0192691873238011, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54811,11 +54766,6 @@
     kind: "not-applicable"
     note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.0721120602624904e-13, independent_closure_residual=3.149725975042153e-12). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
@@ -54915,7 +54865,7 @@
       libration_point: "L1"
       jacobi_constant: 2.997880257746657   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.205720044789085   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.000024770598633   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.8738000112132556, 0.0, -0.1909255824728982, 0.0, 0.23431199721051096, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -54933,11 +54883,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=3.194035871285821e-15, independent_closure_residual=3.318526990850063e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55019,7 +54964,7 @@
       libration_point: "L1"
       jacobi_constant: 2.997844536842309   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.225507479346857   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000544240451326   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.8722996137828095, 0.0, -0.19031417076887022, 0.0, 0.2367270363675417, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55037,11 +54982,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.5725749195636552e-15, independent_closure_residual=3.3099798067711603e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55123,7 +55063,7 @@
       libration_point: "L1"
       jacobi_constant: 2.9978667065670472   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.2107230101428095   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000271978408284   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.8734182771705113, 0.0, 0.19077196270413063, 0.0, 0.23493194974852327, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55141,11 +55081,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=1.0635686291173762e-14, independent_closure_residual=3.2028663139999335e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55227,7 +55162,7 @@
       libration_point: "L1"
       jacobi_constant: 2.99793759047823   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.1909458430122166   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000199438228894   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.8749370732850867, 0.0, 0.19137602966693582, 0.0, 0.23244357310487412, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55245,11 +55180,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.542432151426415e-15, independent_closure_residual=3.015601948277832e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55331,7 +55261,7 @@
       libration_point: "L1"
       jacobi_constant: 2.99805334816899   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.1711834495519042   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000170675547742   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.876481907346328, 0.0, 0.19197272047649233, 0.0, 0.22985412372985958, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55349,11 +55279,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=8.718885342929877e-15, independent_closure_residual=2.9252350287672864e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55435,7 +55360,7 @@
       libration_point: "L1"
       jacobi_constant: 2.998211594777295   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.151437165405162   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000154730906106   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.878054568677307, 0.0, 0.19256487759430296, 0.0, 0.22715962136410817, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55453,11 +55378,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.3962139459858942e-14, independent_closure_residual=2.777226819324092e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55539,7 +55459,7 @@
       libration_point: "L1"
       jacobi_constant: 2.9984100446794395   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
       period_nd: 2.1317085330479375   # Per #438 scan, this specific member (TU).
-      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      stability_index: 1.0000147036868363   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.8796570729975475, 0.0, 0.19315543115591807, 0.0, 0.22435528819795938, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55557,11 +55477,6 @@
     kind: "not-applicable"
     note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=5.394395849595582e-15, independent_closure_residual=2.4965277736000625e-13). Never a golden."
     source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
-    todo_ref: "#438"
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
-    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
     todo_ref: "#438"
   corroborating_sources: []
   priority_date: "2026-07-22"
@@ -55638,7 +55553,7 @@
       libration_point:
       jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
       period_nd: 6.267093371035164   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
-      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      stability_index: 1.008109574501162   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [-0.8081272737956029, 0.0, 0.0, 0.0, 0.1389495551262821, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55652,11 +55567,6 @@
     method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
   source_ephemeris:
   data_gaps:
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "Braik-Ross 2026 Table 2 labels this member stable ('R31-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
-    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
-    todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
     year: 2026
@@ -55737,7 +55647,7 @@
       libration_point:
       jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
       period_nd: 12.60275494862142   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
-      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      stability_index: 1.01480560909678   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.2278881086717652, 0.0, 0.0, 0.0, 2.277116891512287, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55751,11 +55661,6 @@
     method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
   source_ephemeris:
   data_gaps:
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "Braik-Ross 2026 Table 2 labels this member stable ('R52-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
-    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
-    todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
     year: 2026
@@ -55836,7 +55741,7 @@
       libration_point:
       jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
       period_nd: 6.09412703751587   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
-      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      stability_index: 1.0000000000035079   # DERIVED (#796): general spectral-radius proxy (max|eigenvalue| of the full-period monodromy), computed by src/cyclerfinder/ml/seed_generation.py::stability_index(system, state_nd, period_nd), fed with this row's OWN already-catalogued mass_ratio/state_nd/period_nd -- pure serialization, not new discovery work. NOT Barden nu (different convention: here ~1.0 = neutrally/marginally stable, vs Barden's |nu|<1); consistent with #438's qualitative 'stable' tag for this member. NOT a golden; not sourced -- our own computation.
       state_nd: [0.4485378415692721, 0.0, 0.0, 0.0, 1.185506250841159, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
       lunit_km: 384400.0
       tunit_s: 375699.8
@@ -55850,11 +55755,6 @@
     method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
   source_ephemeris:
   data_gaps:
-  - path: "orbit_elements.cr3bp.stability_index"
-    kind: "unknown"
-    note: "Braik-Ross 2026 Table 2 labels this member stable ('R21-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
-    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
-    todo_ref: "#438"
   corroborating_sources:
   - authors: ["Braik, A.", "Ross, S. D."]
     year: 2026
