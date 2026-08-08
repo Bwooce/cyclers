@@ -479,14 +479,37 @@ unchanged. See `git log` around this date for the corrected commit.
   interpolation accuracy vs DE440). No production code changed → no past-search invalidation.
   No xfail needed. Note: `docs/notes/2026-08-08-803-rails-spline-final-knot-ulp.md`. NOT the
   same class as `#804` (that one is a 2.8x margin miss, not a ULP knife edge — still open).
-- `#804` — registered 2026-08-08 (same audit as `#803`, not dispatched): `tests/genome/
-  test_da_section_map.py::test_taylor_fixed_point_reaches_png_neighbourhood` fails REPRODUCIBLY in
-  isolation on this Mac (`0.000278 < 0.0001` assertion fails by ~2.8x). Same non-contention
-  confirmation as `#803` (re-run alone, clean failure). `tests/genome/test_da_section_map.py` has
-  had no commits since `2c053157` (`#450`'s original pure-Python Taylor-map `DASectionMap` build) —
-  also not touched by tonight's work. Needs investigation: check whether `#450`'s Taylor-map fixed
-  point iteration ever actually converged to the claimed `1e-4` neighbourhood on this machine, or
-  whether this is the same class of environment drift as `#803`.
+- `#804` — ✓ DONE 2026-08-08 (registered same audit as `#803`, dispatched + resolved same day):
+  `tests/genome/test_da_section_map.py::test_taylor_fixed_point_reaches_png_neighbourhood`'s
+  `1e-4` bound was the Linux/OpenBLAS build machine's empirical noise-floor snapshot (~3e-5, `#450`
+  decision note) + headroom, never a derived invariant — NOT a convergence bug. Instrumented trace:
+  the re-expansion iteration converges cleanly (steps → 1e-10) but to the truncated-polynomial
+  scheme's own fixed point 2.784e-4 from the published P5g' (float P^5 residual there is 0.38; at
+  the golden it is 3.27e-6, so the real map's fixed point is unmoved). Mechanism: `compose_self`
+  evaluates the `[-3e-4, 3e-4]`-fitted single-rev polynomial at the orbit's other chain points
+  (section footprint 0.11 x 0.4 — up to ~1000x outside the fit domain), so the landing is
+  ULP-sensitive to the BLAS/DOP853 stack (the "pure-Python" label only means no DA library) and
+  the floor is machine-dependent: 3e-5 Linux vs 2.8e-4 macOS/Accelerate — the `#584`-class
+  divergence reached through the FD fit. A (order, h) sweep confirmed the shipped baseline is
+  already optimal; chain-referenced composition cannot start from a coarse seed (off-orbit 5-rev
+  chain diverges). Load-bearing lane proof `tests/search/test_png_lane_recovery.py` PASSES on this
+  machine (corrector micro-multistart closes the 2.78e-4 landing to 1e-11; `da_hotm_close.py`'s
+  own docstring already said "~3e-4 floor" — the repo was self-inconsistent and the test constant
+  was the optimistic side). Fix (test + docstrings only, no solver change → no past-search
+  invalidation; `#523`/`#527`/`#532` DA-HOTM negatives unaffected, downstream tolerances >= 6e-3):
+  assertion now derived from the test's own construction (landing >= 2x closer than the coarse
+  seed's 1e-3 offset, i.e. < 5e-4; observed descent 33x Linux / 3.6x macOS) + a `> 1e-7`
+  output-not-input guard; machine-dependent-floor band documented in `DASectionMap`'s and the
+  test module's docstrings. No xfail (deterministic per-machine; this machine is the CI runner).
+  Follow-up `#805` registered. Note: `docs/notes/2026-08-08-804-taylor-fixed-point-floor.md`.
+- `#805` — registered 2026-08-08 (found during `#804`, not dispatched): cut the DA-HOTM Taylor
+  backend's machine-dependent FD noise floor by computing the first-order polynomial block of
+  `taylor_single_rev` EXACTLY from STM/variational propagation instead of finite differences of
+  the float propagator — the arXiv:2509.12671 lane's own DA advantage is exact derivatives
+  (`#450` decision note). Could let the Taylor iteration land inside the ~1e-5 corrector basin
+  directly, removing the micro-multistart's reach as a lane fragility and shrinking the
+  machine-dependence `#804` characterized (3e-5 Linux vs 2.8e-4 macOS for P5g'). Low priority:
+  the lane closes end-to-end on both machines today (`test_png_lane_recovery` passes).
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).

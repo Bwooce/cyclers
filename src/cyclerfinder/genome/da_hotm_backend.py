@@ -285,8 +285,13 @@ class DASectionMap(SamplingSectionMap):
       an iterated (re-expanded) trust-region Newton, returning the section point.
 
     No differential-algebra library, no MOSEK. The FD-coefficient accuracy floors
-    the achievable fixed-point distance for strongly-unstable multi-rev orbits
-    (~3e-5 for P5g'); the corrector finishes the closure (Task 5).
+    the achievable fixed-point distance for strongly-unstable multi-rev orbits,
+    and the floor is MACHINE-DEPENDENT (~3e-5 Linux/OpenBLAS build machine,
+    ~2.8e-4 macOS/Accelerate; #450 decision note + #804 note): compose_self
+    evaluates the [-h, h]-fitted single-rev polynomial at the orbit's other chain
+    points far outside the fit domain, so tiny BLAS/integrator coefficient
+    differences shift where the re-expansion iteration lands. The corrector
+    micro-multistart finishes the closure from that floor (Task 5).
     """
 
     def taylor_single_rev(
