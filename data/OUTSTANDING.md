@@ -452,6 +452,34 @@ unchanged. See `git log` around this date for the corrected commit.
   printed `r_pM≈1.67` LU/`~642,000` km, `7-3a`'s own printed `r_pM≈1.41` LU/`~541,000` km, both
   far outside the lunar SOI `66,183` km). Low priority — a 2-row completeness gap, not a
   blocker for anything else.
+- `#802` — registered 2026-08-08 (found during `#797`'s own writeback, not dispatched; note: this
+  bullet was missing from the commit that claimed to register it — added by the coordinating
+  session on discovering the gap while auditing that commit): add Casoliva 2010 (DOI
+  `10.2514/1.46856`) as a proper `KNOWN_CORPUS` anchor in `search/literature_check.py`. `#797`
+  added it to `DOI_ALLOWLIST` (the corpus-coverage ratchet) but it is not yet a `KNOWN_CORPUS`
+  anchor, so `literature_check.py`'s own novelty gate cannot yet recognize a future hit against
+  this paper's specific orbits as already-published. Low priority, small/mechanical — deferred
+  out of `#797`'s scope, not blocking anything currently active.
+- `#803` — registered 2026-08-08 (found by the coordinating session auditing the self-hosted CI
+  runner's first two real completed runs, not dispatched): `tests/nbody/test_propagator_api.py::
+  test_rails_cache_batch_samples_match_per_point` fails REPRODUCIBLY in isolation on this Mac
+  (`assert 2.98e-08 <= 1e-09`, ~30x past tolerance) — confirmed NOT CPU-contention noise (re-run
+  alone, nothing else on the machine, same failure). Not a new regression from tonight's work:
+  `tests/nbody/test_propagator_api.py` has no commits since `f5eb3959` (well before this session),
+  and neither `pyproject.toml` nor `uv.lock` have changed recently either — so either this test has
+  been silently broken for a while and nobody re-ran it in isolation, or some other environment
+  drift (macOS/Xcode/Accelerate BLAS update) is responsible. Needs investigation: bisect whether it
+  ever passed, check the rails/spline-caching code (`nbody/propagator.py`'s batch-vs-per-point
+  rails cache path) for a genuine precision bug vs. an overly tight `1e-9`-km tolerance on a
+  cached-spline reconstruction that was never realistically achievable.
+- `#804` — registered 2026-08-08 (same audit as `#803`, not dispatched): `tests/genome/
+  test_da_section_map.py::test_taylor_fixed_point_reaches_png_neighbourhood` fails REPRODUCIBLY in
+  isolation on this Mac (`0.000278 < 0.0001` assertion fails by ~2.8x). Same non-contention
+  confirmation as `#803` (re-run alone, clean failure). `tests/genome/test_da_section_map.py` has
+  had no commits since `2c053157` (`#450`'s original pure-Python Taylor-map `DASectionMap` build) —
+  also not touched by tonight's work. Needs investigation: check whether `#450`'s Taylor-map fixed
+  point iteration ever actually converged to the claimed `1e-4` neighbourhood on this machine, or
+  whether this is the same class of environment drift as `#803`.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
