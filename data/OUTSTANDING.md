@@ -460,18 +460,25 @@ unchanged. See `git log` around this date for the corrected commit.
   anchor, so `literature_check.py`'s own novelty gate cannot yet recognize a future hit against
   this paper's specific orbits as already-published. Low priority, small/mechanical — deferred
   out of `#797`'s scope, not blocking anything currently active.
-- `#803` — registered 2026-08-08 (found by the coordinating session auditing the self-hosted CI
-  runner's first two real completed runs, not dispatched): `tests/nbody/test_propagator_api.py::
-  test_rails_cache_batch_samples_match_per_point` fails REPRODUCIBLY in isolation on this Mac
-  (`assert 2.98e-08 <= 1e-09`, ~30x past tolerance) — confirmed NOT CPU-contention noise (re-run
-  alone, nothing else on the machine, same failure). Not a new regression from tonight's work:
-  `tests/nbody/test_propagator_api.py` has no commits since `f5eb3959` (well before this session),
-  and neither `pyproject.toml` nor `uv.lock` have changed recently either — so either this test has
-  been silently broken for a while and nobody re-ran it in isolation, or some other environment
-  drift (macOS/Xcode/Accelerate BLAS update) is responsible. Needs investigation: bisect whether it
-  ever passed, check the rails/spline-caching code (`nbody/propagator.py`'s batch-vs-per-point
-  rails cache path) for a genuine precision bug vs. an overly tight `1e-9`-km tolerance on a
-  cached-spline reconstruction that was never realistically achievable.
+- `#803` — DONE 2026-08-08 (dispatched + closed same day): root cause found — TEST-DESIGN bug,
+  not a code bug. The failing `2.98e-08` residual is exactly 1 ULP of Mars' ~1.69e8 km
+  x-coordinate (`2**-25` = ULP of doubles in `[2^27, 2^28)` km — NOT a float32 round-trip). The
+  batch `ephem.states()` path is BIT-IDENTICAL to per-point `ingest_planet_state()` (verified
+  directly, all 3 bodies × 71 knots, r and v) — the `#692`-era parity fix holds. The discrepancy
+  is `CubicSpline`/PPoly FINAL-knot evaluation: interior knots return the stored constant
+  coefficient exactly (left-closed interval lookup, offset 0), but the last knot evaluates the
+  last interval's cubic at offset h = 86400 s via scipy `_ppoly`'s ascending-power accumulation,
+  reproducing the endpoint sample only to rounding (mechanism reproduced op-for-op outside
+  scipy). Whether that rounds bit-exact is a knife edge in the spline coefficients (scipy banded
+  LAPACK solve — Accelerate on this Mac), so the old fixed `1e-9` km bound (below 1 ULP of any
+  planetary-scale coordinate) only ever passed by rounding luck; a scipy/Accelerate build drift
+  plausibly flipped a coefficient ULP. Fix (commit on `tests/nbody/test_propagator_api.py`
+  only): assert the batch-vs-per-point bit parity DIRECTLY (`array_equal`, stronger than
+  before), and bound the spline knot check by an honestly-derived `4*np.spacing(max|ref|)`
+  (~1.2e-7 km at Mars — still ~6 orders below the cache's real ~0.08 km mid-interval
+  interpolation accuracy vs DE440). No production code changed → no past-search invalidation.
+  No xfail needed. Note: `docs/notes/2026-08-08-803-rails-spline-final-knot-ulp.md`. NOT the
+  same class as `#804` (that one is a 2.8x margin miss, not a ULP knife edge — still open).
 - `#804` — registered 2026-08-08 (same audit as `#803`, not dispatched): `tests/genome/
   test_da_section_map.py::test_taylor_fixed_point_reaches_png_neighbourhood` fails REPRODUCIBLY in
   isolation on this Mac (`0.000278 < 0.0001` assertion fails by ~2.8x). Same non-contention

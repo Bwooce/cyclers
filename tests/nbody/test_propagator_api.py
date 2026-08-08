@@ -86,10 +86,26 @@ def test_rails_acceleration_matches_integrator_in_far_field() -> None:
 
 
 def test_rails_cache_batch_samples_match_per_point() -> None:
-    """The rails spline is built from the vectorised ephem.states() batch; at every
-    grid knot the resulting CubicSpline must reproduce the per-point
-    ingest_planet_state() sample it replaced (≤1e-9 km). This pins the I5 batching
-    optimisation to byte-for-byte parity with the old serial-loop construction.
+    """Pin the I5 batching optimisation: the rails spline is built from the
+    vectorised ephem.states() batch, whose samples must be BIT-IDENTICAL to the
+    per-point ingest_planet_state() calls they replaced (asserted directly below
+    via array_equal — the actual byte-for-byte parity claim).
+
+    The spline-evaluation check on top of that uses a few-ULP tolerance, NOT
+    exact reproduction, because CubicSpline knot fidelity is not exact at the
+    FINAL knot (#803): PPoly's interval lookup is left-closed, so every interior
+    knot returns the stored constant coefficient exactly (offset 0), but the
+    last knot is evaluated as the last interval's cubic at offset h = 86400 s
+    (scipy _ppoly ascending-power accumulation), which reproduces the endpoint
+    sample only to floating-point rounding. Whether that rounds bit-exact is a
+    knife edge in the spline coefficients (scipy's banded LAPACK solve — BLAS/
+    Accelerate-build dependent): Mars' ~1.69e8 km x-coordinate lands 1 ULP
+    (2**-25 km ≈ 3e-8) off on macOS/Accelerate. The old fixed 1e-9 km bound sat
+    BELOW one ULP of any coordinate in [1.34e8, 2.68e8) km, i.e. it demanded
+    exact endpoint rounding and passed only by luck. Honest bound: 4 ULPs of the
+    largest coordinate (~1.2e-7 km at Mars) — still ~6 orders of magnitude
+    tighter than the cache's real mid-interval interpolation accuracy vs DE440
+    (~0.08 km), so the parity pin loses nothing physically meaningful.
     """
     pytest.importorskip("astropy")
     from cyclerfinder.core.constants import SECONDS_PER_DAY
@@ -106,12 +122,19 @@ def test_rails_cache_batch_samples_match_per_point() -> None:
     lo, hi = min(t0, t1) - pad, max(t0, t1) + pad
     n = max(4, int((hi - lo) / step) + 1)
     grid = np.linspace(lo, hi, n)
+    grid_list = [float(t) for t in grid]
 
     for body in bodies:
-        for t in grid:
-            ref = ingest_planet_state(body, float(t), ephem)[0]
-            got = cache.position(body, float(t))
-            assert np.max(np.abs(got - ref)) <= 1e-9
+        batch = ephem.states([body] * len(grid_list), grid_list)
+        for i, t in enumerate(grid_list):
+            ref_r, ref_v = ingest_planet_state(body, t, ephem)
+            # The I5 pin proper: batched states() ≡ per-point state(), bitwise.
+            assert np.array_equal(batch[i][0], ref_r)
+            assert np.array_equal(batch[i][1], ref_v)
+            # Spline knot fidelity: exact at interior knots, ≤ a few ULPs of the
+            # coordinate magnitude at the final knot (see docstring derivation).
+            got = cache.position(body, t)
+            assert np.max(np.abs(got - ref_r)) <= 4.0 * np.spacing(np.max(np.abs(ref_r)))
 
 
 @pytest.mark.slow
