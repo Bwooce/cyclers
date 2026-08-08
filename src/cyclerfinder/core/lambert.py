@@ -3,8 +3,11 @@
 Given two heliocentric position vectors ``r1, r2`` and a time of flight ``tof``,
 finds the heliocentric velocity vectors ``v1`` (at ``r1``) and ``v2`` (at
 ``r2``) such that a Keplerian conic connects them in exactly ``tof`` seconds.
-The single-revolution case is fully implemented in M1; the multi-revolution
-branches return an empty list and are M4's responsibility (see plan §3.2.1).
+The single-revolution case was the M1 deliverable; the multi-revolution
+``low``/``high`` branches (M4, task #54) are implemented too -- pass
+``max_revs > 0`` to :func:`lambert` to get them (see :class:`LambertSolution`
+and the ``max_revs`` parameter docs below). Covered by
+``tests/core/test_lambert_multirev.py``.
 
 Algorithm
 ---------
@@ -77,8 +80,10 @@ class LambertGeometryError(LambertError):
     The two classic cases are a transfer angle of exactly ``0`` (the two
     position vectors coincide on a ray from the focus) and exactly ``180`` deg
     (``r2 = -k * r1`` for some ``k > 0``); for the latter the in-plane direction
-    of the transfer is ambiguous and only a multi-rev / out-of-plane treatment
-    resolves it. Multi-rev support is the M4 deliverable.
+    of the transfer is fundamentally ambiguous in a purely 2D/coplanar
+    treatment and only an out-of-plane (3D) formulation resolves it -- this is
+    a geometric degeneracy of the exact-180-deg case itself, not something
+    multi-rev support (``max_revs > 0``, task #54, already implemented) fixes.
     """
 
 
@@ -699,7 +704,10 @@ def lambert(
     if abs(dnu) < 1.0e-12 or abs(dnu - np.pi) < 1.0e-9 or abs(dnu - 2.0 * np.pi) < 1.0e-12:
         raise LambertGeometryError(
             "Lambert single-rev universal-variable form is singular for 0- or "
-            "180-degree transfer angles; multi-rev support arrives in M4."
+            "180-degree transfer angles; a purely in-plane treatment cannot "
+            "resolve this (see LambertGeometryError's docstring) -- multi-rev "
+            "support (max_revs > 0) does not help here either, since the "
+            "degeneracy is in the transfer geometry, not the revolution count."
         )
 
     sin_dnu = float(np.sin(dnu))
