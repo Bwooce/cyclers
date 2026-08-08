@@ -1117,6 +1117,32 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         system="earth-moon",
     ),
     CorpusAnchor(
+        # #802: added by the coordinating session. #797's own catalogue writeback
+        # (7 Casoliva 2010 Table 3 rows) needed this paper recognized as
+        # published so a future hit against these specific orbits doesn't
+        # false-flag as novel; #797 added the DOI to DOI_ALLOWLIST but left this
+        # anchor itself for a follow-on task.
+        name="Casoliva-Mondelo-Villac-Mease-Barrabes-Olle two classes of Earth-Moon cyclers (2010)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Casoliva", "Mondelo", "Villac", "Mease", "Barrabes", "Olle"),
+        keywords=(
+            "two classes cycler trajectories Earth-Moon system",
+            "p-q resonant cycler differential correction second-species",
+            "L1 Lyapunov homoclinic connection cycler Earth-Moon",
+        ),
+        citation="Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes "
+        "of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, "
+        "Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
+        doi="10.2514/1.46856",
+        key="casoliva-2010-two-classes-em-cyclers-jgcd",
+        year=2010,
+        title="Two Classes of Cycler Trajectories in the Earth-Moon System",
+        venue="Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
+        provenance="verified-against-source",
+        system="earth-moon",
+    ),
+    CorpusAnchor(
         name="Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
