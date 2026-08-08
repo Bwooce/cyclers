@@ -19,6 +19,24 @@ nontrivial monodromy eigenvalue collapses smoothly and monotonically from
 specific number, and — per this task's own honesty discipline — it is **not established**
 that this `half_crossings=4` branch is the same family object she plots in Fig. 4.11/4.12.
 
+**Addendum 2026-08-08 (CI cross-platform investigation, coordinating session):** the first
+CI run of `test_c774_chain_branch_fold_eigenvalue_reaches_unity` found `max_eig` off by
+`0.213` from `1.0` on Linux — investigated directly rather than assumed to be routine
+cross-platform noise, given the magnitude. Confirmed deterministic-per-run on this Mac (3
+repeated runs, bit-identical), then directly measured the local sensitivity: perturbing
+`C` by as little as `1e-9` at the exact reported fold seed swings `max_eig` from `~1.0` to
+values in the `10`-`20000+` range. This is consistent with, not contradictory to, the
+"collapses smoothly and monotonically" characterization above — a smooth curve dropping
+from `4.77e7` to `1` over a `ΔC` of only `~7e-5` implies an enormous local slope right at
+the crossing, so a cross-platform corrector difference far too small to move the reported
+`x0`/`jacobi` outside this test's own loose tolerances can still swing the eigenvalue by
+orders of magnitude. **This does not undermine the qualitative finding (a fold bifurcation
+genuinely exists near `C≈3.0100697`)** — it means the specific 10-significant-figure `C`
+value reported above carries less genuine cross-platform precision than its digit count
+suggests, and any future work building on this fold's exact location should re-derive it
+fresh rather than treat `C=3.0100696796878963` as portable. Full detail in the test's own
+`xfail` reason, `tests/search/test_saturn_titan_resonant_connections.py`.
+
 ---
 
 ## Direction: resolved from the dispatch note's own internal contradiction
