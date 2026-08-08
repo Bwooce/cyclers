@@ -6,7 +6,13 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # Self-hosted on the maintainer's Mac (2026-08, GitHub Actions minutes
+    # exhausted for the month). Trades away the Linux-vs-macOS numerical
+    # divergence coverage that caught real cross-platform bugs earlier this
+    # project -- xfail(strict=False) markers citing that class may now go
+    # unexercised. Revisit runs-on if GitHub-hosted minutes become routine
+    # again.
+    runs-on: [self-hosted, macOS, arm64]
     steps:
       - uses: actions/checkout@v5
 
@@ -76,7 +82,7 @@ jobs:
             [[ "$name" =~ ^#.*$ || -z "$name" ]] && continue
             target=~/dev/references/kernels/"$name"
             if [[ -f "$target" ]]; then
-              have_bytes=$(stat -c %s "$target")
+              have_bytes=$(stat -f%z "$target" 2>/dev/null || stat -c %s "$target")
               if [[ "$have_bytes" == "$expected_bytes" ]]; then
                 echo "[$name] already cached at $target ($have_bytes bytes); skipping download."
                 continue
@@ -85,7 +91,7 @@ jobs:
             fi
             echo "[$name] downloading from $url"
             curl -L --fail --retry 3 --retry-delay 10 -o "$target" "$url"
-            have_bytes=$(stat -c %s "$target")
+            have_bytes=$(stat -f%z "$target" 2>/dev/null || stat -c %s "$target")
             if [[ "$have_bytes" != "$expected_bytes" ]]; then
               echo "[$name] downloaded $have_bytes bytes, expected $expected_bytes" >&2
               exit 1
