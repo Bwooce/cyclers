@@ -114,18 +114,62 @@ unchanged. See `git log` around this date for the corrected commit.
   depend on `#783`'s own connection-reproduction result and is dispatchable now. Mandatory
   `literature_check.py` novelty gate before any discovery claim, same discipline as every other
   task in this campaign.
-- `#786` — registered + DISPATCHED 2026-08-08 (split from `#785`'s own second avenue, per
-  `#783`'s own note that it does NOT depend on `#783`'s connection-reproduction result): apply
+- `#786` — ✓ DONE 2026-08-08, CLEAN NEGATIVE (split from `#785`'s own second avenue, per
+  `#783`'s own note that it does NOT depend on `#783`'s connection-reproduction result): applied
   this project's own already-validated Poincaré-section Newton-shooting connection machinery
   (`jovian_resonant_connections.py`-style — the SAME method already used for Jupiter-Europa
   `#754`, Saturn-Titan `#767`, and Neptune-Triton `#781`; explicitly NOT the Barrabés-Mondelo-Ollé
   method `#783` used and found intractable) to Earth-Moon's own Class 1 resonant families
-  (`#780`'s own Table 3, all 16 rows already vendored, 12/16 fully reproducing Casoliva's own
-  printed values). Casoliva's own paper builds Class 1 via a different (second-species/
-  generating-family) method than Class 2's homoclinic-shadowing construction — this project's own
-  resonant-connection machinery has never been pointed at Earth-Moon's own resonant orbits at all,
-  a genuinely unexplored avenue, structurally distinct from `#783`'s own attempt. Mandatory
-  `literature_check.py` novelty gate before any discovery claim.
+  (`#780`'s own Table 3). Built `src/cyclerfinder/search/earth_moon_class1_resonant_connections.py`
+  (a NEW filename, not the dispatch note's own suggested `earth_moon_resonant_connections.py` —
+  that exact name was already claimed by `#783`'s own committed Class-2/BMO module; documented in
+  the new module's own docstring) + `tests/search/test_earth_moon_class1_resonant_connections.py`
+  (14 tests, all passing). Targeted `7-3b`/`7-3c` (the two physically-real, resonance-satisfying,
+  fully-`#780`-reproducing rows with a real in-plane saddle eigenvalue inside this task chain's
+  own demonstrated Newton-tractable band, `lambda~57.3`/`57.0`) — both `build_node` eigenvalue
+  cross-checks confirm to `<3e-10` relative against `#780`'s own `table3_gate_report`. Neither
+  orbit has a perpendicular `{y=0,xdot=0}` crossing at all (genuinely new geometry vs. every prior
+  sibling target — 20 `{y=0}` crossings/period, closest approach to perpendicular `|xdot|~0.259`),
+  requiring a new `_snap_to_y0` phase-reparametrization helper (closure residual `3.6e-11`/
+  `1.5e-09`) and a fully-unrestricted section convention (`#781`'s own generalization, reused
+  directly). **CLEAN NEGATIVE on the connection itself**: an extensive multi-strategy search
+  (a 40-combo blind diagonal `(k,branch)` grid+Newton scan across `k=10-20`; a fast, independent
+  direct manifold-tube forward/backward propagation pre-scan finding the closest non-ghost
+  unstable/stable crossing pairs; targeted Newton refinement seeded exactly at those pairs; an
+  `fd_step` sweep over two orders of magnitude ruling out finite-difference noise as the cause)
+  never reached a converged, non-ghost self-intersection for either orbit — every near-converged
+  Newton attempt plateaus at (or very near) one of the orbit's own 20 natural section points, the
+  diagnostic signature of this orbit's own unusually dense crossing structure starving the
+  correction of a genuine transversal-intersection basin within the region searched. Not a forced
+  or fudged negative — real, honest evidence (pinned as regression tests, not re-run at full scan
+  cost in CI). Mandatory `literature_check.py` gate run (its own "published" verdict is a known
+  false-positive on an unrelated free-return-cycler hit, consistent with the tool's own documented
+  scope limitation for raw resonant-orbit-manifold objects) plus a direct corpus/WebSearch pass —
+  found REAL, load-bearing prior art: Vaquero's 2013 dissertation (already in this project's own
+  corpus, `#765`'s primary source) has an entire never-previously-digested Earth-Moon chapter
+  (Sec. 4.4) computing genuine homoclinic self-connections of Earth-Moon p:q resonant orbits (1:2
+  and 2:3 at `C=2.8284`) — the PHENOMENON is established prior art, though the SPECIFIC `7:3`
+  target was never computed by anyone; registered the corpus-completeness gap as `#787`. 1-2d/2-1b
+  (weaker `lambda~4.6`/`1.2` rows) registered as a follow-on, not attempted (outside this chain's
+  own demonstrated tractable band). Full writeup:
+  `docs/notes/2026-08-08-786-earth-moon-class1-resonant-connections.md`.
+- `#787` — registered 2026-08-08 (found during `#786`'s own mandatory literature-novelty gate,
+  not dispatched): Vaquero's 2013 Purdue dissertation (already acquired, `#765`'s own primary
+  source — but `#765`/`#780`/`#783`'s own digest passes only deep-read her Sec. 4.3, Saturn-
+  Titan) has its OWN Sec. 4.4 ("Resonance Transition in the Earth-Moon System", pp.133-172),
+  never previously digested, which directly computes GENUINE homoclinic self-connections of
+  planar Earth-Moon p:q resonant orbits (Sec. 4.4.1, Figs. 4.22-4.24: 1:2 and 2:3 resonances at
+  `C=2.8284`, plus a heteroclinic connection between them), spatial/3D extensions (Sec. 4.4.2),
+  and a family of stable 2:1/3:1 resonant "Earth-Moon Periodic Cyclers" (Sec. 4.4.7, Figs.
+  4.43-4.44) — all via her OWN family-continuation orbit-generation lineage, entirely distinct
+  from both Casoliva's Class 1 (elliptical/second-species) and Class 2 (L1-Lyapunov homoclinic-
+  shadowing) methods. This is a genuine corpus-completeness gap (the dissertation's own Ch. 4 has
+  TWO independent system case studies — Saturn-Titan Sec. 4.3 and Earth-Moon Sec. 4.4 — and only
+  the first was ever digested) with real downstream consequences already found once (this task's
+  own literature-novelty gate). Proposed scope: a dedicated digest of Sec. 4.4 in full (not just
+  the 4.4.1 finding this task needed), cross-checked against Casoliva's own Table 3/`#780` and
+  this task's own `7-3b`/`7-3c` connection work for any direct numeric overlap, plus a citation-
+  mining pass per the standing corpus-document-policy discipline.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
