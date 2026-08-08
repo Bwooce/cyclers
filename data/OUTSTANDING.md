@@ -311,23 +311,79 @@ unchanged. See `git log` around this date for the corrected commit.
   (weaker `lambda~4.6`/`1.2` rows) registered as a follow-on, not attempted (outside this chain's
   own demonstrated tractable band). Full writeup:
   `docs/notes/2026-08-08-786-earth-moon-class1-resonant-connections.md`.
-- `#787` — registered 2026-08-08 (found during `#786`'s own mandatory literature-novelty gate,
-  not dispatched): Vaquero's 2013 Purdue dissertation (already acquired, `#765`'s own primary
-  source — but `#765`/`#780`/`#783`'s own digest passes only deep-read her Sec. 4.3, Saturn-
-  Titan) has its OWN Sec. 4.4 ("Resonance Transition in the Earth-Moon System", pp.133-172),
-  never previously digested, which directly computes GENUINE homoclinic self-connections of
-  planar Earth-Moon p:q resonant orbits (Sec. 4.4.1, Figs. 4.22-4.24: 1:2 and 2:3 resonances at
-  `C=2.8284`, plus a heteroclinic connection between them), spatial/3D extensions (Sec. 4.4.2),
-  and a family of stable 2:1/3:1 resonant "Earth-Moon Periodic Cyclers" (Sec. 4.4.7, Figs.
-  4.43-4.44) — all via her OWN family-continuation orbit-generation lineage, entirely distinct
-  from both Casoliva's Class 1 (elliptical/second-species) and Class 2 (L1-Lyapunov homoclinic-
-  shadowing) methods. This is a genuine corpus-completeness gap (the dissertation's own Ch. 4 has
-  TWO independent system case studies — Saturn-Titan Sec. 4.3 and Earth-Moon Sec. 4.4 — and only
-  the first was ever digested) with real downstream consequences already found once (this task's
-  own literature-novelty gate). Proposed scope: a dedicated digest of Sec. 4.4 in full (not just
-  the 4.4.1 finding this task needed), cross-checked against Casoliva's own Table 3/`#780` and
-  this task's own `7-3b`/`7-3c` connection work for any direct numeric overlap, plus a citation-
-  mining pass per the standing corpus-document-policy discipline.
+- `#787` — ✓ DONE 2026-08-08 (registered during `#786`'s own mandatory literature-novelty gate,
+  self-dispatched): full deep-read of Vaquero's 2013 dissertation Sec. 4.4 ("Resonance
+  Transition in the Earth-Moon System," pp.133-172, `#765`/`#780`/`#783`'s own digest passes had
+  only ever covered her Sec. 4.3 Saturn-Titan chapter), per the standing corpus-document-policy
+  discipline (digest + citation-mining + `CORPUS_INDEX.md` registration; no code/catalogue
+  touched, pure digest task). Full writeup: `docs/notes/2026-08-08-787-vaquero-2013-earth-moon-
+  chapter-digest.md`. **Headline findings**: (1) Sec. 4.4.1's 1:2/2:3 planar homoclinic/
+  heteroclinic connections at `C=2.8284` (the finding `#786` already needed) confirmed
+  figure/prose-only, no IC table anywhere in the whole chapter (checked every `Table 4.x`
+  reference in the section — all four are ΔV/TOF transfer tables, not orbit-state tables).
+  (2) **Corrected `#786`'s own "STABLE 2:1/3:1... cyclers" framing** (also corrected in that
+  task's own note): Vaquero's own printed Sec. 4.4.7 criterion is "stable OR possess small
+  unstable modes," and her own free-transfer discussion explicitly requires BOTH orbits
+  unstable at the shared energy — confirmed directly by a Fig. 4.44 vision read (PDF p.188),
+  whose `ν3D` colorbar visibly crosses the `|ν|=2` instability threshold within both families'
+  plotted range. No digit-grade IC table exists for the 4.4.7 cyclers either — Fig. 4.44's own
+  `x0` axis carries no printed value labels, a genuinely non-digitizable graphical source.
+  (3) Cross-check against Casoliva's Table 3 (`#780`) found NO exact numeric orbit match (same
+  resonance labels recur — 1:2, 2:1, 3:2 — but at different `C` values or absent from one
+  paper's table); confirmed the two papers' `p:q` conventions are identical (`p`=spacecraft,
+  `q`=moon in both, cross-validated against Casoliva's own `a_s=(q/p)^(2/3)` Table 1 formula) —
+  found and corrected a role-assignment inversion in `#725`'s own digest-note prose (confirmed
+  NOT to have propagated into `search/earth_moon_resonant_families.py` code, which stores `p`/`q`
+  as opaque metadata, not a derived formula). (4) **The accurately-scoped catalogue gap**: not
+  "the 4.4.7 family specifically" but the entire Casoliva/Vaquero two-body-seeded p:q-resonance
+  METHOD lineage — `grep -i "casoliva|mondelo|villac"` against `data/catalogue.yaml` returns
+  ZERO rows despite three prior digest/gate tasks (`#725`/`#780`/`#786`), while the Braik-Ross/
+  Ross-Roberts-Tsoukkas manifold-tube lineage has 18 rows. Registered as `#797`. (5) A specific
+  near-coincidence — already-catalogued `braik-ross-planar-r31-s-corridor` sits at `C=3.1294`,
+  within `0.001` of Vaquero's own printed 3:1-family upper bound `C=3.13` — was checked
+  geometrically (Kepler's-3rd-law periapsis estimate `~63,600` km, exceeding Vaquero's own
+  GEO cycler-perigee ceiling `42,164` km) and most likely does NOT indicate orbit identity, but
+  is the single most concrete falsifiable target for a future direct-reproduction task.
+  Registered as `#798`. Citation-mining pass: refs [105]/[106] confirmed to BE Casoliva's own
+  papers (already corpus, strengthens the `#797` cross-reproduction motivation); [41]/[89]/[90]/
+  [91]/[104] all already in corpus or backlog (item 61/85 reinforced); 4 genuinely new
+  low-priority LEO-to-LPO background papers registered as `#730` backlog items 100-103 (that
+  file's numbering is non-sequential by position — checked directly before assigning). No
+  literature-novelty framing applies anywhere in this task (pure reproduction of Vaquero's own
+  already-published content, per the dispatch's own explicit instruction).
+  `tests/data/test_outstanding_structure.py`/`test_outstanding_header_body_consistency.py` run
+  clean after this file's own edits.
+- `#797` — registered 2026-08-08 (found during `#787`'s own cross-check against
+  `data/catalogue.yaml`, not dispatched): the Casoliva 2008/2010 (`#725` digest, `#780` gate
+  module) / Vaquero 2013 Sec. 4.4 (`#787`) two-body-seeded p:q-resonant Earth-Moon "cycler"
+  lineage has ZERO catalogue rows, despite `#780` building a full validation gate module
+  (`search/earth_moon_resonant_families.py`, all 16 Casoliva Table 3 rows reproduced) and
+  `#786` attempting (clean negative) a connection search on two of its rows. By contrast the
+  Braik-Ross/Ross-Roberts-Tsoukkas manifold-tube-intersection lineage has 18 catalogue rows.
+  Proposed scope: a dedicated writeback task selecting the strongest-sourced Casoliva Table 3
+  members (e.g. the already-gated `1-2c/d/e`, `2-1a/b`, `3-2c`, `7-3a/b/c/d` rows, all with
+  digit-grade `(x_i, u_i, C_J, T, k)` from `#780`'s own extraction) as `quasi_cycler`/`cycler`
+  catalogue rows — mirroring the `#707`→`#708`/`#735`→`#736`/`#770`→`#779` staged digest→design→
+  writeback pattern. Vaquero's OWN 2:1/3:1 "Earth-Moon Periodic Cyclers" (Sec. 4.4.7) are
+  explicitly NOT writeback-ready on their own (no digit-grade IC anywhere, graph-only per `#787`)
+  — any writeback for THAT specific family would need either digitizing Fig. 4.44 (imprecise) or
+  independently reproducing it via CR3BP family continuation seeded from her own stated
+  `(C, TOF)` constraints (a genuine, non-trivial computation task, not a transcription one).
+- `#798` — registered 2026-08-08 (found during `#787`'s own numeric cross-check pass, not
+  dispatched): resolve whether `data/catalogue.yaml`'s already-catalogued
+  `braik-ross-planar-r31-s-corridor` row (Braik & Ross 2026 Table 2, `C_J=3.1294`,
+  `x0=-0.8081272738`, `T=27.2517` days) is the SAME physical orbit as (or a nearby member of the
+  same family as) Vaquero 2013's own printed 3:1 "Earth-Moon Periodic Cycler" family upper bound
+  (`C=3.13`, Sec. 4.4.7). `#787`'s own Kepler's-3rd-law estimate (implied periapsis `~63,600` km,
+  exceeding Vaquero's own printed GEO cycler-perigee ceiling of `42,164` km, and the IC's own
+  apoapsis crossing sits on the opposite side of Earth from the Moon, `~690,000` km away at that
+  point) argues AGAINST identity, but is explicitly a Keplerian approximation on a genuine CR3BP
+  orbit — indicative, not decisive. Proposed scope: direct CR3BP family continuation of Vaquero's
+  own 3:1 resonant-cycler family (two-body-seeded per her own Ch.3.5.1 method, continued in `C`
+  from `C=2.54` to `3.13`) and a direct IC-level comparison against R31-S at the matching `C`, OR
+  (cheaper first step) a direct propagation of R31-S's own already-catalogued IC checking whether
+  it EVER comes within Vaquero's own stated perigee/lunar-approach bounds at some OTHER point
+  along its own orbit (the Kepler estimate only checked the one printed apse crossing).
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).

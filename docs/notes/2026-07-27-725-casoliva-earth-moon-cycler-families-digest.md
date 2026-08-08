@@ -49,8 +49,17 @@ the abstract. Precisely:
 ### Class 1 — High-energy near-Keplerian resonant cyclers (§IV both papers)
 
 Organized around **p-q resonant orbits** (`q·T_moon = p·T_spacecraft`, Eq. 9): the spacecraft
-completes `q` inertial ellipses while the Moon completes `p` revolutions. Two seed/continuation
-strategies:
+completes `p` inertial ellipses while the Moon completes `q` revolutions (**correction, `#787`,
+2026-08-08**: the prose gloss here originally had `p`/`q` swapped — Casoliva's own Eq. (9) text
+reads "the spacecraft traverses its (inertial) elliptic orbit `p` times, while the moon completes
+`q` revolutions," i.e. `p`=spacecraft, `q`=moon, the SAME role assignment Vaquero 2013 uses (her
+own Eq. 3.1, `p`=body B/spacecraft, `q`=body A/moon) — cross-checked against Table 1's own
+`a_s=(q/p)^(2/3)` formula, e.g. `p=7,q=3` → `0.5686` vs. the table's printed `0.5684`. This was a
+note-file transcription error only — confirmed NOT to have propagated into
+`search/earth_moon_resonant_families.py`: `Table3Row.p`/`.q` are stored as opaque metadata from
+Casoliva's own designation digits, and `satisfies_resonance`/`exists_in_em_system` are verbatim
+footnote-flag transcriptions from her own printed table, not derived from any p/q formula in this
+project's own code). Two seed/continuation strategies:
 
 1. **Elliptical-orbit seed + differential correction at fixed T** (µ jumped directly to µ_EM, no
    continuation in µ). Works for `p>q` (larger `a_s/c`) but fails below `a_s/c≈0.6` (Earth-Moon

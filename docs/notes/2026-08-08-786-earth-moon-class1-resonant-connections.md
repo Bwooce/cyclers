@@ -206,9 +206,16 @@ states: *"If the intersection corresponds to a stable and an unstable manifold a
 same periodic orbit, then a homoclinic connection can be calculated"* and computes exactly this for
 BOTH a `1:2` and a `2:3` planar Earth-Moon resonant orbit at `C=2.8284` (Figs. 4.22-4.24), via her
 own family-continuation orbit-generation lineage (Fig. 3.17), plus a heteroclinic connection
-between them. Sec. 4.4.7 ("Earth-Moon Periodic Cyclers") separately catalogues STABLE `2:1`/`3:1`
+between them. Sec. 4.4.7 ("Earth-Moon Periodic Cyclers") separately catalogues `2:1`/`3:1`
 resonant cyclers (a family-continuation study, not a homoclinic-connection one) — neither section
-touches `7:3` or Casoliva's own elliptical/second-species generating-family method.
+touches `7:3` or Casoliva's own elliptical/second-species generating-family method. **Correction,
+`#787`, 2026-08-08**: "STABLE" above overstates Sec. 4.4.7's own criteria — Vaquero's own printed
+stability criterion is "stable or possess small unstable modes," and her own text explicitly notes
+a cost-free transfer requires "both orbits... UNSTABLE and possess the same value of Jacobi
+constant" between members of these same two families, confirmed visually in Fig. 4.44 (its own
+`ν3D` colorbar spans 0.5-2.5+, i.e. crosses the `|ν|=2` Barden-class instability threshold within
+both families' own plotted range). Not a fully-stable family — see the `#787` digest for the full
+read.
 
 This is a genuine corpus-completeness gap: Vaquero 2013's own Ch. 4 has TWO independent system case
 studies (Saturn-Titan Sec. 4.3, already digested for `#765`; Earth-Moon Sec. 4.4, never digested
