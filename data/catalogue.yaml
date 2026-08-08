@@ -56643,3 +56643,738 @@
     "crnbp_provenance.real_ephemeris_evidence.torus_points[0].n_epochs_narrow": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:summary.n_primary_epochs_narrow = 10 (of 10 tested); fraction_primary_epochs_narrow = 1.0."
     "orbit_elements.cr3bp.mass_ratio": "core.crnbp.jupiter_europa_io_ganymede_default().mu, live-printed this session (PYTHONPATH=src python3 -c \"from cyclerfinder.core.crnbp import jupiter_europa_io_ganymede_default as f; print(f().mu)\") = 2.528017724591319e-05."
     "crnbp_provenance.torus.radau_cross_check.integrator_delta_max_km": "data/found/738_crnbp_torus_radau_ghost_guard/result.json:check.integrator_delta_max_km = 7.112659620276295e-08 -- the independent Radau-vs-DOP853 cross-check this row's V1 validation_level rests on (#738)."
+
+- id: casoliva-1-2c-em-resonant-po-2010
+  name: "Casoliva 1-2c (1,2) resonant Earth-Moon periodic orbit (CR3BP, C=1.5692, NO lunar encounter -- periselene 339,553 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- Casoliva's own printed periselene r_pM=339553.2 km (independently DERIVE-cross-checked this task at 339569.5 km via direct dense propagation over one full period) sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- this orbit's own p-q Earth-resonance is genuine (satisfies_resonance=True, exists_in_em_system=True) but it NEVER actually encounters the Moon, exactly resonant_po's own defining carve-out ('a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary', data/README.md/catalogue.schema.json v4.9, precedent em-cycler-21-3d-spatial-2026's identical reasoning for its own (2,1) resonant member at 122,628 km vs SOI 66,183 km). Honesty note: this row is STABLE (Casoliva's own printed k=1.9996; resonant_po's descriptive prose says 'stable' but only epoch_locked=false/n_returns=infinite is the enforced invariant per tests/data/test_schema_v47_orbit_class.py -- an UNSTABLE resonant_po is not schema-excluded, just undercharacterized by that prose, same as this row). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "1-2c" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=1.92e-12), AND an independent Radau integrator cross-check passes (radau_djacobi=1.79e-13). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 12.5663707984126 TU nondim (Casoliva 2010 Table 3 "1-2c" prints T=12.5663706144 TU exactly = 2*pi*2 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 1.46e-08 relative). 54.569212 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(1,2) resonant Earth-Moon cycler, Table 3 row '1-2c'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 1.5691869304021369   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.5691874798 verbatim -- reproduces it to 3.50e-07 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=1.79e-13 over one period. NOT a golden.
+      period_nd: 12.566370798412644   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=12.5663706144 TU to 1.46e-08 relative. NOT a golden.
+      stability_index: 1.99959164927983   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=-1.028753, k_perp=1.999592, k_signed=1.999592; reproduces Casoliva's own printed k=1.9995914782 to 8.56e-08 relative -- her own printed STABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [2.475494080030184, 1.2142004376881142e-07, 2.132140746916684e-20, 0.3779077723058042, -2.2861779579105543, 4.029861988735784e-21]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-2.4754942840, u_i=-0.3779077269, v_i=2.2861781603 in HER frame/convention) at this project's own registry mu. Closure residual 1.92e-12; x0 reproduces Casoliva's own printed x_i to 8.24e-08 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 339553.24352468   # SOURCED: Casoliva 2010 Table 3 "1-2c" r_pM column (periselene, Moon-relative, nondim r_pm=0.8833330997 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 339569.5 km, agreeing to 4.78e-05 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 44854.09451756   # SOURCED: Casoliva 2010 Table 3 "1-2c" r_pE column (perigee, Earth-relative, nondim r_pe=0.1166859899 LU). DERIVE cross-check (min Earth distance over one period): 44867.0 km, agreeing to 2.88e-04 relative.
+      casoliva_apogee_km: 1172471.64360184   # SOURCED: Casoliva 2010 Table 3 "1-2c" r_aE column (apogee, Earth-relative, nondim r_ae=3.0501343486 LU).
+      energy_regime:
+      tof_days_bounds: [54.56921239489617, 54.56921239489617]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "1-2c" -- p=1, q=2, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "1-2c" -- (1,2) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.5692, T=2*pi*2 TU (STABLE, k=1.9996). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=8.24e-08, period_rel_err=1.46e-08, jacobi_rel_err=3.50e-07, k_rel_err=8.56e-08), AND an independent Radau integrator cross-check passes (radau_djacobi=1.79e-13). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#797): despite genuinely satisfying its own (1,2) Earth-centered p-q resonance (Casoliva's own footnotes confirm both satisfies_resonance=True and exists_in_em_system=True), this orbit's own printed periselene r_pM=339553.2 km sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation over one full period) confirms 339569.5 km, agreeing to 4.78e-05 relative. It NEVER actually encounters the Moon: an Earth-resonant periodic orbit whose closest lunar approach is a small fraction of the full Earth-Moon separation, not a transport cycler. Exactly matches resonant_po's own schema v4.9 carve-out (data/README.md/catalogue.schema.json: 'a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary'), the identical reasoning em-cycler-21-3d-spatial-2026 already established for its own (2,1) Earth-Moon resonant member (122,628 km vs SOI 66,183 km). Only epoch_locked=false/n_returns=infinite is the schema-ENFORCED resonant_po invariant (tests/data/test_schema_v47_orbit_class.py) -- 'stable' in the class's own descriptive prose is NOT schema-enforced, so this row's own STABLE character (Casoliva's own printed k reproduced to 8.56e-08 relative) does not block admission.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 1.92e-12. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=1.79e-13 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 339569.5 km and min Earth distance 44867.0 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"1-2c\", C_J column = 1.5691874798."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"1-2c\", T column = 12.5663706144 TU (=2*pi*2 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"1-2c\", k column = 1.9995914782 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> STABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"1-2c\", r_pM column = 0.8833330997 LU (339553.2 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('never encounters the secondary') + this row's own casoliva_periselene_km/DERIVE cross-check, both well OUTSIDE the lunar SOI/Hill radius, mirroring em-cycler-21-3d-spatial-2026's identical reasoning."
+
+- id: casoliva-1-2d-em-resonant-po-2010
+  name: "Casoliva 1-2d (1,2) resonant Earth-Moon periodic orbit (CR3BP, C=2.5803, NO lunar encounter -- periselene 603,592 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- Casoliva's own printed periselene r_pM=603591.6 km (independently DERIVE-cross-checked this task at 603584.6 km via direct dense propagation over one full period) sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- this orbit's own p-q Earth-resonance is genuine (satisfies_resonance=True, exists_in_em_system=True) but it NEVER actually encounters the Moon, exactly resonant_po's own defining carve-out ('a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary', data/README.md/catalogue.schema.json v4.9, precedent em-cycler-21-3d-spatial-2026's identical reasoning for its own (2,1) resonant member at 122,628 km vs SOI 66,183 km). Honesty note: this row is UNSTABLE (Casoliva's own printed k=4.8579; resonant_po's descriptive prose says 'stable' but only epoch_locked=false/n_returns=infinite is the enforced invariant per tests/data/test_schema_v47_orbit_class.py -- an UNSTABLE resonant_po is not schema-excluded, just undercharacterized by that prose, same as this row). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "1-2d" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=7.60e-12), AND an independent Radau integrator cross-check passes (radau_djacobi=4.35e-14). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 12.5663707178212 TU nondim (Casoliva 2010 Table 3 "1-2d" prints T=12.5663706144 TU exactly = 2*pi*2 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 8.23e-09 relative). 54.569212 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(1,2) resonant Earth-Moon cycler, Table 3 row '1-2d'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 2.5803053692300644   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=2.5803060666 verbatim -- reproduces it to 2.70e-07 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=4.35e-14 over one period. NOT a golden.
+      period_nd: 12.566370717821197   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=12.5663706144 TU to 8.23e-09 relative. NOT a golden.
+      stability_index: 4.857289303177874   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=4.857289, k_perp=1.999142, k_signed=4.857289; reproduces Casoliva's own printed k=4.8578794987 to 1.21e-04 relative -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [2.598795165390677, -2.341420275586999e-06, 3.460923682921868e-20, -2.1040760862434794e-06, -2.223783827765469, 3.550636863680402e-22]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-2.5987958202, u_i=0.0000000000, v_i=2.2237844860 in HER frame/convention) at this project's own registry mu. Closure residual 7.60e-12; x0 reproduces Casoliva's own printed x_i to 2.52e-07 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 603591.56160236   # SOURCED: Casoliva 2010 Table 3 "1-2d" r_pM column (periselene, Moon-relative, nondim r_pm=1.5702173819 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 603584.6 km, agreeing to 1.15e-05 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 219211.26421656   # SOURCED: Casoliva 2010 Table 3 "1-2d" r_pE column (perigee, Earth-relative, nondim r_pe=0.5702686374 LU). DERIVE cross-check (min Earth distance over one period): 219185.3 km, agreeing to 1.19e-04 relative.
+      casoliva_apogee_km: 1003648.70837964   # SOURCED: Casoliva 2010 Table 3 "1-2d" r_aE column (apogee, Earth-relative, nondim r_ae=2.6109487731 LU).
+      energy_regime:
+      tof_days_bounds: [54.56921204492943, 54.56921204492943]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "1-2d" -- p=1, q=2, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "1-2d" -- (1,2) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=2.5803, T=2*pi*2 TU (UNSTABLE, k=4.8579). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=2.52e-07, period_rel_err=8.23e-09, jacobi_rel_err=2.70e-07, k_rel_err=1.21e-04), AND an independent Radau integrator cross-check passes (radau_djacobi=4.35e-14). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#797): despite genuinely satisfying its own (1,2) Earth-centered p-q resonance (Casoliva's own footnotes confirm both satisfies_resonance=True and exists_in_em_system=True), this orbit's own printed periselene r_pM=603591.6 km sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation over one full period) confirms 603584.6 km, agreeing to 1.15e-05 relative. It NEVER actually encounters the Moon: an Earth-resonant periodic orbit whose closest lunar approach is a small fraction of the full Earth-Moon separation, not a transport cycler. Exactly matches resonant_po's own schema v4.9 carve-out (data/README.md/catalogue.schema.json: 'a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary'), the identical reasoning em-cycler-21-3d-spatial-2026 already established for its own (2,1) Earth-Moon resonant member (122,628 km vs SOI 66,183 km). Only epoch_locked=false/n_returns=infinite is the schema-ENFORCED resonant_po invariant (tests/data/test_schema_v47_orbit_class.py) -- 'stable' in the class's own descriptive prose is NOT schema-enforced, so this row's own UNSTABLE character (Casoliva's own printed k reproduced to 1.21e-04 relative) does not block admission.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 7.60e-12. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=4.35e-14 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 603584.6 km and min Earth distance 219185.3 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"1-2d\", C_J column = 2.5803060666."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"1-2d\", T column = 12.5663706144 TU (=2*pi*2 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"1-2d\", k column = 4.8578794987 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> UNSTABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"1-2d\", r_pM column = 1.5702173819 LU (603591.6 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('never encounters the secondary') + this row's own casoliva_periselene_km/DERIVE cross-check, both well OUTSIDE the lunar SOI/Hill radius, mirroring em-cycler-21-3d-spatial-2026's identical reasoning."
+
+- id: casoliva-2-1a-em-resonant-po-2010
+  name: "Casoliva 2-1a (2,1) resonant Earth-Moon periodic orbit (CR3BP, C=0.4887, NO lunar encounter -- periselene 90,471 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- Casoliva's own printed periselene r_pM=90471.5 km (independently DERIVE-cross-checked this task at 90388.2 km via direct dense propagation over one full period) sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- this orbit's own p-q Earth-resonance is genuine (satisfies_resonance=True, exists_in_em_system=True) but it NEVER actually encounters the Moon, exactly resonant_po's own defining carve-out ('a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary', data/README.md/catalogue.schema.json v4.9, precedent em-cycler-21-3d-spatial-2026's identical reasoning for its own (2,1) resonant member at 122,628 km vs SOI 66,183 km). Honesty note: this row is STABLE (Casoliva's own printed k=1.9256; resonant_po's descriptive prose says 'stable' but only epoch_locked=false/n_returns=infinite is the enforced invariant per tests/data/test_schema_v47_orbit_class.py -- an UNSTABLE resonant_po is not schema-excluded, just undercharacterized by that prose, same as this row). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "2-1a" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=2.48e-09), AND an independent Radau integrator cross-check passes (radau_djacobi=4.97e-13). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.2831732676827 TU nondim (Casoliva 2010 Table 3 "2-1a" prints T=6.2831853072 TU exactly = 2*pi*1 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 1.92e-06 relative). 27.284554 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(2,1) resonant Earth-Moon cycler, Table 3 row '2-1a'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 0.48860008358632845   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=0.4887353098 verbatim -- reproduces it to 2.77e-04 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=4.97e-13 over one period. NOT a golden.
+      period_nd: 6.28317326768271   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=6.2831853072 TU to 1.92e-06 relative. NOT a golden.
+      stability_index: 1.9256036936988594   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=1.282670, k_perp=1.925604, k_signed=1.925604; reproduces Casoliva's own printed k=1.9255637447 to 2.07e-05 relative -- her own printed STABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [0.7362289133973212, -1.8193944946183493e-05, -8.382999828593104e-22, 0.6875343730937509, -1.5222605806692158, 3.224843503503204e-22]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-0.7362153512, u_i=-0.6876743802, v_i=1.5221620241 in HER frame/convention) at this project's own registry mu. Closure residual 2.48e-09; x0 reproduces Casoliva's own printed x_i to 1.84e-05 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 90471.47028119999   # SOURCED: Casoliva 2010 Table 3 "2-1a" r_pM column (periselene, Moon-relative, nondim r_pm=0.2353576230 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 90388.2 km, agreeing to 9.20e-04 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 72141.9728588   # SOURCED: Casoliva 2010 Table 3 "2-1a" r_pE column (perigee, Earth-relative, nondim r_pe=0.1876742270 LU). DERIVE cross-check (min Earth distance over one period): 72161.0 km, agreeing to 2.63e-04 relative.
+      casoliva_apogee_km: 409158.43792924   # SOURCED: Casoliva 2010 Table 3 "2-1a" r_aE column (apogee, Earth-relative, nondim r_ae=1.0644080071 LU).
+      energy_regime:
+      tof_days_bounds: [27.28455351655085, 27.28455351655085]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "2-1a" -- p=2, q=1, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "2-1a" -- (2,1) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=0.4887, T=2*pi*1 TU (STABLE, k=1.9256). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=1.84e-05, period_rel_err=1.92e-06, jacobi_rel_err=2.77e-04, k_rel_err=2.07e-05), AND an independent Radau integrator cross-check passes (radau_djacobi=4.97e-13). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#797): despite genuinely satisfying its own (2,1) Earth-centered p-q resonance (Casoliva's own footnotes confirm both satisfies_resonance=True and exists_in_em_system=True), this orbit's own printed periselene r_pM=90471.5 km sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation over one full period) confirms 90388.2 km, agreeing to 9.20e-04 relative. It NEVER actually encounters the Moon: an Earth-resonant periodic orbit whose closest lunar approach is a small fraction of the full Earth-Moon separation, not a transport cycler. Exactly matches resonant_po's own schema v4.9 carve-out (data/README.md/catalogue.schema.json: 'a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary'), the identical reasoning em-cycler-21-3d-spatial-2026 already established for its own (2,1) Earth-Moon resonant member (122,628 km vs SOI 66,183 km). Only epoch_locked=false/n_returns=infinite is the schema-ENFORCED resonant_po invariant (tests/data/test_schema_v47_orbit_class.py) -- 'stable' in the class's own descriptive prose is NOT schema-enforced, so this row's own STABLE character (Casoliva's own printed k reproduced to 2.07e-05 relative) does not block admission.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 2.48e-09. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=4.97e-13 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 90388.2 km and min Earth distance 72161.0 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"2-1a\", C_J column = 0.4887353098."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"2-1a\", T column = 6.2831853072 TU (=2*pi*1 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"2-1a\", k column = 1.9255637447 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> STABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"2-1a\", r_pM column = 0.2353576230 LU (90471.5 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('never encounters the secondary') + this row's own casoliva_periselene_km/DERIVE cross-check, both well OUTSIDE the lunar SOI/Hill radius, mirroring em-cycler-21-3d-spatial-2026's identical reasoning."
+
+- id: casoliva-2-1b-em-resonant-po-2010
+  name: "Casoliva 2-1b (2,1) resonant Earth-Moon periodic orbit (CR3BP, C=1.1964, NO lunar encounter -- periselene 92,590 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- Casoliva's own printed periselene r_pM=92589.9 km (independently DERIVE-cross-checked this task at 92589.7 km via direct dense propagation over one full period) sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- this orbit's own p-q Earth-resonance is genuine (satisfies_resonance=True, exists_in_em_system=True) but it NEVER actually encounters the Moon, exactly resonant_po's own defining carve-out ('a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary', data/README.md/catalogue.schema.json v4.9, precedent em-cycler-21-3d-spatial-2026's identical reasoning for its own (2,1) resonant member at 122,628 km vs SOI 66,183 km). Honesty note: this row is UNSTABLE (Casoliva's own printed k=2.0374; resonant_po's descriptive prose says 'stable' but only epoch_locked=false/n_returns=infinite is the enforced invariant per tests/data/test_schema_v47_orbit_class.py -- an UNSTABLE resonant_po is not schema-excluded, just undercharacterized by that prose, same as this row). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "2-1b" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=3.53e-11), AND an independent Radau integrator cross-check passes (radau_djacobi=2.18e-12). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.2831866501872 TU nondim (Casoliva 2010 Table 3 "2-1b" prints T=6.2831853072 TU exactly = 2*pi*1 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 2.14e-07 relative). 27.284612 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(2,1) resonant Earth-Moon cycler, Table 3 row '2-1b'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 1.1964069547969753   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.1964188553 verbatim -- reproduces it to 9.95e-06 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=2.18e-12 over one period. NOT a golden.
+      period_nd: 6.283186650187152   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=6.2831853072 TU to 2.14e-07 relative. NOT a golden.
+      stability_index: 2.03738353022292   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=1.513141, k_perp=2.037384, k_signed=2.037384; reproduces Casoliva's own printed k=2.0373978625 to 7.03e-06 relative -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [1.2287176062981842, -2.099396187831639e-06, 2.117582368135751e-22, -3.6387370430919613e-06, -1.4164817812200836, 2.2960047937239047e-21]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-1.2287157860, u_i=0.0000000000, v_i=1.4164812666 in HER frame/convention) at this project's own registry mu. Closure residual 3.53e-11; x0 reproduces Casoliva's own printed x_i to 1.48e-06 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 92589.9432716   # SOURCED: Casoliva 2010 Table 3 "2-1b" r_pM column (periselene, Moon-relative, nondim r_pm=0.2408687390 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 92589.7 km, agreeing to 2.28e-06 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 6789.74895628   # SOURCED: Casoliva 2010 Table 3 "2-1b" r_pE column (perigee, Earth-relative, nondim r_pe=0.0176632387 LU). DERIVE cross-check (min Earth distance over one period): 6883.9 km, agreeing to 1.39e-02 relative.
+      casoliva_apogee_km: 485181.07416812   # SOURCED: Casoliva 2010 Table 3 "2-1b" r_aE column (apogee, Earth-relative, nondim r_ae=1.2621776123 LU).
+      energy_regime:
+      tof_days_bounds: [27.284611629807173, 27.284611629807173]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "2-1b" -- p=2, q=1, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "2-1b" -- (2,1) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.1964, T=2*pi*1 TU (UNSTABLE, k=2.0374). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=1.48e-06, period_rel_err=2.14e-07, jacobi_rel_err=9.95e-06, k_rel_err=7.03e-06), AND an independent Radau integrator cross-check passes (radau_djacobi=2.18e-12). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#797): despite genuinely satisfying its own (2,1) Earth-centered p-q resonance (Casoliva's own footnotes confirm both satisfies_resonance=True and exists_in_em_system=True), this orbit's own printed periselene r_pM=92589.9 km sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation over one full period) confirms 92589.7 km, agreeing to 2.28e-06 relative. It NEVER actually encounters the Moon: an Earth-resonant periodic orbit whose closest lunar approach is a small fraction of the full Earth-Moon separation, not a transport cycler. Exactly matches resonant_po's own schema v4.9 carve-out (data/README.md/catalogue.schema.json: 'a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary'), the identical reasoning em-cycler-21-3d-spatial-2026 already established for its own (2,1) Earth-Moon resonant member (122,628 km vs SOI 66,183 km). Only epoch_locked=false/n_returns=infinite is the schema-ENFORCED resonant_po invariant (tests/data/test_schema_v47_orbit_class.py) -- 'stable' in the class's own descriptive prose is NOT schema-enforced, so this row's own UNSTABLE character (Casoliva's own printed k reproduced to 7.03e-06 relative) does not block admission.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 3.53e-11. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=2.18e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 92589.7 km and min Earth distance 6883.9 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"2-1b\", C_J column = 1.1964188553."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"2-1b\", T column = 6.2831853072 TU (=2*pi*1 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"2-1b\", k column = 2.0373978625 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> UNSTABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"2-1b\", r_pM column = 0.2408687390 LU (92589.9 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('never encounters the secondary') + this row's own casoliva_periselene_km/DERIVE cross-check, both well OUTSIDE the lunar SOI/Hill radius, mirroring em-cycler-21-3d-spatial-2026's identical reasoning."
+
+- id: casoliva-3-2c-em-resonant-po-2010
+  name: "Casoliva 3-2c (3,2) resonant Earth-Moon periodic orbit (CR3BP, C=0.7089, NO lunar encounter -- periselene 84,332 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- Casoliva's own printed periselene r_pM=84332.2 km (independently DERIVE-cross-checked this task at 84332.4 km via direct dense propagation over one full period) sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- this orbit's own p-q Earth-resonance is genuine (satisfies_resonance=True, exists_in_em_system=True) but it NEVER actually encounters the Moon, exactly resonant_po's own defining carve-out ('a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary', data/README.md/catalogue.schema.json v4.9, precedent em-cycler-21-3d-spatial-2026's identical reasoning for its own (2,1) resonant member at 122,628 km vs SOI 66,183 km). Honesty note: this row is STABLE (Casoliva's own printed k=1.8752; resonant_po's descriptive prose says 'stable' but only epoch_locked=false/n_returns=infinite is the enforced invariant per tests/data/test_schema_v47_orbit_class.py -- an UNSTABLE resonant_po is not schema-excluded, just undercharacterized by that prose, same as this row). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "3-2c" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=3.50e-09), AND an independent Radau integrator cross-check passes (radau_djacobi=1.20e-12). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 12.5663822625157 TU nondim (Casoliva 2010 Table 3 "3-2c" prints T=12.5663706144 TU exactly = 2*pi*2 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 9.27e-07 relative). 54.569262 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(3,2) resonant Earth-Moon cycler, Table 3 row '3-2c'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 0.7088829319074961   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=0.7089330385 verbatim -- reproduces it to 7.07e-05 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=1.20e-12 over one period. NOT a golden.
+      period_nd: 12.56638226251566   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=12.5663706144 TU to 9.27e-07 relative. NOT a golden.
+      stability_index: 1.8752821816159428   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=-1.245829, k_perp=1.875282, k_signed=1.875282; reproduces Casoliva's own printed k=1.8751541804 to 6.83e-05 relative -- her own printed STABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [1.2237480067508, 5.623774278346967e-07, -6.776263578034403e-21, 0.5006561967016632, -1.4965386531110982, 3.869887814820691e-21]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-1.2237269180, u_i=-0.5006876037, v_i=1.4965104108 in HER frame/convention) at this project's own registry mu. Closure residual 3.50e-09; x0 reproduces Casoliva's own printed x_i to 1.72e-05 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 84332.15776104   # SOURCED: Casoliva 2010 Table 3 "3-2c" r_pM column (periselene, Moon-relative, nondim r_pm=0.2193864666 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 84332.4 km, agreeing to 3.04e-06 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 15080.81785616   # SOURCED: Casoliva 2010 Table 3 "3-2c" r_pE column (perigee, Earth-relative, nondim r_pe=0.0392320964 LU). DERIVE cross-check (min Earth distance over one period): 15084.4 km, agreeing to 2.35e-04 relative.
+      casoliva_apogee_km: 598016.01950156   # SOURCED: Casoliva 2010 Table 3 "3-2c" r_aE column (apogee, Earth-relative, nondim r_ae=1.5557128499 LU).
+      energy_regime:
+      tof_days_bounds: [54.56926217753289, 54.56926217753289]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "3-2c" -- p=3, q=2, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "3-2c" -- (3,2) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=0.7089, T=2*pi*2 TU (STABLE, k=1.8752). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=1.72e-05, period_rel_err=9.27e-07, jacobi_rel_err=7.07e-05, k_rel_err=6.83e-05), AND an independent Radau integrator cross-check passes (radau_djacobi=1.20e-12). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#797): despite genuinely satisfying its own (3,2) Earth-centered p-q resonance (Casoliva's own footnotes confirm both satisfies_resonance=True and exists_in_em_system=True), this orbit's own printed periselene r_pM=84332.2 km sits OUTSIDE both the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation over one full period) confirms 84332.4 km, agreeing to 3.04e-06 relative. It NEVER actually encounters the Moon: an Earth-resonant periodic orbit whose closest lunar approach is a small fraction of the full Earth-Moon separation, not a transport cycler. Exactly matches resonant_po's own schema v4.9 carve-out (data/README.md/catalogue.schema.json: 'a stable resonant/libration periodic orbit... with NO demonstrated transport utility -- it never encounters the secondary'), the identical reasoning em-cycler-21-3d-spatial-2026 already established for its own (2,1) Earth-Moon resonant member (122,628 km vs SOI 66,183 km). Only epoch_locked=false/n_returns=infinite is the schema-ENFORCED resonant_po invariant (tests/data/test_schema_v47_orbit_class.py) -- 'stable' in the class's own descriptive prose is NOT schema-enforced, so this row's own STABLE character (Casoliva's own printed k reproduced to 6.83e-05 relative) does not block admission.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 3.50e-09. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=1.20e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 84332.4 km and min Earth distance 15084.4 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"3-2c\", C_J column = 0.7089330385."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"3-2c\", T column = 12.5663706144 TU (=2*pi*2 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"3-2c\", k column = 1.8751541804 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> STABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"3-2c\", r_pM column = 0.2193864666 LU (84332.2 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('never encounters the secondary') + this row's own casoliva_periselene_km/DERIVE cross-check, both well OUTSIDE the lunar SOI/Hill radius, mirroring em-cycler-21-3d-spatial-2026's identical reasoning."
+
+- id: casoliva-7-3b-em-cycler-2010
+  name: "Casoliva 7-3b (7,3) resonant Earth-Moon cycler (CR3BP, C=1.0688, genuine lunar encounter periselene 13,210 km)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- Casoliva's own printed periselene r_pM=13210.0 km (independently DERIVE-cross-checked this task at 13269.2 km via direct dense propagation) sits WELL INSIDE the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "7-3b" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=8.40e-11), AND an independent Radau integrator cross-check passes (radau_djacobi=1.59e-12). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 18.8496322021155 TU nondim (Casoliva 2010 Table 3 "7-3b" prints T=18.8495559215 TU exactly = 2*pi*3 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 4.05e-06 relative). 81.854149 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(7,3) resonant Earth-Moon cycler, Table 3 row '7-3b'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 1.068655371747616   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.0687623900 verbatim -- reproduces it to 1.00e-04 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=1.59e-12 over one period. NOT a golden.
+      period_nd: 18.849632202115544   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=18.8495559215 TU to 4.05e-06 relative. NOT a golden.
+      stability_index: 57.35615364858809   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=57.356154, k_perp=-2.269616, k_signed=57.356154; reproduces Casoliva's own printed k=57.3519357466 to 7.35e-05 relative -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [0.8403728541538553, -1.6016160110133428e-05, -5.295994865841499e-23, 0.5542859797462729, -1.3463244982002647, 2.2443207228440498e-23]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-0.8404096071, u_i=-0.5542434833, v_i=1.3463118042 in HER frame/convention) at this project's own registry mu. Closure residual 8.40e-11; x0 reproduces Casoliva's own printed x_i to 4.37e-05 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 13209.95862436   # SOURCED: Casoliva 2010 Table 3 "7-3b" r_pM column (periselene, Moon-relative, nondim r_pm=0.0343651369 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 13269.2 km, agreeing to 4.48e-03 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 15707.32154828   # SOURCED: Casoliva 2010 Table 3 "7-3b" r_pE column (perigee, Earth-relative, nondim r_pe=0.0408619187 LU). DERIVE cross-check (min Earth distance over one period): 15933.2 km, agreeing to 1.44e-02 relative.
+      casoliva_apogee_km: 456963.60845672   # SOURCED: Casoliva 2010 Table 3 "7-3b" r_aE column (apogee, Earth-relative, nondim r_ae=1.1887710938 LU).
+      energy_regime:
+      tof_days_bounds: [81.85414864034166, 81.85414864034166]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "7-3b" -- p=7, q=3, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "7-3b" -- (7,3) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.0688, T=2*pi*3 TU (UNSTABLE, k=57.3519). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=4.37e-05, period_rel_err=4.05e-06, jacobi_rel_err=1.00e-04, k_rel_err=7.35e-05), AND an independent Radau integrator cross-check passes (radau_djacobi=1.59e-12). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = cycler (#797): Casoliva's own printed periselene r_pM=13210.0 km sits WELL INSIDE the lunar sphere of influence (66182.9 km, patched-conic SOI=a*(m2/m1)^(2/5) at this project's own registry mu) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation of the corrected orbit over one full period) confirms 13269.2 km. A genuine lunar flyby every period, satisfying cycler's own defining 'transports between encounters' property (data/README.md schema v4.7).
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 8.40e-11. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=1.59e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 13269.2 km and min Earth distance 15933.2 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", C_J column = 1.0687623900."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", T column = 18.8495559215 TU (=2*pi*3 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", k column = 57.3519357466 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> UNSTABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", r_pM column = 0.0343651369 LU (13210.0 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own casoliva_periselene_km/DERIVE cross-check, both well inside the lunar SOI/Hill radius."
+
+- id: casoliva-7-3c-em-cycler-2010
+  name: "Casoliva 7-3c (7,3) resonant Earth-Moon cycler (CR3BP, C=1.0688, genuine lunar encounter periselene 13,210 km)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- Casoliva's own printed periselene r_pM=13210.3 km (independently DERIVE-cross-checked this task at 13169.9 km via direct dense propagation) sits WELL INSIDE the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). #797 admission + orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "7-3c" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=1.47e-09), AND an independent Radau integrator cross-check passes (radau_djacobi=2.19e-12). See notes: block + source_quotes for the full per-quantity numbers.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 18.8505691606650 TU nondim (Casoliva 2010 Table 3 "7-3c" prints T=18.8495559215 TU exactly = 2*pi*3 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 5.38e-05 relative). 81.858217 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Casoliva 2010 Class 1 (p,q)=(7,3) resonant Earth-Moon cycler, Table 3 row '7-3c'"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
+      libration_point:
+      jacobi_constant: 1.0671969118897233   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.0687623900 verbatim -- reproduces it to 1.46e-03 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=2.19e-12 over one period. NOT a golden.
+      period_nd: 18.850569160664993   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=18.8495559215 TU to 5.38e-05 relative. NOT a golden.
+      stability_index: 57.04311630270262   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=57.043116, k_perp=-2.253139, k_signed=57.043116; reproduces Casoliva's own printed k=57.3519357463 to 5.38e-03 relative -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [0.946182643867633, 4.344682426662323e-05, -4.234992885085817e-22, 0.42786762494145186, -1.5132148719027556, -1.2566408726156288e-22]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-0.9462620909, u_i=-0.4279513671, v_i=1.5130807007 in HER frame/convention) at this project's own registry mu. Closure residual 1.47e-09; x0 reproduces Casoliva's own printed x_i to 8.40e-05 relative.
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      casoliva_periselene_km: 13210.299318079999   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_pM column (periselene, Moon-relative, nondim r_pm=0.0343660232 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 13169.9 km, agreeing to 3.06e-03 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
+      casoliva_perigee_km: 15705.70272456   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_pE column (perigee, Earth-relative, nondim r_pe=0.0408577074 LU). DERIVE cross-check (min Earth distance over one period): 15798.8 km, agreeing to 5.93e-03 relative.
+      casoliva_apogee_km: 456900.79023156   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_aE column (apogee, Earth-relative, nondim r_ae=1.1886076749 LU).
+      energy_regime:
+      tof_days_bounds: [81.85821736399389, 81.85821736399389]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Casoliva 2010 Table 3 prints the IC in HER OWN frame/convention (Earth at (+mu,0), Moon at (mu-1,0)) at HER OWN displayed mu_EM=0.0121529529 -- NOT this project's rotating-frame convention or registry mu. state_nd here is DERIVED via the module's own validated 180-degree-rotation flip (cyclerfinder.search.earth_moon_resonant_families.table3_seed_state, verified two independent ways per #780's own module docstring: Jacobi-constant round-trip AND decisive direct-propagation periodicity closure) followed by a full-state Newton periodicity correction at this project's own registry mu (correct_periodic). Never a golden."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::table3_seed_state + recover_table3_row + docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md."
+    todo_ref: "#797"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "derive"
+    note: "This row's stability_index uses Casoliva's OWN full-period Eq. 6-8 k=max(|kappa_par|,|kappa_perp|) convention (see the field's own comment), NOT this project's usual Barden half-period nu convention (braik-ross-*-cycler-2026 / em-cycler-21-3d-spatial-2026 rows) -- Barden's method needs a symmetric perpendicular x-axis crossing this row's own printed IC (a general asymmetric Poincare y=0 crossing) does not have. DERIVED via cyclerfinder.search.earth_moon_resonant_families.planar_stability_index (full 6x6 monodromy trace identity on the decoupled in-plane 4x4 and out-of-plane 2x2 blocks), reproducing Casoliva's own printed k -- NOT directly comparable number-for-number to this catalogue's other Barden-nu stability_index values."
+    source_hint: "src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index + StabilityIndex; docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md (\"The Class 1 gate\" section, k reproduction table)."
+    todo_ref: "#797"
+  legs: []
+  first_published:
+    authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: |
+      Table 3 (p.1630), Class 1 (high-energy near-Keplerian p-q resonant
+      orbits), row "7-3c" -- p=7, q=3, printed to 10-11 significant
+      figures. Casoliva's own footnotes confirm this row BOTH satisfies its
+      own p-q resonance relation AND physically exists in the Earth-Moon
+      system (does not fly through Earth) -- the two admission flags this
+      project's own #780 gate module carries verbatim from the paper
+      (satisfies_resonance=True, exists_in_em_system=True for this row).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2008
+    title: "Families of Cycler Trajectories in the Earth-Moon System"
+    venue: "AIAA/AAS Astrodynamics Specialist Conference, AIAA 2008-6434"
+    doi:
+    url:
+    note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
+  priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Casoliva 2010 Table 3 Class 1 row "7-3c" -- (7,3) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.0688, T=2*pi*3 TU (UNSTABLE, k=57.3519). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live this task (#797) directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+
+    ADMISSION (#797): #780's own table3_gate_report() reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=8.40e-05, period_rel_err=5.38e-05, jacobi_rel_err=1.46e-03, k_rel_err=5.38e-03), AND an independent Radau integrator cross-check passes (radau_djacobi=2.19e-12). This is a STRICTER bar than the raw satisfies_resonance/exists_in_em_system admission filter alone -- 2 of the 9 admitted rows (1-2e, 7-3a) pass the raw filter but FAIL this stronger self-consistency gate (an honest, unresolved miss on Casoliva's own printed stability index k only -- IC/period/Jacobi still match tightly per #780's module docstring) and are explicitly EXCLUDED from writeback this task; see the #797 results note.
+
+    ORBIT_CLASS = cycler (#797): Casoliva's own printed periselene r_pM=13210.3 km sits WELL INSIDE the lunar sphere of influence (66182.9 km, patched-conic SOI=a*(m2/m1)^(2/5) at this project's own registry mu) and Hill radius (61524.1 km) -- an independent DERIVE cross-check (dense propagation of the corrected orbit over one full period) confirms 13169.9 km. A genuine lunar flyby every period, satisfying cycler's own defining 'transports between encounters' property (data/README.md schema v4.7).
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 1.47e-09. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=2.19e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 13169.9 km and min Earth distance 15798.8 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", C_J column = 1.0687623900."
+    "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", T column = 18.8495559215 TU (=2*pi*3 exactly, her own Eq. 18)."
+    "orbit_elements.cr3bp.stability_index": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", k column = 57.3519357463 (her own Eq. 6-8 full-period max(|kappa_par|,|kappa_perp|) convention; |k|<2 -> UNSTABLE)."
+    "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", r_pM column = 0.0343660232 LU (13210.3 km at this project's own registry lunit_km=384400.0 km)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own casoliva_periselene_km/DERIVE cross-check, both well inside the lunar SOI/Hill radius."
