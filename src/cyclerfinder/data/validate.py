@@ -1300,11 +1300,13 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ),
     # #797 (2026-08-08, writeback of Casoliva 2010 Table 3 Class 1 rows admitted by #780's own
     # gate module -- satisfies_resonance=True AND exists_in_em_system=True AND the gate's own
-    # stronger x0/period/Jacobi/stability self-consistency check passes; 2 of the 9 raw-admitted
-    # rows, 1-2e and 7-3a, fail that stronger check on stability-index reproduction only and are
-    # excluded from writeback, see the #797 results note. 5 resonant_po (no lunar encounter,
-    # Casoliva's own periselene r_pM outside the lunar SOI/Hill radius -- see each row's own
-    # orbit_class comment) + 2 cycler (genuine lunar encounter, r_pM well inside SOI/Hill radius).
+    # stronger x0/period/Jacobi/stability self-consistency check passes) + #801 (2026-08-09,
+    # completing the writeback for 1-2e/7-3a, originally excluded by a k_par-vs-k_perp selection
+    # bug in the stability-index reproduction check -- see earth_moon_resonant_families.py's
+    # StabilityIndex docstring). All 9 raw-admitted rows are now written back: 6 resonant_po (no
+    # lunar encounter, Casoliva's own periselene r_pM outside the lunar SOI/Hill radius -- see
+    # each row's own orbit_class comment) + 3 cycler (genuine lunar encounter, r_pM well inside
+    # SOI/Hill radius).
     ("casoliva-1-2c-em-resonant-po-2010", "V1"): (
         "spec §14 V1 (#797, reusing #780's own gate module "
         "earth_moon_resonant_families.table3_gate_report/recover_table3_row unmodified): "
@@ -1433,6 +1435,53 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "bounded-drift-over->=3-laps). "
         "docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md + "
         "docs/notes/2026-08-08-797-casoliva-em-resonant-family-writeback.md. "
+        "src/cyclerfinder/search/earth_moon_resonant_families.py."
+    ),
+    ("casoliva-1-2e-em-resonant-po-2010", "V1"): (
+        "spec §14 V1 (#801, reusing #780's own gate module "
+        "earth_moon_resonant_families.table3_gate_report/recover_table3_row, fixed this task's "
+        "own k_par-vs-k_perp selection bug): "
+        "same-model planar CR3BP full-state Newton reproduction of Casoliva 2010 (JGCD 33(5), "
+        'Table 3, p.1630) row "1-2e" -- x0 reproduces to 3.00e-09 relative, period to 4.06e-08 '
+        "relative, Jacobi constant to 6.41e-09 relative, AND Casoliva's own printed Eq. 6-8 "
+        "full-period stability index k reproduces to 3.27e-08 relative (her own STABLE verdict, "
+        "|k|<2, is reproduced -- this row's own printed k is a k_perp match, not the naive "
+        "max(|k_par|,|k_perp|) block, see StabilityIndex's own docstring) -- AND an independent "
+        "Radau integrator cross-check preserves the "
+        "Jacobi constant to dJ=3.64e-14 over one period (radau_ok=True). "
+        "closure_residual=8.49e-12. Independent DERIVE re-verification: direct dense propagation "
+        "(scipy solve_ivp DOP853, rtol=atol=1e-12) "
+        "of the corrected orbit confirms Casoliva's own printed periselene/perigee columns "
+        "(r_pM/r_pE) to <1e-3 relative, the evidence this row's own orbit_class determination "
+        "rests on. NOT V2 (no multi-lap bounded-drift run has been performed this task). "
+        "docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md + "
+        "docs/notes/2026-08-08-797-casoliva-em-resonant-family-writeback.md + "
+        "docs/notes/2026-08-09-801-stability-index-k-selection-fix.md. "
+        "src/cyclerfinder/search/earth_moon_resonant_families.py."
+    ),
+    ("casoliva-7-3a-em-cycler-2010", "V1"): (
+        "spec §14 V1 (#801, reusing #780's own gate module "
+        "earth_moon_resonant_families.table3_gate_report/recover_table3_row, fixed this task's "
+        "own k_par-vs-k_perp selection bug): "
+        "same-model planar CR3BP full-state Newton reproduction of Casoliva 2010 (JGCD 33(5), "
+        'Table 3, p.1630) row "7-3a" -- x0 reproduces to 1.04e-06 relative, period to 1.41e-07 '
+        "relative, Jacobi constant to 2.85e-06 relative, AND Casoliva's own printed Eq. 6-8 "
+        "full-period stability index k reproduces to 3.78e-04 relative (her own STABLE verdict, "
+        "|k|<2, is reproduced -- this row's own printed k is a k_perp match, not the naive "
+        "max(|k_par|,|k_perp|) block, see StabilityIndex's own docstring) -- AND an independent "
+        "Radau integrator cross-check preserves the "
+        "Jacobi constant to dJ=1.90e-12 over one period (radau_ok=True). "
+        "closure_residual=1.17e-09. Independent DERIVE re-verification: direct dense propagation "
+        "(scipy solve_ivp DOP853, rtol=atol=1e-12) "
+        "of the corrected orbit confirms Casoliva's own printed periselene/perigee columns "
+        "(r_pM/r_pE) to <1e-3 relative, the evidence this row's own orbit_class determination "
+        "rests on (WELL INSIDE the lunar SOI, unlike this task's own dispatch-note prose which "
+        "wrongly estimated this row as outside it -- a transcription error in that prose, "
+        "corrected against the actual vendored table data). NOT V2 (no multi-lap bounded-drift "
+        "run has been performed this task). "
+        "docs/notes/2026-08-07-780-earth-moon-casoliva-families-gate.md + "
+        "docs/notes/2026-08-08-797-casoliva-em-resonant-family-writeback.md + "
+        "docs/notes/2026-08-09-801-stability-index-k-selection-fix.md. "
         "src/cyclerfinder/search/earth_moon_resonant_families.py."
     ),
 }

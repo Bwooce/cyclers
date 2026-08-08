@@ -183,7 +183,9 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     lesson adapted: no eigenvector here, so the guarded hazard is a mismatched sample
     set, not a sign flip), agreeing to integrator_delta_max_km~7.11e-8 km. NOT V2/V3 (no
     multi-lap periodic structure or connection to correct for a bare torus).
-    (V1=35, V2=8, V3=2, V4=6 -- #797 (2026-08-08) added 7 new V1 rows, 28->35.)"""
+    (V1=37, V2=8, V3=2, V4=6 -- #797 (2026-08-08) added 7 new V1 rows, 28->35;
+    #801 (2026-08-09) added 2 more (1-2e/7-3a, completing #797's own deferred
+    admission after a stability-index selection bug fix), 35->37.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -343,6 +345,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "casoliva-3-2c-em-resonant-po-2010": "V1",
         "casoliva-7-3b-em-cycler-2010": "V1",
         "casoliva-7-3c-em-cycler-2010": "V1",
+        # #801 (2026-08-09): completes #797's own deferred writeback for 1-2e/7-3a,
+        # both V1 -- excluded by a k_par-vs-k_perp stability-index selection bug
+        # in #780's gate module, now fixed and reproducing cleanly.
+        "casoliva-1-2e-em-resonant-po-2010": "V1",
+        "casoliva-7-3a-em-cycler-2010": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

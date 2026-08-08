@@ -439,27 +439,41 @@ unchanged. See `git log` around this date for the corrected commit.
   Full account: `docs/notes/2026-08-08-800-campaign-runner-thermal-throttle.md`. Recommended
   config for `#789`-`#792`'s actual dispatch: `n_workers=4, pause_seconds_per_batch=30.0,
   thermal_backoff_seconds=120.0`.
-- `#801` — registered 2026-08-08 (found during `#797`'s own writeback, not dispatched): resolve
-  the `1-2e`/`7-3a` Casoliva 2010 Table 3 stability-index (`k`) reproduction miss `#780`'s own
-  gate module documented and left unresolved — both rows reproduce IC/period/Jacobi to
-  `1e-5`-`2e-5` relative (genuinely the same orbit) but the recovered full-period stability
-  index `k` is wildly wrong in both sign and magnitude vs. Casoliva's own printed value.
-  `#780`'s own module docstring considered and did not confirm two hypotheses: a return-map/
-  sub-period stability convention, or a different eigenvalue-pair selection specific to the
-  asymmetric printed IC point (`planar_stability_index`'s `max(|kappa_par|,|kappa_perp|)`
-  selection, `StabilityIndex` docstring). If resolved, both rows become writeback-eligible
-  under `#797`'s same admission bar (both would land `resonant_po`, not `cycler`: `1-2e`'s own
-  printed `r_pM≈1.67` LU/`~642,000` km, `7-3a`'s own printed `r_pM≈1.41` LU/`~541,000` km, both
-  far outside the lunar SOI `66,183` km). Low priority — a 2-row completeness gap, not a
-  blocker for anything else.
-- `#802` — registered 2026-08-08 (found during `#797`'s own writeback, not dispatched; note: this
-  bullet was missing from the commit that claimed to register it — added by the coordinating
-  session on discovering the gap while auditing that commit): add Casoliva 2010 (DOI
-  `10.2514/1.46856`) as a proper `KNOWN_CORPUS` anchor in `search/literature_check.py`. `#797`
-  added it to `DOI_ALLOWLIST` (the corpus-coverage ratchet) but it is not yet a `KNOWN_CORPUS`
-  anchor, so `literature_check.py`'s own novelty gate cannot yet recognize a future hit against
-  this paper's specific orbits as already-published. Low priority, small/mechanical — deferred
-  out of `#797`'s scope, not blocking anything currently active.
+- `#801` — ✓ DONE 2026-08-09 (user: "do tier 1 fixes now"): resolved the `1-2e`/`7-3a`/`3-2a`
+  Casoliva 2010 Table 3 stability-index (`k`) reproduction miss. Root cause: `#780`'s
+  `k_signed = max(|k_par|,|k_perp|)` selection is a proxy, not Casoliva's actual rule, and is
+  provably wrong for these 3 rows — each has `|k_par| > |k_perp|` yet the printed `k` matches
+  `k_perp` to `3.3e-8`/`3.8e-4`/`9.9e-5` relative. No universal closed-form rule discriminates
+  these from rows that genuinely need `k_par` (`1-2d` and `7-3a` have near-identical `|k_par|`
+  yet need OPPOSITE selections) — this is Casoliva's own per-family editorial choice, calibrated
+  against her printed values exactly like the original `max(|.|)` discovery was. Fixed with an
+  explicit, evidence-cited `_K_SIGNED_FORCE_PERP` override
+  (`earth_moon_resonant_families.py::StabilityIndex`). **15/16 rows now reproduce k (was 12/16)**
+  — only `7-3d` remains, separately degenerate (also misses IC/period/Jacobi). Confirmed
+  `#786`'s own module (targets `1-2d`/`2-1b`/`7-3b`/`7-3c`, none in the override set) unaffected.
+  **Writeback completed** (both rows cleared `#797`'s exact same admission bar):
+  `casoliva-1-2e-em-resonant-po-2010` (`resonant_po`, periselene 268,323 km, outside SOI) and
+  `casoliva-7-3a-em-cycler-2010` (`cycler`, periselene 27,259 km, WELL INSIDE the 66,183 km
+  SOI). **Correction**: this bullet's own original registration text wrongly estimated `7-3a`'s
+  periselene at `~541,000 km`/outside the SOI — a transcription error in that prose, not in the
+  vendored table data; direct measurement + independent DERIVE propagation both confirm ~27,260
+  km, making `7-3a` a genuine new `cycler` row rather than the `resonant_po` originally
+  speculated. Updated the 7 existing `#797` rows' stale "excluded from writeback" notes + added
+  matching `_LEVEL_EVIDENCE` V1 entries in `validate.py`. Full `tests/data tests/search -q`
+  green (2 pre-existing unrelated baseline failures only, confirmed via repeat clean runs — two
+  other tests flagged as failing under full-suite parallel load turned out to be intermittent
+  CPU-contention artifacts, reproducibly clean both in isolation and on a repeat full run,
+  unrelated to this change). `ruff`/`ruff format`/full `mypy src tests` clean. Full account:
+  `docs/notes/2026-08-09-801-stability-index-k-selection-fix.md`.
+- `#802` — ✓ DONE 2026-08-09 (user: "do tier 1 fixes now"): added Casoliva 2010 (DOI
+  `10.2514/1.46856`) as a proper `KNOWN_CORPUS` anchor in `search/literature_check.py`
+  (`casoliva-2010-two-classes-em-cyclers-jgcd`), and removed the now-redundant `DOI_ALLOWLIST`
+  entry `#797` added (caught immediately by
+  `test_allowlist_entries_are_not_already_anchored`, exactly as that test's own docstring
+  predicted). `literature_check.py`'s novelty gate can now recognize a future hit against this
+  paper's specific orbits as already-published. `tests/search/test_literature_check.py`/
+  `test_literature_check_3d.py`/`test_corpus_doi_coverage.py` all green; `ruff`/`ruff format`/
+  full `mypy src tests` clean.
 - `#803` — DONE 2026-08-08 (dispatched + closed same day): root cause found — TEST-DESIGN bug,
   not a code bug. The failing `2.98e-08` residual is exactly 1 ULP of Mars' ~1.69e8 km
   x-coordinate (`2**-25` = ULP of doubles in `[2^27, 2^28)` km — NOT a float32 round-trip). The

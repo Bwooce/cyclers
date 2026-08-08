@@ -2,10 +2,14 @@
 
 Reproduce-before-trust: sourced Table 3 (Class 1, all 16 rows) and Table 4
 (Class 2, He1 golden anchor) constants are checked verbatim against
-Casoliva et al. 2010's own printed values. The gate is HONEST: 12/16 Table
-3 rows fully pass (IC/period/Jacobi/stability-index all reproduce); 4
-(1-2e, 3-2a, 7-3a, 7-3d) are documented misses on the stability index ONLY
-(IC/period/Jacobi still match). The Class 2 golden anchor passes on its
+Casoliva et al. 2010's own printed values. The gate is HONEST: 15/16 Table
+3 rows fully pass (IC/period/Jacobi/stability-index all reproduce) --
+1-2e/3-2a/7-3a's stability-index-only misses were resolved (#801: a
+per-row ``k_par``-vs-``k_perp`` selection override, see
+``StabilityIndex``'s own docstring). The 1 remaining exception, 7-3d, ALSO
+misses IC/period/Jacobi (a separately degenerate row -- fails its own
+resonance relation AND flies through the Earth). The Class 2 golden anchor
+passes on its
 primary criterion (eigenvalue, 5.3e-8 relative) with a small, honestly
 reported secondary period-in-days discrepancy (0.135%). The two-body-seed
 lineage check is a clean, expected honest negative (4th confirmation of
@@ -170,28 +174,21 @@ def test_table3_gate_report_all_converge(system: cr3bp.CR3BPSystem) -> None:
 
 
 def test_table3_gate_report_honest_pass_count(system: cr3bp.CR3BPSystem) -> None:
-    """12 of 16 rows fully pass (IC/period/Jacobi/k all reproduce); the 4
-    documented misses are stability-index-only (module docstring)."""
+    """15 of 16 rows fully pass (IC/period/Jacobi/k all reproduce) since
+    #801's k_par-vs-k_perp selection fix; the 1 remaining miss (7-3d) is a
+    separately degenerate row, not a k-selection issue (module docstring)."""
     rows = {r.designation: r for r in emf.table3_gate_report(system)}
-    expected_fail = {"1-2e", "3-2a", "7-3a", "7-3d"}
+    expected_fail = {"7-3d"}
     passed = {d for d, r in rows.items() if r.passed}
     failed = {d for d, r in rows.items() if not r.passed}
     assert failed == expected_fail, failed
-    assert len(passed) == 12
+    assert len(passed) == 15
 
-    # Three of the four failures (1-2e, 3-2a, 7-3a) still reproduce
-    # IC/period/Jacobi tightly -- the miss there is k-only, not "this isn't
-    # the same orbit". 7-3d is the exception: it also carries BOTH
-    # footnotes (does not satisfy its own resonance relation AND flies
-    # through the Earth) and misses on IC too -- the single most
-    # degenerate row in the table (module docstring).
-    for d in expected_fail:
-        r = rows[d]
-        assert not r.k_reproduced
-        if d != "7-3d":
-            assert r.x0_rel_err < emf.TABLE3_IC_GATE_REL_TOL
-            assert r.period_rel_err < emf.TABLE3_IC_GATE_REL_TOL
-            assert r.jacobi_rel_err < emf.TABLE3_IC_GATE_REL_TOL
+    # 7-3d also carries BOTH footnotes (does not satisfy its own resonance
+    # relation AND flies through the Earth) and misses on IC too -- the
+    # single most degenerate row in the table (module docstring).
+    r = rows["7-3d"]
+    assert not r.k_reproduced
 
 
 @_XFAIL_784_7_3D_CROSS_PLATFORM
@@ -221,6 +218,22 @@ def test_stability_index_k_signed_picks_larger_magnitude() -> None:
     assert idx.k_signed == 5.0
     idx2 = emf.StabilityIndex(k_par=1.0, k_perp=-3.0, k_eig=1.0, lam=1.0 + 0j, agree=True)
     assert idx2.k_signed == -3.0
+
+
+@pytest.mark.parametrize("designation", sorted(emf._K_SIGNED_FORCE_PERP))
+def test_stability_index_k_signed_forces_perp_for_overridden_rows(designation: str) -> None:
+    """#801: 1-2e/3-2a/7-3a have |k_par| > |k_perp| yet Casoliva's printed k
+    matches k_perp -- the override must win even though the plain max(|.|)
+    rule would pick k_par."""
+    idx = emf.StabilityIndex(
+        k_par=10.0, k_perp=-3.0, k_eig=10.0, lam=1.0 + 0j, agree=True, designation=designation
+    )
+    assert idx.k_signed == -3.0
+
+
+def test_stability_index_k_signed_ignores_override_without_designation() -> None:
+    idx = emf.StabilityIndex(k_par=10.0, k_perp=-3.0, k_eig=10.0, lam=1.0 + 0j, agree=True)
+    assert idx.k_signed == 10.0
 
 
 def test_planar_stability_index_he1_matches_full_period_eigenvalue(

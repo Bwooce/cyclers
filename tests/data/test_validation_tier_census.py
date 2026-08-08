@@ -217,7 +217,10 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # cycler-2026 above. Their real evidence (validation_level=V1, same-model CR3BP
     # reproduction + independent Radau cross-check) lives on the orthogonal
     # validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
-    "unvalidated": 111,
+    # 111 -> 113 (2026-08-09, #801): +2 more Casoliva rows (1-2e/7-3a), same
+    # provenance-tag convention -- completes #797's own deferred writeback after
+    # fixing a k_par-vs-k_perp stability-index selection bug.
+    "unvalidated": 113,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

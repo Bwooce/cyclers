@@ -558,10 +558,19 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "casoliva-3-2c-em-resonant-po-2010",
         "casoliva-7-3b-em-cycler-2010",
         "casoliva-7-3c-em-cycler-2010",
+        # #801 (2026-08-09): completes #797's own deferred writeback for 1-2e/7-3a,
+        # excluded by a k_par-vs-k_perp stability-index selection bug in #780's
+        # gate module, now fixed (see earth_moon_resonant_families.py's
+        # StabilityIndex docstring). 1 orbit_class=resonant_po (1-2e, periselene
+        # outside SOI/Hill radius) + 1 orbit_class=cycler (7-3a, periselene WELL
+        # INSIDE SOI/Hill radius -- correcting #801's own registration bullet,
+        # which wrongly estimated it as outside). non-keplerian 47->49.
+        "casoliva-1-2e-em-resonant-po-2010",
+        "casoliva-7-3a-em-cycler-2010",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 47
+assert len(NON_KEPLERIAN_IDS) == 49
 
 
 # ---------------------------------------------------------------------------
@@ -660,10 +669,16 @@ def test_census_distribution() -> None:
     (5 orbit_class=resonant_po + 2 orbit_class=cycler, all cycler_class=non-keplerian
     genuine planar CR3BP periodic orbits, rotating-frame with a Jacobi-constant
     identity): non-keplerian 40->47.
+
+    #801 (2026-08-09) completed #797's own deferred writeback for 1-2e/7-3a
+    (excluded by a k_par-vs-k_perp stability-index selection bug, now fixed --
+    see earth_moon_resonant_families.py's StabilityIndex docstring): 1
+    orbit_class=resonant_po (1-2e) + 1 orbit_class=cycler (7-3a), both
+    cycler_class=non-keplerian: non-keplerian 47->49.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 47}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 49}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

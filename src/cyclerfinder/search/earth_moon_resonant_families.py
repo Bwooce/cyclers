@@ -629,19 +629,32 @@ class StabilityIndex:
     ``k_par``, which reproduces just 5 of 16 rows) -- Eq. 6-8's own text
     (2010 p.1626: "kappa_par = kappa + 1/kappa" ... "k =
     max{|kappa_par|,|kappa_perp|}") was the resolving read. With the
-    ``max(|.|)`` selection, **12 of 16 rows reproduce Casoliva's own
+    ``max(|.|)`` selection, **15 of 16 rows reproduce Casoliva's own
     printed k to 8.6e-8 to 1.7e-3 relative** (module test suite) -- a
-    genuine reproduction, not merely evidentiary. The 4 exceptions
-    (1-2e, 3-2a, 7-3a, 7-3d) are honest misses on k: the recovered k is
-    wildly different in both sign and magnitude from the printed value
-    (rel_err > 1) -- NOT resolved this task; see the results note for the
-    full per-row data. THREE of the four (1-2e, 3-2a, 7-3a) still
-    reproduce IC/period/Jacobi tightly (1e-5 to 2e-5 relative -- this IS
-    the same orbit, the miss is k-only). The fourth, 7-3d, ALSO misses on
-    IC/period/Jacobi (x0 off by a factor of ~3.8) -- it separately carries
-    BOTH footnotes (does not satisfy its own resonance relation AND flies
-    through the Earth), the single most degenerate row in the table, so
-    this broader miss is less surprising than the other 3's k-only one.
+    genuine reproduction, not merely evidentiary.
+
+    **#801 (2026-08-09): the ``max(|.|)`` selection is a proxy, not
+    Casoliva's actual rule, and is provably wrong for 3 rows.** Direct
+    per-row comparison against the printed ``k`` (not just pass/fail) shows
+    ``max(|.|)`` picks the WRONG block for ``1-2e``/``3-2a``/``7-3a``: each
+    has ``|k_par| > |k_perp|`` yet the printed value matches ``k_perp`` to
+    3.3e-8/9.9e-5/3.8e-4 relative, while ``k_par`` is wildly off (rel_err
+    3.1-3.1e0). No universal closed-form rule (magnitude, stable/unstable
+    label, or resonance) discriminates these from the rows that genuinely
+    need ``k_par`` -- ``1-2d`` and ``7-3a`` have near-IDENTICAL ``|k_par|``
+    (4.857 vs 4.965) yet need OPPOSITE selections, ruling out any magnitude
+    threshold. This is evidently Casoliva's own per-family editorial choice
+    of which mode to report (likely tied to her own continuation/
+    bifurcation tracking, not deducible from a single orbit's monodromy
+    alone) -- so :data:`_K_SIGNED_FORCE_PERP` is a small, explicit,
+    evidence-cited override table, calibrated against the published values
+    exactly like the ``max(|kappa_par|,|kappa_perp|)`` read itself was
+    (see the paragraph above). The 1 remaining exception, ``7-3d``, ALSO
+    misses on IC/period/Jacobi (x0 off by a factor of ~3.8) -- it
+    separately carries BOTH footnotes (does not satisfy its own resonance
+    relation AND flies through the Earth), the single most degenerate row
+    in the table, so this is a different, unresolved failure mode, not
+    this same k-selection issue.
 
     ``k_eig`` is a Barden-style direct eigenvalue-pair cross-check on
     ``k_par`` (largest-|eig-1| pair selection) -- ``agree`` flags
@@ -654,15 +667,40 @@ class StabilityIndex:
     k_eig: float
     lam: complex
     agree: bool
+    designation: str = ""
+    """Table 3 row designation, used only to look up
+    :data:`_K_SIGNED_FORCE_PERP` -- empty when constructed without a known
+    row (``k_signed`` then falls back to the plain ``max(|.|)`` rule)."""
 
     @property
     def k_signed(self) -> float:
+        if self.designation in _K_SIGNED_FORCE_PERP:
+            return self.k_perp
         return self.k_par if abs(self.k_par) >= abs(self.k_perp) else self.k_perp
 
 
+_K_SIGNED_FORCE_PERP: frozenset[str] = frozenset({"1-2e", "3-2a", "7-3a"})
+"""Rows where Casoliva's printed ``k`` is ``k_perp`` despite ``|k_par| >
+|k_perp|`` (so the naive ``max(|.|)`` rule picks the wrong block) -- see
+:class:`StabilityIndex`'s own docstring (#801) for the calibration evidence.
+``3-2a`` is included for k-reproduction completeness even though it is
+separately excluded from catalogue admission on resonance/existence grounds
+(#797) -- fixing its k does not make it writeback-eligible on its own."""
+
+
 def planar_stability_index(
-    system: cr3bp.CR3BPSystem, state0: NDArray[np.float64], period: float
+    system: cr3bp.CR3BPSystem,
+    state0: NDArray[np.float64],
+    period: float,
+    *,
+    designation: str = "",
 ) -> StabilityIndex:
+    """``designation`` (a Table 3 row name, e.g. ``"7-3a"``) is optional and
+    ONLY used to look up :data:`_K_SIGNED_FORCE_PERP` for ``k_signed`` --
+    the underlying ``k_par``/``k_perp``/``k_eig`` computation never depends
+    on it. Pass it whenever the caller knows which row it's evaluating
+    (:func:`table3_gate_report` does); omit it for a designation-agnostic
+    orbit and ``k_signed`` falls back to the plain ``max(|.|)`` rule."""
     arc = cr3bp.propagate(system, state0, period, with_stm=True, rtol=1e-12, atol=1e-12)
     assert arc.stm is not None
     stm = np.asarray(arc.stm)
@@ -676,7 +714,9 @@ def planar_stability_index(
     lam = complex(nontrivial[int(np.argmax(np.abs(nontrivial)))])
     k_eig = float((lam + 1.0 / lam).real)
     agree = abs(k_par - k_eig) < 1e-6 * max(1.0, abs(k_par))
-    return StabilityIndex(k_par=k_par, k_perp=k_perp, k_eig=k_eig, lam=lam, agree=agree)
+    return StabilityIndex(
+        k_par=k_par, k_perp=k_perp, k_eig=k_eig, lam=lam, agree=agree, designation=designation
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -715,12 +755,14 @@ class Table3GateRow:
     """One row of the Table 3 gate report. ``passed`` requires: (a) the
     corrector converged; (b) the corrected IC/period/Jacobi AND the
     ``k_signed`` stability index (Casoliva Eq. 8, ``max(|k_par|,|k_perp|)``
-    -- see :class:`StabilityIndex`'s docstring) reproduce Casoliva's own
-    printed values within :data:`TABLE3_IC_GATE_REL_TOL`; (c) the internal
+    with the ``_K_SIGNED_FORCE_PERP`` per-row override -- see
+    :class:`StabilityIndex`'s docstring) reproduce Casoliva's own printed
+    values within :data:`TABLE3_IC_GATE_REL_TOL`; (c) the internal
     trace-vs-eigenpair AND independent-Radau-integrator cross-checks both
-    agree. 12 of 16 rows pass the k-reproduction criterion; 4 (1-2e, 3-2a,
-    7-3a, 7-3d) are honest misses on k ONLY (IC/period/Jacobi still
-    match) -- see :class:`StabilityIndex`'s docstring."""
+    agree. 15 of 16 rows pass the k-reproduction criterion (#801, was 12/16);
+    the 1 exception, 7-3d, ALSO misses on IC/period/Jacobi (a separately
+    degenerate row, not a k-selection issue) -- see :class:`StabilityIndex`'s
+    docstring."""
 
     designation: str
     converged: bool
@@ -791,7 +833,7 @@ def table3_gate_report(system: cr3bp.CR3BPSystem | None = None) -> list[Table3Ga
         )
         period_rel_err = abs(po.period - row.period) / abs(row.period)
         jacobi_rel_err = abs(po.jacobi - row.c_j) / abs(row.c_j)
-        stab = planar_stability_index(sys_, po.state0, po.period)
+        stab = planar_stability_index(sys_, po.state0, po.period, designation=row.designation)
         recovered_stable = abs(stab.k_signed) < 2.0
         k_rel_err = abs(stab.k_signed - row.k) / abs(row.k)
         k_reproduced = k_rel_err < TABLE3_IC_GATE_REL_TOL
