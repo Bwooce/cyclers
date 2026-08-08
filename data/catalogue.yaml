@@ -544,7 +544,7 @@
       tof_days:                 # known-unknown — see data_gaps[]
       n_revs:
       branch:
-      note: "PROVISIONAL / likely mismodelled: there is no defined direct Mars->Earth leg in the S1L1 architecture. In the McConaghy/Longuski/Byrnes nomenclature S and L denote consecutive Earth-to-Earth resonant intervals, not Earth<->Mars transits; Mars is a flyby target of opportunity on the outbound arc. A single S1L1 vehicle gives one-way fast transit only — the crewed return uses a mirrored companion cycler (conjugate L1S1). This segment should be replaced by the S1/L1 Earth-to-Earth resonant intervals; see data_gaps."
+      note: "CORRECTED 2026-08-08 (task #793, adopting task #167's confirmed topology, search/s1l1_corrected.py): this leg IS real and does NOT need a mirrored companion cycler. Task #167 independently reconstructed the S1L1 architecture on DE440 (7 Mars encounters, sibling catalogue row russell-ch4-4.991gG2, its own 4.99/5.10 km/s anchors) and confirmed the per-cycle sequence is E -> g(Earth-Earth free return, NO Mars) -> E flyby -> G(Earth-Mars-Earth transit, longitude rendezvous with true Mars) -> E: the 'G' arc is a single continuous Earth-Mars-Earth round trip, of which THIS segment (out-em's return half) is the Mars->Earth leg. The PRIOR note here ('no direct Mars->Earth leg exists ... crewed return uses a mirrored conjugate L1S1 cycler') was the exact topology error #167 corrected -- it does not describe this architecture. Superseded, not deleted, for the record. This row's OWN per-leg (tof/n_revs/branch/a_au/e) for its own 5.65/3.05 km/s anchors are still not derived (russell-ch4-4.991gG2's specific real-ephemeris reconstruction numbers do NOT transfer here -- different row, different sourced V-infinity pair, per [[project_s1l1_nomenclature]]); see data_gaps."
     - id: "loop-ee"
       from: "E"
       to: "E"
@@ -552,7 +552,7 @@
       tof_days:                 # the 'L1' intermediate Earth-Earth multi-rev loop
       n_revs:
       branch:
-      note: "The single intermediate Earth-Earth loop that gives S1L1 its 'L1'; fills the remainder of the ~1559.86-d (2-synodic) period. Multi-rev arc — n_revs/branch to be set by the multi-rev Lambert solver (task #54)."
+      note: "The single intermediate Earth-Earth loop that gives S1L1 its 'L1'; fills the remainder of the ~1559.86-d (2-synodic) period. Multi-rev arc — n_revs/branch to be set by the multi-rev Lambert solver (task #54). CORRECTED 2026-08-08 (task #793 / task #167, search/s1l1_corrected.py): this is the 'g' free-return arc of the confirmed topology -- a genuine sub-Mars Earth-Earth free return (DE440 reconstruction on the sibling row russell-ch4-4.991gG2 found g-arc closest Mars approach 0.67-1.05 AU, well inside Mars's orbit), NOT a Mars-crossing leg."
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -582,9 +582,9 @@
     source_hint: "McConaghy 2006 JSR 43(2):456-465 full text"
     todo_ref: "#s1l1-provenance"
   - path: "trajectory.segments[ret-me]"
-    kind: "uncertain"
-    note: "No direct Mars->Earth leg ToF exists to extract: it is undefined by construction. The S/L labels denote Earth-to-Earth resonant intervals (S1 short, L1 long), not Earth<->Mars transits; Mars is a flyby target of opportunity on the outbound arc, and the crewed return uses a mirrored conjugate L1S1 cycler. The fix is to re-model the post-Mars arc as the S1/L1 Earth-to-Earth resonant intervals, not to back-fill a return ToF. NB the day-count breakdown of S1 vs L1 is not reconciled against a single citation and must not be invented."
-    source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420; nomenclature: McConaghy/Russell/Longuski 2005"
+    kind: "unknown"
+    note: "CORRECTED 2026-08-08 (task #793, adopting task #167's confirmed topology): the ToF/n_revs/branch/(a,e) of this leg are a genuine known-unknown to derive, NOT undefined-by-construction as previously claimed here. Task #167 (search/s1l1_corrected.py) independently confirmed on DE440 that the S1L1 architecture's per-cycle sequence is E -> g(Earth-Earth free return) -> E -> G(Earth-Mars-Earth transit) -> E, where this segment is the Mars->Earth return half of the single continuous 'G' arc -- no mirrored companion cycler is needed. The S/L naming (S1 short, L1 long) still denotes Earth-to-Earth resonant intervals per McConaghy/Russell/Longuski 2005, but that governs the loop-ee segment's naming, not this one's existence. See trajectory.segments[ret-me]'s own note for the full correction; this row's specific per-leg values (its own 5.65/3.05 km/s anchors, distinct from russell-ch4-4.991gG2's 4.99/5.10) are still not derived."
+    source_hint: "task #167 (search/s1l1_corrected.py); McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420; nomenclature: McConaghy/Russell/Longuski 2005"
     todo_ref: "#54-backfill"
   - path: "trajectory.segments[loop-ee]"
     kind: "derive"
@@ -593,8 +593,8 @@
     todo_ref: "#54"
   - path: "trajectory.segments"
     kind: "uncertain"
-    note: "Segment topology is provisional AND the current 3-segment E->M / M->E / E-loop skeleton is structurally wrong: it posits a direct Mars->Earth leg that the S1L1 nomenclature does not define. Correct model: outbound E->M (~154 d) with a ballistic Mars flyby, then the S1 (short) and L1 (long) Earth-to-Earth resonant intervals carry the vehicle back to its next Earth flyby to repeat. Re-derive the S1/L1 interval ToF / n_revs / branch from the in-house multi-rev Lambert solver constrained to the published 5.65/3.05 km/s V-infinity; do not invent interval day-counts. probe work showed the naive 3-leg fixed-154-d structure does not close ballistically, consistent with the mismodelled return leg."
-    source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420"
+    note: "CORRECTED 2026-08-08 (task #793, adopting task #167's confirmed topology, search/s1l1_corrected.py): the 3-segment skeleton (out-em / ret-me / loop-ee) is STRUCTURALLY RIGHT, not wrong as previously claimed here -- task #167 independently reconstructed exactly this architecture on DE440 (7 Mars encounters, sourced Russell App-C #83 per-leg v_inf, sibling row russell-ch4-4.991gG2) and confirmed the per-cycle sequence E -> g(Earth-Earth free return, NO Mars) -> E flyby -> G(Earth-Mars-Earth transit) -> E, i.e. out-em+ret-me together ARE the single 'G' Earth-Mars-Earth transit and loop-ee IS the 'g' free-return loop. What was wrong: this row's ret-me segment's old note wrongly claimed no Mars->Earth return leg exists at all (see its own corrected note). What remains genuinely open: this row's OWN per-leg (tof_days/n_revs/branch/a_au/e) for ret-me and loop-ee at its OWN sourced 5.65/3.05 km/s V-infinity anchors -- #167's specific reconstruction numbers belong to russell-ch4-4.991gG2 (4.99/5.10 km/s, a different sourced row per [[project_s1l1_nomenclature]]) and do not transfer here. Re-derive from the in-house multi-rev Lambert solver (task #54) constrained to 5.65/3.05 km/s; do not invent interval day-counts."
+    source_hint: "task #167 (search/s1l1_corrected.py, docs/notes/2026-06-08-s1l1-corrected-closure-results.md); McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420"
     todo_ref: "#54"
   first_published:
     authors: ["McConaghy, T. T.", "Longuski, J. M.", "Byrnes, D. V."]
@@ -645,6 +645,28 @@
     near the cycler's aphelion. This matches the low V_inf at Mars (3.05 km/s):
     the cycler "catches up" to Mars near its slowest point in its heliocentric
     motion.
+
+    TOPOLOGY CORRECTION (task #793, 2026-08-08, adopting task #167): the
+    trajectory.segments skeleton (out-em / ret-me / loop-ee) was previously
+    documented as structurally wrong -- specifically, ret-me's note claimed no
+    direct Mars->Earth leg exists and that a crewed return required a mirrored
+    conjugate L1S1 cycler. Task #167 (src/cyclerfinder/search/s1l1_corrected.py,
+    docs/notes/2026-06-08-s1l1-corrected-closure-results.md) independently
+    reconstructed this exact S1L1 architecture on DE440 real ephemeris and
+    confirmed the per-cycle sequence E -> g(Earth-Earth free return, sub-Mars)
+    -> E flyby -> G(Earth-Mars-Earth transit) -> E: ret-me IS real, the return
+    half of a single continuous Earth-Mars-Earth ('G') arc, with no mirrored
+    companion needed. This row's 3-segment skeleton was already the right
+    SHAPE; only the ret-me note's claim was wrong (now corrected in place).
+    IMPORTANT (see [[project_s1l1_nomenclature]]): #167's reconstruction was
+    performed against the SIBLING catalogue row russell-ch4-4.991gG2, which
+    carries its own sourced V_inf anchors (4.99 km/s Earth / 5.10 km/s Mars) --
+    NOT this row's 5.65/3.05 km/s pair. The two rows are both "S1L1-class"
+    two-synodic cyclers with one intermediate Earth loop, but #167's specific
+    per-leg numbers (transit times, epochs, DE440 miss distances) do not
+    transfer to this row; they remain separate, independently-sourced entries.
+    This row's own per-leg (a,e)/n_revs/branch at its own 5.65/3.05 anchors
+    are still an open data_gaps item (task #54).
   source_quotes:
     a_au: "Rogers et al. 2012, Table 1: 'S1L1 ... Semi-Major Axis, AU: 1.30'."
     e: "Rogers et al. 2012, Table 1: 'S1L1 ... Eccentricity: 0.257'."
@@ -1298,11 +1320,11 @@
       to: "E"
       traj_type: "keplerian-arc"
       tof_days: 1083            # SOURCED Russell 2004 Table 3.6: Earth t=1265 d -> Earth t=2348 d => 2348 - 1265
-      n_revs:                   # rev count not tabulated; multi-rev (1083 d ~ 3 yr) — to be derived
-      branch:
-      a_au:
-      e:
-      note: "Intermediate Earth-Earth loop arc #2 (sequence E-E-M-M), the second of the 2 loops implied by 3 Earth flybys. SOURCED ToF from Russell 2004 Table 3.6 cumulative epochs: Earth t=1265 d -> Earth t=2348 d = 1083 d. The following Earth flyby (flyby_mechanics[2]=24 deg) closes the cycle by launching the next out-em leg (E t=2348 -> M t=2529, the partial second cycle) and is implicit (not stored). Per-segment (a,e), rev count, branch not tabulated (tracked in data_gaps)."
+      n_revs: 1                 # DERIVED (kind: derive) via task #54 multi-rev Lambert solver -- see note
+      branch: "high"
+      a_au: 1.3093              # DERIVED (kind: derive) via task #54 multi-rev Lambert solver -- see note
+      e: 0.2371
+      note: "Intermediate Earth-Earth loop arc #2 (sequence E-E-M-M), the second of the 2 loops implied by 3 Earth flybys. SOURCED ToF from Russell 2004 Table 3.6 cumulative epochs: Earth t=1265 d -> Earth t=2348 d = 1083 d. The following Earth flyby (flyby_mechanics[2]=24 deg) closes the cycle by launching the next out-em leg (E t=2348 -> M t=2529, the partial second cycle) and is implicit (not stored). n_revs/branch/a_au/e DERIVED (kind: derive, task #54, 2026-08-08): circular-coplanar Earth positions 1083 d apart (transfer angle 347.4 deg) fed to cyclerfinder.core.lambert.lambert(..., max_revs=6); the n_revs=1/branch=high solution's emerged V-infinity (3.3969 km/s departure, 3.3969 km/s arrival) matches the published 3.4 km/s target to 0.09%, decisively better than every other branch (next-best score 0.017 km/s worse-conditioned). Independently cross-checked against lamberthub's izzo2015/gooding1990 (max velocity-component disagreement 2.3e-10 m/s). Perihelion 0.999 AU (touches Earth almost exactly at perihelion, as physically expected for an Earth-departure arc)."
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -1341,7 +1363,7 @@
     todo_ref: "#54-backfill"
   - path: "trajectory.segments[*].n_revs"
     kind: "derive"
-    note: "Rev counts / branch for the multi-rev ret-me (902 d) and loop arcs (182 d, 1083 d) are derivable once the multi-rev Lambert solver closes them to the published 3.4/4.6 km/s V-infinity; Russell tabulates encounter epochs (hence ToF) but not the rev count. Topology is RESOLVED for this cycler: 3 Earth flybys imply 2 intermediate Earth-Earth loops (loop-ee-1, loop-ee-2), both materialised with sourced ToFs from Table 3.6."
+    note: "Rev counts / branch for the multi-rev ret-me (902 d) and loop-ee-1 (182 d) arcs are still derivable once the multi-rev Lambert solver closes them to the published 3.4/4.6 km/s V-infinity; Russell tabulates encounter epochs (hence ToF) but not the rev count. Topology is RESOLVED for this cycler: 3 Earth flybys imply 2 intermediate Earth-Earth loops (loop-ee-1, loop-ee-2), both materialised with sourced ToFs from Table 3.6. [2026-08-08: loop-ee-2 (1083 d) now DERIVED (n_revs=1/branch=high/a_au=1.3093/e=0.2371) via task #54's multi-rev Lambert solver -- see the segment's own note. ret-me (Mars->Earth) is NOT closable by this same simple approach: unlike loop-ee (same body at both ends, so the transfer angle is pinned by ToF alone via Earth's own circular motion), ret-me's transfer angle depends on the UNKNOWN relative Mars-Earth phase at that point in the cycle, which this per-arc-isolated method cannot supply. loop-ee-1 (182 d) was tried and is near the classic 180-degree Lambert transfer-angle singularity (179.4 deg here, since 182 d is close to half an Earth year) -- every branch found scored >=3.4 km/s off target (the trivial degenerate a=1AU/e=0/V-inf=0 solution), no acceptable match, left open rather than forced."
     source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.6 cumulative epochs"
     todo_ref: "#54"
   first_published:
@@ -1367,6 +1389,10 @@
 
     trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.4 row 3.1.2.+1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 4.619 vs. tabulated 4.600 km/s, 0.4% error)."
     trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.4 row 3.1.2.+1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 4.619 vs. tabulated 4.600 km/s, 0.4% error)."
+    trajectory.segments[loop-ee-2].n_revs: "DERIVED (kind: derive) via cyclerfinder.core.lambert.lambert(max_revs=6) on the circular-coplanar Earth-Earth loop (1083 d SOURCED ToF, Russell 2004 Table 3.6); the n_revs=1/branch=high solution's emerged V-infinity (3.397 km/s both ends) matches the published 3.4 km/s target to 0.09%. Independently cross-checked against lamberthub izzo2015/gooding1990 (task #793, 2026-08-08)."
+    trajectory.segments[loop-ee-2].branch: "DERIVED (kind: derive), see trajectory.segments[loop-ee-2].n_revs."
+    trajectory.segments[loop-ee-2].a_au: "DERIVED (kind: derive), see trajectory.segments[loop-ee-2].n_revs."
+    trajectory.segments[loop-ee-2].e: "DERIVED (kind: derive), see trajectory.segments[loop-ee-2].n_revs."
 - id: russell-ocampo-2.5.1+0
   name: "Russell-Ocampo cycler 2.5.1.+0 (short-transit 2-synodic)"
   source: literature

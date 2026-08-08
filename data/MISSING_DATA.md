@@ -15,7 +15,41 @@ fixed by rename not duplication, per `#616`). Catalogue is now 361 entries, **83
 across 291 entries (independently recomputed 2026-07-19 directly from `data/catalogue.yaml`), with
 only **85** `a_au`-path gaps remaining — down from the 216-row gap this report's Priority 1
 checklist below still describes as open. The Priority 1 checklist (§Priority 1, further down) is
-now DONE, not pending; see `#616`'s own `OUTSTANDING.md` entry for the full backfill result.*
+now DONE, not pending; see `#616`'s own `OUTSTANDING.md` entry for the full backfill result.
+**THIRD STALENESS CORRECTION 2026-08-08 (`#793`)**: catalogue has grown to **383 entries, 881
+data_gaps across 313 entries** (independently recomputed from `data/catalogue.yaml`; the growth
+since `#616` is unrelated new rows from other tasks, not a regression of this report's fixes — the
+Russell backfill's own 161-row result above is still fully live, re-verified: `out-em.a_au`
+populated on 162/200 `russell-ocampo-*` rows). Of the 881, **415 carry `todo_ref: "#54"`**
+(`kind: derive`/`uncertain`, the multi-rev-Lambert-blocked class §5 below describes). **The
+multi-rev Lambert solver is NOT pending** — `core/lambert.py`'s `lambert(..., max_revs=N)` has
+been implemented and tested since M4 (`tests/core/test_lambert_multirev.py`); §5's framing below,
+and this file's own earlier "resolved by the Lambert solver" language, were accurate about the
+CAPABILITY but the module's own docstring/error text still called multi-rev "M4's future
+responsibility" until `#793` fixed it (`src/cyclerfinder/core/lambert.py`, commit `efbe7239`).
+**Applying that capability to the #54 backfill turned out to be much narrower than §5 implies**:
+`#793` traced every `loop-ee`/`loop-ee-N` segment with a sourced `tof_days` but no `a_au` (9 rows,
+14 arcs) and Lambert-solved each one (circular-coplanar Earth positions, V-infinity-magnitude
+branch selection, independently cross-checked against `lamberthub`). Only **1 of 14** closed
+cleanly (`russell-ocampo-3.1.2+1`'s `loop-ee-2`, 1083 d, n_revs=1/branch=high, V-infinity residual
+0.09%): the rest sit at or near the classic 0-degree/180-degree Lambert transfer-angle degeneracy
+BY DESIGN — these `loop-ee` arcs are resonant "V-infinity-leveraging" loops deliberately close to
+half/full Earth-year multiples, which is exactly where a bare position+time Lambert solve becomes
+ill-conditioned or outright singular. A parallel `free_return_arcs[]` Russell-descriptor path
+exists (14 rows carry `g`/`G`/`f`/`h` arc-type descriptors, `search/descriptor.py`) that WOULD
+resolve the resonant (`f`/`h`) cases via closed-form vis-viva rather than Lambert, but mapping
+Russell's multi-candidate descriptor list onto this catalogue's specific materialised
+`loop-ee-N` segments is an unvalidated approximation even in this project's own code
+(`search/cycler_assembly.py::descriptor_to_phsi`'s docstring: "There is NO published crosswalk...
+this is a best-effort STRUCTURAL map") — closing it responsibly needs primary-source
+verification per row, out of `#793`'s scope; registered as `#794`. `ret-me` (Mars-Earth) arcs are
+additionally blocked by the unknown relative Mars-Earth orbital phase, a deeper gap the multi-rev
+solver alone cannot supply. `#793` also adopted `#167`'s confirmed S1L1 topology into
+`s1l1-2syn-em-cpom` (that row's `ret-me`/`loop-ee` notes wrongly claimed no Mars-Earth return leg
+exists; corrected in place, no numeric writeback since `#167`'s reconstruction used a sibling row's
+different sourced V-infinity anchors) and re-confirmed the `#596`/`#616` Russell backfill needs no
+re-execution (already live, see above). See `docs/notes/2026-08-08-793-catalogue-gap-execution-
+sprint.md` for the full account.*
 
 ---
 
@@ -392,12 +426,24 @@ expanded into `hollister-menning-1970-ev-orbit-01..15` with V∞ from Table 3
 
 ## 5. Notes on Sources NOT Requiring Human Sourcing
 
-The following gap types are **computable by the project's multi-rev Lambert solver** and should NOT be sourced:
+The following gap types are **computable by the project's multi-rev Lambert solver** (`core/lambert.py`, `max_revs` parameter — implemented and tested, NOT pending) and should NOT be sourced:
 
-- `trajectory.segments[].tof_days` where `kind: derive` — these 201 entries are calculated from the `a_au` and encounter geometry once `a_au` is backfilled from Russell.
+- `trajectory.segments[].tof_days` where `kind: derive` — these entries are calculated from the `a_au` and encounter geometry once `a_au` is backfilled from Russell.
 - `trajectory.segments[].n_revs` where `kind: derive` — same, resolved by the Lambert solver.
 
-These are internal engineering computations; treating them as "sourcing targets" would violate the golden-test discipline (circular: a value cannot be cited to itself). Once Priority 1 provides the sourced `a_au`, run the Lambert solver to fill the derive gaps programmatically.
+These are internal engineering computations; treating them as "sourcing targets" would violate the golden-test discipline (circular: a value cannot be cited to itself).
+
+**CAVEAT (`#793`, 2026-08-08, see the top-of-file THIRD STALENESS CORRECTION for the full account):**
+"computable" undersells how ill-conditioned the actual computation is for most of these entries.
+The `loop-ee`/`loop-ee-N` intermediate Earth-Earth arcs this section describes are, by design,
+resonant "V-infinity-leveraging" loops with ToFs near half/full Earth-year multiples — precisely
+the regime where a circular-coplanar position+time Lambert solve sits at or near the classic
+0-degree/180-degree transfer-angle singularity. Of 14 such arcs actually attempted, only 1 closed
+with a decisive residual; the rest need either a closed-form resonant (vis-viva) treatment keyed
+off Russell's own `g`/`G`/`f`/`h` arc-type descriptors (`free_return_arcs[]`, `search/descriptor.py`
+— populated on only 14 rows, and the descriptor-to-materialised-segment mapping is itself an
+unvalidated approximation per this project's own code) or more primary-source verification per row.
+Registered as follow-on task `#794`. Do not assume "run the Lambert solver" alone closes these.
 
 ---
 

@@ -33,26 +33,37 @@ its own DONE entry, and a leftover already-executed `#144` TODO. One flagged ite
 cited as evidence) was checked and found to be a real commit in a different repository — left
 unchanged. See `git log` around this date for the corrected commit.
 
+- `#793` — ✓ DONE 2026-08-08 (partial, honest-scope-boundary — registered 2026-08-08, user: "let's
+  pick the small possible things to close out first"): catalogue data-gap execution sprint against
+  the ~415 `todo_ref: "#54"` `data_gaps` entries an earlier Fable survey flagged as
+  multi-rev-Lambert-blocked, plus 3 companion items. **Capability claim verified true**:
+  `core/lambert.py`'s `max_revs` param genuinely returns multi-rev branches (tested,
+  `tests/core/test_lambert_multirev.py`); its own docstring/error-message calling multi-rev "M4's
+  future responsibility" was stale and fixed (commit `efbe7239`). **Applying it to the catalogue
+  was much narrower than hoped**: of 14 candidate `loop-ee`/`loop-ee-N` arcs with everything a
+  per-arc Lambert closure self-contained-ly needs, only **1 closed** cleanly
+  (`russell-ocampo-3.1.2+1`'s `loop-ee-2`, V-infinity residual 0.09%, independently cross-checked
+  against `lamberthub`) — the other 13 sit at or near the classic 0/180-degree Lambert
+  transfer-angle degeneracy BY DESIGN (these are resonant "V-infinity-leveraging" loops with ToFs
+  deliberately near half/full Earth-year multiples). A closed-form resonant-descriptor path exists
+  (`search/descriptor.py`, 14 rows carry `free_return_arcs[]`) but the descriptor-to-segment
+  mapping is an acknowledged unvalidated approximation even in this project's own
+  `search/cycler_assembly.py::descriptor_to_phsi` — not forced through; registered as follow-on
+  `#794`. Companion items: (b) S1L1 topology — adopted `#167`'s confirmed topology into
+  `s1l1-2syn-em-cpom` (structural/provenance correction only — `ret-me`'s note wrongly claimed no
+  Mars-Earth return leg exists; NOT a numeric writeback, since `#167`'s actual reconstruction used
+  sibling row `russell-ch4-4.991gG2`'s different sourced V-infinity anchors, per
+  `[[project_s1l1_nomenclature]]`). (a) Russell backfill — already fully executed by `#596`/`#616`
+  (re-verified live: 162/200 `russell-ocampo-*` rows have `out-em.a_au` populated); nothing to
+  execute. (d) `data/MISSING_DATA.md` — refreshed (383 entries/881 gaps, corrected multi-rev
+  Lambert framing). **Item (c) (persist the `stability_index` Floquet scalar on 29 corridor
+  rows) was listed in this bullet's original registration but was NOT included in this
+  dispatch's actual instructions and was NOT attempted — still open, needs its own dispatch.**
+  Full account: `docs/notes/2026-08-08-793-catalogue-gap-execution-sprint.md`. Verification:
+  `uv run pytest tests/ -q` + `ruff` + `mypy` all clean (see the note for specifics); one
+  `data/catalogue.yaml`-touching commit + one code-only commit, both local, not pushed.
+
 ### Ready to dispatch — no blocker
-- `#793` — registered 2026-08-08 (user: "let's pick the small possible things to close out
-  first"), **PRIORITY — dispatchable now, no dependencies**: catalogue data-gap execution sprint.
-  An earlier Fable discovery-menu survey this session found ~415 of `data/catalogue.yaml`'s 881
-  `data_gaps` entries (the `derive`/`uncertain` rows under `todo_ref: "#54"`) are internally
-  fillable TODAY with a multi-rev Lambert capability (`core/lambert.py`'s own `max_revs` param)
-  that already exists and is tested (`tests/core/test_lambert_multirev.py`) — the gap notes and
-  `core/lambert.py`'s own line-7 docstring still falsely describe it as unbuilt/M4's future
-  responsibility. Near-zero risk, mechanical, census-shaped (not discovery) — exactly this
-  project's own realistic deliverable per `project_capability_frontier_complete`. Companion
-  small wins bundled in: (a) execute the validated-but-never-run Russell backfill method
-  (`docs/notes/2026-07-15-596-russell-backfill-method-validated.md`); (b) adopt the
-  already-coded corrected S1L1 topology (`search/s1l1_corrected.py`, `#167`) into the still-
-  "structurally wrong" `s1l1-2syn-em-cpom` row; (c) persist the already-computed Floquet scalar
-  on the 29 `stability_index`-gap corridor rows (`ml/seed_generation.py::stability_index` already
-  provides it); (d) refresh the stale `data/MISSING_DATA.md` (reports 788 gaps vs the live 881).
-  **Mandatory**: any `catalogue.yaml` change means the FULL `tests/` tree must run before
-  committing (`uv run pytest tests/ -q`), not the narrower `tests/data tests/search` habit —
-  per `[[feedback_verify_scope_must_include_tests_scripts]]`, this exact class of change has
-  broken CI 3+ times before from top-level census-ratchet files a narrower run misses.
 - `#788` — registered 2026-08-08 (from tonight's combinatorial-search scoping survey),
   **PRIORITY — small, foundational, unblocks `#789`-`#792` below**: build a generic checkpointed
   cell-grid campaign runner. This project has a checkpointed-restart pattern
@@ -291,6 +302,25 @@ unchanged. See `git log` around this date for the corrected commit.
   the 4.4.1 finding this task needed), cross-checked against Casoliva's own Table 3/`#780` and
   this task's own `7-3b`/`7-3c` connection work for any direct numeric overlap, plus a citation-
   mining pass per the standing corpus-document-policy discipline.
+- `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
+  dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
+  rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
+  `#793` found that full-rev (`f`/`F`) resonant arcs are closed-form solvable without Lambert at
+  all (resonance pins `a` via Kepler's third law regardless of `e`; `e` follows from a 1-D
+  vis-viva solve against the target V-infinity), sidestepping the 0/180-degree Lambert
+  transfer-angle degeneracy that blocked a direct per-arc Lambert closure for these same rows.
+  The blocker: mapping Russell's `free_return_arcs[]` descriptor list (candidate arc
+  realizations, `g`/`G`/`f`/`F`/`h`/`H`) onto this catalogue's specific materialized
+  `loop-ee-N` segments is NOT a solved problem even in this project's own code —
+  `search/cycler_assembly.py::descriptor_to_phsi`'s own docstring: "There is NO published
+  crosswalk between McConaghy's per-arc descriptor... and Russell's p.h.s.i structure, so this
+  is a best-effort STRUCTURAL map" (several fields flagged `**APPROXIMATION**`). Needs
+  primary-source verification per row (which specific arc option Russell's row actually uses)
+  before any segment-level writeback. Separately/optionally: the `ret-me` (Mars-Earth) arcs
+  across all `#54`-tagged rows need a genuinely different, currently-unbuilt treatment for the
+  unknown relative Mars-Earth orbital phase at each cycle point (a per-arc-isolated Lambert
+  approach, as used for `loop-ee`, cannot supply this). See
+  `docs/notes/2026-08-08-793-catalogue-gap-execution-sprint.md` for the full diagnosis.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
