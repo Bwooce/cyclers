@@ -417,6 +417,23 @@ unchanged. See `git log` around this date for the corrected commit.
   digit-grade source data and does not need continuation). A genuine, non-trivial computation
   task, not a transcription one — same class of effort as `#786`'s connection-search or `#780`'s
   gate-module build.
+- `#800` — ✓ DONE 2026-08-08 (user: "we need to somehow detune the multiweek campaigns to not run
+  this laptop too hot" — this Mac now also runs the self-hosted CI runner set up the same day):
+  added a thermal/duty-cycle throttle to `search/campaign_runner.py` (`#788`) ahead of dispatching
+  any of `#789`-`#792`. Two new opt-in `CampaignRunnerConfig` knobs — `pause_seconds_per_batch`
+  (sensor-independent breather between checkpoint batches, skipped after the final batch) and
+  `thermal_backoff_seconds` (extra sleep when a new `_os_thermal_throttled()` helper finds macOS
+  itself already limiting CPU speed, via `pmset -g therm`'s `CPU_Speed_Limit`/
+  `CPU_Scheduler_Limit` fields; fails open on any error, so it's a safe no-op on non-macOS). Apple
+  Silicon exposes no unprivileged live temperature sensor, so this is reactive (fires once macOS
+  is already throttling), not proactive — the proactive half is capping `n_workers` well below 8
+  at dispatch time (recommended: 4) rather than the library default's `-1`/all-cores. 8 new tests
+  (18/18 total green); found and fixed a real test-isolation bug along the way (monkeypatching
+  process-wide `time.sleep` also intercepts loky's own internal polling sleep, making the executor
+  spin — fixed with a `_sleep()` indirection). `ruff`/`ruff format`/full `mypy src tests` all clean.
+  Full account: `docs/notes/2026-08-08-800-campaign-runner-thermal-throttle.md`. Recommended
+  config for `#789`-`#792`'s actual dispatch: `n_workers=4, pause_seconds_per_batch=30.0,
+  thermal_backoff_seconds=120.0`.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).

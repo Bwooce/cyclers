@@ -34,6 +34,7 @@ import pytest
 
 from cyclerfinder.data.empty_regions import load_empty_regions_list, validate_empty_region
 from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.search import campaign_runner
 from cyclerfinder.search.campaign_runner import (
     CampaignRunnerConfig,
     CampaignRunnerRouting,
@@ -482,3 +483,88 @@ def test_resume_after_real_sigkill(tmp_path: Path) -> None:
     resumed_indices = {rec["index"] for rec in seen_after_first_batch_of_resume}
     redone = partial_indices_before_kill & resumed_indices
     assert not redone, f"resume re-ran already-durable indices: {redone}"
+
+
+# ---------------------------------------------------------------------------
+# Thermal/duty-cycle throttle (#799: multi-week campaigns share this Mac with
+# a self-hosted CI runner and interactive use -- keep sustained heat down).
+# ---------------------------------------------------------------------------
+
+
+def test_pause_seconds_per_batch_sleeps_between_but_not_after_the_last_batch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    cells = [{"n": i} for i in range(15)]  # 3 batches of 5
+    routing = CampaignRunnerRouting(results_path=tmp_path / "results.jsonl")
+    cfg = CampaignRunnerConfig(n_workers=2, checkpoint_batch_size=5, pause_seconds_per_batch=12.5)
+
+    sleep_calls: list[float] = []
+    monkeypatch.setattr(campaign_runner, "_sleep", lambda s: sleep_calls.append(s))
+
+    stats = run_grid_campaign(cells, _worker_always_miss, routing=routing, config=cfg)
+
+    assert stats.evaluated_total == 15
+    # 3 batches -> 2 gaps between them, none after the final batch.
+    assert sleep_calls == [12.5, 12.5]
+
+
+def test_thermal_backoff_sleeps_extra_when_os_reports_throttling(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    cells = [{"n": i} for i in range(10)]  # 2 batches of 5
+    routing = CampaignRunnerRouting(results_path=tmp_path / "results.jsonl")
+    cfg = CampaignRunnerConfig(n_workers=2, checkpoint_batch_size=5, thermal_backoff_seconds=99.0)
+
+    sleep_calls: list[float] = []
+    monkeypatch.setattr(campaign_runner, "_sleep", lambda s: sleep_calls.append(s))
+    monkeypatch.setattr(campaign_runner, "_os_thermal_throttled", lambda: True)
+
+    run_grid_campaign(cells, _worker_always_miss, routing=routing, config=cfg)
+
+    assert sleep_calls == [99.0]
+
+
+def test_no_thermal_backoff_when_os_reports_no_throttling(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    cells = [{"n": i} for i in range(10)]
+    routing = CampaignRunnerRouting(results_path=tmp_path / "results.jsonl")
+    cfg = CampaignRunnerConfig(n_workers=2, checkpoint_batch_size=5, thermal_backoff_seconds=99.0)
+
+    sleep_calls: list[float] = []
+    monkeypatch.setattr(campaign_runner, "_sleep", lambda s: sleep_calls.append(s))
+    monkeypatch.setattr(campaign_runner, "_os_thermal_throttled", lambda: False)
+
+    run_grid_campaign(cells, _worker_always_miss, routing=routing, config=cfg)
+
+    assert sleep_calls == []
+
+
+@pytest.mark.parametrize(
+    ("pmset_output", "expected"),
+    [
+        ("Note: No thermal warning level has been recorded\n", False),
+        ("CPU_Speed_Limit\t\t= 100\nCPU_Scheduler_Limit\t= 100\n", False),
+        ("CPU_Speed_Limit\t\t= 50\nCPU_Scheduler_Limit\t= 100\n", True),
+        ("CPU_Speed_Limit\t\t= 100\nCPU_Scheduler_Limit\t= 40\n", True),
+        ("garbage, not pmset output at all", False),
+    ],
+)
+def test_os_thermal_throttled_parses_pmset_therm_output(
+    pmset_output: str, expected: bool, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class _FakeCompleted:
+        stdout = pmset_output
+
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: _FakeCompleted())
+    assert campaign_runner._os_thermal_throttled() is expected
+
+
+def test_os_thermal_throttled_fails_open_when_pmset_is_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _raise(*a: object, **k: object) -> None:
+        raise FileNotFoundError("no pmset on this platform")
+
+    monkeypatch.setattr(subprocess, "run", _raise)
+    assert campaign_runner._os_thermal_throttled() is False

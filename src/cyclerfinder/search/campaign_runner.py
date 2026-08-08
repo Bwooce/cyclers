@@ -112,6 +112,8 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
+import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -175,6 +177,19 @@ class CampaignRunnerConfig:
         Cap the number of batches run by THIS invocation (``None`` = exhaust
         the pending cells). Lets a caller deliberately run in bounded
         segments even when a single invocation could finish the whole grid.
+    pause_seconds_per_batch:
+        Sleep this long between batches (0.0 = no pause, the default). A
+        sensor-independent duty-cycle knob: pinning ``n_workers`` below
+        ``os.cpu_count()`` already leaves headroom, but a long unattended
+        campaign on shared hardware (e.g. a laptop also running other work)
+        benefits from a deliberate breather too. Skipped after the final
+        batch (no point delaying an already-finished run).
+    thermal_backoff_seconds:
+        If > 0, poll :func:`_os_thermal_throttled` between batches and sleep
+        this long (in addition to ``pause_seconds_per_batch``) whenever
+        macOS itself reports it is already thermally limiting CPU speed.
+        0.0 (default) disables the check entirely — safe on Linux/other
+        platforms where ``pmset`` doesn't exist, since the check is opt-in.
     """
 
     n_workers: int = -1
@@ -182,6 +197,8 @@ class CampaignRunnerConfig:
     checkpoint_batch_size: int = 25
     timeout_seconds_per_cell: float | None = None
     max_batches: int | None = None
+    pause_seconds_per_batch: float = 0.0
+    thermal_backoff_seconds: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -327,6 +344,45 @@ def _append_cell_result(path: Path, index: int, outcome: CellOutcome) -> None:
 # ---------------------------------------------------------------------------
 
 
+def _sleep(seconds: float) -> None:
+    """Indirection so tests can stub the campaign's own pauses without
+    patching the process-wide ``time.sleep`` (which loky's internal polling
+    also calls -- patching that globally makes the executor spin)."""
+    time.sleep(seconds)
+
+
+def _os_thermal_throttled() -> bool:
+    """Best-effort check: is macOS already limiting CPU speed for heat?
+
+    Parses ``pmset -g therm``'s ``CPU_Speed_Limit``/``CPU_Scheduler_Limit``
+    fields (percentages; <100 means the OS itself is actively throttling).
+    Fails open (returns ``False``) on any error — missing binary, non-macOS,
+    unparseable output, or no warning ever recorded (the common idle case,
+    printed as prose rather than a field) — so this can never hang a
+    campaign or misbehave on a platform without ``pmset``.
+    """
+    try:
+        out = subprocess.run(
+            ["pmset", "-g", "therm"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        ).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+    for line in out.splitlines():
+        if "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        if key.strip() in ("CPU_Speed_Limit", "CPU_Scheduler_Limit"):
+            try:
+                if float(value.strip()) < 100.0:
+                    return True
+            except ValueError:
+                continue
+    return False
+
+
 def run_grid_campaign(
     cells: Sequence[Any],
     worker: Callable[[Any], CellOutcome],
@@ -421,6 +477,14 @@ def run_grid_campaign(
                 )
             _append_cell_result(routing.results_path, idx, outcome)
         batches_run += 1
+
+        more_pending = start + cfg.checkpoint_batch_size < len(pending)
+        more_allowed = cfg.max_batches is None or batches_run < cfg.max_batches
+        if more_pending and more_allowed:
+            if cfg.pause_seconds_per_batch > 0:
+                _sleep(cfg.pause_seconds_per_batch)
+            if cfg.thermal_backoff_seconds > 0 and _os_thermal_throttled():
+                _sleep(cfg.thermal_backoff_seconds)
 
     final = _load_results(routing.results_path)
     hits = sum(1 for r in final.values() if r["status"] == "hit")
