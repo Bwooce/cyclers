@@ -262,16 +262,25 @@ decisive on a genuine CR3BP orbit):
   0.1654` LU `≈ 63,585` km.
 - **This periapsis estimate (`≈63,600` km) already exceeds Vaquero's own printed GEO ceiling
   (`42,164` km) for a cycler's Earth approach** — and the direct crossing point itself is nowhere
-  near the Moon. **R31-S does not appear to satisfy Vaquero's own printed cycler-selection
-  criteria**, despite the near-identical `C`.
+  near the Moon. On this estimate, **R31-S does not appear to satisfy Vaquero's own printed
+  cycler-selection criteria**, despite the near-identical `C`.
 
-**Read this as an indicative, not decisive, geometric estimate** (a genuine CR3BP orbit is not
-exactly Keplerian, and Vaquero's own `C=3.13` is itself a printed-to-3-sig-fig range endpoint, not
-necessarily a literal match target — per this project's own `[[feedback_published_rounded_values_
-are_display]]` discipline). But the direction is clear: same `C`, different geometry — most
-likely a coincidental proximity in energy, not the same orbit, OR a different branch/point of a
-shared family that Vaquero's own criteria filter excludes but Braik-Ross's own (differently
-scoped) network-node selection does not. This is the single most concrete, falsifiable target for
+**Read this as an indicative, not decisive, geometric estimate — weaker than it may look.** The
+`0.4807`/`63,600` km figures assume a single shared two-body ellipse, but R31-S is a genuine 3:1
+CR3BP orbit: it makes THREE Earth loops per period (`tof_days_bounds` on the catalogue row is the
+full `27.2517`-day period, one loop is `~9.08` days), and a CR3BP resonant orbit's three perigees
+need not be equal — the true minimum perigee across all three loops could sit materially below
+this single-ellipse estimate. It also does not rule out a same-side close lunar approach at some
+OTHER point on the orbit (only the one printed apse crossing, `~690,000` km from the Moon, was
+checked). A genuine two-body-ellipse periapsis this far above the GEO ceiling (`1.5x`) makes a
+same-orbit identity look unlikely, but this paragraph should NOT be read as a settled verdict —
+`#798` (registered below) proposes the actual check (direct propagation of the full orbit, or a
+family-continuation comparison). Separately, Vaquero's own `C=3.13` is itself a printed-to-3-sig-
+fig range endpoint, not necessarily a literal match target — per this project's own
+`[[feedback_published_rounded_values_are_display]]` discipline. Direction, not certainty: same
+`C`, apparently different single-apse geometry — most likely a coincidental proximity in energy,
+not confirmed same or different orbit without the fuller check. This is the single most concrete,
+falsifiable target for
 a future task that wants to resolve the question properly (full CR3BP family continuation +
 direct IC comparison, not a Keplerian estimate). `braik-ross-planar-r21-s-corridor` (`C=3.1294`)
 is more simply excluded — its `C` sits entirely outside Vaquero's printed 2:1 range (`[1.98,

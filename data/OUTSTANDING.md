@@ -364,11 +364,21 @@ unchanged. See `git log` around this date for the corrected commit.
   members (e.g. the already-gated `1-2c/d/e`, `2-1a/b`, `3-2c`, `7-3a/b/c/d` rows, all with
   digit-grade `(x_i, u_i, C_J, T, k)` from `#780`'s own extraction) as `quasi_cycler`/`cycler`
   catalogue rows — mirroring the `#707`→`#708`/`#735`→`#736`/`#770`→`#779` staged digest→design→
-  writeback pattern. Vaquero's OWN 2:1/3:1 "Earth-Moon Periodic Cyclers" (Sec. 4.4.7) are
-  explicitly NOT writeback-ready on their own (no digit-grade IC anywhere, graph-only per `#787`)
-  — any writeback for THAT specific family would need either digitizing Fig. 4.44 (imprecise) or
-  independently reproducing it via CR3BP family continuation seeded from her own stated
-  `(C, TOF)` constraints (a genuine, non-trivial computation task, not a transcription one).
+  writeback pattern. **Two open items any dispatch of this task must resolve, not assume**: (a)
+  that row list is only a candidate filter, not a verified admission set — 5 of Casoliva's own 16
+  Table 3 rows carry `satisfies_resonance=False` (`1-2a`, `1-2b`, `2-1c`, `3-2a`, `7-3d`) and 2
+  carry `exists_in_em_system=False` (`2-1c`, `2-1d`, per `#780`'s own gate report/`#786`'s note) —
+  a row failing either its own labelled resonance or physical existence is not a cycler candidate
+  at all, and this needs re-confirming at dispatch time, not inherited from this bullet; (b) the
+  `orbit_class` (`cycler` vs. `quasi_cycler`) is itself unresolved — the Braik-Ross corridor rows
+  already establish `quasi_cycler` as the schema v5.2 carve-out for an epoch-free CR3BP periodic
+  orbit with `n_returns: infinite`, which is the most likely fit here too, but this has not been
+  checked against Casoliva's own specific orbits' own properties. Vaquero's OWN 2:1/3:1
+  "Earth-Moon Periodic Cyclers" (Sec. 4.4.7) are explicitly NOT writeback-ready on their own (no
+  digit-grade IC anywhere, graph-only per `#787`) — any writeback for THAT specific family would
+  need either digitizing Fig. 4.44 (imprecise) or independently reproducing it via CR3BP family
+  continuation seeded from her own stated `(C, TOF)` constraints (a genuine, non-trivial
+  computation task, not a transcription one).
 - `#798` — registered 2026-08-08 (found during `#787`'s own numeric cross-check pass, not
   dispatched): resolve whether `data/catalogue.yaml`'s already-catalogued
   `braik-ross-planar-r31-s-corridor` row (Braik & Ross 2026 Table 2, `C_J=3.1294`,
