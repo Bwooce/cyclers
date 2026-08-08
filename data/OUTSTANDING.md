@@ -379,21 +379,44 @@ unchanged. See `git log` around this date for the corrected commit.
   need either digitizing Fig. 4.44 (imprecise) or independently reproducing it via CR3BP family
   continuation seeded from her own stated `(C, TOF)` constraints (a genuine, non-trivial
   computation task, not a transcription one).
-- `#798` — registered 2026-08-08 (found during `#787`'s own numeric cross-check pass, not
-  dispatched): resolve whether `data/catalogue.yaml`'s already-catalogued
-  `braik-ross-planar-r31-s-corridor` row (Braik & Ross 2026 Table 2, `C_J=3.1294`,
-  `x0=-0.8081272738`, `T=27.2517` days) is the SAME physical orbit as (or a nearby member of the
-  same family as) Vaquero 2013's own printed 3:1 "Earth-Moon Periodic Cycler" family upper bound
-  (`C=3.13`, Sec. 4.4.7). `#787`'s own Kepler's-3rd-law estimate (implied periapsis `~63,600` km,
-  exceeding Vaquero's own printed GEO cycler-perigee ceiling of `42,164` km, and the IC's own
-  apoapsis crossing sits on the opposite side of Earth from the Moon, `~690,000` km away at that
-  point) argues AGAINST identity, but is explicitly a Keplerian approximation on a genuine CR3BP
-  orbit — indicative, not decisive. Proposed scope: direct CR3BP family continuation of Vaquero's
-  own 3:1 resonant-cycler family (two-body-seeded per her own Ch.3.5.1 method, continued in `C`
-  from `C=2.54` to `3.13`) and a direct IC-level comparison against R31-S at the matching `C`, OR
-  (cheaper first step) a direct propagation of R31-S's own already-catalogued IC checking whether
-  it EVER comes within Vaquero's own stated perigee/lunar-approach bounds at some OTHER point
-  along its own orbit (the Kepler estimate only checked the one printed apse crossing).
+- `#798` — ✓ DONE 2026-08-08: **RULED OUT, decisively.** Direct full-period propagation of
+  `braik-ross-planar-r31-s-corridor`'s own already-catalogued IC in this project's own CR3BP
+  core (`cyclerfinder.core.cr3bp.cr3bp_eom`, DOP853 `rtol=atol=1e-13`, 400k-sample full-period
+  scan; closure residual `2.8e-12`, Jacobi-constant conservation `2.65e-12` — clean reproduction)
+  found the orbit fails BOTH of Vaquero's own printed 3:1-cycler selection criteria (Sec. 4.4.7,
+  p.169-170) at EVERY point along its full period, not just the single apse the earlier Keplerian
+  estimate checked: all three perigees sit `62,882`-`64,461` km from Earth (~50% over her own
+  `42,164` km GEO ceiling), and all four local Moon-approach minima sit `288,000`-`328,500` km
+  from the Moon (4.5-5x the Moon-L1/L2 distance, computed via
+  `cyclerfinder.core.crnbp.cr3bp_collinear_point`) — nowhere near "close Moon approach." A
+  semi-major-axis check (`(r_peri+r_apo)/2=0.4798` LU vs. Casoliva's printed `3:1` two-body value
+  `0.4808` LU) confirms R31-S genuinely IS on the 3:1 resonance, but the ~20,700 km perigee jump
+  implied over Vaquero's own `ΔC=0.0006` gap to her stated cutoff is not smooth family
+  continuation — R31-S reads as a different family member/branch, not "her family, slightly
+  further." R31-S's own perpendicular x-axis crossings (`x=-0.808`, `x=-0.176`) also sit entirely
+  outside her own Fig. 4.44's plotted `x0∈[0.6,1.2+]` range (corroborating, own figure-read, not
+  primary). The `C=3.1294` vs. `3.13` near-coincidence is judged coincidental. No catalogue.yaml
+  edit (pure identity-resolution task, existing row untouched). Full writeup:
+  `docs/notes/2026-08-08-798-r31s-vaquero-3to1-identity-check.md`. Spawned `#799` (direct CR3BP
+  family-continuation reproduction of Vaquero's own 2:1/3:1 families, now the concrete unblocked
+  path to digit-grade ICs for those specific families).
+- `#799` — registered 2026-08-08 (spawned by `#798`'s own decisive negative, not dispatched):
+  direct CR3BP family-continuation reproduction of Vaquero 2013's own 2:1 and 3:1 "Earth-Moon
+  Periodic Cyclers" (Sec. 4.4.7), two-body-seeded per her own Ch.3.5.1 method and continued in
+  Jacobi constant `C` across her own printed ranges (`2:1`: `C∈[1.98,2.66]`; `3:1`:
+  `C∈[2.54,3.13]`), using this project's own existing continuation infrastructure (grep for
+  `continue_family`/`cr3bp_continuation` under `src/cyclerfinder/search/`) rather than building
+  new machinery. Motivation: `#798` confirmed (decisively, not by inference) that
+  `braik-ross-planar-r31-s-corridor` is NOT a member of either family despite its near-coincident
+  `C`, and separately confirmed via a two-body semi-major-axis check that R31-S genuinely IS on
+  the 3:1 resonance — meaning a real, different 3:1 family member exists nearby in `C`-space that
+  a continuation would locate precisely. Neither Vaquero nor Casoliva print a digit-grade IC table
+  for these specific families anywhere (`#787`'s digest, §3/§7: Fig. 4.44's `x0` axis carries no
+  value labels) — this is the ONLY route to a writeback-ready IC for the Vaquero-specific 2:1/3:1
+  cycler families (distinct from `#797`'s Casoliva-Table-3 writeback scope, which already has
+  digit-grade source data and does not need continuation). A genuine, non-trivial computation
+  task, not a transcription one — same class of effort as `#786`'s connection-search or `#780`'s
+  gate-module build.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
