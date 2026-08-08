@@ -214,7 +214,13 @@ def test_504_sweep_33() -> None:
     Seeds from the Ross-RT 2026 Table-I (mu=0.012150, (3,3)) anchor via
     mu-continuation, then C-sweeps for the stable window.
 
-    Clean-negative-aware: passes either way.
+    Clean-negative-aware: passes either way. Expected outcome is a clean
+    negative on EVERY platform: the (3,3) branch is lost at the first mu
+    step and the continuation either diverges (Linux, 2026-07-01 verdict)
+    or captures a retrograde (7,0) near-primary orbit (Mac/Accelerate) --
+    both now map to the same wrong-topology clean negative via
+    ``_topology_gated_result`` (#807; see
+    docs/notes/2026-08-09-807-pc-33-branch-loss-topology-gate.md).
     """
     result = sweep_33()
 

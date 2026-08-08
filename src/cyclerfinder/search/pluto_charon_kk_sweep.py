@@ -456,6 +456,57 @@ def _build_result(
     )
 
 
+def _topology_gated_result(
+    k1: int,
+    k2: int,
+    system: cr3bp.CR3BPSystem,
+    orbit: cp.SymmetricOrbit,
+    method: str,
+) -> SweepResult:
+    """Build the result and apply the wrong-topology clean-negative gate (#807).
+
+    A (k1,k2)-family sweep that converges to a stable orbit of a DIFFERENT
+    winding topology has left the target family branch (continuation
+    branch-jump / off-basin capture), so the correct verdict for the TARGET
+    family is a clean negative -- the same semantics ``sweep_31`` has always
+    applied inline and ``real_binary_kk_sweep._finalize_candidate`` applies
+    for every mu-step path. #807 root cause: ``sweep_33``'s mu-continuation
+    from the mu=0.01215 anchor leaves the (3,3) branch at the very FIRST mu
+    step and (on some platforms) the corrector then captures a retrograde
+    (7,0) near-primary orbit instead of diverging -- whether it diverges
+    (the 2026-07-01 Linux verdict: "mu-continuation failed") or captures
+    off-branch (this Mac/Accelerate) is a measured 1e-9-seed-perturbation
+    knife-edge in the corrector, NOT a near-integer winding wobble (the
+    recovered winding is exactly w1=-7.000000). Both sides of that
+    knife-edge are the same underlying event -- the (3,3) family does not
+    survive continuation to PC mu -- so both must map to the same clean
+    negative. The recovered topology is recorded in ``note`` (recomputed
+    only on the rare gated path).
+
+    NOT applied to ``sweep_32_positive_control``: the positive control must
+    fail loudly on any topology mismatch, never fold into a clean negative.
+    """
+    res = _build_result(k1, k2, system, orbit, method)
+    if not res.topology_ok:
+        state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0])
+        topo = winding_topology(system.mu, state0, orbit.period)
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note=(
+                f"stable orbit found but wrong topology: recovered "
+                f"(k1,k2)=({topo.k1},{topo.k2}), w1={topo.w1:+.3f}, "
+                f"w2={topo.w2:+.3f}, prograde={topo.prograde}, "
+                f"reaches_secondary={topo.reaches_secondary} -- "
+                f"continuation/C-sweep left the ({k1},{k2}) branch; "
+                "clean negative (#807)"
+            ),
+        )
+    return res
+
+
 def sweep_32_positive_control() -> SweepResult:
     """Re-find the admitted (3,2) stable member at PC mu. Positive control."""
     sys_pc = make_pluto_charon_system()
@@ -583,7 +634,7 @@ def sweep_11() -> SweepResult:
             method=method,
             note="no stable window in C-sweep range",
         )
-    return _build_result(1, 1, sys_pc, orbit_stable, method)
+    return _topology_gated_result(1, 1, sys_pc, orbit_stable, method)
 
 
 # ---------------------------------------------------------------------------
@@ -741,6 +792,16 @@ def sweep_33() -> SweepResult:
 
     Mu-step from the mu=0.012150 anchor (k=(3,3)) to PC_MU in 40 steps,
     then C-sweep for the stable window.
+
+    #807 (2026-08-09): the (3,3) branch does NOT survive this continuation --
+    the fixed-C corrector leaves the family at the very first mu step
+    ((3,3)->(3,4)->(6,2)->retrograde (7,0) by mu~0.019) and the end state is
+    a measured knife-edge (a 1e-9 relative seed perturbation, or n_steps
+    39/41 vs 40, flips diverged<->converged; n_steps=80 captures yet another
+    family, prograde (5,0)). On Linux (2026-07-01 verdict) it diverged
+    ("mu-continuation failed"); on Mac/Accelerate it captures the retrograde
+    (7,0) near-primary orbit. Either way the verdict is the same clean
+    negative, enforced by :func:`_topology_gated_result`.
     """
     sys_pc = make_pluto_charon_system()
     c_l1 = _c_l1(PC_MU)
@@ -791,7 +852,7 @@ def sweep_33() -> SweepResult:
             method=method,
             note="no stable window",
         )
-    return _build_result(3, 3, sys_pc, orbit_stable, method)
+    return _topology_gated_result(3, 3, sys_pc, orbit_stable, method)
 
 
 # ---------------------------------------------------------------------------
@@ -899,7 +960,7 @@ def sweep_21() -> SweepResult:
             method="grid_then_c_sweep",
             note="no stable window",
         )
-    return _build_result(2, 1, sys_pc, orbit_stable, "grid_seed_then_c_sweep")
+    return _topology_gated_result(2, 1, sys_pc, orbit_stable, "grid_seed_then_c_sweep")
 
 
 # ---------------------------------------------------------------------------
@@ -955,4 +1016,4 @@ def sweep_22() -> SweepResult:
             method="grid_then_c_sweep",
             note="no stable window",
         )
-    return _build_result(2, 2, sys_pc, orbit_stable, "grid_seed_then_c_sweep")
+    return _topology_gated_result(2, 2, sys_pc, orbit_stable, "grid_seed_then_c_sweep")

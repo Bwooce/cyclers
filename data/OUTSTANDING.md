@@ -538,21 +538,39 @@ unchanged. See `git log` around this date for the corrected commit.
   blind tolerance loosening) or, if the miss is provably irreducible, a properly-derived
   tolerance with the derivation shown (not just widened until it passes). See `#584`'s own
   bullet (search this file) for the full prior investigation to build on, not repeat.
-- `#807` — registered 2026-08-09 (same trigger as `#806`), not dispatched: root-cause and fix
-  `tests/search/test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`'s (3,3) topology
-  misclassification — a corrector-found periodic orbit that is otherwise healthy
-  (`stable_found=True`, `crosscheck_ok=True`, `crosscheck_dj=2.6e-12`) fails the INTEGER
-  winding-number check (`topo.k1 == k1 and topo.k2 == k2` in `pluto_charon_kk_sweep.py`).
-  `#584` (2026-07-14) CLOSED this the same way as `#806` (Linux CI green on the identical tree
-  = local-Mac-only artifact) — same reasoning gap now that CI is this Mac. The original 2026-07-01
-  verdict (`docs/notes/2026-07-01-504-pluto-charon-kk-sweep-verdict.md`) recorded (3,3) as a
-  CLEAN NEGATIVE ("mu-continuation failed, mu-step diverges before PC mu") — by `#584`'s time
-  (2026-07-13) the SAME sweep instead converges to a stable orbit whose topology classification
-  flips at a boundary, a materially different intermediate state than the original verdict
-  describes (worth reconciling, not just re-explaining as noise). Needs either a fix to the
-  winding-number classifier's own basin robustness, or a properly-derived tolerance/hysteresis
-  band if the flip is provably a genuine discretization boundary artifact on a continuous
-  quantity.
+- `#807` — ✓ DONE 2026-08-09 (registered 2026-08-09, same trigger as `#806`): root-caused and
+  FIXED `test_504_sweep_33`. NOT a knife-edge integer-classification wobble and NOT a (3,3)
+  orbit at all: the mu-continuation loses the (3,3) branch at the very FIRST mu step
+  ((3,3)→(3,4)→(6,2)→retrograde (7,0) by mu~0.019) and the Mac/Accelerate corrector then
+  captures a stable retrograde (7,0) near-primary orbit (w1=−7.000000 EXACT, x_max<L1) which
+  `sweep_33` reported as `stable_found=True, topology_ok=False` because it lacked the
+  wrong-topology→clean-negative gate `sweep_31` (inline since 2026-07-01) and
+  `real_binary_kk_sweep._finalize_candidate` (#660) always had. Measured knife-edge (#774-style,
+  direct): a 1e-9 relative anchor-x0 perturbation or n_steps 39/41-vs-40 flips
+  converged↔DIVERGED; n_steps=80 captures a THIRD family (prograde (5,0)). Reconciliation: the
+  2026-07-01 Linux "mu-continuation failed" verdict and the Mac "converges off-branch" state are
+  the two sides of that same knife-edge (git confirms zero code change in the window — pure
+  platform switch); `#584`'s closure was half-right (platform rounding does control the outcome,
+  but via corrector diverge-vs-capture, NOT near-integer winding wobble — the classifier is
+  exact). Fix: `_topology_gated_result()` applied to `sweep_11/21/22/33` (positive control
+  deliberately NOT gated — must fail loudly), making the (3,3) verdict the same clean negative
+  on every platform, recovered topology recorded in `note`. No solver/classifier/tolerance
+  change ⇒ no past negative can flip positive; re-verified: 6/6 `test_504` (incl. the
+  load-bearing (3,2) positive control `ross-rt-pc-cycler-32-2026`), 40/40 across all 8 importing
+  test files, ruff+format+full-mypy clean. Follow-up `#808` registered (same latent gate gap in
+  `real_binary_kk_sweep`'s grid path, a documented #660 scope decision). Full writeup:
+  `docs/notes/2026-08-09-807-pc-33-branch-loss-topology-gate.md`.
+- `#808` — registered 2026-08-09 (found during `#807`, not dispatched): decide + close the
+  deliberately-ungated topology gap in `real_binary_kk_sweep._finalize_grid_candidate` — grid
+  paths verify SEED topology but not post-C-sweep topology (documented #660 scope decision:
+  "whether that survives the subsequent C-sweep is an existing, separate question"), which is
+  the EXACT latent failure class `#807` fixed in `pluto_charon_kk_sweep`, and
+  `test_549_real_binary_kk_sweep.py` asserts `topology_ok` on such results — so a future
+  platform/rounding shift could reproduce `#807`'s failure mode there on any real-binary grid
+  sweep. Either extend `#807`'s clean-negative gate semantics to `_finalize_grid_candidate`
+  (re-checking the #549/#657/#660/#665 verdicts per [[feedback_bugfix_invalidates_past_searches]]
+  — reporting-only, so verdict flips are not expected but must be confirmed), or document a
+  principled reason grid paths are exempt.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
