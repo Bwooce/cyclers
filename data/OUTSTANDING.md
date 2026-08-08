@@ -34,6 +34,91 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#793` — registered 2026-08-08 (user: "let's pick the small possible things to close out
+  first"), **PRIORITY — dispatchable now, no dependencies**: catalogue data-gap execution sprint.
+  An earlier Fable discovery-menu survey this session found ~415 of `data/catalogue.yaml`'s 881
+  `data_gaps` entries (the `derive`/`uncertain` rows under `todo_ref: "#54"`) are internally
+  fillable TODAY with a multi-rev Lambert capability (`core/lambert.py`'s own `max_revs` param)
+  that already exists and is tested (`tests/core/test_lambert_multirev.py`) — the gap notes and
+  `core/lambert.py`'s own line-7 docstring still falsely describe it as unbuilt/M4's future
+  responsibility. Near-zero risk, mechanical, census-shaped (not discovery) — exactly this
+  project's own realistic deliverable per `project_capability_frontier_complete`. Companion
+  small wins bundled in: (a) execute the validated-but-never-run Russell backfill method
+  (`docs/notes/2026-07-15-596-russell-backfill-method-validated.md`); (b) adopt the
+  already-coded corrected S1L1 topology (`search/s1l1_corrected.py`, `#167`) into the still-
+  "structurally wrong" `s1l1-2syn-em-cpom` row; (c) persist the already-computed Floquet scalar
+  on the 29 `stability_index`-gap corridor rows (`ml/seed_generation.py::stability_index` already
+  provides it); (d) refresh the stale `data/MISSING_DATA.md` (reports 788 gaps vs the live 881).
+  **Mandatory**: any `catalogue.yaml` change means the FULL `tests/` tree must run before
+  committing (`uv run pytest tests/ -q`), not the narrower `tests/data tests/search` habit —
+  per `[[feedback_verify_scope_must_include_tests_scripts]]`, this exact class of change has
+  broken CI 3+ times before from top-level census-ratchet files a narrower run misses.
+- `#788` — registered 2026-08-08 (from tonight's combinatorial-search scoping survey),
+  **PRIORITY — small, foundational, unblocks `#789`-`#792` below**: build a generic checkpointed
+  cell-grid campaign runner. This project has a checkpointed-restart pattern
+  (`search/discovery_campaign.py`: append-only checkpoint, `index % n_workers` sharding,
+  empty-region writeback) and a joblib parallel substrate (`parallel/parallel_sweep.py`, measured
+  5x on 8 workers) but **nothing combines them, and no supervising relaunch loop exists anywhere**
+  — every long-running script in this project today is "re-invoke by hand until done." Build:
+  a parallel pool + durable per-cell results + resume-from-checkpoint + `empty_regions.jsonl`
+  emission, generic enough for any (system × parameter) grid. Directly matches the user's own
+  "restartable segments over weeks/months" requirement. Estimated ~days, not weeks. See
+  the survey's own full writeup (not yet filed as a dated note — register a follow-up to file one
+  if this is dispatched) for the concrete design sketch.
+- `#789` — registered 2026-08-08 (Campaign 1 of the combinatorial-search survey, "the Resonant
+  Atlas"), **gated on `#788` landing first**: sweep (system x p:q resonance x energy) using the
+  family+connection pipeline validated across Jupiter-Europa/`#754`, Saturn-Titan/`#767`,
+  Neptune-Triton/`#781`, Earth-Moon/`#780`/`#786` — so far only ever run at ONE paper-anchored
+  energy per system, on 4 systems, for a handful of published resonance ratios. The registry can
+  instantiate ~40 systems with zero new code (most Saturnian/Uranian moon pairs never touched by
+  this method). Estimated ~15-20 viable systems x ~40 coprime p:q x ~100-step continuation in C
+  ~= 60-80k family members, ~30-40k connection attempts, ~1-3k CPU-hours (~2-4 weeks on 8 cores).
+  Direct scale-up of the ONLY method that produced a novel finding this session (`#781`). Real
+  caveat: `#765`-`#786`'s own arc produced ZERO catalogue rows despite real findings — needs a
+  writeback design (extending `#770`'s own precedent) up front, or weeks of CPU pile up
+  uncatalogued in `data/found/`. Unanchored (no published-table) systems gate on the
+  `#765`/`#768`-style evidence pattern (independent Radau cross-check, basin robustness,
+  ghost-guard margins), not a paper table, since not every system will have one.
+- `#790` — registered 2026-08-08 (Campaign 2 of the combinatorial-search survey, "periodic-chain
+  itinerary enumeration"), **gated on `#789`'s own atlas for its alphabet of legs**: search
+  bounded-length cyclic itineraries over resonant-orbit "legs" (each leg a manifold connection),
+  closed into one periodic orbit — the finite, catalogue-relevant projection of Llibre-Martínez-
+  Simó 1985's own proven Bernoulli-shift horseshoe (`#749`; the raw infinite non-periodic
+  itinerary space is NOT the target, see that survey's own explicit dead-end call). Vaquero's own
+  3:4<->6:5 Saturn-Titan chain (`#768`-`#782`-`#774`'s whole saga this session) is exactly ONE
+  2-symbol instance of this space — chain length/composition has never been searched
+  systematically. `#782`'s own natural-waypoint multiple-shooting corrector (Parker-Davis-Born
+  patchpoints) is the proven-tractable technique to reuse. Estimated alphabet m=4-8 orbits per
+  (system, C), lengths <=4-5 -> hundreds-thousands of admissible itineraries (pruned to those
+  whose legs exist as `#789` connections) x minutes-to-an-hour per closure ~= 10^2-10^3 CPU-hours
+  per system-energy. The shelved family-conditioned ML seed-proposer idea (from tonight's earlier
+  AI/ML scoping) plausibly earns its keep HERE specifically, benchmarked against the zero-ML
+  baseline (concatenated manifold arcs, what `#782` already used) — not elsewhere in this menu.
+- `#791` — registered 2026-08-08 (Campaign 3 of the combinatorial-search survey, "moon-tour
+  encounter-sequence enumeration"), **dispatchable independent of `#788`-`#790`, though benefits
+  from `#788`'s own runner**: the real-ephemeris joint search (`#318`/`#501`) has only ever swept
+  7 hand-picked encounter sequences x 512 Sobol cells (55 min total, 0 closed) against Jupiter's
+  Galilean moons; the unexplored combinatorial object is the SEQUENCE alphabet itself — closed
+  tour sequences over {Io,Europa,Ganymede,Callisto} (and Saturnian moons, requires un-hardcoding
+  `joint_sobol.py`'s `primary="Jupiter"`), lengths 3-8, Tisserand/energy-pruned -> ~10^2-10^3
+  sequences x 4-32k cells ~= 10^6-10^7 patched-conic cells at ~1s/cell, plus n-body shooting on
+  survivors ~= weeks. Real risk of a giant clean negative (the `#388` family-selection wall looms)
+  — explicitly fine per this project's own negative-results-registry discipline: per-sequence
+  empty-region records (not a single blob) satisfy capability-subsumption, and the 7 already-
+  stamped sequences get SKIPPED not re-swept. The one place in this whole menu where a learned
+  cell-ranking plausibly earns its keep at 10^7-cell scale (deterministic gates first, ML only if
+  measured against them) — per the earlier "prefilter saved <=1.4% compute" verdict, this is the
+  only campaign large enough to possibly flip that verdict.
+- `#792` — registered 2026-08-08 (Campaign 4 of the combinatorial-search survey, "Uranus
+  asymmetric-closure census"), **the smallest/already-scoped campaign — dispatchable now,
+  cheap enough to run alongside `#788`'s own build-out**: `#679`'s own shortlist item 1, an
+  adaptive basin-width-aware asymmetric-closure grid `#563` explicitly declared out of scope
+  ("a genuinely different, more expensive adaptive grid search would be needed") — a NEW method
+  axis (the symmetric-only machinery that stamped the existing Uranian empty regions cannot
+  represent asymmetric closures), so it legitimately passes the re-sweep gate rather than
+  violating it. Already scoped at ~1-2 weeks. Fold in `#549`'s own leftovers too: 4 real-binary
+  cases left inconclusive at a 240s/job cap — a few hours of CPU to settle, much smaller than the
+  main census.
 - `#774` — ✓ DONE 2026-08-08: continued `#782`'s own converged chain orbit in INCREASING Jacobi
   constant (`#753`'s own `cr3bp_continuation.continue_family`, unmodified, reused as the per-step
   corrector+gauntlet inside an outer step-size-adaptation loop) toward Vaquero's own claimed
