@@ -33,15 +33,32 @@ its own DONE entry, and a leftover already-executed `#144` TODO. One flagged ite
 cited as evidence) was checked and found to be a real commit in a different repository — left
 unchanged. See `git log` around this date for the corrected commit.
 
-- `#796` — registered + DISPATCHED 2026-08-08 (split from `#793`'s own item (c), which was in
-  that task's original registration but got dropped from its actual dispatch instructions):
-  persist the already-computed Floquet-derived `stability_index` scalar on the 29 corridor rows
-  whose `data_gaps` entry cites it as missing — `src/cyclerfinder/ml/seed_generation.py`'s own
-  `stability_index` function already computes this value as a side effect of the census work
-  those rows came from; this is pure serialization (read the already-computed value, write it to
-  the row, remove the gap entry), not new computation. Mandatory: any `catalogue.yaml` change
-  needs the FULL `tests/ -q` tree before committing, not the narrower habit — per
-  `[[feedback_verify_scope_must_include_tests_scripts]]`.
+- `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
+  registration but got dropped from its actual dispatch instructions): persist the already-computed
+  Floquet-derived `stability_index` scalar on the corridor rows whose `data_gaps` entry cites it as
+  missing, using `src/cyclerfinder/ml/seed_generation.py`'s own general spectral-radius
+  `stability_index` function (max `|eigenvalue|` of the full-period monodromy — deliberately NOT
+  Barden nu). **Corrected the dispatch note's own "29" figure**: that number conflated the
+  catalogue-wide total of `stability_index`-path `data_gaps` entries (29, confirmed by direct grep)
+  with the actual in-scope corridor family, which is **20 rows**
+  (`braik-ross-c21-3d-corridor-{01..05}`, `braik-ross-c32-3d-corridor-{01..05}`,
+  `lyapunov3d-l1-corridor-{01..07}`, `braik-ross-planar-r{21,31,52}-s-corridor`); the other 9 are
+  independently out of scope (1 already has a persisted value with only a precision caveat, 2
+  literature-sourced permanent gaps, 4 patched-conic/not-applicable, 2 belong to different
+  `#707`/`#736` task chains) — see the note for the per-row breakdown. **20/20 in-scope rows
+  closed**: recomputed each from the row's own already-catalogued `mass_ratio`/`state_nd`/
+  `period_nd` (pure serialization, no new orbit derivation), all landing at/near 1.0 (consistent
+  with `#438`'s qualitative 'stable' Floquet tag on every member), written back with a `#796`-cited
+  DERIVE-kind provenance comment, and the corresponding `data_gaps` entry removed (17 rows keep an
+  unrelated `state_nd` gap; the 3 planar rows now carry an empty `data_gaps`). Applied via the same
+  minimal-diff `ruamel`-round-trip-and-patch strategy `scripts/backfill_russell_2004_tables.py`
+  already established (isolates the real edit from round-trip reformatting noise). Full
+  `tests/ -q` run: 4 pre-existing failures, all confirmed unrelated via a direct `git stash`-and-
+  rerun check on just those 4 tests (byte-identical failures with the catalogue edit stashed out;
+  2 already documented in `#682`'s own note, 2 new but in modules this task's catalogue-only change
+  never touches, matching the cross-platform DOP853/BLAS-divergence class per `#584`/`#631`/`#632`/
+  `#635`/`#731`/`#784`); `ruff`/`ruff format`/`mypy src tests` all clean. Full account:
+  `docs/notes/2026-08-08-796-persist-stability-index-corridor-rows.md`.
 - `#793` — ✓ DONE 2026-08-08 (partial, honest-scope-boundary — registered 2026-08-08, user: "let's
   pick the small possible things to close out first"): catalogue data-gap execution sprint against
   the ~415 `todo_ref: "#54"` `data_gaps` entries an earlier Fable survey flagged as
