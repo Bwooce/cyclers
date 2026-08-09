@@ -1,12 +1,16 @@
 """Corrector micro-multistart closer for DA/HOTM enumerator candidates (#450).
 
-The Taylor-map enumerator emits a COARSE fixed-point candidate that lands in the
-corrector's neighbourhood (~3e-4 for strongly-unstable multi-rev orbits like
-P5g'; the FD-Taylor floor, see the #450 decision note). The existing asymmetric
-corrector ``correct_general_periodic`` has a tight isotropic convergence basin
-(~1e-5 for P5g', condition ~3600) but follows the stable manifold via its STM
-Newton, so a small cluster of starts around the coarse candidate reliably lands a
-member inside the basin.
+The Taylor-map enumerator emits a fixed-point candidate. Since #805 the
+enumerator's exact-derivative chain-Newton endgame usually lands it AT the true
+float fixed point (~1e-9), where the radius-0 corrector start closes directly;
+when the endgame declines (off-family landing) the candidate is COARSE at the
+FD-Taylor floor (~3e-5..3e-4 for strongly-unstable multi-rev orbits like P5g';
+the #450 decision + #804 notes). The existing asymmetric corrector
+``correct_general_periodic`` has a tight isotropic convergence basin (~1e-5 for
+P5g', condition ~3600) but follows the stable manifold via its STM Newton, so a
+small cluster of starts around a coarse candidate reliably lands a member
+inside the basin -- the multistart is retained as the robustness net for the
+coarse case.
 
 This module is the thin closer: a corrector micro-multistart over an expanding
 cluster of starts around the candidate. It does NOT modify the corrector (additive

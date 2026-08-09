@@ -516,14 +516,26 @@ unchanged. See `git log` around this date for the corrected commit.
   output-not-input guard; machine-dependent-floor band documented in `DASectionMap`'s and the
   test module's docstrings. No xfail (deterministic per-machine; this machine is the CI runner).
   Follow-up `#805` registered. Note: `docs/notes/2026-08-08-804-taylor-fixed-point-floor.md`.
-- `#805` — registered 2026-08-08 (found during `#804`, not dispatched): cut the DA-HOTM Taylor
-  backend's machine-dependent FD noise floor by computing the first-order polynomial block of
-  `taylor_single_rev` EXACTLY from STM/variational propagation instead of finite differences of
-  the float propagator — the arXiv:2509.12671 lane's own DA advantage is exact derivatives
-  (`#450` decision note). Could let the Taylor iteration land inside the ~1e-5 corrector basin
-  directly, removing the micro-multistart's reach as a lane fragility and shrinking the
-  machine-dependence `#804` characterized (3e-5 Linux vs 2.8e-4 macOS for P5g'). Low priority:
-  the lane closes end-to-end on both machines today (`test_png_lane_recovery` passes).
+- `#805` — ✓ DONE 2026-08-09 (registered 2026-08-08, found during `#804`): **goal achieved —
+  P5g' Taylor-lane landing 2.784e-4 → 4.12e-9 (~67,000x), inside the ~1e-5 corrector basin,
+  landing machine-dependence eliminated — but NOT by the proposed mechanism, which is a measured
+  negative.** Substituting the exact STM first-order block INTO the `taylor_single_rev`
+  polynomial makes the descent WORSE (9.2e-4 best across the new scheme's own (order, h) sweep;
+  block decomposition shows each exactness injection degrades it): the FD lstsq "linear block"
+  differs from the true Jacobian by 6-25% because it is a domain-AVERAGED linearization under
+  violent curvature, and the out-of-domain `compose_self` descent depends on exactly that
+  averaging — so the FD fit is RESTORED bit-for-bit and documented as deliberate. The fix that
+  works: new `DASectionMap.single_rev_stm` (exact 2x2 section-map Jacobian: lift derivative +
+  `cr3bp_stm_eom` STM + crossing-time correction; validated vs central FD at its ~1e-8 probe
+  floor) + `section_chain_newton` (exact-derivative multiple-shooting Newton over the n chain
+  nodes — direct P^n Newton diverges, measured), wired as a strict-fallback endgame in
+  `taylor_fixed_point` (`refine=True`): converges from the FD-floor landing to the TRUE float
+  fixed point (chain residual 1.8e-11; float P^5 residual at landing 4.2e-10, was 0.38).
+  Tests TIGHTENED (genome fixed-point bound 5e-4 → 1e-5 + residual<1e-8; lane coarse bound
+  1e-3 → 1e-5; 2 new tests pin the Jacobian parity + off-family `None` fallback). Invalidation
+  check: `#527`/`#532` campaign scripts use `SamplingSectionMap`/`enumerate_fixed_points`, NOT
+  `taylor_fixed_point` — no past search flows through the changed path, nothing to re-run.
+  Follow-up `#812` registered. Note: `docs/notes/2026-08-09-805-stm-exact-first-order.md`.
 - `#806` — ✓ DONE 2026-08-09 (registered 2026-08-09, user: "fix the known test failures while
   we know them" — the self-hosted CI runner set up earlier tonight is THIS Mac, so the reasoning
   that closed `#584` no longer holds): root-caused and FIXED IN THE SOURCE
@@ -609,6 +621,16 @@ unchanged. See `git log` around this date for the corrected commit.
   stable member is unknown). Cheap: one C-sweep variant + one bounded run; honest odds low
   (every other higher topology is certified empty) but it closes the last asterisk on the
   #504/#549/#656 15-topology PC census.
+- `#812` — registered 2026-08-09 (found during `#805`, not dispatched; `#811` is claimed by
+  `#799`'s note for the Vaquero-family catalogue writeback): point the now-precise `#805`
+  Taylor+chain-Newton-endgame lane (`genome/da_hotm_enumerator.taylor_enumerate`, endgame
+  `refine=True` default) at a fresh multi-rev band as a discovery probe. Pre-#805 the Taylor
+  lane could not land strongly-unstable needle basins without the corrector multistart's
+  reach (FD floor 3e-5..3e-4, landing residual O(0.1) truncation artifacts); bands screened
+  only by the `SamplingSectionMap` grid (`#527`/`#532` used exactly that path) may hide
+  needle-basin multi-rev families the refined lane can now surface and certify. Speculative,
+  low priority; pick a band not already stamped in `empty_regions.jsonl` or justify a
+  method-capability re-sweep under the negative-registry's method-versioning principle.
 - `#809` — ✓ DONE 2026-08-09 (user: "fix the contention?"): reduced `pytest-xdist` parallelism
   from `-n auto` (resolves to `os.cpu_count()=8` on this machine — no `psutil` installed) to
   `-n 6`, in `pyproject.toml`'s shared `addopts` (inherited by both local dev runs and the

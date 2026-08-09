@@ -10,7 +10,8 @@ Two tests:
 
 * FAST (default suite) -- the capability proof: from a COARSE reference ~1e-3 from
   P5g' (a legitimate coarse seed, not P5g' itself; the kind a fine sweep grid
-  provides), the Taylor finder + closer recover the published P5g'. ~30 s.
+  provides), the Taylor finder (FD polynomial descent + #805 exact-derivative
+  chain-Newton endgame) + closer recover the published P5g'. ~30 s.
 * SLOW (``@pytest.mark.slow``) -- the full global-sweep recovery: ``recover_png_
   candidate`` over the published DRO/Lyapunov bridge sub-band surfaces P5g' from a
   fine reference grid (~8 min; the basin is narrower than any coarse grid, decision
@@ -46,18 +47,27 @@ def test_lane_recovers_p5g_from_coarse_seed() -> None:
     """FAST capability proof: Taylor finder + closer recover P5g' from a coarse seed.
 
     The seed is offset ~1e-3 from P5g' (a coarse reference, NOT the published IC).
-    The Taylor map descends into the corrector neighbourhood and the micro-multistart
-    closes to the published P5g' -- the lane-recovery the sampling grid cannot do.
+    The Taylor polynomial stage descends to its FD floor and the #805
+    exact-derivative chain-Newton endgame converges from there into the
+    corrector's ~1e-5 basin (observed ~4e-9 from the published IC -- the true
+    float fixed point); the corrector then certifies the published P5g' -- the
+    lane-recovery the sampling grid cannot do.
+
+    Non-circularity: the published IC is never handed to the finder -- the seed
+    is 1e-3 away, and the candidate must have MOVED well off the seed, proving
+    it is an output of the float-propagation pipeline, not an echoed input.
     """
     system = cr3bp.cr3bp_system("Earth", "Moon")
     backend = DASectionMap(system, c_target=_C)
     # Coarse seed ~1e-3 from P5g' (off in BOTH components; not the published IC).
     seed = SectionPoint(x=_P5G_X0 + 8e-4, xdot=_P5G_XDOT0 - 6e-4)
     coarse = backend.taylor_fixed_point(seed, n=_N, order=2, h=3e-4, samples=6, max_iter=30)
-    # The Taylor finder reached the corrector neighbourhood (NOT yet P5g' itself).
+    # The backend landed inside the corrector's ~1e-5 basin (#805; pre-#805 this
+    # bound was 1e-3, the FD floor plus headroom).
     dist = math.hypot(coarse.x - _P5G_X0, coarse.xdot - _P5G_XDOT0)
-    assert dist < 1e-3, (coarse.x, coarse.xdot, dist)
-    assert dist > 1e-7, "coarse candidate must be an OUTPUT, not the handed-in IC"
+    assert dist < 1e-5, (coarse.x, coarse.xdot, dist)
+    moved = math.hypot(coarse.x - seed.x, coarse.xdot - seed.xdot)
+    assert moved > 5e-4, "candidate must be an OUTPUT well off the handed-in seed"
     # The corrector micro-multistart closes the coarse candidate to published P5g'.
     orbit = close_candidate(
         system,
@@ -90,16 +100,18 @@ def test_global_sweep_surfaces_png_family_region() -> None:
     """SLOW: a BLIND global enumeration over the band surfaces the Png' family
     region as an OUTPUT (no P5g' hint).
 
-    HONEST reach of the pure-Python (non-DA) lane (decision-note finding): a blind
-    global grid sweep with the FD-Taylor map surfaces a fixed-point candidate in
-    the Png' family REGION (~a few e-3 of P5g'). It does NOT, by itself, land the
-    ~1e-5 closing basin -- the FD-Taylor map's truncation-artifact fixed points sit
-    ~2e-3 off the true P5g' and do not close, the strongly-unstable needle basin
-    that the paper's EXACT-derivative DA avoids and the pure-Python backend cannot.
-    So this slow test asserts only the VERIFIED claim -- the global sweep reaches
-    the family region. The decisive emit->close-to-1e-12 recovery of the published
-    P5g' is carried by the FAST ``test_lane_recovers_p5g_from_coarse_seed`` above
-    (a coarse seed ~1e-3 from P5g', NOT the published IC -- non-circular).
+    HONEST reach of the pure-Python (non-DA) lane (decision-note finding, updated
+    for #805): a blind global grid sweep with the FD-Taylor map surfaces a
+    fixed-point candidate in the Png' family REGION. Pre-#805 the polynomial
+    stage's truncation-artifact fixed points sat ~2e-3 off the true P5g' and did
+    not close by themselves; since #805 any surfaced candidate whose section
+    chain exists is refined by the exact-derivative chain-Newton endgame toward
+    the true fixed point, while endgame-declined candidates keep the coarse
+    landing. This slow test keeps its original region-level assertions (the
+    machine-independent sweep-capability claim, valid in both regimes). The
+    decisive emit->close-to-1e-12 recovery of the published P5g' is carried by
+    the FAST ``test_lane_recovers_p5g_from_coarse_seed`` above (a coarse seed
+    ~1e-3 from P5g', NOT the published IC -- non-circular).
     """
     system = cr3bp.cr3bp_system("Earth", "Moon")
     backend = DASectionMap(system, c_target=_C)

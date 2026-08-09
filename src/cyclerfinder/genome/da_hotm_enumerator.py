@@ -170,9 +170,11 @@ def taylor_enumerate(
     collects the converged section points; dedups them into distinct basins. This
     is the GLOBAL enumeration that reaches the strongly-unstable multi-rev families
     (P5g') a brute-force grid cannot (their section basin is narrower than any
-    feasible grid spacing -- see the #450 decision note). Each emitted candidate is
-    COARSE (the FD-Taylor floor ~3e-4 for P5g'); the corrector micro-multistart
-    (``search.da_hotm_close.close_candidate``) certifies it to 1e-12.
+    feasible grid spacing -- see the #450 decision note). Candidates whose chain
+    Newton endgame accepted land at the TRUE float fixed point (~1e-9, #805);
+    otherwise they are COARSE (the FD-Taylor floor ~3e-5..3e-4 for P5g'). The
+    corrector micro-multistart (``search.da_hotm_close.close_candidate``)
+    certifies either to 1e-12.
 
     Returns one :class:`FixedPointCandidate` per distinct Taylor fixed-point basin,
     with ``residual`` set to the (fragile) section residual at the candidate, or
