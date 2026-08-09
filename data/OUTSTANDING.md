@@ -405,23 +405,31 @@ unchanged. See `git log` around this date for the corrected commit.
   `docs/notes/2026-08-08-798-r31s-vaquero-3to1-identity-check.md`. Spawned `#799` (direct CR3BP
   family-continuation reproduction of Vaquero's own 2:1/3:1 families, now the concrete unblocked
   path to digit-grade ICs for those specific families).
-- `#799` — registered 2026-08-08 (spawned by `#798`'s own decisive negative, not dispatched):
-  direct CR3BP family-continuation reproduction of Vaquero 2013's own 2:1 and 3:1 "Earth-Moon
-  Periodic Cyclers" (Sec. 4.4.7), two-body-seeded per her own Ch.3.5.1 method and continued in
-  Jacobi constant `C` across her own printed ranges (`2:1`: `C∈[1.98,2.66]`; `3:1`:
-  `C∈[2.54,3.13]`), using this project's own existing continuation infrastructure (grep for
-  `continue_family`/`cr3bp_continuation` under `src/cyclerfinder/search/`) rather than building
-  new machinery. Motivation: `#798` confirmed (decisively, not by inference) that
-  `braik-ross-planar-r31-s-corridor` is NOT a member of either family despite its near-coincident
-  `C`, and separately confirmed via a two-body semi-major-axis check that R31-S genuinely IS on
-  the 3:1 resonance — meaning a real, different 3:1 family member exists nearby in `C`-space that
-  a continuation would locate precisely. Neither Vaquero nor Casoliva print a digit-grade IC table
-  for these specific families anywhere (`#787`'s digest, §3/§7: Fig. 4.44's `x0` axis carries no
-  value labels) — this is the ONLY route to a writeback-ready IC for the Vaquero-specific 2:1/3:1
-  cycler families (distinct from `#797`'s Casoliva-Table-3 writeback scope, which already has
-  digit-grade source data and does not need continuation). A genuine, non-trivial computation
-  task, not a transcription one — same class of effort as `#786`'s connection-search or `#780`'s
-  gate-module build.
+- `#799` — ✓ DONE 2026-08-09: **REPRODUCED — both of Vaquero 2013's own Sec. 4.4.7 "Earth-Moon
+  Periodic Cycler" families (2:1 AND 3:1), by direct CR3BP continuation across their FULL printed
+  Jacobi ranges, endpoint to endpoint, with all four of her printed endpoint Earth→Moon TOFs
+  recovered (0.10%-1.83% relative — the only digit-grade values she prints for these families).**
+  New module `src/cyclerfinder/search/vaquero_em_cyclers.py` (+15 tests, + driver
+  `scripts/screen_799_vaquero_em_cycler_families.py`): a Tisserand-matched two-body APOAPSIS seed
+  (perigee in her LEO-GEO band, apogee at the Moon's vicinity — NOT the 4x-documented-failing
+  naive `two_body_resonant_seed` construction) converged on both target families on the FIRST
+  corrector attempt at mid-range C, then the existing `cr3bp_continuation.continue_family` (no new
+  machinery, full gauntlet incl. independent-Radau cross-check per member, `rtol=atol=1e-13` —
+  1e-12 measurably leaks the Jacobi-conservation gate at the families' ~7,000 km low-C perigees)
+  walked 69 members across `C∈[1.98,2.66]` (2:1) and 60 across `C∈[2.54,3.13]` (3:1), both
+  branches terminating on `jacobi_bound` (her exact printed endpoints), worst crossing residual
+  2e-12, worst Radau dC 2.1e-12. Family identity verified on ALL constraints (`#798` discipline):
+  printed C-range + all 4 endpoint TOFs + resonance semi-major axis (2-4% of `p^(-2/3)`) +
+  cislunar(L1)/circumlunar(L2) geometry + Fig. 4.44's plotted `x0` band + her
+  stable-or-small-unstable-modes criterion (2:1 stable through C≈2.46 then |λ|≤5.7; 3:1 |λ|∈
+  [11.3,16.9] throughout — honest caveat: NO linearly stable 3:1 member found anywhere in her
+  range; her own p.172 unstable-to-unstable free-transfer statement in the `[2.54,2.66]` overlap
+  is corroborated exactly). Digit-grade writeback-eligible ICs now exist (129-member record:
+  `data/found/799_vaquero_em_cycler_families/results.json`); REPRODUCTION, nothing novel claimed
+  (`literature_check.py` not in play, `#780` precedent). Writeback itself registered as `#811`
+  (out of `#799`'s own scope). Full `tests/search tests/data tests/scripts` green (3 unrelated
+  known-class contention flakes re-run clean in isolation), ruff/format/full-mypy clean. Full
+  writeup: `docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md`.
 - `#800` — ✓ DONE 2026-08-08 (user: "we need to somehow detune the multiweek campaigns to not run
   this laptop too hot" — this Mac now also runs the self-hosted CI runner set up the same day):
   added a thermal/duty-cycle throttle to `search/campaign_runner.py` (`#788`) ahead of dispatching
@@ -621,7 +629,23 @@ unchanged. See `git log` around this date for the corrected commit.
   stable member is unknown). Cheap: one C-sweep variant + one bounded run; honest odds low
   (every other higher topology is certified empty) but it closes the last asterisk on the
   #504/#549/#656 15-topology PC census.
-- `#812` — registered 2026-08-09 (found during `#805`, not dispatched; `#811` is claimed by
+- `#811` — registered 2026-08-09 (spawned by `#799`'s successful reproduction, not dispatched):
+  catalogue writeback of Vaquero 2013's two Sec. 4.4.7 Earth-Moon periodic-cycler families
+  (2:1 circumlunar/L2, 3:1 cislunar/L1), now writeback-eligible: `#799` produced digit-grade,
+  independently-Radau-cross-checked ICs across both families' full printed Jacobi ranges
+  (129 members, `data/found/799_vaquero_em_cycler_families/results.json`; representative
+  endpoint/seed ICs tabulated in `docs/notes/2026-08-09-799-vaquero-em-cycler-family-
+  reproduction.md`). This closes the `#787`-identified Casoliva/Vaquero-lineage
+  p:q-resonance-METHOD catalogue-class gap for the Vaquero side (the `#797` Casoliva-Table-3
+  rows cover the other). Scope: select representative members (at minimum the 4 printed-TOF
+  endpoint members + the stability-transition region of the 2:1), rows with
+  `#797`-style sourced/DERIVE provenance split (Vaquero's prose C-ranges/TOFs SOURCED, ICs
+  DERIVE via `#799`'s continuation), validation-level gates per the established V1
+  same-model-reproduction + Radau-cross-check precedent (`braik-ross-c11a-cycler-2026`
+  lineage), class per the v4.2 checklist (cycler vs `resonant_po` — note the 2:1's
+  17,675-86,911 km lunar approaches vs the 66,183 km SOI mean only the HIGH-C 2:1 members
+  genuinely encounter the Moon; the 3:1's 33,258-66,995 km approaches are SOI-marginal —
+  per-member SOI check required, `#797`'s own discipline).
   `#799`'s note for the Vaquero-family catalogue writeback): point the now-precise `#805`
   Taylor+chain-Newton-endgame lane (`genome/da_hotm_enumerator.taylor_enumerate`, endgame
   `refine=True` default) at a fresh multi-rev band as a discovery probe. Pre-#805 the Taylor
