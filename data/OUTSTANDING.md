@@ -567,18 +567,48 @@ unchanged. See `git log` around this date for the corrected commit.
   test files, ruff+format+full-mypy clean. Follow-up `#808` registered (same latent gate gap in
   `real_binary_kk_sweep`'s grid path, a documented #660 scope decision). Full writeup:
   `docs/notes/2026-08-09-807-pc-33-branch-loss-topology-gate.md`.
-- `#808` — registered 2026-08-09 (found during `#807`, not dispatched): decide + close the
-  deliberately-ungated topology gap in `real_binary_kk_sweep._finalize_grid_candidate` — grid
-  paths verify SEED topology but not post-C-sweep topology (documented #660 scope decision:
-  "whether that survives the subsequent C-sweep is an existing, separate question"), which is
-  the EXACT latent failure class `#807` fixed in `pluto_charon_kk_sweep`, and
-  `test_549_real_binary_kk_sweep.py` asserts `topology_ok` on such results — so a future
-  platform/rounding shift could reproduce `#807`'s failure mode there on any real-binary grid
-  sweep. Either extend `#807`'s clean-negative gate semantics to `_finalize_grid_candidate`
-  (re-checking the #549/#657/#660/#665 verdicts per this project's own "bug-fix invalidates
-  past searches" discipline — reporting-only, so verdict flips are not expected but must be
-  confirmed), or document a
-  principled reason grid paths are exempt.
+- `#808` — ✓ DONE 2026-08-09 (registered during `#807`): **extended `#807`'s clean-negative
+  gate to `real_binary_kk_sweep`'s grid paths — no principled exemption exists.** The #660
+  scope decision's "whether [seed topology] survives the subsequent C-sweep is an existing,
+  separate question" was already answered empirically twice before this task: `#656`'s (5,1)
+  PC grid sweep is a MEASURED in-module instance of the exact failure mode (genuine (5,1)
+  seed, `c_sweep_find_nu_zero` with `hc=None` walked onto the retrograde (4,0) family,
+  reported `stable_found=True, topology_ok=False`), and `#807` gated pluto_charon's own
+  grid-seeded `sweep_21`/`sweep_22`, which use the IDENTICAL `_grid_seed_search` +
+  `c_sweep_find_nu_zero` machinery — no architectural difference justifies the sibling
+  differing; `c_sweep_find_nu_zero` itself has zero topology awareness (failed steps
+  `continue` with the stale seed). Fix (REPORTING only, check untouched):
+  `_finalize_grid_candidate` now routes through `_topology_gated_result` (reused from
+  pluto_charon) BEFORE the #660 clearance gate; the same-gap SRP grid path
+  `sweep_family_grid_srp` (topology-filtered gravity seed then TWO un-re-checked
+  continuations, unlike `sweep_family_srp` which has gated inline since #665) got the
+  equivalent via new `_topology_gated_result_srp`. New
+  `tests/search/test_808_grid_topology_gate.py` (3 tests, mislabeled-target reconvergence of
+  #659's recorded Antiope (2,2) IC). **Bug-fix-invalidates-past-searches re-verification
+  (actually run): SAME verdicts everywhere** — #549 grid probes were all
+  seed-not-found/no-stable-window (class unaffected); #657's Antiope (2,2) (the only stable
+  grid hit ever) is topology_ok=True and still clearance-rejected with #659's exact figures;
+  #665's grid phase was 0/24 at the seed stage (gated code never reached); #656's (5,1)
+  branch loss replayed deterministically from its recorded seed — reproduces the recorded
+  wreckage exactly (C=3.2243893, x0=-0.587245699, T=18.69835) and now reports the clean
+  negative with "recovered (k1,k2)=(4,0)" in `note`, matching #656's own hand diagnosis;
+  its UNSETTLED adjudication + empty-regions stamp are untouched. 42/42 across all 8
+  importing test files, ruff/format clean on changed files (3 pre-existing findings in
+  #799's concurrent uncommitted files left alone), full `mypy src tests` clean (841 files).
+  Follow-up `#810` registered (#656's recommended hc-fixed (5,1) re-attempt was never given
+  a number). Full writeup: `docs/notes/2026-08-09-808-real-binary-grid-topology-gate.md`.
+- `#810` — registered 2026-08-09 (found during `#808`, not dispatched): the `#656` bullet's
+  own recommended follow-up — a (5,1)-specific Pluto-Charon re-attempt holding the seed's own
+  half-crossing count FIXED through the C-sweep (mirroring #504's "sweep upward only, hc
+  fixed" (3,2)-positive-control convention) instead of `sweep_family_grid`'s `hc=None`
+  auto-redetection, which is the measured branch-loss mechanism (#656, re-confirmed by
+  `#808`'s deterministic replay) — was recommended in prose but never registered as a task.
+  (5,1) remains the ONE k2<=k1<=5 PC topology whose negative rests on a known
+  search-method gap rather than an exhausted-within-budget seed search (a genuine prograde
+  (5,1) seed EXISTS at x0=-0.6685146994, C=3.05, T=28.1427 TU; whether that family has a
+  stable member is unknown). Cheap: one C-sweep variant + one bounded run; honest odds low
+  (every other higher topology is certified empty) but it closes the last asterisk on the
+  #504/#549/#656 15-topology PC census.
 - `#809` — ✓ DONE 2026-08-09 (user: "fix the contention?"): reduced `pytest-xdist` parallelism
   from `-n auto` (resolves to `os.cpu_count()=8` on this machine — no `psutil` installed) to
   `-n 6`, in `pyproject.toml`'s shared `addopts` (inherited by both local dev runs and the

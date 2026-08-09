@@ -67,6 +67,7 @@ from cyclerfinder.search.pluto_charon_kk_sweep import (
     _c_l1,
     _grid_seed_search,
     _nd_system,
+    _topology_gated_result,
     c_sweep_find_nu_zero,
 )
 
@@ -747,16 +748,47 @@ def _finalize_grid_candidate(
 ) -> SweepResult:
     """Finalization for :func:`sweep_family_grid`.
 
-    Deliberately does NOT add a topology_ok gate here (unlike
-    :func:`_finalize_candidate`/:func:`sweep_family`) -- ``sweep_family_grid``
-    never had one pre-#660 (its own ``_grid_seed_search`` already filters the
-    SEED for correct topology; whether that survives the subsequent C-sweep
-    is an existing, separate question this task does not change). Adding one
-    here would be an unrelated behavior change outside #660's scope. When no
-    radius is supplied this is BYTE-IDENTICAL to the pre-#660
-    ``_build_result(...)`` return.
+    Task #808: applies the wrong-topology clean-negative gate
+    (:func:`pluto_charon_kk_sweep._topology_gated_result`, from #807) BEFORE
+    the #660 body-clearance gate. History of this decision: #660 deliberately
+    left the grid path ungated ("its own ``_grid_seed_search`` already
+    filters the SEED for correct topology; whether that survives the
+    subsequent C-sweep is an existing, separate question") -- that separate
+    question has since been answered empirically, twice:
+
+    * #656's (5,1) PC grid sweep: ``_grid_seed_search`` found a genuine
+      prograde (5,1) seed, then ``c_sweep_find_nu_zero`` (called here with
+      ``hc=None``, auto-redetecting the crossing count each step) walked off
+      that branch onto the unrelated retrograde (4,0) family and reported
+      ``stable_found=True, topology_ok=False`` -- the exact confusing
+      partial-failure state, hand-diagnosed at the time.
+    * #807: the same event class in ``pluto_charon_kk_sweep``'s own sweeps
+      ((3,3) mu-continuation branch loss -> stable retrograde (7,0) capture,
+      a measured 1e-9 platform knife-edge); the fix gated ALL of that
+      module's non-control sweeps INCLUDING its two grid-seeded ones
+      (``sweep_21``/``sweep_22``), which use this very same
+      ``_grid_seed_search`` + ``c_sweep_find_nu_zero`` machinery.
+
+    So the seed-topology filter is NOT a safeguard against post-C-sweep
+    branch loss, and the pluto-charon grid sweeps already carry the gate --
+    there is no architectural reason for this sibling grid path to differ.
+    Semantics exactly match #807: a stable orbit of a DIFFERENT winding
+    topology = "target family not found" = clean negative for the TARGET
+    family, with the recovered topology recorded in ``note``. As with every
+    negative in this project, it is method-conditional (per the
+    negative-results-registry discipline): the note preserves what WAS
+    found, so a #656-(5,1)-style "genuine seed lost by the C-sweep" case
+    remains diagnosable from the result itself. The topology CHECK is
+    unchanged -- only the reporting of a mismatch. The gate runs before
+    ``_gate_clearance``, making that function's own "only called on a
+    ``res`` with ``stable_found`` and ``topology_ok`` both True" contract
+    actually hold on this path.
     """
-    res = _build_result(k1, k2, target_system, orbit, method)
+    res = _topology_gated_result(k1, k2, target_system, orbit, method)
+    if not res.topology_ok:
+        # Wrong-topology clean negative (#808, extending #807's gate to the
+        # grid path). res already carries the recovered topology in `note`.
+        return res
     return _gate_clearance(
         res, target_system, radius_km_primary, radius_km_secondary, clearance_margin_km
     )
@@ -1259,6 +1291,54 @@ def _build_result_srp(
     )
 
 
+def _topology_gated_result_srp(
+    k1: int,
+    k2: int,
+    system: cr3bp.CR3BPSystem,
+    orbit: cp.SymmetricOrbit,
+    beta_nd: float,
+    phi0: float,
+    method: str,
+) -> SweepResult:
+    """SRP-augmented analog of
+    :func:`pluto_charon_kk_sweep._topology_gated_result` (task #808).
+
+    Same clean-negative semantics as the gravity-only gate (see
+    :func:`_finalize_grid_candidate`'s docstring for the full #656/#807/#808
+    history): a stable orbit whose SRP-augmented winding topology does not
+    match the target ``(k1, k2)`` means the beta-continuation and/or
+    C_srp-sweep left the target branch, so the correct verdict for the
+    TARGET family is a clean negative with the recovered topology recorded
+    in ``note``. ``sweep_family_srp`` has applied this gate inline since
+    #665; ``sweep_family_grid_srp`` (whose gravity-only seed is
+    topology-filtered but then undergoes TWO continuations -- beta-stepping
+    AND a C_srp-sweep -- with no re-check) simply never got it: the same
+    #660-scope-inherited gap #808 closes on the gravity-only grid path.
+    The topology check itself is unchanged; only the reporting differs.
+    """
+    res = _build_result_srp(k1, k2, system, orbit, beta_nd, phi0, method)
+    if not res.topology_ok:
+        state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0])
+        topo = srp.winding_topology_srp(system.mu, state0, orbit.period, beta_nd, phi0)
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note=(
+                f"stable orbit found but wrong topology: recovered "
+                f"(k1,k2)=({topo.k1},{topo.k2}), w1={topo.w1:+.3f}, "
+                f"w2={topo.w2:+.3f}, prograde={topo.prograde}, "
+                f"reaches_secondary={topo.reaches_secondary} -- "
+                f"beta-continuation/C_srp-sweep left the ({k1},{k2}) "
+                "branch; clean negative (#808)"
+            ),
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    return res
+
+
 def _gate_clearance_srp(
     res: SweepResult,
     target_system: cr3bp.CR3BPSystem,
@@ -1545,9 +1625,12 @@ def sweep_family_grid_srp(
             beta_nd=beta_nd,
             phi0=phi0,
         )
-    res = _build_result_srp(
+    res = _topology_gated_result_srp(
         k1, k2, target_system, orbit_stable, beta_nd, phi0, method + "_then_c_sweep"
     )
+    if not res.topology_ok:
+        # Wrong-topology clean negative (#808) -- see _finalize_grid_candidate.
+        return res
     return _gate_clearance_srp(
         res,
         target_system,
