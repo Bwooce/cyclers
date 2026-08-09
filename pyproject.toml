@@ -214,22 +214,36 @@ ignore_missing_imports = true
 testpaths = ["tests"]
 # Skip @pytest.mark.slow tests by default. M5's full optimiser tests
 # (DE + multi-start + SLSQP per Aldrin / 2-syn rediscovery) legitimately
-# need 5-10 min each on CI's 2-core runners and are unproductive to gate
-# every push on. Run them with `uv run pytest -m slow` or
-# `-m "slow or not slow"` to include everything.
+# need 5-10 min each and are unproductive to gate every push on. Run them
+# with `uv run pytest -m slow` or `-m "slow or not slow"` to include
+# everything.
 #
 # --timeout=600: belt-and-braces wall-clock cap. Fast tests finish in
 # under 1s; the slow ones (if -m slow) need ~5 min each. pytest-timeout
 # is xdist-aware — the cap is enforced per worker.
 #
-# -n auto: parallel execution across all logical cores via pytest-xdist.
-# The default run now carries the surfaced M5/M6b xfail tests (each a real
-# ~4-5s optimiser pass), so the suite is CPU-bound and fans out cleanly;
-# the slow suite (`-m slow`, 200+ parametrised optimiser runs) is where the
-# speedup is largest. All on-disk-mutating tests write to tmp_path, so
-# worker isolation is safe. Override with `-n0` to force serial (e.g. when
-# debugging with --pdb, which xdist does not support).
-addopts = "-ra -q --strict-markers --timeout=600 -n auto -m 'not slow'"
+# -n 6, not -n auto: parallel execution via pytest-xdist, deliberately
+# capped 2 below this machine's 8 logical cores (no psutil installed, so
+# `-n auto` resolves to os.cpu_count()=8 -- full oversubscription, zero
+# headroom). This machine now also runs a self-hosted GitHub Actions CI
+# runner (2026-08-09) whose own `uv run pytest` step inherits this same
+# addopts, so a genuinely 8-way-vs-8-core suite was contending with
+# itself even with nothing else running: repeated same-session
+# observations found the SAME two tests
+# (test_earth_moon_class1_resonant_connections.py's
+# test_known_close_pair_73c_plateaus_just_outside_guard and
+# test_find_homoclinic_default_k_range_is_too_narrow_for_this_orbit,
+# deliberately near-boundary/margin tests by design) failing under full
+# -n auto parallel load and passing cleanly both in isolation (-n0) and
+# on repeat full runs -- an isolated-flip contention artifact, not a real
+# regression, here triggered by CPU contention rather than a numerical
+# basin edge. Leaving 2 cores free reduces (does not eliminate --
+# concurrent heavy runs should still be avoided where practical) both
+# self-contention and contention with the CI runner/other concurrent
+# work. All on-disk-mutating tests write to tmp_path, so worker isolation
+# is safe. Override with `-n0` to force serial (e.g. when debugging with
+# --pdb, which xdist does not support).
+addopts = "-ra -q --strict-markers --timeout=600 -n 6 -m 'not slow'"
 markers = [
     "slow: tests that take more than ~10 seconds (M5 optimiser, catalogue rediscovery). Skipped by default; run with `-m slow` or `-m 'slow or not slow'`.",
 ]

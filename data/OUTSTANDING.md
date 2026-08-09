@@ -575,9 +575,27 @@ unchanged. See `git log` around this date for the corrected commit.
   `test_549_real_binary_kk_sweep.py` asserts `topology_ok` on such results — so a future
   platform/rounding shift could reproduce `#807`'s failure mode there on any real-binary grid
   sweep. Either extend `#807`'s clean-negative gate semantics to `_finalize_grid_candidate`
-  (re-checking the #549/#657/#660/#665 verdicts per [[feedback_bugfix_invalidates_past_searches]]
-  — reporting-only, so verdict flips are not expected but must be confirmed), or document a
+  (re-checking the #549/#657/#660/#665 verdicts per this project's own "bug-fix invalidates
+  past searches" discipline — reporting-only, so verdict flips are not expected but must be
+  confirmed), or document a
   principled reason grid paths are exempt.
+- `#809` — ✓ DONE 2026-08-09 (user: "fix the contention?"): reduced `pytest-xdist` parallelism
+  from `-n auto` (resolves to `os.cpu_count()=8` on this machine — no `psutil` installed) to
+  `-n 6`, in `pyproject.toml`'s shared `addopts` (inherited by both local dev runs and the
+  self-hosted CI runner's own `uv run pytest` step, since `ci.yml` never overrides `-n`). Root
+  cause this session actually observed: even with NOTHING else running on the machine, an
+  8-way-parallel full suite self-contends enough to intermittently flip 2 deliberately
+  near-boundary/margin tests
+  (`test_earth_moon_class1_resonant_connections.py::test_known_close_pair_73c_plateaus_just_outside_guard`
+  and `::test_find_homoclinic_default_k_range_is_too_narrow_for_this_orbit`) — both pass cleanly
+  in isolation (`-n0`) and on some full runs, fail on others; classic isolated-flip contention
+  signature, not a real regression (neither test touches anything `#797`-`#807` changed).
+  Leaving 2 cores free reduces self-contention and headroom-contention with concurrent work (the
+  CI runner, `#800`'s campaign-runner throttle, interactive use) — does NOT fully eliminate it;
+  concurrent heavy runs should still be avoided where practical (standing discipline, unchanged).
+  `-n 6` chosen over a lower number to keep most of the parallel speedup — not deeply tuned,
+  revisit if flakes persist. Verification: `tests/search/test_earth_moon_class1_resonant_connections.py`
+  green under the new setting; full `tests/data tests/search -q` clean.
 - `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
   dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
   rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
