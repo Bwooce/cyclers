@@ -5,11 +5,18 @@ per-leg ``(n_revs, branch)`` topology + asymmetric ToF seeds that the N-arc
 corrector (search/correct.py) consumes. Isolated here so the corrector stays
 catalogue-agnostic (spec §4).
 
-Field semantics (Russell 2004 pp.126-127, spec §16.7.7):
+Field semantics (Russell 2004 pp.126-127, spec §16.7.7; McConaghy, Russell &
+Longuski 2005, JSR 42(4) DOI 10.2514/1.8123, "Full-Revolution Transfers"):
   * ``arc_type`` -- generic (g/G), half-rev (h/H), full-rev (f/F).
   * ``tof_years`` -- Earth-Earth leg ToF in years; g/h arcs only (null for f/F).
-  * ``resonance`` -- ``M:N`` resonant orbit; full-rev arcs only (M = spacecraft
-    revs, N = Earth years).
+  * ``resonance`` -- ``M:N`` resonant orbit; full-rev arcs only. Per the
+    primary source: "The first parameter, M, is the number of Earth
+    revolutions, and so for Earth-Earth transfers, M also equals the transfer
+    time of flight in years. The second parameter, N, is the number of
+    spacecraft revolutions" (a = a_E (M/N)^(2/3), their Eq. (14)).
+    [#794, 2026-08-09: this module previously read M as spacecraft revs and N
+    as years -- reversed vs. BOTH primary sources; harmless for the 1:1 arcs
+    but wrong for 3:2 / 2:1. Fixed.]
 """
 
 from __future__ import annotations
@@ -24,16 +31,19 @@ def arc_to_leg_topology(arc_type: str, *, resonance: str | None) -> tuple[int, s
     """Per-leg ``(n_revs, branch)`` for a single Earth-Earth return arc.
 
     generic / half-rev returns are direct E-E legs (``n_revs=0, branch="single"``).
-    A full-rev return is a resonant multi-rev loop: the spacecraft does ``M`` revs
-    (``M:N``), so ``n_revs=M, branch="low"`` (spec §16.7.7).
+    A full-rev return is a resonant multi-rev loop: in ``M:N``, ``N`` (after the
+    colon) is the spacecraft revolution count (McConaghy/Russell/Longuski 2005:
+    "The second parameter, N, is the number of spacecraft revolutions"; Russell
+    2004 p.126: "the number following the colon ... represent[s] the number of
+    revolutions by the spacecraft"), so ``n_revs=N, branch="low"``.
     """
     if arc_type in ("generic", "half-rev"):
         return (0, "single")
     if arc_type == "full-rev":
         if resonance is None:
             raise ValueError("full-rev arc requires an M:N resonance")
-        m_revs = int(resonance.split(":")[0])
-        return (m_revs, "low")
+        n_revs = int(resonance.split(":")[1])
+        return (n_revs, "low")
     raise ValueError(f"unknown arc_type {arc_type!r}")
 
 
@@ -41,11 +51,12 @@ def arc_tof_seed_days(arc_type: str, *, tof_years: float | None, resonance: str 
     """ToF seed (days) for a single Earth-Earth return arc.
 
     For g/h arcs the seed is the sourced ``tof_years * DAYS_PER_JULIAN_YEAR``
-    (spec §16.7.7). For f/F arcs ``tof_years`` is null; the seed is derived from
-    the ``M:N`` resonance: ``M`` spacecraft revs over ``N`` Earth years means the
-    Earth-Earth resonant interval is approximately ``N`` Earth years
-    (``N * DAYS_PER_JULIAN_YEAR``). This is a *seed only*, refined by the
-    corrector.
+    (spec §16.7.7). For f/F arcs ``tof_years`` is null; the ToF is exactly the
+    ``M`` (before the colon) of the ``M:N`` resonance in Earth years
+    (McConaghy/Russell/Longuski 2005: "M also equals the transfer time of
+    flight in years"; a full-rev arc departs and re-meets Earth at the same
+    point after exactly M Earth years / N spacecraft revs). This is a *seed
+    only*, refined by the corrector.
     """
     if arc_type in ("generic", "half-rev"):
         if tof_years is None:
@@ -54,8 +65,8 @@ def arc_tof_seed_days(arc_type: str, *, tof_years: float | None, resonance: str 
     if arc_type == "full-rev":
         if resonance is None:
             raise ValueError("full-rev arc requires an M:N resonance")
-        n_years = int(resonance.split(":")[1])
-        return n_years * DAYS_PER_JULIAN_YEAR
+        m_years = int(resonance.split(":")[0])
+        return m_years * DAYS_PER_JULIAN_YEAR
     raise ValueError(f"unknown arc_type {arc_type!r}")
 
 

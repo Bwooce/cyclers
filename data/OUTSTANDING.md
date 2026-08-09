@@ -648,25 +648,67 @@ unchanged. See `git log` around this date for the corrected commit.
   `-n 6` chosen over a lower number to keep most of the parallel speedup — not deeply tuned,
   revisit if flakes persist. Verification: `tests/search/test_earth_moon_class1_resonant_connections.py`
   green under the new setting; full `tests/data tests/search -q` clean.
-- `#794` — registered 2026-08-08 (found during `#793`'s catalogue gap execution sprint, not
-  dispatched): close the remaining `loop-ee`/`loop-ee-N` `#54` `data_gaps` on the 14 catalogue
-  rows that carry `free_return_arcs[]` Russell arc-type descriptors (`search/descriptor.py`).
-  `#793` found that full-rev (`f`/`F`) resonant arcs are closed-form solvable without Lambert at
-  all (resonance pins `a` via Kepler's third law regardless of `e`; `e` follows from a 1-D
-  vis-viva solve against the target V-infinity), sidestepping the 0/180-degree Lambert
-  transfer-angle degeneracy that blocked a direct per-arc Lambert closure for these same rows.
-  The blocker: mapping Russell's `free_return_arcs[]` descriptor list (candidate arc
-  realizations, `g`/`G`/`f`/`F`/`h`/`H`) onto this catalogue's specific materialized
-  `loop-ee-N` segments is NOT a solved problem even in this project's own code —
-  `search/cycler_assembly.py::descriptor_to_phsi`'s own docstring: "There is NO published
-  crosswalk between McConaghy's per-arc descriptor... and Russell's p.h.s.i structure, so this
-  is a best-effort STRUCTURAL map" (several fields flagged `**APPROXIMATION**`). Needs
-  primary-source verification per row (which specific arc option Russell's row actually uses)
-  before any segment-level writeback. Separately/optionally: the `ret-me` (Mars-Earth) arcs
-  across all `#54`-tagged rows need a genuinely different, currently-unbuilt treatment for the
-  unknown relative Mars-Earth orbital phase at each cycle point (a per-arc-isolated Lambert
-  approach, as used for `loop-ee`, cannot supply this). See
-  `docs/notes/2026-08-08-793-catalogue-gap-execution-sprint.md` for the full diagnosis.
+- `#794` — ✓ DONE 2026-08-09 (registered 2026-08-08 by `#793`, dispatched 2026-08-09): closed
+  the `loop-ee`/`loop-ee-N` `#54` `data_gaps` on ALL 14 `free_return_arcs[]` rows — 23 loop
+  segments now carry sourced/derived tof_days / n_revs / branch / (a,e) (+ inclination in the
+  note where the arc is out-of-ecliptic). **The `#793`-flagged descriptor-to-segment mapping
+  blocker dissolved on reading the primary sources**: Russell 2004 §4.8 states the Table
+  4.9-4.13 leg columns ARE the per-leg itinerary in order (uppercase = designated E-M transit =
+  out-em+ret-me; the lowercase legs in cyclic order ARE the loop-ee segments), and McConaghy/
+  Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123 — the thesis's own "Ref. 25") prints the
+  complete closed-form argument semantics (g = Lagrange Lambert Eqs (1)-(11); f = resonant
+  a=(M/N)^(2/3) + v_out direction Eqs (14)-(16); h = backflip Eqs (17)-(19)) AND the explicit
+  per-leg labels for both ocampo rows (Fig. 4 for 2.5.1+0, Table 2 for 4.3.1-5) — no guessing
+  required; `descriptor_to_phsi`'s p.h.s.i map was never needed. Every arc cross-checked TWO
+  independent ways: (1) emergent V-infinity vs the row's separately-printed v-infE, 23/23 within
+  <=0.02 km/s; (2) 13/13 Lambert-solvable g-arcs reproduced by `core.lambert` to 4 decimals
+  (supplying the stored branch labels), and the 2 ocampo rows additionally verified by
+  Kepler-propagating Russell's own printed Table 3.5/3.7 flyby delta-v vectors (print-precision
+  agreement, INCLUDING the leg order and 4.3.1-5's zero-turn f-to-h continuation: its 548-d
+  loop is ONE circular inclined conic, a=1, e=0, i=5.961 deg). Structural corrections sourced
+  from the printed legs: 3 rows over-materialized (3.78Gg3/9.94Gg3/6.44Gg3 print ONE loop, not
+  2 — collapsed, sequence_canonical corrected) and 1 under-materialized (8.049gGf2 prints TWO
+  loops — split). Real code bug found+fixed: `search/descriptor.py` read f(M:N) REVERSED vs
+  both primary sources (M=years/N=revs, not M=revs/N=years; harmless for 1:1, wrong for
+  3:2/2:1) — tests updated; blast-radius follow-up `#813`. mcconaghy-2006-em-k2 closed with an
+  explicit model caveat (Russell circular-coplanar realization; its own 4.7 km/s McConaghy
+  anchor's loop stays a narrowed gap). ret-me NOT attempted (per dispatch: needs the
+  Mars-phase designated-arc split — registered `#815`; the ocampo whole-g-arc conics from the
+  propagation cross-check are recorded in the gap notes as a head start). Full account:
+  `docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md`. Verification: full
+  `tests/data tests/search -q` ratchet + ruff/format + full `mypy src tests` (see commit).
+- `#813` — registered 2026-08-09 (found during `#794`, not dispatched): blast-radius check for
+  `#794`'s `search/descriptor.py` M:N-reversal bugfix, per
+  `[[feedback_bugfix_invalidates_past_searches]]`. The parser feeds `seed_ladder` Rung 1
+  (descriptor seeds); affected rows are exactly the four with non-1:1 f/F resonances
+  (russell-ch4-5.30gGf3, -3.66gfF3, -5.30ggF3, -5.75ggF3), whose f/F-leg ToF seed and rev
+  count were wrong pre-fix (e.g. F(2:1) seeded 1 yr/2 revs instead of 2 yr/1 rev). Audit which
+  past self-seeding/closure campaigns consumed Rung-1 seeds for those rows
+  (`validate_self_seeding_reachable.py`, `triage_self_seeding.py`, seed-ladder consumers) and
+  re-run any negatives that did; seeds feed correctors, so impact needs measuring, not assuming.
+- `#814` — registered 2026-08-09 (found during `#794`, not dispatched): extend `#794`'s
+  descriptor machinery to the ch4 rows it could not touch because their `free_return_arcs[]`
+  were never ingested: russell-ch4-3.77Gh3 (printed legs G(2.9062,686.21,U) +
+  h(3.5,3,U,+-2.022) — an h-arc loop, closable by the same Eqs (17)-(19)), 8.165Gfh-f2 and any
+  other `russell-ch4-*`/Appendix-C parent rows whose printed Table 4.9-4.13 leg strings exist
+  but aren't in the catalogue's `free_return_arcs`. Ingest descriptors first (schema v4.1),
+  then close their loops identically. Also disposition the `russell-ch4-3.64gGg3` id misnomer
+  found by `#794` (printed third leg is f(1:1,82.995,-180.000), so Russell's own shorthand is
+  3.64gGf — id left stable, row note documents it; decide rename-vs-alias, mind
+  cyclers.space/ratchet ripple).
+- `#815` — registered 2026-08-09 (found during `#794`, = the dispatch's explicitly-deferred
+  `ret-me` item, now sharpened): per-segment closure of out-em/ret-me on descriptor rows needs
+  a DESIGNATED-ARC SPLIT treatment, not a per-arc solve — out-em and ret-me are the two halves
+  of ONE printed generic-return conic split by the Mars encounter (`#794` verified this
+  directly: propagating Table 3.5/3.7's printed vectors emerges one conic spanning both legs —
+  2.5.1+0: a=1.5651/e=0.4010, matching #596's out-em inversion 1.5633/0.4001; 4.3.1-5:
+  a=1.2524/e=0.2049, aphelion 1.509 AU vs printed AR 0.99x1.52 — both now recorded in those
+  rows' gap notes). So the actual work is (a) adopt a convention for writing one-conic values
+  onto two segments (trivial for a,e — identical — plus per-half rev counts from the Mars-
+  crossing true anomalies), and (b) for the ch4 rows, the designated G/F-leg conic is directly
+  solvable from its own printed descriptor by `#794`'s exact machinery (no Mars phase needed
+  for the CONIC; the Mars encounter only splits the ToF). Cheap and well-posed after `#794`;
+  supersedes the vaguer "unknown Mars-Earth phase" framing where the descriptor is printed.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +

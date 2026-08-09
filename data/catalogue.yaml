@@ -348,12 +348,12 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # the intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: "The single intermediate Earth-Earth loop of this 2-synodic ('L1') cycler; fills the remainder of the 4.27-yr period between the two Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54)."
+      tof_days: 533.7           # SOURCED: g(1.4612,...) = 1.4612 yr (Russell 2004 Table 4.9 row 1 — this row's orbit_source; circular-coplanar model)
+      n_revs: 1                 # DERIVED (#794): floor(526.02 deg / 360) = 1 complete rev
+      branch: "low"
+      a_au: 1.0512              # DERIVED (#794), circular-coplanar Russell realization — see note + data_gaps
+      e: 0.1704
+      note: "The single intermediate Earth-Earth loop of this 2-synodic ('L1') cycler. MAPPED + DERIVED (#794, 2026-08-09) from this row's own free_return_arcs descriptor (Russell 2004 Table 4.9 row 1, this row's orbit_source): the non-designated leg g(1.4612,526.02,Ll) is the loop; (a,e,n_revs,branch) from the McConaghy/Russell/Longuski 2005 (DOI 10.2514/1.8123) Lagrange generic-transfer solve, cross-checked by cyclerfinder.core.lambert (identical to 4 decimals) — same derivation as sibling row russell-ch4-4.991gG2. MODEL CAVEAT: these are CIRCULAR-COPLANAR values whose emergent Earth V-infinity is 4.995 km/s (Russell's printed 4.99), NOT this row's own 4.7 km/s McConaghy-2006 ephemeris-flavored anchor — see the remaining data_gaps entry."
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -378,10 +378,10 @@
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
   - path: "trajectory.segments[loop-ee]"
-    kind: "derive"
-    note: "Intermediate Earth-Earth loop tof_days / n_revs / branch / (a,e) are computable once the in-house multi-rev Lambert solver closes the arc to the published 4.7/5.0 km/s V-infinity; not yet derived."
-    source_hint: "task #54 multi-rev Lambert solver"
-    todo_ref: "#54"
+    kind: "unknown"
+    note: "[NARROWED #794, 2026-08-09] The loop's circular-coplanar realization is now DERIVED from this row's own Russell Table 4.9 descriptor (see the segment note): tof 533.7 d, n_revs 1, branch low, a 1.0512 AU, e 0.1704, emergent V-infinity 4.995 km/s. STILL OPEN: a loop realization consistent with THIS row's own McConaghy-2006 ephemeris-flavored anchors (4.7/5.0 km/s, 153-d transits) — McConaghy 2006 (DOI 10.2514/1.15215) does not publish per-loop elements, and the circular-coplanar values cannot honestly be claimed to close to 4.7 km/s (they close to 4.99, the sibling russell-ch4-4.991gG2's anchor)."
+    source_hint: "McConaghy/Landau/Yam/Longuski 2006 JSR, DOI 10.2514/1.15215 (full paper)"
+    todo_ref: "#54-backfill"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not in the McConaghy 2006 abstract; orbit_elements.a_au/e are null for the same reason (piecewise generic-return arcs, not a single ellipse). Full paper (DOI 10.2514/1.15215, AIAA 403) would have higher-precision per-leg elements."
@@ -1111,11 +1111,11 @@
       to: "E"
       traj_type: "keplerian-arc"
       tof_days: 548             # SOURCED Russell 2004 Table 3.7: Earth t=2583 d -> Earth t=3131 d => 3131 - 2583
-      n_revs:                   # rev count not tabulated — to be derived
-      branch:
-      a_au:
-      e:
-      note: "Intermediate Earth-Earth loop arc filling the cycler period between Mars encounters (sequence E-E-M-M). 2 Earth flybys (Russell required-geocentric-turn column) imply exactly 1 intermediate Earth-Earth loop, so this single slot is the complete loop topology for this cycler. SOURCED ToF from Russell 2004 Table 3.7 cumulative epochs: Earth t=2583 d -> Earth t=3131 d = 548 d. Per-segment (a,e), rev count, and branch not tabulated (tracked in data_gaps)."
+      n_revs: 1                 # DERIVED (#794): 1.5 revolutions total (1 complete) on one continuous circular inclined orbit — see note
+      branch: "resonant"        # 1:1-resonant circular inclined return continuing through a zero-turn Earth passage — not a Lambert branch; see note
+      a_au: 1.0000              # DERIVED (#794): a pinned at 1 AU (f 1:1 resonance = h backflip solution coincide here)
+      e: 0.0000
+      note: "Intermediate Earth-Earth loop arc filling the cycler period between Mars encounters (sequence E-E-M-M); SOURCED ToF from Russell 2004 Table 3.7 cumulative epochs (2583 -> 3131 d). MAPPED + DERIVED (#794, 2026-08-09): McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) Table 2 prints Cycler 4.3.1.-5's label as 4g(7 1/14, 5 1/14 rev, L) f(1:1, 84.039, -+90.0) ... h(0.5, 0, U, +-5.961): the 548-d loop is the f(1:1) full-rev arc followed by the h(0.5) half-rev backflip. With lambda=+-90 and a=1 the f arc IS a circular INCLINED orbit (their Eq (16): e=0, i=5.961 deg) — identical to the h backflip's orbit (i'=5.961 deg) — so the two descriptor arcs form ONE CONTINUOUS circular inclined orbit (a=1 AU, e=0, i=5.961 deg, 1.5 revs over 548 d) with a ZERO-TURN unpowered Earth passage at the 1-yr mark, which is exactly why Russell's Table 3.4 turn-angle column lists only 2 flybys and Table 3.7 lists no encounter between 2583 and 3131 d. CROSS-CHECKED independently by Kepler-propagating Table 3.7's own printed flyby delta-v vectors: the 2583->3131 arc emerges a=0.9998, e=0.0006, i=5.954 as one conic, re-passing Earth's position at 2583+365.3 d to 0.006 AU (print precision). V-infinity = 2 v_E sin(i/2) = 3.097 km/s vs the sourced 3.1. INCLINATION i=5.961 deg recorded here in the note (no segment inclination field)."
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -1141,13 +1141,13 @@
   data_gaps:
   - path: "trajectory.segments[*].a_au"
     kind: "unknown"
-    note: "Per-segment (a,e) of every arc (out-em / ret-me / loop-ee) not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published). ToFs are now fully sourced from Table 3.7 cumulative epochs; only the per-segment conic elements remain unknown."
-    source_hint: "Russell 2004 dissertation Table 3.4 / 4.x leg descriptors"
+    note: "Per-segment (a,e) not tabulated directly by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published). [#794 2026-08-09: loop-ee now DERIVED from the primary-source leg decomposition (McConaghy/Russell/Longuski 2005 Table 2), cross-checked by Kepler-propagating Table 3.7's own printed flyby delta-v vectors — see the segment note. REMAINING: out-em and ret-me, the two halves of the single designated g(7 1/14) generic-return arc split by the Mars encounter; the Table 3.7 propagation cross-check emerges a=1.2524/e=0.2049 for that whole g arc (aphelion 1.509 AU, consistent with the printed AR=0.99 x 1.52), but a sourced-quality SEGMENT writeback needs the Mars-phase split treatment.]"
+    source_hint: "Russell 2004 dissertation Table 3.4 / Table 3.7; McConaghy/Russell/Longuski 2005 Table 2"
     todo_ref: "#54-backfill"
-  - path: "trajectory.segments[*].n_revs"
+  - path: "trajectory.segments[ret-me].n_revs"
     kind: "derive"
-    note: "Rev counts / branch for the multi-rev ret-me (2315 d) and loop-ee (548 d) arcs are derivable once the multi-rev Lambert solver closes them to the published 3.1/2.5 km/s V-infinity; Russell tabulates encounter epochs (hence ToF) but not the rev count. Topology itself is RESOLVED for this cycler: 2 Earth flybys imply exactly 1 intermediate Earth-Earth loop, matching the single sourced loop-ee slot."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.7 cumulative epochs"
+    note: "[NARROWED #794, 2026-08-09 — was trajectory.segments[*].n_revs] Rev count / branch / (a,e) for the multi-rev ret-me (2315 d) remain underived as SEGMENT values; loop-ee (548 d) is now closed via the primary-source leg decomposition (see the segment note). ret-me is the Mars->Earth remainder of the single designated g(7 1/14, 5 1/14 rev, L) arc (out-em is the first 268 d of the same conic; the '5 1/14 rev' in the printed descriptor gives the whole arc's revolution count), so the honest per-segment writeback needs the Mars-phase split treatment, not a loop-style per-arc solve."
+    source_hint: "Russell 2004 Table 3.7 cumulative epochs + printed delta-v vectors; McConaghy/Russell/Longuski 2005 Table 2"
     todo_ref: "#54"
   first_published:
     authors: ["Russell, R. P.", "Ocampo, C. A."]
@@ -1208,6 +1208,8 @@
     aphelion_au: |
       Russell 2004 §3.8: "The Aphelion Ratio is 0.992, thus the cycler
       doesn't quite reach Mars in the simplified model."
+    trajectory.segments[loop-ee].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) Table 2's printed cycler label for 4.3.1.-5 (f(1:1,84.039,-+90.0) + h(0.5,0,U,+-5.961) = one continuous circular inclined orbit, a=1 AU, e=0, i=5.961 deg), via their Eqs (14)-(19). Cross-checked by Kepler-propagating Russell 2004 Table 3.7's printed flyby delta-v vectors (emerged a=0.9998, e=0.0006, i=5.954 as ONE conic over the full 548 d, with a 0.006-AU zero-turn Earth re-passage at the 1-yr mark). See docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md."
+    trajectory.segments[loop-ee].e: "DERIVED (kind: derive), see trajectory.segments[loop-ee].a_au."
 
   free_return_arcs:
   - arc_type: generic
@@ -1484,31 +1486,31 @@
       to: "E"
       traj_type: "keplerian-arc"
       tof_days: 366             # SOURCED Russell 2004 Table 3.5: Earth t=652 d -> Earth t=1018 d => 1018 - 652
-      n_revs:                   # rev count not tabulated — to be derived
-      branch:
-      a_au:
-      e:
-      note: "Intermediate Earth-Earth loop arc #1 (sequence E-E-M-M). 4 Earth flybys (Russell required-geocentric-turn column) imply 3 intermediate Earth-Earth loops; this is the first. SOURCED ToF from Russell 2004 Table 3.5 cumulative epochs: Earth t=652 d -> Earth t=1018 d = 366 d. Per-segment (a,e), rev count, branch not tabulated (tracked in data_gaps)."
+      n_revs: 1                 # DERIVED (#794): f(1:1) full-rev return, N=1 spacecraft rev
+      branch: "resonant"        # same-point 1:1 resonant return — not a Lambert branch; see note
+      a_au: 1.0000              # DERIVED (#794): a pinned at 1 AU by the 1:1 resonance
+      e: 0.2107
+      note: "Intermediate Earth-Earth loop arc #1 (sequence E-E-M-M), the first of the 3 loops implied by 4 Earth flybys; SOURCED ToF from Russell 2004 Table 3.5 cumulative epochs (652 -> 1018 d). MAPPED (#794, 2026-08-09) via the PRIMARY-SOURCE per-leg decomposition: McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) Fig. 4 labels Cycler 2.5.1.+0's legs explicitly — Leg 1 g (designated, Mars encounter), Leg 2 f(1:1,74.919,-144.069), Leg 3 h(0.5,0,U,15.081), Leg 4 f(1:1,74.919,35.931) — so this 366-d loop IS the Leg-2 full-rev arc (1 Earth year exactly). (a,e) DERIVED via their Eqs (14)-(16): a=1 AU, e=0.2107, OUT-OF-ECLIPTIC with INCLINATION i=8.99 deg (lambda=-144.069 is not 0/180; i recorded here in the note — no segment inclination field). CROSS-CHECKED independently by Kepler-propagating Russell 2004 Table 3.5's own printed flyby delta-v vectors through the full cycle: this arc emerges a=1.0003, e=0.2118, i=9.005 (print-precision agreement). Emergent V-infinity 7.817 km/s vs the sourced 7.8."
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
       tof_days: 182             # SOURCED Russell 2004 Table 3.5: Earth t=1018 d -> Earth t=1200 d => 1200 - 1018
-      n_revs:                   # rev count not tabulated — to be derived
-      branch:
-      a_au:
-      e:
-      note: "Intermediate Earth-Earth loop arc #2 (sequence E-E-M-M), the second of the 3 loops implied by 4 Earth flybys. SOURCED ToF from Russell 2004 Table 3.5 cumulative epochs: Earth t=1018 d -> Earth t=1200 d = 182 d. Per-segment (a,e), rev count, branch not tabulated (tracked in data_gaps)."
+      n_revs: 0                 # DERIVED (#794): h(0.5) half-rev backflip, 0 complete revs
+      branch: "half-rev"        # 180-deg backflip return — the Lambert BVP is singular at 180 deg; not a Lambert branch
+      a_au: 1.0000              # DERIVED (#794): the 0.5-yr 180-deg return forces the circular a=1 solution
+      e: 0.0000
+      note: "Intermediate Earth-Earth loop arc #2 = Leg 3 h(0.5,0,U,15.081) per McConaghy/Russell/Longuski 2005 Fig. 4 (see loop-ee-1 note for the full leg mapping). A half-revolution BACKFLIP: circular inclined orbit, a=1 AU, e=0, INCLINATION i'=15.081 deg (printed in the leg descriptor itself; recorded here in the note — no segment inclination field), meeting Earth again at the opposite node half a year later. V-infinity = 2 v_E sin(i'/2) = 7.817 km/s vs the sourced 7.8. CROSS-CHECKED by the Table 3.5 delta-v-vector propagation: this arc emerges a=0.9996, e=0.0010, i=15.077 (print-precision agreement)."
     - id: "loop-ee-3"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
       tof_days: 365             # SOURCED Russell 2004 Table 3.5: Earth t=1200 d -> Earth t=1565 d => 1565 - 1200
-      n_revs:                   # rev count not tabulated — to be derived
-      branch:
-      a_au:
-      e:
-      note: "Intermediate Earth-Earth loop arc #3 (sequence E-E-M-M), the third of the 3 loops implied by 4 Earth flybys. SOURCED ToF from Russell 2004 Table 3.5 cumulative epochs: Earth t=1200 d -> Earth t=1565 d = 365 d. The following Earth flyby (flyby_mechanics[3]=54 deg) closes the cycle by launching the next out-em leg (E t=1565 -> M t=1659, the partial second cycle) and is implicit (not stored). Per-segment (a,e), rev count, branch not tabulated (tracked in data_gaps)."
+      n_revs: 1                 # DERIVED (#794): f(1:1) full-rev return, N=1 spacecraft rev
+      branch: "resonant"        # same-point 1:1 resonant return — not a Lambert branch; see note
+      a_au: 1.0000              # DERIVED (#794): a pinned at 1 AU by the 1:1 resonance
+      e: 0.2107
+      note: "Intermediate Earth-Earth loop arc #3 = Leg 4 f(1:1,74.919,35.931) per McConaghy/Russell/Longuski 2005 Fig. 4 (see loop-ee-1 note). Same shape as loop-ee-1 (a=1 AU, e=0.2107, i=8.99 deg) with the opposite radial-velocity sign / node orientation (lambda=+35.931 vs -144.069). The following Earth flyby (flyby_mechanics[3]=54 deg) closes the cycle by launching the next out-em leg (E t=1565 -> M t=1659) and is implicit (not stored). CROSS-CHECKED by the Table 3.5 delta-v-vector propagation: this arc emerges a=1.0018, e=0.2115, i=8.975 (print-precision agreement). Emergent V-infinity 7.817 km/s vs the sourced 7.8."
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -1550,13 +1552,13 @@
   data_gaps:
   - path: "trajectory.segments[*].a_au"
     kind: "unknown"
-    note: 'Per-segment (a,e) of every arc (out-em / ret-me / loop-ee-1 / loop-ee-2 / loop-ee-3) not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published). All ToFs are now sourced from Table 3.5 cumulative epochs; only the per-segment conic elements remain unknown. [2026-07-15: out-em a_au/e now DERIVED via the validated AR+V_inf_Earth inversion (docs/notes/2026-07-15-596-russell-backfill-method-validated.md); remaining segments (ret-me / loop-ee-*) still need the multi-rev Lambert rev-count resolution (task #54) before their own a_au/e can be safely assigned -- NOT simply copied from out-em, since they may involve additional revolutions.]'
-    source_hint: "Russell 2004 dissertation Table 3.4 / 4.x leg descriptors"
+    note: 'Per-segment (a,e) not tabulated directly by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published). [2026-07-15: out-em a_au/e DERIVED via the validated AR+V_inf_Earth inversion (docs/notes/2026-07-15-596-russell-backfill-method-validated.md).] [#794 2026-08-09: ALL THREE loop arcs now DERIVED from the primary-source per-leg decomposition (McConaghy/Russell/Longuski 2005 Fig. 4 + leg descriptors), cross-checked by Kepler-propagating Table 3.5''s own printed flyby delta-v vectors — see the segment notes. REMAINING: ret-me (558 d) only, which is the second half of the designated Leg-1 g arc split by the Mars encounter; the Table 3.5 propagation cross-check emerges a=1.5651/e=0.4010 for the whole g arc (matching out-em''s inverted 1.5633/0.4001 at print precision), but a sourced-quality writeback for ret-me as a SEGMENT still needs the Mars-phase split treatment (out-em and ret-me lie on the SAME conic).]'
+    source_hint: "Russell 2004 dissertation Table 3.4 / Table 3.5; McConaghy/Russell/Longuski 2005 Fig. 4"
     todo_ref: "#54-backfill"
-  - path: "trajectory.segments[*].n_revs"
+  - path: "trajectory.segments[ret-me].n_revs"
     kind: "derive"
-    note: "Rev counts / branch for the multi-rev ret-me (558 d) and loop arcs (366 d, 182 d, 365 d) are derivable once the multi-rev Lambert solver closes them to the published 7.8/9.9 km/s V-infinity; Russell tabulates encounter epochs (hence ToF) but not the rev count. Topology is RESOLVED for this cycler: 4 Earth flybys imply 3 intermediate Earth-Earth loops (loop-ee-1/2/3), all materialised with sourced ToFs from Table 3.5."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.5 cumulative epochs"
+    note: "[NARROWED #794, 2026-08-09 — was trajectory.segments[*].n_revs] Rev count / branch / (a,e) for the multi-rev ret-me (558 d) remain underived as SEGMENT values; the loop arcs (366/182/365 d) are all now closed via the primary-source leg decomposition (see segment notes). ret-me is the Mars->Earth half of the single designated g(1-11/14) generic-return arc (out-em is the other half; both lie on ONE conic, a~1.565 AU, e~0.401 per the Table 3.5 propagation cross-check), so the honest per-segment writeback needs the Mars-phase split treatment, not a loop-style per-arc solve."
+    source_hint: "Russell 2004 Table 3.5 cumulative epochs + printed delta-v vectors"
     todo_ref: "#54"
   first_published:
     authors: ["Russell, R. P.", "Ocampo, C. A."]
@@ -1583,6 +1585,9 @@
 # ---------------------------------------------------------------------------
     trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.4 row 2.5.1.+0's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.912 vs. tabulated 9.900 km/s, 0.1% error)."
     trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.4 row 2.5.1.+0's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.912 vs. tabulated 9.900 km/s, 0.1% error)."
+    trajectory.segments[loop-ee-1].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) Fig. 4's explicit per-leg mapping of Cycler 2.5.1.+0 + the printed leg descriptor f(1:1,74.919,-144.069), via their Eqs (14)-(16). Cross-checked by Kepler-propagating Russell 2004 Table 3.5's printed flyby delta-v vectors (emerged a=1.0003, e=0.2118, i=9.005 vs derived 1.0000/0.2107/8.99). See docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md."
+    trajectory.segments[loop-ee-2].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from the printed leg h(0.5,0,U,15.081) (backflip: a=1, e=0, i'=15.081 printed in the descriptor), same sources and propagation cross-check as loop-ee-1 (emerged a=0.9996, e=0.0010, i=15.077)."
+    trajectory.segments[loop-ee-3].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from the printed leg f(1:1,74.919,35.931), same sources and propagation cross-check as loop-ee-1 (emerged a=1.0018, e=0.2115, i=8.975)."
   free_return_arcs:
   - arc_type: generic
     resonance:
@@ -40885,12 +40890,12 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 1 for this 2-synodic cycler (sequence E-E-M-M); fills part of the 4.27-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 533.7           # SOURCED: g(1.4612,...) = 1.4612 yr (Russell 2004 Table 4.9 row 1, Leg 1; p.126: "the first number in the parenthesis is the time of flight in years")
+      n_revs: 1                 # DERIVED (#794): floor(526.02 deg / 360) = 1 complete rev
+      branch: "low"
+      a_au: 1.0512              # DERIVED (#794) — see note
+      e: 0.1704
+      note: 'Intermediate Earth-Earth loop 1 of 1 for this 2-synodic cycler (sequence E-E-M-M). MAPPED (#794, 2026-08-09) to the printed non-designated leg g(1.4612,526.02,Ll) of Russell 2004 Table 4.9 row 1: the uppercase G(2.8096,...) leg is the designated E-M transit (out-em + ret-me), so the single lowercase g leg IS this loop. (a,e,n_revs,branch) DERIVED (kind: derive) by the McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) generic-transfer Lagrange formulation, Eqs (1)-(11), from the printed (tof=1.4612 yr, transfer angle theta=526.02 deg, epsilon=Ll long-period lower branch): a=1.0512 AU, e=0.1704, coplanar. Cross-checks: emergent V-infinity 4.995 km/s vs the row''s independently-printed 4.99 (0.1%); independently reproduced by cyclerfinder.core.lambert.lambert(max_revs=8) n_revs=1/branch=low to 4 decimals in (a,e). The Ll subscript (long-period = larger-a lower-branch root) selects a=1.0512 over the degenerate a=1.0000/e~0 root, consistent with the V-infinity match.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -40914,14 +40919,9 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
-  - path: "trajectory.segments[loop-ee]"
-    kind: "derive"
-    note: "The 1 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 4.99/5.1 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
-    note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
+    note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined). [#794 2026-08-09: the loop-ee gap on this row is CLOSED (descriptor-derived, see the segment note); out-em/ret-me are halves of the designated G(2.8096,651.46,U) arc split by the Mars encounter, so their per-segment elements need the Mars-phase treatment, not the loop solve.]"
     source_hint: "Russell 2004 dissertation Table 4.x leg descriptors g(...)/G(...)"
     todo_ref: "#54-backfill"
   - path: "trajectory.segments[ret-me].a_au"
@@ -41011,6 +41011,10 @@
       cycler ... discovered first by McConaghy et al. in Ref. 15".
       Line 8008: "the S1L1 cycler (4.991Gg2), 8.049gGf2, and the
       Aldrin cycler".
+    trajectory.segments[loop-ee].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from the printed leg descriptor g(1.4612,526.02,Ll) (Russell 2004 Table 4.9 row 1) via the McConaghy/Russell/Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123) Lagrange generic-transfer solve, Eqs (1)-(11). Emergent V-infinity 4.995 km/s vs the printed 4.99 (independent cross-check); independently reproduced by cyclerfinder.core.lambert (n_revs=1, branch=low). See docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md."
+    trajectory.segments[loop-ee].e: "DERIVED (kind: derive), see trajectory.segments[loop-ee].a_au."
+    trajectory.segments[loop-ee].tof_days: "SOURCED: 1.4612 yr printed in the leg descriptor (Russell 2004 p.126: first number in the parenthesis is ToF in years) = 533.7 d."
+    trajectory.segments[loop-ee].n_revs: "DERIVED: floor(526.02/360) = 1 (McConaghy/Russell/Longuski 2005 Eq (2)); branch per cyclerfinder.core.lambert branch vocabulary (low), matching the Ll (lower-curve long-period) printed subscript."
 
 - id: russell-ch4-8.049gGf2
   name: "Russell-Ocampo cycler 8.049gGf2 (high-energy two-synodic ballistic)"
@@ -41048,7 +41052,7 @@
   fleet_size:        # schema v2; integer count; null where not stated by source
   flyby_mechanics:        # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
-  sequence_canonical: "E-E-M-M"
+  sequence_canonical: "E-E-E-M-M"   # CORRECTED #794 (was E-E-M-M): Table 4.9 row 2 prints THREE legs (gGf) = 3 Earth encounters per cycle + the Mars crossing pair on the designated G leg
   sense: "outbound"
   period:
     pair: "E-M"
@@ -41108,16 +41112,26 @@
       a_au:                     # per-segment elements not tabulated — see data_gaps[]
       e:
       note: 'Russell 2004 Table 4.9 row 2: t_in = 93 days (symmetric generic returns).'
-    - id: "loop-ee"
+    - id: "loop-ee-1"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 1 for this 2-synodic cycler (sequence E-E-M-M); fills part of the 4.27-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 365.3           # SOURCED: f(1:1,...) full-rev = M=1 Earth year exactly (resonance condition)
+      n_revs: 1                 # N=1 spacecraft rev (the number after the colon)
+      branch: "resonant"        # same-point 1:1 resonant return — not a Lambert branch (the E-E boundary-value problem is degenerate at 360 deg); see note
+      a_au: 1.0000              # DERIVED (#794): a = (M/N)^(2/3) = 1 AU exactly (resonance pins a)
+      e: 0.2678
+      note: 'RESTRUCTURED + DERIVED (#794, 2026-08-09). Russell 2004 Table 4.9 row 2 prints THREE legs — g(1.4951,538.24,Ll), G(1.7757,279.24,U) designated, f(1:1,74.468,-180.000) — so this 2-synodic cycler has TWO intermediate Earth-Earth loops (the prior single loop-ee slot under-counted; the printed legs are the primary source). Cyclic order after the designated G transit: Leg 3 f (this segment), then Leg 1 g (loop-ee-2). This f(1:1) arc: a pinned at 1 AU by the 1:1 resonance (McConaghy/Russell/Longuski 2005 Eq (14)); v_out direction from the printed (phi=74.468, lambda=-180.000) via their Eq (16); lambda=+-180/0 means IN-ECLIPTIC (coplanar, i=0) per the same source; e=0.2678. Cross-check: emergent V-infinity 8.049 km/s vs the row''s printed 8.05 (and vs the "8.049" in the cycler code itself).'
+    - id: "loop-ee-2"
+      from: "E"
+      to: "E"
+      traj_type: "keplerian-arc"
+      tof_days: 546.1           # SOURCED: g(1.4951,...) = 1.4951 yr
+      n_revs: 1                 # DERIVED (#794): floor(538.24 deg / 360) = 1
+      branch: "low"
+      a_au: 1.0837              # DERIVED (#794) — see note
+      e: 0.2708
+      note: 'Second intermediate Earth-Earth loop = the printed non-designated leg g(1.4951,538.24,Ll) (Leg 1, wrapping cyclically after loop-ee-1). (a,e,n_revs,branch) DERIVED (#794) by the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve (Eqs (1)-(11)) from the printed (1.4951 yr, 538.24 deg, Ll long-period lower branch). Cross-checks: emergent V-infinity 8.050 km/s vs printed 8.05; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=1/branch=low to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -41127,7 +41141,7 @@
       max_turning_angle_deg: 11.9     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=10.02 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
       note: "Ballistic Mars flyby; V-infinity continuity (10.02 km/s in == out) is the cycle-closure constraint at Mars."
-    - at_segment_boundary: ["ret-me", "loop-ee"]
+    - at_segment_boundary: ["ret-me", "loop-ee-1"]
       body: "E"
       type: "flyby-ballistic"
       dv_kms: 0.0
@@ -41135,17 +41149,20 @@
       max_turning_angle_deg: 57.3     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=8.05 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
       note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 8.05 km/s."
+    - at_segment_boundary: ["loop-ee-1", "loop-ee-2"]
+      body: "E"
+      type: "flyby-ballistic"
+      dv_kms: 0.0
+      turning_angle_deg:
+      max_turning_angle_deg: 57.3     # COMPUTED, same anchor as the previous Earth flyby (V-infinity continuity at 8.05 km/s)
+      periapsis_alt_km:
+      note: "Second intermediate Earth flyby, between the f(1:1) and g(1.4951) loops (added with the #794 restructure; Russell prints no per-flyby turn angles for Table 4.9 rows)."
   family:
     id: "russell-2syn-em"
     name: "Russell 2-synodic Earth-Mars ballistic"
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
-  - path: "trajectory.segments[loop-ee]"
-    kind: "derive"
-    note: "The 1 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 8.05/10.02 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -41197,6 +41214,8 @@
     "legs[0].tof_days": "Russell 2004 Table 4.9 row 2: t_out = 93."
     "legs[1].tof_days": "Russell 2004 Table 4.9 row 2: t_in = 93."
     "orbit_elements.aphelion_au": "Russell 2004 Table 4.9 row 2: aphel = 2.19 AU."
+    trajectory.segments[loop-ee-1].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from the printed leg f(1:1,74.468,-180.000): a = (M/N)^(2/3) = 1 AU exactly (McConaghy/Russell/Longuski 2005 JSR 42(4) DOI 10.2514/1.8123 Eq (14)); e from their Eq (16) v_out direction (phi=74.468, lambda=-180 in-ecliptic). Emergent V-infinity 8.049 km/s vs printed 8.05. See docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md."
+    trajectory.segments[loop-ee-2].a_au: "DERIVED (kind: derive, #794, 2026-08-09) from the printed leg g(1.4951,538.24,Ll) via the McConaghy/Russell/Longuski 2005 Lagrange solve; emergent V-infinity 8.050 km/s vs printed 8.05; cross-checked by cyclerfinder.core.lambert (n_revs=1, branch=low)."
     name: |
       Russell 2004 dissertation line 7416 lists 8.049gGf2 among the most
       promising cyclers; line 5470: "The new cycler, 8.05gGf, is composed
@@ -41464,12 +41483,12 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 1 for this 2-synodic cycler (sequence E-E-M-M); fills part of the 4.27-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 930.3           # SOURCED: g(2.5469,...) = 2.5469 yr (Russell 2004 Table 4.9 row 4, Leg 2)
+      n_revs: 2                 # DERIVED (#794): floor(916.9 deg / 360) = 2 complete revs
+      branch: "low"
+      a_au: 1.0555              # DERIVED (#794) — see note
+      e: 0.3093
+      note: 'Intermediate Earth-Earth loop 1 of 1 for this 2-synodic cycler. MAPPED (#794, 2026-08-09) to the printed non-designated leg g(2.5469,916.9,L) of Russell 2004 Table 4.9 row 4 (the uppercase G(1.7238,260.58,U) is the designated transit). (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 (DOI 10.2514/1.8123) Lagrange generic-transfer solve from the printed (2.5469 yr, 916.9 deg, L): a=1.0555 AU, e=0.3093, coplanar. Cross-checks: emergent V-infinity 9.352 km/s vs the printed 9.35; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=2/branch=low to 4 decimals (unique L-branch root).'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -41493,11 +41512,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
-  - path: "trajectory.segments[loop-ee]"
-    kind: "derive"
-    note: "The 1 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 9.35/10.52 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -41650,22 +41664,22 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 365.3           # SOURCED: f(1:1,...) full-rev = M=1 Earth year exactly (resonance condition)
+      n_revs: 1                 # N=1 spacecraft rev
+      branch: "resonant"        # same-point 1:1 resonant return — not a Lambert branch; see note
+      a_au: 1.0000              # DERIVED (#794): a = (M/N)^(2/3) = 1 AU exactly
+      e: 0.1220
+      note: 'Intermediate Earth-Earth loop 1 of 2. MAPPED + DERIVED (#794, 2026-08-09): the printed Table 4.10 row (v_infE=3.64, t=175 d, TR=1.62) has legs g(2.4845,894.42,Ll), G(2.9217,691.79,U) designated, f(1:1,82.995,-180.000); cyclic order after the designated G transit is Leg 3 f (this segment) then Leg 1 g (loop-ee-2). NOTE the catalogue id ("...gGg3") mis-transcribes the third leg — the printed leg is f(1:1,...), a full-rev return, so Russell''s own shorthand rule (first letter of each leg) gives 3.64gGf. This f(1:1): a pinned at 1 AU by the resonance (McConaghy/Russell/Longuski 2005 Eq (14)); lambda=-180 = in-ecliptic (coplanar); e=0.1220. Cross-check: emergent V-infinity 3.639 km/s vs printed 3.64.'
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 907.5           # SOURCED: g(2.4845,...) = 2.4845 yr
+      n_revs: 2                 # DERIVED (#794): floor(894.42 deg / 360) = 2
+      branch: "low"
+      a_au: 1.0213              # DERIVED (#794) — see note
+      e: 0.1227
+      note: 'Intermediate Earth-Earth loop 2 of 2 = the printed non-designated leg g(2.4845,894.42,Ll). (a,e,n_revs,branch) DERIVED (#794) via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve (Ll = long-period lower-branch root). Cross-checks: emergent V-infinity 3.640 km/s vs printed 3.64; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=2/branch=low to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -41689,11 +41703,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 3.64/4.59 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -41942,7 +41951,7 @@
   fleet_size:        # schema v2; integer count; null where not stated by source
   flyby_mechanics:        # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
-  sequence_canonical: "E-E-E-M-M"
+  sequence_canonical: "E-E-M-M"   # CORRECTED #794 (was E-E-E-M-M): the printed Table 4.10 row has TWO legs (Gg) = 2 Earth encounters per cycle, one 3.5-yr loop
   sense: "outbound"
   period:
     pair: "E-M"
@@ -42001,26 +42010,16 @@
       a_au:                     # per-segment elements not tabulated — see data_gaps[]
       e:
       note: 'Russell 2004 Table 4.10: t_in = 171 days.'
-    - id: "loop-ee-1"
+    - id: "loop-ee"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
-    - id: "loop-ee-2"
-      from: "E"
-      to: "E"
-      traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 1279.1          # SOURCED: g(3.5018,...) = 3.5018 yr (Russell 2004 Table 4.10, Leg 2)
+      n_revs: 3                 # DERIVED (#794): floor(1260.65 deg / 360) = 3 complete revs
+      branch: "low"
+      a_au: 1.0157              # DERIVED (#794) — see note
+      e: 0.1270
+      note: 'RESTRUCTURED + DERIVED (#794, 2026-08-09): the printed Table 4.10 row (v_infE=3.78, t=171 d) has exactly TWO legs — G(2.9043,685.56,U) designated + g(3.5018,1260.65,L) — so this 3-synodic cycler has ONE long intermediate Earth-Earth loop (3.5 yr, 3 revs), not the two loops the prior template assumed from a "3-synodic implies 2 loops" heuristic; the printed legs are the primary source (2.9043 + 3.5018 = 6.406 yr = 3 synodic periods exactly). The former empty loop-ee-2 slot is REMOVED. (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 (DOI 10.2514/1.8123) Lagrange generic-transfer solve from (3.5018 yr, 1260.65 deg, L): a=1.0157 AU, e=0.1270, coplanar. Cross-checks: emergent V-infinity 3.783 km/s vs printed 3.78; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=3/branch=low to 4 decimals (unique L root; the residual 180.65-deg transfer angle sits 0.65 deg from the 180-deg Lambert singularity yet both solvers agree).'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -42030,25 +42029,20 @@
       max_turning_angle_deg: 41.1     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=4.63 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
       note: "Ballistic Mars flyby; V-infinity continuity (4.63 km/s in == out) is the cycle-closure constraint at Mars."
-    - at_segment_boundary: ["ret-me", "loop-ee-1"]
+    - at_segment_boundary: ["ret-me", "loop-ee"]
       body: "E"
       type: "flyby-ballistic"
       dv_kms: 0.0
       turning_angle_deg:
       max_turning_angle_deg: 107.6     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=3.78 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
-      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 3.78 km/s."
+      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 3.78 km/s. (#794: boundary id updated with the single-loop restructure.)"
   family:
     id: "russell-3syn-em"
     name: "Russell 3-synodic Earth-Mars ballistic"
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 3.78/4.63 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -42185,22 +42179,22 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 1095.8          # SOURCED: f(3:2,...) full-rev = M=3 Earth years exactly (resonance condition)
+      n_revs: 2                 # N=2 spacecraft revs (the number after the colon)
+      branch: "resonant"        # same-point 3:2 resonant return — not a Lambert branch; see note
+      a_au: 1.3104              # DERIVED (#794): a = (M/N)^(2/3) = (3/2)^(2/3) AU (resonance pins a)
+      e: 0.2447
+      note: 'Intermediate Earth-Earth loop 1 of 2. MAPPED + DERIVED (#794, 2026-08-09): the printed Table 4.11 row (v_infE=5.30, t=118 d, TR=1.27) has legs g(1.4646,527.25,Ll), G(1.9416,338.97,U) designated, f(3:2,82.487,118.851); cyclic order after the designated G transit is Leg 3 f (this segment) then Leg 1 g (loop-ee-2). This f(3:2) = 3 Earth years / 2 spacecraft revs (Russell 2004 p.126: the number after the colon is the spacecraft revolution count): a = (3/2)^(2/3) = 1.3104 AU. The printed longitude lambda=118.851 is NOT 0/180, so this full-rev loop is OUT-OF-ECLIPTIC: via McConaghy/Russell/Longuski 2005 Eq (16), e=0.2447 with INCLINATION i=6.589 deg (i is recorded here in the note; the segment schema carries no inclination field). Cross-check: emergent V-infinity 5.301 km/s vs printed 5.30 (V-infinity depends on phi only, their own remark).'
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 535.0           # SOURCED: g(1.4646,...) = 1.4646 yr
+      n_revs: 1                 # DERIVED (#794): floor(527.25 deg / 360) = 1
+      branch: "low"
+      a_au: 1.0545              # DERIVED (#794) — see note
+      e: 0.1807
+      note: 'Intermediate Earth-Earth loop 2 of 2 = the printed non-designated leg g(1.4646,527.25,Ll). (a,e,n_revs,branch) DERIVED (#794) via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve (Ll long-period lower-branch root). Cross-checks: emergent V-infinity 5.303 km/s vs printed 5.30; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=1/branch=low to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -42224,11 +42218,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 5.3/9.17 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -42475,7 +42464,7 @@
   fleet_size:        # schema v2; integer count; null where not stated by source
   flyby_mechanics:        # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
-  sequence_canonical: "E-E-E-M-M"
+  sequence_canonical: "E-E-M-M"   # CORRECTED #794 (was E-E-E-M-M): the printed Table 4.11 row has TWO legs (Gg) = 2 Earth encounters per cycle, one 4.7-yr loop
   sense: "outbound"
   period:
     pair: "E-M"
@@ -42534,26 +42523,16 @@
       a_au:                     # per-segment elements not tabulated — see data_gaps[]
       e:
       note: 'Russell 2004 Table 4.11: t_in = 82 days.'
-    - id: "loop-ee-1"
+    - id: "loop-ee"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
-    - id: "loop-ee-2"
-      from: "E"
-      to: "E"
-      traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 1718.1          # SOURCED: g(4.7037,...) = 4.7037 yr (Russell 2004 Table 4.11, Leg 2)
+      n_revs: 5                 # DERIVED (#794): floor(2053.31 deg / 360) = 5 complete revs
+      branch: "high"
+      a_au: 0.9015              # DERIVED (#794) — see note
+      e: 0.3494
+      note: 'RESTRUCTURED + DERIVED (#794, 2026-08-09): the printed Table 4.11 row (v_infE=9.94, t=82 d) has exactly TWO legs — G(1.7025,252.9,U) designated + g(4.7037,2053.31,Ls) — so this 3-synodic cycler has ONE long intermediate Earth-Earth loop (4.7 yr, 5 revs, INTERIOR: a=0.9015 AU < 1, aphelion 1.216 AU, perihelion 0.587 AU), not the two loops the prior template assumed; the printed legs are the primary source (1.7025 + 4.7037 = 6.406 yr = 3 synodic periods exactly). The former empty loop-ee-2 slot is REMOVED. (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve from (4.7037 yr, 2053.31 deg, Ls short-period lower-branch root): a=0.9015 AU, e=0.3494, coplanar. Cross-checks: emergent V-infinity 9.943 km/s vs printed 9.94 (the OTHER lower-branch root a=0.9042 emerges 11.09 km/s — the Ls subscript AND the V-infinity match select the same root); independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=5/branch=high to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -42563,25 +42542,20 @@
       max_turning_angle_deg: 10.4     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=10.76 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
       note: "Ballistic Mars flyby; V-infinity continuity (10.76 km/s in == out) is the cycle-closure constraint at Mars."
-    - at_segment_boundary: ["ret-me", "loop-ee-1"]
+    - at_segment_boundary: ["ret-me", "loop-ee"]
       body: "E"
       type: "flyby-ballistic"
       dv_kms: 0.0
       turning_angle_deg:
       max_turning_angle_deg: 44.2     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=9.94 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
-      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 9.94 km/s."
+      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 9.94 km/s. (#794: boundary id updated with the single-loop restructure.)"
   family:
     id: "russell-3syn-em"
     name: "Russell 3-synodic Earth-Mars ballistic"
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 9.94/10.76 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -42730,22 +42704,22 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 878.9           # SOURCED: g(2.4062,...) = 2.4062 yr (Russell 2004 Table 4.12, Leg 1)
+      n_revs: 2                 # DERIVED (#794): floor(866.21 deg / 360) = 2
+      branch: "high"
+      a_au: 0.9790              # DERIVED (#794) — see note
+      e: 0.1249
+      note: 'Intermediate Earth-Earth loop 1 of 2. MAPPED + DERIVED (#794, 2026-08-09): the printed Table 4.12 row (v_infE=3.66, tout=173/tin=199, "out") has legs g(2.4062,866.21,Ls), f(1:1,82.955,87.388), F(3:2,87.27,0.000) designated (uppercase F = the full-rev transit leg; in-ecliptic since lambda=0); cyclic order after the designated F transit is Leg 1 g (this segment) then Leg 2 f (loop-ee-2). (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve from (2.4062 yr, 866.21 deg, Ls short-period lower-branch root): a=0.9790 AU (interior loop), e=0.1249, coplanar. Cross-checks: emergent V-infinity 3.665 km/s vs printed 3.66; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=2/branch=high to 4 decimals.'
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 365.3           # SOURCED: f(1:1,...) full-rev = M=1 Earth year exactly (resonance condition)
+      n_revs: 1                 # N=1 spacecraft rev
+      branch: "resonant"        # same-point 1:1 resonant return — not a Lambert branch; see note
+      a_au: 1.0000              # DERIVED (#794): a = (M/N)^(2/3) = 1 AU exactly
+      e: 0.0056
+      note: 'Intermediate Earth-Earth loop 2 of 2 = the printed leg f(1:1,82.955,87.388). The printed longitude lambda=87.388 is NOT 0/180, so this full-rev loop is OUT-OF-ECLIPTIC: via McConaghy/Russell/Longuski 2005 Eq (16), a=1 AU (1:1 resonance), e=0.0056 (nearly circular) with INCLINATION i=7.038 deg (i recorded here in the note; the segment schema carries no inclination field) — the loop is essentially an inclined circular Earth-radius orbit, the eccentric/inclined complement of a backflip. Cross-check: emergent V-infinity 3.660 km/s vs printed 3.66.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -42769,11 +42743,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 3.66/4.66 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -42915,22 +42884,22 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 535.0           # SOURCED: g(1.4646,...) = 1.4646 yr (Russell 2004 Table 4.12, Leg 1)
+      n_revs: 1                 # DERIVED (#794): floor(527.25 deg / 360) = 1
+      branch: "low"
+      a_au: 1.0545              # DERIVED (#794) — see note
+      e: 0.1807
+      note: 'Intermediate Earth-Earth loop 1 of 2. MAPPED + DERIVED (#794, 2026-08-09): the printed Table 4.12 row (v_infE=5.30, v_infM=5.44, "in" designation) has legs g(1.4646,527.25,Ll), g(1.9416,338.97,U), F(3:2,82.487,180.000) designated (uppercase F = the full-rev transit leg, in-ecliptic, lambda=180); cyclic order after the F transit is Leg 1 g(1.4646) (this segment) then Leg 2 g(1.9416) (loop-ee-2). (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve (Ll long-period lower-branch root). Cross-checks: emergent V-infinity 5.303 km/s vs printed 5.30; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=1/branch=low to 4 decimals.'
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 709.2           # SOURCED: g(1.9416,...) = 1.9416 yr (Russell 2004 Table 4.12, Leg 2)
+      n_revs: 0                 # DERIVED (#794): floor(338.97 deg / 360) = 0 (single-rev long-way transfer)
+      branch: "single"
+      a_au: 1.5828              # DERIVED (#794) — see note
+      e: 0.3711
+      note: 'Intermediate Earth-Earth loop 2 of 2 = the printed leg g(1.9416,338.97,U). A zero-complete-rev long-way (338.97 deg) upper-branch generic return reaching aphelion 2.170 AU. (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange solve (U = upper branch, unique root). Cross-checks: emergent V-infinity 5.301 km/s vs printed 5.30; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=0/branch=single to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -42954,11 +42923,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 5.3/5.44 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -43097,22 +43061,22 @@
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 693.5           # SOURCED: g(1.8987,...) = 1.8987 yr (Russell 2004 Table 4.12, Leg 1)
+      n_revs: 0                 # DERIVED (#794): floor(323.54 deg / 360) = 0 (single-rev long-way transfer)
+      branch: "single"
+      a_au: 1.5790              # DERIVED (#794) — see note
+      e: 0.3753
+      note: 'Intermediate Earth-Earth loop 1 of 2. MAPPED + DERIVED (#794, 2026-08-09): the printed Table 4.12 row (v_infE=5.75, v_infM=9.36, tout=111/tin=142, "out") has legs g(1.8987,323.54,U), g(2.5074,902.67,L), F(2:1,85.196,0.000) designated (uppercase F = the full-rev transit leg, 2 Earth years / 1 spacecraft rev, a=2^(2/3)=1.587 AU, in-ecliptic); cyclic order after the F transit is Leg 1 g(1.8987) (this segment) then Leg 2 g(2.5074) (loop-ee-2). This leg: a zero-complete-rev long-way (323.54 deg) upper-branch generic return, aphelion 2.172 AU. (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange solve (U = upper branch, unique root). Cross-checks: emergent V-infinity 5.751 km/s vs printed 5.75; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=0/branch=single to 4 decimals.'
     - id: "loop-ee-2"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 915.8           # SOURCED: g(2.5074,...) = 2.5074 yr (Russell 2004 Table 4.12, Leg 2)
+      n_revs: 2                 # DERIVED (#794): floor(902.67 deg / 360) = 2
+      branch: "low"
+      a_au: 1.0339              # DERIVED (#794) — see note
+      e: 0.1926
+      note: 'Intermediate Earth-Earth loop 2 of 2 = the printed leg g(2.5074,902.67,L). (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve (L lower branch, unique root). Cross-checks: emergent V-infinity 5.750 km/s vs printed 5.75; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=2/branch=low to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -43136,11 +43100,6 @@
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 5.75/9.36 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."
@@ -43216,7 +43175,7 @@
   fleet_size:        # schema v2; integer count; null where not stated by source
   flyby_mechanics:        # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
-  sequence_canonical: "E-E-E-M-M"
+  sequence_canonical: "E-E-M-M"   # CORRECTED #794 (was E-E-E-M-M): the printed Table 4.13 row has TWO legs (gG) = 2 Earth encounters per cycle, one 2.09-yr loop
   sense: "outbound"
   period:
     pair: "E-M"
@@ -43275,26 +43234,16 @@
       a_au:                     # per-segment elements not tabulated — see data_gaps[]
       e:
       note: 'Russell 2004 Table 4.13: t_in = 262 days (symmetric generic returns).'
-    - id: "loop-ee-1"
+    - id: "loop-ee"
       from: "E"
       to: "E"
       traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 1 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
-    - id: "loop-ee-2"
-      from: "E"
-      to: "E"
-      traj_type: "keplerian-arc"
-      tof_days:                 # intermediate Earth-Earth multi-rev loop — see data_gaps[]
-      n_revs:
-      branch:
-      a_au:
-      e:
-      note: 'Intermediate Earth-Earth loop 2 of 2 for this 3-synodic cycler (sequence E-E-E-M-M); fills part of the 6.41-yr period between Mars encounters. Multi-rev arc — tof_days / n_revs / branch / (a,e) to be set by the multi-rev Lambert solver (task #54).'
+      tof_days: 762.3           # SOURCED: g(2.087,...) = 2.087 yr (Russell 2004 Table 4.13, Leg 1)
+      n_revs: 3                 # DERIVED (#794): floor(1111.33 deg / 360) = 3 complete revs
+      branch: "low"
+      a_au: 0.7574              # DERIVED (#794) — see note
+      e: 0.3462
+      note: 'RESTRUCTURED + DERIVED (#794, 2026-08-09): the printed Table 4.13 row (v_infE=6.44, v_infM=3.74, t=262 d) has exactly TWO legs — g(2.087,1111.33,L) + G(4.3191,1194.88,L) designated — so this 3-synodic cycler has ONE intermediate Earth-Earth loop, not the two loops the prior template assumed; the printed legs are the primary source (2.087 + 4.3191 = 6.406 yr = 3 synodic periods exactly). The former empty loop-ee-2 slot is REMOVED. This loop is a DEEP-INTERIOR fast multi-rev arc: a=0.7574 AU (period 0.66 yr, 3 revs in 2.09 yr), e=0.3462, aphelion 1.020 AU (barely reaching Earth), perihelion 0.495 AU. (a,e,n_revs,branch) DERIVED via the McConaghy/Russell/Longuski 2005 Lagrange generic-transfer solve from (2.087 yr, 1111.33 deg, L, unique root), coplanar. Cross-checks: emergent V-infinity 6.442 km/s vs printed 6.44; independently reproduced by cyclerfinder.core.lambert(max_revs=8) n_revs=3/branch=low to 4 decimals.'
     maneuvers:                # === OCM MAN ===
     - at_segment_boundary: ["out-em", "ret-me"]
       body: "M"
@@ -43304,25 +43253,20 @@
       max_turning_angle_deg: 53.9     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=3.74 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
       note: "Ballistic Mars flyby; V-infinity continuity (3.74 km/s in == out) is the cycle-closure constraint at Mars."
-    - at_segment_boundary: ["ret-me", "loop-ee-1"]
+    - at_segment_boundary: ["ret-me", "loop-ee"]
       body: "E"
       type: "flyby-ballistic"
       dv_kms: 0.509
       turning_angle_deg:
       max_turning_angle_deg: 72.3     # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=6.44 km/s)); vinf sourced from vinf_kms_at_encounters; alt=generic 300 km safe default. Not source-attested.
       periapsis_alt_km:
-      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 6.44 km/s."
+      note: "Intermediate Earth flyby (loop entry); ballistic, V-infinity 6.44 km/s. (#794: boundary id updated with the single-loop restructure.)"
   family:
     id: "russell-3syn-em"
     name: "Russell 3-synodic Earth-Mars ballistic"
     nomenclature: "Russell-Ocampo cycler code"
     continuation_param: {name: "k_synodic", value: 3}
   data_gaps:
-  - path: "trajectory.segments[loop-ee-*]"
-    kind: "derive"
-    note: "The 2 intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) are computable once the multi-rev Lambert solver closes the arc(s) to the published 6.44/3.74 km/s V-infinity; not yet derived. Russell 2004 tabulates only t_out/t_in + the aggregate aphelion, not the loop arc(s)."
-    source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 4.x leg descriptors"
-    todo_ref: "#54"
   - path: "trajectory.segments[out-em].a_au"
     kind: "unknown"
     note: "Per-segment (a,e) of the outbound generic-return arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — each generic-return arc has its own (a,e); only the aggregate aphelion is well-defined)."

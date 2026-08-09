@@ -1120,10 +1120,22 @@ and encounter segments, and forcing one would fabricate structure not in the sou
 | `resonance` | "The number following the colon in the full-rev strings represent the number of revolutions by the spacecraft, thus the full-rev return is an M:N resonant orbit." (e.g. `"3:2"`, `"2:1"`, `"1:1"`). Only on f/F arcs; `null` for g/h. For full-rev arcs the TOF is determined by the M:N resonance condition, so `tof_years` is `null`. |
 | `raw_descriptor` | Verbatim Russell token, e.g. `"g(1.4612,526.02,Ll)"` or `"F(3:2,82.487,180.000)"`. Uppercase letter = designated transit leg (transit times and Mars V∞ are computed from this leg). |
 
-**Known puzzle resolved:** the second parameter in g/h descriptors (e.g. 526.02
-in `g(1.4612,526.02,Ll)`) is **ψ in degrees** (the referencing angle on the V∞
-sphere per Russell §2.7.3), NOT time of flight in days. The TOF is the *first*
-parameter in years (1.4612 yr ≈ 533 d ≠ 526.02 d).
+**Known puzzle resolved** (corrected by `#794`, 2026-08-09): the second
+parameter in g/h descriptors (e.g. 526.02 in `g(1.4612,526.02,Ll)`) is the
+**heliocentric transfer angle θ in degrees** (can exceed 360° for multi-rev
+transfers), NOT time of flight in days — and not Russell §2.7.3's V∞-sphere
+referencing angle ψ, as an earlier revision of this note said. Defining source:
+McConaghy, Russell & Longuski 2005 (JSR 42(4), DOI 10.2514/1.8123 — the paper
+the dissertation's own p.126 cites as the origin of the descriptor syntax):
+"The second parameter, θ, is the transfer angle. For multiple-revolution
+transfers, θ > 2π rad." Arithmetic check on every printed g-string confirms it
+(526.02 = 1.4612 yr × 360°/yr exactly; Ls/Ll/U variants differ by ±360°).
+The TOF is the *first* parameter in years (1.4612 yr ≈ 533 d ≠ 526.02 d).
+Likewise per the same source, in f-strings `M:N` M = Earth years (= ToF) and
+N = spacecraft revolutions, a = (M/N)^(2/3) AU; the third f-argument λ is the
+v_out longitude (0/±180 ⇒ in-ecliptic), and the h-string's fourth argument i′
+is the transfer-plane inclination. `search/descriptor.py` had M:N reversed
+until `#794` fixed it.
 
 **Schema v4.1 field:**
 

@@ -14,5 +14,13 @@ def test_half_rev_arc_is_direct_single() -> None:
 
 
 def test_full_rev_arc_uses_resonance_revs() -> None:
-    # "3:2" -> spacecraft does 3 revs (M:N, M = spacecraft revs, spec §16.7.7).
-    assert arc_to_leg_topology("full-rev", resonance="3:2") == (3, "low")
+    # "3:2" -> 3 Earth years, 2 spacecraft revs (McConaghy/Russell/Longuski
+    # 2005, JSR 42(4): "The second parameter, N, is the number of spacecraft
+    # revolutions"; Russell 2004 p.126: "the number following the colon ...
+    # represent[s] the number of revolutions by the spacecraft"). #794 fixed
+    # the previously-reversed reading.
+    assert arc_to_leg_topology("full-rev", resonance="3:2") == (2, "low")
+
+
+def test_full_rev_one_to_one() -> None:
+    assert arc_to_leg_topology("full-rev", resonance="1:1") == (1, "low")
