@@ -219,23 +219,85 @@ unchanged. See `git log` around this date for the corrected commit.
   complementary-arc coast (T=40.309 d = 5 orbit periods = 13·T_syn) passively encounters
   Oberon every cycle — Russell-Strange passive-target architecture, outside this genome's
   two-sided bend-usefulness semantics; literature_check not-found; flagged as `#817`, NOT
-  claimed. Stamped `uranus-unequal-tof-asymmetric-discrete-roots-2026-08-10`. Artifacts:
+  claimed — **`#817` adjudicated it 2026-08-10: verdict (b) NOT ADMISSIBLE, on the stronger
+  ground that the object is not physically realizable at all (0° required turn at Oberon vs
+  ≥1.40° unmodelled deflection anywhere inside Oberon's SOI), which strengthens rather than
+  corrects this call; no amendment needed to this stamp**. Stamped
+  `uranus-unequal-tof-asymmetric-discrete-roots-2026-08-10`. Artifacts:
   `scripts/scan_816_unequal_tof_discrete_roots.py`,
   `data/found/816_unequal_tof_asymmetric_roots/roots.json`,
   `docs/notes/2026-08-10-816-unequal-tof-discrete-roots.md`.
-- `#817` — registered 2026-08-10 (found during `#816`, not dispatched): Opus+Fable
-  adjudication of `#816`'s single all-physical-gates passive-node object — Ariel-Oberon
-  q=13 n_rev=(2,2) beta=13.575407°, tof0=18.783412 d / tof1=21.526054 d, residual 7.5e-11
-  km/s, cond(J)=145, DOP853 4.9e-5 km, V∞=(1.311,1.327,1.311) km/s, required turns Ariel
-  4.2327790° (≤ 8.04° achievable) / Oberon exactly 0°. Question to adjudicate: is a
-  one-node-working Ariel repeated-flyby cycler with an exact passive Oberon rendezvous each
-  cycle (Russell & Strange 2009 passive-science-target architecture, at Uranus) admissible
-  under the expanded catalogue scope (`quasi_cycler`?), or subsumed by the repeated-moon
-  census (`repeated-moon-uranus-sweep`) + the passive crossing being a free phasing condition
-  outside the genome's semantics? `literature_check.py` ran live: not-found
-  (necessary-not-sufficient); no Uranus-pair cycler in the searchable record. Full numbers in
-  `data/found/816_unequal_tof_asymmetric_roots/roots.json` and the `#816` note §5. Low
-  urgency; adjudication-only (no compute).
+- `#817` — ✓ DONE 2026-08-10 (adjudication-only, no compute): **VERDICT (b) NOT ADMISSIBLE**
+  for `#816`'s single all-physical-gates passive-node object (Ariel-Oberon q=13 n_rev=(2,2)
+  beta=13.575407°, tof0=18.783412 d / tof1=21.526054 d, residual 7.5e-11 km/s, cond(J)=145,
+  DOP853 4.9e-5 km, V∞ Ariel 1.32705 / Oberon 1.31114 km/s, required turns Ariel 4.2327790°
+  ≤ 8.0403° achievable / Oberon exactly 0°) — **but on a THIRD ground, not either of the two
+  the registration offered.** It is NOT subsumed (`repeated-moon-uranus-sweep` is the `#254`
+  TWO-working-node A-B-A genome with no bend gate; no single-moon free-return Uranian sweep
+  exists in `empty_regions.jsonl` at all) and it DOES fit a class (`quasi_cycler`: the five
+  class definitions key on periodicity/epoch-lock/n_returns and say nothing about
+  bend-usefulness; `T/T_Ariel=15.9935`, `T/T_Oberon=2.9935`, difference exactly q=13 ⇒ closes
+  up to a ≈−2.34°/cycle rotation, the same semantics as its own sibling row
+  `ariel-oberon-1-1-uranian-quasi-cycler-2026`; the two-sided bend rule is the `#324` search
+  GATE, which the `#571` stamps' own caveat calls "conditional on this project's own gate
+  POLICY" and an "uncovered case" — uncovered ≠ out of scope). **The disqualification is that
+  the object is not a physically realizable trajectory under the model's own semantics.** The
+  genome puts the spacecraft AT Oberon BY CONSTRUCTION (`_states` + the Lambert legs
+  `r0→r1→r2`; the 2-vector residual is a pair of |V∞|-MAGNITUDE matches, `r_mid` = residual_mid
+  not radius_mid — grounded against `residual_vec_unequal`) while requiring exactly 0° turn
+  there (= periapsis at infinity); both cannot hold. Using the repo's own deflection law (reproduces the stored
+  `max_bend_deg` values BIT-FOR-BIT: 14.742638012954531° Oberon, 8.040293699481882° Ariel),
+  Oberon injects **1.397° anywhere inside its 9,678 km SOI = 33% of the entire 4.2328° turn
+  budget Ariel supplies** (1.021°/24% at the 13,288 km Hill radius); keeping it under 2%
+  needs r_p ≳ 160,000 km ≈ 12 Hill radii, i.e. no encounter at all. Same self-consistency
+  failure class as `#480` (`[[feedback_constructed_tour_per_encounter_self_consistency]]`).
+  **Russell & Strange 2009 is the wrong frame for THIS object** (right frame for the
+  architecture in general): R-S works because the passive target is tiny at HIGH V∞ (Enceladus
+  μ=7.2 at ~4 km/s → ~0.15°); this inverts every term — the "passive" body is the MORE massive
+  (μ 205.3 vs Ariel's 83.5, 2.46×), met at the LOWER V∞, with the LARGEST bend authority in
+  the trajectory (14.74° vs 8.04°). And the fork closes either way: strip the Oberon
+  coincidence and it is a bare single-moon Ariel resonant free-return, which `#816`'s own
+  module docstring **pre-declared** as "a trivial resonant Keplerian orbit … not a discovery"
+  (`classify_root` calls `anchor_passive`/`flyby_passive` "the two one-node-working
+  generalizations of the registration's pre-declared trivial branch"); keep it and it is
+  impossible. Supporting: the passive branch is 785/1645 roots (48%), not a rarity, and per
+  `#577` a known-class member found by our own enumeration at a new pair is not
+  novelty-bearing. `literature_check.py`'s NOT-FOUND is not relied on in either direction —
+  the verdict is upstream of novelty. STRENGTHENS rather than corrects `#816` (which declined
+  the claim on policy grounds and parked it correctly); `uranus-unequal-tof-asymmetric-discrete-
+  roots-2026-08-10` needs NO amendment (`n_survivors: 0`; the object was reported separately as
+  `n_passive_node_physical_gate_passers: 2`, never stamped as a survivor). No `catalogue.yaml`
+  edit, no new stamp, no novelty claim. Follow-ons registered: `#818` (the deterministic gate
+  that would have caught this without adjudication), `#819` (speculative, explicitly NOT
+  implied). Full reasoning + reproducible arithmetic:
+  `docs/notes/2026-08-10-817-passive-oberon-node-adjudication.md`.
+- `#818` — registered 2026-08-10 (from `#817`'s verdict, not dispatched): a reusable
+  **passive-node self-consistency gate**. For any closure root whose required turn at a node
+  is ~0, compute that body's parasitic patched-conic deflection at its own SOI/Hill boundary
+  (`delta = 2·asin(1/(1 + r_p·V∞²/μ))`, the same law `search/physical_sanity.py` already uses
+  for `max_bend_deg`) and reject the root unless that deflection is below a declared fraction
+  of the trajectory's working turn budget. Generalizes `#480`'s geometric SOI-containment rule
+  (`[[feedback_constructed_tour_per_encounter_self_consistency]]`) to the DYNAMICAL side: a
+  node can be geometrically inside the SOI and still be modelled as doing nothing, which is
+  the contradiction `#817` had to adjudicate by hand. Would have auto-classified `#816`'s
+  object out with no adjudication needed. Small: one function + test, plus a pure
+  post-processing re-run over `#816`'s 785 stored passive-node roots (no physics re-run) to
+  test `#817`'s explicitly-unverified hypothesis that they ALL fail the same way (all four
+  Uranian moons are μ ∈ [83, 235] at 1-3 km/s). Cheap, deterministic, and the right shape of
+  gate per `[[feedback_subagent_model_tiering]]`.
+- `#819` — registered 2026-08-10 (from `#817`, **explicitly NOT implied or recommended by
+  that verdict**, speculative, not dispatched): a genuine Russell-Strange-2009-style Uranian
+  cycler with a *properly modelled* second-moon science pass — finite flyby altitude at the
+  science target, its deflection carried as a real constraint rather than assumed zero, and
+  the extra b-plane degree of freedom that makes the system solvable with that constraint in
+  it. `#817` established that the ARCHITECTURE is admissible in principle (schema-wise it is a
+  `quasi_cycler`) and genuinely unsearched by this project (the `#571` stamps' own "uncovered
+  case" caveat), and that no Uranian single-moon free-return sweep exists in
+  `empty_regions.jsonl`. What `#817` disqualified was one specific object, not the class. This
+  is a CAMPAIGN, not a check — needs its own scoping/Fable design pass before any dispatch,
+  and the R-S mass/V∞ discriminator says the target moon should be the SMALL one at HIGH V∞
+  (i.e. Miranda-as-target, or Ariel-as-target off a Titania/Oberon flyby), not the inversion
+  `#816`'s root produced.
 - `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched): a small `argparse` CLI
   wrapper / worked example script demonstrating `search/campaign_runner.py::run_grid_campaign`
   end-to-end (grid + worker + routing + `EmptyRegionSpec`) under `scripts/`, matching the shape of
