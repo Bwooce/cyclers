@@ -761,7 +761,11 @@ unchanged. See `git log` around this date for the corrected commit.
   17,675-86,911 km lunar approaches vs the 66,183 km SOI mean only the HIGH-C 2:1 members
   genuinely encounter the Moon; the 3:1's 33,258-66,995 km approaches are SOI-marginal —
   per-member SOI check required, `#797`'s own discipline).
-  `#799`'s note for the Vaquero-family catalogue writeback): point the now-precise `#805`
+- `#812` — registered 2026-08-09 (found during `#805`, not dispatched; note: this bullet's own
+  header line was accidentally lost in a later edit, merging its body into `#811`'s bullet —
+  restored by the coordinating session from `#805`'s own commit diff, `git show 49233d1e`;
+  `#811` is claimed by `#799`'s note for the Vaquero-family catalogue writeback): point the
+  now-precise `#805`
   Taylor+chain-Newton-endgame lane (`genome/da_hotm_enumerator.taylor_enumerate`, endgame
   `refine=True` default) at a fresh multi-rev band as a discovery probe. Pre-#805 the Taylor
   lane could not land strongly-unstable needle basins without the corrector multistart's
