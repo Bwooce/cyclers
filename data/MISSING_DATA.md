@@ -51,6 +51,20 @@ different sourced V-infinity anchors) and re-confirmed the `#596`/`#616` Russell
 re-execution (already live, see above). See `docs/notes/2026-08-08-793-catalogue-gap-execution-
 sprint.md` for the full account.*
 
+*FOURTH STALENESS CORRECTION 2026-08-10 (`#794`/`#797`/`#801`): catalogue has grown to **392
+entries, 868 data_gaps across 319 entries** (independently recomputed from `data/catalogue.yaml`).
+Two changes since the third correction: (1) `#797`/`#801` wrote back 9 new Casoliva 2010 Table 3
+Earth-Moon p:q resonant-family rows (2 `cycler` + 7 `resonant_po`), each carrying 2 own
+`data_gaps` entries (`state_nd`/`stability_index`, both `kind: derive`, sourced-convention not a
+real gap — see each row's own `data_gaps` note); (2) `#794` closed the `#793`-registered
+`free_return_arcs[]` crosswalk blocker for all 14 rows (23 `loop-ee` segments) via direct
+primary-source verification (Russell 2004 §4.8 + McConaghy/Russell/Longuski 2005 JSR 42(4)) rather
+than the flagged-approximate `descriptor_to_phsi` structural map — triple cross-checked (emergent
+V-infinity, Lambert reproduction, Kepler-propagated flyby ΔV vectors). `ret-me` (Mars-Earth) arcs
+remain open, now sharpened as `#815` (a designated-arc *split* problem, not a from-scratch build —
+the whole-arc conics are already recorded in `#794`'s own gap notes). See
+`docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md` for the full account.*
+
 ---
 
 ## 1. Summary (CORRECTED 2026-07-15)
