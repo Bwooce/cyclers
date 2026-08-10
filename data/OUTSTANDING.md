@@ -173,16 +173,46 @@ unchanged. See `git log` around this date for the corrected commit.
   cell-ranking plausibly earns its keep at 10^7-cell scale (deterministic gates first, ML only if
   measured against them) — per the earlier "prefilter saved <=1.4% compute" verdict, this is the
   only campaign large enough to possibly flip that verdict.
-- `#792` — registered 2026-08-08 (Campaign 4 of the combinatorial-search survey, "Uranus
-  asymmetric-closure census"), **the smallest/already-scoped campaign — dispatchable now,
-  cheap enough to run alongside `#788`'s own build-out**: `#679`'s own shortlist item 1, an
-  adaptive basin-width-aware asymmetric-closure grid `#563` explicitly declared out of scope
-  ("a genuinely different, more expensive adaptive grid search would be needed") — a NEW method
-  axis (the symmetric-only machinery that stamped the existing Uranian empty regions cannot
-  represent asymmetric closures), so it legitimately passes the re-sweep gate rather than
-  violating it. Already scoped at ~1-2 weeks. Fold in `#549`'s own leftovers too: 4 real-binary
-  cases left inconclusive at a 240s/job cap — a few hours of CPU to settle, much smaller than the
-  main census.
+- `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
+  (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
+  reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as
+  Campaign 4 ("Uranus asymmetric-closure census", "`#679`'s own shortlist item 1") — but `#679`
+  shortlist item 1 WAS dispatched, as `#680`, on 2026-07-22, and closed decisively NO-GO
+  (empty-regions `uranus-asymmetric-closure-freebeta-degenerate-manifold-2026-07-22`: the
+  free-beta V∞-magnitude closure set is a degenerate continuous manifold connected to the
+  catalogued `#569` symmetric family, not isolated novel closures); the registration's `#563`
+  quote ("a genuinely different, more expensive adaptive grid search would be needed") is
+  2026-07-11 language superseded by `#564`-s3 DEFER → `#565` → `#680` — a direct
+  `[[feedback_check_history_before_reviving_dormant_work]]` instance. Scoping pass sharpened
+  `#680`'s empirical continuum into an EXACT CLOSED FORM: magnitude closure at both radii is an
+  invertible affine map of the leg invariants (planar Tisserand: |v∞|² linear in (E,h)), forcing
+  congruent legs, hence `beta ≡ (n_a−n_b)·tof (mod 180°)` — one equation in two unknowns;
+  verified to 1e-13..1e-15 km/s at PREDICTED points in both (0,0) and (2,2) rev classes against
+  `scan_558`'s own residual. So an "adaptive basin-width-aware grid" would be sampling
+  analytically-known straight lines — no census exists to run. The `#680`-flagged
+  required-turn gap does NOT rescue it: turn checks are INEQUALITIES (bend is a free
+  periapsis-choice parameter) and only select sub-arcs; the one missing EQUALITY (pattern
+  repeat, `(n_a−n_b)·2·tof ≡ 0 mod 360°`) reads `2·beta ≡ 0 (mod 360°)` on the manifold —
+  collapsing it exactly onto the already-catalogued symmetric `#563`/`#569` family, i.e.
+  genuinely-asymmetric true-periodic closures do not exist in this equal-leg-time genome. The
+  `#549` fold-in ("4 inconclusive real-binary cases, a few hours of CPU") was ALSO already done:
+  `#657(a)` (2026-07-19) re-ran all 6 capped attempts uncapped — 32/32 definitive negatives,
+  stamped `real-binary-kk-cycler-round2-uncapped-recheck-2026-07-19`. Nothing left to run. The
+  single genuinely-different residue is registered as `#816` below (small, optional).
+- `#816` — registered 2026-08-10 (found during `#792`'s scoping-vs-`#680` pass, not
+  dispatched, expectations LOW): the one formulation in the `#558`/`#563` Uranus
+  anchor-flyby-anchor lineage that is both genuinely asymmetric-capable and structurally able
+  to have ISOLATED roots — independent leg times (`tof0 ≠ tof1`) + full periodicity. 3 unknowns
+  `(beta, tof0, tof1)` vs 3 equalities (E-match + h-match via the Tisserand-affine argument, +
+  pattern-repeat resonance) → generically discrete. Structure is already pinned down: the
+  return leg must be a congruent (rotated) copy of the outbound conic, so `tof1` is one of the
+  discrete complementary-arc durations (+k periods) — a finite, cheap root-solve per (pair,
+  arc-type, k, resonance order), HOURS not weeks. Known kill-risks up front: the
+  zero-apsidal-rotation branch is a trivial resonant Keplerian orbit (flyby does no work, fails
+  bend-usefulness), and the `#792`-scoping check measured required turns of 137-156° along the
+  equal-tof manifold vs single-digit achievable bends at these moons — the unequal-tof discrete
+  roots may well all fail the same wall. Clean negative = fine, stamp it. See
+  `docs/notes/2026-08-10-792-scoping-vs-680.md` §4.
 - `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched): a small `argparse` CLI
   wrapper / worked example script demonstrating `search/campaign_runner.py::run_grid_campaign`
   end-to-end (grid + worker + routing + `EmptyRegionSpec`) under `scripts/`, matching the shape of
