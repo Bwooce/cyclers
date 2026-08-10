@@ -318,7 +318,15 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # locally, so the gap went uncaught until the self-hosted CI runner's own
     # full `pytest` run surfaced it. Pure census shift -- none of the 9 is
     # v1-gauntlet-reachable (non-heliocentric primary).
-    ExclusionReason.NON_HELIOCENTRIC: 87,
+    # 87 -> 93 (2026-08-10, #811): +6 Vaquero 2013 Sec. 4.4.7 Earth-Moon
+    # periodic-cycler family rows (primary="Earth", CR3BP; 4 orbit_class=cycler
+    # + 2 resonant_po, written back from #799's continuation reproduction).
+    # Updated in the SAME commit as the catalogue rows this time -- the
+    # coordinating session's 2a8ac2bc fix flagged this file as the fourth,
+    # easily-missed catalogue-count ratchet (it lives outside `tests/data`/
+    # `tests/search`). Pure census shift -- none of the 6 is
+    # v1-gauntlet-reachable (non-heliocentric primary).
+    ExclusionReason.NON_HELIOCENTRIC: 93,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

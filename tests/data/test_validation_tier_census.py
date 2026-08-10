@@ -220,7 +220,15 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 111 -> 113 (2026-08-09, #801): +2 more Casoliva rows (1-2e/7-3a), same
     # provenance-tag convention -- completes #797's own deferred writeback after
     # fixing a k_par-vs-k_perp stability-index selection bug.
-    "unvalidated": 113,
+    # 113 -> 119 (2026-08-10, #811): +6 Vaquero 2013 Sec. 4.4.7 Earth-Moon
+    # periodic-cycler family rows (via #799's continuation reproduction). Same
+    # convention as the Casoliva rows above: NO orbit_source/vinf_source
+    # provenance tags (Vaquero 2013 is not a SOURCE_REGISTRY key; their identity
+    # is a Jacobi/period/state tuple) -> 'unvalidated' on the source-pair tier
+    # axis; their real evidence (validation_level=V1, same-model CR3BP family
+    # reproduction + independent Radau cross-check) lives on the orthogonal
+    # validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
+    "unvalidated": 119,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

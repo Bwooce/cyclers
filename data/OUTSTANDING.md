@@ -753,23 +753,37 @@ unchanged. See `git log` around this date for the corrected commit.
   stable member is unknown). Cheap: one C-sweep variant + one bounded run; honest odds low
   (every other higher topology is certified empty) but it closes the last asterisk on the
   #504/#549/#656 15-topology PC census.
-- `#811` — registered 2026-08-09 (spawned by `#799`'s successful reproduction, not dispatched):
-  catalogue writeback of Vaquero 2013's two Sec. 4.4.7 Earth-Moon periodic-cycler families
-  (2:1 circumlunar/L2, 3:1 cislunar/L1), now writeback-eligible: `#799` produced digit-grade,
-  independently-Radau-cross-checked ICs across both families' full printed Jacobi ranges
-  (129 members, `data/found/799_vaquero_em_cycler_families/results.json`; representative
-  endpoint/seed ICs tabulated in `docs/notes/2026-08-09-799-vaquero-em-cycler-family-
-  reproduction.md`). This closes the `#787`-identified Casoliva/Vaquero-lineage
-  p:q-resonance-METHOD catalogue-class gap for the Vaquero side (the `#797` Casoliva-Table-3
-  rows cover the other). Scope: select representative members (at minimum the 4 printed-TOF
-  endpoint members + the stability-transition region of the 2:1), rows with
-  `#797`-style sourced/DERIVE provenance split (Vaquero's prose C-ranges/TOFs SOURCED, ICs
-  DERIVE via `#799`'s continuation), validation-level gates per the established V1
-  same-model-reproduction + Radau-cross-check precedent (`braik-ross-c11a-cycler-2026`
-  lineage), class per the v4.2 checklist (cycler vs `resonant_po` — note the 2:1's
-  17,675-86,911 km lunar approaches vs the 66,183 km SOI mean only the HIGH-C 2:1 members
-  genuinely encounter the Moon; the 3:1's 33,258-66,995 km approaches are SOI-marginal —
-  per-member SOI check required, `#797`'s own discipline).
+- `#811` — ✓ DONE 2026-08-10 (registered 2026-08-09, spawned by `#799`'s successful
+  reproduction): **catalogue writeback of Vaquero 2013's two Sec. 4.4.7 Earth-Moon
+  periodic-cycler families — 6 new rows in `data/catalogue.yaml`** (398 total, was 392),
+  selected from `#799`'s 129-member Radau-cross-checked record exactly per the registration's
+  minimum: the 4 printed-TOF family endpoints (`vaquero-21-c198-em-resonant-po-2013`,
+  `vaquero-21-c266-em-cycler-2013`, `vaquero-31-c254-em-cycler-2013`,
+  `vaquero-31-c313-em-resonant-po-2013` — the only members anchored by a digit-grade Vaquero
+  print, her four prose endpoint TOFs, recovered at 0.10%-1.83% relative) + the 2:1
+  stability-transition bracket (`vaquero-21-c246-em-cycler-2013` last stable /
+  `vaquero-21-c247-em-cycler-2013` first unstable, Barden nu crossing 1 between C=2.46 and
+  2.47 on `#799`'s dC=0.01 grid). `orbit_class` determined PER MEMBER (not per family) against
+  the lunar SOI (66,182.9 km)/Hill radius, each cross-checked TWO independent ways (`#799`'s
+  dense DOP853 member_report AND `#811`'s own STANDALONE Radau rtol=atol=1e-12 propagation
+  with inline CR3BP EOM, no cyclerfinder imports — agreeing to <0.1 km on all six): 4 cycler
+  (periselene 17,675-49,700 km, inside SOI) + 2 resonant_po (2:1 C=1.98 at 86,911 km = 1.31x
+  SOI, the 2:1 family only enters the SOI for C>=~2.30; 3:1 C=3.13 at 66,995 km = 1.012x SOI,
+  SOI-MARGINAL by ~812 km/1.2%, the ONLY 3:1 member outside — stated on the row as a boundary
+  call, not hidden). `#797`-pattern rows throughout: SOURCED verbatim `source_quotes`
+  (pp.170-172 prose, incl. the criterion-4 stability quote and the reversed-"2.66 < C < 2.54"
+  free-transfer band with `#787`'s typesetting-slip reading), DERIVE-tagged
+  ICs/periods/stability (Barden nu — the project convention, comparable to `braik-ross-*`,
+  deliberately unlike casoliva-* rows' Eq. 6-8 k), `data_gaps` for the no-printed-IC source
+  (Fig. 4.44's x0 axis is unlabeled) + grid-conditional interior-C entries, V1 with 6 new
+  `_LEVEL_EVIDENCE` entries in `validate.py`. Ratchets updated: non-keplerian 49->55
+  (test_cycler_class_census), V1 37->43 (test_schema_v45_fields), unvalidated 113->119
+  (test_validation_tier_census); no DOI-coverage change (dissertation has no DOI; Casoliva
+  2010 corroborating DOI already a `#802` KNOWN_CORPUS anchor). Follow-ons registered: `#822`
+  (compute the free-transfer 2:1<->3:1 heteroclinic connection in the [2.54, 2.66] overlap
+  band), `#823` (V2-ballistic multi-lap candidacy run for the two stable rows). Full
+  `tests/data tests/search -q` ratchet + ruff/format/full-mypy verified — see commit log.
+  Full writeup: `docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md`.
 - `#812` — registered 2026-08-09 (found during `#805`, not dispatched; note: this bullet's own
   header line was accidentally lost in a later edit, merging its body into `#811`'s bullet —
   restored by the coordinating session from `#805`'s own commit diff, `git show 49233d1e`;
@@ -892,6 +906,27 @@ unchanged. See `git log` around this date for the corrected commit.
   (full `tests/data tests/search -q` ratchet); deferred out of `#813` to avoid colliding with
   `#811`'s concurrent catalogue writeback. Sweep the remaining rows' free-text notes for the
   same phrasing while there.
+- `#822` — registered 2026-08-10 (found during `#811`, not dispatched): compute an actual
+  free-transfer (unstable-to-unstable, same-C heteroclinic manifold connection) between
+  Vaquero's 2:1 and 3:1 Earth-Moon periodic-cycler families in their `C ∈ [2.54, 2.66]`
+  overlap band. Vaquero asserts existence (pp.171-172, the reversed-"2.66 < C < 2.54" prose,
+  `#787`'s typesetting-slip reading) but prints NO transfer trajectory or ΔV — a concrete,
+  bounded reproduction target now that `#799`'s digit-grade ICs exist for BOTH families at
+  every 0.01 grid point of the overlap (both unstable there: 2:1 |λ| 2.6-5.7, 3:1 |λ| ~11.3,
+  exactly her free-transfer precondition). Existing manifold-connection machinery
+  (`search/earth_moon_resonant_connections.py`, `#783`) is the natural starting lane; note
+  `#783`'s own connection-reproduction outcome was a clean negative on a DIFFERENT
+  (homoclinic, Casoliva-lineage) target, so treat method fit as open, not assumed. Success
+  would also be the natural upgrade path toward V2/V3-class connection evidence for the
+  `#811` rows.
+- `#823` — registered 2026-08-10 (found during `#811`, not dispatched): V2-ballistic
+  candidacy run for `#811`'s two linearly STABLE Vaquero rows
+  (`vaquero-21-c198-em-resonant-po-2013`, nu=0.4852; `vaquero-21-c246-em-cycler-2013`,
+  nu=-0.9274): multi-lap bounded-drift long run per the `ross-rt-em-cycler-*` V2-ballistic
+  precedent (100-period bounded-band IAS15-class evidence on STABLE members; the four
+  unstable `#811` rows are mechanically ineligible, per their own `_LEVEL_EVIDENCE` NOT-V2
+  notes). Cheap, bounded, and the only currently-visible upgrade path above V1 for this
+  family pair short of `#822`'s connection work.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +

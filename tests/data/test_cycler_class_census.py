@@ -567,10 +567,26 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # which wrongly estimated it as outside). non-keplerian 47->49.
         "casoliva-1-2e-em-resonant-po-2010",
         "casoliva-7-3a-em-cycler-2010",
+        # #811 (2026-08-10): 6 new rows writing back Vaquero 2013 Sec. 4.4.7's two
+        # Earth-Moon periodic-cycler families (2:1 circumlunar/L2, 3:1 cislunar/L1),
+        # reproduced endpoint-to-endpoint by #799's direct CR3BP continuation across
+        # her full printed Jacobi ranges (genuine planar CR3BP periodic orbits,
+        # rotating-frame, Jacobi-constant identity). Selected: the 4 printed-TOF
+        # family endpoints + the 2:1 stability-transition bracket (C=2.46/2.47).
+        # orbit_class determined PER MEMBER vs the lunar SOI: 4 cycler (periselene
+        # 17,675-49,700 km, inside) + 2 resonant_po (86,911 km at the 2:1 low-C end;
+        # 66,995 km SOI-marginal at the 3:1 top endpoint, 1.2% outside).
+        # non-keplerian 49->55.
+        "vaquero-21-c198-em-resonant-po-2013",
+        "vaquero-21-c246-em-cycler-2013",
+        "vaquero-21-c247-em-cycler-2013",
+        "vaquero-21-c266-em-cycler-2013",
+        "vaquero-31-c254-em-cycler-2013",
+        "vaquero-31-c313-em-resonant-po-2013",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 49
+assert len(NON_KEPLERIAN_IDS) == 55
 
 
 # ---------------------------------------------------------------------------
@@ -675,10 +691,17 @@ def test_census_distribution() -> None:
     see earth_moon_resonant_families.py's StabilityIndex docstring): 1
     orbit_class=resonant_po (1-2e) + 1 orbit_class=cycler (7-3a), both
     cycler_class=non-keplerian: non-keplerian 47->49.
+
+    #811 (2026-08-10) admitted 6 new rows writing back Vaquero 2013 Sec. 4.4.7's
+    two Earth-Moon periodic-cycler families, reproduced by #799's direct CR3BP
+    continuation across her full printed Jacobi ranges (4 orbit_class=cycler + 2
+    orbit_class=resonant_po, per-member SOI determination, all cycler_class=
+    non-keplerian genuine planar CR3BP periodic orbits, rotating-frame with a
+    Jacobi-constant identity): non-keplerian 49->55.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 49}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 55}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

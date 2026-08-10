@@ -183,9 +183,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     lesson adapted: no eigenvector here, so the guarded hazard is a mismatched sample
     set, not a sign flip), agreeing to integrator_delta_max_km~7.11e-8 km. NOT V2/V3 (no
     multi-lap periodic structure or connection to correct for a bare torus).
-    (V1=37, V2=8, V3=2, V4=6 -- #797 (2026-08-08) added 7 new V1 rows, 28->35;
+    (V1=43, V2=8, V3=2, V4=6 -- #797 (2026-08-08) added 7 new V1 rows, 28->35;
     #801 (2026-08-09) added 2 more (1-2e/7-3a, completing #797's own deferred
-    admission after a stability-index selection bug fix), 35->37.)"""
+    admission after a stability-index selection bug fix), 35->37; #811
+    (2026-08-10) added 6 more (Vaquero 2013 Sec. 4.4.7 family writeback via
+    #799's continuation reproduction), 37->43.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -350,6 +352,18 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # in #780's gate module, now fixed and reproducing cleanly.
         "casoliva-1-2e-em-resonant-po-2010": "V1",
         "casoliva-7-3a-em-cycler-2010": "V1",
+        # #811 (2026-08-10): 6 new rows writing back Vaquero 2013 Sec. 4.4.7's two
+        # Earth-Moon periodic-cycler families (2:1/3:1), each V1 -- same-model
+        # CR3BP continuation reproduction of her full printed Jacobi ranges with
+        # all four printed endpoint TOFs recovered (0.10%-1.83% relative, #799's
+        # run) AND an independent Radau integrator cross-check per member, per
+        # the new _LEVEL_EVIDENCE entries.
+        "vaquero-21-c198-em-resonant-po-2013": "V1",
+        "vaquero-21-c246-em-cycler-2013": "V1",
+        "vaquero-21-c247-em-cycler-2013": "V1",
+        "vaquero-21-c266-em-cycler-2013": "V1",
+        "vaquero-31-c254-em-cycler-2013": "V1",
+        "vaquero-31-c313-em-resonant-po-2013": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
