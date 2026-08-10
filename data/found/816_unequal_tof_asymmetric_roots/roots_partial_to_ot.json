@@ -1,0 +1,7254 @@
+{
+ "task": 816,
+ "git_sha": "3ab92ed2",
+ "note": "directions=Titania-Oberon,Oberon-Titania",
+ "primary": "Uranus",
+ "moons": [
+  "Ariel",
+  "Umbriel",
+  "Titania",
+  "Oberon"
+ ],
+ "n_rev_max": 3,
+ "tof_scale_box": [
+  0.15,
+  3.6
+ ],
+ "grid": {
+  "n_beta": 180,
+  "n_tof0": 200
+ },
+ "gates": {
+  "bend_floor_deg": 5.0,
+  "root_tol_kms": 1e-10,
+  "dop853_dr_km": 1.0
+ },
+ "elapsed_s": 166.6562008857727,
+ "n_roots": 175,
+ "classes": {
+  "symmetric_equal_tof": 41,
+  "flyby_passive": 44,
+  "asymmetric_candidate": 90
+ },
+ "n_survivors": 0,
+ "roots": [
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.00000000000176,
+   "tof0_days": 12.316046445872495,
+   "tof1_days": 12.316046445872662,
+   "residual_kms": 8.449373463310848e-15,
+   "cond_j": 395.24067219331573,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -4.497015894102054,
+   "energy_leg1": -4.497015894102025,
+   "h_leg0": 1566905.9936980573,
+   "h_leg1": 1566905.9936980626,
+   "congruence_dE": 2.930988785010413e-14,
+   "congruence_dh": 5.3551048040390015e-09,
+   "required_turn_flyby_deg": 152.60876225051123,
+   "required_turn_anchor_deg": 177.19186104877116,
+   "vinf_per_encounter_kms": [
+    2.161767816675383,
+    1.968049572452174,
+    2.1617678166753747
+   ],
+   "max_bend_deg_per_encounter": [
+    6.272498213327438,
+    7.0311243446234695,
+    6.272498213327484
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.731110688829586e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.9999999997451,
+   "tof0_days": 12.316046445882108,
+   "tof1_days": 12.316046445863048,
+   "residual_kms": 1.0153639708807695e-12,
+   "cond_j": 1111.4556059176005,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.0024450594013725,
+   "energy_leg1": -5.0024450594062735,
+   "h_leg0": 1592477.3162653293,
+   "h_leg1": 1592477.3162647213,
+   "congruence_dE": -4.900968519905291e-12,
+   "congruence_dh": -6.079208105802536e-07,
+   "required_turn_flyby_deg": 149.56316010825267,
+   "required_turn_anchor_deg": 179.64070656440572,
+   "vinf_per_encounter_kms": [
+    1.798664601102286,
+    1.6081552502126282,
+    1.7986646011023804
+   ],
+   "max_bend_deg_per_encounter": [
+    8.849892675888727,
+    10.22562242286612,
+    8.849892675887869
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.0469991037000078e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 344.98906485631716,
+   "tof0_days": 23.352822906611877,
+   "tof1_days": 1.2792699851332792,
+   "residual_kms": 1.5015108282975005e-11,
+   "cond_j": 51.37340520373591,
+   "class": "flyby_passive",
+   "energy_leg0": -3.2202307506801926,
+   "energy_leg1": -3.220230750653882,
+   "h_leg0": 1923342.9802475169,
+   "h_leg1": 1923342.980249233,
+   "congruence_dE": 2.631050932677681e-11,
+   "congruence_dh": 1.716194674372673e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 94.73033087893546,
+   "vinf_per_encounter_kms": [
+    1.127950815223736,
+    1.6052697160600966,
+    1.1279508152343523
+   ],
+   "max_bend_deg_per_encounter": [
+    20.19448292843056,
+    10.259217223222427,
+    20.194482928113775
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 111.30110502725233,
+   "tof0_days": 22.545290615344523,
+   "tof1_days": 2.0868022764006326,
+   "residual_kms": 6.284921453501158e-14,
+   "cond_j": 41.54204274949444,
+   "class": "flyby_passive",
+   "energy_leg0": -3.474812479002141,
+   "energy_leg1": -3.4748124790017094,
+   "h_leg0": 679351.9223105599,
+   "h_leg1": 679351.9223105945,
+   "congruence_dE": 4.3165471197426086e-13,
+   "congruence_dh": 3.457535058259964e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 126.55372249247722,
+   "vinf_per_encounter_kms": [
+    4.641646133149787,
+    3.9375314454259756,
+    4.641646133149818
+   ],
+   "max_bend_deg_per_encounter": [
+    1.420776713680936,
+    1.8401233061206483,
+    1.420776713680917
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 248.69889497274744,
+   "tof0_days": 2.086802276400649,
+   "tof1_days": 22.545290615344506,
+   "residual_kms": 9.697122875090717e-14,
+   "cond_j": 41.54244942764953,
+   "class": "flyby_passive",
+   "energy_leg0": -3.474812479001864,
+   "energy_leg1": -3.4748124790014083,
+   "h_leg0": 679351.9223105967,
+   "h_leg1": 679351.9223106217,
+   "congruence_dE": 4.556355293061642e-13,
+   "congruence_dh": 2.5029294192790985e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 126.55372249247925,
+   "vinf_per_encounter_kms": [
+    4.64164613314978,
+    3.9375314454260146,
+    4.641646133149831
+   ],
+   "max_bend_deg_per_encounter": [
+    1.4207767136809402,
+    1.8401233061206126,
+    1.4207767136809089
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 15.010935143715301,
+   "tof0_days": 1.2792699851404827,
+   "tof1_days": 23.352822906604672,
+   "residual_kms": 9.114653810271008e-15,
+   "cond_j": 51.37340736194898,
+   "class": "flyby_passive",
+   "energy_leg0": -3.2202307506805354,
+   "energy_leg1": -3.2202307506805097,
+   "h_leg0": 1923342.9802471006,
+   "h_leg1": 1923342.9802471024,
+   "congruence_dE": 2.5757174171303632e-14,
+   "congruence_dh": 1.862645149230957e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 94.73033087910221,
+   "vinf_per_encounter_kms": [
+    1.1279508152265154,
+    1.6052697160506753,
+    1.1279508152265205
+   ],
+   "max_bend_deg_per_encounter": [
+    20.19448292834762,
+    10.259217223332376,
+    20.194482928347465
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 329.1850722843324,
+   "tof0_days": 6.735811708652208,
+   "tof1_days": 17.89628118309295,
+   "residual_kms": 2.3914935841127266e-15,
+   "cond_j": 98.75801014209331,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.627375669211826,
+   "energy_leg1": -5.627375669211824,
+   "h_leg0": 1633072.2369832601,
+   "h_leg1": 1633072.23698326,
+   "congruence_dE": 1.7763568394002505e-15,
+   "congruence_dh": -2.3283064365386963e-10,
+   "required_turn_flyby_deg": 136.31096252180953,
+   "required_turn_anchor_deg": 170.09685807378713,
+   "vinf_per_encounter_kms": [
+    1.143313453357588,
+    0.9475409070144225,
+    1.1433134533575902
+   ],
+   "max_bend_deg_per_encounter": [
+    19.743316950718864,
+    25.400893635559388,
+    19.7433169507188
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2621661984601913e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 327.92350500997935,
+   "tof0_days": 9.390715433914245,
+   "tof1_days": 15.241377457830911,
+   "residual_kms": 4.613667999888127e-14,
+   "cond_j": 54.533494578703234,
+   "class": "flyby_passive",
+   "energy_leg0": -5.0925732075158905,
+   "energy_leg1": -5.092573207516005,
+   "h_leg0": 1755642.8911252962,
+   "h_leg1": 1755642.8911252823,
+   "congruence_dE": -1.1457501614131615e-13,
+   "congruence_dh": -1.3969838619232178e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 97.14195028364568,
+   "vinf_per_encounter_kms": [
+    0.573706595419051,
+    0.8022127326622676,
+    0.573706595419055
+   ],
+   "max_bend_deg_per_encounter": [
+    53.62600078883154,
+    32.78428919316326,
+    53.626000788831114
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 120.13757031255463,
+   "tof0_days": 7.82232711565926,
+   "tof1_days": 16.809765776085897,
+   "residual_kms": 1.5454048319886196e-12,
+   "cond_j": 651.9549158852421,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.501350669014664,
+   "energy_leg1": -6.501350669006786,
+   "h_leg0": 1391030.872562918,
+   "h_leg1": 1391030.8725640795,
+   "congruence_dE": 7.87725440432041e-12,
+   "congruence_dh": 1.1613592505455017e-06,
+   "required_turn_flyby_deg": 109.41637334549233,
+   "required_turn_anchor_deg": 152.19334767567167,
+   "vinf_per_encounter_kms": [
+    1.898075733017305,
+    1.3282273641953113,
+    1.8980757330163402
+   ],
+   "max_bend_deg_per_encounter": [
+    8.008746995002122,
+    14.411242545134996,
+    8.008746995009709
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.1852822508632594e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 18.660332596580886,
+   "tof0_days": 2.277485425220409,
+   "tof1_days": 22.354607466524747,
+   "residual_kms": 1.0811594422968861e-13,
+   "cond_j": 20.497293357041396,
+   "class": "flyby_passive",
+   "energy_leg0": -5.092573207516185,
+   "energy_leg1": -5.092573207515921,
+   "h_leg0": 1755642.8911252588,
+   "h_leg1": 1755642.8911252946,
+   "congruence_dE": 2.646771690706373e-13,
+   "congruence_dh": 3.585591912269592e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 97.14195028365326,
+   "vinf_per_encounter_kms": [
+    0.5737065954190824,
+    0.8022127326622422,
+    0.5737065954190216
+   ],
+   "max_bend_deg_per_encounter": [
+    53.62600078882806,
+    32.78428919316479,
+    53.6260007888348
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 231.58169450928173,
+   "tof0_days": 2.217136310212832,
+   "tof1_days": 22.414956581532323,
+   "residual_kms": 3.4844134762872556e-11,
+   "cond_j": 827.8855607815308,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.5860046717975376,
+   "energy_leg1": -3.586004671951473,
+   "h_leg0": 837572.57883559,
+   "h_leg1": 837572.5788270026,
+   "congruence_dE": -1.539355309887469e-10,
+   "congruence_dh": -8.587492629885674e-06,
+   "required_turn_flyby_deg": 124.4830067377647,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    4.3219560478122165,
+    3.6841305800998643,
+    4.321956047793196
+   ],
+   "max_bend_deg_per_encounter": [
+    1.6356394086066777,
+    2.097197672497804,
+    1.6356394086208697
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00014960442684311162,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 243.06201355984294,
+   "tof0_days": 2.3764310047897923,
+   "tof1_days": 22.255661886955362,
+   "residual_kms": 9.892299223409336e-13,
+   "cond_j": 76.71070046374791,
+   "class": "flyby_passive",
+   "energy_leg0": -5.546263670122835,
+   "energy_leg1": -5.546263670118529,
+   "h_leg0": 755408.2554028925,
+   "h_leg1": 755408.2554031732,
+   "congruence_dE": 4.305888978706207e-12,
+   "congruence_dh": 2.8067734092473984e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 123.11437956446701,
+   "vinf_per_encounter_kms": [
+    4.01639147223955,
+    3.2464999944498634,
+    4.016391472240039
+   ],
+   "max_bend_deg_per_encounter": [
+    1.8897447670662282,
+    2.6866616156550043,
+    1.8897447670657757
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 183.6934629671286,
+   "tof0_days": 5.4450329633987735,
+   "tof1_days": 19.187059928346383,
+   "residual_kms": 6.97056830501403e-13,
+   "cond_j": 376.93751735777954,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.7758346572522,
+   "energy_leg1": -7.775834657254205,
+   "h_leg0": 1172573.1349478906,
+   "h_leg1": 1172573.1349474755,
+   "congruence_dE": -2.0055068716828828e-12,
+   "congruence_dh": -4.1513703763484955e-07,
+   "required_turn_flyby_deg": 49.03565056021495,
+   "required_turn_anchor_deg": 127.64144701289938,
+   "vinf_per_encounter_kms": [
+    2.168690347936451,
+    1.2549087069037832,
+    2.168690347937122
+   ],
+   "max_bend_deg_per_encounter": [
+    6.2346547700557,
+    15.913697792625653,
+    6.234654770052049
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.518179385027606e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 134.2588772254007,
+   "tof0_days": 4.61000785851477,
+   "tof1_days": 20.022085033230386,
+   "residual_kms": 3.7737114385843494e-11,
+   "cond_j": 383.76153487042217,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031690728,
+   "energy_leg1": -6.363687031555067,
+   "h_leg0": 1486255.6017894188,
+   "h_leg1": 1486255.6018079019,
+   "congruence_dE": 1.3566126000341683e-10,
+   "congruence_dh": 1.8483027815818787e-05,
+   "required_turn_flyby_deg": 106.13312523728045,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5123560672082719,
+    1.0054784201039269,
+    1.512356067195891
+   ],
+   "max_bend_deg_per_encounter": [
+    12.14062668106382,
+    23.094108467353756,
+    12.140626681242244
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2122131862348978e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 210.6782246770611,
+   "tof0_days": 2.7970905878263608,
+   "tof1_days": 21.835002303918795,
+   "residual_kms": 4.130270789782071e-13,
+   "cond_j": 1393.7334057361832,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.827424621224074,
+   "energy_leg1": -5.827424621221978,
+   "h_leg0": 1043725.6260505359,
+   "h_leg1": 1043725.626050734,
+   "congruence_dE": 2.0961010704922955e-12,
+   "congruence_dh": 1.9802246242761612e-07,
+   "required_turn_flyby_deg": 117.32120325328302,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.279104848668306,
+    2.619791225894333,
+    3.2791048486684398
+   ],
+   "max_bend_deg_per_encounter": [
+    2.8120344601595044,
+    4.075137916980097,
+    2.812034460159281
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.197352918944772e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 234.3324535523622,
+   "tof0_days": 2.866036932848237,
+   "tof1_days": 21.76605595889692,
+   "residual_kms": 1.9539319647823284e-13,
+   "cond_j": 142.1893212283584,
+   "class": "flyby_passive",
+   "energy_leg0": -7.329101923887765,
+   "energy_leg1": -7.329101923886734,
+   "h_leg0": 860582.9001897628,
+   "h_leg1": 860582.9001898682,
+   "congruence_dE": 1.0311751452718454e-12,
+   "congruence_dh": 1.0535586625337601e-07,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 118.86818420836249,
+   "vinf_per_encounter_kms": [
+    3.287659583188382,
+    2.416213501260059,
+    3.2876595831884274
+   ],
+   "max_bend_deg_per_encounter": [
+    2.797773210967254,
+    4.761407036003865,
+    2.797773210967179
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 1.9688234740658572,
+   "tof0_days": 1.4607972945012677,
+   "tof1_days": 23.171295597243887,
+   "residual_kms": 2.0749055501749857e-13,
+   "cond_j": 87.92179985641287,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031620304,
+   "energy_leg1": -6.363687031620314,
+   "h_leg0": 1486255.601817012,
+   "h_leg1": 1486255.6018169837,
+   "congruence_dE": -9.769962616701378e-15,
+   "congruence_dh": -2.8405338525772095e-08,
+   "required_turn_flyby_deg": 106.13312523354351,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5123560671024374,
+    1.0054784199902551,
+    1.5123560671025882
+   ],
+   "max_bend_deg_per_encounter": [
+    12.140626682589042,
+    23.094108471587685,
+    12.140626682586868
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.896908073913583e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 231.68009091252458,
+   "tof0_days": 3.6501037249518378,
+   "tof1_days": 20.98198916679332,
+   "residual_kms": 5.737139328561423e-13,
+   "cond_j": 270.2656721687024,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.72859844421843,
+   "energy_leg1": -8.728598444218312,
+   "h_leg0": 864523.3086096804,
+   "h_leg1": 864523.3086098315,
+   "congruence_dE": 1.1901590823981678e-13,
+   "congruence_dh": 1.511070877313614e-07,
+   "required_turn_flyby_deg": 30.604041762086815,
+   "required_turn_anchor_deg": 107.68949290122107,
+   "vinf_per_encounter_kms": [
+    2.818489866079848,
+    1.7310499823030754,
+    2.818489866079441
+   ],
+   "max_bend_deg_per_encounter": [
+    3.7738252907902163,
+    8.93146471313765,
+    3.773825290791269
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.0001005219653803633,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 32.07649499001602,
+   "tof0_days": 15.241377457831133,
+   "tof1_days": 9.390715433914023,
+   "residual_kms": 8.720729421554322e-15,
+   "cond_j": 54.53352705212167,
+   "class": "flyby_passive",
+   "energy_leg0": -5.092573207515958,
+   "energy_leg1": -5.0925732075159384,
+   "h_leg0": 1755642.8911252888,
+   "h_leg1": 1755642.8911252916,
+   "congruence_dE": 1.9539925233402755e-14,
+   "congruence_dh": 2.7939677238464355e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 97.14195028364186,
+   "vinf_per_encounter_kms": [
+    0.5737065954190375,
+    0.8022127326622406,
+    0.5737065954190329
+   ],
+   "max_bend_deg_per_encounter": [
+    53.626000788833046,
+    32.784289193164895,
+    53.626000788833544
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 239.862429687767,
+   "tof0_days": 16.809765776073842,
+   "tof1_days": 7.822327115671314,
+   "residual_kms": 8.420059070014958e-14,
+   "cond_j": 651.9612173703214,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.50135066900985,
+   "energy_leg1": -6.501350669009428,
+   "h_leg0": 1391030.872563629,
+   "h_leg1": 1391030.872563692,
+   "congruence_dE": 4.218847493575595e-13,
+   "congruence_dh": 6.309710443019867e-08,
+   "required_turn_flyby_deg": 109.41637334553133,
+   "required_turn_anchor_deg": 152.1933476756927,
+   "vinf_per_encounter_kms": [
+    1.8980757330167128,
+    1.328227364194898,
+    1.8980757330166576
+   ],
+   "max_bend_deg_per_encounter": [
+    8.008746995006778,
+    14.411242545142878,
+    8.008746995007213
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.85102798908209e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 293.2904720036248,
+   "tof0_days": 21.54416194729994,
+   "tof1_days": 3.0879309444452154,
+   "residual_kms": 9.158929497872833e-14,
+   "cond_j": 19.990244545642373,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.024070118691544,
+   "energy_leg1": -4.024070118691715,
+   "h_leg0": 1798164.317246879,
+   "h_leg1": 1798164.3172468676,
+   "congruence_dE": -1.7141843500212417e-13,
+   "congruence_dh": -1.1408701539039612e-08,
+   "required_turn_flyby_deg": 174.76031835288106,
+   "required_turn_anchor_deg": 137.7946459864167,
+   "vinf_per_encounter_kms": [
+    1.3250638836885211,
+    1.5235730438970525,
+    1.3250638836884647
+   ],
+   "max_bend_deg_per_encounter": [
+    15.3418718664109,
+    11.281065155427411,
+    15.341871866412035
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.4815527163182297e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 341.33966740341043,
+   "tof0_days": 22.354607466525252,
+   "tof1_days": 2.277485425219904,
+   "residual_kms": 4.70715931796867e-13,
+   "cond_j": 20.497289082851548,
+   "class": "flyby_passive",
+   "energy_leg0": -5.092573207515871,
+   "energy_leg1": -5.092573207514812,
+   "h_leg0": 1755642.8911253014,
+   "h_leg1": 1755642.8911254273,
+   "congruence_dE": 1.0587086762825493e-12,
+   "congruence_dh": 1.2596137821674347e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 97.14195028359346,
+   "vinf_per_encounter_kms": [
+    0.5737065954190118,
+    0.8022127326627312,
+    0.5737065954190211
+   ],
+   "max_bend_deg_per_encounter": [
+    53.62600078883589,
+    32.78428919313531,
+    53.626000788834844
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 128.41830549155912,
+   "tof0_days": 22.414956581508367,
+   "tof1_days": 2.217136310236789,
+   "residual_kms": 2.6311676693475083e-13,
+   "cond_j": 827.8955385059843,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.586004671954912,
+   "energy_leg1": -3.586004671953839,
+   "h_leg0": 837572.5788448564,
+   "h_leg1": 837572.578844907,
+   "congruence_dE": 1.0729195309977513e-12,
+   "congruence_dh": 5.0640664994716644e-08,
+   "required_turn_flyby_deg": 124.48300673790212,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    4.3219560477578955,
+    3.684130580043781,
+    4.321956047758045
+   ],
+   "max_bend_deg_per_encounter": [
+    1.635639408647209,
+    2.097197672560493,
+    1.6356394086470976
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.742989996106643e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 116.93798644015939,
+   "tof0_days": 22.255661886955238,
+   "tof1_days": 2.376431004789918,
+   "residual_kms": 9.539264678557385e-13,
+   "cond_j": 76.71159894981567,
+   "class": "flyby_passive",
+   "energy_leg0": -5.546263670119286,
+   "energy_leg1": -5.546263670123528,
+   "h_leg0": 755408.2554032097,
+   "h_leg1": 755408.2554029218,
+   "congruence_dE": -4.241940132487798e-12,
+   "congruence_dh": -2.878950908780098e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 123.11437956446562,
+   "vinf_per_encounter_kms": [
+    4.016391472239774,
+    3.2464999944495787,
+    4.016391472239317
+   ],
+   "max_bend_deg_per_encounter": [
+    1.8897447670660206,
+    2.686661615655464,
+    1.8897447670664445
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 6.016456363152676e-13,
+   "tof0_days": 12.316046445872555,
+   "tof1_days": 12.316046445872601,
+   "residual_kms": 2.5500351074740035e-14,
+   "cond_j": 469.70740061072746,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.77583465725371,
+   "energy_leg1": -7.775834657253638,
+   "h_leg0": 1172573.1349475791,
+   "h_leg1": 1172573.1349475945,
+   "congruence_dE": 7.194245199571014e-14,
+   "congruence_dh": 1.5366822481155396e-08,
+   "required_turn_flyby_deg": 49.03565056018644,
+   "required_turn_anchor_deg": 127.64144701289045,
+   "vinf_per_encounter_kms": [
+    2.168690347936955,
+    1.254908706903732,
+    2.1686903479369306
+   ],
+   "max_bend_deg_per_encounter": [
+    6.234654770052958,
+    15.91369779262678,
+    6.234654770053091
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9799426276208018e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 246.14502687184057,
+   "tof0_days": 13.890651727944489,
+   "tof1_days": 10.741441163800667,
+   "residual_kms": 5.777428238599253e-15,
+   "cond_j": 462.0714811286725,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031617592,
+   "energy_leg1": -6.363687031617575,
+   "h_leg0": 1486255.6018182032,
+   "h_leg1": 1486255.6018182049,
+   "congruence_dE": 1.687538997430238e-14,
+   "congruence_dh": 1.6298145055770874e-09,
+   "required_turn_flyby_deg": 106.13312523351549,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.512356067097653,
+    1.0054784199864195,
+    1.5123560670976532
+   ],
+   "max_bend_deg_per_encounter": [
+    12.140626682657992,
+    23.094108471730546,
+    12.140626682657988
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.3286591862441587e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 113.85497314117887,
+   "tof0_days": 10.741441163461115,
+   "tof1_days": 13.890651728284041,
+   "residual_kms": 8.423458206540364e-11,
+   "cond_j": 462.06911064867546,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031850242,
+   "energy_leg1": -6.363687031548288,
+   "h_leg0": 1486255.6018014497,
+   "h_leg1": 1486255.6018518936,
+   "congruence_dE": 3.019540173454516e-10,
+   "congruence_dh": 5.0443923100829124e-05,
+   "required_turn_flyby_deg": 106.1331252247282,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5123560670363505,
+    1.0054784198743836,
+    1.5123560669574014
+   ],
+   "max_bend_deg_per_encounter": [
+    12.140626683541445,
+    23.094108475903553,
+    12.14062668467921
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.6582745533854722e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 77.22669697083857,
+   "tof0_days": 9.427398872232445,
+   "tof1_days": 15.204694019512711,
+   "residual_kms": 8.588764537771575e-14,
+   "cond_j": 381.2459136570295,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218385,
+   "energy_leg1": -8.728598444218367,
+   "h_leg0": 864523.308609733,
+   "h_leg1": 864523.308609756,
+   "congruence_dE": 1.7763568394002505e-14,
+   "congruence_dh": 2.293381839990616e-08,
+   "required_turn_flyby_deg": 30.604041762089434,
+   "required_turn_anchor_deg": 107.68949290122075,
+   "vinf_per_encounter_kms": [
+    2.818489866079709,
+    1.7310499823029342,
+    2.8184898660796476
+   ],
+   "max_bend_deg_per_encounter": [
+    3.7738252907905765,
+    8.931464713138997,
+    3.7738252907907337
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.937125613073599e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 176.30653703290412,
+   "tof0_days": 19.187059928345203,
+   "tof1_days": 5.445032963399953,
+   "residual_kms": 1.1311481556235892e-12,
+   "cond_j": 376.93915270855314,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.7758346572544905,
+   "energy_leg1": -7.775834657251454,
+   "h_leg0": 1172573.1349474099,
+   "h_leg1": 1172573.1349480525,
+   "congruence_dE": 3.036682016954728e-12,
+   "congruence_dh": 6.426125764846802e-07,
+   "required_turn_flyby_deg": 49.03565056022913,
+   "required_turn_anchor_deg": 127.64144701290387,
+   "vinf_per_encounter_kms": [
+    2.1686903479372472,
+    1.2549087069038447,
+    2.1686903479361717
+   ],
+   "max_bend_deg_per_encounter": [
+    6.234654770051367,
+    15.913697792624301,
+    6.234654770057222
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.858823373639775e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 225.74112279534597,
+   "tof0_days": 20.022085032843016,
+   "tof1_days": 4.61000785890214,
+   "residual_kms": 5.656021871894963e-11,
+   "cond_j": 383.7667855300533,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031726223,
+   "energy_leg1": -6.3636870315032645,
+   "h_leg0": 1486255.60183307,
+   "h_leg1": 1486255.6018676972,
+   "congruence_dE": 2.2295854051890274e-10,
+   "congruence_dh": 3.462727181613445e-05,
+   "required_turn_flyby_deg": 106.13312522681251,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5123560669437128,
+    1.0054784198342774,
+    1.5123560668998879
+   ],
+   "max_bend_deg_per_encounter": [
+    12.140626684876482,
+    23.09410847739738,
+    12.14062668550806
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7859177965964746e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 149.32177532270182,
+   "tof0_days": 21.835002303925172,
+   "tof1_days": 2.7970905878199837,
+   "residual_kms": 1.4077139025352045e-12,
+   "cond_j": 1393.8092025898152,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.827424621218411,
+   "energy_leg1": -5.827424621211137,
+   "h_leg0": 1043725.6260477788,
+   "h_leg1": 1043725.6260484769,
+   "congruence_dE": 7.2732930789243255e-12,
+   "congruence_dh": 6.981426849961281e-07,
+   "required_turn_flyby_deg": 117.3212032532845,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.2791048486770564,
+    2.619791225903124,
+    3.2791048486774965
+   ],
+   "max_bend_deg_per_encounter": [
+    2.812034460144862,
+    4.075137916953709,
+    2.812034460144126
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4980565559085384e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 125.66754644765288,
+   "tof0_days": 21.766055958896043,
+   "tof1_days": 2.866036932849113,
+   "residual_kms": 1.9779476164330252e-13,
+   "cond_j": 142.1829773497625,
+   "class": "flyby_passive",
+   "energy_leg0": -7.329101923888974,
+   "energy_leg1": -7.329101923889763,
+   "h_leg0": 860582.9001899938,
+   "h_leg1": 860582.90018993,
+   "congruence_dE": -7.887024366937112e-13,
+   "congruence_dh": -6.379559636116028e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 118.8681842083549,
+   "vinf_per_encounter_kms": [
+    3.287659583187427,
+    2.4162135012588495,
+    3.2876595831873496
+   ],
+   "max_bend_deg_per_encounter": [
+    2.7977732109688414,
+    4.761407036008436,
+    2.7977732109689692
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 358.0311765259351,
+   "tof0_days": 23.17129559724397,
+   "tof1_days": 1.4607972945011873,
+   "residual_kms": 3.066481013589623e-13,
+   "cond_j": 87.92169491264632,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.363687031620398,
+   "energy_leg1": -6.363687031620394,
+   "h_leg0": 1486255.6018170216,
+   "h_leg1": 1486255.6018169825,
+   "congruence_dE": 4.440892098500626e-15,
+   "congruence_dh": -3.91155481338501e-08,
+   "required_turn_flyby_deg": 106.13312523353515,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5123560671023226,
+    1.0054784199901823,
+    1.5123560671025411
+   ],
+   "max_bend_deg_per_encounter": [
+    12.140626682590694,
+    23.0941084715904,
+    12.140626682587547
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.436456792366097e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 282.77330302916397,
+   "tof0_days": 15.204694019512624,
+   "tof1_days": 9.427398872232532,
+   "residual_kms": 1.7685514763877868e-13,
+   "cond_j": 381.24623292182383,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218415,
+   "energy_leg1": -8.728598444218363,
+   "h_leg0": 864523.3086097066,
+   "h_leg1": 864523.3086097554,
+   "congruence_dE": 5.1514348342607263e-14,
+   "congruence_dh": 4.877801984548569e-08,
+   "required_turn_flyby_deg": 30.604041762092127,
+   "required_turn_anchor_deg": 107.68949290122022,
+   "vinf_per_encounter_kms": [
+    2.8184898660797764,
+    1.731049982303,
+    2.818489866079648
+   ],
+   "max_bend_deg_per_encounter": [
+    3.7738252907904015,
+    8.931464713138373,
+    3.7738252907907337
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.488512415827107e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 128.31990908748406,
+   "tof0_days": 20.98198916679301,
+   "tof1_days": 3.650103724952146,
+   "residual_kms": 8.048956136005548e-14,
+   "cond_j": 270.2655414265071,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218413,
+   "energy_leg1": -8.728598444218356,
+   "h_leg0": 864523.3086097217,
+   "h_leg1": 864523.3086097492,
+   "congruence_dE": 5.684341886080802e-14,
+   "congruence_dh": 2.7474015951156616e-08,
+   "required_turn_flyby_deg": 30.604041762091274,
+   "required_turn_anchor_deg": 107.68949290122039,
+   "vinf_per_encounter_kms": [
+    2.818489866079732,
+    1.731049982302954,
+    2.8184898660796707
+   ],
+   "max_bend_deg_per_encounter": [
+    3.773825290790517,
+    8.931464713138812,
+    3.773825290790675
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.595869475750438e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 6.98150870448444e-10,
+   "tof0_days": 12.316046445850983,
+   "tof1_days": 12.316046445894173,
+   "residual_kms": 3.366426837682002e-12,
+   "cond_j": 1147.3499488534947,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -4.497015894106086,
+   "energy_leg1": -4.4970158940979985,
+   "h_leg0": 1566905.9936971539,
+   "h_leg1": 1566905.9936989653,
+   "congruence_dE": 8.08775268978934e-12,
+   "congruence_dh": 1.8114224076271057e-06,
+   "required_turn_flyby_deg": 177.19186104877116,
+   "required_turn_anchor_deg": 152.60876225051118,
+   "vinf_per_encounter_kms": [
+    1.9680495724526041,
+    2.1617678166770045,
+    1.9680495724517442
+   ],
+   "max_bend_deg_per_encounter": [
+    7.031124344620581,
+    6.272498213318535,
+    7.031124344626356
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.132844532619034e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.9999999998969,
+   "tof0_days": 12.316046445875072,
+   "tof1_days": 12.316046445870084,
+   "residual_kms": 7.605551207288563e-13,
+   "cond_j": 1147.3499199705627,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -4.4970158941016045,
+   "energy_leg1": -4.497015894102473,
+   "h_leg0": 1566905.993698042,
+   "h_leg1": 1566905.9936980773,
+   "congruence_dE": -8.686384944667225e-13,
+   "congruence_dh": 3.5390257835388184e-08,
+   "required_turn_flyby_deg": 177.1918610487709,
+   "required_turn_anchor_deg": 152.60876225051118,
+   "vinf_per_encounter_kms": [
+    1.9680495724524445,
+    2.161767816675648,
+    1.9680495724519054
+   ],
+   "max_bend_deg_per_encounter": [
+    7.031124344621653,
+    6.272498213325982,
+    7.0311243446252725
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.1744754050116463e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.99999999999255,
+   "tof0_days": 12.316046445872757,
+   "tof1_days": 12.316046445872399,
+   "residual_kms": 8.016056266821191e-14,
+   "cond_j": 2628.473709918063,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.002445059404343,
+   "energy_leg1": -5.00244505940398,
+   "h_leg0": 1592477.3162649616,
+   "h_leg1": 1592477.316265006,
+   "congruence_dE": 3.623767952376511e-13,
+   "congruence_dh": 4.44706529378891e-08,
+   "required_turn_flyby_deg": 179.64070656441385,
+   "required_turn_anchor_deg": 149.563160108246,
+   "vinf_per_encounter_kms": [
+    1.6081552502120113,
+    1.7986646011023433,
+    1.6081552502120913
+   ],
+   "max_bend_deg_per_encounter": [
+    10.225622422873286,
+    8.849892675888205,
+    10.225622422872359
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.6641123624064997e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 218.20011345199913,
+   "tof0_days": 2.086802276400507,
+   "tof1_days": 22.545290615344648,
+   "residual_kms": 9.922610689590599e-13,
+   "cond_j": 213.32086930966426,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.4748124790005805,
+   "energy_leg1": -3.4748124790047736,
+   "h_leg0": 679351.9223105586,
+   "h_leg1": 679351.9223103733,
+   "congruence_dE": -4.193090319404291e-12,
+   "congruence_dh": -1.8533319234848022e-07,
+   "required_turn_flyby_deg": 126.55372249247065,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.9375314454263117,
+    4.641646133150125,
+    3.937531445425499
+   ],
+   "max_bend_deg_per_encounter": [
+    1.8401233061203395,
+    1.420776713680731,
+    1.8401233061210869
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00013818911543830745,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 141.79988654799007,
+   "tof0_days": 22.54529061534496,
+   "tof1_days": 2.0868022764001957,
+   "residual_kms": 8.672862164422439e-13,
+   "cond_j": 213.32239947860953,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.4748124790011836,
+   "energy_leg1": -3.474812478997695,
+   "h_leg0": 679351.9223103336,
+   "h_leg1": 679351.9223104692,
+   "congruence_dE": 3.488764832582092e-12,
+   "congruence_dh": 1.3562384992837906e-07,
+   "required_turn_flyby_deg": 126.55372249247665,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    3.9375314454264676,
+    4.641646133150908,
+    3.937531445427168
+   ],
+   "max_bend_deg_per_encounter": [
+    1.840123306120196,
+    1.4207767136802578,
+    1.8401233061195519
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.284092004733794e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 190.67745080473918,
+   "tof0_days": 9.39071543391406,
+   "tof1_days": 15.241377457831096,
+   "residual_kms": 4.0943002132167226e-15,
+   "cond_j": 173.15677369106862,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.092573207515931,
+   "energy_leg1": -5.0925732075159456,
+   "h_leg0": 1755642.8911252925,
+   "h_leg1": 1755642.8911252902,
+   "congruence_dE": -1.4210854715202004e-14,
+   "congruence_dh": -2.3283064365386963e-09,
+   "required_turn_flyby_deg": 97.14195028364136,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8022127326622445,
+    0.5737065954190369,
+    0.8022127326622405
+   ],
+   "max_bend_deg_per_encounter": [
+    32.78428919316466,
+    53.6260007888331,
+    32.784289193164895
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.663879122127417e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 5.81363632786784,
+   "tof0_days": 7.822327115682063,
+   "tof1_days": 16.809765776063095,
+   "residual_kms": 1.5913190162656506e-12,
+   "cond_j": 1557.0037124640942,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.501350669004337,
+   "energy_leg1": -6.501350669012463,
+   "h_leg0": 1391030.8725644504,
+   "h_leg1": 1391030.8725632385,
+   "congruence_dE": -8.125944361836446e-12,
+   "congruence_dh": -1.2118835002183914e-06,
+   "required_turn_flyby_deg": 152.19334767571652,
+   "required_turn_anchor_deg": 109.41637334557592,
+   "vinf_per_encounter_kms": [
+    1.3282273641956475,
+    1.8980757330170541,
+    1.3282273641944569
+   ],
+   "max_bend_deg_per_encounter": [
+    14.411242545128582,
+    8.008746995004095,
+    14.411242545151296
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.025883885145362e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 345.3747016645039,
+   "tof0_days": 2.2774854252204326,
+   "tof1_days": 22.354607466524723,
+   "residual_kms": 4.952192083221729e-14,
+   "cond_j": 26.697621079330478,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.092573207515892,
+   "energy_leg1": -5.092573207515919,
+   "h_leg0": 1755642.8911252986,
+   "h_leg1": 1755642.891125292,
+   "congruence_dE": -2.6645352591003757e-14,
+   "congruence_dh": -6.51925802230835e-09,
+   "required_turn_flyby_deg": 97.14195028363882,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8022127326622508,
+    0.5737065954190608,
+    0.8022127326622575
+   ],
+   "max_bend_deg_per_encounter": [
+    32.784289193164284,
+    53.62600078883045,
+    32.78428919316387
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.426092762381628e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 21.579171234323713,
+   "tof0_days": 3.08793094444527,
+   "tof1_days": 21.544161947299887,
+   "residual_kms": 4.2183624735320274e-13,
+   "cond_j": 10.814940308330632,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.024070118691957,
+   "energy_leg1": -4.024070118691547,
+   "h_leg0": 1798164.31724687,
+   "h_leg1": 1798164.3172468683,
+   "congruence_dE": 4.0945025148175773e-13,
+   "congruence_dh": -1.6298145055770874e-09,
+   "required_turn_flyby_deg": 137.7946459864154,
+   "required_turn_anchor_deg": 174.76031835288023,
+   "vinf_per_encounter_kms": [
+    1.5235730438968127,
+    1.3250638836885877,
+    1.523573043897086
+   ],
+   "max_bend_deg_per_encounter": [
+    11.281065155430623,
+    15.341871866409555,
+    11.281065155426962
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.272032180766912e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 208.33028509962827,
+   "tof0_days": 2.376431004788039,
+   "tof1_days": 22.255661886957117,
+   "residual_kms": 1.96022290174075e-12,
+   "cond_j": 328.49902662616137,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.546263670113319,
+   "energy_leg1": -5.54626367012177,
+   "h_leg0": 755408.2554024628,
+   "h_leg1": 755408.255401919,
+   "congruence_dE": -8.451017663446692e-12,
+   "congruence_dh": -5.437759682536125e-07,
+   "required_turn_flyby_deg": 123.11437956444354,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.2464999944526505,
+    4.016391472242814,
+    3.24649999445095
+   ],
+   "max_bend_deg_per_encounter": [
+    2.686661615650498,
+    1.889744767063207,
+    2.686661615653247
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.548418256404866e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 199.1780706967909,
+   "tof0_days": 2.217136310296004,
+   "tof1_days": 22.414956581449154,
+   "residual_kms": 8.486356484335185e-11,
+   "cond_j": 1515.573096187204,
+   "class": "flyby_passive",
+   "energy_leg0": -3.5860046723402457,
+   "energy_leg1": -3.586004671965769,
+   "h_leg0": 837572.5788679271,
+   "h_leg1": 837572.5788887748,
+   "congruence_dE": 3.744764498492259e-10,
+   "congruence_dh": 2.0847772248089314e-05,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 124.48300673823249,
+   "vinf_per_encounter_kms": [
+    3.684130579905152,
+    4.321956047670504,
+    3.6841305799762374
+   ],
+   "max_bend_deg_per_encounter": [
+    2.097197672715452,
+    1.6356394087124153,
+    2.0971976726359927
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 66.88324509397751,
+   "tof0_days": 4.6100078586493165,
+   "tof1_days": 20.02208503309584,
+   "residual_kms": 3.0604320177553735e-14,
+   "cond_j": 629.283576847815,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031617612,
+   "energy_leg1": -6.363687031617495,
+   "h_leg0": 1486255.6018181925,
+   "h_leg1": 1486255.6018182111,
+   "congruence_dE": 1.1723955140041653e-13,
+   "congruence_dh": 1.862645149230957e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.13312523351847,
+   "vinf_per_encounter_kms": [
+    1.0054784199864497,
+    1.5123560670976985,
+    1.0054784199864644
+   ],
+   "max_bend_deg_per_encounter": [
+    23.094108471729424,
+    12.140626682657336,
+    23.09410847172888
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 104.11387241443148,
+   "tof0_days": 5.445032963357049,
+   "tof1_days": 19.18705992838811,
+   "residual_kms": 1.1077444864078484e-11,
+   "cond_j": 971.6481844954162,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.775834657277735,
+   "energy_leg1": -7.775834657244788,
+   "h_leg0": 1172573.1349426655,
+   "h_leg1": 1172573.134949398,
+   "congruence_dE": 3.2946978478776145e-11,
+   "congruence_dh": 6.732530891895294e-06,
+   "required_turn_flyby_deg": 127.64144701274529,
+   "required_turn_anchor_deg": 49.03565055972917,
+   "vinf_per_encounter_kms": [
+    1.2549087069057339,
+    2.1686903479448003,
+    1.254908706903013
+   ],
+   "max_bend_deg_per_encounter": [
+    15.913697792582754,
+    6.234654770010262,
+    15.913697792642592
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.5338736334259087e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 192.44509544507022,
+   "tof0_days": 2.8660369329304207,
+   "tof1_days": 21.766055958814736,
+   "residual_kms": 2.8217494678687574e-11,
+   "cond_j": 545.3219279028737,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.3291019240784685,
+   "energy_leg1": -7.32910192390109,
+   "h_leg0": 860582.9002048447,
+   "h_leg1": 860582.9002251117,
+   "congruence_dE": 1.77378112198312e-10,
+   "congruence_dh": 2.0267092622816563e-05,
+   "required_turn_flyby_deg": 118.8681842087389,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.416213501147231,
+    3.287659583094519,
+    2.416213501175341
+   ],
+   "max_bend_deg_per_encounter": [
+    4.761407036430318,
+    2.797773211123139,
+    4.761407036324069
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2625394880903046e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 169.7985228977532,
+   "tof0_days": 2.7970905878242123,
+   "tof1_days": 21.835002303920945,
+   "residual_kms": 4.4338543693218457e-13,
+   "cond_j": 2631.0291273842913,
+   "class": "flyby_passive",
+   "energy_leg0": -5.827424621219717,
+   "energy_leg1": -5.82742462122196,
+   "h_leg0": 1043725.6260498434,
+   "h_leg1": 1043725.6260496324,
+   "congruence_dE": -2.2426505097428162e-12,
+   "congruence_dh": -2.1094456315040588e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 117.32120325327577,
+   "vinf_per_encounter_kms": [
+    2.6197912258970315,
+    3.279104848671398,
+    2.6197912258966127
+   ],
+   "max_bend_deg_per_encounter": [
+    4.075137916971996,
+    2.8120344601543312,
+    4.075137916973253
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 340.6191546362857,
+   "tof0_days": 1.460797294500003,
+   "tof1_days": 23.17129559724515,
+   "residual_kms": 5.949112875550405e-12,
+   "cond_j": 181.3467245196311,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031620612,
+   "energy_leg1": -6.363687031621404,
+   "h_leg0": 1486255.6018167548,
+   "h_leg1": 1486255.6018174065,
+   "congruence_dE": -7.922551503725117e-13,
+   "congruence_dh": 6.516929715871811e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.13312523346605,
+   "vinf_per_encounter_kms": [
+    1.0054784199911886,
+    1.5123560671036567,
+    1.0054784199869007
+   ],
+   "max_bend_deg_per_encounter": [
+    23.094108471552918,
+    12.14062668257147,
+    23.094108471712623
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 178.33353417660499,
+   "tof0_days": 3.650103724943332,
+   "tof1_days": 20.981989166801824,
+   "residual_kms": 1.2168486204555184e-11,
+   "cond_j": 378.0975379100341,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444220196,
+   "energy_leg1": -8.728598444217265,
+   "h_leg0": 864523.308607684,
+   "h_leg1": 864523.308610962,
+   "congruence_dE": 2.9309887850104133e-12,
+   "congruence_dh": 3.2780226320028305e-06,
+   "required_turn_flyby_deg": 107.68949290120548,
+   "required_turn_anchor_deg": 30.604041762177186,
+   "vinf_per_encounter_kms": [
+    1.7310499823082817,
+    2.8184898660851396,
+    1.7310499822997496
+   ],
+   "max_bend_deg_per_encounter": [
+    8.93146471308801,
+    3.7738252907765064,
+    8.931464713169362
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.1406602206130507e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 169.32254919525965,
+   "tof0_days": 15.241377457831135,
+   "tof1_days": 9.390715433914021,
+   "residual_kms": 5.29309815580535e-15,
+   "cond_j": 173.15687473315492,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.092573207515949,
+   "energy_leg1": -5.092573207515937,
+   "h_leg0": 1755642.8911252904,
+   "h_leg1": 1755642.8911252916,
+   "congruence_dE": 1.2434497875801753e-14,
+   "congruence_dh": 1.1641532182693481e-09,
+   "required_turn_flyby_deg": 97.14195028364139,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    0.802212732662236,
+    0.573706595419035,
+    0.8022127326622412
+   ],
+   "max_bend_deg_per_encounter": [
+    32.78428919316517,
+    53.626000788833316,
+    32.78428919316485
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2555233784888046e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 354.18636367073543,
+   "tof0_days": 16.809765776096857,
+   "tof1_days": 7.822327115648299,
+   "residual_kms": 2.9833221823187546e-12,
+   "cond_j": 1556.9912713301228,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.501350669004494,
+   "energy_leg1": -6.501350669019759,
+   "h_leg0": 1391030.872564433,
+   "h_leg1": 1391030.8725621472,
+   "congruence_dE": -1.5265122499386052e-11,
+   "congruence_dh": -2.285698428750038e-06,
+   "required_turn_flyby_deg": 152.19334767564467,
+   "required_turn_anchor_deg": 109.41637334544197,
+   "vinf_per_encounter_kms": [
+    1.3282273641955997,
+    1.8980757330180127,
+    1.328227364193403
+   ],
+   "max_bend_deg_per_encounter": [
+    14.411242545129495,
+    8.008746994996557,
+    14.411242545171405
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2298422509627456e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 14.625298335498638,
+   "tof0_days": 22.354607466524783,
+   "tof1_days": 2.277485425220373,
+   "residual_kms": 9.216656711926212e-14,
+   "cond_j": 26.697624432997518,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.092573207515907,
+   "energy_leg1": -5.0925732075161285,
+   "h_leg0": 1755642.8911252965,
+   "h_leg1": 1755642.891125265,
+   "congruence_dE": -2.2115642650533118e-13,
+   "congruence_dh": -3.14321368932724e-08,
+   "required_turn_flyby_deg": 97.14195028365084,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.802212732662246,
+    0.5737065954190863,
+    0.8022127326621804
+   ],
+   "max_bend_deg_per_encounter": [
+    32.784289193164575,
+    53.62600078882763,
+    32.784289193168526
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 8.522301472134746e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 129.25935246560712,
+   "tof0_days": 17.896281183092825,
+   "tof1_days": 6.7358117086523315,
+   "residual_kms": 9.483566407435947e-14,
+   "cond_j": 405.1547462929409,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.627375669211836,
+   "energy_leg1": -5.627375669211805,
+   "h_leg0": 1633072.2369832627,
+   "h_leg1": 1633072.2369832569,
+   "congruence_dE": 3.108624468950438e-14,
+   "congruence_dh": -5.820766091346741e-09,
+   "required_turn_flyby_deg": 170.0968580737871,
+   "required_turn_anchor_deg": 136.3109625218097,
+   "vinf_per_encounter_kms": [
+    0.9475409070143948,
+    1.143313453357629,
+    0.9475409070144614
+   ],
+   "max_bend_deg_per_encounter": [
+    25.40089363556056,
+    19.743316950717674,
+    25.400893635557733
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.742504038771348e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 151.66971490045327,
+   "tof0_days": 22.255661886954684,
+   "tof1_days": 2.376431004790472,
+   "residual_kms": 7.818558502994845e-13,
+   "cond_j": 328.488984030227,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.546263670123089,
+   "energy_leg1": -5.546263670126539,
+   "h_leg0": 755408.2554032874,
+   "h_leg1": 755408.2554030585,
+   "congruence_dE": -3.4496849821152864e-12,
+   "congruence_dh": -2.2887252271175385e-07,
+   "required_turn_flyby_deg": 123.11437956445705,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    3.246499994448269,
+    4.016391472238666,
+    3.246499994447588
+   ],
+   "max_bend_deg_per_encounter": [
+    2.6866616156575818,
+    1.8897447670670464,
+    2.6866616156586822
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.502043962644309e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 160.82192930028387,
+   "tof0_days": 22.41495658150801,
+   "tof1_days": 2.2171363102371444,
+   "residual_kms": 2.8298101802968417e-13,
+   "cond_j": 1515.5250419992697,
+   "class": "flyby_passive",
+   "energy_leg0": -3.5860046719551812,
+   "energy_leg1": -3.58600467195617,
+   "h_leg0": 837572.5788450699,
+   "h_leg1": 837572.5788450403,
+   "congruence_dE": -9.885425811262394e-13,
+   "congruence_dh": -2.9569491744041443e-08,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 124.48300673790263,
+   "vinf_per_encounter_kms": [
+    3.684130580043178,
+    4.32195604775742,
+    3.684130580042953
+   ],
+   "max_bend_deg_per_encounter": [
+    2.0971976725611676,
+    1.6356394086475632,
+    2.0971976725614185
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 316.86795477112616,
+   "tof0_days": 10.741441163800904,
+   "tof1_days": 13.890651727944253,
+   "residual_kms": 6.811378861017111e-14,
+   "cond_j": 865.0167456239096,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031617399,
+   "energy_leg1": -6.3636870316176335,
+   "h_leg0": 1486255.601818219,
+   "h_leg1": 1486255.6018181795,
+   "congruence_dE": -2.3447910280083306e-13,
+   "congruence_dh": -3.958120942115784e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.1331252335221,
+   "vinf_per_encounter_kms": [
+    1.0054784199865185,
+    1.512356067097757,
+    1.0054784199864977
+   ],
+   "max_bend_deg_per_encounter": [
+    23.09410847172686,
+    12.140626682656492,
+    23.094108471727637
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 43.132045228879775,
+   "tof0_days": 13.890651727944144,
+   "tof1_days": 10.741441163801012,
+   "residual_kms": 8.038198711045808e-14,
+   "cond_j": 865.0194374143571,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031617662,
+   "energy_leg1": -6.363687031617374,
+   "h_leg0": 1486255.601818168,
+   "h_leg1": 1486255.601818216,
+   "congruence_dE": 2.877698079828406e-13,
+   "congruence_dh": 4.7963112592697144e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.13312523352354,
+   "vinf_per_encounter_kms": [
+    1.0054784199865319,
+    1.5123560670977998,
+    1.00547841998656
+   ],
+   "max_bend_deg_per_encounter": [
+    23.09410847172637,
+    12.140626682655874,
+    23.094108471725313
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 180.00000000000225,
+   "tof0_days": 12.316046445872523,
+   "tof1_days": 12.316046445872633,
+   "residual_kms": 5.9383960505938e-14,
+   "cond_j": 1192.791525923477,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.775834657253593,
+   "energy_leg1": -7.775834657253748,
+   "h_leg0": 1172573.1349476043,
+   "h_leg1": 1172573.134947571,
+   "congruence_dE": -1.5543122344752192e-13,
+   "congruence_dh": -3.329478204250336e-08,
+   "required_turn_flyby_deg": 127.64144701289052,
+   "required_turn_anchor_deg": 49.03565056018686,
+   "vinf_per_encounter_kms": [
+    1.2549087069037181,
+    2.168690347936968,
+    1.2549087069037392
+   ],
+   "max_bend_deg_per_encounter": [
+    15.913697792627085,
+    6.234654770052888,
+    15.913697792626623
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2201353622150482e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 299.4445113920863,
+   "tof0_days": 9.427398872232267,
+   "tof1_days": 15.204694019512889,
+   "residual_kms": 1.3818098197806374e-13,
+   "cond_j": 591.6733680322114,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218404,
+   "energy_leg1": -8.728598444218356,
+   "h_leg0": 864523.308609723,
+   "h_leg1": 864523.3086097632,
+   "congruence_dE": 4.796163466380676e-14,
+   "congruence_dh": 4.016328603029251e-08,
+   "required_turn_flyby_deg": 107.68949290122063,
+   "required_turn_anchor_deg": 30.604041762089448,
+   "vinf_per_encounter_kms": [
+    1.7310499823029548,
+    2.8184898660797284,
+    1.7310499823028584
+   ],
+   "max_bend_deg_per_encounter": [
+    8.9314647131388,
+    3.7738252907905245,
+    8.931464713139723
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2868325069361948e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 293.116754906016,
+   "tof0_days": 20.022085033095944,
+   "tof1_days": 4.610007858649212,
+   "residual_kms": 1.435067942883752e-14,
+   "cond_j": 629.288067526875,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031617617,
+   "energy_leg1": -6.363687031617651,
+   "h_leg0": 1486255.601818181,
+   "h_leg1": 1486255.6018181741,
+   "congruence_dE": -3.4638958368304884e-14,
+   "congruence_dh": -6.984919309616089e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.13312523351682,
+   "vinf_per_encounter_kms": [
+    1.0054784199865072,
+    1.512356067097773,
+    1.0054784199865092
+   ],
+   "max_bend_deg_per_encounter": [
+    23.09410847172728,
+    12.140626682656263,
+    23.09410847172721
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 255.88612758771842,
+   "tof0_days": 19.187059928336193,
+   "tof1_days": 5.445032963408963,
+   "residual_kms": 3.936349973254632e-12,
+   "cond_j": 971.6499019667735,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.775834657256642,
+   "energy_leg1": -7.775834657245893,
+   "h_leg0": 1172573.1349469484,
+   "h_leg1": 1172573.134949212,
+   "congruence_dE": 1.0748735235210916e-11,
+   "congruence_dh": 2.2635795176029205e-06,
+   "required_turn_flyby_deg": 127.64144701293645,
+   "required_turn_anchor_deg": 49.035650560332016,
+   "vinf_per_encounter_kms": [
+    1.2549087069041112,
+    2.1686903479380284,
+    1.2549087069029408
+   ],
+   "max_bend_deg_per_encounter": [
+    15.91369779261844,
+    6.234654770047117,
+    15.913697792644184
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.339230968466887e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 167.5549045523633,
+   "tof0_days": 21.76605595889688,
+   "tof1_days": 2.8660369328482744,
+   "residual_kms": 2.306790185017043e-13,
+   "cond_j": 545.322077344184,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.329101923886515,
+   "energy_leg1": -7.329101923887852,
+   "h_leg0": 860582.900189915,
+   "h_leg1": 860582.9001897703,
+   "congruence_dE": -1.3367085216486885e-12,
+   "congruence_dh": -1.4470424503087997e-07,
+   "required_turn_flyby_deg": 118.86818420836374,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.4162135012600445,
+    3.2876595831883697,
+    2.4162135012598163
+   ],
+   "max_bend_deg_per_encounter": [
+    4.76140703600392,
+    2.797773210967275,
+    4.761407036004782
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.407230444086501e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 190.20147710076728,
+   "tof0_days": 21.835002303949278,
+   "tof1_days": 2.7970905877958785,
+   "residual_kms": 9.111834539092435e-12,
+   "cond_j": 2631.0090682193263,
+   "class": "flyby_passive",
+   "energy_leg0": -5.827424621217239,
+   "energy_leg1": -5.827424621162866,
+   "h_leg0": 1043725.6260348611,
+   "h_leg1": 1043725.6260406104,
+   "congruence_dE": 5.4373394675621967e-11,
+   "congruence_dh": 5.749287083745003e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 117.3212032531944,
+   "vinf_per_encounter_kms": [
+    2.619791225928863,
+    3.2791048487122554,
+    2.6197912259377665
+   ],
+   "max_bend_deg_per_encounter": [
+    4.075137916876447,
+    2.8120344600859606,
+    4.075137916849722
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 19.380845363732046,
+   "tof0_days": 23.17129559724442,
+   "tof1_days": 1.4607972945007361,
+   "residual_kms": 3.7294063602112275e-12,
+   "cond_j": 181.34656799955866,
+   "class": "flyby_passive",
+   "energy_leg0": -6.363687031621049,
+   "energy_leg1": -6.363687031622345,
+   "h_leg0": 1486255.6018172249,
+   "h_leg1": 1486255.6018165462,
+   "congruence_dE": -1.2958523143424827e-12,
+   "congruence_dh": -6.7870132625103e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 106.13312523344939,
+   "vinf_per_encounter_kms": [
+    1.0054784199882287,
+    1.512356067103663,
+    1.0054784199905844
+   ],
+   "max_bend_deg_per_encounter": [
+    23.09410847166316,
+    12.140626682571376,
+    23.094108471575424
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 60.555488607919926,
+   "tof0_days": 15.204694019512742,
+   "tof1_days": 9.427398872232414,
+   "residual_kms": 1.844875341989085e-13,
+   "cond_j": 591.675608157587,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218427,
+   "energy_leg1": -8.728598444218399,
+   "h_leg0": 864523.3086096803,
+   "h_leg1": 864523.3086097277,
+   "congruence_dE": 2.842170943040401e-14,
+   "congruence_dh": 4.738103598356247e-08,
+   "required_turn_flyby_deg": 107.68949290121925,
+   "required_turn_anchor_deg": 30.604041762097754,
+   "vinf_per_encounter_kms": [
+    1.7310499823030754,
+    2.8184898660798505,
+    1.7310499823029455
+   ],
+   "max_bend_deg_per_encounter": [
+    8.93146471313765,
+    3.7738252907902092,
+    8.93146471313889
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.6551211583760038e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 1,
+   "t_total_days": 24.632092891745156,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 181.66646582379278,
+   "tof0_days": 20.981989166792307,
+   "tof1_days": 3.6501037249528494,
+   "residual_kms": 8.680566528479767e-13,
+   "cond_j": 378.0947155511615,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.728598444218482,
+   "energy_leg1": -8.728598444218182,
+   "h_leg0": 864523.3086096792,
+   "h_leg1": 864523.3086099277,
+   "congruence_dE": 3.0020430585864233e-13,
+   "congruence_dh": 2.484302967786789e-07,
+   "required_turn_flyby_deg": 107.6894929012228,
+   "required_turn_anchor_deg": 30.604041762076864,
+   "vinf_per_encounter_kms": [
+    1.7310499823030465,
+    2.818489866079832,
+    1.731049982302448
+   ],
+   "max_bend_deg_per_encounter": [
+    8.931464713137926,
+    3.7738252907902567,
+    8.931464713143631
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.8513389624258796e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 3.012701199622825e-11,
+   "tof0_days": 24.632092891744026,
+   "tof1_days": 24.632092891746286,
+   "residual_kms": 5.4936635426242314e-14,
+   "cond_j": 512.3253303028199,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.1882203220521372,
+   "energy_leg1": -3.188220322051973,
+   "h_leg0": 1952906.0780448467,
+   "h_leg1": 1952906.0780448637,
+   "congruence_dE": 1.6431300764452317e-13,
+   "congruence_dh": 1.6996636986732483e-08,
+   "required_turn_flyby_deg": 165.25257338337886,
+   "required_turn_anchor_deg": 50.02792493018446,
+   "vinf_per_encounter_kms": [
+    0.9178349496071145,
+    1.5236793692634567,
+    0.9178349496071405
+   ],
+   "max_bend_deg_per_encounter": [
+    28.13158099722503,
+    11.279640898007965,
+    28.131580997223796
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2617639896158153e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.99999999929565,
+   "tof0_days": 24.632092891772572,
+   "tof1_days": 24.63209289171774,
+   "residual_kms": 9.334315739430993e-13,
+   "cond_j": 2199.8930122767015,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.105266583982143,
+   "energy_leg1": -3.1052665839862934,
+   "h_leg0": 1293349.8842546248,
+   "h_leg1": 1293349.8842543215,
+   "congruence_dE": -4.150457755258685e-12,
+   "congruence_dh": -3.033783286809921e-07,
+   "required_turn_flyby_deg": 144.90243943919694,
+   "required_turn_anchor_deg": 157.38543984631173,
+   "vinf_per_encounter_kms": [
+    3.4679520079595303,
+    3.100228163204902,
+    3.467952007959065
+   ],
+   "max_bend_deg_per_encounter": [
+    2.520617657025081,
+    2.939557968310027,
+    2.5206176570257433
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.0205976786276735e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 317.07921364801126,
+   "tof0_days": 22.748960628693982,
+   "tof1_days": 26.51522515479633,
+   "residual_kms": 1.6934425657813888e-11,
+   "cond_j": 2211.848117000665,
+   "class": "flyby_passive",
+   "energy_leg0": -3.2341477955660025,
+   "energy_leg1": -3.2341477955002667,
+   "h_leg0": 1806608.6721235593,
+   "h_leg1": 1806608.6721300632,
+   "congruence_dE": 6.573586119884567e-11,
+   "congruence_dh": 6.503891199827194e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 147.74817196847394,
+   "vinf_per_encounter_kms": [
+    1.7873359768022559,
+    1.9518994473832048,
+    1.7873359768086388
+   ],
+   "max_bend_deg_per_encounter": [
+    8.953859993898499,
+    7.140822665173103,
+    8.95385999383942
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 234.28896610731792,
+   "tof0_days": 15.868565769365551,
+   "tof1_days": 33.39562001412476,
+   "residual_kms": 1.4926873050910503e-11,
+   "cond_j": 423.27524007742517,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.165063215336145,
+   "energy_leg1": -4.1650632152796,
+   "h_leg0": 1846603.2387078258,
+   "h_leg1": 1846603.2387152044,
+   "congruence_dE": 5.654499091178877e-11,
+   "congruence_dh": 7.378635928034782e-06,
+   "required_turn_flyby_deg": 178.75550288172425,
+   "required_turn_anchor_deg": 87.66130089431297,
+   "vinf_per_encounter_kms": [
+    0.8152305986044431,
+    1.2312988092174773,
+    0.8152305985982037
+   ],
+   "max_bend_deg_per_encounter": [
+    33.6265085401077,
+    16.445307788795663,
+    33.62650854048442
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.6901424431270056e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 187.17541053836334,
+   "tof0_days": 13.87565507725052,
+   "tof1_days": 35.38853070623979,
+   "residual_kms": 2.376438625206188e-11,
+   "cond_j": 889.1043502731127,
+   "class": "flyby_passive",
+   "energy_leg0": -4.229477979304658,
+   "energy_leg1": -4.229477979208456,
+   "h_leg0": 1759227.9290623642,
+   "h_leg1": 1759227.9290734904,
+   "congruence_dE": 9.620215735139936e-11,
+   "congruence_dh": 1.1126277968287468e-05,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.12922074540796,
+   "vinf_per_encounter_kms": [
+    1.4126001081690778,
+    1.5267656998811094,
+    1.4126001081713888
+   ],
+   "max_bend_deg_per_encounter": [
+    13.711045984314369,
+    11.238412069093851,
+    13.711045984274671
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 353.296124219612,
+   "tof0_days": 11.417129258264714,
+   "tof1_days": 37.8470565252256,
+   "residual_kms": 7.603218731422691e-13,
+   "cond_j": 290.08549049192976,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.027864552945152,
+   "energy_leg1": -5.027864552942857,
+   "h_leg0": 1742137.6397616868,
+   "h_leg1": 1742137.639761982,
+   "congruence_dE": 2.2950530365051236e-12,
+   "congruence_dh": 2.952292561531067e-07,
+   "required_turn_flyby_deg": 160.09643805741572,
+   "required_turn_anchor_deg": 130.13822746071844,
+   "vinf_per_encounter_kms": [
+    0.827146629407868,
+    0.9585581129477843,
+    0.8271466294076635
+   ],
+   "max_bend_deg_per_encounter": [
+    32.91731639953421,
+    24.938307991430662,
+    32.917316399546216
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.296563341921205e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 42.920786369200485,
+   "tof0_days": 26.515225154142186,
+   "tof1_days": 22.748960629348126,
+   "residual_kms": 8.112938887220455e-12,
+   "cond_j": 2212.088534082234,
+   "class": "flyby_passive",
+   "energy_leg0": -3.2341477955550975,
+   "energy_leg1": -3.234147795512328,
+   "h_leg0": 1806608.6721209525,
+   "h_leg1": 1806608.672125947,
+   "congruence_dE": 4.276934362223983e-11,
+   "congruence_dh": 4.994450137019157e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 147.74817196927333,
+   "vinf_per_encounter_kms": [
+    1.7873359768205397,
+    1.9518994473884135,
+    1.7873359768211257
+   ],
+   "max_bend_deg_per_encounter": [
+    8.953859993729266,
+    7.1408226651373194,
+    8.95385999372384
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 125.71103387979016,
+   "tof0_days": 33.395620014613996,
+   "tof1_days": 15.868565768876316,
+   "residual_kms": 5.1485385183655176e-11,
+   "cond_j": 423.2622758192602,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.165063215241826,
+   "energy_leg1": -4.16506321541127,
+   "h_leg0": 1846603.2387192333,
+   "h_leg1": 1846603.2386995195,
+   "congruence_dE": -1.694440143751308e-10,
+   "congruence_dh": -1.971377059817314e-05,
+   "required_turn_flyby_deg": 178.75550288205963,
+   "required_turn_anchor_deg": 87.661300895162,
+   "vinf_per_encounter_kms": [
+    0.8152305986032589,
+    1.231298809230486,
+    0.8152305985973954
+   ],
+   "max_bend_deg_per_encounter": [
+    33.6265085401792,
+    16.44530778849581,
+    33.626508540533216
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.403520626416766e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.9999999999989,
+   "tof0_days": 24.632092891745195,
+   "tof1_days": 24.632092891745117,
+   "residual_kms": 3.2803286093439427e-15,
+   "cond_j": 379.6086505224129,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.027864552943665,
+   "energy_leg1": -5.0278645529436545,
+   "h_leg0": 1742137.639761878,
+   "h_leg1": 1742137.6397618793,
+   "congruence_dE": 1.0658141036401503e-14,
+   "congruence_dh": 1.3969838619232178e-09,
+   "required_turn_flyby_deg": 160.09643805742718,
+   "required_turn_anchor_deg": 130.13822746070088,
+   "vinf_per_encounter_kms": [
+    0.8271466294077346,
+    0.9585581129475297,
+    0.8271466294077333
+   ],
+   "max_bend_deg_per_encounter": [
+    32.91731639954203,
+    24.938307991441217,
+    32.91731639954211
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8054968177567747e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 2.641911578393774e-09,
+   "tof0_days": 24.632092891668652,
+   "tof1_days": 24.63209289182166,
+   "residual_kms": 2.4374995672218067e-11,
+   "cond_j": 379.6076720827806,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.027864552955119,
+   "energy_leg1": -5.027864552932245,
+   "h_leg0": 1742137.639759324,
+   "h_leg1": 1742137.6397644274,
+   "congruence_dE": 2.2874147020957025e-11,
+   "congruence_dh": 5.103414878249168e-06,
+   "required_turn_flyby_deg": 160.0964380574265,
+   "required_turn_anchor_deg": 130.13822746070207,
+   "vinf_per_encounter_kms": [
+    0.8271466294196769,
+    0.9585581129499633,
+    0.8271466293957966
+   ],
+   "max_bend_deg_per_encounter": [
+    32.91731639884145,
+    24.938307991340334,
+    32.91731640024237
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.780843979125246e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999999878858,
+   "tof0_days": 24.632092891795153,
+   "tof1_days": 24.63209289169516,
+   "residual_kms": 9.7708161718651e-12,
+   "cond_j": 530.1583870491794,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.5780011640654674,
+   "energy_leg1": -3.5780011640762197,
+   "h_leg0": 1885273.0856142777,
+   "h_leg1": 1885273.0856139888,
+   "congruence_dE": -1.0752287948889716e-11,
+   "congruence_dh": -2.889428287744522e-07,
+   "required_turn_flyby_deg": 173.9431605186329,
+   "required_turn_anchor_deg": 103.41868530454653,
+   "vinf_per_encounter_kms": [
+    1.0921159760131087,
+    1.5074963966706862,
+    1.0921159760054744
+   ],
+   "max_bend_deg_per_encounter": [
+    21.304970971559843,
+    11.499453909099904,
+    21.30497097180548
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.733825768248611e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 270.7387514901985,
+   "tof0_days": 18.260352434152207,
+   "tof1_days": 31.003833349338105,
+   "residual_kms": 1.6597889914859897e-13,
+   "cond_j": 900.3046478132547,
+   "class": "flyby_passive",
+   "energy_leg0": -4.229477979242288,
+   "energy_leg1": -4.2294779792414525,
+   "h_leg0": 1759227.9290654166,
+   "h_leg1": 1759227.9290655283,
+   "congruence_dE": 8.357758929378178e-13,
+   "congruence_dh": 1.1175870895385742e-07,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 148.12922074645968,
+   "vinf_per_encounter_kms": [
+    1.4126001081951807,
+    1.526765699887661,
+    1.4126001081951127
+   ],
+   "max_bend_deg_per_encounter": [
+    13.71104598386599,
+    11.238412069006564,
+    13.711045983867157
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 89.2612485098626,
+   "tof0_days": 31.003833349335732,
+   "tof1_days": 18.26035243415458,
+   "residual_kms": 6.455849038906878e-14,
+   "cond_j": 900.3062115898236,
+   "class": "flyby_passive",
+   "energy_leg0": -4.229477979241658,
+   "energy_leg1": -4.229477979241946,
+   "h_leg0": 1759227.9290655162,
+   "h_leg1": 1759227.9290654724,
+   "congruence_dE": -2.886579864025407e-13,
+   "congruence_dh": -4.377216100692749e-08,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 148.12922074645357,
+   "vinf_per_encounter_kms": [
+    1.412600108195039,
+    1.5267656998875725,
+    1.4126001081950919
+   ],
+   "max_bend_deg_per_encounter": [
+    13.711045983868424,
+    11.238412069007744,
+    13.711045983867516
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 25.68396855241703,
+   "tof0_days": 14.470919885126808,
+   "tof1_days": 34.7932658983635,
+   "residual_kms": 7.388448730369185e-14,
+   "cond_j": 296.2703556063385,
+   "class": "flyby_passive",
+   "energy_leg0": -5.111275344083413,
+   "energy_leg1": -5.1112753440834995,
+   "h_leg0": 1710761.990252922,
+   "h_leg1": 1710761.9902529186,
+   "congruence_dE": -8.615330671091215e-14,
+   "congruence_dh": -3.4924596548080444e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.53109816235315,
+   "vinf_per_encounter_kms": [
+    1.0205404715298516,
+    1.0444627604924253,
+    1.0205404715298854
+   ],
+   "max_bend_deg_per_encounter": [
+    23.794490595331013,
+    21.70361954259086,
+    23.794490595329744
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 12.739220558605155,
+   "tof0_days": 17.422724840925383,
+   "tof1_days": 31.84146094256493,
+   "residual_kms": 8.288026138265061e-13,
+   "cond_j": 155.86465861001292,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.743978975528114,
+   "energy_leg1": -4.743978975526967,
+   "h_leg0": 1797317.4267362738,
+   "h_leg1": 1797317.4267363749,
+   "congruence_dE": 1.1466383398328617e-12,
+   "congruence_dh": 1.0104849934577942e-07,
+   "required_turn_flyby_deg": 171.3593971269702,
+   "required_turn_anchor_deg": 68.4268871181284,
+   "vinf_per_encounter_kms": [
+    0.574564617712984,
+    0.9437184032577103,
+    0.5745646177135145
+   ],
+   "max_bend_deg_per_encounter": [
+    53.53101152931488,
+    25.564172661311723,
+    53.531011529256205
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.835852742920621e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 318.99938680673364,
+   "tof0_days": 21.90046098520868,
+   "tof1_days": 27.36372479828163,
+   "residual_kms": 6.457796199517975e-14,
+   "cond_j": 392.56610971949465,
+   "class": "flyby_passive",
+   "energy_leg0": -5.111275344083774,
+   "energy_leg1": -5.111275344083728,
+   "h_leg0": 1710761.9902528783,
+   "h_leg1": 1710761.990252876,
+   "congruence_dE": 4.618527782440651e-14,
+   "congruence_dh": -2.3283064365386963e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.53109816236577,
+   "vinf_per_encounter_kms": [
+    1.0205404715298565,
+    1.0444627604923664,
+    1.020540471529921
+   ],
+   "max_bend_deg_per_encounter": [
+    23.79449059533083,
+    21.703619542592868,
+    23.79449059532841
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 142.24909327118655,
+   "tof0_days": 19.31129692030174,
+   "tof1_days": 29.952888863188573,
+   "residual_kms": 7.813067835252997e-14,
+   "cond_j": 273.1170476466615,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.808845381677074,
+   "energy_leg1": -5.8088453816769094,
+   "h_leg0": 1634180.5077320915,
+   "h_leg1": 1634180.5077321196,
+   "congruence_dE": 1.6431300764452317e-13,
+   "congruence_dh": 2.8172507882118225e-08,
+   "required_turn_flyby_deg": 121.98410864130183,
+   "required_turn_anchor_deg": 167.92181570697159,
+   "vinf_per_encounter_kms": [
+    0.9621391605484764,
+    0.7231347334629585,
+    0.9621391605484
+   ],
+   "max_bend_deg_per_encounter": [
+    26.136695871267005,
+    38.06201927256422,
+    26.136695871270277
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.0460582947408562e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 239.21851179564464,
+   "tof0_days": 15.684177199724475,
+   "tof1_days": 33.58000858376584,
+   "residual_kms": 1.7852165294699933e-14,
+   "cond_j": 164.10837663014362,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.520480925783477,
+   "energy_leg1": -6.520480925783439,
+   "h_leg0": 1515743.2789088392,
+   "h_leg1": 1515743.2789088467,
+   "congruence_dE": 3.730349362740526e-14,
+   "congruence_dh": 7.450580596923828e-09,
+   "required_turn_flyby_deg": 51.83333532349888,
+   "required_turn_anchor_deg": 163.91765159311316,
+   "vinf_per_encounter_kms": [
+    1.216971708234142,
+    0.6155491778649731,
+    1.2169717082341243
+   ],
+   "max_bend_deg_per_encounter": [
+    17.76682477606528,
+    47.2060963793437,
+    17.766824776065725
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8125569361867054e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 95.2768247258162,
+   "tof0_days": 14.335423954573566,
+   "tof1_days": 34.92876182891675,
+   "residual_kms": 5.1278755217469914e-11,
+   "cond_j": 117.33206151559946,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.937856779431303,
+   "energy_leg1": -5.937856779406545,
+   "h_leg0": 1648291.1462794985,
+   "h_leg1": 1648291.146285833,
+   "congruence_dE": 2.475797344914099e-11,
+   "congruence_dh": 6.334623321890831e-06,
+   "required_turn_flyby_deg": 26.47076172470701,
+   "required_turn_anchor_deg": 156.54904227594525,
+   "vinf_per_encounter_kms": [
+    0.6572370643562556,
+    0.3353969938365393,
+    0.6572370643134172
+   ],
+   "max_bend_deg_per_encounter": [
+    45.29388404648563,
+    87.61468029281512,
+    45.29388405031828
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.9628588167901154e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 172.824589468205,
+   "tof0_days": 35.388530705980074,
+   "tof1_days": 13.875655077510238,
+   "residual_kms": 8.806166693193508e-12,
+   "cond_j": 889.0330969480983,
+   "class": "flyby_passive",
+   "energy_leg0": -4.229477979229134,
+   "energy_leg1": -4.229477979265141,
+   "h_leg0": 1759227.9290685214,
+   "h_leg1": 1759227.9290643348,
+   "congruence_dE": -3.600675313464308e-11,
+   "congruence_dh": -4.18652780354023e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.12922074605768,
+   "vinf_per_encounter_kms": [
+    1.4126001081861341,
+    1.5267656998851433,
+    1.4126001081854043
+   ],
+   "max_bend_deg_per_encounter": [
+    13.711045984021387,
+    11.238412069040107,
+    13.711045984033921
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 6.7038757805991755,
+   "tof0_days": 37.847056525217745,
+   "tof1_days": 11.417129258272567,
+   "residual_kms": 9.632040564169828e-14,
+   "cond_j": 290.0855346487595,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.027864552943502,
+   "energy_leg1": -5.027864552943215,
+   "h_leg0": 1742137.6397618968,
+   "h_leg1": 1742137.6397619378,
+   "congruence_dE": 2.8688162956314045e-13,
+   "congruence_dh": 4.0978193283081055e-08,
+   "required_turn_flyby_deg": 160.09643805743733,
+   "required_turn_anchor_deg": 130.1382274606855,
+   "vinf_per_encounter_kms": [
+    0.8271466294077418,
+    0.9585581129476571,
+    0.827146629407671
+   ],
+   "max_bend_deg_per_encounter": [
+    32.91731639954161,
+    24.938307991435934,
+    32.91731639954577
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.230701021683292e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 334.3160314475667,
+   "tof0_days": 34.793265898364155,
+   "tof1_days": 14.470919885126158,
+   "residual_kms": 3.0227440240156574e-14,
+   "cond_j": 296.2680012373457,
+   "class": "flyby_passive",
+   "energy_leg0": -5.111275344083621,
+   "energy_leg1": -5.111275344083621,
+   "h_leg0": 1710761.9902528913,
+   "h_leg1": 1710761.9902528913,
+   "congruence_dE": 0.0,
+   "congruence_dh": 0.0,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.53109816236218,
+   "vinf_per_encounter_kms": [
+    1.0205404715298976,
+    1.0444627604924124,
+    1.0205404715298962
+   ],
+   "max_bend_deg_per_encounter": [
+    23.794490595329282,
+    21.703619542591298,
+    23.794490595329332
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 347.2607794414031,
+   "tof0_days": 31.841460942564538,
+   "tof1_days": 17.422724840925774,
+   "residual_kms": 6.904031476243449e-13,
+   "cond_j": 155.86490621256593,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.74397897552703,
+   "energy_leg1": -4.74397897552803,
+   "h_leg0": 1797317.4267363704,
+   "h_leg1": 1797317.4267362803,
+   "congruence_dE": -1.000088900582341e-12,
+   "congruence_dh": -9.010545909404755e-08,
+   "required_turn_flyby_deg": 171.35939712697038,
+   "required_turn_anchor_deg": 68.42688711812889,
+   "vinf_per_encounter_kms": [
+    0.5745646177134669,
+    0.9437184032576681,
+    0.5745646177130402
+   ],
+   "max_bend_deg_per_encounter": [
+    53.53101152926148,
+    25.56417266131353,
+    53.531011529308664
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.7778000211439275e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 41.000613195529105,
+   "tof0_days": 27.363724798185387,
+   "tof1_days": 21.900460985304925,
+   "residual_kms": 6.6698769883966655e-12,
+   "cond_j": 392.5593843528548,
+   "class": "flyby_passive",
+   "energy_leg0": -5.111275344095819,
+   "energy_leg1": -5.111275344072322,
+   "h_leg0": 1710761.9902503947,
+   "h_leg1": 1710761.990253668,
+   "congruence_dE": 2.3497648271586513e-11,
+   "congruence_dh": 3.273366019129753e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.5310981628027,
+   "vinf_per_encounter_kms": [
+    1.0205404715383795,
+    1.044462760499185,
+    1.020540471534715
+   ],
+   "max_bend_deg_per_encounter": [
+    23.794490595010714,
+    21.703619542360048,
+    23.794490595148343
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 217.75090672883286,
+   "tof0_days": 29.9528888631879,
+   "tof1_days": 19.31129692030241,
+   "residual_kms": 2.6458270874601453e-14,
+   "cond_j": 273.1128066405701,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.8088453816770675,
+   "energy_leg1": -5.808845381677014,
+   "h_leg0": 1634180.5077320938,
+   "h_leg1": 1634180.5077321029,
+   "congruence_dE": 5.3290705182007514e-14,
+   "congruence_dh": 9.080395102500916e-09,
+   "required_turn_flyby_deg": 121.9841086412985,
+   "required_turn_anchor_deg": 167.9218157069737,
+   "vinf_per_encounter_kms": [
+    0.9621391605484629,
+    0.7231347334629397,
+    0.9621391605484366
+   ],
+   "max_bend_deg_per_encounter": [
+    26.136695871267577,
+    38.06201927256561,
+    26.136695871268703
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8608005877801747e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.99999999219216,
+   "tof0_days": 24.63209289203414,
+   "tof1_days": 24.63209289145617,
+   "residual_kms": 4.325762062954789e-11,
+   "cond_j": 181.6435587566177,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.520480925739273,
+   "energy_leg1": -6.52048092582762,
+   "h_leg0": 1515743.2789172693,
+   "h_leg1": 1515743.2789004208,
+   "congruence_dE": -8.834710740757146e-11,
+   "congruence_dh": -1.6848556697368622e-05,
+   "required_turn_flyby_deg": 51.833335323500634,
+   "required_turn_anchor_deg": 163.91765159311345,
+   "vinf_per_encounter_kms": [
+    1.216971708212604,
+    0.6155491778671194,
+    1.216971708255648
+   ],
+   "max_bend_deg_per_encounter": [
+    17.766824776601347,
+    47.206096379134344,
+    17.766824775530015
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.1625227523542726e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 179.999999999976,
+   "tof0_days": 24.632092891744634,
+   "tof1_days": 24.63209289174568,
+   "residual_kms": 1.7187730252410439e-12,
+   "cond_j": 67.06721761903609,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.937856779407371,
+   "energy_leg1": -5.9378567794082215,
+   "h_leg0": 1648291.1462853649,
+   "h_leg1": 1648291.1462851495,
+   "congruence_dE": -8.5087492607272e-13,
+   "congruence_dh": -2.153683453798294e-07,
+   "required_turn_flyby_deg": 26.470761718912716,
+   "required_turn_anchor_deg": 156.5490422743086,
+   "vinf_per_encounter_kms": [
+    0.6572370643181128,
+    0.33539699381436255,
+    0.6572370643195564
+   ],
+   "max_bend_deg_per_encounter": [
+    45.29388404989819,
+    87.61468029728869,
+    45.29388404976903
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7721749259192913e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 104.07345606741092,
+   "tof0_days": 20.73924821313626,
+   "tof1_days": 28.52493757035405,
+   "residual_kms": 2.1399582639105729e-13,
+   "cond_j": 170.62201212939664,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.154228988016606,
+   "energy_leg1": -7.154228988016789,
+   "h_leg0": 1368912.6772974823,
+   "h_leg1": 1368912.6772974276,
+   "congruence_dE": -1.829647544582258e-13,
+   "congruence_dh": -5.471520125865936e-08,
+   "required_turn_flyby_deg": 30.698694086034486,
+   "required_turn_anchor_deg": 143.83966906309573,
+   "vinf_per_encounter_kms": [
+    1.6329223127940178,
+    0.8350636657061158,
+    1.6329223127941845
+   ],
+   "max_bend_deg_per_encounter": [
+    10.568231870686546,
+    30.881052960793948,
+    10.568231870684583
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.2049211307436e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 120.78148820435761,
+   "tof0_days": 33.58000858376575,
+   "tof1_days": 15.684177199724559,
+   "residual_kms": 2.8027139924106894e-14,
+   "cond_j": 164.1078615139589,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.520480925783386,
+   "energy_leg1": -6.520480925783445,
+   "h_leg0": 1515743.2789088567,
+   "h_leg1": 1515743.2789088455,
+   "congruence_dE": -5.861977570020827e-14,
+   "congruence_dh": -1.1175870895385742e-08,
+   "required_turn_flyby_deg": 51.833335323504635,
+   "required_turn_anchor_deg": 163.9176515931146,
+   "vinf_per_encounter_kms": [
+    1.2169717082340972,
+    0.6155491778649723,
+    1.2169717082341251
+   ],
+   "max_bend_deg_per_encounter": [
+    17.766824776066397,
+    47.206096379343784,
+    17.7668247760657
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.3048208803201994e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 264.72317527416374,
+   "tof0_days": 34.928761828922106,
+   "tof1_days": 14.335423954568206,
+   "residual_kms": 4.816736985200548e-11,
+   "cond_j": 117.33145508408805,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.937856779406624,
+   "energy_leg1": -5.937856779430141,
+   "h_leg0": 1648291.146285786,
+   "h_leg1": 1648291.1462797972,
+   "congruence_dE": -2.3517188196819916e-11,
+   "congruence_dh": -5.988869816064835e-06,
+   "required_turn_flyby_deg": 26.47076172442652,
+   "required_turn_anchor_deg": 156.5490422758659,
+   "vinf_per_encounter_kms": [
+    0.6572370643138926,
+    0.33539699383519417,
+    0.657237064354231
+   ],
+   "max_bend_deg_per_encounter": [
+    45.293884050275764,
+    87.61468029308648,
+    45.293884046666776
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.146633539444032e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 255.92654393259085,
+   "tof0_days": 28.52493757035399,
+   "tof1_days": 20.73924821313632,
+   "residual_kms": 1.524439711516024e-13,
+   "cond_j": 170.62272861511158,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.154228988016752,
+   "energy_leg1": -7.154228988016619,
+   "h_leg0": 1368912.6772974392,
+   "h_leg1": 1368912.677297478,
+   "congruence_dE": 1.3233858453531866e-13,
+   "congruence_dh": 3.888271749019623e-08,
+   "required_turn_flyby_deg": 30.698694086032866,
+   "required_turn_anchor_deg": 143.83966906309607,
+   "vinf_per_encounter_kms": [
+    1.6329223127941486,
+    0.8350636657060865,
+    1.632922312794029
+   ],
+   "max_bend_deg_per_encounter": [
+    10.568231870685004,
+    30.88105296079558,
+    10.568231870686414
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.7929368042003485e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.99999999998695,
+   "tof0_days": 24.63209289174546,
+   "tof1_days": 24.63209289174485,
+   "residual_kms": 4.4958412498691914e-14,
+   "cond_j": 5507.635645660075,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.105266583984193,
+   "energy_leg1": -3.1052665839842337,
+   "h_leg0": 1293349.8842544686,
+   "h_leg1": 1293349.8842544775,
+   "congruence_dE": -4.085620730620576e-14,
+   "congruence_dh": 8.847564458847046e-09,
+   "required_turn_flyby_deg": 157.3854398463117,
+   "required_turn_anchor_deg": 144.902439439197,
+   "vinf_per_encounter_kms": [
+    3.100228163204514,
+    3.4679520079593154,
+    3.1002281632044837
+   ],
+   "max_bend_deg_per_encounter": [
+    2.9395579683107442,
+    2.5206176570253866,
+    2.9395579683108
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.8694842946638686e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 1.840978069655671e-10,
+   "tof0_days": 24.632092891740676,
+   "tof1_days": 24.632092891749636,
+   "residual_kms": 2.555956209238051e-13,
+   "cond_j": 1173.029513808252,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.1882203220524534,
+   "energy_leg1": -3.1882203220517322,
+   "h_leg0": 1952906.0780448152,
+   "h_leg1": 1952906.0780448874,
+   "congruence_dE": 7.212008767965017e-13,
+   "congruence_dh": 7.217749953269958e-08,
+   "required_turn_flyby_deg": 50.02792493018561,
+   "required_turn_anchor_deg": 165.25257338337929,
+   "vinf_per_encounter_kms": [
+    1.5236793692633122,
+    0.9178349496071885,
+    1.523679369263531
+   ],
+   "max_bend_deg_per_encounter": [
+    11.279640898009898,
+    28.131580997221523,
+    11.279640898006969
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.139017316723246e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.99999999999005,
+   "tof0_days": 24.632092891745298,
+   "tof1_days": 24.632092891745014,
+   "residual_kms": 8.272145028269018e-14,
+   "cond_j": 1173.0346000197856,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.1882203220520733,
+   "energy_leg1": -3.188220322052139,
+   "h_leg0": 1952906.0780448583,
+   "h_leg1": 1952906.0780448415,
+   "congruence_dE": -6.572520305780927e-14,
+   "congruence_dh": -1.6763806343078613e-08,
+   "required_turn_flyby_deg": 50.02792493018608,
+   "required_turn_anchor_deg": 165.25257338337943,
+   "vinf_per_encounter_kms": [
+    1.5236793692634094,
+    0.9178349496071609,
+    1.5236793692634265
+   ],
+   "max_bend_deg_per_encounter": [
+    11.279640898008598,
+    28.131580997222823,
+    11.279640898008367
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.349838883675822e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 344.601341613791,
+   "tof0_days": 22.748960630740548,
+   "tof1_days": 26.515225152749764,
+   "residual_kms": 7.01283789822701e-11,
+   "cond_j": 5395.3858462650405,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.234147795397975,
+   "energy_leg1": -3.2341477956718094,
+   "h_leg0": 1806608.6721305035,
+   "h_leg1": 1806608.672103316,
+   "congruence_dE": -2.738342885777456e-10,
+   "congruence_dh": -2.7187401428818703e-05,
+   "required_turn_flyby_deg": 147.74817197082805,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    1.9518994474343934,
+    1.7873359768638142,
+    1.9518994473693243
+   ],
+   "max_bend_deg_per_encounter": [
+    7.140822664821436,
+    8.953859993328717,
+    7.140822665268463
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.870164342803964e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 2.3686131610778602,
+   "tof0_days": 15.868565769639803,
+   "tof1_days": 33.39562001385051,
+   "residual_kms": 2.7848215939223344e-12,
+   "cond_j": 981.6447047773976,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.165063215292523,
+   "energy_leg1": -4.165063215301718,
+   "h_leg0": 1846603.238713282,
+   "h_leg1": 1846603.2387122111,
+   "congruence_dE": -9.194423000735696e-12,
+   "congruence_dh": -1.0707881301641464e-06,
+   "required_turn_flyby_deg": 87.66130089382409,
+   "required_turn_anchor_deg": 178.75550288153156,
+   "vinf_per_encounter_kms": [
+    1.2312988092154133,
+    0.815230598602049,
+    1.2312988092126451
+   ],
+   "max_bend_deg_per_encounter": [
+    16.44530778884324,
+    33.62650854025224,
+    16.445307788907048
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.504132649644738e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 344.3816061236187,
+   "tof0_days": 13.875655077661824,
+   "tof1_days": 35.38853070582849,
+   "residual_kms": 4.039259297474424e-14,
+   "cond_j": 2244.9929787314513,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.229477979242098,
+   "energy_leg1": -4.2294779792419135,
+   "h_leg0": 1759227.9290654908,
+   "h_leg1": 1759227.9290655137,
+   "congruence_dE": 1.8474111129762605e-13,
+   "congruence_dh": 2.2817403078079224e-08,
+   "required_turn_flyby_deg": 148.12922074644771,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    1.5267656998873722,
+    1.4126001081948814,
+    1.5267656998874113
+   ],
+   "max_bend_deg_per_encounter": [
+    11.238412069010412,
+    13.71104598387113,
+    11.238412069009893
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.672948944682316e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 186.43387053107423,
+   "tof0_days": 11.417129258271308,
+   "tof1_days": 37.847056525219,
+   "residual_kms": 3.8582765996732606e-14,
+   "cond_j": 682.1554825270338,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.027864552943546,
+   "energy_leg1": -5.0278645529434325,
+   "h_leg0": 1742137.6397618933,
+   "h_leg1": 1742137.639761908,
+   "congruence_dE": 1.1368683772161603e-13,
+   "congruence_dh": 1.4668330550193787e-08,
+   "required_turn_flyby_deg": 130.13822746069226,
+   "required_turn_anchor_deg": 160.09643805743298,
+   "vinf_per_encounter_kms": [
+    0.9585581129475629,
+    0.8271466294077247,
+    0.9585581129476
+   ],
+   "max_bend_deg_per_encounter": [
+    24.938307991439842,
+    32.91731639954263,
+    24.938307991438304
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.611760924282045e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 15.39865831841164,
+   "tof0_days": 26.515225154403414,
+   "tof1_days": 22.7489606290869,
+   "residual_kms": 1.59805796804537e-13,
+   "cond_j": 5395.208079453818,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.2341477955330173,
+   "energy_leg1": -3.23414779553376,
+   "h_leg0": 1806608.6721249667,
+   "h_leg1": 1806608.6721248853,
+   "congruence_dE": -7.425171588693047e-13,
+   "congruence_dh": -8.149072527885437e-08,
+   "required_turn_flyby_deg": 147.74817196892306,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.951899447380528,
+    1.7873359768141348,
+    1.9518994473803724
+   ],
+   "max_bend_deg_per_encounter": [
+    7.140822665191491,
+    8.953859993788548,
+    7.1408226651925615
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.316367043202368e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 357.6313868369223,
+   "tof0_days": 33.395620013898906,
+   "tof1_days": 15.868565769591406,
+   "residual_kms": 8.35499773735699e-13,
+   "cond_j": 981.6491501521434,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.165063215297965,
+   "energy_leg1": -4.165063215300107,
+   "h_leg0": 1846603.2387126386,
+   "h_leg1": 1846603.2387124156,
+   "congruence_dE": -2.141398169897002e-12,
+   "congruence_dh": -2.230517566204071e-07,
+   "required_turn_flyby_deg": 87.6613008939112,
+   "required_turn_anchor_deg": 178.7555028815661,
+   "vinf_per_encounter_kms": [
+    1.2312988092138157,
+    0.8152305986019671,
+    1.2312988092130546
+   ],
+   "max_bend_deg_per_encounter": [
+    16.445307788880065,
+    33.62650854025719,
+    16.44530778889761
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.756408016566986e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 3.862245901134448,
+   "tof0_days": 18.26035243415163,
+   "tof1_days": 31.00383334933868,
+   "residual_kms": 3.1908744557358993e-13,
+   "cond_j": 2227.7134992551796,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.229477979242633,
+   "energy_leg1": -4.229477979241414,
+   "h_leg0": 1759227.9290653863,
+   "h_leg1": 1759227.9290655237,
+   "congruence_dE": 1.2185807918285718e-12,
+   "congruence_dh": 1.3737007975578308e-07,
+   "required_turn_flyby_deg": 148.12922074646298,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.5267656998873906,
+    1.4126001081951665,
+    1.5267656998877057
+   ],
+   "max_bend_deg_per_encounter": [
+    11.238412069010167,
+    13.711045983866233,
+    11.23841206900597
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.501528288295913e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 356.1377540987566,
+   "tof0_days": 31.003833349341317,
+   "tof1_days": 18.260352434148995,
+   "residual_kms": 5.787934117894806e-13,
+   "cond_j": 2227.563346883108,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.229477979241221,
+   "energy_leg1": -4.229477979243194,
+   "h_leg0": 1759227.929065529,
+   "h_leg1": 1759227.9290653204,
+   "congruence_dE": -1.9735324485736783e-12,
+   "congruence_dh": -2.086162567138672e-07,
+   "required_turn_flyby_deg": 148.12922074646988,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.526765699887811,
+    1.4126001081952728,
+    1.5267656998872559
+   ],
+   "max_bend_deg_per_encounter": [
+    11.238412069004566,
+    13.71104598386441,
+    11.238412069011963
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.474056281551234e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 180.00000000000543,
+   "tof0_days": 24.63209289174503,
+   "tof1_days": 24.63209289174528,
+   "residual_kms": 6.88696318607943e-15,
+   "cond_j": 1141.1535009177271,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.578001164070848,
+   "energy_leg1": -3.578001164070825,
+   "h_leg0": 1885273.0856141325,
+   "h_leg1": 1885273.0856141353,
+   "congruence_dE": 2.3092638912203256e-14,
+   "congruence_dh": 2.7939677238464355e-09,
+   "required_turn_flyby_deg": 103.41868530454659,
+   "required_turn_anchor_deg": 173.94316051863288,
+   "vinf_per_encounter_kms": [
+    1.5074963966676365,
+    1.0921159760092942,
+    1.5074963966676433
+   ],
+   "max_bend_deg_per_encounter": [
+    11.49945390914191,
+    21.30497097168257,
+    11.499453909141819
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.9937621873626176e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.9999999757643,
+   "tof0_days": 24.63209289233739,
+   "tof1_days": 24.632092891152922,
+   "residual_kms": 5.1484064348229014e-11,
+   "cond_j": 896.2854296030849,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.0278645528711765,
+   "energy_leg1": -5.027864553016261,
+   "h_leg0": 1742137.6397707474,
+   "h_leg1": 1742137.639752995,
+   "congruence_dE": -1.4508483303643516e-10,
+   "congruence_dh": -1.7752405256032944e-05,
+   "required_turn_flyby_deg": 130.13822746070386,
+   "required_turn_anchor_deg": 160.0964380574253,
+   "vinf_per_encounter_kms": [
+    0.9585581129731785,
+    0.8271466294096735,
+    0.95855811292184
+   ],
+   "max_bend_deg_per_encounter": [
+    24.93830799037795,
+    32.917316399428294,
+    24.93830799250618
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.71882259321842e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 1.3957901501271408e-09,
+   "tof0_days": 24.632092891711807,
+   "tof1_days": 24.632092891778505,
+   "residual_kms": 2.6880875248890672e-12,
+   "cond_j": 896.2623476052206,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.027864552947812,
+   "energy_leg1": -5.027864552939464,
+   "h_leg0": 1742137.6397613143,
+   "h_leg1": 1742137.6397624486,
+   "congruence_dE": 8.347988966761477e-12,
+   "congruence_dh": 1.1343508958816528e-06,
+   "required_turn_flyby_deg": 130.1382274606998,
+   "required_turn_anchor_deg": 160.09643805742803,
+   "vinf_per_encounter_kms": [
+    0.9585581129463767,
+    0.827146629408415,
+    0.9585581129486931
+   ],
+   "max_bend_deg_per_encounter": [
+    24.938307991489012,
+    32.91731639950213,
+    24.93830799139299
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.458782955117965e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 358.9224047443513,
+   "tof0_days": 21.900460985203345,
+   "tof1_days": 27.363724798286967,
+   "residual_kms": 3.498629665979011e-13,
+   "cond_j": 1029.4090637580832,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.111275344084177,
+   "energy_leg1": -5.111275344083227,
+   "h_leg0": 1710761.9902528755,
+   "h_leg1": 1710761.990252984,
+   "congruence_dE": 9.50350909079134e-13,
+   "congruence_dh": 1.0849907994270325e-07,
+   "required_turn_flyby_deg": 148.53109816234038,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    1.0444627604919332,
+    1.0205404715295363,
+    1.044462760492283
+   ],
+   "max_bend_deg_per_encounter": [
+    21.703619542607658,
+    23.794490595342854,
+    21.703619542595717
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.108551434156489e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 118.10470897641565,
+   "tof0_days": 17.422724840928787,
+   "tof1_days": 31.841460942561525,
+   "residual_kms": 5.4436036177819434e-14,
+   "cond_j": 269.51307114560007,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.743978975527286,
+   "energy_leg1": -4.743978975527384,
+   "h_leg0": 1797317.4267363471,
+   "h_leg1": 1797317.4267363376,
+   "congruence_dE": -9.769962616701378e-14,
+   "congruence_dh": -9.546056389808655e-09,
+   "required_turn_flyby_deg": 68.42688711814212,
+   "required_turn_anchor_deg": 171.35939712697495,
+   "vinf_per_encounter_kms": [
+    0.9437184032575312,
+    0.57456461771336,
+    0.9437184032574838
+   ],
+   "max_bend_deg_per_encounter": [
+    25.564172661319397,
+    53.531011529273286,
+    25.564172661321436
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8525078119261554e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 174.1903215635134,
+   "tof0_days": 14.470919885125701,
+   "tof1_days": 34.79326589836461,
+   "residual_kms": 1.1069430215407769e-13,
+   "cond_j": 759.1392577799868,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.1112753440836824,
+   "energy_leg1": -5.111275344083603,
+   "h_leg0": 1710761.9902528734,
+   "h_leg1": 1710761.9902528967,
+   "congruence_dE": 7.904787935331115e-14,
+   "congruence_dh": 2.3283064365386963e-08,
+   "required_turn_flyby_deg": 148.5310981623649,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    1.0444627604924164,
+    1.0205404715299833,
+    1.0444627604924015
+   ],
+   "max_bend_deg_per_encounter": [
+    21.703619542591163,
+    23.794490595326064,
+    21.70361954259167
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.8986750291593787e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 220.01295029045426,
+   "tof0_days": 19.31129692030235,
+   "tof1_days": 29.95288886318796,
+   "residual_kms": 1.1359051976736956e-14,
+   "cond_j": 655.8768671656985,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.80884538167702,
+   "energy_leg1": -5.8088453816769965,
+   "h_leg0": 1634180.507732101,
+   "h_leg1": 1634180.5077321052,
+   "congruence_dE": 2.3092638912203256e-14,
+   "congruence_dh": 4.190951585769653e-09,
+   "required_turn_flyby_deg": 167.9218157069723,
+   "required_turn_anchor_deg": 121.9841086413007,
+   "vinf_per_encounter_kms": [
+    0.7231347334629468,
+    0.9621391605484487,
+    0.7231347334629459
+   ],
+   "max_bend_deg_per_encounter": [
+    38.06201927256508,
+    26.136695871268188,
+    38.06201927256515
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.527218223820908e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 245.76346155738472,
+   "tof0_days": 14.33542395452412,
+   "tof1_days": 34.92876182896619,
+   "residual_kms": 5.551392671943392e-15,
+   "cond_j": 1255.8553806396135,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.937856779408159,
+   "energy_leg1": -5.937856779408168,
+   "h_leg0": 1648291.1462851723,
+   "h_leg1": 1648291.1462851712,
+   "congruence_dE": -8.881784197001252e-15,
+   "congruence_dh": -1.1641532182693481e-09,
+   "required_turn_flyby_deg": 156.54904227436234,
+   "required_turn_anchor_deg": 26.470761719102004,
+   "vinf_per_encounter_kms": [
+    0.33539699381417665,
+    0.6572370643193606,
+    0.3353969938141767
+   ],
+   "max_bend_deg_per_encounter": [
+    87.6146802973262,
+    45.29388404978655,
+    87.6146802973262
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.854616244810768e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 9.993012496185619,
+   "tof0_days": 15.6841771997246,
+   "tof1_days": 33.58000858376571,
+   "residual_kms": 2.0700524363077917e-14,
+   "cond_j": 434.7825544928829,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.520480925783468,
+   "energy_leg1": -6.520480925783424,
+   "h_leg0": 1515743.278908841,
+   "h_leg1": 1515743.2789088492,
+   "congruence_dE": 4.3520742565306136e-14,
+   "congruence_dh": 8.149072527885437e-09,
+   "required_turn_flyby_deg": 163.91765159311345,
+   "required_turn_anchor_deg": 51.83333532350056,
+   "vinf_per_encounter_kms": [
+    0.6155491778649723,
+    1.2169717082341374,
+    0.6155491778649709
+   ],
+   "max_bend_deg_per_encounter": [
+    47.206096379343784,
+    17.766824776065395,
+    47.206096379343926
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8502443719796244e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 15.618393877317192,
+   "tof0_days": 35.38853070580492,
+   "tof1_days": 13.875655077685394,
+   "residual_kms": 1.1368590313550187e-12,
+   "cond_j": 2245.227667685001,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.229477979243716,
+   "energy_leg1": -4.229477979238512,
+   "h_leg0": 1759227.929065039,
+   "h_leg1": 1759227.9290656836,
+   "congruence_dE": 5.203837361023034e-12,
+   "congruence_dh": 6.44708052277565e-07,
+   "required_turn_flyby_deg": 148.1292207465089,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.526765699887911,
+    1.4126001081964052,
+    1.5267656998890407
+   ],
+   "max_bend_deg_per_encounter": [
+    11.238412069003232,
+    13.711045983844956,
+    11.238412068988184
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.56843971498417e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 173.56612946892972,
+   "tof0_days": 37.847056525218925,
+   "tof1_days": 11.417129258271387,
+   "residual_kms": 2.8000960413525485e-14,
+   "cond_j": 682.1291281367869,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.027864552943496,
+   "energy_leg1": -5.027864552943527,
+   "h_leg0": 1742137.6397618984,
+   "h_leg1": 1742137.6397618968,
+   "congruence_dE": -3.019806626980426e-14,
+   "congruence_dh": -1.6298145055770874e-09,
+   "required_turn_flyby_deg": 130.13822746069332,
+   "required_turn_anchor_deg": 160.09643805743218,
+   "vinf_per_encounter_kms": [
+    0.9585581129475861,
+    0.82714662940773,
+    0.9585581129475651
+   ],
+   "max_bend_deg_per_encounter": [
+    24.93830799143888,
+    32.917316399542315,
+    24.93830799143975
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.0760661578251941e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 1.0775952559712323,
+   "tof0_days": 27.363724798278565,
+   "tof1_days": 21.900460985211748,
+   "residual_kms": 2.9789234749625575e-13,
+   "cond_j": 1029.4147310707258,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.111275344084235,
+   "energy_leg1": -5.111275344083353,
+   "h_leg0": 1710761.9902527793,
+   "h_leg1": 1710761.9902529116,
+   "congruence_dE": 8.819611707622244e-13,
+   "congruence_dh": 1.3224780559539795e-07,
+   "required_turn_flyby_deg": 148.53109816238106,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.0444627604923746,
+    1.0205404715302135,
+    1.0444627604925774
+   ],
+   "max_bend_deg_per_encounter": [
+    21.703619542592588,
+    23.794490595317413,
+    21.703619542585667
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.9090420085131856e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 241.8952910235769,
+   "tof0_days": 31.84146094256173,
+   "tof1_days": 17.42272484092858,
+   "residual_kms": 1.785803311922223e-14,
+   "cond_j": 269.51374741014683,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.743978975527361,
+   "energy_leg1": -4.743978975527327,
+   "h_leg0": 1797317.4267363388,
+   "h_leg1": 1797317.4267363444,
+   "congruence_dE": 3.4638958368304884e-14,
+   "congruence_dh": 5.587935447692871e-09,
+   "required_turn_flyby_deg": 68.42688711814148,
+   "required_turn_anchor_deg": 171.35939712697478,
+   "vinf_per_encounter_kms": [
+    0.9437184032574983,
+    0.5745646177133501,
+    0.9437184032575053
+   ],
+   "max_bend_deg_per_encounter": [
+    25.564172661320814,
+    53.53101152927439,
+    25.56417266132051
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.000686313369766e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 185.80967844838756,
+   "tof0_days": 34.79326589806253,
+   "tof1_days": 14.470919885427783,
+   "residual_kms": 3.057099957066837e-11,
+   "cond_j": 759.1525392323814,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.111275344107694,
+   "energy_leg1": -5.11127534400473,
+   "h_leg0": 1710761.9902515044,
+   "h_leg1": 1710761.9902649259,
+   "congruence_dE": 1.0296474783899612e-10,
+   "congruence_dh": 1.3421522453427315e-05,
+   "required_turn_flyby_deg": 148.53109816041214,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.0444627604765055,
+    1.0205404715177988,
+    1.044462760505692
+   ],
+   "max_bend_deg_per_encounter": [
+    21.70361954313442,
+    23.794490595783703,
+    21.70361954213788
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.922037043949037e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 139.98704970949598,
+   "tof0_days": 29.952888863189187,
+   "tof1_days": 19.311296920301125,
+   "residual_kms": 1.1263692722791454e-13,
+   "cond_j": 655.8792017527884,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.808845381676963,
+   "energy_leg1": -5.808845381677262,
+   "h_leg0": 1634180.507732109,
+   "h_leg1": 1634180.5077320663,
+   "congruence_dE": -2.993161274389422e-13,
+   "congruence_dh": -4.260800778865814e-08,
+   "required_turn_flyby_deg": 167.921815706977,
+   "required_turn_anchor_deg": 121.98410864129343,
+   "vinf_per_encounter_kms": [
+    0.7231347334629662,
+    0.9621391605484999,
+    0.723134733462871
+   ],
+   "max_bend_deg_per_encounter": [
+    38.06201927256365,
+    26.136695871265992,
+    38.062019272570666
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.7082718493319747e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 179.9999999999995,
+   "tof0_days": 24.632092891745174,
+   "tof1_days": 24.63209289174514,
+   "residual_kms": 1.2602987517787365e-14,
+   "cond_j": 476.11536348637895,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.937856779407792,
+   "energy_leg1": -5.937856779407783,
+   "h_leg0": 1648291.146285258,
+   "h_leg1": 1648291.1462852599,
+   "congruence_dE": 8.881784197001252e-15,
+   "congruence_dh": 1.862645149230957e-09,
+   "required_turn_flyby_deg": 156.54904227430737,
+   "required_turn_anchor_deg": 26.47076171890832,
+   "vinf_per_encounter_kms": [
+    0.3353969938138931,
+    0.6572370643188269,
+    0.3353969938138857
+   ],
+   "max_bend_deg_per_encounter": [
+    87.6146802973834,
+    45.293884049834304,
+    87.6146802973849
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.1906104127916623e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.99999999961415,
+   "tof0_days": 24.632092891754606,
+   "tof1_days": 24.632092891735706,
+   "residual_kms": 1.2199333328835732e-12,
+   "cond_j": 476.4463412233369,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.520480925782072,
+   "energy_leg1": -6.520480925784829,
+   "h_leg0": 1515743.2789090981,
+   "h_leg1": 1515743.2789085903,
+   "congruence_dE": -2.7569058147491887e-12,
+   "congruence_dh": -5.078036338090897e-07,
+   "required_turn_flyby_deg": 163.9176515931134,
+   "required_turn_anchor_deg": 51.83333532349997,
+   "vinf_per_encounter_kms": [
+    0.6155491778649842,
+    1.216971708234739,
+    0.6155491778649599
+   ],
+   "max_bend_deg_per_encounter": [
+    47.20609637934263,
+    17.766824776050424,
+    47.206096379345
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.342131647981352e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 5.2587625828457975e-11,
+   "tof0_days": 24.632092891743827,
+   "tof1_days": 24.632092891746485,
+   "residual_kms": 1.7215546523173005e-13,
+   "cond_j": 476.44745158599267,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.520480925783691,
+   "energy_leg1": -6.520480925783243,
+   "h_leg0": 1515743.278908802,
+   "h_leg1": 1515743.27890888,
+   "congruence_dE": 4.476419235288631e-13,
+   "congruence_dh": 7.799826562404633e-08,
+   "required_turn_flyby_deg": 163.91765159311274,
+   "required_turn_anchor_deg": 51.8333353234978,
+   "vinf_per_encounter_kms": [
+    0.6155491778649531,
+    1.2169717082342213,
+    0.6155491778649913
+   ],
+   "max_bend_deg_per_encounter": [
+    47.20609637934566,
+    17.766824776063306,
+    47.206096379341936
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.957003671307253e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 160.9676911801103,
+   "tof0_days": 20.739248213134783,
+   "tof1_days": 28.52493757035553,
+   "residual_kms": 4.0553114460032283e-13,
+   "cond_j": 271.20376997951547,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.154228988016941,
+   "energy_leg1": -7.1542289880165235,
+   "h_leg0": 1368912.677297387,
+   "h_leg1": 1368912.6772975018,
+   "congruence_dE": 4.1744385725905886e-13,
+   "congruence_dh": 1.1478550732135773e-07,
+   "required_turn_flyby_deg": 143.8396690630947,
+   "required_turn_anchor_deg": 30.698694086038547,
+   "vinf_per_encounter_kms": [
+    0.8350636657061953,
+    1.6329223127942973,
+    0.8350636657059561
+   ],
+   "max_bend_deg_per_encounter": [
+    30.88105296078952,
+    10.568231870683253,
+    30.881052960802823
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.104077973602024e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 114.23653844261405,
+   "tof0_days": 34.92876182896625,
+   "tof1_days": 14.33542395452406,
+   "residual_kms": 4.6367597689748375e-15,
+   "cond_j": 1255.8636428184502,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -5.937856779408154,
+   "energy_leg1": -5.937856779408156,
+   "h_leg0": 1648291.1462851737,
+   "h_leg1": 1648291.146285174,
+   "congruence_dE": -1.7763568394002505e-15,
+   "congruence_dh": 2.3283064365386963e-10,
+   "required_turn_flyby_deg": 156.54904227436108,
+   "required_turn_anchor_deg": 26.47076171909818,
+   "vinf_per_encounter_kms": [
+    0.3353969938141724,
+    0.6572370643193484,
+    0.33539699381416843
+   ],
+   "max_bend_deg_per_encounter": [
+    87.61468029732704,
+    45.29388404978764,
+    87.61468029732787
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.3104117537951254e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 350.00698750381304,
+   "tof0_days": 33.580008583765746,
+   "tof1_days": 15.684177199724566,
+   "residual_kms": 5.760335218184685e-15,
+   "cond_j": 434.7820909530857,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.520480925783505,
+   "energy_leg1": -6.520480925783497,
+   "h_leg0": 1515743.2789088343,
+   "h_leg1": 1515743.2789088357,
+   "congruence_dE": 7.993605777301127e-15,
+   "congruence_dh": 1.3969838619232178e-09,
+   "required_turn_flyby_deg": 163.91765159311163,
+   "required_turn_anchor_deg": 51.83333532349374,
+   "vinf_per_encounter_kms": [
+    0.6155491778649704,
+    1.2169717082341538,
+    0.6155491778649755
+   ],
+   "max_bend_deg_per_encounter": [
+    47.20609637934396,
+    17.76682477606499,
+    47.206096379343464
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.076481232343134e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 2,
+   "t_total_days": 49.26418578349031,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 199.03230881991632,
+   "tof0_days": 28.524937570354968,
+   "tof1_days": 20.739248213135344,
+   "residual_kms": 1.6600221582922702e-13,
+   "cond_j": 271.2054772493674,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.154228988016637,
+   "energy_leg1": -7.154228988016772,
+   "h_leg0": 1368912.6772974737,
+   "h_leg1": 1368912.6772974322,
+   "congruence_dE": -1.3500311979441904e-13,
+   "congruence_dh": -4.1443854570388794e-08,
+   "required_turn_flyby_deg": 143.8396690630955,
+   "required_turn_anchor_deg": 30.698694086035218,
+   "vinf_per_encounter_kms": [
+    0.8350636657060008,
+    1.6329223127941708,
+    0.8350636657061071
+   ],
+   "max_bend_deg_per_encounter": [
+    30.881052960800343,
+    10.568231870684741,
+    30.881052960794424
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.598055603280686e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 39.527048410795956,
+   "tof0_days": 37.914399242593355,
+   "tof1_days": 35.98187943264211,
+   "residual_kms": 4.835291363733049e-13,
+   "cond_j": 4146.319363728997,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.4574895742778455,
+   "energy_leg1": -2.4574895742801814,
+   "h_leg0": 1813106.5617767714,
+   "h_leg1": 1813106.5617765328,
+   "congruence_dE": -2.3359092438113294e-12,
+   "congruence_dh": -2.3865140974521637e-07,
+   "required_turn_flyby_deg": 177.8066467290311,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.1539114178703898,
+    2.3006615953003173,
+    2.153911417870233
+   ],
+   "max_bend_deg_per_encounter": [
+    6.315858017654286,
+    5.229648767607061,
+    6.315858017655155
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.311325390729943e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 320.4729515859613,
+   "tof0_days": 35.98187943276228,
+   "tof1_days": 37.91439924247319,
+   "residual_kms": 1.6300034773371733e-12,
+   "cond_j": 4145.07536897108,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.457489574275135,
+   "energy_leg1": -2.4574895742827048,
+   "h_leg0": 1813106.5617765014,
+   "h_leg1": 1813106.5617757475,
+   "congruence_dE": -7.569944671104167e-12,
+   "congruence_dh": -7.539056241512299e-07,
+   "required_turn_flyby_deg": 177.80664672898686,
+   "required_turn_anchor_deg": 1.2074182697257333e-06,
+   "vinf_per_encounter_kms": [
+    2.1539114178726955,
+    2.300661595302126,
+    2.153911417872105
+   ],
+   "max_bend_deg_per_encounter": [
+    6.315858017641495,
+    5.229648767599207,
+    6.315858017644771
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9408103402171145e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.9999999988712,
+   "tof0_days": 36.94813933766992,
+   "tof1_days": 36.94813933756554,
+   "residual_kms": 1.0777498515344786e-11,
+   "cond_j": 5136.720534995834,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.4366890588991446,
+   "energy_leg1": -2.436689058903628,
+   "h_leg0": 982506.5732027703,
+   "h_leg1": 982506.5731976572,
+   "congruence_dE": -4.483524662646232e-12,
+   "congruence_dh": -5.113077349960804e-06,
+   "required_turn_flyby_deg": 134.34168088649457,
+   "required_turn_anchor_deg": 142.2825095641039,
+   "vinf_per_encounter_kms": [
+    4.307749787723591,
+    3.7823283930107943,
+    4.307749787732465
+   ],
+   "max_bend_deg_per_encounter": [
+    1.646290835590814,
+    1.9915722674036593,
+    1.646290835584128
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.837517895067934e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.999999956342,
+   "tof0_days": 36.94813933928441,
+   "tof1_days": 36.948139335951055,
+   "residual_kms": 4.130544204939365e-11,
+   "cond_j": 1067.352677318156,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.4451057921046875,
+   "energy_leg1": -2.445105792242183,
+   "h_leg0": 2012095.023693482,
+   "h_leg1": 2012095.0236798532,
+   "congruence_dE": -1.3749534844009759e-10,
+   "congruence_dh": -1.3628741726279259e-05,
+   "required_turn_flyby_deg": 160.7914061740071,
+   "required_turn_anchor_deg": 66.6102444270645,
+   "vinf_per_encounter_kms": [
+    1.1575214734230985,
+    1.7800349200190564,
+    1.1575214734026604
+   ],
+   "max_bend_deg_per_encounter": [
+    19.338629920512748,
+    8.481664445414017,
+    19.338629921086415
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.920026057675682e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 293.84968947890343,
+   "tof0_days": 35.30141685512031,
+   "tof1_days": 38.594861820115156,
+   "residual_kms": 8.778920347342852e-13,
+   "cond_j": 12460.472977874857,
+   "class": "flyby_passive",
+   "energy_leg0": -2.4862833055613276,
+   "energy_leg1": -2.4862833055572935,
+   "h_leg0": 1565376.878052294,
+   "h_leg1": 1565376.8780526347,
+   "congruence_dE": 4.034106382277969e-12,
+   "congruence_dh": 3.4063123166561127e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.80835390507866,
+   "vinf_per_encounter_kms": [
+    2.953006984708891,
+    2.812685615561831,
+    2.9530069847092935
+   ],
+   "max_bend_deg_per_encounter": [
+    3.447845668827241,
+    3.5519057077131677,
+    3.44784566882633
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 66.15031050641049,
+   "tof0_days": 38.59486182066824,
+   "tof1_days": 35.30141685456722,
+   "residual_kms": 6.68377738124945e-12,
+   "cond_j": 12460.20725929626,
+   "class": "flyby_passive",
+   "energy_leg0": -2.4862833055280564,
+   "energy_leg1": -2.4862833055852347,
+   "h_leg0": 1565376.8780591816,
+   "h_leg1": 1565376.8780520489,
+   "congruence_dE": -5.717826212503496e-11,
+   "congruence_dh": -7.132766768336296e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.80835390535313,
+   "vinf_per_encounter_kms": [
+    2.953006984700675,
+    2.812685615559655,
+    2.953006984701491
+   ],
+   "max_bend_deg_per_encounter": [
+    3.4478456688458556,
+    3.551905707718495,
+    3.4478456688440073
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 334.18184968235494,
+   "tof0_days": 36.05407502052113,
+   "tof1_days": 37.84220365471433,
+   "residual_kms": 7.699437752957257e-11,
+   "cond_j": 675.3055833301535,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.8773466388297546,
+   "energy_leg1": -3.877346639132136,
+   "h_leg0": 1821597.5630447285,
+   "h_leg1": 1821597.5630103792,
+   "congruence_dE": -3.0238123116532734e-10,
+   "congruence_dh": -3.434927202761173e-05,
+   "required_turn_flyby_deg": 177.80148798240057,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.2875449340242187,
+    1.5367556092762396,
+    1.2875449340122067
+   ],
+   "max_bend_deg_per_encounter": [
+    16.12683763052665,
+    11.106450643996478,
+    16.126837630787072
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.941008012360487e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 25.818150249154808,
+   "tof0_days": 37.84220365713874,
+   "tof1_days": 36.054075018096725,
+   "residual_kms": 4.410511789581721e-12,
+   "cond_j": 675.3575953768573,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -3.8773466389672606,
+   "energy_leg1": -3.8773466389889384,
+   "h_leg0": 1821597.5630488594,
+   "h_leg1": 1821597.5630460018,
+   "congruence_dE": -2.1677770689620957e-11,
+   "congruence_dh": -2.857530489563942e-06,
+   "required_turn_flyby_deg": 177.8014879848434,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    1.2875449338906235,
+    1.5367556091722514,
+    1.2875449338923264
+   ],
+   "max_bend_deg_per_encounter": [
+    16.126837633423,
+    11.10645064535838,
+    16.12683763338608
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.731766659564174e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 212.58804528670882,
+   "tof0_days": 37.848962629687925,
+   "tof1_days": 36.04731604554754,
+   "residual_kms": 5.031826868586564e-12,
+   "cond_j": 2206.358058106267,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.616813092421763,
+   "energy_leg1": -2.6168130924440893,
+   "h_leg0": 1862650.50212642,
+   "h_leg1": 1862650.5021241305,
+   "congruence_dE": -2.2326140936002048e-11,
+   "congruence_dh": -2.2894237190485e-06,
+   "required_turn_flyby_deg": 177.77688006508575,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.868962291571054,
+    2.106957401397016,
+    1.8689622915693387
+   ],
+   "max_bend_deg_per_encounter": [
+    8.242526378638228,
+    6.182049959434804,
+    8.242526378652295
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.628258971607691e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 147.41195470703275,
+   "tof0_days": 36.047316045785045,
+   "tof1_days": 37.84896262945042,
+   "residual_kms": 1.939558035263023e-13,
+   "cond_j": 2206.166304452859,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.616813092432766,
+   "energy_leg1": -2.616813092433617,
+   "h_leg0": 1862650.502126452,
+   "h_leg1": 1862650.5021263652,
+   "congruence_dE": -8.5087492607272e-13,
+   "congruence_dh": -8.684583008289337e-08,
+   "required_turn_flyby_deg": 177.776880064977,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.8689622915650226,
+    2.1069574013917096,
+    1.8689622915649557
+   ],
+   "max_bend_deg_per_encounter": [
+    8.242526378687689,
+    6.182049959464291,
+    8.242526378688236
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.087490511955678e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999997531623,
+   "tof0_days": 36.94813933851548,
+   "tof1_days": 36.94813933671998,
+   "residual_kms": 2.796481980877949e-11,
+   "cond_j": 790.0029331522929,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.627683743306573,
+   "energy_leg1": -2.627683743398249,
+   "h_leg0": 2003223.928608159,
+   "h_leg1": 2003223.9285989003,
+   "congruence_dE": -9.167600012460753e-11,
+   "congruence_dh": -9.25874337553978e-06,
+   "required_turn_flyby_deg": 160.94838622980402,
+   "required_turn_anchor_deg": 53.30421640012225,
+   "vinf_per_encounter_kms": [
+    1.059668868380676,
+    1.7026995260191475,
+    1.0596688683671467
+   ],
+   "max_bend_deg_per_encounter": [
+    22.385970750194105,
+    9.207877983880284,
+    22.38597075066072
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.372816794326266e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.99999999934994,
+   "tof0_days": 36.948139337641884,
+   "tof1_days": 36.94813933759358,
+   "residual_kms": 1.622592891384727e-12,
+   "cond_j": 204.04398291752588,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.8655560729218372,
+   "energy_leg1": -3.8655560729250515,
+   "h_leg0": 1890774.404890725,
+   "h_leg1": 1890774.404890429,
+   "congruence_dE": -3.2143177008947532e-12,
+   "congruence_dh": -2.959277480840683e-07,
+   "required_turn_flyby_deg": 172.01856725487625,
+   "required_turn_anchor_deg": 36.11635909375291,
+   "vinf_per_encounter_kms": [
+    0.7250544633803824,
+    1.279849783810209,
+    0.725054463379361
+   ],
+   "max_bend_deg_per_encounter": [
+    39.71900675615878,
+    15.378409559028022,
+    39.719006756235764
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.903858634793324e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.00000000115185,
+   "tof0_days": 36.94813933757812,
+   "tof1_days": 36.948139337657345,
+   "residual_kms": 3.0702139640506142e-12,
+   "cond_j": 70.03910980210165,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -4.192797858477915,
+   "energy_leg1": -4.192797858471068,
+   "h_leg0": 1860082.2975443462,
+   "h_leg1": 1860082.297545051,
+   "congruence_dE": 6.8469674374682654e-12,
+   "congruence_dh": 7.047783583402634e-07,
+   "required_turn_flyby_deg": 176.35485258751652,
+   "required_turn_anchor_deg": 5.237694302417616,
+   "vinf_per_encounter_kms": [
+    0.6196404021132323,
+    1.1467516296520448,
+    0.6196404021147807
+   ],
+   "max_bend_deg_per_encounter": [
+    48.82429578595507,
+    18.571504132836527,
+    48.82429578580256
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.445586161947446e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 171.01787474957857,
+   "tof0_days": 36.548565719133954,
+   "tof1_days": 37.34771295610151,
+   "residual_kms": 6.077695841520249e-12,
+   "cond_j": 24.872647308409235,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.190636933142054,
+   "energy_leg1": -4.190636933128289,
+   "h_leg0": 1852179.1118554706,
+   "h_leg1": 1852179.1118568592,
+   "congruence_dE": 1.3764989148512541e-11,
+   "congruence_dh": 1.3886019587516785e-06,
+   "required_turn_flyby_deg": 177.78310479211427,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.721321360097598,
+    1.1852105136655147,
+    0.7213213601005962
+   ],
+   "max_bend_deg_per_encounter": [
+    40.00174591791184,
+    17.55860615572506,
+    40.00174591768369
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.1628923705189656e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 188.9821252516767,
+   "tof0_days": 37.347712956027365,
+   "tof1_days": 36.5485657192081,
+   "residual_kms": 3.571177186978145e-12,
+   "cond_j": 24.872372085316442,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -4.190636933133341,
+   "energy_leg1": -4.190636933137285,
+   "h_leg0": 1852179.1118569656,
+   "h_leg1": 1852179.1118567316,
+   "congruence_dE": -3.944400361888256e-12,
+   "congruence_dh": -2.3399479687213898e-07,
+   "required_turn_flyby_deg": 177.78310479199487,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.721321360092365,
+    1.1852105136607682,
+    0.7213213600896025
+   ],
+   "max_bend_deg_per_encounter": [
+    40.00174591831002,
+    17.558606155845172,
+    40.001745918520236
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.022122542937588e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 1.156299126872049e-09,
+   "tof0_days": 36.948139337574105,
+   "tof1_days": 36.94813933766136,
+   "residual_kms": 3.398476178019791e-12,
+   "cond_j": 144.35414580007344,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.038466676671655,
+   "energy_leg1": -5.038466676664525,
+   "h_leg0": 1769004.6542454963,
+   "h_leg1": 1769004.654246329,
+   "congruence_dE": 7.130296353352605e-12,
+   "congruence_dh": 8.328352123498917e-07,
+   "required_turn_flyby_deg": 162.34358588975547,
+   "required_turn_anchor_deg": 55.117332587643894,
+   "vinf_per_encounter_kms": [
+    0.4627465983678959,
+    0.7793824975363798,
+    0.4627465983682747
+   ],
+   "max_bend_deg_per_encounter": [
+    67.85290965176821,
+    34.20146980628846,
+    67.85290965171245
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.0731474276747512e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.9999999999154,
+   "tof0_days": 36.948139337622116,
+   "tof1_days": 36.94813933761335,
+   "residual_kms": 5.897745499276813e-13,
+   "cond_j": 144.35438221275146,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.03846667666782,
+   "energy_leg1": -5.038466676668384,
+   "h_leg0": 1769004.6542459333,
+   "h_leg1": 1769004.6542458893,
+   "congruence_dE": -5.639932965095795e-13,
+   "congruence_dh": -4.400499165058136e-08,
+   "required_turn_flyby_deg": 162.34358588975493,
+   "required_turn_anchor_deg": 55.11733258764556,
+   "vinf_per_encounter_kms": [
+    0.4627465983682946,
+    0.7793824975348921,
+    0.46274659836787535
+   ],
+   "max_bend_deg_per_encounter": [
+    67.85290965170951,
+    34.20146980638347,
+    67.85290965177123
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.159567558610309e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 1.0146425612508447e-09,
+   "tof0_days": 36.948139337579754,
+   "tof1_days": 36.94813933765571,
+   "residual_kms": 5.055906579133805e-12,
+   "cond_j": 77.59077948056874,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.049760131278575,
+   "energy_leg1": -6.049760131271535,
+   "h_leg0": 1624015.7376291116,
+   "h_leg1": 1624015.7376304285,
+   "congruence_dE": 7.0397021545431926e-12,
+   "congruence_dh": 1.3168901205062866e-06,
+   "required_turn_flyby_deg": 37.25507653036273,
+   "required_turn_anchor_deg": 168.58230208492287,
+   "vinf_per_encounter_kms": [
+    0.783385021760641,
+    0.3884387615127854,
+    0.7833850217555883
+   ],
+   "max_bend_deg_per_encounter": [
+    35.625598117520546,
+    77.57510059439105,
+    35.62559811785022
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.3226405995432296e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 180.00000000022098,
+   "tof0_days": 36.94813933760938,
+   "tof1_days": 36.94813933762608,
+   "residual_kms": 1.0032205561399498e-12,
+   "cond_j": 136.48960148747847,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.538033241179044,
+   "energy_leg1": -5.538033241177127,
+   "h_leg0": 1702783.3068042523,
+   "h_leg1": 1702783.306804523,
+   "congruence_dE": 1.9175772081325704e-12,
+   "congruence_dh": 2.707820385694504e-07,
+   "required_turn_flyby_deg": 131.61638239189165,
+   "required_turn_anchor_deg": 125.74242570920524,
+   "vinf_per_encounter_kms": [
+    0.566812782480957,
+    0.5688276811850915,
+    0.566812782480354
+   ],
+   "max_bend_deg_per_encounter": [
+    54.396854875252394,
+    52.057831613305254,
+    54.396854875320415
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.4343454451285147e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 351.5863194827346,
+   "tof0_days": 38.50388645768624,
+   "tof1_days": 35.39239221754922,
+   "residual_kms": 4.333568959289527e-14,
+   "cond_j": 586.3607160233255,
+   "class": "flyby_passive",
+   "energy_leg0": -6.009245285936854,
+   "energy_leg1": -6.0092452859369425,
+   "h_leg0": 1598917.6289288597,
+   "h_leg1": 1598917.6289288488,
+   "congruence_dE": -8.881784197001252e-14,
+   "congruence_dh": -1.0943040251731873e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.78494544752718,
+   "vinf_per_encounter_kms": [
+    1.055463793256905,
+    0.7092253727273025,
+    1.0554637932569115
+   ],
+   "max_bend_deg_per_encounter": [
+    22.53166108194085,
+    39.105302031261445,
+    22.531661081940634
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Titania",
+   "flyby": "Oberon",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 8.413680517265563,
+   "tof0_days": 35.392392217549194,
+   "tof1_days": 38.50388645768627,
+   "residual_kms": 7.820140202356498e-14,
+   "cond_j": 586.3705837546327,
+   "class": "flyby_passive",
+   "energy_leg0": -6.009245285936937,
+   "energy_leg1": -6.0092452859368795,
+   "h_leg0": 1598917.6289288392,
+   "h_leg1": 1598917.6289288546,
+   "congruence_dE": 5.773159728050814e-14,
+   "congruence_dh": 1.5366822481155396e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.78494544752897,
+   "vinf_per_encounter_kms": [
+    1.0554637932569888,
+    0.7092253727273382,
+    1.0554637932569186
+   ],
+   "max_bend_deg_per_encounter": [
+    22.53166108193794,
+    39.10530203125872,
+    22.531661081940385
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.00000000391776,
+   "tof0_days": 36.94813933752335,
+   "tof1_days": 36.948139337712114,
+   "residual_kms": 3.780839445090028e-12,
+   "cond_j": 2646.436245589692,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.44510579217737,
+   "energy_leg1": -2.4451057921694606,
+   "h_leg0": 2012095.0236863804,
+   "h_leg1": 2012095.0236869587,
+   "congruence_dE": 7.909228827429615e-12,
+   "congruence_dh": 5.783513188362122e-07,
+   "required_turn_flyby_deg": 66.61024442706427,
+   "required_turn_anchor_deg": 160.7914061740069,
+   "vinf_per_encounter_kms": [
+    1.7800349199997703,
+    1.1575214734142123,
+    1.7800349200024583
+   ],
+   "max_bend_deg_per_encounter": [
+    8.481664445584531,
+    19.33862992076217,
+    8.481664445560765
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.5419432697708224e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 1.9572439668991137e-08,
+   "tof0_days": 36.948139337156775,
+   "tof1_days": 36.94813933807869,
+   "residual_kms": 4.114176190030305e-11,
+   "cond_j": 12533.781324651136,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.4366890589202272,
+   "energy_leg1": -2.4366890588825445,
+   "h_leg0": 982506.5732060488,
+   "h_leg1": 982506.5731943828,
+   "congruence_dE": 3.7682745812617213e-11,
+   "congruence_dh": -1.1665979400277138e-05,
+   "required_turn_flyby_deg": 142.282509564104,
+   "required_turn_anchor_deg": 134.3416808864947,
+   "vinf_per_encounter_kms": [
+    3.7823283929944242,
+    4.307749787743707,
+    3.7823283930210447
+   ],
+   "max_bend_deg_per_encounter": [
+    1.9915722674206007,
+    1.6462908355756585,
+    1.9915722673930514
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7566040879908637e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 205.4050830368508,
+   "tof0_days": 37.91439923977782,
+   "tof1_days": 35.98187943545764,
+   "residual_kms": 4.7986851736270185e-11,
+   "cond_j": 9795.422220739292,
+   "class": "flyby_passive",
+   "energy_leg0": -2.457489574397914,
+   "energy_leg1": -2.457489574161846,
+   "h_leg0": 1813106.561751251,
+   "h_leg1": 1813106.5617755791,
+   "congruence_dE": 2.360680539936766e-10,
+   "congruence_dh": 2.432800829410553e-05,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.80664672793012,
+   "vinf_per_encounter_kms": [
+    2.3006615953080325,
+    2.1539114179288696,
+    2.3006615953535294
+   ],
+   "max_bend_deg_per_encounter": [
+    5.229648767573563,
+    6.315858017329892,
+    5.229648767376023
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 154.59491717966793,
+   "tof0_days": 35.981879430255226,
+   "tof1_days": 37.91439924498024,
+   "residual_kms": 4.101596387473106e-11,
+   "cond_j": 9793.780517659525,
+   "class": "flyby_passive",
+   "energy_leg0": -2.4574895743804914,
+   "energy_leg1": -2.4574895741759466,
+   "h_leg0": 1813106.5617774029,
+   "h_leg1": 1813106.5617986473,
+   "congruence_dE": 2.0454482552167974e-10,
+   "congruence_dh": 2.124439924955368e-05,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.80664672997665,
+   "vinf_per_encounter_kms": [
+    2.300661595254217,
+    2.153911417832864,
+    2.300661595293258
+   ],
+   "max_bend_deg_per_encounter": [
+    5.2296487678072205,
+    6.315858017862444,
+    5.229648767637712
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 137.91666975346035,
+   "tof0_days": 35.30141685507345,
+   "tof1_days": 38.594861820162016,
+   "residual_kms": 2.724614843892716e-12,
+   "cond_j": 29897.19154662251,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.4862833055633526,
+   "energy_leg1": -2.4862833055500797,
+   "h_leg0": 1565376.8780522966,
+   "h_leg1": 1565376.878053472,
+   "congruence_dE": 1.3272938303998671e-11,
+   "congruence_dh": 1.1753290891647339e-06,
+   "required_turn_flyby_deg": 177.80835390511578,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.812685615560326,
+    2.9530069847093685,
+    2.8126856155627875
+   ],
+   "max_bend_deg_per_encounter": [
+    3.5519057077168523,
+    3.4478456688261607,
+    3.5519057077108256
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8840946058766018e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 222.08333024676983,
+   "tof0_days": 38.59486182015642,
+   "tof1_days": 35.30141685507905,
+   "residual_kms": 1.934720908884199e-12,
+   "cond_j": 29957.85114790744,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -2.4862833055543234,
+   "energy_leg1": -2.4862833055631075,
+   "h_leg0": 1565376.8780530381,
+   "h_leg1": 1565376.8780523036,
+   "congruence_dE": -8.784084570834239e-12,
+   "congruence_dh": -7.345806807279587e-07,
+   "required_turn_flyby_deg": 177.80835390509665,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.8126856155621116,
+    2.953006984709158,
+    2.8126856155603974
+   ],
+   "max_bend_deg_per_encounter": [
+    3.5519057077124807,
+    3.4478456688266363,
+    3.551905707716678
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.712449424037088e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 6.216039257858652e-08,
+   "tof0_days": 36.94813933612031,
+   "tof1_days": 36.94813933911515,
+   "residual_kms": 6.082551061022933e-11,
+   "cond_j": 1795.276319882309,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -2.6276837434281077,
+   "energy_leg1": -2.6276837432766467,
+   "h_leg0": 2003223.9285969161,
+   "h_leg1": 2003223.9286101484,
+   "congruence_dE": 1.5146106591146236e-10,
+   "congruence_dh": 1.3232231140136719e-05,
+   "required_turn_flyby_deg": 53.30421640012334,
+   "required_turn_anchor_deg": 160.94838622980382,
+   "vinf_per_encounter_kms": [
+    1.7026995259834299,
+    1.0596688683932383,
+    1.7026995260304143
+   ],
+   "max_bend_deg_per_encounter": [
+    9.20787798423635,
+    22.385970749760844,
+    9.207877983767965
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.73266603237448e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 192.75132900401104,
+   "tof0_days": 37.84220365684072,
+   "tof1_days": 36.05407501839475,
+   "residual_kms": 4.7086347519872556e-12,
+   "cond_j": 1520.8008496500984,
+   "class": "flyby_passive",
+   "energy_leg0": -3.8773466389874587,
+   "energy_leg1": -3.877346638969307,
+   "h_leg0": 1821597.563043557,
+   "h_leg1": 1821597.5630455995,
+   "congruence_dE": 1.815170236341146e-11,
+   "congruence_dh": 2.0423904061317444e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.8014879844932,
+   "vinf_per_encounter_kms": [
+    1.5367556091777363,
+    1.2875449339101792,
+    1.5367556091823682
+   ],
+   "max_bend_deg_per_encounter": [
+    11.106450645286545,
+    16.126837632999028,
+    11.106450645225884
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 167.24867099550266,
+   "tof0_days": 36.05407501840546,
+   "tof1_days": 37.84220365683,
+   "residual_kms": 4.743616677028024e-12,
+   "cond_j": 1520.6670246687872,
+   "class": "flyby_passive",
+   "energy_leg0": -3.8773466389685938,
+   "energy_leg1": -3.877346638988312,
+   "h_leg0": 1821597.5630455317,
+   "h_leg1": 1821597.563043227,
+   "congruence_dE": -1.971844909576248e-11,
+   "congruence_dh": -2.3047905415296555e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.80148798446882,
+   "vinf_per_encounter_kms": [
+    1.5367556091830727,
+    1.2875449339111764,
+    1.5367556091783432
+   ],
+   "max_bend_deg_per_encounter": [
+    11.106450645216656,
+    16.12683763297741,
+    11.1064506452786
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999999988916,
+   "tof0_days": 36.9481393376204,
+   "tof1_days": 36.94813933761507,
+   "residual_kms": 1.9347540373832534e-13,
+   "cond_j": 554.8804942397803,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -3.8655560729232326,
+   "energy_leg1": -3.86555607292361,
+   "h_leg0": 1890774.4048905964,
+   "h_leg1": 1890774.4048905617,
+   "congruence_dE": -3.774758283725532e-13,
+   "congruence_dh": -3.4691765904426575e-08,
+   "required_turn_flyby_deg": 36.11635909375323,
+   "required_turn_anchor_deg": 172.0185672548759,
+   "vinf_per_encounter_kms": [
+    1.2798497838096623,
+    0.7250544633799385,
+    1.2798497838095124
+   ],
+   "max_bend_deg_per_encounter": [
+    15.378409559039468,
+    39.71900675619223,
+    15.378409559042609
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.7704018497616764e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 340.5775588854183,
+   "tof0_days": 36.04731604574721,
+   "tof1_days": 37.848962629488256,
+   "residual_kms": 6.448493781893165e-13,
+   "cond_j": 5380.761915410704,
+   "class": "flyby_passive",
+   "energy_leg0": -2.616813092434593,
+   "energy_leg1": -2.6168130924317268,
+   "h_leg0": 1862650.5021260758,
+   "h_leg1": 1862650.5021263703,
+   "congruence_dE": 2.866151760372304e-12,
+   "congruence_dh": 2.945307642221451e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.77688006499454,
+   "vinf_per_encounter_kms": [
+    2.106957401391807,
+    1.8689622915659443,
+    2.1069574013924135
+   ],
+   "max_bend_deg_per_encounter": [
+    6.18204995946375,
+    8.242526378680129,
+    6.18204995946038
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 19.42244111664314,
+   "tof0_days": 37.848962629437835,
+   "tof1_days": 36.04731604579763,
+   "residual_kms": 3.52730138102458e-13,
+   "cond_j": 5381.859487383732,
+   "class": "flyby_passive",
+   "energy_leg0": -2.61681309243425,
+   "energy_leg1": -2.616813092432114,
+   "h_leg0": 1862650.5021263752,
+   "h_leg1": 1862650.5021266332,
+   "congruence_dE": 2.136069099378801e-12,
+   "congruence_dh": 2.5797635316848755e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.77688006496783,
+   "vinf_per_encounter_kms": [
+    2.1069574013912016,
+    1.8689622915645712,
+    2.106957401391554
+   ],
+   "max_bend_deg_per_encounter": [
+    6.182049959467114,
+    8.242526378691391,
+    6.1820499594651555
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.99999999814503,
+   "tof0_days": 36.948139337701704,
+   "tof1_days": 36.94813933753376,
+   "residual_kms": 6.17982732039303e-12,
+   "cond_j": 76.37026167604151,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -4.192797858470276,
+   "energy_leg1": -4.192797858478613,
+   "h_leg0": 1860082.2975450333,
+   "h_leg1": 1860082.2975443737,
+   "congruence_dE": -8.337330825725076e-12,
+   "congruence_dh": -6.596092134714127e-07,
+   "required_turn_flyby_deg": 5.2376943024212395,
+   "required_turn_anchor_deg": 176.3548525875156,
+   "vinf_per_encounter_kms": [
+    1.146751629652819,
+    0.6196404021163014,
+    1.1467516296486548
+   ],
+   "max_bend_deg_per_encounter": [
+    18.571504132815313,
+    48.82429578565279,
+    18.571504132929423
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.781019709788573e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 356.85767501162275,
+   "tof0_days": 36.548565719269256,
+   "tof1_days": 37.34771295596621,
+   "residual_kms": 2.9840458736854412e-12,
+   "cond_j": 99.62825370502917,
+   "class": "flyby_passive",
+   "energy_leg0": -4.190636933131438,
+   "energy_leg1": -4.190636933139006,
+   "h_leg0": 1852179.1118569688,
+   "h_leg1": 1852179.111856167,
+   "congruence_dE": -7.567280135845067e-12,
+   "congruence_dh": -8.01868736743927e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.78310479204373,
+   "vinf_per_encounter_kms": [
+    1.1852105136623587,
+    0.7213213600949635,
+    1.1852105136596294
+   ],
+   "max_bend_deg_per_encounter": [
+    17.558606155804913,
+    40.0017459181123,
+    17.55860615587399
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 3.1423249865185796,
+   "tof0_days": 37.347712956016224,
+   "tof1_days": 36.54856571921924,
+   "residual_kms": 1.6946818973100072e-15,
+   "cond_j": 99.63244659764621,
+   "class": "flyby_passive",
+   "energy_leg0": -4.1906369331351785,
+   "energy_leg1": -4.190636933135181,
+   "h_leg0": 1852179.1118563404,
+   "h_leg1": 1852179.11185634,
+   "congruence_dE": -2.6645352591003757e-15,
+   "congruence_dh": -4.656612873077393e-10,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 177.7831047920837,
+   "vinf_per_encounter_kms": [
+    1.1852105136620656,
+    0.7213213600970567,
+    1.1852105136620665
+   ],
+   "max_bend_deg_per_encounter": [
+    17.55860615581234,
+    40.001745917953016,
+    17.558606155812313
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.0000000211034,
+   "tof0_days": 36.94813933710023,
+   "tof1_days": 36.948139338135235,
+   "residual_kms": 4.133549787913883e-11,
+   "cond_j": 321.53961966141804,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.038466676710259,
+   "energy_leg1": -5.038466676625944,
+   "h_leg0": 1769004.6542410487,
+   "h_leg1": 1769004.6542507738,
+   "congruence_dE": 8.431477738213289e-11,
+   "congruence_dh": 9.72510315477848e-06,
+   "required_turn_flyby_deg": 55.1173325876459,
+   "required_turn_anchor_deg": 162.34358588975508,
+   "vinf_per_encounter_kms": [
+    0.7793824975142897,
+    0.4627465983714154,
+    0.7793824975550849
+   ],
+   "max_bend_deg_per_encounter": [
+    34.201469807699254,
+    67.85290965125013,
+    34.20146980509384
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.176203967777129e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 180.00000000064693,
+   "tof0_days": 36.94813933760382,
+   "tof1_days": 36.948139337631645,
+   "residual_kms": 2.7731595991485384e-12,
+   "cond_j": 227.69881342333298,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.049760131276585,
+   "energy_leg1": -6.0497601312735245,
+   "h_leg0": 1624015.737629461,
+   "h_leg1": 1624015.737630079,
+   "congruence_dE": 3.0606628342866316e-12,
+   "congruence_dh": 6.1793252825737e-07,
+   "required_turn_flyby_deg": 168.5823020849227,
+   "required_turn_anchor_deg": 37.25507653036423,
+   "vinf_per_encounter_kms": [
+    0.3884387615130497,
+    0.7833850217594541,
+    0.3884387615123414
+   ],
+   "max_bend_deg_per_encounter": [
+    77.57510059434425,
+    35.62559811759799,
+    77.5751005944697
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.3356324014851254e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 359.9999999879378,
+   "tof0_days": 36.94813933790553,
+   "tof1_days": 36.948139337329934,
+   "residual_kms": 3.460631478334761e-11,
+   "cond_j": 324.352087553593,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.538033241145073,
+   "energy_leg1": -5.538033241211129,
+   "h_leg0": 1702783.3068088982,
+   "h_leg1": 1702783.3067998728,
+   "congruence_dE": -6.605560542993771e-11,
+   "congruence_dh": -9.025447070598602e-06,
+   "required_turn_flyby_deg": 125.74242570920656,
+   "required_turn_anchor_deg": 131.61638239189023,
+   "vinf_per_encounter_kms": [
+    0.5688276811999027,
+    0.5668127824888884,
+    0.5688276811694645
+   ],
+   "max_bend_deg_per_encounter": [
+    52.05783161166984,
+    54.39685487435762,
+    52.05783161503075
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8923648306124352e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 4.511035962796121e-09,
+   "tof0_days": 36.948139337506866,
+   "tof1_days": 36.9481393377286,
+   "residual_kms": 1.2959049482794259e-11,
+   "cond_j": 324.3487380365013,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.538033241190338,
+   "energy_leg1": -5.538033241165833,
+   "h_leg0": 1702783.3068026283,
+   "h_leg1": 1702783.3068061473,
+   "congruence_dE": 2.4505730777946155e-11,
+   "congruence_dh": 3.5190023481845856e-06,
+   "required_turn_flyby_deg": 125.74242570920482,
+   "required_turn_anchor_deg": 131.6163823918917,
+   "vinf_per_encounter_kms": [
+    0.5688276811798545,
+    0.5668127824849649,
+    0.5688276811895256
+   ],
+   "max_bend_deg_per_encounter": [
+    52.05783161388351,
+    54.396854874800255,
+    52.05783161281563
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.0155731411777795e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 211.15104862016895,
+   "tof0_days": 35.392392217549315,
+   "tof1_days": 38.50388645768615,
+   "residual_kms": 7.860763192303804e-14,
+   "cond_j": 1023.362008827887,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.00924528593692,
+   "energy_leg1": -6.009245285936779,
+   "h_leg0": 1598917.6289288409,
+   "h_leg1": 1598917.6289288674,
+   "congruence_dE": 1.412203687323199e-13,
+   "congruence_dh": 2.6542693376541138e-08,
+   "required_turn_flyby_deg": 177.78494544752718,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.7092253727273509,
+    1.055463793256994,
+    0.7092253727273501
+   ],
+   "max_bend_deg_per_encounter": [
+    39.10530203125775,
+    22.531661081937763,
+    39.1053020312578
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.3761104310655306e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Oberon",
+   "flyby": "Titania",
+   "q": 3,
+   "t_total_days": 73.89627867523546,
+   "t_syn_days": 24.632092891745156,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 148.84895137982537,
+   "tof0_days": 38.50388645768626,
+   "tof1_days": 35.39239221754921,
+   "residual_kms": 5.871432073712851e-14,
+   "cond_j": 1023.3265232839631,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.009245285936803,
+   "energy_leg1": -6.009245285936947,
+   "h_leg0": 1598917.6289288665,
+   "h_leg1": 1598917.6289288432,
+   "congruence_dE": -1.438849039914203e-13,
+   "congruence_dh": -2.3283064365386963e-08,
+   "required_turn_flyby_deg": 177.78494544752684,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.709225372727321,
+    1.055463793256949,
+    0.7092253727272964
+   ],
+   "max_bend_deg_per_encounter": [
+    39.10530203126003,
+    22.531661081939326,
+    39.10530203126191
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.706668854818865e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  }
+ ]
+}

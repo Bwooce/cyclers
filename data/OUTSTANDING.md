@@ -199,20 +199,43 @@ unchanged. See `git log` around this date for the corrected commit.
   `#657(a)` (2026-07-19) re-ran all 6 capped attempts uncapped — 32/32 definitive negatives,
   stamped `real-binary-kk-cycler-round2-uncapped-recheck-2026-07-19`. Nothing left to run. The
   single genuinely-different residue is registered as `#816` below (small, optional).
-- `#816` — registered 2026-08-10 (found during `#792`'s scoping-vs-`#680` pass, not
-  dispatched, expectations LOW): the one formulation in the `#558`/`#563` Uranus
-  anchor-flyby-anchor lineage that is both genuinely asymmetric-capable and structurally able
-  to have ISOLATED roots — independent leg times (`tof0 ≠ tof1`) + full periodicity. 3 unknowns
-  `(beta, tof0, tof1)` vs 3 equalities (E-match + h-match via the Tisserand-affine argument, +
-  pattern-repeat resonance) → generically discrete. Structure is already pinned down: the
-  return leg must be a congruent (rotated) copy of the outbound conic, so `tof1` is one of the
-  discrete complementary-arc durations (+k periods) — a finite, cheap root-solve per (pair,
-  arc-type, k, resonance order), HOURS not weeks. Known kill-risks up front: the
-  zero-apsidal-rotation branch is a trivial resonant Keplerian orbit (flyby does no work, fails
-  bend-usefulness), and the `#792`-scoping check measured required turns of 137-156° along the
-  equal-tof manifold vs single-digit achievable bends at these moons — the unequal-tof discrete
-  roots may well all fail the same wall. Clean negative = fine, stamp it. See
-  `docs/notes/2026-08-10-792-scoping-vs-680.md` §4.
+- `#816` — ✓ DONE 2026-08-10 (CLEAN NEGATIVE, exactly as its own registration predicted):
+  unequal-leg-time (`tof0 ≠ tof1`) + full-periodicity discrete enumeration at Uranus, all 12
+  ordered pairs of {Ariel, Umbriel, Titania, Oberon}, n_rev ∈ [0,3]², legs ∈
+  [0.15,3.6]·√(PaPb), all resonance orders q (pattern-repeat eliminated tof1 exactly via
+  `T=q·T_syn`, leaving a square 2-D deflated-Newton root-solve per (direction,q,n_rev) — 82
+  solves). The formulation IS discrete as predicted: 1645 isolated roots (max cond(J) 9.9e4;
+  the same symmetric golden that shows cond ~1e8-1e12 under `#680`'s free formulation shows
+  3.3e2 here — fixing T cuts the along-manifold null direction), Tisserand congruence holds at
+  every root (|ΔE|,|Δh| ≤ 5e-5), and the symmetric `#563`/`#569` family reappears exactly on
+  the tof0=tof1 diagonal (424 roots; PC1 bitwise-faithful to `scan_558`, PC2 recovers the
+  Ariel-Umbriel golden). **436 genuine dual-flyby asymmetric candidates exist as isolated
+  roots and ALL fail required-turn feasibility** (required 26-179°/node vs achievable
+  4.6-88°) — the registration's predicted bend wall, now confirmed at the discrete roots; 0
+  survivors. Combined with `#680`+`#792`-scoping: the lineage's asymmetric question is closed
+  at BOTH existence (equal-tof: none exist) and achievability (unequal-tof: all discrete roots
+  physically unreachable). ONE object passes all physical gates but is one-node-working
+  (Oberon requires EXACTLY 0° turn): an Ariel-only 4.23°-flip repeated-flyby cycler whose
+  complementary-arc coast (T=40.309 d = 5 orbit periods = 13·T_syn) passively encounters
+  Oberon every cycle — Russell-Strange passive-target architecture, outside this genome's
+  two-sided bend-usefulness semantics; literature_check not-found; flagged as `#817`, NOT
+  claimed. Stamped `uranus-unequal-tof-asymmetric-discrete-roots-2026-08-10`. Artifacts:
+  `scripts/scan_816_unequal_tof_discrete_roots.py`,
+  `data/found/816_unequal_tof_asymmetric_roots/roots.json`,
+  `docs/notes/2026-08-10-816-unequal-tof-discrete-roots.md`.
+- `#817` — registered 2026-08-10 (found during `#816`, not dispatched): Opus+Fable
+  adjudication of `#816`'s single all-physical-gates passive-node object — Ariel-Oberon
+  q=13 n_rev=(2,2) beta=13.575407°, tof0=18.783412 d / tof1=21.526054 d, residual 7.5e-11
+  km/s, cond(J)=145, DOP853 4.9e-5 km, V∞=(1.311,1.327,1.311) km/s, required turns Ariel
+  4.2327790° (≤ 8.04° achievable) / Oberon exactly 0°. Question to adjudicate: is a
+  one-node-working Ariel repeated-flyby cycler with an exact passive Oberon rendezvous each
+  cycle (Russell & Strange 2009 passive-science-target architecture, at Uranus) admissible
+  under the expanded catalogue scope (`quasi_cycler`?), or subsumed by the repeated-moon
+  census (`repeated-moon-uranus-sweep`) + the passive crossing being a free phasing condition
+  outside the genome's semantics? `literature_check.py` ran live: not-found
+  (necessary-not-sufficient); no Uranus-pair cycler in the searchable record. Full numbers in
+  `data/found/816_unequal_tof_asymmetric_roots/roots.json` and the `#816` note §5. Low
+  urgency; adjudication-only (no compute).
 - `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched): a small `argparse` CLI
   wrapper / worked example script demonstrating `search/campaign_runner.py::run_grid_campaign`
   end-to-end (grid + worker + routing + `EmptyRegionSpec`) under `scripts/`, matching the shape of

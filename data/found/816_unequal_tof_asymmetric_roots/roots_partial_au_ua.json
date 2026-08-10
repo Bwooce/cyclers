@@ -1,0 +1,6918 @@
+{
+ "task": 816,
+ "git_sha": "3ab92ed2",
+ "note": "directions=Ariel-Umbriel,Umbriel-Ariel",
+ "primary": "Uranus",
+ "moons": [
+  "Ariel",
+  "Umbriel",
+  "Titania",
+  "Oberon"
+ ],
+ "n_rev_max": 3,
+ "tof_scale_box": [
+  0.15,
+  3.6
+ ],
+ "grid": {
+  "n_beta": 180,
+  "n_tof0": 200
+ },
+ "gates": {
+  "bend_floor_deg": 5.0,
+  "root_tol_kms": 1e-10,
+  "dop853_dr_km": 1.0
+ },
+ "elapsed_s": 187.01412796974182,
+ "n_roots": 167,
+ "classes": {
+  "symmetric_equal_tof": 34,
+  "asymmetric_candidate": 89,
+  "flyby_passive": 44
+ },
+ "n_survivors": 0,
+ "roots": [
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.99999999853267,
+   "tof0_days": 3.2160881790765545,
+   "tof1_days": 3.2160881790558635,
+   "residual_kms": 1.0360991585359339e-11,
+   "cond_j": 850.0905271773936,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.32553787985343,
+   "energy_leg1": -11.32553787989032,
+   "h_leg0": 1168621.5148451717,
+   "h_leg1": 1168621.5148438215,
+   "congruence_dE": -3.6889602483825e-11,
+   "congruence_dh": -1.35018490254879e-06,
+   "required_turn_flyby_deg": 102.66639848073491,
+   "required_turn_anchor_deg": 155.68075563041205,
+   "vinf_per_encounter_kms": [
+    1.3004234339678844,
+    0.9790404809957213,
+    1.3004234339577418
+   ],
+   "max_bend_deg_per_encounter": [
+    8.425570687762491,
+    13.976354750422564,
+    8.425570687884484
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.3790308944955644e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.999999999787,
+   "tof0_days": 3.2160881790678006,
+   "tof1_days": 3.2160881790646174,
+   "residual_kms": 1.4341537707591693e-12,
+   "cond_j": 4653.323900412589,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.00083025511437,
+   "energy_leg1": -11.000830255119823,
+   "h_leg0": 819489.2579973004,
+   "h_leg1": 819489.2579972447,
+   "congruence_dE": -5.453415496958769e-12,
+   "congruence_dh": -5.564652383327484e-08,
+   "required_turn_flyby_deg": 149.7532531655143,
+   "required_turn_anchor_deg": 130.92336816818454,
+   "vinf_per_encounter_kms": [
+    3.8201441507106026,
+    4.664277496189612,
+    3.8201441507094303
+   ],
+   "max_bend_deg_per_encounter": [
+    1.043249742510663,
+    0.6951027574643653,
+    1.0432497425112977
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.0613946651438645e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 2.6505008212903466e-10,
+   "tof0_days": 3.2160881790640774,
+   "tof1_days": 3.2160881790683407,
+   "residual_kms": 6.275123534677595e-13,
+   "cond_j": 4653.327305187999,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.000830255120901,
+   "energy_leg1": -11.000830255113293,
+   "h_leg0": 819489.2579971117,
+   "h_leg1": 819489.257997433,
+   "congruence_dE": 7.608136343151273e-12,
+   "congruence_dh": 3.213062882423401e-07,
+   "required_turn_flyby_deg": 149.7532531655143,
+   "required_turn_anchor_deg": 130.9233681681845,
+   "vinf_per_encounter_kms": [
+    3.8201441507097593,
+    4.664277496189378,
+    3.8201441507102754
+   ],
+   "max_bend_deg_per_encounter": [
+    1.0432497425111193,
+    0.695102757464435,
+    1.0432497425108402
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.036857802322274e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 267.26368498784024,
+   "tof0_days": 5.536172052529281,
+   "tof1_days": 0.896004305603137,
+   "residual_kms": 8.569539785857195e-11,
+   "cond_j": 660.0743015576177,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.740350952206498,
+   "energy_leg1": -8.740350952825416,
+   "h_leg0": 990075.5272838874,
+   "h_leg1": 990075.527265663,
+   "congruence_dE": -6.189182499838353e-10,
+   "congruence_dh": -1.8224352970719337e-05,
+   "required_turn_flyby_deg": 170.84686656496686,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    3.623208902996955,
+    4.053681827253166,
+    3.6232089029143935
+   ],
+   "max_bend_deg_per_encounter": [
+    1.1585670532432137,
+    0.918476165551926,
+    1.1585670532954817
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.758893110160284e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 92.73631501605198,
+   "tof0_days": 0.8960043055648881,
+   "tof1_days": 5.5361720525675295,
+   "residual_kms": 3.929078363594932e-11,
+   "cond_j": 660.0696525581452,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.740350951913513,
+   "energy_leg1": -8.740350952175916,
+   "h_leg0": 990075.5272619285,
+   "h_leg1": 990075.5272546409,
+   "congruence_dE": -2.62403432316205e-10,
+   "congruence_dh": -7.287599146366119e-06,
+   "required_turn_flyby_deg": 170.8468665630462,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.6232089031841688,
+    4.0536818274817445,
+    3.6232089031470434
+   ],
+   "max_bend_deg_per_encounter": [
+    1.158567053124692,
+    0.9184761654491721,
+    1.1585670531481953
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2194468606569568e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 6.898832045525181,
+   "tof0_days": 1.9706009272587597,
+   "tof1_days": 4.461575430873658,
+   "residual_kms": 3.1534391210270166e-12,
+   "cond_j": 1553.2992093971525,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.337867818537987,
+   "energy_leg1": -14.337867818542946,
+   "h_leg0": 1023695.2642043023,
+   "h_leg1": 1023695.2642039519,
+   "congruence_dE": -4.959588295605499e-12,
+   "congruence_dh": -3.504101186990738e-07,
+   "required_turn_flyby_deg": 170.69004099536852,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8675864284567325,
+    1.8158170941771332,
+    0.8675864284581055
+   ],
+   "max_bend_deg_per_encounter": [
+    17.392577461312236,
+    4.436868561570987,
+    17.39257746126515
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.8922006654805785e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 171.07223701699155,
+   "tof0_days": 2.3965814587817964,
+   "tof1_days": 4.035594899350622,
+   "residual_kms": 9.057678187205881e-15,
+   "cond_j": 2385.824665485848,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.959537165619363,
+   "energy_leg1": -11.959537165619423,
+   "h_leg0": 1085602.1569060765,
+   "h_leg1": 1085602.1569060734,
+   "congruence_dE": -6.039613253960852e-14,
+   "congruence_dh": -3.026798367500305e-09,
+   "required_turn_flyby_deg": 170.41425588883993,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.8266668298188466,
+    2.116922561737426,
+    1.8266668298188449
+   ],
+   "max_bend_deg_per_encounter": [
+    4.427854383048762,
+    3.297823321697133,
+    4.42785438304877
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.0342121026254324e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 15.55195147335685,
+   "tof0_days": 1.8470248775878255,
+   "tof1_days": 4.585151480544592,
+   "residual_kms": 3.744198798192515e-13,
+   "cond_j": 4920.2364808663015,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.359033254325539,
+   "energy_leg1": -14.359033254324892,
+   "h_leg0": 1025072.7592843968,
+   "h_leg1": 1025072.7592844404,
+   "congruence_dE": 6.465938895416912e-13,
+   "congruence_dh": 4.3655745685100555e-08,
+   "required_turn_flyby_deg": 170.97820266959835,
+   "required_turn_anchor_deg": 1.2935391582851272,
+   "vinf_per_encounter_kms": [
+    0.8136531238921437,
+    1.781956523937585,
+    0.8136531238919963
+   ],
+   "max_bend_deg_per_encounter": [
+    19.39166607901755,
+    4.600343039567195,
+    19.391666079023455
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.737537160890414e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 9.978118330901932,
+   "tof0_days": 0.9490814655624921,
+   "tof1_days": 5.483094892569926,
+   "residual_kms": 5.365950338995594e-15,
+   "cond_j": 1402.1395022534534,
+   "class": "flyby_passive",
+   "energy_leg0": -9.56777096954713,
+   "energy_leg1": -9.567770969547169,
+   "h_leg0": 1197471.5142477201,
+   "h_leg1": 1197471.5142477187,
+   "congruence_dE": -3.907985046680551e-14,
+   "congruence_dh": -1.3969838619232178e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.73221055023038,
+   "vinf_per_encounter_kms": [
+    2.0479571844436015,
+    1.6760646760613687,
+    2.0479571844435966
+   ],
+   "max_bend_deg_per_encounter": [
+    3.5503819705047315,
+    5.1732997630412,
+    3.5503819705047484
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 351.54516637495414,
+   "tof0_days": 0.7549131180668361,
+   "tof1_days": 5.677263240065582,
+   "residual_kms": 1.1025397019680873e-12,
+   "cond_j": 19.39853274711363,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.712086688718438,
+   "energy_leg1": -9.712086688714784,
+   "h_leg0": 1226230.080693117,
+   "h_leg1": 1226230.0806932286,
+   "congruence_dE": 3.653966018646315e-12,
+   "congruence_dh": 1.1152587831020355e-07,
+   "required_turn_flyby_deg": 20.260558448660586,
+   "required_turn_anchor_deg": 176.13891215328513,
+   "vinf_per_encounter_kms": [
+    1.701822488109854,
+    0.927888162174683,
+    1.7018224881108504
+   ],
+   "max_bend_deg_per_encounter": [
+    5.071925903170165,
+    15.356133825967612,
+    5.071925903164485
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.9305450945767312e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 25.07140669400177,
+   "tof0_days": 1.7173835929166146,
+   "tof1_days": 4.714792765215804,
+   "residual_kms": 1.3906180472866898e-14,
+   "cond_j": 3470.42955071275,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.33786781854215,
+   "energy_leg1": -14.337867818542097,
+   "h_leg0": 1023695.2642041403,
+   "h_leg1": 1023695.264204143,
+   "congruence_dE": 5.3290705182007514e-14,
+   "congruence_dh": 2.6775524020195007e-09,
+   "required_turn_flyby_deg": 170.69004099536753,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8675864284552106,
+    1.8158170941745757,
+    0.86758642845522
+   ],
+   "max_bend_deg_per_encounter": [
+    17.392577461364436,
+    4.436868561583008,
+    17.392577461364112
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.0335256879323904e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 349.07967186045124,
+   "tof0_days": 0.44895626712561654,
+   "tof1_days": 5.983220091006801,
+   "residual_kms": 5.232908767834996e-14,
+   "cond_j": 33.57557813558803,
+   "class": "flyby_passive",
+   "energy_leg0": -9.567770969547215,
+   "energy_leg1": -9.567770969547201,
+   "h_leg0": 1197471.5142477264,
+   "h_leg1": 1197471.5142477243,
+   "congruence_dE": 1.4210854715202004e-14,
+   "congruence_dh": -2.0954757928848267e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.73221055023114,
+   "vinf_per_encounter_kms": [
+    2.047957184443508,
+    1.676064676061255,
+    2.047957184443534
+   ],
+   "max_bend_deg_per_encounter": [
+    3.5503819705050463,
+    5.173299763041871,
+    3.5503819705049593
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 353.1011679547165,
+   "tof0_days": 4.4615754308689315,
+   "tof1_days": 1.9706009272634866,
+   "residual_kms": 1.246017169591592e-12,
+   "cond_j": 1553.3164331875125,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.337867818539223,
+   "energy_leg1": -14.337867818539301,
+   "h_leg0": 1023695.264203934,
+   "h_leg1": 1023695.2642039789,
+   "congruence_dE": -7.815970093361102e-14,
+   "congruence_dh": 4.493631422519684e-08,
+   "required_turn_flyby_deg": 170.69004099532933,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8675864284627587,
+    1.815817094179468,
+    0.8675864284617676
+   ],
+   "max_bend_deg_per_encounter": [
+    17.392577461105567,
+    4.436868561560014,
+    17.392577461139556
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.786338662213889e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 188.92776298300794,
+   "tof0_days": 4.0355948993506265,
+   "tof1_days": 2.3965814587817915,
+   "residual_kms": 5.4025784115714076e-15,
+   "cond_j": 2385.822957780066,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.959537165619366,
+   "energy_leg1": -11.959537165619377,
+   "h_leg0": 1085602.1569060762,
+   "h_leg1": 1085602.156906076,
+   "congruence_dE": -1.0658141036401503e-14,
+   "congruence_dh": -2.3283064365386963e-10,
+   "required_turn_flyby_deg": 170.4142558888397,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    1.826666829818848,
+    2.116922561737414,
+    1.8266668298188427
+   ],
+   "max_bend_deg_per_encounter": [
+    4.427854383048756,
+    3.297823321697169,
+    4.427854383048781
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.6558596746579752e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 344.4480485268036,
+   "tof0_days": 4.585151480542652,
+   "tof1_days": 1.8470248775897664,
+   "residual_kms": 2.56600955554161e-13,
+   "cond_j": 4920.205263568941,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.359033254325322,
+   "energy_leg1": -14.359033254324752,
+   "h_leg0": 1025072.7592844132,
+   "h_leg1": 1025072.7592844485,
+   "congruence_dE": 5.702105454474804e-13,
+   "congruence_dh": 3.527384251356125e-08,
+   "required_turn_flyby_deg": 170.97820266960196,
+   "required_turn_anchor_deg": 1.2935391583009073,
+   "vinf_per_encounter_kms": [
+    0.8136531238920538,
+    1.7819565239374395,
+    0.8136531238919961
+   ],
+   "max_bend_deg_per_encounter": [
+    19.39166607902115,
+    4.600343039567917,
+    19.39166607902346
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.678685492594639e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 350.0218816690957,
+   "tof0_days": 5.483094892569927,
+   "tof1_days": 0.9490814655624913,
+   "residual_kms": 1.3322676295501878e-15,
+   "cond_j": 1402.143461545722,
+   "class": "flyby_passive",
+   "energy_leg0": -9.56777096954702,
+   "energy_leg1": -9.567770969547016,
+   "h_leg0": 1197471.5142477187,
+   "h_leg1": 1197471.5142477187,
+   "congruence_dE": 3.552713678800501e-15,
+   "congruence_dh": 0.0,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.73221055023038,
+   "vinf_per_encounter_kms": [
+    2.0479571844436686,
+    1.676064676061458,
+    2.04795718444367
+   ],
+   "max_bend_deg_per_encounter": [
+    3.5503819705045068,
+    5.173299763040672,
+    3.5503819705045023
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 8.454833625040935,
+   "tof0_days": 5.6772632400657,
+   "tof1_days": 0.7549131180667183,
+   "residual_kms": 7.489886179073356e-13,
+   "cond_j": 19.398526622075043,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.712086688714702,
+   "energy_leg1": -9.712086688717129,
+   "h_leg0": 1226230.0806932293,
+   "h_leg1": 1226230.080693156,
+   "congruence_dE": -2.426503442620742e-12,
+   "congruence_dh": -7.334165275096893e-08,
+   "required_turn_flyby_deg": 20.260558448680538,
+   "required_turn_anchor_deg": 176.13891215329087,
+   "vinf_per_encounter_kms": [
+    1.7018224881108914,
+    0.9278881621747502,
+    1.701822488110223
+   ],
+   "max_bend_deg_per_encounter": [
+    5.071925903164251,
+    15.356133825965669,
+    5.0719259031680615
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.338637968153742e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 334.928593306201,
+   "tof0_days": 4.714792765212832,
+   "tof1_days": 1.7173835929195862,
+   "residual_kms": 6.322044012980134e-13,
+   "cond_j": 3470.412299461789,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.33786781854256,
+   "energy_leg1": -14.33786781854404,
+   "h_leg0": 1023695.2642042412,
+   "h_leg1": 1023695.2642041509,
+   "congruence_dE": -1.4814816040598089e-12,
+   "congruence_dh": -9.033828973770142e-08,
+   "required_turn_flyby_deg": 170.69004099537793,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    0.8675864284527007,
+    1.815817094173369,
+    0.8675864284528201
+   ],
+   "max_bend_deg_per_encounter": [
+    17.39257746145051,
+    4.43686856158868,
+    17.392577461446418
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.759228661951966e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 16.544972516095754,
+   "tof0_days": 5.9987975969016265,
+   "tof1_days": 0.43337876123079155,
+   "residual_kms": 2.578109028833495e-13,
+   "cond_j": 213.1302163411765,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.959537165621473,
+   "energy_leg1": -11.959537165620063,
+   "h_leg0": 1085602.1569060632,
+   "h_leg1": 1085602.1569061184,
+   "congruence_dE": 1.4104273304837989e-12,
+   "congruence_dh": 5.51808625459671e-08,
+   "required_turn_flyby_deg": 170.41425588883158,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.8266668298178224,
+    2.116922561736601,
+    1.8266668298180644
+   ],
+   "max_bend_deg_per_encounter": [
+    4.427854383053537,
+    3.2978233216996307,
+    4.42785438305241
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.258678100425168e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.9999999979151,
+   "tof0_days": 3.216088179093613,
+   "tof1_days": 3.216088179038805,
+   "residual_kms": 2.995540179803415e-11,
+   "cond_j": 330.04653559659687,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.325537879826573,
+   "energy_leg1": -11.325537879917182,
+   "h_leg0": 1168621.5148459834,
+   "h_leg1": 1168621.5148430096,
+   "congruence_dE": -9.060840966412798e-11,
+   "congruence_dh": -2.973712980747223e-06,
+   "required_turn_flyby_deg": 155.680755630412,
+   "required_turn_anchor_deg": 102.66639848073503,
+   "vinf_per_encounter_kms": [
+    0.9790404809971183,
+    1.3004234339775864,
+    0.9790404809922062
+   ],
+   "max_bend_deg_per_encounter": [
+    13.976354750387353,
+    8.425570687645795,
+    13.97635475051115
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.279968853535832e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 1.3642420526593924e-12,
+   "tof0_days": 3.2160881790661944,
+   "tof1_days": 3.2160881790662237,
+   "residual_kms": 8.639789531958417e-15,
+   "cond_j": 330.0470063125622,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.325537879871906,
+   "energy_leg1": -11.325537879871874,
+   "h_leg0": 1168621.5148444956,
+   "h_leg1": 1168621.5148444967,
+   "congruence_dE": 3.197442310920451e-14,
+   "congruence_dh": 1.1641532182693481e-09,
+   "required_turn_flyby_deg": 155.68075563041182,
+   "required_turn_anchor_deg": 102.66639848073548,
+   "vinf_per_encounter_kms": [
+    0.9790404809946651,
+    1.300423433962812,
+    0.9790404809946613
+   ],
+   "max_bend_deg_per_encounter": [
+    13.976354750449179,
+    8.425570687823498,
+    13.976354750449273
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.184888842180759e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 179.99999999999972,
+   "tof0_days": 3.216088179066216,
+   "tof1_days": 3.216088179066202,
+   "residual_kms": 1.1724291566434251e-14,
+   "cond_j": 1407.5358110112763,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.00083025511708,
+   "energy_leg1": -11.000830255117112,
+   "h_leg0": 819489.257997274,
+   "h_leg1": 819489.2579972709,
+   "congruence_dE": -3.197442310920451e-14,
+   "congruence_dh": -3.14321368932724e-09,
+   "required_turn_flyby_deg": 130.92336816818454,
+   "required_turn_anchor_deg": 149.7532531655143,
+   "vinf_per_encounter_kms": [
+    4.664277496189193,
+    3.82014415071002,
+    4.664277496189204
+   ],
+   "max_bend_deg_per_encounter": [
+    0.6951027574644898,
+    1.0432497425109786,
+    0.6951027574644865
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.910951769071183e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 142.88443472564495,
+   "tof0_days": 0.8960043055730429,
+   "tof1_days": 5.536172052559375,
+   "residual_kms": 1.0422658304592097e-11,
+   "cond_j": 97.57248917302852,
+   "class": "flyby_passive",
+   "energy_leg0": -8.740350952106986,
+   "energy_leg1": -8.740350952184778,
+   "h_leg0": 990075.5272627955,
+   "h_leg1": 990075.5272604511,
+   "congruence_dE": -7.779199506785517e-11,
+   "congruence_dh": -2.3443717509508133e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.84686656343166,
+   "vinf_per_encounter_kms": [
+    4.053681827427843,
+    3.623208903126571,
+    4.053681827425336
+   ],
+   "max_bend_deg_per_encounter": [
+    0.9184761654734027,
+    1.1585670531611563,
+    0.9184761654745293
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 217.11556527462878,
+   "tof0_days": 5.536172052553398,
+   "tof1_days": 0.8960043055790203,
+   "residual_kms": 9.553520443450297e-12,
+   "cond_j": 97.57299289630204,
+   "class": "flyby_passive",
+   "energy_leg0": -8.740350952186546,
+   "energy_leg1": -8.740350952249482,
+   "h_leg0": 990075.5272651094,
+   "h_leg1": 990075.5272633794,
+   "congruence_dE": -6.293632281995087e-11,
+   "congruence_dh": -1.7299316823482513e-06,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 170.84686656373856,
+   "vinf_per_encounter_kms": [
+    4.053681827391745,
+    3.623208903093412,
+    4.0536818273885356
+   ],
+   "max_bend_deg_per_encounter": [
+    0.9184761654896297,
+    1.1585670531821486,
+    0.9184761654910725
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 121.1909872257681,
+   "tof0_days": 1.7173835929161043,
+   "tof1_days": 4.7147927652163135,
+   "residual_kms": 5.771494153252083e-14,
+   "cond_j": 200.13214776688062,
+   "class": "flyby_passive",
+   "energy_leg0": -14.337867818541877,
+   "energy_leg1": -14.337867818542005,
+   "h_leg0": 1023695.2642041357,
+   "h_leg1": 1023695.2642041278,
+   "congruence_dE": -1.2789769243681803e-13,
+   "congruence_dh": -7.916241884231567e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.6900409953656,
+   "vinf_per_encounter_kms": [
+    1.8158170941748006,
+    0.8675864284556329,
+    1.8158170941748575
+   ],
+   "max_bend_deg_per_encounter": [
+    4.436868561581951,
+    17.39257746134995,
+    4.436868561581684
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 33.79660778023344,
+   "tof0_days": 0.754913118066537,
+   "tof1_days": 5.677263240065881,
+   "residual_kms": 2.638970003411226e-15,
+   "cond_j": 294.43779039618545,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.712086688714592,
+   "energy_leg1": -9.712086688714601,
+   "h_leg0": 1226230.0806932303,
+   "h_leg1": 1226230.0806932303,
+   "congruence_dE": -8.881784197001252e-15,
+   "congruence_dh": 0.0,
+   "required_turn_flyby_deg": 176.13891215330108,
+   "required_turn_anchor_deg": 20.260558448718047,
+   "vinf_per_encounter_kms": [
+    0.9278881621748344,
+    1.7018224881109432,
+    0.9278881621748369
+   ],
+   "max_bend_deg_per_encounter": [
+    15.356133825963243,
+    5.071925903163956,
+    15.35613382596317
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.274153622047149e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 117.19063598794284,
+   "tof0_days": 1.9706009272599114,
+   "tof1_days": 4.461575430872506,
+   "residual_kms": 2.082761634259394e-12,
+   "cond_j": 37.32988038833226,
+   "class": "flyby_passive",
+   "energy_leg0": -14.337867818543376,
+   "energy_leg1": -14.337867818538548,
+   "h_leg0": 1023695.2642038339,
+   "h_leg1": 1023695.2642041297,
+   "congruence_dE": 4.828137889489881e-12,
+   "congruence_dh": 2.9581133276224136e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.69004099533092,
+   "vinf_per_encounter_kms": [
+    1.8158170941787721,
+    0.8675864284599978,
+    1.8158170941767315
+   ],
+   "max_bend_deg_per_encounter": [
+    4.436868561563285,
+    17.39257746120025,
+    4.436868561572876
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 118.92737511061513,
+   "tof0_days": 1.8470248775882234,
+   "tof1_days": 4.585151480544194,
+   "residual_kms": 2.1403130445151483e-14,
+   "cond_j": 263.2840040191657,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.359033254325091,
+   "energy_leg1": -14.359033254325123,
+   "h_leg0": 1025072.7592844273,
+   "h_leg1": 1025072.759284425,
+   "congruence_dE": -3.197442310920451e-14,
+   "congruence_dh": -2.3283064365386963e-09,
+   "required_turn_flyby_deg": 1.293539158294426,
+   "required_turn_anchor_deg": 170.9782026696006,
+   "vinf_per_encounter_kms": [
+    1.781956523937342,
+    0.8136531238920471,
+    1.7819565239373614
+   ],
+   "max_bend_deg_per_encounter": [
+    4.6003430395684,
+    19.39166607902142,
+    4.600343039568304
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.883386467939064e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 63.09689315612509,
+   "tof0_days": 0.949081465562569,
+   "tof1_days": 5.483094892569849,
+   "residual_kms": 1.1378409025920006e-12,
+   "cond_j": 1477.12358636546,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.567770969538866,
+   "energy_leg1": -9.56777096954549,
+   "h_leg0": 1197471.5142475734,
+   "h_leg1": 1197471.514247307,
+   "congruence_dE": -6.624034654123534e-12,
+   "congruence_dh": -2.6635825634002686e-07,
+   "required_turn_flyby_deg": 170.73221055019323,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.676064676068821,
+    2.047957184448888,
+    1.6760646760694566
+   ],
+   "max_bend_deg_per_encounter": [
+    5.1732997629972415,
+    3.5503819704869657,
+    5.173299762993493
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4244297714256777e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 7.710636372146922,
+   "tof0_days": 0.43337876123050023,
+   "tof1_days": 5.998797596901918,
+   "residual_kms": 2.9035620375590095e-12,
+   "cond_j": 94.04099230343748,
+   "class": "flyby_passive",
+   "energy_leg0": -11.959537165617064,
+   "energy_leg1": -11.9595371656211,
+   "h_leg0": 1085602.156906134,
+   "h_leg1": 1085602.156906133,
+   "congruence_dE": -4.035882739117369e-12,
+   "congruence_dh": -9.313225746154785e-10,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.41425588882026,
+   "vinf_per_encounter_kms": [
+    2.1169225617377148,
+    1.8266668298195545,
+    2.116922561735821
+   ],
+   "max_bend_deg_per_encounter": [
+    3.2978233216962587,
+    4.427854383045461,
+    3.2978233217019906
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 305.2055811799825,
+   "tof0_days": 2.3965814587796546,
+   "tof1_days": 4.0355948993527635,
+   "residual_kms": 1.457011827710119e-12,
+   "cond_j": 735.132947577566,
+   "class": "flyby_passive",
+   "energy_leg0": -11.959537165622965,
+   "energy_leg1": -11.959537165614993,
+   "h_leg0": 1085602.1569060558,
+   "h_leg1": 1085602.1569063673,
+   "congruence_dE": 7.972289495228324e-12,
+   "congruence_dh": 3.1152740120887756e-07,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 170.4142558887935,
+   "vinf_per_encounter_kms": [
+    2.116922561735995,
+    1.8266668298184467,
+    2.116922561735514
+   ],
+   "max_bend_deg_per_encounter": [
+    3.297823321701465,
+    4.427854383050626,
+    3.2978233217029205
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 238.80901277423712,
+   "tof0_days": 4.714792765215937,
+   "tof1_days": 1.7173835929164811,
+   "residual_kms": 4.4354069848810025e-14,
+   "cond_j": 200.1318646442486,
+   "class": "flyby_passive",
+   "energy_leg0": -14.337867818542016,
+   "energy_leg1": -14.337867818542117,
+   "h_leg0": 1023695.2642041428,
+   "h_leg1": 1023695.2642041366,
+   "congruence_dE": -1.0125233984581428e-13,
+   "congruence_dh": -6.28642737865448e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.69004099536724,
+   "vinf_per_encounter_kms": [
+    1.8158170941746117,
+    0.8675864284553286,
+    1.8158170941746545
+   ],
+   "max_bend_deg_per_encounter": [
+    4.4368685615828385,
+    17.392577461360382,
+    4.436868561582637
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 326.20339221976604,
+   "tof0_days": 5.67726324006588,
+   "tof1_days": 0.754913118066538,
+   "residual_kms": 3.1188573643174643e-14,
+   "cond_j": 294.4377531861121,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.712086688714606,
+   "energy_leg1": -9.71208668871452,
+   "h_leg0": 1226230.08069323,
+   "h_leg1": 1226230.0806932321,
+   "congruence_dE": 8.704148513061227e-14,
+   "congruence_dh": 2.0954757928848267e-09,
+   "required_turn_flyby_deg": 176.13891215330148,
+   "required_turn_anchor_deg": 20.260558448719316,
+   "vinf_per_encounter_kms": [
+    0.9278881621748314,
+    1.7018224881109674,
+    0.9278881621748526
+   ],
+   "max_bend_deg_per_encounter": [
+    15.356133825963331,
+    5.071925903163818,
+    15.356133825962718
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.7572880610571813e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 242.80936401202504,
+   "tof0_days": 4.461575430876968,
+   "tof1_days": 1.9706009272554503,
+   "residual_kms": 1.6976718206905415e-12,
+   "cond_j": 37.33001218651543,
+   "class": "flyby_passive",
+   "energy_leg0": -14.337867818540882,
+   "energy_leg1": -14.337867818543927,
+   "h_leg0": 1023695.2642042073,
+   "h_leg1": 1023695.2642040027,
+   "congruence_dE": -3.0446756227320293e-12,
+   "congruence_dh": -2.046581357717514e-07,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 170.69004099535758,
+   "vinf_per_encounter_kms": [
+    1.8158170941742104,
+    0.8675864284559486,
+    1.8158170941757867
+   ],
+   "max_bend_deg_per_encounter": [
+    4.436868561584725,
+    17.392577461339126,
+    4.436868561577316
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 241.0726248893798,
+   "tof0_days": 4.585151480544331,
+   "tof1_days": 1.8470248775880869,
+   "residual_kms": 6.293123699081406e-14,
+   "cond_j": 263.28345896498064,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.359033254325075,
+   "energy_leg1": -14.359033254325183,
+   "h_leg0": 1025072.7592844283,
+   "h_leg1": 1025072.7592844208,
+   "congruence_dE": -1.0835776720341528e-13,
+   "congruence_dh": -7.566995918750763e-09,
+   "required_turn_flyby_deg": 1.2935391582927354,
+   "required_turn_anchor_deg": 170.97820266960008,
+   "vinf_per_encounter_kms": [
+    1.781956523937334,
+    0.8136531238920592,
+    1.781956523937393
+   ],
+   "max_bend_deg_per_encounter": [
+    4.600343039568441,
+    19.391666079020936,
+    4.600343039568147
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 8.374814256215754e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 296.9031068438454,
+   "tof0_days": 5.483094892569931,
+   "tof1_days": 0.9490814655624868,
+   "residual_kms": 1.5742242785142615e-12,
+   "cond_j": 1477.1193533871171,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.567770969544998,
+   "energy_leg1": -9.56777096953643,
+   "h_leg0": 1197471.5142472722,
+   "h_leg1": 1197471.5142475776,
+   "congruence_dE": 8.569145393266808e-12,
+   "congruence_dh": 3.0547380447387695e-07,
+   "required_turn_flyby_deg": 170.73221055019383,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.6760646760703484,
+    2.0479571844500484,
+    1.6760646760702045
+   ],
+   "max_bend_deg_per_encounter": [
+    5.173299762988233,
+    3.5503819704830644,
+    5.173299762989082
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.0889323115986585e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 345.7928678265441,
+   "tof0_days": 5.983220091006797,
+   "tof1_days": 0.4489562671256211,
+   "residual_kms": 8.023925212617491e-14,
+   "cond_j": 136.89151625421613,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.567770969547201,
+   "energy_leg1": -9.567770969547466,
+   "h_leg0": 1197471.5142477243,
+   "h_leg1": 1197471.5142477173,
+   "congruence_dE": -2.646771690706373e-13,
+   "congruence_dh": -6.984919309616089e-09,
+   "required_turn_flyby_deg": 170.73221055023012,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    1.676064676061252,
+    2.04795718444353,
+    1.6760646760612101
+   ],
+   "max_bend_deg_per_encounter": [
+    5.1732997630418875,
+    3.5503819705049717,
+    5.173299763042136
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.3567374448676995e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 1,
+   "t_total_days": 6.432176358132418,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 54.794418820157674,
+   "tof0_days": 4.03559489935078,
+   "tof1_days": 2.396581458781638,
+   "residual_kms": 2.1974115683817206e-13,
+   "cond_j": 735.1324268962047,
+   "class": "flyby_passive",
+   "energy_leg0": -11.959537165618876,
+   "energy_leg1": -11.959537165619626,
+   "h_leg0": 1085602.1569060993,
+   "h_leg1": 1085602.1569060786,
+   "congruence_dE": -7.496225862269057e-13,
+   "congruence_dh": -2.0721927285194397e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 170.41425588883544,
+   "vinf_per_encounter_kms": [
+    2.116922561737333,
+    1.8266668298188962,
+    2.11692256173727
+   ],
+   "max_bend_deg_per_encounter": [
+    3.2978233216974155,
+    4.427854383048531,
+    3.2978233216976065
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 1.845194219640689e-09,
+   "tof0_days": 6.432176358108615,
+   "tof1_days": 6.432176358156221,
+   "residual_kms": 3.625246641906064e-12,
+   "cond_j": 2438.2463559087378,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.461160256809787,
+   "energy_leg1": -7.461160256778632,
+   "h_leg0": 1187608.6888405823,
+   "h_leg1": 1187608.6888418742,
+   "congruence_dE": 3.115552260624099e-11,
+   "congruence_dh": 1.2919772416353226e-06,
+   "required_turn_flyby_deg": 172.14954266826666,
+   "required_turn_anchor_deg": 150.08515367948687,
+   "vinf_per_encounter_kms": [
+    2.755280966118429,
+    2.958629959166393,
+    2.7552809661162105
+   ],
+   "max_bend_deg_per_encounter": [
+    1.969777853047101,
+    1.7288093969708789,
+    1.9697778530502195
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.733787767640974e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.00000000074903,
+   "tof0_days": 6.432176358123633,
+   "tof1_days": 6.432176358141203,
+   "residual_kms": 1.7132452928184118e-12,
+   "cond_j": 7275.0320580740245,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.681345863420152,
+   "energy_leg1": -7.681345863407357,
+   "h_leg0": 156895.02253329076,
+   "h_leg1": 156895.02253347193,
+   "congruence_dE": 1.2795098314200004e-11,
+   "congruence_dh": 1.811713445931673e-07,
+   "required_turn_flyby_deg": 104.62560948067495,
+   "required_turn_anchor_deg": 109.90933091187254,
+   "vinf_per_encounter_kms": [
+    8.16278806099339,
+    6.669825515006761,
+    8.162788060994318
+   ],
+   "max_bend_deg_per_encounter": [
+    0.22788525432819706,
+    0.3443328335180779,
+    0.22788525432814538
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.11949116920987e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 223.42609651595396,
+   "tof0_days": 6.207618952905608,
+   "tof1_days": 6.656733763359228,
+   "residual_kms": 5.675423362591194e-11,
+   "cond_j": 26560.351306006207,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.823145854748134,
+   "energy_leg1": -7.823145855135758,
+   "h_leg0": 353389.19254559104,
+   "h_leg1": 353389.19254008477,
+   "congruence_dE": -3.8762415499604685e-10,
+   "congruence_dh": -5.506270099431276e-06,
+   "required_turn_flyby_deg": 113.72599870864622,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    7.416759535233193,
+    6.10793774335067,
+    7.416759535202355
+   ],
+   "max_bend_deg_per_encounter": [
+    0.2759196014748713,
+    0.41036222944899164,
+    0.2759196014771601
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.043948800854352e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 136.57390343782262,
+   "tof0_days": 6.656733763888927,
+   "tof1_days": 6.207618952375909,
+   "residual_kms": 5.967185146627234e-11,
+   "cond_j": 26559.307674811374,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.823145854727883,
+   "energy_leg1": -7.823145855149548,
+   "h_leg0": 353389.19255748845,
+   "h_leg1": 353389.19255104125,
+   "congruence_dE": -4.2166448110947385e-10,
+   "congruence_dh": -6.447196938097477e-06,
+   "required_turn_flyby_deg": 113.72599870921314,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    7.416759535189637,
+    6.107937743319801,
+    7.416759535157866
+   ],
+   "max_bend_deg_per_encounter": [
+    0.2759196014781041,
+    0.4103622294531246,
+    0.2759196014804624
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00018067808493943407,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 214.90546803827985,
+   "tof0_days": 3.9582363648843937,
+   "tof1_days": 8.906116351380442,
+   "residual_kms": 1.1573019339856235e-13,
+   "cond_j": 1020.6061510778469,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.67864988025233,
+   "energy_leg1": -9.678649880252287,
+   "h_leg0": 1172985.721058945,
+   "h_leg1": 1172985.7210589538,
+   "congruence_dE": 4.263256414560601e-14,
+   "congruence_dh": 8.847564458847046e-09,
+   "required_turn_flyby_deg": 166.5447544176773,
+   "required_turn_anchor_deg": 143.00556629584295,
+   "vinf_per_encounter_kms": [
+    2.0001122070620947,
+    2.198115769119331,
+    2.000112207061994
+   ],
+   "max_bend_deg_per_encounter": [
+    3.681659914857789,
+    3.0944106422006845,
+    3.6816599148581486
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.3857033738597514e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 63.375308217007536,
+   "tof0_days": 3.9175558549170244,
+   "tof1_days": 8.946796861347812,
+   "residual_kms": 7.752215406538061e-13,
+   "cond_j": 16172.38800600529,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.22514937208457,
+   "energy_leg1": -10.22514937208917,
+   "h_leg0": 387409.25587570254,
+   "h_leg1": 387409.2558756461,
+   "congruence_dE": -4.600764214046649e-12,
+   "congruence_dh": -5.6461431086063385e-08,
+   "required_turn_flyby_deg": 109.9613344465472,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.9455814896111345,
+    5.595439568016589,
+    6.9455814896107055
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3145192181737275,
+    0.4886419088316838,
+    0.31451921817376627
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 8.811313099412703e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 148.58164594966598,
+   "tof0_days": 5.808203817428342,
+   "tof1_days": 7.056148898836494,
+   "residual_kms": 6.684685929514132e-14,
+   "cond_j": 1032.4929249673976,
+   "class": "flyby_passive",
+   "energy_leg0": -8.216830418534801,
+   "energy_leg1": -8.216830418535109,
+   "h_leg0": 1263448.4322143844,
+   "h_leg1": 1263448.432214375,
+   "congruence_dE": -3.0730973321624333e-13,
+   "congruence_dh": -9.546056389808655e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 63.762695246003446,
+   "vinf_per_encounter_kms": [
+    1.3052628211155133,
+    2.1402135848137838,
+    1.3052628211154924
+   ],
+   "max_bend_deg_per_encounter": [
+    8.291818006207757,
+    3.2593276142482654,
+    8.291818006208004
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 226.71896414536795,
+   "tof0_days": 6.06351899097811,
+   "tof1_days": 6.800833725286726,
+   "residual_kms": 8.507071012819669e-13,
+   "cond_j": 32293.997452227784,
+   "class": "flyby_passive",
+   "energy_leg0": -7.9469692613403,
+   "energy_leg1": -7.946969261335337,
+   "h_leg0": 279825.6933281371,
+   "h_leg1": 279825.69332817406,
+   "congruence_dE": 4.9631410092843e-12,
+   "congruence_dh": 3.6961864680051804e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 116.4773546826592,
+   "vinf_per_encounter_kms": [
+    7.681525934446846,
+    6.296110495340845,
+    7.681525934447353
+   ],
+   "max_bend_deg_per_encounter": [
+    0.25726857737870185,
+    0.38628102929176966,
+    0.257268577378668
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 329.55609830645864,
+   "tof0_days": 3.497316668500994,
+   "tof1_days": 9.367036047763841,
+   "residual_kms": 1.2671964211362125e-13,
+   "cond_j": 387.1970748628971,
+   "class": "flyby_passive",
+   "energy_leg0": -10.775264246282276,
+   "energy_leg1": -10.775264246282658,
+   "h_leg0": 1191282.511441651,
+   "h_leg1": 1191282.5114416387,
+   "congruence_dE": -3.8191672047105385e-13,
+   "congruence_dh": -1.234002411365509e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 65.16621264937724,
+   "vinf_per_encounter_kms": [
+    0.8668091557777151,
+    1.4129219615491013,
+    0.8668091557776768
+   ],
+   "max_bend_deg_per_encounter": [
+    17.27378772729167,
+    7.216623215210221,
+    17.27378772729298
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 60.87339163190089,
+   "tof0_days": 3.821568229143972,
+   "tof1_days": 9.042784487120864,
+   "residual_kms": 1.1300491451641645e-11,
+   "cond_j": 20092.32571087752,
+   "class": "flyby_passive",
+   "energy_leg0": -10.404142297491777,
+   "energy_leg1": -10.404142297555918,
+   "h_leg0": 295814.0013922251,
+   "h_leg1": 295814.0013916472,
+   "congruence_dE": -6.414069275706424e-11,
+   "congruence_dh": -5.778856575489044e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 114.21846450377696,
+   "vinf_per_encounter_kms": [
+    7.291697288838334,
+    5.84512985288511,
+    7.291697288831825
+   ],
+   "max_bend_deg_per_encounter": [
+    0.28544178081903904,
+    0.44794579165965015,
+    0.28544178081954735
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 166.30679485586032,
+   "tof0_days": 2.748500277023567,
+   "tof1_days": 10.11585243924127,
+   "residual_kms": 1.0570139876522839e-11,
+   "cond_j": 10075.398553521653,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.34868301363424,
+   "energy_leg1": -12.348683013693805,
+   "h_leg0": 429321.0724157708,
+   "h_leg1": 429321.0724149587,
+   "congruence_dE": -5.95647975387692e-11,
+   "congruence_dh": -8.121132850646973e-07,
+   "required_turn_flyby_deg": 105.74579215949726,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.4478995705882864,
+    5.058750720842253,
+    6.447899570582676
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3647850230563373,
+    0.5972547770209233,
+    0.36478502305697014
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.71280835052941e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 329.90165112131484,
+   "tof0_days": 2.6344279992952244,
+   "tof1_days": 10.229924716969611,
+   "residual_kms": 6.663743196804369e-13,
+   "cond_j": 266.320044119677,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.545429525705945,
+   "energy_leg1": -11.545429525706458,
+   "h_leg0": 1155744.4679082143,
+   "h_leg1": 1155744.4679081722,
+   "congruence_dE": -5.133671265866724e-13,
+   "congruence_dh": -4.21423465013504e-08,
+   "required_turn_flyby_deg": 151.40236510914684,
+   "required_turn_anchor_deg": 122.04007160855005,
+   "vinf_per_encounter_kms": [
+    1.123316132423157,
+    1.3050841841410399,
+    1.1233161324237908
+   ],
+   "max_bend_deg_per_encounter": [
+    10.926039744073476,
+    8.369783092477691,
+    10.926039744062289
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.695497408282702e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 42.2360286230315,
+   "tof0_days": 0.9428213170692706,
+   "tof1_days": 11.921531399195565,
+   "residual_kms": 3.2072276482137113e-12,
+   "cond_j": 63.94618259714333,
+   "class": "flyby_passive",
+   "energy_leg0": -10.775264246288813,
+   "energy_leg1": -10.775264246282822,
+   "h_leg0": 1191282.5114414862,
+   "h_leg1": 1191282.511441631,
+   "congruence_dE": 5.991651619297045e-12,
+   "congruence_dh": 1.448206603527069e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 65.16621264928204,
+   "vinf_per_encounter_kms": [
+    0.8668091557756595,
+    1.412921961548959,
+    0.8668091557777386
+   ],
+   "max_bend_deg_per_encounter": [
+    17.27378772736183,
+    7.216623215211586,
+    17.273787727290873
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 7.406546313204006,
+   "tof0_days": 1.4009539558849364,
+   "tof1_days": 11.4633987603799,
+   "residual_kms": 3.005917306362836e-14,
+   "cond_j": 48.733762962338105,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.244378816237298,
+   "energy_leg1": -13.244378816237235,
+   "h_leg0": 1094120.9930817117,
+   "h_leg1": 1094120.9930817147,
+   "congruence_dE": 6.217248937900877e-14,
+   "congruence_dh": 3.026798367500305e-09,
+   "required_turn_flyby_deg": 71.85101774259785,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.1916698824509808,
+    0.6841456371726282,
+    1.1916698824509528
+   ],
+   "max_bend_deg_per_encounter": [
+    9.809773300277792,
+    25.732165776581056,
+    9.809773300278215
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.4999217594437966e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 232.01951143649129,
+   "tof0_days": 2.016576112597542,
+   "tof1_days": 10.847776603667294,
+   "residual_kms": 1.0680396276204772e-12,
+   "cond_j": 6542.957737230975,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.268810432293932,
+   "energy_leg1": -14.268810432286699,
+   "h_leg0": 486930.5700285241,
+   "h_leg1": 486930.5700286876,
+   "congruence_dE": 7.23332505003782e-12,
+   "congruence_dh": 1.6350531950592995e-07,
+   "required_turn_flyby_deg": 100.61436541390282,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.866059500300539,
+    4.44171899253838,
+    5.866059500300958
+   ],
+   "max_bend_deg_per_encounter": [
+    0.44044651207529784,
+    0.7735231410722343,
+    0.4404465120752351
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00011270590172068808,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 159.14766320043483,
+   "tof0_days": 2.6819505203086607,
+   "tof1_days": 10.182402195956175,
+   "residual_kms": 3.941074240291271e-12,
+   "cond_j": 12733.478051367876,
+   "class": "flyby_passive",
+   "energy_leg0": -12.591824138471967,
+   "energy_leg1": -12.591824138450823,
+   "h_leg0": 312889.57588872494,
+   "h_leg1": 312889.5758889266,
+   "congruence_dE": 2.114397545938118e-11,
+   "congruence_dh": 2.0168954506516457e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 111.92415596362402,
+   "vinf_per_encounter_kms": [
+    6.914339953118124,
+    5.402860613859758,
+    6.914339953120342
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3173599847461798,
+    0.5239350469921531,
+    0.3173599847459768
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 78.10819920640628,
+   "tof0_days": 2.190506998793976,
+   "tof1_days": 10.67384571747086,
+   "residual_kms": 2.452378874205588e-13,
+   "cond_j": 2169.75217798393,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.24437881623745,
+   "energy_leg1": -13.244378816237369,
+   "h_leg0": 1094120.9930817012,
+   "h_leg1": 1094120.993081712,
+   "congruence_dE": 8.171241461241152e-14,
+   "congruence_dh": 1.0710209608078003e-08,
+   "required_turn_flyby_deg": 71.85101774258271,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.1916698824511045,
+    0.6841456371726663,
+    1.1916698824509155
+   ],
+   "max_bend_deg_per_encounter": [
+    9.809773300275925,
+    25.73216577657879,
+    9.809773300278778
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.1261247415778326e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 145.09453196172015,
+   "tof0_days": 8.906116351380415,
+   "tof1_days": 3.9582363648844208,
+   "residual_kms": 8.62265274246159e-15,
+   "cond_j": 1020.6037487580084,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.678649880252298,
+   "energy_leg1": -9.678649880252284,
+   "h_leg0": 1172985.72105895,
+   "h_leg1": 1172985.7210589512,
+   "congruence_dE": 1.4210854715202004e-14,
+   "congruence_dh": 1.1641532182693481e-09,
+   "required_turn_flyby_deg": 166.54475441767747,
+   "required_turn_anchor_deg": 143.00556629584247,
+   "vinf_per_encounter_kms": [
+    2.000112207062037,
+    2.198115769119296,
+    2.000112207062044
+   ],
+   "max_bend_deg_per_encounter": [
+    3.6816599148579936,
+    3.094410642200781,
+    3.6816599148579687
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.739476285958445e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 296.62469178280764,
+   "tof0_days": 8.946796861349933,
+   "tof1_days": 3.9175558549149034,
+   "residual_kms": 9.52811795467412e-13,
+   "cond_j": 16184.101618509101,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.225149372083287,
+   "energy_leg1": -10.225149372087648,
+   "h_leg0": 387409.2558757543,
+   "h_leg1": 387409.25587574544,
+   "congruence_dE": -4.360956040727615e-12,
+   "congruence_dh": -8.847564458847046e-09,
+   "required_turn_flyby_deg": 109.96133444655445,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.945581489611105,
+    5.595439568016651,
+    6.945581489610514
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3145192181737302,
+    0.488641908831673,
+    0.3145192181737836
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.0001747133904963104,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 211.41835405032177,
+   "tof0_days": 7.056148898836632,
+   "tof1_days": 5.808203817428204,
+   "residual_kms": 1.2023259162213481e-14,
+   "cond_j": 1032.5006668215326,
+   "class": "flyby_passive",
+   "energy_leg0": -8.216830418534993,
+   "energy_leg1": -8.216830418534935,
+   "h_leg0": 1263448.432214378,
+   "h_leg1": 1263448.43221438,
+   "congruence_dE": 5.861977570020827e-14,
+   "congruence_dh": 2.0954757928848267e-09,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 63.76269524600542,
+   "vinf_per_encounter_kms": [
+    1.3052628211155124,
+    2.1402135848137607,
+    1.3052628211155115
+   ],
+   "max_bend_deg_per_encounter": [
+    8.291818006207766,
+    3.259327614248334,
+    8.291818006207778
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 133.28103585483169,
+   "tof0_days": 6.800833725284424,
+   "tof1_days": 6.063518990980412,
+   "residual_kms": 6.719966375579881e-13,
+   "cond_j": 32302.34114119244,
+   "class": "flyby_passive",
+   "energy_leg0": -7.9469692613423355,
+   "energy_leg1": -7.946969261338481,
+   "h_leg0": 279825.6933280994,
+   "h_leg1": 279825.69332812564,
+   "congruence_dE": 3.8546943414985435e-12,
+   "congruence_dh": 2.62516550719738e-08,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 116.47735468265363,
+   "vinf_per_encounter_kms": [
+    7.681525934446722,
+    6.296110495340482,
+    7.681525934447125
+   ],
+   "max_bend_deg_per_encounter": [
+    0.25726857737871006,
+    0.3862810292918142,
+    0.2572685773786832
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 323.66003484169875,
+   "tof0_days": 7.709424033848435,
+   "tof1_days": 5.154928682416401,
+   "residual_kms": 2.5011331388797805e-14,
+   "cond_j": 416.3324399031287,
+   "class": "flyby_passive",
+   "energy_leg0": -10.775264246282454,
+   "energy_leg1": -10.775264246282543,
+   "h_leg0": 1191282.511441645,
+   "h_leg1": 1191282.511441642,
+   "congruence_dE": -8.881784197001252e-14,
+   "congruence_dh": -3.026798367500305e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 65.1662126493828,
+   "vinf_per_encounter_kms": [
+    0.8668091557777117,
+    1.4129219615490478,
+    0.8668091557777143
+   ],
+   "max_bend_deg_per_encounter": [
+    17.27378772729179,
+    7.216623215210735,
+    17.2737877272917
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 36.33996515829954,
+   "tof0_days": 5.154928682416418,
+   "tof1_days": 7.709424033848418,
+   "residual_kms": 1.4398698088834183e-14,
+   "cond_j": 416.3309705094729,
+   "class": "flyby_passive",
+   "energy_leg0": -10.775264246282518,
+   "energy_leg1": -10.775264246282545,
+   "h_leg0": 1191282.5114416424,
+   "h_leg1": 1191282.5114416415,
+   "congruence_dE": -2.6645352591003757e-14,
+   "congruence_dh": -9.313225746154785e-10,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 65.16621264938539,
+   "vinf_per_encounter_kms": [
+    0.8668091557777198,
+    1.4129219615490367,
+    0.8668091557777133
+   ],
+   "max_bend_deg_per_encounter": [
+    17.273787727291516,
+    7.216623215210841,
+    17.273787727291737
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.9999999984276,
+   "tof0_days": 6.432176358149036,
+   "tof1_days": 6.4321763581158,
+   "residual_kms": 3.106459286042223e-11,
+   "cond_j": 393.61361571456877,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.54542952569123,
+   "energy_leg1": -11.5454295257213,
+   "h_leg0": 1155744.467908268,
+   "h_leg1": 1155744.4679081177,
+   "congruence_dE": -3.007016857736744e-11,
+   "congruence_dh": -1.5040859580039978e-07,
+   "required_turn_flyby_deg": 151.40236510914605,
+   "required_turn_anchor_deg": 122.04007160854816,
+   "vinf_per_encounter_kms": [
+    1.1233161324348804,
+    1.3050841841514027,
+    1.1233161324119951
+   ],
+   "max_bend_deg_per_encounter": [
+    10.926039743866507,
+    8.369783092354254,
+    10.92603974427054
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.7920890574230206e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 3.4924028113891836e-09,
+   "tof0_days": 6.432176358090426,
+   "tof1_days": 6.43217635817441,
+   "residual_kms": 5.543660912733673e-11,
+   "cond_j": 393.6131461033913,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.545429525743206,
+   "energy_leg1": -11.545429525669352,
+   "h_leg0": 1155744.4679076287,
+   "h_leg1": 1155744.4679087554,
+   "congruence_dE": 7.385381195490481e-11,
+   "congruence_dh": 1.1266674846410751e-06,
+   "required_turn_flyby_deg": 151.40236510914582,
+   "required_turn_anchor_deg": 122.0400716085486,
+   "vinf_per_encounter_kms": [
+    1.12331613240503,
+    1.3050841841616247,
+    1.1233161324418455
+   ],
+   "max_bend_deg_per_encounter": [
+    10.926039744393508,
+    8.369783092232492,
+    10.926039743743539
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.814595457064883e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999999967875,
+   "tof0_days": 6.432176358136116,
+   "tof1_days": 6.43217635812872,
+   "residual_kms": 9.312164235741092e-13,
+   "cond_j": 20125.483330023017,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -8.305955457926625,
+   "energy_leg1": -8.30595545793321,
+   "h_leg0": 931372.4213563505,
+   "h_leg1": 931372.4213561739,
+   "congruence_dE": -6.5849548036567285e-12,
+   "congruence_dh": -1.7660204321146011e-07,
+   "required_turn_flyby_deg": 146.16977564894464,
+   "required_turn_anchor_deg": 164.05389120527136,
+   "vinf_per_encounter_kms": [
+    4.548487300072014,
+    4.007075108724744,
+    4.5484873000716854
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7307154116703811,
+    0.9489694311861129,
+    0.7307154116704859
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.343250875801433e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 359.67377823499476,
+   "tof0_days": 4.363815093195457,
+   "tof1_days": 8.500537623069379,
+   "residual_kms": 5.826778926103322e-11,
+   "cond_j": 12188.78142994422,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.905777260726271,
+   "energy_leg1": -10.905777260300022,
+   "h_leg0": 858645.8265141953,
+   "h_leg1": 858645.8265267168,
+   "congruence_dE": 4.262492581119659e-10,
+   "congruence_dh": 1.2521515600383282e-05,
+   "required_turn_flyby_deg": 133.71130003499277,
+   "required_turn_anchor_deg": 153.63578726646114,
+   "vinf_per_encounter_kms": [
+    4.436886627688535,
+    3.661882905982862,
+    4.436886627703176
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7676881532779681,
+    1.134464676903058,
+    0.7676881532729355
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.493752354767659e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 143.09899071507115,
+   "tof0_days": 4.784855238967694,
+   "tof1_days": 8.079497477297142,
+   "residual_kms": 1.7553750672222349e-12,
+   "cond_j": 4973.7634546021945,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.692739781984951,
+   "energy_leg1": -12.692739781984423,
+   "h_leg0": 1120278.0005836515,
+   "h_leg1": 1120278.0005836259,
+   "congruence_dE": 5.275779813018744e-13,
+   "congruence_dh": -2.561137080192566e-08,
+   "required_turn_flyby_deg": 111.37025021247064,
+   "required_turn_anchor_deg": 138.28711335547465,
+   "vinf_per_encounter_kms": [
+    1.0069258743998675,
+    0.8082938986370102,
+    1.0069258744011258
+   ],
+   "max_bend_deg_per_encounter": [
+    13.298229796953414,
+    19.607834465250594,
+    13.298229796923895
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9119155001974906e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 88.53868214599957,
+   "tof0_days": 3.3408237203448845,
+   "tof1_days": 9.523528995919952,
+   "residual_kms": 6.496879435929395e-13,
+   "cond_j": 7466.926816829848,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.243268530627425,
+   "energy_leg1": -13.24326853062231,
+   "h_leg0": 786456.7611459666,
+   "h_leg1": 786456.7611461349,
+   "congruence_dE": 5.115907697472721e-12,
+   "congruence_dh": 1.6833655536174774e-07,
+   "required_turn_flyby_deg": 118.72204487831583,
+   "required_turn_anchor_deg": 142.98919955680455,
+   "vinf_per_encounter_kms": [
+    4.379135846226763,
+    3.3567719739787756,
+    4.379135846226822
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7879299388925514,
+    1.3475434277415304,
+    0.7879299388925304
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.0311251595548425e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 30.443901693527135,
+   "tof0_days": 9.367036047763989,
+   "tof1_days": 3.497316668500847,
+   "residual_kms": 1.990397979782739e-14,
+   "cond_j": 387.1952399011697,
+   "class": "flyby_passive",
+   "energy_leg0": -10.77526424628249,
+   "energy_leg1": -10.775264246282525,
+   "h_leg0": 1191282.5114416436,
+   "h_leg1": 1191282.5114416417,
+   "congruence_dE": -3.552713678800501e-14,
+   "congruence_dh": -1.862645149230957e-09,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 65.16621264938523,
+   "vinf_per_encounter_kms": [
+    0.8668091557777109,
+    1.412921961549037,
+    0.8668091557777308
+   ],
+   "max_bend_deg_per_encounter": [
+    17.27378772729182,
+    7.21662321521084,
+    17.27378772729114
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 299.1266083646465,
+   "tof0_days": 9.042784487160793,
+   "tof1_days": 3.8215682291040434,
+   "residual_kms": 4.034796216177848e-12,
+   "cond_j": 20094.93739821744,
+   "class": "flyby_passive",
+   "energy_leg0": -10.404142297530708,
+   "energy_leg1": -10.404142297552808,
+   "h_leg0": 295814.0013928416,
+   "h_leg1": 295814.0013926724,
+   "congruence_dE": -2.2099655438978516e-11,
+   "congruence_dh": -1.6915146261453629e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 114.21846450379944,
+   "vinf_per_encounter_kms": [
+    7.291697288830555,
+    5.845129852876599,
+    7.291697288828194
+   ],
+   "max_bend_deg_per_encounter": [
+    0.2854417808196466,
+    0.4479457916609495,
+    0.28544178081983096
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 193.6932051426961,
+   "tof0_days": 10.115852439257589,
+   "tof1_days": 2.7485002770072473,
+   "residual_kms": 1.5791545047220182e-12,
+   "cond_j": 10075.807867065887,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.348683013680837,
+   "energy_leg1": -12.348683013671122,
+   "h_leg0": 429321.07241645124,
+   "h_leg1": 429321.0724166087,
+   "congruence_dE": 9.71489555467997e-12,
+   "congruence_dh": 1.5745172277092934e-07,
+   "required_turn_flyby_deg": 105.74579215951196,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.447899570578015,
+    5.058750720832056,
+    6.447899570578818
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3647850230574958,
+    0.5972547770233186,
+    0.3647850230574053
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.0001577699307638183,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 30.098348878697404,
+   "tof0_days": 10.229924716969485,
+   "tof1_days": 2.634427999295351,
+   "residual_kms": 4.279089325837012e-13,
+   "cond_j": 266.31987050328735,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.545429525706421,
+   "energy_leg1": -11.545429525705801,
+   "h_leg0": 1155744.4679081757,
+   "h_leg1": 1155744.4679082148,
+   "congruence_dE": 6.199485369506874e-13,
+   "congruence_dh": 3.91155481338501e-08,
+   "required_turn_flyby_deg": 151.40236510914846,
+   "required_turn_anchor_deg": 122.04007160855092,
+   "vinf_per_encounter_kms": [
+    1.123316132423726,
+    1.305084184140981,
+    1.1233161324232983
+   ],
+   "max_bend_deg_per_encounter": [
+    10.926039744063434,
+    8.369783092478391,
+    10.926039744070986
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2092807702476717e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 0.3262217935264289,
+   "tof0_days": 8.500537622741186,
+   "tof1_days": 4.36381509352365,
+   "residual_kms": 6.462462136202064e-11,
+   "cond_j": 12189.123174446191,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.905777260586696,
+   "energy_leg1": -10.905777260140662,
+   "h_leg0": 858645.8265185764,
+   "h_leg1": 858645.8265311075,
+   "congruence_dE": 4.460343205892059e-10,
+   "congruence_dh": 1.2531178072094917e-05,
+   "required_turn_flyby_deg": 133.71130003581874,
+   "required_turn_anchor_deg": 153.6357872671017,
+   "vinf_per_encounter_kms": [
+    4.436886627691503,
+    3.6618829060053413,
+    4.436886627710539
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7676881532769482,
+    1.1344646768892668,
+    0.7676881532704047
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7675735460921103e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 216.9010092849204,
+   "tof0_days": 8.079497477297243,
+   "tof1_days": 4.784855238967593,
+   "residual_kms": 1.3963227312629443e-12,
+   "cond_j": 4973.592571903763,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.69273978198521,
+   "energy_leg1": -12.692739781984777,
+   "h_leg0": 1120278.000583662,
+   "h_leg1": 1120278.0005836417,
+   "congruence_dE": 4.334310688136611e-13,
+   "congruence_dh": -2.0256265997886658e-08,
+   "required_turn_flyby_deg": 111.37025021241571,
+   "required_turn_anchor_deg": 138.28711335543684,
+   "vinf_per_encounter_kms": [
+    1.006925874399313,
+    0.8082938986362285,
+    1.0069258744003198
+   ],
+   "max_bend_deg_per_encounter": [
+    13.298229796966421,
+    19.60783446528237,
+    13.298229796942804
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.60913672841409e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.00000000017806,
+   "tof0_days": 6.432176358130368,
+   "tof1_days": 6.432176358134468,
+   "residual_kms": 5.011863016223513e-13,
+   "cond_j": 10084.495665485947,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -13.24326853062992,
+   "energy_leg1": -13.243268530633843,
+   "h_leg0": 786456.7611458863,
+   "h_leg1": 786456.7611457577,
+   "congruence_dE": -3.923972258235153e-12,
+   "congruence_dh": -1.2852251529693604e-07,
+   "required_turn_flyby_deg": 118.7220448782637,
+   "required_turn_anchor_deg": 142.98919955677067,
+   "vinf_per_encounter_kms": [
+    4.379135846226722,
+    3.3567719739778097,
+    4.3791358462266725
+   ],
+   "max_bend_deg_per_encounter": [
+    0.787929938892566,
+    1.3475434277422969,
+    0.7879299388925837
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.9163908097378173e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 286.914006829623,
+   "tof0_days": 5.201408059174663,
+   "tof1_days": 7.662944657090173,
+   "residual_kms": 1.1917949579639697e-11,
+   "cond_j": 7258.103253159144,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -15.415467016177615,
+   "energy_leg1": -15.415467016072698,
+   "h_leg0": 710994.1931982852,
+   "h_leg1": 710994.1932021857,
+   "congruence_dE": 1.0491696400549699e-10,
+   "congruence_dh": 3.900495357811451e-06,
+   "required_turn_flyby_deg": 99.72314858689128,
+   "required_turn_anchor_deg": 131.8993387443253,
+   "vinf_per_encounter_kms": [
+    4.380318457034804,
+    3.093852075053181,
+    4.380318457033063
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7875074579876243,
+    1.58302300923467,
+    0.787507457988246
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.927154691913941e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 352.59345368679453,
+   "tof0_days": 11.463398760379865,
+   "tof1_days": 1.4009539558849706,
+   "residual_kms": 2.4586113856753457e-14,
+   "cond_j": 48.73385072977282,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.244378816237269,
+   "energy_leg1": -13.244378816237205,
+   "h_leg0": 1094120.9930817152,
+   "h_leg1": 1094120.9930817178,
+   "congruence_dE": 6.394884621840902e-14,
+   "congruence_dh": 2.561137080192566e-09,
+   "required_turn_flyby_deg": 71.85101774259205,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.1916698824509213,
+    0.684145637172589,
+    1.1916698824509013
+   ],
+   "max_bend_deg_per_encounter": [
+    9.80977330027869,
+    25.73216577658339,
+    9.809773300278993
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2177003462633986e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 127.98048856380919,
+   "tof0_days": 10.84777660366401,
+   "tof1_days": 2.0165761126008253,
+   "residual_kms": 9.638994918395214e-13,
+   "cond_j": 6542.843854469312,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -14.268810432290564,
+   "energy_leg1": -14.268810432284077,
+   "h_leg0": 486930.57002799364,
+   "h_leg1": 486930.57002814056,
+   "congruence_dE": 6.487255177489715e-12,
+   "congruence_dh": 1.4691613614559174e-07,
+   "required_turn_flyby_deg": 100.61436541389487,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.866059500303722,
+    4.441718992541133,
+    5.866059500304105
+   ],
+   "max_bend_deg_per_encounter": [
+    0.4404465120748217,
+    0.773523141071282,
+    0.4404465120747644
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00014796702871823573,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 200.85233679930815,
+   "tof0_days": 10.182402195959165,
+   "tof1_days": 2.681950520305671,
+   "residual_kms": 6.441524566792844e-12,
+   "cond_j": 12732.517187683736,
+   "class": "flyby_passive",
+   "energy_leg0": -12.591824138444167,
+   "energy_leg1": -12.59182413847918,
+   "h_leg0": 312889.5758891406,
+   "h_leg1": 312889.5758887898,
+   "congruence_dE": -3.5011993304578937e-11,
+   "congruence_dh": -3.5081757232546806e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 111.92415596363166,
+   "vinf_per_encounter_kms": [
+    6.91433995312041,
+    5.402860613860297,
+    6.914339953116811
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3173599847459706,
+    0.5239350469920491,
+    0.3173599847463
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 281.8918007935946,
+   "tof0_days": 10.673845717470863,
+   "tof1_days": 2.190506998793973,
+   "residual_kms": 2.2885240788748445e-13,
+   "cond_j": 2169.9519127013223,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.24437881623735,
+   "energy_leg1": -13.244378816237422,
+   "h_leg0": 1094120.9930817129,
+   "h_leg1": 1094120.993081703,
+   "congruence_dE": -7.105427357601002e-14,
+   "congruence_dh": -9.778887033462524e-09,
+   "required_turn_flyby_deg": 71.85101774258368,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.1916698824509073,
+    0.68414563717266,
+    1.191669882451082
+   ],
+   "max_bend_deg_per_encounter": [
+    9.8097733002789,
+    25.732165776579162,
+    9.809773300276262
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8271570696181215e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 271.46131785393555,
+   "tof0_days": 9.523528995920701,
+   "tof1_days": 3.340823720344135,
+   "residual_kms": 6.396666898222709e-13,
+   "cond_j": 7465.7973483272,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.24326853062404,
+   "energy_leg1": -13.243268530629399,
+   "h_leg0": 786456.7611460821,
+   "h_leg1": 786456.7611458987,
+   "congruence_dE": -5.359268584470556e-12,
+   "congruence_dh": -1.8335413187742233e-07,
+   "required_turn_flyby_deg": 118.7220448783021,
+   "required_turn_anchor_deg": 142.9891995567956,
+   "vinf_per_encounter_kms": [
+    4.379135846226775,
+    3.3567719739785367,
+    4.3791358462267596
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7879299388925473,
+    1.34754342774172,
+    0.7879299388925526
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.910024342550346e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 73.0859931750555,
+   "tof0_days": 7.662944657036355,
+   "tof1_days": 5.2014080592284815,
+   "residual_kms": 1.0503978160306394e-11,
+   "cond_j": 7258.579811511495,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -15.415467016147563,
+   "energy_leg1": -15.415467016060386,
+   "h_leg0": 710994.1931994641,
+   "h_leg1": 710994.1932025836,
+   "congruence_dE": 8.717648825040669e-11,
+   "congruence_dh": 3.1194649636745453e-06,
+   "required_turn_flyby_deg": 99.7231485871091,
+   "required_turn_anchor_deg": 131.8993387444394,
+   "vinf_per_encounter_kms": [
+    4.380318457033899,
+    3.0938520750549032,
+    4.380318457033252
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7875074579879475,
+    1.5830230092329318,
+    0.7875074579881784
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.5706243312454418e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 180.00000000216477,
+   "tof0_days": 6.432176358107494,
+   "tof1_days": 6.432176358157342,
+   "residual_kms": 9.845148217082935e-12,
+   "cond_j": 5567.64577699809,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -17.486986620135948,
+   "energy_leg1": -17.48698662003624,
+   "h_leg0": 626753.3439570405,
+   "h_leg1": 626753.3439615421,
+   "congruence_dE": 9.970690939553606e-11,
+   "congruence_dh": 4.501664079725742e-06,
+   "required_turn_flyby_deg": 74.10028968349093,
+   "required_turn_anchor_deg": 120.13079928956954,
+   "vinf_per_encounter_kms": [
+    4.461555695564177,
+    2.895748525322985,
+    4.461555695557411
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7592781115047557,
+    1.803518665946145,
+    0.7592781115070432
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.135398896444191e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 124.0057365975436,
+   "tof0_days": 6.656733763392535,
+   "tof1_days": 6.207618952872301,
+   "residual_kms": 5.200975036226348e-11,
+   "cond_j": 71054.20222164509,
+   "class": "flyby_passive",
+   "energy_leg0": -7.823145855105015,
+   "energy_leg1": -7.823145854773351,
+   "h_leg0": 353389.1925420867,
+   "h_leg1": 353389.19254604145,
+   "congruence_dE": 3.3166358548442076e-10,
+   "congruence_dh": 3.954744897782803e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 113.72599870871188,
+   "vinf_per_encounter_kms": [
+    6.1079377433023065,
+    7.4167595352280395,
+    6.1079377433452455
+   ],
+   "max_bend_deg_per_encounter": [
+    0.4103622294554669,
+    0.27591960147525374,
+    0.4103622294497179
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 235.99426343354918,
+   "tof0_days": 6.207618952655103,
+   "tof1_days": 6.656733763609733,
+   "residual_kms": 6.256112161885198e-13,
+   "cond_j": 71045.63025488326,
+   "class": "flyby_passive",
+   "energy_leg0": -7.823145854937971,
+   "energy_leg1": -7.823145854934353,
+   "h_leg0": 353389.19254814024,
+   "h_leg1": 353389.1925481736,
+   "congruence_dE": 3.61843888185831e-12,
+   "congruence_dh": 3.3352989703416824e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 113.72599870891878,
+   "vinf_per_encounter_kms": [
+    6.107937743312263,
+    7.416759535198037,
+    6.1079377433127755
+   ],
+   "max_bend_deg_per_encounter": [
+    0.41036222945413386,
+    0.27591960147748074,
+    0.4103622294540653
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.00000000003746,
+   "tof0_days": 6.43217635813215,
+   "tof1_days": 6.432176358132686,
+   "residual_kms": 2.8435583831733384e-14,
+   "cond_j": 20440.58032938427,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.681345863413943,
+   "energy_leg1": -7.681345863413547,
+   "h_leg0": 156895.02253337542,
+   "h_leg1": 156895.0225333876,
+   "congruence_dE": 3.9612757518625585e-13,
+   "congruence_dh": 1.2165401130914688e-08,
+   "required_turn_flyby_deg": 109.90933091187256,
+   "required_turn_anchor_deg": 104.62560948067497,
+   "vinf_per_encounter_kms": [
+    6.6698255150060275,
+    8.16278806099386,
+    6.669825515006055
+   ],
+   "max_bend_deg_per_encounter": [
+    0.3443328335181534,
+    0.22788525432817092,
+    0.3443328335181505
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.974733295313464e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 3.7093760064965155e-10,
+   "tof0_days": 6.432176358131752,
+   "tof1_days": 6.432176358133084,
+   "residual_kms": 1.710461311234931e-11,
+   "cond_j": 7197.6409710680955,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -7.461160256794875,
+   "energy_leg1": -7.461160256793541,
+   "h_leg0": 1187608.6888419127,
+   "h_leg1": 1187608.688840544,
+   "congruence_dE": 1.334043986389588e-12,
+   "congruence_dh": -1.3685785233974457e-06,
+   "required_turn_flyby_deg": 150.0851536794869,
+   "required_turn_anchor_deg": 172.14954266826672,
+   "vinf_per_encounter_kms": [
+    2.9586299591606764,
+    2.7552809661247233,
+    2.95862995916924
+   ],
+   "max_bend_deg_per_encounter": [
+    1.7288093969774598,
+    1.969777853038256,
+    1.7288093969676015
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4393373266677915e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 183.50452463744972,
+   "tof0_days": 5.808203817428321,
+   "tof1_days": 7.056148898836515,
+   "residual_kms": 5.0472550777541736e-14,
+   "cond_j": 2532.7121228914853,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.216830418534851,
+   "energy_leg1": -8.216830418535054,
+   "h_leg0": 1263448.4322143823,
+   "h_leg1": 1263448.4322143765,
+   "congruence_dE": -2.0250467969162855e-13,
+   "congruence_dh": -5.820766091346741e-09,
+   "required_turn_flyby_deg": 63.76269524600446,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.1402135848137784,
+    1.3052628211155175,
+    2.140213584813732
+   ],
+   "max_bend_deg_per_encounter": [
+    3.2593276142482814,
+    8.291818006207707,
+    3.259327614248419
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.830474753205133e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 353.3684622071646,
+   "tof0_days": 3.9582363648843564,
+   "tof1_days": 8.90611635138048,
+   "residual_kms": 4.4703264848902573e-14,
+   "cond_j": 3296.4107132822314,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.67864988025234,
+   "energy_leg1": -9.678649880252259,
+   "h_leg0": 1172985.721058948,
+   "h_leg1": 1172985.7210589533,
+   "congruence_dE": 8.171241461241152e-14,
+   "congruence_dh": 5.3551048040390015e-09,
+   "required_turn_flyby_deg": 143.00556629584227,
+   "required_turn_anchor_deg": 166.5447544176775,
+   "vinf_per_encounter_kms": [
+    2.198115769119294,
+    2.000112207062054,
+    2.198115769119284
+   ],
+   "max_bend_deg_per_encounter": [
+    3.0944106422007867,
+    3.6816599148579345,
+    3.0944106422008133
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4527981715326812e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 204.11513415945305,
+   "tof0_days": 3.917555855006758,
+   "tof1_days": 8.946796861258079,
+   "residual_kms": 3.2305413700047396e-11,
+   "cond_j": 42942.58095470204,
+   "class": "flyby_passive",
+   "energy_leg0": -10.225149371953886,
+   "energy_leg1": -10.225149372147229,
+   "h_leg0": 387409.255873546,
+   "h_leg1": 387409.25587112794,
+   "congruence_dE": -1.9334223111400206e-10,
+   "congruence_dh": -2.418062649667263e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 109.96133444647677,
+   "vinf_per_encounter_kms": [
+    5.595439568046707,
+    6.945581489638909,
+    5.595439568019742
+   ],
+   "max_bend_deg_per_encounter": [
+    0.4886419088264458,
+    0.31451921817121903,
+    0.4886419088311354
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 247.35220626784428,
+   "tof0_days": 6.063518990982215,
+   "tof1_days": 6.800833725282621,
+   "residual_kms": 5.115553030601543e-13,
+   "cond_j": 88007.66201366553,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.946969261337044,
+   "energy_leg1": -7.94696926134521,
+   "h_leg0": 279825.6933281562,
+   "h_leg1": 279825.69332774245,
+   "congruence_dE": -8.165912390722951e-12,
+   "congruence_dh": -4.1374005377292633e-07,
+   "required_turn_flyby_deg": 116.47735468264342,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.296110495340625,
+    7.681525934447689,
+    6.296110495340482
+   ],
+   "max_bend_deg_per_encounter": [
+    0.38628102929179664,
+    0.25726857737864545,
+    0.3862810292918142
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.235763618682964e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 182.4563655847789,
+   "tof0_days": 2.634427999294975,
+   "tof1_days": 10.229924716969862,
+   "residual_kms": 9.53499970250244e-15,
+   "cond_j": 1114.0715324945509,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.545429525706346,
+   "energy_leg1": -11.545429525706258,
+   "h_leg0": 1155744.46790819,
+   "h_leg1": 1155744.4679081936,
+   "congruence_dE": 8.881784197001252e-14,
+   "congruence_dh": 3.4924596548080444e-09,
+   "required_turn_flyby_deg": 122.0400716085473,
+   "required_turn_anchor_deg": 151.40236510914508,
+   "vinf_per_encounter_kms": [
+    1.3050841841408787,
+    1.1233161324234133,
+    1.3050841841408702
+   ],
+   "max_bend_deg_per_encounter": [
+    8.369783092479611,
+    10.926039744068953,
+    8.369783092479713
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.948078619550603e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 206.98551202814429,
+   "tof0_days": 3.82156822912927,
+   "tof1_days": 9.042784487135567,
+   "residual_kms": 5.4014406839798106e-12,
+   "cond_j": 55078.00270332599,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.404142297514248,
+   "energy_leg1": -10.404142297546073,
+   "h_leg0": 295814.00139239425,
+   "h_leg1": 295814.001392064,
+   "congruence_dE": -3.182520913469489e-11,
+   "congruence_dh": -3.3027026802301407e-07,
+   "required_turn_flyby_deg": 114.21846450378509,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.845129852880758,
+    7.291697288834584,
+    5.845129852876306
+   ],
+   "max_bend_deg_per_encounter": [
+    0.44794579166031456,
+    0.2854417808193319,
+    0.4479457916609943
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00010807897903837923,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 133.81612935033,
+   "tof0_days": 3.497316668501926,
+   "tof1_days": 9.36703604776291,
+   "residual_kms": 9.822516052423433e-13,
+   "cond_j": 857.5112404157285,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246280818,
+   "energy_leg1": -10.775264246283442,
+   "h_leg0": 1191282.511441699,
+   "h_leg1": 1191282.511441621,
+   "congruence_dE": -2.62367905179417e-12,
+   "congruence_dh": -7.799826562404633e-08,
+   "required_turn_flyby_deg": 65.16621264933521,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.4129219615495359,
+    0.8668091557777983,
+    1.4129219615486508
+   ],
+   "max_bend_deg_per_encounter": [
+    7.216623215206056,
+    17.273787727288834,
+    7.216623215214539
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7734326095774718e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 12.477041966767509,
+   "tof0_days": 2.748500277004293,
+   "tof1_days": 10.115852439260543,
+   "residual_kms": 1.2082628535877545e-12,
+   "cond_j": 26332.121147406204,
+   "class": "flyby_passive",
+   "energy_leg0": -12.348683013677789,
+   "energy_leg1": -12.348683013685584,
+   "h_leg0": 429321.07241676457,
+   "h_leg1": 429321.07241662574,
+   "congruence_dE": -7.794653811288299e-12,
+   "congruence_dh": -1.3882527127861977e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 105.74579215950031,
+   "vinf_per_encounter_kms": [
+    5.058750720830197,
+    6.447899570577085,
+    5.058750720829141
+   ],
+   "max_bend_deg_per_encounter": [
+    0.5972547770237554,
+    0.36478502305760074,
+    0.5972547770240033
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    2
+   ],
+   "beta_deg": 349.46762563678465,
+   "tof0_days": 0.9428213170688572,
+   "tof1_days": 11.92153139919598,
+   "residual_kms": 2.61515855536846e-14,
+   "cond_j": 49.239360614571,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246282545,
+   "energy_leg1": -10.775264246282454,
+   "h_leg0": 1191282.5114416417,
+   "h_leg1": 1191282.5114416447,
+   "congruence_dE": 9.059419880941277e-14,
+   "congruence_dh": 3.026798367500305e-09,
+   "required_turn_flyby_deg": 65.16621264938293,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.4129219615490227,
+    0.866809155777714,
+    1.4129219615490487
+   ],
+   "max_bend_deg_per_encounter": [
+    7.216623215210973,
+    17.273787727291715,
+    7.216623215210727
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.222497920052602e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 288.9970942028087,
+   "tof0_days": 1.4009539558855837,
+   "tof1_days": 11.463398760379253,
+   "residual_kms": 7.421305468885744e-13,
+   "cond_j": 64.81096282445543,
+   "class": "flyby_passive",
+   "energy_leg0": -13.244378816235336,
+   "energy_leg1": -13.24437881623707,
+   "h_leg0": 1094120.9930818493,
+   "h_leg1": 1094120.9930817606,
+   "congruence_dE": -1.7337242752546445e-12,
+   "congruence_dh": -8.870847523212433e-08,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 71.85101774251221,
+   "vinf_per_encounter_kms": [
+    0.6841456371719552,
+    1.1916698824499892,
+    0.6841456371716997
+   ],
+   "max_bend_deg_per_encounter": [
+    25.732165776621088,
+    9.80977330029276,
+    25.732165776636283
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 9.042607995948996,
+   "tof0_days": 2.681950520321075,
+   "tof1_days": 10.18240219594376,
+   "residual_kms": 3.1422121943906716e-12,
+   "cond_j": 35228.351012518215,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.591824138442057,
+   "energy_leg1": -12.591824138460279,
+   "h_leg0": 312889.5758884604,
+   "h_leg1": 312889.5758882362,
+   "congruence_dE": -1.822186845856777e-11,
+   "congruence_dh": -2.2415770217776299e-07,
+   "required_turn_flyby_deg": 111.92415596361286,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.402860613862896,
+    6.914339953123553,
+    5.402860613860253
+   ],
+   "max_bend_deg_per_encounter": [
+    0.5239350469915472,
+    0.3173599847456828,
+    0.5239350469920575
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00013993247108925582,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 315.5085570854616,
+   "tof0_days": 2.190506998793984,
+   "tof1_days": 10.673845717470853,
+   "residual_kms": 5.037939600321159e-13,
+   "cond_j": 9102.606426220678,
+   "class": "flyby_passive",
+   "energy_leg0": -13.244378816237404,
+   "energy_leg1": -13.24437881623729,
+   "h_leg0": 1094120.9930817033,
+   "h_leg1": 1094120.9930817229,
+   "congruence_dE": 1.1368683772161603e-13,
+   "congruence_dh": 1.955777406692505e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 71.85101774257151,
+   "vinf_per_encounter_kms": [
+    0.6841456371726774,
+    1.191669882451094,
+    0.684145637172343
+   ],
+   "max_bend_deg_per_encounter": [
+    25.732165776578128,
+    9.809773300276085,
+    25.732165776598023
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    3
+   ],
+   "beta_deg": 119.15454006068106,
+   "tof0_days": 2.016576112607741,
+   "tof1_days": 10.847776603657096,
+   "residual_kms": 6.0373260879981686e-12,
+   "cond_j": 16631.534107984124,
+   "class": "flyby_passive",
+   "energy_leg0": -14.268810432263287,
+   "energy_leg1": -14.268810432301883,
+   "h_leg0": 486930.5700273503,
+   "h_leg1": 486930.5700265345,
+   "congruence_dE": -3.859668140648864e-11,
+   "congruence_dh": -8.157803677022457e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 100.61436541387117,
+   "vinf_per_encounter_kms": [
+    4.441718992548934,
+    5.866059500311537,
+    4.44171899254347
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7735231410685829,
+    0.4404465120736526,
+    0.7735231410704733
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 176.49547536253263,
+   "tof0_days": 7.056148898836638,
+   "tof1_days": 5.808203817428198,
+   "residual_kms": 2.081542342093095e-14,
+   "cond_j": 2532.706815915616,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -8.216830418534984,
+   "energy_leg1": -8.216830418534872,
+   "h_leg0": 1263448.4322143781,
+   "h_leg1": 1263448.4322143819,
+   "congruence_dE": 1.1191048088221578e-13,
+   "congruence_dh": 3.725290298461914e-09,
+   "required_turn_flyby_deg": 63.76269524600525,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.1402135848137522,
+    1.3052628211155177,
+    2.1402135848137727
+   ],
+   "max_bend_deg_per_encounter": [
+    3.2593276142483587,
+    8.291818006207706,
+    3.259327614248298
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.2655400391143378e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 6.631537792845615,
+   "tof0_days": 8.906116351380389,
+   "tof1_days": 3.9582363648844474,
+   "residual_kms": 3.913280250966303e-14,
+   "cond_j": 3296.4157171340917,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.678649880252298,
+   "energy_leg1": -9.678649880252223,
+   "h_leg0": 1172985.7210589491,
+   "h_leg1": 1172985.7210589533,
+   "congruence_dE": 7.460698725481052e-14,
+   "congruence_dh": 4.190951585769653e-09,
+   "required_turn_flyby_deg": 143.00556629584244,
+   "required_turn_anchor_deg": 166.54475441767767,
+   "vinf_per_encounter_kms": [
+    2.1981157691193043,
+    2.0001122070620654,
+    2.198115769119298
+   ],
+   "max_bend_deg_per_encounter": [
+    3.094410642200758,
+    3.6816599148578932,
+    3.094410642200775
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.4962446010659553e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 155.88486583393524,
+   "tof0_days": 8.946796861304122,
+   "tof1_days": 3.917555854960714,
+   "residual_kms": 1.666515315102055e-11,
+   "cond_j": 42954.167571773956,
+   "class": "flyby_passive",
+   "energy_leg0": -10.22514937211956,
+   "energy_leg1": -10.22514937202094,
+   "h_leg0": 387409.25587346294,
+   "h_leg1": 387409.2558746594,
+   "congruence_dE": 9.86197790098231e-11,
+   "congruence_dh": 1.1964584700763226e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 109.96133444651075,
+   "vinf_per_encounter_kms": [
+    5.595439568017358,
+    6.9455814896246295,
+    5.595439568031232
+   ],
+   "max_bend_deg_per_encounter": [
+    0.48864190883154995,
+    0.31451921817250866,
+    0.48864190882913733
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 112.64779373939454,
+   "tof0_days": 6.800833725231953,
+   "tof1_days": 6.0635189910328835,
+   "residual_kms": 1.526948656943753e-11,
+   "cond_j": 87990.51488575345,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -7.9469692613770775,
+   "energy_leg1": -7.946969261297049,
+   "h_leg0": 279825.6933275806,
+   "h_leg1": 279825.69332783815,
+   "congruence_dE": 8.002842832866008e-11,
+   "congruence_dh": 2.575688995420933e-07,
+   "required_turn_flyby_deg": 116.47735468263457,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    6.296110495335871,
+    7.6815259344535995,
+    6.296110495347864
+   ],
+   "max_bend_deg_per_encounter": [
+    0.386281029292378,
+    0.25726857737825043,
+    0.3862810292909114
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.00024284356688353764,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 252.17425186215436,
+   "tof0_days": 7.709424033821342,
+   "tof1_days": 5.154928682443495,
+   "residual_kms": 2.5607336471393874e-11,
+   "cond_j": 832.4904910525133,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246313055,
+   "energy_leg1": -10.77526424621627,
+   "h_leg0": 1191282.5114400368,
+   "h_leg1": 1191282.5114437921,
+   "congruence_dE": 9.678480239472265e-11,
+   "congruence_dh": 3.7553254514932632e-06,
+   "required_turn_flyby_deg": 65.16621265142285,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.4129219615473598,
+    0.8668091557959301,
+    1.4129219615692192
+   ],
+   "max_bend_deg_per_encounter": [
+    7.216623215226914,
+    17.273787726670005,
+    7.216623215017392
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.6562304592910695e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 107.82574814611749,
+   "tof0_days": 5.154928682389811,
+   "tof1_days": 7.709424033875025,
+   "residual_kms": 4.5649027084034893e-11,
+   "cond_j": 832.4960198580108,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246325717,
+   "energy_leg1": -10.775264246265209,
+   "h_leg0": 1191282.5114408515,
+   "h_leg1": 1191282.5114419076,
+   "congruence_dE": 6.050804302049073e-11,
+   "congruence_dh": 1.0561197996139526e-06,
+   "required_turn_flyby_deg": 65.1662126484442,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.4129219615282813,
+    0.8668091557888641,
+    1.4129219615579922
+   ],
+   "max_bend_deg_per_encounter": [
+    7.21662321540978,
+    17.273787726911163,
+    7.216623215125002
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.539079119086685e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.9999999626503,
+   "tof0_days": 6.432176358393811,
+   "tof1_days": 6.432176357871025,
+   "residual_kms": 7.090771294483164e-11,
+   "cond_j": 54667.191389844025,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -8.30595545769472,
+   "energy_leg1": -8.305955458164568,
+   "h_leg0": 931372.4213622139,
+   "h_leg1": 931372.4213503259,
+   "congruence_dE": -4.698481603782056e-10,
+   "congruence_dh": -1.1887983419001102e-05,
+   "required_turn_flyby_deg": 164.05389120527252,
+   "required_turn_anchor_deg": 146.1697756489458,
+   "vinf_per_encounter_kms": [
+    4.00707510875694,
+    4.548487300085805,
+    4.007075108691746
+   ],
+   "max_bend_deg_per_encounter": [
+    0.9489694311709894,
+    0.7307154116659783,
+    0.9489694312016131
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.1575192506404276e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 3.524291969370097e-12,
+   "tof0_days": 6.432176358132391,
+   "tof1_days": 6.432176358132445,
+   "residual_kms": 2.4231364644140748e-14,
+   "cond_j": 1488.7079094946498,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -11.545429525706323,
+   "energy_leg1": -11.545429525706261,
+   "h_leg0": 1155744.4679081908,
+   "h_leg1": 1155744.4679081924,
+   "congruence_dE": 6.217248937900877e-14,
+   "congruence_dh": 1.6298145055770874e-09,
+   "required_turn_flyby_deg": 122.04007160854873,
+   "required_turn_anchor_deg": 151.4023651091456,
+   "vinf_per_encounter_kms": [
+    1.305084184140891,
+    1.1233161324234395,
+    1.3050841841409124
+   ],
+   "max_bend_deg_per_encounter": [
+    8.369783092479466,
+    10.926039744068492,
+    8.369783092479212
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.128160091223619e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 115.43709282380259,
+   "tof0_days": 4.363815093347979,
+   "tof1_days": 8.500537622916857,
+   "residual_kms": 3.2044941037180155e-12,
+   "cond_j": 33192.06812102692,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.905777260454332,
+   "energy_leg1": -10.90577726042985,
+   "h_leg0": 858645.8265221704,
+   "h_leg1": 858645.8265229127,
+   "congruence_dE": 2.4481749960614252e-11,
+   "congruence_dh": 7.422640919685364e-07,
+   "required_turn_flyby_deg": 153.6357872667657,
+   "required_turn_anchor_deg": 133.71130003538545,
+   "vinf_per_encounter_kms": [
+    3.6618829059625093,
+    4.436886627698652,
+    3.661882905965639
+   ],
+   "max_bend_deg_per_encounter": [
+    1.134464676915544,
+    0.7676881532744909,
+    1.1344646769136242
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.649561683307439e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 235.29727165143728,
+   "tof0_days": 4.7848552389676415,
+   "tof1_days": 8.079497477297195,
+   "residual_kms": 5.5114047386851224e-14,
+   "cond_j": 7346.829588792037,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.692739781984844,
+   "energy_leg1": -12.69273978198476,
+   "h_leg0": 1120278.000583648,
+   "h_leg1": 1120278.000583649,
+   "congruence_dE": 8.526512829121202e-14,
+   "congruence_dh": 9.313225746154785e-10,
+   "required_turn_flyby_deg": 138.287113355452,
+   "required_turn_anchor_deg": 111.37025021244058,
+   "vinf_per_encounter_kms": [
+    0.8082938986360076,
+    1.0069258744001375,
+    0.8082938986360403
+   ],
+   "max_bend_deg_per_encounter": [
+    19.60783446529135,
+    13.298229796947078,
+    19.607834465290022
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 8.885343146707018e-07,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    3
+   ],
+   "beta_deg": 261.55740670200214,
+   "tof0_days": 3.340823720345067,
+   "tof1_days": 9.523528995919769,
+   "residual_kms": 2.484332842392658e-13,
+   "cond_j": 20366.078034277816,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.243268530626773,
+   "energy_leg1": -13.243268530624817,
+   "h_leg0": 786456.7611459887,
+   "h_leg1": 786456.761146053,
+   "congruence_dE": 1.9557688801796758e-12,
+   "congruence_dh": 6.426125764846802e-08,
+   "required_turn_flyby_deg": 142.98919955680012,
+   "required_turn_anchor_deg": 118.72204487830899,
+   "vinf_per_encounter_kms": [
+    3.3567719739782094,
+    4.379135846226789,
+    3.3567719739784567
+   ],
+   "max_bend_deg_per_encounter": [
+    1.3475434277419798,
+    0.7879299388925421,
+    1.3475434277417835
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.2953051348627355e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 177.5436344152233,
+   "tof0_days": 10.229924716969842,
+   "tof1_days": 2.634427999294994,
+   "residual_kms": 1.2817187035862264e-14,
+   "cond_j": 1114.0735806233865,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.545429525706329,
+   "energy_leg1": -11.545429525706236,
+   "h_leg0": 1155744.4679081917,
+   "h_leg1": 1155744.4679081938,
+   "congruence_dE": 9.237055564881302e-14,
+   "congruence_dh": 2.0954757928848267e-09,
+   "required_turn_flyby_deg": 122.04007160854732,
+   "required_turn_anchor_deg": 151.4023651091455,
+   "vinf_per_encounter_kms": [
+    1.3050841841408736,
+    1.123316132423421,
+    1.305084184140886
+   ],
+   "max_bend_deg_per_encounter": [
+    8.369783092479672,
+    10.926039744068815,
+    8.369783092479524
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.8075718694450336e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 153.0144879723227,
+   "tof0_days": 9.042784487132284,
+   "tof1_days": 3.821568229132552,
+   "residual_kms": 6.62385160919286e-12,
+   "cond_j": 55104.660236644435,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.404142297549171,
+   "energy_leg1": -10.404142297509207,
+   "h_leg0": 295814.0013919148,
+   "h_leg1": 295814.0013923634,
+   "congruence_dE": 3.9964476172826835e-11,
+   "congruence_dh": 4.486064426600933e-07,
+   "required_turn_flyby_deg": 114.21846450378123,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.845129852876223,
+    7.291697288835397,
+    5.845129852881713
+   ],
+   "max_bend_deg_per_encounter": [
+    0.44794579166100695,
+    0.28544178081926846,
+    0.44794579166016874
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.0003542211178533785,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 226.18387064939003,
+   "tof0_days": 9.367036047764836,
+   "tof1_days": 3.4973166685,
+   "residual_kms": 6.444499915395026e-13,
+   "cond_j": 857.5057616376886,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246281711,
+   "energy_leg1": -10.775264246283953,
+   "h_leg0": 1191282.511441666,
+   "h_leg1": 1191282.51144159,
+   "congruence_dE": -2.241762331323116e-12,
+   "congruence_dh": -7.59027898311615e-08,
+   "required_turn_flyby_deg": 65.16621264942931,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.4129219615493134,
+    0.866809155777873,
+    1.412921961548672
+   ],
+   "max_bend_deg_per_encounter": [
+    7.216623215208188,
+    17.273787727286287,
+    7.216623215214336
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.5964989572880423e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 347.52295803382185,
+   "tof0_days": 10.115852439256468,
+   "tof1_days": 2.748500277008368,
+   "residual_kms": 2.675332137557351e-12,
+   "cond_j": 26336.647715536885,
+   "class": "flyby_passive",
+   "energy_leg0": -12.348683013684894,
+   "energy_leg1": -12.348683013668591,
+   "h_leg0": 429321.0724162849,
+   "h_leg1": 429321.0724165494,
+   "congruence_dE": 1.63034030720155e-11,
+   "congruence_dh": 2.644956111907959e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 105.74579215950392,
+   "vinf_per_encounter_kms": [
+    5.0587507208304565,
+    6.447899570579476,
+    5.058750720832763
+   ],
+   "max_bend_deg_per_encounter": [
+    0.5972547770236944,
+    0.36478502305733107,
+    0.5972547770231525
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    0
+   ],
+   "beta_deg": 10.53237436321325,
+   "tof0_days": 11.921531399195999,
+   "tof1_days": 0.9428213170688373,
+   "residual_kms": 7.986509535947255e-14,
+   "cond_j": 49.239438796264594,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.775264246282454,
+   "energy_leg1": -10.775264246282308,
+   "h_leg0": 1191282.5114416445,
+   "h_leg1": 1191282.5114416478,
+   "congruence_dE": 1.4566126083082054e-13,
+   "congruence_dh": 3.259629011154175e-09,
+   "required_turn_flyby_deg": 65.16621264938708,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.412921961549052,
+    0.8668091557777781,
+    1.4129219615491113
+   ],
+   "max_bend_deg_per_encounter": [
+    7.216623215210693,
+    17.273787727289527,
+    7.216623215210124
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.827478419848783e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 244.56290717682901,
+   "tof0_days": 8.50053762291243,
+   "tof1_days": 4.363815093352406,
+   "residual_kms": 1.4779160800598214e-12,
+   "cond_j": 33181.24316636008,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -10.905777260436821,
+   "energy_leg1": -10.905777260447547,
+   "h_leg0": 858645.8265226955,
+   "h_leg1": 858645.8265223822,
+   "congruence_dE": -1.0725642596298712e-11,
+   "congruence_dh": -3.132736310362816e-07,
+   "required_turn_flyby_deg": 153.63578726676528,
+   "required_turn_anchor_deg": 133.7113000353849,
+   "vinf_per_encounter_kms": [
+    3.6618829059647764,
+    4.436886627698495,
+    3.661882905963348
+   ],
+   "max_bend_deg_per_encounter": [
+    1.1344646769141533,
+    0.7676881532745446,
+    1.1344646769150295
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.463430641031567e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 124.70272834856138,
+   "tof0_days": 8.0794974772972,
+   "tof1_days": 4.784855238967635,
+   "residual_kms": 3.608139427249938e-14,
+   "cond_j": 7346.667992936226,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.692739781984853,
+   "energy_leg1": -12.69273978198478,
+   "h_leg0": 1120278.0005836468,
+   "h_leg1": 1120278.0005836482,
+   "congruence_dE": 7.283063041541027e-14,
+   "congruence_dh": 1.3969838619232178e-09,
+   "required_turn_flyby_deg": 138.28711335545273,
+   "required_turn_anchor_deg": 111.3702502124406,
+   "vinf_per_encounter_kms": [
+    0.8082938986360233,
+    1.0069258744001353,
+    0.8082938986360408
+   ],
+   "max_bend_deg_per_encounter": [
+    19.60783446529071,
+    13.298229796947135,
+    19.60783446529
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.3601127062426943e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.0000000048634,
+   "tof0_days": 6.43217635809823,
+   "tof1_days": 6.432176358166606,
+   "residual_kms": 9.035827398684145e-12,
+   "cond_j": 27471.667740608766,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -13.243268530673177,
+   "energy_leg1": -13.243268530575897,
+   "h_leg0": 786456.7611440511,
+   "h_leg1": 786456.7611480725,
+   "congruence_dE": 9.728040595291532e-11,
+   "congruence_dh": 4.021450877189636e-06,
+   "required_turn_flyby_deg": 142.98919955680614,
+   "required_turn_anchor_deg": 118.7220448783183,
+   "vinf_per_encounter_kms": [
+    3.3567719739745145,
+    4.379135846228937,
+    3.35677197398247
+   ],
+   "max_bend_deg_per_encounter": [
+    1.3475434277449116,
+    0.7879299388917743,
+    1.347543427738599
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.1391819678731964e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 355.79840347766424,
+   "tof0_days": 5.201408059241078,
+   "tof1_days": 7.6629446570237585,
+   "residual_kms": 1.5799523135349272e-11,
+   "cond_j": 19738.709454017193,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -15.415467016033915,
+   "energy_leg1": -15.415467016166499,
+   "h_leg0": 710994.1932035533,
+   "h_leg1": 710994.1931987756,
+   "congruence_dE": -1.325837217791559e-10,
+   "congruence_dh": -4.777684807777405e-06,
+   "required_turn_flyby_deg": 131.89933874445975,
+   "required_turn_anchor_deg": 99.72314858714786,
+   "vinf_per_encounter_kms": [
+    3.09385207505796,
+    4.380318457034112,
+    3.0938520750422063
+   ],
+   "max_bend_deg_per_encounter": [
+    1.5830230092298467,
+    0.7875074579878714,
+    1.5830230092457462
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.8030717097439725e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 71.00290579718208,
+   "tof0_days": 11.463398760380503,
+   "tof1_days": 1.400953955884333,
+   "residual_kms": 7.049912010249977e-13,
+   "cond_j": 64.81089371340839,
+   "class": "flyby_passive",
+   "energy_leg0": -13.244378816237376,
+   "energy_leg1": -13.244378816239053,
+   "h_leg0": 1094120.993081674,
+   "h_leg1": 1094120.9930815895,
+   "congruence_dE": -1.6768808563938364e-12,
+   "congruence_dh": -8.451752364635468e-08,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 71.85101774267294,
+   "vinf_per_encounter_kms": [
+    0.6841456371734712,
+    1.19166988245247,
+    0.6841456371731832
+   ],
+   "max_bend_deg_per_encounter": [
+    25.732165776530923,
+    9.809773300255316,
+    25.73216577654805
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 350.95739200974634,
+   "tof0_days": 10.182402195903636,
+   "tof1_days": 2.6819505203612,
+   "residual_kms": 2.5833436102838702e-11,
+   "cond_j": 35237.718823498326,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.591824138492722,
+   "energy_leg1": -12.591824138345348,
+   "h_leg0": 312889.57588588924,
+   "h_leg1": 312889.57588762086,
+   "congruence_dE": 1.4737366882400238e-10,
+   "congruence_dh": 1.731619704514742e-06,
+   "required_turn_flyby_deg": 111.92415596357245,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    5.402860613861869,
+    6.914339953141044,
+    5.402860613883523
+   ],
+   "max_bend_deg_per_encounter": [
+    0.5239350469917455,
+    0.3173599847440816,
+    0.5239350469875651
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 0.0003230985730473833,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 44.49144291453674,
+   "tof0_days": 10.67384571747089,
+   "tof1_days": 2.1905069987939463,
+   "residual_kms": 1.0554866647229347e-12,
+   "cond_j": 9103.532900150178,
+   "class": "flyby_passive",
+   "energy_leg0": -13.244378816237715,
+   "energy_leg1": -13.244378816237415,
+   "h_leg0": 1094120.9930816605,
+   "h_leg1": 1094120.9930817042,
+   "congruence_dE": 3.0020430585864233e-13,
+   "congruence_dh": 4.377216100692749e-08,
+   "required_turn_flyby_deg": 8.537736462515939e-07,
+   "required_turn_anchor_deg": 71.8510177426468,
+   "vinf_per_encounter_kms": [
+    0.6841456371733191,
+    1.1916698824518686,
+    0.6841456371726377
+   ],
+   "max_bend_deg_per_encounter": [
+    25.73216577653997,
+    9.809773300264395,
+    25.7321657765805
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    0
+   ],
+   "beta_deg": 240.84545993780063,
+   "tof0_days": 10.847776603667407,
+   "tof1_days": 2.016576112597429,
+   "residual_kms": 1.2746502215226593e-12,
+   "cond_j": 16638.041124569474,
+   "class": "flyby_passive",
+   "energy_leg0": -14.268810432286484,
+   "energy_leg1": -14.26881043229427,
+   "h_leg0": 486930.5700286853,
+   "h_leg1": 486930.5700285308,
+   "congruence_dE": -7.785772027091298e-12,
+   "congruence_dh": -1.5454133972525597e-07,
+   "required_turn_flyby_deg": 1.2074182697257333e-06,
+   "required_turn_anchor_deg": 100.6143654139026,
+   "vinf_per_encounter_kms": [
+    4.441718992538438,
+    5.866059500301011,
+    4.441718992537295
+   ],
+   "max_bend_deg_per_encounter": [
+    0.7735231410722143,
+    0.4404465120752272,
+    0.7735231410726099
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    1
+   ],
+   "beta_deg": 98.44259329866048,
+   "tof0_days": 9.523528995915138,
+   "tof1_days": 3.3408237203496984,
+   "residual_kms": 2.2781811092120872e-12,
+   "cond_j": 20367.00332360309,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.2432685306284,
+   "energy_leg1": -13.24326853061265,
+   "h_leg0": 786456.7611459567,
+   "h_leg1": 786456.7611464288,
+   "congruence_dE": 1.575095609496202e-11,
+   "congruence_dh": 4.7206413000822067e-07,
+   "required_turn_flyby_deg": 142.98919955682558,
+   "required_turn_anchor_deg": 118.7220448783482,
+   "vinf_per_encounter_kms": [
+    3.3567719739778923,
+    4.379135846227093,
+    3.356771973980118
+   ],
+   "max_bend_deg_per_encounter": [
+    1.3475434277422313,
+    0.7879299388924335,
+    1.3475434277404652
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 8.106647453938627e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 4.201596520160191,
+   "tof0_days": 7.662944657038818,
+   "tof1_days": 5.201408059226018,
+   "residual_kms": 7.723910549655368e-12,
+   "cond_j": 19737.32656053295,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -15.4154670161445,
+   "energy_leg1": -15.415467016067064,
+   "h_leg0": 710994.1931991264,
+   "h_leg1": 710994.1932027873,
+   "congruence_dE": 7.743672369997512e-11,
+   "congruence_dh": 3.660912625491619e-06,
+   "required_turn_flyby_deg": 131.89933874442968,
+   "required_turn_anchor_deg": 99.72314858709049,
+   "vinf_per_encounter_kms": [
+    3.0938520750473257,
+    4.380318457036825,
+    3.093852075051591
+   ],
+   "max_bend_deg_per_encounter": [
+    1.5830230092405793,
+    0.7875074579869025,
+    1.5830230092362745
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.663744687432422e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 2,
+   "t_total_days": 12.864352716264836,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 179.99999999993207,
+   "tof0_days": 6.43217635813289,
+   "tof1_days": 6.432176358131946,
+   "residual_kms": 3.3105145378894055e-13,
+   "cond_j": 15053.65433604024,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -17.486986620084288,
+   "energy_leg1": -17.486986620087052,
+   "h_leg0": 626753.3439593626,
+   "h_leg1": 626753.343959259,
+   "congruence_dE": -2.7640112421067897e-12,
+   "congruence_dh": -1.0360963642597198e-07,
+   "required_turn_flyby_deg": 120.13079928957208,
+   "required_turn_anchor_deg": 74.10028968349722,
+   "vinf_per_encounter_kms": [
+    2.8957485253196005,
+    4.461555695560788,
+    2.895748525319273
+   ],
+   "max_bend_deg_per_encounter": [
+    1.8035186659502946,
+    0.7592781115059014,
+    1.8035186659506957
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.8040354074918726e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.00000000048,
+   "tof0_days": 9.648264537193102,
+   "tof1_days": 9.648264537204154,
+   "residual_kms": 8.205524909819899e-13,
+   "cond_j": 2784.597869715815,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.014397763759522,
+   "energy_leg1": -6.014397763755621,
+   "h_leg0": 1325652.6254850822,
+   "h_leg1": 1325652.6254851962,
+   "congruence_dE": 3.90087961932295e-12,
+   "congruence_dh": 1.1408701539039612e-07,
+   "required_turn_flyby_deg": 166.06162473469732,
+   "required_turn_anchor_deg": 50.722867416406324,
+   "vinf_per_encounter_kms": [
+    1.587113095145042,
+    2.608119967475044,
+    1.5871130951454218
+   ],
+   "max_bend_deg_per_encounter": [
+    5.7400389257952185,
+    2.215177640590664,
+    5.740038925792607
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.845374040952603e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 359.99999999858767,
+   "tof0_days": 9.648264537215525,
+   "tof1_days": 9.648264537181731,
+   "residual_kms": 9.030394385666606e-13,
+   "cond_j": 9953.012017579229,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.899097417646736,
+   "energy_leg1": -5.8990974176594975,
+   "h_leg0": 848617.7472720334,
+   "h_leg1": 848617.7472715501,
+   "congruence_dE": -1.27613475342514e-11,
+   "congruence_dh": -4.832400009036064e-07,
+   "required_turn_flyby_deg": 144.73424532430568,
+   "required_turn_anchor_deg": 157.69431842968234,
+   "vinf_per_encounter_kms": [
+    5.502546501114748,
+    4.875929342789089,
+    5.502546501114961
+   ],
+   "max_bend_deg_per_encounter": [
+    0.500300795486821,
+    0.642626756354462,
+    0.5003007954867823
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.7862478722206266e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 5.353870614174843e-10,
+   "tof0_days": 9.64826453719229,
+   "tof1_days": 9.648264537204966,
+   "residual_kms": 5.946717673616272e-13,
+   "cond_j": 9952.977441940477,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.899097417655511,
+   "energy_leg1": -5.899097417650738,
+   "h_leg0": 848617.7472717318,
+   "h_leg1": 848617.7472718519,
+   "congruence_dE": 4.773070827468473e-12,
+   "congruence_dh": 1.200241968035698e-07,
+   "required_turn_flyby_deg": 144.7342453243057,
+   "required_turn_anchor_deg": 157.69431842968234,
+   "vinf_per_encounter_kms": [
+    5.502546501114733,
+    4.875929342788921,
+    5.502546501114971
+   ],
+   "max_bend_deg_per_encounter": [
+    0.5003007954868235,
+    0.642626756354506,
+    0.5003007954867805
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8192484324767813e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 133.37332327015253,
+   "tof0_days": 9.10043369457913,
+   "tof1_days": 10.196095379818125,
+   "residual_kms": 6.368462239008351e-14,
+   "cond_j": 11401.366877044655,
+   "class": "flyby_passive",
+   "energy_leg0": -6.085756575729842,
+   "energy_leg1": -6.08575657573024,
+   "h_leg0": 1209812.5831031655,
+   "h_leg1": 1209812.5831031534,
+   "congruence_dE": -3.979039320256561e-13,
+   "congruence_dh": -1.210719347000122e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.090149992736,
+   "vinf_per_encounter_kms": [
+    3.010157699930784,
+    3.274910830112987,
+    3.0101576999307667
+   ],
+   "max_bend_deg_per_encounter": [
+    1.6549183332001032,
+    1.4149141552038678,
+    1.6549183332001223
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 226.62667672819765,
+   "tof0_days": 10.196095379837265,
+   "tof1_days": 9.10043369455999,
+   "residual_kms": 2.444835329108766e-12,
+   "cond_j": 11400.109508751817,
+   "class": "flyby_passive",
+   "energy_leg0": -6.085756575722975,
+   "energy_leg1": -6.085756575737532,
+   "h_leg0": 1209812.5831034873,
+   "h_leg1": 1209812.5831030798,
+   "congruence_dE": -1.4557244298885053e-11,
+   "congruence_dh": -4.0745362639427185e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.09014999269655,
+   "vinf_per_encounter_kms": [
+    3.0101576999299806,
+    3.2749108301133565,
+    3.0101576999290556
+   ],
+   "max_bend_deg_per_encounter": [
+    1.6549183332009738,
+    1.4149141552035522,
+    1.6549183332019763
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.99999999999545,
+   "tof0_days": 9.64826453719868,
+   "tof1_days": 9.648264537198576,
+   "residual_kms": 1.0814278949565478e-14,
+   "cond_j": 3015.9019419609253,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.540315426434251,
+   "energy_leg1": -6.540315426434297,
+   "h_leg0": 1284219.68912201,
+   "h_leg1": 1284219.6891220086,
+   "congruence_dE": -4.618527782440651e-14,
+   "congruence_dh": -1.3969838619232178e-09,
+   "required_turn_flyby_deg": 173.1358295238046,
+   "required_turn_anchor_deg": 103.41666330508505,
+   "vinf_per_encounter_kms": [
+    1.9642005365706339,
+    2.6841322064565873,
+    1.9642005365706303
+   ],
+   "max_bend_deg_per_encounter": [
+    3.8130427937855735,
+    2.0937363201103096,
+    3.813042793785586
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.454339236920366e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999999998155,
+   "tof0_days": 9.648264537198843,
+   "tof1_days": 9.648264537198413,
+   "residual_kms": 5.0307683301612204e-14,
+   "cond_j": 2129.5340073347315,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -9.51210054644869,
+   "energy_leg1": -9.512100546448925,
+   "h_leg0": 1215196.077934452,
+   "h_leg1": 1215196.0779344435,
+   "congruence_dE": -2.362554596402333e-13,
+   "congruence_dh": -8.614733815193176e-09,
+   "required_turn_flyby_deg": 174.09745527074196,
+   "required_turn_anchor_deg": 103.20442303468276,
+   "vinf_per_encounter_kms": [
+    1.3775679363534887,
+    1.9192228498182256,
+    1.3775679363534852
+   ],
+   "max_bend_deg_per_encounter": [
+    7.498458585450313,
+    4.025543206818826,
+    7.49845858545035
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.1188549276591066e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 134.6386483568383,
+   "tof0_days": 8.961705116265792,
+   "tof1_days": 10.334823958131464,
+   "residual_kms": 1.1837392982974486e-11,
+   "cond_j": 3522.5626648977377,
+   "class": "flyby_passive",
+   "energy_leg0": -9.639515403034814,
+   "energy_leg1": -9.639515402965099,
+   "h_leg0": 1163083.2440702457,
+   "h_leg1": 1163083.2440726708,
+   "congruence_dE": 6.971490051910223e-11,
+   "congruence_dh": 2.425163984298706e-06,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.64643381069024,
+   "vinf_per_encounter_kms": [
+    2.156424115817795,
+    2.29292709501757,
+    2.156424115817672
+   ],
+   "max_bend_deg_per_encounter": [
+    3.1814030183933815,
+    2.8499766479971957,
+    3.181403018393734
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 357.03617790715737,
+   "tof0_days": 7.61026669203319,
+   "tof1_days": 11.686262382364067,
+   "residual_kms": 4.01759632080594e-14,
+   "cond_j": 1675.7180578573132,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.01383096989419,
+   "energy_leg1": -11.01383096989401,
+   "h_leg0": 1161461.815108968,
+   "h_leg1": 1161461.8151089747,
+   "congruence_dE": 1.8118839761882555e-13,
+   "congruence_dh": 6.752088665962219e-09,
+   "required_turn_flyby_deg": 158.3501377383291,
+   "required_turn_anchor_deg": 132.02770607356427,
+   "vinf_per_encounter_kms": [
+    1.412480952885161,
+    1.6018078704226184,
+    1.4124809528851492
+   ],
+   "max_bend_deg_per_encounter": [
+    7.154739418830376,
+    5.6931143394727215,
+    7.154739418830489
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.4138721986083737e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 225.3613516461688,
+   "tof0_days": 10.334823958095786,
+   "tof1_days": 8.96170511630147,
+   "residual_kms": 3.752984223477059e-12,
+   "cond_j": 3522.580829324671,
+   "class": "flyby_passive",
+   "energy_leg0": -9.639515402988053,
+   "energy_leg1": -9.63951540301274,
+   "h_leg0": 1163083.2440714783,
+   "h_leg1": 1163083.2440705393,
+   "congruence_dE": -2.468780735398468e-11,
+   "congruence_dh": -9.390059858560562e-07,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.6464338109069,
+   "vinf_per_encounter_kms": [
+    2.1564241158229858,
+    2.2929270950166876,
+    2.1564241158241084
+   ],
+   "max_bend_deg_per_encounter": [
+    3.1814030183784867,
+    2.849976647999335,
+    3.181403018375265
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 2.963822094496405,
+   "tof0_days": 11.686262382344998,
+   "tof1_days": 7.610266692052258,
+   "residual_kms": 6.270695327913664e-12,
+   "cond_j": 1675.6763228681589,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.013830969905289,
+   "energy_leg1": -11.013830969877137,
+   "h_leg0": 1161461.8151085558,
+   "h_leg1": 1161461.8151096036,
+   "congruence_dE": 2.815170319081517e-11,
+   "congruence_dh": 1.0477378964424133e-06,
+   "required_turn_flyby_deg": 158.35013773836724,
+   "required_turn_anchor_deg": 132.02770607350777,
+   "vinf_per_encounter_kms": [
+    1.412480952885723,
+    1.601807870426262,
+    1.4124809528842486
+   ],
+   "max_bend_deg_per_encounter": [
+    7.15473941882503,
+    5.693114339448088,
+    7.154739418839055
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 9.021744412308507e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 38.40187450366695,
+   "tof0_days": 8.461167471910594,
+   "tof1_days": 10.835361602486662,
+   "residual_kms": 3.6716490453042447e-13,
+   "cond_j": 1738.5347130612263,
+   "class": "flyby_passive",
+   "energy_leg0": -11.170928407564777,
+   "energy_leg1": -11.170928407564702,
+   "h_leg0": 1139563.3190214848,
+   "h_leg1": 1139563.3190214536,
+   "congruence_dE": 7.460698725481052e-14,
+   "congruence_dh": -3.119930624961853e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.93600065079045,
+   "vinf_per_encounter_kms": [
+    1.7159880501550109,
+    1.7378530193496622,
+    1.7159880501551101
+   ],
+   "max_bend_deg_per_encounter": [
+    4.945500976138982,
+    4.872520306668635,
+    4.945500976138433
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 321.5981254963159,
+   "tof0_days": 10.835361602486898,
+   "tof1_days": 8.461167471910358,
+   "residual_kms": 2.9759254293953193e-13,
+   "cond_j": 1738.4626749847782,
+   "class": "flyby_passive",
+   "energy_leg0": -11.170928407563594,
+   "energy_leg1": -11.1709284075648,
+   "h_leg0": 1139563.3190215146,
+   "h_leg1": 1139563.3190214764,
+   "congruence_dE": -1.20614629395277e-12,
+   "congruence_dh": -3.818422555923462e-08,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 148.93600065078323,
+   "vinf_per_encounter_kms": [
+    1.7159880501551992,
+    1.737853019349665,
+    1.7159880501551323
+   ],
+   "max_bend_deg_per_encounter": [
+    4.945500976137942,
+    4.872520306668618,
+    4.9455009761383115
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.9999999999975,
+   "tof0_days": 9.648264537198656,
+   "tof1_days": 9.6482645371986,
+   "residual_kms": 3.756641028346278e-14,
+   "cond_j": 575.7693768049212,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -10.503429570417154,
+   "energy_leg1": -10.503429570417229,
+   "h_leg0": 1200187.778325445,
+   "h_leg1": 1200187.7783254427,
+   "congruence_dE": -7.460698725481052e-14,
+   "congruence_dh": -2.3283064365386963e-09,
+   "required_turn_flyby_deg": 168.05918644112182,
+   "required_turn_anchor_deg": 56.914560555085984,
+   "vinf_per_encounter_kms": [
+    0.8838137770465667,
+    1.4924753511674875,
+    0.883813777046546
+   ],
+   "max_bend_deg_per_encounter": [
+    16.707033154925718,
+    6.509505220074346,
+    16.707033154926396
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.519070997176823e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.00000000003237,
+   "tof0_days": 9.648264537198258,
+   "tof1_days": 9.648264537198997,
+   "residual_kms": 1.8528221976754344e-13,
+   "cond_j": 1383.328247763386,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -12.405334616787314,
+   "energy_leg1": -12.405334616786543,
+   "h_leg0": 1106352.446163636,
+   "h_leg1": 1106352.446163669,
+   "congruence_dE": 7.709388682997087e-13,
+   "congruence_dh": 3.306195139884949e-08,
+   "required_turn_flyby_deg": 134.37509109615206,
+   "required_turn_anchor_deg": 158.7217635230431,
+   "vinf_per_encounter_kms": [
+    1.5467123042635214,
+    1.3102954646700202,
+    1.5467123042634054
+   ],
+   "max_bend_deg_per_encounter": [
+    6.028106139786536,
+    8.30804365640209,
+    6.028106139787393
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.635102459202722e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 149.49872993807847,
+   "tof0_days": 7.927271161296714,
+   "tof1_days": 11.369257913100542,
+   "residual_kms": 8.094607497603046e-11,
+   "cond_j": 136.07580098582994,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.327871197681375,
+   "energy_leg1": -12.327871197820498,
+   "h_leg0": 1144073.3934817568,
+   "h_leg1": 1144073.3934772015,
+   "congruence_dE": -1.3912249130498822e-10,
+   "congruence_dh": -4.555331543087959e-06,
+   "required_turn_flyby_deg": 120.69876514828846,
+   "required_turn_anchor_deg": 74.9250131808168,
+   "vinf_per_encounter_kms": [
+    0.6086577812665991,
+    0.7402459317218143,
+    0.6086577812539777
+   ],
+   "max_bend_deg_per_encounter": [
+    30.595547682949487,
+    22.674598442939388,
+    30.595547683906446
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.321216803095598e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 307.5570719860676,
+   "tof0_days": 8.179858243545192,
+   "tof1_days": 11.116670830852064,
+   "residual_kms": 3.2730527148123375e-13,
+   "cond_j": 1064.2313036500004,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.703875230834676,
+   "energy_leg1": -13.703875230835884,
+   "h_leg0": 1047820.2665757351,
+   "h_leg1": 1047820.266575675,
+   "congruence_dE": -1.2079226507921703e-12,
+   "congruence_dh": -6.007030606269836e-08,
+   "required_turn_flyby_deg": 95.56309886297042,
+   "required_turn_anchor_deg": 178.64854492801905,
+   "vinf_per_encounter_kms": [
+    1.7812869972016967,
+    1.083518070061264,
+    1.7812869972019905
+   ],
+   "max_bend_deg_per_encounter": [
+    4.603664787339314,
+    11.76628355676497,
+    4.6036647873378564
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.4806977638953688e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 210.5012700558948,
+   "tof0_days": 11.36925791314486,
+   "tof1_days": 7.927271161252396,
+   "residual_kms": 1.7888376970309994e-14,
+   "cond_j": 136.07543986999409,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.327871197766665,
+   "energy_leg1": -12.327871197766612,
+   "h_leg0": 1144073.393478875,
+   "h_leg1": 1144073.393478877,
+   "congruence_dE": 5.3290705182007514e-14,
+   "congruence_dh": 1.862645149230957e-09,
+   "required_turn_flyby_deg": 120.69876514727538,
+   "required_turn_anchor_deg": 74.92501318248047,
+   "vinf_per_encounter_kms": [
+    0.6086577812630833,
+    0.7402459316749314,
+    0.6086577812630785
+   ],
+   "max_bend_deg_per_encounter": [
+    30.595547683216058,
+    22.67459844527752,
+    30.595547683216427
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 6.419962212249086e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 225.6775173562874,
+   "tof0_days": 10.711591132672599,
+   "tof1_days": 8.584937941724657,
+   "residual_kms": 4.540201371248945e-14,
+   "cond_j": 739.012941652356,
+   "class": "flyby_passive",
+   "energy_leg0": -12.594406330673504,
+   "energy_leg1": -12.594406330673628,
+   "h_leg0": 1114606.5193198794,
+   "h_leg1": 1114606.5193198735,
+   "congruence_dE": -1.2434497875801753e-13,
+   "congruence_dh": -5.820766091346741e-09,
+   "required_turn_flyby_deg": 0.0,
+   "required_turn_anchor_deg": 149.2505934105072,
+   "vinf_per_encounter_kms": [
+    1.2401022592552164,
+    1.024231236075962,
+    1.2401022592552564
+   ],
+   "max_bend_deg_per_encounter": [
+    9.11668064165495,
+    13.014146525589208,
+    9.116680641654407
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": null,
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 52.44292801386615,
+   "tof0_days": 11.116670830852824,
+   "tof1_days": 8.179858243544432,
+   "residual_kms": 3.9494613919556446e-14,
+   "cond_j": 1064.2091343508553,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.703875230835209,
+   "energy_leg1": -13.703875230835363,
+   "h_leg0": 1047820.2665757086,
+   "h_leg1": 1047820.2665757008,
+   "congruence_dE": -1.545430450278218e-13,
+   "congruence_dh": -7.799826562404633e-09,
+   "required_turn_flyby_deg": 95.56309886297022,
+   "required_turn_anchor_deg": 178.64854492801905,
+   "vinf_per_encounter_kms": [
+    1.781286997201828,
+    1.0835180700612017,
+    1.7812869972018615
+   ],
+   "max_bend_deg_per_encounter": [
+    4.603664787338662,
+    11.766283556766188,
+    4.603664787338496
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 4.0648610739867365e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Ariel",
+   "flyby": "Umbriel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 179.99999999999605,
+   "tof0_days": 9.648264537198678,
+   "tof1_days": 9.648264537198578,
+   "residual_kms": 2.930988785010413e-14,
+   "cond_j": 651.0369897152035,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -14.914215910633137,
+   "energy_leg1": -14.914215910633226,
+   "h_leg0": 982251.5710469327,
+   "h_leg1": 982251.5710469275,
+   "congruence_dE": -8.881784197001252e-14,
+   "congruence_dh": -5.238689482212067e-09,
+   "required_turn_flyby_deg": 36.728395220340715,
+   "required_turn_anchor_deg": 160.2955894532976,
+   "vinf_per_encounter_kms": [
+    2.1298139307049104,
+    1.0268879220742118,
+    2.1298139307049397
+   ],
+   "max_bend_deg_per_encounter": [
+    3.2591432786096743,
+    12.95422552432849,
+    3.259143278609587
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9091479863592534e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 180.0000000000013,
+   "tof0_days": 9.648264537198617,
+   "tof1_days": 9.648264537198639,
+   "residual_kms": 2.416106516409301e-14,
+   "cond_j": 27808.885697507376,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -5.899097417653106,
+   "energy_leg1": -5.899097417653117,
+   "h_leg0": 848617.7472717897,
+   "h_leg1": 848617.7472717931,
+   "congruence_dE": -1.0658141036401503e-14,
+   "congruence_dh": 3.3760443329811096e-09,
+   "required_turn_flyby_deg": 157.6943184296823,
+   "required_turn_anchor_deg": 144.73424532430568,
+   "vinf_per_encounter_kms": [
+    4.875929342788659,
+    5.5025465011148675,
+    4.875929342788645
+   ],
+   "max_bend_deg_per_encounter": [
+    0.6426267563545748,
+    0.5003007954867993,
+    0.6426267563545784
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.5858416180006114e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    0
+   ],
+   "beta_deg": 5.1328811423445586e-08,
+   "tof0_days": 9.64826453684044,
+   "tof1_days": 9.648264537556816,
+   "residual_kms": 5.460051428096904e-11,
+   "cond_j": 7323.764500488665,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.014397763899719,
+   "energy_leg1": -6.014397763615911,
+   "h_leg0": 1325652.6254807913,
+   "h_leg1": 1325652.6254894733,
+   "congruence_dE": 2.83808532230978e-10,
+   "congruence_dh": 8.682021871209145e-06,
+   "required_turn_flyby_deg": 50.72286741640887,
+   "required_turn_anchor_deg": 166.06162473469826,
+   "vinf_per_encounter_kms": [
+    2.60811996744943,
+    1.5871130951557006,
+    2.6081199674998365
+   ],
+   "max_bend_deg_per_encounter": [
+    2.215177640633338,
+    5.74003892572192,
+    2.2151776405493586
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 7.5929829747535e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    0,
+    1
+   ],
+   "beta_deg": 344.03465659914633,
+   "tof0_days": 9.100433694574221,
+   "tof1_days": 10.196095379823035,
+   "residual_kms": 1.829413089261542e-12,
+   "cond_j": 31233.80884170156,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.085756575731775,
+   "energy_leg1": -6.085756575728009,
+   "h_leg0": 1209812.583103171,
+   "h_leg1": 1209812.583103159,
+   "congruence_dE": 3.765876499528531e-12,
+   "congruence_dh": -1.210719347000122e-08,
+   "required_turn_flyby_deg": 148.0901499927349,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.274910830112362,
+    3.0101576999314577,
+    3.2749108301135785
+   ],
+   "max_bend_deg_per_encounter": [
+    1.4149141552044007,
+    1.6549183331993726,
+    1.4149141552033628
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.927712342678649e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    0
+   ],
+   "beta_deg": 15.965343381561809,
+   "tof0_days": 10.196095379958567,
+   "tof1_days": 9.100433694438689,
+   "residual_kms": 2.2332460804388058e-11,
+   "cond_j": 31240.596250030343,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -6.085756575673532,
+   "energy_leg1": -6.085756575786473,
+   "h_leg0": 1209812.5831054063,
+   "h_leg1": 1209812.5831026179,
+   "congruence_dE": -1.1294076784906792e-10,
+   "congruence_dh": -2.7883797883987427e-06,
+   "required_turn_flyby_deg": 148.0901499924704,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    3.274910830118171,
+    3.010157699928011,
+    3.2749108300986185
+   ],
+   "max_bend_deg_per_encounter": [
+    1.4149141551994435,
+    1.6549183332031079,
+    1.4149141552161306
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.1188182717282894e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 359.99999999916923,
+   "tof0_days": 9.648264537204458,
+   "tof1_days": 9.648264537192798,
+   "residual_kms": 1.5530116508970245e-12,
+   "cond_j": 5665.259694767096,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -9.51210054644536,
+   "energy_leg1": -9.512100546452508,
+   "h_leg0": 1215196.077934563,
+   "h_leg1": 1215196.0779343243,
+   "congruence_dE": -7.148059921746608e-12,
+   "congruence_dh": -2.3865140974521637e-07,
+   "required_turn_flyby_deg": 103.20442303468492,
+   "required_turn_anchor_deg": 174.09745527074097,
+   "vinf_per_encounter_kms": [
+    1.9192228498189436,
+    1.3775679363535762,
+    1.9192228498174018
+   ],
+   "max_bend_deg_per_encounter": [
+    4.025543206815917,
+    7.498458585449422,
+    4.025543206822163
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.0862013989188308e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    1
+   ],
+   "beta_deg": 179.99999999569138,
+   "tof0_days": 9.648264537230743,
+   "tof1_days": 9.648264537166513,
+   "residual_kms": 2.3664473544812315e-11,
+   "cond_j": 7685.105013924345,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -6.54031542641885,
+   "energy_leg1": -6.540315426449695,
+   "h_leg0": 1284219.6891218764,
+   "h_leg1": 1284219.6891221427,
+   "congruence_dE": -3.084466015934595e-11,
+   "congruence_dh": 2.6635825634002686e-07,
+   "required_turn_flyby_deg": 103.41666330508492,
+   "required_turn_anchor_deg": 173.13582952380455,
+   "vinf_per_encounter_kms": [
+    2.6841322064631985,
+    1.9642005365804398,
+    2.684132206449964
+   ],
+   "max_bend_deg_per_encounter": [
+    2.093736320100183,
+    3.8130427937487537,
+    2.0937363201204544
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.3916024726909097e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 353.06442801455285,
+   "tof0_days": 8.96170511635331,
+   "tof1_days": 10.334823958043946,
+   "residual_kms": 6.430093343689025e-12,
+   "cond_j": 9889.18175307147,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.639515402980768,
+   "energy_leg1": -9.639515403021452,
+   "h_leg0": 1163083.2440710461,
+   "h_leg1": 1163083.244069556,
+   "congruence_dE": -4.0683900692783936e-11,
+   "congruence_dh": -1.4901161193847656e-06,
+   "required_turn_flyby_deg": 148.64643381124773,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.2929270950231713,
+    2.156424115833214,
+    2.2929270950168297
+   ],
+   "max_bend_deg_per_encounter": [
+    2.849976647983615,
+    3.1814030183491364,
+    2.8499766479989903
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.65839274018322e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    1,
+    2
+   ],
+   "beta_deg": 291.1000939771053,
+   "tof0_days": 7.610266692031492,
+   "tof1_days": 11.686262382365765,
+   "residual_kms": 5.468643077875346e-13,
+   "cond_j": 4486.7896949143815,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.013830969895611,
+   "energy_leg1": -11.013830969893117,
+   "h_leg0": 1161461.8151089144,
+   "h_leg1": 1161461.8151090087,
+   "congruence_dE": 2.4940050025179517e-12,
+   "congruence_dh": 9.42964106798172e-08,
+   "required_turn_flyby_deg": 132.0277060735694,
+   "required_turn_anchor_deg": 158.35013773832563,
+   "vinf_per_encounter_kms": [
+    1.6018078704222782,
+    1.4124809528852509,
+    1.6018078704228
+   ],
+   "max_bend_deg_per_encounter": [
+    5.693114339475021,
+    7.1547394188295215,
+    5.693114339471494
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.8681772578650674e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 6.935571978744465,
+   "tof0_days": 10.33482395809192,
+   "tof1_days": 8.961705116305335,
+   "residual_kms": 3.560578010066488e-12,
+   "cond_j": 9889.70665877573,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -9.639515402990655,
+   "energy_leg1": -9.639515403010307,
+   "h_leg0": 1163083.2440712661,
+   "h_leg1": 1163083.2440706072,
+   "congruence_dE": -1.965183571428497e-11,
+   "congruence_dh": -6.58910721540451e-07,
+   "required_turn_flyby_deg": 148.64643381094152,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    2.292927095017176,
+    2.156424115824617,
+    2.292927095013628
+   ],
+   "max_bend_deg_per_encounter": [
+    2.84997664799815,
+    3.181403018373806,
+    2.8499766480067534
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.912977986842013e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    1
+   ],
+   "beta_deg": 68.89990602155058,
+   "tof0_days": 11.686262382375146,
+   "tof1_days": 7.61026669202211,
+   "residual_kms": 3.4511902721871636e-12,
+   "cond_j": 4486.983526452292,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.013830969887927,
+   "energy_leg1": -11.013830969903765,
+   "h_leg0": 1161461.8151092096,
+   "h_leg1": 1161461.815108602,
+   "congruence_dE": -1.5837997580092633e-11,
+   "congruence_dh": -6.076879799365997e-07,
+   "required_turn_flyby_deg": 132.0277060735984,
+   "required_turn_anchor_deg": 158.35013773830602,
+   "vinf_per_encounter_kms": [
+    1.6018078704238412,
+    1.412480952885856,
+    1.6018078704206062
+   ],
+   "max_bend_deg_per_encounter": [
+    5.693114339464455,
+    7.154739418823767,
+    5.693114339486327
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4416700858300105e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 180.0000000004401,
+   "tof0_days": 9.648264537195294,
+   "tof1_days": 9.648264537201962,
+   "residual_kms": 3.1649924658402123e-12,
+   "cond_j": 1212.4384625467446,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -10.503429570419842,
+   "energy_leg1": -10.503429570414578,
+   "h_leg0": 1200187.7783253873,
+   "h_leg1": 1200187.7783255,
+   "congruence_dE": 5.263345315142942e-12,
+   "congruence_dh": 1.126900315284729e-07,
+   "required_turn_flyby_deg": 56.91456055508504,
+   "required_turn_anchor_deg": 168.05918644112162,
+   "vinf_per_encounter_kms": [
+    1.4924753511663622,
+    0.883813777047687,
+    1.4924753511685647
+   ],
+   "max_bend_deg_per_encounter": [
+    6.509505220083615,
+    16.70703315488926,
+    6.509505220065473
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.037318464033719e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 75.15794728862245,
+   "tof0_days": 10.835361602479882,
+   "tof1_days": 8.461167471917374,
+   "residual_kms": 1.8018793959719368e-12,
+   "cond_j": 4991.4724517313725,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.17092840756829,
+   "energy_leg1": -11.170928407558314,
+   "h_leg0": 1139563.3190213994,
+   "h_leg1": 1139563.3190218313,
+   "congruence_dE": 9.976020010071807e-12,
+   "congruence_dh": 4.3190084397792816e-07,
+   "required_turn_flyby_deg": 148.93600065070945,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.7378530193481485,
+    1.715988050154111,
+    1.7378530193495272
+   ],
+   "max_bend_deg_per_encounter": [
+    4.872520306676767,
+    4.945500976143948,
+    4.872520306669359
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.4731164146036336e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 284.8420527135903,
+   "tof0_days": 8.461167471901078,
+   "tof1_days": 10.835361602496178,
+   "residual_kms": 2.8476454279378423e-12,
+   "cond_j": 4991.822694640618,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -11.170928407573024,
+   "energy_leg1": -11.170928407557643,
+   "h_leg0": 1139563.3190210038,
+   "h_leg1": 1139563.3190216508,
+   "congruence_dE": 1.538147387236677e-11,
+   "congruence_dh": 6.470363587141037e-07,
+   "required_turn_flyby_deg": 148.9360006508845,
+   "required_turn_anchor_deg": 8.537736462515939e-07,
+   "vinf_per_encounter_kms": [
+    1.7378530193494175,
+    1.715988050158289,
+    1.7378530193515274
+   ],
+   "max_bend_deg_per_encounter": [
+    4.872520306669949,
+    4.945500976120891,
+    4.872520306658614
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9089390971711e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    2
+   ],
+   "beta_deg": 359.99999999998795,
+   "tof0_days": 9.648264537198713,
+   "tof1_days": 9.648264537198543,
+   "residual_kms": 2.1628557899130955e-14,
+   "cond_j": 3734.6771716293374,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -12.405334616786824,
+   "energy_leg1": -12.40533461678686,
+   "h_leg0": 1106352.4461636564,
+   "h_leg1": 1106352.4461636557,
+   "congruence_dE": -3.552713678800501e-14,
+   "congruence_dh": -6.984919309616089e-10,
+   "required_turn_flyby_deg": 158.72176352304152,
+   "required_turn_anchor_deg": 134.37509109615388,
+   "vinf_per_encounter_kms": [
+    1.3102954646699743,
+    1.546712304263452,
+    1.3102954646699538
+   ],
+   "max_bend_deg_per_encounter": [
+    8.308043656402631,
+    6.028106139787049,
+    8.308043656402873
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 3.162172502201678e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 13.835399121269866,
+   "tof0_days": 8.584937941724888,
+   "tof1_days": 10.711591132672368,
+   "residual_kms": 1.0928227005304875e-13,
+   "cond_j": 2429.1084737278356,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.594406330673484,
+   "energy_leg1": -12.594406330673756,
+   "h_leg0": 1114606.5193198775,
+   "h_leg1": 1114606.5193198638,
+   "congruence_dE": -2.717825964282383e-13,
+   "congruence_dh": -1.3737007975578308e-08,
+   "required_turn_flyby_deg": 149.25059341051235,
+   "required_turn_anchor_deg": 0.0,
+   "vinf_per_encounter_kms": [
+    1.0242312360760157,
+    1.2401022592553772,
+    1.0242312360759855
+   ],
+   "max_bend_deg_per_encounter": [
+    13.014146525587993,
+    9.116680641652769,
+    13.014146525588677
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.763788918272716e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 65.82034503125055,
+   "tof0_days": 7.92727116125237,
+   "tof1_days": 11.369257913144885,
+   "residual_kms": 2.025966904339278e-15,
+   "cond_j": 367.0699845963877,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.327871197766667,
+   "energy_leg1": -12.327871197766662,
+   "h_leg0": 1144073.3934788748,
+   "h_leg1": 1144073.393478875,
+   "congruence_dE": 5.329070518200751e-15,
+   "congruence_dh": 2.3283064365386963e-10,
+   "required_turn_flyby_deg": 74.92501318248324,
+   "required_turn_anchor_deg": 120.69876514727368,
+   "vinf_per_encounter_kms": [
+    0.7402459316749119,
+    0.608657781263086,
+    0.7402459316749123
+   ],
+   "max_bend_deg_per_encounter": [
+    22.674598445278495,
+    30.59554768321585,
+    22.674598445278473
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.1025898216384089e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    2,
+    3
+   ],
+   "beta_deg": 209.7417379967888,
+   "tof0_days": 8.179858243545272,
+   "tof1_days": 11.116670830851984,
+   "residual_kms": 3.558931038566753e-13,
+   "cond_j": 2926.6032117584837,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.70387523083454,
+   "energy_leg1": -13.703875230835905,
+   "h_leg0": 1047820.2665757402,
+   "h_leg1": 1047820.2665756753,
+   "congruence_dE": -1.3642420526593924e-12,
+   "congruence_dh": -6.484333425760269e-08,
+   "required_turn_flyby_deg": 178.64854492802039,
+   "required_turn_anchor_deg": 95.56309886297221,
+   "vinf_per_encounter_kms": [
+    1.083518070061302,
+    1.7812869972019738,
+    1.0835180700610885
+   ],
+   "max_bend_deg_per_encounter": [
+    11.766283556764225,
+    4.603664787337939,
+    11.766283556768405
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 1.9075104492187167e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 294.17965496563704,
+   "tof0_days": 11.369257913163386,
+   "tof1_days": 7.92727116123387,
+   "residual_kms": 2.620806439651783e-11,
+   "cond_j": 367.07024884857975,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -12.32787119774716,
+   "energy_leg1": -12.327871197797485,
+   "h_leg0": 1144073.393479539,
+   "h_leg1": 1144073.393477776,
+   "congruence_dE": -5.0325965617048496e-11,
+   "congruence_dh": -1.7629936337471008e-06,
+   "required_turn_flyby_deg": 74.92501318308278,
+   "required_turn_anchor_deg": 120.6987651469086,
+   "vinf_per_encounter_kms": [
+    0.7402459316855172,
+    0.6086577812645338,
+    0.7402459316593242
+   ],
+   "max_bend_deg_per_encounter": [
+    22.674598444749584,
+    30.59554768310608,
+    22.674598446055874
+   ],
+   "bend_gate_passed": true,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 5.118620130159482e-06,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    2
+   ],
+   "beta_deg": 150.25826200307543,
+   "tof0_days": 11.116670830852943,
+   "tof1_days": 8.179858243544313,
+   "residual_kms": 5.920310472863824e-14,
+   "cond_j": 2926.680508490362,
+   "class": "asymmetric_candidate",
+   "energy_leg0": -13.703875230835132,
+   "energy_leg1": -13.70387523083533,
+   "h_leg0": 1047820.2665757112,
+   "h_leg1": 1047820.2665757035,
+   "congruence_dE": -1.971756091734278e-13,
+   "congruence_dh": -7.683411240577698e-09,
+   "required_turn_flyby_deg": 178.64854492802013,
+   "required_turn_anchor_deg": 95.56309886297204,
+   "vinf_per_encounter_kms": [
+    1.0835180700612244,
+    1.7812869972018401,
+    1.0835180700611673
+   ],
+   "max_bend_deg_per_encounter": [
+    11.766283556765744,
+    4.603664787338602,
+    11.766283556766863
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.958932531274314e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  },
+  {
+   "anchor": "Umbriel",
+   "flyby": "Ariel",
+   "q": 3,
+   "t_total_days": 19.296529074397256,
+   "t_syn_days": 6.432176358132418,
+   "n_rev": [
+    3,
+    3
+   ],
+   "beta_deg": 5.286437954055145e-12,
+   "tof0_days": 9.64826453719859,
+   "tof1_days": 9.648264537198665,
+   "residual_kms": 1.1285830709125949e-13,
+   "cond_j": 1995.0093977951292,
+   "class": "symmetric_equal_tof",
+   "energy_leg0": -14.914215910633216,
+   "energy_leg1": -14.914215910632908,
+   "h_leg0": 982251.571046928,
+   "h_leg1": 982251.5710469468,
+   "congruence_dE": 3.0730973321624333e-13,
+   "congruence_dh": 1.885928213596344e-08,
+   "required_turn_flyby_deg": 160.29558945329921,
+   "required_turn_anchor_deg": 36.728395220347,
+   "vinf_per_encounter_kms": [
+    1.0268879220742144,
+    2.129813930704938,
+    1.0268879220741898
+   ],
+   "max_bend_deg_per_encounter": [
+    12.954225524328429,
+    3.2591432786095926,
+    12.954225524328983
+   ],
+   "bend_gate_passed": false,
+   "turn_feasible": false,
+   "dop853": {
+    "max_dr_arrival_km": 2.9307152982845775e-05,
+    "passed": true
+   },
+   "all_gates_passed": false
+  }
+ ]
+}
