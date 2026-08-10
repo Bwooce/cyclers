@@ -820,15 +820,27 @@ unchanged. See `git log` around this date for the corrected commit.
   propagation cross-check are recorded in the gap notes as a head start). Full account:
   `docs/notes/2026-08-09-794-loop-ee-descriptor-closure.md`. Verification: full
   `tests/data tests/search -q` ratchet + ruff/format + full `mypy src tests` (see commit).
-- `#813` — registered 2026-08-09 (found during `#794`, not dispatched): blast-radius check for
-  `#794`'s `search/descriptor.py` M:N-reversal bugfix, per
-  `[[feedback_bugfix_invalidates_past_searches]]`. The parser feeds `seed_ladder` Rung 1
-  (descriptor seeds); affected rows are exactly the four with non-1:1 f/F resonances
-  (russell-ch4-5.30gGf3, -3.66gfF3, -5.30ggF3, -5.75ggF3), whose f/F-leg ToF seed and rev
-  count were wrong pre-fix (e.g. F(2:1) seeded 1 yr/2 revs instead of 2 yr/1 rev). Audit which
-  past self-seeding/closure campaigns consumed Rung-1 seeds for those rows
-  (`validate_self_seeding_reachable.py`, `triage_self_seeding.py`, seed-ladder consumers) and
-  re-run any negatives that did; seeds feed correctors, so impact needs measuring, not assuming.
+- `#813` — ✓ DONE 2026-08-10 (dispatched 2026-08-10): blast-radius audit of `#794`'s
+  `search/descriptor.py` M:N-reversal bugfix, per
+  `[[feedback_bugfix_invalidates_past_searches]]` — **NO VERDICT FLIPS; one latent duplicate of
+  the reversed parse found and fixed**. Full consumer trace: `seed_ladder` Rung 1 (the path
+  `#794` fixed) has ZERO production consumers (`resolve_seed` is test-only), and every other
+  seed lane for the 4 affected rows (self-seeding `#177`, dsm/multiarc closure, continuation
+  V1→V3 lift, `#137` free-return genome — the source of their current V1) seeds from g/G
+  `tof_years` or sourced aphelion+transit, never the M:N read. The ONE real consumer was
+  `scripts/campaign_russell12.py` (#125/#135 lambert genome, 2026-06-06/07), via its OWN
+  duplicated reversed parse that `#794` didn't touch — now fixed (delegated to the corrected
+  `descriptor.py` functions; `--rows` filter added). A/B re-run at today's HEAD (control =
+  reversed parse reproducing the June-07 seeds exactly, vs fixed parse; circular model, 256
+  epochs, probe-at-truth): outcome classes unchanged (4× CLOSE-OFF-ANCHOR, probe 4×
+  WALKED-AWAY), truth residuals all IMPROVE under the corrected seed (10.72→6.89, 31.89→26.69,
+  37.55→26.11, 21.20→17.00 km/s — the June note's 1000-sentinel "Lambert pathology at truth" on
+  3.66gfF3/5.75ggF3 was a pure artifact of the reversed read) but stay far above the 0.1 km/s
+  floor, so no recorded negative was seed-caused. Runlogs appended:
+  `data/runs/russell12-circular-20260810T-813-{A-preM-Nfix,B-postM-Nfix}.jsonl`. Follow-ups
+  registered: `#820` (genome still structurally mis-posed vs `#794`'s designated-arc semantics),
+  `#821` (5.30gGf3 catalogue prose still states the reversed convention). Full account:
+  `docs/notes/2026-08-10-813-mn-reversal-blast-radius.md`.
 - `#814` — registered 2026-08-09 (found during `#794`, not dispatched): extend `#794`'s
   descriptor machinery to the ch4 rows it could not touch because their `free_return_arcs[]`
   were never ingested: russell-ch4-3.77Gh3 (printed legs G(2.9062,686.21,U) +
@@ -852,6 +864,25 @@ unchanged. See `git log` around this date for the corrected commit.
   solvable from its own printed descriptor by `#794`'s exact machinery (no Mars phase needed
   for the CONIC; the Mars encounter only splits the ToF). Cheap and well-posed after `#794`;
   supersedes the vaguer "unknown Mars-Earth phase" framing where the descriptor is printed.
+- `#820` — registered 2026-08-10 (found during `#813`, not dispatched): re-pose the
+  `campaign_russell12.py` lambert-genome descriptor→genome mapping per `#794`'s primary-source
+  semantics and re-run. `build_genome` still assumes `arcs[0]` is the Mars free-return arc and
+  `arcs[1:]` are the E-E loops, but `#794` established the DESIGNATED (uppercase) arc is the
+  Mars-transit leg — `arcs[1]` (G) for 5.30gGf3, `arcs[2]` (F) for the ggF/gfF rows — so the
+  genome assigns a designated arc to the loop set and drops a real loop arc on all 4 non-1:1
+  rows (and 3.64gGg3/8.049gGf2-class rows should be re-checked too). Re-pose with designated =
+  uppercase, loops = the other arcs in itinerary order, ToF/rev seeds from `#794`'s
+  written-back `loop-ee-*` segments; `#813`'s A/B showed the M:N fix alone leaves
+  truth-residuals at 7–27 km/s — a residual-zero at truth under the CORRECT posing would be
+  V1-grade multi-arc closure evidence beyond the single-ellipse free-return genome.
+- `#821` — registered 2026-08-10 (found during `#813`, not dispatched): fix
+  `russell-ch4-5.30gGf3`'s catalogue prose note, which still explains f(3:2) with the REVERSED
+  pre-`#794` convention ("spacecraft 3 revs vs Earth 2 revs"; correct per both primary sources:
+  3 Earth years, 2 spacecraft revs). The other three non-1:1 rows' notes don't state a rev
+  reading and `#794`'s written-back segments are correct. Catalogue-edit discipline applies
+  (full `tests/data tests/search -q` ratchet); deferred out of `#813` to avoid colliding with
+  `#811`'s concurrent catalogue writeback. Sweep the remaining rows' free-text notes for the
+  same phrasing while there.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +

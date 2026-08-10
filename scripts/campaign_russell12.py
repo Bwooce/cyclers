@@ -30,8 +30,11 @@ into the two SOURCED transfer legs E->M and M->E (the ``trajectory.segments``
 ``out-em`` / ``ret-me`` ToFs). Each SUBSEQUENT arc is an Earth-Earth phasing
 loop: a generic/half-rev arc is a direct E->E leg (n_revs from a multi-rev
 Lambert branch chosen to bracket the arc ToF); a full-rev ``M:N`` arc is an
-M-rev resonant E->E loop. The longest E->E loop is eliminated as the period
-slack leg (spec §2.1(a)), exactly as ``test_correct_s1l1.py`` pins it.
+N-rev resonant E->E loop over M Earth years (M:N read delegated to
+``search/descriptor.py`` since the #794 convention fix — this script previously
+duplicated the parse REVERSED; see the #813 blast-radius note). The longest E->E
+loop is eliminated as the period slack leg (spec §2.1(a)), exactly as
+``test_correct_s1l1.py`` pins it.
 
 Like-for-like variant (#135)
 -----------------------------
@@ -73,6 +76,7 @@ from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.runlog import RunLog, RunRecord, default_runlog_path
 from cyclerfinder.search.correct import _residuals, ballistic_correct
+from cyclerfinder.search.descriptor import arc_to_leg_topology, arc_tof_seed_days
 from cyclerfinder.search.free_return import _residuals as _fr_residuals
 from cyclerfinder.search.free_return import (
     free_return_correct,
@@ -116,11 +120,6 @@ def _t_sec(dt: datetime) -> float:
     return (dt - J2000).total_seconds()
 
 
-def _full_rev_revs(resonance: str) -> int:
-    """M revs from an ``M:N`` full-rev resonance (M spacecraft revs)."""
-    return int(resonance.split(":")[0])
-
-
 def build_genome(row: dict[str, Any]) -> dict[str, Any]:
     """Map a Russell row -> corrector genome.
 
@@ -154,12 +153,13 @@ def build_genome(row: dict[str, Any]) -> dict[str, Any]:
     for arc in ee_arcs:
         at = arc["arc_type"]
         if at == "full-rev":
-            m = _full_rev_revs(arc["resonance"])
-            per_leg_revs.append(m)
-            per_leg_branch.append("low")
-            # full-rev ToF seed from the N-year resonant interval.
-            n_years = int(arc["resonance"].split(":")[1])
-            ee_seeds.append(n_years * DAYS_PER_JULIAN_YEAR)
+            # #813: delegate the M:N read to search/descriptor.py (fixed by #794:
+            # M = Earth years = ToF, N = spacecraft revs — this script previously
+            # duplicated the parse with the REVERSED pre-#794 convention).
+            n_revs, branch = arc_to_leg_topology(at, resonance=arc["resonance"])
+            per_leg_revs.append(n_revs)
+            per_leg_branch.append(branch)
+            ee_seeds.append(arc_tof_seed_days(at, tof_years=None, resonance=arc["resonance"]))
         else:  # generic / half-rev: a multi-rev direct E->E loop.
             tof_yr = arc.get("tof_years")
             seed = float(tof_yr) * DAYS_PER_JULIAN_YEAR if tof_yr else 1.6 * DAYS_PER_JULIAN_YEAR
@@ -752,6 +752,13 @@ def main() -> None:
         "free-return = #137 radial-crossing genome (seed (a,e) from sourced "
         "aphelion+transit, V_inf emerges as evidence)",
     )
+    ap.add_argument(
+        "--rows",
+        type=str,
+        default=None,
+        help="comma-separated subset of RUSSELL12_IDS to run (default: all 12); "
+        "added for the #813 blast-radius re-run of the 4 non-1:1 f/F rows",
+    )
     ap.add_argument("--out", type=str, default=None)
     ap.add_argument(
         "--runlog-dir",
@@ -771,6 +778,14 @@ def main() -> None:
     rows = yaml.safe_load(CATALOGUE_PATH.read_text())
     byid = {r["id"]: r for r in rows}
 
+    run_ids: tuple[str, ...] = RUSSELL12_IDS
+    if args.rows:
+        requested = tuple(s.strip() for s in args.rows.split(",") if s.strip())
+        unknown = [r for r in requested if r not in RUSSELL12_IDS]
+        if unknown:
+            raise SystemExit(f"--rows ids not in RUSSELL12_IDS: {unknown}")
+        run_ids = requested
+
     print(
         f"genome={args.genome} model={args.model} epochs={args.epochs} "
         f"workers={args.workers} probe_at_truth={args.probe_at_truth}",
@@ -778,7 +793,7 @@ def main() -> None:
     )
 
     verdicts: list[dict] = []
-    for rid in RUSSELL12_IDS:
+    for rid in run_ids:
         print(f"=== {rid} ===", flush=True)
         if args.genome == "free-return":
             v = run_row_free_return(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
@@ -802,7 +817,7 @@ def main() -> None:
     probes: list[dict] = []
     if args.probe_at_truth:
         print(f"\n=== SEED-AT-TRUTH PROBE (genome={args.genome}) ===", flush=True)
-        for rid in RUSSELL12_IDS:
+        for rid in run_ids:
             # Honour --genome: the free-return probe seeds the SOURCED ellipse (a, e)
             # and shows the truth-residual≈0 end-to-end; the lambert probe seeds the
             # sourced ToF geometry (the #135 diagnostic). Previously the probe always
