@@ -814,6 +814,31 @@ unchanged. See `git log` around this date for the corrected commit.
   `-n 6` chosen over a lower number to keep most of the parallel speedup — not deeply tuned,
   revisit if flakes persist. Verification: `tests/search/test_earth_moon_class1_resonant_connections.py`
   green under the new setting; full `tests/data tests/search -q` clean.
+- `#824` — registered 2026-08-10 (found while confirming CI went green after `#797`/`#801`'s
+  `NON_HELIOCENTRIC` ratchet fix, not dispatched): `tests/search/test_joint_sobol.py::
+  test_sobol_pipeline_positive_control` and `tests/search/test_joint_cell.py::
+  test_joint_cell_reproduces_liang_member_d` fail with `spiceypy.utils.exceptions.
+  SpiceNOLOADEDFILES` on THREE CONSECUTIVE self-hosted CI runs tonight (`31368280942`,
+  `31375780494`, `31382887932`) — including the last one, confirmed to run with ZERO other
+  local `pytest` processes active on the machine (`ps aux` checked directly beforehand). This
+  rules out `#809`'s own external-contention class as the explanation: the failure survives a
+  genuinely quiet machine, so it is very likely an INTERNAL race between `pytest-xdist`'s own
+  parallel workers (6, per `#809`) and SPICE's kernel pool and/or the shared on-disk kernel
+  cache (`~/.astropy/cache`, `~/dev/references/kernels`) both tests read — `SpiceNOLOADEDFILES`
+  means the pool was empty when a call needed it, consistent with one worker process observing
+  a kernel file mid-write/mid-load by another, or a furnish/clear ordering race across workers
+  sharing the same cache directory. NOT the same bug `#729`'s own `test_lsk_furnish_guard_
+  prevents_kernel_pool_exhaustion` regression-tests (`tests/scripts/test_729_epoch_torus_
+  robustness_scan.py`) — that one guards against `SpiceNOMOREROOM` from repeated same-process
+  re-furnishing, a different error and a different (intra-process, not cross-worker) mechanism;
+  checked, does not cover these two tests. Needs real investigation (do these two tests furnish
+  their own kernels independently, or rely on a shared/session fixture? is the on-disk cache
+  genuinely safe for concurrent multi-process reads, or does the DE440/JUP365 warm-up logic
+  ever write/replace the file lazily inside a test rather than only in `ci.yml`'s own pre-fetch
+  step?) before deciding the fix — do NOT paper over with a retry/xfail without knowing the
+  mechanism, matching this project's own standing discipline. Not blocking any of tonight's
+  actual work (`#813`/`#818`/`#811` all independently verified clean locally and pushed) — this
+  is a CI-green-checkmark gap only, not a code-correctness question for those tasks.
 - `#794` — ✓ DONE 2026-08-09 (registered 2026-08-08 by `#793`, dispatched 2026-08-09): closed
   the `loop-ee`/`loop-ee-N` `#54` `data_gaps` on ALL 14 `free_return_arcs[]` rows — 23 loop
   segments now carry sourced/derived tof_days / n_revs / branch / (a,e) (+ inclination in the
