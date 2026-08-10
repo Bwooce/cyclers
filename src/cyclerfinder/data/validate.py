@@ -1484,6 +1484,147 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "docs/notes/2026-08-09-801-stability-index-k-selection-fix.md. "
         "src/cyclerfinder/search/earth_moon_resonant_families.py."
     ),
+    # #811 (2026-08-10, writeback of Vaquero 2013 Sec. 4.4.7's two Earth-Moon periodic-cycler
+    # families -- 2:1 circumlunar/L2 and 3:1 cislunar/L1 -- reproduced endpoint-to-endpoint by
+    # #799's direct CR3BP continuation across her FULL printed Jacobi ranges with all four printed
+    # endpoint Earth->Moon TOFs recovered at 0.10%-1.83% relative). Six representative rows
+    # selected from #799's 129-member Radau-cross-checked record
+    # (data/found/799_vaquero_em_cycler_families/results.json): the four printed-TOF family
+    # endpoints (the only members anchored by a digit-grade Vaquero print) plus the two members
+    # bracketing the 2:1 family's stability transition (last stable C=2.46 / first unstable
+    # C=2.47). Unlike the Casoliva rows there is NO printed IC/period/stability table to reproduce
+    # per member (Fig. 4.44's x0 axis is unlabeled -- #787 digest): the V1 like-for-like evidence
+    # is the FAMILY-level reproduction (printed C-range endpoints + all four printed endpoint
+    # TOFs + resonance/geometry/stability criteria, #798 all-constraints discipline) carried by
+    # each member's own corrector convergence + independent-Radau cross-check. orbit_class was
+    # determined PER MEMBER against the lunar SOI (66,182.9 km)/Hill radius (61,524.1 km): 4
+    # cycler (periselene 17,675-49,700 km, inside) + 2 resonant_po (86,911 km at the 2:1 low-C
+    # end; 66,995 km SOI-MARGINAL at the 3:1 top endpoint, 1.2% outside -- stated on the row).
+    ("vaquero-21-c198-em-resonant-po-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 2:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[1.98, 2.66], both branches terminating on jacobi_bound at her printed endpoints -- THIS "
+        "member IS her printed low-energy endpoint: her printed 6.39 d Earth->Moon TOF at C=1.98 "
+        "is recovered at 6.3987 d (0.14% relative; her prose endpoint TOFs are the only "
+        "digit-grade values she prints for these families). Crossing residual=5.93e-14, AND an "
+        "independent Radau integrator cross-check preserves the Jacobi constant to dJ=1.30e-12 "
+        "over one period. #811's own independent DERIVE re-verification (not merely inherited "
+        "from #799): STANDALONE Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, no "
+        "cyclerfinder imports) confirms periselene 86,911 km (1.313x lunar SOI -- the resonant_po "
+        "determination's decisive datum), perigee/apogee to <0.1 km, and period-map closure to "
+        "4.3e-13. NOT V2 (no multi-lap bounded-drift run has been performed this task). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("vaquero-21-c246-em-cycler-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 2:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[1.98, 2.66] with all four printed endpoint TOFs recovered (0.10%-1.83% relative) -- "
+        "THIS member is the family's last linearly STABLE member on #799's dC=0.01 grid (Barden "
+        "nu=-0.9274, |lambda|=1.0), bracketing the stability transition with "
+        "vaquero-21-c247-em-cycler-2013; no printed per-member value exists at this interior C "
+        "(family identity carries the sourced evidence). Crossing residual=7.44e-15, AND an "
+        "independent Radau integrator cross-check preserves the Jacobi constant to dJ=4.30e-13 "
+        "over one period. #811's own independent DERIVE re-verification: STANDALONE Radau "
+        "rtol=atol=1e-12 dense propagation (inline CR3BP EOM) confirms periselene 49,700 km "
+        "(0.751x lunar SOI -- the cycler determination's decisive datum), perigee/apogee to "
+        "<0.1 km, and period-map closure to <=3.1e-12. NOT V2 (no multi-lap bounded-drift run "
+        "has been performed this task, despite this member's linear stability). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("vaquero-21-c247-em-cycler-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 2:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[1.98, 2.66] with all four printed endpoint TOFs recovered (0.10%-1.83% relative) -- "
+        "THIS member is the family's first UNSTABLE member on #799's dC=0.01 grid (Barden "
+        "nu=-1.0088, |lambda|=1.142 -- 'small unstable modes' in Vaquero's own criterion-4 "
+        "sense), bracketing the stability transition with vaquero-21-c246-em-cycler-2013; her own "
+        "p.171-172 free-transfer prose REQUIRES unstable 2:1 members above this transition, and "
+        "this is where they begin. No printed per-member value exists at this interior C. "
+        "Crossing residual=2.51e-14, AND an independent Radau integrator cross-check preserves "
+        "the Jacobi constant to dJ=4.40e-13 over one period. #811's own independent DERIVE "
+        "re-verification: STANDALONE Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM) "
+        "confirms periselene 48,516 km (0.733x lunar SOI -- the cycler determination's decisive "
+        "datum), perigee/apogee to <0.1 km, and period-map closure to <=3.1e-12. NOT V2 (an "
+        "UNSTABLE orbit cannot satisfy V2-ballistic bounded-drift-over->=3-laps). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("vaquero-21-c266-em-cycler-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 2:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[1.98, 2.66], both branches terminating on jacobi_bound at her printed endpoints -- THIS "
+        "member IS her printed high-energy endpoint: her printed 4.91 d Earth->Moon TOF at C=2.66 "
+        "is recovered at 4.9668 d (1.16% relative -- the 3-sig-fig-print/unstated-mu caveat #799's "
+        "note documents for the high-C endpoints). UNSTABLE, Barden nu=-2.3270, |lambda|=4.428 "
+        "('small unstable modes' in Vaquero's own sense vs |lambda|=2513.2 for her excluded 4:3 "
+        "family). Crossing residual=1.13e-14, AND an independent Radau integrator cross-check "
+        "preserves the Jacobi constant to dJ=2.86e-13 over one period. #811's own independent "
+        "DERIVE re-verification: STANDALONE Radau rtol=atol=1e-12 dense propagation (inline CR3BP "
+        "EOM) confirms periselene 17,675 km (0.267x lunar SOI -- the cycler determination's "
+        "decisive datum), perigee/apogee to <0.1 km, and period-map closure to <=3.1e-12. NOT V2 "
+        "(an UNSTABLE orbit cannot satisfy V2-ballistic bounded-drift-over->=3-laps). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("vaquero-31-c254-em-cycler-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 3:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[2.54, 3.13], both branches terminating on jacobi_bound at her printed endpoints -- THIS "
+        "member IS her printed low-energy endpoint: her printed 4.90 d Earth->Moon TOF at C=2.54 "
+        "is recovered at 4.9050 d (0.10% relative, the tightest of the four endpoint checks; "
+        "measured from the IN-BAND perigee per #799's TOF-metric analysis -- the global perigee "
+        "at this C sits half a period from the Moon encounter and would give 13.6 d). UNSTABLE, "
+        "Barden nu=5.6750, |lambda|=11.26 ('small unstable modes' in Vaquero's own sense; #799 "
+        "found NO linearly stable 3:1 member anywhere in her printed range -- an honest caveat "
+        "recorded there, consistent with her own p.172 unstable-to-unstable free-transfer "
+        "statement in the [2.54, 2.66] overlap). Crossing residual=1.03e-12, AND an independent "
+        "Radau integrator cross-check preserves the Jacobi constant to dJ=2.10e-12 over one "
+        "period. #811's own independent DERIVE re-verification: STANDALONE Radau rtol=atol=1e-12 "
+        "dense propagation (inline CR3BP EOM) confirms periselene 33,258 km (0.503x lunar SOI -- "
+        "the cycler determination's decisive datum), perigee/apogee to <0.1 km, and period-map "
+        "closure to <=3.1e-12. NOT V2 (an UNSTABLE orbit cannot satisfy V2-ballistic "
+        "bounded-drift-over->=3-laps). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("vaquero-31-c313-em-resonant-po-2013", "V1"): (
+        "spec §14 V1 (#811, evidence produced by #799's reproduction run, "
+        "search/vaquero_em_cyclers.py): same-model planar CR3BP fixed-Jacobi symmetric-corrector "
+        "+ continuation reproduction of Vaquero 2013 (Purdue Ph.D. dissertation, Sec. 4.4.7, "
+        "pp.169-172) 3:1 Earth-Moon periodic-cycler family across her FULL printed Jacobi range "
+        "[2.54, 3.13], both branches terminating on jacobi_bound at her printed endpoints -- THIS "
+        "member IS her printed high-energy endpoint: her printed 5.04 d Earth->Moon TOF at C=3.13 "
+        "is recovered at 5.1320 d (1.83% relative, the largest of the four endpoint checks -- the "
+        "3-sig-fig-print/unstated-mu/unstated-TOF-definition caveat #799's note documents). "
+        "UNSTABLE, Barden nu=6.6836, |lambda|=13.29. Crossing residual=1.95e-12, AND an "
+        "independent Radau integrator cross-check preserves the Jacobi constant to dJ=5.62e-13 "
+        "over one period. #811's own independent DERIVE re-verification: STANDALONE Radau "
+        "rtol=atol=1e-12 dense propagation (inline CR3BP EOM) confirms periselene 66,995 km "
+        "(1.012x lunar SOI, 1.089x Hill -- OUTSIDE both by ~812 km/1.2%, the SOI-MARGINAL "
+        "resonant_po determination's decisive datum, stated as a boundary call on the row), "
+        "perigee/apogee to <0.1 km, and period-map closure to <=3.1e-12. NOT V2 (an UNSTABLE "
+        "orbit cannot satisfy V2-ballistic bounded-drift-over->=3-laps). "
+        "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
+        "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
+        "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
 }
 
 

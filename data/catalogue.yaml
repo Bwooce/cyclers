@@ -57532,3 +57532,621 @@
     "orbit_elements.cr3bp.casoliva_periselene_km": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", r_pM column = 0.0343660232 LU (13210.3 km at this project's own registry lunit_km=384400.0 km)."
     "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
     "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own casoliva_periselene_km/DERIVE cross-check, both well inside the lunar SOI/Hill radius."
+
+- id: vaquero-21-c198-em-resonant-po-2013
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=1.98 printed-TOF family endpoint (6.39 d) (CR3BP, STABLE, NO lunar encounter -- periselene 86,911 km, outside lunar SOI/Hill radius)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- this member's own closest lunar approach 86911.0 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits OUTSIDE both the lunar SOI (66182.9 km -- 1.313x) and Hill radius (61524.1 km -- 1.413x): at THIS low-C end of the family the orbit never actually enters the Moon's sphere of influence, exactly resonant_po's own defining carve-out ('it never encounters the secondary', data/README.md/catalogue.schema.json v4.9; precedent em-cycler-21-3d-spatial-2026 at 122,628 km and the casoliva-*-resonant-po-2010 rows, #797's identical per-row discipline). Vaquero's own criterion 2 admits an L1/L2-LPO-connection encounter notion broader than SOI entry -- her 'cycler' label for the whole family is her own usage, not this schema's; the per-member SOI discriminator governs here. The SAME family's high-C members (C >= ~2.30) ARE genuine SOI-entering cyclers -- see vaquero-21-c246/c247/c266's own cycler rows. #811 per-member orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 2:1 family across her FULL printed Jacobi range [1.98, 2.66] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is one of the four printed-TOF endpoints: her printed 6.39 d Earth->Moon TOF at C=1.98 is recovered at 6.3987 d (0.14% relative); crossing residual=5.93e-14, AND an independent Radau integrator cross-check passes (radau_djacobi=1.30e-12). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.211141776252044 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 0.9885). 26.971758 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 2:1 resonant periodic-cycler family (interior 2:1, circumlunar, L2-connected), C in [1.98, 2.66]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 1.9800000000000062   # DERIVED value at a SOURCED target (#799): the fixed-Jacobi symmetric corrector enforces C to the continuation-grid target -- HER OWN printed 2:1 family endpoint C=1.98 (see source_quotes) -- to machine eps; the recorded value's ~1e-14 offset from 1.98 is grid-float accumulation, not a recovered-vs-printed gap. Independent Radau cross-check preserves Jacobi to dJ=1.30e-12 over one period.
+      period_nd: 6.211141776252044   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: 0.48520150202970636   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=0.48520150202970636, |lambda|=0.9999999999999999 -> STABLE (|nu| <= 1; out-of-plane nu_z=1.0347). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
+      state_nd: [1.2139445950765162, 0.0, 0.0, 0.0, -1.1011440751334407, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 5.93e-14, independent-Radau dJ=1.30e-12. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 86910.98698873368   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 8408.765086410873   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). INSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric).
+      apogee_km: 485024.77169683913   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Beyond the Moon (circumlunar, her L2-connected family).
+      vaquero_printed_tof_days: 6.39   # SOURCED: Vaquero 2013 Sec. 4.4.7 prose (pp.170-171), this endpoint's own printed Earth->Moon TOF -- one of only four digit-grade values she prints for these families (see source_quotes).
+      tof_earth_moon_days: 6.398660871317896   # DERIVED (#799 TOF metric: shortest periodic-wraparound time from a usable in-band perigee to the genuine close lunar approach); reproduces her printed 6.39 d to 0.14% relative -- the strongest single identity check available for this family.
+      energy_regime:
+      tof_days_bounds: [26.97175821406799, 26.97175821406799]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=1.98 -- circumlunar, naturally L2-connected (STABLE, Barden nu=0.4852). Her own printed 2:1 family low-energy endpoint (C=1.98, printed Earth->Moon TOF 6.39 d, recovered 6.3987 d, 0.14% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): one of the four printed-TOF family endpoints -- the only members whose admission is anchored by a digit-grade Vaquero print (her 6.39 d Earth->Moon TOF at C=1.98, recovered at 6.3987 d, 0.14% relative). The four endpoints + the 2:1 stability-transition bracket (vaquero-21-c246/c247) are #811's own minimum representative subset of #799's 129-member record; the full record stays in data/found/799_vaquero_em_cycler_families/results.json.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#811, per-member check): closest lunar approach 86911.0 km = 1.313x the lunar SOI (66,182.9 km), 1.413x the Hill radius (61,524.1 km) -- at this low-C end the orbit never enters the Moon's sphere of influence: an Earth-resonant periodic orbit, exactly resonant_po's v4.9 carve-out ('it never encounters the secondary'), mirroring em-cycler-21-3d-spatial-2026 and the casoliva-*-resonant-po rows. Vaquero labels the whole family 'cyclers' under her own broader criterion 2 (surface contact OR a small L1/L2-LPO connection); this schema's SOI discriminator governs the catalogue class. Cross-checked two independent ways: #799's dense DOP853 propagation and #811's standalone Radau re-derivation, agreeing to <0.1 km. Honesty note: this row is STABLE (Barden nu=0.4852); resonant_po's descriptive 'stable' prose fits here (unlike some casoliva rows), and only epoch_locked=false/n_returns=infinite is schema-enforced.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 5.93e-14, radau dJ=1.30e-12). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.6418 LU vs 2^(-2/3)=0.6300), circumlunar (apogee beyond the Moon), L2-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to 4.3e-13 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\" -- C=1.98 is her own printed 2:1 family low-energy endpoint."
+    "orbit_elements.cr3bp.vaquero_printed_tof_days": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\""
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('it never encounters the secondary') + this row's own periselene_km (86911.0 km = 1.313x SOI, 1.413x Hill), #799-DOP853 and #811-standalone-Radau cross-checked, mirroring em-cycler-21-3d-spatial-2026/#797's reasoning."
+
+- id: vaquero-21-c246-em-cycler-2013
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=2.46 last linearly stable member (stability transition) (CR3BP, STABLE, genuine lunar encounter -- periselene 49,700 km, inside lunar SOI)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- this member's own closest lunar approach 49700.3 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits WELL INSIDE the lunar SOI (66182.9 km, 0.751x) and Hill radius (61524.1 km, 0.808x) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). Per-member check, NOT a family-blanket assumption: the same 2:1 family's low-C members are OUTSIDE the SOI (crossing at C~2.29-2.30) -- see vaquero-21-c198/vaquero-31-c313's own resonant_po rows. #811 orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 2:1 family across her FULL printed Jacobi range [1.98, 2.66] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is an interior stability-transition bracket member (no printed per-member value exists; family identity carries the sourced evidence); crossing residual=7.44e-15, AND an independent Radau integrator cross-check passes (radau_djacobi=4.30e-13). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.02801832920549 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 0.9594). 26.176548 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 2:1 resonant periodic-cycler family (interior 2:1, circumlunar, L2-connected), C in [1.98, 2.66]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 2.4599999999999964   # DERIVED (#799 continuation, dC=0.01 grid): Vaquero prints NO per-member C inside the family interior -- this C=2.46 is #799's own grid point, inside her printed range [1.98, 2.66] (the range endpoints are her prints; this member's C is not). Independent Radau cross-check preserves Jacobi to dJ=4.30e-13 over one period.
+      period_nd: 6.02801832920549   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: -0.9273979208811873   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=-0.9273979208811873, |lambda|=0.9999999999999986 -> STABLE (|nu| <= 1; out-of-plane nu_z=1.2211). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
+      state_nd: [1.117142555344532, 0.0, 0.0, 0.0, -0.8517405492876177, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 7.44e-15, independent-Radau dJ=4.30e-13. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 49700.28291575895   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 43162.66889888758   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). OUTSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric) -- her printed C range nonetheless extends here; her insertion-band criterion selects members usable from LEO, it is not a family-membership condition at every C (#799 note, honest caveats).
+      apogee_km: 454191.04248888063   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Beyond the Moon (circumlunar, her L2-connected family).
+      tof_earth_moon_days: 5.919455384463423   # DERIVED (#799 TOF metric); no printed value exists at this interior C -- consistent with her printed family TOF range (4.91-6.39 d) and criterion 3's 7-day ceiling.
+      energy_regime:
+      tof_days_bounds: [26.17654832915586, 26.17654832915586]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  - path: "orbit_elements.cr3bp.jacobi_constant"
+    kind: "derive"
+    note: "Vaquero prints NO per-member values inside the family interior. This member's C sits on #799's own dC=0.01 continuation grid, selected this task (#811) as the last linearly STABLE member bracketing the 2:1 family's stability transition (between C=2.46 and C=2.47) -- a family-structure feature Vaquero's own criterion 4 prose and Fig. 4.44's nu-arrows describe qualitatively but never quantify. The transition C itself is a DERIVED, grid-resolution-conditional (dC=0.01) value, not a sourced one."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=2.46 -- circumlunar, naturally L2-connected (STABLE, Barden nu=-0.9274). An interior member selected as part of the 2:1 stability-transition bracket (see SELECTION below). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): the last linearly STABLE member of the 2:1 family on #799's dC=0.01 grid -- with its successor vaquero-21-c247 it brackets the family's stability transition (linearly stable through C=2.46, |lambda|<=5.73 above -- #799's note), the family-structure feature Vaquero's own criterion 4 ('stable or possess small unstable modes') makes load-bearing and her own free-transfer prose (p.171-172) implicitly requires (unstable 2:1 members must exist in the [2.54, 2.66] overlap band -- and do, above this transition). The four printed-TOF endpoints + this bracket are #811's own minimum representative subset of #799's 129-member record.
+
+    ORBIT_CLASS = cycler (#811, per-member check): closest lunar approach 49700.3 km = 0.751x the lunar SOI (66,182.9 km) and 0.808x the Hill radius (61,524.1 km) -- a genuine lunar flyby every period ('transports between encounters', data/README.md schema v4.7). Determined per member, not per family: the 2:1 family only enters the SOI for C >= ~2.30 (its C=1.98 end approaches no closer than 86,911 km) and the 3:1 family exits it at its C=3.13 endpoint -- each of #811's six rows carries its own determination. Cross-checked two independent ways: #799's own dense DOP853 member_report propagation and #811's standalone Radau re-derivation (inline CR3BP EOM, no cyclerfinder imports), agreeing to <0.1 km.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 7.44e-15, radau dJ=4.30e-13). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.6469 LU vs 2^(-2/3)=0.6300), circumlunar (apogee beyond the Moon), L2-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to <=3.1e-12 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.family": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\" -- the printed family C-range this interior member sits inside."
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only). Vaquero 2013, Sec. 4.4.7 (pp.171-172): \"a free-transfer between two periodic orbits may exist if both orbits are unstable and possess the same value of Jacobi constant. As illustrated in Figure 4.44, a cost-free transfer between a 2:1 and a 3:1 cycler is available at energy levels such that 2.66 < C < 2.54 approximately.\" -- her own prose REQUIRES unstable 2:1 members in the [2.54, 2.66] overlap band (the printed range is reversed, a likely typesetting slip flagged by #787's digest)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own periselene_km (49700.3 km = 0.751x SOI), #799-DOP853 and #811-standalone-Radau cross-checked."
+
+- id: vaquero-21-c247-em-cycler-2013
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=2.47 first unstable member (stability transition) (CR3BP, UNSTABLE, genuine lunar encounter -- periselene 48,516 km, inside lunar SOI)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- this member's own closest lunar approach 48515.9 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits WELL INSIDE the lunar SOI (66182.9 km, 0.733x) and Hill radius (61524.1 km, 0.789x) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). Per-member check, NOT a family-blanket assumption: the same 2:1 family's low-C members are OUTSIDE the SOI (crossing at C~2.29-2.30) -- see vaquero-21-c198/vaquero-31-c313's own resonant_po rows. #811 orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 2:1 family across her FULL printed Jacobi range [1.98, 2.66] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is an interior stability-transition bracket member (no printed per-member value exists; family identity carries the sourced evidence); crossing residual=2.51e-14, AND an independent Radau integrator cross-check passes (radau_djacobi=4.40e-13). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.019111715389312 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 0.9580). 26.137872 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 2:1 resonant periodic-cycler family (interior 2:1, circumlunar, L2-connected), C in [1.98, 2.66]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 2.469999999999996   # DERIVED (#799 continuation, dC=0.01 grid): Vaquero prints NO per-member C inside the family interior -- this C=2.47 is #799's own grid point, inside her printed range [1.98, 2.66] (the range endpoints are her prints; this member's C is not). Independent Radau cross-check preserves Jacobi to dJ=4.40e-13 over one period.
+      period_nd: 6.019111715389312   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: -1.0088127229099921   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=-1.0088127229099921, |lambda|=1.1418657570921267 -> UNSTABLE (|nu| > 1; out-of-plane nu_z=1.2363). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against -- |lambda|=1.14 is small in her own sense (vs |lambda|=2513.2 for the 4:3 family she excludes). NOT a golden.
+      state_nd: [1.1140613330033071, 0.0, 0.0, 0.0, -0.8473264744079481, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 2.51e-14, independent-Radau dJ=4.40e-13. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 48515.86104779211   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 44271.844205958085   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). OUTSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric) -- her printed C range nonetheless extends here; her insertion-band criterion selects members usable from LEO, it is not a family-membership condition at every C (#799 note, honest caveats).
+      apogee_km: 453237.43968693534   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Beyond the Moon (circumlunar, her L2-connected family).
+      tof_earth_moon_days: 5.896749838462811   # DERIVED (#799 TOF metric); no printed value exists at this interior C -- consistent with her printed family TOF range (4.91-6.39 d) and criterion 3's 7-day ceiling.
+      energy_regime:
+      tof_days_bounds: [26.137871537833124, 26.137871537833124]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  - path: "orbit_elements.cr3bp.jacobi_constant"
+    kind: "derive"
+    note: "Vaquero prints NO per-member values inside the family interior. This member's C sits on #799's own dC=0.01 continuation grid, selected this task (#811) as the first UNSTABLE member bracketing the 2:1 family's stability transition (between C=2.46 and C=2.47) -- a family-structure feature Vaquero's own criterion 4 prose and Fig. 4.44's nu-arrows describe qualitatively but never quantify. The transition C itself is a DERIVED, grid-resolution-conditional (dC=0.01) value, not a sourced one."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=2.47 -- circumlunar, naturally L2-connected (UNSTABLE, Barden nu=-1.0088, |lambda|=1.142). An interior member selected as part of the 2:1 stability-transition bracket (see SELECTION below). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): the first UNSTABLE member of the 2:1 family on #799's dC=0.01 grid -- with its predecessor vaquero-21-c246 it brackets the family's stability transition (linearly stable through C=2.46, |lambda|<=5.73 above -- #799's note), the family-structure feature Vaquero's own criterion 4 ('stable or possess small unstable modes') makes load-bearing and her own free-transfer prose (p.171-172) implicitly requires (unstable 2:1 members must exist in the [2.54, 2.66] overlap band -- and do, above this transition). The four printed-TOF endpoints + this bracket are #811's own minimum representative subset of #799's 129-member record.
+
+    ORBIT_CLASS = cycler (#811, per-member check): closest lunar approach 48515.9 km = 0.733x the lunar SOI (66,182.9 km) and 0.789x the Hill radius (61,524.1 km) -- a genuine lunar flyby every period ('transports between encounters', data/README.md schema v4.7). Determined per member, not per family: the 2:1 family only enters the SOI for C >= ~2.30 (its C=1.98 end approaches no closer than 86,911 km) and the 3:1 family exits it at its C=3.13 endpoint -- each of #811's six rows carries its own determination. Cross-checked two independent ways: #799's own dense DOP853 member_report propagation and #811's standalone Radau re-derivation (inline CR3BP EOM, no cyclerfinder imports), agreeing to <0.1 km.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 2.51e-14, radau dJ=4.40e-13). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.6471 LU vs 2^(-2/3)=0.6300), circumlunar (apogee beyond the Moon), L2-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to <=3.1e-12 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.family": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\" -- the printed family C-range this interior member sits inside."
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only). Vaquero 2013, Sec. 4.4.7 (pp.171-172): \"a free-transfer between two periodic orbits may exist if both orbits are unstable and possess the same value of Jacobi constant. As illustrated in Figure 4.44, a cost-free transfer between a 2:1 and a 3:1 cycler is available at energy levels such that 2.66 < C < 2.54 approximately.\" -- her own prose REQUIRES unstable 2:1 members in the [2.54, 2.66] overlap band (the printed range is reversed, a likely typesetting slip flagged by #787's digest)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own periselene_km (48515.9 km = 0.733x SOI), #799-DOP853 and #811-standalone-Radau cross-checked."
+
+- id: vaquero-21-c266-em-cycler-2013
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=2.66 printed-TOF family endpoint (4.91 d) (CR3BP, UNSTABLE, genuine lunar encounter -- periselene 17,675 km, inside lunar SOI)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- this member's own closest lunar approach 17675.0 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits WELL INSIDE the lunar SOI (66182.9 km, 0.267x) and Hill radius (61524.1 km, 0.287x) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). Per-member check, NOT a family-blanket assumption: the same 2:1 family's low-C members are OUTSIDE the SOI (crossing at C~2.29-2.30) -- see vaquero-21-c198/vaquero-31-c313's own resonant_po rows. #811 orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 2:1 family across her FULL printed Jacobi range [1.98, 2.66] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is one of the four printed-TOF endpoints: her printed 4.91 d Earth->Moon TOF at C=2.66 is recovered at 4.9668 d (1.16% relative); crossing residual=1.13e-14, AND an independent Radau integrator cross-check passes (radau_djacobi=2.86e-13). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 5.662843584779122 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 0.9013). 24.590784 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 2:1 resonant periodic-cycler family (interior 2:1, circumlunar, L2-connected), C in [1.98, 2.66]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 2.659999999999992   # DERIVED value at a SOURCED target (#799): the fixed-Jacobi symmetric corrector enforces C to the continuation-grid target -- HER OWN printed 2:1 family endpoint C=2.66 (see source_quotes) -- to machine eps; the recorded value's ~1e-14 offset from 2.66 is grid-float accumulation, not a recovered-vs-printed gap. Independent Radau cross-check preserves Jacobi to dJ=2.86e-13 over one period.
+      period_nd: 5.662843584779122   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: -2.326992398235445   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=-2.326992398235445, |lambda|=4.428157223146986 -> UNSTABLE (|nu| > 1; out-of-plane nu_z=2.8796). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against -- |lambda|=4.43 is small in her own sense (vs |lambda|=2513.2 for the 4:3 family she excludes). NOT a golden.
+      state_nd: [1.0338302047346954, 0.0, 0.0, 0.0, -0.9089334377051435, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 1.13e-14, independent-Radau dJ=2.86e-13. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 17675.01534133778   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 71115.54390008333   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). OUTSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric) -- her printed C range nonetheless extends here; her insertion-band criterion selects members usable from LEO, it is not a family-membership condition at every C (#799 note, honest caveats).
+      apogee_km: 433534.41867269087   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Beyond the Moon (circumlunar, her L2-connected family).
+      vaquero_printed_tof_days: 4.91   # SOURCED: Vaquero 2013 Sec. 4.4.7 prose (pp.170-171), this endpoint's own printed Earth->Moon TOF -- one of only four digit-grade values she prints for these families (see source_quotes).
+      tof_earth_moon_days: 4.966777622367361   # DERIVED (#799 TOF metric: shortest periodic-wraparound time from a usable in-band perigee to the genuine close lunar approach); reproduces her printed 4.91 d to 1.16% relative -- the strongest single identity check available for this family.
+      energy_regime:
+      tof_days_bounds: [24.590784347691013, 24.590784347691013]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=2.66 -- circumlunar, naturally L2-connected (UNSTABLE, Barden nu=-2.3270, |lambda|=4.428). Her own printed 2:1 family high-energy endpoint (C=2.66, printed Earth->Moon TOF 4.91 d, recovered 4.9668 d, 1.16% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): one of the four printed-TOF family endpoints -- the only members whose admission is anchored by a digit-grade Vaquero print (her 4.91 d Earth->Moon TOF at C=2.66, recovered at 4.9668 d, 1.16% relative). The four endpoints + the 2:1 stability-transition bracket (vaquero-21-c246/c247) are #811's own minimum representative subset of #799's 129-member record; the full record stays in data/found/799_vaquero_em_cycler_families/results.json.
+
+    ORBIT_CLASS = cycler (#811, per-member check): closest lunar approach 17675.0 km = 0.267x the lunar SOI (66,182.9 km) and 0.287x the Hill radius (61,524.1 km) -- a genuine lunar flyby every period ('transports between encounters', data/README.md schema v4.7). Determined per member, not per family: the 2:1 family only enters the SOI for C >= ~2.30 (its C=1.98 end approaches no closer than 86,911 km) and the 3:1 family exits it at its C=3.13 endpoint -- each of #811's six rows carries its own determination. Cross-checked two independent ways: #799's own dense DOP853 member_report propagation and #811's standalone Radau re-derivation (inline CR3BP EOM, no cyclerfinder imports), agreeing to <0.1 km.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 1.13e-14, radau dJ=2.86e-13). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.6564 LU vs 2^(-2/3)=0.6300), circumlunar (apogee beyond the Moon), L2-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to <=3.1e-12 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\" -- C=2.66 is her own printed 2:1 family high-energy endpoint."
+    "orbit_elements.cr3bp.vaquero_printed_tof_days": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"The time-of-flight along the 2:1 cyclers from the vicinity of the Earth to the vicinity of the Moon ranges from 4.91 days for a cycler with C = 2.66 to 6.39 days for a cycler with C = 1.98.\""
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own periselene_km (17675.0 km = 0.267x SOI), #799-DOP853 and #811-standalone-Radau cross-checked."
+
+- id: vaquero-31-c254-em-cycler-2013
+  name: "Vaquero 3:1 resonant Earth-Moon periodic cycler family, C=2.54 printed-TOF family endpoint (4.90 d) (CR3BP, UNSTABLE, genuine lunar encounter -- periselene 33,258 km, inside lunar SOI)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- this member's own closest lunar approach 33258.0 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits WELL INSIDE the lunar SOI (66182.9 km, 0.503x) and Hill radius (61524.1 km, 0.541x) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). Per-member check, NOT a family-blanket assumption: the same 3:1 family's C=3.13 top endpoint is OUTSIDE the SOI -- see vaquero-21-c198/vaquero-31-c313's own resonant_po rows. #811 orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 3:1 family across her FULL printed Jacobi range [2.54, 3.13] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is one of the four printed-TOF endpoints: her printed 4.90 d Earth->Moon TOF at C=2.54 is recovered at 4.9050 d (0.10% relative); crossing residual=1.03e-12, AND an independent Radau integrator cross-check passes (radau_djacobi=2.10e-12). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.269604424886022 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 0.9978). 27.225631 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 3:1 resonant periodic-cycler family (interior 3:1, cislunar, L1-connected), C in [2.54, 3.13]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 2.5400000000000054   # DERIVED value at a SOURCED target (#799): the fixed-Jacobi symmetric corrector enforces C to the continuation-grid target -- HER OWN printed 3:1 family endpoint C=2.54 (see source_quotes) -- to machine eps; the recorded value's ~1e-14 offset from 2.54 is grid-float accumulation, not a recovered-vs-printed gap. Independent Radau cross-check preserves Jacobi to dJ=2.10e-12 over one period.
+      period_nd: 6.269604424886022   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: 5.674983061911675   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=5.674983061911675, |lambda|=11.261165367653621 -> UNSTABLE (|nu| > 1; out-of-plane nu_z=0.4638). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against -- |lambda|=11.26 is small in her own sense (vs |lambda|=2513.2 for the 4:3 family she excludes). NOT a golden.
+      state_nd: [0.9013301668020125, 0.0, 0.0, 0.0, -0.8462249954358775, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 1.03e-12, independent-Radau dJ=2.10e-12. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 33257.99923998553   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 7170.341148605889   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). INSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric).
+      apogee_km: 351432.4489510827   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Inside the Moon's orbit (cislunar, her L1-connected family).
+      vaquero_printed_tof_days: 4.9   # SOURCED: Vaquero 2013 Sec. 4.4.7 prose (pp.170-171), this endpoint's own printed Earth->Moon TOF -- one of only four digit-grade values she prints for these families (see source_quotes).
+      tof_earth_moon_days: 4.904999386063368   # DERIVED (#799 TOF metric: shortest periodic-wraparound time from a usable in-band perigee to the genuine close lunar approach); reproduces her printed 4.90 d to 0.10% relative -- the strongest single identity check available for this family.
+      energy_regime:
+      tof_days_bounds: [27.22563108967013, 27.22563108967013]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 3:1 interior-resonant family member at C=2.54 -- cislunar, naturally L1-connected (UNSTABLE, Barden nu=5.6750, |lambda|=11.261). Her own printed 3:1 family low-energy endpoint (C=2.54, printed Earth->Moon TOF 4.90 d, recovered 4.9050 d, 0.10% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): one of the four printed-TOF family endpoints -- the only members whose admission is anchored by a digit-grade Vaquero print (her 4.90 d Earth->Moon TOF at C=2.54, recovered at 4.9050 d, 0.10% relative). The four endpoints + the 2:1 stability-transition bracket (vaquero-21-c246/c247) are #811's own minimum representative subset of #799's 129-member record; the full record stays in data/found/799_vaquero_em_cycler_families/results.json.
+
+    ORBIT_CLASS = cycler (#811, per-member check): closest lunar approach 33258.0 km = 0.503x the lunar SOI (66,182.9 km) and 0.541x the Hill radius (61,524.1 km) -- a genuine lunar flyby every period ('transports between encounters', data/README.md schema v4.7). Determined per member, not per family: the 2:1 family only enters the SOI for C >= ~2.30 (its C=1.98 end approaches no closer than 86,911 km) and the 3:1 family exits it at its C=3.13 endpoint -- each of #811's six rows carries its own determination. Cross-checked two independent ways: #799's own dense DOP853 member_report propagation and #811's standalone Radau re-derivation (inline CR3BP EOM, no cyclerfinder imports), agreeing to <0.1 km.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 1.03e-12, radau dJ=2.10e-12). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.4664 LU vs 3^(-2/3)=0.4807), cislunar (apogee inside the Moon's orbit), L1-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to <=3.1e-12 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"Similarly, the arc from the Earth to the Moon along the 3:1 cycler orbits ranges from 4.90 days for a cycler with C = 2.54 to 5.04 days for a cycler with C = 3.13.\" -- C=2.54 is her own printed 3:1 family low-energy endpoint."
+    "orbit_elements.cr3bp.vaquero_printed_tof_days": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"Similarly, the arc from the Earth to the Moon along the 3:1 cycler orbits ranges from 4.90 days for a cycler with C = 2.54 to 5.04 days for a cycler with C = 3.13.\""
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own periselene_km (33258.0 km = 0.503x SOI), #799-DOP853 and #811-standalone-Radau cross-checked."
+
+- id: vaquero-31-c313-em-resonant-po-2013
+  name: "Vaquero 3:1 resonant Earth-Moon periodic cycler family, C=3.13 printed-TOF family endpoint (5.04 d) (CR3BP, UNSTABLE, NO lunar SOI entry -- periselene 66,995 km, 1.2% OUTSIDE the lunar SOI, boundary call)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: resonant_po   # schema v4.9 (task #453): resonant_po, NOT cycler -- SOI-MARGINAL, the closest call in this writeback: this member's own closest lunar approach 66995.2 km (#799 dense-propagation value, independently DERIVE-cross-checked this task (#811) by a STANDALONE Radau rtol=atol=1e-12 propagation with inline CR3BP EOM, agreeing to <0.1 km) sits 1.012x the lunar SOI (66182.9 km) and 1.089x the Hill radius (61524.1 km) -- OUTSIDE both, by only ~812 km (1.2%), but outside; under the project's own SOI discriminator (em-cycler-21-3d-spatial-2026 + #797 casoliva precedent) that is resonant_po. This is the ONLY 3:1 member outside the SOI in #799's 60-member reproduction (the family exits the SOI between C=3.12, 65,802 km, and this C=3.13 top endpoint) -- a grid-resolution-conditional boundary call, stated not hidden. Vaquero's own criterion 2 for this family is an L1-LPO connection (this member's approach = 1.155x the Moon-L1 distance), not SOI entry -- her 'cycler' label is her own usage, not this schema's. #811 per-member orbit_class determination.
+  epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
+  n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
+  validation_level: V1   # spec §14 V1 like-for-like (#811, evidence produced by #799's reproduction run): same-model planar CR3BP fixed-Jacobi-corrector + continuation reproduction of Vaquero 2013 Sec. 4.4.7's 3:1 family across her FULL printed Jacobi range [2.54, 3.13] (both branches terminating on jacobi_bound at her printed endpoints, all four printed endpoint TOFs recovered at 0.10%-1.83% relative); THIS member is one of the four printed-TOF endpoints: her printed 5.04 d Earth->Moon TOF at C=3.13 is recovered at 5.1320 d (1.83% relative); crossing residual=1.95e-12, AND an independent Radau integrator cross-check passes (radau_djacobi=5.62e-13). Same V1 evidence class as braik-ross-c11a-cycler-2026 / casoliva-* (#797). See notes: block + source_quotes + validate.py::_LEVEL_EVIDENCE.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.45496522207971 TU nondim (DERIVED, #799 corrector/continuation -- Vaquero prints NO period for any Sec. 4.4.7 family member; the p:1 interior-resonance construction implies T ~= 2*pi TU, and this member's T/2pi = 1.0273). 28.030557 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s); years: null (CR3BP, rotating-frame periodic orbit).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Vaquero 2013 Sec. 4.4.7 Earth-Moon 3:1 resonant periodic-cycler family (interior 3:1, cislunar, L1-connected), C in [2.54, 3.13]"
+      mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition) -- registry value used per project policy + #780's lineage evidence that Casoliva/Vaquero-lineage internals sit closer to the registry value than to displayed roundings; stated, not silently substituted.
+      libration_point:
+      jacobi_constant: 3.129999999999993   # DERIVED value at a SOURCED target (#799): the fixed-Jacobi symmetric corrector enforces C to the continuation-grid target -- HER OWN printed 3:1 family endpoint C=3.13 (see source_quotes) -- to machine eps; the recorded value's ~1e-14 offset from 3.13 is grid-float accumulation, not a recovered-vs-printed gap. Independent Radau cross-check preserves Jacobi to dJ=5.62e-13 over one period.
+      period_nd: 6.45496522207971   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
+      stability_index: 6.683581237622274   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=6.683581237622274, |lambda|=13.291928849536806 -> UNSTABLE (|nu| > 1; out-of-plane nu_z=0.6587). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against -- |lambda|=13.29 is small in her own sense (vs |lambda|=2513.2 for the 4:3 family she excludes). NOT a golden.
+      state_nd: [0.8135643069819515, 0.0, 0.0, 0.0, -0.25304820538336525, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 1.95e-12, independent-Radau dJ=5.62e-13. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
+      lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
+      periselene_km: 66995.19575481689   # DERIVED (#799 member_report dense DOP853 100k-sample full-period propagation; independently re-derived this task (#811) by a STANDALONE Radau rtol=atol=1e-12 dense propagation with inline CR3BP EOM, agreeing to <0.1 km) -- the decisive datum for this row's orbit_class determination (see orbit_class comment above). NOT a Vaquero print: she prints no per-member periselene anywhere.
+      perigee_km: 57910.19002000737   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). OUTSIDE Vaquero's own LEO-GEO insertion band (6,558-42,164 km geocentric) -- her printed C range nonetheless extends here; her insertion-band criterion selects members usable from LEO, it is not a family-membership condition at every C (#799 note, honest caveats).
+      apogee_km: 317404.80424518324   # DERIVED (#799; #811 independent Radau cross-check agrees to <0.1 km). Inside the Moon's orbit (cislunar, her L1-connected family).
+      vaquero_printed_tof_days: 5.04   # SOURCED: Vaquero 2013 Sec. 4.4.7 prose (pp.170-171), this endpoint's own printed Earth->Moon TOF -- one of only four digit-grade values she prints for these families (see source_quotes).
+      tof_earth_moon_days: 5.132025477316254   # DERIVED (#799 TOF metric: shortest periodic-wraparound time from a usable in-band perigee to the genuine close lunar approach); reproduces her printed 5.04 d to 1.83% relative -- the strongest single identity check available for this family.
+      energy_regime:
+      tof_days_bounds: [28.030556622587508, 28.030556622587508]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+  source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "Vaquero 2013 prints NO digit-grade IC anywhere for the Sec. 4.4.7 cycler families (Fig. 4.44's x0 axis carries no value labels -- #787 digest; a genuinely non-digitizable graphical source). state_nd is DERIVED via #799's reproduction (Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector + continue_family walk across her printed Jacobi range at rtol=atol=1e-13, per-member gauntlet incl. Jacobi conservation <=1e-10 and an independent-Radau cross-check). Family identity rests on her printed prose values (C-range endpoints, all four endpoint Earth->Moon TOFs at 0.10%-1.83% relative, resonance semi-major axis, cislunar/circumlunar geometry, Fig. 4.44 x0 band, stability criterion), not on any printed state. Never a golden."
+    source_hint: "src/cyclerfinder/search/vaquero_em_cyclers.py + docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + data/found/799_vaquero_em_cycler_families/results.json."
+    todo_ref: "#811"
+  legs: []
+  first_published:
+    authors: ["Vaquero Escribano, T. M."]
+    year: 2013
+    title: "Spacecraft Transfer Trajectory Design Exploiting Resonant Orbits in Multi-Body Environments"
+    venue: "Ph.D. dissertation, Purdue University, School of Aeronautics and Astronautics (advisor K. C. Howell)"
+    doi:
+    url:
+    note: |
+      Sec. 4.4.7 ("Earth-Moon Periodic Cyclers"), pp.169-172, Figs.
+      4.43-4.44. Prose-only source: prints the two families' Jacobi-range
+      endpoints and four endpoint Earth->Moon TOFs plus four selection
+      criteria -- NO digit-grade IC/period/stability table exists anywhere
+      in the chapter (Fig. 4.44's x0 axis is unlabeled; #787 digest).
+      No DOI exists for the dissertation; freely available from the
+      author's own Purdue page, corpus copy md5
+      fdcbf871322b87cd1dd3448059cb2596 (docs/notes/CORPUS_INDEX.md).
+  corroborating_sources:
+  - authors: ["Casoliva, J.", "Mondelo, J. M.", "Villac, B. F.", "Mease, K. D.", "Barrabes, E.", "Olle, M."]
+    year: 2010
+    title: "Two Classes of Cycler Trajectories in the Earth-Moon System"
+    venue: "Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640"
+    doi: "10.2514/1.46856"
+    url: "https://arc.aiaa.org/doi/10.2514/1.46856"
+    note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
+  priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
+  notes: |
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 3:1 interior-resonant family member at C=3.13 -- cislunar, naturally L1-connected (UNSTABLE, Barden nu=6.6836, |lambda|=13.292). Her own printed 3:1 family high-energy endpoint (C=3.13, printed Earth->Moon TOF 5.04 d, recovered 5.1320 d, 1.83% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+
+    SELECTION (#811): one of the four printed-TOF family endpoints -- the only members whose admission is anchored by a digit-grade Vaquero print (her 5.04 d Earth->Moon TOF at C=3.13, recovered at 5.1320 d, 1.83% relative). The four endpoints + the 2:1 stability-transition bracket (vaquero-21-c246/c247) are #811's own minimum representative subset of #799's 129-member record; the full record stays in data/found/799_vaquero_em_cycler_families/results.json.
+
+    ORBIT_CLASS = resonant_po, NOT cycler (#811, per-member check -- SOI-MARGINAL, the closest call in this writeback): closest lunar approach 66995.2 km = 1.012x the lunar SOI (66,182.9 km), 1.089x the Hill radius (61,524.1 km) -- outside both, by only ~812 km (1.2%). Under the project's own SOI discriminator (em-cycler-21-3d-spatial-2026, #797) that is resonant_po; the call is grid-conditional (the 3:1 family exits the SOI between C=3.12 at 65,802 km and this C=3.13 top endpoint -- this is the ONLY 3:1 member outside the SOI in #799's 60-member record) and is stated, not hidden. Vaquero's own criterion 2 for this family is an L1-LPO connection (approach = 1.155x the Moon-L1 distance here), satisfied without SOI entry -- her 'cycler' label is her own usage. Cross-checked two independent ways: #799's dense DOP853 propagation and #811's standalone Radau re-derivation, agreeing to <0.1 km. Honesty note: this row is UNSTABLE (|lambda|=13.29 -- 'small unstable modes' in her own sense); resonant_po's descriptive 'stable' prose does not fit, but only epoch_locked=false/n_returns=infinite is schema-enforced (tests/data/test_schema_v47_orbit_class.py), same honesty-note pattern as casoliva-1-2d-em-resonant-po-2010.
+
+    MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
+
+    REPRODUCTION (#799, evidence reused by #811 unmodified): src/cyclerfinder/search/vaquero_em_cyclers.py -- Tisserand-matched two-body APOAPSIS seed (NOT the 4x-documented-failing naive two_body_resonant_seed), fixed-Jacobi symmetric corrector, continue_family walk across the family's full printed Jacobi range at rtol=atol=1e-13 (1e-12 measurably leaks the 1e-10 Jacobi-conservation gate at the families' ~7,000-8,500 km low-C perigees), both branches terminating on jacobi_bound at her printed endpoints. Every member passes corrector convergence, period bounds, dedup, Jacobi conservation <=1e-10, and an independent-Radau cross-check (this member: crossing residual 1.95e-12, radau dJ=5.62e-13). Family identity verified on ALL constraints (#798 discipline): printed C-range endpoint-to-endpoint, all four printed endpoint TOFs (0.10%-1.83%), two-body resonance a within 2-4% of p^(-2/3) (this member: a=0.4882 LU vs 3^(-2/3)=0.4807), cislunar (apogee inside the Moon's orbit), L1-connected geometry, Fig. 4.44 x0 band, and her stability criterion. #811's own independent DERIVE re-verification (not merely inherited from #799): standalone Radau rtol=atol=1e-12 dense propagation (inline CR3BP EOM, 20k-sample grid + parabolic refinement, no cyclerfinder imports) confirms periselene/perigee/apogee to <0.1 km and closes the period-map to <=3.1e-12 -- the evidence this row's orbit_class determination rests on.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"Similarly, the arc from the Earth to the Moon along the 3:1 cycler orbits ranges from 4.90 days for a cycler with C = 2.54 to 5.04 days for a cycler with C = 3.13.\" -- C=3.13 is her own printed 3:1 family high-energy endpoint."
+    "orbit_elements.cr3bp.vaquero_printed_tof_days": "Vaquero 2013, Sec. 4.4.7 (pp.170-171): \"Similarly, the arc from the Earth to the Moon along the 3:1 cycler orbits ranges from 4.90 days for a cycler with C = 2.54 to 5.04 days for a cycler with C = 3.13.\""
+    "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only)."
+    "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
+    "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('it never encounters the secondary') + this row's own periselene_km (66995.2 km = 1.012x SOI, 1.089x Hill), #799-DOP853 and #811-standalone-Radau cross-checked, mirroring em-cycler-21-3d-spatial-2026/#797's reasoning."
