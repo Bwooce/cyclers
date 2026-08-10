@@ -271,20 +271,29 @@ unchanged. See `git log` around this date for the corrected commit.
   that would have caught this without adjudication), `#819` (speculative, explicitly NOT
   implied). Full reasoning + reproducible arithmetic:
   `docs/notes/2026-08-10-817-passive-oberon-node-adjudication.md`.
-- `#818` — registered 2026-08-10 (from `#817`'s verdict, not dispatched): a reusable
-  **passive-node self-consistency gate**. For any closure root whose required turn at a node
-  is ~0, compute that body's parasitic patched-conic deflection at its own SOI/Hill boundary
-  (`delta = 2·asin(1/(1 + r_p·V∞²/μ))`, the same law `search/physical_sanity.py` already uses
-  for `max_bend_deg`) and reject the root unless that deflection is below a declared fraction
-  of the trajectory's working turn budget. Generalizes `#480`'s geometric SOI-containment rule
-  (`[[feedback_constructed_tour_per_encounter_self_consistency]]`) to the DYNAMICAL side: a
-  node can be geometrically inside the SOI and still be modelled as doing nothing, which is
-  the contradiction `#817` had to adjudicate by hand. Would have auto-classified `#816`'s
-  object out with no adjudication needed. Small: one function + test, plus a pure
-  post-processing re-run over `#816`'s 785 stored passive-node roots (no physics re-run) to
-  test `#817`'s explicitly-unverified hypothesis that they ALL fail the same way (all four
-  Uranian moons are μ ∈ [83, 235] at 1-3 km/s). Cheap, deterministic, and the right shape of
-  gate per `[[feedback_subagent_model_tiering]]`.
+- `#818` — ✓ DONE 2026-08-10: reusable **passive-node self-consistency gate** built, tested,
+  and re-run over `#816`'s 785 stored passive-node roots (pure post-processing, no physics).
+  `search/physical_sanity.py::passive_node_is_self_consistent` — parasitic deflection from
+  `core/flyby.py::max_bend` VERBATIM (pinned by a rel-1e-15 parity test), evaluated at the
+  body's Laplace SOI `a·(μ/μ_p)^(2/5)` (the lower bound any real encounter imparts; Hill
+  value reported alongside), rejected unless ≤ **2%** of the working turn budget
+  (`#817`'s own negligibility line; verdict insensitive over 0.5%-10%). Positive control
+  reproduces `#817`'s table (Oberon SOI 9,678 km, 1.3968° = 33.0% → reject); negative
+  control (R-S-2009-style Enceladus at 4 km/s vs 30° Titan budget, 0.37% → admit) confirms
+  no over-rejection. **Re-run verdict: 0/785 joint survivors — all 6 turn-feasible passive
+  roots REJECTED (both entries of `#817`'s object at 33.0%, plus one more Ariel-Oberon
+  q=13 n_rev=(3,3) object at 2.85%, thin 1.42× margin but independently dead on the #324
+  bend gate). `#817`'s literal "ALL 785 fail the same way" hypothesis REFUTED under the
+  fraction criterion (698/785 pass it — their budgets are impossible 98°-178° turns, already
+  dead on `#816`'s required-turn wall) but CONFIRMED in the absolute reading (785/785 have
+  parasitic SOI deflection 0.063°-6.58° > the 0.05° passivity threshold itself) and in the
+  operative sense (the gate auto-rejects everything that previously needed hand
+  adjudication).** No exception warranting a new adjudication; no stamp change (`#816`'s
+  `n_survivors: 0` stands). Bonus correction: `tour_self_consistency.py::soi_km`'s docstring
+  mislabeled its Hill formula as "Laplace SOI" (behavior unchanged). Artifacts:
+  `scripts/postprocess_818_passive_node_gate.py`,
+  `data/found/818_passive_node_gate/gate_results.json`,
+  `docs/notes/2026-08-10-818-passive-node-self-consistency-gate.md`.
 - `#819` — registered 2026-08-10 (from `#817`, **explicitly NOT implied or recommended by
   that verdict**, speculative, not dispatched): a genuine Russell-Strange-2009-style Uranian
   cycler with a *properly modelled* second-moon science pass — finite flyby altitude at the

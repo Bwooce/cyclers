@@ -24,10 +24,16 @@ import pytest
 from cyclerfinder.core.flyby import max_bend
 from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.search.physical_sanity import (
+    DEFAULT_MAX_PARASITIC_TURN_FRACTION,
     DEFAULT_MIN_USEFUL_BEND_DEG,
+    PASSIVE_NODE_TURN_MAX_DEG,
     FlybyPhysicalVerdict,
+    PassiveNodeVerdict,
     candidate_passes_physical_gate,
     flyby_is_useful,
+    hill_radius_km,
+    laplace_soi_km,
+    passive_node_is_self_consistent,
 )
 
 # ---------------------------------------------------------------------------
@@ -284,3 +290,137 @@ def test_max_bend_deg_matches_core_flyby(body: str, vinf: float) -> None:
         mu, r = s.mu_km3_s2, s.radius_eq_km
     expected = degrees(max_bend(mu, r + verdict.min_safe_altitude_km, vinf))
     assert verdict.max_bend_deg == pytest.approx(expected, rel=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Passive-node self-consistency gate (task #818)
+# ---------------------------------------------------------------------------
+#
+# Positive control: #817's hand adjudication of #816's Ariel-Oberon passive-
+# Oberon object (docs/notes/2026-08-10-817-passive-oberon-node-adjudication.md
+# §2). EXPECTED values are that note's own published table — Oberon Laplace
+# SOI 9,678 km, parasitic deflection 1.3968 deg, 33% of the 4.2327790 deg
+# Ariel working turn; Hill radius 13,288 km, 1.0207 deg, 24% — derived there
+# from the registry constants + the BMW deflection law, NOT from this gate
+# (non-circular in the same sense the #324 tests above are).
+
+# Stored per-root numbers from data/found/816_unequal_tof_asymmetric_roots/
+# roots.json for the flagged object (quoted in the #817 note).
+_OBERON_VINF_KMS = 1.31114
+_ARIEL_WORKING_TURN_DEG = 4.2327790
+
+
+def test_817_positive_control_oberon_passive_node_rejected() -> None:
+    """#817's Ariel-Oberon object: 1.397 deg parasitic at Oberon's SOI = 33% -> reject."""
+    verdict = passive_node_is_self_consistent("Oberon", _OBERON_VINF_KMS, _ARIEL_WORKING_TURN_DEG)
+    assert isinstance(verdict, PassiveNodeVerdict)
+    # #817 table: Laplace SOI 9,678 km / Hill 13,288 km.
+    assert verdict.soi_radius_km == pytest.approx(9678.0, abs=1.0)
+    assert verdict.hill_radius_km == pytest.approx(13288.0, abs=1.0)
+    # #817 table: 1.3968 deg at the SOI (33% of budget), 1.0207 deg at Hill (24%).
+    assert verdict.parasitic_deflection_deg == pytest.approx(1.3968, abs=1e-3)
+    assert verdict.parasitic_deflection_hill_deg == pytest.approx(1.0207, abs=1e-3)
+    assert verdict.parasitic_fraction == pytest.approx(0.33, abs=0.005)
+    assert verdict.is_self_consistent is False
+    assert "parasitic" in verdict.notes
+
+
+def test_817_deflection_law_is_core_flyby_max_bend_verbatim() -> None:
+    """The gate's parasitic deflection must equal core/flyby.py's max_bend at the SOI.
+
+    #817's whole verification chain rests on the deflection law being the SAME
+    implementation that produced the stored max_bend_deg_per_encounter values
+    ("reproduces ... bit-for-bit"); this pins the gate to that implementation.
+    """
+    verdict = passive_node_is_self_consistent("Oberon", _OBERON_VINF_KMS, _ARIEL_WORKING_TURN_DEG)
+    mu = SATELLITES["Oberon"].mu_km3_s2
+    expected = degrees(max_bend(mu, verdict.soi_radius_km, _OBERON_VINF_KMS))
+    assert verdict.parasitic_deflection_deg == pytest.approx(expected, rel=1e-15)
+    expected_hill = degrees(max_bend(mu, verdict.hill_radius_km, _OBERON_VINF_KMS))
+    assert verdict.parasitic_deflection_hill_deg == pytest.approx(expected_hill, rel=1e-15)
+
+
+def test_818_negative_control_russell_strange_enceladus_admitted() -> None:
+    """R-S 2009-style genuinely-negligible passive target: Enceladus at ~4 km/s.
+
+    #817 §2's own calibration case: Enceladus (mu = 7.2) at ~4 km/s deflects a
+    100-km pass by only ~0.15 deg — "genuinely negligible" against a Titan
+    working turn of tens of degrees. At Enceladus's SOI the parasitic lower
+    bound is smaller still (~0.11 deg); against a 30 deg Titan budget that is
+    ~0.4% << 2% -> the gate must NOT over-reject this architecture.
+    """
+    verdict = passive_node_is_self_consistent("Enceladus", 4.0, 30.0)
+    assert verdict.parasitic_deflection_deg < 0.15
+    assert verdict.parasitic_fraction < 0.005
+    assert verdict.is_self_consistent is True
+    assert verdict.notes == ""
+
+
+def test_818_zero_budget_always_rejected() -> None:
+    """A trajectory with no working turn budget cannot absorb any parasitic turn."""
+    verdict = passive_node_is_self_consistent("Oberon", 1.3, 0.0)
+    assert verdict.parasitic_fraction == float("inf")
+    assert verdict.is_self_consistent is False
+    assert "non-positive working turn budget" in verdict.notes
+
+
+def test_818_threshold_is_2_percent() -> None:
+    assert DEFAULT_MAX_PARASITIC_TURN_FRACTION == 0.02
+
+
+def test_818_passive_turn_threshold_matches_816_classifier() -> None:
+    """PASSIVE_NODE_TURN_MAX_DEG must equal scan_816's TURN_TRIVIAL_DEG (0.05)."""
+    assert PASSIVE_NODE_TURN_MAX_DEG == 0.05
+
+
+def test_818_hill_radius_parity_with_480_soi_km() -> None:
+    """hill_radius_km must agree with tour_self_consistency.soi_km for satellites."""
+    from cyclerfinder.search.tour_self_consistency import soi_km
+
+    for body in ("Oberon", "Ariel", "Enceladus", "Europa"):
+        assert hill_radius_km(body) == pytest.approx(soi_km(body), rel=1e-15)
+
+
+def test_818_laplace_soi_smaller_than_hill() -> None:
+    """The Laplace SOI is strictly inside the Hill sphere for every registry moon.
+
+    This orders the two parasitic bounds: deflection at the SOI (verdict-
+    bearing) >= deflection at Hill (lenient), so the gate never under-reports
+    relative to the #817 table's lenient row.
+    """
+    for body in ("Oberon", "Ariel", "Umbriel", "Titania", "Enceladus", "Titan"):
+        assert laplace_soi_km(body) < hill_radius_km(body)
+
+
+def test_818_planet_lookup_works() -> None:
+    """Planets resolve about the Sun (reusability beyond moon systems)."""
+    # Earth's Laplace SOI is the textbook ~9.24e5 km (BMW table value ~924,000 km).
+    assert laplace_soi_km("E") == pytest.approx(9.24e5, rel=0.01)
+    verdict = passive_node_is_self_consistent("E", 6.0, 30.0)
+    assert verdict.parasitic_deflection_deg > 0.0
+
+
+def test_818_unknown_body_raises() -> None:
+    with pytest.raises(KeyError):
+        passive_node_is_self_consistent("Vulcan", 1.0, 10.0)
+
+
+def test_818_negative_vinf_rejected() -> None:
+    with pytest.raises(ValueError):
+        passive_node_is_self_consistent("Oberon", -1.0, 10.0)
+
+
+def test_818_nonpositive_fraction_rejected() -> None:
+    with pytest.raises(ValueError):
+        passive_node_is_self_consistent("Oberon", 1.0, 10.0, max_parasitic_fraction=0.0)
+
+
+def test_818_borderline_816_object_rejected_at_2_percent() -> None:
+    """The second turn-feasible #816 passive object (q=13 n_rev=(3,3), passive
+    Ariel at 4.6215 km/s vs a 7.0981 deg Oberon working turn) sits at 2.85% —
+    above the 2% floor -> rejected, with a thin (1.4x) margin reported
+    honestly in the #818 note. Values from roots.json (stored, not recomputed).
+    """
+    verdict = passive_node_is_self_consistent("Ariel", 4.621471462531872, 7.098100739994588)
+    assert verdict.parasitic_fraction == pytest.approx(0.0285, abs=5e-4)
+    assert verdict.is_self_consistent is False

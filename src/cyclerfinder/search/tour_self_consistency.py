@@ -33,9 +33,16 @@ class TourSelfConsistencyError(ValueError):
 
 
 def soi_km(body: str) -> float:
-    """Laplace sphere-of-influence radius (km) of a moon about its primary.
+    """Hill-sphere radius (km) of a moon about its primary, used as the SOI bound.
 
-    ``r_SOI = a · (mu_moon / (3 · mu_primary))**(1/3)`` — the standard patched-conic SOI.
+    ``r_Hill = a · (mu_moon / (3 · mu_primary))**(1/3)``. NOTE (#818 docstring
+    correction, behavior unchanged): this is the HILL formula, not the Laplace
+    SOI ``a · (mu/mu_primary)**(2/5)`` (which is the smaller of the two — see
+    :func:`cyclerfinder.data.transfer_network.r_soi_km` and
+    :func:`cyclerfinder.search.physical_sanity.laplace_soi_km`). For the #480
+    geometric containment check the more lenient Hill bound is fine: an
+    encounter that misses even the Hill sphere is unambiguously not an
+    encounter.
     """
     sat = SATELLITES[body]
     mu_primary = PRIMARIES[sat.primary]
