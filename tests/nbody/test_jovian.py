@@ -126,6 +126,42 @@ def test_moon_state_spline_accuracy() -> None:
 
 
 @_needs_kernel
+def test_jovian_ephemeris_survives_external_kclear() -> None:
+    """#824 regression: a same-process ``spice.kclear()`` call elsewhere must
+    not leave ``JovianEphemeris`` silently unable to serve states.
+
+    Reproduced live on CI: several modules (``verify/mission_spk.py``,
+    ``data/validation/v4_saturn_strict.py``, ``data/validation/
+    v4_uranus_strict.py``, ``search/ccr4bp_real_ephemeris_consistency.py``)
+    call ``spice.kclear()``, which wipes SPICE's ENTIRE kernel pool. The
+    former ``_FURNISHED`` module-level Python cache had no way to learn
+    this happened, so a SECOND ``JovianEphemeris`` construction with the
+    SAME already-"furnished" path skipped re-furnishing and the next
+    ``spkezr`` call raised ``SpiceNOLOADEDFILES`` -- exactly the failure
+    ``tests/search/test_joint_sobol.py::test_sobol_pipeline_positive_control``
+    and ``tests/search/test_joint_cell.py::
+    test_joint_cell_reproduces_liang_member_d`` hit on
+    ``pytest-xdist`` workers that happened to run one of those
+    kclear-calling tests first (test-ordering-dependent, hence the
+    CI-only, machine-load-independent flakiness -- confirmed by running
+    with zero other local processes active and still reproducing).
+    """
+    import spiceypy
+
+    assert _KERNEL is not None
+    eph1 = jovian.JovianEphemeris(_KERNEL)
+    t0 = jovian.tdb_sec_from_iso("2033-09-25T18:04:43")
+    r1, _ = eph1.state("EUROPA", t0)
+    assert np.all(np.isfinite(r1))
+
+    spiceypy.kclear()  # simulates an unrelated same-process caller
+
+    eph2 = jovian.JovianEphemeris(_KERNEL)  # same path -- must re-furnish, not trust a cache
+    r2, _ = eph2.state("EUROPA", t0)
+    assert np.allclose(r1, r2)
+
+
+@_needs_kernel
 @pytest.mark.slow
 def test_short_conic_leg_lambert_on_real_geometry() -> None:
     """One Callisto->Ganymede 1-rev Lambert leg on real JUP365 geometry solves.

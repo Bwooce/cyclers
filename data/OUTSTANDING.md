@@ -814,31 +814,39 @@ unchanged. See `git log` around this date for the corrected commit.
   `-n 6` chosen over a lower number to keep most of the parallel speedup — not deeply tuned,
   revisit if flakes persist. Verification: `tests/search/test_earth_moon_class1_resonant_connections.py`
   green under the new setting; full `tests/data tests/search -q` clean.
-- `#824` — registered 2026-08-10 (found while confirming CI went green after `#797`/`#801`'s
-  `NON_HELIOCENTRIC` ratchet fix, not dispatched): `tests/search/test_joint_sobol.py::
+- `#824` — ✓ DONE 2026-08-10: root cause found and fixed — a SYSTEMIC bug, not the cross-worker
+  on-disk-cache race this bullet's own original registration guessed (that hypothesis is WRONG,
+  corrected here, not left standing). `tests/search/test_joint_sobol.py::
   test_sobol_pipeline_positive_control` and `tests/search/test_joint_cell.py::
-  test_joint_cell_reproduces_liang_member_d` fail with `spiceypy.utils.exceptions.
-  SpiceNOLOADEDFILES` on THREE CONSECUTIVE self-hosted CI runs tonight (`31368280942`,
-  `31375780494`, `31382887932`) — including the last one, confirmed to run with ZERO other
-  local `pytest` processes active on the machine (`ps aux` checked directly beforehand). This
-  rules out `#809`'s own external-contention class as the explanation: the failure survives a
-  genuinely quiet machine, so it is very likely an INTERNAL race between `pytest-xdist`'s own
-  parallel workers (6, per `#809`) and SPICE's kernel pool and/or the shared on-disk kernel
-  cache (`~/.astropy/cache`, `~/dev/references/kernels`) both tests read — `SpiceNOLOADEDFILES`
-  means the pool was empty when a call needed it, consistent with one worker process observing
-  a kernel file mid-write/mid-load by another, or a furnish/clear ordering race across workers
-  sharing the same cache directory. NOT the same bug `#729`'s own `test_lsk_furnish_guard_
-  prevents_kernel_pool_exhaustion` regression-tests (`tests/scripts/test_729_epoch_torus_
-  robustness_scan.py`) — that one guards against `SpiceNOMOREROOM` from repeated same-process
-  re-furnishing, a different error and a different (intra-process, not cross-worker) mechanism;
-  checked, does not cover these two tests. Needs real investigation (do these two tests furnish
-  their own kernels independently, or rely on a shared/session fixture? is the on-disk cache
-  genuinely safe for concurrent multi-process reads, or does the DE440/JUP365 warm-up logic
-  ever write/replace the file lazily inside a test rather than only in `ci.yml`'s own pre-fetch
-  step?) before deciding the fix — do NOT paper over with a retry/xfail without knowing the
-  mechanism, matching this project's own standing discipline. Not blocking any of tonight's
-  actual work (`#813`/`#818`/`#811` all independently verified clean locally and pushed) — this
-  is a CI-green-checkmark gap only, not a code-correctness question for those tasks.
+  test_joint_cell_reproduces_liang_member_d` fail with `SpiceNOLOADEDFILES` because
+  `nbody/jovian.py::JovianEphemeris.__init__` (and 3 near-identical siblings —
+  `core/ephemeris.py::_CentredSpiceBackend`, `verify/pluto_charon_realeph.py::_furnish`,
+  `search/crnbp_real_ephemeris_consistency.py`'s own LSK guard) used a Python-level
+  "did-we-call-furnsh" cache (`_FURNISHED`/`_JUP365_FURNISHED`/`_LSK_FURNISHED`) that goes STALE
+  whenever ANY same-process caller elsewhere calls `spice.kclear()` (wipes SPICE's ENTIRE
+  kernel pool — at least 6 other modules/tests do this: `mission_spk.py`,
+  `v4_saturn_strict.py`, `v4_uranus_strict.py`, `ccr4bp_real_ephemeris_consistency.py`,
+  `test_ephemeris_crosscheck.py`, `test_ccr4bp_real_ephemeris_consistency.py`). A same-worker
+  test-ordering dependency (which `kclear()`-calling test lands in the same `pytest-xdist`
+  worker before these two), NOT a cross-worker race — reproduced deterministically in complete
+  isolation (single process, no xdist, no other worker involved): furnish, call
+  `spice.kclear()`, construct `JovianEphemeris` again with the SAME path, and the stale cache
+  skips re-furnishing while the pool is actually empty → `SpiceNOLOADEDFILES` on the next
+  `spkezr` call, exact error, every time. **Fix**: all 4 sites now query SPICE's own pool via
+  `spiceypy.kinfo(path)` (catch `NotFoundError` → not loaded → furnish) instead of trusting a
+  local cache — ground truth, not memoization; verified this doesn't reintroduce `#729`'s own
+  separate `SpiceNOMOREROOM`-from-repeated-furnsh bug (different error, different mechanism,
+  the guard itself is preserved, just made robust). 2 new regression tests
+  (`tests/nbody/test_jovian.py::test_jovian_ephemeris_survives_external_kclear`,
+  `tests/nbody/test_galilean_ephem.py::test_centred_spice_backend_survives_external_kclear`)
+  reproduce the exact kclear-then-reconstruct scenario and confirm the fix. Also plausibly
+  explains some of tonight's earlier "assumed contention" flakes on
+  `test_jupiter_spice_moon_state_fn_europa_sma_sane` (routes through the same
+  `_CentredSpiceBackend` code path) — not re-litigated, but worth knowing this bug class was
+  live all night, not new. Verification: the two originally-failing tests + both new regression
+  tests + all broader `tests/core`/`tests/verify`/`tests/search`(crnbp/ccr4bp real-eph)/
+  `tests/scripts` (#729) suites green (0 FAILED); full `tests/data tests/search -q` ratchet
+  clean; `ruff check`/`ruff format --check`/full `mypy src tests` (842 files) clean.
 - `#794` — ✓ DONE 2026-08-09 (registered 2026-08-08 by `#793`, dispatched 2026-08-09): closed
   the `loop-ee`/`loop-ee-N` `#54` `data_gaps` on ALL 14 `free_return_arcs[]` rows — 23 loop
   segments now carry sourced/derived tof_days / n_revs / branch / (a,e) (+ inclination in the

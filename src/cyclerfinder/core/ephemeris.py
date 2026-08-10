@@ -223,12 +223,6 @@ class _CentredCircularBackend:
         return r, v
 
 
-# Module-level flag so jup365.bsp is furnished into SPICE at most once per
-# interpreter session (spiceypy.furnsh is idempotent for the same file, but
-# a module-level guard avoids even the stat+SPICE lookup on every construction).
-_JUP365_FURNISHED: bool = False
-
-
 class _CentredSpiceBackend:
     """Real Galilean-moon states from the NAIF jup365.bsp satellite kernel.
 
@@ -276,10 +270,9 @@ class _CentredSpiceBackend:
     _ZERO_V: ClassVar[Vec3] = np.zeros(3, dtype=np.float64)
 
     def __init__(self, center: str) -> None:
-        global _JUP365_FURNISHED
         # Lazy import: clear ImportError if spiceypy absent.
         try:
-            import spiceypy  # noqa: F401
+            import spiceypy as s
         except ImportError as exc:
             raise ImportError(
                 "spiceypy is required for the 'spice' ephemeris backend. "
@@ -288,15 +281,21 @@ class _CentredSpiceBackend:
 
         self._center = center
 
-        # Furnish jup365.bsp once per interpreter session.
-        if not _JUP365_FURNISHED:
-            import spiceypy as s
+        # #824: query SPICE's own pool for ground truth rather than the
+        # former `_JUP365_FURNISHED` local flag. A same-process caller
+        # elsewhere (several modules call spice.kclear(), which wipes the
+        # ENTIRE pool) can silently invalidate a Python-level cache without
+        # this class knowing, leaving a stale "already furnished" belief
+        # while the pool is actually empty -- reproduced directly via
+        # nbody.jovian.JovianEphemeris's own identical former bug.
+        # kinfo() always reflects the real state.
+        from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
 
-            from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
-
-            kernel_path = ensure_jup365_kernel()
+        kernel_path = ensure_jup365_kernel()
+        try:
+            s.kinfo(kernel_path)
+        except s.utils.exceptions.NotFoundError:
             s.furnsh(kernel_path)
-            _JUP365_FURNISHED = True
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         """Return Jupiter-centred ``(r_km, v_km_s)`` in J2000 equatorial."""

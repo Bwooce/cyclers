@@ -50,15 +50,19 @@ from cyclerfinder.genome.er3bp_periodic import ER3BPPeriodicOrbit, correct_er3bp
 #: convention): the JPL DE440/PLU060 SYSTEM GM, already includes Charon.
 GM_PLUTO_CHARON_SYSTEM_KM3_S2 = 975.5
 
-_FURNISHED: set[str] = set()
-
 
 def _furnish(kernel_path: str) -> None:
     import spiceypy
 
-    if kernel_path not in _FURNISHED:
+    # #824: query SPICE's own pool for ground truth rather than a local
+    # "did we call furnsh" cache -- a same-process caller elsewhere
+    # (several modules call spice.kclear(), which wipes the ENTIRE pool)
+    # can silently invalidate such a cache without this function knowing.
+    # See nbody.jovian.JovianEphemeris's own identical former bug and fix.
+    try:
+        spiceypy.kinfo(kernel_path)
+    except spiceypy.utils.exceptions.NotFoundError:
         spiceypy.furnsh(kernel_path)
-        _FURNISHED.add(kernel_path)
 
 
 @dataclass(frozen=True)

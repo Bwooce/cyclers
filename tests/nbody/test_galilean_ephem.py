@@ -39,3 +39,31 @@ def test_galilean_spice_io_period_sanity() -> None:
     r1, _ = eph.state("Io", 1.769 * 86400.0)
     # Io's orbital period is ~1.769 days; after one period it should be near start
     assert max(abs(a - b) for a, b in zip(r0, r1, strict=True)) < 5000.0
+
+
+def test_centred_spice_backend_survives_external_kclear() -> None:
+    """#824 regression: a same-process ``spice.kclear()`` call elsewhere must
+    not leave ``_CentredSpiceBackend`` silently unable to serve states.
+
+    Same bug class as ``nbody.jovian.JovianEphemeris``'s own former
+    ``_FURNISHED`` cache (see that module's fix and
+    ``tests/nbody/test_jovian.py::
+    test_jovian_ephemeris_survives_external_kclear``): the former
+    ``_JUP365_FURNISHED`` module-level flag in ``core/ephemeris.py`` had no
+    way to learn that ``spice.kclear()`` (called by several other modules
+    in this codebase) had wiped SPICE's entire pool, so a second
+    construction skipped re-furnishing and the next ``spkezr`` call raised
+    ``SpiceNOLOADEDFILES``.
+    """
+    import spiceypy as s
+
+    from cyclerfinder.core.ephemeris import Ephemeris
+
+    eph1 = Ephemeris(center="Jupiter", model="spice")
+    r1, _ = eph1.state("Europa", 0.0)
+
+    s.kclear()  # simulates an unrelated same-process caller
+
+    eph2 = Ephemeris(center="Jupiter", model="spice")  # must re-furnish, not trust a cache
+    r2, _ = eph2.state("Europa", 0.0)
+    assert max(abs(a - b) for a, b in zip(r1, r2, strict=True)) < 1e-9

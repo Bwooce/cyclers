@@ -109,8 +109,6 @@ def tdb_sec_from_iso(iso: str) -> float:
 
 # --- Kernel-backed moon ephemeris ------------------------------------------------
 
-_FURNISHED: set[str] = set()
-
 
 class JovianEphemeris:
     """Jupiter-centered J2000 moon states from a furnished JUP365 kernel."""
@@ -120,9 +118,18 @@ class JovianEphemeris:
 
         if not os.path.exists(kernel_path):
             raise FileNotFoundError(kernel_path)
-        if kernel_path not in _FURNISHED:
+        # #824: query SPICE's own pool for ground truth rather than a local
+        # "did we call furnsh" flag/cache. A same-process caller elsewhere
+        # (several modules call spice.kclear(), which wipes the ENTIRE
+        # pool) can silently invalidate a Python-level cache without this
+        # class knowing -- reproduced directly: furnish, kclear()
+        # elsewhere, construct again, and a stale cache skips re-furnishing
+        # while the pool is actually empty, raising SpiceNOLOADEDFILES on
+        # the next spkezr call. kinfo() always reflects the real state.
+        try:
+            spiceypy.kinfo(kernel_path)
+        except spiceypy.utils.exceptions.NotFoundError:
             spiceypy.furnsh(kernel_path)
-            _FURNISHED.add(kernel_path)
         self.kernel_path = kernel_path
 
     def state(self, moon: str, t_sec: float) -> tuple[Vec3, Vec3]:

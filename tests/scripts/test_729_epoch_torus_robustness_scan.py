@@ -6,7 +6,10 @@
 algorithm as a library (this test suite's own build DID fix one real bug in
 that module -- an LSK ``spice.furnsh`` call with no idempotency guard that
 exhausted CSPICE's ``MAXFIL`` kernel-pool limit after ~5300 repeated calls;
-see the module's own ``_LSK_FURNISHED`` guard and comment. That fix does not
+see the guard and comment just above the ``spice.kinfo``/``furnsh`` call in
+that module (`#824` later hardened the guard itself to query SPICE's own
+pool rather than a module-level flag, replacing the original
+``_LSK_FURNISHED`` name this comment used to reference). That fix does not
 change any computed physics, only whether a multi-thousand-call scan can run
 to completion at all). The physics/propagation pipeline itself is already
 covered by `#726`'s own test suite
