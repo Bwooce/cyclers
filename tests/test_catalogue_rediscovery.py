@@ -311,7 +311,14 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # census shift -- not v1-gauntlet-reachable (non-heliocentric primary,
     # and not a cycler in any case -- orbit_class=quasi_periodic_torus, no
     # alternating named-body encounter sequence).
-    ExclusionReason.NON_HELIOCENTRIC: 78,
+    # 78 -> 87 (2026-08-08/09, #797/#801): +9 Casoliva 2010 Table 3 Earth-Moon
+    # p:q resonant-family rows (primary="Earth", CR3BP). Neither commit
+    # updated this constant -- this file lives outside `tests/data`/
+    # `tests/search`, the scope every catalogue-editing task tonight checked
+    # locally, so the gap went uncaught until the self-hosted CI runner's own
+    # full `pytest` run surfaced it. Pure census shift -- none of the 9 is
+    # v1-gauntlet-reachable (non-heliocentric primary).
+    ExclusionReason.NON_HELIOCENTRIC: 87,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
