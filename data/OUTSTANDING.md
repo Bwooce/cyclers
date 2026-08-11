@@ -90,9 +90,11 @@ unchanged. See `git log` around this date for the corrected commit.
   `data/catalogue.yaml`-touching commit + one code-only commit, both local, not pushed.
 
 ### Ready to dispatch — no blocker
-- `#788` — registered 2026-08-08 (from tonight's combinatorial-search scoping survey),
-  **PRIORITY — small, foundational, unblocks `#789`-`#792` below**: build a generic checkpointed
-  cell-grid campaign runner. This project has a checkpointed-restart pattern
+- `#788` — ✓ DONE 2026-08-08 (registered 2026-08-08, from tonight's combinatorial-search scoping
+  survey; header previously left un-updated after completion — body below was already DONE,
+  fixed 2026-08-11): **small, foundational, unblocked `#789`-`#792` below**: built a generic
+  checkpointed cell-grid campaign runner (`src/cyclerfinder/search/campaign_runner.py`). This
+  project has a checkpointed-restart pattern
   (`search/discovery_campaign.py`: append-only checkpoint, `index % n_workers` sharding,
   empty-region writeback) and a joblib parallel substrate (`parallel/parallel_sweep.py`, measured
   5x on 8 workers) but **nothing combines them, and no supervising relaunch loop exists anywhere**
@@ -943,14 +945,13 @@ unchanged. See `git log` around this date for the corrected commit.
   `#826`. Frozen `test_russell12_likeforlike_probe.py` pins re-pointed at the new finding
   (old pins guarded the mis-posed genome). Full account:
   `docs/notes/2026-08-11-820-russell12-designated-arc-reposing.md`.
-- `#821` — registered 2026-08-10 (found during `#813`, not dispatched): fix
-  `russell-ch4-5.30gGf3`'s catalogue prose note, which still explains f(3:2) with the REVERSED
-  pre-`#794` convention ("spacecraft 3 revs vs Earth 2 revs"; correct per both primary sources:
-  3 Earth years, 2 spacecraft revs). The other three non-1:1 rows' notes don't state a rev
-  reading and `#794`'s written-back segments are correct. Catalogue-edit discipline applies
-  (full `tests/data tests/search -q` ratchet); deferred out of `#813` to avoid colliding with
-  `#811`'s concurrent catalogue writeback. Sweep the remaining rows' free-text notes for the
-  same phrasing while there.
+- `#821` — ✓ DONE 2026-08-11 (registered 2026-08-10, found during `#813`; dispatched 2026-08-11):
+  fixed `russell-ch4-5.30gGf3`'s catalogue prose note, which explained f(3:2) with the REVERSED
+  pre-`#794` convention ("spacecraft 3 revs vs Earth 2 revs"); corrected per `#794`'s own verified
+  convention (3 Earth years, 2 spacecraft revs), with the note recording the prior-wrong reading
+  for traceability. Swept the other 6 non-1:1-resonance rows' notes for the same phrasing — none
+  had an explicit body-count breakdown to be wrong (they just say "3:2 full-rev" etc.), so no
+  further fix needed. Full `tests/data tests/search -q` ratchet clean. Commit `b6699fe7`, pushed.
 - `#822` — ✓ DONE 2026-08-11 (registered 2026-08-10, found during `#811`; DISPATCHED
   2026-08-11): **COMPUTED AND VERIFIED — the Vaquero 2:1 <-> 3:1 Earth-Moon free transfer
   (unstable-to-unstable, same-C heteroclinic manifold connection) converged and passed the
