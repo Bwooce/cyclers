@@ -1280,11 +1280,18 @@ unchanged. See `git log` around this date for the corrected commit.
   connection that runs BETWEEN two catalogued rows' orbits? Neither existing connection payload
   fits — `ccr4bp_provenance.connection` and `crnbp_provenance…seed_orbit_homoclinic.connection`
   are both INTRINSIC to a single row's own object (the row IS the connection, or the connection
-  belongs to the row's own seed orbit). `#822`'s Vaquero 2:1<->3:1 transfer is now the second
-  such case in the corpus after `#754`/`#759`'s Jupiter-Europa 3:4<->5:6 pair, so this is a
-  recurring shape, not a one-off. Must also settle the prior question of whether such an object
-  belongs as a FIELD on the two rows, as its own ROW, or (the `#828` outcome, deliberately) as
-  prose only. `#828` deliberately shipped comment-only annotations rather than pre-empt this.
+  belongs to the row's own seed orbit). State the motivating case PRECISELY, because a design
+  proposal is only as good as its premise: `#822` is the **first** case in this corpus of a
+  verified connection with **at least one** endpoint that is a catalogued row distinct from the
+  other endpoint. It is deliberately NOT "the first connection between two catalogued rows" —
+  neither of `#822`'s two row-touching connections has BOTH endpoints catalogued (the
+  counterpart 3:1@C=2.66 / 2:1@C=2.54 nodes are uncatalogued family members), and the earlier
+  `#754`/`#759` Jupiter-Europa 3:4<->5:6 pair is not a precedent at all here, since that system
+  has NO catalogue rows whatsoever. So the design must decide whether a half-catalogued
+  connection is even expressible, not assume the symmetric two-row case. Must also settle
+  whether such an object belongs as a FIELD on the endpoint row(s), as its own ROW, or (the
+  `#828` outcome, deliberately) as prose only. `#828` shipped comment-only annotations rather
+  than pre-empt this.
 - `#839` — registered 2026-08-12 (found during `#828`, not dispatched; **gated on `#827`**):
   `vaquero-31-c313-em-resonant-po-2013` sits at **C=3.13, INSIDE** Kumar-Rawat-Rosengren-Ross
   2026's published `C_J ∈ [3.00, 3.15]` 3:1<->2:1 heteroclinic band — which is exactly `#827`'s

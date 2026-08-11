@@ -218,10 +218,16 @@ connection work can ever promote an in-band member.
 
 - `#838` — schema design proposal (user approval required before any bump, per the `#707`/`#735`
   precedent): should the catalogue carry a **cross-row connection-evidence** object or field, for
-  a verified manifold connection running *between two catalogued rows' orbits*? Neither existing
-  connection payload fits (both are intrinsic to a single row's own object), and `#822` is now
-  the second such case in the corpus after `#754`/`#759`'s Jupiter-Europa 3:4↔5:6 pair. Includes
-  the prior question of whether such an object should be its own row rather than a field.
+  a verified manifold connection running *between two different rows' orbits*? Neither existing
+  connection payload fits (both are intrinsic to a single row's own object). **The motivating
+  case must be stated precisely**: `#822` is the *first* case in this corpus of a verified
+  connection with **at least one** endpoint that is a catalogued row distinct from the other
+  endpoint — *not* "the first connection between two catalogued rows", since neither of `#822`'s
+  two row-touching connections has both endpoints catalogued (Sec. 1), and `#754`/`#759`'s
+  Jupiter-Europa 3:4↔5:6 pair is no precedent at all, that system having no catalogue rows.
+  The design therefore has to decide whether a *half-catalogued* connection is expressible, not
+  assume the symmetric two-row case. Includes the prior question of whether such an object
+  should be its own row rather than a field.
 - `#839` — `vaquero-31-c313-em-resonant-po-2013` sits at **C=3.13, inside** Kumar-Rawat-
   Rosengren-Ross 2026's published `C_J ∈ [3.00, 3.15]` heteroclinic band, which is `#827`'s
   digit-grade reproduction target. It is also one of the two `resonant_po` rows — classed that
