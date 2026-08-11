@@ -743,18 +743,51 @@ unchanged. See `git log` around this date for the corrected commit.
   #799's concurrent uncommitted files left alone), full `mypy src tests` clean (841 files).
   Follow-up `#810` registered (#656's recommended hc-fixed (5,1) re-attempt was never given
   a number). Full writeup: `docs/notes/2026-08-09-808-real-binary-grid-topology-gate.md`.
-- `#810` — registered 2026-08-09 (found during `#808`, not dispatched): the `#656` bullet's
-  own recommended follow-up — a (5,1)-specific Pluto-Charon re-attempt holding the seed's own
-  half-crossing count FIXED through the C-sweep (mirroring #504's "sweep upward only, hc
-  fixed" (3,2)-positive-control convention) instead of `sweep_family_grid`'s `hc=None`
-  auto-redetection, which is the measured branch-loss mechanism (#656, re-confirmed by
-  `#808`'s deterministic replay) — was recommended in prose but never registered as a task.
-  (5,1) remains the ONE k2<=k1<=5 PC topology whose negative rests on a known
-  search-method gap rather than an exhausted-within-budget seed search (a genuine prograde
-  (5,1) seed EXISTS at x0=-0.6685146994, C=3.05, T=28.1427 TU; whether that family has a
-  stable member is unknown). Cheap: one C-sweep variant + one bounded run; honest odds low
-  (every other higher topology is certified empty) but it closes the last asterisk on the
-  #504/#549/#656 15-topology PC census.
+- `#810` — ✓ DONE 2026-08-11 (registered 2026-08-09, found during `#808`): **POSITIVE — the
+  low-odds branch happened. The Pluto-Charon (5,1) family HAS a genuine, gate-passing stable
+  member; `#656`'s hc=None auto-redetection was hiding it (a real false negative, the
+  [[feedback_bugfix_invalidates_past_searches]] pattern scoring a full hit).** `#656`'s own
+  recommended follow-up, run as registered: re-sweep the (5,1) topology from `#656`'s genuine
+  prograde seed with the half-crossing index held FIXED (mirroring `#504`'s "sweep upward only,
+  hc fixed" (3,2)-positive-control convention). **Mandatory positive control PASSED first**
+  (18.7s, `sweep_32_positive_control()` UNMODIFIED, exact `ross-rt-pc-cycler-32-2026` figures).
+  **Seed independently re-verified** (not trusted from the bullet): reconverges at residual
+  5.4e-13, winding EXACTLY (w1,w2)=(+5.0000,+1.0000), prograde, reaches_secondary; its own
+  measured perpendicular-crossing index is **hc=5** (the `#656` prose's "hc=4" was the lost
+  (4,0) branch's index, not the seed's). **Method correction found by running it**: a literal
+  fixed-dC=0.005 `#504`-style grid jumps off this branch at its FIRST step (far more fragile
+  than (3,2): dx0/dC~2.5, seed nu=+7.7e+03) — the production sweep is ADAPTIVE (dc halves on
+  any failed/topology-losing step down to 1e-5, hc fixed, winding VERIFIED at every step — the
+  exact check the hc=None path couldn't make). **The member** (nu=0 midpoint of the family's
+  ONE stable window, C∈[3.167773862, 3.168099844], width 3.26e-4): **C=3.167935964707279,
+  x0=-0.7058054139668293, ydot0=-0.6722667009872901, T=24.30571585 TU (24.7153 d),
+  nu=5.98e-10, prograde (5,1), reaches_secondary, independent Radau dJ=7.8e-13, `#660`
+  body-clearance PASS — min dist Pluto 5128.5 km (radius 1188.3), Charon 745.5 km (radius
+  606.0, only ~139.5 km above the surface: narrow but passing, recorded explicitly per the
+  `#659` Antiope lesson as an adjudication axis)**. Family extent mapped: fold/termination at
+  C=3.24603516 (nu→+3.4e+03; the up-sweep's apparent second nu sign change near C=3.2440 is
+  real-eigenvalue sign flicker at |lambda|~4.4-5.4, probed at dc=2e-6 — |nu|>=2.33, NO second
+  stable window); downward the family continues to the C=2.90 diagnostic floor with nu rising
+  monotonically to +5.4e+04 — no stable member below the seed. **Census impact: the
+  `#504`/`#549`/`#656` 15-topology verdict flips from "0 of 15 beyond (3,2)" to "1 of 15 —
+  (5,1) joins (3,2)"; PC (3,2) is no longer structurally unique at this mu** (pending `#836`
+  adjudication; the `pluto-charon-kk-45-cycler-sweep-2026-07-19` stamp's (5,1) UNSETTLED row
+  stays literally true and the append-only registry is not edited; the other 8 topologies'
+  certified-empty negatives are untouched — their grids found no seed at all). **Mandatory
+  literature gate run live** (query trail in the note): not-found for any Pluto-Charon (5,1)
+  cycler; closest prior art Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189) GROUNDED AGAINST
+  THE ACTUAL SOURCE — it tabulates only (1,1),(3,1),(3,2),(3,3), no (5,1) family anywhere, no
+  mu~0.1087 members; this member is a confirming INSTANCE of their universal-stable-subfamily
+  conjecture at a family+mu they never computed. JPL SSD periodic-orbit catalog: PC not among
+  its 7 systems (not-covered, cannot adjudicate). NOT certified novel — not-found is
+  necessary-not-sufficient; `#836` (registered) owns adjudication + any catalogue writeback
+  (NO writeback and NO empty-region stamp from this task). Evidence:
+  `scripts/run_810_pc_51_fixed_hc_sweep.py` (control/seed/up/down/window/gate/verdict phases,
+  foreground, checkpointed, resumable), `data/found/810_pc51_fixed_hc_sweep/*.jsonl` (full
+  per-step record incl. every failed/branch-losing attempt),
+  `tests/scripts/test_run_810_pc_51_fixed_hc.py` (3 evidence tests, NOT slow: standalone
+  independent reproduction of seed + member via fresh corrector/winding/Barden/Radau/clearance
+  calls). Full writeup: `docs/notes/2026-08-11-810-pc-51-fixed-hc-sweep.md`.
 - `#811` — ✓ DONE 2026-08-10 (registered 2026-08-09, spawned by `#799`'s successful
   reproduction): **catalogue writeback of Vaquero 2013's two Sec. 4.4.7 Earth-Moon
   periodic-cycler families — 6 new rows in `data/catalogue.yaml`** (398 total, was 392),
@@ -1121,6 +1154,26 @@ unchanged. See `git log` around this date for the corrected commit.
   the leg-1 topology selection picked a wrong branch that the magnitude-mode residual cannot
   see. Suspect the `F(3:2,82.487,180.000)` designated-arc split. Re-running in `vector`
   residual mode (which carries a bend-feasibility hinge) is the obvious first probe.
+- `#836` — registered 2026-08-11 (found during `#810`, not dispatched): **Opus+Fable
+  adjudication + catalogue-writeback decision for `#810`'s stable Pluto-Charon (5,1) cycler
+  member** (C=3.167935964707279, x0=-0.7058054139668293, T=24.30571585 TU, nu=5.98e-10,
+  prograde (5,1), Radau dJ=7.8e-13, `#660` clearance PASS — see `#810`'s bullet +
+  `docs/notes/2026-08-11-810-pc-51-fixed-hc-sweep.md` + the committed
+  `data/found/810_pc51_fixed_hc_sweep/` record). Scope per the `#659`/`#817` adjudication
+  precedent: (a) independent reproduction beyond `#810`'s own in-task Radau/standalone-test
+  checks (bit-for-bit reconvergence by the adjudicating session before anything else); (b) the
+  **narrow ~139.5 km Charon surface clearance** as an explicit adjudication axis (ideal
+  point-mass CR3BP figure, 1.23 Charon radii from centre — physically clear but mission-margin
+  thin; `#659` rejected Antiope candidates ~30-38 km BELOW surface, this one is ~140 km above);
+  (c) novelty framing — `#810`'s live literature gate returned not-found with Ross &
+  Roberts-Tsoukkas 2026 (arXiv:2606.29189) grounded-against-source as closest prior art (no
+  (5,1) family, no mu~0.1087 members; the member confirms their universal-stable-subfamily
+  conjecture at a family+mu they never computed), but not-found is necessary-not-sufficient
+  and the human gate governs per [[feedback_literature_novelty_check_baseline]]; (d) if
+  admitted: V-tier assignment (the (3,2) precedent `ross-rt-pc-cycler-32-2026` is V1),
+  catalogue row + `_LEVEL_EVIDENCE` under full ratchet discipline (`tests/data tests/search
+  -q`, never a subset), and the census-prose rewrite in the `#504`/`#549`/`#656` records ("0
+  of 15 beyond (3,2)" → "1 of 15"; PC (3,2) no longer structurally unique at this mu).
 - `#827` — registered 2026-08-11 (found during `#822`, not dispatched): digit-grade
   reproduction of Kumar, Rawat, Rosengren & Ross 2026's own printed Table-5 3:1->2:1
   Earth-Moon heteroclinic intersection states (`C_J ∈ {3.00, 3.05, 3.10, 3.15}`; *Adv. Space
