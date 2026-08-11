@@ -63,7 +63,7 @@ mission would care about this margin).
    -58.8 (C=3.190), rises again, and the branch terminates at a **measured fold at
    C=3.24603516** (nu → +3.4e+03; past it even dc=1e-5 only recaptures the unrelated (5,0)).
 5. **Down-sweep** (C=3.05 → 2.90, beyond-convention diagnostic since the seed sat AT `#656`'s
-   grid floor): 100+ good steps at dc~1.25e-3 (dc=2.5e-3 attempts repeatedly capture (4,0) —
+   grid floor): 94 good steps at dc~1.25e-3 (dc=2.5e-3 attempts repeatedly capture (4,0) —
    the same fragility `#656` hit, now caught and retried instead of silently followed). nu rises
    monotonically +7.7e+03 → +5.4e+04: the family continues but NO stable member below the seed.
 6. **Window re-walk** (C in [3.2400, 3.24604] at dc=5e-5, 121 steps) + an ultra-fine dc=2e-6
