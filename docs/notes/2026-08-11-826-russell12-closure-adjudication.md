@@ -249,6 +249,26 @@ posing is a real question, registered as part of **`#830`**.
 ## 10. Verification
 
 - `uv run ruff check .` / `ruff format --check .` — clean.
-- `uv run mypy src tests` — clean.
-- `uv run pytest tests/data tests/search -q` — green (full ratchet, not a subset).
-- `uv run pytest tests/scripts -q` — green.
+- `uv run mypy src tests` — clean (845 source files).
+- `uv run pytest tests/data tests/search -q` — **exit 0, zero FAILED/ERROR** (full ratchet,
+  not a subset).
+- `uv run pytest tests/scripts -q` — exit 0.
+
+A FIRST full-ratchet run, made while a self-hosted CI job was saturating the machine
+(6 workers, load average 16-32), exited 1 on two tests —
+`test_656_pc_higher_kk_sweep.py::test_656_grid_seed_search_recovers_admitted_pc_32_seed` and
+`test_earth_moon_class1_resonant_connections.py::test_find_homoclinic_default_k_range_is_too_narrow_for_this_orbit`.
+Both are the documented CPU-contention flake class, not a regression:
+
+- `#809`'s own bullet names the second test explicitly as one of two "deliberately
+  near-boundary/margin tests" that flip under contention and "pass cleanly in isolation
+  (`-n0`) and on some full runs, fail on others; classic isolated-flip contention signature".
+- The first drives `_grid_seed_search(..., per_call_timeout=5)` — a wall-clock budget, so it
+  is contention-sensitive by construction.
+- Both passed on an isolated `-n0` re-run (exit 0), and the full ratchet re-run above, on the
+  now-quiet machine, is clean.
+- Neither test touches anything this task changed (a new test file, this note, and an
+  `OUTSTANDING.md` bullet).
+
+This is `[[feedback_serialize_verification_runs]]` behaving exactly as recorded; the
+re-run — not the isolated re-run alone — is the evidence relied on here.
