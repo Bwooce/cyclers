@@ -24,17 +24,27 @@ an EXPECTED. Tolerances are the proposed campaign defaults (V∞ 0.5 km/s, AR/TR
 
 Topology mapping (the descriptor->corrector genome)
 ---------------------------------------------------
-All 12 rows are E-M-E-(E...) multi-arc chains (the proven S1L1/Sanchez home
-turf). The descriptor's FIRST generic arc is the Mars "free-return" arc, split
-into the two SOURCED transfer legs E->M and M->E (the ``trajectory.segments``
-``out-em`` / ``ret-me`` ToFs). Each SUBSEQUENT arc is an Earth-Earth phasing
-loop: a generic/half-rev arc is a direct E->E leg (n_revs from a multi-rev
-Lambert branch chosen to bracket the arc ToF); a full-rev ``M:N`` arc is an
-N-rev resonant E->E loop over M Earth years (M:N read delegated to
-``search/descriptor.py`` since the #794 convention fix — this script previously
-duplicated the parse REVERSED; see the #813 blast-radius note). The longest E->E
-loop is eliminated as the period slack leg (spec §2.1(a)), exactly as
-``test_correct_s1l1.py`` pins it.
+All 12 rows are multi-arc chains of Earth-Earth legs (Russell 2004 §4.8). The
+DESIGNATED leg — the UPPERCASE letter in the row's own descriptor string, NOT
+always ``arcs[0]`` (#794/#820: e.g. ``arcs[1]`` (G) for 5.30gGf3, ``arcs[2]``
+(F) for the ggF/gfF rows) — is the Mars-transit leg; the remaining (lowercase)
+arcs, in cyclic itinerary order after it, are the Earth-Earth phasing loops.
+
+The genome splits the designated leg at the Mars encounter: leg 0 is E->M with
+the SOURCED taxi transit t_out (segment ``out-em``); leg 1 is M->E with the
+REMAINDER of the designated leg (its printed full ToF minus t_out). The
+pre-#820 posing used the sourced t_in as leg 1 instead — but t_in is the
+inbound-crossing taxi transit (ridden on another cycle's leg), not a per-cycle
+leg, so the beyond-Mars portion of the designated conic was unaccounted and
+the seeds could never tile the period. Leg 1's ``(n_revs, branch)`` is not
+printed; the small candidate set implied by the printed transfer angle (g/G)
+or resonance (f/F) is discriminated by residual-at-truth
+(:func:`select_leg1_topology`). Each E->E loop leg seeds ``(ToF, n_revs,
+branch)`` directly from the row's #794-written-back ``loop-ee-*`` segments
+(primary-source-derived; M:N per the #794 convention fix — this script
+previously duplicated the parse REVERSED, see the #813 blast-radius note).
+The longest E->E loop is eliminated as the period slack leg (spec §2.1(a)),
+exactly as ``test_correct_s1l1.py`` pins it.
 
 Like-for-like variant (#135)
 -----------------------------
@@ -63,6 +73,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from concurrent.futures import ProcessPoolExecutor
 from datetime import UTC, datetime
@@ -76,7 +87,7 @@ from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.runlog import RunLog, RunRecord, default_runlog_path
 from cyclerfinder.search.correct import _residuals, ballistic_correct
-from cyclerfinder.search.descriptor import arc_to_leg_topology, arc_tof_seed_days
+from cyclerfinder.search.descriptor import arc_tof_seed_days
 from cyclerfinder.search.free_return import _residuals as _fr_residuals
 from cyclerfinder.search.free_return import (
     free_return_correct,
@@ -99,6 +110,9 @@ VINF_CAP_KMS = 12.0  # generous; these rows run 4.6-10.8 km/s at Mars
 # Dense phase-scan floor for the (cheap, Lambert-free) free-return t0 search.
 # 256 misses the narrow basin of deep-aphelion high-e rows (#137 Part 3).
 FR_PHASE_EPOCHS_FLOOR = 4096
+# t0 phase points for the leg-1 (n_revs, branch) residual-at-truth selection
+# in run_row (#820); the probe path reuses its own --phase-epochs instead.
+LEG1_SELECT_PHASE_EPOCHS = 256
 
 RUSSELL12_IDS = (
     "mcconaghy-2006-em-k2",
@@ -120,61 +134,152 @@ def _t_sec(dt: datetime) -> float:
     return (dt - J2000).total_seconds()
 
 
-def build_genome(row: dict[str, Any]) -> dict[str, Any]:
-    """Map a Russell row -> corrector genome.
+def _t0_center(row: dict[str, Any]) -> float:
+    """Epoch-scan centre: the row's priority date, else 2030-01-01."""
+    priority = row.get("priority_date")
+    if priority:
+        return _t_sec(datetime.fromisoformat(str(priority)).replace(tzinfo=UTC))
+    return _t_sec(datetime(2030, 1, 1, tzinfo=UTC))
 
-    Returns sequence, per_leg_revs, per_leg_branch, the two SOURCED transfer-leg
-    ToFs (E->M, M->E), the descriptor E-E loop ToF seeds, the slack leg index,
-    and the target period in seconds.
+
+# Non-Lambert branch labels used by #794's written-back loop segments, mapped
+# onto the corrector's Lambert vocabulary (single/low/high). A "resonant"
+# full-rev loop (N revs in M years) is posed on the multi-rev low branch,
+# matching search/descriptor.py::arc_to_leg_topology.
+_SEGMENT_BRANCH_MAP = {"resonant": "low", "half-rev": "single"}
+
+
+def _designated_arc_index(arcs: list[dict[str, Any]]) -> int:
+    """Index of the DESIGNATED arc: the UPPERCASE letter in Russell's own
+    leg-descriptor notation (Russell 2004 §4.8 pp.125-127: "The transit times
+    and Mars v-inf are calculated using the designated transit leg, as
+    indicated by an uppercase descriptor letter"; established for this
+    catalogue by #794). NOT always ``arcs[0]``: it is ``arcs[1]`` (G) for
+    russell-ch4-5.30gGf3 and ``arcs[2]`` (F) for the ggF/gfF-pattern rows."""
+    ups = [i for i, a in enumerate(arcs) if str(a.get("raw_descriptor") or "")[:1].isupper()]
+    if len(ups) != 1:
+        raise ValueError(
+            f"expected exactly one designated (uppercase) arc, found {len(ups)} in "
+            f"{[a.get('raw_descriptor') for a in arcs]}"
+        )
+    return ups[0]
+
+
+def _g_arc_transfer_angle_deg(raw_descriptor: str) -> float:
+    """The printed transfer angle theta (deg) of a generic g/G(t_f, theta, eps)
+    descriptor (McConaghy/Russell/Longuski 2005 Eqs (1)-(12))."""
+    m = re.match(r"[gG]\(\s*[^,]+,\s*([0-9.eE+-]+)\s*,", raw_descriptor)
+    if not m:
+        raise ValueError(f"cannot parse transfer angle from {raw_descriptor!r}")
+    return float(m.group(1))
+
+
+def _leg1_topology_candidates(designated: dict[str, Any]) -> list[tuple[int, str]]:
+    """Candidate ``(n_revs, branch)`` for the M->E designated-remainder leg.
+
+    full-rev (F) designated: the conic closes after N spacecraft revs in M
+    Earth years and the E->M taxi transit is a fraction of one conic period,
+    so the remainder sweeps exactly N-1 complete revs.
+
+    generic (G) designated: the full E-E leg sweeps the printed transfer angle
+    theta; the E->M piece sweeps an unknown theta_out in (0, 360), so the
+    remainder's complete-rev count is floor(theta/360) or one less. The
+    low/high Lambert branch of a multi-rev remainder is likewise not printed.
+    All candidates are enumerated; :func:`select_leg1_topology` discriminates
+    by residual-at-truth (the same criterion #794 used to select Lambert
+    roots: the sourced geometry is the discriminator, never a tolerance)."""
+    arc_type = designated["arc_type"]
+    if arc_type == "full-rev":
+        n_total = int(str(designated["resonance"]).split(":")[1])
+        n_candidates = [max(0, n_total - 1)]
+    elif arc_type == "generic":
+        theta = _g_arc_transfer_angle_deg(str(designated["raw_descriptor"]))
+        n_full = int(theta // 360.0)
+        n_candidates = sorted({n_full, max(0, n_full - 1)}, reverse=True)
+    else:
+        raise ValueError(f"unsupported designated arc_type {arc_type!r}")
+    out: list[tuple[int, str]] = []
+    for n in n_candidates:
+        if n == 0:
+            out.append((0, "single"))
+        else:
+            out.append((n, "low"))
+            out.append((n, "high"))
+    return out
+
+
+def build_genome(row: dict[str, Any]) -> dict[str, Any]:
+    """Map a Russell row -> corrector genome (#820 re-posed per #794 semantics).
+
+    Returns sequence, per_leg_revs, per_leg_branch, the designated-leg split
+    ToFs (E->M = sourced t_out; M->E = designated-leg remainder), the E-E loop
+    seeds from the #794-written-back ``loop-ee-*`` segments, the slack leg
+    index, the leg-1 topology candidate set, and the target period in seconds.
     """
     segs = row["trajectory"]["segments"]
     seq = [segs[0]["from"]] + [s["to"] for s in segs]
     n_legs = len(seq) - 1
 
-    # Transfer legs (sourced from segments): E->M, M->E.
+    # Leg 0 (E->M): the sourced taxi transit t_out (segment out-em).
     tof_em = float(segs[0]["tof_days"])
-    tof_me = float(segs[1]["tof_days"])
+    loop_segs = segs[2:]  # the #794-written-back loop-ee-* segments, in order
 
     arcs = row["free_return_arcs"]
-    # arc[0] is the Mars free-return arc (the E->M + M->E pair). arcs[1:] are the
-    # Earth-Earth phasing loops, one per remaining (E->E) segment.
-    ee_arcs = arcs[1:]
-    n_ee_legs = n_legs - 2
-    if len(ee_arcs) != n_ee_legs:
-        # Fall back: if the descriptor arc count doesn't line up with the E->E
-        # segment count, pad/truncate by seeding each E->E loop ~1 synodic period.
-        ee_arcs = ee_arcs[:n_ee_legs] + [
-            {"arc_type": "generic", "tof_years": 1.6, "resonance": None}
-        ] * max(0, n_ee_legs - len(ee_arcs))
+    d = _designated_arc_index(arcs)
+    designated = arcs[d]
+    # Full ToF of the designated E-E leg: printed tof_years for g/G; M Earth
+    # years for f/F (the #794-fixed M:N convention, via search/descriptor.py).
+    designated_tof_days = arc_tof_seed_days(
+        designated["arc_type"],
+        tof_years=designated.get("tof_years"),
+        resonance=designated.get("resonance"),
+    )
+    # Leg 1 (M->E): the REMAINDER of the designated conic after the Mars
+    # encounter at t_out. The sourced t_in (segment ret-me) is the
+    # inbound-crossing taxi transit, ridden on another cycle's leg — it is NOT
+    # a per-cycle leg ToF, and using it here (the pre-#820 posing) left the
+    # beyond-Mars time unaccounted so the seeds could never tile the period.
+    tof_me = designated_tof_days - tof_em
+    if tof_me <= 0:
+        raise ValueError(f"{row['id']}: designated leg {designated_tof_days:.1f} d <= t_out")
 
-    per_leg_revs: list[int] = [0, 0]  # E->M, M->E are single-rev transfers
-    per_leg_branch: list[str] = ["single", "single"]
+    # Loop arcs = the non-designated arcs in CYCLIC itinerary order after the
+    # designated leg (#794: the lowercase legs, in cyclic order after it, ARE
+    # the loop-ee-N segments). Cross-checked against the written-back segments;
+    # the segments carry the seeds.
+    loop_arcs = list(arcs[d + 1 :]) + list(arcs[:d])
+    if len(loop_arcs) != len(loop_segs):
+        raise ValueError(
+            f"{row['id']}: {len(loop_arcs)} non-designated arcs vs "
+            f"{len(loop_segs)} loop segments — descriptor/segment mapping out of sync"
+        )
+
+    leg1_candidates = _leg1_topology_candidates(designated)
+    per_leg_revs: list[int] = [0, leg1_candidates[0][0]]
+    per_leg_branch: list[str] = ["single", leg1_candidates[0][1]]
     ee_seeds: list[float] = []
-    for arc in ee_arcs:
-        at = arc["arc_type"]
-        if at == "full-rev":
-            # #813: delegate the M:N read to search/descriptor.py (fixed by #794:
-            # M = Earth years = ToF, N = spacecraft revs — this script previously
-            # duplicated the parse with the REVERSED pre-#794 convention).
-            n_revs, branch = arc_to_leg_topology(at, resonance=arc["resonance"])
-            per_leg_revs.append(n_revs)
-            per_leg_branch.append(branch)
-            ee_seeds.append(arc_tof_seed_days(at, tof_years=None, resonance=arc["resonance"]))
-        else:  # generic / half-rev: a multi-rev direct E->E loop.
-            tof_yr = arc.get("tof_years")
-            seed = float(tof_yr) * DAYS_PER_JULIAN_YEAR if tof_yr else 1.6 * DAYS_PER_JULIAN_YEAR
-            # Choose n_revs that brackets the seed (E->E ~ 1 yr per rev).
-            n_revs = max(1, round(seed / DAYS_PER_JULIAN_YEAR) - 1)
-            per_leg_revs.append(n_revs)
-            per_leg_branch.append("low")
-            ee_seeds.append(seed)
+    for arc, seg in zip(loop_arcs, loop_segs, strict=True):
+        expected = arc_tof_seed_days(
+            arc["arc_type"], tof_years=arc.get("tof_years"), resonance=arc.get("resonance")
+        )
+        if abs(expected - float(seg["tof_days"])) > 1.0:
+            raise ValueError(
+                f"{row['id']}: loop arc {arc.get('raw_descriptor')} ToF {expected:.1f} d "
+                f"does not match segment {seg['id']} tof_days={seg['tof_days']} — "
+                "descriptor/segment cyclic-order mapping out of sync"
+            )
+        per_leg_revs.append(int(seg["n_revs"]))
+        per_leg_branch.append(_SEGMENT_BRANCH_MAP.get(str(seg["branch"]), str(seg["branch"])))
+        ee_seeds.append(float(seg["tof_days"]))
 
     # Target period: k * T_syn(E,M). Use the sourced catalogue years directly
     # (these rows are 2-body E-M; period.years is the sourced repeat period).
     period_sec = float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * DAY_S
 
     # Slack leg = the longest E-E loop (most slack to absorb the period).
-    # Free legs = E->M, M->E, plus the non-slack E-E loops.
+    # Free legs = E->M, M->E, plus the non-slack E-E loops. With the #820
+    # posing the seeds tile the period (designated + loops = k synodic), so
+    # the reconstructed slack ToF now agrees with its own sourced seed.
     all_seeds = [tof_em, tof_me, *ee_seeds]
     # slack must be an E-E loop (index >= 2); pick the longest among them.
     ee_indices = list(range(2, n_legs))
@@ -189,6 +294,63 @@ def build_genome(row: dict[str, Any]) -> dict[str, Any]:
         "slack_leg": slack_leg,
         "period_sec": period_sec,
         "all_seeds": all_seeds,
+        "designated_index": d,
+        "designated_raw": str(designated.get("raw_descriptor")),
+        "designated_tof_days": designated_tof_days,
+        "leg1_candidates": leg1_candidates,
+    }
+
+
+def _genome_with_leg1(genome: dict[str, Any], n_revs: int, branch: str) -> dict[str, Any]:
+    """Copy of ``genome`` with leg 1's (n_revs, branch) replaced."""
+    g = dict(genome)
+    revs = list(genome["per_leg_revs"])
+    branches = list(genome["per_leg_branch"])
+    revs[1] = n_revs
+    branches[1] = branch
+    g["per_leg_revs"] = tuple(revs)
+    g["per_leg_branch"] = tuple(branches)
+    return g
+
+
+def select_leg1_topology(
+    genome: dict[str, Any], *, model: str, phase_epochs: int, t0_center: float
+) -> dict[str, Any]:
+    """Discriminate leg 1's ``(n_revs, branch)`` by residual-at-truth.
+
+    For each candidate, scan t0 over one period with the free ToFs PINNED at
+    the truth seed and record the minimum residual; the candidate whose truth
+    residual is lowest is the topology under which the sourced geometry is
+    best representable (no tolerance is loosened — the losing candidates are
+    reported alongside)."""
+    truth_free = _truth_seed(genome)
+    period_sec = genome["period_sec"]
+    offsets = np.linspace(0.0, period_sec, phase_epochs, endpoint=False)
+    candidates_report: list[dict[str, Any]] = []
+    best: tuple[float, float, dict[str, Any], tuple[int, str]] | None = None
+    for n_revs, branch in genome["leg1_candidates"]:
+        gv = _genome_with_leg1(genome, n_revs, branch)
+        c_res, c_t0 = float("inf"), t0_center
+        for off in offsets:
+            t0 = t0_center + float(off)
+            try:
+                r = _residual_at(gv, t0, truth_free, model, "magnitude")
+            except Exception:
+                continue
+            if r < c_res:
+                c_res, c_t0 = r, t0
+        candidates_report.append(
+            {"n_revs": n_revs, "branch": branch, "truth_residual_kms": round(c_res, 4)}
+        )
+        if best is None or c_res < best[0]:
+            best = (c_res, c_t0, gv, (n_revs, branch))
+    assert best is not None
+    return {
+        "genome": best[2],
+        "leg1": {"n_revs": best[3][0], "branch": best[3][1]},
+        "best_t0_sec": best[1],
+        "best_truth_residual_kms": best[0],
+        "candidates": candidates_report,
     }
 
 
@@ -275,18 +437,25 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
         f"period: src={sourced_period:.2f} ach={achieved_period:.2f} {'OK' if period_ok else 'X'}"
     )
 
-    # Invariants: transit_times (the E->M / M->E ToFs the corrector found).
+    # Invariants: t_out (leg 0) + the designated-leg total ToF (legs 0+1).
+    # Under the #820 posing leg 1 is the beyond-Mars REMAINDER of the
+    # designated conic, so the sourced t_in (the inbound-crossing taxi
+    # transit, ridden on another cycle's leg) has no leg to compare against;
+    # the designated leg's printed full ToF (Russell Tables 4.9-4.13, via the
+    # descriptor) is the sourced anchor checked instead.
     transit_ok = None
     if sourced_transits is not None:
-        # transit legs are the first two (E->M, M->E).
-        ach_transits = best["tof_days"][:2]
-        transit_ok = all(
-            abs(a - s) <= TOL_TRANSIT_DAYS
-            for a, s in zip(ach_transits, sourced_transits, strict=False)
-        )
+        ach_t_out = float(best["tof_days"][0])
+        ach_designated = float(best["tof_days"][0]) + float(best["tof_days"][1])
+        src_t_out = float(sourced_transits[0])
+        src_designated = float(genome["designated_tof_days"])
+        t_out_ok = abs(ach_t_out - src_t_out) <= TOL_TRANSIT_DAYS
+        desig_ok = abs(ach_designated - src_designated) <= TOL_TRANSIT_DAYS
+        transit_ok = t_out_ok and desig_ok
         checks.append(
-            f"transits: src={sourced_transits} ach={[round(t, 1) for t in ach_transits]} "
-            f"{'OK' if transit_ok else 'X'}"
+            f"t_out: src={src_t_out:.0f} ach={ach_t_out:.1f} {'OK' if t_out_ok else 'X'}; "
+            f"designated-leg ToF: src={src_designated:.1f} ach={ach_designated:.1f} "
+            f"{'OK' if desig_ok else 'X'}"
         )
 
     matched = vinf_match and period_ok and (transit_ok in (None, True))
@@ -309,8 +478,9 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
 def _truth_seed(genome: dict[str, Any]) -> list[float]:
     """The row's OWN sourced ToF geometry as a free-leg seed (slack eliminated).
 
-    ``all_seeds`` are [E->M, M->E, *E-E loops] taken verbatim from the row's
-    segments + descriptor arcs — the by-construction circular-coplanar geometry.
+    ``all_seeds`` are [E->M (sourced t_out), M->E (designated-leg remainder),
+    *E-E loops (#794 written-back segments)] — the by-construction
+    circular-coplanar geometry, which now tiles the period (#820).
     Drop the slack leg (reconstructed by the corrector as period - sum(free))."""
     all_seeds = genome["all_seeds"]
     slack = genome["slack_leg"]
@@ -345,28 +515,17 @@ def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dic
     3. Run the full corrector seeded EXACTLY there (truth ToFs, best-phase t0).
     4. Report whether it stayed (residual->0, ToFs ~ truth) or walked away.
     """
-    genome = build_genome(row)
+    # Leg-1 topology selection doubles as the truth phase scan: for every
+    # (n_revs, branch) candidate it scans t0 with the ToFs PINNED at truth;
+    # the winner's scan IS the residual-at-truth landscape minimum.
+    sel = select_leg1_topology(
+        build_genome(row), model=model, phase_epochs=phase_epochs, t0_center=_t0_center(row)
+    )
+    genome = sel["genome"]
     truth_free = _truth_seed(genome)
     period_sec = genome["period_sec"]
-    priority = row.get("priority_date")
-    if priority:
-        t0_center = _t_sec(datetime.fromisoformat(str(priority)).replace(tzinfo=UTC))
-    else:
-        t0_center = _t_sec(datetime(2030, 1, 1, tzinfo=UTC))
-
-    # Phase scan of t0 with ToFs PINNED at truth -> the residual-at-truth landscape.
-    offsets = np.linspace(0.0, period_sec, phase_epochs, endpoint=False)
-    best_t0 = t0_center
-    best_truth_res = float("inf")
-    for off in offsets:
-        t0 = t0_center + float(off)
-        try:
-            r = _residual_at(genome, t0, truth_free, model, "magnitude")
-        except Exception:
-            continue
-        if r < best_truth_res:
-            best_truth_res = r
-            best_t0 = t0
+    best_t0 = float(sel["best_t0_sec"])
+    best_truth_res = float(sel["best_truth_residual_kms"])
 
     # Seed the corrector EXACTLY at (best-phase t0, truth ToFs) and let it run.
     ephem = Ephemeris(model)
@@ -401,6 +560,8 @@ def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dic
     return {
         "id": row["id"],
         "model": model,
+        "leg1": sel["leg1"],
+        "leg1_candidates": sel["candidates"],
         "best_phase_truth_residual_kms": round(best_truth_res, 4),
         "truth_residual_below_floor": bool(best_truth_res <= CORRECTOR_TOL_KMS),
         "solved_converged": bool(solved.converged),
@@ -490,12 +651,16 @@ def probe_at_truth_free_return(row: dict[str, Any], *, phase_epochs: int, model:
 
 
 def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> dict:
-    genome = build_genome(row)
-    priority = row.get("priority_date")
-    if priority:
-        t0_center = _t_sec(datetime.fromisoformat(str(priority)).replace(tzinfo=UTC))
-    else:
-        t0_center = _t_sec(datetime(2030, 1, 1, tzinfo=UTC))
+    t0_center = _t0_center(row)
+    # Select leg 1's (n_revs, branch) by residual-at-truth before the epoch
+    # grid (the sourced geometry discriminates the unprinted topology).
+    sel = select_leg1_topology(
+        build_genome(row),
+        model=model,
+        phase_epochs=LEG1_SELECT_PHASE_EPOCHS,
+        t0_center=t0_center,
+    )
+    genome = sel["genome"]
 
     # Epoch grid over one target period centred on the priority date.
     period_sec = genome["period_sec"]
@@ -530,6 +695,12 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> di
         "per_leg_branch": list(genome["per_leg_branch"]),
         "slack_leg": genome["slack_leg"],
         "seeds": [round(s, 1) for s in genome["all_seeds"]],
+        "designated": genome["designated_raw"],
+        "leg1_selection": {
+            "selected": sel["leg1"],
+            "truth_residual_kms": round(float(sel["best_truth_residual_kms"]), 4),
+            "candidates": sel["candidates"],
+        },
     }
     return verdict
 

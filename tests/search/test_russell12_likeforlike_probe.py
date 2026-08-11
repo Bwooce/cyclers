@@ -1,17 +1,21 @@
-"""#135 like-for-like seed-at-truth probe: pins the decisive diagnostic.
+"""#135/#820 like-for-like seed-at-truth probe: pins the decisive diagnostic.
 
-The Russell-12 closure campaign run on ``Ephemeris('circular')`` (coplanar vs
-coplanar, against rows that are by-construction solutions OF the coplanar model)
-still produces 0 CLOSE-AND-MATCH. The seed-at-truth probe explains why: the
-row's OWN sourced ToF geometry is NOT a residual-zero point of our descriptor->
-corrector genome -- the residual evaluated AT truth sits far above the 0.1 km/s
-closure floor, so the corrector correctly walks away from it.
-
-This test pins that diagnosis on the representative symmetric row
-(``mcconaghy-2006-em-k2``, 153/153 d). It is NON-GOLDEN: the asserted numbers are
-OUR residual at the SOURCED geometry, pinned to guard the genome-mapping finding
-against silent regression -- NOT a rediscovery of any published value. See
-``docs/notes/2026-06-06-russell12-likeforlike.md``.
+HISTORY. The #135 diagnosis ("the sourced geometry is NOT a residual-zero point
+of the descriptor->corrector genome") was pinned here 2026-06-06 — and #820
+(2026-08-11) showed it was an artifact of a MIS-POSED genome: ``build_genome``
+assumed ``arcs[0]`` was the Mars leg and used the sourced t_in as the M->E leg
+ToF, whereas #794's primary-source semantics put the Mars transit on the
+DESIGNATED (uppercase) arc and require the M->E leg to be that arc's
+beyond-Mars REMAINDER (so the seeds can tile the period). Under the corrected
+posing the corrector, seeded at truth, converges to a genuine residual-zero
+closure within ~1 day of the sourced geometry whose EMERGED V-infinity matches
+the row's independently sourced anchors. This file now pins THAT finding on
+``russell-ch4-4.991gG2`` (Russell 2004 Table 4.9 row 1, anchors E 4.99 /
+M 5.10 km/s). GOLDEN DISCIPLINE: the expected side of the V-infinity check is
+the SOURCED anchor; V-infinity is never imposed. See
+``docs/notes/2026-08-11-820-russell12-designated-arc-reposing.md`` (and
+``docs/notes/2026-06-06-russell12-likeforlike.md`` for the superseded #135
+diagnosis).
 """
 
 from __future__ import annotations
@@ -42,34 +46,52 @@ def _row(rid: str) -> dict[str, Any]:
 
 
 @pytest.mark.slow
-def test_sourced_geometry_is_not_a_circular_closure_point() -> None:
-    """Seed-at-truth on circular: residual AT the sourced 153/153 d geometry is
-    far above the closure floor -> the corrector WALKS AWAY (not a seeding gap)."""
+def test_reposed_truth_seed_converges_to_sourced_anchor() -> None:
+    """#820: seeded at the row's OWN sourced geometry under the designated-arc
+    posing, the corrector converges to a residual-zero closure a fraction of a
+    day from truth, and the EMERGED per-body V-infinity matches the row's
+    independently sourced Russell anchors (E 4.99, M 5.10 km/s)."""
     mod = _load_campaign()
-    row = _row("mcconaghy-2006-em-k2")
+    row = _row("russell-ch4-4.991gG2")
     probe = mod.probe_at_truth(row, phase_epochs=64, model="circular")
 
-    # The diagnosis: truth is not a closure point of our genome.
-    assert probe["verdict"] == "WALKED-AWAY"
-    assert not probe["truth_residual_below_floor"]
-    # Residual at the sourced geometry is multi-km/s, far above the 0.1 floor
-    # (pinned ~3.4 km/s; assert the regime, not a sourced value).
-    assert probe["best_phase_truth_residual_kms"] > 1.0
-    # The corrector does find a genuine closure -- just at a different geometry.
     assert probe["solved_converged"]
-    assert probe["tof_drift_days"] > mod.TOL_TRANSIT_DAYS
+    assert probe["solved_max_residual_kms"] <= mod.CORRECTOR_TOL_KMS
+    assert probe["tof_drift_days"] <= mod.TOL_TRANSIT_DAYS
+    # Sequence is E-M-E-E: encounter 0 is Earth, encounter 1 is Mars. The
+    # sourced anchors are the EXPECTED side (golden discipline); the achieved
+    # values EMERGE from the converged Lambert chain (observed 5.008 / 5.107).
+    vinf = probe["solved_vinf_per_encounter_kms"]
+    assert abs(vinf[0] - 4.99) <= mod.TOL_VINF_KMS
+    assert abs(vinf[1] - 5.10) <= mod.TOL_VINF_KMS
+    # Residual AT the rounded seed itself sits just above the 0.1 km/s floor —
+    # period.years is printed to 2 decimals (4.27 vs the exact 4.2708), which
+    # alone injects ~1.3 d of slack-leg error. Pin the regime: sub-km/s, an
+    # order of magnitude below the pre-#820 mis-posed genome's ~3.4 km/s.
+    assert probe["best_phase_truth_residual_kms"] < 1.0
 
 
 @pytest.mark.slow
-def test_genome_maps_truth_seed_to_sourced_tofs() -> None:
-    """The truth seed IS the row's sourced geometry (segment + descriptor ToFs),
-    so a WALKED-AWAY verdict implicates the genome mapping, not the seed."""
+def test_genome_designated_arc_split_and_loop_seeds() -> None:
+    """#820: the genome splits the DESIGNATED (uppercase) arc — ``arcs[1]``
+    (G) for this gG row, NOT ``arcs[0]`` — at the Mars encounter, and seeds
+    the E-E loop from the #794-written-back segment."""
     mod = _load_campaign()
-    row = _row("mcconaghy-2006-em-k2")
+    row = _row("russell-ch4-4.991gG2")
     genome = mod.build_genome(row)
+    assert genome["designated_index"] == 1
+    assert genome["designated_raw"].startswith("G(")
+    # Leg 0 = sourced t_out; leg 1 = designated remainder (2.8096 yr - 150 d);
+    # the loop (#794 segment, 533.7 d) is eliminated as the slack leg.
     truth_free = mod._truth_seed(genome)
-    # mcconaghy is symmetric 153/153 d with the E-E loop eliminated as slack.
-    assert truth_free == [153.0, 153.0]
+    assert truth_free[0] == 150.0
+    assert truth_free[1] == pytest.approx(2.8096 * 365.25 - 150.0, abs=0.01)
+    assert genome["slack_leg"] == 2
+    assert genome["all_seeds"][2] == 533.7
+    # The seeds now tile the sourced period to ~1 d (pre-#820 they could not:
+    # the beyond-Mars designated-leg time had no leg to live in).
+    period_days = genome["period_sec"] / 86400.0
+    assert abs(sum(genome["all_seeds"]) - period_days) < 2.0
 
 
 # ---------------------------------------------------------------------------

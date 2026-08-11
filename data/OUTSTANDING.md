@@ -920,17 +920,29 @@ unchanged. See `git log` around this date for the corrected commit.
   solvable from its own printed descriptor by `#794`'s exact machinery (no Mars phase needed
   for the CONIC; the Mars encounter only splits the ToF). Cheap and well-posed after `#794`;
   supersedes the vaguer "unknown Mars-Earth phase" framing where the descriptor is printed.
-- `#820` — registered 2026-08-10 (found during `#813`, not dispatched): re-pose the
-  `campaign_russell12.py` lambert-genome descriptor→genome mapping per `#794`'s primary-source
-  semantics and re-run. `build_genome` still assumes `arcs[0]` is the Mars free-return arc and
-  `arcs[1:]` are the E-E loops, but `#794` established the DESIGNATED (uppercase) arc is the
-  Mars-transit leg — `arcs[1]` (G) for 5.30gGf3, `arcs[2]` (F) for the ggF/gfF rows — so the
-  genome assigns a designated arc to the loop set and drops a real loop arc on all 4 non-1:1
-  rows (and 3.64gGg3/8.049gGf2-class rows should be re-checked too). Re-pose with designated =
-  uppercase, loops = the other arcs in itinerary order, ToF/rev seeds from `#794`'s
-  written-back `loop-ee-*` segments; `#813`'s A/B showed the M:N fix alone leaves
-  truth-residuals at 7–27 km/s — a residual-zero at truth under the CORRECT posing would be
-  V1-grade multi-arc closure evidence beyond the single-ellipse free-return genome.
+- `#820` — ✓ DONE 2026-08-11 (dispatched 2026-08-11): `campaign_russell12.py::build_genome`
+  re-posed per `#794`'s designated-arc semantics and re-run — **the hoped-for result landed:
+  truth IS a residual-zero region of the correctly-posed genome for 8/12 rows, overturning the
+  #135 "sourced geometry is not a closure point" diagnosis as an artifact of the mis-posing.**
+  Three coupled defects fixed: (1) designated (uppercase `raw_descriptor`) arc identified
+  positionally-independently — it was NOT `arcs[0]` on 9/12 rows, including the two
+  `#794`-flagged re-checks (3.64gGg3 and 8.049gGf2, both `arcs[1]`); (2) loops = the
+  non-designated arcs in cyclic itinerary order, seeded from `#794`'s written-back `loop-ee-*`
+  segments with a raising descriptor↔segment cross-check; (3) the M→E leg is now the
+  designated arc's beyond-Mars REMAINDER (printed leg ToF − t_out) instead of the sourced t_in
+  (an inbound-crossing taxi transit, not a per-cycle leg) — pre-#820 the seeds could never
+  tile the period. Leg-1's unprinted (n_revs, branch) is discriminated by residual-at-truth
+  over the descriptor-implied candidate set. Re-run (circular, 256 epochs + 256-phase probe,
+  runlog `data/runs/russell12-circular-20260811T-820-reposed.jsonl`): first-ever
+  CLOSE-AND-MATCH grid verdicts (9.353Gg2, 3.78Gg3), one strict STAYED-AT-TRUTH (5.30ggF3,
+  at-seed residual 0.074), and 8/12 rows' probes converge to residual-0.000 ballistic closures
+  0.2–3.2 d from the sourced geometry with EMERGED V∞ matching the sourced anchors to
+  0.01–0.10 km/s (never imposed). The 4 failures are exactly the rows with a full-rev f arc in
+  the LOOP set — a precisely-identified degenerate-360°-Lambert / out-of-ecliptic wall,
+  registered `#825`; evidence adjudication/writeback deliberately not done here, registered
+  `#826`. Frozen `test_russell12_likeforlike_probe.py` pins re-pointed at the new finding
+  (old pins guarded the mis-posed genome). Full account:
+  `docs/notes/2026-08-11-820-russell12-designated-arc-reposing.md`.
 - `#821` — registered 2026-08-10 (found during `#813`, not dispatched): fix
   `russell-ch4-5.30gGf3`'s catalogue prose note, which still explains f(3:2) with the REVERSED
   pre-`#794` convention ("spacecraft 3 revs vs Earth 2 revs"; correct per both primary sources:
@@ -960,6 +972,26 @@ unchanged. See `git log` around this date for the corrected commit.
   unstable `#811` rows are mechanically ineligible, per their own `_LEVEL_EVIDENCE` NOT-V2
   notes). Cheap, bounded, and the only currently-visible upgrade path above V1 for this
   family pair short of `#822`'s connection work.
+- `#825` — registered 2026-08-11 (found during `#820`, not dispatched): resonant-loop-aware
+  genome leg for the 4 rows `#820`'s re-posing could not close — exactly the rows whose LOOP
+  set contains a full-rev f arc (8.049gGf2, 3.64gGg3: in-ecliptic f(1:1); 3.66gfF3: inclined
+  f(1:1), i=7.038°; 5.30gGf3: inclined f(3:2), i=6.589°). A resonant E-E loop departs and
+  re-meets Earth at the SAME point after M years / N revs, so its Lambert problem has a
+  360°N transfer angle and is DEGENERATE (endpoints+ToF cannot recover the printed loop e) —
+  the 35–40 km/s truth residuals on those rows are this degeneracy, not geometry; the two
+  inclined loops are additionally outside the coplanar corrector entirely. Fix path: a leg
+  type that pins the loop conic from the `#794` segment's (a, e[, i]) directly (v_out from
+  the McConaghy/Russell/Longuski (ϕ, λ) semantics) instead of solving a Lambert, then re-run
+  those 4 rows. See `docs/notes/2026-08-11-820-russell12-designated-arc-reposing.md` §3.
+- `#826` — registered 2026-08-11 (found during `#820`, not dispatched): adjudicate the
+  validation-evidence implications of `#820`'s 8 truth-region closures (emerged-V∞-matching,
+  period-constrained ballistic multi-arc closures at the sourced geometry: 4.991gG2 (V3),
+  9.353Gg2/3.78Gg3/9.94Gg3/5.30ggF3/5.75ggF3/6.44Gg3 (V1), mcconaghy (V0, closes at Russell's
+  4.99/5.10 anchor not its own McConaghy-flavored 4.7/5.0 — the `#794` model caveat) — decide
+  per-row what gate this satisfies under the `#388` promotion discipline (canonical
+  close_row_dsm framing, dv_band classification) and do any catalogue writeback as its own
+  task with the full ratchet. Explicitly split out of `#820` per its dispatch (no writeback
+  from the campaign task itself).
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
