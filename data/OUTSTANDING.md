@@ -951,19 +951,32 @@ unchanged. See `git log` around this date for the corrected commit.
   (full `tests/data tests/search -q` ratchet); deferred out of `#813` to avoid colliding with
   `#811`'s concurrent catalogue writeback. Sweep the remaining rows' free-text notes for the
   same phrasing while there.
-- `#822` — registered 2026-08-10 (found during `#811`, not dispatched): compute an actual
-  free-transfer (unstable-to-unstable, same-C heteroclinic manifold connection) between
-  Vaquero's 2:1 and 3:1 Earth-Moon periodic-cycler families in their `C ∈ [2.54, 2.66]`
-  overlap band. Vaquero asserts existence (pp.171-172, the reversed-"2.66 < C < 2.54" prose,
-  `#787`'s typesetting-slip reading) but prints NO transfer trajectory or ΔV — a concrete,
-  bounded reproduction target now that `#799`'s digit-grade ICs exist for BOTH families at
-  every 0.01 grid point of the overlap (both unstable there: 2:1 |λ| 2.6-5.7, 3:1 |λ| ~11.3,
-  exactly her free-transfer precondition). Existing manifold-connection machinery
-  (`search/earth_moon_resonant_connections.py`, `#783`) is the natural starting lane; note
-  `#783`'s own connection-reproduction outcome was a clean negative on a DIFFERENT
-  (homoclinic, Casoliva-lineage) target, so treat method fit as open, not assumed. Success
-  would also be the natural upgrade path toward V2/V3-class connection evidence for the
-  `#811` rows.
+- `#822` — ✓ DONE 2026-08-11 (registered 2026-08-10, found during `#811`; DISPATCHED
+  2026-08-11): **COMPUTED AND VERIFIED — the Vaquero 2:1 <-> 3:1 Earth-Moon free transfer
+  (unstable-to-unstable, same-C heteroclinic manifold connection) converged and passed the
+  full verification battery at ALL 13 shared 0.01-grid Jacobi constants of the `C ∈
+  [2.54, 2.66]` overlap band, plus the reverse direction Wu(3:1)->Ws(2:1) demonstrated
+  directly at C=2.60.** Reproduces (supplies the missing numbers for) Vaquero's own
+  qualitative pp.171-172 existence claim — NOT novel (her claim; `literature_check.py`
+  mandatory-floor gate run with the real WebSearch tool: `published`, confidence 0.95,
+  Casoliva-2010-lineage anchor `10.2514/1.46856`). Built
+  `src/cyclerfinder/search/vaquero_em_cycler_connections.py` (+12 tests, driver
+  `scripts/screen_822_vaquero_em_free_transfer.py`, full record
+  `data/found/822_vaquero_em_free_transfer/results.json`) on the `#754`/`#781`
+  Poincare-section `correct_connection` lane (NOT `#783`'s BMO shooting lane — method fit
+  was open per dispatch and this lane fit): promoted `#781`'s whole-crossing-set
+  close-approach seeding to first-class code, added a ydot-SIGN gate (an (x,xdot) section
+  match at fixed C leaves sign(ydot) ambiguous — pre-filtered AND hard-gated on the full
+  4-state gap), seed-diversity refinement, and an eps^2-aware Jacobi gate (drift measured
+  vs the SEED's own conserved value; the linear manifold seed sits O(eps^2) off the energy
+  surface — first-order term vanishes by eigenvector energy-orthogonality). Primary
+  (C=2.60): residual 8.0e-11, crossing (x,xdot,ydot)=(+0.865972,-0.479921,-0.607359),
+  4-state gap 5.7e-6, independent-Radau gap 4.1e-6, ghost 520x/481x guard, transit
+  188.7+133.9 d, Δv=0. Full account + honest search history (first pass verified only 5/13;
+  three diagnosed mechanism fixes — never loosened gates — closed the rest):
+  `docs/notes/2026-08-11-822-vaquero-em-free-transfer.md`. Follow-ons registered: `#827`
+  (Kumar-Rawat-Rosengren-Ross 2026 Table-5 digit-grade heteroclinic reproduction), `#828`
+  (`#811`-row validation-evidence adjudication/writeback).
 - `#823` — registered 2026-08-10 (found during `#811`, not dispatched): V2-ballistic
   candidacy run for `#811`'s two linearly STABLE Vaquero rows
   (`vaquero-21-c198-em-resonant-po-2013`, nu=0.4852; `vaquero-21-c246-em-cycler-2013`,
@@ -992,6 +1005,22 @@ unchanged. See `git log` around this date for the corrected commit.
   close_row_dsm framing, dv_band classification) and do any catalogue writeback as its own
   task with the full ratchet. Explicitly split out of `#820` per its dispatch (no writeback
   from the campaign task itself).
+- `#827` — registered 2026-08-11 (found during `#822`, not dispatched): digit-grade
+  reproduction of Kumar, Rawat, Rosengren & Ross 2026's own printed Table-5 3:1->2:1
+  Earth-Moon heteroclinic intersection states (`C_J ∈ {3.00, 3.05, 3.10, 3.15}`; *Adv. Space
+  Res.* 77(3):3815, DOI `10.1016/j.asr.2025.12.005`, corpus `kumar-2025-arxiv-2509.12675.pdf`,
+  digest `docs/notes/2026-06-20-digest-kumar-2025.md`) using `#822`'s
+  `vaquero_em_cycler_connections.py` machinery generalized to their family branches (their
+  Table-6 orbit ICs already reproduce to ~1e-13 via `resonance_network.py`, `#598`). Unlike
+  Vaquero's prose-only claim, a TRUE digit-grade gate target for the heteroclinic lane —
+  they print exact intersection states.
+- `#828` — registered 2026-08-11 (found during `#822`, not dispatched): adjudicate whether
+  `#822`'s 13/13-grid-point verified free-transfer connections (+ reverse direction) upgrade
+  any of `#811`'s six `vaquero-*` catalogue rows' validation levels — the `#822`
+  registration's own "natural upgrade path toward V2/V3-class connection evidence" framing —
+  and if warranted perform the writeback under full catalogue-edit ratchet discipline
+  (`tests/data tests/search -q`, never a subset). Distinct from `#826` (which is `#820`'s
+  Russell-row analogue of the same adjudication pattern).
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
