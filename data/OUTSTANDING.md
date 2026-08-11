@@ -1174,6 +1174,19 @@ unchanged. See `git log` around this date for the corrected commit.
   catalogue row + `_LEVEL_EVIDENCE` under full ratchet discipline (`tests/data tests/search
   -q`, never a subset), and the census-prose rewrite in the `#504`/`#549`/`#656` records ("0
   of 15 beyond (3,2)" → "1 of 15"; PC (3,2) no longer structurally unique at this mu).
+- `#837` — registered 2026-08-11 (found during `#810`'s verification pass, not dispatched):
+  `tests/scripts/test_671_regularized_qr_integrator.py::test_qr_regularized_oterma_defeats_
+  wrapping_and_conserves_jacobi` and `tests/scripts/test_672_section_map.py::test_oterma_first_
+  section_crossing_rigorously_isolated` both FAIL by **pytest-timeout (>600 s inside mpmath)**
+  on the Mac when the machine is loaded (measured during `#810`: load avg 25 with six
+  concurrent 100%-CPU python processes from sibling sessions; both also timed out in an
+  `-n 0` isolation re-run under the same load) — the `#808`-documented contention-sensitivity
+  condition, now hitting the two heaviest interval-certificate replay tests. No import
+  relationship to `#810`'s all-new files (failure mode is a timeout mid-mpmath, not an
+  assertion). Candidate fixes to adjudicate: a larger per-test timeout for the two certificate
+  replays, a serial-execution marker, or downgrading the replay depth — pick ONE with the
+  certificate-evidence discipline in mind (do NOT just `@pytest.mark.slow` them out of CI per
+  [[feedback_delegation_fresh_agent_not_fork]]).
 - `#827` — registered 2026-08-11 (found during `#822`, not dispatched): digit-grade
   reproduction of Kumar, Rawat, Rosengren & Ross 2026's own printed Table-5 3:1->2:1
   Earth-Moon heteroclinic intersection states (`C_J ∈ {3.00, 3.05, 3.10, 3.15}`; *Adv. Space
