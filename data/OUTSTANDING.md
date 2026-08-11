@@ -1098,7 +1098,16 @@ unchanged. See `git log` around this date for the corrected commit.
   `constraints_satisfied` in both functions, surface the per-node required/max bend in the
   probe dict, and re-classify all 12 rows. `#826` found 2 of `#820`'s 8 affected;
   `6.44Gg3`'s razor-thin +3.302° excess is exactly the
-  `[[feedback_verify_automated_ghost_guard_booleans]]` signal.
+  `[[feedback_verify_automated_ghost_guard_booleans]]` signal. **Scope is wider than the 12
+  current rows** (`[[feedback_bugfix_invalidates_past_searches]]`): because the filter has
+  always been `converged`-only, EVERY CLOSE-AND-MATCH / CLOSE-OFF-ANCHOR verdict this
+  campaign has ever emitted was bend-blind, so the historical
+  `data/runs/russell12-*.jsonl` records (the June-07 and `#813` runs as well as `#820`'s)
+  need re-classifying too, not just a forward fix. Note `#826`'s finding that a
+  `bend_feasible: false` is NOT automatically a defect — for a row whose PUBLISHED
+  `turn_ratio` is < 1 (Russell Table 4.13 near-ballistic, e.g. `6.44Gg3`) it is the
+  CORRECT result — so the re-classification must compare against the published TR
+  (`#833`), not simply drop infeasible closures.
 - `#830` — registered 2026-08-11 (found during `#826`, not dispatched): **V2-ballistic is
   reopened** for the 6 admissible `#820` rows. `tests/search/test_free_return_v2_ballistic.py`
   declined promotion on the STRUCTURAL ground that a single-ellipse slice gives "no continuous
