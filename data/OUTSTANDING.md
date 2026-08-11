@@ -997,15 +997,130 @@ unchanged. See `git log` around this date for the corrected commit.
   type that pins the loop conic from the `#794` segment's (a, e[, i]) directly (v_out from
   the McConaghy/Russell/Longuski (ϕ, λ) semantics) instead of solving a Lambert, then re-run
   those 4 rows. See `docs/notes/2026-08-11-820-russell12-designated-arc-reposing.md` §3.
-- `#826` — registered 2026-08-11 (found during `#820`, not dispatched): adjudicate the
-  validation-evidence implications of `#820`'s 8 truth-region closures (emerged-V∞-matching,
-  period-constrained ballistic multi-arc closures at the sourced geometry: 4.991gG2 (V3),
-  9.353Gg2/3.78Gg3/9.94Gg3/5.30ggF3/5.75ggF3/6.44Gg3 (V1), mcconaghy (V0, closes at Russell's
-  4.99/5.10 anchor not its own McConaghy-flavored 4.7/5.0 — the `#794` model caveat) — decide
-  per-row what gate this satisfies under the `#388` promotion discipline (canonical
-  close_row_dsm framing, dv_band classification) and do any catalogue writeback as its own
-  task with the full ratchet. Explicitly split out of `#820` per its dispatch (no writeback
-  from the campaign task itself).
+- `#826` — ✓ DONE 2026-08-11, **ZERO PROMOTIONS, NO CATALOGUE EDIT** (registered by `#820`,
+  dispatched 2026-08-11): adjudicated the validation-evidence implications of `#820`'s 8
+  truth-region closures per the `#388` promotion discipline. Note
+  `docs/notes/2026-08-11-826-russell12-closure-adjudication.md`. **Seven of the eight rows
+  ALREADY sit at or above the level `#820`'s registration tentatively proposed** — 4.991gG2
+  is V3 (spec §14's own V3-ballistic type specimen), and 9.353Gg2/3.78Gg3/9.94Gg3/5.30ggF3/
+  5.75ggF3/6.44Gg3 are all already V1 — so those "tentatively V1/V3" labels were never
+  promotion proposals. The tier discriminator, stated once: spec §14 **V1** requires
+  lamberthub izzo+gooding per-leg agreement < 1e-3 m/s AND Kepler forward re-propagation, and
+  `probe_at_truth` calls `ballistic_correct` only — it supplies NEITHER half, so this evidence
+  class tops out at V0. Three further independently-sufficient grounds, following `#388`'s own
+  `russell-ocampo-4.3.1-5` precedent: it is not the canonical `close_row_dsm` determination
+  path, it is seeded EXACTLY at truth rather than blind (`#820`'s blind grid found the anchor
+  basin on only 2/12), and it is single-cycle. **Two findings `#820` did not report**, both
+  from an independent re-run that reproduced all of `#820`'s numbers exactly: (a) **two of the
+  eight "closures" are bend-INFEASIBLE** — `probe_at_truth`'s verdict reads `solved.converged`
+  while the same result object carries `constraints_satisfied` (= converged AND bend_feasible
+  AND vinf_cap_ok) right beside it, and spec §14 V0 requires `bend <= max` as a hard
+  constraint, so `#820`'s "8 of 12" is honestly **6 admissible + 2 not** (`run_row`'s grid
+  filter has the identical hole → `#829`); and (b) a **new sourced cross-check**: Russell's
+  published turn ratio (`TR = max allowable / max required turn at a 200 km flyby`,
+  Russell-Ocampo 2003 p.13; our `safe_alt_km = 200.0` is itself sourced from Russell 2004
+  p.165, so `min(max_bend/required_bend)` is like-for-like) reproduces the row's own published
+  `invariants.turn_ratio` to **0.001-0.024 on 7 of 8 rows**. That check resolves the two bend
+  flags into opposite verdicts: `6.44Gg3` measures TR 0.956 vs published **0.95** — it is
+  Russell Table 4.13's NEAR-BALLISTIC row and reproducing TR < 1 is *evidence the closure is
+  on the sourced family*, not a defect; whereas `5.30ggF3` measures **0.613 vs published
+  1.27** — its last node reproduces 1.27 but an earlier Earth node demands **141.244° where
+  86.582° is available**, so `#820`'s lowest-truth-residual, sole STAYED-AT-TRUTH row is
+  **OFF-FAMILY** and its evidence is retracted (→ `#835`). A textbook
+  `[[feedback_orbit_closure_discipline]]` "it closed!" catch, invisible to both the closure
+  residual and the V∞ anchors. **`mcconaghy-2006-em-k2` stays V0 on stronger grounds than the
+  registration's anchor caveat**: it shares `orbit_source`, `free_return_arcs`, aphelion,
+  period, `sequence_canonical` and `turn_ratio` byte-for-byte with `russell-ch4-4.991gG2`
+  (its own `orbit_elements.note` already records Russell tagging Table 4.9 row 1 as 4.991gG2
+  = "the 'S1L1' cycler"), and `build_genome` reads `free_return_arcs` — Russell's — so the
+  probe returns emerged V∞ **5.008/5.107 identical to three decimals** to 4.991gG2's. It is
+  that row's closure, supplying **zero independent evidence** for this one; and its own cited
+  `vinf_source: mcconaghy-2006` 4.7 km/s anchor is unreproduced (the 0.308 km/s gap sits
+  inside `TOL_VINF = 0.5`, but that is a campaign screening threshold, NOT a tier gate — a
+  2-sig-fig published value missed by ~6.5% is not agreement). Duplicate-row question
+  registered as `#831`; rows deliberately NOT merged (frozen-census ripple). **V2-ballistic
+  adjudicated explicitly rather than skipped: REOPENED, not answered.**
+  `tests/search/test_free_return_v2_ballistic.py`'s recorded ground for no-promotion was
+  structural — "no continuous ≥3-lap trajectory to propagate … the gate is structurally
+  inapplicable to a single-arc slice of a multi-arc cycler" — and `#820`'s full-period
+  genome removes exactly that obstacle, so V2 is live for the 6 admissible rows for the first
+  time; not attempted here because the rounded `period.years: 4.27` (vs the exact 4.2708)
+  injects ~1.3 d of secular slack-leg error ≈ 3e6 km rotating-frame drift per lap against a
+  50,000 km tolerance, so it needs an exact-synodic re-pose first (→ `#830`). Downgrade risk
+  checked too (`[[feedback_bugfix_invalidates_past_searches]]` cuts both ways): the rows' V1
+  evidence runs through the `#137` free-return genome and the `#181` joint-(epoch,ToF) closer,
+  not `build_genome`; `test_free_return_v1_mechanics` + `test_closer_sweep_v1` +
+  `test_russell12_likeforlike_probe` re-run 46 passed, no downgrade. Deliverable is the note +
+  new `tests/search/test_russell12_probe_bend_feasibility.py` (17 tests, NOT `slow`, golden
+  expected side = the published `turn_ratio`) — deliberately no "ADDED EVIDENCE" catalogue
+  annotations, since citing `#820`'s closure on rows whose closure is inadmissible
+  (`5.30ggF3`) or non-independent (`mcconaghy`) would be misleading. Follow-ups: `#829`-`#835`.
+- `#829` — registered 2026-08-11 (found during `#826`, not dispatched): `campaign_russell12`
+  is **bend-blind**. `probe_at_truth`'s `stayed` verdict is computed from `solved.converged`
+  and `run_row`'s grid filter is `[r for r in results if r.get("converged")]`, while
+  `BallisticClosureResult` exposes `bend_feasible` / `vinf_cap_ok` / `constraints_satisfied`
+  right there — so the campaign's whole verdict vocabulary (CLOSE-AND-MATCH /
+  CLOSE-OFF-ANCHOR / STAYED-AT-TRUTH) can label a bend-infeasible trajectory a closure, which
+  spec §14 V0 forbids (`bend <= max` is a V0 hard constraint). Report AND gate on
+  `constraints_satisfied` in both functions, surface the per-node required/max bend in the
+  probe dict, and re-classify all 12 rows. `#826` found 2 of `#820`'s 8 affected;
+  `6.44Gg3`'s razor-thin +3.302° excess is exactly the
+  `[[feedback_verify_automated_ghost_guard_booleans]]` signal.
+- `#830` — registered 2026-08-11 (found during `#826`, not dispatched): **V2-ballistic is
+  reopened** for the 6 admissible `#820` rows. `tests/search/test_free_return_v2_ballistic.py`
+  declined promotion on the STRUCTURAL ground that a single-ellipse slice gives "no continuous
+  ≥3-lap trajectory to propagate"; `#820`'s re-posed genome tiles the full cycler period
+  (loop legs included), so that ground is obsolete. Prerequisite: re-pose on the EXACT
+  2 × 2.1354-yr synodic period instead of the rounded `period.years: 4.27` — `#820` records
+  that the rounding alone injects ~1.3 d of slack-leg error, which is secular (~3e6 km of
+  rotating-frame drift per lap vs a 50,000 km tolerance) and would dominate any V2 verdict.
+  Also fold in the `#388` energy-selectivity re-check: `#820`'s anchor-recovering high-V∞ rows
+  (9.35/10.52, 9.94/10.76) look like counterexamples to "high-V∞ rows collapse off-anchor" but
+  are NOT like-for-like (circular + seeded-at-truth vs `#388`'s blind real-eph `close_row_dsm`
+  lane) — re-run that lane under the corrected posing to find out.
+- `#831` — registered 2026-08-11 (found during `#826`, not dispatched): `mcconaghy-2006-em-k2`
+  and `russell-ch4-4.991gG2` are almost certainly **the same physical object carried as two
+  rows** — identical `orbit_source: russell-2004-t49_413`, identical `free_return_arcs`
+  (`g(1.4612,526.02,Ll)` + `G(2.8096,651.46,U)`), identical aphelion 1.64 AU, `turn_ratio`
+  2.65, period k=2/4.27 yr and `sequence_canonical`; the mcconaghy row's own
+  `orbit_elements.note` records Russell tagging Table 4.9 row 1 as 4.991gG2 (#83) = "the
+  'S1L1' cycler". They differ only in `transit_times_days` (153 vs 150) and the V∞ flavour
+  (McConaghy 4.7/5.0 vs Russell 4.99/5.10) — and they sit at DIFFERENT validation levels (V0
+  vs V3). Decide the right disposition (merge with a `rediscoveries` entry per spec §13's
+  exact-match rule, or keep both with an explicit cross-reference documenting the two source
+  flavours) and note the census implications. NOT done under `#826` — a row merge ripples
+  through every frozen-census ratchet.
+- `#832` — registered 2026-08-11 (found during `#826`, not dispatched): the `turn_ratio`
+  catalogue comment is **INVERTED** vs its own sourced definition. Every row reads
+  `# Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)`,
+  which is self-contradictory (if TR = required/max then TR ≥ 1 means INFEASIBLE); the source
+  says "TR = max physically allowable turn angle / max required turn angle (δ_MAX)"
+  (Russell-Ocampo 2003 p.13, digest `2026-06-17-digest-russell-ocampo-2003.md`). `#826`'s
+  measured values confirm the SOURCE's direction (6.44Gg3 = 0.95 is Russell's near-ballistic
+  Table 4.13 row). Comment-only fix across all rows carrying the field — values are correct,
+  only the prose is wrong. Cheap, but it is a live mis-documentation of a sourced invariant.
+- `#833` — registered 2026-08-11 (found during `#826`, not dispatched): promote the
+  **measured-turn-ratio cross-check** to a reusable sourced validation instrument. `#826`
+  found `min(max_bend/required_bend)` over a closure's flybys reproduces Russell's published
+  `invariants.turn_ratio` to 0.001-0.024 on 7/8 rows, and it CAUGHT an off-family closure
+  (`5.30ggF3`) that both the closure residual and the V∞ anchors passed — an independent
+  evidence axis (flyby turn geometry) we were not using. Wire it into the campaign verdicts
+  and consider it as a standing gauntlet check wherever a row publishes a turn ratio.
+- `#834` — registered 2026-08-11 (found during `#826`, not dispatched): audit
+  `russell-ch4-8.049gGf2`'s **V3** `_LEVEL_EVIDENCE` entry against `#820`'s 35.22 km/s
+  truth residual for that row under the corrected designated-arc posing. Almost certainly not
+  a contradiction (its V3 rests on a different real-eph App-C lane, and `#820`'s failure is
+  the `#825` f(1:1) Lambert-degeneracy wall, not a geometry claim) — but "almost certainly"
+  is not verified, and a V3 row is a trust-bearing claim.
+- `#835` — registered 2026-08-11 (found during `#826`, not dispatched): diagnose
+  `russell-ch4-5.30ggF3`'s **spurious node-2 turn** under the reposed genome. Its probe
+  closure has the LOWEST truth residual of all 12 rows (0.074, the sole STAYED-AT-TRUTH
+  verdict) yet demands 141.244° at its second Earth node where only 86.582° is available,
+  giving a measured TR of 0.613 against a published 1.27 — while its THIRD node reproduces
+  1.27 (measures 1.255). So a node is in the wrong place, or a loop leg is mis-ordered, or
+  the leg-1 topology selection picked a wrong branch that the magnitude-mode residual cannot
+  see. Suspect the `F(3:2,82.487,180.000)` designated-arc split. Re-running in `vector`
+  residual mode (which carries a bend-feasibility hinge) is the obvious first probe.
 - `#827` — registered 2026-08-11 (found during `#822`, not dispatched): digit-grade
   reproduction of Kumar, Rawat, Rosengren & Ross 2026's own printed Table-5 3:1->2:1
   Earth-Moon heteroclinic intersection states (`C_J ∈ {3.00, 3.05, 3.10, 3.15}`; *Adv. Space
