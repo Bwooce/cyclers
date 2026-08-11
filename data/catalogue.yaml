@@ -42247,7 +42247,9 @@
   notes: |
     Leg descriptor: g(1.4646,527.25,Ll) G(1.9416,338.97,U)
     f(3:2,82.487,118.851). The f(3:2,...) is a 3:2 resonant
-    full-rev return (spacecraft 3 revs vs Earth 2 revs).
+    full-rev return (3 Earth years, 2 spacecraft revs -- #794's
+    corrected M:N convention; this note previously stated the
+    pre-#794 reversed reading, "spacecraft 3 revs vs Earth 2 revs").
   source_quotes:
     delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.11 (5.30gGf row, first variant): aphel=2.17 AU, TR=1.27, v∞E=5.30, v∞M=9.17."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.11 row 5376: v_inf E = 5.30."
