@@ -91,10 +91,20 @@ SEED_X0 = -0.6685146994
 SEED_C = 3.05
 SEED_T = 28.1427
 
-#: Sweep step. #504's own convention is n_coarse=60 over the family's C band
-#: (dC ~ 0.01 for a 0.6-wide band); dC=0.005 over the ~0.57-wide [3.05,
-#: C_L1-0.002] band is 2x finer than that convention, not coarser.
+#: Max sweep step. #504's own convention is n_coarse=60 over the family's C
+#: band (dC ~ 0.01 for a 0.6-wide band); dC=0.005 is 2x finer than that. The
+#: sweep is ADAPTIVE below this: the very first fixed-dC=0.005 attempt on this
+#: family jumped off the branch at its first step (C=3.055 -> a (5,0)
+#: non-prograde orbit; x0 moves at dx0/dC ~ 2.5 here, and the seed's own
+#: nu=+7.7e+03 marks a deeply unstable, fragile family), so any failed or
+#: topology-losing step is retried from the last good point at half the step,
+#: down to DC_MIN.
 DC = 0.005
+
+#: Adaptive-step floor. A branch that cannot be continued even at this step is
+#: recorded as a measured fold/termination of the family's C-extent (with the
+#: recovered winding of whatever the corrector converged to instead).
+DC_MIN = 1e-5
 
 #: Downward-diagnostic floor (beyond-convention; the seed sat AT #656's grid
 #: floor C=3.05, so the family plausibly extends below it).
@@ -355,10 +365,13 @@ def _refine_nu_zero(
 
 
 def run_sweep(direction: str, budget_s: float) -> None:
-    """Instrumented fixed-hc sweep, resumable from its JSONL checkpoint.
+    """Instrumented adaptive fixed-hc sweep, resumable from its JSONL checkpoint.
 
     ``direction`` is "up" (seed C -> C_L1-0.002, the #504 convention) or
-    "down" (seed C -> C_DOWN_FLOOR, beyond-convention diagnostic). Stops
+    "down" (seed C -> C_DOWN_FLOOR, beyond-convention diagnostic). The step
+    starts at DC and HALVES on any failed or topology-losing correction
+    (retrying from the last good point) down to DC_MIN — a plain fixed grid
+    demonstrably jumps off this fragile branch (see DC's own comment). Stops
     cleanly when ``budget_s`` elapses so callers can re-invoke to resume.
     """
     sys_pc = make_pluto_charon_system()
@@ -366,100 +379,293 @@ def run_sweep(direction: str, budget_s: float) -> None:
 
     seed_orbit, hc, _topo = reconverge_seed()
 
-    if direction == "up":
-        c_values = np.arange(SEED_C, c_l1 - 0.002 + 1e-12, DC)
-        ckpt = OUT_DIR / "sweep_up.jsonl"
-    else:
-        c_values = np.arange(SEED_C, C_DOWN_FLOOR - 1e-12, -DC)
-        ckpt = OUT_DIR / "sweep_down.jsonl"
+    sgn = 1.0 if direction == "up" else -1.0
+    c_limit = (c_l1 - 0.002) if direction == "up" else C_DOWN_FLOOR
+    ckpt = OUT_DIR / f"sweep_{direction}.jsonl"
 
     done = _load_ckpt(ckpt)
-    done_steps = [r for r in done if "c" in r]
-    n_done = len(done_steps)
-    # Carriers: last converged record, else the seed.
-    x0_cur, t_cur = seed_orbit.x0, seed_orbit.period
-    consec_fail = 0
-    for rec in done_steps:
-        if rec.get("converged"):
-            x0_cur, t_cur = rec["x0"], rec["period"]
-            consec_fail = 0
-        else:
-            consec_fail += 1
     if any(rec.get("event") == "end" for rec in done):
-        _log([f"[{_stamp()}] sweep {direction}: already complete ({n_done} steps), nothing to do"])
+        _log([f"[{_stamp()}] sweep {direction}: already complete, nothing to do"])
         return
 
-    _log(
-        [
-            f"[{_stamp()}] sweep {direction}: hc FIXED at {hc}, "
-            f"{len(c_values)} C steps total, resuming at step {n_done}, "
-            f"budget {budget_s:.0f}s"
-        ]
-    )
-    t_start = time.time()
+    # Carriers: last good (converged + topology-verified) record, else the seed.
     prev_ok: dict[str, Any] | None = None
-    for rec in reversed(done_steps):
+    for rec in reversed(done):
         if rec.get("converged") and rec.get("topo_ok"):
             prev_ok = rec
             break
+    if prev_ok is not None:
+        c_cur, x0_cur, t_cur = prev_ok["c"], prev_ok["x0"], prev_ok["period"]
+        dc = float(prev_ok.get("dc", DC))
+    else:
+        c_cur, x0_cur, t_cur = SEED_C, seed_orbit.x0, seed_orbit.period
+        dc = DC
 
-    for i in range(n_done, len(c_values)):
+    _adaptive_walk(
+        sys_pc,
+        hc,
+        ckpt,
+        label=f"sweep {direction}",
+        c_cur=c_cur,
+        x0_cur=x0_cur,
+        t_cur=t_cur,
+        c_limit=c_limit,
+        sgn=sgn,
+        dc=dc,
+        dc_cap=DC,
+        budget_s=budget_s,
+        prev_ok=prev_ok,
+        n_step=len([r for r in done if "c" in r]),
+    )
+
+
+def _adaptive_walk(
+    sys_pc: Any,
+    hc: int,
+    ckpt: Path,
+    *,
+    label: str,
+    c_cur: float,
+    x0_cur: float,
+    t_cur: float,
+    c_limit: float,
+    sgn: float,
+    dc: float,
+    dc_cap: float,
+    budget_s: float,
+    prev_ok: dict[str, Any] | None,
+    n_step: int,
+) -> None:
+    """The adaptive fixed-hc continuation loop (shared by sweep and window)."""
+    _log(
+        [
+            f"[{_stamp()}] {label}: hc FIXED at {hc}, adaptive dc "
+            f"(start {dc:g}, cap {dc_cap:g}, floor {DC_MIN:g}), from "
+            f"C={c_cur:.6f} toward C={c_limit:.6f}, budget {budget_s:.0f}s"
+        ]
+    )
+    t_start = time.time()
+
+    while True:
         if time.time() - t_start > budget_s:
-            _log([f"[{_stamp()}] sweep {direction}: budget reached at step {i}, resume later"])
+            _log([f"[{_stamp()}] {label}: budget reached at C={c_cur:.6f}, resume later"])
             return
-        c = float(c_values[i])
+        if sgn * (c_limit - c_cur) <= 1e-12:
+            _append_ckpt(ckpt, {"event": "end", "reason": "C range exhausted"})
+            _log([f"[{_stamp()}] {label}: COMPLETE (reached C={c_cur:.6f})"])
+            return
+        c = c_cur + sgn * dc
+        if sgn * (c - c_limit) > 0.0:
+            c = c_limit
         t0 = time.time()
         o = _correct_bounded(sys_pc, x0_cur, c, t_cur, hc)
-        if o is None:
-            consec_fail += 1
-            rec = {
+        rec = None if o is None else _step_record(sys_pc, c, o, time.time() - t0)
+        good = rec is not None and rec["topo_ok"]
+        if good:
+            assert rec is not None
+            rec["dc"] = dc
+            n_step += 1
+            _append_ckpt(ckpt, rec)
+            _log(
+                [
+                    f"[{_stamp()}]   step {n_step} C={c:.6f} (dc={dc:g}): "
+                    f"x0={rec['x0']:.8f} T={rec['period']:.4f} nu={rec['nu']:+.4e} "
+                    f"stable={rec['stable']} ({rec['k1']},{rec['k2']}) "
+                    f"prograde={rec['prograde']} [{rec['wall_s']}s]"
+                ]
+            )
+            if prev_ok is not None and prev_ok["nu"] * rec["nu"] < 0.0:
+                _log([f"[{_stamp()}]   nu SIGN CHANGE in [{prev_ok['c']:.6f},{c:.6f}] -- refining"])
+                mid = _refine_nu_zero(sys_pc, hc, prev_ok, rec)
+                _append_ckpt(ckpt, {"event": "nu_zero", "bracket": [prev_ok["c"], c], "mid": mid})
+                _log([f"[{_stamp()}]   nu=0 midpoint: {json.dumps(mid)}"])
+            prev_ok = rec
+            c_cur, x0_cur, t_cur = c, rec["x0"], rec["period"]
+            dc = min(dc_cap, dc * 2.0)
+            continue
+        # Failed or topology-losing attempt: record it, halve the step, retry
+        # from the SAME last good point.
+        if rec is None:
+            att: dict[str, Any] = {
                 "c": c,
                 "converged": False,
-                "consec_fail": consec_fail,
+                "dc": dc,
+                "attempt": "failed",
                 "wall_s": round(time.time() - t0, 2),
             }
-            _append_ckpt(ckpt, rec)
-            _log([f"[{_stamp()}]   step {i} C={c:.5f}: FAILED ({consec_fail} consecutive)"])
-            if consec_fail >= MAX_CONSEC_FAIL:
-                _append_ckpt(ckpt, {"event": "end", "reason": f"{MAX_CONSEC_FAIL} consecutive"})
-                _log([f"[{_stamp()}] sweep {direction}: branch ended (consecutive failures)"])
-                return
-            continue
-        consec_fail = 0
-        rec = _step_record(sys_pc, c, o, time.time() - t0)
-        _append_ckpt(ckpt, rec)
+            why = "no convergence"
+        else:
+            rec["dc"] = dc
+            rec["attempt"] = "wrong_topology"
+            att = rec
+            why = (
+                f"recovered ({rec['k1']},{rec['k2']}) w1={rec['w1']:+.3f} "
+                f"w2={rec['w2']:+.3f} prograde={rec['prograde']}"
+            )
+        _append_ckpt(ckpt, att)
+        _log([f"[{_stamp()}]   attempt C={c:.6f} (dc={dc:g}): {why} -- halving step"])
+        dc *= 0.5
+        if dc < DC_MIN:
+            reason = (
+                f"branch fold/termination: cannot continue past C={c_cur:.8f} "
+                f"even at dc={DC_MIN:g} (hc={hc} held fixed; last attempt: {why})"
+            )
+            _append_ckpt(ckpt, {"event": "end", "reason": reason})
+            _log([f"[{_stamp()}] {label}: {reason}"])
+            return
+
+
+# ---------------------------------------------------------------------------
+# Phase: window (fine re-walk of the near-fold [3.2400, fold] segment)
+# ---------------------------------------------------------------------------
+
+#: The up-sweep's own record shows nu jumping -17.8 (C=3.240) -> +28.2
+#: (C=3.245) with its wide-bracket brentq landing at C=3.2440485 where the
+#: recomputed nu is -2.34 (topology still (5,1)): the 0.005-wide bracket is
+#: too wide for a reliable refinement this close to the measured fold at
+#: C~3.246035, and a genuine narrow second stable window may sit in there.
+#: This phase re-walks the segment at dc<=5e-5 with local brackets only.
+WINDOW_C_FROM = 3.2400
+WINDOW_C_TO = 3.24604
+WINDOW_DC_CAP = 5e-5
+
+
+def run_window(budget_s: float) -> None:
+    """Fine fixed-hc re-walk of [WINDOW_C_FROM, WINDOW_C_TO] (near the fold)."""
+    sys_pc = make_pluto_charon_system()
+    _seed_orbit, hc, _topo = reconverge_seed()
+    ckpt = OUT_DIR / "sweep_window.jsonl"
+
+    done = _load_ckpt(ckpt)
+    if any(rec.get("event") == "end" for rec in done):
+        _log([f"[{_stamp()}] window: already complete, nothing to do"])
+        return
+
+    prev_ok: dict[str, Any] | None = None
+    for rec in reversed(done):
+        if rec.get("converged") and rec.get("topo_ok"):
+            prev_ok = rec
+            break
+    if prev_ok is None:
+        # Start carriers: the up-sweep's last good step at or below WINDOW_C_FROM.
+        up = _load_ckpt(OUT_DIR / "sweep_up.jsonl")
+        cands = [
+            r
+            for r in up
+            if r.get("converged")
+            and r.get("topo_ok")
+            and "attempt" not in r
+            and r["c"] <= WINDOW_C_FROM + 1e-12
+        ]
+        if not cands:
+            raise RuntimeError("window phase needs a completed up-sweep checkpoint first")
+        start = max(cands, key=lambda r: r["c"])
+        c_cur, x0_cur, t_cur = start["c"], start["x0"], start["period"]
+        prev_ok = start
+    else:
+        c_cur, x0_cur, t_cur = prev_ok["c"], prev_ok["x0"], prev_ok["period"]
+
+    _adaptive_walk(
+        sys_pc,
+        hc,
+        ckpt,
+        label="window",
+        c_cur=c_cur,
+        x0_cur=x0_cur,
+        t_cur=t_cur,
+        c_limit=WINDOW_C_TO,
+        sgn=1.0,
+        dc=WINDOW_DC_CAP,
+        dc_cap=WINDOW_DC_CAP,
+        budget_s=budget_s,
+        prev_ok=prev_ok,
+        n_step=len([r for r in done if "c" in r]),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Phase: gate (task #660 body-clearance gate on every stable candidate)
+# ---------------------------------------------------------------------------
+
+
+def _stable_candidates() -> list[dict[str, Any]]:
+    """Every stable topology-verified candidate across all checkpoints.
+
+    Per-step records with |nu|<1 AND nu_zero-refinement midpoints with
+    stable_found (the latter are the catalogue-grade family midpoints; a
+    coarse per-step grid can straddle a narrow stable window without any
+    single step landing inside it, so BOTH kinds count).
+    """
+    cands: list[dict[str, Any]] = []
+    for name in ("up", "down", "window"):
+        for rec in _load_ckpt(OUT_DIR / f"sweep_{name}.jsonl"):
+            if "c" in rec and rec.get("topo_ok") and rec.get("stable") and "attempt" not in rec:
+                cands.append(
+                    {
+                        "source": f"sweep_{name}_step",
+                        "c": rec["c"],
+                        "x0": rec["x0"],
+                        "ydot0": rec["ydot0"],
+                        "period": rec["period"],
+                        "nu": rec["nu"],
+                    }
+                )
+            if rec.get("event") == "nu_zero" and rec.get("mid"):
+                mid = rec["mid"]
+                if mid.get("stable_found") and mid.get("topology_ok"):
+                    cands.append(
+                        {
+                            "source": f"sweep_{name}_nu_zero_mid",
+                            "c": mid["c_mid"],
+                            "x0": mid["x0"],
+                            "ydot0": mid["ydot0"],
+                            "period": mid["period"],
+                            "nu": mid["nu"],
+                            "crosscheck_ok": mid["crosscheck_ok"],
+                        }
+                    )
+    return cands
+
+
+def phase_gate() -> None:
+    """Task #660 min-clearance-vs-body-radius gate (the #659 Antiope lesson:
+    a genuinely stable CR3BP orbit can still be a collision trajectory)."""
+    from cyclerfinder.search.pluto_charon_kk_sweep import (
+        CHARON_RADIUS_KM,
+        PLUTO_RADIUS_KM,
+    )
+    from cyclerfinder.search.real_binary_kk_sweep import min_body_clearance_km
+
+    sys_pc = make_pluto_charon_system()
+    cands = _stable_candidates()
+    if not cands:
+        _log([f"[{_stamp()}] gate: no stable candidates to gate"])
+        return
+    gates = OUT_DIR / "gates.jsonl"
+    gates.unlink(missing_ok=True)
+    for cand in cands:
+        d_p, d_s = min_body_clearance_km(sys_pc, cand["x0"], cand["ydot0"], cand["period"])
+        ok = d_p >= PLUTO_RADIUS_KM and d_s >= CHARON_RADIUS_KM
+        rec = dict(cand)
+        rec.update(
+            {
+                "event": "clearance",
+                "min_dist_pluto_km": round(d_p, 2),
+                "min_dist_charon_km": round(d_s, 2),
+                "pluto_radius_km": PLUTO_RADIUS_KM,
+                "charon_radius_km": CHARON_RADIUS_KM,
+                "clearance_ok": ok,
+            }
+        )
+        _append_ckpt(gates, rec)
         _log(
             [
-                f"[{_stamp()}]   step {i} C={c:.5f}: x0={rec['x0']:.8f} "
-                f"T={rec['period']:.4f} nu={rec['nu']:+.4e} stable={rec['stable']} "
-                f"({rec['k1']},{rec['k2']}) prograde={rec['prograde']} "
-                f"topo_ok={rec['topo_ok']} [{rec['wall_s']}s]"
+                f"[{_stamp()}] gate: {cand['source']} C={cand['c']:.7f} "
+                f"nu={cand['nu']:+.3e}: min dist Pluto {d_p:.1f} km "
+                f"(radius {PLUTO_RADIUS_KM}), Charon {d_s:.1f} km "
+                f"(radius {CHARON_RADIUS_KM}) -> clearance_ok={ok}"
             ]
         )
-        if not rec["topo_ok"]:
-            _append_ckpt(
-                ckpt,
-                {
-                    "event": "end",
-                    "reason": (
-                        f"branch identity lost DESPITE fixed hc={hc}: recovered "
-                        f"({rec['k1']},{rec['k2']}) w1={rec['w1']:+.3f} "
-                        f"w2={rec['w2']:+.3f} at C={c:.5f}"
-                    ),
-                },
-            )
-            _log([f"[{_stamp()}] sweep {direction}: branch identity lost at C={c:.5f} -- STOP"])
-            return
-        if prev_ok is not None and prev_ok["nu"] * rec["nu"] < 0.0:
-            _log([f"[{_stamp()}]   nu SIGN CHANGE in [{prev_ok['c']:.5f},{c:.5f}] -- refining"])
-            mid = _refine_nu_zero(sys_pc, hc, prev_ok, rec)
-            _append_ckpt(ckpt, {"event": "nu_zero", "bracket": [prev_ok["c"], c], "mid": mid})
-            _log([f"[{_stamp()}]   nu=0 midpoint: {json.dumps(mid)}"])
-        prev_ok = rec
-        x0_cur, t_cur = rec["x0"], rec["period"]
-
-    _append_ckpt(ckpt, {"event": "end", "reason": "C range exhausted"})
-    _log([f"[{_stamp()}] sweep {direction}: COMPLETE ({len(c_values)} steps)"])
 
 
 # ---------------------------------------------------------------------------
@@ -468,12 +674,12 @@ def run_sweep(direction: str, budget_s: float) -> None:
 
 
 def summarize() -> dict[str, Any]:
-    """Aggregate both checkpoints into the verdict summary."""
-    out: dict[str, Any] = {"up": {}, "down": {}}
-    for direction in ("up", "down"):
+    """Aggregate all checkpoints into the verdict summary."""
+    out: dict[str, Any] = {}
+    for direction in ("up", "down", "window"):
         recs = _load_ckpt(OUT_DIR / f"sweep_{direction}.jsonl")
         steps = [r for r in recs if "c" in r]
-        conv = [r for r in steps if r.get("converged")]
+        conv = [r for r in steps if r.get("converged") and "attempt" not in r]
         topo_ok = [r for r in conv if r.get("topo_ok")]
         stable = [r for r in topo_ok if r.get("stable")]
         nu_zero = [r for r in recs if r.get("event") == "nu_zero"]
@@ -500,20 +706,44 @@ def summarize() -> dict[str, Any]:
 def phase_verdict(stamp: bool) -> None:
     s = summarize()
     _log([f"[{_stamp()}] VERDICT SUMMARY:", json.dumps(s, indent=2)])
-    n_stable = s["up"]["n_stable_topo_ok"] + s["down"]["n_stable_topo_ok"]
-    incomplete = "INCOMPLETE" in (s["up"]["end_reason"], s["down"]["end_reason"])
+    cands = _stable_candidates()
+    incomplete = [d for d in ("up", "down", "window") if s[d]["end_reason"] == "INCOMPLETE"]
     if incomplete:
-        _log(["VERDICT: sweeps incomplete -- run --phase up/down to completion first"])
+        _log([f"VERDICT: sweeps incomplete ({incomplete}) -- run those phases to completion first"])
         return
-    if n_stable > 0:
-        _log(
-            [
-                f"VERDICT: {n_stable} stable (|nu|<1) topology-verified (5,1) member(s) "
-                "found -- POSITIVE CANDIDATE. Mandatory next steps: independent "
-                "reproduction, literature_check.py novelty gate, adjudication. "
-                "Do NOT stamp an empty region; do NOT write the catalogue from here."
-            ]
-        )
+    if cands:
+        gates = _load_ckpt(OUT_DIR / "gates.jsonl")
+        if not gates:
+            _log(
+                [
+                    f"VERDICT: {len(cands)} stable topology-verified (5,1) candidate(s) "
+                    "found but the #660 body-clearance gate has not run -- run "
+                    "--phase gate first (the #659 Antiope lesson)."
+                ]
+            )
+            return
+        passing = [g for g in gates if g.get("clearance_ok")]
+        if passing:
+            _log(
+                [
+                    f"VERDICT: {len(passing)}/{len(gates)} stable (|nu|<1) "
+                    "topology-verified (5,1) member(s) PASS the body-clearance "
+                    "gate -- POSITIVE CANDIDATE. Mandatory next steps: "
+                    "independent reproduction, literature_check.py novelty "
+                    "gate, adjudication. Do NOT stamp an empty region; do NOT "
+                    "write the catalogue from here.",
+                    json.dumps(passing, indent=2),
+                ]
+            )
+        else:
+            _log(
+                [
+                    f"VERDICT: all {len(gates)} stable candidate(s) FAIL the "
+                    "#660 body-clearance gate (collision trajectories, the "
+                    "#659 Antiope disposition) -- model-invalidity negative. "
+                    "Stamp with the gate figures recorded."
+                ]
+            )
         return
     _log(["VERDICT: clean negative -- family exists but no stable member in the swept C range"])
     if not stamp:
@@ -525,9 +755,9 @@ def phase_verdict(stamp: bool) -> None:
         cwd=Path(__file__).parent.parent,
         check=False,
     ).stdout.strip()
-    total_steps = s["up"]["n_steps"] + s["down"]["n_steps"]
+    total_steps = sum(s[d]["n_steps"] for d in ("up", "down", "window"))
     wall = 0.0
-    for direction in ("up", "down"):
+    for direction in ("up", "down", "window"):
         for r in _load_ckpt(OUT_DIR / f"sweep_{direction}.jsonl"):
             wall += r.get("wall_s", 0.0)
     report = EmptyRegionReport(
@@ -540,6 +770,7 @@ def phase_verdict(stamp: bool) -> None:
             "points_total": total_steps,
             "c_up": s["up"]["c_range_converged"],
             "c_down": s["down"]["c_range_converged"],
+            "c_window": s["window"]["c_range_converged"],
             "dc": DC,
             "hc_fixed": True,
             "seed": {"x0": SEED_X0, "c": SEED_C, "period_tu": SEED_T},
@@ -556,8 +787,8 @@ def phase_verdict(stamp: bool) -> None:
             "independent Radau crosscheck (on any nu=0 midpoint)",
         ),
         result={
-            "up": {k: v for k, v in s["up"].items() if k != "stable_records"},
-            "down": {k: v for k, v in s["down"].items() if k != "stable_records"},
+            d: {k: v for k, v in s[d].items() if k != "stable_records"}
+            for d in ("up", "down", "window")
         },
         verdict=(
             "clean negative: the genuine prograde (5,1) family exists at PC mu "
@@ -611,7 +842,11 @@ def phase_verdict(stamp: bool) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--phase", choices=["control", "seed", "up", "down", "verdict"], required=True)
+    ap.add_argument(
+        "--phase",
+        choices=["control", "seed", "up", "down", "window", "gate", "verdict"],
+        required=True,
+    )
     ap.add_argument("--budget-s", type=float, default=420.0, help="per-invocation sweep budget")
     ap.add_argument("--stamp", action="store_true", help="verdict phase: stamp empty region")
     args = ap.parse_args()
@@ -644,6 +879,10 @@ def main() -> None:
         reconverge_seed()
     elif args.phase in ("up", "down"):
         run_sweep(args.phase, args.budget_s)
+    elif args.phase == "window":
+        run_window(args.budget_s)
+    elif args.phase == "gate":
+        phase_gate()
     elif args.phase == "verdict":
         phase_verdict(args.stamp)
 

@@ -1,0 +1,550 @@
+[2026-08-11T21:54:55+1000] POSITIVE CONTROL (PC 3,2): stable=True C=3.5795150197296888 x0=-0.6931982870433999 T=11.833462517008149 nu=-1.2006976149416296e-07 topo_ok=True xcheck=True [18.7s] PASS=True
+[2026-08-11T21:55:16+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T21:55:16+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T21:55:16+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T21:55:52+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T21:55:52+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T21:55:52+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T21:55:52+1000] sweep up: hc FIXED at 5, 114 C steps total, resuming at step 0, budget 480s
+[2026-08-11T21:55:53+1000]   step 0 C=3.05000: x0=-0.66851470 T=28.1427 nu=+7.7244e+03 stable=False (5,1) prograde=True topo_ok=True [0.29s]
+[2026-08-11T21:55:56+1000]   step 1 C=3.05500: x0=-0.65596087 T=27.7446 nu=+2.5584e+02 stable=False (5,0) prograde=False topo_ok=False [2.79s]
+[2026-08-11T21:55:56+1000] sweep up: branch identity lost at C=3.05500 -- STOP
+[2026-08-11T21:57:27+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T21:57:27+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T21:57:27+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T21:57:27+1000] sweep up: hc FIXED at 5, adaptive dc (start 0.005, floor 1e-05), from C=3.050000 toward C=3.619018, budget 480s
+[2026-08-11T21:57:32+1000]   attempt C=3.055000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T21:57:36+1000]   step 1 C=3.052500 (dc=0.0025): x0=-0.67073058 T=28.0883 nu=+7.3303e+03 stable=False (5,1) prograde=True [3.36s]
+[2026-08-11T21:57:41+1000]   attempt C=3.057500 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T21:57:45+1000]   step 2 C=3.055000 (dc=0.0025): x0=-0.67294000 T=28.0333 nu=+6.9492e+03 stable=False (5,1) prograde=True [3.48s]
+[2026-08-11T21:57:51+1000]   attempt C=3.060000 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T21:57:56+1000]   step 3 C=3.057500 (dc=0.0025): x0=-0.67514109 T=27.9775 nu=+6.5809e+03 stable=False (5,1) prograde=True [3.36s]
+[2026-08-11T21:58:02+1000]   attempt C=3.062500 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T21:58:06+1000]   step 4 C=3.060000 (dc=0.0025): x0=-0.67733177 T=27.9209 nu=+6.2253e+03 stable=False (5,1) prograde=True [3.04s]
+[2026-08-11T21:58:12+1000]   attempt C=3.065000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T21:58:15+1000]   step 5 C=3.062500 (dc=0.0025): x0=-0.67950976 T=27.8635 nu=+5.8821e+03 stable=False (5,1) prograde=True [2.57s]
+[2026-08-11T21:58:21+1000]   attempt C=3.067500 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T21:58:24+1000]   step 6 C=3.065000 (dc=0.0025): x0=-0.68167252 T=27.8053 nu=+5.5513e+03 stable=False (5,1) prograde=True [2.63s]
+[2026-08-11T21:58:32+1000]   attempt C=3.070000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T21:58:36+1000]   step 7 C=3.067500 (dc=0.0025): x0=-0.68381728 T=27.7462 nu=+5.2326e+03 stable=False (5,1) prograde=True [2.57s]
+[2026-08-11T21:58:43+1000]   attempt C=3.072500 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T21:58:47+1000]   step 8 C=3.070000 (dc=0.0025): x0=-0.68594099 T=27.6861 nu=+4.9260e+03 stable=False (5,1) prograde=True [3.26s]
+[2026-08-11T21:58:57+1000]   step 9 C=3.075000 (dc=0.005): x0=-0.69011151 T=27.5630 nu=+4.3479e+03 stable=False (5,1) prograde=True [8.92s]
+[2026-08-11T21:59:02+1000]   step 10 C=3.080000 (dc=0.005): x0=-0.69415343 T=27.4354 nu=+3.8156e+03 stable=False (5,1) prograde=True [4.08s]
+[2026-08-11T21:59:05+1000]   step 11 C=3.085000 (dc=0.005): x0=-0.69803055 T=27.3030 nu=+3.3279e+03 stable=False (5,1) prograde=True [2.8s]
+[2026-08-11T21:59:08+1000]   step 12 C=3.090000 (dc=0.005): x0=-0.70170091 T=27.1654 nu=+2.8831e+03 stable=False (5,1) prograde=True [2.13s]
+[2026-08-11T21:59:10+1000]   step 13 C=3.095000 (dc=0.005): x0=-0.70511690 T=27.0220 nu=+2.4798e+03 stable=False (5,1) prograde=True [2.2s]
+[2026-08-11T21:59:13+1000]   step 14 C=3.100000 (dc=0.005): x0=-0.70822623 T=26.8726 nu=+2.1162e+03 stable=False (5,1) prograde=True [1.99s]
+[2026-08-11T21:59:15+1000]   step 15 C=3.105000 (dc=0.005): x0=-0.71097377 T=26.7168 nu=+1.7904e+03 stable=False (5,1) prograde=True [1.8s]
+[2026-08-11T21:59:17+1000]   step 16 C=3.110000 (dc=0.005): x0=-0.71330468 T=26.5543 nu=+1.5005e+03 stable=False (5,1) prograde=True [1.7s]
+[2026-08-11T21:59:20+1000]   step 17 C=3.115000 (dc=0.005): x0=-0.71516867 T=26.3852 nu=+1.2441e+03 stable=False (5,1) prograde=True [1.59s]
+[2026-08-11T21:59:22+1000]   step 18 C=3.120000 (dc=0.005): x0=-0.71652506 T=26.2095 nu=+1.0188e+03 stable=False (5,1) prograde=True [1.49s]
+[2026-08-11T21:59:23+1000]   step 19 C=3.125000 (dc=0.005): x0=-0.71734777 T=26.0276 nu=+8.2228e+02 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T21:59:25+1000]   step 20 C=3.130000 (dc=0.005): x0=-0.71762907 T=25.8401 nu=+6.5194e+02 stable=False (5,1) prograde=True [1.11s]
+[2026-08-11T21:59:27+1000]   step 21 C=3.135000 (dc=0.005): x0=-0.71738117 T=25.6474 nu=+5.0551e+02 stable=False (5,1) prograde=True [1.16s]
+[2026-08-11T21:59:29+1000]   step 22 C=3.140000 (dc=0.005): x0=-0.71663501 T=25.4506 nu=+3.8083e+02 stable=False (5,1) prograde=True [1.31s]
+[2026-08-11T21:59:30+1000]   step 23 C=3.145000 (dc=0.005): x0=-0.71543679 T=25.2502 nu=+2.7598e+02 stable=False (5,1) prograde=True [1.39s]
+[2026-08-11T21:59:32+1000]   step 24 C=3.150000 (dc=0.005): x0=-0.71384291 T=25.0472 nu=+1.8914e+02 stable=False (5,1) prograde=True [1.33s]
+[2026-08-11T21:59:34+1000]   step 25 C=3.155000 (dc=0.005): x0=-0.71191484 T=24.8421 nu=+1.1863e+02 stable=False (5,1) prograde=True [1.4s]
+[2026-08-11T21:59:36+1000]   step 26 C=3.160000 (dc=0.005): x0=-0.70971442 T=24.6355 nu=+6.2754e+01 stable=False (5,1) prograde=True [1.39s]
+[2026-08-11T21:59:38+1000]   step 27 C=3.165000 (dc=0.005): x0=-0.70730052 T=24.4279 nu=+1.9841e+01 stable=False (5,1) prograde=True [1.3s]
+[2026-08-11T21:59:40+1000]   step 28 C=3.170000 (dc=0.005): x0=-0.70472676 T=24.2197 nu=-1.1810e+01 stable=False (5,1) prograde=True [1.22s]
+[2026-08-11T21:59:40+1000]   nu SIGN CHANGE in [3.165000,3.170000] -- refining
+[2026-08-11T21:59:52+1000]   nu=0 midpoint: {"c_mid": 3.167935964707279, "x0": -0.7058054139668293, "ydot0": -0.6722667009872901, "period": 24.305715846921732, "period_days": 24.715257753332622, "nu": 5.976727618299565e-10, "stable_found": true, "topology_ok": true, "prograde": true, "reaches_secondary": true, "crosscheck_ok": true, "crosscheck_dj": 7.815970093361102e-13}
+[2026-08-11T21:59:54+1000]   step 29 C=3.175000 (dc=0.005): x0=-0.70204040 T=24.0113 nu=-3.3891e+01 stable=False (5,1) prograde=True [1.31s]
+[2026-08-11T21:59:55+1000]   step 30 C=3.180000 (dc=0.005): x0=-0.69928185 T=23.8031 nu=-4.8055e+01 stable=False (5,1) prograde=True [1.34s]
+[2026-08-11T21:59:57+1000]   step 31 C=3.185000 (dc=0.005): x0=-0.69648468 T=23.5953 nu=-5.5876e+01 stable=False (5,1) prograde=True [1.54s]
+[2026-08-11T21:59:59+1000]   step 32 C=3.190000 (dc=0.005): x0=-0.69367566 T=23.3884 nu=-5.8805e+01 stable=False (5,1) prograde=True [1.21s]
+[2026-08-11T22:00:01+1000]   step 33 C=3.195000 (dc=0.005): x0=-0.69087488 T=23.1831 nu=-5.8148e+01 stable=False (5,1) prograde=True [1.23s]
+[2026-08-11T22:00:03+1000]   step 34 C=3.200000 (dc=0.005): x0=-0.68809548 T=22.9802 nu=-5.5043e+01 stable=False (5,1) prograde=True [1.18s]
+[2026-08-11T22:00:05+1000]   step 35 C=3.205000 (dc=0.005): x0=-0.68534313 T=22.7808 nu=-5.0451e+01 stable=False (5,1) prograde=True [1.35s]
+[2026-08-11T22:00:06+1000]   step 36 C=3.210000 (dc=0.005): x0=-0.68261498 T=22.5864 nu=-4.5151e+01 stable=False (5,1) prograde=True [1.21s]
+[2026-08-11T22:00:08+1000]   step 37 C=3.215000 (dc=0.005): x0=-0.67989807 T=22.3989 nu=-3.9740e+01 stable=False (5,1) prograde=True [1.2s]
+[2026-08-11T22:00:10+1000]   step 38 C=3.220000 (dc=0.005): x0=-0.67716703 T=22.2211 nu=-3.4636e+01 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:00:12+1000]   step 39 C=3.225000 (dc=0.005): x0=-0.67438063 T=22.0561 nu=-3.0075e+01 stable=False (5,1) prograde=True [1.14s]
+[2026-08-11T22:00:13+1000]   step 40 C=3.230000 (dc=0.005): x0=-0.67147486 T=21.9084 nu=-2.6076e+01 stable=False (5,1) prograde=True [1.23s]
+[2026-08-11T22:00:15+1000]   step 41 C=3.235000 (dc=0.005): x0=-0.66834474 T=21.7845 nu=-2.2361e+01 stable=False (5,1) prograde=True [1.21s]
+[2026-08-11T22:00:17+1000]   step 42 C=3.240000 (dc=0.005): x0=-0.66477572 T=21.6970 nu=-1.7798e+01 stable=False (5,1) prograde=True [1.27s]
+[2026-08-11T22:00:18+1000]   step 43 C=3.245000 (dc=0.005): x0=-0.65988087 T=21.7004 nu=+2.8228e+01 stable=False (5,1) prograde=True [1.1s]
+[2026-08-11T22:00:18+1000]   nu SIGN CHANGE in [3.240000,3.245000] -- refining
+[2026-08-11T22:00:54+1000]   nu=0 midpoint: {"c_mid": 3.2440485003382507, "x0": -0.6610747294262551, "ydot0": -0.7486019839837261, "period": 21.68277029709128, "period_days": 22.04811658599167, "nu": -2.336376091876454, "stable_found": false, "topology_ok": true, "prograde": true, "reaches_secondary": true, "crosscheck_ok": true, "crosscheck_dj": 2.0371704323451922e-11}
+[2026-08-11T22:00:56+1000]   attempt C=3.250000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:00+1000]   attempt C=3.247500 (dc=0.0025): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:06+1000]   attempt C=3.246250 (dc=0.00125): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:08+1000]   step 44 C=3.245625 (dc=0.000625): x0=-0.65884372 T=21.7281 nu=+1.5966e+02 stable=False (5,1) prograde=True [1.57s]
+[2026-08-11T22:01:15+1000]   attempt C=3.246875 (dc=0.00125): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:19+1000]   attempt C=3.246250 (dc=0.000625): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:21+1000]   step 45 C=3.245937 (dc=0.0003125): x0=-0.65804631 T=21.7598 nu=+8.2030e+02 stable=False (5,1) prograde=True [1.54s]
+[2026-08-11T22:01:24+1000]   attempt C=3.246562 (dc=0.000625): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:30+1000]   attempt C=3.246250 (dc=0.0003125): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:37+1000]   attempt C=3.246094 (dc=0.00015625): no convergence -- halving step
+[2026-08-11T22:01:43+1000]   step 46 C=3.246016 (dc=7.8125e-05): x0=-0.65769402 T=21.7774 nu=+1.9355e+03 stable=False (5,1) prograde=True [4.61s]
+[2026-08-11T22:01:49+1000]   attempt C=3.246172 (dc=0.00015625): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:01:57+1000]   attempt C=3.246094 (dc=7.8125e-05): no convergence -- halving step
+[2026-08-11T22:02:01+1000]   attempt C=3.246055 (dc=3.90625e-05): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:02:04+1000]   step 47 C=3.246035 (dc=1.95313e-05): x0=-0.65754735 T=21.7856 nu=+3.0231e+03 stable=False (5,1) prograde=True [2.13s]
+[2026-08-11T22:02:12+1000]   attempt C=3.246074 (dc=3.90625e-05): no convergence -- halving step
+[2026-08-11T22:02:20+1000]   attempt C=3.246055 (dc=1.95313e-05): no convergence -- halving step
+[2026-08-11T22:02:20+1000] sweep up: branch fold/termination: cannot continue past C=3.24603516 even at dc=1e-05 (hc=5 held fixed; last attempt: no convergence)
+[2026-08-11T22:05:58+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T22:05:58+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T22:05:58+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T22:05:58+1000] sweep down: hc FIXED at 5, adaptive dc (start 0.005, cap 0.005, floor 1e-05), from C=3.050000 toward C=2.900000, budget 480s
+[2026-08-11T22:06:01+1000]   attempt C=3.045000 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:06:02+1000]   step 1 C=3.047500 (dc=0.0025): x0=-0.66629406 T=28.1964 nu=+8.1316e+03 stable=False (5,1) prograde=True [1.25s]
+[2026-08-11T22:06:06+1000]   attempt C=3.042500 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:07+1000]   step 2 C=3.045000 (dc=0.0025): x0=-0.66407018 T=28.2495 nu=+8.5521e+03 stable=False (5,1) prograde=True [1.28s]
+[2026-08-11T22:06:10+1000]   attempt C=3.040000 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:06:12+1000]   step 3 C=3.042500 (dc=0.0025): x0=-0.66184446 T=28.3021 nu=+8.9861e+03 stable=False (5,1) prograde=True [1.32s]
+[2026-08-11T22:06:14+1000]   attempt C=3.037500 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:06:16+1000]   step 4 C=3.040000 (dc=0.0025): x0=-0.65961811 T=28.3541 nu=+9.4336e+03 stable=False (5,1) prograde=True [1.65s]
+[2026-08-11T22:06:18+1000]   attempt C=3.035000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:20+1000]   step 5 C=3.037500 (dc=0.0025): x0=-0.65739228 T=28.4055 nu=+9.8950e+03 stable=False (5,1) prograde=True [1.5s]
+[2026-08-11T22:06:22+1000]   attempt C=3.032500 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:06:25+1000]   step 6 C=3.035000 (dc=0.0025): x0=-0.65516795 T=28.4565 nu=+1.0370e+04 stable=False (5,1) prograde=True [1.51s]
+[2026-08-11T22:06:27+1000]   attempt C=3.030000 (dc=0.005): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:06:29+1000]   step 7 C=3.032500 (dc=0.0025): x0=-0.65294603 T=28.5070 nu=+1.0859e+04 stable=False (5,1) prograde=True [1.75s]
+[2026-08-11T22:06:31+1000]   attempt C=3.027500 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:34+1000]   step 8 C=3.030000 (dc=0.0025): x0=-0.65072732 T=28.5571 nu=+1.1363e+04 stable=False (5,1) prograde=True [1.83s]
+[2026-08-11T22:06:37+1000]   step 9 C=3.025000 (dc=0.005): x0=-0.64630239 T=28.6561 nu=+1.2413e+04 stable=False (5,1) prograde=True [2.87s]
+[2026-08-11T22:06:40+1000]   attempt C=3.020000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:42+1000]   step 10 C=3.022500 (dc=0.0025): x0=-0.64409738 T=28.7051 nu=+1.2960e+04 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:06:44+1000]   attempt C=3.017500 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:46+1000]   step 11 C=3.020000 (dc=0.0025): x0=-0.64189806 T=28.7537 nu=+1.3521e+04 stable=False (5,1) prograde=True [1.41s]
+[2026-08-11T22:06:47+1000]   attempt C=3.015000 (dc=0.005): recovered (4,4) w1=-4.000 w2=-4.000 prograde=False -- halving step
+[2026-08-11T22:06:49+1000]   step 12 C=3.017500 (dc=0.0025): x0=-0.63970489 T=28.8020 nu=+1.4097e+04 stable=False (5,1) prograde=True [1.49s]
+[2026-08-11T22:06:51+1000]   attempt C=3.012500 (dc=0.005): recovered (2,2) w1=-2.000 w2=-2.000 prograde=False -- halving step
+[2026-08-11T22:06:54+1000]   attempt C=3.015000 (dc=0.0025): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:06:56+1000]   step 13 C=3.016250 (dc=0.00125): x0=-0.63861074 T=28.8261 nu=+1.4391e+04 stable=False (5,1) prograde=True [1.32s]
+[2026-08-11T22:07:00+1000]   attempt C=3.013750 (dc=0.0025): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:07:02+1000]   step 14 C=3.015000 (dc=0.00125): x0=-0.63751827 T=28.8501 nu=+1.4688e+04 stable=False (5,1) prograde=True [1.36s]
+[2026-08-11T22:07:05+1000]   attempt C=3.012500 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:07:07+1000]   step 15 C=3.013750 (dc=0.00125): x0=-0.63642754 T=28.8740 nu=+1.4989e+04 stable=False (5,1) prograde=True [1.34s]
+[2026-08-11T22:07:10+1000]   attempt C=3.011250 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:07:12+1000]   step 16 C=3.012500 (dc=0.00125): x0=-0.63533858 T=28.8978 nu=+1.5294e+04 stable=False (5,1) prograde=True [1.53s]
+[2026-08-11T22:07:16+1000]   attempt C=3.010000 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:07:18+1000]   step 17 C=3.011250 (dc=0.00125): x0=-0.63425142 T=28.9216 nu=+1.5603e+04 stable=False (5,1) prograde=True [1.32s]
+[2026-08-11T22:07:21+1000]   attempt C=3.008750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:07:23+1000]   step 18 C=3.010000 (dc=0.00125): x0=-0.63316612 T=28.9454 nu=+1.5915e+04 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:07:27+1000]   attempt C=3.007500 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:07:29+1000]   step 19 C=3.008750 (dc=0.00125): x0=-0.63208269 T=28.9690 nu=+1.6231e+04 stable=False (5,1) prograde=True [1.4s]
+[2026-08-11T22:07:34+1000]   step 20 C=3.006250 (dc=0.0025): x0=-0.62992162 T=29.0163 nu=+1.6875e+04 stable=False (5,1) prograde=True [3.52s]
+[2026-08-11T22:07:37+1000]   attempt C=3.001250 (dc=0.005): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:07:42+1000]   attempt C=3.003750 (dc=0.0025): no convergence -- halving step
+[2026-08-11T22:07:44+1000]   step 21 C=3.005000 (dc=0.00125): x0=-0.62884402 T=29.0398 nu=+1.7203e+04 stable=False (5,1) prograde=True [1.35s]
+[2026-08-11T22:07:49+1000]   attempt C=3.002500 (dc=0.0025): no convergence -- halving step
+[2026-08-11T22:07:51+1000]   step 22 C=3.003750 (dc=0.00125): x0=-0.62776842 T=29.0633 nu=+1.7534e+04 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:07:54+1000]   attempt C=3.001250 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:07:56+1000]   step 23 C=3.002500 (dc=0.00125): x0=-0.62669485 T=29.0867 nu=+1.7869e+04 stable=False (5,1) prograde=True [1.41s]
+[2026-08-11T22:08:00+1000]   attempt C=3.000000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:08:02+1000]   step 24 C=3.001250 (dc=0.00125): x0=-0.62562332 T=29.1101 nu=+1.8208e+04 stable=False (5,1) prograde=True [1.31s]
+[2026-08-11T22:08:09+1000]   attempt C=2.998750 (dc=0.0025): recovered (3,0) w1=+3.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:08:12+1000]   step 25 C=3.000000 (dc=0.00125): x0=-0.62455386 T=29.1335 nu=+1.8550e+04 stable=False (5,1) prograde=True [1.73s]
+[2026-08-11T22:08:18+1000]   attempt C=2.997500 (dc=0.0025): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:08:20+1000]   step 26 C=2.998750 (dc=0.00125): x0=-0.62348648 T=29.1568 nu=+1.8897e+04 stable=False (5,1) prograde=True [1.39s]
+[2026-08-11T22:08:25+1000]   attempt C=2.996250 (dc=0.0025): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:08:27+1000]   step 27 C=2.997500 (dc=0.00125): x0=-0.62242121 T=29.1801 nu=+1.9247e+04 stable=False (5,1) prograde=True [1.39s]
+[2026-08-11T22:08:29+1000]   step 28 C=2.995000 (dc=0.0025): x0=-0.62029705 T=29.2266 nu=+1.9959e+04 stable=False (5,1) prograde=True [2.14s]
+[2026-08-11T22:08:34+1000]   attempt C=2.990000 (dc=0.005): recovered (5,0) w1=+5.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:08:37+1000]   attempt C=2.992500 (dc=0.0025): recovered (5,0) w1=+5.000 w2=+0.000 prograde=True -- halving step
+[2026-08-11T22:08:39+1000]   step 29 C=2.993750 (dc=0.00125): x0=-0.61923820 T=29.2498 nu=+2.0321e+04 stable=False (5,1) prograde=True [1.43s]
+[2026-08-11T22:08:46+1000]   step 30 C=2.991250 (dc=0.0025): x0=-0.61712700 T=29.2962 nu=+2.1055e+04 stable=False (5,1) prograde=True [6.6s]
+[2026-08-11T22:08:49+1000]   step 31 C=2.986250 (dc=0.005): x0=-0.61293094 T=29.3887 nu=+2.2569e+04 stable=False (5,1) prograde=True [2.19s]
+[2026-08-11T22:08:51+1000]   step 32 C=2.981250 (dc=0.005): x0=-0.60877048 T=29.4810 nu=+2.4142e+04 stable=False (5,1) prograde=True [2.17s]
+[2026-08-11T22:09:01+1000]   step 33 C=2.976250 (dc=0.005): x0=-0.60464597 T=29.5734 nu=+2.5772e+04 stable=False (5,1) prograde=True [9.21s]
+[2026-08-11T22:09:03+1000]   attempt C=2.971250 (dc=0.005): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:05+1000]   attempt C=2.973750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:07+1000]   step 34 C=2.975000 (dc=0.00125): x0=-0.60362049 T=29.5964 nu=+2.6189e+04 stable=False (5,1) prograde=True [1.44s]
+[2026-08-11T22:09:09+1000]   attempt C=2.972500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:12+1000]   step 35 C=2.973750 (dc=0.00125): x0=-0.60259727 T=29.6195 nu=+2.6609e+04 stable=False (5,1) prograde=True [1.6s]
+[2026-08-11T22:09:13+1000]   attempt C=2.971250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:16+1000]   step 36 C=2.972500 (dc=0.00125): x0=-0.60157631 T=29.6427 nu=+2.7032e+04 stable=False (5,1) prograde=True [1.61s]
+[2026-08-11T22:09:18+1000]   attempt C=2.970000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:20+1000]   step 37 C=2.971250 (dc=0.00125): x0=-0.60055761 T=29.6658 nu=+2.7459e+04 stable=False (5,1) prograde=True [1.7s]
+[2026-08-11T22:09:22+1000]   attempt C=2.968750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:24+1000]   step 38 C=2.970000 (dc=0.00125): x0=-0.59954118 T=29.6889 nu=+2.7889e+04 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:09:26+1000]   attempt C=2.967500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:28+1000]   step 39 C=2.968750 (dc=0.00125): x0=-0.59852701 T=29.7121 nu=+2.8322e+04 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:09:30+1000]   attempt C=2.966250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:32+1000]   step 40 C=2.967500 (dc=0.00125): x0=-0.59751510 T=29.7353 nu=+2.8759e+04 stable=False (5,1) prograde=True [1.61s]
+[2026-08-11T22:09:34+1000]   attempt C=2.965000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:36+1000]   step 41 C=2.966250 (dc=0.00125): x0=-0.59650545 T=29.7585 nu=+2.9198e+04 stable=False (5,1) prograde=True [1.16s]
+[2026-08-11T22:09:38+1000]   attempt C=2.963750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:40+1000]   step 42 C=2.965000 (dc=0.00125): x0=-0.59549806 T=29.7817 nu=+2.9641e+04 stable=False (5,1) prograde=True [1.15s]
+[2026-08-11T22:09:42+1000]   attempt C=2.962500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:43+1000]   step 43 C=2.963750 (dc=0.00125): x0=-0.59449293 T=29.8050 nu=+3.0087e+04 stable=False (5,1) prograde=True [1.12s]
+[2026-08-11T22:09:45+1000]   attempt C=2.961250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:47+1000]   step 44 C=2.962500 (dc=0.00125): x0=-0.59349006 T=29.8283 nu=+3.0536e+04 stable=False (5,1) prograde=True [1.45s]
+[2026-08-11T22:09:49+1000]   attempt C=2.960000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:51+1000]   step 45 C=2.961250 (dc=0.00125): x0=-0.59248944 T=29.8516 nu=+3.0988e+04 stable=False (5,1) prograde=True [1.63s]
+[2026-08-11T22:09:53+1000]   attempt C=2.958750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:55+1000]   step 46 C=2.960000 (dc=0.00125): x0=-0.59149107 T=29.8749 nu=+3.1443e+04 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:09:57+1000]   attempt C=2.957500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:09:59+1000]   step 47 C=2.958750 (dc=0.00125): x0=-0.59049496 T=29.8983 nu=+3.1900e+04 stable=False (5,1) prograde=True [1.44s]
+[2026-08-11T22:10:00+1000]   attempt C=2.956250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:03+1000]   step 48 C=2.957500 (dc=0.00125): x0=-0.58950108 T=29.9218 nu=+3.2360e+04 stable=False (5,1) prograde=True [1.56s]
+[2026-08-11T22:10:07+1000]   attempt C=2.955000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:11+1000]   step 49 C=2.956250 (dc=0.00125): x0=-0.58850945 T=29.9452 nu=+3.2823e+04 stable=False (5,1) prograde=True [2.97s]
+[2026-08-11T22:10:16+1000]   attempt C=2.953750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:21+1000]   step 50 C=2.955000 (dc=0.00125): x0=-0.58752005 T=29.9688 nu=+3.3288e+04 stable=False (5,1) prograde=True [3.96s]
+[2026-08-11T22:10:24+1000]   attempt C=2.952500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:29+1000]   step 51 C=2.953750 (dc=0.00125): x0=-0.58653289 T=29.9923 nu=+3.3756e+04 stable=False (5,1) prograde=True [3.5s]
+[2026-08-11T22:10:32+1000]   attempt C=2.951250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:38+1000]   step 52 C=2.952500 (dc=0.00125): x0=-0.58554796 T=30.0160 nu=+3.4226e+04 stable=False (5,1) prograde=True [4.21s]
+[2026-08-11T22:10:43+1000]   attempt C=2.950000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:49+1000]   step 53 C=2.951250 (dc=0.00125): x0=-0.58456526 T=30.0396 nu=+3.4699e+04 stable=False (5,1) prograde=True [4.25s]
+[2026-08-11T22:10:53+1000]   attempt C=2.948750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:10:57+1000]   step 54 C=2.950000 (dc=0.00125): x0=-0.58358478 T=30.0634 nu=+3.5173e+04 stable=False (5,1) prograde=True [2.97s]
+[2026-08-11T22:11:01+1000]   attempt C=2.947500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:06+1000]   step 55 C=2.948750 (dc=0.00125): x0=-0.58260651 T=30.0871 nu=+3.5650e+04 stable=False (5,1) prograde=True [3.67s]
+[2026-08-11T22:11:10+1000]   attempt C=2.946250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:14+1000]   step 56 C=2.947500 (dc=0.00125): x0=-0.58163046 T=30.1110 nu=+3.6128e+04 stable=False (5,1) prograde=True [2.83s]
+[2026-08-11T22:11:18+1000]   attempt C=2.945000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:22+1000]   step 57 C=2.946250 (dc=0.00125): x0=-0.58065662 T=30.1349 nu=+3.6609e+04 stable=False (5,1) prograde=True [3.09s]
+[2026-08-11T22:11:26+1000]   attempt C=2.943750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:31+1000]   step 58 C=2.945000 (dc=0.00125): x0=-0.57968498 T=30.1589 nu=+3.7091e+04 stable=False (5,1) prograde=True [4.15s]
+[2026-08-11T22:11:36+1000]   attempt C=2.942500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:44+1000]   step 59 C=2.943750 (dc=0.00125): x0=-0.57871554 T=30.1829 nu=+3.7574e+04 stable=False (5,1) prograde=True [6.98s]
+[2026-08-11T22:11:48+1000]   attempt C=2.941250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:11:54+1000]   step 60 C=2.942500 (dc=0.00125): x0=-0.57774829 T=30.2070 nu=+3.8059e+04 stable=False (5,1) prograde=True [4.69s]
+[2026-08-11T22:11:58+1000]   attempt C=2.940000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:04+1000]   step 61 C=2.941250 (dc=0.00125): x0=-0.57678323 T=30.2312 nu=+3.8545e+04 stable=False (5,1) prograde=True [4.66s]
+[2026-08-11T22:12:08+1000]   attempt C=2.938750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:15+1000]   step 62 C=2.940000 (dc=0.00125): x0=-0.57582035 T=30.2555 nu=+3.9032e+04 stable=False (5,1) prograde=True [4.98s]
+[2026-08-11T22:12:19+1000]   attempt C=2.937500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:24+1000]   step 63 C=2.938750 (dc=0.00125): x0=-0.57485966 T=30.2798 nu=+3.9520e+04 stable=False (5,1) prograde=True [3.94s]
+[2026-08-11T22:12:29+1000]   attempt C=2.936250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:34+1000]   step 64 C=2.937500 (dc=0.00125): x0=-0.57390113 T=30.3043 nu=+4.0008e+04 stable=False (5,1) prograde=True [3.41s]
+[2026-08-11T22:12:38+1000]   attempt C=2.935000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:43+1000]   step 65 C=2.936250 (dc=0.00125): x0=-0.57294477 T=30.3288 nu=+4.0498e+04 stable=False (5,1) prograde=True [4.15s]
+[2026-08-11T22:12:47+1000]   attempt C=2.933750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:12:53+1000]   step 66 C=2.935000 (dc=0.00125): x0=-0.57199058 T=30.3534 nu=+4.0987e+04 stable=False (5,1) prograde=True [4.24s]
+[2026-08-11T22:12:57+1000]   attempt C=2.932500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:01+1000]   step 67 C=2.933750 (dc=0.00125): x0=-0.57103854 T=30.3781 nu=+4.1477e+04 stable=False (5,1) prograde=True [3.7s]
+[2026-08-11T22:13:05+1000]   attempt C=2.931250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:10+1000]   step 68 C=2.932500 (dc=0.00125): x0=-0.57008865 T=30.4029 nu=+4.1966e+04 stable=False (5,1) prograde=True [3.57s]
+[2026-08-11T22:13:13+1000]   attempt C=2.930000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:18+1000]   step 69 C=2.931250 (dc=0.00125): x0=-0.56914091 T=30.4278 nu=+4.2456e+04 stable=False (5,1) prograde=True [3.67s]
+[2026-08-11T22:13:21+1000]   attempt C=2.928750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:26+1000]   step 70 C=2.930000 (dc=0.00125): x0=-0.56819531 T=30.4528 nu=+4.2945e+04 stable=False (5,1) prograde=True [3.89s]
+[2026-08-11T22:13:30+1000]   attempt C=2.927500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:35+1000]   step 71 C=2.928750 (dc=0.00125): x0=-0.56725184 T=30.4779 nu=+4.3433e+04 stable=False (5,1) prograde=True [4.34s]
+[2026-08-11T22:13:39+1000]   attempt C=2.926250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:44+1000]   step 72 C=2.927500 (dc=0.00125): x0=-0.56631050 T=30.5032 nu=+4.3920e+04 stable=False (5,1) prograde=True [3.95s]
+[2026-08-11T22:13:48+1000]   attempt C=2.925000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:13:53+1000]   step 73 C=2.926250 (dc=0.00125): x0=-0.56537129 T=30.5285 nu=+4.4405e+04 stable=False (5,1) prograde=True [4.19s]
+[2026-08-11T22:13:57+1000]   attempt C=2.923750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:14:01+1000]   step 74 C=2.925000 (dc=0.00125): x0=-0.56443420 T=30.5540 nu=+4.4889e+04 stable=False (5,1) prograde=True [3.66s]
+[2026-08-11T22:14:01+1000] sweep down: budget reached at C=2.925000, resume later
+[2026-08-11T22:14:16+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T22:14:16+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T22:14:16+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T22:14:16+1000] sweep down: hc FIXED at 5, adaptive dc (start 0.00125, cap 0.005, floor 1e-05), from C=2.925000 toward C=2.900000, budget 480s
+[2026-08-11T22:14:21+1000]   step 146 C=2.923750 (dc=0.00125): x0=-0.56349922 T=30.5795 nu=+4.5372e+04 stable=False (5,1) prograde=True [3.59s]
+[2026-08-11T22:14:25+1000]   attempt C=2.921250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:14:32+1000]   step 147 C=2.922500 (dc=0.00125): x0=-0.56256635 T=30.6053 nu=+4.5852e+04 stable=False (5,1) prograde=True [5.36s]
+[2026-08-11T22:14:36+1000]   attempt C=2.920000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:14:41+1000]   step 148 C=2.921250 (dc=0.00125): x0=-0.56163558 T=30.6311 nu=+4.6330e+04 stable=False (5,1) prograde=True [3.98s]
+[2026-08-11T22:14:45+1000]   attempt C=2.918750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:14:52+1000]   step 149 C=2.920000 (dc=0.00125): x0=-0.56070691 T=30.6571 nu=+4.6804e+04 stable=False (5,1) prograde=True [4.65s]
+[2026-08-11T22:15:00+1000]   attempt C=2.917500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:09+1000]   step 150 C=2.918750 (dc=0.00125): x0=-0.55978034 T=30.6832 nu=+4.7276e+04 stable=False (5,1) prograde=True [8.07s]
+[2026-08-11T22:15:13+1000]   attempt C=2.916250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:18+1000]   step 151 C=2.917500 (dc=0.00125): x0=-0.55885585 T=30.7095 nu=+4.7744e+04 stable=False (5,1) prograde=True [4.34s]
+[2026-08-11T22:15:21+1000]   attempt C=2.915000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:26+1000]   step 152 C=2.916250 (dc=0.00125): x0=-0.55793345 T=30.7359 nu=+4.8208e+04 stable=False (5,1) prograde=True [3.24s]
+[2026-08-11T22:15:30+1000]   attempt C=2.913750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:37+1000]   step 153 C=2.915000 (dc=0.00125): x0=-0.55701313 T=30.7625 nu=+4.8668e+04 stable=False (5,1) prograde=True [5.51s]
+[2026-08-11T22:15:41+1000]   attempt C=2.912500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:46+1000]   step 154 C=2.913750 (dc=0.00125): x0=-0.55609488 T=30.7892 nu=+4.9124e+04 stable=False (5,1) prograde=True [3.65s]
+[2026-08-11T22:15:50+1000]   attempt C=2.911250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:15:55+1000]   step 155 C=2.912500 (dc=0.00125): x0=-0.55517870 T=30.8161 nu=+4.9574e+04 stable=False (5,1) prograde=True [3.97s]
+[2026-08-11T22:16:00+1000]   attempt C=2.910000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:05+1000]   step 156 C=2.911250 (dc=0.00125): x0=-0.55426458 T=30.8432 nu=+5.0018e+04 stable=False (5,1) prograde=True [4.38s]
+[2026-08-11T22:16:09+1000]   attempt C=2.908750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:13+1000]   step 157 C=2.910000 (dc=0.00125): x0=-0.55335253 T=30.8704 nu=+5.0456e+04 stable=False (5,1) prograde=True [3.12s]
+[2026-08-11T22:16:17+1000]   attempt C=2.907500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:22+1000]   step 158 C=2.908750 (dc=0.00125): x0=-0.55244253 T=30.8979 nu=+5.0888e+04 stable=False (5,1) prograde=True [3.65s]
+[2026-08-11T22:16:26+1000]   attempt C=2.906250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:31+1000]   step 159 C=2.907500 (dc=0.00125): x0=-0.55153459 T=30.9255 nu=+5.1312e+04 stable=False (5,1) prograde=True [3.84s]
+[2026-08-11T22:16:36+1000]   attempt C=2.905000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:40+1000]   step 160 C=2.906250 (dc=0.00125): x0=-0.55062869 T=30.9533 nu=+5.1729e+04 stable=False (5,1) prograde=True [3.22s]
+[2026-08-11T22:16:44+1000]   attempt C=2.903750 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:49+1000]   step 161 C=2.905000 (dc=0.00125): x0=-0.54972484 T=30.9813 nu=+5.2138e+04 stable=False (5,1) prograde=True [3.64s]
+[2026-08-11T22:16:52+1000]   attempt C=2.902500 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:16:57+1000]   step 162 C=2.903750 (dc=0.00125): x0=-0.54882304 T=31.0096 nu=+5.2537e+04 stable=False (5,1) prograde=True [3.84s]
+[2026-08-11T22:17:01+1000]   attempt C=2.901250 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:17:06+1000]   step 163 C=2.902500 (dc=0.00125): x0=-0.54792327 T=31.0380 nu=+5.2927e+04 stable=False (5,1) prograde=True [3.3s]
+[2026-08-11T22:17:11+1000]   attempt C=2.900000 (dc=0.0025): recovered (4,0) w1=+4.000 w2=-0.000 prograde=False -- halving step
+[2026-08-11T22:17:16+1000]   step 164 C=2.901250 (dc=0.00125): x0=-0.54702554 T=31.0667 nu=+5.3307e+04 stable=False (5,1) prograde=True [4.38s]
+[2026-08-11T22:17:22+1000]   step 165 C=2.900000 (dc=0.0025): x0=-0.54612984 T=31.0956 nu=+5.3676e+04 stable=False (5,1) prograde=True [4.18s]
+[2026-08-11T22:17:22+1000] sweep down: COMPLETE (reached C=2.900000)
+[2026-08-11T22:17:37+1000] SEED reconverged: x0=-0.6685146994 C=3.0500000000 T=28.14270 TU  residual=5.36e-13
+[2026-08-11T22:17:37+1000] SEED topology: (k1,k2)=(5,1) w1=+5.0000 w2=+1.0000 prograde=True reaches_secondary=True
+[2026-08-11T22:17:37+1000] SEED half-crossing index (nearest T/2): hc=5 (of 12 crossings within 1.25T)
+[2026-08-11T22:17:37+1000] window: hc FIXED at 5, adaptive dc (start 5e-05, cap 5e-05, floor 1e-05), from C=3.240000 toward C=3.246040, budget 480s
+[2026-08-11T22:17:40+1000]   step 1 C=3.240050 (dc=5e-05): x0=-0.66473632 T=21.6964 nu=-1.7743e+01 stable=False (5,1) prograde=True [1.69s]
+[2026-08-11T22:17:42+1000]   step 2 C=3.240100 (dc=5e-05): x0=-0.66469683 T=21.6958 nu=-1.7628e+01 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:17:45+1000]   step 3 C=3.240150 (dc=5e-05): x0=-0.66465723 T=21.6953 nu=-1.7648e+01 stable=False (5,1) prograde=True [1.41s]
+[2026-08-11T22:17:47+1000]   step 4 C=3.240200 (dc=5e-05): x0=-0.66461753 T=21.6947 nu=-1.7582e+01 stable=False (5,1) prograde=True [1.35s]
+[2026-08-11T22:17:50+1000]   step 5 C=3.240250 (dc=5e-05): x0=-0.66457772 T=21.6941 nu=-1.7529e+01 stable=False (5,1) prograde=True [1.43s]
+[2026-08-11T22:17:53+1000]   step 6 C=3.240300 (dc=5e-05): x0=-0.66453781 T=21.6935 nu=-1.7438e+01 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:17:56+1000]   step 7 C=3.240350 (dc=5e-05): x0=-0.66449779 T=21.6930 nu=-1.7405e+01 stable=False (5,1) prograde=True [2.0s]
+[2026-08-11T22:17:58+1000]   step 8 C=3.240400 (dc=5e-05): x0=-0.66445766 T=21.6924 nu=-1.7313e+01 stable=False (5,1) prograde=True [1.27s]
+[2026-08-11T22:18:01+1000]   step 9 C=3.240450 (dc=5e-05): x0=-0.66441742 T=21.6919 nu=-1.7269e+01 stable=False (5,1) prograde=True [1.92s]
+[2026-08-11T22:18:04+1000]   step 10 C=3.240500 (dc=5e-05): x0=-0.66437707 T=21.6914 nu=-1.7136e+01 stable=False (5,1) prograde=True [1.39s]
+[2026-08-11T22:18:06+1000]   step 11 C=3.240550 (dc=5e-05): x0=-0.66433660 T=21.6908 nu=-1.7042e+01 stable=False (5,1) prograde=True [1.49s]
+[2026-08-11T22:18:09+1000]   step 12 C=3.240600 (dc=5e-05): x0=-0.66429602 T=21.6903 nu=-1.6962e+01 stable=False (5,1) prograde=True [1.38s]
+[2026-08-11T22:18:11+1000]   step 13 C=3.240650 (dc=5e-05): x0=-0.66425533 T=21.6898 nu=-1.6900e+01 stable=False (5,1) prograde=True [1.38s]
+[2026-08-11T22:18:14+1000]   step 14 C=3.240700 (dc=5e-05): x0=-0.66421452 T=21.6893 nu=-1.6816e+01 stable=False (5,1) prograde=True [1.81s]
+[2026-08-11T22:18:16+1000]   step 15 C=3.240750 (dc=5e-05): x0=-0.66417358 T=21.6888 nu=-1.6750e+01 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T22:18:19+1000]   step 16 C=3.240800 (dc=5e-05): x0=-0.66413253 T=21.6883 nu=-1.6668e+01 stable=False (5,1) prograde=True [1.61s]
+[2026-08-11T22:18:22+1000]   step 17 C=3.240850 (dc=5e-05): x0=-0.66409136 T=21.6878 nu=-1.6568e+01 stable=False (5,1) prograde=True [1.53s]
+[2026-08-11T22:18:24+1000]   step 18 C=3.240900 (dc=5e-05): x0=-0.66405006 T=21.6874 nu=-1.6355e+01 stable=False (5,1) prograde=True [1.62s]
+[2026-08-11T22:18:27+1000]   step 19 C=3.240950 (dc=5e-05): x0=-0.66400863 T=21.6869 nu=-1.6289e+01 stable=False (5,1) prograde=True [1.45s]
+[2026-08-11T22:18:29+1000]   step 20 C=3.241000 (dc=5e-05): x0=-0.66396708 T=21.6865 nu=-1.6180e+01 stable=False (5,1) prograde=True [1.32s]
+[2026-08-11T22:18:31+1000]   step 21 C=3.241050 (dc=5e-05): x0=-0.66392540 T=21.6860 nu=-1.6098e+01 stable=False (5,1) prograde=True [1.25s]
+[2026-08-11T22:18:34+1000]   step 22 C=3.241100 (dc=5e-05): x0=-0.66388358 T=21.6856 nu=-1.6027e+01 stable=False (5,1) prograde=True [1.58s]
+[2026-08-11T22:18:37+1000]   step 23 C=3.241150 (dc=5e-05): x0=-0.66384164 T=21.6852 nu=-1.5928e+01 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:18:39+1000]   step 24 C=3.241200 (dc=5e-05): x0=-0.66379956 T=21.6848 nu=-1.5819e+01 stable=False (5,1) prograde=True [1.68s]
+[2026-08-11T22:18:42+1000]   step 25 C=3.241250 (dc=5e-05): x0=-0.66375734 T=21.6843 nu=-1.5723e+01 stable=False (5,1) prograde=True [1.73s]
+[2026-08-11T22:18:45+1000]   step 26 C=3.241300 (dc=5e-05): x0=-0.66371498 T=21.6839 nu=-1.5675e+01 stable=False (5,1) prograde=True [1.54s]
+[2026-08-11T22:18:47+1000]   step 27 C=3.241350 (dc=5e-05): x0=-0.66367248 T=21.6836 nu=-1.5565e+01 stable=False (5,1) prograde=True [1.6s]
+[2026-08-11T22:18:50+1000]   step 28 C=3.241400 (dc=5e-05): x0=-0.66362984 T=21.6832 nu=-1.5484e+01 stable=False (5,1) prograde=True [1.93s]
+[2026-08-11T22:18:53+1000]   step 29 C=3.241450 (dc=5e-05): x0=-0.66358705 T=21.6828 nu=-1.5373e+01 stable=False (5,1) prograde=True [1.66s]
+[2026-08-11T22:18:56+1000]   step 30 C=3.241500 (dc=5e-05): x0=-0.66354412 T=21.6825 nu=-1.5311e+01 stable=False (5,1) prograde=True [1.36s]
+[2026-08-11T22:18:59+1000]   step 31 C=3.241550 (dc=5e-05): x0=-0.66350103 T=21.6821 nu=-1.5139e+01 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:19:01+1000]   step 32 C=3.241600 (dc=5e-05): x0=-0.66345779 T=21.6818 nu=-1.5067e+01 stable=False (5,1) prograde=True [1.61s]
+[2026-08-11T22:19:04+1000]   step 33 C=3.241650 (dc=5e-05): x0=-0.66341440 T=21.6814 nu=-1.4957e+01 stable=False (5,1) prograde=True [1.81s]
+[2026-08-11T22:19:07+1000]   step 34 C=3.241700 (dc=5e-05): x0=-0.66337085 T=21.6811 nu=-1.4842e+01 stable=False (5,1) prograde=True [1.71s]
+[2026-08-11T22:19:10+1000]   step 35 C=3.241750 (dc=5e-05): x0=-0.66332713 T=21.6808 nu=-1.4753e+01 stable=False (5,1) prograde=True [1.62s]
+[2026-08-11T22:19:13+1000]   step 36 C=3.241800 (dc=5e-05): x0=-0.66328326 T=21.6805 nu=-1.4645e+01 stable=False (5,1) prograde=True [1.65s]
+[2026-08-11T22:19:15+1000]   step 37 C=3.241850 (dc=5e-05): x0=-0.66323922 T=21.6802 nu=-1.4506e+01 stable=False (5,1) prograde=True [1.85s]
+[2026-08-11T22:19:18+1000]   step 38 C=3.241900 (dc=5e-05): x0=-0.66319501 T=21.6800 nu=-1.4388e+01 stable=False (5,1) prograde=True [1.45s]
+[2026-08-11T22:19:21+1000]   step 39 C=3.241950 (dc=5e-05): x0=-0.66315063 T=21.6797 nu=-1.4260e+01 stable=False (5,1) prograde=True [1.84s]
+[2026-08-11T22:19:23+1000]   step 40 C=3.242000 (dc=5e-05): x0=-0.66310608 T=21.6795 nu=-1.4110e+01 stable=False (5,1) prograde=True [1.68s]
+[2026-08-11T22:19:26+1000]   step 41 C=3.242050 (dc=5e-05): x0=-0.66306135 T=21.6792 nu=-1.4006e+01 stable=False (5,1) prograde=True [1.55s]
+[2026-08-11T22:19:28+1000]   step 42 C=3.242100 (dc=5e-05): x0=-0.66301643 T=21.6790 nu=-1.3804e+01 stable=False (5,1) prograde=True [1.38s]
+[2026-08-11T22:19:31+1000]   step 43 C=3.242150 (dc=5e-05): x0=-0.66297134 T=21.6788 nu=-1.3740e+01 stable=False (5,1) prograde=True [1.52s]
+[2026-08-11T22:19:34+1000]   step 44 C=3.242200 (dc=5e-05): x0=-0.66292606 T=21.6786 nu=-1.3574e+01 stable=False (5,1) prograde=True [1.52s]
+[2026-08-11T22:19:36+1000]   step 45 C=3.242250 (dc=5e-05): x0=-0.66288058 T=21.6784 nu=-1.3425e+01 stable=False (5,1) prograde=True [1.44s]
+[2026-08-11T22:19:38+1000]   step 46 C=3.242300 (dc=5e-05): x0=-0.66283491 T=21.6782 nu=-1.3386e+01 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:19:41+1000]   step 47 C=3.242350 (dc=5e-05): x0=-0.66278905 T=21.6781 nu=-1.3177e+01 stable=False (5,1) prograde=True [1.53s]
+[2026-08-11T22:19:43+1000]   step 48 C=3.242400 (dc=5e-05): x0=-0.66274298 T=21.6779 nu=-1.2997e+01 stable=False (5,1) prograde=True [1.34s]
+[2026-08-11T22:19:46+1000]   step 49 C=3.242450 (dc=5e-05): x0=-0.66269670 T=21.6778 nu=-1.2825e+01 stable=False (5,1) prograde=True [1.35s]
+[2026-08-11T22:19:48+1000]   step 50 C=3.242500 (dc=5e-05): x0=-0.66265022 T=21.6777 nu=-1.2719e+01 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:19:51+1000]   step 51 C=3.242550 (dc=5e-05): x0=-0.66260352 T=21.6776 nu=-1.2223e+01 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:19:53+1000]   step 52 C=3.242600 (dc=5e-05): x0=-0.66255660 T=21.6775 nu=-1.2178e+01 stable=False (5,1) prograde=True [1.47s]
+[2026-08-11T22:19:56+1000]   step 53 C=3.242650 (dc=5e-05): x0=-0.66250946 T=21.6774 nu=-1.2036e+01 stable=False (5,1) prograde=True [1.35s]
+[2026-08-11T22:19:58+1000]   step 54 C=3.242700 (dc=5e-05): x0=-0.66246209 T=21.6773 nu=-1.1722e+01 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:20:01+1000]   step 55 C=3.242750 (dc=5e-05): x0=-0.66241449 T=21.6773 nu=-1.1505e+01 stable=False (5,1) prograde=True [1.52s]
+[2026-08-11T22:20:04+1000]   step 56 C=3.242800 (dc=5e-05): x0=-0.66236665 T=21.6772 nu=-1.1394e+01 stable=False (5,1) prograde=True [1.57s]
+[2026-08-11T22:20:06+1000]   step 57 C=3.242850 (dc=5e-05): x0=-0.66231857 T=21.6772 nu=-1.1120e+01 stable=False (5,1) prograde=True [1.4s]
+[2026-08-11T22:20:09+1000]   step 58 C=3.242900 (dc=5e-05): x0=-0.66227024 T=21.6772 nu=-1.0908e+01 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T22:20:11+1000]   step 59 C=3.242950 (dc=5e-05): x0=-0.66222165 T=21.6772 nu=-1.0563e+01 stable=False (5,1) prograde=True [1.61s]
+[2026-08-11T22:20:14+1000]   step 60 C=3.243000 (dc=5e-05): x0=-0.66217280 T=21.6773 nu=-1.0443e+01 stable=False (5,1) prograde=True [1.54s]
+[2026-08-11T22:20:17+1000]   step 61 C=3.243050 (dc=5e-05): x0=-0.66212369 T=21.6773 nu=-1.0128e+01 stable=False (5,1) prograde=True [1.53s]
+[2026-08-11T22:20:20+1000]   step 62 C=3.243100 (dc=5e-05): x0=-0.66207430 T=21.6774 nu=-9.8380e+00 stable=False (5,1) prograde=True [1.93s]
+[2026-08-11T22:20:23+1000]   step 63 C=3.243150 (dc=5e-05): x0=-0.66202464 T=21.6775 nu=-9.5786e+00 stable=False (5,1) prograde=True [1.76s]
+[2026-08-11T22:20:26+1000]   step 64 C=3.243200 (dc=5e-05): x0=-0.66197469 T=21.6776 nu=-9.3479e+00 stable=False (5,1) prograde=True [1.69s]
+[2026-08-11T22:20:29+1000]   step 65 C=3.243250 (dc=5e-05): x0=-0.66192444 T=21.6777 nu=-8.8559e+00 stable=False (5,1) prograde=True [1.8s]
+[2026-08-11T22:20:32+1000]   step 66 C=3.243300 (dc=5e-05): x0=-0.66187389 T=21.6779 nu=-8.7323e+00 stable=False (5,1) prograde=True [1.84s]
+[2026-08-11T22:20:35+1000]   step 67 C=3.243350 (dc=5e-05): x0=-0.66182303 T=21.6780 nu=-8.2075e+00 stable=False (5,1) prograde=True [1.7s]
+[2026-08-11T22:20:38+1000]   step 68 C=3.243400 (dc=5e-05): x0=-0.66177186 T=21.6782 nu=-7.8725e+00 stable=False (5,1) prograde=True [1.69s]
+[2026-08-11T22:20:41+1000]   step 69 C=3.243450 (dc=5e-05): x0=-0.66172036 T=21.6784 nu=-7.6555e+00 stable=False (5,1) prograde=True [1.8s]
+[2026-08-11T22:20:45+1000]   step 70 C=3.243500 (dc=5e-05): x0=-0.66166852 T=21.6786 nu=-7.3228e+00 stable=False (5,1) prograde=True [1.9s]
+[2026-08-11T22:20:48+1000]   step 71 C=3.243550 (dc=5e-05): x0=-0.66161634 T=21.6789 nu=-6.9236e+00 stable=False (5,1) prograde=True [1.98s]
+[2026-08-11T22:20:51+1000]   step 72 C=3.243600 (dc=5e-05): x0=-0.66156380 T=21.6792 nu=-6.4702e+00 stable=False (5,1) prograde=True [1.91s]
+[2026-08-11T22:20:55+1000]   step 73 C=3.243650 (dc=5e-05): x0=-0.66151090 T=21.6795 nu=-5.9978e+00 stable=False (5,1) prograde=True [2.2s]
+[2026-08-11T22:20:58+1000]   step 74 C=3.243700 (dc=5e-05): x0=-0.66145761 T=21.6798 nu=-5.3715e+00 stable=False (5,1) prograde=True [1.9s]
+[2026-08-11T22:21:01+1000]   step 75 C=3.243750 (dc=5e-05): x0=-0.66140395 T=21.6801 nu=-5.1583e+00 stable=False (5,1) prograde=True [1.76s]
+[2026-08-11T22:21:04+1000]   step 76 C=3.243800 (dc=5e-05): x0=-0.66134988 T=21.6805 nu=-4.7526e+00 stable=False (5,1) prograde=True [1.81s]
+[2026-08-11T22:21:07+1000]   step 77 C=3.243850 (dc=5e-05): x0=-0.66129539 T=21.6809 nu=-4.4368e+00 stable=False (5,1) prograde=True [1.7s]
+[2026-08-11T22:21:10+1000]   step 78 C=3.243900 (dc=5e-05): x0=-0.66124048 T=21.6813 nu=-3.9376e+00 stable=False (5,1) prograde=True [1.68s]
+[2026-08-11T22:21:12+1000]   step 79 C=3.243950 (dc=5e-05): x0=-0.66118513 T=21.6818 nu=-3.2468e+00 stable=False (5,1) prograde=True [1.78s]
+[2026-08-11T22:21:15+1000]   step 80 C=3.244000 (dc=5e-05): x0=-0.66112932 T=21.6823 nu=-2.8886e+00 stable=False (5,1) prograde=True [1.48s]
+[2026-08-11T22:21:17+1000]   step 81 C=3.244050 (dc=5e-05): x0=-0.66107303 T=21.6828 nu=-2.5303e+00 stable=False (5,1) prograde=True [1.41s]
+[2026-08-11T22:21:20+1000]   step 82 C=3.244100 (dc=5e-05): x0=-0.66101626 T=21.6833 nu=+2.6572e+00 stable=False (5,1) prograde=True [1.46s]
+[2026-08-11T22:21:20+1000]   nu SIGN CHANGE in [3.244050,3.244100] -- refining
+[2026-08-11T22:21:54+1000]   nu=0 midpoint: {"c_mid": 3.2440623670099074, "x0": -0.6610590378624053, "ydot0": -0.7486410533307767, "period": 21.68291830854636, "period_days": 22.048267091382492, "nu": 2.4289643801744223, "stable_found": false, "topology_ok": true, "prograde": true, "reaches_secondary": true, "crosscheck_ok": true, "crosscheck_dj": 5.853362239349735e-11}
+[2026-08-11T22:21:56+1000]   step 83 C=3.244150 (dc=5e-05): x0=-0.66095897 T=21.6839 nu=+3.1842e+00 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T22:21:57+1000]   step 84 C=3.244200 (dc=5e-05): x0=-0.66090116 T=21.6845 nu=+3.7040e+00 stable=False (5,1) prograde=True [1.01s]
+[2026-08-11T22:21:59+1000]   step 85 C=3.244250 (dc=5e-05): x0=-0.66084280 T=21.6852 nu=+4.6477e+00 stable=False (5,1) prograde=True [1.17s]
+[2026-08-11T22:22:01+1000]   step 86 C=3.244300 (dc=5e-05): x0=-0.66078386 T=21.6859 nu=+5.5178e+00 stable=False (5,1) prograde=True [1.28s]
+[2026-08-11T22:22:03+1000]   step 87 C=3.244350 (dc=5e-05): x0=-0.66072433 T=21.6866 nu=+5.9191e+00 stable=False (5,1) prograde=True [1.14s]
+[2026-08-11T22:22:05+1000]   step 88 C=3.244400 (dc=5e-05): x0=-0.66066417 T=21.6873 nu=+6.9440e+00 stable=False (5,1) prograde=True [1.14s]
+[2026-08-11T22:22:07+1000]   step 89 C=3.244450 (dc=5e-05): x0=-0.66060337 T=21.6881 nu=+8.4492e+00 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T22:22:09+1000]   step 90 C=3.244500 (dc=5e-05): x0=-0.66054188 T=21.6890 nu=+9.9081e+00 stable=False (5,1) prograde=True [1.16s]
+[2026-08-11T22:22:11+1000]   step 91 C=3.244550 (dc=5e-05): x0=-0.66047969 T=21.6899 nu=+7.9402e+00 stable=False (5,1) prograde=True [1.03s]
+[2026-08-11T22:22:13+1000]   step 92 C=3.244600 (dc=5e-05): x0=-0.66041674 T=21.6908 nu=+9.6587e+00 stable=False (5,1) prograde=True [1.24s]
+[2026-08-11T22:22:14+1000]   step 93 C=3.244650 (dc=5e-05): x0=-0.66035301 T=21.6918 nu=+1.1471e+01 stable=False (5,1) prograde=True [1.08s]
+[2026-08-11T22:22:16+1000]   step 94 C=3.244700 (dc=5e-05): x0=-0.66028846 T=21.6929 nu=+1.2636e+01 stable=False (5,1) prograde=True [1.09s]
+[2026-08-11T22:22:18+1000]   step 95 C=3.244750 (dc=5e-05): x0=-0.66022303 T=21.6940 nu=+1.4544e+01 stable=False (5,1) prograde=True [1.14s]
+[2026-08-11T22:22:20+1000]   step 96 C=3.244800 (dc=5e-05): x0=-0.66015668 T=21.6951 nu=+1.6706e+01 stable=False (5,1) prograde=True [1.13s]
+[2026-08-11T22:22:22+1000]   step 97 C=3.244850 (dc=5e-05): x0=-0.66008935 T=21.6963 nu=+1.9060e+01 stable=False (5,1) prograde=True [1.13s]
+[2026-08-11T22:22:24+1000]   step 98 C=3.244900 (dc=5e-05): x0=-0.66002099 T=21.6976 nu=+2.1491e+01 stable=False (5,1) prograde=True [0.97s]
+[2026-08-11T22:22:26+1000]   step 99 C=3.244950 (dc=5e-05): x0=-0.65995152 T=21.6990 nu=+2.5871e+01 stable=False (5,1) prograde=True [1.12s]
+[2026-08-11T22:22:28+1000]   step 100 C=3.245000 (dc=5e-05): x0=-0.65988087 T=21.7004 nu=+2.8167e+01 stable=False (5,1) prograde=True [1.12s]
+[2026-08-11T22:22:30+1000]   step 101 C=3.245050 (dc=5e-05): x0=-0.65980896 T=21.7019 nu=+3.2506e+01 stable=False (5,1) prograde=True [1.12s]
+[2026-08-11T22:22:32+1000]   step 102 C=3.245100 (dc=5e-05): x0=-0.65973569 T=21.7035 nu=+3.4489e+01 stable=False (5,1) prograde=True [1.31s]
+[2026-08-11T22:22:34+1000]   step 103 C=3.245150 (dc=5e-05): x0=-0.65966096 T=21.7052 nu=+4.1250e+01 stable=False (5,1) prograde=True [1.63s]
+[2026-08-11T22:22:36+1000]   step 104 C=3.245200 (dc=5e-05): x0=-0.65958465 T=21.7070 nu=+4.6014e+01 stable=False (5,1) prograde=True [1.58s]
+[2026-08-11T22:22:38+1000]   step 105 C=3.245250 (dc=5e-05): x0=-0.65950661 T=21.7089 nu=+5.1618e+01 stable=False (5,1) prograde=True [1.06s]
+[2026-08-11T22:22:40+1000]   step 106 C=3.245300 (dc=5e-05): x0=-0.65942668 T=21.7109 nu=+5.8626e+01 stable=False (5,1) prograde=True [1.03s]
+[2026-08-11T22:22:42+1000]   step 107 C=3.245350 (dc=5e-05): x0=-0.65934467 T=21.7131 nu=+6.9667e+01 stable=False (5,1) prograde=True [1.09s]
+[2026-08-11T22:22:45+1000]   step 108 C=3.245400 (dc=5e-05): x0=-0.65926037 T=21.7154 nu=+7.8835e+01 stable=False (5,1) prograde=True [2.59s]
+[2026-08-11T22:22:47+1000]   step 109 C=3.245450 (dc=5e-05): x0=-0.65917349 T=21.7179 nu=+8.9896e+01 stable=False (5,1) prograde=True [1.42s]
+[2026-08-11T22:22:49+1000]   step 110 C=3.245500 (dc=5e-05): x0=-0.65908371 T=21.7205 nu=+1.0258e+02 stable=False (5,1) prograde=True [1.4s]
+[2026-08-11T22:22:51+1000]   step 111 C=3.245550 (dc=5e-05): x0=-0.65899064 T=21.7234 nu=+1.2302e+02 stable=False (5,1) prograde=True [1.4s]
+[2026-08-11T22:22:54+1000]   step 112 C=3.245600 (dc=5e-05): x0=-0.65889377 T=21.7265 nu=+1.4938e+02 stable=False (5,1) prograde=True [1.81s]
+[2026-08-11T22:22:56+1000]   step 113 C=3.245650 (dc=5e-05): x0=-0.65879245 T=21.7299 nu=+1.7332e+02 stable=False (5,1) prograde=True [1.38s]
+[2026-08-11T22:22:59+1000]   step 114 C=3.245700 (dc=5e-05): x0=-0.65868581 T=21.7336 nu=+2.0908e+02 stable=False (5,1) prograde=True [1.72s]
+[2026-08-11T22:23:01+1000]   step 115 C=3.245750 (dc=5e-05): x0=-0.65857268 T=21.7377 nu=+2.7744e+02 stable=False (5,1) prograde=True [1.96s]
+[2026-08-11T22:23:05+1000]   step 116 C=3.245800 (dc=5e-05): x0=-0.65845135 T=21.7424 nu=+3.5937e+02 stable=False (5,1) prograde=True [3.58s]
+[2026-08-11T22:23:08+1000]   step 117 C=3.245850 (dc=5e-05): x0=-0.65831919 T=21.7477 nu=+4.7225e+02 stable=False (5,1) prograde=True [1.9s]
+[2026-08-11T22:23:11+1000]   step 118 C=3.245900 (dc=5e-05): x0=-0.65817177 T=21.7541 nu=+6.5519e+02 stable=False (5,1) prograde=True [1.9s]
+[2026-08-11T22:23:14+1000]   step 119 C=3.245950 (dc=5e-05): x0=-0.65800043 T=21.7619 nu=+9.3344e+02 stable=False (5,1) prograde=True [1.94s]
+[2026-08-11T22:23:16+1000]   step 120 C=3.246000 (dc=5e-05): x0=-0.65778247 T=21.7727 nu=+1.5612e+03 stable=False (5,1) prograde=True [1.86s]
+[2026-08-11T22:23:22+1000]   step 121 C=3.246040 (dc=5e-05): x0=-0.65749624 T=21.7885 nu=+3.4407e+03 stable=False (5,1) prograde=True [4.54s]
+[2026-08-11T22:23:22+1000] window: COMPLETE (reached C=3.246040)
+[2026-08-11T22:25:31+1000] gate: sweep_up_nu_zero_mid C=3.1679360 nu=+5.977e-10: min dist Pluto 5128.5 km (radius 1188.3), Charon 745.5 km (radius 606.0) -> clearance_ok=True
+[2026-08-11T22:29:05+1000] VERDICT SUMMARY:
+{
+  "up": {
+    "n_steps": 68,
+    "n_converged": 47,
+    "n_topo_ok": 47,
+    "n_stable_topo_ok": 0,
+    "stable_records": [],
+    "nu_zero_events": [
+      {
+        "event": "nu_zero",
+        "bracket": [
+          3.1649999999999974,
+          3.1699999999999973
+        ],
+        "mid": {
+          "c_mid": 3.167935964707279,
+          "x0": -0.7058054139668293,
+          "ydot0": -0.6722667009872901,
+          "period": 24.305715846921732,
+          "period_days": 24.715257753332622,
+          "nu": 5.976727618299565e-10,
+          "stable_found": true,
+          "topology_ok": true,
+          "prograde": true,
+          "reaches_secondary": true,
+          "crosscheck_ok": true,
+          "crosscheck_dj": 7.815970093361102e-13
+        }
+      },
+      {
+        "event": "nu_zero",
+        "bracket": [
+          3.2399999999999958,
+          3.2449999999999957
+        ],
+        "mid": {
+          "c_mid": 3.2440485003382507,
+          "x0": -0.6610747294262551,
+          "ydot0": -0.7486019839837261,
+          "period": 21.68277029709128,
+          "period_days": 22.04811658599167,
+          "nu": -2.336376091876454,
+          "stable_found": false,
+          "topology_ok": true,
+          "prograde": true,
+          "reaches_secondary": true,
+          "crosscheck_ok": true,
+          "crosscheck_dj": 2.0371704323451922e-11
+        }
+      }
+    ],
+    "end_reason": "branch fold/termination: cannot continue past C=3.24603516 even at dc=1e-05 (hc=5 held fixed; last attempt: no convergence)",
+    "c_range_converged": [
+      3.0524999999999998,
+      3.2460351562499956
+    ],
+    "nu_range_topo_ok": [
+      -58.80458612920963,
+      7330.300128695365
+    ],
+    "min_abs_nu_topo_ok": 11.809506192130549
+  },
+  "down": {
+    "n_steps": 183,
+    "n_converged": 94,
+    "n_topo_ok": 94,
+    "n_stable_topo_ok": 0,
+    "stable_records": [],
+    "nu_zero_events": [],
+    "end_reason": "C range exhausted",
+    "c_range_converged": [
+      2.9,
+      3.0475
+    ],
+    "nu_range_topo_ok": [
+      8131.58955948427,
+      53675.616604450086
+    ],
+    "min_abs_nu_topo_ok": 8131.58955948427
+  },
+  "window": {
+    "n_steps": 121,
+    "n_converged": 121,
+    "n_topo_ok": 121,
+    "n_stable_topo_ok": 0,
+    "stable_records": [],
+    "nu_zero_events": [
+      {
+        "event": "nu_zero",
+        "bracket": [
+          3.2440499999999863,
+          3.244099999999986
+        ],
+        "mid": {
+          "c_mid": 3.2440623670099074,
+          "x0": -0.6610590378624053,
+          "ydot0": -0.7486410533307767,
+          "period": 21.68291830854636,
+          "period_days": 22.048267091382492,
+          "nu": 2.4289643801744223,
+          "stable_found": false,
+          "topology_ok": true,
+          "prograde": true,
+          "reaches_secondary": true,
+          "crosscheck_ok": true,
+          "crosscheck_dj": 5.853362239349735e-11
+        }
+      }
+    ],
+    "end_reason": "C range exhausted",
+    "c_range_converged": [
+      3.2400499999999957,
+      3.24604
+    ],
+    "nu_range_topo_ok": [
+      -17.74255737128393,
+      3440.6812179778817
+    ],
+    "min_abs_nu_topo_ok": 2.530295844581865
+  }
+}
+VERDICT: 1/1 stable (|nu|<1) topology-verified (5,1) member(s) PASS the body-clearance gate -- POSITIVE CANDIDATE. Mandatory next steps: independent reproduction, literature_check.py novelty gate, adjudication. Do NOT stamp an empty region; do NOT write the catalogue from here.
+[
+  {
+    "source": "sweep_up_nu_zero_mid",
+    "c": 3.167935964707279,
+    "x0": -0.7058054139668293,
+    "ydot0": -0.6722667009872901,
+    "period": 24.305715846921732,
+    "nu": 5.976727618299565e-10,
+    "crosscheck_ok": true,
+    "event": "clearance",
+    "min_dist_pluto_km": 5128.52,
+    "min_dist_charon_km": 745.52,
+    "pluto_radius_km": 1188.3,
+    "charon_radius_km": 606.0,
+    "clearance_ok": true
+  }
+]

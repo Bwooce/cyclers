@@ -1,0 +1,1 @@
+{"source": "sweep_up_nu_zero_mid", "c": 3.167935964707279, "x0": -0.7058054139668293, "ydot0": -0.6722667009872901, "period": 24.305715846921732, "nu": 5.976727618299565e-10, "crosscheck_ok": true, "event": "clearance", "min_dist_pluto_km": 5128.52, "min_dist_charon_km": 745.52, "pluto_radius_km": 1188.3, "charon_radius_km": 606.0, "clearance_ok": true}
