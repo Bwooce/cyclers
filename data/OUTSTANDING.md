@@ -1205,13 +1205,106 @@ unchanged. See `git log` around this date for the corrected commit.
   Table-6 orbit ICs already reproduce to ~1e-13 via `resonance_network.py`, `#598`). Unlike
   Vaquero's prose-only claim, a TRUE digit-grade gate target for the heteroclinic lane —
   they print exact intersection states.
-- `#828` — registered 2026-08-11 (found during `#822`, not dispatched): adjudicate whether
-  `#822`'s 13/13-grid-point verified free-transfer connections (+ reverse direction) upgrade
-  any of `#811`'s six `vaquero-*` catalogue rows' validation levels — the `#822`
-  registration's own "natural upgrade path toward V2/V3-class connection evidence" framing —
-  and if warranted perform the writeback under full catalogue-edit ratchet discipline
-  (`tests/data tests/search -q`, never a subset). Distinct from `#826` (which is `#820`'s
-  Russell-row analogue of the same adjudication pattern).
+- `#828` — ✓ DONE 2026-08-12, **ZERO TIER PROMOTIONS; two comment-only `ADDED EVIDENCE (no
+  level change)` annotations** (registered by `#822`, dispatched 2026-08-12): adjudicated
+  whether `#822`'s 13/13-grid-point verified Wu(2:1)->Ws(3:1) free transfers upgrade any of
+  `#811`'s six `vaquero-*` rows, per the `#388` discipline. Note
+  `docs/notes/2026-08-12-828-vaquero-connection-tier-adjudication.md`. **`#822`'s own
+  registration framing — "the natural upgrade path toward V2/V3-class connection evidence" —
+  is WRONG and is retracted here**; it was written before the connection existed. **Four of
+  the six rows are outside `#822`'s `C ∈ [2.54, 2.66]` overlap band entirely** (C=1.98, 2.46,
+  2.47 on the 2:1; C=3.13 on the 3:1) — `#822` computed nothing involving those orbits, so for
+  them the question does not arise; `#822`'s undifferentiated "the `#811` rows" plural obscured
+  this. Of the 26 node instances in the 13 connections, exactly TWO are catalogued rows:
+  `vaquero-21-c266` (Wu ORIGIN at the band's high edge) and `vaquero-31-c254` (Ws DESTINATION
+  at the low edge) — and **neither of those two connections has BOTH endpoints in the
+  catalogue** (the counterpart 3:1@2.66 / 2:1@2.54 nodes are uncatalogued). **The tier
+  discriminator, stated once**: every §14 rung measures ONE object's own trajectory under
+  increasing model fidelity; a heteroclinic connection is a TWO-object, same-model,
+  same-fidelity TRANSPORT statement — it moves sideways on the ladder, not up. Not a novel
+  reading: the schema already says exactly this for both connection payloads it carries
+  (`ccr4bp_provenance`/`#708`, `crnbp_provenance`/`#736` — "Provenance/audit only — not a
+  promotion gate"). Rung by rung, against the WRITTEN criteria rather than the favourable
+  parts: **V3** (both variants) needs ephemeris realisation, and `#822` touches no ephemeris,
+  epoch or ΔV budget at all — structurally impossible; **V2-ballistic** (`validation/v2_3d.py`,
+  `V2_N_CYCLES_MIN=3`, module-constant "NOT test-tunable") needs >=3 continuous bounded-drift
+  laps of the ROW'S OWN IC, whereas `#822` propagates manifold legs seeded `x0 + eps*v` and
+  integrated ~4.5-9 periods precisely so they ASYMPTOTICALLY DEPART — a longer cleaner leg is
+  *worse* V2 evidence, not better — and independently both in-band rows are UNSTABLE
+  (|lambda| 4.428, 11.26), which their own `_LEVEL_EVIDENCE` already records as mechanical
+  ineligibility; **V2-powered** has no documented maintenance maneuver to hold them to; **V1**
+  is already held and `#822` adds nothing to it — its node re-derivation calls
+  `correct_symmetric_fixed_jacobi`, **the same corrector `#799` used**, explicitly as a
+  staleness guard (same-corrector re-convergence is not an independent cross-check), and its
+  independent-Radau is applied to the manifold LEGS' crossings, not to either node's own
+  period-map closure. Forcing device, per `#826`: a promotion IS a `_LEVEL_EVIDENCE` string
+  somebody must write, and no honest V2 string exists (no lap count, no drift figure, unstable
+  orbit). **`#822`'s numbers were NOT taken at face value**
+  (`[[feedback_orbit_closure_discipline]]`): `find_free_transfer` was re-run from scratch at the
+  mandated C=2.60 plus the
+  two band edges that actually matter, and **all three reproduce `#822` bit-for-bit**
+  (`|delta| = 0.000e+00` on both crossing components; residuals 8.037e-11 / 4.511e-10 /
+  3.337e-10; seed/refine/converge counts 331/2/1, 31/1/1, 225/6/1 identical) — the
+  no-promotion verdict is about the KIND of evidence, not any doubt about `#822`. The
+  re-converged nodes also reproduce the two rows' recorded `state_nd`/`period_nd`/
+  `jacobi_constant` to 3e-15..1e-13 and `stability_index` to 4.6e-13 / 1.4e-08 relative —
+  **no-downgrade evidence** (`[[feedback_bugfix_invalidates_past_searches]]` cuts both ways),
+  not promotion evidence. One margin chased rather than glossed: c254's Barden nu first came
+  out 1.26e-04 off at `barden_stability`'s DEFAULT `rtol=atol=1e-12`; it is pure STM-tolerance
+  sensitivity on a |lambda|=11.26 orbit (1e-13 -> 1.4e-08; 1e-14 is *worse*, SciPy clamps
+  `rtol` at 2.2e-14), not a bad recorded value. **Writeback**: the established `#181`
+  `ADDED EVIDENCE (…, no level change)` COMMENT convention on the two in-band rows'
+  `validation_level:` comments only — DERIVE-tagged, citing `#822`/commit `13ae76c0`/the
+  `results.json` sweep row, and stating the asymmetry honestly (the reverse direction was
+  demonstrated only at C=2.60, so NO round-trip claim is available at either row's own C). No
+  field value, enum, `_LEVEL_EVIDENCE` entry or census count moves: verified by `yaml.safe_load`
+  of the pre- and post-edit files comparing EQUAL (`git diff --stat` = 2 insertions, 2
+  deletions, both comment text). **No schema field was invented** — cross-row connection
+  evidence has no home (both existing payloads are INTRINSIC to their own row's object) and
+  both arrived via a separate user-approved design task (`#707`->v5.3, `#735`->v5.4), so that
+  is registered as `#838`, not done here. Precedent surveyed: `#767`/`#781`/`#759` wrote back
+  nothing (but their systems have no rows), `#786` nothing (clean negative), and the one
+  positive precedent with a row in play — `#766`/`#779` — recorded its homoclinic as a nested
+  provenance block with `validation_level` untouched. **The real V2 path is `#823`**, whose two
+  targets (the linearly STABLE C=1.98 nu=0.4852 / C=2.46 nu=-0.9274 rows, whose evidence
+  records a "no multi-lap run performed" GAP rather than ineligibility) are **disjoint** from
+  `#822`'s two in-band rows — the free transfer only ever touches UNSTABLE members, because
+  Vaquero's own p.172 claim is unstable-to-unstable and the 2:1 transition sits at C~2.46/2.47,
+  below the band. The property that makes an orbit connectable (a saddle) is the property that
+  disqualifies it from V2-ballistic, so no amount of further connection work can promote an
+  in-band member. Follow-ups: `#838`-`#840`.
+- `#838` — registered 2026-08-12 (found during `#828`, not dispatched): **schema design
+  proposal, user approval required before any bump** (per the `#707`->v5.3 / `#735`->v5.4
+  precedent — neither schema change was made by the task that wanted it): should the catalogue
+  carry a **cross-row connection-evidence** object or field, recording a verified manifold
+  connection that runs BETWEEN two catalogued rows' orbits? Neither existing connection payload
+  fits — `ccr4bp_provenance.connection` and `crnbp_provenance…seed_orbit_homoclinic.connection`
+  are both INTRINSIC to a single row's own object (the row IS the connection, or the connection
+  belongs to the row's own seed orbit). `#822`'s Vaquero 2:1<->3:1 transfer is now the second
+  such case in the corpus after `#754`/`#759`'s Jupiter-Europa 3:4<->5:6 pair, so this is a
+  recurring shape, not a one-off. Must also settle the prior question of whether such an object
+  belongs as a FIELD on the two rows, as its own ROW, or (the `#828` outcome, deliberately) as
+  prose only. `#828` deliberately shipped comment-only annotations rather than pre-empt this.
+- `#839` — registered 2026-08-12 (found during `#828`, not dispatched; **gated on `#827`**):
+  `vaquero-31-c313-em-resonant-po-2013` sits at **C=3.13, INSIDE** Kumar-Rawat-Rosengren-Ross
+  2026's published `C_J ∈ [3.00, 3.15]` 3:1<->2:1 heteroclinic band — which is exactly `#827`'s
+  digit-grade reproduction target. It is also one of `#811`'s two `resonant_po` rows, classed
+  that way precisely for "**no demonstrated transport utility**" (schema v4.9/`#453`). If `#827`
+  lands a heteroclinic touching that member, an `orbit_class` question (`resonant_po` ->
+  `cycler`) goes live — a genuinely DIFFERENT kind of writeback from a validation-tier bump, and
+  per `#828`'s analysis **the only place this family's connection work could actually move a
+  catalogue field**. Note the row is also SOI-MARGINAL (periselene 66,995 km = 1.012x lunar SOI,
+  outside by ~812 km/1.2%), so the `orbit_class` call would need both the transport evidence and
+  a re-look at `#811`'s own stated boundary call, not just the former.
+- `#840` — registered 2026-08-12 (found during `#828`, not dispatched): `#822` demonstrated the
+  REVERSE direction Wu(3:1)->Ws(2:1) at **C=2.60 only** — a C at which NEITHER family node is a
+  catalogued row. Run the reverse at the two band edges (C=2.54 and C=2.66) so each of the two
+  in-band catalogued rows (`vaquero-31-c254`, `vaquero-21-c266`) has a demonstrated ROUND TRIP
+  at its own C, upgrading `#828`'s two annotations from one-way to round-trip. Cheap: the
+  machinery exists (`find_free_transfer`'s own primitives, `#822` Sec. 4's reverse demo is the
+  template) and the CR3BP time-reversal symmetry guarantees existence given the forward hits, so
+  this is a demonstration rather than a search. Per `#828` Sec. 2 this is still NOT a tier
+  promotion under any reading — register it as evidence completeness, not as an upgrade path.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
