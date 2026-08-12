@@ -773,7 +773,20 @@ unchanged. See `git log` around this date for the corrected commit.
   (5,1) joins (3,2)"; PC (3,2) is no longer structurally unique at this mu** (pending `#836`
   adjudication; the `pluto-charon-kk-45-cycler-sweep-2026-07-19` stamp's (5,1) UNSETTLED row
   stays literally true and the append-only registry is not edited; the other 8 topologies'
-  certified-empty negatives are untouched — their grids found no seed at all). **Mandatory
+  certified-empty negatives are untouched — their grids found no seed at all).
+  **CENSUS FRAMING CORRECTED BY `#836` (2026-08-12) — read the line above with this caveat.**
+  The "other 8 ... found no seed at all" sentence is ACCURATE as narrowly stated (it is scoped
+  to `#656`'s nine higher-k1 topologies minus (5,1), and all eight genuinely returned no seed),
+  but the "1 of 15" headline built on it UNDERSTATES what is unknown: it silently excludes
+  `#504`'s three LOWER-k1 negatives — **(1,1), (3,1), (3,3)** — which ran through the same
+  `hc=None` auto-redetection machinery and are therefore exposed to the very branch-loss gap
+  that produced the (5,1) false negative. (3,1)'s own record shows a converged stable orbit
+  found and discarded for wrong topology (the structurally identical signature to (5,1));
+  `#807` DIRECTLY MEASURED (3,3)'s mu-continuation leaving the branch at its first step and
+  only fixed the reporting, not the continuation. Honest census: **2 confirmed stable members
+  of 15 ((3,2) + (5,1)); 10 certified-empty (no seed at all: (2,1),(2,2),(4,1)-(4,4),
+  (5,2)-(5,5)); 3 UNRESOLVED under the same method gap ((1,1),(3,1),(3,3))** — `#844`
+  registered to re-sweep those three with hc fixed. **Mandatory
   literature gate run live** (query trail in the note): not-found for any Pluto-Charon (5,1)
   cycler; closest prior art Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189) GROUNDED AGAINST
   THE ACTUAL SOURCE — it tabulates only (1,1),(3,1),(3,2),(3,3), no (5,1) family anywhere, no
@@ -1088,38 +1101,81 @@ unchanged. See `git log` around this date for the corrected commit.
   expected side = the published `turn_ratio`) — deliberately no "ADDED EVIDENCE" catalogue
   annotations, since citing `#820`'s closure on rows whose closure is inadmissible
   (`5.30ggF3`) or non-independent (`mcconaghy`) would be misleading. Follow-ups: `#829`-`#835`.
-- `#829` — registered 2026-08-11 (found during `#826`, not dispatched): `campaign_russell12`
-  is **bend-blind**. `probe_at_truth`'s `stayed` verdict is computed from `solved.converged`
-  and `run_row`'s grid filter is `[r for r in results if r.get("converged")]`, while
-  `BallisticClosureResult` exposes `bend_feasible` / `vinf_cap_ok` / `constraints_satisfied`
-  right there — so the campaign's whole verdict vocabulary (CLOSE-AND-MATCH /
-  CLOSE-OFF-ANCHOR / STAYED-AT-TRUTH) can label a bend-infeasible trajectory a closure, which
-  spec §14 V0 forbids (`bend <= max` is a V0 hard constraint). Report AND gate on
-  `constraints_satisfied` in both functions, surface the per-node required/max bend in the
-  probe dict, and re-classify all 12 rows. `#826` found 2 of `#820`'s 8 affected;
-  `6.44Gg3`'s razor-thin +3.302° excess is exactly the
-  `[[feedback_verify_automated_ghost_guard_booleans]]` signal. **Scope is wider than the 12
-  current rows** (`[[feedback_bugfix_invalidates_past_searches]]`): because the filter has
-  always been `converged`-only, EVERY CLOSE-AND-MATCH / CLOSE-OFF-ANCHOR verdict this
-  campaign has ever emitted was bend-blind, so the historical
-  `data/runs/russell12-*.jsonl` records (the June-07 and `#813` runs as well as `#820`'s)
-  need re-classifying too, not just a forward fix. Note `#826`'s finding that a
-  `bend_feasible: false` is NOT automatically a defect — for a row whose PUBLISHED
-  `turn_ratio` is < 1 (Russell Table 4.13 near-ballistic, e.g. `6.44Gg3`) it is the
-  CORRECT result — so the re-classification must compare against the published TR
-  (`#833`), not simply drop infeasible closures.
-- `#830` — registered 2026-08-11 (found during `#826`, not dispatched): **V2-ballistic is
-  reopened** for the 6 admissible `#820` rows. `tests/search/test_free_return_v2_ballistic.py`
-  declined promotion on the STRUCTURAL ground that a single-ellipse slice gives "no continuous
-  ≥3-lap trajectory to propagate"; `#820`'s re-posed genome tiles the full cycler period
-  (loop legs included), so that ground is obsolete. Prerequisite: re-pose on the EXACT
-  2 × 2.1354-yr synodic period instead of the rounded `period.years: 4.27` — `#820` records
-  that the rounding alone injects ~1.3 d of slack-leg error, which is secular (~3e6 km of
-  rotating-frame drift per lap vs a 50,000 km tolerance) and would dominate any V2 verdict.
-  Also fold in the `#388` energy-selectivity re-check: `#820`'s anchor-recovering high-V∞ rows
-  (9.35/10.52, 9.94/10.76) look like counterexamples to "high-V∞ rows collapse off-anchor" but
-  are NOT like-for-like (circular + seeded-at-truth vs `#388`'s blind real-eph `close_row_dsm`
-  lane) — re-run that lane under the corrected posing to find out.
+- `#829` — ✓ DONE 2026-08-12 (registered by `#826`, dispatched 2026-08-12): **the bend
+  blindness was not an under-report, it was a systematically WRONG PICK — and fixing it
+  TRIPLED the campaign's CLOSE-AND-MATCH count.** `run_row` filtered on `converged` and
+  then took `min` by residual; magnitude mode drives the powered/degenerate basin to
+  ~1e-14 while the bend-feasible (usually vector-mode) solution sits at a comparable
+  residual, so the `min` always returned the INFEASIBLE one (in `#820`'s runlog every
+  bend-infeasible "best" is `mode=magnitude`; both surviving CLOSE-AND-MATCH rows are
+  `mode=vector`). The filter now precedes the ranking. New outcome `CLOSE-INADMISSIBLE`
+  names the violated constraint (`bend` / `vinf_cap`), the fallback pick among inadmissible
+  closures is the LEAST-VIOLATING (highest measured TR) rather than lowest-residual so a
+  near-ballistic family is not hidden by the degenerate basin, `_classify` now checks the
+  published `turn_ratio` as a match anchor, and `probe_at_truth` reports per-node
+  required/max bend plus an **admissibility** axis (`ADMISSIBLE` /
+  `NEAR-BALLISTIC-AS-PUBLISHED` / `BEND-INFEASIBLE` / `NOT-CONVERGED`) kept orthogonal to
+  `#820`'s unchanged stayed/walked verdict (one is about the closure reached, the other
+  about the seed). Re-run 12 rows x 256 epochs x 2 modes + 256-phase probes
+  (`data/runs/russell12-circular-20260812T-829-bendgate.jsonl`): **6 CLOSE-AND-MATCH (was
+  2), 1 CLOSE-OFF-ANCHOR, 5 CLOSE-INADMISSIBLE**, and **all 8 converging probes are now
+  admissible** — 7 ADMISSIBLE + `6.44Gg3` NEAR-BALLISTIC-AS-PUBLISHED (measured TR 0.956 vs
+  published 0.95) — correcting `#826`'s "6 admissible + 2 not" once `#835`'s genome defect
+  is fixed. HISTORICAL half done per `[[feedback_bugfix_invalidates_past_searches]]`:
+  `scripts/reclassify_russell12_runlogs.py` (+7 tests) applies the V0 gate to every
+  persisted record -> `data/runs/russell12-829-reclassification.json`: over 5 runlogs /
+  44 records, **27 RETRACTED -> CLOSE-INADMISSIBLE, 9 STANDS, 8 N/A**; every CLOSE-* verdict
+  of the June-07 run and both `#813` runs is retracted, while `#820`'s two CLOSE-AND-MATCH
+  headlines (`9.353Gg2`, `3.78Gg3`) SURVIVE and its ten CLOSE-OFF-ANCHOR labels do not.
+  Honest scope stated in the script: a runlog stores only the BEST result, so this retracts
+  a RECORDED VERDICT and cannot conclude no admissible closure existed at another epoch;
+  the pre-`#820` runs cannot be meaningfully re-run (mis-posed genome), which is why
+  record-level retraction is the instrument there and a re-run is the instrument for the
+  current posing. **A retraction is not a validation-level downgrade** — no
+  `catalogue.yaml` edit. Note
+  `docs/notes/2026-08-12-829-833-835-830-russell12-bend-gate.md`.
+- `#830` — ✓ DONE 2026-08-12, **PREREQUISITES BUILT, V2 NOT PROMOTABLE — THE GATE ITSELF IS
+  DEGENERATE HERE** (registered by `#826`, dispatched 2026-08-12): both prerequisites landed
+  — `period_sec_for_row(row, "exact-synodic")` = `k * T_syn(pair)` from the bodies' own mean
+  motions, wired through `build_genome(period_mode=...)` (T_syn(E,M)=779.9286 d; k=2 ->
+  4.270657 yr vs the printed 4.27 = **+0.24 d**, k=3 -> 6.405985 yr vs 6.41 = **-1.47 d**),
+  and `src/cyclerfinder/search/multiarc_cycler.py::build_multiarc_cycler`, the missing
+  adapter from a converged N-arc `BallisticClosureResult` to a `model.Cycler` the §12/§14-V2
+  machinery can propagate. **`test_free_return_v2_ballistic`'s recorded structural ground
+  ("no continuous >=3-lap trajectory to propagate") IS now obsolete** — the trajectory
+  exists and propagates. **But the gate cannot answer the question**:
+  `verify_long_term_stability` rebuilds each lap from the leg TEMPLATE at lap-shifted planet
+  positions instead of integrating across the wrap, so on an exactly commensurate period
+  with the circular ephemeris ANY template repeats. NEGATIVE CONTROL
+  (`[[feedback_verify_gauntlet_with_positive_control]]`): breaking the closure by +/-100 d
+  of ToF — leaving a **35 km/s** V∞ discontinuity at a flyby, a chain nothing could fly —
+  still measures ~1e-5 km of drift and still reports `stable=True`. A `stable` verdict here
+  is a statement about PERIOD COMMENSURABILITY, not ballistic periodicity; the driver
+  reports `GATE-DEGENERATE` with the (drift, all-node-feasibility) pair instead of a "PASS".
+  By the same token the catalogue-period drift (2.8e6-3.2e7 km, **56x-641x** the 50,000 km
+  tolerance) is the period ROUNDING — `#820`'s predicted secular slack-leg error, now
+  MEASURED, and the same artifact contaminates the existing V2 test's cited 9.4e7-1.2e8 km
+  (-> `#850`). What IS load-bearing in an idealized-flyby model: once single-period closure
+  holds and every flyby's turn is deliverable, the multi-lap trajectory is the single lap
+  repeated, so ALL-NODE feasibility decides it — **including the periodicity WRAP node,
+  which `_bend_feasible` never checks** (-> `#848`); `turn_ratio_check.wrap_node_turn()`
+  measures it (rotating `vinf_out(b0)` by the home body's advance over the period;
+  construction validated by the single-loop rows, where the wrap ratio EQUALS the
+  intermediate node's, e.g. 9.353Gg2 1.702=1.702). Measured over the 7 `#829`-admissible
+  rows on the exact period (`data/found/830_v2_ballistic_multiarc/results.json`): **all
+  seven feasible at EVERY node including the wrap**, and the exact posing IMPROVES
+  published-TR agreement on 4 of them (3.78Gg3 1.786->1.812 vs 1.81; 5.30ggF3 1.255->1.273
+  vs 1.27; mcconaghy/4.991gG2 2.658->2.652 vs 2.65). **`#388` energy-selectivity re-check
+  RUN, pattern SURVIVES**: blind real-eph `close_row_dsm(row, Ephemeris("astropy"))`
+  (`data/found/830_v2_ballistic_multiarc/dsm_388_recheck.json`) — the high-V∞ rows
+  9.353Gg2/9.94Gg3 do NOT recover their anchors there (`anchor_match=False`, Mars V∞
+  collapsing to 19.18/18.59 against sourced 10.52/10.76) while the low-energy mcconaghy /
+  4.991gG2 keep `anchor_match=True`, so `#820`'s apparent counterexample is confirmed NOT
+  to be one and `#826`'s "not like-for-like" caution is measured rather than argued; caveat
+  registered as `#849` (that lane's `_descriptor_params` reads `free_return_arcs`
+  POSITIONALLY, i.e. it carries `#820`'s own defect class, so it is not yet the corrected
+  posing). **NO promotion proposed and no `catalogue.yaml` edit** — adjudication registered
+  `#852`. Note `docs/notes/2026-08-12-829-833-835-830-russell12-bend-gate.md`.
 - `#831` — registered 2026-08-11 (found during `#826`, not dispatched): `mcconaghy-2006-em-k2`
   and `russell-ch4-4.991gG2` are almost certainly **the same physical object carried as two
   rows** — identical `orbit_source: russell-2004-t49_413`, identical `free_return_arcs`
@@ -1132,38 +1188,309 @@ unchanged. See `git log` around this date for the corrected commit.
   exact-match rule, or keep both with an explicit cross-reference documenting the two source
   flavours) and note the census implications. NOT done under `#826` — a row merge ripples
   through every frozen-census ratchet.
-- `#832` — registered 2026-08-11 (found during `#826`, not dispatched): the `turn_ratio`
-  catalogue comment is **INVERTED** vs its own sourced definition. Every row reads
-  `# Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)`,
-  which is self-contradictory (if TR = required/max then TR ≥ 1 means INFEASIBLE); the source
-  says "TR = max physically allowable turn angle / max required turn angle (δ_MAX)"
-  (Russell-Ocampo 2003 p.13, digest `2026-06-17-digest-russell-ocampo-2003.md`). `#826`'s
-  measured values confirm the SOURCE's direction (6.44Gg3 = 0.95 is Russell's near-ballistic
-  Table 4.13 row). Comment-only fix across all rows carrying the field — values are correct,
-  only the prose is wrong. Cheap, but it is a live mis-documentation of a sourced invariant.
-- `#833` — registered 2026-08-11 (found during `#826`, not dispatched): promote the
-  **measured-turn-ratio cross-check** to a reusable sourced validation instrument. `#826`
-  found `min(max_bend/required_bend)` over a closure's flybys reproduces Russell's published
-  `invariants.turn_ratio` to 0.001-0.024 on 7/8 rows, and it CAUGHT an off-family closure
-  (`5.30ggF3`) that both the closure residual and the V∞ anchors passed — an independent
-  evidence axis (flyby turn geometry) we were not using. Wire it into the campaign verdicts
-  and consider it as a standing gauntlet check wherever a row publishes a turn ratio.
-- `#834` — registered 2026-08-11 (found during `#826`, not dispatched): audit
-  `russell-ch4-8.049gGf2`'s **V3** `_LEVEL_EVIDENCE` entry against `#820`'s 35.22 km/s
-  truth residual for that row under the corrected designated-arc posing. Almost certainly not
-  a contradiction (its V3 rests on a different real-eph App-C lane, and `#820`'s failure is
-  the `#825` f(1:1) Lambert-degeneracy wall, not a geometry claim) — but "almost certainly"
-  is not verified, and a V3 row is a trust-bearing claim.
-- `#835` — registered 2026-08-11 (found during `#826`, not dispatched): diagnose
-  `russell-ch4-5.30ggF3`'s **spurious node-2 turn** under the reposed genome. Its probe
-  closure has the LOWEST truth residual of all 12 rows (0.074, the sole STAYED-AT-TRUTH
-  verdict) yet demands 141.244° at its second Earth node where only 86.582° is available,
-  giving a measured TR of 0.613 against a published 1.27 — while its THIRD node reproduces
-  1.27 (measures 1.255). So a node is in the wrong place, or a loop leg is mis-ordered, or
-  the leg-1 topology selection picked a wrong branch that the magnitude-mode residual cannot
-  see. Suspect the `F(3:2,82.487,180.000)` designated-arc split. Re-running in `vector`
-  residual mode (which carries a bend-feasibility hinge) is the obvious first probe.
-- `#836` — registered 2026-08-11 (found during `#810`, not dispatched): **Opus+Fable
+- `#832` — ✓ DONE 2026-08-12, **215 catalogue rows + generator + code docstring; COMMENT-ONLY,
+  no value changed** (registered by `#826`, dispatched 2026-08-12): the `turn_ratio` comment
+  was **INVERTED** vs its own sourced definition. The old prose read `# Russell 2004: required
+  turn angle / max ballistic turn (TR >= 1 => strictly ballistic)` — self-contradictory, since
+  under TR = required/max a TR ≥ 1 would mean INFEASIBLE, the exact opposite of the clause it
+  carried. Ground truth re-read directly from the digest
+  (`docs/notes/2026-06-17-digest-russell-ocampo-2003.md` L72-73, Russell-Ocampo 2003 p.13):
+  *"Turn Ratio TR = max physically allowable turn angle / max required turn angle (δ_MAX)";
+  TR > 1 ⇒ all flybys physically attainable; max allowable based on 200 km altitude Earth
+  flyby.* New prose: `# Russell 2004: max physically allowable turn / max required turn
+  (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)`. **Scope was larger than the
+  registration assumed**: the field carries TWO inverted variants, not one — 199 ×
+  `Russell 2004:` + 16 × `Russell 2004 Table 3.4:` (the Ch3 circular-coplanar batch) = **215
+  rows**; a `head`-truncated grep hides the second. Post-check asserts zero residual of either
+  string. **Two non-catalogue carriers of the same inverted prose, also fixed**: (a)
+  `scripts/backfill_invariants.py`'s `tr_comment` generator, which would have silently
+  regenerated the wrong comment on the next backfill run, and (b) the `turn_ratio()` docstring
+  at `src/cyclerfinder/search/cycler_search.py:91` ("demanded turn over the maximum ballistic
+  turn ... `TR <= 1` means the flyby can deliver the required bend ballistically") — inverted
+  in BOTH sentences. **The code was never wrong**, only its prose: the body is
+  `max_allowable / omega_max` with `max_allowable = max_earth_flyby_bend(...)` and `omega_max`
+  = the `omega_minimax` required turn (`cycler_assembly.py:465`), and the one filter that
+  thresholds it (`cycler_search.py:414`, `if tr <= tr_min: continue`) keeps HIGH TR — all three
+  match the source's direction. Parameter names left alone (`tests/search/test_cycler_search.py:27`
+  calls them by keyword). No generator round-trip test exists, so no ratchet asserted the old
+  wording. YAML comments do not parse, so the full ratchet is a structural no-op by
+  construction — run anyway per `[[feedback_catalogue_edits_run_all_ratchets]]`.
+- `#833` — ✓ DONE 2026-08-12 (registered by `#826`, dispatched 2026-08-12): the
+  measured-turn-ratio cross-check is now a named, tested, reusable sourced instrument —
+  `src/cyclerfinder/search/turn_ratio_check.py`. `measure_turn_ratio(nodes, sequence)`
+  returns a per-flyby report (required bend, max ballistic bend, ratio, feasible) plus the
+  binding node and `turn_ratio = min(max_bend/required_bend)` — a like-for-like reproduction
+  of Russell-Ocampo 2003 p.13's published TR, since our `_max_bend_deg` uses the same
+  sourced 200 km safe altitude; `closure_turn_ratio(result, ...)` does it straight from a
+  `BallisticClosureResult` (with `include_wrap=True` for the multi-lap case, `#830` §5);
+  `agrees_with_published(tr)` compares at the documented `TURN_RATIO_TOL = 0.05` (`#826`
+  measured a 0.001-0.024 spread). Wired into `campaign_russell12`'s own verdicts: the
+  measured TR is a `_classify` match anchor, appears per-node in the probe dict, and is what
+  distinguishes a PUBLISHED sub-unity TR (Russell Table 4.13 near-ballistic) from an
+  off-family over-bend — which is what makes `#829`'s re-classification principled rather
+  than a blanket "drop the infeasible ones". `tests/search/test_turn_ratio_check.py`
+  (8 tests: 7 unit on CONSTRUCTED angles, 1 integration cross-checking `all_feasible`
+  against the corrector's own `bend_feasible` and reproducing 9.353Gg2's published TR);
+  `#826`'s test file now imports the instrument instead of carrying its own copy, so there
+  is exactly ONE implementation in the tree. Standing use: wherever a closure is produced
+  for a row publishing `invariants.turn_ratio`, measure and compare — it caught what both
+  the closure residual and the V∞ anchors missed (`5.30ggF3`, `#835`).
+- `#834` — ✓ DONE 2026-08-12, **CONFIRMED NO CONTRADICTION — V3 STANDS; comment-only `ADDED
+  EVIDENCE (no level change)` annotation; plus a NEW finding registered `#842`/`#847`**
+  (registered 2026-08-11, found during `#826`; dispatched 2026-08-12): audited
+  `russell-ch4-8.049gGf2`'s V3 `_LEVEL_EVIDENCE` entry against `#820`'s 35.22 km/s truth
+  residual. Both halves of the registration's hypothesis VERIFIED, not assumed. (1) The V3
+  rests on the DISJOINT App-C #188 real-DE440 lane (#170 independent REBOUND/IAS15
+  reconstruction + #175 V3-POWERED class-split, budget criterion TCM ≤ documented 420 m/s ×
+  1.10), sharing NO model (real-eph vs circular-coplanar), method (App-C printed-state
+  propagation vs Lambert-BVP corrector), data (App-C block #188 vs Table 4.9 descriptors) or
+  code (`search/appc_corrected.py` vs `scripts/campaign_russell12.py`) with `#820`'s probe.
+  (2) `#820`'s 35.22 truth residual independently REPRODUCED (35.2248 exactly, 256 phase
+  epochs) and decomposed per node: ALL of it sits at the f(1:1) loop leg's exit node (35.225
+  km/s), where the ~360°-transfer-angle Lambert problem is degenerate — the solver returns a
+  pathological a=1.115 AU / e=1.0000 conic vs the sourced loop a=1.0 / e=0.2678 — while the
+  row's non-degenerate g(1.4951) loop leg reproduces its sourced conic (a 1.0827 vs 1.0837,
+  e 0.2680 vs 0.2708) and emerges v∞E 7.96 vs the row's printed 8.05 anchor. So the residual
+  is exactly the `#825` genome-representability wall, phase-independent by construction in
+  the circular model, and carries NO information about the row's own geometry. (3) The App-C
+  evidence was RE-RUN, not trusted: `tests/nbody/test_appc_batch_nbody.py`'s 7 in-band
+  encounter asserts + the sourced-Δv-over-ballistic-budget assert still PASS today — but its
+  final Sun-only proxy-TCM regression-anchor assert FAILS: measures 0.219 m/s vs the pinned
+  114.4 (sibling #192: 1263.5 vs 2020.7). Drift direction only STRENGTHENS #188's V3-powered
+  budget criterion (holds under all three historical values 163.6/114.4/0.219 vs the 462 m/s
+  bar) so the V3 verdict is untouched — but the drift itself is a real un-triaged finding on
+  an evidence-bearing @slow gate (excluded from the habitual `-m 'not slow'` ratchet, so no
+  known last-green date) — registered `#842` (root-cause + re-derive) and `#847` (#192
+  V3-powered flip-risk). NO `validation_level` value changed anywhere. Full account:
+  `docs/notes/2026-08-12-834-8049gGf2-v3-audit.md`.
+- `#835` — ✓ DONE 2026-08-12, **DIAGNOSED AND FIXED — the defect is the LOOP CYCLIC ORDER,
+  not the designated-arc split** (registered by `#826`, dispatched 2026-08-12). The
+  registration's suspect is innocent and the evidence is direct: the Mars node's required
+  bend is **0.000°**, i.e. legs 0 and 1 are literally one conic, and every leg reproduces
+  its SOURCED conic — designated `F(3:2)` at a = **1.3104 AU** (= 1.5^(2/3)) with aphelion
+  1.6618 vs the published **1.66**; `loop-ee-1` 1.0541/0.1796 vs 1.0545/0.1807; `loop-ee-2`
+  1.5831/0.3708 vs 1.5828/0.3711. What was wrong is the ORDER in which the two E-E loops are
+  traversed: under the descriptor's PRINTED order the closure demands 141.244° where 86.582°
+  is available (TR 0.613); under the OTHER traversal of the SAME legs every node is feasible
+  (M:∞ E2:2.357 E3:1.255, frame-corrected wrap 2.683) and the binding TR is **1.255 vs the
+  published 1.27**. Why the campaign could not see it: both orders satisfy |V∞| continuity
+  identically, and the magnitude truth residual actually PREFERS the wrong one (0.0736 vs
+  0.0831) — while in `vector` mode (bend hinge inside the residual) the same pair reads
+  **1.1242 vs 0.0831**, a 13x margin the right way. So the registration's own suggested
+  first probe was the fix. `select_leg1_topology` -> **`select_topology`**, which now
+  discriminates leg-1 `(n_revs, branch)` AND the loop cyclic order jointly in vector mode,
+  reporting both residual modes per candidate. Blast radius measured on all 12 rows: vector
+  and magnitude agree on **10**; `5.30ggF3` flips to the reversed order (feasible), and
+  `5.75ggF3` — where magnitude TIES EXACTLY (0.3489 both ways, so its "choice" was an
+  arbitrary tie-break) — is confirmed on the printed order (feasible, TR 1.347 vs 1.34;
+  its reverse measures 0.678, infeasible). The right answer is row-specific and only the
+  bend-aware residual gets both right. CONTROL PRESERVED: `6.44Gg3` still measures TR 0.956
+  vs its published 0.95 and stays bend-infeasible — a published property, not a defect.
+  `#826`'s pins re-pointed deliberately (5.30ggF3 now feasible + TR-reproducing) with the
+  off-family assertion re-aimed at the DEFECT (the printed order still converges and still
+  demands 141°), so the finding is preserved rather than deleted. **Deliberately NO
+  `catalogue.yaml` edit**: the selection now contradicts the `loop-ee-*` segment notes'
+  asserted `#794` cyclic order, which is a data claim needing primary-source adjudication
+  (-> `#851`). Note `docs/notes/2026-08-12-829-833-835-830-russell12-bend-gate.md`.
+- `#848` — registered 2026-08-12 (found during `#830`, not dispatched): **`_bend_feasible`
+  never checks the PERIODICITY WRAP flyby.** `cyclerfinder.search.correct._bend_feasible`
+  loops `range(1, len(sequence) - 1)` — the INTERMEDIATE encounters only — so
+  `BallisticClosureResult.bend_feasible` (and every gate keyed off it, including `#829`'s
+  new `constraints_satisfied` filter) silently omits one real flyby per cycle: `b0`/`bn` are
+  the same physical encounter one period apart, and the spacecraft must be turned from
+  `vinf_in(bn)` onto `vinf_out(b0)` there. `#830` built the measurement
+  (`turn_ratio_check.wrap_node_turn`, rotating `vinf_out(b0)` by the home body's own advance
+  over the period; validated on the single-loop rows where the wrap ratio EQUALS the
+  intermediate node's) and found all 7 `#829`-admissible rows feasible at the wrap, so this
+  is not currently masking a false admission — but it is an unchecked V0 hard constraint in
+  a core corrector, with a blast radius across every closure the project has produced. Fix
+  is not free: the rotation is only exact for a commensurate period, so the wrap check must
+  either take the period as an input or be restricted to callers that pin one.
+- `#849` — registered 2026-08-12 (found during `#830`, not dispatched): **the DSM lane
+  carries `#820`'s own defect class.** `dsm_descriptor_seed._descriptor_params` reads
+  `free_return_arcs` POSITIONALLY (`g_tofs[0]`, `g_tofs[1]`) to identify the g/G arcs —
+  exactly the assumption `#820` overturned for `build_genome`, where the DESIGNATED
+  (uppercase) arc was NOT `arcs[0]` on 9 of the 12 rows. `close_row_dsm` is `#388`'s
+  canonical determination path, so every negative it has produced on a descriptor-bearing
+  row was computed under a posing now known to be wrong for most of them
+  (`[[feedback_bugfix_invalidates_past_searches]]`). Re-pose the seeder per `#794`/`#820`'s
+  designated-arc semantics and re-run `#388`'s lane. `#830` ran the lane AS-IS and recorded
+  the current numbers (`data/found/830_v2_ballistic_multiarc/dsm_388_recheck.json`) —
+  labelled as such, not as the corrected posing.
+- `#850` — registered 2026-08-12 (found during `#830`, not dispatched): **the V2-ballistic
+  gate needs a continuous-propagation instrument, and the existing test's headline number is
+  probably an artifact.** Two coupled parts. (a) `verify_long_term_stability` rebuilds each
+  lap from the leg TEMPLATE at lap-shifted planet positions rather than integrating across
+  the wrap, so on an exactly commensurate period it is DEGENERATE — `#830`'s negative
+  control shows a chain with a 35 km/s V∞ discontinuity passing with ~1e-5 km of drift and
+  `stable=True`. A V2 instrument with teeth must propagate continuously through the flyby
+  turns (or, in the idealized-flyby model, be REPLACED by an explicit all-node feasibility +
+  single-period closure statement, which is what `#830` reports). (b)
+  `tests/search/test_free_return_v2_ballistic.py` cites a MEASURED 9.4e7-1.2e8 km drift as
+  evidence for its structural no-promotion finding; `#830` measured 2.8e6-3.2e7 km of drift
+  attributable to the `period.years` ROUNDING alone on the very same rows, so that number is
+  at least partly a period artifact rather than the multi-arc-slice property it is cited
+  for. Re-measure on the exact synodic period. The test's structural ARGUMENT stands on its
+  own; the number quoted in support of it does not.
+- `#851` — registered 2026-08-12 (found during `#835`, not dispatched): **primary-source
+  adjudication of `russell-ch4-5.30ggF3`'s LOOP CYCLIC ORDER.** `#794` wrote back into the
+  `loop-ee-*` segment notes that "cyclic order after the F transit is Leg 1 g(1.4646) then
+  Leg 2 g(1.9416)"; `#835` found that traversal demands 141.244° at an Earth node with
+  86.582° available, while the REVERSE is feasible at every node and reproduces the
+  published TR 1.27 (measures 1.255, and 1.273 under `#830`'s exact-period posing). The
+  campaign now selects the reverse on physical grounds (bend-aware residual-at-truth), which
+  CONTRADICTS the row's own segment notes — a sourced data claim, so no `catalogue.yaml`
+  edit was made. Decide against Russell 2004 Table 4.12 / the McConaghy-Russell-Longuski 2005
+  descriptor semantics whether the printed order is an itinerary claim at all, and fix the
+  notes (or the campaign's reading) accordingly. Check the other 2-loop rows at the same
+  time: `5.75ggF3`'s printed order IS confirmed correct, and on it the magnitude residual
+  ties exactly — so the printed order is not self-evidently wrong, it is simply not evidence.
+- `#852` — registered 2026-08-12 (found during `#829`/`#830`/`#835`, not dispatched):
+  **Opus-tier adjudication + catalogue-writeback decision for the `#829`/`#835`/`#830`
+  evidence**, per the `#820`->`#826` and `#822`->`#828` split (the computing task
+  deliberately made no `validation_level` change). What changed and needs weighing: (a)
+  `5.30ggF3`'s closure was RETRACTED by `#826` as off-family and is now, under the corrected
+  loop order, admissible, TR-reproducing (1.255 vs 1.27) and the campaign's sole
+  STAYED-AT-TRUTH row — its evidence moved materially in BOTH directions within two days;
+  (b) the blind grid now returns 6 CLOSE-AND-MATCH rows instead of 2, with per-row
+  admissible-epoch counts, i.e. the "epoch+seed-fragile" objection `#826` inherited from
+  `#388` is weaker than it was; (c) all 7 admissible rows are feasible at EVERY node
+  including the wrap under the exact synodic period; (d) against all that, `#826`'s tier
+  discriminator is UNCHANGED — `probe_at_truth` still calls `ballistic_correct` only, so it
+  supplies neither the lamberthub izzo+gooding agreement nor the Kepler re-propagation V1
+  requires, and `#830` established that the V2 drift gate is degenerate for this
+  construction. Also re-check the 27 RETRACTED historical verdicts for any row whose
+  recorded `_LEVEL_EVIDENCE` cites one of them.
+- `#853` — registered 2026-08-12 (found during `#835`, not dispatched, speculative): the
+  designated arc's **INBOUND Mars crossing (`t_in`) as a second sourced anchor.** A 3:2
+  full-rev designated arc crosses Mars's orbital radius on the way back too, and Russell
+  prints `t_in` (e.g. 207 d for `5.30ggF3`) as the inbound taxi transit. `#820` recorded
+  that under its posing `t_in` "has no per-cycle leg to compare against" — true of the
+  taxi's own leg, but the CROSSING is on the same designated conic at `designated_tof -
+  t_in` after departure, so "is Mars actually there at that epoch?" is a checkable
+  invariant the campaign currently ignores. Cheap (one ephemeris lookup per row against an
+  already-converged closure) and it would add a second independent Mars-side anchor on rows
+  where `#826` warned the single Mars node is nearly determined by construction.
+- `#836` — ✓ DONE 2026-08-12, **VERDICT: ADMITTED. New catalogue row `pc-cycler-51-2026`,
+  `validation_level: V1`, `our_status: known-class-member`, NOT claimed novel. Every `#810`
+  number independently reproduced; the narrow Charon clearance is EXACT, not a sampling
+  artifact, and holds; three corrections to the surrounding record recorded, one of them
+  substantive (the census is NOT "1 of 15").** Writeup:
+  `docs/notes/2026-08-12-836-pc-51-adjudication.md`.
+  **(a) Independent reproduction — rebuilt from scratch** against the library primitives in a
+  standalone script that deliberately does NOT import `#810`'s run script (no shared control
+  flow); `#810`'s bracket used only as a brentq bracket + linear continuation guesses, the root
+  itself re-found. Mandatory `#504` (3,2) positive control FIRST, unmodified: C=3.5795150197296888,
+  x0=-0.6931982870433999, T=11.833462517008149 TU, nu=-1.2e-07, topo_ok, xcheck — vs the committed
+  `ross-rt-pc-cycler-32-2026` row dC=6.2e-13/dx0=3.1e-14/dT=2.6e-11, anchor holds. The member,
+  re-derived: own brentq nu=0 root **C=3.167935964707404** (`#810`: ...279, agreement **1.2e-13**),
+  **x0=-0.7058054139667359** (9.3e-14), ydot0=-0.6722667009874522 (1.6e-13),
+  **T=24.305715846918527 TU** (3.2e-12), corrector residual 1.6e-12, Barden **nu=5.29e-11**,
+  winding **exactly (5.0000,1.0000)** prograde + reaches_secondary, independent Radau PASS
+  **dJ=7.945e-13**, stable-window edges C=3.167773861779837 / 3.168099843905549 (width
+  3.259821e-04) — all matching `#810` to 1e-10 or better. Four **perturbed restarts** (x0 guess
+  ±1e-3, ±3e-3; period guess off 0.2%) all reconverge within **3.1e-14** — a genuine isolated
+  corrector fixed point, not an echo of the starting value. **An algorithm-independent stability
+  check `#810` did not do**: a direct full-period variational monodromy (NOT Barden's half-period
+  G-factorization) puts all four eigenvalues on the unit circle with the **nontrivial pair at
+  arg=±pi/2 to 7 digits**, so nu=cos(pi/2)=0 *structurally*, agreeing with Barden to 3e-7
+  (full-period integration noise; det(M)=1+2.8e-12, symplectic). Own self-corrections recorded:
+  my first monodromy selector maximised ‖lam|-1| — right for an UNSTABLE orbit, wrong here (every
+  eigenvalue is on the unit circle, so it returned the trivial pair and a meaningless nu=1.000000);
+  caught because a maximally-stable orbit reporting nu=1 is self-contradictory, fixed by selecting
+  on |arg|. Plus a trivial `SweepResult.c_stable`→`jacobi_mid` field-name slip.
+  **(b) The narrow Charon clearance — the axis that could have flipped this, and it does not.**
+  `min_body_clearance_km` takes a plain `min()` over solver output points (`max_step=period/4000`),
+  i.e. a SAMPLED minimum = only an UPPER BOUND, and at encounter speeds the sample spacing is
+  hundreds of km of arc — enough in principle to hide the whole 139 km margin, so 745.5 km could
+  not be taken at face value. Refined by Brent local minimization on dense output across two
+  integrators (DOP853, Radau), rtol/atol 1e-11→1e-13, grids 4001→200001: **745.5244 km, total
+  spread 1.9e-9 km**. The reason it is exact is structural: **the closest approach sits at
+  t=T/2**, the orbit's second perpendicular x-axis crossing (|y|=1.6e-11, xdot=0 identically),
+  and Charon sits ON the x-axis at (1-mu,0) — so the closest approach is the single coordinate
+  difference |x(T/2)-(1-mu)| = 0.0380369589206897 nd = **745.5243948455181 km**, and by symmetry
+  a true periapsis w.r.t. Charon. Sampling concern fully retired. **Altitude 139.52 km above the
+  606.0 km sourced radius (Nimmo 2017), 1.230 Charon radii from centre — PASSES.** New finding:
+  **the margin cannot be traded for stability** — across the ENTIRE |nu|<1 window the clearance
+  only moves 744.54→746.49 km (altitude 138.5-140.5 km), so no member of the stable window has a
+  materially better margin. Also verified **exactly one** Charon close approach per period (k2=1):
+  the five local minima are 10739 / 14319 / **745.5** / 14319 / 10739 km. Adjudicated against
+  `#659`: those Antiope candidates were REJECTED at **30-38 km BELOW** the surface — trajectories
+  that do not exist because they intersect the body; this one is **139.5 km ABOVE**, a
+  categorically different regime, not two points on one scale. So: **admit, and record the
+  thinness prominently** — it appears in the row's `validation_level` evidence, its
+  `_LEVEL_EVIDENCE` entry, and a dedicated NARROW CHARON CLEARANCE paragraph in `notes`, with the
+  honest caveats (ideal point-mass figure; Charon non-sphericity; CR3BP circular-orbit
+  idealization vs true PC e~0.0022; no ephemeris/solar perturbation). External physical
+  cross-check: C(L1)=3.62101825776712 computed vs Jbara 2025 (arXiv:2510.13479) independently
+  published C_L1~3.6210 at mu~0.109 — MATCH, and C < C(L1) so the L1 gateway is OPEN as a
+  Pluto-Charon cycler requires.
+  **(c) Novelty — NOT claimed novel; the conservative framing is the correct one.** Literature
+  gate **re-run LIVE by this task** (real web search, not inherited from `#810`): signature
+  primary=Pluto, sequence=(Charon,), resonances=("5:1",), topology_label={repeated-moon}, the
+  module's own `build_queries` trail — **not-found**, necessary-not-sufficient per
+  [[feedback_literature_novelty_check_baseline]]. Prior art grounded against the ARTIFACTS, not
+  inherited: **Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189 (v2, HTML + PDF fetched)** computes
+  (1,1),(3,3),(3,2),(3,1) ONLY, at mu ∈ {0.001, 0.012150584270572, 0.1, 0.3, 0.5}; "Pluto",
+  "Charon" and any k1=5 family appear nowhere — `#810`'s characterization CONFIRMED. Two further
+  papers surfaced live and DISTINGUISHED: **Jbara 2025 (arXiv:2510.13479)** is PC CR3BP at
+  mu~0.109 but studies zero-velocity structures / Lagrange-point instability / tadpole-horseshoe
+  chaos — no cyclers, no PO families or IC tables, no winding numbers, nothing near C=3.168, the
+  word "cycler" absent (already a known repo corpus anchor — it is `#494`/`#504`'s own C_L1
+  source — checked per [[feedback_corpus_check_index_not_filenames]], no new corpus item); and
+  **Antoniadou & Libert 2018 (arXiv:1805.00288, CMDA)**, whose "5/1" is a MEAN-MOTION resonance
+  of a massless body about a star at mu~1e-3, not a (k1,k2) cycler winding — the exact numeral
+  concept-collision trap [[feedback_ground_citations_against_content]] warns about. Framing
+  decision: the published class is **generically indexed by winding number**, and the paper's own
+  conjecture ("*We conjecture that saddle-center birth is universal among cycler families...*";
+  "*every cycler family contains a subfamily that is linearly stable...*") predicts exactly this,
+  so computing the (5,1) entry FILLS IN a published, explicitly open-ended classification rather
+  than finding a new dynamical species — the same logic `braik-ross-c21-3d-corridor-01-2026`
+  already applies to itself. Hence `our_status: known-class-member` (not novelty-claimable by
+  construction, spec §685), matching `#822`'s house style. What IS fairly claimable and is what
+  the row says: **first documented member of the (5,1) prograde cycler family at ANY mass ratio
+  in our records, and the first PC cycler beyond (3,2)**.
+  **(d) Tier V1 — assigned against the WRITTEN criteria, and the dispatch's own premise was
+  wrong.** This bullet originally said "the (3,2) precedent `ross-rt-pc-cycler-32-2026` is V1".
+  **It is V2** — its V1 base is `#494`, and `#505` separately upgraded it to V2-ballistic with a
+  100-period REBOUND/IAS15 run (the V1 rows are the abstract-mu siblings like
+  `ross-rt-mu01-cycler-32-2026`). So V1 here is NOT "same as the (3,2) precedent" but "the (3,2)
+  precedent's V1 BASE, which is exactly what I verified and no more". §14 as written: V0 met
+  (residual 1.6e-12); V1 met in this lane's established form (corrector closure + topology +
+  Barden + INDEPENDENT Radau re-propagation + the algorithm-independent monodromy); **V2-ballistic
+  NOT met — never attempted for this member** (no ≥3-lap bounded-drift campaign exists), so V2 is
+  not claimed. The `_LEVEL_EVIDENCE` entry carries the `shared with primary path:` declaration
+  `validate.py`'s own docstring requires, written honestly: the Radau crosscheck and the
+  full-period monodromy **both share mu, the EOM and state0** with the construction — by the
+  file's own taxonomy they are **CONSISTENCY gates, not INDEPENDENCE gates**; the CR3BP lane has
+  no upstream ephemeris to re-derive, so the real independence is confined to the SOURCED inputs
+  (mu/lunit from satellites.py DE440, radii from Nimmo 2017) plus the external C(L1)-vs-Jbara
+  check. Same structural limit the (3,2) V1 base sits under — recorded, not papered over.
+  **THE SUBSTANTIVE CORRECTION TO `#810`: the census is NOT "1 of 15".** Audited `#810`'s claim
+  that "the other 8 higher topologies found no seed at all" by classifying ALL 15 topologies by
+  NEGATIVE MECHANISM. That sentence is ACCURATE as narrowly stated (scoped to `#656`'s nine
+  higher-k1 minus (5,1); all eight genuinely returned no seed) — **but the headline built on it
+  understates what is unknown**, because it silently excludes `#504`'s three LOWER-k1 negatives
+  **(1,1), (3,1), (3,3)**, which ran the same `hc=None` auto-redetection path and are exposed to
+  the very branch-loss gap that produced the (5,1) false negative. (3,1)'s own record shows a
+  converged stable orbit found-and-discarded for wrong topology — the structurally identical
+  signature to (5,1); `#807` DIRECTLY MEASURED (3,3) leaving its branch at the first mu step and
+  fixed only the reporting, not the continuation. **Honest census: 2 confirmed of 15 ((3,2) +
+  (5,1)); 10 certified-empty (no seed at all); 3 UNRESOLVED ((1,1),(3,1),(3,3)).** Per
+  [[feedback_bugfix_invalidates_past_searches]] a limited search path is a false-negative
+  generator and (5,1) is proof this one generated at least one. Census prose rewritten in both
+  the `#810` and `#656` records; **`#844` registered** for the fixed-hc re-sweep of the three.
+  Third correction: the Ross-RT paper's title is wrong in the catalogue across ~6 rows (PDF page 1
+  prints "Stable Ballistic Prograde Cyclers in the Three-Body Problem"; arXiv listing metadata
+  says "Stable Families of Ballistic Prograde Cyclers in the Restricted Three-Body Problem"; the
+  rows carry a third paraphrase matching neither) and they cite v1 while the live paper is v2 —
+  **`#845` registered**; sibling rows deliberately NOT touched (concurrent sessions in
+  `catalogue.yaml`). `#846` registered for an optional V2-ballistic upgrade. `#810`'s other
+  structural claims check out: the append-only `pluto-charon-kk-45-cycler-sweep-2026-07-19` stamp
+  correctly left unedited, and no new empty-region stamp (a positive is not an empty region).
+  Verification: full `tests/data tests/search -q` ratchet after the `catalogue.yaml` edit, plus
+  `tests/scripts`, `ruff check`/`format --check`, full `mypy src tests`.
+  ORIGINAL REGISTRATION (2026-08-11, found during `#810`, not dispatched): **Opus+Fable
   adjudication + catalogue-writeback decision for `#810`'s stable Pluto-Charon (5,1) cycler
   member** (C=3.167935964707279, x0=-0.7058054139668293, T=24.30571585 TU, nu=5.98e-10,
   prograde (5,1), Radau dJ=7.8e-13, `#660` clearance PASS — see `#810`'s bullet +
@@ -1183,6 +1510,66 @@ unchanged. See `git log` around this date for the corrected commit.
   catalogue row + `_LEVEL_EVIDENCE` under full ratchet discipline (`tests/data tests/search
   -q`, never a subset), and the census-prose rewrite in the `#504`/`#549`/`#656` records ("0
   of 15 beyond (3,2)" → "1 of 15"; PC (3,2) no longer structurally unique at this mu).
+- `#844` — registered 2026-08-12 (found during `#836`'s census-mechanism audit, not dispatched):
+  **fixed-hc re-sweep of the three UNRESOLVED Pluto-Charon topologies `(1,1)`, `(3,1)`, `(3,3)`**
+  — the highest-value item `#836` produced. `#836` classified all 15 PC (k2<=k1<=5) topologies by
+  NEGATIVE MECHANISM and found that only 10 are genuinely certified-empty (`_grid_seed_search`
+  returned no converged orbit at all: (2,1),(2,2),(4,1)-(4,4),(5,2)-(5,5) — not vulnerable,
+  nothing downstream to lose). The other three ran the SAME `hc=None` auto-redetection path whose
+  branch loss produced `#656`'s (5,1) false negative, which `#810` then overturned with a real
+  stable member — so per [[feedback_bugfix_invalidates_past_searches]] their negatives are
+  invalidated by method, not merely doubted. Priority order by strength of the existing
+  branch-loss evidence: **(3,1) first** — its own record shows a converged, STABLE orbit found and
+  discarded only for wrong topology (`reaches_secondary=False`, near-primary), the structurally
+  identical signature to the (5,1) case that turned out real; **(3,3) second** — `#807` DIRECTLY
+  MEASURED its mu-continuation leaving the branch at the very first mu step (landing on an
+  unrelated (7,0) retrograde family on Mac / diverging on Linux) and only fixed the REPORTING
+  ("stable/wrong-topology" → "clean negative"), never the continuation, so the true (3,3) family
+  at PC mu has never been explored past that point; **(1,1) third** — weakest (no confirmed
+  wrong-topology capture on record, just "no stable window" from an `hc=None` C-sweep of unknown
+  branch fidelity) but the identical vulnerable code path with no independent evidence ruling out
+  branch loss. Method: reuse `scripts/run_810_pc_51_fixed_hc_sweep.py` verbatim where possible —
+  measure each branch's own perpendicular-crossing index and hold it FIXED through the C-sweep,
+  verify winding topology at EVERY step, adaptive dc with retry-from-last-good (the plain fixed-dC
+  convention jumps off these fragile branches at the first step), plus the mandatory `#504` (3,2)
+  positive control first. Note (1,1)/(3,3) also lose the branch during **mu-continuation**, not
+  only the C-sweep, so the fix may need to hold hc fixed through the mu-step too — a genuinely
+  harder variant than `#810`'s. Any hit goes to a fresh adjudication task on the `#836` pattern
+  (independent reproduction + clearance axis + live literature gate + tier). A clean negative is a
+  fine outcome and would let the census finally read "2 of 15, 13 certified-empty".
+- `#845` — registered 2026-08-12 (found during `#836`'s literature grounding, not dispatched):
+  **reconcile the Ross & Roberts-Tsoukkas 2026 citation across all ~6 catalogue rows citing
+  arXiv:2606.29189** (`ross-rt-mu0001-cycler-11-2026`, `ross-rt-mu01-cycler-32-2026`,
+  `ross-rt-mu03-cycler-31-2026`, `ross-rt-mu05-cycler-11-2026`, `ross-rt-pc-cycler-32-2026`,
+  `pc-cycler-51-2026`, and any `#494`-lineage note/test text). THREE title strings are in play:
+  the title printed on **page 1 of the arXiv PDF** is "Stable Ballistic Prograde Cyclers in the
+  Three-Body Problem" (what `#836` grounded against and what the new `pc-cycler-51-2026` row
+  uses); the **arXiv listing metadata** renders it "Stable Families of Ballistic Prograde Cyclers
+  in the Restricted Three-Body Problem"; and the existing rows carry a third, paraphrased string,
+  "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem", which
+  matches **neither**. `#810`'s note inherits the paraphrase. Separately, those rows cite **v1**
+  while the live paper is **v2 (10 Jul 2026)** — check whether v2 changed any Table-I value the
+  rows treat as SOURCED/golden (per [[feedback_golden_tests_sourced_only]] a changed published
+  number would be a real golden-invalidation, not cosmetics), and whether v2 added any family or
+  mu that would affect a novelty framing (`#836` verified v2 still has no (5,1) and no
+  mu~0.1087). Deliberately NOT fixed inside `#836` because concurrent sessions were editing
+  `catalogue.yaml`. Cosmetic-looking but it is a CITATION-ACCURACY defect on the single most-cited
+  source in the CR3BP-cycler lane; run the full `tests/data tests/search -q` ratchet after.
+- `#846` — registered 2026-08-12 (found during `#836`, not dispatched, LOW priority): optional
+  **V2-ballistic upgrade campaign for `pc-cycler-51-2026`** (the newly-admitted PC (5,1) member),
+  by the same method `#505` used to take the (3,2) row V1→V2 — a ≥3-lap (there: 100-period)
+  inertial REBOUND/IAS15 propagation checking that rotating-frame recurrence drift stays in a
+  BOUNDED oscillation band rather than accumulating secularly, evaluated in the row's DEFINING
+  model (CR3BP, like-for-like per the V1 scoping convention), with the half-ratio test to exclude
+  exponential growth. This is the ONLY thing standing between the row and V2 — `#836` deliberately
+  assigned V1 because no multi-lap campaign has ever been run for this member and tiers are set
+  from recorded evidence, never by analogy. Worth doing mainly as a stability confirmation: the
+  member's Barden nu is 5.3e-11 and its full-period monodromy eigenpair sits at arg=±pi/2, so a
+  bounded result is expected; a SURPRISE (unbounded drift despite near-perfect linear stability)
+  would be the interesting outcome and would matter for the (3,2) row too. Note the caveat spec
+  §14 attaches to this whole lane: CR3BP spectral stability does NOT imply V4 survival, and
+  V2-ballistic is this lane's ceiling (no real-ephemeris claim is available for Pluto-Charon).
+  Requires a new `_LEVEL_EVIDENCE` promotion + full ratchet if it passes.
 - `#837` — registered 2026-08-11 (found during `#810`'s verification pass, not dispatched):
   `tests/scripts/test_671_regularized_qr_integrator.py::test_qr_regularized_oterma_defeats_
   wrapping_and_conserves_jacobi` and `tests/scripts/test_672_section_map.py::test_oterma_first_
@@ -1343,6 +1730,44 @@ unchanged. See `git log` around this date for the corrected commit.
   template) and the CR3BP time-reversal symmetry guarantees existence given the forward hits, so
   this is a demonstration rather than a search. Per `#828` Sec. 2 this is still NOT a tier
   promotion under any reading — register it as evidence completeness, not as an upgrade path.
+- `#842` — registered 2026-08-12 (found during `#834`'s own re-run of the V3 evidence gate,
+  not dispatched): **root-cause and re-derive `tests/nbody/test_appc_batch_nbody.py`'s
+  drifted Sun-only proxy-TCM regression anchors.** The @slow gate (excluded from the habitual
+  `-m 'not slow'` ratchet, so no known last-green date) now FAILS its final assert on BOTH
+  parametrizations: #188 (`russell-ch4-8.049gGf2`) measures **0.219 m/s vs the pinned 114.4**,
+  #192 (`russell-ch4-8.165Gfh-f2`) measures **1263.5 m/s vs the pinned 2020.7** (post-`#198`
+  anchors, pinned 2026-06-23, commit `7ffd9a14`, `abs=1.0`). The evidence-bearing encounter
+  half (7 in-band DE440 Mars encounters at published per-leg v∞ to abs=5e-3) still PASSES on
+  both rows, and the per-node dv/miss distributions look physical (#188: smooth ~0.005-0.03
+  m/s corrections; #192: four large burns 246/434/50/531 m/s at large-miss nodes) — so this
+  smells like a systematic consistency error REMOVED since June (a later fix improving the
+  reconstruction), not a new bug, but that is UNPROVEN. Candidate causes to bisect, per the
+  test's own "re-derive, do not silently re-pin" instruction: `77133d8d` (#692
+  `_AstropyBackend` batch/scalar BLAS-dispatch fix, 2026-07-23 — directly in this lane's
+  `Ephemeris("astropy")` backend), `b1a0015e` (#824 SPICE kernel-pool stale-cache fix,
+  2026-08-10), or the Linux→macOS migration (the documented cross-platform BLAS/DOP853
+  divergence class, `#584`/`#631`/`#784`). Per
+  [[feedback_bugfix_invalidates_past_searches]] also decide whether any other recorded value
+  computed through `continuous_chain`/astropy states since `#198` moved with it (e.g. `#169`'s
+  S1L1 40.2 m/s figure — `test_s1l1_continuous.py` asserts only `< 120 m/s`, so it stays
+  green through a downward drift; re-derive its actual value too). The failing asserts are
+  deliberately left RED (the honest state, and the forcing function for this task). When
+  re-pinning, also fold the post-`#198` corrected figure into
+  `validate.py::_LEVEL_EVIDENCE[("russell-ch4-8.049gGf2","V3")]`, which still cites the
+  pre-`#198` 163.6 m/s (the correction lives only in the batch note's header). None of this
+  threatens #188's V3: its V3-powered budget criterion (TCM ≤ 420×1.10 m/s) holds under all
+  three historical values (163.6/114.4/0.219) — see `#834`.
+- `#847` — registered 2026-08-12 (found during `#834`, not dispatched; **gated on `#842`'s
+  root-cause**): **`russell-ch4-8.165Gfh-f2` (App-C #192) V3-powered flip-risk
+  re-adjudication.** `#175` rejected #192's V3-powered promotion on TCM 2040.6 m/s > its own
+  documented 1678 m/s × 1.10 = 1845.8 bar (re-derived 2020.7 post-`#198`, still over — "the
+  honest V3-powered failure"). Today's measure is **1263.5 m/s — UNDER the bar (0.75×)**. If
+  `#842` concludes the current code is correct, #192 satisfies the `#175` budget criterion it
+  previously failed, and its current no-`validation_level` (V0/absent) floor needs honest
+  re-adjudication (its encounter half already passes; the `#170` PARTIAL verdict's stated
+  ground would be obsolete). If `#842` instead finds a new bug, re-pin and this evaporates.
+  Either way the recorded `#170`/`#175` FAIL rationale ("2040.6 m/s, 1.22×") no longer
+  describes what the code measures today.
 - `#783` — ✓ DONE 2026-08-08, CLEAN NEGATIVE on the connection-reproduction target itself
   (registered as a follow-up from `#780`'s own results note, DISPATCHED 2026-08-08, user:
   "both"): built `src/cyclerfinder/search/earth_moon_resonant_connections.py` +
@@ -14339,6 +14764,20 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
     narrow (mu,C) window on the evidence available, with (5,1) flagged as the one topology where
     that conclusion rests on a known search-method gap rather than an exhaustive-within-budget
     seed search.
+    **SUPERSEDED 2026-08-11/12 by `#810` + `#836` — this verdict line is now WRONG on both
+    counts.** (i) The (5,1) flag was right: `#810`'s fixed-hc re-sweep found a genuine
+    gate-passing stable (5,1) member (C=3.16793596, x0=-0.70580541, T=24.30571585 TU,
+    nu~0, Radau dJ=7.9e-13, `#660` clearance PASS), independently re-derived and ADMITTED to
+    the catalogue by `#836` as `pc-cycler-51-2026` at V1 — so it is **2 of 15**, not 0, and PC
+    (3,2) is no longer structurally idiosyncratic at this mu. (ii) `#836`'s mechanism audit
+    further found that (5,1) was NOT the only topology resting on the search-method gap:
+    **(1,1), (3,1) and (3,3)** all ran the same `hc=None` auto-redetection path, so their
+    negatives are equally exposed and are reclassified from "clean negative" to **UNRESOLVED**
+    ((3,1) had a converged stable orbit found-and-discarded for wrong topology; `#807`
+    directly measured (3,3)'s branch loss at the first mu step). Only the 10 no-seed-at-all
+    topologies — (2,1),(2,2),(4,1)-(4,4),(5,2)-(5,5) — remain genuinely certified-empty.
+    `#844` owns the fixed-hc re-sweep of the three unresolved ones. See
+    `docs/notes/2026-08-12-836-pc-51-adjudication.md`.
   **Stamped** `data/empty_regions.jsonl` region `pluto-charon-kk-45-cycler-sweep-2026-07-19`
   (region_id matches the script's own preflight region_id, so a future weaker-or-equal re-sweep
   is correctly subsumed) — full real numbers per topology, the (5,1) seed-vs-C-sweep diagnosis
