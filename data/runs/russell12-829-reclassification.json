@@ -1,0 +1,720 @@
+{
+  "files": {
+    "russell12-circular-2026-06-07.jsonl": [
+      {
+        "row_id": "mcconaghy-2006-em-k2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-4.991gG2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-8.049gGf2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.45
+      },
+      {
+        "row_id": "russell-ch4-9.353Gg2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.7
+      },
+      {
+        "row_id": "russell-ch4-3.64gGg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "NO-CLOSE",
+        "bend_feasible": null,
+        "vinf_cap_ok": null,
+        "violations": [],
+        "status": "N/A",
+        "revised_outcome": "NO-CLOSE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": null
+      },
+      {
+        "row_id": "russell-ch4-3.78Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.81
+      },
+      {
+        "row_id": "russell-ch4-5.30gGf3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-9.94Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.1
+      },
+      {
+        "row_id": "russell-ch4-3.66gfF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "NO-CLOSE",
+        "bend_feasible": null,
+        "vinf_cap_ok": null,
+        "violations": [],
+        "status": "N/A",
+        "revised_outcome": "NO-CLOSE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": null
+      },
+      {
+        "row_id": "russell-ch4-5.30ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-5.75ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "NO-CLOSE",
+        "bend_feasible": null,
+        "vinf_cap_ok": null,
+        "violations": [],
+        "status": "N/A",
+        "revised_outcome": "NO-CLOSE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": null
+      },
+      {
+        "row_id": "russell-ch4-6.44Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "8071ea9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 0.95
+      }
+    ],
+    "russell12-circular-20260810T-813-A-preM-Nfix.jsonl": [
+      {
+        "row_id": "russell-ch4-5.30gGf3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-3.66gfF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.19
+      },
+      {
+        "row_id": "russell-ch4-5.30ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-5.75ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.34
+      }
+    ],
+    "russell12-circular-20260810T-813-B-postM-Nfix.jsonl": [
+      {
+        "row_id": "russell-ch4-5.30gGf3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-3.66gfF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.19
+      },
+      {
+        "row_id": "russell-ch4-5.30ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-5.75ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "260cecc9",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.34
+      }
+    ],
+    "russell12-circular-20260811T-820-reposed.jsonl": [
+      {
+        "row_id": "mcconaghy-2006-em-k2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-4.991gG2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-8.049gGf2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.45
+      },
+      {
+        "row_id": "russell-ch4-9.353Gg2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.7
+      },
+      {
+        "row_id": "russell-ch4-3.64gGg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.62
+      },
+      {
+        "row_id": "russell-ch4-3.78Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.81
+      },
+      {
+        "row_id": "russell-ch4-5.30gGf3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-9.94Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.1
+      },
+      {
+        "row_id": "russell-ch4-3.66gfF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.19
+      },
+      {
+        "row_id": "russell-ch4-5.30ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-5.75ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 1.34
+      },
+      {
+        "row_id": "russell-ch4-6.44Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "b1a0015e",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": false,
+        "vinf_cap_ok": false,
+        "violations": [
+          "bend",
+          "vinf_cap"
+        ],
+        "status": "RETRACTED",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": null,
+        "sourced_turn_ratio": 0.95
+      }
+    ],
+    "russell12-circular-20260812T-829-bendgate.jsonl": [
+      {
+        "row_id": "mcconaghy-2006-em-k2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 2.6581,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-4.991gG2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 2.6581,
+        "sourced_turn_ratio": 2.65
+      },
+      {
+        "row_id": "russell-ch4-8.049gGf2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-INADMISSIBLE",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "N/A",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": 0.2738,
+        "sourced_turn_ratio": 1.45
+      },
+      {
+        "row_id": "russell-ch4-9.353Gg2",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 1.7018,
+        "sourced_turn_ratio": 1.7
+      },
+      {
+        "row_id": "russell-ch4-3.64gGg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-INADMISSIBLE",
+        "bend_feasible": true,
+        "vinf_cap_ok": false,
+        "violations": [
+          "vinf_cap"
+        ],
+        "status": "N/A",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": 4.5168,
+        "sourced_turn_ratio": 1.62
+      },
+      {
+        "row_id": "russell-ch4-3.78Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 1.7862,
+        "sourced_turn_ratio": 1.81
+      },
+      {
+        "row_id": "russell-ch4-5.30gGf3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-INADMISSIBLE",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "N/A",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": 0.2373,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-9.94Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 1.1011,
+        "sourced_turn_ratio": 1.1
+      },
+      {
+        "row_id": "russell-ch4-3.66gfF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-INADMISSIBLE",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "N/A",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": 0.9742,
+        "sourced_turn_ratio": 1.19
+      },
+      {
+        "row_id": "russell-ch4-5.30ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-AND-MATCH",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-AND-MATCH",
+        "measured_turn_ratio": 1.2548,
+        "sourced_turn_ratio": 1.27
+      },
+      {
+        "row_id": "russell-ch4-5.75ggF3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-OFF-ANCHOR",
+        "bend_feasible": true,
+        "vinf_cap_ok": true,
+        "violations": [],
+        "status": "STANDS",
+        "revised_outcome": "CLOSE-OFF-ANCHOR",
+        "measured_turn_ratio": 1.3474,
+        "sourced_turn_ratio": 1.34
+      },
+      {
+        "row_id": "russell-ch4-6.44Gg3",
+        "genome": "lambert",
+        "model": "circular",
+        "code_version": "4e594821",
+        "recorded_outcome": "CLOSE-INADMISSIBLE",
+        "bend_feasible": false,
+        "vinf_cap_ok": true,
+        "violations": [
+          "bend"
+        ],
+        "status": "N/A",
+        "revised_outcome": "CLOSE-INADMISSIBLE",
+        "measured_turn_ratio": 0.9563,
+        "sourced_turn_ratio": 0.95
+      }
+    ]
+  },
+  "counts": {
+    "RETRACTED": 27,
+    "N/A": 8,
+    "STANDS": 9
+  }
+}
