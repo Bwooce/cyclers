@@ -13,7 +13,42 @@ For each of the 12 ``free_return_arcs[]``-bearing rows (search/descriptor.py's
   4. classifies the per-row outcome:
        - CLOSE-AND-MATCH  (closes within documented tolerances vs sourced anchors)
        - CLOSE-OFF-ANCHOR (closes but does not match a sourced anchor)
+       - CLOSE-INADMISSIBLE (converged, but no closure satisfies the spec §14
+         V0 hard constraints — see #829 below; the violated constraint(s) are
+         named in the verdict)
        - NO-CLOSE         (corrector did not reach the residual floor)
+
+Hard constraints are a FILTER, not a footnote (#829)
+----------------------------------------------------
+``BallisticClosureResult`` carries ``bend_feasible`` / ``vinf_cap_ok`` beside
+``converged`` and exposes the composite ``constraints_satisfied``. Spec §14 **V0**
+requires the hard constraints (V∞ cap, r_p >= r_p_min, **bend <= max**) on top of
+the closure residual, so ``converged`` alone is not even a V0-grade statement.
+Before #829 both the grid filter (``run_row``) and the probe verdict
+(``probe_at_truth``) keyed off ``converged`` ONLY, and — because magnitude mode
+drives the powered/degenerate basin to ~1e-14 while a bend-feasible solution sits
+at a comparable residual — the ``min``-by-residual pick then systematically
+returned a bend-INFEASIBLE trajectory. Both now filter on
+``constraints_satisfied`` BEFORE ranking, and every verdict carries the per-node
+required/max bend.
+
+A bend-infeasible closure is not automatically a defect: for a row whose
+PUBLISHED ``invariants.turn_ratio`` is < 1 (Russell Table 4.13 near-ballistic,
+e.g. russell-ch4-6.44Gg3 at 0.95) it is the CORRECT result. The discriminator is
+the measured turn ratio vs the published one
+(:mod:`cyclerfinder.search.turn_ratio_check`, #833).
+
+Discrete topology unknowns are discriminated in VECTOR mode (#835)
+------------------------------------------------------------------
+Two parts of the genome are not printed in Russell's descriptor: leg 1's
+``(n_revs, branch)`` and the CYCLIC ORDER of the E-E loop legs after the
+designated leg. Both are enumerated and discriminated by residual-at-truth — in
+the **vector** residual mode, whose per-flyby bend-feasibility hinge sees exactly
+what the magnitude residual cannot. #835: on ``russell-ch4-5.30ggF3`` the
+magnitude-selected loop order demanded 141.2 deg at an Earth node where 86.6 deg
+was available (measured TR 0.613 vs published 1.27) while every leg reproduced
+its sourced conic; the OTHER cyclic order is bend-feasible at every node and
+measures TR 1.255. Selection agrees with magnitude mode on 10 of the 12 rows.
 
 GOLDEN DISCIPLINE (project memory feedback_golden_tests_sourced_only): the
 EXPECTED side of every match check is the row's SOURCED catalogue anchor
@@ -93,6 +128,7 @@ from cyclerfinder.search.free_return import (
     free_return_correct,
     seed_ae_from_aphelion_transit,
 )
+from cyclerfinder.search.turn_ratio_check import TURN_RATIO_TOL, closure_turn_ratio
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
@@ -110,9 +146,10 @@ VINF_CAP_KMS = 12.0  # generous; these rows run 4.6-10.8 km/s at Mars
 # Dense phase-scan floor for the (cheap, Lambert-free) free-return t0 search.
 # 256 misses the narrow basin of deep-aphelion high-e rows (#137 Part 3).
 FR_PHASE_EPOCHS_FLOOR = 4096
-# t0 phase points for the leg-1 (n_revs, branch) residual-at-truth selection
-# in run_row (#820); the probe path reuses its own --phase-epochs instead.
-LEG1_SELECT_PHASE_EPOCHS = 256
+# t0 phase points for the residual-at-truth topology selection (leg-1
+# (n_revs, branch) #820 + loop cyclic order #835) in run_row; the probe path
+# reuses its own --phase-epochs instead.
+TOPOLOGY_SELECT_PHASE_EPOCHS = 256
 
 RUSSELL12_IDS = (
     "mcconaghy-2006-em-k2",
@@ -313,44 +350,179 @@ def _genome_with_leg1(genome: dict[str, Any], n_revs: int, branch: str) -> dict[
     return g
 
 
-def select_leg1_topology(
-    genome: dict[str, Any], *, model: str, phase_epochs: int, t0_center: float
-) -> dict[str, Any]:
-    """Discriminate leg 1's ``(n_revs, branch)`` by residual-at-truth.
+def _loop_order_candidates(n_loops: int) -> list[tuple[int, ...]]:
+    """Candidate cyclic orders of the E-E loop legs (#835).
 
-    For each candidate, scan t0 over one period with the free ToFs PINNED at
-    the truth seed and record the minimum residual; the candidate whose truth
-    residual is lowest is the topology under which the sourced geometry is
-    best representable (no tolerance is loosened — the losing candidates are
-    reported alongside)."""
-    truth_free = _truth_seed(genome)
+    ``build_genome`` reads the loops in the descriptor's PRINTED order (the
+    non-designated arcs, cyclically after the designated one — #794's mapping).
+    That fixes the loop SET and each loop's own (ToF, n_revs, branch, a, e), but
+    the printed order is not itself a verified statement of the traversal sense:
+    the same cycle read the other way round is an equally admissible reading of
+    the descriptor. Both are enumerated (forward and reversed) and discriminated
+    by bend-aware residual-at-truth in :func:`select_topology`; nothing is
+    loosened and the loser is reported alongside.
+
+    Only the two traversal senses are enumerated, NOT all permutations: an
+    arbitrary re-ordering of the printed legs is not a reading of the descriptor,
+    and the factorial set would be an unjustified search space.
+    """
+    forward = tuple(range(n_loops))
+    reverse = tuple(reversed(forward))
+    return [forward] if reverse == forward else [forward, reverse]
+
+
+def _genome_with_loop_order(genome: dict[str, Any], order: tuple[int, ...]) -> dict[str, Any]:
+    """Copy of ``genome`` with the E-E loop legs (indices >= 2) re-ordered.
+
+    The slack leg is re-picked (still the longest E-E loop) because the leg
+    INDICES move with the re-ordering.
+    """
+    g = dict(genome)
+    revs = list(genome["per_leg_revs"])
+    branches = list(genome["per_leg_branch"])
+    seeds = list(genome["all_seeds"])
+    g["per_leg_revs"] = tuple(revs[:2] + [revs[2 + i] for i in order])
+    g["per_leg_branch"] = tuple(branches[:2] + [branches[2 + i] for i in order])
+    g["all_seeds"] = seeds[:2] + [seeds[2 + i] for i in order]
+    ee_indices = list(range(2, len(seeds)))
+    slack = max(ee_indices, key=lambda i: g["all_seeds"][i])
+    g["slack_leg"] = slack
+    g["free_tof"] = [g["all_seeds"][i] for i in range(len(seeds)) if i != slack]
+    g["loop_order"] = order
+    return g
+
+
+def select_topology(
+    genome: dict[str, Any],
+    *,
+    model: str,
+    phase_epochs: int,
+    t0_center: float,
+    residual_mode: str = "vector",
+) -> dict[str, Any]:
+    """Discriminate the genome's UNPRINTED discrete topology by residual-at-truth.
+
+    Two unknowns are enumerated jointly: leg 1's ``(n_revs, branch)`` (the
+    designated-arc remainder, #820) and the cyclic order of the E-E loop legs
+    (#835). For each candidate, scan t0 over one period with the free ToFs PINNED
+    at the truth seed and record the minimum residual; the candidate whose truth
+    residual is lowest is the topology under which the sourced geometry is best
+    representable. No tolerance is loosened — every losing candidate is reported
+    alongside, with BOTH residual modes recorded.
+
+    ``residual_mode`` defaults to ``"vector"``: its per-flyby bend-feasibility
+    hinge is what makes a physically un-flyable branch visible at all. The
+    magnitude residual is blind to the required TURN, so it can rank an
+    over-bent chain first — which is exactly what happened to
+    ``russell-ch4-5.30ggF3`` (#835). The two modes select the same topology on 10
+    of the 12 rows; where they differ, the vector-selected one is the
+    bend-feasible reading that reproduces the row's PUBLISHED turn ratio.
+    """
     period_sec = genome["period_sec"]
     offsets = np.linspace(0.0, period_sec, phase_epochs, endpoint=False)
+    n_loops = len(genome["all_seeds"]) - 2
     candidates_report: list[dict[str, Any]] = []
-    best: tuple[float, float, dict[str, Any], tuple[int, str]] | None = None
-    for n_revs, branch in genome["leg1_candidates"]:
-        gv = _genome_with_leg1(genome, n_revs, branch)
-        c_res, c_t0 = float("inf"), t0_center
-        for off in offsets:
-            t0 = t0_center + float(off)
-            try:
-                r = _residual_at(gv, t0, truth_free, model, "magnitude")
-            except Exception:
-                continue
-            if r < c_res:
-                c_res, c_t0 = r, t0
-        candidates_report.append(
-            {"n_revs": n_revs, "branch": branch, "truth_residual_kms": round(c_res, 4)}
-        )
-        if best is None or c_res < best[0]:
-            best = (c_res, c_t0, gv, (n_revs, branch))
+    best: tuple[float, float, dict[str, Any], tuple[int, str], tuple[int, ...]] | None = None
+    for order in _loop_order_candidates(n_loops):
+        g_ord = _genome_with_loop_order(genome, order)
+        truth_free = _truth_seed(g_ord)
+        for n_revs, branch in genome["leg1_candidates"]:
+            gv = _genome_with_leg1(g_ord, n_revs, branch)
+            res_by_mode: dict[str, float] = {}
+            best_t0 = t0_center
+            for mode in ("magnitude", "vector"):
+                c_res, c_t0 = float("inf"), t0_center
+                for off in offsets:
+                    t0 = t0_center + float(off)
+                    try:
+                        r = _residual_at(gv, t0, truth_free, model, mode)
+                    except Exception:
+                        continue
+                    if r < c_res:
+                        c_res, c_t0 = r, t0
+                res_by_mode[mode] = c_res
+                if mode == residual_mode:
+                    best_t0 = c_t0
+            sel_res = res_by_mode[residual_mode]
+            candidates_report.append(
+                {
+                    "loop_order": list(order),
+                    "n_revs": n_revs,
+                    "branch": branch,
+                    "truth_residual_kms": round(sel_res, 4),
+                    "truth_residual_magnitude_kms": round(res_by_mode["magnitude"], 4),
+                    "truth_residual_vector_kms": round(res_by_mode["vector"], 4),
+                }
+            )
+            if best is None or sel_res < best[0]:
+                best = (sel_res, best_t0, gv, (n_revs, branch), order)
     assert best is not None
     return {
         "genome": best[2],
         "leg1": {"n_revs": best[3][0], "branch": best[3][1]},
+        "loop_order": list(best[4]),
+        "loop_order_is_printed": list(best[4]) == list(range(n_loops)),
+        "residual_mode": residual_mode,
         "best_t0_sec": best[1],
         "best_truth_residual_kms": best[0],
         "candidates": candidates_report,
+    }
+
+
+def _finite(value: float) -> float | None:
+    """JSON-safe rounding: an unconstrained (infinite) turn ratio -> ``None``."""
+    return None if not np.isfinite(value) else round(float(value), 4)
+
+
+def _turn_ratio_fields(
+    genome: dict[str, Any],
+    solved: Any,
+    ephem: Ephemeris,
+    published_tr: float | None,
+) -> dict[str, Any]:
+    """Measured turn ratio + per-node bend for a converged closure (#833/#829).
+
+    The EXPECTED side of the comparison is the row's own published
+    ``invariants.turn_ratio`` (Russell 2004 Tables 4.9-4.13); the bends EMERGE
+    from the converged Lambert chain. ``near_ballistic_as_published`` records
+    #826's discriminator: a bend-infeasible closure on a row whose PUBLISHED TR
+    is < 1 is the CORRECT result, not a defect.
+    """
+    report = closure_turn_ratio(
+        solved,
+        sequence=genome["sequence"],
+        per_leg_revs=genome["per_leg_revs"],
+        per_leg_branch=genome["per_leg_branch"],
+        slack_leg=genome["slack_leg"],
+        period_sec=genome["period_sec"],
+        ephem=ephem,
+    )
+    agrees = (
+        None if published_tr is None else bool(report.agrees_with_published(float(published_tr)))
+    )
+    return {
+        "measured_turn_ratio": _finite(report.turn_ratio),
+        "published_turn_ratio": published_tr,
+        "turn_ratio_agrees": agrees,
+        "turn_ratio_tol": TURN_RATIO_TOL,
+        "binding_node": report.binding_index,
+        "turn_ratio_summary": report.summary(),
+        "per_node_bend": [
+            {
+                "node": f.index,
+                "body": f.body,
+                "required_bend_deg": round(f.required_bend_deg, 3),
+                "max_bend_deg": round(f.max_bend_deg, 3),
+                "ratio": _finite(f.ratio),
+                "feasible": bool(f.feasible),
+            }
+            for f in report.flybys
+        ],
+        "near_ballistic_as_published": (
+            None
+            if published_tr is None
+            else bool(float(published_tr) < 1.0 and agrees and not report.all_feasible)
+        ),
     }
 
 
@@ -379,16 +551,36 @@ def _run_one_epoch(args: tuple) -> dict[str, Any]:
             "converged": False,
             "error": repr(exc),
         }
-    return {
+    out = {
         "t0_sec": float(t0_sec),
         "mode": residual_mode,
         "converged": bool(r.converged),
+        # spec §14 V0 requires the HARD CONSTRAINTS (V∞ cap, bend <= max) on top
+        # of the residual, so this — not ``converged`` — is the admissibility
+        # flag ``run_row`` filters on (#829).
+        "constraints_satisfied": bool(r.constraints_satisfied),
         "max_residual_kms": float(r.max_residual_kms),
         "vinf_per_encounter_kms": list(r.vinf_per_encounter_kms),
         "bend_feasible": bool(r.bend_feasible),
         "vinf_cap_ok": bool(r.vinf_cap_ok),
         "tof_days": list(r.tof_days),
     }
+    if r.converged:
+        try:
+            out["measured_turn_ratio"] = _finite(
+                closure_turn_ratio(
+                    r,
+                    sequence=genome["sequence"],
+                    per_leg_revs=genome["per_leg_revs"],
+                    per_leg_branch=genome["per_leg_branch"],
+                    slack_leg=genome["slack_leg"],
+                    period_sec=genome["period_sec"],
+                    ephem=ephem,
+                ).turn_ratio
+            )
+        except Exception:  # a converged point that is not re-solvable: report, don't crash
+            out["measured_turn_ratio"] = None
+    return out
 
 
 def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] | None) -> dict:
@@ -406,6 +598,50 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
             "id": rid,
             "outcome": "NO-CLOSE",
             "detail": "corrector did not reach the residual floor at any scanned epoch/mode",
+        }
+    if not best.get("constraints_satisfied"):
+        # Converged closures exist, but none satisfies the spec §14 V0 hard
+        # constraints (bend <= max / V∞ cap). Pre-#829 this was labelled
+        # CLOSE-OFF-ANCHOR or even CLOSE-AND-MATCH; it is not an admissible
+        # closure at any tier. Reported, with the measured turn ratio, so a
+        # PUBLISHED sub-unity TR (Russell's near-ballistic rows) is
+        # distinguishable from an off-family over-bend (#826/#833).
+        measured = best.get("measured_turn_ratio")
+        violations = [
+            name
+            for name, ok in (("bend", best["bend_feasible"]), ("vinf_cap", best["vinf_cap_ok"]))
+            if not ok
+        ]
+        near_ballistic = (
+            sourced_tr is not None
+            and measured is not None
+            and float(sourced_tr) < 1.0
+            and abs(float(measured) - float(sourced_tr)) <= TURN_RATIO_TOL
+        )
+        return {
+            "id": rid,
+            "outcome": "CLOSE-INADMISSIBLE",
+            "violations": violations,
+            "mode": best["mode"],
+            "max_residual_kms": best["max_residual_kms"],
+            "bend_feasible": best["bend_feasible"],
+            "vinf_cap_ok": best["vinf_cap_ok"],
+            "constraints_satisfied": False,
+            "measured_turn_ratio": measured,
+            "sourced_turn_ratio": sourced_tr,
+            "near_ballistic_as_published": bool(near_ballistic),
+            "detail": (
+                "no scanned epoch/mode produced a closure satisfying the V0 hard "
+                f"constraints (violated: {', '.join(violations) or 'none'}); "
+                "least-violating converged result reported"
+                + (
+                    " — measured TR reproduces the row's PUBLISHED sub-unity turn "
+                    "ratio, i.e. the sourced cycler is itself near-ballistic"
+                    if near_ballistic
+                    else ""
+                )
+            ),
+            "checks": [],
         }
 
     seq = genome["sequence"]
@@ -458,7 +694,21 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
             f"{'OK' if desig_ok else 'X'}"
         )
 
-    matched = vinf_match and period_ok and (transit_ok in (None, True))
+    # Turn ratio: the row's published TR vs the closure's own binding flyby
+    # (#833). An INDEPENDENT sourced axis — it constrains flyby turn geometry,
+    # which neither the closure residual nor the V∞ anchors see. TOL_RATIO is the
+    # campaign's documented dimensionless-ratio tolerance and coincides with the
+    # instrument's own TURN_RATIO_TOL.
+    tr_ok = None
+    measured_tr = best.get("measured_turn_ratio")
+    if sourced_tr is not None and measured_tr is not None:
+        tr_ok = abs(float(measured_tr) - float(sourced_tr)) <= TOL_RATIO
+        checks.append(
+            f"turn_ratio: src={float(sourced_tr):.2f} ach={float(measured_tr):.3f} "
+            f"{'OK' if tr_ok else 'X'}"
+        )
+
+    matched = vinf_match and period_ok and (transit_ok in (None, True)) and (tr_ok in (None, True))
     outcome = "CLOSE-AND-MATCH" if matched else "CLOSE-OFF-ANCHOR"
     return {
         "id": rid,
@@ -467,6 +717,8 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
         "max_residual_kms": best["max_residual_kms"],
         "bend_feasible": best["bend_feasible"],
         "vinf_cap_ok": best["vinf_cap_ok"],
+        "constraints_satisfied": best["constraints_satisfied"],
+        "measured_turn_ratio": measured_tr,
         "achieved_vinf": {k: round(v, 3) for k, v in achieved_vinf.items()},
         "sourced_vinf": sourced_vinf,
         "sourced_turn_ratio": sourced_tr,
@@ -511,14 +763,43 @@ def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dic
 
     1. Fix the free-leg ToFs at the row's OWN sourced values (``_truth_seed``).
     2. Scan t0 over one target period; pick the phase minimising the residual
-       evaluated AT that truth geometry (magnitude mode — the continuity floor).
+       evaluated AT that truth geometry.
     3. Run the full corrector seeded EXACTLY there (truth ToFs, best-phase t0).
-    4. Report whether it stayed (residual->0, ToFs ~ truth) or walked away.
+    4. Report whether it stayed (residual->0, ToFs ~ truth) or walked away —
+       and whether the closure satisfies the spec §14 V0 HARD CONSTRAINTS
+       (#829), with the per-node bend and the measured turn ratio against the
+       row's published one (#833).
+
+    Two ORTHOGONAL axes are reported. ``admissibility`` is about the closure the
+    corrector reached:
+
+    ``ADMISSIBLE``
+        Converged AND ``constraints_satisfied`` (spec §14 V0 hard constraints).
+    ``NEAR-BALLISTIC-AS-PUBLISHED``
+        Bend-INFEASIBLE on a row whose PUBLISHED ``turn_ratio`` is < 1 and whose
+        measured TR reproduces it: the sourced cycler itself needs a small
+        powered nudge (Russell Table 4.13), so this is a FAITHFUL reproduction,
+        not a defect (#826).
+    ``BEND-INFEASIBLE``
+        Over-bent in a way the published TR does NOT account for — the closure is
+        off-family however good the residual looks.
+    ``NOT-CONVERGED``
+
+    ``verdict`` is about the SEED (#820's criterion, unchanged): did the sourced
+    geometry itself sit at a residual-zero point the corrector stayed at?
+    ``STAYED-AT-TRUTH`` / ``STAYED-NEAR-BALLISTIC`` / ``BEND-INFEASIBLE-AT-TRUTH``
+    are the three admissibility flavours of "stayed"; ``WALKED-AWAY`` covers
+    non-convergence, ToF drift beyond ``TOL_TRANSIT_DAYS``, or a truth residual
+    above ``CORRECTOR_TOL_KMS`` (which on most rows is dominated by the sourced
+    values' own print rounding, per #820 — hence the two axes).
+
+    The corrector is run in MAGNITUDE mode (unchanged from #820), so bend
+    feasibility is never imposed by the solve — it EMERGES and is then measured.
     """
-    # Leg-1 topology selection doubles as the truth phase scan: for every
-    # (n_revs, branch) candidate it scans t0 with the ToFs PINNED at truth;
-    # the winner's scan IS the residual-at-truth landscape minimum.
-    sel = select_leg1_topology(
+    # Topology selection doubles as the truth phase scan: for every candidate it
+    # scans t0 with the ToFs PINNED at truth; the winner's scan IS the
+    # residual-at-truth landscape minimum.
+    sel = select_topology(
         build_genome(row), model=model, phase_epochs=phase_epochs, t0_center=_t0_center(row)
     )
     genome = sel["genome"]
@@ -552,26 +833,64 @@ def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dic
         (abs(a - b) for a, b in zip(solved_free, truth_free, strict=False)), default=0.0
     )
     t0_drift_days = abs(solved.t0_sec - best_t0) / DAY_S
-    stayed = (
+    at_truth = (
         solved.converged
         and tof_drift_days <= TOL_TRANSIT_DAYS
         and best_truth_res <= CORRECTOR_TOL_KMS
     )
+
+    published_tr = (row.get("invariants") or {}).get("turn_ratio")
+    turn = (
+        _turn_ratio_fields(genome, solved, ephem, published_tr)
+        if solved.converged
+        else {"measured_turn_ratio": None, "published_turn_ratio": published_tr}
+    )
+    # #829: the V0 hard constraints, not ``converged``, decide admissibility.
+    # Admissibility is reported as its OWN axis, orthogonal to stayed/walked:
+    # the stayed/walked axis is about the SEED (is the sourced geometry itself a
+    # residual-zero point, within the print-rounding-dominated floor — #820's
+    # criterion, unchanged), while admissibility is about the CLOSURE the
+    # corrector reached. A row can be inadmissible without having walked, and
+    # vice versa; collapsing them would hide one of the two.
+    if not solved.converged:
+        admissibility = "NOT-CONVERGED"
+    elif solved.constraints_satisfied:
+        admissibility = "ADMISSIBLE"
+    elif turn.get("near_ballistic_as_published"):
+        admissibility = "NEAR-BALLISTIC-AS-PUBLISHED"
+    else:
+        admissibility = "BEND-INFEASIBLE"
+    if at_truth and admissibility == "ADMISSIBLE":
+        verdict = "STAYED-AT-TRUTH"
+    elif at_truth and admissibility == "NEAR-BALLISTIC-AS-PUBLISHED":
+        verdict = "STAYED-NEAR-BALLISTIC"
+    elif at_truth:
+        verdict = "BEND-INFEASIBLE-AT-TRUTH"
+    else:
+        verdict = "WALKED-AWAY"
     return {
         "id": row["id"],
         "model": model,
         "leg1": sel["leg1"],
-        "leg1_candidates": sel["candidates"],
+        "loop_order": sel["loop_order"],
+        "loop_order_is_printed": sel["loop_order_is_printed"],
+        "topology_residual_mode": sel["residual_mode"],
+        "topology_candidates": sel["candidates"],
         "best_phase_truth_residual_kms": round(best_truth_res, 4),
         "truth_residual_below_floor": bool(best_truth_res <= CORRECTOR_TOL_KMS),
         "solved_converged": bool(solved.converged),
+        "solved_constraints_satisfied": bool(solved.constraints_satisfied),
+        "solved_bend_feasible": bool(solved.bend_feasible),
+        "solved_vinf_cap_ok": bool(solved.vinf_cap_ok),
         "solved_max_residual_kms": round(float(solved.max_residual_kms), 4),
         "tof_drift_days": round(tof_drift_days, 2),
         "t0_drift_days": round(t0_drift_days, 2),
         "truth_free_tof_days": [round(v, 1) for v in truth_free],
         "solved_free_tof_days": [round(v, 1) for v in solved_free],
         "solved_vinf_per_encounter_kms": [round(v, 3) for v in solved.vinf_per_encounter_kms],
-        "verdict": "STAYED-AT-TRUTH" if stayed else "WALKED-AWAY",
+        **turn,
+        "admissibility": admissibility,
+        "verdict": verdict,
     }
 
 
@@ -652,12 +971,13 @@ def probe_at_truth_free_return(row: dict[str, Any], *, phase_epochs: int, model:
 
 def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> dict:
     t0_center = _t0_center(row)
-    # Select leg 1's (n_revs, branch) by residual-at-truth before the epoch
-    # grid (the sourced geometry discriminates the unprinted topology).
-    sel = select_leg1_topology(
+    # Select the unprinted discrete topology (leg 1's (n_revs, branch) and the
+    # loop cyclic order) by bend-aware residual-at-truth before the epoch grid —
+    # the sourced geometry discriminates what the descriptor does not print.
+    sel = select_topology(
         build_genome(row),
         model=model,
-        phase_epochs=LEG1_SELECT_PHASE_EPOCHS,
+        phase_epochs=TOPOLOGY_SELECT_PHASE_EPOCHS,
         t0_center=t0_center,
     )
     genome = sel["genome"]
@@ -675,20 +995,45 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> di
         for res in ex.map(_run_one_epoch, tasks):
             results.append(res)
 
-    # Best closed result: converged, lowest residual, then lowest max-V∞.
-    closed = [r for r in results if r.get("converged")]
+    # Best result: ADMISSIBLE (converged AND the spec §14 V0 hard constraints),
+    # lowest residual, then lowest max-V∞. Filtering on ``converged`` alone —
+    # the pre-#829 rule — systematically returned a bend-INFEASIBLE trajectory:
+    # magnitude mode drives the powered/degenerate basin to ~1e-14, so ranking
+    # by residual over the converged-only set always outranks the bend-feasible
+    # (usually vector-mode) solution. The filter must come BEFORE the ranking.
+    converged = [r for r in results if r.get("converged")]
+    admissible = [r for r in converged if r.get("constraints_satisfied")]
 
     def _key(r: dict[str, Any]) -> tuple:
         return (r["max_residual_kms"], max(r["vinf_per_encounter_kms"], default=1e9))
 
-    best = min(closed, key=_key) if closed else None
-    n_closed_mag = sum(1 for r in closed if r["mode"] == "magnitude")
-    n_closed_vec = sum(1 for r in closed if r["mode"] == "vector")
+    def _least_violating(r: dict[str, Any]) -> tuple:
+        """Rank inadmissible closures by LEAST constraint violation.
+
+        Ranking the fallback pool by residual alone reports the powered/
+        degenerate basin (residual ~1e-14, turn ratio ~0.1) and hides a
+        near-ballistic solution the grid may also have found. The highest
+        measured turn ratio is the least-over-bent chain — a physical
+        violation measure, NOT a fit to the published anchor (which is only
+        compared afterwards)."""
+        tr = r.get("measured_turn_ratio")
+        return (-(float(tr) if tr is not None else -1.0), r["max_residual_kms"])
+
+    if admissible:
+        best = min(admissible, key=_key)
+    elif converged:  # fall back so an infeasible close is still reported
+        best = min(converged, key=_least_violating)
+    else:
+        best = None
+    n_closed_mag = sum(1 for r in converged if r["mode"] == "magnitude")
+    n_closed_vec = sum(1 for r in converged if r["mode"] == "vector")
 
     verdict = _classify(row, genome, best)
     verdict["model"] = model
     verdict["n_closed_magnitude"] = n_closed_mag
     verdict["n_closed_vector"] = n_closed_vec
+    verdict["n_admissible_magnitude"] = sum(1 for r in admissible if r["mode"] == "magnitude")
+    verdict["n_admissible_vector"] = sum(1 for r in admissible if r["mode"] == "vector")
     verdict["genome"] = {
         "sequence": "-".join(genome["sequence"]),
         "per_leg_revs": list(genome["per_leg_revs"]),
@@ -696,8 +1041,11 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> di
         "slack_leg": genome["slack_leg"],
         "seeds": [round(s, 1) for s in genome["all_seeds"]],
         "designated": genome["designated_raw"],
-        "leg1_selection": {
-            "selected": sel["leg1"],
+        "topology_selection": {
+            "leg1": sel["leg1"],
+            "loop_order": sel["loop_order"],
+            "loop_order_is_printed": sel["loop_order_is_printed"],
+            "residual_mode": sel["residual_mode"],
             "truth_residual_kms": round(float(sel["best_truth_residual_kms"]), 4),
             "candidates": sel["candidates"],
         },
@@ -875,7 +1223,18 @@ def _verdict_to_record(v: dict[str, Any], genome: str, code_version: str) -> Run
         seed["derived"] = v["derived"]  # free-return emerged (a, e), tof
 
     solver_audit: dict[str, Any] = {"checks": v.get("checks", [])}
-    for key in ("n_closed_magnitude", "n_closed_vector", "mode", "bend_feasible", "vinf_cap_ok"):
+    for key in (
+        "n_closed_magnitude",
+        "n_closed_vector",
+        "n_admissible_magnitude",
+        "n_admissible_vector",
+        "mode",
+        "bend_feasible",
+        "vinf_cap_ok",
+        "constraints_satisfied",
+        "measured_turn_ratio",
+        "near_ballistic_as_published",
+    ):
         if key in v:
             solver_audit[key] = v[key]
     if "best_phase_residual_kms" in v:
@@ -1000,13 +1359,26 @@ def main() -> None:
             else:
                 p = probe_at_truth(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
             probes.append(p)
+            tr = p.get("measured_turn_ratio")
             print(
-                f"{rid:24s} {p['verdict']:16s} "
+                f"{rid:24s} {p['verdict']:22s} "
                 f"truth_res={p.get('best_phase_truth_residual_kms', float('nan')):.3f} "
                 f"solved_res={p.get('solved_max_residual_kms', float('nan')):.3f} "
-                f"tof_drift={p.get('tof_drift_days')}d",
+                f"tof_drift={p.get('tof_drift_days')}d "
+                f"{p.get('admissibility', '-')} "
+                f"TR={tr if tr is None else round(tr, 3)}"
+                f"/{p.get('published_turn_ratio')} "
+                f"loops={p.get('loop_order')}"
+                f"{'' if p.get('loop_order_is_printed', True) else ' (REVERSED)'}",
                 flush=True,
             )
+            for node in p.get("per_node_bend", []):
+                print(
+                    f"    node{node['node']} {node['body']}: "
+                    f"required={node['required_bend_deg']:.3f} max={node['max_bend_deg']:.3f} "
+                    f"ratio={node['ratio']} feasible={node['feasible']}",
+                    flush=True,
+                )
 
     # Summary table.
     print("\n=== SUMMARY ===")
@@ -1017,9 +1389,13 @@ def main() -> None:
     print("\ncounts:", counts)
     if probes:
         pcounts: dict[str, int] = {}
+        acounts: dict[str, int] = {}
         for p in probes:
             pcounts[p["verdict"]] = pcounts.get(p["verdict"], 0) + 1
+            key = str(p.get("admissibility", "-"))
+            acounts[key] = acounts.get(key, 0) + 1
         print("probe counts:", pcounts)
+        print("admissibility counts:", acounts)
 
     if args.out:
         Path(args.out).write_text(

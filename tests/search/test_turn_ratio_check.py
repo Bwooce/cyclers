@@ -154,7 +154,7 @@ def test_closure_turn_ratio_matches_bend_feasible_and_published_tr() -> None:
     rid = "russell-ch4-9.353Gg2"
     mod = _load_campaign()
     row = _row(rid)
-    sel = mod.select_leg1_topology(
+    sel = mod.select_topology(
         mod.build_genome(row),
         model="circular",
         phase_epochs=PHASE_EPOCHS,

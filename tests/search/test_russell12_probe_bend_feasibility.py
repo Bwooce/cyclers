@@ -27,13 +27,27 @@ Mars (itself sourced from Russell 2004 p.165 r_p,min), so ``min`` over flybys of
   bend infeasibility is a FAITHFUL reproduction of Russell's own Table 4.13
   NEAR-BALLISTIC classification (TR < 1: the cycler needs a small powered nudge),
   not a defect of the closure.
-- ``russell-ch4-5.30ggF3`` measures TR = 0.613 against a published **1.27** — its
-  third node reproduces the published value (1.255) but its SECOND node demands a
-  141-degree turn where only ~87 degrees are available. That node is spurious: the
-  closure is OFF-FAMILY there. This is the row #820 singled out as its strongest
+- ``russell-ch4-5.30ggF3`` measured TR = 0.613 against a published **1.27** — its
+  third node reproduced the published value (1.255) but its SECOND node demanded a
+  141-degree turn where only ~87 degrees are available. That node was spurious: the
+  closure was OFF-FAMILY there. This was the row #820 singled out as its strongest
   result (the sole STAYED-AT-TRUTH verdict, lowest truth residual 0.074) — the
   "it closed!" danger signal per [[feedback_orbit_closure_discipline]], caught only
   by a constraint the closure residual never sees.
+
+#835 RESOLVED THAT ROW — the pins below are deliberately RE-POINTED
+------------------------------------------------------------------
+The 141-degree node was a **loop cyclic-ORDER** defect, not a wrong leg. Every one
+of the row's four legs reproduces its sourced conic (the designated F(3:2) arc at
+a = 1.3104 AU = 1.5^(2/3), aphelion 1.6618 vs the published 1.66; both E-E loops'
+(a, e) to 3-4 decimals of the #794 segment values), but ``build_genome`` traversed
+the two loops in the descriptor's PRINTED order, and with the other traversal the
+same legs are bend-feasible at every node and measure TR **1.255** vs the published
+1.27. ``select_topology`` now discriminates the order by residual-at-truth in the
+**vector** mode, whose bend hinge sees exactly what the magnitude residual cannot.
+So ``5.30ggF3`` is now expected FEASIBLE and TR-REPRODUCING, and the off-family
+assertion below is re-pointed to guard the DEFECT ITSELF (the printed order still
+produces the 141-degree node — the finding is preserved, not deleted).
 
 GOLDEN DISCIPLINE: the EXPECTED side of every turn-ratio assertion below is the
 row's own published ``invariants.turn_ratio`` (Russell 2004 Tables 4.9-4.13),
@@ -41,9 +55,7 @@ never a value this project computed. The bend angles EMERGE from the converged
 Lambert chain.
 
 Assertions record the qualitative finding with teeth (feasible/infeasible, and TR
-agreement to a stated tolerance) without pinning brittle magnitudes. A fix under
-``#829`` (gate the campaign on ``constraints_satisfied``) or ``#835``
-(``5.30ggF3``'s off-family node) may legitimately change the ``5.30ggF3`` picture;
+agreement to a stated tolerance) without pinning brittle magnitudes.
 ``6.44Gg3``'s TR < 1 is a published property and must NOT be "fixed" away.
 """
 
@@ -78,14 +90,14 @@ BEND_FEASIBLE: dict[str, bool] = {
     "russell-ch4-9.353Gg2": True,
     "russell-ch4-3.78Gg3": True,
     "russell-ch4-9.94Gg3": True,
-    "russell-ch4-5.30ggF3": False,  # off-family node 2 (see module docstring)
+    "russell-ch4-5.30ggF3": True,  # #835: was False under the printed loop order
     "russell-ch4-5.75ggF3": True,
     "russell-ch4-6.44Gg3": False,  # published TR = 0.95 < 1 (near-ballistic)
 }
 
-# Rows whose measured TR must reproduce the published TR. 5.30ggF3 is EXCLUDED
-# (it is the off-family finding, asserted separately below).
-TR_REPRODUCING = [r for r in BEND_FEASIBLE if r != "russell-ch4-5.30ggF3"]
+# Rows whose measured TR must reproduce the published TR — now ALL EIGHT (#835
+# moved 5.30ggF3 from 0.613 to 1.255 against its published 1.27).
+TR_REPRODUCING = list(BEND_FEASIBLE)
 
 # Tolerance on the TR reproduction. Russell prints TR to 2 decimals; the observed
 # spread is 0.001-0.024, so 0.05 has teeth (it would catch a wrong node, a wrong
@@ -116,7 +128,7 @@ def _probe_closure(rid: str) -> tuple[Any, dict[str, np.ndarray], tuple[str, ...
     """
     mod = _load_campaign()
     row = _row(rid)
-    sel = mod.select_leg1_topology(
+    sel = mod.select_topology(
         mod.build_genome(row),
         model="circular",
         phase_epochs=PHASE_EPOCHS,
@@ -221,26 +233,86 @@ def test_6_44gg3_bend_infeasibility_is_the_published_near_ballistic_property() -
     assert abs(measured - published) <= TR_TOL
 
 
-def test_5_30ggf3_closure_is_off_family_at_its_second_node() -> None:
-    """#826: 5.30ggF3's closure demands a turn its published TR does not.
+def test_5_30ggf3_printed_loop_order_is_the_off_family_one() -> None:
+    """#826 finding + #835 resolution, both pinned on ``russell-ch4-5.30ggF3``.
 
-    #820's strongest-looking row (sole STAYED-AT-TRUTH, truth residual 0.074).
-    Its LAST Earth node reproduces the published TR = 1.27, but an earlier Earth
-    node demands roughly twice the available turn, dragging the binding ratio to
-    ~0.61. A low closure residual with matching V_inf is therefore NOT sufficient
-    evidence the sourced geometry was found. See #835.
+    #826 caught this row demanding 141 deg at an Earth node with ~87 deg
+    available (binding TR 0.613 vs a published 1.27) despite the sole
+    STAYED-AT-TRUTH verdict and the lowest truth residual of all 12 rows. #835
+    diagnosed it: the two E-E loop legs were traversed in the descriptor's
+    PRINTED order; the other traversal of the SAME legs is bend-feasible at every
+    node and reproduces the published TR.
+
+    Both halves are asserted, because both are load-bearing: the defect must stay
+    reproducible (or the regression guard is empty) and the fix must stay
+    selected (or the row silently reverts to off-family evidence).
     """
     rid = "russell-ch4-5.30ggF3"
-    published = float(_row(rid)["invariants"]["turn_ratio"])
+    mod = _load_campaign()
+    row = _row(rid)
+    published = float(row["invariants"]["turn_ratio"])
+
+    # (a) The selected topology reverses the printed loop order, and is feasible.
+    sel = mod.select_topology(
+        mod.build_genome(row),
+        model="circular",
+        phase_epochs=PHASE_EPOCHS,
+        t0_center=mod._t0_center(row),
+    )
+    assert sel["loop_order"] == [1, 0], (
+        "5.30ggF3's selected loop order is no longer the reversed one; #835's "
+        "diagnosis or the selection criterion changed — re-adjudicate"
+    )
     solved, nodes, sequence = _probe_closure(rid)
-    ratios = _turn_ratios(nodes, sequence)
-    assert not solved.bend_feasible
-    # The binding node is far BELOW the published TR — the off-family finding.
-    assert min(ratios) < published - 0.5, (
-        "5.30ggF3's binding turn ratio no longer contradicts its published TR; "
-        "if a genome fix (#835) achieved this, re-adjudicate the row"
+    assert solved.bend_feasible and solved.constraints_satisfied
+    assert abs(min(_turn_ratios(nodes, sequence)) - published) <= TR_TOL
+
+    # (b) The PRINTED order still produces the off-family node #826 found.
+    printed = mod._genome_with_loop_order(mod.build_genome(row), (0, 1))
+    printed = mod._genome_with_leg1(printed, sel["leg1"]["n_revs"], sel["leg1"]["branch"])
+    ephem = Ephemeris("circular")
+    truth = mod._truth_seed(printed)
+    best_t0, best_res = float(sel["best_t0_sec"]), float("inf")
+    period_sec = printed["period_sec"]
+    for frac in np.linspace(0.0, 1.0, PHASE_EPOCHS, endpoint=False):
+        t0 = mod._t0_center(row) + float(frac) * period_sec
+        try:
+            r = mod._residual_at(printed, t0, truth, "circular", "magnitude")
+        except Exception:  # pragma: no cover - defensive, matches the campaign
+            continue
+        if r < best_res:
+            best_res, best_t0 = r, t0
+    bad = ballistic_correct(
+        sequence=printed["sequence"],
+        per_leg_revs=printed["per_leg_revs"],
+        per_leg_branch=printed["per_leg_branch"],
+        t0_seed_sec=best_t0,
+        tof_seed_days=truth,
+        period_sec=period_sec,
+        ephem=ephem,
+        vinf_cap=mod.VINF_CAP_KMS,
+        slack_leg=printed["slack_leg"],
+        tol_kms=mod.CORRECTOR_TOL_KMS,
+        residual_mode="magnitude",
     )
-    # ...while some node DOES reproduce it, which is why the residual looks good.
-    assert any(abs(r - published) <= TR_TOL for r in ratios if r != float("inf")), (
-        "no node reproduces the published TR any more"
+    assert bad.converged, "the printed-order closure should still converge (that was the trap)"
+    assert not bad.bend_feasible, (
+        "the printed loop order no longer produces #826's over-bent node; if a "
+        "genome change achieved that, re-adjudicate #835's diagnosis"
     )
+    bad_nodes = _vinf_nodes(
+        sequence=printed["sequence"],
+        per_leg_revs=printed["per_leg_revs"],
+        per_leg_branch=printed["per_leg_branch"],
+        t0_sec=float(bad.t0_sec),
+        free_tof_days=tuple(
+            float(v) for i, v in enumerate(bad.tof_days) if i != printed["slack_leg"]
+        ),
+        slack_leg=printed["slack_leg"],
+        period_days=period_sec / DAY_S,
+        ephem=ephem,
+    )
+    bad_ratios = _turn_ratios(bad_nodes, printed["sequence"])
+    assert min(bad_ratios) < published - 0.5  # the 0.613-vs-1.27 contradiction
+    # ...while some node DOES reproduce it, which is why the residual looked good.
+    assert any(abs(r - published) <= TR_TOL for r in bad_ratios if r != float("inf"))
