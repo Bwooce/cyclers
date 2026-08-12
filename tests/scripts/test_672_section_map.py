@@ -309,6 +309,15 @@ def _grad_2uv(iv: Any, st: list[Any]) -> list[Any]:
     return [iv.mpf(2) * st[1], iv.mpf(2) * st[0], iv.mpf(0), iv.mpf(0), iv.mpf(0)]
 
 
+# #837: 3x the suite-default 600s cap. This certificate replay measures ~92s
+# serial on a quiet machine, but is single-threaded CPU-bound mpmath, so heavy
+# external load (sibling sessions; #810 measured load avg 25 on 8 cores) can
+# inflate WALL clock >6.5x past 600s on an otherwise-fine computation. The
+# replay depth (n_steps=136, order=10, tau_max=17) is what the tightness
+# assertions certify, so it must not be downgraded; a serial/xdist marker would
+# not help (#810 saw the timeout in a -n0 isolation re-run under the same
+# load). The cap stays finite as a belt-and-braces guard against genuine hangs.
+@pytest.mark.timeout(1800)
 def test_oterma_first_section_crossing_rigorously_isolated() -> None:
     """The first forward re-crossing of ``{y=0}`` is rigorously isolated + transversal.
 

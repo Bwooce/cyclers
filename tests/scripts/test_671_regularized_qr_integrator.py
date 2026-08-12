@@ -342,6 +342,15 @@ def test_stage4_plain_lc_anchor_intact() -> None:
 # ---------------------------------------------------------------------------- #
 # 5. The Stage-5 result: QR-regularized crosses the perijove and beats naive.    #
 # ---------------------------------------------------------------------------- #
+# #837: 3x the suite-default 600s cap. This certificate replay measures ~79s
+# serial on a quiet machine, but is single-threaded CPU-bound mpmath, so heavy
+# external load (sibling sessions; #810 measured load avg 25 on 8 cores) can
+# inflate WALL clock >6.5x past 600s on an otherwise-fine computation. The
+# replay depth (n_steps=96, order=10, tau=12) is what the tightness assertions
+# certify, so it must not be downgraded; a serial/xdist marker would not help
+# (#810 saw the timeout in a -n0 isolation re-run under the same load). The
+# cap stays finite as a belt-and-braces guard against genuine hangs.
+@pytest.mark.timeout(1800)
 def test_qr_regularized_oterma_defeats_wrapping_and_conserves_jacobi() -> None:
     """QR + regularization compose on the real Oterma arc: wrapping is defeated.
 

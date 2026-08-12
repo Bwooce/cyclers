@@ -1196,7 +1196,38 @@ unchanged. See `git log` around this date for the corrected commit.
   replays, a serial-execution marker, or downgrading the replay depth — pick ONE with the
   certificate-evidence discipline in mind (do NOT just `@pytest.mark.slow` them out of CI per
   [[feedback_delegation_fresh_agent_not_fork]]).
-- `#827` — registered 2026-08-11 (found during `#822`, not dispatched): digit-grade
+  **✓ DONE (2026-08-12, Fable) — adjudicated to the larger per-test timeout;
+  `@pytest.mark.timeout(1800)` on exactly the two Oterma certificate-replay tests, nothing else
+  touched.** Root cause pinned by measurement, not guessed: on a QUIET machine (load ~2.1, no
+  sibling compute) both tests PASS serially in **78.9 s** (`test_671`) and **91.9 s** (`test_672`)
+  — the computation is fine; the 600 s cap is a WALL-clock cap on a single-threaded CPU-bound
+  mpmath replay, so the `#810` load-25-on-8-cores condition (>6.5x wall inflation) is sufficient
+  to blow it on a healthy run. That measurement adjudicates the three candidates: (a) depth
+  downgrade REJECTED — the grids (`n_steps=96/order 10/tau=12`; `n_steps=136/order 10/tau_max=17`)
+  are precisely what the tightness assertions (`hw < 1e-6`, `DP` half-width `< 1e-6`) certify;
+  shrinking them weakens the evidence itself. (b) serial/xdist marker REJECTED — `#810` measured
+  both timeouts in a `-n 0` isolation re-run under the same load, so the contention is EXTERNAL
+  (sibling sessions), which no intra-suite marker can shield (xdist has no exclusive marker,
+  only `xdist_group` co-location); `#809`'s `-n 6` left untouched. (c) per-test cap CHOSEN —
+  1800 s = 3x the suite default keeps the replay bit-identical, keeps both tests in the normal
+  CI/ratchet path (NOT `@pytest.mark.slow`, per the explicit prohibition), tolerates ~19-22x
+  contention slowdown over baseline, and stays finite as a hang guard. Marker precedence over the
+  global `--timeout` was verified BEHAVIORALLY per
+  [[feedback_verify_automated_ghost_guard_booleans]] (the gate's own mechanism, not assumed):
+  `test_672`'s Oterma test ran green to completion (~107 s) under a deliberate `--timeout=5`.
+  The `timeout` marker is plugin-registered so `--strict-markers` is satisfied. Verification:
+  full `tests/scripts` 212 passed under default addopts (5:14), `ruff check` + `format --check`
+  clean, full `mypy src tests` clean (848 files). Follow-on `#843` registered (duration-headroom
+  audit for the next-heaviest tests).
+- `#843` — registered 2026-08-12 (found during `#837`, not dispatched, speculative): timeout-headroom
+  audit of the whole suite's next-heaviest tests. `#837` fixed the two tests that ALREADY tripped
+  the 600 s wall-clock cap under the `#810` contention condition, but the fix criterion generalizes:
+  any test whose quiet-machine serial baseline exceeds ~150 s has <4x contention headroom and is the
+  next candidate to be picked off by the same external-load wall-clock inflation (measured >6.5x at
+  load 25). Sweep `--durations=0` output from a quiet-machine full run of `tests/` (all
+  directories), list every test above the ~150 s baseline, and pre-emptively grant the same
+  `@pytest.mark.timeout(1800)` treatment (same discipline: never a depth downgrade of a certified
+  replay, never `@pytest.mark.slow`). Cheap; requires a quiet machine for the baseline run.
   reproduction of Kumar, Rawat, Rosengren & Ross 2026's own printed Table-5 3:1->2:1
   Earth-Moon heteroclinic intersection states (`C_J ∈ {3.00, 3.05, 3.10, 3.15}`; *Adv. Space
   Res.* 77(3):3815, DOI `10.1016/j.asr.2025.12.005`, corpus `kumar-2025-arxiv-2509.12675.pdf`,
