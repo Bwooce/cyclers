@@ -60,11 +60,10 @@ import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.correct import (
-    _bend_deg,
-    _max_bend_deg,
     _vinf_nodes,
     ballistic_correct,
 )
+from cyclerfinder.search.turn_ratio_check import measure_turn_ratio
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CAMPAIGN = REPO_ROOT / "scripts" / "campaign_russell12.py"
@@ -153,16 +152,14 @@ def _probe_closure(rid: str) -> tuple[Any, dict[str, np.ndarray], tuple[str, ...
 
 
 def _turn_ratios(nodes: dict[str, np.ndarray], sequence: tuple[str, ...]) -> list[float]:
-    """Per-intermediate-flyby ``max_bend / required_bend`` (Russell's TR)."""
-    out: list[float] = []
-    for i in range(1, len(sequence) - 1):
-        v_in, v_out = nodes[f"b{i}_in"], nodes[f"b{i}_out"]
-        required = _bend_deg(v_in, v_out)
-        max_turn = _max_bend_deg(float(np.linalg.norm(v_in)), sequence[i], None)
-        # A node the closure turns through by ~0 degrees is unconstrained; it can
-        # never be the binding flyby Russell's delta_MAX refers to.
-        out.append(float("inf") if required < 1e-9 else max_turn / required)
-    return out
+    """Per-intermediate-flyby ``max_bend / required_bend`` (Russell's TR).
+
+    #833 promoted this measurement to
+    :func:`cyclerfinder.search.turn_ratio_check.measure_turn_ratio`; this thin
+    wrapper keeps the assertions below reading as they did while ensuring there
+    is exactly ONE implementation of the check in the tree.
+    """
+    return [f.ratio for f in measure_turn_ratio(nodes, sequence).flybys]
 
 
 @pytest.mark.parametrize("rid", sorted(BEND_FEASIBLE))
