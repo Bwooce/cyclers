@@ -162,6 +162,58 @@ def measure_turn_ratio(
     return TurnRatioReport(flybys=tuple(flybys), turn_ratio=ratio, binding_index=binding)
 
 
+def wrap_node_turn(
+    nodes: dict[str, np.ndarray],
+    sequence: tuple[str, ...],
+    *,
+    t0_sec: float,
+    t_end_sec: float,
+    ephem: Ephemeris,
+    rp_factors: dict[str, float] | None = None,
+) -> FlybyTurn:
+    """The PERIODICITY WRAP flyby — the one :func:`_bend_feasible` never checks.
+
+    ``_bend_feasible`` (and therefore ``BallisticClosureResult.bend_feasible``)
+    loops over the INTERMEDIATE encounters only, ``1 .. n-2``. But ``b0`` and
+    ``bn`` are the same physical encounter of a periodic cycler one period apart,
+    and the spacecraft must be turned from ``vinf_in(bn)`` onto ``vinf_out(b0)``
+    there by a real flyby. On a k-loop cycler that is one of the k+1 Earth
+    passes per cycle, and it is currently unconstrained.
+
+    The two vectors live one period apart, and a cycler repeats in the ROTATING
+    frame: at ``t0 + P`` the whole configuration is the ``t0`` configuration
+    rotated by the home body's own advance. ``vinf_out(b0)`` is therefore rotated
+    by the angle from ``r_body(t0)`` to ``r_body(t_end)`` about the orbit normal
+    before the turn is measured. Validation of the construction: on the
+    single-loop rows the wrap ratio comes out EQUAL to the intermediate Earth
+    node's ratio (e.g. 1.702 on ``russell-ch4-9.353Gg2``), as the cycle's
+    symmetry requires.
+
+    The rotation is only exact if the period really is the commensurate one, so
+    a closure posed on a ROUNDED period carries that rounding into this number.
+    """
+    last = len(sequence) - 1
+    v_in = np.asarray(nodes[f"b{last}_in"], dtype=np.float64)
+    v_out = np.asarray(nodes["b0_out"], dtype=np.float64)
+    r0 = np.asarray(ephem.state(sequence[0], t0_sec)[0], dtype=np.float64)
+    rn = np.asarray(ephem.state(sequence[last], t_end_sec)[0], dtype=np.float64)
+    u0, un = r0 / np.linalg.norm(r0), rn / np.linalg.norm(rn)
+    phi = float(np.arctan2(u0[0] * un[1] - u0[1] * un[0], float(u0 @ un)))
+    c, s = np.cos(phi), np.sin(phi)
+    rot = np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
+    required = _bend_deg(v_in, rot @ v_out)
+    max_turn = _max_bend_deg(float(np.linalg.norm(v_in)), sequence[0], rp_factors)
+    unconstrained = required < UNCONSTRAINED_BEND_DEG
+    return FlybyTurn(
+        index=last,
+        body=sequence[last],
+        required_bend_deg=required,
+        max_bend_deg=max_turn,
+        ratio=float("inf") if unconstrained else max_turn / required,
+        unconstrained=unconstrained,
+    )
+
+
 def closure_turn_ratio(
     result: BallisticClosureResult,
     *,
@@ -172,6 +224,7 @@ def closure_turn_ratio(
     period_sec: float,
     ephem: Ephemeris,
     rp_factors: dict[str, float] | None = None,
+    include_wrap: bool = False,
 ) -> TurnRatioReport:
     """:func:`measure_turn_ratio` for a :class:`BallisticClosureResult`.
 
@@ -180,6 +233,13 @@ def closure_turn_ratio(
     genome the corrector ran. Raises whatever ``_vinf_nodes`` raises if the
     converged point is not re-solvable (a caller wanting a soft failure should
     check ``result.converged`` first).
+
+    ``include_wrap`` appends the PERIODICITY WRAP flyby
+    (:func:`wrap_node_turn`), which ``BallisticClosureResult.bend_feasible``
+    omits. Default ``False`` so this function stays like-for-like with that
+    flag — the published turn ratio is reproduced by the intermediate nodes on
+    every row measured so far. Pass ``True`` for any MULTI-LAP question, where
+    the wrap is a flyby the trajectory has to actually fly.
     """
     free_tof = tuple(float(v) for i, v in enumerate(result.tof_days) if i != slack_leg)
     nodes = _vinf_nodes(
@@ -192,4 +252,19 @@ def closure_turn_ratio(
         period_days=period_sec / DAY_S,
         ephem=ephem,
     )
-    return measure_turn_ratio(nodes, sequence, rp_factors=rp_factors)
+    report = measure_turn_ratio(nodes, sequence, rp_factors=rp_factors)
+    if not include_wrap:
+        return report
+    wrap = wrap_node_turn(
+        nodes,
+        sequence,
+        t0_sec=float(result.t0_sec),
+        t_end_sec=float(result.t0_sec) + float(sum(result.tof_days)) * DAY_S,
+        ephem=ephem,
+        rp_factors=rp_factors,
+    )
+    flybys = (*report.flybys, wrap)
+    binding, ratio = report.binding_index, report.turn_ratio
+    if wrap.ratio < ratio:
+        binding, ratio = wrap.index, wrap.ratio
+    return TurnRatioReport(flybys=flybys, turn_ratio=ratio, binding_index=binding)

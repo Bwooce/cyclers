@@ -128,6 +128,7 @@ from cyclerfinder.search.free_return import (
     free_return_correct,
     seed_ae_from_aphelion_transit,
 )
+from cyclerfinder.search.resonance import synodic_period_days
 from cyclerfinder.search.turn_ratio_check import TURN_RATIO_TOL, closure_turn_ratio
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -245,7 +246,32 @@ def _leg1_topology_candidates(designated: dict[str, Any]) -> list[tuple[int, str
     return out
 
 
-def build_genome(row: dict[str, Any]) -> dict[str, Any]:
+def period_sec_for_row(row: dict[str, Any], mode: str = "catalogue") -> float:
+    """Target period in seconds (#830).
+
+    ``"catalogue"`` (default, #820-unchanged) uses the sourced ``period.years``
+    exactly as printed. ``"exact-synodic"`` uses ``k * T_syn(pair)`` computed from
+    the bodies' own mean motions
+    (:func:`cyclerfinder.search.resonance.synodic_period_days`).
+
+    The printed value is rounded to 2 decimals, and that rounding is NOT
+    negligible for a multi-lap question: it is +0.24 d on the k=2 rows and
+    **-1.47 d** on the k=3 rows, absorbed entirely by the slack leg, and it is
+    SECULAR — ~3e6 km of rotating-frame drift per lap against a 50,000 km V2
+    tolerance. Single-cycle closure work is unaffected (the corrector simply
+    closes on whichever period it is given, and #820 reports the rounding inside
+    its at-seed residual); anything multi-lap must use the exact period.
+    """
+    if mode == "catalogue":
+        return float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * DAY_S
+    if mode != "exact-synodic":
+        raise ValueError(f"unknown period mode {mode!r}")
+    pair = str(row["period"]["pair"])
+    a, b = (s.strip() for s in pair.split("-"))
+    return float(row["period"]["k"]) * synodic_period_days(a, b) * DAY_S
+
+
+def build_genome(row: dict[str, Any], *, period_mode: str = "catalogue") -> dict[str, Any]:
     """Map a Russell row -> corrector genome (#820 re-posed per #794 semantics).
 
     Returns sequence, per_leg_revs, per_leg_branch, the designated-leg split
@@ -309,9 +335,10 @@ def build_genome(row: dict[str, Any]) -> dict[str, Any]:
         per_leg_branch.append(_SEGMENT_BRANCH_MAP.get(str(seg["branch"]), str(seg["branch"])))
         ee_seeds.append(float(seg["tof_days"]))
 
-    # Target period: k * T_syn(E,M). Use the sourced catalogue years directly
-    # (these rows are 2-body E-M; period.years is the sourced repeat period).
-    period_sec = float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * DAY_S
+    # Target period: the sourced catalogue years by default; ``exact-synodic``
+    # recomputes k * T_syn(pair) for multi-lap work (#830, see
+    # :func:`period_sec_for_row`).
+    period_sec = period_sec_for_row(row, period_mode)
 
     # Slack leg = the longest E-E loop (most slack to absorb the period).
     # Free legs = E->M, M->E, plus the non-slack E-E loops. With the #820
@@ -335,6 +362,7 @@ def build_genome(row: dict[str, Any]) -> dict[str, Any]:
         "designated_raw": str(designated.get("raw_descriptor")),
         "designated_tof_days": designated_tof_days,
         "leg1_candidates": leg1_candidates,
+        "period_mode": period_mode,
     }
 
 

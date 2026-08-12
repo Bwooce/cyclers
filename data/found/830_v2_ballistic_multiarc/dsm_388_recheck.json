@@ -1,0 +1,128 @@
+[
+  {
+    "id": "mcconaghy-2006-em-k2",
+    "seeded": true,
+    "converged": false,
+    "max_residual_kms": 9.049524794458117,
+    "anchor_match": true,
+    "dv_dsm_kms": [
+      4.691754332468376,
+      9.049524794458117,
+      5.823453703668527
+    ],
+    "vinf_per_encounter_kms": [
+      4.7,
+      0.01216204174776346,
+      5.815212117912798,
+      0.004865059645123511
+    ],
+    "sourced_vinf": {
+      "E": 4.7,
+      "M": 5.0
+    }
+  },
+  {
+    "id": "russell-ch4-4.991gG2",
+    "seeded": true,
+    "converged": false,
+    "max_residual_kms": 9.183223451994412,
+    "anchor_match": true,
+    "dv_dsm_kms": [
+      4.981753826421098,
+      9.183223451994412,
+      5.841872119581565
+    ],
+    "vinf_per_encounter_kms": [
+      4.99,
+      0.012162042015634901,
+      5.8337895281514385,
+      0.004730903144221174
+    ],
+    "sourced_vinf": {
+      "E": 4.99,
+      "M": 5.1
+    }
+  },
+  {
+    "id": "russell-ch4-9.353Gg2",
+    "seeded": true,
+    "converged": false,
+    "max_residual_kms": 29.46771835978174,
+    "anchor_match": false,
+    "dv_dsm_kms": [
+      9.341646324229885,
+      29.46771835978174,
+      0.889870851446738
+    ],
+    "vinf_per_encounter_kms": [
+      9.35,
+      0.011871767802034633,
+      19.176140235353188,
+      18.979588188265083
+    ],
+    "sourced_vinf": {
+      "E": 9.35,
+      "M": 10.52
+    }
+  },
+  {
+    "id": "russell-ch4-3.78Gg3",
+    "seeded": true,
+    "converged": false,
+    "max_residual_kms": 20.15004737126381,
+    "anchor_match": false,
+    "dv_dsm_kms": [
+      1.5916226897739971,
+      15.067622656272988,
+      9.63925477120903
+    ],
+    "vinf_per_encounter_kms": [
+      3.78,
+      3.9806882281853446,
+      13.23612382916441,
+      5.186689947268614
+    ],
+    "sourced_vinf": {
+      "E": 3.78,
+      "M": 4.63
+    }
+  },
+  {
+    "id": "russell-ch4-9.94Gg3",
+    "seeded": true,
+    "converged": false,
+    "max_residual_kms": 28.5125967696132,
+    "anchor_match": false,
+    "dv_dsm_kms": [
+      9.931681964670208,
+      28.5125967696132,
+      2.8623385759161613
+    ],
+    "vinf_per_encounter_kms": [
+      9.94,
+      0.013277115321195824,
+      18.589054036054584,
+      16.873848812693055
+    ],
+    "sourced_vinf": {
+      "E": 9.94,
+      "M": 10.76
+    }
+  },
+  {
+    "id": "russell-ch4-5.30ggF3",
+    "seeded": false,
+    "sourced_vinf": {
+      "E": 5.3,
+      "M": 5.44
+    }
+  },
+  {
+    "id": "russell-ch4-5.75ggF3",
+    "seeded": false,
+    "sourced_vinf": {
+      "E": 5.75,
+      "M": 9.36
+    }
+  }
+]

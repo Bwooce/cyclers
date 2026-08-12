@@ -1,0 +1,759 @@
+{
+  "laps": 3,
+  "results": [
+    {
+      "id": "mcconaghy-2006-em-k2",
+      "period_mode": "exact-synodic",
+      "period_days": 1559.8573,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.2453,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        150.053,
+        876.09,
+        533.715
+      ],
+      "vinf_per_encounter_kms": [
+        4.995,
+        5.102,
+        4.995,
+        4.995
+      ],
+      "measured_turn_ratio": 2.6524,
+      "published_turn_ratio": 2.65,
+      "turn_ratio_summary": "M1:42858757.307 E2:2.652",
+      "wrap_node": {
+        "required_bend_deg": 34.007,
+        "max_bend_deg": 90.201,
+        "ratio": 2.6524,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 2.6524,
+      "n_laps": 3,
+      "max_drift_km": 1.3494957559479506e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 2.698991511895901e-10,
+      "per_lap_drift_km": [
+        0.0,
+        1.0839045653970588e-05,
+        3.1849864993469945e-06
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 2.9213166237350032,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "mcconaghy-2006-em-k2",
+      "period_mode": "catalogue",
+      "period_days": 1559.6175,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.3066,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        149.864,
+        875.987,
+        533.766
+      ],
+      "vinf_per_encounter_kms": [
+        5.008,
+        5.107,
+        5.008,
+        5.008
+      ],
+      "measured_turn_ratio": 2.6581,
+      "published_turn_ratio": 2.65,
+      "turn_ratio_summary": "M1:inf E2:2.658",
+      "wrap_node": {
+        "required_bend_deg": 33.87,
+        "max_bend_deg": 90.029,
+        "ratio": 2.6581,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 2.6581,
+      "n_laps": 3,
+      "max_drift_km": 2807271.0482967165,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 56.14542096593433,
+      "per_lap_drift_km": [
+        0.0,
+        2803218.582056703,
+        5610336.023425699
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 2.917378099643241,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-4.991gG2",
+      "period_mode": "exact-synodic",
+      "period_days": 1559.8573,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.2261,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        150.053,
+        876.09,
+        533.715
+      ],
+      "vinf_per_encounter_kms": [
+        4.995,
+        5.102,
+        4.995,
+        4.995
+      ],
+      "measured_turn_ratio": 2.6524,
+      "published_turn_ratio": 2.65,
+      "turn_ratio_summary": "M1:inf E2:2.652",
+      "wrap_node": {
+        "required_bend_deg": 34.007,
+        "max_bend_deg": 90.201,
+        "ratio": 2.6524,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 2.6524,
+      "n_laps": 3,
+      "max_drift_km": 1.622076269429698e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 3.244152538859396e-10,
+      "per_lap_drift_km": [
+        0.0,
+        1.622076269429698e-05,
+        6.1092376463696234e-06
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 2.921316623735987,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-4.991gG2",
+      "period_mode": "catalogue",
+      "period_days": 1559.6175,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.2674,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        149.864,
+        875.987,
+        533.766
+      ],
+      "vinf_per_encounter_kms": [
+        5.008,
+        5.107,
+        5.008,
+        5.008
+      ],
+      "measured_turn_ratio": 2.6581,
+      "published_turn_ratio": 2.65,
+      "turn_ratio_summary": "M1:inf E2:2.658",
+      "wrap_node": {
+        "required_bend_deg": 33.87,
+        "max_bend_deg": 90.029,
+        "ratio": 2.6581,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 2.6581,
+      "n_laps": 3,
+      "max_drift_km": 2807271.0482931705,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 56.14542096586341,
+      "per_lap_drift_km": [
+        0.0,
+        2803218.5820522797,
+        5610336.023417734
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 2.9173780996434497,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-9.353Gg2",
+      "period_mode": "exact-synodic",
+      "period_days": 1559.8573,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 0.1749,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        85.414,
+        544.121,
+        930.322
+      ],
+      "vinf_per_encounter_kms": [
+        9.361,
+        10.522,
+        9.361,
+        9.361
+      ],
+      "measured_turn_ratio": 1.7012,
+      "published_turn_ratio": 1.7,
+      "turn_ratio_summary": "M1:inf E2:1.701",
+      "wrap_node": {
+        "required_bend_deg": 28.369,
+        "max_bend_deg": 48.263,
+        "ratio": 1.7012,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.7012,
+      "n_laps": 3,
+      "max_drift_km": 2.722531865535991e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 5.445063731071982e-10,
+      "per_lap_drift_km": [
+        0.0,
+        1.3312542627082518e-05,
+        1.3913344353853296e-05
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 4.587536921118439,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-9.353Gg2",
+      "period_mode": "catalogue",
+      "period_days": 1559.6175,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 0.1823,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        85.283,
+        543.911,
+        930.423
+      ],
+      "vinf_per_encounter_kms": [
+        9.386,
+        10.532,
+        9.386,
+        9.386
+      ],
+      "measured_turn_ratio": 1.7018,
+      "published_turn_ratio": 1.7,
+      "turn_ratio_summary": "M1:inf E2:1.702",
+      "wrap_node": {
+        "required_bend_deg": 28.264,
+        "max_bend_deg": 48.101,
+        "ratio": 1.7018,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.7018,
+      "n_laps": 3,
+      "max_drift_km": 4786039.584039078,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 95.72079168078156,
+      "per_lap_drift_km": [
+        0.0,
+        4757219.346869245,
+        9542818.488225857
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 4.583103314511455,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-3.78Gg3",
+      "period_mode": "exact-synodic",
+      "period_days": 2339.7859,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.0389,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        171.074,
+        889.633,
+        1279.079
+      ],
+      "vinf_per_encounter_kms": [
+        3.788,
+        4.635,
+        3.788,
+        3.788
+      ],
+      "measured_turn_ratio": 1.8118,
+      "published_turn_ratio": 1.81,
+      "turn_ratio_summary": "M1:inf E2:1.812",
+      "wrap_node": {
+        "required_bend_deg": 59.56,
+        "max_bend_deg": 107.912,
+        "ratio": 1.8118,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.8118,
+      "n_laps": 3,
+      "max_drift_km": 1.1263109495487877e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 2.2526218990975756e-10,
+      "per_lap_drift_km": [
+        0.0,
+        4.938290682990051e-06,
+        1.401709273402742e-05
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 3.762432508768641,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-3.78Gg3",
+      "period_mode": "catalogue",
+      "period_days": 2341.2525,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.367,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        171.974,
+        890.357,
+        1278.922
+      ],
+      "vinf_per_encounter_kms": [
+        3.748,
+        4.622,
+        3.748,
+        3.748
+      ],
+      "measured_turn_ratio": 1.7862,
+      "published_turn_ratio": 1.81,
+      "turn_ratio_summary": "M1:inf E2:1.786",
+      "wrap_node": {
+        "required_bend_deg": 60.77,
+        "max_bend_deg": 108.549,
+        "ratio": 1.7862,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.7862,
+      "n_laps": 3,
+      "max_drift_km": 15058387.195376337,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 301.16774390752676,
+      "per_lap_drift_km": [
+        0.0,
+        15058387.195376337,
+        29972099.046066873
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 3.791273096928885,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-9.94Gg3",
+      "period_mode": "exact-synodic",
+      "period_days": 2339.7859,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 0.4594,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        82.46,
+        539.281,
+        1718.045
+      ],
+      "vinf_per_encounter_kms": [
+        9.946,
+        10.764,
+        9.946,
+        9.946
+      ],
+      "measured_turn_ratio": 1.0998,
+      "published_turn_ratio": 1.1,
+      "turn_ratio_summary": "M1:inf E2:1.100",
+      "wrap_node": {
+        "required_bend_deg": 40.595,
+        "max_bend_deg": 44.648,
+        "ratio": 1.0998,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.0998,
+      "n_laps": 3,
+      "max_drift_km": 1.6497490041941787e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 3.299498008388357e-10,
+      "per_lap_drift_km": [
+        0.0,
+        1.002130579504916e-05,
+        6.48524253016475e-06
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 6.900721633603082,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-9.94Gg3",
+      "period_mode": "catalogue",
+      "period_days": 2341.2525,
+      "loop_order": [
+        0
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 1.3146,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        82.991,
+        540.166,
+        1718.096
+      ],
+      "vinf_per_encounter_kms": [
+        9.838,
+        10.718,
+        9.838,
+        9.838
+      ],
+      "measured_turn_ratio": 1.1011,
+      "published_turn_ratio": 1.1,
+      "turn_ratio_summary": "M1:inf E2:1.101",
+      "wrap_node": {
+        "required_bend_deg": 41.131,
+        "max_bend_deg": 45.29,
+        "ratio": 1.1011,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.1011,
+      "n_laps": 3,
+      "max_drift_km": 29579439.977406185,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 591.5887995481237,
+      "per_lap_drift_km": [
+        0.0,
+        29579439.977406185,
+        57923427.883572794
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 6.911735759670714,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-5.30ggF3",
+      "period_mode": "exact-synodic",
+      "period_days": 2339.7859,
+      "loop_order": [
+        1,
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.1028,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        143.173,
+        952.602,
+        709.054,
+        534.957
+      ],
+      "vinf_per_encounter_kms": [
+        5.303,
+        5.436,
+        5.303,
+        5.303,
+        5.303
+      ],
+      "measured_turn_ratio": 1.2731,
+      "published_turn_ratio": 1.27,
+      "turn_ratio_summary": "M1:39104139.260 E2:2.413 E3:1.273",
+      "wrap_node": {
+        "required_bend_deg": 31.963,
+        "max_bend_deg": 86.154,
+        "ratio": 2.6954,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.2731,
+      "n_laps": 3,
+      "max_drift_km": 7.120463394665187e-06,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 1.4240926789330372e-10,
+      "per_lap_drift_km": [
+        0.0,
+        6.2252086593913295e-06,
+        4.7790000971724145e-06
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 9.158461254914547,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-5.30ggF3",
+      "period_mode": "catalogue",
+      "period_days": 2341.2525,
+      "loop_order": [
+        1,
+        0
+      ],
+      "leg1": {
+        "n_revs": 1,
+        "branch": "high"
+      },
+      "truth_residual_kms": 0.0831,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        143.659,
+        952.116,
+        710.655,
+        534.823
+      ],
+      "vinf_per_encounter_kms": [
+        5.27,
+        5.419,
+        5.27,
+        5.27,
+        5.27
+      ],
+      "measured_turn_ratio": 1.2548,
+      "published_turn_ratio": 1.27,
+      "turn_ratio_summary": "M1:inf E2:2.357 E3:1.255",
+      "wrap_node": {
+        "required_bend_deg": 32.265,
+        "max_bend_deg": 86.582,
+        "ratio": 2.6835,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.2548,
+      "n_laps": 3,
+      "max_drift_km": 20977365.93134684,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 419.54731862693683,
+      "per_lap_drift_km": [
+        0.0,
+        20756039.976807903,
+        41667997.800270274
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 9.291703443985424,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-5.75ggF3",
+      "period_mode": "exact-synodic",
+      "period_days": 2339.7859,
+      "loop_order": [
+        0,
+        1
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 0.0537,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        111.447,
+        619.07,
+        693.391,
+        915.879
+      ],
+      "vinf_per_encounter_kms": [
+        5.756,
+        9.357,
+        5.756,
+        5.756,
+        5.756
+      ],
+      "measured_turn_ratio": 1.363,
+      "published_turn_ratio": 1.34,
+      "turn_ratio_summary": "M1:inf E2:83.123 E3:1.363",
+      "wrap_node": {
+        "required_bend_deg": 60.07,
+        "max_bend_deg": 80.554,
+        "ratio": 1.341,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.341,
+      "n_laps": 3,
+      "max_drift_km": 5.9995035879193514e-05,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 1.1999007175838702e-09,
+      "per_lap_drift_km": [
+        0.0,
+        2.6875945430243617e-05,
+        3.423962039339136e-05
+      ],
+      "stable": true,
+      "raw_vinf_rotation_sum_kms": 5.775209588046242,
+      "drift_verdict": "BOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    },
+    {
+      "id": "russell-ch4-5.75ggF3",
+      "period_mode": "catalogue",
+      "period_days": 2341.2525,
+      "loop_order": [
+        0,
+        1
+      ],
+      "leg1": {
+        "n_revs": 0,
+        "branch": "single"
+      },
+      "truth_residual_kms": 0.3489,
+      "converged": true,
+      "solved_residual_kms": 0.0,
+      "constraints_satisfied": true,
+      "bend_feasible": true,
+      "vinf_cap_ok": true,
+      "tof_days": [
+        112.198,
+        618.319,
+        695.095,
+        915.641
+      ],
+      "vinf_per_encounter_kms": [
+        5.697,
+        9.337,
+        5.697,
+        5.697,
+        5.697
+      ],
+      "measured_turn_ratio": 1.3474,
+      "published_turn_ratio": 1.34,
+      "turn_ratio_summary": "M1:inf E2:84.369 E3:1.347",
+      "wrap_node": {
+        "required_bend_deg": 61.278,
+        "max_bend_deg": 81.27,
+        "ratio": 1.3263,
+        "feasible": true
+      },
+      "all_nodes_feasible_incl_wrap": true,
+      "turn_ratio_incl_wrap": 1.3263,
+      "n_laps": 3,
+      "max_drift_km": 32041293.498060957,
+      "drift_tolerance_km": 50000.0,
+      "drift_over_tolerance": 640.8258699612192,
+      "per_lap_drift_km": [
+        0.0,
+        32041293.498060957,
+        63680765.49912187
+      ],
+      "stable": false,
+      "raw_vinf_rotation_sum_kms": 5.819375057858761,
+      "drift_verdict": "UNBOUNDED",
+      "v2_ballistic": "GATE-DEGENERATE"
+    }
+  ]
+}
