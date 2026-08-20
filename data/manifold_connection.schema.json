@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyclers.space/schemas/manifold_connection.schema.json",
+  "version": "1.0",
+  "title": "Cycler Finder Manifold-Connection Registry",
+  "description": "Schema v1.0 (task #838, design note docs/notes/2026-08-21-838-connection-schema-design-recommendation.md; implemented by #856). Registers a NEW top-level relation, separate from data/catalogue.yaml (the SAME dedicated-registry pattern as data/cycler_network.schema.json #570 / data/empty_regions.jsonl -- a cross-row relation is not overloaded onto the per-orbit-row schema): a VERIFIED manifold connection (heteroclinic or homoclinic) between two orbits where AT LEAST ONE endpoint is a catalogued data/catalogue.yaml row and the connection is NOT intrinsic to that row's own object. SCOPE RULE, load-bearing: intrinsic connections (the row IS the connection, or the connection belongs to the row's own seed orbit) stay in the row's own provenance block -- data/catalogue.yaml's ccr4bp_provenance.connection (schema v5.3, #707/#708) and crnbp_provenance.torus.seed_orbit_homoclinic.connection (v5.4, #770/#779) are UNCHANGED and OUT OF SCOPE here; this registry is for EXTRINSIC connections only, i.e. a transport statement BETWEEN two orbits. HALF-CATALOGUED IS THE BASE CASE, not a degenerate one (per #838's registration): the motivating case (#822) never has both endpoints catalogued, so every entry's endpoints are an ordered pair, each EITHER a row_ref (a real data/catalogue.yaml row id, with mandatory identity_evidence) OR an inline uncatalogued descriptor -- never a dangling reference, never a fabricated row. ADMISSION CRITERION: at least one endpoint MUST be a row_ref (enforced structurally here via the endpoints array's 'contains' constraint, and re-verified referentially by the Python semantic gate, src/cyclerfinder/data/validate_connections.py, which additionally resolves every row_ref against the live catalogue -- JSON Schema alone cannot express cross-file referential integrity). PROVENANCE/AUDIT ONLY -- NOT A PROMOTION GATE: a manifold connection is a two-object, same-model, same-fidelity TRANSPORT statement; data/catalogue.yaml's validation_level (spec Section 14) measures ONE object's own trajectory under increasing model fidelity, so a connection entry NEVER changes an endpoint row's validation_level, our_status, or orbit_class by itself -- any such catalogue writeback is a SEPARATE, explicitly adjudicated task (see #828 Sec. 2's ruling, which this registry's existence does not overturn).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "id",
+      "kind",
+      "model",
+      "endpoints",
+      "connection",
+      "evidence",
+      "evidence_class",
+      "provenance"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable human-readable slug for this connection entry, unique across the registry (referential-integrity / uniqueness enforced by the Python semantic gate, mirroring data/catalogue.yaml's id convention -- JSON Schema alone cannot express cross-item uniqueness on a non-key field)."
+      },
+      "kind": {
+        "type": "string",
+        "enum": ["heteroclinic", "homoclinic"],
+        "description": "heteroclinic: connects two DISTINCT periodic orbits (endpoints[0] != endpoints[1]). homoclinic: connects an orbit to ITSELF (its own unstable manifold returns to its own stable manifold) -- included for completeness/symmetry with the schema's kind vocabulary, though every entry populated by #838's implementation pass is a heteroclinic; a homoclinic entry here would still need at least one endpoint to be a catalogued row (else it belongs with the two INTRINSIC connection payloads instead, see the schema-level description)."
+      },
+      "model": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["type", "system", "mass_ratio"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["cr3bp", "ccr4bp", "crnbp"],
+            "description": "Dynamical model the connection is computed/verified in. Must match (or be explicitly reconciled with, via each row_ref endpoint's own model_note) the model_assumption of every catalogued endpoint row."
+          },
+          "system": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable primary-secondary system label, e.g. 'Earth-Moon planar CR3BP'."
+          },
+          "mass_ratio": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "description": "The mu this connection was computed at. NOT guaranteed identical to a row_ref endpoint's own recorded mass_ratio -- e.g. a connection reproducing a published paper's own printed mu may differ from this project's registry mu at the ~1e-8-relative level (task #854's Kumar-vs-project-mu case); any such difference MUST be stated in that endpoint's model_note."
+          }
+        }
+      },
+      "jacobi_constant": {
+        "type": ["number", "null"],
+        "description": "OPTIONAL top-level convenience field: the Jacobi constant (CR3BP) or equivalent reference energy this connection was verified at, when both endpoints share one (a heteroclinic between same-C periodic orbits, the common case). Redundant with, and MUST agree with, each endpoint's own jacobi_constant when both are populated -- present here purely so a reader/query does not need to descend into endpoints[] to find 'at what energy was this connection demonstrated'."
+      },
+      "endpoints": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "description": "Ordered pair: index 0 = unstable-manifold ORIGIN, index 1 = stable-manifold DESTINATION (a heteroclinic/homoclinic connection is directed; the REVERSE direction, if separately verified, is its own entry -- see reverse_of). At least one of the two MUST carry row_ref (the admission criterion for this registry) -- enforced here via 'contains' and re-verified referentially by the Python gate.",
+        "contains": {
+          "type": "object",
+          "required": ["row_ref"]
+        },
+        "items": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["row_ref", "identity_evidence"],
+              "properties": {
+                "row_ref": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A data/catalogue.yaml row id. MUST resolve to an existing, live catalogue row -- enforced by the Python semantic gate (src/cyclerfinder/data/validate_connections.py), never silently skipped."
+                },
+                "identity_evidence": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "MANDATORY, non-empty: states HOW the connection's node was independently matched to the row's own recorded numbers (e.g. 're-converged node reproduces this row's state_nd to 3.1e-15, period_nd to 1.1e-13'). A row_ref without concrete identity evidence is an unverified claim, not a connection -- this field exists specifically so 'this transfer arrives at this catalogued orbit' is never asserted without a number backing it."
+                },
+                "model_note": {
+                  "type": ["string", "null"],
+                  "description": "OPTIONAL. REQUIRED IN PRACTICE (not structurally enforced -- a judgment call for the adjudicating task) whenever this entry's model.mass_ratio (or other model constant) differs from the referenced row's own recorded value, stating the magnitude of the difference and why the identity claim still holds across it (task #854's worked case: Kumar's printed mu vs this project's registry mu, ~1.0e-8 relative)."
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["uncatalogued"],
+              "properties": {
+                "uncatalogued": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": ["family", "derivation"],
+                  "description": "Inline descriptor for a HALF-catalogued connection's other node -- never a dangling reference, never a fabricated catalogue row. Makes the half-catalogued case first-class rather than a degenerate special case.",
+                  "properties": {
+                    "family": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Human-readable family/source label for this uncatalogued node, e.g. 'Vaquero 2013 Sec 4.4.7 Earth-Moon 2:1 Periodic Cycler family member'."
+                    },
+                    "state_nd": {
+                      "type": ["array", "null"],
+                      "description": "OPTIONAL full nondimensional state vector [x, y, z, xdot, ydot, zdot] (or a subset for a planar orbit), when available."
+                    },
+                    "x0": {"type": ["number", "null"], "description": "Nondimensional x0, for planar entries that carry x0/ydot0 rather than a full state_nd."},
+                    "ydot0": {"type": ["number", "null"], "description": "Nondimensional ydot0, paired with x0."},
+                    "period_nd": {"type": ["number", "null"], "description": "Nondimensional period."},
+                    "jacobi_constant": {"type": ["number", "null"], "description": "Jacobi constant (CR3BP) or equivalent conserved/reference quantity, when applicable."},
+                    "lambda_max": {"type": ["number", "null"], "description": "Dominant Floquet/monodromy eigenvalue magnitude, when the node's stability character is relevant evidence."},
+                    "derivation": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "MANDATORY provenance string: which function/module produced this node's numbers and from what source (e.g. 'build_vaquero_overlap_node, the #799-archived guess vendored in OVERLAP_GRID_ICS, re-converged at call time') -- never a hand-typed, unsourced number."
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "connection": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "The connection's own geometry: manifold branch/crossing-index selection, Poincare-section crossing state, and the primary Newton-solve residual. Field names deliberately reuse the vocabulary already shared by ccr4bp_provenance.connection, crnbp_provenance...seed_orbit_homoclinic.connection, and this project's own connection-search results.json records (branch_u/branch_s, k_u/k_s, tau_u/tau_s, epsilon, newton_residual, crossing_x/crossing_xdot) -- a consumer that can read one connection payload in this codebase can read all three."
+      },
+      "evidence": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "The independent verification battery this project's connection searches record (full_state_gap, ghost_distance_from/to, radau_gap, backward_reapproach/forward_reapproach, t_u_nd/t_s_nd, jacobi_drift, dv_kms, etc.) -- whatever subset the producing task actually ran and recorded. additionalProperties is intentionally permissive: different connection kinds (CR3BP heteroclinic vs CCR4BP/CRNBP homoclinic) run different verification instruments."
+      },
+      "evidence_class": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Free-text discriminator for the EVIDENCE KIND, not just its existence -- e.g. 'SELF-CONSISTENCY ONLY (this project's own verification battery, no external published target)' vs 'DIGIT-GRADE REPRODUCTION of a published state (match_distance ... vs <source> Table N)'. This is the #822-vs-#827/#854 distinction: two connections can touch the SAME node with genuinely different evidentiary weight, and evidence_class is what makes that queryable rather than requiring a reader to parse two different 2500-character prose comments to tell them apart."
+      },
+      "reverse_of": {
+        "type": ["string", "null"],
+        "description": "OPTIONAL: the id of this entry's own reverse-direction counterpart (endpoints swapped), when BOTH directions have been independently verified and both are registered as separate directed entries (per #838's directionality choice: entries are directed and per-demonstration, not a single bidirectional record, since in practice the two directions are verified at different Jacobi constants and with different evidence -- see round_trip_note when only one direction exists)."
+      },
+      "round_trip_note": {
+        "type": ["string", "null"],
+        "description": "OPTIONAL free-text note on round-trip status when reverse_of is null but a reverse direction is known to exist at a DIFFERENT Jacobi constant, or is explicitly not yet demonstrated at this connection's own C -- avoids silently implying a round-trip transport claim that has not actually been verified at this specific energy."
+      },
+      "dv_kms": {
+        "type": ["number", "null"],
+        "description": "Delta-V cost of this transfer, km/s. 0.0 for a true (ballistic) heteroclinic/homoclinic connection. Null when not computed/applicable."
+      },
+      "provenance": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["task_refs", "data", "module"],
+        "properties": {
+          "task_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "description": "Task numbers (e.g. '#822', '#828') that found and/or adjudicated this connection."
+          },
+          "data": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path to the raw run-record artifact this entry was transcribed from (e.g. a data/found/.../results.json path + the specific row/key within it)."
+          },
+          "module": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path to the search/connection module that produced this result."
+          },
+          "commit": {
+            "type": ["string", "null"],
+            "description": "Git commit SHA the underlying computation was verified against, when known."
+          },
+          "notes": {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+            "description": "Paths to the docs/notes/ write-up(s) documenting this connection's discovery/adjudication."
+          }
+        }
+      }
+    }
+  }
+}

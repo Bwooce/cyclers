@@ -12,6 +12,10 @@ repos:
         name: check-jsonschema (cycler_networks.yaml)
         files: ^data/cycler_networks\.yaml$
         args: ["--schemafile", "data/cycler_network.schema.json"]
+      - id: check-jsonschema
+        name: check-jsonschema (manifold_connections.yaml)
+        files: ^data/manifold_connections\.yaml$
+        args: ["--schemafile", "data/manifold_connection.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.15  # keep in sync with the ruff dev-dependency in pyproject.toml
     hooks:
@@ -66,4 +70,15 @@ repos:
         entry: uv run pytest tests/data/test_cycler_networks.py -q
         language: system
         files: ^(data/cycler_networks\.yaml|data/cycler_network\.schema\.json|src/cyclerfinder/data/validate_networks\.py)$
+        pass_filenames: false
+      # Manifold-connection registry gate (task #838 design, #856 implementation):
+      # any data/manifold_connections.yaml edit (or a change to the schema/
+      # validator themselves) re-runs the referential-integrity ratchet locally,
+      # before push -- mirrors the cycler-network-ratchets hook above. Also fires
+      # on a data/catalogue.yaml edit: a row_ref target could be renamed/removed.
+      - id: manifold-connection-ratchets
+        name: manifold connection ratchets
+        entry: uv run pytest tests/data/test_manifold_connections.py -q
+        language: system
+        files: ^(data/manifold_connections\.yaml|data/manifold_connection\.schema\.json|src/cyclerfinder/data/validate_connections\.py|data/catalogue\.yaml)$
         pass_filenames: false
