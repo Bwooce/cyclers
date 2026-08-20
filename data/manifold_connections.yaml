@@ -8,7 +8,10 @@
 # motivating case), transcribed -- not recomputed -- from data/found/822_vaquero_em_free_transfer/
 # results.json and src/cyclerfinder/search/vaquero_em_cycler_connections.py::OVERLAP_GRID_ICS, both
 # independently re-verified against the live files before this registry was written (every number
-# below matches its source to full stored precision).
+# below matches its source to full stored precision). A third entry was added once #854 adjudicated
+# #827's Kumar-Rawat-Rosengren-Ross (2026) C=2.54 digit-grade reproduction in favour of recording it
+# (docs/notes/2026-08-21-854-c254-kumar-evidence-adjudication.md); its numbers were independently
+# re-derived fresh (not transcribed from results.json) before this entry was written.
 - id: em-vaquero-hetero-wu21c254-ws31c254-2026
   kind: heteroclinic
   model:
@@ -135,3 +138,93 @@
     notes:
       - "docs/notes/2026-08-11-822-vaquero-em-free-transfer.md"
       - "docs/notes/2026-08-12-828-vaquero-connection-tier-adjudication.md"
+
+- id: em-kumar-hetero-wu31c254-ws21c254-2026
+  kind: heteroclinic
+  model:
+    type: cr3bp
+    system: "Earth-Moon planar CR3BP (Kumar et al. 2026's own printed mu, NOT this project's registry mu)"
+    mass_ratio: 0.012150584270572 # KUMAR_MU; the row's own registry mass_ratio is 0.01215058439469525 (Delta mu ~= 1.24e-10)
+  jacobi_constant: 2.54
+  endpoints:
+    # index 0 = unstable-manifold ORIGIN (3:1), index 1 = stable-manifold DESTINATION (2:1)
+    - row_ref: vaquero-31-c254-em-cycler-2013
+      identity_evidence: >
+        #854: node31 re-derived at Kumar's own mu (build_kumar_node(kumar_system(), 3, 2.54))
+        agrees with this row's own recorded state_nd/period_nd/jacobi_constant to
+        |Delta x0|=3.398e-10, |Delta ydot0|=1.061e-09, |Delta period_nd|=3.345e-10,
+        |Delta jacobi_constant|=5.329e-15 -- consistent with the ~1.24e-10 mu offset
+        between the two sources (NOT the ~1e-15-scale match #828 got at IDENTICAL mu),
+        confirming this is genuinely the same physical orbit and not a coincidentally
+        nearby one.
+      model_note: >
+        Computed at Kumar-Rawat-Rosengren-Ross (2026)'s own printed mu
+        (0.012150584270572), NOT this row's own registry mass_ratio
+        (0.01215058439469525). Delta mu ~= 1.24e-10 absolute -- see the
+        identity_evidence agreement scale above, and #854's adjudication note
+        Sec. 2 for the full comparison table.
+    - uncatalogued:
+        family: "Kumar-Rawat-Rosengren-Ross 2026 Table 6 Earth-Moon 2:1 family member (their own printed mu)"
+        x0: 0.964310487216 # KUMAR_TABLE6_ICS[(2, 2.54)], re-converged
+        ydot0: -1.20233213851
+        period_nd: 6.467341165267291
+        jacobi_constant: 2.54
+        derivation: >
+          build_kumar_node(kumar_system(), 2, 2.54): re-converges Kumar et al. 2026's
+          own Table 6 printed IC at their own mu (KUMAR_MU=0.012150584270572; the
+          function itself rejects disagreement with the print). NOT a catalogued row --
+          no Vaquero/registry-mu 2:1 family member exists near C=2.54 in this project's
+          own model (VAQUERO_C_RANGE_21 bottoms out at 1.98, but no member was
+          catalogued at this specific C).
+  connection: # field names shared with crnbp seed_orbit_homoclinic.connection / results.json
+    branch_u: -1
+    branch_s: -1
+    k_u: 19
+    k_s: 14
+    tau_u: 3.7202948069488033
+    tau_s: 5.98472243980346
+    epsilon: 1.0e-4 # KUMAR_EPSILON
+    crossing_x: -0.04302415992680126
+    crossing_xdot: 3.699595420030449
+    newton_residual: 3.363134020022193e-11
+  evidence:
+    full_state_gap: 4.6513318085564455e-07
+    ydot_signs_match: true
+    ghost_distance_from: 0.592829534095866
+    ghost_distance_to: 1.6996467513384976
+    radau_gap: 4.584414112651359e-07
+    backward_reapproach: 4.965745036947741e-08
+    forward_reapproach: 9.264828886692251e-05
+    t_u_nd: 20.360431324628056
+    t_s_nd: -13.4503643835325
+    jacobi_drift: [2.1882051726151985e-11, 2.9749536167855695e-12]
+    dv_kms: 0.0
+  evidence_class: >
+    DIGIT-GRADE REPRODUCTION of a published state (match_distance
+    7.610531887910121e-07 vs Kumar-Rawat-Rosengren-Ross (2026) Table 5's own
+    printed C=2.54 Wu(3:1)->Ws(2:1) intersection state; runner-up separation
+    1.307, four orders of magnitude wider than the match distance). Independently
+    re-derived end-to-end from Kumar's printed state alone, never from a cached
+    result file (#854 Sec. 1(b)) -- a second, independent SOURCE confirms this
+    connection, not just a second run of this project's own code.
+  round_trip_note: >
+    The FORWARD direction Wu(2:1)->Ws(3:1) at this same node exists in this
+    project's OWN registry mu (see em-vaquero-hetero-wu21c254-ws31c254-2026
+    above) but that is a DIFFERENT model (Delta mu ~= 1.24e-10) -- not a true
+    same-model round trip. #840 (registered) would close a same-model round
+    trip at this row's own registry mu; #854 notes the C=2.54 leg is now a
+    low-risk confirmation run rather than a blind search, existence being
+    independently pre-confirmed near this exact node at a neighbouring mu.
+  dv_kms: 0.0
+  provenance:
+    task_refs: ["#827", "#854"]
+    data: >-
+      data/found/827_kumar_table5_reproduction/results.json (C=2.54 row);
+      independently re-verified fresh by #854 via
+      keh.reproduce_table5_intersection(system, 2.54), seeded only from Kumar's
+      printed state, never from results.json
+    module: "src/cyclerfinder/search/kumar_em_resonant_heteroclinics.py"
+    commit: "168ebb09"
+    notes:
+      - "docs/notes/2026-08-21-827-kumar-table5-reproduction.md"
+      - "docs/notes/2026-08-21-854-c254-kumar-evidence-adjudication.md"

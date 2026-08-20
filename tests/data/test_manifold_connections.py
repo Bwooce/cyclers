@@ -106,12 +106,13 @@ def _build_self_test_connection() -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def test_committed_registry_has_the_two_822_entries() -> None:
+def test_committed_registry_has_the_three_entries() -> None:
     connections = load_connections_raw(CONNECTIONS_PATH)
     ids = {c["id"] for c in connections}
     assert ids == {
         "em-vaquero-hetero-wu21c254-ws31c254-2026",
         "em-vaquero-hetero-wu21c266-ws31c266-2026",
+        "em-kumar-hetero-wu31c254-ws21c254-2026",
     }
 
 
@@ -163,6 +164,37 @@ def test_committed_entries_transcribed_values_match_source_artifact() -> None:
     assert c266["connection"]["newton_residual"] == src266["connection"]["residual"]
     assert c266["connection"]["crossing_x"] == src266["connection"]["crossing_xv"][0]
     assert c266["connection"]["crossing_xdot"] == src266["connection"]["crossing_xv"][1]
+
+
+def test_kumar_entry_reproduces_fresh_not_just_transcribed() -> None:
+    """The #854 entry's numbers are re-derived FRESH here (not read back from
+    any cached results.json), seeded only from Kumar et al.'s own printed
+    Table-5 state -- the same non-circularity check #854's own adjudication
+    ran, repeated as a permanent ratchet."""
+    import cyclerfinder.search.kumar_em_resonant_heteroclinics as keh
+
+    system = keh.kumar_system()
+    fresh = keh.reproduce_table5_intersection(system, 2.54)
+    assert fresh.connection is not None
+
+    connections = {c["id"]: c for c in load_connections_raw(CONNECTIONS_PATH)}
+    entry = connections["em-kumar-hetero-wu31c254-ws21c254-2026"]
+
+    assert entry["connection"]["newton_residual"] == pytest.approx(
+        fresh.connection.residual, rel=1e-9
+    )
+    assert entry["connection"]["crossing_x"] == pytest.approx(
+        fresh.connection.crossing_xv[0], rel=1e-9
+    )
+    assert entry["connection"]["crossing_xdot"] == pytest.approx(
+        fresh.connection.crossing_xv[1], rel=1e-9
+    )
+    assert entry["connection"]["k_u"] == fresh.connection.k_u
+    assert entry["connection"]["k_s"] == fresh.connection.k_s
+    assert entry["connection"]["branch_u"] == fresh.connection.branch_u
+    assert entry["connection"]["branch_s"] == fresh.connection.branch_s
+    assert fresh.matched is True
+    assert fresh.match_distance == pytest.approx(7.610531887910121e-07, rel=1e-6)
 
 
 # ---------------------------------------------------------------------------
