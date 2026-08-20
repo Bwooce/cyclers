@@ -1762,17 +1762,45 @@ unchanged. See `git log` around this date for the corrected commit.
   whether such an object belongs as a FIELD on the endpoint row(s), as its own ROW, or (the
   `#828` outcome, deliberately) as prose only. `#828` shipped comment-only annotations rather
   than pre-empt this.
-- `#839` — registered 2026-08-12 (found during `#828`, not dispatched; **gated on `#827`**):
-  `vaquero-31-c313-em-resonant-po-2013` sits at **C=3.13, INSIDE** Kumar-Rawat-Rosengren-Ross
-  2026's published `C_J ∈ [3.00, 3.15]` 3:1<->2:1 heteroclinic band — which is exactly `#827`'s
-  digit-grade reproduction target. It is also one of `#811`'s two `resonant_po` rows, classed
-  that way precisely for "**no demonstrated transport utility**" (schema v4.9/`#453`). If `#827`
-  lands a heteroclinic touching that member, an `orbit_class` question (`resonant_po` ->
-  `cycler`) goes live — a genuinely DIFFERENT kind of writeback from a validation-tier bump, and
-  per `#828`'s analysis **the only place this family's connection work could actually move a
-  catalogue field**. Note the row is also SOI-MARGINAL (periselene 66,995 km = 1.012x lunar SOI,
-  outside by ~812 km/1.2%), so the `orbit_class` call would need both the transport evidence and
-  a re-look at `#811`'s own stated boundary call, not just the former.
+- `#839` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#828`; gated on `#827`,
+  dispatched after `#827` closed): **fresh, unseeded search for a `Wu(3:1) <-> Ws(2:1)`
+  connection AT C=3.13 specifically (not one of `#827`'s seven printed Table-5 rows) — GENUINE,
+  INDEPENDENTLY-VERIFIED CONNECTION FOUND, touching `vaquero-31-c313-em-resonant-po-2013` at its
+  OWN Jacobi constant via its OWN orbit as the 3:1 node.** mu = this project's own registry
+  Earth-Moon value (matching the catalogue row), NOT Kumar's printed mu. node31 IS the catalogue
+  row (re-converged to ~1e-13 agreement); node21 (no Vaquero/catalogue counterpart reaches
+  C=3.13) was built by continuing Kumar's own Table-6 2:1 print from C=3.10 to C=3.13 at this
+  project's mu (0.001-step continuation — a 0.01 step was tried first and measured to JUMP
+  BRANCHES, see the module docstring) and cross-checked directly against `#827`'s own
+  `build_kumar_node(kumar_system(), 2, 3.10)` (period/`|lambda|` agree to ~1e-8 relative,
+  confirming it is the same physical family member, not a wrong branch — an advisor-caught gap,
+  resolved same session). `#822`'s full, UNMODIFIED verification battery (Newton residual,
+  ydot-sign gate, ghost guard, independent-Radau crosscheck, forward/backward re-approach,
+  Jacobi drift) passed with excellent margins at TWO independent phase-grid resolutions (n_tau=48
+  and 64), each landing on a DIFFERENT specific manifold crossing (both converge+verify — existence
+  corroborated twice, not claimed to be the same object, and neither run enumerated the full
+  intersection set). Both transfer legs dip to ~46,200 km selenocentric — inside the lunar SOI
+  and even the Hill radius, unlike the row's own periodic orbit (periselene 66,995 km, 1.2%
+  OUTSIDE the SOI) — reported as physical data for the adjudication below, not as a gate here.
+  **Compute-only result, no catalogue writeback** (this row's `orbit_class`/`validation_level`/
+  `our_status` untouched) — new follow-up **`#855`** registered for the `orbit_class`
+  (`resonant_po` -> `cycler`?) adjudication. Module:
+  `src/cyclerfinder/search/vaquero_c313_targeted_search.py`. Data:
+  `data/found/839_c313_targeted_search/results.json`. 11 new evidence tests (NOT slow, ~50s):
+  `tests/search/test_vaquero_c313_targeted_search.py`. Full account:
+  `docs/notes/2026-08-21-839-c313-targeted-search.md`.
+- `#855` — registered 2026-08-21 (found during `#839`, not dispatched): **adjudicate whether
+  `#839`'s genuine, independently-verified `Wu(3:1) <-> Ws(2:1)` connection at C=3.13 — touching
+  `vaquero-31-c313-em-resonant-po-2013` via its OWN orbit as node31 — constitutes "demonstrated
+  transport utility" under schema v4.9/`#453`'s criterion**, and if so whether `orbit_class`
+  should move `resonant_po -> cycler`. Must reconcile with `#811`'s own SOI-marginal boundary
+  call on the PERIODIC ORBIT itself (periselene 66,995 km, 1.2% outside the lunar SOI) against
+  `#839`'s finding that the TRANSFER LEG dips to ~46,200 km selenocentric (well inside the SOI) —
+  these are two different objects (the row's own orbit vs. a manifold leg reaching it) and the
+  adjudication needs to work out which one the schema's criterion is actually asking about. Per
+  the `#822`/`#828` and `#827`/`#854` split precedent, this is a SEPARATE adjudication task from
+  `#839`'s own compute — no catalogue writeback was performed by `#839`. Details:
+  `docs/notes/2026-08-21-839-c313-targeted-search.md`.
 - `#840` — registered 2026-08-12 (found during `#828`, not dispatched): `#822` demonstrated the
   REVERSE direction Wu(3:1)->Ws(2:1) at **C=2.60 only** — a C at which NEITHER family node is a
   catalogued row. Run the reverse at the two band edges (C=2.54 and C=2.66) so each of the two
