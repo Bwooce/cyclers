@@ -224,7 +224,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [153, 153]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.65   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -718,7 +718,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.95   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [207]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.11   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.11   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -891,7 +891,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [143]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.92   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.92   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.856   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -1049,7 +1049,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.99   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [268, 2315]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.55   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.55   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.001   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -1248,7 +1248,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [181, 902]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.23   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.23   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -1420,7 +1420,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [94, 558]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.12   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.12   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -5179,7 +5179,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [174]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -5346,7 +5346,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.19   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [141]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -5511,7 +5511,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [115]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.15   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.15   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -5682,7 +5682,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [121]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -5856,7 +5856,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [175]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.56   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.56   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6029,7 +6029,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [116]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.17   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.17   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6206,7 +6206,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [160]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.18   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.18   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6378,7 +6378,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.15   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [173]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.11   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.11   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6545,7 +6545,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.26   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [154]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.01   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.01   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6712,7 +6712,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [196]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.55   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.55   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -6887,7 +6887,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.15   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.15   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7060,7 +7060,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [191, 918]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.40   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.40   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7274,7 +7274,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [130]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.02   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.02   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7453,7 +7453,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [163]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.38   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.38   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7626,7 +7626,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7805,7 +7805,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [132]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.05   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.05   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -7989,7 +7989,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.03   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [131]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.65   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -8166,7 +8166,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [195]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.58   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.58   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -8347,7 +8347,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.16   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [93]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.48   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.48   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -8527,7 +8527,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -8712,7 +8712,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.12   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [199]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.13   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.13   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -8897,7 +8897,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.49   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [66]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.09   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.09   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -12235,7 +12235,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.04   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [229]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.97   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.97   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.279   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -12404,7 +12404,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [168]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.00   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.00   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -12575,7 +12575,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [133]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.92   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.92   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -12756,7 +12756,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.90   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [182]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.07   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.07   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.014   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -12928,7 +12928,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [128]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.738   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13100,7 +13100,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [118]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.305   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13281,7 +13281,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.92   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [270]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.17   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.17   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13453,7 +13453,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.10   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [205]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.90   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.90   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.12   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13622,7 +13622,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [195]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13796,7 +13796,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [189]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.45   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.45   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -13971,7 +13971,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.12   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [122]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -14142,7 +14142,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [170]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.44   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.44   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -14319,7 +14319,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.96   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [279]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.95   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.95   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -14497,7 +14497,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.18   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [186]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.44   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.44   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -14671,7 +14671,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.48   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [154]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.08   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.08   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -14845,7 +14845,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [262]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.79   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.79   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15026,7 +15026,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.45   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [142]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15203,7 +15203,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [134]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.10   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.10   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15386,7 +15386,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.98   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [198]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.74   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.74   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.004   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15564,7 +15564,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [107]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.23   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.23   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15738,7 +15738,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.49   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [82]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.90   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.90   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -15913,7 +15913,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [219]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.36   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.36   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16094,7 +16094,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [104]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.87   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.87   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.067   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16272,7 +16272,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [116]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16455,7 +16455,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.02   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [245]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.78   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.78   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16629,7 +16629,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.30   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [169]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.27   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16803,7 +16803,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.71   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [142]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -16978,7 +16978,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.03   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [154]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -17155,7 +17155,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.31   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [94]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.30   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.30   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -17332,7 +17332,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.72   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [73]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.92   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.92   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.888   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -17510,7 +17510,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.10   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [204]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.09   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.09   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -17690,7 +17690,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.48   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [154]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.38   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.38   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -17870,7 +17870,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.15   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [130]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.701   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18051,7 +18051,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [198]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.57   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.57   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18234,7 +18234,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.10   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [117]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.90   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.90   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18418,7 +18418,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18604,7 +18604,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.11   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [123]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18784,7 +18784,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.49   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [82]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.25   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.25   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -18964,7 +18964,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [160]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.71   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.71   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -19150,7 +19150,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [81]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.87   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.87   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.808   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -19337,7 +19337,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [112]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.24   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.24   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -19523,7 +19523,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.24   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [177]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.76   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.76   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -19703,7 +19703,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.83   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [138]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.09   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.09   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -19883,7 +19883,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.14   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [101]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.00   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.00   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -20072,7 +20072,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.24   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [101]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.81   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.81   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -20255,7 +20255,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.82   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [70]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.07   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.07   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -20438,7 +20438,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.97   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [280]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.69   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.69   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -20628,7 +20628,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.49   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [153]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.39   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.39   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -20814,7 +20814,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.45   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [141]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.20   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.20   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21000,7 +21000,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.97   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [196]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 3.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 3.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21190,7 +21190,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.48   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [82]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.41   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.41   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21376,7 +21376,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [105]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.22   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.22   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21562,7 +21562,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.11   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [202]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.13   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.13   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21748,7 +21748,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.16   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [130]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.708   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -21935,7 +21935,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.10   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [126]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.37   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.37   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -22124,7 +22124,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.12   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [64]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.448   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -22314,7 +22314,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.50   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [152]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.37   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.37   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -22506,7 +22506,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.46   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [84]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.45   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.45   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -22698,7 +22698,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.92   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [213]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.40   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.40   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -22867,7 +22867,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.03   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [179]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.22   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.22   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23034,7 +23034,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.17   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [133]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.07   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.07   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23201,7 +23201,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.34   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [111]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.029   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23369,7 +23369,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.09   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [203]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.927   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23541,7 +23541,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.95   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [264]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.30   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.30   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23719,7 +23719,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [197]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -23896,7 +23896,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [135]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.90   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.90   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24080,7 +24080,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [220]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.26   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.26   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24252,7 +24252,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [158]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.07   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.07   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24420,7 +24420,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.24   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [123]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.17   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24589,7 +24589,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [174]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24760,7 +24760,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [115]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.89   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.89   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.606   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -24932,7 +24932,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [235]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.39   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.39   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25110,7 +25110,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [119]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.92   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.92   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25285,7 +25285,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [181]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.23   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.23   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25462,7 +25462,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [123]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.994   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25646,7 +25646,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.92   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [279]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.89   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.89   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.84   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25818,7 +25818,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [156]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.04   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.04   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -25995,7 +25995,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.98   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [227]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.59   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.59   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.003   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -26170,7 +26170,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.13   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [142]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.33   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.33   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -26341,7 +26341,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.33   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [113]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.11   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.11   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -26512,7 +26512,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.58   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [96]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.232   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -26684,7 +26684,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.95   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [283]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.62   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.62   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -26862,7 +26862,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.11   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [213]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.16   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.16   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27036,7 +27036,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.31   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [180]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.88   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.88   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.424   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27211,7 +27211,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.15   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.15   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27397,7 +27397,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.02   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [189]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.82   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.82   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27571,7 +27571,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [128]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.48   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.48   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27745,7 +27745,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.45   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [104]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.21   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.21   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -27919,7 +27919,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.78   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [89]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.99   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.99   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.194   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28094,7 +28094,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.19   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [141]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.38   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.38   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28271,7 +28271,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.77   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [99]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.96   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.96   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.716   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28449,7 +28449,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [122]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.03   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.03   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28635,7 +28635,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.98   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [289]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.49   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.49   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28813,7 +28813,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.17   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [199]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.05   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.05   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -28987,7 +28987,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.91   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [176]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.98   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.98   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.147   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -29168,7 +29168,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [199]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.40   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.40   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -29348,7 +29348,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [107]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.99   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.99   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.155   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -29535,7 +29535,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.91   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [211]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.39   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.39   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.009   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -29716,7 +29716,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [158]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.89   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.89   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -29893,7 +29893,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.30   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [116]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.50   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.50   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30070,7 +30070,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.62   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [95]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.18   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.18   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30247,7 +30247,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.09   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [81]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30425,7 +30425,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [179]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.47   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.47   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30608,7 +30608,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.03   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [248]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.97   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.97   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30788,7 +30788,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.26   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [186]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.35   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.35   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -30968,7 +30968,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.57   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [161]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.98   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.98   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.496   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -31149,7 +31149,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.96   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [274]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.61   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.61   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -31336,7 +31336,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.47   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [150]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.032   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -31520,7 +31520,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.45   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [139]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.21   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.21   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -31709,7 +31709,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [219]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.31   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.31   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -31893,7 +31893,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.15   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.76   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.76   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32073,7 +32073,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [104]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.34   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.34   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32253,7 +32253,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.89   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [86]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.02   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.02   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32433,7 +32433,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [231]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.84   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.84   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32620,7 +32620,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [115]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.17   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.17   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32803,7 +32803,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [121]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -32992,7 +32992,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.09   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [219]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.75   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.75   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -33172,7 +33172,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.38   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [173]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.17   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.17   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -33352,7 +33352,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.98   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [191]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.61   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.61   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -33542,7 +33542,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.00   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [232]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.14   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.14   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -33725,7 +33725,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.26   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [120]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.57   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.57   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -33908,7 +33908,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.67   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [92]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.15   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.15   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -34091,7 +34091,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [79]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.584   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -34278,7 +34278,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.90   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [276]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 3.44   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 3.44   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.017   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -34468,7 +34468,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.18   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [198]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.92   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.92   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -34654,7 +34654,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.58   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [160]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.21   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.21   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -34840,7 +34840,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.10   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [202]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.65   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35026,7 +35026,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.46   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [143]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35218,7 +35218,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [158]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.93   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.93   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35404,7 +35404,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [104]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.34   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.34   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35590,7 +35590,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.09   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [81]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35777,7 +35777,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [175]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.59   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.59   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -35966,7 +35966,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [91]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.85   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.85   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 3.015   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -36156,7 +36156,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [119]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.10   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.10   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -36348,7 +36348,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.11   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [74]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.90   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.90   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 2.76   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -36535,7 +36535,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.95   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [285]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 3.00   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 3.00   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -36725,7 +36725,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.32   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [179]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.57   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.57   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -36911,7 +36911,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [147]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.746   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -37098,7 +37098,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.11   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [117]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.27   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -37287,7 +37287,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [128]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.67   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.67   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -37476,7 +37476,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.78   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [89]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.08   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.08   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -37665,7 +37665,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.14   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [69]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.06   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.06   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -37857,7 +37857,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.04   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [241]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.91   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.91   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -38049,7 +38049,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.59   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [160]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.24   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.24   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -38241,7 +38241,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.48   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [149]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.30   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.30   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -38436,7 +38436,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [219]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.32   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.32   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -38632,7 +38632,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [104]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.34   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.34   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -38824,7 +38824,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [116]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.17   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.17   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39019,7 +39019,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.19   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [64]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.97   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.97   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.939   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39212,7 +39212,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.20   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [195]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.09   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.09   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39404,7 +39404,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.47   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [79]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.18   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.18   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39602,7 +39602,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.93   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [183]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.09   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.09   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.031   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39801,7 +39801,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.07   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [160]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -39996,7 +39996,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 2.08   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [81]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.94   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.94   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 1.296   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -40192,7 +40192,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.29   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [57]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.01   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.01   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -40390,7 +40390,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.63   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [158]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -40588,7 +40588,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004: outbound-arc aphelion / Mars sma (1.52 AU)
     transit_times_days: [105]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.35   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.35   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -40813,7 +40813,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [150, 150]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 2.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 2.65   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -41050,7 +41050,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [93, 93]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.45   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.45   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -41254,7 +41254,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [92, 92]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.08   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.08   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -41421,7 +41421,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [85, 85]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.70   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.70   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -41598,7 +41598,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [175, 175]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.62   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.62   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -41783,7 +41783,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [171, 171]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.76   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.76   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -41953,7 +41953,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [171, 171]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.81   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.81   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -42114,7 +42114,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [118, 118]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.27   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -42290,7 +42290,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [113, 113]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.26   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.26   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
@@ -42468,7 +42468,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [82, 82]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.10   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.10   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -42641,7 +42641,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [173, 199]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.19   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -42821,7 +42821,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [143, 207]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.27   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -42998,7 +42998,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [111, 142]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 1.34   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.34   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -43179,7 +43179,7 @@
   invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio:        # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [262, 262]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
-    turn_ratio: 0.95   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.95   # Russell 2004: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
   - arc_type: generic
     resonance:
@@ -43504,7 +43504,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [115]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.89   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.89   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -43671,7 +43671,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [123]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -43844,7 +43844,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [231]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.8   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.8   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44015,7 +44015,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [256]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.37   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.37   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44180,7 +44180,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.44   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [137]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.89   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.89   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44347,7 +44347,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [250]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.4   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.4   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44515,7 +44515,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [132]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44685,7 +44685,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [129]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -44864,7 +44864,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.91   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [154]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.5   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.5   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45035,7 +45035,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [105]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.88   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.88   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45214,7 +45214,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.77   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [120]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.96   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.96   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45387,7 +45387,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.96   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [164]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.64   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.64   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45561,7 +45561,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 1.31   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [76]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 0.86   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 0.86   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45737,7 +45737,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [256]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.83   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.83   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -45914,7 +45914,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.92   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [263]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.46   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.46   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -46091,7 +46091,7 @@
   invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
     aphelion_ratio: 0.97   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
     transit_times_days: [268]   # [outbound E->M] transit time in days; sourced from Table 3.4
-    turn_ratio: 1.43   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+    turn_ratio: 1.43   # Russell 2004 Table 3.4: max physically allowable turn / max required turn (TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)
   delta_v_kms:        # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
   v_infinity_leveraging_dv_kms:
   fleet_size:

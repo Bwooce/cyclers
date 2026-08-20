@@ -186,7 +186,14 @@ def _build_invariants_block(
     else:
         lines.append("    transit_times_days: null   # not tabulated — see data_gaps[]")
     if tr is not None:
-        tr_comment = "# Russell 2004: required / max ballistic turn (TR >= 1 => strictly ballistic)"
+        # #832: the direction here is the SOURCE's (Russell-Ocampo 2003 p.13):
+        # TR = max physically allowable turn angle / max required turn angle.
+        # The pre-#832 wording was inverted (and self-contradictory against its
+        # own "TR >= 1 => strictly ballistic" clause).
+        tr_comment = (
+            "# Russell 2004: max physically allowable turn / max required turn "
+            "(TR >= 1 => strictly ballistic; Russell-Ocampo 2003 p.13)"
+        )
         lines.append(f"    turn_ratio: {_fmt_float(tr)}   {tr_comment}")
     else:
         lines.append(

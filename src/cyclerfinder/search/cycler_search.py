@@ -89,10 +89,18 @@ def aphelion_ratio(aphelion_au: float) -> float:
 
 
 def turn_ratio(max_allowable: float, omega_max: float) -> float:
-    """Turn ratio: demanded turn over the maximum ballistic turn.
+    """Turn ratio: maximum ballistic turn over the demanded turn.
 
-    ``TR = max_allowable / omega_max``. ``TR <= 1`` means the flyby can deliver
-    the required bend ballistically.
+    ``TR = max_allowable / omega_max``, where ``max_allowable`` is the maximum
+    physically attainable flyby bend (200 km-altitude Earth flyby) and
+    ``omega_max`` is the maximum turn the cycler geometry *requires*. ``TR >= 1``
+    means every flyby can deliver its required bend ballistically ("strictly
+    ballistic"); ``TR < 1`` is near-ballistic at best and needs a nudge.
+
+    Direction is the source's: Russell & Ocampo 2003 p.13, "Turn Ratio
+    TR = max physically allowable turn angle / max required turn angle
+    (delta_MAX)"; see docs/notes/2026-06-17-digest-russell-ocampo-2003.md.
+    The math was always right — the pre-#832 docstring text was inverted.
     """
     return max_allowable / omega_max
 
