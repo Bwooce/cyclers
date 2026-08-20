@@ -12,8 +12,14 @@ intersection states of
 using `#822`'s Poincare-section Newton machinery
 (:mod:`cyclerfinder.search.vaquero_em_cycler_connections`, reused UNCHANGED --
 its search/verify functions are node-generic) generalized to Kumar's own family
-branches: their 3:1/2:1 unstable resonant orbits at ``C_J in {3.00, 3.05, 3.10,
-3.15}``, OUTSIDE Vaquero's ``[2.54, 2.66]`` overlap band.
+branches: their 3:1/2:1 unstable resonant orbits at all seven printed Jacobi
+constants, ``C_J in {2.54, 2.70, 2.86, 3.00, 3.05, 3.10, 3.15}``. Three of the
+seven (2.54, 2.70, 2.86) sit inside or at the edge of Vaquero's own
+``[2.54, 2.66]`` overlap band that `#822` covers -- but that is a DIFFERENT
+connection (Kumar's own printed digits at Kumar's own mu, digit-grade matched,
+vs `#822`'s self-consistency-only evidence at this project's mu); see
+`#827`'s results note for the C=2.54 cross-reference to the catalogued
+``vaquero-31-c254-em-cycler-2013`` row.
 
 WHAT THE SOURCE PRINTS (unlike Vaquero 2013's prose-only existence claim):
 Table 5 (Appendix 8.2) prints EXACT intersection states ``x = (x, y, xdot,
@@ -119,13 +125,14 @@ KUMAR_TABLE5_31_TO_21: dict[float, tuple[int, tuple[float, float, float, float]]
     3.15: (2, (0.203387734653, 0.165418603215, -1.25080421783, 1.62978185751)),
 }
 
-#: The `#827` reproduction target set: the four C values of the paper's own
-#: Table-1 worked summary (C = 3.00, 3.05, 3.10, 3.15) -- the same four the
-#: task registration names. Table 6 prints BOTH parent-orbit ICs at exactly
-#: these C values (it does NOT at 2.70/2.86, whose 3:1/2:1 columns it also
-#: covers -- so all seven rows above are reproducible in principle; the four
-#: below are the registered digit-grade gate).
-KUMAR_REPRODUCTION_CS: tuple[float, ...] = (3.00, 3.05, 3.10, 3.15)
+#: The `#827` reproduction target set: ALL SEVEN printed Table-5 rows -- Table
+#: 6 prints both parent-orbit ICs at every one of them (2.54, 2.70, 2.86
+#: included; :func:`build_kumar_node`'s own ``KeyError`` off a row Table 6
+#: does NOT cover is the enforcement of this claim, verified by running all
+#: seven -- see the `#827` results note). The task's original dispatch named
+#: the four Table-1 worked-summary values (3.00, 3.05, 3.10, 3.15) as an
+#: opening set; the reproduction was completed against all seven.
+KUMAR_REPRODUCTION_CS: tuple[float, ...] = (2.54, 2.70, 2.86, 3.00, 3.05, 3.10, 3.15)
 
 #: Table 6 (Appendix 8.2) -- PRINT provenance, transcribed verbatim from the
 #: corpus PDF (the complete printed table: 4:1 x2, 3:1 x7, 2:1 x8 rows).

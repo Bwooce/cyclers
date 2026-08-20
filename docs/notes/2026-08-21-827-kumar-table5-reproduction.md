@@ -67,6 +67,13 @@ not just the perigee-match gate.
   own per-C read-merge-write convention, unchanged).
 - Added `tests/search/test_kumar_em_resonant_heteroclinics.py` (the module had zero tests before
   this session).
+- **Record-integrity fixes caught on advisor review**: `KUMAR_REPRODUCTION_CS` still listed only
+  the four Table-1 values after all seven had matched — anyone re-running the driver against an
+  empty `results.json` would have reproduced 4 rows, not 7. Widened it to all seven and tightened
+  the corresponding test from a subset check to an equality check. Also corrected two now-
+  falsified docstring claims: Table 6 DOES print both parent ICs at 2.70/2.86 (this session's own
+  successful runs at those C values are direct proof), and C=2.54 is NOT outside Vaquero's
+  `[2.54, 2.66]` band — it is exactly that band's lower edge (see the `#854` section below).
 
 ## Literature-novelty gate
 
@@ -97,10 +104,33 @@ is relevant) connection AT C=3.13 specifically, using this module's machinery
 match digit-grade. That is explicitly out of `#827`'s scope (a reproduction of PRINTED digits,
 not a new search at an untabulated C) and is left for `#839`'s own dispatch.
 
+## C=2.54 touches a catalogued row — new follow-up `#854` registered
+
+`KUMAR_TABLE5_31_TO_21` covers three C values (2.54, 2.70, 2.86) that sit inside or at the edge
+of `#822`'s own Vaquero overlap band `[2.54, 2.66]` — the module docstring originally (wrongly)
+claimed the whole target set was "OUTSIDE" that band; corrected in this session's edit.
+**C=2.54 is exactly Vaquero's own lower band edge, and `data/catalogue.yaml` carries a 3:1 row
+there: `vaquero-31-c254-em-cycler-2013`.** `#828`'s adjudication (`docs/notes/2026-08-12-828-
+vaquero-connection-tier-adjudication.md`, Sec. 1) already identifies this row as one endpoint of
+`#822`'s own C=2.54 connection evidence (self-consistency-only, at this project's mu) — but this
+`#827` C=2.54 result is a **different kind of evidence on the same node**: Kumar's own printed
+mu, Kumar's own Wu(3:1)->Ws(2:1) direction, and a **digit-grade match to a state Kumar et al.
+themselves published** (match_distance 7.6e-07), not merely a self-consistent Newton closure.
+`#828`'s annotation does not cover this (it predates `#827`'s C=2.54 run and is scoped to `#822`'s
+own connection only). Per `#828` Sec. 2's own ruling this is still **not a tier-promotion
+question** — but it is new, specific evidence a future adjudicator would want, and it directly
+overlaps `#840`'s registered scope (round-tripping `#822`'s two in-band annotations at the
+C=2.54/2.66 band edges) for the C=2.54 edge specifically. **Registered as `#854`**: adjudicate
+whether this `#827` C=2.54 digit-grade connection warrants its own comment-only `ADDED EVIDENCE`
+annotation on `vaquero-31-c254-em-cycler-2013` (parallel to `#828`'s two), and whether it narrows
+`#840`'s remaining scope to just the C=2.66 edge. No catalogue writeback performed here — that
+adjudication is `#854`'s, not `#827`'s.
+
 ## Verification
 
-`tests/search/test_kumar_em_resonant_heteroclinics.py` (10 tests, ~29s), `ruff check` / `ruff
-format --check` (both files touched this session, clean), full `uv run mypy src tests` (clean,
-853 source files). No `data/catalogue.yaml` change in this task, so the full `tests/data
-tests/search -q` ratchet was not required by the dispatch; a `tests/search -q` sanity pass was
-run as part of the module's own new test file above. See the `#827` commits in `git log`.
+`tests/search/test_kumar_em_resonant_heteroclinics.py` (10 tests, ~29s), `ruff check .` / `ruff
+format --check .` (repo-wide, clean), full `uv run mypy src tests` (clean, 853 source files). No
+`data/catalogue.yaml` change in this task, so the full `tests/data tests/search -q` ratchet was
+not required by the dispatch; `uv run pytest tests/search -q` (the broader sanity pass) was run
+separately — see that invocation's own result for pass/fail detail. See the `#827` commits in
+`git log`.

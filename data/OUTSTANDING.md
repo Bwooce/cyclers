@@ -1125,7 +1125,14 @@ unchanged. See `git log` around this date for the corrected commit.
   `docs/notes/2026-08-21-827-kumar-table5-reproduction.md`. **`#839` gate: C=3.13 is NOT one of
   the seven printed rows** (`kumar_table5_state6(3.13)` correctly `KeyError`s — asserted by a
   dedicated test) — `#839` still needs its own targeted search at C=3.13, out of `#827`'s scope
-  (a printed-digit reproduction, not a new-C search).
+  (a printed-digit reproduction, not a new-C search). **Advisor review caught two record-
+  integrity defects, both fixed same-session**: `KUMAR_REPRODUCTION_CS` still listed only the
+  four Table-1 values after all seven had matched (widened to all seven, test tightened to an
+  equality check), and two docstring claims the runs themselves falsified (Table 6 DOES print
+  2.70/2.86's parent ICs; C=2.54 is Vaquero's own band EDGE, not outside it). The C=2.54 edge
+  finding — a Kumar-published digit-grade match touching the catalogued `vaquero-31-c254-em-
+  cycler-2013` row, a different evidence kind from `#828`'s existing annotation — registered as
+  `#854`.
 - `#829` — ✓ DONE 2026-08-12 (registered by `#826`, dispatched 2026-08-12): **the bend
   blindness was not an under-report, it was a systematically WRONG PICK — and fixing it
   TRIPLED the campaign's CLOSE-AND-MATCH count.** `run_row` filtered on `converged` and
@@ -1775,6 +1782,18 @@ unchanged. See `git log` around this date for the corrected commit.
   template) and the CR3BP time-reversal symmetry guarantees existence given the forward hits, so
   this is a demonstration rather than a search. Per `#828` Sec. 2 this is still NOT a tier
   promotion under any reading — register it as evidence completeness, not as an upgrade path.
+- `#854` — registered 2026-08-21 (found during `#827`'s advisor review, not dispatched):
+  **`#827`'s C=2.54 Table-5 row is a Wu(3:1)->Ws(2:1) connection touching the catalogued
+  `vaquero-31-c254-em-cycler-2013` row, digit-grade matched to a state Kumar et al. themselves
+  published (match_distance 7.6e-07)** — a different evidence KIND from `#828`'s existing
+  comment-only annotation on that row (which covers `#822`'s own C=2.54 connection, self-
+  consistency-only, at this project's mu, not Kumar's published digits). Adjudicate whether this
+  warrants its own comment-only `ADDED EVIDENCE` annotation (parallel to `#828`'s two), and
+  whether it narrows `#840`'s remaining round-trip scope to just the C=2.66 edge (C=2.54's
+  round-trip direction is now independently evidenced, via a different paper's own published
+  state, even though `#840` literally asks for `#822`'s `find_free_transfer` machinery
+  specifically). Per `#828` Sec. 2's own ruling this is still NOT a tier-promotion question.
+  Details: `docs/notes/2026-08-21-827-kumar-table5-reproduction.md`.
 - `#842` — registered 2026-08-12 (found during `#834`'s own re-run of the V3 evidence gate,
   not dispatched): **root-cause and re-derive `tests/nbody/test_appc_batch_nbody.py`'s
   drifted Sun-only proxy-TCM regression anchors.** The @slow gate (excluded from the habitual

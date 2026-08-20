@@ -79,8 +79,10 @@ def test_kumar_table5_state6_rejects_a_c_not_in_the_printed_table() -> None:
         keh.kumar_table5_state6(3.13)
 
 
-def test_reproduction_cs_is_a_subset_of_the_printed_table() -> None:
-    assert set(keh.KUMAR_REPRODUCTION_CS) <= set(keh.KUMAR_TABLE5_31_TO_21)
+def test_reproduction_cs_is_exactly_the_printed_table() -> None:
+    """The `#827` target set is ALL SEVEN printed rows, not a proper subset --
+    every one of them was actually run and matched (results.json)."""
+    assert set(keh.KUMAR_REPRODUCTION_CS) == set(keh.KUMAR_TABLE5_31_TO_21)
 
 
 # ---------------------------------------------------------------------------
