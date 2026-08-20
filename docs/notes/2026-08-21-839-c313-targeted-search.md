@@ -128,7 +128,11 @@ nothing here is claimed novel.
 `tests/search/test_vaquero_c313_targeted_search.py` (11 tests, NOT slow, ~50s) —
 `uv run pytest tests/search/test_kumar_em_resonant_heteroclinics.py
 tests/search/test_vaquero_c313_targeted_search.py -q` also run together, clean. `ruff check .` /
-`ruff format --check .` clean on the touched files. `uv run mypy src tests` clean except one
-pre-existing, unrelated `pypdfium2` stub gap in `src/cyclerfinder/verify/ocr.py` (untouched by
-this task, present before it). No `data/catalogue.yaml` change in this task, so the full
-`tests/data tests/search -q` ratchet was not required by the dispatch.
+`ruff format --check .` run REPO-WIDE (not scoped to the touched files): both clean. `uv run mypy
+src tests` clean with ONLY the `ocr`/`viz`/`validation` extras installed alongside `dev`; with
+just `dev` installed, `matplotlib`/`pypdfium2`-importing modules (`tisserand.py`, `plots.py`,
+`ocr.py`, `test_tisserand.py`) surface import-not-found errors that are an environment-sync
+artifact, not a code defect. Even with `ocr` installed, `src/cyclerfinder/verify/ocr.py:110`
+still reports a `pypdfium2` stub gap (that package ships no type stubs) — pre-existing, present
+before this task, in a module this task never touches. No `data/catalogue.yaml` change in this
+task, so the full `tests/data tests/search -q` ratchet was not required by the dispatch.

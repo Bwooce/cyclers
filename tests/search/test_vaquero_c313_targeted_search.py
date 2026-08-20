@@ -124,12 +124,15 @@ def test_node21_at_c310_matches_827s_own_kumar_module_node(
     assert prov.bracket_310_lambda == pytest.approx(lam_kumar, rel=1e-6)
 
 
-def test_node21_rejects_a_mismatched_bracket_topology(system: cr3bp.CR3BPSystem) -> None:
-    """The bracket half-crossing-index equality check
-    (``build_node21_c313``) is a real gate: a bogus C=3.15 guess far off the
-    true family produces a topology mismatch and MUST raise, not silently
-    degrade."""
-    with pytest.raises((RuntimeError, ValueError)):
+def test_node21_rejects_a_branch_jumping_continuation_step(system: cr3bp.CR3BPSystem) -> None:
+    """The interpolation-check gate (``build_node21_c313``'s
+    ``interp_check_tol``) is a real gate: an absurdly coarse continuation
+    step (0.5, jumping straight from C=3.10 to C=3.13 in one shot -- the same
+    failure mode measured for the 0.01 step, module docstring) lands the
+    fixed-``half_crossings``-index corrector on a different branch, and the
+    resulting disagreement with the own-mu bracket interpolation MUST raise
+    a ``ValueError``, not silently degrade."""
+    with pytest.raises(ValueError, match="disagrees with the linear own-mu bracket interpolation"):
         m.build_node21_c313(
             system,
             step=0.5,  # absurdly coarse: forces a branch jump before C313 is even reached
