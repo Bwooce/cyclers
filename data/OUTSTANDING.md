@@ -1101,6 +1101,31 @@ unchanged. See `git log` around this date for the corrected commit.
   expected side = the published `turn_ratio`) — deliberately no "ADDED EVIDENCE" catalogue
   annotations, since citing `#820`'s closure on rows whose closure is inadmissible
   (`5.30ggF3`) or non-independent (`mcconaghy`) would be misleading. Follow-ups: `#829`-`#835`.
+- `#827` — ✓ DONE 2026-08-21 (registered 2026-08-11, found during `#822`; dispatched 2026-08-12,
+  resumed and finished this session after a prior dispatch was killed mid-run by an unrelated
+  process restart, leaving its module/driver/one-row-of-seven already working, uncommitted): **all
+  seven of Kumar-Rawat-Rosengren-Ross (2026)'s printed Table-5 3:1<->2:1 Earth-Moon heteroclinic
+  intersection states reproduce digit-grade — 7/7, no honest negatives.** Built on `#822`'s
+  Poincare-section Newton connection machinery (reused unchanged), at Kumar's own printed
+  `mu = 1.2150584270572e-2`: `src/cyclerfinder/search/kumar_em_resonant_heteroclinics.py` +
+  driver `scripts/screen_827_kumar_table5_reproduction.py`, full record
+  `data/found/827_kumar_table5_reproduction/results.json`. Match distances (planar 4-state,
+  perigee section): C=2.54 7.6e-07, C=2.70 6.8e-05 (tightest margin, still ~1.5x under
+  `KUMAR_MATCH_TOL=1e-4` with runner-up 4 orders of magnitude further away — a specific-point
+  match, not a coincidence, but the one row worth a second look), C=2.86 1.3e-06, C=3.00 1.2e-07,
+  C=3.05 1.4e-06, C=3.10 1.7e-06 (Type 2/long transfer), C=3.15 4.5e-07 (Type 2/long). Full
+  `#822` verification battery (Newton residual, ghost guard, independent Radau crosscheck,
+  forward/backward re-approach, Jacobi drift) passed at all seven, not just the perigee-match
+  gate. **No catalogue writeback** — pure reproduction, per the task's own scope. Literature-
+  novelty gate not re-run live (no catalogue writeback; `#822` already covers this paper's
+  connection concept as `published`, confidence 0.95). 10 new evidence tests (NOT slow, ~29s),
+  `tests/search/test_kumar_em_resonant_heteroclinics.py`: from-scratch reconstruction of two
+  connections (C=2.86 Type 1, C=3.15 Type 2) seeded only by recorded phase indices, plus
+  Table-6 node re-derivation and table-structure checks. Full account:
+  `docs/notes/2026-08-21-827-kumar-table5-reproduction.md`. **`#839` gate: C=3.13 is NOT one of
+  the seven printed rows** (`kumar_table5_state6(3.13)` correctly `KeyError`s — asserted by a
+  dedicated test) — `#839` still needs its own targeted search at C=3.13, out of `#827`'s scope
+  (a printed-digit reproduction, not a new-C search).
 - `#829` — ✓ DONE 2026-08-12 (registered by `#826`, dispatched 2026-08-12): **the bend
   blindness was not an under-report, it was a systematically WRONG PICK — and fixing it
   TRIPLED the campaign's CLOSE-AND-MATCH count.** `run_row` filtered on `converged` and
