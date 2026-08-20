@@ -1032,6 +1032,56 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "docs/notes/2026-07-01-505-pluto-charon-v2-longspan.md + "
         "tests/search/test_505_pc_v2_longspan.py."
     ),
+    # #836 (2026-08-12): adjudication + admission of #810's Pluto-Charon (5,1)
+    # stable member. Assigned against the WRITTEN §14 criteria, not by analogy:
+    # the sibling ross-rt-pc-cycler-32-2026 is V2, and only its V1 BASE (#494's
+    # corrector + Barden + independent-Radau evidence structure) is matched here.
+    # No multi-lap bounded-drift campaign has been run for this member, so V2 is
+    # NOT claimed (that is #843).
+    ("pc-cycler-51-2026", "V1"): (
+        "spec §14 V1, CR3BP-lane form (#836, 2026-08-12): Pluto-Charon "
+        "(mu=0.10876473603280369=106.1/975.5) stable (5,1) prograde cycler, the "
+        "nu=0 midpoint of the family's ONE stable window (C in "
+        "[3.167773862, 3.168099844], width 3.26e-4). INDEPENDENTLY REBUILT FROM "
+        "SCRATCH by #836 against the library primitives (no import of #810's own "
+        "run script): own brentq on nu(C) re-found the root at "
+        "C=3.167935964707404 (#810 recorded ...279; agreement 1.2e-13), "
+        "x0=-0.7058054139667359, T=24.305715846918527 TU; fixed-hc (hc=5) "
+        "corrector crossing residual 1.6e-12; four perturbed restarts "
+        "(dx0 guess +-1e-3, +-3e-3) all reconverge within 3.1e-14; winding "
+        "topology (k1,k2)=(5,1) exactly, (w1,w2)=(5.000000,1.000000), prograde, "
+        "reaches_secondary; Barden nu=5.3e-11 (|nu|<<1 => linearly stable); "
+        "INDEPENDENT Radau re-propagation PASS (closure <1e-6, dJ=7.9e-13); "
+        "#660 body-clearance gate PASS (Pluto 5128.15 km vs 1188.3 km radius; "
+        "Charon 745.52 km vs 606.0 km radius -- NARROW, 139.52 km altitude, "
+        "recorded as an explicit caveat on the row, see below). "
+        "ALGORITHM-INDEPENDENT STABILITY CORROBORATION: a direct full-period "
+        "variational monodromy (NOT Barden's half-period G-factorization) puts "
+        "the nontrivial eigenpair at arg=+-pi/2 to 7 digits, so nu=cos(pi/2)=0 "
+        "structurally, agreeing with the Barden index to 3e-7 (full-period "
+        "integration noise; det(M)=1+2.8e-12, symplectic). "
+        "shared with primary path: the Radau crosscheck and the full-period "
+        "monodromy BOTH share mu, the CR3BP equations of motion, and state0 with "
+        "the construction under test -- they differ only in integrator/algorithm, "
+        "so by this module's own taxonomy they are CONSISTENCY gates, not "
+        "INDEPENDENCE gates. The CR3BP lane has no upstream ephemeris to "
+        "re-derive, so the independence available here is confined to the SOURCED "
+        "inputs and one external-source physical check: mu and lunit_km come from "
+        "satellites.py's DE440 GM/a values (not fitted), the clearance gate's "
+        "radii are Nimmo 2017, and C(L1)=3.62101825776712 (computed) matches "
+        "Jbara 2025 (arXiv:2510.13479) independently-published C_L1~3.6210 at "
+        "mu~0.109, with C=3.16794 < C(L1) confirming the L1 gateway is open at "
+        "this energy as a Pluto-Charon cycler requires. This is the SAME evidence "
+        "structure the (3,2) row's V1 base rests on, so the tier is "
+        "precedent-consistent; the lane's structural independence limit is "
+        "recorded here rather than papered over. "
+        "NOT V2: no multi-lap bounded-drift campaign exists for this member "
+        "(#846). NOT claimed novel: our_status=known-class-member; the live "
+        "literature gate re-run on 2026-08-12 returned not-found "
+        "(necessary-not-sufficient). "
+        "docs/notes/2026-08-12-836-pc-51-adjudication.md; "
+        "tests/scripts/test_run_810_pc_51_fixed_hc.py."
+    ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
     # achieving its encounters with the per-cycle maintenance applied AND bounded

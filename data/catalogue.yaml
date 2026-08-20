@@ -53620,6 +53620,174 @@
     "orbit_elements.cr3bp.mass_ratio": "satellites.py (repo): Charon GM=106.1 km^3/s^2 / Pluto-system GM=975.5 km^3/s^2 = 0.10876473603280369."
     "orbit_elements.cr3bp.lunit_km": "satellites.py (repo): Charon a=19600.0 km (semi-major axis, CR3BP unit length = P1-P2 distance)."
 
+- id: pc-cycler-51-2026
+  name: "Computed Pluto-Charon stable (5,1) prograde CR3BP cycler (known-class member, Ross-RT 2026 (k1,k2) cycler class; family+mu never computed in the source)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4/§685: computed member of the Ross & Roberts-Tsoukkas 2026 prograde (k1,k2) CR3BP cycler CLASS. The class is published and generically indexed by winding number, and the paper's OWN conjecture ("saddle-center birth is universal among cycler families") predicts a linearly stable subfamily in EVERY family -- so computing the (5,1) entry fills in a published, explicitly open-ended classification rather than finding a new dynamical species. The paper computes only (1,1),(3,1),(3,2),(3,3) and only at mu in {0.001, 0.0121506, 0.1, 0.3, 0.5}: neither this FAMILY nor this MU appears in it, so no first_published can be set and the class citation sits in corroborating_sources. NOT novelty-claimable, NOT claimed novel -- see #836's adjudication note.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1, CR3BP-lane form (#836, 2026-08-12), assigned against the WRITTEN criteria and matching the (3,2) row's own V1 BASE evidence structure exactly -- NOT by analogy to a "V1 precedent" (ross-rt-pc-cycler-32-2026 is V2: its V1 base is #494, its V2-ballistic upgrade is #505's separate 100-period run). Independently re-verified by #836 from scratch: fixed-Jacobi corrector closes at crossing residual 1.6e-12; winding topology (k1,k2)=(5,1) exactly (w1,w2)=(5.000000,1.000000), prograde, reaches_secondary; Barden nu=5.3e-11 (|nu|<<1, linearly stable); INDEPENDENT full-period monodromy (direct variational STM, not Barden's half-period G-factorization) puts the nontrivial eigenpair at arg=+-pi/2 to 7 digits => nu=cos(pi/2)=0 structurally, agreeing with Barden to 3e-7 (full-period integration noise; det(M)=1+2.8e-12); INDEPENDENT Radau re-propagation PASS (closure <1e-6, dJ=7.9e-13); #660 body-clearance gate PASS on sourced Nimmo 2017 radii. NOT V2: no multi-lap bounded-drift campaign has been run for this member (that is #846). docs/notes/2026-08-12-836-pc-51-adjudication.md; tests/scripts/test_run_810_pc_51_fixed_hc.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Pluto"
+  bodies: ["Pluto", "Charon"]
+  sequence_canonical: "Pluto-Charon"
+  sense: "n/a"
+  period:
+    pair: "Pluto-Charon"
+    k: 1
+    years:
+    note: |
+      T = 24.305715846918527 TU (DERIVED from the #810 fixed-hc C-sweep's nu=0
+      midpoint, independently re-found by #836's own brentq on nu(C) to 1.2e-13
+      in C). 1 TU = T_s/(2*pi) = 87855.80656569646 s (satellites.py: Charon
+      a=19600 km, GM_system=975.5 km^3/s^2). T in days:
+      24.305715846918527 * 87855.80656569646 / 86400 = 24.7153 d (DERIVED)
+      = 3.868 Charon orbital periods. Encounter cadence: 5 Pluto + 1 Charon
+      passes per period (k1=5, k2=1). years: null (CR3BP, rotating-frame
+      periodic orbit, no heliocentric synodic-multiple convention applies).
+  vinf_kms_at_encounters:
+  - body: "Pluto"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant (C=3.167935964707404 DERIVED), not patched-conic V_inf. Pluto-Charon rotating frame."
+  - body: "Charon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model. Charon is the secondary (mu=0.10876 = GM_Charon/GM_system). Exactly ONE Charon close approach per period (k2=1), verified by local-minima count on a dense one-period propagation: minima at 10739 / 14319 / 745.5 / 14319 / 10739 km from Charon centre."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit in the Pluto-Charon system; Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(5,1) prograde CR3BP cycler (Pluto-Charon, mu=0.10876473603280369)"   # DERIVED: known-class member of the Ross-RT 2026 prograde (k1,k2) cycler class, instantiated at the PC mass ratio. The (5,1) family itself is NOT computed in the source paper.
+      mass_ratio: 0.10876473603280369   # SOURCED (repo): 106.1/975.5 = GM_Charon/GM_PlutoSystem from satellites.py (DE440 Charon GM 106.1, Pluto system GM 975.5).
+      libration_point:
+      jacobi_constant: 3.167935964707404   # DERIVED: nu=0 midpoint of the (5,1) family's ONE stable window at mu=0.10876, re-found independently by #836's brentq (#810 recorded 3.167935964707279; agreement 1.2e-13).
+      period_nd: 24.305715846918527   # DERIVED: period at the nu=0 midpoint in non-dimensional TU (#810 recorded 24.305715846921732; agreement 3.2e-12).
+      stability_index: 5.29e-11   # DERIVED: Barden nu at the nu=0 midpoint (essentially 0 = maximally stable, |nu|<1 => linearly stable). Independently corroborated by a direct full-period monodromy (nontrivial eigenpair at arg=+-pi/2 => nu=0). Published by nu~0 construction.
+      state_nd: [-0.7058054139667359, 0.0, 0.0, 0.0, -0.6722667009874522, 0.0]   # DERIVED: x0 and ydot0 from #836's independent fixed-hc (hc=5) corrector run at mu=0.10876, C=3.167935964707404. Four perturbed restarts (dx0 guess +-1e-3, +-3e-3) all reconverge to this x0 within 3.1e-14.
+      lunit_km: 19600.0   # SOURCED (repo): Charon semi-major axis a=19600 km (satellites.py; the CR3BP unit length = P1-P2 distance).
+      tunit_s: 87855.80656569646   # DERIVED: TU = T_s/(2*pi) = 2*pi*sqrt(19600^3/975.5)/(2*pi) s.
+      tof_days_bounds: [24.715258, 24.715258]   # DERIVED: single-period CR3BP orbit; bounds = [period, period] in days (24.305715846918527 * 87855.80656569646 / 86400).
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "derive"
+    note: "All CR3BP IC values (jacobi_constant, period_nd, stability_index, state_nd) are DERIVED from the #810 fixed-hc C-sweep along the (5,1) branch at mu=0.10876473603280369, seeded from #656's grid seed (x0=-0.6685146994, C=3.05) and independently re-derived end-to-end by #836. No published IC exists for this family at any mass ratio: Ross & Roberts-Tsoukkas 2026 computes only (1,1),(3,1),(3,2),(3,3) and never at mu~0.1087. Crosschecks: independent Radau closure <1e-6 with dJ=7.9e-13; independent full-period monodromy nu agreeing with Barden nu to 3e-7."
+    source_hint: "data/found/810_pc51_fixed_hc_sweep/{sweep_up,sweep_down,sweep_window,gates}.jsonl; tests/scripts/test_run_810_pc_51_fixed_hc.py; docs/notes/2026-08-12-836-pc-51-adjudication.md."
+    todo_ref: "#810"
+  legs: []
+  corroborating_sources:
+  - authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Stable Ballistic Prograde Cyclers in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: |
+      CLASS source only -- this paper supplies NO (5,1) family and NO
+      Pluto-Charon member, so it cannot be first_published for this row.
+      Grounded against the artifact by #836 on 2026-08-12 (arXiv HTML + PDF
+      of v2, 10 Jul 2026): the paper computes (1,1),(3,3),(3,2),(3,1) only,
+      at mu in {0.001, 0.012150584270572, 0.1, 0.3, 0.5} (Sun-Jupiter,
+      Earth-Moon, and three abstract mu); the strings "Pluto" and "Charon"
+      and any k1=5 family appear nowhere in it. Its conjecture -- "We
+      conjecture that saddle-center birth is universal among cycler
+      families, suggesting that stable cyclers are a generic feature of
+      three-body dynamics", with "every cycler family contains a subfamily
+      that is linearly stable to both planar and out-of-plane
+      perturbations" -- is what this member CONFIRMS at a family+mu the
+      authors never computed.
+      TITLE NOTE (#836): the title above is the one printed on page 1 of the
+      arXiv PDF. The arXiv listing metadata renders it as "Stable Families of
+      Ballistic Prograde Cyclers in the Restricted Three-Body Problem", and
+      the ~6 sibling rows citing this paper carry a third, paraphrased string
+      ("Families of Stable Prograde Cycler Orbits in the Circular Restricted
+      Three-Body Problem") that matches neither. Those rows also cite v1 while
+      the live paper is v2. #845 is registered to reconcile all of them at
+      once; not fixed here (concurrent sessions are editing catalogue.yaml).
+  priority_date: "2026-08-11"
+  notes: |
+    Pluto-Charon (mu=0.10876473603280369 = 106.1/975.5, satellites.py) stable
+    (5,1) prograde CR3BP cycler -- 5 Pluto loops and 1 Charon loop per period.
+    Found by #810 (2026-08-11) by re-sweeping #656's genuine prograde (5,1) grid
+    seed with the half-crossing index held FIXED at hc=5 through the whole
+    C-sweep (#504's (3,2) positive-control convention), instead of the
+    `hc=None` auto-redetection that had silently walked the branch onto an
+    unrelated (4,0) family and produced #656's false negative. Independently
+    re-derived end-to-end by #836 (2026-08-12) and admitted at V1.
+
+    The family's ONE stable window across the whole swept extent C in
+    [2.90, 3.24604] is C in [3.167773862, 3.168099844] -- width 3.26e-4, a
+    NARROW window on a fragile branch (dx0/dC ~ 2.5; a plain fixed-dC=0.005
+    sweep jumps off it at the first step). Below the window the family
+    continues to C=2.90 with nu rising monotonically; above it the branch
+    terminates at a measured fold at C=3.24603516. #810's apparent second nu
+    sign change near C=3.2440 was re-walked at dc=5e-5 and probed at dc=2e-6
+    and is real-eigenvalue sign FLICKER at |nu| >= 2.33, not a second stable
+    window.
+
+    NARROW CHARON CLEARANCE -- recorded caveat, adjudicated explicitly (#836).
+    The closest approach to Charon is 745.5244 km from centre against a
+    606.0 km radius (Nimmo 2017, the #660 gate's sourced value): it CLEARS, but
+    by only 139.52 km, i.e. 1.230 Charon radii from centre. #836 confirmed this
+    figure is EXACT rather than a sampling artifact: the minimum sits at
+    t = T/2, the orbit's second perpendicular x-axis crossing (|y|=1.6e-11,
+    xdot=0), and Charon sits on the x-axis at (1-mu, 0), so the closest
+    approach is the single coordinate difference |x(T/2) - (1-mu)| =
+    0.0380369589206897 nd. Brent local minimization on dense output agrees with
+    the sampled minimum to 1.9e-9 km across two integrators (DOP853, Radau) and
+    rtol/atol from 1e-11 to 1e-13. The margin cannot be traded for stability:
+    across the ENTIRE |nu|<1 window the clearance only varies 744.54-746.49 km
+    (altitude 138.5-140.5 km), so no member of the stable window has a
+    materially better margin. This is an IDEAL point-mass CR3BP figure; a real
+    mission would care. Honest caveats: Charon's non-sphericity, the CR3BP
+    circular-orbit idealization (true PC eccentricity ~0.0022), and no
+    ephemeris/solar perturbation. Distinguished from the #659 Antiope
+    precedent, which REJECTED candidates passing 30-38 km BELOW the secondary's
+    surface: this member is 139.5 km ABOVE it, a categorically different
+    regime, and the #660 gate passes on the sourced radius with margin 0.
+
+    Physical cross-check: C(L1) = 3.62101825776712 (computed) vs Jbara 2025
+    (arXiv:2510.13479) independently-published C_L1 ~ 3.6210 at mu~0.109 --
+    MATCH; and C = 3.16794 < C(L1), so the L1 gateway is OPEN at this energy,
+    which a cycler passing between Pluto and Charon requires.
+
+    NOT CLAIMED NOVEL. The live literature gate (search/literature_check.py
+    signature: primary=Pluto, sequence=(Charon,), resonances=("5:1",),
+    topology_label={repeated-moon}) was re-run live by #836 on 2026-08-12 and
+    returned not-found -- necessary-not-sufficient per
+    [[feedback_literature_novelty_check_baseline]]. Closest prior art grounded
+    against source: Ross & Roberts-Tsoukkas 2026 (see corroborating_sources).
+    Also surfaced and DISTINGUISHED: Jbara 2025 (arXiv:2510.13479) is
+    Pluto-Charon CR3BP but studies zero-velocity structures, Lagrange-point
+    instability and tadpole/horseshoe chaos -- no cyclers, no periodic-orbit
+    families, no winding numbers, nothing near C=3.168; Antoniadou & Libert
+    2018 (arXiv:1805.00288, CMDA) studies 5/1 MEAN-MOTION resonant periodic
+    orbits of a massless body about a star in a star+giant-planet system
+    (mu~1e-3), not cyclers encountering both primaries, and never at mu~0.109.
+    JPL SSD Three-Body Periodic Orbits catalog does not index Pluto-Charon at
+    all, so jpl_family_check cannot adjudicate this row.
+
+    MODEL: pure planar CR3BP (PCR3BP). No ephemeris, no solar perturbation.
+  source_quotes:
+    "orbit_elements.cr3bp.mass_ratio": "satellites.py (repo): Charon GM=106.1 km^3/s^2 / Pluto-system GM=975.5 km^3/s^2 = 0.10876473603280369."
+    "orbit_elements.cr3bp.lunit_km": "satellites.py (repo): Charon a=19600.0 km (semi-major axis, CR3BP unit length = P1-P2 distance)."
+
 - id: braik-ross-c21-3d-corridor-01-2026
   name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 1/5 (x0=0.307513, z0=-0.644916)"
   source: this-project

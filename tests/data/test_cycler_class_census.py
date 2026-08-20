@@ -583,10 +583,16 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "vaquero-21-c266-em-cycler-2013",
         "vaquero-31-c254-em-cycler-2013",
         "vaquero-31-c313-em-resonant-po-2013",
+        # #836 (2026-08-12): pc-cycler-51-2026 -- Pluto-Charon stable (5,1) prograde
+        # CR3BP cycler found by #810, independently re-derived and admitted at V1.
+        # A computed known-class member of the Ross-RT 2026 (k1,k2) cycler class at
+        # a family+mu the source paper never computed (genuine planar CR3BP periodic
+        # orbit, rotating-frame, Jacobi-constant identity). non-keplerian 55->56.
+        "pc-cycler-51-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 55
+assert len(NON_KEPLERIAN_IDS) == 56
 
 
 # ---------------------------------------------------------------------------
@@ -698,10 +704,16 @@ def test_census_distribution() -> None:
     orbit_class=resonant_po, per-member SOI determination, all cycler_class=
     non-keplerian genuine planar CR3BP periodic orbits, rotating-frame with a
     Jacobi-constant identity): non-keplerian 49->55.
+
+    #836 (2026-08-12) admitted pc-cycler-51-2026 -- the Pluto-Charon stable (5,1)
+    prograde CR3BP cycler found by #810 and independently re-derived from scratch,
+    a computed known-class member of the Ross-RT 2026 (k1,k2) cycler class
+    (genuine planar CR3BP periodic orbit, rotating-frame, Jacobi-constant
+    identity): non-keplerian 55->56.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 55}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 56}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

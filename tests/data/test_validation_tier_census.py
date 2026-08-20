@@ -228,7 +228,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # axis; their real evidence (validation_level=V1, same-model CR3BP family
     # reproduction + independent Radau cross-check) lives on the orthogonal
     # validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
-    "unvalidated": 119,
+    # 119 -> 120 (2026-08-12, #836): +1 pc-cycler-51-2026 (Pluto-Charon stable
+    # (5,1) prograde CR3BP cycler, #810). Same convention: NO orbit_source/
+    # vinf_source provenance tags (its identity is a Jacobi/period/state tuple,
+    # not a heliocentric orbit/vinf-multiset pair) -> 'unvalidated' on the
+    # source-pair tier axis; its real evidence (validation_level=V1, same-model
+    # CR3BP reproduction + independent Radau cross-check) lives on the
+    # orthogonal validation_level axis.
+    "unvalidated": 120,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

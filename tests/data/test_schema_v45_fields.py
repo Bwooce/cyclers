@@ -364,6 +364,12 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "vaquero-21-c266-em-cycler-2013": "V1",
         "vaquero-31-c254-em-cycler-2013": "V1",
         "vaquero-31-c313-em-resonant-po-2013": "V1",
+        # #836 (2026-08-12): pc-cycler-51-2026, V1 -- Pluto-Charon stable (5,1)
+        # prograde CR3BP cycler (#810), independently re-derived from scratch
+        # against the same evidence structure as ross-rt-pc-cycler-32-2026's V1
+        # base (fixed-Jacobi corrector, winding topology, Barden stability,
+        # independent Radau crosscheck, #660 body-clearance gate).
+        "pc-cycler-51-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
