@@ -62,11 +62,14 @@ verification legs' own error floor, which is why this module's default
 manifold offset is :data:`KUMAR_EPSILON` (1e-4), not the sibling 0.5e-5
 (see that constant's docstring).
 
-LITERATURE-NOVELTY GATE: run (mandatory floor, per the `#827` dispatch);
-expected and actual verdict "published" -- this is an explicit REPRODUCTION of
-Kumar et al.'s own printed table; nothing here is novel and nothing is claimed
-novel. See the results note (``docs/notes/2026-08-12-827-kumar-table5-
-reproduction.md``) for the query trail.
+LITERATURE-NOVELTY GATE: not re-run live (no catalogue writeback here, and
+`#822`'s own live-WebSearch mandatory-floor run against this exact paper's
+connection concept already returned "published", confidence 0.95) -- this is
+an explicit REPRODUCTION of Kumar et al.'s own printed table; nothing here is
+novel and nothing is claimed novel. See the results note
+(``docs/notes/2026-08-21-827-kumar-table5-reproduction.md``) for the full
+account, including why `#839`'s C=3.13 is NOT covered by this module's
+printed-table rows.
 
 Pure: math/numpy/scipy + :mod:`cyclerfinder.core.cr3bp`,
 :mod:`cyclerfinder.search.vaquero_em_cycler_connections` (`#822` machinery,
