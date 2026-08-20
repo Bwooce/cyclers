@@ -1176,18 +1176,26 @@ unchanged. See `git log` around this date for the corrected commit.
   POSITIONALLY, i.e. it carries `#820`'s own defect class, so it is not yet the corrected
   posing). **NO promotion proposed and no `catalogue.yaml` edit** — adjudication registered
   `#852`. Note `docs/notes/2026-08-12-829-833-835-830-russell12-bend-gate.md`.
-- `#831` — registered 2026-08-11 (found during `#826`, not dispatched): `mcconaghy-2006-em-k2`
-  and `russell-ch4-4.991gG2` are almost certainly **the same physical object carried as two
-  rows** — identical `orbit_source: russell-2004-t49_413`, identical `free_return_arcs`
-  (`g(1.4612,526.02,Ll)` + `G(2.8096,651.46,U)`), identical aphelion 1.64 AU, `turn_ratio`
-  2.65, period k=2/4.27 yr and `sequence_canonical`; the mcconaghy row's own
-  `orbit_elements.note` records Russell tagging Table 4.9 row 1 as 4.991gG2 (#83) = "the
-  'S1L1' cycler". They differ only in `transit_times_days` (153 vs 150) and the V∞ flavour
-  (McConaghy 4.7/5.0 vs Russell 4.99/5.10) — and they sit at DIFFERENT validation levels (V0
-  vs V3). Decide the right disposition (merge with a `rediscoveries` entry per spec §13's
-  exact-match rule, or keep both with an explicit cross-reference documenting the two source
-  flavours) and note the census implications. NOT done under `#826` — a row merge ripples
-  through every frozen-census ratchet.
+- `#831` — ✓ DONE 2026-08-12 (registered 2026-08-11, found during `#826`; dispatched
+  2026-08-12): **VERDICT: KEEP BOTH ROWS.** `mcconaghy-2006-em-k2` and `russell-ch4-4.991gG2`
+  are the same physical object carried as two SOURCE REALIZATIONS — identical
+  `orbit_source: russell-2004-t49_413`, identical `free_return_arcs`, aphelion, `turn_ratio`,
+  period, `sequence_canonical`, differing only in `transit_times_days` (153 vs 150) and the V∞
+  flavour (McConaghy 4.7/5.0 vs Russell 4.99/5.10). Ran the pair through the spec §16.2/§16.3
+  decision explicitly: V∞ is binned to 0.05 km/s, an order of magnitude tighter than the
+  ~0.5 km/s the rows' own prior text wishfully claimed would collapse them — the pair sits
+  several bins apart, so the exact hash-match branch never fires and no merge is
+  spec-mandated; at most probable-match-NEEDS-HUMAN, and this is that human confirmation. A
+  merge would launder the McConaghy row's unreproduced V0 anchor into the Russell row's V3
+  and delete payload (dv_band, flyby_altitudes_km, data_gaps) that exists only there. Both
+  rows' notes corrected (the wishful "M7 tolerances should collapse them" claim replaced with
+  the binning fact + this verdict); 3 new ratchet tests
+  (`tests/data/test_multi_arc_invariants.py`) pin the disposition (shared physics identical,
+  source anchors distinct, validation levels not laundered). No row added/removed, no census
+  impact. Full account:
+  `docs/notes/2026-08-12-831-mcconaghy-russell-4991gg2-duplicate-disposition.md`. Follow-up
+  registered: `#844` (mcconaghy row's declared `vinf_fidelity: circular-coplanar` contradicts
+  its own sourced content).
 - `#832` — ✓ DONE 2026-08-12, **215 catalogue rows + generator + code docstring; COMMENT-ONLY,
   no value changed** (registered by `#826`, dispatched 2026-08-12): the `turn_ratio` comment
   was **INVERTED** vs its own sourced definition. The old prose read `# Russell 2004: required
@@ -1510,6 +1518,18 @@ unchanged. See `git log` around this date for the corrected commit.
   catalogue row + `_LEVEL_EVIDENCE` under full ratchet discipline (`tests/data tests/search
   -q`, never a subset), and the census-prose rewrite in the `#504`/`#549`/`#656` records ("0
   of 15 beyond (3,2)" → "1 of 15"; PC (3,2) no longer structurally unique at this mu).
+  **Coordinating-session addendum (2026-08-20, post a process restart mid-dispatch):** the
+  dispatched agent left the adjudication note committed (`1cacc28b`) but the actual writeback
+  (catalogue row + `validate.py` entry) uncommitted, and had NOT bumped the frozen census
+  ratchets for the new row — `test_cycler_class_census.py` (non-keplerian 55→56),
+  `test_schema_v45_fields.py` (V1 census dict), `test_validation_tier_census.py` (unvalidated
+  119→120) all still expected the pre-#836 counts. The coordinating session independently
+  re-derived the key numbers fresh (x0 to 2.8e-14, period to 2e-12, Charon clearance to 5
+  decimals, winding/Radau all matching; Barden nu differs in the 9th decimal from the
+  claimed value, both ~1e-9 to 1e-11 — corrector-precision noise at this nu≈0 midpoint, not
+  load-bearing since both clear |nu|<1 by ~8-9 orders of magnitude), closed the 3 census
+  ratchets, and verified the full `tests/data tests/search tests/scripts` suite clean in
+  isolation before committing (`b2888298`) and pushing.
 - `#844` — registered 2026-08-12 (found during `#836`'s census-mechanism audit, not dispatched):
   **fixed-hc re-sweep of the three UNRESOLVED Pluto-Charon topologies `(1,1)`, `(3,1)`, `(3,3)`**
   — the highest-value item `#836` produced. `#836` classified all 15 PC (k2<=k1<=5) topologies by
