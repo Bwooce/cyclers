@@ -433,15 +433,23 @@
     McConaghy 2006 reports realistic-ephemeris optimised values whereas
     Russell Table 4.9 reports the circular-coplanar simple-model values,
     not pure rounding. Both are valid characterisations of the same
-    underlying ballistic cycler; M7 matching tolerances should be wide
-    enough (~0.5 km/s on V_inf, ~10 d on ToF) to collapse them under
-    the canonical signature.
+    underlying ballistic cycler.
+
+    CORRECTED (#831, 2026-08-12): the prior claim here that M7 matching
+    tolerances "should be wide enough (~0.5 km/s on V_inf, ~10 d on ToF)
+    to collapse them under the canonical signature" was wrong about the
+    spec. Section 16.2's canonical signature bins V_inf to 0.05 km/s, an
+    order of magnitude tighter than that — the 0.29/0.10 km/s V_inf gaps
+    put this pair several bins apart, so the "exact" hash-match branch
+    never fires and no auto-merge is spec-mandated. #831 ran the pair
+    through the full section 16.3 decision (at most probable-match-
+    NEEDS-HUMAN) and resolved it via human confirmation: KEEP BOTH ROWS.
+    See docs/notes/2026-08-12-831-mcconaghy-russell-4991gg2-duplicate-disposition.md.
 
     The Russell entry for this cycler is catalogued separately as
     `russell-ch4-4.991gG2` with the circular-coplanar values + Russell-
-    convention attribution. M7 should collapse the two via the canonical
-    signature (V_inf multiset + ToF + period rounded to whole-number
-    days).
+    convention attribution. Per #831, they are kept as two sourced
+    realizations of one physical object, not merged.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": |
       McConaghy et al. 2006 abstract (quoted via search.arc.aiaa.org/doi/10.2514/1.15215
@@ -40972,11 +40980,20 @@
     this cycler "is essentially ballistic for all launch dates. This
     is consistent with the findings in Ref. 15" (McConaghy 2002 et al).
 
-    M7 canonical-signature matching tolerances should be wide enough
-    (~0.5 km/s on V_inf, ~10 d on ToF) to collapse these two entries
-    under one signature. The leg-descriptor "g(1.4612,526.02,Ll)
-    G(2.8096,651.46,U)" — generic return Ll patched with generic return
-    U — is the unique structural fingerprint.
+    CORRECTED (#831, 2026-08-12): the prior claim here that M7 matching
+    tolerances "should be wide enough (~0.5 km/s on V_inf, ~10 d on ToF)
+    to collapse these two entries under one signature" was wrong about
+    the spec. Section 16.2's canonical signature bins V_inf to 0.05 km/s,
+    an order of magnitude tighter — the pair's V_inf gaps (0.29/0.10
+    km/s) sit several bins apart, so the exact hash-match branch never
+    fires and no merge is spec-mandated. #831 ran the full section 16.3
+    decision (at most probable-match-NEEDS-HUMAN) and resolved it: KEEP
+    BOTH ROWS, the same physical cycler carried as two sourced
+    realizations. See
+    docs/notes/2026-08-12-831-mcconaghy-russell-4991gg2-duplicate-disposition.md.
+    The leg-descriptor "g(1.4612,526.02,Ll) G(2.8096,651.46,U)" —
+    generic return Ll patched with generic return U — remains the
+    shared structural fingerprint identifying them as one object.
 
     Russell's Chapter 5 parent-cycler list (Table 5.5, line 7512) gives
     a 7-cycle realistic-ephemeris optimisation result for #83 4.991gG2:

@@ -377,3 +377,95 @@ def test_golden_transit_times(catalogue_rows: list[dict[str, Any]]) -> None:
     tt3 = inv3.get("transit_times_days")
     assert tt3 is not None, "russell-ocampo-3.1.1+3: transit_times_days absent"
     assert tt3[0] == pytest.approx(174, abs=1), f"t_out expected 174, got {tt3[0]}"
+
+
+# ---------------------------------------------------------------------------
+# #831 (2026-08-12): the deliberate two-row carriage of ONE physical object.
+#
+# ``mcconaghy-2006-em-k2`` and ``russell-ch4-4.991gG2`` are the same physical
+# cycler (Russell 2004 Table 4.9 row 1 = parent cycler 4.991gG2 #83 = the
+# McConaghy "S1L1"/"Notable" cycler) carried as two rows, one per SOURCE
+# REALIZATION. ``#831`` adjudicated this and chose KEEP-BOTH; see
+# docs/notes/2026-08-12-831-mcconaghy-russell-4991gg2-duplicate-disposition.md.
+#
+# That disposition is only defensible while the split stays exactly where it is:
+# the SHARED physics (one object) identical, the SOURCE-FLAVOURED anchors
+# (two realizations) distinct. This test pins both halves so a future edit
+# cannot silently converge the rows into a real duplicate, nor diverge their
+# shared physics into two different objects without the ratchet noticing.
+# ---------------------------------------------------------------------------
+
+_S1L1_PAIR = ("mcconaghy-2006-em-k2", "russell-ch4-4.991gG2")
+
+
+def test_831_s1l1_pair_shares_identical_physics(catalogue_rows: list[dict[str, Any]]) -> None:
+    """The `#831` pair must agree on every field that carries the object's identity.
+
+    These are the fields that make them ONE object. If any diverges, either a row
+    was edited in error or they really are two objects — both cases need a human.
+    """
+    row_map = {r["id"]: r for r in catalogue_rows}
+    a, b = (row_map[rid] for rid in _S1L1_PAIR)
+
+    assert a["orbit_source"] == b["orbit_source"] == "russell-2004-t49_413"
+    assert a["free_return_arcs"] == b["free_return_arcs"], (
+        "#831 pair: free_return_arcs diverged — this descriptor pair "
+        "g(1.4612,526.02,Ll)+G(2.8096,651.46,U) IS the object's structural fingerprint"
+    )
+    assert (a["invariants"]["turn_ratio"], b["invariants"]["turn_ratio"]) == (2.65, 2.65)
+    assert a["orbit_elements"]["aphelion_au"] == b["orbit_elements"]["aphelion_au"] == 1.64
+    assert a["sequence_canonical"] == b["sequence_canonical"] == "E-E-M-M"
+    assert a["period"]["k"] == b["period"]["k"] == 2
+    assert a["cycler_class"] == b["cycler_class"] == "multi-arc"
+
+
+def test_831_s1l1_pair_keeps_distinct_source_anchors(catalogue_rows: list[dict[str, Any]]) -> None:
+    """The two rows must NOT converge onto one anchor set — that is their whole reason to exist.
+
+    Spec §16.2 bins V∞ to 0.05 km/s, so 4.7 vs 4.99 (~6 bins) and 5.0 vs 5.10
+    (2 bins) give the two rows DIFFERENT canonical signatures. §16.3's "exact"
+    branch (log a re-derivation, do not create a new entry) therefore never
+    fires on this pair; it is at most a `probable-match-NEEDS-HUMAN`, and `#831`
+    is that human confirmation. Convergence here would retroactively turn a
+    lawful two-realization record into a genuine duplicate.
+    """
+    row_map = {r["id"]: r for r in catalogue_rows}
+    mcc, rus = (row_map[rid] for rid in _S1L1_PAIR)
+
+    assert mcc["vinf_source"] == "mcconaghy-2006"
+    assert rus["vinf_source"] == "russell-2004-t49_413"
+
+    mcc_vinf = [e["vinf_kms"] for e in mcc["vinf_kms_at_encounters"]]
+    rus_vinf = [e["vinf_kms"] for e in rus["vinf_kms_at_encounters"]]
+    assert mcc_vinf == [4.7, 5.0], f"McConaghy-2006 anchor changed: {mcc_vinf}"
+    assert rus_vinf == [4.99, 5.10], f"Russell Table 4.9 anchor changed: {rus_vinf}"
+
+    # Binned to spec §16.2's 0.05 km/s, the multisets must still differ.
+    assert [round(v / 0.05) for v in mcc_vinf] != [round(v / 0.05) for v in rus_vinf], (
+        "#831 pair: V∞ anchors now collide under the spec §16.2 0.05 km/s binning — "
+        "the rows would share a canonical signature and become a true duplicate"
+    )
+
+    assert mcc["invariants"]["transit_times_days"] == [153, 153]
+    assert rus["invariants"]["transit_times_days"] == [150, 150]
+
+
+def test_831_s1l1_pair_validation_levels_are_not_laundered(
+    catalogue_rows: list[dict[str, Any]],
+) -> None:
+    """`#826` held the McConaghy row at V0 because ITS OWN cited anchor is unreproduced.
+
+    The probe on `mcconaghy-2006-em-k2` is byte-for-byte the `4.991gG2` probe
+    (``build_genome`` reads `free_return_arcs`, which are Russell's, and never
+    touches the 4.7/5.0 fields), so it supplies zero independent evidence for
+    this row: emerged V∞ 5.008 vs the row's own cited 4.7 km/s. The V0/V3 split
+    is therefore INFORMATION, not a duplication defect — and the single largest
+    hazard of a merge would be laundering V0 evidence into a V3 row by absorption.
+    """
+    row_map = {r["id"]: r for r in catalogue_rows}
+    assert row_map["mcconaghy-2006-em-k2"]["validation_level"] == "V0", (
+        "#826/#831: the McConaghy-flavoured realization is V0 because its own "
+        "4.7 km/s anchor is unreproduced — a promotion needs evidence against "
+        "THAT anchor, not the sibling row's Russell closure"
+    )
+    assert row_map["russell-ch4-4.991gG2"]["validation_level"] == "V3"
