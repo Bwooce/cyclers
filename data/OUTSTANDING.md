@@ -1810,18 +1810,45 @@ unchanged. See `git log` around this date for the corrected commit.
   template) and the CR3BP time-reversal symmetry guarantees existence given the forward hits, so
   this is a demonstration rather than a search. Per `#828` Sec. 2 this is still NOT a tier
   promotion under any reading — register it as evidence completeness, not as an upgrade path.
-- `#854` — registered 2026-08-21 (found during `#827`'s advisor review, not dispatched):
-  **`#827`'s C=2.54 Table-5 row is a Wu(3:1)->Ws(2:1) connection touching the catalogued
-  `vaquero-31-c254-em-cycler-2013` row, digit-grade matched to a state Kumar et al. themselves
-  published (match_distance 7.6e-07)** — a different evidence KIND from `#828`'s existing
-  comment-only annotation on that row (which covers `#822`'s own C=2.54 connection, self-
-  consistency-only, at this project's mu, not Kumar's published digits). Adjudicate whether this
-  warrants its own comment-only `ADDED EVIDENCE` annotation (parallel to `#828`'s two), and
-  whether it narrows `#840`'s remaining round-trip scope to just the C=2.66 edge (C=2.54's
-  round-trip direction is now independently evidenced, via a different paper's own published
-  state, even though `#840` literally asks for `#822`'s `find_free_transfer` machinery
-  specifically). Per `#828` Sec. 2's own ruling this is still NOT a tier-promotion question.
-  Details: `docs/notes/2026-08-21-827-kumar-table5-reproduction.md`.
+  **`#854` UPDATE (2026-08-21): scope does NOT narrow — full text unchanged, BOTH edges still
+  needed** (`#854` corrected `#827`'s own overclaim on this point). `#827`'s C=2.54
+  `Wu(3:1)->Ws(2:1)` reproduction is at Kumar et al.'s own printed mu
+  (`1.2150584270572e-2`), not this row's own DE440-registry mu (`0.01215058439469525`,
+  `Δmu≈1.24e-10`) — a neighbouring model, not the row's own. `#840`'s deliverable is a round-trip
+  claim recorded ON this row, which has to hold in this row's own model, so the `find_free_transfer`
+  run at this row's own mu is still fully open at C=2.54. What changed: `#854` independently
+  reproduced `#827`'s C=2.54 connection end-to-end (seeded only from Kumar's printed state, its
+  own fresh search landing on the same result) and confirmed the re-derived node matches this row
+  to `~1e-9..1e-10` (the expected mu-shift scale, not `#828`'s `~1e-15` matched-mu scale) — so
+  C=2.54's leg is now a low-risk **confirmation run** (existence independently pre-confirmed near
+  this exact node, on top of the time-reversal argument already cited), not a blind search. C=2.66
+  is untouched by any of this (not one of Kumar's seven printed Table-5 rows). Details:
+  `docs/notes/2026-08-21-854-c254-kumar-evidence-adjudication.md` Sec. 4.
+- `#854` — ✓ DONE 2026-08-21 (found during `#827`'s advisor review, dispatched same day):
+  **adjudicated `#827`'s C=2.54 Kumar Table-5 reproduction against the catalogued
+  `vaquero-31-c254-em-cycler-2013` row. Verdict: ANNOTATE (comment-only, no level change);
+  `#840`'s scope does NOT narrow — `#827`'s note overclaimed this.** Independently re-verified
+  `#827`'s C=2.54 result two ways before trusting it: (1) seed-level reconstruction from the
+  recorded phase indices only (mirrors the existing C=2.86/3.15 tests, extended to C=2.54, which
+  had none), reproducing `match_distance=7.610531887910121e-07` bit-for-bit; (2) the stronger
+  check, an end-to-end re-run of `keh.reproduce_table5_intersection(system, 2.54)` seeded ONLY
+  from Kumar's printed state (never `results.json`) — its own fresh candidate search
+  (`n_candidates=11`) landed on the identical seed indices and match distance, closing the
+  non-circularity question `#827`'s own note left open. Also independently confirmed the
+  re-derived 3:1 node (Kumar's own mu) reproduces this row's own `state_nd`/`period_nd`/
+  `jacobi_constant` to `~1e-9..1e-10` — the expected `Δmu≈1.24e-10` mu-shift scale, confirming
+  same physical orbit, not a coincidence. **Annotation added**: a second comment-only
+  `ADDED EVIDENCE (#854 …)` block on `vaquero-31-c254-em-cycler-2013`'s `validation_level`
+  field, immediately after `#828`'s existing block, explicitly reconciling with (not
+  contradicting) that block's "no round-trip transport claim at THIS row's own C" caveat — this
+  finding is at a neighbouring model (Kumar's mu), not the row's own, so the caveat stands.
+  **`#840` corrected, not narrowed**: `#840`'s deliverable (reverse-direction `find_free_transfer`
+  at THIS row's own registry mu) is a different axis (direction) from what `#827`/`#854` supply
+  (evidence source/mu) — the C=2.54 leg is still fully open, now as a pre-confirmed low-risk
+  demonstration rather than a blind search; C=2.66 is untouched. `yaml.safe_load` pre/post
+  parsed-equal (comment-only edit confirmed programmatically). Full `tests/data tests/search -q`
+  ratchet, `ruff check .` / `ruff format --check .`, full `mypy src tests`: clean. Details:
+  `docs/notes/2026-08-21-854-c254-kumar-evidence-adjudication.md`.
 - `#842` — registered 2026-08-12 (found during `#834`'s own re-run of the V3 evidence gate,
   not dispatched): **root-cause and re-derive `tests/nbody/test_appc_batch_nbody.py`'s
   drifted Sun-only proxy-TCM regression anchors.** The @slow gate (excluded from the habitual
