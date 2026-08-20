@@ -1,0 +1,146 @@
+{
+  "task": "#839",
+  "row": "vaquero-31-c313-em-resonant-po-2013",
+  "jacobi_target": 3.129999999999993,
+  "mu": 0.01215058439469525,
+  "node31": {
+    "jacobi": 3.129999999999993,
+    "period": 6.454965222083039,
+    "state0": [
+      0.8135643069820537,
+      0.0,
+      0.0,
+      0.0,
+      -0.2530482053832696,
+      0.0
+    ],
+    "note": "IS the catalogue row itself, re-converged to NODE31_IC_ABS_TOL agreement"
+  },
+  "node21": {
+    "jacobi": 3.129999999999993,
+    "period": 7.148969344464315,
+    "state0": [
+      0.8695767908501643,
+      0.0,
+      0.0,
+      0.0,
+      -0.26897053283778805,
+      0.0
+    ],
+    "built_via": "continuation from Kumar Table-6 2:1 bracket (C=3.10,3.15) at THIS project mu, step 0.001"
+  },
+  "node21_provenance": {
+    "bracket_310_xy": [
+      0.8782803347211319,
+      -0.33462954583901305
+    ],
+    "bracket_315_xy": [
+      0.8644011649524701,
+      -0.21905883058444242
+    ],
+    "bracket_310_lambda": 333.0410072133632,
+    "bracket_315_lambda": 271.8995178653324,
+    "interp_distance": 0.0037025615644105656,
+    "n_continuation_steps": 31
+  },
+  "node21_identity_crosscheck_vs_827_kumar_module": {
+    "note": "build_kumar_node(kumar_system(), 2, 3.10) at Kumar's own mu vs this module's own-mu bracket at C=3.10 -- confirms node21 IS the same Kumar 2:1 family member #827 already put through its own reproduction, not a wrong branch (period and |lambda| agree to ~1e-8 relative despite the two mu values differing at 1.24e-10 absolute).",
+    "kumar_module_period_310": 6.798978144793446,
+    "kumar_module_lambda_310": 333.04100533262795,
+    "this_module_own_mu_bracket_310_period": 6.7989781409144125,
+    "this_module_own_mu_bracket_310_lambda": 333.0410072133632
+  },
+  "runs": {
+    "n_tau_48": {
+      "n_tau": 48,
+      "n_seeds": 738,
+      "n_refined": 1,
+      "n_converged": 1,
+      "branch_u": -1,
+      "branch_s": 1,
+      "k_u": 17,
+      "k_s": 14,
+      "tau_u": 5.8726639534049845,
+      "tau_s": 6.473865290398373,
+      "newton_residual": 4.8074709351123464e-12,
+      "evidence": {
+        "full_state_gap": 1.652810462522925e-08,
+        "ydot_signs_match": true,
+        "ydot_u": -2.3078325986974835,
+        "ydot_s": -2.3078326031273684,
+        "ghost_distance_from": 0.13495406140199667,
+        "ghost_distance_to": 1.138484896478245,
+        "radau_gap": 1.5973092452202667e-08,
+        "radau_vs_dop853": 2.264186799107558e-08,
+        "backward_distance": 1.7731140496515193e-09,
+        "forward_distance": 7.999699857948936e-05,
+        "t_u": 18.834382283366594,
+        "t_s": -26.950276698495088,
+        "jacobi_drift_u": 2.1684876116978558e-12,
+        "jacobi_drift_s": 1.6684431614066852e-12,
+        "seed_jacobi_offset_u": 5.92680260425027e-09,
+        "seed_jacobi_offset_s": 9.519252053280525e-10,
+        "crossing_state": [
+          -0.21975612727525806,
+          4.543240783583258e-15,
+          0.0,
+          1.0625085947450492,
+          -2.3078325986974835,
+          0.0
+        ],
+        "passed": true
+      },
+      "leg_min_radii_km": {
+        "geocentric": 57935.29370306973,
+        "selenocentric": 46247.63655242603,
+        "transfer_time_nd": 45.78465898186168
+      }
+    },
+    "n_tau_64": {
+      "n_tau": 64,
+      "n_seeds": 1078,
+      "n_refined": 1,
+      "n_converged": 1,
+      "branch_u": -1,
+      "branch_s": 1,
+      "k_u": 20,
+      "k_s": 13,
+      "tau_u": 4.586306798124203,
+      "tau_s": 6.421078095155724,
+      "newton_residual": 3.951435402188583e-11,
+      "evidence": {
+        "full_state_gap": 7.673612548784641e-08,
+        "ydot_signs_match": true,
+        "ydot_u": 0.5817131271006586,
+        "ydot_s": 0.5817130687876826,
+        "ghost_distance_from": 0.3424445526654567,
+        "ghost_distance_to": 0.2478031278025146,
+        "radau_gap": 5.181294466644941e-08,
+        "radau_vs_dop853": 5.98857003414973e-08,
+        "backward_distance": 4.722034821951218e-09,
+        "forward_distance": 2.988360741195458e-05,
+        "t_u": 22.402582187786948,
+        "t_s": -24.57458824446847,
+        "jacobi_drift_u": 4.163336342344337e-12,
+        "jacobi_drift_s": 1.4761525335416081e-12,
+        "seed_jacobi_offset_u": 5.514674494833116e-09,
+        "seed_jacobi_offset_s": 4.786691043534574e-10,
+        "crossing_state": [
+          0.5638883373489665,
+          1.734723475976807e-16,
+          0.0,
+          -0.5802587114960946,
+          0.5817131271006586,
+          0.0
+        ],
+        "passed": true
+      },
+      "leg_min_radii_km": {
+        "geocentric": 57941.693715721,
+        "selenocentric": 46168.16486465664,
+        "transfer_time_nd": 46.97717043225542
+      }
+    }
+  },
+  "interpretation_note": "Both independent phase-grid resolutions (n_tau=48, 64) found a DIFFERENT specific manifold crossing (different k_u/k_s) that both converges and passes #822 full verification battery unmodified -- existence is corroborated twice, but the two hits are NOT claimed to be the same object, and neither run enumerated the full intersection set. Compute-only result; orbit_class adjudication deferred to #855."
+}
