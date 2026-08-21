@@ -220,6 +220,27 @@ update's own scope.
   basis, the |lambda| tractable-band's system-dependence, `joint_cell.py`'s Saturn
   un-hardcoding scope) apply here unchanged. Full review: `docs/notes/2026-08-21-858-campaigns-
   789-790-791-review.md`.
+  **STATUS 2026-08-21: harness built + smoke-tested, full Stage A run NOT yet executed**
+  (handed to the coordinating session). System list survived the literature/corpus
+  pre-check unchanged (Ganymede/Titania both defensible novel targets — the corpused
+  CCR4BP/Titania-as-perturber/frozen-orbit literature is a different model or orbit class;
+  Rhea's own 2026 halo-tour paper is spatial, not planar-resonant; Oberon confirmed
+  published per AAS 24-288 as intended). Built `search/resonant_atlas_stage_a.py` +
+  `scripts/run_859_resonant_atlas_stage_a.py`, wired through `campaign_runner`; 17 fast
+  evidence tests green, ruff/mypy clean. Smoke test (all 4 systems, small slices,
+  foreground) found a real, honest negative: the naive two-body seed converges to
+  near-unit-circle members even at Oberon's own PUBLISHED unstable p:q ratios (4:5/5:6/
+  4:3/5:4/6:5) — the SAME topology-misidentification failure `#776` already documented
+  for Neptune-Triton, now reproduced on a 4th system — so a "miss" from this harness is
+  NOT strong evidence of an empty in-band cell. Also found the harness's own coarse-grid
+  default (`d_jacobi=5e-4`, 9 steps) samples only a narrow neighborhood of the seed's
+  natural C, not "the family's own existence range" as registered above; refined
+  measured cost is ~0.5-0.7 CPU-hours total for the full 172-cell grid at that default —
+  2-3 orders of magnitude below the 50-100 CPU-hour estimate above, because that estimate
+  implicitly assumed a much deeper per-family walk (`#777`'s own 376s/482-member
+  reference). Real Stage A dispatch needs a decision on d_jacobi/n_c_steps recalibration
+  first (options in the note below) — not a rubber-stamp of the harness's current
+  defaults. Full writeup: `docs/notes/2026-08-21-859-resonant-atlas-pilot-harness.md`.
 - `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
   (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
   reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as
