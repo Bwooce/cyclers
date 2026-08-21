@@ -227,6 +227,37 @@ update's own scope.
   recommendation made between accepting Stage 1's full cost, trying a phasing-based filter, or
   shelving toward `#790` — that decision is the user's. Full account (both passes):
   `docs/notes/2026-08-22-791-stage0-tisserand-pruning-checkpoint.md`. No catalogue writeback.
+  **FABLE ASSESSMENT 2026-08-22 (user-directed) → FINAL DISPOSITION: SHELVED, redirect to `#790`.**
+  Recommendation (c): the hub-energy finding is not just a failed filter, it PREDICTS Stage 1's own
+  downstream sequence-ranking would be noise-dominated even if funded — `joint_cell.py` discriminates
+  per-CELL (`#501`'s 7% feasible), but Stage 1's actual decision output is a per-SEQUENCE ranking
+  ("shoot the top decile"), and with every sequence sharing the same energetic character, any
+  separation would have to come from phasing statistics alone at 512-4k Sobol samples in 13-25 dims
+  — too sparse to trust a ranking by. Rejected (a) on this basis (full ~300-2800 CPU-hours would buy
+  an untrustworthy ranking feeding a Stage 2 whose novelty ceiling is already near-zero per `#858`'s
+  0/36 precedent). Rejected (b): the cheap algebraic phasing version collapses to a ~1-bit filter
+  (Io/Europa/Ganymede's own Laplace resonance means any commensurate tour period is near-commensurate
+  with all three, mirroring the hub-energy failure on a different axis); the honest per-leg-ToF-window
+  version IS a coarse Stage 1 evaluation wearing a Stage 0 costume — days to build, duplicates
+  `joint_cell.py`. `#790` was already ranked ahead by `#858` on expected value; today's result widens
+  the gap (`#791` lost the one mechanism that could have made it cost-competitive) — redirect via
+  `#858` Sec. 4.3's own prerequisite, the Jacobi-constrained multiple-shooting corrector (`#687`
+  extension) + a symmetric-only mini-pilot. Registered `#863` as a small OPTIONAL idle-machine-time
+  follow-up (not this campaign's next funded slice): a "density inversion" probe `#501` never ran —
+  5-10 hand-picked sequences at 32k+ cells each (deep, not broad), Liang Member D positive control
+  first, Stage 2 now legitimately unblocked since `#849` landed — attacks the actual identified flaw
+  (`#858` Sec. 5.1's sparse depth, not breadth), still ranks below `#790`. Full assessment:
+  `docs/notes/2026-08-22-791-fable-shelve-assessment.md`.
+- `#863` — registered 2026-08-22 (found during Fable's `#791` shelve assessment, NOT dispatched,
+  optional idle-machine-time only): **Galilean moon-tour density-inversion probe.** `#501` swept 6-7
+  sequences broadly (512 Sobol cells each) but never deeply; `#858` Sec. 5.1 already diagnosed
+  per-sequence density as the real flaw, not sequence breadth (`#791`'s now-shelved direction).
+  Pick ~5-10 sequences by judgment (short inner-three Io/Europa/Ganymede Laplace-resonance tours,
+  plus 1-2 literature-adjacent Callisto patterns) and run 32k+ cells each — `#501`'s Liang Member D
+  positive control re-run first, Stage 2 n-body shooting on survivors (legitimately unblocked since
+  `#849` landed). ~1-3 days. Produces empty-region stamps with real conditional meaning (unlike a
+  stamp from an already-judged-too-sparse method). Ranks below `#790` on expected value — do not
+  dispatch ahead of it; pick up only on idle machine time.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
   sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,
