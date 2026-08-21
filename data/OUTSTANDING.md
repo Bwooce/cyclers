@@ -194,6 +194,23 @@ update's own scope.
   cell-ranking plausibly earns its keep at 10^7-cell scale (deterministic gates first, ML only if
   measured against them) — per the earlier "prefilter saved <=1.4% compute" verdict, this is the
   only campaign large enough to possibly flip that verdict.
+  **STAGE 0 CHECKPOINT 2026-08-22 (per `#858`'s own gated shape, Sec. 5.4): pruning is TOO WEAK,
+  STOP.** `scripts/scan_791_stage0_sequence_pruning.py` enumerated all 3276 closed Galilean-moon
+  tours (Io/Europa/Ganymede/Callisto, adjacency-distinct, length 3-8) and pure-Tisserand-pruned
+  each leg against the project's own established V∞ probe band. **3269/3269 new sequences survive
+  (0 pruned)** — the already-stamped set is actually 7, not 6 (`#501`'s 6 plus `#318`'s own
+  `jovian.CGCEC` smoke sequence, found by checking `#318`'s driver directly rather than trusting
+  the registration's summary). Independently re-verified this is a real physical fact, not a gate
+  bug: the 4 Galilean moons form a Tisserand-COMPLETE graph at ~3-4 km/s (every one of the 6
+  possible pairs is mutually linkable there, even with zero SMA-range padding) — exactly the
+  energy real Galilean tour designers already exploit, which is also why this territory is so
+  literature-saturated (`#858` Sec. 5.2). Per `#858`'s own explicit rule ("if 10^3 sequences
+  survive... pruning is too weak to proceed"), Stage 1's brute patched-conic enumeration
+  (~10^7 cells) is NOT auto-fired — this is a mandatory dispatch-decision checkpoint. Options for
+  next: a chained/whole-sequence energy-consistency filter (likely far stronger than pairwise),
+  accept Stage 1's full un-narrowed cost, or shelve toward `#790` per `#858`'s own ranking — no
+  recommendation made here, that decision is the user's. Full account:
+  `docs/notes/2026-08-22-791-stage0-tisserand-pruning-checkpoint.md`. No catalogue writeback.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
   sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,
