@@ -1,0 +1,26 @@
+{
+  "note": "Second mu-continuation cross-check (#861): Neptune-Triton table-verified '4:3-saddle' (ESM_GATE_ROWS, C=3.016635194282, half_crossings=2, mu=2.089503183689124e-04) continued down to Oberon's own mu=3.54326e-5 via the same continue_in_mu_downward driver used for the 4:5 cross-check. Lands cleanly (TARGET_REACHED, 30 steps, ~20.6s) at C=3.016466 -- well INSIDE Oberon's published 4:3 range [2.9836,3.0279] -- staying genuinely unstable (|lambda|=3.954, stable=False) throughout the descent. HOWEVER, unlike the 4:5 cross-check, this member's own topology does NOT cleanly match either (p=4,q=3) or (p=3,q=4) under this task's period/winding convention (period_over_2pi=2.037 at the Neptune-Triton source itself, ~32% off q=3 and ~49% off q=4; winding_p_inertial=3.037, close to 3 but that requires q=4 for a consistent p:q pairing, which the period check then fails badly) -- an honest inconsistency, plausibly reflecting the SOURCE row's own already-documented 'family-mixing' complexity (neptune_triton_resonant_families.py module docstring: 'all four printed Res43+x+h rows are NOT samples of one single-crossing-index continuation branch'). Reported as a WEAKER, ambiguous cross-check -- genuinely unstable and in-range, but not a clean topology confirmation the way 4:5's cross-check was.",
+  "seed_mu": 2.089503183689124e-04,
+  "seed_jacobi": 3.016635194282,
+  "seed_half_crossings": 2,
+  "seed_label": "Neptune-Triton 4:3-saddle (ESM_GATE_ROWS)",
+  "target_mu": 3.54326e-05,
+  "stop_reason": "target_reached",
+  "n_steps": 30,
+  "elapsed_s": 20.64,
+  "final_member": {
+    "mu": 3.54326e-05,
+    "x0": -0.5985804132394589,
+    "jacobi": 3.0164663652164085,
+    "period": 12.598013669560887,
+    "abs_lambda": 3.953762594435898,
+    "stable": false,
+    "period_over_2pi_source_mu": 2.0365420205332185,
+    "period_over_2pi_oberon_mu": 2.005,
+    "winding_p_inertial_source_mu": 3.0365420205328073,
+    "winding_p_inertial_oberon_mu": 3.005,
+    "closest_secondary_approach_nondim_oberon_mu": 0.07065
+  },
+  "published_c_range_4_3": [2.9836, 3.0279],
+  "in_published_range": true
+}

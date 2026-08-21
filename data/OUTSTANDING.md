@@ -300,6 +300,37 @@ update's own scope.
   (methodology validation only, and it failed). `tests/search/test_resonant_atlas_stage_a_prime.py`
   (10 tests) + the pre-existing `#859`/`#249` suites all green; `ruff`/`ruff format`/full `mypy`
   clean. Full account: `docs/notes/2026-08-21-861-resonant-seeding-oberon-gate.md`.
+  **ADDENDUM (same day, second pass completing this task's own required `mu_continuation`
+  cross-check + `deflated_newton` backstop, neither covered above)**: continuing
+  `neptune_triton_resonant_families.ESM_GATE_ROWS["4:5-saddle"]` (table-verified) in mu down to
+  Oberon's own mass ratio CONFIRMS the true 4:5 saddle family is real and sits right at the
+  published range's own lower edge (`C=2.9914`), with matching topology and `|lambda|` in the
+  70s-80s — genuinely recoverable, but ONLY from `half_crossings=3`, which NEITHER seed phase's
+  own auto-detection (`opposition`->hc=4, `conjugate_apse`->hc=1) ever selects. Sharpens the
+  gate's own "family-mixing artifact" into a specific mechanism: crossing-index selection is a
+  third, unaddressed free parameter `#860`'s two fixes don't cover. Gate verdict UNCHANGED (still
+  0/6 as built and literally gated); registered `#862` as the concrete follow-up lead. Second
+  `mu_continuation` cross-check (4:3) lands in-range but with ambiguous topology (weaker result,
+  reported honestly). `deflated_newton` backstop attempted at the two auto-detected crossing
+  indices only (found one topology-matching but STABLE root, no unstable match); a wider sweep hit
+  a time budget wall and was abandoned, not completed. Full addendum + all data:
+  `docs/notes/2026-08-21-861-resonant-seeding-oberon-gate.md`'s own "Addendum" section,
+  `data/found/861_resonant_seeding_oberon_gate/`.
+- `#862` — registered 2026-08-22 (found during `#861`'s own addendum pass, not dispatched):
+  **crossing-index-aware seeding — the missing third fix for Resonant Atlas, IF it is ever
+  revisited.** `#861`'s addendum found the genuine Uranus-Oberon 4:5 unstable saddle IS reachable
+  by fold-turning, but only from `half_crossings=3` (the same index the Neptune-Triton
+  table-verified `"4:5-saddle"` anchor uses) — neither of `#861`'s two seed phases
+  (`opposition`/`conjugate_apse`) auto-detects that index from its own natural seed point
+  (`_crossing_index_near_half_period` picks hc=4 and hc=1 respectively for 4:5). A future attempt
+  should SWEEP `half_crossings` explicitly per `(system, p, q)` cell (not just the one index each
+  seed's own natural C happens to auto-detect) before concluding a ratio's saddle is unreachable —
+  cheap to try (each extra `half_crossings` value is one more scalar corrector + fold-turn, not a
+  new seed construction) and directly explains this task's own 0/6 gate result mechanistically
+  rather than leaving it as an unattributed "family-mixing artifact." Explicitly NOT a
+  recommendation to un-shelve `#789`/`#859` now — `#790` still holds the higher-ranked expected
+  value per `#858`; this is a registered lead for if/when Resonant Atlas is revisited, not an
+  active dispatch.
 - `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
   (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
   reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as

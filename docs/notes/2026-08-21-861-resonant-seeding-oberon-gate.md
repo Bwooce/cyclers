@@ -115,3 +115,88 @@ validation (which failed).
 full `mypy src tests` clean. The gate run itself (12 cells, `data/found/861_resonant_seeding_oberon_gate/`)
 is a data artifact, not a pytest-covered claim — its own numbers were independently spot-checked by
 the coordinating session directly against the raw per-member records before this note was written.
+
+## Addendum: `mu_continuation` cross-check + a concrete diagnosis of the family-mixing mechanism
+
+A second, independent execution pass of this same task's own required scope (`#861`'s registration
+explicitly asks for a `mu_continuation` cross-check against a Neptune-Triton table-verified saddle,
+and a `deflated_newton` backstop, before declaring a ratio "genuinely unrecoverable" — neither is
+covered by the gate/note sections above). Ran this after independently reproducing the exact same
+12-cell gate result byte-for-byte (`scripts/run_861_oberon_gate.py`, identical output), so this
+section is additive evidence, not a re-litigation of the FAILS verdict, which stands unchanged.
+
+**mu-continuation cross-check #1 (4:5) — CONFIRMS the true family exists, right at the published
+range's own edge.** `neptune_triton_resonant_families.ESM_GATE_ROWS["4:5-saddle"]` (table-verified,
+`C=2.987089791658`, `half_crossings=3`, `|lambda|~=105` per `#771`'s own survey) continued in mu
+(`mu_continuation.py`, `#249`'s sibling) from Neptune-Triton's `2.089503183689124e-04` down to
+Oberon's own `3.54326e-5` (~5.9x descent, `#860` Sec. 4(d)'s own "modest, safe" assessment) —
+`TARGET_REACHED` cleanly in 20 steps/8.7s, landing at `C=2.986914`, `|lambda|=22.95`, still
+genuinely unstable throughout the descent (script: `scripts/run_861_mu_continuation_crosscheck.py`,
+data: `data/found/861_resonant_seeding_oberon_gate/mu_continuation_crosscheck.json`). That landing
+point's own period/winding (`period_over_2pi=4.966`, `winding_p_inertial=3.966`) match the 4:5
+label to <1% — genuine topology confirmation, independent of both `#861` fixes. Its own C
+(2.986914) sits ~0.0045 (0.15%) BELOW the paper's own printed lower bound (2.9914) — a small,
+real, boundary-adjacent gap, not inside the strict printed range.
+
+**Targeted follow-up (NOT part of either `#861` fix, diagnostic only):** re-corrected that
+mu-continued member at `half_crossings=3` (the SAME crossing index the Neptune-Triton anchor uses)
+up to `C=2.9914` (the published range's own lower edge) via a plain natural-parameter step, then
+fold-turned it (`cr3bp_jacobi_arclength.continue_in_jacobi`, `half_crossings=3` throughout). Result:
+a clean, topology-matching unstable segment, `C in [2.9914, 2.9926]` (9 members), `|lambda|` growing
+70.8 -> 82 -> 68 (a genuine saddle magnitude, not a near-unit-circle value), `period_over_2pi` in
+[4.894, 4.927] (1.1-2.1% off `q=5`) and `winding_p_inertial` in [3.894, 3.927] (1.4-2.7% off `p=4`)
+— BOTH pass this task's own `PERIOD_REVIEWER_REL_TOL=0.03` for every one of these 9 members, with a
+real close approach (`closest_secondary_approach_nondim=0.0123`, ~7,177 km). The walk then hits a
+genuine topology jump at `C~2.9930` (period discontinuously jumps 4.89 -> 7.20) — the SAME
+family-mixing artifact the gate note above describes, caught cleanly by `classify_member`'s own
+period/winding check on the far side of the jump. Full data:
+`data/found/861_resonant_seeding_oberon_gate/hc3_targeted_recovery_4_5.json`.
+
+**This sharpens the gate note's own "family-mixing artifact" diagnosis into a specific, actionable
+mechanism**: the genuine 4:5 saddle is real, sits right at the published range's own lower edge, and
+IS reachable by fold-turning — but only from `half_crossings=3`, which neither seed phase's own
+auto-detection (`_crossing_index_near_half_period`, run once per seed at its OWN natural C) ever
+selects (opposition auto-detects `hc=4`; conjugate_apse auto-detects `hc=1` — see the gate table's
+own `half_crossings` field in `results.jsonl`, neither is 3). `#860`'s two fixes (seed phase,
+continuation method) are both necessary but not sufficient; the auto-detected CROSSING INDEX is a
+third, unaddressed free parameter, and for 4:5 it is simply the wrong one before either fix's own
+machinery gets a chance to matter. This does not change the gate's own literal verdict (the gate is
+scored on `#861`'s two prescribed fixes exactly as built, and they still fail 0/6 as built) but it
+answers the "is this a checker bug or a real dynamics fact" question the gate note itself raises,
+and gives a concrete, sourced lead for anyone revisiting this direction later.
+
+**mu-continuation cross-check #2 (4:3) — weaker, ambiguous.** Same procedure from
+`ESM_GATE_ROWS["4:3-saddle"]` (`C=3.016635194282`, `half_crossings=2`) lands cleanly
+(`TARGET_REACHED`, 30 steps/20.6s) at `C=3.016466` — comfortably INSIDE the published 4:3 range
+`[2.9836,3.0279]` — staying unstable throughout (`|lambda|=3.95`, real but modest). Its own topology,
+however, does NOT cleanly match either `(p=4,q=3)` or `(p=3,q=4)` under this task's own
+period/winding convention, even at the Neptune-Triton SOURCE mu before any continuation
+(`period_over_2pi=2.037`, ~32% off `q=3` and ~49% off `q=4`) — plausibly reflecting this exact ESM
+row's own already-documented "family-mixing" complexity
+(`neptune_triton_resonant_families.py`'s own module docstring: "all four printed `Res43+x+h` rows
+are NOT samples of one single-crossing-index continuation branch"). Reported honestly as a weaker,
+inconclusive cross-check, not a second clean confirmation. Data:
+`data/found/861_resonant_seeding_oberon_gate/mu_continuation_crosscheck_4_3.json`.
+
+**`deflated_newton` backstop — attempted, inconclusive, genuinely slow at these settings.** Ran
+scalar deflated Newton (`deflated_newton.enumerate_roots`) on the 4:5 corrector residual at the
+published range's own midpoint (`C=3.0035`), sweeping `x0 in [-1.9,1.7]` at `half_crossings in
+{1,4}` (the two auto-detected indices). Found several distinct roots, including one genuine,
+tightly-converged 4:5-topology match (`period_over_2pi=4.998`, `winding_p_inertial=3.998`,
+<0.1% both) — but it is STABLE (`|lambda|=1`), not the paper's unstable saddle; no unstable
+topology-matching root turned up in this bounded sweep. A wider hc/seed sweep (5 crossing indices x
+20 seeds) hit a >250s wall-clock budget without finishing and was abandoned rather than let run
+unbounded — a genuine time-budget limitation of this specific attempt, not a negative result on the
+method itself (this is exactly the caveat the module's own docstring gives: narrow saddle basins
+"still require the deflated Newton to pass nearby"; `hc=3`, the crossing index the mu-continuation
+cross-check shows actually hosts the saddle, was not swept). No script/test artifact kept for this
+attempt (exploratory only, not reproducible without re-running); numbers are recorded here for the
+record.
+
+**Disposition unchanged**: this addendum's own findings are point-for-point consistent with —
+and independently corroborate — the gate note's own SHELVE verdict: the fold-turning/conjugate-apse
+combination as built and gated genuinely fails 0/6, and the reason is now understood precisely
+(crossing-index mismatch, not "no such family" or "checker bug"). Registered `#862` as a follow-up
+lead (crossing-index-aware seeding) for whoever next revisits Resonant Atlas, per this project's own
+"register everything" discipline — NOT a recommendation to un-shelve `#789`/`#859` now; that
+decision still rests with `#790`'s own higher-ranked expected value per `#858`.
