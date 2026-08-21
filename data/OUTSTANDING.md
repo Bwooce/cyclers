@@ -241,6 +241,47 @@ update's own scope.
   reference). Real Stage A dispatch needs a decision on d_jacobi/n_c_steps recalibration
   first (options in the note below) — not a rubber-stamp of the harness's current
   defaults. Full writeup: `docs/notes/2026-08-21-859-resonant-atlas-pilot-harness.md`.
+- `#860` — ✓ DONE 2026-08-21 (dispatched to Fable same day, found during `#859`'s smoke test):
+  **advice on the `#859` topology-misidentification finding — fix the seeding, do NOT shelve,
+  do NOT run Stage A as-is.** Mechanism diagnosis: `two_body_resonant_seed`'s `x0_sign=-1`
+  places the seed's apse at OPPOSITION, the encounter-AVOIDING configuration, while the target
+  families are unstable BECAUSE OF repeated close flybys (Anderson & Lo p.177-178; corroborated
+  by `#758`'s measured 668/1641 km close approaches on genuine orbits vs 12,000-28,000 km on
+  every wrong candidate the naive seed finds) — the corrector's basin geometry (wide stable
+  basins vs narrow "fractal" saddle basins, `#753`/`#758`) makes convergence to the wrong branch
+  near-certain from that one seed phase. Primary fix, both cheap: (a) a conjugate-apse seed
+  (the excluded hazardous `+1`-phase ellipse, re-seeded from its SAFE far apse instead); (b)
+  replace `continue_family`'s natural-parameter walk with the already-built, already-proven
+  `cr3bp_jacobi_arclength.py` pseudo-arclength fold-turner (`#249`) — whose own docstring
+  documents this exact failure and which already recovered unstable Earth-Moon members from a
+  stable-branch start. This also fixes the coarse-grid depth gap `#859`'s own note flagged.
+  Weaker candidates assessed and mostly ruled out: multi-start (`#756`'s own 159-candidate wide
+  sweep already failed to find a known saddle — independently verified, matches exactly);
+  flyby-rotation seeding (right physics, one failed field trial, second-tier); `deflated_newton`
+  (`#524`, real backstop for fold-disconnected branches) and `mu_continuation` (from
+  Neptune-Triton's table-verified saddles, the best independent identity cross-check) both
+  exist and are relevant supporting tools, not primary fixes. Confirmed no dependency/conflict
+  with the concurrent `#849` DSM-lane fix (unrelated code). Independently spot-checked by the
+  coordinating session: re-verified the Oberon |lambda|=1.0 finding directly, and confirmed
+  `cr3bp_jacobi_arclength.py`/`deflated_newton.py`/`mu_continuation.py` all exist and `#756`'s
+  cited 159-candidate negative matches its own OUTSTANDING.md bullet exactly. Full advice:
+  `docs/notes/2026-08-21-860-resonant-seeding-topology-fix-advice.md`.
+- `#861` — registered 2026-08-21 (found during `#860`'s advice, not dispatched — awaiting user
+  go-ahead): **`#860`'s concrete fix-and-gate scope**, ~2-4 days effort, trivial compute, ALL
+  against the Oberon positive control, before any novel-system Stage A dispatch: (1) add the
+  conjugate-apse seed to `jovian_resonant_families.py`, converge+classify at Oberon's six
+  published ratios (~0.5 day); (2) wire `cr3bp_jacobi_arclength`-style fold-turning into a
+  Stage A' worker, walking every converging seed's family curve to its natural boundaries
+  (~1-2 days); (3) **the gate**: recover, for >=4 of the 6 published Oberon families, an
+  unstable segment whose C-range and topology (period ~= 2*pi*q, winding = p, close-approach
+  signature) matches the paper, cross-checked on >=1 family via `mu_continuation` down from a
+  Neptune-Triton table-verified saddle; apply `deflated_newton` at the published C for any
+  resisting ratio before declaring it missing. **Decision rule**: gate passes -> run the fixed
+  Stage A' on `#859`'s 3 novel systems (misses now honestly method-conditional-stampable);
+  gate fails on >=3 of 6 families -> shelve Stage A, redirect to `#790`'s corrector/alphabet
+  build instead (per `#858`'s own ranking, `#790` — not `#789`/`#859` — holds the actual
+  catalogue-shaped prize). No catalogue writeback anywhere in this scope. Full scope:
+  `docs/notes/2026-08-21-860-resonant-seeding-topology-fix-advice.md` Sec. 5.
 - `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
   (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
   reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as
