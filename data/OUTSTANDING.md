@@ -194,6 +194,32 @@ update's own scope.
   cell-ranking plausibly earns its keep at 10^7-cell scale (deterministic gates first, ML only if
   measured against them) — per the earlier "prefilter saved <=1.4% compute" verdict, this is the
   only campaign large enough to possibly flip that verdict.
+- `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
+  narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
+  sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,
+  Uranus-Titania, Saturn-Rhea (band-edge probe) — subject to a per-system `literature_check.py`
+  + corpus pre-check that may swap members before the list is final. **Stage A**: family
+  recovery + eigenvalue survey, all coprime p:q with p,q<=8, coarse C-grid (~10 steps spanning
+  each family's existence range), `campaign_runner` checkpointed (`#800` thermal config).
+  Budget ~50-100 CPU-hours, ~2-3 days wall at 4 workers. **Hard checkpoint: report the in-band
+  (|lambda| in [50, 2500]) cell census per system and STOP — do not proceed to Stage B without
+  a dispatch decision at that checkpoint.** Stage B (gated on the checkpoint report, NOT
+  auto-fired): connection attempts on in-band cells only, `#786`-style cheap manifold-tube
+  pre-scan (~20-80 s/family) before any Newton call. Explicitly NOT in scope this week: `#790`'s
+  enumeration (blocked on a missing corrector + alphabet) and `#791`'s n-body stage (blocked on
+  `#849` + its own Stage-1 landscape) — `#791`'s cheap Stage 0 may run independently whenever
+  the machine is otherwise idle, registered separately if picked up.
+  **Zero-CPU prerequisite, run in parallel (per `#858`'s own framing — "the other half of what
+  the census is actually gated on"):** `#838`/`#856`'s shipped registry schema requires >=1
+  catalogued `row_ref` endpoint per connection entry, so a pilot hit on a genuinely fresh system
+  (the whole point of this campaign) still has nowhere to go without either (a) a catalogue
+  writeback for that system's own orbit first, or (b) revisiting the admission rule to allow a
+  zero-catalogued-row connection entry. `#781`'s still-unwritten-back Neptune-Triton finding is
+  the concrete test case — settle its writeback path (or explicitly why it stays unwritten)
+  before or alongside Stage A, not after. Uncertainties flagged by `#858` Sec. 7 (per-step cost
+  basis, the |lambda| tractable-band's system-dependence, `joint_cell.py`'s Saturn
+  un-hardcoding scope) apply here unchanged. Full review: `docs/notes/2026-08-21-858-campaigns-
+  789-790-791-review.md`.
 - `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
   (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
   reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as
@@ -1819,6 +1845,25 @@ update's own scope.
   page is a one-file follow-on). Full site build (405 pages) + `vitest` clean except 3
   pre-existing failures confirmed unrelated (re-ran the identical suite against the pre-`#857`
   baseline). Design note: `docs/notes/2026-08-21-857-manifold-connections-website-representation.md`.
+- `#858` — ✓ DONE 2026-08-21 (dispatched to Fable same day, user-requested pre-commitment review):
+  **critical review of `#789`/`#790`/`#791`'s three undispatched combinatorial-search campaigns
+  before any greenlight** — none should run as registered. Shared structural blocker: the whole
+  `#753`-`#786` pipeline arc produced ZERO catalogue rows despite real findings (`#781`'s novel
+  Neptune-Triton hit is still unwritten-back), and `#838`'s own just-delivered connection-registry
+  design does not fix this — its schema's admission rule requires >=1 catalogued `row_ref`
+  endpoint (verified directly against `data/manifold_connection.schema.json`'s `contains` clause),
+  so a connection touching two entirely fresh, uncatalogued systems (exactly what `#789` would
+  find) still has nowhere to go. Per-campaign: `#789` narrowed to a 3-system + 1-positive-control
+  pilot (not the 15-20-system sweep) — see `#859`. `#790` deferred: its own "minutes-to-an-hour
+  per closure" cost model is contradicted by the one real precedent (`#768`-`#773`-`#775`-`#782`-
+  `#774`, five dispatches over ~8 days for ONE 2-symbol chain, closed only via a symmetric
+  corrector `#775` independently proved does not generalize — the general itinerary case is
+  intractable with the current toolkit, a genuinely verified negative, not a scoping guess).
+  `#791` cut to Stage 0/1 only (Tisserand pruning + patched-conic enumeration + empty-region
+  stamps, hard stop before n-body shooting) — the expensive stage should additionally wait for
+  `#849`'s reposing fix, since the `#388` wall evidence it would be judged against is partly
+  contaminated by that same bug. Full review: `docs/notes/2026-08-21-858-campaigns-789-790-791-
+  review.md`.
 - `#839` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#828`; gated on `#827`,
   dispatched after `#827` closed): **fresh, unseeded search for a `Wu(3:1) <-> Ws(2:1)`
   connection AT C=3.13 specifically (not one of `#827`'s seven printed Table-5 rows) — GENUINE,
