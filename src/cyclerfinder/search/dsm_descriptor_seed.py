@@ -18,6 +18,7 @@ from numpy.typing import NDArray
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search import dsm_leg, self_seeding
+from cyclerfinder.search.descriptor import designated_arc_index
 
 # V_inf anchor-match tolerance (km/s) — aligned to the campaign gate used in
 # free_return_chain.py (vinf_tol_kms=0.5) and the closer-sweep _LEVEL_EVIDENCE
@@ -59,9 +60,22 @@ def _descriptor_params(
     """Extract (aphelion_au, g_tof_yr, big_g_tof_yr, vinf_e, vinf_m, sequence) from
     the row's g/G descriptor, or None if the row has no per-arc descriptor.
 
-    Mirrors scripts/triage_self_seeding.py's extraction — same field paths:
+    ``g_tof_yr``/``big_g_tof_yr`` feed :func:`cyclerfinder.search.self_seeding.
+    g_arc_branches`, whose own model (``free_return_chain.free_return_chain_correct``)
+    is documented as "Russell's generic-return construction: two distinct
+    Earth-to-Earth free-return arcs (arc-1 = g, arc-2 = G)" -- i.e. arc-1/g is the
+    NON-designated (lowercase) Lambert-solvable arc and arc-2/G is the DESIGNATED
+    (uppercase) one, identified by :func:`cyclerfinder.search.descriptor.
+    designated_arc_index` (the #794/#820 semantics: the uppercase letter in
+    Russell's own notation, NOT array position -- #849 fixed this function's own
+    prior ``g_tofs[0]``/``g_tofs[1]`` positional read, which carried #820's exact
+    defect class). A row whose designated arc is itself full-rev (f/F, e.g. the
+    ggF/gfF-pattern rows) has no uppercase GENERIC arc for this two-generic-arc
+    model to consume -- correctly out of scope here, so this returns None rather
+    than feeding a non-designated ToF into the "big_g" (Mars-transit) role.
+
+    Other field paths (mirrors scripts/triage_self_seeding.py's extraction):
     - aphelion_au  <- row["orbit_elements"]["aphelion_au"]
-    - g/G ToFs     <- row["free_return_arcs"][*]["tof_years"] (needs >= 2)
     - vinf_e/m     <- row["vinf_kms_at_encounters"] keyed by body
     - sequence     <- row["sequence_canonical"] split on "-"
     """
@@ -74,26 +88,39 @@ def _descriptor_params(
         if e.get("body") is not None and e.get("vinf_kms") is not None
     }
     fra = row.get("free_return_arcs") or []
-    g_tofs = [a.get("tof_years") for a in fra if a.get("tof_years") is not None]
     seq_str: str | None = row.get("sequence_canonical")
 
-    if (
-        len(g_tofs) < 2
-        or aph is None
-        or "E" not in vinf_list
-        or "M" not in vinf_list
-        or not seq_str
-    ):
+    if len(fra) < 2 or aph is None or "E" not in vinf_list or "M" not in vinf_list or not seq_str:
         return None
 
     sequence = tuple(seq_str.split("-"))
     if len(sequence) < 2:
         return None
 
+    try:
+        d_idx = designated_arc_index(fra)
+    except ValueError:
+        return None
+    designated = fra[d_idx]
+    if designated.get("arc_type") != "generic" or designated.get("tof_years") is None:
+        # The designated (Mars-transit) leg is full-rev (f/F) -- not representable
+        # by this g/G-only shape model. Out of scope for this seeder.
+        return None
+    generic_others = [
+        a
+        for i, a in enumerate(fra)
+        if i != d_idx and a.get("arc_type") == "generic" and a.get("tof_years") is not None
+    ]
+    if len(generic_others) != 1:
+        # Either no other generic (Lambert-solvable) arc to play the "g" role, or
+        # more than one -- ambiguous for this two-generic-arc model.
+        return None
+    g_arc = generic_others[0]
+
     return (
         float(aph),
-        float(g_tofs[0]),
-        float(g_tofs[1]),
+        float(g_arc["tof_years"]),
+        float(designated["tof_years"]),
         float(vinf_list["E"]),
         float(vinf_list["M"]),
         sequence,

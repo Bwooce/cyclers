@@ -1412,17 +1412,38 @@ update's own scope.
   a core corrector, with a blast radius across every closure the project has produced. Fix
   is not free: the rotation is only exact for a commensurate period, so the wrap check must
   either take the period as an input or be restricted to callers that pin one.
-- `#849` — registered 2026-08-12 (found during `#830`, not dispatched): **the DSM lane
-  carries `#820`'s own defect class.** `dsm_descriptor_seed._descriptor_params` reads
-  `free_return_arcs` POSITIONALLY (`g_tofs[0]`, `g_tofs[1]`) to identify the g/G arcs —
-  exactly the assumption `#820` overturned for `build_genome`, where the DESIGNATED
-  (uppercase) arc was NOT `arcs[0]` on 9 of the 12 rows. `close_row_dsm` is `#388`'s
-  canonical determination path, so every negative it has produced on a descriptor-bearing
-  row was computed under a posing now known to be wrong for most of them
-  (`[[feedback_bugfix_invalidates_past_searches]]`). Re-pose the seeder per `#794`/`#820`'s
-  designated-arc semantics and re-run `#388`'s lane. `#830` ran the lane AS-IS and recorded
-  the current numbers (`data/found/830_v2_ballistic_multiarc/dsm_388_recheck.json`) —
-  labelled as such, not as the corrected posing.
+- `#849` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#830`, dispatched
+  2026-08-21): **the DSM lane carried `#820`'s own defect class, now fixed — but it was NOT
+  load-bearing for `close_row_dsm`'s actual verdicts.** `dsm_descriptor_seed._descriptor_params`
+  read `free_return_arcs` POSITIONALLY (`g_tofs[0]`, `g_tofs[1]`) to identify the g/G arcs —
+  exactly the assumption `#820` overturned for `build_genome`, where the DESIGNATED (uppercase)
+  arc was NOT `arcs[0]` on 9 of the 12 rows. Fixed by promoting `#820`'s own
+  `_designated_arc_index` into a shared `cyclerfinder.search.descriptor.designated_arc_index`
+  (case-based, not positional; both `build_genome` and `_descriptor_params` now use it), and
+  requiring the designated arc be `arc_type == "generic"` (a full-rev-designated row, e.g. the
+  ggF-pattern, is honestly out of scope for this g/G-only shape model — `None`, not a fabricated
+  ToF pair). Re-ran `close_row_dsm` (`#388`'s canonical lane) on the real DE440 ephemeris across
+  all 14 `free_return_arcs`-bearing rows under BOTH the pre-fix and corrected posing for direct
+  comparison: **ZERO `converged`/`anchor_match` verdicts flip.** The bug was real (confirmed: the
+  coplanar arc SHAPE `arc_a_au`/`arc_e` genuinely differs on the 3 swap-affected rows —
+  `9.353Gg2`, `3.78Gg3`, `9.94Gg3`), but that shape only feeds a fallback ToF / audit field the
+  corrector's actual per-leg seed (sourced from `free_return_arcs`/`transit_times_days` directly,
+  untouched by the swap) never needed on any of these rows — a clean, verified, non-eventful
+  negative. Two rows DO reclassify from a spurious seed to honest `None` for a WORSE reason than
+  the registration described: both `russell-ocampo-*` rows have only ONE generic arc (g+f+h), but
+  the old code's `tof_years is not None` guard also matches half-rev (`h`) arcs, so it was
+  silently feeding the h-arc's 0.5 yr ToF into the "designated G" role — same ultimate no-seed
+  outcome, now for the structurally correct reason. `5.30ggF3`/`5.75ggF3` also reclassify (old:
+  downstream `g_arc_branches` raise; new: honest `None` in `_descriptor_params` itself) with no
+  outcome change. **No `catalogue.yaml` writeback, no adjudication follow-up registered** — no
+  row gained a closure or anchor match it didn't already have on record. Reused `#830`'s own
+  unmodified `scripts/dsm_closure_batch.py` driver as a corroborating cross-check (identical
+  numbers). 5 new evidence tests in `tests/search/test_dsm_descriptor_seed.py` (13 total, all
+  green); `#820`'s own pinned tests (`test_russell12_likeforlike_probe.py` +3 more files, 48
+  tests) re-run clean, confirming the shared-helper delegation is behavior-preserving. Data:
+  `data/found/849_dsm_reposing_recheck/dsm_reposing_recheck.json`,
+  `data/runs/dsm-closure-20260821T205218.jsonl`. Full account:
+  `docs/notes/2026-08-21-849-dsm-lane-reposing-fix.md`.
 - `#850` — registered 2026-08-12 (found during `#830`, not dispatched): **the V2-ballistic
   gate needs a continuous-propagation instrument, and the existing test's headline number is
   probably an artifact.** Two coupled parts. (a) `verify_long_term_stability` rebuilds each

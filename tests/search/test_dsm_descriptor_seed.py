@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
+import pytest
 
 import cyclerfinder.search.dsm_descriptor_seed as dds
 from cyclerfinder.core.ephemeris import Ephemeris
@@ -101,3 +102,74 @@ def test_closure_result_carries_seed_max_revs_and_n_revs() -> None:
     assert res.max_revs_used == 2
     assert isinstance(res.n_revs_per_leg, tuple)
     assert len(res.n_revs_per_leg) == 3  # E-E-M-M -> 3 legs
+
+
+# --- #849: _descriptor_params identifies g/G by descriptor CASE, not array
+# position (the #820 defect class carried by this lane's own seeder). ---
+
+
+def test_descriptor_params_identifies_designated_by_case_not_position() -> None:
+    # russell-ch4-9.353Gg2's free_return_arcs are [G(1.7238,...), g(2.5469,...)] --
+    # the DESIGNATED (uppercase) arc is arcs[0], not arcs[1]. A positional read
+    # (pre-#849: g_tofs[0]/g_tofs[1]) would swap the g/G roles.
+    row = _row("russell-ch4-9.353Gg2")
+    arcs = row["free_return_arcs"]
+    assert arcs[0]["raw_descriptor"].startswith("G")
+    assert arcs[1]["raw_descriptor"].startswith("g")
+    params = dds._descriptor_params(row)
+    assert params is not None
+    _aph, g_tof_yr, big_g_tof_yr, _ve, _vm, _seq = params
+    assert g_tof_yr == pytest.approx(2.5469)  # arcs[1], lowercase g
+    assert big_g_tof_yr == pytest.approx(1.7238)  # arcs[0], uppercase G
+
+
+@pytest.mark.parametrize(
+    "row_id",
+    ["russell-ch4-5.30ggF3", "russell-ch4-5.75ggF3"],
+)
+def test_descriptor_params_none_when_designated_arc_is_full_rev(row_id: str) -> None:
+    # These rows' designated (uppercase) arc is F -- full-rev, no tof_years. The
+    # g/G shape model (free_return_chain_correct: "two distinct Earth-to-Earth
+    # free-return arcs, arc-1 = g, arc-2 = G") has no generic arc to play the G
+    # role, so this is honestly out of scope -- None, not a fabricated ToF pair
+    # built from the two non-designated lowercase loop arcs (the pre-#849 bug).
+    row = _row(row_id)
+    assert dds._descriptor_params(row) is None
+
+
+@pytest.mark.parametrize(
+    "row_id",
+    ["russell-ocampo-4.3.1-5", "russell-ocampo-2.5.1+0"],
+)
+def test_descriptor_params_none_for_non_two_generic_arc_row(row_id: str) -> None:
+    # Both ocampo rows carry exactly ONE generic (g) arc plus full-rev/half-rev
+    # arcs -- not a two-generic-arc g/G row. The pre-#849 positional read
+    # accidentally satisfied its own len(g_tofs) >= 2 guard here because a
+    # half-rev arc ALSO carries tof_years (descriptor.py: "tof_years -- ...
+    # g/h arcs only"), so it silently fed the h-arc's 0.5 yr ToF into the
+    # designated-arc role of a model documented as g/G-only -- a worse defect
+    # than a simple index swap. Correctly None now.
+    row = _row(row_id)
+    assert dds._descriptor_params(row) is None
+
+
+def test_close_row_dsm_swap_affected_rows_numerically_unchanged() -> None:
+    # #849 finding: for the 3 rows whose designated arc position flips
+    # (9.353Gg2, 3.78Gg3, 9.94Gg3), the corrected g/G identification changes
+    # the audited coplanar arc SHAPE (seed.arc_a_au/arc_e) but NOT
+    # close_row_dsm's converged/anchor_match/vinf verdict, because the
+    # corrector's actual per-leg ToF seed comes from the row's sourced
+    # free_return_arcs/transit_times_days (arc order, untouched by the g/G
+    # swap), not from the shape-fit arc itself. Pin against the historical
+    # #830 uncorrected-posing numbers (data/found/830_v2_ballistic_multiarc/
+    # dsm_388_recheck.json) so a future change to either lane is caught.
+    ephem = Ephemeris("astropy")
+    expected = {
+        "russell-ch4-9.353Gg2": (29.46771835978174, False),
+        "russell-ch4-3.78Gg3": (20.15004737126381, False),
+        "russell-ch4-9.94Gg3": (28.5125967696132, False),
+    }
+    for row_id, (res_kms, match) in expected.items():
+        res = dds.close_row_dsm(_row(row_id), ephem)
+        assert res.max_residual_kms == pytest.approx(res_kms, abs=1e-4), row_id
+        assert res.anchor_match is match, row_id

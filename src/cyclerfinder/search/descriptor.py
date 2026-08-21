@@ -70,6 +70,24 @@ def arc_tof_seed_days(arc_type: str, *, tof_years: float | None, resonance: str 
     raise ValueError(f"unknown arc_type {arc_type!r}")
 
 
+def designated_arc_index(arcs: Sequence[Mapping[str, Any]]) -> int:
+    """Index of the DESIGNATED arc: the UPPERCASE letter in Russell's own
+    leg-descriptor notation (Russell 2004 SS4.8 pp.125-127: "The transit times
+    and Mars v-inf are calculated using the designated transit leg, as
+    indicated by an uppercase descriptor letter"; established for this
+    catalogue by #794, first coded by #820). NOT always ``arcs[0]``: e.g. it is
+    ``arcs[1]`` (G) for russell-ch4-5.30gGf3 and ``arcs[2]`` (F) for the
+    ggF/gfF-pattern rows -- callers must never read ``free_return_arcs``
+    positionally to find the designated leg (#849's own defect class)."""
+    ups = [i for i, a in enumerate(arcs) if str(a.get("raw_descriptor") or "")[:1].isupper()]
+    if len(ups) != 1:
+        raise ValueError(
+            f"expected exactly one designated (uppercase) arc, found {len(ups)} in "
+            f"{[a.get('raw_descriptor') for a in arcs]}"
+        )
+    return ups[0]
+
+
 def parse_free_return_arcs(
     arcs: Sequence[Mapping[str, Any]],
 ) -> tuple[tuple[int, ...], tuple[str, ...], tuple[float, ...]]:

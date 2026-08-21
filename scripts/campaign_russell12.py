@@ -123,6 +123,7 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.runlog import RunLog, RunRecord, default_runlog_path
 from cyclerfinder.search.correct import _residuals, ballistic_correct
 from cyclerfinder.search.descriptor import arc_tof_seed_days
+from cyclerfinder.search.descriptor import designated_arc_index as _shared_designated_arc_index
 from cyclerfinder.search.free_return import _residuals as _fr_residuals
 from cyclerfinder.search.free_return import (
     free_return_correct,
@@ -188,19 +189,14 @@ _SEGMENT_BRANCH_MAP = {"resonant": "low", "half-rev": "single"}
 
 
 def _designated_arc_index(arcs: list[dict[str, Any]]) -> int:
-    """Index of the DESIGNATED arc: the UPPERCASE letter in Russell's own
-    leg-descriptor notation (Russell 2004 §4.8 pp.125-127: "The transit times
-    and Mars v-inf are calculated using the designated transit leg, as
-    indicated by an uppercase descriptor letter"; established for this
-    catalogue by #794). NOT always ``arcs[0]``: it is ``arcs[1]`` (G) for
-    russell-ch4-5.30gGf3 and ``arcs[2]`` (F) for the ggF/gfF-pattern rows."""
-    ups = [i for i, a in enumerate(arcs) if str(a.get("raw_descriptor") or "")[:1].isupper()]
-    if len(ups) != 1:
-        raise ValueError(
-            f"expected exactly one designated (uppercase) arc, found {len(ups)} in "
-            f"{[a.get('raw_descriptor') for a in arcs]}"
-        )
-    return ups[0]
+    """Index of the DESIGNATED arc (#794/#820 semantics).
+
+    Thin wrapper over :func:`cyclerfinder.search.descriptor.designated_arc_index`
+    (promoted to a shared module by #849 so ``dsm_descriptor_seed.py``'s DSM
+    lane reuses the exact same identification instead of its own now-fixed
+    positional read). Kept as a local name for this file's existing call
+    sites and tests."""
+    return _shared_designated_arc_index(arcs)
 
 
 def _g_arc_transfer_angle_deg(raw_descriptor: str) -> float:
