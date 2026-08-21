@@ -1789,18 +1789,34 @@ unchanged. See `git log` around this date for the corrected commit.
   `data/found/839_c313_targeted_search/results.json`. 11 new evidence tests (NOT slow, ~50s):
   `tests/search/test_vaquero_c313_targeted_search.py`. Full account:
   `docs/notes/2026-08-21-839-c313-targeted-search.md`.
-- `#855` — registered 2026-08-21 (found during `#839`, not dispatched): **adjudicate whether
-  `#839`'s genuine, independently-verified `Wu(3:1) <-> Ws(2:1)` connection at C=3.13 — touching
-  `vaquero-31-c313-em-resonant-po-2013` via its OWN orbit as node31 — constitutes "demonstrated
-  transport utility" under schema v4.9/`#453`'s criterion**, and if so whether `orbit_class`
-  should move `resonant_po -> cycler`. Must reconcile with `#811`'s own SOI-marginal boundary
-  call on the PERIODIC ORBIT itself (periselene 66,995 km, 1.2% outside the lunar SOI) against
-  `#839`'s finding that the TRANSFER LEG dips to ~46,200 km selenocentric (well inside the SOI) —
-  these are two different objects (the row's own orbit vs. a manifold leg reaching it) and the
-  adjudication needs to work out which one the schema's criterion is actually asking about. Per
-  the `#822`/`#828` and `#827`/`#854` split precedent, this is a SEPARATE adjudication task from
-  `#839`'s own compute — no catalogue writeback was performed by `#839`. Details:
-  `docs/notes/2026-08-21-839-c313-targeted-search.md`.
+- `#855` — ✓ DONE 2026-08-21 (registered 2026-08-21, found during `#839`, not dispatched):
+  **adjudicated: `orbit_class` STAYS `resonant_po` — no promotion.** `#839`'s genuine,
+  independently-verified `Wu(3:1) <-> Ws(2:1)` connection at C=3.13 touches
+  `vaquero-31-c313-em-resonant-po-2013` via its OWN orbit as node31, but schema v4.9/`#453`'s
+  criterion ("it never encounters the secondary") is grammatically and by this project's own
+  exhaustive, exception-free 16-row practice (9 `resonant_po` + 7 `cycler`, ALL 16 determined
+  solely from the periodic orbit's OWN periselene vs. the lunar SOI — never from a manifold leg)
+  a one-object question about the ORBIT's own trajectory, not the two-object transport-leg
+  question `#839` answers. `#811`'s own periselene determination for this row (66,995.2 km,
+  1.012x SOI, outside by 1.2%) is untouched by `#839`, which never re-propagated the orbit
+  itself. Direct precedent: the sibling `vaquero-31-c254-em-cycler-2013` row's own `#828`
+  `ADDED EVIDENCE` block already ruled a heteroclinic connection is "a two-object... TRANSPORT
+  statement" distinct from "one object's own trajectory"; further corroborated by schema
+  v5.3/v5.4's own choice to mint NEW `orbit_class` values (`torus_homoclinic`,
+  `quasi_periodic_torus`) rather than reuse `resonant_po` specifically because its "no
+  demonstrated transport utility" property is wrong for a connection-without-own-encounter
+  object — this project has faced this exact combination twice before and never answered it
+  with `cycler`. Independently re-verified `#839`'s ~46,200 km selenocentric leg-minimum-radius
+  claim from scratch (standalone inline DOP853 propagation from `#839`'s own recorded
+  `crossing_state`/`t_u`/`t_s`, no cyclerfinder imports): agrees to <0.1 km on both n_tau=48/64
+  runs. Honesty note (stated, not hidden): `resonant_po`'s descriptive prose now UNDERSELLS this
+  row (a verified connection exists at its own C) — same undersell pattern already flagged for
+  "stable" vs. this row's own UNSTABLE character; only `epoch_locked=false`/`n_returns=infinite`
+  is schema-enforced, the prose is not. Comment-only `ADDED EVIDENCE` block appended to the row's
+  `orbit_class` field (no semantic field changed — `orbit_class`/`epoch_locked`/`n_returns`/
+  `validation_level` all unchanged). Full `tests/data tests/search -q` ratchet +
+  ruff/format/full-mypy verified — see commit log. Full writeup:
+  `docs/notes/2026-08-21-855-c313-orbit-class-adjudication.md`.
 - `#840` — registered 2026-08-12 (found during `#828`, not dispatched): `#822` demonstrated the
   REVERSE direction Wu(3:1)->Ws(2:1) at **C=2.60 only** — a C at which NEITHER family node is a
   catalogued row. Run the reverse at the two band edges (C=2.54 and C=2.66) so each of the two
