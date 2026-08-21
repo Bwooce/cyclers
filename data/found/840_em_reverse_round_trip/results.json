@@ -1,0 +1,144 @@
+{
+  "task": "#840",
+  "generated_utc": "2026-08-21T07:25:31+00:00",
+  "mu": 0.01215058439469525,
+  "l_km": 384400.0,
+  "t_s": 375190.2618944357,
+  "method_note": "Symmetry-informed search (find_free_transfer_reverse_near_prediction): the blind find_free_transfer_reverse scan at epsilon=1e-4 (sibling-module default) converged 6/11 refined candidates at C=2.66 but every one failed verify_connection's forward-reapproach gate, including the closest-to-predicted candidate itself (forward_distance=1.58 vs the 0.5 ceiling). Raising epsilon (the same documented #822 evidence-quality knob) and trying multiple predicted-ranked candidates per epsilon (max_try_per_epsilon=5) found a verified connection at epsilon=2e-4 for C=2.66 (1e-4 sufficed unchanged at C=2.54, on the closest-to-predicted candidate). C=2.54's verified crossing matches the symmetry prediction to ~6e-9 (genuinely the time-reversal image of the forward connection); C=2.66's verified crossing is a DIFFERENT intersection point (~0.26 away from the prediction) -- still a genuine, independently verified connection at the same C and mu. Gates were never loosened.",
+  "sweep": [
+    {
+      "jacobi": 2.54,
+      "direction": "Wu(3:1)->Ws(2:1)",
+      "method": "find_free_transfer_reverse_near_prediction",
+      "predicted_crossing_xv": [
+        0.23322507758762506,
+        1.785596430399187
+      ],
+      "mu": 0.01215058439469525,
+      "n_seeds": 1,
+      "n_refined": 1,
+      "n_converged": 1,
+      "verified": true,
+      "notes": "",
+      "connection": {
+        "orbit_from": "vaquero-31-c254",
+        "orbit_to": "vaquero-21-c254",
+        "jacobi": 2.54,
+        "tau_u": 4.258037700729926,
+        "tau_s": 0.316633984139843,
+        "k_u": 26,
+        "k_s": 38,
+        "branch_u": -1,
+        "branch_s": 1,
+        "crossing_xv": [
+          0.23322508223108054,
+          1.7855964271675904
+        ],
+        "residual": 5.003149384845799e-10,
+        "converged": true,
+        "n_iter": 6,
+        "notes": "",
+        "ydot_sign_u": null,
+        "ydot_sign_s": null,
+        "x_sign_u": null,
+        "x_sign_s": null,
+        "epsilon": 0.0001
+      },
+      "evidence": {
+        "full_state_gap": 3.3703459348666194e-06,
+        "ydot_signs_match": true,
+        "ydot_u": 1.552405710081489,
+        "ydot_s": 1.5524088379488248,
+        "ghost_distance_from": 1.7999326702997418,
+        "ghost_distance_to": 0.24275809473080914,
+        "radau_gap": 1.34526141373117e-06,
+        "radau_vs_dop853": 1.3793804029803616e-06,
+        "backward_distance": 4.404466549909856e-08,
+        "forward_distance": 0.0017654933650994179,
+        "t_u": 25.901339218718725,
+        "t_s": -37.057354011499974,
+        "crossing_state": [
+          0.2332255177670723,
+          1.0009354456386177e-15,
+          0.0,
+          1.7855952134090556,
+          1.552405710081489,
+          0.0
+        ],
+        "jacobi_drift_u": 2.0730528405010773e-11,
+        "jacobi_drift_s": 2.149835864884153e-12,
+        "seed_jacobi_offset_u": 7.83019471484181e-09,
+        "seed_jacobi_offset_s": 1.2505174229460181e-08,
+        "passed": true,
+        "notes": ""
+      }
+    },
+    {
+      "jacobi": 2.66,
+      "direction": "Wu(3:1)->Ws(2:1)",
+      "method": "find_free_transfer_reverse_near_prediction",
+      "predicted_crossing_xv": [
+        0.8691637553536629,
+        0.5754661265104016
+      ],
+      "mu": 0.01215058439469525,
+      "n_seeds": 7,
+      "n_refined": 7,
+      "n_converged": 5,
+      "verified": true,
+      "notes": "",
+      "connection": {
+        "orbit_from": "vaquero-31-c266",
+        "orbit_to": "vaquero-21-c266",
+        "jacobi": 2.66,
+        "tau_u": 4.122557122466014,
+        "tau_s": 2.595563242258196,
+        "k_u": 29,
+        "k_s": 33,
+        "branch_u": -1,
+        "branch_s": 1,
+        "crossing_xv": [
+          0.9590289887986131,
+          0.32719383414376546
+        ],
+        "residual": 1.3791048718653995e-10,
+        "converged": true,
+        "n_iter": 11,
+        "notes": "",
+        "ydot_sign_u": null,
+        "ydot_sign_s": null,
+        "x_sign_u": null,
+        "x_sign_s": null,
+        "epsilon": 0.0002
+      },
+      "evidence": {
+        "full_state_gap": 2.8613823450224723e-06,
+        "ydot_signs_match": true,
+        "ydot_u": -1.014988546144049,
+        "ydot_s": -1.0149862357313355,
+        "ghost_distance_from": 0.3340016039894232,
+        "ghost_distance_to": 0.3356352588856158,
+        "radau_gap": 1.7732494775443259e-06,
+        "radau_vs_dop853": 1.0522304766143003e-06,
+        "backward_distance": 2.080963171115428e-09,
+        "forward_distance": 0.05191811455912227,
+        "t_u": 33.61175705551284,
+        "t_s": -38.291496898404276,
+        "crossing_state": [
+          0.9590289496833266,
+          -2.507000683438232e-15,
+          0.0,
+          0.32719314257541354,
+          -1.014988546144049,
+          0.0
+        ],
+        "jacobi_drift_u": 1.3347101202043632e-11,
+        "jacobi_drift_s": 2.212008354263162e-12,
+        "seed_jacobi_offset_u": 3.76601847484892e-08,
+        "seed_jacobi_offset_s": 1.7832380017068772e-08,
+        "passed": true,
+        "notes": ""
+      }
+    }
+  ]
+}
