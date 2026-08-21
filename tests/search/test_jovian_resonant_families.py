@@ -99,6 +99,80 @@ def test_two_body_seed_rejects_bad_pq() -> None:
 
 
 # ---------------------------------------------------------------------------
+# (2b) Conjugate-apse ("encounter-phase") seed (#860 Sec. 4(c1), #861).
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("p", "q"), [(3, 4), (4, 5), (5, 6), (4, 3), (5, 4), (6, 5)])
+def test_conjugate_apse_seed_period_matches_pq_convention(p: int, q: int) -> None:
+    """Same rotating-frame closure period convention as two_body_resonant_seed
+    (T_full = 2*pi*q) -- the target resonance, not the seed point, fixes this."""
+    seed = jrf.two_body_conjugate_apse_seed(p, q)
+    assert seed.period_full == pytest.approx(2.0 * math.pi * q)
+    assert seed.period_two_body == pytest.approx(2.0 * math.pi * q / p)
+
+
+@pytest.mark.parametrize(("p", "q"), [(3, 4), (4, 5), (5, 6), (4, 3), (5, 4), (6, 5)])
+def test_conjugate_apse_seed_at_far_apse_of_same_ellipse(p: int, q: int) -> None:
+    """x0 = -(2a-1), the OTHER apse of the SAME physical ellipse
+    two_body_resonant_seed(p, q, x0_sign=+1) uses (near apse at r=1)."""
+    seed = jrf.two_body_conjugate_apse_seed(p, q)
+    a = (q / p) ** (2.0 / 3.0)
+    assert seed.semi_major_axis == pytest.approx(a)
+    assert seed.r_near == pytest.approx(1.0)
+    assert seed.r_far == pytest.approx(2.0 * a - 1.0)
+    assert seed.x0 == pytest.approx(-seed.r_far)
+    # Genuinely a different seed point than the opposition (x0_sign=-1) seed.
+    opposition = jrf.two_body_resonant_seed(p, q, x0_sign=-1)
+    assert seed.x0 != pytest.approx(opposition.x0, rel=1e-3)
+
+
+@pytest.mark.parametrize(("p", "q"), [(3, 4), (4, 5), (5, 6), (4, 3), (5, 4), (6, 5)])
+def test_conjugate_apse_seed_is_self_consistent_vis_viva_point(p: int, q: int) -> None:
+    """The constructed IC's own two-body specific energy at r_far matches the
+    vis-viva energy at the SAME semi-major-axis, GM=1 (self-consistency of the
+    derivation, not a value asserted against itself): -1/(2a) = 0.5*v_far^2 -
+    1/r_far, i.e. v_far^2 = 2/r_far - 1/a, with v_far the INERTIAL tangential
+    speed |ydot0_rotating + omega x r| at the seed point (omega=1)."""
+    seed = jrf.two_body_conjugate_apse_seed(p, q)
+    v_far_inertial = seed.r_far - seed.ydot0  # invert ydot0 = r_far - v_far
+    energy_vis_viva = -1.0 / (2.0 * seed.semi_major_axis)
+    energy_from_state = 0.5 * v_far_inertial**2 - 1.0 / seed.r_far
+    assert energy_from_state == pytest.approx(energy_vis_viva, rel=1e-9)
+
+
+def test_conjugate_apse_seed_rejects_bad_pq() -> None:
+    with pytest.raises(ValueError, match="positive integers"):
+        jrf.two_body_conjugate_apse_seed(0, 4)
+    # a too small -> r_far <= 0, same domain limit as two_body_resonant_seed
+    with pytest.raises(ValueError):
+        jrf.two_body_conjugate_apse_seed(5, 1)
+
+
+def test_conjugate_apse_seed_converges_a_genuine_symmetric_orbit(system: object) -> None:
+    """The seed is a valid perpendicular-crossing IC (xdot0=0 by construction)
+    that the existing corrector converges from -- confirms the new seed slots
+    into the SAME machinery two_body_resonant_seed feeds, unmodified."""
+    import numpy as np
+
+    import cyclerfinder.core.cr3bp as cr3bp
+
+    seed = jrf.two_body_conjugate_apse_seed(4, 5)
+    state0 = np.array([seed.x0, 0.0, 0.0, 0.0, seed.ydot0, 0.0])
+    seed_jacobi = float(cr3bp.jacobi_constant(state0, system.mu))  # type: ignore[attr-defined]
+    orbit = cp.correct_symmetric_fixed_jacobi(
+        system,  # type: ignore[arg-type]
+        seed.x0,
+        seed_jacobi,
+        seed.period_full,
+        ydot0_sign=1.0 if seed.ydot0 >= 0.0 else -1.0,
+        half_crossings=None,
+    )
+    assert orbit.converged
+    assert orbit.crossing_residual < 1e-8  # default corrector tol
+
+
+# ---------------------------------------------------------------------------
 # (3) Hardcoded Table-1 candidate seeds: standing regression (still converge).
 # ---------------------------------------------------------------------------
 

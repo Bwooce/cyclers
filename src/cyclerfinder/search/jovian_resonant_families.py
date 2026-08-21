@@ -462,6 +462,108 @@ def two_body_resonant_seed(p: int, q: int, *, x0_sign: int = -1) -> TwoBodySeed:
 
 
 # ---------------------------------------------------------------------------
+# Conjugate-apse ("encounter-phase") seed (#860 Sec. 4(c1), #861).
+#
+# #860's diagnosis of the #859 Oberon smoke-test failure: two_body_resonant_seed's
+# x0_sign=-1 (the ONLY phase resonant_atlas_stage_a.py surveys) places the seed's
+# apse at OPPOSITION -- the encounter-AVOIDING configuration -- while the target
+# families (Anderson & Lo p.177-178, this module's own #758 668/1641 km evidence)
+# are unstable BECAUSE OF a close secondary flyby. x0_sign=+1 places the apse AT
+# the secondary's own orbital radius (the encounter geometry) but is numerically
+# hazardous there (DOP853 step-collapse, survey_candidates's own docstring). This
+# seed is the SAFE way to reach the same encounter-configured physical ellipse:
+# seed from its OTHER (far) apse instead of the hazardous near one. Deliberately
+# does NOT touch two_body_resonant_seed (other code depends on it as-is, #776's
+# own gate rows included) -- a separate function + dataclass.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class ConjugateApseSeed:
+    """Two-body p:q resonant-ellipse IC seeded from the CONJUGATE (far) apse of
+    the SAME physical ellipse ``two_body_resonant_seed(p, q, x0_sign=+1)`` uses
+    (#860 Sec. 4(c1)).
+
+    That ellipse has one apse at ``r = 1`` (the secondary's own orbital radius,
+    ``x = +1``, the encounter geometry) and semi-major axis ``a = (q/p)**(2/3)``.
+    For a Kepler ellipse the two apses sit on opposite sides of the focus
+    (barycenter) with radii summing to ``2a``, so the OTHER apse sits at
+    ``r_far = 2*a - 1`` on the ``x = -r_far`` side -- well away from the
+    ``x = 1 - mu`` singularity, hence numerically safe (unlike seeding directly
+    at ``x = 1.0 - mu``), while still being one perpendicular-crossing point of
+    the genuinely encounter-configured ellipse: propagating a symmetric orbit
+    from this far point for a half-period swings through the near (``r=1``)
+    apse, i.e. through the secondary's own orbital radius, before its next
+    perpendicular crossing -- unlike ``x0_sign=-1``'s seed, which is built from
+    an entirely different (opposition-side) ellipse that never approaches
+    ``r = 1`` at all.
+
+    Velocity at the far apse (vis-viva, GM=1, inertial tangential speed
+    ``v_far = sqrt(2/r_far - 1/a)``) points in the OPPOSITE inertial direction
+    from the near apse's velocity (a prograde ellipse's two apses have
+    antiparallel tangential velocity, both consistent with the same signed
+    angular momentum) -- so, UNLIKE :func:`two_body_resonant_seed`'s formula,
+    the rotating-frame ``ydot0`` here is ``r_far - v_far``, not
+    ``v_far - r_far``; see the module test suite for the derivation's
+    self-consistency check (the constructed IC's own Jacobi constant matches
+    the vis-viva energy).
+    """
+
+    p: int
+    q: int
+    x0: float
+    ydot0: float
+    period_two_body: float
+    period_full: float
+    semi_major_axis: float
+    r_near: float  # the near (encounter) apse radius of the SAME physical ellipse (always 1.0)
+    r_far: float  # this seed's own apse radius, = 2*semi_major_axis - r_near
+
+
+def two_body_conjugate_apse_seed(p: int, q: int) -> ConjugateApseSeed:
+    """Conjugate-apse encounter-phase seed (#860 Sec. 4(c1)); see
+    :class:`ConjugateApseSeed` for the full construction and rationale.
+
+    Same domain restriction as :func:`two_body_resonant_seed` (``a =
+    (q/p)**(2/3) >= 0.5``, i.e. ``r_far = 2*a - 1 > 0``) -- both apses of the
+    SAME physical ellipse, so if one seed's vis-viva radicand goes negative,
+    so does the other's.
+    """
+    if p <= 0 or q <= 0:
+        raise ValueError(f"p, q must be positive integers; got p={p}, q={q}")
+    a = (q / p) ** (2.0 / 3.0)
+    r_near = 1.0
+    r_far = 2.0 * a - r_near
+    if r_far <= 0.0:
+        raise ValueError(
+            f"two_body_conjugate_apse_seed: r_far={r_far:.6f} <= 0 for p={p}, q={q} "
+            f"(a={a:.6f} too small -- same domain limit as two_body_resonant_seed)"
+        )
+    v_far_sq = 2.0 / r_far - 1.0 / a
+    if v_far_sq < 0.0:
+        raise ValueError(
+            f"two_body_conjugate_apse_seed: negative vis-viva radicand {v_far_sq:.3e} "
+            f"for p={p}, q={q} (r_far={r_far:.6f}, a={a:.6f})"
+        )
+    v_far = math.sqrt(v_far_sq)
+    x0 = -r_far
+    ydot0 = r_far - v_far  # rotating frame, omega=1 -- see class docstring for the sign derivation
+    period_two_body = 2.0 * math.pi * q / p
+    period_full = 2.0 * math.pi * q
+    return ConjugateApseSeed(
+        p=p,
+        q=q,
+        x0=x0,
+        ydot0=ydot0,
+        period_two_body=period_two_body,
+        period_full=period_full,
+        semi_major_axis=a,
+        r_near=r_near,
+        r_far=r_far,
+    )
+
+
+# ---------------------------------------------------------------------------
 # Two-body flyby-VECTOR-ROTATION seed (Anderson & Lo "Designing Flybys Using
 # the Two-Body Approximations", pp.172-174, Fig. 2) -- #755 strategy 2.
 #
@@ -1437,6 +1539,7 @@ __all__ = [
     "TABLE2_HOMOCLINIC_X",
     "TABLE2_HOMOCLINIC_XDOT",
     "TABLE2_HOMOCLINIC_YDOT",
+    "ConjugateApseSeed",
     "FlybyRotationSeed",
     "GateRow",
     "ResonantFamilyCandidate",
@@ -1453,6 +1556,7 @@ __all__ = [
     "recover_758_table2_seeded_candidate",
     "recover_table1_candidate",
     "survey_candidates",
+    "two_body_conjugate_apse_seed",
     "two_body_flyby_rotation_seed",
     "two_body_resonant_seed",
 ]
