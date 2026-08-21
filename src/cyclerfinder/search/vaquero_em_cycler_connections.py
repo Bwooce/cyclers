@@ -698,46 +698,35 @@ class FreeTransferResult:
     notes: str = ""
 
 
-def find_free_transfer(
+def _find_free_transfer_between(
     system: cr3bp.CR3BPSystem,
+    node_from: jrc.ResonantNode,
+    node_to: jrc.ResonantNode,
     c: float,
     *,
-    n_tau: int = 36,
-    n_periods: float = 9.0,
-    max_seed_distance: float = 0.02,
-    max_refine: int = 8,
-    seed_diversity_radius: float = 0.05,
-    epsilon: float = EPSILON,
-    max_time_factor: float = 10.0,
-    tol: float = 1e-9,
+    n_tau: int,
+    n_periods: float,
+    max_seed_distance: float,
+    max_refine: int,
+    seed_diversity_radius: float,
+    epsilon: float,
+    max_time_factor: float,
+    tol: float,
 ) -> FreeTransferResult:
-    """End-to-end free-transfer search Wu(2:1) -> Ws(3:1) at one shared ``c``.
+    """Shared search core: ``Wu(node_from) -> Ws(node_to)`` at Jacobi ``c``.
 
-    Builds both nodes, both manifolds' whole crossing sets (both branches),
-    pairs same-ydot-sign close approaches, Newton-refines up to ``max_refine``
-    seeds (closest first), and returns the FIRST candidate that both converges
-    AND passes the full :func:`verify_connection` battery. An honest negative
-    (``connection=None``) if none does -- never a fabricated pass.
-
-    ``seed_diversity_radius``: a seed whose ``(x, xdot)`` lies within this
-    radius of an already-refined seed's is skipped -- without this, the
-    distance-ranked top of the seed list is often ``n_tau``-adjacent
-    near-duplicates of ONE close approach, and a fragile geometry there burns
-    the whole ``max_refine`` budget on the same failure (observed directly at
-    C=2.61: 1174 seeds, 8 refined, 0 converged, all eight the same crossing
-    neighborhood). Radius 0.05 is well above the seed-pair gap scale (<= 0.02)
-    and well below the distinct-intersection separation scale (>~ 0.1 in this
-    problem's own converged hits).
+    Factored out of :func:`find_free_transfer` (`#822`) so the REVERSE
+    direction (:func:`find_free_transfer_reverse`, `#840`) reuses the exact
+    same crossing-set / seed-pairing / Newton-refine / verify pipeline with
+    only the two nodes' roles swapped -- never a re-implementation that could
+    silently drift from the forward direction's own logic.
     """
-    node21 = build_vaquero_overlap_node(system, 2, c)
-    node31 = build_vaquero_overlap_node(system, 3, c)
-
     crossings_u: dict[int, list[ManifoldCrossing]] = {}
     crossings_s: dict[int, list[ManifoldCrossing]] = {}
     for branch in (+1, -1):
         crossings_u[branch] = manifold_section_crossings(
             system,
-            node21,
+            node_from,
             direction="unstable",
             branch=branch,
             n_tau=n_tau,
@@ -746,7 +735,7 @@ def find_free_transfer(
         )
         crossings_s[branch] = manifold_section_crossings(
             system,
-            node31,
+            node_to,
             direction="stable",
             branch=branch,
             n_tau=n_tau,
@@ -782,8 +771,8 @@ def find_free_transfer(
         n_refined += 1
         conn = refine_connection(
             system,
-            node21,
-            node31,
+            node_from,
+            node_to,
             seed,
             epsilon=epsilon,
             max_time_factor=max_time_factor,
@@ -793,7 +782,7 @@ def find_free_transfer(
             continue
         n_converged += 1
         ev = verify_connection(
-            system, node21, node31, conn, epsilon=epsilon, max_time_factor=max_time_factor
+            system, node_from, node_to, conn, epsilon=epsilon, max_time_factor=max_time_factor
         )
         if ev.passed:
             return FreeTransferResult(
@@ -818,6 +807,238 @@ def find_free_transfer(
     )
 
 
+def find_free_transfer(
+    system: cr3bp.CR3BPSystem,
+    c: float,
+    *,
+    n_tau: int = 36,
+    n_periods: float = 9.0,
+    max_seed_distance: float = 0.02,
+    max_refine: int = 8,
+    seed_diversity_radius: float = 0.05,
+    epsilon: float = EPSILON,
+    max_time_factor: float = 10.0,
+    tol: float = 1e-9,
+) -> FreeTransferResult:
+    """End-to-end free-transfer search Wu(2:1) -> Ws(3:1) at one shared ``c``.
+
+    Builds both nodes, both manifolds' whole crossing sets (both branches),
+    pairs same-ydot-sign close approaches, Newton-refines up to ``max_refine``
+    seeds (closest first), and returns the FIRST candidate that both converges
+    AND passes the full :func:`verify_connection` battery. An honest negative
+    (``connection=None``) if none does -- never a fabricated pass.
+
+    ``seed_diversity_radius``: a seed whose ``(x, xdot)`` lies within this
+    radius of an already-refined seed's is skipped -- without this, the
+    distance-ranked top of the seed list is often ``n_tau``-adjacent
+    near-duplicates of ONE close approach, and a fragile geometry there burns
+    the whole ``max_refine`` budget on the same failure (observed directly at
+    C=2.61: 1174 seeds, 8 refined, 0 converged, all eight the same crossing
+    neighborhood). Radius 0.05 is well above the seed-pair gap scale (<= 0.02)
+    and well below the distinct-intersection separation scale (>~ 0.1 in this
+    problem's own converged hits).
+    """
+    node21 = build_vaquero_overlap_node(system, 2, c)
+    node31 = build_vaquero_overlap_node(system, 3, c)
+    return _find_free_transfer_between(
+        system,
+        node21,
+        node31,
+        c,
+        n_tau=n_tau,
+        n_periods=n_periods,
+        max_seed_distance=max_seed_distance,
+        max_refine=max_refine,
+        seed_diversity_radius=seed_diversity_radius,
+        epsilon=epsilon,
+        max_time_factor=max_time_factor,
+        tol=tol,
+    )
+
+
+def find_free_transfer_reverse(
+    system: cr3bp.CR3BPSystem,
+    c: float,
+    *,
+    n_tau: int = 36,
+    n_periods: float = 9.0,
+    max_seed_distance: float = 0.02,
+    max_refine: int = 8,
+    seed_diversity_radius: float = 0.05,
+    epsilon: float = EPSILON,
+    max_time_factor: float = 10.0,
+    tol: float = 1e-9,
+) -> FreeTransferResult:
+    """End-to-end free-transfer search Wu(3:1) -> Ws(2:1) at one shared ``c``
+    -- the REVERSE of :func:`find_free_transfer` (`#840`).
+
+    CR3BP time-reversal symmetry ``(x, y, xdot, ydot, t) -> (x, -y, -xdot,
+    ydot, -t)`` maps ``Wu(A) ∩ Ws(B)`` connections into ``Wu(B) ∩
+    Ws(A)`` ones, guaranteeing this direction's existence given a forward
+    hit at the same ``c`` -- demonstrated directly here (never merely
+    asserted), the same discipline `#822` Sec. 4's own C=2.60 reverse demo
+    established. Identical pipeline to :func:`find_free_transfer`
+    (:func:`_find_free_transfer_between`, shared verbatim) with the two
+    nodes' roles swapped; an honest negative (``connection=None``) if no
+    refined seed passes, never a forced pass.
+    """
+    node21 = build_vaquero_overlap_node(system, 2, c)
+    node31 = build_vaquero_overlap_node(system, 3, c)
+    return _find_free_transfer_between(
+        system,
+        node31,
+        node21,
+        c,
+        n_tau=n_tau,
+        n_periods=n_periods,
+        max_seed_distance=max_seed_distance,
+        max_refine=max_refine,
+        seed_diversity_radius=seed_diversity_radius,
+        epsilon=epsilon,
+        max_time_factor=max_time_factor,
+        tol=tol,
+    )
+
+
+def predict_reverse_crossing(forward_crossing_xv: tuple[float, float]) -> tuple[float, float]:
+    """CR3BP time-reversal symmetry image of a forward ``{y=0}`` crossing.
+
+    The map ``(x, y, xdot, ydot, t) -> (x, -y, -xdot, ydot, -t)`` sends a
+    forward ``Wu(2:1) -> Ws(3:1)`` crossing at ``(x, xdot)`` (with ``y=0`` on
+    the section) to its REVERSE ``Wu(3:1) -> Ws(2:1)`` counterpart's own
+    crossing at ``(x, -xdot)`` -- both Vaquero overlap-band orbits are
+    already x-axis symmetric (built by
+    :func:`~cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`),
+    so this prediction needs no search, only the already-computed forward
+    connection. `#840` used this to RANK candidate seeds for the
+    reverse-direction search at C=2.54/2.66, rather than a blind ``(x,
+    xdot)``-close-approach scan. At C=2.54 the verified reverse crossing
+    matched this prediction to ~6e-9, confirming it is genuinely the
+    time-reversal image of the SAME forward connection. At C=2.66 the
+    verified reverse crossing is a DIFFERENT intersection point entirely
+    (~0.26 away from the prediction, module docstring "the intersection
+    structure is rich" `#822` already documented) -- the prediction only
+    biased the search toward a promising region, it did not guarantee
+    landing on the specific mirror-image crossing; existence in the
+    reverse direction is still a genuine, independently verified connection
+    at the same C and mu either way.
+    """
+    x, xdot = forward_crossing_xv
+    return (float(x), -float(xdot))
+
+
+def find_free_transfer_reverse_near_prediction(
+    system: cr3bp.CR3BPSystem,
+    c: float,
+    predicted_xv: tuple[float, float],
+    *,
+    n_tau: int = 36,
+    n_periods: float = 9.0,
+    epsilons: tuple[float, ...] = (1.0e-4, 2.0e-4, 3.0e-4, 5.0e-4, 1.0e-3),
+    max_try_per_epsilon: int = 5,
+    max_time_factor: float = 10.0,
+    tol: float = 1e-9,
+) -> FreeTransferResult:
+    """Reverse-direction (Wu(3:1) -> Ws(2:1)) search at ``c``, ranking seeds
+    by proximity to ``predicted_xv`` (:func:`predict_reverse_crossing`)
+    instead of by native ``(x, xdot)`` close-approach distance, and sweeping
+    ``epsilons`` in order.
+
+    `#840`'s own diagnosed pathology at C=2.66: the blind
+    :func:`find_free_transfer_reverse` scan at the sibling modules' default
+    ``epsilon=1e-4`` converged 6/11 refined candidates, but EVERY ONE failed
+    ``verify_connection``'s forward-reapproach gate (the SAME evidence-quality
+    tradeoff `#822`'s own docstring documents for the forward direction --
+    "Manifold-offset ε as an evidence-quality control"), including the
+    closest-to-predicted candidate itself (``forward_distance=1.58`` vs the
+    ``0.5`` ceiling). Raising ``epsilon`` shortens each leg (fewer Floquet
+    amplification periods); at C=2.66 a candidate among the ``epsilon=2e-4``
+    round's top-``max_try_per_epsilon`` predicted-ranked seeds then passes
+    cleanly (the sibling default ``1e-4`` already sufficed at C=2.54, on the
+    very first/closest-to-predicted candidate). This function promotes that
+    diagnosed fix into reusable code rather than leaving it as a one-off
+    retry.
+
+    An honest negative (``connection=None``) if no candidate across the
+    swept ``epsilons`` passes the full unmodified :func:`verify_connection`
+    battery -- gates are never loosened, only the SEARCH is retargeted.
+    """
+    node21 = build_vaquero_overlap_node(system, 2, c)
+    node31 = build_vaquero_overlap_node(system, 3, c)
+    pred_x, pred_xdot = predicted_xv
+    total_seeds_tried = 0
+    total_converged = 0
+    for epsilon in epsilons:
+        crossings_u: dict[int, list[ManifoldCrossing]] = {}
+        crossings_s: dict[int, list[ManifoldCrossing]] = {}
+        for branch in (+1, -1):
+            crossings_u[branch] = manifold_section_crossings(
+                system,
+                node31,
+                direction="unstable",
+                branch=branch,
+                n_tau=n_tau,
+                n_periods=n_periods,
+                epsilon=epsilon,
+            )
+            crossings_s[branch] = manifold_section_crossings(
+                system,
+                node21,
+                direction="stable",
+                branch=branch,
+                n_tau=n_tau,
+                n_periods=n_periods,
+                epsilon=epsilon,
+            )
+        seeds: list[ConnectionSeed] = []
+        for bu in (+1, -1):
+            for bs in (+1, -1):
+                seeds.extend(
+                    find_connection_seeds(
+                        crossings_u[bu], crossings_s[bs], branch_u=bu, branch_s=bs
+                    )
+                )
+        seeds.sort(key=lambda s: math.hypot(s.x - pred_x, s.xdot - pred_xdot))
+        for seed in seeds[:max_try_per_epsilon]:
+            total_seeds_tried += 1
+            conn = refine_connection(
+                system,
+                node31,
+                node21,
+                seed,
+                epsilon=epsilon,
+                max_time_factor=max_time_factor,
+                tol=tol,
+            )
+            if not conn.converged:
+                continue
+            total_converged += 1
+            ev = verify_connection(
+                system, node31, node21, conn, epsilon=epsilon, max_time_factor=max_time_factor
+            )
+            if ev.passed:
+                return FreeTransferResult(
+                    jacobi=float(c),
+                    connection=conn,
+                    evidence=ev,
+                    n_seeds=total_seeds_tried,
+                    n_refined=total_seeds_tried,
+                    n_converged=total_converged,
+                )
+    return FreeTransferResult(
+        jacobi=float(c),
+        connection=None,
+        evidence=None,
+        n_seeds=total_seeds_tried,
+        n_refined=total_seeds_tried,
+        n_converged=total_converged,
+        notes=(
+            "no verified connection near the symmetry-predicted crossing across the "
+            "swept epsilon range -- honest negative at these settings"
+        ),
+    )
+
+
 __all__ = [
     "BACKWARD_TOL",
     "EPSILON",
@@ -836,7 +1057,10 @@ __all__ = [
     "build_vaquero_overlap_node",
     "find_connection_seeds",
     "find_free_transfer",
+    "find_free_transfer_reverse",
+    "find_free_transfer_reverse_near_prediction",
     "manifold_section_crossings",
+    "predict_reverse_crossing",
     "refine_connection",
     "verify_connection",
 ]
