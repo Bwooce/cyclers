@@ -395,7 +395,15 @@ def test_reverse_c266_at_default_epsilon_fails_forward_gate_not_other_gates(
     ``epsilon=1e-4`` Newton-converges cleanly and passes every OTHER gate,
     but fails specifically the forward-reapproach evidence-quality gate --
     confirming the fix (raising epsilon) targets the right mechanism rather
-    than papering over a genuine non-connection."""
+    than papering over a genuine non-connection.
+
+    NOTE (unlike this file's other negative tests, which check the code
+    correctly REJECTS a malformed input): this pins a NUMERICAL result at
+    fixed settings, not a code-logic invariant. If a future change to the
+    integrator/corrector legitimately tightens this margin and the test
+    starts failing because the geometry now PASSES, that is progress --
+    investigate and delete/relax this test, do not "fix" it to fail again.
+    """
     node21 = vcc.build_vaquero_overlap_node(system, 2, 2.66)
     node31 = vcc.build_vaquero_overlap_node(system, 3, 2.66)
     seed = vcc.ConnectionSeed(

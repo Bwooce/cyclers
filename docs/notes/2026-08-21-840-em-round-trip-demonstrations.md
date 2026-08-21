@@ -87,7 +87,14 @@ per-leg drift `2.07e-11 / 2.15e-12`; seed offsets `7.83e-09 / 1.25e-08`. **This 
 the CR3BP time-reversal-symmetry prediction of the FORWARD entry's own crossing
 (`(0.23322507758762506, -1.785596430399187)` -> predicted reverse `(0.23322507758762506,
 +1.785596430399187)`) to `~5.7e-9`** -- genuinely the mirror-image manifold intersection of the
-same forward connection, not a coincidentally nearby different one.
+same forward connection, not a coincidentally nearby different one. A SECOND, structurally
+independent corroboration of the same claim: the ghost-guard distances against each ORBIT's own
+section points swap and match between the two directions to `~4e-9` (forward's
+`ghost_distance_to` against node31 `1.7999326727722387` vs reverse's `ghost_distance_from`
+against the SAME node31 `1.7999326702997418`; forward's `ghost_distance_from` against node21
+`0.24275809881390115` vs reverse's `ghost_distance_to` against the SAME node21
+`0.24275809473080914`) -- expected only because each orbit's own section-point set is itself
+symmetric under the time-reversal map, so this was not designed as a check but falls out of it.
 
 ### C=2.66 -- a genuine, different intersection point
 

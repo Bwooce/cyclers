@@ -961,7 +961,13 @@ def find_free_transfer_reverse_near_prediction(
 
     An honest negative (``connection=None``) if no candidate across the
     swept ``epsilons`` passes the full unmodified :func:`verify_connection`
-    battery -- gates are never loosened, only the SEARCH is retargeted.
+    battery -- the gate that actually decides pass/fail here
+    (``forward_reapproach`` vs :data:`FORWARD_TOL`) has a FIXED ceiling that
+    never moves; only the SEARCH is retargeted. (One OTHER gate's ceiling is
+    itself epsilon-dependent by construction --
+    :data:`SEED_JACOBI_OFFSET_FACTOR` `* epsilon**2` -- but stays several
+    orders of magnitude from binding across the swept range, so raising
+    epsilon here never trades one gate's slack for another's.)
     """
     node21 = build_vaquero_overlap_node(system, 2, c)
     node31 = build_vaquero_overlap_node(system, 3, c)
