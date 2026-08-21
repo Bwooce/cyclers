@@ -31,16 +31,16 @@
         derivation: >
           build_vaquero_overlap_node (the #799 fixed-Jacobi corrector, tol=1e-12,
           half_crossings=3) re-converges the #799-archived guess vendored in
-          OVERLAP_GRID_ICS at call time. NOT a catalogued row -- #811 catalogued
-          only her four printed-TOF family endpoints; this member's C sits at the
-          3:1 row's edge, not the 2:1 family's own printed endpoint set.
+          OVERLAP_GRID_ICS at call time. NOT a catalogued row -- the catalogue's
+          own #811 admission covers only her four printed-TOF family endpoints;
+          this member's C sits at the 3:1 row's edge, not the 2:1 family's own
+          printed endpoint set.
     - row_ref: vaquero-31-c254-em-cycler-2013
       identity_evidence: >
-        #828 independent re-run: the connection module's re-converged 3:1 node
-        reproduces this row's recorded state_nd to 3.1e-15, period_nd to 1.1e-13,
-        jacobi_constant to 5.3e-15, stability_index to 1.4e-08 relative
-        (rtol=atol=1e-13 STM tolerance) -- the transfer genuinely arrives at
-        THIS catalogued orbit.
+        The re-converged 3:1 node (independent re-run, #828) reproduces this
+        row's recorded state_nd to 3.1e-15, period_nd to 1.1e-13, jacobi_constant
+        to 5.3e-15, stability_index to 1.4e-08 relative (rtol=atol=1e-13 STM
+        tolerance) -- the transfer genuinely arrives at THIS catalogued orbit.
   connection: # field names shared with crnbp seed_orbit_homoclinic.connection / results.json
     branch_u: -1
     branch_s: 1
@@ -93,9 +93,10 @@
   endpoints:
     - row_ref: vaquero-21-c266-em-cycler-2013 # here the CATALOGUED endpoint is the ORIGIN --
       identity_evidence: > # the ordered-pair shape carries the asymmetry
-        #828: re-converged 2:1 node reproduces this row's state_nd to 4.4e-15,
-        period_nd to 5.2e-14, jacobi_constant to 8.0e-15, stability_index to
-        4.6e-13 relative (rtol=atol=1e-13 STM tolerance).
+        The re-converged 2:1 node (independent re-run, #828) reproduces this
+        row's state_nd to 4.4e-15, period_nd to 5.2e-14, jacobi_constant to
+        8.0e-15, stability_index to 4.6e-13 relative (rtol=atol=1e-13 STM
+        tolerance).
     - uncatalogued:
         family: "Vaquero 2013 Sec 4.4.7 Earth-Moon 3:1 Periodic Cycler family member"
         x0: 0.8919375112041409 # OVERLAP_GRID_ICS[(3, 2.66)]
@@ -150,7 +151,7 @@
     # index 0 = unstable-manifold ORIGIN (3:1), index 1 = stable-manifold DESTINATION (2:1)
     - row_ref: vaquero-31-c254-em-cycler-2013
       identity_evidence: >
-        #854: node31 re-derived at Kumar's own mu (build_kumar_node(kumar_system(), 3, 2.54))
+        node31, re-derived at Kumar's own mu (#854, build_kumar_node(kumar_system(), 3, 2.54)),
         agrees with this row's own recorded state_nd/period_nd/jacobi_constant to
         |Delta x0|=3.398e-10, |Delta ydot0|=1.061e-09, |Delta period_nd|=3.345e-10,
         |Delta jacobi_constant|=5.329e-15 -- consistent with the ~1.24e-10 mu offset
@@ -211,10 +212,11 @@
     The FORWARD direction Wu(2:1)->Ws(3:1) at this same node exists in this
     project's OWN registry mu (see em-vaquero-hetero-wu21c254-ws31c254-2026
     above) but that is a DIFFERENT model (Delta mu ~= 1.24e-10) -- not a true
-    same-model round trip. #840 (registered) would close a same-model round
-    trip at this row's own registry mu; #854 notes the C=2.54 leg is now a
-    low-risk confirmation run rather than a blind search, existence being
-    independently pre-confirmed near this exact node at a neighbouring mu.
+    same-model round trip. The registered follow-up (#840) would close a
+    same-model round trip at this row's own registry mu; the #854 adjudication
+    notes the C=2.54 leg is now a low-risk confirmation run rather than a
+    blind search, existence being independently pre-confirmed near this exact
+    node at a neighbouring mu.
   dv_kms: 0.0
   provenance:
     task_refs: ["#827", "#854"]
