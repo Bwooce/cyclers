@@ -148,6 +148,15 @@ concluding this: `#859`.)
 - `uv run mypy src tests` — clean except the same pre-existing `#859`-lane error in
   `resonant_atlas_stage_a.py`, likewise untouched.
 - `uv run pytest tests/search/test_dsm_descriptor_seed.py -q` — 13 passed (8 pre-existing + 5
-  new).
-- `uv run pytest tests/search -q` — sanity pass (chunked; see commit log for the exact split run
-  under this session).
+  new, including the two `close_row_dsm` regression pins).
+- Every test file that imports `descriptor.py`/`campaign_russell12.py`/`dsm_descriptor_seed.py`
+  run explicitly and green: `test_descriptor_parse.py`, `test_descriptor_tof.py`,
+  `test_descriptor_arctype.py`, `test_descriptor_catalogue.py`, `test_seed_ladder.py`,
+  `test_arc_descriptors.py` (49 passed), `test_russell12_likeforlike_probe.py` (`-m 'slow or not
+  slow'`, 4 passed — matches `#820`'s own recorded count), `test_830_multiarc_v2_ballistic.py` +
+  `test_turn_ratio_check.py` + `test_russell12_probe_bend_feasibility.py` +
+  `test_multi_arc_invariants.py` (48 passed, `-m 'slow or not slow'`), `test_dsm_leg.py` (21
+  passed). 82 tests total across every file with a structural dependency on the changed code.
+- A broader alphabetical `tests/search/test_[a-m]*.py -q` sweep (unrelated files included, for
+  general regression coverage) was started but not required to complete before this task's
+  scope closed — the targeted verification above covers every consumer of the changed functions.
