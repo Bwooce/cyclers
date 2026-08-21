@@ -326,7 +326,15 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # easily-missed catalogue-count ratchet (it lives outside `tests/data`/
     # `tests/search`). Pure census shift -- none of the 6 is
     # v1-gauntlet-reachable (non-heliocentric primary).
-    ExclusionReason.NON_HELIOCENTRIC: 93,
+    # 93 -> 94 (2026-08-12, #836): +1 pc-cycler-51-2026 (Pluto-Charon stable
+    # (5,1) prograde CR3BP cycler, primary="Pluto", planetcentric). Same gap
+    # class as the two comments immediately above -- this file lives outside
+    # `tests/data`/`tests/search`, the scope this session's own catalogue-
+    # editing tasks checked locally, so the shift went uncaught until the
+    # self-hosted CI runner's full `pytest` run surfaced it (2026-08-21,
+    # investigated after a direct "CI failed?" user question). Pure census
+    # shift -- not v1-gauntlet-reachable (non-heliocentric primary).
+    ExclusionReason.NON_HELIOCENTRIC: 94,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
