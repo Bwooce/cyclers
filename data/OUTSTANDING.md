@@ -1801,29 +1801,33 @@ unchanged. See `git log` around this date for the corrected commit.
   the `#822`/`#828` and `#827`/`#854` split precedent, this is a SEPARATE adjudication task from
   `#839`'s own compute — no catalogue writeback was performed by `#839`. Details:
   `docs/notes/2026-08-21-839-c313-targeted-search.md`.
-- `#840` — registered 2026-08-12 (found during `#828`, not dispatched): `#822` demonstrated the
-  REVERSE direction Wu(3:1)->Ws(2:1) at **C=2.60 only** — a C at which NEITHER family node is a
-  catalogued row. Run the reverse at the two band edges (C=2.54 and C=2.66) so each of the two
-  in-band catalogued rows (`vaquero-31-c254`, `vaquero-21-c266`) has a demonstrated ROUND TRIP
-  at its own C, upgrading `#828`'s two annotations from one-way to round-trip. Cheap: the
-  machinery exists (`find_free_transfer`'s own primitives, `#822` Sec. 4's reverse demo is the
-  template) and the CR3BP time-reversal symmetry guarantees existence given the forward hits, so
-  this is a demonstration rather than a search. Per `#828` Sec. 2 this is still NOT a tier
-  promotion under any reading — register it as evidence completeness, not as an upgrade path.
-  **`#854` UPDATE (2026-08-21): scope does NOT narrow — full text unchanged, BOTH edges still
-  needed** (`#854` corrected `#827`'s own overclaim on this point). `#827`'s C=2.54
-  `Wu(3:1)->Ws(2:1)` reproduction is at Kumar et al.'s own printed mu
-  (`1.2150584270572e-2`), not this row's own DE440-registry mu (`0.01215058439469525`,
-  `Δmu≈1.24e-10`) — a neighbouring model, not the row's own. `#840`'s deliverable is a round-trip
-  claim recorded ON this row, which has to hold in this row's own model, so the `find_free_transfer`
-  run at this row's own mu is still fully open at C=2.54. What changed: `#854` independently
-  reproduced `#827`'s C=2.54 connection end-to-end (seeded only from Kumar's printed state, its
-  own fresh search landing on the same result) and confirmed the re-derived node matches this row
-  to `~1e-9..1e-10` (the expected mu-shift scale, not `#828`'s `~1e-15` matched-mu scale) — so
-  C=2.54's leg is now a low-risk **confirmation run** (existence independently pre-confirmed near
-  this exact node, on top of the time-reversal argument already cited), not a blind search. C=2.66
-  is untouched by any of this (not one of Kumar's seven printed Table-5 rows). Details:
-  `docs/notes/2026-08-21-854-c254-kumar-evidence-adjudication.md` Sec. 4.
+- `#840` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#828`; corrected same-scope by
+  `#854` 2026-08-21; dispatched and closed same day): **ran the REVERSE direction Wu(3:1)->Ws(2:1)
+  at the two catalogued band-edge Jacobi constants (C=2.54, C=2.66), at this project's own
+  registry mu — BOTH converged and passed the full verification battery.** `#822` had only
+  demonstrated the reverse direction at C=2.60 (neither family node catalogued there); `#828`'s two
+  forward-direction annotations on `vaquero-31-c254-em-cycler-2013` / `vaquero-21-c266-em-cycler-2013`
+  now each carry a demonstrated ROUND TRIP (both directions, same C, same mu). C=2.54's reverse
+  crossing lands almost exactly on the CR3BP time-reversal-symmetry prediction of the forward
+  entry's own crossing (`~6e-9` — genuinely the mirror image); C=2.66's reverse crossing is a
+  DIFFERENT, but equally genuine and fully verified, manifold intersection (`~0.26` from the
+  prediction — this family pair's own intersection structure is rich, `#822`'s note already
+  documents this), found only after diagnosing that the sibling-module default epsilon converges
+  cleanly but fails the forward-reapproach evidence gate at C=2.66 (raising epsilon to `2e-4`
+  fixes it; gates never loosened). New reusable module code:
+  `find_free_transfer_reverse`/`find_free_transfer_reverse_near_prediction`/
+  `predict_reverse_crossing` (`vaquero_em_cycler_connections.py`, refactored via a shared
+  `_find_free_transfer_between` core). Registry writeback: two new entries in
+  `data/manifold_connections.yaml` (`em-vaquero-hetero-wu31c254-ws21c254-2026`,
+  `em-vaquero-hetero-wu31c266-ws21c266-2026`), `reverse_of` set symmetrically on both new and both
+  existing forward entries, `round_trip_note` updated on all four affected entries (incl. the
+  Kumar entry, whose own round trip within Kumar's own mu specifically remains NOT demonstrated —
+  a different model). Per `#828` Sec. 2 (re-affirmed, still binding): **NOT a tier promotion or
+  `orbit_class` change** — `data/catalogue.yaml` untouched. 16 new/existing tests in
+  `tests/search/test_vaquero_em_cycler_connections.py` (16 total, none slow) + 20 in
+  `tests/data/test_manifold_connections.py`; schema + semantic + referential validation clean;
+  free text tested against the live site sanitizer (`cyclers.space`'s `sanitizeCatalogueText`)
+  before commit. Full account: `docs/notes/2026-08-21-840-em-round-trip-demonstrations.md`.
 - `#854` — ✓ DONE 2026-08-21 (found during `#827`'s advisor review, dispatched same day):
   **adjudicated `#827`'s C=2.54 Kumar Table-5 reproduction against the catalogued
   `vaquero-31-c254-em-cycler-2013` row. Verdict: ANNOTATE (comment-only, no level change);

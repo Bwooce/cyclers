@@ -16,6 +16,8 @@ targets + Newton starts, never as sourced goldens. None are ``@pytest.mark.slow`
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 import pytest
 
@@ -274,3 +276,152 @@ def test_manifold_section_crossings_short_horizon_plumbing(
         # periods; manifold trajectories can add near-tangential extra
         # crossings beyond it (observed: 9-11), so only loosely bounded above.
         assert 7 <= len(pts) <= 18
+
+
+# ---------------------------------------------------------------------------
+# (5) `#840`: REVERSE direction (Wu(3:1) -> Ws(2:1)) round-trip
+# demonstrations at the two catalogued band-edge Jacobi constants, seeded
+# from this task's own recorded phase indices -- mirrors the primary-hit
+# pattern above (3), never the full blind seed search in CI.
+# ---------------------------------------------------------------------------
+
+
+def test_predict_reverse_crossing_flips_xdot_sign_only() -> None:
+    """CR3BP time-reversal symmetry ``(x, y, xdot, ydot, t) -> (x, -y,
+    -xdot, ydot, -t)``: on the ``{y=0}`` section this flips ``xdot`` and
+    keeps ``x`` fixed."""
+    assert vcc.predict_reverse_crossing((0.5, -1.2)) == (0.5, 1.2)
+    assert vcc.predict_reverse_crossing((-0.3, 0.9)) == (-0.3, -0.9)
+
+
+def test_reverse_c254_converges_and_matches_symmetry_prediction(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """The C=2.54 reverse connection (`#840`): converges immediately at the
+    sibling-module default epsilon on its own recorded phase indices, and
+    lands almost exactly on the CR3BP time-reversal prediction of the
+    FORWARD entry's own crossing (~6e-9) -- genuinely the mirror-image
+    manifold intersection, not a coincidentally nearby different one."""
+    node21 = vcc.build_vaquero_overlap_node(system, 2, 2.54)
+    node31 = vcc.build_vaquero_overlap_node(system, 3, 2.54)
+    seed = vcc.ConnectionSeed(
+        distance=0.0,
+        branch_u=-1,
+        branch_s=1,
+        k_u=26,
+        k_s=38,
+        tau_u=4.258037700729926,
+        tau_s=0.316633984139843,
+        x=0.0,
+        xdot=0.0,
+        ydot=0.0,
+    )
+    conn = vcc.refine_connection(system, node31, node21, seed, epsilon=1.0e-4)
+    assert conn.converged, conn.notes
+    assert conn.residual < 1e-8
+    assert abs(float(conn.crossing_xv[0]) - 0.23322508223108054) < 1e-6
+    assert abs(float(conn.crossing_xv[1]) - 1.7855964271675904) < 1e-6
+
+    ev = vcc.verify_connection(system, node31, node21, conn, epsilon=1.0e-4)
+    assert ev.passed, ev.notes
+    assert ev.ydot_signs_match
+    assert ev.full_state_gap < 1e-5
+    assert ev.forward_distance < vcc.FORWARD_TOL
+    assert ev.jacobi_drift_u < vcc.JACOBI_DRIFT_TOL
+    assert ev.jacobi_drift_s < vcc.JACOBI_DRIFT_TOL
+
+    # The forward entry's own recorded crossing (em-vaquero-hetero-wu21c254-
+    # ws31c254-2026, data/manifold_connections.yaml) predicts this reverse
+    # crossing via time-reversal symmetry to within ~6e-9.
+    predicted = vcc.predict_reverse_crossing((0.23322507758762506, -1.785596430399187))
+    dist = math.hypot(
+        float(conn.crossing_xv[0]) - predicted[0], float(conn.crossing_xv[1]) - predicted[1]
+    )
+    assert dist < 1e-6
+
+
+def test_reverse_c266_converges_at_larger_epsilon_different_crossing(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """The C=2.66 reverse connection (`#840`): the sibling-module default
+    ``epsilon=1e-4`` converges on this candidate but fails
+    ``verify_connection``'s forward-reapproach gate (the same documented
+    `#822` evidence-quality tradeoff), diagnosed and fixed by raising
+    ``epsilon`` to ``2e-4`` -- which converges on a DIFFERENT crossing from
+    the symmetry prediction (this family pair's own "rich" intersection
+    structure, module docstring), still a genuine verified connection."""
+    node21 = vcc.build_vaquero_overlap_node(system, 2, 2.66)
+    node31 = vcc.build_vaquero_overlap_node(system, 3, 2.66)
+    seed = vcc.ConnectionSeed(
+        distance=0.0,
+        branch_u=-1,
+        branch_s=1,
+        k_u=29,
+        k_s=33,
+        tau_u=4.122557122466014,
+        tau_s=2.595563242258196,
+        x=0.0,
+        xdot=0.0,
+        ydot=0.0,
+    )
+    conn = vcc.refine_connection(system, node31, node21, seed, epsilon=2.0e-4)
+    assert conn.converged, conn.notes
+    assert conn.residual < 1e-8
+    assert abs(float(conn.crossing_xv[0]) - 0.9590289887986131) < 1e-6
+    assert abs(float(conn.crossing_xv[1]) - 0.32719383414376546) < 1e-6
+
+    ev = vcc.verify_connection(system, node31, node21, conn, epsilon=2.0e-4)
+    assert ev.passed, ev.notes
+    assert ev.ydot_signs_match
+    assert ev.forward_distance < vcc.FORWARD_TOL
+    assert ev.jacobi_drift_u < vcc.JACOBI_DRIFT_TOL
+    assert ev.jacobi_drift_s < vcc.JACOBI_DRIFT_TOL
+
+    # The forward entry's own recorded crossing (em-vaquero-hetero-wu21c266-
+    # ws31c266-2026) predicts a DIFFERENT crossing than the one actually
+    # verified here -- confirmed genuinely different, not merely epsilon-shifted.
+    predicted = vcc.predict_reverse_crossing((0.8691637553536629, -0.5754661265104016))
+    dist = math.hypot(
+        float(conn.crossing_xv[0]) - predicted[0], float(conn.crossing_xv[1]) - predicted[1]
+    )
+    assert dist > 0.1
+
+
+def test_reverse_c266_at_default_epsilon_fails_forward_gate_not_other_gates(
+    system: cr3bp.CR3BPSystem,
+) -> None:
+    """Regression pin for the diagnosed C=2.66 pathology this task found:
+    the closest-to-predicted candidate at the sibling-module default
+    ``epsilon=1e-4`` Newton-converges cleanly and passes every OTHER gate,
+    but fails specifically the forward-reapproach evidence-quality gate --
+    confirming the fix (raising epsilon) targets the right mechanism rather
+    than papering over a genuine non-connection."""
+    node21 = vcc.build_vaquero_overlap_node(system, 2, 2.66)
+    node31 = vcc.build_vaquero_overlap_node(system, 3, 2.66)
+    seed = vcc.ConnectionSeed(
+        distance=0.0022718899144641,
+        branch_u=-1,
+        branch_s=-1,
+        k_u=32,
+        k_s=37,
+        tau_u=2.8801447617277045,
+        tau_s=0.07865060534415375,
+        x=0.8669622060749299,
+        xdot=0.5769024162175868,
+        ydot=-0.45520176895324843,
+    )
+    conn = vcc.refine_connection(system, node31, node21, seed, epsilon=1.0e-4)
+    assert conn.converged, conn.notes
+
+    ev = vcc.verify_connection(system, node31, node21, conn, epsilon=1.0e-4)
+    assert not ev.passed
+    assert "forward" in ev.notes
+    # Every OTHER gate passes with good margin -- this is a real,
+    # zero-Delta-v heteroclinic geometry, just an evidence-quality-floor
+    # issue at this epsilon (module docstring, "Manifold-offset epsilon as
+    # an evidence-quality control"), not a spurious Newton false-positive.
+    assert ev.ydot_signs_match
+    assert ev.full_state_gap < vcc.FULL_STATE_GAP_TOL
+    assert ev.radau_gap < vcc.RADAU_GAP_TOL
+    assert ev.backward_distance < vcc.BACKWARD_TOL
+    assert ev.forward_distance > vcc.FORWARD_TOL  # the one gate that fails

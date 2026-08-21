@@ -106,13 +106,15 @@ def _build_self_test_connection() -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def test_committed_registry_has_the_three_entries() -> None:
+def test_committed_registry_has_the_five_entries() -> None:
     connections = load_connections_raw(CONNECTIONS_PATH)
     ids = {c["id"] for c in connections}
     assert ids == {
         "em-vaquero-hetero-wu21c254-ws31c254-2026",
         "em-vaquero-hetero-wu21c266-ws31c266-2026",
         "em-kumar-hetero-wu31c254-ws21c254-2026",
+        "em-vaquero-hetero-wu31c254-ws21c254-2026",
+        "em-vaquero-hetero-wu31c266-ws21c266-2026",
     }
 
 
@@ -164,6 +166,57 @@ def test_committed_entries_transcribed_values_match_source_artifact() -> None:
     assert c266["connection"]["newton_residual"] == src266["connection"]["residual"]
     assert c266["connection"]["crossing_x"] == src266["connection"]["crossing_xv"][0]
     assert c266["connection"]["crossing_xdot"] == src266["connection"]["crossing_xv"][1]
+
+
+def test_reverse_entries_transcribed_values_match_840_source_artifact() -> None:
+    """Same transcription guard as above, for the two #840 REVERSE-direction
+    entries against data/found/840_em_reverse_round_trip/results.json."""
+    import json
+    from pathlib import Path
+
+    results_path = Path("data/found/840_em_reverse_round_trip/results.json")
+    raw = json.loads(results_path.read_text())
+    sweep_by_c = {round(row["jacobi"], 2): row for row in raw["sweep"]}
+
+    connections = {c["id"]: c for c in load_connections_raw(CONNECTIONS_PATH)}
+
+    rev254 = connections["em-vaquero-hetero-wu31c254-ws21c254-2026"]
+    src254 = sweep_by_c[2.54]
+    assert rev254["connection"]["newton_residual"] == src254["connection"]["residual"]
+    assert rev254["connection"]["crossing_x"] == src254["connection"]["crossing_xv"][0]
+    assert rev254["connection"]["crossing_xdot"] == src254["connection"]["crossing_xv"][1]
+    assert rev254["connection"]["k_u"] == src254["connection"]["k_u"]
+    assert rev254["connection"]["k_s"] == src254["connection"]["k_s"]
+    assert rev254["evidence"]["full_state_gap"] == src254["evidence"]["full_state_gap"]
+
+    rev266 = connections["em-vaquero-hetero-wu31c266-ws21c266-2026"]
+    src266 = sweep_by_c[2.66]
+    assert rev266["connection"]["newton_residual"] == src266["connection"]["residual"]
+    assert rev266["connection"]["crossing_x"] == src266["connection"]["crossing_xv"][0]
+    assert rev266["connection"]["crossing_xdot"] == src266["connection"]["crossing_xv"][1]
+    assert rev266["connection"]["k_u"] == src266["connection"]["k_u"]
+    assert rev266["connection"]["k_s"] == src266["connection"]["k_s"]
+    assert rev266["evidence"]["full_state_gap"] == src266["evidence"]["full_state_gap"]
+
+
+def test_forward_and_reverse_840_entries_cross_reference_symmetrically() -> None:
+    """A round trip is a symmetric relationship: each forward entry's
+    ``reverse_of`` must point at its own reverse counterpart, and vice
+    versa -- #840's own writeback edited both sides of two already-committed
+    entries, so this pins that neither direction was missed."""
+    connections = {c["id"]: c for c in load_connections_raw(CONNECTIONS_PATH)}
+    pairs = [
+        ("em-vaquero-hetero-wu21c254-ws31c254-2026", "em-vaquero-hetero-wu31c254-ws21c254-2026"),
+        ("em-vaquero-hetero-wu21c266-ws31c266-2026", "em-vaquero-hetero-wu31c266-ws21c266-2026"),
+    ]
+    for forward_id, reverse_id in pairs:
+        assert connections[forward_id]["reverse_of"] == reverse_id
+        assert connections[reverse_id]["reverse_of"] == forward_id
+
+    # The Kumar entry (a DIFFERENT model -- Kumar's own mu, not this
+    # project's registry mu) has no same-model forward counterpart entry,
+    # so reverse_of stays null (#854's model-boundary distinction).
+    assert connections["em-kumar-hetero-wu31c254-ws21c254-2026"].get("reverse_of") is None
 
 
 def test_kumar_entry_reproduces_fresh_not_just_transcribed() -> None:
