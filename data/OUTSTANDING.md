@@ -207,9 +207,25 @@ update's own scope.
   literature-saturated (`#858` Sec. 5.2). Per `#858`'s own explicit rule ("if 10^3 sequences
   survive... pruning is too weak to proceed"), Stage 1's brute patched-conic enumeration
   (~10^7 cells) is NOT auto-fired — this is a mandatory dispatch-decision checkpoint. Options for
-  next: a chained/whole-sequence energy-consistency filter (likely far stronger than pairwise),
-  accept Stage 1's full un-narrowed cost, or shelve toward `#790` per `#858`'s own ranking — no
-  recommendation made here, that decision is the user's. Full account:
+  next: a chained/whole-sequence energy-consistency filter, accept Stage 1's full un-narrowed
+  cost, or shelve toward `#790` per `#858`'s own ranking.
+  **CHAINED-FILTER FOLLOW-UP 2026-08-22 (same day, user-directed): ALSO fails, more decisively.**
+  Rebuilt the driver around the physically-correct stronger constraint (a flyby preserves V∞
+  *magnitude*, so a real ballistic tour needs ONE common V∞ linking every leg simultaneously, not
+  each leg free to pick its own) — precomputed the 12-ordered-pair x 7-probe-V∞ linkability table
+  and required a non-empty intersection across the whole sequence. **Still 3269/3269 new sequences
+  survive, 0 additional pruning.** Root cause found directly: V∞=4-5 km/s links ALL 12 possible
+  Galilean moon pairs SIMULTANEOUSLY (a universal "hub" energy, not just per-edge connectivity),
+  so any sequence built from this 4-moon alphabet can always fall back to that shared V∞ for every
+  leg. This is a SHARPER negative than the pairwise one — it rules out "the screen was just too
+  permissive" and confirms the cause is structural: Jupiter's Galilean moons are close enough in
+  SMA to share one common natural flyby energy connecting all of them at once. Energy/Tisserand-
+  based sequence filtering appears structurally unable to narrow this alphabet at all; a filter
+  that *would* discriminate needs a non-energy criterion (phasing/resonance compatibility, ToF-
+  window intersection across the chain) — identified as the next candidate, not attempted.
+  Two decisive negatives on the intended cheap-first gate now stand (pairwise + chained); no
+  recommendation made between accepting Stage 1's full cost, trying a phasing-based filter, or
+  shelving toward `#790` — that decision is the user's. Full account (both passes):
   `docs/notes/2026-08-22-791-stage0-tisserand-pruning-checkpoint.md`. No catalogue writeback.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week

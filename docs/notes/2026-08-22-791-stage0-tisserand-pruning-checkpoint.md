@@ -1,5 +1,8 @@
 # `#791` Stage 0 — Tisserand/energy-graph pruning checkpoint: pruning too weak, STOP
 
+**Update 2026-08-22 (same day): the chained/energy-consistency filter was tried next — it fails
+too, and for a sharper, more decisive reason.** See "Addendum: the chained filter" below.
+
 **Task:** `#791`, registered 2026-08-08 (Campaign 3 of the combinatorial-search survey, "moon-tour
 encounter-sequence enumeration"). Per `#858`'s review (Sec. 5.4), fund Stage 0 only first: pure
 Tisserand/energy-graph pruning of the closed-tour sequence alphabet over the Galilean moons, before
@@ -73,20 +76,74 @@ cut the count *before* that stage cannot discriminate at all for this specific s
 combinatorial explosion `#858` Sec. 5.1 warned against, with Stage 0 contributing no narrowing at
 all. Options for whoever revisits this (none attempted here, all out of scope for this checkpoint):
 
-- **A tighter, non-pairwise criterion** — e.g. a chained/graph-level energy-consistency check
-  (does a SINGLE V∞ link the *whole* sequence, not just each leg independently at its own
-  possibly-different V∞?) would likely discriminate far better, since real tours hold V∞
-  quasi-constant across the whole cycle (the same physical fact `releg_moontour.py`'s own
-  continuity-by-construction design already encodes for the powered lane).
+- **The chained/graph-level energy-consistency check was tried same-day — it also fails** (see
+  Addendum below): the alphabet has a universal shared-V∞ "hub" energy (4-5 km/s) at which all 12
+  possible moon pairs are simultaneously linkable, so even the strictly-stronger single-V∞
+  constraint cannot discriminate. Energy-based sequence filtering appears structurally unable to
+  narrow this alphabet.
+- **A non-energy criterion** — e.g. phasing/resonance compatibility (does the sequence's own
+  period_k admit a closed synodic pattern across the moons' actual orbital periods, not just "is a
+  transfer energetically possible") or ToF-window intersection across the whole chain — is the
+  next candidate the Addendum identifies, not attempted here.
 - **Accept Stage 1's full cost** — spend the ~300-2800 CPU-hours `#858` Sec. 5.3 already costed,
   with the explicit understanding that this is now the ENTIRE proposed cost, not a
   pruning-narrowed fraction of it.
-- **Shelve**, on the same logic `#861` used for Resonant Atlas: a decisive negative on the intended
-  cheap-first gate, redirect effort elsewhere (`#790`, per `#858`'s own ranking).
+- **Shelve**, on the same logic `#861` used for Resonant Atlas: two decisive negatives on the
+  intended cheap-first gate (pairwise AND chained energy filters), redirect effort elsewhere
+  (`#790`, per `#858`'s own ranking).
 
 No recommendation is made here between these — that is a dispatch decision, not a Stage 0 finding.
 **Explicitly NOT run**: any cell evaluation, `campaign_runner` dispatch, or n-body shooting. No
 `data/catalogue.yaml` writeback (methodology/pruning checkpoint only).
+
+## Addendum: the chained filter
+
+The pairwise screen above lets each leg use a *different* V∞ from the probe band — a weaker
+constraint than a real ballistic tour actually obeys. A flyby rotates V∞ direction but preserves
+its *magnitude* (`releg_moontour.py`'s own "Continuity model" docstring already encodes this for
+the powered lane), so an unpowered patched-conic tour should hold V∞ quasi-constant across the
+whole cycle. The natural next, strictly-stronger filter: does a **single common V∞** in the same
+probe band link **every** leg of the sequence simultaneously?
+
+Rebuilt the driver (`scripts/scan_791_stage0_sequence_pruning.py`, same file) around a
+precomputed per-pair-per-V∞ linkability table (12 ordered pairs × 7 probe V∞ = 84 `linkable()`
+calls total, cached once) so the chained check is `intersection of each leg's linkable-V∞ set`.
+Positive control (IEGI) still survives (common V∞ = {4, 5} km/s).
+
+**Result: still 3269/3269 new sequences survive. Zero additional pruning from the stronger
+constraint.**
+
+**Why: the alphabet has a universal "hub" energy, not just per-edge connectivity.** Checked
+directly whether any single V∞ links *every one* of the 12 ordered pairs simultaneously:
+
+| V∞ (km/s) | all 12 pairs linkable? |
+|---|---|
+| 4.0 | **True** |
+| 5.0 | **True** |
+| 6.0 | False (2/12 pairs drop) |
+| 8.0 | False (7/12 pairs drop) |
+| 10.0+ | False (all drop) |
+
+At V∞ = 4-5 km/s the four-moon system is **fully connected simultaneously** — not just
+edge-by-edge at possibly-different energies, but at one shared energy covering the whole alphabet
+at once. Any sequence built only from these 4 moons can therefore always fall back to V∞=4 or 5
+km/s for every leg, so the chained constraint — despite being physically the *correct*, stricter
+requirement — collapses to the same non-discriminating result as the pairwise one. This is a
+sharper version of the original finding, not a weaker one: it rules out "the pairwise screen was
+just too permissive" as the explanation and confirms the real cause is structural — the Galilean
+system's own physical connectivity at achievable flyby energies, the same fact that makes this
+territory so literature-saturated (`#858` Sec. 5.2).
+
+**Implication:** any Tisserand/energy-magnitude-based sequence-level filter is unlikely to
+discriminate meaningfully in this specific system, because the discriminating power such filters
+rely on (a sparse, mostly-disconnected reachability graph) is simply absent here — Jupiter's inner
+three-plus-one Galilean moons are close enough in semi-major axis and share a common natural flyby
+energy that connects all of them at once. A filter that *would* discriminate would need to test
+something ENERGY doesn't capture — e.g. phasing/resonance compatibility (do the moons' orbital
+periods admit a closed synodic pattern for this specific sequence and period_k, not just "is a
+transfer energetically possible"), or ToF-window intersection across the whole chain. Neither is
+attempted here — genuinely out of scope for a same-day Stage 0 follow-up, and a different kind of
+check than "Tisserand/energy-graph pruning" as specified.
 
 ## Verification
 
