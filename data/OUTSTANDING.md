@@ -32,6 +32,25 @@ stale "#315-317 still open" block-note, a stale "#293 un-started" pair of lines 
 its own DONE entry, and a leftover already-executed `#144` TODO. One flagged item (a commit SHA
 cited as evidence) was checked and found to be a real commit in a different repository — left
 unchanged. See `git log` around this date for the corrected commit.
+**Further targeted update 2026-08-21** (NOT a full re-audit of the `#654`-`#857` range accrued
+since the previous pass — a targeted close-out of one specific session's arc, prompted by a
+user request to "update all docs and validate there is nothing else pending"): the `#826`-`#857`
+arc (Russell-12 bend-gate cluster, the manifold-connection registry design/implementation/
+population, and the Vaquero/Kumar C=2.54/2.66/3.13 adjudication chain) is FULLY CLOSED — every
+task in that range independently re-verified (fresh re-derivation of headline numeric claims,
+not just re-running the finding-task's own tests), committed, and pushed to `origin/main` in
+both `Bwooce/cyclers` and `Bwooce/cyclers.space`. Two header/body mismatches corrected in place
+(`#837`, `#838` both said "not dispatched" despite being long-since DONE with real commits) and
+two orphaned task numbers given their own bullets for the first time (`#856`, `#857` — both real,
+substantial, pushed work that had zero tracking anywhere in this file before now). The only
+genuinely OPEN/actionable items surfacing from this range as of today: `#789`/`#790`/`#791`
+(three large, undispatched, multi-week combinatorial-search campaigns — see their own bullets;
+under Fable review as of this update for scoping/optimization/success-likelihood before any
+greenlight) and `#795` (a small tooling task explicitly gated on whichever of `#789`-`#791` runs
+first, so it cannot proceed until one of those three is greenlit and dispatched). `data/README.md`
+was also found to cite a stale "237 entries" census (the live catalogue has 399 rows) — predates
+this session, flagged for a separate doc-freshness pass, not fixed as part of this targeted
+update's own scope.
 
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
@@ -1622,7 +1641,7 @@ unchanged. See `git log` around this date for the corrected commit.
   §14 attaches to this whole lane: CR3BP spectral stability does NOT imply V4 survival, and
   V2-ballistic is this lane's ceiling (no real-ephemeris claim is available for Pluto-Charon).
   Requires a new `_LEVEL_EVIDENCE` promotion + full ratchet if it passes.
-- `#837` — registered 2026-08-11 (found during `#810`'s verification pass, not dispatched):
+- `#837` — ✓ DONE 2026-08-12 (Fable) (registered 2026-08-11, found during `#810`'s verification pass):
   `tests/scripts/test_671_regularized_qr_integrator.py::test_qr_regularized_oterma_defeats_
   wrapping_and_conserves_jacobi` and `tests/scripts/test_672_section_map.py::test_oterma_first_
   section_crossing_rigorously_isolated` both FAIL by **pytest-timeout (>600 s inside mpmath)**
@@ -1743,7 +1762,8 @@ unchanged. See `git log` around this date for the corrected commit.
   below the band. The property that makes an orbit connectable (a saddle) is the property that
   disqualifies it from V2-ballistic, so no amount of further connection work can promote an
   in-band member. Follow-ups: `#838`-`#840`.
-- `#838` — registered 2026-08-12 (found during `#828`, not dispatched): **schema design
+- `#838` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#828`; dispatched to Fable
+  2026-08-21, user-approved same day, implemented as `#856`): **schema design
   proposal, user approval required before any bump** (per the `#707`->v5.3 / `#735`->v5.4
   precedent — neither schema change was made by the task that wanted it): should the catalogue
   carry a **cross-row connection-evidence** object or field, recording a verified manifold
@@ -1761,7 +1781,44 @@ unchanged. See `git log` around this date for the corrected commit.
   connection is even expressible, not assume the symmetric two-row case. Must also settle
   whether such an object belongs as a FIELD on the endpoint row(s), as its own ROW, or (the
   `#828` outcome, deliberately) as prose only. `#828` shipped comment-only annotations rather
-  than pre-empt this.
+  than pre-empt this. **VERDICT (Fable, 2026-08-21): a new dedicated top-level registry**
+  (`data/manifold_connections.yaml` + `data/manifold_connection.schema.json` v1.0), mirroring
+  the `#570` `cycler_network.schema.json`/`empty_regions.jsonl` precedent — NOT a field on the
+  endpoint row(s) (ownership/mirroring degrades once a second endpoint is catalogued) and NOT
+  its own catalogue row (a connection is not an orbit; it cannot honestly fill
+  `orbit_class`/`validation_level` without contaminating the frozen census ratchets).
+  Half-catalogued is the base case: each entry's ordered endpoints are `row_ref` (+ mandatory
+  `identity_evidence`) or an inline `uncatalogued` descriptor; the schema's own `contains`
+  constraint requires >=1 `row_ref`. No `data/catalogue.yaml` schema bump (no v5.5) — the
+  registry versions independently. User-approved same day; implemented and merged as `#856`.
+  Design note: `docs/notes/2026-08-21-838-connection-schema-design-recommendation.md`.
+- `#856` — ✓ DONE 2026-08-21 (implementation of `#838`'s user-approved design, dispatched same
+  day): built `data/manifold_connections.yaml` + `data/manifold_connection.schema.json` v1.0 +
+  `src/cyclerfinder/data/validate_connections.py` (schema/semantic/referential three-layer
+  gate, mirroring `validate_networks.py`) + `tests/data/test_manifold_connections.py`, wired
+  into `.pre-commit-config.yaml`. Populated retroactively with `#822`'s two row-touching
+  connections, transcribed and independently re-verified against
+  `data/found/822_vaquero_em_free_transfer/results.json` before commit (not re-derived).
+  Subsequently grown to 5 entries this session as `#854`/`#840` landed their own findings (see
+  those bullets). `ruff`/`mypy`/schema validation clean; 18+ tests, all passing.
+- `#857` — ✓ DONE 2026-08-21 (found during `#856`'s implementation, dispatched to Fable same
+  day for a design note, then implemented directly): represents `data/manifold_connections.yaml`
+  on the public `cyclers.space` website — a fourth committed+soft-fail block in
+  `scripts/sync-catalogue.mjs`, a `src/lib/connections.ts` loader (mirrors `errata.ts`), and a
+  conditional "Manifold connections" section on `/cycler/<id>/` detail pages, handling all
+  three endpoint shapes (this orbit / linked row / uncatalogued descriptor) role-labelled from
+  the endpoint's directed position. `evidence_class` surfaced as a neutral chip, deliberately
+  NOT styled like `.vlevel`/`.our-status-badge`/`.dv-band-badge`/`.orbit-class-badge` (a
+  connection is "provenance/audit only, not a promotion gate" per the schema's own rule). Caught
+  and fixed along the way: the site's `sanitizeCatalogueText` unconditionally strips bare
+  `#NNN` tokens, which broke 4 sentences in `data/manifold_connections.yaml` that used a task
+  ref as their grammatical subject — fixed at the source (cyclerfinder commit `09286c18`),
+  verified against the actual sanitizer function extracted and run standalone, not guessed. No
+  catalogue-table column and no dedicated `/connections/` page yet (deferred per the design
+  note — 2 entries touching 3 rows at design time; the loader is written list-first so an index
+  page is a one-file follow-on). Full site build (405 pages) + `vitest` clean except 3
+  pre-existing failures confirmed unrelated (re-ran the identical suite against the pre-`#857`
+  baseline). Design note: `docs/notes/2026-08-21-857-manifold-connections-website-representation.md`.
 - `#839` — ✓ DONE 2026-08-21 (registered 2026-08-12, found during `#828`; gated on `#827`,
   dispatched after `#827` closed): **fresh, unseeded search for a `Wu(3:1) <-> Ws(2:1)`
   connection AT C=3.13 specifically (not one of `#827`'s seven printed Table-5 rows) — GENUINE,
@@ -1789,7 +1846,7 @@ unchanged. See `git log` around this date for the corrected commit.
   `data/found/839_c313_targeted_search/results.json`. 11 new evidence tests (NOT slow, ~50s):
   `tests/search/test_vaquero_c313_targeted_search.py`. Full account:
   `docs/notes/2026-08-21-839-c313-targeted-search.md`.
-- `#855` — ✓ DONE 2026-08-21 (registered 2026-08-21, found during `#839`, not dispatched):
+- `#855` — ✓ DONE 2026-08-21 (registered 2026-08-21, found during `#839`, dispatched same day):
   **adjudicated: `orbit_class` STAYS `resonant_po` — no promotion.** `#839`'s genuine,
   independently-verified `Wu(3:1) <-> Ws(2:1)` connection at C=3.13 touches
   `vaquero-31-c313-em-resonant-po-2013` via its OWN orbit as node31, but schema v4.9/`#453`'s

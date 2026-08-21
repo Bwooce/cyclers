@@ -11,6 +11,8 @@ Files
 - `catalogue.yaml` — published-cycler seed catalogue with full attribution per spec.md §16. **Sole source of truth.** Edits go through the same process as code: change values, change source quotes, commit.
 - `OUTSTANDING.md` — long-form research questions / source-access gaps / paradigm-mismatch flags log. The YAML's per-entry `notes:` field handles short-form caveats; OUTSTANDING handles the discussion threads.
 
+**A note on numbers in this file.** Row counts, per-field backfill tallies, and "current only member" claims below are frequently labelled with the date they were true (e.g. "2026-06-05 backfill status", "Backfill stats (initial v2 rev, 2026-06-01)") — read those as point-in-time historical snapshots, not live figures; the catalogue has grown substantially since most of them were written (399 rows as of 2026-08-21, versus the 237 several older passages still cite). Where a passage states a count WITHOUT a date qualifier, treat it as similarly liable to have gone stale and re-derive it from `catalogue.yaml` directly (e.g. `python3 -c "import yaml; print(len(yaml.safe_load(open('catalogue.yaml'))))"`) rather than trusting the prose.
+
 Conventions
 -----------
 
@@ -90,7 +92,10 @@ A second optional top-level field, `trajectory_regime:`, was added on
 2026-06-01 to make the *trajectory class* explicit:
 
 - `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
-  required to close the cycle. All but 2 of the current 237 entries are ballistic (the 2 powered Aldrin establishment variants excepted).
+  required to close the cycle. All but 3 of the catalogue's current 399 entries are ballistic
+  (the 2 powered Aldrin establishment variants + `lynam-longuski-2011-ieg-single-period`
+  excepted; re-verified live 2026-08-21, not a static count — query
+  `trajectory_regime` directly rather than trusting this number as it ages).
 - `low-thrust` — requires continuous propulsion (Solar Electric, ion,
   nuclear electric, solar sail, etc.) over the transit legs to close.
   Mathematically: Lambert's problem no longer applies; the trajectory
@@ -678,8 +683,13 @@ change any existing row's validity or the census count:
   `"infinite"` (shares the `cycler` reachability invariants) but with NO
   demonstrated transport utility (never encounters the secondary). Carried
   for known-class corroboration, not as a usable cycler — distinct from
-  `cycler`, whose defining property IS transport. First (and currently only)
-  member: `em-cycler-21-3d-spatial-2026`. Also v4.9 (tasks #427/#428):
+  `cycler`, whose defining property IS transport. First member:
+  `em-cycler-21-3d-spatial-2026`; grown to 9 members as of 2026-08-21
+  (`em-cycler-21-3d-spatial-2026` + 6 Casoliva 2010 rows + 2 Vaquero 2013 rows,
+  each a per-member SOI/periselene determination, not a family-blanket
+  assumption — query `orbit_class: resonant_po` directly rather than trusting
+  this count as it ages; see `#797`/`#801`/`#811`/`#855` in `OUTSTANDING.md`).
+  Also v4.9 (tasks #427/#428):
   `flyby_altitudes_km` provenance enum `sourced`/`computed-m7`/`derived`.
 - **v5.0** (task #305): one additive, optional, nullable nested row property
   `bcr4bp_provenance` (`{mu_sun, sun_commensurate_n, sun_phase_drift}`)
