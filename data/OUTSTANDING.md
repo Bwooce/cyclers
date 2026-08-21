@@ -241,6 +241,11 @@ update's own scope.
   reference). Real Stage A dispatch needs a decision on d_jacobi/n_c_steps recalibration
   first (options in the note below) — not a rubber-stamp of the harness's current
   defaults. Full writeup: `docs/notes/2026-08-21-859-resonant-atlas-pilot-harness.md`.
+  **FINAL DISPOSITION 2026-08-21 (`#861`): SHELVED.** The seeding fix `#860` proposed and `#861`
+  built/gated failed decisively (0/6 Oberon families, see `#861`'s own bullet) — this pilot's
+  core method (seed+continue without a published IC table) does not reliably reach the target
+  family on ANY tested system, published-anchor or novel. Do not dispatch the 3-novel-system
+  Stage A run. `#790` is the recommended next use of effort in this campaign family.
 - `#860` — ✓ DONE 2026-08-21 (dispatched to Fable same day, found during `#859`'s smoke test):
   **advice on the `#859` topology-misidentification finding — fix the seeding, do NOT shelve,
   do NOT run Stage A as-is.** Mechanism diagnosis: `two_body_resonant_seed`'s `x0_sign=-1`
@@ -266,22 +271,35 @@ update's own scope.
   `cr3bp_jacobi_arclength.py`/`deflated_newton.py`/`mu_continuation.py` all exist and `#756`'s
   cited 159-candidate negative matches its own OUTSTANDING.md bullet exactly. Full advice:
   `docs/notes/2026-08-21-860-resonant-seeding-topology-fix-advice.md`.
-- `#861` — registered 2026-08-21 (found during `#860`'s advice, not dispatched — awaiting user
-  go-ahead): **`#860`'s concrete fix-and-gate scope**, ~2-4 days effort, trivial compute, ALL
-  against the Oberon positive control, before any novel-system Stage A dispatch: (1) add the
-  conjugate-apse seed to `jovian_resonant_families.py`, converge+classify at Oberon's six
-  published ratios (~0.5 day); (2) wire `cr3bp_jacobi_arclength`-style fold-turning into a
-  Stage A' worker, walking every converging seed's family curve to its natural boundaries
-  (~1-2 days); (3) **the gate**: recover, for >=4 of the 6 published Oberon families, an
-  unstable segment whose C-range and topology (period ~= 2*pi*q, winding = p, close-approach
-  signature) matches the paper, cross-checked on >=1 family via `mu_continuation` down from a
-  Neptune-Triton table-verified saddle; apply `deflated_newton` at the published C for any
-  resisting ratio before declaring it missing. **Decision rule**: gate passes -> run the fixed
-  Stage A' on `#859`'s 3 novel systems (misses now honestly method-conditional-stampable);
-  gate fails on >=3 of 6 families -> shelve Stage A, redirect to `#790`'s corrector/alphabet
-  build instead (per `#858`'s own ranking, `#790` — not `#789`/`#859` — holds the actual
-  catalogue-shaped prize). No catalogue writeback anywhere in this scope. Full scope:
-  `docs/notes/2026-08-21-860-resonant-seeding-topology-fix-advice.md` Sec. 5.
+- `#861` — ✓ DONE 2026-08-21 (registered + dispatched same day, found during `#860`'s advice):
+  **GATE FAILS — 0/6 published Oberon families recovered with matching topology (needed >=4/6).
+  Resonant Atlas (`#789`/`#859`) is SHELVED; redirect further campaign-family effort to `#790`.**
+  Built both `#860`-recommended fixes: a conjugate-apse seed (`jovian_resonant_families.py`, 10
+  new tests) and a pseudo-arclength fold-turning Stage A' worker
+  (`resonant_atlas_stage_a_prime.py`, reusing `cr3bp_jacobi_arclength`/`#249` unmodified, 10
+  tests) — both work correctly as engineering. Gated together against all 6 published ratios x
+  2 seed kinds (12 cells, `data/found/861_resonant_seeding_oberon_gate/results.jsonl`): the
+  `opposition` seed mostly reproduces `#859`'s own stable-branch failure (flat `|lambda|~1` on
+  4/6 ratios); the `conjugate_apse` seed genuinely stops landing on the boring stable branch on
+  4/6 ratios (4:5, 5:6, 4:3, 5:4) — and trades it for a WORSE failure mode: every one of those
+  "unstable, in-published-range" hits (`|lambda|` up to 1.28e5) independently spot-checked and
+  confirmed to be the SAME dominant, extremely unstable, high-winding real family (period/winding
+  ~10x off target, closest approach 0.035 nondim — tighter than any other branch found) that the
+  continuation reliably walks into regardless of which ratio seeded it, coincidentally overlapping
+  several published C-ranges — the `#776` Neptune-Triton "family mixing" failure mode, here
+  reproduced AS AN ARTIFACT OF THE FIX ITSELF. `n_topology_matches: 0` on every single one of the
+  12 cells, not a borderline case. Process note: a checkpoint-file race (the dispatched agent's
+  own self-backgrounding died per this project's well-documented pattern, but its real compute
+  process survived; the coordinating session's own resume attempts raced it twice) produced 3
+  exact-duplicate records, caught via `ps aux` and deduplicated before analysis — no cell was
+  ever computed twice with a different result, so the race did not affect the substantive
+  outcome. Per `#860`'s own decision rule: gate fails on 6/6 (not just the >=3/6 threshold) ->
+  shelve Stage A entirely; `#790` (already ranked ahead of `#789` on expected value by `#858`,
+  and not blocked by this specific seeding problem since it consumes already-published family
+  alphabets) is the better next use of effort in this campaign family. No catalogue writeback
+  (methodology validation only, and it failed). `tests/search/test_resonant_atlas_stage_a_prime.py`
+  (10 tests) + the pre-existing `#859`/`#249` suites all green; `ruff`/`ruff format`/full `mypy`
+  clean. Full account: `docs/notes/2026-08-21-861-resonant-seeding-oberon-gate.md`.
 - `#792` — ✗ CLOSED 2026-08-10 as DUPLICATE/ALREADY-ANSWERED, both halves; do NOT dispatch
   (scoping verdict, full reasoning in `docs/notes/2026-08-10-792-scoping-vs-680.md` +
   reproducible artifact `scripts/check_792_manifold_closed_form.py`). Registered 2026-08-08 as
