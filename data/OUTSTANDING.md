@@ -258,6 +258,193 @@ update's own scope.
   `#849` landed). ~1-3 days. Produces empty-region stamps with real conditional meaning (unlike a
   stamp from an already-judged-too-sparse method). Ranks below `#790` on expected value — do not
   dispatch ahead of it; pick up only on idle machine time.
+- `#864` — ✓ DONE 2026-09-05 (user-requested): **whole-project feasibility and future review —
+  "will we find more novel cyclers, and how?"** Multi-agent: 6 read-only evidence readers -> 6 lens
+  strategists -> 3 judges -> synthesis -> 2 adversarial refuter lenses per load-bearing claim ->
+  revision; every load-bearing claim also verified directly by the coordinator. **Answer: probably
+  yes, 1-3 more encounter-bearing catalogue-class rows in ~12 weeks (~50% any tier, ~35-45% at
+  V3+), from three specific places; none reaches V5 without external review.** (1) HELIOCENTRIC VEM:
+  the Jones-Hernandez-Jesick 2017 anchor (xfail since 2026-06-06) REPRODUCES at conic level in 0.6 s
+  once each Lambert leg is allowed 3-8 revolutions — coordinator re-run 2026-09-05 14:11 AET: EMEVVE
+  summed interior |v-inf| mismatch 1.136 km/s over 9 flybys (max 0.229), MEEVEM 0.803 (max 0.210),
+  bend-implied altitudes match (Venus 684 vs 684 km, Mars 251 vs 249 km); the 1-rev control fails
+  (42.6 / 80.8 km/s, negative altitudes). Every June attack enumerated <=1 revolution on <=1 leg
+  (VERIFIED: `scripts/hunt_vem_ballistic.py::_topologies`, `tests/test_vem_rediscovery.py` hard-codes
+  `per_leg_revs=(0,)*n_legs`, `nbody/shooter.py::near_miss_survey` default) — so `#110`/`#120`/`#122`/
+  `#133`'s VEM negatives are VOID for this family (topology-enumeration gap, not the W1 basin wall),
+  and Jones's own printed scope (1-2 synodic periods, <=6 flybys) leaves the 3-/5-synodic and >6-flyby
+  VEM classes unsearched by anyone. Only lane that can reach spec-V4 (GMAT) this quarter. (2) URANIAN
+  RUSSELL-STRANGE ONE-WORKING-NODE class (`#819`): admissible, unswept, positive-controllable on
+  TitEnc#235; gated on reading the unfiled UOP-era papers. (3) NEPTUNE-TRITON CHAIN: the Miceli-
+  Bosanac 4:5 saddle passes 6,628.6 km from Triton = 0.554x SOI (coordinator integration, return
+  error 2.4e-9), so by the project's own `#811`/`#855` per-member rule a chain closed on `#781`'s
+  never-used on-axis seeds is a `cycler`-class row TODAY — the brief's "no orbit_class for chain
+  orbits" was wrong, and W13 closes for `#781` at zero CPU via a literature `cycler` row. The
+  moon-system template that produced every prior hit (published method x first application to an
+  under-published, bend-capable, commensurate cell) is otherwise spent for cyclers; dynamical objects
+  (tori, homoclinics) keep arriving at ~1 in 5 pairs but are not cyclers. Corrections to standing
+  beliefs found and verified: powered moon-tour lane WAS swept (`#464`/`#465`, but Uranus/Neptune
+  stamps probed V-inf 4-15 km/s only — band-conditional); `#695` re-run is pointless (`#702` cross-
+  check); `#600` near-miss is dead (`#663`); `#849` not load-bearing; `#587` exists (CLOSED). Process
+  finding: registry stamps fell Jun 62 / Jul 32 / Aug 1 and one strategist re-proposed the closed
+  `#600` refinement because the stamp lacks a `#663` cross-reference. Follow-on tasks `#865`-`#873`
+  registered below (NOT dispatched). **REFUTATION PASS (16 refuters, 2 lenses/claim) + coordinator
+  re-verification changed four things**: (a) the Neptune-Triton chain shot was RUN (two refuters +
+  coordinator, 14:53 AET) and CLOSED two symmetric periodic orbits at C=2.987089791658 — PRIMARY seed
+  x=1.16933872, `ydot0_sign=-1`, `half_crossings=5`: residual 2.9e-14, T=68.7485 (2.26 T_45),
+  |lambda| 1.66e5, Radau closure 7.6e-9, periselene 6,897 km = 0.58x SOI; SECONDARY x=-1.38561105,
+  `ydot0_sign=+1`, `hc=4`: residual 3.3e-14, T=86.898 (2.86 T_45), |lambda| 126.6, Radau 6.8e-11,
+  periselene 5,455 km = 0.46x SOI — both `cycler`-class by their own periselene; the hc=13/15 recipe
+  first registered under `#868` returns 0/6 (corrected below); HELD for adjudication (ESM-family
+  collision check, Campagnola ISSFD 2014 + Miceli-Bosanac AIAA 2024-1280 unread), NOT written back;
+  (b) the GMAT spec-V4 route does NOT exist today: `~/GMAT/R2022a/bin/GmatConsole` is a Linux x86-64
+  ELF, the June Aldrin/S1L1 figures were retired by `#176`, both rows FAILED the V4 predicate — the
+  heliocentric ceiling this quarter is V3; (c) Kumar-Anderson AAS 24-288's Oberon 4:5 family passes
+  ~7,177 km = ~0.74x Oberon SOI (`#861` data) and is therefore a PUBLISHED `cycler`-class row — only
+  the TWO-moon R-S class is unpublished, and under `#817`'s own `#577` reading a new-pair member is
+  known-class unless a novelty POLICY says otherwise (novelty for `#870` cut to ~1 in 10); (d) a
+  missed one-working-node cell at Neptune: `#599`'s 104 residual-gate survivors failed ONLY at
+  Proteus's bend and were never re-gated under the `#818` passive-node rule (registered `#874`).
+  Revised odds: ~70% for >=1 novelty-claimable cycler-class row at any tier (mostly the two V1 orbits
+  in hand), ~25-30% at V3+. Full account: `docs/notes/2026-09-05-864-project-feasibility-
+  future-review.md`.
+- `#865` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 1, week 1**):
+  zero-CPU integrity bundle — add `primary: Uranus` to the 6 flagship quasi_cycler rows (VERIFIED
+  missing); set `our_status: candidate-novel` + a `discovery_run` provenance block on all 8
+  `source: discovered` rows; stamp the ~10 unstamped negatives (`#695`/`#696`/`#703`/`#716`,
+  `#759`/`#780`/`#783`/`#786`, `#861`, `#791` Stage 0) into `data/empty_regions.jsonl` with
+  `reopen_condition`; cross-reference `#663` on the `#600` stamp; add the V-inf 4-15 km/s band
+  caveat to the `#465` Uranus/Neptune powered stamps; record the VEM topology-gap invalidation of
+  `#110`/`#120`/`#122`/`#133`; mark `#789` SHELVED in its own bullet; fix `#790`'s stale "gated on
+  #789" text; fix the `data_gaps.todo_ref` pointing at closed `#587`. Full ratchets. ~3-4 days.
+- `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
+  AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
+  published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,
+  n7h,n3l; MEEVEM n0s,n1l,n4l,n5h,n1h,n0s,n3h,n0s,n6h,n1h), period pinned 12.8 yr; fix
+  `tests/test_vem_rediscovery.py` and `tests/nbody/test_shooter_jones_gate.py` to take rev/branch as a
+  sourced-derived input instead of hard-coded zero revs; n-body shoot (REBOUND/IAS15 + DE440 -> V3);
+  flip the xfail ONLY on a genuine converged pass. CEILING THIS QUARTER IS V3, not spec-V4: the
+  installed GMAT is a Linux x86-64 binary and its lane never produced a V4 row (`#864` refutation of
+  LB7) — spec-V4 needs `#873`(a)'s re-host plus a never-designed continuous multi-cycle chain lane.
+  Note the probe reproduces Jones's STAGE-1 chain (two interior mismatches 0.21-0.23 km/s exceed his
+  own 200 m/s; max deviation from a published V-inf 0.27 km/s; two altitudes off 16-23%); run a
+  +-0.5 d date-rounding scan; an unintended-intermediate-flyby filter for the 4-8-rev legs does not
+  exist in src and is a prerequisite. P(conic gate flips) ~60-65%. Commit a cleaned probe as
+  `scripts/probe_jones_multirev_truth.py`. Kill: conic seed does not close <0.1 km/s on either row
+  after 1 day. ~2-4 days.
+- `#867` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 3, gated on
+  `#866`**): Jones-style itinerary-growth enumerator (near-Hohmann seed legs on a (t0, dt) grid;
+  leg-by-leg growth over per-leg ToF grids with ALL revolutions 0-8 x low/high, prograde; accept a
+  child only if |v-inf_in|-|v-inf_out| <= 100-200 m/s AND altitude in 100-100,000 km; close at
+  t0 + k*T_syn; unintended-intermediate-flyby filter, which does not exist in src today) — positive
+  control: re-find Tables 2/3 from Hohmann seeds and reproduce Jones's 6.4-yr negative — then sweep
+  the classes Jones excluded in print (3-/5-synodic = 19.2/32 yr, >6 flybys, non-Table-1
+  itineraries) over 3 opportunities under the `#871` charter/supervisor; n-body (V3) on survivors.
+  NOVELTY IS POLICY-GATED (`#875`): under the project's own `#577`/`#578` precedent a member of a
+  class the source authors EXCLUDED on stated practicality grounds is known-class unless the owner
+  rules otherwise; without that ruling this is a census + V-tier lift. State k in Jones's T_syn units
+  (k_Tsyn=3 -> 19.2 yr, 5 -> 32 yr): the catalogue's `k=3` means the E-M synodic basis and
+  `vem-emeeve-3syn` (6.4 yr) is exactly the class Jones found EMPTY. Read Hollister 1969 and
+  Minovitch 1967 first. Kill: control fails; sweep yields zero chains within 200 m/s -> stamp.
+  ~8-11 days.
+- `#868` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 4, week 1**):
+  Neptune-Triton zero-code symmetric chain shot + row-first writeback — seed
+  `cr3bp_periodic.correct_symmetric_fixed_jacobi` (via `saturn_titan_resonant_connections.
+  attempt_chain_closure_symmetric`, the `#782` path) with `#781`'s on-axis homoclinic seeds. **RECIPE
+  CORRECTED by `#864`'s refutation pass (the first-registered hc=13/15, k+-2 recipe returns 0/6 and
+  would have stamped a false negative)**: PRIMARY x=1.16933872 with `ydot0_sign=-1`, `half_crossings=5`
+  -> T=68.7485, |lambda| 1.66e5, periselene 0.58x SOI; SECONDARY x=-1.38561105 with `ydot0_sign=+1`,
+  `hc=4` -> T=86.898, |lambda| 126.6, periselene 0.46x SOI (both VERIFIED three times: two refuters
+  + coordinator, residuals ~3e-14, Radau closure <1e-8, tol 1e-10 + Radau gate, one member per seed;
+  general rule: pick the `ydot0` sign under which the seed shadows the base orbit and take the FIRST
+  y=0 crossing with |xdot|<1e-2 near a base-orbit perpendicular point). `#767`'s Saturn-Titan seed
+  closes at 2.2-2.8x Titan SOI -> `resonant_po`, not `cycler`. Before writeback: ESM-family collision
+  check (T/2pi 10.94 and 13.83 near integers vs Miceli-Bosanac's 12 families at this C), read
+  Campagnola et al. ISSFD 2014 and Miceli-Bosanac AIAA 2024-1280, Fable adversarial pass. Then
+  row-first writeback: the Miceli-Bosanac 4:5 saddle as a literature `cycler` row (periselene 0.554x
+  SOI by the `#855` rule) carrying `#781`'s homoclinics as provenance; the two new orbits as
+  `source: discovered` `cycler` rows at V1 with `our_status` per `#875`; the Kumar-Anderson Oberon 4:5
+  family as a literature `cycler` row (~0.74x SOI, `#861` data); the Saturn-Titan 3:4 and `#782`
+  chain rows (known-reproduction of Vaquero). Kill: adjudication finds an ESM-family or literature
+  collision -> file as known-class/reproduction, no novelty claim. ~2.5 days. Needs a 15-minute owner
+  decision on row-first.
+- `#869` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 5, hard gate
+  for `#819`**): close the corpus gap — acquire/OCR/digest/index the UOP-era Uranian papers (UOP
+  concept update PSJ 2026 10.3847/PSJ/ae680c; Landau 2025; Ellison 2025; AAS 25-668) with a verdict
+  on whether any contains a repeating ballistic two-moon Uranian geometry; index entries for Baresi-
+  Owen 2026 heteroclinic continuation, Acta 2026 Saturnian low-energy/low-thrust tour (arXiv
+  2603.07085), Bellome 2023, the 2024 Jovian review (10.34133/space.0036), Brown et al. SIADS 2024;
+  add topology-labelled anchors to `literature_check.py` (Spear 2021, AAS 24-288 as positive
+  controls); fortnightly literature watch. ~3-4 days.
+- `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
+  refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
+  policy; CENSUS unless policy GO**): one-working-node (Russell-Strange) campaign at Saturn and
+  Uranus — Kumar-Anderson AAS 24-288's single-moon Oberon 4:5 free-returns are PUBLISHED (~0.74x
+  SOI), Ariel/Umbriel are inadmissible passive targets (35-56% parasitic turn), Miranda is marginal
+  (2.6-3.0% at 100 km vs the `#818` 2% gate) and ~4.3 deg inclined, and `#817` itself reads `#577` as
+  making a new-pair R-S member known-class — so novelty ~1 in 10; funded for its policy-independent
+  value (32 R-S rows V0->V1, the Saturn Titan-flyby passive-target census, the `uranus_system`
+  genome). Build: `uranus_system()` in `search/moon_cycler_genome.py`; R-S itinerary enumerator (flyby-
+  body p:q hops on a fixed Tisserand contour + target-crossing leg pair + integer-period AND target-
+  phase closure, b-plane as the DOF); positive control = reproduce `russell-strange-2009-titenc-235`
+  (lifts 32 R-S rows V0->V1) + one Jovian Table-3 row; then Titania/Oberon as flyby body with
+  Miranda's deflection MODELLED (0.42 deg at SOI is at the `#818` 2% threshold, not zero), then Ariel;
+  `#324` bend + `#818` self-consistency + V2->V3->V4-strict URA111 + `#567`-style daily duty scans.
+  Kill: TitEnc#235 not reproduced in 5 build-days; zero itineraries <=8 pass -> method-conditional
+  stamp. ~8-14 days.
+- `#871` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 7**): campaign
+  charter + lint (`data/campaigns/NNN.yaml`: deliverable_class; positive control at the END target
+  or UNANCHORED; non-cycler-vocabulary literature precheck with queries recorded; registry_query
+  output; cost = cells x NAMED measured unit cost or GUESS + wall-clock cap; numeric kill; writeback
+  path that exists today; stamping plan); `data/found_index.jsonl` + `scripts/registry_query.py`;
+  the `#795` CLI + detached supervisor (caffeinate/launchd, lock file, heartbeat) proven by a 1-h
+  SIGKILL + duplicate-launch dummy run. Absorbs `#795`. ~3-3.5 days.
+- `#872` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 8 = the G1
+  corrector `#858` named and nobody registered**): Jacobi-pinned multiple-shooting corrector
+  extending `cr3bp_multiple_shooting.correct_multiple_shooting` (VERIFIED: residual is pure 6N state
+  continuity, C only reported) by algebraic elimination of one velocity component at the energy node
+  (weighted-row variant as cross-check; pseudo-arclength wrapper for C-continuation); control ladder
+  Arenstorf -> re-close `#782`'s chain at fixed C -> Earth-Moon 3:1<->2:1 asymmetric chain from
+  `#840`'s legs; then the symmetric on-axis chain pilot over published alphabets; asymmetric tail
+  (5-8 days) ONLY if the EM control passes, else stamp and close `#790`'s general form. G1 2-3 days,
+  pilot 3-5.
+- `#873` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap items 9 + 11,
+  weeks 9-12**): consolidation + publication — (a) honest spec-V4 for the six Uranian rows, in this
+  order (per `#864`'s LB7 refutation): re-host GMAT (the installed R2022a is a Linux x86-64 ELF;
+  Rosetta 2 not installed; x86_64 colima/docker is the alternative; 0.5-1 day) -> run the existing
+  UNTESTED `scripts/gmat_v4_uranus_generate.py` -> ~200-line tudatpy driver (Uranus J2 + five moons
+  from URA111; arm64 installability INFERRED risk) -> else an explicit "V4-internal" relabel; honest
+  label "independent codebase, same SPK"; a continuous multi-cycle GMAT chain lane for heliocentric
+  rows (`#866`/`#867`) is a conditional sub-item (GUESS 3-5 days, never designed); (b) LICENSE (owner decision on MIT code / CC-BY-4.0 data),
+  CITATION version/date/DOI, release tag, Zenodo dataset DOI, stale counts (README 392->399,
+  data/README 237-era, MISSING_DATA), null-validation_level semantics documented; (c) one-sentence
+  spec sec 14 amendment permitting a candidate-framed preprint; arXiv preprint (Uranian family +
+  negative-results registry method + errata + Jones reproduction + any new rows); clean-clone
+  reproduction package; outreach to the Kumar/Anderson, Russell-Strange and UOP groups; notify the 7
+  errata authors and record `author_notified`; preprint wording "first two-moon Uranian cycler
+  family", "first computed symmetric periodic orbits on a Neptune-Triton homoclinic". The only route
+  to V5. ~15-22 days.
+- `#874` — registered 2026-09-05 (found during `#864`'s refutation pass, not dispatched; **roadmap
+  item 7, Stage 0 costs seconds**): Neptune Triton-working-node / Proteus-passive-target re-gate —
+  `#599`'s stamp records 104/1024 candidates passing the residual gate and failing ONLY at Proteus's
+  bend (0.005-0.3 deg) while Triton's own bend was 1.4-30+ deg; `reopen_condition` is None; the
+  `#818` passive-node gate (Proteus passes trivially at ~0.1-0.4% parasitic turn) post-dates `#599`
+  and was never applied. Stage 0: re-run the `#599` construction, re-gate survivors under `#818`
+  (must-REJECT positive control: the `#816` Ariel-Oberon root), record the survivor count, set a
+  `reopen_condition` on the `#599` stamp. Stage 1 (only if survivors exist): the node-locked inclined
+  one-working-node construction the `#575` stamp names as never built — Triton is retrograde (~157 deg
+  to Proteus) — shared with Titan-Iapetus (15.5 deg) as roadmap item 10 (flex, 4-6 days). Novelty is
+  `#875`-gated (R-S architecture at a new system). Ceiling V3 (no Neptune SPICE lane; n-body).
+- `#875` — registered 2026-09-05 (found during `#864`'s refutation pass; **OWNER DECISION, 30
+  minutes, take BEFORE Gate B / any `#867`/`#870`/`#874` sweep**): the NOVELTY POLICY. (i) Is a member
+  of a class the source authors EXCLUDED on stated practicality grounds (Jones 2017 p.3: 3-/5-synodic
+  VEM, >6 flybys) `candidate-novel` or known-class? (ii) Is a known architecture (Russell-Strange
+  one-working-node) at a system the authors never treated (Uranus, Neptune) `candidate-novel` or
+  known-class (`#817`'s reading of `#577`)? (iii) Are theorem-generic accumulation orbits on a
+  homoclinic (`#868`'s two Neptune-Triton orbits) `candidate-novel`, and what `our_status` vocabulary
+  do they and the two torus rows take? Write the answer into `docs/spec.md` sec 16.4/16.5 as a
+  one-paragraph rule, with the `#577`/`#578`/`#817` precedents cited either way. Every
+  novelty probability in `#864`'s roadmap items 6, 7, 9, 10 is conditional on this.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
   sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,
