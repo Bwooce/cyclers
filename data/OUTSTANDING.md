@@ -52,6 +52,51 @@ was also found to cite a stale "237 entries" census (the live catalogue has 399 
 this session, flagged for a separate doc-freshness pass, not fixed as part of this targeted
 update's own scope.
 
+**PRIORITY as of 2026-09-07 (post-`#864` wrap-up) — read this before anything else.** The standing
+roadmap is `docs/notes/2026-09-05-864-project-feasibility-future-review.md` (sec. 7 table + calendar,
+sec. 7a "Revised ranking (final synthesis)", sec. 8 do-not-do list, sec. 10 owner decisions). All of
+`#865`-`#875` are registered below with full specs; NONE has been dispatched. Verdict: ~70% chance of
+>=1 new cycler-class row at any tier in 12 weeks (mostly the two Neptune-Triton orbits already closed
+during the review), ~25-30% at V3+. The heliocentric ceiling is V3 this quarter (installed GMAT is a
+Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
+
+0. **OWNER DECISION `#875` — novelty policy** (30 min, write into `docs/spec.md` sec 16.4/16.5).
+   Gates whether `#867`/`#870`/`#874` output may be called novel. Needed before Gate B (Sep 20);
+   NOT needed for items 1-3.
+1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days): `primary: Uranus` on the 6 V4
+   rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
+   negatives, `#663` cross-ref on the `#600` stamp, stamp the VEM <=1-rev topology-gap invalidation
+   of `#110`/`#120`/`#122`/`#133`, formally SHELVE `#789`, fix `#790`'s text, register G1.
+2. `#868` Neptune-Triton rows (week 1, ~1.5 days): CORRECTED recipe only (PRIMARY x=1.16933872
+   ydot0_sign=-1 hc=5; SECONDARY x=-1.38561105 ydot0_sign=+1 hc=4 — the hc=13/15 recipe returns
+   0/6); ESM-family collision check FIRST; row-first writeback of the 4:5 saddle, Kumar-Anderson
+   Oberon 4:5, Saturn-Titan 3:4 and the `#782` chain; V1.
+3. `#866` Jones VEM anchor to V3 (weeks 1-2, 2-4 days): seed `ballistic_correct` at the published
+   dates with the multi-rev chains recorded in the bullet; V3 ceiling.
+4. `#869` corpus gap (UOP-era Uranian papers) — hard gate for `#870`; may turn `#870` into a
+   reproduction.
+5. `#871` charter + lint + registry tooling + detached supervisor (absorbs `#795`) — no campaign
+   dispatch without a lint-passing charter.
+6. `#867` Jones itinerary-growth enumerator + excluded VEM classes — gated on `#866` and `#875`.
+7. `#874` Stage 0: Triton-working/Proteus-passive re-gate of `#599`'s 104 survivors (seconds);
+   any sweep beyond Stage 0 only if `#875` says GO.
+8. `#872` G1 Jacobi-pinned multiple-shooting corrector + symmetric chain pilot (unblocks `#790`).
+9. `#870` one-working-node campaign at Saturn/Uranus — census unless `#875` says GO; gated on
+   `#869`, `#871`, `#875`.
+10. Flex: shared node-locked inclined construction for Titan-Iapetus / Triton-Proteus.
+11. `#873`(a) make the V4 label honest (GMAT re-host -> tudatpy -> "V4-internal" relabel).
+12. `#873`(b,c) publication package (LICENSE, CITATION/DOI, Zenodo, preprint, outreach; weeks 9-12).
+13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers).
+
+Decision gates: A Sep 13, B Sep 20, C Oct 4, D Oct 18, E Nov 1, F Nov 15, G Nov 29 (sec. 7 of the
+note). Miss a gate by more than a week and the following wave is NOT dispatched. **Do NOT** re-run any
+VEM scan that enumerates <=1 revolution per leg; do NOT re-propose `#600`/`#663`, `#695`/`#702`,
+`#563`-class sweeps, Titania-Oberon CCR4BP, or `#790` as registered (sec. 8). Disposition of the
+2026-08-21 "genuinely OPEN" list above: `#791` SHELVED 2026-08-22 (Fable, `d33c2771`); `#789`
+superseded by the `#859` pilot (harness built, Stage A NOT run) and to be formally SHELVED by
+`#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. Unpushed at
+wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
+
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
   Floquet-derived `stability_index` scalar on the corridor rows whose `data_gaps` entry cites it as
@@ -151,7 +196,9 @@ update's own scope.
   `docs/notes/2026-08-08-788-campaign-runner-infrastructure.md`. `#795` registered as the
   follow-on (a CLI wrapper script for the first real campaign to use, once `#789`+ needs one).
 - `#789` — registered 2026-08-08 (Campaign 1 of the combinatorial-search survey, "the Resonant
-  Atlas"), **gated on `#788` landing first**: sweep (system x p:q resonance x energy) using the
+  Atlas"), **gated on `#788` landing first** — **STATUS 2026-09-07: original scope superseded by the
+  narrowed `#859` pilot (harness built, Stage A never run); `#864` recommends SHELVED, formal
+  disposition via `#865`; body below is the original registration**: sweep (system x p:q resonance x energy) using the
   family+connection pipeline validated across Jupiter-Europa/`#754`, Saturn-Titan/`#767`,
   Neptune-Triton/`#781`, Earth-Moon/`#780`/`#786` — so far only ever run at ONE paper-anchored
   energy per system, on 4 systems, for a handful of published resonance ratios. The registry can
@@ -165,7 +212,10 @@ update's own scope.
   `#765`/`#768`-style evidence pattern (independent Radau cross-check, basin robustness,
   ghost-guard margins), not a paper table, since not every system will have one.
 - `#790` — registered 2026-08-08 (Campaign 2 of the combinatorial-search survey, "periodic-chain
-  itinerary enumeration"), **gated on `#789`'s own atlas for its alphabet of legs**: search
+  itinerary enumeration"), **gated on `#789`'s own atlas for its alphabet of legs** — **STATUS
+  2026-09-07: BLOCKED on the missing Jacobi-pinned multiple-shooting corrector (G1 = `#872`); `#791`
+  was redirected here 2026-08-22; do not dispatch as registered (`#864` sec. 8); body below is the
+  original registration**: search
   bounded-length cyclic itineraries over resonant-orbit "legs" (each leg a manifold connection),
   closed into one periodic orbit — the finite, catalogue-relevant projection of Llibre-Martínez-
   Simó 1985's own proven Bernoulli-shift horseshoe (`#749`; the raw infinite non-periodic
@@ -180,7 +230,8 @@ update's own scope.
   AI/ML scoping) plausibly earns its keep HERE specifically, benchmarked against the zero-ML
   baseline (concatenated manifold arcs, what `#782` already used) — not elsewhere in this menu.
 - `#791` — registered 2026-08-08 (Campaign 3 of the combinatorial-search survey, "moon-tour
-  encounter-sequence enumeration"), **dispatchable independent of `#788`-`#790`, though benefits
+  encounter-sequence enumeration") — **SHELVED 2026-08-22 (Fable assessment, redirect to `#790`; see
+  the FINAL DISPOSITION paragraph at the end of this bullet and `d33c2771`)**, **dispatchable independent of `#788`-`#790`, though benefits
   from `#788`'s own runner**: the real-ephemeris joint search (`#318`/`#501`) has only ever swept
   7 hand-picked encounter sequences x 512 Sobol cells (55 min total, 0 closed) against Jupiter's
   Galilean moons; the unexplored combinatorial object is the SEQUENCE alphabet itself — closed
@@ -716,7 +767,8 @@ update's own scope.
   and the R-S mass/V∞ discriminator says the target moon should be the SMALL one at HIGH V∞
   (i.e. Miranda-as-target, or Ariel-as-target off a Titania/Oberon flyby), not the inversion
   `#816`'s root produced.
-- `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched): a small `argparse` CLI
+- `#795` — registered 2026-08-08 (follow-on from `#788`, not dispatched; **ABSORBED into `#871`
+  2026-09-05 per `#864` — do not dispatch separately**): a small `argparse` CLI
   wrapper / worked example script demonstrating `search/campaign_runner.py::run_grid_campaign`
   end-to-end (grid + worker + routing + `EmptyRegionSpec`) under `scripts/`, matching the shape of
   `scripts/discovery_campaign_daemon.py` today but without its hand-launched `for w in 0 1 2 3;
