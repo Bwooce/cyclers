@@ -800,6 +800,16 @@ Transitions:
   later-ingested literature entry matches the canonical signature
   (per spec §16.3 matcher); the literature citation is attached and
   the entry is retagged.
+- Three cases that look like `known-class-member` but are `candidate-novel`
+  under the 2026-09-07 novelty policy (spec §16.4, decision record
+  `docs/notes/2026-09-07-875-novelty-policy-decision.md`): a member of a class
+  the source authors explicitly EXCLUDED from their search; a published
+  architecture re-applied at a system the authors never treated; a
+  theorem-generic object (e.g. a periodic orbit accumulating on a homoclinic)
+  that is not a member of any published family. Each attributes its source in
+  `corroborating_sources` and explains itself in `notes` (quoted exclusion /
+  how it was re-applied / theorem + negative family check). Literal collision
+  with a published family always wins and downgrades the row.
 - On publication: populate `first_published` with the human authors and
   publication metadata; revise `priority_date` to the publication date.
   This locks in priority — subsequent literature finds of the same

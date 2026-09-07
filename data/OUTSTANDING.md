@@ -60,12 +60,12 @@ sec. 7a "Revised ranking (final synthesis)", sec. 8 do-not-do list, sec. 10 owne
 during the review), ~25-30% at V3+. The heliocentric ceiling is V3 this quarter (installed GMAT is a
 Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 
-0. **OWNER DECISION `#875` — novelty policy** (write into `docs/spec.md` sec 16.4/16.5). **Parts (i)
-   and (ii) DECIDED 2026-09-07: author-excluded classes and known architectures at never-treated
-   systems ARE `candidate-novel`, with attribution + a re-application explanation (see the `#875`
-   bullet). Part (iii) (Neptune-Triton accumulation orbits) still open.** Spec paragraph pending (iii).
+0. **`#875` novelty policy — ✓ DECIDED 2026-09-07 (all three parts), in spec §16.4/16.5.** Author-
+   excluded classes, known architectures at never-treated systems, and theorem-generic orbits not in
+   any published family are ALL `candidate-novel` with attribution (see the `#875` bullet and
+   `docs/notes/2026-09-07-875-novelty-policy-decision.md`). `#867`/`#870` are novelty-bearing.
    NOT needed for items 1-3.
-1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days): `primary: Uranus` on the 6 V4
+1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days; fold in `#876` site test fixes): `primary: Uranus` on the 6 V4
    rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
    negatives, `#663` cross-ref on the `#600` stamp, stamp the VEM <=1-rev topology-gap invalidation
    of `#110`/`#120`/`#122`/`#133`, formally SHELVE `#789`, fix `#790`'s text, register G1.
@@ -488,19 +488,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   one-working-node construction the `#575` stamp names as never built — Triton is retrograde (~157 deg
   to Proteus) — shared with Titan-Iapetus (15.5 deg) as roadmap item 10 (flex, 4-6 days). Novelty is
   `#875`-gated (R-S architecture at a new system). Ceiling V3 (no Neptune SPICE lane; n-body).
-- `#875` — registered 2026-09-05 (found during `#864`'s refutation pass; **OWNER DECISION, 30
-  minutes, take BEFORE Gate B / any `#867`/`#870`/`#874` sweep**) — **PARTLY DECIDED 2026-09-07 (owner,
-  in chat): (i) author-EXCLUDED classes (Jones 3-/5-synodic VEM, >6 flybys) ARE `candidate-novel`; the
-  row must ATTRIBUTE the source method/paper (Jones-Hernandez-Jesick 2017) but the class is genuinely
-  new. (ii) a known architecture (Russell-Strange one-working-node) at a system the authors never
-  treated (Uranus, Neptune) IS `candidate-novel`; the row must attribute Russell-Strange 2009 AND
-  explain how the architecture was re-applied (what changed: system, flyby body, passive target,
-  bend regime). This SUPERSEDES `#817`'s reading of `#577` for new-SYSTEM cases (the `#577` 0/36
-  ruling itself stands: those were same-system members of R-S's own Jovian class). (iii) Neptune-
-  Triton accumulation orbits: STILL OPEN — owner asked for the published/unpublished breakdown
-  first; spec sec 16.4/16.5 paragraph to be written once (iii) is decided. Consequence: `#867` and
-  `#870` outputs are novelty-bearing (subject to the mandatory `literature_check.py` clear); `#870`
-  is no longer census-only; the `#864` note's ~1-in-10 Uranian novelty figure is superseded.**
+- `#875` — ✓ DONE 2026-09-07 (OWNER DECISION taken in chat, all three parts; written into `docs/spec.md`
+  §16.4 new "Novelty policy" bullet + §16.5 attribution fields; decision record
+  `docs/notes/2026-09-07-875-novelty-policy-decision.md`; `data/README.md` transitions + the website
+  `/about/` our_status paragraph updated the same day). **(i) author-EXCLUDED classes (Jones 3-/5-synodic
+  VEM, >6 flybys) ARE `candidate-novel`, attributing the source method. (ii) a known architecture
+  (Russell-Strange one-working-node) at a never-treated system (Uranus, Neptune) IS `candidate-novel`,
+  attributing R-S 2009 AND explaining how it was re-applied; supersedes `#817`'s reading of `#577` for
+  new-SYSTEM cases (the `#577` 0/36 same-system ruling stands). (iii) theorem-generic objects (the two
+  Neptune-Triton accumulation orbits) ARE `candidate-novel` if not a member of any published family,
+  citing the theorem + the parent's source (Miceli-Bosanac 2026), wording "first computed"; torus rows
+  around published orbits stay `known-class-member`. Literal collision always wins.** Consequences:
+  `#867`/`#870` are novelty-bearing (the `#864` note's ~1-in-10 Uranian figure is superseded); `#868`
+  tags `candidate-novel` only after the ESM-family collision check + Campagnola 2014 / AIAA 2024-1280 +
+  `literature_check.py` clear; `#865` applies the vocabulary to the 8 discovered rows.
   Original registration: the NOVELTY POLICY. (i) Is a member
   of a class the source authors EXCLUDED on stated practicality grounds (Jones 2017 p.3: 3-/5-synodic
   VEM, >6 flybys) `candidate-novel` or known-class? (ii) Is a known architecture (Russell-Strange
@@ -510,6 +511,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   do they and the two torus rows take? Write the answer into `docs/spec.md` sec 16.4/16.5 as a
   one-paragraph rule, with the `#577`/`#578`/`#817` precedents cited either way. Every
   novelty probability in `#864`'s roadmap items 6, 7, 9, 10 is conditional on this.
+- `#876` — registered 2026-09-07 (found while updating the cyclers.space `/about/` page for `#875`; not
+  dispatched; small, fold into `#865`'s week-1 hygiene): **three PRE-EXISTING cyclers.space vitest
+  failures** (identical with and without the `#875` page edit, so not caused by it; 164/167 pass).
+  (a) `hero-scenes.test.ts` x2 — stale ratchets: the `earth-moon-landmark` hero scene is now present
+  (test asserts absent) and the earth-moon-* scenes carry 24 live Earth-Moon V1+ rows (test pins 9 =
+  6 Ross-RT + 3 Braik-Ross); upstream catalogue growth since the ratchet was set — re-derive the
+  expected set from `src/data/catalogue.yaml`, don't hand-edit the number. (b) `no-task-refs.test.ts`
+  — a REAL public-site defect, reproduced on a fresh `npm run build` (2026-09-07): the detail page
+  `dist/cycler/europa-3-4-crnbp-torus-jupiter-2026/` renders the raw token `#724` from the row's note
+  text `"... EXTERIOR, never interior -- #724 correction)"`; `sanitizeCatalogueText` in
+  `src/lib/catalogue.ts` handles `task #N`, `(#N)`, `#N ->` chains but not the bare `-- #N correction`
+  form. Fix in the sanitizer (add the pattern + a unit case), NOT by editing `data/catalogue.yaml`
+  (ratchet churn for a display bug). Verify with `npm run build && npx vitest run`.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
   sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,
