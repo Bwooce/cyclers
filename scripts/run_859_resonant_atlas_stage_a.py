@@ -53,6 +53,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import PreflightBlockedError, preflight_search
 from cyclerfinder.search.campaign_runner import (
     CampaignRunnerConfig,
     CampaignRunnerRouting,
@@ -70,6 +72,27 @@ from cyclerfinder.search.resonant_atlas_stage_a import (
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = _REPO_ROOT / "data" / "found" / "859_resonant_atlas_stage_a"
+
+# Pre-flight gate (#521 phase 2): region + method descriptors for the negative
+# registry, and the measured smoke-slice cost (10-12 s/cell on the M3 at 4
+# workers, docs/notes/2026-08-21-859-resonant-atlas-pilot-harness.md) as the
+# timing pilot the gate demands above LARGE_GRID_THRESHOLD points.
+_REGION_ID = "resonant-atlas-stage-a-family-recovery-eigenvalue-survey-2026-08-21"
+_METHOD = MethodCapability(
+    genome=(
+        "planar CR3BP resonant p:q periodic-orbit family recovery + eigenvalue "
+        "survey (Resonant Atlas Stage A): every coprime p,q<=max_pq per system, "
+        "two-body resonant seed, Jacobi-constant continuation n_c_steps members"
+    ),
+    corrector="resonant_atlas_stage_a.stage_a_worker via campaign_runner.run_grid_campaign",
+    capability_tags=frozenset({"cr3bp", "planar", "resonant-po", "family-continuation"}),
+    git_sha="working-tree",
+)
+_SMOKE_SECONDS_PER_CELL = 11.0
+
+
+def _region_id_for(systems: tuple[Any, ...]) -> str:
+    return _REGION_ID + "-" + "+".join(s.system_key for s in systems)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -226,6 +249,14 @@ def main() -> None:
         d_jacobi=args.d_jacobi,
         x0_sign=args.x0_sign,
     )
+    preflight_search(
+        task_no=859,
+        region_id=_region_id_for(systems),
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=len(cells),
+        timing_pilot_seconds_per_point=_SMOKE_SECONDS_PER_CELL,
+    )
     print(
         f"[{datetime.now(UTC).isoformat(timespec='seconds')}] Stage A grid: "
         f"{len(cells)} cells across {len(systems)} system(s) "
@@ -263,4 +294,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except PreflightBlockedError as exc:
+        print(f"BLOCKED by preflight_search:\n{exc}", flush=True)
+        raise SystemExit(1) from exc

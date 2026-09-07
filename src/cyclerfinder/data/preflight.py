@@ -58,7 +58,14 @@ DEFAULT_PREFLIGHT_RUNLOG_PATH: Path = _REPO_ROOT / "data" / "runlogs" / "preflig
 # is ~8 hours: already large enough to want a pilot first.
 LARGE_GRID_THRESHOLD = 500
 
-_TASK_ALLOCATION_RE = re.compile(r"^-\s+\*\*#(\d+)\*\*", re.MULTILINE)
+# Both ledger bullet styles count as an allocation: the bold form
+# (``- **#NNN**``, every task up to #645) and the backtick form
+# (``- `#NNN` --``, every task from #646 on). Until 2026-09-07 only the bold
+# form matched, so every post-#645 script (#656, #657, #665, #667, #810 per
+# the runlog) was falsely blocked on hygiene and had to pass an
+# ``override_reason`` -- which also silenced the OTHER two checks for those
+# runs. See data/OUTSTANDING.md #877.
+_TASK_ALLOCATION_RE = re.compile(r"^-\s+(?:\*\*#(\d+)\*\*|`#(\d+)`)", re.MULTILINE)
 _SCRIPT_FILENAME_TASK_RE = re.compile(r"run_(\d+)_")
 
 
@@ -81,7 +88,7 @@ def _task_numbers_in_outstanding(outstanding_path: Path) -> set[int]:
     if not outstanding_path.exists():
         return set()
     text = outstanding_path.read_text(encoding="utf-8")
-    return {int(m) for m in _TASK_ALLOCATION_RE.findall(text)}
+    return {int(bold or backtick) for bold, backtick in _TASK_ALLOCATION_RE.findall(text)}
 
 
 def _filename_declared_task_no(script_path: Path) -> int | None:

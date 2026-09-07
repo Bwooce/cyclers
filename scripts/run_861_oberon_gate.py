@@ -45,6 +45,8 @@ from typing import Any
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.resonant_atlas_stage_a_prime as sap
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import PreflightBlockedError, preflight_search
 
 #: AAS 24-288 p.169-equivalent (`#728` digest Sec. 1, "L1/L2 libration-point
 #: Jacobi constants at this mu = 3.54326e-5"), the paper's own stated mass
@@ -64,6 +66,23 @@ OBERON_PUBLISHED_C_RANGES: dict[tuple[int, int], tuple[float, float]] = {
 
 RATIOS: list[tuple[int, int]] = list(OBERON_PUBLISHED_C_RANGES)
 SEED_KINDS: list[sap.SeedKind] = ["opposition", "conjugate_apse"]
+
+# Pre-flight gate (#521 phase 2). This is a positive-control GATE on six
+# published AAS 24-288 families (12 cells), not a discovery sweep; it still
+# registers its region so a later sweep can see what was tried here.
+_REGION_ID = "uranus-oberon-resonant-seeding-fold-turning-gate-aas24-288-2026-08-21"
+_METHOD = MethodCapability(
+    genome=(
+        "Uranus-Oberon planar CR3BP resonant family recovery at the six AAS 24-288 "
+        "published ratios: opposition + conjugate-apse seeds, pseudo-arclength "
+        "fold-turning continuation across each family's printed C-range"
+    ),
+    corrector="resonant_atlas_stage_a_prime.fold_turn_family",
+    capability_tags=frozenset(
+        {"cr3bp", "planar", "resonant-po", "family-continuation", "fold-turning"}
+    ),
+    git_sha="working-tree",
+)
 
 
 def _oberon_system() -> cr3bp.CR3BPSystem:
@@ -97,6 +116,13 @@ def main() -> None:
     ap.add_argument("--c-span", type=float, default=0.12)
     ap.add_argument("--record-every", type=int, default=2)
     args = ap.parse_args()
+    preflight_search(
+        task_no=861,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=len(RATIOS) * len(SEED_KINDS),
+    )
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -176,4 +202,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except PreflightBlockedError as exc:
+        print(f"[861] BLOCKED by preflight_search:\n{exc}", flush=True)
+        raise SystemExit(1) from exc

@@ -65,7 +65,8 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
    any published family are ALL `candidate-novel` with attribution (see the `#875` bullet and
    `docs/notes/2026-09-07-875-novelty-policy-decision.md`). `#867`/`#870` are novelty-bearing.
    NOT needed for items 1-3.
-1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days; fold in `#876` site test fixes): `primary: Uranus` on the 6 V4
+1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days; fold in `#877`'s follow-up: drop the
+   stale hygiene clauses from the five `override_reason` strings): `primary: Uranus` on the 6 V4
    rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
    negatives, `#663` cross-ref on the `#600` stamp, stamp the VEM <=1-rev topology-gap invalidation
    of `#110`/`#120`/`#122`/`#133`, formally SHELVE `#789`, fix `#790`'s text, register G1.
@@ -511,19 +512,46 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   do they and the two torus rows take? Write the answer into `docs/spec.md` sec 16.4/16.5 as a
   one-paragraph rule, with the `#577`/`#578`/`#817` precedents cited either way. Every
   novelty probability in `#864`'s roadmap items 6, 7, 9, 10 is conditional on this.
-- `#876` — registered 2026-09-07 (found while updating the cyclers.space `/about/` page for `#875`; not
-  dispatched; small, fold into `#865`'s week-1 hygiene): **three PRE-EXISTING cyclers.space vitest
-  failures** (identical with and without the `#875` page edit, so not caused by it; 164/167 pass).
-  (a) `hero-scenes.test.ts` x2 — stale ratchets: the `earth-moon-landmark` hero scene is now present
-  (test asserts absent) and the earth-moon-* scenes carry 24 live Earth-Moon V1+ rows (test pins 9 =
-  6 Ross-RT + 3 Braik-Ross); upstream catalogue growth since the ratchet was set — re-derive the
-  expected set from `src/data/catalogue.yaml`, don't hand-edit the number. (b) `no-task-refs.test.ts`
-  — a REAL public-site defect, reproduced on a fresh `npm run build` (2026-09-07): the detail page
-  `dist/cycler/europa-3-4-crnbp-torus-jupiter-2026/` renders the raw token `#724` from the row's note
-  text `"... EXTERIOR, never interior -- #724 correction)"`; `sanitizeCatalogueText` in
-  `src/lib/catalogue.ts` handles `task #N`, `(#N)`, `#N ->` chains but not the bare `-- #N correction`
-  form. Fix in the sanitizer (add the pattern + a unit case), NOT by editing `data/catalogue.yaml`
-  (ratchet churn for a display bug). Verify with `npm run build && npx vitest run`.
+- `#877` — ✓ DONE 2026-09-07 (found while making the cyclers CI green after `#875`; fixed in the same
+  session, user-directed: "exempting the tests?!" — an exemption was tried first and REVERTED): **the
+  `preflight_search` task-number hygiene check had been silently broken since `#646`.** Its
+  `_TASK_ALLOCATION_RE` only matched the bold ledger style `- **#NNN**` (last used at `#645`); every
+  task since uses `` - `#NNN` `` bullets, so every post-#645 script was falsely blocked on hygiene and
+  reached for `override_reason` — which ALSO silences the registry-subsumption and timing-pilot checks
+  for that run. Runlog evidence (`data/runlogs/preflight_runlog.jsonl`): `#656`, `#657`, `#665`,
+  `#667`, `#810` all overrode a `TASK ALLOCATIONS` false positive; `#810`'s override text even names
+  the cause. Separately, CI on `main` had been RED since 2026-08-21 (every push through `59a44741`)
+  because `tests/scripts/test_scripts_call_preflight.py` caught `run_859_resonant_atlas_stage_a.py`,
+  `run_861_oberon_gate.py` and `run_861_mu_continuation_crosscheck.py` calling no `preflight_search()`
+  — unnoticed for 17 days because the habitual `tests/data tests/search` subset skips `tests/scripts`
+  ([[feedback_verify_scope_must_include_tests_scripts]], third recurrence). **Fix:** (a) the regex now
+  accepts both bullet styles (`src/cyclerfinder/data/preflight.py`) with a regression test
+  (`tests/data/test_preflight.py::test_backtick_bullet_style_counts_as_allocated`); (b) all three
+  scripts retrofitted with real `preflight_search` calls (region_id + `MethodCapability` + n_points;
+  `run_859` passes its measured 11 s/cell smoke timing as the pilot and derives region_id from the
+  `--systems` subset) and a `PreflightBlockedError` exit handler — NOT exempted; all three verified to
+  PROCEED against the real ledger + registry with zero warnings. **Follow-up (open, small):** the five
+  overriding scripts still carry now-unnecessary hygiene overrides; drop the hygiene clause from each
+  `override_reason` (keeping any genuine registry-overlap justification, e.g. `#810`'s) so the other
+  two checks are live again on re-runs. Verified: `tests/data/test_preflight.py` + `tests/scripts`
+  green (162 tests), ruff + mypy clean on the 5 touched files.
+- `#876` — ✓ DONE 2026-09-07 (found while updating the cyclers.space `/about/` page for `#875`; fixed same
+  session, cyclers.space commit `13e8832`): **cyclers.space CI had been RED since 2026-08-31 and the site
+  had NOT DEPLOYED since** — the `#875` About-page update was invisible until this fix. Three
+  pre-existing vitest failures, none caused by the `#875` edit: (a) `hero-scenes.test.ts` x2 pinned "9
+  Earth-Moon V1+ rows, no landmark scene"; the 9 Casoliva 2010 + 6 Vaquero 2013 Earth-Moon rows landing
+  at V1 upstream (2026-08) made it 24 rows and dumped all 15 into the "landmark cyclers" catch-all panel.
+  Fix: two new hero panels (`earth-moon-casoliva`, `earth-moon-vaquero`), `earthMoonGroupOf` exported,
+  tests now DERIVE expectations from `heroGroups()` + the same partition (scene exists iff group
+  non-empty, rowCount == group size, ids match) — no pinned counts left. (b) `no-task-refs` dist sweep:
+  three REAL public-page defects — raw `#724` in the Europa 3:4 torus row's `orbit_elements.cr3bp.family`
+  (field never routed through the sanitizer), `(#822, #828)` and `#854` from manifold-connection
+  `provenance.task_refs` (rendered verbatim by the template) and `provenance.data` (unsanitized). Fix:
+  sanitize `cr3bp.family`/`libration_point` and `provenance.data/module/notes`; template no longer
+  renders `task_refs`; unit regressions added in `no-task-refs.test.ts` and `connections.test.ts`.
+  Verified: fresh `npm run build` + `npx vitest run` = 21 files / 170 tests green incl. the dist sweep
+  over all 405 pages; About page renders the `#875` paragraph. Lesson recorded in
+  [[feedback_verify_scope_must_include_tests_scripts]]: check `gh run list` after every push.
 - `#859` — registered 2026-08-21 (found during `#858`'s review, user-approved same day): **the
   narrowed `#789` pilot** — Fable's recommended scope, not the original 15-20-system/2-4-week
   sweep. Systems: Uranus-Oberon (published-anchor positive control), Jupiter-Ganymede,

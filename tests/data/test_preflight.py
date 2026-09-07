@@ -237,3 +237,29 @@ def test_runlog_records_every_invocation(tmp_path: Path) -> None:
     assert second["task_no"] == 42
     assert second["proceed"] is False
     assert second["failures"]
+
+
+def test_backtick_bullet_style_counts_as_allocated(tmp_path: Path) -> None:
+    """Regression (#877): the ledger switched from ``- **#NNN**`` to ``- `#NNN```
+    bullets after #645; the hygiene check must recognise both, or every new
+    script is falsely blocked and reaches for ``override_reason`` (which also
+    silences the registry and timing checks)."""
+    outstanding_path = tmp_path / "OUTSTANDING.md"
+    outstanding_path.write_text(
+        "# Outstanding\n\n- `#859` \u2014 registered 2026-08-21: some task.\n"
+        "- **#645** \u2014 an old-style bullet.\n",
+        encoding="utf-8",
+    )
+    for task_no, name in ((859, "run_859_x.py"), (645, "run_645_y.py")):
+        res = preflight_search(
+            task_no=task_no,
+            region_id="test-region",
+            method=_WEAK_METHOD,
+            script_path=Path(name),
+            n_points=10,
+            outstanding_path=outstanding_path,
+            registry=(),
+            runlog_path=tmp_path / "runlog.jsonl",
+        )
+        assert res.proceed is True
+        assert res.warnings == ()

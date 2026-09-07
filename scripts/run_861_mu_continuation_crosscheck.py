@@ -41,8 +41,23 @@ import numpy as np
 import cyclerfinder.search.cr3bp_periodic as cp
 import cyclerfinder.search.mu_continuation as mc
 import cyclerfinder.search.neptune_triton_resonant_families as ntrf
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import PreflightBlockedError, preflight_search
 
 OBERON_MU = 3.54326e-5
+
+# Pre-flight gate (#521 phase 2): one continuation branch (n_points=1), an
+# identity cross-check on a published seed rather than a discovery sweep.
+_REGION_ID = "neptune-triton-4-5-saddle-mu-continuation-to-oberon-crosscheck-2026-08-21"
+_METHOD = MethodCapability(
+    genome=(
+        "pseudo-arclength continuation in mass ratio of the Miceli-Bosanac "
+        "Neptune-Triton 4:5 saddle (C=2.987089791658) down to Oberon's mu=3.54326e-5"
+    ),
+    corrector="mu_continuation.continue_in_mu + cr3bp_periodic.correct_symmetric_fixed_jacobi",
+    capability_tags=frozenset({"cr3bp", "planar", "resonant-po", "mu-continuation"}),
+    git_sha="working-tree",
+)
 
 
 def continue_in_mu_downward(
@@ -206,6 +221,13 @@ def continue_in_mu_downward(
 
 
 def main() -> None:
+    preflight_search(
+        task_no=861,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=1,
+    )
     out_path = Path("data/found/861_resonant_seeding_oberon_gate/mu_continuation_crosscheck.json")
     system = ntrf.neptune_triton_system()
     row = ntrf.ESM_GATE_ROWS["4:5-saddle"]
@@ -263,4 +285,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except PreflightBlockedError as exc:
+        print(f"[861-mu] BLOCKED by preflight_search:\n{exc}", flush=True)
+        raise SystemExit(1) from exc
