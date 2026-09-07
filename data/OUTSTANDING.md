@@ -60,8 +60,10 @@ sec. 7a "Revised ranking (final synthesis)", sec. 8 do-not-do list, sec. 10 owne
 during the review), ~25-30% at V3+. The heliocentric ceiling is V3 this quarter (installed GMAT is a
 Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 
-0. **OWNER DECISION `#875` — novelty policy** (30 min, write into `docs/spec.md` sec 16.4/16.5).
-   Gates whether `#867`/`#870`/`#874` output may be called novel. Needed before Gate B (Sep 20);
+0. **OWNER DECISION `#875` — novelty policy** (write into `docs/spec.md` sec 16.4/16.5). **Parts (i)
+   and (ii) DECIDED 2026-09-07: author-excluded classes and known architectures at never-treated
+   systems ARE `candidate-novel`, with attribution + a re-application explanation (see the `#875`
+   bullet). Part (iii) (Neptune-Triton accumulation orbits) still open.** Spec paragraph pending (iii).
    NOT needed for items 1-3.
 1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days): `primary: Uranus` on the 6 V4
    rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
@@ -487,7 +489,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   to Proteus) — shared with Titan-Iapetus (15.5 deg) as roadmap item 10 (flex, 4-6 days). Novelty is
   `#875`-gated (R-S architecture at a new system). Ceiling V3 (no Neptune SPICE lane; n-body).
 - `#875` — registered 2026-09-05 (found during `#864`'s refutation pass; **OWNER DECISION, 30
-  minutes, take BEFORE Gate B / any `#867`/`#870`/`#874` sweep**): the NOVELTY POLICY. (i) Is a member
+  minutes, take BEFORE Gate B / any `#867`/`#870`/`#874` sweep**) — **PARTLY DECIDED 2026-09-07 (owner,
+  in chat): (i) author-EXCLUDED classes (Jones 3-/5-synodic VEM, >6 flybys) ARE `candidate-novel`; the
+  row must ATTRIBUTE the source method/paper (Jones-Hernandez-Jesick 2017) but the class is genuinely
+  new. (ii) a known architecture (Russell-Strange one-working-node) at a system the authors never
+  treated (Uranus, Neptune) IS `candidate-novel`; the row must attribute Russell-Strange 2009 AND
+  explain how the architecture was re-applied (what changed: system, flyby body, passive target,
+  bend regime). This SUPERSEDES `#817`'s reading of `#577` for new-SYSTEM cases (the `#577` 0/36
+  ruling itself stands: those were same-system members of R-S's own Jovian class). (iii) Neptune-
+  Triton accumulation orbits: STILL OPEN — owner asked for the published/unpublished breakdown
+  first; spec sec 16.4/16.5 paragraph to be written once (iii) is decided. Consequence: `#867` and
+  `#870` outputs are novelty-bearing (subject to the mandatory `literature_check.py` clear); `#870`
+  is no longer census-only; the `#864` note's ~1-in-10 Uranian novelty figure is superseded.**
+  Original registration: the NOVELTY POLICY. (i) Is a member
   of a class the source authors EXCLUDED on stated practicality grounds (Jones 2017 p.3: 3-/5-synodic
   VEM, >6 flybys) `candidate-novel` or known-class? (ii) Is a known architecture (Russell-Strange
   one-working-node) at a system the authors never treated (Uranus, Neptune) `candidate-novel` or
