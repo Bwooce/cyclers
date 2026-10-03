@@ -247,6 +247,24 @@ def test_g4_unstable_manifold_fundamental_domain_consistency(
     assert mism[0] <= 0.02 * first_order, (mism[0], first_order)
 
 
+def test_g4b_second_order_parameterisation_is_cubic(
+    circle_phys: sc.InvariantCircle, bundles_phys: sc.HyperbolicBundles
+) -> None:
+    """With the second-order term w the same mismatch shrinks ~8x per halving
+    of eps (O(eps^3)), at physical Ganymede mass."""
+    b2 = sc.second_order_terms(circle_phys, bundles_phys)
+    theta, s, n = 0.9, 1.3, 3
+    mism = []
+    for eps in (4e-4, 2e-4, 1e-4):
+        a, _ = sc.manifold_point(circle_phys, b2, "unstable", theta, s, n + 1, eps=eps)
+        b, _ = sc.manifold_point(
+            circle_phys, b2, "unstable", theta + circle_phys.rho, b2.lam_u * s, n, eps=eps
+        )
+        mism.append(float(np.linalg.norm(a - b)))
+    assert 6.0 <= mism[0] / mism[1] <= 9.5, mism
+    assert 6.0 <= mism[1] / mism[2] <= 9.5, mism
+
+
 # ---------------------------------------------------------------------------
 # G5 (fast part): the hyperbolic circle at physical Ganymede mass.
 # ---------------------------------------------------------------------------

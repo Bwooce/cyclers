@@ -781,13 +781,84 @@ class HyperbolicBundles:
     spectrum: NDArray[np.complex128] = field(
         repr=False, default_factory=lambda: np.zeros(0, dtype=np.complex128)
     )
+    w_u: FloatArray | None = None
+    w_s: FloatArray | None = None
+    residual2_u: float = float("nan")
+    residual2_s: float = float("nan")
 
     def vector(self, branch: Branch, theta: float | FloatArray, deriv: int = 0) -> FloatArray:
         v = self.v_u if branch == "unstable" else self.v_s
         return fourier_eval(v, theta, deriv=deriv)
 
+    def second(
+        self, branch: Branch, theta: float | FloatArray, deriv: int = 0
+    ) -> FloatArray | None:
+        """Second-order manifold coefficient ``w(theta)`` (None if not computed)."""
+        w = self.w_u if branch == "unstable" else self.w_s
+        return None if w is None else fourier_eval(w, theta, deriv=deriv)
+
     def lam(self, branch: Branch) -> float:
         return self.lam_u if branch == "unstable" else self.lam_s
+
+
+def second_order_terms(
+    circle: InvariantCircle,
+    bundles: HyperbolicBundles,
+    *,
+    h: float = 1e-4,
+    rtol: float = 1e-13,
+    atol: float = 1e-13,
+) -> HyperbolicBundles:
+    """Second-order parameterisation ``W(theta, sig) = u + sig*v + sig^2*w``.
+
+    Invariance ``F(W(theta, sig)) = W(theta + rho, lam*sig)`` at order
+    ``sig^2`` gives ``DF(theta) w(theta) + q(theta)/2 = lam^2 w(theta + rho)``
+    with ``q = D^2F[v, v]``; on the nodes ``(R(-rho) blockdiag(DF) - lam^2 I) w
+    = -R(-rho) q / 2``, solvable because ``lam^2`` is not in the operator's
+    spectrum (``lam e^{ik rho}``, ``e^{ik rho}``, ``lam^-1 e^{ik rho}``). ``q``
+    by central differences of ``F`` with step ``h``. With ``w`` the departure
+    error is ``O(sig^3)`` instead of ``O(sig^2)``. ``residual2_*`` is the
+    off-node check ``|F(W(theta, sig)) - W(theta + rho, lam*sig)| / sig^3`` at
+    the midpoints with ``sig = 10*h`` (O(1) means the cubic remainder).
+    """
+    n_nodes = circle.n_nodes
+    sysm, t0 = circle.system, circle.t0
+    smat = shift_matrix(n_nodes, -circle.rho)
+    orb = strob_iterates(sysm, circle.nodes, n=1, t0=t0, with_stm=True, rtol=rtol, atol=atol)
+    assert orb.stms is not None
+    dfs = orb.stms[1]
+    f0 = orb.states[1]
+    op = np.einsum("jl,lab->jalb", smat, dfs).reshape(4 * n_nodes, 4 * n_nodes)
+    ws: dict[str, FloatArray] = {}
+    res2: dict[str, float] = {}
+    for branch in ("unstable", "stable"):
+        lam = bundles.lam_u if branch == "unstable" else bundles.lam_s
+        v = bundles.v_u if branch == "unstable" else bundles.v_s
+        fp = strob_iterates(sysm, circle.nodes + h * v, n=1, t0=t0, rtol=rtol, atol=atol).states[1]
+        fm = strob_iterates(sysm, circle.nodes - h * v, n=1, t0=t0, rtol=rtol, atol=atol).states[1]
+        q = (fp + fm - 2.0 * f0) / (h * h)
+        rhs = -0.5 * (smat @ q).reshape(-1)
+        w = np.linalg.lstsq(op - lam * lam * np.eye(4 * n_nodes), rhs, rcond=None)[0]
+        w = w.reshape(n_nodes, 4)
+        ws[branch] = w
+        sig = 10.0 * h
+        th = node_angles(n_nodes) + math.pi / n_nodes
+        x = circle.state(th) + sig * fourier_eval(v, th) + sig * sig * fourier_eval(w, th)
+        fx = strob_iterates(sysm, x, n=1, t0=t0, rtol=rtol, atol=atol).states[1]
+        th2 = th + circle.rho
+        target = (
+            circle.state(th2)
+            + lam * sig * fourier_eval(v, th2)
+            + (lam * sig) ** 2 * fourier_eval(w, th2)
+        )
+        res2[branch] = float(np.max(np.abs(fx - target))) / sig**3
+    return replace(
+        bundles,
+        w_u=ws["unstable"],
+        w_s=ws["stable"],
+        residual2_u=res2["unstable"],
+        residual2_s=res2["stable"],
+    )
 
 
 def _pick_real_eigen(
@@ -938,8 +1009,10 @@ def manifold_departure(
     eps: float,
     sign: float = 1.0,
 ) -> tuple[FloatArray, FloatArray]:
-    """Departure state ``u(theta) + sign*s*eps*v(theta)`` and its ``(4, 2)``
-    derivative with respect to ``(theta, s)``.
+    """Departure state ``u(theta) + sig*v(theta) [+ sig^2*w(theta)]``, ``sig =
+    sign*s*eps``, and its ``(4, 2)`` derivative with respect to ``(theta, s)``.
+    The quadratic term is used when the bundles carry it
+    (:func:`second_order_terms`).
 
     When ``mu_gan == 0`` the state is additionally projected onto the Jacobi
     level of ``u(theta)`` (:func:`project_to_jacobi_level`) and the derivative
@@ -947,10 +1020,18 @@ def manifold_departure(
     v = bundles.vector(branch, theta)
     dv = bundles.vector(branch, theta, deriv=1)
     u = circle.state(theta)
-    x0 = u + sign * s * eps * v
+    sig = sign * s * eps
+    x0 = u + sig * v
     d = np.empty((4, 2))
-    d[:, 0] = circle.dstate(theta) + sign * s * eps * dv
+    d[:, 0] = circle.dstate(theta) + sig * dv
     d[:, 1] = sign * eps * v
+    w = bundles.second(branch, theta)
+    if w is not None:
+        dw = bundles.second(branch, theta, deriv=1)
+        assert dw is not None
+        x0 = x0 + sig * sig * w
+        d[:, 0] += sig * sig * dw
+        d[:, 1] += 2.0 * sig * sign * eps * w
     if circle.system.mu_gan == 0.0:
         mu = circle.system.mu
         x0 = project_to_jacobi_level(x0, float(_jacobi4(u, mu)), mu)
@@ -1034,7 +1115,11 @@ def manifold_cloud(
     ss: FloatArray = sgrid.reshape(-1)
     v = bundles.vector(branch, tt)
     base = circle.state(tt)
-    x0 = base + sign * eps * ss[:, None] * v
+    sig = sign * eps * ss[:, None]
+    x0 = base + sig * v
+    w = bundles.second(branch, tt)
+    if w is not None:
+        x0 = x0 + sig * sig * w
     if circle.system.mu_gan == 0.0:
         x0 = project_to_jacobi_level(x0, _jacobi4(base, circle.system.mu), circle.system.mu)
     nn = n_max if branch == "unstable" else -n_max
@@ -1402,9 +1487,18 @@ def verify_trajectory(
     atol: float = 1e-13,
     radau_rtol: float = 1e-12,
     radau_atol: float = 1e-13,
+    extra_periods: int = 0,
 ) -> ConnectionVerification:
     """Integrate ``x0`` (at absolute time ``t_start``) through ``n_u + n_s``
-    periods in ONE integration and test that it is a single connecting trajectory.
+    (+ ``extra_periods``) periods in ONE integration and test that it is a
+    single connecting trajectory.
+
+    ``extra_periods`` continues past the stable-side departure point: the
+    distance to the circle at ``n_u + n_s`` is the stable offset ``eps*s_s``
+    itself, so a few extra periods show whether the trajectory keeps
+    contracting onto the circle (by ``lam_s`` per period) rather than being
+    released. The final-distance and integrator-agreement criteria apply to
+    the last state integrated.
 
     ``junction_target`` is the independently computed stable-side point
     ``Ws(theta_s, s_s, n_s)``; the junction residual is its distance to the
@@ -1414,7 +1508,7 @@ def verify_trajectory(
     within ``thresholds``.
     """
     th = thresholds or VerificationThresholds()
-    n_tot = n_u + n_s
+    n_tot = n_u + n_s + extra_periods
     per, dmin, jdrift, _ = _integrate_single(system, x0, t_start, n_tot, "DOP853", rtol, atol)
     per_r, dmin_r, _, _ = _integrate_single(
         system, x0, t_start, n_tot, "Radau", radau_rtol, radau_atol
@@ -1468,6 +1562,7 @@ def verify_connection(
     thresholds: VerificationThresholds | None = None,
     rtol: float = 1e-13,
     atol: float = 1e-13,
+    extra_periods: int = 0,
 ) -> ConnectionVerification:
     """Verify a refined connection as ONE trajectory (see :func:`verify_trajectory`).
 
@@ -1503,4 +1598,5 @@ def verify_connection(
         thresholds=thresholds,
         rtol=rtol,
         atol=atol,
+        extra_periods=extra_periods,
     )

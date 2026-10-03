@@ -133,6 +133,11 @@ def jeg_34_circle(n_nodes: int = 201) -> tuple[sc.InvariantCircle, np.ndarray, f
     return sc.seed_circle_from_periodic_orbit(sys0, s4, period, n_nodes), s4, period
 
 
+def bundles2(c: sc.InvariantCircle, **kw: Any) -> sc.HyperbolicBundles:
+    """Bundles plus the second-order manifold terms (used for every run)."""
+    return sc.second_order_terms(c, sc.hyperbolic_bundles(c, **kw))
+
+
 def circle_summary(c: sc.InvariantCircle) -> dict[str, Any]:
     return {
         "n_nodes": c.n_nodes,
@@ -156,6 +161,8 @@ def bundle_summary(b: sc.HyperbolicBundles) -> dict[str, Any]:
         "residual_s_offgrid": b.residual_s,
         "tail_u": b.tail_u,
         "tail_s": b.tail_s,
+        "second_order_residual_u": b.residual2_u,
+        "second_order_residual_s": b.residual2_s,
     }
 
 
@@ -255,7 +262,7 @@ def stage_gates(_: argparse.Namespace) -> None:
     }
     log(f"G2 {out['g2']}")
     # G3
-    b0 = sc.hyperbolic_bundles(c0)
+    b0 = bundles2(c0)
     ev = floquet(phys.mu, s4, period)
     lam_f = float(np.max(np.abs(ev)))
     expected = lam_f ** (phys.ganymede_synodic_period / period)
@@ -281,7 +288,7 @@ def stage_gates(_: argparse.Namespace) -> None:
     cp = steps[-1]
     orb = sc.strob_iterates(phys, cp.nodes, n=3, t0=cp.t0)
     target = cp.state(cp.thetas + 3.0 * cp.rho)
-    bp = sc.hyperbolic_bundles(cp)
+    bp = bundles2(cp)
     out["g5_hyperbolic"] = {
         "steps": [circle_summary(c) for c in steps],
         "closure_3_periods": float(np.max(np.abs(orb.states[3] - target))),
@@ -351,7 +358,7 @@ def stage_g5(args: argparse.Namespace) -> None:
                 np.max(np.abs(o3.states[3] - c.state(c.thetas + 3 * c.rho)))
             )
             try:
-                b = sc.hyperbolic_bundles(c)
+                b = bundles2(c)
                 entry["bundles"] = bundle_summary(b)
             except ValueError as exc:
                 entry["bundles"] = f"not hyperbolic: {exc}"
@@ -362,7 +369,7 @@ def stage_g5(args: argparse.Namespace) -> None:
 
 def _r1_setup(eps: float) -> tuple[sc.InvariantCircle, sc.HyperbolicBundles, np.ndarray, float]:
     c0, s4, period = jeg_34_circle()
-    b0 = sc.hyperbolic_bundles(c0)
+    b0 = bundles2(c0)
     log(f"circle N={c0.n_nodes} rho={c0.rho:.6f}; lam_u={b0.lam_u:.6f} lam_s={b0.lam_s:.6f}")
     return c0, b0, s4, period
 
@@ -425,7 +432,7 @@ def stage_r1(args: argparse.Namespace) -> None:
             "connection": connection_summary(con),
         }
         if con.converged and verified < args.n_verify:
-            v = sc.verify_connection(c0, b0, c0, b0, con)
+            v = sc.verify_connection(c0, b0, c0, b0, con, extra_periods=args.extra)
             print_verification(v)
             entry["verification"] = verification_summary(v)
             entry["jacobi_departure_minus_orbit"] = v.jacobi_start - c_orbit
@@ -516,7 +523,7 @@ def stage_r2(args: argparse.Namespace) -> None:
     frac0 = float(args.fractions[0])
     st = sc.continue_circle_in_mass(c0, frac0 * phys.mu_gan, fractions=(1.0,))
     c1 = st[-1]
-    b1 = sc.hyperbolic_bundles(c1, ref_u=b0.v_u, ref_s=b0.v_s)
+    b1 = bundles2(c1, ref_u=b0.v_u, ref_s=b0.v_s)
     log(f"mu_gan={c1.system.mu_gan:.3e}: circle {c1.residual:.2e}, lam_u {b1.lam_u:.6f}")
     scan = []
     for f in ok:
@@ -576,7 +583,7 @@ def stage_r2c(args: argparse.Namespace) -> None:
         )
         chain = sc.continue_circle_in_mass(c0, phys.mu_gan, fractions=tuple(done))
         for cc in chain:
-            cur_b = sc.hyperbolic_bundles(cc, ref_u=cur_b.v_u, ref_s=cur_b.v_s, check_offgrid=False)
+            cur_b = bundles2(cc, ref_u=cur_b.v_u, ref_s=cur_b.v_s, check_offgrid=False)
         cur_circle = chain[-1]
         fracs = [f for f in fracs if f > done[-1]]
         log(f"resumed after frac {done[-1]:g}; remaining {fracs}")
@@ -587,7 +594,7 @@ def stage_r2c(args: argparse.Namespace) -> None:
             log(f"frac {frac:g}: circle failed {circ.residual_history}")
             steps.append({"frac": frac, "circle": circle_summary(circ), "failed": "circle"})
             break
-        bun = sc.hyperbolic_bundles(circ, ref_u=cur_b.v_u, ref_s=cur_b.v_s)
+        bun = bundles2(circ, ref_u=cur_b.v_u, ref_s=cur_b.v_s)
         con = sc.refine_connection(circ, bun, circ, bun, cur, eps=eps, max_iter=30)
         e: dict[str, Any] = {
             "frac": frac, "mu_gan": mg, "circle": circle_summary(circ),
@@ -609,7 +616,7 @@ def stage_r2c(args: argparse.Namespace) -> None:
             or frac in (fracs[0], float(args.fractions[-1]))
             or frac in args.verify_at
         ):
-            v = sc.verify_connection(circ, bun, circ, bun, con)
+            v = sc.verify_connection(circ, bun, circ, bun, con, extra_periods=args.extra)
             print_verification(v)
             e["verification"] = verification_summary(v)
         steps.append(e)
@@ -706,7 +713,7 @@ def stage_r3b(args: argparse.Namespace) -> None:
                 if not last.converged:
                     save("r3b", rec)
                     continue
-                b = sc.hyperbolic_bundles(last)
+                b = bundles2(last)
                 entry["bundles"] = bundle_summary(b)
                 log(f"   bundles: {bundle_summary(b)}")
                 save("r3b", rec)
@@ -764,7 +771,7 @@ def _homoclinic_search(
             "connection": connection_summary(con),
         }
         if con.converged and verified < args.n_verify:
-            v = sc.verify_connection(c, b, c, b, con)
+            v = sc.verify_connection(c, b, c, b, con, extra_periods=args.extra)
             print_verification(v)
             e["verification"] = verification_summary(v)
             verified += 1
@@ -790,6 +797,7 @@ def main() -> None:
     ap.add_argument("--n-family", type=int, default=24)
     ap.add_argument("--branch", type=int, default=0)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--extra", type=int, default=0, help="extra verification periods")
     ap.add_argument("--verify-at", type=float, nargs="*", default=[])
     ap.add_argument("--verify-all", action="store_true")
     ap.add_argument("--homoclinic", action="store_true")
