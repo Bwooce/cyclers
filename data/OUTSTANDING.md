@@ -436,9 +436,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   re-applied (system, model/method, both moons as working nodes versus one flyby body and a passive
   target, low-V-infinity quasi-cycler). PROVISIONAL on `#869` (UOP-era Uranian papers unread).
   The website strip accepts `candidate-novel` rows with attribution sources (cyclers.space
-  `b467f20`); its intro wording was adjusted to match. **Verification on amdnuc is now
-  single-process only:** the machine hard-reset twice (17:00 and ~17:27) at the moment a parallel
-  pytest run started, so the full suite for this tranche is CI's (the self-hosted runner).
+  `b467f20`); its intro wording was adjusted to match. The full suite for this tranche was left to CI (the self-hosted runner); only
+  targeted single-process checks were run locally. (CORRECTION 2026-10-04, owner: an earlier
+  version of this line said the machine had hard-reset because of parallel test runs. That was
+  wrong: it was rebooted for other reasons, and parallel runs on amdnuc are fine.)
   **PROGRESS 2026-10-03 (tranche 4, registry amendments):** (c) DONE — the `#600` stamp now carries
   a `reverification` entry cross-referencing `#663` (an exact closure exists next to the 0.0531
   km/s near-miss, at tof 17.689/2.792/3.002 d, residual ~5e-8 km/s, and fails the bend gate at
@@ -610,7 +611,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   primary and model class as Brown et al., different orbit class; label by spec 16.4 after a
   literature check (Komachi's ASC 2026 "ballistic cycler between EML2 and SEL2 in the BCR4BP",
   title only so far, must be obtained first). Either outcome (survives or does not) is a
-  result. Cost: days, single-process.
+  result. Cost: days.
 - `#885` — registered 2026-10-04 (NOT dispatched). **Discovery line 2 of 4; estimate about 70%.**
   A BRIDGE FROM THE PUBLISHED URANUS TOURS INTO OUR QUASI-CYCLERS (a `precursor_mga` row that
   `inserts_into` a catalogued quasi-cycler). Landau et al. 2025 Table 3 ends with Umbriel,
