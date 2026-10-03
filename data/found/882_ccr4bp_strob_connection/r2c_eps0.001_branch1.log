@@ -1,0 +1,6 @@
+[2026-10-04T00:39:47 +    0.0s] stage r2c start
+[2026-10-04T00:39:49 +    1.9s] circle N=201 rho=3.110934; lam_u=1.992415 lam_s=0.501903
+[2026-10-04T00:43:44 +  236.3s] frac 0.001: circle 1.0e-13 lam_u 1.99231; connection 1.05e-06 (60 it) sv [1.980e+00 2.834e-01 3.085e-03 2.260e-05] theta_u 3.76854 s_u 1.70216
+[2026-10-04T00:43:44 +  236.3s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch1.json
+[2026-10-04T00:43:44 +  236.3s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch1.json
+[2026-10-04T00:43:44 +  236.3s] stage r2c done
