@@ -1,0 +1,54 @@
+[2026-10-04T00:26:22 +    0.0s] stage r2c start
+[2026-10-04T00:26:24 +    1.9s] circle N=201 rho=3.110934; lam_u=1.992415 lam_s=0.501903
+[2026-10-04T00:27:01 +   38.4s] frac 1e-05: circle 2.9e-12 lam_u 1.99241; connection 5.63e-13 (12 it) sv [1.788e+00 8.959e-01 1.160e-03 1.205e-06] theta_u 4.78734 s_u 2.14647
+[2026-10-04T00:27:43 +   81.3s]   verify: genuine=True junction=2.85e-12 max_exc=4.835e-01 final=7.829e-06 dop853-vs-radau=1.01e-08 min dist (planet, moon, perturber)=[1.089  0.0902 0.2423] jacobi drift=3.41e-08
+      period   0: distance to circle 8.5578e-04
+      period   1: distance to circle 3.6876e-03
+      period   2: distance to circle 3.9987e-03
+      period   3: distance to circle 1.3767e-02
+      period   4: distance to circle 1.8192e-02
+      period   5: distance to circle 4.8657e-02
+      period   6: distance to circle 7.5430e-02
+      period   7: distance to circle 1.2333e-01
+      period   8: distance to circle 2.0042e-01
+      period   9: distance to circle 2.2269e-01
+      period  10: distance to circle 3.5426e-01
+      period  11: distance to circle 3.1995e-01
+      period  12: distance to circle 4.6676e-01
+      period  13: distance to circle 4.0503e-01
+      period  14: distance to circle 4.8347e-01
+      period  15: distance to circle 3.5577e-01
+      period  16: distance to circle 3.9533e-01
+      period  17: distance to circle 2.6008e-01
+      period  18: distance to circle 2.4450e-01
+      period  19: distance to circle 1.5768e-01
+      period  20: distance to circle 9.5856e-02
+      period  21: distance to circle 6.8067e-02
+      period  22: distance to circle 2.1377e-02
+      period  23: distance to circle 1.9541e-02
+      period  24: distance to circle 4.5351e-03
+      period  25: distance to circle 5.2803e-03
+      period  26: distance to circle 9.2976e-04
+      period  27: distance to circle 1.4126e-03
+      period  28: distance to circle 1.8445e-04
+      period  29: distance to circle 3.7373e-04
+      period  30: distance to circle 3.6448e-05
+      period  31: distance to circle 9.7425e-05
+      period  32: distance to circle 7.8294e-06
+[2026-10-04T00:27:43 +   81.3s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:28:06 +  104.4s] frac 0.0001: circle 1.1e-13 lam_u 1.99240; connection 4.00e-12 (8 it) sv [1.788e+00 8.967e-01 1.167e-03 1.202e-05] theta_u 4.78862 s_u 2.14763
+[2026-10-04T00:28:06 +  104.4s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:28:32 +  130.1s] frac 0.001: circle 1.2e-13 lam_u 1.99231; connection 3.41e-12 (10 it) sv [1.789e+00 8.934e-01 1.302e-03 1.070e-04] theta_u 4.78877 s_u 2.15315
+[2026-10-04T00:28:32 +  130.1s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:28:49 +  146.4s] frac 0.003: circle 1.6e-13 lam_u 1.99209; connection 1.21e-12 (6 it) sv [1.793e+00 8.859e-01 1.871e-03 2.200e-04] theta_u 4.78882 s_u 2.16532
+[2026-10-04T00:28:49 +  146.4s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:29:05 +  162.8s] frac 0.01: circle 2.2e-11 lam_u 1.99134; connection 4.00e-12 (6 it) sv [1.806e+00 8.602e-01 4.613e-03 2.803e-04] theta_u 4.78897 s_u 2.20814
+[2026-10-04T00:29:05 +  162.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:29:21 +  179.3s] frac 0.03: circle 1.7e-13 lam_u 1.98917; connection 8.19e-12 (6 it) sv [1.836e+00 7.928e-01 1.253e-02 2.515e-04] theta_u 4.78943 s_u 2.33253
+[2026-10-04T00:29:21 +  179.3s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:29:43 +  200.6s] frac 0.1: circle 8.2e-11 lam_u 1.98142; connection 9.39e-12 (8 it) sv [1.896e+00 6.345e-01 3.107e-02 1.040e-04] theta_u 4.79146 s_u 2.78304
+[2026-10-04T00:29:43 +  200.6s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:31:00 +  277.7s] frac 0.2: circle 9.0e-14 lam_u 1.97000; connection 7.13e-07 (30 it) sv [1.934e+00 5.097e-01 3.956e-02 1.478e-05] theta_u 4.79819 s_u 3.23278
+[2026-10-04T00:31:00 +  277.7s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:31:00 +  277.7s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch3.json
+[2026-10-04T00:31:00 +  277.7s] stage r2c done

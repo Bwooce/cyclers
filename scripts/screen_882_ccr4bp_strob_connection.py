@@ -595,7 +595,7 @@ def stage_r2c(args: argparse.Namespace) -> None:
             steps.append({"frac": frac, "circle": circle_summary(circ), "failed": "circle"})
             break
         bun = bundles2(circ, ref_u=cur_b.v_u, ref_s=cur_b.v_s)
-        con = sc.refine_connection(circ, bun, circ, bun, cur, eps=eps, max_iter=30)
+        con = sc.refine_connection(circ, bun, circ, bun, cur, eps=eps, max_iter=args.max_iter)
         e: dict[str, Any] = {
             "frac": frac, "mu_gan": mg, "circle": circle_summary(circ),
             "bundles": bundle_summary(bun), "connection": connection_summary(con),
@@ -797,6 +797,7 @@ def main() -> None:
     ap.add_argument("--n-family", type=int, default=24)
     ap.add_argument("--branch", type=int, default=0)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--max-iter", type=int, default=30)
     ap.add_argument("--extra", type=int, default=0, help="extra verification periods")
     ap.add_argument("--verify-at", type=float, nargs="*", default=[])
     ap.add_argument("--verify-all", action="store_true")
