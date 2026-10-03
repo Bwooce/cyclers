@@ -43,8 +43,8 @@ verification numbers come from single-trajectory integrations.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from typing import Literal
+from dataclasses import dataclass, field, replace
+from typing import Any, Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -52,7 +52,6 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import minimize_scalar
 from scipy.spatial import cKDTree
 
-import cyclerfinder.core.ccr4bp as ccr4bp
 from cyclerfinder.core.ccr4bp import CCR4BPSystem
 
 FloatArray = NDArray[np.float64]
@@ -342,7 +341,8 @@ def strob_map(
 def _wavenumbers(n_nodes: int) -> NDArray[np.int64]:
     if n_nodes % 2 != 1:
         raise ValueError(f"node count must be odd, got {n_nodes}")
-    return np.rint(np.fft.fftfreq(n_nodes, 1.0 / n_nodes)).astype(np.int64)
+    k: NDArray[np.int64] = np.rint(np.fft.fftfreq(n_nodes, 1.0 / n_nodes)).astype(np.int64)
+    return k
 
 
 def node_angles(n_nodes: int) -> FloatArray:
@@ -393,7 +393,7 @@ def fourier_tail(nodes: FloatArray) -> float:
     largest non-constant amplitude (a resolution measure: small = resolved)."""
     a = fourier_amplitudes(nodes)
     kk = a.size - 1
-    k_tail = max(1, int(math.ceil(0.75 * kk)))
+    k_tail = max(1, math.ceil(0.75 * kk))
     return float(a[k_tail:].max() / max(a[1:].max(), 1e-300))
 
 
@@ -639,6 +639,43 @@ def seed_circle_from_periodic_orbit(
     return InvariantCircle(system=system, t0=t0, rho=rho, nodes=nodes, notes="periodic_orbit_seed")
 
 
+def continue_circle_in_mass(
+    circle: InvariantCircle,
+    target_mu_gan: float,
+    fractions: tuple[float, ...] = (0.03, 0.1, 0.25, 0.5, 0.75, 1.0),
+    *,
+    tol: float = 1e-10,
+    max_iter: int = 12,
+    verbose: bool = False,
+) -> list[InvariantCircle]:
+    """Natural-parameter continuation of a circle in the perturber mass at fixed ``rho``.
+
+    Steps ``mu_gan`` through ``fractions * target_mu_gan``, warm-starting each
+    correction from the previous circle and anchoring its phase condition to
+    it. Stops at the first non-converged step (which is returned as the last
+    element, so the caller sees the failure).
+    """
+    out: list[InvariantCircle] = []
+    cur = circle
+    for frac in fractions:
+        sys_k = replace(circle.system, mu_gan=float(frac * target_mu_gan))
+        nxt = correct_invariant_circle(
+            sys_k,
+            cur.nodes,
+            cur.rho,
+            t0=cur.t0,
+            tol=tol,
+            max_iter=max_iter,
+            phase_ref=cur.nodes,
+            verbose=verbose,
+        )
+        out.append(nxt)
+        if not nxt.converged:
+            break
+        cur = nxt
+    return out
+
+
 def seed_circle_from_pseudospectral(
     torus: object, n_nodes: int, theta1: float = 0.0
 ) -> InvariantCircle:
@@ -741,7 +778,9 @@ class HyperbolicBundles:
     residual_s: float
     tail_u: float
     tail_s: float
-    spectrum: NDArray[np.complex128] = field(repr=False, default_factory=lambda: np.zeros(0))
+    spectrum: NDArray[np.complex128] = field(
+        repr=False, default_factory=lambda: np.zeros(0, dtype=np.complex128)
+    )
 
     def vector(self, branch: Branch, theta: float | FloatArray, deriv: int = 0) -> FloatArray:
         v = self.v_u if branch == "unstable" else self.v_s
@@ -765,13 +804,13 @@ def _pick_real_eigen(
     if cand.size == 0:
         raise ValueError("no real eigenvalue off the unit circle: the circle is not hyperbolic")
     best: tuple[float, float, int] | None = None
-    for i in cand:
-        v = vecs[:, i]
+    for ic in cand:
+        v = vecs[:, ic]
         # rotate the global complex phase out, take the real eigenfunction
         j = int(np.argmax(np.abs(v)))
         vr = np.real(v * np.exp(-1j * np.angle(v[j]))).reshape(n_nodes, 4)
         tail = fourier_tail(vr)
-        key = (tail, -mod[i] if want_unstable else mod[i], int(i))
+        key = (tail, float(-mod[ic] if want_unstable else mod[ic]), int(ic))
         if best is None or key[:2] < best[:2]:
             best = key
     assert best is not None
@@ -949,9 +988,9 @@ def manifold_cloud(
     lam = abs(bundles.lam_u) if branch == "unstable" else 1.0 / abs(bundles.lam_s)
     th = _TWO_PI * np.arange(n_theta) / n_theta
     sv = lam ** (np.arange(n_s) / n_s)
-    tt, ss = np.meshgrid(th, sv, indexing="ij")
-    tt = tt.reshape(-1)
-    ss = ss.reshape(-1)
+    tgrid, sgrid = np.meshgrid(th, sv, indexing="ij")
+    tt: FloatArray = tgrid.reshape(-1)
+    ss: FloatArray = sgrid.reshape(-1)
     v = bundles.vector(branch, tt)
     x0 = circle.state(tt) + sign * eps * ss[:, None] * v
     nn = n_max if branch == "unstable" else -n_max
@@ -1044,7 +1083,9 @@ def coarse_intersections(
         if iu.size == 0 or is_.size == 0:
             continue
         tree = cKDTree(ps[is_])
-        d, j = tree.query(pu[iu])
+        dq, jq = tree.query(pu[iu])
+        d = np.asarray(dq, dtype=np.float64)
+        j = np.asarray(jq, dtype=np.int64)
         order = np.argsort(d)[:n_best]
         for o in order:
             a = int(iu[o])
@@ -1114,8 +1155,9 @@ def refine_connection(
     sv = np.full(4, np.nan)
     g = np.full(4, np.nan)
     xu = np.full(4, np.nan)
-    it = 0
+    n_done = 0
     for it in range(1, max_iter + 1):
+        n_done = it
         xu, ju = manifold_point(
             circle_u,
             bundles_u,
@@ -1169,7 +1211,7 @@ def refine_connection(
         singular_values=sv,
         junction_state=xu,
         converged=bool(hist and hist[-1] <= tol),
-        n_iter=it,
+        n_iter=n_done,
         residual_history=tuple(hist),
     )
 
@@ -1226,7 +1268,7 @@ def _integrate_single(
     x0: FloatArray,
     t_start: float,
     n_periods: int,
-    method: str,
+    method: Literal["DOP853", "Radau"],
     rtol: float,
     atol: float,
 ) -> tuple[FloatArray, FloatArray, float, FloatArray]:
@@ -1242,14 +1284,16 @@ def _integrate_single(
     def jac(t: float, y: FloatArray) -> FloatArray:
         return planar_jacobian(t, y, system)
 
+    solver: Any = solve_ivp
+
     y0 = np.asarray(x0, dtype=np.float64).copy()
     span = (t_start, float(t_eval[-1]))
     if method == "Radau":
-        sol = solve_ivp(
+        sol = solver(
             rhs, span, y0, method="Radau", rtol=rtol, atol=atol, dense_output=True, jac=jac
         )
     else:
-        sol = solve_ivp(rhs, span, y0, method=method, rtol=rtol, atol=atol, dense_output=True)
+        sol = solver(rhs, span, y0, method=method, rtol=rtol, atol=atol, dense_output=True)
     if not sol.success:
         raise RuntimeError(f"{method} integration failed: {sol.message}")
     per = np.asarray(sol.sol(t_eval)).T
@@ -1262,8 +1306,8 @@ def _integrate_single(
     dense_t = np.concatenate([dense_t, tt[-1:]])
     ys = np.asarray(sol.sol(dense_t))
     d = body_distances(system, dense_t, ys[0], ys[1]).min(axis=1)
-    jac = _jacobi4(ys.T, system.mu)
-    return per, d, float(np.max(np.abs(jac - jac[0]))), ys.T
+    cj = _jacobi4(ys.T, system.mu)
+    return per, d, float(np.max(np.abs(cj - cj[0]))), ys.T
 
 
 def verify_trajectory(
