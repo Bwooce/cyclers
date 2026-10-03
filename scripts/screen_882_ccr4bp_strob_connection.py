@@ -676,7 +676,7 @@ def stage_r3b(args: argparse.Namespace) -> None:
     radii = uut_radii()
     sys0 = dataclasses.replace(uut, mu_gan=0.0)
     rec: dict[str, Any] = {"orbits": []}
-    tag = "" if not args.orbit else "_" + args.orbit.replace(",", "_")
+    tag = ("" if not args.orbit else "_" + args.orbit.replace(",", "_")) + args.tag
     for p, q in ((2, 3), (3, 4)):
         for e in args.ecc:
             for apse in ("peri", "apo"):
@@ -724,7 +724,10 @@ def stage_r3b(args: argparse.Namespace) -> None:
                 log(f"   bundles: {bundle_summary(b)}")
                 save("r3b" + tag, rec)
                 if args.homoclinic and lam > 1.5:
-                    entry["homoclinic"] = _homoclinic_search(last, b, radii, args)
+                    entry["homoclinic"] = []
+                    _homoclinic_search(
+                        last, b, radii, args, entry["homoclinic"], lambda: save("r3b" + tag, rec)
+                    )
                     save("r3b" + tag, rec)
     save("r3b" + tag, rec)
 
@@ -734,6 +737,8 @@ def _homoclinic_search(
     b: sc.HyperbolicBundles,
     radii: sc.CollisionRadii,
     args: argparse.Namespace,
+    out: list[dict[str, Any]],
+    checkpoint: Any,
 ) -> list[dict[str, Any]]:
     eps = args.eps
     clouds = {}
@@ -764,7 +769,6 @@ def _homoclinic_search(
                 )
             )
     cands.sort(key=lambda x: x.distance)
-    out = []
     verified = 0
     for cand in cands[: args.n_refine]:
         con = sc.refine_connection(c, b, c, b, cand, eps=eps)
@@ -782,6 +786,7 @@ def _homoclinic_search(
             e["verification"] = verification_summary(v)
             verified += 1
         out.append(e)
+        checkpoint()
     return out
 
 
@@ -803,6 +808,7 @@ def main() -> None:
     ap.add_argument("--n-family", type=int, default=24)
     ap.add_argument("--branch", type=int, default=0)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--tag", default="", help="suffix for r3b output names")
     ap.add_argument("--orbit", default="", help="r3b filter 'p,q,e,apse', e.g. '3,4,0.1,peri'")
     ap.add_argument("--max-iter", type=int, default=30)
     ap.add_argument("--tol", type=float, default=1e-11, help="connection residual tolerance")
