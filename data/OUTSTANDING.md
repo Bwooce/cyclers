@@ -432,6 +432,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `b467f20`); its intro wording was adjusted to match. **Verification on amdnuc is now
   single-process only:** the machine hard-reset twice (17:00 and ~17:27) at the moment a parallel
   pytest run started, so the full suite for this tranche is CI's (the self-hosted runner).
+  **PROGRESS 2026-10-03 (tranche 4, registry amendments):** (c) DONE — the `#600` stamp now carries
+  a `reverification` entry cross-referencing `#663` (an exact closure exists next to the 0.0531
+  km/s near-miss, at tof 17.689/2.792/3.002 d, residual ~5e-8 km/s, and fails the bend gate at
+  ~0.83 deg; `#663`'s interval certificate was not obtained). (d) DONE — the three Uranian `#465`
+  powered stamps are marked band-conditional (`vinf_seeds_probed_kms` = 4-15 km/s only, against
+  catalogued Uranian rows at 0.89-2.16 km/s) with a `reopen_condition`; the Neptune one records
+  the band and notes that `#554`'s retrograde-corrected V-infinity lies inside it. **STILL OPEN:**
+  the ~10 negative stamps; the VEM invalidation record (no registry entry mentions Venus at all,
+  so this is a new stamp, not an amendment); G1 is already registered as `#872`, which only needs
+  confirming against `#858`.
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
