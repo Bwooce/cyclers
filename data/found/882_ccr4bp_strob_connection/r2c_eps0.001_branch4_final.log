@@ -1,0 +1,41 @@
+[2026-10-04T00:48:05 +    0.0s] stage r2c start
+[2026-10-04T00:48:07 +    1.9s] circle N=201 rho=3.110934; lam_u=1.992415 lam_s=0.501903
+[2026-10-04T00:48:34 +   29.2s] resumed after frac 0.85; remaining [1.0]
+[2026-10-04T00:50:11 +  126.4s] frac 1: circle 1.5e-13 lam_u 1.86655; connection 1.34e-11 (26 it) sv [1.683e+00 1.079e+00 5.872e-02 1.716e-04] theta_u 5.29965 s_u 2.10094
+[2026-10-04T00:51:18 +  192.8s]   verify: genuine=True junction=1.24e-10 max_exc=2.429e-01 final=1.604e-05 dop853-vs-radau=9.03e-09 min dist (planet, moon, perturber)=[1.0862 0.0864 0.4468] jacobi drift=1.02e-03
+      period   0: distance to circle 3.0347e-04
+      period   1: distance to circle 2.3852e-03
+      period   2: distance to circle 1.0398e-03
+      period   3: distance to circle 1.0524e-02
+      period   4: distance to circle 3.6129e-03
+      period   5: distance to circle 4.6180e-02
+      period   6: distance to circle 1.3642e-02
+      period   7: distance to circle 1.3245e-01
+      period   8: distance to circle 4.3290e-02
+      period   9: distance to circle 2.0454e-01
+      period  10: distance to circle 9.9153e-02
+      period  11: distance to circle 2.4293e-01
+      period  12: distance to circle 1.6757e-01
+      period  13: distance to circle 2.0994e-01
+      period  14: distance to circle 2.2442e-01
+      period  15: distance to circle 1.4516e-01
+      period  16: distance to circle 2.3532e-01
+      period  17: distance to circle 7.7659e-02
+      period  18: distance to circle 1.7937e-01
+      period  19: distance to circle 3.0119e-02
+      period  20: distance to circle 9.1150e-02
+      period  21: distance to circle 1.0735e-02
+      period  22: distance to circle 2.1942e-02
+      period  23: distance to circle 3.1723e-03
+      period  24: distance to circle 4.9042e-03
+      period  25: distance to circle 9.2210e-04
+      period  26: distance to circle 1.1352e-03
+      period  27: distance to circle 2.6423e-04
+      period  28: distance to circle 2.6709e-04
+      period  29: distance to circle 7.6098e-05
+      period  30: distance to circle 6.3678e-05
+      period  31: distance to circle 2.2698e-05
+      period  32: distance to circle 1.6041e-05
+[2026-10-04T00:51:18 +  192.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch4.json
+[2026-10-04T00:51:18 +  192.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r2c_eps0.001_branch4.json
+[2026-10-04T00:51:18 +  192.8s] stage r2c done
