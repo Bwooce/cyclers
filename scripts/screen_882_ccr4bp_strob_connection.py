@@ -457,8 +457,39 @@ def _load_r1(eps: float) -> dict[str, Any]:
     return json.loads((OUT_DIR / f"r1_eps{eps:g}.json").read_text())
 
 
+def _flow(system: ccr4bp.CCR4BPSystem, x: np.ndarray, t0: float, dt: float) -> np.ndarray:
+    from scipy.integrate import solve_ivp
+
+    sol = solve_ivp(
+        sc.planar_rhs_batch, (t0, t0 + dt), np.array(x, dtype=float), args=(system, 1, False),
+        method="DOP853", rtol=1e-13, atol=1e-13,
+    )  # fmt: skip
+    return np.asarray(sol.y[:, -1])
+
+
+def _shifted_seed(
+    c0: sc.InvariantCircle, b0: sc.HyperbolicBundles, con: dict[str, Any], tau: float, period: float
+) -> sc.ConnectionCandidate:
+    """Time-shift an unperturbed connection by tau along the (autonomous) flow and
+    re-express the shifted departure points in (theta, s) coordinates."""
+    out = {}
+    for side, branch in (("u", "unstable"), ("s", "stable")):
+        th, sv, sg = con[f"theta_{side}"], con[f"s_{side}"], con[f"sign_{side}"]
+        x, _ = sc.manifold_departure(c0, b0, branch, th, sv, eps=con["eps"], sign=sg)
+        xs = _flow(c0.system, x, 0.0, tau)
+        th2 = th + 2 * math.pi * tau / period
+        v = b0.vector(branch, th2)
+        coef = float(np.dot(xs - c0.state(th2), v) / np.dot(v, v))
+        out[side] = (th2 % (2 * math.pi), abs(coef) / con["eps"])
+    return sc.ConnectionCandidate(
+        theta_u=out["u"][0], s_u=out["u"][1], theta_s=out["s"][0], s_s=out["s"][1],
+        n_u=con["n_u"], n_s=con["n_s"], sign_u=con["sign_u"], sign_s=con["sign_s"], distance=0.0,
+    )  # fmt: skip
+
+
 def stage_r2(args: argparse.Namespace) -> None:
-    """Continue R1's verified connection in mu_gan."""
+    """Unperturbed connection family + Jacobi-mismatch (Melnikov-type) scan at the
+    first perturbed mass step; writes the branch seeds for stage r2c."""
     eps = args.eps
     r1 = _load_r1(eps)
     good = [r for r in r1["results"] if r.get("verification", {}).get("genuine")]
@@ -467,34 +498,24 @@ def stage_r2(args: argparse.Namespace) -> None:
         return
     base = good[0]["connection"]
     phys = ccr4bp.jupiter_europa_ganymede_default()
-    c0, b0, _, _ = _r1_setup(eps)
-    # Unperturbed family: time-shifted copies of the homoclinic, by seeding the
-    # unperturbed refine at shifted theta (rank-deficient Newton slides onto the curve).
-    shifts = np.linspace(0.0, 2 * math.pi, args.n_family, endpoint=False)
+    c0, b0, _, period = _r1_setup(eps)
+    taus = np.linspace(0.0, period, args.n_family, endpoint=False)
     family: list[sc.Connection] = []
-    for dth in shifts:
-        cand = sc.ConnectionCandidate(
-            theta_u=base["theta_u"] + dth,
-            s_u=base["s_u"],
-            theta_s=base["theta_s"] + dth,
-            s_s=base["s_s"],
-            n_u=base["n_u"],
-            n_s=base["n_s"],
-            sign_u=base["sign_u"],
-            sign_s=base["sign_s"],
-            distance=0.0,
-        )
-        con = sc.refine_connection(c0, b0, c0, b0, cand, eps=eps)
+    for tau in taus:
+        seed = _shifted_seed(c0, b0, base, float(tau), period)
+        con = sc.refine_connection(c0, b0, c0, b0, seed, eps=eps, max_iter=15)
         family.append(con)
+        log(
+            f"family tau={tau:.4f}: theta_u {con.theta_u:.5f} s_u {con.s_u:.4f} "
+            f"residual {con.residual:.2e}"
+        )
     ok = [f for f in family if f.converged]
     log(f"unperturbed family: {len(ok)}/{len(family)} members converged")
-    fracs = [float(f) for f in args.fractions]
-    # first perturbed step: Jacobi-mismatch scan along the family to bracket Melnikov zeros
-    sys1 = dataclasses.replace(phys, mu_gan=fracs[0] * phys.mu_gan)
-    steps = sc.continue_circle_in_mass(c0, sys1.mu_gan, fractions=(1.0,))
-    c1 = steps[-1]
+    frac0 = float(args.fractions[0])
+    st = sc.continue_circle_in_mass(c0, frac0 * phys.mu_gan, fractions=(1.0,))
+    c1 = st[-1]
     b1 = sc.hyperbolic_bundles(c1, ref_u=b0.v_u, ref_s=b0.v_s)
-    log(f"mu_gan={sys1.mu_gan:.3e}: circle {c1.residual:.2e}, lam_u {b1.lam_u:.6f}")
+    log(f"mu_gan={c1.system.mu_gan:.3e}: circle {c1.residual:.2e}, lam_u {b1.lam_u:.6f}")
     scan = []
     for f in ok:
         xu, _ = sc.manifold_point(
@@ -502,77 +523,74 @@ def stage_r2(args: argparse.Namespace) -> None:
         )
         xs, _ = sc.manifold_point(c1, b1, "stable", f.theta_s, f.s_s, f.n_s, eps=eps, sign=f.sign_s)
         dc = float(sc._jacobi4(xu, phys.mu) - sc._jacobi4(xs, phys.mu))
-        scan.append((f, dc, float(np.linalg.norm(xu - xs))))
-    for f, dc, gap in scan:
-        print(
-            f"      theta_u {f.theta_u:.4f} s_u {f.s_u:.4f}: dC {dc:+.3e}  gap {gap:.3e}",
-            flush=True,
+        scan.append(
+            {"conn": connection_summary(f), "dC": dc, "gap": float(np.linalg.norm(xu - xs))}
         )
+        log(f"   theta_u {f.theta_u:.4f} s_u {f.s_u:.4f}: dC {dc:+.3e} gap {scan[-1]['gap']:.3e}")
     seeds = []
     for i in range(len(scan)):
         a, b = scan[i], scan[(i + 1) % len(scan)]
-        if a[1] * b[1] < 0:
-            seeds.append(a[0] if abs(a[1]) < abs(b[1]) else b[0])
+        if a["dC"] * b["dC"] < 0:
+            seeds.append(a["conn"] if abs(a["dC"]) < abs(b["dC"]) else b["conn"])
     log(f"{len(seeds)} sign changes of the Jacobi mismatch along the family")
-    rec: dict[str, Any] = {
-        "eps": eps,
-        "fractions": fracs,
-        "family_size": len(ok),
-        "scan": [{"theta_u": f.theta_u, "s_u": f.s_u, "dC": dc, "gap": g} for f, dc, g in scan],
-        "branches": [],
-    }
-    for bi, seed in enumerate(seeds):
-        branch: list[dict[str, Any]] = []
-        cur_conn = seed
-        cur_circle, cur_b = c0, b0
-        for frac in fracs:
-            mg = frac * phys.mu_gan
-            st = sc.continue_circle_in_mass(cur_circle, mg, fractions=(1.0,))
-            circ = st[-1]
-            if not circ.converged:
-                log(f"branch {bi}: circle failed at mu_gan frac {frac}: {circ.residual_history}")
-                branch.append({"frac": frac, "circle": circle_summary(circ), "failed": "circle"})
-                break
-            bun = sc.hyperbolic_bundles(circ, ref_u=cur_b.v_u, ref_s=cur_b.v_s)
-            cand = sc.ConnectionCandidate(
-                theta_u=cur_conn.theta_u,
-                s_u=cur_conn.s_u,
-                theta_s=cur_conn.theta_s,
-                s_s=cur_conn.s_s,
-                n_u=cur_conn.n_u,
-                n_s=cur_conn.n_s,
-                sign_u=cur_conn.sign_u,
-                sign_s=cur_conn.sign_s,
-                distance=0.0,
-            )
-            con = sc.refine_connection(circ, bun, circ, bun, cand, eps=eps)
-            e: dict[str, Any] = {
-                "frac": frac,
-                "mu_gan": mg,
-                "circle": circle_summary(circ),
-                "bundles": bundle_summary(bun),
-                "connection": connection_summary(con),
-            }
-            log(
-                f"branch {bi} frac {frac:g}: circle {circ.residual:.1e} lam_u {bun.lam_u:.5f}; "
-                f"connection residual "
-                f"{con.residual:.2e} sv {np.array2string(con.singular_values, precision=3)} "
-                f"theta_u {con.theta_u:.5f}"
-            )
-            if not con.converged:
-                e["failed"] = "connection"
-                branch.append(e)
-                break
-            if frac in (fracs[0], fracs[-1]) or args.verify_all:
-                v = sc.verify_connection(circ, bun, circ, bun, con)
-                print_verification(v)
-                e["verification"] = verification_summary(v)
-            branch.append(e)
-            cur_conn, cur_circle, cur_b = con, circ, bun
-            rec["branches"] = [*rec["branches"][:bi], branch]
-            save(f"r2_eps{eps:g}", rec)
-        rec["branches"] = [*rec["branches"][:bi], branch]
-        save(f"r2_eps{eps:g}", rec)
+    save(
+        f"r2_scan_eps{eps:g}",
+        {"eps": eps, "frac0": frac0, "mu_gan0": c1.system.mu_gan, "family_size": len(ok),
+         "scan": scan, "seeds": seeds},
+    )  # fmt: skip
+
+
+def stage_r2c(args: argparse.Namespace) -> None:
+    """Continue one seed (``--branch``) from stage r2 through ``--fractions``."""
+    eps = args.eps
+    scan = json.loads((OUT_DIR / f"r2_scan_eps{eps:g}.json").read_text())
+    seed = scan["seeds"][args.branch]
+    phys = ccr4bp.jupiter_europa_ganymede_default()
+    c0, b0, _, _ = _r1_setup(eps)
+    cur = sc.ConnectionCandidate(
+        theta_u=seed["theta_u"], s_u=seed["s_u"], theta_s=seed["theta_s"], s_s=seed["s_s"],
+        n_u=seed["n_u"], n_s=seed["n_s"], sign_u=seed["sign_u"], sign_s=seed["sign_s"],
+        distance=0.0,
+    )  # fmt: skip
+    cur_circle, cur_b = c0, b0
+    steps: list[dict[str, Any]] = []
+    name = f"r2c_eps{eps:g}_branch{args.branch}"
+    for frac in [float(f) for f in args.fractions]:
+        mg = frac * phys.mu_gan
+        circ = sc.continue_circle_in_mass(cur_circle, mg, fractions=(1.0,))[-1]
+        if not circ.converged:
+            log(f"frac {frac:g}: circle failed {circ.residual_history}")
+            steps.append({"frac": frac, "circle": circle_summary(circ), "failed": "circle"})
+            break
+        bun = sc.hyperbolic_bundles(circ, ref_u=cur_b.v_u, ref_s=cur_b.v_s)
+        con = sc.refine_connection(circ, bun, circ, bun, cur, eps=eps, max_iter=30)
+        e: dict[str, Any] = {
+            "frac": frac, "mu_gan": mg, "circle": circle_summary(circ),
+            "bundles": bundle_summary(bun), "connection": connection_summary(con),
+        }  # fmt: skip
+        log(
+            f"frac {frac:g}: circle {circ.residual:.1e} lam_u {bun.lam_u:.5f}; connection "
+            f"{con.residual:.2e} ({con.n_iter} it) "
+            f"sv {np.array2string(con.singular_values, precision=3)} "
+            f"theta_u {con.theta_u:.5f} s_u {con.s_u:.5f}"
+        )
+        if not con.converged:
+            e["failed"] = "connection"
+            steps.append(e)
+            save(name, {"seed": seed, "steps": steps})
+            break
+        if args.verify_all or frac in (float(args.fractions[0]), float(args.fractions[-1])):
+            v = sc.verify_connection(circ, bun, circ, bun, con)
+            print_verification(v)
+            e["verification"] = verification_summary(v)
+        steps.append(e)
+        save(name, {"seed": seed, "steps": steps})
+        cur = sc.ConnectionCandidate(
+            theta_u=con.theta_u, s_u=con.s_u, theta_s=con.theta_s, s_s=con.s_s, n_u=con.n_u,
+            n_s=con.n_s, sign_u=con.sign_u, sign_s=con.sign_s, distance=0.0,
+        )  # fmt: skip
+        cur_circle, cur_b = circ, bun
+    save(name, {"seed": seed, "steps": steps})
 
 
 def _r3_system() -> ccr4bp.CCR4BPSystem:
@@ -729,7 +747,9 @@ def main() -> None:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    ap.add_argument("--stage", required=True, choices=["gates", "g5", "r1", "r2", "r3a", "r3b"])
+    ap.add_argument(
+        "--stage", required=True, choices=["gates", "g5", "r1", "r2", "r2c", "r3a", "r3b"]
+    )
     ap.add_argument("--eps", type=float, default=1e-4)
     ap.add_argument("--n-theta", type=int, default=96)
     ap.add_argument("--n-s", type=int, default=6)
@@ -739,6 +759,7 @@ def main() -> None:
     ap.add_argument("--n-verify", type=int, default=2)
     ap.add_argument("--min-exc", type=float, default=0.05)
     ap.add_argument("--n-family", type=int, default=24)
+    ap.add_argument("--branch", type=int, default=0)
     ap.add_argument("--verify-all", action="store_true")
     ap.add_argument("--homoclinic", action="store_true")
     ap.add_argument("--nodes", type=int, nargs="+", default=[201])
@@ -753,6 +774,7 @@ def main() -> None:
         "g5": stage_g5,
         "r1": stage_r1,
         "r2": stage_r2,
+        "r2c": stage_r2c,
         "r3a": stage_r3a,
         "r3b": stage_r3b,
     }[args.stage](args)
