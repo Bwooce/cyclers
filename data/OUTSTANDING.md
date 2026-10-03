@@ -660,6 +660,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   window. Overlaps `#870` (one-working-node campaign at Saturn and Uranus): decide at dispatch
   whether this is a sub-item of it. `#864` sec. 8 (no more `#563`-class sweeps) applies: this is
   a targeted construction, not a sweep.
+  **DISPATCHED 2026-10-04 (owner: "can we dispatch all four in parallel?"), four agents, new
+  files only, pathspec commits, no push:** `#884` in full (Opus); `#885` in full (Opus); `#886`
+  PART ONE ONLY, the Titan-Rhea torus-stage check against Kumar IAC-25-C1.9.6 using the `#882`
+  module read-only (Opus; manifolds and connections stay gated on `#882`); `#887` stage one, a
+  go/no-go study of what the published triple-cycler methods require and whether any Uranian
+  triple meets it (Sonnet; no code). Results notes will be dated 2026-10-04 under `docs/notes/`.
   **Order note for `#884`-`#887`:** the numbers follow the estimated probability of a result,
   not value; `#886` is the most valuable and the least certain. None displaces `#868`
   (Neptune-Triton rows), which is unblocked now that the Miceli & Bosanac papers and data are
