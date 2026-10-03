@@ -125,3 +125,15 @@ stamped method-invalid-do-not-certify. The caveats above are recorded so the dec
 reversible by a future worker with a genuine C=3.15 L2 near-bifurcation torus, not presented as a
 proof of non-existence.
 
+## Addendum 2026-10-03 (`#883`): the published energy was a rounded value
+
+An internet search for the paper's data (none exists: no data or code release, no thesis, no
+erratum) found the conference version, Owen & Baresi, AAS 23-110 (2023). It prints "The energy
+level of these orbits is given by 3.1460717" for the Earth-Moon quasi-halo and Lissajous
+connections. The journal's "C = 3.15", on which premise correction 2 above rests, is that number
+rounded. Section "Two premise corrections" found that the L1 halo family is born at C about 3.146
+and concluded that the journal's energy sits at or above the L1 quasi-halo regime and is
+impractical; the conference value says the authors worked AT that bifurcation, with near-planar
+tori. The positive control in this postmortem was therefore run at a different energy
+(C in [3.05, 3.087]) from the published demonstration. The shelving stands until `#883` runs one
+control at C = 3.1460717; it is no longer correct to say the pipeline "had a fair shot".

@@ -582,6 +582,24 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#883` — registered 2026-10-03 (found by the owner-requested internet search for the Owen &
+  Baresi data; NOT dispatched): **the shelved linking-number pipeline (`#522` family, shelved by
+  `#548`, 2026-07-10) was tested at a ROUNDED energy.** No data or code release, thesis or
+  erratum exists for Owen & Baresi 2024 (search record in the corpus index entry), but the
+  conference version, AAS 23-110 (2023, now held), prints "The energy level of these orbits is
+  given by 3.1460717" for its Earth-Moon quasi-halo and Lissajous connections, where the journal
+  prints C = 3.15. The `#548` postmortem itself records that the Earth-Moon L1 halo family is
+  born from the planar Lyapunov family at C about 3.146: the published energy sits AT that
+  bifurcation, which is where the near-planar tori the journal's frequencies point to live, and
+  it is the regime `#548` called unreachable ("the literal C=3.15 precondition was
+  unsatisfiable") and replaced with C in [3.05, 3.087]. `#615`'s "no single Jacobi constant
+  reproduces both frequencies" was likewise not tested at this value. This is the
+  published-rounded-value trap again (see the C21 3.1294 case). **Scope:** one positive-control
+  attempt at C = 3.1460717 with tori seeded from the L1 and L2 halo and vertical-Lyapunov
+  bifurcations (quasi-halo and Lissajous), using the paper's section (x = 1 - mu), offset 1e-6
+  and scanning variable z; pre-register the kill criterion as `#548` did. Read the AAS 23-110
+  digest first (in progress). The `#548` shelving stands until that control is run; `#534`,
+  `#536` and `#546` remain method-invalid. Not a priority above `#882` and `#868`.
 - `#882` — registered 2026-10-03 (found by the adversarial review the owner asked for on the
   Umbriel torus row; NOT dispatched; **this is a correctness defect in a catalogued row and in
   the CCR4BP connection search, so it outranks new discovery work on that lane**). Note:
@@ -608,9 +626,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   constraint in force, and a check of whether `#694`'s Jupiter-Europa-Ganymede "positive
   control" passed only because the constraint was missing; (3) re-run Umbriel with a parent
   orbit that does not cross Titania's orbit; (4) a real-ephemeris check that flies both arcs;
-  (5) add a caveat to the four `#865` torus-connection stamps (`#695`, `#696`, `#703`, `#716`):
-  a true connection needs the state match AND the phase match, so no state match is still a
-  negative on its face, but confirm how each search measured closest approach; (6) fix the
+  (5) ~~caveat on the four torus-connection stamps~~ DONE 2026-10-03, and stronger than a
+  caveat: `#695`, `#696`, `#703` and `#716` are marked METHOD-INVALID in
+  `data/empty_regions.jsonl` (original text kept), because the searches explored slices that
+  generically contain no connection (see PROGRESS below); (6) fix the
   row's notes, which credit arXiv:2509.03655 with four-body content that is in AAS 24-288 (the
   ANCHOR was corrected 2026-10-03, commit `806db9d8`); (7) README wording for this row;
   (8) owner ruling on whether spec 16.4 (ii) "system" means the primary or the base moon (same
@@ -618,6 +637,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `806db9d8`, scope `halo`); (10) the six Uranian rows' `literature_check` blocks were run
   against 73 anchors and name the tour anchor by its old "Sims et al." title; re-run them when
   the rows are next touched (74 anchors now; no status change expected).
+  **PROGRESS 2026-10-03 (owner: "do 882"; coordinator's findings before the rebuild, all in the
+  note's section 6):** (a) EVERY stored result of the lane has the phase defect: `#694`, the
+  lane's "positive control", joins its arcs 316.8 degrees apart in Ganymede's phase, `#703`'s
+  closest candidate 286.5 degrees; `#694` was the same search judged by the same guards, never a
+  comparison with a published connection, so the lane never had a positive control. (b) The
+  departure offset (1e-6) was BELOW the tori's own error (1.1e-4 to 1.8e-4 for `#694`, `#695`,
+  `#701`; one Fourier harmonic in the forcing angle), so the "manifolds" follow the torus error;
+  the globalization module's docstring argues the opposite. (c) The dimension count there is
+  wrong: a 2-torus has three-dimensional manifolds in the extended phase space, which meet along
+  isolated trajectories; a fixed departure phase and offset leaves two-dimensional slices that
+  generically contain no connection. **Rebuild design (dispatched to a build agent, test-first,
+  new files only: `search/ccr4bp_strob_connection.py`, its tests, a staged script):** work in
+  the stroboscopic (one-forcing-period) map; the torus is an invariant circle corrected by a
+  GMOS scheme to about 1e-10; stable and unstable bundles from the linearised circle map;
+  manifolds parameterised by the circle angle and a fundamental domain of the offset; a
+  connection is a zero of a 4-vector in 4 unknowns at one forcing phase, so it is
+  phase-consistent by construction; a claimed connection must pass a SINGLE-TRAJECTORY test (one
+  integration from the departure point that leaves the torus and returns to it, two
+  integrators). Gates are identities (map inverse, symplecticity, unperturbed circle = sampled
+  periodic orbit, multiplier = Floquet multiplier to the power P/T, fundamental-domain
+  consistency) plus a regression test that a phase-inconsistent "connection" is rejected.
+  Positive control: the classical homoclinic of the unperturbed Jupiter-Europa 3:4 orbit
+  (Jacobi constant conserved along it), continued in Ganymede's mass to the physical value.
+  Then Umbriel-Titania: the 1:2 parent (expected: no smooth circle) and a parent that stays
+  inside Titania's orbit (2:3, 3:4). No published four-body connection with printed coordinates
+  has been located to compare against; that limitation stands.
 - `#881` — ✓ DONE 2026-10-03 (commit `469d219d`; follow-up (2) of `#880`, owner: "keep going"):
   **moon-system anchor scopes, the published Neptune-Triton families, and the Persephone
   citation.** Scoping the Neptune flyby anchor alone would have turned the gate there from "always

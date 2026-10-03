@@ -120,3 +120,37 @@ Each is marked with what the coordinator checked.
    so the absence of a state match is, on its face, still a valid negative; that argument has not
    been checked against how each search measured its closest approach, and the stamps should say
    so.
+
+## 6. Addendum, same day: the defect is in the whole lane, and it is deeper than the missing phase
+
+Further checks by the coordinator before starting the rebuild.
+
+- **Every stored result has the phase defect.** From the result files: `#694`
+  (Jupiter-Europa-Ganymede, the lane's "positive control") joins its arcs 316.8 degrees apart in
+  Ganymede's phase (`t_u + t_s` = 1.8799 periods); `#701` (Umbriel) 63.7 degrees; `#703`'s
+  closest candidate 286.5 degrees. `#694` was not a comparison with a published connection: it
+  was the same search run on the Europa 3:4 torus and judged by the same guards. The lane has
+  never had a positive control.
+- **The departure offset was below the torus's own error.** The tori were computed with one
+  Fourier harmonic in the forcing angle (`n1=1`) and have invariance residuals of 1.1e-4 to
+  1.8e-4 for `#694`, `#695` and `#701` (7.9e-7 for `#703`, 2.2e-8 for `#716`), while the manifolds
+  were started 1e-6 off the torus. Where the torus error exceeds the offset, the trajectories are
+  governed by the torus error and not by the stable or unstable direction. That is why `#701`
+  returns the same solution for both signs of the offset. The module docstring argues that an
+  offset "two orders of magnitude BELOW that floor" is safe; it is the other way round.
+- **The dimension count in `ccr4bp_manifold_globalize.py` is wrong.** In the extended phase space
+  `(x, y, vx, vy, forcing phase)` the manifolds of a 2-torus are three-dimensional and meet
+  generically along isolated trajectories. Fixing the departure phase and the offset size leaves a
+  two-dimensional slice of each, and two such slices generically contain no connection at all.
+  The search could not have found one even with the phase constraint added.
+- **Consequence for the four negatives.** Section 5 item 4 above said the absence of a state
+  match "is, on its face, still a valid negative". That was wrong: the searches looked in slices
+  that generically miss every connection. The four stamps (`#695`, `#696`, `#703`, `#716`) are now
+  marked METHOD-INVALID in `data/empty_regions.jsonl`, with the original text kept.
+- **The rebuild** (`#882`) works in the stroboscopic map: the torus is an invariant circle of the
+  one-period map, corrected to about 1e-10; the manifolds are two-dimensional in the
+  four-dimensional map space and meet in points; both sides of a junction are at the same forcing
+  phase by construction; and a claimed connection must pass a single-trajectory test (one
+  integration from the departure point that leaves the torus and returns to it). The positive
+  control is the classical homoclinic of the unperturbed resonant orbit, continued in the
+  perturber's mass to its physical value.
