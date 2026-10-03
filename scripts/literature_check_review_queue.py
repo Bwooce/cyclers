@@ -45,43 +45,12 @@ from cyclerfinder.data.review_queue import (
     load_review_queue,
 )
 from cyclerfinder.search.literature_check import (
-    KNOWN_CORPUS,
     SearchFn,
     SearchResult,
     check_literature,
+    offline_corpus_search,
     signature_from_review_entry,
 )
-
-
-def offline_corpus_search(query: str) -> Sequence[SearchResult]:
-    """A deterministic offline backend: synthesise hits from the known corpus.
-
-    For each curated anchor whose author/keyword appears in the query, emit a
-    result whose title carries the anchor's family name + a tour body + the word
-    "cycler" so the structural matcher can score it. This is NOT a web search --
-    it only re-finds families ALREADY in the curated corpus, so a candidate
-    inside a known family is flagged ``published`` while everything else falls
-    through to ``inconclusive`` (never a false offline ``not-found``).
-    """
-    q = query.lower()
-    out: list[SearchResult] = []
-    for anchor in KNOWN_CORPUS:
-        hit = any(a.lower() in q for a in anchor.authors) or any(
-            kw.lower() in q for kw in anchor.keywords
-        )
-        # Also fire when the query names the anchor's bodies + "cycler".
-        bodies_named = sum(1 for b in anchor.body_set if b.lower() in q)
-        if hit or (bodies_named >= 2 and "cycler" in q):
-            bodies = " ".join(sorted(anchor.body_set))
-            out.append(
-                SearchResult(
-                    title=f"{anchor.name} ({bodies} cycler)",
-                    url=(f"https://doi.org/{anchor.doi}" if anchor.doi else anchor.citation),
-                    snippet=f"{anchor.citation}. {' '.join(anchor.keywords)}. "
-                    f"Authors: {', '.join(anchor.authors)}.",
-                )
-            )
-    return out
 
 
 def results_json_backend(path: Path) -> SearchFn:

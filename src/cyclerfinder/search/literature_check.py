@@ -79,6 +79,16 @@ class SearchResult:
     title: str
     url: str
     snippet: str = ""
+    anchor_name: str | None = None
+    """Name of the :class:`CorpusAnchor` this hit was synthesised from, or
+    ``None`` for a real web hit (#880).
+
+    A corpus-derived hit is not independent evidence: its text is generated
+    from the anchor, so the anchor's own declared scope is known. Carrying the
+    identity lets :func:`check_literature` refuse to count a hit whose anchor a
+    declared-scope filter excludes (topology label, period band, 3D topology).
+    A web hit has no such identity and is scored on its text alone.
+    """
 
 
 @dataclass(frozen=True)
@@ -2523,12 +2533,98 @@ def _corpus_for(sig: CandidateSignature) -> tuple[CorpusAnchor, ...]:
     return KNOWN_CORPUS + tuple(KNOWN_CORPUS_3D)
 
 
+def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> str | None:
+    """Why ``anchor``'s DECLARED scope excludes ``sig``, or ``None`` if it does not.
+
+    These are the three filters under which the candidate and the anchor each
+    state a scope and the two are incompatible. Each needs a declaration on
+    BOTH sides; an undeclared side falls through (returns ``None``), which
+    preserves the historical body-set-only match for un-annotated anchors and
+    un-annotated candidates.
+
+    * ``"period-band"`` (#301): both declare a CR3BP ``period_band_tu`` and the
+      bands are disjoint -- a candidate at a period-multiplied sub-family is out
+      of scope for an anchor that catalogues only the low-integer base family.
+    * ``"topology-label"`` (#349): both declare a non-empty ``topology_label``
+      and the sets are disjoint -- a (k1, k2) repeated-moon candidate is not the
+      same family as a pump-tour anchor even when they share a body subset.
+    * ``"topology-3d"`` (#434): both carry a ``topology_3d`` and the
+      ``(k1, k2, k_z)`` tuple (plus the anchor's Jacobi band, if recorded)
+      disagrees -- a planar candidate is not matched to a halo anchor.
+
+    Used by :func:`_candidate_anchors` and, since #880, by
+    :func:`check_literature` to keep an excluded anchor from being resurrected
+    through its own synthetic search hit.
+    """
+    if sig.period_band_tu is not None and anchor.period_band_tu is not None:
+        c_min, c_max = sig.period_band_tu
+        a_min, a_max = anchor.period_band_tu
+        if c_max < a_min or c_min > a_max:
+            return "period-band"
+    if (
+        sig.topology_label
+        and anchor.topology_label
+        and not (sig.topology_label & anchor.topology_label)
+    ):
+        return "topology-label"
+    if (
+        sig.topology_3d is not None
+        and anchor.topology_3d is not None
+        and not _spatial_topology_matches(sig, anchor)
+    ):
+        return "topology-3d"
+    return None
+
+
+def offline_corpus_search(query: str) -> list[SearchResult]:
+    """Deterministic offline literature backend over :data:`KNOWN_CORPUS`.
+
+    For each curated anchor whose author / keyword appears in the query, or
+    whose bodies are named (two or more) alongside the word "cycler", emit a
+    synthetic hit so :func:`check_literature` can score it. This is NOT a web
+    search: it only re-finds families already in the curated corpus, so a
+    candidate inside a known family reads ``published`` and everything else
+    falls through.
+
+    Every hit names its source anchor in :attr:`SearchResult.anchor_name`
+    (#880). The synthetic title appends "(<bodies> cycler)" to EVERY anchor,
+    cycler or not, and several non-cycler anchors also contain the word in
+    their own citation ("NOT a periodic cycler"), so the text alone cannot
+    tell a tour anchor from a cycler anchor; the identity is what lets the
+    matcher apply the anchor's declared scope.
+
+    This is the single canonical offline backend; the campaign module and the
+    review-queue script import it.
+    """
+    q = query.lower()
+    out: list[SearchResult] = []
+    for anchor in KNOWN_CORPUS:
+        hit = any(a.lower() in q for a in anchor.authors) or any(
+            kw.lower() in q for kw in anchor.keywords
+        )
+        bodies_named = sum(1 for b in anchor.body_set if b.lower() in q)
+        if hit or (bodies_named >= 2 and "cycler" in q):
+            bodies = " ".join(sorted(anchor.body_set))
+            out.append(
+                SearchResult(
+                    title=f"{anchor.name} ({bodies} cycler)",
+                    url=(f"https://doi.org/{anchor.doi}" if anchor.doi else anchor.citation),
+                    snippet=f"{anchor.citation}. {' '.join(anchor.keywords)}. "
+                    f"Authors: {', '.join(anchor.authors)}.",
+                    anchor_name=anchor.name,
+                )
+            )
+    return out
+
+
 def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
     """Corpus anchors whose structural footprint overlaps the signature.
 
     Match on PRIMARY (same dynamical system) and a non-trivial body-set overlap
     -- the structural fingerprint, not a keyword. A heliocentric Earth-Mars
-    candidate cannot collide with a Jovian moon anchor and vice versa.
+    candidate cannot collide with a Jovian moon anchor and vice versa. An
+    anchor that passes the body test is still dropped when its declared scope
+    excludes the candidate (:func:`_declared_scope_exclusion`).
     """
     seq_set = frozenset(sig.sequence)
     anchors: list[CorpusAnchor] = []
@@ -2541,42 +2637,7 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
         # is the structural-fingerprint test, not a single shared body.
         if not (overlap and seq_set <= anchor.body_set):
             continue
-        # Optional CR3BP period-band filter (#301): if BOTH sides declare a
-        # ``period_band_tu``, drop the anchor when the bands are disjoint -- a
-        # candidate at a period-multiplied sub-family is structurally out-of-
-        # scope for an anchor that catalogues only the low-integer base family.
-        if sig.period_band_tu is not None and anchor.period_band_tu is not None:
-            c_min, c_max = sig.period_band_tu
-            a_min, a_max = anchor.period_band_tu
-            if c_max < a_min or c_min > a_max:
-                continue
-        # Optional topology-label filter (#349): if BOTH sides declare a
-        # non-empty ``topology_label`` set, drop the anchor when the sets are
-        # disjoint -- a (k1, k2) repeated-moon candidate is not the same family
-        # as a Titan-pump tour anchor even when they share a body subset.
-        # Empty on either side falls through to the historical body-set-only
-        # match, preserving prior behaviour for un-annotated anchors.
-        if (
-            sig.topology_label
-            and anchor.topology_label
-            and not (sig.topology_label & anchor.topology_label)
-        ):
-            continue
-        # Optional spatial-CR3BP topology filter (#434): when BOTH the
-        # candidate AND the anchor carry a ``topology_3d``, the (k1, k2, k_z)
-        # tuple must agree (+ Jacobi-band overlap if the anchor records one)
-        # for the anchor to flag the candidate a spatial rediscovery. A planar
-        # (k_z=0) candidate is therefore NOT matched to a halo (k_z>0) anchor
-        # and vice versa. When the anchor declares no 3D scope it falls through
-        # unchanged (historical body-set + label match); when the candidate
-        # declares no 3D scope (``topology_3d is None``) this branch is never
-        # reached (the 3D corpus is not even loaded), preserving prior
-        # behaviour for every existing call site.
-        if (
-            sig.topology_3d is not None
-            and anchor.topology_3d is not None
-            and not _spatial_topology_matches(sig, anchor)
-        ):
+        if _declared_scope_exclusion(sig, anchor) is not None:
             continue
         anchors.append(anchor)
     return anchors
@@ -2725,6 +2786,17 @@ def check_literature(
       -> ``not-found`` (necessary-not-sufficient for novelty),
     * a search that returned nothing/erroring everywhere -> ``inconclusive``
       (we cannot trust a not-found we never actually searched for).
+
+    Corpus-derived hits (#880): a hit carrying
+    :attr:`SearchResult.anchor_name` was synthesised from that anchor, so the
+    anchor's declared scope is known. When a declared-scope filter excludes
+    the anchor for this signature (:func:`_declared_scope_exclusion`), the hit
+    is not scored -- otherwise an anchor :func:`_candidate_anchors` correctly
+    rules out would be resurrected through text generated from it. Such hits
+    still count as "the search returned results" (the corpus WAS consulted)
+    and are listed in the result's ``notes``. Hits with no anchor identity
+    (real web hits) and signatures or anchors that declare no scope are
+    handled exactly as before.
     """
     queries = build_queries(sig)[:max_queries]
     trail: list[str] = []
@@ -2732,6 +2804,8 @@ def check_literature(
     best_hit: SearchResult | None = None
     any_results = False
     anchors = _candidate_anchors(sig)
+    corpus_by_name = {a.name: a for a in _corpus_for(sig)}
+    scope_excluded: dict[str, str] = {}
 
     for q in queries:
         trail.append(q)
@@ -2743,6 +2817,12 @@ def check_literature(
         if results:
             any_results = True
         for r in results:
+            source = corpus_by_name.get(r.anchor_name) if r.anchor_name else None
+            if source is not None:
+                reason = _declared_scope_exclusion(sig, source)
+                if reason is not None:
+                    scope_excluded[source.name] = reason
+                    continue
             conf = _result_matches_fingerprint(sig, r)
             if conf > best_conf:
                 best_conf = conf
@@ -2794,7 +2874,8 @@ def check_literature(
             query_trail=trail,
             matched_url=best_hit.url if best_hit else None,
             notes="Cycler-adjacent literature surfaced but could not be confirmed "
-            "as the same family; a human must adjudicate (not certified novel).",
+            "as the same family; a human must adjudicate (not certified novel)."
+            + _scope_note(scope_excluded),
         )
 
     return LiteratureCheckResult(
@@ -2805,7 +2886,18 @@ def check_literature(
         query_trail=trail,
         notes="No published cycler matched the structural fingerprint. "
         "NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence "
-        "of absence; the human + V0-V5 gauntlet still govern.",
+        "of absence; the human + V0-V5 gauntlet still govern." + _scope_note(scope_excluded),
+    )
+
+
+def _scope_note(scope_excluded: dict[str, str]) -> str:
+    """Audit suffix naming corpus anchors whose hits were not scored (#880)."""
+    if not scope_excluded:
+        return ""
+    listed = "; ".join(f"{name} [{reason}]" for name, reason in sorted(scope_excluded.items()))
+    return (
+        f" Corpus anchors consulted but excluded by declared scope "
+        f"({len(scope_excluded)}): {listed}."
     )
 
 
@@ -2872,6 +2964,7 @@ __all__ = [
     "citation_key_exists",
     "derive_citation_key",
     "is_novelty_claimable",
+    "offline_corpus_search",
     "resolve_citation_key",
     "signature_from_review_entry",
 ]

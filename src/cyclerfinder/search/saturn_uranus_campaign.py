@@ -71,43 +71,10 @@ from cyclerfinder.search.five_tier_prioritizer import (
     legs_from_repeated_moon_candidate,
 )
 from cyclerfinder.search.literature_check import (
-    KNOWN_CORPUS,
     CandidateSignature,
-    SearchResult,
     check_literature,
+    offline_corpus_search,
 )
-
-
-def offline_corpus_search(query: str) -> Sequence[SearchResult]:
-    """Deterministic offline literature backend (inlined from #261 driver).
-
-    Mirrors ``scripts.literature_check_review_queue.offline_corpus_search``
-    verbatim: for each curated :data:`KNOWN_CORPUS` anchor whose author/
-    keyword/body appears in the query, emit a synthetic hit so the structural
-    matcher in :func:`check_literature` can score it. NOT a web search; this
-    only re-finds families already in the curated corpus, so a candidate in a
-    known family lands ``published`` while novel candidates fall through to
-    ``inconclusive``/``not-found`` (never a false offline ``not-found``).
-    """
-    q = query.lower()
-    out: list[SearchResult] = []
-    for anchor in KNOWN_CORPUS:
-        hit = any(a.lower() in q for a in anchor.authors) or any(
-            kw.lower() in q for kw in anchor.keywords
-        )
-        bodies_named = sum(1 for b in anchor.body_set if b.lower() in q)
-        if hit or (bodies_named >= 2 and "cycler" in q):
-            bodies = " ".join(sorted(anchor.body_set))
-            out.append(
-                SearchResult(
-                    title=f"{anchor.name} ({bodies} cycler)",
-                    url=(f"https://doi.org/{anchor.doi}" if anchor.doi else anchor.citation),
-                    snippet=f"{anchor.citation}. {' '.join(anchor.keywords)}. "
-                    f"Authors: {', '.join(anchor.authors)}.",
-                )
-            )
-    return out
-
 
 # ---------------------------------------------------------------------------
 # Verdict policy thresholds (the #274 gauntlet's V0 gate uses 0.75 for p_fp;
@@ -658,6 +625,9 @@ __all__ = [
     "CampaignSummary",
     "ScoredCandidate",
     "dop853_cross_check_leg",
+    # Re-exported from literature_check (#880: one canonical offline backend);
+    # older scan/verify scripts import it from here.
+    "offline_corpus_search",
     "run_prioritized_scan",
     "trained_flagger",
 ]

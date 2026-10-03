@@ -20,12 +20,14 @@ from collections.abc import Sequence
 import pytest
 
 from cyclerfinder.search.literature_check import (
+    KNOWN_CORPUS,
     CandidateSignature,
     LiteratureCheckResult,
     SearchResult,
     build_queries,
     check_literature,
     is_novelty_claimable,
+    offline_corpus_search,
 )
 
 # ---------------------------------------------------------------------------
@@ -582,3 +584,102 @@ def test_review_entry_signature_roundtrip() -> None:
     assert sig.sequence == ("Callisto", "Ganymede", "Europa")
     assert sig.n_rev == (1, 1, 1, 1)
     assert sig.is_moon_tour
+
+
+# ---------------------------------------------------------------------------
+# #880: a corpus anchor excluded by a DECLARED-scope filter must not be
+# resurrected through its own synthetic offline hit.
+#
+# Before #880 the offline backend titled every synthetic hit "<anchor>
+# (<bodies> cycler)" and check_literature scored that text with no reference
+# to the anchor's scope: "cycler" (0.30) + both moons named (0.35) + primary
+# (0.10) = 0.75 >= MATCH_THRESHOLD. So every repeated-moon candidate at a moon
+# system with a tour anchor read ``published`` -- at Uranus through
+# Heaton-Longuski 2003, which the corpus itself tags ``mga-tour`` and "NOT a
+# periodic cycler" and which _candidate_anchors (#349) correctly excludes.
+# The expectations below are behavioural: they follow from the anchors' own
+# declared topology labels, not from any value this code computed.
+# ---------------------------------------------------------------------------
+
+URANUS_REPEATED_MOON_SIG = CandidateSignature(
+    primary="Uranus",
+    sequence=("Umbriel", "Oberon", "Umbriel"),
+    period_k=2,
+    vinf_per_encounter_kms=(0.92, 0.96, 0.89),
+    n_rev=(1, 1),
+    topology_label=frozenset({"repeated-moon"}),
+)
+
+
+def test_880_tour_anchor_does_not_flag_repeated_moon_candidate() -> None:
+    """Every Uranian anchor declares a non-repeated-moon scope (mga-tour,
+    resonant, halo), so none may flag a repeated-moon candidate."""
+    result = check_literature(URANUS_REPEATED_MOON_SIG, search=offline_corpus_search)
+    assert result.status == "not-found", result
+    assert "Heaton" not in (result.citation or "")
+    # The exclusion is audited, not silent.
+    assert "Heaton-Longuski" in result.notes
+    assert "scope" in result.notes
+    assert is_novelty_claimable(result.to_review_block())
+
+
+def test_880_unlabelled_signature_keeps_the_conservative_behaviour() -> None:
+    """With no declared topology the scope filter cannot apply, so the same
+    tour anchor still flags the candidate (the pre-#880 behaviour, kept)."""
+    sig = CandidateSignature(
+        primary="Uranus",
+        sequence=("Umbriel", "Oberon", "Umbriel"),
+        period_k=2,
+        vinf_per_encounter_kms=(0.92, 0.96, 0.89),
+        n_rev=(1, 1),
+    )
+    result = check_literature(sig, search=offline_corpus_search)
+    assert result.status == "published", result
+    assert not is_novelty_claimable(result.to_review_block())
+
+
+def test_880_same_scope_anchor_still_flags_published() -> None:
+    """Positive control: the exclusion is scope-specific, not blanket. A
+    tour-labelled Uranian candidate is still matched by the tour anchors, and
+    a repeated-moon Titan-Enceladus candidate is still matched by the
+    Russell-Strange 2009 repeated-moon anchor through the SAME backend."""
+    tour_sig = CandidateSignature(
+        primary="Uranus",
+        sequence=("Umbriel", "Oberon", "Umbriel"),
+        topology_label=frozenset({"mga-tour"}),
+    )
+    tour = check_literature(tour_sig, search=offline_corpus_search)
+    assert tour.status == "published", tour
+
+    rs = check_literature(RS_TITAN_ENCELADUS_SIG, search=offline_corpus_search)
+    assert rs.status == "published", rs
+    blob = ((rs.citation or "") + " " + (rs.matched_url or "") + " " + (rs.doi or "")).lower()
+    assert "russell" in blob or "10.2514/1.36610" in blob, rs
+
+
+def test_880_live_hits_without_anchor_identity_are_unaffected() -> None:
+    """A web hit carries no anchor identity, so nothing is known about its
+    scope and it is scored on its text exactly as before."""
+
+    def _web(_query: str) -> Sequence[SearchResult]:
+        return [
+            SearchResult(
+                title="A Umbriel-Oberon cycler trajectory at Uranus",
+                url="https://example.org/umbriel-oberon-cycler",
+                snippet="Ballistic Umbriel Oberon moon cycler in the Uranus system.",
+            )
+        ]
+
+    result = check_literature(URANUS_REPEATED_MOON_SIG, search=_web)
+    assert result.status == "published", result
+
+
+def test_880_offline_backend_is_canonical_and_tags_its_hits() -> None:
+    """One backend, and every hit it synthesises names its source anchor."""
+    from cyclerfinder.search import saturn_uranus_campaign
+
+    assert saturn_uranus_campaign.offline_corpus_search is offline_corpus_search
+    hits = offline_corpus_search("Umbriel-Oberon cycler 2 synodic trajectory")
+    assert hits, "Uranian anchors should surface for a two-moon cycler query"
+    names = {a.name for a in KNOWN_CORPUS}
+    assert all(h.anchor_name in names for h in hits)
