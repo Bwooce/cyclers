@@ -1,0 +1,14 @@
+[2026-10-04T00:52:40 +    0.0s] stage r3b start
+[2026-10-04T00:52:41 +    0.6s] 3:4 e=0.1 peri: T=25.1721 lam=3.0045 hyperbolic=True r=[1.090,1.331] dUmb=0.090
+[2026-10-04T00:52:51 +   11.3s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 2.9930861406621574, 'rho_over_2pi': 0.4763644543862263, 'residual': 1.2867484855405564e-13, 'converged': True, 'residual_history': [0.0020117284979414285, 0.00010765557326775088, 6.325945585139436e-07, 2.1130058813767505e-10, 1.2867484855405564e-13], 'fourier_tail': 6.941107506675448e-09, 'mu_gan': 3.915686587341081e-05}
+[2026-10-04T00:52:54 +   14.5s]    bundles: {'lam_u': 1.6357010112347417, 'lam_s': 0.611358673212052, 'lam_product': 1.0000000000000833, 'residual_u_offgrid': 3.446891951863762e-07, 'residual_s_offgrid': 3.9318629485585177e-07, 'tail_u': 1.644009781558912e-06, 'tail_s': 1.638155223123164e-06, 'second_order_residual_u': 48.07983405852312, 'second_order_residual_s': 52.89765864224805}
+[2026-10-04T00:52:54 +   14.5s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.1_peri.json
+[2026-10-04T00:52:56 +   16.2s]    cloud unstable+1: dropped 0
+[2026-10-04T00:52:57 +   17.4s]    cloud unstable-1: dropped 0
+[2026-10-04T00:52:58 +   18.6s]    cloud stable+1: dropped 0
+[2026-10-04T00:53:00 +   19.7s]    cloud stable-1: dropped 0
+[2026-10-04T00:54:31 +  111.0s]    refine (9,10) coarse 5.923e-03 -> 3.587e-03 sv [1.805e+00 8.614e-01 2.932e-02 1.212e-03]
+[2026-10-04T00:55:44 +  183.8s]    refine (10,9) coarse 5.923e-03 -> 3.587e-03 sv [1.805e+00 8.614e-01 2.932e-02 1.212e-03]
+[2026-10-04T00:55:44 +  183.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.1_peri.json
+[2026-10-04T00:55:44 +  183.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.1_peri.json
+[2026-10-04T00:55:44 +  183.8s] stage r3b done

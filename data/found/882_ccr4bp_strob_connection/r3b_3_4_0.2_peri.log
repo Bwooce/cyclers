@@ -1,0 +1,6 @@
+[2026-10-04T00:52:40 +    0.0s] stage r3b start
+[2026-10-04T00:52:41 +    0.9s] 3:4 e=0.2 peri: T=25.0724 lam=4.4176 hyperbolic=True r=[0.969,1.454] dUmb=0.031
+[2026-10-04T00:52:56 +   16.2s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 3.004996846549857, 'rho_over_2pi': 0.47826010210396747, 'residual': 0.0005972591742852418, 'converged': False, 'residual_history': [2.4832346069869615e-05, 0.0013290863665538083, 0.0006747727601773695, 0.0005972591742852418], 'fourier_tail': 7.194509061564334e-05, 'mu_gan': 3.915686587341081e-08}
+[2026-10-04T00:52:56 +   16.2s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.2_peri.json
+[2026-10-04T00:52:56 +   16.2s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.2_peri.json
+[2026-10-04T00:52:56 +   16.2s] stage r3b done
