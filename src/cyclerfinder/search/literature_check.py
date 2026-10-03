@@ -1863,48 +1863,99 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         provenance="verified-against-source",
         system="uranian",
     ),
+    # #869 (2026-10-03): this anchor was inherited as "Sims et al. (2014)". The
+    # paper is McAdams et al., AAS 11-188 (2011); Sims, Finlayson, Rinderle,
+    # Vavrina & Kowalkowski are its Ref. 1 (the MALTO low-thrust tool). Read in
+    # full; digest 2026-10-03-digest-mcadams-2011-aas-11-188-...md.
     CorpusAnchor(
-        name="Sims et al. polar Uranus orbiter & satellite tour (2014)",
+        name="McAdams et al. polar Uranus orbiter & satellite tour (AAS 11-188, 2011)",
         primary="Uranus",
         body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
-        # #350: Citation explicit: 'one-shot insertion tour, NOT cycler.'
+        # #350: one-off tour. Same-moon resonant returns only; no two-moon
+        # alternation and no cycler (verified against the paper, #869).
         topology_label=frozenset({"mga-tour"}),
-        authors=("Sims", "Finlayson", "Rinderle", "Vavrina", "Kawalkowski"),
+        authors=("McAdams", "Scott", "Guo", "Dankanich", "Russell"),
         keywords=(
             "polar Uranus orbiter satellite tour",
             "conceptual mission design Uranus orbiter",
             "two-flyby-per-moon Uranus tour",
-            "Uranus inclination reduction sequence",
+            "same-moon resonant flybys Uranus tour",
         ),
-        citation="Sims, Finlayson, Rinderle, Vavrina & Kawalkowski et al., "
-        "'Conceptual mission design of a polar Uranus orbiter and satellite "
-        "tour' (2014). Baseline 424-day, 619 m/s tour with two targeted "
-        "flybys of each major moon. One-shot insertion tour, NOT cycler.",
+        citation="McAdams, Scott, Guo, Dankanich & Russell, 'Conceptual Mission "
+        "Design of a Polar Uranus Orbiter and Satellite Tour,' AAS 11-188 (2011). "
+        "424-day, 619 m/s patched-conic tour with two targeted flybys of each "
+        "major moon at same-moon integer resonances. One-off tour; no two-moon "
+        "alternation, no cycler.",
         doi=None,
+        key="mcadams-2011-polar-uranus-orbiter-satellite-tour",
+        year=2011,
+        title="Conceptual Mission Design of a Polar Uranus Orbiter and Satellite Tour",
+        venue="AAS 11-188",
+        provenance="verified-against-source",
+        system="uranian",
     ),
+    # #882 (2026-10-03): three-body work at EVERY major Uranian moon including
+    # Umbriel, found by the adversarial review of the Umbriel torus row.
     CorpusAnchor(
-        name="Kumar Uranus-Oberon PCRTBP MMR study (2025)",
+        name="Pergola et al. Uranus-moon three-body manifolds with electric propulsion (2007)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        # Libration-point (L1/L2) manifold transfers; the paper computes no
+        # periodic, resonant or quasi-periodic orbit and no two-moon model.
+        topology_label=frozenset({"halo"}),
+        authors=("Pergola", "Geurts", "Casaregola", "Andrenucci"),
+        keywords=(
+            "Uranus moons invariant manifold electric propulsion tour",
+            "Uranus-Umbriel three-body L1 L2 manifolds",
+        ),
+        citation="Pergola, Geurts, Casaregola & Andrenucci, 'Three Body Invariant "
+        "Manifold Transition with Electric Propulsion,' IEPC-2007-305, 30th "
+        "International Electric Propulsion Conference, Florence, 2007. One-way "
+        "Oberon-Titania-Umbriel-Ariel-Miranda tour linking L1/L2 manifolds of five "
+        "planar Uranus-moon three-body problems with electric propulsion.",
+        doi=None,
+        key="pergola-2007-uranus-moons-manifold-electric-propulsion",
+        year=2007,
+        title="Three Body Invariant Manifold Transition with Electric Propulsion",
+        venue="IEPC-2007-305",
+        provenance="verified-against-source",
+        system="uranian",
+    ),
+    # #882 (2026-10-03): corrected. The inherited citation credited
+    # arXiv:2509.03655 with the Uranus-Titania-Oberon four-body content; that
+    # paper never mentions Titania. The Uranian study, including the CCR4BP
+    # part, is Kumar & Anderson AAS 24-288 (held; digest #728; quotes verified).
+    CorpusAnchor(
+        name="Kumar-Anderson Uranus-Oberon MMR survey with Titania CCR4BP (AAS 24-288, 2024)",
         primary="Uranus",
         body_set=frozenset({"Oberon", "Titania"}),
-        # #350: MMR = mean-motion resonance. Citation explicit: 'Single-moon
-        # MMR topology, NOT moon-pair cycler.'
+        # #350: MMR = mean-motion resonance. Single-moon resonant-orbit
+        # topology, NOT a moon-pair cycler.
         topology_label=frozenset({"resonant"}),
-        authors=("Kumar",),
+        authors=("Kumar", "Anderson"),
         keywords=(
             "Uranus-Oberon PCRTBP mean motion resonance",
             "Uranus-Oberon unstable resonant periodic orbit",
             "Uranus-Titania-Oberon CCR4BP secondary resonance",
             "Uranian system heteroclinic resonance transition",
         ),
-        citation="Kumar, 'Multi-shooting parameterization methods for "
-        "invariant manifolds and heteroclinics of 2-DOF Hamiltonian Poincare "
-        "maps, with applications to celestial resonant dynamics,' "
-        "arXiv:2509.03655 (2025). Section 6.2 studies Uranus-Oberon PCRTBP "
-        "3:4/4:5/5:6 exterior and 4:3/5:4/6:5 interior MMR unstable periodic "
-        "orbits plus heteroclinic connections; extends to Uranus-Titania-"
-        "Oberon CCR4BP secondary resonances. Single-moon MMR topology, NOT "
-        "moon-pair cycler.",
+        citation="Kumar & Anderson, 'A Survey of Oberon Mean Motion Resonant "
+        "Unstable Orbit Properties and Connections for Uranian Tours,' AAS 24-288 "
+        "(2024). Uranus-Oberon PCRTBP 3:4/4:5/5:6 exterior and 4:3/5:4/6:5 interior "
+        "unstable resonant orbits, manifolds and heteroclinics; then Oberon "
+        "resonant-orbit families in the Uranus-Oberon-Titania CCR4BP (tori and "
+        "secondary resonances; no CCR4BP heteroclinics). Names Titania, Umbriel "
+        "and Ariel as moons for which the study is still to be done. The manifold "
+        "method is Kumar, arXiv:2509.03655 (2025), whose Sec. 6.2 revisits the "
+        "Uranus-Oberon PCRTBP only. Single-moon MMR topology, NOT moon-pair cycler.",
         doi=None,
+        key="kumar-anderson-2024-oberon-mmr-survey",
+        year=2024,
+        title="A Survey of Oberon Mean Motion Resonant Unstable Orbit Properties "
+        "and Connections for Uranian Tours",
+        venue="AAS 24-288",
+        provenance="verified-against-source",
+        system="uranian",
     ),
     CorpusAnchor(
         name="Canales-Howell-Fantino moon-to-moon analytical transfer (Titania-Oberon, 2021)",

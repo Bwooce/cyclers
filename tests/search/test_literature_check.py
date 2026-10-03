@@ -788,3 +788,42 @@ def test_869_uranus_orbiter_and_probe_tour_papers_are_anchored_as_tours() -> Non
     still_clear = check_literature(URANUS_REPEATED_MOON_SIG, search=offline_corpus_search)
     assert still_clear.status == "not-found", still_clear
     assert "Landau et al." in still_clear.notes and "Ellison et al." in still_clear.notes
+
+
+def test_869_882_uranian_anchor_attributions_are_the_papers_actually_read() -> None:
+    """Three Uranian anchors corrected or added on 2026-10-03, each against the
+    paper in hand: the inherited "Sims et al. (2014)" tour anchor is McAdams et
+    al. AAS 11-188; the Uranus-Oberon-Titania four-body study is Kumar &
+    Anderson AAS 24-288 (not arXiv:2509.03655, which never mentions Titania);
+    and Pergola et al. IEPC-2007-305 is three-body manifold work at every major
+    Uranian moon, Umbriel included."""
+    assert not [a for a in KNOWN_CORPUS if a.name.startswith("Sims et al.")]
+    mcadams = _anchor("McAdams et al. polar Uranus orbiter")
+    assert mcadams.authors[0] == "McAdams" and mcadams.year == 2011
+    assert mcadams.topology_label == frozenset({"mga-tour"})
+
+    kumar = _anchor("Kumar-Anderson Uranus-Oberon MMR survey")
+    assert kumar.year == 2024 and kumar.venue == "AAS 24-288"
+    assert kumar.body_set == frozenset({"Oberon", "Titania"})
+    assert "Umbriel" not in kumar.body_set
+
+    pergola = _anchor("Pergola et al. Uranus-moon three-body manifolds")
+    assert "Umbriel" in pergola.body_set and pergola.topology_label == frozenset({"halo"})
+    for a in (mcadams, kumar, pergola):
+        assert a.primary == "Uranus" and a.provenance == "verified-against-source"
+
+    # A libration-manifold candidate at Uranus-Umbriel now collides with Pergola;
+    # a resonant-orbit candidate there is still not-found (Kumar & Anderson
+    # treat Oberon with Titania, and say Umbriel is still to be done).
+    halo_sig = CandidateSignature(
+        primary="Uranus", sequence=("Umbriel", "Titania"), topology_label=frozenset({"halo"})
+    )
+    halo = check_literature(halo_sig, search=offline_corpus_search)
+    assert halo.status == "published" and "Pergola" in (halo.citation or ""), halo
+    resonant_sig = CandidateSignature(
+        primary="Uranus",
+        sequence=("Umbriel", "Titania"),
+        resonances=("1:2",),
+        topology_label=frozenset({"resonant"}),
+    )
+    assert check_literature(resonant_sig, search=offline_corpus_search).status == "not-found"
