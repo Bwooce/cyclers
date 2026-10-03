@@ -1,0 +1,57 @@
+Task #549 real-binary (k1,k2) sweep — run 2026-07-10T21:07:23Z
+POSITIVE CONTROL (PC 3,2 @ mu=0.10876473603280369)  STABLE  C=3.5795150  x0=-0.693198287  T=11.83346 TU (12.033 d)  nu=-1.04e-07  topo_ok=True  xcheck=True  method='c_sweep_from_mu01_anchor'  [25.5s]
+SYSTEM patroclus-menoetius: mu=0.4380719234 l_km=692.5 t_s=58892.0949
+  mu_source: Buie, M. W. et al. (2015), AJ 149, 113, 'Size and Shape from Stellar Occultation Observations of the Double Jupiter Trojan Patroclus and Menoetius' -- D_Patroclus=113+/-3 km, D_Menoetius=104+/-3 km (2013-10-21 occultation). mu = D_M^3/(D_P^3+D_M^3) = 0.4381, EQUAL-DENSITY ASSUMPTION (standard for a co-formed binary; consistent with the paper's own note that the two diameters reproduce the combined system density of 0.88 g/cm^3 without invoking a density contrast).
+  l_source: Buie, M. W. et al. (2024), AJ 167, 104, Table (mutual-orbit fit): a=692.5+/-4.0 km.
+  t_source: Buie, M. W. et al. (2024), AJ 167, 104, Table (mutual-orbit fit): P=4.282754+/-0.000023 d.
+  CAVEAT: mu is a DERIVED equal-density estimate, not a directly measured mass ratio -- no Lucy-flyby (2033) mass measurement exists yet.
+SYSTEM didymos-dimorphos: mu=0.0079000551 l_km=1.206 t_s=6830.5009
+  mu_source: Naidu, S. P. et al. (2020), Icarus 348, 113777 -- Didymos system mass (5.4+/-0.4)e11 kg (mutual-orbit Kepler fit); Dimorphos mass ~4.3e9 kg assuming EQUAL DENSITY with Didymos (same convention used pre-DART mission design and cited post-impact, e.g. Daly, R. T. et al. (2023), Nature 616, 443). mu = 4.3e9/(5.4e11+4.3e9) = 0.0079.
+  l_source: Naidu, S. P. et al. (2020), Icarus 348, 113777 -- pre-impact mutual-orbit a=1.206+/-0.035 km.
+  t_source: Naidu, S. P. et al. (2020), Icarus 348, 113777 -- pre-impact mutual-orbit P=11.921473+/-0.000044 hr.
+  CAVEAT: Dimorphos's mass is NOT directly measured (DART/LICIACube could not resolve it; Daly et al. 2023 and the post-DART Nature Astronomy 2024 physical-properties paper (arXiv:2403.00667) both state the mass is inferred only via an ASSUMED bulk density, quoting a plausible density range 1500-3300 kg/m^3 vs the assumed-equal 2170 kg/m^3 -- i.e. mu could plausibly range ~0.0055-0.012, a factor >2. ESA Hera (arriving Didymos 2026/2027) will measure it directly. Pre-impact orbital elements (a, P) are used here (the DART impact itself perturbed the orbit ~-33 min in period, still relaxing per post-impact papers; pre-impact is the natural, near-circular reference state a CR3BP model assumes).
+SYSTEM orcus-vanth: mu=0.1370000000 l_km=8980.0 t_s=131174.7911
+  mu_source: Brown, M. E. & Butler, B. J. (2023), PSJ 4, 178 (arXiv:2307.04848), 'Masses and densities of dwarf planet satellites measured with ALMA' -- direct ALMA astrometric mass measurement: 'Vanth contains 13.7+/-1.3% of the mass of the system,' i.e. mu = m_Vanth/(m_Orcus+m_Vanth) = 0.137+/-0.013 (equivalently a satellite/primary mass ratio of 0.16+/-0.02, 'the highest of any known planet or dwarf planet').
+  l_source: Brown, M. E. et al. (2010), AJ 139, 2700 (HST astrometry, refined) -- mutual-orbit a=8980+/-20 km.
+  t_source: Brown, M. E. et al. (2010), AJ 139, 2700 (HST astrometry, refined) -- mutual-orbit P=9.5393+/-0.0001 d.
+SYSTEM eris-dysnomia: mu=0.0049751244 l_km=37273.0 t_s=217071.6932
+  mu_source: Brown, M. E. & Butler, B. J. (2023), PSJ 4, 178 (arXiv:2307.04848) -- ALMA astrometric mass ratio Dysnomia/Eris = 0.0050+/-0.0035 (a 1.5-sigma detection only; 1-sigma upper limit 0.0085, 3-sigma upper limit 0.015). mu = m_Dysnomia/(m_Eris+m_Dysnomia) = 0.0050/1.0050 = 0.004975 (central value; upper 1-sigma bound mu=0.00833).
+  l_source: 'The Eris/Dysnomia system I: the orbit of Dysnomia' (2020), Icarus, arXiv:2009.13733 -- a=37273+/-64 km.
+  t_source: 'The Eris/Dysnomia system I: the orbit of Dysnomia' (2020), Icarus, arXiv:2009.13733 -- P=15.785899+/-0.000050 d.
+  CAVEAT: mu is only a 1.5-sigma ALMA mass DETECTION (Brown & Butler 2023); treat as weakly constrained -- the 1-sigma upper bound mu=0.00833 is nearly 70% larger than the central value used for the sweep.
+
+Results
+[patroclus-menoetius] (1,1) [mu001_11]  negative  method='mu_step_from_mu0.001_[mu001_11]_then_c_sweep'  note=''  [214.7s]
+[patroclus-menoetius] (1,1) [mu01215_11]  negative  method='mu_step_from_mu0.0121506_[mu01215_11]'  note='mu-continuation failed to converge to target mu'  [8.3s]
+[patroclus-menoetius] (1,1) [mu05_11]  negative  method='mu_step_from_mu0.5_[mu05_11]'  note='mu-continuation failed to converge to target mu'  [36.3s]
+[patroclus-menoetius] (3,2) [mu01_32]  negative  method='mu_step_from_mu0.1_[mu01_32]'  note='mu-continuation failed to converge to target mu'  [82.9s]
+[patroclus-menoetius] (3,1) [mu03_31]  negative  method='mu_step_from_mu0.3_[mu03_31]'  note='mu-continuation failed to converge to target mu'  [55.8s]
+[patroclus-menoetius] (3,3) [mu01215_33]  negative  method='mu_step_from_mu0.0121506_[mu01215_33]'  note='mu-continuation failed to converge to target mu'  [104.9s]
+[didymos-dimorphos] (1,1) [mu001_11]  negative  method='mu_step_from_mu0.001_[mu001_11]_then_c_sweep'  note='stable orbit found but wrong topology (got prograde=True, reaches_secondary=False); clean negative'  [124.5s]
+[didymos-dimorphos] (1,1) [mu01215_11]  negative  method='mu_step_from_mu0.0121506_[mu01215_11]'  note='mu-continuation failed to converge to target mu'  [9.5s]
+[didymos-dimorphos] (1,1) [mu05_11]  negative  method='mu_step_from_mu0.5_[mu05_11]'  note='mu-continuation failed to converge to target mu'  [16.8s]
+[didymos-dimorphos] (3,2) [mu01_32]  negative  method='mu_step_from_mu0.1_[mu01_32]'  note='mu-continuation failed to converge to target mu'  [2.0s]
+[didymos-dimorphos] (3,1) [mu03_31]  negative  method='mu_step_from_mu0.3_[mu03_31]'  note='seed jacobi=3.7020 incompatible with C_L1=3.1454'  [53.3s]
+[didymos-dimorphos] (3,3) [mu01215_33]  negative  method='mu_step_from_mu0.0121506_[mu01215_33]_then_c_sweep'  note='no stable (|nu|<1) window found in C-sweep range'  [230.0s]
+[orcus-vanth] (1,1) [mu001_11]  negative  method='mu_step_from_mu0.001_[mu001_11]'  note='mu-continuation failed to converge to target mu'  [5.1s]
+[orcus-vanth] (1,1) [mu01215_11]  negative  method='mu_step_from_mu0.0121506_[mu01215_11]'  note='mu-continuation failed to converge to target mu'  [9.7s]
+[orcus-vanth] (1,1) [mu05_11]  negative  method='mu_step_from_mu0.5_[mu05_11]'  note='mu-continuation failed to converge to target mu'  [19.9s]
+[orcus-vanth] (3,2) [mu01_32]  negative  method='mu_step_from_mu0.1_[mu01_32]_then_c_sweep'  note='stable orbit found but wrong topology (got prograde=True, reaches_secondary=False); clean negative'  [106.3s]
+[orcus-vanth] (3,1) [mu03_31]  negative  method='mu_step_from_mu0.3_[mu03_31]'  note='mu-continuation failed to converge to target mu'  [4.2s]
+[orcus-vanth] (3,3) [mu01215_33]  negative  method='mu_step_from_mu0.0121506_[mu01215_33]'  note='mu-continuation failed to converge to target mu'  [30.1s]
+[eris-dysnomia] (1,1) [mu001_11]  negative  method='mu_step_from_mu0.001_[mu001_11]_then_c_sweep'  note='no stable (|nu|<1) window found in C-sweep range'  [74.3s]
+[eris-dysnomia] (1,1) [mu01215_11]  negative  method='mu_step_from_mu0.0121506_[mu01215_11]'  note='mu-continuation failed to converge to target mu'  [9.3s]
+[eris-dysnomia] (1,1) [mu05_11]  negative  method='mu_step_from_mu0.5_[mu05_11]'  note='mu-continuation failed to converge to target mu'  [15.1s]
+[eris-dysnomia] (3,2) [mu01_32]  negative  method='mu_step_from_mu0.1_[mu01_32]'  note='mu-continuation failed to converge to target mu'  [2.2s]
+[eris-dysnomia] (3,1) [mu03_31]  negative  method='mu_step_from_mu0.3_[mu03_31]'  note='mu-continuation failed to converge to target mu'  [5.3s]
+[eris-dysnomia] (3,3) [mu01215_33]  negative  method='mu_step_from_mu0.0121506_[mu01215_33]_then_c_sweep'  note='no stable (|nu|<1) window found in C-sweep range'  [211.5s]
+
+Results
+[patroclus-menoetius] (2,1) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,1) orbit found in grid (x0 in [-1.05,0.51], C in [2.9927,3.9827], hc in (2, 3, 4))'  [265.5s]
+[patroclus-menoetius] (2,2) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,2) orbit found in grid (x0 in [-1.05,0.51], C in [2.9927,3.9827], hc in (2, 3, 4))'  [267.5s]
+[didymos-dimorphos] (2,1) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,1) orbit found in grid (x0 in [-1.05,0.94], C in [2.6000,3.1354], hc in (2, 3, 4))'  [245.4s]
+[didymos-dimorphos] (2,2) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,2) orbit found in grid (x0 in [-1.05,0.94], C in [2.6000,3.1354], hc in (2, 3, 4))'  [253.0s]
+[orcus-vanth] (2,1) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,1) orbit found in grid (x0 in [-1.05,0.81], C in [2.6893,3.6793], hc in (2, 3, 4))'  [248.7s]
+[orcus-vanth] (2,2) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,2) orbit found in grid (x0 in [-1.05,0.81], C in [2.6893,3.6793], hc in (2, 3, 4))'  [245.5s]
+[eris-dysnomia] (2,1) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,1) orbit found in grid (x0 in [-1.05,0.95], C in [2.6000,3.0996], hc in (2, 3, 4))'  [256.2s]
+[eris-dysnomia] (2,2) [grid_search]  negative  method='grid_search_8x6x3'  note='no (2,2) orbit found in grid (x0 in [-1.05,0.95], C in [2.6000,3.0996], hc in (2, 3, 4))'  [255.6s]
