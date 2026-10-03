@@ -660,6 +660,22 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   window. Overlaps `#870` (one-working-node campaign at Saturn and Uranus): decide at dispatch
   whether this is a sub-item of it. `#864` sec. 8 (no more `#563`-class sweeps) applies: this is
   a targeted construction, not a sweep.
+  **`#887` STAGE ONE DONE 2026-10-04 (go/no-go study, note
+  `docs/notes/2026-10-04-887-uranian-triple-cycler-go-no-go.md`; reading and arithmetic only, no
+  trajectory):** (a) Liang's method needs two synodic periods that share a moon to be nearly
+  commensurate (Callisto-Ganymede against Ganymede-Europa about 7:4, leftover 0.74 d per 49.4 d)
+  and absorbs the leftover by switching between two double cyclers with multi-revolution phasing
+  arcs; it states no numeric tolerance. (b) THE ARITHMETIC DOES NOT DISCRIMINATE: all ten Uranian
+  triples reach Liang's grade within 60 days, and so do about 58% of random triples, so period
+  arithmetic alone is not evidence for or against. (c) The standout is Miranda-Ariel-Umbriel
+  (synodic periods 3.219 d and 6.432 d, ratio 1.998; mismatch 0.005 d per 6.4 d repeat), but
+  Miranda bends a trajectory only about 0.4 degrees at 2 km/s and sits about 4.2 degrees off the
+  other moons' plane, so it can only be a passive target on an Ariel-Umbriel cycler, and the
+  first test is its node geometry. (d) Ariel-Umbriel-Titania and Ariel-Titania-Oberon are not
+  excluded. **DECISION NEEDED BEFORE ANY BUILD:** the one test that discriminates is to measure
+  how much phase drift Liang's own cyclers absorb, using the project's existing reproduction
+  (`cge_scaffold.py`), and hold the Uranian triples to that. Coordinator's estimate stays at
+  about 30%, no higher. Not dispatched further.
   **DISPATCHED 2026-10-04 (owner: "can we dispatch all four in parallel?"), four agents, new
   files only, pathspec commits, no push:** `#884` in full (Opus); `#885` in full (Opus); `#886`
   PART ONE ONLY, the Titan-Rhea torus-stage check against Kumar IAC-25-C1.9.6 using the `#882`
