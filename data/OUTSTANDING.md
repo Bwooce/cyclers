@@ -811,7 +811,33 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Then Umbriel-Titania: the 1:2 parent (expected: no smooth circle) and a parent that stays
   inside Titania's orbit (2:3, 3:4). No published four-body connection with printed coordinates
   has been located to compare against; that limitation stands.
-  **Published check for the TORUS stage, found 2026-10-03 (not yet run):** Kumar, IAC-25-C1.9.6
+  **BUILD DONE 2026-10-04 (commits `72c6c92f` to `f3425a87`; module
+  `search/ccr4bp_strob_connection.py`, 12 gate tests passing, staged driver, outputs under
+  `data/found/882_ccr4bp_strob_connection/`).** Results as reported by the build agent:
+  (R1) the unperturbed homoclinic of the unstable Jupiter-Europa 3:4 orbit found and verified;
+  (R2) three connections continued to PHYSICAL Ganymede mass and verified (branches 0, 2, 4;
+  branch 3 folds near 0.17 of physical mass; branches 1 and 5 never refined);
+  (R3a) the Umbriel 1:2 orbit has NO invariant circle under Titania (it passes inside Titania;
+  the corrector fails at a thousandth of Titania's mass), as expected, so the withdrawn row's
+  object does not exist; (R3b) a homoclinic of the Umbriel 3:4 torus (seed eccentricity about
+  0.1, multiplier 1.636) at physical Titania mass, junction (20, 19), excursion 0.45. The old
+  `#694` seed orbit turned out to be ELLIPTIC and Ganymede-crossing (no hyperbolic object at
+  all). **Coordinator's independent check (own integration with the core propagator, own
+  circle interpolation and distance measure):** the circles are invariant under the core
+  propagator to 5e-13 (Uranus) and 2e-12 (Jupiter) on sample nodes; integrating each stored
+  junction state backward and forward reproduces the stored history: the Uranian trajectory
+  starts 6.7e-4 from the torus, reaches 0.452, and returns to 3.0e-4 at the junction count and
+  2.1e-4 four periods later, never nearer than 0.092 to Umbriel or 0.30 to Titania; the three
+  Jovian ones start at 3e-4 to 8e-4, reach 0.24 and return to 2e-5 to 6e-5. Each is one
+  continuous trajectory of the four-body model, so the `#882` defect (phase jump at the
+  junction) is absent by construction and in fact. **NOT YET ESTABLISHED, and under
+  adversarial review (dispatched 2026-10-04):** whether these are true homoclinic orbits or
+  near-returns (the departure offset is 1e-3 with a second-order model; the agent changed its
+  own verification criterion to "four extra periods" after the original one failed for most
+  cases; two stored diagnostics are unexplained); whether the Jovian case is already published
+  by Kumar, Anderson & de la Llave; and that the Uranian object encounters no moon. NO catalogue
+  row is to be written before that review and a literature check.
+  **Published check for the TORUS stage, found 2026-10-03 (running as `#886` part one):** Kumar, IAC-25-C1.9.6
   (held, digested) gives the Saturn-Titan-Rhea four-body constants (mu 2.36639e-4, mu3
   4.05746e-6, Rhea radius 0.4315, synodic period 2.48376) and reports that the Titan 3:2
   family's tori persist at most energies and fail near six secondary resonances, Tp/T = 4/21,
