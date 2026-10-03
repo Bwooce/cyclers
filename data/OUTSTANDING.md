@@ -638,9 +638,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the source computed (written into spec 16.4 (ii); research and reasons in the `#875` decision
   record's addendum), so a verified Umbriel-based object would be `candidate-novel` with
   Kumar & Anderson AAS 24-288 attributed; (9) ~~anchor Pergola et al. IEPC-2007-305~~ DONE 2026-10-03 (commit
-  `806db9d8`, scope `halo`); (10) the six Uranian rows' `literature_check` blocks were run
-  against 73 anchors and name the tour anchor by its old "Sims et al." title; re-run them when
-  the rows are next touched (74 anchors now; no status change expected).
+  `806db9d8`, scope `halo`); (10) ~~re-run the six Uranian rows' `literature_check` blocks~~ DONE 2026-10-03 against
+  74 anchors: all six still `not-found`; the McAdams tour anchor now appears under its right
+  name among the scope-excluded anchors.
   **PROGRESS 2026-10-03 (owner: "do 882"; coordinator's findings before the rebuild, all in the
   note's section 6):** (a) EVERY stored result of the lane has the phase defect: `#694`, the
   lane's "positive control", joins its arcs 316.8 degrees apart in Ganymede's phase, `#703`'s
