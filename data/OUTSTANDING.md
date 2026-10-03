@@ -611,10 +611,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (5) add a caveat to the four `#865` torus-connection stamps (`#695`, `#696`, `#703`, `#716`):
   a true connection needs the state match AND the phase match, so no state match is still a
   negative on its face, but confirm how each search measured closest approach; (6) fix the
-  "Kumar Uranus-Oberon" anchor and the row's notes, which credit arXiv:2509.03655 with four-body
-  content that is in AAS 24-288; (7) README wording for this row; (8) owner ruling on whether
-  spec 16.4 (ii) "system" means the primary or the base moon (same question as Io-Callisto);
-  (9) anchor Pergola et al. IEPC-2007-305 (Uranus-moon three-body manifolds including Umbriel).
+  row's notes, which credit arXiv:2509.03655 with four-body content that is in AAS 24-288 (the
+  ANCHOR was corrected 2026-10-03, commit `806db9d8`); (7) README wording for this row;
+  (8) owner ruling on whether spec 16.4 (ii) "system" means the primary or the base moon (same
+  question as Io-Callisto); (9) ~~anchor Pergola et al. IEPC-2007-305~~ DONE 2026-10-03 (commit
+  `806db9d8`, scope `halo`); (10) the six Uranian rows' `literature_check` blocks were run
+  against 73 anchors and name the tour anchor by its old "Sims et al." title; re-run them when
+  the rows are next touched (74 anchors now; no status change expected).
 - `#881` — ✓ DONE 2026-10-03 (commit `469d219d`; follow-up (2) of `#880`, owner: "keep going"):
   **moon-system anchor scopes, the published Neptune-Triton families, and the Persephone
   citation.** Scoping the Neptune flyby anchor alone would have turned the gate there from "always
