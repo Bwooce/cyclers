@@ -897,6 +897,37 @@ def hyperbolic_bundles(
 # ---------------------------------------------------------------------------
 
 
+def _jacobi_gradient(states: FloatArray, mu: float) -> FloatArray:
+    """Gradient of the base CR3BP Jacobi constant w.r.t. ``(x, y, vx, vy)``."""
+    x, y, vx, vy = states[..., 0], states[..., 1], states[..., 2], states[..., 3]
+    r1 = np.hypot(x + mu, y)
+    r2 = np.hypot(x - 1.0 + mu, y)
+    a1 = (1.0 - mu) / r1**3
+    a2 = mu / r2**3
+    gx = 2.0 * x - 2.0 * a1 * (x + mu) - 2.0 * a2 * (x - 1.0 + mu)
+    gy = 2.0 * y - 2.0 * a1 * y - 2.0 * a2 * y
+    return np.stack([gx, gy, -2.0 * vx, -2.0 * vy], axis=-1)
+
+
+def project_to_jacobi_level(
+    states: FloatArray, c_target: FloatArray | float, mu: float
+) -> FloatArray:
+    """Move states along ``grad C`` onto ``C = c_target`` (two Newton steps).
+
+    Used only in the AUTONOMOUS limit ``mu_gan = 0``, where the true stable and
+    unstable manifolds of a periodic orbit lie in its Jacobi level: the linear
+    departure ``u + s*eps*v`` is off that level by ``O(eps^2)``, which leaves an
+    ``O(eps^2)`` floor in the connection residual that no choice of ``(theta,
+    s)`` can remove.
+    """
+    out = np.array(states, dtype=np.float64)
+    for _ in range(2):
+        g = _jacobi_gradient(out, mu)
+        dc = np.asarray(c_target) - _jacobi4(out, mu)
+        out = out + (dc / np.sum(g * g, axis=-1))[..., None] * g
+    return out
+
+
 def manifold_departure(
     circle: InvariantCircle,
     bundles: HyperbolicBundles,
@@ -908,13 +939,23 @@ def manifold_departure(
     sign: float = 1.0,
 ) -> tuple[FloatArray, FloatArray]:
     """Departure state ``u(theta) + sign*s*eps*v(theta)`` and its ``(4, 2)``
-    derivative with respect to ``(theta, s)``."""
+    derivative with respect to ``(theta, s)``.
+
+    When ``mu_gan == 0`` the state is additionally projected onto the Jacobi
+    level of ``u(theta)`` (:func:`project_to_jacobi_level`) and the derivative
+    onto that level's tangent space (to first order in the projection)."""
     v = bundles.vector(branch, theta)
     dv = bundles.vector(branch, theta, deriv=1)
-    x0 = circle.state(theta) + sign * s * eps * v
+    u = circle.state(theta)
+    x0 = u + sign * s * eps * v
     d = np.empty((4, 2))
     d[:, 0] = circle.dstate(theta) + sign * s * eps * dv
     d[:, 1] = sign * eps * v
+    if circle.system.mu_gan == 0.0:
+        mu = circle.system.mu
+        x0 = project_to_jacobi_level(x0, float(_jacobi4(u, mu)), mu)
+        g = _jacobi_gradient(x0, mu)
+        d = d - np.outer(g, g @ d) / float(g @ g)
     return x0, d
 
 
@@ -992,7 +1033,10 @@ def manifold_cloud(
     tt: FloatArray = tgrid.reshape(-1)
     ss: FloatArray = sgrid.reshape(-1)
     v = bundles.vector(branch, tt)
-    x0 = circle.state(tt) + sign * eps * ss[:, None] * v
+    base = circle.state(tt)
+    x0 = base + sign * eps * ss[:, None] * v
+    if circle.system.mu_gan == 0.0:
+        x0 = project_to_jacobi_level(x0, _jacobi4(base, circle.system.mu), circle.system.mu)
     nn = n_max if branch == "unstable" else -n_max
     orb = strob_iterates(
         circle.system,
