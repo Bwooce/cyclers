@@ -156,10 +156,13 @@ def test_melnikov_period_two_pi_over_a(l1_member: sf.SymmetricOrbit) -> None:
 
 def test_melnikov_zeros_at_symmetric_phases(l1_member: sf.SymmetricOrbit) -> None:
     """Brown et al. Prop. 3 (via the reversing symmetry): x-axis start, zeros at 0, pi/2."""
-    _, _, zeros = sf.find_zeros(MODEL, l1_member.state, TG, 2, n_grid=61)
+    _, _, zeros = sf.find_zeros(
+        MODEL, l1_member.state, TG, 2, period_orbit=l1_member.period, n_grid=60
+    )
     assert len(zeros) == 2
-    assert min(abs(zeros[0]), abs(zeros[0] - math.pi)) < 1e-7
-    assert abs(zeros[1] - math.pi / 2) < 1e-7
+    expected = [0.0, math.pi / 2, math.pi]
+    assert all(min(abs(z - e) for e in expected) < 1e-7 for z in zeros)
+    assert min(abs(z - math.pi / 2) for z in zeros) < 1e-7  # one zero at pi/2, one at 0 = pi
 
 
 def test_forced_orbit_closure_independent_integrator_and_reversibility(

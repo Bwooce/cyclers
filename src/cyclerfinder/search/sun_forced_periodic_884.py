@@ -58,6 +58,7 @@ from :mod:`cyclerfinder.core.bcr4bp` (read-only).
 from __future__ import annotations
 
 import math
+import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
@@ -425,10 +426,12 @@ def walk_family(
     targets: list[float],
     direction: float,
     *,
-    ds: float = 0.02,
+    ds: float = 0.005,
+    ds_max: float = 0.05,
     max_steps: int = 400,
     tol: float = 1e-11,
     t_window: tuple[float, float] = (0.5, 60.0),
+    wall_s: float = math.inf,
     log: Callable[[str], None] | None = None,
 ) -> tuple[list[SymmetricOrbit], dict[str, Any]]:
     """Pseudo-arclength along a symmetric family, collecting members at target periods.
@@ -437,7 +440,10 @@ def walk_family(
     period. ``direction`` (+1/-1) sets the initial sense of the period. Every
     crossing of a period in ``targets`` is corrected at exactly that period and
     returned (a family folding in period can cross a target more than once).
-    The info dict records the period range visited and the stop reason.
+    A step is accepted only if the corrector lands within half a step of the
+    predictor (guards against jumping to another family). The info dict records
+    the period range visited, a subsampled trace ``(T, C, x0, vy0)`` and the stop
+    reason.
     """
     spatial = abs(float(seed[1])) > 0.0
     first = correct_symmetric_fixed_period(model, seed, seed_period)
@@ -451,23 +457,30 @@ def walk_family(
     if tan[-1] * direction < 0:
         tan = -tan
     t_min = t_max = seed_period
+    trace: list[list[float]] = [[seed_period, jacobi(first.state, model.mu), first.x0, first.vy0]]
     info: dict[str, Any] = {"reason": "max_steps", "seed_corrected": first.state.tolist()}
+    step = 0
+    t_start = time.monotonic()
     for step in range(max_steps):
+        if time.monotonic() - t_start > wall_s:
+            info["reason"] = f"wall-clock limit at T={z[-1]:.6f}"
+            break
         pred = z + ds * tan
         zz = pred.copy()
         ok = False
-        for _ in range(12):
-            res, jac, dt = _half_residual(model, zz[:-1], zz[-1], spatial)
-            full = np.column_stack([jac, dt])
-            big = np.vstack([full, tan])
-            rhs = np.concatenate([res, [tan @ (zz - pred)]])
-            if float(np.max(np.abs(res))) < tol:
-                ok = True
-                break
-            try:
+        try:
+            for _ in range(8):
+                res, jac, dt = _half_residual(model, zz[:-1], zz[-1], spatial)
+                if float(np.max(np.abs(res))) < tol:
+                    ok = True
+                    break
+                big = np.vstack([np.column_stack([jac, dt]), tan])
+                rhs = np.concatenate([res, [tan @ (zz - pred)]])
                 zz = zz - np.linalg.solve(big, rhs)
-            except np.linalg.LinAlgError:
-                break
+        except (np.linalg.LinAlgError, RuntimeError, ValueError):
+            ok = False
+        if ok and float(np.max(np.abs(zz - pred))) > 0.5 * ds:
+            ok = False  # corrector jumped: refuse and shorten the step
         if not ok:
             ds *= 0.5
             if ds < 1e-7:
@@ -481,6 +494,9 @@ def walk_family(
         z_prev = z
         z, tan = zz, newtan
         t_min, t_max = min(t_min, t_new), max(t_max, t_new)
+        if step % 5 == 0:
+            st = np.array([z[0], 0.0, z[1] if spatial else 0.0, 0.0, z[-2], 0.0])
+            trace.append([t_new, jacobi(st, model.mu), float(z[0]), float(z[-2])])
         if log is not None and step % 50 == 0:
             log(f"  family step {step}: T={t_new:.6f} x0={z[0]:.6f}")
         for tp in targets:
@@ -488,8 +504,12 @@ def walk_family(
                 w = (tp - t_old) / (t_new - t_old)
                 zi = (1 - w) * z_prev + w * z  # chord interpolation
                 guess = np.array([zi[0], zi[1] if spatial else 0.0, zi[-2]])
-                member = correct_symmetric_fixed_period(model, guess, tp)
-                if member.residual < 1e-9:
+                try:
+                    member = correct_symmetric_fixed_period(model, guess, tp)
+                except (np.linalg.LinAlgError, RuntimeError):
+                    continue
+                near = abs(member.x0 - guess[0]) + abs(member.vy0 - guess[2]) < 1e-3
+                if member.residual < 1e-9 and near:
                     found.append(member)
         if len(found) and len(targets) == 1:
             info["reason"] = "reached"
@@ -502,8 +522,8 @@ def walk_family(
         if min(r1, r2) < 0.005:
             info["reason"] = f"start point near a primary at T={t_new:.6f}"
             break
-        ds = min(ds * 1.3, 0.2)
-    info.update({"T_min": t_min, "T_max": t_max, "steps": step})
+        ds = min(ds * 1.3, ds_max)
+    info.update({"T_min": t_min, "T_max": t_max, "steps": step, "trace": trace})
     return found, info
 
 
@@ -512,35 +532,71 @@ def walk_family(
 # ---------------------------------------------------------------------------
 
 
+@dataclass(frozen=True)
+class MelnikovSamples:
+    """Unperturbed orbit sampled on a uniform grid over the forced period ``P``."""
+
+    t: FloatArr
+    r: FloatArr
+    v: FloatArr
+    weights: FloatArr  # composite Simpson weights including h / 3
+
+
+def melnikov_samples(
+    model: ForcedModel,
+    x0: FloatArr,
+    period_forced: float,
+    *,
+    period_orbit: float | None = None,
+    samples_per_tu: int = 2000,
+) -> MelnikovSamples:
+    """Sample the CR3BP orbit over ``[0, P]``.
+
+    With ``period_orbit = T*`` only ONE lap is integrated and the orbit is
+    extended periodically (``x(t) = x(t mod T*)``). For unstable orbits with
+    ``a = P / T* > 1`` this is required: integrating ``a`` laps in one shot
+    departs from the periodic orbit by the growth of round-off along the
+    unstable direction.
+    """
+    span = period_orbit if period_orbit is not None else period_forced
+    sol = propagate(model, 0.0, 0.0, x0, 0.0, span, dense=True)
+    n = int(samples_per_tu * period_forced)
+    n = n + 1 if n % 2 == 0 else n
+    t = np.linspace(0.0, period_forced, n)
+    tm = np.mod(t, span) if period_orbit is not None else t
+    if period_orbit is not None:
+        tm[-1] = span if abs(t[-1] - round(t[-1] / span) * span) < 1e-9 else tm[-1]
+    st = sol.sol(tm)
+    h = t[1] - t[0]
+    w = np.ones(n)
+    w[1:-1:2] = 4.0
+    w[2:-1:2] = 2.0
+    return MelnikovSamples(t=t, r=st[:3].T.copy(), v=st[3:].T.copy(), weights=w * h / 3.0)
+
+
+def melnikov_eval(model: ForcedModel, smp: MelnikovSamples, thetas: FloatArr) -> FloatArr:
+    """``Mel(theta0) = -2 int_0^P v . a_sun(x(t), theta0 + w t) dt`` (Simpson)."""
+    out = np.empty(len(thetas))
+    for i, th in enumerate(np.atleast_1d(thetas)):
+        acc = sun_acc_unit(model, smp.r, th + model.omega_sun * smp.t)
+        out[i] = float(smp.weights @ (-2.0 * np.sum(smp.v * acc, axis=1)))
+    return out
+
+
 def melnikov_scan(
     model: ForcedModel,
     x0: FloatArr,
     period_forced: float,
     thetas: FloatArr,
     *,
-    samples_per_tu: int = 400,
+    period_orbit: float | None = None,
+    samples_per_tu: int = 2000,
 ) -> FloatArr:
-    """``Mel(theta0) = -2 int_0^P v . a_sun(x(t), theta0 + w t) dt`` on the CR3BP orbit.
-
-    Quadrature (composite Simpson on a uniform grid from dense output).
-    """
-    sol = propagate(model, 0.0, 0.0, x0, 0.0, period_forced, dense=True)
-    n = int(samples_per_tu * period_forced) | 1
-    n = n + 1 if n % 2 == 0 else n
-    t = np.linspace(0.0, period_forced, n)
-    st = sol.sol(t)  # (6, n)
-    r = st[:3].T  # (n, 3)
-    v = st[3:].T
-    out = np.empty(len(thetas))
-    h = t[1] - t[0]
-    w = np.ones(n)
-    w[1:-1:2] = 4.0
-    w[2:-1:2] = 2.0
-    for i, th in enumerate(thetas):
-        acc = sun_acc_unit(model, r, th + model.omega_sun * t)
-        integrand = -2.0 * np.sum(v * acc, axis=1)
-        out[i] = h / 3.0 * float(w @ integrand)
-    return out
+    """Convenience wrapper: sample the orbit, then evaluate the Melnikov function."""
+    smp = melnikov_samples(
+        model, x0, period_forced, period_orbit=period_orbit, samples_per_tu=samples_per_tu
+    )
+    return melnikov_eval(model, smp, thetas)
 
 
 def melnikov_variational(
@@ -558,29 +614,36 @@ def find_zeros(
     period_forced: float,
     a: int,
     *,
-    n_grid: int = 241,
+    period_orbit: float | None = None,
+    n_grid: int = 240,
+    samples_per_tu: int = 2000,
 ) -> tuple[FloatArr, FloatArr, list[float]]:
-    """Scan ``theta0`` over one Melnikov period ``[0, 2 pi / a)`` and refine sign changes."""
+    """Scan ``theta0`` over one Melnikov period (length ``2 pi / a``); refine sign changes.
+
+    The grid is offset by half a cell so that zeros at the symmetric phases
+    (multiples of ``pi / a``) fall strictly inside a cell.
+    """
     span = 2.0 * math.pi / a
-    th = np.linspace(0.0, span, n_grid)
-    mel = melnikov_scan(model, x0, period_forced, th)
+    smp = melnikov_samples(
+        model, x0, period_forced, period_orbit=period_orbit, samples_per_tu=samples_per_tu
+    )
+    cell = span / n_grid
+    th = np.asarray(-0.5 * cell + cell * np.arange(n_grid + 1), dtype=np.float64)
+    mel = melnikov_eval(model, smp, th)
     zeros: list[float] = []
-    for i in range(n_grid - 1):
+    for i in range(n_grid):
         f0, f1 = mel[i], mel[i + 1]
-        if f0 == 0.0:
-            zeros.append(float(th[i]))
-        elif f0 * f1 < 0:
+        if f0 * f1 < 0:
             lo, hi, flo = th[i], th[i + 1], f0
-            for _ in range(40):
+            for _ in range(45):
                 mid = 0.5 * (lo + hi)
-                fm = float(melnikov_scan(model, x0, period_forced, np.array([mid]))[0])
+                fm = float(melnikov_eval(model, smp, np.array([mid]))[0])
                 if fm * flo <= 0:
                     hi = mid
                 else:
                     lo, flo = mid, fm
-            zeros.append(float(0.5 * (lo + hi)))
-    zeros = sorted({round(z, 12) % span for z in zeros})
-    return th, mel, zeros
+            zeros.append(float(0.5 * (lo + hi)) % span)
+    return th, mel, sorted(zeros)
 
 
 # ---------------------------------------------------------------------------
@@ -627,10 +690,21 @@ class ShootingProblem:
             m = s @ m
         return m
 
-    def nodes_from_orbit(self, x0: FloatArr, eps: float = 0.0) -> FloatArr:
-        """Nodes of a single trajectory from ``x0`` (eps given) at the segment times."""
+    def nodes_from_orbit(
+        self, x0: FloatArr, eps: float = 0.0, period_orbit: float | None = None
+    ) -> FloatArr:
+        """Nodes at the segment times of the trajectory from ``x0``.
+
+        With ``period_orbit = T*`` (unperturbed periodic orbit, ``eps = 0``) one lap
+        is integrated and extended periodically, which keeps the nodes on the
+        orbit for unstable orbits spanning several laps.
+        """
+        tt = self.times()[:-1]
+        if period_orbit is not None:
+            sol = propagate(self.model, 0.0, 0.0, x0, 0.0, period_orbit, dense=True)
+            return np.asarray(sol.sol(np.mod(tt, period_orbit)).T, dtype=np.float64)
         sol = propagate(self.model, eps, self.theta0, x0, 0.0, self.period, dense=True)
-        return np.asarray(sol.sol(self.times()[:-1]).T, dtype=np.float64)
+        return np.asarray(sol.sol(tt).T, dtype=np.float64)
 
 
 def newton_fixed_eps(
@@ -689,6 +763,7 @@ def continue_in_eps(
     log: Callable[[str], None] | None = None,
     eps_target: float = 1.0,
     reverse_from: tuple[FloatArr, float] | None = None,
+    wall_s: float = math.inf,
 ) -> Branch:
     """Pseudo-arclength in ``(nodes, eps)`` from the CR3BP orbit (or a given point).
 
@@ -706,12 +781,20 @@ def continue_in_eps(
     if reverse_from is None:
         _, jac0, jeps0, _ = prob.evaluate(xs0, 0.0)
         y = np.linalg.lstsq(jac0, -jeps0, rcond=None)[0]
-        xs = xs0 + eps_start * y.reshape(xs0.shape)
-        xs, nrm, ok = newton_fixed_eps(prob, xs, eps_start, tol=tol)
+        ok = False
+        nrm = math.inf
+        xs = xs0
+        e_try = eps_start
+        for e_try in (eps_start, 0.1 * eps_start, 0.01 * eps_start):
+            # The first-order predictor is valid for eps << 1 / max|lambda|; very
+            # unstable orbits need a smaller first step.
+            xs, nrm, ok = newton_fixed_eps(prob, xs0 + e_try * y.reshape(xs0.shape), e_try, tol=tol)
+            if ok:
+                break
         if not ok:
-            br.stop_reason = f"start Newton failed at eps={eps_start:.1e} (res {nrm:.2e})"
+            br.stop_reason = f"start Newton failed down to eps={e_try:.1e} (res {nrm:.2e})"
             return br
-        eps = eps_start
+        eps = e_try
         sign = 1.0
     else:
         xs, eps = reverse_from
@@ -724,7 +807,11 @@ def continue_in_eps(
     z = np.concatenate([xs.reshape(n6), [eps]])
     tan = _tangent(jac, jeps, None, sign)
     ds = ds0
+    t_start = time.monotonic()
     for step in range(max_steps):
+        if time.monotonic() - t_start > wall_s:
+            br.stop_reason = f"wall-clock limit at eps={z[-1]:.6g}"
+            return br
         pred = z + ds * tan
         zz = pred.copy()
         ok = False

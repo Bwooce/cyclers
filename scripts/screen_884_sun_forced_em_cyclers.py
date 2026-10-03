@@ -173,7 +173,7 @@ def _cr3bp_info(model: sf.ForcedModel, member: sf.SymmetricOrbit) -> dict[str, A
     }
 
 
-def family_task(name: str, seed: dict[str, Any]) -> dict[str, Any]:
+def family_task(name: str, seed: dict[str, Any], directions: tuple[float, ...]) -> dict[str, Any]:
     model = sf.default_model()
     tg = model.tg
     tl = targets(tg)
@@ -184,16 +184,20 @@ def family_task(name: str, seed: dict[str, Any]) -> dict[str, Any]:
         return rec
     members: list[dict[str, Any]] = []
     walks = []
-    for direction in (+1.0, -1.0):
-        found, info = sf.walk_family(
-            model,
-            np.array(s),
-            seed["period"],
-            tl,
-            direction,
-            max_steps=250,
-            t_window=(max(0.5, seed["period"] - 10), seed["period"] + 10),
-        )
+    for direction in directions:
+        try:
+            found, info = sf.walk_family(
+                model,
+                np.array(s),
+                seed["period"],
+                tl,
+                direction,
+                max_steps=500,
+                wall_s=330.0,
+                t_window=(max(0.5, seed["period"] - 7), seed["period"] + 7),
+            )
+        except (RuntimeError, np.linalg.LinAlgError) as exc:
+            found, info = [], {"reason": f"walk raised {type(exc).__name__}: {exc}"}
         walks.append({"direction": direction, **{k: v for k, v in info.items()}})
         for m in found:
             fr = ratio_of(m.period, tg)
@@ -221,18 +225,26 @@ def melnikov_task(member: dict[str, Any]) -> dict[str, Any]:
     a, n = member["a"], member["n"]
     p = n * model.tg
     x0 = np.array(member["state"])
-    th, mel, zeros = sf.find_zeros(model, x0, p, a)
+    th, mel, zeros = sf.find_zeros(model, x0, p, a, period_orbit=member["period"])
     span = 2 * math.pi / a
     probe = np.array([0.3 * span, 0.7 * span])
-    shifted = sf.melnikov_scan(model, x0, p, probe + span)
-    base = sf.melnikov_scan(model, x0, p, probe)
+    smp = sf.melnikov_samples(model, x0, p, period_orbit=member["period"])
+    shifted = sf.melnikov_eval(model, smp, probe + span)
+    base = sf.melnikov_eval(model, smp, probe)
+    coarse = sf.melnikov_eval(
+        model,
+        sf.melnikov_samples(model, x0, p, period_orbit=member["period"], samples_per_tu=1000),
+        probe,
+    )
+    # The variational value integrates a laps in one shot: reliable only when
+    # max|lambda|^a is moderate; reported, not used.
     var = sf.melnikov_variational(model, x0, p, float(probe[0]))
     amp = float(np.max(np.abs(mel)))
     # Derivative sign at each zero (alternation <-> elliptic / hyperbolic pairing).
     slopes = []
     for z in zeros:
         h = 1e-4
-        f = sf.melnikov_scan(model, x0, p, np.array([z - h, z + h]))
+        f = sf.melnikov_eval(model, smp, np.array([z - h, z + h]))
         slopes.append(float((f[1] - f[0]) / (2 * h)))
     return {
         **member,
@@ -242,6 +254,7 @@ def melnikov_task(member: dict[str, Any]) -> dict[str, Any]:
         "melnikov_slopes": slopes,
         "periodicity_check": float(np.max(np.abs(shifted - base))),
         "variational_vs_quadrature": float(abs(var - base[0])),
+        "quadrature_convergence": float(np.max(np.abs(coarse - base))),
         "theta_grid": th.tolist()[::4],
         "mel_grid": mel.tolist()[::4],
     }
@@ -252,9 +265,9 @@ def continue_task(member: dict[str, Any], theta0: float, max_steps: int) -> dict
     p = member["forced_period"]
     nseg = max(2, math.ceil(p / 1.5))
     prob = sf.ShootingProblem(model, p, theta0, nseg)
-    xs = prob.nodes_from_orbit(np.array(member["state"]))
+    xs = prob.nodes_from_orbit(np.array(member["state"]), period_orbit=member["period"])
     t0 = time.time()
-    br = sf.continue_in_eps(prob, xs, max_steps=max_steps)
+    br = sf.continue_in_eps(prob, xs, max_steps=max_steps, wall_s=280.0)
     rec: dict[str, Any] = {
         "family": member["family"],
         "row": member["row"],
@@ -302,7 +315,7 @@ def control_task(name: str, seed: list[float], seed_period: float, target: float
     trial = [*zeros, 0.37 * 2 * math.pi / a, 0.81 * 2 * math.pi / a]
     for th0 in trial:
         prob = sf.ShootingProblem(model, p, th0, nseg)
-        xs = prob.nodes_from_orbit(member.state)
+        xs = prob.nodes_from_orbit(member.state, period_orbit=member.period)
         br = sf.continue_in_eps(prob, xs, max_steps=200)
         b: dict[str, Any] = {
             "theta0": th0,
@@ -391,7 +404,12 @@ def stage_families(workers: int, budget: float) -> None:
     seeds = {s["row"]: s for s in catalogue_seeds()}
     tasks = []
     for name, row in FAMILY_SEEDS.items():
-        tasks.append((OUT / "families" / f"{row}.json", family_task, (name, seeds[row])))
+        old = OUT / "families" / f"{row}.json"  # both directions in one task (first runs)
+        if old.exists():
+            continue
+        for tag, d in (("up", 1.0), ("dn", -1.0)):
+            path = OUT / "families" / f"{row}__{tag}.json"
+            tasks.append((path, family_task, (name, seeds[row], (d,))))
     run_pool(tasks, workers, budget)
 
 
@@ -406,7 +424,7 @@ def _members() -> list[dict[str, Any]]:
     for m in out:
         if not any(
             abs(u["period"] - m["period"]) < 1e-9
-            and np.max(np.abs(np.array(u["state"]) - np.array(m["state"]))) < 1e-6
+            and np.max(np.abs(np.abs(np.array(u["state"])) - np.abs(np.array(m["state"])))) < 1e-6
             for u in uniq
         ):
             uniq.append(m)
@@ -422,12 +440,19 @@ def stage_melnikov(workers: int, budget: float) -> None:
     run_pool(tasks, workers, budget)
 
 
-def stage_continue(workers: int, budget: float, max_a: int, max_steps: int) -> None:
+def stage_continue(
+    workers: int, budget: float, max_a: int, max_steps: int, cyclers_only: bool
+) -> None:
     tasks = []
-    for f in sorted((OUT / "melnikov").glob("*.json")):
-        m = json.loads(f.read_text())
+    mels = [json.loads(f.read_text()) | {"_stem": f.stem} for f in OUT.glob("melnikov/*.json")]
+    mels.sort(key=lambda m: m.get("forced_period", 0.0))
+    for m in mels:
         if "error" in m or m["a"] > max_a:
             continue
+        if cyclers_only and m["periselene_km_cr3bp"] > sf.LUNAR_SOI_KM:
+            continue
+        stem = m.pop("_stem")
+        f = OUT / "melnikov" / f"{stem}.json"
         for i, z in enumerate(m["melnikov_zeros"]):
             path = OUT / "continue" / f"{f.stem}__z{i}.json"
             tasks.append((path, continue_task, (m, z, max_steps)))
@@ -507,6 +532,7 @@ def stage_summary() -> None:
                     "melnikov_slopes",
                     "periodicity_check",
                     "variational_vs_quadrature",
+                    "quadrature_convergence",
                 )
             }
         )
@@ -530,6 +556,7 @@ def main() -> None:
     )
     ap.add_argument("--max-a", type=int, default=3)
     ap.add_argument("--max-steps", type=int, default=150)
+    ap.add_argument("--cyclers-only", action="store_true")
     args = ap.parse_args()
     log(f"#884 stage {args.stage}; Tg = {sf.default_model().tg:.9f} TU")
     w = min(args.workers, 4)
@@ -540,7 +567,7 @@ def main() -> None:
     elif args.stage == "melnikov":
         stage_melnikov(w, args.budget_s)
     elif args.stage == "continue":
-        stage_continue(w, args.budget_s, args.max_a, args.max_steps)
+        stage_continue(w, args.budget_s, args.max_a, args.max_steps, args.cyclers_only)
     else:
         stage_summary()
 
