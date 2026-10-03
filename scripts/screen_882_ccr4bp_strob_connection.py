@@ -314,7 +314,8 @@ def stage_g5(args: argparse.Namespace) -> None:
         rho_weight=100.0,
     )
     log(
-        f"#694 torus: residual_rms {torus.residual_rms:.3e}, closure {torus.closure_residual:.3e}, rho_strob {torus.rho_strob:.6f}"
+        f"#694 torus: residual_rms {torus.residual_rms:.3e}, "
+        f"closure {torus.closure_residual:.3e}, rho_strob {torus.rho_strob:.6f}"
     )
     rec: dict[str, Any] = {
         "seed_orbit_floquet": [complex(e) for e in ev],
@@ -329,7 +330,8 @@ def stage_g5(args: argparse.Namespace) -> None:
         res0, _ = sc.circle_residual(seed)
         orb = sc.strob_iterates(phys, seed.nodes, n=1, t0=seed.t0, radii=radii)
         log(
-            f"N={n_nodes}: seed residual {res0:.3e}; min dist to Ganymede over one period {orb.min_dist[:, 2].min():.4e}"
+            f"N={n_nodes}: seed residual {res0:.3e}; "
+            f"min dist to Ganymede over one period {orb.min_dist[:, 2].min():.4e}"
         )
         c = sc.correct_invariant_circle(
             phys, seed.nodes, seed.rho, t0=seed.t0, tol=1e-10, max_iter=15, verbose=True
@@ -388,7 +390,8 @@ def stage_r1(args: argparse.Namespace) -> None:
             )
             clouds[(branch, sign)] = cl
             log(
-                f"cloud {branch} sign {sign:+.0f}: {cl.thetas.size} trajectories x {args.n_max} periods, dropped {cl.n_dropped}"
+                f"cloud {branch} sign {sign:+.0f}: {cl.thetas.size} trajectories x {args.n_max} "
+                f"periods, dropped {cl.n_dropped}"
             )
     cands: list[sc.ConnectionCandidate] = []
     for su in (1.0, -1.0):
@@ -401,7 +404,9 @@ def stage_r1(args: argparse.Namespace) -> None:
                 circle=c0,
             )
             log(
-                f"coarse (u{su:+.0f}, s{ss:+.0f}): best distances {[round(c.distance, 5) for c in cc[:5]]} (n_u, n_s) {[(c.n_u, c.n_s) for c in cc[:5]]}"
+                f"coarse (u{su:+.0f}, s{ss:+.0f}): best distances "
+                f"{[round(c.distance, 5) for c in cc[:5]]} "
+                f"(n_u, n_s) {[(c.n_u, c.n_s) for c in cc[:5]]}"
             )
             cands.extend(cc)
     cands.sort(key=lambda c: c.distance)
@@ -410,8 +415,10 @@ def stage_r1(args: argparse.Namespace) -> None:
     for cand in cands[: args.n_refine]:
         con = sc.refine_connection(c0, b0, c0, b0, cand, eps=eps)
         log(
-            f"refine {cand.n_u},{cand.n_s} signs ({cand.sign_u:+.0f},{cand.sign_s:+.0f}) coarse {cand.distance:.3e} -> "
-            f"residual {con.residual:.3e} in {con.n_iter} it; sv {np.array2string(con.singular_values, precision=3)}"
+            f"refine {cand.n_u},{cand.n_s} signs ({cand.sign_u:+.0f},{cand.sign_s:+.0f}) "
+            f"coarse {cand.distance:.3e} -> "
+            f"residual {con.residual:.3e} in {con.n_iter} it; "
+            f"sv {np.array2string(con.singular_values, precision=3)}"
         )
         entry: dict[str, Any] = {
             "candidate": dataclasses.asdict(cand),
@@ -423,7 +430,8 @@ def stage_r1(args: argparse.Namespace) -> None:
             entry["verification"] = verification_summary(v)
             entry["jacobi_departure_minus_orbit"] = v.jacobi_start - c_orbit
             log(
-                f"  Jacobi: orbit {c_orbit:.12f}, departure - orbit {v.jacobi_start - c_orbit:.3e}, drift {v.jacobi_drift:.3e}"
+                f"  Jacobi: orbit {c_orbit:.12f}, departure - orbit "
+                f"{v.jacobi_start - c_orbit:.3e}, drift {v.jacobi_drift:.3e}"
             )
             verified += 1
         results.append(entry)
@@ -459,7 +467,7 @@ def stage_r2(args: argparse.Namespace) -> None:
         return
     base = good[0]["connection"]
     phys = ccr4bp.jupiter_europa_ganymede_default()
-    c0, b0, _, period = _r1_setup(eps)
+    c0, b0, _, _ = _r1_setup(eps)
     # Unperturbed family: time-shifted copies of the homoclinic, by seeding the
     # unperturbed refine at shifted theta (rank-deficient Newton slides onto the curve).
     shifts = np.linspace(0.0, 2 * math.pi, args.n_family, endpoint=False)
@@ -546,8 +554,10 @@ def stage_r2(args: argparse.Namespace) -> None:
                 "connection": connection_summary(con),
             }
             log(
-                f"branch {bi} frac {frac:g}: circle {circ.residual:.1e} lam_u {bun.lam_u:.5f}; connection residual "
-                f"{con.residual:.2e} sv {np.array2string(con.singular_values, precision=3)} theta_u {con.theta_u:.5f}"
+                f"branch {bi} frac {frac:g}: circle {circ.residual:.1e} lam_u {bun.lam_u:.5f}; "
+                f"connection residual "
+                f"{con.residual:.2e} sv {np.array2string(con.singular_values, precision=3)} "
+                f"theta_u {con.theta_u:.5f}"
             )
             if not con.converged:
                 e["failed"] = "connection"
@@ -585,7 +595,8 @@ def stage_r3a(args: argparse.Namespace) -> None:
         c0 = sc.seed_circle_from_periodic_orbit(sys0, sc.to_state4(s0), period, n_nodes)
         r = np.hypot(c0.nodes[:, 0] + uut.mu, c0.nodes[:, 1])
         log(
-            f"N={n_nodes}: orbit radius range [{r.min():.4f}, {r.max():.4f}], Titania at {uut.a_gan:.4f}, rho {c0.rho:.5f}"
+            f"N={n_nodes}: orbit radius range [{r.min():.4f}, {r.max():.4f}], "
+            f"Titania at {uut.a_gan:.4f}, rho {c0.rho:.5f}"
         )
         steps = sc.continue_circle_in_mass(
             c0, uut.mu_gan, fractions=tuple(args.fractions), verbose=True
@@ -635,7 +646,8 @@ def stage_r3b(args: argparse.Namespace) -> None:
                     "min_dist_umbriel_nodes": dmoon,
                 }
                 log(
-                    f"{p}:{q} e={e} {apse}: T={period:.4f} lam={lam:.4f} hyperbolic={hyper} r=[{r.min():.3f},{r.max():.3f}] dUmb={dmoon:.3f}"
+                    f"{p}:{q} e={e} {apse}: T={period:.4f} lam={lam:.4f} hyperbolic={hyper} "
+                    f"r=[{r.min():.3f},{r.max():.3f}] dUmb={dmoon:.3f}"
                 )
                 rec["orbits"].append(entry)
                 if not hyper or r.max() > uut.a_gan - 0.1:
@@ -697,7 +709,8 @@ def _homoclinic_search(
     for cand in cands[: args.n_refine]:
         con = sc.refine_connection(c, b, c, b, cand, eps=eps)
         log(
-            f"   refine ({cand.n_u},{cand.n_s}) coarse {cand.distance:.3e} -> {con.residual:.3e} sv {np.array2string(con.singular_values, precision=3)}"
+            f"   refine ({cand.n_u},{cand.n_s}) coarse {cand.distance:.3e} -> {con.residual:.3e} "
+            f"sv {np.array2string(con.singular_values, precision=3)}"
         )
         e: dict[str, Any] = {
             "candidate": dataclasses.asdict(cand),
