@@ -97,8 +97,8 @@ note). Miss a gate by more than a week and the following wave is NOT dispatched.
 VEM scan that enumerates <=1 revolution per leg; do NOT re-propose `#600`/`#663`, `#695`/`#702`,
 `#563`-class sweeps, Titania-Oberon CCR4BP, or `#790` as registered (sec. 8). Disposition of the
 2026-08-21 "genuinely OPEN" list above: `#791` SHELVED 2026-08-22 (Fable, `d33c2771`); `#789`
-superseded by the `#859` pilot (harness built, Stage A NOT run) and to be formally SHELVED by
-`#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. Unpushed at
+superseded by the `#859` pilot (harness built, Stage A NOT run) and formally SHELVED 2026-10-03
+under `#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. Unpushed at
 wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
 
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
@@ -200,9 +200,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `docs/notes/2026-08-08-788-campaign-runner-infrastructure.md`. `#795` registered as the
   follow-on (a CLI wrapper script for the first real campaign to use, once `#789`+ needs one).
 - `#789` — registered 2026-08-08 (Campaign 1 of the combinatorial-search survey, "the Resonant
-  Atlas"), **gated on `#788` landing first** — **STATUS 2026-09-07: original scope superseded by the
-  narrowed `#859` pilot (harness built, Stage A never run); `#864` recommends SHELVED, formal
-  disposition via `#865`; body below is the original registration**: sweep (system x p:q resonance x energy) using the
+  Atlas") — **SHELVED 2026-10-03 (formal disposition under `#865`, as `#864` recommended; do NOT
+  dispatch). Original scope was superseded by the narrowed `#859` pilot, whose Oberon gate then
+  failed (`#861`, FINAL DISPOSITION 2026-08-21: Resonant Atlas shelved). Reopen condition (`#864`
+  sec. 8): `#862` passes >=4/6 on Oberon AND a writeback decision exists. Body below is the original
+  registration, which was gated on `#788`**: sweep (system x p:q resonance x energy) using the
   family+connection pipeline validated across Jupiter-Europa/`#754`, Saturn-Titan/`#767`,
   Neptune-Triton/`#781`, Earth-Moon/`#780`/`#786` — so far only ever run at ONE paper-anchored
   energy per system, on 4 systems, for a handful of published resonance ratios. The registry can
@@ -216,10 +218,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#765`/`#768`-style evidence pattern (independent Radau cross-check, basin robustness,
   ghost-guard margins), not a paper table, since not every system will have one.
 - `#790` — registered 2026-08-08 (Campaign 2 of the combinatorial-search survey, "periodic-chain
-  itinerary enumeration"), **gated on `#789`'s own atlas for its alphabet of legs** — **STATUS
-  2026-09-07: BLOCKED on the missing Jacobi-pinned multiple-shooting corrector (G1 = `#872`); `#791`
-  was redirected here 2026-08-22; do not dispatch as registered (`#864` sec. 8); body below is the
-  original registration**: search
+  itinerary enumeration") — **STATUS 2026-10-03 (text fixed under `#865`): BLOCKED on the missing
+  Jacobi-pinned multiple-shooting corrector (G1 = `#872`). The original "gated on `#789`'s own atlas
+  for its alphabet of legs" wording is stale: `#789` is SHELVED, so that gate cannot be met as
+  written; `#872`'s chain pilot runs over PUBLISHED alphabets instead. `#791` was redirected here
+  2026-08-22; do not dispatch as registered (`#864` sec. 8); body below is the original
+  registration**: search
   bounded-length cyclic itineraries over resonant-orbit "legs" (each leg a manifold connection),
   closed into one periodic orbit — the finite, catalogue-relevant projection of Llibre-Martínez-
   Simó 1985's own proven Bernoulli-shift horseshoe (`#749`; the raw infinite non-periodic
@@ -372,6 +376,41 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   caveat to the `#465` Uranus/Neptune powered stamps; record the VEM topology-gap invalidation of
   `#110`/`#120`/`#122`/`#133`; mark `#789` SHELVED in its own bullet; fix `#790`'s stale "gated on
   #789" text; fix the `data_gaps.todo_ref` pointing at closed `#587`. Full ratchets. ~3-4 days.
+  **PROGRESS 2026-10-03 (tranche 1, mechanical items; amdnuc checkout):** DONE — `primary: "Uranus"`
+  added to the 6 flagship quasi_cycler rows; `#789` marked SHELVED in its own bullet; `#790`'s
+  stale "gated on `#789`" text fixed; the stale `todo_ref` fixed (see below); `#877`'s follow-up
+  folded in (see below). **`todo_ref` finding:** 18 gaps on the 6 rows cited closed `#587`. 12 are
+  `kind: not-applicable` (heliocentric `aphelion_ratio`, `orbit_elements.cr3bp`): permanent by
+  nature, and citing the task that established them matches the 67 other not-applicable gaps, so
+  they are left alone. The real defect is the 6 `kind: unknown` `invariants.turn_ratio` gaps (the
+  achieved turn angle per encounter was never computed): repointed to new task `#879`.
+  **`#877` follow-up finding:** only 2 of the 5 named scripts carried a hygiene clause.
+  `run_667` overrode for hygiene alone, so its `override_reason` is removed outright and all three
+  checks are live; `run_810` keeps its genuine registry-overlap justification with the hygiene
+  sentence dropped; `run_656`/`run_657`/`run_665` justify skipping the timing pilot and never
+  mentioned hygiene, so they are unchanged. **Census ratchet:** adding `primary` moved the six rows
+  from NOT_TWO_BODY (16 -> 10) to NON_HELIOCENTRIC (94 -> 100) in
+  `tests/test_catalogue_rediscovery.py::EXPECTED_COVERAGE`, updated in the same commit. Full
+  local `uv run pytest` on amdnuc: 4569 passed; the only other failures were five last-digit
+  reproducibility comparisons in tests that read none of the changed rows (`test_705`,
+  `test_kumar_entry_reproduces_fresh`, `test_ccr4bp_real_ephemeris_consistency` e2e,
+  `test_vaquero_c313` x2) — the `#584`-class cross-machine divergence, here on a Ryzen 5825U. **STILL OPEN:** (a) `our_status` + `discovery_run` on
+  the 8 `source: discovered` rows — NOT a blanket `candidate-novel`: `#875` (decided after this
+  bullet was written) keeps torus rows around published orbits at `known-class-member`, and spec
+  sec. 16.5 requires a populated `literature_check` block before any `candidate-novel` tag, which
+  none of the 8 rows carries (their clearances are prose in `notes`); a per-row proposal goes to
+  the owner first; (b) the ~10 negative stamps; (c) `#663` cross-ref on the `#600` stamp; (d) the
+  `#465` band caveat; (e) the VEM topology-gap invalidation record; (f) registering G1.
+- `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
+  turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
+  `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
+  closing the six `kind: unknown` `data_gaps` entries that cited closed `#587`. The maximum-bend
+  side already exists (`data/rerun_324_physical_gate.jsonl` for `#312`; `core/flyby.py::max_bend`
+  generally); the achieved side is the angle between incoming and outgoing V-infinity at each
+  encounter of the row's own `legs`. Derived value, so tag it DERIVED with this task number; check
+  the ratio's direction against `#832` (the turn-ratio direction was inverted once already).
+  No validation-tier or novelty consequence. **Recommended model:** Sonnet behind a hand-checked
+  value for the `#312` row.
 - `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
   AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
   published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,

@@ -237,27 +237,6 @@ def main() -> None:
         script_path=pathlib.Path(__file__),
         n_points=total_points,
         timing_pilot_seconds_per_point=_MEASURED_SEC_PER_POINT,
-        # #667 IS registered in data/OUTSTANDING.md (its own bullet, "- **#667
-        # (registered 2026-07-19, not yet dispatched)** ..."), but
-        # preflight.py's own _TASK_ALLOCATION_RE regex requires the literal
-        # CONTIGUOUS "**#NNN**" (nothing between the digits and the closing
-        # "**"), which every post-#645 bullet header style (a parenthetical
-        # registration date, a "✓ DONE (date, model)" annotation, etc.)
-        # breaks -- confirmed directly: the regex currently recognizes a
-        # max task number of #645 across the WHOLE file. This is a checker
-        # false-negative (the real hygiene condition -- "is this task
-        # actually registered" -- is satisfied), not a genuine gap, so the
-        # audited override escape hatch is the right tool here rather than
-        # reformatting the bullet just to game the regex.
-        override_reason=(
-            "#667 is registered in data/OUTSTANDING.md's own bullet, but "
-            "preflight.py's _TASK_ALLOCATION_RE only matches a literal "
-            "contiguous '**#NNN**' with nothing in between; every post-#645 "
-            "bullet header (date/model/status annotations inside the bold) "
-            "breaks that regex -- confirmed the checker's recognized task "
-            "numbers currently top out at #645. Checker false-negative, not "
-            "a real registration gap."
-        ),
     )
 
     print(f"[{_ts()}] Preflight clear. Total propagations this run: {total_points}")

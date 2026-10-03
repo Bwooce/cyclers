@@ -860,9 +860,7 @@ def main() -> None:
         script_path=Path(__file__),
         n_points=n_up + n_down,
         override_reason=(
-            "#810 IS registered in data/OUTSTANDING.md (its bullet uses the "
-            "backtick list style, not the bold style the allocation regex "
-            "matches -- the same false positive #656 recorded); the region "
+            "the region "
             "intentionally overlaps pluto-charon-kk-45-cycler-sweep-2026-07-19 "
             "because THIS method (fixed-hc branch tracking) is strictly more "
             "capable on the (5,1) row that region itself flags as UNSETTLED "

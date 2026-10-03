@@ -334,7 +334,13 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # self-hosted CI runner's full `pytest` run surfaced it (2026-08-21,
     # investigated after a direct "CI failed?" user question). Pure census
     # shift -- not v1-gauntlet-reachable (non-heliocentric primary).
-    ExclusionReason.NON_HELIOCENTRIC: 94,
+    # 94 -> 100 (2026-10-03, #865): the six Uranian (1,1) quasi_cycler rows
+    # gained the `primary: "Uranus"` key they were missing (#864 finding: with
+    # no `primary` they defaulted to heliocentric under data/README's rule and
+    # were filed NOT_TWO_BODY only by accident of having three `bodies`).
+    # NON_HELIOCENTRIC is the correct lane; pure census shift, paired with the
+    # NOT_TWO_BODY 16 -> 10 change below.
+    ExclusionReason.NON_HELIOCENTRIC: 100,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
@@ -437,7 +443,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # ariel-titania / ariel-umbriel), each bodies=[Uranus, MoonA, MoonB]
     # (3-body Uranus+2-moon, no period.years/period.k) -> NOT_TWO_BODY, the same
     # lane the #312 umbriel-oberon first-documented family member itself files in.
-    ExclusionReason.NOT_TWO_BODY: 16,
+    # 16 -> 10 (2026-10-03, #865): those six Uranian rows (#312's + #569's five)
+    # now carry `primary: "Uranus"` and file under NON_HELIOCENTRIC instead.
+    ExclusionReason.NOT_TWO_BODY: 10,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

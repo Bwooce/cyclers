@@ -50040,6 +50040,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Umbriel", "Oberon"]
   sequence_canonical: "Umbriel-Oberon-Umbriel"
   sense: "n/a"
@@ -50067,7 +50068,7 @@
     kind: "unknown"
     note: "The #324 physical-sanity gate records the MAXIMUM achievable ballistic bend at each encounter (14.7 deg at Umbriel, 39 deg at Oberon, both at 100 km altitude), but the ACTUALLY-ACHIEVED turn angle per encounter has not been separately computed against that ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
     source_hint: "data/rerun_324_physical_gate.jsonl (max-bend values); achieved-turn computation not yet built"
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs (Uranus-Umbriel and Uranus-Oberon), each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours (see this catalogue's Russell-Strange 2009 rows: 'Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
@@ -50259,6 +50260,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Titania", "Oberon"]
   sequence_canonical: "Titania-Oberon-Titania"
   sense: "n/a"
@@ -50285,7 +50287,7 @@
   - path: "invariants.turn_ratio"
     kind: "unknown"
     note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
@@ -50397,6 +50399,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Ariel", "Oberon"]
   sequence_canonical: "Ariel-Oberon-Ariel"
   sense: "n/a"
@@ -50423,7 +50426,7 @@
   - path: "invariants.turn_ratio"
     kind: "unknown"
     note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
@@ -50525,6 +50528,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Umbriel", "Titania"]
   sequence_canonical: "Umbriel-Titania-Umbriel"
   sense: "n/a"
@@ -50551,7 +50555,7 @@
   - path: "invariants.turn_ratio"
     kind: "unknown"
     note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
@@ -50653,6 +50657,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Ariel", "Titania"]
   sequence_canonical: "Ariel-Titania-Ariel"
   sense: "n/a"
@@ -50679,7 +50684,7 @@
   - path: "invariants.turn_ratio"
     kind: "unknown"
     note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
@@ -50781,6 +50786,7 @@
   vinf_source: derived
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
+  primary: "Uranus"   # #865: was absent, so the row defaulted to heliocentric under data/README
   bodies: ["Uranus", "Ariel", "Umbriel"]
   sequence_canonical: "Ariel-Umbriel-Ariel"
   sense: "n/a"
@@ -50807,7 +50813,7 @@
   - path: "invariants.turn_ratio"
     kind: "unknown"
     note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
-    todo_ref: "#587"
+    todo_ref: "#879"   # #865: was "#587" (closed) while this gap is still open
   - path: "orbit_elements.cr3bp"
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
