@@ -140,6 +140,16 @@ is also km/s-class, so no patched-conic repair is cheap.
   so the velocity is never carried across a flyby. The `#324` physical gate
   (`data/rerun_324_physical_gate.jsonl`, `min_useful_bend_deg` 5) tests that the moon CAN bend
   at least 5 deg, which is capacity, not the demanded turn.
+- No earlier demanded-turn computation was found for these candidates. Checked:
+  `scripts/enumerate_563_symmetric_closures.py` and `data/enumerate_563_symmetric_closures.jsonl`
+  (only `max_bend_deg_per_encounter`, the #324 capacity), and the #565 adjudication
+  (`docs/notes/2026-07-11-565-fable-corrected-adjudication.md`), which states: "Nothing in the
+  pipeline ever computes a *required* turn angle -- `residual_at_point` in the #558/#563 scripts
+  matches V-infinity magnitudes only."
+- Scope (inference, not computed): the same two-leg symmetric construction was used at Jupiter
+  (#576/#577) and Saturn (#571). By the mirror identity, the target-moon turn there is non-zero
+  unless the encounter is tangent, so the same check is needed for those rows and for the #577
+  class-membership verdict.
 - Difference from the cited architecture (an inference from `scripts/compare_576_russell_strange_galilean.py`,
   not re-read in the paper here): in Russell & Strange's free-return cyclers the target body is
   massless and is passed on the same conic, and only the flyby body bends. The project's 2-leg
@@ -181,7 +191,8 @@ the Tisserand graph down to the cycler point without any manoeuvre, with periaps
 103,000 km floor (Landau 2023 Table 2) throughout: a breadth-first search over arrival states
 (moon, V-infinity, pump angle), with flyby bends sampled at 0, +-1/2 and +-1 times the maximum,
 reaches a state from which one Oberon flyby turns onto the cycler's departure in **16 flybys** at
-50 km (17 at 100 km; Umbriel and Titania do not shorten it). The route steps V-infinity at Oberon
+50 km (17 at 100 km; Umbriel and Titania do not shorten it). With sampled bends and bucketed
+states, 16 is an UPPER bound on the continuous minimum flyby count, not a lower bound. The route steps V-infinity at Oberon
 3.45 -> 3.29 -> 3.20 -> 3.09 and at Ariel 4.33 -> 3.85 -> 3.29 -> 2.58, then eight Ariel flybys at
 2.58 km/s rotate the pump angle by about 18 deg before the final Oberon arrival at 1.83 km/s. This
 is phase-free: it assumes every encounter can be phased. If each leg takes one revolution of the
@@ -216,7 +227,11 @@ published - 3 m/s). The burns sit at apoapsis, 1.57-1.73 million km, as in the p
 Disclosed: before the stage run, two coarse exploratory grids (2 deg pump step, 0.05-0.1 d) gave
 C1 13.9-14.8, C2 47.9-56.0 and C3 118 m/s. The minima are narrow in pump angle and flight time, and
 the coarse grids missed them. The control is one-sided by nature: our minimum is over an incoming
-direction the paper does not give, so ours below the published value (C1) is expected.
+direction the paper does not give, so ours below the published value (C1) is expected. Only the
+flight time was refined at the grid optimum; pump angle and bend were not, and the minima moved
+a lot with resolution (C2: 48 -> 6.5 -> 3.9 m/s), so the lower-side check is provisional (C1 at
+7.5 m/s is not far above its 4.5 m/s floor). The verdict in section 8 does not depend on
+`landau_leg`.
 
 ## 7. Patched-conic realisation (plan step 3): not done
 
@@ -253,5 +268,8 @@ rule (their tour has a 9.1-day interval).
 - `data/empty_regions.jsonl` entry `uranus-neptune-regular-moon-endgame-vilm-2026-06-23` reads
   "contours disjoint at every probed vinf 4-15 km/s" for Uranian moon pairs. Both published tours
   link Ariel, Umbriel, Titania and Oberon at 2.6-4.5 km/s, and the ladder above links Ariel and
-  Oberon ballistically. The entry's interpretation looks wrong; its `linkable` test was not
-  diagnosed here.
+  Oberon ballistically. `tisserand.linkable` asks whether the contours of two bodies at the SAME
+  V-infinity intersect, and its defaults are heliocentric (`a_range_au` 0.3-5 AU, `tol_au` 0.01
+  AU); how the probe called it was not checked. Even at equal V-infinity the Ellison conic is near
+  a link (Ariel 4.325, Umbriel 4.388 km/s), so the entry's physical interpretation ("too widely
+  spaced ... for ballistic resonant linking") is not supported; the cause was not diagnosed.
