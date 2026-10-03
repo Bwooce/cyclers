@@ -108,3 +108,15 @@ in their tracked outputs.
    None sets `anchor_name`, so a re-run would reproduce the old behaviour.
 4. 19 of the 69 corpus anchors declare no topology label at all. A labelling pass over them is the
    real completion of `#349`; it is corpus curation, one reviewed decision per anchor.
+
+## Addendum, same day (`#881`)
+
+- Item 1 above is done for Neptune: the flyby anchor is scoped `mga-tour` and the families that
+  are published at Neptune-Triton (Miceli & Bosanac 2026; Spear 2021) are now anchors, so a
+  `resonant` candidate there reads `published` and a `repeated-moon` one reads `not-found`.
+- The "Howard, Stern et al." Persephone citation quoted above is the string recorded in the run
+  data and is wrong. CrossRef: Howett, Robbins, Holler et al., *Planetary Science Journal*
+  2(2):75 (2021), DOI 10.3847/PSJ/abe6aa. The DOI the anchor carried (10.3847/PSJ/abf837) belongs
+  to an unrelated paper. The anchor is corrected; its scope stays undeclared because the paper is
+  not in the corpus and has not been read, so Pluto-system candidates still read `published`.
+- 16 anchors remain without a topology label (19 before).

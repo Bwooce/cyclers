@@ -494,14 +494,40 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   which must not be quoted in its support. (iii) `#468`, `#299`/`#301` and the precursor lanes are
   scope-consistent matches, not artefacts (not re-run). **OPEN — follow-ups:** (1) the campaign
   scorer still demotes, because an unlabelled signature is deliberately unchanged: `#870`'s
-  charter must declare the genome's topology label. (2) Neptune (`Voyager 2 Triton encounter +
-  Trident` anchor) and Pluto (`Persephone` and two others) candidates still read `published`
-  because those anchors carry NO topology label; until they are labelled, `#868`'s literature
-  gate cannot clear. (3) 19 of the 69 corpus anchors declare no topology label; a labelling pass
-  is the real completion of `#349` (one reviewed decision per anchor). (4) The historical copies
+  charter must declare the genome's topology label. (2) ✓ Neptune done by `#881` (flyby anchor
+  scoped AND the published families anchored); Pluto still reads `published` through the
+  unscoped Persephone anchor, pending that paper. (3) 16 corpus anchors still declare no topology
+  label after `#881` (19 before); a labelling pass is the real completion of `#349` (one reviewed
+  decision per anchor). (4) The historical copies
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#881` — ✓ DONE 2026-10-03 (commit `469d219d`; follow-up (2) of `#880`, owner: "keep going"):
+  **moon-system anchor scopes, the published Neptune-Triton families, and the Persephone
+  citation.** Scoping the Neptune flyby anchor alone would have turned the gate there from "always
+  published" to blind, because the families actually published at Neptune-Triton were digested
+  (`#776`; Spear digest 2026-08-08) but never registered as anchors. Done together: (a) NEW
+  anchors `miceli-bosanac-2026-neptune-triton` (JAS 73:11, DOI 10.1007/s40295-025-00545-z) and
+  `spear-2021-neptune-triton-heteroclinic` (CU Boulder MS thesis), both `resonant`,
+  `verified-against-source`; (b) `Voyager 2 Triton encounter + Trident` labelled `mga-tour`;
+  (c) `Game-Changer` labelled `mga-tour` and given its peer-reviewed record (Stern, Tapley, Finley
+  & Scherrer 2020, JSR 57(5):956-963, DOI 10.2514/1.A34658, already digested 2026-06-23);
+  (d) `Brozovic` orbit determination labelled `ephemeris` (new anchors-only label);
+  (e) **Persephone citation corrected against CrossRef:** the anchor named the first author
+  "Howard" (it is Howett), gave PSJ 2(2):56 (it is :75), and carried DOI 10.3847/PSJ/abf837, which
+  resolves to an unrelated Neptune VLA/ALMA paper (Tollefson et al.); correct DOI
+  10.3847/PSJ/abe6aa. The wrong citation is also quoted in the `#492` note, the 2026-06-15 Pluto
+  review and `data/scan_492_pluto.jsonl` (run records, left as written). **Measured after the
+  change:** a `resonant` Neptune-Triton candidate reads `published` (Miceli-Bosanac / Spear), so
+  `#868`'s rows need the family-membership check its own bullet already demands; a `repeated-moon`
+  Triton-Proteus candidate reads `not-found`. Anchors 69 -> 71. **OPEN:** (1) Persephone's scope
+  is deliberately NOT declared — the paper is not in the corpus (no PDF, no index entry, no digest;
+  the 2026-06-15 review says "the full PDF was not opened"), so every Pluto-system candidate still
+  reads `published`. Needs the paper (Howett et al. 2021, arXiv 2102.08282) filed and digested.
+  (2) `src/cyclerfinder/ml/falsepos_labels.py` carries two training labels attributed to "Howard
+  et al. 2021 Persephone Pluto-Charon CR3BP periodic orbit / halo family"; whether the paper
+  contains such orbits is unverified for the same reason. (3) 16 anchors still declare no topology
+  label (Earth-Moon 9, heliocentric 5, Mars 1, Persephone 1).
 - `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
   AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
   published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,

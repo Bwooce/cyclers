@@ -22,6 +22,7 @@ import pytest
 from cyclerfinder.search.literature_check import (
     KNOWN_CORPUS,
     CandidateSignature,
+    CorpusAnchor,
     LiteratureCheckResult,
     SearchResult,
     build_queries,
@@ -699,7 +700,7 @@ def test_880_offline_backend_is_canonical_and_tags_its_hits() -> None:
 # ---------------------------------------------------------------------------
 
 
-def _anchor(fragment: str):
+def _anchor(fragment: str) -> CorpusAnchor:
     hits = [a for a in KNOWN_CORPUS if fragment in a.name]
     assert len(hits) == 1, (fragment, [a.name for a in hits])
     return hits[0]
