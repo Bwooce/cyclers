@@ -151,7 +151,10 @@ class CandidateSignature:
     cyclers), ``"pump-tour"`` (V-infinity-leveraging Titan-pump style),
     ``"mga-tour"`` (non-repeating multi-flyby tours, e.g. Galileo VEEGA),
     ``"tulip"`` (Sundman/petal Np-petal periodic orbits), ``"halo"``,
-    ``"nrho"``, ``"resonant"``, ``"binary-coorbital"``.
+    ``"nrho"``, ``"resonant"``, ``"binary-coorbital"``. Anchors only:
+    ``"ephemeris"`` (#881) marks a source about the bodies' own orbits (orbit
+    determination) rather than any spacecraft trajectory, so it never matches
+    a candidate that declares a trajectory topology.
     """
 
     topology_3d: dict[str, Any] | None = None
@@ -920,33 +923,54 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # search remains authoritative for novelty.
     # -----------------------------------------------------------------------
     CorpusAnchor(
-        name="Howard et al. Persephone Pluto-system orbiter (CR3BP periodic orbits)",
+        # #881 (2026-10-03): citation corrected against CrossRef. This anchor
+        # named the first author "Howard" and carried DOI 10.3847/PSJ/abf837,
+        # which resolves to an unrelated paper (Tollefson et al., Neptune
+        # VLA/ALMA brightness temperatures). The record is Howett, Robbins,
+        # Holler, Hendrix, Fielhauer, Perry et al., PSJ 2(2):75,
+        # DOI 10.3847/PSJ/abe6aa. The former name also asserted "(CR3BP periodic
+        # orbits)", which the abstract (a NASA concept-mission study with a
+        # 3.1-year orbital campaign of the Pluto system) does not support and
+        # the 2026-06-15 Pluto review never verified ("the full PDF was not
+        # opened"). topology_label is deliberately NOT set: the scope cannot be
+        # declared until the full paper is read, so this anchor stays
+        # conservative and still flags every Pluto-system candidate.
+        name="Howett et al. Persephone Pluto-system orbiter (mission concept study)",
         primary="Pluto",
         body_set=frozenset({"Charon", "Nix", "Hydra", "Styx", "Kerberos"}),
-        authors=("Howard", "Stern", "McKinnon"),
+        authors=("Howett", "Robbins", "Holler"),
         keywords=(
             "Persephone Pluto orbiter",
             "Pluto-Charon CR3BP periodic orbit",
             "Pluto-Charon binary rotating frame orbit",
         ),
-        citation="Howard, Stern et al., 'Persephone: A Pluto-system Orbiter "
-        "and Kuiper Belt Explorer,' Planetary Science Journal 2(2):56 (2021); "
-        "arXiv:2102.08282",
-        doi="10.3847/PSJ/abf837",
+        citation="Howett, Robbins, Holler et al., 'Persephone: A Pluto-system "
+        "Orbiter and Kuiper Belt Explorer,' Planetary Science Journal 2(2):75 "
+        "(2021); arXiv:2102.08282",
+        doi="10.3847/PSJ/abe6aa",
     ),
     CorpusAnchor(
         name="Stern/SwRI Pluto Game-Changer (Charon gravity-assist tour)",
         primary="Pluto",
         body_set=frozenset({"Charon", "Nix", "Hydra", "Styx", "Kerberos"}),
-        authors=("Stern", "Tapley", "Zangari"),
+        # #881: a one-off tour, not a periodic trajectory. The project's own
+        # digest of the peer-reviewed version (2026-06-23, Stern et al. 2020)
+        # reads "a Pluto-system orbital tour that maneuvers almost entirely on
+        # Charon gravity assists"; the 2026-06-15 Pluto review classed it
+        # "explicitly not a periodic cycler -- one-off sequential gravity
+        # assists". Same label as the Uranian orbiter-tour concepts (#350).
+        topology_label=frozenset({"mga-tour"}),
+        authors=("Stern", "Tapley", "Zangari", "Finley", "Scherrer"),
         keywords=(
             "Charon gravity assist tour",
             "Pluto orbiter Game-Changer",
             "Pluto system flyby tour",
         ),
         citation="Stern, Tapley, Zangari et al., 'Game-Changer Pluto Orbiter' "
-        "concept, DPS 2018 (SwRI)",
-        doi=None,
+        "concept, DPS 2018 (SwRI); peer-reviewed as Stern, Tapley, Finley & "
+        "Scherrer, 'Pluto Orbiter-Kuiper Belt Explorer: Mission Design for the "
+        "Gold Standard,' Journal of Spacecraft and Rockets 57(5):956-963 (2020)",
+        doi="10.2514/1.A34658",
     ),
     CorpusAnchor(
         name="Showalter-Hamilton Styx-Nix-Hydra three-body resonance",
@@ -968,6 +992,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Brozovic et al. Pluto satellite orbit determination",
         primary="Pluto",
         body_set=frozenset({"Charon", "Styx", "Nix", "Kerberos", "Hydra"}),
+        # #881: orbit determination of the moons themselves -- "a property of
+        # the moons' own orbits, not a spacecraft trajectory" (2026-06-15 Pluto
+        # review, class 3). No trajectory label describes it, hence "ephemeris".
+        topology_label=frozenset({"ephemeris"}),
         authors=("Brozovic", "Showalter", "Jacobson"),
         keywords=(
             "Pluto small satellite orbits",
@@ -2014,6 +2042,13 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Voyager 2 Triton encounter + Trident / Triton-Hopper concept tour",
         primary="Neptune",
         body_set=frozenset({"Triton", "Proteus"}),
+        # #881: a flown flyby plus flyby/hopper mission concepts -- one-off
+        # encounters, no periodic-orbit family (the citation below records that
+        # gap itself). Labelled like the Uranian orbiter-tour concepts (#350).
+        # The periodic-orbit families that ARE published at Neptune-Triton are
+        # the two anchors that follow, added in the same change so that scoping
+        # this one does not leave the system unguarded.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Stone", "Miner", "Prockter", "Pappalardo"),
         keywords=(
             "Voyager Neptune Triton encounter trajectory",
@@ -2029,6 +2064,70 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "(GAP: no peer-reviewed Sun-Neptune-Triton bicircular-restricted-4-body "
         "study identified.)",
         doi=None,
+    ),
+    # -----------------------------------------------------------------------
+    # #881 -- published Neptune-Triton periodic-orbit families. Both sources
+    # were digested in full (#776, and the 2026-08-08 Spear digest) but had
+    # never been registered here, so the offline gate could not see them.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Miceli-Bosanac Neptune-Triton planar motion-primitive trajectories (2026)",
+        primary="Neptune",
+        body_set=frozenset({"Triton"}),
+        # Planar CR3BP periodic orbits (resonant, Lyapunov, low prograde) used
+        # as motion primitives, plus transfers chained from them.
+        topology_label=frozenset({"resonant"}),
+        authors=("Miceli", "Bosanac"),
+        keywords=(
+            "Neptune-Triton CR3BP resonant periodic orbit",
+            "Neptunian system motion primitives planar trajectory",
+            "Neptune-Triton resonant orbit transfer low prograde orbit",
+        ),
+        citation="Miceli, G. E. & Bosanac, N., 'Generating Planar Trajectories "
+        "for Neptunian System Exploration Using Motion Primitives,' Journal of "
+        "the Astronautical Sciences 73:11 (2026), DOI "
+        "10.1007/s40295-025-00545-z. Planar Neptune-Triton CR3BP "
+        "(mu = 2.089503183689124e-04); two design scenarios (a 1:7 resonant "
+        "target orbit; a 3:2 resonant orbit to a Triton low prograde orbit); "
+        "machine-readable periodic-orbit initial conditions in the Springer "
+        "supplementary files (64 planar periodic orbits, incl. the 4:5 saddle "
+        "that #781's homoclinics belong to). Computes neither homoclinic "
+        "connections nor cycler-class orbits.",
+        doi="10.1007/s40295-025-00545-z",
+        key="miceli-bosanac-2026-neptune-triton",
+        year=2026,
+        title="Generating Planar Trajectories for Neptunian System Exploration "
+        "Using Motion Primitives",
+        venue="Journal of the Astronautical Sciences 73:11",
+        provenance="verified-against-source",
+        system="neptunian",
+    ),
+    CorpusAnchor(
+        name="Spear Neptune-Triton planar heteroclinic connections (2021)",
+        primary="Neptune",
+        body_set=frozenset({"Triton"}),
+        topology_label=frozenset({"resonant"}),
+        authors=("Spear",),
+        keywords=(
+            "Neptune-Triton planar heteroclinic connections",
+            "Neptune-Triton resonant periodic orbit families",
+            "Neptune-Triton Lyapunov orbit invariant manifold connection",
+        ),
+        citation="Spear, R. L., 'Planar Heteroclinic Connections in the "
+        "Neptune-Triton Circular Restricted Three Body Problem,' MS thesis, "
+        "University of Colorado Boulder (2021), advisor N. Bosanac. Eighteen "
+        "planar periodic-orbit families incl. twelve resonant families (1:2, "
+        "1:3, 2:1, 2:3, 3:1, 3:2, two each; no 4:5 or 4:7) and eleven planar "
+        "heteroclinic connections between L1/L2 Lyapunov orbits. No homoclinic "
+        "constructions of its own.",
+        doi=None,
+        key="spear-2021-neptune-triton-heteroclinic",
+        year=2021,
+        title="Planar Heteroclinic Connections in the Neptune-Triton Circular "
+        "Restricted Three Body Problem",
+        venue="MS thesis, University of Colorado Boulder",
+        provenance="verified-against-source",
+        system="neptunian",
     ),
     # -----------------------------------------------------------------------
     # #314 / #403 — Heteroclinic-cycle / Oterma literature anchors.

@@ -268,8 +268,8 @@ def test_build_queries_moon_tour_branch() -> None:
 _NEW_CORPUS_HITS: list[SearchResult] = [
     SearchResult(
         title="Persephone: A Pluto-system Orbiter and Kuiper Belt Explorer",
-        url="https://doi.org/10.3847/PSJ/abf837",
-        snippet="Howard, Stern et al. design Persephone, a Pluto orbiter with "
+        url="https://doi.org/10.3847/PSJ/abe6aa",
+        snippet="Howett, Robbins et al. design Persephone, a Pluto orbiter with "
         "Pluto-Charon CR3BP periodic orbits and Nix Hydra encounters; "
         "binary rotating frame cycler science orbits.",
     ),
@@ -339,7 +339,7 @@ _NEW_CORPUS_TOKENS: dict[str, tuple[str, ...]] = {
         "brozovic",
         "stern",
         "pluto",
-        "10.3847/psj/abf837",
+        "10.3847/psj/abe6aa",
         "10.1038/nature14469",
     ),
     # Any of the Earth-Moon CR3BP #272 anchors (Braik-Ross orbital networks;
@@ -423,7 +423,7 @@ def test_new_corpus_anchors_registered() -> None:
         f"expected >=3 Pluto-system anchors after #272 expansion; got {len(pluto_anchors)}"
     )
     pluto_authors = {a for anchor in pluto_anchors for a in anchor.authors}
-    assert "Howard" in pluto_authors  # Persephone
+    assert "Howett" in pluto_authors  # Persephone (#881: was mis-cited as "Howard")
     assert "Showalter" in pluto_authors  # Styx-Nix-Hydra resonance
 
     earth_moon_anchors = [a for a in KNOWN_CORPUS if a.primary == "Earth" and "Moon" in a.body_set]
@@ -683,3 +683,85 @@ def test_880_offline_backend_is_canonical_and_tags_its_hits() -> None:
     assert hits, "Uranian anchors should surface for a two-moon cycler query"
     names = {a.name for a in KNOWN_CORPUS}
     assert all(h.anchor_name in names for h in hits)
+
+
+# ---------------------------------------------------------------------------
+# #881: moon-system anchor scopes, the published Neptune-Triton families, and
+# the Persephone citation.
+#
+# After #880 an anchor's declared scope is honoured, so two things have to be
+# true together at Neptune: the flyby-mission anchor must not flag a
+# repeated-moon candidate, AND the families that ARE published there must be
+# anchored -- otherwise the gate would go from "always published" to blind.
+# Expected values come from the sources: Miceli & Bosanac 2026 (DOI from the
+# publisher record) and Spear 2021 (CU Boulder MS thesis), both digested in
+# docs/notes; the Persephone record from CrossRef.
+# ---------------------------------------------------------------------------
+
+
+def _anchor(fragment: str):
+    hits = [a for a in KNOWN_CORPUS if fragment in a.name]
+    assert len(hits) == 1, (fragment, [a.name for a in hits])
+    return hits[0]
+
+
+def test_881_published_neptune_triton_families_are_anchored() -> None:
+    mb = _anchor("Miceli-Bosanac")
+    assert mb.primary == "Neptune" and "Triton" in mb.body_set
+    assert mb.doi == "10.1007/s40295-025-00545-z"
+    assert mb.year == 2026 and mb.provenance == "verified-against-source"
+    assert "resonant" in mb.topology_label
+
+    sp = _anchor("Spear")
+    assert sp.primary == "Neptune" and "Triton" in sp.body_set
+    assert sp.year == 2021 and sp.doi is None  # MS thesis, no DOI
+    assert sp.provenance == "verified-against-source"
+    assert "resonant" in sp.topology_label
+
+
+def test_881_resonant_neptune_triton_candidate_reads_published() -> None:
+    """A single-moon resonant periodic-orbit candidate at Neptune-Triton sits
+    in published territory and must say so (family-membership check needed)."""
+    sig = CandidateSignature(
+        primary="Neptune",
+        sequence=("Triton",),
+        topology_label=frozenset({"resonant"}),
+    )
+    result = check_literature(sig, search=offline_corpus_search)
+    assert result.status == "published", result
+    blob = (result.citation or "") + " " + (result.matched_url or "")
+    assert "Miceli" in blob or "Spear" in blob or "s40295-025-00545-z" in blob, result
+
+
+def test_881_flyby_mission_anchor_does_not_flag_repeated_moon_candidate() -> None:
+    """Voyager 2 / Trident are flyby missions, not periodic trajectories."""
+    assert _anchor("Voyager 2 Triton encounter").topology_label == frozenset({"mga-tour"})
+    sig = CandidateSignature(
+        primary="Neptune",
+        sequence=("Triton", "Proteus", "Triton"),
+        period_k=2,
+        vinf_per_encounter_kms=(1.0, 1.0, 1.0),
+        n_rev=(1, 1),
+        topology_label=frozenset({"repeated-moon"}),
+    )
+    result = check_literature(sig, search=offline_corpus_search)
+    assert result.status == "not-found", result
+    assert "Voyager 2 Triton encounter" in result.notes
+
+
+def test_881_pluto_anchor_citations_and_scopes() -> None:
+    per = _anchor("Persephone")
+    # CrossRef: Howett, Robbins, Holler, Hendrix, Fielhauer, Perry ...,
+    # Planet. Sci. J. 2(2):75 (2021). The anchor used to carry "Howard",
+    # "2(2):56" and a DOI that resolves to an unrelated Neptune VLA/ALMA paper.
+    assert per.authors[0] == "Howett"
+    assert per.doi == "10.3847/PSJ/abe6aa"
+    assert "2(2):75" in per.citation and "Howard" not in per.citation
+    # Scope deliberately NOT declared: the full paper has not been read here.
+    assert per.topology_label == frozenset()
+
+    gc = _anchor("Game-Changer")
+    assert gc.topology_label == frozenset({"mga-tour"})
+    assert gc.doi == "10.2514/1.A34658"
+
+    assert _anchor("Brozovic").topology_label == frozenset({"ephemeris"})
