@@ -734,13 +734,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   method, no cycler or moon tour), Brown et al. (HR4BP Earth-Moon families under solar forcing,
   arXiv v1, no ICs), and two owner-supplied adjacent papers (Li-Qiao-Li 2024 preprint, one-way
   three-body multiple-flyby transfers; Zhang et al. 2024 angles-only orbit determination, out
-  of scope). None is a literature-gate anchor. **REMAINING in this task:** (1) one reference
-  surfaced by the reading and not held: Landau, Davis & Karimi, "Trajectory Options for a
-  Uranus Orbiter and Probe", AAS/AIAA Astrodynamics Specialist Conference, Big Sky, 2023
-  (Landau 2025's Ref. [13], the tour algorithm, possibly with further example tours); a CrossRef
-  title query on 2026-10-03 found no record and the citing paper prints no paper number or
-  DOI, so it has to come from the conference proceedings or from the authors;
-  (2) an AAS 24-288 positive-control anchor; (3) the fortnightly literature watch. `#870`'s hard
+  of scope). None is a literature-gate anchor. **Landau, Davis & Karimi (AAS 23-460) obtained and read the same day**
+  (owner-supplied): no tour table, one example tour in Figure 6 (Oberon, Titania, Titania,
+  Oberon, Ariel, Ariel, Umbriel, Umbriel, Miranda, Miranda; V-infinity 2.8-4.1 km/s; a manoeuvre
+  before every flyby), no two-moon alternation and no cycler or periodic content, so the
+  Uranian verdict is unchanged and the UOP-era tour papers are all read. Also filed and digested
+  that day: the PUBLISHED Brown et al. (compared with the preprint; cite the published one),
+  Oshima 2024 (Earth-Moon transfer-graph method, background for `#878`), and two asteroid-tour
+  papers of low relevance (Grabowski et al. 2026; Zhang et al., JGCD 2026 author manuscript).
+  **REMAINING in this task:** (1) three references surfaced by the reading and NOT held:
+  McAdams, Scott, Guo, Dankanich & Russell, "Conceptual mission design of a polar Uranus orbiter
+  and satellite tour", AAS 11-188 (2011); Strange, Landau & Longuski, "Design of Initial
+  Inclination Reduction Sequence for Uranian Gravity-Assist Tours", AAS 13-801 (2013); and
+  Liang, Zhang, Yang & Baoyin, "Review of trajectory design and optimization methods for ice
+  giant exploration", *Astrodynamics* (2026-03-28), DOI 10.1007/s42064-026-0308-6 (paywalled;
+  found by a web search, not read, relevant to `#868` as well); (2) ANCHOR TO CHECK: the corpus
+  anchor "Sims et al. polar Uranus orbiter & satellite tour (2014)" carries the TITLE of the
+  McAdams et al. AAS 11-188 paper (as printed by both AAS 23-460 Ref. [5] and AAS 25-668
+  Ref. [3]) under a different author list and year; it is inherited and unverified, and must
+  not be edited until AAS 11-188 is in hand (the anchor's scope label `mga-tour` is not in
+  doubt); (3) an AAS 24-288 positive-control anchor; (4) the fortnightly literature watch. `#870`'s hard
   gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty

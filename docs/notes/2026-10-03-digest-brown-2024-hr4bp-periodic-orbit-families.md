@@ -373,3 +373,149 @@ affected. Candidate corpus-index description: Brown et al. 2024 (arXiv v1 of SIA
 periodic-orbit families of EM libration-point orbits continued from the CR3BP into the Sun-Earth-Moon
 Hill restricted 4-body problem (m = 0.0808, mu = 0.0122) using a Melnikov-type function and
 pseudo-arclength continuation with SVD bifurcation detection; no cyclers, no initial-condition tables.
+
+## Addendum 2026-10-03: published version (SIADS 24(1):346-375) compared with the preprint
+
+Compared the full text of the published article (30 pages, text layer plus page image of p. 349 for
+Eq. 2.3c) against the arXiv v1 preprint (27 pages). Equation, table and figure numbers in this addendum
+are the published numbers; the sections above use the preprint's numbering. Where the two versions agree,
+that is said briefly.
+
+**Filed in the private paper corpus as**
+`brown-peterson-henry-scheeres-2025-periodic-orbit-families-hill-restricted-4-body-problem-siads-24-1-346-doi-10.1137-24M1637301-published.pdf`
+(md5 `aa96ae19698ae56f6dafdbc61b2c35d3`, 30 pages).
+
+### (a) Front matter
+- Printed: "Received by the editors February 9, 2024; accepted for publication (in revised form) by J.
+  Mireles James October 26, 2024; published electronically January 31, 2025." Copyright line 2025 by the
+  four authors. SIAM J. Applied Dynamical Systems Vol. 24, No. 1, pp. 346-375. DOI 10.1137/24M1637301.
+- Printed: "A preliminary version of this paper was presented as Paper 23-470 at the 2023 AAS/AIAA
+  Astrodynamics Specialist Conference, Big Sky, MT, August 13-17, 2023."
+- Key words: periodic orbits, bifurcations, three-body problems, Melnikov function. MSC codes 37N05, 34C25,
+  70K60, 37M20. The abstract is word-for-word the preprint's.
+- Funding (same as preprint): U.S. Air Force Office of Scientific Research grant FA9550-21-1-0332.
+- Data availability, code availability, supplementary material, repository or other URL for data or code:
+  not stated (text search for availab, supplement, github, zenodo found nothing; the only URLs are
+  reference DOIs and the SIAM licence line).
+
+### (b) Differences of substance
+1. Symmetries (Eq. 2.5) are different. Preprint: S1 and S2 both of the form (x, -y, z, -x', y', -z') with
+   tau -> k pi - tau and k pi + pi/2 - tau. Published: S1: (x, y, z, x', y', z', tau) -> (x, y, -z, x', y',
+   -z', tau) (a z-reflection with no change of tau); S2: (x, y, z, x', y', z', tau) -> (x, -y, z, -x', y',
+   -z', -tau). The worked example (X(tau0) periodic implies [x0, -y0, 0, -x0', y0', 0] at -tau0 periodic)
+   is the same. The digest's "Symmetries (Eq. 6)" paragraph above describes the preprint form only.
+2. Scaling (Eq. 2.2): published gives 1 DU = d_l (the average distance between the primaries) and 1 TU =
+   (1+m)/n, with d_a = d_l/(a0 nu^(1/3)) in Eq. 2.1d. The preprint had 1 DU = a0 d_a nu^(1/3); the
+   relation is the same rearranged. The 1 MU = M0 line and the 1 TU = m/n0 form are not repeated in the
+   published text.
+3. Constants now printed that the digest recorded as "not stated": d_l = 384,400 km; mu_EM ~ 0.0122;
+   m_SEM ~ 0.0808 ("the difference between a lunar synodic and sidereal month relative to a sidereal
+   month"); nu_SEM ~ 3.04 x 10^-6; d_a ~ 1 AU. m = 0.0808, mu = 0.0122 and m_max = 0.19510486 are unchanged.
+4. New Table 1 (model comparison, BCP / HR4BP / QBCP): time scaling relative to CR3BP 1 / 1+m / 1; forcing
+   period Tg 2 pi (1.0808) / pi / 2 pi (1.0808); coherent No / Yes / Yes; symmetries Yes / Yes / Yes;
+   P0, P1, P2 co-planar Yes / Yes / Yes. The preprint's Hill-variation-orbit tables are now Table 2 (d_p)
+   and Table 3 (c_{n,p}). The numerals in them match the digest's transcription (checked by comparing the
+   set of all numbers of three or more digits; the only extras in the published block are the year and
+   a page number). They are laid out with n = -2..4 in the first block and -4, -3 in a trailing block.
+5. Time and angle notation: published uses alpha for time and tau for the Sun-phase angle (tau = tau0 +
+   alpha), and defines two frames (A with angular velocity m Omega, B with (1+m) Omega) with a Figure 1 of
+   the frame geometry. This is a notational change; the equations of motion (2.4a-c) are the same form.
+6. Numerical settings now stated, in the L4 validation (Section 4): "MATLAB's ode113, an
+   Adams-Bashforth-Moulton PECE solver, was used ... with a relative tolerance of 3 x 10^-14 and absolute
+   tolerance of 10^-16." The preprint stated no integrator or tolerances. Stated only for that
+   validation run; whether the same settings apply to the other families is not stated.
+7. L4 validation wording: the preprint's "Four of these points produced families ... These four points
+   matched the four points where the Melnikov function is zero" is replaced by "The four points where the
+   Melnikov function was zero produced families in the HR4BP that could be continued up to values of m that
+   were not negligible." The published text does not state the result for the other 96 points. The
+   "100 points" test is still described.
+8. Orbit versus object families, reworded and renumbered. Published Figure 3 is the L1 vertical T* = pi
+   case and Figure 4 the L2 northern/southern halo case (the preprint had them as Figures 3 = halo,
+   4 = L1 vertical, so the digest's figure numbers refer to the preprint). Published counts:
+   - Figure 2 (L4, T* = 2 pi): "two distinct object families ... and three distinct orbit families".
+   - L1 vertical: the four Melnikov zeros (with h4) "produced three distinct HR4BP orbit and object
+     families". The preprint said each of the four points produced a different orbit family belonging to
+     three object families, one object family containing two orbit families.
+   - L2 halo (T = pi): "However, only two distinct HR4BP orbit and object families were identified".
+     The preprint said one object family. The published text drops the preprint's statements that the two
+     families contain the same states with tau shifted by pi/2 and that the continuation runs from the
+     northern halo through a turning point in m to the southern halo; it says only that "HR4BP families can
+     also connect two different CR3BP orbits".
+9. Starting-orbit lists (Section 4.1):
+   - L2 and L1 lists are as in the preprint, with different colour names for some members.
+   - L3, L4, L5: published lists the three points (T = pi), the L3, L4, L5 vertical family members with
+     T = 2 pi (the preprint said T = pi), and the L4 planar Lyapunov family members with T = 2 pi. The
+     preprint's L4 and L5 planar Lyapunov members with T = pi, and its L5 Lyapunov member at T = 2 pi, are
+     not listed in the published text.
+   - New count: "Thirty-four families were identified from bifurcations in the initial families" (L3, L4,
+     L5). Counts for L1 and L2 bifurcation families: not stated.
+   - New naming rule: families from bifurcations are named by the path of bifurcations, for example the
+     family from the first bifurcation direction (1) at the third bifurcation point (C) on the HR4BP L2
+     family is "L2-C1". The A, B and C families of Olikara et al. are still reported as all identified.
+10. New sentence in Section 3: "We will start at the five libration points whose HR4BP orbits have periods
+    of T = pi and at each state on the selected CR3BP periodic orbits where M(s, tau0) = 0." Section 3.2
+    adds: for a > 1 with a symmetric point, "As using h3 instead of h2 will produce the same results, the
+    Melnikov function should be recomputed with h4." Prop. 1 is stated for "initial angle" rather than
+    "initial time"; Propositions 1 to 3 and their formulas are otherwise as in the preprint (Prop. 2(a),
+    (b) and Prop. 3 with M = 2AB, A = sin 2 tau0 for a = 1, are unchanged).
+11. References: published list has 39 entries, in alphabetical order (the preprint's list is ordered by
+    first citation; its exact entry count was not checked). Updated or added: Peterson, Brown, Jorba, Scheeres on the EM triangular points
+    is now cited as Celest. Mech. Dyn. Astron. 136 (2024) (preprint: Commun. Nonlinear Sci. Numer. Simul.,
+    "In Preparation"); new (not in the preprint's text): Park, Sanaga, Howell, "A frequency-based hierarchy of dynamical
+    models in cislunar space ...", Celest. Mech. Dyn. Astron. 137 (2025), 5. Published entries carry DOIs
+    where available. Reference numbers differ, so every [n] in the digest's bibliography section differs
+    from the published numbering (for example Scheeres 1998 is [31], Olikara-Gomez-Masdemont is [17]).
+12. Not changed: the pseudo-arclength method, the SVD bifurcation detection (Eq. 3.6, 3.7, nB), the
+    statement that new families were computed only at tangent bifurcations, the conclusion text, Appendix A equations (gradient, Hessian, sensitivities,
+    A.1 to A.5) and Appendix B proofs. No new section, no new family type, no new theorem, no Floquet or
+    stability data, no period-multiplying branches were added.
+
+### (c) Do the digest's "Central results" still hold
+- Items 1 (T = b Tg, Tg = pi), 2 (multiple dynamical equivalents, 9:2 NRHO in the BCP), 3 (families only
+  at fixed T and tau0, tau0 = 0 unless stated), 4 (Melnikov zeros; Cenedese-Haller function), 5
+  (Propositions 1-3): hold, with the same wording (published Section 2.2, 3, 3.2). Item 5 quote from Prop.
+  3 is unchanged; published adds the h4 sentence noted in (b)10.
+- Item 6 (L4 validation): the four Melnikov zeros giving four families, previously found by Scheeres and
+  Peterson et al., holds. The sentence "Four of these points produced families ... These four points
+  matched the four points where the Melnikov function is zero" no longer appears; published wording:
+  "The four points where the Melnikov function was zero produced families in the HR4BP that could be
+  continued up to values of m that were not negligible."
+- Item 7 (orbit versus object; halo): differs. The quoted sentence "only one object family in the HR4BP was
+  identified corresponding to that particular CR3BP orbit" and the northern-to-southern continuation
+  through an m turning point are not in the published text. Published: "only two distinct HR4BP orbit and
+  object families were identified".
+- Item 8 (L1 vertical): the h4 procedure, four zeros and three families hold; "four orbit families ... one
+  object family consists of two orbit families" is replaced by "three distinct HR4BP orbit and object
+  families".
+- Item 9 (m_max = 0.19510486, bifurcations as local minima of sigma_alpha and sigma_beta, A, B, C families,
+  tangent bifurcations only, conclusion quote): hold, same wording.
+- Item 10 (SEM members at m = 0.0808, mu = 0.0122): holds, same wording.
+- "What it does NOT contain": still correct. "Integration tolerances, software: not stated" is now
+  partly wrong (ode113, relative tolerance 3 x 10^-14, absolute 10^-16; see (b)6; stated only for the L4 validation). "Numerical
+  value of nu / d_a: not stated" is now wrong (see (b)3). Floquet multipliers, stability indices, initial
+  conditions, periods of individual orbits, period-multiplying branches: still not given.
+- Section "Families and resonances computed": the L3, L4, L5 rows differ as in (b)9.
+
+### (d) Eq. 4 (published Eq. 2.3c), read from the page image (p. 349)
+V = (1/2)(1 + 2m + (3/2) m^2)(x^2 + y^2) - (1/2) m^2 z^2 + (3/4) m^2 [ (x^2 - y^2) cos 2 tau - 2 x y sin 2 tau ]
+    + (m^2 / a0^3) [ (1 - mu)/R_{1-mu} + mu/R_mu ],
+with R_{1-mu} = r + mu (i_m + rho_bar) and R_mu = r - (1 - mu)(i_m + rho_bar) (Eq. 2.3a, 2.3b; R with
+subscript denotes the vector, and its magnitude is written R_{1-mu}, R_mu). This matches the gradient
+printed in (A.2a): dV/dx = (1 + 2m + (3/2) m^2) x + (3/2) m^2 (x cos 2 tau - y sin 2 tau) and
+dV/dy = (1 + 2m + (3/2) m^2) y - (3/2) m^2 (y cos 2 tau + x sin 2 tau). The digest's partial reading above
+(x^2 - y^2 cos 2 tau ...) was the scrambled text layer; the correct grouping is ((x^2 - y^2) cos 2 tau
+- 2xy sin 2 tau).
+
+### (e) Cyclers, repeated encounters, transfers
+Text search of the published text and of the preprint text: "cycler" 0 / 0, "transfer" 0 / 0,
+"encounter" 0 / 0, "flyby" 0 / 0 (published / preprint). Nothing on cyclers, repeated lunar encounters or
+transfers in either version. The only connection-type mention is the introduction's reference to
+"connections between Sun-Earth and EM libration point orbits [18]" (published numbering).
+
+### Which version to cite
+Cite the published version (G. M. Brown, L. T. Peterson, D. B. Henry, D. J. Scheeres, SIAM J. Appl. Dyn.
+Syst. 24(1), 346-375, 2025, DOI 10.1137/24M1637301); the digest's model constants, Tg = pi resonance
+result, Melnikov propositions, HVO tables and "no initial conditions, no cyclers" conclusions remain valid,
+but its S1/S2 symmetry statement, the halo object-family count, the L3 to L5 starting-orbit list, the
+"not stated" items on nu, d_a and integrator settings, and all figure and reference numbers must be taken
+from this addendum rather than the preprint sections above.
