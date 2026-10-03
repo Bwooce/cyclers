@@ -442,6 +442,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the ~10 negative stamps; the VEM invalidation record (no registry entry mentions Venus at all,
   so this is a new stamp, not an amendment); G1 is already registered as `#872`, which only needs
   confirming against `#858`.
+  **PROGRESS 2026-10-03 (tranche 5, CCR4BP stamps):** the four CCR4BP torus-connection negatives
+  are stamped (registry 96 -> 100), each with a `reopen_condition`, every number recomputed from
+  the committed `result.json`: `#695` Io-Europa (32 refined candidates; 28 close to machine
+  precision but stay 563-823 km off the torus; the 4 the result file flags `corrected_genuine`
+  are ONE 16.7 km / 0.54 m/s near-miss, i.e. "not a numerical ghost", not a connection); `#696`
+  Io-Ganymede (20 candidates, all within 37.0 km of the torus — the ledger's "0.6-59 km" does not
+  match the committed data, which gives 0.40-37.02 km); `#703` Europa-Callisto (32 candidates,
+  farthest excursion 751.9 km, 75% of the gate); `#716` Titan-Hyperion (20 candidates, all within
+  4.24 km). **STILL OPEN:** the connection-lane stamps (`#759`/`#780`/`#783`/`#786`), `#861`,
+  `#791` Stage 0, the VEM invalidation stamp, and confirming G1 = `#872`.
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
