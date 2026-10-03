@@ -588,6 +588,35 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#888` — registered 2026-10-04 (found by `#885`, confirmed by the coordinator with independent
+  code the same day; **OWNER DECISION PENDING; this outranks every Uranian task**). **THE SIX
+  CATALOGUED URANIAN QUASI-CYCLER ROWS ARE NOT BALLISTIC TRAJECTORIES.** At every one of their
+  twelve encounters the turn demanded between the incoming and the outgoing V-infinity exceeds
+  the largest bend the moon can supply at 50 km, by a factor of 1.8 to 28 (flagship
+  Umbriel-Oberon row: 97 degrees demanded at Oberon against 24.9 available, 39.5 against 15.6 at
+  Umbriel; Ariel-Oberon: 122.8 against 8.1). Table and method: section 10 of
+  `docs/notes/2026-10-04-885-uranus-tour-to-cycler-bridge.md`; the agent's own account is its
+  section 4. **Cause:** each leg is a valid Kepler arc and the V-infinity MAGNITUDES match at the
+  encounters, but the DIRECTIONS do not. The validation lane (V2 to V4-strict) matched
+  magnitudes and restarted every leg from its own Lambert solution, so it never compared the two
+  velocities at a flyby; the `#324` bend gate tested only that the moon's bending capacity
+  exceeded a 5 degree floor. `#564`/`#565` had already recorded that no demanded turn is computed
+  anywhere, and `#879` (registered 2026-10-03 as "small, no validation consequence") was the
+  check that would have found this; `#879` is now subsumed here. **Scope of damage:** exactly
+  these six rows (all `candidate-novel`, V4, shown on the website as discovered by the project).
+  The Pluto-Charon and torus rows are different objects. The uncatalogued Jovian `#576` and
+  Saturnian `#571` symmetric closures were built the same way and are presumed to share the
+  defect (not checked). **Consequences already known:** `#885`'s verdict is "not worth a row"
+  because its target is not flyable; `#887` (triple cycler) and `#870` build on the two-moon
+  rows and are on hold; the literature and attribution work of 2026-10-03 on these rows is
+  sound as far as it goes but attaches to objects that are not trajectories. **Recommended
+  (coordinator):** withdraw all six rows to `data/withdrawn/` as was done for the Umbriel torus
+  row, correct the README and the website, and replace `#879` with a real fix: a DEMANDED-TURN
+  gate (turn at every encounter no greater than the bend available at the altitude floor) in
+  the validation lane, with a positive control on a published flyable cycler (a Russell and
+  Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
+  re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
+  sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
 - `#884` — registered 2026-10-04 (owner: "register them all, in probability order"; NOT dispatched).
   **Discovery line 1 of 4 from the 2026-10-03 literature intake; coordinator's rough estimate of
   yielding a catalogue-worthy result: about 85%.** WHICH CATALOGUED EARTH-MOON CYCLERS SURVIVE
@@ -660,6 +689,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   window. Overlaps `#870` (one-working-node campaign at Saturn and Uranus): decide at dispatch
   whether this is a sub-item of it. `#864` sec. 8 (no more `#563`-class sweeps) applies: this is
   a targeted construction, not a sweep.
+  **`#885` DONE 2026-10-04: NOT WORTH A ROW, and it found `#888`.** Note
+  `docs/notes/2026-10-04-885-uranus-tour-to-cycler-bridge.md`. Threshold pre-registered before
+  computing (150 m/s and 365 days; "strong" at 60 m/s and 180 days). Positive control passed
+  (three legs of Landau 2023's Figure 6 tour reproduced at 7.5 / 3.9 / 9.4 m/s against the
+  published 15 / 5 / 8 m/s). In the ideal model a BALLISTIC ladder of 16 Ariel and Oberon
+  flybys (about 323 days) reaches the Ariel-Oberon cycler's Tisserand point from the AAS 25-668
+  end-state, 12 flybys (about 117 days) for Umbriel-Oberon from Landau 2025's. No realisation
+  was built, because the target closures cannot be flown (`#888`). Also reported: the `#465`
+  leveraging machinery is not valid at Uranian V-infinity, and the registry entry
+  `uranus-neptune-regular-moon-endgame-vilm-2026-06-23` ("contours disjoint") conflicts with the
+  published tours; neither was changed.
   **`#887` STAGE ONE DONE 2026-10-04 (go/no-go study, note
   `docs/notes/2026-10-04-887-uranian-triple-cycler-go-no-go.md`; reading and arithmetic only, no
   trajectory):** (a) Liang's method needs two synodic periods that share a moon to be nearly

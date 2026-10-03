@@ -273,3 +273,37 @@ rule (their tour has a 9.1-day interval).
   AU); how the probe called it was not checked. Even at equal V-infinity the Ellison conic is near
   a link (Ariel 4.325, Umbriel 4.388 km/s), so the entry's physical interpretation ("too widely
   spaced ... for ballistic resonant linking") is not supported; the cause was not diagnosed.
+
+## 10. Coordinator's independent check of section 4 (2026-10-04)
+
+The headline in section 4 was recomputed by the coordinating session with separate code, from
+first principles, before anything was done about it: circular-coplanar moons (Uranus GM
+5.793939e6 km^3/s^2; semi-major axes 190,900 / 266,000 / 436,300 / 583,500 km for Ariel, Umbriel,
+Titania, Oberon), one Lambert arc per leg with the row's own leg time, the mirror-symmetry
+condition of an A-B-A closure with equal legs (the far moon sits on the symmetry axis at the
+middle encounter), the Lambert branch chosen as the one that reproduces the row's catalogued
+V-infinity, and the maximum bend from 2*asin(1/(1 + r_p*v_inf^2/GM)) at 50 km altitude. The
+demanded turn is the angle between the incoming V-infinity and the outgoing one, which for a
+mirror-symmetric closure is the incoming vector with its radial component reversed.
+
+| row (leg time) | V-infinity fit error (km/s) | far moon: demanded / available | near moon: demanded / available |
+|---|---|---|---|
+| Umbriel-Oberon (14.94 d) | 0.016 | Oberon 97.0 / 24.9 deg (3.9x) | Umbriel 39.5 / 15.6 deg (2.5x) |
+| Titania-Oberon (12.32 d) | 0.001 | Oberon 152.6 / 7.0 deg (21.7x) | Titania 177.2 / 6.3 deg (28.3x) |
+| Ariel-Oberon (7.75 d) | 0.003 | Oberon 122.8 / 8.1 deg (15.2x) | Ariel 35.5 / 6.4 deg (5.5x) |
+| Umbriel-Titania (3.95 d) | 0.001 | Titania 116.8 / 24.3 deg (4.8x) | Umbriel 137.5 / 9.0 deg (15.3x) |
+| Ariel-Titania (5.32 d) | 0.001 | Titania 131.8 / 9.6 deg (13.7x) | Ariel 17.4 / 9.6 deg (1.8x) |
+| Ariel-Umbriel (3.22 d) | 0.003 | Umbriel 155.6 / 8.1 deg (19.3x) | Ariel 102.9 / 14.3 deg (7.2x) |
+
+Every one of the twelve encounters demands more turn than the moon can supply at 50 km, by a
+factor of 1.8 to 28. The numbers agree with section 4 (which reports 1.9 to 28). The arcs of
+each row are individually valid Kepler arcs whose V-infinity MAGNITUDES match at the encounters;
+their DIRECTIONS do not, and no unpowered flyby can make up the difference. The rows are
+therefore not ballistic trajectories. The validation lane never compared the two velocities at
+an encounter (it matched magnitudes and restarted each leg from its own Lambert solution), and
+the bend gate tested only that the moon's bending capacity exceeded a 5 degree floor.
+
+This check used the ideal model only. It does not exclude that a DIFFERENT two-moon trajectory
+with small demanded turns exists at Uranus; section 5's ladder shows that ballistic flyby
+sequences between these moons exist. It says that the six catalogued closures are not such
+trajectories.
