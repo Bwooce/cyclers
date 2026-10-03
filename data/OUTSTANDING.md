@@ -65,7 +65,7 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
    any published family are ALL `candidate-novel` with attribution (see the `#875` bullet and
    `docs/notes/2026-09-07-875-novelty-policy-decision.md`). `#867`/`#870` are novelty-bearing.
    NOT needed for items 1-3.
-1. `#865` integrity bundle (week 1; cap ledger hygiene at 2 days; fold in `#877`'s follow-up: drop the
+1. ✓ DONE 2026-10-03 — `#865` integrity bundle (week 1; cap ledger hygiene at 2 days; fold in `#877`'s follow-up: drop the
    stale hygiene clauses from the five `override_reason` strings): `primary: Uranus` on the 6 V4
    rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
    negatives, `#663` cross-ref on the `#600` stamp, stamp the VEM <=1-rev topology-gap invalidation
@@ -367,7 +367,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Revised odds: ~70% for >=1 novelty-claimable cycler-class row at any tier (mostly the two V1 orbits
   in hand), ~25-30% at V3+. Full account: `docs/notes/2026-09-05-864-project-feasibility-
   future-review.md`.
-- `#865` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 1, week 1**):
+- `#865` — ✓ DONE 2026-10-03 on the amdnuc checkout, in seven tranches (see the PROGRESS blocks
+  below; two residual owner decisions listed in the last one). Registered 2026-09-05 (found during
+  `#864`; **roadmap item 1, week 1**):
   zero-CPU integrity bundle — add `primary: Uranus` to the 6 flagship quasi_cycler rows (VERIFIED
   missing); set `our_status: candidate-novel` + a `discovery_run` provenance block on all 8
   `source: discovered` rows; stamp the ~10 unstamped negatives (`#695`/`#696`/`#703`/`#716`,
@@ -462,6 +464,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   stalls at 0.03 on the published He1 connection). `#786` is a conditional search negative (no
   7:3 homoclinic self-connection within k <= 34). **STILL OPEN:** `#861`, `#791` Stage 0, the
   VEM invalidation stamp, and confirming G1 = `#872`.
+  **PROGRESS 2026-10-03 (tranche 7, last stamps): registry 104 -> 107.** `#861` Oberon seeding
+  gate (0 of 6 published families recovered; NOT an empty region; reopen = `#862` passing 4 of
+  6); `#791` Stage 0 (energy pruning removes 0 of 3269 sequences; nothing searched); and a NEW
+  stamp recording that the June VEM negatives `#110`/`#120`/`#122`/`#133` are INVALIDATED for the
+  Jones family (they enumerated at most one revolution on one leg; the anchor needs 3-8), with
+  `#866`/`#867` named as not covered. G1 needs no action: `#872` is its registration (its own
+  bullet says so). **`#865` STATUS: every listed item is done** (11 stamps, the `#663`
+  cross-reference, the `#465` band caveat, `primary`, `#789`/`#790`, the `todo_ref`, the `#877`
+  follow-up, `first_published`/`discovery_run`, and `our_status` on 7 of the 8 discovered rows).
+  **Two things remain with the owner:** (1) `umbriel-1-2-torus-homoclinic-uranus-2026` still has
+  no `our_status`; (2) whether to cite the Uranus Orbiter and Probe tour papers on the Uranian
+  rows as nearest published geometry (see `#869`).
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
