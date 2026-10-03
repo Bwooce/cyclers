@@ -166,9 +166,9 @@ a control of the leveraging calculation.
 | Point | a (km) | e | rp (km) | ra (km) | Period (d) | energy (km2/s2) | V-inf Ariel / Umbriel / Titania / Oberon (km/s) |
 |---|---|---|---|---|---|---|---|
 | AAS 25-668 Oberon 3.448 -> Ariel 4.325 | 1,079,637 | 0.886 | 123,265 | 2,036,010 | 33.9 | -2.68 | 4.325 / 4.388 / 3.884 / 3.448 |
-| ariel-oberon cycler | 478,690 | 0.604 | 189,768 | 767,612 | 10.0 | -6.05 | 1.521 / 2.578 / 2.357 / 1.829 |
+| ariel-oberon cycler | 478,690 | 0.604 | 189,768 | 767,613 | 10.0 | -6.05 | 1.521 / 2.578 / 2.357 / 1.829 |
 | Landau 2025 Umbriel 4.1 -> Oberon 2.6 | 495,761 | 0.785 | 106,638 | 884,883 | 10.6 | -5.84 | 4.331 / 4.100 / 3.257 / 2.600 |
-| umbriel-oberon cycler | 444,920 | 0.407 | 264,064 | 625,776 | 9.0 | -6.51 | - / 0.920 / 1.520 / 0.960 |
+| umbriel-oberon cycler | 444,920 | 0.407 | 264,064 | 625,777 | 9.0 | -6.51 | - / 0.920 / 1.520 / 0.960 |
 
 **Gap, Ariel-Oberon.** Energy -2.68 to -6.05 km2/s2, angular momentum 1.161e6 to 1.328e6 km2/s;
 pump angle at Ariel 82.4 to 18.1 deg, at Oberon 109.7 to 118.6 deg. A flyby moves along its own
@@ -182,17 +182,17 @@ the Tisserand graph down to the cycler point without any manoeuvre, with periaps
 (moon, V-infinity, pump angle), with flyby bends sampled at 0, +-1/2 and +-1 times the maximum,
 reaches a state from which one Oberon flyby turns onto the cycler's departure in **16 flybys** at
 50 km (17 at 100 km; Umbriel and Titania do not shorten it). The route steps V-infinity at Oberon
-3.45 -> 3.29 -> 3.20 -> 3.09 and at Ariel 4.33 -> 3.85 -> 3.29 -> 2.58, then nine Ariel flybys at
-2.58 km/s rotate the pump angle by about 16 deg before the final Oberon arrival at 1.83 km/s. This
+3.45 -> 3.29 -> 3.20 -> 3.09 and at Ariel 4.33 -> 3.85 -> 3.29 -> 2.58, then eight Ariel flybys at
+2.58 km/s rotate the pump angle by about 18 deg before the final Oberon arrival at 1.83 km/s. This
 is phase-free: it assumes every encounter can be phased. If each leg takes one revolution of the
-orbit it is flown on, the 16 legs sum to about 323 days (355 at 100 km). So the ideal model offers
+orbit it is flown on, the 15 legs between the 16 flybys sum to about 323 days (355 at 100 km). So the ideal model offers
 a ballistic route at about the pre-registered duration limit, before any phasing cost. For scale,
 going straight from the published conic to the cycler conic with two apse-to-apse burns and no
 flybys costs 603 m/s.
 
 **Umbriel-Oberon (step 5).** From Landau et al. 2025 Table 3's last flyby (Oberon 2.6 km/s, on
 the Umbriel 4.1 / Oberon 2.6 conic) the ladder reaches the umbriel-oberon cycler point in **12
-flybys** (Oberon, Ariel, Oberon, Ariel x4, Oberon, Umbriel, Oberon), about 117 days at one
+flybys** (Oberon x2, Ariel x2, Oberon, Ariel x4, Oberon, Umbriel, Oberon), about 117 days at one
 revolution per leg; the two-burn no-flyby reference is 806 m/s. It looks CHEAPER in time and flyby
 count than the Ariel-Oberon bridge, because the Landau end-state is already a 10.6-day orbit and
 bends grow as V-infinity falls. (The same turn defect applies to its target: section 4.)
