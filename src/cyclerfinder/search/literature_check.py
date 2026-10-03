@@ -1811,6 +1811,58 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "across Miranda/Ariel/Umbriel/Titania/Oberon. NOT a periodic cycler.",
         doi="10.2514/2.3981",
     ),
+    # #869 (2026-10-03): the Uranus Orbiter and Probe tour papers, read in full.
+    # Both design ONE-OFF patched-conic tours (V-infinity 2.6-4.5 km/s) and
+    # contain no periodic or cycler trajectory, hence mga-tour. Each example
+    # tour does contain one four-flyby stretch alternating between two moons
+    # (Umbriel-Oberon in Landau; Oberon-Ariel in Ellison), the nearest
+    # published geometry to the catalogued Uranian quasi_cyclers; that
+    # adjacency is recorded in the two digests, not by this mechanical gate.
+    CorpusAnchor(
+        name="Landau et al. Uranus cruise and tour design trade study (2025)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        topology_label=frozenset({"mga-tour"}),
+        authors=("Landau", "Persinger", "Karimi"),
+        keywords=(
+            "Uranus Orbiter and Probe tour design trade space",
+            "Uranus moon tour patched-conic flyby sequence",
+        ),
+        citation="Landau, Persinger, Karimi, Hofstadter, Castillo-Rogez, Mitchell, "
+        "Elliott, Weinstein-Weiss & Raymond, 'Uranus Cruise and Tour Design Impacts "
+        "on Science, Cost, and Risk,' 2025 IEEE Aerospace Conference. One-off "
+        "26-flyby example moon tour (Table 3); no periodic or cycler trajectory.",
+        doi="10.1109/AERO63441.2025.11068400",
+        key="landau-2025-uranus-tour-trade",
+        year=2025,
+        title="Uranus Cruise and Tour Design Impacts on Science, Cost, and Risk",
+        venue="2025 IEEE Aerospace Conference",
+        provenance="verified-against-source",
+        system="uranian",
+    ),
+    CorpusAnchor(
+        name="Ellison et al. Uranus Orbiter and Probe capture and orbital operations (2025)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        topology_label=frozenset({"mga-tour"}),
+        authors=("Ellison", "Hatten", "Englander"),
+        keywords=(
+            "Uranus Orbiter and Probe system capture orbital operations",
+            "Uranus equatorialization Titania flybys science tour",
+        ),
+        citation="Ellison, Hatten, Englander, Putnam, Shannon, Hughes, Mudek & "
+        "Rashied, 'Uranus Orbiter and Probe: System Capture and Orbital "
+        "Operations,' AAS 25-668 (2025). Equatorialization by repeated Titania "
+        "flybys and a one-off patched-conic moon tour (Table 8); no periodic or "
+        "cycler trajectory.",
+        doi=None,
+        key="ellison-2025-uop-capture-orbital-operations",
+        year=2025,
+        title="Uranus Orbiter and Probe: System Capture and Orbital Operations",
+        venue="AAS 25-668",
+        provenance="verified-against-source",
+        system="uranian",
+    ),
     CorpusAnchor(
         name="Sims et al. polar Uranus orbiter & satellite tour (2014)",
         primary="Uranus",

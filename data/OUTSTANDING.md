@@ -685,6 +685,25 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Russell-Strange enumerated; whether an unenumerated same-system pair (Io-Callisto) is
   `known-class-member` under `#875` is flagged there as an owner question. Two papers remain
   needed: Landau et al. 2025 (IEEE) and Simon et al. 2026 (PSJ 7(6):143).
+  **UPDATE 2, same day — the UOP reading is complete and the verdict is in.** The owner supplied
+  both; filed, digested, indexed. **Simon et al. 2026** gives no moon-by-moon tour and no
+  periodic or resonant geometry (it defers the tour to Landau and Ellison). **Landau et al. 2025**
+  designs a one-off 26-flyby example tour at V-infinity 2.6-4.3 km/s with no cycler or periodic
+  analysis, BUT its Table 3 ends with an Umbriel-Oberon-Umbriel-Oberon alternation (intervals
+  25.7 / 9.1 / 20.3 d; V-infinity 4.0 / 2.7 / 4.1 / 2.6 km/s) — the same pair as the flagship
+  `#312` row (equal 14.94-d legs at 0.89-0.96 km/s). **Verdict across the three UOP papers:** no
+  published repeating or periodic two-moon Uranian trajectory, and nothing in the rows'
+  V-infinity regime; two of the six catalogued pairs (Umbriel-Oberon, Ariel-Oberon) have a
+  published ONE-OFF alternating stretch at 2.6-4.5 km/s. Proposed, owner's call: keep
+  `candidate-novel` on all six, cite Landau 2025 on the Umbriel-Oberon row and AAS 25-668 on the
+  Ariel-Oberon row, and word the claim as "no published repeating or periodic two-moon
+  trajectory" rather than "no published two-moon geometry". Both tour papers are now `mga-tour`
+  anchors in `literature_check.py` (71 -> 73 anchors). **REMAINING in this task:** (1) one
+  reference surfaced by the reading and not held: Landau, Davis & Karimi, "Trajectory Options
+  for a Uranus Orbiter and Probe", AAS/AIAA Astrodynamics Specialist Conference, Big Sky, 2023
+  (Landau 2025's Ref. [13], the tour algorithm, possibly with further example tours);
+  (2) digests for Bellome 2023 and Brown et al.; (3) an AAS 24-288 positive-control anchor;
+  (4) the fortnightly literature watch. `#870`'s hard gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
   policy; CENSUS unless policy GO**): one-working-node (Russell-Strange) campaign at Saturn and

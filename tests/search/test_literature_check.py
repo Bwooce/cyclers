@@ -771,3 +771,20 @@ def test_881_pluto_anchor_citations_and_scopes() -> None:
     assert gc.doi == "10.2514/1.A34658"
 
     assert _anchor("Brozovic").topology_label == frozenset({"ephemeris"})
+
+
+def test_869_uranus_orbiter_and_probe_tour_papers_are_anchored_as_tours() -> None:
+    """Landau 2025 and Ellison 2025 (AAS 25-668) design one-off moon tours; they
+    are anchored (so a tour-labelled candidate collides) and scoped mga-tour (so
+    they do not mechanically flag a repeated-moon candidate)."""
+    landau = _anchor("Landau et al. Uranus cruise and tour design")
+    ellison = _anchor("Ellison et al. Uranus Orbiter and Probe")
+    for a in (landau, ellison):
+        assert a.primary == "Uranus" and a.topology_label == frozenset({"mga-tour"})
+        assert a.provenance == "verified-against-source" and a.year == 2025
+    assert landau.doi == "10.1109/AERO63441.2025.11068400"
+    assert ellison.doi is None  # AAS conference paper, no DOI
+
+    still_clear = check_literature(URANUS_REPEATED_MOON_SIG, search=offline_corpus_search)
+    assert still_clear.status == "not-found", still_clear
+    assert "Landau et al." in still_clear.notes and "Ellison et al." in still_clear.notes
