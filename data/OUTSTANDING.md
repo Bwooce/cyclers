@@ -418,6 +418,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   self-citation; verified against both catalogue shapes (same 7 rows in the strip, 172 tests green
   each). A site test that pinned the old missing-`primary` defect was relaxed in the same commit.
   Full local `uv run pytest`: 4570 passed, only the five `#584`-class failures noted above.
+  **PROGRESS 2026-10-03 (tranche 3):** after the `#880` fix the gate was re-run and returns
+  `not-found` for all six Uranian rows, so they are now `our_status: candidate-novel`, each with a
+  populated `literature_check` block (backend, signature, query trail, and the corpus anchors
+  excluded by declared scope). **Attribution added, beyond the bare label:** the Russell-Strange
+  2009 corpus anchors (`#578`) postdate these rows, and `#577` classed closures from this same
+  method at Jupiter as members of that paper's class ("same model, same method"), so the rows are
+  `#875` case (ii) — a published architecture at a system the authors did not treat — and carry
+  the mandatory `corroborating_sources` attribution plus a `notes` paragraph on how it was
+  re-applied (system, model/method, both moons as working nodes versus one flyby body and a passive
+  target, low-V-infinity quasi-cycler). PROVISIONAL on `#869` (UOP-era Uranian papers unread).
+  The website strip accepts `candidate-novel` rows with attribution sources (cyclers.space
+  `b467f20`); its intro wording was adjusted to match. **Verification on amdnuc is now
+  single-process only:** the machine hard-reset twice (17:00 and ~17:27) at the moment a parallel
+  pytest run started, so the full suite for this tranche is CI's (the self-hosted runner).
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
@@ -428,7 +442,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the ratio's direction against `#832` (the turn-ratio direction was inverted once already).
   No validation-tier or novelty consequence. **Recommended model:** Sonnet behind a hand-checked
   value for the `#312` row.
-- `#880` — registered 2026-10-03 (found by `#865`; owner: "yes register and fix 880"): **the offline
+- `#880` — FIX ✓ DONE 2026-10-03 (commit `d8378af8`, CI green; the audit and three follow-ups at the
+  end of this bullet are OPEN). Registered 2026-10-03 (found by `#865`; owner: "yes register and
+  fix 880"): **the offline
   literature gate cannot return `not-found` for any moon-system candidate.** Every offline backend
   (`saturn_uranus_campaign.offline_corpus_search`, `scripts/literature_check_review_queue.py`, and
   the copies in `run_627`/`run_629`/`run_633`) synthesises a hit from ANY corpus anchor that shares
@@ -454,6 +470,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   an unlabelled signature must behave as before, and a tour anchor must no longer flag a
   repeated-moon candidate; (e) audit which past moon-system verdicts consumed the artefact.
   Then re-run the gate on the six Uranian rows for `#865`.
+  **RESULT 2026-10-03:** fix scope (a)-(d) implemented as specified (`SearchResult.anchor_name`;
+  `_declared_scope_exclusion` factored out of `_candidate_anchors`; `check_literature` skips a
+  corpus-derived hit whose anchor a declared-scope filter excludes and lists it in `notes`; one
+  canonical `offline_corpus_search` in `literature_check.py`, imported by the campaign module and
+  the review-queue script). Five tests added; 223 tests across the 21 related files green; full
+  suite green in CI. Measured after the fix, repeated-moon signatures through the offline backend:
+  the six Uranian rows, Miranda-Ariel, Titan-Rhea and Dione-Rhea read `not-found`;
+  Titan-Enceladus (Russell-Strange 2009), Europa-Callisto and Ganymede-Io still read `published`;
+  the same Uranian signature with NO declared topology still reads `published` (conservative
+  behaviour kept). **OPEN — audit (e):** not done. `saturn_uranus_campaign.score_candidate` builds
+  its signature with no topology label, so the scans that import that module (`scan_285`,
+  `scan_311`, `scan_312`, `scan_492`, `scan_558`, `enumerate_600`, `scan_816`) may have demoted
+  candidates SILVER -> BRONZE on a tour-anchor "published" since 2026-06-16; whether any
+  downstream gate dropped BRONZE rows is unchecked. **OPEN — follow-ups:** (1) the campaign still
+  demotes, because an unlabelled signature is deliberately unchanged: `#870`'s charter must declare
+  the genome's topology label. (2) Neptune (`Voyager 2 Triton encounter + Trident` anchor) and
+  Pluto (`Persephone` and two others) candidates still read `published` because those anchors
+  carry NO topology label; they are flyby/mission references, and until they are labelled `#868`'s
+  literature gate cannot clear. (3) The historical copies of the backend in `run_627`, `run_629`
+  and `run_633` are untouched run records and still carry the old behaviour.
 - `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
   AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
   published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,

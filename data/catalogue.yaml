@@ -50074,6 +50074,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs (Uranus-Umbriel and Uranus-Oberon), each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours (see this catalogue's Russell-Strange 2009 rows: 'Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.295706+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Umbriel", "Oberon", "Umbriel"], n_rev: [0, 0], vinf_kms: [0.9199, 0.9604, 0.8947], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Umbriel-Oberon cycler 2 synodic trajectory"
+    - "Umbriel-Oberon-Umbriel cycler trajectory"
+    - "Umbriel-Oberon cycler"
+    - "Umbriel-Oberon ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (12): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-06-16"
@@ -50083,7 +50104,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-06-16"
   notes: |
     First computed quasi_cycler row admitted to the catalogue, validating the
@@ -50229,6 +50256,23 @@
     row as the first quasi_cycler entry at next sync (predev/prebuild
     pulls catalogue.yaml from main; see scripts/sync-catalogue.mjs in
     the cyclers.space repo).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Umbriel and Oberon
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #327 verified data/silver_327_verified.jsonl meta-row: stored V_inf at Umbriel-1 = 0.9199258810725036 km/s; reported as 0.9199 (4 sig figs) for catalogue display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #327: stored V_inf at Oberon = 0.9604309791298091 km/s; reported as 0.9604."
@@ -50297,6 +50341,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.297430+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Titania", "Oberon", "Titania"], n_rev: [0, 0], vinf_kms: [2.1618, 1.968, 2.1618], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Titania-Oberon cycler 2 synodic trajectory"
+    - "Titania-Oberon-Titania cycler trajectory"
+    - "Titania-Oberon cycler"
+    - "Titania-Oberon ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (14): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Canales-Howell-Fantino moon-to-moon analytical transfer (Titania-Oberon, 2021) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Kumar Uranus-Oberon PCRTBP MMR study (2025) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-07-11"
@@ -50307,7 +50372,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-07-11"
   notes: |
     Representative Titania-Oberon-Titania member of the Uranian symmetric-closure
@@ -50372,6 +50443,23 @@
     #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
     -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
     #568 (writeback-readiness verdict) -> #569 (this writeback).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Titania and Oberon
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line57-titania-oberon-titania: V_inf at first Titania = 2.161767816675378 km/s; reported 2.1618 (4 decimals) for display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Oberon = 1.9680495724521725 km/s; reported 1.9680."
@@ -50441,6 +50529,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.298704+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Ariel", "Oberon", "Ariel"], n_rev: [0, 0], vinf_kms: [1.5209, 1.8286, 1.5209], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Ariel-Oberon cycler 2 synodic trajectory"
+    - "Ariel-Oberon-Ariel cycler trajectory"
+    - "Ariel-Oberon cycler"
+    - "Ariel-Oberon ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (12): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-07-11"
@@ -50451,7 +50560,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-07-11"
   notes: |
     Representative Ariel-Oberon-Ariel member of the Uranian symmetric-closure
@@ -50506,6 +50621,23 @@
     #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
     -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
     #568 (writeback-readiness verdict) -> #569 (this writeback).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Ariel and Oberon
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line18-ariel-oberon-ariel: V_inf at first Ariel = 1.520866047614147 km/s; reported 1.5209 (4 decimals) for display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Oberon = 1.8285940380726622 km/s; reported 1.8286."
@@ -50575,6 +50707,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.299988+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Umbriel", "Titania", "Umbriel"], n_rev: [0, 0], vinf_kms: [1.2296, 1.0058, 1.2296], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Umbriel-Titania cycler 2 synodic trajectory"
+    - "Umbriel-Titania-Umbriel cycler trajectory"
+    - "Umbriel-Titania cycler"
+    - "Umbriel-Titania ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (12): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-07-11"
@@ -50585,7 +50738,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-07-11"
   notes: |
     Representative Umbriel-Titania-Umbriel member of the Uranian symmetric-closure
@@ -50640,6 +50799,23 @@
     #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
     -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
     #568 (writeback-readiness verdict) -> #569 (this writeback).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Umbriel and Titania
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line26-umbriel-titania-umbriel: V_inf at first Umbriel = 1.2295656768416439 km/s; reported 1.2296 (4 decimals) for display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Titania = 1.0058255988095806 km/s; reported 1.0058."
@@ -50709,6 +50885,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.301236+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Ariel", "Titania", "Ariel"], n_rev: [0, 0], vinf_kms: [1.2306, 1.7186, 1.2306], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Ariel-Titania cycler 2 synodic trajectory"
+    - "Ariel-Titania-Ariel cycler trajectory"
+    - "Ariel-Titania cycler"
+    - "Ariel-Titania ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (12): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-07-11"
@@ -50719,7 +50916,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-07-11"
   notes: |
     Representative Ariel-Titania-Ariel member of the Uranian symmetric-closure
@@ -50774,6 +50977,23 @@
     #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
     -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
     #568 (writeback-readiness verdict) -> #569 (this writeback).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Ariel and Titania
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line12-ariel-titania-ariel: V_inf at first Ariel = 1.2306411593828481 km/s; reported 1.2306 (4 decimals) for display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Titania = 1.7185773183747601 km/s; reported 1.7186."
@@ -50843,6 +51063,27 @@
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
   first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: candidate-novel   # spec §16.4 novelty policy case (ii), owner decision #875, applied by #865 (owner-approved 2026-10-03): a published architecture (Russell & Strange 2009) at a system its authors did not treat; attribution in corroborating_sources. PROVISIONAL: the UOP-era Uranian papers (#869) are still unread, and candidate-novel is not verified-novel (that needs V5).
+  literature_check:   # spec §16.5 mandatory gate; fresh run 2026-10-03 against the offline corpus after #880. not-found is necessary-not-sufficient.
+    checked: true
+    reviewer: "literature_check.py offline KNOWN_CORPUS backend (#865, after the #880 fix)"
+    date: "2026-10-03T10:23:20.302512+00:00"
+    backend: "offline_corpus_search over KNOWN_CORPUS (69 anchors); not a web search"
+    signature: {primary: "Uranus", sequence: ["Ariel", "Umbriel", "Ariel"], n_rev: [0, 0], vinf_kms: [0.979, 1.3004, 0.979], topology_label: ["repeated-moon"]}
+    result: "no-match"
+    status: "not-found"
+    citation:
+    doi:
+    confidence: 0.4
+    matched_url:
+    sources_searched:
+    - "Ariel-Umbriel cycler 2 synodic trajectory"
+    - "Ariel-Umbriel-Ariel cycler trajectory"
+    - "Ariel-Umbriel cycler"
+    - "Ariel-Umbriel ballistic low V-infinity cycler"
+    - "Uranus moon tour cycler ballistic patched-conic"
+    notes: "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (12): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Heaton-Longuski Galileo-style Uranian satellite tour (2003) [topology-label]; Jarmak QUEST Uranus orbiter New Frontiers concept (2020) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Sims et al. polar Uranus orbiter & satellite tour (2014) [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+    discipline: "not-found is NECESSARY-NOT-SUFFICIENT for novelty: absence of a search hit is not evidence of absence; the human + V0-V5 gauntlet still govern. This is a rediscovery filter, not a novelty proof."
   discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
     finder: "cyclerfinder discovery campaign"
     discovery_date: "2026-07-11"
@@ -50853,7 +51094,13 @@
     finder_version:   # not recorded at discovery time
     run_id:   # not recorded at discovery time
     cell_id:   # not recorded at discovery time
-  corroborating_sources: []
+  corroborating_sources:   # spec §16.4 case (ii): mandatory ATTRIBUTION of the re-applied architecture, not prior publication of this orbit (#865)
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "ARCHITECTURE source (spec 16.4 novelty policy, case ii). Russell & Strange introduced ideal-model (circular-coplanar) free-return cyclers between two moons and enumerated them for the Jovian pairs Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede and for Titan-Enceladus only (their Table 1). They did not treat Uranus. This row re-applies that architecture at Uranus; see the row notes for what changed."
   priority_date: "2026-07-11"
   notes: |
     Representative Ariel-Umbriel-Ariel member of the Uranian symmetric-closure
@@ -50908,6 +51155,23 @@
     #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
     -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
     #568 (writeback-readiness verdict) -> #569 (this writeback).
+
+    Novelty status and attribution (#865, 2026-10-03; spec §16.4 policy case ii, owner
+    decision #875). This row is tagged candidate-novel as a re-application of a PUBLISHED
+    architecture at a system its authors did not treat, so the architecture is attributed
+    in corroborating_sources (Russell & Strange 2009). How it was re-applied: SYSTEM --
+    Uranus, where Russell & Strange enumerate only Jovian pairs and Titan-Enceladus.
+    MODEL AND METHOD -- the same ideal circular-coplanar patched-conic free-return
+    construction (the #577 adjudication found closures from this same search method at
+    Jupiter to be members of their class: same model, same method). FLYBY BODY AND TARGET
+    -- Russell & Strange use one massive flyby body and a passive target; here Ariel and Umbriel
+    BOTH supply gravity-assist bends in an A-B-A (1,1) symmetric closure. WHAT CHANGED
+    PHYSICALLY -- the low V-infinity regime recorded in vinf_kms_at_encounters, at which
+    mid-sized Uranian moons give useful bends (bend grows as V-infinity falls), and the
+    closure is a QUASI-cycler: near-commensurate and valid over the epoch windows in
+    validity_window, not an exactly periodic ideal-model cycler. Claim wording is "first
+    computed", never "first predicted". The literature_check block above records the
+    fresh not-found run; not-found is necessary-not-sufficient.
   source_quotes:
     "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line2-ariel-umbriel-ariel: V_inf at first Ariel = 0.979040480994661 km/s; reported 0.9790 (4 decimals) for display."
     "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Umbriel = 1.3004234339628207 km/s; reported 1.3004."
