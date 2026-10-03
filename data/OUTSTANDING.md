@@ -475,7 +475,35 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   follow-up, `first_published`/`discovery_run`, and `our_status` on 7 of the 8 discovered rows).
   **Two things remain with the owner:** (1) `umbriel-1-2-torus-homoclinic-uranus-2026` still has
   no `our_status`; (2) whether to cite the Uranus Orbiter and Probe tour papers on the Uranian
-  rows as nearest published geometry (see `#869`).
+  rows as nearest published geometry (see `#869`). **(2) DECIDED AND APPLIED 2026-10-03** (owner
+  agreed; `#869` bullet, commit `02a94b69`). **(1) PROPOSAL PUT TO THE OWNER 2026-10-03, not
+  applied:** `candidate-novel` under spec 16.4 case (ii). Grounds, all checked against papers
+  held in the corpus: the ARCHITECTURE (whiskered tori of the concentric circular restricted
+  four-body problem and their manifold connections) is published by Kumar, Anderson & de la
+  Llave for Jupiter-Europa-Ganymede; the Uranian application is Kumar & Anderson AAS 24-288,
+  which treats the OBERON base system with Titania as perturber and says in its conclusions
+  that "there are three other large moons of Uranus - Titania, Umbriel, and Ariel - for which
+  this study should be repeated" and that connections "should also be done in the CCR4BP". So
+  the source authors name the Umbriel base system as not treated, and four-body connections as
+  not yet computed at Uranus. The 16.4 contrast clause (a torus around an ALREADY-PUBLISHED
+  periodic orbit stays `known-class-member`) does not apply: the parent Uranus-Umbriel 1:2
+  exterior resonant orbit is not published anywhere located, and the row's object is a
+  connection, not a bare torus (which is why the Europa 3:4 torus row is `known-class-member`
+  and this one would not be). Fresh live check 2026-10-03 (two web queries plus the first
+  author's publication list): nothing on Umbriel; `#699`/`#706` verdict unchanged. Applying it
+  needs a `literature_check` block, the two attributions in `corroborating_sources`, a notes
+  paragraph in the `#865` format, and removal of the row's "our_status is left absent" sentence.
+  Claim wording would be "first computed four-body torus connection at the Umbriel base
+  system", never "new species". Caveat to carry: the connection is exact only in the idealized
+  model (real-ephemeris near-miss 5-143 km / 1-13 m/s per synodic window), V1.
+  **Io-Callisto (raised by the `#577` addendum): RECOMMENDED NOT PURSUED, owner to confirm.**
+  The six `#576` closures are three geometries read from each end (legs 7.92 / 8.91 / 9.90 d,
+  V-infinity 5.4-7.3 km/s). Under `#875` as decided they are same-system members of
+  Russell-Strange's Jovian class (the owner kept the 0/36 Galilean ruling), so the best
+  reachable label is `known-class-member`; the pair is physically the least attractive
+  Galilean one; and the roadmap puts `#868` and `#866` first. Reopen only for a mission-driven
+  reason or if the owner rules that an unenumerated PAIR in a treated system is an unsearched
+  sub-class.
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
@@ -694,16 +722,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#312` row (equal 14.94-d legs at 0.89-0.96 km/s). **Verdict across the three UOP papers:** no
   published repeating or periodic two-moon Uranian trajectory, and nothing in the rows'
   V-infinity regime; two of the six catalogued pairs (Umbriel-Oberon, Ariel-Oberon) have a
-  published ONE-OFF alternating stretch at 2.6-4.5 km/s. Proposed, owner's call: keep
-  `candidate-novel` on all six, cite Landau 2025 on the Umbriel-Oberon row and AAS 25-668 on the
-  Ariel-Oberon row, and word the claim as "no published repeating or periodic two-moon
-  trajectory" rather than "no published two-moon geometry". Both tour papers are now `mga-tour`
-  anchors in `literature_check.py` (71 -> 73 anchors). **REMAINING in this task:** (1) one
-  reference surfaced by the reading and not held: Landau, Davis & Karimi, "Trajectory Options
-  for a Uranus Orbiter and Probe", AAS/AIAA Astrodynamics Specialist Conference, Big Sky, 2023
-  (Landau 2025's Ref. [13], the tour algorithm, possibly with further example tours);
-  (2) digests for Bellome 2023 and Brown et al.; (3) an AAS 24-288 positive-control anchor;
-  (4) the fortnightly literature watch. `#870`'s hard gate (read the UOP papers) is otherwise met.
+  published ONE-OFF alternating stretch at 2.6-4.5 km/s. **APPLIED (owner agreed 2026-10-03,
+  commit `02a94b69`):** `candidate-novel` kept on all six; Landau 2025 cited on the
+  Umbriel-Oberon row and AAS 25-668 on the Ariel-Oberon row as NEAREST PUBLISHED GEOMETRY; all
+  six rows' notes word the claim as "no published repeating or periodic two-moon trajectory at
+  Uranus, and none in this V-infinity regime", not "no published two-moon geometry"; the
+  PROVISIONAL "UOP papers unread" caveat is gone; the `literature_check` blocks were re-run
+  against the 73-anchor corpus (still `not-found`, the two tour anchors scope-excluded). Website
+  strip wording aligned. Both tour papers are `mga-tour` anchors in `literature_check.py`
+  (71 -> 73 anchors). **Digests added the same day:** Bellome et al. 2023 (heliocentric MGA
+  method, no cycler or moon tour), Brown et al. (HR4BP Earth-Moon families under solar forcing,
+  arXiv v1, no ICs), and two owner-supplied adjacent papers (Li-Qiao-Li 2024 preprint, one-way
+  three-body multiple-flyby transfers; Zhang et al. 2024 angles-only orbit determination, out
+  of scope). None is a literature-gate anchor. **REMAINING in this task:** (1) one reference
+  surfaced by the reading and not held: Landau, Davis & Karimi, "Trajectory Options for a
+  Uranus Orbiter and Probe", AAS/AIAA Astrodynamics Specialist Conference, Big Sky, 2023
+  (Landau 2025's Ref. [13], the tour algorithm, possibly with further example tours); a CrossRef
+  title query on 2026-10-03 found no record and the citing paper prints no paper number or
+  DOI, so it has to come from the conference proceedings or from the authors;
+  (2) an AAS 24-288 positive-control anchor; (3) the fortnightly literature watch. `#870`'s hard
+  gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
   policy; CENSUS unless policy GO**): one-working-node (Russell-Strange) campaign at Saturn and
