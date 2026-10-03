@@ -594,7 +594,7 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 56
+assert len(NON_KEPLERIAN_IDS) == 55
 
 
 # ---------------------------------------------------------------------------
