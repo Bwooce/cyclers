@@ -56547,6 +56547,23 @@
     cell_id:   # not recorded at discovery time
   priority_date: "2026-07-24"
   notes: |
+    UNDER REVIEW -- DO NOT CITE (#882, 2026-10-03). An adversarial review of this row found,
+    and a direct reading of the search code and the stored result confirmed, that the
+    connection below is NOT a trajectory of the CCR4BP as catalogued. The model is
+    time-dependent (Titania's phase advances with time), but the search matched only the
+    spacecraft state (x, y, vx, vy) between the outgoing and incoming arcs and started both
+    arcs at the same forcing phase, so at the junction the two arcs disagree about where
+    Titania is: t_u + t_s = 38.0957 TU = 3.1770 forcing periods, a 63.7 degree jump. The
+    "machine precision" closure quoted below is a state match between arcs at different
+    perturber phases. In addition the parent 1:2 orbit crosses Titania's orbit (extent
+    1.477-1.698 against 1.640 Umbriel units), a case in which Kumar and Anderson (AAS
+    24-288) state that no quasi-periodic equivalent can exist, and the real-ephemeris
+    checks flew only the outgoing arc. The numbers below are kept unchanged as the record
+    of what was computed; the phrases "new dynamical species", "closing to machine
+    precision" and "real, recurring, correctable near-connection" are withdrawn. No
+    novelty label is assigned. Full account: docs/notes/2026-10-03-882-umbriel-torus-
+    row-adversarial-review.md. Rebuild task: #882.
+
     NEW dynamical species for this catalogue: a homoclinic connection to a quasi-periodic
     invariant TORUS in the CCR4BP (Concentric Circular Restricted 4-Body Problem), not a
     discrete multi-encounter Lambert-arc tour and not a single strictly-periodic orbit.

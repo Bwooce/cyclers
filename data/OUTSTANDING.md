@@ -476,8 +476,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   **Two things remain with the owner:** (1) `umbriel-1-2-torus-homoclinic-uranus-2026` still has
   no `our_status`; (2) whether to cite the Uranus Orbiter and Probe tour papers on the Uranian
   rows as nearest published geometry (see `#869`). **(2) DECIDED AND APPLIED 2026-10-03** (owner
-  agreed; `#869` bullet, commit `02a94b69`). **(1) PROPOSAL PUT TO THE OWNER 2026-10-03, not
-  applied:** `candidate-novel` under spec 16.4 case (ii). Grounds, all checked against papers
+  agreed; `#869` bullet, commit `02a94b69`). **(1) RESOLVED 2026-10-03: NOT LABELLED; the
+  proposal below is WITHDRAWN.** The owner asked for the row to be labelled if novel, with an
+  agent review if needed. An independent adversarial review found that the catalogued
+  connection is not a trajectory of its own model (the search never constrained the forcing
+  phase at the junction), which the coordinator confirmed in the code and the stored result; see
+  `#882` and `docs/notes/2026-10-03-882-umbriel-torus-row-adversarial-review.md`. The proposal
+  text is kept for the record; its grounds about the literature stand, its caveat ("exact only
+  in the idealized model") was wrong, and it silently read spec 16.4 (ii) at moon-pair level,
+  which the policy text does not settle. *Withdrawn proposal:* `candidate-novel` under spec 16.4 case (ii). Grounds, all checked against papers
   held in the corpus: the ARCHITECTURE (whiskered tori of the concentric circular restricted
   four-body problem and their manifold connections) is published by Kumar, Anderson & de la
   Llave for Jupiter-Europa-Ganymede; the Uranian application is Kumar & Anderson AAS 24-288,
@@ -575,6 +582,39 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#882` — registered 2026-10-03 (found by the adversarial review the owner asked for on the
+  Umbriel torus row; NOT dispatched; **this is a correctness defect in a catalogued row and in
+  the CCR4BP connection search, so it outranks new discovery work on that lane**). Note:
+  `docs/notes/2026-10-03-882-umbriel-torus-row-adversarial-review.md`.
+  **Defect (verified in code and stored result):** `ccr4bp_manifold_globalize.manifold_state_at`
+  starts the unstable and the stable arc at the same forcing phase and
+  `ccr4bp_heteroclinic_search`'s refinement residual is the four spacecraft-state components
+  only, so nothing forces the perturber's phase to agree where the arcs are joined. For
+  `umbriel-1-2-torus-homoclinic-uranus-2026`, `t_u + t_s` = 38.0957 TU = 3.1770 forcing periods:
+  Titania is 63.7 degrees apart on the two sides of the junction. The row's "closure" is a state
+  match between arcs at different perturber phases, not a CCR4BP trajectory. The same solution
+  is returned for all four lobe-sign combinations, consistent with a self-intersection of the
+  torus's projection (inference, untested). Also: the parent 1:2 orbit crosses Titania's orbit
+  (Kumar & Anderson AAS 24-288 p. 17 state no quasi-periodic equivalent exists in that case;
+  stored torus residual 1.4e-4), and `#704`/`#705` flew only the outgoing arc.
+  **Done 2026-10-03:** row NOT labelled; an UNDER REVIEW notice added to the row's notes
+  (numbers unchanged); the website's discoveries strip now requires a novelty label, so the row
+  is no longer presented as a discovery.
+  **OWNER DECISION PENDING:** withdraw the row from the catalogue until rebuilt (coordinator's
+  recommendation), or keep it with the notice and demote `validation_level` to V0.
+  **To do:** (1) phase-consistent residual (the stable arc must land at section phase
+  `theta1_section + omega1*(t_u+t_s)`, or compare both arcs in the stroboscopic map);
+  (2) a positive control that reproduces a PUBLISHED four-body torus connection with the phase
+  constraint in force, and a check of whether `#694`'s Jupiter-Europa-Ganymede "positive
+  control" passed only because the constraint was missing; (3) re-run Umbriel with a parent
+  orbit that does not cross Titania's orbit; (4) a real-ephemeris check that flies both arcs;
+  (5) add a caveat to the four `#865` torus-connection stamps (`#695`, `#696`, `#703`, `#716`):
+  a true connection needs the state match AND the phase match, so no state match is still a
+  negative on its face, but confirm how each search measured closest approach; (6) fix the
+  "Kumar Uranus-Oberon" anchor and the row's notes, which credit arXiv:2509.03655 with four-body
+  content that is in AAS 24-288; (7) README wording for this row; (8) owner ruling on whether
+  spec 16.4 (ii) "system" means the primary or the base moon (same question as Io-Callisto);
+  (9) anchor Pergola et al. IEPC-2007-305 (Uranus-moon three-body manifolds including Umbriel).
 - `#881` — ✓ DONE 2026-10-03 (commit `469d219d`; follow-up (2) of `#880`, owner: "keep going"):
   **moon-system anchor scopes, the published Neptune-Triton families, and the Persephone
   citation.** Scoping the Neptune flyby anchor alone would have turned the gate there from "always
