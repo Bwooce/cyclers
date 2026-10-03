@@ -676,9 +676,12 @@ def stage_r3b(args: argparse.Namespace) -> None:
     radii = uut_radii()
     sys0 = dataclasses.replace(uut, mu_gan=0.0)
     rec: dict[str, Any] = {"orbits": []}
+    tag = "" if not args.orbit else "_" + args.orbit.replace(",", "_")
     for p, q in ((2, 3), (3, 4)):
         for e in args.ecc:
             for apse in ("peri", "apo"):
+                if args.orbit and args.orbit != f"{p},{q},{e:g},{apse}":
+                    continue
                 s4, period, res = resonant_orbit(uut.mu, p, q, e, apse, 1)
                 if res > 1e-10:
                     continue
@@ -687,9 +690,10 @@ def stage_r3b(args: argparse.Namespace) -> None:
                 r = np.hypot(c0.nodes[:, 0] + uut.mu, c0.nodes[:, 1])
                 dmoon = float(np.min(np.hypot(c0.nodes[:, 0] - 1 + uut.mu, c0.nodes[:, 1])))
                 lam = float(np.max(np.abs(ev)))
-                hyper = bool(
-                    np.any(np.abs(np.abs(ev) - 1.0) > 1e-4) and np.all(np.abs(ev.imag) < 1e-9)
-                )
+                # hyperbolic: the largest multiplier is real and off the unit circle
+                # (the trivial pair at 1 carries ~1e-7 imaginary noise; do not test it)
+                imax = int(np.argmax(np.abs(ev)))
+                hyper = bool(lam > 1.0 + 1e-4 and abs(ev[imax].imag) < 1e-9 * lam)
                 entry: dict[str, Any] = {
                     "p": p,
                     "q": q,
@@ -713,16 +717,16 @@ def stage_r3b(args: argparse.Namespace) -> None:
                 entry["circle_steps"] = [circle_summary(s) for s in steps]
                 log(f"   circle at physical Titania mass: {circle_summary(last)}")
                 if not last.converged:
-                    save("r3b", rec)
+                    save("r3b" + tag, rec)
                     continue
                 b = bundles2(last)
                 entry["bundles"] = bundle_summary(b)
                 log(f"   bundles: {bundle_summary(b)}")
-                save("r3b", rec)
+                save("r3b" + tag, rec)
                 if args.homoclinic and lam > 1.5:
                     entry["homoclinic"] = _homoclinic_search(last, b, radii, args)
-                    save("r3b", rec)
-    save("r3b", rec)
+                    save("r3b" + tag, rec)
+    save("r3b" + tag, rec)
 
 
 def _homoclinic_search(
@@ -799,6 +803,7 @@ def main() -> None:
     ap.add_argument("--n-family", type=int, default=24)
     ap.add_argument("--branch", type=int, default=0)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--orbit", default="", help="r3b filter 'p,q,e,apse', e.g. '3,4,0.1,peri'")
     ap.add_argument("--max-iter", type=int, default=30)
     ap.add_argument("--tol", type=float, default=1e-11, help="connection residual tolerance")
     ap.add_argument("--extra", type=int, default=0, help="extra verification periods")

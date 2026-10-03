@@ -1,0 +1,19 @@
+[2026-10-04T00:51:32 +    0.0s] stage r3a start
+[2026-10-04T00:51:33 +    0.5s] Umbriel 1:2 orbit: residual 1.26e-14, period 12.56637, Floquet [0.98870726+0.00000000e+00j 1.01142172+0.00000000e+00j
+ 1.        +1.87530957e-07j 1.        -1.87530957e-07j]
+[2026-10-04T00:51:33 +    0.6s] N=101: orbit radius range [1.4767, 1.6982], Titania at 1.6403, rho 5.99555
+  circle GN iter 1: residual 4.880e-03 (alpha 1)
+  circle GN iter 2: residual 1.604e-03 (alpha 1)
+  circle GN iter 3: residual 1.798e-03 (alpha 0.25)
+  circle GN iter 4: residual 1.819e-03 (alpha 0.5)
+  circle GN iter 5: residual 1.862e-03 (alpha 0.25)
+[2026-10-04T00:51:36 +    3.8s]    mu_gan 3.916e-08: {'n_nodes': 101, 't0': 0.0, 'rho': 5.995552497202097, 'rho_over_2pi': 0.9542218164966708, 'residual': 0.001862381314883671, 'converged': False, 'residual_history': [0.010285512793001161, 0.004880306425290359, 0.0016038067783783472, 0.0017976302962626756, 0.001818856423516424, 0.001862381314883671], 'fourier_tail': 0.001957253494717627, 'mu_gan': 3.915686587341081e-08}
+[2026-10-04T00:51:36 +    3.8s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3a.json
+[2026-10-04T00:51:37 +    4.1s] N=201: orbit radius range [1.4767, 1.6982], Titania at 1.6403, rho 5.99555
+  circle GN iter 1: residual 7.983e-03 (alpha 1)
+  circle GN iter 2: residual 4.822e-03 (alpha 1)
+  circle GN iter 3: residual 4.352e-03 (alpha 0.25)
+  circle GN iter 4: residual 4.946e-03 (alpha 0.25)
+[2026-10-04T00:51:40 +    7.7s]    mu_gan 3.916e-08: {'n_nodes': 201, 't0': 0.0, 'rho': 5.995552497202097, 'rho_over_2pi': 0.9542218164966708, 'residual': 0.0049460888639561995, 'converged': False, 'residual_history': [0.015259421365715453, 0.007982999485068476, 0.004821513968563229, 0.004351926831976272, 0.0049460888639561995], 'fourier_tail': 0.0020892821086976442, 'mu_gan': 3.915686587341081e-08}
+[2026-10-04T00:51:40 +    7.7s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3a.json
+[2026-10-04T00:51:40 +    7.7s] stage r3a done

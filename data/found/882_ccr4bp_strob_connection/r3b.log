@@ -1,0 +1,26 @@
+[2026-10-04T00:51:32 +    0.0s] stage r3b start
+[2026-10-04T00:51:33 +    0.8s] 2:3 e=0.05 peri: T=18.8636 lam=1.1366 hyperbolic=True r=[1.245,1.375] dUmb=0.245
+[2026-10-04T00:51:40 +    7.9s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 3.9940653458818134, 'rho_over_2pi': 0.6356752428291313, 'residual': 0.0003365580524578027, 'converged': False, 'residual_history': [0.000541601830327032, 0.0007694354032271727, 0.0002653632806163264, 0.0003365580524578027], 'fourier_tail': 1.6885062818922315e-06, 'mu_gan': 3.915686587341081e-06}
+[2026-10-04T00:51:40 +    7.9s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b.json
+[2026-10-04T00:51:41 +    8.3s] 2:3 e=0.05 apo: T=18.8431 lam=1.0000 hyperbolic=False r=[1.245,1.376] dUmb=0.376
+[2026-10-04T00:51:41 +    8.7s] 2:3 e=0.1 peri: T=18.8614 lam=1.3558 hyperbolic=False r=[1.179,1.441] dUmb=0.179
+[2026-10-04T00:51:41 +    9.0s] 2:3 e=0.1 apo: T=18.8472 lam=1.0000 hyperbolic=False r=[1.180,1.441] dUmb=0.441
+[2026-10-04T00:51:42 +    9.4s] 2:3 e=0.15 peri: T=18.8660 lam=2.1636 hyperbolic=True r=[1.114,1.506] dUmb=0.114
+[2026-10-04T00:51:52 +   19.5s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 3.9935417308521135, 'rho_over_2pi': 0.6355919069088773, 'residual': 2.9172899651541684e-09, 'converged': False, 'residual_history': [0.009003509805985715, 0.004997247296456647, 0.003581450897742894, 0.00028934039519662447, 0.00011326454537818886, 1.1170775439439673e-05, 1.2752544977512326e-06, 2.6028405014644207e-08, 2.917311947570056e-09, 2.917300179205995e-09, 2.917311503480846e-09, 2.9172899651541684e-09], 'fourier_tail': 0.0002744718956468913, 'mu_gan': 1.9578432936705404e-05}
+[2026-10-04T00:51:52 +   19.5s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b.json
+[2026-10-04T00:51:52 +   19.8s] 2:3 e=0.15 apo: T=18.8484 lam=1.0000 hyperbolic=False r=[1.114,1.507] dUmb=0.507
+[2026-10-04T00:51:53 +   20.3s] 2:3 e=0.2 peri: T=18.8875 lam=10.4790 hyperbolic=True r=[1.048,1.571] dUmb=0.048
+[2026-10-04T00:51:53 +   20.6s] 2:3 e=0.2 apo: T=18.8489 lam=1.0000 hyperbolic=False r=[1.048,1.572] dUmb=0.572
+[2026-10-04T00:51:54 +   21.1s] 3:4 e=0.05 peri: T=25.1663 lam=1.4128 hyperbolic=True r=[1.151,1.271] dUmb=0.151
+[2026-10-04T00:52:02 +   29.6s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 2.993784608437059, 'rho_over_2pi': 0.4764756189851923, 'residual': 1.3725132141928498e-13, 'converged': True, 'residual_history': [0.0012998645174588722, 0.0004993123872714458, 8.313775271676094e-06, 2.5307423989762157e-08, 1.3725132141928498e-13], 'fourier_tail': 4.244102629015202e-12, 'mu_gan': 3.915686587341081e-05}
+[2026-10-04T00:52:04 +   31.3s]    bundles: {'lam_u': 1.214147677536332, 'lam_s': 0.8236230390269356, 'lam_product': 0.9999999999999696, 'residual_u_offgrid': 5.748286291407112e-10, 'residual_s_offgrid': 5.636918709583938e-10, 'tail_u': 6.76936245437686e-10, 'tail_s': 6.769513581181594e-10, 'second_order_residual_u': 12.35326305137896, 'second_order_residual_s': 14.21619236219307}
+[2026-10-04T00:52:04 +   31.3s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b.json
+[2026-10-04T00:52:04 +   31.8s] 3:4 e=0.05 apo: T=25.1214 lam=1.0000 hyperbolic=False r=[1.151,1.272] dUmb=0.272
+[2026-10-04T00:52:05 +   32.3s] 3:4 e=0.1 peri: T=25.1721 lam=3.0045 hyperbolic=False r=[1.090,1.331] dUmb=0.090
+[2026-10-04T00:52:05 +   32.7s] 3:4 e=0.1 apo: T=25.1290 lam=1.0000 hyperbolic=False r=[1.090,1.333] dUmb=0.333
+[2026-10-04T00:52:06 +   33.4s] 3:4 e=0.15 peri: T=25.2418 lam=39.7272 hyperbolic=False r=[1.030,1.390] dUmb=0.030
+[2026-10-04T00:52:06 +   33.8s] 3:4 e=0.15 apo: T=25.1310 lam=1.0000 hyperbolic=False r=[1.030,1.393] dUmb=0.393
+[2026-10-04T00:52:07 +   34.6s] 3:4 e=0.2 peri: T=25.0724 lam=4.4176 hyperbolic=False r=[0.969,1.454] dUmb=0.031
+[2026-10-04T00:52:07 +   35.0s] 3:4 e=0.2 apo: T=25.1319 lam=1.0000 hyperbolic=False r=[0.969,1.454] dUmb=0.454
+[2026-10-04T00:52:07 +   35.0s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b.json
+[2026-10-04T00:52:07 +   35.0s] stage r3b done
