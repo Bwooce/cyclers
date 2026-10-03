@@ -667,6 +667,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Then Umbriel-Titania: the 1:2 parent (expected: no smooth circle) and a parent that stays
   inside Titania's orbit (2:3, 3:4). No published four-body connection with printed coordinates
   has been located to compare against; that limitation stands.
+  **Published check for the TORUS stage, found 2026-10-03 (not yet run):** Kumar, IAC-25-C1.9.6
+  (held, digested) gives the Saturn-Titan-Rhea four-body constants (mu 2.36639e-4, mu3
+  4.05746e-6, Rhea radius 0.4315, synodic period 2.48376) and reports that the Titan 3:2
+  family's tori persist at most energies and fail near six secondary resonances, Tp/T = 4/21,
+  5/26, 6/31, 7/36, 8/41, 9/47 (Tp/T from 0.1898475 to 0.1952735). The rebuilt invariant-circle
+  corrector should converge across that family and fail at those ratios; it is a sourced,
+  independent test of existence and non-existence, though it prints no initial conditions. The
+  same paper, like AAS 24-288, computes NO four-body connection, and Bonasera & Bosanac 2023
+  (held) compute torus-to-torus connections only in the autonomous problem, so a verified
+  four-body connection would still have no published counterpart.
 - `#881` — ✓ DONE 2026-10-03 (commit `469d219d`; follow-up (2) of `#880`, owner: "keep going"):
   **moon-system anchor scopes, the published Neptune-Triton families, and the Persephone
   citation.** Scoping the Neptune flyby anchor alone would have turned the gate there from "always
