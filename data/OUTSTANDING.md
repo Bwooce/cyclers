@@ -653,6 +653,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   10.3847/PSJ/ae680c (open access but behind a captcha); Yang et al. Jovian review, DOI
   10.34133/space.0036 (Cloudflare challenge). Anchors for Spear 2021 were added by `#881`; an
   AAS 24-288 positive-control anchor and the fortnightly watch are not done.
+  **UPDATE, same day:** the owner supplied the Jovian review; filed, digested, indexed. It is a
+  2023 paper and gives cyclers one paragraph (Russell-Strange's four pairs plus the
+  Io-Europa-Ganymede triple cyclers); it does NOT survey the double-cycler field and names no
+  Io-Callisto or Europa-Callisto cycler, so two supports `#577` drew from search snippets are
+  withdrawn by an addendum on that note. The 0/36 verdict is unchanged for the pairs
+  Russell-Strange enumerated; whether an unenumerated same-system pair (Io-Callisto) is
+  `known-class-member` under `#875` is flagged there as an owner question. Two papers remain
+  needed: Landau et al. 2025 (IEEE) and Simon et al. 2026 (PSJ 7(6):143).
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
   policy; CENSUS unless policy GO**): one-working-node (Russell-Strange) campaign at Saturn and
