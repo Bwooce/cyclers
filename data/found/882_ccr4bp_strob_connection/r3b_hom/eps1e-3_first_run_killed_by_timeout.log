@@ -1,0 +1,56 @@
+[2026-10-04T00:56:07 +    0.0s] stage r3b start
+[2026-10-04T00:56:07 +    0.5s] 3:4 e=0.1 peri: T=25.1721 lam=3.0045 hyperbolic=True r=[1.090,1.331] dUmb=0.090
+[2026-10-04T00:56:16 +    9.8s]    circle at physical Titania mass: {'n_nodes': 201, 't0': 0.0, 'rho': 2.9930861406621574, 'rho_over_2pi': 0.4763644543862263, 'residual': 1.2867484855405564e-13, 'converged': True, 'residual_history': [0.0020117284979414285, 0.00010765557326775088, 6.325945585139436e-07, 2.1130058813767505e-10, 1.2867484855405564e-13], 'fourier_tail': 6.941107506675448e-09, 'mu_gan': 3.915686587341081e-05}
+[2026-10-04T00:56:18 +   11.5s]    bundles: {'lam_u': 1.6357010112347417, 'lam_s': 0.611358673212052, 'lam_product': 1.0000000000000833, 'residual_u_offgrid': 3.446891951863762e-07, 'residual_s_offgrid': 3.9318629485585177e-07, 'tail_u': 1.644009781558912e-06, 'tail_s': 1.638155223123164e-06, 'second_order_residual_u': 48.07983405852312, 'second_order_residual_s': 52.89765864224805}
+[2026-10-04T00:56:18 +   11.5s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r3b_3_4_0.1_peri.json
+[2026-10-04T00:56:19 +   12.7s]    cloud unstable+1: dropped 0
+[2026-10-04T00:56:21 +   13.9s]    cloud unstable-1: dropped 0
+[2026-10-04T00:56:22 +   15.0s]    cloud stable+1: dropped 0
+[2026-10-04T00:56:23 +   16.2s]    cloud stable-1: dropped 0
+[2026-10-04T00:59:03 +  175.9s]    refine (20,19) coarse 1.552e-03 -> 3.902e-12 sv [1.996e+00 1.278e-01 4.651e-03 1.501e-04]
+[2026-10-04T01:00:49 +  282.5s]   verify: genuine=True junction=9.93e-11 max_exc=4.515e-01 final=1.893e-04 dop853-vs-radau=3.26e-09 min dist (planet, moon, perturber)=[1.0914 0.0922 0.3005] jacobi drift=5.29e-04
+      period   0: distance to circle 6.6701e-04
+      period   1: distance to circle 2.3860e-04
+      period   2: distance to circle 1.9879e-03
+      period   3: distance to circle 1.3296e-03
+      period   4: distance to circle 4.3281e-03
+      period   5: distance to circle 7.3787e-03
+      period   6: distance to circle 6.5239e-03
+      period   7: distance to circle 2.4145e-02
+      period   8: distance to circle 6.6272e-03
+      period   9: distance to circle 6.7577e-02
+      period  10: distance to circle 3.7403e-02
+      period  11: distance to circle 1.2658e-01
+      period  12: distance to circle 1.5774e-01
+      period  13: distance to circle 1.3007e-01
+      period  14: distance to circle 3.0797e-01
+      period  15: distance to circle 7.1527e-02
+      period  16: distance to circle 2.6330e-01
+      period  17: distance to circle 1.8780e-01
+      period  18: distance to circle 1.7700e-01
+      period  19: distance to circle 4.1177e-01
+      period  20: distance to circle 3.9134e-01
+      period  21: distance to circle 4.5155e-01
+      period  22: distance to circle 2.1534e-01
+      period  23: distance to circle 2.4580e-01
+      period  24: distance to circle 2.2169e-01
+      period  25: distance to circle 7.6320e-02
+      period  26: distance to circle 3.2876e-01
+      period  27: distance to circle 1.2026e-01
+      period  28: distance to circle 2.0163e-01
+      period  29: distance to circle 1.3771e-01
+      period  30: distance to circle 5.8552e-02
+      period  31: distance to circle 8.0837e-02
+      period  32: distance to circle 9.0501e-03
+      period  33: distance to circle 2.7929e-02
+      period  34: distance to circle 8.3330e-03
+      period  35: distance to circle 9.6585e-03
+      period  36: distance to circle 5.9565e-03
+      period  37: distance to circle 1.8285e-03
+      period  38: distance to circle 2.9351e-03
+      period  39: distance to circle 2.9755e-04
+      period  40: distance to circle 9.6764e-04
+      period  41: distance to circle 2.8602e-04
+      period  42: distance to circle 3.3785e-04
+      period  43: distance to circle 1.8933e-04
+[2026-10-04T01:03:16 +  429.7s]    refine (19,20) coarse 1.552e-03 -> 2.988e-12 sv [1.996e+00 1.278e-01 4.651e-03 1.501e-04]
