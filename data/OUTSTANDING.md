@@ -89,7 +89,8 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 10. Flex: shared node-locked inclined construction for Titan-Iapetus / Triton-Proteus.
 11. `#873`(a) make the V4 label honest (GMAT re-host -> tudatpy -> "V4-internal" relabel).
 12. `#873`(b,c) publication package (LICENSE, CITATION/DOI, Zenodo, preprint, outreach; weeks 9-12).
-13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers).
+13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
+    exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
 Decision gates: A Sep 13, B Sep 20, C Oct 4, D Oct 18, E Nov 1, F Nov 15, G Nov 29 (sec. 7 of the
 note). Miss a gate by more than a week and the following wave is NOT dispatched. **Do NOT** re-run any
@@ -512,6 +513,49 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   do they and the two torus rows take? Write the answer into `docs/spec.md` sec 16.4/16.5 as a
   one-paragraph rule, with the `#577`/`#578`/`#817` precedents cited either way. Every
   novelty probability in `#864`'s roadmap items 6, 7, 9, 10 is conditional on this.
+- `#878` — registered 2026-10-03 (user-approved; NOT dispatched; **idle-time only**, behind every
+  `#864` roadmap item): **add the published Earth-Moon exterior 1:3 / 1:4 resonant nodes to
+  `resonance_network.py`, as a reproduction of Rawat-Kumar-Rosengren-Ross 2025 (AAS 25-569, anchor
+  `rawat-2025-exterior-mmr-aas`).** `_RESONANT_SEEDS` carries interior members only (4:1, 3:1, 2:1);
+  the `#597` digest already flagged the exterior side as un-modelled ("none currently do").
+  **Class and novelty, fixed in advance:** this is a CONTROL, not a discovery lane. `#864` sec. 8
+  forbids re-sweeping Earth-Moon for novelty and makes Earth-Moon chains controls only; a resonant
+  periodic orbit is a dynamical object, not a cycler; any member is published
+  (`known-class-member` at most). No catalogue row unless the `#811`/`#855` periselene-vs-SOI rule
+  admits one, and no campaign dispatch (a single reproduction needs no charter; a sweep would).
+  **Scope:** (1) reconcile the Jacobi convention first (the digest notes the paper omits the
+  `mu(1-mu)` shift); (2) add unstable 1:3 and 1:4 seeds at the paper's `C=3.10`; (3) reproduce the
+  paper's own numbers as the sourced goldens: the 1:3 -> 2:1 heteroclinic transfers at `C=3.10`
+  (~9.5 d strong, ~7 d weak), their ABSENCE at `C=3.15`, and the weak-unstable family ranges
+  (1:3 `C` in [-0.56, 3.37]; 1:4 `C` in [-0.35, 3.57]). Whether the paper prints initial conditions
+  usable as a golden is UNVERIFIED (the digest lists none); if it does not, the transfer times and
+  the `C=3.15` negative are the gate.
+  **Load-bearing detail, measured 2026-10-03:** beyond the Moon the prograde branch is `ydot < 0` in
+  the rotating frame. At the Kepler seed (x=2.08, xdot=0, project-convention C=3.364) the `ydot < 0`
+  branch returns to the section point within 1.3e-5 at its second same-sign crossing; the `ydot > 0`
+  branch has inertial speed 3.47 against an escape speed of 0.98 and leaves. Any section-map or
+  corrector call here must pass `ydot_sign=-1`.
+  **Stage 2 — NOT AUTHORIZED, owner decision required:** continuation of the reproduced members into
+  the Sun-perturbed BCR4BP with the period pinned to the Sun's synodic cycle. Precondition to check
+  before asking: the 1:3 period is ~82.0 d (3 sidereal months) against 88.6 d (3 synodic months), so
+  a periodic BCR4BP member exists only if the family reaches a commensurate period. Posed as a
+  search for new orbits it would breach the sec. 8 Earth-Moon rule.
+  **Origin, and what must NOT be cited:** a review of uncommitted work done 2026-10-01..03 in an
+  Antigravity session on the amdnuc checkout (`scripts/run_582` .. `run_592`, never committed, deleted
+  at the owner's instruction 2026-10-03). Those runs reused the closed numbers `#582`-`#592`, ran on a
+  working tree last touched 2026-07-13 under a `.git` re-cloned 2026-10-01 (so preflight checked a
+  July ledger), and passed `override_reason` strings plus an unmeasured 0.001 s/point timing pilot.
+  They produced NO usable result and NOTHING was stamped into `empty_regions.jsonl`: (a) the "0
+  candidates in 750,000 points" exterior CR3BP scan and the exterior part of every BCR4BP grid used
+  the `ydot > 0` branch (above), and all 137 coarse BCR4BP candidates lay at x in [0.80, 1.13];
+  (b) the one "certified" Jupiter-Europa BCR4BP orbit (x0=0.98997472, T=4.784) started on the
+  script's own terminal collision-event surface (r=0.01 from Europa, event value -2e-10), so the
+  integration stopped at t=1.6e-9 and the closure check compared the start with itself — a clean
+  integration over the claimed period misses closure by 0.73 length units, and T is 0.76 of a Sun
+  cycle; (c) the corrector stage discarded the grid's return times and seeded every candidate with a
+  fixed period guess. These are method failures, not negatives; do not treat Earth-Moon exterior,
+  Earth-Moon BCR4BP, or Jupiter-Europa BCR4BP periodic-orbit territory as searched on their account.
+  **Recommended model:** Sonnet behind the sourced goldens; no judgment call until Stage 2 is raised.
 - `#877` — ✓ DONE 2026-09-07 (found while making the cyclers CI green after `#875`; fixed in the same
   session, user-directed: "exempting the tests?!" — an exemption was tried first and REVERTED): **the
   `preflight_search` task-number hygiene check had been silently broken since `#646`.** Its
