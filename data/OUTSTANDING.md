@@ -89,6 +89,11 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 10. Flex: shared node-locked inclined construction for Titan-Iapetus / Triton-Proteus.
 11. `#873`(a) make the V4 label honest (GMAT re-host -> tudatpy -> "V4-internal" relabel).
 12. `#873`(b,c) publication package (LICENSE, CITATION/DOI, Zenodo, preprint, outreach; weeks 9-12).
+12a. Registered 2026-10-04 from the literature intake, in estimated-probability order, none
+    dispatched: `#884` (which Earth-Moon cyclers survive the Sun, ~85%), `#885` (bridge from the
+    published Uranus tours into the quasi-cyclers, ~70%), `#886` (four-body torus connections,
+    ~50%, gated on `#882`), `#887` (three-moon Uranian quasi-cycler, ~30%). `#883` (knot-theory
+    control at the published energy) and `#882` (rebuild, in progress) sit beside them.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
     exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
@@ -582,6 +587,82 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#884` — registered 2026-10-04 (owner: "register them all, in probability order"; NOT dispatched).
+  **Discovery line 1 of 4 from the 2026-10-03 literature intake; coordinator's rough estimate of
+  yielding a catalogue-worthy result: about 85%.** WHICH CATALOGUED EARTH-MOON CYCLERS SURVIVE
+  THE SUN. Brown, Peterson, Henry & Scheeres (SIADS 24(1):346-375, held, digested) show that an
+  Earth-Moon periodic orbit continues into the Sun-forced model only if its period is
+  commensurate with the forcing period (the synodic month) and only at zeros of a Melnikov-type
+  function; they test libration-point families (Lyapunov, vertical, halo, butterfly, 9:2 NRHO)
+  and NO cycler or resonant orbit. The catalogue has 44 Earth-Moon periodic rows with a period
+  (Braik-Ross, Ross-RT, Casoliva, Vaquero, the C21/C32 corridors) and the Sun-perturbed models
+  exist (`core/bcr4bp.py`, `core/qbcp.py`). **Scope:** per FAMILY, find the member whose period
+  is a low-order multiple p/q of the synodic month (6.79117 TU with the sidereal month 2*pi),
+  then continue it in the Sun's mass from zero to physical and record which members survive,
+  with what stability, and whether they stay cycler-class. **Do not screen the rows as
+  catalogued:** a first screen (2026-10-04) put 21 of 44 within 1% of some p:q with q <= 6, which
+  is about what chance gives, because low-order ratios are dense; the family member must be
+  SELECTED at the commensurate period. Near-term candidates the screen did surface: the C32
+  cyclers bracket 8:3 (78.61 d and 78.90 d against 78.75 d), Vaquero's 2:1 member sits 0.06%
+  from 5:6. **Gate first:** reproduce one of Brown et al.'s own results (the 9:2 NRHO
+  equivalent, or a planar Lyapunov member) in our model as the positive control; their model is
+  the Hill four-body problem, ours is bicircular, so state the difference. **Novelty:** same
+  primary and model class as Brown et al., different orbit class; label by spec 16.4 after a
+  literature check (Komachi's ASC 2026 "ballistic cycler between EML2 and SEL2 in the BCR4BP",
+  title only so far, must be obtained first). Either outcome (survives or does not) is a
+  result. Cost: days, single-process.
+- `#885` — registered 2026-10-04 (NOT dispatched). **Discovery line 2 of 4; estimate about 70%.**
+  A BRIDGE FROM THE PUBLISHED URANUS TOURS INTO OUR QUASI-CYCLERS (a `precursor_mga` row that
+  `inserts_into` a catalogued quasi-cycler). Landau et al. 2025 Table 3 ends with Umbriel,
+  Oberon, Umbriel, Oberon at V-infinity 4.0 / 2.7 / 4.1 / 2.6 km/s; AAS 25-668 Table 8 has
+  Oberon, Ariel, Oberon, Ariel at 3.5 / 4.4 km/s; the catalogued rows on those pairs sit at
+  0.89-0.96 km/s (Umbriel-Oberon) and 1.52 / 1.83 km/s (Ariel-Oberon). **Scope:** design a
+  V-infinity pump-down (leveraging manoeuvres and/or intermediate-moon flybys, the `#465`
+  machinery) from a published tour end-state into the quasi-cycler's entry state inside its
+  validity window; report delta-v and time; V0-V2 by the precursor class's gates. The
+  2026 ice-giant review (Liang et al., held) lists "cycler orbits between satellites" as future
+  work and the community poll (Simon et al. 2025, held) asks for multiple passes of every major
+  moon with Ariel first, so start with the Ariel-Oberon row, whose V-infinity gap is the
+  smallest. The result exists for SOME delta-v; the open question is whether it is small
+  enough to be worth a row (set the threshold before running). Not novel as a technique;
+  the value is tying the six rows to the flagship mission design.
+- `#886` — registered 2026-10-04 (NOT dispatched; **gated on `#882` passing its positive
+  control**). **Discovery line 3 of 4; estimate about 50%, highest novelty value of the four.**
+  FOUR-BODY TORUS CONNECTIONS AT MOON SYSTEMS. Nobody has published one: Kumar & Anderson (AAS
+  24-288) "do not yet look at the heteroclinics ... in the CCR4BP"; Kumar (IAC-25-C1.9.6)
+  computes four-body tori and secondary resonances at Titan-Rhea and no connection; Bonasera &
+  Bosanac (JGCD 2023) connect tori only in the autonomous three-body problem. **Scope, in
+  order:** (1) Jupiter-Europa-Ganymede, the Europa 3:4 torus homoclinic, continued from the
+  classical unperturbed homoclinic (this is `#882`'s own control, so it comes first);
+  (2) Saturn-Titan-Rhea, the Titan 3:2 family, where the IAC paper's constants and its six
+  secondary-resonance ratios (4/21 ... 9/47) give a PUBLISHED check of the torus stage before
+  any connection is attempted; (3) Uranus: Oberon with Titania (the published families), then
+  Umbriel, Titania or Ariel as base moon (named by the authors as not done), with parent
+  orbits that do not cross the perturber's orbit. Every claimed connection must pass the
+  single-trajectory test. **Labels:** under the body-set ruling each untreated set is
+  `candidate-novel` with Kumar, Anderson & de la Llave attributed for the architecture.
+  **Risk:** the estimate is low because the rebuild is unproven and a transverse connection
+  need not persist to the physical perturber mass; and the same group's ASC 2026 Titan-Rhea
+  paper (title only, not obtained) shows they are moving this way.
+- `#887` — registered 2026-10-04 (NOT dispatched). **Discovery line 4 of 4; estimate about
+  30%.** A THREE-MOON URANIAN QUASI-CYCLER. Liang et al. (JGCD 48(1), held) built
+  Callisto-Ganymede-Europa triple cyclers with a strategy that does not need the Laplace
+  resonance the earlier Io-Europa-Ganymede triple cyclers used ("the previous methods ... are
+  not applicable"). Under the body-set ruling a Uranian moon triple is an untreated system.
+  **Scope:** read Liang's method from the held paper and state its requirements on the three
+  synodic periods; test them on the Uranian triples (period ratios Ariel:Umbriel about 1.644,
+  Umbriel:Titania about 2.101, Titania:Oberon about 1.546), Ariel-including sets first (poll
+  priority); if a set qualifies, build the ideal-model closure, then the same V0-V4 windowed
+  gauntlet the six two-moon rows passed. **Why the estimate is low:** no check has been made
+  that any Uranian triple meets the method's commensurability needs, and the two-moon rows are
+  already quasi-periodic (valid over windows), so a third moon tightens an already narrow
+  window. Overlaps `#870` (one-working-node campaign at Saturn and Uranus): decide at dispatch
+  whether this is a sub-item of it. `#864` sec. 8 (no more `#563`-class sweeps) applies: this is
+  a targeted construction, not a sweep.
+  **Order note for `#884`-`#887`:** the numbers follow the estimated probability of a result,
+  not value; `#886` is the most valuable and the least certain. None displaces `#868`
+  (Neptune-Triton rows), which is unblocked now that the Miceli & Bosanac papers and data are
+  in the corpus (the Spear thesis is in too).
 - `#883` — registered 2026-10-03 (found by the owner-requested internet search for the Owen &
   Baresi data; NOT dispatched): **the shelved linking-number pipeline (`#522` family, shelved by
   `#548`, 2026-07-10) was tested at a ROUNDED energy.** No data or code release, thesis or
