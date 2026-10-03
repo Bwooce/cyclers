@@ -499,7 +499,9 @@ def stage_r2(args: argparse.Namespace) -> None:
     base = good[0]["connection"]
     phys = ccr4bp.jupiter_europa_ganymede_default()
     c0, b0, _, period = _r1_setup(eps)
-    taus = np.linspace(0.0, period, args.n_family, endpoint=False)
+    # distinct trajectories modulo the map: a shift by one FORCING period P is
+    # the same trajectory with (theta, s, n) -> (theta + rho, lam*s, n + 1)
+    taus = np.linspace(0.0, phys.ganymede_synodic_period, args.n_family, endpoint=False)
     family: list[sc.Connection] = []
     for tau in taus:
         seed = _shifted_seed(c0, b0, base, float(tau), period)
@@ -555,7 +557,30 @@ def stage_r2c(args: argparse.Namespace) -> None:
     cur_circle, cur_b = c0, b0
     steps: list[dict[str, Any]] = []
     name = f"r2c_eps{eps:g}_branch{args.branch}"
-    for frac in [float(f) for f in args.fractions]:
+    fracs = [float(f) for f in args.fractions]
+    path = OUT_DIR / f"{name}.json"
+    if args.resume and path.exists():
+        steps = [e for e in json.loads(path.read_text())["steps"] if "failed" not in e]
+        done = [e["frac"] for e in steps]
+        last = steps[-1]["connection"]
+        cur = sc.ConnectionCandidate(
+            theta_u=last["theta_u"],
+            s_u=last["s_u"],
+            theta_s=last["theta_s"],
+            s_s=last["s_s"],
+            n_u=last["n_u"],
+            n_s=last["n_s"],
+            sign_u=last["sign_u"],
+            sign_s=last["sign_s"],
+            distance=0.0,
+        )
+        chain = sc.continue_circle_in_mass(c0, phys.mu_gan, fractions=tuple(done))
+        for cc in chain:
+            cur_b = sc.hyperbolic_bundles(cc, ref_u=cur_b.v_u, ref_s=cur_b.v_s, check_offgrid=False)
+        cur_circle = chain[-1]
+        fracs = [f for f in fracs if f > done[-1]]
+        log(f"resumed after frac {done[-1]:g}; remaining {fracs}")
+    for frac in fracs:
         mg = frac * phys.mu_gan
         circ = sc.continue_circle_in_mass(cur_circle, mg, fractions=(1.0,))[-1]
         if not circ.converged:
@@ -579,7 +604,11 @@ def stage_r2c(args: argparse.Namespace) -> None:
             steps.append(e)
             save(name, {"seed": seed, "steps": steps})
             break
-        if args.verify_all or frac in (float(args.fractions[0]), float(args.fractions[-1])):
+        if (
+            args.verify_all
+            or frac in (fracs[0], float(args.fractions[-1]))
+            or frac in args.verify_at
+        ):
             v = sc.verify_connection(circ, bun, circ, bun, con)
             print_verification(v)
             e["verification"] = verification_summary(v)
@@ -760,6 +789,8 @@ def main() -> None:
     ap.add_argument("--min-exc", type=float, default=0.05)
     ap.add_argument("--n-family", type=int, default=24)
     ap.add_argument("--branch", type=int, default=0)
+    ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--verify-at", type=float, nargs="*", default=[])
     ap.add_argument("--verify-all", action="store_true")
     ap.add_argument("--homoclinic", action="store_true")
     ap.add_argument("--nodes", type=int, nargs="+", default=[201])
