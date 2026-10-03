@@ -47,3 +47,14 @@ all pairs) is the remaining in-Uranus angle but #285/#312 already swept it hard.
 #492 first pass complete: no new novel candidate, no new row. The frontier's lesson: novel
 moon-cycler discovery is gated by (massive flyby body) ∧ (valid point-primary model) ∧ (no
 published lit) — a near-empty intersection now that Uranus is mined.
+
+## Addendum 2026-10-03 (`#880` audit) — ground 3 above is withdrawn
+
+The "Lit-flagged" ground was a mechanical artefact of the offline literature backend, not a real
+collision: it synthesised a hit titled "... (Charon Hydra Nix ... cycler)" from the Persephone
+anchor (a Pluto-orbiter mission concept) and the matcher scored that text. All nine BRONZE records
+in `data/scan_492_pluto.jsonl` carry that hit as their ONLY recorded demotion reason. The verdict
+of this note does not change: grounds 1 (small-moon flybys physically infeasible) and 2 (Charon-
+flyby closures model-invalid in a point-primary model) disqualify all nine on their own. What
+changes is that "the Pluto-system tour regime is published, not virgin ground" must not be cited.
+See `docs/notes/2026-10-03-880-literature-gate-audit.md`.

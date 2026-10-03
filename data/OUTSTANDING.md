@@ -442,8 +442,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the ratio's direction against `#832` (the turn-ratio direction was inverted once already).
   No validation-tier or novelty consequence. **Recommended model:** Sonnet behind a hand-checked
   value for the `#312` row.
-- `#880` — FIX ✓ DONE 2026-10-03 (commit `d8378af8`, CI green; the audit and three follow-ups at the
-  end of this bullet are OPEN). Registered 2026-10-03 (found by `#865`; owner: "yes register and
+- `#880` — ✓ DONE 2026-10-03 (fix `d8378af8`, CI green; audit complete, no verdict flips — note
+  `docs/notes/2026-10-03-880-literature-gate-audit.md`; four follow-ups listed at the end of this
+  bullet remain OPEN and need their own decisions). Registered 2026-10-03 (found by `#865`; owner: "yes register and
   fix 880"): **the offline
   literature gate cannot return `not-found` for any moon-system candidate.** Every offline backend
   (`saturn_uranus_campaign.offline_corpus_search`, `scripts/literature_check_review_queue.py`, and
@@ -479,17 +480,28 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the six Uranian rows, Miranda-Ariel, Titan-Rhea and Dione-Rhea read `not-found`;
   Titan-Enceladus (Russell-Strange 2009), Europa-Callisto and Ganymede-Io still read `published`;
   the same Uranian signature with NO declared topology still reads `published` (conservative
-  behaviour kept). **OPEN — audit (e):** not done. `saturn_uranus_campaign.score_candidate` builds
-  its signature with no topology label, so the scans that import that module (`scan_285`,
-  `scan_311`, `scan_312`, `scan_492`, `scan_558`, `enumerate_600`, `scan_816`) may have demoted
-  candidates SILVER -> BRONZE on a tour-anchor "published" since 2026-06-16; whether any
-  downstream gate dropped BRONZE rows is unchecked. **OPEN — follow-ups:** (1) the campaign still
-  demotes, because an unlabelled signature is deliberately unchanged: `#870`'s charter must declare
-  the genome's topology label. (2) Neptune (`Voyager 2 Triton encounter + Trident` anchor) and
-  Pluto (`Persephone` and two others) candidates still read `published` because those anchors
-  carry NO topology label; they are flyby/mission references, and until they are labelled `#868`'s
-  literature gate cannot clear. (3) The historical copies of the backend in `run_627`, `run_629`
-  and `run_633` are untouched run records and still carry the old behaviour.
+  behaviour kept). **AUDIT (e) DONE 2026-10-03, no verdict flips.** Every tracked output with a
+  recorded literature `published` verdict and every `check_literature` call site was checked.
+  (i) The campaign scorer's demotion path is used only by `scan_285`/`scan_311`/`scan_312`/
+  `scan_492`; `scan_558`, `enumerate_600` and `scan_816` import only the DOP853 cross-check (an
+  earlier version of this bullet listed them — wrong). Its whole recorded footprint is
+  `data/scan_492_pluto.jsonl`: nine BRONZE closures whose ONLY recorded demotion reason is the
+  false Persephone hit. `#492`'s Pluto verdict stands on its two other, independent grounds
+  (small-moon flybys infeasible; Charon-flyby closures model-invalid); its third ground ("the
+  Pluto tour regime is published") is withdrawn by an addendum on that note. (ii) `#641`'s five
+  Sun-Jupiter clusters read `published` against a Tisserand pump-tour graph paper through that
+  script's own backend — the same mechanism; `#641`'s conclusion does not rest on the citation,
+  which must not be quoted in its support. (iii) `#468`, `#299`/`#301` and the precursor lanes are
+  scope-consistent matches, not artefacts (not re-run). **OPEN — follow-ups:** (1) the campaign
+  scorer still demotes, because an unlabelled signature is deliberately unchanged: `#870`'s
+  charter must declare the genome's topology label. (2) Neptune (`Voyager 2 Triton encounter +
+  Trident` anchor) and Pluto (`Persephone` and two others) candidates still read `published`
+  because those anchors carry NO topology label; until they are labelled, `#868`'s literature
+  gate cannot clear. (3) 19 of the 69 corpus anchors declare no topology label; a labelling pass
+  is the real completion of `#349` (one reviewed decision per anchor). (4) The historical copies
+  of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
+  `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
+  the old behaviour if re-run.
 - `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
   AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
   published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,
