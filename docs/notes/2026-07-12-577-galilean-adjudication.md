@@ -190,3 +190,11 @@ and says the 0/36 ruling stands because these are same-system members of Russell
 class. Whether a PAIR the authors never searched (Io-Callisto) is "a member they did not happen to
 tabulate" or an unsearched sub-class is not settled by that text. It matters only if someone
 wants to pursue Io-Callisto, which ground (iii) argues against.
+
+**Owner decision 2026-10-03:** Io-Callisto is NOT pursued. The six `#576` closures (three
+geometries read from each end; legs 7.92 / 8.91 / 9.90 d; V-infinity 5.4-7.3 km/s) stay
+uncatalogued. Under `#875` as decided they would be same-system members of Russell and Strange's
+Jovian class, so the open question above is left unanswered rather than ruled on. Reopen only
+for a mission-driven reason or if the owner later rules that an unenumerated pair in a treated
+system is an unsearched sub-class (the same question arises for an untreated base moon at Uranus,
+`#882` item 8).

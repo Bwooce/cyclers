@@ -503,7 +503,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Claim wording would be "first computed four-body torus connection at the Umbriel base
   system", never "new species". Caveat to carry: the connection is exact only in the idealized
   model (real-ephemeris near-miss 5-143 km / 1-13 m/s per synodic window), V1.
-  **Io-Callisto (raised by the `#577` addendum): RECOMMENDED NOT PURSUED, owner to confirm.**
+  **Io-Callisto (raised by the `#577` addendum): NOT PURSUED -- OWNER CONFIRMED 2026-10-03.**
   The six `#576` closures are three geometries read from each end (legs 7.92 / 8.91 / 9.90 d,
   V-infinity 5.4-7.3 km/s). Under `#875` as decided they are same-system members of
   Russell-Strange's Jovian class (the owner kept the 0/36 Galilean ruling), so the best
@@ -807,8 +807,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   **REMAINING in this task:** (1) the Liang review digest lists further in-system references
   not held; none is known to bear on a catalogue row (mission-concept studies, ephemeris
   papers); the published versions of the Kumar (J. Nonlinear Science, DOI
-  10.1007/s00332-026-10276-6) and Liang papers are also not held; (2) the fortnightly literature
-  watch. `#870`'s hard
+  10.1007/s00332-026-10276-6) and Liang papers are also not held. The Kumar published version
+  is open access (CC BY per CrossRef and Unpaywall: *J. Nonlinear Science* 36(3):57,
+  2026-05-20; PDF at link.springer.com/content/pdf/10.1007/s00332-026-10276-6.pdf), but the
+  owner could not obtain it and an automated fetch met the publisher's bot challenge; arXiv has
+  only v1 (held). SKIPPED by agreement 2026-10-03: nothing pending depends on it (revisit at
+  the `#882` rebuild); (2) the fortnightly literature watch. `#870`'s hard
   gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
