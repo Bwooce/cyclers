@@ -1,7 +1,8 @@
 # Digest — Howett et al. (2021), "Persephone: A Pluto-system Orbiter and Kuiper Belt Explorer"
 
-**Digested:** 2026-10-03 (`#881`). Supplied by the owner as the publisher EPUB; filed at
-`cyclers_pdf/papers/howett-2021-persephone-pluto-system-orbiter-kuiper-belt-explorer-psj-2-75-doi-10.3847-PSJ-abe6aa.epub`
+**Digested:** 2026-10-03 (`#881`). Supplied by the owner as the publisher EPUB; filed in the
+private paper corpus as
+`howett-2021-persephone-pluto-system-orbiter-kuiper-belt-explorer-psj-2-75-doi-10.3847-PSJ-abe6aa.epub`
 (md5 `fe98c5a2069499be1744eb25205e8aa7`). Read in full from the EPUB's text (one XHTML body,
 about 75,000 characters); the figures were not inspected.
 

@@ -601,6 +601,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   chain rows (known-reproduction of Vaquero). Kill: adjudication finds an ESM-family or literature
   collision -> file as known-class/reproduction, no novelty claim. ~2.5 days. Needs a 15-minute owner
   decision on row-first.
+  **PREREQUISITE READ 2026-10-03:** Miceli, Bosanac, Stuart & Alibay, AIAA SciTech 2024
+  (2024-1280; owner-supplied author version, digest
+  `2026-10-03-digest-miceli-2024-aiaa-scitech-neptune-triton-motion-primitives.md`). Its library
+  includes a "4:5 resonant family with periapsis on the -x-axis", but only as a library family:
+  no manifolds are computed for it and no initial condition, period or Jacobi constant is printed
+  for ANY orbit; "homoclinic", "heteroclinic" and "cycler" do not occur; no orbit with a period
+  near 68.75 or 86.90 appears. So this paper does not collide with the two new orbits; the
+  ESM-family collision check against the 2026 journal paper's supplementary files is still
+  required. Campagnola et al. ISSFD 2014 is already digested (2026-06-17). Also new since this
+  bullet was written: the offline literature gate now anchors Miceli-Bosanac 2026 and Spear 2021
+  (`#881`), so a `resonant` Neptune-Triton candidate reads `published` and the family-membership
+  check is what clears or kills it.
 - `#869` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 5, hard gate
   for `#819`**): close the corpus gap — acquire/OCR/digest/index the UOP-era Uranian papers (UOP
   concept update PSJ 2026 10.3847/PSJ/ae680c; Landau 2025; Ellison 2025; AAS 25-668) with a verdict
@@ -609,6 +621,28 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2603.07085), Bellome 2023, the 2024 Jovian review (10.34133/space.0036), Brown et al. SIADS 2024;
   add topology-labelled anchors to `literature_check.py` (Spear 2021, AAS 24-288 as positive
   controls); fortnightly literature watch. ~3-4 days.
+  **PROGRESS 2026-10-03 (not closed).** The four short tags are resolved: "Ellison 2025" and
+  "AAS 25-668" are ONE paper (Ellison, Hatten, Englander et al., "Uranus Orbiter and Probe: System
+  Capture and Orbital Operations", no DOI); "Landau 2025" is Landau, Persinger, Karimi et al.,
+  "Uranus Cruise and Tour Design Impacts on Science, Cost, and Risk", 2025 IEEE Aerospace
+  Conference, DOI 10.1109/AERO63441.2025.11068400; "Bellome 2023" is Bellome, Sanchez, Felicetti
+  & Kemble, JSR 60(5):1381-1399, DOI 10.2514/1.A35472; "Brown et al. SIADS 2024" is Brown,
+  Peterson, Henry & Scheeres, SIADS 24(1):346-375 (2025), DOI 10.1137/24M1637301; "Baresi-Owen
+  2026" is a workshop talk (Geometry Space Surrey, June 2026), abstract only, no paper. The
+  "2024 Jovian review" is dated 2023 by CrossRef (Yang, Hu, Bai & Li, DOI 10.34133/space.0036).
+  **Filed + digested + indexed:** AAS 25-668 (owner-supplied) and Pozzi et al. 2026 (arXiv
+  2603.07085). **Filed + indexed, digest pending:** Bellome 2023, Brown et al. **AAS 25-668
+  verdict** (digest `2026-10-03-digest-ellison-2025-aas-25-668-uop-capture-orbital-operations.md`,
+  last section): no periodic or cycler trajectory; a one-off Star-search tour at V-infinity
+  3.3-4.5 km/s; BUT its Table 8 has a four-flyby Oberon-Ariel-Oberon-Ariel alternation (intervals
+  36/31/35 d, V-infinity repeating to ~1%), the nearest published geometry to the catalogued
+  Ariel-Oberon row (7.75-d legs, 1.5-1.8 km/s). Proposed, owner's call: keep `candidate-novel`,
+  add the paper to that row's `corroborating_sources`, and stop saying no two-moon alternating
+  geometry is published at Uranus. **STILL NEEDED FROM THE OWNER (all three are blocked by bot
+  walls or paywalls):** Landau et al. 2025 (IEEE); Simon et al. 2026, PSJ 7(6):143, DOI
+  10.3847/PSJ/ae680c (open access but behind a captcha); Yang et al. Jovian review, DOI
+  10.34133/space.0036 (Cloudflare challenge). Anchors for Spear 2021 were added by `#881`; an
+  AAS 24-288 positive-control anchor and the fortnightly watch are not done.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
   policy; CENSUS unless policy GO**): one-working-node (Russell-Strange) campaign at Saturn and
