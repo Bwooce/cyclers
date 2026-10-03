@@ -50073,12 +50073,16 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs (Uranus-Umbriel and Uranus-Oberon), each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours (see this catalogue's Russell-Strange 2009 rows: 'Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic-resonance quasi-cycler — catalogue's first computed quasi_cycler row"
-    venue: "cyclerfinder project; task chain #281 -> #285 -> #312 -> #327 -> #324 -> #328 -> #329 -> #330 -> #331 -> #332 -> #335 -> #338 -> #339"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-06-16"
+    description: "Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic-resonance quasi-cycler — catalogue's first computed quasi_cycler row"
+    task_chain: "#281 -> #285 -> #312 -> #327 -> #324 -> #328 -> #329 -> #330 -> #331 -> #332 -> #335 -> #338 -> #339"
+    evidence_files: ["data/silver_327_moontour_v2_verdicts.jsonl", "data/silver_327_v4_strict_boundary_338.jsonl", "data/silver_327_verified.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-06-16"
   notes: |
@@ -50292,12 +50296,17 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Titania-Oberon-Titania (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
-    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-11"
+    description: "Titania-Oberon-Titania (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    task_chain: "#558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    candidate_id: "enum563-line57-titania-oberon-titania"
+    evidence_files: ["data/gauntlet_566_five_representatives.jsonl", "data/scan_567_epoch_robustness.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-07-11"
   notes: |
@@ -50431,12 +50440,17 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Ariel-Oberon-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
-    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-11"
+    description: "Ariel-Oberon-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    task_chain: "#558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    candidate_id: "enum563-line18-ariel-oberon-ariel"
+    evidence_files: ["data/gauntlet_566_five_representatives.jsonl", "data/scan_567_epoch_robustness.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-07-11"
   notes: |
@@ -50560,12 +50574,17 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Umbriel-Titania-Umbriel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
-    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-11"
+    description: "Umbriel-Titania-Umbriel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    task_chain: "#558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    candidate_id: "enum563-line26-umbriel-titania-umbriel"
+    evidence_files: ["data/gauntlet_566_five_representatives.jsonl", "data/scan_567_epoch_robustness.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-07-11"
   notes: |
@@ -50689,12 +50708,17 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Ariel-Titania-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
-    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-11"
+    description: "Ariel-Titania-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    task_chain: "#558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    candidate_id: "enum563-line12-ariel-titania-ariel"
+    evidence_files: ["data/gauntlet_566_five_representatives.jsonl", "data/scan_567_epoch_robustness.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-07-11"
   notes: |
@@ -50818,12 +50842,17 @@
     kind: "not-applicable"
     note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
     todo_ref: "#587"
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Ariel-Umbriel-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
-    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-11"
+    description: "Ariel-Umbriel-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    task_chain: "#558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    candidate_id: "enum563-line2-ariel-umbriel-ariel"
+    evidence_files: ["data/gauntlet_566_five_representatives.jsonl", "data/scan_567_epoch_robustness.jsonl"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   corroborating_sources: []
   priority_date: "2026-07-11"
   notes: |
@@ -56144,12 +56173,16 @@
     todo_ref: "#707"
   legs: []
   corroborating_sources: []
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Umbriel 1:2-exterior resonant torus homoclinic connection -- CCR4BP (Uranus-Umbriel-Titania)"
-    venue: "cyclerfinder project; task chain #689 -> #693 -> #694 -> #699 -> #701 -> #702 -> #704 -> #705 -> #706 -> #707 -> #708"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-24"
+    description: "Umbriel 1:2-exterior resonant torus homoclinic connection -- CCR4BP (Uranus-Umbriel-Titania)"
+    task_chain: "#689 -> #693 -> #694 -> #699 -> #701 -> #702 -> #704 -> #705 -> #706 -> #707 -> #708"
+    evidence_files: ["data/found/701_ccr4bp_umbriel_titania_search/result.json", "data/found/705_ccr4bp_epoch_robustness_scan/result.json"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   priority_date: "2026-07-24"
   notes: |
     NEW dynamical species for this catalogue: a homoclinic connection to a quasi-periodic
@@ -56670,12 +56703,17 @@
     title: "Computation and Analysis of Jupiter-Europa and Jupiter-Ganymede Resonant Orbits in the Planar Concentric Circular Restricted 4-Body Problem"
     venue: "AAS/AIAA Astrodynamics Specialist Conference, AAS 21-651; arXiv:2109.14815"
     note: "SEED source: the planar Jupiter-Europa 3:4 EXTERIOR resonant orbit/torus class this object substitutes (their own abstract's 'exterior Jupiter-Europa' terminology -- never 'interior', #724 correction). Their model is N=4 CCR4BP; no N=5/multi-perturber extension attempted (confirmed by #727's full-text read of their own 2023 Acta Astronautica follow-on paper, which is also entirely N=4)."
-  first_published:
-    authors: ["cyclerfinder discovery campaign"]
-    year: 2026
-    title: "Quasi-periodic invariant-torus substitute of the Jupiter-Europa 3:4 exterior resonant orbit in a Laplace-locked restricted five-body model"
-    venue: "cyclerfinder project; task chain #714 -> #717 -> #720 -> #721 -> #722 -> #723 -> #724 -> #726 -> #727 -> #729 -> #735 -> #736"
-    doi:
+  first_published:   # #865: null until the project publishes this row (spec §16.5); the former self-citation is preserved in discovery_run
+  our_status: known-class-member   # spec §16.4 (#875 iii, applied by #865): a quasi-periodic torus characterising the neighbourhood of an already-published periodic orbit (Kumar et al.'s Jupiter-Europa 3:4) is known-class, not novelty-claimable; class sources are in corroborating_sources
+  discovery_run:   # spec §16.5 provenance of the original discovery (#865); holds what first_published used to carry
+    finder: "cyclerfinder discovery campaign"
+    discovery_date: "2026-07-27"
+    description: "Quasi-periodic invariant-torus substitute of the Jupiter-Europa 3:4 exterior resonant orbit in a Laplace-locked restricted five-body model"
+    task_chain: "#714 -> #717 -> #720 -> #721 -> #722 -> #723 -> #724 -> #726 -> #727 -> #729 -> #735 -> #736"
+    evidence_files: ["data/found/729_crnbp_epoch_torus_robustness_scan/result.json", "data/found/738_crnbp_torus_radau_ghost_guard/result.json"]
+    finder_version:   # not recorded at discovery time
+    run_id:   # not recorded at discovery time
+    cell_id:   # not recorded at discovery time
   priority_date: "2026-07-27"
   notes: |
     First computed quasi-periodic invariant-torus substitute of a mean-motion-resonant
@@ -56736,10 +56774,16 @@
     claim, at the identical sample anchors the corrector's own closure_residual was
     computed from, agrees to integrator_delta_max_km=7.11e-8 km (crnbp_provenance.torus.
     radau_cross_check; seven orders of magnitude below the #701/#708 Umbriel-Titania row's
-    own 1.0 km ghost_guard V1 gate). our_status left absent, matching the #312/#708 rows'
-    own precedent, since no independent novelty-verification gauntlet has been run for
-    this object class (orthogonal to validation_level, which gates mechanical correctness
-    not novelty).
+    own 1.0 km ghost_guard V1 gate). our_status was left absent at writeback (#736),
+    matching the #312/#708 rows' own precedent, since no independent novelty-verification
+    gauntlet had been run for this object class (orthogonal to validation_level, which
+    gates mechanical correctness not novelty). SET 2026-10-03 (#865) to
+    known-class-member under the owner's #875 novelty policy (spec §16.4, case iii
+    contrast): a torus that characterises the neighbourhood of an already-published
+    periodic orbit (here the Kumar et al. Jupiter-Europa 3:4 seed) describes the
+    surroundings of a known object rather than a new orbit, so it is not
+    novelty-claimable. The "first computed" statements above remain factual
+    descriptions of what was computed; they are not a novelty claim.
 
     Seed-lineage standing (#761/#766, writeback #770/#779): the row's own seed_lineage cites
     Kumar et al. 2021's "arbitrarily chosen" C=3.0041 seed orbit. #761 confirmed that orbit
