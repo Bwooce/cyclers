@@ -1139,18 +1139,34 @@ def refine_connection(
     tol: float = 1e-11,
     max_iter: int = 40,
     max_dtheta: float = 0.05,
+    s_window: tuple[float, float] = (-1.0, 2.0),
     rtol: float = 1e-13,
     atol: float = 1e-13,
 ) -> Connection:
-    """Gauss-Newton (least-squares, minimum-norm steps) on ``(theta_u, s_u,
-    theta_s, s_s)`` with the STM Jacobian. Both circles must be at the same
-    forcing phase (raises ``ValueError`` otherwise: the defect this module
-    exists to prevent). ``singular_values`` are those of the column-scaled
-    Jacobian at the final iterate (columns scaled to unit norm; a near-zero
+    """Gauss-Newton (least-squares, minimum-norm steps) on ``(theta_u, ln s_u,
+    theta_s, ln s_s)`` with the STM Jacobian.
+
+    ``s`` is solved for in log form and each ``ln s`` is clipped to
+    ``[s_window[0], s_window[1]] * ln|lam_u|`` (by default one fundamental
+    domain below to two above ``[1, |lam_u|)``). Without this the iteration
+    can slide to the TRIVIAL zero ``s_u = s_s = 0`` (both points on the circle
+    itself, ``u(theta_u + n_u*rho) = u(theta_s - n_s*rho)``), which it did in
+    the first R1 run. Both circles must be at the same forcing phase (raises
+    ``ValueError`` otherwise: the defect this module exists to prevent).
+    ``singular_values`` are those of the column-scaled Jacobian in ``(theta,
+    ln s)`` at the final iterate (columns scaled to unit norm; a near-zero
     value means a non-isolated or tangential intersection)."""
     if not _same_phase(circle_u.system, circle_u.t0, circle_s.t0):
         raise ValueError("unstable and stable circles are at different forcing phases")
-    z = np.array([candidate.theta_u, candidate.s_u, candidate.theta_s, candidate.s_s])
+    if candidate.s_u <= 0.0 or candidate.s_s <= 0.0:
+        raise ValueError("s must be positive (the offset sign is carried by sign_u/sign_s)")
+    z = np.array(
+        [candidate.theta_u, math.log(candidate.s_u), candidate.theta_s, math.log(candidate.s_s)]
+    )
+    llu = math.log(abs(bundles_u.lam_u))
+    lls = math.log(1.0 / abs(bundles_s.lam_s))
+    lo = np.array([-np.inf, s_window[0] * llu, -np.inf, s_window[0] * lls])
+    hi = np.array([np.inf, s_window[1] * llu, np.inf, s_window[1] * lls])
     hist: list[float] = []
     sv = np.full(4, np.nan)
     g = np.full(4, np.nan)
@@ -1163,7 +1179,7 @@ def refine_connection(
             bundles_u,
             "unstable",
             z[0],
-            z[1],
+            math.exp(z[1]),
             candidate.n_u,
             eps=eps,
             sign=candidate.sign_u,
@@ -1176,7 +1192,7 @@ def refine_connection(
             bundles_s,
             "stable",
             z[2],
-            z[3],
+            math.exp(z[3]),
             candidate.n_s,
             eps=eps,
             sign=candidate.sign_s,
@@ -1189,6 +1205,8 @@ def refine_connection(
         res = float(np.linalg.norm(g))
         hist.append(res)
         jac = np.hstack([ju, -js])
+        jac[:, 1] *= math.exp(z[1])
+        jac[:, 3] *= math.exp(z[3])
         cn = np.linalg.norm(jac, axis=0)
         cn[cn == 0.0] = 1.0
         sv = np.linalg.svd(jac / cn, compute_uv=False)
@@ -1196,12 +1214,12 @@ def refine_connection(
             break
         dz = np.linalg.lstsq(jac / cn, -g, rcond=1e-12)[0] / cn
         scale = max(abs(dz[0]) / max_dtheta, abs(dz[2]) / max_dtheta, 1.0)
-        z = z + dz / scale
+        z = np.clip(z + dz / scale, lo, hi)
     return Connection(
         theta_u=float(z[0]) % _TWO_PI,
-        s_u=float(z[1]),
+        s_u=math.exp(float(z[1])),
         theta_s=float(z[2]) % _TWO_PI,
-        s_s=float(z[3]),
+        s_s=math.exp(float(z[3])),
         n_u=candidate.n_u,
         n_s=candidate.n_s,
         sign_u=candidate.sign_u,
