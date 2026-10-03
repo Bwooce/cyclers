@@ -235,7 +235,10 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # source-pair tier axis; its real evidence (validation_level=V1, same-model
     # CR3BP reproduction + independent Radau cross-check) lives on the
     # orthogonal validation_level axis.
-    "unvalidated": 120,
+    # 120 -> 119 (2026-10-03, #882): umbriel-1-2-torus-homoclinic-uranus-2026 WITHDRAWN
+    # by owner decision (its "connection" is not a CCR4BP trajectory; row preserved in
+    # data/withdrawn/).
+    "unvalidated": 119,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

@@ -536,7 +536,9 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # model_assumption=ccr4bp). cycler_class=non-keplerian: one torus + its own
         # homoclinic manifold connection (rotating-frame, base-CR3BP identity tuple),
         # not a chain of Kepler/Lambert arcs. non-keplerian 38->39.
-        "umbriel-1-2-torus-homoclinic-uranus-2026",
+        # WITHDRAWN 2026-10-03 (#882, owner decision): the catalogued connection is not
+        # a CCR4BP trajectory (no forcing-phase constraint at the junction). The row is
+        # preserved in data/withdrawn/; non-keplerian 56->55.
         # #736 (2026-07-27): europa-3-4-crnbp-torus-jupiter-2026 -- the #714-#729 N=5
         # CRNBP Jupiter-Europa 3:4 exterior resonant torus, writing back #735's
         # user-approved schema v5.4 design (orbit_class=quasi_periodic_torus,
@@ -710,10 +712,17 @@ def test_census_distribution() -> None:
     a computed known-class member of the Ross-RT 2026 (k1,k2) cycler class
     (genuine planar CR3BP periodic orbit, rotating-frame, Jacobi-constant
     identity): non-keplerian 55->56.
+
+    #882 (2026-10-03) WITHDREW umbriel-1-2-torus-homoclinic-uranus-2026 (owner
+    decision): an adversarial review found its "connection" is not a CCR4BP
+    trajectory (the search never constrained the perturbing moon's phase where
+    the two manifold arcs are joined). The row is preserved in data/withdrawn/
+    and returns only as a new row if the rebuild verifies one: non-keplerian
+    56->55.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 56}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 55}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

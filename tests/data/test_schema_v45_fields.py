@@ -326,7 +326,9 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # for the full evidence citation (the #701 ghost-guard independent-integrator
         # cross-check, the accepted substitute for the literal Lambert/Kepler V1 gate,
         # which has no analogue for a CCR4BP torus-homoclinic connection).
-        "umbriel-1-2-torus-homoclinic-uranus-2026": "V1",
+        # WITHDRAWN 2026-10-03 (#882, owner decision): that integrator cross-check
+        # tested each arc, not the missing forcing-phase constraint at the junction,
+        # so the V1-equivalent claim did not hold. Row preserved in data/withdrawn/.
         # #738 (2026-07-28): europa-3-4-crnbp-torus-jupiter-2026 promoted V0 -> V1
         # -- see src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE for the full
         # evidence citation (search.crnbp_torus_ghost_guard.radau_ghost_guard, an
