@@ -496,9 +496,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `scan_492`; `scan_558`, `enumerate_600` and `scan_816` import only the DOP853 cross-check (an
   earlier version of this bullet listed them — wrong). Its whole recorded footprint is
   `data/scan_492_pluto.jsonl`: nine BRONZE closures whose ONLY recorded demotion reason is the
-  false Persephone hit. `#492`'s Pluto verdict stands on its two other, independent grounds
-  (small-moon flybys infeasible; Charon-flyby closures model-invalid); its third ground ("the
-  Pluto tour regime is published") is withdrawn by an addendum on that note. (ii) `#641`'s five
+  mechanically generated Persephone hit. `#492`'s Pluto verdict stands on its two other,
+  independent grounds (small-moon flybys infeasible; Charon-flyby closures model-invalid). Its
+  third ground was first called an artefact here; after the paper was read (`#881`) that is
+  retracted — Persephone's periodic three-body orbits are relevant prior art, so the ground stands. (ii) `#641`'s five
   Sun-Jupiter clusters read `published` against a Tisserand pump-tour graph paper through that
   script's own backend — the same mechanism; `#641`'s conclusion does not rest on the citation,
   which must not be quoted in its support. (iii) `#468`, `#299`/`#301` and the precursor lanes are
@@ -506,7 +507,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   scorer still demotes, because an unlabelled signature is deliberately unchanged: `#870`'s
   charter must declare the genome's topology label. (2) ✓ Neptune done by `#881` (flyby anchor
   scoped AND the published families anchored); Pluto still reads `published` through the
-  unscoped Persephone anchor, pending that paper. (3) 16 corpus anchors still declare no topology
+  Persephone anchor, which after reading the paper is the intended behaviour. (3) 16 corpus anchors still declare no topology
   label after `#881` (19 before); a labelling pass is the real completion of `#349` (one reviewed
   decision per anchor). (4) The historical copies
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
@@ -530,14 +531,25 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   review and `data/scan_492_pluto.jsonl` (run records, left as written). **Measured after the
   change:** a `resonant` Neptune-Triton candidate reads `published` (Miceli-Bosanac / Spear), so
   `#868`'s rows need the family-membership check its own bullet already demands; a `repeated-moon`
-  Triton-Proteus candidate reads `not-found`. Anchors 69 -> 71. **OPEN:** (1) Persephone's scope
-  is deliberately NOT declared — the paper is not in the corpus (no PDF, no index entry, no digest;
-  the 2026-06-15 review says "the full PDF was not opened"), so every Pluto-system candidate still
-  reads `published`. Needs the paper (Howett et al. 2021, arXiv 2102.08282) filed and digested.
-  (2) `src/cyclerfinder/ml/falsepos_labels.py` carries two training labels attributed to "Howard
-  et al. 2021 Persephone Pluto-Charon CR3BP periodic orbit / halo family"; whether the paper
-  contains such orbits is unverified for the same reason. (3) 16 anchors still declare no topology
-  label (Earth-Moon 9, heliocentric 5, Mars 1, Persephone 1).
+  Triton-Proteus candidate reads `not-found`. Anchors 69 -> 71. **PERSEPHONE RESOLVED the same
+  day:** the owner supplied the paper (publisher EPUB, filed in the private corpus, digest
+  `docs/notes/2026-10-03-digest-howett-2021-persephone.md`, indexed). Sec. 4.2: the Pluto orbit
+  phase is four periodic orbits of the Pluto/Charon restricted three-body model (two high
+  out-of-plane, two low-altitude), periodic in the rotating frame, "enabling close encounters
+  with Pluto and all its satellites"; figures only, no initial conditions; minor-satellite
+  encounters are opportunistic at <300 m/s. Consequences: (i) the anchor's original "(CR3BP
+  periodic orbits)" description was RIGHT — an interim rename to "(mission concept study)", made
+  from the abstract alone, is reverted; the anchor is now `verified-against-source` with key
+  `howett-2021-persephone`. (ii) Its scope stays undeclared ON PURPOSE: no single topology label
+  covers those orbits, so every Pluto-system periodic or repeating-encounter candidate keeps
+  reading `published` and needs a human comparison with the paper's Figs. 13-14. (iii) The
+  `#880` audit's claim that the `#492` Pluto hit was an artefact is retracted: the hit was
+  generated mechanically, but the citation is relevant prior art and `#492`'s third ground
+  stands (addenda on both notes corrected). (iv) The two `ml/falsepos_labels.py` records
+  "patterned on" this paper had their author/article strings fixed; their numbers are invented
+  `_mocked` shapes — the paper gives no periods and never says "halo". **OPEN:** 16 anchors still
+  declare no topology label (Earth-Moon 9, heliocentric 5, Mars 1, Persephone 1 by design). The
+  Pluto-Charon catalogue rows could cite this paper as a second class-level source (not done).
 - `#866` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 2**): Jones
   AAS 17-577 VEM anchor reproduction to V3/V4 — seed `search/correct.py::ballistic_correct` at the
   published Table 2/3 dates with the multi-rev branch chains (EMEVVE n0s,n1h,n5h,n8l,n1h,n0s,n1h,n1h,

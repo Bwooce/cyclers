@@ -69,13 +69,14 @@ ledger bullet first listed them; corrected).
   run before the tour anchors existed) and nine BRONZE in `data/scan_492_pluto.jsonl`.
 - **`#492` Pluto: all nine closures were demoted with the false hit as their ONLY recorded reason**
   (`verdict_reasons` = "literature_check published: Howard, Stern et al., Persephone ..."; the ML
-  flagger score was 0.58, under its 0.75 limit). Persephone is a mission concept for a Pluto
-  orbiter, not a cycler.
+  flagger score was 0.58, under its 0.75 limit). See the correction at the end of this note:
+  the hit was generated mechanically, but the paper turned out to be relevant prior art.
 - **No verdict flips.** The `#492` note disqualifies the nine on three grounds, and the first two
   are independent of literature: the small-moon-flyby closures are physically infeasible (Nix and
   Hydra cannot supply a gravity assist), and the Charon-flyby closures are model-invalid (Pluto-
   Charon is a binary; the point-primary assumption fails). Ground 3 ("the Pluto-system tour regime
-  is published, not virgin ground") is the artefact and is withdrawn; an addendum is on that note.
+  is published, not virgin ground") was first called an artefact here and withdrawn; that was
+  wrong and is corrected at the end of this note.
 - Neptune had zero gate-passing closures, so literature was never consulted.
 
 **2. `#641` Sun-Jupiter seed census.** All five clusters read `published` against "Strange-Russell
@@ -117,6 +118,25 @@ in their tracked outputs.
 - The "Howard, Stern et al." Persephone citation quoted above is the string recorded in the run
   data and is wrong. CrossRef: Howett, Robbins, Holler et al., *Planetary Science Journal*
   2(2):75 (2021), DOI 10.3847/PSJ/abe6aa. The DOI the anchor carried (10.3847/PSJ/abf837) belongs
-  to an unrelated paper. The anchor is corrected; its scope stays undeclared because the paper is
-  not in the corpus and has not been read, so Pluto-system candidates still read `published`.
+  to an unrelated paper. The anchor is corrected.
 - 16 anchors remain without a topology label (19 before).
+
+## Correction, same day: the Persephone hit was not an artefact in substance
+
+The owner supplied the paper and it was read in full
+(`docs/notes/2026-10-03-digest-howett-2021-persephone.md`). Its Pluto orbit phase "consists of
+multiple periodic orbits designed in the Pluto/Charon restricted three-body dynamics model", four
+of them, periodic in the rotating frame and "enabling close encounters with Pluto and all its
+satellites". This note said above that Persephone is "not a cycler" and withdrew `#492`'s third
+ground as an artefact. Both statements were made from the abstract alone and are retracted:
+
+- The MECHANISM this note describes is unchanged and real: the hit was synthesised and scored on
+  its text, and a tour anchor with a declared scope must not flag an out-of-scope candidate.
+- But for `#492` the citation is relevant prior art, so its third ground stands in substance and
+  the nine Pluto closures have three grounds against them, not two.
+- The Persephone anchor keeps NO topology label, now deliberately and for a sourced reason: its
+  orbits are in-plane and out-of-plane, periodic, and repeatedly encounter Pluto, Charon and the
+  small moons, so every Pluto-system periodic or repeating-encounter candidate should keep reading
+  `published` against it. "Pluto always reads published" is therefore the intended behaviour,
+  not a remaining defect.
+- The audit's conclusion is unchanged: no verdict flips.

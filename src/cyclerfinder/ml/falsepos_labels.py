@@ -606,8 +606,8 @@ KNOWN_TRUE_REPRODUCTIONS: list[dict[str, Any]] = [
     # names the published anchor it is patterned on.
     {
         "_label": "true_reproduction",
-        "_source": "Howard et al. 2021 Persephone Pluto-Charon CR3BP periodic orbit "
-        "(arXiv:2102.08282 / Planet. Sci. J. 2(2):56), #275 synthetic SILVER shape",
+        "_source": "Howett et al. 2021 Persephone Pluto-Charon CR3BP periodic orbit "
+        "(arXiv:2102.08282 / Planet. Sci. J. 2(2):75), #275 synthetic SILVER shape",
         "_mocked": True,
         "max_residual_kms": 2e-7,  # CR3BP periodic orbit, numerically clean
         "bend_feasible": True,
@@ -622,7 +622,7 @@ KNOWN_TRUE_REPRODUCTIONS: list[dict[str, Any]] = [
     },
     {
         "_label": "true_reproduction",
-        "_source": "Howard et al. 2021 Persephone Pluto-Charon CR3BP halo family "
+        "_source": "Howett et al. 2021 Persephone Pluto-Charon CR3BP halo family "
         "(arXiv:2102.08282), #275 synthetic SILVER shape (long-period branch)",
         "_mocked": True,
         "max_residual_kms": 5e-7,

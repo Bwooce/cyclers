@@ -923,19 +923,25 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # search remains authoritative for novelty.
     # -----------------------------------------------------------------------
     CorpusAnchor(
-        # #881 (2026-10-03): citation corrected against CrossRef. This anchor
-        # named the first author "Howard" and carried DOI 10.3847/PSJ/abf837,
-        # which resolves to an unrelated paper (Tollefson et al., Neptune
-        # VLA/ALMA brightness temperatures). The record is Howett, Robbins,
-        # Holler, Hendrix, Fielhauer, Perry et al., PSJ 2(2):75,
-        # DOI 10.3847/PSJ/abe6aa. The former name also asserted "(CR3BP periodic
-        # orbits)", which the abstract (a NASA concept-mission study with a
-        # 3.1-year orbital campaign of the Pluto system) does not support and
-        # the 2026-06-15 Pluto review never verified ("the full PDF was not
-        # opened"). topology_label is deliberately NOT set: the scope cannot be
-        # declared until the full paper is read, so this anchor stays
-        # conservative and still flags every Pluto-system candidate.
-        name="Howett et al. Persephone Pluto-system orbiter (mission concept study)",
+        # #881 (2026-10-03): citation corrected against CrossRef, then the full
+        # paper read (digest 2026-10-03-digest-howett-2021-persephone.md). This
+        # anchor had named the first author "Howard" and carried DOI
+        # 10.3847/PSJ/abf837, which resolves to an unrelated paper (Tollefson et
+        # al., Neptune VLA/ALMA brightness temperatures). The record is Howett,
+        # Robbins, Holler, Hendrix, Fielhauer, Perry et al., PSJ 2(2):75,
+        # DOI 10.3847/PSJ/abe6aa.
+        #
+        # topology_label is deliberately NOT set. Sec. 4.2: "the science orbit
+        # consists of multiple periodic orbits designed in the Pluto/Charon
+        # restricted three-body dynamics model", spanning "both in and out of
+        # the satellite plane, enabling close encounters with Pluto and all its
+        # satellites", periodic in the rotating frame; four orbits (two high
+        # out-of-plane, two low-altitude), shown only as figures -- no initial
+        # conditions, periods or Jacobi constants. No single topology label
+        # covers that, and a narrower one would under-cover, so every
+        # Pluto-system periodic / repeating-encounter candidate keeps reading
+        # ``published`` here and needs a human comparison with its Figs. 13-14.
+        name="Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits)",
         primary="Pluto",
         body_set=frozenset({"Charon", "Nix", "Hydra", "Styx", "Kerberos"}),
         authors=("Howett", "Robbins", "Holler"),
@@ -946,8 +952,17 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         ),
         citation="Howett, Robbins, Holler et al., 'Persephone: A Pluto-system "
         "Orbiter and Kuiper Belt Explorer,' Planetary Science Journal 2(2):75 "
-        "(2021); arXiv:2102.08282",
+        "(2021); arXiv:2102.08282. Concept-mission study; its 3.1-yr Pluto "
+        "orbit phase uses four periodic orbits of the Pluto/Charon restricted "
+        "three-body model (figures only, no initial conditions), with "
+        "opportunistic minor-satellite encounters at <300 m/s.",
         doi="10.3847/PSJ/abe6aa",
+        key="howett-2021-persephone",
+        year=2021,
+        title="Persephone: A Pluto-system Orbiter and Kuiper Belt Explorer",
+        venue="The Planetary Science Journal 2(2):75",
+        provenance="verified-against-source",
+        system="pluto-charon",
     ),
     CorpusAnchor(
         name="Stern/SwRI Pluto Game-Changer (Charon gravity-assist tour)",

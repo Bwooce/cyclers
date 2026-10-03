@@ -48,13 +48,16 @@ all pairs) is the remaining in-Uranus angle but #285/#312 already swept it hard.
 moon-cycler discovery is gated by (massive flyby body) ∧ (valid point-primary model) ∧ (no
 published lit) — a near-empty intersection now that Uranus is mined.
 
-## Addendum 2026-10-03 (`#880` audit) — ground 3 above is withdrawn
+## Addendum 2026-10-03 (`#880` audit, corrected the same day after the paper was read)
 
-The "Lit-flagged" ground was a mechanical artefact of the offline literature backend, not a real
-collision: it synthesised a hit titled "... (Charon Hydra Nix ... cycler)" from the Persephone
-anchor (a Pluto-orbiter mission concept) and the matcher scored that text. All nine BRONZE records
-in `data/scan_492_pluto.jsonl` carry that hit as their ONLY recorded demotion reason. The verdict
-of this note does not change: grounds 1 (small-moon flybys physically infeasible) and 2 (Charon-
-flyby closures model-invalid in a point-primary model) disqualify all nine on their own. What
-changes is that "the Pluto-system tour regime is published, not virgin ground" must not be cited.
-See `docs/notes/2026-10-03-880-literature-gate-audit.md`.
+How ground 3 was produced was mechanical: the offline literature backend synthesised a hit from the
+Persephone anchor and the matcher scored its text, and that hit is the ONLY recorded demotion reason
+on all nine BRONZE records in `data/scan_492_pluto.jsonl`. A first version of this addendum called
+the ground an artefact and withdrew it. That went too far, and was written before the paper had
+been read. Having read it (`docs/notes/2026-10-03-digest-howett-2021-persephone.md`): Persephone's
+Pluto orbit phase is four periodic orbits of the Pluto/Charon restricted three-body model, periodic
+in the rotating frame, "enabling close encounters with Pluto and all its satellites". So ground 3
+stands in substance — repeated-encounter trajectories in the Pluto system are published, and in the
+binary model that ground 2 says these point-primary closures lacked. Two corrections to the text
+above: the first author is Howett, not "Howard", and the article number is 75, not 56 (DOI
+10.3847/PSJ/abe6aa). The verdict of this note is unchanged.

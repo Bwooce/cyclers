@@ -758,8 +758,13 @@ def test_881_pluto_anchor_citations_and_scopes() -> None:
     assert per.authors[0] == "Howett"
     assert per.doi == "10.3847/PSJ/abe6aa"
     assert "2(2):75" in per.citation and "Howard" not in per.citation
-    # Scope deliberately NOT declared: the full paper has not been read here.
+    # Scope deliberately NOT declared (paper read in full, digest 2026-10-03):
+    # its four restricted three-body periodic orbits span in-plane and
+    # out-of-plane and encounter Pluto, Charon and the small moons, so no
+    # narrower label is honest; Pluto-system candidates keep reading published.
     assert per.topology_label == frozenset()
+    assert "CR3BP periodic orbits" in per.name
+    assert per.provenance == "verified-against-source"
 
     gc = _anchor("Game-Changer")
     assert gc.topology_label == frozenset({"mga-tour"})
