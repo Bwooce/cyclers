@@ -116,3 +116,10 @@ the SE-EM relative phase is a genuine dynamical state, not a searched/patched un
 codebase does not yet have that (see the #522 OUTSTANDING.md entry for the full finding). This
 digest's "recommended first-build path" note applies to a SINGLE-SYSTEM validation build; the
 cross-system application is gated on that separate finding.
+
+**Correction 2026-10-03.** The scan range quoted above for the Earth-Moon demonstration,
+"roughly over `z in [-6e-3, +7e-3]`", matches neither version's figure. Read from the conference
+version's Fig. 8 (the same sequence as the journal's Fig. 15), the scanning variable z runs from
+about -8e-3 to +24e-3, with linking-number changes near -7.5e-3, -1.2e-3, 0 and +9e-3. All are
+read by eye. See `2026-10-03-digest-owen-baresi-2023-aas-23-110-knot-theory-conference-version.md`,
+which also records that the energy is 3.1460717 (the journal's 3.15 is that value rounded).

@@ -69,3 +69,52 @@ guarantees objects of this type exist" from "this object is published".
   (cyclers.space repo, same day).
 - `#577`, `#578`, `#817` bullets are NOT rewritten; this note and spec §16.4 are the superseding
   record, cited from the `#875` bullet.
+
+## Addendum 2026-10-03: what "system" means in case (ii) (owner ruling)
+
+The case (ii) text says "a primary/moon system the authors never treated (Uranus, Neptune)" and did
+not say what happens when the authors treated the same primary but not this moon, pair or moon set.
+The question came up twice: the Io-Callisto closures (`#577` addendum) and an Umbriel-based
+four-body object when the only published Uranian four-body study uses Oberon (`#882`).
+
+**Ruling (owner, in chat, 2026-10-03): "body set".** "System" means the body set the source
+actually computed: the primary with the specific pair, moon set, or base moon and perturber. A set
+the source did not compute is a never-treated system even if other moons of the same primary were
+treated, unless the source claims to have searched it. Written into spec 16.4 (ii) the same day.
+
+**Why (research record).**
+- The decision above keys novelty to what the source authors "themselves searched", and case (i)
+  already ruled novel a range of the SAME unchanged enumeration that the authors declared
+  unsearched. Reading "system" as the primary would contradict that.
+- Russell & Strange use "system" for a pair: "The four Jovian cycler systems investigated are
+  representative of the body pairs of highest scientific interest" (p. 146); their Table 1 has
+  columns Primary / Free-return flyby body / Target body.
+- Kumar & Anderson (AAS 24-288) name "Titania, Umbriel, and Ariel" as moons "for which this study
+  should be repeated": an explicit statement that those base moons were not searched.
+- Liang et al. published the Callisto-Ganymede-Europa triple cyclers in JGCD as new against the
+  earlier Io-Europa-Ganymede triple cyclers of the same primary. A primary-level rule would label
+  that known-class.
+
+**Strongest argument against, and the mitigation.** No held paper claims novelty for a new pair
+in an already-treated primary with the method UNCHANGED, and later authors describe Russell &
+Strange as covering the Galilean pairs generally, so a referee may read such a claim as relabelling
+a parameter. Hence the mandatory wording "first computed at <set>, applying <source>'s
+<architecture> unchanged", and the obligation to list the sets the source did treat.
+
+**What it changes.** No catalogue row. The `#577` Galilean ruling stands at pair level for 22 of
+the 36 closures (Io-Ganymede 6, Europa-Ganymede 2, Ganymede-Callisto 14: pairs in Russell &
+Strange's Table 1). The other 14 (Io-Europa 2, Europa-Callisto 6, Io-Callisto 6) are in pairs
+they did not compute; they are uncatalogued, and the owner decided the same day not to pursue
+Io-Callisto. They would be `candidate-novel`-ELIGIBLE under this ruling, subject to the
+literal-collision check against the triple-cycler papers, and must not be described as
+"same-system members of Russell-Strange's class".
+
+**Records found inconsistent during the research (not all fixed here).**
+- `#577` says Europa-Callisto "collides" with Liang et al.; that paper has no standalone
+  Callisto-Europa cycler (the pair appears only as half of a three-moon cycle).
+- The Russell-Strange digest still calls the Saturn small-moon pairs "re-opened"; `#489` closed
+  them as physically infeasible (maximum bend 0.44 degrees at Tethys, 3.1 degrees at Dione). A
+  pointer has been added to the digest.
+- `#836` (Pluto-Charon (5,1)) ruled known-class on the strength of the authors' conjecture; it
+  predates this policy and may conflict with case (iii), since a conjecture is weaker than a
+  theorem. Not re-adjudicated; flagged for the owner.

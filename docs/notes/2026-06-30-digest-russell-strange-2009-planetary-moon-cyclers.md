@@ -60,3 +60,10 @@ geometries — different resonances/itineraries of those pairs — NOT a census 
 ## Status
 Filed + indexed (CORPUS_INDEX). The corrected #320 reading is the actionable output: Titan-Rhea
 V0-known; the small-moon-flyby Saturn pairs reopened for a feasibility + focused-lit re-check.
+
+**Superseded 2026-10-03 (pointer only; the text above is left as written).** The "re-opened"
+status of the small-moon-flyby Saturn pairs was closed by `#489`
+(`2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`): the flybys are physically
+infeasible (maximum bend 0.44 degrees at Tethys, 3.1 degrees at Dione). Separately, the owner
+ruled on 2026-10-03 that "system" in spec 16.4 (ii) means the body set a source computed, so each
+row of this paper's Table 1 is one treated system (see the `#875` decision record's addendum).

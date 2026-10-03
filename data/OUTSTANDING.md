@@ -618,8 +618,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   **Done 2026-10-03:** row NOT labelled; an UNDER REVIEW notice added to the row's notes
   (numbers unchanged); the website's discoveries strip now requires a novelty label, so the row
   is no longer presented as a discovery.
-  **OWNER DECISION PENDING:** withdraw the row from the catalogue until rebuilt (coordinator's
-  recommendation), or keep it with the notice and demote `validation_level` to V0.
+  **OWNER DECISION 2026-10-03: WITHDRAWN.** The row is out of `data/catalogue.yaml` (399 -> 398
+  rows) and preserved verbatim in `data/withdrawn/`; its evidence registration is removed from
+  `validate.py`; three census ratchets and the README are updated. It returns only as a NEW row
+  if this rebuild verifies a connection.
   **To do:** (1) phase-consistent residual (the stable arc must land at section phase
   `theta1_section + omega1*(t_u+t_s)`, or compare both arcs in the stroboscopic map);
   (2) a positive control that reproduces a PUBLISHED four-body torus connection with the phase
@@ -632,8 +634,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   generically contain no connection (see PROGRESS below); (6) fix the
   row's notes, which credit arXiv:2509.03655 with four-body content that is in AAS 24-288 (the
   ANCHOR was corrected 2026-10-03, commit `806db9d8`); (7) README wording for this row;
-  (8) owner ruling on whether spec 16.4 (ii) "system" means the primary or the base moon (same
-  question as Io-Callisto); (9) ~~anchor Pergola et al. IEPC-2007-305~~ DONE 2026-10-03 (commit
+  (8) ~~owner ruling on what "system" means in spec 16.4 (ii)~~ RULED 2026-10-03: the BODY SET
+  the source computed (written into spec 16.4 (ii); research and reasons in the `#875` decision
+  record's addendum), so a verified Umbriel-based object would be `candidate-novel` with
+  Kumar & Anderson AAS 24-288 attributed; (9) ~~anchor Pergola et al. IEPC-2007-305~~ DONE 2026-10-03 (commit
   `806db9d8`, scope `halo`); (10) the six Uranian rows' `literature_check` blocks were run
   against 73 anchors and name the tour anchor by its old "Sims et al." title; re-run them when
   the rows are next touched (74 anchors now; no status change expected).
@@ -849,6 +853,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   needed for `#868`), plus Vaquero 2013, Parker-Davis-Born 2010, Lo-Parker 2004,
   Howell-Pernicka 1988, Marchand-Howell-Wilson 2007, Topputo-Belbruno 2015, Caldas-Soares 2024,
   Peng-Bai 2021 and Sarang-Capannolo 2025. Owner to push from that machine.
+  **RESOLVED 2026-10-03:** all 16 were on the owner's `Shed-Air` Mac (ten unpushed commits of
+  2026-07-29 to 2026-08-08 plus one untracked file; that machine cannot push to GitHub from a
+  remote session). Its commits were fetched over SSH, merged and pushed from amdnuc; the index
+  and the private repository now agree (318 files, none indexed-but-absent). Eight had been
+  re-acquired from their open sources first and proved byte-identical to the originals. Three
+  alternate versions found on the way (an ADS scan of Howell-Pernicka 1988, the author manuscript
+  of Marchand-Howell-Wilson 2007, arXiv v1 of Topputo-Belbruno 2015) are kept beside the
+  originals and indexed as alternates; in each case the original is the better copy. ON THAT MAC:
+  remove or move the untracked Topputo-Belbruno PDF before the next `git pull`, or the pull will
+  refuse to overwrite it.
   **REMAINING in this task:** (1) the Liang review digest lists further in-system references
   not held; none is known to bear on a catalogue row (mission-concept studies, ephemeris
   papers); the published versions of the Kumar (J. Nonlinear Science, DOI
