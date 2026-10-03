@@ -871,7 +871,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2026-05-20; PDF at link.springer.com/content/pdf/10.1007/s00332-026-10276-6.pdf), but the
   owner could not obtain it and an automated fetch met the publisher's bot challenge; arXiv has
   only v1 (held). SKIPPED by agreement 2026-10-03: nothing pending depends on it (revisit at
-  the `#882` rebuild); (2) the fortnightly literature watch. `#870`'s hard
+  the `#882` rebuild); (2) the fortnightly literature watch: FIRST PASS DONE 2026-10-03
+  (`docs/notes/2026-10-03-literature-watch-01.md`, 58 queries): no collision risk found for
+  any protected result, conditional on titles and arXiv abstracts only (publisher pages and
+  conference abstracts were not readable). To obtain: Kumar's ASC 2026 Titan-Rhea paper
+  (bears on `#882`), Guido & Efthymiopoulos arXiv:2604.00679, Park & Howell arXiv:2606.08485,
+  the Rosengren et al. primer arXiv:2606.26367, Bonasera & Bosanac JGCD 2023, and Komachi's
+  ASC 2026 EML2-SEL2 ballistic cycler when a paper exists. Next pass due about 2026-10-17.
+  `#870`'s hard
   gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
