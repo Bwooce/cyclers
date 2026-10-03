@@ -782,18 +782,30 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   that day: the PUBLISHED Brown et al. (compared with the preprint; cite the published one),
   Oshima 2024 (Earth-Moon transfer-graph method, background for `#878`), and two asteroid-tour
   papers of low relevance (Grabowski et al. 2026; Zhang et al., JGCD 2026 author manuscript).
-  **REMAINING in this task:** (1) three references surfaced by the reading and NOT held:
-  McAdams, Scott, Guo, Dankanich & Russell, "Conceptual mission design of a polar Uranus orbiter
-  and satellite tour", AAS 11-188 (2011); Strange, Landau & Longuski, "Design of Initial
-  Inclination Reduction Sequence for Uranian Gravity-Assist Tours", AAS 13-801 (2013); and
-  Liang, Zhang, Yang & Baoyin, "Review of trajectory design and optimization methods for ice
-  giant exploration", *Astrodynamics* (2026-03-28), DOI 10.1007/s42064-026-0308-6 (paywalled;
-  found by a web search, not read, relevant to `#868` as well); (2) ANCHOR TO CHECK: the corpus
-  anchor "Sims et al. polar Uranus orbiter & satellite tour (2014)" carries the TITLE of the
-  McAdams et al. AAS 11-188 paper (as printed by both AAS 23-460 Ref. [5] and AAS 25-668
-  Ref. [3]) under a different author list and year; it is inherited and unverified, and must
-  not be edited until AAS 11-188 is in hand (the anchor's scope label `mga-tour` is not in
-  doubt); (3) an AAS 24-288 positive-control anchor; (4) the fortnightly literature watch. `#870`'s hard
+  **Second batch, same day (owner-supplied unless noted):** McAdams et al. AAS 11-188 and
+  Strange, Landau & Longuski AAS 13-801 (older Uranian tours: same-moon resonant flybys only,
+  no two-moon alternation); the Liang et al. 2026 ice-giant review (submitted manuscript; reports
+  no cycler or periodic two-moon trajectory at Uranus or Neptune and lists "cycler orbits between
+  satellites" as future work; does not cite Kumar & Anderson AAS 24-288); Zhang, Li & Baoyin 2025
+  (Uranus capture with nine Titania flybys); Campagnola et al. 2015 (55-flyby Triton-only tour)
+  and Melman et al. 2008 (Triton three-body capture), both for `#868`; Canales, Howell & Fantino
+  2021 and Pergola et al. IEPC-2007-305 (both fetched open access). All digested and indexed.
+  The Uranian verdict is unchanged by all of them. **Anchors corrected against the papers:** the
+  inherited "Sims et al. (2014)" tour anchor is McAdams et al. AAS 11-188 (2011); the "Kumar
+  (2025)" Uranus-Oberon anchor is Kumar & Anderson AAS 24-288 (2024), which also closes the
+  AAS 24-288 anchor item; Pergola et al. added (scope `halo`). 73 -> 74 anchors.
+  **FOUND WHILE CHECKING: 16 files that CORPUS_INDEX lists as held are absent from the private
+  corpus repository** (no deletion in its history; its last commits before 2026-10-03 are from
+  2026-07-28), so they are most likely unpushed on another machine: Miceli & Bosanac 2026 and
+  its four supplementary files, the Miceli 2025 dissertation and the Spear 2021 thesis (all
+  needed for `#868`), plus Vaquero 2013, Parker-Davis-Born 2010, Lo-Parker 2004,
+  Howell-Pernicka 1988, Marchand-Howell-Wilson 2007, Topputo-Belbruno 2015, Caldas-Soares 2024,
+  Peng-Bai 2021 and Sarang-Capannolo 2025. Owner to push from that machine.
+  **REMAINING in this task:** (1) the Liang review digest lists further in-system references
+  not held; none is known to bear on a catalogue row (mission-concept studies, ephemeris
+  papers); the published versions of the Kumar (J. Nonlinear Science, DOI
+  10.1007/s00332-026-10276-6) and Liang papers are also not held; (2) the fortnightly literature
+  watch. `#870`'s hard
   gate (read the UOP papers) is otherwise met.
 - `#870` — registered 2026-09-05 (found during `#864`, not dispatched; **roadmap item 9 after the
   refutation pass = the `#819` design pass made concrete, gated on `#869` and the `#875` novelty
