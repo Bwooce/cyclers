@@ -1143,7 +1143,7 @@ def refine_connection(
     rtol: float = 1e-13,
     atol: float = 1e-13,
 ) -> Connection:
-    """Gauss-Newton (least-squares, minimum-norm steps) on ``(theta_u, ln s_u,
+    """Levenberg-Marquardt on ``(theta_u, ln s_u,
     theta_s, ln s_s)`` with the STM Jacobian.
 
     ``s`` is solved for in log form and each ``ln s`` is clipped to
@@ -1168,53 +1168,56 @@ def refine_connection(
     lo = np.array([-np.inf, s_window[0] * llu, -np.inf, s_window[0] * lls])
     hi = np.array([np.inf, s_window[1] * llu, np.inf, s_window[1] * lls])
     hist: list[float] = []
-    sv = np.full(4, np.nan)
-    g = np.full(4, np.nan)
-    xu = np.full(4, np.nan)
+
+    def evaluate(zz: FloatArray) -> tuple[FloatArray, FloatArray, FloatArray]:
+        pu, ju = manifold_point(
+            circle_u, bundles_u, "unstable", zz[0], math.exp(zz[1]), candidate.n_u,
+            eps=eps, sign=candidate.sign_u, with_jac=True, rtol=rtol, atol=atol,
+        )  # fmt: skip
+        ps, js = manifold_point(
+            circle_s, bundles_s, "stable", zz[2], math.exp(zz[3]), candidate.n_s,
+            eps=eps, sign=candidate.sign_s, with_jac=True, rtol=rtol, atol=atol,
+        )  # fmt: skip
+        assert ju is not None and js is not None
+        jj = np.hstack([ju, -js])
+        jj[:, 1] *= math.exp(zz[1])
+        jj[:, 3] *= math.exp(zz[3])
+        return pu - ps, jj, pu
+
+    # Levenberg-Marquardt on the column-scaled Jacobian: the unperturbed problem
+    # is rank deficient (connections form curves), so an undamped step along
+    # the near-null direction is huge and gets truncated, stalling plain GN.
+    g, jac, xu = evaluate(z)
+    res = float(np.linalg.norm(g))
+    hist.append(res)
+    lm = 1e-6
     n_done = 0
     for it in range(1, max_iter + 1):
         n_done = it
-        xu, ju = manifold_point(
-            circle_u,
-            bundles_u,
-            "unstable",
-            z[0],
-            math.exp(z[1]),
-            candidate.n_u,
-            eps=eps,
-            sign=candidate.sign_u,
-            with_jac=True,
-            rtol=rtol,
-            atol=atol,
-        )
-        xs, js = manifold_point(
-            circle_s,
-            bundles_s,
-            "stable",
-            z[2],
-            math.exp(z[3]),
-            candidate.n_s,
-            eps=eps,
-            sign=candidate.sign_s,
-            with_jac=True,
-            rtol=rtol,
-            atol=atol,
-        )
-        assert ju is not None and js is not None
-        g = xu - xs
-        res = float(np.linalg.norm(g))
-        hist.append(res)
-        jac = np.hstack([ju, -js])
-        jac[:, 1] *= math.exp(z[1])
-        jac[:, 3] *= math.exp(z[3])
-        cn = np.linalg.norm(jac, axis=0)
-        cn[cn == 0.0] = 1.0
-        sv = np.linalg.svd(jac / cn, compute_uv=False)
         if res <= tol:
             break
-        dz = np.linalg.lstsq(jac / cn, -g, rcond=1e-12)[0] / cn
+        cn = np.linalg.norm(jac, axis=0)
+        cn[cn == 0.0] = 1.0
+        a = jac / cn
+        dz = -np.linalg.solve(a.T @ a + lm * np.eye(4), a.T @ g) / cn
         scale = max(abs(dz[0]) / max_dtheta, abs(dz[2]) / max_dtheta, 1.0)
-        z = np.clip(z + dz / scale, lo, hi)
+        z_t = np.clip(z + dz / scale, lo, hi)
+        try:
+            g_t, jac_t, xu_t = evaluate(z_t)
+            res_t = float(np.linalg.norm(g_t))
+        except RuntimeError:
+            res_t = float("inf")
+        if res_t < res:
+            z, g, jac, xu, res = z_t, g_t, jac_t, xu_t, res_t
+            hist.append(res)
+            lm = max(lm / 10.0, 1e-15)
+        else:
+            lm *= 10.0
+            if lm > 1e6:
+                break
+    cn = np.linalg.norm(jac, axis=0)
+    cn[cn == 0.0] = 1.0
+    sv = np.linalg.svd(jac / cn, compute_uv=False)
     return Connection(
         theta_u=float(z[0]) % _TWO_PI,
         s_u=math.exp(float(z[1])),
