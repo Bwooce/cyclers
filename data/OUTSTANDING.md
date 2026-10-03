@@ -452,6 +452,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   farthest excursion 751.9 km, 75% of the gate); `#716` Titan-Hyperion (20 candidates, all within
   4.24 km). **STILL OPEN:** the connection-lane stamps (`#759`/`#780`/`#783`/`#786`), `#861`,
   `#791` Stage 0, the VEM invalidation stamp, and confirming G1 = `#872`.
+  **PROGRESS 2026-10-03 (tranche 6, connection-lane stamps):** `#759`, `#780`(d), `#783` and
+  `#786` are stamped (registry 100 -> 104), each with a `reopen_condition`. Three of the four
+  are METHOD negatives on PUBLISHED targets, and their verdicts say "NOT AN EMPTY REGION" so
+  the registry cannot be read as claiming the published object does not exist: `#759` (the
+  Anderson-Lo Table 3 connection was not certified; our own manifold trace reproduces their state
+  to 4.5e-7), `#780`(d) (two-body seeds never reach the Casoliva Class 1 rows, which reproduce
+  12/16 from published initial conditions), `#783` (cold-start Barrabes-Mondelo-Olle corrector
+  stalls at 0.03 on the published He1 connection). `#786` is a conditional search negative (no
+  7:3 homoclinic self-connection within k <= 34). **STILL OPEN:** `#861`, `#791` Stage 0, the
+  VEM invalidation stamp, and confirming G1 = `#872`.
 - `#879` — registered 2026-10-03 (split out of `#865`; NOT dispatched; small): compute the ACHIEVED
   turn angle at each encounter for the six Uranian (1,1) quasi_cycler rows and write
   `invariants.turn_ratio` (achieved turn / maximum ballistic bend at the row's flyby altitude),
