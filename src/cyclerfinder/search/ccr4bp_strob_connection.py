@@ -1272,11 +1272,16 @@ def _integrate_single(
     rtol: float,
     atol: float,
 ) -> tuple[FloatArray, FloatArray, float, FloatArray]:
-    """One continuous integration over ``n_periods``; returns per-period states
-    ``(n+1, 4)``, body min distances ``(3,)``, the Jacobi drift and the dense
-    states used for it."""
+    """One continuous trajectory over ``n_periods``.
+
+    The integrator is restarted at every period boundary from the exact end
+    state of the previous period (no state is patched; only the step-size
+    controller restarts), so the per-period states are integrator step
+    endpoints rather than dense-output interpolants. Returns per-period states
+    ``(n+1, 4)``, body min distances ``(3,)`` (accepted steps plus 3 dense
+    samples per step), the base Jacobi-constant drift, and the dense states.
+    """
     period = forcing_period(system)
-    t_eval = t_start + period * np.arange(n_periods + 1)
 
     def rhs(t: float, y: FloatArray) -> FloatArray:
         return planar_rhs_batch(t, y, system, 1, False)
@@ -1285,26 +1290,33 @@ def _integrate_single(
         return planar_jacobian(t, y, system)
 
     solver: Any = solve_ivp
-
-    y0 = np.asarray(x0, dtype=np.float64).copy()
-    span = (t_start, float(t_eval[-1]))
-    if method == "Radau":
-        sol = solver(
-            rhs, span, y0, method="Radau", rtol=rtol, atol=atol, dense_output=True, jac=jac
-        )
+    per = np.empty((n_periods + 1, 4))
+    per[0] = np.asarray(x0, dtype=np.float64)
+    dense: list[FloatArray] = []
+    dense_times: list[FloatArray] = []
+    sub = np.linspace(0.0, 1.0, 4, endpoint=False)
+    for k in range(n_periods):
+        span = (t_start + k * period, t_start + (k + 1) * period)
+        y0 = per[k].copy()
+        if method == "Radau":
+            sol = solver(
+                rhs, span, y0, method="Radau", rtol=rtol, atol=atol, dense_output=True, jac=jac
+            )
+        else:
+            sol = solver(rhs, span, y0, method=method, rtol=rtol, atol=atol, dense_output=True)
+        if not sol.success:
+            raise RuntimeError(f"{method} integration failed: {sol.message}")
+        per[k + 1] = sol.y[:, -1]
+        tt = sol.t
+        dt_k = (tt[:-1, None] + np.diff(tt)[:, None] * sub[None, :]).reshape(-1)
+        dense_times.append(dt_k)
+        dense.append(np.asarray(sol.sol(dt_k)))
+    if dense:
+        dense_t = np.concatenate([*dense_times, np.array([t_start + n_periods * period])])
+        ys = np.concatenate([*dense, per[-1][:, None]], axis=1)
     else:
-        sol = solver(rhs, span, y0, method=method, rtol=rtol, atol=atol, dense_output=True)
-    if not sol.success:
-        raise RuntimeError(f"{method} integration failed: {sol.message}")
-    per = np.asarray(sol.sol(t_eval)).T
-    per[-1] = sol.y[:, -1]
-    per[0] = x0
-    # densify between accepted steps for distances
-    tt = sol.t
-    sub = np.linspace(0.0, 1.0, 5)[:-1]
-    dense_t = (tt[:-1, None] + np.diff(tt)[:, None] * sub[None, :]).reshape(-1)
-    dense_t = np.concatenate([dense_t, tt[-1:]])
-    ys = np.asarray(sol.sol(dense_t))
+        dense_t = np.array([t_start])
+        ys = per[0][:, None].copy()
     d = body_distances(system, dense_t, ys[0], ys[1]).min(axis=1)
     cj = _jacobi4(ys.T, system.mu)
     return per, d, float(np.max(np.abs(cj - cj[0]))), ys.T
