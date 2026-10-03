@@ -1,0 +1,80 @@
+[2026-10-03T23:49:55 +    0.0s] stage r1 start
+[2026-10-03T23:49:56 +    1.0s] circle N=201 rho=3.110934; lam_u=1.992415 lam_s=0.501903
+[2026-10-03T23:49:57 +    1.6s] cloud unstable sign +1: 576 trajectories x 18 periods, dropped 0
+[2026-10-03T23:49:57 +    2.1s] cloud unstable sign -1: 576 trajectories x 18 periods, dropped 0
+[2026-10-03T23:49:58 +    2.7s] cloud stable sign +1: 576 trajectories x 18 periods, dropped 0
+[2026-10-03T23:49:58 +    3.3s] cloud stable sign -1: 576 trajectories x 18 periods, dropped 0
+[2026-10-03T23:49:59 +    3.7s] coarse (u+1, s+1): best distances [0.00978, 0.00979, 0.00986, 0.01005, 0.01032] (n_u, n_s) [(8, 8), (8, 8), (8, 8), (8, 8), (7, 7)]
+[2026-10-03T23:49:59 +    4.1s] coarse (u+1, s-1): best distances [0.00067, 0.00067, 0.00068, 0.00068, 0.00069] (n_u, n_s) [(18, 10), (10, 18), (14, 14), (14, 14), (14, 14)]
+[2026-10-03T23:50:00 +    4.6s] coarse (u-1, s+1): best distances [0.00011, 0.00011, 0.00011, 0.00011, 0.00012] (n_u, n_s) [(17, 11), (11, 17), (18, 10), (10, 18), (13, 15)]
+[2026-10-03T23:50:00 +    5.0s] coarse (u-1, s-1): best distances [0.00978, 0.00979, 0.00986, 0.01005, 0.01032] (n_u, n_s) [(8, 8), (8, 8), (8, 8), (8, 8), (7, 7)]
+[2026-10-03T23:50:38 +   42.5s] refine 17,11 signs (-1,+1) coarse 1.077e-04 -> residual 1.836e-12 in 21 it; sv [1.941e+00 4.842e-01 1.705e-03 1.941e-12]
+[2026-10-03T23:51:03 +   68.1s]   verify: genuine=True junction=1.59e-11 max_exc=4.481e-01 final=1.468e-04 dop853-vs-radau=1.05e-09 min dist (planet, moon, perturber)=[1.089  0.0902 0.3328] jacobi drift=8.18e-13
+      period   0: distance to circle 1.3089e-03
+      period   1: distance to circle 2.7455e-03
+      period   2: distance to circle 5.7273e-03
+      period   3: distance to circle 9.9276e-03
+      period   4: distance to circle 2.4509e-02
+      period   5: distance to circle 3.3744e-02
+      period   6: distance to circle 9.6098e-02
+      period   7: distance to circle 7.7855e-02
+      period   8: distance to circle 2.4061e-01
+      period   9: distance to circle 1.2739e-01
+      period  10: distance to circle 3.8792e-01
+      period  11: distance to circle 1.7076e-01
+      period  12: distance to circle 4.4813e-01
+      period  13: distance to circle 2.0617e-01
+      period  14: distance to circle 4.0554e-01
+      period  15: distance to circle 2.3612e-01
+      period  16: distance to circle 2.9727e-01
+      period  17: distance to circle 2.6359e-01
+      period  18: distance to circle 1.6852e-01
+      period  19: distance to circle 2.1990e-01
+      period  20: distance to circle 5.8998e-02
+      period  21: distance to circle 9.0709e-02
+      period  22: distance to circle 1.0843e-02
+      period  23: distance to circle 2.5005e-02
+      period  24: distance to circle 2.1937e-03
+      period  25: distance to circle 6.4705e-03
+      period  26: distance to circle 5.1451e-04
+      period  27: distance to circle 1.6492e-03
+      period  28: distance to circle 1.4675e-04
+[2026-10-03T23:51:03 +   68.1s]   Jacobi: orbit 3.016042236736, departure - orbit 1.377e-14, drift 8.180e-13
+[2026-10-03T23:51:03 +   68.1s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r1_eps0.001.json
+[2026-10-03T23:51:41 +  105.6s] refine 11,17 signs (-1,+1) coarse 1.077e-04 -> residual 7.359e-12 in 21 it; sv [1.941e+00 4.842e-01 1.705e-03 1.183e-12]
+[2026-10-03T23:52:07 +  131.5s]   verify: genuine=False junction=4.22e-11 max_exc=4.481e-01 final=1.309e-03 dop853-vs-radau=3.07e-10 min dist (planet, moon, perturber)=[1.089  0.0902 0.3328] jacobi drift=5.40e-13
+      period   0: distance to circle 1.4675e-04
+      period   1: distance to circle 1.6492e-03
+      period   2: distance to circle 5.1451e-04
+      period   3: distance to circle 6.4705e-03
+      period   4: distance to circle 2.1937e-03
+      period   5: distance to circle 2.5005e-02
+      period   6: distance to circle 1.0843e-02
+      period   7: distance to circle 9.0709e-02
+      period   8: distance to circle 5.8998e-02
+      period   9: distance to circle 2.1990e-01
+      period  10: distance to circle 1.6852e-01
+      period  11: distance to circle 2.6359e-01
+      period  12: distance to circle 2.9727e-01
+      period  13: distance to circle 2.3612e-01
+      period  14: distance to circle 4.0554e-01
+      period  15: distance to circle 2.0617e-01
+      period  16: distance to circle 4.4813e-01
+      period  17: distance to circle 1.7076e-01
+      period  18: distance to circle 3.8792e-01
+      period  19: distance to circle 1.2739e-01
+      period  20: distance to circle 2.4061e-01
+      period  21: distance to circle 7.7855e-02
+      period  22: distance to circle 9.6098e-02
+      period  23: distance to circle 3.3744e-02
+      period  24: distance to circle 2.4509e-02
+      period  25: distance to circle 9.9276e-03
+      period  26: distance to circle 5.7273e-03
+      period  27: distance to circle 2.7455e-03
+      period  28: distance to circle 1.3089e-03
+[2026-10-03T23:52:07 +  131.5s]   reason: final distance 1.309e-03 > 0.001 x excursion 4.481e-01
+[2026-10-03T23:52:07 +  131.5s]   Jacobi: orbit 3.016042236736, departure - orbit 2.354e-14, drift 5.396e-13
+[2026-10-03T23:52:07 +  131.5s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r1_eps0.001.json
+[2026-10-03T23:53:20 +  204.5s] refine 18,10 signs (-1,+1) coarse 1.114e-04 -> residual 8.174e-12 in 40 it; sv [1.767e+00 9.368e-01 1.150e-03 2.777e-12]
+[2026-10-03T23:53:20 +  204.5s] wrote /home/bruce/dev/cyclers/data/found/882_ccr4bp_strob_connection/r1_eps0.001.json
+[2026-10-03T23:53:20 +  204.5s] stage r1 done
