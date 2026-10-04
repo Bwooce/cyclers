@@ -1490,7 +1490,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   that the Table 18.3 n = 4 row satisfies the recurrence to 3.8e-6 (its printed rounding). Build the
   R-arc and R-orbit solvers by shooting on the sign code with brackets between poles (not random
   multi-start, which can miss roots at larger n), with the counts 2^(n-1) and 2^n - 2 as hard
-  assertions and extended precision above about n = 12. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  assertions and extended precision above about n = 12. Brjuno 1978 part III (digest
+  `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
+  on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
+  one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
+  1968 rows in the agent's run, closed-form Jacobi constants at the junction types (type II: tangent
+  ellipse, demanded turn 0; type III: C = -1, turn 0; type IV*: relative speed 0, turn undefined; all
+  three are `#906` "indeterminate", not rejections), and an extremal-arc condition that reproduces
+  Bruno 1981's maximum-C orbit (a = 1.41019, e = 0.88445, C = -0.39913). Tests: Table II (28 rows, five
+  checks), Table I (97 rows; orbits 53 and 61 are printed wrongly: strict expected failures). The W
+  question and the 1/2 versus 1/12 slip are not settled by a printed formula. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
