@@ -312,3 +312,35 @@ def test_qbcp_pol_forward_prop_is_instability_dominated() -> None:
             f"forward-prop residual at x={x} unexpectedly small ({residual:.3e}); if this "
             "ever holds, the instability-artifact reasoning in #544 needs revisiting"
         )
+
+
+# Andreu (1998), "The Quasi-bicircular Problem", PhD thesis, Table 1.5 (printed page 41), column
+# alpha_1 (cosine series), as printed. Filed in the private paper corpus as
+# andreu-1998-quasi-bicircular-problem-phd-thesis.pdf.
+_ANDREU_1998_TABLE_1_5_ALPHA1 = [
+    1.00184160892484e00,
+    5.76751772619840e-04,
+    1.43877702550763e-02,
+    -2.63036297497202e-06,
+    1.17627835611893e-04,
+    -8.06858139100555e-08,
+    9.84324976650129e-07,
+    -1.17205439441820e-09,
+    8.31190597087959e-09,
+    -1.40858423869539e-11,
+    7.05071378646684e-11,
+    -1.49425963491046e-13,
+    5.98241897945123e-13,
+]
+
+
+def test_alpha1_coefficients_match_andreu_1998_table_1_5() -> None:
+    """The alpha_1 Fourier table agrees with the printed source to its 15 digits.
+
+    Guards a transcription slip found 2026-10-04 (#884): the j = 5 entry was typed as
+    -38.068581391005552e-08, 4.7 times the printed -8.06858139100555e-08.
+    """
+    code = qbcp._COEFFS_ALPHA1
+    assert len(code) == len(_ANDREU_1998_TABLE_1_5_ALPHA1)
+    for j, (got, printed) in enumerate(zip(code, _ANDREU_1998_TABLE_1_5_ALPHA1, strict=True)):
+        assert math.isclose(got, printed, rel_tol=1e-14), (j, got, printed)

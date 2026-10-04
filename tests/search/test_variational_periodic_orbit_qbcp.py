@@ -83,13 +83,16 @@ _POL1 = np.array([0.8369141677649317, 0.0, 0.0, 0.0, 0.8391311559808445, 0.0])
 # its own build_l1_substitute(use_buggy_qbcp=False) internals in this session
 # (2026-07-16), independently of and prior to running the harmonic-balance
 # method below.
+# Recomputed 2026-10-04 by the same independent corrector after the alpha_1 j = 5 coefficient
+# in core/qbcp.py was corrected against Andreu (1998) Table 1.5 (resnorm 1.5e-14). The correction
+# moved this state by 8.59e-08, and the harmonic-balance method moved by the same amount.
 _MULTISHOOT_STATE0 = np.array(
     [
-        0.8358664822188155,
-        -0.01016652946503905,
+        0.8358664683349784,
+        -0.010166531811343641,
         0.0,
-        0.01022379318549257,
-        0.8211145677631191,
+        0.010223785064039955,
+        0.8211146521049189,
         0.0,
     ]
 )
@@ -218,8 +221,8 @@ def test_positive_control_cold_start_reproduces_qbcp_l1_substitute() -> None:
     # distance, which is the actual claim under test here.
     xy_dist = math.hypot(res.state0_pm[0] - _POL1[0], res.state0_pm[4] - _POL1[4])
     full_dist = float(np.linalg.norm(res.state0_pm - _POL1))
-    assert xy_dist == pytest.approx(0.018047024, abs=1e-6)
-    assert full_dist == pytest.approx(0.023099337, abs=1e-6)
+    assert xy_dist == pytest.approx(0.018046941, abs=1e-6)
+    assert full_dist == pytest.approx(0.023099269, abs=1e-6)
 
     # Second, fully independent confirmation: a different integrator
     # (Radau, not the module's own DOP853 closure check) over the
