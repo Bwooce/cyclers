@@ -161,3 +161,7 @@ All uses INFERRED; nothing built or run.
 4. Treat C/3 (not R_f/a_f) as the portable quantity of Table III if a three-body regularised code is ever built; the two published sets (this paper and Heggie 1974) give it to one figure and agree on four of six rows.
 5. Reconcile the step-count discrepancy for Example II at tolerance 1e-8 (38 here, 42 in Heggie's reproduction) before using either as a control; and the sentence on p.200 about the 73 and 50 step runs against Table II.
 6. Add a stopping-point sweep to the #929 reversibility control (p.201).
+
+## 10. Dated note, 2026-10-05 (after digesting Szebehely and Peters 1967a)
+
+Example I of Table I here is the Pythagorean problem of `docs/notes/2026-10-05-digest-szebehely-peters-1967a-pythagorean-three-body.md`. A scratch integration (Levi-Civita pair regularisation and a time-transformed Cartesian integrator, tolerances 1e-12 and 1e-13) gives, for t up to 16: closest r23 4.14e-4 at t = 15.830; r23 below 0.01 at three times (1.879, 8.760, 15.830) with a fourth minimum of 6.1e-2 at 3.800, so the statement on p.200 here, "four encounters within a distance of 0.01", is not reproduced (three); closest r13 0.103 (t = 6.898) and smallest r12 1.80 (t = 2.94) are reproduced. Szebehely and Peters 1967a give the time of the deepest approach as 15.8299236 (computed 15.8299203).
