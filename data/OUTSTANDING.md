@@ -1398,6 +1398,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `_kepler_chi_newton` too. Test: a sweep of e - 1 from -1e-4 to 1e-4 (log-spaced) at several dt,
   compared with `shepperd_stm` or a high-precision reference. Matters for `#928` near-collision work
   and for any near-parabolic heliocentric arc.
+  **FIXED 2026-10-05** (commit 408fcc0a). Shared `_initial_chi_guess` in `core/kepler.py` (finite and
+  positive-log checks) plus one retry from the parabolic bootstrap on Newton failure, in both `propagate`
+  and `shepperd_stm` (which carried a copy of the same guess). Tests: `test_kepler_near_parabolic_sweep_934`
+  (e - 1 from 1e-12 to 1e-2 both sides and 0, rp 1 and 7, five dt, against DOP853 at 1e-13, plus energy and
+  angular momentum) and `test_shepperd_stm_near_parabolic_934`. Before the fix 17 of 330 sweep cases failed,
+  all KeplerConvergenceError, at e - 1 = +1e-8 and +1e-9 (rp 1) and +1e-8 and +1e-7 (rp 7). Callers that
+  catch KeplerConvergenceError and skip or drop the case (past results with a possible hole near e = 1;
+  not changed, to be re-checked): `verify/propagate.py:733`, `verify/agreement.py:425`,
+  `viz/plots.py:194`, `search/lowthrust.py:142` and `:217`, `search/mga_dsm_placement.py:107`.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
