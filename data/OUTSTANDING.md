@@ -1717,7 +1717,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   usable constants (the remainder constants are existence constants; the series of bounds diverges),
   so the seed error can only be CALIBRATED against integrated orbits (fit the constant on Casoliva
   Table 3 flybys at the matching distance), never certified; second order is the right level; do not
-  sample Kepler-arc velocities closer than about mu |ln mu| (about 0.23 days) to the Moon. Either way a
+  sample Kepler-arc velocities closer than about mu |ln mu| (about 0.23 days) to the Moon. First
+  published calibration (Lancaster & Allemann 1973, AIAA J. 11:259; digest
+  `docs/notes/2026-10-05-digest-lancaster-allemann-1973-asymptotic-two-point-boundary-value.md`;
+  numbers computed by the agent from its Table 1): eight Earth-to-Moon transfers to a 2222 km
+  pericynthion give first-order radius errors of 74 to 170 km (1.3 to 3 times mu^2 a_moon) and
+  second-order errors of 3.7 to 554 km: much better in three cases, WORSE in three, which the
+  authors tie to a large first-order correction of the starting velocity (the series may diverge
+  after two terms). Pre-set thresholds for #899: first-order periapsis error within about 3 mu^2
+  a_moon; always report second order alongside; flag cases with a large first-order velocity
+  correction. Fuller data: AIAA 72-49 and Lancaster's report MDC G2748 (1972), not held. Either way a
   matched seed starts a corrector and is never an orbit; one order of accuracy is lost per near-Moon passage, so `#906` should use integrated
   turns, not matched predictions. At a first-species/second-species bifurcation exactly two families
   meet, the minimum distance is O(mu^(1/2)) (about 0.11 lunar distances), and the local hyperbola
