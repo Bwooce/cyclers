@@ -1646,7 +1646,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2022, CNSNS 111:106410 (spatial, McGehee), 10.1016/j.cnsns.2022.106410; Arioli & Mireles James 2025,
   Nonlinearity 38:045010 (branches and bifurcations, planar circular RTBP), 10.1088/1361-6544/adbda3;
   Rodriguez del Rio, thesis (UPC, open access), 10.5821/dissertation-2117-351117; Llibre & Martinez
-  Alfaro 1985, Celest. Mech. 35:113, 10.1007/BF01227665. Brjuno 1978 part III (digest
+  Alfaro 1985, Celest. Mech. 35:113, 10.1007/BF01227665. The 2021 sequel (J. Nonlinear Sci. 31:68; digest
+  `docs/notes/2026-10-05-digest-alvarez-ramirez-barrabes-medina-olle-2021-ejection-collision-two-dof.md`)
+  is purely analytic and does NOT cover the restricted problem (its hypotheses need a homogeneous
+  potential with a total collision; the RTBP has a rotating frame and only binary collisions); it
+  cites none of the Olle, Rodriguez & Soler papers, which remain the ones to get. Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
