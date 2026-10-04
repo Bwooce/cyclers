@@ -922,7 +922,7 @@ READ. Begins with the same orbit as 7P (apoapsis start now); about 120 orbits "w
 e below 0.75; "all of the orbits are stable, and belong to region 1 (Fig. 2). They are on a line close to a2 = -2 a1 - 2. When e increases, the orbits approach the separation point (-4, 6)". (Note the text's "-2a2 - 2" is a typo for a2 = -2 a1 - 2.)
 
 **Table 13, family 7A, printed pp54 to 55** (120 rows; rows 1 to 60 p54, 61 to 120 p55). Header "ELLIPTIC PROBLEM MU=0.012155 E VARIABLE APOAPSIS FAMILY 7". Apoapsis start (v = pi), final state after half a revolution (v = 2 pi). **The table ends at e = 0.93, not 0.99
-as the text says;** Fig. 14 (pp52 to 53) shows orbits at e = 0.95 and 0.975 which are not tabulated.
+as the text says (Table 20 on p95 counts 130 orbits for this family, ten more than the 120 rows printed);** Fig. 14 (pp52 to 53) shows orbits at e = 0.95 and 0.975 which are not tabulated.
 
 ```
   NR         X0       YDOT0          X1       YDOT1  MASS RATIO         ECC
@@ -1155,7 +1155,7 @@ Findings:
 ## 11. Anomalies and slips found while reading
 
 1. Tables 6 and 7 number orbits 1 and 2 in opposite order (Table 7 NR 1 is Table 6 orbit 2). Table 6 truncates to six decimals (Table 7 has seven).
-2. Table 13 ends at e = 0.93 (row 120); the text (p51) says e from 0.0 to 0.99; Fig. 14 shows e = 0.95 and 0.975 that are not tabulated.
+2. Table 13 ends at e = 0.93 (row 120); the text (p51) says e from 0.0 to 0.99; Fig. 14 shows e = 0.95 and 0.975 that are not tabulated. Table 20 (p95, read in part B) counts 130 orbits for 7A against 120 printed rows, and its other counts that fall in part A agree with the printed rows (13, 23, 26, 22, 12, 118, 152, 131). INFERRED: about ten 7A orbits, presumably between e = 0.93 and 0.99, were computed and counted but not tabulated.
 3. Table 11 rows 9 and 10 are printed out of order (mass ratio 0.491 then 0.492; X0 0.6947297 then 0.6933511).
 4. Eq. 36c,d (xi1 = +m2 r, xi2 = -m1 r) is the mirror image of the frame the tables of 3P, 4P, 5P use (smaller primary at +x). Tables 8, 10, 11 have X0 > 0.
 5. Eq. 58 (p9): the second attraction term of the x equation reads (y - y1)/r2^3 in the image where (x - x2)/r2^3 is meant (reading of the image, not certain).
