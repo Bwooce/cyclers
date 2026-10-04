@@ -959,6 +959,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
   Chambers positive control: Duncan, Levison & Lee 1998, Michel & Valsecchi 1997.
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
+  **DOIs looked up 2026-10-04, second batch (Crossref; doubtful matches re-checked by the
+  coordinator):** Perko 1981b, SIAM J. Appl. Math. 41:181 10.1137/0141013; Perko 1976, Rocky
+  Mountain J. Math. 6(4):675 (not 6:130 as written above) 10.1216/rmj-1976-6-4-675; Guillaume
+  1975a, Celest. Mech. 11:213 10.1007/BF01230546; Bruno (Brjuno) 1978, "Researches on the
+  restricted three-body problem", Celest. Mech. 18:9-50 (the English translation of the 1972
+  work) 10.1007/BF01233089; Aarseth & Zare 1974, Celest. Mech. 10:185 10.1007/BF01227619;
+  Stiefel & Scheifele 1971 (book) 10.1007/978-3-642-65027-7; Scheeres 1998, Celest. Mech. Dyn.
+  Astron. 70:75 10.1023/A:1026498608950; Duncan, Levison & Lee 1998, Astron. J. 116:2067
+  10.1086/300541; Hadjidemetriou 1975b 10.1007/BF01228563 confirmed (Celest. Mech. 12:255). No DOI
+  (conference papers or theses): Olikara & Scheeres 2017 (AAS 2017, cited as ref 19 by Sanaga &
+  Howell 2025), Davis et al. AAS 17-826, Park & Howell AAS 23-118 and AAS 22-741, Sanaga & Howell
+  AAS 23-227, Perko 1965 thesis. Not found: Waldvogel 1967 (Bull. Astron. 3:295; try Persee),
+  Henry et al. 2023 (AIAA and ISTS), Michel & Valsecchi 1997.
   **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
   10.1007/BF01229557; Guillaume 1973 10.1007/BF01231414; Guillaume 1975 ("The restricted
   problem: an extension of Breakwell-Perko's matching theory") 10.1007/BF01650284; Perko 1977
