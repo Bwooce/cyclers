@@ -5,7 +5,9 @@ from __future__ import annotations
 import math
 
 import numpy as np
+import pytest
 from scipy.integrate import solve_ivp
+from scipy.optimize import brentq
 
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.qbcp as qbcp
@@ -365,6 +367,7 @@ def _max_position_excursion(state0: np.ndarray, system: qbcp.QBCPSystem) -> floa
             atol=1e-13,
             dense_output=True,
         )
+        assert sol.sol is not None
         samples = sol.sol(np.linspace(0.0, sign * quarter, 400))
         worst = max(worst, float(np.max(np.hypot(samples[0] - state0[0], samples[1] - state0[1]))))
     return worst
@@ -467,3 +470,94 @@ def test_sun_position_tables_are_minus_the_printed_ones() -> None:
                 assert got == 0.0, k
             else:
                 assert math.isclose(got, -want, rel_tol=1e-14), (k, got, want)
+
+
+# Jorba-Cusco, Farres & Jorba (2018), "Two periodic models for the Earth-Moon system", Frontiers in
+# Applied Mathematics and Statistics 4:32, Table 1: the largest eigenvalue of the monodromy matrix
+# of the dynamical equivalents of L1, L2 and L3 in the QBCP, as printed.
+_JCFJ_2018_TABLE_1_LARGEST_MULTIPLIER = {"L1": 4.60182151e8, "L2": 2.39719684e6, "L3": 3.370855}
+
+
+def _collinear_point(mu: float, lo: float, hi: float) -> float:
+    def d_omega(x: float) -> float:
+        return (
+            x
+            - (1.0 - mu) * (x + mu) / abs(x + mu) ** 3
+            - mu * (x - 1.0 + mu) / abs(x - 1.0 + mu) ** 3
+        )
+
+    return float(brentq(d_omega, lo, hi, xtol=1e-15, rtol=1e-15))
+
+
+def _substitute_orbit_and_monodromy(
+    x_point: float, n_seg: int, system: qbcp.QBCPSystem
+) -> tuple[list[np.ndarray], np.ndarray]:
+    """Multiple-shooting Newton for the period-T_S orbit near a collinear point, seeded with the
+    point itself at rest, and the monodromy matrix of the converged orbit."""
+    period = system.sun_period_tu
+    dt = period / n_seg
+    rest = np.array([x_point, 0.0, 0.0, 0.0, 0.0, 0.0])
+    nodes = [qbcp.state_pv_to_pm(rest, i * dt, system) for i in range(n_seg)]
+    stms: list[np.ndarray] = []
+    for _ in range(40):
+        residual = np.zeros(6 * n_seg)
+        jac = np.zeros((6 * n_seg, 6 * n_seg))
+        stms = []
+        for i in range(n_seg):
+            y0 = np.concatenate([nodes[i], np.eye(6).ravel()])
+            sol = solve_ivp(
+                qbcp.qbcp_stm_eom,
+                (i * dt, (i + 1) * dt),
+                y0,
+                args=(system,),
+                method="DOP853",
+                rtol=1e-13,
+                atol=1e-13,
+            )
+            end = sol.y[:, -1]
+            stm = end[6:].reshape(6, 6)
+            stms.append(stm)
+            j = (i + 1) % n_seg
+            residual[6 * i : 6 * i + 6] = end[:6] - nodes[j]
+            jac[6 * i : 6 * i + 6, 6 * i : 6 * i + 6] = stm
+            jac[6 * i : 6 * i + 6, 6 * j : 6 * j + 6] -= np.eye(6)
+        if float(np.linalg.norm(residual)) < 1e-11:
+            break
+        delta = np.linalg.solve(jac, -residual)
+        nodes = [nodes[i] + delta[6 * i : 6 * i + 6] for i in range(n_seg)]
+    else:
+        raise AssertionError("substitute orbit did not converge")
+    monodromy = np.eye(6)
+    for stm in stms:
+        monodromy = stm @ monodromy
+    return nodes, monodromy
+
+
+@pytest.mark.parametrize(
+    ("name", "lo", "hi", "n_seg", "rel_tol"),
+    [
+        ("L1", 0.5, 0.95, 24, 1e-7),
+        ("L2", 1.05, 1.5, 24, 1e-7),
+        ("L3", -1.5, -0.5, 6, 1e-6),
+    ],
+)
+def test_substitute_multipliers_match_jorba_cusco_2018_table_1(
+    name: str, lo: float, hi: float, n_seg: int, rel_tol: float
+) -> None:
+    """Published positive control (#892): the dominant Floquet multipliers of the dynamical
+    equivalents of the collinear points agree with the printed table to its digits.
+
+    Measured: 4.60182152e8, 2.39719685e6 and 3.37085539 against the printed 4.60182151e8,
+    2.39719684e6 and 3.370855. The L1 and L2 orbits stay within 3e-6 of the three-body points
+    (the paper: "of order O(10^-6)").
+    """
+    system = qbcp.qbcp_default()
+    x_point = _collinear_point(system.mu, lo, hi)
+    nodes, monodromy = _substitute_orbit_and_monodromy(x_point, n_seg, system)
+    largest = float(np.max(np.abs(np.linalg.eigvals(monodromy))))
+    assert math.isclose(largest, _JCFJ_2018_TABLE_1_LARGEST_MULTIPLIER[name], rel_tol=rel_tol)
+    if name in ("L1", "L2"):
+        assert max(math.hypot(s[0] - x_point, s[1]) for s in nodes) < 1e-5
+        published = _POL1_PUBLISHED if name == "L1" else _POL2_PUBLISHED
+        assert abs(nodes[0][0] - published[0]) < 1e-7
+        assert abs(nodes[0][4] - published[4]) < 1e-7
