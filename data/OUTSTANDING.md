@@ -891,7 +891,27 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of `run_522`, `run_533`, `run_538`, `search_coherent_connections` need 11 samples. Resolve
   the two slow strict expected-failures in `tests/search/test_variational_qbcp_torus.py`
   (does the corrector still cross the Earth-Moon L2 plateau in the corrected model?).
-- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.**
+- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.** **RUN DONE 2026-10-05 (03:14-03:25 AEDT,
+  data/found/905_sun_forced_rerun/) AND ADVERSARIALLY REVIEWED** (`docs/notes/2026-10-05-905-sun-forced-rerun-adversarial-review.md`):
+  72 distinct orbits reached full Sun strength (36 per model); all re-close in `core/bcr4bp.py` /
+  `core/qbcp.py` to 2e-9 or better with minimal period and no surface crossing. Classes: 0 new
+  reproductions in the run itself (the controls stage separately reproduces Oshima and L&B 013); 2
+  completions of a published gap, both quasi-bicircular: the Leiva & Briozzo 2008 arcs 180A_1 (C32,
+  5 Sun periods, both arc epochs on one orbit within 85 km and 0.4 m/s, multipliers and distances
+  matching) and 357 (C31); 70 Sun-forced counterparts of three-body families not in the held
+  literature (53 with periselene inside the lunar sphere); 0 artefacts. CORRECTION: the earlier
+  statement (in this entry and to the owner) that the 180A_2 member was also completed is WRONG; the
+  180A_2-parent orbits are different orbits (distance above 1e-2, multipliers 4.6e6 and 1.2e7 against
+  the arc's 2.7e7). Defects to fix before any row: the QBCP orbits are closed over M T*, not N Sun
+  periods (error about 1e-10 TU; one Newton step at the exact period); three duplicated parent pairs
+  inflate the census and gave different reached counts (fragile continuation); `after_bifurcation`
+  tracks the walk, not the orbit, and 19 orbits passed a branch point; some orbits have no partner in
+  the other model; subdominant multipliers above about 1e12 are meaningless. The literature check has
+  no Sun-model dimension and returns "published" for everything (needs Sun-forced anchors). Usefulness:
+  idealised models, perigees all above 76 000 km, error doubling every 4 to 24 days. NO CATALOGUE ROW
+  NOW; the only candidates are the two closures, labelled as closures of published arcs, after
+  re-correction at N Sun periods, a Sun-aware literature check and real-ephemeris continuation
+  (compare Genova & Aldrin's 39 m/s per month).
   **DRIVER BUILT AND VALIDATED 2026-10-05 (commits `b9c54cb8`, `3e78c30e`); FULL RUN NOT YET
   LAUNCHED.** New driver `search/sun_forced_905.py` (the `#884` module is left as the record):
   multiple shooting over P = N Sun periods with nodes placed by STM growth, closure checked with
