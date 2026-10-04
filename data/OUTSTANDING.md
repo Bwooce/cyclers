@@ -810,12 +810,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2018 paper's multipliers), added today. `core/er3bp.py`: (b) added today (Neelakantan &
   Ramanan 2022 Table 8, four of five printed orbits close from periapsis to 1e-11..3e-7; the
   fifth row is not reproduced), plus the earlier Antoniadou & Libert check at 2e-3; (a) not
-  yet. `core/ccr4bp.py`: (a) the coordinator's non-rotating-frame integration reproduced the
-  `#890` orbit computed with the module, which is an identity check in effect but is not yet
-  a test; (b) none for the model itself (the `#889` control is for the elliptic stroboscopic
+  yet. `core/ccr4bp.py`: (a) yes, added today
+  (`tests/core/test_ccr4bp_inertial_identity.py`: outer and inner perturber agree with a
+  non-rotating-frame integration to better than 1e-9, with a reversed-rate control), so the
+  two-moon model's sense is confirmed; (b) none for the model itself (the `#889` control is for the elliptic stroboscopic
   machinery, not this module). `core/crnbp.py`, `core/wsb.py` and any other forced or
   multi-body model under `core/`: not examined. `core/cr3bp.py`: many published controls
-  already. **To do:** turn the ccr4bp identity into a test; find a published control for
+  already. **To do:** find a published control for
   ccr4bp (Kumar, Anderson & de la Llave print torus data for Jupiter-Europa-Ganymede);
   examine crnbp and wsb; add an inertial-frame identity for er3bp. A model without both
   checks must say so in its module docstring.
