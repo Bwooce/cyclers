@@ -967,6 +967,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
   Chambers positive control: Duncan, Levison & Lee 1998, Michel & Valsecchi 1997.
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
+  Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
+  (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
+  Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
+  ISSFD 2014; Campagnola 2010 (as cited by Peng & Xu); Greenzweig & Lissauer 1990 (Icarus 87:40).
   **DOIs looked up 2026-10-04, second batch (Crossref; doubtful matches re-checked by the
   coordinator):** Perko 1981b, SIAM J. Appl. Math. 41:181 10.1137/0141013; Perko 1976, Rocky
   Mountain J. Math. 6(4):675, 10.1216/rmj-1976-6-4-675 (Perko's own reference list gives
