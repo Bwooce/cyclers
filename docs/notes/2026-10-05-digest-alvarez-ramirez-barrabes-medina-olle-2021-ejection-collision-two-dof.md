@@ -107,7 +107,7 @@ statements describe different normalisations; I did not reconcile them). Total c
 C = {r = 0, theta_a < theta < theta_b, u^2 + v^2 = 2 V(theta)}. On C: dv/dtau = h r + u^2/2 = u^2/2 >= 0 (gradient-like in v).
 
 Step 3, removal of the two partial collisions simultaneously (Sundman type). With f(theta) = sin(theta - theta_a) sin(theta_b - theta)
-if theta_b - theta_a != pi, else f = sin(theta_b - theta); W(theta) = f(theta) V(theta); F(theta) = f/sqrt(W);
+if theta_b - theta_a not equal to pi, else f = sin(theta_b - theta); W(theta) = f(theta) V(theta); F(theta) = f/sqrt(W);
 w = F(theta) u; d tau = F(theta) dt. Regularised system (eq. 7):
 
     dr/dt = r v F(theta)
@@ -129,14 +129,14 @@ Internal consistency checks run on the 2021 text (independent algebra, not a num
 - Using eq. 3 and eq. 4, dv/dtau = v^2/2 + u^2 - V = (h r + u^2/2) as the paper says: (v^2+u^2)/2 - V + u^2/2 = v^2/2 + u^2 - V. Holds.
 - Eq. 8 follows from eq. 4 with u = w sqrt(W)/f: multiply h r = (v^2 + u^2)/2 - V by 2 f^2 and use F^2 = f^2/W. Holds.
 - Proposition 4 proof: at theta = theta_b, w = 0, f(theta_b) = 0, the last bracket of dw/dt reduces to f'(theta_b) = -sin(theta_b - theta_a),
-  as printed. Holds for theta_b - theta_a != pi.
+  as printed. Holds for theta_b - theta_a not equal to pi.
 
 ## 5. The dynamics on the collision manifold
 
 - Lemma 1: on C every maximum or minimum of theta has w = 0 and either theta = theta_a,b or v^2 = 2 V(theta).
 - Proposition 4: if at t0 either theta > theta_c with w > 0, or theta < theta_c with w < 0, the orbit reaches the section Sigma
   (below) at least once. Proof: theta cannot reach a maximum at theta < theta_b (there dw/dt > 0 would make it a minimum), and
-  it cannot approach theta_b asymptotically (dw/dt = -sin(theta_b - theta_a) != 0 there).
+  it cannot approach theta_b asymptotically (dw/dt = -sin(theta_b - theta_a) nonzero there).
 - Proposition 5: on C every orbit oscillates between maxima and minima on theta = theta_a,b and/or the curve v^2 = 2 V(theta), w = 0.
   Consequence (Remark): forwards in time theta oscillates infinitely while v -> infinity, or oscillates finitely and tends to E+.
   Any heteroclinic orbit E- to E+ on C makes a finite number of oscillations between theta_a and theta_b. v -> +-infinity along the
@@ -229,7 +229,7 @@ The paper prints no numerical values. What is testable is structural, and each i
 4. The time-reversal symmetry (r, v, theta, w, t) -> (r, -v, theta, -w, -t) (eq. 9, 10).
 5. Equilibria E+- = (0, +-v_c, theta_c, 0) with v_c^2 = 2 V(theta_c) for eq. 3 in its own normalisation; hyperbolic saddles with the
    stated stable and unstable dimensions (1 and 2 on a fixed energy level).
-6. At theta = theta_b, w = 0: dw/dt = -sin(theta_b - theta_a) (when theta_b - theta_a != pi).
+6. At theta = theta_b, w = 0: dw/dt = -sin(theta_b - theta_a) (when theta_b - theta_a not equal to pi).
 7. Counts of guaranteed ECOs (Theorem 1: all (a)^m, (b)^m, m >= 1; Theorem 2: 2n+1 collisions; Theorem 3: 2(n+1) collisions), to be compared with
    a numerical search of the 2019 kind. The first cases line up with the 2019 numbers (Section 6.1); the identification of the
    mass parameter with the type and n needs a printed alpha (not in the text) or a computation of the one-dimensional manifold.
