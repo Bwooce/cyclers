@@ -1438,6 +1438,25 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   catch KeplerConvergenceError and skip or drop the case (past results with a possible hole near e = 1;
   not changed, to be re-checked): `verify/propagate.py:733`, `verify/agreement.py:425`,
   `viz/plots.py:194`, `search/lowthrust.py:142` and `:217`, `search/mga_dsm_placement.py:107`.
+- `#935` — registered 2026-10-05. **CONTROL SETS FROM THE DVORAK & HENRARD 1993 VOLUME (= CMDA 56)**
+  (digest `docs/notes/2026-10-05-digest-dvorak-henrard-1993-cmda-56-selected-chapters.md`; agent's
+  reproductions, not yet checked by the coordinator; section 13 separates printed goldens from the
+  agent's own values). (a) Hadjidemetriou (pp.201-219): 43 printed rows of planar elliptic restricted
+  periodic orbits, Sun-Jupiter, 2:1 and 4:1; 19 reproduce to the printed digits, every other row has
+  an exact symmetric orbit within 6e-3 (Newton-corrected); the printed ydot0 is in a frame rotating at
+  the instantaneous angular rate at t = 0 (with omega = 1 they fail by 0.3 to 1.2); the p.211 row
+  printed e' = 0.010 closes only at 0.100 (misprint). A closure test for `#912`/`#931`, and its
+  stability labels per family are a classifier test. (b) Hagel & Trenkler (pp.81-98, Sitnikov): Table
+  I (linearised monodromy against e) reproduced by `core.er3bp` at mu = 0.5 to 3e-4 (|e| <= 0.6); the
+  core z-equation is the Sitnikov equation. (c) Lohinger, Froeschle & Dvorak: 3D CR3BP at mu = 0.5 with
+  printed initial conditions, regular for d0 < 0.25, chaotic for d0 >= 0.255 (needs an adaptive
+  integrator; orbits pass within 0.002 of both primaries): a chaos-indicator control for `#924`. (d)
+  Kallrath, Schloder & Bock: Henon-Heiles largest Lyapunov exponents 0.044, 0.053, 0.037 with initial
+  conditions (use bands). (e) Valsecchi et al.: the lunar Saros point (e, i) = (0.0623, 5.57 deg)
+  reproduced from the printed series (needs two unprinted constants). Printed slips for `#910`:
+  Hagel-Trenkler Table I rows e = -0.40, +-0.80, +-0.99 and eq. 26 (24/121 should be 21/124); the
+  Hadjidemetriou e' misprint and its 4.700496 against 4.700478; Dvorak's Table II inconsistent with
+  Table I. The volume has no Olle or Simo chapter (pages end at 396).
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
