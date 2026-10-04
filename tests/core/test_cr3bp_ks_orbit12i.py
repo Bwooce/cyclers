@@ -28,10 +28,11 @@ Sundman r2  2.3e-14  2.3e-10     3.1e-10         1865
 ==========  =======  ==========  ==============  ======
 
 (plain and Sundman with atol = rtol, as in the #896 test; 2.3e-14 is the smallest rtol DOP853
-accepts.) Backward from the printed point to the entry at rtol 1e-13 the Sundman run's
-Jacobi error is 1.18e-9 and its angle error 8.3e-10 against KS: the #896 passage tolerance of 1e-9 (``_passage_tolerance``) holds for the angles but not for
-the Jacobi constant in that direction. The KS run conserves C to rounding, returns to the printed
-point to 6e-14 after the round trip, and uses a fifth of the plain run's evaluations.
+accepts.) Backward from the printed point to the entry at rtol 1e-13 the Sundman run's Jacobi error
+is 1.18e-9 and its angle error 8.3e-10 against KS: the #896 passage tolerance of 1e-9
+(``_passage_tolerance``) holds for the angles but not for the Jacobi constant in that direction.
+The KS run conserves C to rounding, returns to the printed point to 6e-14 after the round trip, and
+uses a fifth of the plain run's evaluations.
 """
 
 from __future__ import annotations
