@@ -951,7 +951,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Burdet 1967, Duncan, Levison & Lee 1998, Guillaume 1975a (Celest. Mech. 11:213),
   Scheeres 1998, Hadjidemetriou 1975b, Cincotta & Simo 1999 (conditional entropy), Brjuno 1978,
   Perko 1976b (Rocky Mountain J. Math. 6(4):675; the paper starts on p.675, so Perko's own
-  "6:130" citation is wrong), Perko 1981b (SIAM J. Appl. Math. 41:181).
+  "6:130" citation is wrong), Perko 1981b (SIAM J. Appl. Math. 41:181), Gomez & Olle 1986
+  (Celest. Mech. 39:33, 10.1007/BF01232287).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
