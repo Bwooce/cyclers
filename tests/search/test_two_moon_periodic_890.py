@@ -126,3 +126,20 @@ def test_shooter_residual_zero_on_exact_trajectory() -> None:
     rp, _ = sh.evaluate(z + dz, with_jac=False)
     rm, _ = sh.evaluate(z - dz, with_jac=False)
     assert np.allclose((rp - rm) / (2 * eps), jac[:, 1], atol=1e-6)
+
+
+def test_rescale_flyby_nodes_scales_periapsis_offset(geom: tm.ClosureGeometry) -> None:
+    """Identity at equal lam; periapsis offset proportional to lam otherwise."""
+    m1 = tm.TwoMoonModel(lam=0.1)
+    m2 = tm.TwoMoonModel(lam=0.2)
+    _sh, z, _ = tm.symmetric_guess(m1, geom, 3)
+    same = tm.rescale_flyby_nodes(z, m1, m1, 3)
+    assert np.allclose(same, z, atol=1e-13)
+    z2 = tm.rescale_flyby_nodes(z, m1, m2, 3)
+    d1 = float(
+        np.linalg.norm(tm.relative_inertial(m1, "Titania", 0.0, np.array([z[0], 0, 0, z[1]]))[0])
+    )
+    d2 = float(
+        np.linalg.norm(tm.relative_inertial(m2, "Titania", 0.0, np.array([z2[0], 0, 0, z2[1]]))[0])
+    )
+    assert math.isclose(d2 / d1, 2.0, rel_tol=1e-9)

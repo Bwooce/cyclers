@@ -1,0 +1,70 @@
+{
+ "_meta": {
+  "task": "#890",
+  "git_sha": "cf86ff92",
+  "stage": "realeph.json"
+ },
+ "model": "Uranus point mass (GM_sys minus the five moons) + J2 about Titania's orbit normal + Miranda/Ariel/Umbriel/Titania/Oberon point masses from URA111 (indirect terms included), no correction",
+ "epochs": [
+  {
+   "epoch_utc": "2030-01-12T00:14:53",
+   "wall_s": 1.7358672618865967,
+   "Titania": {
+    "start_dist_km": 2765.7599170224685,
+    "minima_within_3RH": [],
+    "closest_overall_km": 2767.694875211342
+   },
+   "Oberon": {
+    "start_dist_km": 145156.0783513331,
+    "minima_within_3RH": [
+     {
+      "t_days": 60.919116218417756,
+      "dist_km": 1985.5610459517175
+     }
+    ],
+    "closest_overall_km": 1985.5610459517175
+   },
+   "end_dist_to_titania_km": 791615.0074641006
+  },
+  {
+   "epoch_utc": "2030-02-05T15:25:53",
+   "wall_s": 1.6935598850250244,
+   "Titania": {
+    "start_dist_km": 2765.759917022494,
+    "minima_within_3RH": [],
+    "closest_overall_km": 2767.694820591671
+   },
+   "Oberon": {
+    "start_dist_km": 144249.90479469465,
+    "minima_within_3RH": [
+     {
+      "t_days": 60.95914394198811,
+      "dist_km": 841.5488389995395
+     }
+    ],
+    "closest_overall_km": 841.5488389995395
+   },
+   "end_dist_to_titania_km": 774581.8827312266
+  },
+  {
+   "epoch_utc": "2030-03-02T06:24:14",
+   "wall_s": 1.6136884689331055,
+   "Titania": {
+    "start_dist_km": 2765.7599170225026,
+    "minima_within_3RH": [],
+    "closest_overall_km": 2767.6947608716414
+   },
+   "Oberon": {
+    "start_dist_km": 144303.32463409574,
+    "minima_within_3RH": [
+     {
+      "t_days": 61.113096724951,
+      "dist_km": 381.64558485888665
+     }
+    ],
+    "closest_overall_km": 381.64558485888665
+   },
+   "end_dist_to_titania_km": 690176.2626695783
+  }
+ ]
+}

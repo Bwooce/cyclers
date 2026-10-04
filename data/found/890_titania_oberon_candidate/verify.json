@@ -1,0 +1,330 @@
+{
+ "_meta": {
+  "task": "#890",
+  "git_sha": "342cba84",
+  "stage": "verify.json"
+ },
+ "z": [
+  1.0062999944957982,
+  0.12590851601977657,
+  1.0797942888309122,
+  -0.7738602116865311,
+  -0.2739409255725388,
+  -0.445928279669622,
+  -0.10952906331256572,
+  -1.0363090377691135,
+  -0.004332419934716168,
+  0.09390640813054416,
+  -0.6424019497273192,
+  -1.125351823809702,
+  -0.446102804518793,
+  0.1649458011460322,
+  -1.0877259503753347,
+  0.19169208796044093,
+  0.14874524679872123,
+  0.11052658427058794,
+  -1.1254910973170698,
+  0.5282660742259133,
+  0.06154936748721063,
+  0.3927782634575199,
+  0.21641024057925415,
+  1.1575766110631813,
+  0.23946638716698465,
+  -0.17716937384515333,
+  0.45745024681727936,
+  1.0827421336511165,
+  0.29395380918078134,
+  0.01745011304910458,
+  1.2319944326330992,
+  -0.1793118107146384,
+  -0.16509711042473338,
+  -0.3646595283501179,
+  1.0123262115609888,
+  -0.4416447643064804,
+  0.0639837780222118,
+  -0.17404931234767695,
+  -0.09861793288061443,
+  -1.2984083074001838,
+  -0.4716742877353143,
+  0.11261781388323848,
+  -0.5044793511215976,
+  -0.908703776303519,
+  -0.05066725294293763,
+  -0.07511337008819684,
+  -1.332542022144366,
+  0.6090291318290396
+ ],
+ "V1_residual": 2.5953128535149972e-11,
+ "V1_pass": true,
+ "monodromy_eigenvalues": [
+  [
+   838673.3316289631,
+   0.0
+  ],
+  [
+   1.7891282558958013,
+   0.0
+  ],
+  [
+   0.5589314221073179,
+   0.0
+  ],
+  [
+   1.189501790526493e-06,
+   0.0
+  ]
+ ],
+ "monodromy_max_abs": 838673.3316289631,
+ "monodromy_det": 0.9967116087459241,
+ "V2_closure": {
+  "closure": {
+   "pos_km": 0.23811111054926618,
+   "vel_kms": 1.6438896324321785e-05
+  },
+  "closure_nondim_max": 4.338796012468178e-06,
+  "half_cycle_symmetry": {
+   "y_km": 0.0002700536728695522,
+   "vx_kms": 2.617322595323644e-08
+  },
+  "pass_direct": false,
+  "pass_fallback": false,
+  "pass": false,
+  "nfev": 11525,
+  "wall_s": 0.4078805446624756
+ },
+ "V3_closure_radau": {
+  "closure": {
+   "pos_km": 0.23038762743437885,
+   "vel_kms": 1.590566310205582e-05
+  },
+  "closure_nondim_max": 4.198056064336573e-06,
+  "half_cycle_symmetry": {
+   "y_km": 0.0002613692833299565,
+   "vx_kms": 2.5330382294660295e-08
+  },
+  "pass_direct": false,
+  "pass_fallback": false,
+  "pass": false,
+  "nfev": 200816,
+  "wall_s": 12.683570384979248
+ },
+ "V3_agreement_at_T": {
+  "pos_km": 9.038068155348724e-06,
+  "vel_kms": 8.74376830575347e-10
+ },
+ "V2_pass": false,
+ "V3_pass": false,
+ "encounters_targeted": [
+  {
+   "body": "Titania",
+   "tau": 1.565309410137474e-10,
+   "t_days": 2.168996660390288e-10,
+   "dist_km": 2765.7599170097965,
+   "alt_km": 1976.8599170097964,
+   "rel_speed_kms": 0.48194648756962044,
+   "hill_radii": 0.26923627534651035,
+   "osc_energy": 0.03409727273788997,
+   "osc_ecc": 1.8312461015231993,
+   "osc_h": 1332.9482774637163,
+   "osc_vinf_kms": 0.2611408537088365,
+   "osc_turn_deg": 66.19648273021492
+  },
+  {
+   "body": "Oberon",
+   "tau": 44.441514194210335,
+   "t_days": 61.581113130511355,
+   "dist_km": 2125.580900180864,
+   "alt_km": 1364.1809001808638,
+   "rel_speed_kms": 0.5145301754346182,
+   "hill_radii": 0.15996050186165062,
+   "osc_energy": 0.03578528904771283,
+   "osc_ecc": 1.7410085426910047,
+   "osc_h": 1093.6755134701846,
+   "osc_vinf_kms": 0.26752678014626063,
+   "osc_turn_deg": 70.11241040486576
+  },
+  {
+   "body": "Titania",
+   "tau": 88.88302512130254,
+   "t_days": 123.1622217338869,
+   "dist_km": 2765.6893344717478,
+   "alt_km": 1976.7893344717477,
+   "rel_speed_kms": 0.4819503958835451,
+   "hill_radii": 0.26922940440318227,
+   "osc_energy": 0.03409706264639269,
+   "osc_ecc": 1.8312197663987948,
+   "osc_h": 1332.9250696395573,
+   "osc_vinf_kms": 0.2611400491935034,
+   "osc_turn_deg": 66.19755695517779
+  }
+ ],
+ "encounters_other_within_2RH": [],
+ "V4": [
+  {
+   "body": "Titania",
+   "t_days": 2.168996660390288e-10,
+   "alt_km": 1976.8599170097964,
+   "dist_km": 2765.7599170097965,
+   "soi_km": 7531.976265242764,
+   "osc_ecc": 1.8312461015231993,
+   "osc_vinf_kms": 0.2611408537088365,
+   "osc_turn_deg": 66.19648273021492,
+   "pass": true
+  },
+  {
+   "body": "Oberon",
+   "t_days": 61.581113130511355,
+   "alt_km": 1364.1809001808638,
+   "dist_km": 2125.580900180864,
+   "soi_km": 9678.24361103865,
+   "osc_ecc": 1.7410085426910047,
+   "osc_vinf_kms": 0.26752678014626063,
+   "osc_turn_deg": 70.11241040486576,
+   "pass": true
+  },
+  {
+   "body": "Titania",
+   "t_days": 123.1622217338869,
+   "alt_km": 1976.7893344717477,
+   "dist_km": 2765.6893344717478,
+   "soi_km": 7531.976265242764,
+   "osc_ecc": 1.8312197663987948,
+   "osc_vinf_kms": 0.2611400491935034,
+   "osc_turn_deg": 66.19755695517779,
+   "pass": true
+  }
+ ],
+ "V4_pass": true,
+ "V5_soi_rows": [
+  {
+   "body": "Titania",
+   "soi_in_t_days": -0.22522007339530298,
+   "soi_out_t_days": 0.22522007339530298,
+   "soi_in_vinf_kms": 0.3511753110645024,
+   "soi_out_vinf_kms": 0.3511753110645024,
+   "soi_crossing_duration_days": 0.45044014679060596
+  },
+  {
+   "body": "Oberon",
+   "soi_in_t_days": 61.27676784932776,
+   "soi_out_t_days": 61.88545853174904,
+   "soi_in_vinf_kms": 0.3332418357333035,
+   "soi_out_vinf_kms": 0.3332418356126456,
+   "soi_crossing_duration_days": 0.6086906824212761
+  }
+ ],
+ "V5_gate_soi": {
+  "turn_feasible": true,
+  "ballistic": true,
+  "worst_ratio": 0.7495402367775785,
+  "max_magnitude_mismatch_kms": 1.206579280932374e-10,
+  "min_required_alt_km": 784.388150490773,
+  "total_impulse_beyond_bend_kms": 1.2065798581618086e-10,
+  "encounters": [
+   {
+    "body": "Titania",
+    "label": "soi",
+    "vinf_in_kms": 0.3511753110645024,
+    "vinf_out_kms": 0.3511753110645024,
+    "magnitude_mismatch_kms": 0.0,
+    "demanded_turn_deg": 55.68813571334098,
+    "available_bend_deg": 86.75995933867624,
+    "alt_floor_km": 50.0,
+    "ratio": 0.6418644745550967,
+    "required_alt_km": 1310.4276170126445,
+    "impulse_beyond_bend_kms": 2.7755575615628914e-17,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   },
+   {
+    "body": "Oberon",
+    "label": "soi",
+    "vinf_in_kms": 0.3332418357333035,
+    "vinf_out_kms": 0.3332418356126456,
+    "magnitude_mismatch_kms": 1.206579280932374e-10,
+    "demanded_turn_deg": 65.9974230803549,
+    "available_bend_deg": 88.05054064087454,
+    "alt_floor_km": 50.0,
+    "ratio": 0.7495402367775785,
+    "required_alt_km": 784.388150490773,
+    "impulse_beyond_bend_kms": 1.2065795806060525e-10,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   }
+  ]
+ },
+ "V5_gate_osculating_not_independent": {
+  "turn_feasible": true,
+  "ballistic": true,
+  "worst_ratio": 0.684487642195866,
+  "max_magnitude_mismatch_kms": 0.0,
+  "min_required_alt_km": 1364.180900179796,
+  "total_impulse_beyond_bend_kms": 5.551115123125783e-17,
+  "encounters": [
+   {
+    "body": "Titania",
+    "label": "osculating",
+    "vinf_in_kms": 0.2611408537088365,
+    "vinf_out_kms": 0.2611408537088365,
+    "magnitude_mismatch_kms": 0.0,
+    "demanded_turn_deg": 66.19648273021492,
+    "available_bend_deg": 106.00062979304506,
+    "alt_floor_km": 50.0,
+    "ratio": 0.6244914097157395,
+    "required_alt_km": 1976.859917009796,
+    "impulse_beyond_bend_kms": 2.7755575615628914e-17,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   },
+   {
+    "body": "Oberon",
+    "label": "osculating",
+    "vinf_in_kms": 0.26752678014626063,
+    "vinf_out_kms": 0.26752678014626063,
+    "magnitude_mismatch_kms": 0.0,
+    "demanded_turn_deg": 70.11241040486576,
+    "available_bend_deg": 102.430498496572,
+    "alt_floor_km": 50.0,
+    "ratio": 0.684487642195866,
+    "required_alt_km": 1364.180900179796,
+    "impulse_beyond_bend_kms": 2.7755575615628914e-17,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   }
+  ]
+ },
+ "V5_pass": true,
+ "min_dist_uranus_km": 437600.0678543162,
+ "max_dist_uranus_km": 585823.6668932732,
+ "V6_pass": true,
+ "apoapses_per_leg": [
+  6,
+  6
+ ],
+ "flybys": {
+  "titania": {
+   "rp_km": 2765.7599170097965,
+   "rp_over_lam_km": 2765.7599170097965,
+   "periapsis_side": "outside",
+   "vp_kms": 0.48194648756962044,
+   "turn_sense": 1.0,
+   "osc_energy": 0.03409727273788997,
+   "osc_ecc": 1.8312461015231993,
+   "osc_h": 1332.9482774637163,
+   "osc_vinf_kms": 0.2611408537088365,
+   "osc_turn_deg": 66.19648273021492
+  },
+  "oberon": {
+   "rp_km": 2125.580822457365,
+   "rp_over_lam_km": 2125.580822457365,
+   "periapsis_side": "inside",
+   "vp_kms": 0.5145301820189072,
+   "turn_sense": 1.0,
+   "osc_energy": 0.03578528890381015,
+   "osc_ecc": 1.741008512616027,
+   "osc_h": 1093.6754874748863,
+   "osc_vinf_kms": 0.2675267796083605,
+   "osc_turn_deg": 70.11241179382739
+  }
+ }
+}

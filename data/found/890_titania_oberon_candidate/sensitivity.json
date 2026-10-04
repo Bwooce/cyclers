@@ -1,0 +1,159 @@
+{
+ "_meta": {
+  "task": "#890",
+  "git_sha": "342cba84",
+  "stage": "sensitivity.json"
+ },
+ "rows": [
+  {
+   "flyby": "Oberon",
+   "perturbation": "pos_radial_km",
+   "size": 1.0,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -9.1401011366911,
+   "d_t_s": -51.94206076570373,
+   "d_rp_km_per_unit": -9.1401011366911
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "pos_radial_km",
+   "size": 0.1,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -0.9145883318606138,
+   "d_t_s": -5.192028160153365,
+   "d_rp_km_per_unit": -9.145883318606138
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "pos_along_km",
+   "size": 1.0,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": 0.30103045046735133,
+   "d_t_s": 4.066303145355076,
+   "d_rp_km_per_unit": 0.30103045046735133
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "pos_along_km",
+   "size": 0.1,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": 0.030103450894785055,
+   "d_t_s": 0.4066377336798176,
+   "d_rp_km_per_unit": 0.30103450894785055
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "vel_radial_ms",
+   "size": 1.0,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -62.56825486206935,
+   "d_t_s": -6.928642463524038,
+   "d_rp_km_per_unit": -62.56825486206935
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "vel_radial_ms",
+   "size": 0.1,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -6.2487954918151445,
+   "d_t_s": -0.43663077742768025,
+   "d_rp_km_per_unit": -62.487954918151445
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "vel_along_ms",
+   "size": 1.0,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -1243.1096771771108,
+   "d_t_s": -9350.064074668437,
+   "d_rp_km_per_unit": -1243.1096771771108
+  },
+  {
+   "flyby": "Oberon",
+   "perturbation": "vel_along_ms",
+   "size": 0.1,
+   "apoapsis_lead_days": 11.654808410711725,
+   "d_rp_km": -142.12544080428938,
+   "d_t_s": -887.9595935630043,
+   "d_rp_km_per_unit": -1421.2544080428938
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "pos_radial_km",
+   "size": 1.0,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 7.0494669995709955,
+   "d_t_s": 33.34702448341171,
+   "d_rp_km_per_unit": 7.0494669995709955
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "pos_radial_km",
+   "size": 0.1,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 0.7046531026685443,
+   "d_t_s": 3.335962958024624,
+   "d_rp_km_per_unit": 7.046531026685443
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "pos_along_km",
+   "size": 1.0,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 1.6013471521655447,
+   "d_t_s": 10.740741388764954,
+   "d_rp_km_per_unit": 1.6013471521655447
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "pos_along_km",
+   "size": 0.1,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 0.16011660759477309,
+   "d_t_s": 1.0741517316504001,
+   "d_rp_km_per_unit": 1.6011660759477309
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "vel_radial_ms",
+   "size": 1.0,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 438.1001325901743,
+   "d_t_s": 2651.628212272154,
+   "d_rp_km_per_unit": 438.1001325901743
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "vel_radial_ms",
+   "size": 0.1,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 42.59743868055557,
+   "d_t_s": 270.78138793141665,
+   "d_rp_km_per_unit": 425.9743868055557
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "vel_along_ms",
+   "size": 1.0,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 1429.9376355560094,
+   "d_t_s": 5340.161940215376,
+   "d_rp_km_per_unit": 1429.9376355560094
+  },
+  {
+   "flyby": "Titania",
+   "perturbation": "vel_along_ms",
+   "size": 0.1,
+   "apoapsis_lead_days": 5.78891408510912,
+   "d_rp_km": 134.23932130669436,
+   "d_t_s": 577.8342400893692,
+   "d_rp_km_per_unit": 1342.3932130669436
+  }
+ ],
+ "monodromy_singular_values": [
+  45960452.19452649,
+  18.835989712968072,
+  0.05308969152529733,
+  2.133433481316991e-08
+ ]
+}
