@@ -1604,6 +1604,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `core.er3bp` STM at mu = 0.5 (4e-4 for |e| <= 0.6, the digest's 3e-4 being the rounded maximum 3.3e-4 at e = -0.60 r3;
   3e-3 at 0.8), strict xfails for the printed slips (Tr R at e = -0.40, r4 at +-0.80, Tr R at -0.80, every column at
   +-0.99) and eq. 26 (24/121); Table V's Q values satisfy cos(2 pi Q) = r1 including e = 0.99. (c), (d), (e) not done.
+- `#936` — registered 2026-10-05. **THE `#436` ELLIPTIC DIRECT-SEEDING CENSUS USED A PERIOD THE
+  PROBLEM CANNOT HAVE: RE-RUN.** Found by the `#930` fix's re-check; reasoning CONFIRMED by the
+  coordinator. 193 of the 200 records in `data/er3bp_direct_436.jsonl` have `period_f_guess` = pi;
+  the elliptic problem is 2 pi-periodic in true anomaly, so for e > 0 no orbit can close in pi (the
+  corrector imposed perpendicular crossings at f = 0 and pi/2, which is not a symmetry of the
+  problem). Re-correcting them with the full-period check: 192 of 200 fail; only the 7 Earth-Moon
+  records seeded at 2 pi close. Consequences: the `#436` "e_only_candidate" census (Earth-Moon 62,
+  Sun-Mercury 35, Sun-Mars 48, Sun-Pluto 36) and the empty-region entry
+  `er3bp-direct-e0-blind-grid-2026-06-24` are NOT valid results; treat them as withdrawn until re-run.
+  Also: the `#448` region C "survives" outcomes have last-member closure residuals 1.8e-4 to 3.9e-3,
+  above the 1e-5 check; `#432`, `#435`, `#511` stored no states and must be re-run through the new
+  check. Do: re-run `#436` with 2 pi-commensurate periods (2 pi k) and the fixed corrector; re-run
+  `#448`; mark the empty-region entry superseded (ratchets that freeze its count will need the
+  update, per the catalogue-edit rule). This is the bug-fix rule: buggy solvers produce false
+  negatives AND false positives.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
