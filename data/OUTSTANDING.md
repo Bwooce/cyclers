@@ -974,7 +974,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Barrabes, Mondelo & Olle 2009 (CMDA 105:197), Alvarez-Ramirez, Barrabes, Medina & Olle 2019
   (CNSNS 71:82), Alvarez-Ramirez et al. 2021 (J. Nonlinear Sci. 31:68), Llibre &
   Martinez Alfaro 1985 (Celest. Mech. 35:113), Rodriguez del Rio 2021 PhD thesis (UPC),
-  Olle, Rodriguez & Soler 2018 (CNSNS 55:298).
+  Olle, Rodriguez & Soler 2018 (CNSNS 55:298) and 2020 (CNSNS 90:105294).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
