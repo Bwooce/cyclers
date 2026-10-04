@@ -88,9 +88,23 @@ Source: Iess, L. et al. (2019), "Measurement and implications of Saturn's gravit
 field and ring mass", Science 364(6445), 1052-1056 (Cassini Grand Finale radio
 science), Table 1: J2 = (16290.573 +/- 0.028) x 10^-6."""
 
+SATURN_J2_REF_RADIUS_KM: Final[float] = 60330.0
+"""Reference radius (km) to which :data:`SATURN_J2` is normalised.
+
+Source: Iess et al. (2019), Table 1 caption: "Measured gravity harmonic coefficients of Saturn
+(un-normalized; reference radius 60330 km)". Read from the paper 2026-10-04 (#894)."""
+
 SATURN_R_EQ_KM: Final[float] = 60268.0
-"""Saturn equatorial radius (km). Source: IAU/JPL nominal value (also the Iess et al.
-2019 reference radius for the zonal-harmonic expansion)."""
+"""Saturn equatorial radius (km), the IAU/JPL nominal 1-bar value. Used as the physical
+radius (planet-crossing checks). It is NOT the reference radius of :data:`SATURN_J2`: until
+2026-10-04 this module said it was, and paired the two, which made the J2 acceleration 0.21
+percent too small (#894)."""
+
+SATURN_J2_AT_R_EQ: Final[float] = SATURN_J2 * (SATURN_J2_REF_RADIUS_KM / SATURN_R_EQ_KM) ** 2
+"""The same J2 harmonic re-expressed for a reference radius of :data:`SATURN_R_EQ_KM`.
+
+The physical quantity is ``J2 * R_ref**2``. The lanes carry one radius (the physical one, also
+used for planet-crossing checks), so the coefficient passed with it must be this one."""
 
 SATURN_PERTURBER_MOONS: Final[tuple[str, ...]] = (
     "Mimas",
@@ -317,7 +331,7 @@ def run_v4_saturn(
     mu_primary: float,
     v3_verdict: V3Saturn3DVerdict,
     n_cycles: int = V4_SATURN_N_CYCLES_MIN,
-    j2: float = SATURN_J2,
+    j2: float = SATURN_J2_AT_R_EQ,
     r_eq_km: float = SATURN_R_EQ_KM,
     perturber_moons: tuple[str, ...] = SATURN_PERTURBER_MOONS,
     agreement_floor_kms: float = V4_SATURN_AGREEMENT_FLOOR_KMS,
@@ -460,6 +474,8 @@ def run_v4_saturn(
 
 __all__ = [
     "SATURN_J2",
+    "SATURN_J2_AT_R_EQ",
+    "SATURN_J2_REF_RADIUS_KM",
     "SATURN_PERTURBER_MOONS",
     "SATURN_R_EQ_KM",
     "V4_SATURN_AGREEMENT_FLOOR_KMS",

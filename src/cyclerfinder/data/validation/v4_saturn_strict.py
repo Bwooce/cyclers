@@ -83,7 +83,7 @@ from cyclerfinder.data.validation.moontour_turn import (
 )
 from cyclerfinder.data.validation.v3_saturn_3d import V3Saturn3DVerdict
 from cyclerfinder.data.validation.v4_saturn import (
-    SATURN_J2,
+    SATURN_J2_AT_R_EQ,
     SATURN_PERTURBER_MOONS,
     SATURN_R_EQ_KM,
     V4_SATURN_AGREEMENT_FLOOR_KMS,
@@ -438,7 +438,7 @@ def run_v4_saturn_strict(
     v3_verdict: V3Saturn3DVerdict,
     v4_scipy_verdict: V4SaturnVerdict,
     n_cycles: int = V4_SATURN_N_CYCLES_MIN,
-    j2: float = SATURN_J2,
+    j2: float = SATURN_J2_AT_R_EQ,
     r_eq_km: float = SATURN_R_EQ_KM,
     perturber_moons: tuple[str, ...] = SATURN_PERTURBER_MOONS,
     agreement_floor_kms: float = V4_SATURN_AGREEMENT_FLOOR_KMS,

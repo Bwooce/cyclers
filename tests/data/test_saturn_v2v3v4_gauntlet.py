@@ -54,6 +54,8 @@ from cyclerfinder.data.validation.v2_saturn_3d import (
 from cyclerfinder.data.validation.v3_saturn_3d import run_v3_saturn_3d
 from cyclerfinder.data.validation.v4_saturn import (
     SATURN_J2,
+    SATURN_J2_AT_R_EQ,
+    SATURN_J2_REF_RADIUS_KM,
     SATURN_R_EQ_KM,
     run_v4_saturn,
 )
@@ -144,6 +146,15 @@ class TestV4SaturnRunsEndToEnd:
         # Sourced-value sanity band, not a golden equality (see module docstring).
         assert 0.01 < SATURN_J2 < 0.02
         assert 55_000.0 < SATURN_R_EQ_KM < 65_000.0
+        # #894: Iess et al. (2019) Table 1 prints J2 = 16290.573e-6 "un-normalized; reference
+        # radius 60330 km". The lanes pass the physical radius (60,268 km), so the coefficient
+        # they use must carry the same J2 * R^2.
+        assert pytest.approx(16290.573e-6, rel=1e-12) == SATURN_J2
+        assert pytest.approx(60330.0, rel=1e-12) == SATURN_J2_REF_RADIUS_KM
+        assert (
+            pytest.approx(16290.573e-6 * 60330.0**2, rel=1e-12)
+            == SATURN_J2_AT_R_EQ * SATURN_R_EQ_KM**2
+        )
 
 
 @pytest.mark.skipif(SAT441_PATH is None, reason="sat441.bsp SPICE kernel not installed")
