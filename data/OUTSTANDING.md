@@ -982,6 +982,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   From the Perko 1976b/1981b digest: Perko 1967, SIAM J. Appl. Math. 15:738 (error-estimation
   lemmas); Breakwell & Perko 1974, Celest. Mech. 9:437 (second-order matching); Deprit &
   Deprit-Bartholome 1969, Bull. Astron. 3:315 (Kepler matrizants, the a_ij of Perko 1981b eq. 50);
+  From the Henon 2001 part B digest: Guillaume 1971 (Liege thesis; 2T1 equation and the 2T4
+  junction disagreement); Devaney 1981, Commun. Math. Phys. 80:465; Hitzl & Henon 1977b, Acta
+  Astronautica 4:1019.
   Aarseth 1971 (Astrophys. Space Sci. 14:118) and Peters 1968 (Bull. Astron. 3:167), perturbed
   KS for a massless particle (`#928`).
   Perko's Stanford thesis is cited there as 1964, "Asymptotic matching in the restricted three-body
@@ -1375,7 +1378,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Hitzl-Henon validity number; a 1P2 family gets no closer than |Delta C|_min =
   sqrt(2(1-K^2) G1 G3 mu)/|G2|. Closed-form characteristics (13.41, 13.45-13.50, 14.15-14.21) give a
   junction classifier for the enumerator; the G1, G2, G3 and K of real orbits are not printed and
-  must be computed from the (A, Z) surface before the sqrt(mu) law is tested at two or three masses. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  must be computed from the (A, Z) surface before the sqrt(mu) law is tested at two or three masses. Henon 2001 part B (Type 2;
+  digest `docs/notes/2026-10-04-digest-henon-2001-generating-families-II-part-b-type-2.md`):
+  regimes in Delta C ~ mu^nu run 0, (0,1/3), 1/3, (1/3,1/2), 1/2 and stop there; for n >= 2
+  arcs every branch has a minimum |Delta C| of order mu^(1/2), below which the turn derived from the
+  mu = 0 orbit is meaningless (indeterminate). Agent's computed estimate, not checked: at the
+  Earth-Moon mass the regular regime essentially does not exist for the slow direct tangent
+  ellipses (2,1), (3,2), (4,3), (3,4) (transition width 0.8 to 1.9 times the range where the
+  first-order law holds), so matched-theory seeds there are rough starts only. Sourced tests: Table
+  18.2 (31 R-arc values to 8 digits, all reproduced; the coordinator rechecked the n = 2, 3 values
+  and the n = 5 polynomial roots), Table 18.3 R-orbits, the printed extremum values of w and W.
+  Control for a continuation driver: the 2T1 avoided crossing near (2,1,+1) at mu = 1e-6, 1e-5,
+  1e-4 should follow the mu^(1/2) neck law. The Casoliva Class 1 cyclers (C_J 0.49 to 2.76) lie
+  away from the Type 2 ellipses, so Type 1 (part A) is the likelier governing case (inferred from
+  C values only). Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
