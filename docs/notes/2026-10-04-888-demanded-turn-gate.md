@@ -210,7 +210,10 @@ about half a Hill radius (Titania r_p 5,350 km, Hill radius 10,270 km). In that 
 instantaneous-flyby patched conic is a poor model; the next check is a full Uranus-Titania-Oberon
 point-mass (or CR3BP-patched) propagation of one cycle from these states, then the literature check
 (near-Hohmann Titania-Oberon transfers are the obvious low-energy tour building block, so novelty is
-doubtful). No catalogue row; nothing written to `empty_regions.jsonl`.
+doubtful). A concrete first step: `src/cyclerfinder/verify/flyby_integrate.py` can integrate one flyby
+in Uranus plus moon from several Hill radii in to several out and compare the exit direction with the
+patched-conic prediction. No catalogue row; nothing written to `empty_regions.jsonl`. The same
+pipeline returning a pass here also shows that the zero-pass systems are not a stuck filter.
 
 The ranges above are the whole claim: within symmetric (rel_offset 0/180, equal-leg, `n T_syn/2`)
 two-moon closures, n_rev 0-6, both branches, legs up to 6 sqrt(P_A P_B), no other turn-feasible closure
@@ -249,10 +252,25 @@ three-moon sequences (`#600`) and the small-body set (`#607`) were not re-screen
 * `#599` (Neptune): `discovery_campaign._moon_state` returns the prograde circular velocity for every
   moon, while the `#599` construction advances retrograde Triton with a negative mean motion. Triton's
   position therefore moves clockwise while its velocity points counter-clockwise, so its V-infinity
-  vectors (and magnitudes) are not physical (read from the code, not run). `#599` stored no passes; the
-  extended run here skipped Neptune rather than reproduce the defect.
+  vectors (and magnitudes) are not physical. Checked by a run: a one-minute finite difference of
+  Triton's position is antiparallel to the returned velocity (cosine -0.99999993). `#599` stored no
+  passes; the extended run here skipped Neptune rather than reproduce the defect.
 * The frozen-gate tests `tests/verify/test_566_five_representatives_v4.py` and `test_silver_327_*`
   test the insufficient gauntlet (item 4 of the `#888` ledger) and are untouched.
 * `data/found/650_transfer_network/` still carries edges between the withdrawn rows (untouched).
+* Wiring must gate on `turn_feasible` plus the lane's own magnitude residual, not on `ballistic` with
+  the 1e-3 km/s default: GanIo#403 (published ballistic) has a 0.011 km/s leg-to-leg V-infinity spread
+  from the rounding of its printed leg parameters, so `ballistic` is False there while
+  `turn_feasible` is True. `mag_tol_kms` must match the precision of the source.
+* Earlier negatives now rest on a different ground. The symmetric-closure empty regions stamped under
+  the capacity gate (`#575`, `#599`, `#609`, `#655`) still hold within the ranges of section 5, but
+  because of the demanded turn (smallest worst ratios in 5.1 and 5.2), not capacity. The `#576` set
+  (36 records, 18 chains) is not flyable at all; `#577` read it as Russell-Strange class members, but in
+  Russell-Strange the target body is massless and passed on the same conic, whereas in these closures
+  both moons must turn, so that framing does not hold.
+* Plan item 2(b) (gating the catalogue's heliocentric rows) was not run: only the adapter
+  `encounters_from_vinf_nodes` was built and tested on synthetic nodes. The `#833`
+  `turn_ratio_check.closure_turn_ratio` already measures demanded turns on that lane against
+  published turn ratios; extending it with the wrap is item 4 of section 6.
 * `uranus_bridge_885.py` was left unchanged; its `entry_correction_kms` is the planar special case of
   `turn_gate.impulse_beyond_bend_kms`.
