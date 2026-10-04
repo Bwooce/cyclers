@@ -1481,9 +1481,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   explicit coefficients held are Perko 1981 eq. 9.
   Perko 1976b and 1981b (digest
   `docs/notes/2026-10-04-digest-perko-1976b-1981b-error-estimates-first-second-species-bifurcation.md`)
-  give the remainder bounds: at the Earth-Moon mass a matched seed is good to about 0.026 lunar
-  distances (about 10 000 km) times an unstated constant, so it starts a corrector and is never an
-  orbit; one order of accuracy is lost per near-Moon passage, so `#906` should use integrated
+  give remainder bounds. CORRECTED 2026-10-05 by the Breakwell & Perko 1974 digest
+  (`docs/notes/2026-10-04-digest-breakwell-perko-1974-second-order-matching.md`): the earlier
+  "about 10 000 km" figure is Perko 1981b's crude uniform bound for NEAR-BIFURCATION orbits, not
+  the accuracy of an ordinary O(mu) flyby seed. For an ordinary flyby the formal error is O(mu^2)
+  at first order (about 57 to 250 km at the Earth-Moon mass, times an unknown coefficient) and
+  O(mu^3) at second order (about 0.7 to 13 km); slow encounters (v1^2 below about 0.1) are outside
+  either expansion. Pre-registered check: on Casoliva rows with v1^2 above 0.5, second-order seeds
+  should land at least 3 times closer to the corrected orbit than first-order ones. Either way a
+  matched seed starts a corrector and is never an orbit; one order of accuracy is lost per near-Moon passage, so `#906` should use integrated
   turns, not matched predictions. At a first-species/second-species bifurcation exactly two families
   meet, the minimum distance is O(mu^(1/2)) (about 0.11 lunar distances), and the local hyperbola
   is (a21 dr + a24 dv)(a41 dr + a44 dv) = mu/V1 (eq. 50, a_ij from the Kepler transition matrix):
