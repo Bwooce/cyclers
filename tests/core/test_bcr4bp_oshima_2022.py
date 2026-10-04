@@ -30,7 +30,8 @@ because the Sun's tidal field is unchanged by that shift to first order in 1/a_S
 
 Monodromy (Fig. 8, p1331, read off the figure): the z0 families have a real pair of modulus about
 1.06 and 0.94 at epsilon = 1 ("weakly unstable"); the vz0 families have all six at modulus 1
-("linearly stable"). Measured: 1.06045 and 0.94299 for z0; all six within 1e-6 of 1 for vz0.
+("linearly stable"). Measured: 1.06045 and 0.94299 for z0; the remaining moduli (all six for
+vz0, four for z0) within 2e-13 of 1.
 """
 
 from __future__ import annotations
@@ -202,6 +203,6 @@ def test_monodromy_moduli_match_fig_8(table: str, unstable: bool) -> None:
     if unstable:
         assert abs(moduli[-1] - 1.06) < 0.01
         assert abs(moduli[0] - 0.94) < 0.01
-        assert np.all(np.abs(moduli[1:-1] - 1.0) < 1e-4)
+        assert np.all(np.abs(moduli[1:-1] - 1.0) < 1e-8)
     else:
-        assert np.all(np.abs(moduli - 1.0) < 1e-4)
+        assert np.all(np.abs(moduli - 1.0) < 1e-8)
