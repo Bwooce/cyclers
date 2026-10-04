@@ -837,6 +837,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#895` — registered and DISPATCHED 2026-10-04 (Opus build agent; pre-registration first).
+  **DOES A BALLISTIC TITANIA-OBERON FLYBY SEQUENCE NEAR THE `#890` ORBIT EXIST IN A
+  REAL-EPHEMERIS MODEL, REPRODUCIBLY, IN THE REPOSITORY?** The `#890` adversarial reviewer's
+  scratch computation says yes at two epochs (three and six cycles, manoeuvre-free, flybys at
+  1,100 to 1,800 km altitude). That is a lead only. This task rebuilds it independently in
+  the repository: a Uranus-centred force model (URA111 moons as unsoftened point masses, J2 at
+  the corrected value, the Sun), with a positive control (the moons' own motion reproduced),
+  multiple shooting with continuity only, a homotopy from the circular coplanar model to the
+  ephemeris, and pre-registered criteria: at least three epochs, at least three cycles each,
+  junction discontinuities under 1 m and 1 mm/s with two integrators, every flyby integrated
+  through continuously, altitudes and other-body approaches reported, and an honest count of
+  how many cycles each arc can be extended to. It also adds the missing regression test on the
+  `#890` model orbit from code that does not share the build's right-hand side. The agent must
+  produce its own first arc BEFORE reading the reviewer's scratch code, then compare. No
+  catalogue row: after it, an adversarial review, an external check, and the owner's say.
 - `#894` — registered 2026-10-04. **PLANETARY GRAVITY CONSTANTS: A J2 IS MEANINGLESS WITHOUT ITS
   REFERENCE RADIUS; ONE PAIR WAS WRONG, ONE IS UNCONFIRMED.** Found by the `#890` adversarial
   reviewer, confirmed by the coordinator. **Uranus, FIXED (commit `1620de10`):**
