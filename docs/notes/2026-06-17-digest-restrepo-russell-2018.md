@@ -593,3 +593,10 @@ Key references the project should be aware of (most already known):
   prograde "g family" nomenclature (p. 11 §4.1)
 
 End of digest.
+
+## Correction (2026-10-04)
+
+The Mars row of the Table 1 transcription above gives the Sun-Mars mass ratio as 3.2271676e-06.
+The paper prints 3.2271676e-07 (checked against the PDF text layer, Table 1), which agrees with
+GM_Mars / (GM_Sun + GM_Mars) = 3.2272e-7. The exponent in the transcription is wrong; no code uses
+this value. Found by the `#896` item (i) inventory.

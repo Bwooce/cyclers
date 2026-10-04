@@ -159,7 +159,7 @@ adversarial-verification.md``): the classical Laplace resonance argument
 **180 deg**, not 0 deg (Sinclair 1975; Murray & Dermott, *Solar System
 Dynamics*; Paita et al. 2018; corroborated independently by Gilliam's own
 thesis prose -- "Europa and Ganymede at the 0 deg position only when Io is at
-the 180 deg position" -- and by Baresi/Owen/Scheeres AAS 23-257 Table 1, whose
+the 180 deg position" -- and by Baresi/Owen/Scheeres AAS 23-201 Table 1, whose
 Jupiter-Europa-frame phases are exactly ``(phi_Io, phi_Gan) = (pi, 0)``). In
 this module's own Europa-synodic phase convention (``theta_j(t) = theta_j0 +
 omega_j*t``, with Europa itself fixed at synodic angle 0 by construction --

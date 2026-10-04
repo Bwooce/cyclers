@@ -427,7 +427,7 @@ def test_default_phase_sits_at_physical_laplace_libration_center() -> None:
     ``phi_L = lambda_Io - 3*lambda_Europa + 2*lambda_Ganymede`` becomes
     ``phi_L = theta_io + 2*theta_gan``. The real Galilean trio librates about
     ``phi_L = 180 deg`` (Sinclair 1975; Murray & Dermott; corroborated by
-    Gilliam's thesis prose and by Baresi/Owen/Scheeres AAS 23-257 Table 1's
+    Gilliam's thesis prose and by Baresi/Owen/Scheeres AAS 23-201 Table 1's
     Jupiter-Europa-frame ``(phi_Io, phi_Gan) = (pi, 0)``) -- NOT 0 deg, the
     old buggy default's value.
     """
