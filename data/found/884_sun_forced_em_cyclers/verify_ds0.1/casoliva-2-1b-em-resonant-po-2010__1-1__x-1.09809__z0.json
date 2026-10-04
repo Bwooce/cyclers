@@ -1,0 +1,10 @@
+{
+ "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.09809__z0",
+ "stop_reason": "reached_target",
+ "reverse_stop": "reached_target",
+ "reverse_folds": [],
+ "return_distance_to_start": 3.7048251818605493e-06,
+ "return_distance_to_orbit": 2.4732947707769083e-06,
+ "return_phase_shift_tu": 0.0,
+ "return_fixed_point_residual_eps0": 4.890845367588881e-11
+}

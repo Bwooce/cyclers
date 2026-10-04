@@ -1,0 +1,9 @@
+{
+ "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z1",
+ "ds_max": 0.02,
+ "forward_stop": "returned_to_eps0",
+ "forward_folds": [
+  0.38906243203296825
+ ],
+ "forward_steps": 72
+}

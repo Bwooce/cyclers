@@ -756,16 +756,22 @@ def continue_in_eps(
     *,
     eps_start: float = 1e-4,
     ds0: float = 0.02,
-    ds_max: float = 0.1,
+    ds_max: float = 0.02,
     ds_min: float = 1e-6,
     max_steps: int = 400,
     tol: float = 1e-10,
     log: Callable[[str], None] | None = None,
     eps_target: float = 1.0,
     reverse_from: tuple[FloatArr, float] | None = None,
+    resume_from: tuple[FloatArr, float] | None = None,
     wall_s: float = math.inf,
 ) -> Branch:
     """Pseudo-arclength in ``(nodes, eps)`` from the CR3BP orbit (or a given point).
+
+    A step is accepted only if the corrector lands within half a step (max norm) of
+    the predictor; with a larger ``ds_max`` (0.1) and no such guard a branch was seen
+    to jump (#884: the Ross-RT C21 3:1 member at theta0 = pi/2 appeared to reach
+    eps = 1, but with small steps it folds at eps = 0.389 and returns to eps = 0).
 
     Default start: nodes ``xs0`` on the unperturbed orbit at a Melnikov zero; a
     fixed-``eps`` Newton solve at ``eps_start`` from the first-order predictor
@@ -773,12 +779,17 @@ def continue_in_eps(
     degenerate ``eps = 0`` plane before arclength stepping begins. Stops on
     reaching ``eps_target`` (corrected exactly there), on returning to ``eps <= 0``,
     or on step-size collapse.
+    ``resume_from=(nodes, eps)`` restarts the forward run from a converged point.
     ``reverse_from=(nodes, eps)`` instead continues from a converged point toward
     ``eps = 0`` (reversibility gate).
     """
     n6 = 6 * prob.n_seg
     br = Branch(theta0=prob.theta0)
-    if reverse_from is None:
+    if resume_from is not None:
+        # Continue forward from a converged point of an earlier (interrupted) run.
+        xs, eps = resume_from
+        sign = 1.0
+    elif reverse_from is None:
         _, jac0, jeps0, _ = prob.evaluate(xs0, 0.0)
         y = np.linalg.lstsq(jac0, -jeps0, rcond=None)[0]
         ok = False
@@ -831,6 +842,8 @@ def continue_in_eps(
             if not np.all(np.isfinite(dz)) or float(np.max(np.abs(dz))) > 0.5:
                 break
             zz = zz + dz
+        if ok and float(np.max(np.abs(zz - pred))) > 0.5 * ds:
+            ok = False  # corrector left the predictor's neighbourhood: possible branch jump
         if not ok:
             ds *= 0.5
             if ds < ds_min:

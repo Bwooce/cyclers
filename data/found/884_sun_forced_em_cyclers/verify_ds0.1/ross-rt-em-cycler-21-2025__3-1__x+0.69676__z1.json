@@ -1,0 +1,10 @@
+{
+ "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z1",
+ "stop_reason": "reached_target",
+ "reverse_stop": "reached_target",
+ "reverse_folds": [],
+ "return_distance_to_start": 0.26332149973705077,
+ "return_distance_to_orbit": 0.024390391358266962,
+ "return_phase_shift_tu": 0.19273408208474668,
+ "return_fixed_point_residual_eps0": 5.850875339774575e-13
+}

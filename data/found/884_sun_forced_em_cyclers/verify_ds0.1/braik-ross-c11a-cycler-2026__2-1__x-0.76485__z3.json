@@ -1,0 +1,10 @@
+{
+ "task": "braik-ross-c11a-cycler-2026__2-1__x-0.76485__z3",
+ "stop_reason": "reached_target",
+ "reverse_stop": "reached_target",
+ "reverse_folds": [],
+ "return_distance_to_start": 5.682703414160891e-05,
+ "return_distance_to_orbit": 1.103948947786133e-05,
+ "return_phase_shift_tu": 6.791193871907917e-05,
+ "return_fixed_point_residual_eps0": 4.1042169662830474e-13
+}

@@ -39,6 +39,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from cyclerfinder.search import sun_forced_periodic_884 as sf  # noqa: E402
 
 OUT = ROOT / "data" / "found" / "884_sun_forced_em_cyclers"
+# Continuation outputs. "continue_ds0.1" (kept, superseded) used ds_max = 0.1 without a
+# jump guard; "continue" is the guarded ds_max = 0.02 rerun.
+CONT_DIR = "continue"
 EM_MU_ROWS = (0.0121505, 0.0121506)  # catalogue rows at the Earth-Moon mass ratio
 
 
@@ -260,14 +263,32 @@ def melnikov_task(member: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def continue_task(member: dict[str, Any], theta0: float, max_steps: int) -> dict[str, Any]:
+def continue_task(
+    member: dict[str, Any],
+    theta0: float,
+    max_steps: int,
+    resume: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     model = sf.default_model()
     p = member["forced_period"]
     nseg = max(2, math.ceil(p / 1.5))
     prob = sf.ShootingProblem(model, p, theta0, nseg)
     xs = prob.nodes_from_orbit(np.array(member["state"]), period_orbit=member["period"])
     t0 = time.time()
-    br = sf.continue_in_eps(prob, xs, max_steps=max_steps, wall_s=280.0)
+    if resume is not None:
+        br = sf.continue_in_eps(
+            prob,
+            xs,
+            max_steps=max_steps,
+            wall_s=280.0,
+            ds0=0.002,
+            resume_from=(np.array(resume["nodes_last"]), float(resume["eps_path"][-1])),
+        )
+        br.eps = list(resume["eps_path"][:-1]) + br.eps
+        br.max_abs_eig = list(resume["max_abs_floquet_path"][:-1]) + br.max_abs_eig
+        br.folds = list(resume["folds"]) + br.folds
+    else:
+        br = sf.continue_in_eps(prob, xs, max_steps=max_steps, wall_s=280.0)
     rec: dict[str, Any] = {
         "family": member["family"],
         "row": member["row"],
@@ -337,8 +358,13 @@ def control_task(name: str, seed: list[float], seed_period: float, target: float
 # ---------------------------------------------------------------------------
 
 
-def run_pool(tasks: list[tuple[Path, Any, tuple[Any, ...]]], workers: int, budget_s: float) -> None:
-    todo = [t for t in tasks if not t[0].exists()]
+def run_pool(
+    tasks: list[tuple[Path, Any, tuple[Any, ...]]],
+    workers: int,
+    budget_s: float,
+    forced: list[tuple[Path, Any, tuple[Any, ...]]] | None = None,
+) -> None:
+    todo = [t for t in tasks if not t[0].exists()] + list(forced or [])
     log(f"{len(tasks)} tasks, {len(todo)} to do, workers={workers}")
     t0 = time.time()
     done = 0
@@ -444,6 +470,7 @@ def stage_continue(
     workers: int, budget: float, max_a: int, max_steps: int, cyclers_only: bool
 ) -> None:
     tasks = []
+    resumes: list[tuple[Path, Any, tuple[Any, ...]]] = []
     mels = [json.loads(f.read_text()) | {"_stem": f.stem} for f in OUT.glob("melnikov/*.json")]
     mels.sort(key=lambda m: m.get("forced_period", 0.0))
     for m in mels:
@@ -454,14 +481,93 @@ def stage_continue(
         stem = m.pop("_stem")
         f = OUT / "melnikov" / f"{stem}.json"
         for i, z in enumerate(m["melnikov_zeros"]):
-            path = OUT / "continue" / f"{f.stem}__z{i}.json"
+            path = OUT / CONT_DIR / f"{f.stem}__z{i}.json"
+            if path.exists() and path.stat().st_size > 0:
+                old = json.loads(path.read_text())
+                if str(old.get("stop_reason", "")).startswith("wall-clock") and old.get(
+                    "nodes_last"
+                ):
+                    # Resume an interrupted branch from its last converged point; the
+                    # file is overwritten only when the resumed task finishes.
+                    resumes.append((path, continue_task, (m, z, max_steps, old)))
+                continue
+            if path.exists():
+                path.unlink()  # empty file left by a killed worker
             tasks.append((path, continue_task, (m, z, max_steps)))
+    run_pool(tasks, workers, budget, forced=resumes)
+
+
+def verify_task(cont_path: str) -> dict[str, Any]:
+    """Reverse a branch from eps = 1 (or its last point) to eps = 0 and compare with the start.
+
+    For a branch that reached eps = 1 this is the reversibility gate. For a branch that
+    folded back to eps = 0 it identifies the CR3BP orbit it lands on (closest
+    commensurate member and phase).
+    """
+    r = json.loads(Path(cont_path).read_text())
+    mel = json.loads(
+        (OUT / "melnikov" / (Path(cont_path).stem.rsplit("__z", 1)[0] + ".json")).read_text()
+    )
+    model = sf.default_model()
+    p = r["forced_period"]
+    prob = sf.ShootingProblem(model, p, r["theta0"], r["n_seg"])
+    xs0 = prob.nodes_from_orbit(np.array(mel["state"]), period_orbit=mel["period"])
+    out: dict[str, Any] = {"task": Path(cont_path).stem, "stop_reason": r["stop_reason"]}
+    if r["stop_reason"] == "reached_target":
+        xs1 = np.array(r["nodes_eps1"])
+        back = sf.continue_in_eps(prob, xs0, reverse_from=(xs1, 1.0), max_steps=150, wall_s=280.0)
+        out["reverse_stop"] = back.stop_reason
+        out["reverse_folds"] = back.folds
+        if back.stop_reason == "reached_target":
+            # At eps = 0 every point of the orbit is a fixed point, so the reversed
+            # branch may land a small phase shift away from the start: report both the
+            # node distance and the distance to the orbit at the best phase.
+            land = back.nodes[-1]
+            out["return_distance_to_start"] = float(np.max(np.abs(land - xs0)))
+            sol = sf.propagate(
+                model, 0.0, 0.0, np.array(mel["state"]), 0.0, mel["period"], dense=True
+            )
+            ts = np.linspace(0, mel["period"], 200001)
+            traj = sol.sol(ts).T
+            k = int(np.argmin(np.max(np.abs(traj - land[0]), axis=1)))
+            out["return_distance_to_orbit"] = float(np.max(np.abs(traj[k] - land[0])))
+            out["return_phase_shift_tu"] = float(min(ts[k], mel["period"] - ts[k]))
+            res0, _, _, _ = prob.evaluate(land, 0.0)
+            out["return_fixed_point_residual_eps0"] = float(np.max(np.abs(res0)))
+    elif r["stop_reason"] == "returned_to_eps0" and "nodes_last" in r:
+        last = np.array(r["nodes_last"])
+        xs_e0, _, ok = sf.newton_fixed_eps(prob, last, 0.0)
+        out["eps0_correction_ok"] = ok
+        x = xs_e0[0]
+        out["landing_state"] = x.tolist()
+        out["landing_jacobi"] = sf.jacobi(x, model.mu)
+        out["start_jacobi"] = sf.jacobi(np.array(mel["state"]), model.mu)
+        # Distance from the landing point to the starting CR3BP orbit (any phase).
+        sol = sf.propagate(model, 0.0, 0.0, np.array(mel["state"]), 0.0, mel["period"], dense=True)
+        ts = np.linspace(0, mel["period"], 20000)
+        out["landing_distance_to_start_orbit"] = float(
+            np.min(np.max(np.abs(sol.sol(ts).T - x), axis=1))
+        )
+    return out
+
+
+def stage_verify(workers: int, budget: float) -> None:
+    tasks = []
+    for f in sorted((OUT / CONT_DIR).glob("*.json")):
+        r = json.loads(f.read_text())
+        if r.get("stop_reason") not in ("reached_target", "returned_to_eps0"):
+            continue
+        if r.get("stop_reason") == "reached_target" and not r["row"].startswith(
+            ("ross-rt-em-cycler-21", "braik-ross-c11a", "casoliva-2-1b")
+        ):
+            continue  # reversibility on a sample of survivors; all fold-backs are analysed
+        tasks.append((OUT / "verify" / f.name, verify_task, (str(f),)))
     run_pool(tasks, workers, budget)
 
 
 def stage_summary() -> None:
     rows = []
-    for f in sorted((OUT / "continue").glob("*.json")):
+    for f in sorted((OUT / CONT_DIR).glob("*.json")):
         r = json.loads(f.read_text())
         if "error" in r:
             rows.append({"task": f.stem, "error": r["error"]})
@@ -545,7 +651,7 @@ def main() -> None:
     ap.add_argument(
         "--stage",
         required=True,
-        choices=["controls", "families", "melnikov", "continue", "summary"],
+        choices=["controls", "families", "melnikov", "continue", "verify", "summary"],
     )
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument(
@@ -568,6 +674,8 @@ def main() -> None:
         stage_melnikov(w, args.budget_s)
     elif args.stage == "continue":
         stage_continue(w, args.budget_s, args.max_a, args.max_steps, args.cyclers_only)
+    elif args.stage == "verify":
+        stage_verify(w, args.budget_s)
     else:
         stage_summary()
 
