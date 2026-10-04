@@ -678,13 +678,15 @@ def continue_jacobi(
     max_steps: int = 500,
     stall_window: int = 10,
     stall_dc: float = 1e-7,
+    earth_stop: float = EARTH_RADIUS_ND,
     stop: StopFn | None = None,
     log: LogFn | None = None,
 ) -> LegResult:
     """Pseudo-arclength continuation of the family through ``orbit`` at fixed mu, starting in
     the direction of increasing (``direction > 0``) or decreasing Jacobi constant; the
     direction is then kept by tangent orientation (folds in C are passed). Stops at an Earth
-    impact (perigee below the Earth's radius) and when C moves by less than ``stall_dc`` over
+    impact (perigee below ``earth_stop``, default the Earth's radius; the primary is not
+    regularised) and when C moves by less than ``stall_dc`` over
     ``stall_window`` members (a walk along a degenerate direction)."""
     members: list[Member] = []
     cur = orbit
@@ -715,7 +717,7 @@ def continue_jacobi(
         members.append(mem)
         if log is not None:
             log(mem)
-        if mem.diag.impact_earth:
+        if mem.diag.perigee < earth_stop:
             return LegResult(members, "earth_impact", n_newton, n_jump)
         if len(members) > stall_window and (
             abs(members[-1].diag.jacobi - members[-1 - stall_window].diag.jacobi) < stall_dc
@@ -1249,3 +1251,24 @@ def corrected_chain(
         return correct(guess, fix_jacobi=c_j, max_iter=max_iter)
     except _STEP_FAILURES:
         return correct(guess, fix_jacobi=c_j, damped=True, max_iter=max_iter)
+
+
+def two_arc_chains(p: int, q: int) -> list[tuple[ReturningArc, ReturningArc]]:
+    """Two-arc chains of returning arcs for the p-q resonance: (i1, j1) + (i2, j2) with
+    i1 + i2 = q, j1 + j2 = p, each pair coprime (a non-primitive returning arc meets the Moon
+    half-way) and each arc able to reach the Moon's orbit (inverse semi-major axis below 2);
+    radial-sign pairs (+,+) and (+,-) only, since (-,-) and (-,+) are their mirror images."""
+    out = []
+    for i1 in range(1, q):
+        i2 = q - i1
+        for j1 in range(1, p):
+            j2 = p - j1
+            if (i1, j1) > (i2, j2):
+                continue  # the cyclic order is irrelevant
+            if math.gcd(i1, j1) != 1 or math.gcd(i2, j2) != 1:
+                continue
+            if (j1 / i1) ** (2.0 / 3.0) >= 2.0 or (j2 / i2) ** (2.0 / 3.0) >= 2.0:
+                continue
+            for s2 in (1, -1):
+                out.append((ReturningArc(i1, j1, 1), ReturningArc(i2, j2, s2)))
+    return out

@@ -2,7 +2,8 @@
 
 For each resonance p-q, a grid of Jacobi constants inside the Eq. 15 interval and both Eq. 16
 directions: second-species seed at mu = 1e-6 (Eqs. 14-17), corrected at fixed C_J (optionally
-also members of each 2008 Table 2 seed's family at mu = 1e-6, sampled in C_J); the
+also members of each 2008 Table 2 seed's family at mu = 1e-6, sampled in C_J, and two-arc
+chains of returning collision arcs joined by matched lunar flybys on a C_J grid); the
 three-step continuation to the paper's mu (mass at fixed C_J first, by default); at that mu, a
 walk in C_J both ways and the correction of every crossing of T = 2 pi q; each crossing is
 compared with every printed 2010 Table 3 row of the same p-q by the same-orbit test (all y = 0
@@ -232,6 +233,9 @@ def main() -> None:
         help="also seed from members of each Table 2 seed's family at mu = 1e-6, every dC",
     )
     ap.add_argument("--table2-walk-steps", type=int, default=200)
+    ap.add_argument(
+        "--n-chain", type=int, default=60, help="C_J grid points for two-arc chain seeds"
+    )
     ap.add_argument("--max-minutes", type=float, default=math.inf)
     ap.add_argument("--out", type=pathlib.Path, default=pathlib.Path("data/runlogs/899_scan"))
     args = ap.parse_args()
@@ -281,6 +285,26 @@ def main() -> None:
                     return ssc.corrected_seed(p, q, c, br)
 
                 jobs.append((f"grid:{p}-{q}:C={c:.6f}:b{br}", p, q, mk2))
+    for p, q in pqs:
+        if args.n_chain <= 0:
+            continue
+        lo, hi = ssc.jacobi_interval(p, q)
+        grid = lo + (hi - lo) * (np.arange(args.n_chain) + 0.5) / args.n_chain
+        for arcs in ssc.two_arc_chains(p, q):
+            label = "+".join(f"({a.i},{a.j},{a.sign:+d})" for a in arcs)
+            for c in grid:
+                try:
+                    for a in arcs:
+                        ssc.arc_relative_velocity(a, float(c))
+                except ValueError:
+                    continue  # an arc of the chain does not reach the Moon at this C
+
+                def mk3(
+                    arcs: tuple[ssc.ReturningArc, ...] = arcs, c: float = float(c)
+                ) -> ssc.MSOrbit:
+                    return ssc.corrected_chain(list(arcs), c)
+
+                jobs.append((f"chain:{p}-{q}:{label}:C={c:.6f}", p, q, mk3))
 
     preflight_search(
         task_no=899,

@@ -192,7 +192,6 @@ def test_forward_reproduction_7_3b_from_a_second_species_chain() -> None:
     assert abs(best.diag.k_par - row_b.k) / row_b.k < 1e-7
 
 
-@pytest.mark.slow
 def test_forward_reproduction_2_1a_from_table2_seed_21a() -> None:
     """#899 step 2 forward reproduction: the 2008 seed 21a (mu = 1e-6) continued in mu at its
     fixed C_J to the paper's mu, then walked in C to T = 2 pi, lands on the printed 2-1a
@@ -209,3 +208,30 @@ def test_forward_reproduction_2_1a_from_table2_seed_21a() -> None:
     printed = np.array([-row.x_i, 0.0, -row.u_i, -row.v_i])
     dists = [ssc.orbit_distance(h.orbit, printed)[0] for h in hits]
     assert min(dists) < 1e-9
+
+
+@pytest.mark.slow
+def test_forward_reproduction_3_2c_from_the_family_of_seed_32a() -> None:
+    """#899 step 2 forward reproduction: the family of the 2008 seed 32a at mu = 1e-6, walked
+    in C (decreasing first; it folds and turns up through a near-collision into resonant
+    orbits with T near 4 pi), sampled at the first member past C = 0.27, continued in mu at
+    that fixed C to the paper's mu, then walked in C to T = 4 pi, lands on the printed 3-2c
+    crossing."""
+    s = ssc.table2_seed("32a")
+    start = ssc.MSOrbit(ssc.SEED_MU, np.array([s.state_project()]), s.period)
+    seed = ssc.correct(ssc.renode(start, 12), fix_jacobi=s.c_j)
+    walk = ssc.continue_jacobi(seed, -1.0, max_steps=300, ds_max=0.05)
+    sample = next(
+        m.orbit
+        for k, m in enumerate(walk.members)
+        if k > 0 and walk.members[k - 1].diag.jacobi < 0.27 <= m.diag.jacobi
+    )
+    leg = ssc.continue_mu(sample, ssc.CASOLIVA_MU_2010, fix="jacobi", dlog_max=0.2)
+    assert leg.reason == "target"
+    hits, _ = ssc.resonant_crossings(leg.members[-1].orbit, 2, max_steps=150)
+    row = emrf.table3_row("3-2c")
+    printed = np.array([-row.x_i, 0.0, -row.u_i, -row.v_i])
+    best = min(hits, key=lambda h: ssc.orbit_distance(h.orbit, printed)[0])
+    assert ssc.orbit_distance(best.orbit, printed)[0] < 1e-9
+    assert abs(best.diag.jacobi - row.c_j) < 2e-10
+    assert abs(ssc.casoliva_k("3-2c", best.diag) - row.k) / abs(row.k) < 1e-7
