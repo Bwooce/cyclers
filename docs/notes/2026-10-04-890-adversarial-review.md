@@ -100,6 +100,15 @@ session (recollection: 3.34343e-3 is an older ring-occultation value referred to
 3510.68e-6 at 25,559 km is the later satellite-orbit value); the computation shows only which
 product the ephemeris obeys. It does not affect the `#890` model claim (the model has no J2).
 
+Update, same day. The coordinator confirmed the mispairing against a source and corrected it
+(commit `1620de10`, registered as `#894`): READ from that commit, not from the paper by the
+reviewer, French et al. 2024 (arXiv:2401.04634, abstract) give J2 = (3509.291 +/- 0.412)e-6 at
+25,559 km, and `v4_uranus.py` and the `#890` script now carry that value. The reviewer's runs in
+this note used 3510.68e-6, a figure from memory that is 4.0e-4 larger (J2 R^2 2.2934e6 against
+2.2925e6 km^2); they were not rerun, and the difference is far below anything reported here. The
+reviewer's attribution of 3510.68e-6 to a particular paper remains unverified and should not be
+quoted.
+
 ## 3. Is the orbit what it is said to be? (question 2)
 
 **Flybys.** COMPUTED from the reviewer's integration, with the periapses found by a root-finder
@@ -387,24 +396,96 @@ the moon's gravity does the turning, at V-infinity 0.26 km/s, with a turn the mo
 
 ## 8. What the mathematics makes unsurprising (question 7)
 
-INFER; a separate literature check is running and this is not one.
+Three papers were made available after the first version of this note and were READ for this
+section (theorem statements and method description only; no digest is attempted here, others
+are writing those). The literature check itself is `docs/notes/2026-10-04-890-literature-check.md`
+(READ, verdict only: same class as prior work, this body set not found).
 
-* A resonant chain of flybys that closes in the patched-conic limit is a collision chain of the
-  zero-mass problem, and periodic orbits that shadow such chains at small mass are the classical
-  "second species". READ (ledger): the project holds a digest of a theorem of this kind for one
-  small secondary in a time-independent problem. Nothing proves the two-moon, periodically forced
-  case at these masses, but existence is what one expects, and a non-degenerate closure continues
-  by the implicit function theorem for small enough mass. The computed content of `#890` is that
-  the continuation reaches the physical masses, where the periapsis is 0.16 to 0.27 Hill radii
-  and "small" is no longer obviously true.
-* Because the orbit is hyperbolic it persists under any small perturbation of the model, periodic
-  or not; under a non-periodic one it becomes a bounded non-periodic solution. That is why a
-  real-ephemeris analogue was to be expected and why section 6 found one.
-* The construction is the obvious one: a near-Hohmann ellipse between two neighbouring moons that
-  grazes both and has its apsides turned by each flyby. The published patched-conic analogues
-  are the moon-to-moon cyclers at Jupiter and Saturn (READ, ledger: Russell and Strange 2009). A
-  claim of novelty in kind is not available. At most: "first computed for Titania and Oberon",
-  and only if the literature check allows it.
+**Second-species theory.** READ: Bolotin and MacKay 2000 (filed in the private paper corpus as
+bolotin-mackay-2000-periodic-chaotic-trajectories-second-species-n-centre-problem-cmda-77-49-doi-10.1023-A-1008393706818.pdf),
+pages 49 to 52, and Bolotin and MacKay 2006 (filed in the private paper corpus as
+bolotin-mackay-2006-nonplanar-second-species-periodic-chaotic-trajectories-cr3bp-cmda-94-433-doi-10.1007-s10569-006-9006-0.pdf),
+pages 433 to 439.
+
+* What the theorem says (2000, Theorem 1.1; restated as Theorem 2.1 in 2006). The system is a
+  Lagrangian L_0 minus epsilon V on a configuration space with a FINITE SET P of points removed,
+  V having Newtonian singularities at those points, studied ON A FIXED LEVEL OF THE ENERGY
+  INTEGRAL H = E. Given a finite set of nondegenerate collision arcs of the epsilon = 0 system,
+  all of the same energy E, and any chain of them in which the velocity changes direction at
+  every collision (arrival velocity not equal to plus or minus the departure velocity), there is
+  an epsilon_0 such that for every epsilon up to epsilon_0 a unique trajectory of energy E
+  shadows the chain within order epsilon, with the times between passages within C epsilon of
+  the arcs' durations and the distance to the singular set at least c epsilon. A periodic chain
+  gives a periodic trajectory, by the uniqueness. The 2006 paper adds (Theorem 2.2) that the
+  resulting invariant set is uniformly hyperbolic with Lyapunov exponents of order
+  log(1/epsilon).
+* Where it is applied. To the circular restricted three-body problem in the rotating frame with
+  ONE small secondary: the 2006 paper normalises the masses to 1 - epsilon and epsilon, and its
+  singular set "consists of one point P". The 2000 abstract says the same ("the circular
+  restricted 3-body problem"), with the n centres of the general theorem being fixed points of
+  a time-independent system.
+* Why `#890` is outside it as stated. Two moons with different periods cannot both be at rest in
+  any rotating frame. In Titania's frame Oberon moves, the system is time-dependent, and there
+  is no energy integral to fix; the theorem's hypotheses (a finite set of fixed centres, a
+  conserved H) both fail. The coordinator's reading of the paper is confirmed. One could make
+  the system autonomous by adding Oberon's phase as a coordinate, but then the singular set is a
+  curve, not a finite set of points, which is again outside the hypotheses. So: the one-moon
+  analogue is a theorem; the two-moon case is a plausible extension that these papers do not
+  prove. Neither paper gives a number for epsilon_0.
+* What the theorem's conclusions look like next to the computed orbit. INFER from READ and
+  COMPUTED numbers; this is a consistency remark, not a verification of either. (a) Closest
+  approach of order epsilon: the build's low-mass ladder has periapses of 52, 101 and 240 km at
+  0.01, 0.02 and 0.05 of Titania's mass (READ), linear as the theorem's scaling says, and
+  2,766 km at full mass against 5,200 km by linear extrapolation, so the physical masses are
+  beyond the linear regime. (b) Lyapunov exponents of order log(1/epsilon): log(1/epsilon) is
+  10.1 for Titania and 10.2 for Oberon; the leading multiplier 8.381e5 per cycle is 13.6 in
+  logarithm, 6.8 per flyby. Same order. (c) Uniqueness and hyperbolicity: the computed fixed
+  point is isolated with both multiplier pairs real (section 5). (d) The direction-change
+  condition: the patched-conic turns are 42 and 58 deg (READ), neither zero nor a reversal.
+  Everything about the orbit is what a second-species orbit should look like.
+
+**The continuation method is published.** READ: Bradley and Russell 2014 (filed in the private
+paper corpus as
+bradley-russell-2014-continuation-method-converting-trajectories-patched-conics-to-full-gravity-models-jas-61-227-doi-10.1007-s40295-014-0017-x.pdf),
+the first eight pages (abstract, introduction, algorithm overview, auxiliary ephemerides; the
+worked examples were not read). Their method takes a zero-sphere-of-influence patched-conic
+trajectory to a ballistic trajectory in an n-body ephemeris by continuation in a control
+parameter kappa from 0 to 1, with three ingredients:
+
+* body masses scaled with kappa, and the flyby periapsis radius scaled as r_p = kappa r_p,final
+  "to maintain a constant turn angle" (their Figure 1). This is the build's mass ladder and its
+  `rescale_flyby_nodes` predictor (periapsis offset proportional to the mass scale, relative
+  velocity kept), which the build introduced as its own deviation 2;
+* body ephemerides blended linearly, x_fake(kappa) = (1 - kappa) x_kepler + kappa x_real (their
+  Eq. 1), from mean Keplerian ephemerides whose semi-major axis is set from the accumulated mean
+  motion (their Eq. 2 and 3). This is, step for step, the homotopy the reviewer used in section
+  6, arrived at without knowledge of the paper;
+* continuity constraints at interior nodes, solved at each step.
+
+Their abstract says the method handles "gravity assists and rendezvous with any number of target
+bodies" for "interplanetary or intermoon tour missions", and the introduction lists a
+seven-encounter tour of three Jovian moons, extended to twelve encounters, as an example. So
+neither the build's route from the patched conic to the four-body orbit nor the reviewer's route
+from the circular model to the ephemeris is new as a method. What `#890` adds to that method is
+a periodicity (symmetry) condition in a periodic model, and the particular pair of moons.
+
+**What remains.** INFER.
+
+* Existence is what one expects: a non-degenerate closure of the zero-mass problem continues
+  for small enough mass (a theorem for one moon; a published numerical method for any number).
+  The computed content of `#890` is that the continuation reaches the physical masses without a
+  fold, where the periapsis is 0.16 to 0.27 Hill radii and the linear small-mass scaling has
+  already failed by a factor of two.
+* Because the orbit is hyperbolic it persists under any small perturbation of the model,
+  periodic or not; under a non-periodic one it becomes a bounded non-periodic solution. That is
+  why a real-ephemeris analogue was to be expected and why section 6 found one.
+* The construction is the obvious one: a near-Hohmann ellipse between two neighbouring moons
+  that grazes both and has its apsides turned by each flyby. The published patched-conic
+  analogues are the moon-to-moon cyclers at Jupiter and Saturn (READ, ledger and literature
+  check: Russell and Strange), and the same model with the same two moons has been used for
+  resonant orbits without flybys (READ, literature check: Kumar and Anderson). A claim of
+  novelty in kind is not available. At most: "first computed for Titania and Oberon, by a
+  published continuation method", and only as far as the literature check allows.
 
 ## 9. Wording corrections (question 8)
 
@@ -417,7 +498,8 @@ pre-registration and must stay as it is):
 | 2.5, V5 row | "PASS ... Titania 55.7 / 86.8 deg (ratio 0.64), Oberon 66.0 / 88.1 deg (0.75)" | Not independent of V4; the "available" figures use a speed in place of V-infinity. | "Restates V4(a): the trajectory is integrated through the flyby, so the turn is supplied at the periapsis altitude. Direction change across the Laplace sphere 55.7 and 66.0 deg; bend available at 50 km with the osculating V-infinity 108 and 104 deg. Not counted as evidence." |
 | 2.5, V6 row | "distance to Uranus 435,000 to 588,000 km" | Wrong; the ledger has the right figures. | "437,600 to 585,800 km" |
 | 2.6 | "the orbit is only flyable with routine targeting" | "Flyable" is not shown; no targeting or navigation analysis exists. | "any use of the orbit needs a correction before every flyby; no targeting or navigation analysis has been done" |
-| 2.7 | "J2 = 3.34343e-3 about Titania's orbit normal" | The J2 value is paired with the wrong radius (section 2 of this review). | add "(this J2 is 4.8 percent too small for the 25,559 km radius used; it does not change the outcome)" |
+| 2.7 | "J2 = 3.34343e-3 about Titania's orbit normal" | The J2 value was paired with the wrong radius (section 2 of this review; since corrected in the script under `#894`, so the note now describes a run the script no longer reproduces exactly). | add "(the stored run used this J2, which is 4.7 percent too small for the 25,559 km radius; corrected to 3509.291e-6 under `#894`; the outcome does not change)" |
+| 2.1 item 2 and 2.4 | the mass-scaling predictor and the mass continuation presented as the build's own devices | Published: Bradley and Russell 2014 scale the masses and the flyby periapsis radius together to keep the turn angle. | add "(this is the continuation of Bradley and Russell 2014, applied with a symmetry condition)" |
 | 2.7 | "This is the expected outcome for an orbit with 1.3 km of flyby shift per mm/s" | True, and it should say what the run does not show. | add "The run measures sensitivity; it does not show that no ballistic trajectory exists in the real system." |
 | 2.9 | "that continues the patched-conic closure without a fold" | The continuation started at 0.01 of the masses, no fold was seen at 13 ladder points, and the orbit's ellipse no longer crosses either moon's orbit. | "reached by continuation in the moons' mass from one percent of the physical value, with no fold detected at the 13 values tried; at full mass its Uranus-centred ellipse (438,500 to 583,400 km) lies between the two moons' orbits and the periapses are about half the patched-conic ones" |
 | 2.9 | "encounters Titania at 1,977 km altitude and Oberon at 1,364 km altitude once each per half cycle" | It is once each per cycle. The altitudes are constants-dependent. | "encounters Titania at about 1,980 km and Oberon at about 1,360 km altitude once each per cycle (1,800 and 1,260 km if the real mean motions are used)" |
@@ -471,8 +553,11 @@ It should not be a row on the present evidence. Before one is considered:
    that.
 6. A ruling on V2 for orbits too unstable to propagate for three laps.
 7. A maintenance budget from a stated navigation error model.
-8. The literature check, and wording no stronger than "first computed for Titania and Oberon".
-9. The J2 pairing corrected in `v4_uranus.py` and wherever it was copied.
+8. Wording no stronger than the literature check allows: "first computed for Titania and
+   Oberon, by a published continuation method (Bradley and Russell 2014)", with the second-species
+   theory cited as the one-moon analogue and not as a proof for two moons.
+9. The J2 pairing corrected in `v4_uranus.py` and wherever it was copied. Done by the
+   coordinator in `1620de10` (`#894`) after this review reported it.
 
 ## 12. How far the reviewer's own numbers can be relied on
 
@@ -496,5 +581,9 @@ It should not be a row on the present evidence. Before one is considered:
   GM and radius values compared with a paper; the literature check; a navigation model.
 * The J2 attribution: no Jacobson paper is listed in the project's corpus index, so the
   "Jacobson 2014 Table 4" attribution in `v4_uranus.py` was not grounded against a held source.
-  The reviewer's statement of which paper gives which value is from memory and must be checked
-  against the papers; the computed part is only that URA111 obeys J2 R^2 near 2.29e6 km^2.
+  The reviewer's statement of which paper gives which value is from memory; the computed part
+  is only that URA111 obeys J2 R^2 near 2.29e6 km^2. The coordinator has since sourced the value
+  (section 2, update).
+* The three papers in section 8 were read only as far as stated there (theorem statements and
+  hypotheses; the first eight pages of the continuation paper). The proofs, the nondegeneracy
+  conditions in detail and the worked examples were not read.
