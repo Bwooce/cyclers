@@ -1334,6 +1334,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (zero turn is outside the theory: indeterminate, not rejected). The Guillaume 1973 hyperbola and
   cubic coefficients are in neither 1975 paper (its pp.253-254 are the conclusions); the only
   explicit coefficients held are Perko 1981 eq. 9.
+  Perko 1976b and 1981b (digest
+  `docs/notes/2026-10-04-digest-perko-1976b-1981b-error-estimates-first-second-species-bifurcation.md`)
+  give the remainder bounds: at the Earth-Moon mass a matched seed is good to about 0.026 lunar
+  distances (about 10 000 km) times an unstated constant, so it starts a corrector and is never an
+  orbit; one order of accuracy is lost per near-Moon passage, so `#906` should use integrated
+  turns, not matched predictions. At a first-species/second-species bifurcation exactly two families
+  meet, the minimum distance is O(mu^(1/2)) (about 0.11 lunar distances), and the local hyperbola
+  is (a21 dr + a24 dv)(a41 dr + a44 dv) = mu/V1 (eq. 50, a_ij from the Kepler transition matrix):
+  this supplies the constant of Guillaume 1973's hyperbola (his cubic is still unsourced). Control:
+  fit the avoided-crossing constant from continuations through C = -1 at two or three small mu and
+  compare with mu/V1 (V1 = 2 there).
   The earlier finding follows, kept as the record of the mistake:
 - `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
