@@ -941,6 +941,7 @@ class PathResult:
     legs: list[tuple[str, LegResult]]
     reached: bool
     final: MSOrbit | None
+    reason: str = ""  # "target", "no_c_leg", "creep", "max_switches"
 
 
 def three_step(
@@ -953,23 +954,28 @@ def three_step(
     rp_gain: float = 1.5,
     c_walk_steps: int = 60,
     dlog_max: float = 0.2,
+    min_mu_gain: float = 1.1,
     log: LogFn | None = None,
 ) -> PathResult:
     """Casoliva's strategy: continue in mu (first at ``first_fix``); when the leg ends short of
     ``mu_target`` (impact trend, fold, corrector failure), continue in C at fixed mu in the
     direction that raises the periselene, until it has risen by ``rp_gain`` or C has moved by
-    ``c_walk_dc``; then resume in mu at fixed C. At most ``max_switches`` C legs."""
+    ``c_walk_dc``; then resume in mu at fixed C. At most ``max_switches`` C legs; the path is
+    abandoned ("creep") when a resumed mu leg gains less than a factor ``min_mu_gain`` in mu."""
     legs: list[tuple[str, LegResult]] = []
     cur = orbit
     fix = first_fix
-    for _ in range(max_switches + 1):
+    for switch in range(max_switches + 1):
+        mu_start = cur.mu
         leg = continue_mu(
             cur, mu_target, fix=fix, dlog_max=dlog_max, stop=impact_trigger(), log=log
         )
         legs.append(("mu@T" if fix == "period" else "mu@C", leg))
         if leg.reason == "target":
-            return PathResult(legs, True, leg.members[-1].orbit)
+            return PathResult(legs, True, leg.members[-1].orbit, "target")
         base = leg.members[-1].orbit if leg.members else cur
+        if switch > 0 and base.mu < min_mu_gain * mu_start:
+            return PathResult(legs, False, None, "creep")
         rp0 = diagnose(base).periselene
         c0 = base.jacobi
         best: tuple[float, LegResult | None] = (-math.inf, None)
@@ -990,11 +996,11 @@ def three_step(
                 if gain > best[0]:
                     best = (gain, walk)
         if best[1] is None or not best[1].members:
-            return PathResult(legs, False, None)
+            return PathResult(legs, False, None, "no_c_leg")
         legs.append(("C@mu", best[1]))
         cur = best[1].members[-1].orbit
         fix = "jacobi"
-    return PathResult(legs, False, None)
+    return PathResult(legs, False, None, "max_switches")
 
 
 # ---------------------------------------------------------------------------------------------

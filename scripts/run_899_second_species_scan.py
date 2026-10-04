@@ -166,6 +166,7 @@ def run_seed(
         }
         for name, leg in path.legs
     ]
+    rec["path_reason"] = path.reason
     if not path.reached or path.final is None:
         rec["stage"] = "continuation_short"
         return rec
@@ -241,6 +242,20 @@ def main() -> None:
     args = ap.parse_args()
 
     pqs = [tuple(int(v) for v in s.split("-")) for s in args.pq]
+    preflight_search(
+        task_no=899,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        # estimate (the Table 2 family samples are only known after the walks below)
+        n_points=len(pqs) * (args.n_c * len(args.branches) + 2 * args.n_chain + 40),
+        override_reason=(
+            "reproduction of published orbits (Casoliva et al. 2010 Table 3) by the published "
+            "seed-and-continuation method, a validation of the #899 pipeline, not a discovery "
+            "sweep; seeds per resonance are a fixed C_J grid"
+        ),
+    )
+
     jobs: list[tuple[str, int, int, Any]] = []
     if not args.no_table2:
         for s in ssc.TABLE2_SEEDS:
@@ -305,19 +320,6 @@ def main() -> None:
                     return ssc.corrected_chain(list(arcs), c)
 
                 jobs.append((f"chain:{p}-{q}:{label}:C={c:.6f}", p, q, mk3))
-
-    preflight_search(
-        task_no=899,
-        region_id=_REGION_ID,
-        method=_METHOD,
-        script_path=pathlib.Path(__file__),
-        n_points=len(jobs),
-        override_reason=(
-            "reproduction of published orbits (Casoliva et al. 2010 Table 3) by the published "
-            "seed-and-continuation method, a validation of the #899 pipeline, not a discovery "
-            "sweep; seeds per resonance are a fixed C_J grid"
-        ),
-    )
 
     w = Writer(args.out)
     done = _done(args.out)
