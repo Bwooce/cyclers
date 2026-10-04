@@ -286,10 +286,10 @@ def test_stability_parameters(name: str, k: int) -> None:
 
     Measured: 5.5036 and 2.0632 for orbit 1 (printed 5.496 and 2.069), 5.5401 and 2.0697 for
     orbit 2 (printed 5.531 and 2.070). The differences, 0.1 to 0.3 percent, are far larger than
-    anything the orbits' closure misses (4e-6 at most) could produce; they also stay at the paper's mass
-    ratio. The change from orbit 1 to orbit 2 agrees better: +0.0365 computed against +0.035
-    printed for |s1|. s1 is negative and s2 positive, so both orbits are unstable through a pair
-    of real eigenvalues (-5.32, -0.188) and (1.285, 0.778).
+    anything the orbits' closure misses (4e-6 at most) could produce; they also stay at the
+    paper's mass ratio. The change from orbit 1 to orbit 2 agrees better: +0.0365 computed
+    against +0.035 printed for |s1|. s1 is negative and s2 positive: for orbit 1 the eigenvalue
+    pairs are (-5.32, -0.188) and (1.285, 0.778), both real, so the orbit is unstable in both.
     """
     _, _, _, s_values = _orbit(name)
     assert abs(s_values[k] - _ORBITS[name][5][k]) <= 5e-4
