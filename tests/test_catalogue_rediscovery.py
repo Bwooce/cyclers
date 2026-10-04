@@ -340,7 +340,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # were filed NOT_TWO_BODY only by accident of having three `bodies`).
     # NON_HELIOCENTRIC is the correct lane; pure census shift, paired with the
     # NOT_TWO_BODY 16 -> 10 change below.
-    ExclusionReason.NON_HELIOCENTRIC: 100,
+    # 100 -> 99 (2026-10-03, #882): umbriel-1-2-torus-homoclinic-uranus-2026 (primary
+    # Uranus) WITHDRAWN from the catalogue by owner decision; preserved in data/withdrawn/.
+    ExclusionReason.NON_HELIOCENTRIC: 99,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
