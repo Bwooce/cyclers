@@ -8,8 +8,8 @@ for conventions and for the Birkhoff equations (Eqs. 88 to 130) that the program
 Written for #899, #912, #925, #928, #930 and #931.
 
 Citation: R. Broucke, "Periodic Orbits in the Elliptic Restricted Three-Body Problem", Jet Propulsion Laboratory Technical Report
-32-1360, Pasadena, 15 December 1969 (NASA CR-104090, NTRS 19700005781; no DOI). 135 PDF pages, 125 printed pages (a scan with a
-poor OCR layer). Filed in the private paper corpus as
+32-1360, Pasadena, July 15, 1969 (title page; NTRS 19700005781; no DOI; prepared under NASA contract NAS 7-100; the preface dates the work from July 1, 1967 to
+June 30 of a year garbled in the OCR). 135 PDF pages, 125 printed pages (a scan with a poor OCR layer). Filed in the private paper corpus as
 `broucke-1969-periodic-orbits-elliptic-restricted-three-body-problem-jpl-tr-32-1360-ntrs-19700005781.pdf`.
 
 Page offset (READ, confirmed at six places): printed page n is PDF page n + 10 (printed 51 is PDF 61, printed 119 is PDF 129,
@@ -701,11 +701,11 @@ atol 1e-14) to v = pi; "E check (dE)" is the energy computed by the formula abov
 | 68 | 1.0732118 | 4.8315714 | -0.5028633 | 0.3800552 | 0.9763937 | 1e-04 | -1.0e-04 |
 | 69 | 1.0870994 | 6.0419078 | -0.4840867 | 0.3915046 | 0.9863937 | 1e-04 | -3.3e-04 |
 
-## 4. Section V: the computer programs (pp.89 to 121 and Tables 20 to 22)
+## 4. Section V: the computer programs (pp.89 to 123 and Tables 20 to 22)
 
 ### 4.1 What is and is not printed (READ, pp.89 to 95)
 
-FORTRAN IV listings (IBM 7094 era, "$IBFTC" cards) of the subroutines in Table 21 (p.95) are printed as Table 22 (pp.96 to 121).
+FORTRAN IV listings (IBM 7094 era, "$IBFTC" cards) of the subroutines in Table 21 (p.95) are printed as Table 22 (pp.96 to 123).
 The author says the full set of programs is not reproduced (nonstandard timing and plotting subroutines, matrix inversion, and
 the least-squares corrector routines CORL2 and CORR "considered too lengthy to be included", p.94). Printed: two MAIN programs
 (one with variational equations and recurrent power series, one regularised), ERPSV, three DERIV routines plus one with variational
@@ -983,10 +983,11 @@ printed orbits do not depend on the Nechville pulsating form of Eq. (33) or on `
   at row 69 (all 69 rows computed; per-row values are in the last column of Table 19). Using the circular-problem value of this formula at the
   FINAL point, as I first did, gives nonsense for e > 0 because E is not conserved there; ENERGY is the ejection value (v = 0).
 - Can `core.er3bp` integrate collision orbits at all? No, not from or through the collision. `er3bp_eom` divides by r2^3, so a state at
-  r2 = 0 raises or returns infinities, and a start at the collision has no defined velocity. It integrates BACKWARD from the regular
-  state at v = pi to within about 3e-2 of m2 (v = 3e-3) with DOP853 at rtol 1e-12 to 1e-13 in a fraction of a second (50 to 120
-  steps), which is why the checks above stop there; attempts to push the end to v = 1e-4 and 1e-6 had not finished after 100 to 120 s and were
-  abandoned. Anything that needs the collision itself (ejection from the primary, the collision-orbit family, continuation through
+  r2 = 0 raises or returns infinities, and a start at the collision has no defined velocity. It does integrate BACKWARD from the regular state at v = pi
+  toward it with DOP853 (rtol and atol 1e-13) at a cost that rises sharply near the end (Table 19 row 37, e = 0.417, mu = 0.5, run
+  time-boxed and unbuffered on 2026-10-05): v = 1e-3 in 115 steps (r2 = 1.2e-2), v = 1e-4 in 136 steps (r2 = 2.5e-3), v = 1e-5 in 158
+  steps (r2 = 4.7e-4), each in well under a second; v = 1e-6 did NOT finish within a 60 s timeout. So the singular end can be approached
+  to r2 of about 5e-4 but not reached, and the checks above stop at v = 3e-3 for economy. Anything that needs the collision itself (ejection from the primary, the collision-orbit family, continuation through
   a close pass) needs the regularised propagator of #928; the listing's Birkhoff routine above is a worked, tested design for it.
 
 
@@ -1099,7 +1100,7 @@ Relations (INFERRED unless marked):
 - Because Broucke's (a1, a2) coefficients (section 4 of part A; Eq. 166 and the seven regions, pp.26 to 29) are the same quantities as
   Hadjidemetriou's (alpha, beta) (alpha = a1, beta = a2, the quartic lambda^4 + a1 lambda^3 + a2 lambda^2 + a1 lambda + 1 = 0, regions
   bounded by the parabola a2 = a1^2/4 + 2 and the lines a2 = -2 a1 - 2 and a2 = 2 a1 - 2), the stability bands the project computes for these
-  families can be compared with Broucke's printed regions (8P region 6 to e = 0.55; 8A region 4 or 2 to e = 0.80, region 1 at 0.85; 11P region 4 to
+  families can be compared with Broucke's printed regions (8P region 6 to e = 0.55; 8A region 4 then 2 to e = 0.85, region 1 at 0.85 itself; 11P region 4 to
   e = 0.45; 11A region 6 to e = 0.30 then region 3 to 0.80). Those are text statements read from the scan, and I have not
   reproduced them numerically here (follow-up F1).
 
@@ -1154,7 +1155,7 @@ Relations (INFERRED unless marked):
 ## 9. Follow-ups (suggestions only; none registered)
 
 - F1. Compute (a1, a2) for a sample of Tables 14 to 18 (monodromy by `core.er3bp` STM over the full period, or the half-revolution
-  matrix with the symmetry) and compare the region statements of section 2.1 (8P region 6, 8A region 4 or 2 then 1 at e = 0.85, 11P region 4,
+  matrix with the symmetry) and compare the region statements of section 2.1 (8P region 6, 8A region 4, then 2, then 1 at e = 0.85, 11P region 4,
   11A region 6 then 3, with the quoted extremes a2 about 13400 at e = 0.18 for 11P, a1 = -5500 at e = 0.18 and a2 = -5200 at e = 0.67 for 11A). No
   row-level stability is printed, so these are text-level checks with numbers read from the scan; part A holds the region definitions.
 - F2. A test-only module that loads the 431 periodic rows and the 69 collision rows (sections 2 and 3 tables) as sourced data with the two
