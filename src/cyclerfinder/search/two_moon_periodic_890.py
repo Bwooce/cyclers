@@ -771,3 +771,34 @@ def symmetric_guess(
         },
     }
     return sh, z, info
+
+
+def rescale_flyby_nodes(
+    z: FloatArray, old: TwoMoonModel, new: TwoMoonModel, n_interior: int
+) -> FloatArray:
+    """Predictor for a change of mass scale: flyby periapsis offsets scale with ``lam``.
+
+    At fixed V-infinity and turn, the hyperbola's periapsis distance is
+    proportional to the moon GM and its periapsis speed is unchanged, so the
+    moon-relative position of the two symmetric nodes is multiplied by
+    ``new.lam / old.lam`` and the moon-relative inertial velocity is kept.
+    Interior nodes are kept as they are.
+    """
+    sh_old = SymmetricShooter(old, 2.5 * old.forcing_period, n_interior)
+    sh_new = SymmetricShooter(new, 2.5 * new.forcing_period, n_interior)
+    s0, mids, s_end = sh_old.unpack(z)
+    k = new.lam / old.lam
+    out = []
+    for body, s, t_old, t_new in (
+        (old.base, s0, 0.0, 0.0),
+        (old.pert, s_end, sh_old.T, sh_new.T),
+    ):
+        dr, dv = relative_inertial(old, body, t_old, s)
+        rb, vb = new.moon_inertial(body, t_new)
+        rb_old, _ = old.moon_inertial(body, t_old)
+        # express the offset in the body's local (radial, along-track) axes so a
+        # slight change of the body's angle at T does not rotate it
+        dr_l, dv_l = to_local(dr, rb_old), to_local(dv, rb_old)
+        sn = rot_from_inertial(new, t_new, rb + k * from_local(dr_l, rb), vb + from_local(dv_l, rb))
+        out.append(np.array([sn[0], 0.0, 0.0, sn[3]]))
+    return SymmetricShooter.pack(out[0], mids, out[1])

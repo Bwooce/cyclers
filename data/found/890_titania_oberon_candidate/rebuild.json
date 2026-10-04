@@ -1,0 +1,97 @@
+{
+ "_meta": {
+  "task": "#890",
+  "git_sha": "214315ec",
+  "stage": "rebuild.json"
+ },
+ "stored_vinf_kms": [
+  0.27473204980521365,
+  0.2689040584762338,
+  0.2747320498052143
+ ],
+ "rebuilt_vinf_kms": [
+  0.27473204980521365,
+  0.2689040584762338,
+  0.2747320498052143
+ ],
+ "max_vinf_diff_kms": 0.0,
+ "residual_kms": 6.661338147750939e-16,
+ "conic_leg0": {
+  "a_km": 511105.3523137717,
+  "e": 0.14849256335065852,
+  "rp_km": 435210.0084064583,
+  "ra_km": 587000.6962210851,
+  "period_days": 11.03879509944567,
+  "argp_deg": 11.271222772495358,
+  "h": 1701859.2048032242
+ },
+ "gate_project_floor": {
+  "turn_feasible": true,
+  "ballistic": true,
+  "worst_ratio": 0.5723514863296105,
+  "max_magnitude_mismatch_kms": 3.552713678800501e-15,
+  "min_required_alt_km": 2215.351456030762,
+  "total_impulse_beyond_bend_kms": 3.619044421386515e-15,
+  "encounters": [
+   {
+    "body": "Oberon",
+    "label": "mid",
+    "vinf_in_kms": 0.26890405847623366,
+    "vinf_out_kms": 0.2689040584762338,
+    "magnitude_mismatch_kms": 1.1102230246251565e-16,
+    "demanded_turn_deg": 58.441220374125876,
+    "available_bend_deg": 102.10722217024218,
+    "alt_floor_km": 50.0,
+    "ratio": 0.5723514863296105,
+    "required_alt_km": 2215.351456030762,
+    "impulse_beyond_bend_kms": 1.0007415106216802e-16,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   },
+   {
+    "body": "Titania",
+    "label": "wrap",
+    "vinf_in_kms": 0.2747320498052143,
+    "vinf_out_kms": 0.27473204980521077,
+    "magnitude_mismatch_kms": 3.552713678800501e-15,
+    "demanded_turn_deg": 42.163055737331284,
+    "available_bend_deg": 102.8560293824824,
+    "alt_floor_km": 50.0,
+    "ratio": 0.40992303504681227,
+    "required_alt_km": 4562.487980684918,
+    "impulse_beyond_bend_kms": 3.5189702703243473e-15,
+    "impulse_periapsis_kms": 0.0,
+    "turn_feasible": true
+   }
+  ]
+ },
+ "local_vinf_kms": {
+  "titania_in": [
+   0.09882002093951317,
+   0.25634410984395356
+  ],
+  "titania_out": [
+   -0.09882002093950491,
+   0.25634410984395606
+  ],
+  "oberon_in": [
+   -0.13127187069174848,
+   -0.2346850839531106
+  ],
+  "oberon_out": [
+   0.13127187069174628,
+   -0.23468508395311194
+  ]
+ },
+ "frame_checks": {
+  "round_trip_pos_km": 0.0,
+  "round_trip_vel_kms": 8.881784197001252e-16,
+  "lam0_leg_pos_err_rel": 6.1096978105851884e-12,
+  "lam0_leg_vel_err_rel": 3.3516864554193665e-12,
+  "lam0_leg_end_to_oberon_km": 3.4921901914490747e-07,
+  "lam0_half_period_days": 61.58023222936293,
+  "lam1_forcing_period_days": 24.632445274063283,
+  "lam1_cycle_days": 123.16222637031642,
+  "lam1_oberon_angle_at_T_deg": 180.0
+ }
+}
