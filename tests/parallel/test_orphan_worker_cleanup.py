@@ -98,8 +98,10 @@ def _pid_alive(pid: int) -> bool:
                     state = line.split()[1]
                     return state != "Z"
         return True  # file exists but no State line — treat as alive
-    except FileNotFoundError:
-        return False  # process gone
+    except (FileNotFoundError, ProcessLookupError):
+        # Gone, or it exited between opening /proc/<pid>/status and reading it (the read then
+        # raises ESRCH, not ENOENT).
+        return False
 
 
 def _wait_all_dead(pids: list[int], timeout: float = 4.0) -> list[int]:
