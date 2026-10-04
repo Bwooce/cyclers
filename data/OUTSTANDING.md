@@ -1185,7 +1185,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
   (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
   7:5) close in `core/cr3bp.py` at the paper's mass ratios (agent's check: Jacobi constants match
-  the printed 4-5 digits, closures 1.6e-7 to 3.9e-5): make them a permanent test. (b) A
+  the printed 4-5 digits, closures 1.6e-7 to 3.9e-5): DONE 2026-10-04,
+  `tests/core/test_cr3bp_lantoine_russell_2011.py` (15 tests: Jacobi constant to the printed
+  rounding, closure within bounds set from the printed mass-ratio precision, one wrong-moon
+  control). (b) A
   Tisserand-Poincare patch-point solver (its eqs. 11-13), tested on its Table 5, then applied to
   Titania-Oberon (`#890`/`#895`; their mass ratios 3.9e-5 and 3.5e-5 are in the paper's regime);
   resolve the sign of eq. 13 (printed arccos is unsigned). The paper treats one moon at a time and
