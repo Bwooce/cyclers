@@ -83,14 +83,14 @@ not modified here).
 
 from __future__ import annotations
 
-from math import log, sqrt
+from math import sqrt
 
 import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core._stumpff import stumpff_c, stumpff_s
 from cyclerfinder.core.constants import MU_SUN_KM3_S2
-from cyclerfinder.core.kepler import KeplerConvergenceError
+from cyclerfinder.core.kepler import KeplerConvergenceError, _initial_chi_guess
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 Mat6 = NDArray[np.float64]  # shape (6, 6), dtype float64
@@ -172,46 +172,48 @@ def shepperd_stm(
 
     # --- Newton solve for the universal anomaly chi (mirrors core/kepler.py,
     # Vallado Algorithm 3.4 initial guesses) -------------------------------
-    chi: float
-    if alpha > 1.0e-9:
-        chi = sqrt_mu * alpha * dt
-    elif alpha < -1.0e-9:
-        a = 1.0 / alpha  # negative for hyperbolic
-        sign_dt = 1.0 if dt >= 0.0 else -1.0
-        arg = (-2.0 * mu * alpha * dt) / (rv_dot + sign_dt * sqrt(-mu * a) * (1.0 - r0_n * alpha))
-        chi = sign_dt * sqrt(-a) * log(arg)
-    else:
-        chi = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
+    chi = _initial_chi_guess(r0_n, rv_dot, alpha, dt, mu)
+    chi_par = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
 
-    residual: float = 0.0
-    for _iteration in range(_NEWTON_MAX_ITER):
-        z = chi * chi * alpha
-        c2 = stumpff_c(z)
-        c3 = stumpff_s(z)
-        chi2 = chi * chi
-        chi3 = chi2 * chi
+    # #934: try the primary guess, then retry once from the parabolic bootstrap.
+    guesses = [chi] if chi == chi_par else [chi, chi_par]
+    for attempt, chi_start in enumerate(guesses):
+        chi = chi_start
+        residual: float = 0.0
+        converged = False
+        failed_flat = False
+        for _iteration in range(_NEWTON_MAX_ITER):
+            z = chi * chi * alpha
+            c2 = stumpff_c(z)
+            c3 = stumpff_s(z)
+            chi2 = chi * chi
+            chi3 = chi2 * chi
 
-        f_val = (
-            (rv_dot / sqrt_mu) * chi2 * c2
-            + (1.0 - alpha * r0_n) * chi3 * c3
-            + r0_n * chi
-            - sqrt_mu * dt
-        )
-        f_prime = (
-            (rv_dot / sqrt_mu) * chi * (1.0 - z * c3) + (1.0 - alpha * r0_n) * chi2 * c2 + r0_n
-        )
+            f_val = (
+                (rv_dot / sqrt_mu) * chi2 * c2
+                + (1.0 - alpha * r0_n) * chi3 * c3
+                + r0_n * chi
+                - sqrt_mu * dt
+            )
+            f_prime = (
+                (rv_dot / sqrt_mu) * chi * (1.0 - z * c3) + (1.0 - alpha * r0_n) * chi2 * c2 + r0_n
+            )
 
-        if f_prime == 0.0:
-            raise KeplerConvergenceError(chi, f_val)
+            if f_prime == 0.0:
+                failed_flat = True
+                break
 
-        delta = f_val / f_prime
-        chi -= delta
-        residual = f_val
+            delta = f_val / f_prime
+            chi -= delta
+            residual = f_val
 
-        if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi), 1.0):
+            if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi), 1.0):
+                converged = True
+                break
+        if converged and chi == chi:
             break
-    else:
-        raise KeplerConvergenceError(chi, residual)
+        if attempt == len(guesses) - 1:
+            raise KeplerConvergenceError(chi, f_val if failed_flat else residual)
 
     # --- Universal functions U0..U5 at the converged chi ------------------
     z = chi * chi * alpha

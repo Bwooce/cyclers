@@ -81,3 +81,75 @@ def test_kepler_negative_dt_directly() -> None:
     r_back, v_back = propagate(r_at_dt, v_at_dt, -dt)
     assert float(np.linalg.norm(r_back - r_at_zero)) < 1.0
     assert float(np.linalg.norm(v_back - v_at_zero)) < 1.0e-6
+
+
+def _dop853_two_body(
+    r0: np.ndarray, v0: np.ndarray, dt: float, mu: float
+) -> tuple[np.ndarray, np.ndarray]:
+    """Independent reference: integrate the two-body ODE (no universal variables)."""
+    from scipy.integrate import solve_ivp
+
+    def rhs(_t: float, y: np.ndarray) -> np.ndarray:
+        r = y[:3]
+        return np.concatenate([y[3:], -mu * r / float(np.linalg.norm(r)) ** 3])
+
+    sol = solve_ivp(
+        rhs, (0.0, dt), np.concatenate([r0, v0]), method="DOP853", rtol=1e-13, atol=1e-13
+    )
+    return sol.y[:3, -1], sol.y[3:, -1]
+
+
+def test_kepler_near_parabolic_sweep_934() -> None:
+    """#934: propagate must not fail near e = 1 (either side), and must be right.
+
+    Sweeps e - 1 over log-spaced magnitudes 1e-12..1e-2 on both sides of 1 and
+    exactly 1, against a DOP853 reference, with energy / angular-momentum
+    conservation checked on the result.
+    """
+    mu = 1.0
+    deltas = [0.0]
+    for mag in np.logspace(-12, -2, 11):
+        deltas.extend([float(mag), -float(mag)])
+    failures: list[str] = []
+    for rp in (1.0, 7.0):
+        for delta in deltas:
+            e = 1.0 + delta
+            r0 = np.array([rp, 0.0, 0.0])
+            v0 = np.array([0.0, sqrt(mu * (1.0 + e) / rp), 0.0])
+            eps0 = 0.5 * float(v0 @ v0) - mu / rp
+            h0 = np.cross(r0, v0)
+            for dt in (0.1, 0.7, 2.5, 9.0, -2.5):
+                try:
+                    r, v = propagate(r0, v0, dt, mu)
+                except Exception as exc:
+                    failures.append(f"rp={rp} e-1={delta:.3e} dt={dt}: {type(exc).__name__}")
+                    continue
+                r_ref, v_ref = _dop853_two_body(r0, v0, dt, mu)
+                scale = max(1.0, float(np.linalg.norm(r_ref)))
+                if float(np.linalg.norm(r - r_ref)) > 1e-8 * scale:
+                    failures.append(f"rp={rp} e-1={delta:.3e} dt={dt}: position mismatch")
+                if float(np.linalg.norm(v - v_ref)) > 1e-8:
+                    failures.append(f"rp={rp} e-1={delta:.3e} dt={dt}: velocity mismatch")
+                eps = 0.5 * float(v @ v) - mu / float(np.linalg.norm(r))
+                if abs(eps - eps0) > 1e-10 * max(abs(eps0), mu / rp):
+                    failures.append(f"rp={rp} e-1={delta:.3e} dt={dt}: energy drift")
+                h = np.cross(r, v)
+                if float(np.linalg.norm(h - h0)) > 1e-10 * float(np.linalg.norm(h0)):
+                    failures.append(f"rp={rp} e-1={delta:.3e} dt={dt}: angular momentum drift")
+    assert not failures, f"{len(failures)} failing cases:\n" + "\n".join(failures)
+
+
+def test_shepperd_stm_near_parabolic_934() -> None:
+    """#934: the STM propagator shares the guess code and must also survive e ~ 1."""
+    from cyclerfinder.core.kepler_stm import shepperd_stm
+
+    mu = 1.0
+    for rp in (1.0, 7.0):
+        for delta in (1e-8, -1e-8, 1e-7, 0.0):
+            r0 = np.array([rp, 0.0, 0.0])
+            v0 = np.array([0.0, sqrt(mu * (2.0 + delta) / rp), 0.0])
+            for dt in (0.7, 2.5, 9.0, -2.5):
+                r_ref, v_ref = _dop853_two_body(r0, v0, dt, mu)
+                r, v, _phi = shepperd_stm(r0, v0, dt, mu)
+                assert float(np.linalg.norm(r - r_ref)) < 1e-8 * max(1.0, float(np.linalg.norm(r)))
+                assert float(np.linalg.norm(v - v_ref)) < 1e-8

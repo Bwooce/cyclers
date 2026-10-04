@@ -32,7 +32,7 @@ Plan: ``docs/phases/m1-core-mechanics/plan.md`` §3.3.
 
 from __future__ import annotations
 
-from math import cos, log, sin, sqrt
+from math import cos, isfinite, log, sin, sqrt
 
 import numba as nb
 import numpy as np
@@ -283,6 +283,34 @@ def _kepler_chi_newton(
 # ---------------------------------------------------------------------------
 
 
+def _initial_chi_guess(r0_n: float, rv_dot: float, alpha: float, dt: float, mu: float) -> float:
+    """Initial universal-anomaly guess per Vallado Algorithm 3.4.
+
+    The hyperbolic log-form guess (eq. 3-66) is used only when it is finite and
+    its logarithm argument is positive; otherwise the parabolic bootstrap is
+    used. For near-parabolic orbits (``|alpha|`` tiny, ``sqrt(-a)`` huge) the
+    log guess can land outside the Newton basin (#934); the callers retry once
+    from the parabolic bootstrap in that case.
+    """
+    sqrt_mu = sqrt(mu)
+    chi_par = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
+    if alpha > 1.0e-9:
+        # Elliptic / near-circular: chi ~ sqrt(mu) * alpha * dt is a good start.
+        return sqrt_mu * alpha * dt
+    if alpha < -1.0e-9:
+        a = 1.0 / alpha  # negative for hyperbolic
+        sign_dt = 1.0 if dt >= 0.0 else -1.0
+        denom = rv_dot + sign_dt * sqrt(-mu * a) * (1.0 - r0_n * alpha)
+        arg = (-2.0 * mu * alpha * dt) / denom if denom != 0.0 else -1.0
+        if arg > 0.0:
+            chi_h = sign_dt * sqrt(-a) * log(arg)
+            if isfinite(chi_h):
+                return chi_h
+        return chi_par
+    # Parabolic: Newton recovers from the simple bootstrap.
+    return chi_par
+
+
 def propagate(
     r0: Vec3,
     v0: Vec3,
@@ -329,34 +357,21 @@ def propagate(
 
     rv_dot = float(np.dot(r0_arr, v0_arr))
 
-    # Initial chi guess per Vallado Algorithm 3.4.
-    chi: float
-    if alpha > 1.0e-9:
-        # Elliptic / near-circular: chi ~ sqrt(mu) * alpha * dt is a good start.
-        chi = sqrt_mu * alpha * dt
-    elif alpha < -1.0e-9:
-        # Hyperbolic: log expression keeps the initial guess in the right basin.
-        a = 1.0 / alpha  # negative for hyperbolic
-        sign_dt = 1.0 if dt >= 0.0 else -1.0
-        # Vallado eq. (3-66).
-        arg = (-2.0 * mu * alpha * dt) / (rv_dot + sign_dt * sqrt(-mu * a) * (1.0 - r0_n * alpha))
-        chi = sign_dt * sqrt(-a) * log(arg)
-    else:
-        # Parabolic: use a simple bootstrap; Newton recovers from here.
-        # Semi-latus rectum p = |r0 x v0|^2 / mu.
-        h_vec = np.cross(r0_arr, v0_arr)
-        p = float(np.dot(h_vec, h_vec)) / mu
-        # From Vallado, but simplified: use sqrt(p) * something. The iteration
-        # is forgiving for parabolic; start from zero and Newton in.
-        chi = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
-        # Silence "unused" lint hint while keeping `p` available for debugging.
-        _ = p
+    chi = _initial_chi_guess(r0_n, rv_dot, alpha, dt, mu)
 
     # JIT-compiled Newton iteration on f(chi) = 0 (Vallado eq. 3-65).
     chi_conv, f_coef, g_coef, _res, z = _kepler_chi_newton(r0_n, v0_n, rv_dot, alpha, dt, mu, chi)
 
     if chi_conv != chi_conv:  # nan check (numba-safe, no math.isnan needed)
-        raise KeplerConvergenceError(chi, 0.0)
+        # #934: retry once from the parabolic bootstrap, which is in the basin
+        # for near-parabolic orbits where the hyperbolic log guess is not.
+        chi_p = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
+        if chi_p != chi:
+            chi_conv, f_coef, g_coef, _res, z = _kepler_chi_newton(
+                r0_n, v0_n, rv_dot, alpha, dt, mu, chi_p
+            )
+        if chi_conv != chi_conv:
+            raise KeplerConvergenceError(chi, 0.0)
 
     r = f_coef * r0_arr + g_coef * v0_arr
     r_n = float(np.linalg.norm(r))
