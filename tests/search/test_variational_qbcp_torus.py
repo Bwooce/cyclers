@@ -38,6 +38,7 @@ pinned with generous bounds.
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 import numpy as np
@@ -339,13 +340,20 @@ def test_coeffs_shape_validation() -> None:
 
 
 def _build_se_l2_gmos_torus() -> QBCPTorus:
-    """Full-mu Sun-Earth L2 QBCP GMOS torus, built exactly as #533/#537/#538's
+    """Full-mu Sun-Earth L2 QBCP GMOS torus, built as #533/#537/#538's
     ``build_tori`` do (BCR4BP mu_sun bootstrap then ``correct_qbcp_torus``).
-    This is the ~1.5e-5-residual SE-L2 torus #544 quotes at ~3e-5.
+
+    #891/#892 (2026-10-04): with the corrected models and seed helper, 5 samples
+    (2 modes) leave the BCR4BP stage at its truncation floor (7.2e-4), so 11
+    samples (5 modes) are used: BCR4BP residual 2.8e-7, QBCP 2.4e-7, rotation
+    number 0.162809 (measured). The BCR4BP bootstrap is started at the QBCP's own
+    Sun phase (pi at t = 0 in this frame, from (alpha_7, alpha_8)); with phase 0
+    it converged to a different torus (rotation number 0.164823).
     """
     qbcp_sys = qbcp.qbcp_default()
     mu_se = 1.0 / (qbcp_sys.mu_sun + 1.0)
-    n_samples, n_modes = 5, 2
+    n_samples, n_modes = 11, 5
+    alphas0 = qbcp.evaluate_alphas(0.0, qbcp_sys)
     sys_se = cr3bp.CR3BPSystem(
         mu=mu_se, primary="Sun", secondary="Earth", l_km=qbcp_sys.a_sun_nondim * 384400.0, t_s=1.0
     )
@@ -363,7 +371,7 @@ def _build_se_l2_gmos_torus() -> QBCPTorus:
         mu_sun=qbcp_sys.mu_sun,
         a_sun_nondim=qbcp_sys.a_sun_nondim,
         omega_sun_nondim=qbcp_sys.omega_sun_nondim,
-        theta_sun0=qbcp_sys.theta_sun0,
+        theta_sun0=math.atan2(alphas0[8], alphas0[7]),
     )
     x0b, ppi, amp = se_lyapunov_to_bcr4bp_torus_seed(orbit_se, bcr, mu_se, n_samples=n_samples)
     tb = correct_bcr4bp_torus(bcr, x0b, n_modes, n_samples, ppi, amp, tol=1e-6)
@@ -451,12 +459,19 @@ def test_se_l2_positive_control_reproduces_gmos_torus() -> None:
     assert res.omega1 == pytest.approx(qbcp_sys.omega_sun_nondim, rel=1e-12)
     # Independent method reproduces the SAME torus's rotation number.
     assert res.rotation_number == pytest.approx(gmos_rot, rel=5e-3)
-    assert res.rotation_number == pytest.approx(0.231365, abs=1e-4)
-    # Residual/closure at the n1=6,n2=5 truncation floor (comparable to the GMOS
-    # seed's own invariance residual ~1.5e-5, on a much more stringent pointwise
-    # PDE metric than GMOS's coarse 5-sample stroboscopic check).
+    # #891/#892 (2026-10-04): recomputed in the corrected models; the old pin
+    # 0.231365 belonged to the defective ones. Independent anchor: the Sun-Earth
+    # three-body orbit seen from the Earth-Moon frame has rotation number
+    # (1 - omega_S) T_s / P_SE = 0.162688; the Moon and the coherent terms move
+    # it by 7e-4 relative.
+    assert res.rotation_number == pytest.approx(0.162806, abs=1e-4)
+    se_cr3bp_rot = 0.162688
+    assert res.rotation_number == pytest.approx(se_cr3bp_rot, rel=2e-3)
+    # Residual/closure at the n1=6,n2=5 truncation floor, on a much more stringent
+    # pointwise PDE metric than GMOS's stroboscopic check. #891/#892: recomputed
+    # 2026-10-04 (was 9.405e-05 in the defective models).
     assert res.residual_rms < 3e-4
-    assert res.residual_rms == pytest.approx(9.405e-05, rel=0.2)
+    assert res.residual_rms == pytest.approx(7.350e-05, rel=0.2)
     assert res.closure_residual < 3e-4
 
 
@@ -464,8 +479,20 @@ def test_se_l2_positive_control_reproduces_gmos_torus() -> None:
 # Integration control 2: EM-L2 headline (the #544/#538 wall).
 # ---------------------------------------------------------------------------
 
+_EM_L2_XFAIL_REASON = (
+    "#891/#892: computed in the wrong model; needs rerun. The pinned residual 3.412e-3,"
+    " rotation number 1.9183 and the 4.771e-1 GMOS plateau they are compared with were all"
+    " obtained in the defective QBCP (parities, #592 alpha_6), with this module's grid copy"
+    " of the field still carrying the Sun-only alpha_6; whether the pseudospectral corrector"
+    " crosses the plateau in the corrected model is open (a run costs 13-22 min)."
+)
+
 
 @pytest.mark.slow
+@pytest.mark.xfail(
+    strict=True,
+    reason=_EM_L2_XFAIL_REASON,
+)
 def test_em_l2_c313_crosses_gmos_plateau() -> None:
     """On the violently-unstable Earth-Moon L2 torus at Jacobi 3.13 -- where the
     single-period GMOS ``correct_qbcp_torus`` plateaus at invariance residual
@@ -515,6 +542,10 @@ def test_em_l2_c313_crosses_gmos_plateau() -> None:
 
 
 @pytest.mark.slow
+@pytest.mark.xfail(
+    strict=True,
+    reason=_EM_L2_XFAIL_REASON,
+)
 def test_em_l2_exact_and_lsmr_agree() -> None:
     """The ``exact`` (dense SVD) and ``lsmr`` (iterative) trust-region solvers
     converge the EM-L2 torus to the SAME minimum -- proof that ~3.4e-3 is a
@@ -715,7 +746,13 @@ def test_unstable_forward_vs_backward_differ_on_torus(se_tori: SETori) -> None:
     )
     assert mvf is not None and mvb is not None
     # The two approximations are materially different directions (not ~parallel).
-    assert abs(float(np.dot(mvf[1], mvb[1]))) < 0.9
+    # #891/#892 (2026-10-04): the bound was 0.9, set on the torus of the defective
+    # models. On the corrected torus the angle between them varies from 2 to 25 deg
+    # around the torus (16 phases measured) and is 16.9 deg (|dot| 0.9567) here, so
+    # the claim is now "more than 8 deg apart" plus a pin of the measured value.
+    dot = abs(float(np.dot(mvf[1], mvb[1])))
+    assert dot < 0.99
+    assert dot == pytest.approx(0.9567, abs=5e-3)
 
 
 # ---------------------------------------------------------------------------

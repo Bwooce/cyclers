@@ -34,6 +34,7 @@ generous bounds (see ``test_variational_qbcp_torus.py``'s identical note).
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 import numpy as np
@@ -334,25 +335,39 @@ def test_ghost_solution_rejected_by_independent_closure(
     """MANDATORY-CHECK DEMONSTRATION: from a poor (linear-interpolation) seed the
     SAME split converges to a GHOST -- a machine-zero nodal residual that is NOT a
     real trajectory. The algebraic residual is tiny yet the INDEPENDENT Radau loop
-    defect is O(1) (~20,000 km arrival error), and ``converged`` is False. A small
-    residual alone is never sufficient here."""
+    defect exceeds the closure tolerance, and ``converged`` is False. A small
+    residual alone is never sufficient here.
+
+    #892 (2026-10-04): in the defective QBCP the ghost's defect was O(1) (~20,000
+    km) and the test asserted > 0.1. In the corrected model the split orbit is the
+    symmetric POL1 orbit and the ghost's defect at order 28 is 3.7e-3 (122 km at
+    arrival; measured). That it is a ghost and not a real trajectory resolved
+    coarsely is shown by refinement: from the same seed, orders 20, 28, 40, 52 give
+    defects 1.1e-3, 3.7e-3, 1.2e-2, 2.0e-2 at different split times, residual
+    1e-15 throughout. A discretisation of a real trajectory would improve with
+    order; this gets worse, so the test checks that too.
+    """
     _system, tor0, tor1, info = periodic_split
     sol, tau_f, tau_r, omega1 = info["sol"], info["tau_f"], info["tau_r"], info["omega1"]
-    order = 28
-    nodes, _ = cheb_diff_matrix(order)
     pm0, pm1 = sol.sol(0.0), sol.sol(tau_f)
-    # linear interpolation in PM (node idx K = s=-1 = departure, idx 0 = arrival)
-    nf = np.array([pm0 + (pm1 - pm0) * (1 - (s + 1) / 2) for s in nodes])
-    nr = np.array([pm1 + (pm0 - pm1) * (1 - (s + 1) / 2) for s in nodes])
-    th0 = np.array([0.0, 0.0])
-    th1 = np.array([omega1 * tau_f, 0.0])
-    z0 = pack_unknowns(nf, nr, tau_f, tau_r, th0, th1, th1.copy(), th0.copy())
-    res = correct_qbcp_arc_connection(
-        tor0, tor1, z0, order, tol=1e-6, closure_tol=1e-3, max_nfev=300, notes="ghost"
-    )
-    assert res.residual_rms < 1e-8  # machine-zero nodal residual (a ghost)
-    assert res.closure_loop_defect > 1e-1  # but NOT a real trajectory
-    assert res.converged is False  # the independent check vetoes it
+    defects = []
+    for order in (28, 40):
+        nodes, _ = cheb_diff_matrix(order)
+        # linear interpolation in PM (node idx K = s=-1 = departure, idx 0 = arrival)
+        nf = np.array([pm0 + (pm1 - pm0) * (1 - (s + 1) / 2) for s in nodes])
+        nr = np.array([pm1 + (pm0 - pm1) * (1 - (s + 1) / 2) for s in nodes])
+        th0 = np.array([0.0, 0.0])
+        th1 = np.array([omega1 * tau_f, 0.0])
+        z0 = pack_unknowns(nf, nr, tau_f, tau_r, th0, th1, th1.copy(), th0.copy())
+        res = correct_qbcp_arc_connection(
+            tor0, tor1, z0, order, tol=1e-6, closure_tol=1e-3, max_nfev=300, notes="ghost"
+        )
+        assert res.residual_rms < 1e-8  # machine-zero nodal residual (a ghost)
+        assert res.closure_loop_defect > 2e-3  # but NOT a real trajectory
+        assert res.converged is False  # the independent check vetoes it
+        defects.append(res.closure_loop_defect)
+    # Refinement makes it worse, not better.
+    assert defects[1] > 2.0 * defects[0]
 
 
 # ---------------------------------------------------------------------------
@@ -361,10 +376,16 @@ def test_ghost_solution_rejected_by_independent_closure(
 
 
 def _build_se_l2_gmos_torus() -> QBCPTorus:
-    """Full-mu Sun-Earth L2 QBCP GMOS torus (built exactly as #533/#538 do)."""
+    """Full-mu Sun-Earth L2 QBCP GMOS torus (built as #533/#538 do).
+
+    #891/#892 (2026-10-04): 11 samples (5 modes) instead of 5 (2), and the BCR4BP
+    bootstrap at the QBCP's own Sun phase (pi at t = 0); see the same builder in
+    tests/search/test_variational_qbcp_torus.py for the measured reasons.
+    """
     system = qbcp.qbcp_default()
     mu_se = 1.0 / (system.mu_sun + 1.0)
-    n_samples, n_modes = 5, 2
+    n_samples, n_modes = 11, 5
+    alphas0 = qbcp.evaluate_alphas(0.0, system)
     sys_se = cr3bp.CR3BPSystem(
         mu=mu_se, primary="Sun", secondary="Earth", l_km=system.a_sun_nondim * 384400.0, t_s=1.0
     )
@@ -382,7 +403,7 @@ def _build_se_l2_gmos_torus() -> QBCPTorus:
         mu_sun=system.mu_sun,
         a_sun_nondim=system.a_sun_nondim,
         omega_sun_nondim=system.omega_sun_nondim,
-        theta_sun0=system.theta_sun0,
+        theta_sun0=math.atan2(alphas0[8], alphas0[7]),
     )
     x0b, ppi, amp = se_lyapunov_to_bcr4bp_torus_seed(orbit_se, bcr, mu_se, n_samples=n_samples)
     tb = correct_bcr4bp_torus(bcr, x0b, n_modes, n_samples, ppi, amp, tol=1e-6)
