@@ -782,10 +782,32 @@ def saturn_centred_residual(circle_nodes: np.ndarray, rho: float) -> float:
 def refine_distance(
     a_nodes: np.ndarray, b_nodes: np.ndarray, rho: float, n_pick: int = 12
 ) -> float:
-    """Max over sampled nodes of ``b`` of the distance to the curve ``a``."""
-    ca = sc.InvariantCircle(system=system(MU3), t0=0.0, rho=rho, nodes=a_nodes)
+    """Max over sampled nodes of ``b`` of the distance to the curve ``a``.
+
+    Newton on ``<u(theta) - p, u'(theta)> = 0`` from the nearest point of a dense sample. The
+    module's ``distance_to_circle`` minimises ``|u(theta) - p|`` with a bounded Brent search,
+    whose relative tolerance in theta (about 1.5e-8 * theta) floors the distance at about
+    1e-8, too coarse for this check.
+    """
+    del rho
+    m = 16 * a_nodes.shape[0]
+    th_dense = sc.node_angles(m)
+    dense = sc.fourier_eval(a_nodes, th_dense)
     idx = np.linspace(0, b_nodes.shape[0] - 1, n_pick).round().astype(int)
-    return float(max(sc.distance_to_circle(ca, b_nodes[j])[0] for j in idx))
+    worst = 0.0
+    for j in idx:
+        p = b_nodes[j]
+        th = float(th_dense[int(np.argmin(np.linalg.norm(dense - p[None, :], axis=1)))])
+        for _ in range(30):
+            d = sc.fourier_eval(a_nodes, th) - p
+            d1 = sc.fourier_eval(a_nodes, th, deriv=1)
+            d2 = sc.fourier_eval(a_nodes, th, deriv=2)
+            step = float(np.dot(d, d1) / (np.dot(d1, d1) + np.dot(d, d2)))
+            th -= step
+            if abs(step) < 1e-15:
+                break
+        worst = max(worst, float(np.linalg.norm(sc.fourier_eval(a_nodes, th) - p)))
+    return worst
 
 
 # ---------------------------------------------------------------------------
@@ -821,12 +843,14 @@ def main() -> None:
             "scan",
             "control",
             "refine",
+            "posthoc",
             "closure",
             "summary",
         ],
     )
     ap.add_argument("--budget-s", type=float, default=420.0)
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--posthoc-factor", type=float, default=3.0)
     ap.add_argument("--fresh", action="store_true", help="family: recompute the rows")
     args = ap.parse_args()
     t_start = time.time()
@@ -849,6 +873,8 @@ def main() -> None:
         )
     elif args.stage == "control":
         stage_control(args.budget_s, workers, t_start)
+    elif args.stage == "posthoc":
+        stage_posthoc(args.budget_s, workers, t_start, args.posthoc_factor)
     elif args.stage == "refine":
         stage_refine(args.budget_s, workers, t_start)
     elif args.stage == "closure":
@@ -946,7 +972,10 @@ def stage_closure(budget_s: float, t_start: float) -> None:
         out["closure"] = closure_check(nodes, rho)
         out["saturn_centred_residual"] = saturn_centred_residual(nodes, rho)
         n2 = next_odd(1.5 * r["n_nodes"])
-        ref = continue_member(r["x"], fam, levels=(n2,), with_bundles=False)
+        if n2 > 701:  # a dense solve at more than 701 nodes exceeds the per-command budget
+            ref = {"status": "skipped (N too large for the dense solve)"}
+        else:
+            ref = continue_member(r["x"], fam, levels=(n2,), with_bundles=False)
         out["refined_status"] = ref["status"]
         out["refined_n"] = n2
         if ref["status"] == "persist":
@@ -964,8 +993,171 @@ def stage_closure(budget_s: float, t_start: float) -> None:
             return
 
 
+def stage_posthoc(budget_s: float, workers: int, t_start: float, factor: float = 3.0) -> None:
+    """NOT pre-registered: members not PERSIST in scan and refine that DID reach the target mass
+    (off-node or tail test failed), rerun at three times the scan's node count (cap 1001)."""
+    scan = {r["id"]: r for r in _read_jsonl("scan.jsonl")}
+    ref = {r["id"]: r for r in _read_jsonl("refine.jsonl")}
+    done = _done_ids(OUT_DIR / "posthoc.jsonl")
+    by_n: dict[int, list[dict[str, Any]]] = {}
+    for i, r in ref.items():
+        if i in done or r["status"] != "unresolved":
+            continue
+        n3 = next_odd(factor * scan[i]["n_nodes"])
+        if n3 > 1001:
+            continue
+        by_n.setdefault(n3, []).append(dict(scan[i]["member"]))
+    log(f"posthoc: {sum(len(v) for v in by_n.values())} members left", t_start)
+    for n3, ms in sorted(by_n.items()):
+        kw = {"levels": (n3,), "h0": H0 / 4, "h_floor": H_FLOOR / 4}
+        run_pool(
+            ms, _load("family.json"), kw, OUT_DIR / "posthoc.jsonl", budget_s, workers, t_start
+        )
+        if time.time() - t_start > budget_s:
+            return
+
+
+def classify_member(r_scan: dict[str, Any], r_ref: dict[str, Any] | None) -> str:
+    """Pre-registered classes: persist / rescued / fail-floor / fail-unresolved / region-B."""
+    if r_scan["status"] == "seed_unresolved":
+        return "region-B"
+    if r_scan["status"] == "persist":
+        return "persist"
+    if r_ref is None:
+        return "crash" if r_scan["status"] == "crash" else "not-refined"
+    if r_ref["status"] == "persist":
+        return "rescued"
+    if r_ref["status"] == "unresolved":
+        return "fail-unresolved"
+    return "fail-floor"
+
+
+def locate(ratio: float, extrema: list[float]) -> dict[str, Any]:
+    near = min(LISTED, key=lambda pq: abs(ratio - pq[0] / pq[1]))
+    d = ratio - near[0] / near[1]
+    d_ext = min(abs(ratio - e) for e in extrema)
+    where = "window" if abs(d) <= WINDOW else ("twist-band" if d_ext <= TWIST_BAND else "outside")
+    p100, q100, d100 = nearest_rational(ratio, 100)
+    return {
+        "nearest_listed": f"{near[0]}/{near[1]}",
+        "delta_listed": d,
+        "delta_extremum": d_ext,
+        "where": where,
+        "nearest_q100": f"{p100}/{q100}",
+        "delta_q100": d100,
+    }
+
+
 def stage_summary(t_start: float) -> dict[str, Any]:
-    raise NotImplementedError
+    fam = _load("family.json")
+    extrema = [e["ratio"] for e in fam["extrema"]]
+    scan = {r["id"]: r for r in _read_jsonl("scan.jsonl")}
+    ref = {r["id"]: r for r in _read_jsonl("refine.jsonl")}
+    post = {r["id"]: r for r in _read_jsonl("posthoc.jsonl")}
+    table = []
+    for i, r in sorted(scan.items(), key=lambda kv: kv[1]["x"]):
+        m = r["member"]
+        cls = classify_member(r, ref.get(i))
+        row: dict[str, Any] = {
+            "id": i,
+            "kind": m["kind"],
+            "segment": m.get("segment"),
+            "offset": m.get("offset"),
+            "x": r["x"],
+            "C": r.get("C"),
+            "ratio": r.get("ratio"),
+            "class": cls,
+            "n_scan": r.get("n_nodes"),
+            "frac_scan": r.get("frac_reached"),
+            "offnode_scan": r.get("offnode_residual"),
+            "n_refine": ref.get(i, {}).get("n_nodes"),
+            "frac_refine": ref.get(i, {}).get("frac_reached"),
+            "offnode_refine": ref.get(i, {}).get("offnode_residual"),
+            "tail_refine": ref.get(i, {}).get("final_tail"),
+        }
+        best = r if cls == "persist" else ref.get(i, r)
+        row["final_residual"] = best.get("final_residual")
+        row["final_tail"] = best.get("final_tail")
+        row["deformation_max"] = best.get("deformation_max")
+        row["deformation_harmonic_q"] = best.get("deformation_harmonic_q")
+        row["harmonic_q"] = best.get("harmonic_q")
+        row["lam_u_map"] = best.get("lam_u_map")
+        if r.get("ratio") is not None:
+            row.update(locate(r["ratio"], extrema))
+        if cls == "region-B":
+            row["n_needed_estimate"] = r.get("n_needed_estimate")
+        if cls.startswith("fail"):
+            hist = (ref.get(i) or r).get("last_fail") or {}
+            h = hist.get("history") or []
+            row["tolerance_edge"] = bool(h) and min(h) < 2.0 * TOL
+        if i in post:
+            row["posthoc_status"] = post[i]["status"]
+            row["posthoc_n"] = post[i].get("n_nodes")
+            row["posthoc_offnode"] = post[i].get("offnode_residual")
+        table.append(row)
+    fam_rows = {r["x"]: r for r in fam["rows"]}
+    del fam_rows
+    tested = [t for t in table if t["class"] != "region-B"]
+    fails = [t for t in tested if t["class"].startswith("fail")]
+    summary = {
+        "counts": {
+            c: sum(1 for t in table if t["class"] == c) for c in sorted({t["class"] for t in table})
+        },
+        "fails_by_where": {
+            w: sum(1 for t in fails if t["where"] == w) for w in ("window", "twist-band", "outside")
+        },
+        "fails_outside": [t for t in fails if t["where"] == "outside"],
+        "max_abs_delta_of_window_fail": {},
+        "region_b": [
+            {k: t.get(k) for k in ("id", "x", "C", "ratio", "kind", "offset", "n_needed_estimate")}
+            for t in table
+            if t["class"] == "region-B"
+        ],
+        "table": table,
+    }
+    for p, q in LISTED:
+        tag = f"{p}/{q}"
+        per_seg: dict[str, Any] = {}
+        for t in tested:
+            if t["nearest_listed"] != tag or t["kind"] != "crossing":
+                continue
+            seg = str(t["segment"])
+            d = per_seg.setdefault(seg, {"fail_offsets": [], "pass_offsets": []})
+            key = "fail_offsets" if t["class"].startswith("fail") else "pass_offsets"
+            d[key].append(t["offset"])
+        for d in per_seg.values():
+            d["fail_offsets"].sort()
+            d["pass_offsets"].sort()
+            d["max_abs_fail_offset"] = max((abs(o) for o in d["fail_offsets"]), default=None)
+        summary["max_abs_delta_of_window_fail"][tag] = per_seg
+    control = _read_jsonl("control.jsonl")
+    summary["control"] = sorted(
+        (
+            {
+                "factor": c["member"]["factor"],
+                "offset": c["member"]["offset"],
+                "status": c["status"],
+                "frac": c.get("frac_reached"),
+                "offnode": c.get("offnode_residual"),
+                "tail": c.get("final_tail"),
+                "deformation_harmonic_q": c.get("deformation_harmonic_q"),
+            }
+            for c in control
+        ),
+        key=lambda c: (c["factor"], c["offset"]),
+    )
+    summary["closure"] = _read_jsonl("closure.jsonl")
+    log(f"classes: {summary['counts']}", t_start)
+    log(f"fails by location: {summary['fails_by_where']}", t_start)
+    for tag, segs in summary["max_abs_delta_of_window_fail"].items():
+        log(f"{tag}: {segs}", t_start)
+    for t in summary["fails_outside"]:
+        log(
+            f"FAIL OUTSIDE: id {t['id']} x {t['x']:.5f} ratio {t['ratio']:.7f} {t['class']} "
+            f"nearest q<=100 {t['nearest_q100']} ({t['delta_q100']:.1e})",
+            t_start,
+        )
+    return summary
 
 
 if __name__ == "__main__":
