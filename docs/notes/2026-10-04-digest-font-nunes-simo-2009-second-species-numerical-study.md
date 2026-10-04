@@ -387,3 +387,28 @@ Szebehely, V.: Theory of Orbits. Academic Press, New York (1967).
 Note: Henon 1968 is listed in this paper as "Bull. Astron. 3, 377-393 (1968)" and in the 2002 paper as "Bull.
 Astronomique Paris 1, 377-402 (1966)"; not resolved here. The two Henon papers on interplanetary orbits are
 presumably the same work cited with different metadata (INFERRED).
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_cr3bp_font_nunes_simo_second_species.py` (commits `a18cf2bc`, `553daa8b`).
+All five orbits of Tables 3 and 4 close in `core.cr3bp`.
+
+- Section 5.3, Table 4, Fig. 12g phi: the digest gives 0.98857090907035220406767336927899 (32
+  decimals). The table (p155, re-read at 400 dpi) prints 0.988570907035220406767336927899 (30
+  decimals, like its psi); the digest has an inserted "09". The digested value misses the fixed point
+  of the return map by 2.0e-9; the printed value closes to 1e-13. The other entries of Tables 3 and 4
+  are correct.
+- Section 7(c), the recipe for a state on the encounter circle, is in the PAPER's frame: big primary
+  at (mu, 0), small primary at (mu - 1, 0) (eq. (1.1), p145). `core.cr3bp` has them at (-mu, 0) and
+  (1 - mu, 0) with the same Coriolis sign, so the paper's frame is the project's turned by pi; every
+  angle shifts by pi. Used literally in `core.cr3bp` the recipe never returns to the circle (a control
+  in the test).
+- The Jacobi constant of the paper includes the constant mu(1 - mu) (eq. (1.2), p145; Omega has
+  + mu(1 - mu)/2). `core.cr3bp.jacobi_constant` omits it, so C_J = 2.8 is 2.79990001 in the project.
+  Using 2.8 directly makes orbit 12a miss by 0.33.
+- The convention is printed, not inferred: psi is "the angle between the x-axis and the synodic
+  velocity" (p151; also (xdot, ydot) = (v cos psi, v sin psi) on p146); phi is counter-clockwise from
+  +x on the circle of radius mu^(2/5) about the small primary, and the points are exits from the disk
+  (p145).
+- The "stability parameter" is not defined in either paper; it equals the trace of the linearised
+  return map to 7e-10 .. 3.8e-7 (INFERRED definition).

@@ -459,3 +459,27 @@ Every published value is the preprint value truncated to 15 decimals (the prepri
 1. `tests/core/test_bcr4bp_rosales_2021_l2.py` pins the published digits, which are the preprint's truncated at 15 decimals; the preprint prints the same digits with one more. No change is needed. If a tighter pin were ever wanted, the preprint's extra digit is the only extra information, and it is below what the computation resolves (the test measured 1e-13).
 2. Table 3 (the 21 RTBP Halo orbits) has a single source, the published paper. Any test built on it should cite the published page only.
 3. The preprint adds no new printed number apart from the extra trailing digits. It is therefore a duplicate for corpus purposes and does not warrant its own tests.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_bcr4bp_rosales_2021_l2.py` (commit `4d70e952`). The Table 2 digits above are
+correct (page 7). Three statements in this digest do not hold:
+
+- Section 6, D1, says the control "discriminates the Sun's sense and phase strongly" and that "the
+  Sun's phase at t = 0 is part of the orbit's definition". It does not discriminate the phase.
+  Changing theta_sun0 by delta is the same system shifted in time by delta / omega_S, and the
+  continuation starts at L2, which does not depend on time, so every phase leads to the same orbit
+  and the same multipliers. Measured: theta_sun0 = 0 and theta_sun0 = pi give the same multipliers
+  to about 1e-13. Only the Sun's sense is discriminated (reversed: lambda_1 = 1.0577e6, unit pair at
+  argument 0.317 rad against 0.524).
+- Section 2.1 reads the unit-modulus pair as "an elliptic direction" without saying which plane each
+  multiplier belongs to; the paper (p7) gives only the type, saddle x saddle x center. Computed: the
+  orbit is planar; lambda_2 = 1.66 is in the out-of-plane (z, vz) block (the out-of-plane saddle);
+  lambda_1 and the unit-modulus pair are in the in-plane block.
+- Section 3's reading of Fig. 2 puts the turning point "slightly below 0 near x = -1.14". In the
+  computed continuation the turning point lies between sampled eps = -0.065 and -0.038 (x about 1.14
+  in the project frame, -1.14 in the paper's), so eps reaches about -0.065, not "slightly below 0".
+  This corrects a graph reading, not a printed number.
+- Section 6, D1, "1e-8 relative is a fair target" is too cautious: the multipliers agree to about
+  1e-13 when taken from the cyclic block matrix of the segment transition matrices (the paper's own
+  method, p6); plain eigenvalues of the product monodromy resolve the unit pair only to about 1e-10.

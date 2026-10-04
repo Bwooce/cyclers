@@ -321,3 +321,12 @@ continuation, but the paper prints no number to compare against.
   cycler.
 - Wrongly-read numbers to avoid: the figures' energy `h` is not the BCP Hamiltonian value; the paper's `m_S` is not the
   value in `core/bcr4bp.py`; the paper's Moon is at negative x.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_cr3bp_published_l1_l2_numbers.py` (commit `299c757e`). Section 2.2 leaves the
+2.3e-9 miss of the RTBP L1 frequencies against Table 1's mu unexplained ("rounding of mu or a loose L1
+root"). It is a mass-ratio difference: at mu = 1/(1 + 81.300585) the linearisation of `core.cr3bp`
+gives both printed frequencies to about 1e-13, and both misses imply the same change of mu to 4e-16.
+Table 1's mu is exactly 1/(1 + 81.300587). INFERRED: the RTBP frequencies were computed with
+81.300585; the paper does not say so. A 1e-8 allowance is not needed.

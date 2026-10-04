@@ -76,3 +76,14 @@ stroboscopic map (not periapsis kicks), and the Europa↔Ganymede link is a hete
 not a periapsis-pinned migration. The #688 seed geometry (Europa 3:4 ↔ Ganymede 3:2 orbits
 radially overlap with a ~30 m/s coplanar speed-match) independently corroborates, at screen
 resolution, that this paper's exact target resonance pair is energetically compatible.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_ccr4bp_kumar_2021.py` (commits `d6686881`, `0c503032`), the first published
+control of `core/ccr4bp.py`. Table 1 (p8) has the GM values of Europa and Ganymede in each other's
+rows (9.8869974284299492e12 is Ganymede's, 3.2009998067205903e12 Europa's); read swapped, it
+reproduces the paper's own mu3 (p8) and mu_bar2 (p12) to 16 digits. The paper does print numbers to
+reproduce: the rotation number 3.097848962221668715 (Fig. 1 title), C = 3.0041 and the Europa
+approaches 22052 km and 18721 km (p8); all reproduce (3.0041057, 22051.69 km, 18721.37 km). The
+paper centres Ganymede's circle on Jupiter, `core/ccr4bp.py` on the Jupiter-Europa barycentre
+(0.015 km effect).

@@ -389,3 +389,12 @@ mechanism reference.
   points of the RTBP*, Phys. D 157:283-321, 2001.
 
 End of digest.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_er3bp_peng_2017.py` (commits `7fa199e7`, `0c503032`). This digest treats
+e = 0.2056 and mu = 1.660e-7 as exact; the paper calls both approximate (p3). With mu = 1.6601209e-7
+and e = 0.205630, Table 2's L1 orbit 1 converges to within 2e-7 of the print, where at the printed
+constants it does not. Five of eight Table 2 rows and the Table 3 eigenvalues of the reproduced rows
+are held as strict expected failures; the Fig. 17 captions (p14) number the L1 curve-C orbits
+differently from Table 3, and read that way two L1 eigenvalues match to about 1 percent.

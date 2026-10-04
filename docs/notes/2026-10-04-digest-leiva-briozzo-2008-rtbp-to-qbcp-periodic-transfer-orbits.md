@@ -288,3 +288,21 @@ Control C (QBCP, periodic arc, the C32/C31 members relevant to the project): Tab
 Ranking (best first for reproducibility and relevance): (1) 013_t3 / 013_t4 for the QBCP model check; (2) 180A_1_t1 for the C32 5/2 link; (3) Control A rows for the CR3BP and the C32 identification. Do not use 187A_t1 (printing flag).
 
 Not reproducible from what is printed: the QBCP alpha_kj table and number of terms (the project's tables must be the same as Andreu's 1998 / 2018 versions for the test to be meaningful, which `qbcp.py` states they are), and any member not in Tables 2-4.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_leiva_briozzo_2008_tables.py` (commits `ebbb8d47`, `f0e757e1`). Every digit
+of Tables 1 to 5 agrees with the page images (pp234, 238, 240, 241).
+
+- Section 5, row 187A_t1 (the FLAG above): the misprint is in y, not xdot. Keeping the printed xdot
+  and solving for y alone gives y = -0.0175001 and a return to 1.4e-5; keeping y and solving for
+  xdot leaves 8.6e-2. The row is omitted from the tests.
+- Section 4, epoch: the digest recommends reading (A) first. Reading (B), the state at QBCP clock
+  time t_i, is the one that closes, for all 24 usable arcs (as for Table 2 in `test_qbcp.py`).
+- Section 6, Table 5: d_E and d_M are centre distances in plain units of 384,400 km. All 35 d_E agree;
+  surface and pulsating-scale readings fail. Seven d_M are printed larger than the computed minimum
+  (1.4 to 7.5 km; 032B_1_t4 prints 725 km against 483.4 km, inside the Moon): strict expected
+  failures; probably a minimum sampled at integration steps (INFERRED).
+- Section 1, mu: confirmed. The section abscissa is L1 at mu = 0.0121505482 (1.5e-10); Table 1
+  closes 12 to 1100 times better there than at the project default.
+- Section 10, Control B expects about 1e-7 for 013_t3; measured 5e-6 at the paper's mu.

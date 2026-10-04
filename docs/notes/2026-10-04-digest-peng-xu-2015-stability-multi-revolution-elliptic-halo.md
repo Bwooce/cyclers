@@ -689,3 +689,26 @@ orbit conditions in CRTBP as the initial guess. They divided the MR halo orbit i
 continuation on eccentricity to generate the design", which is Section 3.3 above; their manifold-transfer numbers are from Peng & Xu
 2015b, a different paper); Park & Howell 2024 (cited once for the computation of the two counterparts, section 3 here); Singh, Park &
 Howell 2026 (reference list entry only).
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_cr3bp_peng_xu_2015_stability.py` (commits `681c9b1a`, `ac7bf462`,
+`640248a1`). The e = 0 rows of Tables 1 to 5 (pp294, 295, 299, 300) were re-read; no transcription
+error. The circular-limit controls pass: the fifth power of the single-period monodromy of the L1
+halo with period 4 pi/5 gives lambda_1 = 1.311204e6 (mu 0.009), 1.596597e6 (0.015), 9.31098e5 (0.004)
+and the unit pairs 0.958732 +- 0.284311i and 0.902069 +- 0.431592i, to the printed digits.
+
+- Table 3's third-eigenvalue column is confirmed in the PDF (p299) to be identical to Table 2's in all
+  twelve rows, and now measured: the mu = 0.004 halo whose lambda_1 and 1/lambda_1 match Table 3 has
+  the unit pair 0.989628 +- 0.143652i, not 0.9021 +- 0.4316i. The "probable copy slip" is a measured
+  finding (one strict expected failure records it).
+- The printed 1/lambda_1 column at e = 0 (Tables 1, 2, 4, 5) misses the exact reciprocal of the
+  well-reproduced lambda_1 by 2.8 to 28.8 units of the last digit, and the paper's own products
+  lambda_1 x (1/lambda_1) are 0.99990, 1.00008, 1.00046 and 1.000046, outside four-digit rounding for
+  three rows. A numerical error in the paper's small eigenvalue, against its "at least four
+  significant digits" (p294). Strict expected failures.
+- The orbit is fixed by "a dichotomy of Az" (p285), but the L1 halo family has two members of period
+  4 pi/5 (z0 0.162 and 0.351 at mu 0.009). The low-amplitude one is meant: Figs. 2 and 6 ranges, the
+  lambda_1 match, and the other member has a complex quartet.
+- The Earth-Moon rows (mu 0.0122, e 0.0554) and all e > 0 rows need an elliptic multi-segment
+  corrector; blocked on `#912`.

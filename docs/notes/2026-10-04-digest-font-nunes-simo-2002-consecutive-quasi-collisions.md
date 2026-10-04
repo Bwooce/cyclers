@@ -373,3 +373,23 @@ restreint des trois corps, Ann. Inst. H Poincare Phys. Theor. 62, 211-49.
 (Note: the volume of Henrard in this list is 25; the Bolotin and MacKay 2006 digest cites it as 21, 83-97
 (1980), and the 2009 companion lists it as Celest. Mech. 21. The two papers by the same authors differ; not
 resolved here.)
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_cr3bp_font_nunes_simo_second_species.py` (commits `a18cf2bc`, `553daa8b`).
+The three orbits of Figs. 8 to 10 close in `core.cr3bp`.
+
+- Section 6(c) says the orientation convention of psi "was not found in the printed text" and calls
+  the recipe INFERRED. The convention is printed in the 2009 companion: psi is "the angle between the
+  x-axis and the synodic velocity" (2009, p151; p146). phi is fixed by the marked initial points in
+  the 2002 Figs. 8(b), 9(b), 10(b) (pp138-139), whose polar angles about the small primary, 0.48, 1.06
+  and 0.93, are the printed phi. The inferred reading was right.
+- The recipe is in the paper's frame (big primary at (mu, 0)); `core.cr3bp` is that frame turned by pi.
+  The paper's C_J includes mu(1 - mu); `core.cr3bp.jacobi_constant` does not (C_J = 2.8 is 2.79990001
+  there).
+- Fig. 8 caption (p138, re-read at 300 dpi) prints the stability parameter as 2.338645E+7. The trace
+  of the return map is 2.3386449e6: all seven digits agree, the exponent is one lower. Figs. 9 and 10
+  agree at their printed exponents. Most likely a slip in the printed exponent; held as a strict
+  expected failure at E+7 and asserted at E+6.
+- No period is printed for these orbits. Computed: Fig. 8 25.105927, Fig. 9 12.550819, Fig. 10
+  25.099866.

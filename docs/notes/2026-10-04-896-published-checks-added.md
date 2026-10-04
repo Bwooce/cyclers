@@ -5,7 +5,8 @@ into a permanent test of the project's models ("use the knowledge from the new p
 add the checks."). New test files only; no model, data or existing test was changed. A check that
 fails is held as a strict expected failure (`xfail(strict=True)`) with its numbers in the reason.
 
-Eleven new files under `tests/core/`. Each exits 0 (strict xfails count as passing); wall times are
+Thirteen new files under `tests/core/` (items j and k, Gomez & Olle 1991 and Peng & Xu 2015, were
+added later; addenda with the evidence were appended to the thirteen digests concerned). Each exits 0 (strict xfails count as passing); wall times are
 with the project's default `-n 6`. `uv run mypy src tests` is clean (893 files), ruff check and
 format are clean.
 
@@ -22,6 +23,8 @@ format are clean.
 | `test_ccr4bp_kumar_2021.py` | 25 s (one control alone is 12.9 s, above the 5 s per-test aim) |
 | `test_er3bp_peng_2017.py` | 7 s |
 | `test_cr3bp_anderson_kumar_2024.py` | under 1 s |
+| `test_cr3bp_gomez_olle_1991.py` | 8 s (`-n 0`) |
+| `test_cr3bp_peng_xu_2015_stability.py` | 4 s (`-n 0`) |
 
 ## Controls
 
@@ -81,6 +84,16 @@ format are clean.
 | Peng et al. 2017 | controls | er3bp | wrong resonance period; f0 = pi orbit started at 0; symplectic monodromy | as stated | pass |
 | Kumar & Anderson 2024 (AAS 24-288) | p7 | cr3bp, mu = 3.54326e-5 | Uranus-Oberon C(L1) = 3.00454, C(L2) = 3.00450 within one last decimal below the computed value | 3.0045498, 3.0045025 (the print is the computed value cut, not rounded, for L1) | pass |
 | Kumar & Anderson 2024 | control | cr3bp | convention with mu(1 - mu) added misses L1 | 4.5 last-decimal units | pass |
+| Gomez & Olle 1991 II | Fig. 8(a), 8(b), p159 | cr3bp, mu = 1e-6 | printed C = jacobi_constant + mu(1 - mu); perpendicular crossing at the printed half period; closure after 2T; Broucke type | C to 1e-14; crossing time 4e-11, xdot 1e-10; closure 1.3e-9, 4.3e-10 | pass |
+| Gomez & Olle 1991 II | p163 starting orbits A0, A1, B1 | cr3bp (Sundman) | perpendicular crossing at k pi and passage at O(mu) | xdot -1.1 to -1.26; passage 1e-5 to 3.5e-5 | strict xfail |
+| Gomez & Olle 1991 I, II | Lemma 7, Thm 10 | cr3bp | computed k pi members near the printed ones pass at the first-order distance mu K0 | 9e-6 to 3e-5 relative | pass |
+| Gomez & Olle 1991 II | Figs. 14, 16, 18, pp162-165 | er3bp, e = 0.5, velocity d/df | periapsis and axis crossing at f = k pi, first-order distance, closure (Fig. 14) | 1e-13 in f; 1e-5 relative; 9.3e-7 | pass |
+| Gomez & Olle 1991 | controls | er3bp | d/dt reading and big-primary-at-origin reading fail | no crossing; 0.5-1.2 | pass |
+| Gomez & Olle 1991 | Figs. 14, 18 | `genome.er3bp_periodic.correct_er3bp_periodic` | symmetric mode at tol 1e-5 accepts the printed orbit | moves 9e-12, 2e-11 | pass |
+| Peng & Xu 2015 | Tables 1-5 e = 0 rows, pp294-300 | cr3bp, L1 halo of period 4 pi/5, monodromy to the fifth power | lambda_1 at mu 0.009, 0.015, 0.004; unit pairs; trivial pair | 1.311204e6, 1.596597e6, 9.31098e5; 0.958732 +- 0.284311i, 0.902069 +- 0.431592i | pass |
+| Peng & Xu 2015 | Tables 1, 2, 4, 5 | cr3bp | printed 1/lambda_1 within one last digit | 2.8 to 28.8 units off the exact reciprocal | 4 strict xfail |
+| Peng & Xu 2015 | Table 3 lambda_3 | cr3bp | printed unit pair at mu 0.004 | 0.989628 +- 0.143652i against printed 0.9021 +- 0.4316i (copied from Table 2) | strict xfail |
+| Peng & Xu 2015 | controls | cr3bp | single-period monodromy, other mu, period 6 pi/7, the other family member of period 4 pi/5 all miss | as stated | pass |
 
 ## Findings (every strict expected failure)
 
@@ -135,6 +148,30 @@ format are clean.
    the rows are wrong. Table 3: the measured largest eigenvalues do not match their rows; read
    with the row numbering of the Fig. 17 captions the two L1 values match to 1.2 and 0.9 percent,
    the L2 value still does not. Nothing relabelled is asserted.
+
+8. **Gomez & Olle 1991 II, p163 starting orbits.** From the printed (x, ydot) the axis crossing
+   comes 1.35e-6 to 1.46e-6 after k pi with xdot -1.1 to -1.26, and the orbit passes 1e-5 to
+   3.5e-5 from the small primary instead of about 1e-7. The computed members whose periapsis lies
+   on the axis at t = k pi differ by (dx, dydot) = (+5.89e-6, -5.89e-6), (+9.08e-6, -9.08e-6),
+   (-1.537e-5, +1.538e-5), with x + ydot (Theorem 10's family parameter) equal to the printed sum.
+   INFERRED: the printed parameter is right and the printed x is off. Those members pass at the
+   paper's first-order distance, so the theory reproduces in the project model.
+9. **Peng & Xu 2015.** The printed 1/lambda_1 misses the exact reciprocal of the reproduced
+   lambda_1 by 2.8 to 28.8 units of the last digit, and the paper's own products
+   lambda_1 x (1/lambda_1) are 0.99990, 1.00008, 1.00046 and 1.000046: a numerical error in the
+   paper's small eigenvalue. Table 3's lambda_3 column is a copy of Table 2's (confirmed in the
+   PDF and now measured: 0.989628 +- 0.143652i at mu 0.004).
+
+## Code findings (not fixed; no source was edited)
+
+- `genome.er3bp_periodic.correct_er3bp_periodic`: at its default tol 1e-10 it raises
+  ConvergenceError on all three printed Gomez & Olle elliptic orbits (line search stalls at 5.3e-8,
+  9.8e-6, 4.4e-6), because its residual is taken at a fixed f where d(xdot)/dt is about 1e8 near a
+  1e-7 periapsis. Its Radau full-period check returns 4.2e-5 and 2.2e-2 against its own 1e-5 bound
+  and only logs a warning, so `genome.er3bp_continuation`, which uses it, would accept such orbits
+  silently. The plain integrators resolve the 1e-7 passages about as well as a Sundman integration
+  (periapsis angle 1e-7 to 5e-6 at 1e-13); the fixed-time residual is what is ill-conditioned.
+- `search/er3bp_periodic` holds only a canonical-momentum converter and a monodromy helper.
 
 ## Other findings (passing checks that changed what we know)
 
@@ -286,7 +323,8 @@ b97188d3, 080b85ea (Oshima); 4d70e952 (Rosales 2021); a18cf2bc, 553daa8b (Font-N
 0a82441d, d9bfce56 (Neelakantan-Ramanan); ebbb8d47, f0e757e1 (Leiva-Briozzo 2008); 833f6ce7,
 0e47d2c7 (Leiva-Briozzo 2005); 299c757e, c97b72fc, f6dabee6 (Jorba 2020, Singh 2026); b752b68b,
 fd2eeabf (Mako-Salamon); d6686881, 7fa199e7, 0c503032 (Kumar 2021, Peng 2017); 672660af (Kumar &
-Anderson 2024); 8a8e9f4d and the follow-up (this note).
+Anderson 2024); e08394d8, c02ec829 (Gomez & Olle 1991); 681c9b1a, ac7bf462, 640248a1 (Peng & Xu
+2015); 8a8e9f4d, d959d203 and the follow-up (this note, digest addenda, ledger).
 
 Every strict expected failure was run once with `--runxfail`: each fails on its asserted
 comparison (an `AssertionError` with the numbers quoted above), none by an exception.

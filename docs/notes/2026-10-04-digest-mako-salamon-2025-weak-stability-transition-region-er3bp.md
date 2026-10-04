@@ -471,3 +471,26 @@ polar equations A3-A5 reduce to).
   the model has no Moon; the Moon's orbit is a length marker only (semimajor axis 384,400 km).
 - The data availability statement reads "No datasets were generated or analyzed during the current study." There are no tables and no
   code link.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_er3bp_mako_salamon_2025.py` (commits `b752b68b`, `fd2eeabf`); the
+non-reproduction of the unstable bands is registered as `#925`. Points of this digest found against
+the PDF:
+
+- Section 1.3 copies A7 (p19), p_r2 = + e r2~ sin f / (1 + e cos f), without comment. A4 (p18) gives
+  r2-dot proportional to (1 + e cos f) p_r2 + e r2~ sin f, which vanishes only for the opposite sign,
+  so A7 and the A6 numerator have a sign slip. Using A7 as printed shifts the boundary speed by less
+  than 5e-4.
+- Section 4 presents only the fixed return half-line; the proof of Proposition 1 (p6) reads as a
+  rotating one (theta-dot = (df/dt)(theta' + 1) holds for the rotating-pulsating angle). Both readings
+  give the same classifications.
+- Not in the digest: p3 speaks of "threshold values of the mean anomaly" while the sweeps are in the
+  true anomaly f0 (differing by up to 1.9 deg at e = 0.0167).
+- Sections 3.4 and 5: the 1.22426 km/s variant for Figure 7 escapes at every f0 in the model; the
+  printed 1.20446 km/s sits on the model's boundary, so the p15 v_p remark is the likelier slip.
+- Not in the digest: at the printed Figure 8 speed (0.982 v_e) the two-body apoapsis is about
+  3.5e5 km, but the plotted orbits reach several million km, which the model gives only near
+  0.998 v_e; the printed speed is probably not the one Figure 8 was computed with.
+- Section 1.4 attributes R_E = 6378 km to Remark 1; it is in the main text between Remarks 1 and 2
+  (p8).

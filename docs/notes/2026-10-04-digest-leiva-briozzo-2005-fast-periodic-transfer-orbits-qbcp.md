@@ -153,3 +153,24 @@ Not in this paper:
 - The alpha_kj tables.
 
 Use for the corrected-model effort (`#891`, `#892`): this paper's two orbits supply a third independent printed QBCP control (after the 2018 POL1 and POL2 and the 2008 Table 2 orbits), with stated epochs, a modest instability multiplier (about 5.3) and 12 printed digits. The expected result is closure far better than the 2008 rows allow. Run them in `core/qbcp.py` with the printed time as the clock. They exercise the Sun's sense, the coefficient tables and the epoch convention together at a lunar distance of 12,000 km, so they probe the model where the Sun's tidal field matters (large orbit, loop enclosing Earth and Moon, period equal to the Sun's synodic period), which the L1 and L2 libration-point controls do not.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_leiva_briozzo_2005_more.py` (commits `833f6ce7`, `0e47d2c7`). Signs were read
+from the page images (the text layer drops minus signs); the digest's numbers are correct.
+
+- Section 3.2 says the 7 km difference in orbit 2's lunar-surface distance is "INFERRED to be the
+  Earth-Moon distance scale factor of the pulsating QBCP frame". Not supported: dividing each centre
+  distance by alpha_6 at its start time gives an orbit-1-minus-orbit-2 difference of 32.1 km (printed
+  31), but orbit 1 alone would then need a lunar radius of 1637 km. The plain reading matches orbit
+  1 exactly (10,432.0 km with 1737.4 km) and misses orbit 2 by 7 km; the printed start abscissas put
+  orbit 1 39.2 km farther from the Moon than orbit 2. Unexplained.
+- Section 1 uses the localisation orbit (x0 = 1.107569, ydot = -1.644251, tau = 6.372441) only for
+  the sign of h. Its h follows from x0 and ydot (1.2e-6), but the orbit misses its start by 3.5e-2
+  after tau; the symmetric orbit at that h has x0 = 1.110654 and period 6.370242.
+- The Earth distances (computed 134,582.8 and 134,377.7 km, printed 134,588 and 134,381) and three
+  of four stability parameters (orbit 1: 5.5036, 2.0632 against 5.496, 2.069; orbit 2 |s1| 5.5401
+  against 5.531) do not reproduce to the printed digits; not explained by the mass ratio. Strict
+  expected failures; cause undetermined (possibly a remaining difference between `core.qbcp` and the
+  paper's model).
+- The seed three-body orbit returns after one Sun period to 4.7e-5.

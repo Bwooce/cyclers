@@ -336,3 +336,21 @@ Rithwik and Ramanan 2019 and 2021 (the source of the Table 8 orbits and of the D
 - Table 7 row 1 and Table 6 row 3 give dV_HOI of 0.48822 and 0.48828 km/s for the same case.
 - The flight duration 4.92426 days (text, p8 and p15) versus 4.9241521 or 4.924152 (Tables 6, 7, 9).
 Each is of the size expected from separate runs or rounding and does not affect the paper's conclusions.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_er3bp_neelakantan_2022_more.py` (commit `0a82441d`).
+
+- Sections 1 and 6 say that "for any reproduction the printed 0.0122 and 0.0554 must be used
+  literally". That is wrong for the two circular-problem halos (p7, Az 15,000 km benchmark; p8, M5N2
+  circular comparison orbit). At mu = 0.0122 neither crosses the x-z plane perpendicularly (half-period
+  (xdot, zdot) residuals 0.031 and 0.0037). Solving for the mass ratio at which each printed state is
+  periodic gives 0.012277471000011 and 0.01227747100007, the same value from both states
+  independently; at mu = 0.012277471 they close to 1.8e-10 and 2.7e-11. The paper never prints this
+  value. The Table 8 elliptic rows do close at 0.0122 (`test_er3bp_neelakantan_2022.py`).
+- Section 3 lists the periods 12.05848 d and 11.459994 d without caution. The paper prints no time
+  unit, and the two periods imply different ones (4.3795 d and 4.3768 d; ratio printed 1.0522239,
+  computed 1.0515584). Held as a strict expected failure.
+- The p7 digits the digest called "small in the scan" (0.8229570002125, 0.152044631998602) are
+  confirmed by closure.
+- Table 8 "M4N2 Lyapunov" (digits confirmed on p14) is still not reproduced; registered as `#925`.

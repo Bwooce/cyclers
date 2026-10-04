@@ -409,3 +409,13 @@ opposition) correspond to the two phases a Sun-forced search must consider; (iii
 resonant periodic orbit web in the QBCP), 23 (Olikara, Gomez and Masdemont) and 24 (Rosales, Jorba and Jorba-Cusco, halo-like
 tori around L2 in the BCP) are the published literature nearest to a Sun-forced periodic orbit search and should be checked by
 the literature review for #884.
+
+## Addendum 2026-10-04 (`#896`): corrections found when the printed numbers were made tests
+
+Test: `tests/core/test_cr3bp_published_l1_l2_numbers.py` (commits `c97b72fc`, `f6dabee6`). Section
+7.1, item 1 proposes a 1e-4 relative tolerance (about 2e-3 day) for the CR3BP bifurcation periods.
+That would hide a real discrepancy: Table 4's vertical-family axial bifurcation is 19.203197 d in
+`core.cr3bp` against the printed 19.2033 (1.03e-4 d), robust to integrator, mu and time unit (the
+paper's own ER3BP brackets pin its unit to the project's within 1e-6). Half a unit of the last printed
+decimal (5e-5 d) is used; Tables 2 and 3 pass at that level (14.831874 d, 18.718299 d). Section 5.2's
+inferred nominal units are confirmed.
