@@ -155,8 +155,12 @@ numbers COMPUTED on 2026-10-04 unless marked.
 | `genome/test_bct_transfer.py::test_backward_arc_reaches_apoapsis`, `test_hiten_signature_band`; `search/test_cislunar_bct_search.py::test_search_emits_transfer_capability_records` | (c), holds at another Sun phase | see 3.1 | 5.648 LD at the 70-day window edge | 3.178 LD at 45.9 d, interior |
 | `data/test_v3_bcr4bp.py::test_v3_bcr4bp_pol1_integrator_independent_passes` | (c), does not hold | strict xfail; see 3.2 | | |
 
-Two new tests per helper are listed in section 2. Commits: `49df785e`, `7c5e3e55`, `4f65771f`,
-`0696575d`, `e175c833`, `9aa470a9`, plus the commit of this note's final version.
+New tests (section 2): one identity test for the bicircular helper
+(`test_se_to_em_transform_mu0_identity`, plus the strengthened convergence test) and two for
+the coherent helper. `tests/genome/test_qbcp_torus.py::test_correct_qbcp_torus_convergence`
+was not touched: it still uses 5 samples and passes at its truncation floor (about 7e-4)
+against a 1e-3 tolerance, so it checks little. Commits: `49df785e`, `7c5e3e55`, `4f65771f`,
+`0696575d`, `e175c833`, `9aa470a9`, `6f5cbcf1`, plus the commit of this correction.
 
 ### 3.1 The Hiten band
 
@@ -292,7 +296,7 @@ QBCP set satisfies it.
 - The Task 1 command takes 5 min 24 s after the repairs (COMPUTED, 6 workers); the
   slowest item is `test_variational_crnbp_torus.py::test_n1_1_cannot_represent_...` (211 s),
   unrelated to these models. The QBCP torus fixture costs 40 to 85 s per worker.
-- `uv run ruff check .` reports four errors, all in another agent's uncommitted #895 files
-  (`scripts/screen_895_titania_oberon_realeph.py`,
-  `src/cyclerfinder/search/titania_oberon_realeph_895.py`); none in files touched here.
+- `uv run ruff check .` first reported four errors, all in another agent's then-uncommitted
+  #895 files; after that agent's commits `71630e05` and `5910b3e2` it is clean (COMPUTED,
+  rechecked at the end).
 - The bicircular "POL1" seed frame (section 3.2) affects the docstrings of five test files.
