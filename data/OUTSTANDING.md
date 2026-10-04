@@ -1067,6 +1067,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   logarithmic potential band 1.98 to 2.035 for MEGNO). A positive indicator on a cycler is
   EXPECTED (cyclers are hyperbolic) and disqualifies nothing; the use is on grids around a
   quasi-cycler and in the capture sweeps (`#908`). Unproven for close encounters and short arcs.
+  Cincotta & Simo 1999 (conditional entropy; digest
+  `docs/notes/2026-10-04-digest-cincotta-simo-1999-conditional-entropy.md`) read in full: it adds
+  nothing over FLI and MEGNO (same regular value 2 as MEGNO, similar cost, noisier, and its
+  speed-based density breaks down at a flyby); do not build it. Its Henon-Heiles orbit labels
+  (h = 0.118: q2 = 0.305 and 0.5 regular, 0.509 layer, 0.6 chaotic) are a sourced classification
+  test for an FLI or MEGNO module; Henon & Heiles 1964 (AJ 69:73) is needed to source the potential.
 - `#927` — registered 2026-10-04. **LEIVA & BRIOZZO 2005 DOES NOT REPRODUCE IN `core.qbcp`: A
   REMAINING MODEL DIFFERENCE?** From `#896` item (e) (`tests/core/test_leiva_briozzo_2005_more.py`,
   strict xfails): the seed orbit closes (4.7e-5), but the localisation orbit misses by 3.5e-2 after
