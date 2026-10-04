@@ -80,10 +80,14 @@ class KSModel:
     ----------
     k2 : gravitational parameter of the regularisation centre (book's K^2).
     omega : rotation rate of the frame about +z; the Coriolis force 2 omega (vy, -vx, 0) is
-        applied in regular form. The centrifugal term, if any, belongs in ``potential``.
+        applied in regular form. The centrifugal term, if any, belongs in the potential.
     centre : position of the regularisation centre in the output frame (3,).
-    autonomous : True when ``h`` is constant (no explicit time dependence in ``V``, no
-        ``force``); then ``h' = 0`` exactly and the transition matrix is available.
+    autonomous : False when ``V`` depends explicitly on time (then ``potential_dt`` enters
+        ``h'``). With ``autonomous`` True and no ``force``, ``h' = 0`` exactly and the
+        transition matrix is available; a ``force`` always adds its work ``-2 (w, L^T P)``.
+
+    A subclass overrides ``potential_and_grad`` (and ``potential_hess`` for the transition
+    matrix), and optionally ``force`` and ``potential_dt``.
     """
 
     k2: float = 1.0

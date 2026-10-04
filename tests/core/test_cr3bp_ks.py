@@ -158,7 +158,8 @@ def test_kepler_against_universal_variables(
 def test_near_collision_ellipse_through_pericentre() -> None:
     """e = 1 - 1e-8, a = 1: through the pericentre (q = 1e-8) and out; against Kepler.
 
-    Measured 3e-15 in position, 3e-13 relative in the pericentre speed 1.4e4.
+    Measured 2.2e-13 in position and 3.9e-13 relative in velocity at the end (the pericentre
+    speed is 1.4e4); closest approach 1.000000005e-8.
     """
     k2, a, e = 1.0, 1.0, 1.0 - 1e-8
     # start at apocentre, run half a period plus 0.1 (through the pericentre)
@@ -176,7 +177,7 @@ def test_near_collision_ellipse_through_pericentre() -> None:
 @pytest.mark.parametrize("q", [1e-2, 1e-4, 1e-6, 1e-8])
 def test_hyperbolic_pass_error_flat_in_pericentre(q: float) -> None:
     """Lunar k2, v_inf = 0.3: from r ~ 0.15 through pericentre q and out, against Kepler from
-    the same start. Measured below 1e-14 in position and 2.4e-14 relative in velocity for every
+    the same start. Measured below 1.3e-14 in position and 2.4e-14 relative in velocity for every
     q from 1e-2 to 1e-8 (the step count is 300 to 312 for all q)."""
     k2 = MU_EM
     vp = math.sqrt(0.09 + 2 * k2 / q)
@@ -193,8 +194,8 @@ def test_hyperbolic_pass_error_flat_in_pericentre(q: float) -> None:
 
 def test_radial_fall_from_rest() -> None:
     """S&S (5,30): from rest at r0 = 1, K = 1, collision at t = pi/(2 sqrt 2) = 1.11072073453959,
-    with u passing smoothly through 0 (measured r = 1e-30, t to 1e-15); then the reflected branch
-    returns to r0 at t = pi/sqrt(2)."""
+    with u passing smoothly through 0 (measured: r = 0 at the event u1 = 0, t to 1e-14); then the
+    reflected branch returns to r0 at t = pi/sqrt(2) (measured 8e-14)."""
     m = KSModel(1.0)
     y0 = ks_state_from_physical(m, np.array([1.0, 0, 0, 0, 0, 0]))
     assert y0[8] == 1.0  # h = K^2/r0
@@ -232,7 +233,7 @@ _LLIBRE_RADII = [
 def test_llibre_circular_orbits(c: float, radius: float, sense: int) -> None:
     """A circular Kepler orbit of the printed radius has the printed Jacobi constant (to the
     7-digit rounding of the radius: measured 1e-8 to 5e-7) and stays circular in the rotating
-    frame, turning at n - 1 (measured: radius to 1.5e-14, angle to 3e-12 after t = 3)."""
+    frame, turning at n - 1 (measured: radius to 6e-15, angle to 2.7e-12 after t = 3)."""
     m = MoonCentredCR3BP(1.0)  # mu_core = 1: the mu = 0 problem about the origin
     n = sense * radius**-1.5
     st = np.array([radius, 0.0, 0.0, 0.0, (n - 1.0) * radius, 0.0])
@@ -248,8 +249,8 @@ def test_llibre_circular_orbits(c: float, radius: float, sense: int) -> None:
 def test_llibre_radial_orbit_returns_to_two_over_c() -> None:
     """Zero sidereal angular momentum ejection at C = 3.25: apocentre 2/C, rotating-frame
     velocity -e_z x x there, re-collision after the Kepler period 2 pi C^(-3/2) along the
-    ejection direction turned by -t (the frame turns by +t). Measured: apocentre 2.8e-15,
-    times 3e-15, direction 1.3e-14 (the wrong Coriolis sign would give -2.1 rad)."""
+    ejection direction turned by -t (the frame turns by +t). Measured: apocentre 2.4e-15,
+    times 3.6e-15, direction 1.2e-14 (the wrong Coriolis sign would give -2.1 rad)."""
     m = MoonCentredCR3BP(1.0)
     c, theta = 3.25, 0.4
     y0 = np.zeros(10)
@@ -326,7 +327,7 @@ def _m1(theta: float, rtol: float = RTOL) -> float:
 def test_rodriguez_del_rio_four_one_ec_orbits() -> None:
     """Exactly four zeros of M_1 on [0, pi) (thesis T5, pp. 42-43; M_1 has period pi because the
     Levi-Civita plane double-covers), each a true ejection-collision orbit: |u| at the minimum is
-    below 1e-12 (measured 5e-17 to 1.5e-16, i.e. r ~ 1e-32). Measured angles theta/pi =
+    below 1e-12 (measured 3e-17 to 1.8e-16, i.e. r ~ 1e-32). Measured angles theta/pi =
     0.0446757, 0.3194493, 0.5455145, 0.7680409 (not printed in the thesis; the digest agent's
     independent Levi-Civita run found the same to six digits)."""
     n = 24
@@ -346,7 +347,7 @@ def test_rodriguez_del_rio_four_one_ec_orbits() -> None:
 
 def test_ks_matches_printed_levi_civita_equations() -> None:
     """Rodriguez del Rio eq. 2.26 (p.22) integrated as printed (a = 4, dt = 4 r ds_T, thesis
-    frame = core frame with mu_core = 1 - mu_T) equals the KS run at s = 4 s_T: measured 4e-15."""
+    frame = core frame with mu_core = 1 - mu_T) equals the KS run at s = 4 s_T: measured 1.1e-15."""
 
     def lc_rhs(s: float, z: FloatArray) -> FloatArray:
         u, v, up, vp = z[:4]
@@ -402,7 +403,7 @@ def test_ks_matches_printed_levi_civita_equations() -> None:
 
 
 def test_agrees_with_cr3bp_eom_away_from_the_moon() -> None:
-    """3D arc staying beyond 0.2 of the Moon: measured 2.3e-14 (state), 4e-14 (energy)."""
+    """3D arc staying beyond 0.2 of the Moon: measured 2.1e-14 (state), 3.8e-14 (energy)."""
     m = MoonCentredCR3BP(MU_EM)
     st = np.array([0.8, 0.1, 0.05, 0.1, -0.2, 0.05])
     arc = propagate_ks(m, st, 1.0, rtol=RTOL, atol=ATOL)
@@ -424,12 +425,14 @@ def _pass_start(q: float) -> FloatArray:
     return propagate_ks(m, peri, -0.08, rtol=RTOL, atol=ATOL).state
 
 
-@pytest.mark.parametrize(("q", "bound"), [(1e-2, 1e-13), (1e-3, 1e-12), (1e-4, 5e-10)])
+@pytest.mark.parametrize(("q", "bound"), [(1e-2, 2e-13), (1e-3, 5e-12), (1e-4, 1e-9)])
 def test_pass_matches_tight_cartesian_reference(q: float, bound: float) -> None:
     """Through the pass and out (t = 0.16) against cr3bp_eom DOP853 at rtol 2.3e-14 (the
-    tightest DOP853 accepts). Measured |KS - Cartesian|: 1.7e-14, 9.2e-14, 3.7e-11; the
-    Cartesian run's own Jacobi error is 1.1e-14, 2.1e-14, 5.8e-11, so at q = 1e-4 the reference
-    is the limit, and the bound there is set by it."""
+    tightest DOP853 accepts). Measured |KS - Cartesian| in two runs whose start states differ
+    only in the last bits: 1.7e-14 and 4.8e-14, 9.2e-14 and 7.0e-13, 3.7e-11 and 1.2e-10; the
+    Cartesian run's own Jacobi error moves with it (1.1e-14 and 1.7e-14, 2.1e-14 and 1.1e-12,
+    5.8e-11 and 1.9e-10), so from q = 1e-3 down the reference is the limit, and the bounds are
+    set by it."""
     m = MoonCentredCR3BP(MU_EM)
     s0 = _pass_start(q)
     arc = propagate_ks(m, s0, 0.16, rtol=RTOL, atol=ATOL)
