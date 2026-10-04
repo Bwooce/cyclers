@@ -54,8 +54,6 @@ primary positive-control test below pins one specific, verified-fast seed
 
 from __future__ import annotations
 
-import math
-
 import numpy as np
 import pytest
 from scipy.integrate import solve_ivp
@@ -74,28 +72,10 @@ from cyclerfinder.search.variational_periodic_orbit_qbcp import (
 # tests/core/test_qbcp.py's _POL1_REFLECTED (see that file for provenance).
 _POL1 = np.array([0.8369141677649317, 0.0, 0.0, 0.0, 0.8391311559808445, 0.0])
 
-# Independent cross-check golden: the project's OWN from-scratch 12-segment
-# multiple-shooting corrector (scripts/analyze_593_qbcp_l1_substitute_reconciliation.py
-# -- CR3BP-L1 (own quintic solve) -> BCR4BP via sequential mu_sun continuation
-# -> QBCP handoff with real time-varying alphas, analytic STM, plain Newton),
-# converging to periodicity resnorm 1.1292257521847358e-14. This is the FULL
-# 6-state (the script itself only prints x0/py0); recomputed directly from
-# its own build_l1_substitute(use_buggy_qbcp=False) internals in this session
-# (2026-07-16), independently of and prior to running the harmonic-balance
-# method below.
-# Recomputed 2026-10-04 by the same independent corrector after the alpha_1 j = 5 coefficient
-# in core/qbcp.py was corrected against Andreu (1998) Table 1.5 (resnorm 1.5e-14). The correction
-# moved this state by 8.59e-08, and the harmonic-balance method moved by the same amount.
-_MULTISHOOT_STATE0 = np.array(
-    [
-        0.8358664683349784,
-        -0.010166531811343641,
-        0.0,
-        0.010223785064039955,
-        0.8211146521049189,
-        0.0,
-    ]
-)
+# #892 (2026-10-04): this file used to cross-check against a 12-segment multiple-shooting
+# state computed in the defective model (``_MULTISHOOT_STATE0``, 1.8e-2 from POL1, with
+# y = -0.0102 and px = +0.0102). In the corrected model the method reproduces the published
+# point itself, so the positive control now compares with ``_POL1`` directly.
 
 
 def test_reconstruct_state0_matches_series_at_theta_zero() -> None:
@@ -162,40 +142,48 @@ def test_warm_start_shape_mismatch_raises() -> None:
 
 def test_low_harmonics_converges_residual_but_not_closure() -> None:
     """Documents WHY the default ``n_harmonics`` is 32, not the CR3BP
-    sibling's 8 (module docstring's cited numbers, reproduced live here):
-    at ``n_harmonics=8`` the harmonic-balance residual can plateau just
-    above ``tol`` while ``closure_residual`` -- an independent check via
-    real nonlinear propagation -- is O(1), i.e. NOT a periodic orbit at
-    all. This is the harmonic-balance signature of #544's violent
-    instability: too few Fourier degrees of freedom let the truncated
-    series zero the residual AT collocation points while diverging wildly
-    BETWEEN them once the true unstable flow amplifies the gap.
+    sibling's 8: at a low harmonic count the harmonic-balance residual is
+    driven below ``tol`` (``converged=True``) while ``closure_residual`` --
+    an independent check via real nonlinear propagation -- is O(1), i.e.
+    NOT a periodic orbit at all. This is the harmonic-balance signature of
+    #544's violent instability: too few Fourier degrees of freedom let the
+    truncated series zero the residual AT collocation points while
+    diverging wildly BETWEEN them once the true unstable flow amplifies the
+    gap.
+
+    #892 (2026-10-04): the test used ``n_harmonics=8`` and pinned a residual
+    plateau of 9.396e-5 above ``tol``; both belonged to the defective model.
+    In the corrected model (measured): ``n_harmonics`` 4 gives residual
+    1.428e-7 with closure 0.26, 6 gives 1.0e-9 with closure 6.3e-2, 8 gives
+    7.9e-12 with closure 5.9e-4. 4 is used so the closure gate still has an
+    O(1) failure to catch.
     """
     system = qbcp.qbcp_default()
     res = discover_qbcp_periodic_orbit(
         system,
-        n_harmonics=8,
+        n_harmonics=4,
         n_restarts=1,
         coefficient_noise=0.0,
         rng=np.random.default_rng(0),
         tol=1e-6,
     )
-    assert not res.converged
-    assert res.residual_rms == pytest.approx(9.396109459538388e-05, rel=1e-3)
-    assert res.closure_residual > 0.1  # NOT a genuine periodic orbit
+    assert res.converged  # the residual criterion alone is satisfied ...
+    assert res.residual_rms == pytest.approx(1.427801e-07, rel=1e-3)
+    assert res.closure_residual > 0.1  # ... but it is NOT a genuine periodic orbit
 
 
 def test_positive_control_cold_start_reproduces_qbcp_l1_substitute() -> None:
     """Seedless spectral method, cold-started with the module's own default
     center guess (no warm_start, no continuation bootstrap), converges to
     the EM-L1 QBCP periodic orbit anchoring the POL1 dynamical substitute --
-    and does so to essentially machine precision agreement with this
-    project's independently-built 12-segment multiple-shooting corrector.
+    and lands on the published POL1 point (#892: before the model was
+    corrected it agreed only with a multiple-shooting state computed in the
+    same defective model, 1.8e-2 from POL1).
 
     "Cold": only ``rng=np.random.default_rng(0)`` is supplied; the caller
-    provides no state derived from ``_MULTISHOOT_STATE0`` or ``_POL1`` at
-    all, only the module's own default ``center_guess=(0.85, ..., 0.8, ...)``
-    (itself ~0.041 away from POL1's (x, py), not already-converged).
+    provides no state derived from ``_POL1`` at all, only the module's own
+    default ``center_guess=(0.85, ..., 0.8, ...)`` (itself ~0.041 away from
+    POL1's (x, py), not already-converged).
     """
     system = qbcp.qbcp_default()
     res = discover_qbcp_periodic_orbit(system, rng=np.random.default_rng(0))
@@ -207,22 +195,11 @@ def test_positive_control_cold_start_reproduces_qbcp_l1_substitute() -> None:
     # period closes tightly -- not circular with residual_rms.
     assert res.closure_residual < 1e-4
 
-    # Cross-check against the independent 12-segment multi-shooting
-    # corrector: essentially machine-precision agreement (~5e-15 observed),
-    # not merely "in the same neighborhood".
-    diff_multishoot = np.linalg.norm(res.state0_pm - _MULTISHOOT_STATE0)
-    assert diff_multishoot < 1e-8
-
-    # Regression-pinned distances to the PUBLISHED POL1 golden. These are
-    # NOT ~0 -- #544's own investigation attributes the gap to a
-    # Gimeno-2018-vs-Rosales-2023 model-instance Fourier-refit difference,
-    # not a corrector defect (see module docstring); both this method and
-    # the independent multi-shooting corrector land at the SAME nonzero
-    # distance, which is the actual claim under test here.
-    xy_dist = math.hypot(res.state0_pm[0] - _POL1[0], res.state0_pm[4] - _POL1[4])
-    full_dist = float(np.linalg.norm(res.state0_pm - _POL1))
-    assert xy_dist == pytest.approx(0.018046941, abs=1e-6)
-    assert full_dist == pytest.approx(0.023099269, abs=1e-6)
+    # Published positive control (#892): the published POL1 point (Rosales &
+    # Jorba 2023 Table 4), reproduced to 1.7e-8 (measured 2026-10-04); the
+    # core module's own multiple-shooting check in tests/core/test_qbcp.py
+    # holds it to 1e-7 in x and py, the same bound used here.
+    assert np.max(np.abs(res.state0_pm - _POL1)) < 1e-7
 
     # Second, fully independent confirmation: a different integrator
     # (Radau, not the module's own DOP853 closure check) over the
@@ -241,17 +218,18 @@ def test_positive_control_cold_start_reproduces_qbcp_l1_substitute() -> None:
 
 
 def test_planar_symmetry_components_are_near_zero() -> None:
-    """The published POL1 substitute has y=z=px=pz=0 (planar, symmetric);
-    this method's converged state has small but genuinely NONZERO y/px
-    (~1e-2, matching the independent multi-shooting result exactly -- see
-    the positive control above), while z/pz are near machine-zero. Pin
-    that z/pz specifically stay at the expected near-zero floor (the
-    planar collinear-point family), distinguishing "genuinely planar" from
-    "small but real y/px offset from the published golden".
+    """The published POL1 substitute has y=z=px=pz=0 (planar, and symmetric
+    under the model's reversing symmetry (x, -y, z, -px, py, -pz, -t)).
+
+    #892 (2026-10-04): this test used to assert that y and px were NONZERO
+    (about 1e-2). That asymmetry was a symptom of the defective model, whose
+    reversing symmetry failed; in the corrected model the symmetry holds
+    (tests/core/test_qbcp.py) and the converged state has y, px of order
+    1e-17 (measured), so they are now required to vanish.
     """
     system = qbcp.qbcp_default()
     res = discover_qbcp_periodic_orbit(system, rng=np.random.default_rng(0))
     assert abs(res.state0_pm[2]) < 1e-10  # z0
     assert abs(res.state0_pm[5]) < 1e-10  # pz0
-    assert abs(res.state0_pm[1]) > 1e-4  # y0 -- genuinely nonzero, not a rounding artifact
-    assert abs(res.state0_pm[3]) > 1e-4  # px0 -- likewise
+    assert abs(res.state0_pm[1]) < 1e-10  # y0
+    assert abs(res.state0_pm[3]) < 1e-10  # px0

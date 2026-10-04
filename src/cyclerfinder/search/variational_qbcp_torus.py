@@ -346,8 +346,9 @@ def _qbcp_rhs_grid(
 ) -> NDArray[np.float64]:
     """Vectorized ``qbcp_eom`` on the grid: ``u`` shape ``(6, m1, m2)`` ->
     ``(6, m1, m2)``. ``alphas`` shape ``(8, m1)`` (per theta1 row, broadcast
-    across theta2). Matches :func:`cyclerfinder.core.qbcp.qbcp_eom` exactly,
-    including the Sun-only 1/alpha6 convention.
+    across theta2). Matches :func:`cyclerfinder.core.qbcp.qbcp_eom` exactly:
+    alpha_6 multiplies the whole Newtonian potential (#892, 2026-10-04; this copy
+    had kept #592's Sun-only 1/alpha_6 factor after the core module was corrected).
     """
     x, y, z, px, py, pz = (u[i] for i in range(6))
     a1, a2, a3, a4, a5, a6, xs, ys = (alphas[i][:, None] for i in range(8))
@@ -360,13 +361,12 @@ def _qbcp_rhs_grid(
     rpe3 = rpe2 * np.sqrt(rpe2)
     rpm3 = rpm2 * np.sqrt(rpm2)
     rps3 = rps2 * np.sqrt(rps2)
-    msun_a6 = mu_sun / a6
-    pot_x = (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + msun_a6 * (x - xs) / rps3
-    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + msun_a6 * (y - ys) / rps3
-    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + msun_a6 * z / rps3
-    dpx = -a2 * px + a3 * py - a4 - pot_x
-    dpy = -a2 * py - a3 * px - a5 - pot_y
-    dpz = -a2 * pz - pot_z
+    pot_x = (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + mu_sun * (x - xs) / rps3
+    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + mu_sun * (y - ys) / rps3
+    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + mu_sun * z / rps3
+    dpx = -a2 * px + a3 * py - a4 - a6 * pot_x
+    dpy = -a2 * py - a3 * px - a5 - a6 * pot_y
+    dpz = -a2 * pz - a6 * pot_z
     return np.stack([dx, dy, dz, dpx, dpy, dpz], axis=0)
 
 
@@ -393,33 +393,35 @@ def _qbcp_jacobian_grid(
     rpm5 = rpm3 * rpm2
     rps5 = rps3 * rps2
     om1 = 1.0 - mu
-    msun_a6 = mu_sun / a6
+    msun = mu_sun
     uxx = (
         -om1 * (1.0 / rpe3 - 3.0 * (x + mu) ** 2 / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * (x - 1.0 + mu) ** 2 / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
+        - msun * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
     )
     uyy = (
         -om1 * (1.0 / rpe3 - 3.0 * y * y / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * y * y / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
+        - msun * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
     )
     uzz = (
         -om1 * (1.0 / rpe3 - 3.0 * z * z / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * z * z / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * z * z / rps5)
+        - msun * (1.0 / rps3 - 3.0 * z * z / rps5)
     )
     uxy = (
         3.0 * om1 * (x + mu) * y / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * y / rpm5
-        + 3.0 * msun_a6 * (x - xs) * (y - ys) / rps5
+        + 3.0 * msun * (x - xs) * (y - ys) / rps5
     )
     uxz = (
         3.0 * om1 * (x + mu) * z / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * z / rpm5
-        + 3.0 * msun_a6 * (x - xs) * z / rps5
+        + 3.0 * msun * (x - xs) * z / rps5
     )
-    uyz = 3.0 * om1 * y * z / rpe5 + 3.0 * mu * y * z / rpm5 + 3.0 * msun_a6 * (y - ys) * z / rps5
+    uyz = 3.0 * om1 * y * z / rpe5 + 3.0 * mu * y * z / rpm5 + 3.0 * msun * (y - ys) * z / rps5
+    # alpha_6 multiplies the whole potential, so its Hessian too (#892).
+    uxx, uyy, uzz, uxy, uxz, uyz = (a6 * h for h in (uxx, uyy, uzz, uxy, uxz, uyz))
 
     m1, m2 = x.shape
     jf = np.zeros((6, 6, m1, m2))

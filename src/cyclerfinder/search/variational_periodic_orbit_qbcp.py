@@ -62,22 +62,19 @@ Positive control and honest scope boundary
 -------------------------------------------
 The positive control target is the published POL1/POL2 golden (Rosales &
 Jorba 2023 Table 4, already used as the sourced reference in
-``tests/core/test_qbcp.py`` and independently reconstructed from scratch via
-a 12-segment multiple-shooting corrector in
-``scripts/analyze_593_qbcp_l1_substitute_reconciliation.py``, converging to
-periodicity residual ~1e-11 and landing ``dist-to-POL1 = 1.81e-2`` under the
-current, `#592`-fixed ``alpha_6`` scaling -- a gap independently attributed in
-`#544`'s own investigation to a Gimeno-2018-vs-Rosales-2023 model-instance
-Fourier-refit difference, NOT a corrector defect). This module, cold-started
-with NO continuation bootstrap at all (no CR3BP L1 fixed point, no BCR4BP
-mu_sun ramp -- just a rough center guess near the collinear point and the
-KNOWN period ``T_s``), converges directly to the same object, landing at an
-almost identical ``dist-to-POL1`` (see the test file for the exact number)
--- an independent cross-check of the multi-shooting result AND a genuine
-wall-crossing: `#544`'s whole multi-stage bootstrap chain existed specifically
-because a single-shot/single-period method could not survive this region's
-instability, and this method reaches the same answer from a plain cold start
-in a fraction of a second.
+``tests/core/test_qbcp.py``). Since the #892 correction of ``core/qbcp.py``
+(2026-10-04) this module, cold-started with NO continuation bootstrap at all
+(no CR3BP L1 fixed point, no BCR4BP mu_sun ramp -- just a rough center guess
+near the collinear point and the KNOWN period ``T_s``), lands on the published
+POL1 point to 1.7e-8 (measured 2026-10-04), with ``y = px = 0`` to 1e-16 as the
+model's reversing symmetry requires. Before #892 it landed 1.8e-2 away, as did
+the 12-segment multiple-shooting corrector of
+``scripts/analyze_593_qbcp_l1_substitute_reconciliation.py``; `#544` had
+attributed that gap to a model-instance Fourier-refit difference, an
+explanation now withdrawn (it was the defects of the model). `#544`'s
+multi-stage bootstrap chain existed because a single-shot/single-period method
+could not survive this region's instability; this method reaches the published
+answer from a plain cold start in about 20 seconds.
 
 **What this module does NOT do (explicit scope boundary, not overclaimed):**
 `#538`/`#544`'s actual named target is the QBCP EM-L1/L2 invariant 2-TORUS
@@ -266,12 +263,13 @@ def discover_qbcp_periodic_orbit(
     indicator here at low harmonic counts, because it only checks the
     collocation-point residual, not what happens BETWEEN points once the
     truncated series is propagated through the true nonlinear (and violently
-    unstable) flow. At ``n_harmonics=8``, a fit can satisfy
-    ``residual_rms < 1e-6`` yet still carry a ``closure_residual`` of
-    ``~0.6`` (an O(1) fraction of the state itself -- not remotely periodic);
-    at 16, ``closure_residual`` is still ``~0.26``; only from ``n_harmonics
-    >= 32`` does ``closure_residual`` collapse to ``1e-6``-``1e-7`` (see
-    ``tests/search/test_variational_periodic_orbit_qbcp.py``). This is the
+    unstable) flow. In the corrected model (#892, measured 2026-10-04, one
+    restart, seed 0) a fit at ``n_harmonics=4`` satisfies ``residual_rms <
+    1e-6`` (1.4e-7) yet carries a ``closure_residual`` of 0.26 (an O(1)
+    fraction of the state itself -- not periodic); at 6 the closure is 6.3e-2,
+    at 8 it is 5.9e-4, and at the default 32 it is 7e-6 (see
+    ``tests/search/test_variational_periodic_orbit_qbcp.py``; the numbers before
+    #892 belonged to the defective model). This is the
     harmonic-balance signature of the same ~1e6-1e8 per-period amplification
     #544 root-caused: with too few Fourier degrees of freedom, the truncated
     series can zero the residual AT the sampled points while still being
