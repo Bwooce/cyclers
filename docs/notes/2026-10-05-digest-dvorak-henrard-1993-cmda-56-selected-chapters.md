@@ -10,7 +10,7 @@ Publishers 1993; reprinted from Celestial Mechanics and Dynamical Astronomy volu
 978-94-010-4898-9 (print), 978-94-011-2030-2 (eBook); book DOI 10.1007/978-94-011-2030-2. Filed in the private paper corpus
 as
 `dvorak-henrard-eds-1993-qualitative-quantitative-behaviour-planetary-systems-humboldt-colloquium-springer-doi-10.1007-978-94-011-2030-2.pdf`
-(393 PDF pages, text layer present; printed pages 1 to 396 plus the front matter and a participants list). Equations
+(393 PDF pages, text layer present; printed pages 1 to 396 plus the front matter and a participants photograph). Equations
 and table digits quoted below were read from page images at 120 to 300 dpi; where OCR and image disagreed the image was
 used and the disagreement is stated.
 
@@ -24,14 +24,20 @@ volume: +9 near the start, +2 around p.200, 0 at p.307 to 324, -2 at p.373).
    and the volume has 393 printed pages, so a chapter at pp.513-526 cannot be in it.
 2. **Hadjidemetriou (pp.201-219)** prints 43 table rows (39 distinct; the e' = 0 rows repeat) of initial conditions of
    symmetric periodic orbits of the planar elliptic restricted problem (Sun-Jupiter, mu = 0.00095387535) at the 2:1 and 4:1
-   resonances as a function of the primaries' eccentricity e'. I integrated every printed row: **all but one close as
-   periodic orbits** (residual 1e-5 to 6e-2, limited by the six printed digits and the orbit's sensitivity), once the
-   rotating-frame velocity uses the instantaneous angular velocity of the Sun-Jupiter line at t = 0. **One printed e' is a
-   misprint**: p.211 row "e' = 0.010, x0 = 0.186246" closes only at e' = 0.100 (residual 8.6e-4 against 2.6 at 0.048).
-   A ready control set for `#912` and `#931` in the planar elliptic problem (section 5.4).
+   resonances as a function of the primaries' eccentricity e'. I integrated every printed row and then Newton-corrected
+   (x0, ydot0) onto the exact symmetric orbit (perpendicular crossing at t = pi), once the rotating-frame velocity uses the
+   instantaneous angular velocity of the Sun-Jupiter line at t = 0 (section 5.3). **Reproduced to the printed digits (a
+   correction of at most 2e-5 in x0 and ydot0): 19 of 43 rows** (all of 4:1 I_c, the low-e' rows of 4:1 II_c, I_e and II_e,
+   and two high-e' rows); **a further 16 rows have an exact symmetric orbit within 1e-3**, and 7 within 6e-3 (the
+   high-eccentricity, very sensitive orbits); **one printed e' is a misprint**: p.211 row "e' = 0.010, x0 = 0.186246"
+   has no orbit there and corresponds to e' = 0.100 (correction 5.6e-5 and 6.0e-4, the size of the neighbouring 2:1 rows).
+   The printed e and a at e' = 0 agree with the osculating values at t = 0 to the last digit (section 5.3), which
+   independently confirms the frame convention. A ready control set for `#912` and `#931` in the planar elliptic problem
+   (section 5.4).
 3. **Hagel & Trenkler (pp.81-98)**, a Sitnikov-problem chapter outside the requested list, prints Table I (monodromy matrix
    of the linearised Sitnikov problem against e). The project's own `core.er3bp` state-transition matrix reproduces it
-   (mu = 0.5, state at the origin; section 8.2): rows at e = +-0.20, +-0.40, +-0.60, +-0.80 agree to the printed 4 digits;
+   (mu = 0.5, state at the origin; section 8.2): rows at e = +-0.20, +-0.40, +-0.60 agree to 3e-4 absolute and e = +-0.80 to 3e-3 absolute (the paper's RK4 step is
+   2 pi/200), apart from the printed slips listed in section 8.2;
    the rows at e = +-0.99 do not (printed values are from a fixed-step RK4 at 2 pi/200 and are not converged). Their
    eq. (26) coefficient 24/121 disagrees with numerics at small e; the second-order coefficient derived independently is
    **21/124** (probable digit transposition).
@@ -93,12 +99,14 @@ Preface p.ix. Session titles and chairmen as printed. Pages are printed pages.
 
 Pagination check (READ, chapter footers): the Scholl-Roques-Sicardy chapter is pp.381-393 and the last chapter (Lazzaro et
 al.) is pp.395-396 ("56: 395-396, 1993" on its first page), so the last printed page of the volume is 396 and the PDF's
-393 pages run to it (page 394 is blank). The list of meeting participants contains no Olle or Simo (section 2).
+393 pages run to it (the printed numbering skips p.394 between the last two chapters; the extract does not show it). The
+volume carries a group photograph of the participants (PDF p.8), not a list of names, so it cannot be searched (section 2).
 
 Coverage of this digest: read in full (text and the key page images): Froeschle-Froeschle-Lohinger, Lohinger-Froeschle-Dvorak,
-Hadjidemetriou, Valsecchi et al., Yoshida, Dvorak, Hagel-Trenkler, Laskar, Milani-Nobili, Benest. Read at abstract or
-first-page level only: Kubala-Black-Szebehely, Wodnar, Sidlichovsky, Robutel, Gilbert-Froeschle-Frisch, Bendjoya-Slezak,
-Contopoulos, Marchal, Hahn et al. All other chapters were not read beyond the contents page.
+Hadjidemetriou, Valsecchi et al., Yoshida, Dvorak, Hagel-Trenkler (sections 2 to 3 and the tables; the first-integral
+construction of sections 4 to 5 not rederived), Laskar, Milani-Nobili, Benest. Read at the level of method and tables:
+Kallrath-Schloder-Bock. Read at abstract or first-page level only: the other chapters listed in section 11.4. Not opened:
+Seidelmann, Inoue, Lazzaro et al.
 
 ## 2. Olle and Simo: not in this volume (READ, contents pp.v-vii; COMPUTED text search)
 
@@ -154,7 +162,7 @@ average. M = 50 random orbits and N = 2000 iterations per value of a, a step of 
   (Fig. 5a), "neither symmetric unimodal nor normal" (p.309).
 - Chaotic orbit a = -1.3, (2, 0) (Fig. 2, p.310): m does not go to zero and "a good approximation to a constant value is not
   reached before 1e4 iterations"; sigma reaches its limit within 1e2 iterations; m and gamma_2 oscillate (cantori); the
-  convergence of gamma_1 is "quite fast (~ 1? iterations)" with the exponent illegible in the scan, and "the small value
+  convergence of gamma_1 is "quite fast (~ 10^2 iterations)" (exponent read from the page image), and "the small value
   does not reflect a symmetric distribution as seen on Fig. 5b".
 - Transversal scan (Fig. 3, p.311): y0 = 0, x0 from 0 to pi, 10000 iterations. **The step is stated twice and differently**:
   0.02 in the text (p.310) and 0.05 in the Fig. 3 caption (p.311). In the ordered region sigma decreases "to ~ 0.32 when x
@@ -181,7 +189,7 @@ All printed qualitative statements reproduce: m to zero for the regular orbit wi
 the chaotic orbit with sigma settled by 1e2 iterations; gamma_2 = -1.23 for the regular orbit (a flat, bimodal
 distribution); a strongly skewed distribution at a = -10 whose mean 1.62 agrees with the large-|a| estimate ln(|a|/2) =
 1.609 (my external knowledge, not from this volume). The chaotic-sea Lyapunov exponent about 0.22 at |a| = 1.3 agrees
-with the Laskar-form map in section 9 (0.2197 and 0.2265 from two starts). The unexplained feature: the paper's "gamma_1
+with the Laskar-form map in section 9 (0.2197 at a = +1.3 from (2, 0.5) and 0.2265 at a = -1.3 from (1, 0.3)). The unexplained feature: the paper's "gamma_1
 small" for the chaotic orbit (Fig. 2c) is not what I compute (-0.68); the vertical axes of the figure are illegible so I do
 not call this a disagreement.
 
@@ -255,11 +263,12 @@ t = 20000, relative tolerance 1e-11 and 1e-9) gives, for the first vector ln(alp
 The transition falls between d0 = 0.24 and 0.255, exactly as printed; regular means are 7e-4 to 9e-4 (of the order of the
 finite-time shear floor ln(n)/n, not zero); chaotic means are 0.10 to 0.19 and vary by tens of percent between tolerances
 (a chaotic orbit's finite-time mean is not a number to pin); sigma is about 1.15 to 1.33 for every chaotic case ("more or
-less constant"); the ln alpha^3 mean differs by a factor 2 to 5 between tolerances (0.0005 to 0.0013 against 0.0012 to
-0.0033) while ln alpha^1 differs by less, the same qualitative sensitivity as printed. The orbits for d0 >= 0.255 pass
+less constant"); the ln alpha^3 mean differs by a factor 1.5 to 7 between the two tolerances (0.0005 to 0.0013 at 1e-11 against 0.0012 to
+0.0033 at 1e-9; d0 = 0.40 is the 7) while the ln alpha^1 mean differs by 0 to 29 percent, the same qualitative sensitivity as
+printed. The orbits for d0 >= 0.255 pass
 within 0.002 to 0.006 of both primaries (a DOP853 check at t = 2000: r2 min = 0.002 to 0.004, r1 min = 0.003 to 0.006): **a
 fixed-step integrator at 5e-4 gave garbage for those cases** (means of 0.002 with kurtosis 1e4), so any reproduction needs
-an adaptive or regularised integrator. The Jacobi constant was constant to 6e-8 or better over t = 2000 at 1e-12.
+an adaptive or regularised integrator. The Jacobi constant (DOP853, 1e-12, t = 2000) varied by 4e-9 to 6e-8 for d0 = 0.10 to 0.255 and 0.5 and by 5.5e-7 for d0 = 0.31.
 
 ### 4.5 Use for `#924`
 
@@ -400,16 +409,49 @@ Residual |(dx, y, dxdot, dydot)| at t = 2 pi, by family (all rows listed in sect
 - 4:1 III_e: 9.3e-4, 5.7e-2, 3.8e-2, 1.6e-2, 2.3e-3, 1.7e-2. 4:1 IV_e: 9.3e-4, 4.7e-2, 1.4e-4, 1.0e-3, 5.5e-3, 1.5e-2.
 - 2:1 I_e: 9.9e-4, 8.8e-4, 2.9e-3 and the e' = "0.010" row 2.7 (fails). 2:1 II_e: 9.9e-4, 7.6e-3, 3.8e-3, 2.9e-2.
 
-The residuals grow with the orbit's eccentricity and instability (the 6-digit initial conditions are amplified): III_e at
-e' = 0.05 to 0.10 (e = 0.80 to 0.82) closes only to a few 1e-2, the paper's own warning that these orbits "are very
-sensitive to the initial conditions" (p.212). **The e' = "0.010" row of 2:1 I_e (p.211) fails by 2.7: scanning e' it closes
-at e' = 0.100 with residual 8.6e-4 (and at no other e' tried, 0.040 to 0.125 in steps of 0.005)**: the printed e' =
-0.010 is a misprint for 0.100, the corrected row being e' = 0.100, x0 = 0.186246, ydot0 = 2.785537 (and the family then
-reads x0 = 0.165776, 0.172130, 0.187429, 0.186246 at e' = 0, 0.02, 0.048, 0.100, still not monotone in x0 but monotone in
-the table's order of e'). Vis-viva check of the
-circular-case rows (COMPUTED): the printed e at e' = 0 is the **osculating eccentricity at t = 0** with GM = 1 - mu
-(2:1 0.7341 against 0.735; 4:1 I_e 0.2420 against 0.243; III_e 0.8007 against 0.801), while the printed a is not the
-osculating semi-major axis at t = 0 (4:1 I_e: 0.3961 against 0.3967) and is probably a mean value over the orbit.
+**A small closure residual does not by itself show that a row is periodic** (the orbits are unstable and a 6-digit initial
+condition is amplified), so I also solved for the nearest exact symmetric orbit: Newton iteration (SciPy fsolve, 1e-11
+integration) on the two half-period symmetry conditions y(pi) = 0 and xdot(pi) = 0 for (x0, ydot0) at fixed e', started at the
+printed row, with the maximum of |Delta x0|, |Delta ydot0| as the measure of how far the printed row is from an exact
+orbit. Result for the 43 rows (excluding the e' = "0.010" row, counted separately):
+
+| max(|Delta x0|, |Delta ydot0|) | rows | which |
+| --- | --- | --- |
+| <= 5e-6 | 15 | 4:1 I_c e' = 0, 0.05, 0.10, 0.20, 0.35 (4e-7 or less); 4:1 II_c e' = 0, 0.01, 0.02, 0.03; 4:1 I_e e' = 0.048, 0.080; 4:1 II_e e' = 0.01, 0.02, 0.03; 2:1 II_e e' = 0.075 (3e-6) |
+| 5e-6 to 2e-5 | 4 | 4:1 I_e and II_e at e' = 0 (5.1e-6), 4:1 I_e e' = 0.090 (1.5e-5), 4:1 III_e e' = 0.15 (9.5e-6) |
+| 2e-5 to 1e-3 | 16 | the 2:1 rows at e' = 0 (3.9e-4), I_e 0.048 (7.9e-4), II_e 0.02, 0.048 (9e-5, 3.7e-4); 4:1 II_c 0.16, I_e 0.100, II_e 0.04, III_e 0 and 0.10 and 0.12, IV_e 0, 0.010, 0.020, 0.035, 0.041 |
+| 1e-3 to 6e-3 | 7 | 2:1 I_e e' = 0.02 (1.8e-3); 4:1 II_c e' = 0.05 (5.0e-3) and 0.10 (2.1e-3); II_e e' = 0.05 (6.1e-3); III_e e' = 0.05 (4.1e-3) and 0.08 (1.4e-3); IV_e e' = 0.03 (1.4e-3) |
+
+So 19 of the 43 rows reproduce to the printed digits (<= 2e-5), and every other row has an exact symmetric periodic orbit within
+6e-3 in (x0, ydot0); the rows with the large corrections are the high-eccentricity, strongly unstable orbits that the paper
+itself says "are very sensitive to the initial conditions" (p.212) and whose stability it could not compute. At e' = 0
+the 2:1 pair differs from the exact orbit by 3.2e-5 in x0 and 3.9e-4 in ydot0 (exact 0.165808, 3.057323 against the printed
+0.165776, 3.057715), which is a property of the paper's table, not of my frame convention (the circular problem has no
+convention to choose). **The e' = "0.010" row of 2:1 I_e (p.211)** has no orbit anywhere near (Newton diverges to
+(-0.054, 5.22)); scanning e' at the printed (x0, ydot0), the closure residual is small only at e' = 0.100 (8.6e-4; none of
+the other e' tried, 0.040 to 0.125 in steps of 0.005), and a Newton correction there is (5.6e-5, -6.0e-4), the same size as
+the neighbouring 2:1 rows. The printed e' = 0.010 is therefore a misprint for 0.100: the corrected row is e' = 0.100, x0 =
+0.186246, ydot0 = 2.785537 (the family then reads x0 = 0.165776, 0.172130, 0.187429, 0.186246 at e' = 0, 0.02, 0.048, 0.100,
+not monotone in x0, with e' increasing in the table's order).
+
+**The two printed values of the 4:1 III_e circular-problem orbit are not settled**: for x0 = 0.077836 the closure
+residual at t = 2 pi is 9.3e-4 for ydot0 = 4.700478 and a Newton solve from either value lands on a different nearby orbit
+(4.700535 from 4.700478; 4.700174 from 4.700496) with residuals of 5e-12 and 3.5e-9, i.e. a flat valley in which the 6-digit
+difference of 1.8e-5 cannot be resolved. Both are consistent with the paper; use 4.700478 (the family tables) and record the
+text value 4.700496 (p.215) as a variant.
+
+**Frame convention confirmed independently of closure (COMPUTED).** With the heliocentric velocity of the asteroid (the Sun
+moves at -mu times Jupiter's velocity, so the barycentric velocity ydot0 + omega x0 is corrected by +mu omega r_J), GM = 1 - mu
+and r = x0 + mu r_J, the osculating elements at t = 0 are: 2:1 I_e at e' = 0: a = 0.62953, e = 0.73515 (printed 0.6295,
+0.735); 4:1 I_e e' = 0: 0.39673, 0.24319 (printed 0.3967, 0.243); 4:1 III_e e' = 0: 0.39671, 0.80139 (printed 0.3967, 0.801);
+4:1 I_c e' = 0: a = 0.39679, e = 0.00027 (printed 0.3972, 0.0003, so a differs in the third digit here). So **at e' = 0
+the printed a and e are the osculating elements at t = 0**, to the last printed digit. For e' > 0, with omega = the
+instantaneous angular velocity and the Sun's velocity -mu r_J omega, the osculating eccentricity at t = 0 is 0.7251 (2:1
+I_e e' = 0.020; printed 0.725), 0.7009 (e' = 0.048; printed 0.701), 0.7824 (2:1 II_e e' = 0.020; printed 0.782), 0.4491
+(4:1 I_e e' = 0.048; printed 0.450), 0.0436 (4:1 I_c e' = 0.050; printed 0.0447), 0.0877 (4:1 II_c e' = 0.050; printed
+0.0875): the printed eccentricity matches the osculating value at t = 0 to 1e-3 or better (0.0011 for the 0.0447 row). The
+printed a for e' > 0 is not the osculating value (it varies with e' as 0.6295, 0.6301, 0.6308 while the osculating a at
+t = 0 stays at 0.6295 to 0.6296), so it is some other average; INFERRED, the paper does not say.
 
 ### 5.4 Techniques applicable to the project's problems
 
@@ -669,7 +711,10 @@ the primaries start at their greatest separation (phi = 0 at apocentre).
 
 COMPUTED (a converged integration of the linearised equation, 1e-13, and separately the project's `core.er3bp` STM; sections
 12.6 and 12.7): Tr R at e = 0 is 2 cos(2 pi sqrt8) = 0.94614 (printed 0.9461, the row is a closed form); at e = +-0.20,
-+-0.40, +-0.60 and +-0.80 the printed entries match to the printed 4 digits except the following printed slips:
++-0.40, +-0.60 the printed entries match to 3e-4 absolute and at e = +-0.80 to 3e-3 absolute (largest differences: r2 0.0675
+against 0.0673 and r3 -1.2706 against -1.2703 at e = -0.60; r1 -0.5498 against -0.5494 and r3 -5.0817 against -5.0842 at
+e = -0.80), a pattern consistent with the paper's fixed-step RK4 whose error grows with |e|; the exceptions are the
+following printed slips:
 
 - Row e = -0.40 is not the mirror of e = +0.40: printed Tr R = 1.6117, Q = 2.8992, w(0) = 0.5297, but the paper's own text
   says Q is exactly symmetric in e (p.86), and the converged values are Tr R = 1.7068, Q = 2.9127, w(0) = 0.5284 (the +0.40
@@ -691,7 +736,7 @@ one period from f = 0 or f = pi, the entries STM[2,2], STM[2,5], STM[5,2], STM[5
 (0.9563, 0.0673, -1.2703, 0.9563); +-0.80: (-0.5494, 0.3813, -1.8308, -0.5494) and (-0.5494, 0.1373, -5.0842, -0.5494);
 +-0.99: (0.9745, -0.1067, 0.4719, 0.9745) and (0.9745, -0.0083, 6.0509, 0.9745). Apart from the paper's slips above, this
 reproduces the printed table for |e| <= 0.80. **A test-ready, sourced, independent check of the project's STM in the
-eccentric problem**, with the e = +-0.99 and the slip rows excluded (or compared to my converged values, not the printed).
+eccentric problem**, with the e = +-0.99 and the slip entries excluded and the tolerances above (3e-4, and 3e-3 at |e| = 0.8).
 
 ### 8.3 Equation (26) is probably misprinted
 
@@ -699,7 +744,7 @@ Eq. (26), p.87: Q(e) = sqrt8 [1 + (24/121) e^2 + O(e^4)], "reproduces the Q valu
 At e = 0.20 it gives 2.8509 against Table I's 2.8480; at e = 0.40 2.9182 against 2.9127. The second-order coefficient c in
 Q = sqrt8 (1 + c e^2): converged numerics give c = 0.16939 (e = 0.02), 0.16959 (0.05), 0.17030 (0.10), tending to **0.16935
 = 21/124**; an independent perturbation derivation (g = 8 - 7 e cos phi + 7 e^2 cos^2 phi - ...; shift of Omega^2 =
-7/2 e^2 - (49/4)(2/31) e^2 = 2.7097 e^2, giving c = 2.7097/16 = 21/124, COMPUTED/derived) agrees. 24/121 and 21/124 differ
+7/2 e^2 - (49/4)(2/31) e^2 = 2.7097 e^2, giving c = 2.7097/16 = 21/124; derived by hand from the equation as printed, INFERRED, and consistent with the numerics) agrees. 24/121 and 21/124 differ
 by a transposition of digits; **eq. (26) as printed does not reproduce Table I** (for e = 0.2, 21/124 gives 2.8476 against
 2.8480). Do not code eq. (26) from this page.
 
@@ -758,9 +803,10 @@ window [t, t+T]; for a chaotic one it drifts (diffusion).
 
 Standard map form here (p.192): **x' = x - a sin y, y' = x' + y (mod 2 pi)**, a different convention from the 1993 GLI
 chapter (x1 = x0 + a sin(x0 + y0), y1 = x0 + y0) and from Yoshida (p' = p + k sin q, q' = q + p'); I checked numerically
-that the Laskar form at a = +1.3 and the GLI form at a = -1.3 share the same chaotic-sea Lyapunov exponent about 0.22
-(0.2197 and 0.2265 from two starts of the Laskar form; 0.2254 for the GLI form), so the three are related by a relabelling
-and a sign of the parameter (INFERRED; the exact conjugacy was not constructed). Convert before reusing any number.
+that the chaotic-sea Lyapunov exponent at |a| = 1.3 is about 0.22 in both forms
+(0.2197 at a = +1.3 from (2, 0.5) and 0.2265 at a = -1.3 from (1, 0.3) for the Laskar form; 0.2254 at a = -1.3 from
+(2, 0) for the GLI form). The three forms are different parametrisations of the same family; initial conditions and
+the sign of the parameter must be converted before reusing any number, and I have not constructed the conversion.
 
 Printed numbers (READ p.193, Fig. 1 and its caption; p.193 text):
 
@@ -902,7 +948,56 @@ a quarter. Lyapunov exponents "for all the orbits" planned (p.49). Relevance: th
 two-parameter initial plane with a fixed-time survival criterion in the elliptic restricted problem) is the style of the
 project's `#908` capture sweeps; no numbers to reproduce.
 
-### 11.3 Chapters read at abstract level only
+### 11.3 Kallrath, Schloder and Bock, "Least squares parameter estimation in chaotic differential equations", CMDA 56:353-371 (PDF pp.352-370)
+
+READ at the level of the method summary, the model, Tables I to III and the conclusion text; the optimisation algebra
+(sections 2 to 4) was not rederived. The method fits parameters and initial values of an ODE model to a (possibly noisy)
+chaotic time series by a **boundary-value-problem approach**: multiple shooting (50 to 100 nodes) or collocation, with the
+node values as extra unknowns, continuity as constraints, and a structure-exploiting generalised Gauss-Newton solver
+(Bock 1981). Their stated reason (p.354): for systems with positive Lyapunov exponents "the link of an initial value
+problem solver" (single shooting, guess-integrate-correct) is not advisable because errors propagate exponentially, whereas
+the multiple-shooting formulation tolerates initial trajectories that are discontinuous and far from the data (Fig. 1 and
+Fig. 4: an initial guess a = 9.2, b = 1, c = 2.1 is an escape orbit, yet the original parameters (1, 1, -1) are recovered).
+The test system is the Henon-Heiles system, generalised to ODEs x1' = x3, x2' = x4, x3' = -a x1 - 2 x1 x2, x4' = -b x2 -
+x1^2 - c x2^2 (the printed eq. 5.5 reads "- b x2 - x1^2 - c x2^2" for the last line, consistent with a potential), with
+(a, b, c) = (1, 1, -1) the 1964 system; the section of Fig. 2 is x1 = 0, x3 >= 0 and the text says that between E- = 1/12 and
+E+ = 1/8 one passes from regular to ergodic behaviour (p.361).
+
+Printed numbers that are usable (READ pp.361 to 365):
+
+| Case | Energy E | Initial values (x1, x2, x3, x4) | Parameters (a, b, c) | Largest Lyapunov exponent |
+| --- | --- | --- | --- | --- |
+| Table I | 0.125 | (0, 0, sqrt(0.1275) = 0.35707, -0.35) | (1, 1, -1) | lambda_1 = 0.044; lambda_2 and lambda_3 of opposite sign, magnitude of order 1e-7; lambda_4 = -lambda_1 "with five digits accuracy" |
+| Table II | 0.12905 | (0, 0, 0.3, -0.41) | (1, 1, -1) | lambda_1 = 0.053 |
+| Table III | 0.1849 | (0, 0, 0.43, 0.43) | 1.3 (1, 1, -1), i.e. (1.3, 1.3, -1.3) | lambda_1 = 0.037 |
+
+The energies are the kinetic energies at the origin (E = (x3^2 + x4^2)/2 = 0.125, 0.12905, 0.1849, COMPUTED, matching the printed
+values and eq. 5.7). The exponents are in the time unit of the ODE and are printed with two significant figures; the
+integration length used for them is not stated in the pages I read. Recovered-parameter accuracy from exact data: absolute
+error below 5e-5 (Table I discussion); Fisher factor 3.75 to convert the printed standard errors to confidence intervals;
+the integrator error bound 1e-13 and the estimation accuracy 1e-5 (p.361).
+
+COMPUTED (section 12.9): the largest Lyapunov exponent of the same system by renormalised tangent vectors (DOP853, 1e-11,
+unit renormalisation interval), finite-time values at t = 2000, 4000, ..., 10000: Table I orbit 0.052, 0.035, 0.033, 0.038,
+0.042; Table II orbit 0.018, 0.038, 0.048, 0.052, 0.056 (still drifting); Table III orbit 0.030, 0.039, 0.038, 0.040, 0.040.
+So they agree with the printed 0.044, 0.053 and 0.037 to within the finite-time scatter (about 0.005 to 0.01), which is
+the right level of agreement for a two-figure printed number: **use them as bands (0.03 to 0.06), not as values to 1e-3**.
+
+Techniques applicable:
+- **`#924`**: three Henon-Heiles chaotic orbits with printed largest exponents and exact initial values, in the
+  potential that the project's `#924` entry already uses (Henon and Heiles 1964), to check the sign and rough size of any
+  chaos indicator, with the Table I note that the Lyapunov spectrum of a Hamiltonian flow comes out as
+  (+lambda_1, ~0, ~0, -lambda_1) in this four-dimensional phase space, a ready consistency test for a tangent-vector code
+  (the two middle values must be near 1e-7, and the first and last must cancel to five digits).
+- **`#905`**: the method's central point is the project's own situation: Leiva and Briozzo's single-shooting failure over
+  five or more Sun periods (as scoped in the OUTSTANDING entry) is the failure mode this chapter says single shooting has
+  on any chaotic system, and the cure it prints is multiple shooting with the node values as unknowns. This chapter does
+  not look for periodic orbits (it fits trajectories to data), so it supports the diagnosis, not a specific algorithm.
+  INFERRED mapping.
+- Eichhorn's companion chapter (pp.337-351) is the review of generalised least-squares adjustment that this one extends;
+  not read beyond the abstract.
+
+### 11.4 Chapters read at abstract or first page only
 
 - Kubala, Black and Szebehely (pp.51-68): Hill's analytic stability criterion governs the closest stable outer orbit for
   0 <= mu <= 0.15, Laplace's (Graziani-Black numerical) criterion for mu > 0.15, the latter good to a few percent (abstract).
@@ -919,6 +1014,16 @@ project's `#908` capture sweeps; no numbers to reproduce.
 - Contopoulos (pp.325-336): periodic orbits of two-degree Hamiltonian systems against quantum eigenfunctions (abstract).
 - Bendjoya and Slezak (pp.231-262): wavelet transform review (abstract). Marchal (pp.13-26), Hahn et al. (pp.131-142): not
   relevant.
+- First page or abstract read, nothing relevant to cycler, second-species or restricted-problem periodic orbits or to chaos
+  indicators: Froeschle and Scholl (pp.163-176, numerical experiments in the 3/1 and nu_6 overlapping region, 1 Myr
+  integrations in a Sun-Jupiter-Saturn model); Moons and Morbidelli (pp.273-276, action-angle theory of the planar 2/1
+  resonance, "very preliminary"); Michtchenko and Ferraz-Mello (pp.121-130, Hildas by numerical integration and Fourier
+  analysis, 50000 years); Schubart (pp.153-162, asteroid 903 Nealley at the 2/1 resonance, 110000 yr in a four-body model);
+  Erdi and Kovacs (pp.221-230, fourth-order solution of the ideal resonance problem H = B(y) - eps^2 A(y) cos x); Lemaitre
+  (pp.103-120, proper elements); Message (pp.277-284, Hyperion); Delhaise and Henrard (pp.285-286, critical inclination of
+  Molniya and Tundra orbits); Farinella et al. (pp.287-306, fragments of 6 Hebe); Morbidelli (pp.177-190, introduction to
+  KAM, Nekhoroshev and successive elimination of harmonics; a review that might serve as a reference for an averaged-model
+  treatment, not read). Not opened at all: Seidelmann (pp.1-12), Inoue (pp.69-70), Lazzaro et al. (pp.395-396).
 
 ## 12. What I computed (throwaway; run outside the repository; not committed)
 
@@ -942,28 +1047,48 @@ difference in e and by perturbation.
 12.7 Project code: `cyclerfinder.core.er3bp.propagate_er3bp(with_stm=True)` at mu = 0.5, e in {+-0.2, ..., +-0.99}.
 12.8 Valsecchi (section 10.2): eqs. (8) to (10) transcribed from the page image and evaluated at e' = 0, two-dimensional root
 find with SciPy fsolve, scan over nu.
+12.9 Kallrath et al. (section 11.3): Henon-Heiles tangent-vector Lyapunov exponent, DOP853 1e-11, t = 10000.
 
 ## 13. Test-ready numbers (for the tasks named)
 
-| Task | What | Source | Expected |
+Per the project's no-circular-goldens rule the two tables are separate: Table A holds expected values **printed in the
+volume** (with page), the only legitimate goldens; Table B holds values from my own runs, which are **not goldens**: they
+are sanity bands that show the printed statement is reachable and must not be written into a test as expected values.
+
+### Table A: printed expected values
+
+| Task | What | Source | Printed expected value and test condition |
 | --- | --- | --- | --- |
-| `#912`, `#931` | 43 rows (39 distinct) of symmetric periodic orbits, planar ER3BP, Sun-Jupiter mu = 0.00095387535 | Hadjidemetriou pp.211, 216, 217 | close after 2 pi to the residuals in section 5.3 using omega = instantaneous angular velocity at t = 0; row 2:1 I_e "e' = 0.010" must be run as 0.100; negative control: omega = 1 fails by 0.3 to 1.2 |
-| `#912` | 2:1 bifurcation orbit A: x = 0.1657759, ydot0 = 3.057715, period 2 pi; 3:1 orbits (0.479420, 0.962393) period pi and (-0.866333, 0.384417) period 2 pi; 4:1 orbits (0.395733, 1.190494), (0.299295, 1.733614), (0.077836, 4.700478 or 4.700496) | Hadjidemetriou pp.210, 212, 215 | periodic in the circular problem; the 4:1 first one with period 2 pi/3 |
-| `#931` | stability labels by family (section 5.2); unit pair splits when e' > 0 | Hadjidemetriou pp.206 to 217 | classifier labels as printed (3:1 I_e stable, others unstable; 4:1 I_c and II_c unstable, I_e and II_e stable) |
-| `#924`, `#912` | Linearised Sitnikov monodromy (z block of the project's STM, mu = 0.5, state at origin): rows e = +-0.2, +-0.4, +-0.6, +-0.8 | Hagel-Trenkler p.86 | match section 8.2 to 4 digits; exclude e = -0.40 columns Tr R, Q, w(0); exclude e = +-0.99; Tr R at e = 0 is 2 cos(2 pi sqrt8) = 0.94614; |Tr R| < 2 for all |e| < 0.99 |
-| `#924` | Sitnikov Poincare classification Table I (11 e by 60 T): positives (0.33, 0.99), (0.51, 0.94), (0.66, 0.82); islands (0.33, 0.65), (0.51, 0.85) | Dvorak p.78 | chaotic indicator large / islands regular; thresholds mine, one thin layer (0.66, 0.80) not reproduced |
-| `#924` | Regular-to-chaotic transition in the 3D CR3BP, mu = 0.5, d0 = 0.24 regular and 0.255 chaotic with printed initial conditions | Lohinger et al. pp.316, 318 | mean of ln alpha^1 at t = 2e4 about 7e-4 (regular, shear floor) and 0.10 to 0.19 (chaotic), integrator must be adaptive |
-| `#924` | Standard map: GLI m, sigma, gamma_1, gamma_2 for a = -1.3 (1, 0) and (2, 0), a = -0.1, a = -10 | Froeschle et al. pp.309 to 313 | table in section 3.3 (sigma = 0.3355 regular at x0 = 1; chaotic m about 0.22) |
-| `#924` | Standard-map critical parameter a_c = 0.971635; golden curve gone at a = 0.9718 for T = 12516 | Laskar p.193 | Greene's value |
-| `#929` | RK4 oscillator energy factor 1 - tau^6/72; symplectic Euler invariant q^2 + p^2 + tau p q = 1 from (1, 0); modified Hamiltonian eq. (63) conserved to O(tau^4) under eq. (61) | Yoshida pp.28, 35, 41 | verified (section 7.2) |
-| `#929` | Forest-Ruth coefficients, Ruth order-3 coefficients | Yoshida pp.32, 33 | sum c = 1, sum d = 1; x0 + 2 x1 = 1, x0^3 + 2 x1^3 = 0 |
-| `#899`, `#884`, `#905` | Saros relation 223 : 239 : 3 at (e, i) = (0.0623, 5.57 deg), other shifts nu = 0.9995 nu0 (0.0871, 5.41 deg), 1.0005 nu0 (0.0137, 5.72 deg); observed periods 29.530589, 27.554550, 27.212221 d | Valsecchi et al. pp.374, 376, 378 | reproduced to the printed digits with eqs. (8) to (10) and two external constants (section 10.2) |
+| `#912`, `#931` | Planar elliptic restricted problem, Sun-Jupiter mu = 0.00095387535: initial conditions (x0, ydot0, e', phase) of symmetric periodic orbits, 43 rows (39 distinct), tables in section 5.2 | Hadjidemetriou pp.211, 216, 217 | each row is a periodic orbit of period 2 pi starting perpendicular to the x-axis with Jupiter at the printed apse, in a frame rotating at the instantaneous angular velocity of the Sun-Jupiter line (the printed ydot0 is relative to that frame). Tolerance for a test: 2e-5 in (x0, ydot0) for the 19 rows listed in section 5.3 (a Newton-corrected exact orbit is the reference); 6e-3 for the remaining rows; the 2:1 row printed e' = 0.010 is run at e' = 0.100 |
+| `#912` | Bifurcation orbits of the circular problem: 2:1 orbit A x = 0.1657759, ydot0 = 3.057715, e = 0.72, period 2 pi (p.210); 3:1 (0.479420, 0.962393) period pi and (-0.866333, 0.384417) e = 0.798 period 2 pi (p.212); 4:1 (0.395733, 1.190494) period 2 pi/3, (0.299295, 1.733614) e = 0.243, (0.077836, 4.700496 on p.215 and 4.700478 on p.217) e = 0.801 | Hadjidemetriou pp.210, 212, 215 | periodic in the circular problem; the printed e at e' = 0 is the osculating eccentricity at t = 0 (0.735 for the 2:1 orbit, not 0.72) |
+| `#931` | Stability by family: 2:1 I_e stable, II_e unstable; 3:1 I_e stable and the other three unstable; 4:1 I_c and II_c unstable, I_e and II_e stable; III_e and IV_e not determined. Unit pair of the circular monodromy splits for e' > 0 | Hadjidemetriou pp.206, 212, 215, 217 | a classifier on the elliptic monodromy returns these labels (2:1 labels are for the circular-problem families; the paper warns its own stability computations for the 2:1 orbits were not accurate) |
+| `#924`, `#912` | Linearised Sitnikov monodromy R = M(2 pi), mu = 0.5, state at the origin of the pulsating frame, rows e = +-0.20, +-0.40, +-0.60, +-0.80 of Table I (section 8.2); Tr R at e = 0 is 2 cos(2 pi sqrt8) printed as 0.9461 | Hagel-Trenkler p.86 | agreement 3e-4 absolute for |e| <= 0.6 and 3e-3 at |e| = 0.8, excluding the printed slips of section 8.2 (row e = -0.40 columns Tr R, Q, w(0); the sign of Tr R and r4 at e = +-0.80); the e = +-0.99 rows are excluded (not converged in the source); |Tr R| < 2 for all |e| <= 0.99 |
+| `#924` | Exact linear frequency Q(e) at T(0) = 0: 2.84802, 2.91273, 3.04723, 3.34258, 4.96398 at e = 0.2, 0.4, 0.6, 0.8, 0.99; sqrt8 at e = 0 | Hagel-Trenkler p.98 (Table V, first row) | the printed first row of Table V |
+| `#924` | Sitnikov Poincare classification, cells of Table I | Dvorak p.78 | chaotic "k" at (e, T) = (0.33, 0.99), (0.51, 0.94), (0.66, 0.82); invariant curves "0" at the cells marked 0, islands "2" at (0.33, 0.65), (0.51, 0.85); no thresholds printed; one printed cell (0.66, 0.80) "k" is thin and was not reproduced by a short run (Table B) |
+| `#924` | 3D restricted problem, mu = 0.5, printed initial conditions of section 4.1 | Lohinger et al. pp.316, 318 | regular (means near zero) for d0 < 0.25, chaotic for d0 >= 0.255; sampled d0 = 0.10, 0.13, 0.22, 0.24 regular and 0.255, 0.27, 0.31, 0.35, 0.40, 0.50 chaotic. No number is printed for the exponents |
+| `#924` | Standard map x1 = x0 + a sin(x0 + y0), y1 = x0 + y0: a = -1.3, (x0, y0) = (1, 0) invariant curve (m tends to 0, sigma constant, distribution bimodal at 1e5 iterations); (2, 0) chaotic (m non-zero, settles after 1e4 iterations, sigma after 1e2); a = -0.1 circulation; a = -10 strong chaos | Froeschle et al. pp.309 to 313 | the qualitative statements only; sigma tending to about 0.32 as x0 tends to 1 is a figure reading, not a printed number |
+| `#924` | Henon-Heiles largest Lyapunov exponents: E = 0.125, (0, 0, 0.35707, -0.35): 0.044; E = 0.12905, (0, 0, 0.3, -0.41): 0.053; E = 0.1849, (0, 0, 0.43, 0.43), parameters (1.3, 1.3, -1.3): 0.037; lambda_2 and lambda_3 of order 1e-7 and lambda_4 = -lambda_1 to five digits (Table I) | Kallrath et al. pp.363 to 365 | two printed significant figures, finite-time values; a test should use a band (the scatter in my runs is about 0.01) |
+| `#924` | Standard-map critical parameter a_c = 0.971635 (Greene); golden curve gone at a = 0.9718, T = 12516 | Laskar p.193 | Greene's printed value |
+| `#929` | RK4 on the unit oscillator multiplies p^2 + q^2 per step by 1 - tau^6/72 + ...; Euler by 1 + tau^2; symplectic Euler orbit through (1, 0) lies on q^2 + p^2 + tau p q = 1; eq. (63) is conserved under eq. (61) with error O(tau^4); Ruth order-3 and Forest-Ruth order-4 coefficients (eqs. 28 and 37), x0 + 2 x1 = 1 and x0^3 + 2 x1^3 = 0 | Yoshida pp.28, 32, 33, 35, 41 | the printed formulas |
+| `#899`, `#884`, `#905` | Observed mean periods T_Dlambda = 29.530589 d, T_M = 27.554550 d, T_theta = 27.212221 d; 223 T_Dlambda ~ 239 T_M ~ 242 T_theta ~ 3 T_omega (exact for the periodic orbits); Saros orbit (223, 239, 3) at (e, i) = (0.0623, 5.57 deg); shifted nu = 0.9995 nu0: (0.0871, 5.41 deg); 1.0005 nu0: (0.0137, 5.72 deg); the Moon's mean elements (0.0549, 5.133 deg); largest set N = (8534, 9146, 115) | Valsecchi et al. pp.374 to 378 | the printed values, with the series of eqs. (8) and (9); the series needs two external constants not printed in the paper (the Sun's mean motion and mu), so a test must declare them |
+
+### Table B: sanity values from my runs (not goldens)
+
+| What | My value | Note |
+| --- | --- | --- |
+| GLI statistics, standard map, n = 1e6 | a = -1.3, (1, 0): m = 1.2e-5, sigma = 0.3355, gamma_1 = 0.512, gamma_2 = -1.23; a = -1.3, (2, 0): m about 0.22, sigma = 0.557, gamma_1 = -0.68, gamma_2 = -0.52; a = -0.1: sigma = 0.0815; a = -10: m = 1.62, sigma = 0.771 | section 3.3; chaotic values scatter by 10 percent between n = 1e4 and 1e6 |
+| Lohinger double star, first-vector mean of ln alpha at t = 2e4 | regular d0 <= 0.24: 7e-4 to 9e-4; chaotic d0 >= 0.255: 0.10 to 0.19 | section 4.4; depends on tolerance by up to 29 percent for chaotic cases; the adaptive integrator is required |
+| Sitnikov finite-time exponent per revolution, 300 revolutions | regular cells 0.011 to 0.030; chaotic cells 0.07 to 0.27 | section 6.3; thresholds are mine; 15 of 16 sampled cells agree with Table A cells |
+| Henon-Heiles finite-time exponent at t = 1e4 | 0.042, 0.056, 0.040 for the three cases | section 11.3 |
+| Saros solution with my transcription of eqs. (8) to (10) | (0.062277, 5.5709 deg); 0.9995 nu0: (0.08707, 5.412 deg); 1.0005 nu0: (0.013672, 5.7235 deg); external constants used: sidereal year 365.256363 d, mu = 1/328900.56 | section 10.2 |
+| Linearised Sitnikov monodromy, converged | agrees with the `core.er3bp` STM; the values at e = +-0.99 differ from the printed ones | section 8.2; **not to be used in place of the printed rows**; if a converged reference is wanted for e = +-0.99 it must be independently sourced |
 
 ## 14. Follow-ups and open items
 
-1. `#912`/`#931`: build the 43-row closure test (section 5.3 recipe, pulsating-frame conversion for the project's frame) and
-   record the corrected e' = 0.100 row; the 4:1 bifurcation point ydot0 = 4.700496 (p.215) against 4.700478 (p.217) and the
-   2:1 e = 0.72 against 0.735 are unresolved printed differences.
+1. `#912`/`#931`: build the 43-row closure test (section 5.3 recipe, pulsating-frame conversion for the project's frame; assert
+   closure to the Newton-correction table, not to 1e-6) and record the corrected e' = 0.100 row; the 4:1 bifurcation point
+   ydot0 = 4.700496 (p.215) against 4.700478 (p.217) is not resolvable (flat valley) and the 2:1 e = 0.72 (p.210) against
+   0.735 (p.211) is an unresolved printed difference (0.735 is the osculating value at t = 0).
 2. `#924`: add the double-star regular and chaotic pair (4.4) and the Sitnikov Table I cells (6.3) as calibration cases for
    the project's CR3BP and ER3BP chaos indicators; neither source prints a threshold.
 3. The Hagel-Trenkler printed slips (e = -0.40 row, e = +-0.80 row, e = +-0.99 rows, eq. 26) should be recorded under `#910`
@@ -973,6 +1098,6 @@ find with SciPy fsolve, scan over nu.
    project's own `core.cr3bp` STM through the double-star orbits (my reproduction used a private integrator); the
    Valsecchi orbits' initial conditions are in unpublished reports and the submitted A&A paper (acquire if `#899` wants a
    Moon-orbit control).
-6. Chapters not read and possibly of interest: Morbidelli (pp.177-189, perturbation methods), Michtchenko and Ferraz-Mello
-   (Hildas), Schubart (2/1 resonance), Moons and Morbidelli, Delhaise and Henrard (critical inclination), Erdi and Kovacs, and
-   the Kallrath et al. least-squares chapter (parameter estimation in chaotic ODEs, relevant to shooting on chaotic arcs).
+6. Chapters not read beyond an abstract and possibly of interest: Morbidelli (pp.177-190, perturbation methods and KAM),
+   Eichhorn (pp.337-351, generalised least squares, the companion of section 11.3), Gilbert et al. (pp.263-272, standard
+   map at k = 1.3 and 10).
