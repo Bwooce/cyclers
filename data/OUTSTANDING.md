@@ -971,6 +971,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
   ISSFD 2014; Campagnola 2010 (as cited by Peng & Xu); Greenzweig & Lissauer 1990 (Icarus 87:40).
+  From the Perko 1976b/1981b digest: Perko 1967, SIAM J. Appl. Math. 15:738 (error-estimation
+  lemmas); Breakwell & Perko 1974, Celest. Mech. 9:437 (second-order matching); Deprit &
+  Deprit-Bartholome 1969, Bull. Astron. 3:315 (Kepler matrizants, the a_ij of Perko 1981b eq. 50);
+  Perko's Stanford thesis is cited there as 1964, "Asymptotic matching in the restricted three-body
+  problem" (the list above says 1965; confirm on receipt).
   **DOIs looked up 2026-10-04, second batch (Crossref; doubtful matches re-checked by the
   coordinator):** Perko 1981b, SIAM J. Appl. Math. 41:181 10.1137/0141013; Perko 1976, Rocky
   Mountain J. Math. 6(4):675, 10.1216/rmj-1976-6-4-675 (Perko's own reference list gives
