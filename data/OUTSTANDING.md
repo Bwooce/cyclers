@@ -1321,8 +1321,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   C -0.720283); Bruno 1981 Table I (23 rows, to 1e-6) and Table III (11 Earth-Moon arcs, a from
   0.52411 to 0.71333, all reproduced; C25 printed 0.57888 against 0.57889);
   `docs/notes/2026-10-04-digest-bruno-1981-periodic-flybys-of-the-moon.md`. Do not copy
-  Bruno's Table IV W column or his Table II mu values (inconsistent with his own eq. 12 and with
-  modern values). Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  Bruno's Table II mu values (inconsistent with modern values). CORRECTED 2026-10-04 by the Brjuno
+  1978 digest (`docs/notes/2026-10-04-digest-brjuno-1978-periodic-solutions-arcs-mu-0.md`): Bruno's
+  eq. 1 is not a slip (his epsilon is Henon's times epsilon''), and his Table IV W column follows
+  W = (1/V^2)(V/sqrt(2 - 1/a) - 1) with V^2 = 3 - C (all 17 rows to 5e-6), a sidereal-speed form
+  that equals eq. 12 only at e = 1; which form is the true first-order periapsis is open (integrate
+  one Table IV orbit at small mu). Brjuno 1978 adds an arc type beyond Henon's enumerator, the
+  asymmetric arcs T_N (a resonant orbit with one collision deleted; zero demanded turn at mu = 0;
+  closed-form seeds), and a printed slip: the type III expansion's (1/2)(e+1)^4 should be 1/12. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
