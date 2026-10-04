@@ -949,7 +949,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Perko 1981, Perko 1977, Henon 1968 (in French), Bruno 1981 (ADS scan, image only), Heggie 1974,
   Guillaume 1973, Chambers 1999, Guillaume 1975 (Celest. Mech. 11:449), Peng & Xu 2015 (ASR),
   Burdet 1967, Duncan, Levison & Lee 1998, Guillaume 1975a (Celest. Mech. 11:213),
-  Scheeres 1998, Hadjidemetriou 1975b.
+  Scheeres 1998, Hadjidemetriou 1975b, Cincotta & Simo 1999 (conditional entropy).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
