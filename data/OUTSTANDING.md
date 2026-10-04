@@ -972,7 +972,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   1969b (AIAA J. 7:1003), Dvorak & Henrard 1993 volume (CMDA 56), Danby 1965 (AIAA J. 3:769),
   Olle, Pacha & Villanueva 2005 (Nonlinearity 18:1141), Kustaanheimo & Stiefel 1965 (Crelle 218:204),
   Barrabes, Mondelo & Olle 2009 (CMDA 105:197), Alvarez-Ramirez, Barrabes, Medina & Olle 2019
-  (CNSNS 71:82).
+  (CNSNS 71:82), Alvarez-Ramirez et al. 2021 (J. Nonlinear Sci. 31:68).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
