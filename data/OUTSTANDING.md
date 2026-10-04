@@ -1172,7 +1172,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   derive. `#670`'s planar Levi-Civita variational jet is an independent cross-check. Sourced controls:
   section 15 examples 1-3 (tolerance 5e-6), section 23 examples (J2 plus Moon, reproduced to 1e-4 km),
   the Stumpff solution (any sign of h) and the radial fall. The book regularises one centre only, so
-  passes near both primaries need a centre switch. The `core/cr3bp_regularized.py` docstring cited
+  passes near both primaries need a centre switch. The Deprit & Deprit-Bartholome closed form and the existing
+  `core/kepler_stm.shepperd_stm` are two independent P = 0 references for the KS transition matrix
+  (after conversion to physical time). The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
@@ -1513,6 +1515,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   this supplies the constant of Guillaume 1973's hyperbola (his cubic is still unsourced). Control:
   fit the avoided-crossing constant from continuations through C = -1 at two or three small mu and
   compare with mu/V1 (V1 = 2 there).
+  Deprit & Deprit-Bartholome 1968 (digest `docs/notes/2026-10-04-digest-deprit-deprit-bartholome-1968-kepler-matrizants.md`):
+  the closed-form planar Kepler matrizant, checked by the agent against a finite difference of
+  `core/kepler.py` (4e-10 relative) and against the existing `core/kepler_stm.shepperd_stm` (4e-14);
+  three printed slips (b44, Table VI b''32 and b''42) are corrected with numerical evidence. Perko's
+  a_ij are entries of the full matrizant composed with a rotation to the frame of the relative
+  velocity, not Deprit's Table I entries. Agent's evaluation at C = -1, V1 = 2 (retrograde unit circle,
+  t1 = pi/2; frame conventions read from the Perko digest, to be confirmed on Perko 1981b pp.195-198):
+  a21 = -2, a24 = 2, a41 = 3 pi/2 - 1, a44 = 3 pi/2 - 2, so the predicted hyperbola is
+  (-2 dr + 2 dv)(-3.712389 dr + 2.712389 dv) = mu/2.
   The earlier finding follows, kept as the record of the mistake:
 - `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
