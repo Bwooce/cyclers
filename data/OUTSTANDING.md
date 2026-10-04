@@ -1193,7 +1193,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   alpha term, a missing tilde). Published benchmark: the L4 solution of the perturbed two-body problem
   (mass ratio 0.01, kappa^2 = 1.01; periods 6.252003 and 5.89817010367 printed, a = 101/105 and e =
   59/101 exactly), whose exact solution is the second body's orbit rotated by 60 degrees. To acquire:
-  Burdet's announced two-fixed-centre paper (the direct fit for #928), NASA CR-769, Broucke 1963. The `core/cr3bp_regularized.py` docstring cited
+  Burdet's announced two-fixed-centre paper (the direct fit for #928), NASA CR-769, Broucke 1963. Aarseth 1971
+  (digest `docs/notes/2026-10-04-digest-aarseth-1971-direct-integration-n-body.md`) does not change it;
+  it adds a second printed source for the perturbed-KS u-form with an integrated energy equation h'
+  (regular for a massless body and for either sign of h, the agent's derivation), a fourth source for
+  the KS map signs (L^T, eq. 34, plus the non-holonomic condition eq. 35), a KS step rule usable for
+  hyperbolic passes, and a plain-to-KS hand-over criterion (gamma_max = 0.01; agent's tidal estimate
+  about 15 000 km from the Moon, untested). Its h is the physical energy (negative when bound),
+  opposite to the Stiefel & Scheifele sign. Peters's printed perturbation gradient has the reversed
+  sign (Aarseth's footnote, confirmed by the agent); use R = r_k - r_l. Eq. 46 starting coefficients
+  are misprinted. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
@@ -1264,7 +1273,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   family. Control for `core.cr3bp` CHECKED by the coordinator: from (0.181, 0, -0.94711034) at mu =
   1/2 the orbit crosses y = 0 perpendicularly at T = 0.9242291 with x = 0.72101839 (printed
   0.72101839). Add a pseudo-arclength test through the fold with the printed rows as expected output.
-  To acquire: Szebehely & Peters 1967, AJ 72:1187.
+  To acquire: Szebehely & Peters 1967, AJ 72:1187 (10.1086/110398, the periodic solution) and AJ
+  72:876 (10.1086/110355, the Pythagorean problem; both papers exist, per the Aarseth 1971 digest).
   Henon 1974a (digest `docs/notes/2026-10-04-digest-henon-1974a-families-periodic-orbits-three-body.md`):
   a third control set. Tables I and II (masses 3:4:5, E = -47/288, 14 rows in the angular momentum A)
   reproduced by the agent's independent integrator (E to 5e-10, A to 5e-9, closure after rotating by
