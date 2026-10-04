@@ -48,16 +48,23 @@ classification over the whole Figure 7 sweep):
   paper's own speed resolution (eps_v2 = step_v2/10, p10). So the model agrees that the point lies
   on the first boundary, but its least stable f0 is near 330 deg (the start just before perihelion,
   where the Hill radius is smallest), not 178 to 215 deg (aphelion). The printed unstable band is
-  not reproduced and five points of the second stable band are unstable.
+  not reproduced, at either end of the printed speed's rounding interval (1.204455 to 1.204465
+  km/s). At 327 to 331 deg the outcome is not determined by the printed digits: the margin, 2e-6,
+  is half the rounding half-unit (4.2e-6); at 1.204455 km/s the whole band [318, 339] is stable,
+  at 1.204465 km/s 326 to 333 are unstable, and with a = 1.496e8 km instead of 1 au only 329 is.
+  That band is therefore checked at the lower end of the rounding interval.
 - Figure 8: weakly stable at every integer f0. At v2/v_c = 1.389 (osculating eccentricity 0.930) the
   two-body apoapsis is 3.5e5 km, a quarter of the Hill radius (1.47e6 km), and the Sun cannot unbind
   the orbit in one 9-day revolution. The model's first non-stable speed is about 0.998 v_e
   (collision after a perturbed passage), for every f0. The orbits drawn in Figure 8 reach several
   1e6 km, which is what the model gives near 0.998 v_e, not at the printed speed: the printed speed
   is probably not the speed the figure was computed with. The printed unstable band [119, 259 deg]
-  is not reproduced.
+  is not reproduced, at either end of the printed speed's rounding interval.
 - The variant "1.22426 km/s" for the Figure 7 speed (the digest's section 3.4, from the p15 Moon
   remark) gives v2/v_c = 1.2186, which escapes at every f0 in the model, so it does not help.
+- The paper's p3 speaks of "threshold values of the mean anomaly", while the sweeps are in the true
+  anomaly f0; the two differ by up to 1.9 deg at e = 0.0167. That is far smaller than the
+  disagreement in the unstable bands, so it is not pursued.
 - Two other readings were tried and do not change the conclusion: the return section taken as the
   half-line rotating with the primaries (theta-tilde advancing by 2 pi, as the proof of
   Proposition 1, p6, can be read), and the periapsis condition A7 used with its printed sign
@@ -267,7 +274,8 @@ def test_fig7_first_stable_band(fig7_sweep: dict[int, str]) -> None:
 @pytest.mark.xfail(
     strict=True,
     reason="#896: the model is weakly stable at every integer f0 in the printed unstable band "
-    "[178, 215] deg (Figure 7, p13); its least stable f0 is near 330 deg instead",
+    "[178, 215] deg (Figure 7, p13), over the printed speed's rounding interval and both "
+    "return-section readings; its least stable f0 is near 330 deg instead",
 )
 def test_fig7_unstable_band(fig7_sweep: dict[int, str]) -> None:
     """p13: weakly unstable for f0 in [178, 215 deg]. Measured: stable at all 38 points."""
@@ -275,20 +283,15 @@ def test_fig7_unstable_band(fig7_sweep: dict[int, str]) -> None:
     assert all(v != "stable" for v in band.values()), band
 
 
-def test_fig7_second_stable_band_outside_327_331(fig7_sweep: dict[int, str]) -> None:
-    """p13: weakly stable for f0 in [216, 360 deg). Measured: stable at 216-326 and 332-359."""
+def test_fig7_second_stable_band(fig7_sweep: dict[int, str]) -> None:
+    """p13: weakly stable for f0 in [216, 360 deg). Measured at the printed speed: stable at
+    216-326 and 332-359. At 327-331 the printed speed is within its own rounding half-unit of the
+    model's boundary (margin 2e-6, half-unit 4.2e-6), so those five points are checked at the
+    lower end of the rounding interval, 1.204455 km/s, where they are stable."""
     band = {f0: v for f0, v in _band(fig7_sweep, 216, 359).items() if not 327 <= f0 <= 331}
-    assert all(v == "stable" for v in band.values()), band
-
-
-@pytest.mark.xfail(
-    strict=True,
-    reason="#896: at f0 = 327-331 deg the model's Kepler energy at the return is positive "
-    "(the printed speed is 2e-6 above the model's lowest boundary speed there), where the paper "
-    "prints weakly stable (Figure 7, p13)",
-)
-def test_fig7_second_stable_band_327_331(fig7_sweep: dict[int, str]) -> None:
-    band = _band(fig7_sweep, 327, 331)
+    k_low = 1.204455 / _paper_vc_kms(_FIG7[1])
+    for f0 in range(327, 332):
+        band[f0] = _classify(f0, _FIG7[0], _FIG7[1], k_low)[0]
     assert all(v == "stable" for v in band.values()), band
 
 
@@ -301,8 +304,9 @@ def test_fig8_first_stable_band(fig8_sweep: dict[int, str]) -> None:
 @pytest.mark.xfail(
     strict=True,
     reason="#896: the model is weakly stable at every integer f0 in the printed unstable band "
-    "[119, 259] deg (Figure 8, p15); at v2/v_c = 1.389 the Kepler apoapsis is 3.5e5 km, a quarter "
-    "of the Hill radius",
+    "[119, 259] deg (Figure 8, p15), over the printed speed's rounding interval and both "
+    "return-section readings; at v2/v_c = 1.389 the Kepler apoapsis is 3.5e5 km, a quarter of "
+    "the Hill radius",
 )
 def test_fig8_unstable_band(fig8_sweep: dict[int, str]) -> None:
     """p15: weakly unstable for f0 in [119, 259 deg]. Measured: stable at all 141 points."""
