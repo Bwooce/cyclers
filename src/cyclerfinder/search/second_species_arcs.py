@@ -756,17 +756,28 @@ def c_family_indices(
     return out
 
 
-def first_c_family(e_p: float, eps_p: int, i_parity: int, *, max_i: int = 2000) -> tuple[int, int]:
-    """Smallest (i, j) with C_ij existing and i of the given parity (0 even, 1 odd).
+def first_c_family(
+    e_p: float,
+    eps_p: int,
+    i_parity: int,
+    *,
+    max_i: int = 2000,
+    factor: float | None = None,
+) -> tuple[int, int]:
+    """Smallest (i, i + 1) with C_ij existing and i of the given parity (0 even, 1 odd).
 
-    Gomez & Olle p. 44: at e_p = 0.98 the first odd-i family is C67,68 for
-    eps_p = +1 and the first even-i family is C68,69 for eps_p = -1.
+    ``factor`` replaces the exact ratio ``c_family_max_j(i)/i`` of eq. 21 (use it to
+    reproduce the rounded 1.015 of the paper's text).  Gomez & Olle p. 44 quote C67,68
+    (eps_p = +1, i odd) and C68,69 (eps_p = -1, i even) at e_p = 0.98; with the exact
+    eq. 21 the second is C66,67 (66 * 1.01523 = 67.005 >= 67), the printed pair following
+    from the rounded 1.015 (66 * 1.015 = 66.99).
     """
     for i in range(1, max_i + 1):
         if i % 2 != i_parity % 2:
             continue
         j = i + 1
-        if c_family_exists(i, j, e_p, eps_p):
+        ok = c_family_exists(i, j, e_p, eps_p) if factor is None else j <= factor * i
+        if ok:
             return i, j
     raise ValueError("none found")
 
