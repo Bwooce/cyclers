@@ -935,7 +935,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (ISSFD). Next literature watch about 2026-10-17.
   **Added 2026-10-04 from the `#897` synthesis and the Musielak & Quarles review digest:**
   RECEIVED 2026-10-04: Hadjidemetriou 1975, Cincotta & Simo 2000 (MEGNO), Froeschle, Lega &
-  Gonczi 1997 (FLI); digests in progress. Still wanted: Bruno 1981, "On periodic
+  Gonczi 1997 (FLI), Henon 1997 (book), Hitzl & Henon 1977, Perko 1976, Sanaga & Howell 2025.
+  **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
+  10.1007/BF01229557; Guillaume 1973 10.1007/BF01231414; Guillaume 1975 ("The restricted
+  problem: an extension of Breakwell-Perko's matching theory") 10.1007/BF01650284; Perko 1977
+  10.1007/BF01232655; Perko 1981 10.1007/BF01229193; Henon 1968 10.3406/bastr.1968.14547;
+  Lantoine & Russell 2011 10.1007/BF03321174; Rhouma & Chicone 2000 10.4310/maa.2000.v7.n1.a5;
+  Jorba & Villanueva 1997 10.1007/s003329900036; Henon 2001 (Generating Families II)
+  10.1007/3-540-44712-1; Cincotta & Simo 1999 ("Conditional entropy", not MEGNO)
+  10.1023/A:1008355215603; Hadjidemetriou 1975b ("The stability of periodic orbits in the
+  three-body problem") 10.1007/BF01228563; Burdet 1967 10.1007/BF01601283; Heggie 1974
+  10.1007/BF01227621; Chambers 1999 10.1046/j.1365-8711.1999.02379.x; Olle 1989 thesis, no DOI.
+  Older entries follow: Bruno 1981, "On periodic
   flybys of the Moon", Celest. Mech. 24:255; Henon 1997, Generating Families in the Restricted
   Three-Body Problem (10.1007/3-540-69650-4); Hitzl & Henon 1977 (10.1007/BF01228610);
   Guillaume 1973, Celest. Mech. 8:199; Perko 1976, 1977, 1981; Lantoine & Russell 2011,
