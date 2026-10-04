@@ -608,7 +608,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (body-set rule: Titania-Oberon is not one of Russell and Strange's computed pairs; Canales,
   Howell & Fantino treat a one-way Titania to Oberon transfer). NO catalogue row before all
   four, an adversarial review, and the owner's say.
-- `#889` — registered 2026-10-04 (from the `#882` adversarial review; DISPATCHED the same day):
+- `#889` — ✓ POSITIVE CONTROL PASSED 2026-10-04 (commits `b4a74bb1`, `0737df97`; note
+  `docs/notes/2026-10-04-889-published-torus-connection-positive-control.md`; module
+  `search/pertbp_strob_889.py`, 13 tests). **The published torus connection is REPRODUCED:**
+  refined intersection (-0.96063509, 0.88783033, -0.51376751, -0.64713768) against the printed
+  (-0.96064, 0.88783, -0.51377, -0.64714), differences (4.9, 0.3, 2.5, 2.3)e-6; three components
+  round to the printed five decimals and the first sits on the rounding boundary. The torus
+  parameter pairs also match the printed ones to five figures, (2.39705, -77.7330) and
+  (1.83095, 202.625) against (2.39703, -77.73428) and (1.83093, 202.62277), but with the
+  stable and unstable labels the other way round from the paper's text (consistent with the
+  paper's own figures; recorded respectfully, cause not determined). The result moves by at
+  most 1.2e-7 across resolution and chart radius. **It only works with the UNROUNDED rotation
+  data:** the paper's printed omega values (1.558039, 1.030011) are roundings of the values
+  implied by the companion paper's Table 1 periods; using the printed ones literally puts the
+  zero 2e-3 away (the published-rounded-value trap a third time). Mass parameter taken from
+  the companion paper (arXiv 2109.14800), which reproduces its Table 1 periods and
+  multipliers. **Review criteria applied:** agreement between offsets 1e-5 and 1e-6 passes
+  (2.8e-9); contraction at the multiplier's rate passes backward (9 periods) and FAILS forward
+  (4 periods: a 3e-9 junction mismatch grows threefold per period); the random-perturbation
+  test passes backward and is inconclusive forward. The agent's inference: the 8-period
+  contraction criterion is unsatisfiable in double precision when the multipliers' ratio is
+  about 9 per period, so it must be RESTATED before it is made a gate. Not done: regenerating
+  the `#882` junctions (it was conditional on the criteria passing); a default-suite test of
+  the connection itself (the tori take minutes to build). **Standing of the lane:** the method
+  now has a published positive control; what remains before more `#886` work is restating the
+  verification criteria and regenerating the `#882` junctions. Original registration follows.
+  Registered 2026-10-04 (from the `#882` adversarial review; DISPATCHED the same day):
   **THE PUBLISHED POSITIVE CONTROL THE TORUS-CONNECTION LANE HAS NEVER HAD.** Kumar, Anderson &
   de la Llave (SIAM J. Applied Dynamical Systems 24(1):219-258, 2025; held as arXiv 2109.14814)
   print a refined heteroclinic connection between the Jupiter-Europa 3:4 and 5:6 resonant tori
