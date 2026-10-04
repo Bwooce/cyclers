@@ -968,7 +968,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Deprit & Deprit-Bartholome 1968, Devaney 1981, Brjuno 1978 part III (Celest. Mech. 18:51),
   Hadjidemetriou & Christides 1975 (digested), Hitzl & Henon 1977b (Acta Astronaut. 4:1019), Henon 1974a
   (Celest. Mech. 10:375), Burdet 1968 (ZAMP 19:345), Waldvogel 1967 (in German), Peters 1968,
-  Aarseth 1971 (Astrophys. Space Sci. 14:118), Perko 1967 (SIAM J. Appl. Math. 15:738).
+  Aarseth 1971 (Astrophys. Space Sci. 14:118), Perko 1967 (SIAM J. Appl. Math. 15:738), Broucke
+  1969b (AIAA J. 7:1003).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
