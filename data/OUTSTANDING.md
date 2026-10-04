@@ -977,7 +977,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Olle, Rodriguez & Soler 2018 (CNSNS 55:298), 2020 (CNSNS 90:105294) and 2021 (CNSNS
   94:105550), Olle, Pacha & Villanueva 2004 (CMDA 90:87), Jorba & Olle 2004 (Nonlinearity
   17:691), Lancaster & Allemann 1973 (AIAA J. 11:259, the journal synoptic of AIAA 72-49), Llibre
-  1982 (Celest. Mech. 28:83), Szebehely & Peters 1967a (AJ 72:876).
+  1982 (Celest. Mech. 28:83), Szebehely & Peters 1967a (AJ 72:876) and 1967b (AJ 72:1187).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
