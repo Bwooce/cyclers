@@ -303,3 +303,19 @@ Not held (worth filing, in priority order):
   unresolved question and needs the papers in section 8, items 1 to 3.
 - Several held digests (Kumar and Anderson, Lynam-Longuski, Anderson-Lo, Kumar Jovian series) were read as
   digests, not re-read from the PDFs.
+
+## Coordinator's correction (2026-10-04, after the theory papers were obtained and digested)
+
+Section 5 above says that second-species theory "may apply" to the existence of the orbit and that
+"the Bolotin-Negrini snippet and Dimare's 3-centre result point that way". The papers are now held
+and digested (Bolotin & MacKay 2000 and 2006; Font, Nunes & Simo 2002 and 2009; Marco & Niederman
+1995; Dimare 2010), and none of them supports that. Every one treats ONE small centre or
+secondary, in an autonomous problem with a conserved energy and fixed centres (in the rotating
+frame for the restricted problem). Dimare's three centres are two equal fixed primaries and one
+small fixed centre; no orbit there alternates between two small centres. Two moons with different
+periods cannot be put in any of those settings. The supported wording is: the one-moon analogue
+is proved for small mass; the two-moon case with different periods is not covered by the
+published theory. Policy case (iii) (a theorem-generic object) therefore does not apply to
+`#890` on present knowledge. Separately, the continuation step used to compute the orbit is the
+published method of Bradley & Russell (2014).
+
