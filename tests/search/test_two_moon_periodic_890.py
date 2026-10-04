@@ -68,8 +68,15 @@ def test_two_body_limit_reproduces_kepler_over_one_leg(geom: tm.ClosureGeometry)
 
 
 def test_forcing_period_matches_patched_conic_at_lam_zero() -> None:
+    """At lam = 0 the forcing period is the two-body synodic period with the system GM."""
+    from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+
+    gm = PRIMARIES["Uranus"]
+    p_t = 2 * math.pi * math.sqrt(SATELLITES["Titania"].sma_km ** 3 / gm)
+    p_o = 2 * math.pi * math.sqrt(SATELLITES["Oberon"].sma_km ** 3 / gm)
+    syn_days = 1.0 / (1.0 / p_t - 1.0 / p_o) / 86400.0
     m0 = tm.TwoMoonModel(lam=0.0)
-    assert math.isclose(m0.days(2.5 * m0.forcing_period), TOF, rel_tol=1e-12)
+    assert math.isclose(m0.days(m0.forcing_period), syn_days, rel_tol=1e-12)
 
 
 def test_perturber_on_axis_at_half_period() -> None:

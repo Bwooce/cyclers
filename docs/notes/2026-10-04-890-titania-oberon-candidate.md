@@ -150,6 +150,17 @@ Outputs in `data/found/890_titania_oberon_candidate/` (`rebuild.json`, `decisive
    and lam = 1 orbits have 6 per leg. The criterion's intent (same revolution count as the conic)
    is met.
 5. **Stages `refine` (post hoc) and `realeph`** were added after `verify`; see 2.5 and 2.7.
+   **`realeph` ran OUTSIDE its pre-registered gate** (section 1.7 allows step 5 only if V1 to V6
+   pass, and V2/V3 failed as written); it was run on the post hoc refined state. Its outcome
+   (the orbit is lost) does not support the candidate, so running it cannot have favoured it.
+6. **Direct Newton at lam = 1** from the lam = 1 hyperbola guess (`direct.json`): did NOT
+   converge (30 iterations, final residual 6.7e-2). Only the continuation reaches lam = 1.
+7. **The project's Uranian validation lane was not used for step 5.** `data/validation/v4_uranus.py`
+   `_third_body_acceleration_kms2` returns ZERO force from a moon when the spacecraft is inside
+   `softening_km`, and both `v4_uranus` and `v4_uranus_strict` pass each moon's Hill radius as
+   that softening. Those lanes therefore cannot represent any encounter inside a Hill radius
+   (this orbit's flybys are at 0.16 and 0.27 Hill radii); `realeph` uses its own unsoftened
+   point-mass model instead. This is a defect of that lane for flyby validation in general.
 
 ### 2.2 Rebuild and frame checks (pass)
 
@@ -221,14 +232,16 @@ start by less than a millimetre and the one-cycle closure becomes 5.2 m and 0.03
 and 0.68 m and 0.005 cm/s (Radau), both inside the pre-registered bounds. My pre-registered
 fallback clause was conditioned on Lambda > 1e6 where it should have been conditioned on
 Lambda times the residual; as written, V2 and V3 fail, and the pass comes only after a post hoc
-refinement. I judge the orbit to exist in the model (the post hoc evidence is strong and
-independent of the clause), but the reader should know the pre-registered test was not passed as
-written.
+refinement. I judge the orbit to exist in the model, but the reader should know the pre-registered test was
+not passed as written. Independent parts of the post hoc evidence: the Radau closure of the
+refined state (0.68 m) and the half-cycle symmetry conditions (0.27 m). Not independent: the
+refinement step used the DOP853 monodromy.
 
 ### 2.6 Sensitivity (V7, reported)
 
 From the apoapsis before each flyby (`sensitivity.json`; nonlinear runs at the full and at a
-tenth of the perturbation agree to within 10 percent, so the response is close to linear):
+tenth of the perturbation agree to within 15 percent per unit, e.g. Oberon along-track 1,243
+against 1,421 km per m/s, so the response is close to linear):
 
 | flyby (apoapsis lead) | 1 km radial | 1 km along-track | 1 m/s radial | 1 m/s along-track |
 |---|---|---|---|---|
@@ -236,7 +249,7 @@ tenth of the perturbation agree to within 10 percent, so the response is close t
 | Titania (5.8 d) | +7.0 km, +33 s | +1.6 km, +11 s | +438 km, +0.7 h | +1,430 km, +1.5 h |
 
 A 1 m/s along-track error moves the next periapsis by more than the Oberon flyby's altitude
-margin (1,364 km): the orbit is only flyable with routine targeting, about 1.3 km of periapsis
+margin (1,364 km): the orbit is only flyable with routine targeting, about 1.2 to 1.4 km of periapsis
 shift per mm/s of along-track error. A maintenance cost per cycle was NOT estimated (it needs a
 navigation-error model and a targeting scheme; inference: with centimetre-per-second
 navigation the per-flyby corrections are of order cm/s, as in any multi-flyby tour, but that is
