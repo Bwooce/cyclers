@@ -614,7 +614,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (one impacts) and none returns to Titania. **Sensitivity:** 1 m/s at the preceding apoapsis
   moves the flyby periapsis by 1,200 to 1,400 km. **Not a row.** Needed first: a literature
   check, an adversarial review, and a real-ephemeris multi-cycle correction with a manoeuvre
-  budget. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
+  budget. **LITERATURE CHECK DONE 2026-10-04 (commit `117c5334`, note
+  `docs/notes/2026-10-04-890-literature-check.md`): same class as prior work; this body set not
+  found.** No paper was found that prints a periodic orbit or repeating sequence alternating
+  Titania and Oberon flybys (21 web queries plus the held corpus; necessary, not sufficient).
+  Close published classes: moon-to-moon free-return cyclers at Jupiter and Saturn (Russell &
+  Strange 2009, patched-conic with one working body); the same model and body set for
+  Oberon-resonant orbits (Kumar & Anderson, AAS 24-288, no Titania flybys); and
+  "second-species" periodic orbits that shadow collision chains at small mass, an old
+  published class, which makes the EXISTENCE of such an orbit unsurprising. The project's own
+  gate does NOT clear it: `check_literature` returns `published` (0.95) on the Heaton &
+  Longuski Uranian-tour anchor, whose own text says it is not a periodic cycler; the agent
+  reads that as a body-set false positive. If a label is ever wanted, the nearest policy case
+  is 16.4 (ii) with wording "a periodic orbit of the Uranus-Titania-Oberon four-body model
+  that continues a patched-conic closure", stating that Kumar & Anderson treated the same
+  model and body set, and never "new in kind". **Papers wanted before any such wording:**
+  Bolotin & MacKay 2006 (DOI 10.1007/s10569-006-9006-0); Font, Nunes & Simo, Nonlinearity
+  15:115 (2002) and CMDA 103:143 (2009); and "A continuation method for converting
+  trajectories from patched conics to full gravity models", J. Astronaut. Sci. (DOI
+  10.1007/s40295-014-0017-x), which may already publish the continuation step.
+  Adversarial review dispatched, not back. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
   inside its Hill sphere (the softening radius passed is the Hill radius), so neither V4 lane
   can represent a flyby; a V4 for moon tours has to be rebuilt on an unsoftened propagator.
   Original registration follows (from the `#888` gated re-enumeration; DISPATCHED the same
