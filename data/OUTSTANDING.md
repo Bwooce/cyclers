@@ -954,7 +954,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (Hill four-body Sun position); conditional on Earth-Moon halo work (`#926`(d)): Davis et al.
   2017 (AAS 17-826), Park & Howell AAS 23-118 and AAS 22-741, Sanaga & Howell AAS 23-227.
   From the Heggie and Chambers digests: Guillaume 1975a, Celest. Mech. 11:213-254; Waldvogel 1967,
-  Bull. Astron. 3:295; Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
+  Bull. Astron. 3:295 (Guillaume 1975a pp.253-254 should hold the Guillaume 1973 coefficients);
+  Perko 1965 thesis and Perko 1976, Rocky Mountain J. Math. 6:130 (remainder estimates);
+  Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
   Chambers positive control: Duncan, Levison & Lee 1998, Michel & Valsecchi 1997.
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
   **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
@@ -1232,6 +1234,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
   Moon's radius is 1737 km), so some are expected to impact. The demanded turn is exactly zero
   at e = 0 or integer eta/pi (tangency or resonance), which supports the `#906` amendment.
+  Guillaume 1975 (digest `docs/notes/2026-10-04-digest-guillaume-1975-extension-breakwell-perko-matching.md`)
+  confirms the gate relation r_p = mu(e-1)/v^2, sin(turn/2) = 1/e, unchanged by matching, and gives
+  the matching equations for a `hyperbola_match` helper (identity tests from its eqs. 1.9-1.12) and
+  the residual slopes 5/3 and 4/3 in mu to measure against numerical flybys.
   The earlier finding follows, kept as the record of the mistake:
 - `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
