@@ -1257,7 +1257,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   centre per moon with a switch, since B3 needs the two bodies to be the primaries). Build B3 later as a
   cross-check and for passes near both primaries or continuation through collisions at either; it has
   no Hamiltonian form (no symplectic check), a singular axis needing a reset, and no printed
-  variational equations. Its h is the physical energy. The `core/cr3bp_regularized.py` docstring cited
+  variational equations. Its h is the physical energy. Kustaanheimo & Stiefel 1965 (digest
+  `docs/notes/2026-10-05-digest-kustaanheimo-stiefel-1965-ks-regularization.md`) settles the convention:
+  all five printed sources use the same matrix L(u) = [[u1,-u2,-u3,u4],[u2,u1,-u4,-u3],[u3,u4,u1,u2],
+  [u4,-u3,u2,-u1]] (Peters's A* and Aarseth's L^T are L3^T, Aarseth & Zare's A_1 is 2 L3^T); the
+  differences are scale factors and the independent variable only. ADOPT the KS 1965 / Stiefel &
+  Scheifele form: x = L(u)u, dx = 2 L3 du, u' = (1/2) L3^T xdot, control u4 u1' - u3 u2' + u2 u3' -
+  u1 u4' = 0. FIRST #928 TEST (before any dynamics): for random u and xdot, |x| = u.u; the code's L3
+  equals each source's matrix up to the documented factor; L3 L3^T = |u|^2 I; the control holds to
+  1e-15 relative; both inverse branches and a fibre rotation round-trip (the coordinator checked one
+  forward value). Code the total-energy equation (book 9,53), not KS eq. 36, which needs the
+  perturbation work as an extra integral. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
