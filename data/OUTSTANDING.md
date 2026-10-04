@@ -1115,6 +1115,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   speed-based density breaks down at a flyby); do not build it. Its Henon-Heiles orbit labels
   (h = 0.118: q2 = 0.305 and 0.5 regular, 0.509 layer, 0.6 chaotic) are a sourced classification
   test for an FLI or MEGNO module; Henon & Heiles 1964 (AJ 69:73) is needed to source the potential.
+  RECEIVED and digested (`docs/notes/2026-10-04-digest-henon-heiles-1964-third-integral.md`): the
+  potential is U = (x^2 + y^2 + 2 x^2 y - (2/3) y^3)/2 as printed (eq. 11); escape energy 1/6.
+  Sourced classification tests for #924: (A) at E = 1/12 every section point regular; (B) at E = 1/6
+  almost all chaotic; (C) the regular fraction against E is 1 up to about 0.11 and falls monotonically
+  (Fig. 7 plot reads: about 0.9 at 0.118, 0.7 at 0.125, 0.1 at 1/6; tolerance a few hundredths); (D)
+  Cincotta & Simo's labels at E = 0.118. Their "0.305" stable orbit is approximate: the coordinator
+  located the symmetric period-1 fixed point at y = 0.295456 (agent: 0.29546, elliptic), so test the
+  label as "regular near 0.30", not as a value.
 - `#927` — registered 2026-10-04. **LEIVA & BRIOZZO 2005 DOES NOT REPRODUCE IN `core.qbcp`: A
   REMAINING MODEL DIFFERENCE?** From `#896` item (e) (`tests/core/test_leiva_briozzo_2005_more.py`,
   strict xfails): the seed orbit closes (4.7e-5), but the localisation orbit misses by 3.5e-2 after
