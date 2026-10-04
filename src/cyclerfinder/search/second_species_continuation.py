@@ -52,8 +52,9 @@ V = sqrt(3 - C) the encounter speed of the mu -> 0 problem.
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
+from itertools import pairwise
 
 import numpy as np
 from numpy.typing import NDArray
@@ -186,16 +187,29 @@ class MSOrbit:
     """A periodic orbit as N multiple-shooting nodes (planar states) and a period."""
 
     mu: float
-    nodes: FloatArray  # (N, 4); node 0 lies on y = 0
+    nodes: FloatArray  # (N, 4)
     period: float
     residual: float = math.inf
     iterations: int = 0
     converged: bool = False
     segments: list[Segment] = field(default_factory=list, repr=False)
+    fractions: FloatArray | None = None  # segment durations / T (None: equal)
+    phase_mode: str = "y0"  # "y0": node 0 on y = 0; "flow": node 0 on the plane through the
+    # guess's node 0 orthogonal to the flow there (Poincare phase condition)
 
     @property
     def n(self) -> int:
         return int(self.nodes.shape[0])
+
+    @property
+    def fracs(self) -> FloatArray:
+        if self.fractions is None:
+            return np.full(self.n, 1.0 / self.n)
+        return self.fractions
+
+    def like(self, mu: float, nodes: FloatArray, period: float) -> MSOrbit:
+        """An uncorrected orbit with this orbit's segment fractions and phase mode."""
+        return MSOrbit(mu, nodes, period, fractions=self.fractions, phase_mode=self.phase_mode)
 
     @property
     def jacobi(self) -> float:
@@ -251,23 +265,23 @@ def renode(orbit: MSOrbit, n: int) -> MSOrbit:
 
 
 def _evaluate(
-    mu: float, nodes: FloatArray, period: float
+    mu: float, nodes: FloatArray, period: float, fracs: FloatArray | None = None
 ) -> tuple[FloatArray, FloatArray, list[Segment]]:
     """Continuity residuals (4N) and their Jacobian with respect to (nodes, T)."""
     n = nodes.shape[0]
-    dt = period / n
+    fr = np.full(n, 1.0 / n) if fracs is None else fracs
     res = np.empty(4 * n)
     jac = np.zeros((4 * n, 4 * n + 1))
     segs = []
     for i in range(n):
-        seg = propagate_segment(mu, nodes[i], dt, with_stm=True)
+        seg = propagate_segment(mu, nodes[i], period * fr[i], with_stm=True)
         segs.append(seg)
         j = (i + 1) % n
         res[4 * i : 4 * i + 4] = seg.end - nodes[j]
         assert seg.stm4 is not None
         jac[4 * i : 4 * i + 4, 4 * i : 4 * i + 4] = seg.stm4
         jac[4 * i : 4 * i + 4, 4 * j : 4 * j + 4] -= np.eye(4)
-        jac[4 * i : 4 * i + 4, 4 * n] = planar_eom(seg.end, mu) / n
+        jac[4 * i : 4 * i + 4, 4 * n] = planar_eom(seg.end, mu) * fr[i]
     return res, jac, segs
 
 
@@ -286,13 +300,16 @@ def correct(
     fix_period: float | None = None,
     fix_jacobi: float | None = None,
     arclength: tuple[FloatArray, FloatArray, float] | None = None,
+    phase: tuple[FloatArray, FloatArray] | None = None,
+    damped: bool = False,
     tol: float = 1e-10,
     accept_tol: float = 1e-8,
     max_iter: int = 12,
 ) -> MSOrbit:
     """Gauss-Newton multiple-shooting correction at fixed ``orbit.mu``.
 
-    Conditions: continuity, y = 0 at node 0, and any of ``fix_period``, ``fix_jacobi`` and
+    Conditions: continuity, y = 0 at node 0 (or, with ``phase = (point, direction)``,
+    direction . (node 0 - point) = 0), and any of ``fix_period``, ``fix_jacobi`` and
     ``arclength = (u_prev, tangent, ds)`` (pseudo-arclength: tangent . (U - u_prev) = ds,
     with U = (nodes, T)). With neither fix nor arclength the system is underdetermined (the
     family at fixed mu) and the minimum-norm step is taken. Raises :class:`CorrectionError`
@@ -305,10 +322,53 @@ def correct(
     n = nodes.shape[0]
     nu = 4 * n + 1
     last_norm = math.inf
+    fr = orbit.fracs
+    if phase is None and orbit.phase_mode == "flow":
+        f0 = planar_eom(orbit.nodes[0], mu)
+        phase = (orbit.nodes[0].copy(), f0 / np.linalg.norm(f0))
+
+    def _done(norm: float, it: int, segs: list[Segment]) -> MSOrbit:
+        return MSOrbit(
+            mu=mu,
+            nodes=nodes,
+            period=period,
+            residual=norm,
+            iterations=it,
+            converged=True,
+            segments=segs,
+            fractions=orbit.fractions,
+            phase_mode=orbit.phase_mode,
+        )
+
+    def _residual_norm(tn: FloatArray, tp: float) -> float:
+        worst = 0.0
+        for i in range(n):
+            end = propagate_segment(mu, tn[i], tp * fr[i], with_stm=False).end
+            worst = max(worst, float(np.max(np.abs(end - tn[(i + 1) % n]))))
+        if phase is None:
+            worst = max(worst, abs(float(tn[0, 1])))
+        else:
+            worst = max(worst, abs(float(phase[1] @ (tn[0] - phase[0]))))
+        if fix_period is not None:
+            worst = max(worst, abs(tp - fix_period))
+        if fix_jacobi is not None:
+            worst = max(worst, abs(jacobi4(tn[0], mu) - fix_jacobi))
+        if arclength is not None:
+            u = np.concatenate([tn.ravel(), [tp]])
+            worst = max(worst, abs(float(arclength[1] @ (u - arclength[0])) - arclength[2]))
+        return worst
+
     for it in range(max_iter + 1):
-        res, jac, segs = _evaluate(mu, nodes, period)
-        rows_r = [res, np.array([nodes[0, 1]])]
-        rows_j = [jac, np.eye(nu)[1:2]]
+        res, jac, segs = _evaluate(mu, nodes, period, fr)
+        if phase is None:
+            rows_r = [res, np.array([nodes[0, 1]])]
+            rows_j = [jac, np.eye(nu)[1:2]]
+        else:
+            ref_pt, ref_dir = phase
+            ph = np.zeros((1, nu))
+            ph[0, :4] = ref_dir
+            rows_r = [res, np.array([float(ref_dir @ (nodes[0] - ref_pt))])]
+            rows_j = [jac, ph]
         if fix_period is not None:
             rows_r.append(np.array([period - fix_period]))
             rows_j.append(np.eye(nu)[nu - 1 : nu])
@@ -326,46 +386,65 @@ def correct(
         jm = np.vstack(rows_j)
         norm = float(np.max(np.abs(f)))
         if norm < tol:
-            return MSOrbit(
-                mu=mu,
-                nodes=nodes,
-                period=period,
-                residual=norm,
-                iterations=it,
-                converged=True,
-                segments=segs,
-            )
+            return _done(norm, it, segs)
         stalled = it >= 1 and norm > 0.5 * last_norm
         if stalled and norm < accept_tol:
             # integration-noise floor reached (the floor grows with the orbit's instability)
-            return MSOrbit(
-                mu=mu,
-                nodes=nodes,
-                period=period,
-                residual=norm,
-                iterations=it,
-                converged=True,
-                segments=segs,
-            )
-        if it == max_iter or not math.isfinite(norm) or (it >= 4 and norm > 0.9 * last_norm):
+            return _done(norm, it, segs)
+        if (
+            it == max_iter
+            or not math.isfinite(norm)
+            or (not damped and it >= 4 and norm > 0.9 * last_norm)
+        ):
             raise CorrectionError(f"multiple shooting did not converge (residual {norm:.3e})")
         last_norm = norm
         step = np.linalg.lstsq(jm, -f, rcond=None)[0]
-        nodes = nodes + step[:-1].reshape(n, 4)
-        period = period + float(step[-1])
+        lam = 1.0
+        if damped and norm > 1e-6:
+            # backtracking on the max-norm residual (state-only propagation)
+            for _ in range(8):
+                tn = nodes + lam * step[:-1].reshape(n, 4)
+                tp = period + lam * float(step[-1])
+                try:
+                    if tp > 0.0 and _residual_norm(tn, tp) < norm:
+                        break
+                except _STEP_FAILURES:
+                    pass
+                lam *= 0.5
+        nodes = nodes + lam * step[:-1].reshape(n, 4)
+        period = period + lam * float(step[-1])
         if not period > 0.0:
             raise CorrectionError("multiple shooting: period became non-positive")
     raise CorrectionError("unreachable")
 
 
-def family_tangent(orbit: MSOrbit) -> FloatArray:
-    """Unit tangent of the family at fixed mu (null vector of continuity + section)."""
-    _res, jac, _ = _evaluate(orbit.mu, orbit.nodes, orbit.period)
+def family_tangent(
+    orbit: MSOrbit, previous: FloatArray | None = None, *, gap: float = 1e-4
+) -> FloatArray:
+    """Unit tangent of the family at fixed mu (null vector of continuity + section).
+
+    One continuity row is redundant (the Jacobi integral), so the null vector is the right
+    singular vector of the smallest singular value. At a branch point (a pair at k = +2,
+    Casoliva scale) the null space is two-dimensional; when the two smallest singular values
+    are both below ``gap`` times the third, the ``previous`` tangent projected onto that plane
+    is returned, which keeps the continuation on the branch it came along.
+    """
+    _res, jac, _ = _evaluate(orbit.mu, orbit.nodes, orbit.period, orbit.fracs)
     nu = jac.shape[1]
-    jm = np.vstack([jac, np.eye(nu)[1:2]])
-    # one continuity row is redundant (Jacobi integral): the null space is the
-    # right singular vector of the smallest singular value
-    _, _, vt = np.linalg.svd(jm)
+    if orbit.phase_mode == "flow":
+        ph = np.zeros((1, nu))
+        f0 = planar_eom(orbit.nodes[0], orbit.mu)
+        ph[0, :4] = f0 / np.linalg.norm(f0)
+    else:
+        ph = np.eye(nu)[1:2]
+    jm = np.vstack([jac, ph])
+    _, sv, vt = np.linalg.svd(jm)
+    if previous is not None and sv[-2] < gap * sv[-3]:
+        basis = vt[-2:]
+        proj = basis.T @ (basis @ previous)
+        norm = float(np.linalg.norm(proj))
+        if norm > 0.0:
+            return np.asarray(proj / norm, dtype=np.float64)
     return np.asarray(vt[-1], dtype=np.float64)
 
 
@@ -500,7 +579,9 @@ def _max_node_change(a: MSOrbit, b: MSOrbit) -> float:
 @dataclass
 class LegResult:
     members: list[Member]
-    reason: str  # "target", "stop:<why>", "min_step", "max_steps"
+    reason: str  # "target", "stop:<why>", "min_step", "max_steps", "earth_impact", "stalled"
+    rejected_newton: int = 0  # trial steps rejected because the corrector failed
+    rejected_jump: int = 0  # trial steps rejected by the node-jump guard
 
 
 def continue_mu(
@@ -529,10 +610,11 @@ def continue_mu(
     prev: MSOrbit | None = None
     lt = math.log(mu_target)
     dlog = math.copysign(dlog0, lt - math.log(cur.mu))
+    n_newton = n_jump = 0
     for _ in range(max_steps):
         lc = math.log(cur.mu)
         if abs(lt - lc) < 1e-14:
-            return LegResult(members, "target")
+            return LegResult(members, "target", n_newton, n_jump)
         step = dlog if abs(dlog) < abs(lt - lc) else lt - lc
         while True:
             ln = lc + step
@@ -546,7 +628,7 @@ def continue_mu(
                 period = period + f * (cur.period - prev.period)
             if fix == "period":
                 period = value
-            trial = MSOrbit(mu_new, nodes, period)
+            trial = cur.like(mu_new, nodes, period)
             try:
                 new = correct(
                     trial,
@@ -555,13 +637,15 @@ def continue_mu(
                     max_iter=8,
                 )
                 ok = _max_node_change(new, cur) <= max_jump
+                n_jump += 0 if ok else 1
             except _STEP_FAILURES:
                 ok = False
+                n_newton += 1
             if ok:
                 break
             step *= 0.5
             if abs(step) < dlog_min:
-                return LegResult(members, "min_step")
+                return LegResult(members, "min_step", n_newton, n_jump)
         mem = Member(leg, new, diagnose(new), step)
         members.append(mem)
         if log is not None:
@@ -574,8 +658,8 @@ def continue_mu(
         if stop is not None:
             why = stop(mem)
             if why:
-                return LegResult(members, "stop:" + why)
-    return LegResult(members, "max_steps")
+                return LegResult(members, "stop:" + why, n_newton, n_jump)
+    return LegResult(members, "max_steps", n_newton, n_jump)
 
 
 def _jacobi_rate(orbit: MSOrbit, tan: FloatArray) -> float:
@@ -592,39 +676,52 @@ def continue_jacobi(
     ds_max: float = 0.1,
     max_jump: float = 0.05,
     max_steps: int = 500,
+    stall_window: int = 10,
+    stall_dc: float = 1e-7,
     stop: StopFn | None = None,
     log: LogFn | None = None,
 ) -> LegResult:
     """Pseudo-arclength continuation of the family through ``orbit`` at fixed mu, starting in
     the direction of increasing (``direction > 0``) or decreasing Jacobi constant; the
-    direction is then kept by tangent orientation (folds in C are passed)."""
+    direction is then kept by tangent orientation (folds in C are passed). Stops at an Earth
+    impact (perigee below the Earth's radius) and when C moves by less than ``stall_dc`` over
+    ``stall_window`` members (a walk along a degenerate direction)."""
     members: list[Member] = []
     cur = orbit
     tan = family_tangent(cur)
     if _jacobi_rate(cur, tan) * direction < 0.0:
         tan = -tan
     ds = ds0
+    n_newton = n_jump = 0
     for _ in range(max_steps):
         while True:
             u0 = cur.unknowns()
             up = u0 + ds * tan
             n = cur.n
-            trial = MSOrbit(cur.mu, up[:-1].reshape(n, 4), float(up[-1]))
+            trial = cur.like(cur.mu, up[:-1].reshape(n, 4), float(up[-1]))
             try:
                 new = correct(trial, arclength=(u0, tan, ds), max_iter=8)
                 ok = _max_node_change(new, cur) <= max_jump
+                n_jump += 0 if ok else 1
             except _STEP_FAILURES:
                 ok = False
+                n_newton += 1
             if ok:
                 break
             ds *= 0.5
             if ds < ds_min:
-                return LegResult(members, "min_step")
+                return LegResult(members, "min_step", n_newton, n_jump)
         mem = Member(leg, new, diagnose(new), ds)
         members.append(mem)
         if log is not None:
             log(mem)
-        new_tan = family_tangent(new)
+        if mem.diag.impact_earth:
+            return LegResult(members, "earth_impact", n_newton, n_jump)
+        if len(members) > stall_window and (
+            abs(members[-1].diag.jacobi - members[-1 - stall_window].diag.jacobi) < stall_dc
+        ):
+            return LegResult(members, "stalled", n_newton, n_jump)
+        new_tan = family_tangent(new, tan)
         if float(new_tan @ tan) < 0.0:
             new_tan = -new_tan
         cur, tan = new, new_tan
@@ -633,8 +730,8 @@ def continue_jacobi(
         if stop is not None:
             why = stop(mem)
             if why:
-                return LegResult(members, "stop:" + why)
-    return LegResult(members, "max_steps")
+                return LegResult(members, "stop:" + why, n_newton, n_jump)
+    return LegResult(members, "max_steps", n_newton, n_jump)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -645,12 +742,14 @@ def y_crossings(orbit: MSOrbit, *, steps_per_segment: int = 60) -> list[tuple[fl
     """All crossings of y = 0 over one period, as (time from node 0, planar state)."""
     mu = orbit.mu
     out: list[tuple[float, FloatArray]] = []
-    dt = orbit.period / orbit.n
-    h = dt / steps_per_segment
+    fr = orbit.fracs
+    starts = np.concatenate([[0.0], np.cumsum(fr)[:-1]]) * orbit.period
     for i in range(orbit.n):
+        k = max(4, round(steps_per_segment * orbit.n * float(fr[i])))
+        h = orbit.period * float(fr[i]) / k
         s = orbit.nodes[i]
-        t = i * dt
-        for _ in range(steps_per_segment):
+        t = float(starts[i])
+        for _ in range(k):
             s2 = propagate_segment(mu, s, h, with_stm=False).end
             if s[1] == 0.0 and not (i == 0 and t == 0.0 and out):
                 if not out or abs(out[-1][0] - t) > 1e-9:
@@ -720,3 +819,433 @@ def match_row(orbit: MSOrbit, designation: str) -> RowMatch:
         k_par=dg.k_par if dg else math.nan,
         k_perp=dg.k_perp if dg else math.nan,
     )
+
+
+def orbit_distance(orbit: MSOrbit, state4: FloatArray) -> tuple[float, bool, float]:
+    """Smallest max-abs difference between ``state4`` (on y = 0) and a y = 0 crossing of
+    ``orbit`` or of its mirror image: (distance, mirrored, crossing time)."""
+    best = (math.inf, False, math.nan)
+    for t, st in y_crossings(orbit):
+        for mir, cand in ((False, st), (True, mirror(st))):
+            dist = float(np.max(np.abs(cand - state4)))
+            if dist < best[0]:
+                best = (dist, mir, t)
+    return best
+
+
+def same_orbit(a: MSOrbit, b: MSOrbit, tol: float = 1e-7) -> bool:
+    """True when a y = 0 crossing of ``b`` lies on ``a`` (or on its mirror image) within
+    ``tol``."""
+    crossings = y_crossings(b)
+    if not crossings:
+        return orbit_distance(a, b.nodes[0])[0] < tol
+
+    def clearance(st: FloatArray) -> float:
+        return min(math.hypot(st[0] + b.mu, st[1]), math.hypot(st[0] - 1.0 + b.mu, st[1]))
+
+    # the crossing farthest from both primaries: a crossing at a fast perigee or lunar pass
+    # is the least well located by the sampled search
+    probe = max((st for _, st in crossings), key=clearance)
+    return orbit_distance(a, probe)[0] < tol
+
+
+# ---------------------------------------------------------------------------------------------
+# Resonant members at fixed mu
+
+
+@dataclass(frozen=True)
+class ResonantHit:
+    orbit: MSOrbit
+    diag: Diagnostics
+    direction: float  # walk direction in C that found it
+    member_index: int  # index of the walk member before the crossing
+
+
+def resonant_crossings(
+    orbit: MSOrbit,
+    q: int,
+    *,
+    directions: tuple[float, ...] = (1.0, -1.0),
+    max_steps: int = 300,
+    ds_max: float = 0.05,
+    period_window: float = 0.25,
+    log: LogFn | None = None,
+) -> tuple[list[ResonantHit], dict[float, LegResult]]:
+    """Walk the family through ``orbit`` at fixed mu in C (both directions) and correct every
+    crossing of T = 2 pi q at that period. The walk stops at an Earth impact, a stall, when
+    |T - 2 pi q| exceeds ``period_window`` times 2 pi q, or after ``max_steps``."""
+    tq = 2.0 * math.pi * q
+
+    def stop(m: Member) -> str | None:
+        if abs(m.diag.period - tq) > period_window * tq:
+            return "period_window"
+        return None
+
+    hits: list[ResonantHit] = []
+    legs: dict[float, LegResult] = {}
+    for direction in directions:
+        leg = continue_jacobi(
+            orbit, direction, leg="walk@mu", ds_max=ds_max, max_steps=max_steps, stop=stop, log=log
+        )
+        legs[direction] = leg
+        chain = [orbit, *[m.orbit for m in leg.members]]
+        for i in range(len(chain) - 1):
+            a, b = chain[i], chain[i + 1]
+            fa, fb = a.period - tq, b.period - tq
+            if fa == 0.0 or fa * fb < 0.0:
+                w = fa / (fa - fb) if fa != fb else 0.0
+                guess = a.like(a.mu, a.nodes + w * (b.nodes - a.nodes), tq)
+                try:
+                    hit = correct(guess, fix_period=tq, tol=1e-11)
+                except _STEP_FAILURES:
+                    continue
+                if any(same_orbit(h.orbit, hit) for h in hits):
+                    continue
+                hits.append(ResonantHit(hit, diagnose(hit), direction, i))
+    return hits, legs
+
+
+# ---------------------------------------------------------------------------------------------
+# The three-step strategy (Casoliva et al. 2010 section IV.C)
+
+
+def moon_radius_scaled(mu: float) -> float:
+    """The Moon's radius scaled at constant density to a secondary of mass ratio ``mu``:
+    R_M (mu / mu_M)^(1/3) (the physical radius at the paper's mu). DECISION (#899 step 2):
+    the surface exclusion used as the impact trigger during a continuation, since the
+    physical radius has no meaning at mu = 1e-6, where the seeds pass at 1e-4 lunar
+    distances."""
+    return float(MOON_RADIUS_ND * (mu / CASOLIVA_MU_2010) ** (1.0 / 3.0))
+
+
+def impact_trigger(window: int = 3) -> StopFn:
+    """Stop a mass leg when the periselene is below :func:`moon_radius_scaled` and has fallen
+    over the last ``window`` members (the family heading for the Moon)."""
+    history: list[float] = []
+
+    def stop(m: Member) -> str | None:
+        history.append(m.diag.periselene)
+        if m.diag.periselene < moon_radius_scaled(m.diag.mu) and len(history) > window:
+            recent = history[-window - 1 :]
+            if all(b < a for a, b in pairwise(recent)):
+                return "lunar_impact_trend"
+        return None
+
+    return stop
+
+
+@dataclass
+class PathResult:
+    legs: list[tuple[str, LegResult]]
+    reached: bool
+    final: MSOrbit | None
+
+
+def three_step(
+    orbit: MSOrbit,
+    mu_target: float = CASOLIVA_MU_2010,
+    *,
+    first_fix: str = "period",
+    max_switches: int = 4,
+    c_walk_dc: float = 0.05,
+    rp_gain: float = 1.5,
+    c_walk_steps: int = 60,
+    dlog_max: float = 0.2,
+    log: LogFn | None = None,
+) -> PathResult:
+    """Casoliva's strategy: continue in mu (first at ``first_fix``); when the leg ends short of
+    ``mu_target`` (impact trend, fold, corrector failure), continue in C at fixed mu in the
+    direction that raises the periselene, until it has risen by ``rp_gain`` or C has moved by
+    ``c_walk_dc``; then resume in mu at fixed C. At most ``max_switches`` C legs."""
+    legs: list[tuple[str, LegResult]] = []
+    cur = orbit
+    fix = first_fix
+    for _ in range(max_switches + 1):
+        leg = continue_mu(
+            cur, mu_target, fix=fix, dlog_max=dlog_max, stop=impact_trigger(), log=log
+        )
+        legs.append(("mu@T" if fix == "period" else "mu@C", leg))
+        if leg.reason == "target":
+            return PathResult(legs, True, leg.members[-1].orbit)
+        base = leg.members[-1].orbit if leg.members else cur
+        rp0 = diagnose(base).periselene
+        c0 = base.jacobi
+        best: tuple[float, LegResult | None] = (-math.inf, None)
+        for direction in (1.0, -1.0):
+
+            def stop(m: Member, c0: float = c0, rp0: float = rp0) -> str | None:
+                if m.diag.periselene >= rp_gain * rp0:
+                    return "periselene_raised"
+                if abs(m.diag.jacobi - c0) >= c_walk_dc:
+                    return "dc_limit"
+                return None
+
+            walk = continue_jacobi(
+                base, direction, max_steps=c_walk_steps, ds_max=0.02, stop=stop, log=log
+            )
+            if walk.members:
+                gain = walk.members[-1].diag.periselene / rp0
+                if gain > best[0]:
+                    best = (gain, walk)
+        if best[1] is None or not best[1].members:
+            return PathResult(legs, False, None)
+        legs.append(("C@mu", best[1]))
+        cur = best[1].members[-1].orbit
+        fix = "jacobi"
+    return PathResult(legs, False, None)
+
+
+# ---------------------------------------------------------------------------------------------
+# Second-species seeds from the matched in/out maps (Casoliva 2008 Eqs. 14-18, Barrabes &
+# Gomez 2003 Eqs. 45-46, planar case)
+
+
+def jacobi_interval(p: int, q: int) -> tuple[float, float]:
+    """Eq. 15: the C_J interval of the p-q family (p spacecraft, q lunar revolutions)."""
+    inv_a = (p / q) ** (2.0 / 3.0)
+    half = 2.0 * math.sqrt(2.0 - inv_a)
+    return inv_a - half, inv_a + half
+
+
+def seed_directions(p: int, q: int, c_j: float) -> tuple[float, float]:
+    """Eq. 16: the two polar angles psi of the velocity, (asin s, pi - asin s)."""
+    inv_a = (p / q) ** (2.0 / 3.0)
+    s = (2.0 - c_j + inv_a) / (2.0 * math.sqrt(3.0 - c_j))
+    s = min(1.0, max(-1.0, s))
+    psi = math.asin(s)
+    return psi, math.pi - psi
+
+
+def _eq17(theta: float, psi: float, c_j: float) -> float:
+    d = theta - psi
+    return (2.0 / math.sqrt(3.0 - c_j)) * (
+        math.cos(theta) * math.sin(d) ** 2 - math.cos(psi) * math.cos(d)
+    ) + math.sin(d) ** 3
+
+
+def seed_angle(psi: float, c_j: float, samples: int = 3600) -> float:
+    """Eq. 17: the angle theta on the circle about the Moon, with cos(theta - psi) > 0."""
+    from scipy.optimize import brentq
+
+    grid = np.linspace(0.0, 2.0 * math.pi, samples + 1)
+    vals = [_eq17(t, psi, c_j) for t in grid]
+    roots = []
+    for i in range(samples):
+        if vals[i] == 0.0 or vals[i] * vals[i + 1] < 0.0:
+            r = float(brentq(_eq17, grid[i], grid[i + 1], args=(psi, c_j), xtol=1e-15))
+            if math.cos(r - psi) > 0.0:
+                roots.append(r)
+    if not roots:
+        raise ValueError("seed_angle: no root of Eq. 17 with cos(theta - psi) > 0")
+    return roots[0]
+
+
+def seed_state(
+    p: int, q: int, c_j: float, branch: int, mu: float, alpha: float = 0.4
+) -> FloatArray:
+    """Eq. 14 initial condition on the circle of radius mu^alpha about the Moon, project frame.
+
+    The speed comes from the exact Jacobi relation at ``mu`` (2008 digest recipe, step 4);
+    ``branch`` 0 or 1 picks psi = asin(s) or pi - asin(s). The only printed alpha is 0.4
+    (Barrabes & Gomez); the period guess is 2 pi q (Eq. 18)."""
+    psi = seed_directions(p, q, c_j)[branch]
+    theta = seed_angle(psi, c_j)
+    rho = mu**alpha
+    x = mu - 1.0 + rho * math.cos(theta)  # Casoliva frame: Moon at (mu - 1, 0)
+    y = rho * math.sin(theta)
+    r1 = math.hypot(x - mu, y)
+    r2 = math.hypot(x - mu + 1.0, y)
+    two_omega = x * x + y * y + 2.0 * (1.0 - mu) / r1 + 2.0 * mu / r2
+    v = math.sqrt(two_omega - c_j)
+    u, w = v * math.cos(psi), v * math.sin(psi)
+    return np.array([-x, -y, -u, -w])  # rotation by pi to the project frame
+
+
+def first_far_crossing(mu: float, state4: FloatArray, period: float, n: int) -> MSOrbit:
+    """Nodes for a seed that is not on y = 0: the seed trajectory is followed for ``period``
+    and node 0 is put at its y = 0 crossing farthest from the Moon."""
+    tmp = MSOrbit(mu, nodes_from_state(mu, state4, period, n), period)
+    crossings = y_crossings(tmp)
+    if not crossings:
+        raise ValueError("first_far_crossing: the seed trajectory does not cross y = 0")
+    _, st = max(crossings, key=lambda c: math.hypot(c[1][0] - 1.0 + mu, c[1][1]))
+    return MSOrbit(mu, nodes_from_state(mu, st, period, n), period)
+
+
+def corrected_seed(
+    p: int,
+    q: int,
+    c_j: float,
+    branch: int,
+    *,
+    mu: float = SEED_MU,
+    alpha: float = 0.4,
+    n: int = 12,
+    max_iter: int = 30,
+) -> MSOrbit:
+    """A seed of :func:`seed_state` corrected at fixed C_J and ``mu`` (2008 p.9: "the initial
+    conditions had to be differentially corrected using a grid of C_J values"). Node 0 stays
+    at the seed point on the circle about the Moon (phase condition orthogonal to the flow
+    there), where the matching of the in and out maps is made; an undamped Gauss-Newton
+    attempt is followed by a backtracking one if it fails; the corrected orbit is then
+    re-noded from its y = 0 crossing farthest from the Moon for continuation."""
+    st = seed_state(p, q, c_j, branch, mu, alpha)
+    period = 2.0 * math.pi * q
+    guess = MSOrbit(mu, nodes_from_state(mu, st, period, n), period)
+    flow = planar_eom(st, mu)
+    phase = (st, flow / np.linalg.norm(flow))
+    try:
+        orbit = correct(guess, fix_jacobi=c_j, phase=phase, max_iter=max_iter)
+    except _STEP_FAILURES:
+        orbit = correct(guess, fix_jacobi=c_j, phase=phase, damped=True, max_iter=max_iter)
+    far = first_far_crossing(mu, orbit.nodes[0], orbit.period, n)
+    return correct(far, fix_jacobi=c_j)
+
+
+# ---------------------------------------------------------------------------------------------
+# Chains of returning collision arcs (two or more lunar encounters per period)
+
+
+@dataclass(frozen=True)
+class ReturningArc:
+    """A Kepler arc that leaves the Moon's position and returns to it after ``i`` lunar
+    revolutions and ``j`` particle revolutions (Henon's same-point arcs, A = i/j; inverse
+    semi-major axis (j/i)^(2/3)); ``sign`` is the sign of the radial relative velocity at the
+    Moon (+1 outward). At mu = 0 the arc returns with the velocity it left with."""
+
+    i: int
+    j: int
+    sign: int
+
+
+def arc_relative_velocity(arc: ReturningArc, c_j: float) -> FloatArray:
+    """Rotating-frame relative velocity at the Moon (project frame: radial +x, tangential +y)
+    of a returning arc at Jacobi constant ``c_j`` (mu = 0): V^2 = 3 - C and the tangential
+    component (C - 2 - 1/a)/2 from the vis-viva speed sqrt(2 - 1/a)."""
+    inv_a = (arc.j / arc.i) ** (2.0 / 3.0)
+    v2 = 3.0 - c_j
+    vt = (c_j - 2.0 - inv_a) / 2.0
+    vr2 = v2 - vt * vt
+    if vr2 < 0.0:
+        raise ValueError(f"arc {arc} does not reach the Moon at C = {c_j}")
+    return np.array([arc.sign * math.sqrt(vr2), vt])
+
+
+def flyby_states(
+    v_in: FloatArray, v_out: FloatArray, mu: float, rho: float
+) -> tuple[FloatArray, FloatArray, float]:
+    """Moon-centred two-body hyperbola turning ``v_in`` into ``v_out`` (equal magnitudes): the
+    states (relative position, velocity) where it crosses the circle of radius ``rho`` inbound
+    and outbound in the rotating frame, and the time from that circle to periapsis. First-order
+    matching (Gomez & Olle; Guillaume 1975): sin(delta/2) = 1/e, r_p = mu (e - 1)/V^2. The
+    Earth's tide over the passage is neglected."""
+    v = float(np.linalg.norm(v_in))
+    u1 = v_in / v
+    u2 = v_out / float(np.linalg.norm(v_out))
+    cosd = float(np.clip(u1 @ u2, -1.0, 1.0))
+    delta = math.acos(cosd)
+    if delta < 1e-12:
+        raise ValueError("flyby_states: zero turn (a single-arc orbit, not a chain)")
+    e = 1.0 / math.sin(0.5 * delta)
+    rp = mu * (e - 1.0) / (v * v)
+    if rho <= rp:
+        raise ValueError("flyby_states: circle inside the periapsis")
+    p = rp * (1.0 + e)
+    phat = (u1 - u2) / np.linalg.norm(u1 - u2)
+    qhat = (u1 + u2) / np.linalg.norm(u1 + u2)
+    nu0 = math.acos((p / rho - 1.0) / e)
+    k = math.sqrt(mu / p)
+
+    def state(nu: float) -> tuple[FloatArray, FloatArray]:
+        r = p / (1.0 + e * math.cos(nu))
+        pos = r * (math.cos(nu) * phat + math.sin(nu) * qhat)
+        vel = k * (-math.sin(nu) * phat + (e + math.cos(nu)) * qhat)
+        return pos, vel
+
+    cosh_f = (e + math.cos(nu0)) / (1.0 + e * math.cos(nu0))
+    big_f = math.acosh(cosh_f)
+    a_abs = mu / (v * v)
+    t_half = (e * math.sinh(big_f) - big_f) / math.sqrt(mu / a_abs**3)
+
+    def rotating(nu: float, tau: float) -> FloatArray:
+        # the hyperbola lives in the moon-centred non-rotating frame aligned with the rotating
+        # frame at periapsis; at time tau from periapsis, r_rot = R(-tau) r and
+        # v_rot = R(-tau) v - omega x r_rot (the frame rotation moves the impact parameter by
+        # about V tau^2, larger than the impact parameter itself at mu = 1e-6)
+        pos, vel = state(nu)
+        c, s_ = math.cos(-tau), math.sin(-tau)
+        rot = np.array([[c, -s_], [s_, c]])
+        pr = rot @ pos
+        vr = rot @ vel - np.array([-pr[1], pr[0]])
+        return np.concatenate([pr, vr])
+
+    return rotating(-nu0, -t_half), rotating(nu0, t_half), t_half
+
+
+def chain_seed(
+    arcs: Sequence[ReturningArc],
+    c_j: float,
+    mu: float,
+    *,
+    alpha: float = 0.4,
+    nodes_per_arc: int = 6,
+) -> MSOrbit:
+    """Multiple-shooting guess for the periodic orbit generated by a chain of returning arcs
+    joined by lunar flybys at Jacobi constant ``c_j``: for each junction, nodes on the circle
+    of radius mu^alpha inbound and outbound on the matched hyperbola, the passage between them
+    as one segment, and ``nodes_per_arc`` nodes along each arc (the first half propagated
+    forward from the outbound node, the second half backward from the inbound one). Period
+    2 pi sum(i). Node 0 is the first outbound node, with a flow phase condition.
+    """
+    m = len(arcs)
+    if m < 2:
+        raise ValueError("chain_seed: a chain needs at least two arcs")
+    rho = mu**alpha
+    moon = np.array([1.0 - mu, 0.0])
+    vel = [arc_relative_velocity(a, c_j) for a in arcs]
+    # junction k joins arc k-1 (inbound) to arc k (outbound)
+    junctions = [flyby_states(vel[k - 1], vel[k], mu, rho) for k in range(m)]
+    period = 2.0 * math.pi * sum(a.i for a in arcs)
+    nodes: list[FloatArray] = []
+    durations: list[float] = []
+    for k, arc in enumerate(arcs):
+        _, out_k, t_k = junctions[k]
+        in_next, _, t_next = junctions[(k + 1) % m]
+        start = np.array([moon[0] + out_k[0], moon[1] + out_k[1], out_k[2], out_k[3]])
+        end = np.array([moon[0] + in_next[0], moon[1] + in_next[1], in_next[2], in_next[3]])
+        arc_time = 2.0 * math.pi * arc.i - t_k - t_next
+        h = arc_time / nodes_per_arc
+        half = nodes_per_arc // 2
+        # first half forward from the outbound node, second half backward from the inbound
+        # one (time reversal: mirror, propagate, mirror), so the seed's mismatch sits mid-arc
+        for jn in range(nodes_per_arc):
+            if jn == 0:
+                node = start
+            elif jn < half:
+                node = propagate_segment(mu, start, jn * h, with_stm=False).end
+            else:
+                back = propagate_segment(mu, mirror(end), (nodes_per_arc - jn) * h, with_stm=False)
+                node = mirror(back.end)
+            nodes.append(node)
+            durations.append(h)
+        nodes.append(end)
+        durations.append(2.0 * t_next)
+    fr = np.array(durations) / period
+    return MSOrbit(mu, np.array(nodes), period, fractions=fr / fr.sum(), phase_mode="flow")
+
+
+def corrected_chain(
+    arcs: Sequence[ReturningArc],
+    c_j: float,
+    *,
+    mu: float = SEED_MU,
+    alpha: float = 0.4,
+    nodes_per_arc: int = 6,
+    max_iter: int = 30,
+) -> MSOrbit:
+    """:func:`chain_seed` corrected at fixed C_J (undamped, then with backtracking)."""
+    guess = chain_seed(arcs, c_j, mu, alpha=alpha, nodes_per_arc=nodes_per_arc)
+    try:
+        return correct(guess, fix_jacobi=c_j, max_iter=max_iter)
+    except _STEP_FAILURES:
+        return correct(guess, fix_jacobi=c_j, damped=True, max_iter=max_iter)

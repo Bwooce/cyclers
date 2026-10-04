@@ -110,3 +110,102 @@ def test_registry_mu_misses_the_printed_digits() -> None:
     ref = ssc.table3_reference("7-3a", mu=emrf.earth_moon_system().mu)
     printed = np.array([-row.x_i, 0.0, -row.u_i, -row.v_i])
     assert np.max(np.abs(ref.nodes[0] - printed)) > 1e-6
+
+
+def test_walk_at_mu_finds_the_7_3a_crossing() -> None:
+    """Crossing finder control with a known answer: from a member of the 7-3a family a few
+    steps away in C, the walk at the paper's mu finds T = 6 pi and the correction lands on
+    the printed 7-3a crossing."""
+    row = emrf.table3_row("7-3a")
+    ref = ssc.table3_reference("7-3a")
+    away = ssc.continue_jacobi(ref, 1.0, max_steps=5, ds_max=0.02).members[-1].orbit
+    assert abs(away.period - 6.0 * math.pi) > 1e-3
+    hits, _ = ssc.resonant_crossings(away, 3, directions=(-1.0,), max_steps=20)
+    printed = np.array([-row.x_i, 0.0, -row.u_i, -row.v_i])
+    dists = [ssc.orbit_distance(h.orbit, printed)[0] for h in hits]
+    assert min(dists) < 1e-9
+
+
+def test_7_3b_and_7_3c_are_one_orbit_and_its_mirror() -> None:
+    """The printed 7-3c crossing is the mirror image of a crossing of the 7-3b orbit (same
+    printed C_J and k): one asymmetric orbit, not two."""
+    b = ssc.table3_reference("7-3b")
+    c = ssc.table3_reference("7-3c")
+    dist, mirrored, _ = ssc.orbit_distance(b, c.nodes[0])
+    assert dist < 1e-9
+    assert mirrored
+
+
+def test_eq14_seed_generator_reproduces_table2_seeds() -> None:
+    """Positive control of the Eq. 14-17 seed generator: at the printed C_J of the 2008 seeds
+    54a (psi branch 0) and 73a (branch 1), the corrected seed is the printed Table 2 orbit."""
+    for name, branch in (("54a", 0), ("73a", 1)):
+        s = ssc.table2_seed(name)
+        orbit = ssc.corrected_seed(s.p, s.q, s.c_j, branch)
+        assert ssc.orbit_distance(orbit, s.state_project())[0] < 1e-8
+        assert abs(orbit.period - s.period) < 1e-8
+
+
+def test_jacobi_interval_matches_eq15() -> None:
+    lo, hi = ssc.jacobi_interval(1, 2)
+    assert abs(lo - (-1.711013183)) < 1e-9
+    assert abs(hi - 2.970934233) < 1e-9
+
+
+def test_two_arc_chain_converges_at_mu_1e6() -> None:
+    """A (1,2) + (2,5) returning-arc chain at C = 1.1 closes at mu = 1e-6 with two lunar
+    passes per period at a periselene of order mu (second species) and T near 6 pi; the sign
+    pairs (+,+) and (-,-) give one orbit and its mirror."""
+    arc = ssc.ReturningArc
+    a = ssc.corrected_chain([arc(1, 2, 1), arc(2, 5, 1)], 1.1)
+    b = ssc.corrected_chain([arc(1, 2, -1), arc(2, 5, -1)], 1.1)
+    for o in (a, b):
+        g = ssc.diagnose(o)
+        assert 0.5 * ssc.SEED_MU < g.periselene < 10.0 * ssc.SEED_MU
+        assert abs(o.period - 6.0 * math.pi) < 1e-4
+    assert abs(ssc.diagnose(a).k_par - ssc.diagnose(b).k_par) / ssc.diagnose(a).k_par < 1e-4
+    assert ssc.same_orbit(a, b, tol=1e-6)
+
+
+def test_forward_reproduction_7_3b_from_a_second_species_chain() -> None:
+    """#899 step 2 forward reproduction: a (1,2) + (2,5) chain seed at mu = 1e-6 and a grid
+    value C = 1.05 (not the printed one), continued in mu at fixed C to the paper's mu, then
+    walked in C to T = 6 pi, lands on the printed 7-3b crossing (and 7-3c is its mirror)."""
+    arc = ssc.ReturningArc
+    seed = ssc.corrected_chain([arc(1, 2, -1), arc(2, 5, -1)], 1.05)
+    leg = ssc.continue_mu(seed, ssc.CASOLIVA_MU_2010, fix="jacobi", dlog_max=0.2)
+    assert leg.reason == "target"
+    hits, _ = ssc.resonant_crossings(leg.members[-1].orbit, 3, directions=(1.0,), max_steps=15)
+    row_b = emrf.table3_row("7-3b")
+    row_c = emrf.table3_row("7-3c")
+    best = min(
+        hits,
+        key=lambda h: ssc.orbit_distance(
+            h.orbit, np.array([-row_b.x_i, 0.0, -row_b.u_i, -row_b.v_i])
+        )[0],
+    )
+    db = ssc.orbit_distance(best.orbit, np.array([-row_b.x_i, 0.0, -row_b.u_i, -row_b.v_i]))
+    dc = ssc.orbit_distance(best.orbit, np.array([-row_c.x_i, 0.0, -row_c.u_i, -row_c.v_i]))
+    assert db[0] < 1e-9
+    assert dc[0] < 1e-9
+    assert abs(best.diag.jacobi - row_b.c_j) < 1e-9
+    assert abs(best.diag.k_par - row_b.k) / row_b.k < 1e-7
+
+
+@pytest.mark.slow
+def test_forward_reproduction_2_1a_from_table2_seed_21a() -> None:
+    """#899 step 2 forward reproduction: the 2008 seed 21a (mu = 1e-6) continued in mu at its
+    fixed C_J to the paper's mu, then walked in C to T = 2 pi, lands on the printed 2-1a
+    crossing (its mirror image)."""
+    s = ssc.table2_seed("21a")
+    start = ssc.MSOrbit(ssc.SEED_MU, np.array([s.state_project()]), s.period)
+    seed = ssc.correct(ssc.renode(start, 12), fix_jacobi=s.c_j)
+    leg = ssc.continue_mu(seed, ssc.CASOLIVA_MU_2010, fix="jacobi", dlog_max=0.4)
+    assert leg.reason == "target"
+    hits, _ = ssc.resonant_crossings(
+        leg.members[-1].orbit, 1, directions=(-1.0,), max_steps=200, ds_max=0.2
+    )
+    row = emrf.table3_row("2-1a")
+    printed = np.array([-row.x_i, 0.0, -row.u_i, -row.v_i])
+    dists = [ssc.orbit_distance(h.orbit, printed)[0] for h in hits]
+    assert min(dists) < 1e-9
