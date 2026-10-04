@@ -62,17 +62,27 @@ small primary moves at vis-viva speed perpendicular to x_m and |v1|^2 = (2/|x_m|
 For e_m = 0 this is Theorem 10's |v1|^2 = 3 - 1/a0 (p. 136). The prediction is in inertial units;
 the pulsating-frame distance is r_p/|x_m|.
 
-Integrator. A passage at 1e-7 is not resolved by ``core.cr3bp``/``core.er3bp`` integrated in
-physical time: measured with DOP853 at rtol = atol = 1e-12, xdot at the elliptic crossing is
-4.7e-5, 2.4e-3, 5.3e-4 (Figs. 14, 16, 18), and 2.6e-6, 2.7e-5, 1.0e-4 with the r2-Sundman
-reparametrisation at the same tolerance, falling to 2.4e-7, 3.9e-6, 8.9e-6 at 1e-13 and 3.7e-9,
-1.4e-6, 1.2e-6 at 1e-14. So the elliptic checks use dt/ds = r2 (``core.cr3bp_regularized.
-sundman_rhs`` for the circular problem; the same factor applied to ``core.er3bp.er3bp_eom`` here,
-a reparametrisation of the project's equations, not a different model) at 1e-13, and they test
-the periapsis rather than the derivative at the crossing: the periapsis must lie on the x-axis
-(angle |y_p|/r_p) at f = k pi. The derivative at the crossing is the same condition amplified by
-v_p/r_p ~ 1e7. The Fig. 8 orbits stay 1.6e-3 from the small primary and need no regularisation.
-The project has no Levi-Civita integrator, which is what the paper used.
+Integrator. Measured on 2026-10-04, with every quantity located by an event (y = 0, or the
+periapsis condition (r - r_m) . v = 0) rather than at a fixed time:
+
+* Circular, the three computed starting members (below), plain ``cr3bp_eom`` DOP853: periapsis
+  angle |y_p|/r_p = 2.5e-6, 4.3e-6, 7.9e-6 at rtol = atol = 1e-12 and 8.3e-7, 5.1e-7, 5.1e-6 at
+  1e-13, r_p within 1.6e-5 (1e-12) and 2.4e-6 (1e-13) of the regularised value; the r2-Sundman
+  integration at 1e-13 gives 5.8e-7, 1.4e-7, 4.8e-6.
+* Elliptic, Figs. 14, 16, 18, plain ``er3bp_eom`` DOP853: xdot/ydot at the crossing 8e-7,
+  1.2e-5, 3.9e-5 at 1e-12 and 8e-8, 1.2e-6, 3.7e-6 at 1e-13; r2-Sundman 5.8e-7, 4.1e-6, 2.7e-5
+  at 1e-12 and 5e-8, 6e-7, 2.4e-6 at 1e-13.
+
+So the plain integrators resolve these 1e-7 passages to about the level of the r2-Sundman one; the
+tests use dt/ds = r2 at 1e-13 (``core.cr3bp_regularized.sundman_rhs`` for the circular problem; the
+same factor applied to ``core.er3bp.er3bp_eom`` here, a reparametrisation of the project's
+equations, not a different model) because the plain integration at 1e-13 sometimes takes 1e5
+function evaluations through the passage. What does NOT resolve the passage is a residual taken at a
+FIXED time: near periapsis d(xdot)/dt ~ v_p^2/r_p ~ 1e8, so a 1e-12 error in the passage timing
+moves xdot at f = k pi by 1e-4. Measured xdot at exactly f = k pi from the printed elliptic states
+(plain, 1e-12): 4.7e-5, 2.4e-3, 5.3e-4. The periapsis angle and the crossing time are the
+well-conditioned forms of the same condition. The Fig. 8 orbits stay 1.6e-3 from the small primary
+and need no regularisation. The project has no Levi-Civita integrator, which is what the paper used.
 
 Measured on 2026-10-04:
 
@@ -90,34 +100,34 @@ Closure after the full period: Fig. 8(a) 1.3e-9, Fig. 8(b) 4.2e-10 (plain DOP853
 9.3e-7 (regularised). Figs. 16 and 18 return to 4.8e-5 and 5.6e-4: the two 1e-7 passages
 amplify the half-period residual, so only Fig. 14 is asserted.
 
-Finding (strict xfail). The three starting orbits of p. 163 do not cross perpendicularly at
-T = k pi in this model. From the printed state the crossing near k pi has xdot = -1.10, -1.26,
--1.20 (at t - k pi = 1.35e-6, 1.33e-6, 1.46e-6) and the orbit passes 9.9e-6, 2.4e-5, 3.5e-5
-from the small primary (the paper's regular
-SPSSS pass at O(mu) = 1e-7). The printed values have 11 to 12 decimals; the miss changes by
-about 1 to 3 per unit change of ydot, so rounding does not explain it, and neither does mu =
-1e-5 or 1e-4, the big primary at the origin, or the mirrored frame (each tried). Solving for
-the member with periapsis on the axis at t = k pi (Newton on (x, ydot), regularised) gives
-A0 (-2.229784142403, 2.229782234233), A1 (-4.308649107687316, 4.308648453731817),
-B1 (3.348316277269, -3.348315336354): offsets (dx, dydot) = (+5.89e-6, -5.89e-6),
-(+9.08e-6, -9.08e-6), (-1.537e-5, +1.538e-5) from the printed values, with x + ydot (the
-inertial velocity at t = 0) equal to the printed x + ydot to within the printed digits for A0,
-5.5e-12 for A1 and 1.3e-8 for B1. INFERRED: the printed x of each starting orbit is off by 6e-6
-to 1.5e-5 while the printed inertial velocity is right to 1e-8 or better. These
-computed members (not printed values) pass the small primary at the first-order distance the
-paper predicts (1.81067e-7, 1.12374e-7, 1.28520e-7 against 1.81064e-7, 1.12373e-7,
-1.28516e-7), on the side the p. 152 rule gives.
+Finding (strict xfail). The three starting orbits of p. 163 do not cross perpendicularly at T = k pi
+in this model. From the printed state the crossing near k pi has xdot = -1.10, -1.26, -1.20 (at t -
+k pi = 1.35e-6, 1.33e-6, 1.46e-6) and the orbit passes 9.9e-6, 2.4e-5, 3.5e-5 from the small primary
+(the paper's regular SPSSS pass at O(mu) = 1e-7). The printed values have 11 to 12 decimals; the
+miss changes by about 1 to 3 per unit change of ydot, so rounding does not explain it, and neither
+does mu = 1e-5 or 1e-4, the big primary at the origin, or the mirrored frame (each tried). Solving
+for the member with periapsis on the axis at t = k pi (Newton on (x, ydot), regularised) gives A0
+(-2.229784142403, 2.229782234233), A1 (-4.308649107687316, 4.308648453731817), B1 (3.348316277269,
+-3.348315336354): offsets (dx, dydot) = (+5.89e-6, -5.89e-6), (+9.08e-6, -9.08e-6), (-1.537e-5,
++1.538e-5) from the printed values, with x + ydot (the inertial velocity at t = 0) equal to the
+printed x + ydot to within the printed digits for A0, 5.5e-12 for A1 and 1.3e-8 for B1 (about 250
+times B1's 10-decimal rounding, so weaker there). x + ydot is Theorem 10's family parameter dv
+(inertial ydot at t = 0, pp. 136-137). INFERRED: the printed family parameter matches the T = k pi
+member while the printed x is off by 6e-6 to 1.5e-5. These computed members (not printed values)
+pass the small primary at the first-order distance the paper predicts (1.81067e-7, 1.12374e-7,
+1.28520e-7 against 1.81064e-7, 1.12373e-7, 1.28516e-7), on the side the p. 152 rule gives.
 
 ER3BP corrector check (``genome.er3bp_periodic.correct_er3bp_periodic``, used by
-``genome.er3bp_continuation``; ``search.er3bp_periodic`` holds only a coordinate converter and
-a monodromy helper). Its symmetric mode (free x, ydot; residual y, xdot at f = period_f, the
-half period) is Part I's condition (5) for the elliptic problem. At its default tolerance 1e-10
-it raises ConvergenceError on all three printed elliptic orbits (line search stalls at residual
-5.3e-8, 9.8e-6, 4.4e-6): its plain DOP853 propagation at 1e-12 cannot resolve the 1e-7 passage
-(the printed state itself has residual 4.7e-5, 2.4e-3, 5.3e-4 there). With tol = 1e-5 it
-accepts Figs. 14 and 18 after moving the printed state by 8.8e-12 and 1.8e-11 (Fig. 16 also,
-by 4.4e-11, but takes 7 s and is left out). Its own Radau full-period check returns 4.2e-5 and
-2.2e-2, above its 1e-5 independent tolerance (a logged warning only).
+``genome.er3bp_continuation``; ``search.er3bp_periodic`` holds only a coordinate converter and a
+monodromy helper). Its symmetric mode (free x, ydot; residual y, xdot at f = period_f, the half
+period) is Part I's condition (5) for the elliptic problem. At its default tolerance 1e-10 it raises
+ConvergenceError on all three printed elliptic orbits (line search stalls at residual 5.3e-8,
+9.8e-6, 4.4e-6): its residual is xdot at the fixed f = k pi, ill-conditioned at a 1e-7 passage (see
+Integrator; the printed state itself has residual 4.7e-5, 2.4e-3, 5.3e-4 there). With tol = 1e-5 it
+accepts Figs. 14 and 18 after moving the printed state by 8.8e-12 and 1.8e-11 (Fig. 16 also, by
+4.4e-11, but takes 7 s and is left out). Its own Radau full-period check returns 4.2e-5 and 2.2e-2,
+above its 1e-5 independent tolerance, which only logs a warning: a continuation through such orbits
+would accept them without notice.
 """
 
 from __future__ import annotations
@@ -429,12 +439,11 @@ def test_elliptic_controls_time_derivative_and_origin_at_big_primary_fail(key: s
 
 @pytest.mark.parametrize("key", ["fig14_A01", "fig18_B12"])
 def test_er3bp_corrector_accepts_printed_orbit(key: str) -> None:
-    """Symmetric half-period mode (free x, ydot; residual y, xdot at f = k pi) at tol = 1e-5, the
-    level its plain 1e-12 propagation resolves at a 1e-7 passage. Measured: moves the printed
-    state by 8.8e-12 (Fig. 14) and 1.8e-11 (Fig. 18). At the default tol = 1e-10 it raises
-    ConvergenceError (module docstring)."""
+    """Symmetric half-period mode (free x, ydot; residual y, xdot at f = period_f = k pi, the
+    printed half period) at tol = 1e-5, the level its fixed-time residual reaches at a 1e-7
+    passage. Measured: converges after moving the printed state by 8.8e-12 (Fig. 14) and 1.8e-11
+    (Fig. 18). At the default tol = 1e-10 it raises ConvergenceError (module docstring)."""
     x, ydot, k = ELLIPTIC[key]
     s0 = np.array([float(x), 0.0, 0.0, 0.0, float(ydot), 0.0])
     orbit = correct_er3bp_periodic(ER3BPSystem(MU, E_M, "P0", "P1"), s0, k * PI, tol=1e-5)
-    assert orbit.period_f == pytest.approx(2.0 * k * PI, abs=1e-15)
     assert float(np.abs(orbit.state0 - s0).max()) < 1e-9
