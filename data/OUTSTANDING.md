@@ -837,6 +837,39 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#897` — registered and DISPATCHED 2026-10-04 (synthesis, most capable model). **OWNER: "I think
+  you are missing the point of these papers if you only extract the constants? what about the
+  knowledge and techniques being applied against our problem?"** Correct: today's use of the
+  thirty-odd new papers was defensive (constants, model checks). `#897` is the other half: a
+  technique inventory across every 2026-10-03 and 2026-10-04 digest and the papers themselves,
+  mapped onto the project's blockers, with ranked, build-ready proposals (method cited,
+  positive control, pre-registrable criteria, how each could fool us). Output:
+  `docs/notes/2026-10-04-897-technique-synthesis-papers-to-problems.md`. From now on every
+  digest must carry a "techniques applicable to the project's problems" section (first applied
+  to Gomez & Olle 1991, Bolotin & Negrini 2001 and MacKay 2005, in progress). **Candidate
+  lines the coordinator put to the synthesis, to be tested against the sources:**
+  `#898` and `#899` below; the published phase-selection rules (Leiva & Briozzo; Brown et al.)
+  for the `#884` rerun; folds in eccentricity as a predictor of which Earth-Moon cyclers reach
+  an ephemeris model (Park & Howell; Singh et al.); Floquet and centre-manifold reduction for
+  the bounded motion around a cycler and its maintenance cost (Jorba et al.); speed as an
+  independent variable in the weak-stability sweeps (Mako & Salamon).
+- `#898` — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping). **APPLY THE
+  BRADLEY & RUSSELL (2014) CONTINUATION TO THE CATALOGUE'S HELIOCENTRIC CYCLERS: THE `#388`
+  WALL.** The project's real-ephemeris lane for Earth-Mars cyclers ramps the planets' ephemeris
+  with zero-size flybys and never scales the planets' mass or integrates through a flyby; it
+  stalls off the published family. Bradley & Russell's method (scale the flyby bodies' mass and
+  sphere of influence from near zero, blend a Keplerian ephemeris into the real one, re-seed
+  each flyby with the hyperbola that keeps the turning angle, multiple shooting with
+  continuity only) produced real-ephemeris Titania-Oberon arcs today where direct propagation
+  failed (`#895`), with a working corrector in the tree. Target: a published ballistic
+  real-ephemeris cycler as the positive control, then the V0 rows.
+- `#899` — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping and the Gomez
+  & Olle digest). **SECOND-SPECIES THEORY AS A GENERATOR OF CYCLERS.** Enumerate collision arcs
+  and admissible chains by symbolic sequence (Henon; Font, Nunes & Simo; Bolotin & MacKay's
+  graph with the direction-change condition), apply the demanded-turn gate at the physical
+  mass, and continue each chain in mass to a periodic orbit of the restricted problem. One
+  moon: a systematic generator of Earth-Moon cycler families, checked against the catalogued
+  ones. Two moons: beyond the symmetric two-leg closures enumerated so far.
 - `#896` — registered and DISPATCHED 2026-10-04. **OWNER'S STANDING INSTRUCTION: "use the
   knowledge from the new papers, always. add the checks."** A paper is done only when its
   constants are reconciled against the code and its printed numbers are permanent tests, or
