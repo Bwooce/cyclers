@@ -18,6 +18,7 @@ from __future__ import annotations
 import dataclasses
 
 import numpy as np
+import pytest
 
 import cyclerfinder.core.bcr4bp as bcr4bp
 from cyclerfinder.data.validation.v1_bcr4bp import SEM_L_KM
@@ -61,6 +62,17 @@ def _close_pol1() -> BCR4BPPeriodicOrbit:
     )
 
 
+@pytest.mark.xfail(
+    strict=True,
+    reason=(
+        "#891: computed in the wrong model; needs rerun. In the corrected model the closed"
+        " orbit's DOP853-LSODA agreement is 0.0034, 1.09, 351.5 km at cycles 1-3, growing by"
+        " 321.7 and 321.9 per cycle, which is its dominant Floquet multiplier (321.8): the"
+        " 100 km floor over 3 cycles would need a 1 m cycle-1 agreement. Whether any V3 claim"
+        " for this orbit is meaningful is open; note also that the seed is POL1 in the"
+        " paper's frame (Earth at +mu), which in this module's frame is not near L1."
+    ),
+)
 def test_v3_bcr4bp_pol1_integrator_independent_passes() -> None:
     """POL1's V2 span agrees within the floor under LSODA -> V3 PASS."""
     orbit = _close_pol1()
