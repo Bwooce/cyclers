@@ -16,7 +16,7 @@ How the bounds were chosen
   resonant orbits, so the bounds are set a little above that mass-ratio rounding effect: 1e-3 for
   the halos (unstable, 3 TU) and 2e-4 for the resonant orbits. They are not set from our own
   residual on the printed mu, which is smaller. The control (the other moon's mass ratio) must
-  miss by more than 1e-2, over 40 times the largest bound.
+  miss by more than 1e-2, ten times the largest bound (the 1e-3 halo bound).
 """
 
 from __future__ import annotations
