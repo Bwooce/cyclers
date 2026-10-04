@@ -206,3 +206,11 @@ What this paper does and does not say (READ): it treats only the transition orbi
 - No example, no table, no critical orbit, no multipliers, no mu: the restricted problem enters only through references. Sourced numbers: lambda-tilde = 20.36207 (does not match its own printed definition, which gives 30.54311; factor exactly 3/2) and Figure A1 (alpha_s from 0.9655 to 0.9738 for the golden mean, reproduced).
 - For `#931`: Delta = 0 with |b| < 2 is this transition; Delta changes linearly across it while multipliers move like sqrt(mu), monodromy noise is amplified to 1.3 sqrt(eta) at the double multiplier, so decide by Delta's sign and treat modulus tolerances as a blind window; Hadjidemetriou 1975b Table I rows 10-11 bracket one such event (collision angle about 2.4 rad, computed).
 - For `#899` and `#916`: the paper is silent about nearby orbits and tori; the family continues through the transition, tori on the stable side are less reliable near it, and the sourced treatment is in two cited papers not held.
+
+## Note 2026-10-05: the two examples this paper lacked are now digested and reproduced
+
+Olle, Pacha and Villanueva 2004 (Celest. Mech. Dyn. Astron. 90, DOI 10.1007/s10569-004-1592-0; the scan prints pages 89-109, the file name says 87-107) is digested in
+`docs/notes/2026-10-05-digest-olle-pacha-villanueva-2004-l4-vertical-hopf.md` and Jorba and Olle 2004 (Nonlinearity 17:691) in
+`docs/notes/2026-10-05-digest-jorba-olle-2004-invariant-curves-hamiltonian-hopf.md`. The example that answers section 0 here is the vertical family of L4 in the spatial restricted problem at mu = 0.04. Reproduced with the project's `core.cr3bp`: the critical orbit
+at h = -1.4571360 (printed 1.45714146, sign lost in print), omega_crit = 1.8326287865 (printed 1.8326287), and the printed coordinate y = 0.86386304 at x = -0.462, with a non-diagonalizable monodromy and Delta changing sign linearly across it. The synthetic scalings of section 6 above
+are confirmed on the closed-form map of Jorba and Olle (Delta = 1 - 4L, max|lambda| - 1 = 0.76 sqrt(L - 1/4), noise about 0.34 sqrt(eta) at the double multiplier). The sourced test cases for the `#931` detector are therefore those two papers; section 5.1 above (Hadjidemetriou 1975b rows 10-11) stays as a third.
