@@ -837,6 +837,27 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#896` — registered and DISPATCHED 2026-10-04. **OWNER'S STANDING INSTRUCTION: "use the
+  knowledge from the new papers, always. add the checks."** A paper is done only when its
+  constants are reconciled against the code and its printed numbers are permanent tests, or
+  recorded as not reproduced. **Done so far today, by the coordinator:** bicircular model
+  against Jorba et al. 2020 and Oshima 2022 Table 4 row 1; quasi-bicircular model against the
+  2018 paper's Table 1, Rosales et al. 2023 Tables 4 and 5, Leiva & Briozzo 2005 and 2008
+  Table 2; elliptic model against Neelakantan & Ramanan 2022 Table 8 (four of five rows);
+  coefficient tables against Andreu 1998; the Uranian registry rows against Jacobson 2014 and
+  Jacobson & Park 2025; Saturn's J2 pairing against Iess et al. 2019. **Dispatched (Opus
+  agent, new test files only, no source edits):** every remaining printed control named in
+  the 2026-10-04 digests: the other rows of Oshima's Tables 2 to 5; the bicircular L2
+  replacement orbit (Rosales et al. 2021 Table 2); the eight second-species periodic orbits
+  of Font, Nunes & Simo; the 34 three-body orbits and the 25 periodic arcs of Leiva & Briozzo
+  2008 and their Table 5 distances; the remaining Neelakantan & Ramanan orbits; the Mako &
+  Salamon true-anomaly sweeps; the three-body frequencies and bifurcation periods quoted by
+  Jorba et al. 2020 and Singh, Park & Howell 2026; and any printed control in an OLDER digest
+  that has no test yet. A control that fails is reported and held as a strict expected
+  failure; it is not loosened and the model is not changed by that agent. **Still to do by
+  the coordinator after `#895`:** switch the registry's Uranian mean motions to the printed
+  periods; decide between the URA111 and URA182 constant sets and make them consistent;
+  Uranus J2 and J4 per the ephemeris in use.
 - `#895` — registered and DISPATCHED 2026-10-04 (Opus build agent; pre-registration first).
   **DOES A BALLISTIC TITANIA-OBERON FLYBY SEQUENCE NEAR THE `#890` ORBIT EXIST IN A
   REAL-EPHEMERIS MODEL, REPRODUCIBLY, IN THE REPOSITORY?** The `#890` adversarial reviewer's
