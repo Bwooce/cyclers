@@ -156,3 +156,12 @@ The paper does not bear on the controls (a) to (e) of #929 except as one more in
 5. When the turn gate (#906) is next touched, take the integrated deflection from the regularised propagator (as in the Heggie digest) and compare with the first-order relation; Burdet's elements give the deflection directly as the change of the Laplace vector direction through the pass (INFERRED, since A is the eccentricity vector of the instantaneous osculating orbit).
 
 References printed on p.438 (READ): [1] P. Kustaanheimo and E. Stiefel, "Perturbation Theory of Kepler Motion Based on Spinor Regularisation", J. reine angew. Math. 218:204 (1965); [2] H. Sperling, "Computation of Keplerian Conic Sections", ARS J., May 1961, pp.660-661; [3] E. Stiefel, "Many-body Problem and Interplanetary Flight", in Dynamics of Rockets and Satellites, G. V. Groves ed., North-Holland. None of the three is held in the corpus.
+
+## Note of 2026-10-05: the full paper (Burdet 1968) has been read
+
+The full paper behind this announcement, Burdet 1968, ZAMP 19:345-368, is digested in `docs/notes/2026-10-04-digest-burdet-1968-theory-kepler-motion-perturbed-two-body.md`. Consequences for this note:
+- The elliptic-only limit of the printed 1967 form (section 2 and section 6.1 above) is removed in 1968: the general form uses dt = (1/kappa) r ds with omega^2 = 1/a, valid for elliptic, parabolic and hyperbolic motion. Its equations (111), (201), (202), (203) are the energy-independent form that sections 3.2 and 6.1 of this note derived by hand; the derivation is confirmed term for term and numerically (including a perturbed hyperbolic-energy close pass), so the "check it symbolically" caveat is closed.
+- Sign and scale conventions differ: alpha(1968) = -alpha(1967) and beta(1968) = beta(1967)/omega with E = omega s; the vector A is the same.
+- The 1968 element equations as printed have three errors (found by numerical differentiation of the exact elements): the alpha term of gamma' has the wrong sign in (206c), (311) and Appendix II (6), and (206d) lacks the tilde on B3.
+- Section 5's recollection of a 1968 title was imprecise: the 1968 paper is the one digested above; "Le mouvement keplerien et les oscillateurs harmoniques" (J. reine angew. Math. 238, 1969) is still only a recollection.
+- The 1968 paper prints one usable benchmark (an exact L4 perturbed two-body problem with three printed orbits and periods) and no tables; see its section 3.
