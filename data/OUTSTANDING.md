@@ -927,8 +927,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (owner):** `mkdir -p data/found/905_sun_forced_rerun && timeout 12h uv run python
   scripts/run_905_sun_forced_rerun.py --stage all --workers 4 > data/found/905_sun_forced_rerun/run.log
   2>&1`; runlog `data/found/905_sun_forced_rerun/runlog.jsonl` (resumable; rerun the same command
-  after an interruption). Smoke timings: one family walk 20 s; one member, both models with full
-  diagnostics, 40 to 120 s. **Still to do after the run:** compare with the review's
+  after an interruption; one runlog line per finished branch as well as per task). Smoke
+  timings: one family walk 11 to 20 s; one member, both models with full diagnostics, 40 to
+  120 s. The `#884` walks found 37 members (three-body, unaffected by the Sun bug), so expect
+  about 40 to 60 members: about 1 to 2 hours on 4 workers; upper bound from the 900 s cap per
+  branch about 8 hours, hence `timeout 12h`. Also checked by smoke run (commit `2686da6e`): the
+  C21 3D corridor walk now stops where the family meets the plane at T = 13.701044,
+  x0 = 0.87645 (the reviewer's values) instead of returning the T = 13.582 planar orbit; the
+  Casoliva 2:1(b) low parent is flagged below the surface at 1,415.4 km (reviewer 1,415.4);
+  Oshima's four families fall into two symmetry classes (z -> -z pairs), as his eq. 8 says.
+  **Still to do after the run:** compare with the review's
   corrected-sense table member by member; the 8/3 members (octupole) need Brown et al.'s
   higher-order functions where the first order is flat; nothing here is a catalogue row
   (section 14 items 6, 7, 9 of the review still apply).
