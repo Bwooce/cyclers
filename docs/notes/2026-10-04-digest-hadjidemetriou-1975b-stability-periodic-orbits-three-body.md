@@ -538,3 +538,13 @@ second source: all 19 rows of that paper's Table I reproduce with the same inert
 total mass 1, theta'0 = 1) to 2e-8 in x1(T), x3(T) and 7e-8 in theta/2pi, with one probable misprint (row 15 period). (3) Section 6 says no current module can reproduce the paper's numbers; that holds for finite third mass, but the project's CR3BP at mu = 1/2
 reproduces that paper's m3 = 0 starting orbit to eight digits (T = 0.9242291, x = 0.721018392 from x30 = 0.181,
 y3'0 = -0.94711034), so it controls the restricted end of a continuation; no module controls finite m3.
+
+## Note 2026-10-05: Henon 1974a is now held and digested
+
+Henon, "Families of periodic orbits in the three-body problem", Celest. Mech. 10:375 (DOI 10.1007/BF01586865) is digested in
+`docs/notes/2026-10-04-digest-henon-1974a-families-periodic-orbits-three-body.md`. Relevant here: its two families have masses 3:4:5
+(E = -47/288 in its normalisation), so none of its orbits is, or connects through anything printed to, an orbit of this paper's
+Table I (equal masses) or of Hadjidemetriou and Christides (m1 = m2, m3 varied). Henon states (p.385) that the Hadjidemetriou-Christides sequence is
+a section of a three-parameter family (m2/m1 and x30 constant), and its dimensional count (periodic orbits at fixed masses form
+one-parameter families) is the counting behind the continuation used here. An independent re-integration reproduces all 13 non-collision rows
+of its Tables I and II (E, A, phi to 1e-9, 5e-9, 8e-7), a third sourced control set for `#931` (a); the closure test there needs the rotation by -phi.

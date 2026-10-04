@@ -295,3 +295,13 @@ option (i)), with a 2 x 2 Newton corrector on (r0, y3'0); the family is NOT mono
 can fold. It does not touch `#890`'s direction (moons' masses raised, massless spacecraft). All 19 printed rows reproduce
 independently (one probable misprint, row 15 period 3.6656 against a computed 3.6697), and the project's `core/cr3bp.py` at
 mu = 1/2 reproduces the paper's m3 = 0 starting orbit to eight digits.
+
+## Note 2026-10-05: Henon 1974a is now held and digested
+
+Henon, "Families of periodic orbits in the three-body problem", Celest. Mech. 10:375 (DOI 10.1007/BF01586865) is digested in
+`docs/notes/2026-10-04-digest-henon-1974a-families-periodic-orbits-three-body.md`. Relevant here: its two families have masses 3:4:5
+(E = -47/288 in its normalisation), so none of its orbits is, or connects through anything printed to, an orbit of this paper's
+Table I (equal masses) or of Hadjidemetriou and Christides (m1 = m2, m3 varied). Henon states (p.385) that the Hadjidemetriou-Christides sequence is
+a section of a three-parameter family (m2/m1 and x30 constant), and its dimensional count (periodic orbits at fixed masses form
+one-parameter families) is the counting behind the continuation used here. An independent re-integration reproduces all 13 non-collision rows
+of its Tables I and II (E, A, phi to 1e-9, 5e-9, 8e-7), a third sourced control set for `#931` (a); the closure test there needs the rotation by -phi.
