@@ -633,6 +633,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   15:115 (2002) and CMDA 103:143 (2009); and "A continuation method for converting
   trajectories from patched conics to full gravity models", J. Astronaut. Sci. (DOI
   10.1007/s40295-014-0017-x), which may already publish the continuation step.
+  **Bolotin & MacKay 2006 now held and digested**
+  (`docs/notes/2026-10-04-digest-bolotin-mackay-2006-nonplanar-second-species.md`): its
+  theorem needs a time-independent system with a conserved energy and a fixed singular set, and
+  treats ONE small secondary; it is an existence statement with no numerical bound on the mass.
+  Supported wording: "the one-moon analogue is a theorem; the two-moon case with different
+  periods is not covered by it as stated". Not supported: "exists by Bolotin & MacKay", or
+  any claim about physical mass ratios. The planar one-moon case rests on their 2000 paper
+  (DOI 10.1023/A:1008393706818), not held; Bolotin 2005 (CMDA 93:345, elliptic case) and
+  Bolotin 2006 (DCDS 14:235) are the nearest time-dependent analogues, not held.
   Adversarial review dispatched, not back. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
   inside its Hill sphere (the softening radius passed is the Hill radius), so neither V4 lane
   can represent a flyby; a V4 for moon tours has to be rebuilt on an unsoftened propagator.
