@@ -1364,3 +1364,154 @@ def encounters(
 
 def branch_signature(flybys: Sequence[FlybyInfo]) -> list[tuple[str, int, int]]:
     return [(BODY_NAMES[f.body], f.side, f.sense) for f in flybys]
+
+
+# --------------------------------------------------------------------------------------------- #
+# Fallback at lam = 0 (pre-registration 1.3): homotopy in the circle constants from the #890
+# model (registry circles, Oberon about the barycentre) to the fitted circles
+# --------------------------------------------------------------------------------------------- #
+
+
+def circles_890(c: Model890, fit: Circles, t_c: float) -> Circles:
+    """The `#890` circles in the fitted reference plane, Titania aligned with ``fit`` at ``t_c``."""
+    # each moon keeps the fitted longitude at t_c (not reduced mod 2 pi: the blend of the two
+    # sets of constants must not sweep a moon round by a whole turn)
+    lon_t = fit.lon0_t + fit.n_t * t_c
+    lon_o = fit.lon0_o + fit.n_o * t_c
+    return Circles(
+        fit.ex, fit.ey, fit.ez,
+        c.a_t, c.n_t, lon_t - c.n_t * t_c,
+        c.a_o, c.n_o, lon_o - c.n_o * t_c,
+        fit.fit_window,
+    )  # fmt: skip
+
+
+def constants_blend_model(
+    table: EphemerisTable, c890: Model890, c0: Circles, c1: Circles, sigma: float
+) -> ForceModel:
+    """sigma 0: the `#890` model on ``c0``; sigma 1: :func:`homotopy_model` (lam 0) on ``c1``."""
+    gm = np.zeros(6)
+    gm[I_TITANIA] = (1.0 - sigma) * c890.gm_t + sigma * GM_TITANIA
+    gm[I_OBERON] = (1.0 - sigma) * c890.gm_o + sigma * GM_OBERON
+    circ = np.zeros((6, 10))
+    circ[:, 0] = 1.0
+    circ[:, 3:6] = c1.ex
+    circ[:, 6:9] = c1.ey
+    for k, (a0, n0, l0, a1, n1, l1) in (
+        (I_TITANIA, (c0.a_t, c0.n_t, c0.lon0_t, c1.a_t, c1.n_t, c1.lon0_t)),
+        (I_OBERON, (c0.a_o, c0.n_o, c0.lon0_o, c1.a_o, c1.n_o, c1.lon0_o)),
+    ):
+        circ[k, :3] = (
+            (1 - sigma) * a0 + sigma * a1,
+            (1 - sigma) * n0 + sigma * n1,
+            (1 - sigma) * l0 + sigma * l1,
+        )
+    circ[I_OBERON, 9] = (1.0 - sigma) * c890.mu
+    cidx = np.zeros(6, dtype=np.int64)
+    cidx[I_OBERON] = I_TITANIA
+    gmc = (1.0 - sigma) * c890.gm_planet + sigma * (GM_URANUS + sum(BODY_GM[k] for k in INNER))
+    return ForceModel(
+        gm=gm,
+        w=np.zeros(6),
+        circ=circ,
+        cidx=cidx,
+        central=central_vector(gmc, 0.0, 0.0, POLE_IAU),
+        table=table,
+        t_ref_et=table.t_ref_et,
+        label=f"sigma={sigma:.6g}",
+    )
+
+
+# --------------------------------------------------------------------------------------------- #
+# Continuation (pre-registration 1.3)
+# --------------------------------------------------------------------------------------------- #
+
+
+@dataclass
+class ContinuationState:
+    """Resumable state of one continuation in a scalar parameter from ``p0`` to 1."""
+
+    param: str
+    times: FloatArray
+    x_cur: FloatArray
+    p_cur: float
+    x_prev: FloatArray | None = None
+    p_prev: float | None = None
+    step: float = 0.1
+    attempts: int = 0
+    status: str = "running"  # running | done | failed
+    signature: list[tuple[str, int, int]] = field(default_factory=list)
+    log: list[dict[str, Any]] = field(default_factory=list)
+
+
+MIN_STEP = 1.0 / 512.0
+MAX_STEP = 0.25
+MAX_ATTEMPTS = 60
+
+
+def continuation_step(
+    st: ContinuationState,
+    model_of: Callable[[float], ForceModel],
+    flybys_of: Callable[[ForceModel, FloatArray], list[FlybyInfo]],
+) -> None:
+    """One attempted step: predictor, Newton, branch check, step control. Mutates ``st``."""
+    if st.status != "running":
+        return
+    p_try = min(1.0, st.p_cur + st.step)
+    if st.x_prev is not None and st.p_prev is not None:
+        x_pred = st.x_cur + (st.x_cur - st.x_prev) * (p_try - st.p_cur) / (st.p_cur - st.p_prev)
+    else:
+        x_pred = st.x_cur
+    model = model_of(p_try)
+    res = newton(model, st.times, x_pred)
+    entry: dict[str, Any] = {
+        "attempt": st.attempts,
+        "param": st.param,
+        "value": p_try,
+        "step": st.step,
+        "converged": res.converged,
+        "reason": res.reason,
+        "iterations": len(res.history) - 1,
+        "history": res.history,
+    }
+    st.attempts += 1
+    accepted = False
+    if res.converged:
+        fl = flybys_of(model, res.x)
+        sig = branch_signature(fl)
+        entry["signature"] = sig
+        entry["flybys"] = [(BODY_NAMES[f.body], round(f.t, 1), round(f.alt_km, 1)) for f in fl]
+        if sig == st.signature:
+            accepted = True
+        else:
+            entry["branch_event"] = True
+    entry["accepted"] = accepted
+    st.log.append(entry)
+    if accepted:
+        st.x_prev, st.p_prev = st.x_cur, st.p_cur
+        st.x_cur, st.p_cur = res.x, p_try
+        if entry["iterations"] <= 4:
+            st.step = min(MAX_STEP, 1.5 * st.step)
+        if st.p_cur >= 1.0:
+            st.status = "done"
+    else:
+        st.step *= 0.5
+        if st.step < MIN_STEP:
+            st.status = "failed"
+    if st.status == "running" and st.attempts >= MAX_ATTEMPTS:
+        st.status = "failed"
+
+
+def arc_flybys(
+    model: ForceModel, times: FloatArray, x: FloatArray, ez: FloatArray
+) -> list[FlybyInfo]:
+    tr = arc_trajectory(model, times, x)
+    return encounters(model, tr, float(times[0]), float(times[-1]), ez)
+
+
+def expected_signature(n_cycles: int) -> list[tuple[str, int, int]]:
+    """T outside, O inside, both with positive turn sense, alternating, 2N + 1 flybys."""
+    sig: list[tuple[str, int, int]] = []
+    for _ in range(n_cycles):
+        sig += [("Titania", 1, 1), ("Oberon", -1, 1)]
+    return [*sig, ("Titania", 1, 1)]

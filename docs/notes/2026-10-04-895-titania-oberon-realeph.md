@@ -233,3 +233,81 @@ nearest to each target date D = 2030-01-12, 2031-06-13 (the review's two dates),
 * Failures of the corrector are failures of the method at that epoch, not evidence that no
   ballistic arc exists; they are reported in those words.
 * Nothing in this task is a catalogue row or a claim about one.
+
+## 2. Results (run after commit `f3860e91`, which holds section 1)
+
+Sections 2.1 and 2.2 were written and committed before the `#890` reviewer's scratch code was
+opened. Everything here was computed by this build unless marked READ or INFERRED.
+
+### 2.1 Step 1: model checks (commit `71630e05`; `control.json`, `p2.json`)
+
+P1 passes at all five epochs: with the full model every moon is within 0.01 to 1.68 km of URA111
+after 30 days and within 0.0 to 6.8 km after 123 days (worst: Ariel at E4, 1.68 / 6.8 km). The
+control discriminates: without the zonal field Miranda and Ariel are 6,920 to 6,990 km and 2,713 to
+2,719 km off at 30 days, and with the repository's former J2 pair 333 to 336 km and 128 to 130 km.
+Without the Sun Titania and Oberon are 0.9 to 2.0 km and 0.9 to 3.6 km off at 30 days (5 to 16 km
+at 123 days) against 0.05 to 0.17 km and 0.01 to 0.75 km with it: the Sun is visible in the moons'
+own motion at this level. Without J4 Miranda degrades from 0.1 to 0.5 km to 2.9 to 3.6 km. The
+French et al. J2 is worse than the kernel's for Miranda and Ariel (2.5 to 3.2 km and 0.6 to 1.1 km),
+as expected for an ephemeris fitted with the kernel's value. The kernel's own pole changes nothing
+material. Leaving the moon's own GM out of the central term costs 25 to 730 km at 30 days (the
+control needs it). Interpolation error of the 600 s Hermite table at mid-knots: Miranda 0.31 m,
+Ariel 0.05 m, the others 1.4 mm or less. The fitted mean plane of Titania is 0.037 to 0.058 deg from
+the antipode of the IAU pole. The mean conjunctions found by this build for the review's two dates
+are 2030-01-11 23:57:20 TDB and 2031-06-13 09:12:10 TDB (the review gives 23:57 and 09:13, READ),
+an agreement between two independent fits.
+
+P2 passes with the module's integrator at rtol 1e-13: half-cycle |y| = 1.4 cm and |v_x| = 0.0014
+mm/s; flyby altitudes 1,976.86 km (Titania) and 1,364.18 km (Oberon); one-cycle return 12.8 m and
+0.089 cm/s (scipy DOP853 1e-13: 12.1 m; scipy Radau 1e-12: 0.63 m; these reproduce the `#890`
+figures 12 m and 0.68 m). At the solver's rtol 1e-12 the return is 125 m and 0.86 cm/s, which
+shows that the 1 cm/s part of P2(iii) was close to ill-posed: the return velocity error tracks the
+position error along the unstable direction at about 7e-5 per second, so 1 cm/s corresponds to
+about 145 m. scipy LSODA at rtol 1e-13 returns 3.0 km and 21 cm/s after one cycle: over a whole
+cycle of this orbit LSODA is far less accurate than DOP853. Negative control: with Oberon circling
+Uranus instead of the barycentre the half-cycle |y| is 8.5 km and the trajectory strikes Titania
+0.12 km from its centre at 122.62 d; there is no return.
+
+### 2.2 First converged real-ephemeris arc: E1, N = 3 (`arcs/E1_N3*`, `verify_E1_N3.json`)
+
+Route. Newton at lam = 0 from the scaled `#890` seed did NOT converge (step halving exhausted at
+iteration 3, residual 2,900 km), so the pre-registered fallback was used: the `#890` orbit placed on
+the `#890` circles converged at sigma = 0 in one Newton step (seed junctions 0.56 km, from the
+interpolation of the stored orbit), then the constants homotopy sigma = 0 to 1 took 39 attempts
+(29 accepted; the first steps had to be cut to 0.003), then lam = 0 to 1 took 7 attempts (6
+accepted), every converged step with the same flyby count, order, sides and turn sense.
+
+The arc moved a long way along the family during the constants homotopy, not during the ephemeris
+homotopy. Flyby altitudes (T, O, T, O, T, O, T), km: at sigma = 0, 1,977 / 1,364 / ... (the `#890`
+orbit); at sigma = 1 (circular model with the URA111 mean motions and radii), 5,454 / 4,073 / 6,519
+/ 4,991 / 8,541 / 3,609 / 6,709; at lam = 1, the values below. The ephemeris homotopy moved them by
+less than 400 km.
+
+Verification at lam = 1 (criteria of section 1.5):
+
+| criterion | result | numbers |
+|---|---|---|
+| solver junctions | | 7.0 mm, 1.2e-4 mm/s |
+| (c) DOP853 1e-13 / LSODA 1e-13 | PASS | 11.7 mm, 1.1e-4 mm/s / 9.6 mm, 6.8e-5 mm/s; LSODA 1e-12 vs 1e-13: 6.9 cm |
+| (d) seven flybys integrated through | PASS | landing within 6 m (DOP853) and 45 m (LSODA), at most 0.027 cm/s; predictions 0 to 5 m |
+| (e) altitudes, hyperbolic | PASS | all hyperbolic; altitudes below |
+| (f) other approaches | PASS | none within 2 Hill radii; closest Umbriel 180,322 km, Ariel 254,476, Miranda 312,050; Uranus 441,699 to 580,599 km |
+
+| flyby | date (TDB) | altitude km | speed at periapsis km/s | osculating excess km/s | e | side | spacecraft z km |
+|---|---|---|---|---|---|---|---|
+| Titania | 2030-01-11 20:23 | 5,562 | 0.314 | 0.166 | 1.77 | outside | -850 |
+| Oberon | 2030-03-14 04:25 | 4,221 | 0.351 | 0.203 | 2.00 | inside | 796 |
+| Titania | 2030-05-14 18:43 | 6,827 | 0.277 | 0.132 | 1.58 | outside | -1,337 |
+| Oberon | 2030-07-14 23:55 | 4,946 | 0.328 | 0.188 | 1.99 | inside | 976 |
+| Titania | 2030-09-14 18:30 | 8,945 | 0.222 | 0.050 | 1.11 | outside | -948 |
+| Oberon | 2030-11-15 01:09 | 3,393 | 0.379 | 0.211 | 1.90 | inside | 634 |
+| Titania | 2031-01-15 20:34 | 6,734 | 0.272 | 0.118 | 1.46 | outside | -223 |
+
+So a manoeuvre-free arc with seven alternating flybys exists at E1 in this model, but it is NOT
+close to the `#890` orbit's flyby geometry: its flybys are two to five times higher and slower
+(osculating excess speed 0.05 to 0.21 km/s against 0.26 to 0.27 km/s), and the fifth flyby, at
+8,945 km (about 0.95 Hill radii) with an excess speed of 0.05 km/s, is barely an encounter. The
+minimum-norm continuation picked this member of the six-parameter family; another route could
+pick a different one. INFERRED: the drift happened while the circles' mean motions changed by
+about 2e-4 (the `#890` cycle is 123.162 d, the URA111 one 123.187 d), which the open arc absorbs by
+changing its flybys rather than its period.
