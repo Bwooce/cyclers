@@ -1213,6 +1213,22 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   open one-way transfers, so it is a method, not a control, for the simultaneous two-moon models.
   The registry's Ganymede mass ratio is 9e-5 relative off the paper's (7.8044e-5 against
   7.8037e-5); note for `#901`.
+- `#933` — registered 2026-10-05. **BROUCKE 1969 (JPL TR 32-1360): THE LARGEST PUBLISHED CONTROL SET
+  FOR THE ELLIPTIC PROBLEM** (digests `docs/notes/2026-10-04-digest-broucke-1969-elliptic-periodic-orbits-part-a.md`
+  and `-part-b.md`). Part B agent's result, not yet checked by the coordinator: all 500 rows of
+  Tables 14-19 (families 8P, 8A, 11P, 11A, 10P and a collision family) transcribed from page images;
+  429 of the 431 periodic rows close in `core.er3bp` at the printed seventh digit (median residual
+  3.1e-6; the 22 worst are 8P rows at e >= 0.815, growing smoothly with e, consistent with rounding
+  amplification); a barycentric inertial integration and Broucke's Birkhoff-regularised equations
+  agree digit for digit on samples. This is strong evidence that `core.er3bp` is right, which bears
+  on `#925` (Mako & Salamon). Printed defects: Table 18 rows 55-56 have X1 and YDOT1 swapped; eq. 114
+  has m1 r1 + m2 r2 for m1 r2 + m2 r1; eq. 115 lacks a factor 1/2. To do: (a) a test-only data
+  module of all rows with the printed defects as recorded known defects, a sample of closures in the
+  default suite and the rest marked as an explicit full check; (b) check the printed stability
+  regions numerically; (c) the planar Birkhoff propagator for `#928` with the 69 collision rows of
+  Table 19 as its test (`core.er3bp` cannot start at a collision: it divides by r2^3); (d) the
+  inertial integration as a frame-independent closure check for `#930`. Part A (families 12A, 6A,
+  7P, 7A, rectilinear; equations; seven stability types) is still being digested.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
