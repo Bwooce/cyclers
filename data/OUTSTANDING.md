@@ -891,7 +891,48 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of `run_522`, `run_533`, `run_538`, `search_coherent_connections` need 11 samples. Resolve
   the two slow strict expected-failures in `tests/search/test_variational_qbcp_torus.py`
   (does the corrector still cross the Earth-Moon L2 plateau in the corrected model?).
-- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.** **Theory added 2026-10-04 (Rhouma & Chicone 2000 and Jorba & Villanueva 1997 digests):** a
+- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.**
+  **DRIVER BUILT AND VALIDATED 2026-10-05 (commits `b9c54cb8`, `3e78c30e`); FULL RUN NOT YET
+  LAUNCHED.** New driver `search/sun_forced_905.py` (the `#884` module is left as the record):
+  multiple shooting over P = N Sun periods with nodes placed by STM growth, closure checked with
+  the Sun back at its starting phase; both corrected models (bicircular, homotopy in the Sun's
+  mass; coherent, the Leiva & Briozzo homotopy H_RTBP + eps (H_QBCP - H_RTBP)), numba fields gated
+  against `core/bcr4bp.py` and `core/qbcp.py` (neither modified); Rhouma-Chicone screens
+  (commensurability, dT/dC from the walk tangent, no nontrivial lambda^M = 1 including the
+  vertical pair, minimal period, planarity); Melnikov zeros in the Sun phase with slope and
+  simplicity; pseudo-arclength in eps with predictor and tangent-cosine guards, folds, branch
+  points (bordered determinant), eps = 0 crossings and an excursion to eps = -0.5 recorded; family
+  walk recording stability-index crossings of 2 cos(2 pi k/m), m <= 6, and stopping where a
+  spatial family meets the plane; refined periselene/perigee with surface flags; Radau closure;
+  Floquet with the reciprocal-pair check; one orbit per symmetry class. **Published controls
+  FOUND by the driver from three-body parents** (`tests/search/test_sun_forced_905.py`, default
+  suite, about 15 s): Oshima 2022, all four 1:1 spatial families from one CR3BP parent (0.022 from
+  the printed states), each matching its printed row at the printed Sun angle to 1.6e-10 ..
+  1.6e-9 and missing the other three by 0.36 to 4.1; Leiva & Briozzo 2008 013_t3 and 013_t4 from
+  the Table 1 parent in the coherent model, 1.1e-6 in position and 4.9e-6 in velocity (their
+  printed states close only to 5e-6 .. 6e-5 here), multiplier 155.88 (printed |s1| 155.8), perigee
+  137,125 km (printed 137125); their t_i lie within 4.6e-3 TU of the driver's Melnikov zeros. The
+  other two 013 phases also reach eps = 1 (|lambda| 125, periselene about 2,350 km; not in the
+  paper, not claimed). **Leiva & Briozzo's 5/2 C32/C31 members (arcs in the paper) COMPLETE as
+  true periodic orbits of 5 Sun periods in the coherent model at their mass ratio, both Melnikov
+  phases each:** 180A_1 (C32, C 3.18010): |lambda| 2.5e3 and 3.9e4, periselene 7,348 (their arc
+  7,371) and 9,933 km; 180A_2 (C32, C 3.15168): 4.6e6 and 1.2e7, 17,750 and 22,239 km (arc 23,966);
+  357 (C31): 4.6e7 and 2.9e7, 13,871 and 14,715 km (arcs 14,713 and 14,716); closure 1e-14 .. 7e-12,
+  Radau 2e-13 .. 8e-12; subdominant multipliers unreliable above about 1e6. Flags: 180A_2's
+  vertical index is 1.99983 (near a vertical bifurcation, |lambda^2 - 1| = 0.026) and one of its
+  branches records a branch point at eps 0.005; 180A_1's second phase records one at eps 0.52.
+  **Second implementation agrees with the review:** the smoke run of the C32 5/2 members in the
+  bicircular model gives |lambda| 9.8e6, 1.9e7 / 2.2e4, 3.1e3 and periselenes 21,806, 23,199 /
+  10,048, 7,670 km, the reviewer's corrected-sense table values to every quoted digit. **Launch
+  (owner):** `mkdir -p data/found/905_sun_forced_rerun && timeout 12h uv run python
+  scripts/run_905_sun_forced_rerun.py --stage all --workers 4 > data/found/905_sun_forced_rerun/run.log
+  2>&1`; runlog `data/found/905_sun_forced_rerun/runlog.jsonl` (resumable; rerun the same command
+  after an interruption). Smoke timings: one family walk 20 s; one member, both models with full
+  diagnostics, 40 to 120 s. **Still to do after the run:** compare with the review's
+  corrected-sense table member by member; the 8/3 members (octupole) need Brown et al.'s
+  higher-order functions where the first order is flat; nothing here is a catalogue row
+  (section 14 items 6, 7, 9 of the review still apply).
+  **Theory added 2026-10-04 (Rhouma & Chicone 2000 and Jorba & Villanueva 1997 digests):** a
   CR3BP periodic orbit commensurate with the Sun's forcing period persists (for small forcing) at a
   simple zero of a Melnikov function, which for the Sun is the Jacobi-constant work integral over
   the period, the quantity `search/sun_forced_periodic_884.py` already computes; screen dT0/dC != 0
