@@ -863,8 +863,22 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   The constant in the code is currently French et al. 2024 (3509.291e-6, 4.0e-4 lower, read
   from an abstract). Since the URA111 kernel is Jacobson's solution, the self-consistent value
   is his; the switch waits for the `#895` build to finish so nothing changes under it. Full
-  digests of both papers, with an audit of every Uranian and Saturnian constant in the
-  registry, are in progress. Earlier text follows.
+  digests of both papers are done (`docs/notes/2026-10-04-digest-jacobson-2014-uranian-satellites-gravity-field.md`,
+  `docs/notes/2026-10-04-digest-iess-2019-saturn-gravity-field-ring-mass.md`). **Audit of the
+  registry's Uranian constants against Jacobson's tables (digest agent; the coordinator checked
+  the period arithmetic):** the system GM and all five moon GMs match Table 12 exactly. The
+  SEMI-MAJOR AXES DO NOT match Table 2's mean elements (Miranda -12 km, Ariel -1, Umbriel +4,
+  Titania +16, Oberon +62 km) and their source is unknown. The moon radii and flyby floors are
+  not in this paper; source unknown. Mean motions: Table 2's rates give periods of 8.705868 d
+  (Titania) and 13.463237 d (Oberon), synodic 24.63739 d, which are what the URA111 kernel
+  shows. The `#890` two-moon model derives its rates from the registry's axes and GMs and gets
+  8.706399 d, 13.465984 d and 24.63245 d: wrong by 6e-5, 2e-4 and 2e-4. That is why its flyby
+  altitudes shift by 100 to 180 km when real mean motions are used. **To do:** take mean
+  motions from the printed rates (or from the kernel), not from Kepler's law on unsourced
+  axes; find or replace the source of every semi-major axis, radius and floor in
+  `core/satellites.py`; switch the Uranus J2 to Jacobson's and add J4 once `#895` has finished;
+  decide whether Saturn's J2, which "includes a constant tidal term" from the satellites, may
+  be used alongside explicit moon point masses. Earlier text follows.
 - `#894` (earlier text) — registered 2026-10-04. **PLANETARY GRAVITY CONSTANTS: A J2 IS MEANINGLESS WITHOUT ITS
   REFERENCE RADIUS; ONE PAIR WAS WRONG, ONE IS UNCONFIRMED.** Found by the `#890` adversarial
   reviewer, confirmed by the coordinator. **Uranus, FIXED (commit `1620de10`):**
