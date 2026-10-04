@@ -236,3 +236,12 @@ Follow-ups (no task numbers registered):
 - The Olle, Rodriguez and Soler papers (DOIs in the `#899` entry) for the restricted-problem continuation and the McGehee-based spatial paper.
 - Stiefel and Scheifele 1971 is held (digest `2026-10-04-digest-stiefel-scheifele-1971-linear-regular-celestial-mechanics.md`); Kustaanheimo-Stiefel 1965 is held and
   digested (`2026-10-05-digest-kustaanheimo-stiefel-1965-ks-regularization.md`). Together they cover the Levi-Civita and KS side of the comparison in 8.1.
+
+## 10. Note added 2026-10-05: the planar predecessor (Llibre 1982)
+
+Llibre 1982 (Celest. Mech. 28:83-105, DOI 10.1007/BF01230662; digest `2026-10-05-digest-llibre-1982-restricted-problem-small-mu.md`) is the planar
+version of this paper. Its Theorem B prints the section as r-dot = 0 (cross one time the surface r-dot = 0), which settles the oddity flagged in
+Section 9 above: the "r = 0" of Theorem B(i) here is most likely r-dot = 0 (the scan or the printing lost the dot), so those orbits cross the section
+r-dot = 0, not the collision. Its Theorem B(ii) says "one and only one" orbit from m1 to m2, where this paper says "at least one". The planar paper carries
+the exact mu = 0 phase portrait with printed, verified numbers (circular radii, boundary radii and energies at C = 3.25, 3.1, 3, 2^(5/3), 1, 0, -1) that
+this paper only summarises. The Rodriguez del Rio thesis (part B digest) contradicts this paper's claim of families of spatial symmetric orbits.
