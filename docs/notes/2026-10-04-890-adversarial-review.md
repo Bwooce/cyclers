@@ -4,7 +4,7 @@ Reviewer's note on `docs/notes/2026-10-04-890-titania-oberon-candidate.md` and t
 `data/OUTSTANDING.md`. Reviewed at commit `a6fac4d6`. Every number below is marked COMPUTED (by
 the reviewer, with the reviewer's own code, not the build's diagnostics), READ (from the note,
 the code, the outputs or git) or INFER (reasoning, no computation). The reviewer's scripts are
-scratch files and are NOT in the repository; nothing here is under test. Section 9 says what
+scratch files and are NOT in the repository; nothing here is under test. Section 12 says what
 that means for how far these numbers may be relied on.
 
 The reviewer's model code was written from a fresh derivation in a non-rotating frame, in
@@ -25,7 +25,7 @@ the repository's code is the point of the check.
 | 8 | Multipliers 8.4e5, 1.79, 0.559, 1.2e-6 | ESTABLISHED | COMPUTED with the reviewer's own variational equations: 8.381e5, 1.7857, 0.5600, 1.19e-6. Second pair real. Section 5. |
 | 9 | The pre-registration was written before the results and not edited afterwards | ESTABLISHED | COMPUTED with git: lines 1 to 125 of the note at HEAD are byte-identical to commit `0e5d63ae` (15:49:41); the first output file is stamped 15:50:59. Section 4. |
 | 10 | The pre-registered closure tests V2 and V3 pass | NOT ESTABLISHED as registered; the orbit's existence does not depend on them | READ and COMPUTED: 1.64 and 1.59 cm/s against a 1 cm/s limit. The limit was unattainable by construction for this orbit (section 4). |
-| 11 | "It is not a trajectory in the real system without correction" | ESTABLISHED, and it says less than it seems to | READ. The uncorrected run measures sensitivity only. COMPUTED by the reviewer (scratch code, section 6): a corrected, manoeuvre-free arc of three cycles with seven flybys does exist in a URA111 force model. |
+| 11 | "It is not a trajectory in the real system without correction" | ESTABLISHED, and it says less than it seems to | READ. The uncorrected run measures sensitivity only. COMPUTED by the reviewer (scratch code, section 6): corrected, manoeuvre-free arcs exist in a URA111 force model at two start epochs, one of three cycles (7 flybys) and one of six cycles (13 flybys, 739 days), all flybys between 1,100 and 1,830 km altitude. |
 | 12 | The object is a cycler | NOT ESTABLISHED | It is a periodic orbit of an idealised model. Class and validation level in section 7. |
 
 ## 2. Is the model right? (question 1)
@@ -157,6 +157,9 @@ hyperbola's (READ: 5,351 km at Titania against 2,766 km).
 accuracy is. READ (`sensitivity.json`): 1 m/s along-track at the preceding apoapsis moves the
 Oberon periapsis by 1,243 km, which is 91 percent of the altitude. So the margin against impact
 is about 1 m/s of uncorrected velocity error eleven days out, or about 1 mm/s per 1.2 km.
+The altitudes themselves are comfortable: in the reviewer's real-ephemeris arcs (section 6) the
+lowest flyby is 1,105 km, so a delivery error of 100 km at three sigma, which needs the
+apoapsis velocity controlled to a few centimetres per second, leaves a factor of ten in hand.
 
 **Continuous laps.** COMPUTED. Integrated without correction for three cycles, the return error
 is 28 m (DOP853) or 0.40 m (Radau) after one cycle, 15,600 km or 332 km after two, and the orbit
@@ -270,41 +273,63 @@ nothing more; it does not bear on whether a corrected ballistic trajectory exist
 says "not attempted" for the correction, correctly. Its J2 is the mispaired value of section 2
 and its pole is Titania's orbit normal; neither changes its outcome.
 
-**Does a ballistic real-system analogue exist? Reviewer's computation.** COMPUTED, scratch code,
-one epoch; a lead, not a result. Force model: Uranus point mass, J2 (3510.68e-6 at 25,559 km)
-about the IAU pole, and Miranda, Ariel, Umbriel, Titania and Oberon as point masses at their
-URA111 positions with direct and indirect terms, three-dimensional. Positive control: this
-force model reproduces the five moons' own URA111 motion to 0.4 to 4 km over 30 days (table in
-section 2), and it fails that control by one to two orders of magnitude if J2 is removed or
-mis-scaled. Method: multiple shooting with a node every 1/24 of a cycle, every node's six
-components free, continuity conditions only, minimum-norm Newton step; a homotopy in which
-Titania and Oberon move from circular coplanar reference orbits (fitted to URA111 over the
-window) to their URA111 positions, and the inner moons' separate gravity and J2 are switched on,
-in ten equal steps. No manoeuvre is allowed anywhere. Start: the mean conjunction of
-2030-01-12; arc: three cycles plus two nodes at each end.
+**Does a ballistic real-system analogue exist? Reviewer's computation.** COMPUTED, scratch code;
+a lead, not a result. Force model: Uranus point mass, J2 (3510.68e-6 at 25,559 km) about the IAU
+pole, and Miranda, Ariel, Umbriel, Titania and Oberon as point masses at their URA111 positions
+with direct and indirect terms, three-dimensional. Positive control: this force model reproduces
+the five moons' own URA111 motion to 0.4 to 4 km over 30 days (table in section 2), and fails
+that control by one to two orders of magnitude if J2 is removed or mis-scaled. Method: multiple
+shooting with a node every 1/24 of a cycle (5.13 d), every node's six components free,
+continuity conditions only, minimum-norm Newton step; a homotopy in which Titania and Oberon
+move from circular coplanar reference orbits (fitted to URA111 over the window) to their URA111
+positions while the inner moons' separate gravity and J2 are switched on. No manoeuvre is
+allowed anywhere. Each arc has two extra nodes (10 d) beyond its first and last flyby.
 
-* At the circular end the code converges from the build's orbit in 13 steps to flybys at
-  1,816 to 1,823 km (Titania) and 1,265 to 1,266 km (Oberon), in agreement with the reviewer's
-  separate planar code with URA111 mean motions (1,810 and 1,254 km; the reference distances
-  differ slightly). This cross-checks the two reviewer codes against each other.
-* Every homotopy step converged in 7 or 8 Newton steps.
-* At the URA111 end: seven flybys, Titania, Oberon, Titania, Oberon, Titania, Oberon, Titania,
-  at altitudes 1,650 / 1,175 / 1,810 / 1,108 / 1,797 / 1,105 / 1,635 km, 369.6 days from first
-  to last, all hyperbolic (osculating eccentricity 1.69 to 1.81, V-infinity 0.265 to 0.276 km/s,
-  turn 67 to 72 deg). The largest discontinuity at any of the 76 junctions is 5.8e-10 in scaled
-  units (0.25 m). A continuous two-segment propagation through each flyby lands within 4 m of
-  the following node. The spacecraft is up to 3,167 km out of Titania's mean plane (1,665 km at
-  the first Oberon flyby, which is where Oberon is), and the flyby planes are tilted 1 to 8 deg
-  from it. Distance from Uranus 435,933 to 587,539 km; nearest approach to Umbriel 170,500 km.
+| | Arc A | Arc B |
+|---|---|---|
+| start (mean Titania-Oberon conjunction, TDB) | 2030-01-11 23:57 | 2031-06-13 09:13 |
+| cycles, flybys, first to last flyby | 3, 7, 369.6 d | 6, 13, 739.2 d |
+| homotopy steps | 10 of 0.1 | 0.1, 0.2, 0.3, then 11 smaller steps with a secant predictor |
+| Titania flyby altitudes, km | 1,650 / 1,810 / 1,797 / 1,635 | 1,745 / 1,614 / 1,512 / 1,525 / 1,694 / 1,826 / 1,820 |
+| Oberon flyby altitudes, km | 1,175 / 1,108 / 1,105 | 1,227 / 1,336 / 1,360 / 1,288 / 1,181 / 1,106 |
+| osculating eccentricity at periapsis | 1.69 to 1.81 | 1.70 to 1.81 |
+| osculating V-infinity, km/s | 0.265 to 0.276 | 0.265 to 0.277 |
+| osculating turn, deg | 67 to 72 | 67 to 72 |
+| flyby plane tilted from Titania's mean plane by up to | 8.2 deg | 8.0 deg |
+| spacecraft out of that plane by up to | 3,167 km | 3,356 km |
+| distance from Uranus | 435,933 to 587,539 km | 435,976 to 587,618 km |
+| nearest approach to Umbriel, Ariel, Miranda | 170,507 / 245,942 / 306,400 km | 169,751 / 245,882 / 306,666 km |
+| largest junction discontinuity, as converged (DOP853, 1e-11) | 0.25 m | 0.29 m |
+| the same recomputed serially, DOP853 at 1e-13 and LSODA at 1e-12 | 0.13 m, 0.007 mm/s; 0.55 m, 0.011 mm/s | 0.20 m, 0.010 mm/s; 0.71 m, 0.011 mm/s |
+| one continuous 61.6-day propagation through each inner flyby, end against the node (both integrators) | 0.03 to 0.27 km, at most 1.9 mm/s (5 legs) | 0.003 to 0.31 km, at most 2.2 mm/s (11 legs) |
 
-So a manoeuvre-free arc with seven alternating flybys at safe altitudes exists in a force model
-that tracks URA111, close to the model orbit. That answers the question as asked: the object is
-not a model object only. Limits, stated before anyone leans on this: one epoch; three cycles; the
-first and last flybys are two nodes from the free ends of the arc and are less constrained than
-the inner five; "0.25 m at the junctions" is the same kind of evidence as the build's own
-shooting residual, not a single propagation (which is impossible for this orbit, section 3); the
-code is the reviewer's scratch code with one positive control and no tests; no Sun, no J4, no
-moon figure. Longer arcs and a second epoch are in section 9.
+* At the circular end of arc A the code converges from the build's orbit to flybys at 1,816 to
+  1,823 km (Titania) and 1,265 to 1,266 km (Oberon), in agreement with the reviewer's separate
+  planar code with URA111 mean motions (1,810 and 1,254 km; the reference distances differ
+  slightly). The two reviewer codes cross-check each other there.
+* The continuous 61.6-day legs differ from the nodes by up to 0.3 km. That is the junction noise
+  (0.2 m) multiplied by the per-leg growth (915), which is what a true trajectory through
+  slightly noisy nodes looks like; it is not a manoeuvre and not a gap.
+* The method did not always work. For arc B the first attempt with steps of 0.1 and a crude
+  predictor (flyby nodes carried with their moon) stalled at the fourth step with the residual
+  stuck near 2,400 km; smaller steps with a secant predictor converged in 3 to 5 Newton steps
+  each. A stall of this kind is a failure of the corrector, not evidence about the trajectory.
+* The arcs are not the periodic orbit and not unique. With all nodes free there is a
+  six-parameter family of nearby ballistic arcs, and the minimum-norm step picks one. Even at
+  the circular end the six-cycle arc's Titania altitude drifts from 1,835 to 1,800 km along the
+  arc. In the URA111 model the altitudes wander over 300 km (Titania) and 250 km (Oberon).
+
+So manoeuvre-free arcs with 7 and 13 alternating flybys at safe altitudes exist, at two epochs,
+in a force model that tracks URA111, close to the model orbit. That answers the question as
+asked: the object is not a model object only, and a ballistic real-system analogue is more than
+plausible for at least two years. What this does NOT show: that such an arc can be continued
+indefinitely (the encounter geometry never repeats, and the altitudes wander); that it survives
+the Sun, J4 and the moons' figures (all small); that an independent code agrees (the code is
+the reviewer's, with one positive control and no tests); or anything about the first and last
+flyby of each arc, which sit 10 days from a free end and are less constrained than the inner
+ones. "Junction discontinuity below one metre" is the same kind of evidence as the build's own
+shooting residual; a single propagation over even two cycles is impossible for this orbit
+(section 3).
 
 **Maintenance cost.** COMPUTED from two-body flyby formulae, then INFER. The leading multiplier
 gives an e-folding time of 9.0 d and a factor of 915 per leg. The growth is concentrated at the
@@ -411,22 +436,29 @@ In `data/OUTSTANDING.md`, `#890`:
 ## 10. The single most serious weakness
 
 The claim as recorded is a periodic orbit of an idealised model, and everything that would make
-it a statement about Uranus's moons was missing: the only real-system evidence in the build is an
-uncorrected run that was bound to fail, the orbit's quoted altitudes move by 100 to 180 km with
-the choice of constants, no test pins the result, and by the catalogue's own definitions the
-class it has in the model (`cycler`) is one it cannot have in the real system. The model result
-itself survived every attack made here.
+it a statement about Uranus's moons is missing from the repository: the only real-system
+evidence in the build is an uncorrected run that was bound to fail, the orbit's quoted altitudes
+move by 100 to 180 km with the choice of constants, no test pins the result, and by the
+catalogue's own definitions the class it has in the model (`cycler`, periodic for ever) is one
+it cannot have in the real system, where the moons' radial and out-of-plane excursions are as
+large as the flyby distances and never repeat. The model result itself survived every attack
+made here, and the reviewer's own scratch computation suggests the real-system version exists
+as an aperiodic ballistic flyby chain. That makes the gap a matter of work not yet done rather
+than a defect of the object, but it is still a gap: nothing reproducible in the repository
+supports any statement about the real system.
 
 ## 11. What is required before a catalogue row
 
 It should not be a row on the present evidence. Before one is considered:
 
 1. The real-ephemeris correction built in the repository as a module with tests, not taken from
-   this review: unsoftened point masses from URA111, J2 with a consistent radius, three
-   dimensions, multiple shooting with every junction discontinuity reported, at least three
-   cycles at each of at least three start epochs, each flyby also integrated through
-   continuously with a second integrator, and the force model's positive control (it must
-   reproduce the moons' own motion) as a test.
+   this review (the reviewer's arcs are a target to reproduce, not evidence): unsoftened point
+   masses from URA111, J2 with a consistent radius, three dimensions, multiple shooting with
+   every junction discontinuity reported, at least three cycles at each of at least three start
+   epochs, each flyby also integrated through continuously with a second integrator, and the
+   force model's positive control (it must reproduce the moons' own motion, and must fail to
+   when J2 is removed) as a test. It should also say how long an arc can be continued before a
+   flyby drops below the floor or the corrector fails, since that sets `n_returns`.
 2. An external check on a different code base (GMAT is installed) through at least one full
    cycle, flyby to flyby, with the moons' gravity unsoftened. The existing `v4_uranus` lanes
    cannot serve.
@@ -441,3 +473,28 @@ It should not be a row on the present evidence. Before one is considered:
 7. A maintenance budget from a stated navigation error model.
 8. The literature check, and wording no stronger than "first computed for Titania and Oberon".
 9. The J2 pairing corrected in `v4_uranus.py` and wherever it was copied.
+
+## 12. How far the reviewer's own numbers can be relied on
+
+* The reviewer's planar model was derived independently and agrees with the repository's
+  right-hand side to rounding, so sections 2 to 5 rest on two codes, three counting the
+  coordinator's. Its integrations use DOP853 and Radau from scipy, as the build's do; the
+  integrator library is shared, the equations and frames are not.
+* The reviewer's URA111 force model has one positive control (the moons' own motion, which also
+  discriminates the J2 value) and one internal cross-check (its circular limit against the
+  planar code). It has no tests, is not in the repository, and was run at two epochs. The
+  ephemeris file is the copy of `ura111.bsp` shipped with the local GMAT installation.
+* "Converged" in section 6 means junction discontinuities below one metre and one hundredth of
+  a millimetre per second at every node, recomputed with a second integrator. It is the danger
+  signal this project has learned to distrust, so the things that would make it hollow were
+  checked: the force model against the ephemeris, the discontinuities serially and with a
+  different method, each inner flyby by one continuous 61.6-day propagation, and the flyby
+  altitudes by a root-finder on the range rate against the URA111 moon positions. What was not
+  checked: an independent code base, a third epoch, arcs longer than six cycles.
+* Not done at all: Titania's GM varied (the reviewer's continuation failed for a bookkeeping
+  reason); the build's continuation in mass and its sensitivity table recomputed; the registry
+  GM and radius values compared with a paper; the literature check; a navigation model.
+* The J2 attribution: no Jacobson paper is listed in the project's corpus index, so the
+  "Jacobson 2014 Table 4" attribution in `v4_uranus.py` was not grounded against a held source.
+  The reviewer's statement of which paper gives which value is from memory and must be checked
+  against the papers; the computed part is only that URA111 obeys J2 R^2 near 2.29e6 km^2.
