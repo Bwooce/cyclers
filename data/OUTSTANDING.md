@@ -1280,6 +1280,47 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   forward value). Code the total-energy equation (book 9,53), not KS eq. 36, which needs the
   perturbation work as an extra integral. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
+  BUILT 2026-10-05 (commits 989cc70d, 30acf34b, e64b0803, 7d7a633c, fe2809c6, 9f37b9a4; not
+  pushed). `core/ks.py`: the KS map in the KS 1965 / S&S convention (forward, both inverse
+  branches with a fibre angle, u' and xdot, bilinear relation, fibre rotation, Q = 2 L3^T P).
+  `core/cr3bp_ks.py`: S&S (9,53) total-energy form, state (u, u', h, t), a `KSModel` base class
+  (k2, frame rate omega for Coriolis in regular form, centre, `potential_and_grad`,
+  `potential_hess`, optional `force` and `potential_dt`, so other force models subclass it) and
+  `MoonCentredCR3BP(mu)` (the project frame centred on the secondary, V(0) = 0 computed without
+  cancellation, h = C/2 - (1 - mu)^2/2 - (1 - mu), h' = 0 exactly; mu = 1 is Llibre's mu = 0
+  problem); `propagate_ks` (stops at a physical time by recomputing the end from the last
+  accepted step plus Newton steps; monitors K = 2|u'|^2 - K^2 + r(h + V), the bilinear relation,
+  the h drift and r_min; optional 6 x 6 fixed-time transition matrix from the analytic 10 x 10
+  variational equations, the lift Jacobian with an optional fibre gauge, the projection and the
+  -zdot dt_f/dz0 correction) and `integrate_ks` (raw entry, starts at u = 0). Tests (all pass;
+  `tests/core` green with -n 4): `test_ks_map.py` (the section 7 map test against the printed
+  KS (5), S&S (9,27), Peters A*, Aarseth L^T and Aarseth-Zare A_1 entries, and S&S section 15
+  Example 2 to its printed six digits); `test_cr3bp_ks.py` (pointwise acceleration against
+  `cr3bp_eom` 1e-15; Kepler against `core.kepler.propagate` 3e-16 to 1.1e-14 including
+  near-parabolic; e = 1 - 1e-8 through q = 1e-8 2e-13; hyperbolic passes q = 1e-2 to 1e-8 with
+  the error flat, 1.3e-14; radial fall t_c to 1e-14; Llibre Fig. 1a/1c radii reproduce C to the
+  printed rounding and stay circular, the radial orbit reaches 2/C to 2.4e-15 and re-collides at
+  2 pi C^(-3/2) turned by -t; Rodriguez del Rio: exactly four 1-EC orbits at mu = 0.1, C = 5,
+  each closing to |u| < 2e-16, and the printed eq. 2.26 integrated independently agrees to
+  1.1e-15; away from the Moon 2e-14; passes at q = 1e-2, 1e-3, 1e-4 against DOP853 rtol 2.3e-14
+  agree to 5e-14, 7e-13, 1.2e-10, the Cartesian reference being the limit below 1e-3; Jacobi
+  error 2e-14 to 7e-14, reversibility 1e-14 to 4e-14 and about 310 steps for every q from 1e-2
+  to 1e-6 while plain DOP853's Jacobi error grows to 4.5e-6; Burdet L4 benchmark, all three
+  orbits, against the exact rotated solution 1.2e-13 to 1.4e-12, periods match the printed
+  digits); `test_cr3bp_ks_stm.py` (P = 0 against `shepperd_stm` 6e-16 to 9.5e-14 and against
+  Deprit Tables I-II with b44 corrected 2e-15 to 6.6e-14; through q = 1e-2..1e-4 passes against
+  finite differences of the KS flow 4e-10 and of the Cartesian flow 1.9e-9, 4.1e-8, 1.25e-6 (the
+  Cartesian flow is the limit); symplectic in (x, p) to 3e-16 of |Phi|^2, det 1 to 1e-14,
+  fibre-angle and gauge invariance 6e-15); `test_cr3bp_ks_orbit12i.py` (`#929` (b): the 12i
+  passage that ends at the printed point comes within 8.7239e-6; from the KS entry state KS hits
+  the printed exit to 1.2e-13 rad with C exact to 4e-16 in about 700 evaluations; plain DOP853
+  2e-10 rad, C error 3e-10 to 4e-10, about 3500 evaluations; Sundman r2 5.7e-11 to 3e-10 rad, C
+  error 1.5e-10 to 4.5e-10. Backward from the printed point at rtol 1e-13 the Sundman C error is
+  1.18e-9, outside the `#896` `_passage_tolerance` of 1e-9 (angles stay inside); the `#896`
+  forward legs are unaffected). Every value the 1-EC test reports as an angle is measured, not
+  printed. Still open: Waldvogel's two-centre form, elliptic/bicircular models (subclass
+  `KSModel` with h integrated), automatic plain-to-KS hand-over, a KS-based return map for the
+  `#896` fixed points, and Burdet 1968 as the second structure.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
   project's lanes treat the spacecraft as massless and the moons as prescribed, so Chambers's
