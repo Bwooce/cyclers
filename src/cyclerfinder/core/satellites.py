@@ -40,6 +40,27 @@ class SatelliteData:
     retrograde: bool = False
 
 
+URANIAN_PRINTED_PERIODS_DAYS: dict[str, float] = {
+    "Miranda": 1.413479,
+    "Ariel": 2.520379,
+    "Umbriel": 4.144177,
+    "Titania": 8.705869,
+    "Oberon": 13.463237,
+}
+"""Orbital periods (days) of the major Uranian moons as PRINTED.
+
+Source: Jacobson & Park (2025), AJ 169:65, Table 6 ("Satellite Equatorial Geometric Orbital
+Elements", row P), read 2026-10-04. Jacobson (2014) Table 2 gives the same Titania and Oberon
+periods through its mean longitude rates (41.3514187 and 26.7394835 deg/day: 8.705868 and
+13.463237 d).
+
+Use these, or the ephemeris itself, whenever a moon's RATE matters (phasing, synodic periods,
+circular-orbit models). ``SatelliteData.mean_motion_deg_day`` is Kepler's third law applied to
+the geometric semi-major axis with the system GM, which gives 8.706245 d for Titania and
+13.465721 d for Oberon: wrong by 4e-5 and 2e-4, because the oblate planet and the inner moons
+change the relation between distance and rate. Found 2026-10-04 (#890 review, #894)."""
+
+
 def mean_motion_deg_day_about(sma_km: float, *, mu_primary: float) -> float:
     """Mean motion (deg/day) about a primary, Kepler III (cf. constants.py:149-159)."""
     period_s = 2.0 * math.pi * math.sqrt(sma_km**3 / mu_primary)
@@ -247,6 +268,16 @@ SATELLITES: dict[str, SatelliteData] = {
     # Was an unsourced 100 km convention; lowered to the published design minimum.
     # Miranda stays 100 km (convention): it was a Voyager-2 mass-pass only, not a
     # Heaton-Longuski tour flyby body, so no published design floor exists for it.
+    # PROVENANCE of the five Uranian rows, established 2026-10-04 (#894) by reading the papers:
+    #   * GM: Jacobson (2014), AJ 148:76, Table 12, "Current Results" (the URA111 solution):
+    #     Miranda 4.3, Ariel 83.5, Umbriel 85.1, Titania 226.9, Oberon 205.3 km^3/s^2.
+    #   * a: Jacobson & Park (2025), AJ 169:65, Table 6, "Satellite Equatorial Geometric Orbital
+    #     Elements" (the URA182 solution): 129,846 / 190,929 / 265,986 / 436,298 / 583,511 km.
+    #   So the GMs and the semi-major axes come from two different solutions. URA182's own GMs
+    #   are 4.11, 83.43, 85.40, 222.80, 214.21 (Titania -1.8 percent, Oberon +4.3 percent).
+    #   * The semi-major axes are GEOMETRIC elements. Kepler's third law applied to them does
+    #     not give the moons' periods: see URANIAN_PRINTED_PERIODS_DAYS below.
+    #   * Radii: not in either paper; source not yet identified.
     # Miranda: GM 4.3 km^3/s^2, mean R 235.8 km, a 129846 km.
     "Miranda": _sat("Miranda", "Uranus", 4.3, 235.8, 129846.0, 100.0),
     # Ariel: GM 83.5 km^3/s^2, mean R 578.9 km, a 190929 km.
