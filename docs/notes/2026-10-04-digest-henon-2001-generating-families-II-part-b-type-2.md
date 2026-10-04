@@ -373,3 +373,7 @@ Not held, and relevant to `#899`:
 - Henon, M. & Guyot, M., "Stability of periodic orbits in the restricted problem" (1970, Reidel): the stability index conventions used here.
 - Perko 1965 (thesis): asymptotic matching; low priority.
 - Henon's manuscript notes (about 400 pages in French) on type 3, offered in the book to interested colleagues (23.4); relevant to the C = -1 retrograde-circle bifurcation, not to `#899` directly.
+
+## 15. Note 2026-10-05: Devaney 1981 now held and digested
+
+The baker-map proof cited in chapter 18 (Devaney 1981, Commun. Math. Phys. 80:465) is digested in `docs/notes/2026-10-04-digest-devaney-1981-baker-transformation.md`. It confirms the dictionary used in sections 3 and 4 above: the book's recurrence is Devaney's plane map in the coordinates (x_i, y_i); Corollary B gives exactly 2^n - 2 period-n points, all hyperbolic (the R-orbit count and Proposition 18.2.2); the R-arc count 2^(n-tilde - 1) corresponds to two-sided terminating sequences, whose existence Devaney only sketches (the book proves it independently, 18.1.2). I also verified the R-orbit counts for n = 2 to 7 (2, 6, 14, 30, 62, 126, one per sign sequence) and Henon's n = 7 orbit (residual 2.5e-6). Item 7 of section 14 (Devaney not held) is now out of date; the thesis and the other references there remain not held.
