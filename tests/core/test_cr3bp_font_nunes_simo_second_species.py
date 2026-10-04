@@ -64,11 +64,17 @@ printed one closes to 1e-12. The test uses the printed string.
 The stability parameter is not defined in either paper. It agrees with the trace of the
 linearised return map (lambda + 1/lambda, coordinate free at a fixed point), INFERRED.
 
-Integrator error is ruled out by (i) Jacobi conservation at every crossing, (ii) a Sundman
-(``core.cr3bp_regularized.sundman_rhs``, dt/ds = r2) recomputation of every passage inside the
-disk, which agrees with the plain DOP853 one. Controls: the most plausible wrong readings (the
-digest's recipe applied literally in the project frame; C_J without mu(1 - mu); angles
-clockwise; psi from the radial direction) miss the start by more than 1e-3 after one period where
+Integrator error is bounded, not eliminated, by (i) Jacobi conservation at every crossing and
+(ii) a Sundman (``core.cr3bp_regularized.sundman_rhs``, dt/ds = r2) recomputation of every
+passage inside the disk: about 1e-11 for passages farther than 1e-4 from M, about 1e-9 for the
+closer ones (12i comes within 8.7e-6; there both integrators drift by 6e-10 in C and differ by
+2.3e-10 in the exit angles). These two bounds (``_passage_tolerance``) were set after measuring;
+the physical bounds (fixed point 1e-10, period 1e-10, trace 1e-6) were set before. The project
+has no Levi-Civita integrator, which is what the papers used.
+
+Controls: the most plausible wrong readings (the digest's recipe applied literally in the
+project frame; C_J without mu(1 - mu); angles clockwise; psi from the radial direction) miss
+the start by more than 1e-3 after one period where
 the right reading misses by less than |stability parameter| x 1e-11.
 """
 
@@ -485,6 +491,16 @@ def test_stability_parameter_is_the_trace_of_the_return_map(key: str) -> None:
     assert trace == pytest.approx(ORBITS[key].stability, rel=1e-6)
     # Half the trace is off by a factor 2: the definition is the trace, not the half-trace.
     assert abs(0.5 * trace / ORBITS[key].stability - 1.0) > 0.4
+
+
+def test_fig8_trace_matches_the_caption_with_exponent_6() -> None:
+    """2002 Fig. 8: the trace agrees with the caption's seven digits 2.338645 at exponent 6.
+
+    The caption prints 2.338645E+7 (p. 138, re-read at 300 dpi). Read as E+6, the exponent
+    corrected reading, it agrees to the same 1e-6 as Figs. 9 and 10 (measured -4.7e-8).
+    """
+    trace = float(np.trace(_shoot("2002_fig8").monodromy))
+    assert trace == pytest.approx(2.338645e6, rel=1e-6)
 
 
 @pytest.mark.parametrize("key", list(ORBITS))
