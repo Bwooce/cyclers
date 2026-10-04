@@ -23,7 +23,7 @@ Runlog: ``runlog.jsonl`` in the output directory, one flushed line per finished 
 UTC time, stage, task, status, seconds, running counts and an ETA from the mean task time.
 
 Launch (the coordinator owns this):
-  timeout 36h uv run python scripts/run_905_sun_forced_rerun.py --stage all --workers 4 \\
+  timeout 12h uv run python scripts/run_905_sun_forced_rerun.py --stage all --workers 4 \\
       > data/found/905_sun_forced_rerun/run.log 2>&1
 """
 
@@ -253,11 +253,33 @@ def targets(tg: float) -> list[float]:
 # ---------------------------------------------------------------------------
 
 
+def _branch_line(label: str, kind: str, tau: float, stop: str, eps: float, secs: float) -> None:
+    """One flushed runlog line per finished branch (small O_APPEND writes are safe across the
+    worker processes), so the runlog never goes quiet for a whole task."""
+    rec = {
+        "utc": utc(),
+        "stage": "branch",
+        "member": label,
+        "model": kind,
+        "tau": tau,
+        "stop": stop,
+        "eps": eps,
+        "seconds": round(secs, 1),
+    }
+    with (OUT / "runlog.jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec) + "\n")
+        fh.flush()
+
+
 def _branch_record(
     model: sf.SunModel, parent: sf.Parent, zz: dict[str, Any], wall_s: float
 ) -> tuple[dict[str, Any], Any]:
+    t_b = time.monotonic()
     prob, xs0 = sf.forced_problem(model, parent, zz["tau"])
     br = sf.continue_in_eps(prob, xs0, wall_s=wall_s)
+    _branch_line(
+        parent.label, model.kind, zz["tau"], br.stop_reason, br.final_eps, time.monotonic() - t_b
+    )
     rec: dict[str, Any] = {"zero": zz, "n_seg": prob.n_seg, "branch": br.summary()}
     samples = None
     if br.stop_reason == "reached_target" and br.final_nodes is not None:
@@ -363,7 +385,7 @@ def family_task(name: str, row_id: str, wall_s: float) -> dict[str, Any]:
                     "residual": m.residual,
                     "dT_dC": f["dT_dC"],
                     "events_before": f["events_before"],
-                    "after_bifurcation": bool(f["events_before"]),
+                    "after_bifurcation": f["after_branch_point"],
                 }
             )
     rec["walks"] = walks
@@ -402,7 +424,7 @@ def _run_pool(stage: str, jobs: list[tuple[str, Path, Any, tuple[Any, ...]]], wo
     with ProcessPoolExecutor(max_workers=workers) as ex:
         futs = {}
         for name, path, fn, args in todo:
-            futs[ex.submit(_timed, fn, args)] = (name, path)
+            futs[ex.submit(_timed, fn, args, OUT)] = (name, path)
         for fut in as_completed(futs):
             name, path = futs[fut]
             secs, rec, err = fut.result()
@@ -412,7 +434,9 @@ def _run_pool(stage: str, jobs: list[tuple[str, Path, Any, tuple[Any, ...]]], wo
             rl.task(name, str(rec.get("status", "?"))[:40], secs)
 
 
-def _timed(fn: Any, args: tuple[Any, ...]) -> tuple[float, Any, str | None]:
+def _timed(fn: Any, args: tuple[Any, ...], out: Path) -> tuple[float, Any, str | None]:
+    global OUT
+    OUT = out
     t = time.monotonic()
     try:
         rec = fn(*args)
@@ -494,6 +518,16 @@ def stage_summary() -> None:
                     "periselene_km": [b["diagnostics"]["periselene_km"] for b in reached],
                     "below_moon_surface": any(
                         b["diagnostics"]["below_moon_surface"] for b in reached
+                    ),
+                    "parent_periselene_km": r["screens"]["parent_periselene_km"],
+                    "excluded_surface": bool(
+                        r["screens"]["parent_below_moon_surface"]
+                        or r["screens"]["parent_below_earth_surface"]
+                        or any(
+                            b["diagnostics"]["below_moon_surface"]
+                            or b["diagnostics"]["below_earth_surface"]
+                            for b in reached
+                        )
                     ),
                     "cycler_class": [b["diagnostics"]["cycler_class"] for b in reached],
                 }

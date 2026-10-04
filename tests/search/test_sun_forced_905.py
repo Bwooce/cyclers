@@ -379,3 +379,63 @@ def test_leiva_briozzo_5_2_c32_member_completes_as_a_periodic_orbit() -> None:
     assert prob.period == pytest.approx(5 * model.tg, rel=1e-14)
     lam = sf.floquet_report(sf.monodromy(stms))["max_abs"]
     assert 1e3 < lam < 1e4
+
+
+def test_oshima_four_families_are_two_symmetry_classes(oshima_found: dict[str, object]) -> None:
+    """Oshima's Tables 4 and 5 (and 2 and 3) are images of each other under the reflection
+    z -> -z (his eq. 8: Table 5 #3 is Table 4 #1 with z negated, at the same Sun angle), so the
+    four orbits found are two classes, one per start point (z0 and vz0), not four."""
+    orbits = oshima_found["orbits"]
+    model = oshima_found["model"]
+    assert isinstance(orbits, list) and isinstance(model, sf.SunModel)
+    samples, rows = [], []
+    for _, prob, br in orbits:
+        d = sf.orbit_diagnostics(prob, br.final_nodes, 1.0, radau=False)
+        samples.append(d["_clock_samples"])
+        rows.append(min(_OSHIMA_ROWS, key=lambda r: _oshima_miss(model, prob, br.final_nodes, r)))
+    classes = sf.symmetry_classes(samples, 128)
+    assert len(set(classes)) == 2
+    by_row = dict(zip(rows, classes, strict=True))
+    assert by_row["vz0-S0"] == by_row["vz0-Spi"]
+    assert by_row["z0-S0"] == by_row["z0-Spi"]
+    assert by_row["vz0-S0"] != by_row["z0-S0"]
+
+
+def test_leiva_briozzo_013_refined_distances_match_table_5(lb013: dict[str, object]) -> None:
+    """Refined closest approaches of the found 013 orbits against Table 5 (p241): d_E 137125 and
+    137126 km (centre distances, 384,400 km units; measured 137,125.05 for both); d_M printed
+    2729 and 2733 km, which the #896 addendum found to be printed up to 7.5 km above the true
+    minimum (a sampled minimum); measured 2,727.16 km. The parent's own refined passes are in
+    the screens."""
+    orbits = lb013["orbits"]
+    scr = lb013["screens"]
+    assert isinstance(orbits, list) and isinstance(scr, dict)
+    assert not scr["parent_below_moon_surface"] and scr["parent_periselene_km"] > 1737.4
+    peris = []
+    for _, prob, br in orbits:
+        t_i, x, _, y, _ = _LB_TABLE_2["013_t3"]
+        pv = sf.value_at_clock(prob, br.final_nodes, 1.0, t_i)
+        if float(np.max(np.abs(pv[:2] - np.array([-x, -y])))) > 1e-5:
+            continue
+        d = sf.orbit_diagnostics(prob, br.final_nodes, 1.0, radau=False)
+        assert abs(d["perigee_km"] - 137125.0) < 1.0
+        assert 2729.0 - 7.5 <= d["periselene_km"] <= 2729.0
+        peris.append(d["periselene_km"])
+    assert len(peris) == 1
+
+
+def test_sub_surface_parent_is_flagged_by_the_refined_periselene() -> None:
+    """Review section 8: the Casoliva 2:1(b) member at C = 0.567 (period Tg; state from the #884
+    three-body walk) is itself an impact orbit, periselene 1,415.4 km from the Moon's centre by
+    the reviewer's separate code, where a minimum sampled at 400 points per TU read 1,810 km. The
+    refined periselene here agrees to 1 km and the parent is excluded."""
+    model = sf.bcr4bp_model()
+    pv, res = sf.correct_parent(
+        model, np.array([-1.7957517461647838, 0.0, 0.0, 0.0, 1.9426441634823564, 0.0]), model.tg
+    )
+    assert res < 1e-11
+    shape = sf.minimal_period_and_planarity(
+        model, sf.Parent("casoliva-2-1b-low", pv, model.tg, 1, 1)
+    )
+    assert abs(shape["parent_periselene_km"] - 1415.4) < 1.0
+    assert shape["parent_below_moon_surface"]

@@ -1120,11 +1120,18 @@ def minimal_period_and_planarity(
     st = sol.sol(ts)
     zmax = float(np.max(np.abs(st[2])))
     vzmax = float(np.max(np.abs(st[5])))
+    tt = np.array([0.0, parent.period])
+    peri = min(_close_approaches([sol], tt, 1.0 - model.mu)) * EM_LENGTH_KM
+    peri_e = min(_close_approaches([sol], tt, -model.mu)) * EM_LENGTH_KM
     return {
         "minimal_period_divisor": minimal_k,
         "return_at_T_over_k": returns,
         "planar": bool(zmax < 1e-10 and vzmax < 1e-10),
         "max_abs_z": zmax,
+        "parent_periselene_km": peri,
+        "parent_perigee_km": peri_e,
+        "parent_below_moon_surface": bool(peri < MOON_RADIUS_KM),
+        "parent_below_earth_surface": bool(peri_e < EARTH_RADIUS_KM),
     }
 
 
@@ -1538,8 +1545,8 @@ def _close_approaches(
         if d[i] <= d[i - 1] and d[i] <= d[(i + 1) % n]:
             k = int(seg[i])
             sol = sols[k]
-            lo = max(tt[k], ts_c[i - 1] if seg[i - 1] == k else tt[k])
-            hi = min(tt[k + 1], ts_c[(i + 1) % n] if seg[(i + 1) % n] == k else tt[k + 1])
+            lo = ts_c[i - 1] if i > 0 and seg[i - 1] == k else tt[k]
+            hi = ts_c[i + 1] if i + 1 < n and seg[i + 1] == k else tt[k + 1]
 
             def dist(t: float, s: Any = sol) -> float:
                 v = s.sol(t)
@@ -1603,21 +1610,28 @@ def same_orbit(pos_a: FloatArr, pos_b: FloatArr, per_tg: int, *, tol: float = 1e
     """How orbit B relates to orbit A on the absolute clock grid, or None.
 
     ``"same"``: ``B(t) = A(t + k Tg)`` for a whole number ``k`` (the same orbit started some Sun
-    periods later). ``"mirror"``: ``B(t) = R A(-t + k Tg)`` with ``R`` the reflection
-    ``y -> -y`` (the reversing symmetry; both clocks are symmetric about t = 0).
+    periods later). The symmetries of both Sun models (Oshima 2022 eqs. 6-8; both clocks are
+    symmetric about t = 0 and the Sun is in the plane):
+    ``"s2"``: ``B(t) = (x, -y, z) A(-t + k Tg)``;
+    ``"s1"``: ``B(t) = (x, -y, -z) A(-t + k Tg)``;
+    ``"s3"``: ``B(t) = (x, y, -z) A(t + k Tg)``.
     """
     if pos_a.shape != pos_b.shape:
         return None
     n = pos_a.shape[0]
     n_sun = n // per_tg
-    refl = np.array([1.0, -1.0, 1.0])
-    rev = (pos_a * refl)[(-np.arange(n)) % n]
+    rev_idx = (-np.arange(n)) % n
+    images = {
+        "same": pos_a,
+        "s2": (pos_a * np.array([1.0, -1.0, 1.0]))[rev_idx],
+        "s1": (pos_a * np.array([1.0, -1.0, -1.0]))[rev_idx],
+        "s3": pos_a * np.array([1.0, 1.0, -1.0]),
+    }
     for k in range(n_sun):
         sh = k * per_tg
-        if float(np.max(np.abs(np.roll(pos_a, -sh, axis=0) - pos_b))) < tol:
-            return "same"
-        if float(np.max(np.abs(np.roll(rev, -sh, axis=0) - pos_b))) < tol:
-            return "mirror"
+        for name, img in images.items():
+            if float(np.max(np.abs(np.roll(img, -sh, axis=0) - pos_b))) < tol:
+                return name
     return None
 
 
@@ -1863,6 +1877,9 @@ def walk_family(
                             "member": member,
                             "dT_dC": dtdc,
                             "events_before": [dict(e) for e in events],
+                            # Only s = 2 crossings (m = 1) can swap the branch at the same
+                            # period; period-multiplying ones branch off at m T.
+                            "after_branch_point": any(e["m"] == 1 for e in events),
                         }
                     )
         if abs(z[0]) > 5 or abs(z[-2]) > 10 or not (t_window[0] < t_new < t_window[1]):
