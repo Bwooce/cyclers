@@ -487,6 +487,21 @@ def reduced_monodromy(k_par: float, k_perp: float) -> FloatArray:
     return m
 
 
+def matching_validity_speed(mu: float, c: float) -> float:
+    """Breakwell-Perko expansion parameter mu |ln mu| / V^3 with V^2 = 3 - C.
+
+    For C >= 3 the relative speed at collision is zero and the matched expansion does not
+    apply; the number is then infinite rather than a division by an underflowed V^3.
+    """
+    v_sq = 3.0 - c
+    if v_sq <= 0.0:
+        return math.inf
+    v3 = float(v_sq**1.5)
+    if v3 == 0.0:
+        return math.inf
+    return float(mu * abs(math.log(mu)) / v3)
+
+
 def diagnose(orbit: MSOrbit) -> Diagnostics:
     """Periselene, perigee, stability indices and validity numbers of a corrected orbit."""
     mu = orbit.mu
@@ -498,7 +513,6 @@ def diagnose(orbit: MSOrbit) -> Diagnostics:
     k_par = float(np.trace(m4)) - 2.0
     k_perp = float(np.trace(mz))
     fc = classify_planar_monodromy(reduced_monodromy(k_par, k_perp))
-    v = math.sqrt(max(3.0 - c, 1e-300))
     return Diagnostics(
         mu=mu,
         jacobi=c,
@@ -511,7 +525,7 @@ def diagnose(orbit: MSOrbit) -> Diagnostics:
         floquet_k=(float(fc.k1.real), float(fc.k2.real)),
         floquet_delta=float(fc.delta),
         nu_eff=math.log(rp) / math.log(mu),
-        validity_speed=mu * abs(math.log(mu)) / v**3,
+        validity_speed=matching_validity_speed(mu, c),
         validity_rp=rp / math.sqrt(mu),
         impact_moon=rp < MOON_RADIUS_ND,
         impact_earth=perigee < EARTH_RADIUS_ND,

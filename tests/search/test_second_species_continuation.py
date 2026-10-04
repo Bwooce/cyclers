@@ -235,3 +235,15 @@ def test_forward_reproduction_3_2c_from_the_family_of_seed_32a() -> None:
     assert ssc.orbit_distance(best.orbit, printed)[0] < 1e-9
     assert abs(best.diag.jacobi - row.c_j) < 2e-10
     assert abs(ssc.casoliva_k("3-2c", best.diag) - row.k) / abs(row.k) < 1e-7
+
+
+def test_matching_validity_speed_is_infinite_at_and_above_c_3() -> None:
+    """C >= 3 means zero relative speed at collision; the 899 scan crashed dividing by V^3 = 0."""
+    from cyclerfinder.search.second_species_continuation import matching_validity_speed
+
+    mu = 0.0121529529
+    assert matching_validity_speed(mu, 3.0) == math.inf
+    assert matching_validity_speed(mu, 3.2) == math.inf
+    assert matching_validity_speed(mu, 3.0 - 1e-300) == math.inf
+    v = math.sqrt(3.0 - 1.0)
+    assert matching_validity_speed(mu, 1.0) == pytest.approx(mu * abs(math.log(mu)) / v**3)
