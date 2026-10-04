@@ -1304,10 +1304,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   each closing to |u| < 2e-16, and the printed eq. 2.26 integrated independently agrees to
   1.1e-15; away from the Moon 2e-14; passes at q = 1e-2, 1e-3, 1e-4 against DOP853 rtol 2.3e-14
   agree to 5e-14, 7e-13, 1.2e-10, the Cartesian reference being the limit below 1e-3; Jacobi
-  error 2e-14 to 7e-14, reversibility 1e-14 to 4e-14 and about 310 steps for every q from 1e-2
+  error 2e-14 to 7e-14, reversibility 1e-14 to 4e-14 and about 310 function evaluations (about 25 steps) for every q from 1e-2
   to 1e-6 while plain DOP853's Jacobi error grows to 4.5e-6; Burdet L4 benchmark, all three
-  orbits, against the exact rotated solution 1.2e-13 to 1.4e-12, periods match the printed
-  digits); `test_cr3bp_ks_stm.py` (P = 0 against `shepperd_stm` 6e-16 to 9.5e-14 and against
+  orbits, against the exact rotated solution 1.2e-13 to 1.4e-12; the periods of the exact
+  fractions match the printed 6.252003 to its digits but differ from the printed ellipse period
+  5.89817010367 by 7.3e-10 at the 10th decimal, consistent with the digest's 9-figure note; that
+  check is Kepler's third law on the derived initial conditions, not the propagator); `test_cr3bp_ks_stm.py` (P = 0 against `shepperd_stm` 6e-16 to 9.5e-14 and against
   Deprit Tables I-II with b44 corrected 2e-15 to 6.6e-14; through q = 1e-2..1e-4 passes against
   finite differences of the KS flow 4e-10 and of the Cartesian flow 1.9e-9, 4.1e-8, 1.25e-6 (the
   Cartesian flow is the limit); symplectic in (x, p) to 3e-16 of |Phi|^2, det 1 to 1e-14,

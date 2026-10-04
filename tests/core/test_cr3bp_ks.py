@@ -178,7 +178,7 @@ def test_near_collision_ellipse_through_pericentre() -> None:
 def test_hyperbolic_pass_error_flat_in_pericentre(q: float) -> None:
     """Lunar k2, v_inf = 0.3: from r ~ 0.15 through pericentre q and out, against Kepler from
     the same start. Measured below 1.3e-14 in position and 2.4e-14 relative in velocity for every
-    q from 1e-2 to 1e-8 (the step count is 300 to 312 for all q)."""
+    q from 1e-2 to 1e-8 (300 to 312 function evaluations, about 25 steps, for all q)."""
     k2 = MU_EM
     vp = math.sqrt(0.09 + 2 * k2 / q)
     rp = np.array([q, 0.0, 0.0])
@@ -449,8 +449,9 @@ def test_pass_matches_tight_cartesian_reference(q: float, bound: float) -> None:
 def test_pass_invariants_flat_in_pericentre(q: float) -> None:
     """KS Jacobi error, reversibility and tolerance self-consistency do not grow as q falls
     (measured for q = 1e-2..1e-6: |dC| 2e-14..7e-14, forward-back 1.3e-14..4e-14, rtol 1e-13
-    against 1e-11 about 3e-12, 300-324 steps). The Cartesian run's |dC| at rtol 1e-13 grows
-    from 7e-14 to 4.5e-6 over the same range (not asserted here; see the #929 comparison)."""
+    against 1e-11 about 3e-12, 300-324 function evaluations). The Cartesian run's |dC| at rtol
+    1e-13 grows from 7e-14 to 4.5e-6 over the same range (not asserted here; see the #929
+    comparison)."""
     m = MoonCentredCR3BP(MU_EM)
     s0 = _pass_start(q)
     c0 = jacobi_constant(s0, MU_EM)
