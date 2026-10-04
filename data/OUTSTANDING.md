@@ -961,7 +961,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
   **DOIs looked up 2026-10-04, second batch (Crossref; doubtful matches re-checked by the
   coordinator):** Perko 1981b, SIAM J. Appl. Math. 41:181 10.1137/0141013; Perko 1976, Rocky
-  Mountain J. Math. 6(4):675 (not 6:130 as written above) 10.1216/rmj-1976-6-4-675; Guillaume
+  Mountain J. Math. 6(4):675, 10.1216/rmj-1976-6-4-675 (Perko's own reference list gives
+  6:130-145; Crossref lists only this one Perko paper in volume 6, so probably the same paper
+  cited before publication; confirm on receipt); Guillaume
   1975a, Celest. Mech. 11:213 10.1007/BF01230546; Bruno (Brjuno) 1978, "Researches on the
   restricted three-body problem", Celest. Mech. 18:9-50 (the English translation of the 1972
   work) 10.1007/BF01233089; Aarseth & Zare 1974, Celest. Mech. 10:185 10.1007/BF01227619;
