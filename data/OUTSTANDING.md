@@ -1358,8 +1358,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   family. Control for `core.cr3bp` CHECKED by the coordinator: from (0.181, 0, -0.94711034) at mu =
   1/2 the orbit crosses y = 0 perpendicularly at T = 0.9242291 with x = 0.72101839 (printed
   0.72101839). Add a pseudo-arclength test through the fold with the printed rows as expected output.
-  To acquire: Szebehely & Peters 1967, AJ 72:1187 (10.1086/110398, the periodic solution) and AJ
-  72:876 (10.1086/110355, the Pythagorean problem; both papers exist, per the Aarseth 1971 digest).
+  Szebehely & Peters 1967a and 1967b RECEIVED and digested
+  (`docs/notes/2026-10-05-digest-szebehely-peters-1967a-pythagorean-three-body.md`, `-1967b-periodic-pythagorean.md`):
+  the Pythagorean problem's 17 close approaches to t = 30 reproduce (times to 2e-3; deepest r23 about
+  4e-4 at t = 15.83), robust only to t of about 30; the 1967b periodic orbit (T = 31.8229622453, E =
+  -12.7616527695, binary collision at T/2) is the headline control for a three-body integrator through
+  a collision (`#931`(a), `#928`). PRINTED MISPRINT, checked by the coordinator: Table I x2 =
+  -0.0129612126 gives E off the printed value by 1.5e-8 and a centre-of-mass offset of 2.4e-8; x2 =
+  -0.0129612186 gives both at 1e-10 (agent: closing residual 3.6e-10 at T with it, 1.5e-7 with the
+  printed value).
   Henon 1974a (digest `docs/notes/2026-10-04-digest-henon-1974a-families-periodic-orbits-three-body.md`):
   a third control set. Tables I and II (masses 3:4:5, E = -47/288, 14 rows in the angular momentum A)
   reproduced by the agent's independent integrator (E to 5e-10, A to 5e-9, closure after rotating by
