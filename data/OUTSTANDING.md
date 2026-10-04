@@ -1473,7 +1473,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Control for a continuation driver: the 2T1 avoided crossing near (2,1,+1) at mu = 1e-6, 1e-5,
   1e-4 should follow the mu^(1/2) neck law. The Casoliva Class 1 cyclers (C_J 0.49 to 2.76) lie
   away from the Type 2 ellipses, so Type 1 (part A) is the likelier governing case (inferred from
-  C values only). Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  C values only). Devaney 1981 (digest `docs/notes/2026-10-04-digest-devaney-1981-baker-transformation.md`)
+  proves Henon's R-region recurrence x' = x + 1/y, y' = y - x' is conjugate to the baker map, so
+  there are exactly 2^n - 2 period-n points (counted as Henon counts them); the coordinator checked
+  that the Table 18.3 n = 4 row satisfies the recurrence to 3.8e-6 (its printed rounding). Build the
+  R-arc and R-orbit solvers by shooting on the sign code with brackets between poles (not random
+  multi-start, which can miss roots at larger n), with the counts 2^(n-1) and 2^n - 2 as hard
+  assertions and extended precision above about n = 12. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
