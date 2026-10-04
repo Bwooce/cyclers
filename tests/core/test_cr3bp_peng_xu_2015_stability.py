@@ -44,8 +44,8 @@ Measured (fifth powers of the single-period eigenvalues):
 * mu = 0.004: x0 = 0.906241, z0 = 0.125478, ydot0 = 0.174558; 9.31098e5, 1.07400e-6,
   1 +- 4.9e-6 i, 0.989628 +- 0.143652i.
 
-These initial states are consistent with the ``e = 0`` (green) ends of the characteristic curves of Fig. 6
-(p. 291), whose axes span x0 0.8 to 0.95, z0 0.1 to 0.25, y0' 0.1 to 0.3.
+These initial states are consistent with the ``e = 0`` (green) ends of the characteristic curves
+of Fig. 6 (p. 291), whose axes span x0 0.8 to 0.95, z0 0.1 to 0.25, y0' 0.1 to 0.3.
 
 Findings, held as strict expected failures:
 
