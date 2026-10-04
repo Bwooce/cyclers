@@ -1310,6 +1310,37 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   with `#912` (the corrector also lacks the published method's apoapsis start).
   Control from Gomez & Olle 1986: a mu = 0 elliptic orbit (closed-form Kepler) given a deliberately
   wrong period must fail the full-period check; one with the right period must pass.
+  **FIXED 2026-10-05** (commit 0889007f). `correct_er3bp_periodic` now raises `ClosureError` (a
+  `ConvergenceError` subclass carrying `.orbit` and `.independent_error`) when the Radau full-period closure
+  exceeds `independent_tol` (default 1e-5, unchanged; `None` records the residual without raising). Callers:
+  `er3bp_continuation` (all three walkers take `independent_tol`; a failing member ends the walk, as
+  `ContinuationError` or the partial list; an explicit `independent_gate` sets the corrector bound),
+  `er3bp_branching` (already skipped on any exception; comment added), `er3bp_direct_seeding.converge_direct_seed`
+  (returns None, docstring says so), `verify/pluto_charon_realeph` (passes `None` and keeps its explicit
+  `independent_tol` gate, since it reports the residual). Tests `tests/genome/test_er3bp_closure_check_930.py`:
+  mu = 0 Kepler orbit (a = 1 particle, closes at f = 2 pi) passes at the right period; a wrong period accepted
+  by a loose Newton tolerance and a state off by 1e-4 accepted at tol 1e-3 are rejected (Newton itself cannot
+  converge at a non-integer period at mu = 0, measured, so the wrong period is exercised through the
+  tolerance); the printed Peng and Xu M5N2 halo (15-digit row, 4 pi) is accepted at the default bound
+  (measured closure 1.1e-8). `test_er3bp_corrector_accepts_printed_orbit` (Gomez & Olle 1991) now asserts
+  that both printed orbits are rejected by default (4.2e-5 and 2.2e-2 before).
+  RE-CHECK of stored results (no data row edited or deleted; states are stored only for two sets):
+  (1) `data/er3bp_direct_436.jsonl` (#436, 200 records; seeds x0, ydot0, period, mu, e stored; re-converged with
+  the same call and `independent_tol=None`): 192 of 200 FAIL the full-period closure (above 1e-5; range 3e-5 to
+  6.5). Every seed with period_f_guess = pi fails except one Sun-Mercury cr3bp_continuous record (181
+  e_only_candidate: Earth-Moon e = 0.0549 62, Sun-Mercury 35, Sun-Mars 48, Sun-Pluto 36; plus 10 Sun-Pluto
+  cr3bp_continuous and 1 inconclusive); the seed period is the FULL period pi, which cannot close in a
+  2 pi-periodic system. Only the 7 Earth-Moon records at 2 pi close. So the #436 "e_only_candidate" census (the
+  `empty_regions` entry er3bp-direct-e0-blind-grid-2026-06-24) rests on non-closing orbits for the period-pi
+  seeds and should be treated as withdrawn pending a re-run with a 2 pi-commensurate period
+  (script `scripts/run_436_direct_er3bp.py`);
+  the scratch table is in the #930 session scratchpad (fix930_931/r436.jsonl). (2) `data/runlogs/448_region_c.runlog.jsonl`
+  (#448, arclength continuation, no gate): all six `survives` outcomes have a last-member `independent_residual`
+  of 1.8e-4 to 3.9e-3 (Mars-L1-lyapunov 3.1e-3, -hiamp 1.8e-4, Mars-dro 1.8e-3, Mercury-L1-lyapunov 3.9e-3, -hiamp
+  2.4e-4, Mercury-dro 3.3e-3), all above 1e-5, so none would be accepted to the target e now. (3) Not
+  re-checkable (only corrector residuals stored, no states): `er3bp_discovery_phaseA/B.jsonl`, `er3bp_discovery_435_highE.jsonl`
+  (#432, #435 via `continue_er3bp_family_in_e`) and the PC (3,2) real-ephemeris result (#511, which already
+  reports its independent residual); a re-run through the new check is needed to settle them.
 - `#931` — registered 2026-10-04. **HADJIDEMETRIOU 1975b FOLLOW-UPS: STABILITY CLASSIFICATION
   AND THE FIRST GENERAL-THREE-BODY CONTROLS** (digest
   `docs/notes/2026-10-04-digest-hadjidemetriou-1975b-stability-periodic-orbits-three-body.md`).
@@ -1399,6 +1430,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   15.829920). NOT done: b1, b2 of Table I and the stability regions (Floquet classifier work); Henon Table II A = 0
   closure rounding sensitivity: A = 0.015 closes to 7.5e-6, not the digest's 6.7e-7 (perturbing the printed digits by
   5e-9 moves it between 1e-6 and 1.4e-5), so the bound there is 2e-5.
+  **FIXED 2026-10-05** (commit 49cb11ee). New `core/floquet_classes.py`: `classify_planar_monodromy` (4x4, or the
+  planar block of a 6x6) returns alpha, beta, Delta, b1, b2, k = -b/2 (critical at |k| = 1; Broucke's index is
+  2k, sign -a1), regime (stable, saddle_centre, saddle_saddle, complex_quartet, boundary, critical) and Broucke's
+  region 1 to 7, decided by the sign of Delta and the size of k with `boundary_tol` (default 1e-3 on |k| = 1;
+  region None on the boundary) and `delta_tol` (relative 1e-9; "critical" carries the note that direct or inverse
+  is undetermined from the linear data); `find_family_transitions` detects sign changes of Delta, P(+1), P(-1)
+  between ordered members (single-valued in alpha, beta, so no pair matching) and bisects with a callback.
+  `floquet_classify` delegates for planar orbits (stable reachable; boundary and critical map to marginal; any
+  saddle or quartet to unstable) and uses an eigenvalue rule for spatial orbits (docstring corrected, return type
+  unchanged); `monodromy_eigenstructure` centre tolerance 0.5 -> 1e-6 (a complex quartet now raises ValueError).
+  Tests (sourced or constructed spectra only): `tests/core/test_floquet_classes_931.py` (synthetic symplectic
+  spectra per regime under random symplectic conjugation; Broucke printed regions 7P 6, 7A 1, 8P 6, 8A 4/2/1,
+  11P 4, 11A 6/3 on 17 re-corrected rows from the TR tables, re-correction moves the printed state by under 4e-6;
+  7A rows are on the boundary at the default tolerance (k_B - 2 = -3e-4 to -7e-4) and region 1 at 5e-5; Jorba and
+  Olle 2004 Ts: alpha = -3, beta = 4 + L, Delta = 1 - 4L, Table 1 angles to 1e-12, critical tag at L = 1/4 with
+  a single Jordan block, Delta sign change located at 0.25 to 1e-12), `tests/search/test_er3bp_floquet_931.py`.
+  Not done: Hadjidemetriou 1975b Table I b1, b2 and row 11 (no monodromy route in the new test-only integrator
+  `tests/core/test_three_body_published_controls_931.py`, which pins E, p and tau/2 only); the Olle, Pacha and
+  Villanueva 2004 vertical-L4 family (needs a spatial CR3BP continuation, not a 5 s test; h_crit = -1.4571360299
+  is the digest agent's derived value, not printed). Callers and disagreements: `er3bp_discovery` maps stable and
+  marginal to elliptic and is unaffected except that near-critical saddles are now "unstable" and the old
+  modulus-only "marginal" no longer hides a Delta < 0 quartet with moduli within 1e-3; the 3D tracer
+  `_classify_floquet` (CR3BP, used by the #682 census) was not changed and still reads "stable" for every
+  non-trivial multiplier within 1e-3 of the unit circle, so a complex quartet with modulus excess below 1e-3
+  (a Hopf transition within about 1.7e-6 relative of the critical parameter, per the Jorba and Olle digest) is
+  read as stable there: disagreement, not rewritten.
 - `#932` — registered 2026-10-04. **LANTOINE & RUSSELL 2011: A CR3BP CONTROL AND A TWO-MOON PATCH
   METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
   (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
