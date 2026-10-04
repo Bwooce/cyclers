@@ -869,6 +869,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   by the digest of the 2018 paper):** five tail entries of the Sun-position series had not
   been reflected with the rest; effect 2e-8 in 389; a test now pins both columns to Andreu's
   table. The digest is `docs/notes/2026-10-04-digest-jorba-cusco-farres-jorba-2018-two-periodic-models.md`.
+  **Third and fourth published controls (commits `5406fd33`, `69ec9800`):** the eleven periodic
+  orbits of Leiva & Briozzo 2008 Table 2 close from their printed states and times to 5e-6 ..
+  3e-4 over 3 to 5 Sun periods (wrong epoch: 1e-2 .. 1), and the two orbits of Leiva & Briozzo
+  2005 close to 2e-6 and 4e-6 with the printed lunar altitude. Rosales, Jorba & Jorba-Cusco
+  2023 is now held and its Table 4 prints POL1 and POL2 as the project had them.
   **Still to do:** triage every test and stored number pinned to the old module (in progress);
   rerun or stamp `#533`, `#538`, `#544`, `#593`; fix the frame-conversion helper
   `genome/qbcp_torus.py`; obtain Rosales, Jorba & Jorba-Cusco 2023 (DOI
@@ -916,7 +921,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   and 2.266951491584771 (the second to all 15 printed digits), with two revolutions about L1
   per period as the paper says. With the old sense the same computation gives 4.310e8, 2.33046
   and 2.26711, so the control discriminates the sense at 1e-4. The paper also states the
-  convention outright: Sun at (a_S cos theta, -a_S sin theta). **Still to do:** the three other places that encode the sense
+  convention outright: Sun at (a_S cos theta, -a_S sin theta). **Second published control
+  (commit `69ec9800`):** Oshima (2022) Table 4 row 1, a printed ten-digit state of a 1:1
+  synodic resonant orbit, closes after one Sun period to 7.9e-9 (0.16 with the old sense, 0.12
+  with no Sun). Oshima and Boudad et al. both print the Sun's rate with the clockwise sign.
+  **Still to do:** the three other places that encode the sense
   (`search/sun_forced_periodic_884.py`, `genome/bcr4bp_torus.py`, `genome/qbcp_torus.py`,
   where the factor `1 + omega_S` must become `1 - omega_S`); the pinned tests; the 19 stamps;
   rerun `#884` (the reviewer's own sense-corrected
@@ -958,6 +967,31 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (4) run the whole test tree, and treat every pinned number that moves as a circular golden
   to be recomputed or removed; (5) mark the 19 stamps METHOD-INVALID until rerun; (6) rerun
   `#884`.
+- `#884` — **PRIOR WORK NOW HELD AND DIGESTED (2026-10-04, late): the method, the mechanisms
+  and two of the project's own family members are in print.** (1) Leiva & Briozzo 2008 (digest
+  `docs/notes/2026-10-04-digest-leiva-briozzo-2008-rtbp-to-qbcp-periodic-transfer-orbits.md`)
+  select three-body periodic transfer orbits whose period is p/q Sun periods with q = 1 or 2,
+  derive four admissible Sun phases pi/2 apart from a first-order condition, and continue in the
+  Sun's strength in the quasi-bicircular problem: 34 candidates, 11 periodic orbits from six
+  parents, 25 "periodic arcs". By Jacobi constant their families 180A_1 and 180A_2 are the
+  project's two C32 members at 5/2 (3.18010396 and 3.15167662 against 3.18010 and 3.15168) and
+  their family 357 is the project's C31 member at 5/2 (INFERRED by the digest from the printed
+  energies and lunar distances). They obtained those three ONLY as arcs, not as periodic
+  orbits. So the same members were tried eighteen years ago in the coherent model, and the
+  statement in Ross & Roberts-Tsoukkas that a (3,2) member "persists even under solar
+  perturbation" refers to an arc. (2) Leiva & Briozzo 2005: two periodic orbits of one Sun
+  period with one lunar pass each; not a cycler family. (3) Oshima 2022: retrograde orbits
+  about the Earth in the bicircular problem; one three-body orbit gives four families; a branch
+  folds and "returns back to epsilon = 0". (4) Boudad, Howell & Davis 2020: near rectilinear
+  halo orbits; counterparts found by scanning the Sun angle; some branches exist only over part
+  of the Sun-mass range. (5) Brown et al. 2025 (J. Astronaut. Sci.): the Melnikov rule and
+  higher-order functions when the first order is flat. None treats a cycler family as such.
+  **What remains possibly unpublished:** whether the C32, C31, C11 and C21 members have true
+  periodic counterparts at full Sun strength (the reviewer's corrected-sense rerun says yes in
+  the bicircular model, and for three orbits in the corrected coherent model, where Leiva &
+  Briozzo found only arcs for C32 and C31). That is a specific, checkable difference from a
+  published result and is the one question worth a careful rerun. No novelty label is
+  available for anything else. Earlier header follows.
 - `#884` — **RESULT INVALID AS COMPUTED (2026-10-04, see `#891`): the bicircular model it used
   moves the Sun the wrong way round.** The orbits below are periodic orbits of that non-physical
   model. The coordinator's "independent check" re-integrated them with the same core model, so
