@@ -1323,7 +1323,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   1977b adds: decide on the pair index k (k = +-1 critical), report its sign and size, add a sign-change
   detector across family members (stable windows of width of order mu are easy to step over), and
   note the 3D tracer's trivial-pair pick (two eigenvalues nearest +1) is ambiguous at vertically
-  critical orbits. Index conversions: Hitzl-Henon k = -b/2 (Hadjidemetriou) = Casoliva k/2. (c) For `#890`/`#895`:
+  critical orbits. Index conversions: Hitzl-Henon k = -b/2 (Hadjidemetriou) = Casoliva k/2. Olle, Pacha &
+  Villanueva 2005 (digest `docs/notes/2026-10-05-digest-olle-pacha-villanueva-2005-normal-form-1-1-resonance.md`;
+  no example system or printed orbit): at the 1:-1 (Hamiltonian-Hopf) transition the family
+  continues through (det(M - I) is nonzero), so a loss of "stable" there is not a fold. Agent's
+  synthetic case: Delta is linear in the unfolding parameter and changes sign, while multiplier
+  moduli move only as its square root, so a 1e-3 modulus tolerance is blind to the transition over a
+  window; detect it by the SIGN of Delta (with bisection), not by modulus, and tag the critical orbit
+  by its rank-3 Jordan structure. Nearest sourced test: Hadjidemetriou 1975b Table I rows 10 -> 11
+  (Delta changes sign). To acquire: Olle, Pacha & Villanueva 2004 (Celest. Mech. 90:89, the L4
+  vertical-family transition) and Jorba & Olle 2004 (Nonlinearity 17:691). (c) For `#890`/`#895`:
   if a multiplier was computed from a half-period construction, det = 1 and reciprocity hold
   identically and check nothing; state how the 8.4e5 value was obtained. (d) Log alpha, beta and
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
