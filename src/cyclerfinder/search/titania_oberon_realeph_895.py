@@ -1092,9 +1092,17 @@ def homotopy_model(
     j4: float = J4_URA111,
     pole: FloatArray = POLE_IAU,
     sun: bool = True,
+    moon_gm: Sequence[float] | None = None,
+    gm_uranus: float = GM_URANUS,
 ) -> ForceModel:
-    """Pre-registration section 1.3: lam = 0 circular coplanar, lam = 1 the full model."""
+    """Pre-registration section 1.3: lam = 0 circular coplanar, lam = 1 the full model.
+
+    ``moon_gm`` (five values, Miranda to Oberon) and ``gm_uranus`` replace the URA111 constants
+    only for the comparison with the `#890` review's model (registry constants).
+    """
     gm = np.array(BODY_GM, dtype=np.float64)
+    if moon_gm is not None:
+        gm[:5] = moon_gm
     for k in INNER:
         gm[k] *= lam
     gm[I_SUN] = lam * GM_SUN if sun else 0.0
@@ -1107,7 +1115,8 @@ def homotopy_model(
     circ[:, 6:9] = circles.ey
     circ[I_TITANIA, :3] = (circles.a_t, circles.n_t, circles.lon0_t)
     circ[I_OBERON, :3] = (circles.a_o, circles.n_o, circles.lon0_o)
-    gmc = GM_URANUS + (1.0 - lam) * sum(BODY_GM[k] for k in INNER)
+    inner_gm = sum((BODY_GM if moon_gm is None else moon_gm)[k] for k in INNER)
+    gmc = gm_uranus + (1.0 - lam) * inner_gm
     return ForceModel(
         gm=gm,
         w=w,

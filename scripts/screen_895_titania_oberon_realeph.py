@@ -403,7 +403,7 @@ def stage_arc_loop(
         e = st.log[-1]
         log(
             f"{st.param}={e['value']:.6g} step {e['step']:.4g}: conv {e['converged']} "
-            f"it {e['iterations']} acc {e['accepted']} res {e['history'][-1]['max_r_km']:.3g} km "
+            f"it {e['iterations']} acc {e['accepted']} res {e['history'][-1]['max_r_km'] if e['history'] else float('nan'):.3g} km "
             f"alts {[a[2] for a in e.get('flybys', [])]} "
             f"{'BRANCH ' + str(e.get('signature')) if e.get('branch_event') else ''}"
             f"({time.time() - t0:.1f} s)"
@@ -695,7 +695,10 @@ def stage_verify(args: argparse.Namespace) -> None:
     out["f_other_within_2_hill"] = others
     out["f_closest_km"] = closest
     out["f_pass"] = f_pass
-    out["all_minima"] = allmin
+    # every local minimum within 10 Hill radii (the closest approach per body is kept above)
+    out["minima_within_10_hill"] = {
+        k: [r for r in rows if r["hill_radii"] <= 10.0] for k, rows in allmin.items()
+    }
     out["pass_c_to_f"] = bool(c_pass and out["d_pass"] and e_pass and f_pass)
     for f in flybys:
         if not f.get("missing"):
@@ -709,9 +712,135 @@ def stage_verify(args: argparse.Namespace) -> None:
     dump(f"verify_{tag}_N{n}{args.variant}.json", out)
 
 
+# ------------------------------------------------------------------------------------------- #
+# Reported variants from a converged arc: the Sun's effect, the review's model
+# ------------------------------------------------------------------------------------------- #
+
+REVIEW_DIR = Path(
+    "/tmp/claude-1000/-home-bruce-dev-cyclers/e8a086b8-fae2-4e77-b340-1425b9d3c532/scratchpad/review890"
+)
+REGISTRY_MOON_GM = (4.3, 83.5, 85.1, 226.9, 205.3)
+REGISTRY_GM_URANUS = 5.7945564e6 - sum(REGISTRY_MOON_GM)
+VARIANT_MODELS: dict[str, dict[str, Any]] = {
+    "sun_off": {"sun": False},
+    "review_physics": {"sun": False, "j4": 0.0, "j2": 3510.68e-6},
+    "review_model": {
+        "sun": False, "j4": 0.0, "j2": 3510.68e-6,
+        "moon_gm": REGISTRY_MOON_GM, "gm_uranus": REGISTRY_GM_URANUS,
+    },
+}  # fmt: skip
+
+
+def stage_variants(args: argparse.Namespace) -> None:
+    tag, n = args.epoch, args.cycles
+    table, circles, t_c = epoch_setup(tag)
+    times, x = load_final(tag, n, args.variant)
+    base = m.homotopy_model(table, circles, 1.0)
+    fl_base = m.arc_flybys(base, times, x, circles.ez)
+    out: dict[str, Any] = {
+        "epoch": tag, "cycles": n, "route": args.variant or "pre-registered",
+        "base_flybys": [f.to_dict() for f in fl_base],
+    }  # fmt: skip
+    for name, kw in VARIANT_MODELS.items():
+        mod = m.homotopy_model(table, circles, 1.0, **kw)
+        res = m.newton(mod, times, x)
+        row: dict[str, Any] = {"model": kw, "converged": res.converged, "history": res.history}
+        if res.converged:
+            fl = m.arc_flybys(mod, times, res.x, circles.ez)
+            row["signature_same"] = m.branch_signature(fl) == m.branch_signature(fl_base)
+            row["flybys"] = [f.to_dict() for f in fl]
+            if len(fl) == len(fl_base):
+                row["alt_change_km"] = [
+                    f.alt_km - b.alt_km for f, b in zip(fl, fl_base, strict=True)
+                ]
+                row["time_change_s"] = [f.t - b.t for f, b in zip(fl, fl_base, strict=True)]
+            row["max_node_shift_km"] = float(
+                np.max(np.linalg.norm(res.x[:, :3] - x[:, :3], axis=1))
+            )
+            row["x"] = res.x.tolist()
+        out[name] = row
+        log(f"{name}: conv {res.converged} it {len(res.history) - 1} "
+            f"alt change {[round(a, 1) for a in row.get('alt_change_km', [])]} "
+            f"max node shift {row.get('max_node_shift_km', float('nan')):.1f} km")  # fmt: skip
+    # comparison with the review's arcs (only after this build's first arc was committed)
+    review = {("E1", 3): "d_a", ("E2", 6): "d_b"}.get((tag, n))
+    if review is not None and REVIEW_DIR.exists():
+        rj = json.loads((REVIEW_DIR / f"{review}_eps1.json").read_text())
+        rz = np.load(REVIEW_DIR / f"{review}_{'final' if review == 'd_a' else 'checkpoint'}.npz")
+        cmp: dict[str, Any] = {
+            "review_t_conj_et": rj["t_conj_et"],
+            "this_t_c_et": table.t_ref_et + t_c,
+        }
+        cmp["review_flybys"] = [
+            {"body": r["body"], "t_s": r["t_from_start_d"] * m.DAY_S + rj["t_conj_et"] - table.t_ref_et,
+             "alt_km": r["alt_km"], "z_km": r["sc_out_of_plane_km"]}
+            for r in rj["flybys"]
+        ]  # fmt: skip
+        for name in ("base", "review_model"):
+            if name == "base":
+                xx, mod = x, base
+            else:
+                if not out[name]["converged"]:
+                    continue
+                xx, mod = (
+                    np.asarray(out[name]["x"]),
+                    m.homotopy_model(table, circles, 1.0, **VARIANT_MODELS[name]),
+                )
+            tr = m.arc_trajectory(mod, times, xx)
+            rt = rz["ts"] - table.t_ref_et
+            sel = (rt >= times[0]) & (rt <= times[-1])
+            d = [
+                float(np.linalg.norm(tr(t)[:3] - rx[:3]))
+                for t, rx in zip(rt[sel], rz["xs"][sel], strict=True)
+            ]
+            dv = [
+                float(np.linalg.norm(tr(t)[3:] - rx[3:]))
+                for t, rx in zip(rt[sel], rz["xs"][sel], strict=True)
+            ]
+            fl = m.arc_flybys(mod, times, xx, circles.ez)
+            cmp[name] = {
+                "node_pos_diff_km": {"max": max(d), "median": float(np.median(d))},
+                "node_vel_diff_m_s": {"max": max(dv) * 1e3, "median": float(np.median(dv)) * 1e3},
+                "alt_minus_review_km": [f.alt_km - r["alt_km"] for f, r in zip(fl, rj["flybys"], strict=False)],
+                "time_minus_review_s": [
+                    f.t - c["t_s"] for f, c in zip(fl, cmp["review_flybys"], strict=False)
+                ],
+            }  # fmt: skip
+            log(f"vs review ({name}): node diff max {max(d):.1f} km median {np.median(d):.1f} km; "
+                f"alt diff {[round(a, 1) for a in cmp[name]['alt_minus_review_km']]}")  # fmt: skip
+        # the review's own nodes, evaluated by this code in the review's model and in this model
+        rt_all = rz["ts"] - table.t_ref_et
+        rx_all = np.asarray(rz["xs"])
+        for name, kw in (("review_model", VARIANT_MODELS["review_model"]), ("this_model", {})):
+            mod = m.homotopy_model(table, circles, 1.0, **kw)
+            ev = m.shoot_eval(mod, rt_all, rx_all, stm=False, rtol=1e-13)
+            row = {"max_jump_m": ev.max_r * 1e3, "max_jump_mm_s": ev.max_v * 1e6,
+                   "median_jump_m": float(np.median(np.linalg.norm(ev.jumps[:, :3], axis=1))) * 1e3}  # fmt: skip
+            res = m.newton(mod, rt_all, rx_all)
+            row["newton_converged"] = res.converged
+            row["newton_iterations"] = len(res.history) - 1
+            if res.converged:
+                fl = m.arc_flybys(mod, rt_all, res.x, circles.ez)
+                row["max_node_shift_km"] = float(
+                    np.max(np.linalg.norm(res.x[:, :3] - rx_all[:, :3], axis=1))
+                )
+                row["alt_minus_review_km"] = [
+                    f.alt_km - r["alt_km"] for f, r in zip(fl, rj["flybys"], strict=False)
+                ]
+                row["n_flybys"] = len(fl)
+            cmp[f"review_nodes_in_{name}"] = row
+            log(f"review nodes in this code, {name}: jumps max {row['max_jump_m']:.3f} m "
+                f"{row['max_jump_mm_s']:.4f} mm/s; Newton conv {res.converged}; "
+                f"alt diff {[round(a, 2) for a in row.get('alt_minus_review_km', [])]}")  # fmt: skip
+        out["review_comparison"] = cmp
+    for name in VARIANT_MODELS:
+        out[name].pop("x", None)
+    dump(f"variants_{tag}_N{n}{args.variant}.json", out)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    ap.add_argument("stage", choices=["control", "p2", "arc", "verify", "d1periodic"])
+    ap.add_argument("stage", choices=["control", "p2", "arc", "verify", "d1periodic", "variants"])
     ap.add_argument("--epoch", default="E1", choices=sorted(EPOCHS))
     ap.add_argument("--cycles", type=int, default=3)
     ap.add_argument("--variant", default="")
@@ -728,6 +857,7 @@ def main() -> int:
         "arc": stage_arc,
         "verify": stage_verify,
         "d1periodic": stage_d1periodic,
+        "variants": stage_variants,
     }
     stages[args.stage](args)
     log(f"done in {time.time() - t:.1f} s")
