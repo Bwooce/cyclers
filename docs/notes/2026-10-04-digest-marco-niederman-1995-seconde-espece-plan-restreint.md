@@ -181,7 +181,7 @@ phi~(t) = S(phi(-t)) is a solution when phi is. A solution is symmetric if its o
 {(M, N) in H_mu : Im(M) = Re(N) = 0} is a one-dimensional S-invariant submanifold with two components: P3 on the axis
 through P1 and P2 with velocity perpendicular to it ("a croisement orthogonal", p. 228). The lemma, attributed to
 Poincare: "LEMME. - Symetrie et periodicite. Soit phi une solution de P_mu pour laquelle il existe deux instants t_1 et
-t_2 dans Dom(phi) tels que phi(t_1) in I_mu et phi(t_2) in I_mu, avec t_1 != t_2. Alors phi est periodique, de periode
+t_2 dans Dom(phi) tels que phi(t_1) in I_mu et phi(t_2) in I_mu, avec t_1 /= t_2. Alors phi est periodique, de periode
 T = 2(t_2 - t_1), et symetrique, plus precisement S(phi(T - t)) = phi(t), pour tout t." (p. 228, TRANSLATED: if a solution
 meets I_mu at two distinct times, it is periodic of period T = 2(t_2 - t_1) and symmetric.) This is the one place where
 the symmetry is used in the existence proof (and it is also what makes the generating solutions symmetric).
@@ -208,7 +208,7 @@ the intersection disappears at mu = 0.)
 Outline of the argument (p. 229, READ): work near the origin of the regularised systems Q_mu; build isolating blocks
 (Conley and Easton [16]) B_eps, balls of radius proportional to eps about 0 in a norm adapted to the problem; lift V_s,
 V_u by the Levi-Civita map to W_s(mu), W_u(mu); at mu = 0 find the (analytic) intersections of W_s(0), W_u(0) with the
-entry set d+B_eps and exit set d-B_eps; these depend analytically on mu, giving first-order approximations for mu != 0;
+entry set d+B_eps and exit set d-B_eps; these depend analytically on mu, giving first-order approximations for mu /= 0;
 for small eps the transition maps f_{mu eps} of the blocks are C^1-approximated, uniformly in mu, by their linearisation
 at the origin, which does not depend on mu; this gives a transversality condition for [f_{mu eps}(W_s(mu) meet d+B_eps)]
 and (W_u(mu) meet d-B_eps) and hence for V_s, V_u.
@@ -257,8 +257,8 @@ fixed-frame excentric-anomaly parametrisation X = a (e + cos E) + i a sqrt(1 - e
 ### 4.2 Theorem 2 (existence of generating solutions), pp. 238-239 (READ)
 
 Definition (p. 238): V_s(0) (resp. V_u(0)) is "p-reguliere en P2" when the restriction of the projection p to V_s(0) is
-a local diffeomorphism near the lift of P2. By Lemma b, a necessary and sufficient condition is Im(Delta M_s conj(N_s)) != 0
-(resp. Im(Delta M_u conj(N_u)) != 0).
+a local diffeomorphism near the lift of P2. By Lemma b, a necessary and sufficient condition is Im(Delta M_s conj(N_s)) /= 0
+(resp. Im(Delta M_u conj(N_u)) /= 0).
 
 "THEOREME 2. - On suppose que les varietes V_s(0) et V_u(0) sont p-regulieres en P2, et que les vitesses N_s et N_u ne
 sont pas colineaires. Il existe un reel mu_1 > 0 tel que, pour tout mu < mu_1, les varietes V_s(mu) et V_u(mu) aient une
@@ -269,7 +269,7 @@ phi_s, phi_u are therefore generating.
 
 Hypotheses, stated in one place: (i) phi_s, phi_u are symmetric double collision Kepler arcs of the same energy h in
 ]0, 3 + 2 sqrt(2)[ with consecutive time intervals (section 2.1, 3.2); (ii) the orbital period ratio is irrational
-(section 2.2.1); (iii) Im(Delta M_s conj(N_s)) != 0 and Im(Delta M_u conj(N_u)) != 0; (iv) N_s, N_u not collinear. The
+(section 2.2.1); (iii) Im(Delta M_s conj(N_s)) /= 0 and Im(Delta M_u conj(N_u)) /= 0; (iv) N_s, N_u not collinear. The
 proof also uses a choice of square roots with alpha = (v_s|v_u) < 0 (p. 246), which the authors say is possible whenever
 N_s, N_u are not collinear. No numerical value or estimate of mu_1 is given anywhere; it depends on the generating pair
 and is "sufficiently small" in the printed text only through the choice of eps with mu = eps^{11/2}. Uniqueness is not
@@ -286,7 +286,7 @@ Step a (pp. 239-240): domains of the arcs. Gronwall type estimate with a Lipschi
 analyticity of i_s^0 give delta_s = eps^{7/3}; then in Levi-Civita coordinates, p(C_eps) image: (M, N)(Phi_0(tau_s^0(a),
 i_s^0(a))) = (-eps^2 N_s, N_s) + O(eps^{7/3}), so (s, u)(q_s^0(a)) = (eps, 0) + O(eps^{4/3}). Same for u with
 delta_u = eps^{7/3}. Step b (pp. 240-241): derivative estimates for the unperturbed arc, d(s,u)/da (q_s^0(a)) = d(s,u)/da
-(q_s^0(a_s)) + O(eps^{4/3}), via a Gronwall bound on Z_0. Step c (pp. 241-242): gap between the perturbed (mu != 0)
+(q_s^0(a_s)) + O(eps^{4/3}), via a Gronwall bound on Z_0. Step c (pp. 241-242): gap between the perturbed (mu /= 0)
 and unperturbed arcs: outside a disc of radius eps about P2 the gap is O(mu/eps^2) over a time of order 1; between the
 disc and C_s(eps) (travel time of order eps) it is O(mu/eps^4) * eps = O(mu/eps^3); analytic closeness of i_s^mu to i_s^0
 gives O(mu). Step d (p. 242): the choice that links the two small parameters: "Nous allons fixer ici mu = eps^{11/2}, ce
@@ -296,7 +296,7 @@ guarantees the bound O(eps^{5/2}) on the gap). The perturbed arc then crosses rh
 with |tau_s^mu(a) - tau_s^0(a)| = O(eps^{5/2}). Step e (pp. 243-245): the same for the a-derivatives (Gronwall again),
 giving d(s,u)/da (q_s^mu(a)) = d(s,u)/da (q_s^0(a)) + O(eps^{-1/2}) (eq. (40')); equivalent estimates near i_u.
 Step f (pp. 245-248): straighten the level set L_mu meet C_s(eps) by the analytic maps T_mu^s, T_mu^u (eps-close to the
-identity) so that x~_s = -mu/(2 alpha eps^2 h^{3/2}); using the hypothesis Im(Delta M_s conj(N_s)) != 0, u_2(q_s^mu(a)) varies
+identity) so that x~_s = -mu/(2 alpha eps^2 h^{3/2}); using the hypothesis Im(Delta M_s conj(N_s)) /= 0, u_2(q_s^mu(a)) varies
 over an interval of length order eps^{4/3} as a varies, hence a point m_mu^(s) exists with u_2 = 0, with (s_1, s_2, u_1) = (eps,
 0, 0) + O(eps^{4/3}) (eq. (41)) and u_1(m_mu^(s)) = -mu/(2 alpha eps) + O(mu/eps^{2/3}) = -eps^{9/2}/(2 alpha) + O(eps^{29/6})
 (eq. (42)); with alpha < 0 this u_1 is positive, with argument zero. Image under the linearised transition map: y'_u = O(eps^{2/3}),
@@ -329,11 +329,11 @@ demonstrate.
 ### 4.5 Closing remark (pp. 248-249, READ)
 
 "Remarque. - La transversalite observee dans la demonstration precedente, associee a la forme de l'application f_{eps mu},
-ne contredit pas l'integrabilite eventuelle du probleme pour mu != 0. On aurait en effet une situation analogue pour le
+ne contredit pas l'integrabilite eventuelle du probleme pour mu /= 0. On aurait en effet une situation analogue pour le
 probleme des deux centres fixes. On peut simplement affirmer qu'il n'existe pas de famille g_mu d'integrales premieres du
 probleme, dependant differentiablement de mu, qui converge pour mu -> 0 vers le moment cinetique. L'etude detaillee et
 geometrique de ce type de probleme donnera lieu a un prochain travail." TRANSLATED: the transversality does not contradict
-possible integrability for mu != 0 (the same would happen for two fixed centres); one can only say that there is no
+possible integrability for mu /= 0 (the same would happen for two fixed centres); one can only say that there is no
 differentiable-in-mu family of first integrals converging to the angular momentum as mu -> 0; a detailed geometric study
 will be the subject of a later work.
 
@@ -387,7 +387,7 @@ circular restricted case with one small secondary. (READ: searched the whole tex
 READ. For the planar circular restricted three-body problem with one secondary of mass mu, at a fixed energy h in
 ]0, 3 + 2 sqrt(2)[ (paper's constant), the following holds. If two symmetric Kepler loops about the primary, each starting
 and ending at the secondary's position, with consecutive intervals, an irrational period ratio, the same energy, and
-satisfying Im(Delta M conj(N)) != 0 on each loop and non-collinear collision velocities N_s, N_u, are given, then for all
+satisfying Im(Delta M conj(N)) /= 0 on each loop and non-collinear collision velocities N_s, N_u, are given, then for all
 mu below an unspecified mu_1 the matching surfaces intersect transversally and there is a symmetric periodic solution
 near the pair, with two collision-type passages per period and period about 2 t_c + l (INFERRED from the lemma). Generating
 pairs satisfying the conditions are dense in the pair of angular momenta (Theorem 1, with a proof that asserts the key
