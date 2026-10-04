@@ -1735,6 +1735,59 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   continuity only) produced real-ephemeris Titania-Oberon arcs today where direct propagation
   failed (`#895`), with a working corrector in the tree. Target: a published ballistic
   real-ephemeris cycler as the positive control, then the V0 rows.
+- `#899` — **STEP 1 DONE (2026-10-05): `src/cyclerfinder/search/second_species_arcs.py`** (commits f945f3c0,
+  90d26495, 5cf1cd99, 6ac649d6, dc433995, c9822afd; four test files `tests/search/test_second_species_arcs_*.py`,
+  tables as CSV in `tests/search/fixtures/second_species_arcs/`; default run about 4 s for all four files, a slow
+  sweep to n = 14 adds about 30 s). API: `timing_residual` (eq. 30, and Gomez & Olle eq. 17 for `e_p`, `eps_p`),
+  `find_etas` / `enumerate_arcs` (all roots at fixed tau, grid plus two-roots-per-cell detection),
+  `refine_point`, `arc_elements` -> `SArc` (a, e, x0, x1, signs, `jacobi`, `speed`, `v1`, `v2`), `tangent_arc`,
+  `e1_arcs` (the e = 1 factorisation), `collision_data` (V1, V2, V, C, demanded turn, Bruno W in both forms
+  `w_eq12` and `w_sidereal`, `indeterminate` flags: tangent_resonance, circular, radial, half_turn,
+  zero_relative_speed), `hyperbolic_arc`, `parabolic_arc` / `parabolic_tau`, `t_n_arc` (Brjuno T_N, closed form),
+  `e_star_abs` / `e_star_matches` / `label_family` (Theorem 2.2 membership test; a MEMBERSHIP test, not an
+  identifier: A_1 and A_2 share the omega_4 form, 138 of 277 Henon rows carry more than one label), curve-f
+  helpers, `critical_function_s` (Hitzl-Henon eq. 40), `r_arc(s)` / `r_orbit(s)` (Henon 2001 ch. 18),
+  `c_family_exists` / `c_family_max_j` (Gomez & Olle eq. 21), `type_ii_junction`. Elliptic extension: only the
+  timing equation, arc elements (a, e), parabolic tau, tangent ellipse and the eq. 21 existence rule are
+  implemented for `e_p > 0`; C, V, V1, V2, W and the turn raise `NotImplementedError` (the paper has no Jacobi
+  integral or collision velocity). **Reproduced (rows, worst residual against the printed value):** Henon 1968
+  Tables 2-9 320 of 323 elliptic rows (a 3.4e-4, e 6.4e-5, x0 5.5e-4, x1 6.7e-4, C 1.2e-4, V 5.7e-5; relative a
+  1.4e-4) plus the parabolic row; Table 1 hyperbolic 16 rows (1e-5 except the two ill-conditioned rows the digest
+  flagged); every printed eta/pi is found by `enumerate_arcs` (298 rows in 125 groups, 2e-4); Bruno 1981 Table I 25
+  rows (the digest says 23; |W| 8.2e-7, V 1.1e-7), Table III 11 arcs (a to 5e-6, signs of W all 11), Table IV 17 rows
+  (a 3.4e-4 at a = 6.9, C 4.3e-5, sidereal W 4.4e-6; the eta = 0.43 row closes at 0.43381 only); Hitzl-Henon 1977b
+  Table 1 7 rows (e 5e-4, x0 5.7e-4, C 1.4e-4, S 2.5e-4; S is O(1) at a non-critical orbit); Perko (2,1) example C =
+  -0.406767 to 3e-6 on all three arcs; Brjuno 1978 Table I 95 of 97 rows (82 generic to 3e-5, 12 tangent to 2.5e-3,
+  circular row 2 exact; orbits 53 and 61 are the strict xfails), the e* test on all 276 determinate Henon rows (202 with a > 1, 74 with a < 1) and on 90 of 91
+  determinate Table I rows, Table II 28 rows (P 2.8e-5, N^-1 1e-5, e* 2e-5, parametric a 1.4e-5, x and phi to the
+  5-digit print); T_N closed-form relations; Henon 2001 Table 18.2 31 values (5e-9), Table 18.3 21 rows (4.8e-7), the
+  n = 5 polynomial roots and the p.191 n = 7 orbit; Devaney counts 2^(n-1) and 2^n - 2 for n = 2..9 by default and to
+  n = 14 in the slow sweep, the n = 6 decomposition 54 + 2 + 6 = 62 and the n = 5 six families; Gomez & Olle eq. 21
+  numbers, Fig. 7 bounds, the tangent ellipse at e_p = 0.5 against the timing equation for (2,5), (3,4), (2,6), (1,1),
+  the parabolic tau at e_p = 0.5 against a first-principles solve. **Strict expected failures (all printed defects):**
+  Henon Table 3 tau/pi 1.8 eta/pi 1.24723 (1.14723), Table 5 tau/pi 3.7 C 1.31608 (1.81607), Table 6 tau/pi 1.9 x1
+  0.85698 (-0.85698); Bruno Table III C25 0.57888 (0.57889); Bruno Table IV row eta/pi 0.43 (0.43381); Bruno Table IV
+  W column is not eq. 12; Brjuno Table I orbit 53 (a-tilde 1.66594, arc has 1.66394) and 61 (tau/pi 0.56, is 3.56002);
+  Brjuno type III coefficient 1/2 (it is 1/12); Henon 2001 p.191 y_0 0.880142094 (the orbit has 0.88014209157, checked
+  at 40 digits); Gomez & Olle parabolic tau/pi 0.2318 (0.231149) and, NEW, C68,69. **NOT AS THE DIGESTS SAID:** exact
+  eq. 21 at e_p = 0.98, eps_p = -1 gives the first even-i family as C66,67 (66 x 1.01523 = 67.005 >= 67); the printed
+  C68,69 follows only from the text's rounded 1.015, so the Gomez & Olle digest's "both as printed" is true only with
+  the rounded factor. **Deviations from the brief:** (1) the R-arc and R-orbit solvers are damped Newton on the convex
+  function Phi(y) = 1/2 sum (y[i+1] - y[i])^2 - sum ln|y[i]|, one critical point per sign orthant (strictly convex,
+  coercive unless all signs agree), not shooting with pole brackets; this gives the Devaney counts with a proof and
+  needs no extended precision (n = 14 residuals below 1e-9; `refine_r_orbit_mp` is provided and agrees to 1e-13), and
+  a stalled solve raises instead of returning; the counts are verified by residual, sign and distinctness checks, not
+  by a dict length. (2) Loosened tolerances, all documented in the tests: the refine-onto-curve limit is 1e-2 for one
+  Table 4 row near the sharp bend (2.455, 2.49955); the wrong-family e* control passes below 20 percent (C23 relabelled
+  C24 matched 15 percent; A1 and A2 are not separable); the y_0 tolerance for the n = 7 orbit is 5e-9 with the strict
+  xfail at 1e-9. (3) The 65.094 degree demanded turn of A0(-1) used in a test was computed in the Hitzl-Henon digest,
+  not printed. (4) The elliptic arcs have no C, so no demanded turn at `e_p > 0` (needs the elliptic analogue of Bruno's
+  eq. 3). **For step 2 / `#906`:** every Bruno Table III arc has e = 1 and so carries the `radial` indeterminate flag;
+  all 11 seeds will read as indeterminate unless the gate is told that a radial arc (angular momentum zero about P1)
+  still has a well-defined demanded turn at P2 (it does: V1, V2 are finite; `collision_data` returns it, the flag marks
+  only that eps1 is undefined). The same ruff, format and mypy runs are clean for these files; the repo-wide failures
+  are in `sun_forced_905.py`, `test_sun_forced_905.py` and `tests/core/test_cr3bp_ks_orbit12i.py` (other agents' files,
+  not touched).
 - `#899` — **CORRECTION (2026-10-04, from the `#897` synthesis; quotes verified by the coordinator
   in the held paper). THE SCOPING FINDING BELOW IS WRONG ON ONE POINT: FOR ONE MOON, SECOND-
   SPECIES SEEDING PLUS CONTINUATION IN MASS TO THE EARTH-MOON VALUE IS PUBLISHED, IN A PAPER
