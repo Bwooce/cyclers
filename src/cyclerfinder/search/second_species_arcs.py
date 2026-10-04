@@ -336,6 +336,40 @@ def closure_residuals(arc: SArc) -> tuple[float, float, float]:
     return r1, r2, r3
 
 
+def tau_branches_from_a_e(
+    a: float, e: float, eps: int, eps1: int, eps2: int, *, eta_max: float = 7.0 * PI
+) -> list[tuple[float, float]]:
+    """(eta, tau) pairs consistent with a symmetric arc of elements (a, e) and Brjuno's
+    signs (``eps`` = sgn a-tilde is Brjuno's, i.e. Henon's eps times eps2).
+
+    From eq. 2.3, ``cos eta = (1 - 1/a)/(eps2 e)``; eta runs over all branches
+    ``+-arccos(.) + 2 pi m`` in (0, eta_max]; tau follows from the third of eqs. 3.9,
+    ``tau = a^(3/2)(eta - eps2 e sin eta)``, and a branch is kept only if the first two
+    of eqs. 3.9 (``cos tau = eps a (cos eta - eps2 e)`` and ``sin tau = eps eps1
+    a sqrt(1 - e^2) sin eta``) close on it to 3e-3.  Needs e > 0, a != 1.
+    """
+    c0 = (1.0 - 1.0 / a) / (eps2 * e)
+    if abs(c0) > 1.0 + 1e-4:  # tangent rows: |cos eta| = 1 up to the 5-digit print
+        return []
+    base = math.acos(max(-1.0, min(1.0, c0)))
+    out: list[tuple[float, float]] = []
+    m_max = int(eta_max / TWO_PI) + 1
+    for mm in range(m_max + 1):
+        for sgn in (1, -1):
+            eta = sgn * base + TWO_PI * mm
+            if eta <= 1e-9 or eta > eta_max:
+                continue
+            tau = a**1.5 * (eta - eps2 * e * math.sin(eta))
+            r1 = eps * a * (math.cos(eta) - eps2 * e) - math.cos(tau)
+            r2 = eps * eps1 * a * math.sqrt(1.0 - e * e) * math.sin(eta) - math.sin(tau)
+            near_tangent = (
+                abs(math.sin(eta)) < 3e-2
+            )  # both senses are solutions at the double point
+            if abs(r1) < 3e-3 * max(1.0, a) and (near_tangent or abs(r2) < 3e-3 * max(1.0, a)):
+                out.append((eta, tau))
+    return sorted(set(out))
+
+
 # --------------------------------------------------------------------------------------
 # Collision velocity, turn, W (Brjuno 1978 section 4.C; Bruno 1981 eqs. 3, 10-12)
 # --------------------------------------------------------------------------------------
