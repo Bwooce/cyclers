@@ -1,0 +1,41 @@
+{
+ "family": "Vaquero 3:1",
+ "row": "vaquero-31-c254-em-cycler-2013",
+ "orbit_class": "cycler",
+ "walks": [
+  {
+   "direction": 1.0,
+   "reason": "step collapse at T=6.269967",
+   "seed_corrected": [
+    0.9013301789125531,
+    0.0,
+    0.0,
+    0.0,
+    -0.8462250186790758,
+    0.0
+   ],
+   "T_min": 6.269604424886022,
+   "T_max": 6.269966554528539,
+   "steps": 22,
+   "events": []
+  },
+  {
+   "direction": -1.0,
+   "reason": "step collapse at T=6.269604",
+   "seed_corrected": [
+    0.9013301789125531,
+    0.0,
+    0.0,
+    0.0,
+    -0.8462250186790758,
+    0.0
+   ],
+   "T_min": 6.269604328839924,
+   "T_max": 6.269604424886022,
+   "steps": 16,
+   "events": []
+  }
+ ],
+ "members": [],
+ "status": "done"
+}

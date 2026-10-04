@@ -1,0 +1,67 @@
+{
+ "family": "Casoliva 2:1 (b)",
+ "row": "casoliva-2-1b-em-resonant-po-2010",
+ "orbit_class": "resonant_po",
+ "walks": [
+  {
+   "direction": 1.0,
+   "reason": "spatial family met the plane at T=6.284218 (pitchfork)",
+   "seed_corrected": [
+    -1.2743563419155632,
+    0.0,
+    -9.510666430599761e-30,
+    0.0,
+    1.415483712143967,
+    0.0
+   ],
+   "T_min": 6.283186650187152,
+   "T_max": 6.284218380576697,
+   "steps": 0,
+   "events": [
+    {
+     "index": "z0",
+     "m": 1,
+     "k": 0,
+     "T": [
+      6.283186650187152,
+      6.284218380576697
+     ],
+     "x0": -1.2729270217556872,
+     "s": null,
+     "plane": true
+    }
+   ]
+  },
+  {
+   "direction": -1.0,
+   "reason": "spatial family met the plane at T=6.280844 (pitchfork)",
+   "seed_corrected": [
+    -1.2743563419155632,
+    0.0,
+    -9.510666430599761e-30,
+    0.0,
+    1.415483712143967,
+    0.0
+   ],
+   "T_min": 6.28084430614756,
+   "T_max": 6.283186650187152,
+   "steps": 1,
+   "events": [
+    {
+     "index": "z0",
+     "m": 1,
+     "k": 0,
+     "T": [
+      6.28216331659097,
+      6.28084430614756
+     ],
+     "x0": -1.2774160349467465,
+     "s": null,
+     "plane": true
+    }
+   ]
+  }
+ ],
+ "members": [],
+ "status": "done"
+}

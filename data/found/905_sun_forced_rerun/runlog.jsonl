@@ -1,0 +1,213 @@
+{"utc": "2026-10-04T16:14:25Z", "stage": "controls", "event": "stage_start", "tasks": 4}
+{"utc": "2026-10-04T16:14:28Z", "stage": "branch", "member": "leiva-briozzo-2008-357", "model": "qbcp", "tau": 1.130082297354274, "stop": "reached_target", "eps": 1.0, "seconds": 0.8}
+{"utc": "2026-10-04T16:14:28Z", "stage": "branch", "member": "leiva-briozzo-2008-180A_1", "model": "qbcp", "tau": 1.5199674500239124, "stop": "reached_target", "eps": 1.0, "seconds": 1.0}
+{"utc": "2026-10-04T16:14:28Z", "stage": "branch", "member": "leiva-briozzo-2008-013", "model": "qbcp", "tau": 0.2293050679244552, "stop": "reached_target", "eps": 1.0, "seconds": 1.0}
+{"utc": "2026-10-04T16:14:31Z", "stage": "branch", "member": "leiva-briozzo-2008-180A_2", "model": "qbcp", "tau": 1.1784124361416768, "stop": "reached_target", "eps": 1.0, "seconds": 3.6}
+{"utc": "2026-10-04T16:14:37Z", "stage": "branch", "member": "leiva-briozzo-2008-357", "model": "qbcp", "tau": 2.8278807653441573, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:14:38Z", "stage": "branch", "member": "leiva-briozzo-2008-013", "model": "qbcp", "tau": 1.9317217286403598, "stop": "reached_target", "eps": 1.0, "seconds": 2.2}
+{"utc": "2026-10-04T16:14:39Z", "stage": "branch", "member": "leiva-briozzo-2008-180A_1", "model": "qbcp", "tau": 3.217765918011784, "stop": "reached_target", "eps": 1.0, "seconds": 1.1}
+{"utc": "2026-10-04T16:14:40Z", "stage": "branch", "member": "leiva-briozzo-2008-180A_2", "model": "qbcp", "tau": 2.876210904171782, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:14:46Z", "stage": "controls", "task": "357", "status": "done", "seconds": 21.1, "done": 1, "total": 4, "counts": {"done": 1}, "eta_utc": "2026-10-04T16:15:49Z"}
+{"utc": "2026-10-04T16:14:46Z", "stage": "branch", "member": "leiva-briozzo-2008-013", "model": "qbcp", "tau": 3.6249020038839506, "stop": "reached_target", "eps": 1.0, "seconds": 0.8}
+{"utc": "2026-10-04T16:14:48Z", "stage": "controls", "task": "180A_1", "status": "done", "seconds": 23.3, "done": 2, "total": 4, "counts": {"done": 2}, "eta_utc": "2026-10-04T16:15:11Z"}
+{"utc": "2026-10-04T16:14:49Z", "stage": "controls", "task": "180A_2", "status": "done", "seconds": 24.3, "done": 3, "total": 4, "counts": {"done": 3}, "eta_utc": "2026-10-04T16:14:57Z"}
+{"utc": "2026-10-04T16:14:55Z", "stage": "branch", "member": "leiva-briozzo-2008-013", "model": "qbcp", "tau": 5.31808227955064, "stop": "reached_target", "eps": 1.0, "seconds": 1.5}
+{"utc": "2026-10-04T16:15:01Z", "stage": "controls", "task": "013", "status": "done", "seconds": 36.3, "done": 4, "total": 4, "counts": {"done": 4}, "eta_utc": "2026-10-04T16:15:01Z"}
+{"utc": "2026-10-04T16:15:01Z", "stage": "families", "event": "stage_start", "tasks": 25}
+{"utc": "2026-10-04T16:15:17Z", "stage": "families", "task": "C11 (Braik-Ross C11b)", "status": "done", "seconds": 16.2, "done": 1, "total": 25, "counts": {"done": 1}, "eta_utc": "2026-10-04T16:21:47Z"}
+{"utc": "2026-10-04T16:15:28Z", "stage": "families", "task": "C11 (Braik-Ross C11a)", "status": "done", "seconds": 27.2, "done": 2, "total": 25, "counts": {"done": 2}, "eta_utc": "2026-10-04T16:20:41Z"}
+{"utc": "2026-10-04T16:15:32Z", "stage": "families", "task": "C21 spatial (#438)", "status": "done", "seconds": 14.6, "done": 3, "total": 25, "counts": {"done": 3}, "eta_utc": "2026-10-04T16:19:18Z"}
+{"utc": "2026-10-04T16:15:34Z", "stage": "families", "task": "C11 (Ross-RT 1:1)", "status": "done", "seconds": 33.3, "done": 4, "total": 25, "counts": {"done": 4}, "eta_utc": "2026-10-04T16:18:29Z"}
+{"utc": "2026-10-04T16:15:42Z", "stage": "families", "task": "C21 3D corridor (#682)", "status": "done", "seconds": 13.5, "done": 5, "total": 25, "counts": {"done": 5}, "eta_utc": "2026-10-04T16:18:24Z"}
+{"utc": "2026-10-04T16:15:46Z", "stage": "families", "task": "C21 planar (Ross-RT 2:1)", "status": "done", "seconds": 45.3, "done": 6, "total": 25, "counts": {"done": 6}, "eta_utc": "2026-10-04T16:18:10Z"}
+{"utc": "2026-10-04T16:15:52Z", "stage": "families", "task": "C31 (Ross-RT 3:1)", "status": "done", "seconds": 20.2, "done": 7, "total": 25, "counts": {"done": 7}, "eta_utc": "2026-10-04T16:18:03Z"}
+{"utc": "2026-10-04T16:16:06Z", "stage": "families", "task": "C32 (Braik-Ross)", "status": "done", "seconds": 24.5, "done": 8, "total": 25, "counts": {"done": 8}, "eta_utc": "2026-10-04T16:18:25Z"}
+{"utc": "2026-10-04T16:16:12Z", "stage": "families", "task": "C32 (Ross-RT 3:2)", "status": "done", "seconds": 38.2, "done": 9, "total": 25, "counts": {"done": 9}, "eta_utc": "2026-10-04T16:18:19Z"}
+{"utc": "2026-10-04T16:16:17Z", "stage": "families", "task": "L1 Lyapunov 3D corridor (#682)", "status": "done", "seconds": 11.4, "done": 10, "total": 25, "counts": {"done": 10}, "eta_utc": "2026-10-04T16:18:12Z"}
+{"utc": "2026-10-04T16:16:20Z", "stage": "families", "task": "C33 (Ross-RT 3:3)", "status": "done", "seconds": 33.8, "done": 11, "total": 25, "counts": {"done": 11}, "eta_utc": "2026-10-04T16:18:01Z"}
+{"utc": "2026-10-04T16:16:28Z", "stage": "families", "task": "C32 3D corridor (#682)", "status": "done", "seconds": 35.6, "done": 12, "total": 25, "counts": {"done": 12}, "eta_utc": "2026-10-04T16:18:02Z"}
+{"utc": "2026-10-04T16:16:32Z", "stage": "families", "task": "Casoliva 1:2 (c)", "status": "done", "seconds": 4.7, "done": 13, "total": 25, "counts": {"done": 13}, "eta_utc": "2026-10-04T16:17:57Z"}
+{"utc": "2026-10-04T16:16:34Z", "stage": "families", "task": "R21-S planar resonant (Braik-Ross)", "status": "done", "seconds": 21.7, "done": 14, "total": 25, "counts": {"done": 14}, "eta_utc": "2026-10-04T16:17:47Z"}
+{"utc": "2026-10-04T16:16:37Z", "stage": "families", "task": "R31-S planar resonant (Braik-Ross)", "status": "done", "seconds": 19.2, "done": 15, "total": 25, "counts": {"done": 15}, "eta_utc": "2026-10-04T16:17:41Z"}
+{"utc": "2026-10-04T16:16:37Z", "stage": "families", "task": "Casoliva 1:2 (d)", "status": "done", "seconds": 4.8, "done": 16, "total": 25, "counts": {"done": 16}, "eta_utc": "2026-10-04T16:17:31Z"}
+{"utc": "2026-10-04T16:16:39Z", "stage": "families", "task": "Casoliva 2:1 (a)", "status": "done", "seconds": 4.5, "done": 17, "total": 25, "counts": {"done": 17}, "eta_utc": "2026-10-04T16:17:25Z"}
+{"utc": "2026-10-04T16:16:41Z", "stage": "families", "task": "Casoliva 2:1 (b)", "status": "done", "seconds": 4.6, "done": 18, "total": 25, "counts": {"done": 18}, "eta_utc": "2026-10-04T16:17:20Z"}
+{"utc": "2026-10-04T16:16:41Z", "stage": "families", "task": "Casoliva 3:2 (c)", "status": "done", "seconds": 4.4, "done": 19, "total": 25, "counts": {"done": 19}, "eta_utc": "2026-10-04T16:17:13Z"}
+{"utc": "2026-10-04T16:16:43Z", "stage": "families", "task": "Casoliva 7:3 (a)", "status": "done", "seconds": 4.9, "done": 20, "total": 25, "counts": {"done": 20}, "eta_utc": "2026-10-04T16:17:09Z"}
+{"utc": "2026-10-04T16:16:46Z", "stage": "families", "task": "Casoliva 7:3 (b)", "status": "no catalogue state or no perpendicular c", "seconds": 4.2, "done": 21, "total": 25, "counts": {"done": 20, "no catalogue state or no perpendicular c": 1}, "eta_utc": "2026-10-04T16:17:05Z"}
+{"utc": "2026-10-04T16:16:46Z", "stage": "families", "task": "Casoliva 7:3 (c)", "status": "no catalogue state or no perpendicular c", "seconds": 4.3, "done": 22, "total": 25, "counts": {"done": 20, "no catalogue state or no perpendicular c": 2}, "eta_utc": "2026-10-04T16:17:00Z"}
+{"utc": "2026-10-04T16:16:50Z", "stage": "families", "task": "Vaquero 3:1", "status": "done", "seconds": 4.9, "done": 23, "total": 25, "counts": {"done": 21, "no catalogue state or no perpendicular c": 2}, "eta_utc": "2026-10-04T16:17:00Z"}
+{"utc": "2026-10-04T16:16:51Z", "stage": "families", "task": "Vaquero 2:1", "status": "done", "seconds": 7.7, "done": 24, "total": 25, "counts": {"done": 22, "no catalogue state or no perpendicular c": 2}, "eta_utc": "2026-10-04T16:16:56Z"}
+{"utc": "2026-10-04T16:16:53Z", "stage": "families", "task": "R52-S planar resonant (Braik-Ross)", "status": "done", "seconds": 32.9, "done": 25, "total": 25, "counts": {"done": 23, "no catalogue state or no perpendicular c": 2}, "eta_utc": "2026-10-04T16:16:53Z"}
+{"utc": "2026-10-04T16:16:53Z", "stage": "forced", "event": "stage_start", "tasks": 29}
+{"utc": "2026-10-04T16:16:54Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "bcr4bp", "tau": 6.791164865468696, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:16:54Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#1", "model": "bcr4bp", "tau": 2.7145951992296916e-07, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:16:54Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#0", "model": "bcr4bp", "tau": 3.3948543655186603, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:16:56Z", "stage": "branch", "member": "C21 3D corridor (#682)#0", "model": "bcr4bp", "tau": 2.2635235421746702, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:16:56Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "bcr4bp", "tau": 1.696394022722951, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:16:58Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#1", "model": "bcr4bp", "tau": 1.697798742464191, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:16:59Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "bcr4bp", "tau": 3.3955679288937426, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:16:59Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#0", "model": "bcr4bp", "tau": 1.6970558976547687, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:17:01Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "bcr4bp", "tau": 5.094741857847988, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:17:03Z", "stage": "branch", "member": "C21 3D corridor (#682)#0", "model": "bcr4bp", "tau": 1.131657892576719, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:17:03Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#1", "model": "qbcp", "tau": 4.670267543233479e-05, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:17:04Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "qbcp", "tau": 1.6932877744130597, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:17:06Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#0", "model": "qbcp", "tau": 1.3953003096654002e-08, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:17:07Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "qbcp", "tau": 3.380196562437371, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:17:07Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#1", "model": "qbcp", "tau": 1.6978451765721072, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:17:09Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "qbcp", "tau": 5.06710543213147, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:17:11Z", "stage": "forced", "task": "braik-ross-c11a-cycler-2026#1", "status": "done", "seconds": 17.6, "done": 1, "total": 29, "counts": {"done": 1}, "eta_utc": "2026-10-04T16:25:24Z"}
+{"utc": "2026-10-04T16:17:11Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#0", "model": "qbcp", "tau": 1.697798487701615, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:17:11Z", "stage": "branch", "member": "C11 (Braik-Ross C11a)#2", "model": "qbcp", "tau": 6.775793489307341, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:17:12Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "bcr4bp", "tau": 3.3955094867830455, "stop": "step collapse at eps=0.000106363", "eps": 0.00010636276992656263, "seconds": 0.3}
+{"utc": "2026-10-04T16:17:13Z", "stage": "forced", "task": "braik-ross-c11a-cycler-2026#2", "status": "done", "seconds": 20.0, "done": 2, "total": 29, "counts": {"done": 2}, "eta_utc": "2026-10-04T16:21:43Z"}
+{"utc": "2026-10-04T16:17:15Z", "stage": "forced", "task": "braik-ross-c11a-cycler-2026#0", "status": "done", "seconds": 22.4, "done": 3, "total": 29, "counts": {"done": 3}, "eta_utc": "2026-10-04T16:20:30Z"}
+{"utc": "2026-10-04T16:17:18Z", "stage": "branch", "member": "C32 (Braik-Ross)#1", "model": "bcr4bp", "tau": 5.964145245965696e-08, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:17:26Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "bcr4bp", "tau": 0.8488735372350744, "stop": "max_steps at eps=1.06335e-05", "eps": 1.0633525192410355e-05, "seconds": 13.6}
+{"utc": "2026-10-04T16:17:26Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "bcr4bp", "tau": 1.6976543645009428, "stop": "step collapse at eps=0.000898239", "eps": 0.0008982393560863322, "seconds": 0.4}
+{"utc": "2026-10-04T16:17:29Z", "stage": "branch", "member": "C32 (Braik-Ross)#1", "model": "bcr4bp", "tau": 1.6977985273344074, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:17:32Z", "stage": "branch", "member": "C21 3D corridor (#682)#0", "model": "qbcp", "tau": 6.494179280736948e-05, "stop": "max_steps at eps=1.48963e-08", "eps": 1.4896346791935718e-08, "seconds": 18.4}
+{"utc": "2026-10-04T16:17:35Z", "stage": "branch", "member": "C32 (Braik-Ross)#0", "model": "bcr4bp", "tau": 2.2637017204659244, "stop": "reached_target", "eps": 1.0, "seconds": 19.8}
+{"utc": "2026-10-04T16:17:40Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "bcr4bp", "tau": 2.5465088012015826, "stop": "max_steps at eps=1.48533e-05", "eps": 1.4853344055392762e-05, "seconds": 13.7}
+{"utc": "2026-10-04T16:17:43Z", "stage": "branch", "member": "C32 (Braik-Ross)#1", "model": "qbcp", "tau": 6.1688026110427976e-06, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:17:44Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "qbcp", "tau": 5.868671490286654e-05, "stop": "reached_target", "eps": 1.0, "seconds": 1.0}
+{"utc": "2026-10-04T16:17:49Z", "stage": "branch", "member": "C21 3D corridor (#682)#0", "model": "qbcp", "tau": 1.1319305988996973, "stop": "max_steps at eps=-1.20607e-08", "eps": -1.2060691699464543e-08, "seconds": 17.6}
+{"utc": "2026-10-04T16:17:49Z", "stage": "forced", "task": "braik-ross-c21-3d-corridor-05-2026#0", "status": "done", "seconds": 56.4, "done": 4, "total": 29, "counts": {"done": 4}, "eta_utc": "2026-10-04T16:23:42Z"}
+{"utc": "2026-10-04T16:17:50Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "qbcp", "tau": 0.8489579138288493, "stop": "reached_target", "eps": 1.0, "seconds": 1.5}
+{"utc": "2026-10-04T16:17:55Z", "stage": "branch", "member": "C32 (Braik-Ross)#2", "model": "bcr4bp", "tau": 5.785745327081638e-05, "stop": "reached_target", "eps": 1.0, "seconds": 3.8}
+{"utc": "2026-10-04T16:17:56Z", "stage": "branch", "member": "C32 (Braik-Ross)#1", "model": "qbcp", "tau": 1.6978046332870418, "stop": "reached_target", "eps": 1.0, "seconds": 3.8}
+{"utc": "2026-10-04T16:17:58Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "qbcp", "tau": 1.697857166935411, "stop": "reached_target", "eps": 1.0, "seconds": 1.5}
+{"utc": "2026-10-04T16:18:05Z", "stage": "branch", "member": "C21 3D corridor (#682)#1", "model": "qbcp", "tau": 2.5467564028330543, "stop": "reached_target", "eps": 1.0, "seconds": 1.5}
+{"utc": "2026-10-04T16:18:05Z", "stage": "forced", "task": "braik-ross-c32-cycler-2026#1", "status": "done", "seconds": 50.0, "done": 5, "total": 29, "counts": {"done": 5}, "eta_utc": "2026-10-04T16:23:53Z"}
+{"utc": "2026-10-04T16:18:07Z", "stage": "branch", "member": "C32 (Braik-Ross)#2", "model": "bcr4bp", "tau": 1.6978563254249899, "stop": "reached_target", "eps": 1.0, "seconds": 0.9}
+{"utc": "2026-10-04T16:18:09Z", "stage": "branch", "member": "C32 (Braik-Ross)#0", "model": "bcr4bp", "tau": 1.1318317645955687, "stop": "reached_target", "eps": 1.0, "seconds": 17.6}
+{"utc": "2026-10-04T16:18:10Z", "stage": "forced", "task": "braik-ross-c21-3d-corridor-05-2026#1", "status": "done", "seconds": 59.5, "done": 6, "total": 29, "counts": {"done": 6}, "eta_utc": "2026-10-04T16:23:06Z"}
+{"utc": "2026-10-04T16:18:14Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 0.002742993896791934, "stop": "step collapse at eps=0.000626745", "eps": 0.0006267450089667226, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:21Z", "stage": "branch", "member": "C32 (Braik-Ross)#3", "model": "bcr4bp", "tau": 7.305277059113662e-08, "stop": "step collapse at eps=0.00393343", "eps": 0.0039334306694740724, "seconds": 13.8}
+{"utc": "2026-10-04T16:18:23Z", "stage": "branch", "member": "C32 (Braik-Ross)#2", "model": "qbcp", "tau": 5.505680698354766e-08, "stop": "reached_target", "eps": 1.0, "seconds": 3.4}
+{"utc": "2026-10-04T16:18:30Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 0.5686756201035715, "stop": "max_steps at eps=-2.34125e-05", "eps": -2.3412528090043048e-05, "seconds": 16.7}
+{"utc": "2026-10-04T16:18:30Z", "stage": "forced", "task": "braik-ross-planar-r21-s-corridor-2026#0", "status": "done", "seconds": 20.4, "done": 7, "total": 29, "counts": {"done": 7}, "eta_utc": "2026-10-04T16:23:37Z"}
+{"utc": "2026-10-04T16:18:31Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#1", "model": "bcr4bp", "tau": 8.125705296470098e-12, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:18:32Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#1", "model": "bcr4bp", "tau": 1.6977984679747962, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:18:33Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#1", "model": "qbcp", "tau": 3.3955200384100928, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:18:34Z", "stage": "branch", "member": "C32 (Braik-Ross)#2", "model": "qbcp", "tau": 1.6977985230044543, "stop": "reached_target", "eps": 1.0, "seconds": 0.9}
+{"utc": "2026-10-04T16:18:34Z", "stage": "branch", "member": "R21-S planar resonant (Braik-Ross)#1", "model": "qbcp", "tau": 1.697721570448354, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:18:35Z", "stage": "forced", "task": "braik-ross-planar-r21-s-corridor-2026#1", "status": "done", "seconds": 4.9, "done": 8, "total": 29, "counts": {"done": 8}, "eta_utc": "2026-10-04T16:23:04Z"}
+{"utc": "2026-10-04T16:18:36Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "bcr4bp", "tau": 0.00031249831320913905, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:40Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "bcr4bp", "tau": 1.6982089718496236, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:44Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "bcr4bp", "tau": 3.3959094342671627, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:45Z", "stage": "forced", "task": "braik-ross-c32-cycler-2026#2", "status": "done", "seconds": 55.2, "done": 9, "total": 29, "counts": {"done": 9}, "eta_utc": "2026-10-04T16:22:53Z"}
+{"utc": "2026-10-04T16:18:47Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#1", "model": "bcr4bp", "tau": 3.3955969359450786, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:18:48Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "bcr4bp", "tau": 5.093609896680781, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:18:52Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 1.7296895539510507e-05, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:52Z", "stage": "branch", "member": "C32 (Braik-Ross)#0", "model": "qbcp", "tau": 0.00033447845797972823, "stop": "reached_target", "eps": 1.0, "seconds": 23.5}
+{"utc": "2026-10-04T16:18:56Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 1.7024441481587655, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:18:56Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#1", "model": "bcr4bp", "tau": 1.6977984679509723, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:18:59Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 3.395614232857017, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:19:02Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#0", "model": "qbcp", "tau": 5.088784317566294, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:19:05Z", "stage": "forced", "task": "braik-ross-planar-r52-s-corridor-2026#0", "status": "done", "seconds": 29.6, "done": 10, "total": 29, "counts": {"done": 10}, "eta_utc": "2026-10-04T16:23:16Z"}
+{"utc": "2026-10-04T16:19:08Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#1", "model": "qbcp", "tau": 3.3955965685604035, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:19:09Z", "stage": "branch", "member": "C32 (Braik-Ross)#3", "model": "bcr4bp", "tau": 1.1318657029850727, "stop": "max_steps at eps=0.00738073", "eps": 0.007380727706237394, "seconds": 47.2}
+{"utc": "2026-10-04T16:19:18Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#1", "model": "qbcp", "tau": 1.6977981005671163, "stop": "reached_target", "eps": 1.0, "seconds": 0.8}
+{"utc": "2026-10-04T16:19:21Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#2", "model": "bcr4bp", "tau": 2.2633731195170124, "stop": "reached_target", "eps": 1.0, "seconds": 13.7}
+{"utc": "2026-10-04T16:19:27Z", "stage": "forced", "task": "braik-ross-planar-r52-s-corridor-2026#1", "status": "done", "seconds": 42.4, "done": 11, "total": 29, "counts": {"done": 11}, "eta_utc": "2026-10-04T16:23:39Z"}
+{"utc": "2026-10-04T16:19:30Z", "stage": "branch", "member": "C21 spatial (#438)#0", "model": "bcr4bp", "tau": 2.2635648762041125, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:19:33Z", "stage": "branch", "member": "C32 (Braik-Ross)#0", "model": "qbcp", "tau": 1.132246441922567, "stop": "reached_target", "eps": 1.0, "seconds": 25.5}
+{"utc": "2026-10-04T16:19:37Z", "stage": "branch", "member": "C21 spatial (#438)#0", "model": "bcr4bp", "tau": 1.1316992261182746, "stop": "step collapse at eps=0.0001799", "eps": 0.0001798999546806266, "seconds": 0.3}
+{"utc": "2026-10-04T16:19:48Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#2", "model": "bcr4bp", "tau": 1.1315074810468206, "stop": "reached_target", "eps": 1.0, "seconds": 12.9}
+{"utc": "2026-10-04T16:19:48Z", "stage": "forced", "task": "braik-ross-c32-cycler-2026#0", "status": "done", "seconds": 155.5, "done": 12, "total": 29, "counts": {"done": 12}, "eta_utc": "2026-10-04T16:23:57Z"}
+{"utc": "2026-10-04T16:19:50Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "bcr4bp", "tau": 3.3952335593200837, "stop": "step collapse at eps=0.000108269", "eps": 0.00010826862663293363, "seconds": 0.3}
+{"utc": "2026-10-04T16:20:01Z", "stage": "branch", "member": "C21 spatial (#438)#0", "model": "qbcp", "tau": 4.380506785016496e-05, "stop": "max_steps at eps=1.60559e-08", "eps": 1.6055866326767032e-08, "seconds": 19.2}
+{"utc": "2026-10-04T16:20:01Z", "stage": "branch", "member": "C21 spatial (#438)#0", "model": "qbcp", "tau": 1.1319094620339714, "stop": "reached_target", "eps": 1.0, "seconds": 0.8}
+{"utc": "2026-10-04T16:20:05Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "bcr4bp", "tau": 0.8485979509743683, "stop": "max_steps at eps=-8.71674e-06", "eps": -8.716735568391813e-06, "seconds": 14.5}
+{"utc": "2026-10-04T16:20:05Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "bcr4bp", "tau": 1.697377204065061, "stop": "step collapse at eps=0.000807429", "eps": 0.0008074290324924047, "seconds": 0.5}
+{"utc": "2026-10-04T16:20:09Z", "stage": "forced", "task": "em-cycler-21-3d-spatial-2026#0", "status": "done", "seconds": 41.6, "done": 13, "total": 29, "counts": {"done": 13}, "eta_utc": "2026-10-04T16:24:09Z"}
+{"utc": "2026-10-04T16:20:10Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "bcr4bp", "tau": 6.791149481268309, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:20:11Z", "stage": "branch", "member": "C32 (Braik-Ross)#3", "model": "qbcp", "tau": 4.889161818264963e-07, "stop": "max_steps at eps=0.00594666", "eps": 0.0059466621061103975, "seconds": 58.1}
+{"utc": "2026-10-04T16:20:12Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "bcr4bp", "tau": 1.696378638332466, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:20:15Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "bcr4bp", "tau": 3.395552544704211, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:20:18Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "bcr4bp", "tau": 5.094726473460398, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:20:20Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "bcr4bp", "tau": 2.546231727166776, "stop": "max_steps at eps=1.48935e-05", "eps": 1.4893458666463369e-05, "seconds": 14.5}
+{"utc": "2026-10-04T16:20:22Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "qbcp", "tau": 1.693142990698432, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:20:24Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "qbcp", "tau": 2.4021958594005608e-05, "stop": "reached_target", "eps": 1.0, "seconds": 1.1}
+{"utc": "2026-10-04T16:20:24Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "qbcp", "tau": 3.380051744245494, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:20:25Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#2", "model": "qbcp", "tau": 2.2628379870498287, "stop": "reached_target", "eps": 1.0, "seconds": 16.6}
+{"utc": "2026-10-04T16:20:26Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "qbcp", "tau": 5.066960665241191, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:20:28Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#0", "model": "qbcp", "tau": 6.775648661559663, "stop": "reached_target", "eps": 1.0, "seconds": 0.1}
+{"utc": "2026-10-04T16:20:30Z", "stage": "forced", "task": "ross-rt-em-cycler-11-2025#0", "status": "done", "seconds": 21.9, "done": 14, "total": 29, "counts": {"done": 14}, "eta_utc": "2026-10-04T16:24:24Z"}
+{"utc": "2026-10-04T16:20:31Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "qbcp", "tau": 0.8489232490712495, "stop": "reached_target", "eps": 1.0, "seconds": 1.6}
+{"utc": "2026-10-04T16:20:32Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#1", "model": "bcr4bp", "tau": 1.0182161674358246e-05, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:20:37Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "qbcp", "tau": 1.6978225021847602, "stop": "reached_target", "eps": 1.0, "seconds": 1.3}
+{"utc": "2026-10-04T16:20:38Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#1", "model": "bcr4bp", "tau": 1.69780878973906, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:20:45Z", "stage": "branch", "member": "C21 spatial (#438)#1", "model": "qbcp", "tau": 2.5467217380806444, "stop": "reached_target", "eps": 1.0, "seconds": 1.8}
+{"utc": "2026-10-04T16:20:45Z", "stage": "branch", "member": "C32 (Braik-Ross)#3", "model": "qbcp", "tau": 1.1318662389991552, "stop": "step collapse at eps=0.00389388", "eps": 0.003893878694832619, "seconds": 34.7}
+{"utc": "2026-10-04T16:20:45Z", "stage": "forced", "task": "braik-ross-c32-cycler-2026#3", "status": "done", "seconds": 160.1, "done": 15, "total": 29, "counts": {"done": 15}, "eta_utc": "2026-10-04T16:24:23Z"}
+{"utc": "2026-10-04T16:20:47Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#2", "model": "bcr4bp", "tau": 2.758594707308116e-07, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:20:48Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#1", "model": "qbcp", "tau": 0.00843401688444909, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:20:51Z", "stage": "forced", "task": "em-cycler-21-3d-spatial-2026#1", "status": "done", "seconds": 62.1, "done": 16, "total": 29, "counts": {"done": 16}, "eta_utc": "2026-10-04T16:24:04Z"}
+{"utc": "2026-10-04T16:20:51Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#2", "model": "bcr4bp", "tau": 1.6977987468591795, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:20:52Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#3", "model": "bcr4bp", "tau": 3.395309661652565, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:20:53Z", "stage": "branch", "member": "R52-S planar resonant (Braik-Ross)#2", "model": "qbcp", "tau": 1.130972331368365, "stop": "reached_target", "eps": 1.0, "seconds": 15.2}
+{"utc": "2026-10-04T16:20:54Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#1", "model": "qbcp", "tau": 1.706237541173831, "stop": "reached_target", "eps": 1.0, "seconds": 0.4}
+{"utc": "2026-10-04T16:20:57Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#2", "model": "qbcp", "tau": 4.8759696193848575e-05, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:20:57Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#3", "model": "bcr4bp", "tau": 1.69751119377873, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:20:59Z", "stage": "forced", "task": "ross-rt-em-cycler-11-2025#1", "status": "done", "seconds": 28.9, "done": 17, "total": 29, "counts": {"done": 17}, "eta_utc": "2026-10-04T16:23:53Z"}
+{"utc": "2026-10-04T16:21:00Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#2", "model": "qbcp", "tau": 1.6978472335848045, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:01Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "bcr4bp", "tau": 5.33130108731629e-07, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:03Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#3", "model": "qbcp", "tau": 3.395596935896201, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:04Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "bcr4bp", "tau": 1.6988643206947103, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:04Z", "stage": "forced", "task": "ross-rt-em-cycler-11-2025#2", "status": "done", "seconds": 18.4, "done": 18, "total": 29, "counts": {"done": 18}, "eta_utc": "2026-10-04T16:23:37Z"}
+{"utc": "2026-10-04T16:21:05Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "bcr4bp", "tau": 6.791118756186919, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:06Z", "stage": "forced", "task": "braik-ross-planar-r52-s-corridor-2026#2", "status": "done", "seconds": 121.1, "done": 19, "total": 29, "counts": {"done": 19}, "eta_utc": "2026-10-04T16:23:19Z"}
+{"utc": "2026-10-04T16:21:07Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "bcr4bp", "tau": 3.3955974690911828, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:08Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#0", "model": "bcr4bp", "tau": 2.9261300642611967e-08, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:21:08Z", "stage": "branch", "member": "C11 (Ross-RT 1:1)#3", "model": "qbcp", "tau": 1.697798473608973, "stop": "reached_target", "eps": 1.0, "seconds": 0.4}
+{"utc": "2026-10-04T16:21:09Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "bcr4bp", "tau": 1.6974702216775004, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:10Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "bcr4bp", "tau": 5.092330637572164, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:13Z", "stage": "forced", "task": "ross-rt-em-cycler-11-2025#3", "status": "done", "seconds": 22.0, "done": 20, "total": 29, "counts": {"done": 20}, "eta_utc": "2026-10-04T16:23:09Z"}
+{"utc": "2026-10-04T16:21:13Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "bcr4bp", "tau": 3.395521814912976, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:15Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "qbcp", "tau": 6.791139990700878, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:17Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#0", "model": "bcr4bp", "tau": 1.6977984972621134, "stop": "reached_target", "eps": 1.0, "seconds": 0.6}
+{"utc": "2026-10-04T16:21:17Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "bcr4bp", "tau": 5.09357122554851, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:19Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "qbcp", "tau": 1.728726687780859, "stop": "below eps_min at eps=-0.512679", "eps": -0.5126790406932821, "seconds": 1.3}
+{"utc": "2026-10-04T16:21:19Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "qbcp", "tau": 3.395543058530444, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:23Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#0", "model": "qbcp", "tau": 5.06235969416286, "stop": "below eps_min at eps=-0.503734", "eps": -0.5037335283251662, "seconds": 1.3}
+{"utc": "2026-10-04T16:21:23Z", "stage": "forced", "task": "ross-rt-em-cycler-21-2025#0", "status": "done", "seconds": 23.4, "done": 21, "total": 29, "counts": {"done": 21}, "eta_utc": "2026-10-04T16:23:06Z"}
+{"utc": "2026-10-04T16:21:23Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "qbcp", "tau": 0.00044942407862835337, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:27Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "qbcp", "tau": 1.698698702458213, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:28Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#1", "model": "bcr4bp", "tau": 3.7277141802432316e-07, "stop": "reached_target", "eps": 1.0, "seconds": 13.0}
+{"utc": "2026-10-04T16:21:29Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#0", "model": "qbcp", "tau": 3.395536540480429, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:21:31Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "qbcp", "tau": 3.396046304655384, "stop": "reached_target", "eps": 1.0, "seconds": 0.2}
+{"utc": "2026-10-04T16:21:35Z", "stage": "branch", "member": "C21 planar (Ross-RT 2:1)#1", "model": "qbcp", "tau": 5.093391969881674, "stop": "reached_target", "eps": 1.0, "seconds": 0.3}
+{"utc": "2026-10-04T16:21:38Z", "stage": "forced", "task": "ross-rt-em-cycler-21-2025#1", "status": "done", "seconds": 34.3, "done": 22, "total": 29, "counts": {"done": 22}, "eta_utc": "2026-10-04T16:23:09Z"}
+{"utc": "2026-10-04T16:21:38Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#0", "model": "qbcp", "tau": 1.697738072622646, "stop": "reached_target", "eps": 1.0, "seconds": 0.8}
+{"utc": "2026-10-04T16:21:40Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#0", "model": "bcr4bp", "tau": 7.947975957545088e-08, "stop": "step collapse at eps=0.00392979", "eps": 0.003929793981598568, "seconds": 15.5}
+{"utc": "2026-10-04T16:21:43Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#1", "model": "bcr4bp", "tau": 3.3955718461026767, "stop": "reached_target", "eps": 1.0, "seconds": 3.6}
+{"utc": "2026-10-04T16:21:47Z", "stage": "forced", "task": "ross-rt-em-cycler-31-2025#0", "status": "done", "seconds": 41.4, "done": 23, "total": 29, "counts": {"done": 23}, "eta_utc": "2026-10-04T16:23:04Z"}
+{"utc": "2026-10-04T16:21:50Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#2", "model": "bcr4bp", "tau": 5.980650690572349e-08, "stop": "reached_target", "eps": 1.0, "seconds": 0.7}
+{"utc": "2026-10-04T16:21:55Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#1", "model": "bcr4bp", "tau": 1.6977733781205209, "stop": "reached_target", "eps": 1.0, "seconds": 0.9}
+{"utc": "2026-10-04T16:21:56Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#1", "model": "bcr4bp", "tau": 1.131865946148618, "stop": "reached_target", "eps": 1.0, "seconds": 14.4}
+{"utc": "2026-10-04T16:22:00Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#2", "model": "bcr4bp", "tau": 1.697798527499005, "stop": "reached_target", "eps": 1.0, "seconds": 0.5}
+{"utc": "2026-10-04T16:22:11Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#1", "model": "qbcp", "tau": 5.442274933280435e-08, "stop": "reached_target", "eps": 1.0, "seconds": 3.2}
+{"utc": "2026-10-04T16:22:13Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#2", "model": "qbcp", "tau": 6.0171866478974264e-06, "stop": "reached_target", "eps": 1.0, "seconds": 1.1}
+{"utc": "2026-10-04T16:22:28Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#1", "model": "qbcp", "tau": 1.6977985223700458, "stop": "reached_target", "eps": 1.0, "seconds": 2.6}
+{"utc": "2026-10-04T16:22:38Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#2", "model": "qbcp", "tau": 1.6978044816720472, "stop": "reached_target", "eps": 1.0, "seconds": 11.6}
+{"utc": "2026-10-04T16:22:46Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#0", "model": "bcr4bp", "tau": 1.1318657093852547, "stop": "max_steps at eps=0.0073323", "eps": 0.007332299975588372, "seconds": 65.6}
+{"utc": "2026-10-04T16:22:46Z", "stage": "forced", "task": "ross-rt-em-cycler-32-2025#1", "status": "done", "seconds": 68.2, "done": 24, "total": 29, "counts": {"done": 24}, "eta_utc": "2026-10-04T16:24:00Z"}
+{"utc": "2026-10-04T16:22:50Z", "stage": "forced", "task": "ross-rt-em-cycler-32-2025#2", "status": "done", "seconds": 62.2, "done": 25, "total": 29, "counts": {"done": 25}, "eta_utc": "2026-10-04T16:23:47Z"}
+{"utc": "2026-10-04T16:22:52Z", "stage": "branch", "member": "Vaquero 2:1#0", "model": "bcr4bp", "tau": 0.0025432227512461577, "stop": "step collapse at eps=0.000332254", "eps": 0.00033225376791881325, "seconds": 0.9}
+{"utc": "2026-10-04T16:22:53Z", "stage": "branch", "member": "Vaquero 2:1#0", "model": "bcr4bp", "tau": 0.5636313240879776, "stop": "step collapse at eps=0.000101831", "eps": 0.00010183078338418842, "seconds": 0.9}
+{"utc": "2026-10-04T16:22:54Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#1", "model": "qbcp", "tau": 2.179309642543463e-05, "stop": "reached_target", "eps": 1.0, "seconds": 35.5}
+{"utc": "2026-10-04T16:23:23Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#3", "model": "bcr4bp", "tau": 2.2637011064373698, "stop": "reached_target", "eps": 1.0, "seconds": 34.2}
+{"utc": "2026-10-04T16:23:44Z", "stage": "branch", "member": "Vaquero 2:1#0", "model": "qbcp", "tau": 9.895826106649698e-05, "stop": "below eps_min at eps=-0.502686", "eps": -0.5026857383561536, "seconds": 48.9}
+{"utc": "2026-10-04T16:23:45Z", "stage": "branch", "member": "C31 (Ross-RT 3:1)#1", "model": "qbcp", "tau": 1.1318863782887256, "stop": "reached_target", "eps": 1.0, "seconds": 28.5}
+{"utc": "2026-10-04T16:23:59Z", "stage": "branch", "member": "Vaquero 2:1#0", "model": "qbcp", "tau": 0.5660317730674735, "stop": "below eps_min at eps=-0.516361", "eps": -0.5163611429641546, "seconds": 14.5}
+{"utc": "2026-10-04T16:23:59Z", "stage": "forced", "task": "vaquero-21-c246-em-cycler-2013#0", "status": "done", "seconds": 69.1, "done": 26, "total": 29, "counts": {"done": 26}, "eta_utc": "2026-10-04T16:24:48Z"}
+{"utc": "2026-10-04T16:23:59Z", "stage": "forced", "task": "ross-rt-em-cycler-31-2025#1", "status": "done", "seconds": 166.4, "done": 27, "total": 29, "counts": {"done": 27}, "eta_utc": "2026-10-04T16:24:31Z"}
+{"utc": "2026-10-04T16:24:00Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#3", "model": "bcr4bp", "tau": 1.1318311257394513, "stop": "reached_target", "eps": 1.0, "seconds": 17.0}
+{"utc": "2026-10-04T16:24:04Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#0", "model": "qbcp", "tau": 4.883636432498627e-07, "stop": "max_steps at eps=0.00590287", "eps": 0.005902865256329899, "seconds": 74.7}
+{"utc": "2026-10-04T16:24:28Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#0", "model": "qbcp", "tau": 1.1318662386938463, "stop": "step collapse at eps=0.00387647", "eps": 0.0038764722101901324, "seconds": 23.5}
+{"utc": "2026-10-04T16:24:28Z", "stage": "forced", "task": "ross-rt-em-cycler-32-2025#0", "status": "done", "seconds": 184.9, "done": 28, "total": 29, "counts": {"done": 28}, "eta_utc": "2026-10-04T16:24:44Z"}
+{"utc": "2026-10-04T16:24:34Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#3", "model": "qbcp", "tau": 5.8041383872081185e-05, "stop": "reached_target", "eps": 1.0, "seconds": 17.6}
+{"utc": "2026-10-04T16:25:04Z", "stage": "branch", "member": "C32 (Ross-RT 3:2)#3", "model": "qbcp", "tau": 1.1319699668069156, "stop": "reached_target", "eps": 1.0, "seconds": 18.0}
+{"utc": "2026-10-04T16:25:16Z", "stage": "forced", "task": "ross-rt-em-cycler-32-2025#3", "status": "done", "seconds": 150.0, "done": 29, "total": 29, "counts": {"done": 29}, "eta_utc": "2026-10-04T16:25:16Z"}

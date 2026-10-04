@@ -1,0 +1,71 @@
+[2026-10-04T16:14:25Z] stage controls start
+[2026-10-04T16:14:25Z] [controls] 4 tasks, 0 already done
+[2026-10-04T16:14:46Z] [controls] 1/4 357: done (21 s) counts={'done': 1} ETA 2026-10-04T16:15:49Z
+[2026-10-04T16:14:48Z] [controls] 2/4 180A_1: done (23 s) counts={'done': 2} ETA 2026-10-04T16:15:11Z
+[2026-10-04T16:14:49Z] [controls] 3/4 180A_2: done (24 s) counts={'done': 3} ETA 2026-10-04T16:14:57Z
+[2026-10-04T16:15:01Z] [controls] 4/4 013: done (36 s) counts={'done': 4} ETA 2026-10-04T16:15:01Z
+[2026-10-04T16:15:01Z] stage controls done in 36 s
+[2026-10-04T16:15:01Z] stage families start
+[2026-10-04T16:15:01Z] [families] 25 tasks, 0 already done
+[2026-10-04T16:15:17Z] [families] 1/25 C11 (Braik-Ross C11b): done (16 s) counts={'done': 1} ETA 2026-10-04T16:21:47Z
+[2026-10-04T16:15:28Z] [families] 2/25 C11 (Braik-Ross C11a): done (27 s) counts={'done': 2} ETA 2026-10-04T16:20:41Z
+[2026-10-04T16:15:32Z] [families] 3/25 C21 spatial (#438): done (15 s) counts={'done': 3} ETA 2026-10-04T16:19:18Z
+[2026-10-04T16:15:34Z] [families] 4/25 C11 (Ross-RT 1:1): done (33 s) counts={'done': 4} ETA 2026-10-04T16:18:29Z
+[2026-10-04T16:15:42Z] [families] 5/25 C21 3D corridor (#682): done (13 s) counts={'done': 5} ETA 2026-10-04T16:18:24Z
+[2026-10-04T16:15:46Z] [families] 6/25 C21 planar (Ross-RT 2:1): done (45 s) counts={'done': 6} ETA 2026-10-04T16:18:10Z
+[2026-10-04T16:15:52Z] [families] 7/25 C31 (Ross-RT 3:1): done (20 s) counts={'done': 7} ETA 2026-10-04T16:18:03Z
+[2026-10-04T16:16:06Z] [families] 8/25 C32 (Braik-Ross): done (24 s) counts={'done': 8} ETA 2026-10-04T16:18:25Z
+[2026-10-04T16:16:12Z] [families] 9/25 C32 (Ross-RT 3:2): done (38 s) counts={'done': 9} ETA 2026-10-04T16:18:19Z
+[2026-10-04T16:16:17Z] [families] 10/25 L1 Lyapunov 3D corridor (#682): done (11 s) counts={'done': 10} ETA 2026-10-04T16:18:12Z
+[2026-10-04T16:16:20Z] [families] 11/25 C33 (Ross-RT 3:3): done (34 s) counts={'done': 11} ETA 2026-10-04T16:18:01Z
+[2026-10-04T16:16:28Z] [families] 12/25 C32 3D corridor (#682): done (36 s) counts={'done': 12} ETA 2026-10-04T16:18:02Z
+[2026-10-04T16:16:32Z] [families] 13/25 Casoliva 1:2 (c): done (5 s) counts={'done': 13} ETA 2026-10-04T16:17:57Z
+[2026-10-04T16:16:34Z] [families] 14/25 R21-S planar resonant (Braik-Ross): done (22 s) counts={'done': 14} ETA 2026-10-04T16:17:47Z
+[2026-10-04T16:16:37Z] [families] 15/25 R31-S planar resonant (Braik-Ross): done (19 s) counts={'done': 15} ETA 2026-10-04T16:17:41Z
+[2026-10-04T16:16:37Z] [families] 16/25 Casoliva 1:2 (d): done (5 s) counts={'done': 16} ETA 2026-10-04T16:17:31Z
+[2026-10-04T16:16:39Z] [families] 17/25 Casoliva 2:1 (a): done (4 s) counts={'done': 17} ETA 2026-10-04T16:17:25Z
+[2026-10-04T16:16:41Z] [families] 18/25 Casoliva 2:1 (b): done (5 s) counts={'done': 18} ETA 2026-10-04T16:17:20Z
+[2026-10-04T16:16:41Z] [families] 19/25 Casoliva 3:2 (c): done (4 s) counts={'done': 19} ETA 2026-10-04T16:17:13Z
+[2026-10-04T16:16:43Z] [families] 20/25 Casoliva 7:3 (a): done (5 s) counts={'done': 20} ETA 2026-10-04T16:17:09Z
+[2026-10-04T16:16:46Z] [families] 21/25 Casoliva 7:3 (b): no catalogue state or no perpendicular c (4 s) counts={'done': 20, 'no catalogue state or no perpendicular c': 1} ETA 2026-10-04T16:17:05Z
+[2026-10-04T16:16:46Z] [families] 22/25 Casoliva 7:3 (c): no catalogue state or no perpendicular c (4 s) counts={'done': 20, 'no catalogue state or no perpendicular c': 2} ETA 2026-10-04T16:17:00Z
+[2026-10-04T16:16:50Z] [families] 23/25 Vaquero 3:1: done (5 s) counts={'done': 21, 'no catalogue state or no perpendicular c': 2} ETA 2026-10-04T16:17:00Z
+[2026-10-04T16:16:51Z] [families] 24/25 Vaquero 2:1: done (8 s) counts={'done': 22, 'no catalogue state or no perpendicular c': 2} ETA 2026-10-04T16:16:56Z
+[2026-10-04T16:16:53Z] [families] 25/25 R52-S planar resonant (Braik-Ross): done (33 s) counts={'done': 23, 'no catalogue state or no perpendicular c': 2} ETA 2026-10-04T16:16:53Z
+[2026-10-04T16:16:53Z] stage families done in 112 s
+[2026-10-04T16:16:53Z] stage forced start
+[2026-10-04T16:16:53Z] [forced] 29 tasks, 0 already done
+[2026-10-04T16:17:11Z] [forced] 1/29 braik-ross-c11a-cycler-2026#1: done (18 s) counts={'done': 1} ETA 2026-10-04T16:25:24Z
+[2026-10-04T16:17:13Z] [forced] 2/29 braik-ross-c11a-cycler-2026#2: done (20 s) counts={'done': 2} ETA 2026-10-04T16:21:43Z
+[2026-10-04T16:17:15Z] [forced] 3/29 braik-ross-c11a-cycler-2026#0: done (22 s) counts={'done': 3} ETA 2026-10-04T16:20:30Z
+[2026-10-04T16:17:49Z] [forced] 4/29 braik-ross-c21-3d-corridor-05-2026#0: done (56 s) counts={'done': 4} ETA 2026-10-04T16:23:42Z
+[2026-10-04T16:18:05Z] [forced] 5/29 braik-ross-c32-cycler-2026#1: done (50 s) counts={'done': 5} ETA 2026-10-04T16:23:53Z
+[2026-10-04T16:18:10Z] [forced] 6/29 braik-ross-c21-3d-corridor-05-2026#1: done (60 s) counts={'done': 6} ETA 2026-10-04T16:23:06Z
+[2026-10-04T16:18:30Z] [forced] 7/29 braik-ross-planar-r21-s-corridor-2026#0: done (20 s) counts={'done': 7} ETA 2026-10-04T16:23:37Z
+[2026-10-04T16:18:35Z] [forced] 8/29 braik-ross-planar-r21-s-corridor-2026#1: done (5 s) counts={'done': 8} ETA 2026-10-04T16:23:04Z
+[2026-10-04T16:18:45Z] [forced] 9/29 braik-ross-c32-cycler-2026#2: done (55 s) counts={'done': 9} ETA 2026-10-04T16:22:53Z
+[2026-10-04T16:19:05Z] [forced] 10/29 braik-ross-planar-r52-s-corridor-2026#0: done (30 s) counts={'done': 10} ETA 2026-10-04T16:23:16Z
+[2026-10-04T16:19:27Z] [forced] 11/29 braik-ross-planar-r52-s-corridor-2026#1: done (42 s) counts={'done': 11} ETA 2026-10-04T16:23:39Z
+[2026-10-04T16:19:48Z] [forced] 12/29 braik-ross-c32-cycler-2026#0: done (156 s) counts={'done': 12} ETA 2026-10-04T16:23:57Z
+[2026-10-04T16:20:09Z] [forced] 13/29 em-cycler-21-3d-spatial-2026#0: done (42 s) counts={'done': 13} ETA 2026-10-04T16:24:09Z
+[2026-10-04T16:20:30Z] [forced] 14/29 ross-rt-em-cycler-11-2025#0: done (22 s) counts={'done': 14} ETA 2026-10-04T16:24:24Z
+[2026-10-04T16:20:45Z] [forced] 15/29 braik-ross-c32-cycler-2026#3: done (160 s) counts={'done': 15} ETA 2026-10-04T16:24:23Z
+[2026-10-04T16:20:51Z] [forced] 16/29 em-cycler-21-3d-spatial-2026#1: done (62 s) counts={'done': 16} ETA 2026-10-04T16:24:04Z
+[2026-10-04T16:20:59Z] [forced] 17/29 ross-rt-em-cycler-11-2025#1: done (29 s) counts={'done': 17} ETA 2026-10-04T16:23:53Z
+[2026-10-04T16:21:04Z] [forced] 18/29 ross-rt-em-cycler-11-2025#2: done (18 s) counts={'done': 18} ETA 2026-10-04T16:23:37Z
+[2026-10-04T16:21:06Z] [forced] 19/29 braik-ross-planar-r52-s-corridor-2026#2: done (121 s) counts={'done': 19} ETA 2026-10-04T16:23:19Z
+[2026-10-04T16:21:13Z] [forced] 20/29 ross-rt-em-cycler-11-2025#3: done (22 s) counts={'done': 20} ETA 2026-10-04T16:23:09Z
+[2026-10-04T16:21:23Z] [forced] 21/29 ross-rt-em-cycler-21-2025#0: done (23 s) counts={'done': 21} ETA 2026-10-04T16:23:06Z
+[2026-10-04T16:21:38Z] [forced] 22/29 ross-rt-em-cycler-21-2025#1: done (34 s) counts={'done': 22} ETA 2026-10-04T16:23:09Z
+[2026-10-04T16:21:47Z] [forced] 23/29 ross-rt-em-cycler-31-2025#0: done (41 s) counts={'done': 23} ETA 2026-10-04T16:23:04Z
+[2026-10-04T16:22:46Z] [forced] 24/29 ross-rt-em-cycler-32-2025#1: done (68 s) counts={'done': 24} ETA 2026-10-04T16:24:00Z
+[2026-10-04T16:22:50Z] [forced] 25/29 ross-rt-em-cycler-32-2025#2: done (62 s) counts={'done': 25} ETA 2026-10-04T16:23:47Z
+[2026-10-04T16:23:59Z] [forced] 26/29 vaquero-21-c246-em-cycler-2013#0: done (69 s) counts={'done': 26} ETA 2026-10-04T16:24:48Z
+[2026-10-04T16:23:59Z] [forced] 27/29 ross-rt-em-cycler-31-2025#1: done (166 s) counts={'done': 27} ETA 2026-10-04T16:24:31Z
+[2026-10-04T16:24:28Z] [forced] 28/29 ross-rt-em-cycler-32-2025#0: done (185 s) counts={'done': 28} ETA 2026-10-04T16:24:44Z
+[2026-10-04T16:25:16Z] [forced] 29/29 ross-rt-em-cycler-32-2025#3: done (150 s) counts={'done': 29} ETA 2026-10-04T16:25:16Z
+[2026-10-04T16:25:16Z] stage forced done in 503 s
+[2026-10-04T16:25:16Z] stage summary start
+[2026-10-04T16:25:16Z] [summary] 58 rows -> /home/bruce/dev/cyclers/data/found/905_sun_forced_rerun/summary.json
+[2026-10-04T16:25:16Z] stage summary done in 0 s
+EXIT=0
