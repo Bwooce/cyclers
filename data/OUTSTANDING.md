@@ -963,7 +963,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Rhouma & Chicone 2000 (Methods Appl. Anal. 7:85), Lantoine & Russell 2011 (J. Astronaut. Sci.
   58:335; it is "Near ballistic halo-to-halo transfers between planetary moons", not a flyby-
   derivatives paper as the wanted list described it), Broucke 1969 (JPL TR 32-1360, NTRS
-  19700005781), Jorba & Villanueva 1997, Aarseth & Zare 1974, Stiefel & Scheifele 1971 (book).
+  19700005781), Jorba & Villanueva 1997, Aarseth & Zare 1974, Stiefel & Scheifele 1971 (book),
+  Hadjidemetriou & Christides 1975, Henon & Heiles 1964 (ADS scan).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
