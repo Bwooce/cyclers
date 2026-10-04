@@ -256,3 +256,77 @@ def test_p1_moons_reproduce_ura111_and_the_control_discriminates(
             (err,) = m.moon_positive_control(table_2030, k, t0, (30.0,), **kw)
             assert err > 10.0, (m.BODY_NAMES[k], kw, err)
     assert math.isfinite(err)
+
+
+# ------------------------------------------------------------------------------------------- #
+# Homotopy end points (kernel-free, synthetic table) and the committed E1 arc (kernel)
+# ------------------------------------------------------------------------------------------- #
+
+
+def _synthetic_table() -> m.EphemerisTable:
+    """Six bodies on circles, tabulated like URA111 (only the plumbing is under test)."""
+    h = 600.0
+    ts = -2 * m.DAY_S + h * np.arange(int(8 * m.DAY_S / h) + 1)
+    data = np.empty((6, len(ts), 6))
+    for k, (a, period_d) in enumerate(
+        ((129900.0, 1.41), (190900.0, 2.52), (266000.0, 4.14), (436300.0, 8.71), (583500.0, 13.46),
+         (2.9e9, 30685.0))
+    ):  # fmt: skip
+        n = 2 * math.pi / (period_d * m.DAY_S)
+        data[k, :, 0] = a * np.cos(n * ts + k)
+        data[k, :, 1] = a * np.sin(n * ts + k)
+        data[k, :, 2] = 0.01 * a * np.sin(n * ts)
+        data[k, :, 3] = -a * n * np.sin(n * ts + k)
+        data[k, :, 4] = a * n * np.cos(n * ts + k)
+        data[k, :, 5] = 0.01 * a * n * np.cos(n * ts)
+    return m.EphemerisTable(t0=float(ts[0]), h=h, data=data, t_ref_et=0.0)
+
+
+def test_homotopy_end_points_are_the_models_they_claim(c890: m.Model890) -> None:
+    table = _synthetic_table()
+    ex, ey, ez = np.eye(3)
+    fit = m.Circles(ex, ey, ez, 436282.0, 8.35e-6, 0.0, 583450.0, 5.40e-6, 0.0, (0.0, 1.0))
+    c0 = m.circles_890(c890, fit, 0.0)
+    pairs = (
+        (m.homotopy_model(table, fit, 1.0), m.full_model(table)),
+        (m.constants_blend_model(table, c890, c0, fit, 1.0), m.homotopy_model(table, fit, 0.0)),
+        (m.constants_blend_model(table, c890, c0, fit, 0.0), m.model_890(c890)),
+    )
+    rng = np.random.default_rng(5)
+    for a, b in pairs:
+        for _ in range(20):
+            t = float(rng.uniform(0.0, 5 * m.DAY_S))
+            r = rng.normal(size=3) * 3e5
+            np.testing.assert_allclose(a.accel(t, r), b.accel(t, r), rtol=1e-12, atol=1e-20)
+
+
+def test_rotation6_maps_the_circular_model_onto_itself_after_one_cycle(c890: m.Model890) -> None:
+    ex, ey, ez = np.eye(3)
+    fit = m.Circles(ex, ey, ez, c890.a_t, c890.n_t, 0.0, c890.a_o, c890.n_o, 0.0, (0.0, 1.0))
+    times, rot = m.periodic_layout(fit, fit, 1.0, 0.0)
+    assert times[-1] == pytest.approx(c890.cycle_s, rel=1e-12)
+    fm = m.model_890(c890)
+    p0, _ = fm.body_states(times[0])
+    p1, _ = fm.body_states(times[-1])
+    np.testing.assert_allclose(rot[:3, :3] @ p0[m.I_TITANIA], p1[m.I_TITANIA], atol=1e-6)
+    np.testing.assert_allclose(rot[:3, :3] @ p0[m.I_OBERON], p1[m.I_OBERON], atol=1e-6)
+
+
+ARC_E1 = REFINE.parents[1] / "895_titania_oberon_realeph" / "arcs"
+
+
+@KERNEL
+def test_committed_e1_d1_arc_is_still_ballistic_with_seven_flybys() -> None:
+    info = json.loads((ARC_E1 / "E1_N3_D1.json").read_text())
+    z = np.load(ARC_E1 / "E1_N3_D1_final.npz")
+    times, x = z["times"], z["x"]
+    table = m.build_table(info["t_ref_et"], times[0] - m.DAY_S, times[-1] + m.DAY_S)
+    fm = m.full_model(table)
+    ev = m.shoot_eval(fm, times, x, stm=False)
+    assert ev.max_r < 1e-3 and ev.max_v < 1e-9  # 1 m, 1 mm/s
+    ez = np.asarray(info["circles"]["ez"])
+    fl = m.arc_flybys(fm, times, x, ez)
+    assert m.branch_signature(fl) == m.expected_signature(3)
+    alts = [f.alt_km for f in fl]
+    expected = [1588.6, 1144.2, 1764.4, 1082.6, 1752.9, 1075.8, 1582.7]  # note section 3.1
+    np.testing.assert_allclose(alts, expected, atol=1.0)

@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from scipy.integrate import solve_ivp
 
 import cyclerfinder.search.titania_oberon_realeph_895 as m
 
@@ -403,7 +404,8 @@ def stage_arc_loop(
         e = st.log[-1]
         log(
             f"{st.param}={e['value']:.6g} step {e['step']:.4g}: conv {e['converged']} "
-            f"it {e['iterations']} acc {e['accepted']} res {e['history'][-1]['max_r_km'] if e['history'] else float('nan'):.3g} km "
+            f"it {e['iterations']} acc {e['accepted']} "
+            f"res {e['history'][-1]['max_r_km'] if e['history'] else float('nan'):.3g} km "
             f"alts {[a[2] for a in e.get('flybys', [])]} "
             f"{'BRANCH ' + str(e.get('signature')) if e.get('branch_event') else ''}"
             f"({time.time() - t0:.1f} s)"
@@ -772,7 +774,8 @@ def stage_variants(args: argparse.Namespace) -> None:
             "this_t_c_et": table.t_ref_et + t_c,
         }
         cmp["review_flybys"] = [
-            {"body": r["body"], "t_s": r["t_from_start_d"] * m.DAY_S + rj["t_conj_et"] - table.t_ref_et,
+            {"body": r["body"],
+             "t_s": r["t_from_start_d"] * m.DAY_S + rj["t_conj_et"] - table.t_ref_et,
              "alt_km": r["alt_km"], "z_km": r["sc_out_of_plane_km"]}
             for r in rj["flybys"]
         ]  # fmt: skip
@@ -801,7 +804,9 @@ def stage_variants(args: argparse.Namespace) -> None:
             cmp[name] = {
                 "node_pos_diff_km": {"max": max(d), "median": float(np.median(d))},
                 "node_vel_diff_m_s": {"max": max(dv) * 1e3, "median": float(np.median(dv)) * 1e3},
-                "alt_minus_review_km": [f.alt_km - r["alt_km"] for f, r in zip(fl, rj["flybys"], strict=False)],
+                "alt_minus_review_km": [
+                    f.alt_km - r["alt_km"] for f, r in zip(fl, rj["flybys"], strict=False)
+                ],
                 "time_minus_review_s": [
                     f.t - c["t_s"] for f, c in zip(fl, cmp["review_flybys"], strict=False)
                 ],
@@ -815,7 +820,8 @@ def stage_variants(args: argparse.Namespace) -> None:
             mod = m.homotopy_model(table, circles, 1.0, **kw)
             ev = m.shoot_eval(mod, rt_all, rx_all, stm=False, rtol=1e-13)
             row = {"max_jump_m": ev.max_r * 1e3, "max_jump_mm_s": ev.max_v * 1e6,
-                   "median_jump_m": float(np.median(np.linalg.norm(ev.jumps[:, :3], axis=1))) * 1e3}  # fmt: skip
+                   "median_jump_m": float(np.median(np.linalg.norm(ev.jumps[:, :3], axis=1)))
+                   * 1e3}  # fmt: skip
             res = m.newton(mod, rt_all, rx_all)
             row["newton_converged"] = res.converged
             row["newton_iterations"] = len(res.history) - 1
@@ -831,16 +837,50 @@ def stage_variants(args: argparse.Namespace) -> None:
             cmp[f"review_nodes_in_{name}"] = row
             log(f"review nodes in this code, {name}: jumps max {row['max_jump_m']:.3f} m "
                 f"{row['max_jump_mm_s']:.4f} mm/s; Newton conv {res.converged}; "
-                f"alt diff {[round(a, 2) for a in row.get('alt_minus_review_km', [])]}")  # fmt: skip
+                f"alt diff {[round(a, 2) for a in row.get('alt_minus_review_km', [])]}"
+            )  # fmt: skip
         out["review_comparison"] = cmp
     for name in VARIANT_MODELS:
         out[name].pop("x", None)
     dump(f"variants_{tag}_N{n}{args.variant}.json", out)
 
 
+def stage_suppl(args: argparse.Namespace) -> None:
+    """Supplementary junction check with Radau (not pre-registered; reported only)."""
+    tag, n = args.epoch, args.cycles
+    table, circles, _t_c = epoch_setup(tag)
+    times, x = load_final(tag, n, args.variant)
+    model = m.homotopy_model(table, circles, 1.0)
+    fd = model.rhs()
+
+    def jac(t: float, y: np.ndarray) -> np.ndarray:
+        _, g = model.accel_grad(t, y[:3])
+        a = np.zeros((6, 6))
+        a[:3, 3:] = np.eye(3)
+        a[3:, :3] = g
+        return a
+
+    out: dict[str, Any] = {"epoch": tag, "cycles": n, "route": args.variant or "pre-registered"}
+    for rtol in (1e-12, 1e-13):
+        jj = []
+        for i in range(len(times) - 1):
+            sol = solve_ivp(fd, (times[i], times[i + 1]), x[i], method="Radau", rtol=rtol,
+                            atol=np.array([1e-9] * 3 + [1e-15] * 3), jac=jac)  # fmt: skip
+            jj.append(sol.y[:, -1] - x[i + 1])
+        ja = np.array(jj)
+        out[f"Radau_{rtol:g}"] = {
+            "max_r_m": float(np.linalg.norm(ja[:, :3], axis=1).max() * 1e3),
+            "max_v_mm_s": float(np.linalg.norm(ja[:, 3:], axis=1).max() * 1e6),
+        }
+        log(f"Radau {rtol:g}: {out[f'Radau_{rtol:g}']}")
+    dump(f"suppl_radau_{tag}_N{n}{args.variant}.json", out)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    ap.add_argument("stage", choices=["control", "p2", "arc", "verify", "d1periodic", "variants"])
+    ap.add_argument(
+        "stage", choices=["control", "p2", "arc", "verify", "d1periodic", "variants", "suppl"]
+    )
     ap.add_argument("--epoch", default="E1", choices=sorted(EPOCHS))
     ap.add_argument("--cycles", type=int, default=3)
     ap.add_argument("--variant", default="")
@@ -858,6 +898,7 @@ def main() -> int:
         "verify": stage_verify,
         "d1periodic": stage_d1periodic,
         "variants": stage_variants,
+        "suppl": stage_suppl,
     }
     stages[args.stage](args)
     log(f"done in {time.time() - t:.1f} s")
