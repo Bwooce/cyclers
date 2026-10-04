@@ -156,9 +156,10 @@ READ (all with printed digits):
   ("close to the resonance value of rho = 6 pi/7 = 2.6927937..."; this is row 3 of Table 3); Type I Fig. 10, near the resonance,
   rho = 2.692464347819371; Type II Fig. 11, rho = 3.116137168026786; Type II Fig. 12, near the resonance rho = pi,
   rho = 3.130357871578353.
-- Type II tori continued back to the RTBP (Fig. 13, p23): rho = 0.739476685309787 and rho = 0.858771705123796; their RTBP
-  centre-manifold energy levels (of the reduced Hamiltonian, not the RTBP value): -1.56702372645620 and -1.56376188467649 as printed in
-  the caption "Left, RTBP energy level: -1.56702372645620. Right, RTBP energy level: -1.56376188467649".
+- Type II tori continued back to the RTBP (Fig. 13, p23): rho = 0.739476685309787 and rho = 0.858771705123796. Fig. 13 caption: "Left,
+  RTBP energy level: -1.56702372645620. Right, RTBP energy level: -1.56376188467649". READ as RTBP energies (the caption says so);
+  INFERRED C = -2 H = 3.1340474529124 and 3.1275237693530, inside the L2 Halo range (small Halo orbits near L2), consistent with the
+  centre-manifold phase portraits of that figure.
 - Appendix (p25): planar tori H1 rho = 0.522687812628674 and H2 rho = 0.258684108104417 (Fig. 16); V1 rho = 0.651014628070470
   (Fig. 17); V2 rho = 0.585297052915989 (Fig. 18).
 - Largest eigenvalue of the tori (p22): Type I "ranges from 2300 to 318600 (approximately)", Type II "from 23400 to 794260
@@ -264,15 +265,17 @@ rotation numbers are unchanged by the rotation. Already tested by the project: t
 (`test_l1_replacement_orbit_matches_jorba_2020`) and the Sun's sense and phase conventions. Nothing in this paper is tested yet.
 
 D1. Table 2, the periodic orbit that replaces L2 in the BCP (NEW, and the most valuable control for the bicircular module at L2).
-Recipe: in `core/bcr4bp.py` (project frame) with the constants of section 1.2, take the RTBP planar Lyapunov orbit around L2 whose
-period is exactly T/2 = pi/omega_S = 3.3956 time units (epsilon = 0, traversed twice in T), and continue it in the Sun's mass
-(`mu_sun = epsilon * m_S`) from epsilon = 0 to 1 by multiple shooting over the Sun's period T = 6.7912 with the starting phase
-theta_sun0 = pi, as the project did for L1 (4 or more segments; the multiplier is 7.8e5 over one period, so use at least four).
-There are two crossings of epsilon = 0 in Fig. 2 (x about -1.18 and about -1.13 in the paper frame, i.e. x about +1.18 and +1.13 in
-the project frame, graph read; the same orbit at two phases). Start from the right-hand one (paper frame x about -1.13) and increase
-epsilon: on the right of Fig. 2 epsilon then rises to 1 (graph read). The left-hand crossing leads along a branch that folds at
-epsilon about 0.07, so ordinary continuation in epsilon from there stalls; a pseudo-arclength continuation, as the paper used, is the
-safe choice. Targets: real multipliers
+Recipe: in `core/bcr4bp.py` (project frame) with the constants of section 1.2, continue the periodic orbit that starts at L2 in the
+Sun's mass (`mu_sun = epsilon * m_S`) with the Sun's period T = 6.7912, the starting phase theta_sun0 = pi, and multiple shooting
+(at least four segments; the multiplier is 7.8e5 over one period), as the project did for L1. The paper's route (Fig. 2) goes from L2
+in the direction of increasing x in the paper frame (toward the Moon; decreasing x in the project frame),
+through negative epsilon to a local minimum, through the 1:2 resonant planar Lyapunov orbit at epsilon = 0 (x about -1.13 in the
+paper frame, +1.13 in the project frame, graph read), and up to epsilon = 1 at x about -1.10. That route needs a pseudo-arclength
+continuation, and `core/bcr4bp.py` must accept a negative `mu_sun` (check before starting). The paper (p7) lists the epsilon = 0
+orbit as a bifurcation point of the branch, so a Newton start exactly there is degenerate. Alternative: a symmetric shooting from the
+perpendicular crossing of the x axis of the epsilon = 0 orbit with a first step at epsilon > 0 (graph read: the right-hand branch
+then rises to 1). The left-hand crossing (x about -1.18) leads along a branch that folds at epsilon about 0.07 and is not the
+route. Targets: real multipliers
 776607.1046490772 and 1.660211640235458 (and their inverses), a unit-modulus pair 0.865694004478591 +- 0.500573561636870 i
 (arg +-0.5242611942478 rad); the orbit loops twice around L2 in T (Fig. 3). Agreement the digits allow: 15 significant digits are
 printed for the two real multipliers and the pair; the achievable agreement is set by conditioning (a 7.8e5 multiplier amplifies
