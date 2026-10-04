@@ -791,6 +791,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   was ours. `#544` and `#593`'s explanation of the POL1 gap (two different coefficient sets,
   amplified by instability) is withdrawn: the gap was these defects. New tests in
   `tests/core/test_qbcp.py`: the published points, the reversing symmetry, the parities.
+  **Second published control (commit `0fd0924d`):** the dominant Floquet multipliers of the
+  module's L1, L2 and L3 substitutes are 4.60182152e8, 2.39719685e6 and 3.37085539, against
+  4.60182151e8, 2.39719684e6 and 3.370855 printed in the 2018 paper's Table 1: agreement to
+  every printed digit, now a permanent test. **Fourth, minor defect (commit `46a96e36`, found
+  by the digest of the 2018 paper):** five tail entries of the Sun-position series had not
+  been reflected with the rest; effect 2e-8 in 389; a test now pins both columns to Andreu's
+  table. The digest is `docs/notes/2026-10-04-digest-jorba-cusco-farres-jorba-2018-two-periodic-models.md`.
   **Still to do:** triage every test and stored number pinned to the old module (in progress);
   rerun or stamp `#533`, `#538`, `#544`, `#593`; fix the frame-conversion helper
   `genome/qbcp_torus.py`; obtain Rosales, Jorba & Jorba-Cusco 2023 (DOI
