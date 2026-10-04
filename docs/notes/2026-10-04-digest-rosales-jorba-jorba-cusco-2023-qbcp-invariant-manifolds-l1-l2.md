@@ -162,10 +162,15 @@ Table 2 value). One time unit is about 4.348 days, so T_s is about 29.5 days, wh
 INFERRED, and important for the project: the mu of Table 3 is a rounding. The gamma values printed on p10 (section 3 below) are
 reproduced to 1e-16 by the Earth-Moon RTBP only with mu = 0.012150581623433623, and are off by 1.1e-10 with mu = 0.0121505816
 (our computation, see section 6, item C5). So the centre-manifold computation used the full mu, and Table 3's mu is a truncation
-of it. The project's `core/qbcp.py` default constants (`_QBCP_MU_EM`, `_QBCP_MU_S`, `_QBCP_A_S`, `_QBCP_OMEGA_S`) are the BCP
-constants of the 2018 paper (mu = 0.012150581623433623, m_S = 328900.54999999906, omega_S = 0.92519598551829646, a_S =
-388.81114302335106), not the m_s and omega_s of Table 3; the header of `core/bcr4bp.py` (lines 11 to 14) and its `_ANDREU_*` constants (lines 101 to 110) quote the Table 3 values. Whether the Fourier table was generated with the Table 3 or the Table 2
-constants is not stated in this paper. The effect on the published orbits is below the project's current 2e-8 agreement
+of it. The project's `core/qbcp.py` default constants (`_QBCP_MU_EM`, `_QBCP_MU_S`, `_QBCP_A_S`, `_QBCP_OMEGA_S`) are mu =
+0.012150581623433623, m_S = 328900.54999999906, omega_S = 0.92519598551829646, a_S = 388.81114302335106, which are the constants of
+Table 3 of the 2018 paper by Jorba-Cusco, Farres and Jorba; that paper's digest records that this table "serves both models" (the BCP
+and the QBCP). They are equal, to every printed digit, to the BCP constants of Table 2 of THIS paper, and they differ from the QBCP
+constants of Table 3 of this paper in m_s (2.3e-8 relative), omega_s (2.2e-12 relative) and mu (the rounding). The header of
+`core/bcr4bp.py` (lines 11 to 14) and its `_ANDREU_*` constants (lines 101 to 110) quote the Table 3 values of this paper.
+Whether Andreu's Fourier table was generated with this paper's Table 3 constants or with the 2018 paper's is not stated in either
+paper (the 2018 paper prints one set for both models, this paper prints a different set for the QBCP, and the two papers have an
+author in common). The effect on the published orbits is below the project's current 2e-8 agreement
 (INFERRED, not measured), but it is a loose end worth closing by trying both.
 
 ## 2. Tables, transcribed digit by digit
@@ -641,19 +646,31 @@ C1. Velocity at t = 0 from the printed Hamiltonian (new; also a correction to a 
 with y = p_x = 0, alpha_2(0) = 0 (sine series), so `x' = 0` and `y' = alpha_1(0) p_y - alpha_3(0) x`. With the project's tables
 (`core/qbcp.py`, alpha_1(0) = 1.0169220392610525, alpha_3(0) = 1.0196084040004443, both computed by us as sums of the cosine
 coefficients), the paper-frame velocity is y' = -6.2475e-6 for POL1 and +6.0180e-6 for POL2 (project frame: opposite signs),
-which is the size expected for an orbit of extent 1e-6 over a time of order one. The relation `v_y = p_y - x` (as used in the
-project note on Andreu's canonical-momentum states, which is the RTBP relation) would give -2.2170e-3 for POL1 and -3.0470e-3 for
+which is the size expected for an orbit of extent 1e-6 over a time of order one. The relation `v_y = p_y - x` (the RTBP relation, quoted in
+the session memory on Andreu's canonical-momentum states) would give -2.2170e-3 for POL1 and -3.0470e-3 for
 POL2, three orders of magnitude too large, so it must not be used with Table 4 in the QBCP. `core/qbcp.py` takes (x, p) as the
-state, so the module is not affected; any helper that converts Table 4 to velocities is.
+state, so the module is not affected. A grep of `src`, `tests` and `scripts` for the RTBP relation finds it applied to Table 4 in
+`tests/data/test_v1_bcr4bp.py` (lines 6 and 42 to 44: `_POL1_VY = _POL1_PY - _POL1_X`, with the paper-frame x = -0.8369141677649317
+unreflected) and described in `tests/genome/test_bcr4bp_genome.py` (lines 13 to 16), both as a seed for a corrector in the BCR4BP
+(not the QBCP), so the conversion is wrong in the QBCP sense for that seed, and, INFERRED, x = -0.8369 in the project frame (Earth
+at -mu, Moon at 1 - mu) is not near L1 (which is at +0.837 there). Both are seeds with free variables, not assertions on the
+printed values, but the seed is then not the published orbit. Other hits for `py - x` (`search/er3bp_periodic.py`,
+`search/earth_moon_resonant_families.py`, `tests/search/test_pertbp_strob_889.py`, `tests/search/test_er3bp_fitzgerald_golden.py`)
+are the RTBP/ER3BP relation in models where it is correct (not examined here).
 
-C2. Full Table 5 (new beyond the largest multiplier). Recipe: integrate the state variational equations of the project's QBCP over
-one period T_s = 2 pi/omega_s (6.7911938719 time units) from the project-frame state above, take the eigenvalues of the 6 x 6
-monodromy matrix. Compare as sets: abs 460182151.5759 and 2397196.843443; unit-modulus pairs with arguments +-2.871101174766 and
-+-2.981120162511 (L1), +-0.408977840813 and +-0.091483781904 (L2). Agreement the digits allow: the printed moduli have 13
-significant digits; the hyperbolic multiplier amplifies a 1e-16 rounding of the printed state by 5e-8 relative at L1 (4.6e8 times
-1e-16, INFERRED) but the STM eigenvalue itself depends smoothly on the state, so 1e-9 relative is a fair target and 1e-6 a safe
-first tolerance; the arguments should reach 1e-9 absolute (INFERRED; tighten after the first measurement). The project test uses
-only the 2018 paper's 9-digit largest multiplier.
+C2. Full Table 5 (new beyond the largest multiplier). Recipe: extend `test_substitute_multipliers_match_jorba_cusco_2018_table_1`,
+which already finds the substitute orbit by multiple shooting (24 segments) and builds the monodromy from the segment STMs, and
+compare the whole spectrum with Table 5, not only the largest modulus. Do NOT integrate the printed state once around: the project
+reproduces the printed state only to about 2e-8, the multiplier at POL1 is 4.6e8, so the error over one period is of order 10; the
+existing forward-propagation test already records a one-period miss of 2.1e-2 at POL2 (multiplier 2.4e6). Targets, compared as
+sets: moduli 460182151.5759 and 2397196.843443; unit-modulus pairs with arguments +-2.871101174766 and +-2.981120162511 (L1),
++-0.408977840813 and +-0.091483781904 (L2). Accuracy: a monodromy matrix formed as the product of segment STMs has entries of size
+4.6e8 at POL1, so machine epsilon times that, about 5e-8, bounds what can be recovered; 1e-9 for the elliptic arguments at POL1 is out
+of reach by that route. The 2021 paper (p6) warns against multiplying the differentials for this reason and recovers the spectrum
+from the multiple-shooting Jacobian instead; its Proposition 1 (p12) says the eigenvalues of the r-section problem are the r-th
+roots of the single-shooting ones, so an r-section generalised eigenproblem is the way to a better figure. Realistic tolerances
+(INFERRED): about 1e-7 relative on the modulus and 1e-7 absolute on the arguments at POL1; at POL2 (2.4e6) perhaps 1e-9; tighten after
+a first measurement. The project test now uses only the 2018 paper's 9-digit largest multiplier.
 
 C3. kappa_1 and omega_j (new, derived). `kappa_1 = ln(abs(lambda_1))/T_s` reproduces 2.93720564115629 and 2.16306748237037; the
 elliptic exponents `omega_j` equal the arguments over T_s plus integer multiples of omega_s (printed omega_1, omega_2 are
@@ -694,15 +711,20 @@ Not testable: the transfer figures; the Sun's sense in the QBCP (no alpha table 
 3. "the alpha_i are odd/even under (theta, x, y, z) -> (-theta, x, -y, z)": the source prints `(theta, X, Y, Z, P_X, P_Y, P_Z) ->
    (-theta, X, -Y, Z, -P_X, P_Y, -P_Z)`, the momenta flipping as well, and states the parity in words that disagree with the
    formula (see 1.3).
-4. "The Sun's perturbation is O(epsilon^2) in size (Coriolis and linear-order Sun terms cancel)": not found in this paper; not
-   a statement of the source. The indirect term cancels the first-order term of the Sun's potential about the barycentre in the
-   BCP (section 1.2), which is a different statement. Treat as unsupported.
+4. "The Sun's perturbation is O(epsilon^2) in size (Coriolis and linear-order Sun terms cancel)": not in this paper. The 2018 paper
+   states it for the BCP (digest of that paper: "the Coriolis term and the truncated Sun's potential cancel out" and the BCP is a
+   perturbation "with size O(m_S/a_S^3) ~ 0.0056", its p6), which is a size of the Sun's perturbation of order 6e-3, not an
+   "epsilon squared" scaling in this paper's notation. The older digest's "O(epsilon^2)" is a loose paraphrase of that and is
+   attributed there to the wrong paper.
 5. The digest's table header "Gimeno 2018" is a misattribution of the paper by Jorba-Cusco, Farres and Jorba (2018) (this paper's
    reference list: "Jorba-Cusco, M., Farres, A., Jorba, A.: Two periodic models for the Earth-Moon system. Front. Appl. Math.
-   Stat. 4, 32 (2018)"). The 2018 column of that table is the BCP constants; Table 3 here is the QBCP set (1.4).
+   Stat. 4, 32 (2018)"). The 2018 column of that table holds the constants of the 2018 paper's Table 3, which that paper uses for
+   both models; the Table 3 of the present paper is a different set, labelled the QBCP set (1.4). The two sets agree except in
+   mu (rounded here), m_s and omega_s.
 6. Table 4 values, the Table 3 constants and the period (6.7912, about 30 days) agree with the source to all printed digits.
-7. The project note on Andreu's canonical-momentum states ("convert via vy = py - x") should be revised: that relation is the RTBP
-   one; the QBCP relation is `y' = alpha_1 p_y - alpha_3 x` at the symmetry point (C1 above).
+7. The relation `v_y = p_y - x` for converting Table 4 (stated in the session's project memory on Andreu's canonical-momentum states,
+   which is not a file in the repository, and used by live tests, see C1) is the RTBP relation; the QBCP relation is
+   `y' = alpha_1 p_y - alpha_3 x` at the symmetry point (C1 above). This digest's own 2.1 and C1 now state it.
 8. The digest says halo ICs are not tabulated: confirmed for this paper; the rotation numbers it prints are in 2.6, 2.7, 4.
 
 ## 8. References cited by the paper that bear on this project (full citations as printed)
