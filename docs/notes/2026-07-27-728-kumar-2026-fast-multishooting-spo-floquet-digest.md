@@ -232,3 +232,12 @@ narrowly-scoped future capability gap, not a fix for the documented `#606`-`#646
 independent hit across this session's two digests plus the prior `#727` digest) that the foundational
 Kumar/Anderson/de la Llave 2022 CMDA whiskered-tori paper and the Haro et al. 2016 parameterization-method
 textbook are the two highest-priority acquisition gaps underlying this entire corpus thread.
+
+## Coordinator's notice (2026-10-04)
+
+This digest refers (about line 110) to the Umbriel-Titania torus connection as "this project's own
+confirmed novel CCR4BP finding". That is no longer true. The row was withdrawn on 2026-10-03
+(`#882`): the catalogued connection joined two arcs at different perturber phases and was not a
+trajectory of its own model; see `docs/notes/2026-10-03-882-umbriel-torus-row-adversarial-review.md`.
+The project has no confirmed-novel finding as of this date. Read the digest's remarks about that
+row accordingly. Found by a `#897` source reader.
