@@ -178,3 +178,5 @@ Everything below is INFERRED use; nothing was built or run.
 - (1.9) and (2.8): the bold/italic distinction between the vector v_inf and the speed V_inf is read from the image; the capital V_inf in (2.8) and the lower-case v_inf elsewhere I take to be the same speed.
 - (0.3): the logarithm prints e where (1.15) prints e*; taken as the same quantity.
 - p.457: "rho^(0)(t_1 mu)" in the matching paragraph is a missing comma on the page (t, mu).
+
+Note 2026-10-04 (Guillaume 1975a, paper I, now held): `docs/notes/2026-10-04-digest-guillaume-1975a-linear-analysis-second-species.md`. Correction to section 5 above: the guess that the 1973 coefficients are "expected at I, pp.253-254" is refuted; those pages hold the Conclusions only (programme statement, no formulas). The 1973 hyperbola and cubic coefficients are in neither 1975 paper. Paper I also supplies the BPM equations with O(mu^2) error (paper II's (1.15) in the narrower O(mu) regime), the I/O equations and Table I, and the necessary conditions V1 = V1' and beta1(0) not zero, which are now in the paper I digest.
