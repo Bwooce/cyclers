@@ -282,7 +282,9 @@ def _reconstruct_701_best_robust(
         torus, torus, seed, lobe_sign_u=-1.0, lobe_sign_s=-1.0, n_segments_dir=32
     )
     assert refined is not None
-    assert math.isclose(refined.residual_norm, 1.1159187446079244e-14, rel_tol=1e-3)
+    # The residual sits at the round-off floor (1.1e-14 on the machine that stored it, 3.4e-14 on
+    # another), so it is bounded, not pinned to a value.
+    assert refined.residual_norm < 1e-12
     departure_u = mg.manifold_state_at(
         torus,
         "unstable",
