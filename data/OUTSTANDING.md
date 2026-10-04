@@ -975,6 +975,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
   Chambers positive control: Duncan, Levison & Lee 1998, Michel & Valsecchi 1997.
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
+  **DOIs looked up 2026-10-04, third batch (Crossref; volume and first page matched by the
+  coordinator):** Hadjidemetriou & Christides 1975, Celest. Mech. 12:175 10.1007/BF01230210; Henon
+  1974a, Celest. Mech. 10:375 10.1007/BF01586865 (1974b not identified); Breakwell & Perko 1974,
+  Celest. Mech. 9:437 10.1007/BF01329325; Perko 1967, SIAM J. Appl. Math. 15:738 10.1137/0115063;
+  Deprit & Deprit-Bartholome, Bull. Astron. 3:315 (1968, not 1969) 10.3406/bastr.1968.14544
+  (Persee); Brjuno 1978, Celest. Mech. 18:51 (the "Bruno 1973" part) 10.1007/BF01233090; Waldvogel
+  1967, Bull. Astron. 2:295 (volume 2, not 3; in German) 10.3406/bastr.1967.14499 (Persee); Burdet
+  1968, ZAMP 19:345 10.1007/BF01601478; Henon & Heiles 1964, AJ 69:73 10.1086/109234; Greenzweig &
+  Lissauer 1990, Icarus 87:40 10.1016/0019-1035(90)90021-Z; Aarseth 1971, Astrophys. Space Sci.
+  14:118 10.1007/BF00649199; Peters 1968, Bull. Astron. 3:167 10.3406/bastr.1968.14529 (Persee);
+  Devaney 1981, Commun. Math. Phys. 80:465 10.1007/BF01941657; Hitzl & Henon 1977b, Acta Astronaut.
+  4:1019 10.1016/0094-5765(77)90004-2. Not found: Burdet 1969, Sperling 1961 (Crossref offers
+  Sperling 1969, Celest. Mech. 1:213, 10.1007/BF01228841, unconfirmed as the one cited), Henry et
+  al. 2023, Campagnola 2010, Peng & Xu ISSFD 2014 (Crossref offers Peng & Xu 2015, Astrophys. Space
+  Sci. 357, 10.1007/s10509-015-2236-4, a related paper), Michel & Valsecchi 1997.
   Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
