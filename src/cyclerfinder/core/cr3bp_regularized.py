@@ -23,8 +23,10 @@ Reference for the technique: Szebehely, "Theory of Orbits" (1967), §3.7
 "Regularization of motion near singularities"; the modern multi-primary form
 ``dt/ds = r1 * r2`` is the time factor of Aarseth & Zare (1974, Celest. Mech.
 10:185, dt = R1 R2 dtau), whose introduction credits Lemaitre (1955) for
-three-body regularisation. Only the time transformation is applied here, not
-their KS coordinate map, so the force law itself is not regularised. (An
+three-body regularisation; it is also the time law of Waldvogel's spatial
+Birkhoff regularisation (1967, Bull. Astron. 2:295). Only the time
+transformation is applied here, not their coordinate maps, so the force law
+itself is not regularised. (An
 earlier version of this docstring cited Stiefel & Scheifele 1971, Ch. III;
 that chapter is Kepler motion and the book has no r1 * r2 form.) Pure: math /
 numpy / scipy + cyclerfinder.core.cr3bp.
