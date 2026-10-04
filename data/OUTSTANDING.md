@@ -1087,6 +1087,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#899` (continuation through near-collision seeds) and `#924` (variational vectors through a
   pass). Heggie's Table III time-reversal rows (C/3 and R_f/a_f) are the portable published
   check for a three-body version, if one is built.
+  Formulation (Burdet 1967 digest `docs/notes/2026-10-04-digest-burdet-1967-regularization-two-body-problem.md`):
+  planar Levi-Civita first (a symplectic check is available); for 3D, KS or a Burdet-type form in
+  1/a (Burdet's printed form uses the eccentric anomaly and is elliptic-only, so it fails on a
+  hyperbolic moon pass; the agent's 1/a form is hand-derived and must be checked symbolically
+  before use). The transition matrix of a redundant-state form must be projected onto the
+  physical state. Tests add the radial-fall cycloid and a near-collision ellipse at e = 1 - 1e-8.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
   project's lanes treat the spacecraft as massless and the moons as prescribed, so Chambers's
