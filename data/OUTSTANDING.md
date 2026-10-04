@@ -1243,6 +1243,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   1/2 the orbit crosses y = 0 perpendicularly at T = 0.9242291 with x = 0.72101839 (printed
   0.72101839). Add a pseudo-arclength test through the fold with the printed rows as expected output.
   To acquire: Szebehely & Peters 1967, AJ 72:1187.
+  Henon 1974a (digest `docs/notes/2026-10-04-digest-henon-1974a-families-periodic-orbits-three-body.md`):
+  a third control set. Tables I and II (masses 3:4:5, E = -47/288, 14 rows in the angular momentum A)
+  reproduced by the agent's independent integrator (E to 5e-10, A to 5e-9, closure after rotating by
+  -phi to 9e-7; without the rotation the closure error is 0.26 to 1.8, a ready negative control).
+  Table II row A = 0 (Szebehely's orbit) has a collision at T/2, a published control for `#928`. No
+  connection to either Hadjidemetriou table (different masses and normalisation); Henon notes the
+  Hadjidemetriou & Christides path is one section of a three-parameter family. To acquire: Standish
+  1970, Szebehely 1970, Szebehely & Feagin 1973.
 - `#932` — registered 2026-10-04. **LANTOINE & RUSSELL 2011: A CR3BP CONTROL AND A TWO-MOON PATCH
   METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
   (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
