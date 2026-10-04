@@ -311,3 +311,49 @@ minimum-norm continuation picked this member of the six-parameter family; anothe
 pick a different one. INFERRED: the drift happened while the circles' mean motions changed by
 about 2e-4 (the `#890` cycle is 123.162 d, the URA111 one 123.187 d), which the open arc absorbs by
 changing its flybys rather than its period.
+
+### 2.3 Epochs E2 to E5, N = 3, pre-registered route
+
+All four converged at lam = 1 and pass (c), (d), (e) and (f) (`verify_E*_N3.json`). E2 converged
+at lam = 0 directly from the scaled seed; E3, E4 and E5 needed the constants homotopy, as E1 did.
+With E1 the five epochs span 2030-01-11 to 2045-06-23, so criterion (b) passes for this route. The
+flyby altitudes differ a great deal between epochs, for the route reason described in 2.2 (numbers
+in section 4).
+
+## 3. Deviation D1, declared before it was run: a periodic start at lam = 0
+
+Why. Section 2.2 shows that the pre-registered route reaches lam = 1 but lets the open arc drift
+along its six-parameter family while the circles' constants change, so the arcs it returns are not
+"near the `#890` orbit" in their flyby geometry, and the drift differs from epoch to epoch. The
+cause of the failed direct start is also identified (INFERRED, arithmetic): the seed's velocity
+scaling s q = 0.99976 is not a similarity of a Kepler orbit (which needs s^(-1/2) = 1.00002), about
+1 m/s of error, which a 5-day node interval on a 9-day e-folding orbit turns into the hundreds of
+kilometres seen at the seed's junctions. Neither point changes section 1; both are reported as
+faults of the pre-registration.
+
+D1 replaces only the lam = 0 starting arc. Everything after it (lam homotopy, Newton settings,
+branch check, criteria (c) to (f), extension (g)) is as pre-registered.
+
+* Periodic shooter at lam = 0: one cycle, 24 nodes at t_c + k h(sigma), h(sigma) = T_cyc(sigma)/24
+  with T_cyc(sigma) = 10 pi / (n_T(sigma) - n_O(sigma)) from the blended mean motions, anchored at
+  the conjunction t_c; continuity at the 23 interior junctions and the wrap condition
+  phi(x_23) = R x_0, R the rotation about the reference +z by n_T(sigma) T_cyc(sigma) (the circular
+  model maps to itself under that time shift and rotation). 144 equations, 144 unknowns, the same
+  Newton, step-halving and continuation rules as section 1.3, the same branch check on the tiled
+  orbit.
+* Control at sigma = 0: the unscaled `#890` orbit must satisfy the wrap condition to its
+  interpolation noise before any Newton step, and converge in at most two steps.
+* Continue sigma from 0 to 1 (the `#890` circles to the URA111-fitted circles). Independent check,
+  stated now: at sigma = 1 the periodic orbit's flyby altitudes should be within 50 km of
+  1,800 to 1,820 km (Titania) and 1,255 to 1,266 km (Oberon), the range READ from the review
+  (section 2 table and arc A's circular end, computed there with URA111 mean motions). A larger
+  difference is investigated before anything else is run.
+* The periodic orbit tiled N times is the lam = 0 seed of the open arc (same node layout as 1.3);
+  Newton at lam = 0, then the lam homotopy, at all five epochs, N = 3, 6 and 12 (9 if 12 fails).
+* Reported per arc in addition: the largest absolute difference between a flyby's altitude and the
+  periodic orbit's altitude at sigma = 1 ("nearness").
+* Every arc is labelled by route ("pre-registered" or "D1") and criterion (b) is evaluated per
+  route.
+* The Sun-off solve and the review-model comparison (section 1.5) are started from D1 arcs.
+* The `#890` reviewer's scratch code is still unread; it will be opened only after the first D1
+  arc is committed.
