@@ -927,8 +927,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   rerun with the corrected model; until then both "empty" results are conditional on the
   parametrisation.
 - `#909` — registered 2026-10-04. **PAPERS STILL WANTED (consolidated).** (Peng & Xu 2015, CMDA 123:279, RECEIVED 2026-10-04: the truncated copy is replaced by
-  a complete 25-page file and a full digest is in progress); Bolotin 2005, CMDA
-  93:343 (10.1007/s10569-005-2172-7); (Bolotin 2006, DCDS, RECEIVED 2026-10-04); Sanaga &
+  a complete 25-page file and a full digest is in progress); (Bolotin 2005, CMDA 93:343, RECEIVED 2026-10-04); (Bolotin 2006, DCDS, RECEIVED 2026-10-04); Sanaga &
   Howell 2025 (10.1007/s42064-024-0250-4); Peng & Xu 2015, Adv. Space Res. 55:1015
   (10.1016/j.asr.2014.11.013); Englander et al. 2026 (10.2514/1.A36704); Kumar, Anderson & de
   la Llave 2026 published version (10.1007/s00332-026-10276-6); no DOI: Kumar ASC 2026 Paper
