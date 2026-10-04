@@ -1634,7 +1634,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (one-round symmetric at mu = 0.0037257851523, a 13-digit target to reproduce by shooting the L3
   unstable manifold), accumulating in sequences as mu -> 0; continuation in mu alone therefore jumps,
   and a second parameter is needed to follow a branch. Its Jacobi constant includes mu(1 - mu), which
-  `core.cr3bp.jacobi_constant` omits, and it mirrors the primaries. Brjuno 1978 part III (digest
+  `core.cr3bp.jacobi_constant` omits, and it mirrors the primaries. Alvarez-Ramirez, Barrabes, Medina
+  & Olle 2019 (digest `docs/notes/2026-10-05-digest-alvarez-ramirez-barrabes-medina-olle-2019-ejection-collision-four-body.md`):
+  no physical relevance (collinear four-body), but its ejection-collision search transfers: label
+  orbits by one ejection angle on the unstable manifold of the collision, root-find a CONTINUOUS
+  section function rather than bisecting the discontinuous collision code, and use a high-order local
+  expansion of the manifold. The restricted-problem versions exist (Crossref, checked by the
+  coordinator 2026-10-05) and are the ones to get: Olle, Rodriguez & Soler 2018, CNSNS 55:298,
+  10.1016/j.cnsns.2017.07.013; 2020, CNSNS 90:105294 (families of n-ejection-collision orbits),
+  10.1016/j.cnsns.2020.105294; 2021, CNSNS 94:105550 (transit regions), 10.1016/j.cnsns.2020.105550;
+  2022, CNSNS 111:106410 (spatial, McGehee), 10.1016/j.cnsns.2022.106410; Arioli & Mireles James 2025,
+  Nonlinearity 38:045010 (branches and bifurcations, planar circular RTBP), 10.1088/1361-6544/adbda3;
+  Rodriguez del Rio, thesis (UPC, open access), 10.5821/dissertation-2117-351117; Llibre & Martinez
+  Alfaro 1985, Celest. Mech. 35:113, 10.1007/BF01227665. Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
