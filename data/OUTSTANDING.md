@@ -942,6 +942,23 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#890` model orbit from code that does not share the build's right-hand side. The agent must
   produce its own first arc BEFORE reading the reviewer's scratch code, then compare. No
   catalogue row: after it, an adversarial review, an external check, and the owner's say.
+- `#894` — **THIRD DEFECT, CONFIRMED BY COMPUTATION, NOT YET FIXED (2026-10-04, 21:45): THE URANIAN
+  V4 LANES COUNT THE MOONS' MASS TWICE.** Found by the French et al. 2024 digest from the
+  tables, confirmed by the coordinator. `PRIMARIES["Uranus"]` = 5794556.4 is Jacobson's SYSTEM
+  GM (planet plus moons; his planet-only value is 5793951.3). `data/validation/v4_uranus.py`
+  and `v4_uranus_strict.py` use it as the central mass and also add the five moons as
+  third bodies. Test: Titania and Oberon propagated from their URA111 states with that
+  arrangement drift 1,952 and 1,583 km from the kernel in 30 days (8,094 and 6,967 km in
+  123 days), against 0.0 and 0.8 km with the planet's GM at the centre. That is larger than
+  any flyby distance, and about ten thousand times the J2 correction these lanes were built
+  to capture. Every Uranian V4 and V4-strict result was computed this way; the rows that
+  rested on them are already withdrawn. **The registry's `PRIMARIES` comments call every
+  entry "system GM", but they are not alike:** Jupiter's and Saturn's values are the planet's
+  own GM (so those lanes do not double count); Uranus's and Neptune's are system values.
+  A test now pins what the Uranus value is. **To do:** fix with the rebuild of the V4 moon-tour
+  lane on an unsoftened propagator (the `#895` force model is the pattern: planet GM at the
+  centre, kernel constants, positive control on the moons' own motion); check any Neptune
+  lane that adds Triton; label each `PRIMARIES` entry as planet or system with its source.
 - `#894` — **BOTH PAPERS NOW HELD AND READ (2026-10-04, late). Saturn: CONFIRMED WRONG AND FIXED
   (commit `d84d3879`).** Iess et al. (2019) Table 1 caption: "un-normalized; reference radius
   60330 km". The lanes passed J2 = 16290.573e-6 with the 60,268 km physical radius, so the J2

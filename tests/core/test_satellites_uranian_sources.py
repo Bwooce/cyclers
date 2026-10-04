@@ -124,3 +124,23 @@ def test_keplers_law_on_the_geometric_axis_does_not_give_the_period(moon: str) -
 def test_registry_mean_motion_matches_the_printed_period(moon: str) -> None:
     printed_rate = 360.0 / URANIAN_PRINTED_PERIODS_DAYS[moon]
     assert SATELLITES[moon].mean_motion_deg_day == pytest.approx(printed_rate, rel=1e-6)
+
+
+def test_registry_uranus_gm_is_the_system_value_not_the_planet() -> None:
+    """Jacobson (2014) Table 12 prints two values: "System" 5794556.4 and, as quoted in Jacobson &
+    Park (2025) Table 2, "Uranus" 5793951.3 +/- 4.4 km^3/s^2. The registry carries the SYSTEM
+    value, and it equals the planet's GM plus the five major moons' to within the planet's stated
+    uncertainty.
+
+    This matters: a propagator that uses ``PRIMARIES["Uranus"]`` as the central mass AND adds
+    the moons as separate bodies counts their mass twice (605 km^3/s^2, 1.04e-4 of the centre).
+    Measured 2026-10-04 (#894): Titania and Oberon propagated that way drift 1,952 and 1,583 km
+    from the URA111 kernel in 30 days, against 0.0 and 0.8 km with the planet's GM at the centre.
+    The Uranian V4 lanes (``data/validation/v4_uranus.py``, ``v4_uranus_strict.py``) do exactly
+    that. (For Jupiter and Saturn the registry value is the planet's own GM, so their lanes do
+    not double count; the registry's comments call all of them "system GM".)
+    """
+    moons = sum(_JACOBSON_2014_GM.values())
+    planet_gm_jacobson_2014 = 5793951.3
+    assert PRIMARIES["Uranus"] - moons == pytest.approx(planet_gm_jacobson_2014, abs=4.4)
+    assert moons / PRIMARIES["Uranus"] == pytest.approx(1.044e-4, rel=1e-2)
