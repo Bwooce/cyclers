@@ -1024,6 +1024,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   not matrizant papers; the "Peng & Xu ISSFD 2014" hit is the ASR paper already held. Not found: Henon
   1965, Standish 1970, Burdet 1969, Sperling 1961, Campagnola 2010 (probably a thesis), Henry et al.
   2023; NASA CR-769 has no DOI.
+  **DOIs, fifth batch 2026-10-05 (coordinator, Crossref):** Olle, Pacha & Villanueva 2004, CMDA
+  90:87 (Hopf bifurcation of the L4 vertical family; note page 87, not 89), 10.1007/s10569-004-1592-0;
+  Jorba & Olle 2004, Nonlinearity 17:691, 10.1088/0951-7715/17/2/019; Llibre 1982, Celest. Mech.
+  28:83, 10.1007/BF01230662; Llibre & Simo 1980, Math. Ann. 248:153, 10.1007/BF01421955; McGehee 1974,
+  Invent. Math. 27:191, 10.1007/BF01390175; Devaney 1980, Invent. Math. 60:249, 10.1007/BF01390017.
   Ollé 1989 thesis REPLACED 2026-10-05 (owner: the thesis is not scanned) by Ollé & Simó 1990,
   "Bifurcation of the families of periodic orbits of the restricted three-body problem", Rev.
   Colombiana Mat. 24:49-60 (open access via the journal archive; no Crossref DOI found), and Ollé &
