@@ -953,6 +953,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
   (Hill four-body Sun position); conditional on Earth-Moon halo work (`#926`(d)): Davis et al.
   2017 (AAS 17-826), Park & Howell AAS 23-118 and AAS 22-741, Sanaga & Howell AAS 23-227.
+  Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
   **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
   10.1007/BF01229557; Guillaume 1973 10.1007/BF01231414; Guillaume 1975 ("The restricted
   problem: an extension of Breakwell-Perko's matching theory") 10.1007/BF01650284; Perko 1977
@@ -1185,8 +1186,24 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Casoliva et al. say fails for tight orbits; (3) what the held papers do NOT show is the
   same for chains with more than one flyby per period, for the Ross-RT families above
   Jacobi constant 3, or for two moons. Barrabes & Gomez 2002 and 2003 (both held) carry the
-  seed formulas and must be digested before a build. The earlier finding follows, kept as
-  the record of the mistake:
+  seed formulas and must be digested before a build.   **CONTROLS AND FIRST BUILD STEP, added 2026-10-04 from the Henon 1968, Bruno 1981 and Perko
+  digests (agents' reproductions, not yet checked by the coordinator).** Step 1 is a
+  `second_species_arcs` module that solves Henon 1968's timing equation (eq. 30, with the e = 1
+  factorisation) and returns a, e, x0, x1, C, V, the collision velocities V1 and V2, Bruno's W and
+  the demanded turn (sin(delta/2) = |V1|/V). Sourced tests: Henon 1968 Tables 1-9 (324 rows,
+  `docs/notes/2026-10-04-digest-henon-1968-consecutive-collision-orbits.md`; three printed
+  defects as strict expected failures) and the parabolic-orbit control (tau/pi 0.163926,
+  C -0.720283); Bruno 1981 Table I (23 rows, to 1e-6) and Table III (11 Earth-Moon arcs, a from
+  0.52411 to 0.71333, all reproduced; C25 printed 0.57888 against 0.57889);
+  `docs/notes/2026-10-04-digest-bruno-1981-periodic-flybys-of-the-moon.md`. Do not copy
+  Bruno's Table IV W column or his Table II mu values (inconsistent with his own eq. 12 and with
+  modern values). Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
+  through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
+  impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
+  Moon's radius is 1737 km), so some are expected to impact. The demanded turn is exactly zero
+  at e = 0 or integer eta/pi (tangency or resonance), which supports the `#906` amendment.
+  The earlier finding follows, kept as the record of the mistake:
 - `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
   1.5e-3 (strips, 2002) and compute periodic orbits at 1e-4; Gomez & Olle part II works at
