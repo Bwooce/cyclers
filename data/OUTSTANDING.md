@@ -926,8 +926,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Sun phase. Add speed as an independent variable and Sun-phase or true-anomaly coverage;
   rerun with the corrected model; until then both "empty" results are conditional on the
   parametrisation.
-- `#909` — registered 2026-10-04. **PAPERS STILL WANTED (consolidated).** Peng & Xu 2015, CMDA
-  123:279 (10.1007/s10569-015-9635-2; held copy is a truncated file); Bolotin 2005, CMDA
+- `#909` — registered 2026-10-04. **PAPERS STILL WANTED (consolidated).** (Peng & Xu 2015, CMDA 123:279, RECEIVED 2026-10-04: the truncated copy is replaced by
+  a complete 25-page file and a full digest is in progress); Bolotin 2005, CMDA
   93:343 (10.1007/s10569-005-2172-7); Bolotin 2006, DCDS (10.3934/dcds.2006.14.235); Sanaga &
   Howell 2025 (10.1007/s42064-024-0250-4); Peng & Xu 2015, Adv. Space Res. 55:1015
   (10.1016/j.asr.2014.11.013); Englander et al. 2026 (10.2514/1.A36704); Kumar, Anderson & de
