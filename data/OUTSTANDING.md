@@ -983,6 +983,36 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the seed table of Casoliva et al. AIAA 2008-6434, and Bolotin 2006 (DCDS 14:235, received
   2026-10-04: general results for time-periodic Hamiltonian systems with a small Newtonian
   singularity, the nearest theory to the two-moon case).
+- **`#919` DONE (2026-10-04):** section 8 of the `#897` note covers the papers previously set aside.
+  Verdicts: useful as methods: Rinker, Jacobson & Wood 1976 (correction-budget statistics),
+  Villegas-Pinto et al. 2023 (the invariant torus a periodic orbit becomes when a second
+  frequency is added), Machado & Wilde 2020 (taxi rendezvous); possibly useful: Venigalla et al.
+  (missed-correction margin), Carruba et al. (clone ensembles as a robustness check), Vergaaij
+  (connection search order for `#650`), Ozaki (for `#899` two moons only), Zhang et al. 2025
+  (dynamic programming error bound, for `#918`); not useful: the rest, each with a reason about
+  the method. No set-aside paper contradicts the project's code. Three new proposals follow.
+- `#921` — registered 2026-10-04 (`#919` Q1). **A PER-ENCOUNTER CORRECTION BUDGET FROM A STATED
+  NAVIGATION MODEL** (Rinker, Jacobson & Wood 1976, eqs. 3-23, reproduced against their Table 2;
+  Venigalla et al.'s missed-correction margin inside it; Putnam & Braun's 0.16-0.4 degree Earth-
+  entry tolerance as an acceptance criterion for taxis), for the `#895` arcs, the `#890` orbit and
+  the Russell & Strange rows. This is the maintenance budget both `#890` reviews demanded (`#907`).
+  (a) 20 percent, needs the owner's ruling on V2 for unstable orbits; (b) 35 percent. 10 to 15
+  agent-hours.
+- `#922` — registered 2026-10-04 (`#919` Q2). **THE `#890` ORBIT AS AN INVARIANT TWO-TORUS** once
+  one more frequency is added (Oberon's eccentricity, then Titania's), computed as an invariant
+  curve of the stroboscopic map, and the `#895` real-ephemeris arcs compared with it. Answers
+  `#907`'s torus question. (a) 0; (b) 30 percent. 20 to 30 agent-hours, after `#916`'s
+  corrector exists.
+- `#923` — registered 2026-10-04 (`#919` Q3). **TAXI DELTA-V PER ENCOUNTER FOR CATALOGUED CYCLERS**
+  (Machado & Wilde 2020), a catalogue column for every row with an encounter excess speed. An
+  architecture question, not validation or discovery: (a) 0, (b) 0. 4 to 6 agent-hours.
+- `#924` — registered 2026-10-04. **CHAOS INDICATORS (FLI, then MEGNO) AS A SCREEN** (Froeschle,
+  Lega & Gonczi 1997; Cincotta & Simo 2000; both digested 2026-10-04): about ten lines on top of
+  the transition matrices the models already return; each model needs a regular and a hyperbolic
+  calibration case; reproduce the papers' controls first (the standard map for FLI; the
+  logarithmic potential band 1.98 to 2.035 for MEGNO). A positive indicator on a cycler is
+  EXPECTED (cyclers are hyperbolic) and disqualifies nothing; the use is on grids around a
+  quasi-cycler and in the capture sweeps (`#908`). Unproven for close encounters and short arcs.
 - `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
   PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
   `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;

@@ -283,3 +283,13 @@ A short, mostly historical survey that adds, for this project, one method it lac
 without the thresholds needed to use them, and with the caveat that a hyperbolic cycler is expected to show positive
 exponents) and a good reference list; it contains nothing on cyclers or flybys, and its collision-regularisation and
 Earth-Moon sections are too thin to act on.
+
+## Coordinator's correction (2026-10-04)
+
+This digest calls Hadjidemetriou (1975) "the existence theory behind the #890 two-moon lane". That is
+wrong. The paper is now held and digested
+(`2026-10-04-digest-hadjidemetriou-1975-restricted-to-general-continuation.md`): its continuation is in
+the mass of the THIRD body, the particle ("when the mass of the third body is small but not
+negligible", p. 155), with the primaries recoiling. `#890` kept the spacecraft massless and grew the
+moons' masses on prescribed circles, which the theorem does not cover. The description of the theorem
+itself in this digest is right.
