@@ -741,7 +741,51 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
-- `#884` — RESULT 2026-10-04, NO ROW YET (commits `b1777003`, `605d9082`; note
+- `#891` — registered 2026-10-04. **DEFECT IN A CORE MODEL: `core/bcr4bp.py` MOVES THE SUN THE
+  WRONG WAY ROUND. EVERY RESULT COMPUTED WITH IT IS A RESULT OF A NON-PHYSICAL MODEL.** Found by
+  the `#884` adversarial reviewer; confirmed by the coordinator with an independent computation
+  and against the published source. **The defect:** `_sun_position` puts the Sun at angle
+  `theta_sun0 + omega_sun * t` (counter-clockwise, omega_sun = +0.9252) in a frame that itself
+  rotates counter-clockwise at rate 1. That is a Sun with an inertial period of 14.19 days. The
+  real Sun is prograde with a 365.24-day period, so in the Earth-Moon rotating frame it moves
+  CLOCKWISE at 0.9252. Andreu (1998, section 1.3) says so in words: the angle is "clockwise
+  measured ... in synodical coordinates, the Sun rotates in reverse sense". **Coordinator's
+  test:** a bicircular integration in a non-rotating frame (Earth and Moon on circles at rate 1,
+  Sun prograde at rate 1 - 0.9252, direct plus indirect term), transformed to the rotating
+  frame and compared after 6 time units: the model with the Sun's sense reversed agrees to
+  4e-12; the model as written differs by 0.116, which is seven times worse than having no Sun
+  at all (0.017); with the Sun switched off the two frames agree to 2e-12 (control). No
+  mirror or time-reversal maps one sense onto the other. **Why it was never caught:** the model
+  has been in the tree since 2026-06-16 with tests of its three-body limit, its variational
+  equations and its published CONSTANTS, but no test against a published bicircular ORBIT or an
+  independent derivation; every later check compared the model with itself. `core/qbcp.py`
+  (coefficients from the printed tables) has the correct sense, and `core/ccr4bp.py` uses a
+  signed rate (negative for an outer perturber), so the two-moon work (`#882`, `#889`, `#890`)
+  is not affected. **Exposed:** all of `#884`; the bicircular validation tiers
+  (`data/validation/v0..v3_bcr4bp.py`); `genome/bcr4bp_*` (genome, continuation, torus,
+  systems); `genome/bct_transfer.py`, `search/cislunar_bct_search.py`, `core/wsb.py`;
+  `#292`, `#303`, `#304`, `#334`, `#412`; 16 scripts and 19 test files that import the model;
+  and 19 negative-result stamps in `data/empty_regions.jsonl` that mention the bicircular
+  model. The quasi-bicircular L1 substitute (`#593`) only used the bicircular model as a
+  starting guess and was converged in the coherent model, so its end result is not exposed.
+  No catalogue row rests on the model (the Genova-Aldrin row is labelled bicircular because the
+  PAPER's model is; the project did not recompute it). **To do, in order:** (1) fix the sense
+  in `_sun_position` and every other place that encodes it (`sun_forced_periodic_884.py` has
+  its own right-hand side; `genome/bcr4bp_torus.py` has the Sun's velocity and a frame rate of
+  `1 + omega_S`); (2) add the non-rotating-frame identity test and a test of the Sun's inertial
+  period; (3) add a positive control against a published bicircular ORBIT with printed numbers;
+  (4) run the whole test tree, and treat every pinned number that moves as a circular golden
+  to be recomputed or removed; (5) mark the 19 stamps METHOD-INVALID until rerun; (6) rerun
+  `#884`.
+- `#884` — **RESULT INVALID AS COMPUTED (2026-10-04, see `#891`): the bicircular model it used
+  moves the Sun the wrong way round.** The orbits below are periodic orbits of that non-physical
+  model. The coordinator's "independent check" re-integrated them with the same core model, so
+  it could not have seen this. What survives: the argument that equivalents exist at the
+  symmetric Sun phases does not depend on the sense. What does not: which branches reach
+  physical Sun mass, the folds, the stability numbers, the periselenes and the Melnikov
+  amplitudes. All must be recomputed after `#891`. The text that follows is kept as the record
+  of what was claimed. Original header: RESULT 2026-10-04, NO ROW YET (commits `b1777003`,
+  `605d9082`; note
   `docs/notes/2026-10-04-884-sun-forced-em-cyclers.md`; code `search/sun_forced_periodic_884.py`,
   13 tests). **Sun-forced equivalents of the catalogued Earth-Moon cycler families exist at the
   physical Sun mass in the bicircular model**, at the low-order commensurate members (period an

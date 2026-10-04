@@ -1,5 +1,16 @@
 # #884 -- Which catalogued Earth-Moon cycler families survive the Sun (BCR4BP)
 
+> **NOTICE, 2026-10-04 (`#891`): the results in this note are INVALID as computed.** The project's
+> bicircular model (`core/bcr4bp.py`), and this task's own right-hand side which was gated against
+> it, move the Sun counter-clockwise in the rotating frame. The real Sun moves clockwise there
+> (Andreu 1998: "in synodical coordinates, the Sun rotates in reverse sense"). An independent
+> integration in a non-rotating frame agrees with the sense-reversed model to 4e-12 and differs
+> from the model as written by 0.116 after 6 time units. Every orbit, fold, stability number,
+> periselene and Melnikov amplitude below belongs to the wrong-sense model and must be recomputed.
+> The existence argument at the symmetric Sun phases does not depend on the sense. Separately, the
+> literature check (`2026-10-04-884-literature-check.md`) found that Sun-perturbed continuation of
+> Earth-Moon cycler-type orbits is prior work (Leiva & Briozzo 2005, 2008).
+
 **Date:** 2026-10-04. **Code:** `src/cyclerfinder/search/sun_forced_periodic_884.py`, gates in
 `tests/search/test_sun_forced_periodic_884.py` (13 tests, about 15 s with 4 workers), staged driver
 `scripts/screen_884_sun_forced_em_cyclers.py`, outputs under `data/found/884_sun_forced_em_cyclers/`
