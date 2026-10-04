@@ -770,6 +770,35 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#892` — registered 2026-10-04. **SECOND DEFECT IN A CORE MODEL: `core/qbcp.py` EVALUATES TWO OF
+  ITS EIGHT FOURIER SERIES WITH THE WRONG PARITY, AND EVEN WITH THAT CORRECTED IT DOES NOT
+  REPRODUCE ITS PUBLISHED CONTROL POINT. THE COHERENT SUN-EARTH-MOON MODEL IS NOT VALIDATED.**
+  Found by the `#884` adversarial reviewer; the parity part confirmed by the coordinator.
+  **The defect:** Andreu (1998) Table 1.5 labels the series alpha_1 c, alpha_2 s, alpha_3 c,
+  alpha_4 c, alpha_5 s, alpha_6 c, alpha_7 c, alpha_8 s (read by the coordinator from the
+  printed page). `evaluate_alphas` evaluates alpha_2 as a cosine series and alpha_3 as a sine
+  series. The tables themselves agree with the print: the alpha_2 list starts with 0.0 and the
+  alpha_3 list with 0.99999. As shipped, alpha_2(0) = -0.0137 (should vanish) and alpha_3(0) =
+  1.0000 (should be 1.0196). **Coordinator's test (in-process patch, no file changed):** the
+  model's reversing symmetry (x, -y, z, -px, py, -pz, -t) fails by 2.2 after 2 time units as
+  shipped and holds exactly with the printed parities; the L1 periodic orbit computed by the
+  independent multiple-shooting corrector becomes symmetric at t = 0 (y = px = 0 to 1e-15), as
+  the published POL1 point is, where the shipped model gives y = -0.0102, px = +0.0102. **But
+  the corrected-parity orbit is still 2.3e-2 from the published POL1 point** ((x, py) =
+  (0.830727, 0.861773) against (0.836914, 0.839131)), no closer than the shipped model's
+  1.8e-2. So either there is at least one more discrepancy in the module, or the convention of
+  the published point is misread. The paper that prints POL1 (Rosales & Jorba 2023, Table 4)
+  is NOT HELD; the values came through a digest. `#544` and `#593` explained the gap as a
+  difference between two published coefficient sets; that explanation was never tested and
+  should now be treated as unsupported. **Exposed:** everything computed with the module:
+  `#533`, `#538`, `#544`, `#592`, `#593`, the QBCP torus and periodic-orbit searches, and the
+  frame-conversion helper in `genome/qbcp_torus.py` (which also carries the `#891` sense
+  error). No catalogue row rests on it. Today's one-coefficient fix (commit `6bda1772`) stands
+  but is minor beside this. **To do:** (1) obtain Rosales & Jorba 2023 (and Gimeno, Jorba et
+  al. 2018 for the coefficient tables with their stated conventions); (2) rebuild the model
+  check from the Hamiltonian as printed, with the reversing symmetry and a non-rotating-frame
+  comparison against the sense-corrected bicircular model as identity tests; (3) reproduce
+  POL1 and POL2 as the positive control before any QBCP result is used again.
 - `#891` — registered 2026-10-04. **DEFECT IN A CORE MODEL: `core/bcr4bp.py` MOVES THE SUN THE
   WRONG WAY ROUND. EVERY RESULT COMPUTED WITH IT IS A RESULT OF A NON-PHYSICAL MODEL.** Found by
   the `#884` adversarial reviewer; confirmed by the coordinator with an independent computation
