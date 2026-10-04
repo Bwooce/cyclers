@@ -1385,6 +1385,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the 11A a2 minimum printed -5200 is about -5.09e4 (a dropped digit); 11P "51 orbits" against 52 TR
   rows. For `#931`: use -a1 for k, treat |k - 2| below about 1e-3 as on the boundary, classify only
   re-corrected orbits, use relative tolerances.
+- `#934` — registered 2026-10-05. **`core.kepler.propagate` FAILS JUST ABOVE THE PARABOLIC BOUNDARY**
+  (found by the Danby 1965 digest agent; CONFIRMED by the coordinator). With mu = 1, periapsis 1, it
+  raises KeplerConvergenceError for e - 1 = 1e-8 at dt = 0.7, 2.5 and 9.0, but succeeds at e - 1 =
+  1e-6, 1e-10, 0 and -1e-8. Cause: alpha = -1e-8 is below the -1e-9 threshold, so the hyperbolic
+  log-form initial guess (Vallado Alg. 3.4, `kepler.py` around line 342) is used; with sqrt(-a) = 1e4
+  it starts Newton near chi = -2.7e5, outside the basin. It raises rather than returning a wrong
+  answer, so no stored result is silently wrong, but any caller that catches the error and skips the
+  case has a hole near e = 1. Fix: widen the near-parabolic band (scale the threshold with r0 and
+  dt), or retry with the parabolic guess when the hyperbolic guess fails; check the compiled twin
+  `_kepler_chi_newton` too. Test: a sweep of e - 1 from -1e-4 to 1e-4 (log-spaced) at several dt,
+  compared with `shepperd_stm` or a high-precision reference. Matters for `#928` near-collision work
+  and for any near-parabolic heliocentric arc.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
