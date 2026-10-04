@@ -1697,7 +1697,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   with its printed Table 1 2-EC angles at mu = 0.1, C = 8 reaching collision to r^2 about 1e-28 in the
   agent's run, and failing with a 1e-3 offset), and near-collision passes (r^2 about 1e-7) as a `#906`
   indeterminate-gate test. Its frame is the project's rotated by pi; its C includes mu(1 - mu). The
-  coordinator checked C_L1(0.5) = 4.25 in that convention. Brjuno 1978 part III (digest
+  coordinator checked C_L1(0.5) = 4.25 in that convention. Llibre 1982 (planar; digest
+  `docs/notes/2026-10-05-digest-llibre-1982-restricted-problem-small-mu.md`): for C < 2 and small mu
+  there is EXACTLY one m1-to-m2 ejection-collision orbit (the radial end of the second-species
+  family), plus at least two m1-to-m1 orbits for C > 0; no printed orbit or mu_0(C). Exact mu = 0
+  controls for a rotating-frame regularised propagator (they test the Coriolis term and the Jacobi
+  convention, which a nonrotating radial-fall test does not): the circular-orbit radii are the roots of
+  4r^3 - C^2 r^2 + 2Cr - 1 = 0 and the boundary radii those of r^3 - Cr + 2 = 0 (the coordinator
+  reproduced the printed values at C = 3.25 and 3.1 to all digits), and the radial orbit returns to
+  r = 2/C. Printed h_0 = 2^(2/3) in Fig. 1b does not reproduce (h = 0 there). Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
