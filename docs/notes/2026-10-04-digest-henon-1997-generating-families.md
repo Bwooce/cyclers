@@ -188,3 +188,5 @@ References worth obtaining (full citations from the book's list, pp.275-278; for
 - Broucke, R., "Periodic orbits in the restricted three-body problem with Earth-Moon masses", JPL Tech. Report 32-1168 (1968): the families compared in chapter 10. Not held.
 - Guillaume, P., Celest. Mech. 8:199-206 (1973b), 11:213-254 and 449-467 (1975): Not held.
 - Henrard, J., "On Poincare's second species solutions", Celest. Mech. 21:83-97 (1980): Not held.
+
+Note (2026-10-04, later): volume II is now held and digested in two parts, `docs/notes/2026-10-04-digest-henon-2001-generating-families-II-part-a-type-1.md` (chapters 11 to 16: general equations, type 1 partial and total bifurcations, the Newton approach, the general proof) and `docs/notes/2026-10-04-digest-henon-2001-generating-families-II-part-b-type-2.md` (chapters 17 to 23). The 'Not held' status of the quantitative bifurcation study in the reference lists above no longer applies to Henon 2001 itself. The type 1 results settle the junction cases left open in this volume's chapter 8 up to n = 6.
