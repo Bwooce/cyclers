@@ -982,6 +982,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   A stated risk: the p:q generating orbits are bifurcation orbits between first and second
   species (Bruno & Gomez 2003; Gomez & Olle II, pp. 151-152), where a demanded-turn test can
   mislead. Wait for the synthesis note and the Gomez & Olle digest before dispatching.
+  **Gomez & Olle digest now in** (`docs/notes/2026-10-04-digest-gomez-olle-1991-second-species-circular-elliptic-I-II.md`):
+  (1) their first-order matching gives the flyby periapsis r_p = mu (e - 1)/v_inf^2 with
+  sin(turn/2) = 1/e, which is exactly the relation in the project's demanded-turn gate, so
+  the gate's required periapsis IS the second-species periapsis at first order; (2) the
+  theory's validity needs mu |ln mu| / v^3 small and r_p well below mu^(1/2): the `#890`
+  chain is outside it (1.09, and 2,126 km against 2,736 km), so the one-moon asymptotics can
+  neither support nor reject that orbit; (3) WHICH CATALOGUE FAMILIES ARE SECOND SPECIES: the
+  Casoliva rows (Jacobi constant 0.49 to 2.76, periods multiples of the lunar period) lie in
+  the second-species band; the Ross-RT and Braik-Ross cyclers (3.13 to 3.18) do not. So a
+  second-species generator would produce Casoliva-type cyclers, not the C11/C21/C32
+  families (the digest's pairing is INFERRED, untested); (4) the project lacks a generating-arc
+  enumerator, the first-order seed integrals, an encounter diagnostic against the asymptotic
+  prediction, and mass-continuation monitors; it has a two-body transition matrix and a
+  mass-continuation routine; (5) Part II computes at mass ratio 1e-6 only and describes no
+  corrector, so there is no published recipe for the continuation in mass.
 - `#899` (earlier text) — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping and the Gomez
   & Olle digest). **SECOND-SPECIES THEORY AS A GENERATOR OF CYCLERS.** Enumerate collision arcs
   and admissible chains by symbolic sequence (Henon; Font, Nunes & Simo; Bolotin & MacKay's
