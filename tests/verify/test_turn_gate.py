@@ -319,6 +319,7 @@ def test_withdrawn_rows_fail_at_every_encounter(path: Path) -> None:
         assert len(rep.encounters) == 2
         for e in rep.encounters:
             assert not e.turn_feasible
+            assert e.status == "fail"  # #937: far outside the tidal band (scale < 0.25 deg)
             assert e.ratio > 1.5
             assert e.required_alt_km < 0.0  # inside the moon
 

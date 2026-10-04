@@ -175,6 +175,15 @@ Attempts to break it:
    solution of the full restricted problem: the Earth's pull during a multi-day transit of the
    sphere is part of the turn. These orbits are ballistic by construction (closure 1.6e-10,
    Jacobi drift 4.5e-13). The test counts neither for nor against orbits 3 and 7.
+   **CORRECTION 2026-10-05 (`#937`):** the numbers above are a measurement error, not a gate
+   failure. The "demanded" angles are between Moon-relative velocities expressed in the ROTATING
+   axes at sphere entry and exit (the axes turn 13.2 degrees per day over the 0.9 to 2.1 day
+   transits), and the "available" angles are the osculating hyperbola's turn at the pass radius,
+   not the bend at the 100 km floor that the gate uses. `verify/turn_gate_fullmodel.py`
+   reproduces all six (90.6/67.0, 77.7/100.0, 23.7/12.6, 32.1/19.1). In inertial axes: 7-3b/c
+   closest pass 18.4 demanded against 70.0 at the floor; orbit 7 62.6 / 119.9 and 101.5 / 113.8;
+   orbit 3 11.9 / 59.9 (both passes). Every pass passes; the non-Moon part of each turn is 0.2 to
+   2.6 degrees. "Earth's pull during the transit" is not the explanation.
 7. **Sun sensitivity.** The model is the circular restricted problem only. Orbit 7's largest
    multiplier is 1.06e4 per 54.6 d, an error-doubling time of 4.1 d (orbit 3: 6.3 d; 7-3b/c:
    14.0 d; 1-2e: 27.6 d; 2-1a, 3-2c and 1-2b: no exponential growth). The Sun's tidal
@@ -238,4 +247,5 @@ Two side findings:
   neighbours, (iii) run a Sun-forced continuation (`#905` style). Given k about -1e4 the expected
   value of (iii) is low.
 - The turn gate needs a positive control before it is used on CR3BP orbits: as built here it
-  fails the published 7-3b/c orbit.
+  fails the published 7-3b/c orbit. (Resolved by `#937`: the hand-built check differenced
+  rotating-axes vectors; measured in inertial axes, 7-3a/b/c and orbits 3 and 7 all pass.)

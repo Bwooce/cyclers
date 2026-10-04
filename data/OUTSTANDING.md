@@ -1690,8 +1690,48 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#448`; mark the empty-region entry superseded (ratchets that freeze its count will need the
   update, per the catalogue-edit rule). This is the bug-fix rule: buggy solvers produce false
   negatives AND false positives.
-- `#937` — registered 2026-10-05. **THE DEMANDED-TURN GATE FAILS A PUBLISHED, VERIFIED ORBIT.**
-  The `#899` scan review (`docs/notes/2026-10-05-899-second-species-scan-adversarial-review.md`) applied
+- `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
+  WITHDRAWAL STANDS.** (b) The review's "32.1 demanded against 19.1" is the angle between two
+  Moon-relative velocities expressed in the ROTATING axes at sphere entry and exit (the axes turn
+  13.2 degrees per day; the 7-3b pass spends 1.04 days inside 66,100 km), compared with the
+  osculating hyperbola's turn at the pass radius instead of the bend at the 100 km floor. All six of
+  the review's numbers are reproduced by that construction (7-3b 32.12/19.11; orbit 3 23.70/12.57;
+  orbit 7 90.61/66.99 and 77.7/100.01). Measured in inertial axes the closest 7-3b pass turns 18.38
+  degrees against 70.03 available (ratio 0.26); the Earth's tide contributes 0.2 to 2.6 degrees on
+  every hyperbolic pass checked, so the registration's "Earth's tide in a slow pass" explanation
+  was wrong too. `turn_gate.py` itself (patched-conic vectors) was never at fault. (c) New
+  `verify/turn_gate_fullmodel.py`: per pass, inertial window turn, osculating hyperbola at
+  periapsis, the turn split into the body's part and the rest (integrated), the rotating-axes angle
+  as a diagnostic, a KS cross-check below 1e-3 LD, and a verdict pass / fail (periapsis below the
+  floor) / indeterminate (`#906`: incomplete window, several periapses in one window, radial pass,
+  osculating ellipse at periapsis, or window turn beyond the floor bend with the periapsis above
+  it). `turn_gate.py` gained a `status` field: "indeterminate" when the tidal turn scale
+  (n r_soi / v)^2 reaches 1 rad or |demanded - available| is within 3 scales (factor a
+  convention: measured non-body part 0.3 to 1.9 scales on the hyperbolic controls);
+  `turn_feasible` is unchanged, so no lane verdict moves. (a) Controls (all by printed states;
+  `tests/verify/test_937_turn_gate_fullmodel.py`, 25 tests): Casoliva 7-3a/7-3b/7-3c, every pass
+  passes (11,000 to 51,000 km altitude, 1.4 to 1.6 km/s, ratios 0.02 to 0.26); Casoliva 1-2b,
+  1-2c, 1-2d, 1-2e, 2-1a, 2-1b, 3-2c never enter the sphere (closest 84,325 km, 3-2c): no
+  encounter, not evidence; Leiva & Briozzo 2005 seed passes (12,079 km, 1.76 km/s); Leiva &
+  Briozzo 2008 Table 1 (all 34 run, 3 in the tests): 32 indeterminate (every pass a slow temporary
+  capture: 2 to 14 periapses inside one window, or one periapsis with an osculating ellipse;
+  0.06 to 0.34 km/s at the sphere; osculating e < 1 at every periapsis), 032B_1 and 032B_2 fail
+  (433 km from the Moon's centre; the paper's own Table 5 gives 725 km for 032B_1_t4, also inside
+  the Moon); Oshima
+  2022 (84,000 km) and all seven Lantoine & Russell 2011 orbits (outside Ganymede's and Europa's
+  spheres) no encounter; Casoliva 2008 seed 32a at mu = 1e-6: KS agrees to 1e-13, window turn =
+  hyperbola turn. Negative controls: closed-form hyperbola below the surface fails; 150 degrees at
+  1 km/s at the Moon (bend 93.3) fails; a 180 degree reversal fails. Unsourced, from the `#899`
+  runlog: scan orbits 3 and 7 pass every lunar pass (correction added to the review note). (d)
+  Corrected gate on the six withdrawn rows (`data/withdrawn/`, unchanged): every encounter
+  `status` "fail", worst ratios 3.89 (umbriel-oberon) to 28.25 (titania-oberon), tidal turn scales
+  0.04 to 0.24 degrees, so no encounter is near the band. Independent full-model bound: flybys in
+  the Uranus-moon CR3BP at each encounter's V-infinity with two-body periapsis at 50 km, over 48
+  approach directions, turn at most 6.1 to 26.1 degrees (Oberon 8.2, Ariel 6.1 to 13.7, Titania
+  9.7 / 25.4, Umbriel 8.4 / 9.3 / 16.6) against 17.9 to 177.2 demanded. The withdrawal stands; the
+  decision on reinstatement remains the owner's. No other rotating-axes differencing found
+  (`two_moon_periodic_890`, `titania_oberon_realeph_895` use inertial axes).
+  Original registration: The `#899` scan review (`docs/notes/2026-10-05-899-second-species-scan-adversarial-review.md`) applied
   the `#888` demanded-turn gate to Casoliva's 7-3b/c orbit, which the pipeline reproduces to 1e-10 in
   the full circular restricted problem: it demands 32 degrees of lunar turn against 19 available at
   the pass radius, so the gate REJECTS a real orbit. A gate that fails its positive control cannot be

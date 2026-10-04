@@ -17,7 +17,8 @@ rotating-axes angle (32.12 reproduced here) against the turn of the
 osculating hyperbola at the pass radius (19.11 reproduced); in inertial axes
 the pass turns by 18.38 degrees, against 70.0 available at the 100 km floor.
 All six of the review's turn numbers (orbits 3 and 7 and 7-3b/c) are
-reproduced to 0.1 degree by the rotating-axes angle; see the ``#937`` note.
+reproduced to 0.1 degree by the rotating-axes angle (``#937`` in
+``data/OUTSTANDING.md``).
 
 What this module measures (per pass of the secondary, model units then km/s)
 ---------------------------------------------------------------------------
