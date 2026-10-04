@@ -327,3 +327,14 @@ numerical overlap.
   four-body problem", Astrophys. Space Sci. 358:1-17 (2015) (no DOI printed); Sweatman, Celest. Mech. Dyn. Astron. 82(2):179-201
   (2002), DOI 10.1023/A:1014599918133; Sweatman 2006, CMDA 94(1):37-65, DOI 10.1007/s10569-005-2289-8; Saari, "Collisions, rings,
   and other Newtonian N-body problems", CBMS 104 (2005), DOI 10.1090/cbms/104.
+
+## 9. Note added 2026-10-05: the 2021 analytic generalisation
+
+The same four authors' 2021 paper (J. Nonlinear Sci. 31:68, DOI 10.1007/s00332-021-09721-5) is the analytic version of this one, digested in
+`2026-10-05-digest-alvarez-ramirez-barrabes-medina-olle-2021-ejection-collision-two-dof.md`. It prints no numerics. Its Theorems 1 and 2 reproduce
+the counts of Section 5.1 above for orders 1 to 5 (two per order for n <= 4 from the all-1 and all-2 sequences; the four at order 5 are those two plus
+(1,2,1,2,1) and (2,1,2,1,2), Theorem 2 with two full turns), and the first ECOs not guaranteed by the theorems are those of order 6.
+Its eq. 7 is the 2019 eq. 6 up to a constant time rescaling, with the 2019 dv/ds line matching term for term. Its normalisation has
+v_c^2 = 2 V(theta_c), against v_c^2 = V(theta_c) here, so numbers must not be moved between the two. The planar restricted problem is outside the
+2021 hypotheses (rotating-frame Coriolis term, no total collision); the restricted-problem papers (Olle, Rodriguez and Soler, listed in the `#899` entry of
+`data/OUTSTANDING.md`) are not cited there and are not held.
