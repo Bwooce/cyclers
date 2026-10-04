@@ -17,7 +17,7 @@ Scope of the emitted script
 ---------------------------
 * Spacecraft: SILVER Lambert IC at Umbriel encounter epoch (J2000-inertial,
   Uranus-centered), with the v_out from a Lambert solve to the next moon.
-* ForceModel: Uranus central body with J2 (3.34343e-3, R_eq = 25559 km,
+* ForceModel: Uranus central body with J2 (3509.291e-6, R_eq = 25559 km,
   Jacobson 2014) + PointMasses on the four other classical Uranian moons
   (Miranda, Ariel, Titania, Oberon) sourced from URA111. Umbriel and
   Oberon are perturbers throughout the leg (matching the v4_uranus_strict
@@ -187,7 +187,7 @@ def generate_script(args: GmatUranusScriptArgs) -> str:
 %% N revs:     {args.n_revs}
 %% N cycles:   {args.n_cycles} (cycle period = {cycle_period_days:.4f} d)
 %% Launch:     {args.launch_epoch_utc_gmat}
-%% J2 = {args.j2:.5e}, R_eq = {args.r_eq_km:.1f} km (Jacobson 2014)
+%% J2 = {args.j2:.5e}, R_eq = {args.r_eq_km:.1f} km (French et al. 2024)
 %% Perturbers: {args.perturber_moons}
 %% URA111:     {DEFAULT_URA_PATH}
 %%

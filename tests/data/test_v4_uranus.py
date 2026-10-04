@@ -355,14 +355,18 @@ def test_v4_carries_notes_through() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_uranus_j2_is_jacobson_2014_value() -> None:
-    """URANUS_J2 carries the sourced Jacobson 2014 AJ 148:76 Table 4 value.
+def test_uranus_j2_is_the_french_2024_value_at_25559_km() -> None:
+    """URANUS_J2 is the French et al. (2024) value, which is referred to 25,559 km.
 
-    Anti-fabrication guard: if a refactor silently shadows the constant
-    with a stub (e.g. 0.0), this test fires. The Jacobson 2014 value is
-    3.34343e-3; the AJ table has 5 significant figures.
+    arXiv:2401.04634, abstract: J2 = (3509.291 +/- 0.412) x 10^-6 for a reference radius
+    R = 25559 km. A J2 is meaningless without its reference radius: until 2026-10-04 the constant
+    was 3.34343e-3 (a value normalised to about 26,200 km) paired with 25,559 km, which made
+    the J2 acceleration 4.7 percent too small.
     """
-    assert pytest.approx(3.34343e-3, rel=1e-6) == URANUS_J2
+    assert pytest.approx(3509.291e-6, rel=1e-9) == URANUS_J2
+    assert pytest.approx(25559.0, rel=1e-12) == URANUS_R_EQ_KM
+    # The physical quantity is J2 * R^2; the old mispairing was off by 4.7 percent.
+    assert abs(URANUS_J2 * URANUS_R_EQ_KM**2 / (3509.291e-6 * 25559.0**2) - 1.0) < 1e-9
 
 
 def test_uranus_r_eq_is_jacobson_2014_value() -> None:

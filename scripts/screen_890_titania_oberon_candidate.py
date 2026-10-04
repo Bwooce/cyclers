@@ -737,7 +737,7 @@ URA_KERNELS = (
     Path.home() / "GMAT" / "R2022a" / "data" / "time" / "SPICELeapSecondKernel.tls",
     Path.home() / "GMAT" / "R2022a" / "data" / "planetary_ephem" / "spk" / "uranian" / "ura111.bsp",
 )
-URANUS_J2 = 3.34343e-3  # Jacobson 2014 (as in data/validation/v4_uranus.py)
+URANUS_J2 = 3509.291e-6  # French et al. 2024, at 25,559 km (as in data/validation/v4_uranus.py)
 URANUS_R_EQ = 25559.0
 MOONS5 = ("Miranda", "Ariel", "Umbriel", "Titania", "Oberon")
 

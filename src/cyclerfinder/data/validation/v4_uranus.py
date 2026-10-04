@@ -37,8 +37,8 @@ two-body Kepler about Uranus, with moons placed by circular-coplanar Kepler
 ephemerides. V4 here adds, on top of the same scipy DOP853 integrator the
 V2 driver chain composes on:
 
-1. **Uranus J2 zonal harmonic** — Jacobson 2014 (AJ 148:76 Table 4):
-   ``J2 = 3.34343e-3``, equatorial radius ``R_eq = 25559 km``. At the
+1. **Uranus J2 zonal harmonic** — French et al. 2024 (ring occultations):
+   ``J2 = 3509.291e-6`` at reference radius ``R = 25559 km``. At the
    spacecraft's distance from Uranus (Umbriel SMA 265,986 km, Oberon
    SMA 583,511 km), the J2 perturbing acceleration scales as
    ``J2 * (R_eq / r)^2 * g`` -> ~5e-5 of the central acceleration at
@@ -128,13 +128,21 @@ from cyclerfinder.verify.turn_gate import EncounterTurn
 # SOURCED perturbation constants
 # --------------------------------------------------------------------------- #
 
-URANUS_J2: Final[float] = 3.34343e-3
-"""Uranus J2 zonal harmonic coefficient.
+URANUS_J2: Final[float] = 3509.291e-6
+"""Uranus J2 zonal harmonic coefficient, referred to ``URANUS_R_EQ_KM`` = 25,559 km.
 
-Source: Jacobson 2014, "The orbits of the Uranian satellites and rings, the
-gravity field of the Uranian system, and the orientation of the pole of
-Uranus", The Astronomical Journal 148:76, Table 4 ("Best-fit zonal harmonic
-coefficients of Uranus"). Same upstream JPL uses for URA111.
+Source: French et al. (2024), "The Uranus system from occultation observations (1977-2006):
+Rings, pole direction, gravity field, and masses of Cressida, Cordelia, and Ophelia", Icarus,
+arXiv:2401.04634, abstract: "J2 = (3509.291 +/- 0.412) x 10^-6 ... for a reference radius R =
+25559 km" (read 2026-10-04). Jacobson (2014), AJ 148:76, is reported to give 3510.7 +/- 0.7
+x 10^-6 at the same radius; that paper is not held and the figure is taken from secondary
+sources.
+
+Until 2026-10-04 this constant was 3.34343e-3, attributed to Jacobson 2014 Table 4 and paired
+with the 25,559 km radius. No one had read that table. The number is 4.7 percent below both
+values above at this radius; J2 R^2 for it matches theirs only at a radius of about 26,200 km,
+so it is an older value normalised to a larger radius. Every Uranian V4 run before that date
+used a J2 acceleration 4.7 percent too small. Found by the #890 adversarial review.
 """
 
 URANUS_R_EQ_KM: Final[float] = 25559.0
