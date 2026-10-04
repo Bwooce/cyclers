@@ -51,8 +51,9 @@ the 8A e = 0 row, likewise 11P and 11A.
 
 Marker choice. The repo marks tests longer than about 10 s ``slow`` (skipped by default,
 ``-m slow`` runs them). The full sweep of the 842 testable rows (the two faulty Table 18 rows
-excluded) takes about 25 s, so it is ``@pytest.mark.slow``; the default suite runs a sample (both ends of each table, every 10th row,
-every flagged row, every 8P row with e >= 0.815 within the sample) in about 5 s.
+excluded) takes about 25 s, so it is ``@pytest.mark.slow``; the default suite runs a sample
+(both ends of each table, every 10th row, every flagged row, the 8P rows with e >= 0.815 within
+the sample) in about 5 s.
 """
 
 from __future__ import annotations
