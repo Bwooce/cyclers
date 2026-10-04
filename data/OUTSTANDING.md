@@ -2101,8 +2101,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   member of the 3-2c family past a fold; 1 (3-2, C 2.6133047523, T 4 pi, asymmetric, two lunar passes,
   k_par about -1.06e4) is not matched to anything held but is NOT novelty-claimable (literature check
   blind; error doubling every 4.1 d; no Sun-forced counterpart). Still not reached: 7-3a, 1-2c, 1-2d,
-  2-1b. Earth-Moon planar scan: no new orbit, as expected. The turn gate failed a published orbit:
-  see `#937`. Barrabes, Mondelo & Olle 2009 (CMDA 105:197; digest
+  2-1b. Earth-Moon planar scan: no new orbit, as expected. (The review's claim that the turn gate
+  failed a published orbit was a rotating-axes measurement error; see `#937`.) Barrabes, Mondelo & Olle 2009 (CMDA 105:197; digest
   `docs/notes/2026-10-05-digest-barrabes-mondelo-olle-2009b-horseshoe-homoclinic-orbits.md`) concerns
   homoclinic connections to L3 (horseshoe-shaped), not the L1/L2 connections of Casoliva's Class 2
   (the coordinator's brief misdescribed it). Connections exist only at a discrete set of mu values
