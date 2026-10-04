@@ -41,9 +41,18 @@ Frame conventions (match cr3bp.py)
   * Primaries: Earth at (-mu, 0, 0), Moon at (1 - mu, 0, 0).
   * Synodic frame angular rate = 1 (nondim).
   * Sun position (synodic): (a_S cos(theta_S), a_S sin(theta_S), 0)
-    with ``theta_S = theta_S0 + omega_S * t``. omega_S is the Sun's frequency
-    *relative to the synodic frame* (so the synodic-frame Sun period is
-    ``2*pi/omega_S ~ 6.79 TU ~ 29.5 d``, the lunar synodic month).
+    with ``theta_S = theta_S0 - omega_S * t``. omega_S > 0 is the magnitude of
+    the Sun's rate *relative to the synodic frame* (so the synodic-frame Sun
+    period is ``2*pi/omega_S ~ 6.79 TU ~ 29.5 d``, the lunar synodic month).
+    The Sun moves CLOCKWISE in this frame: its inertial mean motion
+    ``n_S = 1 - omega_S`` is prograde but slower than the frame's own rate of
+    1. Andreu (1998) section 1.3: "in synodical coordinates, the Sun rotates in
+    reverse sense". ``theta_S0`` is the Sun's angle at ``t = 0``.
+    (#891: until 2026-10-04 this module advanced the Sun counter-clockwise,
+    which is a Sun with an inertial period of 14.19 days. Every result
+    computed with it before that date belongs to that non-physical model.
+    ``tests/core/test_bcr4bp_sun_sense.py`` now checks the sense against a
+    non-rotating-frame derivation.)
   * Standard incoherent direct+indirect Sun acceleration:
 
         a_Sun = -mu_S * (r - r_Sun) / |r - r_Sun|^3
@@ -168,8 +177,12 @@ def andreu_default() -> BCR4BPSystem:
 
 
 def _sun_position(t: float, system: BCR4BPSystem) -> tuple[float, float, float]:
-    """Sun position in synodic frame at nondim time ``t``."""
-    theta = system.theta_sun0 + system.omega_sun_nondim * t
+    """Sun position in synodic frame at nondim time ``t``.
+
+    The Sun regresses (moves clockwise) in the Earth-Moon rotating frame; see
+    the module docstring and #891.
+    """
+    theta = system.theta_sun0 - system.omega_sun_nondim * t
     a_sun = system.a_sun_nondim
     return a_sun * math.cos(theta), a_sun * math.sin(theta), 0.0
 

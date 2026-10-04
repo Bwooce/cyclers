@@ -1,13 +1,38 @@
 """Quasi-Bicircular Restricted 4-Body Problem (QBCP) Sun-Earth-Moon synodic dynamics.
 
-This implements Andreu's (1998) Quasi-Bicircular Problem (QBCP) using the 8 Fourier
-coefficient tables from Gimeno-Jorba (2018) Table 4.
+This implements Andreu's (1998) Quasi-Bicircular Problem (QBCP). The Hamiltonian is
+
+    H = (1/2) alpha_1 (px^2 + py^2 + pz^2) + alpha_2 (px x + py y + pz z)
+        + alpha_3 (px y - py x) + alpha_4 x + alpha_5 y
+        - alpha_6 [ (1 - mu)/r_pe + mu/r_pm + m_S/r_ps ]
+
+(Jorba-Cusco, Farres & Jorba, "Two periodic models for the Earth-Moon system", Frontiers in
+Applied Mathematics and Statistics 4:32, 2018, eq. 4; Andreu 1998 section 1.5), with
+(alpha_7, alpha_8) the Sun's position. alpha_6 multiplies the WHOLE Newtonian potential.
+
+The eight Fourier tables are those of Andreu (1998) Table 1.5, typed from the 2018 paper's
+Table 4, which carries more digits. alpha_1, alpha_3, alpha_4, alpha_6, alpha_7 are cosine
+series and alpha_2, alpha_5, alpha_8 are sine series (Andreu 1998: "The functions alpha_1,
+alpha_3, alpha_4, alpha_6, alpha_7 are even. The other ones, alpha_2, alpha_5, alpha_8 are
+odd").
 
 To maintain coordinate consistency with the repository's BCR4BP and CR3BP conventions
 (where Earth is at -mu and Moon is at 1-mu), the coordinates of the model are reflected
-(x -> -x, y -> -y) relative to the paper's default convention. This maps the Sun's
-rotation to the standard counter-clockwise direction and aligns the primary positions
-perfectly.
+(x -> -x, y -> -y) relative to the papers' convention. That is a rotation by pi: it does not
+change the Sun's sense of motion, which is clockwise in this frame.
+
+#892 (2026-10-04): three defects were corrected, and all results computed with this module
+before that date belong to a model that was not the QBCP.
+  1. alpha_2 was evaluated as a cosine series and alpha_3 as a sine series. The 2018 table's
+     column headers label them that way (a_k and b_k), against its own k = 0 entries (0 for
+     alpha_2, 0.99999... for alpha_3), its own text and Andreu's table.
+  2. #592 (2026-07-14) had moved alpha_6 from the whole potential to the Sun term alone, as a
+     factor 1/alpha_6. That is not the printed Hamiltonian.
+  3. The alpha_1 coefficient at k = 5 was typed, as the 2018 table prints it, as
+     -38.068581391005552e-08; Andreu's table has -8.06858139100555e-08.
+Positive control: with these corrections the L1 and L2 dynamical substitutes agree with the
+published POL1 and POL2 points (Rosales, Jorba & Jorba-Cusco 2023, Table 4) to 2e-8 and stay
+within 3e-6 of the three-body points, as the 2018 paper states; before, the miss was 1.8e-2.
 """
 
 from __future__ import annotations
@@ -19,8 +44,8 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
-# Fourier coefficients for alpha_1 to alpha_8 from Gimeno-Jorba (2018) Table 4.
-# Each entry is a list starting at k=0.
+# Fourier coefficients for alpha_1 to alpha_8: Andreu (1998) Table 1.5, with the extra digits of
+# Jorba-Cusco, Farres & Jorba (2018) Table 4. Each entry is a list starting at k=0.
 # We apply the coordinate reflections to the coefficients directly:
 # - alpha_1, alpha_2, alpha_3, alpha_6: unchanged (even/odd symmetry is preserved).
 # - alpha_4, alpha_5, alpha_7, alpha_8: reflected (multiplied by -1.0).
@@ -225,8 +250,9 @@ def evaluate_alphas(t: float, system: QBCPSystem) -> NDArray[np.float64]:
     theta = system.theta_sun0 + system.omega_sun_nondim * t
     alphas = np.zeros(9, dtype=np.float64)
     alphas[1] = _evaluate_alpha(theta, _COEFFS_ALPHA1, is_even=True)
-    alphas[2] = _evaluate_alpha(theta, _COEFFS_ALPHA2, is_even=True)
-    alphas[3] = _evaluate_alpha(theta, _COEFFS_ALPHA3, is_even=False)
+    # alpha_2 is a sine series and alpha_3 a cosine series (Andreu 1998 Table 1.5; #892).
+    alphas[2] = _evaluate_alpha(theta, _COEFFS_ALPHA2, is_even=False)
+    alphas[3] = _evaluate_alpha(theta, _COEFFS_ALPHA3, is_even=True)
     alphas[4] = _evaluate_alpha(theta, _COEFFS_ALPHA4, is_even=True)
     alphas[5] = _evaluate_alpha(theta, _COEFFS_ALPHA5, is_even=False)
     alphas[6] = _evaluate_alpha(theta, _COEFFS_ALPHA6, is_even=True)
@@ -327,22 +353,18 @@ def qbcp_eom(t: float, state_pm: NDArray[np.float64], system: QBCPSystem) -> NDA
     rpm3 = rpm2 * math.sqrt(rpm2)
     rps3 = rps2 * math.sqrt(rps2)
 
-    # Potential term derivatives w.r.t (x, y, z).
-    # Per Rosales-Jorba (2023) Eq. 3, alpha_6 scales *only* the Sun distance
-    # (Hamiltonian Sun term -m_S / (alpha_6 * R_PS)); the Earth/Moon Newtonian
-    # terms carry no alpha_6. So the Sun gradient enters with a 1/alpha_6 factor
-    # and Earth/Moon enter unscaled. (Earlier code multiplied the *entire*
-    # Newtonian potential by alpha_6, which is physically wrong -- alpha_6 is a
-    # Sun-distance coefficient -- though the error is only O(alpha_6 - 1) ~ 1e-3.)
-    msun_a6 = system.mu_sun / a6
-    pot_x = (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + msun_a6 * (x - xs) / rps3
-    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + msun_a6 * (y - ys) / rps3
-    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + msun_a6 * z / rps3
+    # Potential term derivatives w.r.t (x, y, z). alpha_6 multiplies the whole Newtonian
+    # potential (Earth, Moon and Sun), as in the printed Hamiltonian; see the module docstring.
+    pot_x = (
+        (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + system.mu_sun * (x - xs) / rps3
+    )
+    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + system.mu_sun * (y - ys) / rps3
+    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + system.mu_sun * z / rps3
 
     # Momenta derivatives
-    dpx = -a2 * px + a3 * py - a4 - pot_x
-    dpy = -a2 * py - a3 * px - a5 - pot_y
-    dpz = -a2 * pz - pot_z
+    dpx = -a2 * px + a3 * py - a4 - a6 * pot_x
+    dpy = -a2 * py - a3 * px - a5 - a6 * pot_y
+    dpz = -a2 * pz - a6 * pot_z
 
     return np.array([dx, dy, dz, dpx, dpy, dpz], dtype=np.float64)
 
@@ -368,43 +390,51 @@ def qbcp_potential_second_derivatives(
     rps5 = rps3 * rps2
 
     om1 = 1.0 - mu
-    # Per Rosales-Jorba (2023) Eq. 3 the Sun term carries a 1/alpha_6 factor
-    # while the Earth/Moon Newtonian terms are unscaled (see qbcp_eom). The
-    # second derivatives must scale identically: Earth/Moon unscaled, Sun / a6.
-    msun_a6 = system.mu_sun / a6
+    # Newtonian potential term second derivatives
     uxx = (
         -om1 * (1.0 / rpe3 - 3.0 * (x + mu) ** 2 / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * (x - 1.0 + mu) ** 2 / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
+        - system.mu_sun * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
     )
 
     uyy = (
         -om1 * (1.0 / rpe3 - 3.0 * y * y / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * y * y / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
+        - system.mu_sun * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
     )
 
     uzz = (
         -om1 * (1.0 / rpe3 - 3.0 * z * z / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * z * z / rpm5)
-        - msun_a6 * (1.0 / rps3 - 3.0 * z * z / rps5)
+        - system.mu_sun * (1.0 / rps3 - 3.0 * z * z / rps5)
     )
 
     uxy = (
         3.0 * om1 * (x + mu) * y / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * y / rpm5
-        + 3.0 * msun_a6 * (x - xs) * (y - ys) / rps5
+        + 3.0 * system.mu_sun * (x - xs) * (y - ys) / rps5
     )
 
     uxz = (
         3.0 * om1 * (x + mu) * z / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * z / rpm5
-        + 3.0 * msun_a6 * (x - xs) * z / rps5
+        + 3.0 * system.mu_sun * (x - xs) * z / rps5
     )
 
-    uyz = 3.0 * om1 * y * z / rpe5 + 3.0 * mu * y * z / rpm5 + 3.0 * msun_a6 * (y - ys) * z / rps5
+    uyz = (
+        3.0 * om1 * y * z / rpe5
+        + 3.0 * mu * y * z / rpm5
+        + 3.0 * system.mu_sun * (y - ys) * z / rps5
+    )
 
-    return (uxx, uyy, uzz, uxy, uxz, uyz)
+    return (
+        a6 * uxx,
+        a6 * uyy,
+        a6 * uzz,
+        a6 * uxy,
+        a6 * uxz,
+        a6 * uyz,
+    )
 
 
 def qbcp_stm_eom(

@@ -186,20 +186,28 @@ def test_qbcp_circular_limit_eom() -> None:
     # We will compute the EOM using QBCP's EOM at t=0.5 with patched alphas,
     # and compare it to BCR4BP's EOM.
     t = 0.5
-    theta = system.theta_sun0 + system.omega_sun_nondim * t
     a_s = system.a_sun_nondim
+    sys_bcr = bcr4bp.BCR4BPSystem(
+        mu=system.mu,
+        mu_sun=system.mu_sun,
+        a_sun_nondim=system.a_sun_nondim,
+        omega_sun_nondim=system.omega_sun_nondim,
+        theta_sun0=system.theta_sun0,
+    )
+    # The circular Sun, wherever the bicircular model puts it (its sense is tested separately
+    # in tests/core/test_bcr4bp_sun_sense.py; this test is about the structure of the equations).
+    sun_x, sun_y, _ = bcr4bp._sun_position(t, sys_bcr)
 
     # Patched alphas
     alphas_patched = np.zeros(9, dtype=np.float64)
     alphas_patched[1] = 1.0
     alphas_patched[2] = 0.0
     alphas_patched[3] = 1.0
-    alphas_patched[4] = system.mu_sun / (a_s**2) * math.cos(theta)
-    alphas_patched[5] = system.mu_sun / (a_s**2) * math.sin(theta)
+    alphas_patched[4] = system.mu_sun * sun_x / a_s**3
+    alphas_patched[5] = system.mu_sun * sun_y / a_s**3
     alphas_patched[6] = 1.0
-    # Match BCR4BP's circular Sun position: (a_S * cos(theta), a_S * sin(theta))
-    alphas_patched[7] = a_s * math.cos(theta)
-    alphas_patched[8] = a_s * math.sin(theta)
+    alphas_patched[7] = sun_x
+    alphas_patched[8] = sun_y
 
     # We temporarily patch qbcp.evaluate_alphas to return alphas_patched
     original_evaluate_alphas = qbcp.evaluate_alphas
@@ -220,13 +228,6 @@ def test_qbcp_circular_limit_eom() -> None:
         deriv_pv_qbcp = jac_m @ deriv_pm
 
         # Compare to BCR4BP EOM (which uses the circular approximation)
-        sys_bcr = bcr4bp.BCR4BPSystem(
-            mu=system.mu,
-            mu_sun=system.mu_sun,
-            a_sun_nondim=system.a_sun_nondim,
-            omega_sun_nondim=system.omega_sun_nondim,
-            theta_sun0=system.theta_sun0,
-        )
         deriv_pv_bcr = bcr4bp.bcr4bp_eom(t, state_pv, sys_bcr)
 
         # Compare
@@ -272,22 +273,22 @@ def test_qbcp_collinear_instability_matches_cr3bp() -> None:
 # ---------------------------------------------------------------------------
 # 6. POL substitutes are unstable: forward-prop non-closure is an artifact
 # ---------------------------------------------------------------------------
-def test_qbcp_pol_forward_prop_is_instability_dominated() -> None:
-    """Pin WHY the published POL1/POL2 substitutes do NOT close under naive forward
-    propagation, so the O(1) residual is not re-mistaken for a model bug.
+def test_qbcp_pol_forward_prop_closes_as_far_as_the_instability_allows() -> None:
+    """One forward period from the published POL1/POL2 states.
 
-    POL1/POL2 are dynamical substitutes of the violently unstable EM collinear points.
-    The monodromy over one synodic period T_s carries a huge unstable multiplier
-    (exp(rate * T_s) with rate ~2-3 and T_s ~6.79, i.e. 1e6-1e8), so a single forward
-    propagation of even a perfect IC amplifies any roundoff / model-instance offset to
-    O(1). The residual is therefore a metric artifact of the instability, NOT a defect
-    in qbcp_eom -- proper validation uses continuation + multiple shooting (see
-    data/OUTSTANDING.md, task #544). This test asserts both facts jointly: the forward
-    residual is O(1) AND the frozen instability is large enough to fully explain it.
+    History (#544, #892): this test used to assert that the one-period residual is of order 1
+    and to explain that by the instability alone. The residual was of order 1 because the model
+    was wrong (two series evaluated with exchanged parity, alpha_6 on the Sun term only). With
+    the model corrected, the published states agree with the module's own periodic orbits to
+    about 2e-8, and the one-period residual is that mismatch times the unstable multiplier:
+    measured 2.1e-2 at POL2 (multiplier about 1e6). At POL1 the multiplier is about 1e8, so
+    2e-8 is amplified to order 1 and the one-shot residual says nothing; the quarter-period
+    test above is the meaningful check there.
     """
     system = qbcp.qbcp_default()
     ts = system.sun_period_tu
-    for pol, x in ((_POL1_REFLECTED, _POL1_X), (_POL2_REFLECTED, _POL2_X)):
+    residuals = {}
+    for name, pol, x in (("POL1", _POL1_REFLECTED, _POL1_X), ("POL2", _POL2_REFLECTED, _POL2_X)):
         sol = solve_ivp(
             lambda t, y: qbcp.qbcp_eom(t, y, system),
             (0.0, ts),
@@ -297,21 +298,13 @@ def test_qbcp_pol_forward_prop_is_instability_dominated() -> None:
             atol=1e-12,
         )
         assert sol.success
-        residual = float(np.linalg.norm(sol.y[:, -1] - pol))
+        residuals[name] = float(np.linalg.norm(sol.y[:, -1] - pol))
 
         jac_a = _qbcp_frozen_jacobian(x, 0.0, system)
         rate = float(np.max(np.linalg.eigvals(jac_a).real))
-        amplification = math.exp(rate * ts)
+        assert math.exp(rate * ts) > 1e5, f"expected large unstable amplification at x={x}"
 
-        # The orbit is genuinely, strongly unstable ...
-        assert amplification > 1e5, (
-            f"expected large unstable amplification at x={x}, got {amplification:.2e}"
-        )
-        # ... which is exactly why the naive one-shot residual is O(1) rather than tiny.
-        assert residual > 0.5, (
-            f"forward-prop residual at x={x} unexpectedly small ({residual:.3e}); if this "
-            "ever holds, the instability-artifact reasoning in #544 needs revisiting"
-        )
+    assert residuals["POL2"] < 0.1
 
 
 # Andreu (1998), "The Quasi-bicircular Problem", PhD thesis, Table 1.5 (printed page 41), column
@@ -344,3 +337,78 @@ def test_alpha1_coefficients_match_andreu_1998_table_1_5() -> None:
     assert len(code) == len(_ANDREU_1998_TABLE_1_5_ALPHA1)
     for j, (got, printed) in enumerate(zip(code, _ANDREU_1998_TABLE_1_5_ALPHA1, strict=True)):
         assert math.isclose(got, printed, rel_tol=1e-14), (j, got, printed)
+
+
+# ---------------------------------------------------------------------------
+# #892: the model against published orbits and its own reversing symmetry
+# ---------------------------------------------------------------------------
+
+# Rosales, Jorba & Jorba-Cusco (2023), CMDA 135, Table 4: the dynamical substitutes of L1 and L2 at
+# t = 0 (y = z = px = pz = 0), here in this module's reflected frame. Jorba-Cusco, Farres & Jorba
+# (2018), section 5.1: "the orbits replacing L1 and L2 are small, their maximal distance to the
+# corresponding equilibrium point is of order O(10^-6)".
+_POL1_PUBLISHED = np.array([0.8369141677649317, 0.0, 0.0, 0.0, 0.8391311559808445, 0.0])
+_POL2_PUBLISHED = np.array([1.1556836078332600, 0.0, 0.0, 0.0, 1.1587306159501061, 0.0])
+
+
+def _max_position_excursion(state0: np.ndarray, system: qbcp.QBCPSystem) -> float:
+    quarter = 0.25 * system.sun_period_tu
+    worst = 0.0
+    for sign in (1.0, -1.0):
+        sol = solve_ivp(
+            qbcp.qbcp_eom,
+            (0.0, sign * quarter),
+            state0,
+            args=(system,),
+            method="DOP853",
+            rtol=1e-13,
+            atol=1e-13,
+            dense_output=True,
+        )
+        samples = sol.sol(np.linspace(0.0, sign * quarter, 400))
+        worst = max(worst, float(np.max(np.hypot(samples[0] - state0[0], samples[1] - state0[1]))))
+    return worst
+
+
+def test_published_substitutes_stay_within_1e5_of_their_point() -> None:
+    """From the published POL1 and POL2 states the position stays put for a quarter period
+    each way (2.6e-6 and 3.6e-6 measured), as the published description says it must.
+
+    The orbits are unstable by 1e8 and 1e6 per period, so the test stops at a quarter period.
+    With alpha_2 and alpha_3 evaluated with exchanged parity the excursion is larger than 1;
+    with alpha_6 on the Sun term alone it is 0.17 and 0.10.
+    """
+    system = qbcp.qbcp_default()
+    assert _max_position_excursion(_POL1_PUBLISHED, system) < 1e-5
+    assert _max_position_excursion(_POL2_PUBLISHED, system) < 1e-5
+
+
+def test_reversing_symmetry() -> None:
+    """(theta, x, y, z, px, py, pz) -> (-theta, x, -y, z, -px, py, -pz) is a symmetry of the
+    Hamiltonian (Jorba-Cusco, Farres & Jorba 2018, section 5). It fails by order 1 if a sine
+    series is evaluated as a cosine series or the reverse."""
+    system = qbcp.qbcp_default()
+    mirror = np.array([1.0, -1.0, 1.0, -1.0, 1.0, -1.0])
+    state0 = np.array([0.83, 0.02, 0.01, 0.01, 0.82, 0.02])
+    fwd = solve_ivp(
+        qbcp.qbcp_eom, (0.0, 2.0), state0, args=(system,), method="DOP853", rtol=1e-13, atol=1e-13
+    ).y[:, -1]
+    bwd = solve_ivp(
+        qbcp.qbcp_eom,
+        (0.0, -2.0),
+        mirror * state0,
+        args=(system,),
+        method="DOP853",
+        rtol=1e-13,
+        atol=1e-13,
+    ).y[:, -1]
+    assert np.linalg.norm(mirror * fwd - bwd) < 1e-9
+
+
+def test_alpha_parities_match_andreu_table_1_5() -> None:
+    """alpha_2, alpha_5, alpha_8 vanish at theta = 0 (sine series); the others do not."""
+    alphas = qbcp.evaluate_alphas(0.0, qbcp.qbcp_default())
+    for k in (2, 5, 8):
+        assert alphas[k] == 0.0
+    assert math.isclose(alphas[3], sum(qbcp._COEFFS_ALPHA3), rel_tol=1e-14)
+    assert alphas[3] > 1.019
