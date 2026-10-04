@@ -510,3 +510,14 @@ corpus, digested); Hénon 1997 (already flagged, `#730` item 29).
   paper's own list; no cross-paper duplicates found), none acquired this
   pass. No genuinely new item rose to the same corroboration level as the
   now-4x-flagged Broucke 1968 gap (which this task itself closes).
+
+## Addendum 2026-10-04 (`#884`): the two Leiva-Briozzo QBCP papers are not "unrelated"
+
+This digest calls the 2005 and 2008 Leiva & Briozzo CMDA papers "unrelated". For the atlas question
+it was answering that was fair. For the question of Sun-perturbed Earth-Moon cycler-type orbits
+they are the closest prior work: the 2008 paper (CMDA 101:225-245, DOI 10.1007/s10569-008-9134-9)
+extends families of the atlas into the Sun-Earth-Moon quasi-bicircular problem, and Ross &
+Roberts-Tsoukkas (AAS 25-621) cite it for a (3,2)-cycler member that "persists even under solar
+perturbation". Neither paper is held; both are wanted. See
+`docs/notes/2026-10-04-884-literature-check.md`.
+

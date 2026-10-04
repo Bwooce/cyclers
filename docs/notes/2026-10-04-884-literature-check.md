@@ -254,3 +254,24 @@ integration; not a continuation, not a family survey.
 - Leiva & Briozzo 2008 full text was not seen, so whether their 11 orbits and 25 arcs include the same
   resonances, and their stability results, is unknown.
 - Komachi's abstract could not be found; recheck after the conference proceedings appear.
+
+## Coordinator's check (2026-10-04)
+
+- The Ross & Roberts-Tsoukkas statement was checked in the held paper (filed in the private paper
+  corpus as `ross-roberts-tsoukkas-2025-stable-ballistic-earth-moon-cyclers-AAS-25-621.pdf`). The
+  printed sentence reads "previously identified by Leiva and Brizzolara,11 who demonstrated that a
+  perturbed version of the orbit persists even under solar perturbation"; reference 11 is Leiva &
+  Briozzo, CMDA 101:225-245 (2008), so the surname in the running text is a slip in the source and
+  the quotation above silently corrected it. The same paper's introduction says Leiva and Briozzo
+  "identified a single unstable orbit resembling one of the classes presented here".
+- The held 2006 Leiva-Briozzo atlas preprint was checked: its introduction and its closing section
+  both state that some of its unstable periodic orbits "can be extended from the Earth-Moon CR3BP
+  to the Sun-Earth-Moon Quasi-Bicircular Problem". So the prior work on this orbit class is
+  confirmed from a held source, not only from an abstract.
+- Springer blocks automated download of the four papers named in section 3; they are requested
+  from the owner by DOI.
+- Outcome for `#884`: no novelty label is available for "Earth-Moon cycler-type orbits persist
+  under the Sun" as a statement. What may be unpublished is the family-by-family survey in the
+  bicircular model (which members, which phases, the folds, the stability pattern). That needs the
+  2008 paper read in full and the 2022 synodic-resonant paper identified before it is said.
+

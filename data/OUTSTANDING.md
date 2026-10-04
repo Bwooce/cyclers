@@ -763,7 +763,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the forcing; continuation incomplete; command in the note, section 7); two family walks; the
   out-of-plane members; a cross-check in the coherent model; the literature check (Komachi, ASC
   2026, still not held). **No row** until the literature check, an adversarial review and the
-  owner's say. **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
+  owner's say. **LITERATURE CHECK DONE 2026-10-04 (commit `7a3066b7`, note
+  `docs/notes/2026-10-04-884-literature-check.md`, key quotes verified by the coordinator in held
+  papers): NOT NOVEL AS A CLASS.** Leiva & Briozzo (CMDA 2005 and 2008) extended Earth-Moon
+  periodic transfer orbits from the three-body problem to the Sun-Earth-Moon quasi-bicircular
+  problem (80 families, 11 periodic orbits, 25 periodic arcs, by the 2008 abstract), and Ross &
+  Roberts-Tsoukkas cite them for a (3,2)-cycler member that persists under the Sun. The method is
+  Boudad, Howell & Davis (2020) for the bicircular model and Brown et al. for the Hill model. Not
+  found in print: a family-by-family survey of these cycler families in the bicircular model.
+  That cannot be called unpublished until the 2008 paper and a 2022 Advances in Space Research
+  paper on synodic resonant orbits in the bicircular model are read. **Papers wanted:** Leiva &
+  Briozzo 2008 (DOI 10.1007/s10569-008-9134-9, priority) and 2005 (10.1007/s10569-004-7818-3);
+  Boudad, Howell & Davis, Adv. Space Res. 66(9):2194 (2020); the 2022 paper at ScienceDirect pii
+  S0273117722004781; Brown et al., J. Astronaut. Sci. 72:43 (10.1007/s40295-025-00517-3); Sanaga &
+  Howell (10.1007/s42064-024-0250-4). Komachi's ASC 2026 paper has no abstract or preprint yet.
+  Adversarial review dispatched, not back. **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
   Fourier coefficient typed as -38.068581391005552e-08; Andreu (1998) Table 1.5 prints
   -8.06858139100555e-08. The other 101 printed entries agree with the code. The fix moves the
   L1 substitute orbit by 8.6e-8, which is far below anything a stored result of `#533`, `#538`,
