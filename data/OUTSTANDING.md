@@ -651,7 +651,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   a tenth of it, random perturbations must fail); add R1 and an offset-convergence gate to the
   tests. The rest of `#886` (connections at Titan-Rhea and at Uranus) waits on this, and only
   objects that actually ENCOUNTER a moon are candidates for the catalogue.
-- `#888` — registered 2026-10-04 (found by `#885`, confirmed by the coordinator with independent
+- `#888` — GATE WIRED INTO THE VALIDATION LANE 2026-10-04 (commits `214315ec`, `f91c957a`,
+  `c6d60fed`, `5fafb584`; note `docs/notes/2026-10-04-888-turn-gate-wiring.md`; 41 new tests in
+  `tests/verify/test_888_turn_gate_wiring.py`). Every tier of the moon-tour lane (V2, V3, V4,
+  V4-strict, Uranus and Saturn copies), `correct._bend_feasible` and the `#558` scan's
+  `gate_candidate` now require the demanded turn to fit the available bend. Coordinator's own
+  run of the gated V2 on the six withdrawn rows: all rejected, worst ratios 3.9 to 28.3, required
+  periapsis inside the moon at every encounter; the `#890` chain is accepted (worst ratio 0.57).
+  The old frozen "passes" tests are kept as stored-data checks and each gained a rejection test.
+  **Still open:** no tier flies a flyby (each leg starts from its own Lambert departure), so a
+  continuous real-ephemeris propagation through the encounters does not exist yet; about 17 of
+  the 22 `#574` branches are turn-infeasible by a scratch run (not tested); scripts still on the
+  capacity-only gate (`titan_iapetus_corrector`, `enumerate_600`, `scan_816` and others) are not
+  wired; `run_330`, `run_566`, `run_574` were edited for the new condition but not rerun.
+  Original registration follows (found by `#885`, confirmed by the coordinator with independent
   code the same day). **OWNER DECISION 2026-10-04: WITHDRAWN ("withdraw the lies").** All six
   rows are out of `data/catalogue.yaml` (398 -> 392 rows) and preserved verbatim in
   `data/withdrawn/`; their nine evidence registrations are removed from `validate.py`; five
@@ -718,7 +731,35 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
-- `#884` — registered 2026-10-04 (owner: "register them all, in probability order"; NOT dispatched).
+- `#884` — RESULT 2026-10-04, NO ROW YET (commits `b1777003`, `605d9082`; note
+  `docs/notes/2026-10-04-884-sun-forced-em-cyclers.md`; code `search/sun_forced_periodic_884.py`,
+  13 tests). **Sun-forced equivalents of the catalogued Earth-Moon cycler families exist at the
+  physical Sun mass in the bicircular model**, at the low-order commensurate members (period an
+  integer or half-integer number of synodic months): 13 members of 9 families surveyed, 39 of 56
+  branches reach physical Sun mass. Three branches do not: they fold back near 0.39 to 0.40 of the
+  Sun's mass and reconnect to a different three-body orbit (C21 at 3:1, both near-perpendicular
+  phases; one C11 member at 5:2). Every forced cycler-class orbit is linearly unstable, as its
+  parent is; periselene stays inside the lunar sphere of influence, except that the Casoliva
+  2:1(b) low-perilune member's equivalents pass 1,440 to 1,453 km from the Moon's centre, below
+  its surface. Positive control against Brown et al. passes in the sense that transfers between
+  the two models (zero counts and symmetric-phase locations for two planar Lyapunov members; only
+  Melnikov zeros continue). **Coordinator's independent check:** nine stored orbits, one per
+  family and ratio, re-integrated segment by segment with the core propagator
+  (`core/bcr4bp.bcr4bp_eom`, not the agent's module): each closes to 1e-10 or better, each period
+  is an exact whole number of synodic months, and each periselene matches the stored value (one
+  differs by 11 km from sampling). **A caught error worth remembering:** the first pass used
+  continuation steps of 0.1 and every branch "reached" physical mass; a guarded rerun at 0.02
+  showed one had jumped branches. **Not done:** the 8:3 members (octupole-weak, about 0.5 percent
+  of the forcing; continuation incomplete; command in the note, section 7); two family walks; the
+  out-of-plane members; a cross-check in the coherent model; the literature check (Komachi, ASC
+  2026, still not held). **No row** until the literature check, an adversarial review and the
+  owner's say. **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
+  Fourier coefficient typed as -38.068581391005552e-08; Andreu (1998) Table 1.5 prints
+  -8.06858139100555e-08. The other 101 printed entries agree with the code. The fix moves the
+  L1 substitute orbit by 8.6e-8, which is far below anything a stored result of `#533`, `#538`,
+  `#544` or `#593` depends on (their gap to the published POL1 point is 1.8e-2 and is unchanged),
+  so no past search is rerun. A test now pins the column to the printed table.
+  Original registration follows (owner: "register them all, in probability order").
   **Discovery line 1 of 4 from the 2026-10-03 literature intake; coordinator's rough estimate of
   yielding a catalogue-worthy result: about 85%.** WHICH CATALOGUED EARTH-MOON CYCLERS SURVIVE
   THE SUN. Brown, Peterson, Henry & Scheeres (SIADS 24(1):346-375, held, digested) show that an
