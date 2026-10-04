@@ -561,3 +561,57 @@ def test_substitute_multipliers_match_jorba_cusco_2018_table_1(
         published = _POL1_PUBLISHED if name == "L1" else _POL2_PUBLISHED
         assert abs(nodes[0][0] - published[0]) < 1e-7
         assert abs(nodes[0][4] - published[4]) < 1e-7
+
+
+# Leiva & Briozzo (2008), "Extension of fast periodic transfer orbits from the Earth-Moon RTBP to
+# the Sun-Earth-Moon Quasi-Bicircular Problem", CMDA 101:225-245, Table 2: the eleven periodic
+# orbits they obtained in the QBCP. Columns: label, period in Sun periods, initial time t_i, x,
+# xdot, y, ydot, in their frame (Earth at +mu). This module's frame is rotated by pi, so all four
+# state variables change sign; the velocities are time derivatives of the QBCP coordinates.
+_LEIVA_BRIOZZO_2008_TABLE_2 = [
+    ("146A_t3", 3, 3.32657957, -0.833881068, -0.0658016572, -0.00176277248, 0.0366759999),
+    ("146A_t4", 3, 6.72217651, -0.833912081, -0.0658968551, -0.00207184538, 0.0369412534),
+    ("013_t3", 4, 1.92708674, -0.841058432, -0.0710601802, -0.0415648661, -0.0231934953),
+    ("013_t4", 4, 5.32268367, -0.841255581, -0.0709901229, -0.0417347404, -0.0224675395),
+    ("020_t1", 4, 1.37929365, -0.840861762, -0.0890884586, -0.0359687313, 0.0101908036),
+    ("020_t2", 4, 4.77489058, -0.841778236, -0.0889071284, -0.0358040150, 0.0138070651),
+    ("171_2_t3", 4, 1.73158585, -0.837975852, -0.0330903804, 0.0107192583, 0.0366443351),
+    ("171_2_t4", 4, 5.12718279, -0.838292090, -0.0322885877, 0.0111104984, 0.0373817317),
+    ("032B_1_t4", 5, 6.35357835, -0.824049581, -0.112839541, -0.0276354646, -0.0392670699),
+    ("053d_2_t3", 5, 3.28799799, -0.833040875, -0.103358636, 0.0365770176, -0.0240383643),
+    ("053d_2_t4", 5, 6.68359492, -0.832339057, -0.102739753, 0.0372962615, -0.0265393587),
+]
+
+
+def _leiva_briozzo_closure(
+    row: tuple[str, int, float, float, float, float, float], t0: float
+) -> float:
+    _, n_periods, _, x, xdot, y, ydot = row
+    system = qbcp.qbcp_default()
+    state_pv = np.array([-x, -y, 0.0, -xdot, -ydot, 0.0])
+    state0 = qbcp.state_pv_to_pm(state_pv, t0, system)
+    sol = solve_ivp(
+        qbcp.qbcp_eom,
+        (t0, t0 + n_periods * system.sun_period_tu),
+        state0,
+        args=(system,),
+        method="DOP853",
+        rtol=1e-13,
+        atol=1e-13,
+    )
+    return float(np.hypot(sol.y[0, -1] - state0[0], sol.y[1, -1] - state0[1]))
+
+
+@pytest.mark.parametrize("row", _LEIVA_BRIOZZO_2008_TABLE_2, ids=lambda r: r[0])
+def test_leiva_briozzo_2008_periodic_orbits_close(
+    row: tuple[str, int, float, float, float, float, float],
+) -> None:
+    """Third published control (#892), from a different group and for orbits with close lunar
+    passes: started at the printed time, each printed state returns to its position after its
+    printed 3, 4 or 5 Sun periods to between 5e-6 and 3e-4 (measured). Started at t = 0 instead,
+    the same states miss by 1e-2 to 1. The orbits are unstable (their multipliers reach several
+    hundred) and the paper's mass ratio and series truncation differ slightly from this
+    module's, so closure to the printed nine digits is not expected.
+    """
+    assert _leiva_briozzo_closure(row, row[2]) < 1e-3
+    assert _leiva_briozzo_closure(row, 0.0) > 1e-2
