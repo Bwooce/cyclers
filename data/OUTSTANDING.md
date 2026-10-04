@@ -1143,6 +1143,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   rule, list every stored result produced through `er3bp_continuation` or this corrector and
   re-check its full-period closure; any accepted orbit that fails is withdrawn or re-run. Pairs
   with `#912` (the corrector also lacks the published method's apoapsis start).
+  Control from Gomez & Olle 1986: a mu = 0 elliptic orbit (closed-form Kepler) given a deliberately
+  wrong period must fail the full-period check; one with the right period must pass.
 - `#931` — registered 2026-10-04. **HADJIDEMETRIOU 1975b FOLLOW-UPS: STABILITY CLASSIFICATION
   AND THE FIRST GENERAL-THREE-BODY CONTROLS** (digest
   `docs/notes/2026-10-04-digest-hadjidemetriou-1975b-stability-periodic-orbits-three-body.md`).
@@ -1328,7 +1330,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   that equals eq. 12 only at e = 1; which form is the true first-order periapsis is open (integrate
   one Table IV orbit at small mu). Brjuno 1978 adds an arc type beyond Henon's enumerator, the
   asymmetric arcs T_N (a resonant orbit with one collision deleted; zero demanded turn at mu = 0;
-  closed-form seeds), and a printed slip: the type III expansion's (1/2)(e+1)^4 should be 1/12. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  closed-form seeds), and a printed slip: the type III expansion's (1/2)(e+1)^4 should be 1/12. Gomez & Olle 1986 (digest
+  `docs/notes/2026-10-04-digest-gomez-olle-1986-elliptic-restricted-mu-0.md`) extends the enumerator
+  to the elliptic problem: make e_p and eps_p parameters of the Henon module (Henon is the e_p = 0,
+  eps_p = +1 slice); eq. 21 is a counting oracle for the C_ij families (reproduced at e_p = 0.5 and
+  0.98); its parabolic-arc values reproduce except the printed 0.2318 (computed 0.231149: a strict
+  expected failure); six printed slips are listed. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
