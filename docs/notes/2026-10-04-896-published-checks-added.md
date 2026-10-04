@@ -5,7 +5,7 @@ into a permanent test of the project's models ("use the knowledge from the new p
 add the checks."). New test files only; no model, data or existing test was changed. A check that
 fails is held as a strict expected failure (`xfail(strict=True)`) with its numbers in the reason.
 
-Ten new files under `tests/core/`. Each exits 0 (strict xfails count as passing); wall times are
+Eleven new files under `tests/core/`. Each exits 0 (strict xfails count as passing); wall times are
 with the project's default `-n 6`. `uv run mypy src tests` is clean (893 files), ruff check and
 format are clean.
 
@@ -21,6 +21,7 @@ format are clean.
 | `test_cr3bp_published_l1_l2_numbers.py` | 6 s |
 | `test_ccr4bp_kumar_2021.py` | 25 s (one control alone is 12.9 s, above the 5 s per-test aim) |
 | `test_er3bp_peng_2017.py` | 7 s |
+| `test_cr3bp_anderson_kumar_2024.py` | under 1 s |
 
 ## Controls
 
@@ -78,6 +79,8 @@ format are clean.
 | Peng et al. 2017 | Table 2, p14 (8 rows) | er3bp, e = 0.2056 | corrected orbit within one printed digit | 3 rows within 1.3e-6 | 5 strict xfail |
 | Peng et al. 2017 | Table 3, p14 | er3bp | largest monodromy eigenvalue of the 3 reproduced rows | 7.346e4, 8.777e4, 5.074e4 against -5.7936e5, 74,342, 43,176 | 3 strict xfail |
 | Peng et al. 2017 | controls | er3bp | wrong resonance period; f0 = pi orbit started at 0; symplectic monodromy | as stated | pass |
+| Kumar & Anderson 2024 (AAS 24-288) | p7 | cr3bp, mu = 3.54326e-5 | Uranus-Oberon C(L1) = 3.00454, C(L2) = 3.00450 within one last decimal below the computed value | 3.0045498, 3.0045025 (the print is the computed value cut, not rounded, for L1) | pass |
+| Kumar & Anderson 2024 | control | cr3bp | convention with mu(1 - mu) added misses L1 | 4.5 last-decimal units | pass |
 
 ## Findings (every strict expected failure)
 
@@ -93,10 +96,13 @@ format are clean.
    x0 = 1.110654 with period 6.370242. The Earth distances are 5.2 and 3.3 km below the printed
    ones; the lunar-distance difference is 39.2 km against 31 km printed; three of four stability
    parameters differ by 0.1 to 0.3 percent, which closure error (4e-6) cannot produce and the
-   paper's mass ratio does not remove. Diagnosis: the paper's QBCP is not exactly this module
-   (it may use a slightly different coefficient set or mu), or the printed numbers are rounded
-   from a coarser computation. The 2005 orbits do close in the module (existing test), so the
-   module and the paper share the orbit but not all its derived numbers.
+   paper's mass ratio does not remove. Diagnosis: UNDETERMINED. The 2005 orbits do close in the
+   module (existing test), so the module and the paper share the orbits but not all their derived
+   numbers. Given the `#892` history this should be treated as a possible remaining difference
+   between `core.qbcp` and the paper's quasi-bicircular model, not explained away on the paper's
+   side. The digest's explanation of the 7 km lunar-distance difference (the pulsating length
+   scale) does not hold: that scale gives 32.1 km for the difference but would need a lunar
+   radius of 1637 km for orbit 1.
 3. **Neelakantan & Ramanan 2022.** The two circular-problem halo states are periodic at
    mu = 0.012277471 (eleven digits the same from both states, independently), not at the paper's
    stated 0.0122 (the Table 8 elliptic rows do close at 0.0122, existing test). The printed day
@@ -162,6 +168,30 @@ format are clean.
   rotated by pi from the project's (big primary at +mu), psi is the angle of the synodic velocity
   from the x axis, phi is counter-clockwise from +x on the circle of radius mu^(2/5) about the small
   primary, points are exits from the disk, and C_J includes the constant mu(1 - mu).
+- `2026-10-04-digest-rosales-jorba-jorba-cusco-2021-bcp-halo-like-tori-l2.md` section 6 says the
+  L2 control discriminates the Sun's phase; it cannot (a phase change is a time shift and the
+  continuation starts at time-independent L2; measured: the same multipliers to 1e-13 at
+  theta_sun0 = 0 and pi). Only the sense is discriminated. Its "1e-8 relative is a fair target"
+  is too cautious: 1e-13 is reached from the cyclic block spectrum (the paper's own method).
+- `2026-10-04-digest-jorba-jorba-cusco-rosales-2020-bicircular-l1-vicinity.md` section 2.2
+  leaves the 2.3e-9 frequency miss unexplained; it is the Earth/Moon ratio 81.300585 (above).
+- `2026-10-04-digest-singh-park-howell-2026-aas-26-654-l2-families-intermediary-models.md`
+  section 7.1 proposes a 1e-4 relative tolerance for the bifurcation periods, which would hide
+  the Table 4 discrepancy; half a unit of the last printed decimal is used.
+- `2026-10-04-digest-neelakantan-ramanan-2022-two-impulse-me-halo-ertbp.md` says the printed
+  0.0122 must be used literally for any reproduction; the circular halos need 0.012277471.
+- `2026-10-04-digest-leiva-briozzo-2008-rtbp-to-qbcp-periodic-transfer-orbits.md` recommends
+  epoch reading (A) first; reading (B), the state at QBCP clock time t_i, is the one that closes
+  (already so in `test_qbcp.py`). Its Control B expects about 1e-7 for 013_t3; measured 5e-6.
+- `2026-10-04-digest-mako-salamon-2025-weak-stability-transition-region-er3bp.md`: does not flag
+  that A7 and the A6 numerator (p19) have the sign opposite to what A4 (p18) requires (a paper
+  slip; the printed sign changes the boundary speed by less than 5e-4); presents only the fixed
+  return half-line where the proof of Proposition 1 (p6) reads as a rotating one; does not
+  mention that p3 says "mean anomaly" while the sweeps are in true anomaly; does not note that
+  the Figure 8 speed is inconsistent with the plotted orbit sizes; attributes R_E = 6378 km to
+  Remark 1 (it is in the main text, p8). Its 1.22426 km/s variant for Figure 7 escapes at every
+  f0, so the p15 v_p remark is the likelier slip, not the printed 1.20446.
+- `2026-10-04-digest-oshima-2022-...`: no error; Tables 1 to 5 checked at 250 dpi.
 - `2026-06-25-digest-peng-2017-sun-mercury-ERTBP.md` treats e = 0.2056 and mu = 1.660e-7 as exact;
   the paper calls both approximate.
 - Not checked against PDFs, flagged during the item (i) inventory: the Restrepo-Russell 2018 digest
@@ -181,8 +211,12 @@ format are clean.
   the velocity unit is printed only as "~1024 m/s" and the frame of the speed is not stated;
   neither unit candidate gives all four to the metre per second.
 - The item (i) inventory read about 115 of 171 digests in the relevant sections; about 20 mission
-  or tour digests were screened by keyword only. Two older papers were implemented (Kumar 2021
-  for ccr4bp, Peng 2017 for er3bp), not three or four.
+  or tour digests were screened by keyword only. Three older papers were implemented (Kumar et al.
+  2021 for ccr4bp, Peng et al. 2017 for er3bp, Kumar & Anderson 2024 for cr3bp at the Uranus-Oberon
+  mass ratio), the last a small check.
+- Process: the repository's pytest `addopts` include `-n 6`, so the five agents of the first wave
+  each ran pytest with six workers at times, above the brief's limit of six processes in all.
+  mypy on a single test file needs `MYPYPATH=src` (the full `mypy src tests` does not).
 
 ## Printed numbers in older digests that still have no test
 
@@ -194,9 +228,9 @@ Four-body moon model (`ccr4bp`):
 - Kumar et al. 2023 (AAS 23-397), `2026-07-23-digest-kumar-2023-secondary-resonance-overlap-ccr4bp.md`:
   omega range [2.032685, 2.0405], secondary resonances 11/34, 12/37. Needs the 4:3 torus-family
   machinery.
-- Anderson & Kumar 2024, `2026-07-27-728-anderson-kumar-2024-oberon-mmr-survey-digest.md`:
-  mu_Oberon = 3.54326e-5, mu_Titania = 3.91677e-5, L1/L2 C = 3.00454 / 3.00450 (a cheap cr3bp
-  check, not done for time); "no tori below C = 3.007714" needs torus machinery.
+- Kumar & Anderson 2024, `2026-07-27-728-anderson-kumar-2024-oberon-mmr-survey-digest.md`:
+  the L1/L2 Jacobi constants are now tested; the Titania-perturbed statements ("no tori below
+  C = 3.007714") need torus machinery.
 - Aryan & Fitzgerald 2024, `2026-07-26-710-digest-aryan-fitzgerald-2024-jovian-pccfbp.md`,
   Tables 1-2: rotation numbers at C = 3.0034 and 3.0044; no torus state printed.
 - Blazevski & Ocampo 2012, `2026-07-27-732-blazevski-negri-baresi-foundational-papers-digest.md`,
@@ -251,4 +285,8 @@ and halo C ranges).
 b97188d3, 080b85ea (Oshima); 4d70e952 (Rosales 2021); a18cf2bc, 553daa8b (Font-Nunes-Simo);
 0a82441d, d9bfce56 (Neelakantan-Ramanan); ebbb8d47, f0e757e1 (Leiva-Briozzo 2008); 833f6ce7,
 0e47d2c7 (Leiva-Briozzo 2005); 299c757e, c97b72fc, f6dabee6 (Jorba 2020, Singh 2026); b752b68b,
-fd2eeabf (Mako-Salamon); d6686881, 7fa199e7, 0c503032 (Kumar 2021, Peng 2017).
+fd2eeabf (Mako-Salamon); d6686881, 7fa199e7, 0c503032 (Kumar 2021, Peng 2017); 672660af (Kumar &
+Anderson 2024); 8a8e9f4d and the follow-up (this note).
+
+Every strict expected failure was run once with `--runxfail`: each fails on its asserted
+comparison (an `AssertionError` with the numbers quoted above), none by an exception.
