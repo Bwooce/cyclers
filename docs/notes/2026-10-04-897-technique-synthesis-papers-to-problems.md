@@ -805,10 +805,11 @@ reference-only or background-only might hold techniques for the project's proble
 the papers are about (a sail, a formation, an asteroid, a neural network). This section judges each on what its method
 can do for the problems of section 2. Tags as in the legend at the top: `[P p.N]` READ by me at the source; `[D note]`
 READ in a project digest or triage note, not checked at the source by me; `[I]` INFERRED; `[C]` my calculation. No
-source readers were used for this section: two were dispatched and returned nothing before this version was written. The
+source readers were used for this section: two were dispatched, returned nothing, and were no longer running when checked. The
 papers were found with the corpus-index search the task named (rows marked out of scope, triaged, reference-only or
 background-only), plus the papers the task named (Villegas-Pinto et al. 2023; de la Fuente Marcos 2018) and two
-owner-supplied papers filed under `#869` and marked out of scope or low relevance (Zhang et al. 2024 and 2025). Papers
+owner-supplied papers filed under `#869` and marked out of scope or low relevance (Zhang et al. 2024 and 2025), and Machado & Wilde 2020, indexed as digested
+but set aside as out of scope for trajectory extraction. Papers
 the synthesis already used for their methods (Park & Howell 2024, Mako & Salamon 2025) are not repeated.
 
 ### 8.1 Periodic orbits without symmetry and period doubling in eccentricity (Wang, Ye, Xiao & Li 2026)
@@ -829,7 +830,8 @@ the synthesis already used for their methods (Park & Howell 2024, Mako & Salamon
   freedom and lies on a one-parameter family, so the closure needs a phase condition and a fixed Jacobi constant or period
   `[I]`. The project already has the full-state corrector for that case: `genome/asymmetric_branch.py` routes through
   `search/cr3bp_general_periodic_3d.py::correct_general_periodic_3d` in "full-asymmetric mode" with the period free
-  (module docstring, read). Once Sun forcing is on, `#884`'s multiple-shooting problem (`newton_fixed_eps` in
+  (module docstring, read; that a fixed-period family walk with a phase condition works on these members is `[I]`, not
+  tested). Once Sun forcing is on, `#884`'s multiple-shooting problem (`newton_fixed_eps` in
   `search/sun_forced_periodic_884.py`) is already a six-state closure with no symmetry imposed (code, read). The gap that
   kept 7:3(b) and (c) out is in the three-body stage: `walk_family` and `correct_symmetric_fixed_period` are symmetric
   only, and the phase rule for orbits without the symmetry is missing (already listed under T7). Wang's paper adds no
@@ -873,9 +875,9 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
   on no finite-dimensional torus of that model that the held papers would let one compute. In an intermediate model with
   ONE added frequency they can. The `#890` orbit is periodic in the planar circular four-body model, with period a whole
   number of Titania-Oberon synodic periods. Adding Oberon's eccentricity, with its apsidal precession under J2, adds one
-  incommensurate frequency. By the persistence result Rosales et al. 2021 state for a forced periodic orbit (T7; read
-  at the source by the synthesis author, not by me) (the general theorem is Jorba & Villanueva 1997, not held), the periodic orbit should become a two-dimensional
-  invariant torus if it is nondegenerate. It is hyperbolic, with multipliers about 1e6 per period (`#890` ledger). Such a
+  incommensurate frequency. This is Villegas-Pinto's own step: an orbit periodic in a model with one forcing frequency, given a
+  second incommensurate perturbation, becomes a two-dimensional torus `[D villegas-pinto sec. 2.1, p8]` (the general
+  theorem is Jorba & Villanueva 1997, not held), provided the orbit is nondegenerate. It is hyperbolic, with multipliers about 1e6 per period (`#890` ledger). Such a
   torus would explain one feature of `#895`: arcs exist at all five epochs tried, 2030 to 2045, and each epoch would be a
   different phase on the torus.
 - What it would and would not settle. A torus computed in that intermediate model is one object with a definition, a
@@ -949,8 +951,12 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
 - Bears on, `[I]`: the maintenance budget that `#907` and the `#890` and `#895` reviews ask for "from a stated
   navigation model", and the V2 question in section 4(v). The method is per encounter, which is the cadence an orbit with
   growth of 1e3 per flyby pair needs. Applied to a flyby chain, it gives one correction per leg, aimed at the next
-  encounter's impact-plane coordinates. With an impulsive correction the same algebra holds: y is a velocity change,
-  and u Delta t = |y|. The post-correction covariance (eqs. 21, 23) is then propagated through the flyby to the next
+  encounter's impact-plane coordinates. Rinker's law targets the two impact-plane components and sets the downtrack
+  component to zero; the closed-form statistics (eqs. 13 to 17) rest on the correction covariance having rank 2. With an
+  impulsive correction that targets the same two components, the algebra carries over: y is a velocity change and
+  u Delta t = |y|. A flyby chain may also need the encounter TIME controlled (`#890`'s patched-conic closure missed Oberon by
+  967,000 km through a phase slip). A correction that also targets time of flight has a rank-3 covariance, and eqs. 15 to 17
+  no longer apply; then the Monte Carlo is the only statistic. The post-correction covariance (eqs. 21, 23) is then propagated through the flyby to the next
   leg's correction. The project has every STM this needs (`#895`'s variational Jacobian; the two-body STM). The
   navigation model (orbit-determination covariance at each correction time, execution error) is an input to state and
   pre-register, not something the paper or the project can derive.
@@ -996,7 +1002,7 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
   for the project's orbits. The continuation is natural-parameter with a fixed step and no fold handling `[D]`, weaker
   than what the project has. For taxi rendezvous with a cycler vehicle: the relative-motion set-up is the right
   kinematics for the last phase of a rendezvous, but the paper solves station keeping near a chief, not an approach from
-  a planet. No held set-aside paper gives a taxi rendezvous method.
+  a planet. The taxi method in the held set-aside papers is Machado & Wilde 2020 (8.17).
 - Verdict: NOT USEFUL; one impulse per period cannot hold an orbit whose multiplier per period is 1e6, and the
   continuation is weaker than the project's.
 
@@ -1105,12 +1111,35 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
 - Verdict: NOT USEFUL for the blockers; POSSIBLY USEFUL as an architecture column if the owner wants one. That is a
   scope decision, not a method gap.
 
-### 8.17 Lecture slides (Rickman, NESC)
+### 8.17 Taxi rendezvous with a cycler from a parking orbit (Machado & Wilde 2020)
+
+Filed in the private paper corpus as machado-2020.pdf; indexed as digested, but its digest is three lines and gives it as
+out of scope for trajectory extraction `[D 2026-06-20-digest-new-papers]`.
+
+- Method `[P PDF pp.6-8, printed pp.570-572]`: a crew transfer vehicle leaves a circular parking orbit and meets the
+  cycler on its planetocentric hyperbola, defined by the encounter excess speed and closest-approach altitude. Three
+  options are given. (1) A hyperbolic transfer orbit whose apse line is rotated by an angle from the cycler's: the
+  intersection is found from the conic equations (eqs. 7 to 12) and the intercept impulse from the radial and
+  tangential velocity differences there (eqs. 13 to 16); delta-v falls and transfer time rises with the rotation, and the
+  paper caps the time at 24 h. (2) A Hohmann transfer to the cycler's periapsis. (3) A highly elliptic transfer.
+  Aerocapture feasibility is simulated over a range of arrival excess speeds `[P PDF p.3]`. Table 1 prints, for the 14
+  Earth encounters of the S1L1 cycler, the excess speed, the periapsis altitude and the delta-v and time of each option
+  (for example encounter 7: 3.99 km/s, 4,300 km; Hohmann 5.00 km/s, elliptic 4.76, hyperbolic 4.17) `[P PDF p.8]`.
+- Control checked `[C]`: the Hohmann column of Table 1, computed from the printed excess speed and periapsis altitude
+  with a circular parking orbit at 300 km altitude (my assumption; I did not find the altitude stated on the pages read),
+  reproduces encounters 1, 2, 5, 7 and 14 exactly to the printed 0.01 km/s (7.18, 8.82, 7.67, 5.00, 5.65). With 200 or
+  400 km the values are off by 0.04 to 0.06 km/s.
+- Bears on: hypothesis (3)'s taxi question, and a per-row operational figure of merit: the taxi delta-v at each
+  encounter of a catalogued cycler, from quantities many rows already carry (excess speed; periapsis where a flyby
+  altitude is known) `[I]`. It does not bear on any of the four blockers.
+- Verdict: USEFUL for a taxi-cost column, as proposal Q3 below. It is the taxi method in the held set-aside papers.
+
+### 8.18 Lecture slides (Rickman, NESC)
 
 - Introductory orbital mechanics for thermal engineers `[D rickman-nesc-slides-triage]`. Verdict: NOT USEFUL; textbook
   content with no method beyond what the project implements.
 
-### 8.18 Proposals from this section
+### 8.19 Proposals from this section
 
 Format and probability definitions as in section 3: (a) a validated upgrade of existing rows; (b) an object worth an
 adversarial review.
@@ -1127,14 +1156,17 @@ adversarial review.
   turn_gate.py` (the flybys).
 - To build: the covariance chain; the statistics of eqs. 15 to 17 (already checked against Table 2 `[C]`); a nonlinear
   Monte Carlo of the same chain; a navigation-model file with sources or labelled as convention (orbit-determination
-  covariance at each correction, execution error as in the paper's example: 15 mrad pointing, 10 percent magnitude,
-  `[P p.512]`, or a cited modern value).
+  covariance at each correction; execution error). The paper's example errors (15 mrad pointing, 10 percent throttling,
+  1 min shut-off timing `[P p.512]`) describe solar-electric thrusting; if used they are labelled a convention borrowed
+  from a low-thrust example, not a sourced value for impulsive corrections.
 - Positive controls: (i) Rinker et al. Table 2, all 15 G values from the printed means and standard deviations (passes
   now, scratch calculation); (ii) a negative control: on a stable orbit (a stable Casoliva row) the budget must be small
   and nearly independent of the number of cycles; on the `#895` arcs it must grow with the lead time as the STM predicts.
   No held paper prints a correction budget for a flyby chain, so there is no published end-to-end value to match. Lee &
   Boain (1973) would give the ballistic statistics and is not held.
-- Pre-registrable criteria: the navigation model and lead times fixed before the run. Linear and Monte Carlo 99th
+- Pre-registrable criteria: the navigation model, the lead times and the targeted components (two impact-plane
+  components, or those two plus time of flight) fixed before the run. The closed-form statistics are used only in the
+  two-component case. Linear and Monte Carlo 99th
   percentiles agree within 20 percent, or the linear result is not reported. The result is reported per cycle with the
   model stated, never as a property of the orbit alone.
 - How it could fool us: the linear covariance crossing a flyby, where the turn's slope in impact parameter is of order
@@ -1164,13 +1196,30 @@ adversarial review.
 - Pre-registrable criteria: invariance error below 1e-9 on a node ladder under an independent propagator; continuation
   reaches Oberon's eccentricity, or the stop is recorded (fold, gap, non-convergence) with the step that failed. Then,
   at each of the five `#895` epochs: the arc's flyby altitudes inside the torus's altitude envelope widened by a band set
-  beforehand from the moons' circular-to-kernel position differences.
+  beforehand from the moons' circular-to-kernel position differences. Those differences include the eccentricity terms
+  (a e, several hundred km per moon `[I]`) and any along-track drift from a mean-motion mismatch, so the band may be wider
+  than the altitude envelope itself (about 1,000 to 2,250 km for Titania on the arcs). If the band is not narrower than the
+  envelope, the comparison is reported as uninformative and not counted as a pass.
 - How it could fool us: a "torus" converged with too few nodes; a resonance gap read as non-existence (Rosales: gaps are
   Cantorian and crossed by detours); the comparison band chosen after the fact. Guards: node ladder; gap rule from
   Rosales; band in the pre-registration.
 - Cost: 20 to 30 agent-hours if P6's corrector exists first, about 10 more otherwise; hours of compute.
 - (a) 0 percent (no row exists to upgrade). (b) 30 percent: a computed invariant object in a stated model, with the
   ephemeris arcs as its realisations, is a stronger basis for a `quasi_cycler` row than arcs alone.
+
+#### Q3. Taxi delta-v per encounter for catalogued cyclers
+
+- Goal: for every row with an encounter excess speed (and a periapsis altitude where known), the taxi delta-v from a
+  stated parking orbit by Machado & Wilde's three options, and the transfer time.
+- Method applied: Machado & Wilde 2020, eqs. 6 to 16, with their 24 h cap on the hyperbolic transfer.
+- Positive control: their Table 1 (14 encounters, three options, delta-v and time); the Hohmann column already
+  reproduces for five encounters with a 300 km parking orbit `[C]`; the elliptic and hyperbolic columns are the test of
+  the build. Pass: all 42 delta-v values within 0.01 km/s and all times within the printed rounding.
+- How it could fool us: rows with no periapsis altitude given one by assumption. Guard: such rows get the value at a
+  stated altitude rule, flagged, never mixed with rows whose altitude is sourced.
+- Cost: 4 to 6 agent-hours; seconds of compute.
+- (a) 0 percent (no validation level depends on it). (b) 0 percent. It answers an architecture question, not a
+  discovery or validation one.
 
 #### Add-ons to existing proposals (not separate proposals)
 
@@ -1185,7 +1234,8 @@ adversarial review.
 
 Q1 sits after P3 and before P4: it is cheap, it has a passed control for its statistics, and it removes a stated blocker
 for `#895` and for any moon-tour row that P4 produces. Q2 sits after P6 and before P7: it needs the same corrector as P6
-and should be built second, on the corrector P6 has validated.
+and should be built second, on the corrector P6 has validated. Q3 is outside the ranking of discovery and validation work:
+it changes no level, costs a few hours, and can run whenever the owner wants the column.
 
 #### The seven hypotheses, in one line each
 
@@ -1194,8 +1244,8 @@ and should be built second, on the corrector P6 has validated.
 2. Torus for the `#895` arcs: accepted in a qualified form. One torus in the ephemeris model is not the right object.
    A two-torus in a model with one added frequency is computable and testable (Q2).
 3. Navigation and guidance papers: accepted for Rinker et al. (Q1, control passed) and, as a column inside Q1,
-   Venigalla et al.; rejected for Fu et al. and the learned-guidance papers on method grounds. No held set-aside paper
-   gives a taxi rendezvous method.
+   Venigalla et al.; rejected for Fu et al. and the learned-guidance papers on method grounds. The taxi method is
+   Machado & Wilde 2020 (8.17, Q3, control passed).
 4. Co-orbital papers: the averaged model is not in Carruba et al.; the clone ensemble is possibly useful for
    quasi-cycler labels only; quasi-satellite orbits are not a two-body repeated-encounter class.
 5. Shu & Lin: rejected; the expansion is local to the libration points.
