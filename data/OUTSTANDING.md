@@ -1017,6 +1017,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   not matrizant papers; the "Peng & Xu ISSFD 2014" hit is the ASR paper already held. Not found: Henon
   1965, Standish 1970, Burdet 1969, Sperling 1961, Campagnola 2010 (probably a thesis), Henry et al.
   2023; NASA CR-769 has no DOI.
+  Ollé 1989 thesis REPLACED 2026-10-05 (owner: the thesis is not scanned) by Ollé & Simó 1990,
+  "Bifurcation of the families of periodic orbits of the restricted three-body problem", Rev.
+  Colombiana Mat. 24:49-60 (open access via the journal archive; no Crossref DOI found), and Ollé &
+  Simó 1993, "Bifurcations in the RTBP with equal masses", in Qualitative and Quantitative Behaviour
+  of Planetary Systems (Dvorak & Henrard, eds., Kluwer), pp.513-526 (book DOI
+  10.1007/978-94-011-2030-2; no chapter DOI found). Gómez & Ollé 1991 parts I and II are already
+  held and digested.
   Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
