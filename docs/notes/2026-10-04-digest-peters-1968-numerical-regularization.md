@@ -125,3 +125,10 @@ All uses INFERRED; nothing built or run.
 2. Record the bilinear constraint and the K = 0 energy check as the two monitors in the #928 acceptance run (also as stated in the S and S note).
 3. Run the Sundman, plain and KS comparison on orbit 12i and report accuracy against steps; Table 1's V against L is the published expectation of a large gap.
 4. Szebehely and Peters 1967 (Astron. J. 72:876) carries the three-body test (initial conditions and the detailed run) and Szebehely's contribution in the same Bull. astron. volume discusses the V-type time transformation; neither is held.
+
+## 8. Dated note, 2026-10-05 (after reading Aarseth 1971)
+
+`docs/notes/2026-10-04-digest-aarseth-1971-direct-integration-n-body.md` settles two points about this paper.
+- Sign convention. Aarseth 1971 (footnote p.126) says Peters's definitions of the relative coordinates and momenta "should be reversed in order to be consistent with the final equation of motion". COMPUTED there: Peters's printed gradient dR/du = -2 mu A* (P_k'/(r m_k) - P_l'/(r m_l)) has the sign that goes with r = r_k - r_l, whereas section 2 above (his p.168) defines r = r_l - r_k. So sections 1.1 to 1.3 above are internally inconsistent as printed in this one sign; implement Aarseth's convention (R = r_k - r_l, P = mu (rdot_k - rdot_l)), under which the perturbation term is +2 mu R L^T (F_k - F_l).
+- Citation. Szebehely and Peters 1967, Astron. J. 72:876 (as printed on his p.174 and in Aarseth 1971 and Aarseth and Zare 1974) is "Complete solution of a general problem of three bodies" (Crossref DOI 10.1086/110355), the Pythagorean problem. Astron. J. 72:1187 is a different paper by the same authors, "A new periodic solution of the problem of three bodies" (DOI 10.1086/110398). Follow-up 4 above cites the correct one.
+
