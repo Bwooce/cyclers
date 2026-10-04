@@ -1687,7 +1687,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   mu there are m1-to-m2 ejection-collision orbits when C < 2. The mu = 0 skeleton is radial Kepler
   orbits with apocentre 2/C (zero angular momentum, so C = -2E; an exact control for a regularised
   rotating-frame propagator, `#928`). Radial collision arcs have an undefined turn: `#906`
-  indeterminate. No printed orbits; mu0(C) not quantified; Jacobi constant offset by mu(1 - mu). Brjuno 1978 part III (digest
+  indeterminate. No printed orbits; mu0(C) not quantified; Jacobi constant offset by mu(1 - mu). Rodriguez
+  del Rio 2021 thesis, chapters 4-7 (digest `docs/notes/2026-10-05-digest-rodriguez-del-rio-2021-thesis-part-b.md`):
+  the ejection-collision theorems hold for all mu in (0, 1) but only for C above unquantified
+  constants; numerically four 1-EC orbits exist for every mu and C >= C_L1 (3.1883 at the Earth-Moon
+  mass in the project's convention). The Casoliva Class 1 cyclers sit at C_J 0.49 to 2.76, far below
+  C_L1, so EC orbits are NOT a skeleton for them; at small mu they are four isolated orbits per n, not
+  a family. What the thesis does give: a worked Levi-Civita system for the CR3BP (a `#928` control,
+  with its printed Table 1 2-EC angles at mu = 0.1, C = 8 reaching collision to r^2 about 1e-28 in the
+  agent's run, and failing with a 1e-3 offset), and near-collision passes (r^2 about 1e-7) as a `#906`
+  indeterminate-gate test. Its frame is the project's rotated by pi; its C includes mu(1 - mu). The
+  coordinator checked C_L1(0.5) = 4.25 in that convention. Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
