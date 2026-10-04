@@ -1107,6 +1107,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   through one flyby (REBOUND variational particles do not differentiate callback forces). Not
   recommended: adopting a hybrid symplectic integrator, except as a speed-up for planet-dominated
   capture sweeps (`#908`) gated by a Jacobi-constant check.
+- `#930` — registered 2026-10-04. **THE ELLIPTIC PERIODIC-ORBIT CORRECTOR CAN PASS A BAD ORBIT
+  SILENTLY** (`#896` item (j), agent's finding, not yet checked by the coordinator).
+  `genome.er3bp_periodic.correct_er3bp_periodic` raises ConvergenceError at its default tol 1e-10
+  on all three printed Gomez & Olle 1991 elliptic orbits (a fixed-time residual near a 1e-7
+  periapsis is ill-conditioned); at tol 1e-5 its symmetric mode accepts them, but its Radau
+  full-period check then reports 4.2e-5 and 2.2e-2 against its own 1e-5 bound and only logs a
+  warning, so `genome.er3bp_continuation` would accept such orbits. Fix: make the full-period
+  check a hard failure (or a returned flag that every caller checks), and use event-located
+  crossings rather than a fixed-time residual (as the `#896` tests do). Then, per the bug-fix
+  rule, list every stored result produced through `er3bp_continuation` or this corrector and
+  re-check its full-period closure; any accepted orbit that fails is withdrawn or re-run. Pairs
+  with `#912` (the corrector also lacks the published method's apoapsis start).
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
