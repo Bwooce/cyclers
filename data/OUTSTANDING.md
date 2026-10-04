@@ -1193,7 +1193,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `search/er3bp_periodic.monodromy_eigenstructure` accepts any complex eigenvalue within 0.5 of the
   unit circle as the centre, so it would read part of a complex quartet as a centre; it has no
   callers outside tests. `search/er3bp_floquet.floquet_classify` decides by the largest modulus
-  and labels a quartet unstable correctly. Tighten the former or retire it. (c) For `#890`/`#895`:
+  and labels a quartet unstable correctly, BUT (Broucke 1969 part A digest, CHECKED by the
+  coordinator) it can never return "stable" for a symplectic monodromy, since a linearly stable
+  orbit has max |lambda| = 1 and falls in "marginal"; its docstring says otherwise. Its one consumer,
+  `search/er3bp_discovery.py`, maps stable and marginal alike to "elliptic", so no stored result is
+  wrong; the 3D tracer (`search/cr3bp_3d_family_tracer._classify_floquet`, used by the `#682` census)
+  has its own tolerance-based classifier. Fix the label logic and docstring; tighten or retire
+  `monodromy_eigenstructure`. Broucke's (a1, a2) are Hadjidemetriou's (alpha, beta); his seven
+  regions (part A digest) are the test cases for the classifier, which needs a tolerance at k = +-2
+  and a re-corrected state (printed 7-digit states change region in 9 of 15 7P rows). (c) For `#890`/`#895`:
   if a multiplier was computed from a half-period construction, det = 1 and reciprocity hold
   identically and check nothing; state how the 8.4e5 value was obtained. (d) Log alpha, beta and
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
@@ -1230,7 +1238,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   regions numerically; (c) the planar Birkhoff propagator for `#928` with the 69 collision rows of
   Table 19 as its test (`core.er3bp` cannot start at a collision: it divides by r2^3); (d) the
   inertial integration as a frame-independent closure check for `#930`. Part A (families 12A, 6A,
-  7P, 7A, rectilinear; equations; seven stability types) is still being digested.
+  7P, 7A, rectilinear; equations; seven stability types): DONE. 617 distinct rows; the planar
+  equations are term for term those of `core.er3bp` (same frame, mu, true anomaly; P families start
+  at f0 = 0, A families at pi); the Earth-Moon tables use mu = 0.012155 exactly; 7P and 7A close to
+  a median relative miss of 4e-6 and 8e-7, all 120 Table 13 starts lie within 8e-8 (x0) and 2e-6
+  (ydot0) of the exact orbit; 12A, 9P and the rectilinear tables are inertial (rectilinear only with
+  the smaller primary on +x, the mirror of the printed eq. 36c,d) and also reproduce. Provenance:
+  part A's digits came from per-cell OCR with majority voting, then integration and column-smoothness
+  checks with flagged rows corrected from the image (part B read the images directly); seventh-digit
+  errors on weakly sensitive rows could survive.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
