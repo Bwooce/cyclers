@@ -947,12 +947,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   RECEIVED 2026-10-04: Hadjidemetriou 1975, Cincotta & Simo 2000 (MEGNO), Froeschle, Lega &
   Gonczi 1997 (FLI), Henon 1997 (book), Hitzl & Henon 1977, Perko 1976, Sanaga & Howell 2025,
   Perko 1981, Perko 1977, Henon 1968 (in French), Bruno 1981 (ADS scan, image only), Heggie 1974,
-  Guillaume 1973, Chambers 1999.
+  Guillaume 1973, Chambers 1999, Guillaume 1975 (Celest. Mech. 11:449).
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
   (Hill four-body Sun position); conditional on Earth-Moon halo work (`#926`(d)): Davis et al.
   2017 (AAS 17-826), Park & Howell AAS 23-118 and AAS 22-741, Sanaga & Howell AAS 23-227.
+  From the Heggie and Chambers digests: Guillaume 1975a, Celest. Mech. 11:213-254; Waldvogel 1967,
+  Bull. Astron. 3:295; Aarseth & Zare 1974; Stiefel & Scheifele 1971 (book); only for a
+  Chambers positive control: Duncan, Levison & Lee 1998, Michel & Valsecchi 1997.
   Bruno 1972 (English translation, Celest. Mech. 18:9-50) to settle Bruno 1981's eq. 1 and W.
   **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
   10.1007/BF01229557; Guillaume 1973 10.1007/BF01231414; Guillaume 1975 ("The restricted
@@ -1053,6 +1056,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Andreu's tables), then whether any `#892` defect remains. Not explained away on the paper's
   side until that is done. The QBCP passes POL1/POL2, Rosales 2023 Table 5 and JCFJ 2018 Table 1,
   so a remaining defect would have to be small or confined to terms those controls do not excite.
+- `#928` — registered 2026-10-04. **A REGULARISED PROPAGATOR AND TRANSITION MATRIX FOR CLOSE
+  PASSES** (Heggie 1974 digest `docs/notes/2026-10-04-digest-heggie-1974-global-regularisation.md`).
+  `src/` has only a Sundman time transformation (`core/cr3bp_regularized.py`); a Levi-Civita
+  integrator exists only as the interval-arithmetic proof code of `#670` under `scripts/`.
+  `genome/multi_shooting.py` records that no regularised transition matrix exists. Build a float
+  planar Levi-Civita CR3BP propagator in `src/` reusing the `#670` derivation, with a transition
+  matrix. Controls before use: the radial-fall closed form, a Kepler ellipse against
+  `core/kepler.py`, a determinant/symplectic check and a finite-difference Jacobian. Then compare
+  plain, Sundman and Levi-Civita on the `#896` Font-Nunes-Simo orbit 12i (pass 8.7e-6 from the
+  small primary, in that paper's units and mass ratio) to test the `#896` tolerances. Needed by
+  `#899` (continuation through near-collision seeds) and `#924` (variational vectors through a
+  pass). Heggie's Table III time-reversal rows (C/3 and R_f/a_f) are the portable published
+  check for a three-body version, if one is built.
+- `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
+  digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
+  project's lanes treat the spacecraft as massless and the moons as prescribed, so Chambers's
+  problem (massive close encounters) does not arise; most models are time-dependent, so there is
+  no energy invariant to watch. What applies: (a) a forward-and-back reversibility control through
+  one flyby in the `#890` symmetric model and in `#895`; (b) a three-way comparison (DOP853,
+  REBOUND IAS15, a tight-tolerance reference) through the same flyby; (c) in the `#900` rebuild,
+  ephemeris-table spacing and tolerance sensitivity, with table step times moon speed small against
+  periapsis distance; (d) shooting nodes outside the encounter region; (e) before any `#924`
+  indicator value near a moon, an analytic-against-finite-difference transition-matrix check
+  through one flyby (REBOUND variational particles do not differentiate callback forces). Not
+  recommended: adopting a hybrid symplectic integrator, except as a speed-up for planet-dominated
+  capture sweeps (`#908`) gated by a Jacobi-constant check.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
