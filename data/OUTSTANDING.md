@@ -1172,6 +1172,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   atan2) against the Olikara 2016 thesis, which is held, before reusing it. (i) To acquire: Henry
   et al. 2023 (AIAA) and ISTS 2023, which may print torus tables; Scheeres 1998 for the
   Sun-position slip.
+  ANSWERED 2026-10-04 by Scheeres 1998 (digest
+  `docs/notes/2026-10-04-digest-scheeres-1998-restricted-hill-four-body-problem.md`): the Sun sits at
+  mu^(-1/3)/a0(m) primary separations, so Grossi & Topputo's r0 = M^(-1/3) a0 is a slip
+  (multiplication for division; 389.3 against the project's 388.81, the 0.13 percent not yet
+  explained); the Sun regresses (the `#891` sense). The a_n(m) coefficients to m^9 can be taken
+  from the Brown et al. 2024 tables (held), which reproduce Scheeres's exact rationals through m^6;
+  Olikara & Scheeres 2017 is not needed. First quantitative Hill-model controls: triangular-point
+  limits 0.0385, 0.0243, 0.0135; m_cr = (27/8) nu (1 - nu); the pi orbit's multiplier -1 at m_cr
+  and its pi/3 crossing at m = 0.10538 (also positive controls for the (b) monitor).
 - `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
   PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
   `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;
