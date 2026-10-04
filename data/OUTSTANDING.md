@@ -727,6 +727,24 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   window. Overlaps `#870` (one-working-node campaign at Saturn and Uranus): decide at dispatch
   whether this is a sub-item of it. `#864` sec. 8 (no more `#563`-class sweeps) applies: this is
   a targeted construction, not a sweep.
+  **`#886` PART ONE DONE 2026-10-04: PARTLY REPRODUCED** (Titan-Rhea torus check against Kumar
+  IAC-25-C1.9.6; note `docs/notes/2026-10-04-886-titan-rhea-torus-published-check.md`;
+  criteria pre-registered in commit `7196b8dc` before any four-body run). The three-body Titan
+  3:2 family matches the paper: the maximum of Tp/T is 0.195273282 against the printed
+  0.1952735. In the lower-energy half of the family (Jacobi constant 2.99 to 3.055) invariant
+  circles persist away from the published ratios and fail within 3e-6 to 3e-5 of 6/31, 7/36
+  and 8/41 at all 7 crossings there, with non-overlapping windows, as published; 13 of 13
+  independent closure checks pass. NOT TESTED: the high-energy half (all crossings of 4/21,
+  9/47 and 5/26), where close Titan flybys need 900 to over 10,000 nodes and the corrector's
+  dense solve is too slow. One pre-registered prediction (no failures in the lower-energy
+  half) was wrong. Model difference found: the paper centres Rhea's orbit on Saturn, the
+  project's `core/ccr4bp.py` on the barycentre (about 1 percent of Rhea's effect; moves no
+  resonance). **Lessons for the module:** a converged circle is reliable; a single
+  non-convergence means nothing without a refinement ladder (37 first-pass failures were
+  rescued at 1.5 or 3 times the nodes); the corrector needs a Fourier-diagonal Newton step to
+  reach the high-energy crossings; `continue_circle_in_mass` stops at the first failure and
+  `distance_to_circle` floors at about 2e-8. Open: one failure outside any window (member 44,
+  needs about 1200 nodes), and the long refinement run the agent did not launch.
   **`#885` DONE 2026-10-04: NOT WORTH A ROW, and it found `#888`.** Note
   `docs/notes/2026-10-04-885-uranus-tour-to-cycler-bridge.md`. Threshold pre-registered before
   computing (150 m/s and 365 days; "strong" at 60 m/s and 180 days). Positive control passed
