@@ -948,7 +948,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Gonczi 1997 (FLI), Henon 1997 (book), Hitzl & Henon 1977, Perko 1976, Sanaga & Howell 2025,
   Perko 1981, Perko 1977, Henon 1968 (in French), Bruno 1981 (ADS scan, image only), Heggie 1974,
   Guillaume 1973, Chambers 1999, Guillaume 1975 (Celest. Mech. 11:449), Peng & Xu 2015 (ASR),
-  Burdet 1967, Duncan, Levison & Lee 1998, Guillaume 1975a (Celest. Mech. 11:213).
+  Burdet 1967, Duncan, Levison & Lee 1998, Guillaume 1975a (Celest. Mech. 11:213),
+  Scheeres 1998, Hadjidemetriou 1975b.
   **Added 2026-10-04 from later digests (DOIs not yet looked up):** Perko 1981b, SIAM J. Appl.
   Math. 41:181 (cited by Perko 1981 and Henon 1997); Olikara & Scheeres 2017 (Hill four-body
   coefficients); Henry et al. 2023 (AIAA) and ISTS 2023 (torus tables, possibly); Scheeres 1998
@@ -1328,7 +1329,47 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Salamon true-anomaly sweeps; the three-body frequencies and bifurcation periods quoted by
   Jorba et al. 2020 and Singh, Park & Howell 2026; and any printed control in an OLDER digest
   that has no test yet. A control that fails is reported and held as a strict expected
-  failure; it is not loosened and the model is not changed by that agent. **Still to do by
+  failure; it is not loosened and the model is not changed by that agent. **Agent result
+  (2026-10-04, note `docs/notes/2026-10-04-896-published-checks-added.md`; 13 new files under
+  `tests/core/`, each green with its strict xfails, each fails only on its asserted comparison
+  under `--runxfail`; addenda with evidence on 13 digests).** Passes: Oshima Tables 2-5 (all 15
+  other rows close, 1e-9..3e-8; consecutive crossings one trajectory; Sun sense, phase and mu
+  controls); Rosales et al. 2021 Table 2 L2 multipliers to 1e-13 (pseudo-arclength through
+  negative Sun mass); all eight Font-Nunes-Simo second-species orbits (fixed points to
+  1e-14..6e-11, 2009 periods to 3e-11); Leiva & Briozzo 2008 Table 1 (34 orbits, at mu =
+  0.0121505482, which the printed L1 abscissa implies), Tables 3-4 (24 arcs), Table 5 d_E (35
+  rows); Leiva & Briozzo 2005 seed orbit; Jorba et al. 2020 L1 frequencies to 1e-13 at Earth/Moon
+  81.300585 (Table 1 uses 81.300587); Singh et al. 2026 halo and Lyapunov axial bifurcation
+  periods; first published control of `core/ccr4bp.py` (Kumar et al. 2021: 18721.37 against 18721
+  km, 22051.69 against 22052 km, C 3.0041057); Peng et al. 2017 Table 1 and 3 of 8 Table 2 rows;
+  Kumar & Anderson 2024 Uranus-Oberon C(L1), C(L2); Gomez & Olle 1991 Fig. 8 and the e = 0.5
+  Figs. 14, 16, 18 (perpendicular crossing at the printed half period, periapsis at the
+  first-order distance to 1e-5); Peng & Xu 2015 circular-limit eigenvalues (fifth power of the
+  4 pi/5 halo monodromy: 1.311204e6, 1.596597e6, unit pairs to the printed digits). **Strict
+  xfails (findings):** Leiva & Briozzo 2008 Table 5, seven d_M printed larger than computed
+  (1.4..7.5 km; 032B_1_t4 725 against 483 km); Leiva & Briozzo 2005, localisation orbit misses by
+  3.5e-2, Earth distances 5.2 and 3.3 km low, lunar-distance difference 39.2 against 31 km, three
+  stability parameters off 0.1..0.3 percent (cause UNDETERMINED; may be a remaining difference
+  between `core.qbcp` and the paper's model); Neelakantan & Ramanan circular halos periodic only
+  at the unprinted mu = 0.012277471 and their day periods imply two time units; Singh Table 4
+  vertical-axial bifurcation 19.203197 against 19.2033 d; Font-Nunes-Simo 2002 Fig. 8 exponent
+  (E+7 printed, E+6 computed); Peng 2017 five Table 2 rows and Table 3 eigenvalues; Gomez & Olle
+  p163 starting orbits A0, A1, B1 (printed x off by 6e-6..1.5e-5 with the family parameter x +
+  ydot right, INFERRED); Peng & Xu 2015 printed 1/lambda_1 (2.8..28.8 units off the exact
+  reciprocal; the paper's own products are inconsistent) and Table 3's copied lambda_3 column.
+  Mako & Salamon and Neelakantan M4N2 are in `#925`. **Paper slips found:** Kumar 2021 Table 1
+  Europa and Ganymede GM rows interchanged; Leiva & Briozzo 2008 187A_t1 y misprinted (y =
+  -0.0175001 closes); Mako & Salamon A7 sign. **Code findings, not fixed (no source edits):**
+  `genome.er3bp_periodic.correct_er3bp_periodic` raises ConvergenceError at its default tol on
+  all three printed Gomez & Olle elliptic orbits (fixed-f residual near a 1e-7 periapsis) and its
+  Radau full-period check only warns at 4.2e-5 and 2.2e-2 (so `genome.er3bp_continuation` would
+  accept such orbits silently); the default Jupiter-Europa-Ganymede system's Ganymede rate is
+  1.7e-4 off the printed periods (Kepler's law on registry axes, as `#894`); `ccr4bp.py` centres
+  Ganymede on the Jupiter-Europa barycentre, the paper on Jupiter (0.015 km);
+  `search/variational_ccr4bp_torus.py` says Kumar prints nothing to reproduce (wrong);
+  `tests/core/test_crnbp.py` cites AAS 23-257 for the tri-circular paper (23-201). **Not done:**
+  the older-digest inventory read about 115 of 171 digests; the untested printed numbers are
+  listed in the note; elliptic Earth-Moon rows of Peng & Xu blocked on `#912`. **Still to do by
   the coordinator after `#895`:** switch the registry's Uranian mean motions to the printed
   periods; decide between the URA111 and URA182 constant sets and make them consistent;
   Uranus J2 and J4 per the ephemeris in use.
