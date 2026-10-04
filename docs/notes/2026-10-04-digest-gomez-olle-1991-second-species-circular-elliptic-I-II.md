@@ -885,8 +885,7 @@ to true anomaly (section 8f, now supported by Part I Remark 2, p141; the d/dt re
    published list of initial epochs giving symmetric synodic orbits (pericentre, apocentre, j pi), the statement behind the 2 k pi period requirement in sections 5 and 8f above. Its characteristic
    curves for the mu = 0 elliptic problem (eqs. 7, 10) and the double-collision orbit counts (Proposition p. 54) are not in the 1991 papers.
 2. Corpus status in section 12 above was written before several held files were added: the following entries marked "not held" are now held: Guillaume 1973 (Celest. Mech. 8, 199) and Guillaume 1975
-   (Celest. Mech. 11, 213 and 449), Henon 1968 (Bull. Astron.), Perko 1977 (Celest. Mech. 16, 275), Perko 1981 (Celest. Mech. 24, 155), Perko 1981 (SIAM J. Appl. Math. 41, 181; the printed 1974 year of the
-   Part I entry [11] is probably this paper family), Perko 1976 (Celest. Mech. 14, 395), Brjuno 1978 and Gomez-Olle 1986. Still not held: Guillaume 1971 thesis, Henrard 1980, Olle 1989 thesis,
+   (Celest. Mech. 11, 213 and 449), Henon 1968 (Bull. Astron.), Perko 1977 (Celest. Mech. 16, 275), Perko 1981 (Celest. Mech. 24, 155), Perko 1981 (SIAM J. Appl. Math. 41, 181; Part I entry [11], SIAM J. Appl. Math. 41, 200-237, is a different paper and is not held), Perko 1976 (Celest. Mech. 14, 395), Brjuno 1978 and Gomez-Olle 1986. Still not held: Guillaume 1971 thesis, Henrard 1980, Olle 1989 thesis,
    Perko 1964 thesis, Poincare 1899.
 3. Printed defects found in the 1986 paper that touch the notation used here: its eq. (26b) lacks the factor eps_p; its parabolic tau/pi at e_p = 0.5 (0.2318) is not reproduced (0.23115); the time law for the parabola
    prints s^2/6 for s^3/6. None changes anything in sections 1 to 11 above.
