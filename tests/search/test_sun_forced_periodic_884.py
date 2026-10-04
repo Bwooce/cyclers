@@ -15,6 +15,7 @@ import math
 
 import numpy as np
 import pytest
+from scipy.optimize import minimize_scalar
 
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.cr3bp as cr3bp
@@ -185,7 +186,23 @@ def test_forced_orbit_closure_independent_integrator_and_reversibility(
     back = sf.continue_in_eps(prob, xs0, reverse_from=(xs1, 0.2), ds0=0.05)
     assert back.stop_reason == "reached_target"
     assert back.eps[-1] == 0.0
-    assert float(np.max(np.abs(back.nodes[-1] - xs0))) < 1e-6
+    # At zero Sun mass every point of the periodic orbit solves the shooting problem, so
+    # the reverse continuation may land on the same orbit at a slightly different phase.
+    # #891 (2026-10-04): in the corrected model it lands 4.4e-6 from the start point, in
+    # y and vx only, a phase slip of -1.2e-5 time units at both nodes; the distance to the
+    # orbit's curve is 7e-13 and 1.8e-12 (measured). So compare with the curve: the same
+    # slip must carry both start nodes onto the landing nodes.
+    land = back.nodes[-1]
+    assert float(np.max(np.abs(land - xs0))) < 1e-4
+
+    def _off_orbit(tau: float) -> float:
+        moved = [sf.propagate(MODEL, 0.0, 0.0, xs0[k], 0.0, tau).state_f for k in range(2)]
+        return float(max(np.max(np.abs(moved[k] - land[k])) for k in range(2)))
+
+    slip = minimize_scalar(
+        _off_orbit, bounds=(-1e-3, 1e-3), method="bounded", options={"xatol": 1e-14}
+    )
+    assert float(slip.fun) < 1e-9
 
 
 def test_symmetric_forced_orbit_matches_half_period_shooting(
