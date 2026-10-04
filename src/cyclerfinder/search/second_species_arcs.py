@@ -396,7 +396,7 @@ def collision_data(arc: SArc, tol: float = _TOL_ZERO) -> CollisionData:
     turn = math.degrees(2.0 * math.asin(ratio))
     a, e = arc.a, arc.e
     den12 = 2.0 - 1.0 / a + a * e * e - a
-    sg = arc.eps2 * (1 if math.sin(arc.eta) > 0 else -1)
+    sg = (arc.eps2 or 1) * (1 if math.sin(arc.eta) > 0 else -1)
     w12 = _w_form(v, den12) * sg
     w_sid = _w_form(v, 2.0 - 1.0 / a)
     return CollisionData(v1, v2, v, cj, turn, w12, w_sid, tuple(flags))
