@@ -972,7 +972,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   continuity only) produced real-ephemeris Titania-Oberon arcs today where direct propagation
   failed (`#895`), with a working corrector in the tree. Target: a published ballistic
   real-ephemeris cycler as the positive control, then the V0 rows.
-- `#899` — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping and the Gomez
+- `#899` — **SCOPING FINDING (2026-10-04, from the `#897` source readers).** None of the held
+  second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
+  1.5e-3 (strips, 2002) and compute periodic orbits at 1e-4; Gomez & Olle part II works at
+  1e-6; the only mention of a value near the Earth-Moon one (0.01215) is a citation of
+  Guillaume 1973 for 1e-2 (Gomez & Olle II, p. 155), not held. So continuing generating chains
+  to the Earth-Moon mass is beyond what these papers did: a real extension, with no published
+  control at the target mass (the catalogued cycler families themselves would be the check).
+  A stated risk: the p:q generating orbits are bifurcation orbits between first and second
+  species (Bruno & Gomez 2003; Gomez & Olle II, pp. 151-152), where a demanded-turn test can
+  mislead. Wait for the synthesis note and the Gomez & Olle digest before dispatching.
+- `#899` (earlier text) — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping and the Gomez
   & Olle digest). **SECOND-SPECIES THEORY AS A GENERATOR OF CYCLERS.** Enumerate collision arcs
   and admissible chains by symbolic sequence (Henon; Font, Nunes & Simo; Bolotin & MacKay's
   graph with the direction-change condition), apply the demanded-turn gate at the physical
