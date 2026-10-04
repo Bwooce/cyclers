@@ -991,7 +991,28 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   continuity only) produced real-ephemeris Titania-Oberon arcs today where direct propagation
   failed (`#895`), with a working corrector in the tree. Target: a published ballistic
   real-ephemeris cycler as the positive control, then the V0 rows.
-- `#899` — **SCOPING FINDING (2026-10-04, from the `#897` source readers).** None of the held
+- `#899` — **CORRECTION (2026-10-04, from the `#897` synthesis; quotes verified by the coordinator
+  in the held paper). THE SCOPING FINDING BELOW IS WRONG ON ONE POINT: FOR ONE MOON, SECOND-
+  SPECIES SEEDING PLUS CONTINUATION IN MASS TO THE EARTH-MOON VALUE IS PUBLISHED, IN A PAPER
+  THE PROJECT ALREADY HOLDS AND CATALOGUES FROM.** Casoliva, Mondelo, Villac, Mease, Barrabes
+  & Olle, JGCD 33(5), 2010, section IV.C ("Cyclers via differential correction and
+  continuation from a small-mass-ratio approximation"): seeds are second-species solutions
+  "in the terminology of Poincare" from Barrabes & Gomez's matched in/out maps at mass ratio
+  1e-6, continued in the mass ratio to the Earth-Moon value. They report that fixed-period
+  continuation "in most cases" ends on lunar impact, "showing that resonant cyclers ... do
+  not exist uniformly in mu"; that "a three-step continuation strategy was necessary" (mass,
+  then Jacobi constant at fixed mass to raise the periselene, then mass again); and that the
+  method is "more systematic and thorough" and the only way they obtained the tight 7-3
+  cyclers. **Consequences:** (1) for one moon `#899` is a REPRODUCTION with a strong control:
+  the nine catalogued Casoliva rows with their printed states are the check at the target
+  mass, and the 2008 conference paper's table gives the seeds at 1e-6; (2) the project never
+  built this strategy: `#780` tried two-body seeds at the physical mass only, the route
+  Casoliva et al. say fails for tight orbits; (3) what the held papers do NOT show is the
+  same for chains with more than one flyby per period, for the Ross-RT families above
+  Jacobi constant 3, or for two moons. Barrabes & Gomez 2002 and 2003 (both held) carry the
+  seed formulas and must be digested before a build. The earlier finding follows, kept as
+  the record of the mistake:
+- `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
   1.5e-3 (strips, 2002) and compute periodic orbits at 1e-4; Gomez & Olle part II works at
   1e-6; the only mention of a value near the Earth-Moon one (0.01215) is a citation of
