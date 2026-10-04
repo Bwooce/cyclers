@@ -864,7 +864,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   EPHEMERIS.** (a) Mean motions from printed rates or the kernel, not Kepler's law on geometric
   axes: fix `SatelliteData.mean_motion_deg_day` for the Uranian moons and resolve the strict
   expected-failure in `tests/core/test_satellites_uranian_sources.py`; audit the other
-  systems for the same trap. (b) Decide URA111 (Jacobson 2014) or URA182 (Jacobson & Park
+  systems for the same trap. FOUND IN A SECOND SYSTEM 2026-10-04 (`#896` Kumar 2021 check): the default
+  Jupiter-Europa-Ganymede system's Ganymede rate is 1.7e-4 off the printed periods, the same fault. (b) Decide URA111 (Jacobson 2014) or URA182 (Jacobson & Park
   2025) and make masses, axes, J2, J4 and pole one set; obtain the URA182 kernel if that is
   the choice. (c) Switch `URANUS_J2` in `v4_uranus.py` to the set chosen and add J4. (d) Label
   every `PRIMARIES` entry as planet or system GM with its source (Jupiter's and Saturn's are
@@ -1034,6 +1035,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   logarithmic potential band 1.98 to 2.035 for MEGNO). A positive indicator on a cycler is
   EXPECTED (cyclers are hyperbolic) and disqualifies nothing; the use is on grids around a
   quasi-cycler and in the capture sweeps (`#908`). Unproven for close encounters and short arcs.
+- `#927` — registered 2026-10-04. **LEIVA & BRIOZZO 2005 DOES NOT REPRODUCE IN `core.qbcp`: A
+  REMAINING MODEL DIFFERENCE?** From `#896` item (e) (`tests/core/test_leiva_briozzo_2005_more.py`,
+  strict xfails): the seed orbit closes (4.7e-5), but the localisation orbit misses by 3.5e-2 after
+  its printed period (the symmetric orbit at that energy has x0 = 1.110654, period 6.370242); Earth
+  distances are 5.2 and 3.3 km low; the lunar-distance difference is 39.2 km against 31 printed;
+  three of four stability parameters are off by 0.1 to 0.3 percent. The 2008 paper by the same
+  authors reproduces well at mu = 0.0121505482, so first check whether the 2005 paper uses a
+  different mu or a different set of alpha coefficients (the 2005 model description against
+  Andreu's tables), then whether any `#892` defect remains. Not explained away on the paper's
+  side until that is done. The QBCP passes POL1/POL2, Rosales 2023 Table 5 and JCFJ 2018 Table 1,
+  so a remaining defect would have to be small or confined to terms those controls do not excite.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
