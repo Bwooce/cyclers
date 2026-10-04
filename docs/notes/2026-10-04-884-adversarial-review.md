@@ -31,8 +31,10 @@ Three further corrections stand whichever way the Sun turns:
 
 A second model defect surfaced while preparing the coherent-model spot check: `core/qbcp.py`
 evaluates alpha_2 as a cosine series and alpha_3 as a sine series, the reverse of what the tables
-are, and the shipped coherent model is not time-reversible (section 9). I did not run the
-coherent-model spot check on a model I had just found to be wrong.
+are, and the shipped coherent model is not time-reversible (section 9). The spot check was run with
+that defect repaired in process: three corrected-sense orbits do have periodic counterparts there,
+strongly deformed. It is conditional on the rest of that module, which the coordinator has since
+recorded as not validated (#892; the bicircular defect is #891).
 
 ## 2. Verdicts
 
@@ -95,7 +97,8 @@ depends on the size or sign of the forcing along the orbit changes, because the 
 different Fourier coefficients of the orbit (harmonic +k against harmonic -k).
 
 **Survey with the sense corrected (COMPUTED; my code only; each resulting orbit re-integrated
-segment by segment in the non-rotating frame, closure 1.4e-13 to 8.0e-12, one at 4.1e-10).**
+segment by segment in the non-rotating frame, closure 1.4e-13 to 8.0e-12, and 4.1e-10 for the
+sub-surface Casoliva mirror pair).**
 "lam" is the largest Floquet magnitude over the forced period; periselene in km; phases in radians at
 the member's x-axis crossing. For a = 2, theta0 and theta0 + pi are the same orbit one lap later, so
 two phases are listed.
@@ -313,8 +316,8 @@ det(M - I) changes sign across each fold (for C21: -1.0e3, +6.5e1 either side), 
 saddle-node turning points, not corrector failures. The branches return to eps = 0 and, after a
 Newton solve at eps = 0, are periodic orbits of the three-body problem by the separate core
 propagator (`core.cr3bp.cr3bp_eom`, segment closure 1.7e-13 and 6.3e-13), with Jacobi constant
-3.121403 (period 3 Tg, periselene 25,760 km) and 3.079993 (period 5 Tg per two laps, periselene
-20,434 km), at distances 0.18 and 0.33 from the start orbit. The note's description is right for the
+3.121403 (closed over 3 Tg, periselene 25,760 km) and 3.079993 (closed over 5 Tg, minimal period not
+determined, periselene 20,434 km), at distances 0.18 and 0.33 from the start orbit. The note's description is right for the
 project model. I did not identify the landing orbits' families. With the Sun's sense corrected
 neither fold exists (section 3).
 
@@ -344,7 +347,7 @@ neither fold exists (section 3).
   can hope for is a nearby bounded trajectory that needs station-keeping, and with multipliers of
   1e5 to 1e14 per period the station-keeping cost is the real question. "Survives the Sun" bears
   little weight beyond "has a periodic counterpart in a periodic model".
-- **Coherent-model spot check: not done, and why (COMPUTED).** `core/qbcp.py::evaluate_alphas`
+- **The coherent model as shipped is not usable (COMPUTED).** `core/qbcp.py::evaluate_alphas`
   passes `is_even=True` for alpha_2 and `is_even=False` for alpha_3. The tables say the opposite:
   `_COEFFS_ALPHA2` has a zero constant term like the other sine tables (alpha_5, alpha_8) and
   `_COEFFS_ALPHA3` starts at 0.99999 like a cosine table. The true model has the reversing symmetry,
@@ -352,10 +355,31 @@ neither fold exists (section 3).
   T = 1 and 3 TU is 3.3e-2 to 1.1e-1 as shipped, and exactly 0 with the two parities exchanged
   (in-process patch only). As shipped alpha_2(0) = -0.0137 (should vanish at syzygy) and
   alpha_3(0) = 1.0000 (should be about 1.0196). This is separate from the coefficient corrected in
-  commit 6bda1772. A spot check in a model with this defect would not mean anything, so I stopped
-  there. With both models repaired, the natural check is a homotopy from the corrected-sense
-  bicircular model (which is the coherent model with alpha_1 = alpha_3 = alpha_6 = 1, alpha_2 = 0 and
-  first-harmonic alpha_4, 5, 7, 8) to the full tables.
+  commit 6bda1772.
+- **Spot check in the coherent model with the parities repaired in process (COMPUTED;
+  conditional).** The corrected-sense bicircular model is the coherent model's equations with
+  alpha_1 = alpha_3 = alpha_6 = 1, alpha_2 = 0 and single-harmonic alpha_4, 5, 7, 8 (Sun at angle
+  pi - omega_S t, so the bicircular phase theta0 = pi matches the coherent model's t = 0). I blended
+  every Fourier table linearly from those values (lam = 0) to the shipped tables (lam = 1), with
+  alpha_2 as a sine and alpha_3 as a cosine series, and followed three corrected-sense theta0 = pi
+  orbits in lam by multiple shooting with the module's own propagator and STM. Instrument check: at
+  lam = 0 the alpha form reproduces the bicircular orbits to 1.4e-9, 9.8e-9 and 7.2e-9.
+
+  | Orbit (corrected sense, theta0 = pi) | Reaches lam = 1 | Closure, separate propagation at 1e-13 | Largest multiplier, bicircular to coherent | Largest node displacement | Smallest Moon distance, bicircular to coherent |
+  |---|---|---|---|---|---|
+  | Casoliva 2:1(b), C = -0.02, P = 1 Tg | yes, 11 steps | 3.4e-11 | 9.5 to 10.4 | 0.090 (34,000 km) | 11,749 to about 10,800 km |
+  | C11 2/1, P = 2 Tg | yes, 11 steps | 2.1e-12 | 3.4e5 to 6.8e5 | 0.074 (28,000 km) | 25,005 to about 21,600 km |
+  | C21 planar 3/1, P = 3 Tg | yes, 25 steps | 3.3e-12 | 5.6e4 to 5.1e6 | 0.213 (82,000 km) | 25,103 to about 24,400 km |
+
+  All three stay self-symmetric (defect below 1e-10) and the node displacement grows smoothly with
+  lam, so no jump is evident. The coherent-model distances are read off integrator steps in pulsating
+  coordinates and are good to a few hundred km only. What this shows: going from the bicircular to a
+  coherent forcing is not a small step. It moves these orbits by tens of thousands of km and changes
+  the C21 multiplier ninety-fold, which is far more than the Sun did in the bicircular model (node
+  displacement 0.02 to 0.05). What it does not show: anything about the true coherent model. The
+  coordinator's check (#892) finds that the parity-repaired module still misses a published point by
+  2.3e-2, so the tables or equations have a further problem and these three orbits are orbits of an
+  unvalidated model.
 
 ## 10. Novelty: what the mathematics makes unsurprising (question 10)
 
@@ -421,11 +445,15 @@ to orbits not previously listed, not a new phenomenon.
   (x0, [z0], vy0, T), step at most 0.03, tangent cosine guard, every crossing of a target period
   corrected at that period; where the row's crossing gave a stiff walk, the row's other
   perpendicular crossing was used.
-- Compute used: about 25 minutes of wall time on 4 processes in total.
+- **Coherent-model homotopy.** Natural-parameter steps in lam (0.025 to 0.1, halved on failure),
+  secant predictor, Newton on the cyclic shooting system built from `propagate_qbcp_pv(...,
+  with_stm=True)` at 1e-12, nodes and period as in the bicircular orbit.
+- Compute used: about 25 minutes of wall time on 4 processes in total. The review was done against
+  the tree at commit 8705d463 (before #891 and #892 were registered).
 
 ## 13. Not done
 
-- The coherent-model spot check (section 9).
+- A coherent-model check in a validated coherent model (section 9 is conditional on #892).
 - The a = 3 members and the degenerate C21 3D 5/2 member, in either sense.
 - Two corrected-sense branches of the sub-surface Casoliva member (one stopped at eps = 0.991 by the
   time limit, one converged to 1.3e-11 without diagnostics).
