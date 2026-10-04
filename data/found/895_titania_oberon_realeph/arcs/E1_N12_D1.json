@@ -1,0 +1,200 @@
+{
+ "epoch": "E1",
+ "cycles": 12,
+ "t_ref_et": 947678400.0,
+ "t_c_s": -160.0175685005937,
+ "t_c_tdb": "2030-01-11 23:57:19.982",
+ "circles": {
+  "ez": [
+   0.21195887587793089,
+   0.9417407823074446,
+   0.26114695838842533
+  ],
+  "ex": [
+   -0.9755948450962394,
+   0.21957845573198806,
+   0.0
+  ],
+  "a_t_km": 436282.59846113116,
+  "n_t_rad_s": 8.353223294682118e-06,
+  "lon0_t": 23.118952998146277,
+  "a_o_km": 583447.7380269653,
+  "n_o_rad_s": 5.401529180482172e-06,
+  "lon0_o": 16.83529536805158,
+  "period_t_d": 8.705867136668928,
+  "period_o_d": 13.463234157690655,
+  "synodic_d": 24.637394442933886,
+  "cycle_d": 123.18697221466941,
+  "fit_window_s": [
+   -2592000.0,
+   130325760.00000001
+  ]
+ },
+ "n_nodes": 293,
+ "expected_signature": [
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ],
+  [
+   "Oberon",
+   -1,
+   1
+  ],
+  [
+   "Titania",
+   1,
+   1
+  ]
+ ],
+ "route": "D1: tiled periodic orbit of the circular model (note section 3)",
+ "tile_time_mismatch_s": 1.4901161193847656e-08,
+ "lam0_from_periodic": {
+  "converged": false,
+  "reason": "step halving exhausted",
+  "history": [
+   {
+    "iter": 0,
+    "max_r_km": 2.3330615492647306e-05,
+    "max_v_kms": 1.5027981781833282e-10,
+    "scaled": 4.400895398734306e-11,
+    "alpha": 0.25
+   },
+   {
+    "iter": 1,
+    "max_r_km": 1.955131757080865e-05,
+    "max_v_kms": 1.2017621525610286e-10,
+    "scaled": 4.3100418184407666e-11
+   }
+  ],
+  "flybys": []
+ },
+ "state": {
+  "param": "lam",
+  "p_cur": 0.0,
+  "p_prev": null,
+  "step": 0.1,
+  "attempts": 0,
+  "status": "failed",
+  "signature": []
+ },
+ "logs": {
+  "lam": []
+ },
+ "_meta": {
+  "task": "#895",
+  "git_sha": "ba96b761",
+  "saved_utc": "2026-10-04T08:42:10.782890+00:00"
+ }
+}

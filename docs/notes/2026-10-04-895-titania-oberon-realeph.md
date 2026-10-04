@@ -389,3 +389,22 @@ within 2 Hill radii; closest Umbriel 170,374 km).
 
 Pre-registered route at N = 6 (all five epochs): all converge and pass (c) to (f)
 (`verify_E*_N6.json`); numbers in section 4.
+
+### 3.2 Deviation D2, declared before it was run: Newton tolerance 5 cm
+
+Observed (`arcs/E2_N6_D1.json`, `arcs/E4_N6_D1.json`, `arcs/E1_N12_D1.json`): three D1 runs failed
+without any branch event and without any sign of divergence. In each, Newton reached a junction
+residual of 1.1 to 2.3 cm and could not go lower (step halving exhausted with the residual flat at
+that level), so it never met the pre-registered stop of 1 cm; repeated failures then shrank the
+homotopy step below the minimum (E2 at lam = 0.577, E4 at lam = 0.216) or stopped the run at
+lam = 0 (E1, N = 12, 2.3 cm). That level is the noise floor of the solver's integrator at
+rtol 1e-12 (adaptive step selection makes the segment map non-smooth at the 1e-12 relative level,
+and a flyby segment amplifies that by tens). The 1 cm stop was set too close to it; the
+pre-registration did not measure the floor first.
+
+D2: Newton stops at 5 cm and 5e-8 km/s instead of 1 cm and 1e-8 km/s. Nothing else changes; every
+criterion of section 1.5 is applied unchanged (junctions under 1 m and 1 mm/s with both
+verification integrators, flybys integrated through with the prediction check). A 5 cm residual
+gives a (d) prediction of order 50 m at the per-leg growth of about 1,000, well inside the 0.3 km
+well-posedness bound. D2 is used only for runs that are labelled with it; the failed runs under the
+pre-registered tolerance stay recorded as failures of the method at that tolerance.

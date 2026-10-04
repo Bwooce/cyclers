@@ -314,7 +314,7 @@ def stage_arc(args: argparse.Namespace) -> None:
             "n_nodes": len(times),
             "expected_signature": expected,
         }
-        if args.variant == "_D1":
+        if "_D1" in args.variant:
             _, pzp = arc_paths(tag, 1, "_D1periodic")
             zp = np.load(pzp.with_name(pzp.stem + "_final.npz"))
             tt, x1 = m.tile_periodic(zp["times"], zp["x"], zp["rot"], -2, len(times) - 3)
@@ -718,6 +718,9 @@ def main() -> int:
     ap.add_argument("--budget", type=float, default=420.0)
     ap.add_argument("--quick", action="store_true")
     args = ap.parse_args()
+    if "_D2" in args.variant:
+        m.NEWTON_TOL.update({"r": 5e-5, "v": 5e-8})
+        log("deviation D2: Newton tolerance 5 cm and 5e-8 km/s")
     t = time.time()
     stages = {
         "control": stage_control,

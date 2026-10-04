@@ -1230,6 +1230,11 @@ def min_norm_step(ev: ShootEval) -> FloatArray:
     return np.asarray(dz.reshape(k + 1, 6) * _D, dtype=np.float64)
 
 
+#: Newton stopping tolerance on every junction (pre-registration 1.3: 1 cm and 1e-8 km/s).
+#: Deviation D2 (note section 3.2) raises it to 5 cm and 5e-8 km/s for the runs that name it.
+NEWTON_TOL = {"r": 1e-5, "v": 1e-8}
+
+
 @dataclass
 class NewtonResult:
     x: FloatArray
@@ -1243,11 +1248,13 @@ def newton(
     times: FloatArray,
     x0: FloatArray,
     *,
-    tol_r: float = 1e-5,
-    tol_v: float = 1e-8,
+    tol_r: float | None = None,
+    tol_v: float | None = None,
     max_iter: int = 12,
     rtol: float = 1e-12,
 ) -> NewtonResult:
+    tol_r = NEWTON_TOL["r"] if tol_r is None else tol_r
+    tol_v = NEWTON_TOL["v"] if tol_v is None else tol_v
     x = x0.copy()
     hist: list[dict[str, float]] = []
     try:
@@ -1568,10 +1575,12 @@ def periodic_newton(
     x0: FloatArray,
     rot: FloatArray,
     *,
-    tol_r: float = 1e-5,
-    tol_v: float = 1e-8,
+    tol_r: float | None = None,
+    tol_v: float | None = None,
     max_iter: int = 12,
 ) -> NewtonResult:
+    tol_r = NEWTON_TOL["r"] if tol_r is None else tol_r
+    tol_v = NEWTON_TOL["v"] if tol_v is None else tol_v
     x = x0.copy()
     k = len(times) - 1
     hist: list[dict[str, float]] = []
