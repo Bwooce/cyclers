@@ -934,11 +934,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   1023, Komachi ASC 2026 Paper 688, Rosengren et al. IAC-25-C1.9.1, Kumar & Anderson 2026
   (ISSFD). Next literature watch about 2026-10-17.
   **Added 2026-10-04 from the `#897` synthesis and the Musielak & Quarles review digest:**
-  Hadjidemetriou 1975, "The continuation of periodic orbits from the restricted to the general
-  three-body problem", Celest. Mech. 12:155 (10.1007/BF01230209), the existence theory for
-  continuing a restricted-problem periodic orbit to finite third mass; Cincotta & Simo 2000,
-  A&A Suppl. 147:205 (10.1051/aas:2000108) and Froeschle, Lega & Gonczi 1997, CMDA 67:41
-  (10.1023/A:1008276418601), the chaos indicators MEGNO and FLI; Bruno 1981, "On periodic
+  RECEIVED 2026-10-04: Hadjidemetriou 1975, Cincotta & Simo 2000 (MEGNO), Froeschle, Lega &
+  Gonczi 1997 (FLI); digests in progress. Still wanted: Bruno 1981, "On periodic
   flybys of the Moon", Celest. Mech. 24:255; Henon 1997, Generating Families in the Restricted
   Three-Body Problem (10.1007/3-540-69650-4); Hitzl & Henon 1977 (10.1007/BF01228610);
   Guillaume 1973, Celest. Mech. 8:199; Perko 1976, 1977, 1981; Lantoine & Russell 2011,
