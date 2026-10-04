@@ -1159,8 +1159,20 @@ def orbit_890(refined_state: Sequence[float] | FloatArray, c: Model890 | None = 
     return Orbit890(c, hermite_traj(p.rec_t, p.rec_y, model))
 
 
-def seed_from_890(orb: Orbit890, circles: Circles, t_c: float, times: FloatArray) -> FloatArray:
-    """Map the `#890` orbit onto the fitted circles with its Titania flyby at ``t_c``."""
+def seed_from_890(
+    orb: Orbit890,
+    circles: Circles,
+    t_c: float,
+    times: FloatArray,
+    *,
+    vel_scale: float | None = None,
+) -> FloatArray:
+    """Map the `#890` orbit onto the fitted circles with its Titania flyby at ``t_c``.
+
+    Positions in the Titania-fixed frame are scaled by ``s = a_fit/a_890`` and rotating-frame
+    velocities by ``s q`` (``q`` the cycle ratio), as pre-registered; ``vel_scale`` replaces
+    ``s q`` (used only by the diagnostic of note section 8).
+    """
     s = circles.a_t / orb.c.a_t
     q = orb.c.cycle_s / circles.cycle_s
     out = np.empty((len(times), 6))
@@ -1168,7 +1180,7 @@ def seed_from_890(orb: Orbit890, circles: Circles, t_c: float, times: FloatArray
         tau = ((t - t_c) / circles.cycle_s) * orb.c.cycle_s
         r, v = orb.rot_state(tau)
         r = s * r
-        v = s * q * v
+        v = (s * q if vel_scale is None else vel_scale) * v
         lon = circles.lon_t(t)
         cs, sn = math.cos(lon), math.sin(lon)
         vi = v + circles.n_t * np.array([-r[1], r[0]])

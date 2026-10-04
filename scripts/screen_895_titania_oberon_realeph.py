@@ -839,10 +839,80 @@ def stage_variants(args: argparse.Namespace) -> None:
                 f"{row['max_jump_mm_s']:.4f} mm/s; Newton conv {res.converged}; "
                 f"alt diff {[round(a, 2) for a in row.get('alt_minus_review_km', [])]}"
             )  # fmt: skip
-        out["review_comparison"] = cmp
+        # kept in its own file: it needs the review's scratch directory, which is not in the
+        # repository, and a later re-run without it must not overwrite the comparison
+        dump(f"review_comparison_{tag}_N{n}{args.variant}.json", cmp)
     for name in VARIANT_MODELS:
         out[name].pop("x", None)
     dump(f"variants_{tag}_N{n}{args.variant}.json", out)
+
+
+def stage_seedcheck(args: argparse.Namespace) -> None:
+    """Why the direct start at lam = 0 failed (not pre-registered; note section 8 item 1).
+
+    The registered Newton from three seeds that differ only in how the `#890` rotating-frame
+    velocity is scaled (the registered s q, the Kepler similarity s^-1/2, none), and a Newton
+    damped like the review's (step cap 3e-3 in scaled units, seven halvings, 70 iterations) from
+    the registered seed.
+    """
+    tag, n = args.epoch, args.cycles
+    table, circles, t_c = epoch_setup(tag)
+    times = m.arc_times(circles, t_c, n)
+    orb = m.orbit_890(json.loads(REFINE_890.read_text())["refined_state"])
+    mod = m.homotopy_model(table, circles, 0.0)
+    s_len = circles.a_t / orb.c.a_t
+    q = orb.c.cycle_s / circles.cycle_s
+    out: dict[str, Any] = {"epoch": tag, "cycles": n}
+    for label, vscale in (
+        ("registered_s_q", s_len * q),
+        ("kepler_s^-0.5", s_len**-0.5),
+        ("none", 1.0),
+    ):
+        x0 = m.seed_from_890(orb, circles, t_c, times, vel_scale=vscale)
+        ev = m.shoot_eval(mod, times, x0, stm=False)
+        r = m.newton(mod, times, x0)
+        row: dict[str, Any] = {
+            "velocity_scale": vscale, "seed_max_junction_km": ev.max_r, "converged": r.converged,
+            "iterations": len(r.history) - 1, "reason": r.reason,
+            "final_max_r_km": r.history[-1]["max_r_km"],
+        }  # fmt: skip
+        if r.converged:
+            row["alts_km"] = [f.alt_km for f in m.arc_flybys(mod, times, r.x, circles.ez)]
+        if label == "registered_s_q":
+            x, ev = x0.copy(), m.shoot_eval(mod, times, x0)
+            ok, it = False, 0
+            for it in range(70):  # noqa: B007
+                if ev.max_r < m.NEWTON_TOL["r"] and ev.max_v < m.NEWTON_TOL["v"]:
+                    ok = True
+                    break
+                dx = m.min_norm_step(ev)
+                big = float(np.max(np.abs(dx / m._D)))
+                sc = 1.0 if big <= 3e-3 else 3e-3 / big
+                f0 = float(np.linalg.norm(ev.jumps / m._D))
+                accepted = False
+                for _ in range(7):
+                    xt = x + sc * dx
+                    try:
+                        evt = m.shoot_eval(mod, times, xt)
+                    except RuntimeError:
+                        sc *= 0.5
+                        continue
+                    if float(np.linalg.norm(evt.jumps / m._D)) < f0:
+                        accepted = True
+                        break
+                    sc *= 0.5
+                if not accepted:
+                    break
+                x, ev = xt, evt
+            row["review_style_damped_newton"] = {
+                "converged": ok,
+                "iterations": it,
+                "final_max_r_km": ev.max_r,
+            }
+        out[label] = row
+        brief = {k: v for k, v in row.items() if k != "alts_km"}
+        log(f"{label}: {json.dumps(brief, default=float)[:300]}")
+    dump(f"seedcheck_{tag}_N{n}.json", out)
 
 
 def stage_suppl(args: argparse.Namespace) -> None:
@@ -879,7 +949,8 @@ def stage_suppl(args: argparse.Namespace) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument(
-        "stage", choices=["control", "p2", "arc", "verify", "d1periodic", "variants", "suppl"]
+        "stage",
+        choices=["control", "p2", "arc", "verify", "d1periodic", "variants", "suppl", "seedcheck"],
     )
     ap.add_argument("--epoch", default="E1", choices=sorted(EPOCHS))
     ap.add_argument("--cycles", type=int, default=3)
@@ -899,6 +970,7 @@ def main() -> int:
         "d1periodic": stage_d1periodic,
         "variants": stage_variants,
         "suppl": stage_suppl,
+        "seedcheck": stage_seedcheck,
     }
     stages[args.stage](args)
     log(f"done in {time.time() - t:.1f} s")

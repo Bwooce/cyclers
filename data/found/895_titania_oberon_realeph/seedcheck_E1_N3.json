@@ -1,0 +1,56 @@
+{
+ "_meta": {
+  "task": "#895",
+  "git_sha": "6889dffb",
+  "stage": "seedcheck_E1_N3.json"
+ },
+ "epoch": "E1",
+ "cycles": 3,
+ "registered_s_q": {
+  "velocity_scale": 0.9997638262198143,
+  "seed_max_junction_km": 8476.78835432338,
+  "converged": false,
+  "iterations": 3,
+  "reason": "step halving exhausted",
+  "final_max_r_km": 2924.415043526433,
+  "review_style_damped_newton": {
+   "converged": true,
+   "iterations": 62,
+   "final_max_r_km": 4.245370645886539e-06
+  }
+ },
+ "kepler_s^-0.5": {
+  "velocity_scale": 1.0000176507188234,
+  "seed_max_junction_km": 7001.814549312386,
+  "converged": true,
+  "iterations": 8,
+  "reason": "",
+  "final_max_r_km": 4.77300281410059e-06,
+  "alts_km": [
+   1819.3463375107945,
+   1264.1291127400382,
+   1817.8237616366887,
+   1265.438416357098,
+   1822.0866548113804,
+   1269.8663244333752,
+   1833.531898605399
+  ]
+ },
+ "none": {
+  "velocity_scale": 1.0,
+  "seed_max_junction_km": 7104.33195276316,
+  "converged": true,
+  "iterations": 10,
+  "reason": "",
+  "final_max_r_km": 7.067548845912185e-06,
+  "alts_km": [
+   1813.2074367246628,
+   1259.5614999057302,
+   1809.366915168252,
+   1258.599055401427,
+   1808.4297015584239,
+   1258.2984269063527,
+   1809.8276188121658
+  ]
+ }
+}

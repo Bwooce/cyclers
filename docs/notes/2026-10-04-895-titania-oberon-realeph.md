@@ -523,8 +523,10 @@ by at most 1.7 to 7.8 km, with the same flyby sequence, at all five epochs.
 the arcs' node files in the review's scratch directory, opened after commit `ba96b761`). Their
 model is the same construction with registry GMs, J2 = 3510.68e-6, no J4 and no Sun, SPICE called
 directly, and their Newton caps each step and allows seven halvings and 70 iterations (mine:
-none, four, twelve), which is why their direct start at lam = 0 converged and mine did not. Their
-layout is the same as this build's (two extra nodes each side of the mean conjunction chain).
+none, four, twelve); their seed also carries the flyby nodes with the moon and does not scale the
+velocity. Why their direct start at lam = 0 converged and mine did not was tested afterwards
+(section 9, `seedcheck_E1_N3.json`): either difference alone is enough. Their layout is the same
+as this build's (two extra nodes each side of the mean conjunction chain).
 
 * Their own node states, propagated by THIS code in their model (COMPUTED): largest junction
   0.111 m and 0.0075 mm/s (arc A, 2030) and 0.155 m and 0.0104 mm/s (arc B, 2031); one Newton step
@@ -562,7 +564,9 @@ layout is the same as this build's (two extra nodes each side of the mean conjun
 
 ## 8. Faults of the pre-registration, recorded
 
-1. The seed's velocity scaling (s q) was not a similarity of a Kepler orbit (section 3).
+1. The seed's velocity scaling (s q) was not a similarity of a Kepler orbit (section 3). Tested
+   in section 9: with the Kepler scaling, or with none, the registered Newton converges at lam = 0
+   from the scaled seed; so does a more heavily damped Newton from the registered seed.
 2. The 1 cm Newton stop was set without measuring the solver's noise floor (1 to 2 cm; section
    3.2).
 3. P2's 1 cm/s return bound was nearly ill-posed (velocity error tracks position error along the
@@ -572,3 +576,55 @@ layout is the same as this build's (two extra nodes each side of the mean conjun
    three (c) verdicts. Radau with the analytic Jacobian would have been the better second method.
 5. The registered route did not keep the arcs near the `#890` orbit; "near" needed either a
    periodic start or a nearness criterion, and the registration had neither (section 3).
+
+## 9. Addendum (after the coordinator-style self-review of this note)
+
+**Why the direct start failed** (`seedcheck_E1_N3.json`, driver stage `seedcheck`, not
+pre-registered, COMPUTED at E1, N = 3, lam = 0). With the registered velocity scaling s q =
+0.999764 the seed's largest junction is 8,477 km and the registered Newton stops after 3
+iterations (step halving exhausted, 2,924 km). With the Kepler similarity s^(-1/2) = 1.000018 the
+seed's largest junction is 7,002 km and the registered Newton converges in 8 iterations; with no
+velocity scaling, 7,104 km and 10 iterations. A Newton damped like the review's (step cap 3e-3 in
+scaled units, seven halvings, 70 iterations) converges from the registered seed in 62 iterations.
+The two converged scaled-seed arcs have flybys at 1,809 to 1,834 km (Titania) and 1,258 to 1,270 km
+(Oberon), next to the periodic orbit of section 3.1 (1,805.9 and 1,256.7 km) and to the review's
+circular-end arc A (1,816 to 1,823 and 1,265 to 1,266 km, READ). So the drift of the pre-registered
+route in sections 2.2 and 2.3 came from taking the fallback, and the fallback was needed only
+because of the seed's scaling and the light damping.
+
+**Times.** Dates and times in this note are TDB. In this period TDB = UTC + 69.18 s (37 leap
+seconds plus 32.184 s), so every time quoted is the UTC time to within about a minute and a
+quarter.
+
+**Provenance.** `control.json` and `p2.json` were regenerated at a commit that contains the module
+(their first versions were stamped with the commit before the module existed); every number is
+identical. The comparison with the review's arcs is now in its own files
+(`review_comparison_E1_N3_D1.json`, `review_comparison_E2_N6_D1_D2.json`): it reads the review's
+scratch directory, which is not in the repository and will not survive this session, so it cannot
+be regenerated later; the stage that writes it skips the comparison when the directory is absent
+and no longer overwrites it.
+
+**Sources since read by others.** The Jacobson (2014) digest committed during this work
+(`docs/notes/` Jacobson 2014 digest, commit `e8ddda40`, READ by its author) gives J2 = 3510.7 +/-
+0.7 and J4 = -34.2 +/- 1.3 (x 1e-6, Table 12) and a pole precession of about 1.3 mas per year. The
+kernel header's J702 = 3.510685e-3 and J704 = -3.4166e-5 used here agree with those values, and a
+pole rate of that size is far below anything in section 2.1, which is why the kernel's own pole
+held constant made no difference.
+
+**Where the brief could be sharpened** (in addition to section 8):
+
+1. "Approaches of Uranus within 2 Hill radii" has no meaning (Uranus's Hill sphere is about the
+   Sun); this build reported the closest approach to Uranus and failed only below 1,000 km
+   altitude.
+2. The preflight rule names `scripts/run_*.py`; a `screen_*` driver that corrects around one seed
+   falls outside it. This driver states why it does not call `preflight_search`.
+3. The Sun: about 0.3 to 0.9 km per 5-day node interval, 774 km over 62 days once a flyby is
+   crossed, yet less than 0.4 km of change in the flyby altitudes of the corrected arcs. "It
+   matters at flyby-targeting accuracy" is true of propagation and not of existence.
+4. "Near the model orbit" needs either a periodic start or a stated nearness metric, because an
+   open arc with six free parameters drifts along its family under minimum-norm continuation.
+5. The second verification integrator should be named (Radau with an analytic Jacobian is the
+   reliable choice here; LSODA is not), and its self-convergence should be measured before a
+   threshold is set on it.
+6. Comparing two separately converged arcs measures the family, not the code. The test of the code
+   is each implementation evaluating the other's nodes; the brief asked for the first.

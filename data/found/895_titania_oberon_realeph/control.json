@@ -1,7 +1,7 @@
 {
  "_meta": {
   "task": "#895",
-  "git_sha": "9aa470a9",
+  "git_sha": "6889dffb",
   "stage": "control.json"
  },
  "criterion": "P1: every moon, every epoch: <= 10 km at 30 d and <= 40 km at 123 d (variant 'full'); discrimination: Miranda and Ariel > 10 km at 30 d for 'no_zonal' and 'former_repo_j2' at every epoch",
