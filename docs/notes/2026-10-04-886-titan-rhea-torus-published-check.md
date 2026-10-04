@@ -199,4 +199,157 @@ expected error growth bounded by the per-map multiplier to the power k times the
 
 ## 5. Results
 
-Not yet run.
+Run 2026-10-04, outputs `scan.jsonl` (207 members), `refine.jsonl` (73), `control.jsonl`
+(24), `posthoc.jsonl` (8), `closure.jsonl` (13) and `summary.json` in
+`data/found/886_titan_rhea_torus/`. The pre-registered classes come first; post-hoc
+additions are labelled as such.
+
+### 5.1 Counts (pre-registered classification)
+
+| Class | Members |
+|---|---|
+| persist (scan) | 61 |
+| rescued (scan failed, 1.5 N rerun persisted) | 29 |
+| fail-floor (step floor hit in both runs) | 32 |
+| fail-unresolved (target mass reached but off-node or tail test failed in both runs) | 12 |
+| not refined (scan at N = 601 or 701; the 1.5 N rerun exceeds the per-command budget) | 3 |
+| Region B (seed gate failed at 701 nodes; not testable) | 70 |
+
+Failures by location (44 in total): 40 inside a window, 2 in a twistless band, 2 outside.
+
+### 5.2 Region A crossings: failure windows
+
+Offsets delta = Tp/T - p/q at which the member did not persist (pre-registered classes; a
+`*` marks fail-unresolved members that persisted at 3 N in the post-hoc rerun, section 5.4).
+
+| Ratio, segment (C) | Failed | Persisted | Width of failure |
+|---|---|---|---|
+| 6/31, seg 0 (3.0547) | 0, +-1e-6, +-3e-6 | +-1e-5 and wider | +-3e-6 |
+| 7/36, seg 0 (3.0541) | 0 only | +-1e-6 and wider | below 1e-6 |
+| 8/41, seg 0 (3.0513) | 0 only (+-1e-6 rescued at 1.5 N) | the rest | below 1e-6 |
+| 8/41, seg 1 (3.0398) | 0, +-1e-6, +-3e-6`*` | +-1e-5 (rescued) and wider | +-1e-6 to 3e-6 |
+| 7/36, seg 1 (3.0283) | 0, +-1e-6, +-3e-6, +-1e-5`*`, -3e-4`*` | +-3e-5 and wider (rescued) | +-3e-6 to 1e-5 |
+| 6/31, seg 1 (3.0173) | 0 to +-1e-5, +-3e-5`*` | +-1e-4, +3e-4 | +-1e-5 to 3e-5 |
+| 6/31, seg 2 (3.0077) | 0 to +-1e-5, +-3e-5 (not re-run at 3 N) | +-1e-4, +-3e-4 | +-1e-5 to 3e-5 |
+
+The three seg-0 failures are TOLERANCE-EDGE failures: the corrector's residual stagnates at
+1.0e-10 to 1.2e-10, just above the 1e-10 tolerance, at mass fractions 0.03 to 0.17. They are
+real in the sense that the residual cannot be driven below the resonant forcing at exactly
+rational Tp/T, but the resonance there is about as weak as the tolerance; a 1e-9 tolerance
+would have called them persistent. In segments 1 and 2 (C 3.01 to 3.04) the failures are
+not marginal: at |delta| <= 3e-6 the corrector cannot take even the first 1/1024 step, and
+the deformation of the circle at harmonic q grows like 1/delta toward the ratio (8/41 seg 1:
+1.0e-8 at delta = 1e-4, 9.0e-8 at 3e-5, 3.4e-7 at 1e-5, 1.2e-6 at 3e-6), the small-divisor
+signature the method control below also shows.
+
+Twistless points: the T minimum at Tp/T = 0.195273 (grid member at delta_ext = 5.5e-7 and
+the extremum member) fails, as the fixed-rho formulation is degenerate there; AMBIGUOUS as
+pre-registered. The T maximum at 0.193413 persists (at 1.5 N). The third extremum (0.194080,
+N = 601) failed in the scan and was not refined.
+
+### 5.3 Agreement test against the paper
+
+- (a) No failure outside the windows except twistless bands: **not met as pre-registered**,
+  2 failures outside: member 127 (7/36 seg 1, delta = -3e-4, fail-unresolved; post-hoc at
+  3 N it PERSISTS, so it was a resolution failure of the corrector setting, not of the torus)
+  and grid member 44 (x = -0.5637, Tp/T = 0.193939, 3.9e-4 above 6/31; fail-unresolved at 401
+  and 603 nodes, off-node residual 1e-6 to 4e-6; nearest q <= 100 rational 19/98 at 6.2e-5;
+  not re-run at 3 N because 1203 nodes exceeds the budget). Post-hoc, member 44 is the only
+  open item.
+- (b) A failure inside the window at every Region A crossing of 6/31, 7/36 and 8/41: **met**
+  (7 of 7 crossings). 4/21, 9/47 and 5/26 are crossed only in Region B: **not tested**.
+- (c) Failure windows separated by persisting members: **met**. Every failure window is at
+  most +-3e-5 wide, while neighbouring listed ratios are 6.8e-4 or more apart, and persisting
+  members sit at +-1e-4 around every crossing (except where the segment ends).
+- Prediction 4.7 ("every Region A member persists") was **wrong**: the low-e and mid-e
+  crossings at C 3.01 to 3.05, 0.13 to 0.31 from Rhea's orbit, do fail inside very narrow
+  windows. The paper's text ("many mid-e orbits ... failed") does not say whether such narrow
+  failures occurred in its own computation at these energies; it prints no per-orbit list.
+
+### 5.4 Corrector failure against torus failure
+
+- Refinement at 1.5 N and a quarter of the step rescued 29 members: in this problem the
+  perturbed circles near a resonance need several times the node count of the mu3 = 0 seed
+  (the response is amplified at harmonics near q, 2q, ...), so the seed gate alone does not
+  pick a sufficient N.
+- Post-hoc (not pre-registered): the 12 fail-unresolved members were rerun at 3 N where that
+  was at most 1001 nodes. All 8 that fitted the budget (N = 453) PERSIST, including the
+  outside-window member 127 and the in-window members at 8/41 +-3e-6, 7/36 +-1e-5,
+  6/31 +-3e-5. So "fail-unresolved" was a resolution failure in every case checked. The
+  remaining 4 (6/31 seg 2 at -3e-5, +3e-5 and grid 40, needing 753 nodes; grid 44 needing
+  1203) were not run: a 753-node continuation exceeded 470 s per member on the loaded machine.
+- The fail-floor members (32) did not converge at 1.5 N with a quarter of the step and a
+  floor of 1/4096 of the mass either, and in segments 1 and 2 they fail at the very first
+  step: these are the torus failures, all inside |delta| <= 1e-5 except the twistless pair.
+
+### 5.5 Method control (8/41 crossing, segment 1, mass raised)
+
+| Mass | Failed | Persisted |
+|---|---|---|
+| 100 x | -1e-5 to +3e-6 (fail), +1e-5 (unresolved), +1e-4 (fail, 5e-5 from the twistless T minimum), -3e-4 (unresolved) | -1e-4, -3e-5, +3e-5 |
+| 1000 x | every offset | none |
+
+At 100 x the failure window widens from about +-3e-6 (physical mass) to about +-1e-5, as
+expected for a width growing like sqrt(mu3) (factor 10). At 1000 x nothing persists (no
+refinement was run on the control). The detector does see a resonance and its growth with
+mass; the 100 x members at -3e-4 and +1e-5 were not refined, so their status is open.
+
+### 5.6 Independent checks on persisting circles (13 sampled across Region A)
+
+- Closure with the core 6-state `ccr4bp_eom` (one integration per node over 5 forcing
+  periods, 16 nodes): maximum errors against the rotated circle 2e-12 to 2e-8 at k = 5;
+  growth is consistent with the per-map multipliers (1.0 to 2.5) acting on the off-node
+  interpolation error. Pass.
+- Node refinement at 1.5 N: 12 of 12 persist; curve-to-curve distance 5e-12 to 5e-9 (the
+  pre-registered 1e-8 met). The 13th (x = -0.5477, N = 701) was not refined (1053 nodes).
+  The module's `distance_to_circle` could not be used for this: its bounded Brent search in
+  theta has a relative tolerance of about 1.5e-8 theta and floors distances at about 2e-8;
+  the script uses a Newton projection instead.
+- Saturn-centred residual (the paper's perturber centring, Kumar Eq. [4], written in the
+  script): 9e-8 to 3e-7 for low/mid-e members, 1.5e-6 at x = -0.548. The circles' deformation
+  by Rhea is 1.6e-5 to 1.7e-3, so the centring changes the circle by roughly 1 per cent of
+  Rhea's effect; it moves no resonance (frequencies are unchanged) and is not a factor in the
+  pattern above.
+- Per-map unstable multipliers of persisting circles (module `hyperbolic_bundles`): 1.0008 at
+  the stability boundary to 2.50 at the edge of Region A, consistent with the periodic-orbit
+  multiplier raised to Tp/T.
+
+### 5.7 Region B (not testable)
+
+70 members (x >= -0.5397, C <= 2.985), including every crossing of 4/21, 9/47, 5/26 and the
+segment-3 crossing of 6/31. Estimated node counts for a 1e-10 seed (log-linear fit): about
+900 at C = 2.985, 1250 at 2.979 (6/31 crossing), 2000 to 5400 at 2.97 to 2.963 (5/26, 9/47),
+8000 to 12000 near 4/21 (C = 2.955). One Gauss-Newton iteration of the dense solve takes
+18 s at 1001 nodes and 26 s at 1201 (4 BLAS threads), so only the segment-3 6/31 crossing is
+within reach of this corrector at all (estimated 15 to 30 min per member, about 4 to 7 hours
+for its 13 offsets). The paper's FFT-based quasi-Newton method is `O(N log N)` per step.
+
+## 6. Verdict
+
+**Partly reproduced.** What was run shows: (1) the three-body family matches every printed
+number and figure (max Tp/T to the rounding of the printed Tp); (2) in the part of the family
+the corrector can represent (C from 2.99 to 3.055, ratios 6/31, 7/36, 8/41), invariant circles
+persist to Rhea's printed mass away from the ratios and fail only within +-3e-5 of them (or at
+a twistless point), with non-overlapping failure windows, which is the published pattern;
+(3) the failure detector responds to resonance as theory requires (1/delta growth of the
+resonant harmonic, wider windows at higher mass). Not shown: the paper's failures in the
+high-energy part (4/21, 9/47, 5/26 and the C = 2.98 crossing of 6/31), because the circles
+there need 10^3 to 10^4 nodes that a dense least-squares corrector cannot handle.
+
+**Trust in the corrector:** when it converges and passes the off-node and tail tests, the
+circle is right (13 of 13 independent closures, refinement agreement to 5e-9). Its failures
+need care: 37 of the 76 Region A members that did not persist in the scan were resolution or
+step failures (29 rescued at 1.5 N, 8 more at 3 N), and 3 more sit at twistless points or
+were not refined, so a single run's
+"fail" must not be read as "no torus" without the refinement ladder used here. Its reach is
+limited to orbits without close flybys of the base moon (here, distance to Titan above about
+0.025, i.e. 30 000 km).
+
+## 7. Open items and the long run
+
+- Post-hoc 3 N on the three 6/31 seg-2 members (753 nodes, about 30 min each; 3 in parallel):
+  `uv run python scripts/screen_886_titan_rhea_torus_check.py --stage posthoc --budget-s 7200`
+  (member 44 is skipped by the 1001-node cap).
+- The segment-3 6/31 crossing at about 1301 to 1401 nodes: needs either several hours of the
+  dense solve or a structured (Fourier-diagonal) Newton step, which is also what 4/21, 9/47
+  and 5/26 need.
