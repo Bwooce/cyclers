@@ -798,6 +798,414 @@ Not held (citations as printed in the held papers unless marked):
 - Already listed under `#909` and `#884`: Peng & Xu 2015; Sanaga & Howell (DOI 10.1007/s42064-024-0250-4); Komachi,
   ASC 2026.
 
+## 8. Methods in papers previously set aside (#919)
+
+Added 2026-10-04 by the `#919` agent. The owner asked whether the papers set aside as out of scope, triaged,
+reference-only or background-only might hold techniques for the project's problems. Those verdicts were given on what
+the papers are about (a sail, a formation, an asteroid, a neural network). This section judges each on what its method
+can do for the problems of section 2. Tags as in the legend at the top: `[P p.N]` READ by me at the source; `[D note]`
+READ in a project digest or triage note, not checked at the source by me; `[I]` INFERRED; `[C]` my calculation. No
+source readers were used for this section: two were dispatched and returned nothing before this version was written. The
+papers were found with the corpus-index search the task named (rows marked out of scope, triaged, reference-only or
+background-only), plus the papers the task named (Villegas-Pinto et al. 2023; de la Fuente Marcos 2018) and two
+owner-supplied papers filed under `#869` and marked out of scope or low relevance (Zhang et al. 2024 and 2025). Papers
+the synthesis already used for their methods (Park & Howell 2024, Mako & Salamon 2025) are not repeated.
+
+### 8.1 Periodic orbits without symmetry and period doubling in eccentricity (Wang, Ye, Xiao & Li 2026)
+
+- Method: resonant halo orbits of the Sun-Mercury elliptic problem found by multiple shooting on the full six-state
+  closure `X_{N+1} - X_1 = 0` with midpoint matching, solved with fmincon or fsolve `[D wang-ye-xiao-li sec. 2.3, p5]`.
+  Continuation is staged: eccentricity, then sail loading, then cone angle, then the sail azimuth beta `[D sec. 2.4,
+  p6]`. Orbits with no symmetry appear only under the azimuth law: the symmetry is broken by the control parameter beta,
+  and "all six states are needed" for the initial condition `[D sec. 2.3, p16]`. Along the sail-free 3:1 families,
+  monodromy eigenvalues reach -1 at e = -0.0179, 0.0089, 0.04 (L1) and -0.0189, 0.0094, 0.044 (L2), where a negative e
+  denotes the aphelion start; the doubled-period 6:2 branches born at the second and third reach e = 0.2056 and the
+  first stop converging near 0.037 and 0.038 `[D sec. 2.5, pp7-8]`.
+- Bears on: the Casoliva 7:3(b) and 7:3(c) members that `#884` skipped for having no perpendicular crossing
+  (`docs/notes/2026-10-04-884-sun-forced-em-cyclers.md`), and P7 (`#917`).
+- Hypothesis (1) tested. Wang's orbits lack symmetry because a forcing parameter breaks it in a system that is already
+  time-periodic, where periodic orbits are isolated and a six-state closure is a square system `[I]`. The 7:3(b) and
+  7:3(c) members are asymmetric orbits of the autonomous three-body problem, where a periodic orbit carries a phase
+  freedom and lies on a one-parameter family, so the closure needs a phase condition and a fixed Jacobi constant or period
+  `[I]`. The project already has the full-state corrector for that case: `genome/asymmetric_branch.py` routes through
+  `search/cr3bp_general_periodic_3d.py::correct_general_periodic_3d` in "full-asymmetric mode" with the period free
+  (module docstring, read). Once Sun forcing is on, `#884`'s multiple-shooting problem (`newton_fixed_eps` in
+  `search/sun_forced_periodic_884.py`) is already a six-state closure with no symmetry imposed (code, read). The gap that
+  kept 7:3(b) and (c) out is in the three-body stage: `walk_family` and `correct_symmetric_fixed_period` are symmetric
+  only, and the phase rule for orbits without the symmetry is missing (already listed under T7). Wang's paper adds no
+  method for that. Its period-doubling route is already in `genome/family_switch.py` for the autonomous case.
+- What it does give: printed eigenvalue crossings in eccentricity, a control for a -1 multiplier monitor along an
+  eccentricity continuation. That monitor is an add-on to P7: Casoliva's rows continued in e may period-double before
+  they fold, and a doubled branch is a further object of the elliptic problem `[I]`. The control prints three or four
+  decimals only and no states `[D sec. 5]`, so it tests the monitor and the continuation, not a closure.
+- Verdict: NOT USEFUL as a source of a method the project lacks for asymmetric cyclers (the project has the method; the gap is plumbing
+  in `#884`'s three-body walk plus T7's phase rule). USEFUL as a control for a -1 monitor added to P7. No separate proposal.
+
+### 8.2 Bifurcation equations for symmetry breaking (Shu & Lin 2025)
+
+- Method: a Lindstedt-Poincare series about the collinear points of the spatial elliptic problem, to order 7, with
+  "bifurcation equations" Delta(eta, e, alpha1, alpha2, alpha3) = 0 whose nonzero roots eta mark pitchfork bifurcations
+  `[D shu-lin secs. 0, 6]`. Near the collinear points the eccentricity shifts the circular bifurcation condition at order
+  e^2 `[D sec. 7]`. No differential correction, continuation, Floquet analysis or integration is reported, and no table is
+  printed `[D sec. 0]`.
+- Hypothesis (5) tested. The series is an expansion in the amplitude about an equilibrium. Cyclers are large-amplitude
+  orbits with close passages of the small primary, far outside any such expansion `[I]`. A semi-analytical equation for
+  where asymmetric families branch from symmetric cycler families would need an expansion about the cycler family, which
+  this paper does not attempt. The project already locates such branch points numerically (multiplier +1 crossings,
+  `search/bifurcation_detector.py`, then `genome/asymmetric_branch.py`).
+- Verdict: NOT USEFUL. The method is local to the libration points by construction.
+
+### 8.3 Two intermediate models and a two-torus; the `#895` arcs (Villegas-Pinto, Baresi, Locoche & Hestroffer 2023)
+
+The method is already in T10 and section 5.6. What `#919` adds is a direct answer to the question `#907` left open:
+are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus that can be computed as one object?
+
+- Method: GMOS invariance condition with a Fourier rotation operator, multiple shooting with `N_0` nodes, phase and
+  pseudo-arclength conditions, Newton to 1e-10 `[D villegas-pinto sec. 2.2, pp7-11]`. A resonant orbit is first made
+  periodic in one intermediate model "by design" (Sun first for synodic resonances, eccentricity first for sidereal),
+  then the second perturbation is switched on to make a two-torus, with `N_1` = 30 to 50 points on the circle (more for
+  lower perilunes) `[D pp8-9, p15]`. The orbits treated are near-stable: "remains very close to the near-stable behavior
+  presented by their periodic counterparts" `[D sec. 2.3, p24]`. Many other resonant orbits "fail to do so, even after
+  being computed in the intermediate models" `[D sec. 2.2, p12]`. No numbers are printed: no states, periods or rotation
+  numbers `[D sec. 2.3]`.
+- Answer for `#907`, all `[I]`. In the real ephemeris the forcing on the spacecraft has many frequencies: two moon mean
+  motions, their eccentricities and apsidal precession under J2 and J4, the other three major moons, the Sun. The arcs lie
+  on no finite-dimensional torus of that model that the held papers would let one compute. In an intermediate model with
+  ONE added frequency they can. The `#890` orbit is periodic in the planar circular four-body model, with period a whole
+  number of Titania-Oberon synodic periods. Adding Oberon's eccentricity, with its apsidal precession under J2, adds one
+  incommensurate frequency. By the persistence result Rosales et al. 2021 state for a forced periodic orbit (T7; read
+  at the source by the synthesis author, not by me) (the general theorem is Jorba & Villanueva 1997, not held), the periodic orbit should become a two-dimensional
+  invariant torus if it is nondegenerate. It is hyperbolic, with multipliers about 1e6 per period (`#890` ledger). Such a
+  torus would explain one feature of `#895`: arcs exist at all five epochs tried, 2030 to 2045, and each epoch would be a
+  different phase on the torus.
+- What it would and would not settle. A torus computed in that intermediate model is one object with a definition, a
+  rotation number and a stability. It is still not the ephemeris trajectory. The ephemeris arcs would be compared with
+  it, and the residual measures the other perturbations. The torus is strongly hyperbolic, unlike Villegas-Pinto's, so
+  single shooting over one torus period cannot work. It needs the multiple-shooting invariant-circle variant that T10
+  lists as missing and that P6 (`#916`) also needs `[I]`. Kumar's bundle method (T10) applies here, since there is a real
+  saddle pair.
+- Verdict: USEFUL, as proposal Q2 below. The positive controls cannot come from this paper, which prints no numbers.
+
+### 8.4 Co-orbital asteroids: clone ensembles and the Arjuna domain (Carruba et al. 2026; de la Fuente Marcos & de la Fuente Marcos 2018)
+
+- Carruba et al. method: each co-orbital asteroid is integrated for 78,000 years with two Bulirsch-Stoer codes (SWIFT-BS
+  at tolerance 1e-8 and REBOUND); objects where the two codes disagree are labelled "dubious" (alternating); each object
+  is labelled from its argument-of-perihelion time series (circulating, librating, intermittent; Table 1); then 729 clones
+  are formed from the nominal elements plus or minus one sigma in each of six elements (3^6) and summarised by the mean
+  angle and libration amplitude across clones; Hill-sphere encounters are counted over 10^5 years `[D carruba secs. 1.3,
+  1.4, 1.5, 4]`. "There is no new equation, Hamiltonian or semi-analytical model in this paper beyond (1) and the
+  Hill-radius expression (2)"; the averaged model of Michel & Thomas (1996) is reproduced as a figure and used
+  qualitatively `[D sec. 1.2]`.
+- De la Fuente Marcos method: Monte Carlo sampling of orbital elements, uniform within the Arjuna box, to compute the
+  minimum distance between orbits, relative speed at perigee and gravitational focusing `[P text layer, sec. 3, "Computing
+  the perigee: a Monte Carlo"; D fuente-marcos]`. The synodic periods of the class are of decades or longer `[P sec. 1]`.
+- Hypothesis (4) tested. First half: the averaged co-orbital model is not in Carruba et al.; they derive none `[D]`, so
+  there is nothing to take. Second half: the clone ensemble as a robustness test. For the project's unstable rows it
+  would only restate the multipliers (with growth of 1e3 per flyby pair, a one-sigma clone leaves the chain within a few
+  flybys, which the monodromy already says) `[I]`. It adds information in one place: labels of the "bounded versus
+  divergent" kind, the criterion by which the quasi-cycler rows `#339` and `#344` pass, which are themselves classifications
+  of a long time series as Carruba's are `[I]`. There the robustness of the LABEL across an ensemble spanning the
+  printed-digit interval of the source and the integrator tolerance is a cheap, pre-registrable check. The
+  two-integrator "dubious" rule is already project practice (`#895` used two integrators; the `#896` Mako & Salamon
+  checks ran over the printed rounding interval). Quasi-satellite and horseshoe orbits of one planet repeat encounters
+  with that planet only, at synodic periods of decades for the Arjuna class, and quasi-satellites never leave the
+  planet's vicinity. They are not cyclers between two bodies, and no method in either paper builds one `[I]`.
+- Verdict: Carruba et al., POSSIBLY USEFUL as a robustness check on quasi-cycler labels only. What would decide it: a
+  quasi-cycler row whose bounded label is close to its threshold. If none is, the check adds nothing. De la Fuente Marcos,
+  NOT USEFUL for the blockers; the method is geometric sampling the project's Tisserand tools already cover. It remains
+  target data for the dormant `#308`.
+
+### 8.5 Linking two manifold sets at a common time, phase-free first (Vergaaij 2018)
+
+- Method: unstable and stable manifold sets of the departure and arrival libration orbits, each built in its own
+  three-body model, are transformed to one heliocentric inertial frame at a linkage time; the position and velocity
+  errors are computed for all n x n pairs, and pairs with errors below 1e-3 and 1e-2 in Sun-Earth units are kept
+  `[P p.8, steps 1 to 5]`. The free parameters (departure, link and arrival times, sail angle) are first searched in
+  a problem made autonomous by removing the Earth-Moon phase, "because any relative orientation will occur once every
+  synodic period" `[P p.9, sec. IV.III]`. Survivors seed a direct pseudospectral solver (PSOPT) `[P p.7]`.
+- Hypothesis (7) tested. The step that `#650` lacks is the vector comparison: its edges carry `direction_data: "absent"`,
+  and its design already says a CHEAP edge "is a candidate requiring vector-level follow-up before any claim"
+  (`docs/notes/2026-07-19-650-transfer-network-design.md`, read). The vector comparison itself is the conditional flyby
+  cost that `core/flyby.py` already computes (T2, T16). Vergaaij adds an ORDER of work: compare the two sets with phase
+  removed first, then put the phase back only for pairs that pass. For `#650` that means comparing excess-velocity
+  DIRECTIONS in the planet's frame for every pair of rows at the shared body, then searching epochs only for the pairs
+  whose directions are compatible within the available bend `[I]`. The sail optimiser is not relevant.
+- Verdict: POSSIBLY USEFUL, as the shape of `#650`'s registered vector-level follow-up, not as a separate proposal. What
+  would decide it: whether the phase-free direction screen removes most CHEAP edges. If it does, the epoch search is
+  small.
+
+### 8.6 Statistical trim-manoeuvre cost from a stated navigation model (Rinker, Jacobson & Wood 1976)
+
+- Method `[P pp.510-511]`. Errors at the manoeuvre time are mapped to the impact plane at encounter, z = R[Phi_11 dr +
+  Phi_12 dV] (eq. 3). The guidance law y = -A z nulls the crosstrack and out-of-plane errors with the downtrack component
+  set to zero (eqs. 6, 7), where y is the velocity change in impact-plane coordinates (eq. 4) and A is built from F = R
+  Phi_12 R^T (eqs. 5, 7). The estimated state perturbation is taken as Gaussian with zero mean and covariance X^ (p.510),
+  so the correction has covariance Y = A R [Phi_11 Phi_12] X^ [Phi_11 Phi_12]^T R^T A^T (eq. 8). The correction's magnitude has
+  closed-form statistics from the two nonzero eigenvalues lambda1 <= lambda2 of Y: mean = (2 lambda2/pi)^(1/2) E[(1 -
+  lambda1/lambda2)^(1/2)] / u for the duration at thrust acceleration u, with E the complete elliptic integral of the
+  second kind (eq. 15), the variance (eq. 16), and a series for the distribution function G (eq. 17). The covariances are
+  propagated through the manoeuvre with the execution-error covariance Q (eqs. 18 to 23). The authors point to Lee &
+  Boain (1973) for the corresponding statistics of |Delta V| in a ballistic midcourse correction `[P p.511]` (not held).
+- Bears on, `[I]`: the maintenance budget that `#907` and the `#890` and `#895` reviews ask for "from a stated
+  navigation model", and the V2 question in section 4(v). The method is per encounter, which is the cadence an orbit with
+  growth of 1e3 per flyby pair needs. Applied to a flyby chain, it gives one correction per leg, aimed at the next
+  encounter's impact-plane coordinates. With an impulsive correction the same algebra holds: y is a velocity change,
+  and u Delta t = |y|. The post-correction covariance (eqs. 21, 23) is then propagated through the flyby to the next
+  leg's correction. The project has every STM this needs (`#895`'s variational Jacobian; the two-body STM). The
+  navigation model (orbit-determination covariance at each correction time, execution error) is an input to state and
+  pre-register, not something the paper or the project can derive.
+- Control checked `[C]`. Table 2 prints, for five navigation-coast lengths, the mean and standard deviation of the
+  manoeuvre duration and G at 0.4, 0.8 and 1.2 hours `[P p.511]`. Inverting eqs. 15 and 16 for lambda1/u^2 and
+  lambda2/u^2 from each row's printed mean and standard deviation, then integrating the density of eq. 13, reproduces all
+  15 printed G values within 0.001 (14 exactly to three decimals; the 4-day row gives G(0.4) = 0.615 against 0.614)
+  (scratch calculation; scipy `ellipe` takes the parameter m = k^2 = 1 - lambda1/lambda2). This tests a statistics
+  implementation against printed numbers. It does not test any navigation model.
+- Verdict: USEFUL, as proposal Q1 below.
+
+### 8.7 Recovery margin after a missed manoeuvre (Venigalla, Englander & Scheeres 2020)
+
+- Method: the missed-thrust recovery margin is the longest forced coast from a point on the trajectory after which the
+  spacecraft can still reach its terminal manifold; a "virtual swarm" of spacecraft, spawned at points along the nominal
+  and each required to satisfy the terminal constraints after its forced coast, is co-optimised with the nominal
+  trajectory, adding spacecraft at the worst violations (Algorithm 1) `[P text layer, abstract and "Virtual swarm method"
+  section and Algorithm 1, PDF pp.1, 4-5; D marginal-papers-triage #1]`. Transcription is Sims-Flanagan `[D]`.
+- Bears on, `[I]`: the operational risk of a flyby chain is a correction that is late or missed. The question "how
+  long can the correction before encounter k slip before the next encounter cannot be recovered within a stated delta-v"
+  can be answered post hoc from the same STMs as Q1, without co-optimisation. The virtual-swarm co-design belongs to a
+  later design stage the catalogue does not reach.
+- Verdict: POSSIBLY USEFUL, as a column computed inside Q1 (a slip margin per encounter), not as its own proposal. What
+  would decide it: whether Q1's budgets are dominated by the correction's timing. If they are, the margin is worth
+  reporting.
+
+### 8.8 Conditional initial guesses for increasing robustness (Sinha & Beeson 2025)
+
+- Method: compares a global search sampling from a fixed distribution with a "conditional global search" that seeds the
+  more robust problem from solutions of a less robust one, a sequential ladder `[P abstract; D marginal-papers-triage #2]`.
+- Bears on: seeding long chains from shorter ones. The project already does this in the form that matters (`#895`
+  extended three cycles to six and twelve from the shorter solutions; P5's seven-cycle seed) `[I]`.
+- Verdict: NOT USEFUL beyond current practice; the method is a sequential seeding rule the project already uses.
+
+### 8.9 Teardrop hovering with one impulse per period (Fu, Peng, Gong & Shi 2025)
+
+- Method: a deputy returns to a fixed relative position after one period of the 9:2 near rectilinear halo orbit with one
+  impulse per revisit; natural-parameter continuation in the revisit distance with a linear predictor from STM entries
+  and a least-squares solve, then fmincon `[D fu-peng-gong-shi secs. 1, 3, pp8-10]`. Impulses of order 1e-4 to 8e-2 m/s
+  `[D sec. 1]`.
+- Hypothesis (3), this paper: one correction per orbit period works for a near-stable reference. At multipliers of 1e6
+  per period, an error that one correction per period must absorb has grown by that factor `[I]`. The cadence is wrong
+  for the project's orbits. The continuation is natural-parameter with a fixed step and no fold handling `[D]`, weaker
+  than what the project has. For taxi rendezvous with a cycler vehicle: the relative-motion set-up is the right
+  kinematics for the last phase of a rendezvous, but the paper solves station keeping near a chief, not an approach from
+  a planet. No held set-aside paper gives a taxi rendezvous method.
+- Verdict: NOT USEFUL; one impulse per period cannot hold an orbit whose multiplier per period is 1e6, and the
+  continuation is weaker than the project's.
+
+### 8.10 Learned guidance for continuous thrust (Blender & Singh 2025; Hu, Yang, Li & Baoyin 2024; Singh & Junkins 2022; Li, Topputo & Baoyin 2019)
+
+- Methods: gradient-boosted trees trained on sigma-point ensembles around an extremal bundle to map the belief state to
+  control corrections (Blender & Singh); reinforcement learning per phase with a reachability term in the reward (Hu et
+  al.); Gaussian-process prediction of costates from an extremal-field bundle (Singh & Junkins); a supervised network
+  flying many-revolution orbit raising (Li et al.) `[D marginal-papers-triage #5, #6; background-papers-read-triage #2,
+  #3]`. Not read at the source by me.
+- Bears on: closed-loop guidance of a thrusting vehicle. The project's orbits are ballistic between impulsive
+  corrections, and the open question is the size of the correction budget, not an on-board policy `[I]`. Blender & Singh's
+  sigma-point ensemble is an unscented alternative to Q1's linear covariance. It would serve as Q1's nonlinear
+  cross-check, but a direct Monte Carlo of the impulsive chain is simpler and has no training step `[I]`.
+- Verdict: NOT USEFUL; the methods learn a control policy for continuous thrust, and the project's question is a budget
+  for impulsive corrections.
+
+### 8.11 Orbit determination and filtering (Sarang & Capannolo 2025; Peng & Bai 2021; Caldas & Soares 2024; Zhang, Li, Li, Zhang & Sang 2024)
+
+- Methods: EKF, second-order EKF and UKF compared for angles-only relative navigation of a chaser near a Gateway-like
+  target on a quasi-periodic orbit (Sarang & Capannolo); machine learning fused with an EKF to correct orbit predictions
+  of tracked objects (Peng & Bai); a survey of machine learning in orbit estimation (Caldas & Soares); angles-only
+  initial orbit determination with the Gooding algorithm and kernel-density solution selection (Zhang et al. 2024)
+  `[D ml-orbit-estimation-triage; D 2026-10-03-digest-zhang-2024-iod-gooding-algorithm]`. Sarang & Capannolo state their
+  filter set-up, including an initial covariance with 50 km per position axis and 1e-3 km/s per velocity axis
+  `[P text layer, PDF p.10, "Filter Parameters"]`; I did not read their results.
+- Bears on: Q1 needs an orbit-determination covariance at each correction time. None of these papers gives one for
+  deep-space radiometric tracking of a vehicle on a flyby chain; Sarang & Capannolo's is for optical relative navigation
+  near the Moon `[I]`.
+- Verdict: NOT USEFUL for the blockers. Sarang & Capannolo are POSSIBLY USEFUL as a stated, cited covariance for an
+  Earth-Moon row's Q1 run, if their results give steady-state errors (not checked).
+
+### 8.12 A learned pre-filter for a cycler search (Ozaki et al. 2022)
+
+- Method: Earth free-return legs (full-revolution, half-revolution, generic; Russell & Ocampo's classification) chained
+  by Earth flybys, with an asteroid flyby inserted in each Earth-Earth leg; a network predicts the result of the
+  Earth-asteroid-Earth block optimisation as a residual from the free return; beam search over sequences; survivors are
+  re-optimised end to end by multiple shooting `[D ml-surrogate-trio-triage sec. 1.1-1.2]`. At least 7e6 samples were
+  needed before the validation loss fell two orders of magnitude (Table 5); KKT-preserving "pseudo-asteroids" raise the
+  data rate from 8.77 to 47.6 samples per second (Table 4); 10,000 block costs in 10 s against 1,140 s; the whole search
+  took about 10 h against about 7 days; single-block error about 0.1 km/s, with errors accumulating along a chain `[D]`.
+  The triage gave the prune rate as about 10k of 300k children surviving the screen per parent `[D]`; no false-negative
+  rate is given in the triage.
+- Hypothesis (6) tested. The economics are those of a combinatorial outer loop (15,340 asteroids times a deep tree) over
+  one fixed, expensive block. The project's blockers are formulation, not compute: `#388` asked a ballistic question
+  where the published answer is a cost; the moon closures matched speeds and not directions. A faster search over the
+  same formulation does not touch either `[I]`. The June investigation found the project's exact cells cheap (31.6 ms to
+  0.36 s) and preferred memoisation `[D ml-surrogate-investigation, Verdict A]`. The one place the economics could turn is
+  P8: chains with resonant returns are combinatorial in the number of returns per moon and their types, which is
+  Ozaki's architecture with a second moon in place of the asteroid `[I]`. A further way it could fool us: a region the
+  pre-filter pruned was never solved, so it could not be entered in the negative-results registry as empty. Every "no
+  chain found" from a filtered search would be conditional on the network.
+- Verdict: POSSIBLY USEFUL, for P8 only. What would decide it: P8's chain count times the exact cost per candidate. If the
+  product is under a few CPU-days, the network is not worth training. The Ozaki free-return chain decomposition is the
+  Russell & Strange architecture P8 already uses.
+
+### 8.13 Other learned surrogates (Zhang, Acciarini et al. 2026; Zhang, Michelotti et al. 2026; Viavattene & Ceriotti 2021; Leifsson et al. 2022; Wu, Sicard & Gadsden 2024; Silvestrini & Lavagna 2022)
+
+- Methods: networks that approximate low-thrust optimal cost and reachability, with a Lambert solution as the best input
+  feature (Zhang, Acciarini et al.); neural porkchop plots for low-thrust rendezvous (Zhang, Michelotti et al.); a ranker
+  that prunes multi-target sequences, each survivor re-solved as a full optimal control problem (Viavattene & Ceriotti);
+  adaptive sampling driven by network uncertainty (Leifsson et al.); reviews (Wu et al.; Silvestrini & Lavagna)
+  `[D ml-surrogate-investigation; ml-surrogate-trio-triage; background-papers-read-triage #1]`.
+- Bears on: the same pre-filter question as 8.12. The June note's finding stands. The best surrogate input "is itself a
+  Lambert solution", so against a Lambert-bound inner loop the speedup disappears `[D ml-surrogate-investigation]`.
+  Its governing rule also stands: a surrogate may prune or propose, never be evidence. The basin classifier that note
+  deferred, "Build B", is the only learned tool with a use case. It remains blocked on persisted labels, as stated there.
+- Verdict: NOT USEFUL; the methods learn costs of low-thrust optimal control, a baseline much more expensive than the
+  project's Lambert and ballistic cells.
+
+### 8.14 Dynamic programming with an error bound (Zhang, Guo, Wu, Baoyin, Li & Topputo 2025)
+
+- Method: a fixed-sequence multi-flyby problem recast as an N-stage decision problem with state (epoch, velocity, mass)
+  at each flyby, under the stated Markov property "only the velocity and mass of spacecraft at the flyby epoch influence
+  subsequent trajectories"; states discretised; stage costs approximated; Bellman recursion; a bound J[P2] <= J[P0] + N
+  eps_max with eps_max the largest single-stage error, estimated by random sampling, not derived `[D
+  2026-10-03-digest-zhang-2025-global-optimality-multi-flyby-asteroid, eq. 42]`. A flyby is a position match with no
+  velocity change `[D]`.
+- Bears on: P9 (`#918`), whose limit in T16 is "complete on the grid only". The bound's algebra is the generic sum of
+  stage errors in a Bellman recursion. It does not depend on what a flyby does to the velocity, so it carries over when
+  the stage state is (epoch, incoming excess-velocity vector) and the stage cost includes the conditional flyby cost of
+  T2 `[I]`. Two things weaken it for P9. First, eps_max is sampled, so the bound is an estimate, not a guarantee `[D]`.
+  Second, a gravity assist makes the stage state a three-component excess-velocity vector, not a magnitude, so the grid
+  grows with its cube; the paper's own fast case dropped the velocity from the state `[D]`. A periodicity condition links
+  the last stage to the first, which DP handles by fixing the start state and repeating over start states `[I]`.
+- Verdict: POSSIBLY USEFUL, as a component of P9: it would turn a P9 negative from "not found on this grid" into "no
+  solution cheaper than the found one by more than N eps_max, as estimated". What would decide it: whether eps_max for the
+  conditional flyby cost on a feasible velocity grid is small compared with the 1 to 10 m/s tiers of Russell & Ocampo.
+
+### 8.15 Shape-based initial trajectories for a sail with gravity assists (Fan et al. 2025)
+
+- Method: each heliocentric cylindrical coordinate fitted by an 8th-order Bezier curve with end coefficients fixed by
+  the boundary conditions; free coefficients, flight times, flyby pericentre altitudes and pre-flyby velocities optimised
+  by fmincon for minimum time, under thrust and a 70 km minimum flyby altitude `[D background-papers-read-triage #14]`.
+- Bears on: nothing ballistic. Shape-based methods replace a thrust history; the project's legs are conics or integrated
+  arcs `[I]`.
+- Verdict: NOT USEFUL; a shape-based method exists to parametrise a thrust history, which ballistic legs do not have.
+
+### 8.16 Entry corridors for returning crews (Putnam, Braun, Rohrschneider & Dec 2005)
+
+- Method: for a given inertial speed at the atmospheric interface, the aerodynamic corridor is bounded by lift-down and
+  lift-up trajectories, and the flyable corridor is narrowed by limits on peak heat rate, peak deceleration and
+  integrated heat load `[P text layer, sec. "Entry Corridor Definition", PDF pp.4-5]`.
+- Bears on: no blocker. For a cycler architecture it bears on the taxi's return: the entry speed implied by a row's
+  Earth excess speed, against the corridor limits, would be a per-row figure of merit `[I]`.
+- Verdict: NOT USEFUL for the blockers; POSSIBLY USEFUL as an architecture column if the owner wants one. That is a
+  scope decision, not a method gap.
+
+### 8.17 Lecture slides (Rickman, NESC)
+
+- Introductory orbital mechanics for thermal engineers `[D rickman-nesc-slides-triage]`. Verdict: NOT USEFUL; textbook
+  content with no method beyond what the project implements.
+
+### 8.18 Proposals from this section
+
+Format and probability definitions as in section 3: (a) a validated upgrade of existing rows; (b) an object worth an
+adversarial review.
+
+#### Q1. A per-encounter correction budget from a stated navigation model
+
+- Goal: for any flyby-chain trajectory the project holds (the `#895` arcs, the `#890` orbit, the Russell & Strange
+  rows once P4 runs, the Appendix C solutions of P1), compute the expected and 99th-percentile correction delta-v per
+  cycle under a stated, pre-registered navigation model, and a slip margin per encounter (8.7).
+- Method applied: Rinker, Jacobson & Wood 1976, eqs. 3 to 23, with the impulsive reading (y is the velocity change);
+  one correction per leg at a stated lead time before each encounter, aimed at the impact-plane coordinates; covariance
+  propagated through each correction (eqs. 21, 23) and through each flyby by the STM.
+- Inputs: `search/titania_oberon_realeph_895.py` (variational STMs along the arcs), the two-body STM, `verify/
+  turn_gate.py` (the flybys).
+- To build: the covariance chain; the statistics of eqs. 15 to 17 (already checked against Table 2 `[C]`); a nonlinear
+  Monte Carlo of the same chain; a navigation-model file with sources or labelled as convention (orbit-determination
+  covariance at each correction, execution error as in the paper's example: 15 mrad pointing, 10 percent magnitude,
+  `[P p.512]`, or a cited modern value).
+- Positive controls: (i) Rinker et al. Table 2, all 15 G values from the printed means and standard deviations (passes
+  now, scratch calculation); (ii) a negative control: on a stable orbit (a stable Casoliva row) the budget must be small
+  and nearly independent of the number of cycles; on the `#895` arcs it must grow with the lead time as the STM predicts.
+  No held paper prints a correction budget for a flyby chain, so there is no published end-to-end value to match. Lee &
+  Boain (1973) would give the ballistic statistics and is not held.
+- Pre-registrable criteria: the navigation model and lead times fixed before the run. Linear and Monte Carlo 99th
+  percentiles agree within 20 percent, or the linear result is not reported. The result is reported per cycle with the
+  model stated, never as a property of the orbit alone.
+- How it could fool us: the linear covariance crossing a flyby, where the turn's slope in impact parameter is of order
+  1/mu `[R MacKay p.2, section 4(v)]`. A covariance that is small in kilometres can still be large compared with the
+  linear range there. Guard: the nonlinear Monte Carlo, and a check that the 3-sigma impact-plane error stays below a
+  stated fraction of the flyby periapsis. Second: a budget computed with an optimistic navigation model. Guard: report
+  two models (optimistic and conservative), both stated.
+- Cost: 10 to 15 agent-hours; minutes of compute.
+- (a) 20 percent: it gives the rows a cost column, but a level change needs the owner's ruling on V2 for unstable orbits
+  (section 4(v), `#907`). (b) 35 percent: it is the missing item before `#895` can go to an adversarial review as a row
+  candidate.
+
+#### Q2. The `#890` orbit as a two-torus in a model with one added frequency, and the `#895` arcs compared with it
+
+- Goal: compute the invariant two-torus that the `#890` periodic orbit should become when Oberon's eccentricity (with
+  its J2 apsidal precession) is added to the planar circular four-body model, and measure how far the `#895` ephemeris
+  arcs lie from it.
+- Method applied: Villegas-Pinto et al. 2023 (one perturbation at a time); Rosales et al. 2021 (invariant curve of the
+  stroboscopic map, multiple shooting over sections for unstable cases); Kumar et al. (bundle frame), as in T10.
+- Inputs: `search/two_moon_periodic_890.py`, the `#895` force model (it already has circular-orbit bodies and
+  kernel-driven ones), the invariant-circle corrector of `search/pertbp_strob_889.py` (planar elliptic problem only, to
+  be generalised), `genome/qp_tori.py`.
+- To build: a model with Oberon on a precessing ellipse; the multiple-shooting invariant-circle corrector (shared with
+  P6); continuation in Oberon's eccentricity from 0.
+- Positive controls: Rosales et al. 2021 Table 3 (printed rotation number, as in P6); the e = 0 limit, where the circle
+  must collapse to the `#890` orbit (independently reproduced under `#895`).
+- Pre-registrable criteria: invariance error below 1e-9 on a node ladder under an independent propagator; continuation
+  reaches Oberon's eccentricity, or the stop is recorded (fold, gap, non-convergence) with the step that failed. Then,
+  at each of the five `#895` epochs: the arc's flyby altitudes inside the torus's altitude envelope widened by a band set
+  beforehand from the moons' circular-to-kernel position differences.
+- How it could fool us: a "torus" converged with too few nodes; a resonance gap read as non-existence (Rosales: gaps are
+  Cantorian and crossed by detours); the comparison band chosen after the fact. Guards: node ladder; gap rule from
+  Rosales; band in the pre-registration.
+- Cost: 20 to 30 agent-hours if P6's corrector exists first, about 10 more otherwise; hours of compute.
+- (a) 0 percent (no row exists to upgrade). (b) 30 percent: a computed invariant object in a stated model, with the
+  ephemeris arcs as its realisations, is a stronger basis for a `quasi_cycler` row than arcs alone.
+
+#### Add-ons to existing proposals (not separate proposals)
+
+- P7 (`#917`): a -1 multiplier monitor along the eccentricity continuation, controlled by Wang et al.'s printed
+  crossings (8.1).
+- P9 (`#918`): the stage-error bound of Zhang et al. 2025 (8.14).
+- `#650`: the phase-free direction screen before the epoch search (8.5).
+- P8: a learned pre-filter only if the chain count makes exact evaluation cost more than a few CPU-days, with the
+  registry caveat (8.12).
+
+#### Where they rank among P1 to P9
+
+Q1 sits after P3 and before P4: it is cheap, it has a passed control for its statistics, and it removes a stated blocker
+for `#895` and for any moon-tour row that P4 produces. Q2 sits after P6 and before P7: it needs the same corrector as P6
+and should be built second, on the corrector P6 has validated.
+
+#### The seven hypotheses, in one line each
+
+1. Wang et al.: rejected as a source of a method the project lacks for asymmetric cyclers (the project has full-state correctors; the gap is
+   `#884`'s symmetric three-body walk and T7's phase rule); kept as a control for a period-doubling monitor in P7.
+2. Torus for the `#895` arcs: accepted in a qualified form. One torus in the ephemeris model is not the right object.
+   A two-torus in a model with one added frequency is computable and testable (Q2).
+3. Navigation and guidance papers: accepted for Rinker et al. (Q1, control passed) and, as a column inside Q1,
+   Venigalla et al.; rejected for Fu et al. and the learned-guidance papers on method grounds. No held set-aside paper
+   gives a taxi rendezvous method.
+4. Co-orbital papers: the averaged model is not in Carruba et al.; the clone ensemble is possibly useful for
+   quasi-cycler labels only; quasi-satellite orbits are not a two-body repeated-encounter class.
+5. Shu & Lin: rejected; the expansion is local to the libration points.
+6. Learned pre-filter: possibly useful for P8 only, decided by the chain count; the blockers are formulation, not
+   compute.
+7. Vergaaij: the vector linkage is already registered for `#650` and `core/flyby.py` has the cost; the phase-free first
+   pass is the useful part.
+
+No set-aside paper read for this section contradicts the project's code or a project belief.
+
 ## Appendix: what was read, and limits of this note
 
 - Project state: README; spec sections 14, 16.4, 16.5; `data/OUTSTANDING.md` lines 1 to 1540 and the `#388`, `#378`,
