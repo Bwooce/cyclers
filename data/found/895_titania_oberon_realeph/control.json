@@ -1,0 +1,1729 @@
+{
+ "_meta": {
+  "task": "#895",
+  "git_sha": "9aa470a9",
+  "stage": "control.json"
+ },
+ "criterion": "P1: every moon, every epoch: <= 10 km at 30 d and <= 40 km at 123 d (variant 'full'); discrimination: Miranda and Ariel > 10 km at 30 d for 'no_zonal' and 'former_repo_j2' at every epoch",
+ "P1_pass": true,
+ "discrimination_pass": {
+  "no_zonal": true,
+  "former_repo_j2": true
+ },
+ "epochs": {
+  "E1": {
+   "t_ref_et": 947678400.0,
+   "t_c_s": -160.0175685005937,
+   "t_c_tdb": "2030-01-11 23:57:19.982",
+   "circles": {
+    "ez": [
+     0.21195887587793089,
+     0.9417407823074446,
+     0.26114695838842533
+    ],
+    "ex": [
+     -0.9755948450962394,
+     0.21957845573198806,
+     0.0
+    ],
+    "a_t_km": 436282.59846113116,
+    "n_t_rad_s": 8.353223294682118e-06,
+    "lon0_t": 23.118952998146277,
+    "a_o_km": 583447.7380269653,
+    "n_o_rad_s": 5.401529180482172e-06,
+    "lon0_o": 16.83529536805158,
+    "period_t_d": 8.705867136668928,
+    "period_o_d": 13.463234157690655,
+    "synodic_d": 24.637394442933886,
+    "cycle_d": 123.18697221466941,
+    "fit_window_s": [
+     -2592000.0,
+     130325760.00000001
+    ]
+   },
+   "angle_ez_from_minus_iau_pole_deg": 0.03715152604173235
+  },
+  "E2": {
+   "t_ref_et": 992347200.0,
+   "t_c_s": 33130.04845363552,
+   "t_c_tdb": "2031-06-13 09:12:10.048",
+   "circles": {
+    "ez": [
+     0.21190866752339502,
+     0.9417477937158327,
+     0.26116242007574625
+    ],
+    "ex": [
+     -0.9756063362762699,
+     0.21952739377488587,
+     0.0
+    ],
+    "a_t_km": 436282.54529184464,
+    "n_t_rad_s": 8.35322331836799e-06,
+    "lon0_t": 19.25628150881709,
+    "a_o_km": 583452.101014567,
+    "n_o_rad_s": 5.401529497974394e-06,
+    "lon0_o": 13.07088596092744,
+    "period_t_d": 8.705867111983121,
+    "period_o_d": 13.463233366345884,
+    "synodic_d": 24.63739689529628,
+    "cycle_d": 123.1869844764814,
+    "fit_window_s": [
+     -2592000.0,
+     130325760.00000001
+    ]
+   },
+   "angle_ez_from_minus_iau_pole_deg": 0.03671761319964175
+  },
+  "E3": {
+   "t_ref_et": 1120132800.0,
+   "t_c_s": -32194.685155648724,
+   "t_c_tdb": "2035-06-30 15:03:25.314",
+   "circles": {
+    "ez": [
+     0.21175677077908295,
+     0.9417791875308806,
+     0.2611724180745151
+    ],
+    "ex": [
+     -0.9756415928175076,
+     0.21937065064524167,
+     0.0
+    ],
+    "a_t_km": 436281.99715753354,
+    "n_t_rad_s": 8.353222952092378e-06,
+    "lon0_t": 18.536378542292265,
+    "a_o_km": 583450.448488872,
+    "n_o_rad_s": 5.401528673180734e-06,
+    "lon0_o": 12.15816436712739,
+    "period_t_d": 8.705867493721621,
+    "period_o_d": 13.463235422132348,
+    "synodic_d": 24.637393068107528,
+    "cycle_d": 123.18696534053763,
+    "fit_window_s": [
+     -2592000.0,
+     130325760.00000001
+    ]
+   },
+   "angle_ez_from_minus_iau_pole_deg": 0.0389523008166399
+  },
+  "E4": {
+   "t_ref_et": 1277985600.0,
+   "t_c_s": -363332.6867329037,
+   "t_c_tdb": "2040-06-26 19:04:27.313",
+   "circles": {
+    "ez": [
+     0.21156055337479585,
+     0.9418360386558094,
+     0.2611264225329995
+    ],
+    "ex": [
+     -0.9756879105389543,
+     0.21916455285499417,
+     0.0
+    ],
+    "a_t_km": 436280.8312552868,
+    "n_t_rad_s": 8.353222154689455e-06,
+    "lon0_t": 23.930172560270584,
+    "a_o_km": 583447.7332160369,
+    "n_o_rad_s": 5.401527340108451e-06,
+    "lon0_o": 16.574540045693702,
+    "period_t_d": 8.705868324788252,
+    "period_o_d": 13.463238744797373,
+    "synodic_d": 24.63738859694862,
+    "cycle_d": 123.18694298474313,
+    "fit_window_s": [
+     -2592000.0,
+     130325760.00000001
+    ]
+   },
+   "angle_ez_from_minus_iau_pole_deg": 0.047286926662558924
+  },
+  "E5": {
+   "t_ref_et": 1435752000.0,
+   "t_c_s": -608134.2609692359,
+   "t_c_tdb": "2045-06-23 23:04:25.739",
+   "circles": {
+    "ez": [
+     0.21137267226022652,
+     0.9418971506072394,
+     0.26105813739382716
+    ],
+    "ex": [
+     -0.9757325501289205,
+     0.218965729325193,
+     0.0
+    ],
+    "a_t_km": 436282.7194794115,
+    "n_t_rad_s": 8.353221170161544e-06,
+    "lon0_t": 22.3189777160615,
+    "a_o_km": 583451.9872047402,
+    "n_o_rad_s": 5.401527212880397e-06,
+    "lon0_o": 14.240766185563384,
+    "period_t_d": 8.705869350879887,
+    "period_o_d": 13.4632390619117,
+    "synodic_d": 24.637395752714095,
+    "cycle_d": 123.18697876357047,
+    "fit_window_s": [
+     -2592000.0,
+     130325760.00000001
+    ]
+   },
+   "angle_ez_from_minus_iau_pole_deg": 0.057618066355767404
+  }
+ },
+ "interpolation": [
+  {
+   "epoch": "E1",
+   "body": "Miranda",
+   "max_mid_knot_err_m": 0.31069393464080985
+  },
+  {
+   "epoch": "E1",
+   "body": "Ariel",
+   "max_mid_knot_err_m": 0.04488618581332701
+  },
+  {
+   "epoch": "E1",
+   "body": "Umbriel",
+   "max_mid_knot_err_m": 0.008800072289279676
+  },
+  {
+   "epoch": "E1",
+   "body": "Titania",
+   "max_mid_knot_err_m": 0.0007296970534269796
+  },
+  {
+   "epoch": "E1",
+   "body": "Oberon",
+   "max_mid_knot_err_m": 0.0001727871300610348
+  },
+  {
+   "epoch": "E1",
+   "body": "Sun",
+   "max_mid_knot_err_m": 0.0009902267292640299
+  },
+  {
+   "epoch": "E2",
+   "body": "Miranda",
+   "max_mid_knot_err_m": 0.31068648063277526
+  },
+  {
+   "epoch": "E2",
+   "body": "Ariel",
+   "max_mid_knot_err_m": 0.04490303592288953
+  },
+  {
+   "epoch": "E2",
+   "body": "Umbriel",
+   "max_mid_knot_err_m": 0.008802250505063532
+  },
+  {
+   "epoch": "E2",
+   "body": "Titania",
+   "max_mid_knot_err_m": 0.0007297384011782469
+  },
+  {
+   "epoch": "E2",
+   "body": "Oberon",
+   "max_mid_knot_err_m": 0.00017022015927865093
+  },
+  {
+   "epoch": "E2",
+   "body": "Sun",
+   "max_mid_knot_err_m": 0.0009848303581391753
+  },
+  {
+   "epoch": "E3",
+   "body": "Miranda",
+   "max_mid_knot_err_m": 0.3107181260654936
+  },
+  {
+   "epoch": "E3",
+   "body": "Ariel",
+   "max_mid_knot_err_m": 0.044950249338585595
+  },
+  {
+   "epoch": "E3",
+   "body": "Umbriel",
+   "max_mid_knot_err_m": 0.008836939095831163
+  },
+  {
+   "epoch": "E3",
+   "body": "Titania",
+   "max_mid_knot_err_m": 0.0007238382984559565
+  },
+  {
+   "epoch": "E3",
+   "body": "Oberon",
+   "max_mid_knot_err_m": 0.00017161808492972927
+  },
+  {
+   "epoch": "E3",
+   "body": "Sun",
+   "max_mid_knot_err_m": 0.001430511474609375
+  },
+  {
+   "epoch": "E4",
+   "body": "Miranda",
+   "max_mid_knot_err_m": 0.3107308703244307
+  },
+  {
+   "epoch": "E4",
+   "body": "Ariel",
+   "max_mid_knot_err_m": 0.045022074159928066
+  },
+  {
+   "epoch": "E4",
+   "body": "Umbriel",
+   "max_mid_knot_err_m": 0.008815605146420507
+  },
+  {
+   "epoch": "E4",
+   "body": "Titania",
+   "max_mid_knot_err_m": 0.000728218343802884
+  },
+  {
+   "epoch": "E4",
+   "body": "Oberon",
+   "max_mid_knot_err_m": 0.00017113974399978092
+  },
+  {
+   "epoch": "E4",
+   "body": "Sun",
+   "max_mid_knot_err_m": 0.0006848052318737541
+  },
+  {
+   "epoch": "E5",
+   "body": "Miranda",
+   "max_mid_knot_err_m": 0.31078070458836254
+  },
+  {
+   "epoch": "E5",
+   "body": "Ariel",
+   "max_mid_knot_err_m": 0.04509604336137434
+  },
+  {
+   "epoch": "E5",
+   "body": "Umbriel",
+   "max_mid_knot_err_m": 0.008805663873347445
+  },
+  {
+   "epoch": "E5",
+   "body": "Titania",
+   "max_mid_knot_err_m": 0.0007271460941606292
+  },
+  {
+   "epoch": "E5",
+   "body": "Oberon",
+   "max_mid_knot_err_m": 0.000171780928306543
+  },
+  {
+   "epoch": "E5",
+   "body": "Sun",
+   "max_mid_knot_err_m": 0.0009902267292640299
+  }
+ ],
+ "rows": [
+  {
+   "epoch": "E1",
+   "variant": "full",
+   "moon": "Miranda",
+   "err30_km": 0.4579597353376907,
+   "err123_km": 1.9365923272108434
+  },
+  {
+   "epoch": "E1",
+   "variant": "full",
+   "moon": "Ariel",
+   "err30_km": 0.2302297875995722,
+   "err123_km": 0.9144849773194867
+  },
+  {
+   "epoch": "E1",
+   "variant": "full",
+   "moon": "Umbriel",
+   "err30_km": 0.5913675428018756,
+   "err123_km": 2.4824661855446615
+  },
+  {
+   "epoch": "E1",
+   "variant": "full",
+   "moon": "Titania",
+   "err30_km": 0.04708505413806325,
+   "err123_km": 0.11022104134553919
+  },
+  {
+   "epoch": "E1",
+   "variant": "full",
+   "moon": "Oberon",
+   "err30_km": 0.7547620053236593,
+   "err123_km": 3.3521892427916975
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_sun",
+   "moon": "Miranda",
+   "err30_km": 0.5283669059478271,
+   "err123_km": 2.224649410963509
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_sun",
+   "moon": "Ariel",
+   "err30_km": 0.08089184141699174,
+   "err123_km": 0.21186243641118774
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_sun",
+   "moon": "Umbriel",
+   "err30_km": 1.005393089236361,
+   "err123_km": 4.25442556502501
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_sun",
+   "moon": "Titania",
+   "err30_km": 1.4119059028900245,
+   "err123_km": 5.975739554199436
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_sun",
+   "moon": "Oberon",
+   "err30_km": 3.589842397272709,
+   "err123_km": 15.84222797352506
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_j4",
+   "moon": "Miranda",
+   "err30_km": 3.63907670033283,
+   "err123_km": 14.99518716100855
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_j4",
+   "moon": "Ariel",
+   "err30_km": 0.3745775917551234,
+   "err123_km": 1.5178121658015997
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_j4",
+   "moon": "Umbriel",
+   "err30_km": 0.7211230913654741,
+   "err123_km": 3.024715004886894
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_j4",
+   "moon": "Titania",
+   "err30_km": 0.03308841126400568,
+   "err123_km": 0.054433064570665206
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_j4",
+   "moon": "Oberon",
+   "err30_km": 0.7583464260546336,
+   "err123_km": 3.367962442453777
+  },
+  {
+   "epoch": "E1",
+   "variant": "french_j2",
+   "moon": "Miranda",
+   "err30_km": 3.1955681740646127,
+   "err123_km": 13.19448112068212
+  },
+  {
+   "epoch": "E1",
+   "variant": "french_j2",
+   "moon": "Ariel",
+   "err30_km": 0.8583588553868934,
+   "err123_km": 3.497205060347219
+  },
+  {
+   "epoch": "E1",
+   "variant": "french_j2",
+   "moon": "Umbriel",
+   "err30_km": 1.0486949590650005,
+   "err123_km": 4.405206257426321
+  },
+  {
+   "epoch": "E1",
+   "variant": "french_j2",
+   "moon": "Titania",
+   "err30_km": 0.08791430642934764,
+   "err123_km": 0.448585152230048
+  },
+  {
+   "epoch": "E1",
+   "variant": "french_j2",
+   "moon": "Oberon",
+   "err30_km": 0.8156544544229417,
+   "err123_km": 3.6201595060140797
+  },
+  {
+   "epoch": "E1",
+   "variant": "ura111_pole",
+   "moon": "Miranda",
+   "err30_km": 0.5057821333453968,
+   "err123_km": 2.109822407297196
+  },
+  {
+   "epoch": "E1",
+   "variant": "ura111_pole",
+   "moon": "Ariel",
+   "err30_km": 0.22241945838334637,
+   "err123_km": 0.9037835256171286
+  },
+  {
+   "epoch": "E1",
+   "variant": "ura111_pole",
+   "moon": "Umbriel",
+   "err30_km": 0.5913625933245877,
+   "err123_km": 2.481682589495301
+  },
+  {
+   "epoch": "E1",
+   "variant": "ura111_pole",
+   "moon": "Titania",
+   "err30_km": 0.04698256426123042,
+   "err123_km": 0.1081864462197456
+  },
+  {
+   "epoch": "E1",
+   "variant": "ura111_pole",
+   "moon": "Oberon",
+   "err30_km": 0.7546723157750168,
+   "err123_km": 3.3518415036512006
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_self_mass",
+   "moon": "Miranda",
+   "err30_km": 26.0333533037413,
+   "err123_km": 107.38511650219544
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_self_mass",
+   "moon": "Ariel",
+   "err30_km": 414.28361928190316,
+   "err123_km": 1688.853220470156
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_self_mass",
+   "moon": "Umbriel",
+   "err30_km": 347.2741859435768,
+   "err123_km": 1468.9854915302658
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_self_mass",
+   "moon": "Titania",
+   "err30_km": 731.9979311573082,
+   "err123_km": 3036.7657348559055
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_self_mass",
+   "moon": "Oberon",
+   "err30_km": 538.1315722697716,
+   "err123_km": 2368.8505053153044
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_zonal",
+   "moon": "Miranda",
+   "err30_km": 6919.8021266280475,
+   "err123_km": 28482.750573641653
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_zonal",
+   "moon": "Ariel",
+   "err30_km": 2716.2861195047276,
+   "err123_km": 11072.290894274664
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_zonal",
+   "moon": "Umbriel",
+   "err30_km": 1152.1285386969555,
+   "err123_km": 4844.406470717676
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_zonal",
+   "moon": "Titania",
+   "err30_km": 338.3975422306795,
+   "err123_km": 1399.4357993573542
+  },
+  {
+   "epoch": "E1",
+   "variant": "no_zonal",
+   "moon": "Oberon",
+   "err30_km": 154.10358048607696,
+   "err123_km": 678.0207483167992
+  },
+  {
+   "epoch": "E1",
+   "variant": "former_repo_j2",
+   "moon": "Miranda",
+   "err30_km": 333.25236783454545,
+   "err123_km": 1374.3513055181893
+  },
+  {
+   "epoch": "E1",
+   "variant": "former_repo_j2",
+   "moon": "Ariel",
+   "err30_km": 129.7717282173967,
+   "err123_km": 529.0814857857862
+  },
+  {
+   "epoch": "E1",
+   "variant": "former_repo_j2",
+   "moon": "Umbriel",
+   "err30_km": 55.57914107773861,
+   "err123_km": 233.7016252640433
+  },
+  {
+   "epoch": "E1",
+   "variant": "former_repo_j2",
+   "moon": "Titania",
+   "err30_km": 16.091398413258023,
+   "err123_km": 66.62486658051522
+  },
+  {
+   "epoch": "E1",
+   "variant": "former_repo_j2",
+   "moon": "Oberon",
+   "err30_km": 8.063886377240584,
+   "err123_km": 35.51012262486906
+  },
+  {
+   "epoch": "E2",
+   "variant": "full",
+   "moon": "Miranda",
+   "err30_km": 0.15603387418158787,
+   "err123_km": 0.8358487906218358
+  },
+  {
+   "epoch": "E2",
+   "variant": "full",
+   "moon": "Ariel",
+   "err30_km": 0.0457313356753354,
+   "err123_km": 0.25343545663948147
+  },
+  {
+   "epoch": "E2",
+   "variant": "full",
+   "moon": "Umbriel",
+   "err30_km": 0.20422040750241716,
+   "err123_km": 0.8157831620838076
+  },
+  {
+   "epoch": "E2",
+   "variant": "full",
+   "moon": "Titania",
+   "err30_km": 0.14932927481318917,
+   "err123_km": 0.5732406415877436
+  },
+  {
+   "epoch": "E2",
+   "variant": "full",
+   "moon": "Oberon",
+   "err30_km": 0.6106685858186776,
+   "err123_km": 2.799561940637615
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_sun",
+   "moon": "Miranda",
+   "err30_km": 0.10739089568675207,
+   "err123_km": 0.719794597656364
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_sun",
+   "moon": "Ariel",
+   "err30_km": 0.23524629358202792,
+   "err123_km": 0.9758704378028927
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_sun",
+   "moon": "Umbriel",
+   "err30_km": 0.23415535891614606,
+   "err123_km": 1.0336942843732835
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_sun",
+   "moon": "Titania",
+   "err30_km": 1.6349820922190288,
+   "err123_km": 6.694983277367051
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_sun",
+   "moon": "Oberon",
+   "err30_km": 2.2933029172536474,
+   "err123_km": 9.85269299262072
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_j4",
+   "moon": "Miranda",
+   "err30_km": 3.0922691198048287,
+   "err123_km": 12.825441154061862
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_j4",
+   "moon": "Ariel",
+   "err30_km": 0.636303859758399,
+   "err123_km": 2.59214713883204
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_j4",
+   "moon": "Umbriel",
+   "err30_km": 0.07683659304194168,
+   "err123_km": 0.28528151796459994
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_j4",
+   "moon": "Titania",
+   "err30_km": 0.1633733447230446,
+   "err123_km": 0.631531664399093
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_j4",
+   "moon": "Oberon",
+   "err30_km": 0.6071087886705591,
+   "err123_km": 2.783913815112244
+  },
+  {
+   "epoch": "E2",
+   "variant": "french_j2",
+   "moon": "Miranda",
+   "err30_km": 2.635493710938021,
+   "err123_km": 10.925903369955286
+  },
+  {
+   "epoch": "E2",
+   "variant": "french_j2",
+   "moon": "Ariel",
+   "err30_km": 1.123072086441926,
+   "err123_km": 4.575074378839663
+  },
+  {
+   "epoch": "E2",
+   "variant": "french_j2",
+   "moon": "Umbriel",
+   "err30_km": 0.2590142499649123,
+   "err123_km": 1.131119704450598
+  },
+  {
+   "epoch": "E2",
+   "variant": "french_j2",
+   "moon": "Titania",
+   "err30_km": 0.28304212610850615,
+   "err123_km": 1.1265654050967981
+  },
+  {
+   "epoch": "E2",
+   "variant": "french_j2",
+   "moon": "Oberon",
+   "err30_km": 0.5500243026635937,
+   "err123_km": 2.532916664845435
+  },
+  {
+   "epoch": "E2",
+   "variant": "ura111_pole",
+   "moon": "Miranda",
+   "err30_km": 0.07201751582605254,
+   "err123_km": 0.2829255039286075
+  },
+  {
+   "epoch": "E2",
+   "variant": "ura111_pole",
+   "moon": "Ariel",
+   "err30_km": 0.04456474304077398,
+   "err123_km": 0.16925341402605046
+  },
+  {
+   "epoch": "E2",
+   "variant": "ura111_pole",
+   "moon": "Umbriel",
+   "err30_km": 0.20253491526405115,
+   "err123_km": 0.8074305984175111
+  },
+  {
+   "epoch": "E2",
+   "variant": "ura111_pole",
+   "moon": "Titania",
+   "err30_km": 0.1491456976536102,
+   "err123_km": 0.5730511772218062
+  },
+  {
+   "epoch": "E2",
+   "variant": "ura111_pole",
+   "moon": "Oberon",
+   "err30_km": 0.610706998488592,
+   "err123_km": 2.7997883759206963
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_self_mass",
+   "moon": "Miranda",
+   "err30_km": 25.43698583312028,
+   "err123_km": 105.10088845820846
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_self_mass",
+   "moon": "Ariel",
+   "err30_km": 414.78945942257184,
+   "err123_km": 1692.1633671335221
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_self_mass",
+   "moon": "Umbriel",
+   "err30_km": 349.5150400214214,
+   "err123_km": 1467.6863278797468
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_self_mass",
+   "moon": "Titania",
+   "err30_km": 730.8468586949992,
+   "err123_km": 3015.6449320122033
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_self_mass",
+   "moon": "Oberon",
+   "err30_km": 535.3521465660841,
+   "err123_km": 2350.3880979467467
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_zonal",
+   "moon": "Miranda",
+   "err30_km": 6940.774132443554,
+   "err123_km": 28628.143196860397
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_zonal",
+   "moon": "Ariel",
+   "err30_km": 2716.2826542794633,
+   "err123_km": 11083.335260829455
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_zonal",
+   "moon": "Umbriel",
+   "err30_km": 1158.624079441441,
+   "err123_km": 4865.035824183924
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_zonal",
+   "moon": "Titania",
+   "err30_km": 337.25936396620125,
+   "err123_km": 1393.8521184748179
+  },
+  {
+   "epoch": "E2",
+   "variant": "no_zonal",
+   "moon": "Oberon",
+   "err30_km": 152.08616952663297,
+   "err123_km": 668.5172482945993
+  },
+  {
+   "epoch": "E2",
+   "variant": "former_repo_j2",
+   "moon": "Miranda",
+   "err30_km": 333.7061229560517,
+   "err123_km": 1379.09963846722
+  },
+  {
+   "epoch": "E2",
+   "variant": "former_repo_j2",
+   "moon": "Ariel",
+   "err30_km": 130.02680644989806,
+   "err123_km": 530.6375259853891
+  },
+  {
+   "epoch": "E2",
+   "variant": "former_repo_j2",
+   "moon": "Umbriel",
+   "err30_km": 55.13310161046395,
+   "err123_km": 231.5496155236498
+  },
+  {
+   "epoch": "E2",
+   "variant": "former_repo_j2",
+   "moon": "Titania",
+   "err30_km": 16.22342216821017,
+   "err123_km": 67.00748030388425
+  },
+  {
+   "epoch": "E2",
+   "variant": "former_repo_j2",
+   "moon": "Oberon",
+   "err30_km": 6.667561510549066,
+   "err123_km": 29.19860681204754
+  },
+  {
+   "epoch": "E3",
+   "variant": "full",
+   "moon": "Miranda",
+   "err30_km": 0.17591888942284908,
+   "err123_km": 0.3157659122912923
+  },
+  {
+   "epoch": "E3",
+   "variant": "full",
+   "moon": "Ariel",
+   "err30_km": 0.011120666723830979,
+   "err123_km": 0.1505136210970811
+  },
+  {
+   "epoch": "E3",
+   "variant": "full",
+   "moon": "Umbriel",
+   "err30_km": 0.11362690024857065,
+   "err123_km": 0.4724392903395808
+  },
+  {
+   "epoch": "E3",
+   "variant": "full",
+   "moon": "Titania",
+   "err30_km": 0.06402089665618133,
+   "err123_km": 0.2485863834470197
+  },
+  {
+   "epoch": "E3",
+   "variant": "full",
+   "moon": "Oberon",
+   "err30_km": 0.06333728648697984,
+   "err123_km": 0.3496470260979096
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_sun",
+   "moon": "Miranda",
+   "err30_km": 0.22165945971701786,
+   "err123_km": 0.5826017185261259
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_sun",
+   "moon": "Ariel",
+   "err30_km": 0.11456227515303302,
+   "err123_km": 0.44955427633996103
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_sun",
+   "moon": "Umbriel",
+   "err30_km": 0.28407255141258925,
+   "err123_km": 1.1038403021319554
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_sun",
+   "moon": "Titania",
+   "err30_km": 1.0623294367604335,
+   "err123_km": 4.130097188744628
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_sun",
+   "moon": "Oberon",
+   "err30_km": 2.1716594635464204,
+   "err123_km": 9.272955534582099
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_j4",
+   "moon": "Miranda",
+   "err30_km": 3.31412761334754,
+   "err123_km": 13.643994907592434
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_j4",
+   "moon": "Ariel",
+   "err30_km": 0.5809673124012512,
+   "err123_km": 2.381373511042793
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_j4",
+   "moon": "Umbriel",
+   "err30_km": 0.016706217264626348,
+   "err123_km": 0.07676671607596883
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_j4",
+   "moon": "Titania",
+   "err30_km": 0.050097454716783923,
+   "err123_km": 0.19064990210402308
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_j4",
+   "moon": "Oberon",
+   "err30_km": 0.0668868785770616,
+   "err123_km": 0.36534647831743494
+  },
+  {
+   "epoch": "E3",
+   "variant": "french_j2",
+   "moon": "Miranda",
+   "err30_km": 2.8524455138430698,
+   "err123_km": 11.747076624573753
+  },
+  {
+   "epoch": "E3",
+   "variant": "french_j2",
+   "moon": "Ariel",
+   "err30_km": 1.0675777647009697,
+   "err123_km": 4.365589132052414
+  },
+  {
+   "epoch": "E3",
+   "variant": "french_j2",
+   "moon": "Umbriel",
+   "err30_km": 0.34412412116774765,
+   "err123_km": 1.4524318378958025
+  },
+  {
+   "epoch": "E3",
+   "variant": "french_j2",
+   "moon": "Titania",
+   "err30_km": 0.07169840807839031,
+   "err123_km": 0.3095687409861752
+  },
+  {
+   "epoch": "E3",
+   "variant": "french_j2",
+   "moon": "Oberon",
+   "err30_km": 0.123828641019822,
+   "err123_km": 0.6166506410289627
+  },
+  {
+   "epoch": "E3",
+   "variant": "ura111_pole",
+   "moon": "Miranda",
+   "err30_km": 0.13363273614906349,
+   "err123_km": 0.5498182552717397
+  },
+  {
+   "epoch": "E3",
+   "variant": "ura111_pole",
+   "moon": "Ariel",
+   "err30_km": 0.011190768472555616,
+   "err123_km": 0.03820508062799984
+  },
+  {
+   "epoch": "E3",
+   "variant": "ura111_pole",
+   "moon": "Umbriel",
+   "err30_km": 0.11346163086181182,
+   "err123_km": 0.47169311110079915
+  },
+  {
+   "epoch": "E3",
+   "variant": "ura111_pole",
+   "moon": "Titania",
+   "err30_km": 0.0635722755088247,
+   "err123_km": 0.24717487015702141
+  },
+  {
+   "epoch": "E3",
+   "variant": "ura111_pole",
+   "moon": "Oberon",
+   "err30_km": 0.06329692270595912,
+   "err123_km": 0.349219199369059
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_self_mass",
+   "moon": "Miranda",
+   "err30_km": 25.77711352672104,
+   "err123_km": 106.52030365477343
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_self_mass",
+   "moon": "Ariel",
+   "err30_km": 414.59304863149833,
+   "err123_km": 1692.11026816924
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_self_mass",
+   "moon": "Umbriel",
+   "err30_km": 348.90187045683274,
+   "err123_km": 1458.8030490735496
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_self_mass",
+   "moon": "Titania",
+   "err30_km": 731.4257617659916,
+   "err123_km": 3030.080726341338
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_self_mass",
+   "moon": "Oberon",
+   "err30_km": 535.2813657949256,
+   "err123_km": 2355.5216871587413
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_zonal",
+   "moon": "Miranda",
+   "err30_km": 6986.379102742445,
+   "err123_km": 28789.848283730895
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_zonal",
+   "moon": "Ariel",
+   "err30_km": 2716.1080509627677,
+   "err123_km": 11079.709303809574
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_zonal",
+   "moon": "Umbriel",
+   "err30_km": 1151.906023603323,
+   "err123_km": 4844.467885436796
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_zonal",
+   "moon": "Titania",
+   "err30_km": 338.0215669301058,
+   "err123_km": 1398.411404226828
+  },
+  {
+   "epoch": "E3",
+   "variant": "no_zonal",
+   "moon": "Oberon",
+   "err30_km": 152.84972709415248,
+   "err123_km": 673.0135198140673
+  },
+  {
+   "epoch": "E3",
+   "variant": "former_repo_j2",
+   "moon": "Miranda",
+   "err30_km": 336.09708049983203,
+   "err123_km": 1387.8665524773323
+  },
+  {
+   "epoch": "E3",
+   "variant": "former_repo_j2",
+   "moon": "Ariel",
+   "err30_km": 129.96444981696996,
+   "err123_km": 530.2314186355611
+  },
+  {
+   "epoch": "E3",
+   "variant": "former_repo_j2",
+   "moon": "Umbriel",
+   "err30_km": 54.896849656466024,
+   "err123_km": 230.88281265955882
+  },
+  {
+   "epoch": "E3",
+   "variant": "former_repo_j2",
+   "moon": "Titania",
+   "err30_km": 16.0577045534373,
+   "err123_km": 66.4435007122558
+  },
+  {
+   "epoch": "E3",
+   "variant": "former_repo_j2",
+   "moon": "Oberon",
+   "err30_km": 7.34545424444453,
+   "err123_km": 32.41169286835209
+  },
+  {
+   "epoch": "E4",
+   "variant": "full",
+   "moon": "Miranda",
+   "err30_km": 0.08007804165474693,
+   "err123_km": 0.44666077969882795
+  },
+  {
+   "epoch": "E4",
+   "variant": "full",
+   "moon": "Ariel",
+   "err30_km": 1.6755915777837311,
+   "err123_km": 6.838743587920245
+  },
+  {
+   "epoch": "E4",
+   "variant": "full",
+   "moon": "Umbriel",
+   "err30_km": 0.06283599411562223,
+   "err123_km": 0.24354289976416854
+  },
+  {
+   "epoch": "E4",
+   "variant": "full",
+   "moon": "Titania",
+   "err30_km": 0.1711597506668885,
+   "err123_km": 0.8337880373884102
+  },
+  {
+   "epoch": "E4",
+   "variant": "full",
+   "moon": "Oberon",
+   "err30_km": 0.008639230413286713,
+   "err123_km": 0.036312679416498475
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_sun",
+   "moon": "Miranda",
+   "err30_km": 0.1443377295725414,
+   "err123_km": 0.5821587004976032
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_sun",
+   "moon": "Ariel",
+   "err30_km": 1.615467487861488,
+   "err123_km": 6.613563025996565
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_sun",
+   "moon": "Umbriel",
+   "err30_km": 0.11519908934459469,
+   "err123_km": 0.21445501393118263
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_sun",
+   "moon": "Titania",
+   "err30_km": 0.9381123417537556,
+   "err123_km": 3.1867734833326646
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_sun",
+   "moon": "Oberon",
+   "err30_km": 0.8711655202517569,
+   "err123_km": 4.97045652787683
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_j4",
+   "moon": "Miranda",
+   "err30_km": 3.2716237695482104,
+   "err123_km": 13.534514823298874
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_j4",
+   "moon": "Ariel",
+   "err30_km": 1.0835328275198268,
+   "err123_km": 4.424907288775558
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_j4",
+   "moon": "Umbriel",
+   "err30_km": 0.06674908265963683,
+   "err123_km": 0.3119200252371949
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_j4",
+   "moon": "Titania",
+   "err30_km": 0.15712922434966292,
+   "err123_km": 0.7756883795166394
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_j4",
+   "moon": "Oberon",
+   "err30_km": 0.008507241832972237,
+   "err123_km": 0.05049469607073673
+  },
+  {
+   "epoch": "E4",
+   "variant": "french_j2",
+   "moon": "Miranda",
+   "err30_km": 2.8115639112513393,
+   "err123_km": 11.603406173143522
+  },
+  {
+   "epoch": "E4",
+   "variant": "french_j2",
+   "moon": "Ariel",
+   "err30_km": 0.5982231555199781,
+   "err123_km": 2.447177416104631
+  },
+  {
+   "epoch": "E4",
+   "variant": "french_j2",
+   "moon": "Umbriel",
+   "err30_km": 0.3938562793464795,
+   "err123_km": 1.6814095356103587
+  },
+  {
+   "epoch": "E4",
+   "variant": "french_j2",
+   "moon": "Titania",
+   "err30_km": 0.03825851888848289,
+   "err123_km": 0.2821256282013851
+  },
+  {
+   "epoch": "E4",
+   "variant": "french_j2",
+   "moon": "Oberon",
+   "err30_km": 0.059324569680319024,
+   "err123_km": 0.2990579749774934
+  },
+  {
+   "epoch": "E4",
+   "variant": "ura111_pole",
+   "moon": "Miranda",
+   "err30_km": 0.0177072203545914,
+   "err123_km": 0.04791462043879622
+  },
+  {
+   "epoch": "E4",
+   "variant": "ura111_pole",
+   "moon": "Ariel",
+   "err30_km": 1.6750567168360024,
+   "err123_km": 6.834852961493775
+  },
+  {
+   "epoch": "E4",
+   "variant": "ura111_pole",
+   "moon": "Umbriel",
+   "err30_km": 0.06252665708274488,
+   "err123_km": 0.2363508638335565
+  },
+  {
+   "epoch": "E4",
+   "variant": "ura111_pole",
+   "moon": "Titania",
+   "err30_km": 0.17114325534151975,
+   "err123_km": 0.8334014124115302
+  },
+  {
+   "epoch": "E4",
+   "variant": "ura111_pole",
+   "moon": "Oberon",
+   "err30_km": 0.008309004613483538,
+   "err123_km": 0.03149363243513705
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_self_mass",
+   "moon": "Miranda",
+   "err30_km": 25.64964702601402,
+   "err123_km": 105.72068792800853
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_self_mass",
+   "moon": "Ariel",
+   "err30_km": 412.40575131612087,
+   "err123_km": 1682.4180725417466
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_self_mass",
+   "moon": "Umbriel",
+   "err30_km": 347.44752003321827,
+   "err123_km": 1456.406710825555
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_self_mass",
+   "moon": "Titania",
+   "err30_km": 730.5728034182334,
+   "err123_km": 3014.009615158278
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_self_mass",
+   "moon": "Oberon",
+   "err30_km": 538.2479496116803,
+   "err123_km": 2361.51000105084
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_zonal",
+   "moon": "Miranda",
+   "err30_km": 6969.538519176869,
+   "err123_km": 28737.319617108868
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_zonal",
+   "moon": "Ariel",
+   "err30_km": 2713.380744619666,
+   "err123_km": 11066.384319095874
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_zonal",
+   "moon": "Umbriel",
+   "err30_km": 1148.6893126110065,
+   "err123_km": 4825.337703947265
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_zonal",
+   "moon": "Titania",
+   "err30_km": 336.8022364319852,
+   "err123_km": 1391.1128407228014
+  },
+  {
+   "epoch": "E4",
+   "variant": "no_zonal",
+   "moon": "Oberon",
+   "err30_km": 153.14084689734446,
+   "err123_km": 672.4634954949734
+  },
+  {
+   "epoch": "E4",
+   "variant": "former_repo_j2",
+   "moon": "Miranda",
+   "err30_km": 335.2809982049389,
+   "err123_km": 1384.9762230878591
+  },
+  {
+   "epoch": "E4",
+   "variant": "former_repo_j2",
+   "moon": "Ariel",
+   "err30_km": 128.24835222692477,
+   "err123_km": 523.1368006223764
+  },
+  {
+   "epoch": "E4",
+   "variant": "former_repo_j2",
+   "moon": "Umbriel",
+   "err30_km": 54.7919202836867,
+   "err123_km": 230.19140549088385
+  },
+  {
+   "epoch": "E4",
+   "variant": "former_repo_j2",
+   "moon": "Titania",
+   "err30_km": 15.89702877115671,
+   "err123_km": 65.53755480158306
+  },
+  {
+   "epoch": "E4",
+   "variant": "former_repo_j2",
+   "moon": "Oberon",
+   "err30_km": 7.29737672886407,
+   "err123_km": 32.082670446771736
+  },
+  {
+   "epoch": "E5",
+   "variant": "full",
+   "moon": "Miranda",
+   "err30_km": 0.3025005947367616,
+   "err123_km": 1.3336871366034082
+  },
+  {
+   "epoch": "E5",
+   "variant": "full",
+   "moon": "Ariel",
+   "err30_km": 0.05841746676260494,
+   "err123_km": 0.17287107806848134
+  },
+  {
+   "epoch": "E5",
+   "variant": "full",
+   "moon": "Umbriel",
+   "err30_km": 0.07068578971516712,
+   "err123_km": 0.26479806194283323
+  },
+  {
+   "epoch": "E5",
+   "variant": "full",
+   "moon": "Titania",
+   "err30_km": 0.06479132503336678,
+   "err123_km": 0.29736272341021674
+  },
+  {
+   "epoch": "E5",
+   "variant": "full",
+   "moon": "Oberon",
+   "err30_km": 0.7109997261179898,
+   "err123_km": 3.2319160118241665
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_sun",
+   "moon": "Miranda",
+   "err30_km": 0.3450640608057753,
+   "err123_km": 1.5272162699529022
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_sun",
+   "moon": "Ariel",
+   "err30_km": 0.17987544911083414,
+   "err123_km": 0.7457521439544369
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_sun",
+   "moon": "Umbriel",
+   "err30_km": 0.387051554739224,
+   "err123_km": 1.774264723355211
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_sun",
+   "moon": "Titania",
+   "err30_km": 2.0157100221358792,
+   "err123_km": 9.00667927594031
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_sun",
+   "moon": "Oberon",
+   "err30_km": 3.0317756111543006,
+   "err123_km": 14.789570717787214
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_j4",
+   "moon": "Miranda",
+   "err30_km": 2.930361812978767,
+   "err123_km": 12.021940614982244
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_j4",
+   "moon": "Ariel",
+   "err30_km": 0.6031380493879043,
+   "err123_km": 2.4739639478855913
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_j4",
+   "moon": "Umbriel",
+   "err30_km": 0.19794975972348328,
+   "err123_km": 0.7927510715971161
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_j4",
+   "moon": "Titania",
+   "err30_km": 0.05071348027002975,
+   "err123_km": 0.23936836751028884
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_j4",
+   "moon": "Oberon",
+   "err30_km": 0.7145846371064953,
+   "err123_km": 3.247633001817331
+  },
+  {
+   "epoch": "E5",
+   "variant": "french_j2",
+   "moon": "Miranda",
+   "err30_km": 2.478598879814289,
+   "err123_km": 10.21961769800862
+  },
+  {
+   "epoch": "E5",
+   "variant": "french_j2",
+   "moon": "Ariel",
+   "err30_km": 1.0892754740255348,
+   "err123_km": 4.459983967620785
+  },
+  {
+   "epoch": "E5",
+   "variant": "french_j2",
+   "moon": "Umbriel",
+   "err30_km": 0.5237328558913454,
+   "err123_km": 2.1623598268201283
+  },
+  {
+   "epoch": "E5",
+   "variant": "french_j2",
+   "moon": "Titania",
+   "err30_km": 0.07005632592398625,
+   "err123_km": 0.26067759089853193
+  },
+  {
+   "epoch": "E5",
+   "variant": "french_j2",
+   "moon": "Oberon",
+   "err30_km": 0.7719029922099255,
+   "err123_km": 3.4998183595967944
+  },
+  {
+   "epoch": "E5",
+   "variant": "ura111_pole",
+   "moon": "Miranda",
+   "err30_km": 0.276092517799579,
+   "err123_km": 1.1391255234942848
+  },
+  {
+   "epoch": "E5",
+   "variant": "ura111_pole",
+   "moon": "Ariel",
+   "err30_km": 0.010676542305028887,
+   "err123_km": 0.0634161961911491
+  },
+  {
+   "epoch": "E5",
+   "variant": "ura111_pole",
+   "moon": "Umbriel",
+   "err30_km": 0.06821353553242762,
+   "err123_km": 0.24640554634951015
+  },
+  {
+   "epoch": "E5",
+   "variant": "ura111_pole",
+   "moon": "Titania",
+   "err30_km": 0.06484375451117615,
+   "err123_km": 0.29635399979789606
+  },
+  {
+   "epoch": "E5",
+   "variant": "ura111_pole",
+   "moon": "Oberon",
+   "err30_km": 0.7108842957864863,
+   "err123_km": 3.231391581725365
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_self_mass",
+   "moon": "Miranda",
+   "err30_km": 25.379709646422125,
+   "err123_km": 104.94855933938402
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_self_mass",
+   "moon": "Ariel",
+   "err30_km": 415.2317441546156,
+   "err123_km": 1694.4194422747114
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_self_mass",
+   "moon": "Umbriel",
+   "err30_km": 345.91358367423067,
+   "err123_km": 1458.0895709541314
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_self_mass",
+   "moon": "Titania",
+   "err30_km": 732.0061521730219,
+   "err123_km": 3033.141901254704
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_self_mass",
+   "moon": "Oberon",
+   "err30_km": 537.8666102347385,
+   "err123_km": 2367.5036563349045
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_zonal",
+   "moon": "Miranda",
+   "err30_km": 6956.713640469334,
+   "err123_km": 28652.429779034173
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_zonal",
+   "moon": "Ariel",
+   "err30_km": 2719.2770966935495,
+   "err123_km": 11102.322227671892
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_zonal",
+   "moon": "Umbriel",
+   "err30_km": 1145.985428215655,
+   "err123_km": 4817.825425128302
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_zonal",
+   "moon": "Titania",
+   "err30_km": 338.280705000304,
+   "err123_km": 1398.1685599941895
+  },
+  {
+   "epoch": "E5",
+   "variant": "no_zonal",
+   "moon": "Oberon",
+   "err30_km": 154.05189236170057,
+   "err123_km": 677.732683342001
+  },
+  {
+   "epoch": "E5",
+   "variant": "former_repo_j2",
+   "moon": "Miranda",
+   "err30_km": 334.3441106241363,
+   "err123_km": 1379.5155165633164
+  },
+  {
+   "epoch": "E5",
+   "variant": "former_repo_j2",
+   "moon": "Ariel",
+   "err30_km": 130.1333829351979,
+   "err123_km": 531.4113835280858
+  },
+  {
+   "epoch": "E5",
+   "variant": "former_repo_j2",
+   "moon": "Umbriel",
+   "err30_km": 54.78755120936722,
+   "err123_km": 230.29253863363084
+  },
+  {
+   "epoch": "E5",
+   "variant": "former_repo_j2",
+   "moon": "Titania",
+   "err30_km": 16.068826986793653,
+   "err123_km": 66.38510263278175
+  },
+  {
+   "epoch": "E5",
+   "variant": "former_repo_j2",
+   "moon": "Oberon",
+   "err30_km": 8.019888861017925,
+   "err123_km": 35.381850764508414
+  }
+ ]
+}
