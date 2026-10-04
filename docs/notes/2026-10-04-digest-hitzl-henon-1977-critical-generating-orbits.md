@@ -366,3 +366,7 @@ Columns tau/pi and eta/pi are printed values (READ, 10 decimals; the two flagged
 | C8,10(2) | 8.274 198 672 5 | 9.672 402 344 2 | --- | 0.90463 | 0.20451 | -0.75660 |
 | C9,10(1) | 8.998 993 912 6 | 9.998 917 837 9 | ++- | 0.93217 | 0.07276 | 2.99863 |
 | C9,10(2) | 9.485 385 209 0 | 9.500 192 484 1 | +-- | 0.99997 | 0.04529 | -0.99789 |
+
+## 10. Note added 2026-10-05: the second joint paper is now held
+
+The second joint paper named in sections 0 and 8 (Hitzl & Henon, Acta Astronautica 4:1019-1039, 1977, DOI 10.1016/0094-5765(77)90004-2) is now digested in `docs/notes/2026-10-04-digest-hitzl-henon-1977b-stability-second-species-orbits.md`. Results that touch this digest: the criticality condition G* = 0 (eq. 27) equals the necessary stability condition S = 0 (eq. 40 there) through -(1/2) sigma rho s_eta^2 S = G* (eq. 42), verified numerically here as an identity at generic (tau, eta, sigma) and as S = 0 at the printed critical orbits, so critical if and only if C is extremal holds at mu = 0; the stability index of that paper is k = (Tr - 2)/2 of the 4x4 recurrence matrix, with |k| of order 1/mu per close passage away from S = 0; Table 1 there (seven critical orbits) agrees with this paper's Table I and Table II to the printed digits. The reference "Hitzl and Henon 1977" that Henon 2001 cites for K values is not this second paper (it has no K values); it presumably means the present paper or the book. The statement in section 8 that the second paper is not held is superseded.
