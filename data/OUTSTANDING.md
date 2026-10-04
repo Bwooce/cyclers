@@ -1284,6 +1284,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   confirms the gate relation r_p = mu(e-1)/v^2, sin(turn/2) = 1/e, unchanged by matching, and gives
   the matching equations for a `hyperbola_match` helper (identity tests from its eqs. 1.9-1.12) and
   the residual slopes 5/3 and 4/3 in mu to measure against numerical flybys.
+  Guillaume 1975a (digest `docs/notes/2026-10-04-digest-guillaume-1975a-linear-analysis-second-species.md`)
+  gives input-output equations for a `second_species_io` seed module (small-mu seeds only, 1e-6 to
+  1e-5, then the Casoliva three-step continuation) and two necessary node conditions the `#906`
+  gate should report: equal incoming and outgoing speed |V1| = |V1'| and a nonzero signed turn
+  (zero turn is outside the theory: indeterminate, not rejected). The Guillaume 1973 hyperbola and
+  cubic coefficients are in neither 1975 paper (its pp.253-254 are the conclusions); the only
+  explicit coefficients held are Perko 1981 eq. 9.
   The earlier finding follows, kept as the record of the mistake:
 - `#899` (superseded scoping, 2026-10-04) — **SCOPING FINDING (from the `#897` source readers).** None of the held
   second-species papers continues a periodic orbit in the mass ratio: Font, Nunes & Simo reach
