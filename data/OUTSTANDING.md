@@ -1234,7 +1234,11 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   has its own tolerance-based classifier. Fix the label logic and docstring; tighten or retire
   `monodromy_eigenstructure`. Broucke's (a1, a2) are Hadjidemetriou's (alpha, beta); his seven
   regions (part A digest) are the test cases for the classifier, which needs a tolerance at k = +-2
-  and a re-corrected state (printed 7-digit states change region in 9 of 15 7P rows). (c) For `#890`/`#895`:
+  and a re-corrected state (printed 7-digit states change region in 9 of 15 7P rows). Hitzl & Henon
+  1977b adds: decide on the pair index k (k = +-1 critical), report its sign and size, add a sign-change
+  detector across family members (stable windows of width of order mu are easy to step over), and
+  note the 3D tracer's trivial-pair pick (two eigenvalues nearest +1) is ambiguous at vertically
+  critical orbits. Index conversions: Hitzl-Henon k = -b/2 (Hadjidemetriou) = Casoliva k/2. (c) For `#890`/`#895`:
   if a multiplier was computed from a half-period construction, det = 1 and reciprocity hold
   identically and check nothing; state how the 8.4e5 value was obtained. (d) Log alpha, beta and
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
@@ -1506,7 +1510,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   three are `#906` "indeterminate", not rejections), and an extremal-arc condition that reproduces
   Bruno 1981's maximum-C orbit (a = 1.41019, e = 0.88445, C = -0.39913). Tests: Table II (28 rows, five
   checks), Table I (97 rows; orbits 53 and 61 are printed wrongly: strict expected failures). The W
-  question and the 1/2 versus 1/12 slip are not settled by a printed formula. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  question and the 1/2 versus 1/12 slip are not settled by a printed formula. Hitzl & Henon 1977b (digest
+  `docs/notes/2026-10-04-digest-hitzl-henon-1977b-stability-second-species-orbits.md`): a single-passage
+  second-species orbit is unstable with index of order 1/mu, except near "critical" orbits, which are
+  exactly those where the Jacobi constant is extremal along the family (S = G* = 0, checked by the
+  agent against the companion paper's 10-digit critical orbits). Agent's derivation, not printed: the
+  stable window along a family shrinks like mu; at the Earth-Moon mass it is about 0.005 to 0.16 rad of
+  family length for the fast retrograde critical orbits and out of the theory's range for the slow
+  direct ones. So most seeds and continued members will be unstable, with narrow stable windows that a
+  coarse continuation can step over: log the stability index and detect sign changes. Table 1 (7
+  critical orbits) is a sourced test at tolerance about 1e-3 (5-decimal inputs). The paper's mu* =
+  1/82.30 = 0.01215067 differs from the project's 0.0121529529 (relative 1.9e-4). Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
