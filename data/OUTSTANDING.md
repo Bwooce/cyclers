@@ -1215,7 +1215,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   7.8037e-5); note for `#901`.
 - `#933` — registered 2026-10-05. **BROUCKE 1969 (JPL TR 32-1360): THE LARGEST PUBLISHED CONTROL SET
   FOR THE ELLIPTIC PROBLEM** (digests `docs/notes/2026-10-04-digest-broucke-1969-elliptic-periodic-orbits-part-a.md`
-  and `-part-b.md`). Part B agent's result, not yet checked by the coordinator: all 500 rows of
+  and `-part-b.md`). Part B agent's result; the coordinator re-ran three rows independently (8P
+  e = 0.002 and 0.5, 11P e = 0.005; mu = 0.5; DOP853 1e-13 to v = pi): X1 and YDOT1 match to
+  1e-6 to 2e-6 and y, xdot vanish to 3e-6, i.e. the printed seventh digit: all 500 rows of
   Tables 14-19 (families 8P, 8A, 11P, 11A, 10P and a collision family) transcribed from page images;
   429 of the 431 periodic rows close in `core.er3bp` at the printed seventh digit (median residual
   3.1e-6; the 22 worst are 8P rows at e >= 0.815, growing smoothly with e, consistent with rounding
