@@ -852,7 +852,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#890` model orbit from code that does not share the build's right-hand side. The agent must
   produce its own first arc BEFORE reading the reviewer's scratch code, then compare. No
   catalogue row: after it, an adversarial review, an external check, and the owner's say.
-- `#894` — registered 2026-10-04. **PLANETARY GRAVITY CONSTANTS: A J2 IS MEANINGLESS WITHOUT ITS
+- `#894` — **BOTH PAPERS NOW HELD AND READ (2026-10-04, late). Saturn: CONFIRMED WRONG AND FIXED
+  (commit `d84d3879`).** Iess et al. (2019) Table 1 caption: "un-normalized; reference radius
+  60330 km". The lanes passed J2 = 16290.573e-6 with the 60,268 km physical radius, so the J2
+  acceleration was 0.21 percent too small. The reference radius is now its own constant, the
+  lanes use the coefficient re-expressed for the radius they carry, and a test pins J2 R^2.
+  **Uranus: source read.** Jacobson (2014) Table 12, "Current Results": J2 = 3510.7 +/- 0.7
+  e-6, J4 = -34.2 +/- 1.3 e-6, "The reference radius for the Uranus zonal harmonics is 25559
+  km". The old 3.34343e-3 appears nowhere in that paper; its "Table 4" is a star catalogue.
+  The constant in the code is currently French et al. 2024 (3509.291e-6, 4.0e-4 lower, read
+  from an abstract). Since the URA111 kernel is Jacobson's solution, the self-consistent value
+  is his; the switch waits for the `#895` build to finish so nothing changes under it. Full
+  digests of both papers, with an audit of every Uranian and Saturnian constant in the
+  registry, are in progress. Earlier text follows.
+- `#894` (earlier text) — registered 2026-10-04. **PLANETARY GRAVITY CONSTANTS: A J2 IS MEANINGLESS WITHOUT ITS
   REFERENCE RADIUS; ONE PAIR WAS WRONG, ONE IS UNCONFIRMED.** Found by the `#890` adversarial
   reviewer, confirmed by the coordinator. **Uranus, FIXED (commit `1620de10`):**
   `data/validation/v4_uranus.py` had J2 = 3.34343e-3 paired with R = 25,559 km and attributed to
