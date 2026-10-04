@@ -928,8 +928,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   3e-4 over 3 to 5 Sun periods (wrong epoch: 1e-2 .. 1), and the two orbits of Leiva & Briozzo
   2005 close to 2e-6 and 4e-6 with the printed lunar altitude. Rosales, Jorba & Jorba-Cusco
   2023 is now held and its Table 4 prints POL1 and POL2 as the project had them.
-  **Still to do:** triage every test and stored number pinned to the old module (in progress);
-  rerun or stamp `#533`, `#538`, `#544`, `#593`; fix the frame-conversion helper
+  **Triage done 2026-10-04** (see `#891` for the note and commits). Exposed coherent-model
+  work: `#533`, `#538`, `#544`, `#593`, and by inference `#617` to `#646` (the pseudospectral
+  torus chain, which imported the uncorrected grid copy). The Sun-Earth L2 torus control now
+  converges with 11 samples to rotation number 0.162806 (an independent three-body value is
+  0.162688; the old model gave 0.231365). Any rerun of `run_522`, `run_533`, `run_538` or
+  `search_coherent_connections` needs 11 samples, not 5.
+  **Still to do:** rerun or stamp `#533`, `#538`, `#544`, `#593`; fix the frame-conversion helper
   `genome/qbcp_torus.py`; obtain Rosales, Jorba & Jorba-Cusco 2023 (DOI
   10.1007/s10569-023-10129-4) so POL1 and POL2 are held from the source. Registration text:
   **SECOND DEFECT IN A CORE MODEL: `core/qbcp.py` EVALUATES TWO OF
@@ -961,8 +966,42 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   check from the Hamiltonian as printed, with the reversing symmetry and a non-rotating-frame
   comparison against the sense-corrected bicircular model as identity tests; (3) reproduce
   POL1 and POL2 as the positive control before any QBCP result is used again.
-- `#891` — **MODEL CORRECTED 2026-10-04 (commit `8c5b754b`); dependent code, tests and past
-  results not yet triaged.** `_sun_position` now uses `theta_sun0 - omega_sun * t`
+- `#891` — **MODEL CORRECTED AND DEPENDENT CODE TRIAGED 2026-10-04** (triage note
+  `docs/notes/2026-10-04-891-892-dependent-code-triage.md`; commits `49df785e`, `7c5e3e55`,
+  `4f65771f`, `0696575d`, `e175c833`, `9aa470a9`). **Triage outcome.** (1) The two
+  frame-conversion helpers (`genome/bcr4bp_torus.py`, `genome/qbcp_torus.py`) were wrong in
+  three ways each, not one: the Sun's sense, the time-scale factor (`1 + omega_S` where it is
+  `1 - omega_S`), and every sample being transformed at its own time instead of the section
+  time, with the Sun phase dropped. Rederived and checked by an identity: with the Moon's mass
+  zero the bicircular model is the Sun-Earth three-body problem, and a state carried both ways
+  agrees to 3e-8 (the size of the module's Sun-mass inconsistency; 4e-12 with a consistent Sun
+  mass); the old transform missed by 190. (2) A third copy of the coherent model's field, in
+  `search/variational_qbcp_torus.py`, still had the `#592` scaling and was fixed; a fourth
+  copy in `scripts/analyze_593_*` is not fixed. (3) Every failing test in the 26 files was
+  classified and repaired, none deleted; the coherent-model periodic-orbit test now compares
+  with the PUBLISHED POL1 point (1.7e-8) where it used to compare with the defective model's
+  own output. (4) Tests left as strict expected-failures, each an open question: the
+  bicircular "POL1" V3 integrator-agreement test (the orbit's multiplier of 322 makes the
+  100 km floor unreachable over three cycles), and two slow Earth-Moon L2 torus tests whose
+  pins all came from the old model. (5) The Hiten-band transfer tests now run at a Sun phase
+  of 0.5 rad, disclosed in the tests: in the corrected model the arc has no apoapsis at phase
+  0, and has one inside the sourced band for phases 0.30 to 0.75 rad and those plus pi. The
+  coordinator accepts this (a ballistic capture transfer does depend on the Sun's phase, and
+  the band is unchanged). (6) Two of the 19 negative-result stamps were method-invalid and
+  are now marked (`#378` cislunar transfer sweep, `#412` reach spike); the other 17 only
+  mention the model in prose. **New defect found by the triage, NOT YET FIXED:** the
+  bicircular tests and validation tiers (`tests/core/test_bcr4bp.py`,
+  `tests/data/test_v0..v3_bcr4bp.py`, `tests/genome/test_bcr4bp_genome.py`) use the "POL1"
+  point in the PAPER's frame (Earth at +mu) inside a module whose Earth is at -mu, and the
+  point is a QUASI-bicircular one in any case. The orbit they close is 0.84 from the Earth on
+  the far side from the Moon, with multiplier 322; it is not the L1 substitute. So `#292`'s
+  "POL1 seed closes" never tested what it said. **Exposed past work, to rerun or stamp:**
+  `#303`, `#304` (Sun-on continuations and their data files under `data/bcr4bp_*`), `#334`
+  (the scaling exponent), `#412`, `#378`; partly `#292`. **Still to do:** rebuild the
+  bicircular validation tiers on a real L1 substitute (the Jorba 2020 orbit, now reproduced);
+  rerun or stamp the exposed tasks; rerun `#884`. Earlier status text follows: **MODEL
+  CORRECTED 2026-10-04 (commit `8c5b754b`); dependent code, tests and past results not yet
+  triaged.** `_sun_position` now uses `theta_sun0 - omega_sun * t`
   (`omega_sun` stays a positive magnitude, `theta_sun0` stays the Sun's angle at t = 0).
   `tests/core/test_bcr4bp_sun_sense.py` checks the model against the non-rotating-frame
   derivation at two Sun phases (4e-12), with the Sun off as a control, and checks that the
