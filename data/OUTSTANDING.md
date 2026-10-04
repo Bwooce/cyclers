@@ -1627,7 +1627,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   that the Table 18.3 n = 4 row satisfies the recurrence to 3.8e-6 (its printed rounding). Build the
   R-arc and R-orbit solvers by shooting on the sign code with brackets between poles (not random
   multi-start, which can miss roots at larger n), with the counts 2^(n-1) and 2^n - 2 as hard
-  assertions and extended precision above about n = 12. Brjuno 1978 part III (digest
+  assertions and extended precision above about n = 12. Barrabes, Mondelo & Olle 2009 (CMDA 105:197; digest
+  `docs/notes/2026-10-05-digest-barrabes-mondelo-olle-2009b-horseshoe-homoclinic-orbits.md`) concerns
+  homoclinic connections to L3 (horseshoe-shaped), not the L1/L2 connections of Casoliva's Class 2
+  (the coordinator's brief misdescribed it). Connections exist only at a discrete set of mu values
+  (one-round symmetric at mu = 0.0037257851523, a 13-digit target to reproduce by shooting the L3
+  unstable manifold), accumulating in sequences as mu -> 0; continuation in mu alone therefore jumps,
+  and a second parameter is needed to follow a branch. Its Jacobi constant includes mu(1 - mu), which
+  `core.cr3bp.jacobi_constant` omits, and it mirrors the primaries. Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
