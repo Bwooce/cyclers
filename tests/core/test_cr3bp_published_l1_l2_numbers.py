@@ -18,8 +18,8 @@ an L1 found to machine precision:
 - The two misses are the same mass-ratio error. Both frequencies grow with mu (d omega/d mu = 7.802
   planar, 7.974 vertical), and both misses are removed by the same change of mu, +2.9527e-10 (the
   two estimates agree to 4e-16 in mu). At mu = 1/(1 + 81.300585) = 0.012150581918706896 the model
-  gives 2.33438585628800 and 2.26883106554112, which are the printed values to their last digit
-  (residuals -1.6e-13 and +2e-14).
+  gives 2.33438585628800 and 2.26883106554112: residuals -1.6e-13 (planar, in double precision;
+  1.6e-14 in 40-digit arithmetic) and +2e-14 (vertical, within the last printed digit).
 - Table 1's double is itself exactly 1/(1 + 81.300587) (equal to the last bit). INFERRED: the
   printed RTBP frequencies were computed with an Earth/Moon mass ratio of 81.300585, two units in
   the sixth decimal from the 81.300587 behind Table 1. The paper does not say this; it is the
@@ -42,8 +42,9 @@ The CR3BP rows of Table 2 (p12, L2 Lyapunov family at the halo bifurcation, out-
 "Center -> Saddle", 19.2033 days). The paper prints neither mu nor its length and time units. The
 project's Earth-Moon system (``cr3bp_system("Earth", "Moon")``: mu = 0.01215058439469525,
 384,400 km, time unit 4.342480 days) is used; the digest infers the same nominal units from the
-tables' p:q brackets. A bifurcation period moves by about 2e-7 day per 1e-8 change of mu, so the
-unknown mu does not matter at four decimals.
+tables' p:q brackets, and the test below pins it from those brackets. Measured on the vertical
+family, the bifurcation period moves by 2.35e-6 day per 1e-7 change of mu, so the unknown mu does
+not matter at four decimals (closing the vertical miss below would need mu changed by about 4e-6).
 
 Method, written here on ``core.cr3bp`` (``cr3bp_eom``, ``cr3bp_stm_eom``, ``propagate``):
 single-shooting perpendicular-crossing families with natural continuation, then a root of the
@@ -62,11 +63,21 @@ stability function of the bifurcating pair.
 
 Measured: halo bifurcation 14.831874 d (printed 14.8319, -2.6e-5 d); Lyapunov axial bifurcation
 18.718299 d (printed 18.7183, -7e-7 d); vertical axial bifurcation 19.203197 d (printed 19.2033,
--1.03e-4 d). Each stability change is in the printed direction. The vertical value is robust to the
-integrator tolerance (19.2031974 at rtol 1e-13) and the STM mode; no single time unit reconciles it
-with the Lyapunov axial value at four decimals (19.2033 needs a unit 2.7e-6 to 7.9e-6 longer,
-18.7183 allows at most 2.7e-6). It is asserted at the printed precision (half a unit in the fourth
-decimal, 5e-5 day) and kept as a strict xfail: a finding, one unit in the last printed digit.
+-1.03e-4 d). Each stability change is in the printed direction. The vertical value does not move
+with the integrator: 19.2031974 d at rtol = atol = 1e-12, at rtol 1e-13 / atol 1e-14, and with
+``stm_mode="fixed_path"`` for the monodromy. The stability function is checked once against the
+eigenvalues of the monodromy at a member far from the root (vz0 = 0.4, s - 2 = -0.3707).
+
+The time unit is pinned by the paper itself: each of the six ER3BP bracket ends of Tables 2 to 4
+is a p:q orbit of period q P_sys / p with P_sys = 2 pi time units, so P_sys = p P / q, with
+(p / q) 5e-5 day of rounding. The six intervals intersect in [27.284585, 27.284615] day; the
+project's 2 pi t_s = 27.284606 day lies inside, which pins the paper's time unit to within -7.8e-7
+and +3.2e-7 relative of the project's. Matching 19.2033 would need a unit at least 2.7e-6 longer,
+which those brackets exclude. So the vertical miss survives both the rounding and the unknown units.
+It is asserted at the printed precision (half a unit in the fourth decimal, 5e-5 day) and kept as a
+strict xfail: a finding, about one unit in the last printed digit. Cause not determined (a coarse
+bifurcation estimate in the paper's continuation, which samples discrete family members, would be
+one explanation; INFERRED, not stated in the paper).
 Control: a time unit from the sidereal month (27.321661 d / 2 pi = 4.348371 d) moves the three
 periods by 0.020 to 0.026 day, far outside the printed digits.
 """
@@ -154,6 +165,15 @@ _SINGH_LYAPUNOV_AXIAL_BIFURCATION_D = 18.7183  # Table 3, p12, L2 Lyapunov, sadd
 _SINGH_VERTICAL_AXIAL_BIFURCATION_D = 19.2033  # Table 4, p14, L2 vertical, centre to saddle
 _HALF_UNIT_4TH_DECIMAL_D = 5e-5
 _SIDEREAL_MONTH_D = 27.321661
+# ER3BP p:q bracket ends of Tables 2 to 4 (period in days, p, q), Singh et al. 2026 p12, p14.
+_SINGH_ER3BP_BRACKET_ENDS = (
+    (14.7792, 24, 13),
+    (14.8825, 11, 6),
+    (18.7007, 89, 61),
+    (18.7094, 35, 24),
+    (19.1730, 37, 26),
+    (19.3266, 24, 17),
+)
 
 _EM = cr3bp_system("Earth", "Moon")
 _DAY_PER_UNIT = _EM.t_s / 86400.0
@@ -304,7 +324,14 @@ def l2_bifurcations() -> dict[str, _Bifurcation]:
         vzs.append(vz0)
         xvs.append(x0)
         vyvs.append(vy0)
-        hs.append(_small_pair_s_minus_2(_EM, np.array([x0, 0.0, 0.0, 0.0, vy0, vz0]), period))
+        state = np.array([x0, 0.0, 0.0, 0.0, vy0, vz0])
+        hs.append(_small_pair_s_minus_2(_EM, state, period))
+        if len(vzs) == 41:  # vz0 = 0.4, far from the root: check against the eigenvalues
+            stm = propagate(_EM, state, period, with_stm=True).stm
+            assert stm is not None
+            s_vals = [float((e + 1.0 / e).real) for e in np.linalg.eigvals(stm)]
+            s_small = min(s_vals, key=lambda v: abs(v - 2.0) if abs(v - 2.0) > 1e-3 else 1e9)
+            assert abs(hs[-1] - (s_small - 2.0)) < 1e-7
         if hs[-1] > 0.0:
             break
         if len(vzs) > 1:
@@ -335,8 +362,10 @@ _PERIOD_CASES = [
         marks=pytest.mark.xfail(
             strict=True,
             reason="#896: core.cr3bp puts the L2 vertical-family axial bifurcation at 19.203197 d, "
-            "1.03e-4 d below the printed 19.2033 (two half-units of the fourth decimal), robust "
-            "to integrator tolerance and mu, and no common time unit fits it and Table 3",
+            "1.03e-4 d below the printed 19.2033 (two half-units of the fourth decimal); not "
+            "integrator tolerance or mu, and the paper's own ER3BP brackets pin its time unit to "
+            "1e-6, excluding the 2.7e-6 longer unit a match would need",
+            raises=AssertionError,
         ),
     ),
 ]
@@ -369,12 +398,13 @@ def test_singh_2026_stability_change_is_in_the_printed_direction(
         assert b.before > 0.0 > b.after
 
 
-def test_singh_2026_vertical_miss_is_one_unit_in_the_last_printed_digit(
-    l2_bifurcations: dict[str, _Bifurcation],
-) -> None:
-    """Pins the size of the Table 4 finding (strict xfail above), so that a change is noticed."""
-    miss_d = l2_bifurcations["vertical_axial"].period_units * _DAY_PER_UNIT - 19.2033
-    assert -1.5e-4 < miss_d < -_HALF_UNIT_4TH_DECIMAL_D
+def test_singh_2026_er3bp_brackets_pin_the_time_unit() -> None:
+    """The paper's ER3BP p:q bracket ends give P_sys = 2 pi time units in days, within rounding."""
+    lo = max(p * (period - 5e-5) / q for period, p, q in _SINGH_ER3BP_BRACKET_ENDS)
+    hi = min(p * (period + 5e-5) / q for period, p, q in _SINGH_ER3BP_BRACKET_ENDS)
+    assert lo < 2.0 * np.pi * _DAY_PER_UNIT < hi
+    # A unit long enough to put the vertical bifurcation at 19.2033 is outside the window.
+    assert 2.0 * np.pi * _DAY_PER_UNIT * (1.0 + 2.7e-6) > hi
 
 
 def test_singh_2026_sidereal_month_time_unit_is_discriminated(
