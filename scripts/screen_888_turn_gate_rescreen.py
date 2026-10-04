@@ -6,7 +6,8 @@ Stages (each writes JSONL under ``data/found/888_turn_gate/``)::
     uv run python scripts/screen_888_turn_gate_rescreen.py --stage regression
     uv run python scripts/screen_888_turn_gate_rescreen.py --stage rescreen
     uv run python scripts/screen_888_turn_gate_rescreen.py --stage ungated
-    uv run python scripts/screen_888_turn_gate_rescreen.py --stage extended
+    uv run python scripts/screen_888_turn_gate_rescreen.py --stage extended --primary Uranus
+    uv run python scripts/screen_888_turn_gate_rescreen.py --stage candidates
 
 controls    McConaghy-Longuski-Byrnes 2002 Table 4 (19 Earth-Mars nPr cyclers) and
             Russell-Strange 2009 Tables 3-6 (10 generic-leg moon cyclers) through
@@ -22,7 +23,11 @@ ungated     The same enumerations re-run over each file's own ranges (n_rev 0-3,
             the #324 capacity gate, which pruned before, is dropped. Miranda is
             added at Uranus.
 extended    Wider ranges in the same ideal model: n_rev 0-6 per leg, both
-            multi-revolution Lambert branches per leg, tof_scale up to 6.
+            multi-revolution Lambert branches per leg, tof_scale up to 6
+            (``--primary`` runs one system at a time).
+candidates  Diagnostics of every closure that passes the gate: V-infinity over
+            moon speed, Hill radii, and the distance from each leg's conic to
+            the two cycler moons away from the targeted encounters.
 
 Closure definition and branch rule:
 :func:`cyclerfinder.verify.turn_gate_closures.symmetric_closure`.
@@ -45,7 +50,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+import numpy as np  # noqa: E402
 import yaml  # type: ignore[import-untyped]  # noqa: E402
+from scipy.integrate import solve_ivp  # noqa: E402
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES  # noqa: E402
 from cyclerfinder.search.discovery_campaign import _mean_motion_rad_day  # noqa: E402
@@ -272,9 +279,33 @@ def stage_regression() -> None:
 # ---------------------------------------------------------------------------
 
 
-def gate_closure(c: SymmetricClosure) -> dict[str, Any]:
+def _compact(rep: Any, rep50: Any) -> list[dict[str, Any]]:
+    """Per-encounter essentials (keeps the enumeration outputs small)."""
+    return [
+        {
+            "body": e.body,
+            "label": e.label,
+            "vinf_in_kms": round(e.vinf_in_kms, 6),
+            "vinf_out_kms": round(e.vinf_out_kms, 6),
+            "demanded_turn_deg": round(e.demanded_turn_deg, 4),
+            "available_bend_deg": round(e.available_bend_deg, 4),
+            "alt_floor_km": e.alt_floor_km,
+            "available_bend_50km_deg": round(e50.available_bend_deg, 4),
+            "ratio": round(e.ratio, 5),
+            "required_alt_km": round(e.required_alt_km, 1),
+        }
+        for e, e50 in zip(rep.encounters, rep50.encounters, strict=True)
+    ]
+
+
+def gate_closure(c: SymmetricClosure, *, compact: bool = False) -> dict[str, Any]:
     rep = demanded_turn_gate(c.encounters)
     rep50 = demanded_turn_gate(c.encounters, alt_floor_km=UNIFORM_FLOOR_KM)
+    gates: dict[str, Any] = (
+        {"encounters": _compact(rep, rep50)}
+        if compact
+        else {"gate_project_floor": rep.as_dict(), "gate_50km": rep50.as_dict()}
+    )
     return {
         "primary": c.primary,
         "anchor": c.anchor,
@@ -285,8 +316,7 @@ def gate_closure(c: SymmetricClosure) -> dict[str, Any]:
         "residual_kms": c.residual_kms,
         "vinf_kms": list(c.stored_convention_vinf),
         "wrap_local_check_deg": c.wrap_local_check_deg,
-        "gate_project_floor": rep.as_dict(),
-        "gate_50km": rep50.as_dict(),
+        **gates,
         "pass_project_floor": rep.turn_feasible,
         "pass_50km": rep50.turn_feasible,
         "worst_ratio_project_floor": rep.worst_ratio,
@@ -421,7 +451,7 @@ def enumerate_pair(
                     )
                     if c is None or c.residual_kms >= GATE_RESIDUAL_KMS:
                         continue
-                    g = gate_closure(c)
+                    g = gate_closure(c, compact=True)
                     g["n_commensurate_int"] = n
                     g["branches"] = list(br)
                     out.append(g)
@@ -508,6 +538,126 @@ def run_enumeration(
     )
 
 
+# ---------------------------------------------------------------------------
+# candidates: diagnostics of every closure that passes the gate
+# ---------------------------------------------------------------------------
+
+
+def _two_body_rhs(_t: float, y: np.ndarray, mu: float) -> np.ndarray:
+    r = y[:3]
+    return np.concatenate([y[3:], -mu * r / float(np.linalg.norm(r)) ** 3])
+
+
+def leg_moon_distances(
+    primary: str,
+    r0: np.ndarray,
+    v0: np.ndarray,
+    t0_days: float,
+    tof_days: float,
+    moons: dict[str, float],
+    n_samples: int = 4000,
+) -> dict[str, dict[str, float]]:
+    """Distance from the conic to each moon (longitude at t = 0 given) along one leg."""
+    mu = PRIMARIES[primary]
+    ts = np.linspace(0.0, tof_days * 86400.0, n_samples)
+    sol = solve_ivp(
+        _two_body_rhs,
+        (0.0, ts[-1]),
+        np.concatenate([r0, v0]),
+        t_eval=ts,
+        args=(mu,),
+        rtol=1e-12,
+        atol=1e-6,
+        method="DOP853",
+    )
+    out: dict[str, dict[str, float]] = {}
+    for moon, th0 in moons.items():
+        sat = SATELLITES[moon]
+        n = _mean_motion_rad_day(mu, sat.sma_km)
+        th = th0 + n * (t0_days + ts / 86400.0)
+        pos = np.stack([sat.sma_km * np.cos(th), sat.sma_km * np.sin(th), np.zeros_like(th)])
+        d = np.linalg.norm(sol.y[:3] - pos, axis=0)
+        hill = sat.sma_km * (sat.mu_km3_s2 / (3.0 * mu)) ** (1.0 / 3.0)
+        # Re-approaches inside the leg: interior local minima of the distance
+        # (the targeted flybys are the end points, never interior minima).
+        interior = (d[1:-1] < d[:-2]) & (d[1:-1] < d[2:])
+        local_min = d[1:-1][interior]
+        out[moon] = {
+            "min_dist_km": float(d.min()),
+            "min_interior_local_min_km": float(local_min.min()) if local_min.size else None,
+            "n_interior_local_min": int(local_min.size),
+            "hill_radius_km": hill,
+        }
+    return out
+
+
+def stage_candidates() -> None:
+    rows: list[dict[str, Any]] = []
+    for path in [*sorted(OUT_DIR.glob("extended_*.jsonl")), OUT_DIR / "ungated.jsonl"]:
+        if not path.exists():
+            continue
+        for line in path.read_text().splitlines():
+            g = json.loads(line)
+            if g.get("kind") != "closure" or not g["pass_project_floor"]:
+                continue
+            primary, a, b = g["primary"], g["anchor"], g["flyby"]
+            c = symmetric_closure(
+                primary,
+                a,
+                b,
+                tof_days=g["tof_days"],
+                n_rev=(g["n_rev"][0], g["n_rev"][1]),
+                rel_offset_deg=g["rel_offset_deg"],
+                branches=tuple(g.get("branches", ["closest"] * 3)),  # type: ignore[arg-type]
+            )
+            assert c is not None
+            mu = PRIMARIES[primary]
+            th_a, th_b = 0.0, math.radians(g["rel_offset_deg"])
+            from cyclerfinder.verify.turn_gate_closures import _moon_state
+
+            ra0, wa0 = _moon_state(a, th_a, 0.0, mu)
+            rb1, wb1 = _moon_state(b, th_b, g["tof_days"], mu)
+            v_leg0 = np.asarray(c.vectors["out0"]) + wa0
+            v_leg1 = np.asarray(c.vectors["out1"]) + wb1
+            moons = {a: th_a, b: th_b}
+            d0 = leg_moon_distances(primary, ra0, v_leg0, 0.0, g["tof_days"], moons)
+            d1 = leg_moon_distances(primary, rb1, v_leg1, g["tof_days"], g["tof_days"], moons)
+            v_moon = {m: math.sqrt(mu / SATELLITES[m].sma_km) for m in (a, b)}
+            rows.append(
+                {
+                    "kind": "candidate",
+                    "source": path.name,
+                    "primary": primary,
+                    "sequence": [a, b, a],
+                    "tof_days_per_leg": g["tof_days"],
+                    "cycle_days": 2.0 * g["tof_days"],
+                    "n_rev": g["n_rev"],
+                    "branches": g.get("branches"),
+                    "rel_offset_deg": g["rel_offset_deg"],
+                    "vinf_kms": g["vinf_kms"],
+                    "vinf_over_moon_speed": {
+                        a: g["vinf_kms"][0] / v_moon[a],
+                        b: g["vinf_kms"][1] / v_moon[b],
+                    },
+                    "gate_project_floor": demanded_turn_gate(c.encounters).as_dict(),
+                    "gate_50km": demanded_turn_gate(
+                        c.encounters, alt_floor_km=UNIFORM_FLOOR_KM
+                    ).as_dict(),
+                    "leg0_moon_distances": d0,
+                    "leg1_moon_distances": d1,
+                }
+            )
+            log(
+                f"  {primary} {a}-{b}-{a} tof {g['tof_days']:.3f} d n_rev {g['n_rev']} "
+                f"V_inf {g['vinf_kms'][0]:.4f}/{g['vinf_kms'][1]:.4f} worst ratio "
+                f"{g['worst_ratio_project_floor']:.3f}; interior closest re-approach (km) leg0 "
+                + ", ".join(f"{m} {v['min_interior_local_min_km']}" for m, v in d0.items())
+                + "; leg1 "
+                + ", ".join(f"{m} {v['min_interior_local_min_km']}" for m, v in d1.items())
+            )
+    write_jsonl("candidates.jsonl", {"task": "#888 passing-closure diagnostics"}, rows)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -515,7 +665,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--stage",
         required=True,
-        choices=["controls", "regression", "rescreen", "ungated", "extended"],
+        choices=["controls", "regression", "rescreen", "ungated", "extended", "candidates"],
     )
     ap.add_argument("--extended-scale", type=float, default=6.0)
     ap.add_argument("--extended-nrev", type=int, default=6)
@@ -531,6 +681,8 @@ def main(argv: list[str] | None = None) -> int:
         stage_regression()
     elif args.stage == "rescreen":
         stage_rescreen()
+    elif args.stage == "candidates":
+        stage_candidates()
     elif args.stage == "ungated":
         run_enumeration(
             "ungated",
