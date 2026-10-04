@@ -14,6 +14,8 @@ Tasks:
 
 from __future__ import annotations
 
+import dataclasses
+
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.genome.bct_transfer as bct
 import cyclerfinder.search.cislunar_bct_search as search
@@ -41,8 +43,13 @@ def test_classifies_transfer_vs_chain() -> None:
 
 
 def test_search_emits_transfer_capability_records() -> None:
-    """run_cislunar_bct_search over a tiny grid emits classified BCT records."""
-    system = bcr4bp.andreu_default()
+    """run_cislunar_bct_search over a tiny grid emits classified BCT records.
+
+    #891 (2026-10-04): at Sun phase 0.5 rad, as in tests/genome/test_bct_transfer.py
+    (which records the scan); at phase 0 in the corrected model both theta2 values
+    are still climbing past 5.5 LD when the 70-day window ends.
+    """
+    system = dataclasses.replace(bcr4bp.andreu_default(), theta_sun0=0.5)
     grid = search.BCTSearchGrid(
         theta2_values=(0.70, 0.75),
         e2_values=(0.95,),

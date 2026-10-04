@@ -15,6 +15,7 @@ Tasks:
 
 from __future__ import annotations
 
+import dataclasses
 import math
 
 import pytest
@@ -23,6 +24,19 @@ import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.wsb as wsb
 import cyclerfinder.genome.bct_transfer as bct
 from cyclerfinder.search.literature_check import SearchResult
+
+# #891 (2026-10-04): the Sun phase at capture selects the solar-assisted family. With the
+# Sun moving the right way, theta2 = 0.70 at Sun phase 0 climbs past 5.6 LD and is still
+# climbing when the 70-day backward arc ends (no apoapsis). A scan of the Sun phase
+# (12 phases, then 0.30 to 0.75 rad in steps of 0.05) gives a genuine interior apoapsis
+# in the Hiten band throughout 0.30 to 0.75 rad: 3.74 LD at 57 d down to 2.81 LD at 40 d
+# for theta2 = 0.70, and the same at phase + pi (tidal symmetry). The old pass (3.54 LD
+# at 58 d at phase 0) belonged to the model with the Sun moving the wrong way.
+_HITEN_SUN_PHASE = 0.5
+
+
+def _hiten_system() -> bcr4bp.BCR4BPSystem:
+    return dataclasses.replace(bcr4bp.andreu_default(), theta_sun0=_HITEN_SUN_PHASE)
 
 
 def test_backward_arc_reaches_apoapsis() -> None:
@@ -33,11 +47,13 @@ def test_backward_arc_reaches_apoapsis() -> None:
     periapsis-angle theta_2 is the family selector (design: the W point sits on
     the unstable manifold whose backward arc escapes the Moon to the apoapsis).
     """
-    system = bcr4bp.andreu_default()
+    system = _hiten_system()
     target = bct.BCTTarget(r_capture_km=100.0, e2=0.95, theta2=0.70, branch="retrograde")
     arc = bct.construct_bct_backward(target, system, back_days=70.0)
     assert arc.max_earth_apoapsis_ld == pytest.approx(3.9, abs=1.2)
     assert 2.7 <= arc.max_earth_apoapsis_ld <= 5.1
+    # A genuine apoapsis, not the end of the integration window (#891; measured 45.9 d).
+    assert arc.t_apoapsis_days < arc.back_days - 5.0
     # The QF really is on W: bound to the Moon at a periapsis.
     assert wsb.kepler_energy_moon(arc.qf_state, system) < 0.0
     assert wsb.is_periapsis(arc.qf_state, system, tol=1e-5)
@@ -89,11 +105,14 @@ def test_hiten_signature_band() -> None:
     ΔV a factor-2 band, not bit-exact. NOT marked slow (V-evidence in default
     suite).
     """
-    system = bcr4bp.andreu_default()
+    system = _hiten_system()
     target = bct.BCTTarget(r_capture_km=100.0, e2=0.95, theta2=0.70, branch="retrograde")
     result = bct.build_hiten_bct(system, target)
     # Apoapsis signature (the load-bearing geometric fact).
     assert 2.7 <= result.apoapsis_ld <= 5.1
+    # TOF is twice the apoapsis time; an apoapsis at the 70-day window edge would
+    # give 140 d with no apoapsis at all (#891). Measured 91.8 d.
+    assert result.tof_days < 130.0
     # TOF order-150 d (>> 5 d Hohmann); generous order-of-magnitude band.
     assert 60.0 <= result.tof_days <= 260.0
     # Ballistic capture: definitional facts (exact).
