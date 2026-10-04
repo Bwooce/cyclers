@@ -923,6 +923,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   la Llave 2026 published version (10.1007/s00332-026-10276-6); no DOI: Kumar ASC 2026 Paper
   1023, Komachi ASC 2026 Paper 688, Rosengren et al. IAC-25-C1.9.1, Kumar & Anderson 2026
   (ISSFD). Next literature watch about 2026-10-17.
+- `#911` — registered 2026-10-04. **STALE CLAIMS ABOUT WITHDRAWN ROWS IN OLDER NOTES.** Eighteen
+  notes under `docs/notes/` name the seven withdrawn rows, and several call a project result
+  "confirmed novel" (`2026-07-19-659-antiope-adjudication-fable.md`,
+  `2026-07-22-679-discovery-strategy-pass.md`, and the Kumar 2026 multishooting digest, which
+  now carries a notice). Notes are a dated record and are not rewritten, but a reader, human
+  or agent, who opens one alone is misled: a `#897` source reader was. Add a short dated
+  notice at the top of each affected note pointing to `#882` and `#888`; also check the
+  website copy and `README.md` for the same phrases.
 - `#910` — registered 2026-10-04. **PRINTED ITEMS NOT REPRODUCED OR NOT RESOLVED.** Neelakantan &
   Ramanan 2022 Table 8, "M4N2 Lyapunov" row (does not close in `core/er3bp.py` from either
   apse; the `#896` agent is retrying); MacKay 2005 footnote, the exceptional-case formula
