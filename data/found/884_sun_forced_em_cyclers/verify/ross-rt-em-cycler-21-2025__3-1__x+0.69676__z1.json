@@ -1,0 +1,16 @@
+{
+ "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z1",
+ "stop_reason": "returned_to_eps0",
+ "eps0_correction_ok": true,
+ "landing_state": [
+  0.7057295611711661,
+  -0.06380885818343743,
+  -6.2038545941477076e-24,
+  0.056346143843410024,
+  0.45042709661040337,
+  1.8694281843698425e-22
+ ],
+ "landing_jacobi": 3.121403334359086,
+ "start_jacobi": 3.125232151700272,
+ "landing_distance_to_start_orbit": 0.024579441094446743
+}

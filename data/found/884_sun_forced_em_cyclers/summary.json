@@ -1,0 +1,2102 @@
+{
+ "families": [
+  {
+   "family": "C11 (Braik-Ross C11a)",
+   "row": "braik-ross-c11a-cycler-2026",
+   "status": "ok",
+   "period_range_walked": [
+    9.657430660520873,
+    16.739811497131186
+   ],
+   "walk_stops": [
+    "step collapse at T=12.310951",
+    "left domain at T=16.739811"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "3/2",
+     "period": 10.186790807861875,
+     "jacobi": 3.0920393738798166,
+     "periselene_km_cr3bp": 21994.86025413409,
+     "max_abs_floquet_cr3bp": 141462.5316545084
+    },
+    {
+     "ratio_T_over_Tg": "3/2",
+     "period": 10.186790807861875,
+     "jacobi": 3.1510685348493386,
+     "periselene_km_cr3bp": 23253.24575914343,
+     "max_abs_floquet_cr3bp": 1007.4281141116849
+    },
+    {
+     "ratio_T_over_Tg": "2/1",
+     "period": 13.582387743815834,
+     "jacobi": 3.121069591320925,
+     "periselene_km_cr3bp": 25847.706498504092,
+     "max_abs_floquet_cr3bp": 382479.937421574
+    }
+   ]
+  },
+  {
+   "family": "C11 (Braik-Ross C11b)",
+   "row": "braik-ross-c11b-cycler-2026",
+   "status": "ok",
+   "period_range_walked": [
+    11.890974576627745,
+    13.395438311076838
+   ],
+   "walk_stops": [
+    "step collapse at T=13.395438",
+    "step collapse at T=12.695784"
+   ],
+   "members": []
+  },
+  {
+   "family": "C21 3D corridor (#682)",
+   "row": "braik-ross-c21-3d-corridor-05-2026",
+   "status": "ok",
+   "period_range_walked": [
+    12.55703205667094,
+    19.256164421344234
+   ],
+   "walk_stops": [
+    "step collapse at T=12.563894",
+    "step collapse at T=12.557032"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.0251624406301247,
+     "periselene_km_cr3bp": 120554.76875820593,
+     "max_abs_floquet_cr3bp": 7.108181855730971
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.0125077502189166,
+     "periselene_km_cr3bp": 75328.74591590467,
+     "max_abs_floquet_cr3bp": 37.41856536431497
+    },
+    {
+     "ratio_T_over_Tg": "2/1",
+     "period": 13.582387743815834,
+     "jacobi": 3.0989513145457566,
+     "periselene_km_cr3bp": 42002.93757305004,
+     "max_abs_floquet_cr3bp": 109353.36885652118
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.025162440630123,
+     "periselene_km_cr3bp": 120554.76875822812,
+     "max_abs_floquet_cr3bp": 7.108181855737037
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.0125077502189166,
+     "periselene_km_cr3bp": 75328.74591589518,
+     "max_abs_floquet_cr3bp": 37.41856536429646
+    }
+   ]
+  },
+  {
+   "family": "C32 3D corridor (#682)",
+   "row": "braik-ross-c32-3d-corridor-05-2026",
+   "status": "ok",
+   "period_range_walked": [
+    31.237197144002426,
+    31.318188983045417
+   ],
+   "walk_stops": [
+    "step collapse at T=31.256049",
+    "left domain at T=31.272571"
+   ],
+   "members": []
+  },
+  {
+   "family": "C32 (Braik-Ross)",
+   "row": "braik-ross-c32-cycler-2026",
+   "status": "ok",
+   "period_range_walked": [
+    16.459321043496523,
+    19.253986300094958
+   ],
+   "walk_stops": [
+    "step collapse at T=19.253986",
+    "step collapse at T=19.178339"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.1287478937026014,
+     "periselene_km_cr3bp": 26209.42012740886,
+     "max_abs_floquet_cr3bp": 279713.0318857898
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.151676902314379,
+     "periselene_km_cr3bp": 23303.922336082585,
+     "max_abs_floquet_cr3bp": 4262.5625651027785
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.1801042564642596,
+     "periselene_km_cr3bp": 8287.989540818697,
+     "max_abs_floquet_cr3bp": 80.12703699563843
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.18264334952602,
+     "periselene_km_cr3bp": 4457.380383336054,
+     "max_abs_floquet_cr3bp": 78.70304096639617
+    }
+   ]
+  },
+  {
+   "family": "R21-S planar resonant (Braik-Ross)",
+   "row": "braik-ross-planar-r21-s-corridor-2026",
+   "status": "ok",
+   "period_range_walked": [
+    0.49464352034370423,
+    6.09412703751587
+   ],
+   "walk_stops": [
+    "left domain at T=0.494644"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "5/6",
+     "period": 5.659328226589931,
+     "jacobi": 3.1949300815570156,
+     "periselene_km_cr3bp": 177152.9044214633,
+     "max_abs_floquet_cr3bp": 1.0000049600881908
+    },
+    {
+     "ratio_T_over_Tg": "1/2",
+     "period": 3.3955969359539586,
+     "jacobi": 3.4207231023217473,
+     "periselene_km_cr3bp": 195515.35862336782,
+     "max_abs_floquet_cr3bp": 1.000000000000004
+    }
+   ]
+  },
+  {
+   "family": "braik-ross-planar-r21-s-corridor-2026",
+   "row": "braik-ross-planar-r21-s-corridor-2026",
+   "status": "not completed: the walk exceeded the 475 s per-command limit twice (DOP853 grinding near a primary inside a single corrector step); no members recorded",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "R31-S planar resonant (Braik-Ross)",
+   "row": "braik-ross-planar-r31-s-corridor-2026",
+   "status": "ok",
+   "period_range_walked": [
+    6.194694427491785,
+    6.300303662289035
+   ],
+   "walk_stops": [
+    "step collapse at T=6.297049",
+    "left domain at T=6.300304"
+   ],
+   "members": []
+  },
+  {
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "row": "braik-ross-planar-r52-s-corridor-2026",
+   "status": "ok",
+   "period_range_walked": [
+    12.592082396299721,
+    19.60965329093155
+   ],
+   "walk_stops": [
+    "left domain at T=12.724132",
+    "left domain at T=19.609653"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "2/1",
+     "period": 13.582387743815834,
+     "jacobi": 3.197160382458867,
+     "periselene_km_cr3bp": 74124.10931915717,
+     "max_abs_floquet_cr3bp": 9.35802558109129
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.020097040647552,
+     "periselene_km_cr3bp": 78421.3904227555,
+     "max_abs_floquet_cr3bp": 1448.0143458770578
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 2.971164849900342,
+     "periselene_km_cr3bp": 65148.0846818746,
+     "max_abs_floquet_cr3bp": 1100.8067500474071
+    }
+   ]
+  },
+  {
+   "family": "Casoliva 1:2 (c)",
+   "row": "casoliva-1-2c-em-resonant-po-2010",
+   "status": "ok",
+   "period_range_walked": [
+    10.213378480204613,
+    12.58878029401016
+   ],
+   "walk_stops": [
+    "step collapse at T=12.588780",
+    "step collapse at T=10.213378"
+   ],
+   "members": []
+  },
+  {
+   "family": "Casoliva 1:2 (d)",
+   "row": "casoliva-1-2d-em-resonant-po-2010",
+   "status": "ok",
+   "period_range_walked": [
+    6.899502691795483,
+    12.723186751498062
+   ],
+   "walk_stops": [
+    "left domain at T=6.899503",
+    "left domain at T=12.570060"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "3/2",
+     "period": 10.186790807861875,
+     "jacobi": 3.2857819181867196,
+     "periselene_km_cr3bp": 352881.7044927734,
+     "max_abs_floquet_cr3bp": 1.0000000000001916
+    }
+   ]
+  },
+  {
+   "family": "Casoliva 2:1 (a)",
+   "row": "casoliva-2-1a-em-resonant-po-2010",
+   "status": "ok",
+   "period_range_walked": [
+    5.9702810309045145,
+    6.320443077051692
+   ],
+   "walk_stops": [
+    "step collapse at T=6.320443",
+    "step collapse at T=6.203764"
+   ],
+   "members": []
+  },
+  {
+   "family": "Casoliva 2:1 (b)",
+   "row": "casoliva-2-1b-em-resonant-po-2010",
+   "status": "ok",
+   "period_range_walked": [
+    6.2586889788496745,
+    7.894579346331466
+   ],
+   "walk_stops": [
+    "step collapse at T=6.315252",
+    "step collapse at T=6.258689"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "1/1",
+     "period": 6.791193871907917,
+     "jacobi": -0.020923326957551946,
+     "periselene_km_cr3bp": 13843.243221149854,
+     "max_abs_floquet_cr3bp": 7.625692726242354
+    },
+    {
+     "ratio_T_over_Tg": "1/1",
+     "period": 6.791193871907917,
+     "jacobi": 0.5672902502624444,
+     "periselene_km_cr3bp": 1810.3360832899707,
+     "max_abs_floquet_cr3bp": 966.5301143686069
+    }
+   ]
+  },
+  {
+   "family": "Casoliva 3:2 (c)",
+   "row": "casoliva-3-2c-em-resonant-po-2010",
+   "status": "ok",
+   "period_range_walked": [
+    12.439566722951737,
+    13.219461470783909
+   ],
+   "walk_stops": [
+    "left domain at T=12.448399",
+    "left domain at T=12.514965"
+   ],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (a)",
+   "row": "casoliva-7-3a-em-cycler-2010",
+   "status": "ok",
+   "period_range_walked": [
+    18.79136813825826,
+    18.849558588581477
+   ],
+   "walk_stops": [
+    "step collapse at T=18.791368"
+   ],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (a)",
+   "row": "casoliva-7-3a-em-cycler-2010",
+   "status": "ok",
+   "period_range_walked": [
+    18.849558588581477,
+    19.160343333800558
+   ],
+   "walk_stops": [
+    "step collapse at T=19.132318"
+   ],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (b)",
+   "row": "casoliva-7-3b-em-cycler-2010",
+   "status": "no perpendicular crossing (asymmetric orbit); skipped",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (b)",
+   "row": "casoliva-7-3b-em-cycler-2010",
+   "status": "no perpendicular crossing (asymmetric orbit); skipped",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (c)",
+   "row": "casoliva-7-3c-em-cycler-2010",
+   "status": "no perpendicular crossing (asymmetric orbit); skipped",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "Casoliva 7:3 (c)",
+   "row": "casoliva-7-3c-em-cycler-2010",
+   "status": "no perpendicular crossing (asymmetric orbit); skipped",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "C21 spatial (#438)",
+   "row": "em-cycler-21-3d-spatial-2026",
+   "status": "ok",
+   "period_range_walked": [
+    12.543817245293738,
+    19.253100162350687
+   ],
+   "walk_stops": [
+    "step collapse at T=12.555071",
+    "step collapse at T=12.543817"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.0251624406301216,
+     "periselene_km_cr3bp": 120554.76875821961,
+     "max_abs_floquet_cr3bp": 7.108181855718389
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.0125077502189144,
+     "periselene_km_cr3bp": 75328.74591589498,
+     "max_abs_floquet_cr3bp": 37.41856536426625
+    },
+    {
+     "ratio_T_over_Tg": "2/1",
+     "period": 13.582387743815834,
+     "jacobi": 3.0989513145457606,
+     "periselene_km_cr3bp": 42002.93757305077,
+     "max_abs_floquet_cr3bp": 109353.36880171101
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.0251624406301247,
+     "periselene_km_cr3bp": 120554.7687582045,
+     "max_abs_floquet_cr3bp": 7.108181855727301
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.012507750218915,
+     "periselene_km_cr3bp": 75328.74591590906,
+     "max_abs_floquet_cr3bp": 37.41856536437854
+    }
+   ]
+  },
+  {
+   "family": "L1 Lyapunov 3D corridor (#682)",
+   "row": "lyapunov3d-l1-corridor-04-2026",
+   "status": "ok",
+   "period_range_walked": [
+    1.803676970358581,
+    3.123714895307851
+   ],
+   "walk_stops": [
+    "max_steps",
+    "max_steps"
+   ],
+   "members": []
+  },
+  {
+   "family": "C11 (Ross-RT 1:1)",
+   "row": "ross-rt-em-cycler-11-2025",
+   "status": "ok",
+   "period_range_walked": [
+    9.657101780931535,
+    17.30533116243483
+   ],
+   "walk_stops": [
+    "left domain at T=17.305331",
+    "step collapse at T=12.485928"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "2/1",
+     "period": 13.582387743815834,
+     "jacobi": 3.1210695913209254,
+     "periselene_km_cr3bp": 25847.70649870762,
+     "max_abs_floquet_cr3bp": 382479.93842764327
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.0769222744363627,
+     "periselene_km_cr3bp": 19953.589391143963,
+     "max_abs_floquet_cr3bp": 5808691.654274337
+    },
+    {
+     "ratio_T_over_Tg": "3/2",
+     "period": 10.186790807861875,
+     "jacobi": 3.1510685348493377,
+     "periselene_km_cr3bp": 23253.245759200538,
+     "max_abs_floquet_cr3bp": 1007.4280997688672
+    },
+    {
+     "ratio_T_over_Tg": "3/2",
+     "period": 10.186790807861875,
+     "jacobi": 3.0920393738798118,
+     "periselene_km_cr3bp": 21994.860254422398,
+     "max_abs_floquet_cr3bp": 141462.53173762717
+    }
+   ]
+  },
+  {
+   "family": "ross-rt-em-cycler-21-2025",
+   "row": "ross-rt-em-cycler-21-2025",
+   "status": "not completed: the walk exceeded the 475 s per-command limit twice (DOP853 grinding near a primary inside a single corrector step); no members recorded",
+   "period_range_walked": [
+    null,
+    null
+   ],
+   "walk_stops": [],
+   "members": []
+  },
+  {
+   "family": "C21 planar (Ross-RT 2:1)",
+   "row": "ross-rt-em-cycler-21-2025",
+   "status": "ok",
+   "period_range_walked": [
+    19.44043166795154,
+    22.94848248467684
+   ],
+   "walk_stops": [
+    "max_steps"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "3/1",
+     "period": 20.37358161572375,
+     "jacobi": 3.125232151700272,
+     "periselene_km_cr3bp": 26007.45462505247,
+     "max_abs_floquet_cr3bp": 36851.389552644396
+    }
+   ]
+  },
+  {
+   "family": "C31 (Ross-RT 3:1)",
+   "row": "ross-rt-em-cycler-31-2025",
+   "status": "ok",
+   "period_range_walked": [
+    14.487589692945086,
+    18.892870104373472
+   ],
+   "walk_stops": [
+    "step collapse at T=14.919649",
+    "max_steps"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.055825398809767,
+     "periselene_km_cr3bp": 14294.404677133016,
+     "max_abs_floquet_cr3bp": 6180.593792578207
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.0247185722514045,
+     "periselene_km_cr3bp": 10207.665460374788,
+     "max_abs_floquet_cr3bp": 15663.32429340393
+    }
+   ]
+  },
+  {
+   "family": "C32 (Ross-RT 3:2)",
+   "row": "ross-rt-em-cycler-32-2025",
+   "status": "ok",
+   "period_range_walked": [
+    16.459787638765313,
+    19.212816286141912
+   ],
+   "walk_stops": [
+    "step collapse at T=19.166302",
+    "max_steps"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.182643349526045,
+     "periselene_km_cr3bp": 4457.380383328612,
+     "max_abs_floquet_cr3bp": 78.70311768222669
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.180104256464265,
+     "periselene_km_cr3bp": 8287.989540748054,
+     "max_abs_floquet_cr3bp": 80.12703556289219
+    },
+    {
+     "ratio_T_over_Tg": "5/2",
+     "period": 16.977984679769794,
+     "jacobi": 3.1516769023143745,
+     "periselene_km_cr3bp": 23303.922336071617,
+     "max_abs_floquet_cr3bp": 4262.563273672677
+    },
+    {
+     "ratio_T_over_Tg": "8/3",
+     "period": 18.10985032508778,
+     "jacobi": 3.1287478937026076,
+     "periselene_km_cr3bp": 26209.420116662408,
+     "max_abs_floquet_cr3bp": 279712.50488279026
+    }
+   ]
+  },
+  {
+   "family": "C33 (Ross-RT 3:3)",
+   "row": "ross-rt-em-cycler-33-2025",
+   "status": "ok",
+   "period_range_walked": [
+    18.122671551186777,
+    19.089232525921044
+   ],
+   "walk_stops": [
+    "step collapse at T=18.783231",
+    "step collapse at T=19.089233"
+   ],
+   "members": []
+  },
+  {
+   "family": "Vaquero 2:1",
+   "row": "vaquero-21-c246-em-cycler-2013",
+   "status": "ok",
+   "period_range_walked": [
+    5.417069849051434,
+    6.02801832920549
+   ],
+   "walk_stops": [
+    "start point near a primary at T=5.481873"
+   ],
+   "members": [
+    {
+     "ratio_T_over_Tg": "5/6",
+     "period": 5.659328226589931,
+     "jacobi": 2.6606752654131993,
+     "periselene_km_cr3bp": 17458.647877829564,
+     "max_abs_floquet_cr3bp": 5.65430404660614
+    }
+   ]
+  },
+  {
+   "family": "Vaquero 2:1",
+   "row": "vaquero-21-c246-em-cycler-2013",
+   "status": "ok",
+   "period_range_walked": [
+    6.02801832920549,
+    6.2537242380512215
+   ],
+   "walk_stops": [
+    "step collapse at T=6.253724"
+   ],
+   "members": []
+  },
+  {
+   "family": "Vaquero 3:1",
+   "row": "vaquero-31-c254-em-cycler-2013",
+   "status": "ok",
+   "period_range_walked": [
+    6.269595351304046,
+    6.269604424886022
+   ],
+   "walk_stops": [
+    "step collapse at T=6.269595"
+   ],
+   "members": []
+  },
+  {
+   "family": "Vaquero 3:1",
+   "row": "vaquero-31-c254-em-cycler-2013",
+   "status": "ok",
+   "period_range_walked": [
+    6.269604424886022,
+    6.269604424886022
+   ],
+   "walk_stops": [
+    "step collapse at T=6.269604"
+   ],
+   "members": []
+  }
+ ],
+ "melnikov": [
+  {
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio_T_over_Tg": "2/1",
+   "a": 1,
+   "period": 13.582387743815834,
+   "melnikov_amplitude": 0.052024400481722986,
+   "melnikov_zeros": [
+    8.362068440203181e-08,
+    1.5710318202597837,
+    3.141592737524339,
+    4.712153649165035
+   ],
+   "melnikov_slopes": [
+    -0.1039059879575098,
+    0.10401889155365815,
+    -0.10413403447469846,
+    0.10401889164156743
+   ],
+   "periodicity_check": 2.42861286636753e-17,
+   "variational_vs_quadrature": 1.0480270203755415e-08,
+   "quadrature_convergence": 7.28583859910259e-17
+  },
+  {
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio_T_over_Tg": "3/2",
+   "a": 2,
+   "period": 10.186790807861875,
+   "melnikov_amplitude": 0.05249498755905834,
+   "melnikov_zeros": [
+    5.822698956194004e-08,
+    1.5707963857671265
+   ],
+   "melnikov_slopes": [
+    -0.10499995377143985,
+    0.10499795981771348
+   ],
+   "periodicity_check": 1.3530843112619095e-15,
+   "variational_vs_quadrature": 1.3653386795806077e-06,
+   "quadrature_convergence": 1.734723475976807e-16
+  },
+  {
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio_T_over_Tg": "3/2",
+   "a": 2,
+   "period": 10.186790807861875,
+   "melnikov_amplitude": 0.013740102598444631,
+   "melnikov_zeros": [
+    4.637363322906457e-07,
+    1.5707967908987952
+   ],
+   "melnikov_slopes": [
+    -0.027482713243715783,
+    0.027482401031115548
+   ],
+   "periodicity_check": 2.5743296383495817e-15,
+   "variational_vs_quadrature": 0.0015418535095320304,
+   "quadrature_convergence": 1.6653345369377348e-16
+  },
+  {
+   "family": "C21 3D corridor (#682)",
+   "ratio_T_over_Tg": "2/1",
+   "a": 1,
+   "period": 13.582387743815834,
+   "melnikov_amplitude": 0.03677162053528459,
+   "melnikov_zeros": [
+    4.418775205557194e-09,
+    1.571227498644677,
+    3.1415926579991695,
+    4.711957815214296
+   ],
+   "melnikov_slopes": [
+    -0.07356569755283346,
+    0.07349746767161047,
+    -0.07342878619955678,
+    0.0734974676702124
+   ],
+   "periodicity_check": 6.591949208711867e-17,
+   "variational_vs_quadrature": 6.849783656948105e-10,
+   "quadrature_convergence": 6.591949208711867e-17
+  },
+  {
+   "family": "C21 3D corridor (#682)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 2.9574417584592866e-07,
+   "melnikov_zeros": [
+    0.7854108339036074,
+    1.5707981469750272,
+    2.356182392825639,
+    3.141590260389819
+   ],
+   "melnikov_slopes": [
+    -1.1833370481412198e-06,
+    1.183302384029361e-06,
+    -1.1833272198485262e-06,
+    1.1833612735545618e-06
+   ],
+   "periodicity_check": 1.7564075194265172e-16,
+   "variational_vs_quadrature": 1.0816143223603435e-10,
+   "quadrature_convergence": 3.152859917587847e-16
+  },
+  {
+   "family": "C21 3D corridor (#682)",
+   "ratio_T_over_Tg": "8/3",
+   "a": 3,
+   "period": 18.10985032508778,
+   "melnikov_amplitude": 0.0002146775856602945,
+   "melnikov_zeros": [
+    4.16113438945766e-10,
+    1.0471975508352962
+   ],
+   "melnikov_slopes": [
+    0.000644087932537285,
+    -0.0006440879227534446
+   ],
+   "periodicity_check": 1.2771901591879242e-16,
+   "variational_vs_quadrature": 2.8286682783422445e-11,
+   "quadrature_convergence": 1.8388068845354155e-16
+  },
+  {
+   "family": "C32 (Braik-Ross)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 0.0199996384635195,
+   "melnikov_zeros": [
+    8.779917988171212e-09,
+    1.5707963347940996
+   ],
+   "melnikov_slopes": [
+    -0.04000050760572492,
+    0.04000484315757301
+   ],
+   "periodicity_check": 9.121176036686052e-15,
+   "variational_vs_quadrature": 1.2145514585462647e-05,
+   "quadrature_convergence": 1.1856002291033008e-12
+  },
+  {
+   "family": "C32 (Braik-Ross)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 0.017174426726856665,
+   "melnikov_zeros": [
+    1.5707963264445894,
+    3.1415926532523937
+   ],
+   "melnikov_slopes": [
+    0.03435356241766538,
+    -0.034349983176621204
+   ],
+   "periodicity_check": 2.949029909160572e-16,
+   "variational_vs_quadrature": 4.327445381202555e-10,
+   "quadrature_convergence": 1.8908485888147197e-15
+  },
+  {
+   "family": "C32 (Braik-Ross)",
+   "ratio_T_over_Tg": "8/3",
+   "a": 3,
+   "period": 18.10985032508778,
+   "melnikov_amplitude": 0.0002029997294188371,
+   "melnikov_zeros": [
+    1.0471989817188965,
+    2.094393125274682
+   ],
+   "melnikov_slopes": [
+    -0.0006090482881524958,
+    0.0006090485435558332
+   ],
+   "periodicity_check": 2.316185682919164e-10,
+   "variational_vs_quadrature": 0.033071079396960364,
+   "quadrature_convergence": 1.298524172303056e-10
+  },
+  {
+   "family": "C32 (Braik-Ross)",
+   "ratio_T_over_Tg": "8/3",
+   "a": 3,
+   "period": 18.10985032508778,
+   "melnikov_amplitude": 0.0001048731676198052,
+   "melnikov_zeros": [
+    1.0471975581296658,
+    2.0943951000600944
+   ],
+   "melnikov_slopes": [
+    -0.0003146464580203179,
+    0.00031464644384329027
+   ],
+   "periodicity_check": 8.092638972140298e-13,
+   "variational_vs_quadrature": 6.210459006560174e-07,
+   "quadrature_convergence": 4.5441894604841826e-13
+  },
+  {
+   "family": "R21-S planar resonant (Braik-Ross)",
+   "ratio_T_over_Tg": "1/2",
+   "a": 2,
+   "period": 3.3955969359539586,
+   "melnikov_amplitude": 0.000918770339750056,
+   "melnikov_zeros": [
+    1.570796326792468,
+    3.1415926535880554
+   ],
+   "melnikov_slopes": [
+    -0.0018376856370514501,
+    0.0018377102552506394
+   ],
+   "periodicity_check": 6.852157730108388e-17,
+   "variational_vs_quadrature": 1.3136193521834372e-15,
+   "quadrature_convergence": 7.166576360129184e-17
+  },
+  {
+   "family": "R21-S planar resonant (Braik-Ross)",
+   "ratio_T_over_Tg": "5/6",
+   "a": 6,
+   "period": 5.659328226589931,
+   "melnikov_amplitude": 2.1676063721720595e-13,
+   "melnikov_zeros": [
+    0.010431236883602535,
+    0.513217867034742
+   ],
+   "melnikov_slopes": [
+    9.194034422677078e-13,
+    -1.3183898417423734e-12
+   ],
+   "periodicity_check": 1.7867651802561113e-16,
+   "variational_vs_quadrature": 4.2054883880870975e-12,
+   "quadrature_convergence": 1.3183898417423734e-16
+  },
+  {
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio_T_over_Tg": "2/1",
+   "a": 1,
+   "period": 13.582387743815834,
+   "melnikov_amplitude": 0.008034074612753274,
+   "melnikov_zeros": [
+    5.100621687557178e-11,
+    1.5717676741562592,
+    3.141592653640708,
+    4.7114176331154525
+   ],
+   "melnikov_slopes": [
+    -0.016057220038180695,
+    0.016073001592514444,
+    -0.016086782914836104,
+    0.016073001593399153
+   ],
+   "periodicity_check": 3.9898639947466563e-17,
+   "variational_vs_quadrature": 6.011614817058586e-13,
+   "quadrature_convergence": 1.734723475976807e-16
+  },
+  {
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 0.006469495654625882,
+   "melnikov_zeros": [
+    1.5707963264950067,
+    3.1415926529843476
+   ],
+   "melnikov_slopes": [
+    0.012940122924793088,
+    -0.01294007612322656
+   ],
+   "periodicity_check": 8.066464163292153e-17,
+   "variational_vs_quadrature": 8.736079626196769e-09,
+   "quadrature_convergence": 1.2065001775418693e-15
+  },
+  {
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio_T_over_Tg": "8/3",
+   "a": 3,
+   "period": 18.10985032508778,
+   "melnikov_amplitude": 2.6729916092045214e-05,
+   "melnikov_zeros": [
+    1.047197601389522,
+    2.0943950502104145
+   ],
+   "melnikov_slopes": [
+    8.019660480401009e-05,
+    -8.019660604271107e-05
+   ],
+   "periodicity_check": 6.413381110903504e-15,
+   "variational_vs_quadrature": 5.929976651049154e-05,
+   "quadrature_convergence": 4.490548558000462e-15
+  },
+  {
+   "family": "Casoliva 1:2 (d)",
+   "ratio_T_over_Tg": "3/2",
+   "a": 2,
+   "period": 10.186790807861875,
+   "melnikov_amplitude": 3.506195731632633e-06,
+   "melnikov_zeros": [
+    1.5707963225844928,
+    3.1415926471617492
+   ],
+   "melnikov_slopes": [
+    -7.012999972411116e-06,
+    7.012983093551695e-06
+   ],
+   "periodicity_check": 6.591949208711867e-17,
+   "variational_vs_quadrature": 1.8148590269495557e-13,
+   "quadrature_convergence": 1.1362438767648086e-16
+  },
+  {
+   "family": "Casoliva 2:1 (b)",
+   "ratio_T_over_Tg": "1/1",
+   "a": 1,
+   "period": 6.791193871907917,
+   "melnikov_amplitude": 0.0003311077130216059,
+   "melnikov_zeros": [
+    1.5592411005143947,
+    3.141592653365937,
+    4.723944206581729,
+    6.2831853069475345
+   ],
+   "melnikov_slopes": [
+    0.0006494359228777918,
+    -0.0006601024537221389,
+    0.000649435923372188,
+    -0.0006391049442010938
+   ],
+   "periodicity_check": 1.0928757898653885e-16,
+   "variational_vs_quadrature": 1.972423960272529e-13,
+   "quadrature_convergence": 2.462494184257702e-16
+  },
+  {
+   "family": "Casoliva 2:1 (b)",
+   "ratio_T_over_Tg": "1/1",
+   "a": 1,
+   "period": 6.791193871907917,
+   "melnikov_amplitude": 0.004751454882701204,
+   "melnikov_zeros": [
+    1.571057822197289,
+    3.141592649112851,
+    4.712127483743798,
+    6.283185302724392
+   ],
+   "melnikov_slopes": [
+    0.009484249005025508,
+    -0.00951723870840776,
+    0.00948424900551123,
+    -0.009451433459293362
+   ],
+   "periodicity_check": 1.0408340855860843e-17,
+   "variational_vs_quadrature": 2.8745640763550018e-09,
+   "quadrature_convergence": 1.6648559545123093e-07
+  },
+  {
+   "family": "C11 (Ross-RT 1:1)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 0.0021070710347900114,
+   "melnikov_zeros": [
+    1.4041708705099602e-05,
+    1.5708135195992499
+   ],
+   "melnikov_slopes": [
+    -0.004214567226987383,
+    0.004214411012167657
+   ],
+   "periodicity_check": 9.832499398010341e-14,
+   "variational_vs_quadrature": 0.1879983172187835,
+   "quadrature_convergence": 1.3471254493857554e-11
+  },
+  {
+   "family": "C21 planar (Ross-RT 2:1)",
+   "ratio_T_over_Tg": "3/1",
+   "a": 1,
+   "period": 20.37358161572375,
+   "melnikov_amplitude": 0.05658937610923858,
+   "melnikov_zeros": [
+    2.6639348661097194e-07,
+    1.5711961822429803,
+    3.141592919262911,
+    4.711989652205018
+   ],
+   "melnikov_slopes": [
+    -0.11317231140662219,
+    0.11321174001200718,
+    -0.11325042035343051,
+    0.11321173980692383
+   ],
+   "periodicity_check": 1.3877787807814457e-17,
+   "variational_vs_quadrature": 7.220065210283844e-08,
+   "quadrature_convergence": 4.163336342344337e-17
+  },
+  {
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio_T_over_Tg": "5/2",
+   "a": 2,
+   "period": 16.977984679769794,
+   "melnikov_amplitude": 0.010899115206170998,
+   "melnikov_zeros": [
+    1.5707963262257953,
+    3.14159265310452
+   ],
+   "melnikov_slopes": [
+    -0.02180023133230638,
+    0.021799961009254243
+   ],
+   "periodicity_check": 4.822531263215524e-16,
+   "variational_vs_quadrature": 8.803628521937557e-06,
+   "quadrature_convergence": 6.131380125840025e-14
+  },
+  {
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio_T_over_Tg": "8/3",
+   "a": 3,
+   "period": 18.10985032508778,
+   "melnikov_amplitude": 3.6063029802385627e-05,
+   "melnikov_zeros": [
+    2.4327700908395896e-07,
+    1.0471973349844932
+   ],
+   "melnikov_slopes": [
+    -0.0001081982896680711,
+    0.00010819827592472436
+   ],
+   "periodicity_check": 6.231167152897198e-12,
+   "variational_vs_quadrature": 0.4331397696195029,
+   "quadrature_convergence": 3.49009620574485e-12
+  },
+  {
+   "family": "Vaquero 2:1",
+   "ratio_T_over_Tg": "5/6",
+   "a": 6,
+   "period": 5.659328226589931,
+   "melnikov_amplitude": 5.169542636844493e-13,
+   "melnikov_zeros": [
+    0.10941543867309234,
+    0.41355767702319474
+   ],
+   "melnikov_slopes": [
+    1.1449174941446927e-12,
+    -2.224782857940255e-12
+   ],
+   "periodicity_check": 2.172741153660951e-15,
+   "variational_vs_quadrature": 3.784725474860473e-09,
+   "quadrature_convergence": 2.2837634561234665e-15
+  }
+ ],
+ "continuations": [
+  {
+   "task": "braik-ross-c11a-cycler-2026__2-1__x-0.76485__z0",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 8.362068440203181e-08,
+   "stop_reason": "reached_target",
+   "eps_max": 1.016564886630948,
+   "folds": [],
+   "closure_dop853": 3.36739525153007e-11,
+   "closure_radau": 3.36640160192303e-11,
+   "max_abs_floquet": 497561.8794404225,
+   "stability": "unstable(2)",
+   "periselene_km": 24678.405790004454,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__2-1__x-0.76485__z1",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 1.5710318202597837,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0153789508862971,
+   "folds": [],
+   "closure_dop853": 1.2670420268534599e-14,
+   "closure_radau": 1.7553319908714116e-13,
+   "max_abs_floquet": 399803.7444808942,
+   "stability": "unstable(2)",
+   "periselene_km": 26303.460398664287,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__2-1__x-0.76485__z2",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 3.141592737524339,
+   "stop_reason": "reached_target",
+   "eps_max": 1.01653719757547,
+   "folds": [],
+   "closure_dop853": 3.469396991917506e-11,
+   "closure_radau": 3.468247911087019e-11,
+   "max_abs_floquet": 498721.1614618216,
+   "stability": "unstable(2)",
+   "periselene_km": 24681.892949609395,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__2-1__x-0.76485__z3",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 4.712153649165035,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0153789519332461,
+   "folds": [],
+   "closure_dop853": 1.3877787807814457e-14,
+   "closure_radau": 1.388802267632272e-13,
+   "max_abs_floquet": 399803.7444807428,
+   "stability": "unstable(2)",
+   "periselene_km": 26303.46042687811,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__3-2__x-0.77034__z0",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 5.822698956194004e-08,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0147703923544686,
+   "folds": [],
+   "closure_dop853": 5.054290319606025e-14,
+   "closure_radau": 1.3375411889171573e-13,
+   "max_abs_floquet": 37916282.29096499,
+   "stability": "unstable(1)",
+   "periselene_km": 21854.57527106761,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__3-2__x-0.77034__z1",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 1.5707963857671265,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0193440002652154,
+   "folds": [],
+   "closure_dop853": 2.891298311880064e-13,
+   "closure_radau": 3.6759484345338933e-13,
+   "max_abs_floquet": 14343943.288847104,
+   "stability": "unstable(2)",
+   "periselene_km": 23998.73288665352,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__3-2__x-0.85152__z0",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 4.637363322906457e-07,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0170872419111359,
+   "folds": [],
+   "closure_dop853": 2.695933754015556e-14,
+   "closure_radau": 4.4336756488405626e-13,
+   "max_abs_floquet": 31846336058.989136,
+   "stability": "unstable(3)",
+   "periselene_km": 21671.017058553185,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c11a-cycler-2026__3-2__x-0.85152__z1",
+   "family": "C11 (Braik-Ross C11a)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 1.5707967908987952,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0074706114482281,
+   "folds": [],
+   "closure_dop853": 7.399608703551053e-12,
+   "closure_radau": 7.421036007926318e-12,
+   "max_abs_floquet": 9946107937.41278,
+   "stability": "unstable(2)",
+   "periselene_km": 22115.0455668267,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__2-1__x+0.87858__z0",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 4.418775205557194e-09,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0196470887880849,
+   "folds": [],
+   "closure_dop853": 1.865174681370263e-14,
+   "closure_radau": 1.8274270985330077e-13,
+   "max_abs_floquet": 165556.61155442017,
+   "stability": "unstable(1)",
+   "periselene_km": 43269.13589127036,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__2-1__x+0.87858__z1",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 1.571227498644677,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0188836302694677,
+   "folds": [],
+   "closure_dop853": 2.88876979359515e-14,
+   "closure_radau": 1.6497914145929826e-13,
+   "max_abs_floquet": 66428.798242898,
+   "stability": "unstable(3)",
+   "periselene_km": 40403.87245511188,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__2-1__x+0.87858__z2",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 3.1415926579991695,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0196494702312768,
+   "folds": [],
+   "closure_dop853": 2.6685680229926252e-14,
+   "closure_radau": 1.8418599978531347e-13,
+   "max_abs_floquet": 165313.98310345795,
+   "stability": "unstable(1)",
+   "periselene_km": 43265.148129328874,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__2-1__x+0.87858__z3",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 4.711957815214296,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0188836301164774,
+   "folds": [],
+   "closure_dop853": 3.9336226269994824e-14,
+   "closure_radau": 1.616484723854228e-13,
+   "max_abs_floquet": 66428.79824291164,
+   "stability": "unstable(3)",
+   "periselene_km": 40403.87245513057,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__5-2__x+0.86595__z0",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 0.7854108339036074,
+   "stop_reason": "wall-clock limit at eps=0.495571",
+   "eps_max": 0.4955710711154365,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__5-2__x+0.86595__z1",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5707981469750272,
+   "stop_reason": "wall-clock limit at eps=0.0795928",
+   "eps_max": 0.07959280277079832,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__5-2__x+0.86595__z2",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 2.356182392825639,
+   "stop_reason": "wall-clock limit at eps=0.1139",
+   "eps_max": 0.11390015921977709,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__5-2__x+0.86595__z3",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 3.141590260389819,
+   "stop_reason": "wall-clock limit at eps=0.0862308",
+   "eps_max": 0.08623083093813153,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__8-3__x+0.75203__z0",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 4.16113438945766e-10,
+   "stop_reason": "wall-clock limit at eps=0.498291",
+   "eps_max": 0.49829111842075613,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c21-3d-corridor-05-2026__8-3__x+0.75203__z1",
+   "family": "C21 3D corridor (#682)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 1.0471975508352962,
+   "stop_reason": "wall-clock limit at eps=0.520976",
+   "eps_max": 0.5209764619203285,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__5-2__x-0.29241__z0",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 8.779917988171212e-09,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0123576116809594,
+   "folds": [],
+   "closure_dop853": 7.228789788982226e-11,
+   "closure_radau": 7.23154869319842e-11,
+   "max_abs_floquet": 10597194.27988594,
+   "stability": "unstable(3)",
+   "periselene_km": 21740.713804749434,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__5-2__x-0.29241__z1",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5707963347940996,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0079590967507197,
+   "folds": [],
+   "closure_dop853": 5.090372567906343e-14,
+   "closure_radau": 8.721495747820995e-13,
+   "max_abs_floquet": 24728191.624400765,
+   "stability": "unstable(4)",
+   "periselene_km": 23312.100693490742,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__5-2__x-0.32012__z0",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5707963264445894,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0128083570398025,
+   "folds": [],
+   "closure_dop853": 1.2022771667119514e-11,
+   "closure_radau": 1.1927403509304213e-11,
+   "max_abs_floquet": 18034.265876742873,
+   "stability": "unstable(2)",
+   "periselene_km": 8854.27008074966,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__5-2__x-0.32012__z1",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 3.1415926532523937,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0115955891513229,
+   "folds": [],
+   "closure_dop853": 2.4964752487477426e-13,
+   "closure_radau": 1.4149514893091464e-12,
+   "max_abs_floquet": 2923.2162364703972,
+   "stability": "unstable(1)",
+   "periselene_km": 8289.541583519538,
+   "cycler_class": true
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__8-3__x-0.27475__z0",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 1.0471989817188965,
+   "stop_reason": "wall-clock limit at eps=0.183701",
+   "eps_max": 0.18370103880007788,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__8-3__x-0.27475__z1",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 2.094393125274682,
+   "stop_reason": "wall-clock limit at eps=0.557416",
+   "eps_max": 0.5574163293328066,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__8-3__x-0.32099__z0",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 1.0471975581296658,
+   "stop_reason": "wall-clock limit at eps=0.00652364",
+   "eps_max": 0.006523641134557687,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-c32-cycler-2026__8-3__x-0.32099__z1",
+   "family": "C32 (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 2.0943951000600944,
+   "stop_reason": "wall-clock limit at eps=0.0159394",
+   "eps_max": 0.015939376123634184,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-planar-r21-s-corridor-2026__1-2__x+0.47922__z0",
+   "family": "R21-S planar resonant (Braik-Ross)",
+   "ratio": "1/2",
+   "a": 2,
+   "period_cr3bp": 3.3955969359539586,
+   "theta0": 1.570796326792468,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0195544257848888,
+   "folds": [],
+   "closure_dop853": 1.132533194829477e-14,
+   "closure_radau": 6.328271240363392e-14,
+   "max_abs_floquet": 1.161956339104637,
+   "stability": "unstable(1)",
+   "periselene_km": 196961.61345744523,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r21-s-corridor-2026__1-2__x+0.47922__z1",
+   "family": "R21-S planar resonant (Braik-Ross)",
+   "ratio": "1/2",
+   "a": 2,
+   "period_cr3bp": 3.3955969359539586,
+   "theta0": 3.1415926535880554,
+   "stop_reason": "reached_target",
+   "eps_max": 1.019572068639441,
+   "folds": [],
+   "closure_dop853": 1.4032229429434812e-14,
+   "closure_radau": 6.850076061937216e-14,
+   "max_abs_floquet": 1.000000000000002,
+   "stability": "linearly_stable",
+   "periselene_km": 194088.82562959607,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__2-1__x+0.79502__z0",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 5.100621687557178e-11,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0183146657905666,
+   "folds": [],
+   "closure_dop853": 1.270095140171179e-13,
+   "closure_radau": 3.42115225038242e-13,
+   "max_abs_floquet": 9.166488859257019,
+   "stability": "unstable(2)",
+   "periselene_km": 75133.42099769475,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__2-1__x+0.79502__z1",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 1.5717676741562592,
+   "stop_reason": "reached_target",
+   "eps_max": 1.014743027860702,
+   "folds": [],
+   "closure_dop853": 1.205174848806223e-12,
+   "closure_radau": 1.1143863609675009e-12,
+   "max_abs_floquet": 10.360883388503973,
+   "stability": "unstable(1)",
+   "periselene_km": 74869.1006720886,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__2-1__x+0.79502__z2",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 3.141592653640708,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0183277159703408,
+   "folds": [],
+   "closure_dop853": 1.2145839889399213e-13,
+   "closure_radau": 3.4600100562443004e-13,
+   "max_abs_floquet": 9.172037482705669,
+   "stability": "unstable(2)",
+   "periselene_km": 75129.64187630972,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__2-1__x+0.79502__z3",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "2/1",
+   "a": 1,
+   "period_cr3bp": 13.582387743815834,
+   "theta0": 4.7114176331154525,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0147430706575233,
+   "folds": [],
+   "closure_dop853": 1.2600476217983214e-12,
+   "closure_radau": 1.1654011089490268e-12,
+   "max_abs_floquet": 10.360883388528054,
+   "stability": "unstable(1)",
+   "periselene_km": 74869.1006721121,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__5-2__x+0.76235__z0",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5707963264950067,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0156179440425264,
+   "folds": [],
+   "closure_dop853": 9.77051772821369e-13,
+   "closure_radau": 5.472566844133553e-13,
+   "max_abs_floquet": 1645346.2251746943,
+   "stability": "unstable(2)",
+   "periselene_km": 79747.26387887391,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__5-2__x+0.76235__z1",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 3.1415926529843476,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0164676810462683,
+   "folds": [],
+   "closure_dop853": 1.7240896210690693e-12,
+   "closure_radau": 1.3732071035832405e-12,
+   "max_abs_floquet": 2698678.4533954053,
+   "stability": "unstable(3)",
+   "periselene_km": 78616.21056952309,
+   "cycler_class": false
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__8-3__x+0.71762__z0",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 1.047197601389522,
+   "stop_reason": "returned_to_eps0",
+   "eps_max": 0.0001,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "braik-ross-planar-r52-s-corridor-2026__8-3__x+0.71762__z1",
+   "family": "R52-S planar resonant (Braik-Ross)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 2.0943950502104145,
+   "stop_reason": "wall-clock limit at eps=0.754692",
+   "eps_max": 0.7546916194284666,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "casoliva-1-2d-em-resonant-po-2010__3-2__x-1.89472__z0",
+   "family": "Casoliva 1:2 (d)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 1.5707963225844928,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0186377662038544,
+   "folds": [],
+   "closure_dop853": 4.440892098500626e-15,
+   "closure_radau": 6.339373470609644e-14,
+   "max_abs_floquet": 1.012979365024387,
+   "stability": "unstable(1)",
+   "periselene_km": 347862.5548496429,
+   "cycler_class": false
+  },
+  {
+   "task": "casoliva-1-2d-em-resonant-po-2010__3-2__x-1.89472__z1",
+   "family": "Casoliva 1:2 (d)",
+   "ratio": "3/2",
+   "a": 2,
+   "period_cr3bp": 10.186790807861875,
+   "theta0": 3.1415926471617492,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0186306398453586,
+   "folds": [],
+   "closure_dop853": 8.104628079763643e-15,
+   "closure_radau": 6.628031457012185e-14,
+   "max_abs_floquet": 1.0000000000000606,
+   "stability": "linearly_stable",
+   "periselene_km": 348849.545798195,
+   "cycler_class": false
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.09809__z0",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 1.5592411005143947,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0197426360813489,
+   "folds": [],
+   "closure_dop853": 1.6618650899857812e-14,
+   "closure_radau": 4.911626660941693e-13,
+   "max_abs_floquet": 7.7673634757877075,
+   "stability": "unstable(2)",
+   "periselene_km": 13441.161288605732,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.09809__z1",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 3.141592653365937,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0045074330471446,
+   "folds": [],
+   "closure_dop853": 8.264222639553509e-15,
+   "closure_radau": 4.756195437494171e-13,
+   "max_abs_floquet": 7.820095587722396,
+   "stability": "unstable(3)",
+   "periselene_km": 13366.828692539833,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.09809__z2",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 4.723944206581729,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0197375331780805,
+   "folds": [],
+   "closure_dop853": 2.7325364193586665e-14,
+   "closure_radau": 4.912736883966318e-13,
+   "max_abs_floquet": 7.7673634757876435,
+   "stability": "unstable(2)",
+   "periselene_km": 13441.161274999635,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.09809__z3",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 6.2831853069475345,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0045095017501382,
+   "folds": [],
+   "closure_dop853": 1.2150003225741557e-14,
+   "closure_radau": 5.053735208093713e-13,
+   "max_abs_floquet": 7.817425222469102,
+   "stability": "unstable(3)",
+   "periselene_km": 13368.783610465347,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.79575__z0",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 1.571057822197289,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0095279288821806,
+   "folds": [],
+   "closure_dop853": 4.9837356463910965e-12,
+   "closure_radau": 4.0774822407385614e-10,
+   "max_abs_floquet": 958.8517482118821,
+   "stability": "unstable(2)",
+   "periselene_km": 1453.2452768528947,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.79575__z1",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 3.141592649112851,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0115502538313066,
+   "folds": [],
+   "closure_dop853": 1.8192641837444512e-11,
+   "closure_radau": 2.854032565835496e-10,
+   "max_abs_floquet": 945.6630092680903,
+   "stability": "unstable(3)",
+   "periselene_km": 1439.842426648231,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.79575__z2",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 4.712127483743798,
+   "stop_reason": "reached_target",
+   "eps_max": 1.009527880158316,
+   "folds": [],
+   "closure_dop853": 2.2824617196270935e-11,
+   "closure_radau": 1.9435966724934417e-10,
+   "max_abs_floquet": 958.8517482590755,
+   "stability": "unstable(2)",
+   "periselene_km": 1453.2452772365039,
+   "cycler_class": true
+  },
+  {
+   "task": "casoliva-2-1b-em-resonant-po-2010__1-1__x-1.79575__z3",
+   "family": "Casoliva 2:1 (b)",
+   "ratio": "1/1",
+   "a": 1,
+   "period_cr3bp": 6.791193871907917,
+   "theta0": 6.283185302724392,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0114311477268798,
+   "folds": [],
+   "closure_dop853": 4.3445247399631626e-12,
+   "closure_radau": 2.0830212554834304e-10,
+   "max_abs_floquet": 945.6198949449894,
+   "stability": "unstable(3)",
+   "periselene_km": 1439.9393394003814,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-11-2025__5-2__x-0.84540__z0",
+   "family": "C11 (Ross-RT 1:1)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.4041708705099602e-05,
+   "stop_reason": "returned_to_eps0",
+   "eps_max": 0.3989392670782835,
+   "folds": [
+    0.398484374444866
+   ],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "ross-rt-em-cycler-11-2025__5-2__x-0.84540__z1",
+   "family": "C11 (Ross-RT 1:1)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5708135195992499,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0030142740245998,
+   "folds": [],
+   "closure_dop853": 7.284978176258505e-12,
+   "closure_radau": 7.290584802532862e-12,
+   "max_abs_floquet": 251754347420775.03,
+   "stability": "unstable(2)",
+   "periselene_km": 19725.880165582916,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z0",
+   "family": "C21 planar (Ross-RT 2:1)",
+   "ratio": "3/1",
+   "a": 1,
+   "period_cr3bp": 20.37358161572375,
+   "theta0": 2.6639348661097194e-07,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0022161782691723,
+   "folds": [],
+   "closure_dop853": 2.7172708527700706e-14,
+   "closure_radau": 1.924710391065787e-13,
+   "max_abs_floquet": 917024.9176573697,
+   "stability": "unstable(2)",
+   "periselene_km": 24403.93873453154,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z1",
+   "family": "C21 planar (Ross-RT 2:1)",
+   "ratio": "3/1",
+   "a": 1,
+   "period_cr3bp": 20.37358161572375,
+   "theta0": 1.5711961822429803,
+   "stop_reason": "returned_to_eps0",
+   "eps_max": 0.389255697808644,
+   "folds": [
+    0.389255697808644
+   ],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z2",
+   "family": "C21 planar (Ross-RT 2:1)",
+   "ratio": "3/1",
+   "a": 1,
+   "period_cr3bp": 20.37358161572375,
+   "theta0": 3.141592919262911,
+   "stop_reason": "reached_target",
+   "eps_max": 1.003120434872799,
+   "folds": [],
+   "closure_dop853": 2.9157232184218174e-14,
+   "closure_radau": 2.05238603889768e-13,
+   "max_abs_floquet": 907102.5440356499,
+   "stability": "unstable(2)",
+   "periselene_km": 24403.07872271003,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-21-2025__3-1__x+0.69676__z3",
+   "family": "C21 planar (Ross-RT 2:1)",
+   "ratio": "3/1",
+   "a": 1,
+   "period_cr3bp": 20.37358161572375,
+   "theta0": 4.711989652205018,
+   "stop_reason": "returned_to_eps0",
+   "eps_max": 0.3892554824815042,
+   "folds": [
+    0.3887380022651159
+   ],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "ross-rt-em-cycler-31-2025__5-2__x-0.26213__z0",
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 1.5707963262257953,
+   "stop_reason": "reached_target",
+   "eps_max": 1.015642194223994,
+   "folds": [],
+   "closure_dop853": 4.33897917595516e-11,
+   "closure_radau": 4.300440559212859e-11,
+   "max_abs_floquet": 43522186.41838156,
+   "stability": "unstable(2)",
+   "periselene_km": 14006.693278731274,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-31-2025__5-2__x-0.26213__z1",
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio": "5/2",
+   "a": 2,
+   "period_cr3bp": 16.977984679769794,
+   "theta0": 3.14159265310452,
+   "stop_reason": "reached_target",
+   "eps_max": 1.0172457308393965,
+   "folds": [],
+   "closure_dop853": 1.288656681364131e-12,
+   "closure_radau": 7.821521208484228e-13,
+   "max_abs_floquet": 31388264.088235766,
+   "stability": "unstable(1)",
+   "periselene_km": 14323.39625661278,
+   "cycler_class": true
+  },
+  {
+   "task": "ross-rt-em-cycler-31-2025__8-3__x-0.24591__z0",
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 2.4327700908395896e-07,
+   "stop_reason": "wall-clock limit at eps=0.949841",
+   "eps_max": 0.9498406427034616,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  },
+  {
+   "task": "ross-rt-em-cycler-31-2025__8-3__x-0.24591__z1",
+   "family": "C31 (Ross-RT 3:1)",
+   "ratio": "8/3",
+   "a": 3,
+   "period_cr3bp": 18.10985032508778,
+   "theta0": 1.0471973349844932,
+   "stop_reason": "wall-clock limit at eps=0.900578",
+   "eps_max": 0.900577811511738,
+   "folds": [],
+   "closure_dop853": null,
+   "closure_radau": null,
+   "max_abs_floquet": null,
+   "stability": null,
+   "periselene_km": null,
+   "cycler_class": null
+  }
+ ]
+}
