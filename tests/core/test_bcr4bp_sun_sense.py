@@ -20,6 +20,7 @@ import math
 import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
+from scipy.optimize import brentq
 
 import cyclerfinder.core.bcr4bp as bcr4bp
 
@@ -152,3 +153,116 @@ def test_theta_sun0_is_the_suns_angle_at_time_zero() -> None:
     assert z == 0.0
     assert math.isclose(math.atan2(y, x), 0.7, abs_tol=1e-14)
     assert math.isclose(math.hypot(x, y), system.a_sun_nondim, rel_tol=1e-14)
+
+
+# ---------------------------------------------------------------------------
+# Published positive control: the L1 replacement orbit of the bicircular problem
+# ---------------------------------------------------------------------------
+
+# Jorba, Jorba-Cusco & Rosales (2020), "The vicinity of the Earth-Moon L1 point in the bicircular
+# problem", Celestial Mechanics and Dynamical Astronomy 132:11. Table 1 (constants) and sections
+# 3.1-3.2: the Sun is at (a_S cos theta, -a_S sin theta), theta = omega_S t (clockwise); the
+# monodromy matrix of the periodic orbit that replaces L1 "has an hyperbolic eigenvalue close to
+# 4.287 x 10^8"; the normalized logarithms of its elliptic eigenvalues are omega_1 =
+# 2.32981963603288 and omega_2 = 2.26695149158478 (each defined up to +-(omega + k omega_S)); its
+# (x, y) projection "revolves L1 twice in T_S units of time".
+_JJR_2020_MU = 0.012150581623433623
+_JJR_2020_M_SUN = 328900.54999999906
+_JJR_2020_OMEGA_SUN = 0.925195985518289646
+_JJR_2020_A_SUN = 388.81114302335106
+_JJR_2020_OMEGA_1 = 2.32981963603288
+_JJR_2020_OMEGA_2 = 2.26695149158478
+
+
+def _l1_replacement_monodromy(n_seg: int = 24) -> tuple[list[FloatArray], FloatArray, float]:
+    """The period-T_S orbit that replaces L1, by multiple shooting continued in the Sun's mass."""
+    mu = _JJR_2020_MU
+    period = 2.0 * math.pi / _JJR_2020_OMEGA_SUN
+    dt = period / n_seg
+
+    def d_omega(x: float) -> float:
+        return (
+            x
+            - (1.0 - mu) * (x + mu) / abs(x + mu) ** 3
+            - mu * (x - 1.0 + mu) / abs(x - 1.0 + mu) ** 3
+        )
+
+    x_l1 = float(brentq(d_omega, 0.5, 0.95, xtol=1e-15))
+    nodes = [np.array([x_l1, 0.0, 0.0, 0.0, 0.0, 0.0]) for _ in range(n_seg)]
+    stms: list[FloatArray] = []
+    for eps in np.concatenate([[0.0], np.geomspace(1e-4, 1.0, 25)]):
+        # The paper's frame has the Earth at (mu, 0); this module's is rotated by pi, which puts
+        # the Sun at angle pi at t = 0 and leaves its sense unchanged.
+        system = bcr4bp.BCR4BPSystem(
+            mu=mu,
+            mu_sun=float(eps) * _JJR_2020_M_SUN,
+            a_sun_nondim=_JJR_2020_A_SUN,
+            omega_sun_nondim=_JJR_2020_OMEGA_SUN,
+            theta_sun0=math.pi,
+        )
+        for _ in range(40):
+            residual = np.zeros(6 * n_seg)
+            jac = np.zeros((6 * n_seg, 6 * n_seg))
+            stms = []
+            for i in range(n_seg):
+                sol = solve_ivp(
+                    bcr4bp.bcr4bp_stm_eom,
+                    (i * dt, (i + 1) * dt),
+                    np.concatenate([nodes[i], np.eye(6).ravel()]),
+                    args=(system,),
+                    method="DOP853",
+                    rtol=1e-13,
+                    atol=1e-13,
+                )
+                end = sol.y[:, -1]
+                stm = end[6:].reshape(6, 6)
+                stms.append(stm)
+                j = (i + 1) % n_seg
+                residual[6 * i : 6 * i + 6] = end[:6] - nodes[j]
+                jac[6 * i : 6 * i + 6, 6 * i : 6 * i + 6] = stm
+                jac[6 * i : 6 * i + 6, 6 * j : 6 * j + 6] -= np.eye(6)
+            if float(np.linalg.norm(residual)) < 1e-11:
+                break
+            delta = np.linalg.solve(jac, -residual)
+            nodes = [nodes[i] + delta[6 * i : 6 * i + 6] for i in range(n_seg)]
+        else:
+            raise AssertionError(f"L1 replacement did not converge at eps = {eps}")
+    monodromy = np.eye(6)
+    for stm in stms:
+        monodromy = stm @ monodromy
+    return nodes, monodromy, x_l1
+
+
+def test_l1_replacement_orbit_matches_jorba_2020() -> None:
+    """Published positive control for the bicircular model (#891).
+
+    Measured with the corrected sense: unstable multiplier 4.287389e8, frequencies
+    2.3298196303 and 2.266951491584771, two revolutions about L1 per period. With the Sun
+    advancing counter-clockwise, as before 2026-10-04, the same computation gives 4.310e8,
+    2.33046 and 2.26711, so this test discriminates the sense at the 1e-4 level.
+    """
+    nodes, monodromy, x_l1 = _l1_replacement_monodromy()
+    period = 2.0 * math.pi / _JJR_2020_OMEGA_SUN
+    eigenvalues = np.linalg.eigvals(monodromy)
+
+    unstable = float(np.max(np.abs(eigenvalues)))
+    assert abs(unstable / 1e8 - 4.287) < 5e-4  # printed as "close to 4.287 x 10^8"
+
+    elliptic = [v for v in eigenvalues if abs(abs(v) - 1.0) < 1e-3 and v.imag > 0.0]
+    assert len(elliptic) == 2
+    printed = (_JJR_2020_OMEGA_1, _JJR_2020_OMEGA_2)
+    found = []
+    for value in elliptic:
+        base = math.atan2(value.imag, value.real) / period
+        candidates = [
+            abs(sign * base + k * _JJR_2020_OMEGA_SUN) for sign in (1.0, -1.0) for k in range(-4, 5)
+        ]
+        found.append(min(candidates, key=lambda c: min(abs(c - p) for p in printed)))
+    omega_1, omega_2 = sorted(found, reverse=True)
+    # The in-plane frequency shares a block with the 4e8 multiplier and is resolved to about 1e-8;
+    # the out-of-plane one is decoupled and agrees to the printed digits.
+    assert math.isclose(omega_1, _JJR_2020_OMEGA_1, rel_tol=1e-7)
+    assert math.isclose(omega_2, _JJR_2020_OMEGA_2, rel_tol=1e-12)
+
+    angles = np.unwrap([math.atan2(s[1], s[0] - x_l1) for s in [*nodes, nodes[0]]])
+    assert round(abs(angles[-1] - angles[0]) / (2.0 * math.pi)) == 2
