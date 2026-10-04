@@ -375,8 +375,9 @@ neither fold exists (section 3).
   lam, so no jump is evident. The coherent-model distances are read off integrator steps in pulsating
   coordinates and are good to a few hundred km only. What this shows: going from the bicircular to a
   coherent forcing is not a small step. It moves these orbits by tens of thousands of km and changes
-  the C21 multiplier ninety-fold, which is far more than the Sun did in the bicircular model (node
-  displacement 0.02 to 0.05). What it does not show: anything about the true coherent model. The
+  the C21 multiplier ninety-fold. That is as large as, or larger than, what switching the Sun on did
+  in the corrected-sense bicircular model (node displacement 0.059, 0.027 and 0.030 for the same
+  three orbits). What it does not show: anything about the true coherent model. The
   coordinator's check (#892) finds that the parity-repaired module still misses a published point by
   2.3e-2, so the tables or equations have a further problem and these three orbits are orbits of an
   unvalidated model.
@@ -448,8 +449,9 @@ to orbits not previously listed, not a new phenomenon.
 - **Coherent-model homotopy.** Natural-parameter steps in lam (0.025 to 0.1, halved on failure),
   secant predictor, Newton on the cyclic shooting system built from `propagate_qbcp_pv(...,
   with_stm=True)` at 1e-12, nodes and period as in the bicircular orbit.
-- Compute used: about 25 minutes of wall time on 4 processes in total. The review was done against
-  the tree at commit 8705d463 (before #891 and #892 were registered).
+- Compute used: about 25 minutes of wall time on 4 processes in total. The #884 note was read
+  as committed in 605d9082 and the two core modules as of 6bda1772, that is, before the coordinator
+  registered #891 and #892 from the findings here.
 
 ## 13. Not done
 
