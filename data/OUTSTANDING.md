@@ -891,7 +891,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of `run_522`, `run_533`, `run_538`, `search_coherent_connections` need 11 samples. Resolve
   the two slow strict expected-failures in `tests/search/test_variational_qbcp_torus.py`
   (does the corrector still cross the Earth-Moon L2 plateau in the corrected model?).
-- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.**
+- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.** **Theory added 2026-10-04 (Rhouma & Chicone 2000 and Jorba & Villanueva 1997 digests):** a
+  CR3BP periodic orbit commensurate with the Sun's forcing period persists (for small forcing) at a
+  simple zero of a Melnikov function, which for the Sun is the Jacobi-constant work integral over
+  the period, the quantity `search/sun_forced_periodic_884.py` already computes; screen dT0/dC != 0
+  and no multiplier with lambda^M = 1 first; the theorem gives no radius, so reaching the full Sun
+  (eps = 1) is a continuation, not a guarantee. Non-commensurate orbits become 2-tori on a Cantor
+  set (Jorba & Villanueva; their bicircular Hamiltonian matches `core/bcr4bp.py`, Sun sense
+  included); what lies in the resonance gaps neither paper says.
   Compare with the reviewer's corrected-sense table; apply the review's section 14 (refined
   periselene with a surface exclusion, minimal-period and planarity checks, bifurcation
   detection in the family walk, one orbit per symmetry class); settle the one open question
@@ -1174,6 +1181,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
   acquire: Hadjidemetriou & Christides 1975 (the mass continuation), Henon 1974a and b, Broucke 1969
   (NASA TR 32-1360).
+- `#932` — registered 2026-10-04. **LANTOINE & RUSSELL 2011: A CR3BP CONTROL AND A TWO-MOON PATCH
+  METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
+  (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
+  7:5) close in `core/cr3bp.py` at the paper's mass ratios (agent's check: Jacobi constants match
+  the printed 4-5 digits, closures 1.6e-7 to 3.9e-5): make them a permanent test. (b) A
+  Tisserand-Poincare patch-point solver (its eqs. 11-13), tested on its Table 5, then applied to
+  Titania-Oberon (`#890`/`#895`; their mass ratios 3.9e-5 and 3.5e-5 are in the paper's regime);
+  resolve the sign of eq. 13 (printed arccos is unsigned). The paper treats one moon at a time and
+  open one-way transfers, so it is a method, not a control, for the simultaneous two-moon models.
+  The registry's Ganymede mass ratio is 9e-5 relative off the paper's (7.8044e-5 against
+  7.8037e-5); note for `#901`.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
