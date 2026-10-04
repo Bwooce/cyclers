@@ -1229,6 +1229,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
   acquire: Hadjidemetriou & Christides 1975 (the mass continuation), Henon 1974a and b, Broucke 1969
   (NASA TR 32-1360).
+  Hadjidemetriou & Christides 1975 RECEIVED and digested
+  (`docs/notes/2026-10-04-digest-hadjidemetriou-christides-1975-families-planar-three-body.md`): a
+  second control set for (a). Table I (p.181, 19 rows) continues a restricted orbit (mu = 1/2) in the
+  third mass m3 to a fold at m3 = 0.2245 and back to an elliptic-restricted orbit with e = 0.292; the
+  agent reproduced all 19 rows with an independent integrator (x1(T), x3(T) to 2e-8; row 15's printed
+  period 3.6656 computes to 3.6697, a probable misprint). It does not reach the 1975b equal-mass
+  family. Control for `core.cr3bp` CHECKED by the coordinator: from (0.181, 0, -0.94711034) at mu =
+  1/2 the orbit crosses y = 0 perpendicularly at T = 0.9242291 with x = 0.72101839 (printed
+  0.72101839). Add a pseudo-arclength test through the fold with the printed rows as expected output.
+  To acquire: Szebehely & Peters 1967, AJ 72:1187.
 - `#932` — registered 2026-10-04. **LANTOINE & RUSSELL 2011: A CR3BP CONTROL AND A TWO-MOON PATCH
   METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
   (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
