@@ -798,6 +798,27 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#894` — registered 2026-10-04. **PLANETARY GRAVITY CONSTANTS: A J2 IS MEANINGLESS WITHOUT ITS
+  REFERENCE RADIUS; ONE PAIR WAS WRONG, ONE IS UNCONFIRMED.** Found by the `#890` adversarial
+  reviewer, confirmed by the coordinator. **Uranus, FIXED (commit `1620de10`):**
+  `data/validation/v4_uranus.py` had J2 = 3.34343e-3 paired with R = 25,559 km and attributed to
+  "Jacobson 2014 Table 4", a table nobody had read (the paper is not held), with a test that
+  pinned the number as an "anti-fabrication guard". French et al. (2024, arXiv:2401.04634,
+  abstract read) give J2 = (3509.291 +/- 0.412)e-6 at R = 25,559 km, and Jacobson 2014 is
+  reported at 3510.7e-6 at the same radius. The old number matches those only at a radius of
+  about 26,200 km, so it was an older value on a different normalisation, and every Uranian V4
+  run used a J2 acceleration 4.7 percent too small. The constant is now the French et al.
+  value; all tests that use it pass unchanged (none was pinned to a J2-dependent number). No
+  catalogue row depends on it (the Uranian rows are withdrawn). **Saturn, NOT CONFIRMED:**
+  `data/validation/v4_saturn.py` pairs J2 = 16290.573e-6 (Iess et al. 2019, Table 1) with R =
+  60,268 km and says that is also the paper's reference radius. The coordinator's recollection
+  is that Iess et al. normalise to 60,330 km, which would make the J2 acceleration 0.2
+  percent too small; a held review reproduces the J2 value but does not state the radius.
+  Needs the paper (DOI 10.1126/science.aat2965). **To do:** read Iess et al. 2019 and fix or
+  confirm; read Jacobson 2014 (DOI 10.1088/0004-6256/148/5/76) or Jacobson & Park 2025 (DOI
+  10.3847/1538-3881/ad99d1, the URA111/URA182-era solution) and decide which J2, J4 pair the
+  Uranian lane should carry; add J4; grep every other "sourced" constant whose test only pins
+  the number to itself.
 - `#893` — registered 2026-10-04. **AUDIT: EVERY CORE DYNAMICAL MODEL MUST HAVE (a) AN IDENTITY TEST
   AGAINST THE SAME PHYSICS WRITTEN INDEPENDENTLY (FOR A FORCED ROTATING-FRAME MODEL, A
   NON-ROTATING-FRAME INTEGRATION) AND (b) A POSITIVE CONTROL AGAINST A PUBLISHED ORBIT WITH
