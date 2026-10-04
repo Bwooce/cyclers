@@ -1,7 +1,7 @@
 {
   "task": "650",
-  "generated_at": "2026-07-19T01:58:05Z",
-  "elapsed_s": 11.53138518333435,
+  "generated_at": "2026-10-04T05:27:07Z",
+  "elapsed_s": 27.048501014709473,
   "conventions": {
     "b0_delta_vinf_kms": 0.1,
     "b1_dv_hop_kms": 0.5,
@@ -22,15 +22,15 @@
     "dv_hop_formula": "|sqrt(v_a^2 + 2*mu/r_p) - sqrt(v_b^2 + 2*mu/r_p)| (Oberth-optimal same-body powered-flyby handoff, lower bound -- no V_inf direction data in the catalogue)"
   },
   "counts": {
-    "n_catalogue_rows": 361,
-    "n_nodes": 291,
-    "n_candidate_pairs": 31906,
-    "n_edges": 60239
+    "n_catalogue_rows": 392,
+    "n_nodes": 285,
+    "n_candidate_pairs": 31894,
+    "n_edges": 60227
   },
   "band_histogram_overall": {
-    "B0_ballistic_compatible": 2319,
-    "B1_cheap": 12191,
-    "B2_moderate": 20495,
+    "B0_ballistic_compatible": 2318,
+    "B1_cheap": 12184,
+    "B2_moderate": 20491,
     "B3_expensive": 25234
   },
   "band_histogram_by_body": {
@@ -45,21 +45,6 @@
       "B3_expensive": 16736,
       "B1_cheap": 3256,
       "B2_moderate": 6933
-    },
-    "Ariel": {
-      "B1_cheap": 3
-    },
-    "Oberon": {
-      "B1_cheap": 1,
-      "B2_moderate": 2
-    },
-    "Titania": {
-      "B1_cheap": 1,
-      "B2_moderate": 2
-    },
-    "Umbriel": {
-      "B1_cheap": 2,
-      "B0_ballistic_compatible": 1
     },
     "Venus": {
       "B2_moderate": 75,
@@ -104,64 +89,21 @@
   "phase_status_counts": {
     "phase_locked": 23284,
     "not_computed_dv_gated": 36444,
-    "epoch_window_overlap": 12,
     "no_period_data": 499
   },
-  "cheap_edge_count": 2,
-  "cheap_edges": [
-    {
-      "id_a": "ariel-oberon-1-1-uranian-quasi-cycler-2026",
-      "id_b": "titania-oberon-1-1-uranian-quasi-cycler-2026",
-      "body": "Oberon",
-      "dv_hop_kms": 0.1305260410171467
-    },
-    {
-      "id_a": "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
-      "id_b": "umbriel-titania-1-1-uranian-quasi-cycler-2026",
-      "body": "Umbriel",
-      "dv_hop_kms": 0.2785550328410835
-    }
-  ],
+  "cheap_edge_count": 0,
+  "cheap_edges": [],
   "cheap_dv_phase_indeterminate_count": 14375,
   "data_gaps": {
     "no_period_data_node_count": 33,
     "null_vinf_row_count_eligible_nodes": 0,
-    "null_vinf_row_count_full_catalogue": 48,
-    "null_vinf_entries_total_full_catalogue": 81
+    "null_vinf_row_count_full_catalogue": 84,
+    "null_vinf_entries_total_full_catalogue": 153
   },
   "cheap_edge_subgraph": {
-    "n_components": 2,
-    "component_sizes": [
-      2,
-      2
-    ],
-    "components": [
-      [
-        "ariel-oberon-1-1-uranian-quasi-cycler-2026",
-        "titania-oberon-1-1-uranian-quasi-cycler-2026"
-      ],
-      [
-        "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
-        "umbriel-titania-1-1-uranian-quasi-cycler-2026"
-      ]
-    ],
-    "top_degree_hubs": [
-      {
-        "id": "ariel-oberon-1-1-uranian-quasi-cycler-2026",
-        "degree": 1
-      },
-      {
-        "id": "titania-oberon-1-1-uranian-quasi-cycler-2026",
-        "degree": 1
-      },
-      {
-        "id": "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
-        "degree": 1
-      },
-      {
-        "id": "umbriel-titania-1-1-uranian-quasi-cycler-2026",
-        "degree": 1
-      }
-    ]
+    "n_components": 0,
+    "component_sizes": [],
+    "components": [],
+    "top_degree_hubs": []
   }
 }
