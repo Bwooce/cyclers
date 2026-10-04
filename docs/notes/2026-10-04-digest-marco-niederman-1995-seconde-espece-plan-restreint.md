@@ -491,3 +491,17 @@ in Delta M_s and Delta N_s (eq. (36), p. 234); the sign convention in the Lemma 
 (18)-(19) (printed as such); the final-step exponents on p. 248 (eps^{17/3}, eps^{5/2}), which do not obviously agree with
 delta_s = eps^{7/3} on p. 240; and the derivative orders in the equation after (42). None of these affect the statements of
 Theorems 1 and 2, which are legible.
+
+
+## Coordinator's correction (2026-10-04, from the `#897` synthesis reading of the sources)
+
+Section 1 above says "each generating arc is a full Keplerian revolution about P1 that leaves P2
+and returns to P2". That is not what the paper uses. Bolotin & MacKay (2006) classify the
+segments of Kepler orbit between two intersections with the secondary's circle into four
+classes; class 2 is "a segment of coplanar orbit between distinct intersection points", and they
+state that Marco and Niederman's orbit is built from class 2 arcs (p. 438 and the closing
+remarks: "subshifts using class 2 arcs ... like Marco and Niederman's orbit"); the synthesis
+reader reports that p. 224 of this paper says the same. So the generating arcs here join two
+DIFFERENT points of the secondary's orbit; the full-revolution arcs (class 1) are the ones used
+in Bolotin & MacKay (2000). Read the digest's later sections with that in mind. The coordinator
+checked the Bolotin & MacKay passage in the held text; the p. 224 reading is the reader's.

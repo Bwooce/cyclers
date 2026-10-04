@@ -419,3 +419,15 @@ body problem, Springer (1997) (ref. 11, "for a nice survey" of numerics, p. 54);
 III (1899) chapter XXXII (ref. 18) and Levy's note, Oeuvres VII (1952) p. 629 (ref. 19); Saari and Xia, J. Diff.
 Eq. 82 (1989) 342-355 (ref. 20, collinear case). New in this list relative to the 2006 digest: none beyond the
 Henon survey, which the 2000 paper recommends for the planar numerics.
+
+
+## Coordinator's addendum (2026-10-04, later the same day)
+
+This digest says MacKay (2005) is not held. It is now held and digested:
+`docs/notes/2026-10-04-digest-mackay-2005-chaos-in-three-physical-systems.md`. Its footnote a
+(p. 3) is the correction referred to here: the direction change at a collision must be measured
+in the rotating frame (with velocities relative to the secondary); it "holds in the rotating
+frame for all such sequences except those containing two consecutive Omega_n satisfying" a
+printed exceptional relation, and MacKay states that the planar theorem stands. The exceptional
+relation as printed could not be rederived by the digest's author and is recorded as unresolved
+(`#910`).

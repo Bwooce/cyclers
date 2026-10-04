@@ -946,7 +946,23 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   an ephemeris model (Park & Howell; Singh et al.); Floquet and centre-manifold reduction for
   the bounded motion around a cycler and its maintenance cost (Jorba et al.); speed as an
   independent variable in the weak-stability sweeps (Mako & Salamon).
-- `#898` — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping). **APPLY THE
+- `#898` — **SCOPING FINDING (2026-10-04, from the `#897` source readers; the coordinator's framing
+  below was too strong).** Bradley & Russell's method, as its authors state it, starts from "an
+  initial ZSOI trajectory in some ephemeris model" (their Algorithm 1). It does NOT supply the
+  step where `#388` failed, which is carrying the idealised circular-coplanar cycler to the real
+  ephemeris; its own contribution (mass continuation, flyby re-seeding) is what Earth-Mars
+  cyclers need least, since heliocentric flybys are tiny on the scale of the legs (their p. 19:
+  it "may converge directly when kappa_0 = 1"; Russell & Strange p. 152; Russell & Ocampo
+  p. 366, the effect is "expected to be minor"). The relevant published method for that step
+  is Russell & Ocampo's own (2006): zero-sphere-of-influence patched conics on real planet
+  positions, the full V-infinity vector per leg with a powered-flyby cost, a ramp in
+  eccentricity, then inclination, then the real ephemeris, over 21 launch windows and several
+  step counts, keeping the best; and their result is that most parents are NOT ballistic in the
+  real ephemeris: 9, 39 and 74 of 203 under 1, 10 and 300 m/s at some date (p. 364). So the
+  honest target for the heliocentric rows is "reproduce Russell & Ocampo's real-ephemeris
+  costs", not "make them close ballistically". Do not dispatch until the synthesis note says
+  what `#388` actually differs in. Earlier text:
+- `#898` (earlier text) — registered 2026-10-04, NOT YET DISPATCHED (waits for the `#897` scoping). **APPLY THE
   BRADLEY & RUSSELL (2014) CONTINUATION TO THE CATALOGUE'S HELIOCENTRIC CYCLERS: THE `#388`
   WALL.** The project's real-ephemeris lane for Earth-Mars cyclers ramps the planets' ephemeris
   with zero-size flybys and never scales the planets' mass or integrates through a flyby; it
