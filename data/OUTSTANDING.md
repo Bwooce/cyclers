@@ -588,7 +588,36 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
-- `#890` — registered 2026-10-04 (from the `#888` gated re-enumeration; DISPATCHED the same
+- `#890` — RESULT 2026-10-04, NO ROW (commits `0e5d63ae` pre-registration, `c3fa4207`,
+  `09a79fc6`, `9daffd1d`, `6f01af80`, `0920097f`; note
+  `docs/notes/2026-10-04-890-titania-oberon-candidate.md`; code
+  `search/two_moon_periodic_890.py`, 9 tests). **A periodic Titania-Oberon-Titania orbit with
+  real flybys of both moons exists in the planar circular four-body model at the moons'
+  physical masses. It is not a trajectory of the real Uranian system without correction.**
+  The patched-conic closure itself does not fly: started in the four-body model it misses the
+  Oberon flyby by 967,000 km, because the flyby offset changes the orbit's energy by a few
+  percent and that accumulates to a full phase slip over 5.5 revolutions. A symmetric
+  multiple-shooting correction, continued in the moons' mass from 0.01 to 1, converges
+  (residual 2.6e-11) to an orbit with cycle 123.162 d, Titania flyby at 1,977 km altitude and
+  Oberon flyby at 1,364 km, distance from Uranus 437,600 to 585,800 km, largest Floquet
+  multiplier 8.4e5. **Pre-registered closure tests V2 and V3 FAILED as written** (1.64 and
+  1.59 cm/s against a 1 cm/s limit); after one further Newton step (post hoc, labelled so)
+  the closure is 5 m. **Coordinator's independent check** (own integration in a non-rotating
+  frame, not the agent's module or the core right-hand side): the refined state closes after
+  one cycle to 12 m and 0.09 cm/s with DOP853 and to 0.12 m with Radau; the flybys are at
+  1,976.9 km (Titania) and 1,364.2 km (Oberon) altitude; the turn measured across Oberon's
+  sphere of influence is 66.0 degrees against 103.8 available at a 50 km floor (ratio 0.64);
+  moving the start by 44 m destroys the closure (108,000 km), so the return is specific. The
+  perturber's rate in this model is signed and negative, so the `#891` sense defect does not
+  apply. **Real ephemeris (outside the pre-registered gate):** started uncorrected at three
+  2030 conjunctions with all five moons and J2, every run reaches Oberon half a day early
+  (one impacts) and none returns to Titania. **Sensitivity:** 1 m/s at the preceding apoapsis
+  moves the flyby periapsis by 1,200 to 1,400 km. **Not a row.** Needed first: a literature
+  check, an adversarial review, and a real-ephemeris multi-cycle correction with a manoeuvre
+  budget. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
+  inside its Hill sphere (the softening radius passed is the Hill radius), so neither V4 lane
+  can represent a flyby; a V4 for moon tours has to be rebuilt on an unsoftened propagator.
+  Original registration follows (from the `#888` gated re-enumeration; DISPATCHED the same
   day; **a candidate, not a result**). THE ONE SYMMETRIC TWO-MOON CLOSURE THAT PASSES THE
   DEMANDED-TURN GATE: Titania-Oberon-Titania, equal legs of 61.58 days (two and a half synodic
   periods; total period five synodic periods, about 123.2 days), five revolutions per leg on
