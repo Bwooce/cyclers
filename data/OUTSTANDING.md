@@ -1336,7 +1336,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   to the elliptic problem: make e_p and eps_p parameters of the Henon module (Henon is the e_p = 0,
   eps_p = +1 slice); eq. 21 is a counting oracle for the C_ij families (reproduced at e_p = 0.5 and
   0.98); its parabolic-arc values reproduce except the printed 0.2318 (computed 0.231149: a strict
-  expected failure); six printed slips are listed. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
+  expected failure); six printed slips are listed. Henon 2001 part A (Type 1 bifurcations; digest
+  `docs/notes/2026-10-04-digest-henon-2001-generating-families-II-part-a-type-1.md`; agent's derivation,
+  not checked against a computed orbit): near a Type 1 bifurcation the demanded turn falls
+  continuously to zero, so no turn threshold is natural and `#906` must return indeterminate there;
+  the transition is |Delta C| ~ sqrt(mu) (0.110 at the Earth-Moon mass), the same quantity as the
+  Hitzl-Henon validity number; a 1P2 family gets no closer than |Delta C|_min =
+  sqrt(2(1-K^2) G1 G3 mu)/|G2|. Closed-form characteristics (13.41, 13.45-13.50, 14.15-14.21) give a
+  junction classifier for the enumerator; the G1, G2, G3 and K of real orbits are not printed and
+  must be computed from the (A, Z) surface before the sqrt(mu) law is tested at two or three masses. Perko 1981's (2,1) resonance bifurcation at C = -0.406767 (arc values
   tau/pi 0.203581 and 1.796418) is a further control. Step 2: run Bruno's 11 Table III arcs
   through the three-step mass continuation from 1e-6 to 0.01215 and record which end on lunar
   impact; first-order lunar periapsis radii from Bruno's formulas are 1855 to 10 457 km (the
