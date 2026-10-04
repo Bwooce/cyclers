@@ -1202,7 +1202,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   about 15 000 km from the Moon, untested). Its h is the physical energy (negative when bound),
   opposite to the Stiefel & Scheifele sign. Peters's printed perturbation gradient has the reversed
   sign (Aarseth's footnote, confirmed by the agent); use R = r_k - r_l. Eq. 46 starting coefficients
-  are misprinted. The `core/cr3bp_regularized.py` docstring cited
+  are misprinted. Waldvogel 1967 (digest `docs/notes/2026-10-04-digest-waldvogel-1967-spatial-birkhoff-regularisation.md`):
+  the spatial Birkhoff regularisation removes BOTH primary singularities with one coordinate set
+  (inversion, KS, inversion; time law dt = r1 r2 ds, the one `core/cr3bp_regularized.py` already uses
+  without the coordinate map). The agent implemented the printed equations: planar and 3D passes near
+  either primary agree with Cartesian to 4e-12 to 2e-9, energy constant to 2e-12. Decision: complement,
+  not replace. The one-centre moon-centred KS code stays the first build (simpler, clear route to a
+  transition matrix; covers Earth-Moon chains and orbit 12i; the Uranian two-moon case needs one KS
+  centre per moon with a switch, since B3 needs the two bodies to be the primaries). Build B3 later as a
+  cross-check and for passes near both primaries or continuation through collisions at either; it has
+  no Hamiltonian form (no symplectic check), a singular axis needing a reset, and no printed
+  variational equations. Its h is the physical energy. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
