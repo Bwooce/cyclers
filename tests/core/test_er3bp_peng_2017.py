@@ -38,12 +38,12 @@ Checked here:
   4) x = 0.99671, which are Table 2's rows 2 and 3; read with that numbering the measured L1
   values match Table 3 rows 3 and 4 to 1.2% and 0.9%. The L2 value and the secondary
   eigenvalues still do not match under either numbering; nothing relabelled is asserted.
-  Held as strict expected failures. Structural checks that do hold: the monodromy is symplectic (determinant 1 to 2e-6) and its eigenvalues come in
-  reciprocal pairs.
+  Held as strict expected failures. Structural checks that do hold: the monodromy is
+  symplectic (determinant 1 to 2e-6) and its eigenvalues come in reciprocal pairs.
 
-Controls: the 7:3 L1 halo corrected with the 5:2 period converges to the 5:2 L1 row instead; an ``f0 = pi``
-orbit's printed state propagated from ``f0 = 0`` (the sign of ``e`` reversed, Eq. 6) misses the
-x-z plane by far more than from ``f0 = pi``.
+Controls: the 7:3 L1 halo corrected with the 5:2 period converges to the 5:2 L1 row instead;
+an ``f0 = pi`` orbit's printed state propagated from ``f0 = 0`` (the sign of ``e`` reversed,
+Eq. 6) misses the x-z plane by far more than from ``f0 = pi``.
 """
 
 from __future__ import annotations
