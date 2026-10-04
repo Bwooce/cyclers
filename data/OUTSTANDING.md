@@ -1108,7 +1108,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   recommended: adopting a hybrid symplectic integrator, except as a speed-up for planet-dominated
   capture sweeps (`#908`) gated by a Jacobi-constant check.
 - `#930` — registered 2026-10-04. **THE ELLIPTIC PERIODIC-ORBIT CORRECTOR CAN PASS A BAD ORBIT
-  SILENTLY** (`#896` item (j), agent's finding, not yet checked by the coordinator).
+  SILENTLY** (`#896` item (j); CONFIRMED by the coordinator in the code: `er3bp_periodic.py`
+  lines 205-230 only call `log_outcome(... status "WARN")`, and no caller reads the returned
+  closure error; callers are `genome/er3bp_continuation.py`, `genome/er3bp_branching.py`,
+  `search/er3bp_direct_seeding.py` and `verify/pluto_charon_realeph.py`).
   `genome.er3bp_periodic.correct_er3bp_periodic` raises ConvergenceError at its default tol 1e-10
   on all three printed Gomez & Olle 1991 elliptic orbits (a fixed-time residual near a 1e-7
   periapsis is ill-conditioned); at tol 1e-5 its symmetric mode accepts them, but its Radau
@@ -1134,6 +1137,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   variable, written from Szebehely ch. 10, not from `core.er3bp`) and compare; only then
   attribute the misses. Do not use `core.er3bp` results for decisions that depend on stability
   bands until this is settled.
+  **Item (2) RESOLVED against the paper (2026-10-04, Peng & Xu ASR digest agent; test file
+  `tests/core/test_er3bp_peng_xu_2015.py`).** `core.er3bp` reproduces the M5N2 orbit (Peng & Xu
+  ASR Table 2, the same orbit as Neelakantan & Ramanan Table 8) and its printed multipliers
+  1.5427e6 and 1.0086 to four digits. The M4N2 Lyapunov row has no 4 pi symmetric orbit within
+  0.01 of it: bounded solves never close, unbounded solves reach unrelated 4 pi orbits (x0 0.769
+  and 0.694, ydot moved by 0.26 and 0.34), while the sibling M2N1 row re-corrects in place. With
+  four of five Table 8 rows and the Peng & Xu eigenvalues reproduced, the M4N2 row is a slip or a
+  mislabel in the paper, not a model defect. Item (1), Mako & Salamon, is still open.
 - `#926` — registered 2026-10-04. **SANAGA & HOWELL 2025 FOLLOW-UPS** (digest
   `docs/notes/2026-10-04-digest-sanaga-howell-2025-hill-restricted-four-body-ephemeris-transition.md`;
   the paper prints no orbit tables). (a) Sourced-constants test module: the printed Hill tide
