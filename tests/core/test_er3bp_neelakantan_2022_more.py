@@ -190,7 +190,11 @@ _M4N2_LYAPUNOV = np.array([0.804504659626012, 0.0, 0.0, 0.0, 0.31826866733409, 0
         "#896: Table 8 'M4N2 Lyapunov' does not close in the ER3BP (mu 0.0122, e 0.0554): "
         "closure 4.51 from periapsis, 2.0 from apoapsis; half-period (y, xdot) (-2.28, -1.86) and "
         "(0.71, 0.067); a 2.56e5-per-2pi multiplier would give ~1e-10, so not digit rounding; "
-        "Newton at the half-period symmetry lands far away or on a 2pi orbit"
+        "Newton at the half-period symmetry lands far away or on a 2pi orbit. #925: no 4pi "
+        "symmetric orbit within 0.01 of the printed state (bounded solves never close; unbounded "
+        "ones reach unrelated 4pi orbits at x0 0.769 and 0.694), while the sibling M2N1 row "
+        "re-corrects in place and the M5N2 row and its printed multipliers reproduce "
+        "(test_er3bp_peng_xu_2015.py): a slip or mislabel in the paper's row, not the model"
     ),
 )
 @pytest.mark.parametrize("f0", [0.0, math.pi], ids=["periapsis", "apoapsis"])
