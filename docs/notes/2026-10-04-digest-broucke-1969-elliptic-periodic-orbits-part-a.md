@@ -1181,3 +1181,7 @@ smaller than the integration check could see (about 1e-6 relative for the low mu
 5. Check the `core.er3bp` three-dimensional (z) equation against a published three-dimensional elliptic orbit (this report has none).
 6. Read Table 3 against the 8P, 8A, 10P, 11P, 11A families of Part B, which print stability regions as numbers.
 7. Obtain Schubart's 1956 rectilinear orbit (Ref. in Section IV-A) and Bartlett (Ref. 18) to cross-check the Stromgren seeds of 12A and 8P.
+
+## Note 2026-10-05: the journal companion
+
+Broucke 1969, AIAA J. 7(6):1003-1009 (DOI 10.2514/3.5267) is digested in `docs/notes/2026-10-04-digest-broucke-1969b-aiaa-stability-elliptic-periodic-orbits.md`. It has no tables, repeats the equations and the seven regions of section 5.6 above, and confirms the TR text on the stability of 7P, 7A, 8P, 8A, 11P, 11A. New relative to this part: its Eq. 39 has a sign slip (the TR Eq. 167 is right), the 8P range is 0.975 (the TR text says 0.075), and the printed 11A a2 minimum of -5200 is about ten times too small against a recomputation (about -5.1e4). The region statements of section 9 above (7A region 1, 7P region 6) agree with its p1008 text.
