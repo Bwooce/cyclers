@@ -10,7 +10,7 @@ attempting to reproduce Table 4.1 of
     Purdue University (advisor K. C. Howell), August 2013.
 
 PDF held at
-``cyclers_pdf/papers/vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.pdf``
+``vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.pdf``
 (born-digital text layer, md5 ``fdcbf871322b87cd1dd3448059cb2596`` -- matches
 the copy `#764`'s own scoping note downloaded and text-verified; re-verified
 independently this task, both via ``pdftotext`` text-layer grep AND a direct

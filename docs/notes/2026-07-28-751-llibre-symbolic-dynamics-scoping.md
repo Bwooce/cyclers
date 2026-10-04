@@ -16,7 +16,7 @@ Proposition 6.1, Theorem 6.1 + proof, Lemma 6.1 + proof, Theorem C full statemen
 proof, Theorem 6.2, and the closing periodic-family remark), plus §5's Table I
 (`mu_k` values) and the (46,46)-homoclinic worked point (`mu=0.00025,
 Delta C=0.0000783`), from
-`/Users/bruce/dev/cyclers_pdf/papers/llibre-martinez-simo-1985-transversality-invariant-manifolds-lyapunov-l2-jde-58-104-doi-10.1016-0022-0396(85)90024-5.pdf`
+`/Users/bruce/dev/llibre-martinez-simo-1985-transversality-invariant-manifolds-lyapunov-l2-jde-58-104-doi-10.1016-0022-0396(85)90024-5.pdf`
 (via its `.txt` sidecar); the `#749` digest in full; the genome package itself
 (`genome/__init__.py`'s genome definition, `search/binary_star_search.py`'s
 `Topology`/`winding_topology` in full, `genome/asymmetric_branch.py` header,

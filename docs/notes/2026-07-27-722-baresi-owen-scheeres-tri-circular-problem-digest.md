@@ -22,7 +22,7 @@ reads "AAS 23-201"; the Surrey Open Research landing page's own metadata
 citation independently confirms this). No DOI. Acquired open-access from
 Surrey Open Research (`openresearch.surrey.ac.uk`, record `99815166602346`),
 Author's Accepted Manuscript / "textimage" version, text-layer PDF, 16 pp.
-Filed as `cyclers_pdf/papers/baresi-owen-scheeres-2023-exploiting-laplace-
+Filed as `baresi-owen-scheeres-2023-exploiting-laplace-
 resonance-tri-circular-problem-AAS-23-201.pdf` (private corpus commit
 `ad5b0dd`).
 
@@ -37,7 +37,7 @@ for this title (`ISSFD2024_19-5.pdf`) is mislabeled/stale — it actually serves
 Owen & Baresi's separate knot-theory paper (DOI `10.1007/s42064-024-0201-0`,
 already in this corpus, `owen-baresi-2024-knot-theory-...pdf`). The correct
 paper was retrieved from Surrey's own repository instead; verified by reading
-the acquired PDF's own title page. Filed as `cyclers_pdf/papers/owen-baresi-
+the acquired PDF's own title page. Filed as `owen-baresi-
 scheeres-2024-transfer-trajectory-design-tri-circular-problem-issfd2024.pdf`
 (private corpus commit `ad5b0dd`).
 

@@ -7,7 +7,7 @@ already-registered follow-up to vendor the remaining canonical rows and extend t
 3-criterion gate (plus continuation and two-body-seed-lineage checks) to them.
 
 **Source data:** unchanged from `#776` -- the same three machine-readable ESM text files
-(`miceli-bosanac-2026-jas-73-11-esm{2,3,4}-*.txt`, filed at `cyclers_pdf/papers/`, indexed in
+(`miceli-bosanac-2026-jas-73-11-esm{2,3,4}-*.txt`, filed at ``, indexed in
 `docs/notes/CORPUS_INDEX.md`'s own `#776` entries) at the same `µ=2.089503183689124e-04`. No new
 acquisition, filing, or corpus-index work this task.
 

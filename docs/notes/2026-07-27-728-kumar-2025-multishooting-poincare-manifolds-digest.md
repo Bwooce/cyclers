@@ -12,7 +12,7 @@ Kumar/Anderson/de la Llave's joint work) but are not authors of this specific pa
 page count; front matter/references pagination differs slightly from arXiv's reported count — not
 significant).
 **Filed:** `kumar-2025-multishooting-parameterization-invariant-manifolds-heteroclinics-poincare-maps-arxiv-2509.03655.pdf`
-(private `cyclers_pdf` repo).
+(private `the private paper corpus` repo).
 **Acquired/digested:** 2026-07-27 (`#728`).
 **Text layer:** confirmed via `pdffonts` (embedded/subsetted Type-1 CM fonts, standard LaTeX/arXiv
 output) and `pdftotext -layout` (clean extraction, verified against the visible page 1 abstract text).

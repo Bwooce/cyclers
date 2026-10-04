@@ -28,7 +28,7 @@ specifically — the pair `#693` flagged as the best-conditioned non-Jovian CCR4
   secondary resonances" — **Titania appears only as the perturbing 4th body atop an Oberon-based
   resonant-orbit family**, never as the base moon paired with Umbriel. No Umbriel mention anywhere
   in this 163-line digest.
-- `ls -la /Users/bruce/dev/cyclers_pdf/papers/` (218 files) — grepped for "umbriel", "titania",
+- `ls -la /Users/bruce/dev/` (218 files) — grepped for "umbriel", "titania",
   "oberon" in filenames: **zero matches for all three**. The Kumar arXiv:2509.03655 PDF itself is
   NOT in the corpus (only cited by digest/abstract, confirming `#693`'s flagged `inherited-
   unverified` provenance caveat on that anchor). No Uranian moon-pair PDF has ever been acquired

@@ -24,7 +24,7 @@ formulation + Table 1/2 numeric values before the user supplied the actual manus
 authors/affiliation). That user-supplied file is the one filed and digested here — a native
 LaTeX/pdfTeX PDF (`pdftotext` extracts cleanly, 9,479 words, 22 pages; no OCR needed).
 
-**Filed** at `cyclers_pdf/papers/aryan-fitzgerald-2024-four-body-invariant-structures-jovian-multi-moon-ballistic-transfers-AAS-24-103.pdf`
+**Filed** at `aryan-fitzgerald-2024-four-body-invariant-structures-jovian-multi-moon-ballistic-transfers-AAS-24-103.pdf`
 (private corpus repo, commit `72d5e21`).
 
 ## 1. The PCCFBP / PCC4BP model formulation

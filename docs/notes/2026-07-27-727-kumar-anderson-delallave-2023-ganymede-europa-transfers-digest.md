@@ -8,7 +8,7 @@ presented at IAC 2022 (IAC-22-C1,8,4,x73382).
 **Authors:** Bhanu Kumar (Georgia Tech), Rodney L. Anderson (JPL/Caltech), Rafael de la Llave (Georgia
 Tech).
 **Filed:** `kumar-anderson-delallave-2023-transfers-ganymede-europa-resonant-tori-ccr4bp-gpu-manifold-intersections-acta-astro-211-doi-10.1016-j.actaastro.2023.05.040.pdf`
-(private `cyclers_pdf` repo, commit `231a9d1`).
+(private `the private paper corpus` repo, commit `231a9d1`).
 **Acquired/digested:** 2026-07-27 (`#727`), user-supplied PDF. Native text-layer PDF (LaTeX-produced,
 embedded/subsetted Type-1 + TrueType fonts confirmed via `pdffonts`); no OCR needed.
 
@@ -198,7 +198,7 @@ announced" finding for the Kumar lineage is independently reconfirmed by this pa
 ## 5. Mandatory citation-mining pass
 
 Full introduction/background (§1) and reference list ([1]-[32]) read and cross-checked against
-`docs/notes/CORPUS_INDEX.md` (2026-07-27 pass) and the `cyclers_pdf/papers/` filename listing directly
+`docs/notes/CORPUS_INDEX.md` (2026-07-27 pass) and the `` filename listing directly
 (broader net than the index, in case a file predates full indexing).
 
 **Already in corpus** (no action needed):

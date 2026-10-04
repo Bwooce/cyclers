@@ -8,7 +8,7 @@ page is Kumar first, Anderson second — matches the paper's own byline, not the
 "Anderson, Kumar" ordering.]
 **PDF source:** direct S3-hosted conference-proceeding link,
 `https://s3.amazonaws.com/amz.xcdsystem.com/A464D031-C624-C138-7D0E208E29BC4EDD_abstract_File24217/FinalPaperUpload_288_0930052440.pdf`.
-**Filed:** `anderson-kumar-2024-oberon-mmr-unstable-orbit-survey-aas-24-288.pdf` (private `cyclers_pdf`
+**Filed:** `anderson-kumar-2024-oberon-mmr-unstable-orbit-survey-aas-24-288.pdf` (private `the private paper corpus`
 repo).
 **Acquired/digested:** 2026-07-27 (`#728`).
 **Text layer:** native LaTeX-produced text-layer PDF confirmed via `pdffonts` (embedded Type-1
@@ -204,7 +204,7 @@ check worth running against `#701`'s near-integer rotation number in a future ta
 ## 3. Mandatory citation-mining pass
 
 All 25 references read; cross-checked against `docs/notes/CORPUS_INDEX.md` (2026-07-27) and the
-`cyclers_pdf/papers/` filename listing directly.
+`` filename listing directly.
 
 **Already in corpus** (no action needed — confirmed by direct grep, not assumed):
 - [15] Kumar, Anderson, de la Llave 2023, AAS 23-397 — `kumar-anderson-delallave-2023-secondary-resonance-overlap-ganymede-4-3-ccr4bp-AAS-23-397-arxiv-2309.06073.pdf`.

@@ -14,7 +14,7 @@ mechanism.
 ## Path 1: search the thesis for a more precise `µ` — clean negative, but confirms the module already uses the best available value
 
 Grepped the OCR text sidecar
-(`cyclers_pdf/papers/vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.txt`)
+(`vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.txt`)
 for every occurrence of `µ`/"mass parameter"/"mass fraction" and for the digit string `2.36`
 (Saturn-Titan `µ`'s leading digits) across the whole document — background/Ch.2 formulas,
 Ch.4.3 Saturn-Titan intro, and any appendix. The ONLY place a numeric Saturn-Titan `µ` value

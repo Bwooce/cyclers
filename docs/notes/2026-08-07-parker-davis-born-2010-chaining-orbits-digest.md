@@ -2,7 +2,7 @@
 
 **Source:** J.S. Parker, K.E. Davis & G.H. Born, *Acta Astronautica* 67(5-6):623-638 (2010).
 DOI `10.1016/j.actaastro.2010.04.003`. Filed at
-`cyclers_pdf/papers/parker-davis-born-2010-chaining-periodic-three-body-orbits-earth-moon-actaastro-67-623-doi-10.1016-j.actaastro.2010.04.003.pdf`
+`parker-davis-born-2010-chaining-periodic-three-body-orbits-earth-moon-actaastro-67-623-doi-10.1016-j.actaastro.2010.04.003.pdf`
 (md5 `2c1da419dbaf8885517ae739f5901bb7`), text-layer PDF (Elsevier), 16 pages, tagged.
 
 **Acquisition context:** uploaded directly by the user 2026-08-07, identified this session as
@@ -63,7 +63,7 @@ attempt the technique.
 
 ## Registration
 
-Filed in `cyclers_pdf` (commit pending in that repo). `CORPUS_INDEX.md` and `#730`'s backlog master
+Filed in `the private paper corpus` (commit pending in that repo). `CORPUS_INDEX.md` and `#730`'s backlog master
 list updated in the same session (new item, since this paper had no prior backlog row). Two new
 acquisition candidates flagged (Howell & Pernicka 1988; Wilson 2003 JPL IOM) but not acquired this
 pass. **No decision made here on whether to reopen `#774`** — that closure was explicitly confirmed

@@ -12,7 +12,7 @@ reproduce-a-published-family-table-then-connections pipeline this project alread
 2. Same authors, "Families of Cycler Trajectories in the Earth-Moon System," AIAA 2008-6434
    ("2008", the JGCD paper's conference precursor).
 
-Both filed at `cyclers_pdf/papers/casoliva-mondelo-villac-mease-barrabes-olle-*`. Digest:
+Both filed at `casoliva-mondelo-villac-mease-barrabes-olle-*`. Digest:
 `docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`.
 
 **Code delivered:** `src/cyclerfinder/search/earth_moon_resonant_families.py` (new module, a

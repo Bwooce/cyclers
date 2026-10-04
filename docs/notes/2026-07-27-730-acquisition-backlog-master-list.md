@@ -30,7 +30,7 @@ acquired dissertation (same content class, per `#764`'s own scoping note).
 **Update 2026-07-27 (`#732`):** the user directly supplied PDFs for the top
 three items of §2's ranking — **item 1 (Blazevski & Ocampo 2012), item 4
 (Baresi, Olikara & Scheeres 2018), and item 5 (Negri & Prado 2020)**. All
-three are now ACQUIRED — filed in the private `cyclers_pdf` corpus, digested
+three are now ACQUIRED — filed in the private `the private paper corpus` corpus, digested
 (including each paper's own mandatory cross-check question against this
 project's code), citation-mined, and registered in `CORPUS_INDEX.md`. See
 `docs/notes/2026-07-27-732-blazevski-negri-baresi-foundational-papers-digest.md`.
@@ -41,7 +41,7 @@ re-flag or re-acquire these three.
 directly supplied PDFs for the remaining two items of §2's top-5 —
 **item 2 (Olikara 2016 PhD thesis) and item 3 (Haro, Canadell, Figueras,
 Luque & Mondelo 2016 book)**. Both are now ACQUIRED — filed in the private
-`cyclers_pdf` corpus, digested (including each's own mandatory cross-check
+`the private paper corpus` corpus, digested (including each's own mandatory cross-check
 question), citation-mined, and registered in `CORPUS_INDEX.md`. See
 `docs/notes/2026-07-27-733-olikara-thesis-haro-parameterization-book-digest.md`.
 Struck through in §2's table below; **no longer live backlog** — do not
@@ -54,7 +54,7 @@ original top-5) — **item 6 (Iuliano 2016 MS thesis), item 7 (Calleja,
 del-Castillo-Negrete, Martínez-del-Río & Olvera 2021), item 8 (Calleja & de
 la Llave 2010), item 9 (Cabré, Fontich & de la Llave 2005), and item 10
 (Gonzalez & Mireles James 2017)**. All five are now ACQUIRED — filed in the
-private `cyclers_pdf` corpus, digested (including each's own mandatory
+private `the private paper corpus` corpus, digested (including each's own mandatory
 cross-check question), citation-mined, and registered in `CORPUS_INDEX.md`.
 See `docs/notes/2026-07-28-741-iuliano-calleja-cabre-gonzalez-parameterization-methods-digest.md`.
 Struck through in §2's table below; **no longer live backlog** — do not
@@ -65,7 +65,7 @@ items — **§3 item 11 (Anderson, Campagnola, Koh, McElrath & Woollands 2021,
 Europa Lander endgame design) and §4 items 24 (Barrabés, Mondelo & Ollé 2009,
 homoclinic-continuation algorithm), 25 (Barrabés & Gómez 2002, p-q resonant
 in/out-map seed method), and 44 (Franz & Russell 2022, lunar periodic-orbit
-database)**. All four are now ACQUIRED — filed in the private `cyclers_pdf`
+database)**. All four are now ACQUIRED — filed in the private `the private paper corpus`
 corpus, digested (including each's own mandatory cross-check question),
 citation-mined, and registered in `CORPUS_INDEX.md`. See
 `docs/notes/2026-07-28-742-anderson-barrabes-franz-earth-moon-jovian-digest.md`.

@@ -8,7 +8,7 @@ actually reachable, and what should `#754` become?
 
 **Sources read directly this pass** (not just digests): Anderson & Lo 2011 (JAS 58:167) —
 full text layer of
-`cyclers_pdf/papers/anderson-lo-2011-dynamical-systems-resonant-flybys-ballistic-case-jas-58-167-doi-10.1007-BF03321164.txt`
+`anderson-lo-2011-dynamical-systems-resonant-flybys-ballistic-case-jas-58-167-doi-10.1007-BF03321164.txt`
 around the Poincaré-map methodology (journal pp. 170-171), family-selection prose
 (pp. 183-184), Table 1 + footnote 4 (p. 184), and the "Using Homoclinic and Heteroclinic
 Connections" section with Tables 2/3 (pp. 190-191), **confirmed against the rendered PDF

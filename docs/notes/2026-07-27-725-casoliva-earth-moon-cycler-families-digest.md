@@ -8,9 +8,9 @@
    AIAA/AAS Astrodynamics Specialist Conference, Honolulu HI, 18-21 Aug 2008 (the JGCD paper's
    conference precursor).
 
-**Filed:** `/Users/bruce/dev/cyclers_pdf/papers/casoliva-mondelo-villac-mease-barrabes-olle-2010-two-classes-cycler-trajectories-earth-moon-jgcd-33-5-doi-10.2514-1.46856.pdf`
+**Filed:** `/Users/bruce/dev/casoliva-mondelo-villac-mease-barrabes-olle-2010-two-classes-cycler-trajectories-earth-moon-jgcd-33-5-doi-10.2514-1.46856.pdf`
 (+ `.txt`) and `...-2008-families-cycler-trajectories-earth-moon-AIAA-2008-6434.pdf` (+ `.txt`), commit
-`3a0dfe5` in the private `cyclers_pdf` repo. **OCR status: both text-layer** (native LaTeX PDFs;
+`3a0dfe5` in the private `the private paper corpus` repo. **OCR status: both text-layer** (native LaTeX PDFs;
 `pdftotext -layout` yields 355,842 chars/18 pp for the 2010 JGCD and 110,676 chars/20 pp for the
 2008 AIAA — both far above the 10-char/page floor; no OCR needed).
 
@@ -184,7 +184,7 @@ rediscovery of an already-catalogued source.
 
 Read both papers' Introduction/Background sections and reference lists in full (2010: refs [1]-[30];
 2008: refs 1-27, near-identical set). Cross-checked every citation against
-`grep -i <author> /Users/bruce/dev/cyclers_pdf/papers/` (filename sweep) and
+`grep -i <author> /Users/bruce/dev/` (filename sweep) and
 `grep -i <author> docs/notes/CORPUS_INDEX.md` (zero hits for any of the flagged names below,
 confirming none are digested/mined under an alternate filename).
 
@@ -291,7 +291,7 @@ confirming none are digested/mined under an alternate filename).
 
 Both papers are genuinely new to this project's corpus (zero catalogue/KNOWN_CORPUS overlap),
 native text-layer PDFs needing no OCR, now filed+committed to the private corpus
-(`cyclers_pdf` commit `3a0dfe5`) and registered in `CORPUS_INDEX.md`. The "unstable complement to
+(`the private paper corpus` commit `3a0dfe5`) and registered in `CORPUS_INDEX.md`. The "unstable complement to
 Ross-Roberts-Tsoukkas" hypothesis is **confirmed for Class 2** (the L1-homoclinic low-energy
 cyclers, built on the provably-unstable Lyapunov family, energy-adjacent to but never overlapping
 in construction method with RRT's stable result) and **only partially applicable to Class 1** (the

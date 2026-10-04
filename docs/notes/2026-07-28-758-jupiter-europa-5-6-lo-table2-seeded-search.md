@@ -11,7 +11,7 @@ used.
 
 **Sources read directly this task** (not inherited from `#757`'s own
 summary without re-checking): the paper's text-layer sidecar
-(`cyclers_pdf/papers/anderson-lo-2011-...BF03321164.txt`, lines 1146-1173 and
+(`anderson-lo-2011-...BF03321164.txt`, lines 1146-1173 and
 1550-1584) and the rendered PDF pages, confirming both:
 
 * p.184, footnote-adjacent prose: "the stable and unstable manifolds of the

@@ -7,7 +7,7 @@ orbit of Kumar et al. 2021" — is, digit-for-digit, the *same specific orbit*
 as this session's OWN independently-built and reviewer-confirmed 3:4-LO
 orbit (`#753`→`#755`, reproducing Anderson & Lo 2011's Table 1 eigenvalue).
 Read the Kumar et al. 2021 PDF directly (already in the private corpus at
-`cyclers_pdf/papers/kumar-anderson-delallave-gunter-2021-europa-ganymede-
+`kumar-anderson-delallave-gunter-2021-europa-ganymede-
 resonant-orbits-ccr4bp-AAS-21-651-arxiv-2109.14815.pdf`), the catalogue row's
 own `crnbp_provenance` block, `src/cyclerfinder/search/jovian_resonant_
 families.py`'s stored `3:4-LO` candidate, and this project's own #690/#724

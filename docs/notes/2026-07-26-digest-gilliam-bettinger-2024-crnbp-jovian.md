@@ -24,7 +24,7 @@ effects) are therefore the verbatim content of the target paper. The thesis is f
 the corpus PDF for this task since it is freely available and content-equivalent (plus a
 superset — see §5 below) where the journal version is not.
 **Filed:** `gilliam-2025-crnbp-multibody-systems-thesis-afit-etd-8309.pdf` (private
-`cyclers_pdf` corpus, commit `8f773c3`). Text-layer PDF (native, no OCR needed), 204 pp,
+`the private paper corpus` corpus, commit `8f773c3`). Text-layer PDF (native, no OCR needed), 204 pp,
 `pdftotext -layout` extraction clean.
 **Acquired/digested:** 2026-07-26 (`#711`, dispatched alongside `#710`/`#712`).
 

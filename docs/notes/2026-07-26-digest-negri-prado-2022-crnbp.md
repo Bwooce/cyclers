@@ -14,7 +14,7 @@ the article "A" from the title). The arXiv posting postdates the nominal JGCD pr
 about a year — plausible under an author-rights embargo delay, not evidence of a different
 paper.
 **Filed:** `negri-prado-2022-circular-restricted-n-body-problem-jgcd-doi-10.2514-1.G006430-arxiv-2307.10881.pdf`
-(in the private `cyclers_pdf` corpus, commit `8833b60`)
+(in the private `the private paper corpus` corpus, commit `8833b60`)
 **Acquired/digested:** 2026-07-26 (`#712`). Text-layer PDF (arXiv source), no OCR needed.
 JGCD/ARC page itself is paywalled (403 on direct fetch); full text obtained via the free
 arXiv preprint instead.

@@ -7,7 +7,7 @@ Periodically Perturbed Planar Circular Restricted 3-Body Problems"
 **Authors:** Bhanu Kumar (Georgia Tech), Rodney L. Anderson (JPL/Caltech), Rafael de la Llave
 (Georgia Tech).
 **Filed:** `kumar-anderson-delallave-2021-whiskered-tori-manifolds-cmda-arxiv-2105.11100.pdf`
-(private `cyclers_pdf` repo).
+(private `the private paper corpus` repo).
 **Acquired/digested:** 2026-07-27 (`#728`). Native text-layer PDF (LaTeX, embedded Type-1 fonts
 confirmed via `pdffonts`); `pdftotext -layout` extracts cleanly. No OCR needed.
 

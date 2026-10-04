@@ -230,7 +230,7 @@ believed could not exist.
 
 ## 6. Recommended follow-ups (for the coordinating session; none started here)
 
-1. Acquire both TCP papers into `cyclers_pdf` + digest + `CORPUS_INDEX.md`
+1. Acquire both TCP papers into `the private paper corpus` + digest + `CORPUS_INDEX.md`
    (AAS 23-257 PDF is openly downloadable from Surrey Open Research; ISSFD 2024
    likewise). Amend the Gilliam digest with §2.2.5.1.
 2. Fix `jupiter_europa_io_ganymede_default()` to pin

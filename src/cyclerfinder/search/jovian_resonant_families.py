@@ -9,7 +9,7 @@ attempts to reproduce Table 1 of
     Resonant Flybys: Ballistic Case," Journal of the Astronautical Sciences
     58(2):167-194, DOI 10.1007/BF03321164.
 
-PDF held at ``cyclers_pdf/papers/anderson-lo-2011-...BF03321164.pdf``
+PDF held at ``anderson-lo-2011-...BF03321164.pdf``
 (content-verified against its own title page; text layer, no OCR needed).
 Digested at ``docs/notes/2026-07-28-745-anderson-lo-2010-2011-resonant-flyby-digest.md``
 and scoped at ``docs/notes/2026-07-28-752-resonant-manifold-jovian-tour-scoping.md``

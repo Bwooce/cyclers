@@ -11,7 +11,7 @@ pass): T. M. Vaquero Escribano (2013), "Spacecraft Transfer Trajectory Design Ex
 Resonant Orbits in Multi-Body Environments," PhD dissertation, Purdue University (advisor
 K. C. Howell). Freely downloaded from the author's own Purdue faculty page; md5
 `fdcbf871322b87cd1dd3448059cb2596` (matches `#764`'s own scoping-note md5 exactly). Filed at
-`cyclers_pdf/papers/vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.pdf`.
+`vaquero-2013-spacecraft-transfer-trajectory-design-resonant-orbits-multibody-environments-purdue-phd.pdf`.
 Table 4.1 (p.109, PDF page 124) verified against the actual PDF text layer AND a direct
 page-image (vision) read — see screenshot cross-check in the digest note.
 

@@ -2,7 +2,7 @@
 
 **Source:** M. W. Lo & J. S. Parker, AIAA/AAS Astrodynamics Specialist Conference, 16-19 August 2004,
 Providence, RI. DOI `10.2514/6.2004-5304` (CrossRef-confirmed). Filed at
-`cyclers_pdf/papers/lo-parker-2004-unstable-resonant-orbits-near-earth-planetary-missions-AIAA-2004-5304.pdf`
+`lo-parker-2004-unstable-resonant-orbits-near-earth-planetary-missions-AIAA-2004-5304.pdf`
 (md5 `da6336f61e1652eb1b6f0a4d0eeed6df`), text-layer PDF (`activePDF Toolkit`), 29 pages.
 
 **Acquisition context:** uploaded directly by the user 2026-08-07 after this session identified it as
@@ -102,7 +102,7 @@ re-flagging anything already present):
 
 ## Registration
 
-Filed in `cyclers_pdf` (commit pending in that repo, separate from this one). `CORPUS_INDEX.md` and
+Filed in `the private paper corpus` (commit pending in that repo, separate from this one). `CORPUS_INDEX.md` and
 `#730`'s backlog master list item 30 status updated in the same session. No catalogue or code changes —
 digest and citation-mining only. Directly informs `#780` (dispatched, in progress as of this digest);
 no action needed on `#774` from this paper specifically.

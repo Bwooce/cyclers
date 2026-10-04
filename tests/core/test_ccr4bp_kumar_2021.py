@@ -503,7 +503,8 @@ def test_torus_multiplier_matches_figure2_end(torus: Torus) -> None:
 
 def test_reversed_ganymede_rate_misses_the_print(base_orbit: BaseOrbit) -> None:
     """Control: the same computation with Ganymede's synodic rate reversed (the error class of
-    #891) gives 21774.8 km, about 3000 km from the print. A coarser curve (N = 63, about 10 km
-    truncation error) is enough to show it."""
+    #891) converges (Newton residual 3e-10) and gives 21774.8 km, about 3000 km from the print.
+    A coarser curve (N = 63, about 10 km truncation error) is enough to show it."""
     wrong = _continue_torus(base_orbit, 63, -1.0)
+    assert wrong.newton_residual < 1e-8
     assert abs(_section_closest_km(wrong) - CLOSEST_MU3_PHYSICAL_KM) > 1000.0

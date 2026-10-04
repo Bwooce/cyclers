@@ -10,7 +10,7 @@ Journal of the Astronautical Sciences* 71, article 51 (2024). DOI `10.1007/s4029
 Open access.
 
 **File**: `kumar-pdf/papers/moreno-aydin-vankoert-frauenfelder-koh-2024-bifurcation-graphs-cr3bp-symplectic-jas-71-51.pdf`
-(private `cyclers_pdf` repo). 48 pages. Native PDF with a full text layer (`pdftotext -layout`
+(private `the private paper corpus` repo). 48 pages. Native PDF with a full text layer (`pdftotext -layout`
 verified clean throughout, including the equation-heavy §2/§3 — no OCR needed).
 
 ## What the paper actually is

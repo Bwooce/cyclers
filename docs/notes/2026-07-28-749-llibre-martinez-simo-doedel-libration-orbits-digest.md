@@ -6,7 +6,7 @@ directly supplied PDFs for `#730` §4 item 28 and §6 item 43 of that list —
 both independently verified page-1-exact by the coordinating session before
 this task started.
 
-**Filed** (private `cyclers_pdf` repo):
+**Filed** (private `the private paper corpus` repo):
 1. `llibre-martinez-simo-1985-transversality-invariant-manifolds-lyapunov-l2-jde-58-104-doi-10.1016-0022-0396(85)90024-5.pdf`
 2. `doedel-romanov-paffenroth-keller-dichmann-galan-vioque-vanderbauwhede-2007-elemental-periodic-orbits-libration-points-ijbc-17-8-2625-doi-10.1142-S0218127407018671.pdf`
 

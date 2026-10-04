@@ -16,7 +16,7 @@ Miceli 2025 CU Boulder PhD dissertation (Table 2.1's equilibrium-point positive 
 files re-downloaded and md5-verified this task to match `#771`'s own scoping-note record exactly
 (JAS-2026 PDF `576ce77e832861c1011efd08749b654e`; dissertation PDF
 `c3ed8d2ae0824f1e8bdd59420128f7ff`; ESM2/ESM3/ESM4 line counts 93/297/752). Filed at
-`cyclers_pdf/papers/` (see `docs/notes/CORPUS_INDEX.md`'s own `#776` entries).
+`` (see `docs/notes/CORPUS_INDEX.md`'s own `#776` entries).
 
 **Code delivered:** `src/cyclerfinder/search/neptune_triton_resonant_families.py` (new module, a
 thin sibling of `saturn_titan_resonant_families.py`, reusing its corrector/classification/

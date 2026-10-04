@@ -3,7 +3,7 @@
 **Task:** `#744`, continuing the `#730` consolidated acquisition backlog
 (`docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`) §4 ("Casoliva/
 Barrabés/Barrabés-Mondelo-Ollé Earth-Moon cycler methods" cluster). All three
-PDFs were filed into the private `cyclers_pdf` corpus by the coordinating
+PDFs were filed into the private `the private paper corpus` corpus by the coordinating
 session before this task started (currently untracked/uncommitted in that
 repo — `git status` confirms all three as `??`; no commit hash to cite yet).
 This digest does not commit anything in either repo.

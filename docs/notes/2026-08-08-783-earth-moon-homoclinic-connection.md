@@ -7,7 +7,7 @@ targets a GENUINELY DIFFERENT algorithm class: Casoliva's own Class 2 cyclers ar
 Barrabés, Mondelo & Ollé's own numerical-continuation-of-homoclinic-connections method
 (Barrabés, E., Mondelo, J. M. & Ollé, M., "Numerical Continuation of Homoclinic Connections of
 Periodic Orbits in the RTBP," *Nonlinearity* 22:2901, 2009, DOI `10.1088/0951-7715/22/12/006`,
-filed at `cyclers_pdf/papers/barrabes-mondelo-olle-2009-...`), NOT this project's own
+filed at `barrabes-mondelo-olle-2009-...`), NOT this project's own
 Poincaré-section Newton-shooting machinery (`jovian_resonant_connections.py`'s
 `correct_connection`, reused verbatim by the Saturn-Titan and Neptune-Triton connection
 modules).

@@ -2,7 +2,7 @@
 
 **Source:** K.C. Howell & H.J. Pernicka, *Celestial Mechanics* 41:107-124 (1987, published 1988).
 DOI `10.1007/BF01238756`. Purdue University. Filed at
-`cyclers_pdf/papers/howell-pernicka-1988-numerical-determination-lissajous-trajectories-celest-mech-41-107-doi-10.1007-BF01238756.pdf`
+`howell-pernicka-1988-numerical-determination-lissajous-trajectories-celest-mech-41-107-doi-10.1007-BF01238756.pdf`
 (md5 `b7ae7fcc7777d7eb28406aab46260518`), text-layer (image-scan-derived but OCR'd with a real text
 layer, 35,883 chars — well above the 10 char/page floor, no re-OCR needed), 18 pages.
 
@@ -51,6 +51,6 @@ utility already implements.
 
 ## Registration
 
-Filed in `cyclers_pdf`, `CORPUS_INDEX.md` and `#730` backlog item 97 updated to ACQUIRED in the same
+Filed in `the private paper corpus`, `CORPUS_INDEX.md` and `#730` backlog item 97 updated to ACQUIRED in the same
 session. No catalogue/code changes. Directly relevant to `#782` (in progress at time of this digest) —
 flagged to that task directly, not left for it to discover independently.

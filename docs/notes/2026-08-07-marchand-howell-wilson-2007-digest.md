@@ -2,7 +2,7 @@
 
 **Source:** B.G. Marchand, K.C. Howell (Purdue) & R.S. Wilson (JPL), *Journal of Spacecraft and
 Rockets* 44(4):884-897 (2007). DOI `10.2514/1.27205`. Filed at
-`cyclers_pdf/papers/marchand-howell-wilson-2007-improved-corrections-process-constrained-trajectory-design-n-body-jsr-44-884-doi-10.2514-1.27205.pdf`
+`marchand-howell-wilson-2007-improved-corrections-process-constrained-trajectory-design-n-body-jsr-44-884-doi-10.2514-1.27205.pdf`
 (md5 `259351abcee68ba3f46b61c47ae79d4e`), text-layer, 14 pages.
 
 **Acquisition context:** user-supplied, in response to a search for the unobtainable Wilson 2003 JPL
@@ -41,7 +41,7 @@ algebraic constraint) is enforced SIMULTANEOUSLY with continuity, not as a separ
 
 ## Registration
 
-Filed in `cyclers_pdf`. `CORPUS_INDEX.md` and `#730` backlog item 98 to be updated to reflect this as
+Filed in `the private paper corpus`. `CORPUS_INDEX.md` and `#730` backlog item 98 to be updated to reflect this as
 a strong substitute for the unobtainable JPL IOM. Directly relayed to `#782` (in progress at time of
 this digest) rather than left for it to discover independently — its periodicity-as-constraint
 formulation and patch-density heuristic are both immediately actionable for that task's own problem.

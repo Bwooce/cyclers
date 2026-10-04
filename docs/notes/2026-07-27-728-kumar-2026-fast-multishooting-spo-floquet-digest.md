@@ -12,7 +12,7 @@ assumed; confirmed directly against the arXiv author field.
 (PDF page count; downloaded file reports 10 physical pages at the `file` tool level due to dense
 multi-column-style LaTeX layout — text extraction confirms the full 33-page content is present).
 **Filed:** `kumar-2026-fast-multishooting-periodic-orbits-symplectic-maps-floquet-arxiv-2601.00149.pdf`
-(private `cyclers_pdf` repo).
+(private `the private paper corpus` repo).
 **Acquired/digested:** 2026-07-27 (`#728`).
 **Text layer:** confirmed via `pdffonts` (embedded/subsetted Type-1 CM + Concrete/custom fonts) and
 `pdftotext -layout` (clean extraction). No OCR needed.

@@ -22,7 +22,7 @@ first task (`#776`).
 
 ## 1. Sources acquired and read first-hand this pass
 
-All downloads live in this session's scratchpad; **nothing is filed into `cyclers_pdf/` yet** —
+All downloads live in this session's scratchpad; **nothing is filed into `the private paper corpus/` yet** —
 filing + `CORPUS_INDEX.md` registration + per-paper digest todos are Step 0 of the recommended
 first task, exactly as `#764` handled Vaquero (downloaded/verified at scoping, filed by `#765`).
 
@@ -106,7 +106,7 @@ connection orbits — connection-stage work in this system would be NOVEL, subje
 
 * `data/catalogue.yaml`: zero Neptune-Triton rows; the only "Neptune" hits are Voyager 2's
   Grand-Tour `mga_tour` row. No seed/µ duplication risk. (Confirms `#764`.)
-* `cyclers_pdf/papers/` + `CORPUS_INDEX.md`: no Miceli/Bosanac/Triton entry; the only Neptune
+* `` + `CORPUS_INDEX.md`: no Miceli/Bosanac/Triton entry; the only Neptune
   documents are the Voyager-2 Science encounter papers (`#429`). Both papers above are new to
   the corpus.
 
@@ -151,7 +151,7 @@ JAS-2026 supplementary-data gate"** (family confirmation ONLY, mirroring `#765`'
 scope; Sonnet-tier per `[[feedback_subagent_model_tiering]]`):
 
 0. **Acquire + file the anchors**: the JAS-2026 PDF (CC-BY 4.0; md5 above), all four ESM files
-   (the data files ARE the anchor — file them alongside the PDF in `cyclers_pdf/papers/`), and
+   (the data files ARE the anchor — file them alongside the PDF in ``), and
    the Miceli 2025 dissertation (md5 above) → `CORPUS_INDEX.md` + per-paper digest todos per
    `[[feedback_per_paper_digest_todo]]`. Record AIAA-2024 (`10.2514/6.2024-1280`) as the
    paywalled, superseded conference precursor and AAS 24-161/25-138 as not-found-open. Re-verify

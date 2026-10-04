@@ -24,7 +24,7 @@ numbers, not a database lookup.
 
 `pdftotext -layout` (used by the `#725`/`#742` digests) badly scrambles Table 3's columns across
 the page. `pdftotext -raw` on the same PDF (re-extracted this session,
-`/Users/bruce/dev/cyclers_pdf/papers/casoliva-mondelo-villac-mease-barrabes-olle-2010-two-classes-cycler-trajectories-earth-moon-jgcd-33-5-doi-10.2514-1.46856.pdf`)
+`/Users/bruce/dev/casoliva-mondelo-villac-mease-barrabes-olle-2010-two-classes-cycler-trajectories-earth-moon-jgcd-33-5-doi-10.2514-1.46856.pdf`)
 recovers it cleanly as one row per orbit. µ_EM = 0.0121529529 (Earth at `(µ,0)`, Moon at `(µ−1,0)`,
 barycentric synodic frame, DU = 384,400 km, TU⁻¹ = ω_EM = 2.66529×10⁻⁶ rad/s — both from the
 paper's own text). IC point `(x_i, y=0, u_i, v_i)` is a Poincaré-section (`y=0`) crossing, **not**
@@ -58,7 +58,7 @@ multiples of `2π` (`T ≈ 2πq`, Casoliva Eq. 18) — 1 sidereal month (2π) fo
 
 ## 2. Franz & Russell 2022 — mass ratio and search-domain bounds
 
-Read in full: `/Users/bruce/dev/cyclers_pdf/papers/franz-russell-2022-database-planar-3d-periodic-orbits-families-near-moon-jas-69-1573-doi-10.1007-s40295-022-00361-9.pdf`
+Read in full: `/Users/bruce/dev/franz-russell-2022-database-planar-3d-periodic-orbits-families-near-moon-jas-69-1573-doi-10.1007-s40295-022-00361-9.pdf`
 (no `.txt` sidecar existed despite `#742`'s digest describing it as text-layer — generated one this
 session via `pdftotext -layout`, now committed alongside the PDF).
 

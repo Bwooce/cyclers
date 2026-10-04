@@ -13,7 +13,7 @@ job was Table 3: the HETEROCLINIC connection `Wu(3:4-LO) ∩ Ws(5:6-LO)`.
 between 3:4-LO's own IC and Table 3's published `x`), `docs/notes/2026-07-28-755-...md`
 and `docs/notes/2026-07-28-758-...md` (both reviewer verdicts, read in full),
 `docs/notes/2026-07-28-754-...md` (the Table-2 build this task extends), and the
-paper's own text layer directly (`cyclers_pdf/papers/anderson-lo-2011-...BF03321164.txt`,
+paper's own text layer directly (`anderson-lo-2011-...BF03321164.txt`,
 lines ~1548-1591) — re-verified `#757`'s own reading that Table 3, exactly like Table 2,
 was "computed as before by using interpolation between the closest points on the
 invariant manifolds in the Poincare section" (line 1591, verbatim), confirming the

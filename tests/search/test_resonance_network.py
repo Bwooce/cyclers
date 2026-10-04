@@ -8,7 +8,7 @@ published *Advances in Space Research* 77(3):3815 (2026), DOI
 10.1016/j.asr.2025.12.005.
 
 REPRODUCE-BEFORE-TRUST (2026-07-15 -- paper confirmed in hand): the PDF is
-held at ``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf``. The suite:
+held at ``kumar-2025-arxiv-2509.12675.pdf``. The suite:
 
 * The reproduce-before-trust gate for the non-Kumar R31-U and R21-U checks the
   recovered period against the Braik-Ross Table 2 (a different paper/energy,
@@ -191,7 +191,7 @@ def test_reproduce_r41u_period_kumar(kumar_members: dict[str, rn.ResonantMember]
     """R41-U recovered period matches Kumar 2025 Figure 7 caption.
 
     UN-XFAILED 2026-07-15: the paper is confirmed in hand
-    (``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf``) and the sourced
+    (``kumar-2025-arxiv-2509.12675.pdf``) and the sourced
     value is an exact PRINTED figure caption ("period 6.3089 TU"), not a
     digitization/estimate as the previous xfail reason claimed -- this test
     was already unexpectedly passing (XPASS) before the un-xfail.

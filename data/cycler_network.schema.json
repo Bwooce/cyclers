@@ -154,7 +154,7 @@
           },
           "url": {
             "type": ["string", "null"],
-            "description": "URL, when one exists (never a link into the private cyclers_pdf corpus repo)."
+            "description": "URL, when one exists (never a link into the private paper corpus)."
           },
           "note": {
             "type": ["string", "null"],

@@ -7,7 +7,7 @@ report and review). Spec: `docs/notes/2026-07-28-752-resonant-manifold-jovian-to
 **Source paper** (read directly this task, both the acquired PDF's text layer and
 the digest): R. L. Anderson & M. W. Lo (2011), "A Dynamical Systems Analysis of
 Resonant Flybys: Ballistic Case," *J. Astronaut. Sci.* 58(2):167–194, DOI
-`10.1007/BF03321164`. PDF at `cyclers_pdf/papers/anderson-lo-2011-...BF03321164.pdf`.
+`10.1007/BF03321164`. PDF at `anderson-lo-2011-...BF03321164.pdf`.
 
 **Code delivered:** `src/cyclerfinder/search/jovian_resonant_families.py` (new
 module) + `tests/search/test_jovian_resonant_families.py` (20 tests, all passing).

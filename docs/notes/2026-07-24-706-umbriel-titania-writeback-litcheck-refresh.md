@@ -23,7 +23,7 @@ check of the closest adjacent paper (Kumar arXiv:2509.03655).
   Llave-Gunter 2021 Europa-Ganymede CCR4BP, arXiv:2109.14815; Kumar-Anderson-de la Llave 2023
   Ganymede secondary-resonance-overlap CCR4BP, arXiv:2309.06073) but both are explicitly Jovian
   (Europa/Ganymede), acquired 2026-07-23 for `#688`/`#686` — not Uranian, not relevant here.
-- `/Users/bruce/dev/cyclers_pdf/papers/`: directory listing re-scanned; still zero
+- `/Users/bruce/dev/`: directory listing re-scanned; still zero
   Umbriel/Titania/Oberon-titled PDFs beyond the already-known Heaton-Longuski and Voyager-2 items.
 
 **3. Fresh live web searches** (WebSearch confirmed available, used directly — no access

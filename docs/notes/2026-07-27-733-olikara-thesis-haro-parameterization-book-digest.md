@@ -13,8 +13,8 @@ to this task's own Olikara-thesis cross-check).
 
 ## 0. Acquisition, filing, text-layer check
 
-Both filed in the private `cyclers_pdf` corpus
-(`/Users/bruce/dev/cyclers_pdf/papers/`, separate repo, committed there as
+Both filed in the private `the private paper corpus` corpus
+(`/Users/bruce/dev/`, separate repo, committed there as
 `1d796f3`, never committed to the public `cyclers` repo):
 
 | Paper | Filename | Pages | Text layer |
@@ -385,7 +385,7 @@ lineage extensively documented elsewhere in this project's corpus.
 
 ## 3. Summary for the coordinating session
 
-Both papers filed (`cyclers_pdf` commit `1d796f3`) + digested + citation-mined
+Both papers filed (`the private paper corpus` commit `1d796f3`) + digested + citation-mined
 per `[[feedback_corpus_document_policy]]`. Direct answers to the two mandatory
 cross-check questions:
 

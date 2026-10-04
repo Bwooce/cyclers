@@ -21,8 +21,8 @@ parallel; not touched here.
 
 ## 0. Acquisition, filing, text-layer check
 
-All seven filed in the private `cyclers_pdf` corpus
-(`/Users/bruce/dev/cyclers_pdf/papers/`, separate repo, never committed to
+All seven filed in the private `the private paper corpus` corpus
+(`/Users/bruce/dev/`, separate repo, never committed to
 the public `cyclers` repo):
 
 | # | Paper | Filename | Pages | Text layer |

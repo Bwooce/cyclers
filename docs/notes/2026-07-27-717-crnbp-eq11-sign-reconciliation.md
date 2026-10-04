@@ -36,7 +36,7 @@ form, so at least one transcription had a sign slip.
 
 ## Resolution: read the source PDFs directly (not guessed, not split)
 
-Sources read directly, in `/Users/bruce/dev/cyclers_pdf/papers/` (private
+Sources read directly, in `/Users/bruce/dev/` (private
 corpus, read-only reference for this task):
 
 - `negri-prado-2022-circular-restricted-n-body-problem-jgcd-doi-10.2514-1.G006430-arxiv-2307.10881.pdf`

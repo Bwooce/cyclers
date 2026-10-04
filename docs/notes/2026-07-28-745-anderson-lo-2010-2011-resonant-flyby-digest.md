@@ -6,7 +6,7 @@ directly supplied PDFs for §3 items 12 and 13 of that list — both
 independently verified page-1-exact against the master list row by the
 coordinating session before this task started.
 
-**Filed** (private `cyclers_pdf` repo, commit `bd6e4b9`):
+**Filed** (private `the private paper corpus` repo, commit `bd6e4b9`):
 1. `anderson-lo-2010-dynamical-systems-planetary-flybys-approach-planar-europa-orbiter-jgcd-33-6-1899-doi-10.2514-1.45060.pdf`
 2. `anderson-lo-2011-dynamical-systems-resonant-flybys-ballistic-case-jas-58-167-doi-10.1007-BF03321164.pdf`
 

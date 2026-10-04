@@ -7,7 +7,7 @@ reproduction of Gurfil & Kasdin 2002, CMAME 191:2141-2158, DOI 10.1016/S0045-782
 via a new z²-maximizing fitness on the existing niching-GA + `characterize()` stack; then a
 multi-seed cluster-everything widening; then the #588 dedup/literature/adjudication pipeline).
 **Evidence base:** the source paper read IN FULL from
-`cyclers_pdf/papers/gurfil-kasdin-2002-out-of-ecliptic-trajectories-deterministic-crowding-...pdf`
+`gurfil-kasdin-2002-out-of-ecliptic-trajectories-deterministic-crowding-...pdf`
 (text-extracted, all 18 pages), `scripts/run_581_gurfil_reproduction.py`,
 `scripts/run_583_widened_bounded_drift_search.py`,
 `src/cyclerfinder/data/validation/er3bp_drift_classifier.py`,

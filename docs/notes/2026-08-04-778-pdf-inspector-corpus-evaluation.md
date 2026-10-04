@@ -2,7 +2,7 @@
 
 **Task:** `#778` (tooling evaluation only — no code/catalogue changes). User asked to check for
 a machine-wide memory documenting a "new PDF tool," and if found, use it to reprocess the whole
-`cyclers_pdf/papers/` corpus (251 files) looking for improvements to existing digests.
+`` corpus (251 files) looking for improvements to existing digests.
 
 **Tool found:** `pdf-inspect` (machine-wide CLI wrapping the `pdf-inspector` PyPI package,
 github.com/firecrawl/pdf-inspector), installed 2026-08-02 during an unrelated hardware-schematic
@@ -23,7 +23,7 @@ corpus's content type before trusting it, rather than assuming the existing mach
 schematic-specific finding does or doesn't generalize.
 
 1. **Corpus-wide mechanical sweep** (`pdf-inspect FILE.pdf --pages 1` over all 251 files in
-   `cyclers_pdf/papers/`, capturing stdout byte count + stderr diagnostics + `pdfinfo` Producer;
+   ``, capturing stdout byte count + stderr diagnostics + `pdfinfo` Producer;
    pure mechanical, no LLM tokens, ~70s total).
 2. **Three targeted head-to-head comparisons** against `pdftotext -layout` on files whose correct
    content was already independently known from prior verified digest/gate work this session:

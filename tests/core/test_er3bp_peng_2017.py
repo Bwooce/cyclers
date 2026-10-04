@@ -24,23 +24,24 @@ Checked here:
   period ``2 pi`` from ``f0``) must land within one unit of the last printed digit. Three rows
   do (L1 orbits 2 and 3, L2 orbit 3; largest difference 1.3e-6 in the five-decimal x0 of L2
   orbit 3). The other five do not converge to the printed orbit from the printed state with a
-  damped single-shooting Newton corrector: L1 orbit 1, L1 orbit 4 and L2 orbit 1 stall (half
-  period residual 0.04 to 0.11), and L2 orbits 2 and 4 converge to other orbits (x0 = 1.00514
-  and 1.00505). With ``mu = 1.6601209e-7`` and ``e = 0.205630`` (scratch run, not kept) L1
-  orbit 1 converges to within 2e-7 of the print, so the printed constants' rounding is a
-  likely cause for that row; the others still fail. A four-segment multiple-shooting corrector
-  without damping diverged for all five (scratch). These rows are held as strict expected
-  failures.
+  damped single-shooting Newton corrector (eight iterations): L1 orbit 1, L1 orbit 4 and L2
+  orbit 1 stall (half-period residual 3e-4 to 5e-3), and L2 orbits 2 and 4 converge to other
+  orbits (x0 = 1.00514 and 1.00505). With ``mu = 1.6601209e-7`` and ``e = 0.205630`` (scratch
+  run, not kept) L1 orbit 1 converges to within 2e-7 of the print, so rounding of the printed
+  constants is a likely cause for that row; the others still fail. A four-segment
+  multiple-shooting corrector without damping diverged for all five (scratch). These rows are
+  held as strict expected failures.
 * Table 3 (p. 14): monodromy eigenvalues over ``4 pi``. For the three reproduced orbits the
   largest eigenvalue does not match its row: L1 orbit 2 measured 7.346e4 against printed
   -5.7936e5, L1 orbit 3 measured 8.777e4 against 74,342, L2 orbit 3 measured 5.074e4 against
-  43,176. The measured L1 values are within 1.2% of the printed values one row lower (74,342
-  and 88,537), which suggests the L1 rows of Table 3 may be shifted by one relative to
-  Table 2; this is not asserted. Held as strict expected failures. Structural checks that do
-  hold: the monodromy is symplectic (determinant 1 to 2e-6) and its eigenvalues come in
+  43,176. The Fig. 17 captions (p. 14) label the L1 curve-C orbits 3) x = 0.99692 and
+  4) x = 0.99671, which are Table 2's rows 2 and 3; read with that numbering the measured L1
+  values match Table 3 rows 3 and 4 to 1.2% and 0.9%. The L2 value and the secondary
+  eigenvalues still do not match under either numbering; nothing relabelled is asserted.
+  Held as strict expected failures. Structural checks that do hold: the monodromy is symplectic (determinant 1 to 2e-6) and its eigenvalues come in
   reciprocal pairs.
 
-Controls: the 7:3 L1 halo corrected with the 5:2 period lands far from its print; an ``f0 = pi``
+Controls: the 7:3 L1 halo corrected with the 5:2 period converges to the 5:2 L1 row instead; an ``f0 = pi``
 orbit's printed state propagated from ``f0 = 0`` (the sign of ``e`` reversed, Eq. 6) misses the
 x-z plane by far more than from ``f0 = pi``.
 """
@@ -174,10 +175,13 @@ def test_table1_circular_halo_has_the_resonant_period(
 
 
 def test_table1_wrong_resonance_period_misses_print() -> None:
-    """Control: the 7:3 L1 state corrected with the 5:2 half period lands far from the print."""
+    """Control: the 7:3 L1 state corrected with the 5:2 half period converges, but to the 5:2 L1
+    orbit of the table, not to its own printed state."""
     _, _, _, x0, z0, yd0 = TABLE1[2]
-    g, _ = _correct(0.0, (x0, z0, yd0), 2.0 * math.pi / 5.0, 0.0)
+    g, res = _correct(0.0, (x0, z0, yd0), 2.0 * math.pi / 5.0, 0.0)
+    assert res < 1e-10
     assert float(np.max(np.abs(g - np.array([x0, z0, yd0])))) > 1e-4
+    np.testing.assert_allclose(g, TABLE1[0][3:], rtol=0.0, atol=1e-6)
 
 
 @pytest.mark.parametrize(

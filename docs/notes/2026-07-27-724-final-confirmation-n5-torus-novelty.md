@@ -40,7 +40,7 @@ et al. 2021 Jupiter-Europa 3:4 resonant orbit is EXTERIOR to Europa:
 ## 1. Independent re-read of both TCP papers — the absence is textual, not inferred
 
 Both papers re-read IN FULL from the PDFs (not from `#722`'s digest):
-`cyclers_pdf/papers/baresi-owen-scheeres-2023-...-AAS-23-201.pdf` (16 pp) and
+`baresi-owen-scheeres-2023-...-AAS-23-201.pdf` (16 pp) and
 `owen-baresi-scheeres-2024-...-issfd2024.pdf` (7 pp). Complete enumeration of
 every computed object in each:
 

@@ -12,7 +12,7 @@ family "ends for a value of Jacobi constant C < 3.01400" (Fig. 4.12).
 
 **Sources read directly this task**: Vaquero 2013 Sec. 4.3.1 pp.104-118 (the FULL "Design of
 Planar Transfers" and "Design of Planar Periodic Resonant Chains" subsections, not just the
-summary already excerpted in `#765`'s own note) — `cyclers_pdf/papers/vaquero-2013-...-phd.txt`,
+summary already excerpted in `#765`'s own note) — `vaquero-2013-...-phd.txt`,
 lines ~4010-4335 — read in full this task specifically to resolve the geometry question the
 dispatch note flagged ("check the actual geometry... don't assume"). Also re-read
 `docs/notes/2026-07-29-765-saturn-titan-resonant-families-vaquero-gate.md`,

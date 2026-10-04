@@ -16,7 +16,7 @@ Casoliva, J., Mondelo, J. M., Villac, B. F., Mease, K. D., Barrabes, E. &
 Olle, M., "Two Classes of Cycler Trajectories in the Earth-Moon System,"
 JGCD 33(5), 2010, pp. 1623-1640, DOI 10.2514/1.46856 ("2010"), and its
 conference precursor, AIAA 2008-6434 ("2008"). Both filed at
-``cyclers_pdf/papers/casoliva-mondelo-villac-mease-barrabes-olle-*``. Full
+``casoliva-mondelo-villac-mease-barrabes-olle-*``. Full
 digest: ``docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md``.
 Full-precision Table 3 (2010, Class 1) extraction cross-check for 6 of its
 16 rows: ``docs/notes/2026-07-28-747-franz-russell-casoliva-crosscheck.md``.

@@ -124,7 +124,7 @@ Purdue-restricted dissertations, and the un-digitised 1985/1986 Niehoff conferen
 **Resolved 2026-06-03 (pre-dates this correction, still true):** the Hollister & Menning 1970
 Earth-Venus periodic-orbit gap (period `k` / years / elements / V∞) is closed — the single placeholder
 was individuated into the 15-orbit `hollister-menning-1970-ev-orbit-01..15` family from the PRIMARY
-paper (now in `docs/refs/` and `cyclers_pdf/papers/`), with V∞ from Table 3 (Vr × 29.785 EMOS) and a
+paper (now in `docs/refs/` and ``), with V∞ from Table 3 (Vr × 29.785 EMOS) and a
 shared period 16 yr / k=10 (corrected from a wrong secondary "3.2 yr").
 
 **The §3/§4/§6 sections below are left UNMODIFIED as a historical record of the original (now-stale)

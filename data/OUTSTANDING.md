@@ -4384,7 +4384,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Boulder PhD dissertation (2025, free on the Bosanac group site — adds a third design scenario +
   equilibrium-point positive-control table); AIAA-2024 (`10.2514/6.2024-1280`) confirmed paywalled
   (403) and superseded by the JAS version. Catalogue re-check: still zero Neptune-Triton rows.
-  Ranking vs `#772`'s parked candidates unchanged. Nothing filed into `cyclers_pdf/` yet — filing
+  Ranking vs `#772`'s parked candidates unchanged. Nothing filed into `the private paper corpus/` yet — filing
   + digests are Step 0 of `#776`. Full findings, verification numbers, and the spec-complete
   `#776` task in `docs/notes/2026-08-01-771-neptune-triton-scoping.md`.
 - `#776` — ✓ DONE 2026-08-01 (family confirmation ONLY, mirroring `#765`'s own Task-A-only scope
@@ -4455,7 +4455,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   everything, numbers are free" rule; honest, well-evidenced NEGATIVE on tool adoption): user
   found a machine-wide memory (`~/.claude/memory/pdf_inspector_tool.md`, outside this repo)
   documenting a `pdf-inspect` CLI installed 2026-08-02 during an unrelated session, and asked to
-  reprocess the whole `cyclers_pdf/papers/` corpus (251 files) with it looking for digest
+  reprocess the whole `` corpus (251 files) with it looking for digest
   improvements. Before mass-reprocessing (which would touch many existing sourced digests), ran a
   mechanical sweep of all 251 files (`pdf-inspect FILE --pages 1`, stdout bytes + stderr
   diagnostics + `pdfinfo` Producer, no LLM tokens) plus 3 targeted head-to-head comparisons
@@ -4880,7 +4880,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   campaign, spec-complete in `docs/notes/2026-07-29-764-new-system-discovery-scoping.md` §6.
   **Acquired + digested + citation-mined** the Vaquero 2013 Purdue thesis (freely downloaded,
   md5 `fdcbf871322b87cd1dd3448059cb2596`, matches `#764`'s own scoping-note md5 exactly; filed
-  `cyclers_pdf/papers/`, `CORPUS_INDEX.md` updated, digest at
+  ``, `CORPUS_INDEX.md` updated, digest at
   `docs/notes/2026-07-29-765-vaquero-2013-digest.md`; citation-mining surfaced one new backlog
   candidate, Bevilacqua et al. 1980 Titan-Hyperion resonance paper, `#730` backlog item 95; the
   JSR companion DOI `10.2514/1.A32412` confirmed PAYWALLED, not independently acquired, recorded
@@ -5493,7 +5493,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   surfaced ~13 new candidates (none acquired), strongest being Anderson's own 2005 PhD dissertation
   (root of the whole lineage) and a 2nd/3rd independent recurrence of Howell-Marchand-Lo 2001 /
   Johannesen & D'Amario 1999. See `docs/notes/2026-07-28-745-anderson-lo-2010-2011-resonant-flyby-digest.md`.
-  Commits: `cyclers_pdf` `bcf526f`, public repo `710e7f7`.
+  Commits: `the private paper corpus` `bcf526f`, public repo `710e7f7`.
 - `#747` — REMOVED from this list 2026-07-28, CLOSED: executed the cross-check (not just described
   it). Verdict: structural domain mismatch, not a database lookup result — all 6 rows fall outside
   Franz & Russell's search domain on three independent grounds (search-box `x0` bound, the explicit
@@ -5561,7 +5561,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   citation-mining pass (~60 new candidates flagged, none acquired). Master list: 3 wrong DOIs
   corrected (items 22/40/42), 3 status upgrades (19/30/39, incl. an author-name fix), ~20 DOIs
   independently CrossRef-reconfirmed, 6 items marked confirmed-no-DOI/settled, 13 marked ACQUIRED.
-  Commits: `cyclers_pdf` `ab36a57`/`efa0731`, public repo `ece0973`/`fa53131`. See the retracted
+  Commits: `the private paper corpus` `ab36a57`/`efa0731`, public repo `ece0973`/`fa53131`. See the retracted
   collision note above for the one process hiccup this task surfaced (no data loss, no actual
   duplication).
 - `#743` — REMOVED from this list 2026-07-28, CLOSED: all 34 remaining §3-§7 items swept, 3 more
@@ -6873,7 +6873,7 @@ theta_io0=pi per the real Laplace libration center). #724 for the final confirma
 Europa 3:4 interior-resonant family + physical Ganymede rate combination genuinely absent from
 BOTH Surrey TCP papers (#722), checked one more time skeptically before any V0-V5 writeback is
 authorized. #725 for actually processing #713's two papers -- user directly supplied both PDFs
-(JGCD 2010 + AIAA 2008-6434 conference precursor), file into cyclers_pdf/papers/, OCR-if-needed,
+(JGCD 2010 + AIAA 2008-6434 conference precursor), file into , OCR-if-needed,
 full digest, citation-mine per the new [[feedback_corpus_document_policy]] requirement,
 CORPUS_INDEX.md registration. #726 for starting the V0-V5 vetting chain (#701-style) on #724's
 CONFIRMED narrow N=5 CRNBP torus novelty claim -- real-ephemeris consistency check first (the
@@ -13298,7 +13298,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   `-fitzgerald2022-transit-perturbed-rtbp.md`, `-naik2017-lobe-dynamics-transport.md`) to identify
   which (if any) contain a table of converged CR3BP resonant/transport orbit initial conditions
   suitable for a new golden, analogous to Kumar's Table 6 — then go to the actual source PDFs
-  (`~/dev/cyclers_pdf/papers/`) to verify/extract the exact numbers directly (per
+  (`~/dev/`) to verify/extract the exact numbers directly (per
   `[[feedback_ground_citations_against_content]]`, never trust an inherited/digested number without
   grounding it against the source). **Not every paper necessarily has extractable IC data** — some
   may only have qualitative/topological findings (e.g. `#598`'s own digest notes already found IAC-24-
@@ -13311,7 +13311,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   mechanical golden-table extension behind a strong sourced-value gate — this project's own
   model-tiering policy reserves exactly this class of work for Sonnet, not Opus).
   **OUTCOME: 0 new `_RESONANT_SEEDS` entries — all 4 papers checked and ruled out against the source
-  PDFs directly (`~/dev/cyclers_pdf/papers/`), each for a distinct, well-founded reason, not a lack of
+  PDFs directly (`~/dev/`), each for a distinct, well-founded reason, not a lack of
   effort:** (1) `rawat2026-cislunar-mmr` (the JGCD 49-4 "Definitions, Widths, and Comparisons" paper —
   a DIFFERENT paper from the arXiv:2509.12675 Kumar 2025 paper `#598` already mined, despite the
   similar author list/title; confirmed as a separate PDF file in the corpus) reports resonance-zone
@@ -13417,7 +13417,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
     not a data gap. No action needed.
   - `5.2.1.-7`, `5.9.2.+1`, `6.6.1.-6` are each the **exact same table row** as an existing
     `russell-ocampo-*` entry, mislabeled with the wrong sign on the trailing `i` field. Read
-    Russell's dissertation directly (`~/dev/cyclers_pdf/papers/russell-2004-dissertation.pdf`,
+    Russell's dissertation directly (`~/dev/russell-2004-dissertation.pdf`,
     pp.56-69 + the actual Table 3.4 on p.83): his real naming convention is `p.h.s.i`, and `i` is
     the **signed multi-rev-Lambert solution-BRANCH selector** ("the negative sign indicates the
     solution ... is from the lower solution curve", p.58) — NOT a loop-direction/count as the
@@ -13872,7 +13872,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   Ross 2025 AAS 25-569 (exterior-MMR sequel); Rawat-Kumar-Rosengren-Ross 2024 AAS 24-368 (quantitative
   resonance-widths/chaotic-zone companion); Rosengren-Ross-Kumar-Rawat 2024 AMOS (xGEO domain-awareness
   survey). All confirmed genuinely new/distinct via title-page read (not filename inference), all
-  filed to `cyclers_pdf/papers/` + `CORPUS_INDEX.md`-registered.
+  filed to `` + `CORPUS_INDEX.md`-registered.
   **Full mining pass complete 2026-07-15** (all 4 read page-by-page, not just abstract/intro; digest
   notes `2026-07-15-{kumar,rawat,rawat,rosengren}-2024/25-*.md` rewritten with the actual quantitative
   findings): IAC-24-C1.9.5 — 3:1 identified as the "gateway to the Moon" (heteroclinic to 2:1 for
@@ -13894,7 +13894,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   mirror" (Kumar-Rawat-Rosengren-Ross, "Cislunar Resonant Transport and Heteroclinic Pathways: From
   3:1 to 2:1 to L1," arXiv:2509.12675, published *Advances in Space Research* 77(3):3815 (2026), DOI
   `10.1016/j.asr.2025.12.005`). **User asked to verify this claim (2026-07-15) — it is STALE, not
-  true.** The PDF is already sitting in the corpus at `cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf`
+  true.** The PDF is already sitting in the corpus at `kumar-2025-arxiv-2509.12675.pdf`
   (47 pages; content-verified against its own title page: exact title, author list, and abstract all
   match) — found via a corpus content grep (`pdftotext` on every PDF, not filename inference), per
   the standing `feedback_corpus_check_index_not_filenames` discipline. It must have been acquired in
@@ -19523,7 +19523,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   geometry-compatible pair found, cross-check literature-novelty via
   `search/literature_check.py` (mandatory gate per
   `[[feedback_literature_novelty_check_baseline]]`) and the `docs/notes/CORPUS_INDEX.md` /
-  `cyclers_pdf` corpus (grep for existing CCR4BP/whiskered-torus/heteroclinic work on that specific
+  `the private paper corpus` corpus (grep for existing CCR4BP/whiskered-torus/heteroclinic work on that specific
   pair before calling it novel — per `[[feedback_ground_citations_against_content]]`, do not just
   trust an abstract-level topical match). Output: a ranked shortlist (tractability x novelty),
   written to `docs/notes/`, explicitly analogous in structure to `#679`'s and `#686`'s own
@@ -19792,12 +19792,12 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   literature exists in this specific Uranian neighborhood. Scope: a second, MORE TARGETED
   literature pass specifically on Umbriel-Titania (not piggybacked on an adjacent-pair query),
   checking `search/literature_check.py`'s `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the
-  private `cyclers_pdf` corpus, and live search — before this candidate could be promoted to a
+  private `the private paper corpus` corpus, and live search — before this candidate could be promoted to a
   build task analogous to `#695`/`#696`.
   **RESULT.** `docs/notes/2026-07-24-699-umbriel-titania-deep-litcheck.md`. Ten distinct targeted
   live-search queries (direct-pair, author-driven via Kumar's full publication list, general
   Uranian-4-body survey, conference-paper angles), a full re-read (not grep snippets) of every
-  existing Uranian `KNOWN_CORPUS` anchor, a `cyclers_pdf` corpus directory scan (218 files, zero
+  existing Uranian `KNOWN_CORPUS` anchor, a `the private paper corpus` corpus directory scan (218 files, zero
   Umbriel/Titania/Oberon filename matches), and a full-text (not abstract-only) check of the
   single closest-adjacent paper (Kumar arXiv:2509.03655) confirming "Umbriel" does not appear in
   it anywhere and Titania there is only Oberon's perturber, never paired with Umbriel — all
@@ -20126,7 +20126,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   the much stronger, more specific claim this would actually become if promoted: a
   real-ephemeris-survivable, epoch-recurring homoclinic connection (not just an idealized-model
   curiosity). Re-run `#699`'s own methodology (same sources: `search/literature_check.py`'s
-  `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the private `cyclers_pdf` corpus, live search) to
+  `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the private `the private paper corpus` corpus, live search) to
   confirm nothing new has surfaced and that the SPECIFIC claim about to be made is still
   unaddressed. Cheap, mechanical, no design judgment needed — a final gate check, not a fresh
   investigation.
@@ -20698,7 +20698,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   registered/dispatched. Full report + independent re-verification script
   (`scripts/verify_724_rerun_continuation.py`): commit `631e7c5`.
 - **#725 ✓ DONE (2026-07-27) -- process `#713`'s two user-supplied papers.** Both filed as native
-  text-layer PDFs (no OCR needed) to the private corpus (`cyclers_pdf` commit `ae9f61e`), digested
+  text-layer PDFs (no OCR needed) to the private corpus (`the private paper corpus` commit `ae9f61e`), digested
   (`docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`) and indexed (public
   commit `3167b25`). **Findings**: planar CR3BP model (`mu_EM=0.0121529529`; the 2010 paper upgrades
   to a 6-state spatial EOM specifically for out-of-plane stability, though every orbit stayed
@@ -20752,7 +20752,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   unrelated failures. Commit `441703b`. No catalogue writeback (matches `#704`'s own precedent).
   **See `#729` for the epoch-robustness scan needed to settle whether a recurring window exists.**
 - **#727 ✓ DONE (2026-07-27) -- process Kumar/Anderson/de la Llave 2023, user-supplied PDF.**
-  Filed (private `cyclers_pdf` commit `5fab523`), digested + indexed (public commit `d47e102`).
+  Filed (private `the private paper corpus` commit `5fab523`), digested + indexed (public commit `d47e102`).
   **Cross-check #1 (`#715`)**: their GPU method (spatially-partitioned mesh-intersection search
   over full discretized manifold surfaces, bounding-box + Moller triangle tests) IS the class of
   upgrade `#715`'s own report flagged as needed — but NOT a drop-in fix: it intersects two
@@ -20777,7 +20777,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   digested (the `#597`/`#688`/`#727` Kumar/Rawat/Rosengren/Ross cislunar-MMR + Kumar/Anderson/de la
   Llave CCR4BP cluster). **7 papers filed, OCR-probed (all native text-layer, no OCR needed),
   digested, and CORPUS_INDEX-registered** (the 6 originally identified + 1 found indirectly, see
-  below), all in the private `cyclers_pdf` repo + public `docs/notes/` digests, single consolidated
+  below), all in the private `the private paper corpus` repo + public `docs/notes/` digests, single consolidated
   `CORPUS_INDEX.md` commit (`1da3ac3`) to avoid a 3-agent concurrent-edit collision on that shared
   file: (1)/(2) Kumar/Anderson/de la Llave, CMDA (`10.1007/s10569-021-10057-1`, arXiv `2105.11100`)
   + CNSNS (`10.1016/j.cnsns.2021.105691`, arXiv `2109.14800`) whiskered-tori/manifold-expansion
@@ -20921,7 +20921,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   a slower/more-loaded runner (this run's own 1h48m total exceeded the historical 1h28-34m range).
   **Explicitly flagged as a separate follow-up, not fixed here — see `#737`.**
 - **#732 ✓ DONE (2026-07-27) -- process 3 user-supplied papers from `#730`'s own top-5 ranked
-  list.** Filed (private `cyclers_pdf` commit `8d37abd`), digested + indexed (public commit
+  list.** Filed (private `the private paper corpus` commit `8d37abd`), digested + indexed (public commit
   `0f374e9`); master list updated with items #1/#4/#5 struck through as ACQUIRED. **Cross-check
   1 (Blazevski & Ocampo 2012 EOM fidelity + `#724` relevance)**: `core/ccr4bp.py` is faithful to
   this paper's founding CONCEPT (concentric/coplanar/circular/non-mutually-coupled extra
@@ -20949,7 +20949,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   cleanly (an untested, cheap future follow-up) WITHOUT invalidating the PDE choice for the
   unstable-parent-orbit regime it exists to handle.
 - **#733 ✓ DONE (2026-07-27) -- process 2 more user-supplied papers from `#730`'s own top-5 ranked
-  list (found in `~/Downloads`).** Filed (private `cyclers_pdf` commit `d705b59`), digested +
+  list (found in `~/Downloads`).** Filed (private `the private paper corpus` commit `d705b59`), digested +
   indexed (public commit `b1effb5`), master list extended so all 5 top items are now ACQUIRED.
   **Real finding: `genome/qp_tori.py`'s own docstring citation is IMPRECISE — it does NOT match
   Olikara's 2016 thesis method.** `qp_tori.py` implements the EARLIER Olikara & Scheeres 2010/2012
@@ -21150,7 +21150,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   pass. Commit `6b87ea6`.
 - **#741 ✓ DONE (2026-07-28) -- all 5 top-10 `#730` backlog papers processed, 2 DOIs corrected in
   the master list, one real mischaracterization in an existing digest found and fixed.** Filed
-  (private `cyclers_pdf` commit `40548eb`), digested + indexed (public commit `a1e6058`). Master
+  (private `the private paper corpus` commit `40548eb`), digested + indexed (public commit `a1e6058`). Master
   list corrected: items 8/9's DOIs fixed to `10.1088/0951-7715/23/9/001` /
   `10.1016/j.jde.2004.12.003` with a note explaining the wrong-paper-at-guessed-DOI discovery, all
   5 items 6-10 struck through as ACQUIRED. **Key findings**: Iuliano 2016 thesis's own Eq.
@@ -21172,7 +21172,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   acquired) a rigorous-numerics CR4BP pair (Burgos-García/Lessard/Mireles-James 2019, Castelli/
   Lessard/Mireles-James 2017) and two Calleja/de la Llave 2009 numerical companion papers.
 - **#742 ✓ DONE (2026-07-28) -- 4 more backlog papers processed (items 11, 24, 25, 44), all
-  cross-checks confirmed, one real omission flagged.** Filed (private `cyclers_pdf` commit
+  cross-checks confirmed, one real omission flagged.** Filed (private `the private paper corpus` commit
   `978d184`), digested + indexed (public commit `9d7ba2d`), master list updated marking all 4
   ACQUIRED. **Anderson 2021 vs `#727` Kumar 2023**: confirmed directly — Anderson's own Table 2/
   Conclusions give DeltaV = 146.71 m/s (CRTBP) / 135.04 m/s (COSMIC-optimized), both genuinely
@@ -21230,7 +21230,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   text-layer check) before trusting `#743`'s own labeling — a scratchpad location from a different
   agent's own session should be spot-checked, not blindly trusted, matching this session's own
   established discipline for every other batch this arc; (2) standard acquisition pipeline for all
-  14 that check out (file into the private `cyclers_pdf` corpus, OCR-if-needed, digest +
+  14 that check out (file into the private `the private paper corpus` corpus, OCR-if-needed, digest +
   citation-mine per `[[feedback_corpus_document_policy]]`, `CORPUS_INDEX.md` registration,
   honestly noting preprint-vs-published-version caveats where they apply); (3) apply ALL of
   `#743`'s own DOI findings to `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`
@@ -21309,7 +21309,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   finding): its near-Keplerian wide orbits sit outside every near-Moon symmetric-family census this
   project has cross-checked so far. No code written, no catalogue rows touched (research-only
   scope). Finding note: `docs/notes/2026-07-28-747-franz-russell-casoliva-crosscheck.md`. Commits:
-  `cyclers_pdf` `0a077f5` (missing `.txt` sidecar for the Franz-Russell PDF, generated this session),
+  `the private paper corpus` `0a077f5` (missing `.txt` sidecar for the Franz-Russell PDF, generated this session),
   public repo `7a7afe5`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,

@@ -27,7 +27,7 @@ and explicitly flagged this pair as under-checked.
   `kumar-anderson-delallave-2023-...-arxiv-2309.06073.pdf`) and grepping for "Callisto":
   **zero matches in either paper**, in the full text layer, not just the abstract. Neither paper
   discusses Callisto even in passing (no future-work mention either).
-- `ls /Users/bruce/dev/cyclers_pdf/papers/`: no Aryan/Fitzgerald/"AAS 24-103" file present — this
+- `ls /Users/bruce/dev/`: no Aryan/Fitzgerald/"AAS 24-103" file present — this
   paper (found by `#693`'s live search, flagged as "not yet acquired") is still **not acquired**
   in this project's corpus. No other undigested Jovian-multi-moon-CCR4BP paper found in the
   directory listing.

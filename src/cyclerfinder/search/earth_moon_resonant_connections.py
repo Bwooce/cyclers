@@ -9,7 +9,7 @@ class than those three: Casoliva's own Class 2 cyclers are built via Barrabes, M
 Olle's own numerical-continuation-of-homoclinic-connections method (Barrabes, E., Mondelo,
 J. M. & Olle, M., "Numerical Continuation of Homoclinic Connections of Periodic Orbits in
 the RTBP," *Nonlinearity* 22:2901, 2009, DOI 10.1088/0951-7715/22-12-006, filed at
-``cyclers_pdf/papers/barrabes-mondelo-olle-2009-...``), NOT this project's own established
+``barrabes-mondelo-olle-2009-...``), NOT this project's own established
 Poincare-section Newton-shooting machinery (:mod:`cyclerfinder.search.jovian_resonant_connections`'s
 ``correct_connection``/ghost-guard, reused verbatim by the Saturn-Titan and Neptune-Triton
 connection modules). This module implements Barrabes-Mondelo-Olle's OWN system of equations

@@ -10,7 +10,7 @@ one family `#755` reviewer-confirmed (`3:4-LO`), with no dependency on `5:6-LO`
 file this same session — not touched here).
 
 **Sources read directly this task**: the paper's own text layer (`.txt` sidecar of
-`cyclers_pdf/papers/anderson-lo-2011-...BF03321164.pdf`) around p.170-171 (the
+`anderson-lo-2011-...BF03321164.pdf`) around p.170-171 (the
 Poincare-map section definition and Eq. 7), and pp.190-191 (Table 2, Table 3, and
 the surrounding "Using Homoclinic and Heteroclinic Connections" prose) — confirmed
 verbatim against the rendered text (grep line numbers 22, 247-269, 949-953,

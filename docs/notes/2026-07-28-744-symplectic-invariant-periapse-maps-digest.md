@@ -2,7 +2,7 @@
 
 **Task:** `#744`, continuing the `#730` consolidated acquisition backlog
 (`docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`). All four PDFs
-filed to the private `cyclers_pdf` repo this session by the coordinating
+filed to the private `the private paper corpus` repo this session by the coordinating
 session. **OCR status: all four text-layer, no OCR needed** (pdftotext
 char-count/page verified far above the 10-char/page floor by the coordinating
 session; not re-verified here).

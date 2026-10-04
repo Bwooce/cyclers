@@ -56,7 +56,7 @@ closure of the current gap.
 
 Neither paper reduces the 20-cluster unmatched set. The live-literature-check phase (mandatory per
 [[feedback_literature_novelty_check_baseline]]) surfaced two real companion works, both now
-digested, filed in `cyclers_pdf/papers/` and `CORPUS_INDEX.md`, and one (the out-of-ecliptic paper)
+digested, filed in `` and `CORPUS_INDEX.md`, and one (the out-of-ecliptic paper)
 added as a new `CorpusAnchor` in `literature_check.py` so future searches into that z-excursion
 regime engage it structurally. The 20 clusters proceed to Opus/Fable adjudication as originally
 scoped, with this search now honestly exhausted rather than skipped.

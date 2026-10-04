@@ -96,7 +96,7 @@ TOF_SCALE_MAX = 2.0  # same bound as step 3 (verified against scan_433's own _me
 # Russell & Strange 2009, Table 3 ("Characteristics of promising Jovian
 # ballistic ideal model cyclers"), transcribed verbatim from the paper's text
 # layer (pdftotext -raw on the acquired PDF,
-# /home/bruce/dev/cyclers_pdf/papers/russell-strange-2009-...pdf, page 7 of
+# russell-strange-2009-...pdf, page 7 of
 # the extracted PDF / journal p.149), row order confirmed self-consistent
 # against Table 2's sourced synodic periods (Io/Europa/Ganymede/Callisto mean
 # orbital periods) and the independently-legible Fig. 6 caption identifiers.
@@ -361,7 +361,7 @@ def main() -> int:
                     "task": "#576 step 5 -- Russell-Strange 2009 Table 3 literature golden",
                     "source": "Russell & Strange, JGCD 32(1) 2009, DOI 10.2514/1.36610, "
                     "Table 3, transcribed via pdftotext -raw from the acquired PDF "
-                    "(cyclers_pdf/papers), row order cross-validated against Table 2's "
+                    "(the private paper corpus), row order cross-validated against Table 2's "
                     "sourced synodic periods and the Fig.6 caption identifiers.",
                     "period_tol_days": PERIOD_TOL_DAYS,
                     "n_rs_rows": len(RUSSELL_STRANGE_TABLE3),

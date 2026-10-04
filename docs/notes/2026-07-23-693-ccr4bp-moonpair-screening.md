@@ -29,7 +29,7 @@ notes/2026-07-23-digest-kumar-2021-europa-ganymede-ccr4bp-resonant-orbits.md` an
 2023 secondary-resonance digest (grepped for scope — neither mentions Io or any pair beyond
 Europa/Ganymede); `docs/notes/CORPUS_INDEX.md` (grepped for CCR4BP/whisker/heteroclinic entries;
 also confirmed `#679`/`#686`'s own strategy notes are NOT registered there, so this note isn't
-either, matching precedent); `ls /Users/bruce/dev/cyclers_pdf/papers/` (read access confirmed,
+either, matching precedent); `ls /Users/bruce/dev/` (read access confirmed,
 full directory listing scanned for Uranus/Saturn/Neptune CCR4BP titles — none found beyond the
 three Jovian Kumar papers already in corpus). External sourcing: JPL SSD "Mean Orbital Elements of
 Regular Planetary Satellites" (`https://ssd.jpl.nasa.gov/sats/elem/`, fetched 2026-07-23 — the
@@ -184,7 +184,7 @@ geometry, everything else fails on mass.
 
 Method, per pair: (1) grep `search/literature_check.py`'s full `KNOWN_CORPUS` for a same-body-set
 anchor; (2) grep `docs/notes/CORPUS_INDEX.md` + relevant digest notes; (3) `ls` the private
-`cyclers_pdf/papers/` corpus for a matching title; (4) live WebSearch, since (contrary to this
+`` corpus for a matching title; (4) live WebSearch, since (contrary to this
 task's own working assumption) WebSearch/WebFetch turned out to be available in this sandbox.
 `search/literature_check.py`'s own `check_literature()` engine was NOT invoked directly — it's
 built to consume a `CandidateSignature` for an actual discovered trajectory (V∞/resonance/n_rev

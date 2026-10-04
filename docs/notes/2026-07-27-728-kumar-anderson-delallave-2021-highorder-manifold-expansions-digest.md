@@ -9,7 +9,7 @@ restricted 3-body problem"
 **Authors:** Bhanu Kumar (Georgia Tech), Rodney L. Anderson (JPL/Caltech), Rafael de la Llave
 (Georgia Tech).
 **Filed:** `kumar-anderson-delallave-2021-highorder-resonant-manifold-expansions-cnsns-arxiv-2109.14800.pdf`
-(private `cyclers_pdf` repo).
+(private `the private paper corpus` repo).
 **Acquired/digested:** 2026-07-27 (`#728`). Native text-layer PDF (LaTeX, embedded Type-1 fonts
 confirmed via `pdffonts`); `pdftotext -layout` extracts cleanly. No OCR needed.
 

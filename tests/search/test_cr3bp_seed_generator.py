@@ -11,7 +11,7 @@ The Richardson (1980) halo-branch tests below (#580) are different: Table I
 (p. 253 of the source paper) gives fully-sourced, published numeric golden
 values for every Appendix I coefficient at Sun-Earth mu=3.04036e-6, L1/L2/L3
 -- so those ARE exact-value goldens, traced directly to a fresh read of the
-primary-source PDF (``cyclers_pdf/papers/richardson-1980-...pdf``), not to
+primary-source PDF (``richardson-1980-...pdf``), not to
 this codebase's own computed output (see
 ``docs/notes/2026-07-12-digest-richardson-1980-collinear-halo-analytic.md``
 section 4). NOTE: that digest's Table I transcription has several confirmed

@@ -11,7 +11,7 @@ repurposable (mu + seed geometry only) or need structural changes; then recommen
 a spec-complete first task, mirroring `#752`'s own format.
 
 **Sources checked this pass:** the full `#752→#759` task-chain notes + both jovian modules read
-in full (all 1307 + 721 lines); `docs/notes/CORPUS_INDEX.md` + `cyclers_pdf/papers/` filename
+in full (all 1307 + 721 lines); `docs/notes/CORPUS_INDEX.md` + `` filename
 grep for Titan/Enceladus/Triton/Pluto/Charon; `data/catalogue.yaml` grep for all six body names;
 `core/satellites.py` registry GMs; the `#730` acquisition-backlog master list; and a real web
 literature search per system. One decisive primary source was downloaded and text-verified
@@ -200,7 +200,7 @@ Table-4.1 gate"** (spec-complete; Sonnet-tier per `[[feedback_subagent_model_tie
 tier `#753` ran at):
 
 0. **Acquire + register the anchor first**: download the Vaquero 2013 thesis PDF (URL + md5
-   above) into `cyclers_pdf/papers/`, register in `CORPUS_INDEX.md` (born-digital text layer,
+   above) into ``, register in `CORPUS_INDEX.md` (born-digital text layer,
    no OCR), file its own digest todo per `[[feedback_per_paper_digest_todo]]`; record the JSR
    companion (DOI `10.2514/1.A32412`) as the citable venue. Re-verify every Table-4.1 number
    and the µ value against the PDF directly (this note's extraction is one hop removed — the

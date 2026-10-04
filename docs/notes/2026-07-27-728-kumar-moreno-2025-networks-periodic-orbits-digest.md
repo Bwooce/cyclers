@@ -8,7 +8,7 @@ Institute for Mathematics, Heidelberg University).
 **PDF source:** direct S3-hosted conference-proceeding link,
 `https://s3.amazonaws.com/amz.xcdsystem.com/A464D031-C624-C138-7D0E208E29BC4EDD_abstract_File25843/PreprintPaperUpload_677_0726010120.pdf`.
 **Filed:** `kumar-moreno-2025-networks-periodic-orbits-earth-moon-regularized-symplectic-aas-25-677.pdf`
-(private `cyclers_pdf` repo).
+(private `the private paper corpus` repo).
 **Acquired/digested:** 2026-07-27 (`#728`).
 **Text layer:** native LaTeX-produced text-layer PDF confirmed via `pdffonts` (embedded/subsetted
 Type-1 Computer Modern + NimbusRoman fonts) and `pdftotext -layout` (clean extraction, 2175 lines).
@@ -133,7 +133,7 @@ specific orbit currently in this project's catalogue.
 ## 3. Mandatory citation-mining pass
 
 All 19 references read; cross-checked against `docs/notes/CORPUS_INDEX.md` (2026-07-27) and the
-`cyclers_pdf/papers/` filename listing directly.
+`` filename listing directly.
 
 **Already in corpus** (no action needed):
 - [18] Kumar, Rawat, Rosengren, Ross 2024, IAC-24-C1.9.5 — `kumar-rawat-rosengren-ross-2024-interior-mmr-heteroclinic-earth-moon-IAC-24-C1.9.5.pdf`.

@@ -6,7 +6,7 @@ directly supplied PDFs for §3 item 11 and §4 items 24/25/44 of that list — a
 four independently verified page-1-match by the coordinating session before
 this task started.
 
-**Filed** (private `cyclers_pdf` repo, commit `513e657`):
+**Filed** (private `the private paper corpus` repo, commit `513e657`):
 1. `anderson-campagnola-koh-mcelrath-woollands-2021-endgame-europa-lander-ganymede-europa-approach-jas-68-96-doi-10.1007-s40295-021-00250-7.pdf`
 2. `barrabes-mondelo-olle-2009-numerical-continuation-homoclinic-connections-periodic-orbits-rtbp-nonlinearity-22-2901-doi-10.1088-0951-7715-22-12-006.pdf`
 3. `barrabes-gomez-2002-spatial-pq-resonant-orbits-rtbp-cmda-84-387-doi-10.1023-A1021137127909.pdf`

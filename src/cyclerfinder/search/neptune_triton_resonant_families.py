@@ -32,7 +32,7 @@ enter ONLY for human-readable period-in-days reporting, using the paper's OWN
 stated values (JAS-2026 p.5 body text, independently re-grepped this task):
 ``l* = 354,760 km``, ``t* ~= 8.081353e4 s``.
 
-PDFs + all 4 ESM files filed at ``cyclers_pdf/papers/`` (see
+PDFs + all 4 ESM files filed in the private paper corpus (see
 ``docs/notes/CORPUS_INDEX.md``'s own `#776` entry for md5s + the digest
 note); the companion CU Boulder PhD dissertation (Miceli 2025, freely
 hosted, source of Table 2.1's equilibrium-point positive control) is filed

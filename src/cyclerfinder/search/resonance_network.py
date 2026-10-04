@@ -42,7 +42,7 @@ finite-dimensional section.
 
 REPRODUCE-BEFORE-TRUST gate (2026-07-15: paper confirmed in hand, values
 sourced directly): the PDF is held at
-``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf`` (content-verified
+``kumar-2025-arxiv-2509.12675.pdf`` (content-verified
 against its own title page/abstract). The paper's own Table 6 (Appendix 8.2)
 gives exact Cartesian ICs ``(x, ydot)`` (with ``y=0, xdot=0``) for the unstable
 4:1 (C=2.85, 3.15), 3:1 (C=2.54-3.15), and 2:1 (C=2.54-3.15) resonant periodic

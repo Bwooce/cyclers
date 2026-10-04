@@ -266,9 +266,9 @@ just not uniformly tight.
 ## 7. Literature novelty gate (mandatory, read in full — this is what licenses "novel" above)
 
 **Step 1 — direct text-layer grep of the primary source and its companion dissertation (the
-load-bearing evidence).** Both `cyclers_pdf/papers/miceli-bosanac-2026-generating-planar-
+load-bearing evidence).** Both `miceli-bosanac-2026-generating-planar-
 trajectories-neptunian-system-motion-primitives-jas-73-11-...txt` (the JAS-2026 paper's own text
-layer) and `cyclers_pdf/papers/miceli-2025-...-phd-dissertation-colorado.txt` (the companion
+layer) and `miceli-2025-...-phd-dissertation-colorado.txt` (the companion
 dissertation) were grepped this task for `homoclinic`/`heteroclinic`: **zero occurrences in
 either document.** The paper's own two `intersect`-adjacent hits are unrelated: p.6/line 310
 ("intersects one of the primaries" — a corrector failure-mode check, not a manifold intersection)
