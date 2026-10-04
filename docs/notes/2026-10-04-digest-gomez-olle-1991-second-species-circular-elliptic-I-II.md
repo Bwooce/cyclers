@@ -48,7 +48,7 @@ read with confidence. Nothing in a table below was computed or filled in by me u
 3. Most useful for the project: (i) the exact asymptotic formulas for the flyby (Delta = mu K0, periapsis time shift
    mu ln mu/|v1|^3), which reduce to the gate's own periapsis relation (section 8e: COMPUTED/INFERRED, the strongest original
    content of this digest); (ii) the elliptic result: symmetric periodic solutions in the elliptic problem have period 2 k pi and
-   start at pericentre or apocentre of the primaries, the SAME structural requirement as the #890 perturber-on-axis condition;
+   start at pericentre or apocentre of the primaries, which I read as the same kind of structural requirement as the #890 perturber-on-axis condition (INFERRED);
    (iii) printed 16-digit initial conditions at mu = 1e-6 that the project's CR3BP and ER3BP code can reproduce, and which I
    verified are internally consistent (section 9).
 
@@ -557,7 +557,7 @@ NOT rectilinear; they are the non-rectilinear orbits of the A0 family at the 2:1
 
 ### 8a. Recipe: second-species periodic orbits for one small secondary at a given energy (circular problem), from these papers
 
-1. Fix the energy C < 3 (Henrard's necessary condition for mu -> 0, p. 154; at mu > 0 small the condition is C < C2(mu), the L2 value, p. 154)
+1. Fix the energy C < 3 (Henrard's necessary condition for mu -> 0, p. 154; at mu > 0 small the condition is C < C2(mu), the Jacobi value at the paper's L2, which is the collinear point BETWEEN the primaries, p. 154; the paper's C includes the constant mu(1 - mu), so C_L4 = 3 exactly in its convention (COMPUTED: Omega at L4 = 3/2); for Earth-Moon C2 = 3.1883 in the project's convention, 3.2003 in the paper's, COMPUTED with the project's mu = 0.0121506)
    and the period class T = k pi (half period), k = 1, 2, 3, 4 (the only k for which the nondegeneracy a21 or a24 /= 0 is checked, p. 133).
 2. Enumerate generating arcs (OCC): the solutions (tau, eta) of Part II eq. (1) (for e_m = 0, Henon's equation) with the sign triplet
    (epsilon, epsilon', epsilon''), giving the families A_j, B_j, C_ij; each OCC carries a0, e0 and, by Tisserand, C = 1/a0 + 2 epsilon'
@@ -582,7 +582,10 @@ NOT rectilinear; they are the non-rectilinear orbits of the A0 family at the 2:1
    epsilon' = +1), (b) when |v1| -> 1 for rectilinear seeds (K0 -> infinity: the passage becomes tangent), (c) at a bifurcation orbit (E_ij tangency or I_r, where it splits into
    two branches with O(mu^nu) variations), (d) when eta -> pi (collision with the big primary first), and (e) when C reaches C2(mu).
 7. At the physical mu check: closest approach r_p = mu (e1 - 1)/|v1|^2 (section 8e) against the secondary's radius plus margin, and that the
-   hyperbolic leg stays inside the secondary's Hill sphere (the formulas are first order in mu; the theorem's mu1 is not estimated).
+   hyperbolic leg stays inside the secondary's Hill sphere (the formulas are first order in mu; the theorem's mu1 is not estimated). VALIDITY TESTS for
+   using the first-order formulas at all (COMPUTED from the printed orders, my reading, not a printed criterion): mu |ln mu|/|v1|^3 << 1 (the periapsis time
+   shift, (A.17), must be small against the encounter's own time scale) and r_p << mu^(1/2) (the inner region of (A.4), (A.6) has radius mu^(1/2) k_bar). For the
+   Earth-Moon rectilinear rows of section 8e the first is 0.010 to 0.035 and r_p/(mu^(1/2)) is at most 0.083 (r_p <= 0.0091 against mu^(1/2) = 0.110), so they pass.
 
 ### 8b. What the project already has, and what it lacks
 
@@ -628,9 +631,12 @@ with periods 6.2832, 12.5664 and 18.85 (2 pi, 4 pi, 6 pi: integer multiples of t
 Consequences, from these papers' own hypotheses:
 - The second-species/matched-asymptotics regime (generating arcs are Kepler arcs meeting the secondary's orbit with relative speed v^2 = 3 - C minus
   an angular-momentum term, i.e. C < 3 for mu -> 0, with "C < C2(mu)" at small mu > 0) contains the casoliva rows and the lower-C braik-ross 3D corridors.
-  The ross-rt (1,1), (2,1), (3,1), (3,2), (3,3) rows and braik-ross planar rows with C > 3 are OUTSIDE the C < 3 limit regime (INFERRED): their generating
-  arcs at mu = 0 would have no real encounter with the secondary's orbit, so the O(mu)-matching formulas are not defined for them (they exist because mu
-  is finite: the C2(mu) neck at about 3.17 for Earth-Moon, a standard value not taken from these papers). A second-species generator cannot produce them.
+  The ross-rt (1,1), (2,1), (3,1), (3,2), (3,3) rows and braik-ross planar rows with catalogue C = 3.13 to 3.18 (paper convention 3.14 to 3.19, adding mu(1 - mu) = 0.0120,
+  assuming the catalogue stores the project convention, not checked) are OUTSIDE the C < 3 limit regime (INFERRED): their generating arcs at their own C would have no
+  real encounter with the secondary's orbit, so the O(mu)-matching formulas are not defined for them at that C. They are below the inner collinear value C2 (3.1883 in
+  the project's convention), so the neck is open and the secondary is reachable, but that is a finite-mu effect. Whether a family reaches them by continuing in C (and in mu)
+  from an admissible family is NOT excluded: Table III row 4 has B1 branches near C = 3 evolving to orbits around the collinear points, and Casoliva's strategy (digest
+  `docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`) is continuation in mu, then in C. That connection has not been tested (INFERRED; open).
 - The casoliva Class 1 periods 2 k pi map onto the 2 k pi class of Theorem 10 (circular case), and Part I's starting families have synodic periods
   2 T = 2 pi (A0), 6 pi (A1), 4 pi (B1) and, near the 2:1 point, 4 pi (the Fig. 8 orbits: 2 T = 12.547 and 12.588), so the comparison is direct by period:
   casoliva-2-1a/2-1b (T = 2 pi, C = 0.489, 1.196) against A0 (C = 0.897 at mu = 1e-6, k = 1); casoliva-7-3a/b/c (T = 6 pi, C = 1.02 to 1.07) against A1
@@ -652,11 +658,14 @@ symmetry of the rotating (circular) or rotating-pulsating (elliptic) frame (Lemm
   periapsis r_p = mu (e1 - 1)/v_inf^2 and the time shift mu ln mu/|v1|^3 are statements about a single passage by a body of mass mu on a given
   Kepler orbit, with O(mu^(2 - nu)) errors, with no use of the symmetry. In a chain with several moons, each passage can be matched separately,
   provided the passages are separated and the "outer" arcs between them are the unperturbed Kepler arcs; the first-order timing shift per passage
-  is the new bookkeeping item. COMPUTED order of magnitude for the #890 case, per Titania passage: mu_T = GM_Titania/GM_Uranus = 3.94e-5, so
-  mu ln mu = -4.0e-4 in units of 1/n_Titania (8.706 d / 2 pi = 1.386 d), i.e. about 6e-4 day (under a minute) divided by |v1|^3: a timing shift of the order of
-  a minute, far smaller than the 5.5-revolution phase slip #890 attributes to the energy change from the flyby offset; the second-species formulas are therefore
-  consistent with the #890 reading that the accumulated phase error comes from the velocity change delta x0' = mu (K0 - K1)/a24 (amplified by 1/a24 over several
-  revolutions), not from the periapsis timing term (INFERRED).
+  is the new bookkeeping item. The VALIDITY of the first-order theory for the #890 chain is the point to check, and it fails (COMPUTED): per Titania passage
+  mu_T = GM_Titania/GM_Uranus = 3.94e-5, so mu ln mu = -4.0e-4 in units of 1/n_Titania (8.706 d / 2 pi = 1.386 d). The #890 note
+  (`docs/notes/2026-10-04-890-titania-oberon-candidate.md`) prints an osculating V-infinity of 0.261 km/s at the Titania flyby; Titania's circular speed is 3.646 km/s,
+  so |v1| = 0.0716 and |v1|^3 = 3.67e-4. Then mu |ln mu|/|v1|^3 = 1.09, i.e. about 1.5 days: the periapsis time shift is of order one, not a small correction, and
+  the flyby radius (2,126 km, the note's Titania value) is the same size as mu^(1/2) a_Titania = 2,736 km, the edge of the inner region (A.6), not O(mu). The
+  one-moon first-order matching is therefore OUTSIDE its range of validity for #890 (a slow, near-tangent encounter, C close to 3), and these formulas can neither
+  support nor reject #890's explanation of the phase slip. What does carry over for such low-speed encounters is the structure (hyperbola matched to the outer
+  arcs; r_p = mu (e1 - 1)/v_inf^2 as the gate's relation, which is exact for a two-body hyperbola whatever the matching accuracy), not the O(mu) error claims.
 - Does not carry over: (i) "symmetric periodic" in a synodic frame: with two moons of different periods there is no common rotating frame; periodicity
   becomes a condition on the pair of phases at the ends of the chain (as in #890, where the perturber must lie on the axis at tau = T). (ii) the one-parameter
   family structure of Theorem 10 (dv or dr free) depends on the circular problem's integral C; the concentric circular four-body model has no Jacobi
@@ -699,6 +708,8 @@ Derivation (all steps from the printed formulas; the identification at the end i
    i.e. they are physical only for a0 between 0.5 and about 0.73 (C between about 1.37 and 2), or after non-first-order corrections. For Jupiter
    (radius 71492 km, threshold r_p/mu = 0.0963) the first-order r_p falls below the planet's radius for a0 above about 3.4 (C below about 0.29; 65600 km at a0 = 5 in the
    table). COMPUTED by hand, labelled estimate.
+   Validity of this table (COMPUTED, my reading): the first-order formulas need mu |ln mu|/|v1|^3 << 1 and r_p << mu^(1/2); at Earth-Moon mu the five rows give
+   0.035, 0.019, 0.014, 0.011, 0.010 and r_p = 0.0091, 0.0025, 0.0014, 0.0011, 0.0009 against mu^(1/2) = 0.110, so they pass; for #890 they do not (section 8d).
    Regime mismatch to say plainly: the rectilinear seeds have C <= 2 (C = 0.46 to 0.90 for the printed starting orbits) while the catalogue's ross-rt and
    braik-ross planar rows are at C about 3.13 to 3.18; only the Fig. 8 orbits (C about 2.97) lie in that band, and they are not rectilinear, for which the general
    K0 (C0 /= 0 form, p. 123) applies and the table above does not.
@@ -778,8 +789,10 @@ generating-orbit identity t1 = k pi in section 7 is an independent check), then 
    p. 159 ("x > 1 - mu", "x < 1 - mu") and p. 163 (x = 1, C = 3 near the small primary) place it at +(1 - mu). My Jacobi recomputation (section 7) reproduces the printed C
    to 1e-14 only with the small primary at +(1 - mu) and the big at -mu; Font-Nunes-Simo 2009 place the small primary at the opposite side (mu - 1), so ICs from
    that paper cannot be mixed with these without a reflection x -> -x (y -> -y).
-2. Lagrange labels: Table III prints (L2) for x < 0.993081 (between the primaries) and (L1) for x > 1.006948 (beyond the small primary); the usual convention for the
-   mass ratio at hand is the reverse for the equilibrium points near a small secondary; verify against the project's convention before using these labels.
+2. Lagrange labels: Table III prints (L2) for x < 0.993081 (the point between the primaries) and (L1) for x > 1.006948 (beyond the small primary); the p. 154 remark
+   (ovals around the primaries for C >= C2) is consistent with C2 being the value at the point between the primaries, so the paper uses inner = L2, outer = L1
+   consistently. This is a naming convention, not an inconsistency; the project's own labelling (check `search.periapse_map.collinear_l1_l2`, `search.binary_star_search.collinear_lpoints`)
+   may differ, so use positions (0.99309 and 1.00695 at mu = 1e-6) not labels.
 3. Remark (1) p. 164 states x0 = ydot0; the data have x = -ydot. Sign slip in the remark.
 4. T notation: Theorem 10 p. 137 uses T = 2 t* (full period); Part II uses T for the half period.
 5. Table I row 4 prints C0 /= 0 for a collision-orbit point (text says C0 = 0); Table III row 6 and Fig. 10's caption disagree on whether the point extends to a SPSSS; Table I row 3 prints
