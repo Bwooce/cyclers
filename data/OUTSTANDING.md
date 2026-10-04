@@ -1363,6 +1363,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   part A's digits came from per-cell OCR with majority voting, then integration and column-smoothness
   checks with flagged rows corrected from the image (part B read the images directly); seventh-digit
   errors on weakly sensitive rows could survive.
+  Broucke 1969b (AIAA J. 7:1003; digest `docs/notes/2026-10-04-digest-broucke-1969b-aiaa-stability-elliptic-periodic-orbits.md`)
+  adds the stability regions per family (7P 6; 7A 1; 8P 6; 8A 4 then 2 then 1; 11P 4; 11A 6 then 3),
+  which the agent reproduced on re-corrected orbits in `core.er3bp`, including the 8A 4 -> 2 -> 1 and
+  11A 6 -> 3 sequences; 11P a2 peaks near 13 400 at e = 0.18 (computed 13 325) and 11A a1 has a
+  minimum near -5500 there (computed -5613). Defects to record, not test against: eq. 39 prints +a1
+  where its eq. 38 and the TR give -a1 (a classifier built from eq. 39 swaps regions 4/5 and 6/7);
+  the 11A a2 minimum printed -5200 is about -5.09e4 (a dropped digit); 11P "51 orbits" against 52 TR
+  rows. For `#931`: use -a1 for k, treat |k - 2| below about 1e-3 as on the boundary, classify only
+  re-corrected orbits, use relative tolerances.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
