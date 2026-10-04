@@ -1029,6 +1029,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   NO Ollé & Simó chapter and has no pages 513-526; the 1993 citation is wrong as given, and the 1990
   Rev. Colombiana Mat. citation is unconfirmed (no Crossref record). Both need a verified source
   before they are sought further.
+  Searched the neighbouring years (Crossref, 2026-10-05): no Olle and/or Simo chapter on pp.513-526
+  in the 1985 NATO volume (Stability of the Solar System and Its Minor Natural and Artificial Bodies),
+  the 1988 Humboldt volume (Long-Term Dynamical Behaviour, p.513 is Yoshida), the 1991 NATO volume
+  (Predictability, Stability and Chaos in N-Body Dynamical Systems, pp.509-530 are Chauvineau and
+  Ferrandiz) or the 1993 volume. Nearest real items, possible substitutes: Font & Simo 1991, "Are
+  there irregular families of characteristic curves?", NATO ASI B 272:531-540,
+  10.1007/978-1-4684-5997-5_48; Olle 1985, "The restricted elliptic three-body problem for the mass
+  parameter equal to zero", 1-page abstract, 10.1007/978-94-009-5398-7_54. The cited Olle & Simo
+  1993 paper is probably a garbled or invented reference.
   Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
