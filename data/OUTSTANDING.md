@@ -1577,7 +1577,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   at first order (about 57 to 250 km at the Earth-Moon mass, times an unknown coefficient) and
   O(mu^3) at second order (about 0.7 to 13 km); slow encounters (v1^2 below about 0.1) are outside
   either expansion. Pre-registered check: on Casoliva rows with v1^2 above 0.5, second-order seeds
-  should land at least 3 times closer to the corrected orbit than first-order ones. Either way a
+  should land at least 3 times closer to the corrected orbit than first-order ones. Perko 1967
+  (digest `docs/notes/2026-10-04-digest-perko-1967-error-estimation-singular-perturbation.md`) gives no
+  usable constants (the remainder constants are existence constants; the series of bounds diverges),
+  so the seed error can only be CALIBRATED against integrated orbits (fit the constant on Casoliva
+  Table 3 flybys at the matching distance), never certified; second order is the right level; do not
+  sample Kepler-arc velocities closer than about mu |ln mu| (about 0.23 days) to the Moon. Either way a
   matched seed starts a corrector and is never an orbit; one order of accuracy is lost per near-Moon passage, so `#906` should use integrated
   turns, not matched predictions. At a first-species/second-species bifurcation exactly two families
   meet, the minimum distance is O(mu^(1/2)) (about 0.11 lunar distances), and the local hyperbola
