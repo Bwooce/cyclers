@@ -664,6 +664,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the 22 `#574` branches are turn-infeasible by a scratch run (not tested); scripts still on the
   capacity-only gate (`titan_iapetus_corrector`, `enumerate_600`, `scan_816` and others) are not
   wired; `run_330`, `run_566`, `run_574` were edited for the new condition but not rerun.
+  **Status of the six follow-ups listed below:** (1) gate built and (2) positive controls plus
+  regression tests: done; (3) Jovian `#576` and Saturnian `#575`/`#655` stored closures: all
+  fail the gate (rescreen table in the gate note; `#571` is a free grid scan, not a symmetric
+  set); (4) frozen-gate tests relabelled and paired with rejection tests: done; (5) the
+  transfer-network output regenerated from the current catalogue (commit `46adfe68`: 285
+  nodes, 60,227 edges, no withdrawn row); (6) gated re-enumeration: done, one candidate,
+  `#890`. Also fixed on the way (commit `342cba84`): the wiring made the `#563` enumeration
+  return no passes, which broke two tests in `tests/scripts` that the wiring run had not
+  included; the script now writes the 60 stored records as magnitude closures, and the tests
+  assert that all 60 are reproduced and that none passes the turn gate.
   Original registration follows (found by `#885`, confirmed by the coordinator with independent
   code the same day). **OWNER DECISION 2026-10-04: WITHDRAWN ("withdraw the lies").** All six
   rows are out of `data/catalogue.yaml` (398 -> 392 rows) and preserved verbatim in
