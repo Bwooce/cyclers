@@ -298,3 +298,33 @@ patched-conic hyperbolae and turns 24 and 12 degrees larger. Status: a model-lev
 real-ephemeris correction and its manoeuvre budget, the spec 16.4 literature check (Canales,
 Howell and Fantino treat a one-way Titania to Oberon transfer; near-Hohmann Titania-Oberon
 cycling is an obvious construction, so novelty is doubtful), and an adversarial review.
+
+## Addendum, 2026-10-04: corrections from the adversarial review
+
+Added by the coordinator. Section 1 (the pre-registration) and the text above are left as
+written; the review (`docs/notes/2026-10-04-890-adversarial-review.md`, section 9) found the
+following statements in section 2 wrong or stronger than the evidence. Read them as corrected here.
+
+- 2.4: the 0.351 and 0.333 km/s are SPEEDS relative to the moon at the Laplace sphere, not
+  V-infinity. The osculating V-infinity there is 0.251 and 0.262 km/s. The time inside the sphere
+  is 0.45 and 0.61 days.
+- 2.5, V5: the demanded-turn gate is not independent evidence on a trajectory integrated through
+  the flyby; it restates that the periapsis is above the altitude floor. Not counted.
+- 2.5, V6: the distance from Uranus is 437,600 to 585,800 km, not 435,000 to 588,000 km.
+- 2.6: "flyable with routine targeting" is not shown. No targeting or navigation analysis exists.
+- 2.7: the J2 used there (3.34343e-3 at 25,559 km) was 4.7 percent too small (`#894`, since
+  corrected); it does not change the outcome. The uncorrected real-ephemeris runs measure
+  SENSITIVITY. They do not show that no ballistic trajectory exists in the real system.
+- 2.9: the continuation started at one percent of the moons' mass and no fold was detected at the
+  13 values tried. At full mass the orbit's Uranus-centred ellipse (438,500 to 583,400 km) lies
+  BETWEEN the two moons' orbits (436,298 and 583,511 km): the flybys happen through the moons'
+  gravitational reach, not at orbit crossings as in the patched conic. The encounters are once
+  each per CYCLE, not per half cycle. The altitudes (1,977 and 1,364 km) depend on the model's
+  constants: with the real mean motions they are about 1,800 and 1,260 km.
+- Method: the continuation in the moons' mass with each flyby re-seeded by the hyperbola that
+  keeps the turning angle is the published method of Bradley & Russell (2014), J. Astronaut. Sci.
+  61:227. What this note adds to it is the periodic closure in the restricted four-body model.
+- Theory: second-species orbits (one small secondary) are proved and computed in the published
+  literature (Bolotin & MacKay 2000, 2006; Font, Nunes & Simo 2002, 2009). The two-moon case with
+  different periods is not covered by those results as stated.
+

@@ -592,26 +592,30 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `09a79fc6`, `9daffd1d`, `6f01af80`, `0920097f`; note
   `docs/notes/2026-10-04-890-titania-oberon-candidate.md`; code
   `search/two_moon_periodic_890.py`, 9 tests). **A periodic Titania-Oberon-Titania orbit with
-  real flybys of both moons exists in the planar circular four-body model at the moons'
-  physical masses. It is not a trajectory of the real Uranian system without correction.**
+  hyperbolic flybys of both moons, inside their Laplace spheres, exists in the planar circular
+  four-body model at the moons' physical masses. It is not a trajectory of the real Uranian system without correction.**
   The patched-conic closure itself does not fly: started in the four-body model it misses the
-  Oberon flyby by 967,000 km, because the flyby offset changes the orbit's energy by a few
-  percent and that accumulates to a full phase slip over 5.5 revolutions. A symmetric
+  Oberon flyby by 967,000 km (the build attributes this to the flyby offset changing the
+  orbit's energy by a few percent, which accumulates to a full phase slip over 5.5
+  revolutions). A symmetric
   multiple-shooting correction, continued in the moons' mass from 0.01 to 1, converges
   (residual 2.6e-11) to an orbit with cycle 123.162 d, Titania flyby at 1,977 km altitude and
-  Oberon flyby at 1,364 km, distance from Uranus 437,600 to 585,800 km, largest Floquet
+  Oberon flyby at 1,364 km (with the registry's distances; about 1,800 and 1,260 km with the
+  real mean motions), distance from Uranus 437,600 to 585,800 km, largest Floquet
   multiplier 8.4e5. **Pre-registered closure tests V2 and V3 FAILED as written** (1.64 and
   1.59 cm/s against a 1 cm/s limit); after one further Newton step (post hoc, labelled so)
   the closure is 5 m. **Coordinator's independent check** (own integration in a non-rotating
   frame, not the agent's module or the core right-hand side): the refined state closes after
   one cycle to 12 m and 0.09 cm/s with DOP853 and to 0.12 m with Radau; the flybys are at
   1,976.9 km (Titania) and 1,364.2 km (Oberon) altitude; the turn measured across Oberon's
-  sphere of influence is 66.0 degrees against 103.8 available at a 50 km floor (ratio 0.64);
+  sphere of influence is 66.0 degrees against 103.8 available at a 50 km floor (ratio 0.64;
+  this restates that the periapsis is above the floor and is not an independent test);
   moving the start by 44 m destroys the closure (108,000 km), so the return is specific. The
   perturber's rate in this model is signed and negative, so the `#891` sense defect does not
   apply. **Real ephemeris (outside the pre-registered gate):** started uncorrected at three
   2030 conjunctions with all five moons and J2, every run reaches Oberon half a day early
-  (one impacts) and none returns to Titania. **Sensitivity:** 1 m/s at the preceding apoapsis
+  (one impacts) and none returns to Titania. These runs are uncorrected and measure
+  sensitivity only. **Sensitivity:** 1 m/s at the preceding apoapsis
   moves the flyby periapsis by 1,200 to 1,400 km. **Not a row.** Needed first: a literature
   check, an adversarial review, and a real-ephemeris multi-cycle correction with a manoeuvre
   budget. **LITERATURE CHECK DONE 2026-10-04 (commit `117c5334`, note
@@ -652,7 +656,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   any claim about physical mass ratios. The planar one-moon case rests on their 2000 paper
   (DOI 10.1023/A:1008393706818), not held; Bolotin 2005 (CMDA 93:345, elliptic case) and
   Bolotin 2006 (DCDS 14:235) are the nearest time-dependent analogues, not held.
-  Adversarial review dispatched, not back. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
+  **ADVERSARIAL REVIEW DONE 2026-10-04** (note
+  `docs/notes/2026-10-04-890-adversarial-review.md`, own code in a non-rotating frame). The
+  model claim survives: the module's equations equal the reviewer's independent derivation to
+  3e-15; the orbit closes (28 m DOP853, 0.4 m Radau); root-finding finds no other approach
+  (next nearest 122,000 and 144,000 km); the fixed point is isolated (multipliers 8.38e5, 1.786,
+  0.560, 1.19e-6: two unstable directions, e-folding 9 and 212 days); the pre-registration is
+  byte-identical to its commit. Corrections: the altitudes depend on the constants (about
+  1,800 and 1,260 km with real mean motions); at full mass the orbit's ellipse lies between
+  the moons' orbits; the turn gate is not evidence on an integrated trajectory; the
+  pre-registered closure criteria were ill-posed and the post hoc step is polishing, not a
+  pass; in the real system the only possible class is `quasi_cycler` and the evidence level
+  is V1 in a model. **A lead, not a result:** in the reviewer's scratch force model (URA111
+  moons as point masses plus J2, three-dimensional, multiple shooting, no manoeuvre) ballistic
+  arcs exist near the orbit at two epochs: three cycles from 2030-01-12 (7 flybys) and six
+  cycles from 2031-06-13 (739 days, 13 flybys; Titania 1,512 to 1,826 km, Oberon 1,106 to
+  1,360 km altitude), junction discontinuities under 1 m with two integrators. Not in the
+  repository, not tested, not verified by the coordinator. **Most serious weakness (the
+  reviewer's words, agreed):** nothing reproducible in the repository supports any statement
+  about the real Uranian system, and no test pins the model orbit itself. **Required before
+  any row** (review section 11): the real-ephemeris correction rebuilt in the repository with
+  tests, at three or more epochs and cycles, each flyby integrated through, with a
+  force-model positive control and an external check; a regression test on the model orbit
+  from code that does not share the build's right-hand side; real mean motions; a ruling on
+  what V2 means for an orbit too unstable to propagate three laps; a maintenance budget;
+  class `quasi_cycler` with the demonstrated number of returns; wording no stronger than
+  "first computed for Titania and Oberon"; and the owner's say. **Defect found on the way:** `data/validation/v4_uranus.py` zeroes a moon's force
   inside its Hill sphere (the softening radius passed is the Hill radius), so neither V4 lane
   can represent a flyby; a V4 for moon tours has to be rebuilt on an unsoftened propagator.
   Original registration follows (from the `#888` gated re-enumeration; DISPATCHED the same
