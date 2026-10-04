@@ -1176,7 +1176,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the Stumpff solution (any sign of h) and the radial fall. The book regularises one centre only, so
   passes near both primaries need a centre switch. The Deprit & Deprit-Bartholome closed form and the existing
   `core/kepler_stm.shepperd_stm` are two independent P = 0 references for the KS transition matrix
-  (after conversion to physical time). The `core/cr3bp_regularized.py` docstring cited
+  (after conversion to physical time). Peters 1968 (digest `docs/notes/2026-10-04-digest-peters-1968-numerical-regularization.md`)
+  confirms the recommendation and adds: a third printed source of the 3D KS map (agrees term by term
+  with Aarseth & Zare eqs. 48-53), so the first #928 test should assert the code's map against both
+  before any dynamics; and two run monitors, the bilinear constraint and the identically-zero
+  regularised Hamiltonian K. Its Table 1 (Burrau problem: rectangular, time-only and KS with one
+  integrator) is the template for the `#929` comparison on orbit 12i; its numbers are 1960s upper
+  bounds, not expected values. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
