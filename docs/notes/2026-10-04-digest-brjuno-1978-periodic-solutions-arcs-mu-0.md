@@ -124,3 +124,8 @@ No connection beyond the statement that the resonant seeds T_N are what #917 and
 3. Check Casoliva's (p, q) convention against Brjuno's (N = (p + q)/p, a = (p/(p + q))^(2/3)) before any seed is built.
 4. Obtain Bruno 1973 (the Celest. Mech. 18:51-101 translation of the preprint on properties of solutions at mu = 0, listed in the Bruno 1981 references) and the preprint 103/1978 (extremum of the Hamiltonian along the arc families), which the ledger already lists as wanted for the stability intervals; neither is held.
 5. Settle whether the sidereal-speed form of W (the printed Table IV column) or eq. 12 is the first-order closest-approach parameter, by integrating one Table IV orbit at small mu (a #899 control: a = 1.41019, e = 0.88445, the maximum-C orbit, mu = 1e-4 to 1e-3) and measuring the periapsis.
+
+## Note added 2026-10-05 after reading part III (`docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`)
+
+Part III does not settle either open question of this digest. The W column question: W does not occur in part III (answer 2 above stands). The type III expansion (1/2 versus 1/12): part III does not repeat it; its eq. (2.33) a - 1 = -(1/4) e^4 - (5/16) e^6 concerns another curve (the curve f, a < 1, eps' = -1) and reproduces from its Table II. What part III does supply are exact tools that support the 1/12 reading indirectly: the e* formula and Theorem 2.2 reproduce all of Henon's Tables 2 to 9 (276 rows), and its extremal-point condition reproduces the Bruno 1981 maximum-C orbit. The intersection types here are proved there (Theorems 2.2, 2.4, 2.5); the T_N arcs are unchanged. The a < 1 and a > 1 sign conventions of Q1 (p.71) are my reconstruction, flagged there.
+
