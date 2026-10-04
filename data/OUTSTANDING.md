@@ -637,6 +637,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   15:115 (2002) and CMDA 103:143 (2009); and "A continuation method for converting
   trajectories from patched conics to full gravity models", J. Astronaut. Sci. (DOI
   10.1007/s40295-014-0017-x), which may already publish the continuation step.
+  **Two cautions for the demanded-turn gate, from the MacKay 2005 digest (not yet acted on):**
+  (1) the theory requires the direction change to be measured with velocities RELATIVE TO THE
+  FLYBY BODY (the error in Bolotin & MacKay 2000 was to measure it in the inertial frame);
+  the project's gate does use body-relative velocities (`turn_gate_closures.py` subtracts the
+  moon's velocity), but it never checks that its inputs are body-relative, so a caller passing
+  inertial velocities would repeat that error silently; (2) the gate accepts a demanded turn
+  of zero as feasible, whereas the theory excludes turns of 0 and 180 degrees: a zero-turn
+  "flyby" in a zero-size-body chain is a trajectory through the body's centre, not an
+  encounter. Both to be added as checks when the gate is next touched (`#899`).
   **Bradley & Russell 2014 now held and digested**
   (`docs/notes/2026-10-04-digest-bradley-russell-2014-patched-conics-to-full-gravity-continuation.md`):
   their method continues a patched-conic tour to a full ephemeris in one scalar that scales the
