@@ -412,3 +412,58 @@ def test_alpha_parities_match_andreu_table_1_5() -> None:
         assert alphas[k] == 0.0
     assert math.isclose(alphas[3], sum(qbcp._COEFFS_ALPHA3), rel_tol=1e-14)
     assert alphas[3] > 1.019
+
+
+# Andreu (1998) Table 1.5, columns alpha_7 (cosine) and alpha_8 (sine), signs as printed, in the
+# thesis's own frame. The module reflects the frame (x -> -x, y -> -y), so its tables for
+# alpha_4, alpha_5, alpha_7 and alpha_8 are minus the printed ones, entry by entry.
+_ANDREU_1998_TABLE_1_5_ALPHA7 = [
+    -6.31406956800623e-02,
+    3.88563862309805e02,
+    1.73691020334556e-01,
+    3.38290807166970e00,
+    1.57483756538049e-04,
+    2.93636048900444e-02,
+    -1.22443455011601e-05,
+    2.53893543426244e-04,
+    -2.27892904000757e-07,
+    2.19043270618166e-06,
+    -3.03331196123435e-09,
+    1.88697154529022e-08,
+    -3.43237510689845e-11,
+    1.61151370399910e-10,
+]
+_ANDREU_1998_TABLE_1_5_ALPHA8 = [
+    0.0,
+    -3.89743725623765e02,
+    -1.73427916632252e-01,
+    -3.38569648664212e00,
+    -1.55588663241340e-04,
+    -2.93758267196753e-02,
+    1.22585121310793e-05,
+    -2.53959688769264e-04,
+    2.28002922020236e-07,
+    -2.19083462442904e-06,
+    3.03610903512086e-09,
+    -1.88745764757932e-08,
+    3.43237510689845e-11,
+    -1.63172364150645e-10,
+]
+
+
+def test_sun_position_tables_are_minus_the_printed_ones() -> None:
+    """Guards the frame reflection of the Sun-position series, entry by entry.
+
+    Found 2026-10-04 (#892): five tail entries (alpha_7 at k = 12, 13; alpha_8 at k = 11, 12, 13)
+    had kept the printed sign.
+    """
+    for code, printed in (
+        (qbcp._COEFFS_ALPHA7, _ANDREU_1998_TABLE_1_5_ALPHA7),
+        (qbcp._COEFFS_ALPHA8, _ANDREU_1998_TABLE_1_5_ALPHA8),
+    ):
+        assert len(code) == len(printed)
+        for k, (got, want) in enumerate(zip(code, printed, strict=True)):
+            if want == 0.0:
+                assert got == 0.0, k
+            else:
+                assert math.isclose(got, -want, rel_tol=1e-14), (k, got, want)

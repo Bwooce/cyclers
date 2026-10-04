@@ -21,7 +21,7 @@ To maintain coordinate consistency with the repository's BCR4BP and CR3BP conven
 (x -> -x, y -> -y) relative to the papers' convention. That is a rotation by pi: it does not
 change the Sun's sense of motion, which is clockwise in this frame.
 
-#892 (2026-10-04): three defects were corrected, and all results computed with this module
+#892 (2026-10-04): four defects were corrected, and all results computed with this module
 before that date belong to a model that was not the QBCP.
   1. alpha_2 was evaluated as a cosine series and alpha_3 as a sine series. The 2018 table's
      column headers label them that way (a_k and b_k), against its own k = 0 entries (0 for
@@ -30,6 +30,8 @@ before that date belong to a model that was not the QBCP.
      factor 1/alpha_6. That is not the printed Hamiltonian.
   3. The alpha_1 coefficient at k = 5 was typed, as the 2018 table prints it, as
      -38.068581391005552e-08; Andreu's table has -8.06858139100555e-08.
+  4. Five tail entries (alpha_7 at k = 12, 13; alpha_8 at k = 11, 12, 13) had not been multiplied
+     by -1 for the frame reflection. The effect is 2e-8 in a Sun distance of 389.
 Positive control: with these corrections the L1 and L2 dynamical substitutes agree with the
 published POL1 and POL2 points (Rosales, Jorba & Jorba-Cusco 2023, Table 4) to 2e-8 and stay
 within 3e-6 of the three-body points, as the 2018 paper states; before, the miss was 1.8e-2.
@@ -160,8 +162,8 @@ _COEFFS_ALPHA7 = [
     -2.190432706181655e-06,
     3.033311961234353e-09,
     -1.886971545290216e-08,
-    -3.432375106898453e-11,
-    1.611513703999101e-10,
+    3.432375106898453e-11,
+    -1.611513703999101e-10,
 ]
 
 # Reflected (multiplied by -1.0)
@@ -177,12 +179,12 @@ _COEFFS_ALPHA8 = [
     -2.280029220202363e-07,
     2.19083462442904e-06,
     -3.036109035120856e-09,
-    -1.887457647579322e-08,
-    3.432375106898453e-11,
-    -1.631723641506449e-10,
+    1.887457647579322e-08,
+    -3.432375106898453e-11,
+    1.631723641506449e-10,
 ]
 
-# Constants from Gimeno-Jorba (2018) Table 3
+# Constants from Jorba-Cusco, Farres & Jorba (2018) Table 3
 _QBCP_MU_EM: float = 0.012150581623433623
 _QBCP_MU_S: float = 328900.54999999906
 _QBCP_A_S: float = 388.81114302335106
