@@ -1310,7 +1310,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2018 paper's multipliers), added today. `core/er3bp.py`: (b) added today (Neelakantan &
   Ramanan 2022 Table 8, four of five printed orbits close from periapsis to 1e-11..3e-7; the
   fifth row is not reproduced), plus the earlier Antoniadou & Libert check at 2e-3; (a) not
-  yet. `core/ccr4bp.py`: (a) yes, added today
+  yet. **Update 2026-10-04 late (`#896` sub-worker, commits `d6686881`, `0c503032`):**
+  `core/ccr4bp.py` now has its first PUBLISHED control: Kumar, Anderson, de la Llave & Gunter
+  2021 (AAS 21-651), the Jupiter-Europa 3:4 torus with Ganymede, reproduces the printed closest
+  approaches to Europa (22,052 and 18,721 km); the paper's Table 1 prints Europa's and Ganymede's
+  GM values in each other's rows. Elliptic model (`tests/core/test_er3bp_peng_2017.py`): all six
+  circular-problem halo orbits of Peng, Bai & Xu 2017 reproduce, but only 3 of the 8 Sun-Mercury
+  elliptic orbits; the other five and the printed eigenvalues are strict expected failures. One
+  row reproduces once the paper's "approximately" stated constants are refined; the rest fail
+  with a single-shooting corrector, and the project has no elliptic multi-segment corrector
+  (`#912`), so this is not evidence the rows are wrong; retry them when `#912` exists.
+  `core/ccr4bp.py`: (a) yes, added today
   (`tests/core/test_ccr4bp_inertial_identity.py`: outer and inner perturber agree with a
   non-rotating-frame integration to better than 1e-9, with a reversed-rate control), so the
   two-moon model's sense is confirmed; (b) none for the model itself (the `#889` control is for the elliptic stroboscopic
