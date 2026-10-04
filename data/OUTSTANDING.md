@@ -1150,7 +1150,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   form cannot treat a massless particle (pp.202-203): use single KS about the moon with the other
   bodies as Cartesian perturbations. Its Tables I-II (Pythagorean and captured-binary problems,
   initial conditions printed) are controls for a three-body version only. The Stiefel & Scheifele
-  1971 digest (book, in progress) will settle the KS transition matrix.
+  1971 digest (`docs/notes/2026-10-04-digest-stiefel-scheifele-1971-linear-regular-celestial-mechanics.md`)
+  REVISES the recommendation: build ONE KS code centred on the moon (K^2 = mu_moon; planar data keep
+  u3 = u4 = 0, which is exactly Levi-Civita), in the book's total-energy form (9,53) with V =
+  centrifugal plus the other primary's direct attraction (V(0) = 0) and Coriolis as a force; the KS
+  u-method covers hyperbolic passes, so the Burdet 1/a form is not needed. The book's h is the
+  NEGATIVE energy (h > 0 elliptic). It prints no KS transition matrix; the agent verified a recipe by
+  finite differences (lift, 10x10 flow, project to (x, v), then subtract (dz/dt)_f dt_f/dz0 for fixed
+  time, without which the matrix is wrong by O(1)); the analytic variational equations are still to
+  derive. `#670`'s planar Levi-Civita variational jet is an independent cross-check. Sourced controls:
+  section 15 examples 1-3 (tolerance 5e-6), section 23 examples (J2 plus Moon, reproduced to 1e-4 km),
+  the Stumpff solution (any sign of h) and the radial fall. The book regularises one centre only, so
+  passes near both primaries need a centre switch. The `core/cr3bp_regularized.py` docstring cited
+  this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
   project's lanes treat the spacecraft as massless and the moons as prescribed, so Chambers's
