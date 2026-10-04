@@ -481,3 +481,12 @@ reproduce the paper's separation. That is a curiosity, not a need.
   eq. 26 as the derived one and treat the p.204 form as shorthand (it is consistent in an order-of-magnitude sense only).
 - The ordering of A2 versus A3 details, for example "delta_0^k = delta_0/2, k = 1..4", is read as printed; the two orbits are
   on slightly different energy levels, as the text says.
+
+## 11. Dated note, 2026-10-05: the Henon-Heiles potential is now sourced
+
+Henon and Heiles 1964 (AJ 69:73, digest `docs/notes/2026-10-04-digest-henon-heiles-1964-third-integral.md`) prints the
+potential as U(x, y) = (1/2)(x^2 + y^2 + 2 x^2 y - (2/3) y^3) (eq. 11, p.75), which expands to exactly the standard form
+inferred in sections 3 and 6 of this digest, (q1^2 + q2^2)/2 + q1^2 q2 - q2^3/3. The inference is CONFIRMED; nothing in
+the check of section 7.3 changes. In that paper the critical energy is about 0.11 and the section's relative regular area
+reads about 0.9 at E = 0.118 (read off its Fig. 7). One small discrepancy is recorded there, not resolved: a Newton solve of
+the one-crossing map at h = 0.118 puts the stable 1-periodic orbit at y = 0.2955 against the "about 0.305" label here.
