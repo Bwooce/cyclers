@@ -266,3 +266,46 @@ def test_l1_replacement_orbit_matches_jorba_2020() -> None:
 
     angles = np.unwrap([math.atan2(s[1], s[0] - x_l1) for s in [*nodes, nodes[0]]])
     assert round(abs(angles[-1] - angles[0]) / (2.0 * math.pi)) == 2
+
+
+# ---------------------------------------------------------------------------
+# Published positive control with a printed initial state
+# ---------------------------------------------------------------------------
+
+# Oshima (2022), "Multiple families of synodic resonant periodic orbits in the bicircular restricted
+# four-body problem", Advances in Space Research 70:1325-1335. Table 1 (constants; the Sun's rate is
+# printed as -0.925195985, that is, clockwise, in the same frame as this module: Earth at -mu) and
+# Table 4, row 1: a linearly stable 1:1 synodic resonant three-dimensional retrograde orbit about
+# the Earth, state at y = 0 with the Sun angle zero.
+_OSHIMA_2022_SYSTEM = bcr4bp.BCR4BPSystem(
+    mu=0.0121506683,
+    mu_sun=328900.541,
+    a_sun_nondim=388.811143,
+    omega_sun_nondim=0.925195985,
+    theta_sun0=0.0,
+)
+_OSHIMA_2022_TABLE_4_ROW_1 = np.array([1.090174251, 0.0, -0.204803847, 0.0, -2.061909684, 0.0])
+
+
+def test_oshima_2022_printed_orbit_closes_after_one_sun_period() -> None:
+    """Measured closure 7.9e-9 (the state is printed to ten digits). With the Sun switched off the
+    same state misses by 0.12, and with the Sun advancing counter-clockwise, as this module had it
+    before 2026-10-04, by 0.16."""
+    period = 2.0 * math.pi / _OSHIMA_2022_SYSTEM.omega_sun_nondim
+    closure = float(
+        np.linalg.norm(
+            _propagate_rotating(_OSHIMA_2022_TABLE_4_ROW_1, period, _OSHIMA_2022_SYSTEM)
+            - _OSHIMA_2022_TABLE_4_ROW_1
+        )
+    )
+    assert closure < 1e-6
+    no_sun = dataclasses.replace(_OSHIMA_2022_SYSTEM, mu_sun=0.0)
+    assert (
+        float(
+            np.linalg.norm(
+                _propagate_rotating(_OSHIMA_2022_TABLE_4_ROW_1, period, no_sun)
+                - _OSHIMA_2022_TABLE_4_ROW_1
+            )
+        )
+        > 1e-2
+    )

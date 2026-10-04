@@ -615,3 +615,48 @@ def test_leiva_briozzo_2008_periodic_orbits_close(
     """
     assert _leiva_briozzo_closure(row, row[2]) < 1e-3
     assert _leiva_briozzo_closure(row, 0.0) > 1e-2
+
+
+# Leiva & Briozzo (2005), "Fast periodic transfer orbits in the Sun-Earth-Moon Quasi-Bicircular
+# Problem", CMDA 91:357-372: two periodic orbits of the QBCP with period one Sun period, printed as
+# (start time, x, ydot) with y = xdot = 0, in their frame (Earth at +mu). One lunar pass per period
+# at 10,431 and 10,400 km above the surface.
+_LEIVA_BRIOZZO_2005_ORBITS = [
+    ("orbit 1", 0.0, -1.01950751115, 1.97782573253),
+    ("orbit 2", 0.5, -1.01940558303, 1.97615899365),  # start time in Sun periods
+]
+
+
+@pytest.mark.parametrize("orbit", _LEIVA_BRIOZZO_2005_ORBITS, ids=lambda o: o[0])
+def test_leiva_briozzo_2005_periodic_orbits_close(orbit: tuple[str, float, float, float]) -> None:
+    """Fourth published control (#892). Measured: closure 1.8e-6 and 3.6e-6 from the printed
+    epoch, 2.5e-2 from the other one; closest approach to the Moon 0.0317 length units, which is
+    the printed altitude of about 10,400 km."""
+    _, start_fraction, x, ydot = orbit
+    system = qbcp.qbcp_default()
+    period = system.sun_period_tu
+    state_pv = np.array([-x, 0.0, 0.0, 0.0, -ydot, 0.0])
+
+    def closure_from(t0: float) -> tuple[float, float]:
+        state0 = qbcp.state_pv_to_pm(state_pv, t0, system)
+        sol = solve_ivp(
+            qbcp.qbcp_eom,
+            (t0, t0 + period),
+            state0,
+            args=(system,),
+            method="DOP853",
+            rtol=1e-13,
+            atol=1e-13,
+            dense_output=True,
+        )
+        assert sol.sol is not None
+        samples = sol.sol(np.linspace(t0, t0 + period, 4000))
+        moon_distance = float(np.min(np.hypot(samples[0] - (1.0 - system.mu), samples[1])))
+        return float(np.hypot(sol.y[0, -1] - state0[0], sol.y[1, -1] - state0[1])), moon_distance
+
+    t_printed = start_fraction * period
+    closure, moon_distance = closure_from(t_printed)
+    assert closure < 1e-4
+    assert 0.030 < moon_distance < 0.033
+    wrong_epoch_closure, _ = closure_from(t_printed + 0.5 * period)
+    assert wrong_epoch_closure > 1e-3
