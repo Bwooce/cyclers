@@ -164,8 +164,7 @@ reproduced to 1e-16 by the Earth-Moon RTBP only with mu = 0.012150581623433623, 
 (our computation, see section 6, item C5). So the centre-manifold computation used the full mu, and Table 3's mu is a truncation
 of it. The project's `core/qbcp.py` default constants (`_QBCP_MU_EM`, `_QBCP_MU_S`, `_QBCP_A_S`, `_QBCP_OMEGA_S`) are the BCP
 constants of the 2018 paper (mu = 0.012150581623433623, m_S = 328900.54999999906, omega_S = 0.92519598551829646, a_S =
-388.81114302335106), not the m_s and omega_s of Table 3; the older comment block in `core/qbcp.py` and the constants in
-`core/bcr4bp.py` lines 11 to 14 quote Table 3 values. Whether the Fourier table was generated with the Table 3 or the Table 2
+388.81114302335106), not the m_s and omega_s of Table 3; the header of `core/bcr4bp.py` (lines 11 to 14) and its `_ANDREU_*` constants (lines 101 to 110) quote the Table 3 values. Whether the Fourier table was generated with the Table 3 or the Table 2
 constants is not stated in this paper. The effect on the published orbits is below the project's current 2e-8 agreement
 (INFERRED, not measured), but it is a loose end worth closing by trying both.
 
