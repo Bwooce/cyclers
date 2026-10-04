@@ -589,7 +589,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
 - `#888` — registered 2026-10-04 (found by `#885`, confirmed by the coordinator with independent
-  code the same day; **OWNER DECISION PENDING; this outranks every Uranian task**). **THE SIX
+  code the same day). **OWNER DECISION 2026-10-04: WITHDRAWN ("withdraw the lies").** All six
+  rows are out of `data/catalogue.yaml` (398 -> 392 rows) and preserved verbatim in
+  `data/withdrawn/`; their nine evidence registrations are removed from `validate.py`; five
+  census ratchets, the transfer-network positive control (which now reads the withdrawn rows as
+  fixtures) and the README are updated; the website's launch-windows data, About wording and
+  tests follow (its hero scene and discoveries strip are data-driven and disappear with the
+  rows). The catalogue now holds NO V4 row and NO project-discovered row with a novelty label.
+  **STILL TO DO (the real fix, not dispatched):** (1) a DEMANDED-TURN gate in the validation
+  lane: at every encounter the angle between incoming and outgoing V-infinity must not exceed
+  the bend available at the altitude floor; (2) a positive control on a published flyable
+  cycler (a Russell & Strange Table 3 or 4 member) and a regression test that the six
+  withdrawn closures FAIL the gate; (3) check the uncatalogued Jovian `#576` and Saturnian
+  `#571` symmetric closures for the same defect and stamp the outcome; (4) the frozen-gate
+  tests `tests/verify/test_566_five_representatives_v4.py` and `test_silver_327_*` still pass
+  (they test stored gauntlet output) but no longer back any catalogue claim: mark them as
+  tests of an INSUFFICIENT gauntlet, or retire them, when the gate lands; (5)
+  `data/found/650_transfer_network/` still contains edges between the withdrawn rows
+  (stale derived data); (6) re-run the Uranian two-moon search with the gate in force
+  (`#885` section 5 shows ballistic flyby sequences between these moons exist). **This
+  outranks every Uranian task.** **THE SIX
   CATALOGUED URANIAN QUASI-CYCLER ROWS ARE NOT BALLISTIC TRAJECTORIES.** At every one of their
   twelve encounters the turn demanded between the incoming and the outgoing V-infinity exceeds
   the largest bend the moon can supply at 50 km, by a factor of 1.8 to 28 (flagship
@@ -610,8 +629,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   because its target is not flyable; `#887` (triple cycler) and `#870` build on the two-moon
   rows and are on hold; the literature and attribution work of 2026-10-03 on these rows is
   sound as far as it goes but attaches to objects that are not trajectories. **Recommended
-  (coordinator):** withdraw all six rows to `data/withdrawn/` as was done for the Umbriel torus
-  row, correct the README and the website, and replace `#879` with a real fix: a DEMANDED-TURN
+  (coordinator, since accepted by the owner):** withdraw all six rows to `data/withdrawn/` as
+  was done for the Umbriel torus row, correct the README and the website, and replace `#879`
+  with a real fix: a DEMANDED-TURN
   gate (turn at every encounter no greater than the bend available at the altitude floor) in
   the validation lane, with a positive control on a published flyable cycler (a Russell and
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
