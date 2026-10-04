@@ -934,6 +934,23 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   la Llave 2026 published version (10.1007/s00332-026-10276-6); no DOI: Kumar ASC 2026 Paper
   1023, Komachi ASC 2026 Paper 688, Rosengren et al. IAC-25-C1.9.1, Kumar & Anderson 2026
   (ISSFD). Next literature watch about 2026-10-17.
+- `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
+  PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
+  `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;
+  the agent's reading of the code, not checked by the coordinator). Their method: a
+  circular-problem orbit whose period is N/M of the primaries' period is periodic in the
+  elliptic problem over N revolutions; start at periapsis OR apoapsis (two counterparts per
+  orbit, which need not share stability); impose perpendicular crossings at the start and at
+  half the period; continue in eccentricity with a multi-segment corrector; stability from the
+  product of segment transition matrices. The project has a periapsis-start single-segment
+  corrector (`search/er3bp_periodic.py`), a planar eccentricity continuation
+  (`genome/er3bp_continuation.py`) and a single full-period monodromy. **Missing:** a starting
+  true anomaly argument (apoapsis group); an elliptic multi-segment corrector; the segmented
+  monodromy product with a stability index and eigenvalue-type classification
+  (`monodromy_eigenstructure` would raise on three real pairs); three-dimensional
+  continuation. These are needed to carry the Earth-Moon cyclers into the elliptic problem
+  and to test Park & Howell's folds on them (`#897` candidate), and to settle the one
+  Neelakantan & Ramanan orbit the project cannot reproduce (`#910`).
 - `#911` — registered 2026-10-04. **STALE CLAIMS ABOUT WITHDRAWN ROWS IN OLDER NOTES.** Eighteen
   notes under `docs/notes/` name the seven withdrawn rows, and several call a project result
   "confirmed novel" (`2026-07-19-659-antiope-adjudication-fable.md`,
