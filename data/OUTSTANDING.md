@@ -1182,7 +1182,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   before any dynamics; and two run monitors, the bilinear constraint and the identically-zero
   regularised Hamiltonian K. Its Table 1 (Burrau problem: rectangular, time-only and KS with one
   integrator) is the template for the `#929` comparison on orbit 12i; its numbers are 1960s upper
-  bounds, not expected values. The `core/cr3bp_regularized.py` docstring cited
+  bounds, not expected values. Burdet 1968 (digest
+  `docs/notes/2026-10-04-digest-burdet-1968-theory-kepler-motion-perturbed-two-body.md`) SUPERSEDES the
+  earlier "Burdet is elliptic-only" and "1/a form hand-derived, unchecked" statements: the 1968 form
+  (dt = r ds, element omega^2 = 1/a, eqs. 111 and 201-203) holds for elliptic, parabolic and hyperbolic
+  motion and is term for term the 1/a form; the agent's perturbed runs matched Cartesian integration
+  to 1e-12 on bound and hyperbolic-energy passes. KS stays the primary build (constant frequency in
+  the CR3BP, symplectic check); the Burdet form becomes the source-confirmed second integrator for the
+  three-way comparison on orbit 12i. Code it from eqs. 201-203, not 206 (sign slip in the gamma'
+  alpha term, a missing tilde). Published benchmark: the L4 solution of the perturbed two-body problem
+  (mass ratio 0.01, kappa^2 = 1.01; periods 6.252003 and 5.89817010367 printed, a = 101/105 and e =
+  59/101 exactly), whose exact solution is the second body's orbit rotated by 60 degrees. To acquire:
+  Burdet's announced two-fixed-centre paper (the direct fit for #928), NASA CR-769, Broucke 1963. The `core/cr3bp_regularized.py` docstring cited
   this book wrongly; corrected 2026-10-05 to Aarseth & Zare 1974.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
