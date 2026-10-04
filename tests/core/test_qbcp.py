@@ -660,3 +660,40 @@ def test_leiva_briozzo_2005_periodic_orbits_close(orbit: tuple[str, float, float
     assert 0.030 < moon_distance < 0.033
     wrong_epoch_closure, _ = closure_from(t_printed + 0.5 * period)
     assert wrong_epoch_closure > 1e-3
+
+
+# Rosales, Jorba & Jorba-Cusco (2023), "Invariant manifolds near L1 and L2 in the quasi-bicircular
+# problem", CMDA 135:15, Table 5: the monodromy spectra of the dynamical substitutes of L1 and L2
+# (largest modulus, and the arguments of the two unit-modulus pairs).
+_RJJ_2023_TABLE_5 = {
+    "L1": (460182151.5759, (2.981120162511, 2.871101174766)),
+    "L2": (2397196.843443, (0.408977840813, 0.091483781904)),
+}
+
+
+@pytest.mark.parametrize(("name", "lo", "hi"), [("L1", 0.5, 0.95), ("L2", 1.05, 1.5)])
+def test_substitute_spectra_match_rosales_2023_table_5(name: str, lo: float, hi: float) -> None:
+    """Fifth published control (#892): the whole monodromy spectrum, from the source.
+
+    Measured: moduli 460182152.08 and 2397196.8457 (relative difference 1e-9 from the printed
+    values); arguments 2.98112012, 2.8711011756 at L1 and 0.4089778402, 0.0914837825 at L2. The
+    L1 argument that shares a block with the 4.6e8 multiplier agrees to 4e-8, the other three
+    to 1e-9.
+    """
+    system = qbcp.qbcp_default()
+    x_point = _collinear_point(system.mu, lo, hi)
+    _, monodromy = _substitute_orbit_and_monodromy(x_point, 24, system)
+    eigenvalues = np.linalg.eigvals(monodromy)
+    modulus, arguments = _RJJ_2023_TABLE_5[name]
+    assert math.isclose(float(np.max(np.abs(eigenvalues))), modulus, rel_tol=1e-8)
+    found = sorted(
+        (
+            abs(math.atan2(v.imag, v.real))
+            for v in eigenvalues
+            if abs(abs(v) - 1.0) < 1e-3 and v.imag > 0.0
+        ),
+        reverse=True,
+    )
+    assert len(found) == 2
+    for got, want in zip(found, arguments, strict=True):
+        assert abs(got - want) < 2e-7
