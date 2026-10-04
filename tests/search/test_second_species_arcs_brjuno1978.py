@@ -163,6 +163,27 @@ def test_e_star_reproduces_every_determinate_henon_row() -> None:
     assert (n_gt, n_lt) == (202, 74)
 
 
+def test_label_family_contains_the_true_family_for_every_determinate_henon_row() -> None:
+    """label_family returns every family whose Theorem 2.2 curve (and N^-1 range) the arc is
+    on: the printed family is always among them (276 rows).  It is a membership test, not an
+    identifier: A_1 and A_2 share the omega_4 form, so many rows carry more than one label."""
+    misses = []
+    ambiguous = 0
+    for r, arc in _henon_determinate():
+        labels = m.label_family(arc)
+        if r["family"] not in labels:
+            misses.append((r["table"], r["tau_pi"], r["eta_pi"]))
+        ambiguous += len(labels) > 1
+    assert misses == [HENON_DEFECT_ROW]
+    assert ambiguous > 100  # documents the limit: most arcs carry several candidate labels
+
+
+def test_label_family_on_undetermined_arcs_is_empty() -> None:
+    assert m.label_family(m.tangent_arc(2, 1, eps1=1)) == []  # e* radicand vanishes
+    (arc,) = [a for a in m.e1_arcs(1, 1) if abs(a.eta / PI - 1.36836) < 1e-3]
+    assert m.label_family(arc) == []  # e = 1
+
+
 def test_e_star_rejects_a_wrong_family_label() -> None:
     """Negative control: relabelled families (A1 as A3, A0 as A3, B1 as B2, C23 as C24)
     match under a fifth of the rows.  (A1 and A2 share the omega_4 form of Theorem 2.2,

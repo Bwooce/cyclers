@@ -225,7 +225,8 @@ def test_s_is_not_small_at_a_non_critical_orbit() -> None:
 
 
 def test_hitzl_a0_minus_1_demanded_turn() -> None:
-    """Digest 1977b 9.4 item 3: demanded turn 65.094 degrees and V = 1.8437 at A0(-1)."""
+    """Digest 1977b 9.4 item 3: demanded turn 65.094 degrees and V = 1.8437 at A0(-1). Both are
+    values COMPUTED in the digest from the printed Table 1 row (not printed in the paper)."""
     r = HH[0]
     arc = m.arc_elements(float(r["tau_pi"]) * PI, float(r["eta_pi"]) * PI, -1, eps1=-1)
     cd = m.collision_data(arc)

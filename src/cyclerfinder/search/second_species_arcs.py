@@ -15,8 +15,8 @@ Sources (all digested under ``docs/notes/2026-10-04-digest-*``):
   velocity (4.C), the asymmetric arcs T_N, the e* membership test (Theorem 2.2),
   the curve f of Table II.
 * Bruno 1981 (Celest. Mech. 24:255) -- the first-order periapsis parameter W.
-* Hitzl & Henon 1977 (Celest. Mech. 15:421 and 16:?) -- the critical-orbit
-  function S (eq. 40 of the stability paper); S = 0 at critical orbits.
+* Hitzl & Henon 1977, Celest. Mech. 15:421 (critical orbits) and Acta Astronautica
+  4:1019 (stability; eq. 40, the critical-orbit function S, S = 0 at critical orbits).
 * Henon 2001, Generating families II part B, chapter 18 -- R-arcs and R-orbits;
   Devaney 1981 -- their count by the baker map.
 * Gomez & Olle 1986, Celest. Mech. 39:33 -- the elliptic extension (primaries'
@@ -62,7 +62,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.optimize import brentq
+from scipy.optimize import brentq, minimize_scalar
 
 PI = math.pi
 TWO_PI = 2.0 * math.pi
@@ -481,28 +481,72 @@ def find_etas(
     f = _timing_residual_vec(tau, etas, sigma, e_p, eps_p)
     roots: list[float] = []
     sg = eps_p * sigma
+
+    def fun(x: float) -> float:
+        return timing_residual(tau, x, sigma, e_p, eps_p)
+
+    def accept(cand: float) -> None:
+        d = 1.0 - sg * math.cos(tau) * math.cos(cand)
+        if d <= 0.0 or abs(math.cos(cand) - sg * math.cos(tau)) > d * (1.0 + 1e-9):
+            return
+        if drop_coincident and sigma == 1 and abs(cand - tau) < 1e-7:
+            return
+        if any(abs(cand - r) < 1e-12 for r in roots):
+            return
+        roots.append(cand)
+
     for i in range(n - 1):
         f0, f1 = float(f[i]), float(f[i + 1])
         if f0 == 0.0:
-            cand = float(etas[i])
+            accept(float(etas[i]))
         elif f0 * f1 < 0.0:
-            cand = brentq(
-                lambda x: timing_residual(tau, x, sigma, e_p, eps_p),
-                float(etas[i]),
-                float(etas[i + 1]),
-                xtol=1e-15,
-                rtol=4 * np.finfo(float).eps,
+            accept(
+                float(
+                    brentq(
+                        fun,
+                        float(etas[i]),
+                        float(etas[i + 1]),
+                        xtol=1e-15,
+                        rtol=4 * np.finfo(float).eps,
+                    )
+                )
             )
-        else:
-            continue
-        d = 1.0 - sg * math.cos(tau) * math.cos(cand)
-        if d <= 0.0 or abs(math.cos(cand) - sg * math.cos(tau)) > d * (1.0 + 1e-9):
-            continue
-        if drop_coincident and sigma == 1 and abs(cand - tau) < 1e-7:
-            continue
-        if roots and abs(cand - roots[-1]) < 1e-12:
-            continue
-        roots.append(cand)
+        # two roots inside one cell (a turning point of the curve): the residual has an
+        # interior extremum of the same sign at both grid ends; look for it explicitly
+        local_extremum = 0 < i < n - 1 and (f[i] - f[i - 1]) * (f[i + 1] - f[i]) < 0.0
+        if local_extremum and f[i - 1] * f[i] > 0.0 and f[i] * f[i + 1] > 0.0:
+            sign = 1.0 if f[i] > 0.0 else -1.0
+            res = minimize_scalar(
+                lambda x, sign=sign: sign * fun(x),
+                bounds=(float(etas[i - 1]), float(etas[i + 1])),
+                method="bounded",
+                options={"xatol": 1e-14},
+            )
+            xe, fe = float(res.x), fun(float(res.x))
+            if fe * sign < 0.0:  # crossed zero: two roots flank the extremum
+                accept(
+                    float(
+                        brentq(
+                            fun,
+                            float(etas[i - 1]),
+                            xe,
+                            xtol=1e-15,
+                            rtol=4 * np.finfo(float).eps,
+                        )
+                    )
+                )
+                accept(
+                    float(
+                        brentq(
+                            fun,
+                            xe,
+                            float(etas[i + 1]),
+                            xtol=1e-15,
+                            rtol=4 * np.finfo(float).eps,
+                        )
+                    )
+                )
+    roots.sort()
     return roots
 
 
@@ -756,29 +800,20 @@ def c_family_indices(
     return out
 
 
-def first_c_family(
-    e_p: float,
-    eps_p: int,
-    i_parity: int,
-    *,
-    max_i: int = 2000,
-    factor: float | None = None,
-) -> tuple[int, int]:
-    """Smallest (i, i + 1) with C_ij existing and i of the given parity (0 even, 1 odd).
+def first_c_family(e_p: float, eps_p: int, i_parity: int, *, max_i: int = 2000) -> tuple[int, int]:
+    """Smallest (i, i + 1) with C_ij existing (eq. 21) and i of the given parity (0 even,
+    1 odd).
 
-    ``factor`` replaces the exact ratio ``c_family_max_j(i)/i`` of eq. 21 (use it to
-    reproduce the rounded 1.015 of the paper's text).  Gomez & Olle p. 44 quote C67,68
-    (eps_p = +1, i odd) and C68,69 (eps_p = -1, i even) at e_p = 0.98; with the exact
-    eq. 21 the second is C66,67 (66 * 1.01523 = 67.005 >= 67), the printed pair following
-    from the rounded 1.015 (66 * 1.015 = 66.99).
+    Gomez & Olle p. 44 quote C67,68 (eps_p = +1, i odd) and C68,69 (eps_p = -1, i even) at
+    e_p = 0.98.  Exact eq. 21 reproduces the first and gives C66,67 for the second
+    (66 * 1.01523 = 67.005 >= 67); the printed C68,69 follows only from the rounded
+    factor 1.015 (66 * 1.015 = 66.99).
     """
     for i in range(1, max_i + 1):
         if i % 2 != i_parity % 2:
             continue
-        j = i + 1
-        ok = c_family_exists(i, j, e_p, eps_p) if factor is None else j <= factor * i
-        if ok:
-            return i, j
+        if c_family_exists(i, i + 1, e_p, eps_p):
+            return i, i + 1
     raise ValueError("none found")
 
 
@@ -927,6 +962,56 @@ def e_star_matches(
     return any(abs(es - c) < tol for c in theorem_2_2_values(kind, a**1.5, j, k))
 
 
+def label_family(arc: SArc, *, max_index: int = 12, tol: float = 3e-3) -> list[str]:
+    """Candidate family labels ("A2", "B1", "C23", ...) of an arc, by the e* membership test.
+
+    ``sigma`` splits the labels (A: -1, B: +1, C_ij: (-1)**(i+j)); Theorem 2.2 then gives
+    |e*| for each index, restricted to the printed ranges of N^-1 = a^(3/2) (A_j: N^-1 >= 1;
+    B_k: N^-1 > 1 - 1/k; C_ij: (i-1)/j < N^-1 < (i+1)/j with Brjuno's C_(i,j) read as
+    ``j = k`` of the theorem).  Returns every label that matches, sorted; empty for
+    arcs with undefined eps1, e = 0, e = 1 or at a tangent point (the e* radicand vanishes).
+
+    Limit: Theorem 2.2's omega_4 form for A_j is the same function for j = 2l - 1 and
+    j = 2l, so A_1 and A_2 (A_3 and A_4, ...) are not separated by e* where only that form
+    matches; the list then carries both.  The label is a membership test, not a proof.
+    """
+    if arc.e_p != 0.0 or arc.eps1 == 0 or arc.e < 1e-9 or arc.e > 1.0 - 1e-9:
+        return []
+    a, e = arc.a, arc.e
+    if abs(a - 1.0) >= a * e * (1.0 - 1e-9):
+        return []
+    es = e_star_abs(a, e, arc.eps1)
+    ninv = a**1.5
+    out: list[str] = []
+
+    def hit(kind: str, j: int, k: int) -> bool:
+        return any(abs(es - c) < tol for c in theorem_2_2_values(kind, ninv, j, k))
+
+    if arc.sigma == -1 and ninv >= 1.0 - 1e-9:
+        out.extend(f"A{j}" for j in range(max_index + 1) if hit("A", j, 0))
+    if arc.sigma == 1:
+        out.extend(
+            f"B{k}"
+            for k in range(1, max_index + 1)
+            if ninv > 1.0 - 1.0 / k - 1e-9 and hit("B", 0, k)
+        )
+    for i in range(1, max_index + 1):
+        for j in range(i + 1, 3 * max_index):
+            if (
+                m_ok(i, j)
+                and family_sigma("C", i, j) == arc.sigma
+                and (i - 1) / j - 1e-9 < ninv < (i + 1) / j + 1e-9
+                and hit("C", i, j)
+            ):
+                out.append(f"C{i}{j}")
+    return sorted(out)
+
+
+def m_ok(i: int, j: int) -> bool:
+    """C_ij exists at e_p = 0: 1 < j/i <= 2 sqrt 2."""
+    return c_family_exists(i, j)
+
+
 # --------------------------------------------------------------------------------------
 # The curve f of Brjuno 1978b Table II (P = 0, eps1 = -1, a < 1)
 # --------------------------------------------------------------------------------------
@@ -989,6 +1074,12 @@ def _damped_newton(
     tol: float,
     max_iter: int = 5000,
 ) -> NDArray[np.float64]:
+    """Damped Newton on the strictly convex ``phi`` inside one open orthant.
+
+    Raises ``RuntimeError`` if the line search stalls or the iteration limit is hit
+    before the gradient is below ``tol`` (relative to ``max(1, max 1/|y|)``): a stall
+    is never returned as a solution.
+    """
     y = y0.copy()
     for _ in range(max_iter):
         g, h = grad_hess(y)
@@ -1012,7 +1103,7 @@ def _damped_newton(
                 break
             t *= 0.5
             if t < 1e-16:
-                return y
+                raise RuntimeError("damped Newton line search stalled before convergence")
         y = yn
     raise RuntimeError("damped Newton did not converge")
 
@@ -1042,15 +1133,42 @@ def r_arc(signs: Sequence[int], tol: float = 1e-12) -> NDArray[np.float64]:
     return _damped_newton(s.copy(), gh, phi, s, tol)
 
 
+def _verified_distinct(
+    sols: dict[tuple[int, ...], NDArray[np.float64]],
+    resid: Callable[[NDArray[np.float64]], float],
+    expected: int,
+    what: str,
+) -> None:
+    """Raise RuntimeError unless there are exactly ``expected`` solutions, each with the
+    right signs and a recurrence residual below 1e-9, and pairwise distinct."""
+    bad_resid = [c for c, y in sols.items() if resid(y) > 1e-9]
+    bad_sign = [c for c, y in sols.items() if not np.all(np.sign(y) == np.array(c))]
+    stacked = np.array([y for y in sols.values()])
+    if len(sols) > 1:
+        order = np.lexsort(stacked.T[::-1])
+        srt = stacked[order]
+        distinct = 1 + int(np.sum(np.max(np.abs(np.diff(srt, axis=0)), axis=1) > 1e-8))
+    else:
+        distinct = len(sols)
+    if len(sols) != expected or bad_resid or bad_sign or distinct != expected:
+        raise RuntimeError(
+            f"{what}: expected {expected} distinct converged solutions, found {len(sols)} "
+            f"({distinct} distinct, {len(bad_resid)} with residual > 1e-9, "
+            f"{len(bad_sign)} with wrong signs)"
+        )
+
+
 def r_arcs(n: int) -> dict[tuple[int, ...], NDArray[np.float64]]:
     """All 2^(n-1) R-arcs of order n >= 2, keyed by the sign code of (y_1 .. y_(n-1)).
 
-    Hard assertion of the Devaney count: exactly ``2**(n-1)`` arcs, all distinct.
+    The Devaney count is verified, not assumed: raises ``RuntimeError`` unless there are
+    exactly ``2**(n-1)`` solutions with the right signs, residual below 1e-9, pairwise
+    distinct.
     """
     out: dict[tuple[int, ...], NDArray[np.float64]] = {}
     for code in itertools.product((1, -1), repeat=n - 1):
         out[code] = r_arc(code)
-    assert len(out) == 2 ** (n - 1)
+    _verified_distinct(out, r_arc_residual, 2 ** (n - 1), f"R-arcs of order {n}")
     return out
 
 
@@ -1078,13 +1196,17 @@ def r_orbit(signs: Sequence[int], tol: float = 1e-12) -> NDArray[np.float64]:
 
 def r_orbits(n: int) -> dict[tuple[int, ...], NDArray[np.float64]]:
     """All 2^n - 2 R-orbits of order n, keyed by sign code (sub-period solutions
-    included, as in Henon's count).  Hard assertion of the count."""
+    included, as in Henon's count).
+
+    The count is verified, not assumed: raises ``RuntimeError`` unless there are exactly
+    ``2**n - 2`` converged, distinct solutions with the right signs.
+    """
     out: dict[tuple[int, ...], NDArray[np.float64]] = {}
     for code in itertools.product((1, -1), repeat=n):
         if len(set(code)) == 1:
             continue
         out[code] = r_orbit(code)
-    assert len(out) == 2**n - 2
+    _verified_distinct(out, r_orbit_residual, 2**n - 2, f"R-orbits of order {n}")
     return out
 
 

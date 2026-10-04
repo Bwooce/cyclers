@@ -278,3 +278,56 @@ def test_a0_family_is_the_only_hyperbolic_continuation() -> None:
     h = m.hyperbolic_arc(0.16 * PI)
     assert h.eta < 0.5  # eta -> 0 at the parabolic orbit
     assert m.parabolic_arc().tau / PI > 0.16
+
+
+# --- enumerator completeness: every printed row is found by find_etas / enumerate_arcs -----------
+def _groups_by_tau_and_sigma() -> dict[tuple[float, int], list[tuple[tuple[str, str, str], float]]]:
+    groups: dict[tuple[float, int], list[tuple[tuple[str, str, str], float]]] = {}
+    for r in ELLIPTIC_ROWS:
+        if _key(r) in DEFECTS:
+            continue
+        tp, ep = float(r["tau_pi"]), float(r["eta_pi"])
+        if abs(math.sin(ep * PI)) < 1e-9 and abs(math.sin(tp * PI)) < 1e-9:
+            continue  # double point (tangent ellipse): F has a vanishing gradient there
+        groups.setdefault((tp, SIGMA[r["family"]]), []).append((_key(r), ep))
+    return groups
+
+
+def test_enumerator_finds_every_printed_row() -> None:
+    """For each distinct printed (tau/pi, sigma) of Tables 2-9, every printed eta/pi appears
+    among the roots of the timing equation within 2e-4 (298 rows in 125 groups).  This
+    includes Table 8 tau/pi 2.43883, the printed turning point, where two roots (2.50301 and
+    2.50352) sit inside one 0.0017 pi grid cell."""
+    groups = _groups_by_tau_and_sigma()
+    assert len(groups) == 125
+    n = 0
+    missing = []
+    for (tp, sg), lst in groups.items():
+        roots = [x / PI for x in m.find_etas(tp * PI, sg, eta_max=7.0 * PI)]
+        for key, ep in lst:
+            n += 1
+            if min((abs(x - ep) for x in roots), default=9.0) > 2e-4:
+                missing.append(key)
+    assert n == 298
+    assert missing == []
+
+
+def test_enumerator_resolves_two_roots_inside_one_grid_cell() -> None:
+    """Near the C23 turning point (tau/pi about 2.43884) the two roots at eta/pi 2.5030 and
+    2.5035 are 5e-4 pi apart, closer than the grid spacing 1.7e-3 pi; the printed Table 8 row
+    tau/pi 2.43883, eta/pi 2.50300 is the lower one."""
+    roots = [x / PI for x in m.find_etas(2.43883 * PI, -1, eta_max=2.6 * PI, eta_min=2.4 * PI)]
+    assert len(roots) == 2
+    assert roots[1] - roots[0] < 1.7e-3
+    assert roots[0] == pytest.approx(2.50300, abs=2e-5)
+    assert m.find_etas(2.4390 * PI, -1, eta_max=2.6 * PI, eta_min=2.4 * PI) == []
+
+
+def test_enumerate_arcs_returns_arcs_with_both_signs() -> None:
+    """enumerate_arcs at tau/pi 0.17 returns the single A0 arc (Table 2 row 2) and, for sigma = +1,
+    the B-type arcs of the same duration, none of which is the coincident circle."""
+    arcs = m.enumerate_arcs(0.17 * PI, eta_max=7.0 * PI)
+    a0 = [a for a in arcs if a.sigma == -1 and a.eta / PI < 0.5]
+    assert len(a0) == 1
+    assert a0[0].a == pytest.approx(6.92689, abs=5e-4)
+    assert all(not (a.sigma == 1 and abs(a.a - 1.0) < 1e-9 and a.e < 1e-9) for a in arcs)

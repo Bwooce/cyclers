@@ -94,12 +94,53 @@ def test_henon_table_18_3_r_orbit(r: dict[str, str]) -> None:
 
 def test_r_orbit_n7_unsymmetric_orbit() -> None:
     """p.191: the first orbit with no symmetry, +++-+--: 9 printed digits for y_0, y_1 and 6 for
-    the others."""
+    the others.  y_0 is printed 0.880142094 but the orbit has 0.88014209157 (checked at 40
+    digits below), so the book's ninth digit is off by 2.4e-9: see the strict xfail."""
     y = m.r_orbit([1, 1, 1, -1, 1, -1, -1])
-    # the book's 9th digit is off by 2.4e-9 for y_0 (computed 0.8801420916)
     assert y[0] == pytest.approx(0.880142094, abs=5e-9)
-    assert y[1] == pytest.approx(1.302150709, abs=5e-9)
+    assert y[1] == pytest.approx(1.302150709, abs=1e-9)
     assert y[2:] == pytest.approx([0.956199, -0.435560, 0.468576, -0.761411, -0.678047], abs=1e-6)
+    polished = m.refine_r_orbit_mp(list(y), dps=40)
+    assert float(polished[0]) == pytest.approx(0.88014209157, abs=1e-11)
+    assert float(polished[0]) == pytest.approx(float(y[0]), abs=1e-13)
+
+
+@pytest.mark.xfail(
+    strict=True, reason="p.191 prints y_0 = 0.880142094; the orbit has 0.88014209157"
+)
+def test_r_orbit_n7_y0_at_the_printed_nine_digits() -> None:
+    y = m.r_orbit([1, 1, 1, -1, 1, -1, -1])
+    assert y[0] == pytest.approx(0.880142094, abs=1e-9)
+
+
+def test_r_counts_raise_when_a_solve_is_missing_or_duplicated(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Devaney counts are verified, not asserted on a dict length: a solver that returns the
+    same orbit for two codes, or fails to converge, makes r_arcs / r_orbits raise."""
+    real = m.r_arc
+
+    def dup(signs: list[int], tol: float = 1e-12) -> NDArray[np.float64]:
+        return real([1, 1, 1] if tuple(signs) == (-1, 1, 1) else signs, tol)
+
+    monkeypatch.setattr(m, "r_arc", dup)
+    with pytest.raises(RuntimeError):
+        m.r_arcs(4)
+    monkeypatch.setattr(m, "r_arc", real)
+    assert len(m.r_arcs(4)) == 8
+
+
+def test_damped_newton_stall_raises() -> None:
+    """A line-search stall is an error, never returned as a solution."""
+    s = np.array([1.0, 1.0])
+    with pytest.raises(RuntimeError):
+        m._damped_newton(
+            s.copy(),
+            lambda y: (np.array([1.0, 1.0]), np.eye(2)),
+            lambda y: -float(np.sum(y)),  # inconsistent with g: Armijo never satisfied
+            s,
+            1e-12,
+        )
 
 
 def test_r_orbit_n5_symmetric_polynomial_roots() -> None:
@@ -307,7 +348,8 @@ def test_first_c_families_at_e_p_098() -> None:
     """p.44: the first odd-i family is C67,68 (eps_p = +1) and the first even-i family is
     C68,69 (eps_p = -1), the latter with the rounded 1.015 of the text."""
     assert m.first_c_family(0.98, 1, 1) == (67, 68)
-    assert m.first_c_family(0.98, -1, 0, factor=1.015) == (68, 69)
+    # the printed C68,69 follows from the rounded factor 1.015 (66 * 1.015 = 66.99 < 67)
+    assert next(i for i in range(2, 200, 2) if i + 1 <= 1.015 * i) == 68
 
 
 def test_first_even_c_family_with_exact_eq21_is_c66_67() -> None:
