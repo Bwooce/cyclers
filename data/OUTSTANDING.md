@@ -975,6 +975,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   From the Perko 1976b/1981b digest: Perko 1967, SIAM J. Appl. Math. 15:738 (error-estimation
   lemmas); Breakwell & Perko 1974, Celest. Mech. 9:437 (second-order matching); Deprit &
   Deprit-Bartholome 1969, Bull. Astron. 3:315 (Kepler matrizants, the a_ij of Perko 1981b eq. 50);
+  Aarseth 1971 (Astrophys. Space Sci. 14:118) and Peters 1968 (Bull. Astron. 3:167), perturbed
+  KS for a massless particle (`#928`).
   Perko's Stanford thesis is cited there as 1964, "Asymptotic matching in the restricted three-body
   problem" (the list above says 1965; confirm on receipt).
   **DOIs looked up 2026-10-04, second batch (Crossref; doubtful matches re-checked by the
@@ -1108,7 +1110,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   plain, Sundman and Levi-Civita on the `#896` Font-Nunes-Simo orbit 12i (pass 8.7e-6 from the
   small primary, in that paper's units and mass ratio) to test the `#896` tolerances. Needed by
   `#899` (continuation through near-collision seeds) and `#924` (variational vectors through a
-  pass). Heggie's Table III time-reversal rows (C/3 and R_f/a_f) are the portable published
+  pass). Heggie's Table III time-reversal rows (C/3 only; R_f/a_f depends on the step count and differs
+  between Heggie and Aarseth & Zare, so it is not portable) are the portable published
   check for a three-body version, if one is built.
   Formulation (Burdet 1967 digest `docs/notes/2026-10-04-digest-burdet-1967-regularization-two-body-problem.md`):
   planar Levi-Civita first (a symplectic check is available); for 3D, KS or a Burdet-type form in
@@ -1116,6 +1119,13 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   hyperbolic moon pass; the agent's 1/a form is hand-derived and must be checked symbolically
   before use). The transition matrix of a redundant-state form must be projected onto the
   physical state. Tests add the radial-fall cycloid and a near-collision ellipse at e = 1 - 1e-8.
+  Aarseth & Zare 1974 (digest `docs/notes/2026-10-04-digest-aarseth-zare-1974-regularization-three-body.md`)
+  does not change the choice: KS reduces to Levi-Civita in the plane and covers hyperbolic passes
+  (Burdet's printed form does not); it prints a checkable 3D KS map. Their two-KS eight-dimensional
+  form cannot treat a massless particle (pp.202-203): use single KS about the moon with the other
+  bodies as Cartesian perturbations. Its Tables I-II (Pythagorean and captured-binary problems,
+  initial conditions printed) are controls for a three-body version only. The Stiefel & Scheifele
+  1971 digest (book, in progress) will settle the KS transition matrix.
 - `#929` — registered 2026-10-04. **INTEGRATOR CONTROLS THROUGH ONE MOON FLYBY** (Chambers 1999
   digest `docs/notes/2026-10-04-digest-chambers-1999-hybrid-symplectic-integrator.md`). The
   project's lanes treat the spacecraft as massless and the moons as prescribed, so Chambers's
