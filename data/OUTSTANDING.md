@@ -1088,6 +1088,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   A stated risk: the p:q generating orbits are bifurcation orbits between first and second
   species (Bruno & Gomez 2003; Gomez & Olle II, pp. 151-152), where a demanded-turn test can
   mislead. Wait for the synthesis note and the Gomez & Olle digest before dispatching.
+  **From the Bolotin 2005 and 2006 digests (`#920`):** the theory's testable conditions on a
+  chain of Kepler arcs are a nondegenerate summed-action Hessian, equal relative speeds in and
+  out at each encounter, a change of direction (turn not 0 or 180 degrees), no early
+  collision, and a twist condition; only the smallness of the mass is not computable. The
+  theory places NO upper bound on the turn (any turn is reached at an impact parameter of
+  order the mass), so the project's demanded-turn gate is a physical condition at the real
+  masses that the theory does not contain: the gate and the theory test different things,
+  and a `#899` generator should apply both. For two moons, a chain visiting both is the
+  natural nondegenerate candidate, but no published existence route covers it (INFERRED by
+  the digest).
   **Gomez & Olle digest now in** (`docs/notes/2026-10-04-digest-gomez-olle-1991-second-species-circular-elliptic-I-II.md`):
   (1) their first-order matching gives the flyby periapsis r_p = mu (e - 1)/v_inf^2 with
   sin(turn/2) = 1/e, which is exactly the relation in the project's demanded-turn gate, so
