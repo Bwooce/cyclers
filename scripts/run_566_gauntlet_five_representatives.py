@@ -482,8 +482,12 @@ def main() -> int:
         # admission): every cycle's Lambert converged AND the per-cycle
         # V_inf-continuity closure residual stayed comfortably bounded
         # (< 0.5 km/s) even though the 50,000 km drift floor was blown.
+        # #888: a bounded-drift label is only meaningful for flyable flybys; the
+        # quasi label used to be stamped on magnitude-matched chains whose turns
+        # were 1.9-28x the available bend.
         v2_quasi_bounded = (not v2_all_pass) and all(
-            chains[nc][0].max_closure_residual_kms < 0.5 for nc in N_CYCLES_GRID
+            chains[nc][0].max_closure_residual_kms < 0.5 and chains[nc][0].turn_feasible
+            for nc in N_CYCLES_GRID
         )
 
         # V4-strict: single representative epoch, n_cycles grid.

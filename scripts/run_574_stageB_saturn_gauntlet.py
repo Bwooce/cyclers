@@ -285,6 +285,7 @@ def main() -> int:
             (not v2_by_nc[nc].passes_v2)
             and v2_by_nc[nc].n_cycles_completed == nc
             and v2_by_nc[nc].max_closure_residual_kms < QUASI_BOUNDED_CLOSURE_FLOOR_KMS
+            and v2_by_nc[nc].turn_feasible  # #888: flyable flybys, not just magnitudes
             for nc in N_CYCLES_GRID
         )
         if v2_all_pass:

@@ -190,3 +190,55 @@ def test_closure_turn_ratio_matches_bend_feasible_and_published_tr() -> None:
     assert report.agrees_with_published(published), (
         f"{rid}: measured TR {report.turn_ratio:.3f} vs published {published} ({report.summary()})"
     )
+
+
+def test_ballistic_correct_reports_the_wrap_like_wrap_node_turn() -> None:
+    """#888: ``ballistic_correct`` now evaluates the periodicity WRAP flyby on a
+    closed sequence (``wrap_bend_feasible``) with its own ephemeris-driven
+    rotation. It must agree with :func:`wrap_node_turn`, the `#833` construction
+    that reproduces the published turn ratio on the single-loop rows, and
+    ``gate_wrap=True`` must fold it into ``bend_feasible``."""
+    rid = "russell-ch4-9.353Gg2"
+    mod = _load_campaign()
+    row = _row(rid)
+    sel = mod.select_topology(
+        mod.build_genome(row),
+        model="circular",
+        phase_epochs=PHASE_EPOCHS,
+        t0_center=mod._t0_center(row),
+    )
+    genome = sel["genome"]
+    ephem = Ephemeris("circular")
+    kwargs: dict[str, Any] = {
+        "sequence": genome["sequence"],
+        "per_leg_revs": genome["per_leg_revs"],
+        "per_leg_branch": genome["per_leg_branch"],
+        "t0_seed_sec": float(sel["best_t0_sec"]),
+        "tof_seed_days": mod._truth_seed(genome),
+        "period_sec": genome["period_sec"],
+        "ephem": ephem,
+        "vinf_cap": mod.VINF_CAP_KMS,
+        "slack_leg": genome["slack_leg"],
+        "tol_kms": mod.CORRECTOR_TOL_KMS,
+        "residual_mode": "magnitude",
+    }
+    solved = ballistic_correct(**kwargs)
+    assert solved.converged
+    assert solved.wrap_bend_feasible is not None
+    report = closure_turn_ratio(
+        solved,
+        sequence=genome["sequence"],
+        per_leg_revs=genome["per_leg_revs"],
+        per_leg_branch=genome["per_leg_branch"],
+        slack_leg=genome["slack_leg"],
+        period_sec=genome["period_sec"],
+        ephem=ephem,
+        include_wrap=True,
+    )
+    wrap = report.flybys[-1]
+    assert wrap.index == len(genome["sequence"]) - 1
+    assert solved.wrap_bend_feasible is (
+        wrap.unconstrained or wrap.required_bend_deg <= wrap.max_bend_deg
+    )
+    gated = ballistic_correct(**kwargs, gate_wrap=True)
+    assert gated.bend_feasible is (solved.bend_feasible and solved.wrap_bend_feasible)

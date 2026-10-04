@@ -412,9 +412,9 @@ def test_lane_accepts_a_turn_feasible_chain() -> None:
 def test_lane_rejects_a_chain_whose_only_infeasible_flyby_is_the_wrap() -> None:
     """Titania-Umbriel-Titania, legs of 3 T_syn (commensurate, so the phasing
     repeats), one revolution each, rel_offset 0: the Umbriel flyby is feasible,
-    the closing Titania flyby is not. Before #888 the lane passed it (drift and
-    magnitude closure within the floors); a check of the intermediate encounters
-    alone would still pass it. A project computation, found by scanning the
+    the closing Titania flyby is not. With the drift floor opened, the pre-#888
+    lane passed it (magnitude closure within its default floor); a check of the
+    intermediate encounters alone would still pass it. A project computation, found by scanning the
     lane's own construction. Drift floor generous as above (inertial offset of
     the closing encounter); magnitude-closure floor at its default."""
     mu = PRIMARIES["Uranus"]

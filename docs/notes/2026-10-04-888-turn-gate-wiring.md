@@ -66,8 +66,9 @@ Titania-Oberon chain, a project computation: V2 passes it (ratio 0.57) under the
 floor that the six rows fail under. At the default 50,000 km floor it fails on drift (the V2 drift
 is an inertial offset of the closing encounter, about 7e5 km here), not on the turn. A wrap-only
 case, Titania-Umbriel-Titania (legs of 3 synodic periods, 1 revolution each, also a project
-computation), passes every pre-`#888` criterion and has a feasible Umbriel flyby (ratio 0.3); it
-is now rejected at the Titania wrap (ratio 22.8). A check of the intermediate encounters alone
+computation), passes every pre-`#888` criterion once the drift floor is opened (magnitude
+closure at its default floor) and has a feasible Umbriel flyby (ratio 0.3); it is now rejected at
+the Titania wrap (ratio 22.8). A check of the intermediate encounters alone
 would still pass it.
 
 ## 3. Tests
@@ -127,6 +128,14 @@ building block for item 3.
   empty-region stamping scripts) still use the capacity gate. Only `scan_558.gate_candidate` and
   its generic callers (`enumerate_563`, `scan_571`, `refine_562`, `compare_576`, `_apply_609`,
   `certify_610`) now see the turn. No script that writes `data/` was re-run.
-* The bounded-drift labels (`FAIL_QUASI_BOUNDED`, `PASS_AS_QUASI_CYCLER`, `EFFECTIVELY_CYCLIC`) live
-  in scripts, not in `src`; they read `passes_*`, so they inherit the gate once re-run.
-* `search.correct.ballistic_correct` gates the wrap only with `gate_wrap=True` (section 1).
+* The bounded-drift labels live in scripts, not in `src`. `FAIL_QUASI_BOUNDED` is stamped on a
+  strict-V2 FAIL with a bounded drift shape, so gating `passes_v2` alone would NOT have removed it:
+  a turn-infeasible chain still fails V2 and still qualified. Its conditions in
+  `scripts/run_330_silver_moontour_v2.py`, `run_566_gauntlet_five_representatives.py` and
+  `run_574_stageB_saturn_gauntlet.py` now also require `turn_feasible` (edited, not re-run).
+  `PASS_AS_QUASI_CYCLER` additionally needs V3, V4 and V4-strict passes, which now require the
+  turn. `EFFECTIVELY_CYCLIC` (`analyze_338_boundary.py`) reads stored epoch-sweep output; a new
+  sweep would inherit the gate through `passes_v4_strict`. None of these scripts was re-run.
+* `search.correct.ballistic_correct` gates the wrap only with `gate_wrap=True` (section 1). Its
+  ephemeris-driven wrap is tested against `turn_ratio_check.wrap_node_turn` on
+  `russell-ch4-9.353Gg2` (`tests/search/test_turn_ratio_check.py`).

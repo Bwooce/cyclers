@@ -191,6 +191,7 @@ def main() -> int:
         v3.n_cycles_completed >= 1
         and not v3.passes_v2
         and v10.max_closure_residual_kms < 0.5  # within "quasi" envelope
+        and v10.turn_feasible  # #888: flyable flybys, not just matched magnitudes
     )
     if v3.passes_v2:
         next_step = "Phase 3 (#331) — V3 6D nbody / REBOUND on the SILVER"
