@@ -1025,6 +1025,10 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of Planetary Systems (Dvorak & Henrard, eds., Kluwer), pp.513-526 (book DOI
   10.1007/978-94-011-2030-2; no chapter DOI found). Gómez & Ollé 1991 parts I and II are already
   held and digested.
+  CORRECTION 2026-10-05: the Dvorak & Henrard 1993 volume (now held; 393 pages, = CMDA 56) contains
+  NO Ollé & Simó chapter and has no pages 513-526; the 1993 citation is wrong as given, and the 1990
+  Rev. Colombiana Mat. citation is unconfirmed (no Crossref record). Both need a verified source
+  before they are sought further.
   Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
