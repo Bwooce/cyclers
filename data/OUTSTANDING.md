@@ -1386,6 +1386,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   connection to either Hadjidemetriou table (different masses and normalisation); Henon notes the
   Hadjidemetriou & Christides path is one section of a three-parameter family. To acquire: Standish
   1970, Szebehely 1970, Szebehely & Feagin 1973.
+  **TESTS ADDED 2026-10-05 for (a)** (`tests/core/test_three_body_published_controls_931.py`, test-only planar
+  Newtonian integrator, G = 1, DOP853 1e-13, about 6 s default, 8 Henon rows slow): Hadjidemetriou 1975b Table I rows
+  1, 2, 3, 10, 24 (E, p, tau/2 to the printed digits, perpendicular crossing) and orbit a (eq. 73) returning to its
+  state; Hadjidemetriou & Christides 1975 Table I, all 19 rows (x1(T), x3(T) to 5e-8, theta/2pi to 1e-7, 2T to 1e-4;
+  row 15 period 3.6656 a strict xfail, integrated 3.6697) plus the e = 0.2922 and 3.5986 analytic row-19 checks and
+  the `core.cr3bp` mu = 1/2 control (x = 0.72101839, T = 0.9242); Henon 1974a Tables I and II, 12 non-collision rows
+  (E = -47/288, A, phi, closure after rotation by -phi, unrotated closure as a negative control; Table II A = 0
+  skipped: collision at T/2, needs #928); Szebehely-Peters 1967b: printed x2 offset fails E by 1.5e-8 (strict xfail),
+  corrected x2 = -0.0129612186 passes at 1e-9, closure at T and the binary collision skipped for #928; Szebehely-Peters
+  1967a: all 9 close approaches to t = 16 (times 2e-3, distances factor 1.3), t10 = 15.8299236 a strict xfail (computed
+  15.829920). NOT done: b1, b2 of Table I and the stability regions (Floquet classifier work); Henon Table II A = 0
+  closure rounding sensitivity: A = 0.015 closes to 7.5e-6, not the digest's 6.7e-7 (perturbing the printed digits by
+  5e-9 moves it between 1e-6 and 1.4e-5), so the bound there is 2e-5.
 - `#932` — registered 2026-10-04. **LANTOINE & RUSSELL 2011: A CR3BP CONTROL AND A TWO-MOON PATCH
   METHOD** (digest `docs/notes/2026-10-04-digest-lantoine-russell-2011-halo-to-halo-transfers-between-moons.md`).
   (a) Its seven printed Europa and Ganymede orbits (two halos, resonant orbits 3:4, 9:7, 4:3, 11:8,
@@ -1435,6 +1448,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the 11A a2 minimum printed -5200 is about -5.09e4 (a dropped digit); 11P "51 orbits" against 52 TR
   rows. For `#931`: use -a1 for k, treat |k - 2| below about 1e-3 as on the boundary, classify only
   re-corrected orbits, use relative tolerances.
+  **TESTS ADDED 2026-10-05** (`tests/core/test_er3bp_broucke_1969_tables.py`, data `tests/core/data/broucke_1969_tables.csv`,
+  846 printed rows, printed columns only): closure in `core.er3bp` of Tables 12 and 13 (7P, 7A), 14 to 18 (8P, 8A, 11P,
+  11A, 10P) and, through the printed Eq. 62/64 conversion, Table 9 (9P, e < 1) and Table 5 (12A, half-period crossing
+  only); the rectilinear tables 4, 6, 7, 8, 10, 11, the e = 1 rows and Table 19 are NOT tested (need #928 or a rectilinear
+  integrator). Tolerance per row is 2 x the state-transition-matrix image of half a unit in the seventh decimal (so the 8P
+  e >= 0.815 rows pass as rounding amplification), measured residual/bound at most 1.5 except Table 17 row 93 (override
+  2e-4, close approach) and Table 5 (fixed 1e-4: the 12A inertial digits are good to about five to six places). Default suite
+  runs a sample of about 120 rows in about 5 s; the full 842-row sweep is `@pytest.mark.slow` (about 25 s). Strict xfails: Table 18
+  rows 55 and 56 as printed (swapped X1/YDOT1; the corrected rows pass). Table 15 rows 75-77 order asserted. Part A digits
+  came from OCR with checks (see test docstring). Still to do: (b), (c), (d) above; Table 19 needs #928.
 - `#934` — registered 2026-10-05. **`core.kepler.propagate` FAILS JUST ABOVE THE PARABOLIC BOUNDARY**
   (found by the Danby 1965 digest agent; CONFIRMED by the coordinator). With mu = 1, periapsis 1, it
   raises KeplerConvergenceError for e - 1 = 1e-8 at dt = 0.7, 2.5 and 9.0, but succeeds at e - 1 =
@@ -1475,6 +1498,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Hagel-Trenkler Table I rows e = -0.40, +-0.80, +-0.99 and eq. 26 (24/121 should be 21/124); the
   Hadjidemetriou e' misprint and its 4.700496 against 4.700478; Dvorak's Table II inconsistent with
   Table I. The volume has no Olle or Simo chapter (pages end at 396).
+  **TESTS ADDED 2026-10-05** (`tests/core/test_er3bp_cmda56_tables.py`, data `tests/core/data/hadjidemetriou_cmda56_table_a.csv`,
+  about 7 s default, 4 s slow): (a) all 43 Hadjidemetriou rows through the instantaneous-rate frame conversion
+  (x = x0/r, ydot = r ydot0/sqrt(1 - e'^2)); the 19 golden rows are exact orbits to 2e-5 (two-parameter fsolve distance), the
+  other 23 are only a closure band of 0.1 (the digest's 6e-3 bound is its own computation, not a printed value), the
+  e' = 0.010 row is a strict xfail at the printed e' and closes to 3e-3 at 0.100; (b) Hagel-Trenkler Table I against the
+  `core.er3bp` STM at mu = 0.5 (4e-4 for |e| <= 0.6, the digest's 3e-4 being the rounded maximum 3.3e-4 at e = -0.60 r3;
+  3e-3 at 0.8), strict xfails for the printed slips (Tr R at e = -0.40, r4 at +-0.80, Tr R at -0.80, every column at
+  +-0.99) and eq. 26 (24/121); Table V's Q values satisfy cos(2 pi Q) = r1 including e = 0.99. (c), (d), (e) not done.
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
