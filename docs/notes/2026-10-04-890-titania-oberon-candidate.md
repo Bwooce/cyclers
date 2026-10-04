@@ -170,7 +170,7 @@ either moon for the rest of the cycle; after one cycle it is 1,045,000 km and 3.
 start. (b) The honest realisation (the Titania hyperbola periapsis of the patched-conic turn,
 r_p 5,351 km, at tau = 0) never meets Oberon at tau = T: at T it is 967,000 km from the intended
 Oberon periapsis; its only later close approach is an unplanned Oberon pass at 155 km from the
-centre (inside the moon) at t = 99.4 d. Why (run, `diag`): at lam = 1 the trajectory leaving
+centre (inside the moon) at t = 99.4 d. Why (run with a scratch diagnostic, not kept in the repo; the numbers are reproducible from `two_moon_periodic_890.flyby_node_state` and `propagate`): at lam = 1 the trajectory leaving
 the periapsis is already 11,000 km and 98 m/s off the leg conic after one day and 46,000 km and
 335 m/s after three, scaling linearly with lam (1.1, 10, 98 m/s at one day for lam 0.01, 0.1,
 1). The flyby's 5,000-8,000 km offset from the moon's centre changes the Uranus-centred energy
@@ -257,8 +257,8 @@ mm/s: Titania's real eccentricity alone (0.0011) changes its orbital speed by ab
 **What a real-ephemeris correction would need** (not attempted): multiple shooting in the full
 force model with nodes at every apoapsis and the flyby periapses free, over the validity window
 (several cycles, not one, because the real system is not periodic); the IAU Uranus pole for J2
-(and J4); out-of-plane states (inclinations of 0.08 and 0.06 deg give hundreds of km at the
-flybys); a deterministic manoeuvre budget per cycle as the measure of whether "ballistic"
+(and J4); out-of-plane states (the moons' small real inclinations, not quantified here, displace the
+flybys out of plane); a deterministic manoeuvre budget per cycle as the measure of whether "ballistic"
 survives; and the same encounter criteria (V4-V6) at every flyby.
 
 ### 2.8 Variants (step 6, from `data/found/888_turn_gate/extended_uranus.jsonl`)
@@ -280,8 +280,8 @@ cycle). The pre-registered closure tests V2 and V3 were failed as written (1.6 c
 1 cm/s) and passed only after a post hoc refinement. It is not a trajectory in the real system
 without correction: uncorrected real-ephemeris propagations lose the return to Titania in one
 cycle (and one hits Oberon). The patched-conic state itself is not near a trajectory (section
-2.3); the orbit found differs from it by thousands of km and about 20 degrees of turn at each
-flyby. Status: a model-level periodic orbit, not a catalogue row. Still open: the
+2.3); the orbit found has its periapses 2,600 km (Titania) and 850 km (Oberon) closer than the
+patched-conic hyperbolae and turns 24 and 12 degrees larger. Status: a model-level periodic orbit, not a catalogue row. Still open: the
 real-ephemeris correction and its manoeuvre budget, the spec 16.4 literature check (Canales,
 Howell and Fantino treat a one-way Titania to Oberon transfer; near-Hohmann Titania-Oberon
 cycling is an obvious construction, so novelty is doubtful), and an adversarial review.
