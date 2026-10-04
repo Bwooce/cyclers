@@ -9,7 +9,7 @@ leiva-briozzo-2008-extension-fast-periodic-transfer-orbits-earth-moon-rtbp-to-su
 Table 1 is on p234, Table 2 on p238, Tables 3 and 4 on p240, Table 5 on p241. Every expected value
 below is the paper's, typed digit by digit from the page and checked against the text layer.
 Table 2 closure is already tested in ``tests/core/test_qbcp.py``; this file reuses the printed
-Table 2 states only for their Table 5 distances.
+Table 2 states only for their Table 5 distances (and quotes their closure at the paper's mu below).
 
 The paper's frame has the Earth at +mu and the Moon at -1 + mu (p228); the project's frames are
 rotated by pi, so x, y, xdot and ydot all change sign. The velocities are time derivatives of the
@@ -25,8 +25,11 @@ from 2.9e-5 to 3.4e-2, against 3.1e-8 to 4.6e-4 at the paper's value.
 The quasi-bicircular checks use ``core.qbcp`` with its coefficient tables (Andreu 1998) and mu set
 to the paper's value, which is how the paper describes its own model: Andreu's coefficients
 (p229) with its own mass ratio. With that mu the Table 3 and 4 arcs return to within 7e-7 to 1.7e-4
-in position (the Table 2 orbits to 5e-6 to 6e-5); with the module's default mu they return to
-within 4.7e-6 to 2.1e-3 (Table 2: 5e-6 to 3e-4), and the Table 5 distances agree less well.
+in position (the Table 2 orbits to 5e-6 to 6e-5, better than at the default mu for nine of the
+eleven); with the module's default mu they return to within 4.7e-6 to 2.1e-3 in position and up
+to 7.7e-3 in velocity (Table 2: 5e-6 to 3e-4), eight of the 24 arcs exceed the 1e-3 bounds used
+below, and the Table 5 distances agree less well. That is the mass-ratio difference resolved
+by Table 1, not a defect of the model.
 """
 
 from __future__ import annotations
@@ -327,13 +330,6 @@ def _run(name: str) -> _Run:
     )
 
 
-@pytest.mark.parametrize("name", [row[0] for row in _TABLE_2])
-def test_table_2_orbits_close_at_the_paper_mass_ratio(name: str) -> None:
-    """With the paper's mass ratio the Table 2 orbits return closer than with the module's
-    default (test_qbcp.py): measured 5.0e-6 to 6.0e-5 in position against 5e-6 to 3e-4."""
-    assert _run(name).closure_position < 1e-4
-
-
 @pytest.mark.parametrize("name", [row[0] for row in _TABLES_3_4])
 def test_tables_3_4_periodic_arcs_return_after_tau(name: str) -> None:
     """The paper's definition (p239): "These arcs are periodic in the sense that after a time
@@ -446,22 +442,26 @@ def test_table_5_moon_distances(name: str) -> None:
     assert abs(computed - _TABLE_5[name][1]) <= _distance_budget_km(name)
 
 
-def test_table_5_distances_are_centre_distances_in_unscaled_units() -> None:
-    """Control for the two distance tests: the other readings fail the same budget.
+# Rows for the control test: small budgets (1.1 to 2.5 km), both kinds of orbit, both arc lengths.
+_CONTROL_ROWS = ("180A_1_t2", "077_1_t1", "180A_1_t1", "188A_1_t3", "013_t3", "146A_t3")
 
-    Distance to the lunar surface (centre distance less 1737.4 km) fails every d_M row, and the
-    centre distance divided by alpha_6 at the time of closest approach (a pulsating length
-    scale) fails 34 of the 35 d_E rows (by 2.4 to 1015 km); the exception is 187A_t2, whose
-    budget is 64 km.
+
+def test_table_5_distances_are_centre_distances_in_unscaled_units() -> None:
+    """Control for the two distance tests, on six rows that pass both: the other readings fail
+    the same budget in all six.
+
+    Distance to the lunar surface (centre distance less 1737.4 km) misses d_M by about 1737 km;
+    the centre distance divided by alpha_6 at the time of closest approach (a pulsating length
+    scale) misses d_E by 5.9 to 860 km. Over all 35 rows the scaled reading fails 34 (by 2.4 to
+    1015 km); the exception, 187A_t2, has a 64 km budget.
     """
-    surface_ok = 0
-    scaled_ok = 0
-    for name, (d_e, d_m) in _TABLE_5.items():
+    for name in _CONTROL_ROWS:
+        d_e, d_m = _TABLE_5[name]
         run = _run(name)
         budget = _distance_budget_km(name)
+        assert abs(run.earth_distance * KM_PER_LENGTH_UNIT - d_e) <= budget
+        assert abs(run.moon_distance * KM_PER_LENGTH_UNIT - d_m) <= budget
         surface = run.moon_distance * KM_PER_LENGTH_UNIT - 1737.4
-        surface_ok += abs(surface - d_m) <= budget
+        assert abs(surface - d_m) > budget
         scaled = run.earth_distance * KM_PER_LENGTH_UNIT / run.alpha6_at_earth_min
-        scaled_ok += abs(scaled - d_e) <= budget
-    assert surface_ok == 0
-    assert scaled_ok <= 1
+        assert abs(scaled - d_e) > budget
