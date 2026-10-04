@@ -909,6 +909,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   numbers of Sun periods, 5.000000 for the C32 member, and were re-integrated with the Sun's
   phase advancing; the rerun must show the same explicitly in the corrected model.)
 - `#906` — registered 2026-10-04. **HARDEN THE DEMANDED-TURN GATE.** (a) Refuse or flag inputs that
+  **Amendment to (b) from the Hitzl & Henon 1977 digest (2026-10-04):** do NOT implement "a turn
+  near zero is not an encounter" with a loose tolerance. Of 160 non-degenerate critical
+  generating orbits the digest recomputed, 64 demand under 2 degrees and 23 under 0.5 degrees;
+  these are the near-resonant seeds (the first-to-second-species bifurcation orbits), and a 1
+  degree rule would discard them. Instead return "indeterminate: near resonance or outside
+  first-order validity", with the first-order periapsis, the validity numbers mu |ln mu| / v^3
+  and r_p / sqrt(mu), and the nearest low-order p/q, and never reject on those grounds alone.
+  Also: at the Earth-Moon mass the first-order theory is outside its validity for most of these
+  orbits (only 1 of 160 has its periapsis below 0.1 sqrt(mu)), so do not rank candidates by it.
   are not body-relative velocities (the error of Bolotin & MacKay 2000, corrected in MacKay
   2005). (b) Treat a demanded turn of 0 or 180 degrees as not an encounter. (c) Wire the gate
   into the scripts still on the capacity-only test (`titan_iapetus_corrector`,
@@ -1139,6 +1148,14 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   and a `#899` generator should apply both. For two moons, a chain visiting both is the
   natural nondegenerate candidate, but no published existence route covers it (INFERRED by
   the digest).
+  **The enumerator is specified (Henon 1997, chapter 4, per the digest):** fix C below 3
+  (encounter speed sqrt(3 - C)); arcs between DIFFERENT points of the secondary's circle are
+  straight lines in Henon's (A, Z) plane, arcs returning to the SAME point are A = I/J with I,
+  J coprime; every periodic word of arcs at one C is a candidate generating orbit (the only
+  forbidden words repeat an identical returning arc); the demanded turn at each junction is
+  the difference of the rotating-frame velocity angles; the seed at small mass comes from
+  Barrabes & Gomez; continue in C, turning back at critical arcs. Henon's I counts the Moon's
+  revolutions and J the particle's, so Barrabes & Gomez's (p, q) is Henon's (J, I) (INFERRED).
   **Gomez & Olle digest now in** (`docs/notes/2026-10-04-digest-gomez-olle-1991-second-species-circular-elliptic-I-II.md`):
   (1) their first-order matching gives the flyby periapsis r_p = mu (e - 1)/v_inf^2 with
   sin(turn/2) = 1/e, which is exactly the relation in the project's demanded-turn gate, so
