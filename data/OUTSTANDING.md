@@ -770,7 +770,32 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
-- `#892` — registered 2026-10-04. **SECOND DEFECT IN A CORE MODEL: `core/qbcp.py` EVALUATES TWO OF
+- `#892` — **MODEL CORRECTED 2026-10-04 (commit `8c5b754b`), POSITIVE CONTROL PASSES; dependent
+  tests and past results not yet triaged.** The remaining mismatch reported in the registration
+  below had a third cause, found by the coordinator: `#592` (2026-07-14) had moved alpha_6 from
+  the whole Newtonian potential to the Sun term alone. The printed Hamiltonian
+  (Jorba-Cusco, Farres & Jorba 2018, eq. 4, now held) has alpha_6 on all three terms. With the
+  parities as Andreu prints them AND `#592` reverted, the module's L1 and L2 periodic orbits
+  (independent multiple-shooting corrector) agree with the published POL1 and POL2 points to
+  1.4e-9 / 1.7e-8 and 9.5e-10 / 1.9e-8 in (x, py), where the miss was 1.8e-2, and stay within
+  2.6e-6 and 3.1e-6 of the three-body points, as the 2018 paper says ("of order 1e-6").
+  Started from the published states the position moves 2.6e-6 and 3.6e-6 in a quarter period
+  each way; with the parities exchanged it moves more than 1, and with the `#592` scaling 0.17
+  and 0.10. The reversing symmetry now holds exactly. **Where the slips came from:** the code's
+  tables were typed from the 2018 paper's Table 4 (the code's citation "Gimeno-Jorba 2018" is a
+  wrong attribution). That table's header labels alpha_2 as a cosine column and alpha_3 as a
+  sine column, against its own k = 0 entries and against Andreu's Table 1.5, and it prints the
+  alpha_1 k = 5 coefficient as -38.068581391005552e-08 where Andreu has -8.06858139100555e-08.
+  Both are printing slips in a published table, the kind that happens to everyone; the
+  thesis value also agrees better with POL1 (1.7e-8 against 6.8e-8 in py). The `#592` change
+  was ours. `#544` and `#593`'s explanation of the POL1 gap (two different coefficient sets,
+  amplified by instability) is withdrawn: the gap was these defects. New tests in
+  `tests/core/test_qbcp.py`: the published points, the reversing symmetry, the parities.
+  **Still to do:** triage every test and stored number pinned to the old module (in progress);
+  rerun or stamp `#533`, `#538`, `#544`, `#593`; fix the frame-conversion helper
+  `genome/qbcp_torus.py`; obtain Rosales, Jorba & Jorba-Cusco 2023 (DOI
+  10.1007/s10569-023-10129-4) so POL1 and POL2 are held from the source. Registration text:
+  **SECOND DEFECT IN A CORE MODEL: `core/qbcp.py` EVALUATES TWO OF
   ITS EIGHT FOURIER SERIES WITH THE WRONG PARITY, AND EVEN WITH THAT CORRECTED IT DOES NOT
   REPRODUCE ITS PUBLISHED CONTROL POINT. THE COHERENT SUN-EARTH-MOON MODEL IS NOT VALIDATED.**
   Found by the `#884` adversarial reviewer; the parity part confirmed by the coordinator.
@@ -799,7 +824,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   check from the Hamiltonian as printed, with the reversing symmetry and a non-rotating-frame
   comparison against the sense-corrected bicircular model as identity tests; (3) reproduce
   POL1 and POL2 as the positive control before any QBCP result is used again.
-- `#891` — registered 2026-10-04. **DEFECT IN A CORE MODEL: `core/bcr4bp.py` MOVES THE SUN THE
+- `#891` — **MODEL CORRECTED 2026-10-04 (commit `8c5b754b`); dependent code, tests and past
+  results not yet triaged.** `_sun_position` now uses `theta_sun0 - omega_sun * t`
+  (`omega_sun` stays a positive magnitude, `theta_sun0` stays the Sun's angle at t = 0).
+  `tests/core/test_bcr4bp_sun_sense.py` checks the model against the non-rotating-frame
+  derivation at two Sun phases (4e-12), with the Sun off as a control, and checks that the
+  Sun's inertial period is a year. The reviewer's audit (review note section 11a) found
+  nothing else wrong in the module: constants agree with Andreu, and the indirect term is
+  right. **Still to do:** the three other places that encode the sense
+  (`search/sun_forced_periodic_884.py`, `genome/bcr4bp_torus.py`, `genome/qbcp_torus.py`,
+  where the factor `1 + omega_S` must become `1 - omega_S`); the pinned tests; the 19 stamps;
+  a published bicircular ORBIT as positive control (Jorba, Jorba-Cusco & Rosales 2020, DOI
+  10.1007/s10569-019-9940-2, not held); rerun `#884` (the reviewer's own sense-corrected
+  rerun of the a = 1, 2 members: every cycler-class phase reaches physical Sun mass, none of
+  the three fold-backs occurs, one "stable" orbit becomes unstable). Registration text:
+  **DEFECT IN A CORE MODEL: `core/bcr4bp.py` MOVES THE SUN THE
   WRONG WAY ROUND. EVERY RESULT COMPUTED WITH IT IS A RESULT OF A NON-PHYSICAL MODEL.** Found by
   the `#884` adversarial reviewer; confirmed by the coordinator with an independent computation
   and against the published source. **The defect:** `_sun_position` puts the Sun at angle
@@ -881,7 +920,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Howell (10.1007/s42064-024-0250-4). Komachi's ASC 2026 paper has no abstract or preprint yet.
   Adversarial review dispatched, not back. **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
   Fourier coefficient typed as -38.068581391005552e-08; Andreu (1998) Table 1.5 prints
-  -8.06858139100555e-08. The other 101 printed entries agree with the code. The fix moves the
+  -8.06858139100555e-08. (Later the same day: the code's value is what its actual source, the 2018
+  Jorba-Cusco, Farres & Jorba table, prints; the slip is in that table. See `#892`.) The other 101 printed entries agree with the code. The fix moves the
   L1 substitute orbit by 8.6e-8, which is far below anything a stored result of `#533`, `#538`,
   `#544` or `#593` depends on (their gap to the published POL1 point is 1.8e-2 and is unchanged),
   so no past search is rerun. A test now pins the column to the printed table.
