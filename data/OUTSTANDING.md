@@ -588,6 +588,24 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#889` — registered 2026-10-04 (from the `#882` adversarial review; DISPATCHED the same day):
+  **THE PUBLISHED POSITIVE CONTROL THE TORUS-CONNECTION LANE HAS NEVER HAD.** Kumar, Anderson &
+  de la Llave (SIAM J. Applied Dynamical Systems 24(1):219-258, 2025; held as arXiv 2109.14814)
+  print a refined heteroclinic connection between the Jupiter-Europa 3:4 and 5:6 resonant tori
+  in the planar ELLIPTIC restricted three-body problem: intersection point (x, y, px, py) =
+  (-0.96064, 0.88783, -0.51377, -0.64714), with omega_u = 1.558039 and omega_s = 1.030011
+  (quote verified in the held paper). **Scope:** give the stroboscopic-map machinery of
+  `search/ccr4bp_strob_connection.py` an elliptic right-hand side (the forcing period is the
+  moon's orbital period; `core/er3bp.py` exists), compute the two tori at the published
+  rotation data, their bundles and manifolds, and reproduce the printed intersection point to
+  the precision printed (five decimals), with the coordinate and frame conventions of the paper
+  stated and matched. Pass: the printed point is recovered. Fail: say exactly what could not be
+  matched. Then, in the same task: regenerate the stored `#882` junctions at a 1e-4 offset
+  inside the fundamental domain; adopt the review's pre-registered verification criteria
+  (contraction at the multiplier's rate for at least 8 periods, agreement between an offset and
+  a tenth of it, random perturbations must fail); add R1 and an offset-convergence gate to the
+  tests. The rest of `#886` (connections at Titan-Rhea and at Uranus) waits on this, and only
+  objects that actually ENCOUNTER a moon are candidates for the catalogue.
 - `#888` — registered 2026-10-04 (found by `#885`, confirmed by the coordinator with independent
   code the same day). **OWNER DECISION 2026-10-04: WITHDRAWN ("withdraw the lies").** All six
   rows are out of `data/catalogue.yaml` (398 -> 392 rows) and preserved verbatim in
@@ -850,7 +868,19 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   2.1e-4 four periods later, never nearer than 0.092 to Umbriel or 0.30 to Titania; the three
   Jovian ones start at 3e-4 to 8e-4, reach 0.24 and return to 2e-5 to 6e-5. Each is one
   continuous trajectory of the four-body model, so the `#882` defect (phase jump at the
-  junction) is absent by construction and in fact. **NOT YET ESTABLISHED, and under
+  junction) is absent by construction and in fact. **ADVERSARIAL REVIEW DONE 2026-10-04 (note
+  `docs/notes/2026-10-04-882-rebuild-results-and-review.md`):** R1 established; R2 established
+  but as TWO independent trajectories (branches 0 and 4 are mirror images; branch 0 is near a
+  fold); R3a NOT established as non-existence (say "no smooth continuation found; the torus
+  contains collision phases"); R3b established as a model object with its stored precision
+  overstated (real accuracy 1e-7 to 3e-6, not 1e-10; six re-refinements at different offsets
+  agree to 2e-7; random 1e-6 perturbations miss). **DECISION: NO CATALOGUE ROW; the Uranian
+  object is on HOLD** (it encounters no moon, belongs to none of the catalogue's classes, the
+  model omits Ariel and Oberon, and the lane still has no positive control against a published
+  connection). The Jovian torus and its manifolds are already published (Kumar, Anderson & de
+  la Llave, Acta Astronautica 2023, which found only near-intersections and no exact
+  connection). Next step is `#889`. *Questions the review was asked, kept for the record:*
+  **NOT YET ESTABLISHED, and under
   adversarial review (dispatched 2026-10-04):** whether these are true homoclinic orbits or
   near-returns (the departure offset is 1e-3 with a second-order model; the agent changed its
   own verification criterion to "four extra periods" after the original one failed for most
