@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 from scipy.optimize import fsolve
 
 from cyclerfinder.search import second_species_arcs as m
@@ -65,7 +66,7 @@ def test_r_arc_sequences_beginning_r_minus_are_sign_reversals() -> None:
         assert m.r_arc([-c for c in code]) == pytest.approx(-m.r_arc(code), abs=1e-11)
 
 
-@pytest.mark.parametrize("n", range(2, 11))
+@pytest.mark.parametrize("n", range(2, 10))
 def test_r_arc_count_is_two_to_the_n_minus_one(n: int) -> None:
     """Devaney / Henon: exactly 2^(n-1) R-arcs, one per sign code (hard assertion inside)."""
     arcs = m.r_arcs(n)
@@ -116,7 +117,7 @@ def test_r_orbit_n5_symmetric_polynomial_roots() -> None:
     assert solved == pytest.approx(pos, abs=1e-9)
 
 
-@pytest.mark.parametrize("n", range(2, 11))
+@pytest.mark.parametrize("n", range(2, 10))
 def test_r_orbit_count_is_two_to_the_n_minus_two(n: int) -> None:
     """Devaney Corollary B / Henon 18.2: exactly 2^n - 2 R-orbits, one per sign code except
     all + and all -; each satisfies sum 1/y_i = 0 (18.84) and the recurrence."""
@@ -185,7 +186,7 @@ def test_r_orbit_extended_precision_polish_agrees_with_double() -> None:
 @pytest.mark.slow
 def test_r_region_counts_to_n_equal_14() -> None:
     """Full sweep beyond the default range (several minutes at most)."""
-    for n in (11, 12, 13, 14):
+    for n in (10, 11, 12, 13, 14):
         arcs = m.r_arcs(n)
         assert len(arcs) == 2 ** (n - 1)
         orbits = m.r_orbits(n)
@@ -210,8 +211,8 @@ def _parabola_first_principles(e_p: float, eps_p: int, eps: int) -> float:
             t -= PI  # time measured from apocentre
         return eps_p * r * math.cos(f), eps_p * r * math.sin(f), t
 
-    def eqs(v: list[float]) -> list[float]:
-        tau, pp, sig = v
+    def eqs(v: NDArray[np.float64]) -> list[float]:
+        tau, pp, sig = float(v[0]), abs(float(v[1])) + 1e-12, float(v[2])
         x, y, t = p2(tau)
         return [
             eps * (pp / 2.0) * (1.0 - sig**2) - x,
@@ -224,7 +225,7 @@ def _parabola_first_principles(e_p: float, eps_p: int, eps: int) -> float:
         for sg0 in (1.0, 3.0):
             sol, _info, ier, _msg = fsolve(eqs, [tau0, 0.2, sg0], full_output=True, xtol=1e-13)
             good = ier == 1 and 0.0 < sol[0] < PI and sol[1] > 0 and sol[2] > 0
-            if good and max(abs(v) for v in eqs(list(sol))) < 1e-10:
+            if good and max(abs(v) for v in eqs(sol)) < 1e-10:
                 best = float(sol[0]) / PI
             break
         if best is not None:
