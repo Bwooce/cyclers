@@ -37,7 +37,8 @@ period, starting at periapsis f = 0 for e > 0 and at apoapsis f = pi for the tab
 digest section 8.2 (it rounds the largest miss to 3e-4; it is 3.3e-4, e = -0.60 r3, printed
 -1.2706 against -1.27027, so the test uses 4e-4): 4e-4 absolute for |e| <= 0.6, 3e-3 at |e| = 0.8.
 Printed slips are strict expected failures: Tr R at e = -0.40; r4 at e = +-0.80 and Tr R at
-e = -0.80; every column at e = +-0.99 (the source's RK4 with step 2 pi / 200 is not converged there). Table V's first row
+e = -0.80; every column at e = +-0.99 (the source's RK4 with step 2 pi / 200 is not converged
+there). Table V's first row
 (exact linear frequency Q(e) at T(0) = 0: 2.84802, 2.91273, 3.04723, 3.34258, 4.96398 at
 e = 0.2 .. 0.99) gives cos(2 pi Q) = r1, an independent check that also holds at e = 0.99,
 where Table I fails. Eq. (26), Q = sqrt(8) [1 + (24/121) e^2], does not reproduce Table I.
