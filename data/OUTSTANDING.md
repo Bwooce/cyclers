@@ -1690,6 +1690,21 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#448`; mark the empty-region entry superseded (ratchets that freeze its count will need the
   update, per the catalogue-edit rule). This is the bug-fix rule: buggy solvers produce false
   negatives AND false positives.
+- `#937` — registered 2026-10-05. **THE DEMANDED-TURN GATE FAILS A PUBLISHED, VERIFIED ORBIT.**
+  The `#899` scan review (`docs/notes/2026-10-05-899-second-species-scan-adversarial-review.md`) applied
+  the `#888` demanded-turn gate to Casoliva's 7-3b/c orbit, which the pipeline reproduces to 1e-10 in
+  the full circular restricted problem: it demands 32 degrees of lunar turn against 19 available at
+  the pass radius, so the gate REJECTS a real orbit. A gate that fails its positive control cannot be
+  used as a pass/fail criterion on full-model orbits as it stands (the patched-conic turn ignores the
+  Earth's tide and the extended lunar arc in a slow pass). Do: (a) run the gate on every reproduced
+  published orbit (Casoliva 2-1a, 3-2c, 7-3b/c, 1-2b, 1-2e; Oshima; Leiva & Briozzo) and record where
+  it passes and fails; (b) find what it actually measures (compare the patched-conic turn with the
+  integrated rotation of the Moon-relative velocity through the pass, with KS); (c) restrict or
+  redesign it so every positive control passes; (d) then RE-EXAMINE the `#888` withdrawal of the six
+  Uranian rows: their demanded turns were 1.8 to 28 times the available bend and their validation
+  matched only V-infinity magnitudes, so the withdrawal may well stand, but it rested on this gate and
+  must be re-checked with the corrected one (a gate that fails a positive control is a false-negative
+  generator).
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
@@ -2026,7 +2041,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   that the Table 18.3 n = 4 row satisfies the recurrence to 3.8e-6 (its printed rounding). Build the
   R-arc and R-orbit solvers by shooting on the sign code with brackets between poles (not random
   multi-start, which can miss roots at larger n), with the counts 2^(n-1) and 2^n - 2 as hard
-  assertions and extended precision above about n = 12. Barrabes, Mondelo & Olle 2009 (CMDA 105:197; digest
+  assertions and extended precision above about n = 12. SCAN DONE 2026-10-05 (1060 seeds, 41 min;
+  review `docs/notes/2026-10-05-899-second-species-scan-adversarial-review.md`): 64 hits collapse to 7
+  distinct orbits: 5 reproduce 6 printed Casoliva rows (2-1a, 3-2c, 7-3b/c as one orbit and its
+  mirror, 1-2e newly reproduced, 1-2b printed but not catalogued) to about 1e-10; 1 is an unprinted
+  member of the 3-2c family past a fold; 1 (3-2, C 2.6133047523, T 4 pi, asymmetric, two lunar passes,
+  k_par about -1.06e4) is not matched to anything held but is NOT novelty-claimable (literature check
+  blind; error doubling every 4.1 d; no Sun-forced counterpart). Still not reached: 7-3a, 1-2c, 1-2d,
+  2-1b. Earth-Moon planar scan: no new orbit, as expected. The turn gate failed a published orbit:
+  see `#937`. Barrabes, Mondelo & Olle 2009 (CMDA 105:197; digest
   `docs/notes/2026-10-05-digest-barrabes-mondelo-olle-2009b-horseshoe-homoclinic-orbits.md`) concerns
   homoclinic connections to L3 (horseshoe-shaped), not the L1/L2 connections of Casoliva's Class 2
   (the coordinator's brief misdescribed it). Connections exist only at a discrete set of mu values
