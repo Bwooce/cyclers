@@ -17,6 +17,12 @@ The expected numeric values here trace to the ALREADY-COMMITTED, pre-#575
 non-genericized #563 script and independently cross-checked against the catalogued
 #312 SILVER value 0.965 km/s in ``data/catalogue.yaml``/``verify_327_umbriel_silver.py``)
 -- not a value this dispatch's own code invented, so this is not a circular golden.
+
+#888 (2026-10-04): the family is a set of V-infinity MAGNITUDE closures. The script now
+reports them as ``magnitude_closures`` and keeps ``passes`` for records that also pass the
+demanded-turn gate. The committed file predates the gate, so its ``pass`` records are compared
+with the fresh ``magnitude_closure`` records, and the tests assert that the turn gate rejects
+the whole family (the catalogue rows built from it were withdrawn).
 """
 
 from __future__ import annotations
@@ -48,7 +54,7 @@ def test_pair_n_max_defaults_to_uranus() -> None:
 def test_umbriel_oberon_reproduces_312_and_n7_sibling() -> None:
     """Direct function-level C1 check (fast, no full 12-direction run needed)."""
     result = enum563.enumerate_direction("Umbriel", "Oberon")
-    passes: list[dict[str, Any]] = result["passes"]
+    passes: list[dict[str, Any]] = result["magnitude_closures"]
 
     def find(n_commensurate: int, n_rev: list[int], rel_offset_deg: float) -> dict[str, Any]:
         matches = [
@@ -70,6 +76,13 @@ def test_umbriel_oberon_reproduces_312_and_n7_sibling() -> None:
 
     sibling = find(7, [2, 2], 0.0)
     assert sibling["residual_kms"] <= EXPECTED_312_RESIDUAL_CEILING_KMS
+
+    # #888: both close in V-infinity magnitude and neither can be flown. The demanded turn
+    # exceeds the available bend, so neither is a pass.
+    for closure in (silver, sibling):
+        assert closure["turn_gate_passed"] is False
+        assert closure["worst_turn_ratio"] > 1.0
+        assert closure not in result["passes"]
 
 
 # Some Uranian directions (e.g. Ariel-Umbriel n=(2,2)) have a residual near the
@@ -95,12 +108,12 @@ def test_full_uranian_run_reproduces_committed_family(tmp_path: Path) -> None:
     rc = enum563.main(["--out", str(out_path)])
     assert rc == 0
 
-    def load_passes(path: Path) -> dict[tuple[Any, ...], dict[str, Any]]:
+    def load_passes(path: Path, kind: str = "pass") -> dict[tuple[Any, ...], dict[str, Any]]:
         out: dict[tuple[Any, ...], dict[str, Any]] = {}
         with path.open() as fh:
             for line in fh:
                 d = json.loads(line)
-                if d.get("kind") != "pass":
+                if d.get("kind") != kind:
                     continue
                 key = (
                     d["anchor"],
@@ -114,7 +127,10 @@ def test_full_uranian_run_reproduces_committed_family(tmp_path: Path) -> None:
 
     committed_path = enum563.ROOT / "data" / "enumerate_563_symmetric_closures.jsonl"
     committed = load_passes(committed_path)
-    fresh = load_passes(out_path)
+    # The committed file predates the #888 turn gate: its "pass" records are what the
+    # script now writes as "magnitude_closure".
+    fresh = load_passes(out_path, kind="magnitude_closure")
+    fresh_turn_gated = load_passes(out_path)
 
     assert set(committed.keys()) == set(fresh.keys())
     assert len(committed) == 60  # 30-member family x 2 anchor directions each
@@ -123,6 +139,12 @@ def test_full_uranian_run_reproduces_committed_family(tmp_path: Path) -> None:
         assert abs(c["residual_kms"] - f["residual_kms"]) < _RESIDUAL_ATOL_KMS, key
         for cv, fv in zip(c["vinf_per_encounter_kms"], f["vinf_per_encounter_kms"], strict=True):
             assert abs(cv - fv) < _RESIDUAL_ATOL_KMS, key
+
+    # #888: no member of the family passes the demanded-turn gate.
+    assert fresh_turn_gated == {}
+    for key, f in fresh.items():
+        assert f["turn_gate_passed"] is False, key
+        assert f["worst_turn_ratio"] > 1.0, key
 
 
 def test_generic_out_required_for_non_default_args(tmp_path: Path) -> None:

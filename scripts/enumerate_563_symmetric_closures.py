@@ -152,6 +152,7 @@ def enumerate_direction(
     n_infeasible = 0
     n_subgate = 0
     passes: list[dict[str, Any]] = []
+    magnitude_closures: list[dict[str, Any]] = []
 
     for n in range(1, n_max + 1):
         target_tof_days = n * t_syn / 2.0
@@ -174,22 +175,28 @@ def enumerate_direction(
                     continue
                 n_subgate += 1
                 gated = gate_candidate(anchor, flyby, pt, primary=primary)
-                if gated["all_gates_passed"]:
-                    passes.append(
-                        {
-                            "anchor": anchor,
-                            "flyby": flyby,
-                            "n_commensurate_int": n,
-                            "t_syn_days": t_syn,
-                            "rel_offset_deg": rel,
-                            "n_rev": [n0, n1],
-                            "tof_days": target_tof_days,
-                            "residual_kms": pt["residual_kms"],
-                            "vinf_per_encounter_kms": gated["vinf_per_encounter_kms"],
-                            "max_bend_deg_per_encounter": gated["max_bend_deg_per_encounter"],
-                            "dop853_cross_check": gated["dop853_cross_check"],
-                        }
-                    )
+                # #888: a MAGNITUDE closure is what this script called a "pass"
+                # before the demanded-turn gate existed (residual, bend capacity
+                # and DOP853 cross-check). A pass now also needs the turn gate.
+                if gated["physical_gate_passed"] and gated["dop853_cross_check"]["passed"]:
+                    record = {
+                        "anchor": anchor,
+                        "flyby": flyby,
+                        "n_commensurate_int": n,
+                        "t_syn_days": t_syn,
+                        "rel_offset_deg": rel,
+                        "n_rev": [n0, n1],
+                        "tof_days": target_tof_days,
+                        "residual_kms": pt["residual_kms"],
+                        "vinf_per_encounter_kms": gated["vinf_per_encounter_kms"],
+                        "max_bend_deg_per_encounter": gated["max_bend_deg_per_encounter"],
+                        "dop853_cross_check": gated["dop853_cross_check"],
+                        "turn_gate_passed": gated["turn_gate_passed"],
+                        "worst_turn_ratio": gated["turn_gate"].get("worst_ratio"),
+                    }
+                    magnitude_closures.append(record)
+                    if gated["all_gates_passed"]:
+                        passes.append(record)
 
     return {
         "anchor": anchor,
@@ -199,6 +206,8 @@ def enumerate_direction(
         "n_evaluated": n_evaluated,
         "n_infeasible": n_infeasible,
         "n_subgate_residual_only": n_subgate,
+        "n_magnitude_closures": len(magnitude_closures),
+        "magnitude_closures": magnitude_closures,
         "n_all_gates_passed": len(passes),
         "passes": passes,
     }
@@ -279,6 +288,7 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"[563] {anchor}-{flyby}-{anchor}: T_syn={res['t_syn_days']:.4f}d n_max={res['n_max']} "
             f"evaluated={res['n_evaluated']} sub_gate={res['n_subgate_residual_only']} "
+            f"magnitude_closures={res['n_magnitude_closures']} "
             f"all_gates_pass={res['n_all_gates_passed']}",
             flush=True,
         )
@@ -286,7 +296,7 @@ def main(argv: list[str] | None = None) -> int:
     elapsed = time.time() - t0
     print(
         f"[563] DONE: {total_evaluated} candidates directly evaluated across "
-        f"{len(directions)} directions, {total_passes} pass ALL gates (residual+bend+DOP853) "
+        f"{len(directions)} directions, {total_passes} pass ALL gates (residual+turn+DOP853) "
         f"({elapsed:.1f}s)",
         flush=True,
     )
@@ -323,11 +333,14 @@ def main(argv: list[str] | None = None) -> int:
                         "n_evaluated": res["n_evaluated"],
                         "n_infeasible": res["n_infeasible"],
                         "n_subgate_residual_only": res["n_subgate_residual_only"],
+                        "n_magnitude_closures": res["n_magnitude_closures"],
                         "n_all_gates_passed": res["n_all_gates_passed"],
                     }
                 )
                 + "\n"
             )
+            for p in res["magnitude_closures"]:
+                fh.write(json.dumps({"kind": "magnitude_closure", **p}) + "\n")
             for p in res["passes"]:
                 fh.write(json.dumps({"kind": "pass", **p}) + "\n")
     print(f"[563] written: {out_path}", flush=True)
