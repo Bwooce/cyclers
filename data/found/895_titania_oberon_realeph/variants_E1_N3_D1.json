@@ -4,6 +4,27 @@
   "git_sha": "6889dffb",
   "stage": "variants_E1_N3_D1.json"
  },
+ "constants": {
+  "source": "URA111 SPK comment area (R. A. Jacobson, 2014-01-08), read from ura111.bsp; matches Jacobson (2014) AJ 148:76 Table 12 (J2 3510.7e-6, J4 -34.2e-6 at 25,559 km)",
+  "gm_km3_s2": {
+   "Uranus": 5793951.322279009,
+   "Miranda": 4.3195168992321,
+   "Ariel": 83.46344431770477,
+   "Umbriel": 85.09338094489388,
+   "Titania": 226.9437003741248,
+   "Oberon": 205.3234302535623,
+   "Sun": 132713233263.9
+  },
+  "J2": 0.003510685384697763,
+  "J4": -3.416639735448987e-05,
+  "R_ref_km": 25559.0,
+  "pole_ra_dec_deg": [
+   257.311,
+   -15.175
+  ],
+  "pole_source": "IAU 2009 (GMAT PCK BODY799_POLE_RA/DEC), held constant",
+  "not_imported_from": "data/validation/v4_uranus.py (URANUS_J2 there is French et al. 2024)"
+ },
  "epoch": "E1",
  "cycles": 3,
  "route": "_D1",

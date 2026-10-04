@@ -65,11 +65,32 @@ def git_sha() -> str:
         return "unknown"
 
 
-def dump(name: str, obj: dict[str, Any]) -> Path:
+def _sig(v: Any, digits: int = 10) -> Any:
+    """Round floats to ``digits`` significant figures (summaries only; node states are in npz)."""
+    if isinstance(v, float):
+        return float(f"{v:.{digits}g}")
+    if isinstance(v, dict):
+        return {k: _sig(x, digits) for k, x in v.items()}
+    if isinstance(v, (list, tuple)):
+        return [_sig(x, digits) for x in v]
+    return v
+
+
+def dump(name: str, obj: dict[str, Any], *, compact: bool = False) -> Path:
     OUT.mkdir(parents=True, exist_ok=True)
-    obj = {"_meta": {"task": "#895", "git_sha": git_sha(), "stage": name}, **obj}
+    obj = {
+        "_meta": {"task": "#895", "git_sha": git_sha(), "stage": name},
+        "constants": m.constants_record(),
+        **obj,
+    }
     path = OUT / name
-    path.write_text(json.dumps(obj, indent=1, default=float) + "\n")
+    if compact:  # one line per top-level key: small files, still diffable
+        body = ",\n".join(
+            f"{json.dumps(k)}: {json.dumps(_sig(v), default=float)}" for k, v in obj.items()
+        )
+        path.write_text("{\n" + body + "\n}\n")
+    else:
+        path.write_text(json.dumps(obj, indent=1, default=float) + "\n")
     log(f"wrote {path}")
     return path
 
@@ -230,10 +251,63 @@ def stage_p2(args: argparse.Namespace) -> None:
 
 
 def arc_paths(tag: str, n: int, variant: str = "") -> tuple[Path, Path]:
-    d = OUT / "arcs"
+    """Checkpoint files (resumable state with every Newton history): scratch, not the repo."""
+    d = CACHE / "ckpt"
     d.mkdir(parents=True, exist_ok=True)
     stem = f"{tag}_N{n}{variant}"
     return d / f"{stem}.json", d / f"{stem}.npz"
+
+
+def final_path(tag: str, n: int, variant: str = "") -> Path:
+    """Compressed node states of a converged arc (committed)."""
+    d = OUT / "arcs"
+    d.mkdir(parents=True, exist_ok=True)
+    return d / f"{tag}_N{n}{variant}_final.npz"
+
+
+def _trim_newton(d: dict[str, Any]) -> dict[str, Any]:
+    out = {k: v for k, v in d.items() if k != "history"}
+    if d.get("history"):
+        out["iterations"] = len(d["history"]) - 1
+        out["final_max_r_km"] = d["history"][-1]["max_r_km"]
+        out["final_max_v_kms"] = d["history"][-1]["max_v_kms"]
+    return out
+
+
+def compact_summary(info: dict[str, Any]) -> dict[str, Any]:
+    """Committed per-run summary: route, outcome, one line per continuation step, no histories."""
+    out: dict[str, Any] = {}
+    for k, v in info.items():
+        if k in ("logs", "_meta"):
+            continue
+        out[k] = _trim_newton(v) if isinstance(v, dict) and "history" in v else v
+    # one row per attempted step: [value, step, converged, accepted, iterations,
+    # final largest junction km, branch event, flyby altitudes km (accepted steps only)]
+    out["steps_columns"] = [
+        "value", "step", "converged", "accepted", "iterations", "final_max_r_km",
+        "branch_event", "flyby_alts_km",
+    ]  # fmt: skip
+    out["steps"] = {
+        par: [
+            [
+                e["value"], e["step"], e["converged"], e["accepted"], e["iterations"],
+                float(f"{e['history'][-1]['max_r_km']:.3g}") if e["history"] else None,
+                bool(e.get("branch_event")),
+                [round(a[2]) for a in e.get("flybys", [])] if e["accepted"] else [],
+            ]
+            for e in log_list
+        ]
+        for par, log_list in info.get("logs", {}).items()
+    }  # fmt: skip
+    out["step_failure_reasons"] = sorted(
+        {e["reason"] for lg in info.get("logs", {}).values() for e in lg if e["reason"]}
+    )
+    return out
+
+
+def write_summary(path_json: Path) -> None:
+    info = json.loads(path_json.read_text())
+    dump(f"arcs/{path_json.stem}.json", compact_summary(info), compact=True)
 
 
 def save_ckpt(
@@ -316,8 +390,7 @@ def stage_arc(args: argparse.Namespace) -> None:
             "expected_signature": expected,
         }
         if "_D1" in args.variant:
-            _, pzp = arc_paths(tag, 1, "_D1periodic")
-            zp = np.load(pzp.with_name(pzp.stem + "_final.npz"))
+            zp = np.load(final_path(tag, 1, "_D1periodic"))
             tt, x1 = m.tile_periodic(zp["times"], zp["x"], zp["rot"], -2, len(times) - 3)
             info["route"] = "D1: tiled periodic orbit of the circular model (note section 3)"
             info["tile_time_mismatch_s"] = float(np.max(np.abs(tt - times)))
@@ -361,6 +434,7 @@ def stage_arc(args: argparse.Namespace) -> None:
                 st = m.ContinuationState("sigma", times, r0.x, 0.0, status="failed", signature=sig0)
                 save_ckpt(pj, pz, info, st)
                 log("FAILED at sigma = 0")
+                write_summary(pj)
                 return
             st = m.ContinuationState("sigma", times, r0.x, 0.0, signature=sig0)
         save_ckpt(pj, pz, info, st)
@@ -412,12 +486,16 @@ def stage_arc_loop(
         )
         save_ckpt(pj, pz, info, st)
     if st.status == "done" and st.param == "lam":
-        np.savez(pz.with_name(pz.stem + "_final.npz"), times=st.times, x=st.x_cur)
+        np.savez_compressed(
+            final_path(args.epoch, args.cycles, args.variant), times=st.times, x=st.x_cur
+        )
         log(f"DONE: {pj.name} converged at lam = 1")
     elif st.status == "failed":
         log(f"FAILED: {pj.name} at {st.param} = {st.p_cur:.6g}")
     else:
         log(f"paused: {st.param} = {st.p_cur:.6g}, step {st.step:.4g}")
+    if st.status != "running":
+        write_summary(pj)
 
 
 # ------------------------------------------------------------------------------------------- #
@@ -488,13 +566,15 @@ def stage_d1periodic(args: argparse.Namespace) -> None:
         fl = m.periodic_flybys(model_of(1.0), times, st.x_cur, rot, circles.ez)
         info["sigma1_flybys"] = [f.to_dict() for f in fl]
         save_ckpt(pj, pz, info, st)
-        np.savez(pz.with_name(pz.stem + "_final.npz"), times=times, x=st.x_cur, rot=rot)
+        np.savez_compressed(final_path(tag, 1, "_D1periodic"), times=times, x=st.x_cur, rot=rot)
         log(
             "DONE periodic at sigma = 1: "
             + ", ".join(f"{m.BODY_NAMES[f.body]} {f.alt_km:.1f}" for f in fl)
         )
     else:
         log(f"{st.status}: sigma = {st.p_cur:.6g}")
+    if st.status != "running":
+        write_summary(pj)
 
 
 # ------------------------------------------------------------------------------------------- #
@@ -510,8 +590,7 @@ A_MEAN_KM = {0: 129900.0, 1: 190900.0, 2: 266000.0, 3: 436300.0, 4: 583500.0}
 
 
 def load_final(tag: str, n: int, variant: str = "") -> tuple[np.ndarray, np.ndarray]:
-    _, pz = arc_paths(tag, n, variant)
-    z = np.load(pz.with_name(pz.stem + "_final.npz"))
+    z = np.load(final_path(tag, n, variant))
     return z["times"], z["x"]
 
 
@@ -563,7 +642,7 @@ def stage_verify(args: argparse.Namespace) -> None:
         name: {
             "max_r_m": float(np.linalg.norm(jj[:, :3], axis=1).max() * 1e3),
             "max_v_mm_s": float(np.linalg.norm(jj[:, 3:], axis=1).max() * 1e6),
-            "per_junction_r_m": (np.linalg.norm(jj[:, :3], axis=1) * 1e3).tolist(),
+            "worst_junction_index": int(np.argmax(np.linalg.norm(jj[:, :3], axis=1))),
         }
         for name, jj in jumps.items()
     }
@@ -697,10 +776,6 @@ def stage_verify(args: argparse.Namespace) -> None:
     out["f_other_within_2_hill"] = others
     out["f_closest_km"] = closest
     out["f_pass"] = f_pass
-    # every local minimum within 10 Hill radii (the closest approach per body is kept above)
-    out["minima_within_10_hill"] = {
-        k: [r for r in rows if r["hill_radii"] <= 10.0] for k, rows in allmin.items()
-    }
     out["pass_c_to_f"] = bool(c_pass and out["d_pass"] and e_pass and f_pass)
     for f in flybys:
         if not f.get("missing"):
@@ -711,7 +786,7 @@ def stage_verify(args: argparse.Namespace) -> None:
             )
     log(f"(f) others within 2 Hill radii: {len(others)}; closest {json.dumps(closest)}")
     log(f"c {c_pass} d {out['d_pass']} e {e_pass} f {f_pass}")
-    dump(f"verify_{tag}_N{n}{args.variant}.json", out)
+    dump(f"verify_{tag}_N{n}{args.variant}.json", out, compact=True)
 
 
 # ------------------------------------------------------------------------------------------- #

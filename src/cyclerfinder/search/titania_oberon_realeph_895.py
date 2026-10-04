@@ -80,6 +80,21 @@ MOONS = (I_MIRANDA, I_ARIEL, I_UMBRIEL, I_TITANIA, I_OBERON)
 TABLE_STEP_S = 600.0
 
 
+def constants_record() -> dict[str, Any]:
+    """Every constant of the force model, with its source, for the output files."""
+    return {
+        "source": "URA111 SPK comment area (R. A. Jacobson, 2014-01-08), read from ura111.bsp; "
+        "matches Jacobson (2014) AJ 148:76 Table 12 (J2 3510.7e-6, J4 -34.2e-6 at 25,559 km)",
+        "gm_km3_s2": {"Uranus": GM_URANUS, **dict(zip(BODY_NAMES, BODY_GM, strict=True))},
+        "J2": J2_URA111,
+        "J4": J4_URA111,
+        "R_ref_km": R_REF_KM,
+        "pole_ra_dec_deg": list(POLE_IAU_RA_DEC_DEG),
+        "pole_source": "IAU 2009 (GMAT PCK BODY799_POLE_RA/DEC), held constant",
+        "not_imported_from": "data/validation/v4_uranus.py (URANUS_J2 there is French et al. 2024)",
+    }
+
+
 def pole_vector(ra_deg: float, dec_deg: float) -> FloatArray:
     ra, dec = math.radians(ra_deg), math.radians(dec_deg)
     return np.array([math.cos(dec) * math.cos(ra), math.cos(dec) * math.sin(ra), math.sin(dec)])
