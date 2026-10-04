@@ -1034,6 +1034,34 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   logarithmic potential band 1.98 to 2.035 for MEGNO). A positive indicator on a cycler is
   EXPECTED (cyclers are hyperbolic) and disqualifies nothing; the use is on grids around a
   quasi-cycler and in the capture sweeps (`#908`). Unproven for close encounters and short arcs.
+- `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
+  PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
+  coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
+  xfails): `core.er3bp` reproduces every printed stable band of the true-anomaly sweeps but
+  neither printed unstable band (Fig. 7 [178, 215] deg, Fig. 8 [119, 259] deg); the model's
+  least stable start is near 330 deg, not near aphelion. The paper has slips (A7 sign against A4;
+  "mean" for true anomaly; the speed scale and a never stated; Fig. 8's speed inconsistent with
+  its plotted sizes), so the paper may be at fault. (2) Neelakantan & Ramanan 2022 Table 8 M4N2
+  Lyapunov does not close (4.51 from periapsis, 2.0 from apoapsis; no nearby 4 pi orbit). Four of
+  the five Table 8 rows do close, which argues against a model defect, but `#912` already says
+  the elliptic corrector lacks the published method. Next: integrate both cases in an
+  independent elliptic formulation (pulsating frame with true anomaly as the independent
+  variable, written from Szebehely ch. 10, not from `core.er3bp`) and compare; only then
+  attribute the misses. Do not use `core.er3bp` results for decisions that depend on stability
+  bands until this is settled.
+- `#926` — registered 2026-10-04. **SANAGA & HOWELL 2025 FOLLOW-UPS** (digest
+  `docs/notes/2026-10-04-digest-sanaga-howell-2025-hill-restricted-four-body-ephemeris-transition.md`;
+  the paper prints no orbit tables). (a) Sourced-constants test module: the printed Hill tide
+  (Eq. 2) equals the quadrupole of a Sun at angle theta0 - t, an independent confirmation of the
+  `#891` Sun sense; m = 0.0808 against the project's omega_S; the 5:2 period relation
+  2 x 27.32 x (1 + m) days. (b) A multiplier root-of-unity monitor (broken bifurcations happen
+  where a multiplier sits at a p-th root of unity), with a positive control on a CR3BP family
+  with a known period-multiplying bifurcation; wire it into the `#905` family walk and any
+  `#388` ramp, and record branch identity per row. (c) Do NOT build a Hill four-body module now;
+  if one is wanted, read Eq. 8 from the page image first (its text layer is garbled) and get
+  Olikara & Scheeres 2017 (not held). (d) Papers to acquire only if Earth-Moon halo
+  interface-region work proceeds: Davis et al. 2017 (AAS 17-826), Park & Howell (AAS 23-118,
+  AAS 22-741), Sanaga & Howell (AAS 23-227), Olikara & Scheeres 2017.
 - `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
   PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
   `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;
