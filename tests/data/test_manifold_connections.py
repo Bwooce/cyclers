@@ -233,9 +233,10 @@ def test_kumar_entry_reproduces_fresh_not_just_transcribed() -> None:
     connections = {c["id"]: c for c in load_connections_raw(CONNECTIONS_PATH)}
     entry = connections["em-kumar-hetero-wu31c254-ws21c254-2026"]
 
-    assert entry["connection"]["newton_residual"] == pytest.approx(
-        fresh.connection.residual, rel=1e-9
-    )
+    # A converged Newton residual is round-off (4.6e-10 on the machine that stored the entry,
+    # 3.4e-11 on another), so both are bounded and not compared with each other.
+    assert entry["connection"]["newton_residual"] < 1e-8
+    assert fresh.connection.residual < 1e-8
     assert entry["connection"]["crossing_x"] == pytest.approx(
         fresh.connection.crossing_xv[0], rel=1e-9
     )
@@ -247,7 +248,10 @@ def test_kumar_entry_reproduces_fresh_not_just_transcribed() -> None:
     assert entry["connection"]["branch_u"] == fresh.connection.branch_u
     assert entry["connection"]["branch_s"] == fresh.connection.branch_s
     assert fresh.matched is True
-    assert fresh.match_distance == pytest.approx(7.610531887910121e-07, rel=1e-6)
+    # Distance from the printed Table-5 state. It is reproduced to about half a percent across
+    # machines (7.61e-07 and 7.57e-07), so it is bounded and loosely pinned.
+    assert fresh.match_distance < 1e-6
+    assert fresh.match_distance == pytest.approx(7.610531887910121e-07, rel=2e-2)
 
 
 # ---------------------------------------------------------------------------
