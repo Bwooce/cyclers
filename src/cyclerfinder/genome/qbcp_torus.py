@@ -43,55 +43,55 @@ class QBCPTorus:
 def se_to_em_transform(
     state_se: NDArray[np.float64], t: float, qbcp_sys: qbcp.QBCPSystem, mu_se: float
 ) -> NDArray[np.float64]:
-    """Transform Sun-Earth state to Earth-Moon rotating frame at time t."""
-    omega_s = qbcp_sys.omega_sun_nondim
-    mu_em = qbcp_sys.mu
-    a_s = qbcp_sys.a_sun_nondim
+    """Map a Sun-Earth CR3BP state to the QBCP Earth-Moon frame at time t (a SEED, not exact).
 
-    # Sun position in EM rotating frame
-    theta_s = qbcp_sys.theta_sun0 + omega_s * t
-    sx = a_s * math.cos(theta_s)
-    sy = a_s * math.sin(theta_s)
+    The Sun-Earth secondary (mass ``mu_se = 1 / (mu_sun + 1)``, the Earth+Moon mass point)
+    maps to the origin of the QBCP frame (the Earth-Moon barycentre) and the Sun-Earth
+    primary to the QBCP's own Sun position ``(alpha_7, alpha_8)(t)``, which starts near
+    angle pi in this module's frame and regresses. With ``D`` and ``theta_S`` the distance
+    and angle of that Sun position, ``R`` the rotation by ``theta_S - pi`` and ``p`` the
+    secondary-centred Sun-Earth position:
 
-    # Earth position is fixed at (-mu_em, 0, 0)
-    ex = -mu_em
-    ey = 0.0
+        r = D R p,
+        v = dD/dt R p + D dtheta_S/dt J R p + D R (n_S v_SE),    J = [[0, -1], [1, 0]],
 
-    # Vector from Earth to Sun
-    dx = sx - ex
-    dy = sy - ey
-    d_val = math.sqrt(dx * dx + dy * dy)
+    the derivatives of ``(alpha_7, alpha_8)`` being taken by central difference. The Sun
+    and the secondary map exactly onto the QBCP Sun (position and velocity) and the
+    origin. The time scale is not exact: Sun-Earth time is taken to advance at the mean
+    inertial rate ``n_S = 1 - omega_S``, while in the coherent model the Sun's motion is
+    not uniform, and the Moon has no Sun-Earth counterpart. There is no exact identity
+    for the flow; the measured bound (2026-10-04, ``tests/genome/test_qbcp_torus.py``) is
+    that with the Moon's mass set to zero the QBCP flow and the transformed Sun-Earth
+    flow agree to 7.5e-7 in position after 6 time units, a few Earth-Moon distances
+    from the Earth (7.2e-4 at the physical Moon mass). Treat it as a seed generator.
+    (#891/#892: until 2026-10-04 this placed the Sun on a prograde circle starting at
+    angle 0, used the factor ``1 + omega_S`` and put the secondary at the Earth.)
+    """
+    alphas = qbcp.evaluate_alphas(t, qbcp_sys)
+    xs, ys = float(alphas[7]), float(alphas[8])
+    h = 1e-5
+    alphas_p = qbcp.evaluate_alphas(t + h, qbcp_sys)
+    alphas_m = qbcp.evaluate_alphas(t - h, qbcp_sys)
+    dxs = float(alphas_p[7] - alphas_m[7]) / (2.0 * h)
+    dys = float(alphas_p[8] - alphas_m[8]) / (2.0 * h)
 
-    # Rotation angle from SE to EM frame
-    theta_rel = math.atan2(dy, dx)
-    alpha = theta_rel - math.pi
+    d_val = math.hypot(xs, ys)
+    dot_d = (xs * dxs + ys * dys) / d_val
+    dot_theta = (xs * dys - ys * dxs) / (d_val * d_val)
 
+    alpha = math.atan2(ys, xs) - math.pi
     cos_a = math.cos(alpha)
     sin_a = math.sin(alpha)
     rot_mat = np.array([[cos_a, -sin_a, 0.0], [sin_a, cos_a, 0.0], [0.0, 0.0, 1.0]])
+    j_mat = np.array([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
 
-    dot_dx = -a_s * omega_s * math.sin(theta_s)
-    dot_dy = a_s * omega_s * math.cos(theta_s)
-    dot_d = (dx * dot_dx + dy * dot_dy) / d_val
+    pos_rel = rot_mat @ (state_se[:3] - np.array([1.0 - mu_se, 0.0, 0.0]))
+    n_s = 1.0 - qbcp_sys.omega_sun_nondim
+    pos_em = d_val * pos_rel
+    vel_em = dot_d * pos_rel + d_val * dot_theta * (j_mat @ pos_rel)
+    vel_em += d_val * n_s * (rot_mat @ state_se[3:])
 
-    dot_alpha = (dx * dot_dy - dy * dot_dx) / (d_val * d_val)
-    dot_rot = dot_alpha * np.array([[-sin_a, -cos_a, 0.0], [cos_a, -sin_a, 0.0], [0.0, 0.0, 0.0]])
-
-    pos_se = state_se[:3]
-    vel_se = state_se[3:]
-    pos_rel_se = pos_se - np.array([1.0 - mu_se, 0.0, 0.0])
-
-    pos_rel_em = d_val * (rot_mat @ pos_rel_se)
-    pos_em = pos_rel_em + np.array([-mu_em, 0.0, 0.0])
-
-    gamma = 1.0 + omega_s
-    vel_rel_em = (
-        dot_d * (rot_mat @ pos_rel_se)
-        + d_val * (dot_rot @ pos_rel_se)
-        + d_val * (rot_mat @ (gamma * vel_se))
-    )
-
-    return np.concatenate([pos_em, vel_rel_em])
+    return np.concatenate([pos_em, vel_em])
 
 
 def se_lyapunov_to_qbcp_torus_seed(
@@ -100,8 +100,13 @@ def se_lyapunov_to_qbcp_torus_seed(
     mu_se: float,
     n_samples: int = 5,
 ) -> tuple[NDArray[np.float64], int, float]:
-    """Sample a Sun-Earth L2 Lyapunov orbit and transform it to EM frame."""
-    t_em = orbit_se.period / (1.0 + qbcp_sys.omega_sun_nondim)
+    """Seed a QBCP invariant circle from a Sun-Earth L2 Lyapunov orbit (unvalidated seed).
+
+    As :func:`cyclerfinder.genome.bcr4bp_torus.se_lyapunov_to_bcr4bp_torus_seed`: every
+    sample is transformed at the section time t = 0 and ``rho = 2 pi T_s / T_em`` with
+    ``T_em = period / (1 - omega_S)``.
+    """
+    t_em = orbit_se.period / (1.0 - qbcp_sys.omega_sun_nondim)
 
     sol = solve_ivp(
         cr3bp.cr3bp_eom,
@@ -115,17 +120,7 @@ def se_lyapunov_to_qbcp_torus_seed(
 
     u_samples = np.zeros((n_samples, 6))
     for j in range(n_samples):
-        state_se = sol.y[:, j]
-        t_val = j * t_em / n_samples
-        # Use mu = 0.0 for the starting system representation
-        sys_mu0 = qbcp.QBCPSystem(
-            mu=0.0,
-            mu_sun=qbcp_sys.mu_sun,
-            a_sun_nondim=qbcp_sys.a_sun_nondim,
-            omega_sun_nondim=qbcp_sys.omega_sun_nondim,
-            theta_sun0=qbcp_sys.theta_sun0,
-        )
-        u_samples[j] = se_to_em_transform(state_se, t_val, sys_mu0, mu_se)
+        u_samples[j] = se_to_em_transform(sol.y[:, j], 0.0, qbcp_sys, mu_se)
 
     coeffs = np.fft.fft(u_samples, axis=0) / n_samples
     t_s = 2.0 * math.pi / qbcp_sys.omega_sun_nondim

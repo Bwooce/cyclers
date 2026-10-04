@@ -43,51 +43,43 @@ class BCR4BPTorus:
 def se_to_em_transform(
     state_se: NDArray[np.float64], t: float, bcr_sys: bcr4bp.BCR4BPSystem, mu_SE: float
 ) -> NDArray[np.float64]:
-    """Transform Sun-Earth state to Earth-Moon rotating frame at time t."""
+    """Transform a Sun-Earth CR3BP state to the BCR4BP Earth-Moon rotating frame at time t.
+
+    ``state_se`` is in Sun-Earth rotating units (length = Sun to Earth-Moon barycentre
+    distance, time such that that frame turns at rate 1). The Sun-Earth secondary, of mass
+    ``mu_SE = 1 / (mu_sun + 1)``, is the Earth+Moon mass point, so it maps to the origin of
+    the Earth-Moon frame (the Earth-Moon barycentre), not to the Earth at (-mu, 0, 0).
+
+    In the BCR4BP the Sun sits at angle ``theta_sun0 - omega_S t`` in the Earth-Moon frame
+    (#891), and the Sun-Earth frame turns at the Sun's inertial rate ``n_S = 1 - omega_S``,
+    so Sun-Earth time is ``tau = n_S t``. With the rotation ``R(alpha)``,
+    ``alpha = theta_sun0 - omega_S t - pi`` (the Sun lies on the -x axis of the Sun-Earth
+    frame seen from the secondary), and ``p`` the secondary-centred Sun-Earth position:
+
+        r_EM = a_S R p,    v_EM = a_S R (n_S v_SE - omega_S J p),    J = [[0, -1], [1, 0]].
+
+    At ``mu = 0`` this is exact: the BCR4BP is then the Sun-Earth CR3BP seen from a frame
+    turning at rate 1, apart from the module's Sun mass missing the Kepler relation
+    ``n_S^2 a_S^3 = 1 + mu_sun`` by 2.3e-8 relative (``tests/genome/test_bcr4bp_torus.py``
+    checks the identity). At ``mu > 0`` the Moon has no Sun-Earth counterpart and the map is
+    a seed only. (#891: until 2026-10-04 this used a prograde Sun, the factor ``1 + omega_S``
+    and the Earth at (-mu, 0, 0).)
+    """
     omega_S = bcr_sys.omega_sun_nondim
-    mu_EM = bcr_sys.mu
+    n_S = 1.0 - omega_S
     a_S = bcr_sys.a_sun_nondim
 
-    # Sun position in EM rotating frame
-    theta_S = bcr_sys.theta_sun0 + omega_S * t
-    sx = a_S * math.cos(theta_S)
-    sy = a_S * math.sin(theta_S)
-
-    # Earth position is fixed at (-mu_EM, 0, 0)
-    ex = -mu_EM
-    ey = 0.0
-
-    # Vector from Earth to Sun
-    dx = sx - ex
-    dy = sy - ey
-    D = math.sqrt(dx * dx + dy * dy)
-
-    # Rotation angle from SE to EM frame
-    theta_rel = math.atan2(dy, dx)
-    alpha = theta_rel - math.pi
-
+    alpha = bcr_sys.theta_sun0 - omega_S * t - math.pi
     cos_a = math.cos(alpha)
     sin_a = math.sin(alpha)
     R = np.array([[cos_a, -sin_a, 0.0], [sin_a, cos_a, 0.0], [0.0, 0.0, 1.0]])
+    J = np.array([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
 
-    dot_dx = -a_S * omega_S * math.sin(theta_S)
-    dot_dy = a_S * omega_S * math.cos(theta_S)
-    dot_D = (dx * dot_dx + dy * dot_dy) / D
+    pos_rel_se = state_se[:3] - np.array([1.0 - mu_SE, 0.0, 0.0])
+    pos_em = a_S * (R @ pos_rel_se)
+    vel_em = a_S * (R @ (n_S * state_se[3:] - omega_S * (J @ pos_rel_se)))
 
-    dot_alpha = (dx * dot_dy - dy * dot_dx) / (D * D)
-    dot_R = dot_alpha * np.array([[-sin_a, -cos_a, 0.0], [cos_a, -sin_a, 0.0], [0.0, 0.0, 0.0]])
-
-    pos_se = state_se[:3]
-    vel_se = state_se[3:]
-    pos_rel_se = pos_se - np.array([1.0 - mu_SE, 0.0, 0.0])
-
-    pos_rel_em = D * (R @ pos_rel_se)
-    pos_em = pos_rel_em + np.array([-mu_EM, 0.0, 0.0])
-
-    gamma = 1.0 + omega_S
-    vel_rel_em = dot_D * (R @ pos_rel_se) + D * (dot_R @ pos_rel_se) + D * (R @ (gamma * vel_se))
-
-    return np.concatenate([pos_em, vel_rel_em])
+    return np.concatenate([pos_em, vel_em])
 
 
 def se_lyapunov_to_bcr4bp_torus_seed(
@@ -96,8 +88,17 @@ def se_lyapunov_to_bcr4bp_torus_seed(
     mu_SE: float,
     n_samples: int = 5,
 ) -> tuple[NDArray[np.float64], int, float]:
-    """Sample a Sun-Earth L2 Lyapunov orbit and transform it to EM frame."""
-    T_em = orbit_se.period / (1.0 + bcr_sys.omega_sun_nondim)
+    """Seed a BCR4BP invariant circle from a Sun-Earth L2 Lyapunov orbit.
+
+    The circle is the stroboscopic section at t = 0 (the time origin of
+    :func:`bcr4bp_torus_residual`), so every sample is transformed at t = 0; sample j is the
+    orbit at Sun-Earth phase j / n_samples. One Sun synodic period ``T_s`` advances the
+    Sun-Earth phase by ``n_S T_s``, so ``rho = 2 pi T_s / T_em`` with
+    ``T_em = period / (1 - omega_S)`` the orbit's period in Earth-Moon time units. (#891:
+    until 2026-10-04 the samples were transformed at different times, the factor was
+    ``1 + omega_S`` and ``theta_sun0`` was dropped.)
+    """
+    T_em = orbit_se.period / (1.0 - bcr_sys.omega_sun_nondim)
 
     sol = solve_ivp(
         cr3bp.cr3bp_eom,
@@ -111,16 +112,7 @@ def se_lyapunov_to_bcr4bp_torus_seed(
 
     u_samples = np.zeros((n_samples, 6))
     for j in range(n_samples):
-        state_se = sol.y[:, j]
-        t_em = j * T_em / n_samples
-        # Use mu = 0.0 for the starting system representation
-        sys_mu0 = bcr4bp.BCR4BPSystem(
-            mu=0.0,
-            mu_sun=bcr_sys.mu_sun,
-            a_sun_nondim=bcr_sys.a_sun_nondim,
-            omega_sun_nondim=bcr_sys.omega_sun_nondim,
-        )
-        u_samples[j] = se_to_em_transform(state_se, t_em, sys_mu0, mu_SE)
+        u_samples[j] = se_to_em_transform(sol.y[:, j], 0.0, bcr_sys, mu_SE)
 
     coeffs = np.fft.fft(u_samples, axis=0) / n_samples
     T_s = 2.0 * math.pi / bcr_sys.omega_sun_nondim
