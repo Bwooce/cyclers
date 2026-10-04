@@ -1075,6 +1075,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Olikara & Scheeres 2017 (not held). (d) Papers to acquire only if Earth-Moon halo
   interface-region work proceeds: Davis et al. 2017 (AAS 17-826), Park & Howell (AAS 23-118,
   AAS 22-741), Sanaga & Howell (AAS 23-227), Olikara & Scheeres 2017.
+  EXTENDED 2026-10-04 from Grossi & Topputo 2025 (AAS 25-427; digest
+  `docs/notes/2026-10-04-digest-grossi-topputo-2025-hr4bp-invariant-tori-collocation.md`; no
+  printed orbit tables either). (e) Its eq. 3 gives a structural test of any Hill four-body module
+  (reduces to the CR3BP at m = 0; tide is the quadrupole of the regressing Sun); m, mu and the Sun
+  mass agree with the project's constants to the printed digits. (f) An experiment, not a build:
+  Gauss-Legendre collocation of the stroboscopic-map invariant curve against the existing
+  `genome/qp_tori.py` and `search/variational_*_torus.py` correctors (iterations, basin, wall time;
+  the paper prints no timings). (g) Its rotate-and-propagate invariance check (p15) as a gauge for
+  the `#895` real-ephemeris arcs. (h) Settle its rotation-number convention (eq. 28 lacks 2 pi and
+  atan2) against the Olikara 2016 thesis, which is held, before reusing it. (i) To acquire: Henry
+  et al. 2023 (AIAA) and ISTS 2023, which may print torus tables; Scheeres 1998 for the
+  Sun-position slip.
 - `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
   PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
   `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;
