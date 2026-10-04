@@ -633,6 +633,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   15:115 (2002) and CMDA 103:143 (2009); and "A continuation method for converting
   trajectories from patched conics to full gravity models", J. Astronaut. Sci. (DOI
   10.1007/s40295-014-0017-x), which may already publish the continuation step.
+  **Bradley & Russell 2014 now held and digested**
+  (`docs/notes/2026-10-04-digest-bradley-russell-2014-patched-conics-to-full-gravity-continuation.md`):
+  their method continues a patched-conic tour to a full ephemeris in one scalar that scales the
+  flyby bodies' mass (with radius, sphere of influence and an ephemeris blend), starting from a
+  small positive value and re-seeding each flyby with the hyperbola, periapsis along the
+  difference of the excess velocities, that keeps the turning angle. That is the continuation
+  step of `#890`, published in 2014, and must be cited as theirs. Their examples are open
+  tours (an interplanetary one and a Jovian moon tour); they impose no periodicity, no
+  symmetry and compute no Floquet multipliers. What `#890` adds, if anything, is the periodic
+  closure in the restricted four-body model.
   **Bolotin & MacKay 2006 now held and digested**
   (`docs/notes/2026-10-04-digest-bolotin-mackay-2006-nonplanar-second-species.md`): its
   theorem needs a time-independent system with a conserved energy and a fixed singular set, and
