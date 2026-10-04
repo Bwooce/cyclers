@@ -357,3 +357,35 @@ branch check, criteria (c) to (f), extension (g)) is as pre-registered.
 * The Sun-off solve and the review-model comparison (section 1.5) are started from D1 arcs.
 * The `#890` reviewer's scratch code is still unread; it will be opened only after the first D1
   arc is committed.
+
+### 3.1 First D1 results (written before the review's scratch code was opened)
+
+Periodic orbit at E1 (`arcs/E1_N1_D1periodic*`). Control at sigma = 0: the unscaled `#890` orbit
+satisfied the wrap condition to 12 m (largest junction 18 m, the interpolation of the stored orbit)
+and converged in one Newton step, with flybys at 1,976.9 and 1,364.2 km. (A first run failed
+because the closed-chain Jacobian subtracted the wrap rotation at every junction instead of only at
+the last; fixed before any result was used.) Its multipliers in three dimensions at sigma = 0:
+8.38e5 and 1.19e-6, 1.786 and 0.560 (the planar pairs, as in `#890`), and an out-of-plane pair
+24.3 and 0.041, so the out-of-plane motion is unstable too. Sigma 0 to 1 took 22 accepted steps
+with the flyby sides unchanged; at sigma = 1 the periodic orbit's flybys are at 1,805.9 km (Titania)
+and 1,256.7 km (Oberon). The pre-stated check (1,800 to 1,820 and 1,255 to 1,266 km within 50 km)
+passes; these agree with the review's figures, computed there by other code.
+
+D1 arc E1, N = 3 (`arcs/E1_N3_D1*`, `verify_E1_N3_D1.json`): Newton at lam = 0 from the tiled
+periodic orbit converged, the lam homotopy took 10 accepted steps, every one with the same
+signature. At lam = 1 it passes (c) (DOP853 13 mm, LSODA 31 mm, at most 0.0008 mm/s), (d) (landing
+within 10 m with DOP853 and 18 m with LSODA, predictions up to 8 m), (e) and (f) (no other approach
+within 2 Hill radii; closest Umbriel 170,374 km).
+
+| flyby | date (TDB) | altitude km | speed at periapsis km/s | osculating excess km/s | e |
+|---|---|---|---|---|---|
+| Titania | 2030-01-11 23:09 | 1,588.6 | 0.515 | 0.273 | 1.78 |
+| Oberon | 2030-03-14 14:21 | 1,144.2 | 0.540 | 0.275 | 1.70 |
+| Titania | 2030-05-15 04:16 | 1,764.4 | 0.499 | 0.267 | 1.80 |
+| Oberon | 2030-07-15 19:06 | 1,082.6 | 0.547 | 0.277 | 1.69 |
+| Titania | 2030-09-15 09:32 | 1,752.9 | 0.500 | 0.267 | 1.80 |
+| Oberon | 2030-11-16 00:20 | 1,075.8 | 0.548 | 0.278 | 1.69 |
+| Titania | 2031-01-16 15:12 | 1,582.7 | 0.516 | 0.274 | 1.78 |
+
+Pre-registered route at N = 6 (all five epochs): all converge and pass (c) to (f)
+(`verify_E*_N6.json`); numbers in section 4.

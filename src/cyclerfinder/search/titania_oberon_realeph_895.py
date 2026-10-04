@@ -1515,3 +1515,181 @@ def expected_signature(n_cycles: int) -> list[tuple[str, int, int]]:
     for _ in range(n_cycles):
         sig += [("Titania", 1, 1), ("Oberon", -1, 1)]
     return [*sig, ("Titania", 1, 1)]
+
+
+# --------------------------------------------------------------------------------------------- #
+# Deviation D1 (note section 3): periodic orbit of the circular model, continued in sigma
+# --------------------------------------------------------------------------------------------- #
+
+
+def rotation6(ez: FloatArray, theta: float) -> FloatArray:
+    """Rotation of a 6-state (position and velocity) about the unit axis ``ez`` by ``theta``."""
+    k = np.array([[0.0, -ez[2], ez[1]], [ez[2], 0.0, -ez[0]], [-ez[1], ez[0], 0.0]])
+    r3 = np.eye(3) + math.sin(theta) * k + (1.0 - math.cos(theta)) * (k @ k)
+    out = np.zeros((6, 6))
+    out[:3, :3] = r3
+    out[3:, 3:] = r3
+    return out
+
+
+def blended_rates(c0: Circles, c1: Circles, sigma: float) -> tuple[float, float]:
+    return (1 - sigma) * c0.n_t + sigma * c1.n_t, (1 - sigma) * c0.n_o + sigma * c1.n_o
+
+
+def periodic_layout(
+    c0: Circles, c1: Circles, sigma: float, t_c: float, per_cycle: int = 24
+) -> tuple[FloatArray, FloatArray]:
+    """Node times (per_cycle + 1, the last one is t_c + T_cyc) and the wrap rotation."""
+    n_t, n_o = blended_rates(c0, c1, sigma)
+    t_cyc = 10.0 * math.pi / (n_t - n_o)
+    times = t_c + t_cyc / per_cycle * np.arange(per_cycle + 1)
+    return np.asarray(times, dtype=np.float64), rotation6(c1.ez, n_t * t_cyc)
+
+
+def periodic_eval(
+    model: ForceModel, times: FloatArray, x: FloatArray, rot: FloatArray, *, rtol: float = 1e-12
+) -> ShootEval:
+    """Jumps of the closed chain: node i -> i+1, and the last node -> rot @ node 0."""
+    k = len(times) - 1
+    jumps = np.empty((k, 6))
+    stms = np.empty((k, 6, 6))
+    for i in range(k):
+        p = propagate(model, times[i], times[i + 1], x[i], stm=True, rtol=rtol)
+        nxt = rot @ x[0] if i == k - 1 else x[i + 1]
+        jumps[i] = p.state - nxt
+        assert p.stm is not None
+        stms[i] = p.stm
+    return ShootEval(jumps, stms)
+
+
+def periodic_newton(
+    model: ForceModel,
+    times: FloatArray,
+    x0: FloatArray,
+    rot: FloatArray,
+    *,
+    tol_r: float = 1e-5,
+    tol_v: float = 1e-8,
+    max_iter: int = 12,
+) -> NewtonResult:
+    x = x0.copy()
+    k = len(times) - 1
+    hist: list[dict[str, float]] = []
+    dinv = 1.0 / _D
+    try:
+        ev = periodic_eval(model, times, x, rot)
+    except RuntimeError as exc:
+        return NewtonResult(x, False, hist, f"propagation: {exc}")
+    for it in range(max_iter + 1):
+        hist.append({"iter": it, "max_r_km": ev.max_r, "max_v_kms": ev.max_v, "scaled": ev.scaled})
+        if ev.max_r < tol_r and ev.max_v < tol_v:
+            return NewtonResult(x, True, hist)
+        if it == max_iter:
+            break
+        assert ev.stms is not None
+        jac = np.zeros((6 * k, 6 * k))
+        for i in range(k):
+            jac[6 * i : 6 * i + 6, 6 * i : 6 * i + 6] = (dinv[:, None] * ev.stms[i]) * _D[None, :]
+            if i == k - 1:
+                jac[6 * i : 6 * i + 6, 0:6] -= (dinv[:, None] * rot) * _D[None, :]
+            else:
+                jac[6 * i : 6 * i + 6, 6 * i + 6 : 6 * i + 12] -= np.eye(6)
+        dz, *_ = np.linalg.lstsq(jac, -(ev.jumps * dinv).reshape(-1), rcond=None)
+        dx = dz.reshape(k, 6) * _D
+        alpha = 1.0
+        for _ in range(5):
+            xt = x + alpha * dx
+            try:
+                evt = periodic_eval(model, times, xt, rot)
+            except RuntimeError:
+                alpha *= 0.5
+                continue
+            if evt.scaled < ev.scaled:
+                break
+            alpha *= 0.5
+        else:
+            return NewtonResult(x, False, hist, "step halving exhausted")
+        x, ev = xt, evt
+        hist[-1]["alpha"] = alpha
+    return NewtonResult(x, False, hist, "iteration limit")
+
+
+def tile_periodic(
+    times: FloatArray, x: FloatArray, rot: FloatArray, k_lo: int, k_hi: int
+) -> tuple[FloatArray, FloatArray]:
+    """Node times and states for node indices k_lo .. k_hi of the repeated periodic orbit."""
+    per = len(times) - 1
+    t_cyc = times[-1] - times[0]
+    ks = np.arange(k_lo, k_hi + 1)
+    tt = np.empty(len(ks))
+    xx = np.empty((len(ks), 6))
+    for i, kk in enumerate(ks):
+        q, r = divmod(int(kk), per)
+        tt[i] = times[r] + q * t_cyc
+        xx[i] = (
+            np.linalg.matrix_power(rot, q) @ x[r]
+            if q >= 0
+            else np.linalg.matrix_power(rot.T, -q) @ x[r]
+        )
+    return tt, xx
+
+
+def periodic_flybys(
+    model: ForceModel, times: FloatArray, x: FloatArray, rot: FloatArray, ez: FloatArray
+) -> list[FlybyInfo]:
+    tt, xx = tile_periodic(times, x, rot, -2, len(times) + 1)
+    return arc_flybys(model, tt, xx, ez)
+
+
+def periodic_continuation_step(
+    st: ContinuationState,
+    model_of: Callable[[float], ForceModel],
+    layout_of: Callable[[float], tuple[FloatArray, FloatArray]],
+    ez: FloatArray,
+) -> None:
+    """:func:`continuation_step` for the closed chain; the node times move with sigma."""
+    if st.status != "running":
+        return
+    p_try = min(1.0, st.p_cur + st.step)
+    if st.x_prev is not None and st.p_prev is not None:
+        x_pred = st.x_cur + (st.x_cur - st.x_prev) * (p_try - st.p_cur) / (st.p_cur - st.p_prev)
+    else:
+        x_pred = st.x_cur
+    model = model_of(p_try)
+    times, rot = layout_of(p_try)
+    res = periodic_newton(model, times, x_pred, rot)
+    entry: dict[str, Any] = {
+        "attempt": st.attempts,
+        "param": st.param,
+        "value": p_try,
+        "step": st.step,
+        "converged": res.converged,
+        "reason": res.reason,
+        "iterations": len(res.history) - 1,
+        "history": res.history,
+    }
+    st.attempts += 1
+    accepted = False
+    if res.converged:
+        fl = periodic_flybys(model, times, res.x, rot, ez)
+        sig = branch_signature(fl)
+        entry["signature"] = sig
+        entry["flybys"] = [(BODY_NAMES[f.body], round(f.t, 1), round(f.alt_km, 1)) for f in fl]
+        accepted = sig == st.signature
+        entry["branch_event"] = not accepted
+    entry["accepted"] = accepted
+    st.log.append(entry)
+    if accepted:
+        st.x_prev, st.p_prev = st.x_cur, st.p_cur
+        st.x_cur, st.p_cur = res.x, p_try
+        st.times = times
+        if entry["iterations"] <= 4:
+            st.step = min(MAX_STEP, 1.5 * st.step)
+        if st.p_cur >= 1.0:
+            st.status = "done"
+    else:
+        st.step *= 0.5
+        if st.step < MIN_STEP:
+            st.status = "failed"
+    if st.status == "running" and st.attempts >= MAX_ATTEMPTS:
+        st.status = "failed"

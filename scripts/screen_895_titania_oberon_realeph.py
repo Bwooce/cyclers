@@ -314,6 +314,24 @@ def stage_arc(args: argparse.Namespace) -> None:
             "n_nodes": len(times),
             "expected_signature": expected,
         }
+        if args.variant == "_D1":
+            _, pzp = arc_paths(tag, 1, "_D1periodic")
+            zp = np.load(pzp.with_name(pzp.stem + "_final.npz"))
+            tt, x1 = m.tile_periodic(zp["times"], zp["x"], zp["rot"], -2, len(times) - 3)
+            info["route"] = "D1: tiled periodic orbit of the circular model (note section 3)"
+            info["tile_time_mismatch_s"] = float(np.max(np.abs(tt - times)))
+            r1 = m.newton(m.homotopy_model(table, circles, 0.0), times, x1)
+            info["lam0_from_periodic"] = {
+                "converged": r1.converged, "reason": r1.reason, "history": r1.history,
+                "flybys": alts(m.homotopy_model(table, circles, 0.0), r1.x) if r1.converged else [],
+            }  # fmt: skip
+            sig1 = sig_of(m.homotopy_model(table, circles, 0.0), r1.x) if r1.converged else []
+            log(f"D1 lam=0 from the tiled periodic orbit: converged {r1.converged}, "
+                f"{len(r1.history) - 1} it, signature ok {sig1 == expected}")  # fmt: skip
+            status = "running" if (r1.converged and sig1 == expected) else "failed"
+            st = m.ContinuationState("lam", times, r1.x, 0.0, signature=sig1, status=status)
+            save_ckpt(pj, pz, info, st)
+            return stage_arc_loop(args, info, st, pj, pz, t_start, table, circles, t_c, times)
         orb = m.orbit_890(json.loads(REFINE_890.read_text())["refined_state"], c890)
         x0 = m.seed_from_890(orb, circles, t_c, times)
         res = m.newton(m.homotopy_model(table, circles, 0.0, **model_kw), times, x0)
@@ -346,6 +364,27 @@ def stage_arc(args: argparse.Namespace) -> None:
             st = m.ContinuationState("sigma", times, r0.x, 0.0, signature=sig0)
         save_ckpt(pj, pz, info, st)
 
+    stage_arc_loop(args, info, st, pj, pz, t_start, table, circles, t_c, times)
+
+
+def stage_arc_loop(
+    args: argparse.Namespace,
+    info: dict[str, Any],
+    st: m.ContinuationState,
+    pj: Path,
+    pz: Path,
+    t_start: float,
+    table: m.EphemerisTable,
+    circles: m.Circles,
+    t_c: float,
+    times: np.ndarray,
+) -> None:
+    c890 = m.registry_890()
+    model_kw: dict[str, Any] = {}
+
+    def fl_of(model: m.ForceModel, x: np.ndarray) -> list[m.FlybyInfo]:
+        return m.arc_flybys(model, times, x, circles.ez)
+
     c0 = m.circles_890(c890, circles, t_c)
     while time.time() - t_start < args.budget:
         if st.status == "done" and st.param == "sigma":
@@ -377,6 +416,83 @@ def stage_arc(args: argparse.Namespace) -> None:
         log(f"FAILED: {pj.name} at {st.param} = {st.p_cur:.6g}")
     else:
         log(f"paused: {st.param} = {st.p_cur:.6g}, step {st.step:.4g}")
+
+
+# ------------------------------------------------------------------------------------------- #
+# Deviation D1: periodic orbit of the circular model, continued from #890 in sigma
+# ------------------------------------------------------------------------------------------- #
+
+
+def stage_d1periodic(args: argparse.Namespace) -> None:
+    tag = args.epoch
+    t_start = time.time()
+    pj, pz = arc_paths(tag, 1, "_D1periodic")
+    table, circles, t_c = epoch_setup(tag)
+    c890 = m.registry_890()
+    c0 = m.circles_890(c890, circles, t_c)
+
+    def model_of(p: float) -> m.ForceModel:
+        return m.constants_blend_model(table, c890, c0, circles, p)
+
+    def layout_of(p: float) -> tuple[np.ndarray, np.ndarray]:
+        return m.periodic_layout(c0, circles, p, t_c)
+
+    if pj.exists():
+        info, st = load_ckpt(pj, pz)
+        log(f"resumed {pj.name}: sigma={st.p_cur:.6g} step {st.step:.4g} status {st.status}")
+    else:
+        info = {"epoch": tag, "route": "D1", "t_c_s": t_c, "circles": circles.to_dict()}
+        orb = m.orbit_890(json.loads(REFINE_890.read_text())["refined_state"], c890)
+        times, rot = layout_of(0.0)
+        x0 = m.seed_from_890(orb, c0, t_c, times[:-1])
+        m0 = model_of(0.0)
+        ev0 = m.periodic_eval(m0, times, x0, rot)
+        wrap = float(np.linalg.norm(ev0.jumps[-1, :3]))
+        info["sigma0_seed_jumps"] = {
+            "max_r_km": ev0.max_r,
+            "max_v_kms": ev0.max_v,
+            "wrap_r_km": wrap,
+        }
+        r0 = m.periodic_newton(m0, times, x0, rot)
+        fl0 = m.periodic_flybys(m0, times, r0.x, rot, circles.ez)
+        info["sigma0"] = {
+            "converged": r0.converged, "iterations": len(r0.history) - 1, "history": r0.history,
+            "flybys": [(m.BODY_NAMES[f.body], f.t, f.alt_km) for f in fl0],
+        }  # fmt: skip
+        sig0 = m.branch_signature(fl0)
+        ok = r0.converged and len(r0.history) - 1 <= 2 and sig0 == m.expected_signature(1)
+        info["sigma0"]["control_pass"] = ok
+        log(
+            f"sigma=0 control: seed jumps {ev0.max_r:.3g} km "
+            f"(wrap {info['sigma0_seed_jumps']['wrap_r_km']:.3g}), "
+            f"Newton {len(r0.history) - 1} it, "
+            f"conv {r0.converged}, sig ok {sig0 == m.expected_signature(1)}"
+        )
+        st = m.ContinuationState("sigma", times, r0.x, 0.0, signature=sig0,
+                                 status="running" if ok else "failed")  # fmt: skip
+        save_ckpt(pj, pz, info, st)
+    while time.time() - t_start < args.budget and st.status == "running":
+        t0 = time.time()
+        m.periodic_continuation_step(st, model_of, layout_of, circles.ez)
+        e = st.log[-1]
+        log(
+            f"sigma={e['value']:.6g} step {e['step']:.4g}: conv {e['converged']} "
+            f"it {e['iterations']} acc {e['accepted']} "
+            f"alts {[a[2] for a in e.get('flybys', [])]} ({time.time() - t0:.1f} s)"
+        )
+        save_ckpt(pj, pz, info, st)
+    if st.status == "done":
+        times, rot = layout_of(1.0)
+        fl = m.periodic_flybys(model_of(1.0), times, st.x_cur, rot, circles.ez)
+        info["sigma1_flybys"] = [f.to_dict() for f in fl]
+        save_ckpt(pj, pz, info, st)
+        np.savez(pz.with_name(pz.stem + "_final.npz"), times=times, x=st.x_cur, rot=rot)
+        log(
+            "DONE periodic at sigma = 1: "
+            + ", ".join(f"{m.BODY_NAMES[f.body]} {f.alt_km:.1f}" for f in fl)
+        )
+    else:
+        log(f"{st.status}: sigma = {st.p_cur:.6g}")
 
 
 # ------------------------------------------------------------------------------------------- #
@@ -595,7 +711,7 @@ def stage_verify(args: argparse.Namespace) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    ap.add_argument("stage", choices=["control", "p2", "arc", "verify"])
+    ap.add_argument("stage", choices=["control", "p2", "arc", "verify", "d1periodic"])
     ap.add_argument("--epoch", default="E1", choices=sorted(EPOCHS))
     ap.add_argument("--cycles", type=int, default=3)
     ap.add_argument("--variant", default="")
@@ -603,9 +719,14 @@ def main() -> int:
     ap.add_argument("--quick", action="store_true")
     args = ap.parse_args()
     t = time.time()
-    {"control": stage_control, "p2": stage_p2, "arc": stage_arc, "verify": stage_verify}[
-        args.stage
-    ](args)
+    stages = {
+        "control": stage_control,
+        "p2": stage_p2,
+        "arc": stage_arc,
+        "verify": stage_verify,
+        "d1periodic": stage_d1periodic,
+    }
+    stages[args.stage](args)
     log(f"done in {time.time() - t:.1f} s")
     return 0
 
