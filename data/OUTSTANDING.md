@@ -858,7 +858,43 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   the coordinator after `#895`:** switch the registry's Uranian mean motions to the printed
   periods; decide between the URA111 and URA182 constant sets and make them consistent;
   Uranus J2 and J4 per the ephemeris in use.
-- `#895` — registered and DISPATCHED 2026-10-04 (Opus build agent; pre-registration first).
+- `#895` — RESULT 2026-10-04, NO ROW (note `docs/notes/2026-10-04-895-titania-oberon-realeph.md`;
+  code `search/titania_oberon_realeph_895.py`, tests, driver; pre-registration commit `f3860e91`,
+  unchanged afterwards, checked by the coordinator). **Manoeuvre-free Titania-Oberon flyby arcs
+  exist in a real-ephemeris force model at all five epochs tried, 2030 to 2045.** Force model:
+  Uranus with J2 and J4 (the URA111 kernel's own constants, which are Jacobson 2014's), the five
+  major moons at their URA111 positions as unsoftened point masses, and the Sun. Its positive
+  control: each moon propagated as a test body stays within 0.01 to 1.7 km of the kernel after
+  30 days and 7 km after 123 days; without J2, or with the repository's old J2, Miranda is 333
+  to 6,990 km off. The `#890` model orbit is reproduced in independent code and is now a
+  permanent kernel-free test. **Arcs:** three cycles (370 days, 7 flybys) at every epoch; six
+  cycles at three epochs with the registered 1 cm Newton stop, and twelve cycles (4 years, 25
+  flybys) at every epoch with that stop loosened to 5 cm (deviation D2, declared before it was
+  run). Flyby altitudes on the arcs started from the periodic orbit of the circular model
+  (deviation D1, declared before it was run): Titania about 1,000 to 2,250 km, Oberon about 930
+  to 1,720 km; all flybys hyperbolic; nearest other body Umbriel at 167,000 km or more.
+  Junctions 0.2 to 8 cm with DOP853; each flyby integrated through continuously lands within 3
+  to 364 m. **Failures, reported by the build:** criterion (c) fails as registered on three
+  long arcs (the second verification integrator disagrees with itself by 0.4 to 0.55 m against
+  a 0.3 m threshold); the registered route, without D1, drifts to flybys several thousand km
+  up; extensions stop where Newton stalls at its 1 to 2 cm integration noise floor, not at a
+  branch event; one run diverged. **Coordinator's independent check:** own force-model code
+  (direct SPICE calls at every evaluation, own zonal-harmonic gradient, scipy DOP853), taking
+  only the stored node states: the six-cycle arc from 2035-06-30 (148 segments, 760 days)
+  joins to 0.26 m and 0.001 mm/s; the three-cycle arc from 2031-06-13 to 0.03 m; flyby
+  altitudes found by my own minimisation match the build's table (Titania 1,534 to 1,844 km,
+  Oberon 1,115 to 1,469 km at the 2031 epoch). The `#890` reviewer's scratch arcs are also
+  ballistic in the build's code. So three implementations agree. **What this is and is not:**
+  a ballistic multi-flyby sequence that can be chained for at least four years at any of five
+  epochs, in a force model that reproduces the moons' motion to kilometres. It is not
+  periodic (the real moons never repeat exactly), its flyby altitudes wander by hundreds of
+  km, and it is unstable (errors grow by about 1e3 per flyby pair), so any use needs
+  navigation. The continuation method is Bradley & Russell's (2014). **Not a row.** Before
+  one: an adversarial review of `#895`; an external check (GMAT, unsoftened); a ruling from
+  the owner on class (`quasi_cycler`, number of returns demonstrated) and on what V2 means for
+  an orbit this unstable; a maintenance budget; wording no stronger than "first computed for
+  Titania and Oberon, by a published continuation method". Original registration follows
+  (Opus build agent; pre-registration first).
   **DOES A BALLISTIC TITANIA-OBERON FLYBY SEQUENCE NEAR THE `#890` ORBIT EXIST IN A
   REAL-EPHEMERIS MODEL, REPRODUCIBLY, IN THE REPOSITORY?** The `#890` adversarial reviewer's
   scratch computation says yes at two epochs (three and six cycles, manoeuvre-free, flybys at
