@@ -466,7 +466,7 @@ to orbits not previously listed, not a new phenomenon.
     bicircular: 1.0e-2 to 1.8e-2 after 0.5 TU, 4.4e-2 to 1.8e-1 after 2 TU. For scale, the whole
     solar effect in the bicircular model (corrected sense minus no Sun) is 2e-3 to 6e-3 after 0.5 TU
     and 1.0e-2 to 1.8e-2 after 2 TU. The coherent-minus-bicircular difference is of the order of the
-    lunar variation (about 1e-2), which is the expected order, and it is three to ten times the solar
+    lunar variation (about 1e-2), which is the expected order, and it is 2.5 to 17 times the solar
     effect itself. This comparison therefore cannot tell the two senses apart (coherent minus
     shipped-sense bicircular is 1.1e-2 to 2.0e-2 after 0.5 TU) and cannot validate the coherent
     module to better than 1e-2. The module as shipped (parities exchanged) is further away: 2.0e-2 to
