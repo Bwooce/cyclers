@@ -98,7 +98,9 @@ def converge_direct_seed(
     here (matching ``er3bp_discovery.continue_and_monitor``).
 
     Returns the converged orbit if both the orbit's own ``converged`` state
-    (no exception raised) and ``corrector_residual < tol`` hold, else ``None``.
+    (no exception raised) and ``corrector_residual < tol`` hold, else ``None``. A seed whose
+    independent full-period closure fails (ClosureError, #930) is rejected as ``None``: it is
+    not a periodic orbit over the stated period.
     """
     integration_f = seed.period_f / 2.0 if seed.is_half_period_residual else seed.period_f
     try:

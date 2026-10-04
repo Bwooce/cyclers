@@ -47,6 +47,7 @@ def continue_er3bp_family_in_e(
     *,
     is_half_period_residual: bool = True,
     tol: float = 1e-10,
+    independent_tol: float | None = 1e-5,
 ) -> list[ER3BPPeriodicOrbit]:
     """Continue an ER3BP periodic orbit family in eccentricity.
 
@@ -61,6 +62,10 @@ def continue_er3bp_family_in_e(
         n_steps: Number of steps (inclusive of the target).
         is_half_period_residual: Symmetry flag for the corrector.
         tol: Convergence tolerance for the corrector.
+        independent_tol: Full-period closure bound forwarded to the corrector. A member whose
+            Radau closure exceeds it raises ClosureError (#930), which ends the continuation
+            (ContinuationError, or the partial list with its death eccentricity). ``None``
+            records the residual without gating.
 
     Returns:
         List of converged ER3BPPeriodicOrbit objects along the continuation path.
@@ -80,6 +85,7 @@ def continue_er3bp_family_in_e(
             free_vars=(IDX_X, IDX_YDOT),
             residual_indices=(IDX_Y, IDX_XDOT),
             tol=tol,
+            independent_tol=independent_tol,
         )
     except Exception as e:
         raise ContinuationError(f"Failed to converge initial seed at e={current_e}: {e}") from e
@@ -119,6 +125,7 @@ def continue_er3bp_family_in_e(
                 free_vars=(IDX_X, IDX_YDOT),
                 residual_indices=(IDX_Y, IDX_XDOT),
                 tol=tol,
+                independent_tol=independent_tol,
             )
         except Exception as e:
             raise ContinuationError(
@@ -144,6 +151,7 @@ def continue_er3bp_family_in_e_partial(
     *,
     is_half_period_residual: bool = True,
     tol: float = 1e-10,
+    independent_tol: float | None = 1e-5,
 ) -> tuple[list[ER3BPPeriodicOrbit], float | None]:
     """Continue an ER3BP periodic orbit family in eccentricity, non-raising.
 
@@ -173,6 +181,7 @@ def continue_er3bp_family_in_e_partial(
             free_vars=(IDX_X, IDX_YDOT),
             residual_indices=(IDX_Y, IDX_XDOT),
             tol=tol,
+            independent_tol=independent_tol,
         )
     except Exception:
         return history, current_e
@@ -212,6 +221,7 @@ def continue_er3bp_family_in_e_partial(
                 free_vars=(IDX_X, IDX_YDOT),
                 residual_indices=(IDX_Y, IDX_XDOT),
                 tol=tol,
+                independent_tol=independent_tol,
             )
         except Exception:
             return history, target_e
@@ -413,6 +423,7 @@ def continue_er3bp_family_in_e_arclength(
     is_half_period_residual: bool = True,
     tol: float = 1e-10,
     independent_gate: float | None = None,
+    independent_tol: float | None = 1e-5,
 ) -> list[ER3BPPeriodicOrbit]:
     """Pseudo-arclength continuation of an ER3BP family in eccentricity `e`.
 
@@ -435,6 +446,9 @@ def continue_er3bp_family_in_e_arclength(
         max_steps: Maximum continuation steps.
         is_half_period_residual: Symmetry flag for the corrector / residual.
         tol: Convergence tolerance for the residual L2 norm.
+        independent_tol: Closure bound forwarded to the corrector when ``independent_gate`` is
+            None (ClosureError ends the walk at that member, #930); ignored when a gate is set,
+            the gate then being the bound. ``None`` records without gating.
         independent_gate: If set, every member is gated on its
             ``independent_residual`` (the full-period closure from the
             corrector's independent Radau re-propagation), not on
@@ -458,6 +472,10 @@ def continue_er3bp_family_in_e_arclength(
             ``independent_gate`` is set) the seed fails the independent gate.
     """
     history: list[ER3BPPeriodicOrbit] = []
+    # An explicit independent_gate (#441) may be looser than the corrector's default bound; it
+    # then sets the corrector's rejection level, so the corrector never rejects a member the
+    # gate would have accepted.
+    closure_tol = independent_gate if independent_gate is not None else independent_tol
 
     try:
         seed_orbit = correct_er3bp_periodic(
@@ -468,6 +486,7 @@ def continue_er3bp_family_in_e_arclength(
             free_vars=_FREE_VARS,
             residual_indices=_RESIDUAL_INDICES,
             tol=tol,
+            independent_tol=closure_tol,
         )
     except Exception as exc:
         raise ContinuationError(
@@ -554,6 +573,7 @@ def continue_er3bp_family_in_e_arclength(
                     free_vars=_FREE_VARS,
                     residual_indices=_RESIDUAL_INDICES,
                     tol=tol,
+                    independent_tol=closure_tol,
                 )
             except Exception:
                 final_orbit = None
@@ -581,6 +601,7 @@ def continue_er3bp_family_in_e_arclength(
                 free_vars=_FREE_VARS,
                 residual_indices=_RESIDUAL_INDICES,
                 tol=tol,
+                independent_tol=closure_tol,
             )
         except Exception:
             break

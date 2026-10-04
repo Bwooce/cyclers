@@ -159,8 +159,15 @@ def differential_correct_pc32_to_eccentricity(
     period_ratio = period_seed / (2.0 * math.pi)
 
     sys0 = ER3BPSystem(mu=mu, e=0.0, primary_name="Pluto", secondary_name="Charon")
+    # independent_tol=None: this verifier reports the Radau closure residual and applies its own
+    # explicit gate below (converged flag), so a non-closing orbit is reported, not raised (#930).
     seed_orbit = correct_er3bp_periodic(
-        sys0, seed_state, half_period, is_half_period_residual=True, tol=tol
+        sys0,
+        seed_state,
+        half_period,
+        is_half_period_residual=True,
+        tol=tol,
+        independent_tol=None,
     )
 
     try:
@@ -172,6 +179,7 @@ def differential_correct_pc32_to_eccentricity(
             n_steps,
             is_half_period_residual=True,
             tol=tol,
+            independent_tol=None,
         )
         _last = history[-1]
         target_corrector_residual = _last.corrector_residual

@@ -61,6 +61,23 @@ class ConvergenceError(Exception):
     """Raised when the Newton corrector fails to converge."""
 
 
+class ClosureError(ConvergenceError):
+    """Raised when the corrector converged its residual but the orbit does not close.
+
+    The symmetric corrector only zeroes a half-period crossing condition; an independent Radau
+    re-propagation over the full period then measures X(T) - X(0). When that exceeds
+    ``independent_tol`` the orbit is not periodic over the stated period (#930), and returning it
+    would let a continuation accept it. The rejected orbit is kept on ``orbit`` for diagnostics.
+    """
+
+    def __init__(
+        self, message: str, *, orbit: ER3BPPeriodicOrbit, independent_error: float
+    ) -> None:
+        super().__init__(message)
+        self.orbit = orbit
+        self.independent_error = independent_error
+
+
 def correct_er3bp_periodic(
     system: er3bp.ER3BPSystem,
     state_guess: NDArray[np.float64] | Sequence[float],
@@ -74,7 +91,7 @@ def correct_er3bp_periodic(
     rtol: float = 1e-12,
     atol: float = 1e-12,
     state_step_cap: float = 0.1,
-    independent_tol: float = 1e-5,
+    independent_tol: float | None = 1e-5,
     max_backtrack: int = 20,
     require_monotone_decrease: bool = True,
     notes: str = "",
@@ -97,7 +114,16 @@ def correct_er3bp_periodic(
         is_half_period_residual: If True, tests X(T) = 0 for residual indices.
             If False, tests X(T) - X(0) = 0 for residual indices.
         tol: Convergence tolerance for the residual vector L2 norm.
+        independent_tol: Bound on the full-period closure |X(T) - X(0)| measured by an
+            independent Radau re-propagation. Exceeding it raises :class:`ClosureError`
+            (#930). ``None`` disables the check (the error is still recorded on the returned
+            orbit as ``independent_residual``); use it only for a caller that reports the
+            residual and applies its own gate.
         ...
+
+    Raises:
+        ConvergenceError: Newton failed (singular Jacobian, line search, iteration cap).
+        ClosureError: Newton converged but the orbit does not close over the full period.
     """
     if len(free_vars) != len(residual_indices):
         raise ValueError("Must have equal number of free vars and residual indices.")
@@ -217,19 +243,7 @@ def correct_er3bp_periodic(
     final_radau = radau_sol.y[:, -1]
     independent_err = float(np.linalg.norm(final_radau - state))
 
-    if independent_err > independent_tol:
-        log_outcome(
-            solver="er3bp_periodic",
-            inputs={"mu": system.mu, "e": system.e, "state_guess": state.tolist()},
-            outcome={
-                "independent_err": independent_err,
-                "independent_tol": independent_tol,
-                "status": "WARN",
-            },
-            meta={"message": "Converged but independent closure > tol"},
-        )
-
-    return ER3BPPeriodicOrbit(
+    orbit = ER3BPPeriodicOrbit(
         state0=state,
         period_f=full_period,
         mu=system.mu,
@@ -239,3 +253,23 @@ def correct_er3bp_periodic(
         iterations=i,
         notes=notes,
     )
+
+    if independent_tol is not None and not independent_err <= independent_tol:
+        log_outcome(
+            solver="er3bp_periodic",
+            inputs={"mu": system.mu, "e": system.e, "state_guess": state.tolist()},
+            outcome={
+                "independent_err": independent_err,
+                "independent_tol": independent_tol,
+                "status": "REJECTED",
+            },
+            meta={"message": "Converged but independent closure > tol"},
+        )
+        raise ClosureError(
+            f"Converged (residual {err:.2e}) but the orbit does not close over the full period "
+            f"{full_period:.6g}: independent error {independent_err:.3e} > {independent_tol:.3e}",
+            orbit=orbit,
+            independent_error=independent_err,
+        )
+
+    return orbit

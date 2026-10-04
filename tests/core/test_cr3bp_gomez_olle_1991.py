@@ -127,7 +127,8 @@ Integrator; the printed state itself has residual 4.7e-5, 2.4e-3, 5.3e-4 there).
 accepts Figs. 14 and 18 after moving the printed state by 8.8e-12 and 1.8e-11 (Fig. 16 also, by
 4.4e-11, but takes 7 s and is left out). Its own Radau full-period check returns 4.2e-5 and 2.2e-2,
 above its 1e-5 independent tolerance, which only logs a warning: a continuation through such orbits
-would accept them without notice.
+would accept them without notice. Since #930 that check raises ClosureError (the tests below
+pass ``independent_tol=None`` to study the crossing condition alone, and assert the rejection).
 """
 
 from __future__ import annotations
@@ -144,7 +145,7 @@ from scipy.integrate import solve_ivp
 from cyclerfinder.core.cr3bp import cr3bp_eom, jacobi_constant
 from cyclerfinder.core.cr3bp_regularized import sundman_rhs
 from cyclerfinder.core.er3bp import ER3BPSystem, er3bp_eom
-from cyclerfinder.genome.er3bp_periodic import correct_er3bp_periodic
+from cyclerfinder.genome.er3bp_periodic import ClosureError, correct_er3bp_periodic
 
 FloatArray = NDArray[np.float64]
 
@@ -445,5 +446,11 @@ def test_er3bp_corrector_accepts_printed_orbit(key: str) -> None:
     (Fig. 18). At the default tol = 1e-10 it raises ConvergenceError (module docstring)."""
     x, ydot, k = ELLIPTIC[key]
     s0 = np.array([float(x), 0.0, 0.0, 0.0, float(ydot), 0.0])
-    orbit = correct_er3bp_periodic(ER3BPSystem(MU, E_M, "P0", "P1"), s0, k * PI, tol=1e-5)
+    system = ER3BPSystem(MU, E_M, "P0", "P1")
+    orbit = correct_er3bp_periodic(system, s0, k * PI, tol=1e-5, independent_tol=None)
     assert float(np.abs(orbit.state0 - s0).max()) < 1e-9
+    # The Radau full-period check fails for both (4.2e-5 and 2.2e-2 measured before #930, against
+    # the 1e-5 default bound): the corrector now refuses to return them.
+    assert orbit.independent_residual > 1e-5
+    with pytest.raises(ClosureError):
+        correct_er3bp_periodic(system, s0, k * PI, tol=1e-5)

@@ -168,7 +168,8 @@ def branch_at_saddle_center_er3bp(
                     independent_tol=independent_tol,
                 )
             except Exception:
-                # ConvergenceError / SingularJacobian / propagation failure — try
+                # ConvergenceError (including ClosureError, #930: the perturbed orbit does not
+                # close over the full period) / SingularJacobian / propagation failure: try
                 # the next sign/amplitude rather than fabricating a result.
                 continue
             if orbit.corrector_residual < tol and orbit.independent_residual < independent_tol:
