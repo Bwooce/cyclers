@@ -1730,7 +1730,20 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   approach directions, turn at most 6.1 to 26.1 degrees (Oberon 8.2, Ariel 6.1 to 13.7, Titania
   9.7 / 25.4, Umbriel 8.4 / 9.3 / 16.6) against 17.9 to 177.2 demanded. The withdrawal stands; the
   decision on reinstatement remains the owner's. No other rotating-axes differencing found
-  (`two_moon_periodic_890`, `titania_oberon_realeph_895` use inertial axes).
+  (`two_moon_periodic_890`, `titania_oberon_realeph_895` use inertial axes). The new `status` is
+  also held to the published patched-conic controls: McConaghy Table 4 (pass for 6S7/6S8/6S9,
+  fail for the rest, none indeterminate) and all Russell & Strange rows (pass).
+  **Not run:** Broucke 1969 7P/7A (elliptic problem, pulsating frame) and the quasi-bicircular
+  orbits (Leiva & Briozzo 2008 Tables 2 to 4, the two 2005 orbits): their frames do not rotate
+  uniformly and the adapter supports uniform rotation only (no QBCP or ER3BP model is
+  offered); a search for other published moon-tour or cycler rows with a
+  full-model state was not made. **For the owner (`#906`):** a 180 degree demand is treated as a
+  rejection (test `test_reversal_is_a_rejection_not_a_non_encounter`), against `#906`(b)'s "treat
+  0 or 180 degrees as not an encounter"; the titania-oberon closing flyby demands 177.2 degrees at
+  2.16 km/s, which that rule would wave through. Needs a ruling. Still open in `#906`: (a) is
+  enforced only inside the full-model adapter (raw `Encounter` vectors are not checked); the
+  first-order validity numbers (mu |ln mu| / v^3, r_p / sqrt(mu)) for matched-expansion
+  candidates are not built into the gate; (c) and (d) untouched.
   Original registration: The `#899` scan review (`docs/notes/2026-10-05-899-second-species-scan-adversarial-review.md`) applied
   the `#888` demanded-turn gate to Casoliva's 7-3b/c orbit, which the pipeline reproduces to 1e-10 in
   the full circular restricted problem: it demands 32 degrees of lunar turn against 19 available at

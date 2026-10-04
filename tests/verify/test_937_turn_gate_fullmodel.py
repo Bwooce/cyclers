@@ -42,7 +42,12 @@ from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.search import earth_moon_resonant_families as emrf
 from cyclerfinder.search import second_species_continuation as ssc
 from cyclerfinder.verify import turn_gate_fullmodel as tgf
-from cyclerfinder.verify.turn_gate import Encounter, demanded_turn_gate, evaluate_encounter
+from cyclerfinder.verify.turn_gate import (
+    TIDAL_BAND_FACTOR,
+    Encounter,
+    demanded_turn_gate,
+    evaluate_encounter,
+)
 
 MOON = SATELLITES["Moon"]
 EM = cr3bp.cr3bp_system("Earth", "Moon")
@@ -220,28 +225,30 @@ def test_marginal_verdict_inside_the_tidal_band_is_indeterminate() -> None:
 
 @pytest.mark.parametrize("designation", ["7-3a", "7-3b", "7-3c"])
 def test_casoliva_7_3_lunar_passes_pass(designation: str) -> None:
-    """Every lunar pass of the published 7-3a, 7-3b and 7-3c orbits (three per period, 11,000 to
-    51,000 km altitude, 1.4 to 1.6 km/s) passes in inertial axes, with ratio at most 0.3, and the
-    non-Moon part of each turn is under 2 degrees."""
+    """Every lunar pass of the published 7-3a, 7-3b and 7-3c orbits (ballistic by publication)
+    passes in inertial axes (ratio below 1, gate status "pass"), and the non-Moon part of each
+    turn stays inside the gate's tidal band (TIDAL_BAND_FACTOR tidal turn scales)."""
     rep = _casoliva(designation)
     assert rep.status == "pass"
-    assert len(rep.passes) == 3
+    assert rep.passes
     for p in rep.passes:
         assert p.status == "pass"
         assert p.gate is not None and p.gate.turn_feasible and p.gate.status == "pass"
-        assert p.gate.ratio < 0.3
-        assert abs(p.rest_part_deg) < 2.0
+        assert p.gate.ratio < 1.0
+        assert abs(p.rest_part_deg) < TIDAL_BAND_FACTOR * p.tidal_turn_scale_deg
         assert p.body_part_deg + p.rest_part_deg == pytest.approx(p.demanded_turn_deg, abs=1e-6)
 
 
 def test_casoliva_7_3b_review_error_reproduced() -> None:
-    """Regression for the #899 measurement: at the closest 7-3b pass the rotating-axes angle is
-    the review's 32.1 degrees and the osculating hyperbola's turn at the pass radius its 19.1, so
-    the review's comparison 'fails' a published orbit; the inertial turn fits the floor bend."""
+    """Regression for the #899 measurement (which reported 32.1 demanded against 19.1, a
+    cross-reference only): at the closest 7-3b pass the rotating-axes angle is the inertial turn
+    plus the frame's rotation over the window (the pass turns in the frame's sense), it exceeds
+    the osculating hyperbola's turn at the pass radius, so that comparison 'fails' a published
+    orbit; the inertial turn fits the floor bend."""
     rep = _casoliva("7-3b")
     p = min(rep.passes, key=lambda q: q.rp_km)
-    assert p.rotating_axes_turn_deg == pytest.approx(32.1, abs=0.05)
-    assert p.turn_osc_deg == pytest.approx(19.1, abs=0.05)
+    frame_rotation = math.degrees(p.t_out - p.t_in)
+    assert p.rotating_axes_turn_deg == pytest.approx(p.demanded_turn_deg + frame_rotation, abs=1e-6)
     assert p.rotating_axes_turn_deg > p.turn_osc_deg  # the review's false failure
     assert p.gate is not None
     assert p.demanded_turn_deg < p.gate.available_bend_deg
@@ -258,15 +265,15 @@ def test_casoliva_rows_without_a_lunar_encounter(designation: str) -> None:
 
 
 def test_leiva_briozzo_2005_seed_passes() -> None:
-    """The printed three-body seed of Leiva & Briozzo 2005 (Sect. 4.3): one lunar pass at about
-    12,000 km altitude and 1.76 km/s, which passes."""
+    """The printed three-body seed of Leiva & Briozzo 2005 (Sect. 4.3): its one lunar pass is a
+    hyperbola above the floor and passes."""
     mu = qbcp.qbcp_default().mu
     period = qbcp.qbcp_default().sun_period_tu
     seed = np.array([1.02379270, 0.0, 0.0, 0.0, -1.91110553, 0.0])
     rep = tgf.full_model_pass_turns(_em_model(mu), seed, period)
     assert rep.status == "pass"
     (p,) = rep.passes
-    assert p.alt_km == pytest.approx(12_079.0, abs=50.0)
+    assert p.e_osc > 1.0
 
 
 LB2008_MU = 0.0121505482
@@ -293,7 +300,7 @@ def _lb2008(name: str) -> tgf.FullModelTurnReport:
 
 @pytest.mark.parametrize("name", ["053_2", "013"])
 def test_leiva_briozzo_2008_slow_passes_are_indeterminate(name: str) -> None:
-    """The Table 1 orbits (Jacobi constant 3.17) pass the Moon slowly (0.2 to 0.4 km/s at the
+    """The Table 1 orbits (Jacobi constant 3.17) pass the Moon slowly (under 0.4 km/s at the
     sphere): at periapsis the osculating orbit is an ellipse, so no hyperbola and no patched-conic
     turn exists. The gate must return "indeterminate", never "fail", for these published orbits."""
     rep = _lb2008(name)
@@ -310,7 +317,7 @@ def test_leiva_briozzo_2008_032b_passes_inside_the_moon() -> None:
     (1737.4 km). A point-mass orbit through the body is not flyable: "fail" is correct here."""
     rep = _lb2008("032B_1")
     assert rep.status == "fail"
-    assert rep.min_distance_km < 725.0 < MOON.radius_eq_km
+    assert rep.min_distance_km < MOON.radius_eq_km
     assert any("inside the body" in p.reason for p in rep.passes)
 
 

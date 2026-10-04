@@ -230,6 +230,8 @@ def test_mcconaghy_table4_turns_and_verdict(
     assert e.demanded_turn_deg == pytest.approx(req, abs=TURN_TOL_DEG)
     assert e.available_bend_deg == pytest.approx(mx, abs=TURN_TOL_DEG)
     assert rep.turn_feasible == (f"{n}{p}{r}" in MCCONAGHY_BALLISTIC)
+    # #937: no published verdict falls inside the tidal band at Earth
+    assert rep.status == ("pass" if f"{n}{p}{r}" in MCCONAGHY_BALLISTIC else "fail")
 
 
 def test_mcconaghy_aldrin_required_altitude() -> None:
@@ -274,6 +276,7 @@ def test_russell_strange_min_flyby_altitude(row) -> None:  # type: ignore[no-unt
     # source floor (1000 km at Titan, p.144; at the Galilean moons every
     # published altitude is positive, so the surface).
     assert rep.turn_feasible
+    assert rep.status == "pass"  # #937: outside the tidal band at every encounter
 
 
 # ---------------------------------------------------------------------------
