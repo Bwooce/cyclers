@@ -804,8 +804,10 @@ Added 2026-10-04 by the `#919` agent. The owner asked whether the papers set asi
 reference-only or background-only might hold techniques for the project's problems. Those verdicts were given on what
 the papers are about (a sail, a formation, an asteroid, a neural network). This section judges each on what its method
 can do for the problems of section 2. Tags as in the legend at the top: `[P p.N]` READ by me at the source; `[D note]`
-READ in a project digest or triage note, not checked at the source by me; `[I]` INFERRED; `[C]` my calculation. No
-source readers were used for this section: two were dispatched, returned nothing, and were no longer running when checked. The
+READ in a project digest or triage note, not checked at the source by me; `[I]` INFERRED; `[C]` my calculation. Two
+source readers were dispatched. One (navigation and guidance papers) reported after the first version was committed; its
+findings are folded in and tagged `[R919 p.N]` (READ at the source by that reader, not re-checked by me). The other
+returned nothing. The
 papers were found with the corpus-index search the task named (rows marked out of scope, triaged, reference-only or
 background-only), plus the papers the task named (Villegas-Pinto et al. 2023; de la Fuente Marcos 2018) and two
 owner-supplied papers filed under `#869` and marked out of scope or low relevance (Zhang et al. 2024 and 2025), and Machado & Wilde 2020, indexed as digested
@@ -989,6 +991,11 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
   more robust problem from solutions of a less robust one, a sequential ladder `[P abstract; D marginal-papers-triage #2]`.
 - Bears on: seeding long chains from shorter ones. The project already does this in the form that matters (`#895`
   extended three cycles to six and twelve from the shorter solutions; P5's seven-cycle seed) `[I]`.
+- The paper's own results qualify the ladder: seeding the robust problem from the non-robust one did better than
+  seeding it from partially robust ones, and the non-conditional search had the higher cumulative feasibility for two of
+  the problems `[R919 pp.30-33, Figs. 16, 17]`. The triage note's "sequential ladder" reading overstates it. For the
+  project this is a caution, not a method: when extending `#895`-type arcs, seeding every length from the shortest
+  solution is a fair comparison to keep `[I]`.
 - Verdict: NOT USEFUL beyond current practice; the method is a sequential seeding rule the project already uses.
 
 ### 8.9 Teardrop hovering with one impulse per period (Fu, Peng, Gong & Shi 2025)
@@ -1017,6 +1024,11 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
   corrections, and the open question is the size of the correction budget, not an on-board policy `[I]`. Blender & Singh's
   sigma-point ensemble is an unscented alternative to Q1's linear covariance. It would serve as Q1's nonlinear
   cross-check, but a direct Monte Carlo of the impulsive chain is simpler and has no training step `[I]`.
+- Two by-products the reader found `[R919]`: Hu et al. print a navigation-error model (for example 1.0 km and 1.0 m/s
+  state and observation errors in the interplanetary phase, 0.1 km and 0.1 m/s on approach; Table 4, PDF p.29), one
+  citable input for Q1's conservative case, labelled as a low-thrust mission's assumption; and Blender & Singh test their
+  sigma-point ensembles against 1000-sample Monte Carlo by Kullback-Leibler divergence (Table 8b, p.15), a usable gate for
+  when Q1's Gaussian assumption has failed.
 - Verdict: NOT USEFUL; the methods learn a control policy for continuous thrust, and the project's question is a budget
   for impulsive corrections.
 
@@ -1032,8 +1044,9 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
 - Bears on: Q1 needs an orbit-determination covariance at each correction time. None of these papers gives one for
   deep-space radiometric tracking of a vehicle on a flyby chain; Sarang & Capannolo's is for optical relative navigation
   near the Moon `[I]`.
-- Verdict: NOT USEFUL for the blockers. Sarang & Capannolo are POSSIBLY USEFUL as a stated, cited covariance for an
-  Earth-Moon row's Q1 run, if their results give steady-state errors (not checked).
+- Sarang & Capannolo's results are residual norms from 50 Monte Carlo runs (Table 1, p.13) for relative navigation near
+  a stable orbit, and the EKF degrades near perilune `[R919]`; they are not an absolute orbit-determination covariance.
+- Verdict: NOT USEFUL for the blockers or as Q1's navigation input.
 
 ### 8.12 A learned pre-filter for a cycler search (Ozaki et al. 2022)
 
@@ -1108,6 +1121,9 @@ are the `#895` real-ephemeris Titania-Oberon arcs pieces of an invariant torus t
   integrated heat load `[P text layer, sec. "Entry Corridor Definition", PDF pp.4-5]`.
 - Bears on: no blocker. For a cycler architecture it bears on the taxi's return: the entry speed implied by a row's
   Earth excess speed, against the corridor limits, would be a per-row figure of merit `[I]`.
+- The paper also states a delivery requirement: a minimum corridor width of 0.4 deg, and a flight-path-angle
+  uncertainty of 0.16 deg from Stardust and Genesis entry analyses `[R919 PDF p.6]`. That is an acceptance criterion for a
+  taxi's Earth-arrival leg in Q1 or Q3, not a method.
 - Verdict: NOT USEFUL for the blockers; POSSIBLY USEFUL as an architecture column if the owner wants one. That is a
   scope decision, not a method gap.
 
