@@ -1705,7 +1705,16 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   convention, which a nonrotating radial-fall test does not): the circular-orbit radii are the roots of
   4r^3 - C^2 r^2 + 2Cr - 1 = 0 and the boundary radii those of r^3 - Cr + 2 = 0 (the coordinator
   reproduced the printed values at C = 3.25 and 3.1 to all digits), and the radial orbit returns to
-  r = 2/C. Printed h_0 = 2^(2/3) in Fig. 1b does not reproduce (h = 0 there). Brjuno 1978 part III (digest
+  r = 2/C. Printed h_0 = 2^(2/3) in Fig. 1b does not reproduce (h = 0 there). Rodriguez del Rio thesis
+  chapters 1-3 (digest `docs/notes/2026-10-05-digest-rodriguez-del-rio-2021-thesis-part-a.md`, with the
+  ORS 2018 comparison): its Levi-Civita equations (eq. 2.26, closed form) agree with `cr3bp_eom` to
+  2e-14 in the agent's scratch integrator, so they are a ready `#928` control: four 1-EC orbits at
+  mu = 0.1, C = 5 close to |(u, v)| = 4e-14; the root counts change from 4 to 6 (n = 2) and 4 to 8
+  (n = 3) at printed thresholds C-hat(0.1, 2) = 3.72442505 (agent: 3.72441077, an ill-conditioned
+  tangency) and C-hat(0.1, 3) = 3.80644009. Sourced convention check: the ORS 2018 energies H_L1(0.5)
+  = -2.125, H_L2(0.5) = -1.853398112043077, H_L1(0.1) = -1.843476614939948 equal
+  -(jacobi_constant + mu(1 - mu))/2 to 15 digits (agent); make it a golden test. The thesis prints
+  +mu(1 - mu)/2 in eqs. 1.5 and 1.23 where minus is correct (eq. 2.1 and the paper). Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
