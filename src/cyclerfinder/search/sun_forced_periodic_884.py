@@ -23,6 +23,13 @@ synodic month, 6.79119 TU in this model) at every ``eps``. (Brown et al. instead
 hold the forcing period fixed in a time unit that itself depends on their parameter
 ``m``; their starting CR3BP members are therefore not ours. See the #884 note.)
 
+Sun's sense (#891)
+------------------
+The Sun regresses in the rotating frame: its angle is ``theta0 - omega_S t``. Until
+2026-10-04 this module (and ``core/bcr4bp.py``, against which it is gated) advanced it the
+other way. EVERYTHING under ``data/found/884_sun_forced_em_cyclers/`` was computed with the
+wrong sense and is kept only as a record; see the notice in the #884 note.
+
 Stroboscopic map
 ----------------
 For a forced period ``P = n Tg`` a periodic orbit is a fixed point of the map
@@ -40,7 +47,7 @@ the Jacobi-constant gradient, since ``grad C^T M = grad C^T`` on the orbit) give
 the bifurcation function
 
     Mel(theta0) = d/d eps [ C(phi_eps^P(x(0))) - C(x(0)) ] at eps = 0
-                = -2 * integral_0^P v(t) . a_sun(x(t), theta0 + omega_S t) dt
+                = -2 * integral_0^P v(t) . a_sun(x(t), theta0 - omega_S t) dt
 
 (per unit ``eps``; ``a_sun`` at ``mu_sun = mu_sun_phys``), the work of the solar
 force along the unperturbed orbit, i.e. Brown et al.'s Eq. 2.7 up to the factor
@@ -120,7 +127,7 @@ def _rhs(
     ay = -2.0 * vx + yy - (1.0 - mu) * yy / r13 - mu * yy / r23
     az = -(1.0 - mu) * z / r13 - mu * z / r23
     if mus != 0.0:
-        th = th0 + w_s * t
+        th = th0 - w_s * t
         sx = a_s * math.cos(th)
         sy = a_s * math.sin(th)
         dx = x - sx
@@ -169,7 +176,7 @@ def _rhs_var(
     uxy = 3 * om1 * (x + mu) * yy / r15 + 3 * mu * (x - 1 + mu) * yy / r25
     uxz = 3 * om1 * (x + mu) * z / r15 + 3 * mu * (x - 1 + mu) * z / r25
     uyz = 3 * om1 * yy * z / r15 + 3 * mu * yy * z / r25
-    th = th0 + w_s * t
+    th = th0 - w_s * t
     sx = a_s * math.cos(th)
     sy = a_s * math.sin(th)
     dx = x - sx
@@ -262,7 +269,7 @@ def propagate(
     atol: float = 1e-13,
     dense: bool = False,
 ) -> Any:
-    """Propagate the eps-scaled BCR4BP from ``t0`` to ``t1`` (Sun angle ``theta0 + w t``).
+    """Propagate the eps-scaled BCR4BP from ``t0`` to ``t1`` (Sun angle ``theta0 - w t``).
 
     Returns an :class:`Arc`, or the raw ``solve_ivp`` solution when ``dense``.
     ``method`` may be any ``solve_ivp`` method; ``Radau`` / ``LSODA`` provide the
@@ -575,10 +582,10 @@ def melnikov_samples(
 
 
 def melnikov_eval(model: ForcedModel, smp: MelnikovSamples, thetas: FloatArr) -> FloatArr:
-    """``Mel(theta0) = -2 int_0^P v . a_sun(x(t), theta0 + w t) dt`` (Simpson)."""
+    """``Mel(theta0) = -2 int_0^P v . a_sun(x(t), theta0 - w t) dt`` (Simpson)."""
     out = np.empty(len(thetas))
     for i, th in enumerate(np.atleast_1d(thetas)):
-        acc = sun_acc_unit(model, smp.r, th + model.omega_sun * smp.t)
+        acc = sun_acc_unit(model, smp.r, th - model.omega_sun * smp.t)
         out[i] = float(smp.weights @ (-2.0 * np.sum(smp.v * acc, axis=1)))
     return out
 
