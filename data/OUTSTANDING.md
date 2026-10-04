@@ -995,6 +995,28 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Sperling 1969, Celest. Mech. 1:213, 10.1007/BF01228841, unconfirmed as the one cited), Henry et
   al. 2023, Campagnola 2010, Peng & Xu ISSFD 2014 (Crossref offers Peng & Xu 2015, Astrophys. Space
   Sci. 357, 10.1007/s10509-015-2236-4, a related paper), Michel & Valsecchi 1997.
+  **DOIs, fourth batch 2026-10-05 (Haiku lookup; every DOI's title and authors re-fetched by the
+  coordinator):** Lancaster & Allemann 1972, AIAA 72-49, 10.2514/6.1972-49; Breakwell & Perko,
+  "Matched asymptotic expansions, patched conics, and the computation of interplanetary trajectories",
+  Progress in Astronautics 17:159 (1966; the 1965 AIAA conference version is 10.2514/6.1965-689),
+  10.1016/B978-1-4832-2729-0.50015-6; Henon & Guyot 1970, in Periodic Orbits, Stability and Resonances
+  pp.349-374, 10.1007/978-94-010-3323-7_33; Szebehely 1970, "New families of periodic orbits in the
+  general planar problem of three bodies", same volume pp.382-396, 10.1007/978-94-010-3323-7_35;
+  Szebehely & Feagin 1973, Celest. Mech. 8:11, 10.1007/BF01228387; Szebehely & Peters 1967, AJ 72:876
+  10.1086/110355 and 72:1187 10.1086/110398; Kustaanheimo & Stiefel 1965, J. reine angew. Math. 218:204,
+  10.1515/crll.1965.218.204; Kirchgraber 1971, Celest. Mech. 4:340 (a KS-separable problem; likely the
+  one cited), 10.1007/BF01231396; Broucke 1963 is probably Deprit & Broucke 1963, Icarus 2:207
+  (regularisation of the planar restricted problem by conformal maps), 10.1016/0019-1035(63)90016-2;
+  Lantoine, Russell & Campagnola 2011, Acta Astronaut. 68:1361, 10.1016/j.actaastro.2010.09.021;
+  Campagnola & Russell 2010, JGCD 33:476 (Endgame Part 2), 10.2514/1.44290; Nunez, Cincotta & Wachlin
+  1996, CMDA 64:43, 10.1007/BF00051604; Michel & Valsecchi 1997, CMDA 65:355 (symplectic integrator
+  efficiency; likely the P/Oterma source Chambers cites), 10.1007/BF00049500; Goodyear 1965, AJ 70:189,
+  10.1086/109713; Danby 1965, AIAA J. 3:769, 10.2514/3.2976; Broucke 1969, "Stability of periodic
+  orbits in the elliptic restricted three-body problem", AIAA J. 7:1003, 10.2514/3.5267 (the journal
+  companion of TR 32-1360; useful for `#931` and `#933`). REJECTED: the Sconzo 1963 and 1967 hits are
+  not matrizant papers; the "Peng & Xu ISSFD 2014" hit is the ASR paper already held. Not found: Henon
+  1965, Standish 1970, Burdet 1969, Sperling 1961, Campagnola 2010 (probably a thesis), Henry et al.
+  2023; NASA CR-769 has no DOI.
   Added 2026-10-04 from the later digests (DOIs not looked up): Hadjidemetriou & Christides 1975
   (mass continuation, `#931`); Henon 1974a and 1974b; Broucke 1969 (NASA TR 32-1360); Henon &
   Heiles 1964 (AJ 69:73, `#924` test potential); Burdet 1968 and 1969; Sperling 1961; Peng & Xu
