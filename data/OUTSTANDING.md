@@ -588,6 +588,26 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   of the backend in `run_627`/`run_629`/`run_633` and the bespoke backends in `run_641`,
   `run_436`, `campaign_468`, `run_299`, `run_301` are untouched run records and would reproduce
   the old behaviour if re-run.
+- `#890` — registered 2026-10-04 (from the `#888` gated re-enumeration; DISPATCHED the same
+  day; **a candidate, not a result**). THE ONE SYMMETRIC TWO-MOON CLOSURE THAT PASSES THE
+  DEMANDED-TURN GATE: Titania-Oberon-Titania, equal legs of 61.58 days (two and a half synodic
+  periods; total period five synodic periods, about 123.2 days), five revolutions per leg on
+  the high branch, a near-Hohmann orbit (semi-major axis about 511,100 km, eccentricity 0.148,
+  periapsis just inside Titania's orbit and apoapsis just outside Oberon's), V-infinity 0.27
+  km/s at both moons; demanded turns 58.4 degrees at Oberon and about 42 degrees at Titania
+  against about 102 degrees available, i.e. flybys at about 2,200 km and 4,600 km altitude.
+  Recomputed independently by the coordinator in the ideal model (same numbers). **Why it is
+  not yet a trajectory:** it exists only as a patched-conic closure in the circular-coplanar
+  model; the V-infinity is about a twelfth of the moons' orbital speed, where the patched conic
+  is at its weakest, and the orbit grazes both moons' orbits on every revolution. **Scope:**
+  (1) integrate the flybys and then the whole cycle in the restricted four-body problem with
+  BOTH moons massive, and correct the closure to a periodic orbit of the five-period
+  stroboscopic map if one exists; (2) if it survives, the real ephemeris with the moons'
+  eccentricities and inclinations, over the validity window; (3) the demanded-turn gate at
+  every encounter of the corrected orbit; (4) a literature check and the spec 16.4 label
+  (body-set rule: Titania-Oberon is not one of Russell and Strange's computed pairs; Canales,
+  Howell & Fantino treat a one-way Titania to Oberon transfer). NO catalogue row before all
+  four, an adversarial review, and the owner's say.
 - `#889` — registered 2026-10-04 (from the `#882` adversarial review; DISPATCHED the same day):
   **THE PUBLISHED POSITIVE CONTROL THE TORUS-CONNECTION LANE HAS NEVER HAD.** Kumar, Anderson &
   de la Llave (SIAM J. Applied Dynamical Systems 24(1):219-258, 2025; held as arXiv 2109.14814)
@@ -614,7 +634,25 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   fixtures) and the README are updated; the website's launch-windows data, About wording and
   tests follow (its hero scene and discoveries strip are data-driven and disappear with the
   rows). The catalogue now holds NO V4 row and NO project-discovered row with a novelty label.
-  **STILL TO DO (the real fix, not dispatched):** (1) a DEMANDED-TURN gate in the validation
+  **GATE BUILT 2026-10-04 (commits `a211814f` to `6c9f445d`; note
+  `docs/notes/2026-10-04-888-demanded-turn-gate.md`):** `verify/turn_gate.py` and
+  `verify/turn_gate_closures.py`, 51 tests. POSITIVE CONTROLS against published values, both
+  pass: McConaghy, Longuski & Byrnes 2002 Table 4 (all 19 ballistic-or-powered verdicts match;
+  all 38 angles within 0.6 degrees; the Aldrin cycler's known deficiency reproduced, 83.7
+  degrees demanded against 71.8 available, published 84 / 72) and Russell & Strange 2009
+  Tables 2-6 (the gate's required altitude reproduces the published minimum flyby altitude
+  within 1 km for 9 of 10 cyclers). REGRESSION: all six withdrawn rows fail at every
+  encounter. RE-SCREEN of the stored symmetric closures: 0 of 30 Uranian (`#563`), 0 of 18
+  Jovian (`#576`), 0 of 12 Saturnian (`#575`, `#655`) pass; the smallest worst-case ratio
+  anywhere is 1.57 (Jupiter). So every symmetric closure the project ever enumerated is
+  non-ballistic, and `#577`'s description of the Jovian ones as members of Russell and
+  Strange's class does not hold (their target moon is passed without bending). EXTENDED
+  ENUMERATION with the gate in force (0 to 6 revolutions, both multi-revolution branches, legs
+  up to 6 geometric-mean periods): exactly ONE closure passes, registered as `#890`. Also
+  found: `#599`'s Neptune code gives retrograde Triton a prograde velocity (confirmed by finite
+  differences), so the Neptune negatives built on it are suspect; two of Russell and Strange's
+  own Titan cyclers fall below the project's 1500 km Titan altitude floor (they used 1000 km).
+  **STILL TO DO:** (1) a DEMANDED-TURN gate in the validation
   lane: at every encounter the angle between incoming and outgoing V-infinity must not exceed
   the bend available at the altitude floor; (2) a positive control on a published flyable
   cycler (a Russell & Strange Table 3 or 4 member) and a regression test that the six
