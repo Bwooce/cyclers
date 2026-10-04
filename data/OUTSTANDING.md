@@ -1652,7 +1652,15 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `docs/notes/2026-10-05-digest-alvarez-ramirez-barrabes-medina-olle-2021-ejection-collision-two-dof.md`)
   is purely analytic and does NOT cover the restricted problem (its hypotheses need a homogeneous
   potential with a total collision; the RTBP has a rotating frame and only binary collisions); it
-  cites none of the Olle, Rodriguez & Soler papers, which remain the ones to get. Brjuno 1978 part III (digest
+  cites none of the Olle, Rodriguez & Soler papers (the 2018 paper and the Rodriguez del Rio 2021
+  thesis, which contains all four, are now HELD; thesis digests in progress). Llibre & Martinez
+  Alfaro 1985 (digest `docs/notes/2026-10-05-digest-llibre-martinez-alfaro-1985-ejection-collision-spatial-rtbp.md`):
+  in the restricted problem itself, ejection (and collision) orbits with either primary form a set
+  diffeomorphic to S^2 x R for every mu and C (McGehee-type blow-up, a complement to KS); for small
+  mu there are m1-to-m2 ejection-collision orbits when C < 2. The mu = 0 skeleton is radial Kepler
+  orbits with apocentre 2/C (zero angular momentum, so C = -2E; an exact control for a regularised
+  rotating-frame propagator, `#928`). Radial collision arcs have an undefined turn: `#906`
+  indeterminate. No printed orbits; mu0(C) not quantified; Jacobi constant offset by mu(1 - mu). Brjuno 1978 part III (digest
   `docs/notes/2026-10-04-digest-brjuno-1978b-properties-solutions-mu-0.md`) adds no arc types and nothing
   on continuation to mu > 0 (that is in later preprints, not held), but gives exact structure: a
   one-dimensional membership test (e* relation, Theorem 2.2) that reproduced all 276 determinate Henon
