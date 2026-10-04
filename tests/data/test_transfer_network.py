@@ -322,8 +322,27 @@ def test_positive_control_aldrin_outbound_inbound_earth_edge_is_b0_zero_cost() -
     assert edge.band == "B0_ballistic_compatible"
 
 
+def _load_withdrawn_uranian_rows() -> list[dict[str, Any]]:
+    """The six Uranian (1,1) quasi_cycler rows, WITHDRAWN from the catalogue on
+    2026-10-04 (#888: not ballistic trajectories) and preserved verbatim in
+    data/withdrawn/. They are used here ONLY as fixtures for the epoch-window
+    edge logic, which depends on their bodies and validity windows, not on the
+    trajectories being flyable."""
+    import yaml
+
+    out: list[dict[str, Any]] = []
+    for path in sorted(
+        (CATALOGUE_PATH.parent / "withdrawn").glob("*-1-1-uranian-quasi-cycler-2026.yaml")
+    ):
+        with open(path) as fh:
+            data = yaml.safe_load(fh)
+        assert isinstance(data, list) and len(data) == 1
+        out.append(data[0])
+    return out
+
+
 def test_positive_control_uranian_quasi_cyclers_share_epoch_window_overlap() -> None:
-    rows = _load_catalogue_rows()
+    rows = _load_withdrawn_uranian_rows()
     # Schema v5.2 (#684) added 20 epoch-free CR3BP KAM-corridor quasi_cycler rows
     # (epoch_locked=false, no validity_window -- #682's cycler-corridor census).
     # This positive control is specifically about the real-ephemeris, epoch-LOCKED
@@ -336,7 +355,7 @@ def test_positive_control_uranian_quasi_cyclers_share_epoch_window_overlap() -> 
         for r in rows
         if r.get("orbit_class") == "quasi_cycler" and r.get("epoch_locked") is True
     }
-    assert len(qc_rows) == 6, "expected the 6 #569 Uranian quasi_cycler rows"
+    assert len(qc_rows) == 6, "expected the 6 withdrawn #569 Uranian quasi_cycler fixtures"
 
     n_pairs_with_shared_body = 0
     n_epoch_window_overlap = 0

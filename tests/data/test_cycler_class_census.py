@@ -361,7 +361,9 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # closes-up-to-rotation. Same exemption pattern as Heaton-Longuski 2003
         # and Tito 2018 from the invariants{}/transit_times_days completeness
         # tests.
-        "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
+        # WITHDRAWN 2026-10-04 (#888, owner decision): not a ballistic trajectory (the
+        # turn demanded at every encounter exceeds the available bend); row preserved
+        # in data/withdrawn/. multi-arc 297 -> 291 together with the five below.
         # #356 (2026-06-17): damario-1992-galileo-veega admitted as the third
         # computed mga_tour row (after Tito 2018 and Heaton-Longuski 2003).
         # Galileo VEEGA flown trajectory (D'Amario-Bright-Wolf 1992 SSR
@@ -446,15 +448,12 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # matching the #312 umbriel-oberon row's own precedent above; same
         # invariants{}/transit_times_days exemption as #312 (quasi_cycler class).
         # multi-arc 292 -> 297.
-        "titania-oberon-1-1-uranian-quasi-cycler-2026",
-        "ariel-oberon-1-1-uranian-quasi-cycler-2026",
-        "umbriel-titania-1-1-uranian-quasi-cycler-2026",
-        "ariel-titania-1-1-uranian-quasi-cycler-2026",
-        "ariel-umbriel-1-1-uranian-quasi-cycler-2026",
+        # WITHDRAWN 2026-10-04 (#888, owner decision): all five, with the #312 row
+        # above, for the same reason. multi-arc 297 -> 291.
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 297, (
+assert len(MULTI_ARC_ALLOWLIST) == 291, (
     f"Allowlist must have 297 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
@@ -722,7 +721,9 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 55}
+    # #888 (2026-10-04): the six Uranian (1,1) quasi_cycler rows WITHDRAWN (not ballistic;
+    # preserved in data/withdrawn/): multi-arc 297 -> 291.
+    expected = {"single-ellipse": 46, "multi-arc": 291, "non-keplerian": 55}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

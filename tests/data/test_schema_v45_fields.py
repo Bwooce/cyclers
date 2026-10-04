@@ -307,7 +307,9 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # JSONL verdict files from #306/#330/#331/#335/#338 and assert what the
         # catalogue row claims. V5 is the GMAT independent-toolchain lane,
         # separately-tracked. docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md.
-        "umbriel-oberon-1-1-uranian-quasi-cycler-2026": "V4",
+        # WITHDRAWN 2026-10-04 (#888, owner decision): the V4 gauntlet matched V-infinity
+        # magnitudes at the flybys and never the directions; the closure demands turns the
+        # moons cannot supply. Row preserved in data/withdrawn/; no V-level claim stands.
         # #569 (2026-07-11): the 5 sibling representatives of the 30-member #563
         # Uranian symmetric-closure quasi-cycler family, each at #312-equivalent
         # V4 (windowed). Evidence: the #566 V2->V3->V4-scipy->V4-strict gauntlet
@@ -316,11 +318,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # frozen-gate pytest tests/verify/test_566_five_representatives_v4.py,
         # registered V4 in validate.py::_LEVEL_EVIDENCE.
         # docs/notes/2026-07-11-568-writeback-readiness-verdict.md.
-        "titania-oberon-1-1-uranian-quasi-cycler-2026": "V4",
-        "ariel-oberon-1-1-uranian-quasi-cycler-2026": "V4",
-        "umbriel-titania-1-1-uranian-quasi-cycler-2026": "V4",
-        "ariel-titania-1-1-uranian-quasi-cycler-2026": "V4",
-        "ariel-umbriel-1-1-uranian-quasi-cycler-2026": "V4",
+        # WITHDRAWN 2026-10-04 (#888, owner decision): all five, same reason as the #312
+        # row above. Catalogue now has no V4 row.
         # #708 (2026-07-24): umbriel-1-2-torus-homoclinic-uranus-2026 lands at
         # V1-equivalent -- see src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE
         # for the full evidence citation (the #701 ghost-guard independent-integrator
@@ -388,7 +387,9 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # duty-cycle scan + #568 verdict; tests/verify/test_566_five_representatives_v4.py.
     assert sum(1 for lvl in byid.values() if lvl == "V2") == 8
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
-    assert sum(1 for lvl in byid.values() if lvl == "V4") == 6
+    # 6 -> 0 (#888, 2026-10-04): all six Uranian V4 rows WITHDRAWN (not ballistic: the V4
+    # gauntlet matched V-infinity magnitudes at the flybys and never the directions).
+    assert sum(1 for lvl in byid.values() if lvl == "V4") == 0
     assert not any(lvl == "V5" for lvl in byid.values())
 
 

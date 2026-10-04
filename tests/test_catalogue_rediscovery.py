@@ -342,7 +342,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # NOT_TWO_BODY 16 -> 10 change below.
     # 100 -> 99 (2026-10-03, #882): umbriel-1-2-torus-homoclinic-uranus-2026 (primary
     # Uranus) WITHDRAWN from the catalogue by owner decision; preserved in data/withdrawn/.
-    ExclusionReason.NON_HELIOCENTRIC: 99,
+    # 99 -> 93 (2026-10-04, #888): the six Uranian (1,1) quasi_cycler rows WITHDRAWN by
+    # owner decision (not ballistic trajectories; preserved in data/withdrawn/).
+    ExclusionReason.NON_HELIOCENTRIC: 93,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

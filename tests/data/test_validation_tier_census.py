@@ -238,7 +238,9 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 120 -> 119 (2026-10-03, #882): umbriel-1-2-torus-homoclinic-uranus-2026 WITHDRAWN
     # by owner decision (its "connection" is not a CCR4BP trajectory; row preserved in
     # data/withdrawn/).
-    "unvalidated": 119,
+    # 119 -> 113 (2026-10-04, #888): the six Uranian (1,1) quasi_cycler rows WITHDRAWN by
+    # owner decision (not ballistic trajectories; preserved in data/withdrawn/).
+    "unvalidated": 113,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent
