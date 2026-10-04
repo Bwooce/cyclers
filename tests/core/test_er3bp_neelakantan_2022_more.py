@@ -17,8 +17,8 @@ jaa-43-50-doi-10.1007-s12036-022-09830-x.pdf. Table 8 rows 1-4 are tested in
      days.
    The paper states mu = 0.0122 (p5) for its Earth-Moon work. With that mass ratio neither state
    crosses the x-z plane perpendicularly at its first return ((xdot, zdot) residual norms 0.031
-   and 0.0037); that is recorded below as a strict expected failure. Solving for the mass ratio at which each
-   printed state does cross perpendicularly gives 0.012277471000011 (benchmark) and
+   and 0.0037); that is recorded below as a strict expected failure. Solving for the mass ratio
+   at which each printed state does cross perpendicularly gives 0.012277471000011 (benchmark) and
    0.01227747100007 (comparison orbit), independently and to eleven digits the same value. This
    value, mu = 0.012277471, is not printed anywhere in the paper; it is identified here from the
    two states. (It is the Earth-Moon mass ratio commonly used in older textbook examples; that
