@@ -1,0 +1,26 @@
+{
+  "3:4": {
+    "n_nodes": 1023,
+    "residual_on_grid": 9.22151244253655e-13,
+    "residual_off_grid": 7.36525840316915e-10,
+    "reversibility_defect": 4.2609367700841005e-09,
+    "fourier_tail": 3.727379940905214e-10,
+    "max_change_vs_table1": 3.701227935248852e-09,
+    "history": [
+      3.0398350503446636e-11,
+      8.884559754562815e-14
+    ]
+  },
+  "5:6": {
+    "n_nodes": 2047,
+    "residual_on_grid": 1.2640111179962332e-11,
+    "residual_off_grid": 1.5973089517729022e-10,
+    "reversibility_defect": 8.96506990866186e-09,
+    "fourier_tail": 7.425794411070064e-12,
+    "max_change_vs_table1": 7.531281868977668e-09,
+    "history": [
+      1.1211925832199654e-10,
+      6.428191312579656e-13
+    ]
+  }
+}
