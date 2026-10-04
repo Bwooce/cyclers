@@ -16,6 +16,8 @@ from __future__ import annotations
 import numpy as np
 from numpy.typing import NDArray
 
+_UNIT_CIRCLE_TOL = 1.0e-6  # |lambda| - 1 for a centre; explicit and small (#931)
+
 
 def canonical_to_er3bp_state(
     x: float,
@@ -73,7 +75,7 @@ def monodromy_eigenstructure(
                 (the center rotation angle, in radians, 0 < w < pi).
 
     Raises:
-        ValueError: If no center (near-unit-circle complex) eigenvalue is found.
+        ValueError: If no center (unit-circle to 1e-6, complex) eigenvalue is found.
 
     References:
         Fitzgerald J., Ross S.D. (2022), Adv. Space Res. 70:144-156,
@@ -84,8 +86,10 @@ def monodromy_eigenstructure(
     # Saddle eigenvalue: largest magnitude.
     r = float(np.max(np.abs(eigs)))
 
-    # Center eigenvalue: unit-circle (|λ| within 0.5 of 1.0) with non-zero Im.
-    center_mask = (np.abs(np.abs(eigs) - 1.0) < 0.5) & (np.abs(eigs.imag) > 1e-10)
+    # Center eigenvalue: on the unit circle to _UNIT_CIRCLE_TOL with non-zero Im. (It was 0.5,
+    # which read part of a complex quartet as a centre, #931.) Moduli cannot detect a
+    # Hamiltonian-Hopf transition; use core.floquet_classes for classification.
+    center_mask = (np.abs(np.abs(eigs) - 1.0) < _UNIT_CIRCLE_TOL) & (np.abs(eigs.imag) > 1e-10)
     center_eigs = eigs[center_mask]
 
     if center_eigs.size == 0:
