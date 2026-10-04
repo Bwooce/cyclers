@@ -628,3 +628,37 @@ held constant made no difference.
    threshold is set on it.
 6. Comparing two separately converged arcs measures the family, not the code. The test of the code
    is each implementation evaluating the other's nodes; the brief asked for the first.
+
+## 10. Which J2 (coordinator's question, answered without a rerun)
+
+This build has used one constant set from the start, and it is the self-consistent one for a model
+that takes the moons from URA111: the values in the URA111 kernel's own header, J2 = 3.510685e-3
+and J4 = -3.416640e-5 at R = 25,559 km, and the header's GMs. The coordinator read Jacobson (2014)
+Table 12 (filed in the private paper corpus as
+jacobson-2014-orbits-uranian-satellites-rings-gravity-field-uranian-system-pole-aj-148-76-doi-10.1088-0004-6256-148-5-76.pdf;
+READ by the coordinator, not by this build): J2 = 3510.7 +/- 0.7e-6, J4 = -34.2 +/- 1.3e-6, reference
+radius 25,559 km, pole RA 77.310 and Dec 15.172 deg. The header values are those, to the printed
+digits. The module defines every constant itself (`GM_*`, `J2_URA111`, `J4_URA111`, `R_REF_KM`,
+`POLE_IAU_RA_DEC_DEG`) and imports nothing from `data/validation/v4_uranus.py` (only the kernel's
+file path from `v4_uranus_strict`). Since the housekeeping commit every output file carries a
+`constants` block with the values and their source.
+
+No switch, therefore no deviation. The positive control was already run with both values
+(`control.json`, variant `french_j2`, COMPUTED, all five epochs): with the French et al. (2024) J2
+of 3509.291e-6 in place of the kernel's, Miranda's 30-day error rises from 0.08 to 0.46 km to 2.5 to
+3.2 km (123 days: 0.3 to 1.9 km to 10.2 to 13.2 km), and the kernel's value is the better of the
+two for 22 of the 25 moon-epoch pairs at 30 days. The three exceptions (Oberon at E2, Ariel and
+Titania at E4) are at or below 1.7 km either way. Removing J4 instead degrades Miranda in the same
+way (2.9 to 3.6 km at 30 days). The ephemeris obeys the field it was fitted with.
+
+## 11. Housekeeping (commit after `cf1aa2a0`)
+
+At the coordinator's request the committed outputs were slimmed (the directory went from 8.3 MB to
+1.5 MB): per-run files under `arcs/` are now compact summaries (route, outcome, one row per
+attempted continuation step with its final residual, branch flag and flyby altitudes); the full
+Newton histories and the resumable checkpoint states now live in the scratch directory, not the
+repository, and the driver writes them there; final node states are compressed `.npz` files; the
+verification files no longer list every distance minimum or every junction (they keep the largest
+junction and its index, the per-flyby table, the closest approach to each body and every approach
+within 2 Hill radii). Summary numbers are stored to 10 significant figures. No number in this note
+changed.
