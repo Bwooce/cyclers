@@ -425,6 +425,126 @@ to orbits not previously listed, not a new phenomenon.
 | "Pattern: For a = 1 and 2, every equivalent of every cycler-class family reaches physical Sun mass, except the three fold-backs" | Shipped model | After rerun: "every one, in the members tested" if the rerun confirms section 3 |
 | "the Casoliva 1:2(d) ... periselene ~348,000 (no)" | Corrected sense: 594,530 km, a very different orbit | Recompute |
 
+## 11a. Follow-up asked for by the coordinator after #891 was registered
+
+### Is anything else wrong in the bicircular model besides the sense?
+
+- **Constants (READ against Andreu 1998 section 1.3, filed in the private paper corpus as
+  `andreu-1998-quasi-bicircular-problem-phd-thesis.pdf`; COMPUTED consistency).** The thesis prints
+  a_s = 388.81114, omega_s = 0.925195985520347 and m_s = n_s^2 a_s^3 - 1, about 328900.54, with
+  omega_s = 1 - n_s. `andreu_default()` has the same omega_s to every digit and
+  a_s = 388.8111430233511. Its m_S = 328900.5423094043 does not satisfy the thesis's own defining
+  relation with those two numbers: n_s^2 a_s^3 - 1 = 328900.5499819, a difference of 7.7e-3
+  (relative 2.3e-8). The `qbcp_default()` set (m_S = 328900.54999999906) satisfies it to 1.9e-13. The
+  Earth-Moon mass ratio is 0.0121505816 in one module and 0.012150581623433623 in the other. Neither
+  matters at the accuracy of anything here (the solar term changes by 2e-8 of itself), but the two
+  constant sets must not be mixed: taking the direct term from one and the indirect term from the
+  other leaves an uncancelled uniform acceleration of 5e-8, which showed up as a 4.5e-7 residual in
+  my first coherent-model instrument check.
+- **Sense, again, from the constants (COMPUTED).** With the sense as shipped the Sun's inertial rate
+  is 1 + omega_s, and n^2 a_s^3 - 1 = 2.18e8, against m_S = 3.29e5: the shipped kinematics are
+  inconsistent with the shipped Sun mass by a factor 662.
+- **Indirect term (COMPUTED and READ).** Direct plus indirect acceleration equals the gradient of
+  mu_S [1/|r - r_S| - r . r_S / a_S^3] to 1.3e-9 by central differences at 20 random points and
+  vanishes at the origin (1e-16). It matches the thesis Hamiltonian term (m_s / a_s^2)(y sin theta
+  - x cos theta) once the Sun is at (a_s cos theta, -a_s sin theta). The centripetal acceleration of
+  the Earth-Moon barycentre on its circle, n_s^2 a_s m_s / (1 + m_s), equals m_s / a_s^2 exactly when
+  the Kepler relation holds, so the indirect term is right. The only defect found in
+  `core/bcr4bp.py` is the sense.
+- **Coherent model against the corrected-sense bicircular model at the same epoch (COMPUTED).**
+  - Sun angle from the coherent tables (alpha_7, alpha_8) minus (pi - omega_s t) at t = 0.5, 1, 2,
+    3 TU: -0.0085, -0.0103, +0.0048, +0.0067 rad. Minus (pi + omega_s t): -0.93, -1.86, +2.59, +0.74
+    rad. The tables follow the corrected sense to within the lunar variation (about 0.01 rad) and do
+    not follow the shipped sense.
+  - Leading table coefficients against the bicircular values: alpha_4 -2.15476 against
+    -m_S / a_S^2 = -2.17564 (ratio 0.990); alpha_5 2.19257 against 2.17564 (1.008); alpha_7
+    -388.564 against -a_S (0.9994); alpha_8 389.744 against a_S (1.0024). alpha_1, alpha_3, alpha_6
+    have constant terms 1.0018, 1.0000, 1.0009 and second harmonics 0.014, 0.019, 0.007; alpha_2 has
+    second harmonic -0.013. So the tables are the bicircular values plus corrections of 1 to 2
+    percent, as they should be.
+  - Short propagations from three states, parity-repaired coherent model minus corrected-sense
+    bicircular: 1.0e-2 to 1.8e-2 after 0.5 TU, 4.4e-2 to 1.8e-1 after 2 TU. For scale, the whole
+    solar effect in the bicircular model (corrected sense minus no Sun) is 2e-3 to 6e-3 after 0.5 TU
+    and 1.0e-2 to 1.8e-2 after 2 TU. The coherent-minus-bicircular difference is of the order of the
+    lunar variation (about 1e-2), which is the expected order, and it is three to ten times the solar
+    effect itself. This comparison therefore cannot tell the two senses apart (coherent minus
+    shipped-sense bicircular is 1.1e-2 to 2.0e-2 after 0.5 TU) and cannot validate the coherent
+    module to better than 1e-2. The module as shipped (parities exchanged) is further away: 2.0e-2 to
+    2.8e-2 after 0.5 TU.
+  - INFERRED, not computed: #892 reports that the parity-repaired module misses a published point by
+    2.3e-2. That is the size of alpha_1(0) - 1 = 0.017 and alpha_3(0) - 1 = 0.020. If the published
+    point is given in canonical momenta, converting with vy = py - x (the bicircular rule) instead
+    of vy = alpha_1 py - alpha_3 x + alpha_2 y would produce a miss of exactly that size.
+
+### Every place in `src/` that encodes the Sun's sense or rate (READ)
+
+Encodes the sense independently and must change with the fix:
+
+| File and lines | What it encodes |
+|---|---|
+| `core/bcr4bp.py` 172-174 (`_sun_position`), docstring 43-46 | Sun at theta0 + omega_S t. The STM block (`_sun_second_deriv_block`) and the acceleration both call `_sun_position`, so one change covers the module |
+| `search/sun_forced_periodic_884.py` 123, 172 (`_rhs`, `_rhs_var`: `th = th0 + w_s * t`), 581 (`melnikov_eval`: `th + model.omega_sun * smp.t`), docstrings 29 and 43 | Own copy of the Sun angle in the equations of motion, the variational equations and the Melnikov quadrature. `sun_acc_unit` takes the angle as an argument and is neutral |
+| `genome/bcr4bp_torus.py` 52-54 (Sun position), 73-74 (Sun velocity), 87 (`gamma = 1.0 + omega_S`), 100 (`T_em = orbit_se.period / (1.0 + omega_sun)`) | Sun-Earth to Earth-Moon frame transform. With the right sense the Sun-Earth frame turns at n_S = 1 - omega_S, so both factors become 1 - omega_S and the velocity terms change sign. Sanity number: as written, a Sun-Earth Lyapunov orbit of period 3.06 Sun-Earth time units becomes 1.59 Earth-Moon TU (6.9 days); with 1 - omega_S it becomes 40.9 TU (178 days) (INFERRED) |
+| `genome/qbcp_torus.py` 52-54, 73-74, 87, 104 | The same code applied to the coherent system. It has the wrong sense and, separately, starts the Sun at angle theta_sun0 = 0 where the coherent tables have the Sun at pi at t = 0 |
+
+Stores the rate as a positive magnitude; unaffected if the fix puts the minus sign in the angle
+(theta0 - omega_S t, as the thesis does), but breaks if the fix makes omega_S negative:
+
+- `genome/bcr4bp_systems.py` 209 (`omega_sun_nondim = 1.0 - n_primary * tu_seconds`), 39, 267. For a
+  retrograde satellite (Triton) the true synodic rate is 1 + n; the module's docs already call that
+  system a prograde idealisation.
+- `core/bcr4bp.py` 144 (`sun_period_tu`), 430 (`sun_commensurate_period`); `genome/bcr4bp_genome.py`
+  425 (`sun_phase_drift`); `data/validation/v0_bcr4bp.py`, `v1_bcr4bp.py`, `v2_bcr4bp.py`;
+  `core/wsb.py` 237; the #884 module's `tg`.
+
+I recommend the minus sign in the angle, for that reason.
+
+Already signed correctly, no change: `core/ccr4bp.py` and the five `ccr4bp_*` modules
+(omega = n3/n2 - 1, negative, with the perturber regressing; READ, not run) and
+`search/variational_ccr4bp_torus.py`. `core/qbcp.py` carries the sense in its tables (clockwise), but
+its module docstring says the reflection "maps the Sun's rotation to the standard counter-clockwise
+direction", which is wrong and should be reworded.
+
+Consumers whose results change when `core/bcr4bp.py` is fixed (they call it, they do not encode the
+sense): `core/ccr4bp.py`, `core/wsb.py`, `data/validation/v0..v3_bcr4bp.py`,
+`genome/bcr4bp_continuation.py`, `genome/bcr4bp_genome.py`, `genome/bcr4bp_systems.py`,
+`genome/bcr4bp_torus.py`, `genome/bct_transfer.py`, `search/bvp_integral.py`,
+`search/cislunar_bct_search.py`, `search/isolated_3d_asymmetric_fitness.py`,
+`search/sun_forced_periodic_884.py`. Outside `src/`, `tests/genome/test_bcr4bp_genome.py` and
+`tests/core/test_qbcp.py` contain Sun-angle arithmetic of their own and should be read when the fix
+lands.
+
+### The remaining questions, answered for the corrected-sense model (COMPUTED)
+
+Sample: all 39 corrected-sense orbits of section 3 (so more than a sample for a = 1, 2).
+
+- **Do equivalents still reach full Sun mass?** Yes for every cycler-class phase; see section 3.
+  **Do the folds move or vanish?** The three shipped-model folds vanish. A new one appears on a
+  non-cycler orbit (Casoliva 1:2(d), theta0 = pi/2, eps = 0.608). **How far do the orbits move?**
+  Largest node displacement from the three-body parent 0.027 (C11 2/1), 0.030 (C21 3/1), 0.059
+  (Casoliva 2:1(b)); largest periselene change against the parent among cycler-class orbits
+  2,173 km (C11 3/2 at C = 3.151: 21,080 against 23,253 km).
+- **Cycler-class label.** 37 of 39 orbits keep the parent's count of lunar-distance minima, of
+  minima inside 66,183 km and of Earth-distance minima. Exceptions: C32 5/2 (C = 3.15168),
+  theta0 = pi/2, 10 lunar minima against 14 with the same 6 inside the sphere of influence; and the
+  non-cycler Casoliva 1:2(d) orbit, which is a different shape altogether. No orbit changes class.
+  Closest Earth approach of the cycler-class orbits: 95,217 km (C31) to 236,253 km (C11 5/2). The
+  only sub-surface passes are again the Casoliva low member's (1,349 km). The catalogue-class
+  remarks of section 5 are model-independent.
+- **Multiplicity.** Same structure. Mirror pairs agree with each other's mirror image to 6e-8 or
+  better. The theta0 = 0 and pi orbits differ by 34 to 117 km in position (C11 2/1 39 km, the planar
+  period-Tg orbit 34 km, C21 3/1 36 km, Casoliva 74 km, R52-S 117 km).
+- **Accuracy at large multipliers.** Same picture. The stored nodes already satisfy the 2N-segment
+  system to 3e-12 without correction. Largest multiplier unchanged from N to 2N segments (8.8874e13,
+  2.3377e10, 1.9472e7, 3.4391e5). Largest times smallest: 1.2e13 and 6.2e12 at 8.9e13; 1.1e6 and
+  6.5e5 at 2.3e10; 14.6 and 10.7 at 1.9e7; 1.000 at 3.4e5. Second magnitude at 8.9e13: 1.04 with N
+  segments, 1.31 with 2N. Single-shot closure over one period: 2.6, 8.6e-4, 2.6e-4, 2.4e-9.
+  E-folding times 3.7 to 8.8 days.
+- **Not re-examined in the corrected model:** the a = 3 members, the degenerate C21 3D 5/2 member,
+  the L1 / L2 Lyapunov controls, the fold landings' families, and every gate in the build's test
+  file. The family-membership results of section 4 are three-body results and do not depend on the
+  Sun at all.
+
 ## 12. Methods, so the computations can be repeated
 
 - **Equations of motion.** Three-body rotating-frame terms plus mu_S times (direct plus indirect)
