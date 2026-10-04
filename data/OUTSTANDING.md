@@ -846,6 +846,90 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- **FOLLOW-UPS FROM 2026-10-04, EACH GIVEN ITS OWN NUMBER** (owner, 2026-10-04: "you're logging new
+  tasks as appropriate right? not just talking about them"). Until this block the items below
+  existed only as "to do" sentences inside `#884`, `#888`, `#890`, `#891`, `#892`, `#894` and
+  `#895`. None is started unless it says so.
+- `#900` — registered 2026-10-04. **REBUILD THE V4 MOON-TOUR VALIDATION LANE.** The present
+  lanes (`data/validation/v4_uranus.py`, `v4_uranus_strict.py`, `v4_saturn.py`,
+  `v4_saturn_strict.py`) have three defects: they zero a moon's gravity inside its Hill sphere,
+  so no flyby is ever flown (`#890`); every leg restarts from its own Lambert departure, so
+  nothing is continuous through an encounter (`#888`); and the Uranian ones count the moons'
+  mass twice, 2,000 km of error per month (`#894`). Rebuild on the `#895` force model:
+  planet GM at the centre, the kernel's own constants, unsoftened moons, the Sun, a positive
+  control on the moons' own motion as a test, continuity through every flyby. Check whether
+  any Neptune lane adds Triton on top of a system GM. Until done, no V4 verdict for a moon
+  tour means anything.
+- `#901` — registered 2026-10-04. **SATELLITE REGISTRY: ONE CONSISTENT, SOURCED CONSTANT SET PER
+  EPHEMERIS.** (a) Mean motions from printed rates or the kernel, not Kepler's law on geometric
+  axes: fix `SatelliteData.mean_motion_deg_day` for the Uranian moons and resolve the strict
+  expected-failure in `tests/core/test_satellites_uranian_sources.py`; audit the other
+  systems for the same trap. (b) Decide URA111 (Jacobson 2014) or URA182 (Jacobson & Park
+  2025) and make masses, axes, J2, J4 and pole one set; obtain the URA182 kernel if that is
+  the choice. (c) Switch `URANUS_J2` in `v4_uranus.py` to the set chosen and add J4. (d) Label
+  every `PRIMARIES` entry as planet or system GM with its source (Jupiter's and Saturn's are
+  planet values, Uranus's and Neptune's system values, all commented "system"). (e) Find the
+  source of every moon radius and flyby floor. (f) Saturn's J2 "includes a constant tidal
+  term" (Iess et al. 2019): decide whether it may be used alongside explicit moon masses.
+  (g) Repeat the audit for the Jovian, Saturnian and Neptunian rows against their papers.
+- `#902` — registered 2026-10-04. **REBUILD THE BICIRCULAR VALIDATION TIERS ON A REAL ORBIT.**
+  `data/validation/v0..v3_bcr4bp.py` and their tests, `tests/core/test_bcr4bp.py` and
+  `tests/genome/test_bcr4bp_genome.py` use a "POL1" seed that is a quasi-bicircular point in
+  the other frame; the orbit it closes is on the far side of the Earth, not the L1
+  replacement. Rebuild on the L1 replacement orbit now reproduced from Jorba et al. 2020;
+  resolve the strict expected-failure in `tests/data/test_v3_bcr4bp.py`; correct `#292`'s
+  record.
+- `#903` — registered 2026-10-04. **RERUN OR STAMP THE PAST WORK DONE IN THE WRONG-SENSE BICIRCULAR
+  MODEL:** `#303` and `#304` (Sun-on continuations; `data/bcr4bp_*_303.jsonl`, `*_304.jsonl`),
+  `#334` (the scaling exponent 2.89), `#412` (reach spike; stamp already marked), `#378`
+  (cislunar capture sweep; stamp already marked; a rerun must cover Sun phases). Each data
+  file needs an invalid-model notice until rerun.
+- `#904` — registered 2026-10-04. **RERUN OR STAMP THE PAST WORK DONE IN THE DEFECTIVE COHERENT
+  MODEL:** `#533`, `#538`, `#544`, `#593`, and the `#617` to `#646` torus chain. Fix the fourth
+  copy of the old field in `scripts/analyze_593_qbcp_l1_substitute_reconciliation.py`. Reruns
+  of `run_522`, `run_533`, `run_538`, `search_coherent_connections` need 11 samples. Resolve
+  the two slow strict expected-failures in `tests/search/test_variational_qbcp_torus.py`
+  (does the corrector still cross the Earth-Moon L2 plateau in the corrected model?).
+- `#905` — registered 2026-10-04. **RERUN `#884` IN THE CORRECTED MODELS WITH THE BUILD'S OWN CODE.**
+  Compare with the reviewer's corrected-sense table; apply the review's section 14 (refined
+  periselene with a surface exclusion, minimal-period and planarity checks, bifurcation
+  detection in the family walk, one orbit per symmetry class); settle the one open question
+  against the literature: Leiva & Briozzo (2008) obtained only periodic ARCS for the C32 and
+  C31 members at 5/2, the reviewer found periodic orbits. Use the published selection rules
+  (their first-order phase condition; Brown et al.'s higher-order functions for 8:3).
+- `#906` — registered 2026-10-04. **HARDEN THE DEMANDED-TURN GATE.** (a) Refuse or flag inputs that
+  are not body-relative velocities (the error of Bolotin & MacKay 2000, corrected in MacKay
+  2005). (b) Treat a demanded turn of 0 or 180 degrees as not an encounter. (c) Wire the gate
+  into the scripts still on the capacity-only test (`titan_iapetus_corrector`,
+  `enumerate_600`, `scan_816` and the others listed in the `#888` wiring note). (d) Rerun
+  `run_330`, `run_566`, `run_574`, which were edited for the gate but not rerun; test the
+  inferred statement that 17 of the 22 `#574` branches are turn-infeasible.
+- `#907` — registered 2026-10-04. **`#895` FOLLOW-UPS BEFORE ANY ROW:** an adversarial review of
+  `#895`; an external check in GMAT with unsoftened moons; a maintenance budget from a stated
+  navigation model; the owner's ruling on class (`quasi_cycler`, returns demonstrated) and on
+  what V2 means for an orbit too unstable to propagate three laps; whether the arcs are
+  pieces of an invariant torus that can be computed as one object (waits for `#897`).
+- `#908` — registered 2026-10-04. **WEAK-STABILITY SWEEPS: SAMPLING.** The capture sweeps (`#378`,
+  `#681`) sample speed through a fixed osculating eccentricity and so cannot see weakly
+  unstable cases below circular speed (Mako & Salamon 2025); the cislunar one also ran at one
+  Sun phase. Add speed as an independent variable and Sun-phase or true-anomaly coverage;
+  rerun with the corrected model; until then both "empty" results are conditional on the
+  parametrisation.
+- `#909` — registered 2026-10-04. **PAPERS STILL WANTED (consolidated).** Peng & Xu 2015, CMDA
+  123:279 (10.1007/s10569-015-9635-2; held copy is a truncated file); Bolotin 2005, CMDA
+  93:343 (10.1007/s10569-005-2172-7); Bolotin 2006, DCDS (10.3934/dcds.2006.14.235); Sanaga &
+  Howell 2025 (10.1007/s42064-024-0250-4); Peng & Xu 2015, Adv. Space Res. 55:1015
+  (10.1016/j.asr.2014.11.013); Englander et al. 2026 (10.2514/1.A36704); Kumar, Anderson & de
+  la Llave 2026 published version (10.1007/s00332-026-10276-6); no DOI: Kumar ASC 2026 Paper
+  1023, Komachi ASC 2026 Paper 688, Rosengren et al. IAC-25-C1.9.1, Kumar & Anderson 2026
+  (ISSFD). Next literature watch about 2026-10-17.
+- `#910` — registered 2026-10-04. **PRINTED ITEMS NOT REPRODUCED OR NOT RESOLVED.** Neelakantan &
+  Ramanan 2022 Table 8, "M4N2 Lyapunov" row (does not close in `core/er3bp.py` from either
+  apse; the `#896` agent is retrying); MacKay 2005 footnote, the exceptional-case formula
+  (the digest could not rederive the printed factor); Leiva & Briozzo 2008 Table 4, row
+  187A_t1 (two identical printed values, probably a misprint); the printed bicircular r_PS in
+  the 2018 two-models paper (sign inconsistent with its own indirect term). Each to be
+  resolved or left recorded; none blocks a result.
 - `#897` — registered and DISPATCHED 2026-10-04 (synthesis, most capable model). **OWNER: "I think
   you are missing the point of these papers if you only extract the constants? what about the
   knowledge and techniques being applied against our problem?"** Correct: today's use of the
