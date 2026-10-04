@@ -54,13 +54,14 @@ and the conclusions (text layer); the project's own notes on `#388`. Everything 
    been run (`#170`).
 5. **Leiva & Briozzo's "periodic arcs" are a numerical fallback, by their own words, not evidence that periodic
    orbits do not exist.** They single-shot over five or more Sun periods in double precision and report that the
-   half-integer members "proved difficult to continue ... we reduced the integration interval to [0, tau], obtaining
-   - continuation now succeeded - periodic arcs" `[R p.239]`. The `#884` reviewer's finding of true periodic orbits for
+   half-integer members "proved difficult to continue"; where the iteration failed "we reduced the integration interval
+   to [0, tau], obtaining - when continuation now succeeded - periodic arcs in the QBCP instead of periodic orbits"
+   `[P p.239, text layer]`. The `#884` reviewer's finding of true periodic orbits for
    the same members is therefore a specific, checkable extension of a published result, with a published selection
    rule to pre-register (section 4, idea iii).
 6. **Centre-manifold reduction does not give bounded motion around an unstable planar cycler** (it has no centre
    directions in the plane). What the Jorba school does give is the correct object for a cycler whose period is not
-   commensurate with the Sun: an invariant curve of the stroboscopic map `[R Rosales et al. 2021 pp.5, 13-14]`. For
+   commensurate with the Sun: an invariant curve of the stroboscopic map `[P Rosales et al. 2021 p.5, text layer; R pp.13-14]`. For
    STABLE cyclers this is a direct test of a conjecture printed by Ross & Roberts-Tsoukkas (section 5.3).
 7. **A technique the candidate list did not have:** Russell & Strange's use of repeated free returns to ONE moon to
    rotate the excess velocity in steps. Every symmetric two-moon closure the project enumerated asked one flyby per
@@ -199,11 +200,11 @@ missing.
 ### T7. Which periodic orbits of the three-body problem continue under a periodic forcing, and at which phases (Leiva & Briozzo 2008; Brown et al. 2025, two papers; Oshima 2022; Boudad et al. 2020; Rosales et al. 2021)
 
 - Does: a periodic orbit whose period is p/q forcing periods "becomes a periodic orbit of period pT once eps is set
-  to be different from zero. This is a consequence of the Implicit Function Theorem" `[R Rosales 2021 p.5]`; all
+  to be different from zero. This is a consequence of the Implicit Function Theorem" `[P Rosales 2021 p.5, text layer]`; all
   others "gain, generically, the frequency of the perturbation and become ... two dimensional invariant tori"
   `[R pp.13-14]`. The admissible phases are zeros of a first-order work integral: Leiva & Briozzo's
   Im[e^(-2 i phi) sum ...] = 0, tan 2 phi = Im/Re, four phases a quarter Sun period apart, nonzero only for q = 1 or 2
-  ("When q != 1, 2 no condition is obtained at first order ... This course will not be pursued") `[R pp.232-233]`;
+  ("When q [is not] 1, 2 no condition is obtained at first order ... This course will not be pursued") `[R pp.232-233]`;
   Brown et al.'s Melnikov-type function M, whose zeros come in fours (two integrations suffice by their
   Proposition 2), is identically zero for some symmetric orbits and must then be recomputed at higher order
   `[R SIADS p.351, Props. 2, 3]`. In the bicircular problem the lowest nonzero order is j = a - 1 with zero spacing
@@ -412,7 +413,7 @@ T16 is the method for the remaining question `#388` named ("a global / family-ta
   outer arcs, so a closure at any other periapsis is not on the branch `[D gomez-olle sec. 8e]`).
 - T15 says how published moon cyclers satisfy it: many flybys of one working body with free returns in between.
   The project's enumerations were two-leg symmetric closures. Objects: Uranian pairs first (Ariel with any partner by
-  the community's stated priority `[D simon-2025]`), then the 30 Russell & Strange rows as the control population.
+  the community poll's stated priority, as the ledger records under `#885`), then the 30 Russell & Strange rows as the control population.
 - T1 is how a gated chain becomes a trajectory (`#890`, `#895` did this once). T19 supplies seeds where the excess
   speed is too low for a zero-radius model.
 - Progress: one chain that passes the gate at every encounter, converges in the four-body model with both moons
@@ -604,7 +605,8 @@ an object worth sending to an adversarial review. Costs assume the existing modu
 - The conjecture, as printed: "near-commensurable stable cyclers should persist under the dominant perturbations
   neglected here, including primary eccentricity and, in the Earth-Moon case, solar gravity. This conjecture can be
   tested in the elliptic and bicircular restricted problems and, ultimately, in full ephemeris models"
-  `[R 2026 arXiv version p.4]`.
+  `[P 2026 arXiv version, closing paragraph, text layer]`. The conjecture is about stable members NEAR a
+  commensurability with the Sun; the object computed here for each stable member is its invariant curve `[I]`.
 - Method applied: Rosales et al. 2021 section 3 (invariant curve with rotation number 2 pi T_Sun/P, continuation in
   Sun strength, gaps crossed by detour); Park & Howell's fold monitor for the eccentricity leg.
 - Inputs: the invariant-circle corrector of `search/ccr4bp_strob_connection.py`, `core/bcr4bp.py`, `genome/
@@ -653,7 +655,7 @@ an object worth sending to an adversarial review. Costs assume the existing modu
 - How it could fool us: "it closed" in the ideal model. Only integrated trajectories count, and the owner's rule that
   `#563`-class sweeps are not repeated applies: this is a different genome (returns), and the note must say so.
 
-### P9. A global search for zero-radius real-ephemeris cyclers by dynamic programming (lowest rank, highest cost)
+### P9. A global search for zero-radius real-ephemeris cyclers by dynamic programming (ranked last; costs more than the others)
 
 - Method applied: Bellome et al. 2023 with a closure condition added. Control: it must find Appendix C parents 1 and
   83 at their printed windows. Cost: 60 agent-hours or more. (a) 15 percent. (b) 15 percent. Do after P1 and P5.
@@ -683,7 +685,8 @@ Strange's (P8). Smallest decisive experiment: the 7-3 seeds at 1e-6 continued to
 **(iii) Phase selection and higher-order Melnikov functions for the `#884` rerun.** Sound, and they fit together:
 Leiva & Briozzo's quadrupole condition is Brown et al.'s lowest-order function for q = 1, 2; q = 3 first appears at
 the octupole, about 1/389 weaker `[D brown-jas; R]`. The question the papers "leave open" is answered by Leiva &
-Briozzo's own text: arcs were adopted because single shooting over five Sun periods failed numerically `[R p.239]`.
+Briozzo's own text: arcs were adopted because single shooting over five Sun periods failed numerically
+`[P p.239, text layer]`.
 The project's orbits close over the full interval with multiple shooting (the `#884` table lists these members as
 "5/2 (2)"), so there is no contradiction, and the squared stability parameters agree in order `[C]`. Published for
 these members: arcs. Not found in the held papers: the periodic orbits. Smallest decisive experiment: P3's first
