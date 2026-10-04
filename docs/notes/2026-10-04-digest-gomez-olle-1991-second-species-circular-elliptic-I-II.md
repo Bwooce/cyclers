@@ -876,3 +876,20 @@ to true anomaly (section 8f, now supported by Part I Remark 2, p141; the d/dt re
   1e-5 bound) only logs a warning. `genome.er3bp_continuation` uses the same corrector.
 - The Jacobi convention is not printed as a formula in either part; +mu(1 - mu) is confirmed
   numerically only.
+
+## 14. Addendum, 2026-10-04 (after the 1986 digest was written; earlier sections are left as written)
+
+1. The mu = 0 groundwork these papers cite as "[2]" (Part II) and "[1]" (Part I), Gomez and Olle 1986, is now held and digested:
+   `docs/notes/2026-10-04-digest-gomez-olle-1986-elliptic-restricted-mu-0.md`. Part II eq. (1) (p. 149) is that paper's eq. (17) in the same symbols; at e_m = 0 it is Henon's equation (digest
+   `docs/notes/2026-10-04-digest-henon-1968-consecutive-collision-orbits.md`). Its eq. (21) is the existence rule for the double-point families C_ij at e_p /= 0, and its Proposition 2 is the
+   published list of initial epochs giving symmetric synodic orbits (pericentre, apocentre, j pi), the statement behind the 2 k pi period requirement in sections 5 and 8f above. Its characteristic
+   curves for the mu = 0 elliptic problem (eqs. 7, 10) and the double-collision orbit counts (Proposition p. 54) are not in the 1991 papers.
+2. Corpus status in section 12 above was written before several held files were added: the following entries marked "not held" are now held: Guillaume 1973 (Celest. Mech. 8, 199) and Guillaume 1975
+   (Celest. Mech. 11, 213 and 449), Henon 1968 (Bull. Astron.), Perko 1977 (Celest. Mech. 16, 275), Perko 1981 (Celest. Mech. 24, 155), Perko 1981 (SIAM J. Appl. Math. 41, 181; the printed 1974 year of the
+   Part I entry [11] is probably this paper family), Perko 1976 (Celest. Mech. 14, 395), Brjuno 1978 and Gomez-Olle 1986. Still not held: Guillaume 1971 thesis, Henrard 1980, Olle 1989 thesis,
+   Perko 1964 thesis, Poincare 1899.
+3. Printed defects found in the 1986 paper that touch the notation used here: its eq. (26b) lacks the factor eps_p; its parabolic tau/pi at e_p = 0.5 (0.2318) is not reproduced (0.23115); the time law for the parabola
+   prints s^2/6 for s^3/6. None changes anything in sections 1 to 11 above.
+4. #896 item 8 (the p163 starting orbits): the 1986 paper bears on it only weakly (a mu = 0 paper; it confirms the generating (tau, eta) of the three starting orbits satisfy eq. (17) to 4e-6 to 8e-6 relative, below the
+   resolution needed to test an O(1e-5) offset in x). See section 10 of the 1986 digest. Section 9 item 3 above (the starting-orbit lines) should be read with the #896 note (`docs/notes/2026-10-04-896-published-checks-added.md`, item 8):
+   the project's integration finds the printed x off by (+5.89e-6, +9.08e-6, -1.537e-5) while x + ydot matches; my section 7 statement that t1 = k pi holds "to about 2e-5 to 5e-5" is the same finding seen from the generating-orbit side.
