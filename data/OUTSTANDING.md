@@ -857,11 +857,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   derivation at two Sun phases (4e-12), with the Sun off as a control, and checks that the
   Sun's inertial period is a year. The reviewer's audit (review note section 11a) found
   nothing else wrong in the module: constants agree with Andreu, and the indirect term is
-  right. **Still to do:** the three other places that encode the sense
+  right. **Published positive control, passed (2026-10-04, permanent test):** Jorba,
+  Jorba-Cusco & Rosales (2020, now held) print, for the periodic orbit that replaces L1 in the
+  bicircular problem, a hyperbolic eigenvalue "close to 4.287 x 10^8" and frequencies
+  2.32981963603288 and 2.26695149158478. The corrected module gives 4.287389e8, 2.3298196303
+  and 2.266951491584771 (the second to all 15 printed digits), with two revolutions about L1
+  per period as the paper says. With the old sense the same computation gives 4.310e8, 2.33046
+  and 2.26711, so the control discriminates the sense at 1e-4. The paper also states the
+  convention outright: Sun at (a_S cos theta, -a_S sin theta). **Still to do:** the three other places that encode the sense
   (`search/sun_forced_periodic_884.py`, `genome/bcr4bp_torus.py`, `genome/qbcp_torus.py`,
   where the factor `1 + omega_S` must become `1 - omega_S`); the pinned tests; the 19 stamps;
-  a published bicircular ORBIT as positive control (Jorba, Jorba-Cusco & Rosales 2020, DOI
-  10.1007/s10569-019-9940-2, not held); rerun `#884` (the reviewer's own sense-corrected
+  rerun `#884` (the reviewer's own sense-corrected
   rerun of the a = 1, 2 members: every cycler-class phase reaches physical Sun mass, none of
   the three fold-backs occurs, one "stable" orbit becomes unstable). Registration text:
   **DEFECT IN A CORE MODEL: `core/bcr4bp.py` MOVES THE SUN THE
