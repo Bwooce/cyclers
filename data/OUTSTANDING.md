@@ -918,7 +918,30 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Boudad, Howell & Davis, Adv. Space Res. 66(9):2194 (2020); the 2022 paper at ScienceDirect pii
   S0273117722004781; Brown et al., J. Astronaut. Sci. 72:43 (10.1007/s40295-025-00517-3); Sanaga &
   Howell (10.1007/s42064-024-0250-4). Komachi's ASC 2026 paper has no abstract or preprint yet.
-  Adversarial review dispatched, not back. **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
+  **ADVERSARIAL REVIEW DONE 2026-10-04** (note
+  `docs/notes/2026-10-04-884-adversarial-review.md`, 15 verdicts with the reviewer's own
+  computations). It found `#891` and the first part of `#892`. Beyond the model: the build's
+  numerics are sound (all 39 stored orbits close in the reviewer's own equations; backward
+  continuation lands on the stated member 39 of 39); the "C21 3D corridor 2/1" member is a
+  PLANAR orbit of minimal period one synodic month reached by a branch switch, not a member
+  of the 3D family; the Casoliva 2:1(b) low member's three-body parent is itself 322 km below
+  the lunar surface (true periselene 1,415 km; the note's 1,810 km was a sampling artefact),
+  so the Sun does not cause the impact; the "positive control against Brown et al." passes
+  identically with the Sun running either way and is not a control; counts of unstable
+  directions are unreliable above multipliers of about 1e7. **Reviewer's own rerun with the
+  Sun's sense corrected (one implementation, not yet repeated with the build's code):** every
+  phase of every cycler-class member with period 1 to 3 synodic months at these resonances
+  reaches physical Sun mass; none of the three fold-backs occurs; Casoliva 1:2(d) is unstable
+  (multiplier 13.8), so the only stable forced orbit is the non-cycler R21-S 1:2; lunar
+  distances move by up to 2,173 km. A spot check of three of those orbits in the corrected
+  coherent model: all three have periodic counterparts there, moved by 6,400 to 25,500 km,
+  with multipliers within a factor 1.3. **Required before any row** (review section 14):
+  rerun with the build's code and compare; refined, not sampled, periselene with a
+  minimum-altitude exclusion; minimal-period, planarity and bifurcation checks in the family
+  walk; rows carry the parent's class and say "periodic counterpart in the bicircular
+  problem", not "survives the Sun"; persistence in the validated coherent model for every
+  proposed member; one orbit per symmetry class; and the literature outcome above sets the
+  novelty label (none available for the class). **Side finding, fixed (commit `6bda1772`):** `core/qbcp.py` had the alpha_1 j = 5
   Fourier coefficient typed as -38.068581391005552e-08; Andreu (1998) Table 1.5 prints
   -8.06858139100555e-08. (Later the same day: the code's value is what its actual source, the 2018
   Jorba-Cusco, Farres & Jorba table, prints; the slip is in that table. See `#892`.) The other 101 printed entries agree with the code. The fix moves the
