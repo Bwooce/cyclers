@@ -408,3 +408,167 @@ verification integrators, flybys integrated through with the prediction check). 
 gives a (d) prediction of order 50 m at the per-leg growth of about 1,000, well inside the 0.3 km
 well-posedness bound. D2 is used only for runs that are labelled with it; the failed runs under the
 pre-registered tolerance stay recorded as failures of the method at that tolerance.
+
+## 4. All arcs (computed; `arcs/`, `verify_*.json`, `suppl_radau_*.json`)
+
+Routes: "pre-reg" is section 1 as registered (scaled `#890` seed at lam = 0, the constants homotopy
+as fallback, Newton stop 1 cm); "D1" starts from the periodic orbit of the circular model
+(section 3); "D2" is the 5 cm Newton stop (section 3.2). Altitudes are minimum to maximum over the
+arc. "Nearness" is the largest difference between any flyby altitude and that epoch's periodic
+orbit at sigma = 1 (Titania 1,805.0 to 1,806.4 km, Oberon 1,256.6 to 1,257.3 km over the five
+epochs). Junctions are the largest over all junctions (position, velocity). "Landing" is the
+largest (d) end error over all flybys (DOP853 / LSODA, and the larger velocity error). All flybys
+in every converged arc are hyperbolic, on the expected side, in the expected order, and no other
+moon comes within 2 Hill radii (closest other body in every arc: Umbriel, 167,000 to 181,000 km;
+Uranus never closer than 433,800 km).
+
+| epoch (first Titania flyby) | N | route | result | Titania alt km | Oberon alt km | nearness km | junctions DOP853 / LSODA | landing (d) | (c) (d) (e) (f) |
+|---|---|---|---|---|---|---|---|---|---|
+| E1 (2030-01-11) | 3 | pre-reg | converged | 5,562-8,945 | 3,393-4,946 | 7,139 | 1.2 cm / 1.0 cm | 6 m / 45 m, 0.03 cm/s | P P P P |
+| E1 | 3 | D1 | converged | 1,583-1,764 | 1,076-1,144 | 223 | 1.3 cm / 3.1 cm | 10 m / 18 m, 0.01 cm/s | P P P P |
+| E1 | 6 | pre-reg | converged | 1,215-3,715 | 983-2,015 | 1,909 | 0.6 cm / 1.0 cm | 12 m / 17 m | P P P P |
+| E1 | 6 | D1 | converged | 1,755-1,994 | 1,211-1,607 | 350 | 1.2 cm / 2.8 cm | 13 m / 13 m | P P P P |
+| E1 | 9 | pre-reg | converged | 959-4,747 | 786-1,867 | 2,941 | 0.8 cm / 1.2 cm | 12 m / 24 m | P P P P |
+| E1 | 12 | pre-reg | FAILED at sigma 0.985 (stall at 1.1 cm) | | | | | | |
+| E1 | 12 | pre-reg + D2 | converged | 1,091-3,059 | 897-1,914 | 1,253 | 1.2 cm / 3.3 cm | 12 m / 112 m, 0.07 cm/s | P P P P |
+| E1 | 12 | D1 | FAILED at lam 0 (stall at 2.3 cm) | | | | | | |
+| E1 | 12 | D1 + D2 | converged | 1,357-2,003 | 1,125-1,369 | 449 | 4.0 cm / 33 cm | 17 m / 77 m, 0.06 cm/s | **F** P P P |
+| E2 (2031-06-13) | 3 | pre-reg (direct) | converged | 1,659-1,832 | 1,219-1,515 | 258 | 0.4 cm / 1.0 cm | 9 m / 80 m, 0.05 cm/s | P P P P |
+| E2 | 3 | D1 | converged | 1,534-1,844 | 1,115-1,469 | 271 | 0.2 cm / 0.5 cm | 14 m / 48 m | P P P P |
+| E2 | 6 | pre-reg | converged | 1,319-4,856 | 964-1,859 | 3,051 | 0.4 cm / 0.5 cm | 9 m / 129 m, 0.08 cm/s | P P P P |
+| E2 | 6 | D1 | FAILED at lam 0.577 (stall at 1.1 cm) | | | | | | |
+| E2 | 6 | D1 + D2 | converged | 1,416-1,803 | 1,052-1,307 | 389 | 1.6 cm / 8.7 cm | 13 m / 17 m | P P P P |
+| E2 | 9 | pre-reg | converged | 1,127-3,862 | 796-1,987 | 2,057 | 0.8 cm / 2.1 cm | 16 m / 21 m | **F** P P P |
+| E2 | 12 | pre-reg | FAILED at lam 0.986 (stall at 1.1 cm) | | | | | | |
+| E2 | 12 | pre-reg + D2 | converged | 1,118-3,457 | 709-2,058 | 1,652 | 1.5 cm / 9.9 cm | 14 m / 119 m, 0.08 cm/s | **F** P P P |
+| E2 | 12 | D1 + D2 | converged | 1,508-1,883 | 1,137-1,368 | 297 | 3.0 cm / 13 cm | 13 m / 138 m, 0.09 cm/s | P P P P |
+| E3 (2035-06-30) | 3 | pre-reg | converged | 2,689-5,334 | 1,710-2,628 | 3,528 | 0.6 cm / 0.7 cm | 3 m / 47 m | P P P P |
+| E3 | 3 | D1 | converged | 1,961-2,250 | 1,321-1,527 | 444 | 0.6 cm / 1.5 cm | 5 m / 14 m | P P P P |
+| E3 | 6 | pre-reg | converged | 1,431-3,947 | 925-2,126 | 2,141 | 0.9 cm / 0.7 cm | 16 m / 43 m | P P P P |
+| E3 | 6 | D1 | converged | 1,544-1,943 | 1,141-1,401 | 261 | 1.0 cm / 7.7 cm | 10 m / 145 m, 0.09 cm/s | P P P P |
+| E3 | 9 | pre-reg | converged | 1,154-3,832 | 721-1,849 | 2,026 | 0.8 cm / 1.6 cm | 13 m / 88 m | P P P P |
+| E3 | 12 | pre-reg | FAILED at lam 0.781 (stall at 1.0 to 1.6 cm) | | | | | | |
+| E3 | 12 | pre-reg + D2 | converged | 1,195-4,308 | 770-2,361 | 2,502 | 1.1 cm / 5.6 cm | 15 m / 41 m | P P P P |
+| E3 | 12 | D1 + D2 | converged | 1,497-1,973 | 1,064-1,510 | 308 | 2.0 cm / 14 cm | 16 m / 33 m | P P P P |
+| E4 (2040-06-26) | 3 | pre-reg | converged | 1,216-2,364 | 1,077-1,589 | 590 | 0.3 cm / 0.5 cm | 16 m / 19 m | P P P P |
+| E4 | 3 | D1 | converged | 1,001-1,760 | 941-1,248 | 805 | 0.5 cm / 1.2 cm | 9 m / 9 m | P P P P |
+| E4 | 6 | pre-reg | converged | 1,148-3,701 | 1,050-1,768 | 1,894 | 0.7 cm / 1.0 cm | 7 m / 242 m, 0.16 cm/s | P P P P |
+| E4 | 6 | D1 | FAILED at lam 0.216 (stall at 1.0 to 1.1 cm) | | | | | | |
+| E4 | 6 | D1 + D2 | converged | 1,308-1,772 | 972-1,457 | 498 | 1.3 cm / 9.3 cm | 14 m / 16 m | P P P P |
+| E4 | 9 | pre-reg | FAILED at lam 0.303 (Newton diverges, residual above 7,000 km) | | | | | | |
+| E4 | 12 | pre-reg | FAILED at lam 0.486 (stall at 1.0 cm) | | | | | | |
+| E4 | 12 | pre-reg + D2 | converged | 976-3,566 | 948-1,848 | 1,760 | 1.0 cm / 5.1 cm | 10 m / 92 m | P P P P |
+| E4 | 12 | D1 + D2 | converged | 1,453-1,896 | 933-1,437 | 353 | 7.8 cm / 23 cm | 13 m / 364 m, 0.23 cm/s | P P P P |
+| E5 (2045-06-23) | 3 | pre-reg | converged | 1,220-2,530 | 1,010-1,387 | 725 | 0.5 cm / 0.8 cm | 5 m / 79 m | P P P P |
+| E5 | 3 | D1 | converged | 1,609-1,813 | 1,070-1,177 | 196 | 0.9 cm / 6.0 cm | 13 m / 11 m | P P P P |
+| E5 | 6 | pre-reg | converged | 1,107-3,214 | 936-1,985 | 1,409 | 0.4 cm / 0.7 cm | 10 m / 81 m | P P P P |
+| E5 | 6 | D1 | converged | 1,819-2,131 | 1,231-1,717 | 460 | 0.4 cm / 5.1 cm | 13 m / 38 m | P P P P |
+| E5 | 9 | pre-reg | converged | 943-4,230 | 801-1,892 | 2,425 | 0.6 cm / 3.2 cm | 9 m / 314 m, 0.20 cm/s | P P P P |
+| E5 | 12 | pre-reg | FAILED at sigma 0.985 (stall at 1.1 cm) | | | | | | |
+| E5 | 12 | pre-reg + D2 | converged | 907-2,759 | 687-1,786 | 954 | 1.7 cm / 4.8 cm | 10 m / 19 m | P P P P |
+| E5 | 12 | D1 + D2 | converged | 1,219-1,970 | 1,099-1,385 | 586 | 5.2 cm / 21 cm | 12 m / 187 m, 0.12 cm/s | P P P P |
+
+The three (c) failures (E1 N12 D1+D2, E2 N9 pre-reg, E2 N12 pre-reg+D2) are failures of the
+verifier as the pre-registration defines them: the junctions are below 1 m and 1 mm/s under both
+integrators (largest 33 cm with LSODA), but LSODA at rtol 1e-12 differs from LSODA at 1e-13 by
+0.39, 0.47 and 0.55 m, above the registered 0.3 m, so LSODA is declared not to resolve those arcs.
+A supplementary check that was not pre-registered (`suppl_radau_*.json`): scipy Radau with the
+analytic Jacobian puts the largest junction of those three arcs at 3.7 cm, 1.1 cm and 1.6 cm at
+rtol 1e-12 and at 3.4 cm, 1.1 cm and 1.6 cm at rtol 1e-13, in agreement with DOP853. This does not
+turn the registered verdict into a pass.
+
+Every (d) prediction (from the measured junction jumps and the solver's matrices) was between 3
+and 20 m, inside the 0.3 km bound that keeps (d) well posed. The observed DOP853 landing errors
+(3 to 17 m) agree with the predictions; the LSODA landing errors are larger (up to 364 m) and are
+covered by the registered consistency allowance of three times the difference between the two
+integrators' end states, which is LSODA's own error over 62 days (section 2.1 shows LSODA losing
+3 km over a cycle of the planar orbit).
+
+Every failure of the corrector except one is the same thing: Newton reaches a junction residual of
+1.0 to 2.3 cm and cannot go lower, so it never meets the 1 cm stop, and the homotopy step then
+shrinks below the minimum. No failed run shows a branch event. The exception is E4 at N = 9 on the
+pre-registered route, where Newton diverges at lam = 0.303 (residuals of 8,700 and 21,700 km after
+step halving): a failure of the corrector on that path at that epoch, not evidence that no arc
+exists (E4 at N = 6 and N = 12 converge).
+
+## 5. Criteria (section 1.5), per route
+
+| criterion | pre-registered route | D1 (with D2 where named) |
+|---|---|---|
+| P1 force-model control | PASS (0.01 to 1.68 km at 30 d, 6.8 km at 123 d; discriminates) | same model |
+| P2 `#890` orbit kernel-free | PASS (1.4 cm, 1,976.86 / 1,364.18 km, 12.8 m return; negative control strikes Titania) | same |
+| (b) three or more epochs over ten years, N = 3, passing (c) to (f) | PASS: E1 to E5, 2030-01-11 to 2045-06-23 | PASS: E1 to E5 |
+| (c) no manoeuvre, two integrators | PASS for all N = 3 and N = 6 arcs; N = 9: fails as registered at E2 (LSODA self-convergence); N = 12 + D2: fails as registered at E2 | PASS for N = 3, 6; N = 12 + D2: fails as registered at E1 (LSODA self-convergence) |
+| (d) every flyby integrated through | PASS in every converged arc | PASS in every converged arc |
+| (e) altitude at least 50 km, hyperbolic | PASS everywhere; lowest flyby 687 km (Oberon, E5 N = 12 + D2) | PASS; lowest 933 km (Oberon, E4 N = 12) |
+| (f) other approaches | PASS: none within 2 Hill radii in any arc | PASS |
+| (g) extension (reported) | Under the registered 1 cm stop: N = 9 at E1, E3, E5; N = 6 at E2 (N = 9 fails (c) as registered) and E4 (N = 9 diverges); N = 12 fails everywhere (floor). With D2: N = 12 converges at all five epochs, passes (c) to (f) at E1, E3, E4, E5 | Under 1 cm: N = 6 at E1, E3, E5; N = 3 at E2, E4 (N = 6 stalls); N = 12 under 1 cm was tried only at E1 (stalls at lam = 0) and N = 9 was not tried on this route. With D2: N = 6 at all five; N = 12 converges at all five and passes (c) to (f) at E2 to E5; E1 fails (c) as registered |
+
+Neither route was tried beyond 12 cycles (about 4.1 years); no arc stopped because a flyby went
+below the floor, an encounter was lost, or another body came close. Where an arc stopped, it was
+the corrector, as described in section 4.
+
+## 6. The Sun, and the comparison with the `#890` review's arcs
+
+**The Sun.** COMPUTED on the D1 arc at E1, N = 3: removing the Sun changes each 5-day segment's
+end point by 0.3 to 0.9 km, a 31-day propagation by 3.6 km, and a 62-day propagation through the
+Oberon flyby by 774 km (the flyby amplifies it). So for prediction and targeting the Sun is not
+negligible, as the brief said, and it is larger than the brief's estimate of 100 km per cycle
+once a flyby is crossed. For the EXISTENCE of the arcs it does not matter: re-converging each D1
+arc with the Sun removed (one Newton solve from the converged arc, `variants_*.json`) changes the
+flyby altitudes by at most 0.07 to 0.41 km and the flyby times by at most 2 s, and moves the nodes
+by at most 1.7 to 7.8 km, with the same flyby sequence, at all five epochs.
+
+**The review's arcs** (READ: `d_realeph.py`, `model.py`, `d_a_eps1.json`, `d_b_eps1.json` and
+the arcs' node files in the review's scratch directory, opened after commit `ba96b761`). Their
+model is the same construction with registry GMs, J2 = 3510.68e-6, no J4 and no Sun, SPICE called
+directly, and their Newton caps each step and allows seven halvings and 70 iterations (mine:
+none, four, twelve), which is why their direct start at lam = 0 converged and mine did not. Their
+layout is the same as this build's (two extra nodes each side of the mean conjunction chain).
+
+* Their own node states, propagated by THIS code in their model (COMPUTED): largest junction
+  0.111 m and 0.0075 mm/s (arc A, 2030) and 0.155 m and 0.0104 mm/s (arc B, 2031); one Newton step
+  moves the nodes by 2 to 3 m and the flyby altitudes by less than 0.1 m. So the review's arcs are
+  manoeuvre-free trajectories of their model in an independent implementation.
+* The same nodes in THIS model have junction jumps up to 134 km and 0.76 m/s (the Sun, J4 and the
+  URA111 GM set together); Newton re-converges them in three steps, moving the nodes by at most
+  4.3 km and the flyby altitudes by +0.10 to +0.30 km.
+* This build's own arcs at those epochs are different members of the family. E1, N = 3 (D1)
+  against arc A: flyby altitudes 25 to 62 km lower, flyby times 1 to 24 minutes apart, node
+  positions 606 km apart at the median and 3,303 km at most. E2, N = 6 (D1 + D2) against arc B:
+  altitudes 11 to 301 km lower, times up to 3.8 hours apart, nodes 1,609 km apart at the median and
+  23,891 km at most (largest at the ends). These differences do not come from the model: putting
+  this build's arcs into the review's model changes their altitudes by 0.3 km. They come from the
+  route: with six free parameters the minimum-norm continuation lands on a member that depends on
+  the start (the review started from the `#890` orbit's nodes carried with the moons; this build
+  from its own periodic orbit with URA111-fitted circles) and on the step history. INFERRED: no
+  pair of separately converged arcs should be expected to agree better than this; the comparison
+  that tests the code is the cross-evaluation above.
+
+## 7. What was not done, and what is not shown
+
+* Arcs longer than 12 cycles were not tried. The registered N = 12 runs did not converge under the
+  1 cm stop; N = 12 needed D2.
+* No manoeuvre budget, navigation model or targeting analysis. The arcs are as unstable as the
+  `#890` orbit (multiplier about 8e5 per cycle); "manoeuvre-free" here means an exact trajectory of
+  the model exists, not that it can be flown without corrections.
+* No external code base (GMAT) was used. The independent checks are: P1 against URA111, P2 against
+  the stored `#890` orbit, the review's nodes in this code, and three integrators on this code's
+  right-hand side.
+* J4 and the Sun are in the model; the moons' figures, the reaction of the moons on Uranus's
+  figure, the other planets and Puck are not (estimated in 1.1 as below the level that matters).
+* The "nearness" of an arc to the `#890` orbit is measured by flyby altitude only.
+* Nothing here is a catalogue row or a claim about one.
+
+## 8. Faults of the pre-registration, recorded
+
+1. The seed's velocity scaling (s q) was not a similarity of a Kepler orbit (section 3).
+2. The 1 cm Newton stop was set without measuring the solver's noise floor (1 to 2 cm; section
+   3.2).
+3. P2's 1 cm/s return bound was nearly ill-posed (velocity error tracks position error along the
+   unstable direction; section 2.1). It passed at rtol 1e-13.
+4. LSODA was a poor choice of second verifier: over one cycle of the planar orbit it is 250 times
+   less accurate than DOP853 at the same rtol (section 2.1), and its own self-convergence decided
+   three (c) verdicts. Radau with the analytic Jacobian would have been the better second method.
+5. The registered route did not keep the arcs near the `#890` orbit; "near" needed either a
+   periodic start or a nearness criterion, and the registration had neither (section 3).
