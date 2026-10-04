@@ -928,12 +928,55 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   parametrisation.
 - `#909` — registered 2026-10-04. **PAPERS STILL WANTED (consolidated).** (Peng & Xu 2015, CMDA 123:279, RECEIVED 2026-10-04: the truncated copy is replaced by
   a complete 25-page file and a full digest is in progress); Bolotin 2005, CMDA
-  93:343 (10.1007/s10569-005-2172-7); Bolotin 2006, DCDS (10.3934/dcds.2006.14.235); Sanaga &
+  93:343 (10.1007/s10569-005-2172-7); (Bolotin 2006, DCDS, RECEIVED 2026-10-04); Sanaga &
   Howell 2025 (10.1007/s42064-024-0250-4); Peng & Xu 2015, Adv. Space Res. 55:1015
   (10.1016/j.asr.2014.11.013); Englander et al. 2026 (10.2514/1.A36704); Kumar, Anderson & de
   la Llave 2026 published version (10.1007/s00332-026-10276-6); no DOI: Kumar ASC 2026 Paper
   1023, Komachi ASC 2026 Paper 688, Rosengren et al. IAC-25-C1.9.1, Kumar & Anderson 2026
   (ISSFD). Next literature watch about 2026-10-17.
+- **PROPOSALS FROM THE `#897` SYNTHESIS, NUMBERED (2026-10-04).** Note:
+  `docs/notes/2026-10-04-897-technique-synthesis-papers-to-problems.md` (sections 0 to 7 complete;
+  the synthesis agent stopped when its model's usage ran out, before writing the section on
+  papers previously set aside: that is `#919`). Probabilities are the synthesis agent's:
+  (a) validated upgrade of existing rows, (b) a new object worth adversarial review. Its
+  mapping to existing numbers: its P2 is `#899` (one moon), P3 is `#905`, P8 is `#899` (two
+  moons). Its stop-doing list (section 6) is adopted as written unless the owner objects;
+  in particular `#898` is NOT dispatched as registered and is replaced by `#913` and `#915`.
+- `#913` — registered 2026-10-04 (synthesis P1, ranked first). **REPRODUCE ALL 77 PUBLISHED REAL-
+  EPHEMERIS EARTH-MARS CYCLER SOLUTIONS OF RUSSELL (2004) APPENDIX C** from their printed
+  reproduction data (`search/appc_corrected.py` reconstructs a block; only parents 83, 188 and
+  192 have ever been run, `#170`), gate and level each. (a) 85 percent for at least ten rows
+  at V3; (b) 0. 6 to 10 agent-hours, then 10 to 15 for an integrated-flyby stage.
+- `#914` — registered 2026-10-04 (synthesis P4). **RUSSELL & STRANGE MOON CYCLERS WITH INTEGRATED
+  FLYBYS,** the 30 catalogued rows carried to multi-cycle trajectories with every flyby
+  integrated, using the `#895` corrector. (a) 50 percent, needs an owner rule for moon-tour
+  levels. 25 to 40 agent-hours.
+- `#915` — registered 2026-10-04 (synthesis P5). **RUSSELL & OCAMPO'S (2006) OPTIMISER AS PUBLISHED:**
+  zero-size flybys on real planet positions, full excess-velocity vector per leg with a
+  powered-flyby cost, eccentricity then inclination then ephemeris ramp over many windows;
+  target is the published real-ephemeris cost of every constructible heliocentric row, not a
+  ballistic closure. (a) 45 percent; (b) 5 percent. 30 to 50 agent-hours. After `#913`.
+- `#916` — registered 2026-10-04 (synthesis P6). **TEST THE PRINTED PERSISTENCE CONJECTURE** of Ross &
+  Roberts-Tsoukkas (stable near-commensurate cyclers persist under eccentricity and the Sun)
+  for the printed stable members and the stable Casoliva rows, as invariant curves of the
+  one-period map in the corrected models. (a) 35 percent; (b) 45 percent. 20 to 30 agent-hours.
+- `#917` — registered 2026-10-04 (synthesis P7). **CASOLIVA ROWS IN THE ELLIPTIC PROBLEM WITH THE FOLD
+  COUNT** (Park & Howell's predictor applied to cyclers). Blocked on `#912`. (a) 40 percent;
+  (b) 30 percent. 15 to 20 agent-hours.
+- `#918` — registered 2026-10-04 (synthesis P9, ranked last). **GLOBAL SEARCH FOR ZERO-RADIUS
+  REAL-EPHEMERIS CYCLERS BY DYNAMIC PROGRAMMING** on a graph of (body, epoch) nodes. (a) 15
+  percent; (b) 15 percent. 60 agent-hours or more. After `#913` and `#915`.
+- `#919` — registered and DISPATCHED 2026-10-04. **FINISH THE SYNTHESIS: METHODS IN PAPERS PREVIOUSLY
+  SET ASIDE.** Owner: "the pdf's you disregarded as not relevant might be relevant as new
+  techniques for our problem?" About 30 corpus rows marked out of scope, triaged,
+  reference-only or background-only were judged on their objects, not their methods. Each to
+  be read for its method and given a verdict, with useful ones turned into proposals; appended
+  to the `#897` note.
+- `#920` — registered and DISPATCHED 2026-10-04. **DIGESTS NEEDED BEFORE `#899` (P2) IS BUILT:**
+  Barrabes & Gomez 2002 and 2003 (seed formulas; held but only mentioned in a lineage digest),
+  the seed table of Casoliva et al. AIAA 2008-6434, and Bolotin 2006 (DCDS 14:235, received
+  2026-10-04: general results for time-periodic Hamiltonian systems with a small Newtonian
+  singularity, the nearest theory to the two-moon case).
 - `#912` — registered 2026-10-04. **THE ELLIPTIC-PROBLEM PERIODIC-ORBIT CODE LACKS WHAT THE
   PUBLISHED METHOD NEEDS** (from the Peng & Xu 2015 digest,
   `docs/notes/2026-10-04-digest-peng-xu-2015-stability-multi-revolution-elliptic-halo.md`;
@@ -982,7 +1025,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   an ephemeris model (Park & Howell; Singh et al.); Floquet and centre-manifold reduction for
   the bounded motion around a cycler and its maintenance cost (Jorba et al.); speed as an
   independent variable in the weak-stability sweeps (Mako & Salamon).
-- `#898` — **SCOPING FINDING (2026-10-04, from the `#897` source readers; the coordinator's framing
+- `#898` — **NOT TO BE DISPATCHED; REPLACED BY `#913` AND `#915` (`#897` synthesis).** **SCOPING FINDING (2026-10-04, from the `#897` source readers; the coordinator's framing
   below was too strong).** Bradley & Russell's method, as its authors state it, starts from "an
   initial ZSOI trajectory in some ephemeris model" (their Algorithm 1). It does NOT supply the
   step where `#388` failed, which is carrying the idealised circular-coplanar cycler to the real
