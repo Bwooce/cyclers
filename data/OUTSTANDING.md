@@ -1821,6 +1821,90 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   continuity only) produced real-ephemeris Titania-Oberon arcs today where direct propagation
   failed (`#895`), with a working corrector in the tree. Target: a published ballistic
   real-ephemeris cycler as the positive control, then the V0 rows.
+- `#899` — **STEP 2 (2026-10-05): PIPELINE VALIDATED, three Casoliva orbits (four printed rows)
+  reproduced forward from mu = 1e-6 seeds by continuation in mu.** Commits 05aa25a1, cb8d011d,
+  023ef1d9, dc639e34. Modules `src/cyclerfinder/search/second_species_lc.py` (planar
+  moon-centred Levi-Civita propagator, compiled DOP853, planar and vertical transition
+  matrices, periselene and perigee; agrees with the `#928` KS propagator to 5e-11 in state at
+  rtol 1e-13, about 200 times faster) and `src/cyclerfinder/search/second_species_continuation.py`
+  (2008 Table 2 seeds; asymmetric multiple shooting with y = 0 or flow phase; continue_mu in
+  log mu at fixed T or C; pseudo-arclength in C at fixed mu with branch-point tangent
+  projection; three_step; resonant_crossings at T = 2 pi q; same-orbit test over all y = 0
+  crossings and mirror images; Eq. 14-17 seed generator; two-arc returning-arc chains joined
+  by matched flybys); tests `tests/search/test_second_species_continuation.py` (31 default,
+  about 16 s, plus one slow, 18 s); scan script `scripts/run_899_second_species_scan.py`.
+  **Target mu (convention check):** the paper's mu 0.0121529529, not the catalogue rows'
+  registry mu 0.0121505844: the nine printed Table 3 crossings, corrected at T = 2 pi q, move
+  by at most 3e-10 at the paper's mu (C to 2e-10, the printed k to 1e-7 with the `#801`
+  block choice) and by 1e-6 or more at the registry mu (a test). **Results (gate of
+  `table3_gate_report` applied to each hit: x0, T, C, k relative errors and the Radau
+  re-closure):** 2-1a REPRODUCED: 2008 seed 21a, one mu leg at its fixed C 0.3044 to the
+  paper's mu (periselene grew from 5.4e-4 to 0.11, no impact), walk in C at that mu finds
+  T = 2 pi at C 0.4887353098; crossing distance 6.0e-11 direct and 5.9e-11 mirrored, x0 8e-11,
+  T 3e-12, C 1.7e-11, k_perp 1.9255637448 (printed 1.9255637447), Radau dJ 4e-13; stable.
+  3-2c REPRODUCED: the 32a family at mu = 1e-6 folds at C -0.436 and turns up through a
+  near-collision (rp 6e-3) into resonant orbits with T near 4 pi; members sampled at
+  C -0.035, 0.27, 0.57 (scan samples every 0.3), each continued at fixed C, walk lands at
+  C 0.7089330386; distance 1.2e-10 direct, 1.1e-10 mirrored, x0 9e-11, C 1.3e-10, k_perp
+  1.8751541807 (1.8751541804), Radau ok; stable. 7-3b and 7-3c REPRODUCED AS ONE ORBIT AND
+  ITS MIRROR: the printed 7-3c crossing is the mirror image of a 7-3b crossing (2e-10), so they
+  are one asymmetric orbit; a (1,2) + (2,5) returning-arc chain at mu = 1e-6 (grid C 1.072,
+  1.138, 1.203 in the scan, all three) continued at fixed C reaches the paper's mu with the
+  periselene growing as mu (2.3e-6 to 0.035) and the walk finds C 1.0687623900; sign pair
+  (+,+) gives 7-3c directly (4.6e-11) and 7-3b mirrored (9.7e-11), (-,-) the reverse; C
+  5.8e-12, k_par 57.3519358 (57.3519357), Radau ok; unstable. **Seed finding:** at mu = 1e-6
+  the 7-3b/c orbit passes the Moon TWICE per period (rp about 2.3 mu, turn about 21 degrees,
+  arcs of 2 pi and 4 pi), so its generating orbit is a chain of two returning collision arcs,
+  not the single-arc seed of Eqs. 14-17; the chain seed is this project's construction
+  (hyperbola built in the non-rotating moon-centred frame and rotated in: the frame rotation
+  moves the impact parameter by more than its own size at mu = 1e-6; without it no seed
+  closed). **Not reproduced (each conditional on the seeds tried; the full scan has not run):**
+  7-3a: diagnostic reverse continuation (labelled as such, not used for any forward path)
+  takes it at fixed C to a far orbit at mu = 1e-6 (rp 0.064) whose family ends in a near-radial
+  pass (turn about 1.5 degrees, T 18.87) at C about 0.765, below the Eq. 15 end C_J1 =
+  0.7778, the endpoint Barrabes & Gomez exclude (sin psi = 1); the Eq. 14-17 seed did not
+  correct in 104 tries there (alpha 0.34 to 0.5), and 73a is on a different family. 1-2c/d/e:
+  ended in impact (inferred): the 12a family with T near 4 pi heads into Earth collision
+  (perigee 0.0018 and falling at C 0.509, corrector stalling); the rows reverse-continue to
+  far orbits beyond that (perigees 0.11 to 0.75), so passing needs Earth regularisation
+  (`#928` regularises the Moon only); the other 12a branch goes deep at the Moon. 2-1b: not on
+  the 21a sheet in the walked range (samples at C 0.80, 1.00, 1.15 reach only 2-1a);
+  reverse continuation stalls near mu 1e-4 at fixed C and fixed T (a fold). **Deviations from
+  the published method:** every successful path is one fixed-C mu leg plus a C walk at the
+  target mu; no fixed-T first leg (the digest marks fixed T as INFERRED), and the three-step
+  switch never fired on a successful path; where it ran (12a, 32b, high-C chains) the C legs
+  were triggered by min_step (folds, corrector failure), never by the impact trigger
+  (decision: impact trigger = periselene below the Moon radius scaled at constant density,
+  R_M (mu/mu_M)^(1/3), and falling over three members; physical radius only at the target
+  mu). 3-2c's path follows the 2008 order (C at 1e-6, mu at fixed C, C at the target); the
+  member continued in mu is already far from the Moon (rp 0.23), so only the 32a seed is
+  second species on that path. Seeds are zero-order arcs with a first-order flyby: they do NOT
+  test the pre-registered Lancaster & Allemann / Breakwell & Perko periapsis thresholds (still
+  open). The test C values (1.05, 0.27) were chosen after seeing results: they are regression
+  checks; the target-free evidence is the scan runlogs. **Positive controls:** all ten 2008
+  Table 2 seeds close at mu = 1e-6 with corrections below 1e-7 and k_par to the printed four
+  decimals; the Eq. 14-17 generator at the printed C_J of 54a (branch 0) and 73a (branch 1)
+  converges onto the printed Table 2 orbits (2e-11, 1e-9); success rate on uniform C grids is
+  low (7-3: 2 of 100 at mu = 1e-6, 0 of 100 at 1e-5 and 1e-4), as Casoliva report.
+  **Stability (two scales, never mixed: Casoliva k = lambda + 1/lambda, critical 2;
+  floquet_classes normalised k, critical 1, applied to a reduced matrix of the planar and
+  vertical pairs since the planar block always carries the trivial pair).** Delta of that
+  reduced matrix is (k_par - k_perp)^2 >= 0 by construction, so its zeros only mark k_par =
+  k_perp (no complex quartet is possible for a planar orbit). Observed: 7-3b/c mu leg, the
+  VERTICAL pair crosses -2 at mu about 1.5e-4 and back at 7.6e-3 (log-mu steps 0.045), k_par
+  stays 1e9 to 58 (unstable throughout); 2-1a lies in a planar-and-vertical stable window at
+  the target mu between a k = +2 crossing at C 0.0604 (step 3e-5, a fold) and a k = -2
+  crossing at C 0.670 to 0.676 (step 0.006); 3-2c walk: k = -2 crossings at C -0.084, -0.27,
+  -0.371 and k = +2 at -0.372 (steps 1e-2 to 7e-5). Walk steps at the target mu are 0.003 to
+  0.05 in C, so Hitzl-Henon windows of width of order mu (0.012) can be stepped over and paired
+  crossings cancel in the sign test. Printed r_pM and r_pE are not reproduced at 1e-4 even
+  by the printed states themselves (2-1a r_pM 0.2351364 dense against 0.2353576 printed;
+  1-2e 0.6980334 against 0.6982893), presumably a coarse sampling in the paper; not a
+  reproduction criterion. **Step-1 module:** no bug found; this step did not exercise
+  `second_species_arcs` (the chains use closed-form returning arcs). **Full scan (to be
+  launched and owned by the coordinator):** `uv run python scripts/run_899_second_species_scan.py
+  --pq 7-3 2-1 1-2 3-2 --n-c 100 --n-chain 60 --table2-walk-dc 0.1 --table2-walk-steps 600
+  --out data/runlogs/899_scan` (resumable with the same --out; estimate 3 to 5 hours).
 - `#899` — **STEP 1 DONE (2026-10-05): `src/cyclerfinder/search/second_species_arcs.py`** (commits f945f3c0,
   90d26495, 5cf1cd99, 6ac649d6, dc433995, c9822afd; four test files `tests/search/test_second_species_arcs_*.py`,
   tables as CSV in `tests/search/fixtures/second_species_arcs/`; default run about 4 s for all four files, a slow
