@@ -897,6 +897,17 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   against the literature: Leiva & Briozzo (2008) obtained only periodic ARCS for the C32 and
   C31 members at 5/2, the reviewer found periodic orbits. Use the published selection rules
   (their first-order phase condition; Brown et al.'s higher-order functions for 8:3).
+  **Scoping from the `#897` source reader (2026-10-04, reader's page-cited reading, not checked
+  by the coordinator):** Leiva & Briozzo's "arcs" for those members are a STATED NUMERICAL
+  FAILURE, not a non-existence result: they used single shooting over five or more Sun
+  periods and Newton-Raphson did not converge (their p. 239). So finding true periodic
+  counterparts with multiple shooting would complete what they could not, not contradict
+  them. Their phase rule is their Eqs. 29 to 31: four phases pi/2 apart, for q = 1 or 2
+  only. No held paper carries a cycler to a full ephemeris. **Check that must pass before any
+  claim:** the closure is over p Sun periods with the Sun back at its starting phase, not
+  over the three-body period tau. (The `#884` stored orbits do have periods that are whole
+  numbers of Sun periods, 5.000000 for the C32 member, and were re-integrated with the Sun's
+  phase advancing; the rerun must show the same explicitly in the corrected model.)
 - `#906` — registered 2026-10-04. **HARDEN THE DEMANDED-TURN GATE.** (a) Refuse or flag inputs that
   are not body-relative velocities (the error of Bolotin & MacKay 2000, corrected in MacKay
   2005). (b) Treat a demanded turn of 0 or 180 degrees as not an encounter. (c) Wire the gate
