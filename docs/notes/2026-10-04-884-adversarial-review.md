@@ -31,10 +31,11 @@ Three further corrections stand whichever way the Sun turns:
 
 A second model defect surfaced while preparing the coherent-model spot check: `core/qbcp.py`
 evaluates alpha_2 as a cosine series and alpha_3 as a sine series, the reverse of what the tables
-are, and the shipped coherent model is not time-reversible (section 9). The spot check was run with
-that defect repaired in process: three corrected-sense orbits do have periodic counterparts there,
-strongly deformed. It is conditional on the rest of that module, which the coordinator has since
-recorded as not validated (#892; the bicircular defect is #891).
+are, and the shipped coherent model is not time-reversible (section 9). The coordinator has since
+corrected that module (#892: the two parities, and alpha_6 restored to multiply the whole Newtonian
+potential) and validated it against the published POL1 and POL2 points. Against the corrected module,
+three corrected-sense orbits have periodic counterparts in the coherent model, 6,000 to 26,000 km
+from their bicircular positions. The bicircular defect is #891.
 
 ## 2. Verdicts
 
@@ -356,31 +357,37 @@ neither fold exists (section 3).
   (in-process patch only). As shipped alpha_2(0) = -0.0137 (should vanish at syzygy) and
   alpha_3(0) = 1.0000 (should be about 1.0196). This is separate from the coefficient corrected in
   commit 6bda1772.
-- **Spot check in the coherent model with the parities repaired in process (COMPUTED;
-  conditional).** The corrected-sense bicircular model is the coherent model's equations with
-  alpha_1 = alpha_3 = alpha_6 = 1, alpha_2 = 0 and single-harmonic alpha_4, 5, 7, 8 (Sun at angle
-  pi - omega_S t, so the bicircular phase theta0 = pi matches the coherent model's t = 0). I blended
-  every Fourier table linearly from those values (lam = 0) to the shipped tables (lam = 1), with
-  alpha_2 as a sine and alpha_3 as a cosine series, and followed three corrected-sense theta0 = pi
+- **Spot check in the corrected coherent model (COMPUTED).** The corrected-sense bicircular model is
+  the coherent model's equations with alpha_1 = alpha_3 = alpha_6 = 1, alpha_2 = 0 and
+  single-harmonic alpha_4, 5, 7, 8 (Sun at angle pi - omega_S t, so the bicircular phase
+  theta0 = pi matches the coherent model's t = 0). I blended every Fourier table linearly from those
+  values (lam = 0) to the module's tables (lam = 1) and followed three corrected-sense theta0 = pi
   orbits in lam by multiple shooting with the module's own propagator and STM. Instrument check: at
-  lam = 0 the alpha form reproduces the bicircular orbits to 1.4e-9, 9.8e-9 and 7.2e-9.
+  lam = 0 the alpha form reproduces the bicircular orbits to 1.4e-9, 9.8e-9 and 7.2e-9. The run
+  below used the coordinator's corrected `core/qbcp.py` as it stood in the working tree at 17:49
+  AEDT on 2026-10-04 (alpha_2 sine, alpha_3 cosine, alpha_6 on the whole potential; validated by the
+  coordinator against the published POL1 and POL2 points to 2e-8). I confirmed that this module is
+  exactly reversible (defect 0 after 3 TU).
 
   | Orbit (corrected sense, theta0 = pi) | Reaches lam = 1 | Closure, separate propagation at 1e-13 | Largest multiplier, bicircular to coherent | Largest node displacement | Smallest Moon distance, bicircular to coherent |
   |---|---|---|---|---|---|
-  | Casoliva 2:1(b), C = -0.02, P = 1 Tg | yes, 11 steps | 3.4e-11 | 9.5 to 10.4 | 0.090 (34,000 km) | 11,749 to about 10,800 km |
-  | C11 2/1, P = 2 Tg | yes, 11 steps | 2.1e-12 | 3.4e5 to 6.8e5 | 0.074 (28,000 km) | 25,005 to about 21,600 km |
-  | C21 planar 3/1, P = 3 Tg | yes, 25 steps | 3.3e-12 | 5.6e4 to 5.1e6 | 0.213 (82,000 km) | 25,103 to about 24,400 km |
+  | Casoliva 2:1(b), C = -0.02, P = 1 Tg | yes | 1.5e-12 | 9.5 to 9.0 | 0.066 (25,500 km) | 11,749 to about 12,100 km |
+  | C11 2/1, P = 2 Tg | yes | 4.2e-13 | 3.4e5 to 4.1e5 | 0.017 (6,400 km) | 25,005 to about 25,600 km |
+  | C21 planar 3/1, P = 3 Tg | yes | 1.2e-11 | 5.6e4 to 7.4e4 | 0.028 (10,600 km) | 25,103 to about 25,800 km |
 
-  All three stay self-symmetric (defect below 1e-10) and the node displacement grows smoothly with
-  lam, so no jump is evident. The coherent-model distances are read off integrator steps in pulsating
-  coordinates and are good to a few hundred km only. What this shows: going from the bicircular to a
-  coherent forcing is not a small step. It moves these orbits by tens of thousands of km and changes
-  the C21 multiplier ninety-fold. That is as large as, or larger than, what switching the Sun on did
-  in the corrected-sense bicircular model (node displacement 0.059, 0.027 and 0.030 for the same
-  three orbits). What it does not show: anything about the true coherent model. The
-  coordinator's check (#892) finds that the parity-repaired module still misses a published point by
-  2.3e-2, so the tables or equations have a further problem and these three orbits are orbits of an
-  unvalidated model.
+  All three stay self-symmetric (defect below 1e-9). The coherent-model distances are read off
+  integrator steps in pulsating coordinates and are good to a few hundred km only. What this shows:
+  three cycler-type orbits that have periodic equivalents in the corrected-sense bicircular model
+  also have them in the coherent model, with the same character (multiplier within a factor 1.3,
+  periselene within about 700 km for the two cycler-class ones). The step from bicircular to coherent
+  is about as large as the step of switching the Sun on (node displacement 0.059, 0.027 and 0.030
+  from the three-body parent for the same three orbits). What it does not show: anything for the
+  other 36 orbits or other phases, and nothing about an ephemeris.
+- **Superseded run, kept for the record (COMPUTED).** Before the coordinator's fix I ran the same
+  homotopy with only the parities repaired in process, that is, with alpha_6 still dividing the Sun
+  term alone. In that still-wrong model the three orbits also continued but moved much further
+  (0.090, 0.074, 0.213) and the C21 multiplier rose to 5.1e6. Those numbers describe a wrong model and
+  should not be used; the difference from the table above is the effect of the alpha_6 placement.
 
 ## 10. Novelty: what the mathematics makes unsurprising (question 10)
 
@@ -462,19 +469,20 @@ to orbits not previously listed, not a new phenomenon.
     have constant terms 1.0018, 1.0000, 1.0009 and second harmonics 0.014, 0.019, 0.007; alpha_2 has
     second harmonic -0.013. So the tables are the bicircular values plus corrections of 1 to 2
     percent, as they should be.
-  - Short propagations from three states, parity-repaired coherent model minus corrected-sense
-    bicircular: 1.0e-2 to 1.8e-2 after 0.5 TU, 4.4e-2 to 1.8e-1 after 2 TU. For scale, the whole
-    solar effect in the bicircular model (corrected sense minus no Sun) is 2e-3 to 6e-3 after 0.5 TU
-    and 1.0e-2 to 1.8e-2 after 2 TU. The coherent-minus-bicircular difference is of the order of the
-    lunar variation (about 1e-2), which is the expected order, and it is 2.5 to 17 times the solar
-    effect itself. This comparison therefore cannot tell the two senses apart (coherent minus
-    shipped-sense bicircular is 1.1e-2 to 2.0e-2 after 0.5 TU) and cannot validate the coherent
-    module to better than 1e-2. The module as shipped (parities exchanged) is further away: 2.0e-2 to
-    2.8e-2 after 0.5 TU.
-  - INFERRED, not computed: #892 reports that the parity-repaired module misses a published point by
-    2.3e-2. That is the size of alpha_1(0) - 1 = 0.017 and alpha_3(0) - 1 = 0.020. If the published
-    point is given in canonical momenta, converting with vy = py - x (the bicircular rule) instead
-    of vy = alpha_1 py - alpha_3 x + alpha_2 y would produce a miss of exactly that size.
+  - Short propagations from three states, coordinator's corrected coherent module minus
+    corrected-sense bicircular: 1.0e-2 to 2.0e-2 after 0.5 TU, 3.0e-2 to 6.7e-2 after 2 TU. For
+    scale, the whole solar effect in the bicircular model (corrected sense minus no Sun) is 2e-3 to
+    6e-3 after 0.5 TU and 1.0e-2 to 1.8e-2 after 2 TU. The coherent-minus-bicircular difference is of
+    the order of the lunar variation (about 1e-2), which is the expected order, and it is two to nine
+    times the solar effect itself. A raw state comparison therefore cannot tell the two senses apart
+    (coherent minus shipped-sense bicircular is 1.2e-2 to 2.2e-2 after 0.5 TU) and cannot validate the
+    coherent module to better than 1e-2; the Sun-angle comparison above is what discriminates the
+    sense, and the coordinator's POL1 / POL2 control is what validates the module. (With only the
+    parities repaired and alpha_6 misplaced the same differences were 1.0e-2 to 1.8e-2 and 4.4e-2 to
+    1.8e-1.)
+  - A wrong guess of mine, recorded so it is not repeated: I suggested that #892's 2.3e-2 miss
+    against the published point was a momentum-conversion slip. The coordinator found the cause was
+    the alpha_6 placement; with that restored the published points are matched to 2e-8.
 
 ### Every place in `src/` that encodes the Sun's sense or rate (READ)
 
@@ -575,7 +583,7 @@ Sample: all 39 corrected-sense orbits of section 3 (so more than a sample for a 
 
 ## 13. Not done
 
-- A coherent-model check in a validated coherent model (section 9 is conditional on #892).
+- The coherent-model check for more than three orbits and one phase each.
 - The a = 3 members and the degenerate C21 3D 5/2 member, in either sense.
 - Two corrected-sense branches of the sub-surface Casoliva member (one stopped at eps = 0.991 by the
   time limit, one converged to 1.3e-11 without diagnostics).
@@ -591,7 +599,8 @@ Sample: all 39 corrected-sense orbits of section 3 (so more than a sample for a 
    gate that compares two rotating-frame codes sharing a sign cannot catch this). Then re-examine
    every earlier result that used the module (#292, #303, #304, #334, #412 and anything calling
    `bcr4bp_eom`); a correctness fix invalidates prior results in both directions.
-2. Fix the alpha_2 / alpha_3 parities in `core/qbcp.py` and add a reversibility gate.
+2. Fix `core/qbcp.py` (done by the coordinator under #892 while this review was being finished) and
+   keep a reversibility gate and the published-point control in the test suite.
 3. Re-run #884 in the corrected model with the build's own code and compare with section 3 here, so
    the corrected survey rests on two implementations.
 4. Replace the sampled periselene with a refined minimum, and exclude members whose parent or forced
@@ -603,8 +612,9 @@ Sample: all 39 corrected-sense orbits of section 3 (so more than a sample for a 
    of period n synodic months in the bicircular problem", class and tier set by the existing rules,
    not "survives the Sun". Carry the parent row's `orbit_class`; do not promote a `resonant_po` or V0
    `quasi_cycler` family to cycler through a distant member.
-7. Persist the same members into the repaired coherent model before any statement about the real
-   Sun, and state the lunar-eccentricity caveat in the row.
+7. Persist every proposed member into the corrected coherent model (section 9 does this for three
+   orbits) before any statement about the real Sun, and state the lunar-eccentricity caveat in the
+   row.
 8. Report one orbit per symmetry class (not per phase), with the largest multiplier only unless the
    subdominant ones pass the reciprocal-pair check.
 9. Run the literature check (`search/literature_check.py`) and set `our_status` from it.
