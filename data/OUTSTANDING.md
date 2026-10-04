@@ -944,7 +944,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   (ISSFD). Next literature watch about 2026-10-17.
   **Added 2026-10-04 from the `#897` synthesis and the Musielak & Quarles review digest:**
   RECEIVED 2026-10-04: Hadjidemetriou 1975, Cincotta & Simo 2000 (MEGNO), Froeschle, Lega &
-  Gonczi 1997 (FLI), Henon 1997 (book), Hitzl & Henon 1977, Perko 1976, Sanaga & Howell 2025.
+  Gonczi 1997 (FLI), Henon 1997 (book), Hitzl & Henon 1977, Perko 1976, Sanaga & Howell 2025,
+  Perko 1981, Perko 1977, Henon 1968 (in French), Bruno 1981 (ADS scan, image only).
   **DOIs looked up 2026-10-04 (Crossref, authors, year and volume matched):** Bruno 1981
   10.1007/BF01229557; Guillaume 1973 10.1007/BF01231414; Guillaume 1975 ("The restricted
   problem: an extension of Breakwell-Perko's matching theory") 10.1007/BF01650284; Perko 1977
