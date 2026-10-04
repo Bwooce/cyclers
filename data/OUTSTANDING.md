@@ -1131,6 +1131,24 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   rule, list every stored result produced through `er3bp_continuation` or this corrector and
   re-check its full-period closure; any accepted orbit that fails is withdrawn or re-run. Pairs
   with `#912` (the corrector also lacks the published method's apoapsis start).
+- `#931` — registered 2026-10-04. **HADJIDEMETRIOU 1975b FOLLOW-UPS: STABILITY CLASSIFICATION
+  AND THE FIRST GENERAL-THREE-BODY CONTROLS** (digest
+  `docs/notes/2026-10-04-digest-hadjidemetriou-1975b-stability-periodic-orbits-three-body.md`).
+  (a) A test-only equal-mass planar three-body integrator, pinned to Table I (p.268, 26 members):
+  E, p and tau/2 for rows 1, 2, 3, 10, 24; b1 and b2 for rows 5, 6, 10, 16, 22; row 11 has a complex
+  quartet (Delta < 0); orbit a (eq. 73, 11 digits) returns to its state. The agent reproduced these
+  with its own integrator (rows 1-2 are ill-conditioned in b; pin alpha and beta there). (b) A
+  symplectic classifier returning alpha, beta, Delta, b1, b2 and the regime, deciding by eigenvalue
+  modulus, with synthetic-spectrum tests per regime. CHECKED by the coordinator:
+  `search/er3bp_periodic.monodromy_eigenstructure` accepts any complex eigenvalue within 0.5 of the
+  unit circle as the centre, so it would read part of a complex quartet as a centre; it has no
+  callers outside tests. `search/er3bp_floquet.floquet_classify` decides by the largest modulus
+  and labels a quartet unstable correctly. Tighten the former or retire it. (c) For `#890`/`#895`:
+  if a multiplier was computed from a half-period construction, det = 1 and reciprocity hold
+  identically and check nothing; state how the 8.4e5 value was obtained. (d) Log alpha, beta and
+  Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
+  acquire: Hadjidemetriou & Christides 1975 (the mass continuation), Henon 1974a and b, Broucke 1969
+  (NASA TR 32-1360).
 - `#925` — registered 2026-10-04. **ELLIPTIC-PROBLEM CONTROLS THAT DO NOT REPRODUCE: MODEL OR
   PAPER?** From `#896` items (f) and (g), the agents' reports, not yet checked by the
   coordinator. (1) Mako & Salamon 2025 (`tests/core/test_er3bp_mako_salamon_2025.py`, 7 strict
