@@ -78,6 +78,10 @@ class V3Saturn3DVerdict:
     v3_v2_agreement_floor_kms: float
     passes_v3: bool
     notes: str = ""
+    turn_feasible: bool = False
+    """(#888) Carried from ``v2_verdict.turn_feasible`` and required by ``passes_v3``:
+    V3 re-propagates the same Lambert legs leg by leg, so it does not fly the flybys."""
+    turn_failure_reason: str = "turn gate not evaluated"
 
 
 def _cycle_v3(
@@ -202,6 +206,7 @@ def run_v3_saturn_3d(
         and n_completed == n_cycles
         and math.isfinite(drift_agreement)
         and drift_agreement <= agreement_floor_kms
+        and v2_verdict.turn_feasible
     )
 
     return V3Saturn3DVerdict(
@@ -216,6 +221,8 @@ def run_v3_saturn_3d(
         v3_v2_agreement_floor_kms=float(agreement_floor_kms),
         passes_v3=passes_v3,
         notes=notes,
+        turn_feasible=bool(v2_verdict.turn_feasible),
+        turn_failure_reason=v2_verdict.turn_failure_reason,
     )
 
 

@@ -51,6 +51,13 @@ from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.lambert import lambert as _lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.data.validation.moontour_turn import (
+    TURN_GATE_NOT_EVALUATED,
+    CycleTurnRecord,
+    gate_cycle_record,
+    leg_vinf,
+    summarize_turn_gate,
+)
 from cyclerfinder.data.validation.v3_saturn_3d import V3Saturn3DVerdict
 from cyclerfinder.data.validation.v4_uranus import (
     _hill_radius_km,
@@ -68,6 +75,7 @@ from cyclerfinder.genome.titan_iapetus_corrector import (
     titan_state,
 )
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day, _moon_state
+from cyclerfinder.verify.turn_gate import EncounterTurn
 
 # --------------------------------------------------------------------------- #
 # SOURCED Saturn constants
@@ -115,6 +123,9 @@ class V4SaturnCycleVerdict:
     agreement_kms: float
     v4_terminal_offset_vs_moon_kms: float
     notes: str = ""
+    turn_feasible: bool | None = None
+    """(#888) Both flybys of this cycle (Iapetus, closing Titan wrap) are turn-feasible."""
+    turn_encounters: tuple[EncounterTurn, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -131,6 +142,12 @@ class V4SaturnVerdict:
     bounded_drift_survives: bool
     passes_v4: bool
     notes: str = ""
+    turn_feasible: bool = False
+    """(#888) Every completed cycle is turn-feasible; required by ``passes_v4``. The
+    V4 propagation restarts each leg from its own Lambert departure, so the flybys
+    are not flown; this gate holds them to the moons' available bend."""
+    worst_turn_ratio: float = math.inf
+    turn_failure_reason: str = TURN_GATE_NOT_EVALUATED
 
 
 def _perturber_state(
@@ -242,24 +259,29 @@ def _cycle_v4(
     j2: float,
     r_eq_km: float,
     t_cycle_offset_days: float,
+    turn_record: CycleTurnRecord | None = None,
 ) -> tuple[bool, np.ndarray | None, float]:
+    """One cycle; ``turn_record`` (#888) collects the Lambert V_inf vectors of both
+    legs and of the next cycle's first leg for the demanded-turn gate."""
     n0, n1 = params.n_rev
     r0, v0 = titan_state(params, t_cycle_offset_days + 0.0)
     r1, v1 = iapetus_state(params, t_cycle_offset_days + tof_days)
-    r2, _v2 = titan_state(params, t_cycle_offset_days + 2.0 * tof_days)
+    r2, v2 = titan_state(params, t_cycle_offset_days + 2.0 * tof_days)
     tof_s = tof_days * DAY_S
 
     sc_r_curr: np.ndarray | None = None
     worst_offset_kms = 0.0
-    for leg_start_days, r_a, v_a, r_b, n_rev in (
-        (t_cycle_offset_days + 0.0, r0, v0, r1, n0),
-        (t_cycle_offset_days + tof_days, r1, v1, r2, n1),
+    for leg_start_days, r_a, v_a, r_b, v_b, n_rev in (
+        (t_cycle_offset_days + 0.0, r0, v0, r1, v1, n0),
+        (t_cycle_offset_days + tof_days, r1, v1, r2, v2, n1),
     ):
         sols = _lambert(r_a, r_b, tof_s, mu=mu_primary, max_revs=max(0, n_rev))
         wanted = [s for s in sols if s.n_revs == n_rev]
         if not wanted:
             return False, None, float("inf")
         best = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a)))
+        if turn_record is not None:
+            turn_record.legs.append(leg_vinf(best.v1, v_a, best.v2, v_b))
         r_f_leg, _, ok = _v4_propagate_leg(
             r_a.copy(),
             best.v1.copy(),
@@ -278,6 +300,13 @@ def _cycle_v4(
         sc_r_curr = r_f_leg
     if sc_r_curr is None:
         return False, None, float("inf")
+    if turn_record is not None:
+        r3, _v3 = iapetus_state(params, t_cycle_offset_days + 3.0 * tof_days)
+        sols2 = _lambert(r2, r3, tof_s, mu=mu_primary, max_revs=max(0, n0))
+        wanted2 = [s for s in sols2 if s.n_revs == n0]
+        if wanted2:
+            best2 = min(wanted2, key=lambda s: float(np.linalg.norm(s.v1 - v2)))
+            turn_record.wrap_depart = best2.v1 - v2
     return True, sc_r_curr, worst_offset_kms
 
 
@@ -294,8 +323,13 @@ def run_v4_saturn(
     agreement_floor_kms: float = V4_SATURN_AGREEMENT_FLOOR_KMS,
     drift_unbounded_factor: float = 10.0,
     notes: str = "",
+    turn_alt_floor_km: float | None = None,
 ) -> V4SaturnVerdict:
-    """Run V4 for the Titan-Iapetus 3D-eccentric family: J2 + n-body scipy fallback."""
+    """Run V4 for the Titan-Iapetus 3D-eccentric family: J2 + n-body scipy fallback.
+
+    #888: ``passes_v4`` also requires every flyby (Iapetus and the closing Titan wrap)
+    of every cycle to be turn-feasible; ``turn_alt_floor_km`` overrides the registry
+    floors."""
     if n_cycles < V4_SATURN_N_CYCLES_MIN:
         raise ValueError(f"V4-Saturn requires n_cycles >= {V4_SATURN_N_CYCLES_MIN}")
     if agreement_floor_kms <= 0.0:
@@ -318,11 +352,13 @@ def run_v4_saturn(
     n_legs = len(SEQUENCE) - 1
 
     per_cycle: list[V4SaturnCycleVerdict] = []
+    turn_records: list[CycleTurnRecord] = []
     n_completed = 0
     cycle_zero_r_v4: np.ndarray | None = None
 
     for k in range(n_cycles):
         t_offset_days = k * period_days
+        turn_record = CycleTurnRecord()
         converged, r_v4, v4_offset_vs_moon = _cycle_v4(
             params,
             tof_days=tof_days,
@@ -332,6 +368,7 @@ def run_v4_saturn(
             j2=j2,
             r_eq_km=r_eq_km,
             t_cycle_offset_days=t_offset_days,
+            turn_record=turn_record,
         )
         if not converged or r_v4 is None:
             per_cycle.append(
@@ -354,6 +391,8 @@ def run_v4_saturn(
             assert cycle_zero_r_v4 is not None
             drift_v4 = float(np.linalg.norm(r_v4 - cycle_zero_r_v4))
         drift_v3 = float(v3_verdict.per_cycle[k].rendezvous_drift_kms_v3)
+        gate_cycle_record(turn_record, SEQUENCE, alt_floor_km=turn_alt_floor_km)
+        turn_records.append(turn_record)
         per_cycle.append(
             V4SaturnCycleVerdict(
                 cycle_index=k,
@@ -363,6 +402,9 @@ def run_v4_saturn(
                 rendezvous_drift_kms_v3=drift_v3,
                 agreement_kms=abs(drift_v4 - drift_v3),
                 v4_terminal_offset_vs_moon_kms=v4_offset_vs_moon,
+                notes=turn_record.error,
+                turn_feasible=turn_record.turn_feasible,
+                turn_encounters=turn_record.encounters,
             )
         )
         n_completed += 1
@@ -387,12 +429,14 @@ def run_v4_saturn(
             else:
                 bounded_drift_survives = max_v4 <= drift_unbounded_factor * max_v3
 
+    turn = summarize_turn_gate(turn_records)  # #888
     passes_v4 = bool(
         n_completed >= V4_SATURN_N_CYCLES_MIN
         and n_completed == n_cycles
         and math.isfinite(drift_agreement)
         and drift_agreement <= agreement_floor_kms
         and bounded_drift_survives
+        and turn.turn_feasible
     )
 
     return V4SaturnVerdict(
@@ -408,6 +452,9 @@ def run_v4_saturn(
         bounded_drift_survives=bool(bounded_drift_survives),
         passes_v4=passes_v4,
         notes=notes,
+        turn_feasible=turn.turn_feasible,
+        worst_turn_ratio=turn.worst_turn_ratio,
+        turn_failure_reason=turn.turn_failure_reason,
     )
 
 

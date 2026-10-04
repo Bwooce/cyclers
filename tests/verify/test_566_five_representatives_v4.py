@@ -26,6 +26,15 @@ Sourced-golden discipline: the EXPECTED side is the frozen project output
 (#566 gauntlet + #567 scan). This test is intentionally NOT ``@pytest.mark.slow``
 — it only reads JSONL (no propagation), runs in well under a second, and must
 stay in the default suite so the V4 claim is verified in CI, not skipped.
+
+#888 (2026-10-04): THESE STORED VERDICTS ARE OUTPUT OF AN INSUFFICIENT GAUNTLET.
+The five rows were withdrawn (``data/withdrawn/``): the gauntlet compared only
+V-infinity magnitudes and restarted every leg from its own Lambert solution, so
+it never noticed that every flyby demands 1.9 to 28 times the bend the moon can
+supply. The stored-data checks below are kept as a record of what that gauntlet
+said; they back no catalogue claim. ``test_566_representative_rejected_by_gated_lane``
+asserts that the gated lane (V2, V3, V4 with the demanded-turn gate) now rejects
+each of the same five inputs, on the turn.
 """
 
 from __future__ import annotations
@@ -35,6 +44,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+
+from cyclerfinder.data.validation.v2_moontour import run_v2_moontour
+from cyclerfinder.data.validation.v3_3d import run_v3_3d
+from cyclerfinder.data.validation.v4_uranus import run_v4_uranus
 
 GAUNTLET_PATH = Path("data/gauntlet_566_five_representatives.jsonl")
 SCAN_PATH = Path("data/scan_567_epoch_robustness.jsonl")
@@ -143,3 +156,40 @@ def test_566_representative_duty_cycle_matches_catalogue(candidate_id: str) -> N
         f"catalogue validity_window.synodic_duty_cycle_pct {expected_pct}% "
         "(within 0.1) — the #568 characterization has drifted from the row."
     )
+
+
+@pytest.mark.parametrize("candidate_id", list(REPRESENTATIVES))
+def test_566_representative_rejected_by_gated_lane(candidate_id: str) -> None:
+    """#888: the same #566 inputs are REJECTED by the gated V2 / V3 / V4 lane.
+
+    V2 runs with drift and closure floors wide enough that only the demanded
+    turn can reject; V3 and V4 run at their defaults. The stored PASS above was
+    a pass on magnitudes only.
+    """
+    with GAUNTLET_PATH.open() as fh:
+        meta = json.loads(fh.readline())
+    c = next(x for x in meta["candidates"] if x["candidate_id"] == candidate_id)
+    args = (
+        candidate_id,
+        tuple(c["sequence"]),
+        tuple(c["vinf_kms"]),
+        tuple(c["tof_days"]),
+        float(c["rel_offset_deg"]),
+        None,
+    )
+    kw: dict[str, Any] = {
+        "n_cycles": 3,
+        "n_revs": tuple(c["n_revs"]),
+        "phase0_deg": float(meta["phase0_deg"]),
+    }
+    v2_open = run_v2_moontour(*args, **kw, drift_floor_kms=1.0e9, closure_floor_kms=1.0e3)
+    assert v2_open.n_cycles_completed == 3
+    assert v2_open.passes_v2 is False and v2_open.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in v2_open.turn_failure_reason
+    v2 = run_v2_moontour(*args, **kw)
+    v3 = run_v3_3d(*args, v2_verdict=v2, **kw)
+    assert v3.passes_v3 is False and v3.turn_feasible is False
+    v4 = run_v4_uranus(*args, v3_verdict=v3, **kw)
+    assert v4.n_cycles_propagated == 3
+    assert v4.passes_v4 is False and v4.turn_feasible is False
+    assert v4.worst_turn_ratio > 1.5

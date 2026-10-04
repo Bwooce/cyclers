@@ -97,6 +97,8 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
 )
 from cyclerfinder.search.saturn_uranus_campaign import dop853_cross_check_leg  # noqa: E402
+from cyclerfinder.verify.turn_gate import demanded_turn_gate  # noqa: E402
+from cyclerfinder.verify.turn_gate_closures import symmetric_closure  # noqa: E402
 
 MOONS: tuple[str, ...] = ("Miranda", "Ariel", "Umbriel", "Titania", "Oberon")
 GATE_RESIDUAL_KMS = 0.05
@@ -477,20 +479,45 @@ def encounter_vinfs_kms(rec: dict[str, Any]) -> tuple[float, float, float]:
 def gate_candidate(
     anchor: str, flyby: str, rec: dict[str, Any], *, primary: str = "Uranus"
 ) -> dict[str, Any]:
-    """Run the #324 physical-bend gate + DOP853 cross-check on one record.
+    """Run the #888 demanded-turn gate + DOP853 cross-check on one record.
 
-    ``primary`` (#571 genericization, default ``"Uranus"``): forwarded only
-    to :func:`build_legs_for_record` for the Kepler-state reconstruction --
-    the gate logic itself (:func:`candidate_passes_physical_gate`) is
-    body-agnostic (it resolves each body's own GM/radius/safe_alt from the
-    ``PLANETS``/``SATELLITES`` registries via the body NAME in ``seq``, not
-    via ``primary``), so this is a pure pass-through, not a gate change.
+    ``primary`` (#571 genericization, default ``"Uranus"``): forwarded to
+    :func:`build_legs_for_record` and the closure rebuild for the Kepler-state
+    reconstruction.
+
+    #888: ``all_gates_passed`` now requires the DEMANDED-TURN gate
+    (:func:`cyclerfinder.verify.turn_gate.demanded_turn_gate` on the record's
+    rebuilt V_inf VECTORS, :func:`cyclerfinder.verify.turn_gate_closures.
+    symmetric_closure`: the flyby at ``flyby`` and the closing flyby at
+    ``anchor``, the latter against the next lap's first leg solved directly)
+    instead of the #324 bend-CAPACITY gate, which only checked that each moon
+    can bend by more than 5 degrees and never compared a direction. Six
+    catalogued rows passed the capacity gate while demanding 1.8 to 28 times
+    the available bend. The capacity verdict is still reported as
+    ``physical_gate_passed`` (downstream scripts read that key) but no longer
+    decides anything.
     """
     seq = (anchor, flyby, anchor)
     vinfs = encounter_vinfs_kms(rec)
     physical_pass, verdicts = candidate_passes_physical_gate(
         seq, vinfs, min_useful_bend_deg=DEFAULT_MIN_USEFUL_BEND_DEG
     )
+    closure = symmetric_closure(
+        primary,
+        anchor,
+        flyby,
+        tof_days=float(rec["tof_days"]),
+        n_rev=(int(rec["n_rev"][0]), int(rec["n_rev"][1])),
+        rel_offset_deg=float(rec["rel_offset_deg"]),
+        phase0_deg=float(rec.get("phase0_deg", 0.0)),
+    )
+    if closure is None:
+        turn_pass = False
+        turn_gate: dict[str, Any] = {"error": "closing leg has no solution at n_rev[0]"}
+    else:
+        report = demanded_turn_gate(closure.encounters)
+        turn_pass = report.turn_feasible
+        turn_gate = report.as_dict()
     legs = build_legs_for_record(anchor, flyby, rec, primary=primary)
     cross_checks = [dop853_cross_check_leg(leg, rtol=1e-12, atol=1e-12) for leg in legs]
     max_dr_km = max(float(cc["dr_arrival_km"]) for cc in cross_checks)
@@ -503,12 +530,14 @@ def gate_candidate(
         "vinf_per_encounter_kms": list(vinfs),
         "physical_gate_passed": physical_pass,
         "max_bend_deg_per_encounter": [v.max_bend_deg for v in verdicts],
+        "turn_gate_passed": bool(turn_pass),
+        "turn_gate": turn_gate,
         "dop853_cross_check": {
             "max_dr_arrival_km": max_dr_km,
             "per_leg": cross_checks,
             "passed": independent_pass,
         },
-        "all_gates_passed": bool(physical_pass and independent_pass),
+        "all_gates_passed": bool(turn_pass and independent_pass),
     }
 
 

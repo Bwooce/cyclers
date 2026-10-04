@@ -39,7 +39,9 @@ PASS criterion: identical form to :mod:`v2_moontour` -- ``n_cycles >= n_cycles_m
 complete AND every cycle's V_inf-continuity residual <= ``closure_floor_kms`` AND the
 max inter-cycle rendezvous drift <= ``drift_floor_kms`` (same 50,000 km / 0.05 km/s
 defaults as the Uranian gate, per :data:`V2_SATURN_DRIFT_FLOOR_KMS` /
-:data:`V2_SATURN_CLOSURE_FLOOR_KMS`).
+:data:`V2_SATURN_CLOSURE_FLOOR_KMS`) AND (#888) every flyby, the Iapetus one and the
+closing Titan wrap, is TURN-FEASIBLE at the registry floors (Titan 1500 km), as in
+:mod:`v2_moontour`.
 
 Discipline
 ----------
@@ -60,6 +62,13 @@ from typing import Final
 import numpy as np
 
 from cyclerfinder.core.lambert import lambert as _lambert
+from cyclerfinder.data.validation.moontour_turn import (
+    TURN_GATE_NOT_EVALUATED,
+    CycleTurnRecord,
+    gate_cycle_record,
+    leg_vinf,
+    summarize_turn_gate,
+)
 from cyclerfinder.genome.titan_iapetus_corrector import (
     SEQUENCE,
     TitanIapetusClosureParams,
@@ -69,6 +78,7 @@ from cyclerfinder.genome.titan_iapetus_corrector import (
     titan_state,
 )
 from cyclerfinder.search.discovery_campaign import DAY_S
+from cyclerfinder.verify.turn_gate import EncounterTurn
 
 V2_SATURN_N_CYCLES_MIN: Final[int] = 3
 """Spec section 14 V2-ballistic minimum: >= 3 continuous laps."""
@@ -92,6 +102,9 @@ class V2SaturnCycleVerdict:
     rendezvous_drift_kms: float
     closure_residual_kms: float
     notes: str = ""
+    turn_feasible: bool | None = None
+    """(#888) Both flybys of this cycle (Iapetus, closing Titan wrap) are turn-feasible."""
+    turn_encounters: tuple[EncounterTurn, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -110,6 +123,10 @@ class V2Saturn3DVerdict:
     n_cycles_min: int
     passes_v2: bool
     notes: str = ""
+    turn_feasible: bool = False
+    """(#888) Every completed cycle is turn-feasible. Required by ``passes_v2``."""
+    worst_turn_ratio: float = math.inf
+    turn_failure_reason: str = TURN_GATE_NOT_EVALUATED
 
 
 def _cycle_residual(
@@ -118,11 +135,14 @@ def _cycle_residual(
     tof_days: float,
     mu: float,
     t_cycle_offset_days: float,
+    turn_record: CycleTurnRecord | None = None,
 ) -> tuple[bool, float, tuple[np.ndarray, np.ndarray, np.ndarray]]:
     """Re-solve both legs of one cycle at the given global time offset.
 
     Mirrors :func:`v2_moontour._cycle_residual` exactly in spirit, with
     ``_moon_state`` calls replaced by the corrector's eccentric 3D Kepler states.
+    ``turn_record`` (#888) collects the V_inf vectors of both legs and of the
+    next cycle's first leg (Titan at ``2 tof`` to Iapetus at ``3 tof``).
     """
     n0, n1 = params.n_rev
     r0, v0 = titan_state(params, t_cycle_offset_days + 0.0)
@@ -147,6 +167,14 @@ def _cycle_residual(
     r_mid = abs(vinf1_in - vinf1_out)
     r_wrap = abs(vinf0_out - vinf2_in)
     residual = max(r_mid, r_wrap)
+    if turn_record is not None:
+        turn_record.legs.append(leg_vinf(best0.v1, v0, best0.v2, v1))
+        turn_record.legs.append(leg_vinf(best1.v1, v1, best1.v2, v2))
+        r3, _v3 = iapetus_state(params, t_cycle_offset_days + 3.0 * tof_days)
+        cands2 = [s for s in _lambert(r2, r3, tof_s, mu=mu, max_revs=max(0, n0)) if s.n_revs == n0]
+        if cands2:
+            best2 = min(cands2, key=lambda s: float(np.linalg.norm(s.v1 - v2)))
+            turn_record.wrap_depart = best2.v1 - v2
     return True, residual, (r0, r1, r2)
 
 
@@ -159,6 +187,7 @@ def run_v2_saturn_3d(
     drift_floor_kms: float = V2_SATURN_DRIFT_FLOOR_KMS,
     closure_floor_kms: float = V2_SATURN_CLOSURE_FLOOR_KMS,
     notes: str = "",
+    turn_alt_floor_km: float | None = None,
 ) -> V2Saturn3DVerdict:
     """Run V2 for a Titan-Iapetus 3D-eccentric closure: re-solve legs over ``n_cycles``.
 
@@ -177,6 +206,9 @@ def run_v2_saturn_3d(
         Bars per the module docstring.
     notes:
         Free-form audit note.
+    turn_alt_floor_km:
+        (#888) Uniform flyby floor for the demanded-turn gate; ``None`` uses the
+        registry floors (Titan 1500 km, Iapetus 100 km).
     """
     if n_cycles < V2_SATURN_N_CYCLES_MIN:
         raise ValueError(
@@ -192,6 +224,7 @@ def run_v2_saturn_3d(
     n_legs = len(SEQUENCE) - 1
 
     per_cycle: list[V2SaturnCycleVerdict] = []
+    turn_records: list[CycleTurnRecord] = []
     cycle_zero_final_pos_km: np.ndarray | None = None
     n_completed = 0
     max_drift_kms = 0.0
@@ -199,8 +232,13 @@ def run_v2_saturn_3d(
 
     for k in range(n_cycles):
         t_offset_days = k * period_days
+        turn_record = CycleTurnRecord()
         converged, residual, states = _cycle_residual(
-            params, tof_days=tof_days, mu=mu, t_cycle_offset_days=t_offset_days
+            params,
+            tof_days=tof_days,
+            mu=mu,
+            t_cycle_offset_days=t_offset_days,
+            turn_record=turn_record,
         )
         if not converged:
             per_cycle.append(
@@ -223,6 +261,8 @@ def run_v2_saturn_3d(
             drift_kms = float(np.linalg.norm(final_pos_km - cycle_zero_final_pos_km))
             max_drift_kms = max(max_drift_kms, drift_kms)
         max_closure = max(max_closure, residual)
+        gate_cycle_record(turn_record, SEQUENCE, alt_floor_km=turn_alt_floor_km)
+        turn_records.append(turn_record)
         per_cycle.append(
             V2SaturnCycleVerdict(
                 cycle_index=k,
@@ -230,14 +270,19 @@ def run_v2_saturn_3d(
                 n_legs=n_legs,
                 rendezvous_drift_kms=drift_kms,
                 closure_residual_kms=residual,
+                notes=turn_record.error,
+                turn_feasible=turn_record.turn_feasible,
+                turn_encounters=turn_record.encounters,
             )
         )
         n_completed += 1
 
+    turn = summarize_turn_gate(turn_records)  # #888
     passes_v2 = bool(
         n_completed >= V2_SATURN_N_CYCLES_MIN
         and max_drift_kms <= drift_floor_kms
         and max_closure <= closure_floor_kms
+        and turn.turn_feasible
     )
 
     return V2Saturn3DVerdict(
@@ -253,6 +298,9 @@ def run_v2_saturn_3d(
         n_cycles_min=V2_SATURN_N_CYCLES_MIN,
         passes_v2=passes_v2,
         notes=notes,
+        turn_feasible=turn.turn_feasible,
+        worst_turn_ratio=turn.worst_turn_ratio,
+        turn_failure_reason=turn.turn_failure_reason,
     )
 
 

@@ -231,7 +231,16 @@ def test_lambert_failure_caps_cycle_count() -> None:
 
 def test_drift_floor_correctly_passes_small_drift() -> None:
     """A custom drift floor large enough to absorb the SILVER's drift +
-    a custom closure floor that does the same -> passes_v2 == True."""
+    a custom closure floor that does the same -> drift and closure accept.
+
+    #888 (2026-10-04): this test used to assert ``passes_v2 is True``. That
+    was a pass on magnitudes only: the SILVER (the withdrawn
+    umbriel-oberon-1-1-uranian-quasi-cycler-2026 row) demands 3.9x the
+    available bend at Oberon and 2.7x at the Umbriel wrap. With both floors
+    out of the way the demanded-turn gate is the only criterion left, and it
+    rejects; the drift/closure floor mechanics this test exists for are still
+    asserted below.
+    """
     verdict = run_v2_moontour(
         SILVER_ID,
         SILVER_SEQ,
@@ -245,8 +254,13 @@ def test_drift_floor_correctly_passes_small_drift() -> None:
         drift_floor_kms=1.0e9,  # generous, well above any conceivable drift
         closure_floor_kms=1.0e3,  # generous, well above any conceivable residual
     )
-    assert verdict.passes_v2 is True
     assert verdict.n_cycles_completed == 3
+    assert verdict.max_drift_kms <= verdict.drift_floor_kms
+    assert verdict.max_closure_residual_kms <= verdict.closure_floor_kms
+    # #888: the only failing criterion is the demanded turn.
+    assert verdict.turn_feasible is False
+    assert verdict.passes_v2 is False
+    assert "demanded turn exceeds the available bend" in verdict.turn_failure_reason
 
 
 def test_drift_floor_correctly_rejects_large_drift() -> None:

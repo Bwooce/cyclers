@@ -166,6 +166,13 @@ def test_silver_v3_ias15_passes_agreement_floor() -> None:
     If REBOUND is unavailable on the runner, this test still expects
     agreement at the wider LSODA floor; both architectures are
     independent of V2's DOP853+Lambert chain.
+
+    #888 (2026-10-04): the agreement still holds, but ``passes_v3`` is now
+    asserted FALSE. The SILVER is the withdrawn
+    umbriel-oberon-1-1-uranian-quasi-cycler-2026 row: its flybys demand 3.9x
+    (Oberon) and 2.7x (Umbriel wrap) the available bend, and V3 now inherits
+    V2's demanded-turn verdict (V3 re-propagates the same legs leg by leg, so
+    integrator agreement says nothing about the flybys).
     """
     v2_verdict = run_v2_moontour(
         SILVER_ID,
@@ -197,10 +204,10 @@ def test_silver_v3_ias15_passes_agreement_floor() -> None:
         f"V3 disagreement = {v3_verdict.drift_agreement_kms:.3e} km "
         f"exceeds floor {V3_AGREEMENT_FLOOR_KMS} km — V2 signature integrator-noise"
     )
-    assert v3_verdict.passes_v3, (
-        f"V3 expected PASS at agreement={v3_verdict.drift_agreement_kms:.3e} "
-        f"< floor={V3_AGREEMENT_FLOOR_KMS}"
-    )
+    # #888: rejected on the demanded turn alone (agreement above holds).
+    assert v3_verdict.turn_feasible is False
+    assert v3_verdict.passes_v3 is False
+    assert "demanded turn exceeds the available bend" in v3_verdict.turn_failure_reason
     # IAS15-vs-analytic-Kepler offset at each leg endpoint is tiny — the
     # per-leg numeric agreement of the two Kepler integrators.
     for c in v3_verdict.per_cycle:

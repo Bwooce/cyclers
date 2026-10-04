@@ -182,7 +182,8 @@ class V3Verdict3D:
     :data:`V3_AGREEMENT_FLOOR_KMS` (100 km)."""
     passes_v3: bool
     """``drift_agreement_kms <= v3_v2_agreement_floor_kms`` AND every cycle's
-    Lambert leg closed under both V2 and V3. The headline boolean.
+    Lambert leg closed under both V2 and V3 AND (#888) the V2 verdict is
+    turn-feasible. The headline boolean.
 
     Interpretation:
 
@@ -195,6 +196,12 @@ class V3Verdict3D:
       candidate retires to the negative-results registry (#172).
     """
     notes: str = ""
+    turn_feasible: bool = False
+    """(#888) Carried from ``v2_verdict.turn_feasible``. V3 re-propagates the
+    same Lambert legs leg by leg with another integrator, so it does not fly
+    the flybys either; a chain whose flybys demand more turn than the moons
+    can supply cannot pass V3 by agreeing with V2."""
+    turn_failure_reason: str = "turn gate not evaluated"
 
 
 def _resolve_primary(system: cr3bp.CR3BPSystem | None, sequence: tuple[str, ...]) -> str:
@@ -410,7 +417,8 @@ def run_v3_3d(
       3. Extract the V2 per-cycle drift series from ``v2_verdict``.
       4. Compute ``drift_agreement_kms = max_k |drift_v3[k] - drift_v2[k]|``.
       5. Verdict: PASS iff every cycle converged AND
-         ``drift_agreement_kms <= agreement_floor_kms``.
+         ``drift_agreement_kms <= agreement_floor_kms`` AND (#888)
+         ``v2_verdict.turn_feasible``.
 
     Parameters
     ----------
@@ -562,6 +570,7 @@ def run_v3_3d(
         and n_completed == n_cycles
         and math.isfinite(drift_agreement)
         and drift_agreement <= agreement_floor_kms
+        and v2_verdict.turn_feasible
     )
 
     return V3Verdict3D(
@@ -576,6 +585,8 @@ def run_v3_3d(
         v3_v2_agreement_floor_kms=float(agreement_floor_kms),
         passes_v3=passes_v3,
         notes=notes,
+        turn_feasible=bool(v2_verdict.turn_feasible),
+        turn_failure_reason=v2_verdict.turn_failure_reason,
     )
 
 

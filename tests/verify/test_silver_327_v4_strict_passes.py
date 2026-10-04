@@ -24,6 +24,14 @@ What this gate asserts:
 Sourced-golden discipline: the EXPECTED side is the JSONL file itself, frozen
 project output from #338. This test ties the catalogue row's V4 claim to the
 recorded evidence.
+#888 (2026-10-04): THIS STORED VERDICT IS OUTPUT OF AN INSUFFICIENT GAUNTLET.
+The row it backed (umbriel-oberon-1-1-uranian-quasi-cycler-2026) was withdrawn
+(``data/withdrawn/``): the lane compared only V-infinity magnitudes and
+restarted every leg from its own Lambert solution, so it never noticed that the
+Oberon flyby demands 3.9 times, and the Umbriel wrap flyby 2.7 times, the bend
+the moon can supply. The stored-data checks are kept as a record and back no
+catalogue claim; the last test asserts that the gated lane now rejects the same
+inputs, on the turn.
 """
 
 from __future__ import annotations
@@ -31,6 +39,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
+
+import pytest
+
+from cyclerfinder.data.validation.v2_moontour import run_v2_moontour
+from cyclerfinder.data.validation.v3_3d import run_v3_3d
+from cyclerfinder.data.validation.v4_uranus import run_v4_uranus
+from cyclerfinder.data.validation.v4_uranus_strict import (
+    DEFAULT_LSK_PATH,
+    DEFAULT_PCK_PATH,
+    DEFAULT_URA_PATH,
+    run_v4_uranus_strict,
+)
 
 VERDICT_PATH = Path("data/silver_327_v4_strict_boundary_338.jsonl")
 EXPECTED_VERDICT_LABEL = "EFFECTIVELY_CYCLIC"
@@ -114,3 +134,61 @@ def test_silver_327_v4_strict_longest_pass_run_is_at_least_84_years() -> None:
         f"#338 longest PASS run end {run['longest_pass_run_end_year']} != "
         f"{EXPECTED_LONGEST_PASS_END_YEAR}"
     )
+
+
+def _silver_inputs() -> tuple[tuple[Any, ...], dict[str, Any]]:
+    """The #330 V2 run's stored SILVER inputs (``_meta.stored_silver``)."""
+    path = Path("data/silver_327_moontour_v2_verdicts.jsonl")
+    with path.open() as fh:
+        s = json.loads(fh.readline())["stored_silver"]
+    args = (
+        "repeated-moon-uranus-00000041",
+        tuple(s["sequence"]),
+        tuple(s["vinf_per_encounter_kms"]),
+        tuple(s["tof_days"]),
+        float(s["rel_offset_deg"]),
+        None,
+    )
+    kw = {"n_cycles": 3, "n_revs": tuple(s["n_rev"]), "phase0_deg": float(s["phase0_deg"])}
+    return args, kw
+
+
+def test_silver_327_rejected_by_gated_v4() -> None:
+    """#888: the gated V4-scipy rejects the SILVER on the demanded turn."""
+    args, kw = _silver_inputs()
+    v2 = run_v2_moontour(*args, **kw)
+    v3 = run_v3_3d(*args, v2_verdict=v2, **kw)
+    v4 = run_v4_uranus(*args, v3_verdict=v3, **kw)
+    assert v4.n_cycles_propagated == 3
+    assert v4.passes_v4 is False and v4.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in v4.turn_failure_reason
+
+
+@pytest.mark.skipif(
+    not (DEFAULT_LSK_PATH.exists() and DEFAULT_PCK_PATH.exists() and DEFAULT_URA_PATH.exists()),
+    reason="URA111 SPICE kernel not installed",
+)
+def test_silver_327_rejected_by_gated_v4_strict_at_2000() -> None:
+    """#888: the gated V4-strict rejects the SILVER at the first year of the
+    #338 sweep (2000-06-21, the #338/#566 anchor epoch), on the demanded turn."""
+    args, kw = _silver_inputs()
+    v2 = run_v2_moontour(*args, **kw)
+    v3 = run_v3_3d(*args, v2_verdict=v2, **kw)
+    v4 = run_v4_uranus(*args, v3_verdict=v3, **kw)
+    cid, seq, vinf, tofs, rel, system = args
+    v4s = run_v4_uranus_strict(
+        cid,
+        seq,
+        vinf,
+        tofs,
+        rel,
+        "2000-06-21T00:00:00",
+        system,
+        v3_verdict=v3,
+        v4_scipy_verdict=v4,
+        n_cycles=3,
+        n_revs=kw["n_revs"],
+    )
+    assert v4s.n_cycles_propagated == 3
+    assert v4s.passes_v4_strict is False and v4s.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in v4s.turn_failure_reason

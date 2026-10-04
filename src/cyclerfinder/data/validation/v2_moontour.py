@@ -33,7 +33,14 @@ Discipline distinction vs Phase 1
 PASS criterion: ``n_cycles >= n_cycles_min`` complete (every leg's Lambert
 converged in every cycle) AND every cycle's V_inf-continuity residual stays
 within ``closure_floor_kms`` AND the max inter-cycle rendezvous drift stays
-below ``drift_floor_kms``.
+below ``drift_floor_kms`` AND (#888) every flyby of every cycle is
+TURN-FEASIBLE: the angle between the incoming and the outgoing V_inf vector is
+no larger than the bend the moon can supply at its registry altitude floor,
+at every intermediate encounter AND at the anchor wrap (the last leg's arrival
+against the next cycle's first departure). Before #888 only the magnitudes
+were compared, which let six non-ballistic Uranian rows through
+(``docs/notes/2026-10-04-888-demanded-turn-gate.md``); the wiring is
+:mod:`cyclerfinder.data.validation.moontour_turn`.
 
 The drift floor (50,000 km) mirrors the Phase-1 same-model floor
 :data:`cyclerfinder.data.validation.v2_3d.V2_DRIFT_FLOOR_KMS`. The per-cycle
@@ -75,10 +82,18 @@ import numpy as np
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.lambert import lambert as _lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.data.validation.moontour_turn import (
+    TURN_GATE_NOT_EVALUATED,
+    CycleTurnRecord,
+    gate_cycle_record,
+    leg_vinf,
+    summarize_turn_gate,
+)
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day, _moon_state
 from cyclerfinder.search.releg_moontour import close_powered_cycle
 from cyclerfinder.search.releg_solver import Releg
 from cyclerfinder.verify.dv_band_acceptance import classify_dv_band
+from cyclerfinder.verify.turn_gate import EncounterTurn
 
 V2_MOONTOUR_N_CYCLES_MIN: Final[int] = 3
 """Spec §14 V2-ballistic minimum: ``>= 3`` continuous laps. Spec-fixed."""
@@ -124,6 +139,14 @@ class MoontourCycleVerdict:
         :meth:`RepeatedMoonTarget._close_one_phasing`'s ``worst``.
     notes:
         Free-form audit string.
+    turn_feasible:
+        (#888) Every flyby of this cycle, the anchor wrap included, demands no
+        more turn than the moon can supply at its altitude floor. ``None`` when
+        the cycle did not converge.
+    turn_encounters:
+        (#888) Per-flyby gate results (demanded turn, available bend, ratio,
+        required periapsis altitude, ...): the intermediate encounters
+        ``"e1" ..`` and the closing ``"wrap"`` flyby.
     """
 
     cycle_index: int
@@ -133,6 +156,8 @@ class MoontourCycleVerdict:
     rendezvous_drift_seconds: float
     closure_residual_kms: float
     notes: str = ""
+    turn_feasible: bool | None = None
+    turn_encounters: tuple[EncounterTurn, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -166,8 +191,8 @@ class V2MoontourVerdict:
         Spec §14 minimum cycles (3). Stored for audit.
     passes_v2:
         ``n_cycles_completed >= n_cycles_min AND max_drift_kms <=
-        drift_floor_kms AND max_closure_residual_kms <= closure_floor_kms``.
-        The headline boolean.
+        drift_floor_kms AND max_closure_residual_kms <= closure_floor_kms AND
+        turn_feasible``. The headline boolean.
     powered_total_dv_kms:
         Mean per-cycle delivered ΔV (km/s) when a powered ``releg`` backend was
         passed (#449); ``None`` on the default ballistic path. A powered cycle
@@ -178,6 +203,17 @@ class V2MoontourVerdict:
         powered backend was passed; ``None`` on the default ballistic path.
     notes:
         Free-form audit string.
+    turn_feasible:
+        (#888) Every completed cycle is turn-feasible (see
+        :class:`MoontourCycleVerdict`). Required by ``passes_v2``. On the
+        powered (``releg``) path the gate is applied to the ballistic Lambert
+        legs, because the powered close pins V_inf magnitudes only and does not
+        expose its leg vectors.
+    worst_turn_ratio:
+        Largest demanded/available ratio over every flyby of every completed
+        cycle (``inf`` when nothing could be gated).
+    turn_failure_reason:
+        Empty when ``turn_feasible``; otherwise names the binding flyby.
     """
 
     candidate_id: str
@@ -195,6 +231,9 @@ class V2MoontourVerdict:
     notes: str = ""
     powered_total_dv_kms: float | None = None
     measured_dv_band: str | None = None
+    turn_feasible: bool = False
+    worst_turn_ratio: float = math.inf
+    turn_failure_reason: str = TURN_GATE_NOT_EVALUATED
 
 
 def _resolve_primary(system: cr3bp.CR3BPSystem | None, sequence: tuple[str, ...]) -> str:
@@ -246,12 +285,19 @@ def _cycle_residual(
     consts: dict[str, tuple[float, float]],
     mu: float,
     n_revs: tuple[int, ...] | None,
+    turn_record: CycleTurnRecord | None = None,
 ) -> tuple[bool, float, list[tuple[np.ndarray, np.ndarray]]]:
     """Re-solve all Lambert legs of one cycle; return (converged, residual, states).
 
     Mirrors :meth:`RepeatedMoonTarget._close_one_phasing` verbatim for the
     geometry; only the moon-longitude phase is shifted by
     ``n * t_cycle_offset_days`` to advance the ephemeris through cycle k.
+
+    ``turn_record`` (#888): when given, every leg's departure and arrival
+    V_inf VECTORS are stored in it, and the next cycle's first leg is solved
+    (same epoch and anchor state as this cycle's closing encounter, same
+    branch rule) so that the closing flyby can be gated as well;
+    :func:`run_v2_moontour` applies the gate. Without it nothing changes.
 
     Returns:
         ``converged``: every leg's Lambert had a solution at the requested n_rev
@@ -294,6 +340,30 @@ def _cycle_residual(
         _, v_b_moon = states[k + 1]
         vinf_out[k] = float(np.linalg.norm(best.v1 - v_a))
         vinf_in[k + 1] = float(np.linalg.norm(best.v2 - v_b_moon))
+        if turn_record is not None:
+            turn_record.legs.append(leg_vinf(best.v1, v_a, best.v2, v_b_moon))
+
+    if turn_record is not None:
+        # The leg that leaves the anchor after the closing flyby: cycle k+1's
+        # first leg, which starts at this cycle's last epoch and anchor state.
+        r_wrap_a, v_wrap_a = states[-1]
+        sma1, n1_rad_day = consts[sequence[1]]
+        r_wrap_b, _ = _moon_state(
+            theta_base[sequence[1]],
+            n1_rad_day,
+            t_cycle_offset_days + epochs_days[-1] + leg_tofs_days[0],
+            sma1,
+            mu,
+        )
+        nrev0 = max(0, n_revs_used[0])
+        wrap_sols = [
+            s
+            for s in _lambert(r_wrap_a, r_wrap_b, leg_tofs_days[0] * DAY_S, mu=mu, max_revs=nrev0)
+            if s.n_revs == n_revs_used[0]
+        ]
+        if wrap_sols:
+            wrap_best = min(wrap_sols, key=lambda s: float(np.linalg.norm(s.v1 - v_wrap_a)))
+            turn_record.wrap_depart = wrap_best.v1 - v_wrap_a
 
     worst = 0.0
     for k in range(len(sequence)):
@@ -325,6 +395,7 @@ def run_v2_moontour(
     notes: str = "",
     releg: Releg | None = None,
     dv_band: str | None = None,
+    turn_alt_floor_km: float | None = None,
 ) -> V2MoontourVerdict:
     """Run V2 for a moontour: re-solve Lambert legs over ``n_cycles``.
 
@@ -384,6 +455,9 @@ def run_v2_moontour(
         ``phase0_deg`` (the #327 basin-floor record stores 29.999...°).
     notes:
         Free-form audit note.
+    turn_alt_floor_km:
+        (#888) Uniform flyby altitude floor for the demanded-turn gate, km.
+        ``None`` (default) uses each moon's registry ``safe_alt_km``.
 
     Returns
     -------
@@ -453,6 +527,7 @@ def run_v2_moontour(
     cycle_period_days = float(sum(leg_tofs_days))
 
     per_cycle: list[MoontourCycleVerdict] = []
+    turn_records: list[CycleTurnRecord] = []
     cycle_zero_final_pos_km: np.ndarray | None = None
     n_completed = 0
     max_drift_kms = 0.0
@@ -461,6 +536,7 @@ def run_v2_moontour(
 
     for k in range(n_cycles):
         t_offset_days = k * cycle_period_days
+        turn_record = CycleTurnRecord()
         converged, residual, states = _cycle_residual(
             sequence=sequence,
             leg_tofs_days=leg_tofs_days,
@@ -469,6 +545,7 @@ def run_v2_moontour(
             consts=consts,
             mu=mu,
             n_revs=n_revs,
+            turn_record=turn_record,
         )
         if not converged:
             per_cycle.append(
@@ -493,6 +570,8 @@ def run_v2_moontour(
             drift_kms = float(np.linalg.norm(final_pos_km - cycle_zero_final_pos_km))
             max_drift_kms = max(max_drift_kms, drift_kms)
         max_closure = max(max_closure, residual)
+        gate_cycle_record(turn_record, sequence, alt_floor_km=turn_alt_floor_km)
+        turn_records.append(turn_record)
 
         per_cycle.append(
             MoontourCycleVerdict(
@@ -502,6 +581,9 @@ def run_v2_moontour(
                 rendezvous_drift_kms=drift_kms,
                 rendezvous_drift_seconds=0.0,
                 closure_residual_kms=residual,
+                notes=turn_record.error,
+                turn_feasible=turn_record.turn_feasible,
+                turn_encounters=turn_record.encounters,
             )
         )
         n_completed += 1
@@ -546,10 +628,14 @@ def run_v2_moontour(
             # powered (not the raw ballistic) continuity.
             max_closure = max(powered_residuals) if powered_residuals else max_closure
 
+    # #888: the flybys must be flyable, not just magnitude-matched.
+    turn = summarize_turn_gate(turn_records)
+
     passes_v2 = bool(
         n_completed >= V2_MOONTOUR_N_CYCLES_MIN
         and max_drift_kms <= drift_floor_kms
         and max_closure <= closure_floor_kms
+        and turn.turn_feasible
     )
 
     return V2MoontourVerdict(
@@ -568,6 +654,9 @@ def run_v2_moontour(
         notes=notes,
         powered_total_dv_kms=powered_total_dv_kms,
         measured_dv_band=measured_dv_band,
+        turn_feasible=turn.turn_feasible,
+        worst_turn_ratio=turn.worst_turn_ratio,
+        turn_failure_reason=turn.turn_failure_reason,
     )
 
 

@@ -598,6 +598,13 @@ def test_560_silver_312_canonical_epoch_unchanged() -> None:
     single-epoch result is unaffected rather than assumed so. A future edit
     to ``_select_leg_transfer`` / ``_leg_periapsis_km`` / the guard threshold
     that silently perturbed the canonical result would trip here.
+
+    #888 (2026-10-04): the headline used to be ``passes_v4_strict is True``.
+    The convergence, branch-selection and drift-agreement checks below still
+    hold and still guard the #560 fixes, but the SILVER (the withdrawn
+    umbriel-oberon-1-1-uranian-quasi-cycler-2026 row) is not ballistic: its
+    flybys demand more turn than Oberon and Umbriel can supply, so the gated
+    verdict is FAIL, on the turn alone.
     """
     canonical_epoch = "2000-06-21T00:00:00"
 
@@ -650,8 +657,10 @@ def test_560_silver_312_canonical_epoch_unchanged() -> None:
         n_revs=SILVER_NREV,
     )
 
-    # The headline: #312's canonical single-epoch result is a PASS, unchanged.
-    assert verdict.passes_v4_strict is True
+    # The headline (#888): rejected on the demanded turn, and on nothing else.
+    assert verdict.passes_v4_strict is False
+    assert verdict.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in verdict.turn_failure_reason
     assert verdict.n_cycles_propagated == 3
     assert verdict.bounded_drift_survives is True
     # Every cycle converged cleanly -- the planet-crossing guard did NOT

@@ -55,6 +55,11 @@ class BallisticClosureResult:
     # acted on, so a caller decides how to handle it (the publication layer
     # refuses; the search loop merely records it).
     hyperbolic_impossible: bool = False
+    # #888: the periodicity WRAP flyby (arrival at the last encounter against
+    # the first departure rotated by the home body's advance over one period),
+    # which ``bend_feasible`` leaves out unless ``ballistic_correct(gate_wrap=
+    # True)``. ``None`` when not evaluated (open sequence or no node vectors).
+    wrap_bend_feasible: bool | None = None
 
     @property
     def constraints_satisfied(self) -> bool:
@@ -346,13 +351,35 @@ def _per_encounter_vinf(nodes: dict[str, np.ndarray], n_encounters: int) -> tupl
     return tuple(out)
 
 
+def _wrap_rotation_rad(
+    sequence: tuple[str, ...], t0_sec: float, t_end_sec: float, ephem: Ephemeris
+) -> float:
+    """Home body's advance about +z from ``t0`` to ``t_end`` (rad), the angle by
+    which the next period's first departure is rotated before the wrap turn is
+    measured (same construction as ``turn_ratio_check.wrap_node_turn``)."""
+    r0 = np.asarray(ephem.state(sequence[0], t0_sec)[0], dtype=np.float64)
+    rn = np.asarray(ephem.state(sequence[-1], t_end_sec)[0], dtype=np.float64)
+    u0, un = r0 / np.linalg.norm(r0), rn / np.linalg.norm(rn)
+    return float(np.arctan2(u0[0] * un[1] - u0[1] * un[0], float(u0 @ un)))
+
+
 def _bend_feasible(
     nodes: dict[str, np.ndarray],
     sequence: tuple[str, ...],
     rp_factors: dict[str, float] | None,
+    *,
+    wrap_rotation_rad: float | None = None,
 ) -> bool:
     """Every intermediate flyby's required turn must fit within its V_inf-limited
-    maximum (``correct_s1l1_twoarc.py:141,151``)."""
+    maximum (``correct_s1l1_twoarc.py:141,151``).
+
+    ``wrap_rotation_rad`` (#888): also require the periodicity WRAP flyby at
+    ``sequence[-1]`` to fit, i.e. the turn from ``b{n-1}_in`` onto ``b0_out``
+    rotated about +z by that angle (the home body's advance over one period,
+    :func:`_wrap_rotation_rad`). ``None`` keeps the intermediate-only check that
+    the published turn ratios are measured on (``turn_ratio_check``); any
+    multi-lap claim needs the wrap, since it is a flyby the trajectory flies.
+    """
     norm = np.linalg.norm
     for i in range(1, len(sequence) - 1):
         v_in = nodes[f"b{i}_in"]
@@ -361,7 +388,28 @@ def _bend_feasible(
         max_turn = _max_bend_deg(float(norm(v_in)), sequence[i], rp_factors)
         if required > max_turn:
             return False
+    if wrap_rotation_rad is not None:
+        return _wrap_bend_feasible(nodes, sequence, rp_factors, wrap_rotation_rad)
     return True
+
+
+def _wrap_bend_feasible(
+    nodes: dict[str, np.ndarray],
+    sequence: tuple[str, ...],
+    rp_factors: dict[str, float] | None,
+    wrap_rotation_rad: float,
+) -> bool:
+    """The periodicity WRAP flyby alone (#888): ``b{n-1}_in`` against ``b0_out``
+    rotated about +z by ``wrap_rotation_rad``, judged at ``sequence[-1]``."""
+    last = len(sequence) - 1
+    v_in = np.asarray(nodes[f"b{last}_in"], dtype=np.float64)
+    v_out = np.array(nodes["b0_out"], dtype=np.float64)
+    c, s = np.cos(wrap_rotation_rad), np.sin(wrap_rotation_rad)
+    x, y = float(v_out[0]), float(v_out[1])
+    v_out[0], v_out[1] = c * x - s * y, s * x + c * y
+    required = _bend_deg(v_in, v_out)
+    max_turn = _max_bend_deg(float(np.linalg.norm(v_in)), sequence[last], rp_factors)
+    return required <= max_turn
 
 
 def ballistic_correct(
@@ -380,6 +428,7 @@ def ballistic_correct(
     residual_mode: str = "magnitude",
     method: Literal["trf", "dogbox", "lm"] = "lm",
     mu_central: float = MU_SUN_KM3_S2,
+    gate_wrap: bool = False,
 ) -> BallisticClosureResult:
     """N-arc ballistic differential corrector (spec §2.1; generalises
     ``correct_s1l1_twoarc.py:_solve``).
@@ -397,6 +446,12 @@ def ballistic_correct(
     be under-determined (m <= n; e.g. a short 2-encounter chain in vector mode)
     must pass ``method="trf"``, which handles m<n, m=n and m>n. ``lm`` raises a
     ``ValueError`` for m<n.
+
+    The periodicity WRAP flyby (#888) is always evaluated for a closed
+    sequence and reported as ``wrap_bend_feasible``; ``gate_wrap=True`` also
+    folds it into ``bend_feasible`` (and so ``constraints_satisfied``). The
+    default keeps ``bend_feasible`` intermediate-only, like-for-like with the
+    published turn ratios; a multi-lap claim should pass ``gate_wrap=True``.
     """
     period_days = period_sec / DAY_S
     n_encounters = len(sequence)
@@ -461,6 +516,14 @@ def ballistic_correct(
 
     converged = max_res < tol_kms
     bend_feasible = _bend_feasible(nodes, sequence, rp_factors)
+    wrap_bend_feasible: bool | None = None
+    if sequence[0] == sequence[-1] and len(sequence) >= 2:
+        wrap_rot = _wrap_rotation_rad(
+            sequence, float(x[0]), float(x[0]) + float(sum(full_tofs)) * DAY_S, ephem
+        )
+        wrap_bend_feasible = _wrap_bend_feasible(nodes, sequence, rp_factors, wrap_rot)
+        if gate_wrap:
+            bend_feasible = bend_feasible and wrap_bend_feasible
     vinf_cap_ok = max(vinf_per_encounter) <= vinf_cap
 
     return BallisticClosureResult(
@@ -472,4 +535,5 @@ def ballistic_correct(
         bend_feasible=bend_feasible,
         vinf_cap_ok=vinf_cap_ok,
         hyperbolic_impossible=_hyperbolic_impossible(sequence, vinf_per_encounter),
+        wrap_bend_feasible=wrap_bend_feasible,
     )

@@ -113,8 +113,16 @@ from scipy.integrate import solve_ivp
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.lambert import lambert as _lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.data.validation.moontour_turn import (
+    TURN_GATE_NOT_EVALUATED,
+    CycleTurnRecord,
+    gate_cycle_record,
+    leg_vinf,
+    summarize_turn_gate,
+)
 from cyclerfinder.data.validation.v3_3d import V3Verdict3D
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day, _moon_state
+from cyclerfinder.verify.turn_gate import EncounterTurn
 
 # --------------------------------------------------------------------------- #
 # SOURCED perturbation constants
@@ -202,6 +210,12 @@ class V4CycleVerdictUranus:
     target at the cycle's final encounter, km. Same definition as V3's
     ``ias15_vs_analytic_kepler_kms`` but under the J2 + other-moon model."""
     notes: str = ""
+    turn_feasible: bool | None = None
+    """(#888) Every flyby of this cycle, the anchor wrap included, demands no
+    more turn than the moon supplies at its altitude floor (Lambert-conic
+    V_inf vectors of the legs this cycle targeted). ``None`` if not converged."""
+    turn_encounters: tuple[EncounterTurn, ...] = ()
+    """(#888) Per-flyby gate results (``"e1" ..`` and ``"wrap"``)."""
 
 
 @dataclass(frozen=True)
@@ -233,7 +247,8 @@ class V4UranusVerdict:
     central V4 question, distinct from the strict V3 agreement gate."""
     passes_v4: bool
     """``drift_agreement_kms <= v4_v3_agreement_floor_kms`` AND every cycle's
-    Lambert leg closed AND bounded_drift_survives. The headline boolean.
+    Lambert leg closed AND bounded_drift_survives AND (#888) turn_feasible.
+    The headline boolean.
 
     Interpretation:
 
@@ -247,8 +262,19 @@ class V4UranusVerdict:
       -> the V3-confirmed quasi_cycler property was a Keplerian artifact.
       Retire to the negative-results registry (#172) with the perturbation
       order at which the signature collapses recorded.
+
+    The V4 propagation is LEG BY LEG: every leg restarts from its own Lambert
+    departure velocity at the moon, so no flyby is flown. ``turn_feasible``
+    (#888) is what makes the verdict honest about the flybys: it requires the
+    turn each flyby demands to fit inside the moon's available bend.
     """
     notes: str = ""
+    turn_feasible: bool = False
+    """(#888) Every completed cycle is turn-feasible. Required by ``passes_v4``."""
+    worst_turn_ratio: float = math.inf
+    """(#888) Largest demanded/available turn ratio over all gated flybys."""
+    turn_failure_reason: str = TURN_GATE_NOT_EVALUATED
+    """(#888) Empty when ``turn_feasible``; otherwise names the binding flyby."""
 
 
 # --------------------------------------------------------------------------- #
@@ -517,6 +543,7 @@ def _cycle_v4(
     n_revs: tuple[int, ...] | None,
     j2: float,
     r_eq_km: float,
+    turn_record: CycleTurnRecord | None = None,
 ) -> tuple[bool, np.ndarray | None, float]:
     """Re-solve all Lambert legs of one cycle AND propagate them under V4 physics.
 
@@ -528,6 +555,11 @@ def _cycle_v4(
 
     The Lambert targeting is identical to V2/V3 — V4 changes the propagation
     physics between encounters, not the targeting.
+
+    ``turn_record`` (#888): when given, every leg's Lambert departure and
+    arrival V_inf vectors are stored, plus the departure of the next cycle's
+    first leg (same rule as :func:`v2_moontour._cycle_residual`), for the
+    demanded-turn gate in :func:`run_v4_uranus`.
     """
     n_legs = len(sequence) - 1
     if n_revs is None:
@@ -554,7 +586,7 @@ def _cycle_v4(
     worst_offset_kms = 0.0
     for k in range(n_legs):
         r_a, v_a_moon = states[k]
-        r_b, _ = states[k + 1]
+        r_b, v_b_moon = states[k + 1]
         nrev = max(0, n_revs_used[k])
         sols = _lambert(r_a, r_b, leg_tofs_days[k] * DAY_S, mu=mu_primary, max_revs=nrev)
         wanted = [s for s in sols if s.n_revs == n_revs_used[k]]
@@ -562,6 +594,8 @@ def _cycle_v4(
             return False, None, float("inf")
         v_a_captured = v_a_moon
         best = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a_captured)))
+        if turn_record is not None:
+            turn_record.legs.append(leg_vinf(best.v1, v_a_moon, best.v2, v_b_moon))
         # IC for the V4 leg: planet-frame spacecraft state at moon-A, using
         # Lambert's v-out from moon-A. Identical to V3's choice; the delta is
         # in what physics drives the propagation.
@@ -595,6 +629,29 @@ def _cycle_v4(
         sc_r_curr = r_f_leg
     if sc_r_curr is None:
         return False, None, float("inf")
+    if turn_record is not None:
+        # Next cycle's first leg (Lambert only: its departure V_inf is all the
+        # wrap flyby needs; it is propagated when that cycle runs).
+        r_wrap_a, v_wrap_a = states[-1]
+        sma1, n1_rad_day = tour_consts[sequence[1]]
+        r_wrap_b, _ = _moon_state(
+            theta_base[sequence[1]],
+            n1_rad_day,
+            t_cycle_offset_days + epochs_days[-1] + leg_tofs_days[0],
+            sma1,
+            mu_primary,
+        )
+        nrev0 = max(0, n_revs_used[0])
+        wrap_sols = [
+            s
+            for s in _lambert(
+                r_wrap_a, r_wrap_b, leg_tofs_days[0] * DAY_S, mu=mu_primary, max_revs=nrev0
+            )
+            if s.n_revs == n_revs_used[0]
+        ]
+        if wrap_sols:
+            wrap_best = min(wrap_sols, key=lambda s: float(np.linalg.norm(s.v1 - v_wrap_a)))
+            turn_record.wrap_depart = wrap_best.v1 - v_wrap_a
     return True, sc_r_curr, worst_offset_kms
 
 
@@ -616,6 +673,7 @@ def run_v4_uranus(
     agreement_floor_kms: float = V4_AGREEMENT_FLOOR_KMS,
     drift_unbounded_factor: float = 10.0,
     notes: str = "",
+    turn_alt_floor_km: float | None = None,
 ) -> V4UranusVerdict:
     """Run V4 for an Uranian moontour: re-propagate cycles under J2 + other-moon n-body.
 
@@ -636,7 +694,8 @@ def run_v4_uranus(
          (monotonically diverging) one does not.
       5. Verdict: PASS iff every cycle converged AND
          ``drift_agreement_kms <= agreement_floor_kms`` AND
-         bounded_drift_survives.
+         bounded_drift_survives AND (#888) every flyby of every cycle,
+         including the anchor wrap, is turn-feasible.
 
     Parameters
     ----------
@@ -668,6 +727,9 @@ def run_v4_uranus(
         of V3 max drift. Default 10.0.
     notes:
         Free-form audit note.
+    turn_alt_floor_km:
+        (#888) Uniform flyby altitude floor for the demanded-turn gate, km;
+        ``None`` uses each moon's registry ``safe_alt_km``.
 
     Returns
     -------
@@ -752,12 +814,14 @@ def run_v4_uranus(
     cycle_period_days = float(sum(leg_tofs_days))
 
     per_cycle: list[V4CycleVerdictUranus] = []
+    turn_records: list[CycleTurnRecord] = []
     v4_terminal_positions: list[np.ndarray] = []
     n_completed = 0
     cycle_zero_r_v4: np.ndarray | None = None
 
     for k in range(n_cycles):
         t_offset_days = k * cycle_period_days
+        turn_record = CycleTurnRecord()
         converged, r_v4, v4_offset_vs_moon = _cycle_v4(
             sequence=sequence,
             leg_tofs_days=leg_tofs_days,
@@ -770,6 +834,7 @@ def run_v4_uranus(
             n_revs=n_revs,
             j2=j2,
             r_eq_km=r_eq_km,
+            turn_record=turn_record,
         )
         if not converged or r_v4 is None:
             per_cycle.append(
@@ -794,6 +859,8 @@ def run_v4_uranus(
             drift_v4 = float(np.linalg.norm(r_v4 - cycle_zero_r_v4))
         drift_v3 = float(v3_verdict.per_cycle[k].rendezvous_drift_kms_v3)
         agreement = abs(drift_v4 - drift_v3)
+        gate_cycle_record(turn_record, sequence, alt_floor_km=turn_alt_floor_km)
+        turn_records.append(turn_record)
         per_cycle.append(
             V4CycleVerdictUranus(
                 cycle_index=k,
@@ -803,6 +870,9 @@ def run_v4_uranus(
                 rendezvous_drift_kms_v3=drift_v3,
                 agreement_kms=agreement,
                 v4_terminal_offset_vs_moon_kms=v4_offset_vs_moon,
+                notes=turn_record.error,
+                turn_feasible=turn_record.turn_feasible,
+                turn_encounters=turn_record.encounters,
             )
         )
         n_completed += 1
@@ -834,12 +904,16 @@ def run_v4_uranus(
             else:
                 bounded_drift_survives = max_v4 <= drift_unbounded_factor * max_v3
 
+    # #888: the flybys must be flyable; V4 restarts each leg, so it never flies them.
+    turn = summarize_turn_gate(turn_records)
+
     passes_v4 = bool(
         n_completed >= V4_N_CYCLES_MIN
         and n_completed == n_cycles
         and math.isfinite(drift_agreement)
         and drift_agreement <= agreement_floor_kms
         and bounded_drift_survives
+        and turn.turn_feasible
     )
 
     return V4UranusVerdict(
@@ -858,6 +932,9 @@ def run_v4_uranus(
         bounded_drift_survives=bool(bounded_drift_survives),
         passes_v4=passes_v4,
         notes=notes,
+        turn_feasible=turn.turn_feasible,
+        worst_turn_ratio=turn.worst_turn_ratio,
+        turn_failure_reason=turn.turn_failure_reason,
     )
 
 

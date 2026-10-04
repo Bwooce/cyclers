@@ -212,3 +212,42 @@ class TestV4SaturnStrictSpice:
         assert crossing_cycle.perijove_km < SATURN_R_EQ_KM
         # Never silently excluded -- the FAIL is real and finite periapsis is recorded.
         assert math.isfinite(crossing_cycle.perijove_km)
+
+
+@pytest.mark.skipif(not PROBE_574_PATH.exists(), reason="#574 Stage-A probe jsonl not present")
+class TestTurnGateWiringSaturn:
+    """#888: the Saturn V2 / V3 / V4 tiers gate the demanded turn at every flyby.
+
+    Structure is asserted against the registry (the Iapetus flyby and the closing
+    Titan wrap, each at its own registry floor, Titan 1500 km) and the verdict
+    against the wiring identity ``passes == (pre-#888 criteria AND turn_feasible)``.
+    That branch 6 is not turn-feasible is a measured fact of this branch (worst
+    demanded/available ratio about 15), held only to a conservative bound.
+    """
+
+    def test_v2_v3_v4_gate_both_flybys(self) -> None:
+        from cyclerfinder.core.satellites import SATELLITES
+
+        params = _load_branch_params(6)
+        v2 = run_v2_saturn_3d("b6", params, mu=MU_SATURN, n_cycles=3)
+        for cyc in v2.per_cycle:
+            assert [(e.body, e.label) for e in cyc.turn_encounters] == [
+                ("Iapetus", "e1"),
+                ("Titan", "wrap"),
+            ]
+            for e in cyc.turn_encounters:
+                assert e.alt_floor_km == SATELLITES[e.body].safe_alt_km
+        assert v2.turn_feasible is False
+        assert v2.worst_turn_ratio > 1.5
+        old_v2 = (
+            v2.n_cycles_completed >= V2_SATURN_N_CYCLES_MIN
+            and v2.max_drift_kms <= v2.drift_floor_kms
+            and v2.max_closure_residual_kms <= v2.closure_floor_kms
+        )
+        assert v2.passes_v2 is (old_v2 and v2.turn_feasible)
+        v3 = run_v3_saturn_3d("b6", params, mu=MU_SATURN, v2_verdict=v2, n_cycles=3)
+        assert v3.turn_feasible is False and v3.passes_v3 is False
+        v4 = run_v4_saturn("b6", params, mu_primary=MU_SATURN, v3_verdict=v3, n_cycles=3)
+        assert v4.turn_feasible is False
+        assert v4.passes_v4 is False
+        assert "demanded turn exceeds the available bend" in v4.turn_failure_reason

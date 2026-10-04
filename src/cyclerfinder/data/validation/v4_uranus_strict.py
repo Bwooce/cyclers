@@ -90,6 +90,7 @@ verdict; the gauntlet runner (#335 Part C) sweeps multiple epochs.
 
 from __future__ import annotations
 
+import dataclasses
 import math
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -103,6 +104,13 @@ from scipy.integrate import solve_ivp
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.lambert import lambert as _lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.data.validation.moontour_turn import (
+    TURN_GATE_NOT_EVALUATED,
+    CycleTurnRecord,
+    gate_cycle_record,
+    leg_vinf,
+    summarize_turn_gate,
+)
 from cyclerfinder.data.validation.v3_3d import V3Verdict3D
 from cyclerfinder.data.validation.v4_uranus import (
     URANIAN_PERTURBER_MOONS,
@@ -116,6 +124,7 @@ from cyclerfinder.data.validation.v4_uranus import (
     _third_body_acceleration_kms2,
 )
 from cyclerfinder.search.discovery_campaign import DAY_S
+from cyclerfinder.verify.turn_gate import EncounterTurn
 
 # --------------------------------------------------------------------------- #
 # SPICE kernel locations
@@ -181,6 +190,13 @@ class V4UranusStrictCycleVerdict:
     perijove_km: float | None = None
     """Osculating periapsis (km) of the offending branch when
     ``failure_mode == "planet_crossing_infeasible"``; ``None`` otherwise."""
+    turn_feasible: bool | None = None
+    """(#888) Every flyby of this cycle, the anchor wrap included, demands no
+    more turn than the moon supplies at its altitude floor (Lambert-conic
+    V_inf vectors of the selected branches against the SPICE moon velocities).
+    ``None`` if the cycle did not converge."""
+    turn_encounters: tuple[EncounterTurn, ...] = ()
+    """(#888) Per-flyby gate results (``"e1" ..`` and ``"wrap"``)."""
 
 
 @dataclass(frozen=True)
@@ -238,7 +254,10 @@ class V4UranusStrictVerdict:
     ``drift_unbounded_factor`` x V3 max drift)."""
     passes_v4_strict: bool
     """``drift_agreement_kms_vs_v3 <= v4_v3_agreement_floor_kms`` AND
-    every cycle's Lambert leg closed AND ``bounded_drift_survives``.
+    every cycle's Lambert leg closed AND ``bounded_drift_survives`` AND
+    (#888) ``turn_feasible``. The propagation is leg by leg (each leg starts
+    from its own Lambert departure at the moon), so the flybys are never
+    flown; the turn gate is what holds them to the moon's available bend.
 
     Interpretation:
 
@@ -257,6 +276,13 @@ class V4UranusStrictVerdict:
     the Python+SPICE driver (the SPICE library is the same C code GMAT links;
     a parallel GMAT script lives in ``scripts/gmat_v4_uranus_generate.py``
     for human cross-check)."""
+    turn_feasible: bool = False
+    """(#888) Every completed cycle is turn-feasible. Required by
+    ``passes_v4_strict``."""
+    worst_turn_ratio: float = math.inf
+    """(#888) Largest demanded/available turn ratio over all gated flybys."""
+    turn_failure_reason: str = TURN_GATE_NOT_EVALUATED
+    """(#888) Empty when ``turn_feasible``; otherwise names the binding flyby."""
 
 
 # --------------------------------------------------------------------------- #
@@ -432,6 +458,10 @@ class _LegOutcome:
     failure_mode: str
     perijove_km: float | None
     chosen_branch_index: int | None
+    v1_kms: np.ndarray | None = None
+    """(#888) Lambert departure velocity of the chosen branch (planet frame)."""
+    v2_kms: np.ndarray | None = None
+    """(#888) Lambert arrival velocity of the chosen branch (planet frame)."""
 
 
 def _select_leg_transfer(
@@ -524,6 +554,8 @@ def _select_leg_transfer(
             failure_mode=FAILURE_MODE_CONVERGED,
             perijove_km=None,
             chosen_branch_index=best_idx,
+            v1_kms=wanted[best_idx].v1.copy(),
+            v2_kms=wanted[best_idx].v2.copy(),
         )
 
     if crossing_perijove_km:
@@ -558,6 +590,7 @@ def _cycle_v4_strict(
     n_revs: tuple[int, ...] | None,
     j2: float,
     r_eq_km: float,
+    turn_record: CycleTurnRecord | None = None,
 ) -> tuple[bool, np.ndarray | None, float, str, float | None]:
     """One cycle: SPICE-sampled Lambert endpoints + V4-strict propagation.
 
@@ -568,7 +601,12 @@ def _cycle_v4_strict(
     :data:`FAILURE_MODE_PLANET_CROSSING`,
     :data:`FAILURE_MODE_INTEGRATOR_FAILURE`) and ``perijove_km`` is the
     offending branch's periapsis when the mode is
-    ``planet_crossing_infeasible`` (#559/#560/#567 bug 2)."""
+    ``planet_crossing_infeasible`` (#559/#560/#567 bug 2).
+
+    ``turn_record`` (#888): when given, each converged leg's chosen-branch
+    Lambert V_inf vectors (against the SPICE moon velocities) are stored for
+    the demanded-turn gate; the wrap leg is supplied by
+    :func:`run_v4_uranus_strict` (the next cycle's first leg)."""
     n_legs = len(sequence) - 1
     if n_revs is None:
         n_revs_used: tuple[int, ...] = tuple(0 for _ in range(n_legs))
@@ -609,6 +647,10 @@ def _cycle_v4_strict(
         )
         if not outcome.ok or outcome.r_f_km is None:
             return False, None, float("inf"), outcome.failure_mode, outcome.perijove_km
+        if turn_record is not None and outcome.v1_kms is not None and outcome.v2_kms is not None:
+            turn_record.legs.append(
+                leg_vinf(outcome.v1_kms, states[k][1], outcome.v2_kms, states[k + 1][1])
+            )
         worst_offset_kms = max(worst_offset_kms, outcome.offset_kms)
         sc_r_curr = outcome.r_f_km
     if sc_r_curr is None:
@@ -641,6 +683,7 @@ def run_v4_uranus_strict(
     drift_unbounded_factor: float = 10.0,
     spice_kernel_paths: tuple[str, ...] | None = None,
     notes: str = "",
+    turn_alt_floor_km: float | None = None,
 ) -> V4UranusStrictVerdict:
     """Phase 4.1 V4-strict gauntlet on the SILVER under full SPICE Uranian ephemeris.
 
@@ -659,7 +702,12 @@ def run_v4_uranus_strict(
          e. Record terminal spacecraft position at the cycle's final encounter.
     5. Compute V4-strict per-cycle drift, V4-strict-vs-V4-scipy agreement,
        V4-strict-vs-V3 agreement.
-    6. Bounded-drift check + headline verdict.
+    6. (#888) Demanded-turn gate on every flyby of every completed cycle,
+       the anchor wrap included (the wrap's outgoing leg is the next cycle's
+       first leg, selected by the same rule; after the last cycle it is
+       selected once more). ``turn_alt_floor_km`` overrides the registry
+       floors.
+    7. Bounded-drift check + headline verdict (requires ``turn_feasible``).
 
     Parameters mostly mirror :func:`run_v4_uranus` except:
 
@@ -764,11 +812,14 @@ def run_v4_uranus_strict(
         cycle_period_s = float(sum(leg_tofs_days)) * DAY_S
 
         per_cycle: list[V4UranusStrictCycleVerdict] = []
+        turn_records: list[CycleTurnRecord] = []
         n_completed = 0
         cycle_zero_r: np.ndarray | None = None
 
         for k in range(n_cycles):
             et_cycle_start = et_launch + k * cycle_period_s
+            turn_record = CycleTurnRecord()
+            turn_records.append(turn_record)
             converged, r_v4s, v4_offset_vs_moon, failure_mode, perijove_km = _cycle_v4_strict(
                 sequence=sequence,
                 leg_tofs_days=leg_tofs_days,
@@ -780,6 +831,7 @@ def run_v4_uranus_strict(
                 n_revs=n_revs,
                 j2=j2,
                 r_eq_km=r_eq_km,
+                turn_record=turn_record,
             )
             if not converged or r_v4s is None:
                 if failure_mode == FAILURE_MODE_PLANET_CROSSING:
@@ -840,6 +892,47 @@ def run_v4_uranus_strict(
                 )
             )
             n_completed += 1
+
+        # #888 wrap flybys: the leg leaving the anchor after cycle k's closing
+        # flyby is cycle k+1's first leg. Reuse it when cycle k+1 solved it;
+        # otherwise (after the last cycle) select it once more, same rule.
+        n_revs_used = tuple(0 for _ in range(n_legs)) if n_revs is None else tuple(n_revs)
+        for k in range(n_completed):
+            nxt = turn_records[k + 1] if k + 1 < len(turn_records) else None
+            if nxt is not None and nxt.legs:
+                turn_records[k].wrap_depart = nxt.legs[0].depart
+            else:
+                et_next = et_launch + (k + 1) * cycle_period_s
+                r_a, v_a = _moon_state_spice(sequence[0], et_next)
+                r_b, _v_b = _moon_state_spice(sequence[1], et_next + leg_tofs_days[0] * DAY_S)
+                wrap_leg = _select_leg_transfer(
+                    r_a,
+                    r_b,
+                    leg_tofs_days[0] * DAY_S,
+                    max(0, n_revs_used[0]),
+                    mu_primary=mu_primary,
+                    j2=j2,
+                    r_eq_km=r_eq_km,
+                    perturber_moons=perturber_moons,
+                    perturber_mu=perturber_mu,
+                    perturber_hill_km=perturber_hill_km,
+                    et_leg_start=et_next,
+                )
+                if wrap_leg.ok and wrap_leg.v1_kms is not None:
+                    turn_records[k].wrap_depart = wrap_leg.v1_kms - v_a
+                else:
+                    turn_records[
+                        k
+                    ].error = (
+                        f"no flyable wrap leg after the closing flyby ({wrap_leg.failure_mode})"
+                    )
+            gate_cycle_record(turn_records[k], sequence, alt_floor_km=turn_alt_floor_km)
+            per_cycle[k] = dataclasses.replace(
+                per_cycle[k],
+                notes=turn_records[k].error,
+                turn_feasible=turn_records[k].turn_feasible,
+                turn_encounters=turn_records[k].encounters,
+            )
     finally:
         spice.kclear()
 
@@ -871,12 +964,16 @@ def run_v4_uranus_strict(
             else:
                 bounded_drift_survives = max_v4s <= drift_unbounded_factor * max_v3
 
+    # #888: the flybys must be flyable; each leg restarts, so none is flown.
+    turn = summarize_turn_gate(turn_records[:n_completed])
+
     passes_v4_strict = bool(
         n_completed >= V4_N_CYCLES_MIN
         and n_completed == n_cycles
         and math.isfinite(drift_agreement_vs_v3)
         and drift_agreement_vs_v3 <= agreement_floor_kms
         and bounded_drift_survives
+        and turn.turn_feasible
     )
 
     return V4UranusStrictVerdict(
@@ -906,6 +1003,9 @@ def run_v4_uranus_strict(
         passes_v4_strict=passes_v4_strict,
         notes=notes,
         gmat_status="not_used",
+        turn_feasible=turn.turn_feasible,
+        worst_turn_ratio=turn.worst_turn_ratio,
+        turn_failure_reason=turn.turn_failure_reason,
     )
 
 
@@ -944,6 +1044,9 @@ def _verdict_to_jsonable(verdict: V4UranusStrictVerdict) -> dict[str, Any]:
         "v4_v3_agreement_floor_kms": verdict.v4_v3_agreement_floor_kms,
         "bounded_drift_survives": verdict.bounded_drift_survives,
         "passes_v4_strict": verdict.passes_v4_strict,
+        "turn_feasible": verdict.turn_feasible,
+        "worst_turn_ratio": verdict.worst_turn_ratio,
+        "turn_failure_reason": verdict.turn_failure_reason,
         "per_cycle_drift_kms_v4_strict": list(verdict.per_cycle_drift_kms_v4_strict),
         "per_cycle_drift_kms_v4_scipy": list(verdict.per_cycle_drift_kms_v4_scipy),
         "per_cycle_drift_kms_v3": list(verdict.per_cycle_drift_kms_v3),
@@ -961,6 +1064,8 @@ def _verdict_to_jsonable(verdict: V4UranusStrictVerdict) -> dict[str, Any]:
                 "notes": c.notes,
                 "failure_mode": c.failure_mode,
                 "perijove_km": c.perijove_km,
+                "turn_feasible": c.turn_feasible,
+                "turn_encounters": [e.as_dict() for e in c.turn_encounters],
             }
             for c in verdict.per_cycle
         ],

@@ -18,6 +18,14 @@ What this gate asserts (per #331 across n_cycles in {3, 5, 10}):
 Sourced-golden discipline: the EXPECTED side is the JSONL file itself, frozen
 project output from #331. This test ties the catalogue row's V3 claim to the
 recorded evidence.
+#888 (2026-10-04): THIS STORED VERDICT IS OUTPUT OF AN INSUFFICIENT GAUNTLET.
+The row it backed (umbriel-oberon-1-1-uranian-quasi-cycler-2026) was withdrawn
+(``data/withdrawn/``): the lane compared only V-infinity magnitudes and
+restarted every leg from its own Lambert solution, so it never noticed that the
+Oberon flyby demands 3.9 times, and the Umbriel wrap flyby 2.7 times, the bend
+the moon can supply. The stored-data checks are kept as a record and back no
+catalogue claim; the last test asserts that the gated lane now rejects the same
+inputs, on the turn.
 """
 
 from __future__ import annotations
@@ -25,6 +33,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
+
+from cyclerfinder.data.validation.v2_moontour import run_v2_moontour
+from cyclerfinder.data.validation.v3_3d import run_v3_3d
 
 CANDIDATE_ID = "repeated-moon-uranus-00000041"
 VERDICT_PATH = Path("data/silver_327_v3_verdicts.jsonl")
@@ -89,3 +100,31 @@ def test_silver_327_v3_all_legs_converge_across_all_cycles() -> None:
                 f"#331 V3 n_cycles={n} cycle {cyc['cycle_index']} reports "
                 f"{cyc['converged_legs']}/{cyc['n_legs']} legs converged."
             )
+
+
+def _silver_inputs() -> tuple[tuple[Any, ...], dict[str, Any]]:
+    """The #330 V2 run's stored SILVER inputs (``_meta.stored_silver``)."""
+    path = Path("data/silver_327_moontour_v2_verdicts.jsonl")
+    with path.open() as fh:
+        s = json.loads(fh.readline())["stored_silver"]
+    args = (
+        "repeated-moon-uranus-00000041",
+        tuple(s["sequence"]),
+        tuple(s["vinf_per_encounter_kms"]),
+        tuple(s["tof_days"]),
+        float(s["rel_offset_deg"]),
+        None,
+    )
+    kw = {"n_cycles": 3, "n_revs": tuple(s["n_rev"]), "phase0_deg": float(s["phase0_deg"])}
+    return args, kw
+
+
+def test_silver_327_rejected_by_gated_lane() -> None:
+    """#888: integrator agreement still holds, but the gated V3 rejects the SILVER
+    (it inherits V2's demanded-turn verdict)."""
+    args, kw = _silver_inputs()
+    v2 = run_v2_moontour(*args, **kw)
+    v3 = run_v3_3d(*args, v2_verdict=v2, **kw)
+    assert v3.drift_agreement_kms < V3_AGREEMENT_FLOOR_KMS
+    assert v3.passes_v3 is False and v3.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in v3.turn_failure_reason

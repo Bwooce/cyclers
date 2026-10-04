@@ -24,6 +24,17 @@ is stale). Either way, the V1 registry entry for
 Sourced-golden discipline: the EXPECTED side is the JSONL file itself, which
 is sourced by the #306 / #331 verdict chain (project output, frozen). This
 test is the wrapper that ties the catalogue claim to the recorded evidence.
+
+V1 checks the LEGS (each Lambert arc is a valid Kepler arc, re-propagated); it
+says nothing about the flybys between them, so its stored pass remains true.
+#888 (2026-10-04): THIS STORED VERDICT IS OUTPUT OF AN INSUFFICIENT GAUNTLET.
+The row it backed (umbriel-oberon-1-1-uranian-quasi-cycler-2026) was withdrawn
+(``data/withdrawn/``): the lane compared only V-infinity magnitudes and
+restarted every leg from its own Lambert solution, so it never noticed that the
+Oberon flyby demands 3.9 times, and the Umbriel wrap flyby 2.7 times, the bend
+the moon can supply. The stored-data checks are kept as a record and back no
+catalogue claim; the last test asserts that the gated lane now rejects the same
+inputs, on the turn.
 """
 
 from __future__ import annotations
@@ -31,6 +42,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
+
+from cyclerfinder.data.validation.v2_moontour import run_v2_moontour
 
 CANDIDATE_ID = "repeated-moon-uranus-00000041"
 VERDICT_PATH = Path("data/silver_327_v1_v2_verdicts.jsonl")
@@ -77,3 +90,29 @@ def test_silver_327_v1_passes_independent_crosscheck() -> None:
         f"JSONL v1_floor_kms ({row['v1_floor_kms']}) drifted from spec "
         f"§14 V1 floor ({V1_FLOOR_KMS}) — registry entry must be re-validated."
     )
+
+
+def _silver_inputs() -> tuple[tuple[Any, ...], dict[str, Any]]:
+    """The #330 V2 run's stored SILVER inputs (``_meta.stored_silver``)."""
+    path = Path("data/silver_327_moontour_v2_verdicts.jsonl")
+    with path.open() as fh:
+        s = json.loads(fh.readline())["stored_silver"]
+    args = (
+        "repeated-moon-uranus-00000041",
+        tuple(s["sequence"]),
+        tuple(s["vinf_per_encounter_kms"]),
+        tuple(s["tof_days"]),
+        float(s["rel_offset_deg"]),
+        None,
+    )
+    kw = {"n_cycles": 3, "n_revs": tuple(s["n_rev"]), "phase0_deg": float(s["phase0_deg"])}
+    return args, kw
+
+
+def test_silver_327_rejected_by_gated_lane() -> None:
+    """#888: valid legs, unflyable flybys -- the gated V2 lane rejects the SILVER."""
+    args, kw = _silver_inputs()
+    v2 = run_v2_moontour(*args, **kw, drift_floor_kms=1.0e9, closure_floor_kms=1.0e3)
+    assert v2.n_cycles_completed == 3
+    assert v2.passes_v2 is False and v2.turn_feasible is False
+    assert "demanded turn exceeds the available bend" in v2.turn_failure_reason
