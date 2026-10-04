@@ -54,6 +54,30 @@ Overall verdict: ``turn_feasible`` iff every encounter's demanded turn is no
 larger than its available bend (to ``turn_tol_rad``); ``ballistic`` iff in
 addition every magnitude mismatch is within ``mag_tol_kms``.
 
+Three-way ``status`` (#937, #906): ``"pass"`` / ``"fail"`` follow
+``turn_feasible`` except where the patched conic itself cannot decide, which
+is ``"indeterminate"`` (never a rejection):
+
+* the TIDAL TURN SCALE ``(n r_soi / v)^2`` (n the body's mean motion about its
+  primary, ``r_soi`` its Laplace sphere of influence, v the smaller
+  V-infinity) is a radian or more: at such a V-infinity the primary's tide
+  over the transit of the sphere turns the velocity as much as the body does,
+  and the patched-conic V-infinity has no meaning (the slow-pass regime of
+  Henon, Brjuno and the low-energy transfers);
+* ``|demanded - available|`` is within ``TIDAL_BAND_FACTOR`` tidal turn scales:
+  the verdict could be flipped by the part of the turn the patched conic
+  leaves out. The factor 3 is a convention set from the full-model controls
+  of #937 (the non-body part of the integrated turn of every hyperbolic lunar
+  pass of Casoliva's 7-3a/b/c and Leiva-Briozzo 2005 is 0.3 to 1.9 tidal
+  scales; ``verify/turn_gate_fullmodel.py``).
+
+``turn_feasible`` itself is unchanged, so every existing caller keeps its
+verdict. Full-model orbits (CR3BP, bicircular) must be measured with
+:mod:`cyclerfinder.verify.turn_gate_fullmodel`, which converts the rotating-
+frame velocities to inertial axes before differencing them; differencing
+rotating-frame components taken a day apart adds the frame's own rotation
+(13.2 degrees per day in the Earth-Moon system), the error of the #899 review.
+
 Positive controls and regression: ``tests/verify/test_turn_gate.py``
 (McConaghy-Longuski-Byrnes 2002 Table 4; Russell-Strange 2009 Tables 3-6;
 the six withdrawn Uranian rows).
@@ -68,7 +92,7 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
-from cyclerfinder.core.constants import PLANETS
+from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.flyby import (
     bend_angle,
     dv_powered_flyby_periapsis,
@@ -83,6 +107,32 @@ Vec = NDArray[np.float64]
 DEFAULT_MAG_TOL_KMS: float = 1.0e-3
 #: Slack on ``demanded <= available`` (rad), absorbing round-off only.
 DEFAULT_TURN_TOL_RAD: float = 1.0e-9
+#: ``status`` is ``"indeterminate"`` when ``|demanded - available|`` is within this many
+#: tidal turn scales (convention from the #937 full-model controls; module docstring).
+TIDAL_BAND_FACTOR: float = 3.0
+#: ``status`` is ``"indeterminate"`` when the tidal turn scale reaches this (rad).
+TIDAL_SCALE_LIMIT_RAD: float = 1.0
+
+
+def tidal_speed_kms(body: str) -> float:
+    """``n r_soi`` (km/s) of a flyby body about its primary: the speed scale of the
+    tidal turn ``(n r_soi / v)^2``. ``nan`` when the body is not in the registries."""
+    pl = PLANETS.get(body)
+    if pl is None:
+        pl = next((p for p in PLANETS.values() if p.name == body), None)
+    if pl is not None:
+        a_km = pl.sma_au * AU_KM
+        gm_ratio = pl.mu_km3_s2 / MU_SUN_KM3_S2
+        n = math.radians(pl.mean_motion_deg_day) / 86400.0
+        return float(n * a_km * gm_ratio**0.4)
+    s = SATELLITES.get(body)
+    if s is None:
+        return math.nan
+    primary = next((p for p in PLANETS.values() if p.name == s.primary), None)
+    if primary is None:
+        return math.nan
+    n = math.radians(s.mean_motion_deg_day) / 86400.0
+    return float(n * s.sma_km * (s.mu_km3_s2 / primary.mu_km3_s2) ** 0.4)
 
 
 @dataclass(frozen=True)
@@ -131,6 +181,9 @@ class Encounter:
     vinf_in: Vec
     vinf_out: Vec
     label: str = ""
+    #: ``n r_soi`` of the body (km/s), for the tidal turn scale; ``nan`` disables
+    #: the ``"indeterminate"`` band (``status`` then follows ``turn_feasible``).
+    tidal_speed_kms: float = math.nan
 
     @classmethod
     def for_body(
@@ -152,6 +205,7 @@ class Encounter:
             vinf_in=_vec3(vinf_in),
             vinf_out=_vec3(vinf_out),
             label=label,
+            tidal_speed_kms=tidal_speed_kms(body),
         )
 
     def with_floor(self, alt_floor_km: float) -> Encounter:
@@ -164,6 +218,7 @@ class Encounter:
             self.vinf_in,
             self.vinf_out,
             self.label,
+            self.tidal_speed_kms,
         )
 
 
@@ -184,6 +239,8 @@ class EncounterTurn:
     impulse_beyond_bend_kms: float
     impulse_periapsis_kms: float
     turn_feasible: bool
+    tidal_turn_scale_deg: float = math.nan
+    status: str = ""
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -200,6 +257,8 @@ class EncounterTurn:
             "impulse_beyond_bend_kms": self.impulse_beyond_bend_kms,
             "impulse_periapsis_kms": _json_float(self.impulse_periapsis_kms),
             "turn_feasible": self.turn_feasible,
+            "tidal_turn_scale_deg": _json_float(self.tidal_turn_scale_deg),
+            "status": self.status,
         }
 
 
@@ -214,6 +273,17 @@ class TurnGateReport:
     def turn_feasible(self) -> bool:
         """Every demanded turn fits inside the available bend."""
         return all(e.turn_feasible for e in self.encounters)
+
+    @property
+    def status(self) -> str:
+        """``"fail"`` if any encounter fails, else ``"indeterminate"`` if any is, else
+        ``"pass"`` (module docstring)."""
+        st = {e.status for e in self.encounters}
+        if "fail" in st:
+            return "fail"
+        if "indeterminate" in st:
+            return "indeterminate"
+        return "pass"
 
     @property
     def max_magnitude_mismatch_kms(self) -> float:
@@ -244,6 +314,7 @@ class TurnGateReport:
     def as_dict(self) -> dict[str, object]:
         return {
             "turn_feasible": self.turn_feasible,
+            "status": self.status,
             "ballistic": self.ballistic,
             "worst_ratio": _json_float(self.worst_ratio),
             "max_magnitude_mismatch_kms": self.max_magnitude_mismatch_kms,
@@ -364,6 +435,13 @@ def evaluate_encounter(
         )
     else:
         periapsis_dv = math.nan
+    tidal = (enc.tidal_speed_kms / v) ** 2
+    if not math.isnan(tidal) and (
+        tidal >= TIDAL_SCALE_LIMIT_RAD or abs(demanded - available) <= TIDAL_BAND_FACTOR * tidal
+    ):
+        status = "indeterminate"
+    else:
+        status = "pass" if feasible else "fail"
     return EncounterTurn(
         body=enc.body,
         label=enc.label,
@@ -378,6 +456,8 @@ def evaluate_encounter(
         impulse_beyond_bend_kms=impulse_beyond_bend_kms(v_in, v_out, available),
         impulse_periapsis_kms=periapsis_dv,
         turn_feasible=bool(feasible),
+        tidal_turn_scale_deg=math.degrees(tidal),
+        status=status,
     )
 
 
