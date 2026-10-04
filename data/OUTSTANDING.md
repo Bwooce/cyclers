@@ -798,6 +798,27 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   Strange Table 3 or 4 member) and a regression test that the six closures FAIL it; then
   re-run the Uranian search with the gate in force. `#885` section 5 shows ballistic flyby
   sequences between these moons exist, so a real two-moon cycler at Uranus is not excluded.
+- `#893` — registered 2026-10-04. **AUDIT: EVERY CORE DYNAMICAL MODEL MUST HAVE (a) AN IDENTITY TEST
+  AGAINST THE SAME PHYSICS WRITTEN INDEPENDENTLY (FOR A FORCED ROTATING-FRAME MODEL, A
+  NON-ROTATING-FRAME INTEGRATION) AND (b) A POSITIVE CONTROL AGAINST A PUBLISHED ORBIT WITH
+  PRINTED NUMBERS.** Reason: `#891` and `#892`. Two core models were wrong for three and a half
+  months while passing every test, because every test compared the model with itself, with its
+  three-body limit, or with published CONSTANTS. State on 2026-10-04:
+  `core/bcr4bp.py`: (a) yes, (b) yes (Jorba, Jorba-Cusco & Rosales 2020), both added today.
+  `core/qbcp.py`: (a) reversing symmetry only; a non-rotating-frame identity is not possible
+  without the quasi-bicircular solution itself; (b) yes, two controls (POL1/POL2 and the
+  2018 paper's multipliers), added today. `core/er3bp.py`: (b) added today (Neelakantan &
+  Ramanan 2022 Table 8, four of five printed orbits close from periapsis to 1e-11..3e-7; the
+  fifth row is not reproduced), plus the earlier Antoniadou & Libert check at 2e-3; (a) not
+  yet. `core/ccr4bp.py`: (a) the coordinator's non-rotating-frame integration reproduced the
+  `#890` orbit computed with the module, which is an identity check in effect but is not yet
+  a test; (b) none for the model itself (the `#889` control is for the elliptic stroboscopic
+  machinery, not this module). `core/crnbp.py`, `core/wsb.py` and any other forced or
+  multi-body model under `core/`: not examined. `core/cr3bp.py`: many published controls
+  already. **To do:** turn the ccr4bp identity into a test; find a published control for
+  ccr4bp (Kumar, Anderson & de la Llave print torus data for Jupiter-Europa-Ganymede);
+  examine crnbp and wsb; add an inertial-frame identity for er3bp. A model without both
+  checks must say so in its module docstring.
 - `#892` — **MODEL CORRECTED 2026-10-04 (commit `8c5b754b`), POSITIVE CONTROL PASSES; dependent
   tests and past results not yet triaged.** The remaining mismatch reported in the registration
   below had a third cause, found by the coordinator: `#592` (2026-07-14) had moved alpha_6 from
