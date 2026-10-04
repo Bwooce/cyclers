@@ -256,3 +256,9 @@ The Uranian problem is a planar two-moon model with several commensurate frequen
 6. For #922: set the problem up in the cylinder-function form (section 3.2); use the paper's adaptive invariance check (3.6) as the comparison metric for the #895 arcs.
 7. Check the Sun-position slip (section 1.4) against Scheeres 1998 if that paper can be obtained, and file the result.
 8. Obtain the three conference references this paper leans on that the corpus lacks: Henry et al. 2023 (AIAA, ref 23) and Henry et al. ISTS 2023 (ref 14), which carry the HR4BP torus results with tables of rotation numbers, if they exist; check `CORPUS_INDEX.md` first.
+
+## 10. Note added 2026-10-04: what Scheeres 1998 settles (digest `2026-10-04-digest-scheeres-1998-restricted-hill-four-body-problem.md`)
+
+1. The Sun-position slip of section 1.4 and section 7 item 1 is CONFIRMED as a slip. From Scheeres' definitions (eqs. 9, 17, 22, 45, 52) the Sun is at mu^(-1/3)/a0(m) primary separations, so the correct form is M^(-1/3)/a0(m), not M^(-1/3) a0(m). At m = 0.0808 and M = 3.0404e-6 this is 389.3 (printed series for a0 to m^3), 0.13 percent above the project's 388.8111. The slip does not enter the equations of motion.
+2. Eqs. 1 to 3 of this paper, the Coriolis coefficient 2(1 + m), the positions r1 = -mu r_v.o., r2 = (1 - mu) r_v.o., Omega = 1 + 1/m in the Sun-year unit, and the order-6 truncation "as in Reference 16" all agree with Scheeres eqs. 55-58, 32-33, p82 and the appendix. The T = pi forcing period is Scheeres' "period pi" (p83). The interpretation of section 1.4 (Omega = 1 + 1/m in one unit, 2(1+m) in the other) is Scheeres' own p82 statement (rotation at (1 + 1/m), then t = m tau).
+3. The J matrix (eq. 12 here), eq. 28, eq. 30 and the rho convention are not in Scheeres; they remain open (section 7 items 2 to 4).

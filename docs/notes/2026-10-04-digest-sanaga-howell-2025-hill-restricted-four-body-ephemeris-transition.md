@@ -199,3 +199,10 @@ No help for anchoring: the paper prints no orbit state, period or multiplier, so
 5. Read p.789 as an image and the following figures (Figs. 8, 9, 18, 19 hodographs) if a quantitative HR4BP control is wanted; the text layer carries no hodograph numbers, so no x0 values are available.
 6. Obtain Davis et al. (AAS 17-826), Park & Howell (AAS 23-118, AAS 22-741), Sanaga & Howell (AAS 23-227) and Olikara & Scheeres (AAS 17) if held-paper work on the Earth-Moon halo interface region proceeds; the printed ICs for the 3:1 orbit, if any, would be in those, not here.
 7. Cross-check the QBCP Sun-angle direction once against the #891/#892 non-rotating-frame identity (section 6, first row), so the "theta0 + omega t" in `qbcp.evaluate_alphas` is documented as Andreu's convention rather than left looking like the #891 bug.
+
+## Note added 2026-10-04: what Scheeres 1998 settles (digest `2026-10-04-digest-scheeres-1998-restricted-hill-four-body-problem.md`)
+
+1. N3 (a_n(m) to order m^9, attributed here to Olikara & Scheeres 2017): Scheeres 1998 itself gives the a_n/a0 only to order m^6 (and a0 to m^3) from Wintner; the m^9 values are not in it. The Brown et al. 2024 tables (order m^9, in the Brown digest) re-expanded in m reproduce Scheeres' appendix exactly through m^6 (symbolic check), so the m^9 tables are consistent with the 1998 origin. The Olikara & Scheeres 2017 attribution is not contradicted but is not needed to obtain the coefficients.
+2. The model equations here (Eqs. 2 and 3 as read in section 2) agree with Scheeres eqs. 55 and 56 (potential, Coriolis 2(1 + m), period-pi tide); the Sun direction regresses in the Earth-Moon rotating frame, confirming T1 from the source model (a points along angle -tau in the Moon-fixed frame, Scheeres eqs. 47 and 51).
+3. T3 and N-values: Scheeres prints m = 0.0808 and nu = 0.0122 (approximately), consistent with N2.
+4. Item 4 of the recommendations (a Hill module would need Eq. 8 read from the page image and the a_n coefficients): the coefficients are now available (Scheeres 1998 appendix and the Brown tables). Scheeres' Eq. 61 (expansion in m) was verified here against his Eq. 56 numerically.
