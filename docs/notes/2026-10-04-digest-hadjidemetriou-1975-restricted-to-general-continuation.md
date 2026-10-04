@@ -283,3 +283,15 @@ and Feagin 1973; Whittaker 1960.
 - No numerical example.
 - For the project the paper is background for the mass of the spacecraft, which is irrelevant at the project's mass
   ratios. It is not the existence theory for moon-mass continuation.
+
+## Note 2026-10-05: what the worked continuation shows
+
+The numerical companion, Hadjidemetriou and Christides 1975 (Celest. Mech. 12:175, DOI 10.1007/BF01230210), is digested in
+`docs/notes/2026-10-04-digest-hadjidemetriou-christides-1975-families-planar-three-body.md`. It confirms, for one orbit, the
+statements here: the continuation is in the third body's mass at fixed m1/m2 = 1 and fixed x30 = 0.181 (the particle's mass,
+option (i)), with a 2 x 2 Newton corrector on (r0, y3'0); the family is NOT monotonic in the mass: it reaches m3 = 0.2245
+(about 5:5:3) and turns back, ending at m3 = 0 in a periodic orbit of the elliptic restricted problem (e = 0.292, computed
+0.29221), so the 'larger m2 needs numerical continuation' sentence above (section 2.2) is borne out and the continuation
+can fold. It does not touch `#890`'s direction (moons' masses raised, massless spacecraft). All 19 printed rows reproduce
+independently (one probable misprint, row 15 period 3.6656 against a computed 3.6697), and the project's `core/cr3bp.py` at
+mu = 1/2 reproduces the paper's m3 = 0 starting orbit to eight digits.

@@ -526,3 +526,15 @@ variational STM that `#928` plans.
   reproduce the printed values (4 significant figures, 3 for the unstable rows), row 11 is Delta < 0, and orbit a (eq. 73) is
   periodic with period 0.362499 and eigenvalue angle 0.147 rad (42.7 iterations per circuit).
 - Not a model the project has: no finite-mass three-body code in `src/`; the paper's numbers need a new test-only integrator.
+
+## Note 2026-10-05: the mass-continuation paper is now held and digested
+
+Hadjidemetriou and Christides 1975 (Celest. Mech. 12:175, DOI 10.1007/BF01230210) is digested in
+`docs/notes/2026-10-04-digest-hadjidemetriou-christides-1975-families-planar-three-body.md`. It corrects three statements
+above. (1) It is NOT the source of this paper's equal-mass family: its printed path (x30 = 0.181, m1 = m2, total mass 1)
+turns back at m3 = 0.2245 and never reaches m3 = 1/3, and its x30 is 0.181 against 0.31 to 1.02 in Table I here; the
+starting orbit and path of the 1975b member remain unprinted. (2) The convention check in section 5(a) is confirmed from a
+second source: all 19 rows of that paper's Table I reproduce with the same inertial integrator and normalisation (G = 1,
+total mass 1, theta'0 = 1) to 2e-8 in x1(T), x3(T) and 7e-8 in theta/2pi, with one probable misprint (row 15 period). (3) Section 6 says no current module can reproduce the paper's numbers; that holds for finite third mass, but the project's CR3BP at mu = 1/2
+reproduces that paper's m3 = 0 starting orbit to eight digits (T = 0.9242291, x = 0.721018392 from x30 = 0.181,
+y3'0 = -0.94711034), so it controls the restricted end of a continuation; no module controls finite m3.
