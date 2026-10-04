@@ -1343,7 +1343,18 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   window; detect it by the SIGN of Delta (with bisection), not by modulus, and tag the critical orbit
   by its rank-3 Jordan structure. Nearest sourced test: Hadjidemetriou 1975b Table I rows 10 -> 11
   (Delta changes sign). To acquire: Olle, Pacha & Villanueva 2004 (Celest. Mech. 90:89, the L4
-  vertical-family transition) and Jorba & Olle 2004 (Nonlinearity 17:691). (c) For `#890`/`#895`:
+  vertical-family transition) and Jorba & Olle 2004 (Nonlinearity 17:691). BOTH RECEIVED and digested
+  (`docs/notes/2026-10-05-digest-olle-pacha-villanueva-2004-l4-vertical-hopf.md`,
+  `docs/notes/2026-10-05-digest-jorba-olle-2004-invariant-curves-hamiltonian-hopf.md`). Sourced tests:
+  the Jorba & Olle map Ts at K = -1 is exact (alpha = -3, beta = 4 + L, Delta = 1 - 4L, critical at
+  L = 1/4, multipliers exp(+-i arccos(3/4)), one Jordan block); its Table 1 and both Fig. 2 invariant
+  curves reproduce (agent's own Fourier-Newton solver; a positive control for an invariant-curve
+  solver, which must fix the amplitude, not omega, or it collapses to the trivial curve). The mu =
+  0.04 vertical L4 family: the agent continued it in `core.cr3bp` and found the critical orbit at h =
+  -1.4571360299 (printed 1.45714146, minus sign lost in print), omega 1.8326287865 (printed
+  1.8326287), a non-diagonalizable double multiplier, Delta changing sign linearly; a 1e-3 modulus
+  test is blind within about 1.3e-7 of h_crit. Neither paper decides direct against inverse from
+  linear data; the critical tag must say so. (c) For `#890`/`#895`:
   if a multiplier was computed from a half-period construction, det = 1 and reciprocity hold
   identically and check nothing; state how the 8.4e5 value was obtained. (d) Log alpha, beta and
   Delta along `#899` continuations to tell a quartet event from a period-doubling or fold. To
