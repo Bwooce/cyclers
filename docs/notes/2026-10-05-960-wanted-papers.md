@@ -143,5 +143,5 @@ list.
 - McElrath, Campagnola & Strange 2012 (AIAA 2012-4809) and Buffington, Campagnola & Petropoulos 2012
   (AIAA 2012-5069, taken out of the Clipper/Jovian background row): batch 8.
 - Lam, Arrieta-Camacho & Buffington 2015 (AAS 15-657): batch 9.
-- Rall 1969 Sc.D. thesis: ALREADY HELD as `hollister-rall-1970-periodic-orbits-NASA-CR.pdf` (filed under
-  the chairman's name and the report year). Found in batch 10; the DSpace scan was not filed.
+- Rall 1969 Sc.D. thesis: ALREADY HELD (filed under the chairman's name and the report
+  year as `hollister-rall-1970-periodic-orbits-NASA-CR.pdf`; renamed 2026-10-05 to `rall-1969-free-fall-periodic-orbits-connecting-earth-mars-mit-scd-thesis-msl-te-34-ntrs-19700017824.pdf`). Found in batch 10; the DSpace scan was not filed.

@@ -72,7 +72,7 @@ Compressed from the six extracts. Each line is a stated gap in a held paper, wit
   periods, one-year and half-year "backflips" `[P p.8]`. McConaghy 2004 PhD p.165: "allow for Mars
   gravity assists"; p.167 Venus assists with the 6.4-year composite synodic period `[P]`. McConaghy et
   al. 2004 (JSR) p.5: "gravity-assist maneuvers at Mars, Venus, or the moon" `[P]`.
-- Hollister & Rall 1970 (`hollister-rall-1970-periodic-orbits-NASA-CR.pdf`): Earth-Venus-Mars periodic
+- Rall 1969 Sc.D. thesis, held as `rall-1969-free-fall-periodic-orbits-connecting-earth-mars-mit-scd-thesis-msl-te-34-ntrs-19700017824.pdf` (formerly `hollister-rall-1970-periodic-orbits-NASA-CR.pdf`; Rall is the sole author): Earth-Venus-Mars periodic
   orbits with direct returns at Venus and Earth "has not been carried out, but it is the next logical
   step" `[P thesis p.101]`; Mars-Venus periodic orbits were attempted and "this investigation simply
   failed to find any" `[P p.86]`, blamed on missing knowledge of returns "which traverse the Sun a

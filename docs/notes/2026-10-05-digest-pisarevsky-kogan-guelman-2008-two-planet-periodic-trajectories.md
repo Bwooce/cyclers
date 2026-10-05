@@ -197,8 +197,8 @@ Held:
 - [8] McConaghy et al. AAS 03-509: covered by `mcconaghy-2004-...-purdue-phd.pdf` and
   `mcconaghy-landau-yam-2006-...jsr...pdf` (INFERRED from title match).
 - [2] and [3], the Menning 1968 MS and Rall 1969 PhD theses: partly covered by
-  `hollister-menning-1970-...JSR-7-10.pdf` and `hollister-rall-1970-periodic-orbits-NASA-CR.pdf`. The
-  theses themselves are not held.
+  `hollister-menning-1970-...JSR-7-10.pdf` and `rall-1969-free-fall-periodic-orbits-connecting-earth-mars-mit-scd-thesis-msl-te-34-ntrs-19700017824.pdf` (formerly `hollister-rall-1970-periodic-orbits-NASA-CR.pdf`). CORRECTION 2026-10-05: the second file IS Rall's thesis (MSL report TE-34), so Rall [3] is fully held, not partly covered.
+  Menning [2] has also been held since 2026-10-05 (`menning-1968-...-mit-ms-thesis-ocr.pdf`).
 
 Not held, in priority order. The DOI was checked through the Crossref API (title, authors, volume and
 pages).

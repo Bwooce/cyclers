@@ -103,9 +103,10 @@ Before any "wanted papers" or acquisition list goes to the owner, run
 `python scripts/check_wanted_vs_corpus.py <list.md>` and resolve every hit by hand. The checker:
 - extracts the first 3 pages of every `papers/` PDF, plus any `.txt` companion;
 - for each row of the list, reports (1) any DOI in the row found in a corpus text, filename or
-  `CORPUS_INDEX.md`; (2) first-author surname and year both in a corpus filename, with transliteration
-  aliases (Bruno/Brjuno, Henon/Hénon, Olle/Ollé, ...); (3) the opening of the quoted title found in a
-  corpus text.
+  `CORPUS_INDEX.md`; (2) the first author's surname among a corpus filename's author tokens (any
+  position) with a filename year within one year, or the same in a `CORPUS_INDEX.md` `[identity: ...]`
+  note, with transliteration aliases (Bruno/Brjuno, Henon/Hénon, Olle/Ollé, ...); (3) the opening of the
+  quoted title, spaces removed, found in a corpus text.
 
 Treat the hits as follows:
 - Title hits are mostly citations inside other papers.
@@ -114,7 +115,15 @@ Treat the hits as follows:
   thesis version) is marked "acquire only for attribution".
 
 Precedent: the first `#960` wanted list carried Bruno 1978a, b (held as "brjuno-1978") and Henon 2001 (held).
-A filename grep on "bruno" missed the first, and nobody searched for the second.
+A filename grep on "bruno" missed the first, and nobody searched for the second. The batch-10 list then asked for
+Rall 1969, held for months as "hollister-rall-1970-periodic-orbits-NASA-CR.pdf" (the chairman's name and
+the report year); the first checker version missed it.
+
+**Identity notes in the index.** When a filename does not show the title-page first author and year (a
+thesis filed under its supervisor, a report reissue year, a transliteration), the index row carries
+`[identity: Author, I. (Year), "Title", what it is (thesis, report number, NTRS id)]`. The checker reads
+these notes. Prefer a corrective `git mv` in `cyclers_pdf` plus a redirect row in the index when the
+filename is actively misleading.
 
 ### 2. Chapter/section-summary digest
 A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.

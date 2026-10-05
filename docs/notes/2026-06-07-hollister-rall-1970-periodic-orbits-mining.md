@@ -1,4 +1,8 @@
-# Rall (Hollister adv.) 1970 — Free-fall periodic orbits Earth-Mars (method mining)
+# Rall 1969 (Sc.D. thesis; Hollister was chairman) — Free-fall periodic orbits Earth-Mars (method mining)
+
+> File (renamed 2026-10-05): `cyclers_pdf/papers/rall-1969-free-fall-periodic-orbits-connecting-earth-mars-mit-scd-thesis-msl-te-34-ntrs-19700017824.pdf`, formerly
+> `hollister-rall-1970-periodic-orbits-NASA-CR.pdf`. It is Rall's sole-author Sc.D. thesis (Oct 1969),
+> issued as MIT Measurement Systems Laboratory report TE-34, NTRS 19700017824.
 
 Mined 2026-06-07 (Task #142). **NEVER MINED before.** The foundational
 periodic-orbit search methodology. Directly informs our N-arc corrector
@@ -269,12 +273,13 @@ period** Earth-Mars cyclers.
 ## Addendum 2026-10-05 (#960 batch 10): elements, conventions and identity
 
 Read on the page images of a second scan, the MIT DSpace copy (hdl 1721.1/13552; 219 pp., image-only;
-pages 167, 168, 178 and 204 missing). This file (the MSL report scan) has the same pages; its text layer
-garbles the program listing.
+pages 167, 168, 178 and 204 missing). The held file (the MSL report, NTRS 19700017824) has the same
+pages; its text layer garbles the program listing.
 
 - **Identity:** the held file is Rall's Sc.D. thesis (sole author; Hollister was thesis chairman), report
   TE-34, dated October 1969 (submitted 8 Oct 1969; MIT Archives stamp 1 Apr 1970). Cite it as
-  Rall, C. S. (1969). The "hollister-rall-1970" filename misled the #960 wanted-list check.
+  Rall, C. S. (1969). The old "hollister-rall-1970" filename misled the #960 wanted-list check; the file
+  was renamed on 2026-10-05 (see the header).
 - **Planet elements (Appendix A, thesis p.136, the Fortran listing), verbatim:**
   - YR = 365.25636
   - A = 1.0, 0.723332, 1.523691 (Earth, Venus, Mars)
