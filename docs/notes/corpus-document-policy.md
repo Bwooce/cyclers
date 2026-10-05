@@ -97,6 +97,25 @@ vision-read — never vision-read a whole document.
   index-to-disk checks can be scripted. All abbreviated and stale names were expanded on 2026-10-05
   (`#964`); all 412 PDFs on disk are named in the index.
 
+#### Wanted lists: check against the whole corpus first (adopted 2026-10-05, `#964`)
+
+Before any "wanted papers" or acquisition list goes to the owner, run
+`python scripts/check_wanted_vs_corpus.py <list.md>` and resolve every hit by hand. The checker:
+- extracts the first 3 pages of every `papers/` PDF, plus any `.txt` companion;
+- for each row of the list, reports (1) any DOI in the row found in a corpus text, filename or
+  `CORPUS_INDEX.md`; (2) first-author surname and year both in a corpus filename, with transliteration
+  aliases (Bruno/Brjuno, Henon/Hénon, Olle/Ollé, ...); (3) the opening of the quoted title found in a
+  corpus text.
+
+Treat the hits as follows:
+- Title hits are mostly citations inside other papers.
+- Surname+year and DOI hits need a human look.
+- A row whose paper is held is removed. A row whose content is held in another form (a report, preprint or
+  thesis version) is marked "acquire only for attribution".
+
+Precedent: the first `#960` wanted list carried Bruno 1978a, b (held as "brjuno-1978") and Henon 2001 (held).
+A filename grep on "bruno" missed the first, and nobody searched for the second.
+
 ### 2. Chapter/section-summary digest
 A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.
 - **Papers** (journal/conference): full-page read.

@@ -96,6 +96,9 @@ Held:
 - Hitzl & Henon 1977a, b.
 - Perko 1981.
 - Szebehely 1967.
+- Henon 2001 (LNP m65), held as `henon-2001-generating-families-...-doi-10.1007-3-540-44712-1.pdf`.
+- Bruno 1978a, b (Celest. Mech. 18), held under the transliteration "Brjuno" (`brjuno-1978-...` and
+  `brjuno-1978b-...`). Correction 2026-10-05: the first version of this digest listed both as not held.
 
 Not held, in priority order:
 1. Bruno, A. D. & Varin, V. P. (2005b), "Family h of periodic solutions of the restricted problem for small
@@ -103,13 +106,9 @@ Not held, in priority order:
    mu = 0.1-0.5.
 2. Bruno, A. D. (1994), "The Restricted 3-Body Problem: Plane Periodic Orbits", de Gruyter, doi
    10.1515/9783110901733 (CONFIRMED in batch 1).
-3. Henon, M. (2001), "Generating Families of the Restricted Three-Body Problem. II. Quantitative Study of
-   Bifurcations", LNP monographs 65, Springer. DOI not checked.
-4. Bruno, A. D. (1978a, b), Celest. Mech. 18:9-50 and 18:51-101, "Researches on the restricted three-body
-   problem II, III". DOIs not checked.
-5. Bartlett, J. H. (1964), "The restricted problem of three bodies (1)", Kong. Dan. Vidensk. Selsk.
+3. Bartlett, J. H. (1964), "The restricted problem of three bodies (1)", Kong. Dan. Vidensk. Selsk.
    Mat.-Fys. Skr. The mu = 1/2 families.
-6. Bray & Goudas 1967 (3D doubly-symmetric orbits); Voyatzis & Kotoulas 2005 and Voyatzis, Kotoulas &
+4. Bray & Goudas 1967 (3D doubly-symmetric orbits); Voyatzis & Kotoulas 2005 and Voyatzis, Kotoulas &
    Hadjidemetriou 2005 (Neptune exterior resonances); Kotoulas & Voyatzis 2004; Henon 1965a, b; Henon
    1973 (vertical stability, A&A 28); Bruno 1972, 1993, 1996 KIAM preprints; Bruno 1998/2000 (Power
    Geometry); Abalakin et al. 1971.
