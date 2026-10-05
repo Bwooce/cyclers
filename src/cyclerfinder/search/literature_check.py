@@ -810,6 +810,65 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         provenance="verified-against-source",
         system="saturnian",
     ),
+    # -----------------------------------------------------------------------
+    # Russell & Strange 2007, AAS 07-118 "Planetary Moon Cycler Trajectories"
+    # (#960) -- the conference parent of R-S 2009 (its ref. [26]). Its Jovian
+    # and Titan-Enceladus rows are the R-S 2009 rows (covered above); the two
+    # anchors below cover the HELIOCENTRIC rows R-S 2009 omits: Table 3/5
+    # VenMar#45 (Venus flyby, Mars massless target) and VenMer#22/69/75
+    # (Venus flyby, Mercury massless target). No Earth-Venus set exists in
+    # this paper despite R-S 2009 p.5. Grounded against the source PDF:
+    # docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-
+    # moon-cyclers.md.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Russell-Strange 2007 Venus-Mars ideal-model free-return cycler",
+        primary="Sun",
+        body_set=frozenset({"V", "M"}),
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Venus Mars cycler",
+            "Venus-Mars free-return cycler",
+            "planetary moon cycler heliocentric",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler "
+        "Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, "
+        "Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target "
+        "(massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period "
+        "667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+        doi=None,
+        key="russell-strange-2007-venmar",
+        year=2007,
+        title="Planetary Moon Cycler Trajectories",
+        venue="AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona",
+        provenance="verified-against-source",
+        system="heliocentric",
+    ),
+    CorpusAnchor(
+        name="Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler",
+        primary="Sun",
+        body_set=frozenset({"V", "Me"}),
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Venus Mercury cycler",
+            "Venus-Mercury free-return cycler",
+            "planetary moon cycler heliocentric",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler "
+        "Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, "
+        "Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mercury target "
+        "(massless); Tables 3/5 VenMer#22/69/75 (ideal model only; the "
+        "ephemeris attempt failed on Mercury's eccentricity, p.14).",
+        doi=None,
+        key="russell-strange-2007-venmer",
+        year=2007,
+        title="Planetary Moon Cycler Trajectories",
+        venue="AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona",
+        provenance="verified-against-source",
+        system="heliocentric",
+    ),
     CorpusAnchor(
         name="Strange/Campagnola/Russell moon-tour & V-infinity-leveraging",
         primary="Jupiter",
@@ -1572,6 +1631,39 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "labels"
         ),
         doi="10.2514/1.8123",
+    ),
+    CorpusAnchor(
+        name="Pisarevsky-Kogan-Guelman two-planet periodic trajectories (2008)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #960: the published two-working-body Earth-Mars class (Mars also
+        # bends): classes I-V of recursive trajectories, Table 4 spatial
+        # class-III ballistic 2-synodic cycler, Fig. 14 class I.1 candidates.
+        # Per docs/notes/2026-10-05-digest-pisarevsky-kogan-guelman-2008-two-
+        # planet-periodic-trajectories.md.
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Pisarevsky", "Kogan", "Guelman"),
+        keywords=(
+            "two-planet periodic trajectories",
+            "both planets massive cycler",
+            "extended Henon diagram recursive trajectories",
+            "Earth-Mars cycler Mars gravity assist",
+        ),
+        citation=(
+            "Pisarevsky, D. M., Kogan, A. & Guelman, M., 'Interplanetary "
+            "Periodic Trajectories in Two-Planet Systems,' J. Guidance, "
+            "Control, and Dynamics 31(3):729-739 (2008), DOI 10.2514/1.30046. "
+            "Circular-coplanar patched-conic (collisional-arc) cyclers with "
+            "flybys at both planets; Earth-Mars only; Table 4 one purely "
+            "ballistic two-synodic class-III cycler (t1 = 134 d)"
+        ),
+        doi="10.2514/1.30046",
+        key="pisarevsky-2008-two-planet",
+        year=2008,
+        title="Interplanetary Periodic Trajectories in Two-Planet Systems",
+        venue="Journal of Guidance, Control, and Dynamics 31(3):729-739",
+        provenance="verified-against-source",
+        system="heliocentric",
     ),
     CorpusAnchor(
         name=("Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)"),

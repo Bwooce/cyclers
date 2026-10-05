@@ -1768,14 +1768,26 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   acquire and read Pisarevsky, Kogan & Guelman 2008 and Russell & Strange AAS 07-118. Cost (GUESS):
   3-5 agent-days. P(novel row): 0.25-0.45. Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R1. Shares its generator
-  with `#943` (X1).
+  with `#943` (X1). **GATE CLEARED 2026-10-05 (`#960`)**:
+  - (a) Earth-Mars with Mars turns is PARTIAL. Pisarevsky 2008 publishes the class, one spatial class
+    III member (Table 4) and graphical class I.1 candidates (Fig. 14).
+  - (b) Earth-Venus is OPEN. AAS 07-118 has no Earth-Venus set.
+  - (c) Venus-Mars is PARTIAL. AAS 07-118 VenMar#45 is a published one-working-body member. The
+    two-working-body cell is open.
+  - Verdicts and controls are in `docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`
+    sec. 4.
 - `#943` — registered 2026-10-05, not dispatched (from `#938`, X1, rank 2 of 18). **HOLLISTER'S
   TWO-WORKING-BODY DATE-RESIDUAL CORRECTOR AT JUPITER (Ganymede-Callisto, Ganymede-Europa).**
   Sources: Hollister & Menning 1970; Hollister & Rall 1970; Russell & Strange 2009. Gate before
   dispatch: none beyond X1's own positive controls (Hollister-Menning's 15 rows; the R-S
   Ganymede-Callisto rows in the one-body limit). Cost (GUESS): +2 agent-days on `#942` (3-5 alone).
   P(novel row): 0.4. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a
-  X1. Shares its generator with `#942` (R1).
+  X1. Shares its generator with `#942` (R1). **GATE CHECKED 2026-10-05 (`#960`)**:
+  - Both pairs are OPEN. AAS 07-118 has massless targets only, and its p.18 names removing that
+    assumption as future work.
+  - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
+    only the Ganymede-hosted limit.
+  - Same digest, sec. 4.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
@@ -1863,6 +1875,15 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   perturber).** Sources: Kumar et al. 2021; the `#889` solver. Gate before dispatch: none. Cost
   (GUESS): 2-3 agent-days. P(novel row): 0 (dynamical object, not a cycler). Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X8.
+- `#960` — **DONE 2026-10-05: FILED, DIGESTED AND INDEXED Pisarevsky, Kogan & Guelman 2008 (JGCD
+  31(3), doi 10.2514/1.30046) and Russell & Strange AAS 07-118 (2007)**, the `#942`/`#943` gate papers.
+  - Digests: `docs/notes/2026-10-05-digest-pisarevsky-kogan-guelman-2008-two-planet-periodic-trajectories.md`
+    and `docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`.
+  - Three KNOWN_CORPUS anchors were added.
+  - Owner-gated catalogue proposals are in the R-S 2007 digest, sec. 8:
+    - 2007 priority for the 30 `russell-strange-2009-*` rows.
+    - The rows' "min flyby altitude" notes name the target body, not the flyby body.
+    - New rows: EurGan#93, VenMar#45 and VenMer#22/69/75.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
