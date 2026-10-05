@@ -1,0 +1,30 @@
+{
+ "status": "ok",
+ "message": {
+  "DOI": "10.2514/3.29664",
+  "title": [
+   "Periodic orbits for interplanetary flight."
+  ],
+  "author": [
+   {
+    "family": "HOLLISTER",
+    "given": "WALTER M."
+   }
+  ],
+  "container-title": [
+   "Journal of Spacecraft and Rockets"
+  ],
+  "volume": "6",
+  "issue": "4",
+  "page": "366-369",
+  "issued": {
+   "date-parts": [
+    [
+     1969,
+     4
+    ]
+   ]
+  },
+  "type": "journal-article"
+ }
+}

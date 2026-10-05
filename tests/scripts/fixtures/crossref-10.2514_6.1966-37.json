@@ -1,0 +1,35 @@
+{
+ "status": "ok",
+ "message": {
+  "DOI": "10.2514/6.1966-37",
+  "title": [
+   "Venus-swingby mission mode and its role in the manned exploration ofMars"
+  ],
+  "author": [
+   {
+    "family": "GILLESPIE",
+    "given": "R."
+   },
+   {
+    "family": "ROSS",
+    "given": "S."
+   }
+  ],
+  "container-title": [
+   "3rd and 4th Aerospace Sciences Meeting"
+  ],
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "issued": {
+   "date-parts": [
+    [
+     1966,
+     1,
+     24
+    ]
+   ]
+  },
+  "type": "proceedings-article"
+ }
+}

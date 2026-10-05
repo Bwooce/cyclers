@@ -1,0 +1,168 @@
+{
+ "status": "ok",
+ "message": {
+  "items": [
+   {
+    "DOI": "10.2514/6.1966-37",
+    "title": [
+     "Venus-swingby mission mode and its role in the manned exploration ofMars"
+    ],
+    "author": [
+     {
+      "given": "R.",
+      "family": "GILLESPIE",
+      "sequence": "first",
+      "affiliation": [
+       {
+        "name": "NASA, OFFICE OF MANNED SPACE FLIGHT, WASHINGTON, D.C."
+       }
+      ],
+      "role": [
+       {
+        "role": "author",
+        "vocabulary": "crossref"
+       }
+      ]
+     },
+     {
+      "given": "S.",
+      "family": "ROSS",
+      "sequence": "additional",
+      "affiliation": [
+       {
+        "name": "NASA, ELECTRONICS RESEARCH CENTER, SYSTEMS LAB., CAMBRIDGE, MASS."
+       }
+      ],
+      "role": [
+       {
+        "role": "author",
+        "vocabulary": "crossref"
+       }
+      ]
+     }
+    ],
+    "container-title": [
+     "3rd and 4th Aerospace Sciences Meeting"
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       1966,
+       1,
+       24
+      ]
+     ]
+    },
+    "type": "proceedings-article"
+   },
+   {
+    "issue": "2",
+    "DOI": "10.2514/3.28830",
+    "type": "journal-article",
+    "page": "170-175",
+    "title": [
+     "Venus-swingby mission mode and its role in the manned exploration ofMars."
+    ],
+    "volume": "4",
+    "author": [
+     {
+      "given": "ROLLIN W.",
+      "family": "GILLESPIE",
+      "sequence": "first",
+      "affiliation": [
+       {
+        "name": "NASA Office of Manned Space Flight, Washington,   D.  C."
+       }
+      ],
+      "role": [
+       {
+        "vocabulary": "crossref",
+        "role": "author"
+       }
+      ]
+     },
+     {
+      "given": "STANLEY",
+      "family": "ROSS",
+      "sequence": "additional",
+      "affiliation": [
+       {
+        "name": "NASA Office of Manned Space Flight, Washington,   D.  C."
+       }
+      ],
+      "role": [
+       {
+        "vocabulary": "crossref",
+        "role": "author"
+       }
+      ]
+     }
+    ],
+    "container-title": [
+     "Journal of Spacecraft and Rockets"
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       1967,
+       2
+      ]
+     ]
+    }
+   },
+   {
+    "DOI": "10.2514/6.1970-1075",
+    "title": [
+     "Manned Mars lander launch-to-rendezvous analysis for a 1981 Venus-swingby mission"
+    ],
+    "author": [
+     {
+      "given": "N.",
+      "family": "FAUST",
+      "sequence": "first",
+      "affiliation": [
+       {
+        "name": "NASA, MANNED SPACECRAFT CENTER, HOUSTON, TEX."
+       }
+      ],
+      "role": [
+       {
+        "role": "author",
+        "vocabulary": "crossref"
+       }
+      ]
+     },
+     {
+      "given": "T.",
+      "family": "MURTAGH",
+      "sequence": "additional",
+      "affiliation": [
+       {
+        "name": "NASA, MANNED SPACECRAFT CENTER, HOUSTON, TEX."
+       }
+      ],
+      "role": [
+       {
+        "role": "author",
+        "vocabulary": "crossref"
+       }
+      ]
+     }
+    ],
+    "container-title": [
+     "Astrodynamics Conference"
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       1970,
+       8,
+       16
+      ]
+     ]
+    },
+    "type": "proceedings-article"
+   }
+  ]
+ }
+}
