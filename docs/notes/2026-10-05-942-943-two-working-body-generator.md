@@ -389,6 +389,14 @@ E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40,
   return lasts 1.36 yr. H&M's sequential modification inserted a 1.37-yr one (p.1195); this is a
   consistency check only.
 
+Hollister 1969 p.367, circular orbit I (sourced numbers): transfers of 0.485 yr and 0.6 rev, with V_inf
+0.107 EMOS at Earth and 0.126 at Venus. Our corrector finds exactly this symmetric zero: both transfers
+0.4846 yr, 216 deg, gate-passing. Its V_inf is 0.1008 EMOS at Earth and 0.1075 at Venus. An independent
+shooting solve with the Kepler step gives the same numbers.
+
+The printed pair does not follow from the stated geometry. It may be a different unit or an erratum
+(respectful framing). It is recorded only, and it does not affect the other controls.
+
 ## 5. Positive controls 3-6: Russell & Strange (expected values from the papers' tables)
 
 All four were run BLIND through the production enumerator. In each run the published cycler is the only
