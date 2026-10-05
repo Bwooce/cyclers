@@ -108,6 +108,10 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
     reproduced), `#887` (three-moon Uranian quasi-cycler, ~30%; stage one go/no-go done
     2026-10-04). `#883` (knot-theory control at the published energy; not dispatched) and `#882`
     (rebuild done and reviewed 2026-10-04, Uranian object on HOLD, no row) sit beside them.
+12b. Registered 2026-10-05 from the `#938` corpus review, none dispatched: `#942`-`#959`, ranked
+    in the re-ranked table at the end of sec. 3a of
+    `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (`#942` R1 and `#943` X1 share a
+    generator). Waiting on owner: `#948`, `#949` (Pluto part), `#950`, `#956`; see below.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
     exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
@@ -119,6 +123,10 @@ VEM scan that enumerates <=1 revolution per leg; do NOT re-propose `#600`/`#663`
 superseded by the `#859` pilot (harness built, Stage A NOT run) and formally SHELVED 2026-10-03
 under `#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. The wrap-up
 commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-05, `#939`).
+
+**Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
+lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
+part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
 
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
@@ -1748,9 +1756,113 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
   Matters wherever these matrices feed Floquet multipliers or stability indices on such arcs;
   correctors only need them as Jacobians. The `#939` test now bounds both against
   `core.cr3bp` (scratch evidence scripts were not kept; the numbers are in the commit message).
-- `#938` — registered and DISPATCHED 2026-10-05 (owner of the work: corpus-review-fable). **FABLE
-  CORPUS NOVEL-PATHS REVIEW**, read-only over the paper corpus; output
-  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md`. In progress.
+- `#938` — ✓ DONE 2026-10-05 (owner of the work: corpus-review-fable; note pushed in `19ff1fd8`).
+  **FABLE CORPUS NOVEL-PATHS REVIEW**, read-only over the paper corpus; output
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (10 routes R1-R10 in sec. 3, a
+  technique x case matrix and 8 transfer cells X1-X8 in sec. 3a, corpus gaps in sec. 5). The
+  re-ranked table at the end of sec. 3a is registered as `#942`-`#959` in table order.
+- `#942` — registered 2026-10-05, not dispatched (from `#938`, R1, rank 1 of 18). **TWO-WORKING-BODY
+  HELIOCENTRIC GENERATOR: Earth-Venus with Venus returns, Earth-Mars with Mars turns, Venus-Mars.**
+  Sources: Russell & Strange 2009; Russell & Ocampo 2006; Russell 2004; McConaghy et al. 2002, 2004
+  and McConaghy 2004 PhD; Hollister & Rall 1970; Hollister & Menning 1970. Gate before dispatch:
+  acquire and read Pisarevsky, Kogan & Guelman 2008 and Russell & Strange AAS 07-118. Cost (GUESS):
+  3-5 agent-days. P(novel row): 0.25-0.45. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R1. Shares its generator
+  with `#943` (X1).
+- `#943` — registered 2026-10-05, not dispatched (from `#938`, X1, rank 2 of 18). **HOLLISTER'S
+  TWO-WORKING-BODY DATE-RESIDUAL CORRECTOR AT JUPITER (Ganymede-Callisto, Ganymede-Europa).**
+  Sources: Hollister & Menning 1970; Hollister & Rall 1970; Russell & Strange 2009. Gate before
+  dispatch: none beyond X1's own positive controls (Hollister-Menning's 15 rows; the R-S
+  Ganymede-Callisto rows in the one-body limit). Cost (GUESS): +2 agent-days on `#942` (3-5 alone).
+  P(novel row): 0.4. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a
+  X1. Shares its generator with `#942` (R1).
+- `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
+  SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
+  2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
+  pass. Cost (GUESS): 5-8 agent-days. P(novel row): 0.4. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X2.
+- `#945` — registered 2026-10-05, not dispatched (from `#938`, R2, rank 4 of 18). **IO-CONTAINING
+  JOVIAN TRIPLES WITH LIANG'S ALTERNATING-DOUBLE-CYCLER CONSTRUCTION.** Sources: Liang et al. 2024
+  (JGCD); Lynam & Longuski 2011; Hernandez et al. 2017. Gate before dispatch: none. Cost (GUESS):
+  1-3 agent-days. P(novel row): 0.4. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R2.
+- `#946` — registered 2026-10-05, not dispatched (from `#938`, X3, rank 5 of 18). **ELLIPTIC
+  SECOND-SPECIES CYCLERS AT SATURN-TITAN (Bolotin 2005 shadowing + the ER3BP corrector).** Sources:
+  Bolotin 2005, 2006; Broucke 1969; Gomez & Olle 1991 II; Peng & Xu; Martinez-Cacho. Gate before
+  dispatch: `#899` step 3 and `#917`. Cost (GUESS): 4-6 agent-days. P(novel row): 0.3. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X3.
+- `#947` — registered 2026-10-05, not dispatched (from `#938`, R3, rank 6 of 18). **REFINE ZHOU ET
+  AL. 2025 TABLE 6 "CYCLER-LIKE" FIXED POINTS WITH MULTIPLE SHOOTING.** Sources: Zhou et al. 2025
+  (Sec. V.B, Table 6). Gate before dispatch: none. Cost (GUESS): 0.5 agent-day. P(novel row): 0.3.
+  Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R3.
+- `#948` — registered 2026-10-05, not dispatched (from `#938`, R4, rank 7 of 18). **EARTH-GRAZING
+  SECOND-SPECIES CYCLERS: Bruno's e = 1 arcs and Gomez-Olle double-collision orbits continued to the
+  Earth-Moon mass (needs both-primary regularisation).** Sources: Bruno 1981 Table III; Hitzl &
+  Henon 1977b; Gomez & Olle 1986; Genova & Aldrin 2015; Casoliva et al. 2010; Waldvogel 1967. Gate
+  before dispatch: OWNER: the Earth-Moon tension with `#864` sec. 8. Cost (GUESS): 3-5 agent-days.
+  P(novel row): 0.35. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3
+  R4.
+- `#949` — registered 2026-10-05, not dispatched (from `#938`, X4, rank 8 of 18). **THE DA
+  TRANSFER-MAP ENUMERATOR AT TITAN (and at Pluto-Charon if the owner reopens that lane).** Sources:
+  Zhou et al. 2025 (method); Ross & Roberts-Tsoukkas (3,2) Table I row as control. Gate before
+  dispatch: OWNER for the Pluto-Charon part (lane closed by `#864` sec. 8); Titan is un-gated. Cost
+  (GUESS): 1-2 agent-days. P(novel row): 0.3. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X4.
+- `#950` — registered 2026-10-05, not dispatched (from `#938`, R6, rank 9 of 18). **EARTH-NEA
+  ONE-WORKING-NODE CYCLERS: a resonant near-Earth asteroid as the massless passive target.**
+  Sources: Russell & Strange 2009; Ozaki et al. 2022; Adamo 2025; de la Fuente Marcos 2018. Gate
+  before dispatch: OWNER: is an asteroid an admissible cycler endpoint under the spec. Cost (GUESS):
+  2-3 agent-days. P(novel row): 0.3 (policy-dependent). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R6.
+- `#951` — registered 2026-10-05, not dispatched (from `#938`, R5, rank 10 of 18). **VENUS-MERCURY
+  (and Earth-Venus-Mercury) BALLISTIC CYCLERS ON THE REAL EPHEMERIS.** Sources: no held paper names
+  the body set; precedent Mariner 10 (Dunne & Burgess 1978; Giberson & Cunningham 1975); Hughes et
+  al. 2014; Russell & Strange 2009 p.5. Gate before dispatch: read Russell & Strange AAS 07-118;
+  `#867` built. Cost (GUESS): 1-2 agent-days on `#867`. P(novel row): 0.25. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R5.
+- `#952` — registered 2026-10-05, not dispatched (from `#938`, X5, rank 11 of 18). **CASOLIVA
+  CLASS-2 HOMOCLINIC-SHADOWING CYCLERS AT TITAN AND GANYMEDE.** Sources: Casoliva et al. 2010 (Class
+  2); the `#868` Neptune-Triton recipe. Gate before dispatch: `#872`. Cost (GUESS): 1-2 agent-days
+  per moon. P(novel row): 0.2 (thin). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X5 (inside `#872`'s pilot
+  scope by the note's reading).
+- `#953` — registered 2026-10-05, not dispatched (from `#938`, R7, rank 12 of 18). **EXACT PERIODIC
+  TRIPLE CYCLER IN THE LAPLACE-LOCKED TRI-CIRCULAR (N = 5) MODEL.** Sources: Blazevski & Ocampo
+  2012; Baresi, Owen & Scheeres 2023; Hernandez et al. 2017; Bradley & Russell 2014. Gate before
+  dispatch: none. Cost (GUESS): 3-5 agent-days. P(novel row): 0 (V-tier lift of
+  `hernandez-2017-jovian-ieg-triple-family`). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R7.
+- `#954` — registered 2026-10-05, not dispatched (from `#938`, X6, rank 13 of 18). **BOLOTIN-MACKAY
+  NONDEGENERACY SORT OF THE 203 RUSSELL PARENTS (a persistence predictor for the `#388` wall).**
+  Sources: Bolotin & MacKay 2000; Bolotin 2006; Russell & Ocampo 2006. Gate before dispatch: none.
+  Cost (GUESS): 0.5-1 agent-day. P(novel row): 0 (diagnostic). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X6.
+- `#955` — registered 2026-10-05, not dispatched (from `#938`, R8, rank 14 of 18). **LUNAR GRAVITY
+  ASSISTS INSIDE HELIOCENTRIC CYCLERS.** Sources: McConaghy et al. 2002, 2004; McConaghy 2004 PhD;
+  Russell & Ocampo 2006; D'Amario 1992 (Galileo control). Gate before dispatch: `#913`. Cost
+  (GUESS): 3-5 agent-days. P(novel row): 0.3 of a row; mostly validation. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R8.
+- `#956` — registered 2026-10-05, not dispatched (from `#938`, R9, rank 15 of 18). **EXTERIOR-REALM
+  (k1,k2) CYCLERS AT EARTH-MOON (through L2), Ross & Roberts-Tsoukkas's named future work.**
+  Sources: Ross & Roberts-Tsoukkas 2025, 2026 (arXiv 2606.29189 Table I control); Rawat et al. 2025.
+  Gate before dispatch: OWNER: the Earth-Moon tension with `#864` sec. 8. Cost (GUESS): 2-3
+  agent-days. P(novel row): 0.2. Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R9.
+- `#957` — registered 2026-10-05, not dispatched (from `#938`, R10, rank 16 of 18). **SPATIAL
+  SECOND-SPECIES SEEDS CORRECTED AT A PHYSICAL MASS RATIO.** Sources: Barrabes & Gomez 2002, 2003;
+  Henon 1968; Casoliva et al. 2010. Gate before dispatch: `#899`. Cost (GUESS): 3-4 agent-days.
+  P(novel row): 0.15. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3
+  R10.
+- `#958` — registered 2026-10-05, not dispatched (from `#938`, X7, rank 17 of 18).
+  **COVERING-RELATION PROOF OF THE TWO NEPTUNE-TRITON ORBITS.** Sources: Wilczak & Zgliczynski; the
+  `#636` machinery. Gate before dispatch: `#868` adjudicated. Cost (GUESS): 3-5 agent-days. P(novel
+  row): 0 (publication value). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X7.
+- `#959` — registered 2026-10-05, not dispatched (from `#938`, X8, rank 18 of 18). **VENUS-FORCED
+  EARTH RESONANT TORI (Kumar's stroboscopic invariant-circle solver at Sun-Earth with Venus as
+  perturber).** Sources: Kumar et al. 2021; the `#889` solver. Gate before dispatch: none. Cost
+  (GUESS): 2-3 agent-days. P(novel row): 0 (dynamical object, not a cycler). Detail:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X8.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
