@@ -394,8 +394,19 @@ Hollister 1969 p.367, circular orbit I (sourced numbers): transfers of 0.485 yr 
 0.4846 yr, 216 deg, gate-passing. Its V_inf is 0.1008 EMOS at Earth and 0.1075 at Venus. An independent
 shooting solve with the Kepler step gives the same numbers.
 
-The printed pair does not follow from the stated geometry. It may be a different unit or an erratum
-(respectful framing). It is recorded only, and it does not affect the other controls.
+Readings checked (lead's request, 2026-10-06):
+- (a) The inclined-elliptic orbit I does not fit. Hollister's own Table 1 averages 0.166 EMOS at Earth
+  and 0.198 at Venus, with ranges 0.154-0.191 and 0.178-0.223.
+- (b) No transfer angle at the stated 0.485-yr flight time gives both values. At 0.485 yr: 200 deg
+  gives 0.120/0.101, 216 deg gives 0.101/0.108, 230 deg gives 0.099/0.150.
+- (c) A scan over angle and flight time fits 0.107/0.126 only at geometries other than the stated one,
+  e.g. 189.5 deg / 0.385 yr or 228.5 deg / 0.505 yr.
+- (d) Rescaling by another planet's mean orbital speed does not give the pair either. Our Venus value of
+  3.20 km/s equals the printed EARTH value of 3.2 km/s, but our Earth value of 3.00 km/s matches neither
+  printed number.
+
+Status: NOT REPRODUCED FROM THE STATED GEOMETRY. This is a suspected unit or print issue, offered with
+respect. It is recorded only and does not affect the other controls.
 
 ## 5. Positive controls 3-6: Russell & Strange (expected values from the papers' tables)
 
@@ -489,9 +500,14 @@ gate-passing. Gauntlet: `data/942_cell_vm_gauntlet.json`.
   - Venus turn 3.05 deg of 3.26 available (742 km required altitude).
   - Perihelion 0.069 AU (about 15 solar radii), aphelion 1.95 AU.
   - DOP853 re-fly miss 0.009 km.
-  - It is in R-S 2007's published one-working-body Venus-Mars class (same ideal model; R-S archived the
-    full catalogue without printing it). Novelty policy (#875) decides how such members are recorded.
+  - Recorded as a MEMBER OF THE PUBLISHED R-S 2007 CLASS, not a find (lead ruling 2026-10-06). R-S ran
+    this exact class in the same ideal model and archived the complete trajectories (AAS 07-118 p.9), so
+    it is not an author-excluded class under #875.
   - Not a credible design: it is a sun-grazer.
+  - Full state: k = 2, period 667.85 d, key k2|LV>V/1l|LV>M/0s|LM>V/0s. Lambert-leg start dates (d,
+    model epoch, all bodies at angle 0 at t = 0): 316.278, 729.731, 915.491.
+    - Legs: V-V 1-rev low, 413.5 d, a 1.0074 AU, e 0.9318. V-M-V 0-rev, a 0.8737 AU, e 0.9405.
+  - Registry stamp: heliocentric-venus-mars-one-working-body-rs2007-ideal-k1-3-942.
 
 ## 7. Literal-collision checks (to be completed per candidate)
 
