@@ -8,6 +8,15 @@ on:
   pull_request:
     branches: [main]
 
+# One self-hosted runner: when a new push queues behind a running job, the
+# older run still WAITING in the queue is cancelled (GitHub keeps at most one
+# pending run per group); the run already in progress is never cancelled.
+# A cancelled run's commit is still tested by the later run, but a failure
+# then needs a local bisect to pin to one push.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   check:
     # Self-hosted on the maintainer's Mac (2026-08, GitHub Actions minutes
