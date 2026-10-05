@@ -32,21 +32,24 @@ def canonical(seq: tuple) -> tuple:
     return min(rots)
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("dirs", nargs="+", type=Path)
-    ap.add_argument("--json", type=Path)
-    args = ap.parse_args()
-    recs = []
+def is_pass(m: dict) -> bool:
+    """Pre-registered pass (results note sec. 6.1): gate "pass" (near-180 included),
+    and the independent re-propagation miss under 1 km at every encounter."""
+    miss = m.get("max_encounter_miss_km")
+    return m["status"] == "pass" and miss is not None and miss < 1.0
+
+
+def collect(dirs: list[Path]) -> tuple[int, list[dict], dict[tuple, dict], dict[tuple, dict]]:
+    """``(n_structures, zeros, physical groups, gate-passing groups)``."""
+    recs: list[dict] = []
     n_struct = 0
-    for d in args.dirs:
+    for d in dirs:
         sp = d / "structures.jsonl"
         if sp.exists():
             n_struct += sum(1 for _ in sp.open())
         zp = d / "zeros.jsonl"
         if zp.exists():
             recs += [json.loads(line) for line in zp.open()]
-    status = Counter(r["status"] for r in recs)
     groups: dict[tuple, dict] = {}
     for r in recs:
         seq = flyby_seq(r)
@@ -54,13 +57,24 @@ def main() -> None:
         key = (r["k"], min(fwd, rev))
         g = groups.setdefault(key, {"members": [], "mirror_pair": fwd != rev})
         g["members"].append(r)
-    passing = {k: g for k, g in groups.items() if any(m["status"] == "pass" for m in g["members"])}
+    passing = {k: g for k, g in groups.items() if any(is_pass(m) for m in g["members"])}
+    return n_struct, recs, groups, passing
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("dirs", nargs="+", type=Path)
+    ap.add_argument("--json", type=Path)
+    args = ap.parse_args()
+    n_struct, recs, groups, passing = collect(args.dirs)
+    status = Counter(r["status"] for r in recs)
     print(f"structures {n_struct}; zeros {len(recs)}; status {dict(status)}")
     print(f"physical cyclers (merged incl. mirrors) {len(groups)}; with a gate pass {len(passing)}")
     out = []
     for (k, seq), g in sorted(passing.items(), key=lambda kv: (kv[0][0], kv[0][1])):
         best = min(
-            g["members"], key=lambda m: m["worst_ratio"] if m["worst_ratio"] is not None else 9
+            (m for m in g["members"] if is_pass(m)),
+            key=lambda m: m["worst_ratio"] if m["worst_ratio"] is not None else 9,
         )
         line = {
             "k": k,
@@ -68,6 +82,7 @@ def main() -> None:
             "n_member_zeros": len(g["members"]),
             "mirror_pair": g["mirror_pair"],
             "keys": sorted({m["key"] for m in g["members"]}),
+            "key": best["key"],
             "worst_ratio": best["worst_ratio"],
             "max_turn_deg": best["max_turn_deg"],
             "min_required_alt_km": best["min_required_alt_km"],

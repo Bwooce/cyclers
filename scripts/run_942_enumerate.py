@@ -123,6 +123,34 @@ def leg_key(leg: object) -> str:
     raise TypeError(leg)
 
 
+def parse_leg(token: str) -> LambertLeg | ResonantLeg | HalfRevLeg:
+    """Inverse of :func:`leg_key`."""
+    kind, rest = token[0], token[1:]
+    if kind == "L":
+        pair, rev = rest.split("/")
+        frm, to = pair.split(">")
+        n = int(rev[:-1])
+        br = {"s": "single", "l": "low", "h": "high"}[rev[-1]]
+        return LambertLeg(frm, to, n, br)
+    if kind == "R":
+        body, nm = rest.split("/")
+        n, m = nm.split(":")
+        return ResonantLeg(body, int(n), int(m))
+    if kind == "H":
+        body, args = rest.split("/")
+        h, k, pa = args.split(",")
+        return HalfRevLeg(body, int(h), int(k), pa == "p", 0)
+    raise ValueError(token)
+
+
+def parse_cycle_key(key: str, system: CircularSystem, a: str, b: str) -> tuple[int, Cycle]:
+    """Inverse of :func:`cycle_key`: ``(k, Cycle)``."""
+    parts = key.split("|")
+    k = int(parts[0][1:])
+    legs = tuple(parse_leg(t) for t in parts[1:])
+    return k, Cycle(legs, k * system.synodic_s(a, b))
+
+
 def cycle_key(c: Cycle, k: int) -> str:
     return f"k{k}|" + "|".join(leg_key(lg) for lg in c.legs)
 
