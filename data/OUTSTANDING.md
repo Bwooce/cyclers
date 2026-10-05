@@ -112,7 +112,8 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
     in the re-ranked table at the end of sec. 3a of
     `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (`#942` R1 and `#943` X1 share a
     generator). Waiting on owner: `#948`, `#949` (Pluto part), `#950`, `#956`; see below. The
-    `#942`/`#943` paper gate is cleared by `#960`. R1 verdicts: (a) PARTIAL, (b) OPEN, (c) PARTIAL.
+    `#942`/`#943` paper gate is cleared by `#960`. R1 verdicts: (a) PARTIAL (prior art now includes
+    Rall 1969 and Rall & Hollister 1971: check candidates against M4-1, M5-1, M5-2), (b) OPEN, (c) PARTIAL.
     X1 verdicts: Ganymede-Callisto PARTIAL (the Campagnola et al. 2019 GCGC cycler); Ganymede-Europa
     OPEN.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
@@ -1774,6 +1775,13 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   with `#943` (X1). **GATE CLEARED 2026-10-05 (`#960`)**:
   - (a) Earth-Mars with Mars turns is PARTIAL. Pisarevsky 2008 publishes the class, one spatial class
     III member (Table 4) and graphical class I.1 candidates (Fig. 14).
+    **Lead ruling 2026-10-05: stays PARTIAL, with stronger prior art.** Rall 1969 (Sc.D. thesis, held
+    as `rall-1969-...-ntrs-19700017824.pdf`) and Rall & Hollister 1971 (JSR 8(10):1017, doi
+    10.2514/3.59763) computed Earth-Mars periodic orbits in which Mars is a ballistic working body
+    (Table 1, page image: Mars turns 2.3-4.3 deg circular-coplanar, up to 13.6 deg eccentric-inclined;
+    passes down to 1.00 Mars radius), never with direct returns at Mars. Any R1(a) candidate must be
+    checked against Rall's families (M4-1, M5-1, M5-2 and their eccentric-inclined versions) before it
+    can be called novel. Digest: `docs/notes/2026-10-05-digest-rall-hollister-1971-periodic-swing-by-orbits-earth-mars.md`.
   - (b) Earth-Venus is OPEN. AAS 07-118 has no Earth-Venus set.
   - (c) Venus-Mars is PARTIAL. AAS 07-118 VenMar#45 is a published one-working-body member. The
     two-working-body cell is open.
@@ -1941,6 +1949,21 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - The same latent false match applies to any shared surname: Liang, Xu, Russell, Anderson, Campagnola.
   - Fix: disambiguate by first initial or DOI before strong-linking, with a test pair of same-surname
     authors. Cost (GUESS): 0.5 agent-day.
+- `#964` — **DONE 2026-10-06: CORPUS TOOLING (from the 2026-10-05 papercut review).** Commit
+  `ac793161` plus docs commits `e6f10bc6`, `8b7cc7de`, `8b5567b7`:
+  - `scripts/crossref_check.py`: confirms a DOI only on a journal or volume match; flags AIAA
+    conference records (the Gillespie-Ross 66-37 trap).
+  - `scripts/repo_sync_status.py`: read-only fetch and ahead/behind for cyclers, cyclers.space and the
+    corpus repo.
+  - `scripts/check_wanted_vs_corpus.py`: a wanted list against the whole corpus (DOI; author tokens with
+    year +/-1, also in CORPUS_INDEX `[identity: ...]` notes; squashed title; Bruno/Brjuno-type
+    aliases). Required by `docs/notes/corpus-document-policy.md` before any wanted list goes to the
+    owner. Caught the held Bruno 1978, Henon 2001 and Rall 1969 (filed as "hollister-rall-1970").
+  - Offline tests in `tests/scripts/`; full `tests/scripts` green (241) on 2026-10-05.
+  - Policy: OCR digit-4 recipe, page-image rule for text-layer numbers, second-witness rule, Crossref
+    journal-match rule, full index filenames, identity notes.
+  - Open follow-up (lead item 4, 2026-10-05): index title-page fields (title-page author and title,
+    report/thesis number) matched by the checker.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
