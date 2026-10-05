@@ -1950,15 +1950,24 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - Fix: disambiguate by first initial or DOI before strong-linking, with a test pair of same-surname
     authors. Cost (GUESS): 0.5 agent-day.
 - `#962` — registered 2026-10-06 (from the 2026-10-05 papercut review; owner of the work:
-  ci-keeper-opus; in progress). **PRE-COMMIT HOOKS IN A SHARED CHECKOUT.** (a) The installed
+  ci-keeper-opus). **PRE-COMMIT HOOKS IN A SHARED CHECKOUT.** (a) The installed
   `.git/hooks/pre-commit` fails with "pre-commit not found" unless `.venv/bin` is on PATH; (b) the
   mypy hook (`uv run mypy src tests`, `pass_filenames: false`) fails on other agents' UNTRACKED files
   and blocks unrelated pathspec commits; make it check what the commit will contain without
   weakening what CI checks; (c) if possible, stop the stash-and-restore of other agents' unstaged
   edits. Papercuts: `docs/papercuts/processed/*precommit*` (three entries, one cause group).
+  **DONE 2026-10-06 (commit `009e6fa3`), (c) not fixable in config:** (b) the hook runs mypy on
+  `git ls-files -- "src/*.py" "tests/*.py"`, the file set CI checks out; a pathspec commit hands the
+  hook a temporary index of HEAD plus the committed paths, so other agents' untracked AND staged
+  files are excluded (checked: an untracked file with a type error no longer fails it, a staged
+  one does). (a) the installed hook carried a Linux clone's venv path; `uv run pre-commit install`
+  re-run in this clone (hooks are per clone), and the config's header says so; a plain
+  `git commit` now works without `.venv/bin` on PATH. (c) pre-commit always stashes unstaged
+  edits of tracked files so hooks see only the committed content, and has no switch for it; the
+  fix is per-agent worktrees, a team-practice decision for the lead.
 - `#963` — registered 2026-10-06 (from papercut
   `processed/2026-10-05-twobody-gen-opus-kepler-propagate-nonconvergence.md`; owner of the work:
-  ci-keeper-opus; in progress). **`core.kepler.propagate` RAISES `KeplerConvergenceError` ON AN
+  ci-keeper-opus). **`core.kepler.propagate` RAISES `KeplerConvergenceError` ON AN
   ORDINARY SINGLE-REV HELIOCENTRIC ARC** (elliptic, alpha > 0, 173 d of a 239 d period; reproducer
   in the papercut). Cause (diagnosed by `#939`): the orbit is near-radial (perihelion about 9e6 km),
   so f'(chi) = r is small near the first iterate and the unguarded Newton overshoots and diverges.
@@ -1966,6 +1975,22 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   test, then list the past negatives and results that may have hit `KeplerError`
   (17 `except Kepler*Error` sites in `src/` and `scripts/` treat it as "infeasible") for re-check,
   per the bug-fix rule.
+  **FIXED 2026-10-06 (commit `5c8acd2d`):** bracket-safeguarded Newton in `core/kepler.py` (oracle
+  and JIT core), `kepler_stm.shepperd_stm` now calls the same solver; regression tests in
+  `tests/core/test_kepler.py` (reproducer, an e = 0.9-0.9999 sweep against an independent
+  Kepler-equation solve, shepperd_stm). On 200,000 random heliocentric states the old code failed
+  on 107 (about 0.05 percent), the new on none; converged results are unchanged (192,777
+  bit-identical, the rest within 3e-11). **RE-CHECK LIST (open):** the error was swallowed, not
+  logged (no stored output under `data/` records it), so affected results cannot be found by
+  grep; the paths that turned it into a result are: `verify/propagate.py` (stability report with
+  zero laps and `stable=False`, so a V-tier gate FAIL), `verify/agreement.py` (agreement residual
+  inf, "unavailable"), `search/mga_dsm_placement.py` (placement rejected), `search/releg_solver.py`
+  and `search/dsm_leg.py` (candidate skipped: releg and DSM-closure negatives, the `#388` lane),
+  `search/fbs_optimize.py`, `search/fbs_optimize_flyby.py`, `search/lowthrust.py` (penalty point
+  that steers the optimiser away), `scripts/fbs_optimizer_fair_trial.py` (FD column skipped),
+  `viz/plots.py` (cosmetic). Re-check: re-run the stored V-gauntlet stability FAILs and the
+  `#388`/releg negatives that go through these paths; the frozen census ratchets in the full
+  suite are the first check.
 - `#965` — registered 2026-10-06 (owner of the work: twobody-gen-opus; not dispatched). **SELF-
   CONSISTENCY TEST FOR TRANSCRIBED SOURCE TABLES WITH REDUNDANT COLUMNS**, starting with Hollister &
   Menning 1970 Table 3: r_p = mu / V^2 (1 / sin(theta / 2) - 1) against the printed Rmin, so a
