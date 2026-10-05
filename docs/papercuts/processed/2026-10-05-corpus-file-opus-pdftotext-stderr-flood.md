@@ -7,3 +7,5 @@
 What happened: pdftotext on the Hollister-Menning 1970 and Campagnola 2019 AIAA PDFs flooded stderr with tens of thousands of warnings. That truncated the useful tool output and hid an error.
 Workaround: `2>/dev/null` on every pdftotext call.
 Suggested fix: note it in the corpus policy's tool line, or wrap pdftotext in a helper that discards those warnings.
+
+Disposition (main, 2026-10-05): Backlog: #964 (note in the corpus policy tool line). Known environment otherwise.

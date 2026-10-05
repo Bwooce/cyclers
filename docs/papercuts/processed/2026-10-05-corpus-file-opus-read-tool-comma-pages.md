@@ -7,3 +7,5 @@
 What happened: `pages: "9,12,18"` rendered page 9 only, and reported "1 page(s)" without an error.
 Workaround: one Read per page, or contiguous ranges.
 Suggested fix: harness should accept comma lists or refuse them.
+
+Disposition (main, 2026-10-05): Promoted: docs/team/coordination.md (Read `pages` takes one range, not a comma list). Known environment (harness).

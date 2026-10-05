@@ -7,3 +7,5 @@
 What happened: all six reader sub-agents ended without a SubagentHandback report; their output survived only because the brief made them write to scratch files incrementally. Passing `name` for a sub-agent was refused ("team roster is flat").
 Workaround: write-to-file-as-you-go in every sub-agent brief.
 Suggested fix: keep this in the team-lead brief template for any agent allowed to spawn.
+
+Disposition (main, 2026-10-05): Promoted: team-lead skill teammate-brief.md SUB-AGENTS line (write output to a file as you go), personal_scripts 2026-10-05.

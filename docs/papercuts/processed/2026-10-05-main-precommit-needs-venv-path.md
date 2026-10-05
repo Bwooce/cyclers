@@ -7,3 +7,5 @@
 What happened: the pre-commit hook calls `pre-commit`, which lives only in `.venv/bin`; a plain `git commit` in a fresh agent shell fails.
 Workaround: `PATH="$PWD/.venv/bin:$PATH" git commit ...`, written into every brief.
 Suggested fix: make the hook call `uv run pre-commit` (or the venv path) itself.
+
+Disposition (main, 2026-10-05): Backlog: #962. Cause group: pre-commit hook.

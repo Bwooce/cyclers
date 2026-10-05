@@ -36,3 +36,4 @@ Friction you work around goes in `docs/papercuts/YYYY-MM-DD-<agent-name>-<slug>.
 
 ## Lead address
 Teammates message the lead at `main`. Not "team-lead" (unread mailbox) and not the session name (refused).
+- The Read tool's `pages` takes one range ("9-12"), not a comma list: "9,12,18" silently returns page 9 only.
