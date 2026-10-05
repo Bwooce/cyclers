@@ -11,7 +11,7 @@ Files
 - `catalogue.yaml` — published-cycler seed catalogue with full attribution per spec.md §16. **Sole source of truth.** Edits go through the same process as code: change values, change source quotes, commit.
 - `OUTSTANDING.md` — long-form research questions / source-access gaps / paradigm-mismatch flags log. The YAML's per-entry `notes:` field handles short-form caveats; OUTSTANDING handles the discussion threads.
 
-**A note on numbers in this file.** Row counts, per-field backfill tallies, and "current only member" claims below are frequently labelled with the date they were true (e.g. "2026-06-05 backfill status", "Backfill stats (initial v2 rev, 2026-06-01)") — read those as point-in-time historical snapshots, not live figures; the catalogue has grown substantially since most of them were written (399 rows as of 2026-08-21, versus the 237 several older passages still cite). Where a passage states a count WITHOUT a date qualifier, treat it as similarly liable to have gone stale and re-derive it from `catalogue.yaml` directly (e.g. `python3 -c "import yaml; print(len(yaml.safe_load(open('catalogue.yaml'))))"`) rather than trusting the prose.
+**A note on numbers in this file.** Row counts, per-field backfill tallies, and "current only member" claims below are frequently labelled with the date they were true (e.g. "2026-06-05 backfill status", "Backfill stats (initial v2 rev, 2026-06-01)") — read those as point-in-time historical snapshots, not live figures; the catalogue has grown substantially since most of them were written (392 rows as of 2026-10-05 and 399 on 2026-08-21, versus the 237 several older passages still cite). Where a passage states a count WITHOUT a date qualifier, treat it as similarly liable to have gone stale and re-derive it from `catalogue.yaml` directly (e.g. `python3 -c "import yaml; print(len(yaml.safe_load(open('catalogue.yaml'))))"`) rather than trusting the prose.
 
 Conventions
 -----------
@@ -92,9 +92,9 @@ A second optional top-level field, `trajectory_regime:`, was added on
 2026-06-01 to make the *trajectory class* explicit:
 
 - `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
-  required to close the cycle. All but 3 of the catalogue's current 399 entries are ballistic
+  required to close the cycle. All but 3 of the catalogue's 392 entries (2026-10-05) are ballistic
   (the 2 powered Aldrin establishment variants + `lynam-longuski-2011-ieg-single-period`
-  excepted; re-verified live 2026-08-21, not a static count — query
+  excepted; re-verified live 2026-10-05, not a static count — query
   `trajectory_regime` directly rather than trusting this number as it ages).
 - `low-thrust` — requires continuous propulsion (Solar Electric, ion,
   nuclear electric, solar sail, etc.) over the transit legs to close.
@@ -176,7 +176,7 @@ the matcher's pool prefilter (before the per-signature distance
 calculation).
 
 **Default when absent:** `circular-coplanar`. Pre-v2 entries that
-predate this field (none currently — backfilled on all 237) should be
+predate this field (none currently — backfilled on all 237 entries of 2026-06) should be
 read as circular-coplanar.
 
 **Backfill stats (initial v2 rev, 2026-06-01):**
@@ -245,7 +245,7 @@ Per-encounter geometry parallel to the existing
   rp_km: 6578               # closest-approach radius from body center (= body radius + min altitude)
 ```
 
-`null` (or omitted) on most current 237 entries: while some Russell
+`null` (or omitted) on most entries (written when there were 237): while some Russell
 entries cite turning-angle multisets like `[93, 93]` deg in their
 notes, deriving per-encounter `turning_angle_deg` + `min_altitude_km`
 mechanically requires the bend formula `sin(δ/2) = 1 / (1 + r_p ·

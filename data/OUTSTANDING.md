@@ -51,11 +51,20 @@ first, so it cannot proceed until one of those three is greenlit and dispatched)
 was also found to cite a stale "237 entries" census (the live catalogue has 399 rows) — predates
 this session, flagged for a separate doc-freshness pass, not fixed as part of this targeted
 update's own scope.
+**Further targeted update 2026-10-05 (`#939`)** (NOT a full re-audit of `#858`-`#937`): the
+PRIORITY list statuses (`#866`, `#868`, `#869`, `#882`-`#887`) and the stale "NONE has been
+dispatched" / "Unpushed at wrap-up" lines corrected against the bullets and `git log`; header
+status of `#882`, `#886`, `#887`, `#897`, `#920` corrected (work had landed); `#906` text order
+repaired and its status (partly done under `#937`, owner ruling) recorded; `#938` and `#939`
+registered. The `data/README.md` stale counts above were fixed in the same pass (live catalogue:
+392 rows on 2026-10-05).
 
 **PRIORITY as of 2026-09-07 (post-`#864` wrap-up) — read this before anything else.** The standing
 roadmap is `docs/notes/2026-09-05-864-project-feasibility-future-review.md` (sec. 7 table + calendar,
 sec. 7a "Revised ranking (final synthesis)", sec. 8 do-not-do list, sec. 10 owner decisions). All of
-`#865`-`#875` are registered below with full specs; NONE has been dispatched. Verdict: ~70% chance of
+`#865`-`#875` are registered below with full specs. Status at the `#939` audit (2026-10-05): `#865`
+and `#875` done; `#869` done except its recurring literature watch; `#868` prerequisite reading in
+progress; `#866`, `#867`, `#870`-`#874` not dispatched. Verdict: ~70% chance of
 >=1 new cycler-class row at any tier in 12 weeks (mostly the two Neptune-Triton orbits already closed
 during the review), ~25-30% at V3+. The heliocentric ceiling is V3 this quarter (installed GMAT is a
 Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
@@ -70,14 +79,16 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
    rows, `our_status` + `discovery_run` on the 8 `source: discovered` rows, stamp the ~10 unstamped
    negatives, `#663` cross-ref on the `#600` stamp, stamp the VEM <=1-rev topology-gap invalidation
    of `#110`/`#120`/`#122`/`#133`, formally SHELVE `#789`, fix `#790`'s text, register G1.
-2. `#868` Neptune-Triton rows (week 1, ~1.5 days): CORRECTED recipe only (PRIMARY x=1.16933872
+2. `#868` Neptune-Triton rows (week 1, ~1.5 days; IN PROGRESS: Miceli 2024 read 2026-10-03, no
+   collision; the ESM-family check against the 2026 journal supplement is still open; no row yet): CORRECTED recipe only (PRIMARY x=1.16933872
    ydot0_sign=-1 hc=5; SECONDARY x=-1.38561105 ydot0_sign=+1 hc=4 — the hc=13/15 recipe returns
    0/6); ESM-family collision check FIRST; row-first writeback of the 4:5 saddle, Kumar-Anderson
    Oberon 4:5, Saturn-Titan 3:4 and the `#782` chain; V1.
-3. `#866` Jones VEM anchor to V3 (weeks 1-2, 2-4 days): seed `ballistic_correct` at the published
+3. `#866` Jones VEM anchor to V3 (weeks 1-2, 2-4 days; not dispatched as of 2026-10-05): seed `ballistic_correct` at the published
    dates with the multi-rev chains recorded in the bullet; V3 ceiling.
-4. `#869` corpus gap (UOP-era Uranian papers) — hard gate for `#870`; may turn `#870` into a
-   reproduction.
+4. ✓ DONE 2026-10-03 except the recurring fortnightly literature watch (next pass about
+   2026-10-17) — `#869` corpus gap (UOP-era Uranian papers) — hard gate for `#870`, now met (UOP
+   papers read, Uranian verdict unchanged; see the bullet's REMAINING list).
 5. `#871` charter + lint + registry tooling + detached supervisor (absorbs `#795`) — no campaign
    dispatch without a lint-passing charter.
 6. `#867` Jones itinerary-growth enumerator + excluded VEM classes — gated on `#866` and `#875`.
@@ -89,11 +100,14 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 10. Flex: shared node-locked inclined construction for Titan-Iapetus / Triton-Proteus.
 11. `#873`(a) make the V4 label honest (GMAT re-host -> tudatpy -> "V4-internal" relabel).
 12. `#873`(b,c) publication package (LICENSE, CITATION/DOI, Zenodo, preprint, outreach; weeks 9-12).
-12a. Registered 2026-10-04 from the literature intake, in estimated-probability order, none
-    dispatched: `#884` (which Earth-Moon cyclers survive the Sun, ~85%), `#885` (bridge from the
-    published Uranus tours into the quasi-cyclers, ~70%), `#886` (four-body torus connections,
-    ~50%, gated on `#882`), `#887` (three-moon Uranian quasi-cycler, ~30%). `#883` (knot-theory
-    control at the published energy) and `#882` (rebuild, in progress) sit beside them.
+12a. Registered 2026-10-04 from the literature intake, in estimated-probability order:
+    `#884` (which Earth-Moon cyclers survive the Sun, ~85%; its run was INVALID, wrong-sense Sun
+    (`#891`); rerun as `#905` in the corrected models, done 2026-10-05, no catalogue row), `#885`
+    (bridge from the published Uranus tours into the quasi-cyclers, ~70%; not dispatched), `#886`
+    (four-body torus connections, ~50%, gated on `#882`; part one done 2026-10-04, partly
+    reproduced), `#887` (three-moon Uranian quasi-cycler, ~30%; stage one go/no-go done
+    2026-10-04). `#883` (knot-theory control at the published energy; not dispatched) and `#882`
+    (rebuild done and reviewed 2026-10-04, Uranian object on HOLD, no row) sit beside them.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
     exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
@@ -103,8 +117,8 @@ VEM scan that enumerates <=1 revolution per leg; do NOT re-propose `#600`/`#663`
 `#563`-class sweeps, Titania-Oberon CCR4BP, or `#790` as registered (sec. 8). Disposition of the
 2026-08-21 "genuinely OPEN" list above: `#791` SHELVED 2026-08-22 (Fable, `d33c2771`); `#789`
 superseded by the `#859` pilot (harness built, Stage A NOT run) and formally SHELVED 2026-10-03
-under `#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. Unpushed at
-wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
+under `#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. The wrap-up
+commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-05, `#939`).
 
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
@@ -986,6 +1000,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   numbers of Sun periods, 5.000000 for the C32 member, and were re-integrated with the Sun's
   phase advancing; the rerun must show the same explicitly in the corrected model.)
 - `#906` — registered 2026-10-04. **HARDEN THE DEMANDED-TURN GATE.** (a) Refuse or flag inputs that
+  are not body-relative velocities (the error of Bolotin & MacKay 2000, corrected in MacKay
+  2005). (b) Treat a demanded turn of 0 or 180 degrees as not an encounter. (c) Wire the gate
+  into the scripts still on the capacity-only test (`titan_iapetus_corrector`,
+  `enumerate_600`, `scan_816` and the others listed in the `#888` wiring note). (d) Rerun
+  `run_330`, `run_566`, `run_574`, which were edited for the gate but not rerun; test the
+  inferred statement that 17 of the 22 `#574` branches are turn-infeasible.
   **Amendment to (b) from the Hitzl & Henon 1977 digest (2026-10-04):** do NOT implement "a turn
   near zero is not an encounter" with a loose tolerance. Of 160 non-degenerate critical
   generating orbits the digest recomputed, 64 demand under 2 degrees and 23 under 0.5 degrees;
@@ -995,12 +1015,12 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   and r_p / sqrt(mu), and the nearest low-order p/q, and never reject on those grounds alone.
   Also: at the Earth-Moon mass the first-order theory is outside its validity for most of these
   orbits (only 1 of 160 has its periapsis below 0.1 sqrt(mu)), so do not rank candidates by it.
-  are not body-relative velocities (the error of Bolotin & MacKay 2000, corrected in MacKay
-  2005). (b) Treat a demanded turn of 0 or 180 degrees as not an encounter. (c) Wire the gate
-  into the scripts still on the capacity-only test (`titan_iapetus_corrector`,
-  `enumerate_600`, `scan_816` and the others listed in the `#888` wiring note). (d) Rerun
-  `run_330`, `run_566`, `run_574`, which were edited for the gate but not rerun; test the
-  inferred statement that 17 of the 22 `#574` branches are turn-infeasible.
+  **OWNER RULING 2026-10-05 (recorded under `#937`):** a demanded turn near 180 degrees is a
+  REJECTION, not "not an encounter"; this overrides (b) for that case. (Text order repaired by
+  `#939`: the amendment above had been inserted inside the sentence of (a).)
+  **STATUS 2026-10-05: PARTLY DONE under `#937`** (`turn_gate.py` tri-state status with
+  "indeterminate"; (a) enforced inside the full-model adapter only). Still open: (a) for raw
+  `Encounter` vectors, the first-order validity numbers in the gate, (c) and (d).
 - `#907` — registered 2026-10-04. **`#895` FOLLOW-UPS BEFORE ANY ROW:** an adversarial review of
   `#895`; an external check in GMAT with unsoftened moons; a maintenance budget from a stated
   navigation model; the owner's ruling on class (`quasi_cycler`, returns demonstrated) and on
@@ -1202,7 +1222,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   reference-only or background-only were judged on their objects, not their methods. Each to
   be read for its method and given a verdict, with useful ones turned into proposals; appended
   to the `#897` note.
-- `#920` — registered and DISPATCHED 2026-10-04. **DIGESTS NEEDED BEFORE `#899` (P2) IS BUILT:**
+- `#920` — ✓ DONE 2026-10-04 (all four digests are in `docs/notes/`: `2026-10-04-digest-barrabes-gomez-2002-...`, `...-2003-...`, `2026-10-04-digest-casoliva-2008-aiaa-...`, `2026-10-04-digest-bolotin-2006-...`; checked by `#939`). **DIGESTS NEEDED BEFORE `#899` (P2) IS BUILT:**
   Barrabes & Gomez 2002 and 2003 (seed formulas; held but only mentioned in a lineage digest),
   the seed table of Casoliva et al. AIAA 2008-6434, and Bolotin 2006 (DCDS 14:235, received
   2026-10-04: general results for time-periodic Hamiltonian systems with a small Newtonian
@@ -1379,7 +1399,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   fractions match the printed 6.252003 to its digits but differ from the printed ellipse period
   5.89817010367 by 7.3e-10 at the 10th decimal, consistent with the digest's 9-figure note; that
   check is Kepler's third law on the derived initial conditions, not the propagator); `test_cr3bp_ks_stm.py` (P = 0 against `shepperd_stm` 6e-16 to 9.5e-14 and against
-  Deprit Tables I-II with b44 corrected 2e-15 to 6.6e-14; through q = 1e-2..1e-4 passes against
+  Deprit Tables I-II with b44 corrected 2e-15 to 6.6e-14 (its A(t0) B(t0) = I sanity check had an
+  absolute 1e-12 that the lunar case cannot meet in float64 and failed in CI from the start;
+  rescaled to 16 u |A||B| by `#939`, commit `3d46e1d5`); through q = 1e-2..1e-4 passes against
   finite differences of the KS flow 4e-10 and of the Cartesian flow 1.9e-9, 4.1e-8, 1.25e-6 (the
   Cartesian flow is the limit); symplectic in (x, p) to 3e-16 of |Phi|^2, det 1 to 1e-14,
   fibre-angle and gauge invariance 6e-15); `test_cr3bp_ks_orbit12i.py` (`#929` (b): the 12i
@@ -1690,6 +1712,25 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   `#448`; mark the empty-region entry superseded (ratchets that freeze its count will need the
   update, per the catalogue-edit rule). This is the bug-fix rule: buggy solvers produce false
   negatives AND false positives.
+- `#939` — registered and DISPATCHED 2026-10-05 (owner of the work: ci-keeper-opus). **CI GREEN +
+  PROJECT CONSISTENCY AUDIT.** CI on `main` failed in every run from `b849f1e9` (run 37220515039)
+  to `0ebb27eb` (run 37260624966) on two tests, both red from the commits that added them
+  (`e64b0803`, `05aa25a1`; checked in worktrees on this Mac, which is also the CI runner, so not a
+  platform effect). (1) `test_kepler_stm_against_deprit_closed_form[lunar pass]`: FIXED
+  (`3d46e1d5`); the A(t0) B(t0) = I check used an absolute 1e-12 but B holds an entry of 2.15e4
+  (storage alone u * 2.15e4 = 2.4e-12); now 16 u |A||B| elementwise (Higham 2002 eq. 3.13 plus
+  margin; measured 1.48 u |A||B|; the printed b44 slip gives 2e15 u |A||B|). (2)
+  `test_lc_propagator_matches_ks[73a]`: LC against KS 4 x 4 matrix 1.09e-7 against a 1e-7 bound.
+  Against an independent 34-digit mpmath Cartesian variational reference (float64 Cartesian
+  DOP853 agrees to 9e-12): KS error 2.0e-7, LC error 0.9e-7, end states 1e-11. Cause:
+  conditioning of the regularised fixed-time matrices on that arc (LC phi up to 4110, the
+  fixed-time correction cancels 713 against 703), about 3000x loss; tightening rtol does not fix
+  it robustly (scan 1.2e-8 to 8.7e-8 for 73a, and the 2-1b end state then exceeds 5e-11). Bound
+  change or an added Cartesian reference put to the lead for approval. (3) Consistency audit of
+  this file's PRIORITY list and the `#876`-`#937` bullets, `README.md`, `data/README.md`.
+- `#938` — registered and DISPATCHED 2026-10-05 (owner of the work: corpus-review-fable). **FABLE
+  CORPUS NOVEL-PATHS REVIEW**, read-only over the paper corpus; output
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md`. In progress.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
@@ -1742,7 +1783,8 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   full-model state was not made. **For the owner (`#906`):** a 180 degree demand is treated as a
   rejection (test `test_reversal_is_a_rejection_not_a_non_encounter`), against `#906`(b)'s "treat
   0 or 180 degrees as not an encounter"; the titania-oberon closing flyby demands 177.2 degrees at
-  2.16 km/s, which that rule would wave through. Needs a ruling. Still open in `#906`: (a) is
+  2.16 km/s, which that rule would wave through. Ruled 2026-10-05: a rejection (see the top of
+  this bullet). Still open in `#906`: (a) is
   enforced only inside the full-model adapter (raw `Encounter` vectors are not checked); the
   first-order validity numbers (mu |ln mu| / v^3, r_p / sqrt(mu)) for matched-expansion
   candidates are not built into the gate; (c) and (d) untouched.
@@ -1849,7 +1891,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   187A_t1 (two identical printed values, probably a misprint); the printed bicircular r_PS in
   the 2018 two-models paper (sign inconsistent with its own indirect term). Each to be
   resolved or left recorded; none blocks a result.
-- `#897` — registered and DISPATCHED 2026-10-04 (synthesis, most capable model). **OWNER: "I think
+- `#897` — ✓ DONE 2026-10-04 (synthesis, most capable model; note `docs/notes/2026-10-04-897-technique-synthesis-papers-to-problems.md`, proposals registered as `#913`-`#918`, section 8 added under `#919`). **OWNER: "I think
   you are missing the point of these papers if you only extract the constants? what about the
   knowledge and techniques being applied against our problem?"** Correct: today's use of the
   thirty-odd new papers was defensive (constants, model checks). `#897` is the other half: a
@@ -2801,7 +2843,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   smallest. The result exists for SOME delta-v; the open question is whether it is small
   enough to be worth a row (set the threshold before running). Not novel as a technique;
   the value is tying the six rows to the flagship mission design.
-- `#886` — registered 2026-10-04 (NOT dispatched; **gated on `#882` passing its positive
+- `#886` — registered 2026-10-04 (part one DONE 2026-10-04, see below; the rest **gated on `#882` passing its positive
   control**). **Discovery line 3 of 4; estimate about 50%, highest novelty value of the four.**
   FOUR-BODY TORUS CONNECTIONS AT MOON SYSTEMS. Nobody has published one: Kumar & Anderson (AAS
   24-288) "do not yet look at the heteroclinics ... in the CCR4BP"; Kumar (IAC-25-C1.9.6)
@@ -2819,7 +2861,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   **Risk:** the estimate is low because the rebuild is unproven and a transverse connection
   need not persist to the physical perturber mass; and the same group's ASC 2026 Titan-Rhea
   paper (title only, not obtained) shows they are moving this way.
-- `#887` — registered 2026-10-04 (NOT dispatched). **Discovery line 4 of 4; estimate about
+- `#887` — registered 2026-10-04 (stage one DONE 2026-10-04, see below; later stages not dispatched). **Discovery line 4 of 4; estimate about
   30%.** A THREE-MOON URANIAN QUASI-CYCLER. Liang et al. (JGCD 48(1), held) built
   Callisto-Ganymede-Europa triple cyclers with a strategy that does not need the Laplace
   resonance the earlier Io-Europa-Ganymede triple cyclers used ("the previous methods ... are
@@ -2908,7 +2950,7 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   digest first (in progress). The `#548` shelving stands until that control is run; `#534`,
   `#536` and `#546` remain method-invalid. Not a priority above `#882` and `#868`.
 - `#882` — registered 2026-10-03 (found by the adversarial review the owner asked for on the
-  Umbriel torus row; NOT dispatched; **this is a correctness defect in a catalogued row and in
+  Umbriel torus row; dispatched 2026-10-03, rebuild done and adversarially reviewed 2026-10-04, see the status paragraphs below; **this is a correctness defect in a catalogued row and in
   the CCR4BP connection search, so it outranks new discovery work on that lane**). Note:
   `docs/notes/2026-10-03-882-umbriel-torus-row-adversarial-review.md`.
   **Defect (verified in code and stored result):** `ccr4bp_manifold_globalize.manifold_state_at`
