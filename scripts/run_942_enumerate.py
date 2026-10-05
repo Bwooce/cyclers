@@ -4,6 +4,7 @@ Cells (circular-coplanar ideal model):
   ev  Earth-Venus, both massive              (#942 cell b; Venus 0.61520 yr)
   em  Earth-Mars, both massive               (#942 cell a; Mars 1.875 yr, Russell)
   vm  Venus-Mars, Mars massless              (#942 cell c; R-S 2007 Table 2 constants)
+  vm2 Venus-Mars, both massive               (#942 cell c, two working bodies; same constants)
   gc  Ganymede-Callisto, both massive        (#943 X1; R-S 2009 Table 2 constants)
   ge  Ganymede-Europa, both massive          (#943 X1)
   gc1 / ge1  the one-body limits (Callisto / Europa massless), recall controls
@@ -73,7 +74,7 @@ def rs_moon_system(moons: list[str], massless: list[str]) -> CircularSystem:
     return CircularSystem(mu, bodies, frozenset(massless), flyby_overrides=over)
 
 
-def rs2007_venus_mars() -> CircularSystem:
+def rs2007_venus_mars(*, mars_massless: bool = True) -> CircularSystem:
     """Venus-Mars ideal model with Russell & Strange 2007 (AAS 07-118) Table 2
     constants (p.8): Sun mu 1.3271244e11, Venus period 19,414,153 s, Mars
     59,354,429 s, Venus mu 324,860 and radius 6,052 km; Mars massless. The
@@ -84,8 +85,12 @@ def rs2007_venus_mars() -> CircularSystem:
         bodies[c] = ((mu * (per / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0), per, 0.0)
     from cyclerfinder.verify.turn_gate import body_constants
 
-    over = {"V": FlybyBody("V", 324_860.0, 6052.0, body_constants("V").alt_floor_km)}
-    return CircularSystem(mu, bodies, frozenset({"M"}), flyby_overrides=over)
+    over = {
+        "V": FlybyBody("V", 324_860.0, 6052.0, body_constants("V").alt_floor_km),
+        "M": FlybyBody("M", 42_828.3, 3399.0, body_constants("M").alt_floor_km),
+    }
+    massless = frozenset({"M"}) if mars_massless else frozenset()
+    return CircularSystem(mu, bodies, massless, flyby_overrides=over)
 
 
 def cell_system(cell: str) -> tuple[CircularSystem, str, str]:
@@ -95,6 +100,8 @@ def cell_system(cell: str) -> tuple[CircularSystem, str, str]:
         return heliocentric_circular({"E": 1.0, "M": 1.875}), "E", "M"
     if cell == "vm":
         return rs2007_venus_mars(), "V", "M"
+    if cell == "vm2":
+        return rs2007_venus_mars(mars_massless=False), "V", "M"
     if cell == "gc":
         return rs_moon_system(["Ganymede", "Callisto"], []), "Ganymede", "Callisto"
     if cell == "ge":
@@ -129,6 +136,12 @@ def main() -> None:
     ap.add_argument("--transfer-revs", type=str, default="0")
     ap.add_argument("--generic-revs", type=str, default="1")
     ap.add_argument("--visits", type=int, default=1)
+    ap.add_argument(
+        "--resonant-only",
+        type=str,
+        default="",
+        help="comma list of bodies whose returns are full-revolution (n:m resonant) only",
+    )
     ap.add_argument("--n-phase", type=int, default=24)
     ap.add_argument("--n-split", type=int, default=10)
     ap.add_argument("--n-refine", type=int, default=60)
@@ -149,7 +162,15 @@ def main() -> None:
     if system.body(b).massless:
         mb = 0
     generic = tuple(int(v) for v in args.generic_revs.split(","))
-    spec = {c: CatalogueSpec(generic_revs=generic) for c in (a, b)}
+    res_only = {c for c in args.resonant_only.split(",") if c}
+    spec = {
+        c: (
+            CatalogueSpec(half_revs=(), generic_revs=())
+            if c in res_only
+            else CatalogueSpec(generic_revs=generic)
+        )
+        for c in (a, b)
+    }
     t_revs = tuple(int(v) for v in args.transfer_revs.split(","))
     ks = [int(v) for v in args.k.split(",")]
     shard_i, shard_n = (int(v) for v in args.shard.split("/"))

@@ -406,15 +406,66 @@ GanCal#1 contains a resonant f(2:1) leg, so its 247 km altitude also checks the 
 convention against a published value. VenMar#45's published minimum distance (108,067,501 km) is the
 conic's perihelion, which the leg does not pass; ours is the along-leg minimum.
 
-## 6. Enumeration (PENDING)
+## 6. Enumeration: PRE-REGISTRATION (owner ruling "search where controls pass", 2026-10-06)
 
-Settings and pruning (first pass):
-- ev and em: <= 2 returns per block, 0-rev transfers, generic 1-rev.
-- vm: <= 3 Venus returns, transfers 0-1 rev, generic 1-2.
-- gc and ge: <= 1 return per block, transfers 0-2 rev, generic 1-2.
-- k = 1-3 in every cell.
-- Catalogue: resonances (1:1, 2:1, 1:2, 3:2, 2:3); half-revs (1, 0, peri/apo), (3, 1, peri/apo);
-  generic n-rev, low and high.
+Written and committed before any production run. Code: `scripts/run_942_enumerate.py` (sharded,
+resumable, progress and ETA per structure) and `scripts/analyse_942_enumeration.py`.
+
+### 6.1 Common settings (every cell)
+- Ideal model: circular coplanar.
+  - Heliocentric cells: R-S 2007 Table 2 constants for Venus-Mars; Venus 0.61520 yr for Earth-Venus;
+    Mars 1.875 yr for Earth-Mars.
+  - Jovian cells: R-S 2009 Table 2 constants.
+- Return catalogue per body:
+  - resonant n:m in {1:1, 2:1, 1:2, 3:2, 2:3}.
+  - half-rev (1, 0, peri/apo) and (3, 1, peri/apo), both mirror signs.
+  - generic same-body Lambert legs (revs as stated per cell, both branches).
+- Structures: [A-block, A->B, B-block, B->A], one visit per cycle, period k synodic periods.
+- Seeds: n_phase 36, n_split 12, n_refine 40, spread across basins (min separation 0.03 T).
+  These are the settings at which every recall control in secs. 4-5 passed.
+- Zero: max |residual| < 1e-8 km/s (exact zero; candidates are held to exact closure, not to H&M's
+  0.005-EMOS tolerance).
+- Free directions: minimax of demanded/available turn, with the even-spread tie-break.
+- Gate at every massive flyby: #888/#937 demanded-turn gate (`verify/turn_gate.py`, tri-state), at the
+  registry floors. Earth 200 km, Venus 300 km, Mars 200 km, Ganymede and Europa 100 km, Callisto 200 km.
+- Near-180 rule: a demanded turn >= 175 deg is a rejection (PROVISIONAL; owner ruling #937/#906 gives
+  no number). Every zero stores its largest demanded turn.
+- PASS (a "gate-passing zero"):
+  - exact zero.
+  - gate status "pass" at every massive flyby ("indeterminate" is reported separately and is NOT a
+    pass).
+  - no near-180 demand.
+  - independent re-propagation miss < 1 km at every encounter (far inside every SOI).
+- Dedupe (analysis script): two zeros are the same physical cycler when the cyclic sequence of massive
+  flybys (body, V_inf to 1 m/s, turn to 0.1 deg) agrees up to rotation. Mirror (time-reversed) twins
+  are merged and flagged. Split labels of one conic at a massless target collapse automatically.
+- A gate-passing physical cycler is only "candidate, pending gauntlet". The gauntlet:
+  - collision with Hollister-Menning (15 rows plus 1H-3H), Rall 1969 / Rall-Hollister 1971 (M4-1, M5-1,
+    M5-2), R-S 2007/2009 (all rows incl. VenMar#45, EurGan, GanEur, GanCal), Campagnola 2019 GCGC,
+    Jones 2017 and the catalogue (`our_status`).
+  - `literature_check.py`.
+  - an independent cross-check (re-solve by a different code path).
+  - SOI self-consistency at every encounter.
+  - No catalogue writes.
+
+### 6.2 Cells, in launch order
+
+| # | Cell | Bodies (massive) | k | Returns per block (A,B) | Transfer revs | Generic revs | Structures | In-run recall control |
+|---|---|---|---|---|---|---|---|---|
+| 1 | vm (R1(c), one working body) | Venus; Mars massless | 1-3 | 3, 0 | 0-1 | 1-2 | 14,044 | VenMar#45 at k = 2 must appear as a gate-passing cycler, else the run is void |
+| 2 | vm2 (R1(c), two working bodies) | Venus, Mars | 1-3 | 3, 0 (Mars bends at pass-through only) | 0-1 | 1-2 | to be counted before launch | the vm2 zeros with zero Mars turn must coincide with vm cyclers |
+| 3 | gc (X1) | Ganymede, Callisto | 1-3 | 1, 1 | 0-2 | 1-2 | 4,043 | gc1 recall of GanCal#1/#5 (passed, sec. 5) re-run as a slice; GCGC (Campagnola 2019, V_inf 3.5/4.5 km/s) as a geometry check |
+| 4 | ge (X1) | Ganymede, Europa | 1-3 | 1, 1 | 0-2 | 1-2 | 5,533 | ge1 recall of GanEur#5/#43 (passed, sec. 5) |
+| 5 | ev (R1(b)) | Earth, Venus | 1-3 | 2, 2; EARTH returns full-revolution only (`--resonant-only E`) | 0 | 1 | to be counted | Hollister 1H and 2H topologies must appear |
+| 6 | em (R1(a)) | Earth, Mars | 1-3 | 2, 2 | 0 | 1 | to be counted | every candidate compared with Rall's families |
+
+Notes on the cells:
+- Earth-symmetric families (orbits 3-8 type) are excluded from ev by `--resonant-only E`, per the owner
+  ruling.
+- Empty-cell stamps go to `data/empty_regions.jsonl` with these exact settings as the method scope.
+- Workers: 2 shards per cell (`--shard 0/2`, `1/2`), launched by the lead.
+- Timing pilot for vm: 2.8 s per structure (20-structure k = 3 sample). Serial about 11 h; about 5.5 h
+  on 2 workers, longer under load.
 
 ## 7. Literal-collision checks (to be completed per candidate)
 
