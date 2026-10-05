@@ -1691,7 +1691,9 @@ wrap-up: this session's commits on `main` (`ec088b01` + the wrap-up commit).
   update, per the catalogue-edit rule). This is the bug-fix rule: buggy solvers produce false
   negatives AND false positives.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
-  WITHDRAWAL STANDS.** (b) The review's "32.1 demanded against 19.1" is the angle between two
+  WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
+  Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
+  this overrides `#906`(b)'s proposal for that case. (b) The review's "32.1 demanded against 19.1" is the angle between two
   Moon-relative velocities expressed in the ROTATING axes at sphere entry and exit (the axes turn
   13.2 degrees per day; the 7-3b pass spends 1.04 days inside 66,100 km), compared with the
   osculating hyperbola's turn at the pass radius instead of the bend at the 100 km floor. All six of
