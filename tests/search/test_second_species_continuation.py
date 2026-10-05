@@ -14,6 +14,7 @@ import math
 import numpy as np
 import pytest
 
+from cyclerfinder.core.cr3bp import CR3BPSystem, propagate
 from cyclerfinder.core.cr3bp_ks import MoonCentredCR3BP, propagate_ks
 from cyclerfinder.search import earth_moon_resonant_families as emrf
 from cyclerfinder.search import second_species_continuation as ssc
@@ -28,6 +29,17 @@ def _ks(mu: float, st4: np.ndarray, t: float) -> tuple[np.ndarray, np.ndarray, n
     assert arc.stm is not None
     end = np.array([arc.state[0], arc.state[1], arc.state[3], arc.state[4]])
     return end, arc.stm[np.ix_(_PLANAR, _PLANAR)], arc.stm[np.ix_([2, 5], [2, 5])], arc.r_min
+
+
+def _cartesian_stm(mu: float, st4: np.ndarray, t: float) -> tuple[np.ndarray, np.ndarray]:
+    """Planar 4 x 4 and vertical 2 x 2 transition matrices from the unregularised Cartesian
+    variational equations (``core.cr3bp.propagate``), formed without the regularised fixed-time
+    cancellation."""
+    s6 = np.array([st4[0], st4[1], 0.0, st4[2], st4[3], 0.0])
+    system = CR3BPSystem(mu=mu, primary="primary", secondary="secondary", l_km=1.0, t_s=1.0)
+    arc = propagate(system, s6, t, with_stm=True, rtol=1e-13, atol=1e-15)
+    assert arc.stm is not None
+    return arc.stm[np.ix_(_PLANAR, _PLANAR)], arc.stm[np.ix_([2, 5], [2, 5])]
 
 
 @pytest.mark.parametrize(
@@ -46,15 +58,30 @@ def _ks(mu: float, st4: np.ndarray, t: float) -> tuple[np.ndarray, np.ndarray, n
     ],
 )
 def test_lc_propagator_matches_ks(mu: float, state: np.ndarray, t: float) -> None:
-    # both at rtol 1e-13: at 1e-12 each integrator alone is off by up to 1.5e-9 over the 73a
-    # arc (measured against its own 1e-14 run), and the two then differ at that level
+    # All three propagators at rtol 1e-13, atol 1e-15. The 4 x 4 matrix bounds come from an
+    # independent reference on the 73a arc: the Cartesian variational equations integrated by
+    # mpmath's Taylor method at 28 and 34 digits (the two agree to float64). Against it, at
+    # these tolerances: LC 0.91e-7, KS 2.0e-7, Cartesian DOP853 (core.cr3bp) 5.3e-11, relative
+    # to the largest entry (9.97); end states LC 2.6e-12, KS 1.4e-11. The regularised matrices
+    # lose about 3000x on this arc: LC's 6 x 6 phi reaches 4110, phi @ (lift Jacobian) about
+    # 3e4 before it cancels to 325, and the fixed-time correction then cancels 713 against
+    # 703 to leave 10. The Cartesian matrix has no such step. So LC is held to the Cartesian
+    # matrix at 2e-7 (measured 9.1e-8 for 73a, 4.0e-9 for 2-1b, 2.1e-11 for 32a) and to KS at
+    # 5e-7 (the sum of both errors, 2.9e-7, with margin). Tightening rtol does not help
+    # robustly: from 2.3e-14 to 5e-14 the 73a LC-KS difference wanders over 1.2e-8 to 8.7e-8.
+    # Vertical (z, vz) block, same 34-digit reference extended to it, 73a: LC 2.2e-13, KS
+    # 2.95e-9, Cartesian 2.7e-12 (largest entry 0.86). LC is held to the Cartesian block at
+    # 1e-9 (measured 1.6e-13, 1.8e-11 for 2-1b, 8.8e-12 for 32a) and to KS at 1e-8.
     arc = propagate_lc(mu, state, t, rtol=1e-13, atol=1e-15)
     end, m4, mz, r_min = _ks(mu, state, t)
+    m4_cart, mz_cart = _cartesian_stm(mu, state, t)
     assert arc.stm4 is not None
     assert arc.stm_z is not None
     assert np.max(np.abs(arc.end - end)) < 5e-11
-    assert np.max(np.abs(arc.stm4 - m4)) / np.max(np.abs(m4)) < 1e-7
-    assert np.max(np.abs(arc.stm_z - mz)) / np.max(np.abs(mz)) < 1e-9
+    assert np.max(np.abs(arc.stm4 - m4_cart)) / np.max(np.abs(m4_cart)) < 2e-7
+    assert np.max(np.abs(arc.stm4 - m4)) / np.max(np.abs(m4)) < 5e-7
+    assert np.max(np.abs(arc.stm_z - mz_cart)) / np.max(np.abs(mz_cart)) < 1e-9
+    assert np.max(np.abs(arc.stm_z - mz)) / np.max(np.abs(mz)) < 1e-8
     assert abs(arc.r_min - r_min) / r_min < 1e-9
     assert abs(arc.jacobi_drift) < 5e-11
 
