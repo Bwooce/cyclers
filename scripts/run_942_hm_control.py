@@ -57,6 +57,8 @@ from pathlib import Path
 import numpy as np
 
 from cyclerfinder.core.constants import SECONDS_PER_DAY
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.hollister_menning_1970 import (
     Row,
     build_cycle,
@@ -200,6 +202,18 @@ def main() -> None:
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     lo, hi = (int(v) for v in args.orbits.split("-"))
+    preflight_search(
+        task_no=942,
+        region_id="hollister-menning-1970-table3-positive-control",
+        method=MethodCapability(
+            genome="Hollister-Menning Earth-Venus periodic swing-by chains (Table 3 structures)",
+            corrector="two_working_body.correct_dates (H&M date residual, least squares)",
+            capability_tags=frozenset({"ballistic", "patched-conic", "3d", "inclined-elliptic"}),
+            git_sha="working-tree",
+        ),
+        script_path=Path(__file__),
+        n_points=hi - lo + 1,
+    )
     system = (
         MeanElementSystem(periods_days={"E": 5844.0 / 16, "V": 5844.0 / 26}, anchor_jd=2443363.0)
         if args.periodic

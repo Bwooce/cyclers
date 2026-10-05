@@ -30,6 +30,8 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
     Cycle,
@@ -134,6 +136,12 @@ def main() -> None:
     ap.add_argument("--sample", type=int, default=0)
     ap.add_argument("--seed", type=int, default=942)
     ap.add_argument("--shard", type=str, default="0/1")
+    ap.add_argument(
+        "--timing-pilot-s",
+        type=float,
+        default=None,
+        help="measured seconds per structure from a --sample pilot (preflight gate)",
+    )
     args = ap.parse_args()
 
     system, a, b = cell_system(args.cell)
@@ -170,6 +178,26 @@ def main() -> None:
     log(f"total to run: {len(todo)} (shard {shard_i}/{shard_n})")
     if args.count_only:
         return
+    preflight_search(
+        task_no=943 if args.cell.startswith("g") else 942,
+        region_id=(
+            f"{args.cell}-two-working-body-ideal-k{args.k.replace(',', '-')}"
+            f"-ret{args.max_returns.replace(',', '-')}-tr{args.transfer_revs.replace(',', '-')}"
+            f"-gen{args.generic_revs.replace(',', '-')}-v{args.visits}"
+        ),
+        method=MethodCapability(
+            genome=(
+                "two-working-body cycle templates [A-block, A->B, B-block, B->A] x visits: "
+                "full-rev n:m, half-rev n-pi and generic returns; Lambert transfers"
+            ),
+            corrector="two_working_body.correct_dates (date residual) + minimax turn gate",
+            capability_tags=frozenset({"ballistic", "coplanar", "patched-conic", "circular"}),
+            git_sha="working-tree",
+        ),
+        script_path=Path(__file__),
+        n_points=len(todo),
+        timing_pilot_seconds_per_point=args.timing_pilot_s,
+    )
 
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "settings.json").write_text(

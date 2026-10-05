@@ -11,9 +11,10 @@ Venus returns is full-revolution (225 d) or symmetric (about 330 d).
 
 Read errors and print errors
 ----------------------------
-* TRANSCRIPTION ERRORS (checked against the page image, 2026-10-05): orbit 1,
-  row 12 is printed "E 3163" (the YAML has planet V); orbit 6, row 3 is printed
-  "995" (the YAML has 993). :func:`load_table3` corrects both.
+* The YAML was corrected to the print on 2026-10-05 (30 cells, including
+  orbit 1 row 12 planet E and orbit 6 row 3 date 995; see
+  ``docs/notes/2026-10-05-hollister-menning-1970-table3-recheck.md`` and the
+  Menning 1968 thesis). Values are read as stored.
 * PRINT ERRORS in the paper (the YAML matches the print): dates that break the
   225-d Venus full-revolution step, namely orbit 2 "5715" (5590 + 225 = 5815),
   orbit 4 "2573" (2358 + 225 = 2583), orbit 5 "5662" (5877 - 225 = 5652),
@@ -21,8 +22,7 @@ Read errors and print errors
   the next Earth date 2716), orbit 8 "4870" (5645 + 225 = 5870). The block TYPE
   is unambiguous in each case; dates reached through full-revolution legs are
   computed from the block start, so these printed dates are never used.
-* Orbit 13 prints V_r 0.129 and 0.124 for the first Earth pair, and orbit 15's
-  date span is 5843 d; both kept as printed.
+* Orbit 15's date span is 5843 d; kept as printed.
 """
 
 from __future__ import annotations
@@ -56,13 +56,6 @@ PERIOD_DAYS = 5844.0
 _VENUS_TYPE_OVERRIDE: dict[tuple[int, int], str] = {(2, 4): "FS", (6, 1): "FF", (8, 4): "FF"}
 
 
-#: (orbit, row index) -> (planet, date) in the YAML, (planet, date) on the page
-#: image (checked at 200 and 450 dpi, 2026-10-05).
-_TRANSCRIPTION_FIXES: dict[tuple[int, int], tuple[str, float, str, float]] = {
-    (1, 11): ("V", 3163.0, "E", 3163.0),
-    (6, 2): ("V", 993.0, "V", 995.0),
-}
-
 #: Print errors inferred from the block structure (the page shows the left value).
 #: Orbit 5 block 1 prints V 977, 1242, 1467: a 265-d first gap is too short for a
 #: symmetric return at the printed V_r (the Lambert residual at the printed dates
@@ -91,7 +84,7 @@ class Row:
 
 
 def load_table3(path: Path = TABLE3_PATH) -> dict[int, list[Row]]:
-    """Table 3 rows per orbit, with the transcription and inferred print fixes applied."""
+    """Table 3 rows per orbit, with the inferred print-error date fixes applied."""
     data = yaml.safe_load(path.read_text())
     out: dict[int, list[Row]] = {}
     for o in data["orbits"]:
@@ -105,9 +98,7 @@ def load_table3(path: Path = TABLE3_PATH) -> dict[int, list[Row]]:
             )
             for e in o["encounters"]
         ]
-        for (orb, i), (pl_old, d_old, pl_new, d_new) in (
-            _TRANSCRIPTION_FIXES | _PRINT_ERROR_FIXES
-        ).items():
+        for (orb, i), (pl_old, d_old, pl_new, d_new) in _PRINT_ERROR_FIXES.items():
             if o["orbit"] == orb and (rows[i].planet, rows[i].date) == (pl_old, d_old):
                 r = rows[i]
                 rows[i] = Row(pl_new, d_new, r.vr_emos, r.theta_deg, r.rmin_radii)
