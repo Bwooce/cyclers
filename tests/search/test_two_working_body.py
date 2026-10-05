@@ -27,6 +27,7 @@ from cyclerfinder.search.two_working_body import (
     correct_dates,
     cycle_flybys,
     encounter_self_consistency,
+    eval_lambert_legs,
     half_rev_arrival,
     half_rev_vectors,
     heliocentric_circular,
@@ -344,3 +345,38 @@ def test_r1c_one_body_control_venmar45_through_the_enumerator() -> None:
         assert ass.report is not None
         assert ass.report.gate.min_required_alt_km == pytest.approx(19_784.0, abs=2.0)
         assert ass.r_max_km == pytest.approx(341_571_371.0, rel=1e-5)
+
+
+def test_menning_turn_rule_has_the_minimax_largest_turn() -> None:
+    """Menning 1968 secs. 4.21-4.22 select, among the cone vectors, a set whose
+    largest turn is the minimax one; only the inner turns may differ."""
+    from cyclerfinder.search.two_working_body import _blocks, menning_block, optimise_block
+    from cyclerfinder.search.two_working_body_enum import solve_structure
+
+    s = heliocentric_circular({"E": 1.0, "V": 0.61520})
+    syn = s.synodic_s("E", "V")
+    cyc = Cycle(
+        (
+            ResonantLeg("E"),
+            LambertLeg("E", "V"),
+            ResonantLeg("V"),
+            ResonantLeg("V"),
+            LambertLeg("V", "E"),
+        ),
+        2 * syn,
+    )
+    zs = solve_structure(s, cyc, phase_period_s=syn, n_phase=36, n_split=12, n_refine=40)
+    n_checked = 0
+    for z in zs:
+        legs = eval_lambert_legs(s, cyc, z.x)
+        assert legs is not None
+        for blk in _blocks(s, cyc, legs):
+            fm = menning_block(s, blk)
+            fo = optimise_block(s, blk)
+            if fm is None or fo is None:
+                continue
+            assert max(f.turn_deg for f in fm) == pytest.approx(
+                max(f.turn_deg for f in fo[0]), abs=0.05
+            )
+            n_checked += 1
+    assert n_checked >= 4

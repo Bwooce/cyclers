@@ -126,6 +126,56 @@ Reading:
 - The control is FROZEN. A further model change chosen by match would be tuning.
 - The open discrepancy goes to the lead and owner.
 
+### 3.3 Amendment 3, 2026-10-05, written and committed BEFORE the re-run
+
+Context: the table was corrected to the print (commit 259efc0d, 30 cells). The re-run with
+amendments 1-2 gave 6/15 on the exact-periodicity model and 0/15 on real periods.
+
+Then I read Menning 1968 (MIT S.M. thesis): ch. 1, ch. 3, ch. 4 pp.17-25, ch. 5 pp.29-31, p.33, p.44 and
+A-1/A-2. I also read Hollister 1969 (JSR 6(4) pp.366-369) and the H&M 1970 text (pp.1194-1195).
+
+**Which model Table 3 was computed in (sources):**
+- H&M 1970 p.1194: "inclined elliptic case"; "the error made by assuming exact periodicity of the solar
+  system is of the same order of magnitude as [the patched conic model]".
+- Menning p.30: "For the inclined elliptic case, Earth and Venus repeat their absolute orientation to
+  within several degrees every 16 years" (his ref. 12, Gillespie & Ross 1966).
+- Hollister 1969 p.366: the 32-yr (and 8-yr) resonances hold "to within a few degrees". The general
+  case is "eccentric and inclined".
+- No source gives the planetary elements or periods used.
+
+Reading: real (non-commensurate) inclined-elliptic planet orbits. The exact periodicity is assumed only
+when the 16-yr cycle is closed (last date = first + 5844 d). So our REAL-PERIOD model (stage 1) is the
+sourced one, and its result is the honest headline. The exact-periodicity model (stage 2) is our choice.
+
+Unexplained data point, not a source: 129 of the 130 printed Venus full-revolution steps are exactly
+225 d (the other is 224 d). A 224.70-d period would print about 30 % 224-d steps, and 224.77 d about
+23 %. So their effective Venus full-revolution time was close to 225.0 d. Neither model explains this.
+I do NOT adopt it, because it was inferred from the table being matched.
+
+**Every difference between our model and theirs:**
+
+| # | Item | Theirs (cite) | Ours before amendment 3 | Amendment 3 |
+|---|---|---|---|---|
+| D1 | Planet elements | inclined, elliptic; values not stated (Menning p.30; Hollister 1969 p.366) | Standish & Williams J2000 mean elements, fixed | unchanged (no source) |
+| D2 | Periodicity | real orbits, cycle closed at +5844 d (H&M p.1194; Menning p.30) | stage 1 real; stage 2 commensurate 5844/16, 5844/26, anchor JD 2443363 | both still reported; stage 1 is the headline |
+| D3 | Full-revolution circle | spacecraft heliocentric speed equals the planet's, \|v_sc\| = \|V_P\| (Menning p.18) | vis-viva with a from the model period (differs only in stage 2, by a few m/s) | \|v_sc\| = \|V_P\| for every 1:1 return |
+| D4 | Turn selection | cone-vector rules, secs. 4.21 (one return) and 4.22 (two returns), pp.22-25 | global minimax plus an even-spread tie-break | Menning's rules for blocks of 1-2 full-revolution returns (`menning_block`); same largest turn, different inner turns |
+| D5 | Symmetric return | conventional transfer plus one revolution, Eq. (3.6); the root that is not the planet's own orbit (pp.12-15) | 1-rev Lambert, branch chosen by the residual at the printed dates | unchanged; the chosen branch is never the planet-orbit root (that root has V_inf near 0) |
+| D6 | Convergence | assumed at summed \|delta V_r\| = 0.005 EMOS (Menning p.33; H&M p.1195) | exact zero (max residual < 1e-9 km/s) | summed \|residual\| at the least-squares minimum <= 0.005 EMOS |
+| D7 | Flyby constants (mu, radius, EMOS) | not stated | registry; EMOS 29.785 km/s | unchanged |
+| D8 | Patched conic, hyperbola time ignored, planet-centre ellipses | Menning pp.4-5 | same | - |
+| D9 | Acceptance floor | 1.1 radii (Menning p.6) | not part of the match test | - |
+
+Pass rule unchanged: >= 0.90 of the 25 encounters within all four pre-registered tolerances (date 3 d,
+V_r 0.005 EMOS, theta 3 deg, Rmin 10 %). D6 replaces only the "exact zero" requirement.
+
+Reported side by side:
+- raw.
+- source-consistent rows only. These are rows whose own printed (V_r, theta, Rmin) agree with the
+  flyby formula; orbit 14's three inconsistent rows can never pass.
+
+One re-run per model (real periods = headline; exact periodicity = secondary).
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):

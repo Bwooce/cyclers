@@ -80,6 +80,8 @@ DAY = SECONDS_PER_DAY
 F_TOL_EMOS = 0.006
 C_TOL = {"date": 3.0, "vr": 0.005, "theta": 3.0, "rmin_rel": 0.10}
 PASS_FRAC = 0.90
+#: Menning 1968 p.33: convergence assumed at summed |delta V_r| = 0.005 EMOS.
+HM_TOL_EMOS = 0.005
 #: Table 2, orbit 1H (inclined-elliptic approximation, p.1195).
 TABLE2_1H = [
     441,
@@ -199,6 +201,12 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--orbits", type=str, default="1-15")
     ap.add_argument("--periodic", action="store_true")
+    ap.add_argument(
+        "--amendment3",
+        action="store_true",
+        help="Menning 1968 turn rules (secs. 4.21-4.22) and convergence at summed "
+        "|delta V_r| <= 0.005 EMOS (thesis p.33); see the results note sec. 3.3",
+    )
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     lo, hi = (int(v) for v in args.orbits.split("-"))
@@ -233,7 +241,9 @@ def main() -> None:
         sol = correct_dates(system, cyc, x0)
         # Compared at the least-squares point even when it is not an exact zero
         # (reported separately; the pass needs ``converged``).
-        fl = cycle_flybys(system, cyc, sol.x)
+        fl = cycle_flybys(
+            system, cyc, sol.x, convention="menning1968" if args.amendment3 else "minimax"
+        )
         cmp_a = compare(system, rows, fl, 5844.0) if fl else []
         for e in cmp_a:
             e["source_consistent"] = source_consistent(system, e)
@@ -262,7 +272,14 @@ def main() -> None:
             "max_date_shift_d": float(np.max(np.abs(sol.x - x0)) / DAY),
             "self_consistency_miss_km": miss,
             "frac_encounters_within_tol": frac_a,
-            "control_pass": bool(sol.converged and frac_a >= PASS_FRAC),
+            "control_pass": bool(
+                (hm_sum_abs_emos <= HM_TOL_EMOS if args.amendment3 else sol.converged)
+                and frac_a >= PASS_FRAC
+            ),
+            "posthoc_pass_source_consistent": bool(
+                (hm_sum_abs_emos <= HM_TOL_EMOS if args.amendment3 else sol.converged)
+                and frac_cons >= PASS_FRAC
+            ),
             "hm_sum_abs_residual_emos": hm_sum_abs_emos,
             "hm_tolerance_met": hm_sum_abs_emos <= 0.005,
             "n_source_inconsistent_rows": len(cmp_a) - len(cons),
@@ -302,7 +319,8 @@ def main() -> None:
         )
     )
     n_pass = sum(v["control_pass"] for v in summary.values())
-    log(f"DONE control_pass {n_pass}/{len(summary)}")
+    n_pc = sum(v["posthoc_pass_source_consistent"] for v in summary.values())
+    log(f"DONE control_pass {n_pass}/{len(summary)}; source-consistent rows {n_pc}/{len(summary)}")
 
 
 if __name__ == "__main__":

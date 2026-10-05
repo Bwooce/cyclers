@@ -472,12 +472,18 @@ def resonant_circle(
     """
     r, w = system.state(leg.body, t_s)
     rn = float(np.linalg.norm(r))
-    a_body = (system.mu * (system.period_s(leg.body) / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
-    a_sc = a_body * (leg.body_revs / leg.sc_revs) ** (2.0 / 3.0)
-    vf2 = system.mu * (2.0 / rn - 1.0 / a_sc)
+    wn = float(np.linalg.norm(w))
+    if leg.body_revs == leg.sc_revs:
+        # Same period as the body, so the same heliocentric speed at the same
+        # point: |v_sc| = |V_P| (Menning 1968 p.18). Exact for any Keplerian body
+        # orbit, also when the model's period is set apart from its a.
+        vf2 = wn * wn
+    else:
+        a_body = (system.mu * (system.period_s(leg.body) / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
+        a_sc = a_body * (leg.body_revs / leg.sc_revs) ** (2.0 / 3.0)
+        vf2 = system.mu * (2.0 / rn - 1.0 / a_sc)
     if vf2 <= 0.0:
         return None
-    wn = float(np.linalg.norm(w))
     z = (vf2 - vinf * vinf - wn * wn) / (2.0 * wn)
     if abs(z) > vinf:
         return None
@@ -949,6 +955,111 @@ def _balance(
     return seq
 
 
+def menning_block(system: System, blk: _Block) -> list[Flyby] | None:
+    """Menning 1968 turn-angle selection (ch. 4, pp.21-25) for a block of one or
+    two consecutive 1:1 full-revolution returns; ``None`` for any other block.
+
+    Cone vectors lie on the full-revolution circle. ``CV_I`` / ``CV_O`` are the
+    cone vectors closest to the inbound / outbound V-infinity, with the minimum
+    turns ``T_I`` / ``T_O`` (Eqs. 4.3-4.5). Cone vectors are taken on the arc
+    between ``CV_I`` and ``CV_O``.
+
+    One return (sec. 4.21): ``CV_I`` if ``T_I`` is not less than the outbound turn
+    it leaves; else ``CV_O`` if ``T_O`` is not less than the inbound turn; else
+    the cone vector that equalises the two turns.
+
+    Two returns (sec. 4.22): (1) ``CV_I`` and ``CV_O`` if the intermediate turn
+    is less than both ``T_I`` and ``T_O``; (2) if ``T_I`` is the largest of the
+    three, keep ``CV_I`` and equate the intermediate and outbound turns (mirror
+    for ``T_O``); (3) otherwise fix the larger of ``T_I``/``T_O`` and equate the
+    other two; if those exceed it, equate all three.
+    """
+    legs = [leg for leg, _ in blk.fixed]
+    if not legs or len(legs) > 2:
+        return None
+    if not all(isinstance(lg, ResonantLeg) and lg.body_revs == lg.sc_revs == 1 for lg in legs):
+        return None
+    vinf = float(np.linalg.norm(blk.v_in))
+    circ = resonant_circle(system, legs[0], blk.fixed[0][1], vinf)  # type: ignore[arg-type]
+    if circ is None:
+        return None
+    _, _, _, e1, e2 = circ
+    v_i, v_o = blk.v_in, blk.v_out
+
+    def closest(v: Vec) -> float:
+        return math.atan2(float(v @ e2), float(v @ e1))
+
+    phi_i, phi_o = closest(v_i), closest(v_o)
+    dphi = (phi_o - phi_i + math.pi) % (2.0 * math.pi) - math.pi  # shorter arc
+
+    def cv(sv: float) -> Vec:
+        return resonant_vec(circ, phi_i + sv * dphi)
+
+    def ang(a: Vec, b: Vec) -> float:
+        return bend_angle(a, b)
+
+    def bisect(f: Callable[[float], float], lo: float = 0.0, hi: float = 1.0) -> float:
+        flo = f(lo)
+        for _ in range(80):
+            mid = 0.5 * (lo + hi)
+            fm = f(mid)
+            if (fm > 0) == (flo > 0):
+                lo, flo = mid, fm
+            else:
+                hi = mid
+        return 0.5 * (lo + hi)
+
+    t_i, t_o = ang(v_i, cv(0.0)), ang(cv(1.0), v_o)
+    if len(legs) == 1:
+        if t_i >= ang(cv(0.0), v_o):
+            u = cv(0.0)
+        elif t_o >= ang(v_i, cv(1.0)):
+            u = cv(1.0)
+        else:
+            u = cv(bisect(lambda sv: ang(v_i, cv(sv)) - ang(cv(sv), v_o)))
+        seq = [v_i, u, u, v_o]
+    else:
+        mid = ang(cv(0.0), cv(1.0))
+        if mid < t_i and mid < t_o:
+            u1, u2 = cv(0.0), cv(1.0)
+        elif t_i >= mid and t_i >= t_o:
+            u1 = cv(0.0)
+            u2 = cv(bisect(lambda sv: ang(u1, cv(sv)) - ang(cv(sv), v_o)))
+        elif t_o >= mid and t_o >= t_i:
+            u2 = cv(1.0)
+            u1 = cv(bisect(lambda sv: ang(v_i, cv(sv)) - ang(cv(sv), u2)))
+        else:
+            if t_i > t_o:
+                u1 = cv(0.0)
+                u2 = cv(bisect(lambda sv: ang(u1, cv(sv)) - ang(cv(sv), v_o)))
+                if ang(u1, u2) <= t_i:
+                    seq = [v_i, u1, u1, u2, u2, v_o]
+                    return _flybys_from_seq(system, blk, seq)
+            else:
+                u2 = cv(1.0)
+                u1 = cv(bisect(lambda sv: ang(v_i, cv(sv)) - ang(cv(sv), u2)))
+                if ang(u1, u2) <= t_o:
+                    seq = [v_i, u1, u1, u2, u2, v_o]
+                    return _flybys_from_seq(system, blk, seq)
+
+            # equate all three: for u1 = cv(s1), put u2 where the intermediate and
+            # outbound turns are equal, then move s1 until the inbound turn matches
+            def u2_of(s1: float) -> float:
+                return bisect(lambda sv: ang(cv(s1), cv(sv)) - ang(cv(sv), v_o), s1, 1.0)
+
+            s1 = bisect(lambda sv: ang(v_i, cv(sv)) - ang(cv(sv), cv(u2_of(sv))))
+            u1, u2 = cv(s1), cv(u2_of(s1))
+        seq = [v_i, u1, u1, u2, u2, v_o]
+    return _flybys_from_seq(system, blk, seq)
+
+
+def _flybys_from_seq(system: System, blk: _Block, seq: list[Vec]) -> list[Flyby]:
+    ts = [blk.t_arr]
+    for leg, t in blk.fixed:
+        ts.append(t + fixed_duration_s(system, leg))
+    return [Flyby(blk.body, ts[i], seq[2 * i], seq[2 * i + 1]) for i in range(len(seq) // 2)]
+
+
 @dataclass(frozen=True)
 class CycleReport:
     """Every flyby of a solved cycle with the demanded-turn gate applied."""
@@ -968,8 +1079,14 @@ class CycleReport:
         return max((e.demanded_turn_deg for e in self.gate.encounters), default=0.0)
 
 
-def cycle_flybys(system: System, cycle: Cycle, x: Dates, *, n_grid: int = 72) -> list[Flyby] | None:
-    """All flybys of a solved cycle, with minimax-chosen free directions."""
+def cycle_flybys(
+    system: System, cycle: Cycle, x: Dates, *, n_grid: int = 72, convention: str = "minimax"
+) -> list[Flyby] | None:
+    """All flybys of a solved cycle, with the free directions chosen by
+    ``convention``: ``"minimax"`` (this module's minimax plus even-spread
+    tie-break) or ``"menning1968"`` (Menning's cone-vector rules, secs. 4.21-4.22,
+    for blocks of one or two full-revolution returns; other blocks fall back to
+    minimax). Both give the same largest turn in a block."""
     legs = eval_lambert_legs(system, cycle, x)
     if legs is None:
         return None
@@ -978,6 +1095,11 @@ def cycle_flybys(system: System, cycle: Cycle, x: Dates, *, n_grid: int = 72) ->
         if system.body(blk.body).massless and not blk.fixed:
             out.append(Flyby(blk.body, blk.t_arr, blk.v_in, blk.v_out))
             continue
+        if convention == "menning1968":
+            fm = menning_block(system, blk)
+            if fm is not None:
+                out.extend(fm)
+                continue
         res = optimise_block(system, blk, n_grid=n_grid)
         if res is None:
             return None
