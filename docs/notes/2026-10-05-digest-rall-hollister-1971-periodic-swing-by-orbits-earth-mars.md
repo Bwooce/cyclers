@@ -93,3 +93,23 @@ Not held:
    9th Annual Meeting. Already in the wanted list.
 2. [5] Hickman, D. E. (1968), "Guidance Requirements for Periodic Orbits", S.M. thesis, MIT. Already in
    the wanted list (not on DSpace).
+
+## 5. Conference version: AIAA Paper 71-92 (filed 2026-10-06, batch 13)
+
+C. S. Rall (Bellcomm) & W. M. Hollister (MIT), "Free-Fall Periodic Orbits Connecting Earth and Mars",
+AIAA Paper 71-92, 9th Aerospace Sciences Meeting, New York, 25-27 January 1971, doi 10.2514/6.1971-92.
+Crossref lists Hollister first; the title page lists Rall first.
+- Filed as `cyclers_pdf/papers/rall-hollister-1971-free-fall-periodic-orbits-earth-mars-aiaa-71-92-doi-10.2514-6.1971-92-ocr.pdf`.
+  6 pages. The upload (md5 1002666f78b9bed4199696709dfa6c98) is a scan with a poor text layer (1,067
+  words, e.g. "poriadic"). I re-OCR'd it with `ocrmypdf --force-ocr` (5,184 words); the filed PDF
+  carries that layer.
+- I compared it with the JSR version on the page images:
+  - The same sections, the same Table 1 (the circular-coplanar row checked: 0.257, 0.314, 0.181, 0.249,
+    0.316, 0.211, 0.245, 0.314, 0.183) and the same planet-model sentence ("accurate values for the
+    planets' eccentricity, relative inclination, period, and location of the ascending node").
+  - The same 60-synodic-period (128 yr) M4-1 cycle with "seventy-five" independent dates.
+- Extra in the conference version:
+  - Fig. 1: distance from the Sun for Hollister's periodic orbit (Earth-Venus), as the comparison case.
+  - Separate distance-time figures for M4-1, M5-1, M5-2 and M6-1 (Figs. 2-6).
+  - Fig. 7: orbit M4-1 in a frame that rotates with the Earth-Sun line.
+- No new numbers. Cite the JSR version; use this one for the figures.
