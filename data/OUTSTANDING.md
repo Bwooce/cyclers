@@ -1729,6 +1729,13 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
   change: option B approved by the owner (Cartesian reference added to the test; see the
   `#939` commits); option C registered as `#940`. Vertical block: KS 2.95e-9, LC 2.2e-13. (3) Consistency audit of
   this file's PRIORITY list and the `#876`-`#937` bullets, `README.md`, `data/README.md`.
+- `#941` — registered 2026-10-05 (found by `#939`; NOT dispatched; small). **A TEST REWRITES A TRACKED
+  DATA FILE ON EVERY RUN.** `tests/genome/test_floquet_phase1_reproduction.py` writes
+  `data/floquet_phase1_reproduction.jsonl` (line ~236, documented under `#740`); on this Mac it lands
+  on the other BLAS-dependent branch (period 18.89 TU against the committed 23.36, 4 corrector
+  iterations against 3), so every local full run leaves the tree dirty and invites a wrong commit.
+  Fix: write to `tmp_path` (or a gitignored path) and compare against the committed record, or keep
+  one committed record per known branch. Restored to HEAD by `#939` after its run.
 - `#940` — registered 2026-10-05 (from `#939`, option C; NOT dispatched). **THE REGULARISED
   FIXED-TIME TRANSITION MATRICES LOSE ABOUT 3000x TO CANCELLATION ON SOME ARCS.** On the 2008 seed
   73a arc (mu = 1e-6, a third of the period) the `second_species_lc` 4 x 4 matrix carries 0.9e-7
