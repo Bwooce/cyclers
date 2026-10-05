@@ -418,6 +418,14 @@ Settings and pruning (first pass):
 
 ## 7. Literal-collision checks (to be completed per candidate)
 
+R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
+10.2514/3.59763) computed Earth-Mars periodic orbits with Mars as a ballistic working body (Mars turns
+2.3-13.6 deg, never direct returns at Mars). Any R1(a) candidate is checked against the families M4-1,
+M5-1 and M5-2 (circular and eccentric-inclined) before novelty language is used.
+
+Method cross-check: the full-rev circle reproduces Russell & Ocampo 2005 Eqs. (13) and (17) exactly (test,
+Fig. 10 setup). Our half-rev radial and transverse speeds are Eqs. (18)-(19) with r1 = r2.
+
 Against:
 - Hollister & Menning 1970 (catalogue rows hollister-menning-1970-ev-orbit-01..15).
 - Jones 2017 VEM.

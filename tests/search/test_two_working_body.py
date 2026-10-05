@@ -380,3 +380,18 @@ def test_menning_turn_rule_has_the_minimax_largest_turn() -> None:
             )
             n_checked += 1
     assert n_checked >= 4
+
+
+def test_full_rev_circle_matches_russell_ocampo_2005_eqs_13_17() -> None:
+    """Russell & Ocampo 2005 (JSR 42(1)) Eq. (13) v_F = sqrt(2mu/r - mu (N/M)^(2/3)/a_B)
+    and Eq. (17) z_F = (v_F^2 - v_inf^2 - v_B^2)/(2 v_B), Fig. 10 setup: mu = 1,
+    r = a_B = 1, N = 7 spacecraft revolutions, M = 4 body revolutions, v_inf = 0.5."""
+    from cyclerfinder.search.two_working_body import CircularSystem
+
+    sysm = CircularSystem(1.0, {"B": (1.0, 2.0 * math.pi, 0.0)})
+    circ = resonant_circle(sysm, ResonantLeg("B", body_revs=4, sc_revs=7), 0.0, 0.5)
+    assert circ is not None
+    v_f = math.sqrt(2.0 - (7.0 / 4.0) ** (2.0 / 3.0))
+    z_f = (v_f**2 - 0.25 - 1.0) / 2.0
+    assert circ[0] == pytest.approx(z_f, abs=1e-12)
+    assert circ[1] == pytest.approx(math.sqrt(0.25 - z_f**2), abs=1e-12)
