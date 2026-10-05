@@ -22,7 +22,7 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 - see `docs/team/lead-log.md` for current dispatches
 
 ## Shared resources
-- Machine CPU: only one full-suite pytest run at a time (8-way parallel runs collide).
+- Machine CPU: only ONE full-suite pytest run at a time on Shed-Air, counting the cyclers CI runner (it runs on this Mac). Do a local full run only while no cyclers CI run is in progress, and do not push while a local full run is going. The offgridgate project also has a CI runner here (next-server, playwright), and its runs add load that we cannot schedule. Any pytest-timeout seen under heavy load is suspect until it has been re-run alone.
 
 ## Known hazards
 - The pre-commit hook stashes other agents' unstaged changes during each commit and restores them afterwards. Avoid committing while another agent is in the middle of editing a file that has the same hook scope. If a teammate's edit disappears, look in `~/.cache/pre-commit/patch*`.
