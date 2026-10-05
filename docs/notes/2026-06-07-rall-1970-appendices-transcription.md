@@ -568,3 +568,10 @@ but must not become a circular golden.
   TE-34, 1969), heliocentric, multi-arc; NEVER a DE kernel; superseded-by-modern
   -work flag applies.
 - ET-vs-UT for the 1969 JD usage is **unstated** → conversion caveat recorded.
+
+## 2026-10-05 resolution of the Appendix F date flag (#960 batch 10)
+
+An Appendix F token "d-dddd" is JD = 2400000 + the five digits, so "4-1160" is JD 2441160 and
+JD - 2440000 = 1160, the same scale as Appendix E. Anchors: M5-2e Mars "4-1160" is 28 Jul 1971 (Mars
+opposition 10 Aug 1971), and "4-7436" is 2 Oct 1988 (opposition 28 Sep 1988). See the addendum in
+`2026-06-07-hollister-rall-1970-periodic-orbits-mining.md`.

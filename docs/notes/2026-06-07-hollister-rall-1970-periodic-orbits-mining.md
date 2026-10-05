@@ -265,3 +265,55 @@ period** Earth-Mars cyclers.
   times/angles are given only as plots (Figs.3-3..3-7), not tabulated.
 - "About 100 schemes attempted, 18 missed/grazed all planets, several converged"
   (p.123) — no exact success count.
+
+## Addendum 2026-10-05 (#960 batch 10): elements, conventions and identity
+
+Read on the page images of a second scan, the MIT DSpace copy (hdl 1721.1/13552; 219 pp., image-only;
+pages 167, 168, 178 and 204 missing). This file (the MSL report scan) has the same pages; its text layer
+garbles the program listing.
+
+- **Identity:** the held file is Rall's Sc.D. thesis (sole author; Hollister was thesis chairman), report
+  TE-34, dated October 1969 (submitted 8 Oct 1969; MIT Archives stamp 1 Apr 1970). Cite it as
+  Rall, C. S. (1969). The "hollister-rall-1970" filename misled the #960 wanted-list check.
+- **Planet elements (Appendix A, thesis p.136, the Fortran listing), verbatim:**
+  - YR = 365.25636
+  - A = 1.0, 0.723332, 1.523691 (Earth, Venus, Mars)
+  - E = 0.016726, 0.006793, 0.093368
+  - PER = YR, 224.7008, 686.9796 (days)
+  - GFP, the true longitude of perihelion (deg): 102.25253, 131.00831, 335.33269
+  - TJP, the date of perihelion (JD - 2440000):
+    - +2.124962 + (40*PER(1) - 3065.)
+    - -27.01776 + (65*PER(2) - 3065.)
+    - +146.08905 + (22*PER(3) - 3065.)
+  - p.129: "The ephemerides are based on the mean orbital elements of 1960". GLON is measured from "the
+    equinox of 1960" (p.135).
+  - No inclination arrays appear in that setup block.
+  - Model III's elements are "from Reference 7 or 8" (p.23): the 1961 Explanatory Supplement, or NASA
+    SP-35 (1963).
+- **Models (sec. 2.3, pp.22-23):**
+  - I.A: circular, P_Mars = 32/17 yr, P_Venus = 8/13 yr.
+    - I.A.1: exactly symmetric.
+    - I.A.2: phased at a near-future epoch.
+  - I.B: real a and P.
+  - II: e and i equal to the actual values "at one time", with the I.A periods (32-yr exact repeat).
+  - III: constant mean elements.
+  - p.10: "Hollister and Menning ... took care of this periodicity problem by modeling the planets' orbits
+    as truly periodic."
+- **Symmetric-return branch (p.132, Figs. A-1, A-2):** take the multi-rev Lambert branch whose a is not the
+  planet's (citing Menning).
+- **Cycle closure (pp.20-23):** "A": t_{N+1} = t_1 + T_cycle, t_{N+2} = t_2 + T_cycle. "B": the arrival
+  speed at t_{N+1} is subtracted from the departure speed at t_1.
+- **Appendix F date tokens:** "4-1160" means JD 2441160, i.e. JD = 2400000 + the five printed digits
+  (equivalently JD - 2440000 = 1160). Checked against Mars oppositions: M5-2e Mars "4-1160" is 28 Jul 1971
+  (opposition 10 Aug 1971), and "4-7436" is 2 Oct 1988 (opposition 28 Sep 1988). Successive Earth
+  full-revolution dates differ by 365 d (3-9740, 4-0105). This resolves the open
+  flag in the appendices transcription.
+- **R1 antecedents:**
+  - Sec. 4.4 (pp.84-86): circular-coplanar Mars-Venus periodic orbits, with repeats up to four M-V
+    synodic periods. All failed (no convergence, or Venus-surface intersection). Venus could not turn full
+    revolution returns. "This investigation simply failed to find any".
+  - Sec. 4.2 (pp.71-74): E-V-M schemes from Hollister orbits I-III and VanderVeen did not converge. A
+    Mars visit 3 times in 32 yr converged, but it intersected Venus.
+  - M5-2e (Appendix F, p.203): the Mars encounters are ballistic flybys with turn angles of 9.0, 2.2,
+    2.2, 6.5, 2.2 and 3.0 deg at 1.39-10.4 Mars radii. So Mars does give small gravity assists in Rall's
+    Earth-Mars periodic orbits (a fact relevant to #942 R1(a); its weight is for the gate owner).
