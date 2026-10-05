@@ -209,6 +209,60 @@ Comparison with earlier runs, exact-periodicity model:
 The Earth-symmetric-return family (orbits 3-8) fails in both models, with nearby zeros whose V_inf is
 about 0.01 EMOS off. The full-revolution family passes only on the exact-periodicity variant.
 
+### 3.5 Reproduction ladder (owner ruling, 2026-10-05): step 1, the planet model (sourced)
+
+Hollister 1969 (JSR 6(4)) states the general-case procedure on p.368 (text layer, read):
+- "The periodic orbits of the last section can be used as starting points, but they now take 16 yr
+  before repeating exactly."
+- Steps: "1) Use the circular, coplanar analysis to establish the 10 t_i for the case of zero
+  eccentricity and inclination. 2) Increase the eccentricity and inclination to their actual values."
+
+Its circular model (p.366) is "Earth makes 32 revolutions of the sun in 32 yr ... Venus makes 52
+revolutions ... in 32 yr", so the periods are 1 yr and 8/13 yr.
+
+So the inclined-elliptic orbits keep the COMMENSURATE periods and repeat EXACTLY in 16 yr. With 5844 d =
+16 yr (the Table 3 footnote), that is Earth 365.25 d and Venus 224.769 d, the same values as our
+"exact-periodicity" model.
+
+**Amendment 4:** the exact-periodicity model is the SOURCED model, and its result is the headline:
+- 7/15 raw.
+- 8/15 on source-consistent rows (sec. 3.4).
+
+This supersedes sec. 3.3's reading. Sec. 3.3 had taken H&M p.1194 "assuming exact periodicity" and
+Menning p.30 "within several degrees" to mean real periods with a closed cycle. Hollister's procedure is
+the more specific statement. The real-period run (0/15) is kept as the non-sourced variant.
+
+What stays unsourced (D1):
+- the planets' phases (mean longitudes) and the orientation of the ellipses. Ours: Standish & Williams
+  J2000 elements, with mean longitudes exact at JD 2443363.
+- the e and i "actual values". Ours: Standish & Williams.
+
+The 129/130 printed Venus steps of 225 d are still not explained: 224.769 d would print about 23 % 224-d
+steps.
+
+### 3.6 Step 2: orbits 3-8 (the Earth-symmetric family) against Menning's method
+
+Checked against Menning chs. 1, 3, 4, 5 and H&M pp.1194-1195:
+- Date convention: encounter dates are planet-centre crossings, and hyperbola time is ignored (Menning
+  pp.4-5). Ours is the same.
+- Symmetric-return root: Eq. (3.6), a conventional transfer plus one revolution. The transfer root is
+  the one that is not the planet's own orbit (pp.12-15). Ours is a 1-rev Lambert whose other root has
+  V_inf 0.000 (the planet orbit); we use the non-planet root. Same.
+- Transfer legs: a conventional (0-rev) Lambert, Eq. (3.1). Ours is the same.
+- Turn rule: secs. 4.21-4.22, applied after the dates are solved, so it cannot change the zero.
+  Adopted in amendment 3.
+
+No method difference was found. Diagnosis at the printed dates, orbit 3, exact-periodicity model:
+- The symmetric legs reproduce the printed V_r to 0.002-0.006 EMOS (they are long, 490 d, and not
+  sensitive).
+- The short transfers (78-135 d) miss by up to 0.019 EMOS (e.g. V->E 3758->3885: 0.186 against 0.204).
+- Orbit 1's transfers (155-223 d) miss by at most 0.012.
+
+INFERRED (not sourced): the Earth-symmetric family has the shortest transfers. Those are the most
+sensitive to planet phase, which is exactly the unsourced item D1. A planet-phase difference of a degree
+or so between our ephemeris and theirs would act on that family first. Testing this by moving our phase
+anchor would be tuning, so it is not done.
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
