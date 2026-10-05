@@ -1,5 +1,9 @@
 # Local presubmit: mirrors the CI lint job (.github/workflows/ci.yml).
 # Activate once per clone with: uv run pre-commit install
+# (#962) The installed .git/hooks/pre-commit records the absolute path of the
+# venv python it was installed from. If `git commit` says "`pre-commit` not
+# found", the hook came from another machine or clone path: re-run
+# `uv run pre-commit install` in this clone (no PATH change needed after that).
 # Run manually across the tree with: uv run pre-commit run --all-files
 repos:
   - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -26,12 +30,17 @@ repos:
     hooks:
       # Mirrors the CI Mypy stage. Runs in the uv-managed venv so it sees
       # the same stubs/extras CI does (run `uv sync --all-extras` once).
-      # Checks the whole tree, not just staged files, since mypy is
-      # project-global; pass_filenames: false keeps pre-commit from
-      # appending paths to the command.
+      # Checks every TRACKED .py file under src/ and tests/ (the index, which
+      # includes files staged by this commit), not just the staged ones, since
+      # mypy is project-global; pass_filenames: false keeps pre-commit from
+      # appending paths. #962: `mypy src tests` also read other agents'
+      # UNTRACKED work-in-progress files in a shared checkout and failed
+      # unrelated commits; CI checks out tracked files only, so this is the
+      # same file set CI checks (pre-commit has stashed unstaged edits of
+      # tracked files, so their content is the index content).
       - id: mypy
         name: mypy
-        entry: uv run mypy src tests
+        entry: bash -c 'exec uv run mypy $(git ls-files -- "src/*.py" "tests/*.py")'
         language: system
         types: [python]
         pass_filenames: false
