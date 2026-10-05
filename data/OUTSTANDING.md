@@ -1963,8 +1963,10 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   one does). (a) the installed hook carried a Linux clone's venv path; `uv run pre-commit install`
   re-run in this clone (hooks are per clone), and the config's header says so; a plain
   `git commit` now works without `.venv/bin` on PATH. (c) pre-commit always stashes unstaged
-  edits of tracked files so hooks see only the committed content, and has no switch for it; the
-  fix is per-agent worktrees, a team-practice decision for the lead.
+  edits of tracked files so hooks see only the committed content, and has no switch for it.
+  Per-agent worktrees are ruled out (owner's standing rule: no branches). Disposition: KNOWN
+  ENVIRONMENT; mitigation: commit promptly, and avoid committing while another agent is mid-edit
+  on hook-scoped files.
 - `#963` — registered 2026-10-06 (from papercut
   `processed/2026-10-05-twobody-gen-opus-kepler-propagate-nonconvergence.md`; owner of the work:
   ci-keeper-opus). **`core.kepler.propagate` RAISES `KeplerConvergenceError` ON AN
@@ -1990,7 +1992,17 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   that steers the optimiser away), `scripts/fbs_optimizer_fair_trial.py` (FD column skipped),
   `viz/plots.py` (cosmetic). Re-check: re-run the stored V-gauntlet stability FAILs and the
   `#388`/releg negatives that go through these paths; the frozen census ratchets in the full
-  suite are the first check.
+  suite are the first check. Not affected: the running `#942` enumeration
+  (`two_working_body.kepler_step` uses its own eccentric-anomaly solver for elliptic arcs and
+  calls `core.kepler.propagate` only for non-elliptic ones). The re-runs are `#967`.
+- `#967` — registered 2026-10-06 (from `#963`; NOT dispatched; gated on `#963` being pushed).
+  **RE-RUN THE NEGATIVES THAT COULD HAVE HIT THE SWALLOWED `KeplerError`.** Before `#963`,
+  `core.kepler.propagate` failed on about 0.05 percent of random heliocentric arcs (near-radial
+  ellipses), and the callers listed in the `#963` bullet turned the error into a result: skipped
+  candidates in `releg_solver`/`dsm_leg` (the `#388` DSM-closure and releg negatives), V-tier FAILs
+  from a zero-lap `verify/propagate.py` stability report, `agreement` residuals marked unavailable,
+  rejected `mga_dsm_placement`s, and optimiser penalty points (FBS, low-thrust). Re-run each stored
+  negative or FAIL that went through these paths with the fixed propagator and record any flip.
 - `#965` — registered 2026-10-06 (owner of the work: twobody-gen-opus; not dispatched). **SELF-
   CONSISTENCY TEST FOR TRANSCRIBED SOURCE TABLES WITH REDUNDANT COLUMNS**, starting with Hollister &
   Menning 1970 Table 3: r_p = mu / V^2 (1 / sin(theta / 2) - 1) against the printed Rmin, so a
