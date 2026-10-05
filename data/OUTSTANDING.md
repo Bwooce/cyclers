@@ -1914,6 +1914,19 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
       R3/R4/R9; the anchor was dropped because of the surname collision with Guoliang Liang.
     - The `#938` note sec. 5 was corrected (Perko issue; items 1-5, 8, 9 received; items 15 and 18 held).
     - Digests are `docs/notes/2026-10-05-digest-{campagnola-2019,hitzl-1977,perko-1974,arenstorf-1963,liang-xu-peng-xu-2020}-*.md`.
+  - **Batches 4-5 and the priority batch, same day:**
+    - Hollister-Menning 1970 was swapped to a text-layer copy. The recheck found 27 cells in
+      `data/sources/hollister-menning-1970-table3.yaml` that differ from the print; they were reported to
+      the `#942` owner (`docs/notes/2026-10-05-hollister-menning-1970-table3-recheck.md`).
+    - Menning 1968 MIT thesis (OCRed): the source of H&M Table 3, plus the 1H-3H dates. Orbit 13 row 1
+      V_r is 0.124.
+    - VanderVeen 1969: one-shot E-V-M-V-E trips, not cyclers. No R1(c) collision.
+    - Minovitch TR 32-849: no periodic Earth-Venus content. The R1-relevant report is TR 32-464, not held.
+    - Binder & Arnas 2024: the spatial Earth-Moon 2:1 family R2:1-S. One printed state. Prior art for R10.
+    - Henon & Guyot 1970: critical orbits of f, g, h, i, l, m for all mu. All tables are transcribed in the
+      digest. The retrograde-stability threshold is 0.0477.
+    - Bruno & Varin 2006: family h only, at mu = 0 and 0.00095.
+    - The `#938` sec. 5 items 6, 11, 12 and 19 are marked received.
 - `#961` — registered 2026-10-05, not dispatched (found by `#960`). **LITERATURE-GATE SURNAME
   COLLISION.** `search/literature_check.py` strong-links search hits to KNOWN_CORPUS anchors by author
   surname.

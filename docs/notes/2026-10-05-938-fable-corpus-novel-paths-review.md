@@ -695,7 +695,7 @@ Campagnola et al. 2014 Acta Astronautica.
    resonant cycler orbits", Acta Astronautica 170:539-551, doi 10.1016/j.actaastro.2020.02.029
    (CONFIRMED). Unlocks: Earth-Moon p:q cycler prior art for R3, R4 and R9 literal collision
    (quasi-periodic p:q cyclers refined in the bicircular model).
-6. **Binder, D. & Arnas, D. (2024)**, "Reliable and Repeatable Transit Through Cislunar Space Using
+6. **[Received 2026-10-05, filed under `#960`.]** **Binder, D. & Arnas, D. (2024)**, "Reliable and Repeatable Transit Through Cislunar Space Using
    2:1 Resonant Spatial Orbits", JGCD 47(9):1973-1979, doi 10.2514/1.G007800 (CONFIRMED); arXiv
    2304.13584. Unlocks: spatial 2:1 Earth-Moon cycler prior art (R10, R3 collision check).
 7. **Kevorkian, J. & Lancaster, J. E. (1968)**, "An Asymptotic Solution for a Class of Periodic
@@ -713,11 +713,12 @@ Campagnola et al. 2014 Acta Astronautica.
     orbits around the Earth", Advances in Space Research 69(5):2210-2222, doi
     10.1016/j.asr.2021.12.020 (CONFIRMED). Unlocks: the 12:11 initial conditions the held Oshima
     papers lack (`#905`/P3 controls).
-11. **Bruno, A. D. & Varin, V. P. (2006)**, "On families of periodic solutions of the restricted
+11. **[Received 2026-10-05, filed under `#960`.]** [`#960` note: this paper tabulates only family h, at mu = 0 and 0.00095; the other mu values are in KIAM
+    preprints 2005b, c.] **Bruno, A. D. & Varin, V. P. (2006)**, "On families of periodic solutions of the restricted
     three-body problem", Celest. Mech. Dyn. Astron. 95:27-54, doi 10.1007/s10569-006-9021-1
     (CONFIRMED). Unlocks: symmetric families for all mu in [0, 1/2], the cross-check Leiva & Briozzo
     name; X4's Pluto-Charon and R9 controls.
-12. **Henon, M. & Guyot, M. (1970)**, "Stability of Periodic Orbits in the Restricted Problem", in
+12. **[Received 2026-10-05, filed under `#960`.]** **Henon, M. & Guyot, M. (1970)**, "Stability of Periodic Orbits in the Restricted Problem", in
     Giacaglia (ed.), Periodic Orbits, Stability and Resonances, Reidel, pp. 349-374, doi
     10.1007/978-94-010-3323-7_33 (CONFIRMED). Unlocks: critical (stability-boundary) orbits of
     families f, g, h, i, l, m for all mu, the limits mu -> 0 and mu -> 1; controls for X4 and R9.
@@ -752,7 +753,9 @@ Campagnola et al. 2014 Acta Astronautica.
     Earth-Mars Cyclers with Intermediate Earth Encounter", AAS 03-509; **Chen, K. J. et al. (2003)**,
     AAS 03-510 (conference, no DOI; UNCONFIRMED). Unlocks: check whether they add members to the held
     AIAA 2002-4420/4422 content (R1(a), R8).
-19. **Menning, M. D. (1968)**, MS thesis (MIT), Earth-Venus periodic orbits; **VanderVeen, A. A.
+19. **[Received 2026-10-05, filed under `#960`.]** [Menning thesis, VanderVeen 1969 and Minovitch TR 32-849 all received. `#960` note: TR
+    32-849 has no periodic Earth-Venus content. The R1-relevant Minovitch report is TR 32-464 (1963), not held.]
+    **Menning, M. D. (1968)**, MS thesis (MIT), Earth-Venus periodic orbits; **VanderVeen, A. A.
     (1969)**, E-V-M-V-E flyby trajectories; **Minovitch, M. A. (1965)**, "Utilizing Large Planetary
     Perturbations for the Design of Deep-Space, Solar-Probe, and Out-of-Ecliptic Trajectories", JPL
     TR 32-849 (NTRS 19660005935; the first draft's "1967" was wrong). No DOIs; UNCONFIRMED except
