@@ -130,9 +130,16 @@ def test_kepler_stm_against_deprit_closed_form(mu: float, s0: list[float], dt: f
     idx = [0, 1, 3, 4]
     sf = arc.state[idx]
     closed = _deprit_a(sf, dt, mu) @ _deprit_b(np.array(s0), 0.0, mu)
-    assert np.allclose(
-        _deprit_a(np.array(s0), 0.0, mu) @ _deprit_b(np.array(s0), 0.0, mu), np.eye(4), atol=1e-12
-    )
+    # A(t0) B(t0) = I, to rounding relative to |A||B| entry by entry. An absolute 1e-12 cannot
+    # hold for the lunar pass: B has an entry of 2.15e4, whose storage alone carries u * 2.15e4
+    # = 2.4e-12. The product adds at most gamma_4 |A||B| (gamma_n = n u / (1 - n u); Higham
+    # 2002, Accuracy and Stability of Numerical Algorithms, 2nd ed., section 3.5, eq. 3.13);
+    # the rest of the 16 u is margin for rounding inside the entry formulas, which has no
+    # strict bound in |A||B| where terms cancel. Measured: at most 1.48 u |A||B| over the five
+    # cases. The printed b44 slip (e1 in place of e2) gives 2e15 u |A||B| or more.
+    a0, b0 = _deprit_a(np.array(s0), 0.0, mu), _deprit_b(np.array(s0), 0.0, mu)
+    u = np.finfo(np.float64).eps / 2
+    assert np.all(np.abs(a0 @ b0 - np.eye(4)) <= 16 * u * (np.abs(a0) @ np.abs(b0)))
     ks4 = arc.stm[np.ix_(idx, idx)]
     assert np.abs(ks4 - closed).max() < 2e-12 * max(1.0, float(np.abs(closed).max()))
     # planar data: no coupling into z
