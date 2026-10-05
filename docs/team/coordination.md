@@ -30,3 +30,9 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 - Background agents hang forever on a permission prompt (seen 2026-10-05: auto mode was switched off for a few minutes and the Fable reviewer froze for 2 h, still listed as "running"). Liveness check = the agent's transcript mtime under `~/.claude/projects/<proj>/<session>/subagents/`, not the agent list.
 - Teammate messages addressed to "team-lead" go to the file mailbox `~/.claude/teams/session-<id>/inboxes/team-lead.json`, which the in-process lead conversation never reads; "main" is queued straight into the lead conversation. Briefs say "message main". Verified 2026-10-05 from delivery receipts. Original note: (2026-10-05: refcheck-sonnet, corpus-review-fable-2, twobody-gen-opus and corpus-file-opus reports all lost). Briefs must tell teammates to message the lead session by its ListAgents name ("main" works; "team-lead" and "cyclers" do not). A lost report can be recovered from the agent's transcript (`subagents/agent-a<name>-*.jsonl`, SendMessage tool_use input).
 - Teammates read their own mailbox only between turns: a teammate deep in one long turn does not see messages (the first #938 Fable reviewer has 5 unread lead messages in its inbox file). Put must-know items in the brief; ask for a receipt within the first minute.
+
+## Papercuts
+Friction you work around goes in `docs/papercuts/YYYY-MM-DD-<agent-name>-<slug>.md`, one file per entry (format: the `papercuts` skill; see existing entries). Fill in "Seen before". Commit the one file by path with your work. The lead reviews at 10 unprocessed entries, at handover, or when the user asks; processed entries move to `docs/papercuts/processed/` with a `Disposition:` line.
+
+## Lead address
+Teammates message the lead at `main`. Not "team-lead" (unread mailbox) and not the session name (refused).
