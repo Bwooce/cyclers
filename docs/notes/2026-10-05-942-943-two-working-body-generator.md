@@ -176,6 +176,39 @@ Reported side by side:
 
 One re-run per model (real periods = headline; exact periodicity = secondary).
 
+### 3.4 Result of the amendment-3 re-run (2026-10-05, commit a04d4696, corrected table)
+
+Criterion: >= 0.90 of the encounters within the pre-registered tolerances, and summed |dV_r| <= 0.005
+EMOS (Menning p.33). Cells give raw / source-consistent-rows match, [summed residual in EMOS].
+
+**HEADLINE, real periods (the sourced model): 0/15 pass raw; 1/15 on source-consistent rows (orbit 14).**
+
+| Orbit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| raw | 0.76 | 0.64 | 0.52 | 0.00 | 0.36 | 0.00 | 0.48 | 0.48 | 0.84 | 0.84 | 0.72 | 0.60 | 0.84 | 0.80 | 0.68 |
+| consistent | 0.76 | 0.64 | 0.52 | 0.00 | 0.39 | 0.00 | 0.48 | 0.48 | 0.84 | 0.84 | 0.72 | 0.60 | 0.84 | 0.91 | 0.71 |
+
+Orbit 6's residual is 0.0056 EMOS and orbit 9's is 0.0037; every other orbit is an exact zero.
+
+**Our variant, exact periodicity: 7/15 pass raw (orbits 1, 2, 9, 11, 12, 13, 15); 8/15 on
+source-consistent rows (adds orbit 14).**
+
+| Orbit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| raw | 1.00 | 0.92 | 0.48 | 0.64 | 0.48 | 0.16 | 0.60 | 0.84 | 0.96 | 0.84 | 0.96 | 0.96 | 1.00 | 0.88 | 0.96 |
+| consistent | 1.00 | 0.92 | 0.48 | 0.73 | 0.52 | 0.16 | 0.60 | 0.84 | 0.96 | 0.84 | 0.96 | 0.96 | 1.00 | 1.00 | 1.00 |
+
+Orbit 6's residual is 0.0057 EMOS (fails H&M's tolerance) and orbit 9's is 0.0015 (passes it).
+
+Comparison with earlier runs, exact-periodicity model:
+- original pre-registered rule: 4/15.
+- after the table correction: 6/15.
+- after amendment 3: 7/15.
+- On real periods: 0/15 throughout.
+
+The Earth-symmetric-return family (orbits 3-8) fails in both models, with nearby zeros whose V_inf is
+about 0.01 EMOS off. The full-revolution family passes only on the exact-periodicity variant.
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
