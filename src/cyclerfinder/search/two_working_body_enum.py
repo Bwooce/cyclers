@@ -274,7 +274,11 @@ class Assessment:
 def leg_extent(
     system: CircularSystem, cycle: Cycle, x: np.ndarray, n_samples: int = 400
 ) -> tuple[float, float]:
-    """Smallest and largest distance from the central body over every leg (sampled)."""
+    """Smallest and largest distance from the central body over every leg.
+
+    Sampled, then refined: when an apse is passed during the leg (the radial
+    velocity changes sign between samples), its exact radius ``a(1 -/+ e)`` is used.
+    """
     legs = eval_lambert_legs(system, cycle, x)
     if legs is None:
         return math.nan, math.nan
@@ -283,11 +287,24 @@ def leg_extent(
         leg = cycle.legs[leg_i]
         assert isinstance(leg, LambertLeg)
         r0, w0 = system.state(leg.frm, ev.t_dep)
+        v0 = w0 + ev.vinf_dep
+        energy = 0.5 * float(v0 @ v0) - system.mu / float(np.linalg.norm(r0))
+        h = np.cross(r0, v0)
+        ecc = math.sqrt(max(0.0, 1.0 + 2.0 * energy * float(h @ h) / system.mu**2))
+        a = -system.mu / (2.0 * energy) if energy < 0.0 else math.inf
+        prev_rdot = float(r0 @ v0)
         r0n = float(np.linalg.norm(r0))
         lo, hi = min(lo, r0n), max(hi, r0n)
         for t in np.linspace(0.0, ev.t_arr - ev.t_dep, n_samples)[1:]:
-            rn = float(np.linalg.norm(kepler_step(r0, w0 + ev.vinf_dep, float(t), system.mu)[0]))
+            r, v = kepler_step(r0, v0, float(t), system.mu)
+            rn = float(np.linalg.norm(r))
             lo, hi = min(lo, rn), max(hi, rn)
+            rdot = float(r @ v)
+            if prev_rdot < 0.0 <= rdot:
+                lo = min(lo, a * (1.0 - ecc) if math.isfinite(a) else lo)
+            elif prev_rdot > 0.0 >= rdot and math.isfinite(a):
+                hi = max(hi, a * (1.0 + ecc))
+            prev_rdot = rdot
     return lo, hi
 
 

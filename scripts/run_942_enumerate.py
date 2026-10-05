@@ -3,7 +3,7 @@
 Cells (circular-coplanar ideal model):
   ev  Earth-Venus, both massive              (#942 cell b; Venus 0.61520 yr)
   em  Earth-Mars, both massive               (#942 cell a; Mars 1.875 yr, Russell)
-  vm  Venus-Mars, Mars massless              (#942 cell c)
+  vm  Venus-Mars, Mars massless              (#942 cell c; R-S 2007 Table 2 constants)
   gc  Ganymede-Callisto, both massive        (#943 X1; R-S 2009 Table 2 constants)
   ge  Ganymede-Europa, both massive          (#943 X1)
   gc1 / ge1  the one-body limits (Callisto / Europa massless), recall controls
@@ -71,13 +71,28 @@ def rs_moon_system(moons: list[str], massless: list[str]) -> CircularSystem:
     return CircularSystem(mu, bodies, frozenset(massless), flyby_overrides=over)
 
 
+def rs2007_venus_mars() -> CircularSystem:
+    """Venus-Mars ideal model with Russell & Strange 2007 (AAS 07-118) Table 2
+    constants (p.8): Sun mu 1.3271244e11, Venus period 19,414,153 s, Mars
+    59,354,429 s, Venus mu 324,860 and radius 6,052 km; Mars massless. The
+    same model as their VenMar#45, so that row is the cell's recall control."""
+    mu = 1.3271244e11
+    bodies = {}
+    for c, per in (("V", 19_414_153.0), ("M", 59_354_429.0)):
+        bodies[c] = ((mu * (per / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0), per, 0.0)
+    from cyclerfinder.verify.turn_gate import body_constants
+
+    over = {"V": FlybyBody("V", 324_860.0, 6052.0, body_constants("V").alt_floor_km)}
+    return CircularSystem(mu, bodies, frozenset({"M"}), flyby_overrides=over)
+
+
 def cell_system(cell: str) -> tuple[CircularSystem, str, str]:
     if cell == "ev":
         return heliocentric_circular({"E": 1.0, "V": 0.61520}), "E", "V"
     if cell == "em":
         return heliocentric_circular({"E": 1.0, "M": 1.875}), "E", "M"
     if cell == "vm":
-        return heliocentric_circular({"V": 0.61520, "M": 1.875}, massless=["M"]), "V", "M"
+        return rs2007_venus_mars(), "V", "M"
     if cell == "gc":
         return rs_moon_system(["Ganymede", "Callisto"], []), "Ganymede", "Callisto"
     if cell == "ge":

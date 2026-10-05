@@ -294,3 +294,53 @@ def test_x1_ganeur43_blind_through_the_enumerator() -> None:
         assert ass.report.gate.min_required_alt_km == pytest.approx(8861.0, abs=2.0)
         assert ass.r_min_km == pytest.approx(564_558.0, rel=1e-3)
         assert ass.r_max_km == pytest.approx(1_072_330.0, rel=1e-3)
+
+
+def test_r1c_one_body_control_venmar45_through_the_enumerator() -> None:
+    """R1(c) control (expected: Russell & Strange 2007, AAS 07-118, Tables 2, 3, 5,
+    row VenMar#45: V_inf 8.22 / 12.96 km/s, minimum Venus flyby altitude
+    19,784 km, maximum distance 341,571,371 km, period 2 x 333.9 d).
+
+    Venus-Mars, Mars massless, k = 2, no returns, transfers of 0-1 revolutions:
+    every gate-passing zero must be VenMar#45."""
+    import importlib.util
+    from pathlib import Path
+
+    from cyclerfinder.search.two_working_body_enum import (
+        CatalogueSpec,
+        assess,
+        solve_structure,
+        structures,
+    )
+
+    path = Path(__file__).resolve().parents[2] / "scripts" / "run_942_enumerate.py"
+    spec = importlib.util.spec_from_file_location("run_942_enumerate", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    sysm, a, b = mod.cell_system("vm")
+    syn = sysm.synodic_s(a, b)
+    assert 2 * syn / DAY == pytest.approx(667.8, abs=0.1)
+    passing = []
+    for cyc in structures(
+        sysm,
+        a,
+        b,
+        2,
+        max_returns={a: 0, b: 0},
+        spec={c: CatalogueSpec() for c in (a, b)},
+        transfer_revs=(0, 1),
+    ):
+        for z in solve_structure(
+            sysm, cyc, phase_period_s=syn, n_phase=36, n_split=12, n_refine=40
+        ):
+            ass = assess(sysm, z)
+            if ass.status == "pass":
+                passing.append(ass)
+    assert passing
+    for ass in passing:
+        assert ass.vinf_kms["V"] == pytest.approx(8.22, abs=0.01)
+        assert ass.vinf_kms["M"] == pytest.approx(12.96, abs=0.01)
+        assert ass.report is not None
+        assert ass.report.gate.min_required_alt_km == pytest.approx(19_784.0, abs=2.0)
+        assert ass.r_max_km == pytest.approx(341_571_371.0, rel=1e-5)
