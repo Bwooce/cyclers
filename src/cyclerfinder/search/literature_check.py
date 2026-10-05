@@ -1695,6 +1695,66 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         system="heliocentric",
     ),
     CorpusAnchor(
+        name="Rall-Hollister Earth-Mars periodic swing-by orbits (1971)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #960 / #942 R1(a) lead ruling 2026-10-05: Earth-Mars periodic orbits
+        # M4-1, M5-1, M5-2, M6-1 in which Mars is a weak ballistic working body
+        # (Table 1: Mars turns 2.3-4.3 deg circular-coplanar, up to 13.6 deg
+        # eccentric-inclined), never with direct returns at Mars. Per
+        # docs/notes/2026-10-05-digest-rall-hollister-1971-periodic-swing-by-
+        # orbits-earth-mars.md. Author forms carry initials: matching is by
+        # substring, and a bare "rall" is inside "parallel", "overall" (#961).
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Rall, C. S.", "C. S. Rall"),
+        keywords=(
+            "periodic swing-by orbits connecting earth and mars",
+            "free-fall periodic orbits connecting earth and mars",
+        ),
+        citation=(
+            "Rall, C. S. & Hollister, W. M., 'Periodic Swing-By Orbits "
+            "Connecting Earth and Mars,' J. Spacecraft and Rockets 8(10):"
+            "1017-1020 (1971), DOI 10.2514/3.59763 (conference version AIAA "
+            "71-92). Patched-conic Earth-Mars periodic orbits M4-1, M5-1, M5-2 "
+            "from reciprocal Earth-Mars-Earth round trips and Earth direct "
+            "returns; ballistic Mars swing-bys, also in the eccentric-inclined "
+            "model"
+        ),
+        doi="10.2514/3.59763",
+        key="rall-1971-periodic-swing-by-earth-mars",
+        year=1971,
+        title="Periodic Swing-By Orbits Connecting Earth and Mars",
+        venue="Journal of Spacecraft and Rockets 8(10):1017-1020",
+        provenance="verified-against-source",
+        system="heliocentric",
+    ),
+    CorpusAnchor(
+        name="Rall Earth-Mars free-fall periodic orbits, Sc.D. thesis (1969)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #960 / #942 R1(a): the thesis behind Rall & Hollister 1971, with the
+        # full families (Appendices E/F encounter dates) and the 1960 mean
+        # elements (p.136). Held as rall-1969-...-ntrs-19700017824.pdf
+        # (formerly hollister-rall-1970-...); MIT MSL report TE-34.
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Rall, C. S.", "C. S. Rall"),
+        keywords=("free-fall periodic orbits connecting earth and mars",),
+        citation=(
+            "Rall, C. S., 'Free-Fall Periodic Orbits Connecting Earth and "
+            "Mars,' Sc.D. thesis, MIT (October 1969), MIT Measurement Systems "
+            "Laboratory report TE-34, NTRS 19700017824. Earth-Mars periodic "
+            "orbits M4-1, M5-1, M5-2, M6-1 with ballistic Mars swing-bys; "
+            "Mars-Venus search (circular coplanar) found none"
+        ),
+        doi=None,
+        key="rall-1969-free-fall-periodic-earth-mars",
+        year=1969,
+        title="Free-Fall Periodic Orbits Connecting Earth and Mars",
+        venue="Sc.D. thesis, MIT; MSL report TE-34",
+        provenance="verified-against-source",
+        system="heliocentric",
+    ),
+    CorpusAnchor(
         name=("Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)"),
         primary="Sun",
         body_set=frozenset({"E", "M"}),

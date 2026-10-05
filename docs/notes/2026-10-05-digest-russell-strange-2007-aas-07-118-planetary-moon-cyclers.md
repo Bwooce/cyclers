@@ -216,7 +216,7 @@ Per-cell verdicts (combining this paper with the Pisarevsky 2008 digest):
 
 | Cell | Verdict | What is published | What is left |
 |---|---|---|---|
-| R1(a) Earth-Mars, Mars turns | PARTIAL | Pisarevsky 2008: method, Table 4 (one spatial class III member), Fig. 14 (graphical class I.1 candidates) | enumeration with turn gating, numeric coplanar class I and II members, ephemeris |
+| R1(a) Earth-Mars, Mars turns | PARTIAL (lead ruling 2026-10-05: prior art stronger) | Pisarevsky 2008: method, Table 4 (one spatial class III member), Fig. 14 (graphical class I.1 candidates). Rall 1969 thesis and Rall & Hollister 1971 (JSR 8(10):1017, doi 10.2514/3.59763): Earth-Mars periodic orbits M4-1, M5-1, M5-2 with ballistic Mars swing-bys (turns 2.3-4.3 deg circular-coplanar, up to 13.6 deg eccentric-inclined; passes to 1.00 Mars radius), no direct returns at Mars. Check every R1(a) candidate against these families | enumeration with turn gating, numeric coplanar class I and II members, ephemeris |
 | R1(b) Earth-Venus, Venus returns | OPEN | nothing in either paper. AAS 07-118 ran no Earth-Venus set. Precedents: Hollister & Menning 1970 (15 rows), Pisarevsky method | the whole cell |
 | R1(c) Venus-Mars | PARTIAL | VenMar#45 (one-working-body, Venus hosts, Mars massless, ballistic in patched-conic ephemeris). The `#938` phrase "never revisited" since Rall is superseded | the two-working-body Venus-Mars cell, and the rest of the one-body catalogue (archived, unpublished) |
 | X1 Ganymede-Callisto | OPEN | only the Ganymede-hosted one-body limit (GanCal#1, #5) | both moons bending |
