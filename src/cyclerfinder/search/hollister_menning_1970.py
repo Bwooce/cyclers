@@ -16,7 +16,7 @@ Read errors and print errors
   "995" (the YAML has 993). :func:`load_table3` corrects both.
 * PRINT ERRORS in the paper (the YAML matches the print): dates that break the
   225-d Venus full-revolution step, namely orbit 2 "5715" (5590 + 225 = 5815),
-  orbit 4 "2573" (2358 + 225 = 2583), orbit 5 "5877" (5662 + 225 = 5887),
+  orbit 4 "2573" (2358 + 225 = 2583), orbit 5 "5662" (5877 - 225 = 5652),
   orbit 6 "2585, 2810" after 2135 (a two-full-revolution block; 2810 falls after
   the next Earth date 2716), orbit 8 "4870" (5645 + 225 = 5870). The block TYPE
   is unambiguous in each case; dates reached through full-revolution legs are
@@ -63,6 +63,23 @@ _TRANSCRIPTION_FIXES: dict[tuple[int, int], tuple[str, float, str, float]] = {
     (6, 2): ("V", 993.0, "V", 995.0),
 }
 
+#: Print errors inferred from the block structure (the page shows the left value).
+#: Orbit 5 block 1 prints V 977, 1242, 1467: a 265-d first gap is too short for a
+#: symmetric return at the printed V_r (the Lambert residual at the printed dates
+#: is 8.9 km/s) and the turn pattern (34.0, 34.0, 38.7) is a two-full-revolution
+#: block's; 1017 = 1242 - 225.
+#: The other entries restore the 225-d Venus full-revolution step at the print
+#: errors listed in the module docstring (they affect only date comparisons).
+_PRINT_ERROR_FIXES: dict[tuple[int, int], tuple[str, float, str, float]] = {
+    (5, 2): ("V", 977.0, "V", 1017.0),
+    (2, 23): ("V", 5715.0, "V", 5815.0),
+    (4, 9): ("V", 2573.0, "V", 2583.0),
+    (5, 22): ("V", 5662.0, "V", 5652.0),
+    (6, 8): ("V", 2585.0, "V", 2360.0),
+    (6, 9): ("V", 2810.0, "V", 2585.0),
+    (8, 23): ("V", 4870.0, "V", 5870.0),
+}
+
 
 @dataclass(frozen=True)
 class Row:
@@ -74,7 +91,7 @@ class Row:
 
 
 def load_table3(path: Path = TABLE3_PATH) -> dict[int, list[Row]]:
-    """Table 3 rows per orbit, with :data:`_TRANSCRIPTION_FIXES` applied."""
+    """Table 3 rows per orbit, with the transcription and inferred print fixes applied."""
     data = yaml.safe_load(path.read_text())
     out: dict[int, list[Row]] = {}
     for o in data["orbits"]:
@@ -88,7 +105,9 @@ def load_table3(path: Path = TABLE3_PATH) -> dict[int, list[Row]]:
             )
             for e in o["encounters"]
         ]
-        for (orb, i), (pl_old, d_old, pl_new, d_new) in _TRANSCRIPTION_FIXES.items():
+        for (orb, i), (pl_old, d_old, pl_new, d_new) in (
+            _TRANSCRIPTION_FIXES | _PRINT_ERROR_FIXES
+        ).items():
             if o["orbit"] == orb and (rows[i].planet, rows[i].date) == (pl_old, d_old):
                 r = rows[i]
                 rows[i] = Row(pl_new, d_new, r.vr_emos, r.theta_deg, r.rmin_radii)

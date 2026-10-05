@@ -41,7 +41,7 @@ run through the same residual and gate code.
 from __future__ import annotations
 
 import math
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -104,6 +104,8 @@ class System(Protocol):
 
     def body(self, code: str) -> FlybyBody: ...
 
+    def wrap_rotation(self, code: str, dt_s: float) -> Vec: ...
+
 
 def _flyby_body(code: str, massless: bool) -> FlybyBody:
     bc = body_constants(code)
@@ -140,6 +142,12 @@ class CircularSystem:
         if code not in self._fb:
             self._fb[code] = _flyby_body(code, code in self.massless)
         return self._fb[code]
+
+    def wrap_rotation(self, code: str, dt_s: float) -> Vec:
+        """The model is invariant under rotation: after ``dt_s`` every body has
+        advanced, and when ``dt_s`` is a multiple of their synodic period the
+        whole configuration is the start rotated by the advance of ``code``."""
+        return _rot_z(2.0 * math.pi * dt_s / self.period_s(code))
 
     def synodic_s(self, a: str, b: str) -> float:
         return 1.0 / abs(1.0 / self.period_s(a) - 1.0 / self.period_s(b))
@@ -257,6 +265,11 @@ class MeanElementSystem:
         if code not in self._fb:
             self._fb[code] = _flyby_body(code, code in self.massless)
         return self._fb[code]
+
+    def wrap_rotation(self, code: str, dt_s: float) -> Vec:
+        """Identity: the cycle is compared in inertial axes (H&M's exact-periodicity
+        assumption; with ``periods_days`` set to commensurate values it is exact)."""
+        return np.eye(3)
 
 
 def _rot_z(a: float) -> Vec:
@@ -708,12 +721,16 @@ def _blocks(system: System, cycle: Cycle, legs: list[LegEval]) -> list[_Block]:
             fixed.append((cycle.legs[k], t))
             t += fixed_duration_s(system, cycle.legs[k])
             k = (k + 1) % len(cycle.legs)
+        v_out = legs[(j + 1) % n].vinf_dep
+        if j == n - 1:
+            # the departure that opens the next cycle, in the arrival's axes
+            v_out = system.wrap_rotation(leg_body_to(cycle.legs[i0]), cycle.period_s) @ v_out
         out.append(
             _Block(
                 leg_body_to(cycle.legs[i0]),
                 legs[j].t_arr,
                 legs[j].vinf_arr,
-                legs[(j + 1) % n].vinf_dep,
+                v_out,
                 tuple(fixed),
             )
         )
@@ -776,7 +793,7 @@ def optimise_block(
     def ratios(seq: list[Vec]) -> list[float]:
         return [bend_angle(seq[2 * i], seq[2 * i + 1]) / avail for i in range(len(seq) // 2)]
 
-    best: tuple[float, list[Vec]] | None = None
+    best: tuple[float, list[Vec], list[float], tuple[int, ...]] | None = None
     for hc in np.ndindex(*([2] * n_half)) if n_half else [()]:
         if n_phi == 0:
             seq = _block_vectors(system, blk, [], list(hc))
@@ -784,7 +801,7 @@ def optimise_block(
                 continue
             val = max(ratios(seq))
             if best is None or val < best[0]:
-                best = (val, seq)
+                best = (val, seq, [], hc)
             continue
         grids = np.linspace(
             0.0, 2.0 * math.pi, n_grid if n_phi == 1 else max(12, 36 // n_phi), endpoint=False
@@ -825,13 +842,59 @@ def optimise_block(
                 continue
             val = max(ratios(seq))
             if best is None or val < best[0]:
-                best = (val, seq)
+                best = (val, seq, list(r.x[:-1]), hc)
     if best is None:
         return None
     seq = best[1]
+    if n_phi >= 1 and len(seq) // 2 >= 3:
+        seq = _balance(system, blk, best[0], best[2], best[3], ratios) or seq
     ts = epochs()
     flybys = [Flyby(blk.body, ts[i], seq[2 * i], seq[2 * i + 1]) for i in range(len(seq) // 2)]
     return flybys, best[0]
+
+
+def _balance(
+    system: System,
+    blk: _Block,
+    s_star: float,
+    phis: list[float],
+    hc: tuple[int, ...],
+    ratios: Callable[[list[Vec]], list[float]],
+) -> list[Vec] | None:
+    """Tie-break of the minimax: with the largest ratio held at ``s_star``, raise the
+    smallest (spread the turn as evenly as the circles allow).
+
+    The minimax leaves the inner flybys of a block with two or more free
+    directions undetermined; this fixes them. It cannot change the largest
+    ratio, so it never changes a gate verdict.
+    """
+    cap = s_star * (1.0 + 1e-9) + 1e-12
+
+    def obj(z: Vec) -> float:
+        return -float(z[-1])
+
+    def cons(z: Vec) -> Vec:
+        seq = _block_vectors(system, blk, list(z[:-1]), list(hc))
+        if seq is None:
+            return np.full(2 * (len(blk.fixed) + 1), -1.0)
+        rr = np.asarray(ratios(seq))
+        return np.asarray(np.concatenate([rr - z[-1], cap - rr]), dtype=np.float64)
+
+    seq0 = _block_vectors(system, blk, phis, list(hc))
+    if seq0 is None:
+        return None
+    z0 = np.array([*phis, min(ratios(seq0))])
+    r = minimize(  # type: ignore[call-overload]
+        obj,
+        z0,
+        constraints=[{"type": "ineq", "fun": cons}],
+        method="SLSQP",
+        options={"ftol": 1e-12, "maxiter": 300},
+    )
+    seq = _block_vectors(system, blk, list(r.x[:-1]), list(hc))
+    if seq is None or max(ratios(seq)) > cap * (1.0 + 1e-6):
+        return None
+    return seq
 
 
 @dataclass(frozen=True)

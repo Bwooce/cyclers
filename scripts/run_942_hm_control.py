@@ -33,6 +33,15 @@ exact periodicity of the solar system" over 16 yr (p.1194): Earth period
 Diagnosis behind the amendment: stage 1 dates slip progressively (Venus
 full-revolution steps of 224.70 d against the printed 225 d).
 
+AMENDMENT 2 2026-10-05 (after the periodic rerun; earlier results stay reported):
+(a) the minimax leaves the inner flyby of a block with two free directions
+undetermined (orbits 4 and 8 missed only there); ties are now broken by raising
+the smallest ratio with the largest held fixed (``_balance``), which cannot
+change a gate verdict; (b) date comparisons use the print-error fixes of
+``hollister_menning_1970._PRINT_ERROR_FIXES``; (c) a printed row whose own
+(V_r, theta, Rmin) triple disagrees with the flyby formula by > 10 % is
+"source-inconsistent"; the post-hoc fraction excludes those rows.
+
 Usage: ``uv run python scripts/run_942_hm_control.py --out <dir> [--periodic]``
 """
 
@@ -155,6 +164,16 @@ def encounter_pass(e: dict) -> bool:
     )
 
 
+def source_consistent(system, e: dict) -> bool:
+    """Is the PRINTED (V_r, theta, Rmin) triple consistent with the flyby formula
+    ``r_p = mu/v^2 (1/sin(theta/2) - 1)`` and registry constants, within 10 %?
+    Independent of our solver: it tests the source row against itself."""
+    body = system.body(e["planet"])
+    v = e["vr"] * EMOS_KMS
+    rp = rmin_radii(body, v, math.radians(e["theta"]))
+    return bool(abs(rp / e["rmin"] - 1.0) <= 0.10)
+
+
 def forward(system, orbit, rows, branches):
     cyc, x = build_cycle(system, orbit, rows, branches)
     legs = eval_lambert_legs(system, cyc, x)
@@ -198,9 +217,16 @@ def main() -> None:
         f_frac = float(np.mean(np.array(fw["vr_errs"]) <= F_TOL_EMOS))
         cyc, x0 = build_cycle(system, orbit, rows, branches)
         sol = correct_dates(system, cyc, x0)
-        fl = cycle_flybys(system, cyc, sol.x) if sol.converged else None
+        # Compared at the least-squares point even when it is not an exact zero
+        # (reported separately; the pass needs ``converged``).
+        fl = cycle_flybys(system, cyc, sol.x)
         cmp_a = compare(system, rows, fl, 5844.0) if fl else []
+        for e in cmp_a:
+            e["source_consistent"] = source_consistent(system, e)
         frac_a = float(np.mean([encounter_pass(e) for e in cmp_a])) if cmp_a else 0.0
+        cons = [e for e in cmp_a if e.get("source_consistent")]
+        frac_cons = float(np.mean([encounter_pass(e) for e in cons])) if cons else 0.0
+        hm_sum_abs_emos = float(np.sum(np.abs(sol.residual))) / EMOS_KMS
         miss = encounter_self_consistency(system, cyc, sol.x)
         # seed (b): perturbed
         x_b = x0 + rng.uniform(-7.0, 7.0, size=x0.size) * DAY
@@ -223,6 +249,10 @@ def main() -> None:
             "self_consistency_miss_km": miss,
             "frac_encounters_within_tol": frac_a,
             "control_pass": bool(sol.converged and frac_a >= PASS_FRAC),
+            "hm_sum_abs_residual_emos": hm_sum_abs_emos,
+            "hm_tolerance_met": hm_sum_abs_emos <= 0.005,
+            "n_source_inconsistent_rows": len(cmp_a) - len(cons),
+            "posthoc_frac_within_tol_source_consistent_rows": frac_cons,
             "perturbed_seed_converged": sol_b.converged,
             "perturbed_seed_same_solution": same_b,
             "encounters": cmp_a,
@@ -246,7 +276,9 @@ def main() -> None:
             f"orbit {orbit}: fwd_frac={f_frac:.2f} conv={sol.converged} "
             f"res={sol.max_abs_residual_kms:.1e} "
             f"shift={rec['max_date_shift_d']:.2f}d match={frac_a:.2f} pass={rec['control_pass']} "
-            f"pert_same={same_b} miss={miss:.1e}km  [{n_done + 1}/{len(orbits)} eta {eta:.0f}s]"
+            f"pert_same={same_b} miss={miss:.1e}km hm_sum={hm_sum_abs_emos:.4f}EMOS "
+            f"posthoc={frac_cons:.2f}({len(cmp_a) - len(cons)} incons) "
+            f"[{n_done + 1}/{len(orbits)} eta {eta:.0f}s]"
         )
     (args.out / "summary.json").write_text(
         json.dumps(
