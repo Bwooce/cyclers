@@ -113,7 +113,8 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
     `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (`#942` R1 and `#943` X1 share a
     generator). Waiting on owner: `#948`, `#949` (Pluto part), `#950`, `#956`; see below. The
     `#942`/`#943` paper gate is cleared by `#960`. R1 verdicts: (a) PARTIAL, (b) OPEN, (c) PARTIAL.
-    X1 verdict: OPEN.
+    X1 verdicts: Ganymede-Callisto PARTIAL (the Campagnola et al. 2019 GCGC cycler); Ganymede-Europa
+    OPEN.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
     exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
@@ -1785,8 +1786,12 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   Ganymede-Callisto rows in the one-body limit). Cost (GUESS): +2 agent-days on `#942` (3-5 alone).
   P(novel row): 0.4. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a
   X1. Shares its generator with `#942` (R1). **GATE CHECKED 2026-10-05 (`#960`)**:
-  - Both pairs are OPEN. AAS 07-118 has massless targets only, and its p.18 names removing that
-    assumption as future work.
+  - Both pairs were OPEN against AAS 07-118. It has massless targets only, and its p.18 names removing
+    that assumption as future work.
+  - **UPDATE (batch 2): Ganymede-Callisto is now PARTIAL.** Campagnola et al. 2019 (JGCD 42(12), sec.
+    III.C, Fig. 11) publish a two-working-body GCGC cycler: high-fidelity, no states, v_inf 3.5/4.5
+    km/s. Frame a result as "first numeric/periodic member". Ganymede-Europa stays OPEN. See
+    `docs/notes/2026-10-05-digest-campagnola-2019-europa-clipper-tour-design-techniques.md` sec. 4.
   - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
@@ -1887,6 +1892,18 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
     - The 10 Jovian rows' "min flyby altitude" notes name the target body, not the flyby body. The
       TitEnc notes and `verify/turn_gate_closures.py` are correct.
     - New rows: EurGan#93, VenMar#45 and VenMer#22/69/75.
+  - **Batches 2-3, same day: filed, digested and indexed five more papers.**
+    - Campagnola et al. 2019 JGCD 42(12): a GCGC Ganymede-Callisto cycler, so X1 Ganymede-Callisto is
+      PARTIAL. A KNOWN_CORPUS anchor was added.
+    - Hitzl 1977 AIAA J 15(10): `#948` R4 "announced, never delivered" STANDS.
+    - Perko 1974 SIAM J. Appl. Math. 27(1): the theorem scope covers only symmetric, planar, circular
+      orbits as mu -> 0.
+    - Arenstorf 1963 AIAA J 1(1): second kind; Earth-Moon mu is asserted, not proved; a 3:1 orbit
+      cannot pass near both bodies.
+    - Liang, Xu, Peng & Xu 2020 Acta Astro 170: one 2:1 Casoliva-family member; no collision for
+      R3/R4/R9; the anchor was dropped because of the surname collision with Guoliang Liang.
+    - The `#938` note sec. 5 was corrected (Perko issue; items 1-5, 8, 9 received; items 15 and 18 held).
+    - Digests are `docs/notes/2026-10-05-digest-{campagnola-2019,hitzl-1977,perko-1974,arenstorf-1963,liang-xu-peng-xu-2020}-*.md`.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";

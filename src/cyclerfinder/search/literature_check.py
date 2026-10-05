@@ -870,6 +870,35 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         system="heliocentric",
     ),
     CorpusAnchor(
+        # #960: the published TWO-working-body Ganymede-Callisto (GCGC)
+        # cycler, sec. III.C and Fig. 11 (no states; high-fidelity jTOP
+        # example). A #943 X1 Ganymede-Callisto closure must collide here.
+        # Per docs/notes/2026-10-05-digest-campagnola-2019-europa-clipper-
+        # tour-design-techniques.md.
+        name="Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019)",
+        primary="Jupiter",
+        body_set=frozenset({"Ganymede", "Callisto"}),
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Campagnola", "Buffington", "Lam", "Petropoulos", "Pellegrini"),
+        keywords=(
+            "Ganymede-Callisto cycler line of apses rotation",
+            "GCGC cycler Europa Clipper",
+            "Callisto pi-transfer petal rotation",
+        ),
+        citation="Campagnola, S., Buffington, B. B., Lam, T., Petropoulos, A. E. & "
+        "Pellegrini, E., 'Tour Design Techniques for the Europa Clipper Mission,' "
+        "Journal of Guidance, Control, and Dynamics 42(12):2615-2626 (2019). Sec. "
+        "III.C, Fig. 11: two GCGC cycles (G1-G5, G5-G9), ~90 deg apse rotation "
+        "each; Table 3 v_inf 3.5/4.5 km/s.",
+        doi="10.2514/1.G004309",
+        key="campagnola-2019-europa-clipper-gcgc",
+        year=2019,
+        title="Tour Design Techniques for the Europa Clipper Mission",
+        venue="Journal of Guidance, Control, and Dynamics 42(12):2615-2626",
+        provenance="verified-against-source",
+        system="jovian",
+    ),
+    CorpusAnchor(
         name="Strange/Campagnola/Russell moon-tour & V-infinity-leveraging",
         primary="Jupiter",
         body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
