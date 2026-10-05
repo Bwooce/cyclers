@@ -1,8 +1,12 @@
 name: CI
 
 on:
+  # main only: pushes to stray branches (e.g. stash branches from another
+  # machine) otherwise queue full runs on the self-hosted runner.
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   check:
