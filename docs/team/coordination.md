@@ -23,3 +23,7 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 
 ## Shared resources
 - Machine CPU: only one full-suite pytest run at a time (8-way parallel runs collide).
+
+## Known hazards
+- The pre-commit hook stashes other agents' unstaged changes during each commit and restores them afterwards. Avoid committing while another agent is in the middle of editing a file that has the same hook scope. If a teammate's edit disappears, look in `~/.cache/pre-commit/patch*`.
+- The `git commit` hook needs the venv: `PATH="$PWD/.venv/bin:$PATH" git commit ...`.
