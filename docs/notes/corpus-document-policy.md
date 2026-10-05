@@ -54,6 +54,49 @@ vision-read — never vision-read a whole document.
   digitize step of the never-give-up-reproducing ladder). A published
   table or the original always beats an eyeballed plot.
 
+#### Numbers from OCR or a text layer (adopted 2026-10-05, `#964`, from the `#960` papercuts)
+
+- **Never trust OCRed 4s.**
+  - Tesseract (inside ocrmypdf) reads the typewriter digit 4 as `h`, `L` or `u`. In the Menning 1968
+    thesis tables, "4474" came out as "Lush" and "4924" as "hgok".
+  - It also drops table rows, which silently shifts any row-by-row alignment.
+  - It scrambles double-spaced typewritten body text.
+- **Table recipe for scans:**
+  1. Render the table pages at 400 dpi in grey:
+     `pdftoppm -f P -l P -r 400 -gray -png in.pdf out`.
+  2. Run Tesseract with a digit whitelist:
+     `tesseract out-P.png stdout --psm 6 -c tessedit_char_whitelist="EV0123456789.- "`.
+     Put the column letters the table uses into the whitelist.
+  3. Accept only well-formed cells, for example `^0\.\d{3}$` for a 3-decimal column, and compare them
+     with an independent copy.
+  4. Read every disputed or shifted page by vision.
+  5. Record which pages were image-checked.
+- **Publisher text layers also corrupt numbers.** Seen in this corpus:
+  - lost minus signs (Russell & Strange 2009, Table 6).
+  - digit groups split by thin spaces ("0.310 73").
+  - "O." printed for "0.".
+  - misread labels ("II" for l1, "12" for l2: Henon & Guyot 1970).
+- **The rule for text-layer numbers:** any number taken from a text layer or from OCR into a golden test
+  value, a catalogue field or a `data/sources` file gets a page-image check. Record the page.
+- **The second-witness rule for transcribed tables:** a table transcribed into `data/sources/` needs a
+  second witness before it is used as a control or a golden. The witness can be:
+  - another copy (a text-layer edition, the thesis behind the paper);
+  - an independent OCR pass; or
+  - a physics or self-consistency identity between the table's own columns, checked row by row.
+  Precedent: the Hollister & Menning 1970 Table 3 YAML, transcribed by eye from an image scan, had 27 wrong
+  cells (18 of them turn angles with 3 read as 5). The periapsis identity
+  r_p = mu/V^2 (1/sin(theta/2) - 1) against the printed Rmin flags most of them at once. Details:
+  `docs/notes/2026-10-05-hollister-menning-1970-table3-recheck.md`.
+- **pdftotext stderr:** on many AIAA PDFs, `pdftotext` writes tens of thousands of
+  "Syntax Warning: Badly formatted number" lines to stderr. Always use `pdftotext ... 2>/dev/null`; the
+  flood truncates tool output and hides real errors.
+- **DOIs:** confirm DOIs with `scripts/crossref_check.py`. Crossref's bibliographic search often returns
+  the AIAA conference record (10.2514/6.YYYY-NNNN) before the journal version, so a DOI is CONFIRMED only
+  when the journal or volume matches too.
+- **Index filenames:** every `CORPUS_INDEX.md` row names its file IN FULL, with no "..." abbreviations, so
+  index-to-disk checks can be scripted. All abbreviated and stale names were expanded on 2026-10-05
+  (`#964`); all 412 PDFs on disk are named in the index.
+
 ### 2. Chapter/section-summary digest
 A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.
 - **Papers** (journal/conference): full-page read.
