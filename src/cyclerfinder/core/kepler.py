@@ -17,7 +17,8 @@ Tolerances
 * Newton convergence: relative chi-step ``|delta| / max(|chi|, 1) < 1e-12``.
   (Absolute residual ``|f|`` scales with ``sqrt(mu) * dt`` and is not a useful
   convergence criterion across short and long propagations.)
-* Iteration cap: 50.
+* Iteration cap: 200 (#963: the bracketed fallback bisects; plain Newton needs far fewer).
+* Newton is safeguarded by a bracket on the monotone f(chi) (#963).
 
 JIT acceleration (#475)
 -----------------------
@@ -32,7 +33,7 @@ Plan: ``docs/phases/m1-core-mechanics/plan.md`` §3.3.
 
 from __future__ import annotations
 
-from math import cos, isfinite, log, sin, sqrt
+from math import cos, inf, isfinite, log, nan, sin, sqrt
 
 import numba as nb
 import numpy as np
@@ -44,7 +45,7 @@ from cyclerfinder.core.constants import MU_SUN_KM3_S2
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 
 _NEWTON_TOL_DELTA_REL: float = 1.0e-12
-_NEWTON_MAX_ITER: int = 50
+_NEWTON_MAX_ITER: int = 200
 
 
 class KeplerError(Exception):
@@ -171,8 +172,24 @@ def _kepler_chi_newton_py(
     ``chi = nan`` (caller must detect and raise :class:`KeplerConvergenceError`).
     """
     sqrt_mu = sqrt(mu)
+    # #963: Newton safeguarded by a bracket. f(chi) is strictly increasing (f'(chi) = r > 0), and
+    # f(0) = -sqrt(mu) dt, so the root lies in (0, inf) for dt > 0 and (-inf, 0) for dt < 0.
+    # Every evaluated iterate narrows the bracket; a Newton step that leaves it is replaced by a
+    # bisection (or, while the far side is still open, by a step that doubles the distance from
+    # 0). A Newton step that converges is accepted before the bracket test, so iterates that
+    # the plain Newton solve accepted are unchanged.
+    if dt > 0.0:
+        lo = 0.0
+        hi = inf
+    elif dt < 0.0:
+        lo = -inf
+        hi = 0.0
+    else:
+        lo = 0.0
+        hi = 0.0
     chi = chi0
     residual = 0.0
+    converged = False
     for _iteration in range(_NEWTON_MAX_ITER):
         z = chi * chi * alpha
         c = stumpff_c_py(z)
@@ -187,18 +204,43 @@ def _kepler_chi_newton_py(
             - sqrt_mu * dt
         )
         f_prime = (rv_dot / sqrt_mu) * chi * (1.0 - z * s) + (1.0 - alpha * r0_n) * chi2 * c + r0_n
-
-        if f_prime == 0.0:
-            return float("nan"), 0.0, 0.0, 0.0, 0.0
-
-        delta = f_val / f_prime
-        chi -= delta
         residual = f_val
 
-        if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi), 1.0):
+        if f_val == 0.0:
+            converged = True
             break
-    else:
-        return float("nan"), 0.0, 0.0, 0.0, 0.0
+        # f is monotone, so the sign of f places chi on one side of the root (a non-finite f
+        # comes from a chi far beyond it, on chi's own side of 0).
+        if f_val < 0.0 or (f_val != f_val and chi < 0.0):
+            if chi > lo:
+                lo = chi
+        elif chi < hi:
+            hi = chi
+
+        if f_prime > 0.0 and f_prime < inf and abs(f_val) < inf:
+            chi_new = chi - f_val / f_prime
+        else:
+            chi_new = nan
+        if chi_new == chi_new:
+            delta = chi - chi_new
+            if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
+                chi = chi_new
+                converged = True
+                break
+        if not (lo < chi_new < hi):
+            if hi == inf:
+                chi_new = 2.0 * lo + 1.0
+            elif lo == -inf:
+                chi_new = 2.0 * hi - 1.0
+            else:
+                chi_new = 0.5 * (lo + hi)
+                if hi - lo <= _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
+                    chi = chi_new
+                    converged = True
+                    break
+        chi = chi_new
+    if not converged:
+        return nan, 0.0, 0.0, 0.0, 0.0
 
     z = chi * chi * alpha
     c = stumpff_c_py(z)
@@ -238,7 +280,23 @@ def _kepler_chi_newton(
     :class:`KeplerConvergenceError`.
     """
     sqrt_mu = sqrt(mu)
+    # #963: Newton safeguarded by a bracket. f(chi) is strictly increasing (f'(chi) = r > 0), and
+    # f(0) = -sqrt(mu) dt, so the root lies in (0, inf) for dt > 0 and (-inf, 0) for dt < 0.
+    # Every evaluated iterate narrows the bracket; a Newton step that leaves it is replaced by a
+    # bisection (or, while the far side is still open, by a step that doubles the distance from
+    # 0). A Newton step that converges is accepted before the bracket test, so iterates that
+    # the plain Newton solve accepted are unchanged.
+    if dt > 0.0:
+        lo = 0.0
+        hi = inf
+    elif dt < 0.0:
+        lo = -inf
+        hi = 0.0
+    else:
+        lo = 0.0
+        hi = 0.0
     chi = chi0
+    converged = False
     for _iteration in range(_NEWTON_MAX_ITER):
         z = chi * chi * alpha
         c = stumpff_c(z)
@@ -254,16 +312,41 @@ def _kepler_chi_newton(
         )
         f_prime = (rv_dot / sqrt_mu) * chi * (1.0 - z * s) + (1.0 - alpha * r0_n) * chi2 * c + r0_n
 
-        if f_prime == 0.0:
-            return float("nan"), 0.0, 0.0, 0.0, 0.0
-
-        delta = f_val / f_prime
-        chi -= delta
-
-        if abs(delta) < 1.0e-12 * (abs(chi) if abs(chi) > 1.0 else 1.0):
+        if f_val == 0.0:
+            converged = True
             break
-    else:
-        return float("nan"), 0.0, 0.0, 0.0, 0.0
+        # f is monotone, so the sign of f places chi on one side of the root (a non-finite f
+        # comes from a chi far beyond it, on chi's own side of 0).
+        if f_val < 0.0 or (f_val != f_val and chi < 0.0):
+            if chi > lo:
+                lo = chi
+        elif chi < hi:
+            hi = chi
+
+        if f_prime > 0.0 and f_prime < inf and abs(f_val) < inf:
+            chi_new = chi - f_val / f_prime
+        else:
+            chi_new = nan
+        if chi_new == chi_new:
+            delta = chi - chi_new
+            if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
+                chi = chi_new
+                converged = True
+                break
+        if not (lo < chi_new < hi):
+            if hi == inf:
+                chi_new = 2.0 * lo + 1.0
+            elif lo == -inf:
+                chi_new = 2.0 * hi - 1.0
+            else:
+                chi_new = 0.5 * (lo + hi)
+                if hi - lo <= _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
+                    chi = chi_new
+                    converged = True
+                    break
+        chi = chi_new
+    if not converged:
+        return nan, 0.0, 0.0, 0.0, 0.0
 
     z = chi * chi * alpha
     c = stumpff_c(z)
@@ -274,7 +357,7 @@ def _kepler_chi_newton(
     f_coef = 1.0 - (chi2 / r0_n) * c
     g_coef = dt - (chi3 / sqrt_mu) * s
     # Return (chi, f, g, unused_residual_placeholder, z) — residual not tracked
-    # in the JIT path for speed; convergence is guaranteed by the break above.
+    # in the JIT path for speed; non-convergence returned nan above.
     return chi, f_coef, g_coef, 0.0, z
 
 

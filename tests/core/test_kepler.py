@@ -153,3 +153,112 @@ def test_shepperd_stm_near_parabolic_934() -> None:
                 r, v, _phi = shepperd_stm(r0, v0, dt, mu)
                 assert float(np.linalg.norm(r - r_ref)) < 1e-8 * max(1.0, float(np.linalg.norm(r)))
                 assert float(np.linalg.norm(v - v_ref)) < 1e-8
+
+
+# #963 reproducer (papercut 2026-10-05-twobody-gen-opus-kepler-propagate-nonconvergence): a
+# 173-day leg of an elliptic, near-radial heliocentric orbit (a = 0.754 au, perihelion about
+# 9e6 km, period 239 d) from a #942 Venus-to-Earth sample. Unguarded Newton on f(chi) diverged
+# because f'(chi) = r is small near the first iterate.
+_R0_963 = np.array([-88039995.65452953, -62916481.70866319, 0.0])
+_V0_963 = np.array([-19.984711843308432, -29.60574045546609, 0.0])
+_MU_963 = 132717453059.67786
+_DT_963 = 14953799.40036204
+
+
+def _kepler_equation_state(
+    r0: np.ndarray, v0: np.ndarray, dt: float, mu: float
+) -> tuple[np.ndarray, np.ndarray]:
+    """Independent elliptic reference: Kepler's equation M = E - e sin E solved by bisection
+    (monotone in E, no starting guess), then the perifocal state. Planar orbits only."""
+    rn = float(np.linalg.norm(r0))
+    h = float(r0[0] * v0[1] - r0[1] * v0[0])
+    a = 1.0 / (2.0 / rn - float(v0 @ v0) / mu)
+    ev = ((float(v0 @ v0) - mu / rn) * r0 - float(r0 @ v0) * v0) / mu
+    e = float(np.linalg.norm(ev))
+    w = float(np.arctan2(ev[1], ev[0]))
+    cos_e0 = (1.0 - rn / a) / e
+    sin_e0 = float(r0 @ v0) / (e * sqrt(mu * a))
+    e0 = float(np.arctan2(sin_e0, cos_e0))
+    n = sqrt(mu / a**3)
+    m = e0 - e * np.sin(e0) + n * dt
+    lo, hi = m - e - 1.0, m + e + 1.0
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        if mid - e * np.sin(mid) < m:
+            lo = mid
+        else:
+            hi = mid
+    ea = 0.5 * (lo + hi)
+    b = a * sqrt(1.0 - e * e)
+    xp, yp = a * (np.cos(ea) - e), b * np.sin(ea)
+    edot = n / (1.0 - e * np.cos(ea))
+    vxp, vyp = -a * np.sin(ea) * edot, b * np.cos(ea) * edot
+    sgn = 1.0 if h >= 0.0 else -1.0
+    cw, sw = np.cos(w), np.sin(w)
+    r = np.array([cw * xp - sw * sgn * yp, sw * xp + cw * sgn * yp, 0.0])
+    v = np.array([cw * vxp - sw * sgn * vyp, sw * vxp + cw * sgn * vyp, 0.0])
+    return r, v
+
+
+def _assert_matches_kepler_equation(
+    r: np.ndarray, v: np.ndarray, r0: np.ndarray, v0: np.ndarray, dt: float, mu: float
+) -> None:
+    r_ref, v_ref = _kepler_equation_state(r0, v0, dt, mu)
+    scale_r = float(np.linalg.norm(r_ref))
+    a = 1.0 / (2.0 / float(np.linalg.norm(r0)) - float(v0 @ v0) / mu)
+    # Both sides lose digits in the near-radial pass: the reference through the angle
+    # (eccentric anomaly) and E - e sin E near E = 0, the propagator through f and g.
+    assert float(np.linalg.norm(r - r_ref)) < 1e-8 * max(scale_r, a)
+    assert float(np.linalg.norm(v - v_ref)) < 1e-8 * float(np.linalg.norm(v_ref)) + 1e-8 * sqrt(
+        mu / a
+    )
+
+
+def test_kepler_near_radial_elliptic_reproducer_963() -> None:
+    r, v = propagate(_R0_963, _V0_963, _DT_963, _MU_963)
+    _assert_matches_kepler_equation(r, v, _R0_963, _V0_963, _DT_963, _MU_963)
+    r_b, _v_b = propagate(r, v, -_DT_963, _MU_963)
+    # round trip measured 4e-15 relative
+    assert float(np.linalg.norm(r_b - _R0_963)) < 1e-12 * float(np.linalg.norm(_R0_963))
+
+
+def test_kepler_near_radial_elliptic_sweep_963() -> None:
+    """Elliptic orbits with e from 0.9 to 0.9999, started at several true anomalies (both
+    branches), propagated by fractions of the period up to two revolutions, both signs of dt,
+    against Kepler's equation. Every case must converge and match."""
+    mu = 1.0
+    failures: list[str] = []
+    for e in (0.9, 0.99, 0.999, 0.9999):
+        a = 1.0
+        p = a * (1.0 - e * e)
+        period = 2.0 * pi * sqrt(a**3 / mu)
+        for nu in (-3.0, -2.0, -0.3, 0.0, 0.3, 2.0, 3.0):
+            rn = p / (1.0 + e * np.cos(nu))
+            r0 = np.array([rn * np.cos(nu), rn * np.sin(nu), 0.0])
+            vf = sqrt(mu / p)
+            v0 = np.array([-vf * np.sin(nu), vf * (e + np.cos(nu)), 0.0])
+            for frac in (0.1, 0.37, 0.5, 0.72, 0.95, 1.3, 2.0):
+                for sign in (1.0, -1.0):
+                    dt = sign * frac * period
+                    try:
+                        r, v = propagate(r0, v0, dt, mu)
+                        if e < 0.9995:
+                            _assert_matches_kepler_equation(r, v, r0, v0, dt, mu)
+                        else:
+                            # e = 0.9999 from r0 = 1e-4: the f and g sums cancel by about
+                            # a / r0 = 1e4, so the universal-variable state is good to about
+                            # 1e-8 a (measured 9.4e-9 against a 40-digit Kepler solve; the
+                            # float Kepler-equation reference has 2e-10). Convergence is what
+                            # #963 is about; accuracy here is held at 1e-7 a.
+                            r_ref, _ = _kepler_equation_state(r0, v0, dt, mu)
+                            assert float(np.linalg.norm(r - r_ref)) < 1e-7 * a
+                    except Exception as exc:
+                        failures.append(f"e={e} nu={nu} dt={dt:.3f}: {type(exc).__name__}")
+    assert not failures, f"{len(failures)} failing cases:\n" + "\n".join(failures[:40])
+
+
+def test_shepperd_stm_near_radial_elliptic_963() -> None:
+    from cyclerfinder.core.kepler_stm import shepperd_stm
+
+    r, v, _phi = shepperd_stm(_R0_963, _V0_963, _DT_963, _MU_963)
+    _assert_matches_kepler_equation(r, v, _R0_963, _V0_963, _DT_963, _MU_963)

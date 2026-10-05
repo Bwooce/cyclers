@@ -74,11 +74,10 @@ inside the FD validation tolerance.
 
 Tolerances
 ----------
-Newton solve for ``chi``: identical to ``core/kepler.py`` (relative chi-step
-``< 1e-12``, 50-iteration cap, Vallado Alg. 3.4 initial guesses). The solver is
-replicated inline because the STM needs ``chi`` itself, which
-:func:`~cyclerfinder.core.kepler.propagate` does not expose (and that module is
-not modified here).
+Newton solve for ``chi``: ``core/kepler.py``'s own ``_kepler_chi_newton`` (relative
+chi-step ``< 1e-12``, bracket-safeguarded since #963, Vallado Alg. 3.4 initial
+guesses), called directly because the STM needs ``chi`` itself, which
+:func:`~cyclerfinder.core.kepler.propagate` does not expose.
 """
 
 from __future__ import annotations
@@ -90,13 +89,15 @@ from numpy.typing import NDArray
 
 from cyclerfinder.core._stumpff import stumpff_c, stumpff_s
 from cyclerfinder.core.constants import MU_SUN_KM3_S2
-from cyclerfinder.core.kepler import KeplerConvergenceError, _initial_chi_guess
+from cyclerfinder.core.kepler import (
+    KeplerConvergenceError,
+    _initial_chi_guess,
+    _kepler_chi_newton,
+)
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 Mat6 = NDArray[np.float64]  # shape (6, 6), dtype float64
 
-_NEWTON_TOL_DELTA_REL: float = 1.0e-12
-_NEWTON_MAX_ITER: int = 50
 
 # Series cutoff for c4/c5; below this the downward recursion from c2/c3 loses
 # ~12*eps/|z| relative precision to cancellation (see module docstring).
@@ -175,45 +176,16 @@ def shepperd_stm(
     chi = _initial_chi_guess(r0_n, rv_dot, alpha, dt, mu)
     chi_par = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
 
-    # #934: try the primary guess, then retry once from the parabolic bootstrap.
+    # #934: try the primary guess, then retry once from the parabolic bootstrap. #963: the
+    # solve is core/kepler.py's bracket-safeguarded Newton (one implementation, not a copy).
     guesses = [chi] if chi == chi_par else [chi, chi_par]
-    for attempt, chi_start in enumerate(guesses):
-        chi = chi_start
-        residual: float = 0.0
-        converged = False
-        failed_flat = False
-        for _iteration in range(_NEWTON_MAX_ITER):
-            z = chi * chi * alpha
-            c2 = stumpff_c(z)
-            c3 = stumpff_s(z)
-            chi2 = chi * chi
-            chi3 = chi2 * chi
-
-            f_val = (
-                (rv_dot / sqrt_mu) * chi2 * c2
-                + (1.0 - alpha * r0_n) * chi3 * c3
-                + r0_n * chi
-                - sqrt_mu * dt
-            )
-            f_prime = (
-                (rv_dot / sqrt_mu) * chi * (1.0 - z * c3) + (1.0 - alpha * r0_n) * chi2 * c2 + r0_n
-            )
-
-            if f_prime == 0.0:
-                failed_flat = True
-                break
-
-            delta = f_val / f_prime
-            chi -= delta
-            residual = f_val
-
-            if abs(delta) < _NEWTON_TOL_DELTA_REL * max(abs(chi), 1.0):
-                converged = True
-                break
-        if converged and chi == chi:
+    for chi_start in guesses:
+        chi_conv = float(_kepler_chi_newton(r0_n, v0_n, rv_dot, alpha, dt, mu, chi_start)[0])
+        if chi_conv == chi_conv:
             break
-        if attempt == len(guesses) - 1:
-            raise KeplerConvergenceError(chi, f_val if failed_flat else residual)
+    else:
+        raise KeplerConvergenceError(chi, 0.0)
+    chi = chi_conv
 
     # --- Universal functions U0..U5 at the converged chi ------------------
     z = chi * chi * alpha
