@@ -1726,8 +1726,21 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
   conditioning of the regularised fixed-time matrices on that arc (LC phi up to 4110, the
   fixed-time correction cancels 713 against 703), about 3000x loss; tightening rtol does not fix
   it robustly (scan 1.2e-8 to 8.7e-8 for 73a, and the 2-1b end state then exceeds 5e-11). Bound
-  change or an added Cartesian reference put to the lead for approval. (3) Consistency audit of
+  change: option B approved by the owner (Cartesian reference added to the test; see the
+  `#939` commits); option C registered as `#940`. Vertical block: KS 2.95e-9, LC 2.2e-13. (3) Consistency audit of
   this file's PRIORITY list and the `#876`-`#937` bullets, `README.md`, `data/README.md`.
+- `#940` — registered 2026-10-05 (from `#939`, option C; NOT dispatched). **THE REGULARISED
+  FIXED-TIME TRANSITION MATRICES LOSE ABOUT 3000x TO CANCELLATION ON SOME ARCS.** On the 2008 seed
+  73a arc (mu = 1e-6, a third of the period) the `second_species_lc` 4 x 4 matrix carries 0.9e-7
+  relative error and the `core.cr3bp_ks` one 2.0e-7 (KS vertical block 2.95e-9) at rtol 1e-13,
+  against a 34-digit mpmath Cartesian reference, while the plain Cartesian variational matrix is
+  good to 5e-11. LC's 6 x 6 phi reaches 4110, phi @ (lift Jacobian) about 3e4, cancelling to
+  325; the fixed-time correction then cancels 713 against 703 to leave 10. Options: form the
+  fixed-time matrix without the subtraction (e.g. integrate in physical time outside the pass
+  and hand over only near the secondary), or reduce the off-shell growth of the C column.
+  Matters wherever these matrices feed Floquet multipliers or stability indices on such arcs;
+  correctors only need them as Jacobians. The `#939` test now bounds both against
+  `core.cr3bp` (scratch evidence scripts were not kept; the numbers are in the commit message).
 - `#938` — registered and DISPATCHED 2026-10-05 (owner of the work: corpus-review-fable). **FABLE
   CORPUS NOVEL-PATHS REVIEW**, read-only over the paper corpus; output
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md`. In progress.
