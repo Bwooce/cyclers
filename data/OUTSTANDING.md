@@ -111,7 +111,9 @@ Linux x86-64 binary; no spec-V4 lane on this Mac). Order of work:
 12b. Registered 2026-10-05 from the `#938` corpus review, none dispatched: `#942`-`#959`, ranked
     in the re-ranked table at the end of sec. 3a of
     `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (`#942` R1 and `#943` X1 share a
-    generator). Waiting on owner: `#948`, `#949` (Pluto part), `#950`, `#956`; see below.
+    generator). Waiting on owner: `#948`, `#949` (Pluto part), `#950`, `#956`; see below. The
+    `#942`/`#943` paper gate is cleared by `#960`. R1 verdicts: (a) PARTIAL, (b) OPEN, (c) PARTIAL.
+    X1 verdict: OPEN.
 13. Idle-time only: `#863`, CCR4BP near-miss energy continuation (not cyclers), `#878` (Earth-Moon
     exterior 1:3/1:4 resonance-network nodes; reproduction of a published paper, not a cycler).
 
@@ -1882,7 +1884,8 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - Three KNOWN_CORPUS anchors were added.
   - Owner-gated catalogue proposals are in the R-S 2007 digest, sec. 8:
     - 2007 priority for the 30 `russell-strange-2009-*` rows.
-    - The rows' "min flyby altitude" notes name the target body, not the flyby body.
+    - The 10 Jovian rows' "min flyby altitude" notes name the target body, not the flyby body. The
+      TitEnc notes and `verify/turn_gate_closures.py` are correct.
     - New rows: EurGan#93, VenMar#45 and VenMer#22/69/75.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the

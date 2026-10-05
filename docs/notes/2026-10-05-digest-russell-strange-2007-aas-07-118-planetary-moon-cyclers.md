@@ -165,8 +165,12 @@ Tables 4 and 6 (pp.10, 13) give the 20 Titan-Enceladus rows: IDs 37, 145, 183, 2
 - Example: TitEnc#235 is g(0.88468,678.48383,U) g(1.22599,441.35506,U) f(2:3,55.18988,179.99996)
   F(1:2,57.76202,180.0) f(1:2,57.76202,154.65857), v_inf T/E 3.18/6.04 km/s, period 97.4 d.
 
-Cross-check against R-S 2009 Table 5 (READ, held PDF): the EurGan#131, #159, GanCal#1, #5 and GanEur#5,
-#43, #316 strings are identical. R-S 2009 Table 5 omits EurGan#93 and all Ven* rows.
+Cross-check against R-S 2009 Tables 5 and 6, p.151 of the held PDF (COMPUTED): every 5-decimal number in
+both tables was compared.
+- All 30 shared rows (EurGan#131, #159; GanCal#1, #5; GanEur#5, #43, #316; GanIo#53, #185, #403; and the
+  20 TitEnc rows) are identical.
+- The 2009 text layer drops six minus signs. The page image (p.151) shows them, so they match 2007.
+- R-S 2009 omits EurGan#93 and all Ven* rows.
 
 Ephemeris and high-fidelity results (READ pp.14-18):
 - **VenMar#45** "easily converges to ballistic" in the patched-conic ephemeris model and is "similar to the
@@ -307,10 +311,14 @@ pages. AAS papers have no DOI.
     `corroborating_sources`.
   - This needs the ratchets that check first_published DOIs to accept a DOI-less AAS source. Check
     `tests/data` before editing.
-- **Label error in the existing rows.** The catalogued notes read, for example, "GanCal#1 ... min Callisto
-  flyby altitude 247 km". Table 3's column is "Min flyby alt. at Body A", the FLYBY body (Ganymede for
-  GanCal, Europa for EurGan). R-S 2009's header says the same. The notes name the target body. This is a
-  wording fix in the notes; the values are correct.
+- **Label error in the 10 Jovian rows (gancal, ganeur, eurgan, ganio).** The catalogued notes read, for
+  example, "GanCal#1 ... min Callisto flyby altitude 247 km". Table 3's column is "Min flyby alt. at Body
+  A", the FLYBY body (Ganymede for GanCal, GanEur and GanIo, Europa for EurGan). R-S 2009's header says the
+  same.
+  - The notes name the target body. This is a wording fix in the notes; the values are correct.
+  - The 20 TitEnc notes correctly name Titan.
+  - `src/cyclerfinder/verify/turn_gate_closures.py` (`RS_GENERIC_CYCLERS`) pairs the altitudes with the
+    flyby body, so the turn-gate control is not affected.
 - **New rows available (V0, sourced strings):**
   - EurGan#93 (dropped from R-S 2009).
   - VenMar#45, which has a published patched-conic ephemeris ballistic result, so possibly more than V0
