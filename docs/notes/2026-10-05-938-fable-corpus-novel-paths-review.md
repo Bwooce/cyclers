@@ -672,25 +672,26 @@ search or has no DOI. Items the first draft listed that ARE held were removed: B
 Jorba & Villanueva 1997, Sanaga & Howell 2025, Peng & Xu 2015/2017, Miceli et al. AIAA 2024-1280,
 Campagnola et al. 2014 Acta Astronautica.
 
-1. **Russell, R. P. & Strange, N. J. (2007)**, "Planetary moon cycler trajectories", AAS 07-118,
+1. **[Received 2026-10-05, filed under `#960`.]** **Russell, R. P. & Strange, N. J. (2007)**, "Planetary moon cycler trajectories", AAS 07-118,
    AAS/AIAA Space Flight Mechanics Meeting, Sedona; Advances in the Astronautical Sciences 127. No
    DOI (conference); free copy at the JPL open repository, handle 2014/40318 (UNCONFIRMED by DOI;
    located by web search). Unlocks: it holds the Earth-Venus, Venus-Mars and Venus-Mercury
    ideal-model free-return searches that Russell & Strange 2009 p.5 cite as ref. [26]; gates R1(b),
-   R5 and the literal-collision check for X1.
-2. **Pisarevsky, D. M., Kogan, A. & Guelman, M. (2008)**, "Interplanetary Periodic Trajectories in
+   R5 and the literal-collision check for X1. [`#960` correction: it holds NO Earth-Venus set (Table 1);
+   see `2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`.]
+2. **[Received 2026-10-05, filed under `#960`.]** **Pisarevsky, D. M., Kogan, A. & Guelman, M. (2008)**, "Interplanetary Periodic Trajectories in
    Two-Planet Systems", J. Guidance, Control, and Dynamics 31(3):729-739, doi 10.2514/1.30046
    (CONFIRMED). Unlocks: the only published two-planet periodic method with flybys at BOTH bodies;
    gates R1 cells (a), (b) and X1.
-3. **Perko, L. M. (1974)**, "Periodic Orbits in the Restricted Three-Body Problem: Existence and
-   Asymptotic Approximation", SIAM J. Applied Mathematics 27(2):200-237, doi 10.1137/0127016
+3. **[Received 2026-10-05, filed under `#960`.]** **Perko, L. M. (1974)**, "Periodic Orbits in the Restricted Three-Body Problem: Existence and
+   Asymptotic Approximation", SIAM J. Applied Mathematics 27(1):200-237 [`#960` correction: issue 1, July 1974, per the PDF and Crossref; was printed here as 27(2)], doi 10.1137/0127016
    (CONFIRMED). Unlocks: the original second-species existence theorem that every held Perko paper
    cites; needed to state X2/X3/R4 novelty claims as "theorem-generic" with the theorem in hand.
-4. **Campagnola, S., Buffington, B. B., Lam, T., Petropoulos, A. E. & Pellegrini, E. (2019)**,
+4. **[Received 2026-10-05, filed under `#960`.]** **Campagnola, S., Buffington, B. B., Lam, T., Petropoulos, A. E. & Pellegrini, E. (2019)**,
    "Tour Design Techniques for the Europa Clipper Mission", JGCD 42(12):2615-2626, doi
    10.2514/1.G004309 (CONFIRMED). Unlocks: literal-collision check for X1, R2 and R7 (Ganymede-
    Callisto repeated legs, the "Callisto pi-transfer").
-5. **Liang, Y., Xu, M., Peng, K. & Xu, S. (2020)**, "A cislunar in-orbit infrastructure based on p:q
+5. **[Received 2026-10-05, filed under `#960`.]** **Liang, Y., Xu, M., Peng, K. & Xu, S. (2020)**, "A cislunar in-orbit infrastructure based on p:q
    resonant cycler orbits", Acta Astronautica 170:539-551, doi 10.1016/j.actaastro.2020.02.029
    (CONFIRMED). Unlocks: Earth-Moon p:q cycler prior art for R3, R4 and R9 literal collision
    (quasi-periodic p:q cyclers refined in the bicircular model).
@@ -701,11 +702,11 @@ Campagnola et al. 2014 Acta Astronautica.
    Orbits of the Restricted Three-Body Problem", Astronomical Journal 73:791-806, doi 10.1086/110701
    (CONFIRMED). Unlocks: the earliest matched-asymptotic Earth-Moon periodic flyby orbits; R4 and X2
    attribution.
-8. **Hitzl, D. L. (1977)**, "Generating Orbits for Stable Close Encounter Periodic Solutions of the
+8. **[Received 2026-10-05, filed under `#960`.]** **Hitzl, D. L. (1977)**, "Generating Orbits for Stable Close Encounter Periodic Solutions of the
    Restricted Problem", AIAA Journal 15(10):1410-1418, doi 10.2514/3.60808 (CONFIRMED). Unlocks: the
    stability side of the Hitzl-Henon programme that 1977b announced; R4's "announced, never delivered"
    claim must be re-checked against it.
-9. **Arenstorf, R. F. (1963)**, "Existence of Periodic Solutions Passing Near Both Masses of the
+9. **[Received 2026-10-05, filed under `#960`.]** **Arenstorf, R. F. (1963)**, "Existence of Periodic Solutions Passing Near Both Masses of the
    Restricted Three-Body Problem", AIAA Journal 1(1):238-240, doi 10.2514/3.1516 (CONFIRMED).
    Unlocks: the existence theorem behind Genova & Aldrin's non-existence remark (R4).
 10. **Oshima, K. (2022)**, "Continuation and stationkeeping analyses on planar retrograde periodic
@@ -730,7 +731,9 @@ Campagnola et al. 2014 Acta Astronautica.
     UNCONFIRMED). **Newton, R. R. (1959)**, "Periodic orbits of a planetoid passing close to two
     gravitating masses", Smithsonian Contributions to Astrophysics 3:69-78 (no DOI found;
     UNCONFIRMED). Unlocks: the remaining primer-cited Earth-Moon cycler ancestors (R4).
-15. **Campagnola, S., Boutonnet, A., Martens, W. & Masters, A. (2014)**, "Mission Design for the
+15. **[Held as the 2015 journal version: IEEE AES Magazine 30(7), doi 10.1109/MAES.2015.140119,
+    digested 2026-10-03; the 2026-10-05 upload was an md5 duplicate and was not filed.]**
+    **Campagnola, S., Boutonnet, A., Martens, W. & Masters, A. (2014)**, "Mission Design for the
     Exploration of Neptune and Triton", 24th ISSFD, paper S6-1; free PDF at issfd.org
     (ISSFD_2014/ISSFD24_Paper_S6-1_campagnola.pdf; no DOI; UNCONFIRMED by DOI). Unlocks: the
     Neptune-Triton tour prior art the `#864` review named as unread before any `#868` writeback.
@@ -742,7 +745,10 @@ Campagnola et al. 2014 Acta Astronautica.
     Orbital Tour of Pluto and Its Moons", J. Spacecraft and Rockets, cited by Stern et al. 2020 as
     "to be published"; no Crossref record found on 2026-10-05 (possibly never published;
     UNCONFIRMED). Unlocks: the only numerical Charon-assist tour; needed only if Pluto reopens (X4).
-18. **McConaghy, T. T., Yam, C. H., Landau, D. F. & Longuski, J. M. (2003)**, "Two-Synodic-Period
+18. **[Held as journal versions: AAS 03-509 = McConaghy, Landau, Yam & Longuski 2006, JSR 43(2),
+    doi 10.2514/1.15215; AAS 03-510 = Chen et al. 2005, JSR 42(5). The 2026-06-17 Hintz digest records
+    that the catalogue covers both; the 2026-10-05 upload of the 2006 paper was an md5 duplicate and was
+    not filed.]** **McConaghy, T. T., Yam, C. H., Landau, D. F. & Longuski, J. M. (2003)**, "Two-Synodic-Period
     Earth-Mars Cyclers with Intermediate Earth Encounter", AAS 03-509; **Chen, K. J. et al. (2003)**,
     AAS 03-510 (conference, no DOI; UNCONFIRMED). Unlocks: check whether they add members to the held
     AIAA 2002-4420/4422 content (R1(a), R8).
