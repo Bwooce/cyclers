@@ -60,6 +60,8 @@ from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.hollister_menning_1970 import (
+    RALL_1960_EPOCH_JD,
+    RallElementSystem,
     Row,
     build_cycle,
     load_table3,
@@ -202,6 +204,13 @@ def main() -> None:
     ap.add_argument("--orbits", type=str, default="1-15")
     ap.add_argument("--periodic", action="store_true")
     ap.add_argument(
+        "--rall-anchor",
+        choices=["1960", "mid"],
+        default=None,
+        help="amendment 5 (INFERRED SOURCE): Rall 1969 p.136 elements, truly periodic, "
+        "anchored at the 1960 element epoch or at JD 2443363",
+    )
+    ap.add_argument(
         "--amendment3",
         action="store_true",
         help="Menning 1968 turn rules (secs. 4.21-4.22) and convergence at summed "
@@ -222,11 +231,16 @@ def main() -> None:
         script_path=Path(__file__),
         n_points=hi - lo + 1,
     )
-    system = (
-        MeanElementSystem(periods_days={"E": 5844.0 / 16, "V": 5844.0 / 26}, anchor_jd=2443363.0)
-        if args.periodic
-        else MeanElementSystem()
-    )
+    periodic = {"E": 5844.0 / 16, "V": 5844.0 / 26}
+    if args.rall_anchor is not None:
+        system: MeanElementSystem = RallElementSystem(
+            periods_days=periodic,
+            anchor_jd=RALL_1960_EPOCH_JD if args.rall_anchor == "1960" else 2443363.0,
+        )
+    elif args.periodic:
+        system = MeanElementSystem(periods_days=periodic, anchor_jd=2443363.0)
+    else:
+        system = MeanElementSystem()
     table = load_table3()
     rng = np.random.default_rng(942)
     summary = {}

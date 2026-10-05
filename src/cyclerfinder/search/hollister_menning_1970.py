@@ -28,17 +28,19 @@ Read errors and print errors
 from __future__ import annotations
 
 import itertools
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 import yaml  # type: ignore[import-untyped]
 
-from cyclerfinder.core.constants import SECONDS_PER_DAY
+from cyclerfinder.core.constants import AU_KM, SECONDS_PER_DAY
 from cyclerfinder.search.two_working_body import (
     Cycle,
     LambertLeg,
     Leg,
+    MeanElementSystem,
     ResonantLeg,
     System,
     date_residual,
@@ -196,3 +198,43 @@ def pick_branches(system: System, orbit: int, rows: list[Row]) -> tuple[tuple[st
             f"orbit {orbit}: no branch combination is Lambert-feasible at the printed dates"
         )
     return best
+
+
+#: Rall 1969 (MIT Sc.D. thesis TE-34, filed as hollister-rall-1970-periodic-orbits-NASA-CR.pdf),
+#: Appendix A, program listing p.136, read on the page image (#960 batch 10): "The ephemerides
+#: are based on the mean orbital elements of 1960" (p.129); longitudes "relative to the equinox
+#: of 1960" (p.135). Values: a (AU), e, PER (d), GFP = true longitude of perihelion (deg), and
+#: the 1960 perihelion date TJP - 2440000 (the listing's base value minus 3065, before its
+#: whole-period shift). INFERRED SOURCE for H&M: Rall is Hollister's student in the same group,
+#: but no source states that H&M used these numbers.
+RALL_1969_ELEMENTS: dict[str, tuple[float, float, float, float, float]] = {
+    "E": (1.0, 0.016726, 365.25636, 102.25253, 2.124962 - 3065.0),
+    "V": (0.723332, 0.006793, 224.7008, 131.00831, -27.01776 - 3065.0),
+}
+#: General precession in longitude, 1960.0 -> J2000 (50.29 arcsec/yr x 40 yr), deg.
+PRECESSION_1960_J2000_DEG = 0.5588
+#: JD of 1960.0 as the listing counts it (JD 2440000 - 3065).
+RALL_1960_EPOCH_JD = 2440000.0 - 3065.0
+
+
+@dataclass
+class RallElementSystem(MeanElementSystem):
+    """Amendment 5 (INFERRED SOURCE): Rall 1969 p.136 1960 mean elements for Earth and
+    Venus, perihelion longitudes precessed to J2000, mean longitude exact at
+    ``anchor_jd`` and advanced at ``periods_days`` (H&M's truly periodic model).
+    Venus inclination and node are Standish & Williams J2000 (OUR CHOICE; Rall's
+    setup block lists none). Earth's orbit is the ecliptic."""
+
+    def _rall(self, code: str) -> tuple[float, float, float, float, float]:
+        return RALL_1969_ELEMENTS[code]
+
+    def _elements(self, code: str) -> tuple[float, float, float, float, float, float]:
+        a_au, e, per_d, gfp_deg, tjp = self._rall(code)
+        base = super()._elements(code)
+        inc, lan = base[2], base[3]
+        varpi = math.radians(gfp_deg + PRECESSION_1960_J2000_DEG)
+        m_j2000 = 2.0 * math.pi * ((2451545.0 - (2440000.0 + tjp)) / per_d)
+        return (a_au * AU_KM, e, inc, lan, varpi, varpi + m_j2000)
+
+    def _kepler_period_s(self, code: str) -> float:
+        return self._rall(code)[2] * SECONDS_PER_DAY

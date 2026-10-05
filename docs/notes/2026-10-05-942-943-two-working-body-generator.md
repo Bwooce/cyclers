@@ -314,6 +314,45 @@ Reading the result:
 So for orbit I (= Table 3 orbit 1) the transfer GEOMETRY, and not only the magnitudes, reproduces an
 independent published solution.
 
+### 3.9 Amendment 5 (INFERRED SOURCE), pre-registered and committed before its runs
+
+Source: Rall, C. S. (1969), MIT Sc.D. thesis TE-34, filed as
+`hollister-rall-1970-periodic-orbits-NASA-CR.pdf`.
+- p.10: "Hollister and Menning, however, took care of this periodicity problem by modeling the planets'
+  orbits as truly periodic." This supports amendment 4.
+- p.129: "The ephemerides are based on the mean orbital elements of 1960."
+- p.136 (program listing, page image), Earth and Venus:
+  - a = 1.0 and 0.723332 AU.
+  - e = 0.016726 and 0.006793.
+  - PER = 365.25636 and 224.7008 d.
+  - GFP (true longitude of perihelion, 1960 equinox) = 102.25253 and 131.00831 deg.
+  - 1960 perihelion dates (JD - 2440000) = 2.124962 - 3065 and -27.01776 - 3065.
+- INFERRED: that H&M used the same numbers. Rall is Hollister's student in the same group, but no source
+  says so.
+
+The model (`hollister_menning_1970.RallElementSystem`):
+- the Rall elements.
+- GFP precessed +0.5588 deg (50.29 arcsec/yr x 40 yr) to J2000.
+- mean longitude exact at the anchor (Rall's elements and real PER), then advanced at the truly
+  periodic 365.25 / 224.769 d.
+- Venus inclination and node from Standish & Williams J2000 (OUR CHOICE; Rall's setup lists none).
+- Earth on the ecliptic.
+
+Anchors, both pre-registered, one run each, both reported, neither picked as better:
+- (a) the 1960 element epoch, JD 2436935.
+- (b) JD 2443363 (as amendment 4).
+
+At (a), Venus sits about 3.24 deg in longitude from the amendment-4 ephemeris; at (b), about 0.1 deg.
+
+Everything else is unchanged from amendment 3: Menning turn rules, |v_sc| = |V_P|, the 0.005-EMOS
+summed-residual convergence, and the four tolerances with the 0.90 pass fraction.
+
+THE HEADLINE STAYS AMENDMENT 4 (sec. 3.5) unless a source ties H&M to Rall's elements. Amendment 5 is
+evidence, not a reproduction claim.
+
+Suspected print error (recorded, not adjusted): Hollister 1969 Table 1, AR E 3935, elevation +46. Ours
+is -45, with matching speed and angle (sec. 3.8).
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
