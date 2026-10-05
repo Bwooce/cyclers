@@ -1,0 +1,307 @@
+{
+ "cell": "vm",
+ "n_structures": 14044,
+ "n_zeros": 2046,
+ "n_physical": 344,
+ "n_gate_passing": 2,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "jones-2017-vem-triple-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     null
+    ],
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "vem-emeeve-3syn",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "jones-2017-vem-emevve-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.72
+    ],
+    [
+     "M",
+     2.5
+    ],
+    [
+     "E",
+     5.81
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "E",
+     4.21
+    ],
+    [
+     "M",
+     2.79
+    ],
+    [
+     "E",
+     5.04
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "E",
+     5.67
+    ]
+   ]
+  },
+  {
+   "id": "jones-2017-vem-meevem-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "M",
+     3.85
+    ],
+    [
+     "E",
+     3.48
+    ],
+    [
+     "E",
+     3.42
+    ],
+    [
+     "V",
+     5.16
+    ],
+    [
+     "E",
+     3.84
+    ],
+    [
+     "M",
+     3.12
+    ],
+    [
+     "E",
+     2.98
+    ],
+    [
+     "E",
+     2.92
+    ],
+    [
+     "V",
+     4.31
+    ],
+    [
+     "E",
+     4.97
+    ],
+    [
+     "M",
+     2.42
+    ]
+   ]
+  }
+ ],
+ "empty_regions_same_pair": [
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133"
+ ],
+ "candidates": [
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "V",
+     8.22,
+     18.1
+    ]
+   ],
+   "keys": [
+    "k2|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k2|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 12.96475955374864,
+    "V": 8.219573173685143
+   },
+   "x_days": [
+    279.77233937432425,
+    392.73120550751946
+   ],
+   "period_days": 667.8466791414623,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 392.73120550751946,
+     "vinf_kms": 12.96475955374864,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 947.6190185157867,
+     "vinf_kms": 8.219573173685143,
+     "turn_deg": 18.054873543334104,
+     "available_deg": 51.042160430225536,
+     "ratio": 0.3537247128873994,
+     "required_alt_km": 19784.252176930248,
+     "rmin_radii": 4.26904365117816,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108208887.24573702,
+   "r_max_km": 341571415.5508685,
+   "min_required_alt_km": 19784.252176930248,
+   "max_turn_deg": 18.054873543334104,
+   "cross_check": {
+    "max_arrival_miss_km": 0.015141188765739475,
+    "max_vinf_vector_error_kms": 4.072687873989771e-09,
+    "max_junction_mismatch_kms": 1.195024523781285e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3537247134191088
+   },
+   "soi_fraction": 2.6230372993072856e-08,
+   "collisions": [
+    "LITERAL VenMar#45 (dV_inf 0.005, period 667.8 vs 667.8)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "V",
+     41.813,
+     3.1
+    ],
+    [
+     "V",
+     41.813,
+     3.1
+    ]
+   ],
+   "keys": [
+    "k2|LV>V/1l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k2|LV>V/1l|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 41.81251544058617,
+    "M": 20.779058950673964
+   },
+   "x_days": [
+    316.2780328582799,
+    729.7306635289985,
+    915.4906540806105
+   ],
+   "period_days": 667.8466791414623,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 729.7306635289985,
+     "vinf_kms": 41.81251544058617,
+     "turn_deg": 3.0507923100196774,
+     "available_deg": 3.2573322233148287,
+     "ratio": 0.9365923095541768,
+     "required_alt_km": 742.4974510199854,
+     "rmin_radii": 1.1226862939557147,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 915.4906540806105,
+     "vinf_kms": 20.779058950673964,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 984.1247119997423,
+     "vinf_kms": 41.81251544058621,
+     "turn_deg": 3.0507923100196774,
+     "available_deg": 3.257332223314827,
+     "ratio": 0.9365923095541774,
+     "required_alt_km": 742.4974510199818,
+     "rmin_radii": 1.1226862939557123,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 10273332.202016354,
+   "r_max_km": 291149335.31052953,
+   "min_required_alt_km": 742.4974510199818,
+   "max_turn_deg": 3.0507923100196774,
+   "cross_check": {
+    "max_arrival_miss_km": 0.009424777502321322,
+    "max_vinf_vector_error_kms": 2.876931032175361e-09,
+    "max_junction_mismatch_kms": 2.5146462689917826e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.936592310142186
+   },
+   "soi_fraction": 1.6327346094647027e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  }
+ ]
+}

@@ -395,3 +395,27 @@ def test_full_rev_circle_matches_russell_ocampo_2005_eqs_13_17() -> None:
     z_f = (v_f**2 - 0.25 - 1.0) / 2.0
     assert circ[0] == pytest.approx(z_f, abs=1e-12)
     assert circ[1] == pytest.approx(math.sqrt(0.25 - z_f**2), abs=1e-12)
+
+
+@pytest.mark.parametrize("ecc_v", [(-30.0, 22.0), (-31.0, 12.0), (-5.0, 45.0)])
+def test_kepler_step_high_eccentricity_against_dop853(ecc_v: tuple[float, float]) -> None:
+    """Regression (#942 vm cell): the earlier Newton start failed near aphelion at
+    e about 0.94. Checked against an independent DOP853 two-body integration."""
+    from scipy.integrate import solve_ivp
+
+    from cyclerfinder.search.two_working_body import kepler_step
+
+    mu = 1.3271244e11
+    r0 = np.array([1.082e8, 0.0, 0.0])
+    v0 = np.array([ecc_v[0], ecc_v[1], 0.3])
+
+    def rhs(_t: float, y: np.ndarray) -> np.ndarray:
+        return np.concatenate([y[3:], -mu * y[:3] / np.linalg.norm(y[:3]) ** 3])
+
+    for dt in np.linspace(2e5, 3.5e7, 25):
+        ref = solve_ivp(
+            rhs, (0, dt), np.concatenate([r0, v0]), method="DOP853", rtol=1e-12, atol=1e-6
+        )
+        r, v = kepler_step(r0, v0, float(dt), mu)
+        assert float(np.linalg.norm(r - ref.y[:3, -1])) < 5.0
+        assert float(np.linalg.norm(v - ref.y[3:, -1])) < 1e-6

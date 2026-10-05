@@ -3,8 +3,9 @@
 Pre-registered in docs/notes/2026-10-05-942-943-two-working-body-generator.md sec. 6.1.
 For every physically distinct gate-passing cycler (analyse_942_enumeration.collect):
 
-1. Independent cross-check: every leg is re-flown with scipy DOP853 (rtol 1e-12) on the
-   two-body equations, not with the Lambert solver or the Kepler step. Lambert legs start
+1. Independent cross-check: every leg is re-flown with scipy DOP853 (rtol 1e-13,
+   atol 1e-8 km) on the two-body equations, not with the Lambert solver or the Kepler
+   step. Lambert legs start
    from the solved departure V_inf; fixed (full-rev, half-rev) legs start from the chosen
    flyby direction. Reported: the largest arrival miss (km) and V_inf vector error (km/s),
    the largest junction magnitude mismatch built from the integrated arrivals, and the turn
@@ -101,8 +102,8 @@ def fly(mu: float, r0: np.ndarray, v0: np.ndarray, dt: float) -> tuple[np.ndarra
         np.concatenate([r0, v0]),
         args=(mu,),
         method="DOP853",
-        rtol=1e-12,
-        atol=1e-6,
+        rtol=1e-13,
+        atol=1e-8,
     )
     return sol.y[:3, -1], sol.y[3:, -1]
 

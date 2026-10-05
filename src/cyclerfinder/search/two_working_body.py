@@ -313,19 +313,31 @@ def kepler_step(r0: Vec, v0: Vec, dt: float, mu: float) -> tuple[Vec, Vec]:
     n = math.sqrt(mu / a**3)
     sigma0 = float(r0 @ v0) / math.sqrt(mu * a)  # e sin E0
     ecos0 = 1.0 - r0n / a  # e cos E0
-    e0 = math.atan2(sigma0, ecos0)
-    ecc = math.hypot(sigma0, ecos0)
-    m0 = e0 - sigma0
     dm = math.fmod(n * dt, 2.0 * math.pi)
-    m1 = m0 + dm
-    big_e = m1 if ecc < 0.8 else math.pi * (1.0 if math.sin(m1) >= 0 else -1.0) + m1 - math.pi
-    for _ in range(100):
-        f = big_e - ecc * math.sin(big_e) - m1
-        d = f / (1.0 - ecc * math.cos(big_e))
-        big_e -= d
-        if abs(d) < 1e-15:
+    if dm < 0.0:
+        dm += 2.0 * math.pi
+
+    # Kepler's equation in the eccentric-anomaly change dE:
+    #   dM = dE - ecos0 sin dE + sigma0 (1 - cos dE),
+    # monotonic in dE (derivative 1 - e cos E > 0), bracketed on [0, 2 pi].
+    def kep(x: float) -> float:
+        return x - ecos0 * math.sin(x) + sigma0 * (1.0 - math.cos(x)) - dm
+
+    lo, hi = 0.0, 2.0 * math.pi
+    de = dm
+    for _ in range(200):
+        fx = kep(de)
+        if abs(fx) < 1e-15:
             break
-    de = big_e - e0
+        if fx > 0.0:
+            hi = de
+        else:
+            lo = de
+        d1 = 1.0 - ecos0 * math.cos(de) + sigma0 * math.sin(de)
+        step = de - fx / d1 if d1 > 0.0 else 0.5 * (lo + hi)
+        de = step if lo < step < hi else 0.5 * (lo + hi)
+        if hi - lo < 1e-15:
+            break
     r1n = a + (r0n - a) * math.cos(de) + sigma0 * a * math.sin(de)
     f_c = 1.0 - a / r0n * (1.0 - math.cos(de))
     g_c = (dm - (de - math.sin(de))) / n
