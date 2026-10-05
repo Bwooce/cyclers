@@ -105,8 +105,10 @@ Before any "wanted papers" or acquisition list goes to the owner, run
 - for each row of the list, reports (1) any DOI in the row found in a corpus text, filename or
   `CORPUS_INDEX.md`; (2) the first author's surname among a corpus filename's author tokens (any
   position) with a filename year within one year, or the same in a `CORPUS_INDEX.md` `[identity: ...]`
-  note, with transliteration aliases (Bruno/Brjuno, Henon/Hénon, Olle/Ollé, ...); (3) the opening of the
-  quoted title, spaces removed, found in a corpus text.
+  note, with transliteration aliases (Bruno/Brjuno, Henon/Hénon, Olle/Ollé, ...), or the row's whole
+  title in an identity note; (3) the opening of the quoted title, spaces removed, found in a corpus text;
+  (4) a report, paper or thesis number in the row (AAS, AIAA, JPL TR, NASA TN/TM/CR, MIT TE/RE, NTRS)
+  found in a corpus filename or an identity note.
 
 Treat the hits as follows:
 - Title hits are mostly citations inside other papers.
@@ -121,8 +123,9 @@ the report year); the first checker version missed it.
 
 **Identity notes in the index.** When a filename does not show the title-page first author and year (a
 thesis filed under its supervisor, a report reissue year, a transliteration), the index row carries
-`[identity: Author, I. (Year), "Title", what it is (thesis, report number, NTRS id)]`. The checker reads
-these notes. Prefer a corrective `git mv` in `cyclers_pdf` plus a redirect row in the index when the
+`[identity: Author, I. (Year), "Title", what it is (thesis, report number, NTRS id)]`. Add one too when
+the held file is a journal version of a report that is cited by its number (Hollister 1969 JSR = MIT RE-36).
+The checker reads these notes: surname and year, the whole title, and report numbers. Prefer a corrective `git mv` in `cyclers_pdf` plus a redirect row in the index when the
 filename is actively misleading.
 
 ### 2. Chapter/section-summary digest

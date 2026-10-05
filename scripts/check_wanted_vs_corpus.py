@@ -16,14 +16,17 @@ reports:
    corpus filename (the tokens before its year), and a filename year within
    one year of the row's. Any author position counts: Rall's 1969 thesis was
    filed as "hollister-rall-1970-..." (advisor first, report year). The same
-   test runs on every CORPUS_INDEX "[identity: Author (Year), Title]" note,
-   which records the title page when a filename does not show it.
+   test runs on every CORPUS_INDEX "[identity: Author (Year), Title, report
+   no.]" note, which records the title page when a filename does not show it;
+   a row's whole title found in an identity note also counts.
 3. Title hits: the first 32 letters and digits of the row's quoted title,
    spaces removed ("Freefall" = "Free-Fall"), found in a corpus text. These
    are mostly citations inside other papers, so they are listed but do not
    fail the run.
+4. Report-number hits: an AAS, AIAA, JPL TR, NASA TN/TM/CR, MIT TE/RE or NTRS
+   number from the row found in a corpus filename or an identity note.
 
-Name+year and DOI hits need a human look. A held paper is removed from the
+Name+year, DOI and report-number hits need a human look. A held paper is removed from the
 list; a paper held in another form (report, preprint, thesis) is marked
 "acquire only for attribution".
 
@@ -33,7 +36,7 @@ Usage::
     python scripts/check_wanted_vs_corpus.py LIST --papers ../cyclers_pdf/papers --pages 3
 
 Read-only. Extracted text is cached under ``--cache`` (default: the system
-temp directory). Exit status 1 when any row has a DOI or name+year hit.
+temp directory). Exit status 1 when any row has a DOI, report-number or name+year hit.
 """
 
 from __future__ import annotations
@@ -67,6 +70,11 @@ ALIAS_GROUPS: tuple[frozenset[str], ...] = (
 DOI_RE = re.compile(r"10\.\d{4,9}/[^\s|;,()\]]+(?:\([^\s|;,)]*\)[^\s|;,()\]]*)*", re.IGNORECASE)
 YEAR_RE = re.compile(r"(?<!\d)(1[89]\d\d|20\d\d)(?!\d)")  # also "1978a"
 ROW_RE = re.compile(r"^\|\s*(\d+)\s*\|(.*)$")
+#: Report, paper and thesis numbers: AAS 07-118, AIAA 65-700, JPL TR 32-464, NASA TN D-1859, TE-34.
+REPORT_RE = re.compile(
+    r"\b(?:AAS|AIAA|TR|TN|TM|CR|TE|RE|IAF|IAC|NTRS)[ -]?(?:[A-Z][ -]?)?\d{2,4}(?:-\d{2,5})*"
+    r"|\bNTRS[ -]?\d{8,}"
+)
 
 
 def fold(s: str) -> str:
@@ -108,6 +116,7 @@ class Row:
     surname: str | None = None
     year: str | None = None
     title: str | None = None
+    report_ids: list[str] = field(default_factory=list)
 
 
 def _clean(cell: str) -> str:
@@ -128,6 +137,7 @@ def parse_rows(markdown: str) -> list[Row]:
         doi_field = cells[2]
         row = Row(int(m.group(1)), citation, doi_field, line)
         row.dois = sorted({d.rstrip(".") for d in DOI_RE.findall(citation + " " + doi_field)})
+        row.report_ids = sorted({squash(m.group(0)) for m in REPORT_RE.finditer(citation)})
         sm = re.match(r"\s*([A-Z][A-Za-zÀ-ÿ'\-]+)", citation)
         row.surname = sm.group(1) if sm else None
         ym = YEAR_RE.search(citation)
@@ -144,10 +154,11 @@ class Hits:
     doi: list[str] = field(default_factory=list)
     name_year: list[str] = field(default_factory=list)
     title: list[str] = field(default_factory=list)
+    report: list[str] = field(default_factory=list)
 
     @property
     def needs_look(self) -> bool:
-        return bool(self.doi or self.name_year)
+        return bool(self.doi or self.name_year or self.report)
 
 
 @dataclass(frozen=True)
@@ -224,6 +235,20 @@ def check_row(row: Row, corpus: Corpus) -> Hits:
             for fn, txt in corpus.squashed.items():
                 if key in txt:
                     hits.title.append(fn)
+            full = squash(row.title)
+            for fn, ident in corpus.identities:
+                # A title-page title in an [identity: ...] note is the work itself, not a
+                # citation; the whole title must match ("Periodic Orbits Connecting Earth and
+                # Venus" must not match "... Connecting Earth and Mars").
+                if full in squash(ident) and fn not in hits.name_year:
+                    hits.name_year.append(fn)
+    for rid in row.report_ids:
+        for fn in fnames:
+            if rid in squash(fn) and fn not in hits.report:
+                hits.report.append(fn)
+        for fn, ident in corpus.identities:
+            if rid in squash(ident) and fn not in hits.report:
+                hits.report.append(fn)
     return hits
 
 
@@ -254,12 +279,20 @@ def report(all_hits: Sequence[Hits]) -> str:
         tag = "LOOK" if h.needs_look else ("title" if h.title else "ok  ")
         head = f"{tag} row {r.rank}: {r.surname or '?'} {r.year or '?'} | {r.citation[:70]}"
         lines.append(head)
-        for kind, names in (("DOI", h.doi), ("name+year", h.name_year), ("title", h.title)):
+        kinds = (
+            ("DOI", h.doi),
+            ("report no.", h.report),
+            ("name+year", h.name_year),
+            ("title", h.title),
+        )
+        for kind, names in kinds:
             if names:
                 shown = ", ".join(names[:4]) + (f" (+{len(names) - 4})" if len(names) > 4 else "")
                 lines.append(f"      {kind}: {shown}")
     n_look = sum(h.needs_look for h in all_hits)
-    lines.append(f"{len(all_hits)} rows; {n_look} need a human look (DOI or name+year hit)")
+    lines.append(
+        f"{len(all_hits)} rows; {n_look} need a human look (DOI, report-number or name+year hit)"
+    )
     return "\n".join(lines)
 
 

@@ -138,6 +138,48 @@ def test_index_identity_note_catches_misleading_filename() -> None:
     assert h.name_year == ["smith-1970-report.pdf"] and h.needs_look
 
 
+def test_report_number_in_filename_or_identity_note() -> None:
+    rows = cw.parse_rows(
+        HEADER
+        + '| 1 | Hollister, W. M. & Prussing, J. E. (1966), "Optimum Transfer to Mars via Venus",'
+        " Astronautica Acta 12(2); AIAA 65-700 | none | n/a | x |\n"
+        + '| 2 | Minovitch, M. A. (1963), "The Determination of Ballistic Trajectories",'
+        " JPL TR 32-464 | none | n/a | x |\n"
+    )
+    assert rows[0].report_ids == ["aiaa65700"] and rows[1].report_ids == ["tr32464"]
+    te = cw.parse_rows(
+        HEADER + "| 1 | Rall, C. S. (1969), thesis, MIT report TE-34 | x | x | x |\n"
+    )
+    assert te[0].report_ids == ["te34"]
+    fn = "hollister-prussing-1965-optimum-transfer-mars-via-venus-aiaa-65-700.pdf"
+    h = cw.check_row(rows[0], cw.Corpus.build({}, [fn], ""))
+    assert h.report == [fn] and h.needs_look
+    index = "| x-1963-report.pdf | n.md | [identity: Minovitch (1963), JPL TR 32-464] | mined | - |"
+    h2 = cw.check_row(rows[1], cw.Corpus.build({}, ["x-1963-report.pdf"], index))
+    assert h2.report == ["x-1963-report.pdf"]
+
+
+def test_identity_note_title_counts() -> None:
+    row = cw.parse_rows(WANTED)[2]  # Turner 2007, "Low Road to Mars: The Venus-Mars Cycler"
+    # A different author and year, so only the title path can match.
+    index = (
+        "| a-2009-b.pdf | n.md | "
+        '[identity: Smith (2009), "Low Road to Mars: The Venus-Mars Cycler"]'
+        " | - | - |"
+    )
+    h = cw.check_row(row, cw.Corpus.build({}, ["a-2009-b.pdf"], index))
+    assert h.name_year == ["a-2009-b.pdf"] and h.needs_look
+    near = (
+        '| r.pdf | n.md | [identity: Rall (1969), "Free-Fall Periodic Orbits Connecting Earth'
+        ' and Mars"] |'
+    )
+    hv = cw.parse_rows(
+        HEADER + '| 1 | Hollister, W. M. (1967), "Periodic Orbits Connecting Earth and Venus" |'
+        " x | x | x |\n"
+    )[0]
+    assert not cw.check_row(hv, cw.Corpus.build({}, ["r.pdf"], near)).needs_look
+
+
 def test_index_doi_hit() -> None:
     row = cw.parse_rows(WANTED)[4]
     h = cw.check_row(row, cw.Corpus.build({}, [], "| x.pdf | ... DOI 10.2514/1.8696 ... |"))
