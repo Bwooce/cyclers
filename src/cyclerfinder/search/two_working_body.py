@@ -73,8 +73,11 @@ Dates = Sequence[float] | NDArray[np.float64]
 #: ``data/sources/hollister-menning-1970-table3.yaml``.
 EMOS_KMS: float = 29.785
 #: A demanded turn within this of 180 degrees is a rejection (owner ruling
-#: 2026-10-05, recorded under #937 / #906).
-NEAR_180_DEG: float = 1.0
+#: 2026-10-05, recorded under #937 / #906: "near 180 degrees", example 177.2).
+#: The ruling gives no number; 5 degrees (>= 175) is PROVISIONAL, chosen to
+#: catch the ruling's example, and awaits the owner. Reports also carry the
+#: largest demanded turn so another threshold can be applied without a rerun.
+NEAR_180_DEG: float = 5.0
 
 
 # ---------------------------------------------------------------------------
@@ -958,6 +961,11 @@ class CycleReport:
     def status(self) -> str:
         """``fail`` on any near-180-degree demand (owner ruling), else the gate's."""
         return "fail" if self.near_180 else self.gate.status
+
+    @property
+    def max_turn_deg(self) -> float:
+        """Largest demanded turn over the massive flybys."""
+        return max((e.demanded_turn_deg for e in self.gate.encounters), default=0.0)
 
 
 def cycle_flybys(system: System, cycle: Cycle, x: Dates, *, n_grid: int = 72) -> list[Flyby] | None:

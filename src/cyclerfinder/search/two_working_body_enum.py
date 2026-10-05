@@ -197,9 +197,15 @@ def solve_structure(
     n_phase: int = 24,
     n_split: int = 8,
     n_refine: int = 10,
+    min_sep_frac: float = 0.03,
     tol_kms: float = 1e-8,
 ) -> list[Zero]:
-    """All distinct zeros reached from the best-residual seeds of the grid."""
+    """All distinct zeros reached from the best-residual seeds of the grid.
+
+    Seeds are taken in residual order but a seed within ``min_sep_frac`` of the
+    cycle period of one already refined (dates compared modulo the phase
+    period) is skipped, so the ``n_refine`` refinements go to distinct basins.
+    """
     scored: list[tuple[float, np.ndarray]] = []
     for x in _seed_grid(system, cycle, phase_period_s, n_phase, n_split):
         r = date_residual(system, cycle, x)
@@ -207,8 +213,16 @@ def solve_structure(
             continue
         scored.append((float(np.sum(r * r)), x))
     scored.sort(key=lambda s: s[0])
+    chosen: list[np.ndarray] = []
+    sep = min_sep_frac * cycle.period_s
+    for _, x0 in scored:
+        if len(chosen) >= n_refine:
+            break
+        if any(_sep(x0, c, phase_period_s) < sep for c in chosen):
+            continue
+        chosen.append(x0)
     zeros: list[Zero] = []
-    for _, x0 in scored[:n_refine]:
+    for x0 in chosen:
         sol: Solution = correct_dates(system, cycle, x0, tol_kms=tol_kms, max_nfev=80)
         if not sol.converged:
             continue
@@ -217,6 +231,11 @@ def solve_structure(
             continue
         zeros.append(Zero(cycle, x, sol.max_abs_residual_kms))
     return zeros
+
+
+def _sep(x: np.ndarray, y: np.ndarray, period: float) -> float:
+    d = (x - y + 0.5 * period) % period - 0.5 * period
+    return float(np.max(np.abs(d)))
 
 
 def _normalise(x: np.ndarray, period: float) -> np.ndarray:

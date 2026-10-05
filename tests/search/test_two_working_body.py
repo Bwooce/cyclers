@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import itertools
 import math
 
 import numpy as np
@@ -180,22 +181,30 @@ def test_x1_one_body_control_russell_strange_gancal5() -> None:
     assert row.rs_id == "GanCal#5"
     p = g.ideal_period_s
     period = sum(leg.n_body_revs for leg in row.legs) * p
-    cyc = Cycle(
-        (
-            LambertLeg("Ganymede", "Ganymede", 1, "low"),
-            LambertLeg("Ganymede", "Ganymede", 1, "high"),
-        ),
-        period,
-    )
-    sol = correct_dates(sysm, cyc, np.array([0.0, 1.55 * p]))
-    assert sol.converged
+    # Blind over the four branch pairs and five seeds: the gate-passing zeros
+    # that reproduce the published row must all be the ("low", "high") pair.
+    matches = []
+    for b1, b2 in itertools.product(("low", "high"), repeat=2):
+        cyc_try = Cycle(
+            (LambertLeg("Ganymede", "Ganymede", 1, b1), LambertLeg("Ganymede", "Ganymede", 1, b2)),
+            period,
+        )
+        for split in (1.3, 1.55, 1.8, 2.1, 2.4):
+            s_try = correct_dates(sysm, cyc_try, np.array([0.0, split * p]))
+            fl_try = cycle_flybys(sysm, cyc_try, s_try.x) if s_try.converged else None
+            if not fl_try:
+                continue
+            rep_try = gate_cycle(sysm, fl_try)
+            if (
+                rep_try.status == "pass"
+                and abs(fl_try[0].vinf_kms - row.vinf_flyby_kms) < 0.015
+                and abs(rep_try.gate.min_required_alt_km - row.min_flyby_alt_km) < 2.0
+            ):
+                matches.append((b1, b2, cyc_try, s_try))
+    assert matches
+    assert {(m[0], m[1]) for m in matches} == {("low", "high")}
+    _, _, cyc, sol = matches[0]
     assert (sol.x[1] - sol.x[0]) / p == pytest.approx(row.legs[0].n_body_revs, abs=1e-4)
-    fl = cycle_flybys(sysm, cyc, sol.x)
-    assert fl is not None
-    rep = gate_cycle(sysm, fl)
-    assert fl[0].vinf_kms == pytest.approx(row.vinf_flyby_kms, abs=0.015)
-    assert rep.gate.min_required_alt_km == pytest.approx(row.min_flyby_alt_km, abs=2.0)
-    assert rep.status == "pass"
     placed = place_massless_target(sysm, cyc, sol.x, "Callisto")
     assert placed
     s2, c2, seed = placed[0]
@@ -210,10 +219,12 @@ def test_x1_one_body_control_russell_strange_gancal5() -> None:
 
 
 def test_hollister_3h_circular_recall() -> None:
-    """Recall control (Hollister & Menning 1970 p.1194-1195): in the circular
+    """Recall control (Hollister & Menning 1970 p.1194): in the circular
     coplanar model a 3.2-yr (two E-V synodic periods) orbit with a symmetric
     return at Earth and two full-revolution returns at Venus exists with
-    ballistic flybys; H&M's own approximation used a 1.37-yr symmetric return."""
+    ballistic flybys. Consistency check only: the 1.37-yr symmetric return
+    H&M inserted (p.1195) belongs to their inclined-elliptic sequential
+    modification, not to the circular orbit."""
     from cyclerfinder.search.two_working_body_enum import assess, solve_structure
 
     s = heliocentric_circular({"E": 1.0, "V": 0.61520})
@@ -234,3 +245,52 @@ def test_hollister_3h_circular_recall() -> None:
     # the symmetric return runs from the first Lambert start to the second
     sy_years = [(z.x[1] - z.x[0]) / (365.25 * DAY) for z in passing]
     assert min(abs(y - 1.37) for y in sy_years) < 0.03
+
+
+def test_x1_ganeur43_blind_through_the_enumerator() -> None:
+    """X1 control (expected: Russell & Strange 2009 Tables 3, 5, row GanEur#43:
+    V_inf 1.87 km/s, minimum flyby altitude 8861 km, 564,558-1,072,330 km).
+
+    Every k = 2 Ganymede-Europa structure with Europa massless and up to two
+    revolutions per transfer is enumerated at the production settings; every
+    gate-passing zero must be this cycler (the split labels are one conic)."""
+    import importlib.util
+    from pathlib import Path
+
+    from cyclerfinder.search.two_working_body_enum import (
+        CatalogueSpec,
+        assess,
+        solve_structure,
+        structures,
+    )
+
+    path = Path(__file__).resolve().parents[2] / "scripts" / "run_942_enumerate.py"
+    spec = importlib.util.spec_from_file_location("run_942_enumerate", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    sysm, a, b = mod.cell_system("ge1")
+    syn = sysm.synodic_s(a, b)
+    passing = []
+    for cyc in structures(
+        sysm,
+        a,
+        b,
+        2,
+        max_returns={a: 0, b: 0},
+        spec={c: CatalogueSpec() for c in (a, b)},
+        transfer_revs=(0, 1, 2),
+    ):
+        for z in solve_structure(
+            sysm, cyc, phase_period_s=syn, n_phase=36, n_split=12, n_refine=40
+        ):
+            ass = assess(sysm, z)
+            if ass.status == "pass":
+                passing.append(ass)
+    assert passing
+    for ass in passing:
+        assert ass.vinf_kms["Ganymede"] == pytest.approx(1.87, abs=0.015)
+        assert ass.report is not None
+        assert ass.report.gate.min_required_alt_km == pytest.approx(8861.0, abs=2.0)
+        assert ass.r_min_km == pytest.approx(564_558.0, rel=1e-3)
+        assert ass.r_max_km == pytest.approx(1_072_330.0, rel=1e-3)
