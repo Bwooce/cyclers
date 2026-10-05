@@ -353,6 +353,32 @@ evidence, not a reproduction claim.
 Suspected print error (recorded, not adjusted): Hollister 1969 Table 1, AR E 3935, elevation +46. Ours
 is -45, with matching speed and angle (sec. 3.8).
 
+### 3.10 Amendment 5 results (commit 240b3b2c) and the end of the ladder
+
+Cells give raw / source-consistent-rows match, [summed residual in EMOS]; P = pass.
+
+| Orbit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| (a) anchor 1960 | 1.00 P | 0.40 | 0.20 | 0.12 | 0.00 | 0.00 | 0.48 | 0.44 | 0.80 | 0.36 | 0.56 | 0.64 | 0.76 | 0.52/0.59 | 0.76/0.79 |
+| (b) anchor JD 2443363 | 1.00 P | 0.96 P | 0.48 | 0.64/0.73 | 0.48/0.52 | 0.24 [0.0057] | 0.68 | 0.84 | 1.00 P [0.0014] | 0.84 | 0.96 P | 0.96 P | 1.00 P | 0.88/1.00 | 0.96/1.00 P |
+
+Totals:
+- Anchor (a): 1/15 raw, 1/15 on source-consistent rows.
+- Anchor (b): 7/15 raw, 8/15 on source-consistent rows. This is the same set as amendment 4.
+
+Reading:
+- Rall's 1960 elements do NOT fix orbits 3-8 at either anchor.
+- Anchored at their own 1960 epoch, the truly periodic Venus drifts about 3.2 deg by the 1970s, and
+  almost every orbit fails.
+- Anchored mid-span they reproduce amendment 4 to within a few hundredths. So Standish and Rall
+  elements agree there; the e and perihelion differences do not matter.
+
+The anchor (planet phase) is the one model item no source states, and the result depends strongly on it.
+That fits the inference in sec. 3.6, but it does not reproduce orbits 3-8.
+
+LADDER STOPPED here (lead's instruction). Headline (amendment 4, sourced): 7/15 raw and 8/15 on
+source-consistent rows; orbits 3-8 not reproduced.
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
