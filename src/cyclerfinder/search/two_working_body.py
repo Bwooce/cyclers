@@ -118,12 +118,14 @@ class CircularSystem:
 
     ``bodies`` maps a code to ``(a_km, period_s, theta0_rad)``: each body rides
     a prograde circle in the xy-plane at angle ``theta0 + 2 pi t / period``.
-    ``massless`` names target bodies that take no part in the turn.
+    ``massless`` names target bodies that take no part in the turn;
+    ``flyby_overrides`` replaces registry flyby constants (e.g. a paper's own).
     """
 
     mu: float
     bodies: dict[str, tuple[float, float, float]]
     massless: frozenset[str] = frozenset()
+    flyby_overrides: dict[str, FlybyBody] = field(default_factory=dict)
     _fb: dict[str, FlybyBody] = field(default_factory=dict, repr=False)
 
     def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
@@ -140,7 +142,13 @@ class CircularSystem:
 
     def body(self, code: str) -> FlybyBody:
         if code not in self._fb:
-            self._fb[code] = _flyby_body(code, code in self.massless)
+            if code in self.flyby_overrides:
+                fb = self.flyby_overrides[code]
+                self._fb[code] = FlybyBody(
+                    fb.code, fb.mu_km3_s2, fb.radius_km, fb.alt_floor_km, code in self.massless
+                )
+            else:
+                self._fb[code] = _flyby_body(code, code in self.massless)
         return self._fb[code]
 
     def wrap_rotation(self, code: str, dt_s: float) -> Vec:
@@ -280,6 +288,47 @@ def _rot_z(a: float) -> Vec:
 def _rot_x(a: float) -> Vec:
     c, s = math.cos(a), math.sin(a)
     return np.array([[1.0, 0.0, 0.0], [0.0, c, -s], [0.0, s, c]])
+
+
+def kepler_step(r0: Vec, v0: Vec, dt: float, mu: float) -> tuple[Vec, Vec]:
+    """Two-body propagation by ``dt``.
+
+    Elliptic orbits use the classical eccentric-anomaly Lagrange f and g
+    solution (Kepler's equation by Newton, ``dt`` reduced modulo the period);
+    :func:`cyclerfinder.core.kepler.propagate` fails to converge on some
+    single-revolution heliocentric arcs here (reported as a papercut).
+    Non-elliptic orbits fall back to :func:`propagate`.
+    """
+    r0 = np.asarray(r0, dtype=np.float64)
+    v0 = np.asarray(v0, dtype=np.float64)
+    r0n = float(np.linalg.norm(r0))
+    alpha = 2.0 / r0n - float(v0 @ v0) / mu
+    if alpha <= 0.0:
+        r, v = propagate(r0, v0, dt, mu)
+        return np.asarray(r, dtype=np.float64), np.asarray(v, dtype=np.float64)
+    a = 1.0 / alpha
+    n = math.sqrt(mu / a**3)
+    sigma0 = float(r0 @ v0) / math.sqrt(mu * a)  # e sin E0
+    ecos0 = 1.0 - r0n / a  # e cos E0
+    e0 = math.atan2(sigma0, ecos0)
+    ecc = math.hypot(sigma0, ecos0)
+    m0 = e0 - sigma0
+    dm = math.fmod(n * dt, 2.0 * math.pi)
+    m1 = m0 + dm
+    big_e = m1 if ecc < 0.8 else math.pi * (1.0 if math.sin(m1) >= 0 else -1.0) + m1 - math.pi
+    for _ in range(100):
+        f = big_e - ecc * math.sin(big_e) - m1
+        d = f / (1.0 - ecc * math.cos(big_e))
+        big_e -= d
+        if abs(d) < 1e-15:
+            break
+    de = big_e - e0
+    r1n = a + (r0n - a) * math.cos(de) + sigma0 * a * math.sin(de)
+    f_c = 1.0 - a / r0n * (1.0 - math.cos(de))
+    g_c = (dm - (de - math.sin(de))) / n
+    fdot = -math.sqrt(mu * a) / (r1n * r0n) * math.sin(de)
+    gdot = 1.0 - a / r1n * (1.0 - math.cos(de))
+    return f_c * r0 + g_c * v0, fdot * r0 + gdot * v0
 
 
 # ---------------------------------------------------------------------------
@@ -499,7 +548,7 @@ def half_rev_arrival(system: System, leg: HalfRevLeg, t_dep: float, u_dep: Vec) 
     """
     r0, w0 = system.state(leg.body, t_dep)
     dt = fixed_duration_s(system, leg)
-    _, v1 = propagate(r0, w0 + u_dep, dt, system.mu)
+    _, v1 = kepler_step(r0, w0 + u_dep, dt, system.mu)
     _, w1 = system.state(leg.body, t_dep + dt)
     return np.asarray(v1 - w1, dtype=np.float64)
 
@@ -971,7 +1020,7 @@ def encounter_self_consistency(system: System, cycle: Cycle, x: Dates) -> float:
         leg = cycle.legs[leg_i]
         assert isinstance(leg, LambertLeg)
         r1, w1 = system.state(leg.frm, ev.t_dep)
-        r_end, _ = propagate(r1, w1 + ev.vinf_dep, ev.t_arr - ev.t_dep, system.mu)
+        r_end, _ = kepler_step(r1, w1 + ev.vinf_dep, ev.t_arr - ev.t_dep, system.mu)
         r2, _ = system.state(leg.to, ev.t_arr)
         worst = max(worst, float(np.linalg.norm(r_end - r2)))
     return worst

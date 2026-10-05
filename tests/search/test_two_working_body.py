@@ -132,3 +132,105 @@ def test_hm1970_orbit1_corrector_reproduces_printed_dates_and_turns() -> None:
         d = min(abs(f.t_s / DAY - r.date), abs(f.t_s / DAY - 5844 - r.date))
         assert d < 3.0
         assert f.turn_deg == pytest.approx(r.theta_deg, abs=3.0)
+
+
+def test_kepler_step_matches_universal_variables() -> None:
+    from cyclerfinder.search.two_working_body import kepler_step
+
+    mu = 1.327e11
+    r0 = np.array([1.4e8, 2e7, 1e6])
+    v0 = np.array([-3.0, 31.0, 0.5])
+    for dt in (1e5, 3e6, 2e7, 7e7, -4e6):
+        a = kepler_step(r0, v0, dt, mu)
+        b = propagate(r0, v0, dt, mu)
+        assert float(np.linalg.norm(a[0] - b[0])) < 1e-3
+        assert float(np.linalg.norm(a[1] - b[1])) < 1e-9
+
+
+def test_x1_one_body_control_russell_strange_gancal5() -> None:
+    """X1 control (expected values: Russell & Strange 2009 Tables 2, 3, 5).
+
+    GanCal#5: Ganymede generic returns g1.50425 and g3.74691 (both one-rev),
+    Callisto massless. The date corrector must find the split, V_inf 3.24 km/s
+    and the 328 km minimum flyby altitude, and carry a massless Callisto
+    encounter placed on the cycler without changing them."""
+    from cyclerfinder.search.two_working_body import CircularSystem, FlybyBody, gate_cycle
+    from cyclerfinder.search.two_working_body_enum import Zero, assess, place_massless_target
+    from cyclerfinder.verify.turn_gate_closures import (
+        RS_BODIES,
+        RS_GENERIC_CYCLERS,
+        RS_PRIMARY_GM,
+    )
+
+    mu = RS_PRIMARY_GM["Jupiter"]
+    g, c = RS_BODIES["Ganymede"], RS_BODIES["Callisto"]
+
+    def a_of(p: float) -> float:
+        return float((mu * (p / (2 * math.pi)) ** 2) ** (1 / 3))
+
+    sysm = CircularSystem(
+        mu,
+        {
+            "Ganymede": (a_of(g.ideal_period_s), g.ideal_period_s, 0.0),
+            "Callisto": (a_of(c.ideal_period_s), c.ideal_period_s, 0.0),
+        },
+        flyby_overrides={"Ganymede": FlybyBody("Ganymede", g.gm_km3_s2, g.radius_km, 0.0)},
+    )
+    row = RS_GENERIC_CYCLERS[0]
+    assert row.rs_id == "GanCal#5"
+    p = g.ideal_period_s
+    period = sum(leg.n_body_revs for leg in row.legs) * p
+    cyc = Cycle(
+        (
+            LambertLeg("Ganymede", "Ganymede", 1, "low"),
+            LambertLeg("Ganymede", "Ganymede", 1, "high"),
+        ),
+        period,
+    )
+    sol = correct_dates(sysm, cyc, np.array([0.0, 1.55 * p]))
+    assert sol.converged
+    assert (sol.x[1] - sol.x[0]) / p == pytest.approx(row.legs[0].n_body_revs, abs=1e-4)
+    fl = cycle_flybys(sysm, cyc, sol.x)
+    assert fl is not None
+    rep = gate_cycle(sysm, fl)
+    assert fl[0].vinf_kms == pytest.approx(row.vinf_flyby_kms, abs=0.015)
+    assert rep.gate.min_required_alt_km == pytest.approx(row.min_flyby_alt_km, abs=2.0)
+    assert rep.status == "pass"
+    placed = place_massless_target(sysm, cyc, sol.x, "Callisto")
+    assert placed
+    s2, c2, seed = placed[0]
+    z = correct_dates(s2, c2, seed)
+    assert z.converged
+    a = assess(s2, Zero(c2, z.x, z.max_abs_residual_kms))
+    assert a.report is not None
+    assert a.report.gate.min_required_alt_km == pytest.approx(row.min_flyby_alt_km, abs=2.0)
+    assert a.r_min_km == pytest.approx(row.min_dist_primary_km, rel=1e-3)
+    assert a.r_max_km == pytest.approx(row.max_dist_primary_km, rel=1e-3)
+    assert a.max_encounter_miss_km < 1.0
+
+
+def test_hollister_3h_circular_recall() -> None:
+    """Recall control (Hollister & Menning 1970 p.1194-1195): in the circular
+    coplanar model a 3.2-yr (two E-V synodic periods) orbit with a symmetric
+    return at Earth and two full-revolution returns at Venus exists with
+    ballistic flybys; H&M's own approximation used a 1.37-yr symmetric return."""
+    from cyclerfinder.search.two_working_body_enum import assess, solve_structure
+
+    s = heliocentric_circular({"E": 1.0, "V": 0.61520})
+    syn = s.synodic_s("E", "V")
+    cyc = Cycle(
+        (
+            LambertLeg("E", "E", 1, "high"),
+            LambertLeg("E", "V"),
+            ResonantLeg("V"),
+            ResonantLeg("V"),
+            LambertLeg("V", "E"),
+        ),
+        2 * syn,
+    )
+    zs = solve_structure(s, cyc, phase_period_s=syn, n_phase=48, n_split=16, n_refine=300)
+    passing = [z for z in zs if assess(s, z).status == "pass"]
+    assert passing
+    # the symmetric return runs from the first Lambert start to the second
+    sy_years = [(z.x[1] - z.x[0]) / (365.25 * DAY) for z in passing]
+    assert min(abs(y - 1.37) for y in sy_years) < 0.03
