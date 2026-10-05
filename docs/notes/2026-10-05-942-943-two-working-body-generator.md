@@ -475,6 +475,24 @@ Notes on the cells:
 - Timing pilot for vm: 2.8 s per structure (20-structure k = 3 sample). Serial about 11 h; about 5.5 h
   on 2 workers, longer under load.
 
+### 6.3 Cell 1 result: vm (Venus-Mars, Mars massless), 2026-10-06
+
+Run (launched by the lead, 2 shards): 14,044 structures, 2,046 exact zeros, 344 physical cyclers, 2
+gate-passing. Gauntlet: `data/942_cell_vm_gauntlet.json`.
+
+- In-run control: VenMar#45 recovered (LITERAL). The run is valid.
+- Bug fix during adjudication: `kepler_step` diverged near aphelion at e about 0.93. All zeros were
+  reassessed (`scripts/reassess_942_zeros.py`); no verdict changed.
+- Candidate vm-1, a class member, NOT novel. k = 2; one Venus 1-rev generic return plus a 0-rev
+  V->M->V conic.
+  - V_inf: Venus 41.81 km/s, Mars 20.78 km/s.
+  - Venus turn 3.05 deg of 3.26 available (742 km required altitude).
+  - Perihelion 0.069 AU (about 15 solar radii), aphelion 1.95 AU.
+  - DOP853 re-fly miss 0.009 km.
+  - It is in R-S 2007's published one-working-body Venus-Mars class (same ideal model; R-S archived the
+    full catalogue without printing it). Novelty policy (#875) decides how such members are recorded.
+  - Not a credible design: it is a sun-grazer.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
