@@ -209,3 +209,35 @@ A `KNOWN_CORPUS` anchor has been added in `src/cyclerfinder/search/literature_ch
 
 A Ganymede-Callisto cycler candidate now meets this paper as well as the Russell & Strange 2009 GanCal
 anchor.
+
+## 8. Addendum: the sourced Ganymede-Callisto sequence numbers (READ, Table 1 continued, p.6, page image at 220 dpi)
+
+Transition to Europa Campaign 2 in tour 18F17. This is a high-fidelity tour, so these are flown-design
+values, not ideal-model invariants. n and m are the numerically measured revolution counts of the leg after
+the flyby (p.3).
+
+| Flyby | Date (ET) | Alt, km | v_inf, km/s | n | m |
+|---|---|---|---|---|---|
+| 33E26 | 21-May-2027 | 1932 | 3.77 | 4.53 | 1.35 |
+| 34C01 | 06-Jun-2027 | 135 | 4.84 | 0.92 | 0.52 |
+| 35G05 | 22-Jun-2027 | 1302 | 4.71 | 3.30 | 1.82 |
+| 37C02 | 15-Jul-2027 | 25 | 3.62 | 1.56 | 1.56 |
+| 38C03 | 10-Aug-2027 | 1614 | 3.61 | 2.30 | 2.30 |
+| 41C04 | 18-Sep-2027 | 1633 | 3.62 | 1.56 | 1.56 |
+| 42C05 | 14-Oct-2027 | 543 | 3.63 | 1.26 | 1.26 |
+| 44C06 | 04-Nov-2027 | 1292 | 3.63 | 2.59 | 2.59 |
+| 46C07 | 17-Dec-2027 | 2772 | 3.63 | 1.59 | 1.54 |
+| 48G06 | 12-Jan-2028 | 4657 | 3.20 | 3.13 | 1.39 |
+| 49C08 | 04-Feb-2028 | 5644 | 4.37 | 1.00 | 1.00 |
+| 50C09 | 21-Feb-2028 | 176 | 4.38 | 1.25 | 1.54 |
+
+- The two Callisto-Ganymede-Callisto transfers are 34C01-35G05-37C02 and 46C07-48G06-49C08 (p.8).
+- In these, Ganymede v_inf is 4.71 and 3.20 km/s, and Callisto v_inf is 4.84 / 3.62 and 3.63 / 4.37
+  km/s.
+- These are tour legs, not a repeating cycler. They are the only sourced per-flyby numbers in the paper
+  for a G-C sequence.
+- Caution: their v_inf range (3.2-4.8 km/s) overlaps the GCGC cycler's 3.5/4.5 km/s.
+
+Follow-up for 15F09, which "inspired" the GCGC cycler: the 2015 Clipper trade-study paper Lam,
+Arrieta-Camacho & Buffington, AAS 15-657, is a likely published description of 15F09. This is unverified.
+It moves up the missing-papers list, to just after Landau's STAR paper.

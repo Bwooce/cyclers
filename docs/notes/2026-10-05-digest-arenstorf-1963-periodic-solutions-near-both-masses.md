@@ -78,7 +78,12 @@ Earth-Moon cycler concept and should be recorded as prior art.
   They are near Kepler ellipses whose collision values of e are excluded. The Moon passage distance stays
   of order delta, which is fixed. It does not tend to 0 with mu, so these are not second-species orbits.
 - **Earth-Moon mu:** not covered by the theorem. The note asserts it and illustrates it at mu = 1/82.
-- **Which orbits can pass near both masses (COMPUTED from Eq. 9):**
+- **Which orbits can pass near both masses (COMPUTED):**
+  - General bound: any ellipse with a small perigee r_p that reaches the Moon distance r = 1 needs
+    a >= (1 + r_p)/2 > 1/2. This holds for both of Arenstorf's constructions: the apogee-at-Moon
+    construction of Eq. (9), and the p.240 variant for k - m odd that comes close to M 'at a later time
+    (not at apogee)'.
+  - The Eq. (9) instance:
   - Both inequalities together need 1 < a(1 + e) and a(1 - e) < 2 delta. Adding them, 2a lies between
     1 + delta/2 and 1 + 3 delta, so a is just above 1/2.
   - Hence m/k is just above 2^(-3/2) = 0.35355.
@@ -89,6 +94,10 @@ Earth-Moon cycler concept and should be recorded as prior art.
     which is less than 1 (COMPUTED).
   - At mu = 0 such an ellipse cannot reach the Moon's orbit, so Eq. (9) can never be met. Arenstorf's
     theorem cannot supply a 3:1 orbit passing near both bodies.
+  - Convention checked: Genova & Aldrin's 3:1 is three spacecraft revolutions per lunar month. Their
+    lunar encounter is every 26 days and their Earth perigees are every 7-10 days. Their own text has the
+    CR3BP apogee 'below lunar distance' (`docs/notes/2026-06-10-genova-aldrin-2015-mining.md` sec. 2), so
+    m/k = 1/3 is right.
   - This is consistent with Genova & Aldrin's statement.
   - The Arenstorf 3:1 figure they cite is not in this note. It is probably in the Proc. XIV IAC 1963 paper
     or NASA TN D-1859 (INFERRED; neither is held).

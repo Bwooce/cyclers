@@ -104,9 +104,12 @@ Cross-check against paper I's Table I as transcribed in the 2026-10-04 digest (C
 | C38(2) | e | 0.91527 | 0.91526 |
 | C38(2) | C | 1.31530 | 1.31528 |
 
-- These differences are below 5e-5, which is a rounding or recomputation level. Paper I is the authority;
-  the digest transcription should be re-checked against paper I's page image before either is used as a
-  5-digit golden.
+- These differences are below 5e-5, which is a rounding or recomputation level.
+- **Checked 2026-10-05 against paper I's own page image (Celest. Mech. 15, p.450, Table II, not Table
+  I).** Paper I prints C25(1) C = 2.641 31; C38(1) a = 0.521 11, e = 0.920 48, x1 = 0.041 44,
+  C = 2.483 18; C38(2) e = 0.915 26, C = 1.315 28. These are the same as the 2026-10-04 digest.
+- So the differences are real differences between the two papers, not transcription errors. Use paper I
+  as the authority.
 - C23(1) and C24(2) were not in the digest excerpt and were not compared.
 
 ## 3. Gate answer: `#948` R4, "announced, never delivered"

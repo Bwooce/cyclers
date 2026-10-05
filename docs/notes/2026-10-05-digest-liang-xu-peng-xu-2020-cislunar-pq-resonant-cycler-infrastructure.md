@@ -101,19 +101,27 @@ Results:
   - The nearest rows are `casoliva-2-1a-em-resonant-po-2010` (C = 0.4887, periselene 90,471 km, perigee
     72,142 km) and `casoliva-2-1b-em-resonant-po-2010` (C = 1.1964, periselene 92,590 km, perigee 6,790 km,
     apogee 485,181 km). Both are `resonant_po` and both are the same (2,1) family at different energies.
-  - The Liang member (C about 2.09 by my check) would be a third point on that family, with the same
-    `resonant_po` verdict, because 80,928 km is above the 66,183 km SOI.
+  - No-duplicate evidence uses PRINTED values only:
+    - Liang's closest Moon distance is 80,927.9 km. Casoliva 2-1b's printed periselene is 92,590 km and
+      2-1a's is 90,471 km.
+    - The models differ: Liang's orbit is quasi-periodic in the bicircular model, while the Casoliva rows
+      are CR3BP periodic orbits.
+    - The paper's statement that the member lies near the 2000 km-altitude 'red' orbit puts it closer
+      to 2-1b (perigee 6,790 km) than my sec. 2 stand-in suggests.
+    - The C of about 2.09 is the value of my COMPUTED stand-in, not of Liang's member.
+  - Same `resonant_po` verdict, because 80,928 km is above the 66,183 km SOI.
 - **`#947` R3 (Zhou et al. 2025 Table 6 "cycler-like" fixed points): no literal collision.**
   - Zhou's n = 2 row is x0 = 0.693, with xdot0 = -0.0212 (not perpendicular), on the Earth side.
   - Liang's member is a symmetric far-side 2:1 orbit.
-  - Add the Liang 2:1 signature (C about 2.09, far-side perpendicular crossing at x about 1.198) to the R3
-    match list alongside the Casoliva rows.
+  - Add the Liang 2:1 signature (far-side perpendicular crossing at x about 1.198, Moon distance
+    80,927.9 km) to the R3 match list alongside the Casoliva rows. Do not use a Jacobi constant: it is not
+    printed.
 - **`#948` R4 (Earth-grazing second-species): no collision.**
   - The Liang orbits are high-energy, Keplerian-like and far from the Moon (no near-collision).
   - The Earth-margin end of the family (2000 km altitude, Fig. 2 red) is an Earth-grazing resonant orbit of
     the second KIND, not second species.
 - **`#956` R9 (exterior-realm cyclers through L2): no literal collision.**
-  - The Liang member's apogee is beyond the Moon, but C about 2.09 is far below C(L2), about 3.17. The Hill
+  - The Liang member's apogee is beyond the Moon, but its energy is far beyond the L2 level: my stand-in's C of about 2.09 is far below C(L2), about 3.17. The Hill
     region is wide open, so this is not an L2-tube transit, which is the R9 class of Ross &
     Roberts-Tsoukkas.
   - It is still published prior art for "p:q orbits with apogee beyond the Moon" at high energy. Cite it if

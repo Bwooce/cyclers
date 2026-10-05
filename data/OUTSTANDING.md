@@ -1813,14 +1813,22 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 - `#947` — registered 2026-10-05, not dispatched (from `#938`, R3, rank 6 of 18). **REFINE ZHOU ET
   AL. 2025 TABLE 6 "CYCLER-LIKE" FIXED POINTS WITH MULTIPLE SHOOTING.** Sources: Zhou et al. 2025
   (Sec. V.B, Table 6). Gate before dispatch: none. Cost (GUESS): 0.5 agent-day. P(novel row): 0.3.
-  Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R3.
+  Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R3. `#960` collision
+  check: Liang et al. 2020 has no collision with the Zhou rows. Add its 2:1 far-side member to the match
+  list (`docs/notes/2026-10-05-digest-liang-xu-peng-xu-2020-cislunar-pq-resonant-cycler-infrastructure.md` sec. 3).
 - `#948` — registered 2026-10-05, not dispatched (from `#938`, R4, rank 7 of 18). **EARTH-GRAZING
   SECOND-SPECIES CYCLERS: Bruno's e = 1 arcs and Gomez-Olle double-collision orbits continued to the
   Earth-Moon mass (needs both-primary regularisation).** Sources: Bruno 1981 Table III; Hitzl &
   Henon 1977b; Gomez & Olle 1986; Genova & Aldrin 2015; Casoliva et al. 2010; Waldvogel 1967. Gate
   before dispatch: OWNER: the Earth-Moon tension with `#864` sec. 8. Cost (GUESS): 3-5 agent-days.
   P(novel row): 0.35. Detail: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3
-  R4.
+  R4. `#960` checks:
+  - Hitzl 1977 (AIAA J) does not deliver the mu > 0 stability study, so "announced, never delivered"
+    stands.
+  - Perko 1974 covers symmetric circular orbits only, and excludes Earth-collision arcs, so it is not a
+    "theorem-generic" basis for e = 1 arcs.
+  - Arenstorf 1963: a 3:1 orbit cannot pass near both bodies (2a < 1).
+  - Digests: `docs/notes/2026-10-05-digest-{hitzl-1977,perko-1974,arenstorf-1963}-*.md`.
 - `#949` — registered 2026-10-05, not dispatched (from `#938`, X4, rank 8 of 18). **THE DA
   TRANSFER-MAP ENUMERATOR AT TITAN (and at Pluto-Charon if the owner reopens that lane).** Sources:
   Zhou et al. 2025 (method); Ross & Roberts-Tsoukkas (3,2) Table I row as control. Gate before
@@ -1866,7 +1874,9 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   Sources: Ross & Roberts-Tsoukkas 2025, 2026 (arXiv 2606.29189 Table I control); Rawat et al. 2025.
   Gate before dispatch: OWNER: the Earth-Moon tension with `#864` sec. 8. Cost (GUESS): 2-3
   agent-days. P(novel row): 0.2. Detail:
-  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R9.
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R9. `#960` collision check:
+  Liang et al. 2020 is a high-energy 2:1 orbit with apogee beyond the Moon, not an L2-tube transit. No
+  literal collision; cite it if a result is near C = 2.
 - `#957` — registered 2026-10-05, not dispatched (from `#938`, R10, rank 16 of 18). **SPATIAL
   SECOND-SPECIES SEEDS CORRECTED AT A PHYSICAL MASS RATIO.** Sources: Barrabes & Gomez 2002, 2003;
   Henon 1968; Casoliva et al. 2010. Gate before dispatch: `#899`. Cost (GUESS): 3-4 agent-days.
@@ -1904,6 +1914,14 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
       R3/R4/R9; the anchor was dropped because of the surname collision with Guoliang Liang.
     - The `#938` note sec. 5 was corrected (Perko issue; items 1-5, 8, 9 received; items 15 and 18 held).
     - Digests are `docs/notes/2026-10-05-digest-{campagnola-2019,hitzl-1977,perko-1974,arenstorf-1963,liang-xu-peng-xu-2020}-*.md`.
+- `#961` — registered 2026-10-05, not dispatched (found by `#960`). **LITERATURE-GATE SURNAME
+  COLLISION.** `search/literature_check.py` strong-links search hits to KNOWN_CORPUS anchors by author
+  surname.
+  - A Yuying Liang 2020 anchor matched the fixture's Guoliang Liang 2024 hit (doi 10.2514/1.G008387),
+    which made `test_new_corpus_entries_flagged_published` fail. The anchor was dropped.
+  - The same latent false match applies to any shared surname: Liang, Xu, Russell, Anderson, Campagnola.
+  - Fix: disambiguate by first initial or DOI before strong-linking, with a test pair of same-surname
+    authors. Cost (GUESS): 0.5 agent-day.
 - `#937` — **DONE 2026-10-05: THE GATE WAS RIGHT; THE #899 MEASUREMENT WAS WRONG. `#888`
   WITHDRAWAL STANDS.** OWNER RULING 2026-10-05: a demanded turn near 180 degrees (e.g. the
   Titania-Oberon closing flyby, 177.2 deg at 2.16 km/s) is a REJECTION, not "not an encounter";
