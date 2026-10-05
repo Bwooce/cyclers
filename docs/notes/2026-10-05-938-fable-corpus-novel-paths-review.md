@@ -767,6 +767,13 @@ Campagnola et al. 2014 Acta Astronautica.
 21. Still wanted from `#909` and relevant here: Kumar, ASC 2026 Paper 1023 (Titan-Rhea untargeted
     moons); Komachi, ASC 2026 Paper 688 (EML2-SEL2 cycler in the BCR4BP); Kumar & Anderson 2026
     ISSFD (UNCONFIRMED, not searched).
+22. **[Received 2026-10-05, filed under `#960`; not on the original list, these came from the `#960`
+    citation mining.]**
+    - Hollister, W. M. (1969), JSR 6(4):366-369, doi 10.2514/3.29664. The original Earth-Venus cycler
+      record; no Mars orbit.
+    - Landau, D. F. (2018), JGCD 41:1531-1541, doi 10.2514/1.G003172. The STAR method; no cycler.
+    - Anderson, R. L., Campagnola, S. & Buffington, B. B. (2018), JGCD 41(4):827-840, doi 10.2514/1.G002571.
+      Single-moon petal periodic orbits; no two-moon cycler.
 
 ## 6. What was verified at the source versus what was inferred [F2]
 

@@ -1927,6 +1927,12 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
       digest. The retrograde-stability threshold is 0.0477.
     - Bruno & Varin 2006: family h only, at mu = 0 and 0.00095.
     - The `#938` sec. 5 items 6, 11, 12 and 19 are marked received.
+  - **Batch 6:**
+    - Hollister 1969 (JSR 6(4)): the original Earth-Venus cycler record, orbits I-III with orbit I v_inf
+      directions. No Mars orbit.
+    - Landau 2018: no cycler.
+    - Anderson, Campagnola & Buffington 2018: single-moon petal periodic orbits only.
+    - None collides with R1(a)/(c), X1 or R2.
 - `#961` — registered 2026-10-05, not dispatched (found by `#960`). **LITERATURE-GATE SURNAME
   COLLISION.** `search/literature_check.py` strong-links search hits to KNOWN_CORPUS anchors by author
   surname.
