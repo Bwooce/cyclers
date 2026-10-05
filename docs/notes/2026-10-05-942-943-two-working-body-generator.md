@@ -293,6 +293,27 @@ Models:
 The vectors are the Lambert-leg end V_inf, which carry no free direction. So this tests the transfer
 geometry and the ephemeris, independent of the turn rule.
 
+### 3.8 Step 3 result: the direction control PASSES (data/942_hollister1969_table1_directions.json)
+
+| Model / point | Convention A (toward outward radial) | Convention B |
+|---|---|---|
+| exact periodicity (sourced), converged orbit 1 | **20/21 = 0.95, PASS**; median abs dAng 0.7 deg, dElev 0.5 deg | 0.05 (median dAng 51 deg) |
+| real periods, converged orbit 1 | 0.95, PASS; median 1.1 / 0.4 deg | 0.05 |
+| exact periodicity, at the printed dates | 0.33 (median 1.7 / 1.7 deg) | 0.00 |
+
+Reading the result:
+- The angle convention is not in doubt. A fits to about 1 deg; B misses by about 50 deg.
+- The one failing event is AR E 3935 (V 0.1562 against 0.156; angle within 0.2 deg). Its elevation
+  is -45 deg against a printed +46: the same magnitude with the opposite sign. It is the only sign
+  disagreement in 21 events. This may be a sign slip in the print, offered with respect; it was not
+  adjusted.
+- Every other converged event agrees to within 4 deg (real periods) or 1.5 deg (exact periodicity).
+- The converged zero fits much better than the printed dates. The corrector moves the dates by under
+  2.2 d onto Hollister's own solution.
+
+So for orbit I (= Table 3 orbit 1) the transfer GEOMETRY, and not only the magnitudes, reproduces an
+independent published solution.
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
