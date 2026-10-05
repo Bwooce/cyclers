@@ -1949,6 +1949,27 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - The same latent false match applies to any shared surname: Liang, Xu, Russell, Anderson, Campagnola.
   - Fix: disambiguate by first initial or DOI before strong-linking, with a test pair of same-surname
     authors. Cost (GUESS): 0.5 agent-day.
+- `#962` — registered 2026-10-06 (from the 2026-10-05 papercut review; owner of the work:
+  ci-keeper-opus; in progress). **PRE-COMMIT HOOKS IN A SHARED CHECKOUT.** (a) The installed
+  `.git/hooks/pre-commit` fails with "pre-commit not found" unless `.venv/bin` is on PATH; (b) the
+  mypy hook (`uv run mypy src tests`, `pass_filenames: false`) fails on other agents' UNTRACKED files
+  and blocks unrelated pathspec commits; make it check what the commit will contain without
+  weakening what CI checks; (c) if possible, stop the stash-and-restore of other agents' unstaged
+  edits. Papercuts: `docs/papercuts/processed/*precommit*` (three entries, one cause group).
+- `#963` — registered 2026-10-06 (from papercut
+  `processed/2026-10-05-twobody-gen-opus-kepler-propagate-nonconvergence.md`; owner of the work:
+  ci-keeper-opus; in progress). **`core.kepler.propagate` RAISES `KeplerConvergenceError` ON AN
+  ORDINARY SINGLE-REV HELIOCENTRIC ARC** (elliptic, alpha > 0, 173 d of a 239 d period; reproducer
+  in the papercut). Cause (diagnosed by `#939`): the orbit is near-radial (perihelion about 9e6 km),
+  so f'(chi) = r is small near the first iterate and the unguarded Newton overshoots and diverges.
+  Fix the numerics (bracketed Newton: f is monotone in chi), add the reproducer as a regression
+  test, then list the past negatives and results that may have hit `KeplerError`
+  (17 `except Kepler*Error` sites in `src/` and `scripts/` treat it as "infeasible") for re-check,
+  per the bug-fix rule.
+- `#965` — registered 2026-10-06 (owner of the work: twobody-gen-opus; not dispatched). **SELF-
+  CONSISTENCY TEST FOR TRANSCRIBED SOURCE TABLES WITH REDUNDANT COLUMNS**, starting with Hollister &
+  Menning 1970 Table 3: r_p = mu / V^2 (1 / sin(theta / 2) - 1) against the printed Rmin, so a
+  transcription slip is caught by the table itself.
 - `#964` — **DONE 2026-10-06: CORPUS TOOLING (from the 2026-10-05 papercut review).** Commit
   `ac793161` plus docs commits `e6f10bc6`, `8b7cc7de`, `8b5567b7`:
   - `scripts/crossref_check.py`: confirms a DOI only on a journal or volume match; flags AIAA
