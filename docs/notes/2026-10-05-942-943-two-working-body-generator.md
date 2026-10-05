@@ -263,6 +263,36 @@ sensitive to planet phase, which is exactly the unsourced item D1. A planet-phas
 or so between our ephemeris and theirs would act on that family first. Testing this by moving our phase
 anchor would be tuning, so it is not done.
 
+### 3.7 Step 3: Hollister 1969 Table 1 V_inf DIRECTIONS (PRE-REGISTERED 2026-10-05, before any computation)
+
+Source: Hollister 1969 p.368, Table 1, "Periodic orbit I". It lists 21 transfer endpoints (LV/AR) with
+JD - 2440000, V (EMOS), Ang and Elev (deg). Footnotes, read from the page image:
+- "The angle is in the orbital plane clockwise from the circumferential direction."
+- "The elevation is positive when above the orbital plane."
+
+The dates are Menning's 1H = Table 3 orbit 1, so the test uses our orbit-1 solution.
+
+Pre-registered conventions:
+- "orbital plane" = the plane of the encountered planet's orbit (normal r x v of the planet).
+- "circumferential" = the unit vector in that plane perpendicular to the planet's radius vector, in the
+  direction of motion.
+- "Clockwise" is ambiguous in sign. Convention A measures toward the outward radial; convention B toward
+  the inward radial. Both are reported; the control passes if EITHER passes. That is one declared bit
+  of freedom.
+
+Pass rule: at >= 90 % of the 21 events,
+- |dV| <= 0.005 EMOS,
+- |dAng| <= 10 deg (wrapped),
+- |dElev| <= 10 deg.
+
+Models:
+- headline: the sourced exact-periodicity model, at the amendment-3 converged orbit-1 zero (also
+  reported at the printed dates).
+- secondary: real periods.
+
+The vectors are the Lambert-leg end V_inf, which carry no free direction. So this tests the transfer
+geometry and the ephemeris, independent of the turn rule.
+
 ## 4. Positive control 2: recall in the circular model (production enumerator)
 
 E-V, k = 2 (3.197 yr), production settings (n_phase 36, n_split 12, n_refine 40, basin-spread seeds):
