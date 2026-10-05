@@ -241,3 +241,8 @@ the flyby (p.3).
 Follow-up for 15F09, which "inspired" the GCGC cycler: the 2015 Clipper trade-study paper Lam,
 Arrieta-Camacho & Buffington, AAS 15-657, is a likely published description of 15F09. This is unverified.
 It moves up the missing-papers list, to just after Landau's STAR paper.
+- **Resolved 2026-10-05 (batch 9):** AAS 15-657 is filed and digested
+  (`2026-10-05-digest-lam-arrieta-camacho-buffington-2015-europa-mission-flyby-trades.md`). Its tour
+  15F9-A22 (INFERRED to be 15F09) rotates 180 deg with a Callisto-only switch flip (E23, C1-C7 with a
+  C4-C5 pi-transfer, E24). It has no G-C chain. The only G-C-G-C chain in that paper is the non-resonant
+  13F7-A21 pump-down. X1 Ganymede-Callisto stays PARTIAL; there is no literal collision.

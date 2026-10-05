@@ -84,7 +84,7 @@ It is the source of the crank-over-the-top (COT) definitions and of a full, publ
     should be.
 - **`#943` X1 Ganymede-Callisto:** not touched (no Callisto flybys).
 - **Cite with:** McElrath, Campagnola & Strange 2012 (filed today), Campagnola et al. 2014 and 2019
-  (held), and Lam, Buffington & Campagnola 2018 (wanted-list row 55).
+  (held), and Lam, Buffington & Campagnola 2018 (in the wanted list, Clipper and Jovian background row).
 
 ## 3. Positive controls
 

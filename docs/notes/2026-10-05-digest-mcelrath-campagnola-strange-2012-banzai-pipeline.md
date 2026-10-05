@@ -93,7 +93,7 @@ Held:
 
 Not held:
 1. Uphoff, C., Roberts, P. H. & Friedman, L. D. (1976), "Orbit Design Concepts for Jupiter Orbiter
-   Missions", JSR 13(6):348-355, doi 10.2514/3.57096. The backflip origin. Already in wanted-list row 55.
+   Missions", JSR 13(6):348-355, doi 10.2514/3.57096. The backflip origin. Already in the wanted list (Clipper and Jovian background row).
 2. Campagnola, S., Russell, R. P. & Skerritt, P. (2012), "Flybys in the planar, circular, restricted,
    three-body problem", CMDA 113:343-368. DOI not checked. Multi-body flyby model (X1 context).
 3. Heaton, A. F., Strange, N. J., Longuski, J. M. & Bonfiglio, E. P. (2002), "Automated Design of the

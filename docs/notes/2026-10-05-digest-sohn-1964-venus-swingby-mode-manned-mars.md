@@ -59,4 +59,4 @@ repeated. There is no literal collision for `#942` R1(c).
 
 Not held:
 1. Ross, S. (1963), "A systematic approach to the study of nonstop interplanetary round trips", AAS
-   Preprint 63-07. Already wanted-list row 7.
+   Preprint 63-07. Already in the wanted list.

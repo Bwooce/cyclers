@@ -99,5 +99,5 @@ Not held:
 4. Deerwester, J. M. (1965), "Initial mass savings associated with the Venus swingby mode of Mars round
    trips", AIAA Paper 65-89. DOI not checked.
 5. Ross, S. (1963), "A systematic approach to the study of nonstop interplanetary round trips", Adv.
-   Astronaut. Sci. 13. Already wanted-list row 7. The symmetry principle.
+   Astronaut. Sci. 13. Already in the wanted list. The symmetry principle.
 6. Ross, S. (ed.) (1963), Planetary Flight Handbook, NASA SP-35. Background.
