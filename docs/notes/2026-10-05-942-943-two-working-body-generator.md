@@ -1033,6 +1033,44 @@ Control D1, Hollister 1H (k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s, x 474.597193,
 - If D1 fails at every epoch, the route cannot judge ev-A or ev-B, and they stay "not judged".
 Then, only if D1 passes, with the same settings and criteria: ev-A (5 cycles) and ev-B (4 cycles).
 
+### 6.23 GM defect found by D1, and the results of 6.22 (2026-10-06), data `data/942_direct_route_and_gm_fix.json`
+
+Defect (found by the D1 re-fly, fixed in c4ff9a41):
+- The heliocentric ideal model's GM is a convention: a 1-AU circle with exactly a 365.25-d period. It is
+  3.78e-5 above the real solar GM (132,717,453,060 against 132,712,440,018 km^3/s^2).
+- Blend and RampedKepler kept that GM for the spacecraft at every lambda, so at lambda = 1 the bodies
+  were real but the Lambert arcs were not. The re-fly checker took the GM from the solver, so it repeated
+  the error instead of catching it.
+- D1 showed it: the solver closed to 1e-12, but the junctions rebuilt against the mean-element system
+  disagreed by 2.7e-4 km/s. Now the GM follows lambda, and the checker takes it from the real system.
+- Affected: every ev-cell real-ephemeris result (ev-C, C3, D1). vm2 (1.4e-10) and gc (about 1e-8) are
+  negligible.
+
+Results with the fix (criteria as pre-registered):
+- **ev-C re-run** (5 cycles):
+  - Standish (now ramp mode): PASS at 5/5, worst 0.869-0.914; re-fly miss <= 0.093 km, V_inf error
+    <= 2.5e-8 km/s.
+  - DE440: PASS at 5/5, the same ratios; re-fly miss <= 0.116 km.
+  - Verdict unchanged.
+- **D1, Hollister 1H, direct route: PASS** (rule: at least one epoch).
+  - Converges at 2 of 5 epochs, gate pass at worst 0.862 and 0.822.
+  - Re-fly miss <= 1.4e-4 km, V_inf error <= 3.3e-11 km/s, junction mismatch <= 1.1e-11 km/s.
+  - The other 3 epochs do not converge.
+  - The landings span V_inf E 3.68-5.58 and V 4.78-6.41 km/s, the range of H&M orbit 1 (E 0.155 EMOS =
+    4.62, V 0.179-0.206 EMOS = 5.33-6.13 km/s; descriptive).
+- **ev-A** (k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s, 5 cycles, Standish, direct):
+  - Converges and passes at 5/5, worst 0.579-0.580 (ideal 0.574).
+  - Re-fly miss <= 1.9e-3 km, V_inf error <= 5.4e-10 km/s, including the Venus full-revs.
+- **ev-B** (k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s, 4 cycles, Standish, direct):
+  - Passes at 2/5 (worst 0.933 and 0.757); re-fly miss <= 1.6e-2 km.
+  - Gate fail at 2 epochs (1.092, 1.034); no convergence at 1.
+- Limits:
+  - The direct route finds one landing solution per epoch, and other solutions may exist. A
+    non-converged epoch is not a negative.
+  - Standish fixed mean elements are not DE440. By the 6.18 amendment, ev-A's and ev-B's full-rev legs
+    on DE440 get a closure Delta-V report (blend + shoot), not a pass/fail; not yet run.
+- Status: ev-A and ev-B are "candidate, pending owner adjudication, NOT novel", like ev-C.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
