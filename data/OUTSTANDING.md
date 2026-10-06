@@ -143,16 +143,17 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 | ev-A | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
 | ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist, ideal model only so far (ge-2 first in the ladder) | 6.28, 6.29 |
-| em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist, ideal model only; worst ratios 0.939-0.983 (thin); NO in-run published recall control in the em cell | 6.36 |
-| vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | ideal model only (Standish route is a launch request) | 6.37 |
+| em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); NO in-run published recall control in the em cell; rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40 |
+| vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
 All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
 - gc-1 (and every Jovian candidate with a full-rev or half-rev leg: gc-1, ge-1/2/3): no Jovian
   full-rev published control is decided at 10 cycles. C4 GanCal#1 at R-S's 2013 epoch is UNDECIDED
-  (6.31, 6.34: the shoot closes a gate-failing solution, not the published member). GanEur#316 at
-  R-S's 2019 epoch now closes with the gate passing (worst 0.804; lead log 2026-10-06 17:17), pending
-  its DOP853 re-fly; if that holds it is the first decided Jovian 10-cycle published control (half-rev
-  path).
+  (6.31, 6.34: the shoot closes a gate-failing solution, not the published member); the chain-length
+  continuation (6.35) tracks the member through 9 cycles but only "indeterminate" (0.973-0.992; the
+  member is marginal in every model, ideal 0.961). GanEur#316 at R-S's 2019 epoch PASSES (6.38: 10
+  cycles, gate pass 0.804, DOP853 re-fly 1.5e-5 km): the first decided Jovian 10-cycle published
+  control, for the HALF-REV path only. ge-1/2/3 have full-rev legs, so it does not unblock them.
 - gc-2 is distinct from GanCal#5: GanCal#5's skeleton with one extra Callisto encounter, which has no
   counterpart on GanCal#5's leg; gc-2 needs at least 0.214 of Callisto's GM (6.21).
 - Not novel, recorded: vm-1 (an R-S VenMar class member, Mars massless); vm2-1 (ideal-model

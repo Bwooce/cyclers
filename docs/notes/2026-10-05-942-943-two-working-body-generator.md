@@ -1667,6 +1667,25 @@ A non-converged epoch is not a negative. All results are on Standish fixed mean 
 - Status: vm2n-2 and em-1..3 stay "candidate, pending owner adjudication, NOT novel", recorded as
   ideal-model members with no controlled real-ephemeris pass.
 
+### 6.41 Prior-art results received 2026-10-06 (from the lead and corpus-file-opus)
+
+- ev-C: D. Ross, "A cycler-quartet between Venus and Sol/Terra L1" (unrefereed manuscript; possible
+  class collision, see 0ba585b2). Its 2L4 is powered, never reaches Earth (aphelion 0.979 AU; it
+  targets Sun-Earth L1), needs a Venus flyby below the surface, and has a Venus V_inf of 3.86 km/s.
+  NO collision with ev-C; it is the nearest unrefereed class relative. Search note:
+  `docs/notes/2026-10-06-942-evC-prior-art-search.md`.
+- gc-1, gc-2, ge-1, ge-2, ge-3: Campagnola et al., ISSFD 2024 paper 19-3 (the conference form of
+  JAS 2025, the 21F31 reference trajectory).
+  - NO repeating G-C or G-E segment. "Cycler" appears once, as an untried option.
+  - The flown tour uses a Callisto petal rotation: Callisto V_inf 4.8 -> 3.6 -> 5.1, Ganymede 5.35 /
+    4.30.
+  - G-E appears only in the one-shot pump-down (Ganymede 7.65-8.73, Europa 6.30-6.38 km/s, read on
+    the page image of Cangahuala 2025 Table 2).
+  - Nearest: the petal-rotation Callisto V_inf of 3.6 is 0.56 km/s above gc-2's. No collision.
+- gc-1, gc-2: Golubev, Grushevskii, Koryanov & Tuchin 2014 (JCSSI 53(3):445). Its "crossed" G-C-G
+  manoeuvres are one-shot (no cycler, no periodic orbit, no G-C V_inf values). No collision.
+- Still open (lead log): the web prior-art search for ge-*, em-* and ev-A.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
