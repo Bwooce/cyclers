@@ -52,10 +52,12 @@ from cyclerfinder.search.two_working_body import (
     Cycle,
     Flyby,
     FlybyBody,
+    HalfRevLeg,
     LambertLeg,
     MeanElementSystem,
     Vec,
     _blocks,
+    _solve_half_rev_e,
     date_residual,
     eval_lambert_legs,
     fixed_duration_s,
@@ -388,6 +390,32 @@ def chain_eval(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> ChainEval 
     return ChainEval(np.asarray(res), block_flybys, segments)
 
 
+def _fallback_directions(sysm: Any, blk: Any) -> list[np.ndarray]:
+    """Shoot seed for a block with no minimax solution: each fixed leg leaves with the block's
+    |V_inf| along its nearest geometry. A half-rev takes its untilted conic (alpha = 0: radial
+    -/+ W e, transverse W), else the arrival direction; a full-rev takes the arrival direction.
+    A seed only; the shoot solves the directions."""
+    vin = float(np.linalg.norm(blk.v_in))
+    outs = []
+    for leg, t0 in blk.fixed:
+        r, w = sysm.state(blk.body, t0)
+        u = np.asarray(blk.v_in, dtype=float)
+        if isinstance(leg, HalfRevLeg):
+            rn, big_w = float(np.linalg.norm(r)), float(np.linalg.norm(w))
+            e = _solve_half_rev_e(
+                sysm.mu,
+                rn,
+                0.5 * leg.half_periods * sysm.period_s(blk.body),
+                leg.k_sc,
+                leg.via_peri,
+            )
+            if e is not None:
+                radial = (-1.0 if leg.via_peri else 1.0) * big_w * e
+                u = big_w * (w / big_w) + radial * (r / rn) - w
+        outs.append(vin * u / float(np.linalg.norm(u)))
+    return outs
+
+
 def initial_fixed_params(
     sysm: Blend, cycle_ideal: Cycle, x_ideal: np.ndarray
 ) -> list[tuple[float, float, float]]:
@@ -403,13 +431,22 @@ def initial_fixed_params(
         if not blk.fixed:
             continue
         res = optimise_block(sysm, blk)  # type: ignore[arg-type]
-        assert res is not None
-        fl = res[0]
+        if res is None:
+            outs = _fallback_directions(sysm, blk)
+            print(
+                f"  seed: block {j} at {blk.body} (t = {blk.t_arr / DAY:.3f} d, |V_inf| "
+                f"{float(np.linalg.norm(blk.v_in)):.5f} km/s, fixed legs "
+                f"{[type(lg).__name__ for lg, _ in blk.fixed]}) has no minimax solution at "
+                f"lambda = {sysm.lam}; nearest-geometry directions used as the shoot seed",
+                flush=True,
+            )
+        else:
+            outs = [f.vinf_out for f in res[0]]
         q = (lam_idx[j] + 1) % len(legs_all)
         for i, (leg, t0) in enumerate(blk.fixed):
             assert legs_all[q] is leg or legs_all[q] == leg
             _, w = sysm.state(blk.body, t0)
-            th, ph = _angles(fl[i].vinf_out, w)
+            th, ph = _angles(outs[i], w)
             by_index[q] = (th, ph, fixed_duration_s(sysm, leg) / DAY)  # type: ignore[arg-type]
             q = (q + 1) % len(legs_all)
     return [by_index[i] for i in sorted(by_index)]

@@ -1,0 +1,62 @@
+{
+ "gc-1": {
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "status": "pass",
+  "vinf_kms": {
+   "Ganymede": 2.3972188633350457,
+   "Callisto": 1.806685534631882
+  },
+  "old_r_min_km": 888745.1090870866,
+  "old_r_max_km": 1955849.8748976307,
+  "new_r_min_km": 888745.1090870866,
+  "new_r_max_km": 2294674.589943721
+ },
+ "gc-2": {
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "status": "pass",
+  "vinf_kms": {
+   "Ganymede": 3.6170798475500927,
+   "Callisto": 3.0386139338954963
+  },
+  "old_r_min_km": 791455.420645312,
+  "old_r_max_km": 2337391.5728160767,
+  "new_r_min_km": 791455.420645312,
+  "new_r_max_km": 2337391.5728160767
+ },
+ "ev-A": {
+  "key": "k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+  "status": "pass",
+  "vinf_kms": {
+   "V": 10.364004702191608,
+   "E": 4.892825050758517
+  },
+  "old_r_min_km": 81994955.37449022,
+  "old_r_max_km": 185933432.88932827,
+  "new_r_min_km": 76539623.3470295,
+  "new_r_max_km": 185933432.88932827
+ },
+ "ev-B": {
+  "key": "k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s",
+  "status": "pass",
+  "vinf_kms": {
+   "V": 10.9319376214333,
+   "E": 8.011994836033171
+  },
+  "old_r_min_km": 98055417.61015216,
+  "old_r_max_km": 252237333.32000524,
+  "new_r_min_km": 91313127.28484945,
+  "new_r_max_km": 252237333.32000524
+ },
+ "ev-C": {
+  "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+  "status": "pass",
+  "vinf_kms": {
+   "V": 13.166434198896294,
+   "E": 9.074921385818076
+  },
+  "old_r_min_km": 76145744.95980752,
+  "old_r_max_km": 247052034.27473998,
+  "new_r_min_km": 76145744.95980752,
+  "new_r_max_km": 247052034.27473998
+ }
+}

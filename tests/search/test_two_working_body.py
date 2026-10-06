@@ -419,3 +419,73 @@ def test_kepler_step_high_eccentricity_against_dop853(ecc_v: tuple[float, float]
         r, v = kepler_step(r0, v0, float(dt), mu)
         assert float(np.linalg.norm(r - ref.y[:3, -1])) < 5.0
         assert float(np.linalg.norm(v - ref.y[3:, -1])) < 1e-6
+
+
+@pytest.mark.parametrize(
+    "radius_scale", [1.0 - 1e-3, 1.0 - 1e-6, 1.0, 1.0 + 1e-6, 1.0 + 1e-4, 1.0 + 1.4e-3]
+)
+def test_half_rev_eccentricity_skips_the_body_circle(radius_scale: float) -> None:
+    """GanEur#316's h(1.5, 540 deg) leg (Russell & Strange 2007 Tables 3, 5): a 3-pi half-rev,
+    one spacecraft revolution, whose apoapsis is the cycler's 1,496,829 km maximum distance.
+    With p = r_Ganymede = 1,070,338 km that gives e = 1 - 1,070,338 / 1,496,829 = 0.28493.
+
+    The body's own circle (e = 0) also takes 1.5 body periods. A body radius slightly above the
+    circular one moves that root to a tiny e; the solver must still return the leg's conic
+    (#943: the GanEur#316 real-ephemeris chain picked the circle and demanded 87-deg turns)."""
+    from cyclerfinder.search.two_working_body import _solve_half_rev_e
+    from cyclerfinder.verify.turn_gate_closures import RS_BODIES, RS_PRIMARY_GM
+
+    mu = RS_PRIMARY_GM["Jupiter"]
+    period_g = RS_BODIES["Ganymede"].ideal_period_s
+    a_g = float((mu * (period_g / (2 * math.pi)) ** 2) ** (1 / 3))
+    e = _solve_half_rev_e(mu, a_g * radius_scale, 1.5 * period_g, 1, True)
+    assert e is not None
+    assert e == pytest.approx(1.0 - 1_070_338.0 / 1_496_829.0, abs=1e-2)
+
+
+@pytest.mark.parametrize(
+    ("cell", "key", "seed_days", "r_min_km", "r_max_km"),
+    [
+        # GanCal#1: G g f(2:1); its maximum distance is on the 2:1 full-rev leg.
+        (
+            "gc",
+            "k3|LGanymede>Ganymede/1l|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Ganymede/0s",
+            (0.991426, 26.049946, 35.954310),
+            826_589.0,
+            2_415_871.0,
+        ),
+        # GanEur#316: g h g G; its maximum distance is the half-rev's apoapsis.
+        (
+            "ge",
+            "k7|LGanymede>Ganymede/1h|HGanymede/3,1,p|LGanymede>Ganymede/1h"
+            "|LGanymede>Europa/1l|LEuropa>Ganymede/2l",
+            (1.531607, 21.658966, 31.054502, 38.655780),
+            592_969.0,
+            1_496_829.0,
+        ),
+    ],
+)
+def test_extent_includes_fixed_legs_russell_strange_table3(
+    cell: str, key: str, seed_days: tuple[float, ...], r_min_km: float, r_max_km: float
+) -> None:
+    """Minimum and maximum distance to Jupiter over the whole cycle, fixed legs included
+    (expected: Russell & Strange 2007 Table 3, GanCal#1 and GanEur#316). Before #943 the
+    extent sampled the Lambert legs only and gave 2,357,860 and 1,281,581 km."""
+    import importlib.util
+    from pathlib import Path
+
+    from cyclerfinder.search.two_working_body_enum import Zero, assess
+
+    path = Path(__file__).resolve().parents[2] / "scripts" / "run_942_enumerate.py"
+    spec = importlib.util.spec_from_file_location("run_942_enumerate", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    sysm, a, b = mod.cell_system(cell)
+    _, cyc = mod.parse_cycle_key(key, sysm, a, b)
+    sol = correct_dates(sysm, cyc, np.array(seed_days) * DAY, tol_kms=1e-8, max_nfev=200)
+    assert sol.converged
+    ass = assess(sysm, Zero(cyc, sol.x, sol.max_abs_residual_kms))
+    assert ass.status == "pass"
+    assert ass.r_min_km == pytest.approx(r_min_km, rel=1e-4)
+    assert ass.r_max_km == pytest.approx(r_max_km, rel=1e-4)

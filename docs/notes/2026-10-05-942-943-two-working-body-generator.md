@@ -1290,6 +1290,67 @@ TOF=375.7 days, Delta-v_TOTAL=0 m/s".
   A closure that only fails the gate: the control is NOT passed and the caveat stays; R-S's model is
   not jup365, so this is not a contradiction of R-S.
 
+### 6.30 The GanEur#316 10-cycle launches failed: a half-rev root defect, fixed; `leg_extent` fixed (2026-10-06)
+
+What failed: both lead launches (n10_rs2019, n10_std) stopped at once in `initial_fixed_params`
+(`assert res is not None`). My 1-cycle slice (6.28) had passed. The 2-cycle chain already fails, so
+the slice did not test the launch (papercut 2026-10-06-twobody-gen2-opus-one-cycle-slice-hid-chain-failure).
+
+Cause (checked block by block):
+- `_solve_half_rev_e` returned the FIRST root of the flight-time equation, scanning e up from 0.
+- For a (3, 1) half-rev (and any (2k+1, k) half-rev) the body's own circle, e = 0, is also a root.
+- In cycle 2 the blended Ganymede radius is 6e-4 above the circular one. That moves the circle's root
+  to e = 0.002-0.005, and the scan took it in place of the leg's conic (e = 0.285).
+- Result: the minimax chose a tilted near-circle and demanded 87-deg turns (ratio 2.89 from
+  lambda = 0.1), then found no directions at lambda >= 0.9.
+- In cycle 1 the radius happened to be below the circular one, so the slice passed.
+
+Fixes:
+- `two_working_body._solve_half_rev_e`: the circle's root lies before the flight time's minimum over
+  e, the leg's after it. When roots lie on both sides, the leg's is kept.
+  - Test: GanEur#316's half-rev e = 1 - r_G / r_max(Table 3) = 0.2849 at radius scales 1 -/+ 1e-3.
+  - The old code gave 0.0 at a scale of 1 + 1e-6.
+- `run_942_realeph_chain.initial_fixed_params`:
+  - The bare assert is now an error that names the block, the body, the time, |V_inf| and the leg types.
+  - Where the blended model has no minimax solution (a half-rev whose |V_inf| is below its conic's
+    minimum there), the shoot is seeded from the untilted conic. This is a seed only; the shoot solves
+    the directions.
+- `two_working_body_enum.leg_extent` now also samples the fixed legs, from the flyby directions of
+  `cycle_flybys`; `assess` passes them. Test against R-S Table 3:
+  - GanCal#1: 826,589-2,415,871 km; ours was 2,357,860, now 2,415,872.
+  - GanEur#316: 592,969-1,496,829 km; ours was 1,281,581, now 1,496,828.
+  - Not in the test: the in-run EurGan#131 now gives 669,299-1,459,266 km, equal to Table 3 to the km
+    (it was 1,458,675).
+
+Reassessment after the half-rev fix (it moves only the assessment of zeros with an H leg; the zeros
+themselves do not use the root):
+- vm: 1,668 H-leg zeros, 0 changes. gc: 1,312, 0. ge: all 5,437 zeros reassessed with both fixes,
+  0 verdict changes. `data/943_cell_ge_gauntlet.json` is regenerated; only r_min/r_max moved.
+- ev: the first 400 of 8,464 H-leg zeros gave 12 changes, all "fail" to "no-directions" (the old
+  code had taken the circle's root at round-off). The run was stopped at the 10-min limit; the rest
+  is a lead launch.
+- vm2, em, vm2n, vmn: lead launches.
+
+Distances re-reported (ideal model; `data/942_943_extent_rereport.json`). A full-rev leg's extent is
+at its minimax direction.
+
+| Candidate | Fixed legs | r_min (old -> new) | r_max (old -> new) |
+|---|---|---|---|
+| gc-1 | Callisto 1:1 | 888,745 km (same) | 1,955,850 -> 2,294,675 km |
+| gc-2 | none | 791,455 km | 2,337,392 km (same) |
+| ev-A | Venus 1:1 | 0.5481 -> 0.5116 AU | 1.2429 AU (same) |
+| ev-B | Earth 1:1, Venus 3:2 | 0.6555 -> 0.6104 AU | 1.6861 AU (same) |
+| ev-C | none | 0.5090 AU | 1.6514 AU (same) |
+
+ge rows with fixed legs moved too (in the regenerated gauntlet):
+- ge-1: r_min 296,786 -> 289,471 km.
+- ge-2: r_max 1,071,917 -> 1,087,498 km.
+- ge-3: r_min 284,027 -> 279,867 km.
+
+Validation with the exact launch-A flags (10 cycles, R-S epoch), after the fixes: the blend reaches
+lambda = 1. The seed is used at blocks 28 and 32, and the shoot starts. Restart 0 stalls at a max
+residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict will be reported.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

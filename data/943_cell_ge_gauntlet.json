@@ -286,7 +286,8 @@
   "jupiter-galilean-io-callisto-symmetric-closure-corpus-gap-578",
   "jupiter-io-ganymede-ccr4bp-torus-connection-696-2026-07-23",
   "saturn-titan-hyperion-ccr4bp-torus-connection-716-2026-07-27",
-  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22"
+  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22",
+  "jupiter-ganymede-europa-two-working-body-rs2009-ideal-k1-3-943"
  ],
  "candidates": [
   {
@@ -432,7 +433,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 296785.89251238445,
+   "r_min_km": 289471.0848141757,
    "r_max_km": 1070337.8773284326,
    "min_required_alt_km": 2884.5336182421406,
    "max_turn_deg": 13.077461358223243,
@@ -594,7 +595,7 @@
     }
    ],
    "r_min_km": 670987.7190261683,
-   "r_max_km": 1446562.999552683,
+   "r_max_km": 1461686.9920965265,
    "min_required_alt_km": 1339.1163389294888,
    "max_turn_deg": 19.223546662684477,
    "cross_check": {
@@ -685,7 +686,7 @@
     }
    ],
    "r_min_km": 670987.7190261683,
-   "r_max_km": 1457002.992150209,
+   "r_max_km": 1459265.5030535944,
    "min_required_alt_km": 2955.168381665976,
    "max_turn_deg": 12.914915604277649,
    "cross_check": {
@@ -1022,7 +1023,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 286376.02050125325,
+   "r_min_km": 278203.34481745603,
    "r_max_km": 1076446.8196287188,
    "min_required_alt_km": 2158.6230643302697,
    "max_turn_deg": 13.675401132631468,
@@ -1483,7 +1484,7 @@
     }
    ],
    "r_min_km": 669790.0543024748,
-   "r_max_km": 1086956.3400629861,
+   "r_max_km": 1087497.571231519,
    "min_required_alt_km": 4510.589780056973,
    "max_turn_deg": 20.044545888627823,
    "cross_check": {
@@ -1645,7 +1646,7 @@
     }
    ],
    "r_min_km": 667501.8008385091,
-   "r_max_km": 1071917.0363648254,
+   "r_max_km": 1087497.571231519,
    "min_required_alt_km": 1830.4430382383262,
    "max_turn_deg": 30.677421140710614,
    "cross_check": {
@@ -1748,7 +1749,7 @@
     }
    ],
    "r_min_km": 670987.7190261683,
-   "r_max_km": 1445959.0017870427,
+   "r_max_km": 1462050.7348076063,
    "min_required_alt_km": 1503.8991057238804,
    "max_turn_deg": 17.928209962133266,
    "cross_check": {
@@ -1842,7 +1843,7 @@
     }
    ],
    "r_min_km": 669298.9763495396,
-   "r_max_km": 1458674.7306018495,
+   "r_max_km": 1459265.503053597,
    "min_required_alt_km": 1112.977053219845,
    "max_turn_deg": 19.796504049753565,
    "cross_check": {
@@ -2204,7 +2205,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 284026.90576346946,
+   "r_min_km": 279867.0826110343,
    "r_max_km": 1074327.9733882232,
    "min_required_alt_km": 546.018820863198,
    "max_turn_deg": 19.708940078936966,

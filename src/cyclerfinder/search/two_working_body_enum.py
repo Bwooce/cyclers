@@ -45,6 +45,7 @@ from cyclerfinder.search.two_working_body import (
     ResonantLeg,
     Solution,
     Vec,
+    _blocks,
     correct_dates,
     cycle_flybys,
     date_residual,
@@ -271,13 +272,44 @@ class Assessment:
         return "no-directions" if self.report is None else self.report.status
 
 
+def _arc_extent(
+    mu: float, r0: np.ndarray, v0: np.ndarray, dt: float, n_samples: int
+) -> tuple[float, float]:
+    """Smallest and largest distance from the centre along a two-body arc of ``dt`` seconds.
+
+    Sampled, then refined: when an apse is passed (the radial velocity changes sign between
+    samples), its exact radius ``a(1 -/+ e)`` is used."""
+    energy = 0.5 * float(v0 @ v0) - mu / float(np.linalg.norm(r0))
+    h = np.cross(r0, v0)
+    ecc = math.sqrt(max(0.0, 1.0 + 2.0 * energy * float(h @ h) / mu**2))
+    a = -mu / (2.0 * energy) if energy < 0.0 else math.inf
+    prev_rdot = float(r0 @ v0)
+    lo = hi = float(np.linalg.norm(r0))
+    for t in np.linspace(0.0, dt, n_samples)[1:]:
+        r, v = kepler_step(r0, v0, float(t), mu)
+        rn = float(np.linalg.norm(r))
+        lo, hi = min(lo, rn), max(hi, rn)
+        rdot = float(r @ v)
+        if prev_rdot < 0.0 <= rdot:
+            lo = min(lo, a * (1.0 - ecc) if math.isfinite(a) else lo)
+        elif prev_rdot > 0.0 >= rdot and math.isfinite(a):
+            hi = max(hi, a * (1.0 + ecc))
+        prev_rdot = rdot
+    return lo, hi
+
+
 def leg_extent(
-    system: CircularSystem, cycle: Cycle, x: np.ndarray, n_samples: int = 400
+    system: CircularSystem,
+    cycle: Cycle,
+    x: np.ndarray,
+    n_samples: int = 400,
+    flybys: list[Flyby] | None = None,
 ) -> tuple[float, float]:
     """Smallest and largest distance from the central body over every leg.
 
-    Sampled, then refined: when an apse is passed during the leg (the radial
-    velocity changes sign between samples), its exact radius ``a(1 -/+ e)`` is used.
+    Lambert legs always; fixed legs (full-rev, half-rev) only when ``flybys`` (from
+    :func:`cycle_flybys`) supply their departure directions. Without them the extent covers
+    the Lambert legs only (#943: GanEur#316's half-rev apoapsis is the cycler's maximum).
     """
     legs = eval_lambert_legs(system, cycle, x)
     if legs is None:
@@ -287,24 +319,17 @@ def leg_extent(
         leg = cycle.legs[leg_i]
         assert isinstance(leg, LambertLeg)
         r0, w0 = system.state(leg.frm, ev.t_dep)
-        v0 = w0 + ev.vinf_dep
-        energy = 0.5 * float(v0 @ v0) - system.mu / float(np.linalg.norm(r0))
-        h = np.cross(r0, v0)
-        ecc = math.sqrt(max(0.0, 1.0 + 2.0 * energy * float(h @ h) / system.mu**2))
-        a = -system.mu / (2.0 * energy) if energy < 0.0 else math.inf
-        prev_rdot = float(r0 @ v0)
-        r0n = float(np.linalg.norm(r0))
-        lo, hi = min(lo, r0n), max(hi, r0n)
-        for t in np.linspace(0.0, ev.t_arr - ev.t_dep, n_samples)[1:]:
-            r, v = kepler_step(r0, v0, float(t), system.mu)
-            rn = float(np.linalg.norm(r))
-            lo, hi = min(lo, rn), max(hi, rn)
-            rdot = float(r @ v)
-            if prev_rdot < 0.0 <= rdot:
-                lo = min(lo, a * (1.0 - ecc) if math.isfinite(a) else lo)
-            elif prev_rdot > 0.0 >= rdot and math.isfinite(a):
-                hi = max(hi, a * (1.0 + ecc))
-            prev_rdot = rdot
+        a_lo, a_hi = _arc_extent(system.mu, r0, w0 + ev.vinf_dep, ev.t_arr - ev.t_dep, n_samples)
+        lo, hi = min(lo, a_lo), max(hi, a_hi)
+    if flybys:
+        for blk in _blocks(system, cycle, legs):
+            for leg_f, t0 in blk.fixed:
+                fb = next(f for f in flybys if f.body == blk.body and abs(f.t_s - t0) < 1.0)
+                r0, w0 = system.state(blk.body, t0)
+                a_lo, a_hi = _arc_extent(
+                    system.mu, r0, w0 + fb.vinf_out, fixed_duration_s(system, leg_f), n_samples
+                )
+                lo, hi = min(lo, a_lo), max(hi, a_hi)
     return lo, hi
 
 
@@ -324,7 +349,7 @@ def assess(system: CircularSystem, zero: Zero, *, hm_floor_radii: float = 1.1) -
     miss = encounter_self_consistency(system, zero.cycle, zero.x)
     bodies = {leg.frm for leg in zero.cycle.legs if isinstance(leg, LambertLeg)}
     soi = min(sphere_of_influence_km(system, b) for b in bodies)
-    lo, hi = leg_extent(system, zero.cycle, zero.x)
+    lo, hi = leg_extent(system, zero.cycle, zero.x, flybys=fl)
     vinf: dict[str, float] = {}
     if fl:
         for f in fl:

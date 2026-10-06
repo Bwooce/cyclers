@@ -583,10 +583,11 @@ def _solve_half_rev_e(
     lo, hi = 0.0, 0.999
     grid = np.linspace(lo, hi, 400)
     vals = [f(float(g)) for g in grid]
+    roots: list[float] = []
     for i in range(len(grid) - 1):
         if vals[i] == 0.0:
-            return float(grid[i])
-        if vals[i] * vals[i + 1] < 0.0:
+            roots.append(float(grid[i]))
+        elif vals[i] * vals[i + 1] < 0.0:
             a, b = float(grid[i]), float(grid[i + 1])
             for _ in range(80):
                 m = 0.5 * (a + b)
@@ -594,8 +595,18 @@ def _solve_half_rev_e(
                     b = m
                 else:
                     a = m
-            return 0.5 * (a + b)
-    return None
+            roots.append(0.5 * (a + b))
+    # When the spacecraft's revolutions match the body's (half_periods = 2 k_sc + 1) the body's
+    # own circle (e = 0) is a root, shared by the peri and apo legs. A body radius a little off
+    # the circular one (an ephemeris, a blend) moves it to a small e (0.005 at 0.14 % off), and
+    # the scan from e = 0 took it in place of the leg's own conic (#943 GanEur#316 chain). The
+    # circle's root lies before the flight time's minimum over e, the leg's after it: when roots
+    # lie on both sides, keep the leg's.
+    e_min = float(grid[int(np.argmin(vals))])
+    after = [e for e in roots if e > e_min]
+    if after and len(after) < len(roots):
+        return after[0]
+    return roots[0] if roots else None
 
 
 # ---------------------------------------------------------------------------

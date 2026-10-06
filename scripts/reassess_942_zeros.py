@@ -40,6 +40,9 @@ def main() -> None:
     ap.add_argument("--cell", required=True)
     ap.add_argument("dirs", nargs="+", type=Path)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument(
+        "--key-contains", default="", help="reassess only zeros whose key contains this text"
+    )
     args = ap.parse_args()
     system, a, b = ENUM.cell_system(args.cell)
     args.out.mkdir(parents=True, exist_ok=True)
@@ -47,6 +50,7 @@ def main() -> None:
         for d in args.dirs:
             fs.write((d / "structures.jsonl").read_text())
     recs = [json.loads(line) for d in args.dirs for line in (d / "zeros.jsonl").open()]
+    recs = [r for r in recs if args.key_contains in r["key"]]
     t0 = time.time()
     changed = 0
     with (args.out / "zeros.jsonl").open("w") as fz:
@@ -78,6 +82,12 @@ def main() -> None:
                 != (new["max_encounter_miss_km"] >= 1.0)
             ):
                 changed += 1
+                print(
+                    f"CHANGED {r['key']} x={[round(v, 4) for v in r['x_days']]}: "
+                    f"{r['status']} -> {new['status']} "
+                    f"(worst {r.get('worst_ratio')} -> {new['worst_ratio']})",
+                    flush=True,
+                )
             fz.write(json.dumps(new, default=float) + "\n")
             if (i + 1) % 200 == 0:
                 el = time.time() - t0
