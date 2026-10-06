@@ -95,9 +95,9 @@ def main() -> None:
             worst_miss = worst_dv = 0.0
             for frm, t0, v0, to, t1 in ev.segments:
                 r0, _ = real.state(frm, t0)
-                r1, v1 = fly(sysm.mu, r0, v0, t1 - t0)
+                r1, v1 = fly(real.mu, r0, v0, t1 - t0)  # the real GM, not the solver's
                 rb, _ = real.state(to, t1)
-                _, vk = CHAIN.kepler_step(r0, v0, t1 - t0, sysm.mu)
+                _, vk = CHAIN.kepler_step(r0, v0, t1 - t0, real.mu)
                 worst_miss = max(worst_miss, float(np.linalg.norm(r1 - rb)))
                 worst_dv = max(worst_dv, float(np.linalg.norm(v1 - vk)))
             print(

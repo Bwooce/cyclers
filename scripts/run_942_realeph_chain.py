@@ -33,7 +33,7 @@ import importlib.util
 import json
 import math
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -41,9 +41,10 @@ import numpy as np
 from scipy.optimize import least_squares
 from scipy.optimize._numdiff import approx_derivative, group_columns
 
-from cyclerfinder.core.constants import SECONDS_PER_DAY
+from cyclerfinder.core.constants import MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.lambert import LambertError, lambert
+from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import (
@@ -84,6 +85,7 @@ class DE440Planets:
 
     def __init__(self) -> None:
         self.eph = Ephemeris("astropy")
+        self.mu = MU_SUN_KM3_S2
 
     def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
         r, v = self.eph.state(code, t_s + JD_2440000_S_FROM_J2000)
@@ -103,6 +105,7 @@ class SpiceMoons:
 
     def __init__(self) -> None:
         self.eph = Ephemeris("spice", center="Jupiter")
+        self.mu = PRIMARIES["Jupiter"]  # Jupiter alone; the moons are the encounter bodies
 
     def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
         r, v = self.eph.state(code, t_s + JD_2440000_S_FROM_J2000)
@@ -138,10 +141,12 @@ class Blend:
     t_shift: float
     rot: float
     lam: float = 0.0
-    mu: float = field(init=False)
 
-    def __post_init__(self) -> None:
-        self.mu = self.circ.mu
+    @property
+    def mu(self) -> float:
+        """Central GM for the spacecraft: the ideal model's at lambda = 0, the real one's at 1.
+        (The ideal heliocentric GM is a convention, 3.8e-5 above the real one.)"""
+        return (1.0 - self.lam) * self.circ.mu + self.lam * float(self.real.mu)
 
     def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
         rc, vc = self.circ.state(code, t_s - self.t_shift)
@@ -182,10 +187,12 @@ class RampedKepler:
     t_shift: float
     rot: float
     lam: float = 0.0
-    mu: float = field(init=False)
 
-    def __post_init__(self) -> None:
-        self.mu = self.circ.mu
+    @property
+    def mu(self) -> float:
+        """Central GM for the spacecraft: the ideal model's at lambda = 0, the real one's at 1.
+        (The ideal heliocentric GM is a convention, 3.8e-5 above the real one.)"""
+        return (1.0 - self.lam) * self.circ.mu + self.lam * float(self.real.mu)
 
     def _params(self, code: str) -> tuple[float, float, float, float, float, float, float]:
         lam = self.lam
