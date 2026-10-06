@@ -142,7 +142,7 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 | ev-C | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
-| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056, two validated methods): ge-1 and ge-3 NEGATIVE, conditional on the method (every closure gate-fails: ge-1 best 2.57-6.60, ge-3 2.88-3.32); ge-2 UNDECIDED (one 10-cycle closure, gate fail 8.13; homotopy rerun of epochs 1-4 launched, `data/943_rung_d_hom/ge2_rerun.log`); the blend lambda = 1 gate passes are an artefact (6.49) | 6.28, 6.29, 6.46-6.50 |
+| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056, two validated methods): ge-1, ge-2 and ge-3 NOT PASSED, real-ephemeris NEGATIVE, conditional on the method (every closure gate-fails: ge-1 5/5 epochs, best 2.57-6.60; ge-3 3/5, 2.88-3.32; ge-2 (homotopy rerun, 6.51: one 10-cycle closure, gate fail 7.93; gate fails from k = 2 at every epoch); the blend lambda = 1 gate passes are an artefact: the full-rev legs miss the moon by 748-3,192 km (6.49) | 6.28, 6.29, 6.46-6.51 |
 | em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
@@ -154,7 +154,7 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   **OWNER RULING 2026-10-06 (note 6.45): C4 validates the full-rev path. This is a POST-HOC amendment
   to 6.35, which said an indeterminate C4 is not a pass, made after the result was seen and recorded
   as such.** Consequences: gc-1's caveat is LIFTED (its 10-cycle result stands with no caveat); ge-1/2/3
-  proceeded to rung (d) (6.46-6.50: ge-1 and ge-3 conditional negatives, ge-2 undecided). Both shoot
+  proceeded to rung (d) (6.46-6.51: all three conditional negatives). Both shoot
   methods (6.46a grow, 6.48 homotopy) pass both controls (C4 path at 0.9917, re-fly 2.9e-4 km;
   GanEur#316 gate pass 0.741, re-fly 1.1e-5 km).
 - gc-2 is distinct from GanCal#5: GanCal#5's skeleton with one extra Callisto encounter, which has no
@@ -1858,7 +1858,7 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
-  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.50):**
+  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.51):**
     - Cells enumerated: gc, ge. ge completed after the `#963` fix by resuming: about 1,135 structures
       were computed before the crash on the pre-fix code (converged results are unaffected by that bug;
       it only raised), the rest after; reassessed at HEAD with 0 verdict changes. In-run LITERAL recalls:
@@ -1869,9 +1869,11 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
       Callisto encounter with no counterpart on GanCal#5's leg).
     - ge-1, ge-2, ge-3: shortlist (near-one-body rows ge-4/5/6 demoted). Rung (d) (note 6.50; patched
       conic, jup365, 10 cycles, epochs 2030-2056, two validated methods that pass both controls):
-      ge-1 and ge-3 NEGATIVE, conditional on the method (every closure fails the gate); ge-2 UNDECIDED
-      (homotopy rerun of epochs 1-4 launched after a SpiceyError fix). The blend lambda = 1 gate passes
-      are an artefact (6.49). All three stay candidate, NOT novel, at the ideal-model level.
+      ge-1, ge-2 and ge-3 NOT PASSED, real-ephemeris NEGATIVE, conditional on the method. ge-1:
+      closures at 5/5 epochs, all gate-failing (2.57-6.60); ge-3: 3/5, gate-failing (2.88-3.32); ge-2
+      (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
+      from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
+      miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
     - All **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
     - Rulings: C4 option (c) (judge C4 and gc-1 at 1 and 10 cycles, caveat stated); gc-2 n-body option
