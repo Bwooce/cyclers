@@ -1686,6 +1686,37 @@ A non-converged epoch is not a negative. All results are on Standish fixed mean 
   manoeuvres are one-shot (no cycler, no periodic orbit, no G-C V_inf values). No collision.
 - Still open (lead log): the web prior-art search for ge-*, em-* and ev-A.
 
+### 6.42 Lead rulings on 6.40, and the em recall control: PRE-REGISTERED 2026-10-06, before running
+
+Ruling on 6.40 (lead): no ramp continuation now. vm2n-2 and em-1..3 are recorded as "ideal-model;
+rung (d) not passed at the converged landings, all failing at Mars (e = 0.093); other landings
+untested". A ramp continuation stays an open option.
+
+em recall control (approved by the lead). The em cell's scope holds no published Russell-Ocampo row:
+- 2.5.1.+0 has three Earth returns;
+- Byrnes case 3 (2.3.1.+1) has a 1-rev transfer;
+- the rest have more returns or k = 4.
+So the rows' own structures are solved with the em cell's model and the production solver
+(`scripts/recall_942_ro.py`; every cyclic order of the Earth block, k = 2, n_phase 36, n_split 12,
+n_refine 40). Structures are from the McConaghy, Russell & Longuski 2005 Table 2 labels; expected
+values are from Russell 2004 Table 3.4. Turn ratio there = max / required, so ours (required / max)
+is its inverse.
+
+- 2.5.1.+0 = g(1-11/14 yr, 11/14 rev) f(1:1) h(0.5 yr, 0 rev, tilt 15.081 deg) f(1:1).
+  EXPECTED: V_inf E 7.8 / M 9.9; E->M 94 d; three Earth turns of 54 deg; our ratio 1/1.12 = 0.893.
+  Gate PASS.
+- 2.3.1.+1 (Byrnes case 3) = g(2-11/14 yr, 1-11/14 rev) f(1:1) h(0.5 yr, 0 rev, tilt 10.388 deg).
+  EXPECTED: V_inf E 5.4 / M 5.3; E->M 143 d; turns 93, 93 deg; our ratio 1/0.92 = 1.087. Gate FAIL
+  (R-O list it as near-ballistic).
+
+CONTROL PASS = a zero of each structure reproduces:
+- V_inf within 0.05 km/s (the table's rounding);
+- every Earth turn within 1 deg;
+- the worst ratio within 0.02 of the expected value;
+- 2.5.1.+0 passes the gate.
+If it passes, em's results stop being conditional on the control gap. If not, the gap stays and the
+cause is reported.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
