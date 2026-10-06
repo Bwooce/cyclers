@@ -755,6 +755,34 @@ Top 3, for the full ladder:
 
 The other 16 non-Hollister skeletons are recorded as "candidate, not laddered".
 
+### 6.13 Ladder for the shortlisted candidates: PRE-REGISTRATION (2026-10-06), committed before running
+
+Candidates: gc-1, gc-2 (sec. 6.11); ev-A, ev-B, ev-C (sec. 6.12).
+
+Rung (a), floor sweep: re-gate all of the cell's zeros at the target body's floor, raised from the
+registry value to 3x it in 6 steps; report where each candidate stops passing.
+
+Rung (d), real ephemeris: `scripts/run_942_realeph_chain.py`.
+- Generic tool: any cell and key, full-rev and half-rev legs supported.
+- The first date is fixed; every other date and the chain period are free; H&M closure B at the end.
+- A homotopy from the ideal circular model, rotated into the bodies' mean orbital plane and
+  phase-matched, to the real ephemeris:
+  - Standish J2000 mean elements for Earth-Venus.
+  - NAIF jup365 (SPICE) for the Galilean moons.
+- Adaptive lambda step; every interior flyby gated at the registry floors.
+- Chains:
+  - gc-1, gc-2: n = 10 cycles (376 d).
+  - ev-A, ev-C (k = 2): n = 5 cycles (16 yr).
+  - ev-B (k = 3): n = 4 cycles (19.2 yr).
+- 5 epochs, every 6.4 yr from 2030-01-01.
+- RUNG PASS: lambda = 1 reached and every interior flyby passes, at >= 1 epoch. All epochs are reported.
+- Validation:
+  - the tool reproduces the vm2-1 single-cycle result (worst ratio 1.46 at lambda = 1, against 1.465 from
+    the earlier script).
+  - gc-1, single cycle, epoch 0: passes at lambda = 1 (worst 0.742).
+
+Rung (c), neighbours: only if (d) passes. A separate launch request.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
