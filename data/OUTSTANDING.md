@@ -132,6 +132,43 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
 part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
 
+**`#942`/`#943` two-working-body candidates (2026-10-06; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
+`docs/team/lead-log.md`):**
+
+| Name | Pair, bodies that bend | Period / V_inf (km/s) | Real-ephemeris rung | Note sec. |
+|---|---|---|---|---|
+| gc-1 | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km | 6.11, 6.26 |
+| gc-2 | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km | 6.11, 6.14, 6.21 |
+| ev-C | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
+| ev-A | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
+| ev-B | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
+| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist, ideal model only so far (ge-2 first in the ladder) | 6.28, 6.29 |
+| em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist, ideal model only; worst ratios 0.939-0.983 (thin); NO in-run published recall control in the em cell | 6.36 |
+| vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | ideal model only (Standish route is a launch request) | 6.37 |
+
+All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
+- gc-1 (and every Jovian candidate with a full-rev or half-rev leg: gc-1, ge-1/2/3): no Jovian
+  full-rev published control is decided at 10 cycles. C4 GanCal#1 at R-S's 2013 epoch is UNDECIDED
+  (6.31, 6.34: the shoot closes a gate-failing solution, not the published member). GanEur#316 at
+  R-S's 2019 epoch now closes with the gate passing (worst 0.804; lead log 2026-10-06 17:17), pending
+  its DOP853 re-fly; if that holds it is the first decided Jovian 10-cycle published control (half-rev
+  path).
+- gc-2 is distinct from GanCal#5: GanCal#5's skeleton with one extra Callisto encounter, which has no
+  counterpart on GanCal#5's leg; gc-2 needs at least 0.214 of Callisto's GM (6.21).
+- Not novel, recorded: vm-1 (an R-S VenMar class member, Mars massless); vm2-1 (ideal-model
+  curiosity: does not survive the homotopy to the real ephemeris, 6.9-6.10).
+- Prior art checked, no collision found (offline corpus; the web literature search is still open):
+  Hollister & Menning 1970 and Menning's variations; Jones 2017 VEM; Russell & Strange 2007/2009
+  (EurGan, GanEur, GanCal, GanIo, VenMar rows); Campagnola et al. 2019 GCGC; Lam et al. 2015;
+  Liang et al. 2024 CGCEC; Buffington et al. 2012 (Clipper 11-F5); Cangahuala et al. 2025 (21F31);
+  Hernandez et al. 2017 and Lynam & Longuski 2011 (Io-Europa-Ganymede triples); Kumar, Anderson &
+  de la Llave 2023 (context, other model); the `#576` symmetric G-C-G closures; Pisarevsky 2008
+  (Table 4; Fig. 14 not digitised, open); Rall 1969 and Rall & Hollister 1971 (em-4/em-5 are
+  Rall-adjacent, not members); D. Ross 2L4 (powered, no collision with ev-C); the catalogue.
+- Rulings recorded: C4 option (c), judge C4 and gc-1 at both 1 and 10 cycles with the caveat stated
+  (near-180-degree treatment to the backlog); gc-2 n-body option (i), the rung is dropped because the
+  Jovian n-body lane has no positive control (`#968`).
+
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
   Floquet-derived `stability_index` scalar on the corridor rows whose `data_gaps` entry cites it as
@@ -1765,7 +1802,7 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` (10 routes R1-R10 in sec. 3, a
   technique x case matrix and 8 transfer cells X1-X8 in sec. 3a, corpus gaps in sec. 5). The
   re-ranked table at the end of sec. 3a is registered as `#942`-`#959` in table order.
-- `#942` — registered 2026-10-05, not dispatched (from `#938`, R1, rank 1 of 18). **TWO-WORKING-BODY
+- `#942` — DISPATCHED 2026-10-05 (owner approved R1+X1); cells vm, vm2, ev, gc, ge, em, vm2n, vmn enumerated; adjudication and real-ephemeris ladder in progress (twobody-gen2-opus) (registered 2026-10-05 from `#938`, R1, rank 1 of 18). **TWO-WORKING-BODY
   HELIOCENTRIC GENERATOR: Earth-Venus with Venus returns, Earth-Mars with Mars turns, Venus-Mars.**
   Sources: Russell & Strange 2009; Russell & Ocampo 2006; Russell 2004; McConaghy et al. 2002, 2004
   and McConaghy 2004 PhD; Hollister & Rall 1970; Hollister & Menning 1970. Gate before dispatch:
@@ -1787,18 +1824,16 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
     two-working-body cell is open.
   - Verdicts and controls are in `docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`
     sec. 4.
-  - **STATUS 2026-10-06 (twobody-gen-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`
-    secs. 6.18-6.25):**
-    - Done: cells vm, vm2, ev. Pending the lead: em, then the vm2n/vmn neighbours.
-    - Candidates (all "pending owner adjudication, NOT novel"):
-      - ev-C: ballistic on Standish and DE440, 5/5 epochs, after the GM fix.
-      - ev-A: ballistic on Standish, 5/5.
-      - ev-B: ballistic on Standish, 2/5.
-      - ev-A and ev-B on DE440: no gate-passing ballistic member; ev-A's closure dv is 1.6-2.5 m/s
-        per 16 yr.
-    - vm2-1: ideal-model curiosity; its 7-cycle negative is path-limited.
-    - Controls passed: H&M endpoint (6 orbits), D1 (1H, direct route), VenMar#45.
-- `#943` — registered 2026-10-05, not dispatched (from `#938`, X1, rank 2 of 18). **HOLLISTER'S
+  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.3-6.37):**
+    - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
+      direct route), VenMar#45 (in-run LITERAL in vm and vmn). The em cell has NO in-run published
+      recall control (a targeted Russell-Ocampo recall is the missing control).
+    - Candidates (all **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
+      STATE): ev-C (Venus-hosted; Standish and DE440, 5/5); ev-A (both bend; Standish 5/5; DE440
+      near-ballistic, 1.6-2.5 m/s per 16 yr); ev-B (Standish 2/5); em-1, em-2, em-3 (shortlist,
+      ideal model, thin margins); vm2n-2 (ideal model).
+    - Not novel: vm-1 (R-S VenMar class member); vm2-1 (ideal-model curiosity).
+- `#943` — DISPATCHED 2026-10-05 (owner approved R1+X1); cells vm, vm2, ev, gc, ge, em, vm2n, vmn enumerated; adjudication and real-ephemeris ladder in progress (twobody-gen2-opus) (registered 2026-10-05 from `#938`, X1, rank 2 of 18). **HOLLISTER'S
   TWO-WORKING-BODY DATE-RESIDUAL CORRECTOR AT JUPITER (Ganymede-Callisto, Ganymede-Europa).**
   Sources: Hollister & Menning 1970; Hollister & Rall 1970; Russell & Strange 2009. Gate before
   dispatch: none beyond X1's own positive controls (Hollister-Menning's 15 rows; the R-S
@@ -1814,15 +1849,25 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
-  - **STATUS 2026-10-06 (twobody-gen-opus; same note, secs. 6.11, 6.19-6.21):**
-    - gc done:
-      - gc-2 is ballistic on jup365, 10 cycles, 5/5 epochs.
-      - gc-2 is not a GanCal member; no Callisto-mass path connects them in the patched conic.
-      - gc-1 passes in diagnostics (1 cycle 5/5; 10 cycles, epoch 0).
-    - C4 GanCal#1 cannot be decided at 10 cycles. The pre-registered gc-1 rung waits for the lead's
-      ruling on the control.
-    - gc-2 n-body lane: no control exists in this lane; waits for the lead's ruling.
-    - ge: crashed earlier; to be restarted after the ci-keeper kepler fix.
+  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.34):**
+    - Cells enumerated: gc, ge (ge re-run after the `#963` kepler fix). In-run LITERAL recalls:
+      GanCal#5 (gc), GanEur#43 and EurGan#131 (ge).
+    - gc-1: G-C, both bend, 37.57 d, V_inf 2.397/1.807; jup365 10 cycles, 5/5 epochs, re-fly <= 0.19
+      km. Caveat: no Jovian full-rev published control is decided at 10 cycles (C4 GanCal#1 undecided).
+    - gc-2: G-C, both bend, V_inf 3.617/3.039; jup365 10 cycles, 5/5; distinct from GanCal#5 (an extra
+      Callisto encounter with no counterpart on GanCal#5's leg).
+    - ge-1, ge-2, ge-3: shortlist (near-one-body rows ge-4/5/6 demoted), ideal model only so far.
+    - All **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
+      STATE.
+    - Rulings: C4 option (c) (judge C4 and gc-1 at 1 and 10 cycles, caveat stated); gc-2 n-body option
+      (i) (rung dropped: the Jovian n-body lane has no positive control; `#968`).
+    - Controls: GanEur#316 at R-S's 2019 epoch now closes with the gate passing (worst 0.804), pending
+      its re-fly; C4 GanCal#1 at R-S's 2013 epoch is undecided (the shoot closes a gate-failing
+      solution).
+- `#968` — registered 2026-10-06 (from `#943`, lead ruling; NOT dispatched; for the owner). **JOVIAN
+  N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
+  EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
+  published Jovian cycler control in that lane before any Jovian candidate is put through it.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
