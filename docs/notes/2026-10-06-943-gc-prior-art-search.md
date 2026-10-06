@@ -116,3 +116,14 @@ Titan and methods papers.
   6.30/6.38 km/s.
 - **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to the lead and twobody-gen2-opus first.
   The two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.
+
+## 8. Follow-up 2026-10-06 (batch 19): Golubev et al. 2014 read
+
+- Row 9 above is now held and digested:
+  `2026-10-06-digest-golubev-et-al-2014-gravity-assist-maneuvers-jupiter-system.md`.
+- The "crossed" ("crisscross") G-C-G maneuvers are chain templates R1..-C12-C21-R1.. (a "reflection"
+  to Callisto, then a "re-reflection" back). They give a one-way v_inf reduction for a Ganymede lander.
+  The paper cites the JUICE G5-C11-G12, G12-C24-G25 and G25-C29-G30 triplets as the same device.
+- It gives no periods, leg times or v_inf values for any chain. It is not periodic.
+- **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to the lead and twobody-gen2-opus before
+  filing. The two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.
