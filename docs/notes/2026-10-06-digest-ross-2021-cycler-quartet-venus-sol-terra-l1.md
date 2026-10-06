@@ -71,6 +71,6 @@ academia.edu item 45489864. Undated; the text mentions "early March 2021" (p.4).
 - Hollister, W. M. (1969), "Castles in Space", Astronautica Acta 14(2):311-316. Not held; no DOI found
   by Crossref. Added to the wanted list (Tier D, history).
 - Morrison, O. (2018), "Use of Manifolds in the Insertion of Ballistic Cycler Trajectories", MS thesis,
-  Cal Poly, doi 10.15368/theses.2018.80. Free. Added to the wanted list (Tier D; S1L1 insertion from
-  STL1).
+  Cal Poly, doi 10.15368/theses.2018.80. Free. Added to the wanted list (Tier D). Received in batch 29: the thesis uses a southern
+  halo about Sun-Earth L2, not L1 (see `2026-10-06-digest-morrison-2018-manifolds-insertion-ballistic-cycler-ms-thesis.md`).
 - David, H. (2007), "The Case for Venus" (web page). Not acquired.

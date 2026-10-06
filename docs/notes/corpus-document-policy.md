@@ -31,6 +31,11 @@ probe returning empty = image-only).
   unchanged, and add the OCR text as a `.txt` sidecar.
 - Old solid RAR archives (inside KIAM source zips): `unar` (`brew install unar`); `7z` and `bsdtar`
   cannot open them. Translations and renders: `tectonic` (`brew install tectonic`).
+- Large files: GitHub warns above 50 MB and refuses above 100 MB. Try `ocrmypdf --skip-text
+  --optimize 2` on any PDF over 50 MB and file the smaller copy if the pages stay legible. It does
+  not help with anti-aliased greyscale scans: Bruno 1994 (85 MB, 150 dpi grey) saved 3 %, and a
+  lossy grey-JPEG rewrite still gave 62 MB, so the original was filed. Record the size and the
+  reason in the digest header.
 
 #### Three content classes (the hybrid rule)
 OCR is bulk text only; two other content classes need Claude vision.
