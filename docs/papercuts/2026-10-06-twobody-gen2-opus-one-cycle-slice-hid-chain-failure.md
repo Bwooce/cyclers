@@ -11,10 +11,10 @@ Cause:
 - For a (3, 1) half-rev the body's own circle (e = 0) is also a root.
 - In cycles 2 onward, the blended Ganymede radius was a little ABOVE the circular one. That moved the circle's root to e of about 0.002-0.005, so the scan took it instead of the leg's conic (e = 0.285). The result was 87-deg turn demands, or no directions at all.
 - Cycle 1's radius happened to be below the circular one, so the 1-cycle slice passed.
-- The same knife-edge also existed in the ideal model, where f(0) is round-off. Reassessment showed it flipped some ev zeros from "fail" to "no-directions", but no pass.
+- The same knife-edge also existed in the ideal model, where f(0) is round-off, and its sign differs between cells. The first fix (1feb8f2b) only moved the coverage gap, and lost 5 ev gate-passers. The final rule (note 6.34) gives one key per geometry in every cell; the ev set is back to 31 of 31.
 
 Workaround/fix:
-- The root on the leg's side of the flight-time minimum is now kept (test against R-S Table 3).
+- The half-rev keys are now explicit: peri = the leg's conic, apo = the apo conic or the tilted circle (tests against R-S Table 3, in heliocentric and Jovian cells).
 - The bare assert is replaced by an error that names the block, the body, the time and |V_inf|.
 - The shoot gets a nearest-geometry seed where the blend has no minimax solution.
 

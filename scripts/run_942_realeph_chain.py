@@ -57,11 +57,11 @@ from cyclerfinder.search.two_working_body import (
     MeanElementSystem,
     Vec,
     _blocks,
-    _solve_half_rev_e,
     date_residual,
     eval_lambert_legs,
     fixed_duration_s,
     gate_cycle,
+    half_rev_conic,
     kepler_step,
     optimise_block,
 )
@@ -438,15 +438,16 @@ def _fallback_directions(sysm: Any, blk: Any) -> list[np.ndarray]:
         u = np.asarray(blk.v_in, dtype=float)
         if isinstance(leg, HalfRevLeg):
             rn, big_w = float(np.linalg.norm(r)), float(np.linalg.norm(w))
-            e = _solve_half_rev_e(
+            conic = half_rev_conic(
                 sysm.mu,
                 rn,
                 0.5 * leg.half_periods * sysm.period_s(blk.body),
                 leg.k_sc,
                 leg.via_peri,
             )
-            if e is not None:
-                radial = (-1.0 if leg.via_peri else 1.0) * big_w * e
+            if conic is not None:
+                e, through_peri = conic
+                radial = (-1.0 if through_peri else 1.0) * big_w * e
                 u = big_w * (w / big_w) + radial * (r / rn) - w
         outs.append(vin * u / float(np.linalg.norm(u)))
     return outs

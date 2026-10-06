@@ -60,6 +60,11 @@ def main() -> None:
     ap.add_argument("--chain", type=Path, nargs="+", required=True)
     ap.add_argument("--n-cycles", type=int, required=True)
     ap.add_argument("--real", default="auto", choices=["auto", "mean", "de440", "spice"])
+    ap.add_argument(
+        "--include-failed",
+        action="store_true",
+        help="also re-fly a stored closure whose rung did not pass (e.g. a gate fail)",
+    )
     args = ap.parse_args()
     circ, a, b = CHAIN.ENUM.cell_system(args.cell)
     _, one = CHAIN.ENUM.parse_cycle_key(args.key, circ, a, b)
@@ -68,7 +73,7 @@ def main() -> None:
     n_lam = sum(isinstance(lg, CHAIN.LambertLeg) for lg in legs_chain)
     for path in args.chain:
         for ep in json.loads(path.read_text()):
-            if not ep["rung_pass"]:
+            if not ep["rung_pass"] and not (args.include_failed and "final_y" in ep):
                 print(f"epoch JD {ep['epoch_jd']:.1f}: rung not passed, skipped")
                 continue
             if ep.get("mode") == "ramp":

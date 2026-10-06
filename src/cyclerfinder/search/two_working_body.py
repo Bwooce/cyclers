@@ -540,9 +540,10 @@ def half_rev_vectors(system: System, leg: HalfRevLeg, t_s: float, vinf: float) -
     rn = float(np.linalg.norm(r))
     big_w = float(np.linalg.norm(w))
     target = 0.5 * leg.half_periods * system.period_s(leg.body)
-    e = _solve_half_rev_e(system.mu, rn, target, leg.k_sc, leg.via_peri)
-    if e is None:
+    conic = half_rev_conic(system.mu, rn, target, leg.k_sc, leg.via_peri)
+    if conic is None:
         return []
+    e, through_peri = conic
     cos_alpha = 1.0 - 0.5 * ((vinf / big_w) ** 2 - e * e)
     if abs(cos_alpha) > 1.0:
         return []
@@ -550,7 +551,7 @@ def half_rev_vectors(system: System, leg: HalfRevLeg, t_s: float, vinf: float) -
     r_hat = r / rn
     w_hat = w / big_w
     h_hat = np.cross(r_hat, w_hat)
-    radial = (-1.0 if leg.via_peri else 1.0) * big_w * e
+    radial = (-1.0 if through_peri else 1.0) * big_w * e
     out = []
     for s in (1, -1):
         if leg.sign not in (0, s):
@@ -574,20 +575,31 @@ def half_rev_arrival(system: System, leg: HalfRevLeg, t_dep: float, u_dep: Vec) 
     return np.asarray(v1 - w1, dtype=np.float64)
 
 
-def _solve_half_rev_e(
+def _half_rev_roots(
     mu: float, r: float, target: float, k_sc: int, via_peri: bool
-) -> float | None:
+) -> tuple[list[float], list[float]]:
+    """Roots in e of the half-rev flight-time equation, split into ``(circle, conic)``.
+
+    When the spacecraft's revolutions match the body's (half_periods = 2 k_sc + 1) the body's own
+    circle, e = 0, tilted, is a root of both the peri and the apo equation (a node-to-node return
+    after half a period). In the ideal model f(0) is round-off, so whether a scan from e = 0 sees it
+    was a coin toss (#943); here |f(0)| <= 1e-12 target counts as a root. A body radius a little off
+    the circular one (an ephemeris, a blend) moves the circle's root to a small e (0.005 at 0.14 %
+    off). Circle roots: below 0.05 or before the flight time's minimum over e; the rest are the
+    leg's own conic."""
+
     def f(e: float) -> float:
         return half_rev_tof_s(mu, r, e, k_sc, via_peri) - target
 
-    lo, hi = 0.0, 0.999
-    grid = np.linspace(lo, hi, 400)
+    grid = np.linspace(0.0, 0.999, 400)
     vals = [f(float(g)) for g in grid]
     roots: list[float] = []
+    if abs(vals[0]) <= 1e-12 * target:
+        roots.append(0.0)
     for i in range(len(grid) - 1):
-        if vals[i] == 0.0:
+        if i > 0 and vals[i] == 0.0:
             roots.append(float(grid[i]))
-        elif vals[i] * vals[i + 1] < 0.0:
+        elif vals[i] * vals[i + 1] < 0.0 and not (i == 0 and roots):
             a, b = float(grid[i]), float(grid[i + 1])
             for _ in range(80):
                 m = 0.5 * (a + b)
@@ -596,17 +608,43 @@ def _solve_half_rev_e(
                 else:
                     a = m
             roots.append(0.5 * (a + b))
-    # When the spacecraft's revolutions match the body's (half_periods = 2 k_sc + 1) the body's
-    # own circle (e = 0) is a root, shared by the peri and apo legs. A body radius a little off
-    # the circular one (an ephemeris, a blend) moves it to a small e (0.005 at 0.14 % off), and
-    # the scan from e = 0 took it in place of the leg's own conic (#943 GanEur#316 chain). The
-    # circle's root lies before the flight time's minimum over e, the leg's after it: when roots
-    # lie on both sides, keep the leg's.
     e_min = float(grid[int(np.argmin(vals))])
-    after = [e for e in roots if e > e_min]
-    if after and len(after) < len(roots):
-        return after[0]
-    return roots[0] if roots else None
+    circle = [e for e in roots if e < _CIRCLE_E or e < e_min]
+    conic = [e for e in roots if e not in circle]
+    return circle, conic
+
+
+#: Half-rev roots below this eccentricity are the body's own (tilted) circle.
+_CIRCLE_E = 0.05
+
+
+def half_rev_conic(
+    mu: float, r: float, target: float, k_sc: int, via_peri: bool
+) -> tuple[float, bool] | None:
+    """The half-rev conic of a leg: ``(e, passes_periapsis)``, or ``None``.
+
+    A peri leg (``via_peri``) is the leg's own conic through periapsis only. An apo leg is its own
+    conic through apoapsis if one exists, else the body's tilted circle (from whichever equation
+    holds its root). So every geometry has exactly one key, the same in every cell."""
+    circ_p, conic_p = _half_rev_roots(mu, r, target, k_sc, True)
+    circ_a, conic_a = _half_rev_roots(mu, r, target, k_sc, False)
+    if via_peri:
+        return (conic_p[0], True) if conic_p else None
+    if conic_a:
+        return conic_a[0], False
+    if circ_a:
+        return circ_a[0], False
+    if circ_p:
+        return circ_p[0], True
+    return None
+
+
+def _solve_half_rev_e(
+    mu: float, r: float, target: float, k_sc: int, via_peri: bool
+) -> float | None:
+    """The eccentricity of :func:`half_rev_conic`."""
+    sol = half_rev_conic(mu, r, target, k_sc, via_peri)
+    return None if sol is None else sol[0]
 
 
 # ---------------------------------------------------------------------------

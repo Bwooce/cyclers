@@ -443,6 +443,44 @@ def test_half_rev_eccentricity_skips_the_body_circle(radius_scale: float) -> Non
     assert e == pytest.approx(1.0 - 1_070_338.0 / 1_496_829.0, abs=1e-2)
 
 
+@pytest.mark.parametrize("cell_body", [("ev", "V"), ("em", "M"), ("ge", "Ganymede")])
+@pytest.mark.parametrize("radius_scale", [1.0 - 2.2e-16, 1.0, 1.0 + 2.2e-16])
+def test_half_rev_keys_cover_conic_and_circle_in_every_cell(
+    cell_body: tuple[str, str], radius_scale: float
+) -> None:
+    """One key per half-rev geometry, the same in heliocentric and Jovian cells (#943).
+
+    In the ideal model the flight-time equation at e = 0 is round-off, and its sign differs between
+    cells. Before, a heliocentric (3, 1, peri) key returned the body's tilted circle and never the
+    leg's conic, while a Jovian one did the reverse. Expected:
+    - (3, 1, peri): the conic, e = 0.28493 (GanEur#316's half-rev; Russell & Strange 2007 Table 3);
+      the value is a property of a (3, 1) half-rev with p = r, the same for every body.
+    - (3, 1, apo) and (1, 0, apo): the circle, e = 0 (geometric).
+    - (1, 0, peri): none."""
+    import importlib.util
+    from pathlib import Path
+
+    from cyclerfinder.search.two_working_body import half_rev_conic
+
+    path = Path(__file__).resolve().parents[2] / "scripts" / "run_942_enumerate.py"
+    spec = importlib.util.spec_from_file_location("run_942_enumerate", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    cell, body = cell_body
+    sysm, _, _ = mod.cell_system(cell)
+    a, period, _ = sysm.bodies[body]
+    r = a * radius_scale
+    conic = half_rev_conic(sysm.mu, r, 1.5 * period, 1, True)
+    assert conic is not None and conic[1]
+    assert conic[0] == pytest.approx(1.0 - 1_070_338.0 / 1_496_829.0, abs=2e-5)
+    for hp, k in ((3, 1), (1, 0)):
+        circle = half_rev_conic(sysm.mu, r, 0.5 * hp * period, k, False)
+        assert circle is not None
+        assert circle[0] == pytest.approx(0.0, abs=1e-6)
+    assert half_rev_conic(sysm.mu, r, 0.5 * period, 0, True) is None
+
+
 @pytest.mark.parametrize(
     ("cell", "key", "seed_days", "r_min_km", "r_max_km"),
     [

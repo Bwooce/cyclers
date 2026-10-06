@@ -1328,7 +1328,8 @@ themselves do not use the root):
   0 verdict changes. `data/943_cell_ge_gauntlet.json` is regenerated; only r_min/r_max moved.
 - ev: the first 400 of 8,464 H-leg zeros gave 12 changes, all "fail" to "no-directions" (the old
   code had taken the circle's root at round-off). The run was stopped at the 10-min limit; the rest
-  is a lead launch.
+  is a lead launch. CORRECTION (6.34): the full ev run under this version lost 5 gate-passing
+  cyclers; this version was itself a regression, replaced in 6.34.
 - vm2, em, vm2n, vmn: lead launches.
 
 Distances re-reported (ideal model; `data/942_943_extent_rereport.json`). A full-rev leg's extent is
@@ -1417,6 +1418,56 @@ Readings, fixed now:
 - Closures, but none passes the gate: the stall is fixed, and the open item becomes "the shoot finds
   closures but not the gate-passing member". The caveat stays.
 - No closure: the method fails, and the caveat stays.
+
+### 6.34 Half-rev keys: one key per geometry in every cell (replaces the 1feb8f2b rule), and the C4 result with `--shoot-rel-time` (2026-10-06)
+
+Regression found in 1feb8f2b (by the full ev reassessment):
+- 5 of ev's 31 gate-passing physical cyclers were lost, including the Hollister 1H variant
+  2.994/3.19 with a half-rev pair at Venus.
+- Cause: at e = 0 the flight-time equation is round-off in the ideal model, and its sign differs
+  between cells. In the heliocentric cells (f(0) > 0):
+  - before 1feb8f2b, a (3,1,peri) key returned the body's tilted circle and the apo key nothing, so
+    the leg's own conic (e = 0.285) was NEVER assessed;
+  - 1feb8f2b swapped that, so the circle was never assessed.
+- In the Jovian cells (f(0) < 0) both were covered (peri = conic, apo = circle). So vm, gc and ge
+  were unaffected; ev, em, vm2, vm2n and vmn have the coverage gap.
+
+New rule (`two_working_body.half_rev_conic`):
+- |f(0)| <= 1e-12 of the target counts as a root.
+- Roots are split into the circle's (e < 0.05, or before the flight time's minimum) and the conic's.
+- peri key = the leg's own conic through periapsis.
+- apo key = its own apo conic if one exists, else the tilted circle, from whichever equation holds
+  the root. The radial sign follows the equation used.
+- Tests (identical in ev, em and ge, at the circular radius and 1 ulp either side):
+  - (3,1,p) gives 0.28493 (GanEur#316 Table 3);
+  - (3,1,a) and (1,0,a) give 0;
+  - (1,0,p) gives none.
+- The blend radius test (scales 1 -/+ 1e-3) is kept.
+
+Acceptance check, ev H-leg zeros (8,464) reassessed with the new rule, against the set from before
+1feb8f2b:
+- gate-passing physical cyclers: 31 before, 31 after, lost 0, gained 0. The in-run Hollister 1H and
+  2H controls are in the set.
+- Physical cyclers in all: 3,534 -> 4,018 (the newly assessed conics). None of them passes the gate.
+- Other cells under the new rule: vm (1,668 H zeros), gc (1,312) and ge (2,944): 0 verdict changes.
+- em, vm2, vm2n and vmn: H-leg reassessment with this code is a lead launch. The lead's em full
+  reassessment (intermediate code) stands for its non-H zeros only.
+- Registry consequence: the stamps for vm2 and ev (and later em, vm2n and vmn) were made under the
+  old coverage gap. The ev scope is now complete with no change of verdict. vm2 is to be re-stamped
+  or annotated after its reassessment.
+
+C4@2013 with `--shoot-rel-time` (the 6.33 control), `data/943_c4_rs2013/n10_direct_rel/`:
+- Restart 0 closes in about 2 s (max residual below 1e-6; it stalled at 4.0e-6 before). The DOP853
+  re-fly of that closure (checker `--include-failed`) misses by 3.8e-4 km. The closure is real.
+- It FAILS the gate: worst 5.106 (Ganymede), min altitude -2,605 km. No other restart closes.
+- Reading (fixed in 6.33): the stall is fixed, but the shoot finds a closure that is not the
+  gate-passing member. The control is NOT passed; the gc-1 caveat stays.
+- Restart defect, found after the run: the restarts perturb every fixed leg's theta by N(0, 0.3) rad
+  and phi by N(0, 0.6) rad. That puts the arrivals about 4e6 km off (residual about 4e3). LM's first
+  step then leaves the domain (a Lambert or flight-time failure), and the restart ends at nfev 2 with
+  an infinite residual. 14 of 20 restarts died that way, so only about 6 were real attempts. Changes
+  to the restarts, a chain-length continuation (1 -> 10 cycles from the 1-cycle gate-passing closure)
+  or a gate-constrained shoot are method changes. Each needs pre-registration and lead approval.
 
 ## 7. Literal-collision checks (to be completed per candidate)
 
