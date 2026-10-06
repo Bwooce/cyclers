@@ -125,3 +125,4 @@
 
 - 2026-10-06 23:56 AEDT: pushed 51c366b2..c8208b6e (docs/OUTSTANDING only) after tests/data+tests/scripts clean (bk2qqhzfo). Waiting: corpus-file TR 32-464 verdict -> twobody-gen2 fills decision-summary placeholders.
 - 2026-10-07 00:26 AEDT: batch 30 (bccf4306, 15 digests) pushed. Schwaniger 1963 retrograde E-M PO -> register as task (V0 row proposal). corpus-file next: batch 33 TR 32-464.
+- 2026-10-07 01:08 AEDT: owner items to corpus-file: Hollister 1963 ScD thesis (row 43, image-only, 158 pp.); batch 35 = six Lynam-group Jovian MSAC papers (CMDA MSAC-Laplace ms, Acta 94:253 Part II, CMDA 2015 x2, Didion-Lynam 2014, JGCD 34(5) 2011). Minovitch verdict still first.
