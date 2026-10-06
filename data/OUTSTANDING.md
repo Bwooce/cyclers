@@ -1868,9 +1868,10 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
       STATE.
     - Rulings: C4 option (c) (judge C4 and gc-1 at 1 and 10 cycles, caveat stated); gc-2 n-body option
       (i) (rung dropped: the Jovian n-body lane has no positive control; `#968`).
-    - Controls: GanEur#316 at R-S's 2019 epoch now closes with the gate passing (worst 0.804), pending
-      its re-fly; C4 GanCal#1 at R-S's 2013 epoch is undecided (the shoot closes a gate-failing
-      solution).
+    - Controls: GanEur#316 at R-S's 2019 epoch PASSES (note 6.38: 10 cycles, gate 0.804, DOP853 re-fly
+      1.5e-5 km), for the half-rev path only, so it does not unblock the full-rev ge-1/2/3; C4 GanCal#1
+      at R-S's 2013 epoch is undecided (the chain-length continuation tracks the member through 9
+      cycles only as "indeterminate", 0.973-0.992).
 - `#968` — registered 2026-10-06 (from `#943`, lead ruling; NOT dispatched; for the owner). **JOVIAN
   N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
   EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
