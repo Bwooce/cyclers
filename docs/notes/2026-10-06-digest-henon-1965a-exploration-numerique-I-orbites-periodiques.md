@@ -7,7 +7,7 @@ M. Hénon (Institut d'Astrophysique, Paris), Annales d'Astrophysique 28:499-511 
   cd8dc3a89baacbde109190b6c073a360, 13 pp., fetched by fetch-sonnet).
 - **Companion `...-tables.txt`:** Tables 0-6 and the numeric displays (eqs. 9-10), from 400 dpi images
   with three witnesses. Decimal commas are converted.
-- Wanted list: removed in batch 27. An English translation is to follow (owner request).
+- Wanted list: removed in batch 27. English translation: `...-en-translation.pdf` (21 pp., full, private research copy).
 
 ## 0. Verdict
 
