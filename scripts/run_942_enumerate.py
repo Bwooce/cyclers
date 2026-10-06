@@ -28,8 +28,10 @@ import json
 import math
 import random
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
@@ -155,7 +157,17 @@ def cycle_key(c: Cycle, k: int) -> str:
     return f"k{k}|" + "|".join(leg_key(lg) for lg in c.legs)
 
 
-def main() -> None:
+#: Cells that belong to #943 (X1, Jovian); they run through scripts/run_943_enumerate.py.
+X1_CELLS = frozenset({"gc", "ge", "gc1", "ge1"})
+
+
+def _preflight_942(**kwargs: Any) -> None:
+    preflight_search(task_no=942, script_path=Path(__file__), **kwargs)
+
+
+def main(preflight: Callable[..., None] = _preflight_942, x1: bool = False) -> None:
+    """Run one cell. ``preflight`` is the task-specific gate (#942 here, #943 in
+    run_943_enumerate.py); ``x1`` selects which cells this entry point accepts."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--cell", required=True)
     ap.add_argument("--k", type=str, required=True, help="comma list of synodic multiples")
@@ -184,6 +196,13 @@ def main() -> None:
         help="measured seconds per structure from a --sample pilot (preflight gate)",
     )
     args = ap.parse_args()
+    if (args.cell in X1_CELLS) != x1:
+        owner = (
+            "#943 (run_943_enumerate.py)"
+            if args.cell in X1_CELLS
+            else "#942 (run_942_enumerate.py)"
+        )
+        raise SystemExit(f"cell {args.cell!r} belongs to {owner}")
 
     system, a, b = cell_system(args.cell)
     ma, mb = (int(v) for v in args.max_returns.split(","))
@@ -227,8 +246,7 @@ def main() -> None:
     log(f"total to run: {len(todo)} (shard {shard_i}/{shard_n})")
     if args.count_only:
         return
-    preflight_search(
-        task_no=943 if args.cell.startswith("g") else 942,
+    preflight(
         region_id=(
             f"{args.cell}-two-working-body-ideal-k{args.k.replace(',', '-')}"
             f"-ret{args.max_returns.replace(',', '-')}-tr{args.transfer_revs.replace(',', '-')}"
@@ -243,7 +261,6 @@ def main() -> None:
             capability_tags=frozenset({"ballistic", "coplanar", "patched-conic", "circular"}),
             git_sha="working-tree",
         ),
-        script_path=Path(__file__),
         n_points=len(todo),
         timing_pilot_seconds_per_point=args.timing_pilot_s,
     )
