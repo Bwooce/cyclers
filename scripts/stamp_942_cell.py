@@ -32,6 +32,7 @@ def main() -> None:
     ap.add_argument("--interpretation", required=True)
     ap.add_argument("--git-sha", required=True)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--task", type=int, default=942)
     args = ap.parse_args()
     g = json.loads(args.gauntlet.read_text())
     st = json.loads(args.settings.read_text())
@@ -99,7 +100,7 @@ def main() -> None:
         interpretation=args.interpretation,
         source_anchors="docs/notes/2026-10-05-942-943-two-working-body-generator.md sec. 6; "
         f"data/942_cell_{g['cell']}_gauntlet.json",
-        run={"date": date.today().isoformat(), "task": 942, "git_sha": args.git_sha},
+        run={"date": date.today().isoformat(), "task": args.task, "git_sha": args.git_sha},
     )
     if args.dry_run:
         print(report)
