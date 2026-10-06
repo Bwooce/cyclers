@@ -138,3 +138,13 @@ Titan and methods papers.
   as an unused option.
 - **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to twobody-gen2-opus first. The
   two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.
+
+## 10. Follow-up 2026-10-07 (batch 32): Niehoff 1971 JSR read
+
+- Niehoff 1971 (JSR 8(10):1021-1027, the journal form of the held AIAA 70-1070):
+  `2026-10-07-digest-niehoff-1971-touring-galilean-satellites-jsr.md`.
+- Its orbits are Io-commensurate capture ellipses (periapse 1.2-2.6 R_J) that meet Io, Europa and Ganymede once
+  per revolution at high relative speed (6-14 km/s at Ganymede, our computation). Callisto is not in the
+  resonance ("irregular intervals"). There is no moon-to-moon leg and no gravity assist.
+- **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** It is the earliest held "repeat encounters by period
+  commensurability" idea, recorded as lineage only.
