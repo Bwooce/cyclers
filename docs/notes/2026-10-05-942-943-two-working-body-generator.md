@@ -509,6 +509,77 @@ gate-passing. Gauntlet: `data/942_cell_vm_gauntlet.json`.
     - Legs: V-V 1-rev low, 413.5 d, a 1.0074 AU, e 0.9318. V-M-V 0-rev, a 0.8737 AU, e 0.9405.
   - Registry stamp: heliocentric-venus-mars-one-working-body-rs2007-ideal-k1-3-942.
 
+### 6.4 Cell 2 result: vm2 (Venus-Mars, both massive), 2026-10-06
+
+Run: 14,044 structures, 6,744 exact zeros, 2,020 physical cyclers, 3 gate-passing (reassessed with the
+fixed `kepler_step`; no verdict changed). Gauntlet: `data/942_cell_vm2_gauntlet.json`.
+- VenMar#45 (LITERAL) and vm-1 (sec. 6.3): both have a Mars turn of 0.0, so they are the one-body
+  cyclers again.
+- **vm2-1: candidate, pending owner adjudication. NOT novel.** Mars bends, so it is two-working-body.
+
+**vm2-1 full state** (R-S 2007 ideal model: circular coplanar, Sun mu 1.3271244e11, Venus period
+19,414,153 s, Mars 59,354,429 s, all bodies at angle 0 at t = 0).
+- k = 3, period 1001.770 d. Key k3|LV>V/2l|LV>M/0s|LM>V/0s. Lambert-leg starts (d): 52.916705,
+  614.929975, 834.808349.
+
+| Leg | Type | Flight (d) | a (AU) | e | Perihelion / aphelion (AU) |
+|---|---|---|---|---|---|
+| V->V | generic return, 2 rev, low | 562.01 | 0.74537 | 0.17372 | 0.616 / 0.875 |
+| V->M | 0-rev transfer | 219.88 | 1.12250 | 0.35896 | 0.720 / 1.525 |
+| M->V | 0-rev transfer | 219.88 | 1.12250 | 0.35896 | 0.720 / 1.525 |
+
+On the generic return Venus makes 2.5 revolutions and the spacecraft 2. The two transfers form a
+symmetric 440-d round trip.
+
+| Flyby | V_inf (km/s) | Turn (deg) | Available (deg) | Ratio | Required altitude |
+|---|---|---|---|---|---|
+| Venus (x2) | 6.086 | 69.55 | 70.90 at 300 km | 0.981 | 556 km (1.092 radii) |
+| Mars | 4.849 | 16.42 | 39.27 at 200 km | 0.418 | 7,533 km (3.2 radii) |
+
+Checks:
+- Exact zero (residual < 1e-8 km/s).
+- Independent DOP853 re-fly: miss 0.013 km, V_inf vector error 4e-9 km/s, gate pass on the integrated
+  vectors.
+- lamberthub (Izzo/Gooding) agreement on all three legs: 1e-7 m/s.
+- SOI fraction 2e-8.
+
+**Both acceptance criteria, side by side:**
+- PASSES the project's registry floor: Venus 300 km.
+- FAILS Rall's and H&M's own acceptance, "flybys ... beyond 1.1 planet radii" (Menning p.6; H&M p.1193),
+  i.e. 605 km at Venus. vm2-1 needs 556 km.
+- The neighbouring zero of the same structure (V_inf 6.11 / 5.87) fails the gate at ratio 1.07.
+
+**Prior attempt (Rall 1969 Sc.D. thesis, sec. 4.4, pp.84-86, read on the page images):**
+- "The approach to obtaining such a periodic orbit was to have the trajectory go from Venus to Mars to
+  Venus in a low energy fashion (taking around 400 or 450 days for the round trip and making about one
+  revolution of the Sun) while Venus makes about two revolutions of the Sun. Then find appropriate
+  direct return trajectories in the vicinity of Venus until the next opportunity for a transfer to Mars
+  presents itself."
+- "Attempts were made with repeating periods of up to four Mars-Venus synodic periods. In all cases,
+  the attempted method either did not converge, or the trajectory intersected the surface of Venus."
+- "More promising direct return orbits appeared to be those which travel around the Sun a different
+  number of times than does Venus ... In each case, the attempt either failed to converge; or the
+  resulting trajectory intersected the surface of Venus."
+- "this investigation did not prove that no periodic orbits of the type considered connect Mars and
+  Venus; this investigation simply failed to find any."
+
+vm2-1 is in that attempted class: a 440-d V-M-V round trip, plus a Venus return that circles the Sun 2
+times while Venus does 2.5, at 3 synodic periods. It closes ballistically only between the two flyby
+criteria above.
+
+Other gates:
+- R-S 2007: their ideal model has Mars massless (p.2), and the massive target is named as future work
+  (p.18). VenMar#45 is the only printed Venus-Mars row. No collision.
+- Pisarevsky 2008: the method is general, but its numbers are Earth-Mars only. Its diagrams restrict
+  loitering arcs to multiples of pi and name "any number of generic returns" as future work (digest sec.
+  4). vm2-1's Venus return is generic (non-k pi), so it is outside their covered diagrams.
+- Turner AAS 07-175: unheld.
+- Catalogue: only Jones VEM rows on this pair.
+- Offline literature_check: "published" via the R-S Venus-Mars body-pair anchor (a flag, not a
+  verdict).
+
+Approved next steps: robustness pre-registration (sec. 6.5); registry stamp for the rest of the cell.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
