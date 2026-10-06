@@ -435,6 +435,10 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--real", default="auto", choices=["auto", "mean", "de440", "spice"])
     ap.add_argument("--shoot-restarts", type=int, default=20)
+    # Solver settings only (budget, method); the closure threshold and the re-fly criterion
+    # do not change with them.
+    ap.add_argument("--shoot-nfev-per-var", type=int, default=30)
+    ap.add_argument("--shoot-method", default="lm", choices=["lm", "trf"])
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -573,6 +577,9 @@ def main() -> None:
             cyc_now = Cycle(legs_chain, float(y[-1]) * DAY)
             x_now = np.concatenate([[x0], y[:-1] * DAY])
             fixed0 = np.ravel(initial_fixed_params(sysm, cyc_now, x_now))
+            (args.out / f"shoot_start_epoch{ie}.json").write_text(
+                json.dumps({"x0": x0, "y": y.tolist(), "fixed0": fixed0.tolist()})
+            )
             rng = np.random.default_rng(943 + ie)
             best = None
             tried = []
@@ -582,18 +589,46 @@ def main() -> None:
                     f0[0::3] += rng.normal(0.0, 0.3, f0[0::3].size)
                     f0[1::3] += rng.normal(0.0, 0.6, f0[1::3].size)
                 ys = np.concatenate([y, f0])
+                t_r = time.time()
+                n_ev = [0]
+
+                def fun(
+                    yy: np.ndarray,
+                    s_: Blend = sysm,
+                    x0_: float = x0,
+                    r: int = r,
+                    n_ev: list[int] = n_ev,
+                    t_r: float = t_r,
+                ) -> np.ndarray:
+                    n_ev[0] += 1
+                    if n_ev[0] % 20000 == 0:
+                        print(
+                            f"{time.strftime('%H:%M:%S')}   shoot restart {r}: {n_ev[0]} evals "
+                            f"[{time.time() - t_r:.0f}s]",
+                            flush=True,
+                        )
+                    return _res(s_, legs_chain, x0_, yy)
+
                 sol = least_squares(
-                    lambda yy, s_=sysm, x0_=x0: _res(s_, legs_chain, x0_, yy),
+                    fun,
                     ys,
-                    method="lm",
+                    method=args.shoot_method,
+                    x_scale="jac" if args.shoot_method == "trf" else 1.0,
                     xtol=1e-14,
                     ftol=1e-14,
                     gtol=1e-14,
-                    max_nfev=30 * len(ys),
+                    max_nfev=args.shoot_nfev_per_var * len(ys),
                 )
                 ev = chain_eval(sysm, legs_chain, x0, sol.x)
-                if ev is None or float(np.max(np.abs(ev.residual))) >= 1e-6:
-                    tried.append({"restart": r, "converged": False})
+                worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
+                if worst_res >= 1e-6:
+                    tried.append({"restart": r, "converged": False, "max_residual": worst_res})
+                    print(
+                        f"{time.strftime('%H:%M:%S')}   shoot restart {r}/{args.shoot_restarts}: "
+                        f"no closure (max residual {worst_res:.1e}, nfev {sol.nfev}, "
+                        f"{time.time() - t_r:.0f}s)",
+                        flush=True,
+                    )
                     continue
                 g = gate_eval(sysm, ev)
                 tried.append({"restart": r, "converged": True} | g)
