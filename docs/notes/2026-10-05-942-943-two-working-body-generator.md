@@ -1878,6 +1878,27 @@ Runs (lead launches), controls first:
 
 The C4 `grow1` run (6.46a control without the homotopy) is still running and is reported separately.
 
+### 6.49 Is the blend's lambda = 1 gate pass a real-ephemeris solution? PRE-REGISTERED 2026-10-06, before computing
+
+Lead's question: in blend mode, a full-rev leg at lambda = 1 is timed at the IDEAL body period from
+the minimax direction, and its arrival V_inf is taken from the circle rule, not propagated. So the
+blend gate may score full-rev legs that do not return to the moon.
+
+Test (no re-solve; `scripts/analyse_942_fullrev_closure_dv.py`, the 6.24 measure, `--real spice`):
+- For each of ge-1, ge-2, ge-3 at every epoch: the phase-1 lambda = 1 solution of the
+  `data/943_rung_d_hom/` runs (1 cycle; dates plus minimax directions).
+- Each full-rev leg is re-flown exactly (DOP853, real GM) from its minimax direction for its blend
+  duration. Reported: the miss D (km) at arrival against the moon, the mid-course correction that
+  retargets it, and the induced arrival |V_inf| change.
+- The same measure for the two controls, C4 and GanEur#316, as reference sizes.
+
+Reading, fixed now:
+- D of order 1 km or less: the blend pass is close to a real solution, and the shoot's failure to find
+  a gate-passing closure is a tool limitation (undecided).
+- D of hundreds to thousands of km: the blend pass relies on full-rev legs that do not close. It is
+  NOT evidence, and the gate-failing real closures found by the controlled methods (6.46a, 6.48) are
+  the real-ephemeris evidence.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
