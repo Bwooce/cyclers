@@ -1868,6 +1868,18 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
   EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
   published Jovian cycler control in that lane before any Jovian candidate is put through it.
+- `#969` — registered 2026-10-06 (found by `#963`'s test run; NOT dispatched). **REMOVE WALL-CLOCK
+  BUDGETS FROM CORRECTNESS ASSERTIONS.** `test_656_grid_seed_search_recovers_admitted_pc_32_seed`
+  passes `per_call_timeout=5` (SIGALRM, seconds) to `_grid_seed_search`; under load (16-20 on 8
+  cores) a call ran past 5 s, the known PC (3,2) seed was "not recovered" and the test failed (it
+  passes alone in 1.5 s). Scope: audit `tests/` for per-call timeouts used as pass/fail, and the
+  production paths that turn a wall-clock cut-off into a result: `search/pluto_charon_kk_sweep.py`
+  (`_run_with_timeout`, `per_call_timeout`; a sweep under load can report a false "not found") and
+  `search/real_binary_kk_sweep.py`, plus `core/cr3bp.py`'s `#652` wall-clock budget event, which
+  terminates a propagation. Fix: an evaluation- or step-count budget, or a wall-clock guard that is
+  reported as a timeout and kept out of pass/fail. NOT "raise the timeout". Past negatives from these
+  sweeps run under load are suspect (bug-fix rule). Papercut:
+  `docs/papercuts/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
