@@ -691,6 +691,70 @@ Findings:
 Verdict at this rung: vm2-1 is an ideal-model-only object. Its 2 % Venus margin does not survive real
 orbit eccentricity (Mars e = 0.093) and inclination. The #866 V3 lane is not requested.
 
+### 6.10 vm2-1 final record (lead ruling 2026-10-06)
+
+vm2-1 is an "ideal-model curiosity / negative-adjacent, not a find". It does not persist toward the real
+ephemeris: the Venus ratio is over 1 by lambda of about 0.06 (sec. 6.9). Step (b3) was dropped. Step (c),
+the neighbours, stays: a neighbour with more margin is the only way this family could survive real
+eccentricity. The lead launches it after em.
+
+### 6.11 Cell 3 result: gc (Ganymede-Callisto, both massive), 2026-10-06
+
+Run: 4,043 structures, 2,300 exact zeros, 775 physical cyclers, 3 gate-passing (reassessed; no verdict
+changed; 0 errors). Gauntlet: `data/943_cell_gc_gauntlet.json`.
+- In-run control: GanCal#5 is LITERAL. GanCal#1 needs two Ganymede returns, so it lies outside this cell's
+  `--max-returns 1,1` scope; it was recovered blind by the targeted run of sec. 5.
+- GCGC (Campagnola 2019): not present. It has an alternating G1 C2 G3 C4 pattern with V_inf 3.5/4.5; no
+  gate-passer matches within 0.5 km/s at both moons. The Lam 2015 13F7 pump-down is non-resonant, not a
+  cycler, so there is no collision. Liang 2024 CGCEC is a three-moon tour.
+- The #576 symmetric G-C-G closures (V_inf pairs 3.97/2.47, 7.59/3.71, 2.80/3.47, 3.28/4.70, 6.54/5.51,
+  1.93/1.49, 7.66/3.67) have no returns and were judged by the capacity gate. None matches a gc
+  gate-passer.
+
+| Candidate | gc-1 | gc-2 |
+|---|---|---|
+| Status | candidate, pending owner adjudication, NOT novel | candidate, pending owner adjudication, NOT novel |
+| Key | k3\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | k3\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s |
+| Period | 37.57 d (3 G-C synodic) | 37.57 d |
+| V_inf G / C (km/s) | 2.397 / 1.807 | 3.617 / 3.039 |
+| Ganymede turn | 29.35 deg of 45.44 (ratio 0.646, 2,437 km) | 19.72 deg of 25.02 (ratio 0.788, 1,024 km) |
+| Callisto turns | 2 x 40.15 deg of 54.45 (ratio 0.737, 1,801 km) | 2 x 6.87 deg of 26.56 (ratio 0.259, 9,800 km) |
+| Distance from Jupiter (km) | 888,745 to 1,955,850 | 791,455 to 2,337,392 |
+| Lambert starts (d) | 0.766855, 11.345133, 31.824260 | 0.838679, 11.684556, 14.289304, 35.803635 |
+
+Leg detail:
+- gc-1:
+  - G-G 1-rev low, 10.578 d (a 1,142,885 km, e 0.2224).
+  - G->C 3.790 d and C->G 6.512 d on one conic (a 1,481,355 km, e 0.3203).
+  - Callisto 1:1 full-rev return.
+- gc-2:
+  - G-G 1-rev low, 10.846 d (e 0.3300).
+  - G->C and C->G of 2.605 d each (a 1,572,225 km, e 0.4120).
+  - C-C 1-rev high, 21.514 d (e 0.3856).
+
+Checks, both:
+- DOP853 re-fly miss < 1e-5 km.
+- lamberthub agreement < 3e-9 m/s on every leg.
+- Gate pass on the integrated vectors.
+
+Both moons bend in both, so these are two-working-body cyclers. R-S 2007/2009 name the massive target
+as future work; GCGC is the only published two-working-body G-C cycler, and it is a different class.
+
+### 6.12 ev shortlist (lead ruling 2026-10-06)
+
+Ranking: worst gate ratio, then the lowest maximum V_inf; anything inside Menning's p.41-42
+"variations" is demoted; the best Earth-massless skeleton is included. Full list:
+`data/942_cell_ev_shortlist_ranking.json`. One skeleton is a Menning variation (k=2, 3.51/4.41: FR at
+Earth, half-rev plus symmetric at Venus) and is demoted to last.
+
+Top 3, for the full ladder:
+- ev-A: k=2, E/V 4.89/10.36, worst ratio 0.574, two-working-body. Key k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s.
+- ev-B: k=3, 8.01/10.93, worst ratio 0.673, two-working-body. Key k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s.
+- ev-C: k=2, 9.07/13.17, worst ratio 0.746, Earth-massless (R-S architecture at Venus). Key
+  k2|LE>V/0s|LV>V/1h|LV>E/0s.
+
+The other 16 non-Hollister skeletons are recorded as "candidate, not laddered".
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
