@@ -1814,6 +1814,17 @@ RUNG PASS at >= 1 epoch (the C4 and #316 criteria, now judged on BOTH):
   closure).
 All epochs are reported. These are patched-conic results on jup365; the n-body lane stays unrun (#968).
 
+### 6.46a Amendment to 6.46 before any ge run (a convergence fact only; no candidate gate was seen)
+
+- Validation slices (ge-2, 1 restart) with the 6.46 flags: the 10-cycle DIRECT date solve does not
+  converge at any of the 5 epochs (max residual 5.7e-4 to 2.7e-2).
+- The growth only needs a first-cycle seed, so `--grow-from-one` is added: phase 1 solves ONE cycle
+  (direct), and the shoot grows it to 10. With it the 1-cycle date solve converges at 5/5 epochs.
+- Everything else in 6.46 is unchanged.
+- Because the seed path changed, the control is re-run first with the same flags: C4@2013,
+  `--grow-from-one`, judged as in 6.45 (10-cycle closure plus re-fly < 1 km; gate recorded). The ge
+  runs are judged as in 6.46.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

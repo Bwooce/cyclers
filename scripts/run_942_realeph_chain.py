@@ -607,6 +607,11 @@ def main() -> None:
         help="chain-length continuation 1 -> n cycles in the shoot (note 6.35)",
     )
     ap.add_argument(
+        "--grow-from-one",
+        action="store_true",
+        help="with --grow-chain: the phase-1 date solve on one cycle only (note 6.46a)",
+    )
+    ap.add_argument(
         "--shoot-rel-time",
         action="store_true",
         help="shoot in dates relative to the epoch (note 6.33; fixes the long-chain stall)",
@@ -633,9 +638,11 @@ def main() -> None:
         raise SystemExit(f"cell {args.cell!r} has a massless body; use its both-massive cell")
     _, one = ENUM.parse_cycle_key(args.key, circ, a, b)
     t_cyc = one.period_s
-    legs_chain = one.legs * args.n_cycles
+    # --grow-from-one: phase 1 (the date solve) on one cycle only; the shoot grows it (note 6.46a)
+    n_ph = 1 if args.grow_from_one else args.n_cycles
+    legs_chain = one.legs * n_ph
     x1 = np.array([float(v) for v in args.x_days.split(",")]) * DAY
-    xs = np.concatenate([x1 + i * t_cyc for i in range(args.n_cycles)])
+    xs = np.concatenate([x1 + i * t_cyc for i in range(n_ph)])
     real = real_ephemeris(args.cell, args.real)
     out = []
     t_run = time.time()
@@ -681,7 +688,7 @@ def main() -> None:
         # Phase 1 (both modes): dates + chain period, fixed legs timed at the model's body
         # period with minimax directions. Exact at every lambda in ramp mode; a continuation
         # device only in blend mode.
-        y = np.concatenate([(xs[1:] + t_shift) / DAY, [args.n_cycles * t_cyc / DAY]])
+        y = np.concatenate([(xs[1:] + t_shift) / DAY, [n_ph * t_cyc / DAY]])
         r0 = date_chain_residual(sysm, legs_chain, x0, y)
         assert float(np.max(np.abs(r0))) < 1e-6, f"lambda=0 residual {np.max(np.abs(r0))}"
         lam, dlam, lam_done = (1.0 if args.direct else 0.0), 0.1, 0.0
@@ -834,10 +841,10 @@ def main() -> None:
                 # each seeded by the previous length's gate-best closure with one more cycle
                 # appended (the last cycle's dates moved by one cycle, its fixed parameters
                 # copied). Restarts at every length; a length without a closure ends the run.
-                one_legs = legs_chain[: len(legs_chain) // args.n_cycles]
+                one_legs = legs_chain[: len(legs_chain) // n_ph]
                 nl_c = sum(isinstance(lg, LambertLeg) for lg in one_legs)
                 nf_c = len(one_legs) - nl_c
-                y1 = np.concatenate([y_s[: nl_c - 1], [y_s[n_dates] / args.n_cycles]])
+                y1 = np.concatenate([y_s[: nl_c - 1], [y_s[n_dates] / n_ph]])
                 seed = np.concatenate([y1, fixed0[: 3 * nf_c]])
                 grow: list[dict[str, Any]] = []
                 best = None
@@ -860,7 +867,9 @@ def main() -> None:
                         print(f"  grow: no closure at {k} cycles; stop", flush=True)
                         break
                     if k == args.n_cycles:
-                        best = (best_k[0], to_abs(best_k[1]))
+                        final = np.array(best_k[1], dtype=float)
+                        final[:nd_k] += shift
+                        best = (best_k[0], final)
                         break
                     sol_k = best_k[1]
                     dates = np.concatenate(
