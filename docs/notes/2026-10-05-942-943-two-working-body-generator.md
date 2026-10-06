@@ -879,6 +879,41 @@ flyby passes, and the re-fly miss is < 1 km at every segment):
 3. Only if C4 and C3 pass: gc-1 (10 cycles), ev-A (5), ev-B (4).
 4. Regression: C1 VenMar#45, epoch 0 only (Lambert-only path unchanged).
 
+### 6.18 Amendment (approach change, criteria unchanged) and what the controls now show (2026-10-06)
+
+Approach change (advisor review, recorded before the remaining runs):
+- Standish runs use a Keplerian RAMP (`RampedKepler`): e and i ramped from 0 to their actual values
+  (Hollister 1969 p.368), with a, mu and the epoch longitude interpolated. A full-rev leg timed at the
+  current Keplerian period is then exact at every lambda, and the minimax stays valid.
+- Blend runs (jup365, DE440) are time-and-minimax continuation devices only. At lambda = 1 every fixed
+  leg is shot, with restarts over its direction, and the closing solution with the smallest worst ratio
+  is kept.
+- DE440 is not Keplerian: report the closure Delta-V of full-rev candidates there, with no pass/fail.
+- Bug fixed: shot fixed-leg parameters were assigned in block order rather than leg order whenever a key
+  begins with a fixed leg (1H does). This produced the C3 "residual inf".
+
+Findings that change how rung (d) must be read:
+1. ENDPOINT CONTROL PASSES. The published H&M Earth-full-rev orbits 1, 2, 11, 12, 13 and 15, solved on
+   the real-period Standish model:
+   - all close as 16-yr chains.
+   - all pass the gate at the registry floors (worst ratio 0.78-0.89).
+   - all re-fly with DOP853 to a miss <= 0.001 km, including the full-rev legs.
+   So the gate, the full-rev timing and the re-fly are validated on published members at lambda = 1.
+2. THE HOMOTOPY CAN FOLD WHERE A REAL-EPHEMERIS SOLUTION EXISTS. Ramp-mode continuation of our circular
+   1H member folds at lambda of about 0.29-0.39, in both the free-period and the fixed-period
+   formulation. Yet 1H-family orbits exist at lambda = 1 (finding 1). Our circular 1H member need not be
+   the parent of H&M's orbit 1, but either way a fold is NOT a negative. Gate verdicts at intermediate
+   lambda describe artificial blended models and carry no physical meaning; only lambda = 1 counts.
+3. Consequences:
+   - vm2-1: its 7-cycle "negative" (sec. 6.9) is PATH-LIMITED (folds before lambda 0.13). The
+     single-cycle lambda = 1 failure stands (Venus 1.23, Mars 1.47). The record must say "single-cycle
+     real-ephemeris failure; 7-cycle chain not reached".
+   - GanCal#5 (C2) reached lambda = 1 and failed there: a real failure.
+   - gc-2 and ev-C reached lambda = 1, passed and re-flew: unaffected.
+   - gc-1, ev-A, ev-B: not judged. A lambda = 1 seeding route that does not depend on the homotopy is
+     needed (e.g. a direct solve from the ideal dates at several epochs, or pseudo-arclength through
+     the fold).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

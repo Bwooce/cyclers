@@ -54,6 +54,7 @@ from cyclerfinder.search.two_working_body import (
     MeanElementSystem,
     Vec,
     _blocks,
+    date_residual,
     eval_lambert_legs,
     fixed_duration_s,
     gate_cycle,
@@ -160,6 +161,110 @@ class Blend:
 
     def wrap_rotation(self, code: str, dt_s: float) -> Vec:
         return np.eye(3)
+
+
+@dataclass
+class RampedKepler:
+    """Hollister 1969 p.368 homotopy: "increase the eccentricity and inclination to their actual
+    values". Keplerian at EVERY lambda, so a full-rev return timed at the body's current period
+    with |v_sc| = |V_P| is exact and the free-direction minimax stays valid.
+
+    lambda = 0 is the ideal circular body (rotated, phase-matched at the epoch t_e). lambda = 1 is
+    the fixed Standish & Williams J2000 mean-element orbit (MeanElementSystem) exactly. In
+    between, a, mu and the epoch mean longitude are interpolated linearly, e and i are ramped
+    from 0, and Omega and varpi are the Standish values. The period is Kepler's at (a, mu).
+    """
+
+    circ: CircularSystem
+    real: MeanElementSystem
+    t_e: float
+    t_shift: float
+    rot: float
+    lam: float = 0.0
+    mu: float = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.mu = self.circ.mu
+
+    def _params(self, code: str) -> tuple[float, float, float, float, float, float, float]:
+        lam = self.lam
+        a_c = self.circ.bodies[code][0]
+        a_s, e_s, i_s, lan, varpi, l0 = self.real._elements(code)
+        mu = (1 - lam) * self.circ.mu + lam * self.real.mu
+        a = (1 - lam) * a_c + lam * a_s
+        n = math.sqrt(mu / a**3)
+        th_c = 2 * math.pi * (self.t_e - self.t_shift) / self.circ.period_s(code) + self.rot
+        n_s = 2 * math.pi / self.real.period_s(code)
+        l_s = l0 + n_s * (self.t_e + JD_2440000_S_FROM_J2000)
+        l_s = th_c + ((l_s - th_c + math.pi) % (2 * math.pi) - math.pi)
+        l_e = (1 - lam) * th_c + lam * l_s
+        return a, lam * e_s, lam * i_s, lan, varpi, l_e, n
+
+    def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
+        a, e, inc, lan, varpi, l_e, n = self._params(code)
+        m_anom = (l_e - varpi + n * (t_s - self.t_e)) % (2 * math.pi)
+        ecc_anom = m_anom
+        for _ in range(60):
+            d = (ecc_anom - e * math.sin(ecc_anom) - m_anom) / (1 - e * math.cos(ecc_anom))
+            ecc_anom -= d
+            if abs(d) < 1e-15:
+                break
+        ce, se = math.cos(ecc_anom), math.sin(ecc_anom)
+        b = math.sqrt(1 - e * e)
+        x, y = a * (ce - e), a * b * se
+        rdot = n * a / (1 - e * ce)
+        vx, vy = -rdot * se, rdot * b * ce
+        cz, sz = math.cos(lan), math.sin(lan)
+        ci, si = math.cos(inc), math.sin(inc)
+        w = varpi - lan
+        cw, sw = math.cos(w), math.sin(w)
+        rz1 = np.array([[cz, -sz, 0], [sz, cz, 0], [0, 0, 1.0]])
+        rx = np.array([[1.0, 0, 0], [0, ci, -si], [0, si, ci]])
+        rz2 = np.array([[cw, -sw, 0], [sw, cw, 0], [0, 0, 1.0]])
+        m = rz1 @ rx @ rz2
+        return m @ np.array([x, y, 0.0]), m @ np.array([vx, vy, 0.0])
+
+    def period_s(self, code: str) -> float:
+        return 2 * math.pi / self._params(code)[6]
+
+    def body(self, code: str) -> FlybyBody:
+        return self.circ.body(code)
+
+    def wrap_rotation(self, code: str, dt_s: float) -> Vec:
+        return np.eye(3)
+
+
+def date_chain_residual(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
+    """Ramp mode: dates [x0, y[:-1]] (days), chain period y[-1] (days); fixed legs timed at
+    the model's current body period (exact in a Keplerian model)."""
+    cyc = Cycle(legs, float(y[-1]) * DAY)
+    r = date_residual(sysm, cyc, np.concatenate([[x0], np.asarray(y[:-1]) * DAY]))
+    n = sum(isinstance(lg, LambertLeg) for lg in legs)
+    return np.full(n, 1e3) if r is None else r
+
+
+def interior_gate(sysm: Any, cycle: Cycle, x: np.ndarray) -> dict:
+    """Ramp mode gate: minimax free directions; the last (closure) block is not a flyby."""
+    legs = eval_lambert_legs(sysm, cycle, x)
+    if legs is None:
+        return {"status": "lambert-fail"}
+    fl = []
+    for blk in _blocks(sysm, cycle, legs)[:-1]:
+        res = optimise_block(sysm, blk)
+        if res is None:
+            return {"status": "no-directions"}
+        fl.extend(res[0])
+    rep = gate_cycle(sysm, fl)
+    by_body: dict[str, float] = {}
+    for f, e in zip(fl, rep.gate.encounters, strict=True):
+        by_body[f.body] = max(by_body.get(f.body, 0.0), e.ratio)
+    return {
+        "status": rep.status,
+        "worst_ratio": rep.gate.worst_ratio,
+        "worst_ratio_by_body": by_body,
+        "min_required_alt_km": rep.gate.min_required_alt_km,
+        "n_flybys": len(fl),
+    }
 
 
 def _fixed_basis(w: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -278,21 +383,28 @@ def chain_eval(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> ChainEval 
 def initial_fixed_params(
     sysm: Blend, cycle_ideal: Cycle, x_ideal: np.ndarray
 ) -> list[tuple[float, float, float]]:
-    """(theta, phi, tau_days) per fixed leg from the ideal (lambda = 0) minimax directions."""
+    """(theta, phi, tau_days) per fixed leg IN ASCENDING LEG INDEX (chain_eval's order), from
+    the ideal (lambda = 0) minimax directions. Walks the legs exactly as chain_eval does."""
+    legs_all = cycle_ideal.legs
+    lam_idx = cycle_ideal.lambert_index
     legs = eval_lambert_legs(sysm, cycle_ideal, x_ideal)  # type: ignore[arg-type]
     assert legs is not None
-    out = []
-    for blk in _blocks(sysm, cycle_ideal, legs):  # type: ignore[arg-type]
+    blocks = _blocks(sysm, cycle_ideal, legs)  # type: ignore[arg-type]
+    by_index: dict[int, tuple[float, float, float]] = {}
+    for j, blk in enumerate(blocks):
         if not blk.fixed:
             continue
         res = optimise_block(sysm, blk)  # type: ignore[arg-type]
         assert res is not None
         fl = res[0]
+        q = (lam_idx[j] + 1) % len(legs_all)
         for i, (leg, t0) in enumerate(blk.fixed):
+            assert legs_all[q] is leg or legs_all[q] == leg
             _, w = sysm.state(blk.body, t0)
             th, ph = _angles(fl[i].vinf_out, w)
-            out.append((th, ph, fixed_duration_s(sysm, leg) / DAY))  # type: ignore[arg-type]
-    return out
+            by_index[q] = (th, ph, fixed_duration_s(sysm, leg) / DAY)  # type: ignore[arg-type]
+            q = (q + 1) % len(legs_all)
+    return [by_index[i] for i in sorted(by_index)]
 
 
 def gate_eval(sysm: Blend, ev: ChainEval) -> dict:
@@ -322,6 +434,7 @@ def main() -> None:
     ap.add_argument("--epoch-span-yr", type=float, default=32.0)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--real", default="auto", choices=["auto", "mean", "de440", "spice"])
+    ap.add_argument("--shoot-restarts", type=int, default=20)
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -345,7 +458,6 @@ def main() -> None:
     _, one = ENUM.parse_cycle_key(args.key, circ, a, b)
     t_cyc = one.period_s
     legs_chain = one.legs * args.n_cycles
-    n_lam = sum(isinstance(lg, LambertLeg) for lg in legs_chain)
     x1 = np.array([float(v) for v in args.x_days.split(",")]) * DAY
     xs = np.concatenate([x1 + i * t_cyc for i in range(args.n_cycles)])
     real = real_ephemeris(args.cell, args.real)
@@ -383,22 +495,25 @@ def main() -> None:
         assert te is not None, "no phase match"
         rot = in_plane_longitude(real, basis, a, te) - th[a]
         t_shift = te - x1[0]
-        sysm = Blend(circ, real, basis, t_shift, rot, 0.0)
-        # Unknowns: every Lambert start except the first (the epoch is fixed), the chain
-        # period (the final arrival is free) and (theta, phi, tau) per fixed leg; closure B
-        # at the wrap. Square.
         x0 = xs[0] + t_shift
-        cyc_ideal = Cycle(legs_chain, args.n_cycles * t_cyc)
-        fixed0 = initial_fixed_params(sysm, cyc_ideal, xs + t_shift)
-        y = np.concatenate(
-            [(xs[1:] + t_shift) / DAY, [args.n_cycles * t_cyc / DAY], np.ravel(fixed0)]
+        ramp = isinstance(real, MeanElementSystem)
+        sysm: Any = (
+            RampedKepler(circ, real, te, t_shift, rot, 0.0)
+            if ramp
+            else Blend(circ, real, basis, t_shift, rot, 0.0)
         )
+        # Phase 1 (both modes): dates + chain period, fixed legs timed at the model's body
+        # period with minimax directions. Exact at every lambda in ramp mode; a continuation
+        # device only in blend mode.
+        y = np.concatenate([(xs[1:] + t_shift) / DAY, [args.n_cycles * t_cyc / DAY]])
+        r0 = date_chain_residual(sysm, legs_chain, x0, y)
+        assert float(np.max(np.abs(r0))) < 1e-6, f"lambda=0 residual {np.max(np.abs(r0))}"
         lam, dlam, lam_done = 0.0, 0.1, 0.0
         steps = []
         while True:
             sysm.lam = lam
             sol = least_squares(
-                lambda yy, s_=sysm, x0_=x0: _res(s_, legs_chain, x0_, yy),
+                lambda yy, s_=sysm, x0_=x0: date_chain_residual(s_, legs_chain, x0_, yy),
                 y,
                 method="lm",
                 xtol=1e-14,
@@ -406,21 +521,23 @@ def main() -> None:
                 gtol=1e-14,
                 max_nfev=50 * len(y),
             )
-            ev = chain_eval(sysm, legs_chain, x0, sol.x)
-            res = ev.residual if ev is not None else np.array([np.inf])
+            res = date_chain_residual(sysm, legs_chain, x0, sol.x)
             conv = bool(np.max(np.abs(res)) < 1e-6)
-            gate = gate_eval(sysm, ev) if conv and ev is not None else {"status": "unconverged"}
+            cyc_now = Cycle(legs_chain, float(sol.x[-1]) * DAY)
+            x_now = np.concatenate([[x0], sol.x[:-1] * DAY])
+            gate = interior_gate(sysm, cyc_now, x_now) if conv else {"status": "unconverged"}
             rec = {
+                "phase": "ramp" if ramp else "blend",
                 "lambda": lam,
                 "converged": conv,
                 "max_residual_kms": float(np.max(np.abs(res))),
                 "max_date_shift_d": float(np.max(np.abs(sol.x - y))),
-                "chain_period_d": float(sol.x[n_lam - 1]),
+                "chain_period_d": float(sol.x[-1]),
             } | gate
             steps.append(rec)
             print(
                 f"{time.strftime('%H:%M:%S')} {args.cell} epoch {ie} (JD {te / DAY + 2440000:.1f}) "
-                f"lam={lam:.4f} conv={conv} res={rec['max_residual_kms']:.1e} "
+                f"{rec['phase']} lam={lam:.4f} conv={conv} res={rec['max_residual_kms']:.1e} "
                 f"gate={gate.get('status')} worst={gate.get('worst_ratio', float('nan')):.3f} "
                 f"[elapsed {time.time() - t_run:.0f}s]",
                 flush=True,
@@ -436,22 +553,67 @@ def main() -> None:
                 if dlam < 1.0 / 640:
                     break
                 lam = lam_done + dlam
-        conv_steps = [s for s in steps if s["converged"]]
-        out.append(
-            {
-                "epoch_jd": te / DAY + 2440000.0,
-                "last_converged_lambda": max(s["lambda"] for s in conv_steps),
-                "last_gate_pass_lambda": max(
-                    (s["lambda"] for s in conv_steps if s.get("status") == "pass"), default=None
-                ),
-                "rung_pass": any(
-                    s["lambda"] == 1.0 and s.get("status") == "pass" for s in conv_steps
-                ),
-                "steps": steps,
-                "x0_days": x0 / DAY,
-                "final_y": y.tolist(),
-            }
-        )
+        conv_steps = [s_ for s_ in steps if s_["converged"]]
+        reached = bool(conv_steps) and conv_steps[-1]["lambda"] >= 1.0
+        rec_out: dict[str, Any] = {
+            "epoch_jd": te / DAY + 2440000.0,
+            "mode": "ramp" if ramp else "blend+shoot",
+            "last_converged_lambda": max((s_["lambda"] for s_ in conv_steps), default=None),
+            "steps": steps,
+            "x0_days": x0 / DAY,
+            "final_y_dates": y.tolist(),
+        }
+        if ramp:
+            rec_out["rung_pass"] = reached and conv_steps[-1].get("status") == "pass"
+        elif reached and any(not isinstance(lg, LambertLeg) for lg in legs_chain):
+            # Phase 2 (blend mode, lambda = 1 = the real ephemeris): shoot every fixed leg,
+            # dates as start, restarts over the fixed-leg directions; keep the closing solution
+            # with the smallest worst gate ratio.
+            sysm.lam = 1.0
+            cyc_now = Cycle(legs_chain, float(y[-1]) * DAY)
+            x_now = np.concatenate([[x0], y[:-1] * DAY])
+            fixed0 = np.ravel(initial_fixed_params(sysm, cyc_now, x_now))
+            rng = np.random.default_rng(943 + ie)
+            best = None
+            tried = []
+            for r in range(args.shoot_restarts):
+                f0 = fixed0.copy()
+                if r > 0:
+                    f0[0::3] += rng.normal(0.0, 0.3, f0[0::3].size)
+                    f0[1::3] += rng.normal(0.0, 0.6, f0[1::3].size)
+                ys = np.concatenate([y, f0])
+                sol = least_squares(
+                    lambda yy, s_=sysm, x0_=x0: _res(s_, legs_chain, x0_, yy),
+                    ys,
+                    method="lm",
+                    xtol=1e-14,
+                    ftol=1e-14,
+                    gtol=1e-14,
+                    max_nfev=30 * len(ys),
+                )
+                ev = chain_eval(sysm, legs_chain, x0, sol.x)
+                if ev is None or float(np.max(np.abs(ev.residual))) >= 1e-6:
+                    tried.append({"restart": r, "converged": False})
+                    continue
+                g = gate_eval(sysm, ev)
+                tried.append({"restart": r, "converged": True} | g)
+                if best is None or g["worst_ratio"] < best[0]["worst_ratio"]:
+                    best = (g, sol.x)
+                print(
+                    f"{time.strftime('%H:%M:%S')}   shoot restart {r}: closes, "
+                    f"gate={g['status']} worst={g['worst_ratio']:.3f}",
+                    flush=True,
+                )
+            rec_out["shoot_restarts"] = tried
+            rec_out["rung_pass"] = best is not None and best[0]["status"] == "pass"
+            if best is not None:
+                rec_out["shoot_best"] = best[0]
+                rec_out["final_y"] = best[1].tolist()
+        else:
+            rec_out["rung_pass"] = reached and conv_steps[-1].get("status") == "pass"
+            if reached:
+                rec_out["final_y"] = y.tolist()
+        out.append(rec_out)
         (args.out / "realeph_chain.json").write_text(json.dumps(out, indent=1, default=float))
     print("DONE", flush=True)
 
