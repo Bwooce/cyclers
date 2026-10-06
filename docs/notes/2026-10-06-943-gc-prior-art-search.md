@@ -148,3 +148,15 @@ Titan and methods papers.
   resonance ("irregular intervals"). There is no moon-to-moon leg and no gravity assist.
 - **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** It is the earliest held "repeat encounters by period
   commensurability" idea, recorded as lineage only.
+
+## 11. Follow-up 2026-10-07 (batch 35): six Lynam capture papers read
+
+- Lynam, Kloster & Longuski 2011 (CMDA 109), Lynam & Longuski 2011 (JGCD 34(5)), Didion & Lynam 2014
+  (AIAA 2014-4106), Lynam 2014 (Acta 94, Part II), Lynam 2015 (CMDA 121) and Lynam 2015/16 (CMDA 124).
+  Digests dated 2026-10-07; the two collision checks are filed beside the CMDA 109 and Acta 94 PDFs.
+- All are one-shot multiple-satellite-aided captures: each moon is met once on the arrival hyperbola or the
+  first ~200-d orbit. Our patched-conic estimates give Ganymede v_inf of at least 4.6 km/s and Callisto of
+  at least 7.1 km/s, far above gc-1/gc-2.
+- **Period coincidence, not prior art:** Lynam's capture-opportunity clock is 16 S(Ga,Io) = 37.605 d, close
+  to 3 S(Ca,Ga) = 37.570 d, the gc period. It runs on Io and repeats an opportunity, not a trajectory.
+- **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to twobody-gen2-opus first.
