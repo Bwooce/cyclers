@@ -127,3 +127,14 @@ Titan and methods papers.
 - It gives no periods, leg times or v_inf values for any chain. It is not periodic.
 - **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to the lead and twobody-gen2-opus before
   filing. The two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.
+
+## 9. Follow-up 2026-10-07 (batch 30): Buffington 2014 read
+
+- Buffington 2014 (AIAA 2014-4105, Clipper tour 13F7-A21):
+  `2026-10-07-digest-buffington-2014-europa-clipper-13f7-a21.md`.
+- Table 3 (p.7, page image) lists all 59 flybys. The only G-C alternation is the one-way pump-down
+  G1 G2 G3 C1 G4 C2, with v_inf falling (G 6.39 to 5.24, C 5.54 to 4.35 km/s). The E-C switch-flip
+  (E28, C3-C9, E29) is used once. There is no G-E pair. "Ganymede or Callisto cyclers" are named only
+  as an unused option.
+- **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to twobody-gen2-opus first. The
+  two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.

@@ -31,6 +31,9 @@ probe returning empty = image-only).
   unchanged, and add the OCR text as a `.txt` sidecar.
 - Old solid RAR archives (inside KIAM source zips): `unar` (`brew install unar`); `7z` and `bsdtar`
   cannot open them. Translations and renders: `tectonic` (`brew install tectonic`).
+- ADS article scans (JBIG2 stencil masks, producer `jb2pdf.py`): `ocrmypdf --redo-ocr` drops the page
+  images and leaves blank pages with a text layer. Use `--force-ocr` for these. After any OCR, render one
+  page (`pdftoppm`) and compare it with the original before filing.
 - Large files: GitHub warns above 50 MB and refuses above 100 MB. Try `ocrmypdf --skip-text
   --optimize 2` on any PDF over 50 MB and file the smaller copy if the pages stay legible. It does
   not help with anti-aliased greyscale scans: Bruno 1994 (85 MB, 150 dpi grey) saved 3 %, and a
