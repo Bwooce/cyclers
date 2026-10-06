@@ -142,8 +142,8 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 | ev-C | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
-| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist; rung (d) jup365 10 cycles pre-registered (6.46/6.46a), launch pending, ge-2 first | 6.28, 6.29, 6.46 |
-| em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); NO in-run published recall control in the em cell; rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40 |
+| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist; rung (d) jup365 10 cycles pre-registered (6.46/6.46a), running since 2026-10-06 20:16 (ge-2, ge-1, ge-3) | 6.28, 6.29, 6.46 |
+| em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
 All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
@@ -154,7 +154,7 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   **OWNER RULING 2026-10-06 (note 6.45): C4 validates the full-rev path. This is a POST-HOC amendment
   to 6.35, which said an indeterminate C4 is not a pass, made after the result was seen and recorded
   as such.** Consequences: gc-1's caveat is LIFTED (its 10-cycle result stands with no caveat); ge-1/2/3
-  proceed to rung (d) (6.46/6.46a, launch pending).
+  proceed to rung (d) (6.46/6.46a, running since 20:16).
 - gc-2 is distinct from GanCal#5: GanCal#5's skeleton with one extra Callisto encounter, which has no
   counterpart on GanCal#5's leg; gc-2 needs at least 0.214 of Callisto's GM (6.21).
 - Not novel, recorded: vm-1 (an R-S VenMar class member, Mars massless); vm2-1 (ideal-model
@@ -1833,12 +1833,12 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
     sec. 4.
   - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.3-6.37):**
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
-      direct route), VenMar#45 (in-run LITERAL in vm and vmn). The em cell has NO in-run published
-      recall control (a targeted Russell-Ocampo recall is the missing control).
+      direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
+      blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
     - Candidates (all **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
       STATE): ev-C (Venus-hosted; Standish and DE440, 5/5); ev-A (both bend; Standish 5/5; DE440
       near-ballistic, 1.6-2.5 m/s per 16 yr); ev-B (Standish 2/5); em-1, em-2, em-3 (shortlist,
-      ideal model, thin margins); vm2n-2 (ideal model).
+      thin margins; rung (d) not passed, 6.40); vm2n-2 (rung (d) not passed).
     - Not novel: vm-1 (R-S VenMar class member); vm2-1 (ideal-model curiosity).
 - `#943` — DISPATCHED 2026-10-05 (owner approved R1+X1); cells vm, vm2, ev, gc, ge, em, vm2n, vmn enumerated; adjudication and real-ephemeris ladder in progress (twobody-gen2-opus) (registered 2026-10-05 from `#938`, X1, rank 2 of 18). **HOLLISTER'S
   TWO-WORKING-BODY DATE-RESIDUAL CORRECTOR AT JUPITER (Ganymede-Callisto, Ganymede-Europa).**
@@ -1866,7 +1866,7 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
     - gc-2: G-C, both bend, V_inf 3.617/3.039; jup365 10 cycles, 5/5; distinct from GanCal#5 (an extra
       Callisto encounter with no counterpart on GanCal#5's leg).
     - ge-1, ge-2, ge-3: shortlist (near-one-body rows ge-4/5/6 demoted); rung (d) pre-registered
-      (6.46/6.46a: jup365, 10 cycles, 5 epochs, ge-2 first), launch pending.
+      (6.46/6.46a: jup365, 10 cycles, 5 epochs), running since 2026-10-06 20:16.
     - All **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
     - Rulings: C4 option (c) (judge C4 and gc-1 at 1 and 10 cycles, caveat stated); gc-2 n-body option
