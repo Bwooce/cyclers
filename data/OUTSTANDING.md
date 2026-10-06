@@ -137,23 +137,24 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 
 | Name | Pair, bodies that bend | Period / V_inf (km/s) | Real-ephemeris rung | Note sec. |
 |---|---|---|---|---|
-| gc-1 | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km | 6.11, 6.26 |
+| gc-1 | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km; no caveat since 6.45 | 6.11, 6.26, 6.45 |
 | gc-2 | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km | 6.11, 6.14, 6.21 |
 | ev-C | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
-| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist, ideal model only so far (ge-2 first in the ladder) | 6.28, 6.29 |
+| ge-1, ge-2, ge-3 | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | shortlist; rung (d) jup365 10 cycles pre-registered (6.46/6.46a), launch pending, ge-2 first | 6.28, 6.29, 6.46 |
 | em-1, em-2, em-3 | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); NO in-run published recall control in the em cell; rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40 |
 | vm2n-2 | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
 All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
-- gc-1 (and every Jovian candidate with a full-rev or half-rev leg: gc-1, ge-1/2/3): no Jovian
-  full-rev published control is decided at 10 cycles. C4 GanCal#1 at R-S's 2013 epoch is UNDECIDED
-  (6.31, 6.34: the shoot closes a gate-failing solution, not the published member); the chain-length
-  continuation (6.35) tracks the member through 9 cycles but only "indeterminate" (0.973-0.992; the
-  member is marginal in every model, ideal 0.961). GanEur#316 at R-S's 2019 epoch PASSES (6.38: 10
-  cycles, gate pass 0.804, DOP853 re-fly 1.5e-5 km): the first decided Jovian 10-cycle published
-  control, for the HALF-REV path only. ge-1/2/3 have full-rev legs, so it does not unblock them.
+- Jovian controls validated at 10 cycles on jup365 (closure plus DOP853 re-fly): the HALF-REV path by
+  GanEur#316 at R-S's 2019 epoch (6.38: gate pass 0.804, re-fly 1.5e-5 km) and the FULL-REV path by
+  C4 GanCal#1 at R-S's 2013 epoch (6.44-6.45: closes at 10 cycles, re-fly 2.8e-4 km; gate
+  "indeterminate, marginal as in the ideal model (0.961 ideal, 0.9917 at 10 cycles)").
+  **OWNER RULING 2026-10-06 (note 6.45): C4 validates the full-rev path. This is a POST-HOC amendment
+  to 6.35, which said an indeterminate C4 is not a pass, made after the result was seen and recorded
+  as such.** Consequences: gc-1's caveat is LIFTED (its 10-cycle result stands with no caveat); ge-1/2/3
+  proceed to rung (d) (6.46/6.46a, launch pending).
 - gc-2 is distinct from GanCal#5: GanCal#5's skeleton with one extra Callisto encounter, which has no
   counterpart on GanCal#5's leg; gc-2 needs at least 0.214 of Callisto's GM (6.21).
 - Not novel, recorded: vm-1 (an R-S VenMar class member, Mars massless); vm2-1 (ideal-model
@@ -171,8 +172,9 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   (Table 4; Fig. 14 not digitised, open); Rall 1969 and Rall & Hollister 1971 (em-4/em-5 are
   Rall-adjacent, not members); D. Ross 2L4 (powered, no collision with ev-C); the catalogue.
 - Rulings recorded: C4 option (c), judge C4 and gc-1 at both 1 and 10 cycles with the caveat stated
-  (near-180-degree treatment to the backlog); gc-2 n-body option (i), the rung is dropped because the
-  Jovian n-body lane has no positive control (`#968`).
+  (near-180-degree treatment to the backlog), superseded for the caveat by the 6.45 owner ruling above;
+  gc-2 n-body option (i), the rung is dropped because the Jovian n-body lane has no positive control
+  (`#968`).
 
 - `#796` — ✓ DONE 2026-08-08 (split from `#793`'s own item (c), which was in that task's original
   registration but got dropped from its actual dispatch instructions): persist the already-computed
@@ -1854,24 +1856,25 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
-  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.34):**
+  - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.46):**
     - Cells enumerated: gc, ge. ge completed after the `#963` fix by resuming: about 1,135 structures
       were computed before the crash on the pre-fix code (converged results are unaffected by that bug;
       it only raised), the rest after; reassessed at HEAD with 0 verdict changes. In-run LITERAL recalls:
       GanCal#5 (gc), GanEur#43 and EurGan#131 (ge).
     - gc-1: G-C, both bend, 37.57 d, V_inf 2.397/1.807; jup365 10 cycles, 5/5 epochs, re-fly <= 0.19
-      km. Caveat: no Jovian full-rev published control is decided at 10 cycles (C4 GanCal#1 undecided).
+      km. No caveat: lifted by the owner ruling of 2026-10-06 (note 6.45, post-hoc amendment to 6.35).
     - gc-2: G-C, both bend, V_inf 3.617/3.039; jup365 10 cycles, 5/5; distinct from GanCal#5 (an extra
       Callisto encounter with no counterpart on GanCal#5's leg).
-    - ge-1, ge-2, ge-3: shortlist (near-one-body rows ge-4/5/6 demoted), ideal model only so far.
+    - ge-1, ge-2, ge-3: shortlist (near-one-body rows ge-4/5/6 demoted); rung (d) pre-registered
+      (6.46/6.46a: jup365, 10 cycles, 5 epochs, ge-2 first), launch pending.
     - All **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
     - Rulings: C4 option (c) (judge C4 and gc-1 at 1 and 10 cycles, caveat stated); gc-2 n-body option
       (i) (rung dropped: the Jovian n-body lane has no positive control; `#968`).
-    - Controls: GanEur#316 at R-S's 2019 epoch PASSES (note 6.38: 10 cycles, gate 0.804, DOP853 re-fly
-      1.5e-5 km), for the half-rev path only, so it does not unblock the full-rev ge-1/2/3; C4 GanCal#1
-      at R-S's 2013 epoch is undecided (the chain-length continuation tracks the member through 9
-      cycles only as "indeterminate", 0.973-0.992).
+    - Controls validated at 10 cycles: half-rev path by GanEur#316 at R-S's 2019 epoch (6.38: gate pass
+      0.804, re-fly 1.5e-5 km); full-rev path by C4 GanCal#1 at R-S's 2013 epoch (re-fly 2.8e-4 km, gate
+      indeterminate 0.9917), per the OWNER RULING of 2026-10-06 (note 6.45), a post-hoc amendment to
+      6.35 recorded as such.
 - `#968` — registered 2026-10-06 (from `#943`, lead ruling; NOT dispatched; for the owner). **JOVIAN
   N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
   EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
