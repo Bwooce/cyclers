@@ -1717,6 +1717,32 @@ CONTROL PASS = a zero of each structure reproduces:
 If it passes, em's results stop being conditional on the control gap. If not, the gap stays and the
 cause is reported.
 
+### 6.43 Result of the em recall control (2026-10-06), data `data/942_em_ro_recall.json`
+
+| Row | Our best zero | V_inf E / M | Earth turns (deg) | Worst ratio | Gate | Against the pre-registration |
+|---|---|---|---|---|---|---|
+| 2.5.1.+0 | k2\|RE/1:1\|HE/1,0,a\|RE/1:1\|LE>M/0s\|LM>E/0s | 7.817 / 9.945 (7.8 / 9.9) | 53.56 x 4 (R-O: 54, 54, 54) | 0.897 (0.893) | PASS | PASS on every criterion |
+| 2.3.1.+1 (Byrnes case 3) | k2\|HE/1,0,a\|RE/1:1\|LE>M/0s\|LM>E/1l (and its 0+1 twins) | 5.393 / 5.314 (5.4 / 5.3) | 92.85, 89.53, 38.49 (R-O: 93, 93) | 1.092 (1.087) | fail (as published: near-ballistic) | V_inf and ratio PASS; turns FAIL (89.5 against 93; one extra value) |
+
+Notes:
+- 2.5.1.+0 is found as the time-reversed twin. Our Mars-to-Earth leg is 93.8 d, R-O's Earth-to-Mars
+  time is 94 d; the analysis merges mirror twins (6.1).
+- R-O list one turn fewer than our encounter count in both rows (3 for 4, and 2 for 3). For 2.5.1.+0
+  all four of ours equal 53.56 deg, so the mapping is immaterial.
+- For case 3 the 1:1 full-rev direction is free (lambda in the McConaghy label). Our minimax picks a
+  different split of the turns than R-O's tabulated choice, at the same worst ratio (1.092 against
+  1.087).
+
+Reading:
+- The published BALLISTIC row (2.5.1.+0) is recovered blind, with V_inf, turns, worst ratio and the
+  gate pass all reproduced. This is the em-cell positive control for a gate pass.
+- The near-ballistic case 3 reproduces V_inf and the worst ratio, but not R-O's per-flyby turn split.
+  The pre-registered all-criteria rule is not met for that row.
+- Recommendation to the lead: count the control as passed for the gate-pass question (2.5.1.+0), so
+  em-1..5 are no longer conditional on a control gap. Keep the case-3 turn mismatch on record.
+- The em cell's own scope (<= 2 returns per block, 0-rev transfers) excludes both rows; they were
+  solved by the same code path outside that scope, as GanEur#5 was for ge (sec. 5).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
