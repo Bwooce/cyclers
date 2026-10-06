@@ -141,14 +141,15 @@ at t = 0).
     solution costs 1.56-2.53 m/s mid-course per 16-yr chain (6.25).
 - Prior art: outside Hollister's 3.2-yr FR/SY itineraries. Menning 1968 estimates at least 1024
   Earth-Venus FR/SY orbits and names half-rev and order variations. ev-A carries a generic (non-FR,
-  non-SY) Venus return, so it is not one of those. The web prior-art search is OPEN.
+  non-SY) Venus return, so it is not one of those. Web prior-art search DONE 2026-10-07
+  (`2026-10-07-942-evAB-prior-art-search.md`): no collision; nearest is the Hollister-Menning class.
 - Minovitch 1963 (JPL TR 32-464): NO collision. All its returns are one-shot (Table 14 E-V-E free
   returns; Tables 16-17 one-way E-V-M-E chains); the repeating free-fall idea (p.15) is stated but not
   computed (see ev-C).
 - **Decision asked:** candidate-novel?
   - Proposed attribution: Hollister 1969 and Hollister & Menning 1970 (method and the E-V
     two-working-body class).
-  - Or "a member of the Hollister-Menning class"? The web search should finish first.
+  - Or "a member of the Hollister-Menning class"? (Web search done: no collision.)
 
 ### 2.5 ev-B (Earth-Venus, both bend) — Standish 2/5
 
@@ -161,9 +162,9 @@ at t = 0).
   - Standish direct: PASS at 2/5 epochs (0.933, 0.757; re-fly <= 1.6e-2 km); gate fails at 2;
     no convergence at 1.
   - DE440: Venus legs as ev-A. The Earth 1:1 figures are an upper bound (lunar reflex in DE440; 6.25).
-- Prior art: as ev-A. Near: the VESTA web concept's "1752-d Earth-Venus cycle" (no sources, no
-  trajectory) has the same period as ev-B (3 synodic periods). That is a period coincidence only; it
-  cannot be compared further.
+- Prior art: as ev-A (search DONE, no collision). Near: the VESTA web concept's "1752-d Earth-Venus
+  cycle" (no sources) has ev-B's period (3 synodic periods). But its E->V leg is 109 d, against ev-B's
+  50.1 d: a period coincidence only.
 - Minovitch 1963 (JPL TR 32-464): NO collision. All its returns are one-shot (Table 14 E-V-E free
   returns; Tables 16-17 one-way E-V-M-E chains); the repeating free-fall idea (p.15) is stated but not
   computed (see ev-C).
@@ -193,7 +194,8 @@ at t = 0).
 ## 4. Open items
 
 - Minovitch JPL TR 32-464 (1963): full digest in progress (corpus-file-opus); the key-page verdict above is no collision.
-- Web prior-art search: open for ge-*, em-* and ev-A/ev-B (done for gc-1, gc-2 and ev-C).
+- Web prior-art search: open for ge-* and em-* (done for gc-1, gc-2, ev-C, ev-A and ev-B). Pending for
+  ev-A/ev-B: Hollister 1963 Sc.D. and Crocco 1956 (corpus-file-opus queue).
 - The Jovian n-body lane (#968): no positive control, so gc-1 and gc-2 have no n-body check.
 - gc-2: a continuous-gravity check of the GanCal#5 relation (owner option).
 - Pisarevsky 2008 Fig. 14 (class I.1 points) is not digitised.
@@ -208,6 +210,6 @@ at t = 0).
 | gc-1 | PASS 5/5 (jup365, 10 cycles) | none | candidate-novel | Hollister & Menning 1970 (method); Russell & Strange 2007/2009 (model, future-work statement); Campagnola et al. 2019 (class) |
 | gc-2 | PASS 5/5 (jup365, 10 cycles) | none; near the R-S GanCal family | candidate-novel, or GanCal-family relative | as gc-1, plus R-S GanCal#5 (skeleton) |
 | ev-C | PASS 5/5 (Standish and DE440) | none (D. Ross 2L4 nearest, unrefereed; Minovitch 1963 none) | candidate-novel under `#875` (ii) | Russell & Strange 2007/2009, re-applied to Earth-Venus with Venus hosting |
-| ev-A | Standish 5/5; DE440 near-ballistic | none (Minovitch 1963 none); web search pending | candidate-novel, or Hollister-Menning class member | Hollister 1969; Hollister & Menning 1970 |
-| ev-B | Standish 2/5 | none (Minovitch 1963 none); web search pending | as ev-A | as ev-A |
+| ev-A | Standish 5/5; DE440 near-ballistic | none (Minovitch 1963 none; web search done) | candidate-novel, or Hollister-Menning class member | Hollister 1969; Hollister & Menning 1970 |
+| ev-B | Standish 2/5 | none (Minovitch 1963 none; web search done) | as ev-A | as ev-A |
 | ge-1..3, em-1..5, vm2-1, vm2n-2 | not passed / negative (conditional) | none | not candidate-novel (ideal-model members only) | — |
