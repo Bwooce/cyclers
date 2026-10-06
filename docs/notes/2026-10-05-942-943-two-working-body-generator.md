@@ -1958,6 +1958,27 @@ Verdicts at rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056):
 - All three stay "candidate, pending owner adjudication, NOT novel" in the ideal model, with the rung
   (d) outcomes above.
 
+### 6.51 ge-2 homotopy rerun (fixed code, 5 epochs), and its verdict (2026-10-06), data `data/943_rung_d_hom/ge2_rerun/`
+
+Best closure per chain length (worst ratio; "none" = no closure at that length, which ends the
+growth):
+
+| Epoch (JD) | k = 1 | k = 2 | k = 3 | k = 4-5 | k = 6-10 |
+|---|---|---|---|---|---|
+| 2462504.1 | 1.34 | 5.95 | 7.43 | 7.73-7.94 | 8.09-8.13; k = 10: 7.93 |
+| 2464845.0 | 1.35 | none | | | |
+| 2467178.9 | 1.20 | 1.20 | 1.20 | none at 4 | |
+| 2469519.8 | 0.96 (pass) | 1.03 | none | | |
+| 2471853.7 | 0.90 (pass) | 1.82 | 1.49 | 1.55-1.53 | none at 6 |
+
+- No crash. The single 10-cycle closure (epoch 0) fails the gate, at 7.93.
+- At every epoch the closures fail the gate from k = 2 on; only two 1-cycle closures pass.
+- Verdict under the 6.50 rules: ge-2 rung (d) NOT PASSED, real-ephemeris NEGATIVE, conditional on the
+  method (the same standing as ge-3: closures where they exist are all gate-failing beyond one cycle,
+  and no 10-cycle gate-passing closure is found at any epoch).
+- So all three ge shortlist candidates are rung-(d) negatives (conditional). They stay "candidate,
+  NOT novel" in the ideal model.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
