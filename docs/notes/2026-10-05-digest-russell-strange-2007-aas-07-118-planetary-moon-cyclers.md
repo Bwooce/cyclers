@@ -179,8 +179,22 @@ Ephemeris and high-fidelity results (READ pp.14-18):
   proved too high for multiple cycles to remain ballistic in the ephemeris model" (p.14). The text names
   "#22 and #45" as Venus-Mercury cyclers. #45 is VenMar, so this is probably a slip for #69 or #75
   (INFERRED).
-- GanCal#1 is ballistic over 10 cycles (Fig. 9b). GanEur#316 and EurGan#131 are ballistic (Fig. 10).
-  TitEnc#37, #235, #572 and #586 appear in Figs. 11-13.
+- Patched-conic ephemeris examples, Figs. 9-13 (pp.14-16). The figure titles were read on the page images
+  (Figs. 9-10 at 110 dpi, Figs. 11-13 at 90-110 dpi):
+  - Fig. 9(a) VenMar#45: 10 cycles, 10 V and 10 M flybys, start 7-19-2011, TOF 6675.9 d, Delta-v_TOTAL
+    = 0 m/s.
+  - Fig. 9(b) GanCal#1: 10 cycles, 30 G and 10 C flybys, start 9-27-2013, TOF 375.7 d, 0 m/s
+    (ballistic).
+  - Fig. 10(a) GanEur#316: 10 cycles, 40 G and 10 E flybys, start 4-24-2019, TOF 493.5 d, 0 m/s
+    (ballistic).
+  - Fig. 10(b) EurGan#131: 10 cycles, 20 E and 10 G flybys, start 4-23-2019, TOF 211.8 d,
+    **Delta-v_TOTAL = 61 m/s (NOT ballistic)**.
+  - Figs. 11-13, TitEnc: #37 (8 cycles, 131 m/s), #183 (10 cycles, 0 m/s), #207 (10 cycles, 28 m/s),
+    #235 (9 cycles, 1 m/s), #572 (5 cycles, 222 m/s), #586 (5 cycles, 154 m/s).
+  - **Correction 2026-10-06** (found by twobody-gen2-opus; verified on the page images by
+    corpus-file-opus): this line previously said "GanEur#316 and EurGan#131 are ballistic (Fig. 10)". That
+    was wrong for EurGan#131 (61 m/s over 10 cycles). It also listed only TitEnc#37, #235, #572 and #586
+    for Figs. 11-13, omitting #183 and #207.
 - Table 7 (p.17) gives the patched-conic ephemeris TitEnc#235. Legs 1-27 are shown, and the start is
   8774.549 d after J2000 (10 Jan 2024).
 - Table 8 (p.18) gives single cycles optimised in a high-fidelity n-body plus oblateness model:
@@ -238,7 +252,9 @@ periods.
    period 37.6 d, min Ganymede altitude 247 km. This is the X1 one-body limit at Ganymede-Callisto.
 2. **GanCal#5**: g(1.50425,541.53130,L) G(3.74691,628.88825,U). 3.24 / 3.34, 37.6 d, 328 km.
 3. **EurGan#131** (Europa-hosted) and **GanEur#43** (Ganymede-hosted). These are the two ends of an X1
-   Ganymede-Europa mass continuation.
+   Ganymede-Europa mass continuation. EurGan#131 is ballistic only in the ideal model (Table 3). Its
+   patched-conic ephemeris example needs 61 m/s over 10 cycles (Fig. 10(b)), and one high-fidelity cycle
+   costs 58 m/s (p.18).
 4. **VenMar#45**: G(2.97216,349.97729,U). 8.22 / 12.96 km/s, 667.8 d = 2 x 333.9 d. This is the R1(c)
    one-body control.
 5. **VenMer#22**: G(1.93012,1054.84284,U). 433.7 d = 3 x 144.6 d. This is the R5 control.
