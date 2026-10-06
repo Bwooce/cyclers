@@ -1128,6 +1128,20 @@ Reading:
 - Standish (sec. 6.23): ev-A 5/5, ev-B 2/5, both ballistic and re-flown. That verdict stands; DE440
   carries no pass/fail by the 6.18 amendment.
 
+### 6.26 gc-1 rung (d) on jup365, 10 cycles (lead launch 2026-10-06 14:22), data `data/943_gc1_realeph/`
+
+- Run: blend + shoot, `--shoot-nfev-per-var 60 --shoot-jac sparse`, 20 restarts. The code is from
+  4735f609, which is before the GM fix c4ff9a41; the ideal Jovian GM is 126,686,535 km^3/s^2.
+- Result: the rung passes at 5/5 epochs, worst 0.755-0.761 (ideal 0.737). At every epoch only restart 0
+  (the unperturbed minimax seed) closes; the other 19 do not.
+- Re-fly (DOP853):
+  - With the solver's GM: closure residual 1.1e-9, miss <= 2.6e-6 km (epoch 0, checked).
+  - With JUP365's Jupiter-alone GM (126,686,534; 7.9e-9 lower), as the fixed checker now does: miss
+    <= 0.19 km at all 5 epochs, inside the 1 km criterion. The 0.19 km is the GM sensitivity of a
+    376-d chain, not a closure defect (checked by rebuilding the segments at the run-time GM).
+- Status: candidate, pending owner adjudication, NOT novel. The control question for full-rev Jovian
+  rows (C4 GanCal#1, sec. 6.19) is still with the lead. This result does not settle it.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
