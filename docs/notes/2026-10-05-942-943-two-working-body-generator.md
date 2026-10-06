@@ -814,7 +814,9 @@ Status: gc-2 and ev-C are the strongest results so far. They remain "candidate, 
 adjudication", NOT novel. Gauntlet items still open for them:
 - a web literature search (only the offline corpus was checked);
 - an n-body (V3-lane) check;
-- for ev-C, a DE440 run (Standish fixed mean elements are not DE440).
+- for ev-C, a DE440 run (Standish fixed mean elements are not DE440). DONE 2026-10-06: on DE440
+  (astropy backend) ev-C passes at all 5 epochs, worst 0.869-0.914. The dates move by about 0.23 d
+  against the Standish run. The DOP853 re-fly miss is <= 0.097 km.
 
 ## 7. Literal-collision checks (to be completed per candidate)
 

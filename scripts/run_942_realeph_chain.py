@@ -71,6 +71,25 @@ def _load(name: str, path: Path) -> Any:
 ENUM = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
 
 
+class DE440Planets:
+    """Heliocentric DE440 states (astropy backend, J2000 ecliptic); ``t_s`` past JD 2440000.0."""
+
+    def __init__(self) -> None:
+        self.eph = Ephemeris("astropy")
+
+    def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
+        r, v = self.eph.state(code, t_s + JD_2440000_S_FROM_J2000)
+        return np.asarray(r, dtype=float), np.asarray(v, dtype=float)
+
+
+def real_ephemeris(cell: str, which: str) -> Any:
+    """``which``: "auto" (SPICE for Jovian cells, Standish mean elements otherwise),
+    "mean", "de440" or "spice"."""
+    if which == "auto":
+        which = "spice" if cell in ENUM.X1_CELLS else "mean"
+    return {"spice": SpiceMoons, "de440": DE440Planets, "mean": MeanElementSystem}[which]()
+
+
 class SpiceMoons:
     """Jupiter-centred real moon states; ``t_s`` is seconds past JD 2440000.0."""
 
@@ -180,6 +199,7 @@ def main() -> None:
     ap.add_argument("--first-epoch-jd", type=float, default=2462502.5)  # 2030-01-01
     ap.add_argument("--epoch-span-yr", type=float, default=32.0)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--real", default="auto", choices=["auto", "mean", "de440", "spice"])
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -200,8 +220,7 @@ def main() -> None:
     legs_chain = one.legs * args.n_cycles
     x1 = np.array([float(v) for v in args.x_days.split(",")]) * DAY
     xs = np.concatenate([x1 + i * t_cyc for i in range(args.n_cycles)])
-    jovian = args.cell in ENUM.X1_CELLS
-    real: Any = SpiceMoons() if jovian else MeanElementSystem()
+    real = real_ephemeris(args.cell, args.real)
     out = []
     t_run = time.time()
     for ie in range(args.epochs):

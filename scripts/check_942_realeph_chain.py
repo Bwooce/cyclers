@@ -26,7 +26,6 @@ from scipy.integrate import solve_ivp
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.search.two_working_body import (
     Cycle,
-    MeanElementSystem,
     _blocks,
     eval_lambert_legs,
     fixed_duration_s,
@@ -65,12 +64,12 @@ def main() -> None:
     ap.add_argument("--key", required=True)
     ap.add_argument("--chain", type=Path, nargs="+", required=True)
     ap.add_argument("--n-cycles", type=int, required=True)
+    ap.add_argument("--real", default="auto", choices=["auto", "mean", "de440", "spice"])
     args = ap.parse_args()
     circ, a, b = CHAIN.ENUM.cell_system(args.cell)
     _, one = CHAIN.ENUM.parse_cycle_key(args.key, circ, a, b)
     legs_chain = one.legs * args.n_cycles
-    jovian = args.cell in CHAIN.ENUM.X1_CELLS
-    real: Any = CHAIN.SpiceMoons() if jovian else MeanElementSystem()
+    real = CHAIN.real_ephemeris(args.cell, args.real)
     for path in args.chain:
         for ep in json.loads(path.read_text()):
             if not ep["rung_pass"]:
