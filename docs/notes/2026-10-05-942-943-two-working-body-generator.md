@@ -618,6 +618,44 @@ Approved next steps: robustness pre-registration (sec. 6.5); registry stamp for 
 
 All four are diagnosis. None changes vm2-1's label.
 
+### 6.6 vm2-1 robustness results so far (a, b1, b2)
+
+- (a) Floor sweep, all 6,744 vm2 zeros re-gated (`data/942_vm2_1_robust_a_floor_sweep.json`): vm2-1
+  passes at Venus floors 300-550 km and fails from 600 km. No other cycler joins at any floor. VenMar#45
+  and vm-1 pass at all floors to 700 km.
+- (b1) The 16.42-deg Mars turn needs at least 0.329 of Mars's GM at the 200-km floor.
+- (b2) The one-body (massless-Mars) member of the same structure is the vm zero with V_inf
+  6.110 / 5.866 km/s and Venus ratio 1.075: it FAILS the gate. So the Mars turn is what makes vm2-1
+  feasible. It lowers the Venus demand from 1.075 to 0.981 of capacity.
+- (b3), (c) and (d) are pending; (c) and (d) need launches.
+
+### 6.7 Cell 5 result: ev (Earth-Venus, Earth returns full-revolution only), 2026-10-06
+
+Run: 2,770 structures, 13,915 exact zeros, 3,534 physical cyclers, 31 gate-passing (reassessed; no
+verdict changed). In 23 of them the transfer skeletons are distinct (same transfer V_inf; they differ
+only in the block returns). Gauntlet: `data/942_cell_ev_gauntlet.json`.
+- In-run control: Hollister 1H and 2H appear, so the run is valid. 3H is excluded by
+  `--resonant-only E`.
+- Hollister family (PUBLISHED, Hollister 1969 orbits I/II), 4 skeletons:
+  - (k=2; E/V V_inf) 2.99/3.19 (1H; also a variant with a half-rev pair at Venus).
+  - 6.14/5.28 (1H).
+  - 4.05/7.07 and 5.60/6.02 (2H).
+- Earth-massless (Earth turn 0; Venus hosts every return; the R-S one-body architecture at Venus),
+  5 skeletons:
+  - k=2: 9.07/13.17, 13.85/12.77.
+  - k=3: 11.06/5.97, 11.12/6.13, 17.03/13.72.
+  - AAS 07-118 ran no Earth-Venus set (#960 gate: R1(b) OPEN).
+- Two-working-body, outside Hollister's 3.2-yr itineraries, 14 skeletons:
+  - k=2: 3.51/4.41, 4.40/8.82, 4.89/10.36, 6.04/4.16.
+  - k=3: 3.34/4.04, 4.30/5.82, 5.06/5.93, 5.58/3.77, 5.92/3.58, 5.99/3.70, 6.24/4.34, 6.26/6.13,
+    8.01/10.93, 9.43/5.24.
+
+All are "candidate, pending owner adjudication". NOT novel. Collision context:
+- Menning 1968 p.41-42 estimates "a minimum of 1024" Earth-Venus orbits of the FR/SY type, and names
+  half-rev and order variations as possible but not computed.
+- Pisarevsky 2008: the method is general; its numbers are Earth-Mars only.
+- No Earth-Venus catalogue row other than the 15 H&M rows. The DOP853 re-fly miss is < 0.1 km for all 31.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

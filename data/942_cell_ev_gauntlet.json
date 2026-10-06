@@ -1,0 +1,4164 @@
+{
+ "cell": "ev",
+ "n_structures": 2770,
+ "n_zeros": 13915,
+ "n_physical": 3534,
+ "n_gate_passing": 31,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "jones-2017-vem-triple-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     null
+    ],
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "vem-emeeve-3syn",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "jones-2017-vem-emevve-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.72
+    ],
+    [
+     "M",
+     2.5
+    ],
+    [
+     "E",
+     5.81
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "E",
+     4.21
+    ],
+    [
+     "M",
+     2.79
+    ],
+    [
+     "E",
+     5.04
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "E",
+     5.67
+    ]
+   ]
+  },
+  {
+   "id": "jones-2017-vem-meevem-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "M",
+     3.85
+    ],
+    [
+     "E",
+     3.48
+    ],
+    [
+     "E",
+     3.42
+    ],
+    [
+     "V",
+     5.16
+    ],
+    [
+     "E",
+     3.84
+    ],
+    [
+     "M",
+     3.12
+    ],
+    [
+     "E",
+     2.98
+    ],
+    [
+     "E",
+     2.92
+    ],
+    [
+     "V",
+     4.31
+    ],
+    [
+     "E",
+     4.97
+    ],
+    [
+     "M",
+     2.42
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-01",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.75
+    ],
+    [
+     "V",
+     6.7
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-02",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.8
+    ],
+    [
+     "V",
+     7.68
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-03",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.43
+    ],
+    [
+     "V",
+     7.39
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-04",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.05
+    ],
+    [
+     "V",
+     8.4
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-05",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.15
+    ],
+    [
+     "V",
+     5.6
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-06",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.23
+    ],
+    [
+     "V",
+     9.0
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-07",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.51
+    ],
+    [
+     "V",
+     6.67
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-08",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.43
+    ],
+    [
+     "V",
+     6.49
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-09",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.41
+    ],
+    [
+     "V",
+     8.28
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-10",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.04
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-11",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.04
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-12",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.13
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-13",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.36
+    ],
+    [
+     "V",
+     7.45
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-14",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.45
+    ],
+    [
+     "V",
+     7.6
+    ]
+   ]
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-15",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.63
+    ],
+    [
+     "V",
+     8.37
+    ]
+   ]
+  },
+  {
+   "id": "damario-1992-galileo-veega",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Gaspra",
+    "Ida",
+    "J",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "V",
+     6.2
+    ],
+    [
+     "E",
+     8.9
+    ],
+    [
+     "Gaspra",
+     8.0
+    ],
+    [
+     "E",
+     8.9
+    ],
+    [
+     "Ida",
+     12.4
+    ],
+    [
+     "J",
+     5.9
+    ]
+   ]
+  },
+  {
+   "id": "cassini-huygens-vvejga",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "J",
+    "S",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     6.008
+    ],
+    [
+     "V",
+     9.452
+    ],
+    [
+     "E",
+     16.048
+    ],
+    [
+     "J",
+     10.427
+    ]
+   ]
+  },
+  {
+   "id": "mariner-10-venus-mercury",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Me",
+    "V"
+   ],
+   "vinf": [
+    [
+     "Me",
+     10.376
+    ]
+   ]
+  },
+  {
+   "id": "bepicolombo-earth-venus-mercury",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Me",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.993
+    ],
+    [
+     "V",
+     7.979
+    ],
+    [
+     "V",
+     8.022
+    ],
+    [
+     "Me",
+     6.659
+    ],
+    [
+     "Me",
+     6.423
+    ],
+    [
+     "Me",
+     3.64
+    ],
+    [
+     "Me",
+     2.748
+    ],
+    [
+     "Me",
+     2.612
+    ],
+    [
+     "Me",
+     1.892
+    ]
+   ]
+  }
+ ],
+ "empty_regions_same_pair": [
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133"
+ ],
+ "candidates": [
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     2.994,
+     87.6
+    ],
+    [
+     "E",
+     2.994,
+     87.6
+    ],
+    [
+     "V",
+     3.19,
+     73.7
+    ],
+    [
+     "V",
+     3.19,
+     73.7
+    ],
+    [
+     "V",
+     3.19,
+     73.7
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 3.190271920792486,
+    "E": 2.994071820948365
+   },
+   "x_days": [
+    474.59719334719347,
+    1100.6183800415804
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 651.2147800415803,
+     "vinf_kms": 3.190271920792486,
+     "turn_deg": 73.72214862757826,
+     "available_deg": 113.02928176851864,
+     "ratio": 0.6522393796906497,
+     "required_alt_km": 15237.953324051708,
+     "rmin_radii": 3.51792083744534,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 875.9165800415803,
+     "vinf_kms": 3.190271920792486,
+     "turn_deg": 73.72214862757825,
+     "available_deg": 113.02928176851864,
+     "ratio": 0.6522393796906496,
+     "required_alt_km": 15237.953324051708,
+     "rmin_radii": 3.51792083744534,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1100.6183800415804,
+     "vinf_kms": 3.190271920792479,
+     "turn_deg": 73.72214862757826,
+     "available_deg": 113.0292817685189,
+     "ratio": 0.6522393796906482,
+     "required_alt_km": 15237.953324051898,
+     "rmin_radii": 3.517920837445356,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1277.235966735967,
+     "vinf_kms": 2.994071820948365,
+     "turn_deg": 87.59629740051169,
+     "available_deg": 121.1791893909567,
+     "ratio": 0.7228658471868668,
+     "required_alt_km": 13401.290653659667,
+     "rmin_radii": 3.1011293193701652,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1642.485966735967,
+     "vinf_kms": 2.994071820948368,
+     "turn_deg": 87.59629740051169,
+     "available_deg": 121.1791893909567,
+     "ratio": 0.7228658471868668,
+     "required_alt_km": 13401.290653659667,
+     "rmin_radii": 3.1011293193701595,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107444358.34051187,
+   "r_max_km": 151005203.2103075,
+   "min_required_alt_km": 13401.290653659667,
+   "max_turn_deg": 87.59629740051169,
+   "cross_check": {
+    "max_arrival_miss_km": 4.940606049631581e-05,
+    "max_vinf_vector_error_kms": 1.1806103268640798e-11,
+    "max_junction_mismatch_kms": 3.461231301571388e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7228658471866858
+   },
+   "soi_fraction": 8.016935880270253e-11,
+   "collisions": [
+    "PUBLISHED FAMILY Hollister 1969 orbit I (1H)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     2.994,
+     87.6
+    ],
+    [
+     "E",
+     2.994,
+     87.6
+    ],
+    [
+     "V",
+     3.19,
+     92.2
+    ],
+    [
+     "V",
+     3.19,
+     0.0
+    ],
+    [
+     "V",
+     3.19,
+     92.2
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 3.1902719207924846,
+    "E": 2.994071820948365
+   },
+   "x_days": [
+    474.59719334719347,
+    1100.6183800415804
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 651.2147800415803,
+     "vinf_kms": 3.1902719207924846,
+     "turn_deg": 92.21100778302767,
+     "available_deg": 113.02928176851867,
+     "ratio": 0.8158152147854364,
+     "required_alt_km": 6322.84875668382,
+     "rmin_radii": 2.044788121994085,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 988.2674800415803,
+     "vinf_kms": 3.1902719207924823,
+     "turn_deg": 0.0,
+     "available_deg": 113.02928176851873,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1100.6183800415804,
+     "vinf_kms": 3.190271920792477,
+     "turn_deg": 92.21100778302777,
+     "available_deg": 113.0292817685189,
+     "ratio": 0.8158152147854356,
+     "required_alt_km": 6322.848756683864,
+     "rmin_radii": 2.044788121994088,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1277.235966735967,
+     "vinf_kms": 2.994071820948365,
+     "turn_deg": 87.59629740051169,
+     "available_deg": 121.1791893909567,
+     "ratio": 0.7228658471868668,
+     "required_alt_km": 13401.290653659667,
+     "rmin_radii": 3.1011293193701652,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1642.485966735967,
+     "vinf_kms": 2.994071820948368,
+     "turn_deg": 87.59629740051169,
+     "available_deg": 121.1791893909567,
+     "ratio": 0.7228658471868668,
+     "required_alt_km": 13401.290653659667,
+     "rmin_radii": 3.1011293193701595,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107444358.34051187,
+   "r_max_km": 151005203.2103075,
+   "min_required_alt_km": 6322.84875668382,
+   "max_turn_deg": 92.21100778302777,
+   "cross_check": {
+    "max_arrival_miss_km": 4.940606049631581e-05,
+    "max_vinf_vector_error_kms": 1.1806103268640798e-11,
+    "max_junction_mismatch_kms": 1.241673430740775e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8158152147857577
+   },
+   "soi_fraction": 8.016935880270253e-11,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     3.512,
+     87.4
+    ],
+    [
+     "E",
+     3.512,
+     87.4
+    ],
+    [
+     "V",
+     4.41,
+     46.7
+    ],
+    [
+     "V",
+     4.41,
+     89.2
+    ],
+    [
+     "V",
+     4.41,
+     92.0
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|LV>V/1h|HV/1,0,p|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 4.409911779934758,
+    "E": 3.5120349845953442
+   },
+   "x_days": [
+    474.59719334719404,
+    778.5708075460238,
+    1085.6132525371372
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 666.2199075460238,
+     "vinf_kms": 4.409911779934758,
+     "turn_deg": 92.03182884075619,
+     "available_deg": 92.85614018230616,
+     "ratio": 0.9911227050797977,
+     "required_alt_km": 459.4775653912502,
+     "rmin_radii": 1.0759241160301452,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 778.5708075460238,
+     "vinf_kms": 4.409911779934711,
+     "turn_deg": 89.22496902966205,
+     "available_deg": 92.85614018230747,
+     "ratio": 0.9608946576336661,
+     "required_alt_km": 1028.8596759749144,
+     "rmin_radii": 1.1700088694231094,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1085.6132525371372,
+     "vinf_kms": 4.409911779934713,
+     "turn_deg": 46.67806795556268,
+     "available_deg": 92.85614018230739,
+     "ratio": 0.5026923137653381,
+     "required_alt_km": 19408.62321467203,
+     "rmin_radii": 4.2070827216153175,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1277.2359667359672,
+     "vinf_kms": 3.5120349845953442,
+     "turn_deg": 87.44386818950035,
+     "available_deg": 112.37674111921903,
+     "ratio": 0.7781313759288702,
+     "required_alt_km": 8062.183200177603,
+     "rmin_radii": 2.264034184304539,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1642.4859667359672,
+     "vinf_kms": 3.5120349845953474,
+     "turn_deg": 87.44386818950035,
+     "available_deg": 112.37674111921903,
+     "ratio": 0.7781313759288702,
+     "required_alt_km": 8062.183200177603,
+     "rmin_radii": 2.264034184304535,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 90568728.04983287,
+   "r_max_km": 152148366.6744634,
+   "min_required_alt_km": 459.4775653912502,
+   "max_turn_deg": 92.03182884075619,
+   "cross_check": {
+    "max_arrival_miss_km": 8.145264766244747e-05,
+    "max_vinf_vector_error_kms": 2.3203837846758255e-11,
+    "max_junction_mismatch_kms": 2.2819079958935617e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9911227050797937
+   },
+   "soi_fraction": 1.3217015220972333e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     4.05,
+     86.8
+    ],
+    [
+     "E",
+     4.05,
+     86.8
+    ],
+    [
+     "V",
+     7.069,
+     9.8
+    ],
+    [
+     "V",
+     7.069,
+     8.3
+    ],
+    [
+     "V",
+     7.069,
+     18.1
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 7.068520211653379,
+    "E": 4.049562351100343
+   },
+   "x_days": [
+    474.59719334719364,
+    598.1371672472674,
+    1153.695992835893
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 598.1371672472674,
+     "vinf_kms": 7.068520211653379,
+     "turn_deg": 9.770270380479348,
+     "available_deg": 60.773872831448486,
+     "ratio": 0.16076432067405708,
+     "required_alt_km": 63796.461602820666,
+     "rmin_radii": 11.541733302954418,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 928.9941928358932,
+     "vinf_kms": 7.068520211653382,
+     "turn_deg": 8.28913688641131,
+     "available_deg": 60.773872831447925,
+     "ratio": 0.13639309953803092,
+     "required_alt_km": 77408.42154485486,
+     "rmin_radii": 13.790974841345523,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1153.695992835893,
+     "vinf_kms": 7.068520211653362,
+     "turn_deg": 18.059407266890595,
+     "available_deg": 60.77387283144831,
+     "ratio": 0.2971574202120866,
+     "required_alt_km": 28873.55996593556,
+     "rmin_radii": 5.771069758738781,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1277.235966735967,
+     "vinf_kms": 4.049562351100343,
+     "turn_deg": 86.76017758515813,
+     "available_deg": 103.81375608593243,
+     "ratio": 0.8357291062018978,
+     "required_alt_km": 4704.483030179753,
+     "rmin_radii": 1.737595167708024,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1642.485966735967,
+     "vinf_kms": 4.049562351100345,
+     "turn_deg": 86.76017758515812,
+     "available_deg": 103.81375608593243,
+     "ratio": 0.8357291062018977,
+     "required_alt_km": 4704.483030179758,
+     "rmin_radii": 1.7375951677080232,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 91449585.8081757,
+   "r_max_km": 151578695.189366,
+   "min_required_alt_km": 4704.483030179753,
+   "max_turn_deg": 86.76017758515813,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0005719745816396284,
+    "max_vinf_vector_error_kms": 1.892523957446994e-10,
+    "max_junction_mismatch_kms": 1.872821897563881e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8357291062018817
+   },
+   "soi_fraction": 9.28121671731192e-10,
+   "collisions": [
+    "PUBLISHED FAMILY Hollister 1969 orbit II (2H)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     4.405,
+     47.5
+    ],
+    [
+     "V",
+     8.818,
+     33.2
+    ],
+    [
+     "V",
+     8.818,
+     33.2
+    ]
+   ],
+   "keys": [
+    "k2|LE>V/0s|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 8.817634487709023,
+    "E": 4.404792448105944
+   },
+   "x_days": [
+    1.7677524592492934e-13,
+    156.66014934803616,
+    1011.2286240407375
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 156.66014934803616,
+     "vinf_kms": 8.817634487709023,
+     "turn_deg": 33.15653408223817,
+     "available_deg": 46.75539792244385,
+     "ratio": 0.7091487946961123,
+     "required_alt_km": 4413.682839048496,
+     "rmin_radii": 1.7293173665766346,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1011.2286240407375,
+     "vinf_kms": 8.817634487709014,
+     "turn_deg": 33.156534082237954,
+     "available_deg": 46.75539792244393,
+     "ratio": 0.7091487946961065,
+     "required_alt_km": 4413.682839048616,
+     "rmin_radii": 1.7293173665766528,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1167.8887733887734,
+     "vinf_kms": 4.404792448105944,
+     "turn_deg": 47.497765768913425,
+     "available_deg": 98.48213794831526,
+     "ratio": 0.4822982802611463,
+     "required_alt_km": 24089.984372756426,
+     "rmin_radii": 4.776962516289057,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 88930608.01277082,
+   "r_max_km": 238895943.1169094,
+   "min_required_alt_km": 4413.682839048496,
+   "max_turn_deg": 47.497765768913425,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0030953729627589913,
+    "max_vinf_vector_error_kms": 7.313008986286431e-10,
+    "max_junction_mismatch_kms": 6.568221522229578e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7091487946926611
+   },
+   "soi_fraction": 5.0227454524149865e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     4.893,
+     31.8
+    ],
+    [
+     "V",
+     10.364,
+     6.6
+    ],
+    [
+     "V",
+     10.364,
+     21.6
+    ],
+    [
+     "V",
+     10.364,
+     15.0
+    ]
+   ],
+   "keys": [
+    "k2|LE>V/0s|LV>V/1h|RV/1:1|LV>E/0s",
+    "k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 10.364004702191608,
+    "E": 4.892825050758517
+   },
+   "x_days": [
+    583.944386694386,
+    984.2215547169349,
+    1576.2577920606109
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 759.5197547169349,
+     "vinf_kms": 10.364004702191608,
+     "turn_deg": 6.574790744409568,
+     "available_deg": 37.635789762439096,
+     "ratio": 0.17469517142885296,
+     "required_alt_km": 43664.77578054668,
+     "rmin_radii": 8.21517164819503,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 984.2215547169349,
+     "vinf_kms": 10.364004702191615,
+     "turn_deg": 21.604531252474114,
+     "available_deg": 37.635789762439096,
+     "ratio": 0.5740421919891703,
+     "required_alt_km": 7060.802724448834,
+     "rmin_radii": 2.166727704889259,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1576.2577920606109,
+     "vinf_kms": 10.364004702191622,
+     "turn_deg": 15.029740508064625,
+     "available_deg": 37.63578976243908,
+     "ratio": 0.3993470205603196,
+     "required_alt_km": 14049.037471738418,
+     "rmin_radii": 3.321464270421755,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1751.8331600831593,
+     "vinf_kms": 4.892825050758517,
+     "turn_deg": 31.761731525135026,
+     "available_deg": 91.58264557060578,
+     "ratio": 0.34680950006678146,
+     "required_alt_km": 37819.092717441,
+     "rmin_radii": 6.9294889271649165,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 81994955.37449022,
+   "r_max_km": 185933432.88932827,
+   "min_required_alt_km": 7060.802724448834,
+   "max_turn_deg": 31.761731525135026,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0006649536525585708,
+    "max_vinf_vector_error_kms": 1.9085777958960717e-10,
+    "max_junction_mismatch_kms": 1.8892976072493184e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.574042191986387
+   },
+   "soi_fraction": 1.0789953180563927e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     5.599,
+     22.2
+    ],
+    [
+     "E",
+     5.599,
+     22.2
+    ],
+    [
+     "V",
+     6.022,
+     21.8
+    ],
+    [
+     "V",
+     6.022,
+     8.3
+    ],
+    [
+     "V",
+     6.022,
+     30.1
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.0219071616193585,
+    "E": 5.599157062461449
+   },
+   "x_days": [
+    540.6825788890019,
+    613.4707857392445,
+    1166.8198443106728
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 613.4707857392445,
+     "vinf_kms": 6.0219071616193585,
+     "turn_deg": 21.81458235980172,
+     "available_deg": 71.62348773537866,
+     "ratio": 0.30457302554712556,
+     "required_alt_km": 32333.16073644019,
+     "rmin_radii": 6.342734514762285,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 942.1180443106728,
+     "vinf_kms": 6.021907161619218,
+     "turn_deg": 8.327501473359634,
+     "available_deg": 71.62348773537869,
+     "ratio": 0.11626774591215884,
+     "required_alt_km": 108370.37419591038,
+     "rmin_radii": 18.90713080338252,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1166.8198443106728,
+     "vinf_kms": 6.021907161619103,
+     "turn_deg": 30.142083833155606,
+     "available_deg": 71.62348773538132,
+     "ratio": 0.4208407714591886,
+     "required_alt_km": 19442.749762292784,
+     "rmin_radii": 4.212721795547078,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1343.321352277775,
+     "vinf_kms": 5.599157062461449,
+     "turn_deg": 22.248477660418267,
+     "available_deg": 82.45191646889103,
+     "ratio": 0.26983578567045896,
+     "required_alt_km": 46806.24956533183,
+     "rmin_radii": 8.338545654527621,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1708.571352277775,
+     "vinf_kms": 5.599157062461385,
+     "turn_deg": 22.248477660412924,
+     "available_deg": 82.45191646889262,
+     "ratio": 0.26983578567038896,
+     "required_alt_km": 46806.249565349906,
+     "rmin_radii": 8.338545654530263,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 94011283.40535751,
+   "r_max_km": 160970892.35603216,
+   "min_required_alt_km": 19442.749762292784,
+   "max_turn_deg": 30.142083833155606,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00014653958065729577,
+    "max_vinf_vector_error_kms": 4.9700738134066454e-11,
+    "max_junction_mismatch_kms": 4.650679841233796e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.4208407714575866
+   },
+   "soi_fraction": 2.3778427388252e-10,
+   "collisions": [
+    "PUBLISHED FAMILY Hollister 1969 orbit II (2H)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     6.039,
+     59.7
+    ],
+    [
+     "E",
+     6.039,
+     59.7
+    ],
+    [
+     "E",
+     6.039,
+     59.7
+    ],
+    [
+     "V",
+     4.156,
+     67.3
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|RE/1:1|LE>V/0s|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|RE/1:1|LE>V/0s|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 4.156041701356047,
+    "E": 6.039496188118888
+   },
+   "x_days": [
+    365.2500000000005,
+    583.9443866943867
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 583.9443866943867,
+     "vinf_kms": 4.156041701356047,
+     "turn_deg": 67.29705438833766,
+     "available_deg": 96.75515611109441,
+     "ratio": 0.6955397220492009,
+     "required_alt_km": 9083.446887960377,
+     "rmin_radii": 2.5009496163059457,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 802.6387733887738,
+     "vinf_kms": 6.039496188118888,
+     "turn_deg": 59.73261626350504,
+     "available_deg": 77.25225110351008,
+     "ratio": 0.7732152191069418,
+     "required_alt_km": 4638.502343128507,
+     "rmin_radii": 1.7272503464771152,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1167.8887733887739,
+     "vinf_kms": 6.039496188118888,
+     "turn_deg": 59.73261626350504,
+     "available_deg": 77.25225110351008,
+     "ratio": 0.7732152191069418,
+     "required_alt_km": 4638.502343128507,
+     "rmin_radii": 1.7272503464771152,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1533.1387733887739,
+     "vinf_kms": 6.039496188118873,
+     "turn_deg": 59.73261626350502,
+     "available_deg": 77.25225110351043,
+     "ratio": 0.7732152191069381,
+     "required_alt_km": 4638.502343128625,
+     "rmin_radii": 1.7272503464771247,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108210556.34939745,
+   "r_max_km": 167402732.96943644,
+   "min_required_alt_km": 4638.502343128507,
+   "max_turn_deg": 67.29705438833766,
+   "cross_check": {
+    "max_arrival_miss_km": 8.456596355893482e-05,
+    "max_vinf_vector_error_kms": 1.6136639848152727e-11,
+    "max_junction_mismatch_kms": 1.3105072582675348e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7732152191068788
+   },
+   "soi_fraction": 1.3722201298680886e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     6.039,
+     73.7
+    ],
+    [
+     "E",
+     6.039,
+     73.7
+    ],
+    [
+     "V",
+     4.156,
+     67.3
+    ]
+   ],
+   "keys": [
+    "k2|RE/2:3|LE>V/0s|LV>E/0s"
+   ],
+   "key": "k2|RE/2:3|LE>V/0s|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 4.156041701356047,
+    "E": 6.039496188118888
+   },
+   "x_days": [
+    365.2500000000005,
+    583.9443866943867
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 583.9443866943867,
+     "vinf_kms": 4.156041701356047,
+     "turn_deg": 67.29705438833766,
+     "available_deg": 96.75515611109441,
+     "ratio": 0.6955397220492009,
+     "required_alt_km": 9083.446887960377,
+     "rmin_radii": 2.5009496163059457,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 802.6387733887738,
+     "vinf_kms": 6.039496188118888,
+     "turn_deg": 73.7452304834051,
+     "available_deg": 77.25225110351008,
+     "ratio": 0.9546029977119249,
+     "required_alt_km": 905.9717915839856,
+     "rmin_radii": 1.1420433257523295,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1533.1387733887739,
+     "vinf_kms": 6.039496188118873,
+     "turn_deg": 73.7452304834052,
+     "available_deg": 77.25225110351043,
+     "ratio": 0.9546029977119219,
+     "required_alt_km": 905.9717915840392,
+     "rmin_radii": 1.142043325752332,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108210556.34939745,
+   "r_max_km": 167402732.96943644,
+   "min_required_alt_km": 905.9717915839856,
+   "max_turn_deg": 73.7452304834052,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0005609699691860199,
+    "max_vinf_vector_error_kms": 1.1407041112520331e-10,
+    "max_junction_mismatch_kms": 1.3105072582675348e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9546029977252951
+   },
+   "soi_fraction": 9.102649004076857e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     6.144,
+     15.1
+    ],
+    [
+     "E",
+     6.144,
+     15.1
+    ],
+    [
+     "V",
+     5.282,
+     66.5
+    ],
+    [
+     "V",
+     5.282,
+     66.5
+    ],
+    [
+     "V",
+     5.282,
+     66.5
+    ]
+   ],
+   "keys": [
+    "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+   ],
+   "key": "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.282135860597094,
+    "E": 6.144459351198307
+   },
+   "x_days": [
+    389.7646300014741,
+    1080.5155399021255
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 631.1119399021254,
+     "vinf_kms": 5.282135860597094,
+     "turn_deg": 66.5101080222803,
+     "available_deg": 80.63544892087715,
+     "ratio": 0.8248246759008284,
+     "required_alt_km": 3537.5591972090924,
+     "rmin_radii": 1.5845466137693058,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 855.8137399021255,
+     "vinf_kms": 5.282135860597094,
+     "turn_deg": 66.51010802228025,
+     "available_deg": 80.63544892087715,
+     "ratio": 0.8248246759008278,
+     "required_alt_km": 3537.559197209107,
+     "rmin_radii": 1.5845466137693092,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1080.5155399021255,
+     "vinf_kms": 5.282135860597105,
+     "turn_deg": 66.51010802228018,
+     "available_deg": 80.63544892087715,
+     "ratio": 0.824824675900827,
+     "required_alt_km": 3537.559197209125,
+     "rmin_radii": 1.5845466137693058,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1192.4034033902471,
+     "vinf_kms": 6.144459351198307,
+     "turn_deg": 15.073772480549739,
+     "available_deg": 76.06650970011788,
+     "ratio": 0.19816569131377376,
+     "required_alt_km": 63556.42860666,
+     "rmin_radii": 10.964732429965052,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1557.6534033902471,
+     "vinf_kms": 6.144459351198351,
+     "turn_deg": 15.073772480549469,
+     "available_deg": 76.06650970011788,
+     "ratio": 0.1981656913137702,
+     "required_alt_km": 63556.428606661444,
+     "rmin_radii": 10.964732429965123,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 104462768.86426097,
+   "r_max_km": 166238658.2133991,
+   "min_required_alt_km": 3537.5591972090924,
+   "max_turn_deg": 66.5101080222803,
+   "cross_check": {
+    "max_arrival_miss_km": 5.708856363325436e-05,
+    "max_vinf_vector_error_kms": 1.160044954421074e-11,
+    "max_junction_mismatch_kms": 5.766942479112913e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.824824675901355
+   },
+   "soi_fraction": 9.263546810793728e-11,
+   "collisions": [
+    "PUBLISHED FAMILY Hollister 1969 orbit I (1H)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     9.075,
+     0.0
+    ],
+    [
+     "V",
+     13.166,
+     19.7
+    ],
+    [
+     "V",
+     13.166,
+     19.7
+    ]
+   ],
+   "keys": [
+    "k2|LE>V/0s|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 13.166434198896294,
+    "E": 9.074921385818076
+   },
+   "x_days": [
+    70.45968113073174,
+    193.2883086954084,
+    1017.2397971651454
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 193.2883086954084,
+     "vinf_kms": 13.166434198896294,
+     "turn_deg": 19.652557981637838,
+     "available_deg": 26.33694295390099,
+     "ratio": 0.7461973857799972,
+     "required_alt_km": 3054.7621027748237,
+     "rmin_radii": 1.5047691765714006,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1017.2397971651454,
+     "vinf_kms": 13.166434198896276,
+     "turn_deg": 19.6525579816381,
+     "available_deg": 26.336942953901097,
+     "ratio": 0.7461973857800043,
+     "required_alt_km": 3054.762102774722,
+     "rmin_radii": 1.5047691765713804,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1238.3484545195051,
+     "vinf_kms": 9.074921385818076,
+     "turn_deg": 1.4787793334710982e-06,
+     "available_deg": 50.16094481737578,
+     "ratio": 2.9480691379617878e-08,
+     "required_alt_km": 375060448317.1527,
+     "rmin_radii": 58804076.28360557,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 76145744.95980752,
+   "r_max_km": 247052034.27473998,
+   "min_required_alt_km": 3054.762102774722,
+   "max_turn_deg": 19.6525579816381,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0815703201925112,
+    "max_vinf_vector_error_kms": 2.254719101097768e-08,
+    "max_junction_mismatch_kms": 2.189066172775256e-08,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7461973857785258
+   },
+   "soi_fraction": 1.3236109500477992e-07,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     13.846,
+     0.0
+    ],
+    [
+     "V",
+     12.771,
+     1.6
+    ],
+    [
+     "V",
+     12.771,
+     21.4
+    ],
+    [
+     "V",
+     12.771,
+     19.8
+    ]
+   ],
+   "keys": [
+    "k2|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s",
+    "k2|LE>V/0s|RV/2:1|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k2|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 12.771040009056176,
+    "E": 13.846437101377987
+   },
+   "x_days": [
+    566.4329196269667,
+    601.2624252394304,
+    1393.7434241888486
+   ],
+   "period_days": 1167.8887733887732,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 601.2624252394304,
+     "vinf_kms": 12.771040009056176,
+     "turn_deg": 19.75276831096315,
+     "available_deg": 27.622043015698658,
+     "ratio": 0.7151088824145593,
+     "required_alt_km": 3568.7470767887307,
+     "rmin_radii": 1.5897001019182166,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 944.3398241888486,
+     "vinf_kms": 12.771040009056218,
+     "turn_deg": 21.366300574289557,
+     "available_deg": 27.62204301569837,
+     "ratio": 0.7735235428511388,
+     "required_alt_km": 2700.8751669919757,
+     "rmin_radii": 1.4462928660881016,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1393.7434241888486,
+     "vinf_kms": 12.771040009056158,
+     "turn_deg": 1.6135322633266553,
+     "available_deg": 27.622043015698754,
+     "ratio": 0.05841466043658023,
+     "required_alt_km": 133415.60308313175,
+     "rmin_radii": 23.04560677536113,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1734.32169301574,
+     "vinf_kms": 13.846437101377987,
+     "turn_deg": 8.537736462515939e-07,
+     "available_deg": 27.79098853446812,
+     "ratio": 3.0721240634988226e-08,
+     "required_alt_km": 279043277459.35474,
+     "rmin_radii": 43749967.088742435,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 77152664.32949619,
+   "r_max_km": 241411879.67992908,
+   "min_required_alt_km": 2700.8751669919757,
+   "max_turn_deg": 21.366300574289557,
+   "cross_check": {
+    "max_arrival_miss_km": 0.01028598660897392,
+    "max_vinf_vector_error_kms": 2.7846847756518984e-09,
+    "max_junction_mismatch_kms": 2.582698499509206e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7735235428151164
+   },
+   "soi_fraction": 1.669068415515775e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     3.339,
+     87.5
+    ],
+    [
+     "E",
+     3.339,
+     87.5
+    ],
+    [
+     "V",
+     4.041,
+     65.2
+    ],
+    [
+     "V",
+     4.041,
+     92.1
+    ],
+    [
+     "V",
+     4.041,
+     92.1
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|LE>V/0s|HV/3,1,p|RV/3:2|LV>E/0s",
+    "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 4.041313972720514,
+    "E": 3.3390321797077496
+   },
+   "x_days": [
+    474.59719334719375,
+    1673.467823388774
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 662.3097233887738,
+     "vinf_kms": 4.041313972720514,
+     "turn_deg": 65.15191158001288,
+     "available_deg": 98.56886560858291,
+     "ratio": 0.6609786079788237,
+     "required_alt_km": 11000.378165528735,
+     "rmin_radii": 2.8177035205275676,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1336.4151233887737,
+     "vinf_kms": 4.041313972720514,
+     "turn_deg": 92.09043919829645,
+     "available_deg": 98.56886560858291,
+     "ratio": 0.9342751246015928,
+     "required_alt_km": 1687.761153399253,
+     "rmin_radii": 1.2788858113948334,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1673.467823388774,
+     "vinf_kms": 4.0413139727205145,
+     "turn_deg": 92.0904391061074,
+     "available_deg": 98.56886560858287,
+     "ratio": 0.9342751236663176,
+     "required_alt_km": 1687.7611748312293,
+     "rmin_radii": 1.2788858149362552,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1861.1803534303538,
+     "vinf_kms": 3.3390321797077496,
+     "turn_deg": 87.49373236698574,
+     "available_deg": 115.25779389465488,
+     "ratio": 0.7591133702155937,
+     "required_alt_km": 9573.79906111455,
+     "rmin_radii": 2.501033775397824,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2226.4303534303535,
+     "vinf_kms": 3.339032179707768,
+     "turn_deg": 87.49373236698575,
+     "available_deg": 115.25779389465488,
+     "ratio": 0.7591133702155938,
+     "required_alt_km": 9573.79906111455,
+     "rmin_radii": 2.501033775397795,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 105653625.25462273,
+   "r_max_km": 151752824.21921754,
+   "min_required_alt_km": 1687.761153399253,
+   "max_turn_deg": 92.09043919829645,
+   "cross_check": {
+    "max_arrival_miss_km": 0.000769487592035417,
+    "max_vinf_vector_error_kms": 2.0072762645718813e-10,
+    "max_junction_mismatch_kms": 5.3449689119133836e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9342751245937627
+   },
+   "soi_fraction": 1.2486186156193342e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     4.296,
+     87.2
+    ],
+    [
+     "E",
+     4.296,
+     87.2
+    ],
+    [
+     "V",
+     5.818,
+     17.1
+    ],
+    [
+     "V",
+     5.818,
+     52.7
+    ],
+    [
+     "V",
+     5.818,
+     35.6
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k3|RE/1:1|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 5.817507180510697,
+    "E": 4.296204639641904
+   },
+   "x_days": [
+    474.5971933471934,
+    678.7501702927057,
+    1657.0273764848416
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 678.7501702927057,
+     "vinf_kms": 5.817507180510697,
+     "turn_deg": 35.605676861062555,
+     "available_deg": 73.9956877301185,
+     "ratio": 0.48118583600338594,
+     "required_alt_km": 15744.627863166475,
+     "rmin_radii": 3.6016437858432813,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 982.9219764848416,
+     "vinf_kms": 5.817507180510666,
+     "turn_deg": 52.67755671513947,
+     "available_deg": 73.9956877301187,
+     "ratio": 0.7119003597516123,
+     "required_alt_km": 5984.115298047344,
+     "rmin_radii": 1.9888157734967025,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1657.0273764848416,
+     "vinf_kms": 5.817507180510673,
+     "turn_deg": 17.07187985407662,
+     "available_deg": 73.9956877301187,
+     "ratio": 0.23071452374822374,
+     "required_alt_km": 49018.82242416465,
+     "rmin_radii": 9.099874818097842,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1861.1803534303538,
+     "vinf_kms": 4.296204639641904,
+     "turn_deg": 87.23008271686014,
+     "available_deg": 100.08416399940884,
+     "ratio": 0.8715672812871312,
+     "required_alt_km": 3332.92901002664,
+     "rmin_radii": 1.522555255559208,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2226.4303534303535,
+     "vinf_kms": 4.296204639641933,
+     "turn_deg": 87.23008271686015,
+     "available_deg": 100.08416399940884,
+     "ratio": 0.8715672812871313,
+     "required_alt_km": 3332.92901002664,
+     "rmin_radii": 1.522555255559188,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 85161115.41601847,
+   "r_max_km": 154106901.813151,
+   "min_required_alt_km": 3332.92901002664,
+   "max_turn_deg": 87.23008271686015,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00040254065138176483,
+    "max_vinf_vector_error_kms": 1.2915344316622462e-10,
+    "max_junction_mismatch_kms": 1.27675647831893e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8715672812871503
+   },
+   "soi_fraction": 6.53187596604768e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.056,
+     58.8
+    ],
+    [
+     "E",
+     5.056,
+     82.7
+    ],
+    [
+     "E",
+     5.056,
+     58.8
+    ],
+    [
+     "V",
+     5.929,
+     28.6
+    ],
+    [
+     "V",
+     5.929,
+     0.0
+    ],
+    [
+     "V",
+     5.929,
+     28.6
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.928535943747064,
+    "E": 5.055720770045381
+   },
+   "x_days": [
+    536.6129475913345,
+    1062.7818974387208
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 613.3782974387208,
+     "vinf_kms": 5.928535943747064,
+     "turn_deg": 28.645790279334953,
+     "available_deg": 72.6962720749881,
+     "ratio": 0.39404758265714196,
+     "required_alt_km": 22066.957969506784,
+     "rmin_radii": 4.646346206005946,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 838.0800974387208,
+     "vinf_kms": 5.928535943747065,
+     "turn_deg": 0.002621423522707167,
+     "available_deg": 72.6962720749881,
+     "ratio": 3.605994431190502e-05,
+     "required_alt_km": 404015882.88186795,
+     "rmin_radii": 66760.62240686537,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1062.7818974387208,
+     "vinf_kms": 5.928535943747045,
+     "turn_deg": 28.64579027933494,
+     "available_deg": 72.69627207498854,
+     "ratio": 0.39404758265713935,
+     "required_alt_km": 22066.95796950716,
+     "rmin_radii": 4.646346206005978,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1192.6961076744947,
+     "vinf_kms": 5.055720770045381,
+     "turn_deg": 58.77890813016876,
+     "available_deg": 89.38826708340675,
+     "ratio": 0.6575684935845452,
+     "required_alt_km": 9804.6690128447,
+     "rmin_radii": 2.537230857983248,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1557.9461076744947,
+     "vinf_kms": 5.055720770045382,
+     "turn_deg": 82.7384313624596,
+     "available_deg": 89.38826708340675,
+     "ratio": 0.9256072867511539,
+     "required_alt_km": 1622.907797121382,
+     "rmin_radii": 1.2544485634475053,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2288.4461076744947,
+     "vinf_kms": 5.055720770045377,
+     "turn_deg": 58.77890813016876,
+     "available_deg": 89.38826708340689,
+     "ratio": 0.6575684935845442,
+     "required_alt_km": 9804.669012844763,
+     "rmin_radii": 2.5372308579832525,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 101427703.0787172,
+   "r_max_km": 149597870.7,
+   "min_required_alt_km": 1622.907797121382,
+   "max_turn_deg": 82.7384313624596,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0004144412560017617,
+    "max_vinf_vector_error_kms": 6.569469598922418e-11,
+    "max_junction_mismatch_kms": 1.191846621395598e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9256072867517605
+   },
+   "soi_fraction": 6.724982607655094e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "V",
+     3.773,
+     76.7
+    ],
+    [
+     "V",
+     3.773,
+     76.7
+    ],
+    [
+     "V",
+     3.773,
+     76.7
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+   ],
+   "key": "k3|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 3.7730097429660363,
+    "E": 5.582098706360165
+   },
+   "x_days": [
+    547.8749999999999,
+    1100.6183800415797
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 651.2147800415796,
+     "vinf_kms": 3.7730097429660363,
+     "turn_deg": 76.74569229877577,
+     "available_deg": 102.93656805886715,
+     "ratio": 0.745562959267173,
+     "required_alt_km": 7888.715984169222,
+     "rmin_radii": 2.3035321696303934,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 875.9165800415797,
+     "vinf_kms": 3.7730097429660368,
+     "turn_deg": 76.74569229877578,
+     "available_deg": 102.93656805886714,
+     "ratio": 0.7455629592671733,
+     "required_alt_km": 7888.715984169209,
+     "rmin_radii": 2.3035321696303925,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1100.6183800415797,
+     "vinf_kms": 3.7730097429660594,
+     "turn_deg": 76.74569229877578,
+     "available_deg": 102.93656805886714,
+     "ratio": 0.7455629592671733,
+     "required_alt_km": 7888.715984169209,
+     "rmin_radii": 2.3035321696303646,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1203.95816008316,
+     "vinf_kms": 5.582098706360165,
+     "turn_deg": 66.21046105950008,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.8009897661691315,
+     "required_alt_km": 4250.885528681131,
+     "rmin_radii": 1.6664776138676751,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1934.45816008316,
+     "vinf_kms": 5.582098706360165,
+     "turn_deg": 66.21046105950008,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.8009897661691315,
+     "required_alt_km": 4250.885528681131,
+     "rmin_radii": 1.6664776138676751,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2299.7081600831602,
+     "vinf_kms": 5.58209870636017,
+     "turn_deg": 66.21046105950006,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.8009897661691314,
+     "required_alt_km": 4250.885528681139,
+     "rmin_radii": 1.6664776138676733,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107603286.08122022,
+   "r_max_km": 149597870.7,
+   "min_required_alt_km": 4250.885528681131,
+   "max_turn_deg": 76.74569229877578,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0004912762655956852,
+    "max_vinf_vector_error_kms": 9.577080667971818e-11,
+    "max_junction_mismatch_kms": 1.2604139953964477e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8009897661692494
+   },
+   "soi_fraction": 7.971755451080585e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "E",
+     5.582,
+     66.2
+    ],
+    [
+     "V",
+     3.773,
+     92.8
+    ],
+    [
+     "V",
+     3.773,
+     0.0
+    ],
+    [
+     "V",
+     3.773,
+     92.8
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
+    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 3.7730097429660305,
+    "E": 5.582098706360165
+   },
+   "x_days": [
+    547.8749999999999,
+    1100.6183800415797
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 651.2147800415796,
+     "vinf_kms": 3.7730097429660305,
+     "turn_deg": 92.76201790356036,
+     "available_deg": 102.93656805886735,
+     "ratio": 0.9011570878340497,
+     "required_alt_km": 2650.0655200218616,
+     "rmin_radii": 1.4378970752539468,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 763.5656800415796,
+     "vinf_kms": 3.773009742966024,
+     "turn_deg": 0.0,
+     "available_deg": 102.93656805886738,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1100.6183800415797,
+     "vinf_kms": 3.773009742966053,
+     "turn_deg": 92.76201790356068,
+     "available_deg": 102.93656805886738,
+     "ratio": 0.9011570878340526,
+     "required_alt_km": 2650.0655200217834,
+     "rmin_radii": 1.4378970752539162,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1203.95816008316,
+     "vinf_kms": 5.582098706360165,
+     "turn_deg": 66.21046105950035,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.8009897661691348,
+     "required_alt_km": 4250.885528681048,
+     "rmin_radii": 1.666477613867662,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1569.20816008316,
+     "vinf_kms": 5.582098706360165,
+     "turn_deg": 66.21046105950039,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.8009897661691352,
+     "required_alt_km": 4250.8855286810385,
+     "rmin_radii": 1.6664776138676605,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2299.7081600831602,
+     "vinf_kms": 5.58209870636017,
+     "turn_deg": 66.21046105950036,
+     "available_deg": 82.66080773561285,
+     "ratio": 0.800989766169135,
+     "required_alt_km": 4250.885528681042,
+     "rmin_radii": 1.6664776138676582,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107603286.08122022,
+   "r_max_km": 149597870.7,
+   "min_required_alt_km": 2650.0655200217834,
+   "max_turn_deg": 92.76201790356068,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0005021545609831955,
+    "max_vinf_vector_error_kms": 9.267837496140987e-11,
+    "max_junction_mismatch_kms": 4.169997680492088e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9011570878346075
+   },
+   "soi_fraction": 8.148273464725516e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.924,
+     59.7
+    ],
+    [
+     "E",
+     5.924,
+     59.7
+    ],
+    [
+     "E",
+     5.924,
+     59.7
+    ],
+    [
+     "V",
+     3.582,
+     88.8
+    ],
+    [
+     "V",
+     3.582,
+     89.9
+    ],
+    [
+     "V",
+     3.582,
+     92.9
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/1:1|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
+    "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 3.582425834005025,
+    "E": 5.923687346676164
+   },
+   "x_days": [
+    365.2500000000003,
+    1156.79383004158
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 595.03933004158,
+     "vinf_kms": 3.582425834005025,
+     "turn_deg": 88.77412098685782,
+     "available_deg": 106.14638743692545,
+     "ratio": 0.8363367150823608,
+     "required_alt_km": 4822.2827169326,
+     "rmin_radii": 1.7968344487479089,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 819.7411300415799,
+     "vinf_kms": 3.5824258340050203,
+     "turn_deg": 89.85011466469246,
+     "available_deg": 106.14638743692558,
+     "ratio": 0.8464735996604998,
+     "required_alt_km": 4480.014370521173,
+     "rmin_radii": 1.7402779950628156,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1156.79383004158,
+     "vinf_kms": 3.582425834005011,
+     "turn_deg": 92.92404972464107,
+     "available_deg": 106.14638743692575,
+     "ratio": 0.8754329937027612,
+     "required_alt_km": 3553.5519526944,
+     "rmin_radii": 1.587189258186717,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1386.5831600831605,
+     "vinf_kms": 5.923687346676164,
+     "turn_deg": 59.73775233744828,
+     "available_deg": 78.58422583616913,
+     "ratio": 0.76017485318222,
+     "required_alt_km": 5071.686113916562,
+     "rmin_radii": 1.7951673214163575,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1751.8331600831605,
+     "vinf_kms": 5.923687346676165,
+     "turn_deg": 59.73775233744837,
+     "available_deg": 78.5842258361691,
+     "ratio": 0.7601748531822213,
+     "required_alt_km": 5071.686113916528,
+     "rmin_radii": 1.7951673214163522,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2117.0831600831602,
+     "vinf_kms": 5.923687346676175,
+     "turn_deg": 59.73775233744828,
+     "available_deg": 78.5842258361691,
+     "ratio": 0.7601748531822202,
+     "required_alt_km": 5071.6861139165585,
+     "rmin_radii": 1.795167321416351,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108210556.34939748,
+   "r_max_km": 167327905.7755159,
+   "min_required_alt_km": 3553.5519526944,
+   "max_turn_deg": 92.92404972464107,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0001036236531341331,
+    "max_vinf_vector_error_kms": 1.9767270893852618e-11,
+    "max_junction_mismatch_kms": 1.603339683242666e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8754329937027963
+   },
+   "soi_fraction": 1.6814621010263689e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.924,
+     73.9
+    ],
+    [
+     "E",
+     5.924,
+     73.9
+    ],
+    [
+     "V",
+     3.582,
+     88.8
+    ],
+    [
+     "V",
+     3.582,
+     89.9
+    ],
+    [
+     "V",
+     3.582,
+     92.9
+    ]
+   ],
+   "keys": [
+    "k3|RE/2:3|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
+    "k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s"
+   ],
+   "key": "k3|RE/2:3|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 3.5824258340050203,
+    "E": 5.923687346676164
+   },
+   "x_days": [
+    365.2500000000003,
+    1156.79383004158
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 595.03933004158,
+     "vinf_kms": 3.5824258340050203,
+     "turn_deg": 92.92404972464116,
+     "available_deg": 106.14638743692558,
+     "ratio": 0.8754329937027635,
+     "required_alt_km": 3553.551952694329,
+     "rmin_radii": 1.5871892581867053,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 932.09203004158,
+     "vinf_kms": 3.582425834005021,
+     "turn_deg": 89.85011466469378,
+     "available_deg": 106.14638743692558,
+     "ratio": 0.8464735996605123,
+     "required_alt_km": 4480.0143705207565,
+     "rmin_radii": 1.7402779950627474,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1156.79383004158,
+     "vinf_kms": 3.582425834005016,
+     "turn_deg": 88.77412098686003,
+     "available_deg": 106.14638743692575,
+     "ratio": 0.8363367150823795,
+     "required_alt_km": 4822.282716931998,
+     "rmin_radii": 1.796834448747801,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1386.5831600831605,
+     "vinf_kms": 5.923687346676164,
+     "turn_deg": 73.88910664272183,
+     "available_deg": 78.58422583616913,
+     "ratio": 0.9402536686785515,
+     "required_alt_km": 1161.9453003374074,
+     "rmin_radii": 1.1821762844444086,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2117.0831600831602,
+     "vinf_kms": 5.923687346676174,
+     "turn_deg": 73.8891066427219,
+     "available_deg": 78.58422583616913,
+     "ratio": 0.9402536686785523,
+     "required_alt_km": 1161.945300337392,
+     "rmin_radii": 1.1821762844444026,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108210556.34939748,
+   "r_max_km": 167327905.7755159,
+   "min_required_alt_km": 1161.945300337392,
+   "max_turn_deg": 92.92404972464116,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0004406678019346933,
+    "max_vinf_vector_error_kms": 8.037713472573977e-11,
+    "max_junction_mismatch_kms": 1.603250865400696e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9402536686879049
+   },
+   "soi_fraction": 7.15055091849209e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.992,
+     59.7
+    ],
+    [
+     "E",
+     5.992,
+     59.7
+    ],
+    [
+     "E",
+     5.992,
+     59.7
+    ],
+    [
+     "V",
+     3.701,
+     92.4
+    ],
+    [
+     "V",
+     3.701,
+     92.4
+    ],
+    [
+     "V",
+     3.701,
+     99.9
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 3.7014223874055068,
+    "E": 5.992399780078692
+   },
+   "x_days": [
+    365.2500000000018,
+    826.3777128567551,
+    1150.1572472264074
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 601.6759128567552,
+     "vinf_kms": 3.7014223874055068,
+     "turn_deg": 92.3711321907034,
+     "available_deg": 104.13180613899831,
+     "ratio": 0.8870597333863929,
+     "required_alt_km": 3096.920879346856,
+     "rmin_radii": 1.5117354967690366,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 826.3777128567551,
+     "vinf_kms": 3.7014223874055503,
+     "turn_deg": 92.37113219070343,
+     "available_deg": 104.13180613899831,
+     "ratio": 0.8870597333863931,
+     "required_alt_km": 3096.920879346845,
+     "rmin_radii": 1.5117354967689984,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1150.1572472264074,
+     "vinf_kms": 3.7014223874055467,
+     "turn_deg": 99.85337091861808,
+     "available_deg": 104.13180613899837,
+     "ratio": 0.9589132717560925,
+     "required_alt_km": 1223.127386840446,
+     "rmin_radii": 1.2021096841997878,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1386.5831600831618,
+     "vinf_kms": 5.992399780078692,
+     "turn_deg": 59.71163584943307,
+     "available_deg": 77.79091211864777,
+     "ratio": 0.7675914091142171,
+     "required_alt_km": 4819.459961969195,
+     "rmin_radii": 1.7556218942881276,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1751.8331600831618,
+     "vinf_kms": 5.992399780078692,
+     "turn_deg": 59.71163584943307,
+     "available_deg": 77.79091211864777,
+     "ratio": 0.7675914091142171,
+     "required_alt_km": 4819.459961969195,
+     "rmin_radii": 1.7556218942881276,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2117.0831600831616,
+     "vinf_kms": 5.992399780078642,
+     "turn_deg": 59.71163584943306,
+     "available_deg": 77.79091211864889,
+     "ratio": 0.7675914091142059,
+     "required_alt_km": 4819.45996196957,
+     "rmin_radii": 1.7556218942881578,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 99600111.7058186,
+   "r_max_km": 167719992.53469598,
+   "min_required_alt_km": 1223.127386840446,
+   "max_turn_deg": 99.85337091861808,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00024616424326290233,
+    "max_vinf_vector_error_kms": 8.238942056492318e-11,
+    "max_junction_mismatch_kms": 8.042855270673499e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9589132717410641
+   },
+   "soi_fraction": 3.9944147224632455e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.992,
+     74.2
+    ],
+    [
+     "E",
+     5.992,
+     74.2
+    ],
+    [
+     "V",
+     3.701,
+     92.4
+    ],
+    [
+     "V",
+     3.701,
+     92.4
+    ],
+    [
+     "V",
+     3.701,
+     99.9
+    ]
+   ],
+   "keys": [
+    "k3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    "k3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 3.7014223874055068,
+    "E": 5.992399780078692
+   },
+   "x_days": [
+    365.2500000000018,
+    826.3777128567551,
+    1150.1572472264074
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 601.6759128567552,
+     "vinf_kms": 3.7014223874055068,
+     "turn_deg": 92.3711321907034,
+     "available_deg": 104.13180613899831,
+     "ratio": 0.8870597333863929,
+     "required_alt_km": 3096.920879346856,
+     "rmin_radii": 1.5117354967690366,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 826.3777128567551,
+     "vinf_kms": 3.7014223874055503,
+     "turn_deg": 92.37113219070343,
+     "available_deg": 104.13180613899831,
+     "ratio": 0.8870597333863931,
+     "required_alt_km": 3096.920879346845,
+     "rmin_radii": 1.5117354967689984,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1150.1572472264074,
+     "vinf_kms": 3.7014223874055467,
+     "turn_deg": 99.85337091861808,
+     "available_deg": 104.13180613899837,
+     "ratio": 0.9589132717560925,
+     "required_alt_km": 1223.127386840446,
+     "rmin_radii": 1.2021096841997878,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1386.5831600831618,
+     "vinf_kms": 5.992399780078692,
+     "turn_deg": 74.21237350143545,
+     "available_deg": 77.79091211864777,
+     "ratio": 0.9539979861432363,
+     "required_alt_km": 921.0716691778707,
+     "rmin_radii": 1.144410769034574,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2117.0831600831616,
+     "vinf_kms": 5.992399780078642,
+     "turn_deg": 74.2123735014354,
+     "available_deg": 77.79091211864889,
+     "ratio": 0.9539979861432218,
+     "required_alt_km": 921.0716691781236,
+     "rmin_radii": 1.144410769034595,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 99600111.7058186,
+   "r_max_km": 167719992.53469598,
+   "min_required_alt_km": 921.0716691778707,
+   "max_turn_deg": 99.85337091861808,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0004668062516072779,
+    "max_vinf_vector_error_kms": 8.696161498543196e-11,
+    "max_junction_mismatch_kms": 8.042855270673499e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9589132717410641
+   },
+   "soi_fraction": 7.574689724399126e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     6.245,
+     59.6
+    ],
+    [
+     "E",
+     6.245,
+     59.6
+    ],
+    [
+     "E",
+     6.245,
+     59.6
+    ],
+    [
+     "V",
+     4.34,
+     57.2
+    ],
+    [
+     "V",
+     4.34,
+     8.8
+    ],
+    [
+     "V",
+     4.34,
+     66.0
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|RV/1:1|LV>E/0s",
+    "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|RV/1:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 4.340450665458962,
+    "E": 6.24499098754335
+   },
+   "x_days": [
+    365.25,
+    609.9735250861163,
+    1141.8596349970437
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 609.9735250861163,
+     "vinf_kms": 4.340450665458962,
+     "turn_deg": 65.98180231196476,
+     "available_deg": 93.90734116833707,
+     "ratio": 0.7026266689170407,
+     "required_alt_km": 8372.839711724064,
+     "rmin_radii": 2.3835288198096083,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 917.1578349970438,
+     "vinf_kms": 4.3404506654590005,
+     "turn_deg": 8.792617195375371,
+     "available_deg": 93.90734116833588,
+     "ratio": 0.09363077567720667,
+     "required_alt_km": 201654.4222920395,
+     "rmin_radii": 34.32139566608933,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1141.8596349970437,
+     "vinf_kms": 4.340450665458955,
+     "turn_deg": 57.1891851165892,
+     "available_deg": 93.90734116833724,
+     "ratio": 0.6089958932398322,
+     "required_alt_km": 12733.035189036025,
+     "rmin_radii": 3.1040079297127536,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1386.58316008316,
+     "vinf_kms": 6.24499098754335,
+     "turn_deg": 59.64234349859951,
+     "available_deg": 74.94976103817442,
+     "ratio": 0.7957642916062356,
+     "required_alt_km": 3953.615098008725,
+     "rmin_radii": 1.6198698927302322,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1751.83316008316,
+     "vinf_kms": 6.24499098754335,
+     "turn_deg": 59.64234349859952,
+     "available_deg": 74.94976103817442,
+     "ratio": 0.7957642916062359,
+     "required_alt_km": 3953.615098008725,
+     "rmin_radii": 1.6198698927302322,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2117.0831600831602,
+     "vinf_kms": 6.244990987543356,
+     "turn_deg": 59.64234349859957,
+     "available_deg": 74.94976103817442,
+     "ratio": 0.7957642916062365,
+     "required_alt_km": 3953.615098008707,
+     "rmin_radii": 1.6198698927302262,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 90838510.80411266,
+   "r_max_km": 168803291.67520073,
+   "min_required_alt_km": 3953.615098008707,
+   "max_turn_deg": 65.98180231196476,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00036450636177222124,
+    "max_vinf_vector_error_kms": 9.912723746586489e-11,
+    "max_junction_mismatch_kms": 5.934630564752297e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7957642916061396
+   },
+   "soi_fraction": 5.914707833255393e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     6.264,
+     16.7
+    ],
+    [
+     "E",
+     6.264,
+     16.7
+    ],
+    [
+     "V",
+     6.127,
+     7.8
+    ],
+    [
+     "V",
+     6.127,
+     59.7
+    ],
+    [
+     "V",
+     6.127,
+     59.7
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+    "k3|RE/1:1|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.126868239008418,
+    "E": 6.263673982398454
+   },
+   "x_days": [
+    404.18697435903175,
+    644.3739440311007,
+    1722.1017041142607
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 644.3739440311007,
+     "vinf_kms": 6.126868239008418,
+     "turn_deg": 7.830827560795824,
+     "available_deg": 70.43902328892618,
+     "ratio": 0.1111717226497506,
+     "required_alt_km": 112030.28595125268,
+     "rmin_radii": 19.511894965340833,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1272.6981041142606,
+     "vinf_kms": 6.126868239008494,
+     "turn_deg": 59.73896383451186,
+     "available_deg": 70.43902328892447,
+     "ratio": 0.8480947214369589,
+     "required_alt_km": 2670.8132085325205,
+     "rmin_radii": 1.4413254252507552,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1722.1017041142607,
+     "vinf_kms": 6.1268682390084255,
+     "turn_deg": 59.73896383451186,
+     "available_deg": 70.439023288926,
+     "ratio": 0.8480947214369406,
+     "required_alt_km": 2670.813208532908,
+     "rmin_radii": 1.4413254252507874,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1790.7701344421919,
+     "vinf_kms": 6.263673982398454,
+     "turn_deg": 16.695619506018993,
+     "available_deg": 74.74424572391123,
+     "ratio": 0.22336996439416792,
+     "required_alt_km": 53441.10337027581,
+     "rmin_radii": 9.37879515135467,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2156.020134442192,
+     "vinf_kms": 6.263673982398522,
+     "turn_deg": 16.695619506017906,
+     "available_deg": 74.74424572391123,
+     "ratio": 0.2233699643941534,
+     "required_alt_km": 53441.10337028032,
+     "rmin_radii": 9.378795151355169,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 102098264.7980049,
+   "r_max_km": 178040760.19577092,
+   "min_required_alt_km": 2670.8132085325205,
+   "max_turn_deg": 59.73896383451186,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0003621120769714086,
+    "max_vinf_vector_error_kms": 9.674900714884383e-11,
+    "max_junction_mismatch_kms": 8.890577163356284e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8480947214472383
+   },
+   "soi_fraction": 5.87585667302445e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     8.012,
+     21.8
+    ],
+    [
+     "E",
+     8.012,
+     21.8
+    ],
+    [
+     "V",
+     10.932,
+     9.3
+    ],
+    [
+     "V",
+     10.932,
+     14.2
+    ],
+    [
+     "V",
+     10.932,
+     23.5
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s",
+    "k3|RE/1:1|LE>V/0s|RV/3:2|LV>V/1l|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 10.9319376214333,
+    "E": 8.011994836033171
+   },
+   "x_days": [
+    547.5969022070199,
+    597.6931769759217,
+    1778.7965570094584
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 597.6931769759217,
+     "vinf_kms": 10.9319376214333,
+     "turn_deg": 23.489722486334855,
+     "available_deg": 34.87920758593551,
+     "ratio": 0.6734591784650151,
+     "required_alt_km": 4584.165478360338,
+     "rmin_radii": 1.7574879338973874,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1104.6911570094585,
+     "vinf_kms": 10.931937621433242,
+     "turn_deg": 14.230308658595167,
+     "available_deg": 34.87920758593548,
+     "ratio": 0.40798830144103754,
+     "required_alt_km": 13175.873726831174,
+     "rmin_radii": 3.177182611261306,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1778.7965570094584,
+     "vinf_kms": 10.931937621433248,
+     "turn_deg": 9.259413827739591,
+     "available_deg": 34.879207585935475,
+     "ratio": 0.2654708770239756,
+     "required_alt_km": 24907.543020579073,
+     "rmin_radii": 5.1157247464521385,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1934.18006229018,
+     "vinf_kms": 8.011994836033171,
+     "turn_deg": 21.81234927661541,
+     "available_deg": 58.101757091234035,
+     "ratio": 0.37541634485106296,
+     "required_alt_km": 20231.89966941138,
+     "rmin_radii": 4.1720704132588216,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2299.43006229018,
+     "vinf_kms": 8.011994836033193,
+     "turn_deg": 21.81234927661541,
+     "available_deg": 58.101757091234035,
+     "ratio": 0.37541634485106296,
+     "required_alt_km": 20231.89966941138,
+     "rmin_radii": 4.1720704132587985,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 98055417.61015216,
+   "r_max_km": 252237333.32000524,
+   "min_required_alt_km": 4584.165478360338,
+   "max_turn_deg": 23.489722486334855,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0022263181325626077,
+    "max_vinf_vector_error_kms": 5.505821063499774e-10,
+    "max_junction_mismatch_kms": 4.849596280109836e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6734591784643225
+   },
+   "soi_fraction": 3.61256281892145e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     9.428,
+     0.0
+    ],
+    [
+     "E",
+     9.428,
+     4.1
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ],
+    [
+     "E",
+     9.428,
+     4.1
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "x_days": [
+    167.04133190949312,
+    484.1930770275822,
+    1123.6267901495576
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 484.1930770275822,
+     "vinf_kms": 5.238915223575792,
+     "turn_deg": 61.444119206224876,
+     "available_deg": 81.19927041384805,
+     "ratio": 0.7567077745041653,
+     "required_alt_km": 5280.516069184342,
+     "rmin_radii": 1.8725529708820072,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1123.6267901495576,
+     "vinf_kms": 5.238915223575807,
+     "turn_deg": 61.444119206222226,
+     "available_deg": 81.19927041384796,
+     "ratio": 0.7567077745041336,
+     "required_alt_km": 5280.51606918521,
+     "rmin_radii": 1.8725529708821451,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1188.3744919926532,
+     "vinf_kms": 9.427994529973164,
+     "turn_deg": 4.13565481842421,
+     "available_deg": 47.82803385666481,
+     "ratio": 0.08646926258391258,
+     "required_alt_km": 113417.66246026244,
+     "rmin_radii": 18.782255611671943,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1553.6244919926532,
+     "vinf_kms": 9.427994529973162,
+     "turn_deg": 0.00037025437437074906,
+     "available_deg": 47.82803385666482,
+     "ratio": 7.741367238309635e-06,
+     "required_alt_km": 1387867979.288709,
+     "rmin_radii": 217598.70592709267,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1918.8744919926532,
+     "vinf_kms": 9.427994529973084,
+     "turn_deg": 4.13565481842421,
+     "available_deg": 47.828033856665826,
+     "ratio": 0.08646926258391073,
+     "required_alt_km": 113417.66246026648,
+     "rmin_radii": 18.782255611672262,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 105706424.74389367,
+   "r_max_km": 205504647.16079184,
+   "min_required_alt_km": 5280.516069184342,
+   "max_turn_deg": 61.444119206224876,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00014437402691947992,
+    "max_vinf_vector_error_kms": 3.91947541029553e-11,
+    "max_junction_mismatch_kms": 2.892974748647248e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7567077745092536
+   },
+   "soi_fraction": 2.342703111647996e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     9.428,
+     30.2
+    ],
+    [
+     "E",
+     9.428,
+     30.2
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ]
+   ],
+   "keys": [
+    "k3|RE/2:1|LE>V/0s|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/2:1|LE>V/0s|LV>V/1h|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "x_days": [
+    167.04133190949312,
+    484.1930770275822,
+    1123.6267901495576
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 484.1930770275822,
+     "vinf_kms": 5.238915223575792,
+     "turn_deg": 61.444119206224876,
+     "available_deg": 81.19927041384805,
+     "ratio": 0.7567077745041653,
+     "required_alt_km": 5280.516069184342,
+     "rmin_radii": 1.8725529708820072,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1123.6267901495576,
+     "vinf_kms": 5.238915223575807,
+     "turn_deg": 61.444119206222226,
+     "available_deg": 81.19927041384796,
+     "ratio": 0.7567077745041336,
+     "required_alt_km": 5280.51606918521,
+     "rmin_radii": 1.8725529708821451,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1188.3744919926532,
+     "vinf_kms": 9.427994529973164,
+     "turn_deg": 30.20072843391069,
+     "available_deg": 47.82803385666481,
+     "ratio": 0.6314440715756547,
+     "required_alt_km": 6351.193881168646,
+     "rmin_radii": 1.9957757071020341,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1918.8744919926532,
+     "vinf_kms": 9.427994529973084,
+     "turn_deg": 30.200728433911348,
+     "available_deg": 47.828033856665826,
+     "ratio": 0.6314440715756551,
+     "required_alt_km": 6351.193881168711,
+     "rmin_radii": 1.9957757071020106,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 105706424.74389367,
+   "r_max_km": 205504647.16079184,
+   "min_required_alt_km": 5280.516069184342,
+   "max_turn_deg": 61.444119206224876,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00251449780964714,
+    "max_vinf_vector_error_kms": 3.6267898145984845e-10,
+    "max_junction_mismatch_kms": 3.3998759363385034e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7567077745092536
+   },
+   "soi_fraction": 4.0801811576384106e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     9.428,
+     35.5
+    ],
+    [
+     "E",
+     9.428,
+     35.5
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ],
+    [
+     "V",
+     5.239,
+     61.4
+    ]
+   ],
+   "keys": [
+    "k3|RE/2:3|LE>V/0s|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|RE/2:3|LE>V/0s|LV>V/1h|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "x_days": [
+    167.04133190949312,
+    484.1930770275822,
+    1123.6267901495576
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 484.1930770275822,
+     "vinf_kms": 5.238915223575792,
+     "turn_deg": 61.444119206224876,
+     "available_deg": 81.19927041384805,
+     "ratio": 0.7567077745041653,
+     "required_alt_km": 5280.516069184342,
+     "rmin_radii": 1.8725529708820072,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1123.6267901495576,
+     "vinf_kms": 5.238915223575807,
+     "turn_deg": 61.444119206222226,
+     "available_deg": 81.19927041384796,
+     "ratio": 0.7567077745041336,
+     "required_alt_km": 5280.51606918521,
+     "rmin_radii": 1.8725529708821451,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1188.3744919926532,
+     "vinf_kms": 9.427994529973164,
+     "turn_deg": 35.46048561591439,
+     "available_deg": 47.82803385666481,
+     "ratio": 0.7414163359126459,
+     "required_alt_km": 3862.6989827165553,
+     "rmin_radii": 1.6056155555637257,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1918.8744919926532,
+     "vinf_kms": 9.427994529973084,
+     "turn_deg": 35.46048561591374,
+     "available_deg": 47.828033856665826,
+     "ratio": 0.7414163359126164,
+     "required_alt_km": 3862.6989827171665,
+     "rmin_radii": 1.6056155555637945,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 105706424.74389367,
+   "r_max_km": 205504647.16079184,
+   "min_required_alt_km": 3862.6989827165553,
+   "max_turn_deg": 61.444119206224876,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0009130532709244296,
+    "max_vinf_vector_error_kms": 2.5283245549513266e-10,
+    "max_junction_mismatch_kms": 3.26263460692644e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7567077745092536
+   },
+   "soi_fraction": 1.4815772507945693e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     11.065,
+     0.0
+    ],
+    [
+     "V",
+     5.972,
+     53.5
+    ],
+    [
+     "V",
+     5.972,
+     53.5
+    ],
+    [
+     "V",
+     5.972,
+     56.1
+    ]
+   ],
+   "keys": [
+    "k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 5.972404467930978,
+    "E": 11.064592191188249
+   },
+   "x_days": [
+    13.371852756963422,
+    1073.782370566823,
+    1703.8801679336148
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 399.676970566823,
+     "vinf_kms": 5.972404467930978,
+     "turn_deg": 53.470346374951966,
+     "available_deg": 72.18998957729445,
+     "ratio": 0.7406892103468279,
+     "required_alt_km": 5085.473667656864,
+     "rmin_radii": 1.840324146147735,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1073.782370566823,
+     "vinf_kms": 5.972404467930932,
+     "turn_deg": 53.47034637495182,
+     "available_deg": 72.18998957729552,
+     "ratio": 0.7406892103468151,
+     "required_alt_km": 5085.473667657251,
+     "rmin_radii": 1.8403241461477708,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1703.8801679336148,
+     "vinf_kms": 5.9724044679308905,
+     "turn_deg": 56.07266068650328,
+     "available_deg": 72.18998957729552,
+     "ratio": 0.7767373428758425,
+     "required_alt_km": 4216.991153716447,
+     "rmin_radii": 1.6968160140315993,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1765.2050128401236,
+     "vinf_kms": 11.064592191188249,
+     "turn_deg": 0.0,
+     "available_deg": 38.66900650661,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 104097795.0020358,
+   "r_max_km": 235213857.0715215,
+   "min_required_alt_km": 4216.991153716447,
+   "max_turn_deg": 56.07266068650328,
+   "cross_check": {
+    "max_arrival_miss_km": 0.000659954587892172,
+    "max_vinf_vector_error_kms": 1.6991125577512605e-10,
+    "max_junction_mismatch_kms": 5.1743498374889896e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7767373428802181
+   },
+   "soi_fraction": 1.0708835235742496e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     11.122,
+     0.0
+    ],
+    [
+     "V",
+     6.127,
+     39.8
+    ],
+    [
+     "V",
+     6.127,
+     1.0
+    ],
+    [
+     "V",
+     6.127,
+     68.9
+    ]
+   ],
+   "keys": [
+    "k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.126868239007952,
+    "E": 11.121552938864003
+   },
+   "x_days": [
+    569.410346480387,
+    627.374537683054,
+    1929.804097766214
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 627.374537683054,
+     "vinf_kms": 6.126868239007952,
+     "turn_deg": 68.91626066081795,
+     "available_deg": 70.43902328893108,
+     "ratio": 0.9783818321576243,
+     "required_alt_km": 589.2592692598537,
+     "rmin_radii": 1.097369256958218,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1255.6986977662139,
+     "vinf_kms": 6.126868239008001,
+     "turn_deg": 0.9875800859827635,
+     "available_deg": 70.43902328892997,
+     "ratio": 0.014020354625473196,
+     "required_alt_km": 989454.2820958651,
+     "rmin_radii": 164.49751844011124,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1929.804097766214,
+     "vinf_kms": 6.126868239007949,
+     "turn_deg": 39.833740098284345,
+     "available_deg": 70.43902328893114,
+     "ratio": 0.5655067069128975,
+     "required_alt_km": 10698.112176081086,
+     "rmin_radii": 2.767757060061601,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2321.2435065635473,
+     "vinf_kms": 11.121552938864003,
+     "turn_deg": 0.0,
+     "available_deg": 38.39340077200448,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 103741037.34093358,
+   "r_max_km": 235599659.57669127,
+   "min_required_alt_km": 589.2592692598537,
+   "max_turn_deg": 68.91626066081795,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0003637214182811273,
+    "max_vinf_vector_error_kms": 6.938772125477087e-11,
+    "max_junction_mismatch_kms": 4.842348744205083e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9783818321528814
+   },
+   "soi_fraction": 5.901970850030016e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     11.122,
+     0.0
+    ],
+    [
+     "V",
+     6.127,
+     40.8
+    ],
+    [
+     "V",
+     6.127,
+     58.8
+    ],
+    [
+     "V",
+     6.127,
+     58.8
+    ]
+   ],
+   "keys": [
+    "k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.126868239008016,
+    "E": 11.121552938864074
+   },
+   "x_days": [
+    569.4103464803867,
+    1301.4799376830522,
+    1929.8040977662122
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 627.3745376830523,
+     "vinf_kms": 6.126868239008016,
+     "turn_deg": 58.76207222020474,
+     "available_deg": 70.4390232889298,
+     "ratio": 0.8342261075820424,
+     "required_alt_km": 2933.2802935492427,
+     "rmin_radii": 1.484695511013127,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1301.4799376830522,
+     "vinf_kms": 6.126868239008251,
+     "turn_deg": 58.76207222020472,
+     "available_deg": 70.4390232889298,
+     "ratio": 0.8342261075820421,
+     "required_alt_km": 2933.28029354925,
+     "rmin_radii": 1.4846955110130144,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1929.8040977662122,
+     "vinf_kms": 6.126868239008258,
+     "turn_deg": 40.82132018426299,
+     "available_deg": 70.43902328892975,
+     "ratio": 0.5795270615383235,
+     "required_alt_km": 10108.805551039186,
+     "rmin_radii": 2.6703799780293376,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2321.243506563547,
+     "vinf_kms": 11.121552938864074,
+     "turn_deg": 0.0,
+     "available_deg": 38.39340077200411,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 103741037.34093332,
+   "r_max_km": 235599659.57669264,
+   "min_required_alt_km": 2933.2802935492427,
+   "max_turn_deg": 58.76207222020474,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0006133550017226876,
+    "max_vinf_vector_error_kms": 1.57789356257872e-10,
+    "max_junction_mismatch_kms": 4.7488235566106596e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8342261075792186
+   },
+   "soi_fraction": 9.952681252577328e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     17.034,
+     0.0
+    ],
+    [
+     "V",
+     13.716,
+     12.4
+    ],
+    [
+     "V",
+     13.716,
+     11.8
+    ],
+    [
+     "V",
+     13.716,
+     24.2
+    ]
+   ],
+   "keys": [
+    "k3|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+    "k3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 13.716254346055747,
+    "E": 17.03381868807729
+   },
+   "x_days": [
+    29.89612262770156,
+    550.9564045580588,
+    1123.0361842567115
+   ],
+   "period_days": 1751.83316008316,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 101.55280455805878,
+     "vinf_kms": 13.716254346055747,
+     "turn_deg": 12.384543593521814,
+     "available_deg": 24.683544139701112,
+     "ratio": 0.5017327950730731,
+     "required_alt_km": 8229.644939411104,
+     "rmin_radii": 2.359867302192918,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 550.9564045580588,
+     "vinf_kms": 13.716254346055768,
+     "turn_deg": 11.839753138206623,
+     "available_deg": 24.683544139701112,
+     "ratio": 0.47966179699306294,
+     "required_alt_km": 8963.432892838478,
+     "rmin_radii": 2.481118492487926,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1123.0361842567115,
+     "vinf_kms": 13.71625434605582,
+     "turn_deg": 24.22429673172784,
+     "available_deg": 24.683544139701045,
+     "ratio": 0.9813945920661146,
+     "required_alt_km": 450.80023272718245,
+     "rmin_radii": 1.0744902727663068,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1781.7292827108615,
+     "vinf_kms": 17.03381868807729,
+     "turn_deg": 0.0,
+     "available_deg": 19.896627718172937,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 81455389.8914592,
+   "r_max_km": 360429761.23496276,
+   "min_required_alt_km": 450.80023272718245,
+   "max_turn_deg": 24.22429673172784,
+   "cross_check": {
+    "max_arrival_miss_km": 0.011885738372423871,
+    "max_vinf_vector_error_kms": 3.3015072963633927e-09,
+    "max_junction_mismatch_kms": 3.0519462512756945e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9813945920485204
+   },
+   "soi_fraction": 1.9286541259142774e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  }
+ ]
+}
