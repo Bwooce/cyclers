@@ -1832,6 +1832,37 @@ R-O 2.5.1.+0: a blind recovery that met every pre-registered criterion. The Byrn
 mismatch stays on record. em-1..em-5 are no longer conditional on a control gap; they remain
 "candidate, pending owner adjudication, NOT novel", with rung (d) not passed (6.40).
 
+### 6.48 Anchored shoot (Newton homotopy at the first length): PRE-REGISTERED 2026-10-06, before the runs
+
+Why (lead's reading of the 6.46a ge runs, which are NOT recorded as negatives):
+- At lambda = 1 the blend's minimax solution passes the gate (ge-1 at 5/5 epochs, worst 0.31-0.33;
+  ge-2 at 4/5; ge-3 at 5/5). But the shoot is not anchored to it.
+- The full-rev legs' free directions let LM jump to other, gate-failing closures: ge-1 at 5.8-118,
+  ge-3 at 2.2-3.4; ge-2 found no closure beyond 2-5 cycles.
+- This is a tool limitation, not a verdict on the candidates.
+
+Method (`--shoot-homotopy N`; with `--grow-chain --grow-from-one --shoot-rel-time --direct`):
+- At the FIRST length (k = 1) each restart solves residual(y) = (1 - mu) residual(seed) for mu = 0 ->
+  1 in N = 10 steps, each step from the last solution. The step doubles back to 1/N after a success
+  and halves on failure down to 1/640.
+- The seed is the phase-1 solution: the dates and the fixed-leg minimax directions at lambda = 1. So
+  the closure reached is the one continuously connected to the seed, not wherever LM lands.
+- Longer chains (k >= 2) are seeded by the previous closure, and the plain shoot tracks them (6.35).
+- A homotopy path that stops counts as no closure for that restart.
+- Validation, C4@2013 (not a verdict): with the homotopy at every k, k = 2 stopped at mu = 0.69. With
+  the homotopy at k = 1 only (this method) the slice closes k = 1 (pass 0.964), k = 2 (0.973) and
+  k = 3 (0.974) at restart 0.
+- Unchanged: the restarts (20, sigma 0.03/0.05 rad), the closure threshold, the gate, the re-fly.
+
+Runs (lead launches), controls first:
+1. C4@2013, 10 cycles. Must close with re-fly < 1 km (6.45); the gate is recorded.
+2. GanEur#316@2019, 10 cycles. Must close with re-fly < 1 km; it passed the gate before (6.38), so a
+   gate pass is expected.
+3. Then ge-1, ge-2, ge-3 (6.46 candidates, 5 epochs). Judged by the 6.46 rule: closure, gate PASS at
+   every interior flyby, and re-fly < 1 km, at >= 1 epoch.
+
+The C4 `grow1` run (6.46a control without the homotopy) is still running and is reported separately.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

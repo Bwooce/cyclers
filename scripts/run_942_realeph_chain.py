@@ -505,15 +505,24 @@ def gate_eval(sysm: Blend, ev: ChainEval) -> dict:
 
 
 def shoot_once(
-    shoot_sys: Any, legs_c: tuple, x_base: float, ys: np.ndarray, args: Any, label: str
+    shoot_sys: Any,
+    legs_c: tuple,
+    x_base: float,
+    ys: np.ndarray,
+    args: Any,
+    label: str,
+    offset: np.ndarray | None = None,
 ) -> tuple[np.ndarray, ChainEval | None, int, float]:
     """One LM shoot of a chain from ``ys`` (dates, period, fixed-leg parameters), with the
-    sparse or dense forward-difference Jacobian and the Gauss-Newton polish of near-closures."""
+    sparse or dense forward-difference Jacobian and the Gauss-Newton polish of near-closures.
+    With ``offset`` it solves residual(y) = offset (a step of the Newton homotopy)."""
     t_r = time.time()
     prog = {"n": 0, "best": math.inf, "t_beat": t_r}
 
     def fun(yy: np.ndarray) -> np.ndarray:
         out_r = _res(shoot_sys, legs_c, x_base, yy)
+        if offset is not None:
+            out_r = out_r - offset
         prog["n"] += 1
         prog["best"] = min(prog["best"], float(np.max(np.abs(out_r))))
         if time.time() - prog["t_beat"] > 60.0:
@@ -575,6 +584,35 @@ def shoot_once(
     return x_sol, chain_eval(shoot_sys, legs_c, x_base, x_sol), int(sol.nfev), time.time() - t_r
 
 
+def shoot_homotopy(
+    shoot_sys: Any, legs_c: tuple, x_base: float, ys: np.ndarray, args: Any, label: str
+) -> tuple[np.ndarray, ChainEval | None, int, float]:
+    """Newton homotopy from the seed (note 6.48): solve residual(y) = (1 - mu) residual(seed)
+    for mu = 0 -> 1, each step from the last solution, so the closure reached is the one
+    continuously connected to the seed's dates and directions, not whichever LM lands on.
+    Step 1 / --shoot-homotopy, halved on failure down to 1/640; a failed path returns its last
+    point (no closure)."""
+    t0 = time.time()
+    r0 = _res(shoot_sys, legs_c, x_base, ys)
+    y = np.array(ys, dtype=float)
+    mu, dmu, nfev = 0.0, 1.0 / args.shoot_homotopy, 0
+    while mu < 1.0:
+        mu_try = min(1.0, mu + dmu)
+        off = (1.0 - mu_try) * r0
+        y_try, _, n, _ = shoot_once(shoot_sys, legs_c, x_base, y, args, label, offset=off)
+        nfev += n
+        f_try = _res(shoot_sys, legs_c, x_base, y_try) - off
+        if float(np.max(np.abs(f_try))) < 1e-6:
+            y, mu = y_try, mu_try
+            dmu = min(2.0 * dmu, 1.0 / args.shoot_homotopy)
+        else:
+            dmu /= 2.0
+            if dmu < 1.0 / 640:
+                print(f"  homotopy {label}: stopped at mu = {mu:.4f}", flush=True)
+                break
+    return y, chain_eval(shoot_sys, legs_c, x_base, y), nfev, time.time() - t0
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--cell", required=True)
@@ -605,6 +643,12 @@ def main() -> None:
         "--grow-chain",
         action="store_true",
         help="chain-length continuation 1 -> n cycles in the shoot (note 6.35)",
+    )
+    ap.add_argument(
+        "--shoot-homotopy",
+        type=int,
+        default=0,
+        help="Newton-homotopy steps from the seed to closure (0 = plain shoot; note 6.48)",
     )
     ap.add_argument(
         "--grow-from-one",
@@ -789,6 +833,7 @@ def main() -> None:
                 sig_ph: float = sig_ph,
                 to_abs: Any = to_abs,
                 n_full: int = len(y_s) + len(fixed0),
+                use_hom: bool = True,
             ) -> tuple[tuple[dict[str, Any], np.ndarray] | None, list[dict[str, Any]]]:
                 """Restart 0 from the seed, then perturbed seeds; the gate-best closure."""
                 best_c: tuple[dict[str, Any], np.ndarray] | None = None
@@ -798,7 +843,8 @@ def main() -> None:
                     if r > 0:
                         f0[0::3] += rng.normal(0.0, sig_th, f0[0::3].size)
                         f0[1::3] += rng.normal(0.0, sig_ph, f0[1::3].size)
-                    x_sol, ev, nfev, t_used = shoot_once(
+                    shoot_fn = shoot_homotopy if (args.shoot_homotopy and use_hom) else shoot_once
+                    x_sol, ev, nfev, t_used = shoot_fn(
                         shoot_sys, legs_c, x_base, np.concatenate([y_c, f0]), args, f"{label}{r}"
                     )
                     worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
@@ -852,8 +898,14 @@ def main() -> None:
                 for k in range(1, args.n_cycles + 1):
                     legs_k = one_legs * k
                     nd_k = k * nl_c - 1
+                    # The homotopy anchors the first length to the phase-1 seed; longer chains are
+                    # seeded by the previous closure, which the plain shoot tracks (note 6.48).
                     best_k, tried_k = run_restarts(
-                        legs_k, seed[: nd_k + 1], seed[nd_k + 1 :], f"k={k} restart "
+                        legs_k,
+                        seed[: nd_k + 1],
+                        seed[nd_k + 1 :],
+                        f"k={k} restart ",
+                        use_hom=k == 1,
                     )
                     grow.append(
                         {
