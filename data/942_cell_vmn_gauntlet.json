@@ -1,0 +1,1299 @@
+{
+ "cell": "vm",
+ "n_structures": 8616,
+ "n_zeros": 8036,
+ "n_physical": 1707,
+ "n_gate_passing": 14,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "jones-2017-vem-triple-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     null
+    ],
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "vem-emeeve-3syn",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "jones-2017-vem-emevve-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.72
+    ],
+    [
+     "M",
+     2.5
+    ],
+    [
+     "E",
+     5.81
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "E",
+     4.21
+    ],
+    [
+     "M",
+     2.79
+    ],
+    [
+     "E",
+     5.04
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "E",
+     5.67
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "jones-2017-vem-meevem-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "M",
+     3.85
+    ],
+    [
+     "E",
+     3.48
+    ],
+    [
+     "E",
+     3.42
+    ],
+    [
+     "V",
+     5.16
+    ],
+    [
+     "E",
+     3.84
+    ],
+    [
+     "M",
+     3.12
+    ],
+    [
+     "E",
+     2.98
+    ],
+    [
+     "E",
+     2.92
+    ],
+    [
+     "V",
+     4.31
+    ],
+    [
+     "E",
+     4.97
+    ],
+    [
+     "M",
+     2.42
+    ]
+   ],
+   "k": 2
+  }
+ ],
+ "empty_regions_same_pair": [
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133",
+  "heliocentric-venus-mars-one-working-body-rs2007-ideal-k1-3-942",
+  "heliocentric-venus-mars-two-working-body-rs2007-ideal-k1-3-942",
+  "vm2-1-venus-mars-two-working-body-realeph-chain-negative-942",
+  "heliocentric-venus-mars-two-working-body-rs2007-ideal-k1-3-942-reassessed-halfrev-rule"
+ ],
+ "candidates": [
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "V",
+     8.22,
+     18.1
+    ]
+   ],
+   "keys": [
+    "k2|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k2|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 12.96475955374864,
+    "V": 8.219573173685143
+   },
+   "x_days": [
+    279.77233937432425,
+    392.73120550751946
+   ],
+   "period_days": 667.8466791414623,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 392.73120550751946,
+     "vinf_kms": 12.96475955374864,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 947.6190185157867,
+     "vinf_kms": 8.219573173685143,
+     "turn_deg": 18.054873543334104,
+     "available_deg": 51.042160430225536,
+     "ratio": 0.3537247128873994,
+     "required_alt_km": 19784.252176930248,
+     "rmin_radii": 4.26904365117816,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108208887.24573702,
+   "r_max_km": 341571415.5508685,
+   "min_required_alt_km": 19784.252176930248,
+   "max_turn_deg": 18.054873543334104,
+   "cross_check": {
+    "max_arrival_miss_km": 0.015141188765739475,
+    "max_vinf_vector_error_kms": 4.072687873989771e-09,
+    "max_junction_mismatch_kms": 1.195024523781285e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3537247134191088
+   },
+   "soi_fraction": 2.6230372993072856e-08,
+   "collisions": [
+    "LITERAL VenMar#45 (dV_inf 0.005, period 667.8 vs 667.8)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "V",
+     41.813,
+     3.1
+    ],
+    [
+     "V",
+     41.813,
+     3.1
+    ]
+   ],
+   "keys": [
+    "k2|LV>V/1l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k2|LV>V/1l|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 41.81251544058617,
+    "M": 20.779058950673964
+   },
+   "x_days": [
+    316.2780328582799,
+    729.7306635289985,
+    915.4906540806105
+   ],
+   "period_days": 667.8466791414623,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 729.7306635289985,
+     "vinf_kms": 41.81251544058617,
+     "turn_deg": 3.0507923100196774,
+     "available_deg": 3.2573322233148287,
+     "ratio": 0.9365923095541768,
+     "required_alt_km": 742.4974510199854,
+     "rmin_radii": 1.1226862939557147,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 915.4906540806105,
+     "vinf_kms": 20.779058950673964,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 984.1247119997423,
+     "vinf_kms": 41.81251544058621,
+     "turn_deg": 3.0507923100196774,
+     "available_deg": 3.257332223314827,
+     "ratio": 0.9365923095541774,
+     "required_alt_km": 742.4974510199818,
+     "rmin_radii": 1.1226862939557123,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 10273332.202016354,
+   "r_max_km": 291149335.31052953,
+   "min_required_alt_km": 742.4974510199818,
+   "max_turn_deg": 3.0507923100196774,
+   "cross_check": {
+    "max_arrival_miss_km": 0.009424777502321322,
+    "max_vinf_vector_error_kms": 2.876931032175361e-09,
+    "max_junction_mismatch_kms": 2.5146462689917826e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.936592310142186
+   },
+   "soi_fraction": 1.6327346094647027e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     6.028,
+     18.5
+    ],
+    [
+     "V",
+     6.028,
+     18.5
+    ]
+   ],
+   "keys": [
+    "k4|LV>V/1h|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k4|LV>V/1h|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 6.0276554973320575,
+    "M": 5.870981253490964
+   },
+   "x_days": [
+    49.47538215150154,
+    942.187028252898,
+    1117.6733447925735
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 942.187028252898,
+     "vinf_kms": 6.0276554973320575,
+     "turn_deg": 18.475518992361973,
+     "available_deg": 71.55710185881253,
+     "ratio": 0.258192667288504,
+     "required_alt_km": 40704.595485798374,
+     "rmin_radii": 7.725808903775091,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1117.6733447925735,
+     "vinf_kms": 5.870981253490964,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 1385.1687404344264,
+     "vinf_kms": 6.027655497332022,
+     "turn_deg": 18.475518992359223,
+     "available_deg": 71.55710185881316,
+     "ratio": 0.25819266728846324,
+     "required_alt_km": 40704.59548580748,
+     "rmin_radii": 7.725808903776542,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108102905.99884133,
+   "r_max_km": 235211586.3014648,
+   "min_required_alt_km": 40704.595485798374,
+   "max_turn_deg": 18.475518992361973,
+   "cross_check": {
+    "max_arrival_miss_km": 0.01952499640683558,
+    "max_vinf_vector_error_kms": 5.3703509641235e-09,
+    "max_junction_mismatch_kms": 8.870904011359926e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.25819266799251916
+   },
+   "soi_fraction": 3.382481695219073e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     6.208,
+     17.3
+    ],
+    [
+     "V",
+     6.208,
+     17.3
+    ],
+    [
+     "V",
+     6.208,
+     17.3
+    ]
+   ],
+   "keys": [
+    "k4|RV/2:1|RV/2:1|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k4|RV/2:1|RV/2:1|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 5.871486081935051,
+    "V": 6.207900358791202
+   },
+   "x_days": [
+    287.4382785769748,
+    551.3296446884923
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 551.3296446884923,
+     "vinf_kms": 5.871486081935051,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 724.3282572302699,
+     "vinf_kms": 6.207900358791202,
+     "turn_deg": 17.342803743776177,
+     "available_deg": 69.539010839059,
+     "ratio": 0.24939675636045988,
+     "required_alt_km": 41429.66424105198,
+     "rmin_radii": 7.845615373604094,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1173.7299470450846,
+     "vinf_kms": 6.2079003587912025,
+     "turn_deg": 17.342803743776177,
+     "available_deg": 69.539010839059,
+     "ratio": 0.24939675636045988,
+     "required_alt_km": 41429.66424105198,
+     "rmin_radii": 7.84561537360409,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1623.1316368598993,
+     "vinf_kms": 6.2079003587912,
+     "turn_deg": 17.34280374377616,
+     "available_deg": 69.53901083905907,
+     "ratio": 0.24939675636045938,
+     "required_alt_km": 41429.66424105213,
+     "rmin_radii": 7.845615373604107,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108104539.20991956,
+   "r_max_km": 235437263.68246314,
+   "min_required_alt_km": 41429.66424105198,
+   "max_turn_deg": 17.342803743776177,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0007932236623316367,
+    "max_vinf_vector_error_kms": 2.204024702881176e-10,
+    "max_junction_mismatch_kms": 3.849809360190193e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.24939675636641787
+   },
+   "soi_fraction": 1.374169020134658e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     6.221,
+     0.5
+    ],
+    [
+     "V",
+     6.221,
+     35.9
+    ]
+   ],
+   "keys": [
+    "k4|LV>V/1h|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k4|LV>V/1h|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 6.221385132223641,
+    "M": 5.997548908925045
+   },
+   "x_days": [
+    45.78930692843774,
+    932.0809753965469,
+    1113.473682431722
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 932.0809753965469,
+     "vinf_kms": 6.221385132223641,
+     "turn_deg": 0.45755446663182814,
+     "available_deg": 69.39067740524116,
+     "ratio": 0.006593889607961494,
+     "required_alt_km": 2087556.5380598844,
+     "rmin_radii": 345.93663880677593,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1113.473682431722,
+     "vinf_kms": 5.997548908925045,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1381.4826652113625,
+     "vinf_kms": 6.221385132223571,
+     "turn_deg": 35.85583786668425,
+     "available_deg": 69.39067740524116,
+     "ratio": 0.5167241365477145,
+     "required_alt_km": 12821.12103027982,
+     "rmin_radii": 3.1184932303814827,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107761332.2128511,
+   "r_max_km": 235757986.622886,
+   "min_required_alt_km": 12821.12103027982,
+   "max_turn_deg": 35.85583786668425,
+   "cross_check": {
+    "max_arrival_miss_km": 0.007518392269214189,
+    "max_vinf_vector_error_kms": 2.0486241729258367e-09,
+    "max_junction_mismatch_kms": 6.622080661600194e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5167241365758722
+   },
+   "soi_fraction": 1.3024752321690781e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     6.221,
+     25.1
+    ],
+    [
+     "V",
+     6.221,
+     25.1
+    ]
+   ],
+   "keys": [
+    "k4|RV/2:1|LV>M/0s|LM>V/1h",
+    "k4|RV/2:1|LV>M/0s|LM>V/1l",
+    "k4|RV/2:1|LV>M/1h|LM>V/0s",
+    "k4|RV/2:1|LV>M/1l|LM>V/0s"
+   ],
+   "key": "k4|RV/2:1|LV>M/0s|LM>V/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 5.937153489700909,
+    "V": 6.221385132231673
+   },
+   "x_days": [
+    277.45309700212255,
+    449.341017407695
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 449.341017407695,
+     "vinf_kms": 5.937153489700909,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 1163.7447654702326,
+     "vinf_kms": 6.221385132231673,
+     "turn_deg": 25.145622589687306,
+     "available_deg": 69.39067740513207,
+     "ratio": 0.36237753441829873,
+     "required_alt_km": 24111.91323626569,
+     "rmin_radii": 4.984123138840993,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1613.1464552850473,
+     "vinf_kms": 6.2213851322316565,
+     "turn_deg": 25.145622589687278,
+     "available_deg": 69.39067740513244,
+     "ratio": 0.36237753441829634,
+     "required_alt_km": 24111.91323626606,
+     "rmin_radii": 4.984123138841027,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107761332.21284933,
+   "r_max_km": 235332915.64664575,
+   "min_required_alt_km": 24111.91323626569,
+   "max_turn_deg": 25.145622589687306,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0030096631085373467,
+    "max_vinf_vector_error_kms": 7.993304152239019e-10,
+    "max_junction_mismatch_kms": 2.79285927717865e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.36237753448774396
+   },
+   "soi_fraction": 5.213896157153561e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     6.226,
+     36.3
+    ]
+   ],
+   "keys": [
+    "k4|LV>M/1h|LM>V/1l",
+    "k4|LV>M/1l|LM>V/1h"
+   ],
+   "key": "k4|LV>M/1l|LM>V/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 5.95888736471438,
+    "V": 6.225879746669506
+   },
+   "x_days": [
+    161.67663821107507,
+    781.9835630438954
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 781.9835630438954,
+     "vinf_kms": 5.95888736471438,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 1497.3699964939997,
+     "vinf_kms": 6.225879746669506,
+     "turn_deg": 36.311749502853395,
+     "available_deg": 69.34131743748122,
+     "ratio": 0.5236668532522822,
+     "required_alt_km": 12463.339124755224,
+     "rmin_radii": 3.0593752684657542,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107761076.54870771,
+   "r_max_km": 235463477.462308,
+   "min_required_alt_km": 12463.339124755224,
+   "max_turn_deg": 36.311749502853395,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0032811007474871684,
+    "max_vinf_vector_error_kms": 8.73024388507178e-10,
+    "max_junction_mismatch_kms": 3.027631478857984e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5236668533609654
+   },
+   "soi_fraction": 5.684130735439999e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     8.463,
+     35.5
+    ]
+   ],
+   "keys": [
+    "k4|LV>M/0s|LM>V/1h",
+    "k4|LV>M/0s|LM>V/1l",
+    "k4|LV>M/1h|LM>V/0s",
+    "k4|LV>M/1l|LM>V/0s"
+   ],
+   "key": "k4|LV>M/0s|LM>V/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 13.015624365989856,
+    "V": 8.46316918695229
+   },
+   "x_days": [
+    282.9829844701218,
+    393.21583138003626
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 393.21583138003626,
+     "vinf_kms": 13.015624365989856,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1618.6763427530464,
+     "vinf_kms": 8.46316918695229,
+     "turn_deg": 35.5316113377125,
+     "available_deg": 49.23789571282628,
+     "ratio": 0.7216313943419936,
+     "required_alt_km": 4276.921072288258,
+     "rmin_radii": 1.706695484515572,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107643087.08330928,
+   "r_max_km": 341987057.1511203,
+   "min_required_alt_km": 4276.921072288258,
+   "max_turn_deg": 35.5316113377125,
+   "cross_check": {
+    "max_arrival_miss_km": 0.05015431252945184,
+    "max_vinf_vector_error_kms": 1.3273159293899697e-08,
+    "max_junction_mismatch_kms": 4.806286924008418e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7216313960431507
+   },
+   "soi_fraction": 8.688659425708036e-08,
+   "collisions": [
+    "NEAR VenMar#45 (dV_inf 0.243, period 1335.7 vs 667.8, encounters 1+0 vs 1+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     22.89,
+     2.0
+    ],
+    [
+     "V",
+     22.89,
+     2.9
+    ],
+    [
+     "V",
+     22.89,
+     4.9
+    ]
+   ],
+   "keys": [
+    "k4|LV>V/1l|RV/2:1|LV>M/0s|LM>V/0s",
+    "k4|RV/2:1|LV>V/1l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k4|LV>V/1l|RV/2:1|LV>M/0s|LM>V/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 22.88997595742433,
+    "M": 11.839850325069207
+   },
+   "x_days": [
+    313.7812169919214,
+    1326.2373535225975,
+    1417.8836256634213
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 876.8356637077827,
+     "vinf_kms": 22.88997595742433,
+     "turn_deg": 1.986490372247951,
+     "available_deg": 10.204076027318102,
+     "ratio": 0.19467616342035945,
+     "required_alt_km": 29095.883492329245,
+     "rmin_radii": 5.807647635877271,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1326.2373535225975,
+     "vinf_kms": 22.88997595742442,
+     "turn_deg": 2.902006915802937,
+     "available_deg": 10.204076027318102,
+     "ratio": 0.2843968339743604,
+     "required_alt_km": 17813.322222487295,
+     "rmin_radii": 3.943377763134023,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1417.8836256634213,
+     "vinf_kms": 11.839850325069207,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1649.474575274846,
+     "vinf_kms": 22.88997595742438,
+     "turn_deg": 4.888497288051087,
+     "available_deg": 10.204076027318143,
+     "ratio": 0.47907299739473747,
+     "required_alt_km": 7866.311194022044,
+     "rmin_radii": 2.2997870446169735,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 62383685.57236244,
+   "r_max_km": 305350135.0267602,
+   "min_required_alt_km": 7866.311194022044,
+   "max_turn_deg": 4.888497288051087,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0010615932754516947,
+    "max_vinf_vector_error_kms": 2.627401809805546e-10,
+    "max_junction_mismatch_kms": 2.247659836029925e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.479072997388834
+   },
+   "soi_fraction": 1.8390885955430411e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     24.073,
+     4.9
+    ],
+    [
+     "V",
+     24.073,
+     4.9
+    ]
+   ],
+   "keys": [
+    "k4|LV>V/1h|LV>M/0s|LM>V/1h",
+    "k4|LV>V/1h|LV>M/0s|LM>V/1l",
+    "k4|LV>V/1h|LV>M/1h|LM>V/0s",
+    "k4|LV>V/1h|LV>M/1l|LM>V/0s"
+   ],
+   "key": "k4|LV>V/1h|LV>M/0s|LM>V/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 24.07291502811561,
+    "M": 11.94388991671028
+   },
+   "x_days": [
+    299.4716604098657,
+    828.5475034817217,
+    983.3900616596591
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 828.5475034817217,
+     "vinf_kms": 24.07291502811561,
+     "turn_deg": 4.875890900213481,
+     "available_deg": 9.303115354086906,
+     "ratio": 0.5241137742177384,
+     "required_alt_km": 6565.997230632998,
+     "rmin_radii": 2.0849301438587178,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 983.3900616596591,
+     "vinf_kms": 11.94388991671028,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1635.1650186927907,
+     "vinf_kms": 24.072915028115585,
+     "turn_deg": 4.8758909002142286,
+     "available_deg": 9.303115354086906,
+     "ratio": 0.5241137742178189,
+     "required_alt_km": 6565.9972306309755,
+     "rmin_radii": 2.0849301438583883,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 47696114.994496174,
+   "r_max_km": 248565583.83716542,
+   "min_required_alt_km": 6565.9972306309755,
+   "max_turn_deg": 4.8758909002142286,
+   "cross_check": {
+    "max_arrival_miss_km": 0.006129372958923633,
+    "max_vinf_vector_error_kms": 1.7609849518404644e-09,
+    "max_junction_mismatch_kms": 1.760657397653631e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5241137741920634
+   },
+   "soi_fraction": 1.0618435673295e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 4,
+   "flybys": [
+    [
+     "V",
+     28.098,
+     4.8
+    ],
+    [
+     "V",
+     28.098,
+     4.8
+    ]
+   ],
+   "keys": [
+    "k4|LV>V/2l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k4|LV>V/2l|LV>M/0s|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 28.097502247931743,
+    "M": 14.16214428040615
+   },
+   "x_days": [
+    300.3770974023639,
+    1333.91778968153,
+    1414.9217834023245
+   ],
+   "period_days": 1335.6933582829247,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 1333.91778968153,
+     "vinf_kms": 28.097502247931743,
+     "turn_deg": 4.783311508591518,
+     "available_deg": 6.976069245877103,
+     "ratio": 0.6856743160080417,
+     "required_alt_km": 3397.2802017237864,
+     "rmin_radii": 1.561348347938496,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1414.9217834023245,
+     "vinf_kms": 14.16214428040615,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1636.0704556852886,
+     "vinf_kms": 28.09750224793176,
+     "turn_deg": 4.783311508591213,
+     "available_deg": 6.976069245877098,
+     "ratio": 0.6856743160079984,
+     "required_alt_km": 3397.2802017244103,
+     "rmin_radii": 1.561348347938598,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 48319902.68088614,
+   "r_max_km": 314424381.8962055,
+   "min_required_alt_km": 3397.2802017237864,
+   "max_turn_deg": 4.783311508591518,
+   "cross_check": {
+    "max_arrival_miss_km": 0.004974773670092983,
+    "max_vinf_vector_error_kms": 1.397315807449426e-09,
+    "max_junction_mismatch_kms": 1.3950902655324171e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6856743160163965
+   },
+   "soi_fraction": 8.61822482643647e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "V",
+     6.39,
+     32.5
+    ],
+    [
+     "V",
+     6.39,
+     34.3
+    ],
+    [
+     "V",
+     6.39,
+     66.8
+    ]
+   ],
+   "keys": [
+    "k5|LV>V/2l|RV/3:2|LV>M/0s|LM>V/0s",
+    "k5|RV/3:2|LV>V/2l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k5|RV/3:2|LV>V/2l|LV>M/0s|LM>V/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.390104020908659,
+    "M": 5.892879975018427
+   },
+   "x_days": [
+    50.71781797609861,
+    613.3643018107841,
+    784.4132307344743
+   ],
+   "period_days": 1669.616697853656,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 613.3643018107841,
+     "vinf_kms": 6.390104020908659,
+     "turn_deg": 66.75125557704564,
+     "available_deg": 67.56535827743879,
+     "ratio": 0.9879508860583517,
+     "required_alt_km": 453.93721852349245,
+     "rmin_radii": 1.0750061497890497,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 784.4132307344743,
+     "vinf_kms": 5.892879975018427,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1046.2319811075326,
+     "vinf_kms": 6.390104020908026,
+     "turn_deg": 32.48881695706801,
+     "available_deg": 67.56535827744467,
+     "ratio": 0.48085021356149227,
+     "required_alt_km": 14432.491888760138,
+     "rmin_radii": 3.384747503099824,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1720.3345158297548,
+     "vinf_kms": 6.390104020908507,
+     "turn_deg": 34.26243861999722,
+     "available_deg": 67.56535827744467,
+     "ratio": 0.5071006724970634,
+     "required_alt_km": 13001.047505480725,
+     "rmin_radii": 3.1482233155118733,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 91317828.34257676,
+   "r_max_km": 234836221.20123684,
+   "min_required_alt_km": 453.93721852349245,
+   "max_turn_deg": 66.75125557704564,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0008194546811027124,
+    "max_vinf_vector_error_kms": 2.0599174239221463e-10,
+    "max_junction_mismatch_kms": 1.5306778067269988e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9879508860299906
+   },
+   "soi_fraction": 1.41961125171891e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "V",
+     6.617,
+     1.0
+    ],
+    [
+     "V",
+     6.617,
+     63.2
+    ],
+    [
+     "V",
+     6.617,
+     64.2
+    ]
+   ],
+   "keys": [
+    "k5|LV>V/3l|RV/2:1|LV>M/0s|LM>V/0s",
+    "k5|RV/2:1|LV>V/3l|LV>M/0s|LM>V/0s"
+   ],
+   "key": "k5|RV/2:1|LV>V/3l|LV>M/0s|LM>V/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.616895970757276,
+    "M": 5.930116726153987
+   },
+   "x_days": [
+    157.89713575163836,
+    949.2346450213289,
+    1118.1251153237781
+   ],
+   "period_days": 1669.616697853656,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 949.2346450213289,
+     "vinf_kms": 6.616895970757276,
+     "turn_deg": 63.218473026198424,
+     "available_deg": 65.19921449604115,
+     "ratio": 0.9696201635993177,
+     "required_alt_km": 684.7242033359271,
+     "rmin_radii": 1.113140152567002,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1118.1251153237781,
+     "vinf_kms": 5.930116726153987,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "V",
+     "t_days": 1378.1121437904794,
+     "vinf_kms": 6.616895970758213,
+     "turn_deg": 0.9566938936744451,
+     "available_deg": 65.1992144960294,
+     "ratio": 0.01467339600744281,
+     "required_alt_km": 875263.3062841528,
+     "rmin_radii": 145.6238113490008,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1827.5138336052942,
+     "vinf_kms": 6.616895970757637,
+     "turn_deg": 64.17516691980079,
+     "available_deg": 65.19921449604115,
+     "ratio": 0.9842935596056522,
+     "required_alt_km": 495.7339533721379,
+     "rmin_radii": 1.0819124179396895,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 89911833.22277112,
+   "r_max_km": 236456639.36470202,
+   "min_required_alt_km": 495.7339533721379,
+   "max_turn_deg": 64.17516691980079,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0010135680709438598,
+    "max_vinf_vector_error_kms": 2.582751549043478e-10,
+    "max_junction_mismatch_kms": 1.4946355264555677e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9842935595794133
+   },
+   "soi_fraction": 1.7558904367459245e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "V",
+     6.645,
+     63.2
+    ],
+    [
+     "V",
+     6.645,
+     63.2
+    ]
+   ],
+   "keys": [
+    "k5|LV>V/3l|LV>M/0s|LM>V/1h",
+    "k5|LV>V/3l|LV>M/0s|LM>V/1l",
+    "k5|LV>V/3l|LV>M/1h|LM>V/0s",
+    "k5|LV>V/3l|LV>M/1l|LM>V/0s"
+   ],
+   "key": "k5|LV>V/3l|LV>M/1h|LM>V/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 6.644806902285197,
+    "M": 6.042830995337583
+   },
+   "x_days": [
+    52.48684550374135,
+    843.8821616206377,
+    1555.097141614027
+   ],
+   "period_days": 1669.616697853656,
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 843.8821616206377,
+     "vinf_kms": 6.644806902285197,
+     "turn_deg": 63.17533666562589,
+     "available_deg": 64.91479605862764,
+     "ratio": 0.9732039612135459,
+     "required_alt_km": 636.8417045882206,
+     "rmin_radii": 1.105228305450623,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1555.097141614027,
+     "vinf_kms": 6.042830995337583,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "V",
+     "t_days": 1722.1035433573973,
+     "vinf_kms": 6.644806902284678,
+     "turn_deg": 63.17533666563705,
+     "available_deg": 64.91479605862823,
+     "ratio": 0.973203961213709,
+     "required_alt_km": 636.8417045861161,
+     "rmin_radii": 1.105228305450428,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 89834017.68147044,
+   "r_max_km": 235732608.97456533,
+   "min_required_alt_km": 636.8417045861161,
+   "max_turn_deg": 63.17533666563705,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0007024804838880096,
+    "max_vinf_vector_error_kms": 1.7414459922460686e-10,
+    "max_junction_mismatch_kms": 1.0112533033179716e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9732039611973645
+   },
+   "soi_fraction": 1.216966870819993e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Russell, R. P. & Strange, N. J., 'Planetary Moon Cycler Trajectories,' AAS 07-118, AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, Jan-Feb 2007. Table 1 Sun: Venus-flyby -> Mars target (massless); Tables 3/5 VenMar#45 = G(2.97216,349.97729,U), period 667.8 d, ballistic in a patched-conic ephemeris model (Fig. 9a).",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  }
+ ]
+}

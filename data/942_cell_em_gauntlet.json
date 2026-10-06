@@ -1,0 +1,6241 @@
+{
+ "cell": "em",
+ "n_structures": 9901,
+ "n_zeros": 28090,
+ "n_physical": 6247,
+ "n_gate_passing": 8,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "aldrin-classic-em-k1-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.5
+    ],
+    [
+     "M",
+     9.7
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "mcconaghy-2006-em-k2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.7
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "s1l1-2syn-em-cpom",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.65
+    ],
+    [
+     "M",
+     3.05
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ocampo-2.1.1+2-case2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.1
+    ],
+    [
+     "M",
+     2.0
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ocampo-2.3.1+1-case3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     5.3
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ocampo-4.3.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.1
+    ],
+    [
+     "M",
+     2.5
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-3.1.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.4
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-2.5.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.8
+    ],
+    [
+     "M",
+     9.9
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "niehoff-visit1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 7
+  },
+  {
+   "id": "niehoff-visit2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 7
+  },
+  {
+   "id": "jones-2017-vem-triple-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     null
+    ],
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "vem-emeeve-3syn",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "jones-2017-vem-emevve-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.72
+    ],
+    [
+     "M",
+     2.5
+    ],
+    [
+     "E",
+     5.81
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "E",
+     4.21
+    ],
+    [
+     "M",
+     2.79
+    ],
+    [
+     "E",
+     5.04
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "E",
+     5.67
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "jones-2017-vem-meevem-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "M",
+     3.85
+    ],
+    [
+     "E",
+     3.48
+    ],
+    [
+     "E",
+     3.42
+    ],
+    [
+     "V",
+     5.16
+    ],
+    [
+     "E",
+     3.84
+    ],
+    [
+     "M",
+     3.12
+    ],
+    [
+     "E",
+     2.98
+    ],
+    [
+     "E",
+     2.92
+    ],
+    [
+     "V",
+     4.31
+    ],
+    [
+     "E",
+     4.97
+    ],
+    [
+     "M",
+     2.42
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "aldrin-classic-em-k1-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "M",
+     9.7
+    ],
+    [
+     "E",
+     6.5
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "aldrin-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.509
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "aldrin-3-2-1-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.546
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "visit-1-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.834
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "visit-2-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.878
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "case-1-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.526
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "case-2-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.91
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "case-3-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.688
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "s1l1-4-3-2-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.657
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "u0l1-3-2-1-establishment",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.049
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "visit-1-5-4-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.664
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "visit-2-5-4-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.754
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "visit-2-3-2-2-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.611
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "case-1-5-4-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.3
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "case-1-3-2-2-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.479
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "case-2-5-4-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.767
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "case-3-3-2-2-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.607
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "s1l1-5-4-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.514
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "s1l1-3-2-2-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.479
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "u0l1-4-3-3-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.801
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "u0l1-2-1-1-establishment-cc",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.634
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "sanchez-net-2022-eem-cycler1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.283
+    ],
+    [
+     "M",
+     6.207
+    ],
+    [
+     "E",
+     3.605
+    ],
+    [
+     "E",
+     3.709
+    ],
+    [
+     "M",
+     5.21
+    ],
+    [
+     "E",
+     5.225
+    ],
+    [
+     "E",
+     5.234
+    ],
+    [
+     "M",
+     7.276
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "sanchez-net-2022-em-cycler2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "M",
+     6.466
+    ],
+    [
+     "E",
+     3.09
+    ],
+    [
+     "E",
+     5.285
+    ],
+    [
+     "M",
+     6.871
+    ],
+    [
+     "E",
+     5.721
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-3.1.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.3.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     6.8
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.5.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.5.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.7.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.9.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-4.0.3+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     4.9
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.1.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.1
+    ],
+    [
+     "M",
+     6.1
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.3.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.7
+    ],
+    [
+     "M",
+     7.6
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.5.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.7
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.5.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.5.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.4
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.5.3-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.7.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     6.8
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.9.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.9.2-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.10.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.9
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.11.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.7
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.12.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.8
+    ],
+    [
+     "M",
+     8.2
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.13.1-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.14.1-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     14.7
+    ],
+    [
+     "M",
+     9.4
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.14.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     14.1
+    ],
+    [
+     "M",
+     12.7
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "mcconaghy-2005-em-case1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "mcconaghy-2005-em-u0l1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 1
+  },
+  {
+   "id": "mcconaghy-2005-em-snlm-broadclass-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "russell-ocampo-5.1.1-7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.0
+    ],
+    [
+     "M",
+     4.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.1.2-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.7
+    ],
+    [
+     "M",
+     7.0
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.1.5-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.2.1-7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "M",
+     1.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.2.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     7.1
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.2.5+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.3
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.3.1-7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "M",
+     1.4
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.3.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     5.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.3.3-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.4.1+6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.9
+    ],
+    [
+     "M",
+     1.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.4.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.0
+    ],
+    [
+     "M",
+     6.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.4.3+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "M",
+     4.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     2.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.2
+    ],
+    [
+     "M",
+     7.0
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.0
+    ],
+    [
+     "M",
+     10.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.2-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.0
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.9
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.5.4-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.3
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     2.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.7
+    ],
+    [
+     "M",
+     7.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.8
+    ],
+    [
+     "M",
+     11.0
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.3
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.6.4+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.7.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.8
+    ],
+    [
+     "M",
+     3.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.7.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.0
+    ],
+    [
+     "M",
+     8.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.7.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.1
+    ],
+    [
+     "M",
+     11.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.8.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.1
+    ],
+    [
+     "M",
+     4.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.8.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.6
+    ],
+    [
+     "M",
+     9.1
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.8.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     11.0
+    ],
+    [
+     "M",
+     12.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.6
+    ],
+    [
+     "M",
+     5.7
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.0
+    ],
+    [
+     "M",
+     10.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.5
+    ],
+    [
+     "M",
+     13.8
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.0
+    ],
+    [
+     "M",
+     4.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.9
+    ],
+    [
+     "M",
+     12.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.9.3-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.10.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.9
+    ],
+    [
+     "M",
+     6.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.10.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.8
+    ],
+    [
+     "M",
+     10.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.10.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     4.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.10.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.6
+    ],
+    [
+     "M",
+     13.0
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.10.3+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.7
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.11.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.6
+    ],
+    [
+     "M",
+     7.8
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.11.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.5
+    ],
+    [
+     "M",
+     12.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.11.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.6
+    ],
+    [
+     "M",
+     7.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.12.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.1
+    ],
+    [
+     "M",
+     8.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.12.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     11.5
+    ],
+    [
+     "M",
+     13.2
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.13.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     2.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.13.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.1
+    ],
+    [
+     "M",
+     10.3
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.13.2-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.9
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.14.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.3
+    ],
+    [
+     "M",
+     2.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.14.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.8
+    ],
+    [
+     "M",
+     10.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.14.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.15.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.6
+    ],
+    [
+     "M",
+     5.8
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.15.1-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.5
+    ],
+    [
+     "M",
+     13.9
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.16.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.8
+    ],
+    [
+     "M",
+     6.0
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.16.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.6
+    ],
+    [
+     "M",
+     14.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.17.1-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.1
+    ],
+    [
+     "M",
+     10.4
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-5.18.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.6
+    ],
+    [
+     "M",
+     10.6
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "russell-ocampo-6.0.1+9a",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.0
+    ],
+    [
+     "M",
+     1.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.0.1+8b",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.0
+    ],
+    [
+     "M",
+     3.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.0.1+7c",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.0
+    ],
+    [
+     "M",
+     6.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.0.1+6d",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.0
+    ],
+    [
+     "M",
+     8.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.1.2-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.9
+    ],
+    [
+     "M",
+     5.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.1.3-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.1
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.1.4-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "M",
+     4.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.1.6-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.1+8",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.3
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.1+7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.1+6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     7.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.2+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.3+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.6
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.3+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.4+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.4
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.2.6+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     9.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.3.1-9",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.7
+    ],
+    [
+     "M",
+     1.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.3.4+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.4.1+7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     2.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.4.1+6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.7
+    ],
+    [
+     "M",
+     6.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.4.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.9
+    ],
+    [
+     "M",
+     8.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.4.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.0
+    ],
+    [
+     "M",
+     10.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.5.1-8",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.2
+    ],
+    [
+     "M",
+     2.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.5.1-7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.4
+    ],
+    [
+     "M",
+     6.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.5.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.4
+    ],
+    [
+     "M",
+     9.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.5.5-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.9
+    ],
+    [
+     "M",
+     3.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     7.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.7
+    ],
+    [
+     "M",
+     11.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     6.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.6
+    ],
+    [
+     "M",
+     11.3
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.6.5+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.7.1-7",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.7
+    ],
+    [
+     "M",
+     3.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.7.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.1
+    ],
+    [
+     "M",
+     7.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.7.2+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.7.3-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.1
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.7.5+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.1
+    ],
+    [
+     "M",
+     9.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.1+6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.9
+    ],
+    [
+     "M",
+     1.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.7
+    ],
+    [
+     "M",
+     8.3
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.2
+    ],
+    [
+     "M",
+     10.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.6
+    ],
+    [
+     "M",
+     13.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.8.3+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.4
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.3
+    ],
+    [
+     "M",
+     4.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.0
+    ],
+    [
+     "M",
+     9.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.4
+    ],
+    [
+     "M",
+     12.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.2-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "M",
+     2.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.2
+    ],
+    [
+     "M",
+     10.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.9.4-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.7
+    ],
+    [
+     "M",
+     9.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.3
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.9
+    ],
+    [
+     "M",
+     6.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.1
+    ],
+    [
+     "M",
+     12.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.7
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.10.4+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.11.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.2
+    ],
+    [
+     "M",
+     6.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.11.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     11.0
+    ],
+    [
+     "M",
+     10.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.11.2+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.1
+    ],
+    [
+     "M",
+     2.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.12.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.7
+    ],
+    [
+     "M",
+     2.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.12.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     7.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.12.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.4
+    ],
+    [
+     "M",
+     11.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.1+5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     16.7
+    ],
+    [
+     "M",
+     9.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.1-5",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.2
+    ],
+    [
+     "M",
+     7.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.4
+    ],
+    [
+     "M",
+     12.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.0
+    ],
+    [
+     "M",
+     5.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.13.3-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.1
+    ],
+    [
+     "M",
+     9.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     4.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.6
+    ],
+    [
+     "M",
+     13.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.6
+    ],
+    [
+     "M",
+     4.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.4
+    ],
+    [
+     "M",
+     12.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.14.3+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.15.1+4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     17.2
+    ],
+    [
+     "M",
+     10.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.15.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.3
+    ],
+    [
+     "M",
+     2.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.15.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.5
+    ],
+    [
+     "M",
+     10.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.15.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     14.3
+    ],
+    [
+     "M",
+     14.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.15.2+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.7
+    ],
+    [
+     "M",
+     6.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.16.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     7.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.16.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.7
+    ],
+    [
+     "M",
+     11.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.17.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     17.9
+    ],
+    [
+     "M",
+     11.3
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.17.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.5
+    ],
+    [
+     "M",
+     4.8
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.17.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.5
+    ],
+    [
+     "M",
+     12.6
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.17.2-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.3
+    ],
+    [
+     "M",
+     10.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.18.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.3
+    ],
+    [
+     "M",
+     1.7
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.18.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.18.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.19.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     18.8
+    ],
+    [
+     "M",
+     12.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.19.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.4
+    ],
+    [
+     "M",
+     8.2
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.19.2+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.6
+    ],
+    [
+     "M",
+     11.1
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.20.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.8
+    ],
+    [
+     "M",
+     5.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.20.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.3
+    ],
+    [
+     "M",
+     4.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.20.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.6
+    ],
+    [
+     "M",
+     13.0
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.21.1+1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     20.3
+    ],
+    [
+     "M",
+     14.4
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.21.1-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.7
+    ],
+    [
+     "M",
+     12.9
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ocampo-6.22.1+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "russell-ch4-4.991gG2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.99
+    ],
+    [
+     "M",
+     5.1
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ch4-8.049gGf2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.05
+    ],
+    [
+     "M",
+     10.02
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ch4-8.165Gfh-f2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.16
+    ],
+    [
+     "M",
+     10.06
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ch4-9.353Gg2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.35
+    ],
+    [
+     "M",
+     10.52
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "russell-ch4-3.64gGg3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.64
+    ],
+    [
+     "M",
+     4.59
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-3.77Gh3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.77
+    ],
+    [
+     "M",
+     4.63
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-3.78Gg3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.78
+    ],
+    [
+     "M",
+     4.63
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-5.30gGf3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.3
+    ],
+    [
+     "M",
+     9.17
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-5.66Gfh3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.66
+    ],
+    [
+     "M",
+     9.26
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-9.94Gg3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     9.94
+    ],
+    [
+     "M",
+     10.76
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-3.66gfF3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.66
+    ],
+    [
+     "M",
+     4.66
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-5.30ggF3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.3
+    ],
+    [
+     "M",
+     5.44
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-5.75ggF3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.75
+    ],
+    [
+     "M",
+     9.36
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ch4-6.44Gg3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.44
+    ],
+    [
+     "M",
+     3.74
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-2004-ch4-broadclass-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-ocampo-3.1.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.4
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.1.3+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     9.1
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-3.5.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.7
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "russell-ocampo-4.1.1-6",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.7
+    ],
+    [
+     "M",
+     1.6
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.1.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.5
+    ],
+    [
+     "M",
+     9.3
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.1.2-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.6
+    ],
+    [
+     "M",
+     1.5
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.1.2-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.2
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.1.4-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.1
+    ],
+    [
+     "M",
+     9.2
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.6.1-4",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.8
+    ],
+    [
+     "M",
+     2.1
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.6.3+0",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.4
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.7.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.6
+    ],
+    [
+     "M",
+     11.4
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.8.1+3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.7
+    ],
+    [
+     "M",
+     3.1
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.8.1+2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     12.5
+    ],
+    [
+     "M",
+     10.7
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.9.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     2.7
+    ],
+    [
+     "M",
+     1.6
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.10.1-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     10.2
+    ],
+    [
+     "M",
+     3.6
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "russell-ocampo-4.12.1-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     11.6
+    ],
+    [
+     "M",
+     4.8
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "rall-1970-m4-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.65
+    ],
+    [
+     "M",
+     9.35
+    ],
+    [
+     "E",
+     5.39
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "rall-1970-m6-1",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.36
+    ],
+    [
+     "M",
+     9.38
+    ],
+    [
+     "E",
+     6.07
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "rall-1970-m6-2",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.06
+    ],
+    [
+     "M",
+     9.35
+    ],
+    [
+     "E",
+     5.51
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "rall-1970-m6-3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.21
+    ],
+    [
+     "M",
+     9.38
+    ],
+    [
+     "E",
+     6.01
+    ]
+   ],
+   "k": 6
+  },
+  {
+   "id": "rall-1970-m4-1a",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.41
+    ],
+    [
+     "M",
+     9.68
+    ]
+   ],
+   "k": 4
+  },
+  {
+   "id": "rall-1970-m5-1a",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.6
+    ],
+    [
+     "M",
+     9.51
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-1b",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.19
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-1c",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.18
+    ],
+    [
+     "M",
+     9.54
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-1d",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.24
+    ],
+    [
+     "M",
+     9.55
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-1e",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.37
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-2a",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     8.37
+    ],
+    [
+     "M",
+     9.78
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-2b",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.8
+    ],
+    [
+     "M",
+     9.38
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-2c",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.24
+    ],
+    [
+     "M",
+     9.5
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-2d",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.33
+    ],
+    [
+     "M",
+     9.55
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "rall-1970-m5-2e",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     7.77
+    ],
+    [
+     "M",
+     9.32
+    ]
+   ],
+   "k": 5
+  },
+  {
+   "id": "tito-2018-mars-free-return",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.232
+    ],
+    [
+     "M",
+     5.417
+    ],
+    [
+     "E",
+     8.837
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "russell-2006-54-3.768ghminus3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-55-3.768ghplus3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-111-5.219gghminus3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-112-5.219gghplus3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-117-5.225ggg3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-177-5.751ggf3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  },
+  {
+   "id": "russell-2006-178-5.751ggf3",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M"
+   ],
+   "vinf": [],
+   "k": null
+  }
+ ],
+ "empty_regions_same_pair": [
+  "jovian-IEG-vilm-2026-06-09",
+  "jovian-perm-vilm-2026-06-09",
+  "saturnian-titan-vilm-2026-06-09",
+  "saturnian-titan-endgame-vilm-2026-06-10",
+  "cr3bp-continuation-ross-(1,1)-2026-06-12",
+  "cr3bp-continuation-ross-(2,1)-2026-06-12",
+  "cr3bp-continuation-ross-(3,1)-2026-06-12",
+  "cr3bp-continuation-ross-(3,2)-2026-06-12",
+  "cr3bp-continuation-ross-(3,3)-2026-06-12",
+  "cr3bp-continuation-arenstorf-1963-2026-06-12",
+  "cr3bp-continuation-saturn-mimas-lyapunov-2026-06-12",
+  "cr3bp-continuation-saturn-enceladus-lyapunov-2026-06-12",
+  "cr3bp-continuation-saturn-tethys-lyapunov-2026-06-12",
+  "cr3bp-em-cj3.00-dro-lyapunov-band-newfamily-2026-06-13",
+  "repeated-moon-jupiter-sweep",
+  "repeated-moon-saturn-sweep",
+  "repeated-moon-uranus-sweep",
+  "repeated-moon-mars-sweep",
+  "repeated-moon-neptune-sweep",
+  "binary-star-mu-continuation-em-31-to-mu0.3",
+  "binary-star-mu-continuation-em-11-to-mu0.5",
+  "precursor-mga-into-aldrin-s1l1-multirev-2026-06-23",
+  "precursor-mga-into-aldrin-s1l1-global-engine-2026-06-24",
+  "er3bp-discovery-em-broucke-koblick-2026-06-24",
+  "er3bp-direct-e0-blind-grid-2026-06-24",
+  "er3bp-highE-sun-planet-arclength-vinf-2026-06-25",
+  "cislunar-bct-wsb-quasicycler-2026-06-26",
+  "floquet-branch-c32-b0-em-v4-2026-06-19",
+  "floquet-branch-c11a-b0-em-v4-2026-06-19",
+  "closer-sweep-v1-russell-ocampo-3.1.2+1-2026-06-17",
+  "closer-sweep-v1-russell-ocampo-4.3.1-5-2026-06-17",
+  "closer-sweep-v1-russell-ocampo-4.5.2-2-2026-06-17",
+  "closer-sweep-v1-mcconaghy-2006-em-k2-s1l1-2026-06-17",
+  "coorbital-resonance-unstable-manifold-encounters",
+  "sun-jupiter-quasi-hilda-transient-capture-quasi-cycler",
+  "mars-phobos-deimos-symmetric-closure-609-2026-07-16",
+  "sunmars-bct-wsb-quasicycler-2026-07-22",
+  "sunearth-gaio-earthmars-transport-2026-07-22",
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133"
+ ],
+ "candidates": [
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "E",
+     7.593,
+     8.2
+    ],
+    [
+     "E",
+     7.593,
+     34.7
+    ],
+    [
+     "M",
+     9.865,
+     0.0
+    ],
+    [
+     "E",
+     7.593,
+     42.9
+    ]
+   ],
+   "keys": [
+    "k2|LE>E/1l|RE/1:1|LE>M/0s|LM>E/0s",
+    "k2|RE/1:1|LE>E/1l|LE>M/0s|LM>E/0s"
+   ],
+   "key": "k2|LE>E/1l|RE/1:1|LE>M/0s|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 7.592997288410585,
+    "M": 9.86538686970146
+   },
+   "x_days": [
+    49.18291111261558,
+    958.6564100196142,
+    1519.2072570621283
+   ],
+   "period_days": 1565.3571428571431,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 593.4064100196142,
+     "vinf_kms": 7.592997288410585,
+     "turn_deg": 8.224753249249083,
+     "available_deg": 61.65248222139039,
+     "ratio": 0.13340506258473883,
+     "required_alt_km": 83116.35181915814,
+     "rmin_radii": 14.03144661507869,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 958.6564100196142,
+     "vinf_kms": 7.592997288410665,
+     "turn_deg": 42.89657343275643,
+     "available_deg": 61.65248222139039,
+     "ratio": 0.6957801517012305,
+     "required_alt_km": 5615.570779985058,
+     "rmin_radii": 1.8804406020103999,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1519.2072570621283,
+     "vinf_kms": 9.86538686970146,
+     "turn_deg": 0.0,
+     "available_deg": 12.518232207296037,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1614.5400539697587,
+     "vinf_kms": 7.592997288410608,
+     "turn_deg": 34.67182018350896,
+     "available_deg": 61.652482221390294,
+     "ratio": 0.5623750891165189,
+     "required_alt_km": 9910.61242772963,
+     "rmin_radii": 2.553841259246952,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 111772738.43952751,
+   "r_max_km": 327530463.60756093,
+   "min_required_alt_km": 5615.570779985058,
+   "max_turn_deg": 42.89657343275643,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00036177562721000057,
+    "max_vinf_vector_error_kms": 4.3113438818131115e-11,
+    "max_junction_mismatch_kms": 3.9540815066629875e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6957801516987421
+   },
+   "soi_fraction": 6.267438114011352e-10,
+   "collisions": [
+    "CATALOGUE NEAR russell-ocampo-2.5.1+0 (dV_inf 0.207, k 2)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     4.684,
+     35.1
+    ],
+    [
+     "E",
+     4.684,
+     90.3
+    ],
+    [
+     "E",
+     4.684,
+     92.8
+    ],
+    [
+     "M",
+     4.539,
+     38.4
+    ],
+    [
+     "M",
+     4.539,
+     38.4
+    ]
+   ],
+   "keys": [
+    "k3|HE/1,0,a|LE>E/1l|LE>M/0s|LM>M/1l|LM>E/0s",
+    "k3|LE>E/1l|HE/1,0,a|LE>M/0s|LM>M/1l|LM>E/0s"
+   ],
+   "key": "k3|LE>E/1l|HE/1,0,a|LE>M/0s|LM>M/1l|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 4.684472407341916,
+    "M": 4.538516937781964
+   },
+   "x_days": [
+    33.800011351304605,
+    748.8785600772824,
+    1062.738652758267,
+    2067.9756329569373
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 566.2535600772824,
+     "vinf_kms": 4.684472407341916,
+     "turn_deg": 90.30148056550046,
+     "available_deg": 94.46825350559268,
+     "ratio": 0.9558923470534412,
+     "required_alt_km": 1078.4058829367395,
+     "rmin_radii": 1.1690785072407084,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 748.8785600772824,
+     "vinf_kms": 4.6844724073486255,
+     "turn_deg": 92.83052865819835,
+     "available_deg": 94.46825350559266,
+     "ratio": 0.9826637543659327,
+     "required_alt_km": 534.0238991863489,
+     "rmin_radii": 1.0837272543952168,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1062.738652758267,
+     "vinf_kms": 4.538516937781964,
+     "turn_deg": 38.35453066783437,
+     "available_deg": 42.98231610471758,
+     "ratio": 0.8923328043652052,
+     "required_alt_km": 854.214606554428,
+     "rmin_radii": 1.2515214421298217,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 2067.9756329569373,
+     "vinf_kms": 4.5385169377933305,
+     "turn_deg": 38.35453066860038,
+     "available_deg": 42.98231610461589,
+     "ratio": 0.8923328043851382,
+     "required_alt_km": 854.2146064176509,
+     "rmin_radii": 1.2515214420877308,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2381.835725637019,
+     "vinf_kms": 4.684472407329668,
+     "turn_deg": 35.06385605780205,
+     "available_deg": 94.46825350593734,
+     "ratio": 0.3711707876085408,
+     "required_alt_km": 35756.3344540793,
+     "rmin_radii": 6.606078146935178,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 131694664.35564639,
+   "r_max_km": 286370076.8400743,
+   "min_required_alt_km": 534.0238991863489,
+   "max_turn_deg": 92.83052865819835,
+   "cross_check": {
+    "max_arrival_miss_km": 0.003628572015033402,
+    "max_vinf_vector_error_kms": 6.455537233729481e-10,
+    "max_junction_mismatch_kms": 5.755413923225206e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.982663754365766
+   },
+   "soi_fraction": 6.286175418128517e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.151,
+     33.4
+    ],
+    [
+     "E",
+     5.151,
+     41.9
+    ],
+    [
+     "M",
+     9.153,
+     0.0
+    ],
+    [
+     "E",
+     5.151,
+     75.3
+    ]
+   ],
+   "keys": [
+    "k3|LE>E/1l|RE/3:2|LE>M/0s|LM>E/0s",
+    "k3|RE/3:2|LE>E/1l|LE>M/0s|LM>E/0s"
+   ],
+   "key": "k3|LE>E/1l|RE/3:2|LE>M/0s|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 5.1506398649664025,
+    "M": 9.153413172783932
+   },
+   "x_days": [
+    77.68498927477661,
+    1707.7639709118082,
+    2304.2753202110403
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 612.0139709118081,
+     "vinf_kms": 5.1506398649664025,
+     "turn_deg": 33.388532396678,
+     "available_deg": 88.13435420330018,
+     "ratio": 0.37883675098657243,
+     "required_alt_km": 30900.62482185686,
+     "rmin_radii": 5.844772826588213,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1707.7639709118082,
+     "vinf_kms": 5.150639864966448,
+     "turn_deg": 41.885048895381054,
+     "available_deg": 88.13435420330018,
+     "ratio": 0.47524088959413596,
+     "required_alt_km": 20632.97486218048,
+     "rmin_radii": 4.2349532257115206,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 2304.2753202110403,
+     "vinf_kms": 9.153413172783932,
+     "turn_deg": 0.0,
+     "available_deg": 14.298247743699442,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2425.720703560491,
+     "vinf_kms": 5.150639864966448,
+     "turn_deg": 75.27358129205759,
+     "available_deg": 88.13435420330036,
+     "ratio": 0.85407764058069,
+     "required_alt_km": 3201.660068020942,
+     "rmin_radii": 1.501974176475156,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 129852807.88865405,
+   "r_max_km": 324782471.9669657,
+   "min_required_alt_km": 3201.660068020942,
+   "max_turn_deg": 75.27358129205759,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00020520606304089186,
+    "max_vinf_vector_error_kms": 3.898276954538922e-11,
+    "max_junction_mismatch_kms": 3.603339848723408e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.854077640580416
+   },
+   "soi_fraction": 3.555010907305117e-10,
+   "collisions": [
+    "CATALOGUE NEAR russell-ocampo-3.5.1+1 (dV_inf 0.249, k 3)",
+    "CATALOGUE LITERAL? russell-ocampo-3.5.2+0 (dV_inf 0.049, k 3)",
+    "CATALOGUE NEAR russell-ocampo-3.9.1+0 (dV_inf 0.249, k 3)",
+    "CATALOGUE V_INF russell-ocampo-4.5.3-1 (dV_inf 0.051, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-4.9.2-1 (dV_inf 0.049, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-5.1.5-1 (dV_inf 0.049, k 5 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.2.3+1 (dV_inf 0.049, k 6 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.2.6+0 (dV_inf 0.053, k 6 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.6.5+0 (dV_inf 0.051, k 6 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.10.4+0 (dV_inf 0.049, k 6 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.14.3+0 (dV_inf 0.049, k 6 vs 3)",
+    "CATALOGUE NEAR russell-ch4-5.30gGf3 (dV_inf 0.149, k 3)",
+    "CATALOGUE NEAR russell-ocampo-3.1.1+2 (dV_inf 0.249, k 3)",
+    "CATALOGUE NEAR russell-ocampo-3.1.3+0 (dV_inf 0.053, k 3)",
+    "CATALOGUE V_INF russell-ocampo-4.1.2-2 (dV_inf 0.049, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-4.1.4-1 (dV_inf 0.051, k 4 vs 3)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.333,
+     60.7
+    ],
+    [
+     "E",
+     5.333,
+     60.7
+    ],
+    [
+     "M",
+     4.713,
+     38.4
+    ],
+    [
+     "M",
+     4.713,
+     38.4
+    ]
+   ],
+   "keys": [
+    "k3|RE/2:1|LE>M/0s|LM>M/1l|LM>E/0s"
+   ],
+   "key": "k3|RE/2:1|LE>M/0s|LM>M/1l|LM>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 4.713134357653968,
+    "E": 5.333159389559459
+   },
+   "x_days": [
+    756.5892857142851,
+    1061.9235532084485,
+    2068.7907325058313
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 1061.9235532084485,
+     "vinf_kms": 4.713134357653968,
+     "turn_deg": 38.3503805418054,
+     "available_deg": 40.85391796672414,
+     "ratio": 0.9387197715783858,
+     "required_alt_km": 545.7127325931178,
+     "rmin_radii": 1.1606838052621018,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 2068.7907325058313,
+     "vinf_kms": 4.713134357653951,
+     "turn_deg": 38.350380541803865,
+     "available_deg": 40.85391796672421,
+     "ratio": 0.9387197715783467,
+     "required_alt_km": 545.7127325933548,
+     "rmin_radii": 1.1606838052621768,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2374.1249999999995,
+     "vinf_kms": 5.333159389559459,
+     "turn_deg": 60.69213749849783,
+     "available_deg": 85.7739457798184,
+     "ratio": 0.7075824359799706,
+     "required_alt_km": 7346.388347895018,
+     "rmin_radii": 2.151807863000594,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3104.6249999999995,
+     "vinf_kms": 5.3331593895594445,
+     "turn_deg": 60.692137498497765,
+     "available_deg": 85.77394577981875,
+     "ratio": 0.7075824359799671,
+     "required_alt_km": 7346.388347895186,
+     "rmin_radii": 2.1518078630006094,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 149597870.7,
+   "r_max_km": 325345763.942765,
+   "min_required_alt_km": 545.7127325931178,
+   "max_turn_deg": 60.69213749849783,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0012041736457551536,
+    "max_vinf_vector_error_kms": 2.0570457131482384e-10,
+    "max_junction_mismatch_kms": 1.8750334618289344e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9387197715792882
+   },
+   "soi_fraction": 2.086122788728657e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.333,
+     65.4
+    ],
+    [
+     "E",
+     5.333,
+     65.4
+    ],
+    [
+     "E",
+     5.333,
+     65.4
+    ],
+    [
+     "M",
+     4.713,
+     38.4
+    ],
+    [
+     "M",
+     4.713,
+     38.4
+    ]
+   ],
+   "keys": [
+    "k3|RE/1:1|RE/1:1|LE>M/0s|LM>M/1l|LM>E/0s"
+   ],
+   "key": "k3|RE/1:1|RE/1:1|LE>M/0s|LM>M/1l|LM>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "M": 4.713134357653968,
+    "E": 5.333159389559459
+   },
+   "x_days": [
+    756.5892857142851,
+    1061.9235532084485,
+    2068.7907325058313
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "M",
+     "t_days": 1061.9235532084485,
+     "vinf_kms": 4.713134357653968,
+     "turn_deg": 38.3503805418054,
+     "available_deg": 40.85391796672414,
+     "ratio": 0.9387197715783858,
+     "required_alt_km": 545.7127325931178,
+     "rmin_radii": 1.1606838052621018,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 2068.7907325058313,
+     "vinf_kms": 4.713134357653951,
+     "turn_deg": 38.350380541803865,
+     "available_deg": 40.85391796672421,
+     "ratio": 0.9387197715783467,
+     "required_alt_km": 545.7127325933548,
+     "rmin_radii": 1.1606838052621768,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2374.1249999999995,
+     "vinf_kms": 5.333159389559459,
+     "turn_deg": 65.43689998199223,
+     "available_deg": 85.7739457798184,
+     "ratio": 0.7628994957276264,
+     "required_alt_km": 5535.346075949722,
+     "rmin_radii": 1.8678625241116211,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2739.3749999999995,
+     "vinf_kms": 5.333159389559459,
+     "turn_deg": 65.43689998199241,
+     "available_deg": 85.7739457798184,
+     "ratio": 0.7628994957276285,
+     "required_alt_km": 5535.346075949657,
+     "rmin_radii": 1.8678625241116107,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3104.6249999999995,
+     "vinf_kms": 5.3331593895594445,
+     "turn_deg": 65.43689998199214,
+     "available_deg": 85.77394577981875,
+     "ratio": 0.7628994957276223,
+     "required_alt_km": 5535.346075949875,
+     "rmin_radii": 1.8678625241116356,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 135119709.2315719,
+   "r_max_km": 288707803.88202524,
+   "min_required_alt_km": 545.7127325931178,
+   "max_turn_deg": 65.43689998199241,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00016391291960390005,
+    "max_vinf_vector_error_kms": 2.219099661725199e-11,
+    "max_junction_mismatch_kms": 1.8750334618289344e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9387197715792882
+   },
+   "soi_fraction": 2.839644250296704e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.49,
+     8.3
+    ],
+    [
+     "E",
+     5.49,
+     74.5
+    ],
+    [
+     "M",
+     9.799,
+     5.6
+    ],
+    [
+     "M",
+     9.799,
+     5.6
+    ],
+    [
+     "E",
+     5.49,
+     82.8
+    ]
+   ],
+   "keys": [
+    "k3|LE>E/1l|RE/1:1|LE>M/0s|RM/1:1|LM>E/0s",
+    "k3|RE/1:1|LE>E/1l|LE>M/0s|RM/1:1|LM>E/0s"
+   ],
+   "key": "k3|LE>E/1l|RE/1:1|LE>M/0s|RM/1:1|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 5.4903954453628785,
+    "M": 9.79890848919812
+   },
+   "x_days": [
+    75.76698191987154,
+    976.7153727096766,
+    2308.477225429485
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 611.4653727096766,
+     "vinf_kms": 5.4903954453628785,
+     "turn_deg": 8.311420977598274,
+     "available_deg": 83.7934794197014,
+     "ratio": 0.09918935262215767,
+     "required_alt_km": 162867.689276292,
+     "rmin_radii": 26.53530745361725,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 976.7153727096766,
+     "vinf_kms": 5.490395445362905,
+     "turn_deg": 82.76372986278604,
+     "available_deg": 83.7934794197014,
+     "ratio": 0.9877108628971283,
+     "required_alt_km": 401.1580095435693,
+     "rmin_radii": 1.0628957969299662,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1623.6334754294846,
+     "vinf_kms": 9.79890848919812,
+     "turn_deg": 5.602612532731787,
+     "available_deg": 12.67047332489766,
+     "ratio": 0.44217862972195154,
+     "required_alt_km": 5284.414974061754,
+     "rmin_radii": 2.5559833148503923,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 2308.477225429485,
+     "vinf_kms": 9.798908489198142,
+     "turn_deg": 5.602612532731918,
+     "available_deg": 12.67047332489766,
+     "ratio": 0.44217862972196187,
+     "required_alt_km": 5284.414974061543,
+     "rmin_radii": 2.555983314850318,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2423.802696205586,
+     "vinf_kms": 5.49039544536291,
+     "turn_deg": 74.4523088851901,
+     "available_deg": 83.79347941970107,
+     "ratio": 0.8885215102750021,
+     "required_alt_km": 2256.4209684849875,
+     "rmin_radii": 1.3537743025094906,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 122139468.69868237,
+   "r_max_km": 344322262.02662015,
+   "min_required_alt_km": 401.1580095435693,
+   "max_turn_deg": 82.76372986278604,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0009977768154040606,
+    "max_vinf_vector_error_kms": 1.0198053991195436e-10,
+    "max_junction_mismatch_kms": 8.458123090804293e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9877108628951881
+   },
+   "soi_fraction": 1.728558800482791e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.591,
+     31.5
+    ],
+    [
+     "E",
+     5.591,
+     46.8
+    ],
+    [
+     "E",
+     5.591,
+     78.3
+    ],
+    [
+     "M",
+     9.372,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LE>E/1h|RE/3:2|LE>M/0s|LM>E/0s",
+    "k3|RE/3:2|LE>E/1h|LE>M/0s|LM>E/0s"
+   ],
+   "key": "k3|RE/3:2|LE>E/1h|LE>M/0s|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 5.590508511833162,
+    "M": 9.372133267694167
+   },
+   "x_days": [
+    416.7282685564139,
+    908.6555093247849,
+    1530.8473757106485
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 908.6555093247849,
+     "vinf_kms": 5.590508511833162,
+     "turn_deg": 78.3183173128427,
+     "available_deg": 82.55775335751999,
+     "ratio": 0.948648844326974,
+     "required_alt_km": 1064.7713519816525,
+     "rmin_radii": 1.166940809202059,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1530.8473757106485,
+     "vinf_kms": 9.372133267694167,
+     "turn_deg": 0.0,
+     "available_deg": 13.71457265240894,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1669.0139828421286,
+     "vinf_kms": 5.590508511833142,
+     "turn_deg": 31.531151749947227,
+     "available_deg": 82.55775335751994,
+     "ratio": 0.3819284133544696,
+     "required_alt_km": 27808.095458231317,
+     "rmin_radii": 5.359908772456803,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2764.7639828421284,
+     "vinf_kms": 5.590508511833143,
+     "turn_deg": 46.78716556289599,
+     "available_deg": 82.55775335751994,
+     "ratio": 0.5667204309725113,
+     "required_alt_km": 12989.655977792521,
+     "rmin_radii": 3.0365909320844806,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 113784994.31668635,
+   "r_max_km": 328691293.5455765,
+   "min_required_alt_km": 1064.7713519816525,
+   "max_turn_deg": 78.3183173128427,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0005840069925548079,
+    "max_vinf_vector_error_kms": 5.198422085040941e-11,
+    "max_junction_mismatch_kms": 5.189626506307832e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.948648844326679
+   },
+   "soi_fraction": 1.0117397106639491e-09,
+   "collisions": [
+    "CATALOGUE NEAR russell-ocampo-3.5.1+1 (dV_inf 0.191, k 3)",
+    "CATALOGUE NEAR russell-ocampo-3.9.1+0 (dV_inf 0.191, k 3)",
+    "CATALOGUE V_INF russell-ocampo-4.5.1-3 (dV_inf 0.091, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-4.9.1-2 (dV_inf 0.091, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-4.13.1-1 (dV_inf 0.091, k 4 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-5.9.3-1 (dV_inf 0.091, k 5 vs 3)",
+    "CATALOGUE V_INF russell-ocampo-6.5.5-1 (dV_inf 0.091, k 6 vs 3)",
+    "CATALOGUE NEAR russell-ch4-5.30gGf3 (dV_inf 0.291, k 3)",
+    "CATALOGUE NEAR russell-ch4-5.66Gfh3 (dV_inf 0.112, k 3)",
+    "CATALOGUE NEAR russell-ch4-5.75ggF3 (dV_inf 0.159, k 3)",
+    "CATALOGUE NEAR russell-ocampo-3.1.1+2 (dV_inf 0.191, k 3)",
+    "CATALOGUE V_INF russell-ocampo-4.1.1-4 (dV_inf 0.091, k 4 vs 3)",
+    "CATALOGUE V_INF rall-1970-m6-2 (dV_inf 0.081, k 6 vs 3)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "E",
+     5.977,
+     8.9
+    ],
+    [
+     "E",
+     5.977,
+     68.7
+    ],
+    [
+     "M",
+     10.028,
+     5.9
+    ],
+    [
+     "M",
+     10.028,
+     5.9
+    ],
+    [
+     "E",
+     5.977,
+     77.6
+    ]
+   ],
+   "keys": [
+    "k3|LE>E/1h|RE/1:1|LE>M/0s|RM/1:1|LM>E/0s",
+    "k3|RE/1:1|LE>E/1h|LE>M/0s|RM/1:1|LM>E/0s"
+   ],
+   "key": "k3|RE/1:1|LE>E/1h|LE>M/0s|RM/1:1|LM>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "E": 5.976907177425848,
+    "M": 10.027681237366885
+   },
+   "x_days": [
+    188.4300705321965,
+    678.855744791798,
+    1496.9396253357831
+   ],
+   "period_days": 2348.0357142857147,
+   "flyby_table": [
+    {
+     "body": "E",
+     "t_days": 678.855744791798,
+     "vinf_kms": 5.976907177425848,
+     "turn_deg": 77.63010303576904,
+     "available_deg": 77.96900999176158,
+     "ratio": 0.99565331205272,
+     "required_alt_km": 265.1279620247451,
+     "rmin_radii": 1.0415682450885824,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 812.0958753357831,
+     "vinf_kms": 10.027681237366885,
+     "turn_deg": 5.877729879800386,
+     "available_deg": 12.157492643068814,
+     "ratio": 0.48346563328182446,
+     "required_alt_km": 4485.26634682966,
+     "rmin_radii": 2.320675918258301,
+     "status": "pass"
+    },
+    {
+     "body": "M",
+     "t_days": 1496.9396253357831,
+     "vinf_kms": 10.027681237366878,
+     "turn_deg": 5.8777298798002615,
+     "available_deg": 12.157492643068847,
+     "ratio": 0.4834656332818129,
+     "required_alt_km": 4485.266346829858,
+     "rmin_radii": 2.3206759182583556,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2171.215784817911,
+     "vinf_kms": 5.97690717742592,
+     "turn_deg": 68.68989076458628,
+     "available_deg": 77.96900999175976,
+     "ratio": 0.8809896492445634,
+     "required_alt_km": 2241.420743514286,
+     "rmin_radii": 1.3514224833229964,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2536.465784817911,
+     "vinf_kms": 5.976907177425846,
+     "turn_deg": 8.940212271183096,
+     "available_deg": 77.96900999176147,
+     "ratio": 0.11466366280818183,
+     "required_alt_km": 125626.71370090502,
+     "rmin_radii": 20.69645896613725,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 111434518.25465375,
+   "r_max_km": 348663965.1768843,
+   "min_required_alt_km": 265.1279620247451,
+   "max_turn_deg": 77.63010303576904,
+   "cross_check": {
+    "max_arrival_miss_km": 0.003315433896836097,
+    "max_vinf_vector_error_kms": 5.127957000790714e-10,
+    "max_junction_mismatch_kms": 2.1617019285713468e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9956533120533246
+   },
+   "soi_fraction": 5.743691726765759e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 (Aldrin-class follow-up)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  }
+ ]
+}

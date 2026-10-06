@@ -1517,6 +1517,96 @@ restarts; descriptive by 6.27), `data/943_ganeur316_realeph/n10_std/`:
 - So a published Jovian half-rev member closes ballistically over 10 cycles on jup365 with the
   pre-6.33 shoot at 2030-2056 epochs, but not at R-S's own 2019 epoch (6.32).
 
+### 6.36 Cell 6 result: em (Earth-Mars, both massive), 2026-10-06
+
+Run record:
+- 9,901 structures and 28,090 zeros. The run code predates 79193f6e; it has no Traceback.
+- Full reassessment at 1feb8f2b (lead launch). Its 25,178 H-leg zeros were then reassessed again under
+  the 6.34 half-rev rule (12,860 verdict changes, mostly fail <-> no-directions).
+- Merged set: 6,247 physical cyclers, 8 gate-passing (the same 8 as on the original assessment).
+- Gauntlet: `data/942_cell_em_gauntlet.json`. Every one re-flies with DOP853 to <= 3.6e-3 km and passes
+  the gate on the integrated vectors; SOI fraction <= 6.3e-9.
+
+Positive control: NONE in-run. The pre-registration (6.2) set no in-run recall control for em.
+- The nearest Russell-Ocampo catalogue rows (V_inf rounded to 0.1 km/s; no leg structures in the
+  catalogue) do not match structurally.
+- Our k = 3 one-body 5.151/9.153 is within 0.049 km/s of R-O 3.5.2+0, but R-O list 5 Earth flybys
+  (turns 83 x 4 and 24 deg) and ours has 3 (33, 42, 75 deg).
+- So the em cell is NOT validated by a published recall. Its results are conditional on that gap.
+  A targeted R-O recall (leg structures from Russell 2004) is the missing control.
+
+Classification:
+- One-body (Mars turn 0; the R-O Earth-hosted free-return class, Mars massless in their ideal model;
+  class members, not finds), 3:
+  - k2 7.593/9.865 (NEAR R-O 2.5.1+0 by V_inf);
+  - k3 5.151/9.153 (V_inf NEAR R-O 3.5.2+0, structure differs);
+  - k3 5.591/9.372.
+- Two-working-body (both planets turn), 5. None is near-one-body: Mars turns >= 5.6 deg, ratio >= 0.44.
+
+| Name | k | Key | V_inf E / M (km/s) | Earth worst ratio | Mars turn, ratio | Worst | r (AU) |
+|---|---|---|---|---|---|---|---|
+| em-1 | 3 | k3\|RE/2:1\|LE>M/0s\|LM>M/1l\|LM>E/0s | 5.333 / 4.713 | 0.708 | 2 x 38.4 deg, 0.939 | 0.939 | 1.000-2.175 |
+| em-2 | 3 | k3\|RE/1:1\|RE/1:1\|LE>M/0s\|LM>M/1l\|LM>E/0s | 5.333 / 4.713 | 0.763 | 2 x 38.4 deg, 0.939 | 0.939 | 0.903-1.930 |
+| em-3 | 3 | k3\|LE>E/1l\|HE/1,0,a\|LE>M/0s\|LM>M/1l\|LM>E/0s | 4.684 / 4.539 | 0.983 | 2 x 38.4 deg, 0.892 | 0.983 | 0.880-1.914 |
+| em-4 | 3 | k3\|LE>E/1l\|RE/1:1\|LE>M/0s\|RM/1:1\|LM>E/0s | 5.490 / 9.799 | 0.988 | 2 x 5.6 deg, 0.442 | 0.988 | 0.816-2.302 |
+| em-5 | 3 | k3\|RE/1:1\|LE>E/1h\|LE>M/0s\|RM/1:1\|LM>E/0s | 5.977 / 10.028 | 0.996 | 2 x 5.9 deg, 0.483 | 0.996 | 0.745-2.331 |
+
+- em-1 and em-2 share the transfer and Mars part (a 1-rev generic Mars return, 38.4-deg Mars turns)
+  and differ in the Earth block. em-3's Earth half-rev is the tilted-circle geometry (6.34).
+- Collision checks:
+  - Rall 1969 / Rall & Hollister 1971: their M4-1, M5-1 and M5-2 have k = 4-5, two round trips per
+    pattern, Mars swing-bys of 2.3-4.3 deg at about 9.35 km/s, and no direct returns at Mars. No em row
+    is a member (k = 3, one round trip, Mars returns).
+    - em-4 and em-5 are in Rall's energy regime at Mars (9.8-10.0 km/s, 5.6-5.9-deg Mars turns). They add
+      Mars 1:1 returns, so they are Rall-adjacent, not Rall members.
+  - Pisarevsky 2008: their diagrams cover loitering arcs that are multiples of pi only. Every em
+    two-working-body row has a generic loitering arc (Mars generic for em-1/2/3, Earth generic for
+    em-3/4/5), so all lie outside the covered diagrams. Table 4 (E 6.2 / M 5.7, k = 2) is not within
+    0.3 km/s of any em row. Fig. 14 (class I.1 graphical points) is not digitised: an open check.
+  - Catalogue (273 Earth-Mars rows incl. 222 R-O and 15 Rall): no V_inf match within 0.3 km/s for any
+    two-working-body row.
+  - Offline literature_check: "published" via the Earth-Mars anchors (a flag).
+- Status: em-1..em-5 are "candidate, pending owner adjudication, NOT novel". The margins are thin
+  (worst 0.939-0.996).
+- Shortlist (6.12 rule; no demotions): em-1, em-2 (0.939), em-3 (0.983).
+  - Real-ephemeris viability:
+    - em-1 has an Earth 2:1 full-rev, and em-2 two Earth 1:1 full-revs. On DE440, Earth full-revs carry
+      the lunar-reflex seed issue of 6.25; on Standish (ramp, exact) they are fine.
+    - em-3's Earth leg is a tilted-circle half-rev; that leg type has no real-ephemeris control.
+  - With ideal margins of 6 % or less, all three are expected to be fragile (GanCal#5 failed with a
+    6 % margin, 6.16).
+
+### 6.37 vm2n and vmn (vm2-1 neighbours, k = 2-5), 2026-10-06
+
+- vmn (Mars massless, cell vm): 8,616 structures, 1,707 physical cyclers, 14 gate-passing, all
+  one-body R-S class members. In-run control VenMar#45 is LITERAL. vm-1 is present. No finds.
+  `data/942_cell_vmn_gauntlet.json`.
+- vm2n (Mars massive, cell vm2): 8,616 structures, 4,476 physical cyclers, 23 gate-passing.
+  `data/942_cell_vm2n_gauntlet.json`. H-leg reassessment (6.34 rule): vm2n 0 changes, vmn 0 changes.
+- Two-working-body vm2n rows (Mars turns > 0), ranked:
+
+| Name | k | Key | V_inf V / M | Worst (body) | Mars turn | r (AU) |
+|---|---|---|---|---|---|---|
+| vm2n-1 | 4 | k4\|LV>V/1h\|LV>M/0s\|LM>V/1h | 18.651 / 7.594 | 0.297 (V) | 5.4 deg (0.276) | 0.435-1.524 |
+| vm2n-2 | 4 | k4\|RV/2:1\|RV/2:1\|LV>M/0s\|LM>V/0s | 6.221 / 4.864 | 0.421 (M) | 16.5 deg | 0.722-1.574 |
+| vm2n-3 | 4 | k4\|LV>V/3h\|LV>M/0s\|LM>V/0s | 26.223 / 10.491 | 0.591 (V) | 5.0 deg | 0.249-1.524 |
+| vm2n-4 | 4 | k4\|RV/2:1\|LV>M/1h\|LM>V/0s | 6.516 / 5.039 | 0.880 (M) | 32.7 deg | 0.714-1.573 |
+| (k = 5 rows) | 5 | 5 rows | 6.2-6.9 / 4.9-5.1 | 0.908-0.996 | 16-34 deg | |
+
+- vm2-1 (k3, 0.981) reappears.
+- Answer to "a vm2-1 neighbour with more margin?": YES, vm2n-2.
+  - It has the same V-M-V round trip (V_inf 6.22 / 4.86 against vm2-1's 6.09 / 4.85; Mars turn 16.5
+    against 16.4 deg), with the Venus loiter as two 2:1 full-revs (k = 4) in place of the 2-rev generic
+    return (k = 3).
+  - Venus ratio 0.289 against 0.981; worst 0.421 (Mars).
+  - Its one-body twin in vmn (k4, V 6.208 / M 5.871, RV/2:1 x 2) is an R-S class member.
+- vm2n-1 and vm2n-3 have Venus V_inf of 18.7 and 26.2 km/s (r_min 0.435 and 0.249 AU): high-energy.
+- All are "candidate, pending owner adjudication, NOT novel". Collisions: R-S has no two-body V-M rows;
+  the catalogue has only the Jones VEM rows on this pair; Rall's thesis records the failed V-M search
+  (6.4).
+- Real-ephemeris rung for vm2n-2 (Venus 2:1 full-revs, heliocentric): the Standish direct route (6.22)
+  is controlled (D1, the H&M endpoint orbits). That is a launch request with its own pre-registration.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
