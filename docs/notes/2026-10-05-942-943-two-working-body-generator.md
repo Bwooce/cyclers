@@ -1774,6 +1774,15 @@ Also received:
   - Callisto appears as one block of 8 flybys (the "switch flip", V_inf 2.73-3.63 km/s).
   - The pattern is one-way (G^4 E^n C^8 E^n C), with no periodic two-body sequence. No collision with
     gc-1, gc-2 or ge-1..3.
+- Minovitch 1972 (JSR 9(10):751, "Gravity Thrust Jupiter Orbiter Trajectories"; read by
+  corpus-file-opus on the page image):
+  - Table 1 is one non-periodic 19-encounter Galilean tour at high V_inf (Ganymede 12.25-12.65,
+    Callisto 8.13-8.52 km/s).
+  - The paper discusses periodic gravity-thrust trajectories, citing only Hollister's Earth-Venus and
+    Earth-Mars orbits, and calls a four-satellite periodic one "rather remote". It gives no two-moon
+    periodic sequence.
+  - No collision with gc-1, gc-2 or ge-1..3. It is an early statement of the periodic-tour idea at
+    Jupiter (context for the prior-art record).
 - Grushevskii, Golubev, Koryanov, Tuchin & Tuchin, ISSFD 2017 paper 145: the same one-way cross-GAM
   template as Golubev 2014 (no periodic G-C sequence). No collision with gc-1, gc-2 or ge-1..3.
 
