@@ -113,8 +113,15 @@ at t = 0).
     targets Sun-Earth L1, Venus flyby below the surface; no collision).
   - VanderVeen 1969 affirms the 8-yr E-V repeat. corpus-file-opus's own arithmetic gives a -2.4 deg slip
     per 8 yr, which the 16-yr chain absorbs. Not a published objection.
-- **[PLACEHOLDER: Minovitch JPL TR 32-464 (1963), being digested by corpus-file-opus with priority;
-  its R1 verdict may change this entry.]**
+- Minovitch 1963 (JPL TR 32-464, 31 Oct 1963; key pages read on the images by corpus-file-opus, full
+  digest in progress): NO collision.
+  - Every return trajectory is one-shot.
+  - Table 14 has ~1-yr Earth-Venus-Earth free returns with no Venus-Venus leg; no trajectory returns
+    to Venus.
+  - Concept priority, recorded: p.15 "example 5" imagines an E-V-M-E-V-M-E free fall that "repeats
+    the same flight" (an idea only; whether it is possible is stated as unknown, and none is computed).
+    The p.50-51 "space bus" chain (Table 23, E-V-M-E-M-E-V-E, 1970-75) does not repeat.
+  - Cite Minovitch 1963 as the earliest statement of the repeating free-fall (cycler) idea.
 - **Decision asked:** candidate-novel under `#875` (ii)?
   - The known architecture (R-S one-working-node) at a never-treated pair.
   - Proposed attribution: Russell & Strange 2007/2009, explaining its re-application to Earth-Venus
@@ -135,7 +142,9 @@ at t = 0).
 - Prior art: outside Hollister's 3.2-yr FR/SY itineraries. Menning 1968 estimates at least 1024
   Earth-Venus FR/SY orbits and names half-rev and order variations. ev-A carries a generic (non-FR,
   non-SY) Venus return, so it is not one of those. The web prior-art search is OPEN.
-- **[PLACEHOLDER: Minovitch JPL TR 32-464 (1963), pending.]**
+- Minovitch 1963 (JPL TR 32-464): NO collision. All its returns are one-shot (Table 14 E-V-E free
+  returns; Tables 16-17 one-way E-V-M-E chains); the repeating free-fall idea (p.15) is stated but not
+  computed (see ev-C).
 - **Decision asked:** candidate-novel?
   - Proposed attribution: Hollister 1969 and Hollister & Menning 1970 (method and the E-V
     two-working-body class).
@@ -155,7 +164,9 @@ at t = 0).
 - Prior art: as ev-A. Near: the VESTA web concept's "1752-d Earth-Venus cycle" (no sources, no
   trajectory) has the same period as ev-B (3 synodic periods). That is a period coincidence only; it
   cannot be compared further.
-- **[PLACEHOLDER: Minovitch JPL TR 32-464 (1963), pending.]**
+- Minovitch 1963 (JPL TR 32-464): NO collision. All its returns are one-shot (Table 14 E-V-E free
+  returns; Tables 16-17 one-way E-V-M-E chains); the repeating free-fall idea (p.15) is stated but not
+  computed (see ev-C).
 - **Decision asked:** as ev-A, with the weaker real-ephemeris standing.
 
 ## 3. Recorded, not proposed as finds
@@ -168,7 +179,7 @@ at t = 0).
 | ge-4/5/6 | near-one-body (turn < 1 deg, ratio < 0.05 at one moon) | not laddered | R-S-class relatives |
 | em-1, em-2 (k3, E 5.333 / M 4.713, Mars generic return 2 x 38.4 deg), em-3 (E 4.684 / M 4.539) | worst 0.939-0.983 | rung (d) not passed: converged landings fail at Mars (2.9-24) | ideal-model members only |
 | em-4, em-5 (Mars 1:1, M 9.8-10.0) | worst 0.988-0.996 | not laddered | Rall-adjacent, not Rall members |
-| vm2-1 k3\|LV>V/2l\|LV>M/0s\|LM>V/0s, V 6.086 / M 4.849, worst 0.981 | passes the registry floor, fails Rall/H&M's 1.1-radius rule | single-cycle failure; the 7-cycle negative is path-limited | ideal-model curiosity (6.10); in Rall's attempted class (thesis sec. 4.4) |
+| vm2-1 k3\|LV>V/2l\|LV>M/0s\|LM>V/0s, V 6.086 / M 4.849, worst 0.981 | passes the registry floor, fails Rall/H&M's 1.1-radius rule | single-cycle failure; the 7-cycle negative is path-limited | ideal-model curiosity (6.10); in Rall's attempted class (thesis sec. 4.4); weak related prior art: the one-shot E-V-M-E chains of Minovitch 1963 (Venus V_inf 5.37-6.11 km/s; no M->V or V->V leg) |
 | vm2n-2 k4\|RV/2:1 x 2\|LV>M/0s\|LM>V/0s, V 6.221 / M 4.864, worst 0.421 | vm2-1 neighbour with margin | rung (d) not passed (1/5 converged, Mars 5.91) | ideal-model member only |
 | vm-1, the em one-body rows, the ge one-body rows, vmn | | | R-S / R-O class members |
 
@@ -181,7 +192,7 @@ at t = 0).
 
 ## 4. Open items
 
-- ev-A, ev-B, ev-C: Minovitch JPL TR 32-464 (1963) verdict (placeholders above).
+- Minovitch JPL TR 32-464 (1963): full digest in progress (corpus-file-opus); the key-page verdict above is no collision.
 - Web prior-art search: open for ge-*, em-* and ev-A/ev-B (done for gc-1, gc-2 and ev-C).
 - The Jovian n-body lane (#968): no positive control, so gc-1 and gc-2 have no n-body check.
 - gc-2: a continuous-gravity check of the GanCal#5 relation (owner option).
@@ -196,7 +207,7 @@ at t = 0).
 |---|---|---|---|---|
 | gc-1 | PASS 5/5 (jup365, 10 cycles) | none | candidate-novel | Hollister & Menning 1970 (method); Russell & Strange 2007/2009 (model, future-work statement); Campagnola et al. 2019 (class) |
 | gc-2 | PASS 5/5 (jup365, 10 cycles) | none; near the R-S GanCal family | candidate-novel, or GanCal-family relative | as gc-1, plus R-S GanCal#5 (skeleton) |
-| ev-C | PASS 5/5 (Standish and DE440) | none (D. Ross 2L4 nearest, unrefereed); Minovitch 1963 pending | candidate-novel under `#875` (ii) | Russell & Strange 2007/2009, re-applied to Earth-Venus with Venus hosting |
-| ev-A | Standish 5/5; DE440 near-ballistic | none; Minovitch 1963 and web search pending | candidate-novel, or Hollister-Menning class member | Hollister 1969; Hollister & Menning 1970 |
-| ev-B | Standish 2/5 | none; Minovitch 1963 and web search pending | as ev-A | as ev-A |
+| ev-C | PASS 5/5 (Standish and DE440) | none (D. Ross 2L4 nearest, unrefereed; Minovitch 1963 none) | candidate-novel under `#875` (ii) | Russell & Strange 2007/2009, re-applied to Earth-Venus with Venus hosting |
+| ev-A | Standish 5/5; DE440 near-ballistic | none (Minovitch 1963 none); web search pending | candidate-novel, or Hollister-Menning class member | Hollister 1969; Hollister & Menning 1970 |
+| ev-B | Standish 2/5 | none (Minovitch 1963 none); web search pending | as ev-A | as ev-A |
 | ge-1..3, em-1..5, vm2-1, vm2n-2 | not passed / negative (conditional) | none | not candidate-novel (ideal-model members only) | — |

@@ -1983,6 +1983,19 @@ growth):
 - So all three ge shortlist candidates are rung-(d) negatives (conditional). They stay "candidate,
   NOT novel" in the ideal model.
 
+### 6.52 Minovitch 1963 (JPL TR 32-464, 31 Oct 1963): key pages checked by corpus-file-opus on the images (full digest in progress)
+
+- Every trajectory that returns to its start planet is one-shot:
+  - Table 14: ~1-yr Earth-Venus-Earth free returns, with no Venus-Venus leg;
+  - Table 15: Earth-Mars-Earth returns of about 1,030-1,110 days;
+  - Tables 16-17: one-way E-V-M-E chains, Venus V_inf 5.37-6.11 km/s;
+  - Table 23: the 1970-75 "space bus" chain, which does not repeat.
+- No collision with ev-A, ev-B, ev-C or vm2-1. The E-V-M-E chains are weak related prior art for vm2-1.
+- Concept priority: p.15 "example 5" imagines an E-V-M-E-V-M-E free fall that "repeats the same
+  flight". It is not computed, and its feasibility is stated as unknown. This is the earliest statement
+  of the repeating free-fall (cycler) idea in the corpus, ahead of Hollister and Rall. Owner summary
+  updated (placeholders filled).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
