@@ -1,0 +1,171 @@
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.0000 conv=True res=2.1e-12 gate=pass worst=0.961 [elapsed 0s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.1000 conv=True res=1.5e-11 gate=pass worst=0.961 [elapsed 0s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.2000 conv=True res=1.2e-11 gate=pass worst=0.960 [elapsed 0s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.3000 conv=True res=7.9e-13 gate=pass worst=0.960 [elapsed 0s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.4000 conv=True res=6.8e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.5000 conv=True res=7.7e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.6000 conv=True res=4.7e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.7000 conv=True res=4.7e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.8000 conv=True res=3.2e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=0.9000 conv=True res=9.3e-12 gate=pass worst=0.960 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=1.0000 conv=True res=6.4e-12 gate=pass worst=0.961 [elapsed 1s]
+15:55:41 gc epoch 0 (JD 2456550.4) blend lam=1.0000 conv=True res=6.4e-12 gate=pass worst=0.961 [elapsed 1s]
+15:55:41   shoot restart 0/20: no closure (max residual 2.1e-03, nfev 30, 0s)
+15:55:43   shoot restart 1/20: no closure (max residual 2.8e+00, nfev 360, 2s)
+15:55:43   shoot restart 2/20: no closure (max residual 1.8e+00, nfev 55, 0s)
+15:55:45   shoot restart 3/20: no closure (max residual 5.3e+00, nfev 360, 2s)
+15:55:47   shoot restart 4/20: no closure (max residual 3.9e+00, nfev 360, 2s)
+15:55:47   shoot restart 5/20: no closure (max residual 2.2e-01, nfev 88, 0s)
+15:55:47   shoot restart 6/20: no closure (max residual inf, nfev 2, 0s)
+15:55:47   shoot restart 7/20: no closure (max residual inf, nfev 2, 0s)
+15:55:49   shoot restart 8/20: no closure (max residual 7.9e+00, nfev 360, 2s)
+15:55:49   shoot restart 9/20: no closure (max residual inf, nfev 2, 0s)
+15:55:51   shoot restart 10/20: no closure (max residual 8.9e-03, nfev 360, 2s)
+15:55:51   shoot restart 11/20: no closure (max residual 5.0e-03, nfev 44, 0s)
+15:55:53   shoot restart 12/20: no closure (max residual 7.1e+00, nfev 360, 2s)
+15:55:53   shoot restart 13/20: no closure (max residual 3.1e-02, nfev 38, 0s)
+15:55:55   shoot restart 14/20: no closure (max residual 8.7e+00, nfev 360, 2s)
+15:55:55   shoot restart 15/20: no closure (max residual inf, nfev 2, 0s)
+15:55:55   shoot restart 16/20: no closure (max residual inf, nfev 2, 0s)
+15:55:56   shoot restart 17/20: no closure (max residual 4.7e+00, nfev 360, 2s)
+15:55:57   shoot restart 18/20: no closure (max residual 5.4e+00, nfev 91, 0s)
+15:55:59   shoot restart 19/20: no closure (max residual 3.1e+00, nfev 360, 2s)
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.0000 conv=True res=9.4e-12 gate=pass worst=0.961 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.1000 conv=True res=2.6e-12 gate=pass worst=0.961 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.2000 conv=True res=5.0e-12 gate=pass worst=0.960 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.3000 conv=True res=4.3e-12 gate=pass worst=0.960 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.4000 conv=True res=1.1e-11 gate=pass worst=0.960 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.5000 conv=True res=6.4e-12 gate=pass worst=0.960 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.6000 conv=True res=4.3e-12 gate=pass worst=0.960 [elapsed 18s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.7000 conv=True res=5.1e-12 gate=pass worst=0.960 [elapsed 19s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.8000 conv=True res=6.3e-12 gate=pass worst=0.960 [elapsed 19s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=0.9000 conv=True res=8.7e-12 gate=pass worst=0.960 [elapsed 19s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=1.0000 conv=True res=5.6e-12 gate=pass worst=0.961 [elapsed 19s]
+15:55:59 gc epoch 1 (JD 2456550.4) blend lam=1.0000 conv=True res=2.2e-12 gate=pass worst=0.961 [elapsed 19s]
+15:55:59   shoot restart 0/20: no closure (max residual 6.7e-04, nfev 29, 0s)
+15:56:01   shoot restart 1/20: no closure (max residual 1.6e+00, nfev 360, 2s)
+15:56:03   shoot restart 2/20: no closure (max residual 1.5e+00, nfev 360, 2s)
+15:56:03   shoot restart 3/20: no closure (max residual inf, nfev 2, 0s)
+15:56:05   shoot restart 4/20: no closure (max residual 7.5e+00, nfev 360, 2s)
+15:56:05   shoot restart 5/20: no closure (max residual inf, nfev 2, 0s)
+15:56:05   shoot restart 6/20: no closure (max residual inf, nfev 2, 0s)
+15:56:06   shoot restart 7/20: no closure (max residual 1.4e+00, nfev 360, 2s)
+15:56:08   shoot restart 8/20: no closure (max residual 9.9e+00, nfev 360, 2s)
+15:56:08   shoot restart 9/20: no closure (max residual 1.9e-03, nfev 32, 0s)
+15:56:10   shoot restart 10/20: no closure (max residual 3.0e+00, nfev 360, 2s)
+15:56:10   shoot restart 11/20: no closure (max residual 2.2e-01, nfev 74, 0s)
+15:56:10   shoot restart 12: closes, gate=fail worst=1.438
+15:56:12   shoot restart 13/20: no closure (max residual 4.0e+00, nfev 360, 2s)
+15:56:14   shoot restart 14/20: no closure (max residual 3.8e+00, nfev 360, 2s)
+15:56:14   shoot restart 15/20: no closure (max residual inf, nfev 2, 0s)
+15:56:14   shoot restart 16/20: no closure (max residual 5.9e-03, nfev 42, 0s)
+15:56:14   shoot restart 17/20: no closure (max residual inf, nfev 2, 0s)
+15:56:14   shoot restart 18/20: no closure (max residual 2.0e-02, nfev 43, 0s)
+15:56:14   shoot restart 19/20: no closure (max residual inf, nfev 2, 0s)
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.0000 conv=True res=6.2e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.1000 conv=True res=2.2e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.2000 conv=True res=7.4e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.3000 conv=True res=2.1e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.4000 conv=True res=3.9e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.5000 conv=True res=2.1e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.5500 conv=True res=6.7e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.5750 conv=True res=1.0e-11 gate=pass worst=0.961 [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.5875 conv=False res=4.1e-04 gate=unconverged worst=nan [elapsed 34s]
+15:56:14 gc epoch 2 (JD 2456562.9) blend lam=0.5813 conv=False res=5.7e-05 gate=unconverged worst=nan [elapsed 34s]
+15:56:15 gc epoch 2 (JD 2456562.9) blend lam=0.5781 conv=True res=1.8e-11 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 2 (JD 2456562.9) blend lam=0.5813 conv=False res=5.2e-05 gate=unconverged worst=nan [elapsed 34s]
+15:56:15 gc epoch 2 (JD 2456562.9) blend lam=0.5797 conv=True res=2.1e-11 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 2 (JD 2456562.9) blend lam=0.5813 conv=False res=6.8e-05 gate=unconverged worst=nan [elapsed 34s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.0000 conv=True res=6.7e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.1000 conv=True res=2.3e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.2000 conv=True res=2.8e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.3000 conv=True res=5.6e-12 gate=pass worst=0.961 [elapsed 34s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.4000 conv=True res=6.7e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5000 conv=True res=2.4e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5500 conv=True res=5.7e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5750 conv=True res=4.0e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5875 conv=False res=4.1e-04 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5813 conv=False res=5.7e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5781 conv=True res=2.2e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5813 conv=False res=5.1e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5797 conv=True res=2.6e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 3 (JD 2456562.9) blend lam=0.5813 conv=False res=6.8e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:15 gc epoch 4 (JD 2456562.9) blend lam=0.0000 conv=True res=2.1e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 4 (JD 2456562.9) blend lam=0.1000 conv=True res=5.3e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 4 (JD 2456562.9) blend lam=0.2000 conv=True res=1.5e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 4 (JD 2456562.9) blend lam=0.3000 conv=True res=3.8e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:15 gc epoch 4 (JD 2456562.9) blend lam=0.4000 conv=True res=4.1e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5000 conv=True res=6.1e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5500 conv=True res=4.1e-12 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5750 conv=True res=1.8e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.6000 conv=False res=1.1e-03 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5875 conv=False res=4.1e-04 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5813 conv=False res=5.7e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5781 conv=True res=2.2e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5813 conv=False res=5.2e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5797 conv=True res=2.5e-11 gate=pass worst=0.961 [elapsed 35s]
+15:56:16 gc epoch 4 (JD 2456562.9) blend lam=0.5813 conv=False res=6.8e-05 gate=unconverged worst=nan [elapsed 35s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.0000 conv=True res=5.7e-12 gate=pass worst=0.961 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.1000 conv=True res=3.4e-12 gate=pass worst=0.961 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.2000 conv=True res=5.2e-12 gate=pass worst=0.962 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.3000 conv=True res=5.0e-12 gate=pass worst=0.962 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.4000 conv=True res=4.4e-12 gate=pass worst=0.963 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5000 conv=True res=3.9e-12 gate=pass worst=0.964 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.6000 conv=False res=1.1e-02 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5500 conv=False res=2.2e-03 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5250 conv=True res=2.2e-12 gate=pass worst=0.965 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5500 conv=False res=2.2e-03 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5312 conv=True res=4.8e-12 gate=pass worst=0.966 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5344 conv=True res=3.8e-12 gate=pass worst=0.966 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5359 conv=True res=4.6e-12 gate=pass worst=0.966 [elapsed 36s]
+15:56:16 gc epoch 5 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:16 gc epoch 6 (JD 2456575.4) blend lam=0.0000 conv=True res=6.8e-12 gate=pass worst=0.961 [elapsed 36s]
+15:56:16 gc epoch 6 (JD 2456575.4) blend lam=0.1000 conv=True res=6.9e-12 gate=pass worst=0.961 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.2000 conv=True res=5.8e-12 gate=pass worst=0.962 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.3000 conv=True res=4.4e-12 gate=pass worst=0.962 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.4000 conv=True res=1.5e-11 gate=pass worst=0.963 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5000 conv=True res=3.1e-12 gate=pass worst=0.964 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.6000 conv=False res=1.1e-02 gate=unconverged worst=nan [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5500 conv=False res=2.2e-03 gate=unconverged worst=nan [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5250 conv=True res=5.3e-12 gate=pass worst=0.965 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5500 conv=False res=2.2e-03 gate=unconverged worst=nan [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5312 conv=True res=6.0e-12 gate=pass worst=0.966 [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 36s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5344 conv=True res=8.7e-12 gate=pass worst=0.966 [elapsed 37s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 37s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5359 conv=True res=7.9e-12 gate=pass worst=0.966 [elapsed 37s]
+15:56:17 gc epoch 6 (JD 2456575.4) blend lam=0.5375 conv=False res=2.4e-05 gate=unconverged worst=nan [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.0000 conv=True res=9.2e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.1000 conv=True res=5.5e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.2000 conv=True res=2.6e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.3000 conv=True res=2.8e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.4000 conv=True res=1.6e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.5000 conv=True res=1.1e-11 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.6000 conv=True res=3.1e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.7000 conv=True res=1.0e-11 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.8000 conv=True res=4.0e-12 gate=pass worst=0.961 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.9000 conv=True res=8.8e-12 gate=pass worst=0.962 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=1.0000 conv=False res=3.0e-03 gate=unconverged worst=nan [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.9500 conv=True res=6.1e-12 gate=pass worst=0.962 [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=1.0000 conv=False res=3.0e-03 gate=unconverged worst=nan [elapsed 37s]
+15:56:17 gc epoch 7 (JD 2456588.0) blend lam=0.9750 conv=False res=2.0e-04 gate=unconverged worst=nan [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9625 conv=True res=2.0e-12 gate=pass worst=0.962 [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9750 conv=False res=2.0e-04 gate=unconverged worst=nan [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9687 conv=True res=3.8e-12 gate=pass worst=0.963 [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9750 conv=False res=2.0e-04 gate=unconverged worst=nan [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9719 conv=True res=4.1e-12 gate=pass worst=0.963 [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9750 conv=False res=2.0e-04 gate=unconverged worst=nan [elapsed 37s]
+15:56:18 gc epoch 7 (JD 2456588.0) blend lam=0.9734 conv=False res=2.6e-05 gate=unconverged worst=nan [elapsed 37s]
+DONE

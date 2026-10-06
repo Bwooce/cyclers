@@ -1,0 +1,842 @@
+[
+ {
+  "epoch_jd": 2456550.4055426423,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 6.422862242061456e-12,
+    "max_date_shift_d": 0.034893965828814544,
+    "chain_period_d": 37.557954701117815,
+    "status": "pass",
+    "worst_ratio": 0.9608984247832961,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9608984247832961,
+     "Callisto": 0.3366164576916281
+    },
+    "min_required_alt_km": 245.82609304949892,
+    "n_flybys": 3
+   }
+  ],
+  "x0_days": 16550.405542642387,
+  "final_y_dates": [
+   16575.482311994496,
+   16585.403321419366,
+   37.557954701117815
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": false,
+    "max_residual": 0.0020605831362772733
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": 2.7597017713845156
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": 1.7902373225261687
+   },
+   {
+    "restart": 3,
+    "converged": false,
+    "max_residual": 5.288350500288245
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": 3.8545237098181784
+   },
+   {
+    "restart": 5,
+    "converged": false,
+    "max_residual": 0.21743659008838656
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 8,
+    "converged": false,
+    "max_residual": 7.431951873764687
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": 0.008883894627540911
+   },
+   {
+    "restart": 11,
+    "converged": false,
+    "max_residual": 0.005034675722805915
+   },
+   {
+    "restart": 12,
+    "converged": false,
+    "max_residual": 7.106458426214231
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": 0.03141031338260136
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": 8.750155412476408
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": 4.6692181840949925
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": 5.385319581019692
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": 3.197622937225292
+   }
+  ],
+  "rung_pass": false
+ },
+ {
+  "epoch_jd": 2456550.405542648,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 6.773692717843005e-12,
+    "max_date_shift_d": 0.034893966767413076,
+    "chain_period_d": 37.55795467640093,
+    "status": "pass",
+    "worst_ratio": 0.9608984264834355,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9608984264834355,
+     "Callisto": 0.33661651537836784
+    },
+    "min_required_alt_km": 245.82608515008496,
+    "n_flybys": 3
+   }
+  ],
+  "x0_days": 16550.405542647823,
+  "final_y_dates": [
+   16575.482312014494,
+   16585.40332142574,
+   37.55795467640093
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": false,
+    "max_residual": 0.0006706211977871134,
+    "y_stall": [
+     16575.48312161865,
+     16585.403126152254,
+     37.5557665651537,
+     1.0883446466638778,
+     46.87942783285245,
+     14.308381800927275
+    ]
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": 1.5904570719594406
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": 1.530609683917118
+   },
+   {
+    "restart": 3,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": 7.502654876491288
+   },
+   {
+    "restart": 5,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": 1.3533456256665821
+   },
+   {
+    "restart": 8,
+    "converged": false,
+    "max_residual": 9.869120703452733
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": 0.0019239022301044315
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": 2.817806337710761
+   },
+   {
+    "restart": 11,
+    "converged": false,
+    "max_residual": 0.22158162000251758
+   },
+   {
+    "restart": 12,
+    "converged": true,
+    "status": "fail",
+    "worst_ratio": 1.4383035096794359,
+    "worst_ratio_by_body": {
+     "Ganymede": 1.4383035096794359,
+     "Callisto": 0.9708218467055778
+    },
+    "min_required_alt_km": -902.6462097593333,
+    "n_flybys": 3
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": 3.987551122073317
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": 3.8004304192573106
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": 0.005693699639277128
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": 0.020190199285629207
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": Infinity
+   }
+  ],
+  "rung_pass": false,
+  "shoot_best": {
+   "status": "fail",
+   "worst_ratio": 1.4383035096794359,
+   "worst_ratio_by_body": {
+    "Ganymede": 1.4383035096794359,
+    "Callisto": 0.9708218467055778
+   },
+   "min_required_alt_km": -902.6462097593333,
+   "n_flybys": 3
+  },
+  "final_y": [
+   16575.65846981961,
+   16585.484911540305,
+   37.355636624555544,
+   1.257691929390223,
+   2.0467314255350497,
+   14.30863019440401
+  ]
+ },
+ {
+  "epoch_jd": 2456562.889007369,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 7.51532169829261e-12,
+    "max_date_shift_d": 0.060048719631595304,
+    "chain_period_d": 37.620917695553864,
+    "status": "pass",
+    "worst_ratio": 0.9608044150481648,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9608044150481648,
+     "Callisto": 0.03652152881210022
+    },
+    "min_required_alt_km": 249.9164049999481,
+    "n_flybys": 3
+   }
+  ],
+  "x0_days": 16562.889007369125,
+  "final_y_dates": [
+   16587.926718213428,
+   16597.91194089991,
+   37.620917695553864
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": true,
+    "status": "pass",
+    "worst_ratio": 0.9635638649037561,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9635638649037561,
+     "Callisto": 0.036548530868251224
+    },
+    "min_required_alt_km": 238.87825657680605,
+    "n_flybys": 3
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": 5.047200308517902
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 3,
+    "converged": false,
+    "max_residual": 10.652907656428987
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": 4.268861875287051
+   },
+   {
+    "restart": 5,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": 3.31403608355352
+   },
+   {
+    "restart": 8,
+    "converged": true,
+    "status": "fail",
+    "worst_ratio": 4.2438290693191005,
+    "worst_ratio_by_body": {
+     "Ganymede": 4.2438290693191005,
+     "Callisto": 0.0015906632903947263
+    },
+    "min_required_alt_km": -2632.088209015175,
+    "n_flybys": 3
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": 7.802515342902603
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 11,
+    "converged": true,
+    "status": "pass",
+    "worst_ratio": 0.9635638645736779,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9635638645736779,
+     "Callisto": 0.03654853086395548
+    },
+    "min_required_alt_km": 238.8782578823243,
+    "n_flybys": 3
+   },
+   {
+    "restart": 12,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": 1.5823442207211063
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": 1.5475308837429025
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": 0.025425812313432328
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": 5.674926003698958
+   }
+  ],
+  "rung_pass": true,
+  "shoot_best": {
+   "status": "pass",
+   "worst_ratio": 0.9635638645736779,
+   "worst_ratio_by_body": {
+    "Ganymede": 0.9635638645736779,
+    "Callisto": 0.03654853086395548
+   },
+   "min_required_alt_km": 238.8782578823243,
+   "n_flybys": 3
+  },
+  "final_y": [
+   16587.92666382441,
+   16597.911614599874,
+   37.61962705120707,
+   1.0371822389259486,
+   1.4407002565248974,
+   14.308221232639212
+  ]
+ },
+ {
+  "epoch_jd": 2456562.889007374,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 4.533706743359289e-12,
+    "max_date_shift_d": 0.060048716091841925,
+    "chain_period_d": 37.6209176843893,
+    "status": "pass",
+    "worst_ratio": 0.9608044152517577,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9608044152517577,
+     "Callisto": 0.03652153072961698
+    },
+    "min_required_alt_km": 249.91640374528833,
+    "n_flybys": 3
+   }
+  ],
+  "x0_days": 16562.889007374175,
+  "final_y_dates": [
+   16587.926718222727,
+   16597.91194090142,
+   37.6209176843893
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": false,
+    "max_residual": 0.04917883342981804
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": 0.10851625553789002
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": 4.505858223118354
+   },
+   {
+    "restart": 3,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": 0.21646997550396052
+   },
+   {
+    "restart": 5,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": 2.179807731034076
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": 1.8760202339381795
+   },
+   {
+    "restart": 8,
+    "converged": false,
+    "max_residual": 1.5223040616804215
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 11,
+    "converged": false,
+    "max_residual": 8.621811658712721
+   },
+   {
+    "restart": 12,
+    "converged": false,
+    "max_residual": 9.960513676494884
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": 1.560180539085
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": 6.602896175644244
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": Infinity
+   }
+  ],
+  "rung_pass": false
+ },
+ {
+  "epoch_jd": 2456562.889007379,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 6.903366767119223e-12,
+    "max_date_shift_d": 0.060048712988646,
+    "chain_period_d": 37.620917674593954,
+    "status": "pass",
+    "worst_ratio": 0.9608044154787607,
+    "worst_ratio_by_body": {
+     "Ganymede": 0.9608044154787607,
+     "Callisto": 0.036521532411865
+    },
+    "min_required_alt_km": 249.9164024518409,
+    "n_flybys": 3
+   }
+  ],
+  "x0_days": 16562.889007378606,
+  "final_y_dates": [
+   16587.926718230887,
+   16597.911940902748,
+   37.620917674593954
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": true,
+    "status": "fail",
+    "worst_ratio": 4.665889777829145,
+    "worst_ratio_by_body": {
+     "Ganymede": 4.665889777829145,
+     "Callisto": 0.036335051219772554
+    },
+    "min_required_alt_km": -2595.3574793373996,
+    "n_flybys": 3
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": 2.6085734752136522
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 3,
+    "converged": true,
+    "status": "fail",
+    "worst_ratio": 4.665889776805065,
+    "worst_ratio_by_body": {
+     "Ganymede": 4.665889776805065,
+     "Callisto": 0.03633505120709675
+    },
+    "min_required_alt_km": -2595.3574792769145,
+    "n_flybys": 3
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": 8.183168101471965
+   },
+   {
+    "restart": 5,
+    "converged": true,
+    "status": "fail",
+    "worst_ratio": 35.79167615576002,
+    "worst_ratio_by_body": {
+     "Ganymede": 35.79167615576002,
+     "Callisto": 7.927978493866753
+    },
+    "min_required_alt_km": -2622.6225697625823,
+    "n_flybys": 3
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": 0.0013598547476298961
+   },
+   {
+    "restart": 8,
+    "converged": false,
+    "max_residual": 2.527426766775086
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": 0.18099257543627645
+   },
+   {
+    "restart": 11,
+    "converged": false,
+    "max_residual": 11.46475369495881
+   },
+   {
+    "restart": 12,
+    "converged": false,
+    "max_residual": 3.327655775084017
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": 6.477652327093092
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": Infinity
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": 0.09758757240388194
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": 5.606979560984098
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": 8.813161356029633
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": 2.547900255077268
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": 7.808370475646574
+   }
+  ],
+  "rung_pass": false,
+  "shoot_best": {
+   "status": "fail",
+   "worst_ratio": 4.665889776805065,
+   "worst_ratio_by_body": {
+    "Ganymede": 4.665889776805065,
+    "Callisto": 0.03633505120709675
+   },
+   "min_required_alt_km": -2595.3574792769145,
+   "n_flybys": 3
+  },
+  "final_y": [
+   16587.925871918687,
+   16597.911978801738,
+   37.6222091308388,
+   1.0348908238938064,
+   4.581738895939239,
+   14.309105977430717
+  ]
+ },
+ {
+  "epoch_jd": 2456575.4229459004,
+  "mode": "blend+shoot",
+  "last_converged_lambda": null,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": false,
+    "max_residual_kms": 0.07557630844506091,
+    "max_date_shift_d": 0.03394689641572768,
+    "chain_period_d": 37.542479592338566,
+    "status": "unconverged"
+   }
+  ],
+  "x0_days": 16575.422945900256,
+  "final_y_dates": [
+   16600.48146640413,
+   16610.385830711406,
+   37.56970482351334
+  ],
+  "rung_pass": false
+ },
+ {
+  "epoch_jd": 2456575.422945908,
+  "mode": "blend+shoot",
+  "last_converged_lambda": null,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": false,
+    "max_residual_kms": 0.07557631871497339,
+    "max_date_shift_d": 0.033946909323276486,
+    "chain_period_d": 37.542479572724076,
+    "status": "unconverged"
+   }
+  ],
+  "x0_days": 16575.422945907634,
+  "final_y_dates": [
+   16600.481466411507,
+   16610.385830718787,
+   37.56970482351334
+  ],
+  "rung_pass": false
+ },
+ {
+  "epoch_jd": 2456587.9862178317,
+  "mode": "blend+shoot",
+  "last_converged_lambda": null,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": false,
+    "max_residual_kms": 0.003021915917646112,
+    "max_date_shift_d": 0.06470098685056769,
+    "chain_period_d": 37.50500383666277,
+    "status": "unconverged"
+   }
+  ],
+  "x0_days": 16587.986217831738,
+  "final_y_dates": [
+   16613.044738335608,
+   16622.949102642888,
+   37.56970482351334
+  ],
+  "rung_pass": false
+ }
+]

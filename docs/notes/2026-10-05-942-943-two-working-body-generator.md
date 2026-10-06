@@ -1253,6 +1253,43 @@ em reassessment check (the em run used code from before 79193f6e): every pass (2
 other zeros of the 28,090 were reassessed at HEAD. 3 changed, all "fail" to "no-directions"; no pass
 or indeterminate changed. The em gate-pass set stands.
 
+### 6.29 Lead rulings on ge, and C4 at R-S's own epoch: PRE-REGISTERED 2026-10-06, before the 10-cycle run
+
+Lead rulings (2026-10-06):
+- The near-one-body rule of 6.27 is APPROVED: ge-4, ge-5 and ge-6 are "near-one-body R-S-class
+  relatives", demoted. ge shortlist: ge-1, ge-2, ge-3; ge-2 (V_inf 1.37/1.62) goes first in the
+  ladder.
+- The R-S 2007 digest correction (EurGan#131 is 61 m/s, not ballistic) goes to corpus-file-opus.
+- GanEur#316 10-cycle runs launched by the lead: A at R-S's epoch (n10_rs2019), B at the 5 standard
+  epochs (n10_std).
+- `leg_extent` is to be fixed in src with a test (full-rev and half-rev legs), and the r_min/r_max of
+  the reported candidates re-reported.
+- C4 (GanCal#1) at R-S's own epoch: approved.
+
+C4 at R-S's epoch. R-S Fig. 9(b): "10 cycles in ephemeris model, 30 G. & 10 C. flybys, start=9-27-2013,
+TOF=375.7 days, Delta-v_TOTAL=0 m/s".
+- Key k3|LGanymede>Ganymede/1l|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Ganymede/0s, cell gc.
+  Dates re-solved to 1.8e-13 km/s: 0.9914256850702445, 26.049946188944165, 35.95431049622312 d
+  (V_inf 3.180/3.255, altitude 247.3 km; sec. 5).
+- 1-cycle slices at the R-S epoch, done before this pre-registration:
+  - Blend continuation folds at lambda 0.58 (JD 2456562.9); in a scan of 8 epochs over 36 d around it,
+    it folds at lambda 0.54-0.97 at 7 and reaches lambda 1 at 1 (closure fails the gate, 1.44).
+  - `--direct` (one date solve at lambda = 1 from the phase-matched ideal dates, then the shoot; the
+    6.22 route): converges at lambda 1 at the 5 epochs from JD 2456550.4 to 2456562.9 and fails at the 3
+    later ones. At the R-S epoch (JD 2456562.9) the shoot closes with a gate pass, worst 0.964
+    (Ganymede); DOP853 re-fly miss 4.1e-5 km. Two other runs at the same phase-matched JD (other
+    restart seeds) closed only with gate fails (4.67) or not at all, so the closing solution depends on
+    the restart: one landing solution, not the only one.
+- RUN (lead launch): `--direct`, 10 cycles, `--epochs 1 --first-epoch-jd 2456562.5`, `--shoot-jac
+  sparse --shoot-nfev-per-var 60 --shoot-restarts 20`.
+- PASS = the sec. 6.17 criteria at this epoch: the date solve converges at lambda = 1, the shoot closes
+  (max residual < 1e-6) with a gate pass at every interior flyby, and the DOP853 re-fly miss is < 1 km
+  at every segment.
+- If it passes: the Jovian full-rev path has a decided 10-cycle published control, and the gc-1 caveat
+  is withdrawn. If the solve or the shoot does not converge: undecided (as in 6.19), the caveat stays.
+  A closure that only fails the gate: the control is NOT passed and the caveat stays; R-S's model is
+  not jup365, so this is not a contradiction of R-S.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
