@@ -1774,6 +1774,13 @@ Also received:
   - Callisto appears as one block of 8 flybys (the "switch flip", V_inf 2.73-3.63 km/s).
   - The pattern is one-way (G^4 E^n C^8 E^n C), with no periodic two-body sequence. No collision with
     gc-1, gc-2 or ge-1..3.
+- Buffington 2014 (AIAA 2014-4105, Clipper tour 13F7-A21; Table 3 read by corpus-file-opus on the
+  page image):
+  - The only G-C alternation is the one-way pump-down G1 G2 G3 C1 G4 C2 (G 6.39 -> 5.24, C 5.54 ->
+    4.35 km/s).
+  - There are no G-E pairs.
+  - R-S 2009 "Ganymede or Callisto cyclers" are named only as an unused petal-rotation option.
+  - No collision with gc-1, gc-2 or ge-1..3.
 - Minovitch 1972 (JSR 9(10):751, "Gravity Thrust Jupiter Orbiter Trajectories"; read by
   corpus-file-opus on the page image):
   - Table 1 is one non-periodic 19-encounter Galilean tour at high V_inf (Ganymede 12.25-12.65,
