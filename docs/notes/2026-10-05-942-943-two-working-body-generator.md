@@ -1996,6 +1996,18 @@ growth):
   of the repeating free-fall (cycler) idea in the corpus, ahead of Hollister and Rall. Owner summary
   updated (placeholders filled).
 
+### 6.53 Batch-35 collision checks from corpus-file-opus (2026-10-07)
+
+- Six Lynam papers: Lynam-Kloster-Longuski CMDA 2011; Lynam-Longuski JGCD 2011; Didion-Lynam AIAA
+  2014-4106; Lynam Acta 2014 Part II; two Lynam CMDA 2015.
+  - All are one-shot multiple-satellite-aided captures, with no G-C-G or C-G-C return and no cycler.
+    No collision with gc-1, gc-2 or ge-1..3.
+  - Period coincidence, recorded: their capture-opportunity clock is 16 S(Ga, Io) = 37.605 d, close to
+    3 S(Ca, Ga) = 37.570 d, gc-1/gc-2's period. The clock runs on Io and the captures are separate:
+    a numerical coincidence, not prior art.
+- Hollister 1963 Sc.D. thesis: one-shot powered E-V-M round trips (an opportunity repeating about every
+  6 yr). No collision with ev-A, ev-B or ev-C. Recorded in `2026-10-07-942-evAB-prior-art-search.md`.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

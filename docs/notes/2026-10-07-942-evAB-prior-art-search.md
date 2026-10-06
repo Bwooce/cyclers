@@ -63,9 +63,12 @@ papers. None has an Earth-Venus cycler.
 
 ## 4. Pending (corpus-file-opus queue)
 
-- Hollister 1963 Sc.D. thesis (Venus-swingby Mars round trips).
-- Crocco 1956 (E-M-V-E).
-Their verdicts will be added here when corpus-file-opus reports.
+- Hollister 1963 Sc.D. thesis (checked by corpus-file-opus, batch 35): NO collision with ev-A, ev-B or
+  ev-C. Every trajectory is a one-shot E-V-M round trip with POWERED Venus flybys. What repeats is the
+  opportunity (an E-V-M alignment about every 6 yr), not an orbit. Table 11.1 (p.80): a 690-d Earth
+  1970 -> Earth 1972 round trip, Venus V_inf 5.1-7.9 km/s. ev-C's 122.8-d E->V leg against the thesis's
+  120 d is a leg-length coincidence; the V_inf differ by a factor of about 2.5. Related history only.
+- Crocco 1956 (E-M-V-E): still pending.
 
 ## 5. Recommendation
 
