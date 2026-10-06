@@ -1373,7 +1373,11 @@ residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict wi
   ge-1, ge-2, ge-3) are "not judged" at rung (d).
 - Both Jovian fixed-leg controls (C4@2013 and #316@2019) now end in the same 10-cycle shoot stall.
   They are the reproducers for the stall item (approved by the lead, after em).
-- (The lead's failed first launch left `n10_rs2019/` and `n10_rs2019.log`; they are not this run.)
+- (The lead's failed first launch left `n10_rs2019.log`, committed as the evidence for 6.30. It ends in
+  the AssertionError at `initial_fixed_params`, after the blend reached lambda = 1 with "no-directions".
+  Cause: the half-rev circle root (6.30, 6.34). Fixed in 1feb8f2b and 1e4b7aeb. The bare assert is now
+  a named error, with a nearest-geometry seed fallback, so it cannot stop a valid run. It is not this
+  run.)
 
 ### 6.33 The long-chain shoot stall: diagnosis, method and control, PRE-REGISTERED 2026-10-06 (before the control run)
 

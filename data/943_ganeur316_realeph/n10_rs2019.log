@@ -1,0 +1,22 @@
+15:54:38 ge epoch 0 (JD 2458597.6) blend lam=0.0000 conv=True res=5.6e-11 gate=pass worst=0.729 [elapsed 1s]
+15:54:41 ge epoch 0 (JD 2458597.6) blend lam=0.1000 conv=True res=5.0e-11 gate=fail worst=2.893 [elapsed 4s]
+15:54:44 ge epoch 0 (JD 2458597.6) blend lam=0.2000 conv=True res=6.5e-11 gate=fail worst=2.898 [elapsed 7s]
+15:54:47 ge epoch 0 (JD 2458597.6) blend lam=0.3000 conv=True res=7.4e-11 gate=fail worst=2.903 [elapsed 9s]
+15:54:50 ge epoch 0 (JD 2458597.6) blend lam=0.4000 conv=True res=4.5e-11 gate=fail worst=2.908 [elapsed 12s]
+15:54:53 ge epoch 0 (JD 2458597.6) blend lam=0.5000 conv=True res=4.0e-11 gate=fail worst=2.912 [elapsed 15s]
+15:54:55 ge epoch 0 (JD 2458597.6) blend lam=0.6000 conv=True res=6.6e-11 gate=fail worst=2.915 [elapsed 18s]
+15:54:58 ge epoch 0 (JD 2458597.6) blend lam=0.7000 conv=True res=5.6e-11 gate=fail worst=2.918 [elapsed 21s]
+15:55:01 ge epoch 0 (JD 2458597.6) blend lam=0.8000 conv=True res=6.3e-11 gate=fail worst=2.920 [elapsed 23s]
+15:55:03 ge epoch 0 (JD 2458597.6) blend lam=0.9000 conv=True res=7.3e-11 gate=no-directions worst=nan [elapsed 26s]
+15:55:06 ge epoch 0 (JD 2458597.6) blend lam=1.0000 conv=True res=4.4e-11 gate=no-directions worst=nan [elapsed 28s]
+15:55:06 ge epoch 0 (JD 2458597.6) blend lam=1.0000 conv=True res=4.4e-11 gate=no-directions worst=nan [elapsed 29s]
+Traceback (most recent call last):
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 722, in <module>
+    main()
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 593, in main
+    fixed0 = np.ravel(initial_fixed_params(sysm, cyc_now, x_now))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 406, in initial_fixed_params
+    assert res is not None
+           ^^^^^^^^^^^^^^^
+AssertionError
