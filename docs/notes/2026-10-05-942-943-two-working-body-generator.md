@@ -914,6 +914,36 @@ Findings that change how rung (d) must be read:
      needed (e.g. a direct solve from the ideal dates at several epochs, or pseudo-arclength through
      the fold).
 
+### 6.19 Amendment (solver only) and the C4 GanCal#1 control status (2026-10-06)
+
+Solver changes, recorded before the next recorded run (criteria unchanged: closure max residual
+< 1e-6, gate at the registry floors, DOP853 re-fly):
+- `x_scale="jac"` restored for the lm shoot. Commit 1b8cfbfa forced 1.0 (SciPy >= 1.16 defaults lm to
+  "jac"), and that stalled the solver; the 1-cycle sweep made with it is void (papercut).
+- `--shoot-jac sparse`: a column-grouped forward-difference Jacobian. It reproduces the dense result
+  exactly on the 1-cycle GanCal#1 sweep (same closures, same ratios) and is about 3x faster at 10 cycles.
+- A Gauss-Newton polish of near-closures (max residual between 1e-6 and 1e-2), with steps accepted only
+  if they reduce the max residual.
+- `--shoot-nfev-per-var 60` for the 10-cycle runs.
+
+C4 GanCal#1 on jup365 (diagnostics, not the pre-registered rung):
+- 1 cycle, 5 epochs, 20 restarts: closes at 3 of the 4 epochs that reach lambda = 1. The best closure
+  per epoch is gate "indeterminate" at worst ratio 0.968, 0.978 and 4.91 (fail). The first two are inside
+  three tidal turn scales of the margin; GanCal#1's ideal-model ratio is already 0.961-0.966, so it is
+  marginal in every model. One epoch folds in the blend at lambda 0.45.
+- 10 cycles, epoch 1, restart 0: the max residual falls from 1e-3 to 5.5e-6 and then stops (LM ends on
+  its own tolerance; the polish cannot improve it, even with central differences). Cause: the
+  LGanymede>Ganymede/1l legs of this member span 179.74-179.78 deg between their endpoints. A 3-D
+  Lambert arc this close to 180 deg is plane-singular, so its derivatives are unreliable at the
+  1e-6 level. So the pre-registered 10-cycle C4 cannot be decided with this formulation; it is NOT a
+  failure of the member.
+
+gc-1 (diagnostics, same settings): its Ganymede-Ganymede leg spans about 172 deg.
+- 1 cycle, 5 epochs: closes at every epoch, with gate passes at worst ratio 0.726-0.742 (ideal 0.737).
+- 10 cycles, epoch 0: restart 0 closes in about 1 s and passes the gate at worst ratio 0.758. The DOP853
+  re-fly misses by at most 2.6e-6 km over 40 segments.
+No gc-1 verdict until the control question is ruled on (lead's instruction).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
