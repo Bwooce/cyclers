@@ -946,6 +946,45 @@ gc-1 (diagnostics, same settings): its Ganymede-Ganymede leg spans about 172 deg
   re-fly misses by at most 2.6e-6 km over 40 segments.
 No gc-1 verdict until the control question is ruled on (lead's instruction).
 
+### 6.20 gc-2 and the R-S GanCal family: Callisto-mass question, PRE-REGISTERED 2026-10-06 (before running)
+
+Question (lead and corpus-file-opus): is gc-2 a two-working-body relative of GanCal#1/#5 (Callisto
+massless), as tested by a Callisto-mass homotopy?
+
+Model fact that settles the patched-conic part without computation: the date residuals (V_inf
+magnitude match at each junction) do not contain any body's GM. GM enters only the gate's turn
+capacity. So a homotopy in Callisto's GM leaves every solution fixed, including gc-2, GanCal#1 and
+GanCal#5; only the gate verdicts change. A massless-Callisto member (GanCal) must also meet the vector
+match at Callisto (zero turn). gc-2 turns 6.87 deg at each Callisto encounter, so it is not a GanCal
+member at any Callisto mass, and in this model no Callisto-mass path joins them. Checking this
+through continuous gravity (CR4BP or n-body) would need a different model: not done here, an owner
+choice.
+
+Structure (from `data/943_cell_gc_gauntlet.json`):
+- GanCal#5 (LITERAL in-run) = LG>G/1l | LG>C/1h | LC>G/0s, Callisto turn 0.0.
+- gc-2 = LG>G/1l | LG>C/0s | LC>C/1h | LC>G/0s.
+- gc-2 is GanCal#5's skeleton with GanCal#5's 24.25-d G->C 1-rev leg replaced by a 2.60-d G->C leg plus
+  a 21.51-d C->C 1-rev leg: one extra Callisto encounter inserted.
+
+Computations (script `scripts/analyse_943_gc2_gancal_relation.py`, ideal circular gc model):
+- H1a: gate verdict of gc-2 and of GanCal#5 against a Callisto GM scale s (log grid 1e-3 to 1; then
+  bisection to 1e-4 relative for s*, the smallest s at which gc-2's Callisto encounters are still
+  feasible). This is the only effect of the homotopy in this model.
+- H1b (descriptive): along GanCal#5's G->C 1h leg (Kepler conic, 0.01-d steps, excluding the last 0.5 d),
+  the minimum distance to Callisto and its time after departure. Compare it with Callisto's sphere of
+  influence (`sphere_of_influence_km`) and with gc-2's insertion time, 2.60 d after departure. Also
+  compare the conic elements (a, e) of the two legs.
+
+Interpretation rules, fixed now:
+- If the H1b minimum distance is below Callisto's SOI: "gc-2 has GanCal#5's skeleton with a Callisto
+  encounter inserted where GanCal#5's leg passes close to Callisto: structurally related (INFERRED),
+  not the same orbit".
+- Otherwise: "the inserted encounter has no counterpart on GanCal#5's leg; the relation is the shared
+  G-G 1l leg and the period only".
+- GanCal#1 (LG>G/1l | RGanymede/2:1 | LG>C/0s | LC>G/0s; three Ganymede encounters and one Callisto
+  encounter) has a different encounter count from gc-2 (two and two). No insertion test applies; it is
+  compared by V_inf distance only (sec. 6.11 numbers).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
