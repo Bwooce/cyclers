@@ -1898,6 +1898,18 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   reported as a timeout and kept out of pass/fail. NOT "raise the timeout". Past negatives from these
   sweeps run under load are suspect (bug-fix rule). Papercut:
   `docs/papercuts/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md`.
+- `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`; NOT dispatched; register
+  only, `data/catalogue.yaml` not edited). **ADD A V0 CATALOGUE ROW
+  `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger 1963 (NASA TN D-1833,
+  Sec. III.E, p.6-7) prints a retrograde ("counter-rotation") Earth-Moon symmetric periodic free-return
+  orbit: periselenum about 2150 km, period "about 650 hours". Reproduced at mu = 0.01215 in the digest
+  `docs/notes/2026-10-07-digest-schwaniger-1963-earth-moon-symmetrical-free-return.md`: periselenum
+  2202.5 km (464 km altitude), perigee 6555.0 km (177 km altitude), period 625.5 h = 26.06 d, C =
+  1.09727 with the mu(1 - mu) term (1.08542 without), perpendicular crossings, one period closes to
+  below 1 m; strongly unstable (finite-difference monodromy, largest eigenvalue about 5e2, rough).
+  Published 1963, so NOT novel (literature row, V0). Second use: a positive control for a corrector
+  regularised at BOTH primaries (`#948` R4), since it passes 177 km above the Earth and 464 km above
+  the Moon every period.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
