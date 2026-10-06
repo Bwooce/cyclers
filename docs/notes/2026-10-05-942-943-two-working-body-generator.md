@@ -839,6 +839,27 @@ tool AND the independent DOP853 re-fly: miss < 1 km, V_inf error < 1e-6 km/s, at
 - After the full-rev fix: C4 = GanCal#1 (R-S 2007: "ballistic over 10 cycles", Fig. 9b; it contains an
   f(2:1) leg) and C3 again. Both must pass by the re-fly before gc-1, ev-A or ev-B are judged.
 
+### 6.16 Chain-tool control results (2026-10-06), data 
+
+| Control | Expected | Result |
+|---|---|---|
+| C1 VenMar#45, cell vm2, 7 cycles, Standish | pass | PASS at 5/5 epochs; worst ratio 0.31-0.49 (Venus), Mars 0.08-0.25. Re-fly miss <= 0.03 km, V_inf error <= 9e-9 km/s |
+| C1 VenMar#45, DE440 | pass | PASS at 5/5; same ratios to 3 decimals. Re-fly miss <= 0.025 km |
+| C2 GanCal#5, cell gc, 10 cycles, jup365 | sanity | FAILS at 5/5. The Ganymede ratio rises from 0.94 (ideal) to 1.10-1.23 by lambda = 1 (gate pass up to lambda 0.3-0.4). R-S printed no ephemeris result for #5, so there is no contradiction; it bounds what a 6 % ideal margin survives |
+| C3 Hollister 1H, 5 cycles, Standish | negative control | the chain does not converge past lambda = 0.29-0.39 at any epoch |
+
+Reading:
+- The Lambert-only path of the tool reproduces a published real-ephemeris result (VenMar#45). That
+  supports the gc-2 and ev-C passes (Lambert-only, re-flown).
+- The 1H negative control fails earlier than predicted: the run never reached lambda = 1, so the re-fly
+  was not the stage that exposed it. The full-rev defect shows up as a fold.
+
+Full-rev fix (next, approved): on the real ephemeris each full-rev leg becomes a shooting leg.
+- Unknowns: the departure direction (2 angles) and the flight time.
+- Equations: the arrival position equals the body's position (3 equations).
+- Its |V_inf| is fixed by the junction.
+- Then C4 (GanCal#1) and C3 again must pass by the re-fly before gc-1, ev-A or ev-B are judged.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
