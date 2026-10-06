@@ -932,11 +932,13 @@ C4 GanCal#1 on jup365 (diagnostics, not the pre-registered rung):
   three tidal turn scales of the margin; GanCal#1's ideal-model ratio is already 0.961-0.966, so it is
   marginal in every model. One epoch folds in the blend at lambda 0.45.
 - 10 cycles, epoch 1, restart 0: the max residual falls from 1e-3 to 5.5e-6 and then stops (LM ends on
-  its own tolerance; the polish cannot improve it, even with central differences). Cause: the
-  LGanymede>Ganymede/1l legs of this member span 179.74-179.78 deg between their endpoints. A 3-D
-  Lambert arc this close to 180 deg is plane-singular, so its derivatives are unreliable at the
-  1e-6 level. So the pre-registered 10-cycle C4 cannot be decided with this formulation; it is NOT a
-  failure of the member.
+  its own tolerance; the polish cannot improve it, even with central differences). The
+  LGanymede>Ganymede/1l legs span 179.74-179.78 deg between their endpoints, but that is NOT the
+  cause (correction, same day): the 1-cycle epoch-1 closure has the same leg at 179.75 deg and
+  converges to 2.9e-9. The stall grows with chain length: ten weakly determined crank angles, and
+  a forward-difference Jacobian whose smallest singular value changes with the step size
+  (1e-4 to 6e-3). Cause not yet isolated. So the pre-registered 10-cycle C4 cannot be decided with this
+  formulation; it is NOT a failure of the member.
 
 gc-1 (diagnostics, same settings): its Ganymede-Ganymede leg spans about 172 deg.
 - 1 cycle, 5 epochs: closes at every epoch, with gate passes at worst ratio 0.726-0.742 (ideal 0.737).
