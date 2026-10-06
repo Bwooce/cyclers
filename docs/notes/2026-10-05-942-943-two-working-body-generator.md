@@ -783,6 +783,39 @@ Rung (d), real ephemeris: `scripts/run_942_realeph_chain.py`.
 
 Rung (c), neighbours: only if (d) passes. A separate launch request.
 
+### 6.14 Ladder rung (d) results (2026-10-06), real-ephemeris chains
+
+Data: `data/942_943_ladder_realeph_chains.json`. Independent re-fly: `scripts/check_942_realeph_chain.py`
+(DOP853, rtol 1e-13, from the real-ephemeris states).
+
+| Candidate | Legs | Rung (d) by the tool (5 epochs) | Independent DOP853 re-fly at lambda = 1 | Verdict at this rung |
+|---|---|---|---|---|
+| gc-2 | Lambert only | PASS at 5/5; worst ratio 0.813-0.823 (Ganymede) | miss <= 2.4e-5 km, V_inf error <= 1.4e-10 km/s | PASS: ballistic over 10 cycles (376 d), patched conic, NAIF jup365, all epochs |
+| ev-C | Lambert only | PASS at 5/5; worst 0.869-0.914 (Venus); Earth ratio 0.06-0.11 | miss <= 0.12 km, V_inf error <= 3e-8 km/s | PASS: ballistic over 5 cycles (16 yr), patched conic, Standish mean elements, all epochs |
+| gc-1 | includes a Callisto 1:1 full-rev | "PASS" at 5/5 (0.75) | miss 4,300-6,500 km, V_inf error 19-27 m/s | NOT VALID: the full-rev legs do not close |
+| ev-A | includes a Venus 1:1 full-rev | "PASS" at 5/5 (0.58) | miss about 52,000 km, V_inf error 17 m/s | NOT VALID: same defect |
+| ev-B | includes 1:1 and 3:2 full-revs | 2/5 by the tool | not re-flown | NOT VALID: same defect |
+
+The defect ("it closed!" was the danger signal):
+- On the real ephemeris the chain tool timed a full-revolution return at the IDEAL model's body period,
+  with |v_sc| = |V_P|. The real body does not return to the same point in that time, so those legs
+  do not close.
+- The tool's own gate saw only V_inf magnitudes and directions, not the leg closure. The independent
+  re-fly caught it.
+- Fix needed before gc-1, ev-A or ev-B can be judged: on the real ephemeris a full-rev return must
+  become a free-date 1-rev same-body Lambert leg (its circle of directions collapses to discrete
+  solutions), or be charged its correction Delta-V. Until then those three are "not judged at rung (d)".
+
+Reproduction checks of the tool:
+- the vm2-1 single cycle gives 1.46 (the earlier script gave 1.465).
+- the vm2-1 chains (Lambert only) are unaffected by the defect.
+
+Status: gc-2 and ev-C are the strongest results so far. They remain "candidate, pending owner
+adjudication", NOT novel. Gauntlet items still open for them:
+- a web literature search (only the offline corpus was checked);
+- an n-body (V3-lane) check;
+- for ev-C, a DE440 run (Standish fixed mean elements are not DE440).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
