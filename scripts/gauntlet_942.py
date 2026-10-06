@@ -69,17 +69,18 @@ ENUM = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
 ANALYSE = _load("analyse_942_enumeration", REPO / "scripts" / "analyse_942_enumeration.py")
 
 #: Russell & Strange 2007 (AAS 07-118) Table 3 (p.9), via the #960 digest:
-#: (id, flyby body A, target B, V_inf A, V_inf B, period d).
+#: (id, flyby body A, target B, V_inf A, V_inf B, period d, number of legs). The number of
+#: legs (Table 3) is the number of flyby-body encounters per cycle; the target is met once.
 RS_ROWS = [
-    ("VenMar#45", "V", "M", 8.22, 12.96, 667.8),
-    ("EurGan#93", "Europa", "Ganymede", 2.37, 4.10, 28.2),
-    ("EurGan#131", "Europa", "Ganymede", 2.40, 4.10, 21.2),
-    ("EurGan#159", "Europa", "Ganymede", 2.45, 4.11, 28.2),
-    ("GanCal#1", "Ganymede", "Callisto", 3.18, 3.26, 37.6),
-    ("GanCal#5", "Ganymede", "Callisto", 3.24, 3.34, 37.6),
-    ("GanEur#5", "Ganymede", "Europa", 1.66, 2.57, 35.3),
-    ("GanEur#43", "Ganymede", "Europa", 1.87, 3.89, 14.1),
-    ("GanEur#316", "Ganymede", "Europa", 3.20, 3.81, 49.4),
+    ("VenMar#45", "V", "M", 8.22, 12.96, 667.8, 1),
+    ("EurGan#93", "Europa", "Ganymede", 2.37, 4.10, 28.2, 3),
+    ("EurGan#131", "Europa", "Ganymede", 2.40, 4.10, 21.2, 2),
+    ("EurGan#159", "Europa", "Ganymede", 2.45, 4.11, 28.2, 3),
+    ("GanCal#1", "Ganymede", "Callisto", 3.18, 3.26, 37.6, 3),
+    ("GanCal#5", "Ganymede", "Callisto", 3.24, 3.34, 37.6, 2),
+    ("GanEur#5", "Ganymede", "Europa", 1.66, 2.57, 35.3, 1),
+    ("GanEur#43", "Ganymede", "Europa", 1.87, 3.89, 14.1, 1),
+    ("GanEur#316", "Ganymede", "Europa", 3.20, 3.81, 49.4, 4),
 ]
 #: Hollister 1969 p.367 circular-coplanar orbits I-III = Menning 1H-3H (k = 2, E-V).
 HOLLISTER_TOPOLOGIES = {
@@ -164,14 +165,22 @@ def collisions(cell: str, line: dict, system: Any, a: str, b: str) -> list[str]:
     out = []
     v = line["vinf_kms"]
     period_d = line["k"] * system.synodic_s(a, b) / DAY
-    for rid, fa, fb, va, vb, per in RS_ROWS:
+    n_enc = {c: sum(1 for f in line["flybys"] if f[0] == c) for c in (a, b)}
+    for rid, fa, fb, va, vb, per, n_legs in RS_ROWS:
         if {fa, fb} != {a, b} or fa not in v or fb not in v:
             continue
         dv = max(abs(v[fa] - va), abs(v[fb] - vb))
-        if dv <= 0.05 and abs(period_d - per) <= 0.3:
+        # V_inf and period alone do not separate the members of one R-S family (the EurGan
+        # rows share their V_inf), so LITERAL also needs R-S's encounter counts.
+        # (a massless target is not in the flyby sequence)
+        same_count = n_enc[fa] == n_legs and (n_enc[fb] == 1 or system.body(fb).massless)
+        if dv <= 0.05 and abs(period_d - per) <= 0.3 and same_count:
             out.append(f"LITERAL {rid} (dV_inf {dv:.3f}, period {period_d:.1f} vs {per})")
         elif dv <= 0.3:
-            out.append(f"NEAR {rid} (dV_inf {dv:.3f}, period {period_d:.1f} vs {per})")
+            out.append(
+                f"NEAR {rid} (dV_inf {dv:.3f}, period {period_d:.1f} vs {per}, "
+                f"encounters {n_enc[fa]}+{n_enc[fb]} vs {n_legs}+1)"
+            )
     if {a, b} == {"Ganymede", "Callisto"}:
         dv = max(abs(v.get("Ganymede", 0) - 3.5), abs(v.get("Callisto", 0) - 4.5))
         dv2 = max(abs(v.get("Ganymede", 0) - 4.5), abs(v.get("Callisto", 0) - 3.5))

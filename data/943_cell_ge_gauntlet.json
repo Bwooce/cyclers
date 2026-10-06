@@ -1,0 +1,2227 @@
+{
+ "cell": "ge",
+ "n_structures": 5533,
+ "n_zeros": 5437,
+ "n_physical": 1721,
+ "n_gate_passing": 22,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "hernandez-2017-jovian-ieg-triple-family",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": [
+    [
+     "Io",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-jovian-multimoon-family",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": [
+    [
+     "Io",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Callisto",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "liang-2024-cgcec-111-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.6685
+    ]
+   ]
+  },
+  {
+   "id": "liang-2024-cgcec-110-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.4853
+    ]
+   ]
+  },
+  {
+   "id": "liang-2024-cgcec-111-lowperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     7.6433
+    ],
+    [
+     "Ganymede",
+     10.4922
+    ],
+    [
+     "Europa",
+     12.0213
+    ]
+   ]
+  },
+  {
+   "id": "liang-2024-cgcec-ephemeris-2033",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-eurgan-131",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Europa",
+     2.4
+    ],
+    [
+     "Ganymede",
+     4.1
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-eurgan-159",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Europa",
+     2.45
+    ],
+    [
+     "Ganymede",
+     4.11
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-ganeur-5",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Ganymede",
+     1.66
+    ],
+    [
+     "Europa",
+     2.57
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-ganeur-43",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Ganymede",
+     1.87
+    ],
+    [
+     "Europa",
+     3.89
+    ]
+   ]
+  },
+  {
+   "id": "russell-strange-2009-ganeur-316",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Ganymede",
+     3.2
+    ],
+    [
+     "Europa",
+     3.81
+    ]
+   ]
+  },
+  {
+   "id": "lynam-longuski-2011-ieg-single-period",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": []
+  },
+  {
+   "id": "lynam-longuski-2011-gipeipe",
+   "our_status": null,
+   "bodies": [
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": []
+  },
+  {
+   "id": "europa-3-4-crnbp-torus-jupiter-2026",
+   "our_status": "known-class-member",
+   "bodies": [
+    "Europa",
+    "Ganymede",
+    "Io",
+    "Jupiter"
+   ],
+   "vinf": []
+  }
+ ],
+ "empty_regions_same_pair": [
+  "jovian-IEG-vilm-2026-06-09",
+  "jovian-perm-vilm-2026-06-09",
+  "uranus-neptune-regular-moon-endgame-vilm-2026-06-23",
+  "jupiter-galilean-amalthea-repeated-moon-quasicycler-2026-06-24",
+  "jovian-cgcec-sobol-smoke-318-2026-06-30",
+  "jovian-ege-sobol-broadened-501-2026-06-30",
+  "jovian-egce-sobol-broadened-501-2026-06-30",
+  "jovian-iegi-sobol-broadened-501-2026-06-30",
+  "jovian-egcge-sobol-broadened-501-2026-06-30",
+  "jupiter-galilean-symmetric-closure-litcovered-known-class-member-578",
+  "jupiter-galilean-io-callisto-symmetric-closure-corpus-gap-578",
+  "jupiter-io-ganymede-ccr4bp-torus-connection-696-2026-07-23",
+  "saturn-titan-hyperion-ccr4bp-torus-connection-716-2026-07-27",
+  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22"
+ ],
+ "candidates": [
+  {
+   "k": 1,
+   "flybys": [
+    [
+     "Europa",
+     2.347,
+     9.7
+    ],
+    [
+     "Ganymede",
+     4.09,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k1|LGanymede>Europa/0s|LEuropa>Ganymede/0s"
+   ],
+   "key": "k1|LGanymede>Europa/0s|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.3471094386045728,
+    "Ganymede": 4.090076442777406
+   },
+   "x_days": [
+    6.520248250525922,
+    7.871607696093819
+   ],
+   "period_days": 7.05092944152151,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 7.871607696093819,
+     "vinf_kms": 2.3471094386045728,
+     "turn_deg": 9.653156019825602,
+     "available_deg": 30.053136619308876,
+     "ratio": 0.3212029460387018,
+     "required_alt_km": 4767.213608336523,
+     "rmin_radii": 4.0539484998952675,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 13.571177692047433,
+     "vinf_kms": 4.090076442777406,
+     "turn_deg": 0.0,
+     "available_deg": 20.47879067741826,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 670987.7190261683,
+   "r_max_km": 1457953.5802465202,
+   "min_required_alt_km": 4767.213608336523,
+   "max_turn_deg": 9.653156019825602,
+   "cross_check": {
+    "max_arrival_miss_km": 1.4428880459459155e-06,
+    "max_vinf_vector_error_kms": 1.008960279316758e-11,
+    "max_junction_mismatch_kms": 9.320544336333114e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.32120294603855853
+   },
+   "soi_fraction": 1.4836412724970122e-10,
+   "collisions": [
+    "NEAR EurGan#131 (dV_inf 0.053, period 7.1 vs 21.2, encounters 1+1 vs 2+1)",
+    "NEAR EurGan#159 (dV_inf 0.103, period 7.1 vs 28.2, encounters 1+1 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.023, period 7.1 vs 28.2, encounters 1+1 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 1,
+   "flybys": [
+    [
+     "Europa",
+     8.184,
+     1.0
+    ],
+    [
+     "Europa",
+     8.184,
+     1.0
+    ],
+    [
+     "Ganymede",
+     3.734,
+     13.1
+    ]
+   ],
+   "keys": [
+    "k1|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k1|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 8.184150778296708,
+    "Ganymede": 3.7339829910624376
+   },
+   "x_days": [
+    5.766356509352726,
+    10.502496731787025
+   ],
+   "period_days": 7.05092944152151,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 6.951316176231469,
+     "vinf_kms": 8.184150778296708,
+     "turn_deg": 0.9765368992185641,
+     "available_deg": 3.206922200756587,
+     "ratio": 0.3045090707183905,
+     "required_alt_km": 4002.227769818276,
+     "rmin_radii": 3.5638871043038285,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 10.502496731787025,
+     "vinf_kms": 8.184150778296704,
+     "turn_deg": 0.9765368992178177,
+     "available_deg": 3.2069222007565905,
+     "ratio": 0.3045090707181574,
+     "required_alt_km": 4002.2277698225707,
+     "rmin_radii": 3.563887104306578,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 12.817285950874238,
+     "vinf_kms": 3.7339829910624376,
+     "turn_deg": 13.077461358223243,
+     "available_deg": 23.772167827316267,
+     "ratio": 0.5501164829905043,
+     "required_alt_km": 2884.5336182421406,
+     "rmin_radii": 2.0951152688846375,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 296785.89251238445,
+   "r_max_km": 1070337.8773284326,
+   "min_required_alt_km": 2884.5336182421406,
+   "max_turn_deg": 13.077461358223243,
+   "cross_check": {
+    "max_arrival_miss_km": 8.208802315092577e-06,
+    "max_vinf_vector_error_kms": 1.3363141474265207e-10,
+    "max_junction_mismatch_kms": 1.2652634495680104e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5501164830080055
+   },
+   "soi_fraction": 8.44065341497526e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 1,
+   "flybys": [
+    [
+     "Europa",
+     8.409,
+     0.0
+    ],
+    [
+     "Ganymede",
+     3.861,
+     13.2
+    ]
+   ],
+   "keys": [
+    "k1|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+    "k1|LGanymede>Europa/0s|LEuropa>Ganymede/1l",
+    "k1|LGanymede>Europa/1h|LEuropa>Ganymede/0s",
+    "k1|LGanymede>Europa/1l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k1|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 8.408697520783832,
+    "Ganymede": 3.86055806719682
+   },
+   "x_days": [
+    5.769720073383922,
+    6.934476665311512
+   ],
+   "period_days": 7.05092944152151,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 6.934476665311512,
+     "vinf_kms": 8.408697520783832,
+     "turn_deg": 0.0,
+     "available_deg": 3.0423794965748847,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 12.820649514905432,
+     "vinf_kms": 3.86055806719682,
+     "turn_deg": 13.216343254425011,
+     "available_deg": 22.521710698882735,
+     "ratio": 0.5868267926503759,
+     "required_alt_km": 2467.6419744397654,
+     "rmin_radii": 1.9368420555959494,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 283782.5821564771,
+   "r_max_km": 1071876.0087004004,
+   "min_required_alt_km": 2467.6419744397654,
+   "max_turn_deg": 13.216343254425011,
+   "cross_check": {
+    "max_arrival_miss_km": 1.6941768836184966e-05,
+    "max_vinf_vector_error_kms": 2.1827662100018012e-10,
+    "max_junction_mismatch_kms": 6.082423453790398e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.586826792511933
+   },
+   "soi_fraction": 1.7420275637525004e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     2.347,
+     19.2
+    ],
+    [
+     "Ganymede",
+     4.049,
+     0.9
+    ],
+    [
+     "Ganymede",
+     4.049,
+     0.9
+    ]
+   ],
+   "keys": [
+    "k2|RGanymede/1:1|LGanymede>Europa/0s|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|RGanymede/1:1|LGanymede>Europa/0s|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.3472650009851432,
+    "Ganymede": 4.048546422459896
+   },
+   "x_days": [
+    6.50656211191865,
+    7.845404289793696
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 7.845404289793696,
+     "vinf_kms": 2.3472650009851432,
+     "turn_deg": 19.223546662684477,
+     "available_deg": 30.05011636744977,
+     "ratio": 0.6397162136619008,
+     "required_alt_km": 1339.1163389294888,
+     "rmin_radii": 1.8578580005954373,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 13.45387238385056,
+     "vinf_kms": 4.048546422459896,
+     "turn_deg": 0.8848575360634673,
+     "available_deg": 20.828580011465352,
+     "ratio": 0.04248285459577111,
+     "required_alt_km": 74887.07757563403,
+     "rmin_radii": 29.430933020362197,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 20.608420994961673,
+     "vinf_kms": 4.0485464224599,
+     "turn_deg": 0.8848575360626435,
+     "available_deg": 20.828580011465352,
+     "ratio": 0.04248285459573157,
+     "required_alt_km": 74887.07757570676,
+     "rmin_radii": 29.430933020389762,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 670987.7190261683,
+   "r_max_km": 1446562.999552683,
+   "min_required_alt_km": 1339.1163389294888,
+   "max_turn_deg": 19.223546662684477,
+   "cross_check": {
+    "max_arrival_miss_km": 5.913525630431199e-06,
+    "max_vinf_vector_error_kms": 5.601597025392622e-11,
+    "max_junction_mismatch_kms": 5.580957918027707e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6397162136614879
+   },
+   "soi_fraction": 6.080548463844925e-10,
+   "collisions": [
+    "NEAR EurGan#131 (dV_inf 0.053, period 14.1 vs 21.2, encounters 1+2 vs 2+1)",
+    "NEAR EurGan#159 (dV_inf 0.103, period 14.1 vs 28.2, encounters 1+2 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.051, period 14.1 vs 28.2, encounters 1+2 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     2.366,
+     12.9
+    ],
+    [
+     "Europa",
+     2.366,
+     12.9
+    ],
+    [
+     "Ganymede",
+     4.09,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.3656954878883543,
+    "Ganymede": 4.090180162361506
+   },
+   "x_days": [
+    6.513575802884443,
+    14.945997349325413
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 7.843636238214302,
+     "vinf_kms": 2.3656954878883543,
+     "turn_deg": 12.914915604277649,
+     "available_deg": 29.695200828778628,
+     "ratio": 0.43491592054704564,
+     "required_alt_km": 2955.168381665976,
+     "rmin_radii": 2.8931251644240716,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 14.945997349325413,
+     "vinf_kms": 2.365695487888357,
+     "turn_deg": 12.914915604277649,
+     "available_deg": 29.695200828778628,
+     "ratio": 0.43491592054704564,
+     "required_alt_km": 2955.168381665976,
+     "rmin_radii": 2.8931251644240654,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 20.615434685927465,
+     "vinf_kms": 4.090180162361506,
+     "turn_deg": 1.2074182697257333e-06,
+     "available_deg": 20.47792748658474,
+     "ratio": 5.89619369692916e-08,
+     "required_alt_km": 56093298006.51361,
+     "rmin_radii": 21295862.050308853,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 670987.7190261683,
+   "r_max_km": 1457002.992150209,
+   "min_required_alt_km": 2955.168381665976,
+   "max_turn_deg": 12.914915604277649,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0091166228084683e-06,
+    "max_vinf_vector_error_kms": 8.136335940757e-12,
+    "max_junction_mismatch_kms": 4.761080418802521e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.4349159205467764
+   },
+   "soi_fraction": 1.037618320124029e-10,
+   "collisions": [
+    "NEAR EurGan#131 (dV_inf 0.034, period 14.1 vs 21.2, encounters 2+1 vs 2+1)",
+    "NEAR EurGan#159 (dV_inf 0.084, period 14.1 vs 28.2, encounters 2+1 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.010, period 14.1 vs 28.2, encounters 2+1 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     2.368,
+     19.2
+    ],
+    [
+     "Ganymede",
+     4.096,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+    "k2|LGanymede>Europa/0s|LEuropa>Ganymede/1l",
+    "k2|LGanymede>Europa/1h|LEuropa>Ganymede/0s",
+    "k2|LGanymede>Europa/1l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.368336638514018,
+    "Ganymede": 4.096118604778935
+   },
+   "x_days": [
+    6.514569086686723,
+    7.84338540196769
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 7.84338540196769,
+     "vinf_kms": 2.368336638514018,
+     "turn_deg": 19.2122821021713,
+     "available_deg": 29.64481006506378,
+     "ratio": 0.6480824825662436,
+     "required_alt_km": 1289.7261304706344,
+     "rmin_radii": 1.8262178926781754,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 20.616427969729745,
+     "vinf_kms": 4.096118604778935,
+     "turn_deg": 0.0,
+     "available_deg": 20.428591076066635,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 670237.4846865769,
+   "r_max_km": 1458508.524302835,
+   "min_required_alt_km": 1289.7261304706344,
+   "max_turn_deg": 19.2122821021713,
+   "cross_check": {
+    "max_arrival_miss_km": 3.2979110528177435e-06,
+    "max_vinf_vector_error_kms": 3.6802460106944957e-11,
+    "max_junction_mismatch_kms": 3.027000872179997e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6480824825656564
+   },
+   "soi_fraction": 3.3910579304694594e-10,
+   "collisions": [
+    "NEAR EurGan#131 (dV_inf 0.032, period 14.1 vs 21.2, encounters 1+1 vs 2+1)",
+    "NEAR EurGan#159 (dV_inf 0.082, period 14.1 vs 28.2, encounters 1+1 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.004, period 14.1 vs 28.2, encounters 1+1 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     3.893,
+     0.0
+    ],
+    [
+     "Ganymede",
+     1.872,
+     22.7
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Europa/0s|LEuropa>Ganymede/2h",
+    "k2|LGanymede>Europa/0s|LEuropa>Ganymede/2l",
+    "k2|LGanymede>Europa/1h|LEuropa>Ganymede/1l",
+    "k2|LGanymede>Europa/1l|LEuropa>Ganymede/1h",
+    "k2|LGanymede>Europa/2h|LEuropa>Ganymede/0s",
+    "k2|LGanymede>Europa/2l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Europa/1h|LEuropa>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 3.8931358242221386,
+    "Ganymede": 1.871946198257745
+   },
+   "x_days": [
+    3.8546798879801933,
+    11.437487496287197
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 11.437487496287197,
+     "vinf_kms": 3.8931358242221386,
+     "turn_deg": 0.0,
+     "available_deg": 12.960551343237562,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 17.956538771023215,
+     "vinf_kms": 1.871946198257745,
+     "turn_deg": 22.732135190291544,
+     "available_deg": 61.04740547030614,
+     "ratio": 0.37236857185271544,
+     "required_alt_km": 8862.162323423974,
+     "rmin_radii": 4.364526318687865,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 564558.0820404385,
+   "r_max_km": 1072329.4503843023,
+   "min_required_alt_km": 8862.162323423974,
+   "max_turn_deg": 22.732135190291544,
+   "cross_check": {
+    "max_arrival_miss_km": 1.5157644912207459e-06,
+    "max_vinf_vector_error_kms": 3.431348340235538e-11,
+    "max_junction_mismatch_kms": 3.1322056059934766e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.37236857184752853
+   },
+   "soi_fraction": 1.5585760550717243e-10,
+   "collisions": [
+    "LITERAL GanEur#43 (dV_inf 0.003, period 14.1 vs 14.1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     5.622,
+     3.3
+    ],
+    [
+     "Europa",
+     5.622,
+     3.3
+    ],
+    [
+     "Ganymede",
+     5.229,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Europa/0s|LEuropa>Europa/1l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Europa/0s|LEuropa>Europa/1l|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 5.621706024897382,
+    "Ganymede": 5.228709749706896
+   },
+   "x_days": [
+    6.527223782886599,
+    7.343466729012005,
+    15.662829986233753
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 7.343466729012005,
+     "vinf_kms": 5.621706024897382,
+     "turn_deg": 3.2994235447320652,
+     "available_deg": 6.593070598354136,
+     "ratio": 0.5004380728997075,
+     "required_alt_km": 1857.7993723447203,
+     "rmin_radii": 2.1901341270625982,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 15.662829986233753,
+     "vinf_kms": 5.621706024897385,
+     "turn_deg": 3.2994235447312916,
+     "available_deg": 6.593070598354136,
+     "ratio": 0.5004380728995902,
+     "required_alt_km": 1857.799372345546,
+     "rmin_radii": 2.1901341270631245,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 20.629082665929623,
+     "vinf_kms": 5.228709749706896,
+     "turn_deg": 8.537736462515939e-07,
+     "available_deg": 13.41846750706848,
+     "ratio": 6.36267625793966e-08,
+     "required_alt_km": 48542459653.34584,
+     "rmin_radii": 18429180.82283439,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 553877.871605726,
+   "r_max_km": 1648426.9313239092,
+   "min_required_alt_km": 1857.7993723447203,
+   "max_turn_deg": 3.2994235447320652,
+   "cross_check": {
+    "max_arrival_miss_km": 9.43172109126533e-05,
+    "max_vinf_vector_error_kms": 1.6279274906830568e-09,
+    "max_junction_mismatch_kms": 1.4975753970247752e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5004380736347664
+   },
+   "soi_fraction": 9.698112560429598e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     8.393,
+     0.0
+    ],
+    [
+     "Ganymede",
+     3.907,
+     13.7
+    ],
+    [
+     "Ganymede",
+     3.907,
+     13.7
+    ]
+   ],
+   "keys": [
+    "k2|RGanymede/1:2|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+    "k2|RGanymede/1:2|LGanymede>Europa/0s|LEuropa>Ganymede/1l",
+    "k2|RGanymede/1:2|LGanymede>Europa/1h|LEuropa>Ganymede/0s",
+    "k2|RGanymede/1:2|LGanymede>Europa/1l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|RGanymede/1:2|LGanymede>Europa/0s|LEuropa>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 8.39275382991351,
+    "Ganymede": 3.9071460708548678
+   },
+   "x_days": [
+    1.4585512440540311,
+    3.673174319756516
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 3.673174319756516,
+     "vinf_kms": 8.39275382991351,
+     "turn_deg": 0.0,
+     "available_deg": 3.0536440507600084,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 8.40586151598594,
+     "vinf_kms": 3.9071460708548678,
+     "turn_deg": 13.675401132631468,
+     "available_deg": 22.084601621843436,
+     "ratio": 0.6192278840613273,
+     "required_alt_km": 2158.6230643302697,
+     "rmin_radii": 1.8195228034663136,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 15.560410127097052,
+     "vinf_kms": 3.9071460708548735,
+     "turn_deg": 13.67540113263144,
+     "available_deg": 22.084601621843436,
+     "ratio": 0.6192278840613261,
+     "required_alt_km": 2158.623064330279,
+     "rmin_radii": 1.8195228034663118,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 286376.02050125325,
+   "r_max_km": 1076446.8196287188,
+   "min_required_alt_km": 2158.6230643302697,
+   "max_turn_deg": 13.675401132631468,
+   "cross_check": {
+    "max_arrival_miss_km": 2.2186491394348305e-05,
+    "max_vinf_vector_error_kms": 3.2095908347489547e-10,
+    "max_junction_mismatch_kms": 8.86259954313573e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6192278840134026
+   },
+   "soi_fraction": 2.281313121765843e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     8.409,
+     0.0
+    ],
+    [
+     "Ganymede",
+     3.861,
+     13.2
+    ],
+    [
+     "Ganymede",
+     3.861,
+     13.2
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1h"
+   ],
+   "key": "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 3.8605580672058544,
+    "Europa": 8.408697520766632
+   },
+   "x_days": [
+    5.769720073352807,
+    12.820649514951782,
+    13.985406106846055
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 12.820649514951782,
+     "vinf_kms": 3.8605580672058544,
+     "turn_deg": 13.216343252694454,
+     "available_deg": 22.521710698811404,
+     "ratio": 0.586826792575395,
+     "required_alt_km": 2467.6419751714784,
+     "rmin_radii": 1.9368420558722048,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 13.985406106846055,
+     "vinf_kms": 8.408697520766632,
+     "turn_deg": 0.0,
+     "available_deg": 3.0423794965896866,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 19.871578956395826,
+     "vinf_kms": 3.860558067212388,
+     "turn_deg": 13.216343255708676,
+     "available_deg": 22.521710698811404,
+     "ratio": 0.5868267927092313,
+     "required_alt_km": 2467.6419738624845,
+     "rmin_radii": 1.9368420553686883,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 283782.5821520238,
+   "r_max_km": 1071876.0087032854,
+   "min_required_alt_km": 2467.6419738624845,
+   "max_turn_deg": 13.216343255708676,
+   "cross_check": {
+    "max_arrival_miss_km": 3.0288515164046125e-05,
+    "max_vinf_vector_error_kms": 3.851002133042088e-10,
+    "max_junction_mismatch_kms": 7.602629636949132e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5868267926503641
+   },
+   "soi_fraction": 3.1143990212054785e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     8.511,
+     0.0
+    ],
+    [
+     "Ganymede",
+     3.907,
+     8.9
+    ],
+    [
+     "Ganymede",
+     3.907,
+     17.2
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1l",
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/1h|LEuropa>Ganymede/0s",
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/1l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "Ganymede": 3.9071460708509305,
+    "Europa": 8.510945899202245
+   },
+   "x_days": [
+    5.700680510612413,
+    12.647990782544317,
+    13.932372345124442
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 12.647990782544317,
+     "vinf_kms": 3.9071460708509305,
+     "turn_deg": 8.885190073449081,
+     "available_deg": 22.084601621879894,
+     "ratio": 0.40232512343108107,
+     "required_alt_km": 5080.147756855382,
+     "rmin_radii": 2.928681760385486,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 13.932372345124442,
+     "vinf_kms": 8.510945899202245,
+     "turn_deg": 0.0,
+     "available_deg": 2.971585819918588,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 19.802539393655433,
+     "vinf_kms": 3.9071460708509242,
+     "turn_deg": 17.195496455211618,
+     "available_deg": 22.084601621879955,
+     "ratio": 0.7786192728138442,
+     "required_alt_km": 1050.9095214699637,
+     "rmin_radii": 1.3989785578853295,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 277586.8983203305,
+   "r_max_km": 1076446.8196287074,
+   "min_required_alt_km": 1050.9095214699637,
+   "max_turn_deg": 17.195496455211618,
+   "cross_check": {
+    "max_arrival_miss_km": 2.294554331538985e-05,
+    "max_vinf_vector_error_kms": 2.7770420062382423e-10,
+    "max_junction_mismatch_kms": 6.026779075796185e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7786192727455131
+   },
+   "soi_fraction": 2.3593621957178765e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     8.705,
+     0.1
+    ],
+    [
+     "Europa",
+     8.705,
+     0.1
+    ],
+    [
+     "Ganymede",
+     4.033,
+     12.5
+    ],
+    [
+     "Ganymede",
+     4.033,
+     12.5
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 4.032953257493155,
+    "Europa": 8.705124865038027
+   },
+   "x_days": [
+    5.7556616449217675,
+    12.595041512920464,
+    17.453612889042027
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 12.595041512920464,
+     "vinf_kms": 4.032953257493155,
+     "turn_deg": 12.481462194690014,
+     "available_deg": 20.962087937742886,
+     "ratio": 0.5954302945279013,
+     "required_alt_km": 2350.502328386223,
+     "rmin_radii": 1.8923699044744378,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 13.902432333486471,
+     "vinf_kms": 8.705124865038027,
+     "turn_deg": 0.0989972285464717,
+     "available_deg": 2.8437203441231653,
+     "ratio": 0.034812575276981596,
+     "required_alt_km": 47318.41104119411,
+     "rmin_radii": 31.312883434461302,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 17.453612889042027,
+     "vinf_kms": 8.705124865037998,
+     "turn_deg": 0.0989972285464717,
+     "available_deg": 2.843720344123201,
+     "ratio": 0.03481257527698116,
+     "required_alt_km": 47318.41104119473,
+     "rmin_radii": 31.312883434461508,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 19.857520527964788,
+     "vinf_kms": 4.032953257493139,
+     "turn_deg": 12.481462194689602,
+     "available_deg": 20.962087937742883,
+     "ratio": 0.5954302945278817,
+     "required_alt_km": 2350.502328386404,
+     "rmin_radii": 1.8923699044745224,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 267045.8695240504,
+   "r_max_km": 1084611.7562730417,
+   "min_required_alt_km": 2350.502328386223,
+   "max_turn_deg": 12.481462194690014,
+   "cross_check": {
+    "max_arrival_miss_km": 2.2693309491643326e-05,
+    "max_vinf_vector_error_kms": 2.720666118469323e-10,
+    "max_junction_mismatch_kms": 8.803091589015821e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5954302945298825
+   },
+   "soi_fraction": 2.3334263989468423e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 2,
+   "flybys": [
+    [
+     "Europa",
+     8.816,
+     0.0
+    ],
+    [
+     "Ganymede",
+     4.125,
+     12.1
+    ],
+    [
+     "Ganymede",
+     4.125,
+     12.1
+    ]
+   ],
+   "keys": [
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/0s|LEuropa>Ganymede/1h",
+    "k2|LGanymede>Ganymede/1h|LGanymede>Europa/1h|LEuropa>Ganymede/0s"
+   ],
+   "key": "k2|LGanymede>Ganymede/1h|LGanymede>Europa/1h|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 4.125383650917467,
+    "Europa": 8.815932699345549
+   },
+   "x_days": [
+    5.7844818618402885,
+    12.570020145218331,
+    17.447937085744936
+   ],
+   "period_days": 14.10185888304302,
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 12.570020145218331,
+     "vinf_kms": 4.125383650917467,
+     "turn_deg": 12.080418041992877,
+     "available_deg": 20.187889380059268,
+     "ratio": 0.5983992588113445,
+     "required_alt_km": 2306.3859656225986,
+     "rmin_radii": 1.8756210955285353,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 17.447937085744936,
+     "vinf_kms": 8.815932699345549,
+     "turn_deg": 0.0,
+     "available_deg": 2.774389899697176,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 19.88634074488331,
+     "vinf_kms": 4.125383650917403,
+     "turn_deg": 12.080418041995067,
+     "available_deg": 20.187889380059268,
+     "ratio": 0.598399258811453,
+     "required_alt_km": 2306.385965621601,
+     "rmin_radii": 1.8756210955282142,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 261727.1977792847,
+   "r_max_km": 1090138.859591902,
+   "min_required_alt_km": 2306.385965621601,
+   "max_turn_deg": 12.080418041995067,
+   "cross_check": {
+    "max_arrival_miss_km": 1.913632774262027e-05,
+    "max_vinf_vector_error_kms": 3.723817367351265e-10,
+    "max_junction_mismatch_kms": 3.6210501264122286e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.598399258844758
+   },
+   "soi_fraction": 1.9676818116798805e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     1.582,
+     20.0
+    ],
+    [
+     "Europa",
+     1.582,
+     20.0
+    ],
+    [
+     "Ganymede",
+     1.595,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/0s|REuropa/3:2|LEuropa>Ganymede/1h",
+    "k3|LGanymede>Europa/1h|REuropa/3:2|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Europa/1h|REuropa/3:2|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 1.5822612963668388,
+    "Ganymede": 1.5946287373464227
+   },
+   "x_days": [
+    1.2948282202209371,
+    20.276260214754508
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 9.622718548087843,
+     "vinf_kms": 1.5822612963668388,
+     "turn_deg": 20.044545888627802,
+     "available_deg": 51.58173937421188,
+     "ratio": 0.38859771174465296,
+     "required_alt_km": 4510.58978005698,
+     "rmin_radii": 3.889551428607931,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 20.276260214754508,
+     "vinf_kms": 1.5822612963668494,
+     "turn_deg": 20.044545888627823,
+     "available_deg": 51.58173937421188,
+     "ratio": 0.38859771174465335,
+     "required_alt_km": 4510.589780056973,
+     "rmin_radii": 3.8895514286078736,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 22.44761654478547,
+     "vinf_kms": 1.5946287373464227,
+     "turn_deg": 0.0,
+     "available_deg": 71.91214301326661,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 669790.0543024748,
+   "r_max_km": 1086956.3400629861,
+   "min_required_alt_km": 4510.589780056973,
+   "max_turn_deg": 20.044545888627823,
+   "cross_check": {
+    "max_arrival_miss_km": 4.715383093259605e-06,
+    "max_vinf_vector_error_kms": 7.612402005533891e-11,
+    "max_junction_mismatch_kms": 3.1319391524675666e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.38859771174915764
+   },
+   "soi_fraction": 4.848565342578775e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     1.585,
+     29.2
+    ],
+    [
+     "Ganymede",
+     1.607,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/1h|LEuropa>Ganymede/2l",
+    "k3|LGanymede>Europa/1l|LEuropa>Ganymede/2h",
+    "k3|LGanymede>Europa/2h|LEuropa>Ganymede/1l",
+    "k3|LGanymede>Europa/2l|LEuropa>Ganymede/1h"
+   ],
+   "key": "k3|LGanymede>Europa/1l|LEuropa>Ganymede/2h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 1.5846494091106171,
+    "Ganymede": 1.6070108022689724
+   },
+   "x_days": [
+    2.247217251305067,
+    9.732515494923774
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 9.732515494923774,
+     "vinf_kms": 1.5846494091106171,
+     "turn_deg": 29.246881877503995,
+     "available_deg": 51.4874227792682,
+     "ratio": 0.5680393443441196,
+     "required_alt_km": 2215.4616590897144,
+     "rmin_radii": 2.4192579494487663,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 23.4000055758696,
+     "vinf_kms": 1.6070108022689724,
+     "turn_deg": 0.0,
+     "available_deg": 71.38147507369005,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 669788.5121369807,
+   "r_max_km": 1087826.2577014498,
+   "min_required_alt_km": 2215.4616590897144,
+   "max_turn_deg": 29.246881877503995,
+   "cross_check": {
+    "max_arrival_miss_km": 3.0752712573755285e-06,
+    "max_vinf_vector_error_kms": 6.443992201368289e-11,
+    "max_junction_mismatch_kms": 1.322608689235949e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5680393443884316
+   },
+   "soi_fraction": 3.1621298508818184e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     1.62,
+     30.7
+    ],
+    [
+     "Europa",
+     1.62,
+     30.7
+    ],
+    [
+     "Ganymede",
+     1.371,
+     23.9
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/0s|REuropa/3:2|LEuropa>Ganymede/1h",
+    "k3|LGanymede>Europa/1h|REuropa/3:2|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Europa/1h|REuropa/3:2|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 1.620389953593598,
+    "Ganymede": 1.3710693682027406
+   },
+   "x_days": [
+    1.8485050651520303,
+    20.371856298672345
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 9.718314632005677,
+     "vinf_kms": 1.620389953593598,
+     "turn_deg": 30.677421140710614,
+     "available_deg": 50.10147439792862,
+     "ratio": 0.6123057556561435,
+     "required_alt_km": 1830.4430382383262,
+     "rmin_radii": 2.1726092493519067,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 20.371856298672345,
+     "vinf_kms": 1.620389953593549,
+     "turn_deg": 30.67742114071059,
+     "available_deg": 50.10147439793235,
+     "ratio": 0.6123057556560975,
+     "required_alt_km": 1830.443038238739,
+     "rmin_radii": 2.1726092493520404,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 23.00129338971656,
+     "vinf_kms": 1.3710693682027406,
+     "turn_deg": 23.943760413706034,
+     "available_deg": 82.29376392546492,
+     "ratio": 0.2909547366844512,
+     "required_alt_km": 17463.588524320785,
+     "rmin_radii": 7.63006398037947,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 667501.8008385091,
+   "r_max_km": 1071917.0363648254,
+   "min_required_alt_km": 1830.4430382383262,
+   "max_turn_deg": 30.677421140710614,
+   "cross_check": {
+    "max_arrival_miss_km": 4.827010290732195e-06,
+    "max_vinf_vector_error_kms": 7.763536677687161e-11,
+    "max_junction_mismatch_kms": 7.970513138388924e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6123057556704452
+   },
+   "soi_fraction": 4.963345361561425e-10,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     2.379,
+     17.9
+    ],
+    [
+     "Europa",
+     2.379,
+     17.9
+    ],
+    [
+     "Ganymede",
+     4.052,
+     0.9
+    ],
+    [
+     "Ganymede",
+     4.052,
+     0.9
+    ]
+   ],
+   "keys": [
+    "k3|RGanymede/1:1|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|RGanymede/1:1|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.3793911542796486,
+    "Ganymede": 4.0524495555881295
+   },
+   "x_days": [
+    0.6535475511255787,
+    13.334586432437762
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 6.23222532132665,
+     "vinf_kms": 2.3793911542796486,
+     "turn_deg": 17.928209962133266,
+     "available_deg": 29.4351637325555,
+     "ratio": 0.6090745791335463,
+     "required_alt_km": 1503.8991057238804,
+     "rmin_radii": 1.963420311161999,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 13.334586432437762,
+     "vinf_kms": 2.3793911542796584,
+     "turn_deg": 17.928209962133245,
+     "available_deg": 29.4351637325555,
+     "ratio": 0.6090745791335456,
+     "required_alt_km": 1503.899105723885,
+     "rmin_radii": 1.9634203111619852,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 14.651787264579,
+     "vinf_kms": 4.0524495555881295,
+     "turn_deg": 0.9416690055601403,
+     "available_deg": 20.795348922802617,
+     "ratio": 0.045282673979448206,
+     "required_alt_km": 70033.70226621008,
+     "rmin_radii": 27.588345583223266,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 21.80633587569011,
+     "vinf_kms": 4.0524495555881135,
+     "turn_deg": 0.9416690055601403,
+     "available_deg": 20.795348922802894,
+     "ratio": 0.0452826739794476,
+     "required_alt_km": 70033.70226621126,
+     "rmin_radii": 27.588345583223486,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 670987.7190261683,
+   "r_max_km": 1445959.0017870427,
+   "min_required_alt_km": 1503.8991057238804,
+   "max_turn_deg": 17.928209962133266,
+   "cross_check": {
+    "max_arrival_miss_km": 3.8109635811761646e-06,
+    "max_vinf_vector_error_kms": 6.928910134962405e-11,
+    "max_junction_mismatch_kms": 1.752198386384407e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6090745791589609
+   },
+   "soi_fraction": 3.918601219895276e-10,
+   "collisions": [
+    "NEAR EurGan#131 (dV_inf 0.048, period 21.2 vs 21.2, encounters 2+2 vs 2+1)",
+    "NEAR EurGan#159 (dV_inf 0.071, period 21.2 vs 28.2, encounters 2+2 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.048, period 21.2 vs 28.2, encounters 2+2 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     2.402,
+     19.8
+    ],
+    [
+     "Europa",
+     2.402,
+     19.8
+    ],
+    [
+     "Ganymede",
+     4.103,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/1h",
+    "k3|LGanymede>Europa/0s|REuropa/2:1|LEuropa>Ganymede/1l",
+    "k3|LGanymede>Europa/1h|REuropa/2:1|LEuropa>Ganymede/0s",
+    "k3|LGanymede>Europa/1l|REuropa/2:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Europa/1h|REuropa/2:1|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 2.4020769305784166,
+    "Ganymede": 4.103208735344564
+   },
+   "x_days": [
+    0.5414588579172527,
+    20.387683866571503
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 13.285322755460392,
+     "vinf_kms": 2.4020769305784166,
+     "turn_deg": 19.796504049753565,
+     "available_deg": 29.011242208887783,
+     "ratio": 0.6823735401336513,
+     "required_alt_km": 1112.977053219845,
+     "rmin_radii": 1.7129897842535842,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 20.387683866571503,
+     "vinf_kms": 2.402076930578421,
+     "turn_deg": 19.79650404975353,
+     "available_deg": 29.011242208887783,
+     "ratio": 0.68237354013365,
+     "required_alt_km": 1112.97705321985,
+     "rmin_radii": 1.7129897842535813,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 21.694247182481785,
+     "vinf_kms": 4.103208735344564,
+     "turn_deg": 1.2074182697257333e-06,
+     "available_deg": 20.369905634164777,
+     "ratio": 5.927461282396073e-08,
+     "required_alt_km": 55737646876.08327,
+     "rmin_radii": 21160838.842096914,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 669298.9763495396,
+   "r_max_km": 1458674.7306018495,
+   "min_required_alt_km": 1112.977053219845,
+   "max_turn_deg": 19.796504049753565,
+   "cross_check": {
+    "max_arrival_miss_km": 3.761438435705691e-06,
+    "max_vinf_vector_error_kms": 6.747958710587108e-11,
+    "max_junction_mismatch_kms": 1.3008705224137884e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6823735401460905
+   },
+   "soi_fraction": 3.8676772760363866e-10,
+   "collisions": [
+    "LITERAL EurGan#131 (dV_inf 0.003, period 21.2 vs 21.2)",
+    "NEAR EurGan#159 (dV_inf 0.048, period 21.2 vs 28.2, encounters 2+1 vs 3+1)",
+    "NEAR EurGan#93 (dV_inf 0.032, period 21.2 vs 28.2, encounters 2+1 vs 3+1)"
+   ],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     5.762,
+     0.0
+    ],
+    [
+     "Ganymede",
+     2.622,
+     35.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/2h|LEuropa>Ganymede/2l",
+    "k3|LGanymede>Europa/2l|LEuropa>Ganymede/2h"
+   ],
+   "key": "k3|LGanymede>Europa/2h|LEuropa>Ganymede/2l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 5.762440492530591,
+    "Ganymede": 2.621746702156736
+   },
+   "x_days": [
+    4.238547240102201,
+    15.417780863325813
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 15.417780863325813,
+     "vinf_kms": 5.762440492530591,
+     "turn_deg": 0.0,
+     "available_deg": 6.292110233021898,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 25.391335564666736,
+     "vinf_kms": 2.621746702156736,
+     "turn_deg": 35.04055901677976,
+     "available_deg": 40.3345808312299,
+     "ratio": 0.8687473204047498,
+     "required_alt_km": 705.956013449565,
+     "rmin_radii": 1.2680167097378754,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 450105.8783003261,
+   "r_max_km": 1077273.9516124595,
+   "min_required_alt_km": 705.956013449565,
+   "max_turn_deg": 35.04055901677976,
+   "cross_check": {
+    "max_arrival_miss_km": 1.822522961249936e-05,
+    "max_vinf_vector_error_kms": 3.0458631823425273e-10,
+    "max_junction_mismatch_kms": 2.736175730433388e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8687473203999976
+   },
+   "soi_fraction": 1.8739986743817213e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     6.522,
+     3.9
+    ],
+    [
+     "Europa",
+     6.522,
+     3.9
+    ],
+    [
+     "Ganymede",
+     4.361,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/0s|LEuropa>Europa/2l|LEuropa>Ganymede/1l",
+    "k3|LGanymede>Europa/1l|LEuropa>Europa/2l|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Europa/0s|LEuropa>Europa/2l|LEuropa>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 6.522209532160026,
+    "Ganymede": 4.361127209084785
+   },
+   "x_days": [
+    3.521601859259499,
+    6.493345757527479,
+    18.82784174681514
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 6.493345757527479,
+     "vinf_kms": 6.522209532160026,
+     "turn_deg": 3.930064330710642,
+     "available_deg": 4.970487296880401,
+     "ratio": 0.7906798862914802,
+     "required_alt_km": 559.3972303925034,
+     "rmin_radii": 1.3583582513725194,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 18.82784174681514,
+     "vinf_kms": 6.522209532160028,
+     "turn_deg": 3.9300643307107346,
+     "available_deg": 4.970487296880423,
+     "ratio": 0.7906798862914953,
+     "required_alt_km": 559.3972303924616,
+     "rmin_radii": 1.3583582513724857,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 24.67439018382403,
+     "vinf_kms": 4.361127209084785,
+     "turn_deg": 0.0,
+     "available_deg": 18.387377096017666,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 445383.84018048184,
+   "r_max_km": 1357019.2660867514,
+   "min_required_alt_km": 559.3972303924616,
+   "max_turn_deg": 3.9300643307107346,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0002270421487922763,
+    "max_vinf_vector_error_kms": 4.156617717461009e-09,
+    "max_junction_mismatch_kms": 4.128003716630246e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7906798861944525
+   },
+   "soi_fraction": 2.3345477391061226e-08,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     6.522,
+     3.9
+    ],
+    [
+     "Europa",
+     6.522,
+     3.9
+    ],
+    [
+     "Ganymede",
+     5.021,
+     0.0
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Europa/0s|LEuropa>Europa/1h|LEuropa>Ganymede/1h",
+    "k3|LGanymede>Europa/0s|LEuropa>Europa/1h|LEuropa>Ganymede/1l",
+    "k3|LGanymede>Europa/1h|LEuropa>Europa/1h|LEuropa>Ganymede/0s",
+    "k3|LGanymede>Europa/1l|LEuropa>Europa/1h|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Europa/1l|LEuropa>Europa/1h|LEuropa>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Europa": 6.522209532147452,
+    "Ganymede": 5.020964981458835
+   },
+   "x_days": [
+    3.5489953815888375,
+    11.043339840816806,
+    19.86163217609594
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Europa",
+     "t_days": 11.043339840816806,
+     "vinf_kms": 6.522209532147452,
+     "turn_deg": 3.93006433071454,
+     "available_deg": 4.9704872968987575,
+     "ratio": 0.7906798862893444,
+     "required_alt_km": 559.3972303985065,
+     "rmin_radii": 1.3583582513763626,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 19.86163217609594,
+     "vinf_kms": 6.522209532147478,
+     "turn_deg": 3.930064330714726,
+     "available_deg": 4.9704872968987175,
+     "ratio": 0.7906798862893881,
+     "required_alt_km": 559.3972303983855,
+     "rmin_radii": 1.358358251376285,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 24.70178370615337,
+     "vinf_kms": 5.020964981458835,
+     "turn_deg": 0.0,
+     "available_deg": 14.414714625439982,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 445383.8401811365,
+   "r_max_km": 1357019.266086224,
+   "min_required_alt_km": 559.3972303983855,
+   "max_turn_deg": 3.930064330714726,
+   "cross_check": {
+    "max_arrival_miss_km": 4.569153023205126e-05,
+    "max_vinf_vector_error_kms": 8.392749315796631e-10,
+    "max_junction_mismatch_kms": 8.292007080967778e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7906798861978127
+   },
+   "soi_fraction": 4.698205120368517e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  },
+  {
+   "k": 3,
+   "flybys": [
+    [
+     "Europa",
+     8.413,
+     0.6
+    ],
+    [
+     "Europa",
+     8.413,
+     0.6
+    ],
+    [
+     "Ganymede",
+     3.881,
+     19.7
+    ],
+    [
+     "Ganymede",
+     3.881,
+     19.7
+    ]
+   ],
+   "keys": [
+    "k3|LGanymede>Ganymede/1h|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/2l",
+    "k3|LGanymede>Ganymede/1h|LGanymede>Europa/1h|REuropa/1:1|LEuropa>Ganymede/1l",
+    "k3|LGanymede>Ganymede/1h|LGanymede>Europa/1l|REuropa/1:1|LEuropa>Ganymede/1h",
+    "k3|LGanymede>Ganymede/1h|LGanymede>Europa/2l|REuropa/1:1|LEuropa>Ganymede/0s"
+   ],
+   "key": "k3|LGanymede>Ganymede/1h|LGanymede>Europa/1h|REuropa/1:1|LEuropa>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 3.8805290470327476,
+    "Europa": 8.413468561566885
+   },
+   "x_days": [
+    1.3659491806513222,
+    8.353073268406968,
+    17.769145064442366
+   ],
+   "period_days": 21.152788324564533,
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 8.353073268406968,
+     "vinf_kms": 3.8805290470327476,
+     "turn_deg": 19.708940078936887,
+     "available_deg": 22.332863274553315,
+     "ratio": 0.8825084287957738,
+     "required_alt_km": 546.0188208632107,
+     "rmin_radii": 1.207296439202837,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 14.217964508886812,
+     "vinf_kms": 8.413468561566885,
+     "turn_deg": 0.5545159605165474,
+     "available_deg": 3.039020663776205,
+     "ratio": 0.18246534718441856,
+     "required_alt_km": 7743.759049451057,
+     "rmin_radii": 5.960768129052567,
+     "status": "pass"
+    },
+    {
+     "body": "Europa",
+     "t_days": 17.769145064442366,
+     "vinf_kms": 8.413468561566859,
+     "turn_deg": 0.554515960517862,
+     "available_deg": 3.0390206637762414,
+     "ratio": 0.18246534718484894,
+     "required_alt_km": 7743.759049429005,
+     "rmin_radii": 5.960768129038406,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 22.518737505215856,
+     "vinf_kms": 3.88052904703273,
+     "turn_deg": 19.708940078936966,
+     "available_deg": 22.332863274553326,
+     "ratio": 0.882508428795777,
+     "required_alt_km": 546.018820863198,
+     "rmin_radii": 1.2072964392028422,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 284026.90576346946,
+   "r_max_km": 1074327.9733882232,
+   "min_required_alt_km": 546.018820863198,
+   "max_turn_deg": 19.708940078936966,
+   "cross_check": {
+    "max_arrival_miss_km": 7.166938490350891e-05,
+    "max_vinf_vector_error_kms": 1.3291195324098673e-09,
+    "max_junction_mismatch_kms": 1.2921663739007272e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.88250842868414
+   },
+   "soi_fraction": 7.36936297421552e-09,
+   "collisions": [],
+   "literature_offline": {
+    "status": "published",
+    "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
+    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   }
+  }
+ ]
+}

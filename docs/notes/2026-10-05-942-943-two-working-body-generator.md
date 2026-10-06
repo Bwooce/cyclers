@@ -1142,6 +1142,59 @@ Reading:
 - Status: candidate, pending owner adjudication, NOT novel. The control question for full-rev Jovian
   rows (C4 GanCal#1, sec. 6.19) is still with the lead. This result does not settle it.
 
+### 6.27 Cell 4 (ge) adjudication and its real-ephemeris control: PRE-REGISTERED 2026-10-06, before the control runs
+
+Author: twobody-gen2-opus (takes over from twobody-gen-opus).
+
+Run record, checked from the files:
+- 5,533 structures (shards 2,767 + 2,766), 5,437 zeros. The first 568 structures of each shard ran
+  before the #963 crash (79193f6e) and the rest after the resume, so the zeros were assessed by two
+  code versions. All 5,437 zeros were reassessed at 86a4d5ab (`scripts/reassess_942_zeros.py`):
+  0 verdict changes, 0 errors.
+- 65 raw gate-pass records (28 of them from the pre-crash part), 1,721 physical cyclers, 22
+  gate-passing physical cyclers. Gauntlet (sec. 6.1 criteria): `data/943_cell_ge_gauntlet.json`.
+
+Classification rules for the 22 (the first rule is the vm-1 ruling of sec. 6.3; the second is NEW
+and goes to the lead before it is applied):
+- A gate-passer with a turn of exactly 0 at one moon is a one-working-body cycler: a member of
+  the R-S class (GanEur: Ganymede hosts, Europa massless; EurGan: the reverse). R-S ran both
+  Jovian one-body G-E searches in this ideal model (AAS 07-118 Table 1), so these are class
+  members, NOT finds.
+- PROPOSED: a gate-passer whose turn at one moon is below 1 deg with a ratio below 0.05 is
+  "near-one-body" and is demoted in the shortlist (like the Menning variations in sec. 6.12).
+- The gauntlet's LITERAL test compares V_inf and period only. In this cell the whole EurGan
+  family shares V_inf of about 2.35-2.40 / 4.05-4.10 km/s, so a LITERAL label also needs the same
+  encounter count and the same return types as the R-S nomenclature (Table 5).
+
+Real-ephemeris control for the ge cell, chosen from the page images (AAS 07-118 p.15, Fig. 10):
+- GanEur#316, "10 cycles in ephemeris model, 40 G. & 10 E. flybys, start=4-24-2019,
+  TOF=493.5 days, Delta-v_TOTAL=0 m/s" (Fig. 10(a) title). Nomenclature g h(1.5, 540 deg) g G:
+  it has a 3-pi half-rev leg, so it tests the shot fixed-leg path at 10 cycles. It does NOT test a
+  full-rev leg; the gc-1 caveat (sec. 6.19) stays for full-rev rows.
+- EurGan#131, "10 cycles ..., Delta-v_TOTAL=61 m/s" (Fig. 10(b) title). It is NOT a ballistic
+  published result. The R-S 2007 digest line "GanEur#316 and EurGan#131 are ballistic (Fig. 10)" is
+  wrong for #131 (reported to the corpus owner). Not a control.
+- Also read for context: Fig. 9(b) GanCal#1 is "10 cycles, 30 G. & 10 C. flybys, start=9-27-2013,
+  TOF=375.7 days, Delta-v_TOTAL=0 m/s". The C4 runs (sec. 6.19) used the 2030-2056 epochs, not
+  R-S's 2013 epoch.
+
+Step 1, recall (`scripts/recall_943_ganeur316.py`, cell ge, k = 7, 200 structures, blind). EXPECTED
+(Table 3): V_inf G/E 3.20/3.81 km/s, period 49.4 d, minimum altitude at Ganymede 1,447 km, distance
+to Jupiter 592,969-1,496,829 km, transits G->E 7.60 d and E->G 12.23 d, Europa turn 0.0. PASS if a
+gate-passing zero matches V_inf to 0.05 km/s, the altitude to 5 % and the distances to 0.1 %.
+
+Step 2, chain control (`scripts/run_942_realeph_chain.py`, cell ge, jup365, blend + shoot,
+`--shoot-jac sparse --shoot-nfev-per-var 60`, 20 restarts: the gc-1 settings of sec. 6.26).
+- Judged at R-S's own epoch, 2019-04-24 (JD 2458597.5), 10 cycles. PASS = the sec. 6.17 criteria
+  (lambda = 1 reached, every interior flyby passes the gate at the registry floors, DOP853 re-fly miss
+  < 1 km at every segment). R-S claimed ballistic only at 2019, so the 5 standard epochs (2030-2056)
+  are reported but do not decide the control.
+- First a 1-cycle slice at the R-S epoch (validation of the settings), then the 10-cycle run (a lead
+  launch).
+- If it passes: the Jovian fixed-leg path is validated at 10 cycles on a published member, for
+  half-rev legs. If it fails or does not decide: the ge candidates with fixed legs are "not judged" at
+  rung (d).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
