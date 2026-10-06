@@ -1899,6 +1899,58 @@ Reading, fixed now:
   NOT evidence, and the gate-failing real closures found by the controlled methods (6.46a, 6.48) are
   the real-ephemeris evidence.
 
+### 6.50 Results of 6.48 and 6.49, and the ge verdicts (2026-10-06)
+
+Controls under the 6.48 homotopy method (`data/943_rung_d_hom/`):
+- C4@2013: 10 cycles closed at 6 of 20 restarts. Restart 0 lands on a gate-failing closure (4.906),
+  but the gate-best closure is the published member again: indeterminate 0.9917, the same as 6.44.
+  DOP853 re-fly 2.9e-4 km. PASSES its path control (6.45 rule).
+  - Correction to the lead's first reading, which took restart 0's 4.906.
+- GanEur#316@2019: 10 cycles, gate pass, worst 0.741; re-fly 1.1e-5 km. PASS.
+- So the homotopy method passes both controls. It does not fail its full-rev control.
+- C4 grow1 (6.46a, without the homotopy): 10 cycles, indeterminate 0.9917, re-fly 2.9e-4 km. PASS
+  (path), as 6.44.
+
+Defect found: the ge-2 homotopy run crashed after epoch 0. A trial step reached year 2230, outside
+jup365, and SpiceyError was not caught. It is fixed: a failed evaluation now counts as "no closure".
+ge-2 epochs 1-4 were not run under the homotopy.
+
+6.49 blend-artefact test (`data/943_blend_artefact_test/`): the full-rev legs of the lambda = 1
+phase-1 solutions (1 cycle), re-flown exactly from the minimax directions:
+
+| | Full-rev miss D (km) | Mid-course dv per leg (m/s) | Induced arrival V_inf change (m/s) |
+|---|---|---|---|
+| ge-1 (5 epochs) | 3,111-3,192 | 16.0-16.2 | 46-48 |
+| ge-2 (epoch 0) | 748 | 6.8 | 13 |
+| ge-3 (5 epochs) | 3,079-3,175 | 12.8-14.0 | 49-50 |
+| C4 (control) | 418 | 0.39 | 2.2 |
+| GanEur#316 (control, half-rev) | 34,271 | 28.4 | 295 |
+
+Reading (rule fixed in 6.49):
+- D is hundreds to thousands of km for ge-1, ge-2 and ge-3, so their blend gate passes are NOT
+  real-ephemeris evidence.
+- Caution, from the controls: GanEur#316's blend leg misses by 34,271 km, yet a gate-passing real
+  closure exists close to it (0.741). A large D therefore does not by itself show absence either.
+- The evidence is the real closures.
+
+Verdicts at rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056):
+- ge-1: NOT PASSED, real-ephemeris NEGATIVE, conditional on the method.
+  - Both validated methods (6.46a grow; 6.48 homotopy) close at all 5 epochs with 20 restarts each.
+  - Every closure fails the gate (the best per epoch is 2.57-6.60).
+  - Each method recovers its controls' published members, but none finds a gate-passing ge-1 closure.
+- ge-3: NOT PASSED, real-ephemeris NEGATIVE, conditional on the method. It closes at 3 of 5 epochs
+  (2.88-3.32, all gate fails); at 2 epochs no 10-cycle closure (grow stops at k = 3, or no closure at
+  k = 10).
+- ge-2: UNDECIDED.
+  - It closed at 10 cycles at one epoch only (homotopy, epoch 0: gate fail 8.13). grow1 stopped at
+    k = 2-5 at all 5 epochs, and the homotopy run crashed before epochs 1-4.
+  - The rerun of epochs 1-4 with the fixed code is a launch request.
+- The negatives are conditional, like every "no X found": they hold for the patched-conic jup365
+  model, these epochs, and the two shoot methods. They are not proof that no gate-passing ge-1 or ge-3
+  member exists elsewhere.
+- All three stay "candidate, pending owner adjudication, NOT novel" in the ideal model, with the rung
+  (d) outcomes above.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

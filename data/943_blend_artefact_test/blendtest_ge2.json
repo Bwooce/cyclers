@@ -1,0 +1,33 @@
+[
+ {
+  "epoch_jd": 2462504.1349552446,
+  "gate_at_lambda1_minimax": {
+   "status": "pass",
+   "worst_ratio": 0.861230707561098
+  },
+  "shoot_best": {
+   "status": "fail",
+   "worst_ratio": 7.932969057559741,
+   "worst_ratio_by_body": {
+    "Europa": 7.932969057559741,
+    "Ganymede": 1.7818642660462105
+   },
+   "min_required_alt_km": -1773.1019369312623,
+   "n_flybys": 29
+  },
+  "legs": [
+   {
+    "body": "Europa",
+    "t0_days": 22511.93855829821,
+    "miss_km": 747.9612885387188,
+    "dv_mid_ms": 6.774504306381147,
+    "refly_miss_after_km": 4.4754156633323913e-07,
+    "dvinf_ms": 13.139240824621812
+   }
+  ],
+  "sum_dv_mid_ms": 6.774504306381147,
+  "max_dv_mid_ms": 6.774504306381147,
+  "max_abs_dvinf_ms": 13.139240824621812,
+  "max_miss_km": 747.9612885387188
+ }
+]

@@ -40,6 +40,7 @@ from typing import Any
 import numpy as np
 from scipy.optimize import least_squares
 from scipy.optimize._numdiff import approx_derivative, group_columns
+from spiceypy.utils.exceptions import SpiceyError
 
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
@@ -350,10 +351,22 @@ class ChainEval:
 
 
 def _res(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
-    ev = chain_eval(sysm, legs, x0, y)
+    try:
+        ev = chain_eval(sysm, legs, x0, y)
+    except SpiceyError:
+        # A trial step far outside the kernel's span (the 6.48 ge-2 run reached year 2230) is a
+        # failed evaluation, not a crash of the whole run.
+        ev = None
     n_fix = sum(not isinstance(lg, LambertLeg) for lg in legs)
     n_lam = len(legs) - n_fix
     return np.full(n_lam + 3 * n_fix, 1e3) if ev is None else ev.residual
+
+
+def _safe_eval(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> ChainEval | None:
+    try:
+        return chain_eval(sysm, legs, x0, y)
+    except SpiceyError:
+        return None
 
 
 def chain_eval(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> ChainEval | None:
@@ -581,7 +594,7 @@ def shoot_once(
                 break
         else:
             break
-    return x_sol, chain_eval(shoot_sys, legs_c, x_base, x_sol), int(sol.nfev), time.time() - t_r
+    return x_sol, _safe_eval(shoot_sys, legs_c, x_base, x_sol), int(sol.nfev), time.time() - t_r
 
 
 def shoot_homotopy(
@@ -610,7 +623,7 @@ def shoot_homotopy(
             if dmu < 1.0 / 640:
                 print(f"  homotopy {label}: stopped at mu = {mu:.4f}", flush=True)
                 break
-    return y, chain_eval(shoot_sys, legs_c, x_base, y), nfev, time.time() - t0
+    return y, _safe_eval(shoot_sys, legs_c, x_base, y), nfev, time.time() - t0
 
 
 def main() -> None:

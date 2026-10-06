@@ -1,0 +1,33 @@
+[
+ {
+  "epoch_jd": 2458597.5916615785,
+  "gate_at_lambda1_minimax": {
+   "status": "pass",
+   "worst_ratio": 0.6708533975212763
+  },
+  "shoot_best": {
+   "status": "pass",
+   "worst_ratio": 0.7412948605319549,
+   "worst_ratio_by_body": {
+    "Ganymede": 0.7412948605319549,
+    "Europa": 0.591907330514993
+   },
+   "min_required_alt_km": 1370.7396515534324,
+   "n_flybys": 49
+  },
+  "legs": [
+   {
+    "body": "Ganymede",
+    "t0_days": 18606.989354349334,
+    "miss_km": 34271.24933828746,
+    "dv_mid_ms": 28.440074335897016,
+    "refly_miss_after_km": 1.071208178560043e-06,
+    "dvinf_ms": -295.38052653764834
+   }
+  ],
+  "sum_dv_mid_ms": 28.440074335897016,
+  "max_dv_mid_ms": 28.440074335897016,
+  "max_abs_dvinf_ms": 295.38052653764834,
+  "max_miss_km": 34271.24933828746
+ }
+]

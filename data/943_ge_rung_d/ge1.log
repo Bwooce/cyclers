@@ -1,0 +1,1006 @@
+20:16:04 ge epoch 0 (JD 2462508.1) blend lam=1.0000 conv=True res=8.1e-12 gate=pass worst=0.314 [elapsed 0s]
+20:16:04   shoot k=1 restart 0: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 1: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 2: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 3: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 4: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 5: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 6: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 7: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 8: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 9/20: no closure (max residual 4.2e-01, nfev 300, 0s)
+20:16:04   shoot k=1 restart 10: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 11: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 12: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 13: closes, gate=fail worst=4.416
+20:16:04   shoot k=1 restart 14: closes, gate=fail worst=4.416
+20:16:05   shoot k=1 restart 15/20: no closure (max residual 1.5e-01, nfev 300, 0s)
+20:16:05   shoot k=1 restart 16: closes, gate=fail worst=4.416
+20:16:05   shoot k=1 restart 17: closes, gate=fail worst=4.416
+20:16:05   shoot k=1 restart 18: closes, gate=fail worst=4.416
+20:16:05   shoot k=1 restart 19: closes, gate=fail worst=4.416
+20:16:05   shoot k=2 restart 0: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 1: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 2: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 3: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 4: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 5: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 6: closes, gate=fail worst=44.935
+20:16:05   shoot k=2 restart 7: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 8: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 9: closes, gate=fail worst=6.672
+20:16:05   shoot k=2 restart 10: closes, gate=fail worst=6.672
+20:16:06   shoot k=2 restart 11/20: no closure (max residual 1.8e+00, nfev 600, 1s)
+20:16:06   shoot k=2 restart 12: closes, gate=fail worst=9.166
+20:16:06   shoot k=2 restart 13: closes, gate=fail worst=6.672
+20:16:06   shoot k=2 restart 14: closes, gate=fail worst=6.672
+20:16:06   shoot k=2 restart 15: closes, gate=fail worst=6.672
+20:16:07   shoot k=2 restart 16/20: no closure (max residual 1.8e+00, nfev 600, 1s)
+20:16:07   shoot k=2 restart 17: closes, gate=fail worst=6.672
+20:16:07   shoot k=2 restart 18: closes, gate=fail worst=6.672
+20:16:08   shoot k=2 restart 19: closes, gate=fail worst=6.672
+20:16:08   shoot k=3 restart 0: closes, gate=fail worst=7.046
+20:16:08   shoot k=3 restart 1/20: no closure (max residual 3.2e-03, nfev 60, 0s)
+20:16:08   shoot k=3 restart 2: closes, gate=fail worst=7.046
+20:16:08   shoot k=3 restart 3: closes, gate=fail worst=42.765
+20:16:08   shoot k=3 restart 4: closes, gate=fail worst=7.046
+20:16:08   shoot k=3 restart 5: closes, gate=fail worst=17.272
+20:16:08   shoot k=3 restart 6: closes, gate=fail worst=7.976
+20:16:08   shoot k=3 restart 7: closes, gate=fail worst=7.046
+20:16:08   shoot k=3 restart 8: closes, gate=fail worst=45.577
+20:16:08   shoot k=3 restart 9: closes, gate=fail worst=7.046
+20:16:08   shoot k=3 restart 10/20: no closure (max residual 1.3e+00, nfev 92, 0s)
+20:16:09   shoot k=3 restart 11: closes, gate=fail worst=17.272
+20:16:09   shoot k=3 restart 12: closes, gate=fail worst=42.765
+20:16:09   shoot k=3 restart 13/20: no closure (max residual 7.4e-04, nfev 40, 0s)
+20:16:09   shoot k=3 restart 14: closes, gate=fail worst=7.046
+20:16:11   shoot k=3 restart 15/20: no closure (max residual 3.2e-01, nfev 900, 3s)
+20:16:11   shoot k=3 restart 16: closes, gate=fail worst=7.046
+20:16:12   shoot k=3 restart 17: closes, gate=fail worst=7.976
+20:16:12   shoot k=3 restart 18: closes, gate=fail worst=7.976
+20:16:12   shoot k=3 restart 19: closes, gate=fail worst=17.272
+20:16:12   shoot k=4 restart 0/20: no closure (max residual 1.1e-03, nfev 62, 0s)
+20:16:12   shoot k=4 restart 1/20: no closure (max residual 4.0e-04, nfev 47, 0s)
+20:16:12   shoot k=4 restart 2: closes, gate=fail worst=11.805
+20:16:12   shoot k=4 restart 3/20: no closure (max residual 1.1e-03, nfev 69, 0s)
+20:16:13   shoot k=4 restart 4/20: no closure (max residual 3.7e-03, nfev 55, 0s)
+20:16:13   shoot k=4 restart 5/20: no closure (max residual 1.1e-03, nfev 84, 0s)
+20:16:13   shoot k=4 restart 6: closes, gate=fail worst=42.200
+20:16:13   shoot k=4 restart 7/20: no closure (max residual 1.1e-03, nfev 62, 0s)
+20:16:13   shoot k=4 restart 8/20: no closure (max residual 1.1e-03, nfev 51, 0s)
+20:16:14   shoot k=4 restart 9/20: no closure (max residual 3.3e-03, nfev 46, 0s)
+20:16:14   shoot k=4 restart 10/20: no closure (max residual 1.2e-03, nfev 53, 0s)
+20:16:14   shoot k=4 restart 11/20: no closure (max residual 1.1e-03, nfev 52, 0s)
+20:16:14   shoot k=4 restart 12/20: no closure (max residual 2.0e-03, nfev 65, 0s)
+20:16:14   shoot k=4 restart 13/20: no closure (max residual 1.2e-03, nfev 57, 0s)
+20:16:14   shoot k=4 restart 14/20: no closure (max residual 1.1e-03, nfev 37, 0s)
+20:16:15   shoot k=4 restart 15: closes, gate=fail worst=42.109
+20:16:15   shoot k=4 restart 16/20: no closure (max residual 3.3e-03, nfev 64, 0s)
+20:16:15   shoot k=4 restart 17: closes, gate=fail worst=45.589
+20:16:15   shoot k=4 restart 18/20: no closure (max residual 1.1e-03, nfev 49, 0s)
+20:16:15   shoot k=4 restart 19/20: no closure (max residual 1.1e-03, nfev 63, 0s)
+20:16:15   shoot k=5 restart 0: closes, gate=fail worst=11.805
+20:16:15   shoot k=5 restart 1: closes, gate=fail worst=11.805
+20:16:16   shoot k=5 restart 2: closes, gate=fail worst=7.909
+20:16:16   shoot k=5 restart 3: closes, gate=fail worst=7.909
+20:16:16   shoot k=5 restart 4: closes, gate=fail worst=42.109
+20:16:16   shoot k=5 restart 5: closes, gate=fail worst=11.805
+20:16:17   shoot k=5 restart 6/20: no closure (max residual 1.6e-02, nfev 95, 0s)
+20:16:17   shoot k=5 restart 7/20: no closure (max residual 1.6e-02, nfev 84, 0s)
+20:16:18   shoot k=5 restart 8/20: no closure (max residual 7.6e-03, nfev 70, 0s)
+20:16:18   shoot k=5 restart 9/20: no closure (max residual 1.6e-02, nfev 70, 0s)
+20:16:18   shoot k=5 restart 10: closes, gate=fail worst=7.985
+20:16:18   shoot k=5 restart 11: closes, gate=fail worst=7.909
+20:16:18   shoot k=5 restart 12: closes, gate=fail worst=7.909
+20:16:19   shoot k=5 restart 13/20: no closure (max residual 6.8e-01, nfev 71, 0s)
+20:16:19   shoot k=5 restart 14: closes, gate=fail worst=7.909
+20:16:20   shoot k=5 restart 15: closes, gate=fail worst=5.398
+20:16:20   shoot k=5 restart 16: closes, gate=fail worst=7.909
+20:16:20   shoot k=5 restart 17: closes, gate=fail worst=7.909
+20:16:20   shoot k=5 restart 18: closes, gate=fail worst=11.805
+20:16:21   shoot k=5 restart 19: closes, gate=fail worst=5.398
+20:16:21   shoot k=6 restart 0: closes, gate=fail worst=6.733
+20:16:21   shoot k=6 restart 1: closes, gate=fail worst=8.393
+20:16:21   shoot k=6 restart 2: closes, gate=fail worst=14.224
+20:16:21   shoot k=6 restart 3: closes, gate=fail worst=44.901
+20:16:22   shoot k=6 restart 4/20: no closure (max residual 1.2e-02, nfev 118, 1s)
+20:16:22   shoot k=6 restart 5: closes, gate=fail worst=6.733
+20:16:22   shoot k=6 restart 6: closes, gate=fail worst=6.733
+20:16:22   shoot k=6 restart 7: closes, gate=fail worst=45.527
+20:16:23   shoot k=6 restart 8: closes, gate=fail worst=6.733
+20:16:23   shoot k=6 restart 9: closes, gate=fail worst=6.733
+20:16:23   shoot k=6 restart 10: closes, gate=fail worst=6.733
+20:16:24   shoot k=6 restart 11: closes, gate=fail worst=23.242
+20:16:24   shoot k=6 restart 12: closes, gate=fail worst=47.369
+20:16:30   shoot k=6 restart 13: closes, gate=fail worst=22.477
+20:16:31   shoot k=6 restart 14/20: no closure (max residual 7.4e-03, nfev 85, 0s)
+20:16:31   shoot k=6 restart 15: closes, gate=fail worst=6.733
+20:16:31   shoot k=6 restart 16: closes, gate=fail worst=6.733
+20:16:31   shoot k=6 restart 17: closes, gate=fail worst=44.901
+20:16:32   shoot k=6 restart 18: closes, gate=fail worst=6.733
+20:16:34   shoot k=6 restart 19/20: no closure (max residual 9.9e-01, nfev 411, 3s)
+20:16:34   shoot k=7 restart 0: closes, gate=fail worst=6.791
+20:16:55   shoot k=7 restart 1/20: no closure (max residual 9.0e-01, nfev 2100, 21s)
+20:16:56   shoot k=7 restart 2: closes, gate=fail worst=6.791
+20:16:57   shoot k=7 restart 3: closes, gate=fail worst=6.791
+20:16:57   shoot k=7 restart 4: closes, gate=fail worst=23.254
+20:16:59   shoot k=7 restart 5/20: no closure (max residual 1.5e-02, nfev 138, 1s)
+20:16:59   shoot k=7 restart 6: closes, gate=fail worst=36.656
+20:16:59   shoot k=7 restart 7: closes, gate=fail worst=6.791
+20:17:00   shoot k=7 restart 8: closes, gate=fail worst=11.884
+20:17:01   shoot k=7 restart 9: closes, gate=fail worst=6.791
+20:17:01   shoot k=7 restart 10: closes, gate=fail worst=6.791
+20:17:02   shoot k=7 restart 11: closes, gate=fail worst=6.791
+20:17:02   shoot k=7 restart 12: closes, gate=fail worst=6.791
+20:17:02   shoot k=7 restart 13: closes, gate=fail worst=44.701
+20:17:04   shoot k=7 restart 14/20: no closure (max residual 1.5e-02, nfev 146, 1s)
+20:17:04   shoot k=7 restart 15/20: no closure (max residual 1.4e-03, nfev 63, 1s)
+20:17:04   shoot k=7 restart 16: closes, gate=fail worst=6.791
+20:17:05   shoot k=7 restart 17: closes, gate=fail worst=11.884
+20:17:05   shoot k=7 restart 18: closes, gate=fail worst=6.791
+20:17:29   shoot k=7 restart 19/20: no closure (max residual 1.7e-01, nfev 2100, 23s)
+20:17:29   shoot k=8 restart 0: closes, gate=fail worst=6.995
+20:17:56   shoot k=8 restart 1/20: no closure (max residual 5.1e-01, nfev 2400, 27s)
+20:18:25   shoot k=8 restart 2/20: no closure (max residual 4.2e-01, nfev 2400, 29s)
+20:18:26   shoot k=8 restart 3/20: no closure (max residual 6.5e-04, nfev 86, 1s)
+20:18:27   shoot k=8 restart 4/20: no closure (max residual 1.3e-03, nfev 118, 1s)
+20:18:28   shoot k=8 restart 5: closes, gate=fail worst=45.215
+20:18:28   shoot k=8 restart 6: closes, gate=fail worst=44.948
+20:18:29   shoot k=8 restart 7/20: no closure (max residual 6.5e-04, nfev 44, 1s)
+20:18:29   shoot k=8 restart 8: closes, gate=fail worst=6.995
+20:18:30   shoot k=8 restart 9: closes, gate=fail worst=45.587
+20:18:30   shoot k=8 restart 10: closes, gate=fail worst=7.903
+20:18:31   shoot k=8 restart 11: closes, gate=fail worst=6.995
+20:18:32   shoot k=8 restart 12: closes, gate=fail worst=7.903
+20:18:32   shoot k=8 restart 13: closes, gate=fail worst=6.995
+20:18:33   shoot k=8 restart 14: closes, gate=fail worst=6.995
+20:18:34   shoot k=8 restart 15/20: no closure (max residual 1.5e-03, nfev 79, 1s)
+20:18:34   shoot k=8 restart 16: closes, gate=fail worst=7.903
+20:18:35   shoot k=8 restart 17/20: no closure (max residual 1.5e-03, nfev 56, 1s)
+20:18:36   shoot k=8 restart 18/20: no closure (max residual 6.5e-04, nfev 115, 1s)
+20:18:38   shoot k=8 restart 19/20: no closure (max residual 1.3e-03, nfev 125, 2s)
+20:18:39   shoot k=9 restart 0/20: no closure (max residual 5.7e-04, nfev 38, 1s)
+20:18:40   shoot k=9 restart 1: closes, gate=fail worst=108.209
+20:18:41   shoot k=9 restart 2/20: no closure (max residual 9.2e-04, nfev 58, 1s)
+20:18:43   shoot k=9 restart 3/20: no closure (max residual 2.3e-03, nfev 117, 2s)
+20:18:45   shoot k=9 restart 4/20: no closure (max residual 5.7e-04, nfev 106, 2s)
+20:18:46   shoot k=9 restart 5/20: no closure (max residual 5.7e-04, nfev 89, 1s)
+20:18:47   shoot k=9 restart 6/20: no closure (max residual 5.7e-04, nfev 81, 1s)
+20:18:48   shoot k=9 restart 7: closes, gate=fail worst=8.724
+20:18:49   shoot k=9 restart 8/20: no closure (max residual 5.7e-04, nfev 61, 1s)
+20:18:50   shoot k=9 restart 9/20: no closure (max residual 2.4e-03, nfev 61, 1s)
+20:18:51   shoot k=9 restart 10: closes, gate=fail worst=11.452
+20:18:53   shoot k=9 restart 11/20: no closure (max residual 5.7e-04, nfev 97, 1s)
+20:18:53   shoot k=9 restart 12/20: no closure (max residual 4.8e-04, nfev 61, 1s)
+20:18:54   shoot k=9 restart 13: closes, gate=fail worst=11.452
+20:18:55   shoot k=9 restart 14: closes, gate=fail worst=44.972
+20:18:57   shoot k=9 restart 15/20: no closure (max residual 6.5e-04, nfev 115, 2s)
+20:18:58   shoot k=9 restart 16/20: no closure (max residual 5.7e-04, nfev 67, 1s)
+20:18:59   shoot k=9 restart 17: closes, gate=fail worst=11.452
+20:19:00   shoot k=9 restart 18: closes, gate=fail worst=12.310
+20:19:01   shoot k=9 restart 19/20: no closure (max residual 5.7e-04, nfev 60, 1s)
+20:19:03   shoot k=10 restart 0: closes, gate=fail worst=8.803
+20:19:04   shoot k=10 restart 1/20: no closure (max residual 1.4e-03, nfev 89, 1s)
+20:19:06   shoot k=10 restart 2/20: no closure (max residual 9.1e-03, nfev 141, 2s)
+20:19:07   shoot k=10 restart 3/20: no closure (max residual 1.4e-03, nfev 46, 1s)
+20:19:09   shoot k=10 restart 4: closes, gate=fail worst=44.754
+20:19:11   shoot k=10 restart 5/20: no closure (max residual 1.4e-03, nfev 116, 2s)
+20:19:12   shoot k=10 restart 6/20: no closure (max residual 1.0e-03, nfev 42, 1s)
+20:19:14   shoot k=10 restart 7: closes, gate=fail worst=57.603
+20:19:15   shoot k=10 restart 8/20: no closure (max residual 4.7e-03, nfev 119, 2s)
+20:19:17   shoot k=10 restart 9: closes, gate=fail worst=5.801
+20:19:17   shoot k=10 restart 10/20: no closure (max residual 1.0e-03, nfev 41, 1s)
+20:19:18   shoot k=10 restart 11/20: no closure (max residual 3.9e-04, nfev 48, 1s)
+20:19:18   shoot k=10 restart 12: closes, gate=fail worst=8.803
+20:19:19   shoot k=10 restart 13: closes, gate=fail worst=44.949
+20:19:21   shoot k=10 restart 14: closes, gate=fail worst=44.754
+20:19:23   shoot k=10 restart 15: closes, gate=fail worst=5.801
+20:19:23   shoot k=10 restart 16: closes, gate=fail worst=8.803
+20:19:26   shoot k=10 restart 17: closes, gate=fail worst=46.096
+20:19:27   shoot k=10 restart 18/20: no closure (max residual 1.7e-03, nfev 78, 1s)
+20:19:43   shoot k=10 restart 19/20: no closure (max residual 8.5e-01, nfev 989, 17s)
+20:19:43 ge epoch 1 (JD 2464841.9) blend lam=1.0000 conv=True res=1.1e-11 gate=pass worst=0.329 [elapsed 220s]
+20:19:44   shoot k=1 restart 0: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 1: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 2: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 3: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 4: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 5: closes, gate=fail worst=4.608
+20:19:44   shoot k=1 restart 6/20: no closure (max residual 1.6e-01, nfev 300, 1s)
+20:19:44   shoot k=1 restart 7: closes, gate=fail worst=3.756
+20:19:45   shoot k=1 restart 8: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 9: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 10: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 11: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 12: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 13: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 14: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 15/20: no closure (max residual 1.4e-01, nfev 300, 1s)
+20:19:45   shoot k=1 restart 16: closes, gate=fail worst=4.608
+20:19:45   shoot k=1 restart 17: closes, gate=fail worst=4.608
+20:19:46   shoot k=1 restart 18: closes, gate=fail worst=4.608
+20:19:46   shoot k=1 restart 19: closes, gate=fail worst=4.608
+20:19:46   shoot k=2 restart 0: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 1: closes, gate=fail worst=5.115
+20:19:46   shoot k=2 restart 2: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 3: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 4: closes, gate=fail worst=5.115
+20:19:46   shoot k=2 restart 5: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 6: closes, gate=fail worst=5.115
+20:19:46   shoot k=2 restart 7: closes, gate=fail worst=5.115
+20:19:46   shoot k=2 restart 8: closes, gate=fail worst=5.115
+20:19:46   shoot k=2 restart 9: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 10: closes, gate=fail worst=4.565
+20:19:46   shoot k=2 restart 11: closes, gate=fail worst=4.565
+20:19:47   shoot k=2 restart 12: closes, gate=fail worst=5.115
+20:19:47   shoot k=2 restart 13: closes, gate=fail worst=4.565
+20:19:47   shoot k=2 restart 14: closes, gate=fail worst=5.115
+20:19:47   shoot k=2 restart 15: closes, gate=fail worst=5.115
+20:19:47   shoot k=2 restart 16: closes, gate=fail worst=4.565
+20:19:48   shoot k=2 restart 17/20: no closure (max residual 7.1e-01, nfev 253, 1s)
+20:19:48   shoot k=2 restart 18: closes, gate=fail worst=5.115
+20:19:48   shoot k=2 restart 19: closes, gate=fail worst=5.115
+20:19:48   shoot k=3 restart 0: closes, gate=fail worst=6.601
+20:19:48   shoot k=3 restart 1: closes, gate=fail worst=44.995
+20:19:48   shoot k=3 restart 2: closes, gate=fail worst=6.601
+20:19:49   shoot k=3 restart 3: closes, gate=fail worst=22.229
+20:19:49   shoot k=3 restart 4: closes, gate=fail worst=5.915
+20:19:49   shoot k=3 restart 5: closes, gate=fail worst=30.268
+20:19:50   shoot k=3 restart 6: closes, gate=fail worst=22.229
+20:19:50   shoot k=3 restart 7: closes, gate=fail worst=6.601
+20:19:50   shoot k=3 restart 8: closes, gate=fail worst=6.601
+20:19:50   shoot k=3 restart 9: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 10: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 11: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 12: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 13: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 14: closes, gate=fail worst=5.915
+20:19:51   shoot k=3 restart 15: closes, gate=fail worst=6.601
+20:19:51   shoot k=3 restart 16: closes, gate=fail worst=6.601
+20:19:52   shoot k=3 restart 17: closes, gate=fail worst=5.915
+20:19:52   shoot k=3 restart 18: closes, gate=fail worst=5.915
+20:19:52   shoot k=3 restart 19: closes, gate=fail worst=5.915
+20:19:52   shoot k=4 restart 0/20: no closure (max residual 1.4e-03, nfev 48, 0s)
+20:19:52   shoot k=4 restart 1/20: no closure (max residual 1.4e-03, nfev 35, 0s)
+20:19:53   shoot k=4 restart 2/20: no closure (max residual 1.1e-03, nfev 50, 0s)
+20:20:03   shoot k=4 restart 3/20: no closure (max residual 3.2e-01, nfev 1200, 10s)
+20:20:03   shoot k=4 restart 4: closes, gate=fail worst=46.703
+20:20:04   shoot k=4 restart 5/20: no closure (max residual 1.4e-03, nfev 39, 0s)
+20:20:04   shoot k=4 restart 6/20: no closure (max residual 1.4e-03, nfev 77, 1s)
+20:20:04   shoot k=4 restart 7: closes, gate=fail worst=21.276
+20:20:05   shoot k=4 restart 8/20: no closure (max residual 1.4e-03, nfev 40, 0s)
+20:20:05   shoot k=4 restart 9/20: no closure (max residual 2.3e-03, nfev 49, 0s)
+20:20:06   shoot k=4 restart 10/20: no closure (max residual 2.3e-03, nfev 82, 1s)
+20:20:06   shoot k=4 restart 11/20: no closure (max residual 1.4e-03, nfev 48, 0s)
+20:20:07   shoot k=4 restart 12/20: no closure (max residual 1.9e-01, nfev 103, 1s)
+20:20:07   shoot k=4 restart 13/20: no closure (max residual 2.3e-03, nfev 72, 0s)
+20:20:16   shoot k=4 restart 14/20: no closure (max residual 1.4e-03, nfev 1170, 9s)
+20:20:16   shoot k=4 restart 15/20: no closure (max residual 1.4e-03, nfev 56, 0s)
+20:20:17   shoot k=4 restart 16/20: no closure (max residual 1.4e-03, nfev 67, 0s)
+20:20:17   shoot k=4 restart 17: closes, gate=fail worst=21.276
+20:20:17   shoot k=4 restart 18/20: no closure (max residual 1.4e-03, nfev 52, 0s)
+20:20:27   shoot k=4 restart 19/20: no closure (max residual 4.9e-01, nfev 1200, 9s)
+20:20:27   shoot k=5 restart 0: closes, gate=fail worst=21.276
+20:20:27   shoot k=5 restart 1: closes, gate=fail worst=6.747
+20:20:28   shoot k=5 restart 2/20: no closure (max residual 3.4e-04, nfev 69, 1s)
+20:20:29   shoot k=5 restart 3/20: no closure (max residual 3.4e-04, nfev 102, 1s)
+20:20:29   shoot k=5 restart 4: closes, gate=fail worst=6.747
+20:20:29   shoot k=5 restart 5: closes, gate=fail worst=44.668
+20:20:30   shoot k=5 restart 6: closes, gate=fail worst=21.276
+20:20:31   shoot k=5 restart 7/20: no closure (max residual 3.4e-04, nfev 95, 1s)
+20:20:31   shoot k=5 restart 8/20: no closure (max residual 1.4e-02, nfev 45, 0s)
+20:20:32   shoot k=5 restart 9: closes, gate=fail worst=6.747
+20:20:32   shoot k=5 restart 10: closes, gate=fail worst=45.176
+20:20:34   shoot k=5 restart 11/20: no closure (max residual 1.4e-02, nfev 118, 1s)
+20:20:35   shoot k=5 restart 12/20: no closure (max residual 1.4e-02, nfev 150, 1s)
+20:20:36   shoot k=5 restart 13/20: no closure (max residual 2.2e-03, nfev 58, 1s)
+20:20:36   shoot k=5 restart 14/20: no closure (max residual 3.4e-04, nfev 70, 1s)
+20:20:37   shoot k=5 restart 15/20: no closure (max residual 1.4e-02, nfev 106, 1s)
+20:20:38   shoot k=5 restart 16/20: no closure (max residual 3.4e-04, nfev 63, 1s)
+20:20:38   shoot k=5 restart 17/20: no closure (max residual 1.4e-02, nfev 48, 0s)
+20:20:39   shoot k=5 restart 18: closes, gate=fail worst=6.747
+20:20:41   shoot k=5 restart 19/20: no closure (max residual 1.4e-02, nfev 201, 2s)
+20:20:41   shoot k=6 restart 0: closes, gate=fail worst=6.453
+20:20:41   shoot k=6 restart 1: closes, gate=fail worst=6.453
+20:20:42   shoot k=6 restart 2: closes, gate=fail worst=21.053
+20:20:42   shoot k=6 restart 3: closes, gate=fail worst=6.453
+20:20:42   shoot k=6 restart 4: closes, gate=fail worst=6.453
+20:20:43   shoot k=6 restart 5/20: no closure (max residual 4.6e-01, nfev 103, 1s)
+20:20:44   shoot k=6 restart 6: closes, gate=fail worst=6.453
+20:20:44   shoot k=6 restart 7: closes, gate=fail worst=6.417
+20:20:45   shoot k=6 restart 8: closes, gate=fail worst=21.297
+20:20:46   shoot k=6 restart 9: closes, gate=fail worst=6.453
+20:20:46   shoot k=6 restart 10: closes, gate=fail worst=21.297
+20:20:46   shoot k=6 restart 11: closes, gate=fail worst=6.453
+20:20:47   shoot k=6 restart 12/20: no closure (max residual 4.6e-01, nfev 101, 1s)
+20:20:48   shoot k=6 restart 13: closes, gate=fail worst=45.064
+20:20:50   shoot k=6 restart 14/20: no closure (max residual 6.8e-03, nfev 177, 2s)
+20:20:50   shoot k=6 restart 15: closes, gate=fail worst=21.297
+20:20:51   shoot k=6 restart 16: closes, gate=fail worst=104.620
+20:20:53   shoot k=6 restart 17: closes, gate=fail worst=6.453
+20:20:54   shoot k=6 restart 18: closes, gate=fail worst=6.453
+20:20:54   shoot k=6 restart 19: closes, gate=fail worst=6.417
+20:20:55   shoot k=7 restart 0: closes, gate=fail worst=5.841
+20:20:56   shoot k=7 restart 1: closes, gate=fail worst=40.754
+20:20:56   shoot k=7 restart 2: closes, gate=fail worst=5.841
+20:20:57   shoot k=7 restart 3: closes, gate=fail worst=21.551
+20:20:57   shoot k=7 restart 4: closes, gate=fail worst=5.841
+20:20:58   shoot k=7 restart 5: closes, gate=fail worst=5.841
+20:20:58   shoot k=7 restart 6: closes, gate=fail worst=5.841
+20:20:59   shoot k=7 restart 7: closes, gate=fail worst=44.705
+20:20:59   shoot k=7 restart 8: closes, gate=fail worst=17.610
+20:21:00   shoot k=7 restart 9: closes, gate=fail worst=5.841
+20:21:00   shoot k=7 restart 10: closes, gate=fail worst=22.757
+20:21:00   shoot k=7 restart 11: closes, gate=fail worst=11.691
+20:21:01   shoot k=7 restart 12/20: no closure (max residual 1.5e-03, nfev 41, 0s)
+20:21:01   shoot k=7 restart 13: closes, gate=fail worst=45.137
+20:21:01   shoot k=7 restart 14: closes, gate=fail worst=5.841
+20:21:02   shoot k=7 restart 15: closes, gate=fail worst=5.841
+20:21:03   shoot k=7 restart 16/20: no closure (max residual 1.3e-02, nfev 87, 1s)
+20:21:04   shoot k=7 restart 17: closes, gate=fail worst=5.841
+20:21:04   shoot k=7 restart 18/20: no closure (max residual 1.5e-03, nfev 60, 1s)
+20:21:05   shoot k=7 restart 19: closes, gate=fail worst=50.721
+20:21:06   shoot k=8 restart 0/20: no closure (max residual 2.1e-04, nfev 29, 0s)
+20:21:06   shoot k=8 restart 1/20: no closure (max residual 1.7e-03, nfev 52, 1s)
+20:21:08   shoot k=8 restart 2/20: no closure (max residual 4.4e-04, nfev 124, 2s)
+20:21:09   shoot k=8 restart 3/20: no closure (max residual 4.4e-04, nfev 128, 2s)
+20:21:12   shoot k=8 restart 4/20: no closure (max residual 9.5e-01, nfev 178, 2s)
+20:21:13   shoot k=8 restart 5/20: no closure (max residual 2.7e-03, nfev 65, 1s)
+20:21:14   shoot k=8 restart 6/20: no closure (max residual 2.1e-04, nfev 89, 2s)
+20:21:38   shoot k=8 restart 7/20: no closure (max residual 9.6e-01, nfev 1563, 24s)
+20:21:39   shoot k=8 restart 8: closes, gate=fail worst=21.250
+20:21:39   shoot k=8 restart 9/20: no closure (max residual 2.1e-04, nfev 34, 0s)
+20:21:40   shoot k=8 restart 10/20: no closure (max residual 2.1e-04, nfev 38, 0s)
+20:21:41   shoot k=8 restart 11/20: no closure (max residual 1.6e-03, nfev 66, 1s)
+20:21:42   shoot k=8 restart 12/20: no closure (max residual 2.1e-04, nfev 92, 1s)
+20:21:43   shoot k=8 restart 13: closes, gate=fail worst=9.960
+20:21:44   shoot k=8 restart 14: closes, gate=fail worst=45.996
+20:21:46   shoot k=8 restart 15/20: no closure (max residual 4.4e-04, nfev 128, 2s)
+20:22:22   shoot k=8 restart 16/20: no closure (max residual 1.6e+00, nfev 2400, 36s)
+20:22:22   shoot k=8 restart 17/20: no closure (max residual 2.1e-04, nfev 56, 1s)
+20:22:23   shoot k=8 restart 18/20: no closure (max residual 7.1e-03, nfev 75, 1s)
+20:22:24   shoot k=8 restart 19/20: no closure (max residual 2.1e-04, nfev 87, 1s)
+20:22:25   shoot k=9 restart 0/20: no closure (max residual 6.5e-03, nfev 60, 1s)
+20:22:26   shoot k=9 restart 1/20: no closure (max residual 2.6e-03, nfev 64, 1s)
+20:22:27   shoot k=9 restart 2: closes, gate=fail worst=11.228
+20:22:28   shoot k=9 restart 3: closes, gate=fail worst=114.923
+20:22:29   shoot k=9 restart 4: closes, gate=fail worst=17.562
+20:22:30   shoot k=9 restart 5: closes, gate=fail worst=29.411
+20:22:31   shoot k=9 restart 6/20: no closure (max residual 6.5e-03, nfev 50, 1s)
+20:22:32   shoot k=9 restart 7/20: no closure (max residual 6.5e-03, nfev 83, 1s)
+20:22:33   shoot k=9 restart 8/20: no closure (max residual 4.6e-03, nfev 89, 1s)
+20:22:34   shoot k=9 restart 9/20: no closure (max residual 6.5e-03, nfev 46, 1s)
+20:22:36   shoot k=9 restart 10: closes, gate=fail worst=12.818
+20:22:36   shoot k=9 restart 11: closes, gate=fail worst=17.562
+20:22:37   shoot k=9 restart 12: closes, gate=fail worst=35.633
+20:22:38   shoot k=9 restart 13: closes, gate=fail worst=21.358
+20:22:39   shoot k=9 restart 14: closes, gate=fail worst=17.562
+20:22:40   shoot k=9 restart 15: closes, gate=fail worst=7.376
+20:23:26   shoot k=9 restart 16/20: no closure (max residual 8.9e-01, nfev 2700, 46s)
+20:23:28   shoot k=9 restart 17/20: no closure (max residual 6.5e-03, nfev 110, 2s)
+20:24:15   shoot k=9 restart 18/20: no closure (max residual 1.2e+00, nfev 2700, 47s)
+20:24:16   shoot k=9 restart 19/20: no closure (max residual 1.0e-03, nfev 69, 1s)
+20:24:17   shoot k=10 restart 0/20: no closure (max residual 3.8e-04, nfev 104, 2s)
+20:24:18   shoot k=10 restart 1: closes, gate=fail worst=6.643
+20:24:19   shoot k=10 restart 2: closes, gate=fail worst=21.360
+20:24:22   shoot k=10 restart 3/20: no closure (max residual 6.9e-06, nfev 214, 3s)
+20:24:24   shoot k=10 restart 4: closes, gate=fail worst=6.604
+20:24:26   shoot k=10 restart 5: closes, gate=fail worst=21.310
+20:24:26   shoot k=10 restart 6: closes, gate=fail worst=6.643
+20:25:24   shoot k=10 restart 7/20: no closure (max residual 3.2e+00, nfev 3000, 58s)
+20:25:26   shoot k=10 restart 8: closes, gate=fail worst=6.604
+20:25:27   shoot k=10 restart 9/20: no closure (max residual 1.2e-03, nfev 55, 1s)
+20:25:27   shoot k=10 restart 10: closes, gate=fail worst=17.281
+20:25:28   shoot k=10 restart 11: closes, gate=fail worst=30.503
+20:25:30   shoot k=10 restart 12: closes, gate=fail worst=6.604
+20:25:32   shoot k=10 restart 13: closes, gate=fail worst=118.294
+20:25:34   shoot k=10 restart 14/20: no closure (max residual 6.4e-03, nfev 85, 1s)
+20:25:35   shoot k=10 restart 15: closes, gate=fail worst=6.643
+20:25:37   shoot k=10 restart 16: closes, gate=fail worst=21.226
+20:25:48   shoot k=10 restart 17/20: no closure (max residual 6.9e-06, nfev 650, 12s)
+20:25:50   shoot k=10 restart 18: closes, gate=fail worst=108.205
+20:25:51   shoot k=10 restart 19: closes, gate=fail worst=47.579
+20:25:51 ge epoch 2 (JD 2467182.8) blend lam=1.0000 conv=True res=2.0e-11 gate=pass worst=0.342 [elapsed 587s]
+20:25:51   shoot k=1 restart 0: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 1: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 2: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 3: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 4: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 5: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 6: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 7: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 8: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 9: closes, gate=fail worst=3.658
+20:25:51   shoot k=1 restart 10: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 11: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 12: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 13: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 14/20: no closure (max residual 2.5e-01, nfev 300, 1s)
+20:25:52   shoot k=1 restart 15: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 16: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 17: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 18: closes, gate=fail worst=3.658
+20:25:52   shoot k=1 restart 19: closes, gate=fail worst=3.658
+20:25:52   shoot k=2 restart 0: closes, gate=fail worst=45.666
+20:25:53   shoot k=2 restart 1: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 2: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 3: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 4: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 5: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 6: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 7: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 8: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 9: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 10: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 11: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 12: closes, gate=fail worst=3.589
+20:25:53   shoot k=2 restart 13: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 14: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 15: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 16: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 17: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 18: closes, gate=fail worst=3.589
+20:25:54   shoot k=2 restart 19: closes, gate=fail worst=3.589
+20:25:54   shoot k=3 restart 0/20: no closure (max residual 1.1e-03, nfev 52, 0s)
+20:25:54   shoot k=3 restart 1/20: no closure (max residual 1.1e-03, nfev 39, 0s)
+20:25:55   shoot k=3 restart 2/20: no closure (max residual 1.1e-03, nfev 65, 0s)
+20:25:55   shoot k=3 restart 3/20: no closure (max residual 1.1e-03, nfev 36, 0s)
+20:25:55   shoot k=3 restart 4/20: no closure (max residual 1.1e-03, nfev 36, 0s)
+20:25:55   shoot k=3 restart 5: closes, gate=fail worst=16.627
+20:25:55   shoot k=3 restart 6/20: no closure (max residual 1.1e-03, nfev 86, 0s)
+20:25:56   shoot k=3 restart 7/20: no closure (max residual 1.1e-03, nfev 35, 0s)
+20:25:56   shoot k=3 restart 8/20: no closure (max residual 1.1e-03, nfev 43, 0s)
+20:25:56   shoot k=3 restart 9: closes, gate=fail worst=16.627
+20:25:56   shoot k=3 restart 10/20: no closure (max residual 1.1e-03, nfev 57, 0s)
+20:25:56   shoot k=3 restart 11/20: no closure (max residual 1.1e-03, nfev 50, 0s)
+20:25:57   shoot k=3 restart 12/20: no closure (max residual 1.1e-03, nfev 39, 0s)
+20:25:57   shoot k=3 restart 13/20: no closure (max residual 1.1e-03, nfev 44, 0s)
+20:25:57   shoot k=3 restart 14: closes, gate=fail worst=45.789
+20:25:57   shoot k=3 restart 15/20: no closure (max residual 1.1e-03, nfev 51, 0s)
+20:25:57   shoot k=3 restart 16/20: no closure (max residual 1.1e-03, nfev 65, 0s)
+20:26:03   shoot k=3 restart 17/20: no closure (max residual 1.1e-03, nfev 869, 5s)
+20:26:03   shoot k=3 restart 18/20: no closure (max residual 1.1e-03, nfev 35, 0s)
+20:26:03   shoot k=3 restart 19: closes, gate=fail worst=16.627
+20:26:03   shoot k=4 restart 0: closes, gate=fail worst=10.365
+20:26:04   shoot k=4 restart 1/20: no closure (max residual 3.1e-03, nfev 80, 1s)
+20:26:04   shoot k=4 restart 2/20: no closure (max residual 3.5e-03, nfev 45, 0s)
+20:26:05   shoot k=4 restart 3: closes, gate=fail worst=10.365
+20:26:05   shoot k=4 restart 4/20: no closure (max residual 2.5e-03, nfev 57, 0s)
+20:26:05   shoot k=4 restart 5/20: no closure (max residual 2.5e-03, nfev 72, 1s)
+20:26:06   shoot k=4 restart 6: closes, gate=fail worst=10.365
+20:26:06   shoot k=4 restart 7/20: no closure (max residual 2.5e-03, nfev 51, 0s)
+20:26:06   shoot k=4 restart 8: closes, gate=fail worst=10.365
+20:26:06   shoot k=4 restart 9: closes, gate=fail worst=10.365
+20:26:07   shoot k=4 restart 10/20: no closure (max residual 2.5e-03, nfev 48, 0s)
+20:26:07   shoot k=4 restart 11: closes, gate=fail worst=47.572
+20:26:07   shoot k=4 restart 12/20: no closure (max residual 3.1e-03, nfev 40, 0s)
+20:26:07   shoot k=4 restart 13/20: no closure (max residual 2.5e-03, nfev 41, 0s)
+20:26:07   shoot k=4 restart 14: closes, gate=fail worst=10.365
+20:26:08   shoot k=4 restart 15/20: no closure (max residual 2.5e-03, nfev 44, 0s)
+20:26:08   shoot k=4 restart 16/20: no closure (max residual 2.5e-03, nfev 57, 0s)
+20:26:09   shoot k=4 restart 17: closes, gate=fail worst=16.036
+20:26:09   shoot k=4 restart 18: closes, gate=fail worst=10.365
+20:26:09   shoot k=4 restart 19/20: no closure (max residual 2.5e-03, nfev 41, 0s)
+20:26:09   shoot k=5 restart 0: closes, gate=fail worst=10.365
+20:26:10   shoot k=5 restart 1/20: no closure (max residual 1.4e-02, nfev 63, 1s)
+20:26:11   shoot k=5 restart 2/20: no closure (max residual 1.4e-02, nfev 111, 1s)
+20:26:11   shoot k=5 restart 3: closes, gate=fail worst=16.017
+20:26:27   shoot k=5 restart 4/20: no closure (max residual 6.1e-01, nfev 1500, 16s)
+20:26:27   shoot k=5 restart 5/20: no closure (max residual 1.4e-02, nfev 75, 1s)
+20:26:28   shoot k=5 restart 6/20: no closure (max residual 4.6e-04, nfev 49, 0s)
+20:26:28   shoot k=5 restart 7: closes, gate=fail worst=10.365
+20:26:28   shoot k=5 restart 8: closes, gate=fail worst=3.515
+20:26:29   shoot k=5 restart 9/20: no closure (max residual 1.4e-02, nfev 51, 0s)
+20:26:30   shoot k=5 restart 10/20: no closure (max residual 4.6e-04, nfev 121, 1s)
+20:26:30   shoot k=5 restart 11/20: no closure (max residual 1.4e-02, nfev 49, 0s)
+20:26:30   shoot k=5 restart 12/20: no closure (max residual 1.4e-02, nfev 63, 1s)
+20:26:31   shoot k=5 restart 13: closes, gate=fail worst=3.515
+20:26:31   shoot k=5 restart 14/20: no closure (max residual 1.4e-02, nfev 60, 0s)
+20:26:32   shoot k=5 restart 15/20: no closure (max residual 1.4e-02, nfev 138, 1s)
+20:26:33   shoot k=5 restart 16: closes, gate=fail worst=3.515
+20:26:33   shoot k=5 restart 17: closes, gate=fail worst=3.515
+20:26:33   shoot k=5 restart 18/20: no closure (max residual 1.4e-02, nfev 45, 0s)
+20:26:34   shoot k=5 restart 19: closes, gate=fail worst=3.515
+20:26:34   shoot k=6 restart 0: closes, gate=fail worst=4.235
+20:26:35   shoot k=6 restart 1: closes, gate=fail worst=4.235
+20:26:35   shoot k=6 restart 2/20: no closure (max residual 1.1e-02, nfev 56, 0s)
+20:26:36   shoot k=6 restart 3/20: no closure (max residual 1.0e-02, nfev 65, 1s)
+20:26:36   shoot k=6 restart 4: closes, gate=fail worst=45.991
+20:26:37   shoot k=6 restart 5: closes, gate=fail worst=4.235
+20:26:37   shoot k=6 restart 6: closes, gate=fail worst=4.235
+20:26:38   shoot k=6 restart 7: closes, gate=fail worst=4.235
+20:26:38   shoot k=6 restart 8/20: no closure (max residual 1.4e-02, nfev 65, 1s)
+20:26:39   shoot k=6 restart 9: closes, gate=fail worst=45.517
+20:26:39   shoot k=6 restart 10: closes, gate=fail worst=4.235
+20:26:39   shoot k=6 restart 11: closes, gate=fail worst=46.305
+20:26:40   shoot k=6 restart 12/20: no closure (max residual 1.4e-02, nfev 85, 1s)
+20:26:40   shoot k=6 restart 13: closes, gate=fail worst=4.235
+20:27:01   shoot k=6 restart 14/20: no closure (max residual 1.9e+00, nfev 1800, 21s)
+20:27:02   shoot k=6 restart 15: closes, gate=fail worst=4.235
+20:27:17   shoot k=6 restart 16: closes, gate=fail worst=45.503
+20:27:18   shoot k=6 restart 17: closes, gate=fail worst=4.235
+20:27:19   shoot k=6 restart 18: closes, gate=fail worst=4.235
+20:27:20   shoot k=6 restart 19: closes, gate=fail worst=4.235
+20:27:20   shoot k=7 restart 0: closes, gate=fail worst=3.605
+20:27:20   shoot k=7 restart 1: closes, gate=fail worst=3.605
+20:27:21   shoot k=7 restart 2: closes, gate=fail worst=3.605
+20:27:21   shoot k=7 restart 3: closes, gate=fail worst=3.605
+20:27:22   shoot k=7 restart 4: closes, gate=fail worst=3.605
+20:27:22   shoot k=7 restart 5: closes, gate=fail worst=11.087
+20:27:23   shoot k=7 restart 6: closes, gate=fail worst=3.605
+20:27:23   shoot k=7 restart 7: closes, gate=fail worst=3.605
+20:27:24   shoot k=7 restart 8: closes, gate=fail worst=46.816
+20:27:24   shoot k=7 restart 9: closes, gate=fail worst=11.087
+20:27:26   shoot k=7 restart 10: closes, gate=fail worst=11.087
+20:27:26   shoot k=7 restart 11: closes, gate=fail worst=3.605
+20:27:27   shoot k=7 restart 12/20: no closure (max residual 5.3e-03, nfev 113, 1s)
+20:27:28   shoot k=7 restart 13/20: no closure (max residual 7.6e-03, nfev 61, 1s)
+20:27:30   shoot k=7 restart 14/20: no closure (max residual 1.1e-02, nfev 158, 2s)
+20:28:00   shoot k=7 restart 15/20: no closure (max residual 2.6e+00, nfev 2100, 30s)
+20:28:00   shoot k=7 restart 16: closes, gate=fail worst=3.605
+20:28:01   shoot k=7 restart 17/20: no closure (max residual 1.1e-02, nfev 68, 1s)
+20:28:02   shoot k=7 restart 18/20: no closure (max residual 6.0e-03, nfev 97, 1s)
+20:28:02   shoot k=7 restart 19: closes, gate=fail worst=3.605
+20:28:03   shoot k=8 restart 0/20: no closure (max residual 5.0e-04, nfev 32, 0s)
+20:28:03   shoot k=8 restart 1/20: no closure (max residual 4.9e-03, nfev 64, 1s)
+20:28:05   shoot k=8 restart 2: closes, gate=fail worst=100.109
+20:28:06   shoot k=8 restart 3: closes, gate=fail worst=10.321
+20:28:08   shoot k=8 restart 4/20: no closure (max residual 3.9e-03, nfev 154, 2s)
+20:28:09   shoot k=8 restart 5/20: no closure (max residual 5.0e-04, nfev 116, 1s)
+20:28:10   shoot k=8 restart 6/20: no closure (max residual 5.0e-04, nfev 62, 1s)
+20:28:11   shoot k=8 restart 7/20: no closure (max residual 5.0e-04, nfev 37, 0s)
+20:28:11   shoot k=8 restart 8/20: no closure (max residual 1.3e-03, nfev 76, 1s)
+20:28:12   shoot k=8 restart 9/20: no closure (max residual 5.0e-04, nfev 62, 1s)
+20:28:13   shoot k=8 restart 10/20: no closure (max residual 4.9e-03, nfev 67, 1s)
+20:28:13   shoot k=8 restart 11/20: no closure (max residual 5.0e-04, nfev 37, 0s)
+20:28:15   shoot k=8 restart 12/20: no closure (max residual 1.3e-03, nfev 122, 1s)
+20:28:15   shoot k=8 restart 13/20: no closure (max residual 5.0e-04, nfev 44, 1s)
+20:28:16   shoot k=8 restart 14/20: no closure (max residual 5.0e-04, nfev 46, 1s)
+20:28:17   shoot k=8 restart 15/20: no closure (max residual 4.9e-03, nfev 96, 1s)
+20:28:18   shoot k=8 restart 16/20: no closure (max residual 9.9e-03, nfev 63, 1s)
+20:28:19   shoot k=8 restart 17/20: no closure (max residual 3.9e-03, nfev 96, 1s)
+20:28:21   shoot k=8 restart 18: closes, gate=fail worst=47.567
+20:28:51   shoot k=8 restart 19/20: no closure (max residual 5.0e-04, nfev 2159, 30s)
+20:28:51   shoot k=9 restart 0: closes, gate=fail worst=10.476
+20:28:52   shoot k=9 restart 1: closes, gate=fail worst=46.425
+20:28:52   shoot k=9 restart 2: closes, gate=fail worst=10.476
+20:28:53   shoot k=9 restart 3: closes, gate=fail worst=10.476
+20:28:54   shoot k=9 restart 4/20: no closure (max residual 4.5e-05, nfev 83, 1s)
+20:28:55   shoot k=9 restart 5/20: no closure (max residual 1.2e-03, nfev 58, 1s)
+20:28:56   shoot k=9 restart 6: closes, gate=fail worst=11.048
+20:28:57   shoot k=9 restart 7: closes, gate=fail worst=38.403
+20:28:58   shoot k=9 restart 8: closes, gate=fail worst=38.403
+20:29:43   shoot k=9 restart 9/20: no closure (max residual 7.5e-01, nfev 2700, 45s)
+20:29:44   shoot k=9 restart 10: closes, gate=fail worst=4.125
+20:29:45   shoot k=9 restart 11/20: no closure (max residual 1.5e-02, nfev 76, 1s)
+20:29:46   shoot k=9 restart 12: closes, gate=fail worst=10.476
+20:29:47   shoot k=9 restart 13: closes, gate=fail worst=47.820
+20:29:47   shoot k=9 restart 14: closes, gate=fail worst=45.417
+20:29:48   shoot k=9 restart 15: closes, gate=fail worst=10.476
+20:29:49   shoot k=9 restart 16/20: no closure (max residual 3.9e-03, nfev 83, 1s)
+20:29:51   shoot k=9 restart 17/20: no closure (max residual 1.2e-03, nfev 110, 2s)
+20:29:52   shoot k=9 restart 18/20: no closure (max residual 3.0e-03, nfev 97, 1s)
+20:29:53   shoot k=9 restart 19/20: no closure (max residual 1.2e-03, nfev 67, 1s)
+20:29:53   shoot k=10 restart 0: closes, gate=fail worst=3.494
+20:30:42   shoot k=10 restart 1/20: no closure (max residual 7.5e-01, nfev 3000, 48s)
+20:30:42   shoot k=10 restart 2: closes, gate=fail worst=46.583
+20:30:44   shoot k=10 restart 3/20: no closure (max residual 1.7e-04, nfev 97, 1s)
+20:30:46   shoot k=10 restart 4/20: no closure (max residual 9.5e-03, nfev 171, 2s)
+20:30:47   shoot k=10 restart 5: closes, gate=fail worst=109.451
+20:31:20   shoot k=10 restart 6/20: no closure (max residual 1.1e-02, nfev 2254, 33s)
+20:31:20   shoot k=10 restart 7: closes, gate=fail worst=45.187
+20:31:21   shoot k=10 restart 8/20: no closure (max residual 3.5e-03, nfev 85, 1s)
+20:31:22   shoot k=10 restart 9/20: no closure (max residual 1.7e-04, nfev 70, 1s)
+20:31:23   shoot k=10 restart 10/20: no closure (max residual 3.3e-03, nfev 53, 1s)
+20:31:24   shoot k=10 restart 11/20: no closure (max residual 2.2e-03, nfev 50, 1s)
+20:31:25   shoot k=10 restart 12/20: no closure (max residual 1.7e-04, nfev 86, 1s)
+20:32:07   shoot k=10 restart 13/20: no closure (max residual 2.6e+00, nfev 3000, 43s)
+20:32:08   shoot k=10 restart 14/20: no closure (max residual 1.7e-04, nfev 80, 1s)
+20:32:09   shoot k=10 restart 15: closes, gate=fail worst=3.492
+20:32:10   shoot k=10 restart 16/20: no closure (max residual 3.7e-03, nfev 84, 1s)
+20:32:11   shoot k=10 restart 17/20: no closure (max residual 1.9e-03, nfev 131, 2s)
+20:32:13   shoot k=10 restart 18/20: no closure (max residual 1.8e-03, nfev 136, 1s)
+20:32:14   shoot k=10 restart 19: closes, gate=fail worst=3.492
+20:32:14 ge epoch 3 (JD 2469516.7) blend lam=1.0000 conv=True res=5.6e-12 gate=pass worst=0.342 [elapsed 970s]
+20:32:14   shoot k=1 restart 0: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 1: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 2: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 3: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 4: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 5: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 6: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 7: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 8: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 9: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 10: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 11: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 12: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 13: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 14: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 15: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 16: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 17: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 18: closes, gate=fail worst=2.115
+20:32:14   shoot k=1 restart 19: closes, gate=fail worst=2.115
+20:32:14   shoot k=2 restart 0: closes, gate=fail worst=2.035
+20:32:14   shoot k=2 restart 1: closes, gate=fail worst=2.035
+20:32:14   shoot k=2 restart 2: closes, gate=fail worst=2.035
+20:32:16   shoot k=2 restart 3: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 4/20: no closure (max residual 7.1e-01, nfev 278, 1s)
+20:32:17   shoot k=2 restart 5: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 6: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 7: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 8: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 9: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 10: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 11: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 12: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 13: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 14: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 15: closes, gate=fail worst=2.035
+20:32:17   shoot k=2 restart 16: closes, gate=fail worst=2.035
+20:32:18   shoot k=2 restart 17: closes, gate=fail worst=46.391
+20:32:20   shoot k=2 restart 18/20: no closure (max residual 7.9e-01, nfev 600, 2s)
+20:32:20   shoot k=2 restart 19: closes, gate=fail worst=2.035
+20:32:20   shoot k=3 restart 0: closes, gate=fail worst=2.620
+20:32:20   shoot k=3 restart 1/20: no closure (max residual 2.1e-03, nfev 34, 0s)
+20:32:20   shoot k=3 restart 2/20: no closure (max residual 2.1e-03, nfev 55, 0s)
+20:32:20   shoot k=3 restart 3: closes, gate=fail worst=2.620
+20:32:21   shoot k=3 restart 4: closes, gate=fail worst=2.620
+20:32:21   shoot k=3 restart 5/20: no closure (max residual 2.1e-03, nfev 50, 0s)
+20:32:21   shoot k=3 restart 6/20: no closure (max residual 2.1e-03, nfev 40, 0s)
+20:32:25   shoot k=3 restart 7/20: no closure (max residual 8.4e-01, nfev 900, 4s)
+20:32:25   shoot k=3 restart 8/20: no closure (max residual 2.1e-03, nfev 56, 0s)
+20:32:25   shoot k=3 restart 9/20: no closure (max residual 2.1e-03, nfev 45, 0s)
+20:32:26   shoot k=3 restart 10/20: no closure (max residual 2.1e-03, nfev 54, 0s)
+20:32:26   shoot k=3 restart 11/20: no closure (max residual 2.1e-03, nfev 37, 0s)
+20:32:26   shoot k=3 restart 12: closes, gate=fail worst=2.620
+20:32:26   shoot k=3 restart 13/20: no closure (max residual 2.1e-03, nfev 38, 0s)
+20:32:26   shoot k=3 restart 14/20: no closure (max residual 1.3e+00, nfev 97, 0s)
+20:32:27   shoot k=3 restart 15/20: no closure (max residual 2.1e-03, nfev 52, 0s)
+20:32:27   shoot k=3 restart 16: closes, gate=fail worst=2.620
+20:32:27   shoot k=3 restart 17: closes, gate=fail worst=48.926
+20:32:27   shoot k=3 restart 18/20: no closure (max residual 2.1e-03, nfev 61, 0s)
+20:32:28   shoot k=3 restart 19/20: no closure (max residual 1.2e+00, nfev 317, 1s)
+20:32:28   shoot k=4 restart 0/20: no closure (max residual 4.1e-03, nfev 42, 0s)
+20:32:29   shoot k=4 restart 1/20: no closure (max residual 4.1e-03, nfev 97, 0s)
+20:32:29   shoot k=4 restart 2/20: no closure (max residual 4.1e-03, nfev 43, 0s)
+20:32:29   shoot k=4 restart 3: closes, gate=fail worst=1.940
+20:32:29   shoot k=4 restart 4/20: no closure (max residual 4.1e-03, nfev 45, 0s)
+20:32:29   shoot k=4 restart 5/20: no closure (max residual 2.6e-03, nfev 56, 0s)
+20:32:30   shoot k=4 restart 6/20: no closure (max residual 4.0e-03, nfev 83, 0s)
+20:32:30   shoot k=4 restart 7/20: no closure (max residual 4.1e-03, nfev 42, 0s)
+20:32:30   shoot k=4 restart 8: closes, gate=fail worst=1.940
+20:32:30   shoot k=4 restart 9/20: no closure (max residual 4.0e-03, nfev 42, 0s)
+20:32:31   shoot k=4 restart 10/20: no closure (max residual 1.0e+00, nfev 137, 1s)
+20:32:31   shoot k=4 restart 11/20: no closure (max residual 4.5e-03, nfev 66, 0s)
+20:32:31   shoot k=4 restart 12/20: no closure (max residual 4.1e-03, nfev 60, 0s)
+20:32:32   shoot k=4 restart 13/20: no closure (max residual 4.1e-03, nfev 50, 0s)
+20:32:33   shoot k=4 restart 14/20: no closure (max residual 1.2e+00, nfev 178, 1s)
+20:32:33   shoot k=4 restart 15: closes, gate=fail worst=48.299
+20:32:33   shoot k=4 restart 16/20: no closure (max residual 4.1e-03, nfev 42, 0s)
+20:32:33   shoot k=4 restart 17/20: no closure (max residual 4.1e-03, nfev 39, 0s)
+20:32:33   shoot k=4 restart 18/20: no closure (max residual 4.1e-03, nfev 44, 0s)
+20:32:34   shoot k=4 restart 19/20: no closure (max residual 4.1e-03, nfev 82, 0s)
+20:32:34   shoot k=5 restart 0: closes, gate=fail worst=1.940
+20:32:34   shoot k=5 restart 1/20: no closure (max residual 2.7e-03, nfev 52, 0s)
+20:32:37   shoot k=5 restart 2/20: no closure (max residual 7.1e-04, nfev 468, 3s)
+20:32:38   shoot k=5 restart 3/20: no closure (max residual 7.1e-04, nfev 51, 0s)
+20:32:38   shoot k=5 restart 4/20: no closure (max residual 7.1e-04, nfev 57, 0s)
+20:32:38   shoot k=5 restart 5: closes, gate=fail worst=2.189
+20:32:39   shoot k=5 restart 6: closes, gate=fail worst=1.940
+20:32:39   shoot k=5 restart 7/20: no closure (max residual 1.5e-02, nfev 47, 0s)
+20:32:39   shoot k=5 restart 8: closes, gate=fail worst=2.189
+20:32:39   shoot k=5 restart 9: closes, gate=fail worst=1.940
+20:32:39   shoot k=5 restart 10: closes, gate=fail worst=1.940
+20:32:40   shoot k=5 restart 11/20: no closure (max residual 1.5e-02, nfev 96, 1s)
+20:32:40   shoot k=5 restart 12: closes, gate=fail worst=2.189
+20:32:40   shoot k=5 restart 13: closes, gate=fail worst=47.268
+20:32:40   shoot k=5 restart 14/20: no closure (max residual 1.5e-02, nfev 57, 0s)
+20:32:41   shoot k=5 restart 15: closes, gate=fail worst=2.189
+20:32:41   shoot k=5 restart 16/20: no closure (max residual 7.1e-04, nfev 50, 0s)
+20:32:41   shoot k=5 restart 17: closes, gate=fail worst=1.940
+20:32:42   shoot k=5 restart 18/20: no closure (max residual 1.5e-02, nfev 107, 1s)
+20:32:42   shoot k=5 restart 19: closes, gate=fail worst=2.189
+20:32:42   shoot k=6 restart 0/20: no closure (max residual 1.5e-02, nfev 40, 0s)
+20:32:43   shoot k=6 restart 1/20: no closure (max residual 1.5e-02, nfev 68, 0s)
+20:32:43   shoot k=6 restart 2/20: no closure (max residual 1.2e-02, nfev 50, 0s)
+20:32:43   shoot k=6 restart 3: closes, gate=fail worst=47.271
+20:32:44   shoot k=6 restart 4: closes, gate=fail worst=2.156
+20:32:44   shoot k=6 restart 5: closes, gate=fail worst=2.156
+20:32:45   shoot k=6 restart 6/20: no closure (max residual 4.3e-01, nfev 134, 1s)
+20:32:45   shoot k=6 restart 7: closes, gate=fail worst=2.156
+20:32:46   shoot k=6 restart 8/20: no closure (max residual 1.5e-02, nfev 73, 0s)
+20:32:46   shoot k=6 restart 9: closes, gate=fail worst=2.156
+20:32:46   shoot k=6 restart 10/20: no closure (max residual 1.5e-02, nfev 60, 0s)
+20:32:47   shoot k=6 restart 11: closes, gate=fail worst=1.941
+20:32:47   shoot k=6 restart 12: closes, gate=fail worst=2.907
+20:32:48   shoot k=6 restart 13: closes, gate=fail worst=2.156
+20:32:48   shoot k=6 restart 14/20: no closure (max residual 1.5e-02, nfev 79, 0s)
+20:32:49   shoot k=6 restart 15: closes, gate=fail worst=2.907
+20:32:49   shoot k=6 restart 16/20: no closure (max residual 1.5e-02, nfev 78, 1s)
+20:32:49   shoot k=6 restart 17: closes, gate=fail worst=2.156
+20:32:50   shoot k=6 restart 18: closes, gate=fail worst=1.959
+20:32:50   shoot k=6 restart 19: closes, gate=fail worst=1.941
+20:32:50   shoot k=7 restart 0: closes, gate=fail worst=1.959
+20:32:50   shoot k=7 restart 1: closes, gate=fail worst=1.959
+20:32:51   shoot k=7 restart 2: closes, gate=fail worst=1.959
+20:32:51   shoot k=7 restart 3: closes, gate=fail worst=2.064
+20:32:51   shoot k=7 restart 4: closes, gate=fail worst=2.080
+20:32:52   shoot k=7 restart 5/20: no closure (max residual 6.4e-03, nfev 66, 1s)
+20:32:52   shoot k=7 restart 6: closes, gate=fail worst=1.959
+20:32:53   shoot k=7 restart 7: closes, gate=fail worst=2.064
+20:32:53   shoot k=7 restart 8/20: no closure (max residual 7.2e-03, nfev 56, 0s)
+20:32:53   shoot k=7 restart 9: closes, gate=fail worst=5.911
+20:32:54   shoot k=7 restart 10/20: no closure (max residual 6.4e-03, nfev 87, 1s)
+20:32:55   shoot k=7 restart 11/20: no closure (max residual 7.2e-03, nfev 64, 1s)
+20:32:55   shoot k=7 restart 12: closes, gate=fail worst=2.080
+20:32:56   shoot k=7 restart 13/20: no closure (max residual 7.2e-03, nfev 54, 0s)
+20:32:56   shoot k=7 restart 14: closes, gate=fail worst=1.959
+20:32:57   shoot k=7 restart 15/20: no closure (max residual 7.2e-03, nfev 76, 1s)
+20:32:57   shoot k=7 restart 16: closes, gate=fail worst=2.080
+20:33:18   shoot k=7 restart 17/20: no closure (max residual 2.2e+00, nfev 2100, 21s)
+20:33:19   shoot k=7 restart 18: closes, gate=fail worst=2.080
+20:33:19   shoot k=7 restart 19: closes, gate=fail worst=5.911
+20:33:19   shoot k=8 restart 0: closes, gate=fail worst=8.291
+20:33:20   shoot k=8 restart 1/20: no closure (max residual 9.9e-04, nfev 47, 0s)
+20:33:20   shoot k=8 restart 2/20: no closure (max residual 2.9e-03, nfev 68, 1s)
+20:33:21   shoot k=8 restart 3/20: no closure (max residual 1.2e-02, nfev 46, 0s)
+20:33:21   shoot k=8 restart 4: closes, gate=fail worst=45.180
+20:33:21   shoot k=8 restart 5/20: no closure (max residual 9.9e-04, nfev 48, 0s)
+20:33:22   shoot k=8 restart 6/20: no closure (max residual 9.9e-04, nfev 39, 0s)
+20:33:22   shoot k=8 restart 7/20: no closure (max residual 9.9e-04, nfev 43, 0s)
+20:33:45   shoot k=8 restart 8/20: no closure (max residual 1.7e+00, nfev 2400, 23s)
+20:33:46   shoot k=8 restart 9: closes, gate=fail worst=3.547
+20:33:47   shoot k=8 restart 10: closes, gate=fail worst=45.170
+20:33:47   shoot k=8 restart 11/20: no closure (max residual 9.9e-04, nfev 71, 1s)
+20:33:48   shoot k=8 restart 12: closes, gate=fail worst=51.340
+20:33:48   shoot k=8 restart 13/20: no closure (max residual 9.9e-04, nfev 49, 0s)
+20:33:48   shoot k=8 restart 14/20: no closure (max residual 3.6e-04, nfev 58, 0s)
+20:34:09   shoot k=8 restart 15/20: no closure (max residual 1.6e+00, nfev 2400, 21s)
+20:34:10   shoot k=8 restart 16/20: no closure (max residual 9.9e-04, nfev 93, 1s)
+20:34:10   shoot k=8 restart 17/20: no closure (max residual 2.9e-03, nfev 77, 1s)
+20:34:11   shoot k=8 restart 18/20: no closure (max residual 9.9e-04, nfev 40, 0s)
+20:34:11   shoot k=8 restart 19/20: no closure (max residual 3.6e-04, nfev 101, 1s)
+20:34:12   shoot k=9 restart 0: closes, gate=fail worst=3.306
+20:34:12   shoot k=9 restart 1/20: no closure (max residual 4.7e-03, nfev 65, 1s)
+20:34:13   shoot k=9 restart 2/20: no closure (max residual 2.0e-03, nfev 119, 1s)
+20:34:14   shoot k=9 restart 3: closes, gate=fail worst=3.535
+20:34:15   shoot k=9 restart 4/20: no closure (max residual 1.5e-03, nfev 66, 1s)
+20:34:15   shoot k=9 restart 5: closes, gate=fail worst=3.306
+20:34:16   shoot k=9 restart 6/20: no closure (max residual 1.5e-03, nfev 41, 0s)
+20:34:16   shoot k=9 restart 7/20: no closure (max residual 3.3e-03, nfev 104, 1s)
+20:34:18   shoot k=9 restart 8: closes, gate=fail worst=3.535
+20:34:18   shoot k=9 restart 9: closes, gate=fail worst=3.535
+20:34:19   shoot k=9 restart 10/20: no closure (max residual 1.2e-02, nfev 67, 1s)
+20:34:20   shoot k=9 restart 11/20: no closure (max residual 1.5e-03, nfev 108, 1s)
+20:34:21   shoot k=9 restart 12/20: no closure (max residual 3.3e-03, nfev 135, 1s)
+20:34:21   shoot k=9 restart 13: closes, gate=fail worst=3.535
+20:34:22   shoot k=9 restart 14/20: no closure (max residual 3.8e-03, nfev 65, 1s)
+20:34:22   shoot k=9 restart 15: closes, gate=fail worst=3.306
+20:34:23   shoot k=9 restart 16: closes, gate=fail worst=3.535
+20:34:23   shoot k=9 restart 17: closes, gate=fail worst=13.960
+20:34:23   shoot k=9 restart 18/20: no closure (max residual 2.3e-03, nfev 80, 1s)
+20:34:24   shoot k=9 restart 19/20: no closure (max residual 4.4e-03, nfev 65, 1s)
+20:34:24   shoot k=10 restart 0/20: no closure (max residual 3.8e-03, nfev 41, 0s)
+20:34:25   shoot k=10 restart 1/20: no closure (max residual 5.1e-04, nfev 112, 1s)
+20:34:26   shoot k=10 restart 2/20: no closure (max residual 3.8e-03, nfev 91, 1s)
+20:34:27   shoot k=10 restart 3/20: no closure (max residual 3.8e-03, nfev 70, 1s)
+20:34:28   shoot k=10 restart 4/20: no closure (max residual 4.5e-04, nfev 141, 1s)
+20:34:29   shoot k=10 restart 5/20: no closure (max residual 4.5e-04, nfev 75, 1s)
+20:34:29   shoot k=10 restart 6/20: no closure (max residual 4.5e-04, nfev 90, 1s)
+20:34:30   shoot k=10 restart 7/20: no closure (max residual 3.8e-03, nfev 79, 1s)
+20:34:31   shoot k=10 restart 8/20: no closure (max residual 3.8e-03, nfev 128, 1s)
+20:34:32   shoot k=10 restart 9/20: no closure (max residual 4.5e-04, nfev 101, 1s)
+20:34:34   shoot k=10 restart 10/20: no closure (max residual 8.1e-03, nfev 213, 2s)
+20:34:35   shoot k=10 restart 11: closes, gate=fail worst=3.299
+20:34:36   shoot k=10 restart 12: closes, gate=fail worst=2.566
+20:34:36   shoot k=10 restart 13/20: no closure (max residual 4.5e-04, nfev 59, 1s)
+20:34:37   shoot k=10 restart 14/20: no closure (max residual 4.5e-04, nfev 99, 1s)
+20:34:38   shoot k=10 restart 15/20: no closure (max residual 3.8e-03, nfev 64, 1s)
+20:34:38   shoot k=10 restart 16: closes, gate=fail worst=3.299
+20:34:39   shoot k=10 restart 17/20: no closure (max residual 3.8e-03, nfev 38, 0s)
+20:34:39   shoot k=10 restart 18/20: no closure (max residual 4.5e-04, nfev 97, 1s)
+20:34:40   shoot k=10 restart 19/20: no closure (max residual 3.4e-03, nfev 104, 1s)
+20:34:40 ge epoch 4 (JD 2471857.6) blend lam=1.0000 conv=True res=1.6e-11 gate=pass worst=0.331 [elapsed 1117s]
+20:34:40   shoot k=1 restart 0: closes, gate=fail worst=2.377
+20:34:40   shoot k=1 restart 1: closes, gate=fail worst=2.377
+20:34:40   shoot k=1 restart 2: closes, gate=fail worst=2.377
+20:34:40   shoot k=1 restart 3: closes, gate=fail worst=2.377
+20:34:40   shoot k=1 restart 4: closes, gate=fail worst=2.377
+20:34:40   shoot k=1 restart 5: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 6: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 7: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 8: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 9: closes, gate=fail worst=1.870
+20:34:41   shoot k=1 restart 10: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 11: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 12: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 13: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 14: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 15: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 16: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 17: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 18: closes, gate=fail worst=2.377
+20:34:41   shoot k=1 restart 19: closes, gate=fail worst=2.377
+20:34:41   shoot k=2 restart 0: closes, gate=fail worst=2.339
+20:34:41   shoot k=2 restart 1: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 2: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 3: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 4: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 5: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 6: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 7: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 8: closes, gate=fail worst=2.835
+20:34:41   shoot k=2 restart 9: closes, gate=fail worst=2.339
+20:34:41   shoot k=2 restart 10: closes, gate=fail worst=2.339
+20:34:42   shoot k=2 restart 11/20: no closure (max residual 7.1e-01, nfev 254, 0s)
+20:34:42   shoot k=2 restart 12: closes, gate=fail worst=2.835
+20:34:42   shoot k=2 restart 13/20: no closure (max residual 7.1e-01, nfev 245, 1s)
+20:34:42   shoot k=2 restart 14: closes, gate=fail worst=2.339
+20:34:42   shoot k=2 restart 15: closes, gate=fail worst=2.835
+20:34:42   shoot k=2 restart 16: closes, gate=fail worst=2.835
+20:34:42   shoot k=2 restart 17: closes, gate=fail worst=2.339
+20:34:42   shoot k=2 restart 18: closes, gate=fail worst=2.835
+20:34:42   shoot k=2 restart 19: closes, gate=fail worst=2.339
+20:34:43   shoot k=3 restart 0/20: no closure (max residual 1.3e-03, nfev 39, 0s)
+20:34:43   shoot k=3 restart 1: closes, gate=fail worst=43.474
+20:34:43   shoot k=3 restart 2: closes, gate=fail worst=6.251
+20:34:43   shoot k=3 restart 3/20: no closure (max residual 1.3e-03, nfev 67, 0s)
+20:34:43   shoot k=3 restart 4/20: no closure (max residual 1.3e-03, nfev 56, 0s)
+20:34:43   shoot k=3 restart 5/20: no closure (max residual 1.3e-03, nfev 42, 0s)
+20:34:44   shoot k=3 restart 6/20: no closure (max residual 1.3e-03, nfev 61, 0s)
+20:34:47   shoot k=3 restart 7/20: no closure (max residual 1.3e+00, nfev 900, 3s)
+20:34:47   shoot k=3 restart 8/20: no closure (max residual 1.3e-03, nfev 41, 0s)
+20:34:47   shoot k=3 restart 9/20: no closure (max residual 1.3e-03, nfev 39, 0s)
+20:34:47   shoot k=3 restart 10: closes, gate=fail worst=6.251
+20:34:47   shoot k=3 restart 11: closes, gate=fail worst=6.251
+20:34:47   shoot k=3 restart 12: closes, gate=fail worst=6.251
+20:34:47   shoot k=3 restart 13/20: no closure (max residual 1.3e-03, nfev 44, 0s)
+20:34:47   shoot k=3 restart 14/20: no closure (max residual 1.3e-03, nfev 89, 0s)
+20:34:48   shoot k=3 restart 15/20: no closure (max residual 1.3e-03, nfev 94, 0s)
+20:34:48   shoot k=3 restart 16/20: no closure (max residual 1.3e-03, nfev 49, 0s)
+20:34:48   shoot k=3 restart 17/20: no closure (max residual 1.3e-03, nfev 48, 0s)
+20:34:48   shoot k=3 restart 18/20: no closure (max residual 1.3e-03, nfev 41, 0s)
+20:34:48   shoot k=3 restart 19/20: no closure (max residual 1.3e-03, nfev 42, 0s)
+20:34:48   shoot k=4 restart 0/20: no closure (max residual 8.2e-03, nfev 35, 0s)
+20:34:48   shoot k=4 restart 1/20: no closure (max residual 3.8e-03, nfev 51, 0s)
+20:34:49   shoot k=4 restart 2/20: no closure (max residual 3.8e-03, nfev 51, 0s)
+20:34:49   shoot k=4 restart 3: closes, gate=fail worst=6.199
+20:34:49   shoot k=4 restart 4: closes, gate=fail worst=4.589
+20:34:49   shoot k=4 restart 5/20: no closure (max residual 3.8e-03, nfev 51, 0s)
+20:34:49   shoot k=4 restart 6/20: no closure (max residual 3.8e-03, nfev 49, 0s)
+20:34:50   shoot k=4 restart 7/20: no closure (max residual 3.8e-03, nfev 52, 0s)
+20:34:50   shoot k=4 restart 8/20: no closure (max residual 3.8e-03, nfev 44, 0s)
+20:34:50   shoot k=4 restart 9/20: no closure (max residual 3.8e-03, nfev 57, 0s)
+20:34:50   shoot k=4 restart 10: closes, gate=fail worst=43.503
+20:34:50   shoot k=4 restart 11: closes, gate=fail worst=6.199
+20:34:50   shoot k=4 restart 12/20: no closure (max residual 3.8e-03, nfev 62, 0s)
+20:34:51   shoot k=4 restart 13/20: no closure (max residual 3.8e-03, nfev 90, 0s)
+20:34:51   shoot k=4 restart 14/20: no closure (max residual 3.8e-03, nfev 42, 0s)
+20:34:51   shoot k=4 restart 15/20: no closure (max residual 3.8e-03, nfev 52, 0s)
+20:34:51   shoot k=4 restart 16/20: no closure (max residual 3.8e-03, nfev 57, 0s)
+20:34:51   shoot k=4 restart 17/20: no closure (max residual 3.8e-03, nfev 62, 0s)
+20:34:51   shoot k=4 restart 18: closes, gate=fail worst=4.589
+20:34:52   shoot k=4 restart 19/20: no closure (max residual 3.8e-03, nfev 50, 0s)
+20:34:52   shoot k=5 restart 0: closes, gate=fail worst=4.590
+20:34:52   shoot k=5 restart 1/20: no closure (max residual 1.5e-02, nfev 54, 0s)
+20:34:52   shoot k=5 restart 2/20: no closure (max residual 1.8e-03, nfev 59, 0s)
+20:34:53   shoot k=5 restart 3/20: no closure (max residual 1.5e-02, nfev 131, 1s)
+20:34:59   shoot k=5 restart 4/20: no closure (max residual 1.8e-03, nfev 1020, 6s)
+20:34:59   shoot k=5 restart 5: closes, gate=fail worst=7.314
+20:34:59   shoot k=5 restart 6: closes, gate=fail worst=4.590
+20:34:59   shoot k=5 restart 7/20: no closure (max residual 4.4e-03, nfev 92, 0s)
+20:35:00   shoot k=5 restart 8/20: no closure (max residual 5.7e-03, nfev 102, 0s)
+20:35:00   shoot k=5 restart 9/20: no closure (max residual 1.5e-02, nfev 62, 0s)
+20:35:00   shoot k=5 restart 10/20: no closure (max residual 2.2e-03, nfev 52, 0s)
+20:35:00   shoot k=5 restart 11: closes, gate=fail worst=44.123
+20:35:01   shoot k=5 restart 12/20: no closure (max residual 1.5e-02, nfev 56, 0s)
+20:35:01   shoot k=5 restart 13/20: no closure (max residual 1.5e-02, nfev 49, 0s)
+20:35:01   shoot k=5 restart 14/20: no closure (max residual 1.5e-02, nfev 57, 0s)
+20:35:02   shoot k=5 restart 15/20: no closure (max residual 2.2e-03, nfev 67, 0s)
+20:35:02   shoot k=5 restart 16: closes, gate=fail worst=2.578
+20:35:02   shoot k=5 restart 17: closes, gate=fail worst=2.578
+20:35:02   shoot k=5 restart 18: closes, gate=fail worst=2.578
+20:35:03   shoot k=5 restart 19/20: no closure (max residual 3.9e-05, nfev 93, 0s)
+20:35:03   shoot k=6 restart 0: closes, gate=fail worst=3.189
+20:35:03   shoot k=6 restart 1: closes, gate=fail worst=3.189
+20:35:03   shoot k=6 restart 2/20: no closure (max residual 1.3e-02, nfev 61, 0s)
+20:35:04   shoot k=6 restart 3: closes, gate=fail worst=3.189
+20:35:04   shoot k=6 restart 4: closes, gate=fail worst=3.189
+20:35:04   shoot k=6 restart 5: closes, gate=fail worst=49.399
+20:35:05   shoot k=6 restart 6/20: no closure (max residual 1.3e-02, nfev 58, 0s)
+20:35:05   shoot k=6 restart 7: closes, gate=fail worst=3.189
+20:35:07   shoot k=6 restart 8/20: no closure (max residual 1.1e+00, nfev 251, 1s)
+20:35:07   shoot k=6 restart 9: closes, gate=fail worst=3.189
+20:35:07   shoot k=6 restart 10: closes, gate=fail worst=3.189
+20:35:07   shoot k=6 restart 11: closes, gate=fail worst=46.653
+20:35:08   shoot k=6 restart 12: closes, gate=fail worst=3.189
+20:35:08   shoot k=6 restart 13: closes, gate=fail worst=3.189
+20:35:08   shoot k=6 restart 14: closes, gate=fail worst=4.594
+20:35:08   shoot k=6 restart 15: closes, gate=fail worst=3.189
+20:35:09   shoot k=6 restart 16/20: no closure (max residual 4.4e-01, nfev 123, 1s)
+20:35:10   shoot k=6 restart 17: closes, gate=fail worst=46.653
+20:35:10   shoot k=6 restart 18: closes, gate=fail worst=3.189
+20:35:10   shoot k=6 restart 19: closes, gate=fail worst=3.679
+20:35:10   shoot k=7 restart 0: closes, gate=fail worst=3.200
+20:35:10   shoot k=7 restart 1: closes, gate=fail worst=46.326
+20:35:20   shoot k=7 restart 2/20: no closure (max residual 7.3e-01, nfev 1305, 10s)
+20:35:21   shoot k=7 restart 3: closes, gate=fail worst=3.200
+20:35:21   shoot k=7 restart 4/20: no closure (max residual 4.3e-03, nfev 52, 0s)
+20:35:21   shoot k=7 restart 5: closes, gate=fail worst=3.200
+20:35:22   shoot k=7 restart 6: closes, gate=fail worst=3.200
+20:35:22   shoot k=7 restart 7: closes, gate=fail worst=3.200
+20:35:22   shoot k=7 restart 8: closes, gate=fail worst=108.818
+20:35:23   shoot k=7 restart 9/20: no closure (max residual 9.0e-03, nfev 130, 1s)
+20:35:23   shoot k=7 restart 10: closes, gate=fail worst=3.200
+20:35:23   shoot k=7 restart 11: closes, gate=fail worst=3.200
+20:35:29   shoot k=7 restart 12/20: no closure (max residual 9.0e-03, nfev 773, 6s)
+20:35:30   shoot k=7 restart 13: closes, gate=fail worst=3.200
+20:35:47   shoot k=7 restart 14/20: no closure (max residual 6.8e-01, nfev 2100, 17s)
+20:35:48   shoot k=7 restart 15/20: no closure (max residual 1.6e-02, nfev 142, 1s)
+20:35:48   shoot k=7 restart 16: closes, gate=fail worst=4.969
+20:35:48   shoot k=7 restart 17/20: no closure (max residual 4.3e-03, nfev 48, 0s)
+20:35:49   shoot k=7 restart 18/20: no closure (max residual 9.0e-03, nfev 94, 1s)
+20:35:50   shoot k=7 restart 19: closes, gate=fail worst=5.070
+20:35:50   shoot k=8 restart 0/20: no closure (max residual 1.4e-04, nfev 29, 0s)
+20:35:50   shoot k=8 restart 1/20: no closure (max residual 1.4e-04, nfev 43, 0s)
+20:35:53   shoot k=8 restart 2/20: no closure (max residual 1.6e-02, nfev 411, 3s)
+20:35:53   shoot k=8 restart 3: closes, gate=fail worst=6.087
+20:35:54   shoot k=8 restart 4/20: no closure (max residual 1.4e-04, nfev 42, 0s)
+20:35:54   shoot k=8 restart 5/20: no closure (max residual 1.2e-03, nfev 64, 0s)
+20:35:55   shoot k=8 restart 6/20: no closure (max residual 1.2e-02, nfev 63, 0s)
+20:35:55   shoot k=8 restart 7/20: no closure (max residual 1.4e-04, nfev 83, 1s)
+20:35:56   shoot k=8 restart 8: closes, gate=fail worst=14.806
+20:35:57   shoot k=8 restart 9/20: no closure (max residual 1.4e-04, nfev 88, 1s)
+20:35:57   shoot k=8 restart 10/20: no closure (max residual 9.3e-04, nfev 79, 1s)
+20:35:58   shoot k=8 restart 11/20: no closure (max residual 3.7e-04, nfev 85, 1s)
+20:35:58   shoot k=8 restart 12/20: no closure (max residual 1.4e-04, nfev 44, 0s)
+20:35:59   shoot k=8 restart 13/20: no closure (max residual 1.4e-04, nfev 58, 0s)
+20:35:59   shoot k=8 restart 14/20: no closure (max residual 1.4e-04, nfev 60, 0s)
+20:35:59   shoot k=8 restart 15/20: no closure (max residual 7.7e-03, nfev 57, 0s)
+20:36:00   shoot k=8 restart 16: closes, gate=fail worst=4.971
+20:36:07   shoot k=8 restart 17/20: no closure (max residual 1.4e-04, nfev 887, 7s)
+20:36:07   shoot k=8 restart 18/20: no closure (max residual 1.4e-04, nfev 44, 0s)
+20:36:19   shoot k=8 restart 19/20: no closure (max residual 6.1e-03, nfev 1501, 12s)
+20:36:19   shoot k=9 restart 0: closes, gate=fail worst=5.834
+20:36:20   shoot k=9 restart 1: closes, gate=fail worst=6.592
+20:36:20   shoot k=9 restart 2: closes, gate=fail worst=4.946
+20:36:20   shoot k=9 restart 3: closes, gate=fail worst=6.592
+20:36:21   shoot k=9 restart 4: closes, gate=fail worst=41.877
+20:36:21   shoot k=9 restart 5: closes, gate=fail worst=47.414
+20:36:21   shoot k=9 restart 6: closes, gate=fail worst=5.204
+20:36:22   shoot k=9 restart 7: closes, gate=fail worst=8.648
+20:36:22   shoot k=9 restart 8: closes, gate=fail worst=5.204
+20:36:23   shoot k=9 restart 9/20: no closure (max residual 1.7e-03, nfev 47, 0s)
+20:36:23   shoot k=9 restart 10: closes, gate=fail worst=5.204
+20:36:24   shoot k=9 restart 11/20: no closure (max residual 1.7e-03, nfev 64, 0s)
+20:36:24   shoot k=9 restart 12/20: no closure (max residual 1.4e-02, nfev 65, 0s)
+20:36:24   shoot k=9 restart 13/20: no closure (max residual 5.6e-03, nfev 48, 0s)
+20:36:25   shoot k=9 restart 14: closes, gate=fail worst=4.946
+20:36:26   shoot k=9 restart 15/20: no closure (max residual 3.6e-03, nfev 147, 1s)
+20:36:27   shoot k=9 restart 16: closes, gate=fail worst=44.094
+20:36:27   shoot k=9 restart 17/20: no closure (max residual 8.5e-03, nfev 59, 0s)
+20:36:28   shoot k=9 restart 18/20: no closure (max residual 8.5e-03, nfev 93, 1s)
+20:36:28   shoot k=9 restart 19: closes, gate=fail worst=5.204
+20:36:28   shoot k=10 restart 0: closes, gate=fail worst=8.188
+20:36:39   shoot k=10 restart 1/20: no closure (max residual 1.7e-02, nfev 1086, 11s)
+20:36:40   shoot k=10 restart 2/20: no closure (max residual 1.7e-03, nfev 169, 1s)
+20:36:41   shoot k=10 restart 3: closes, gate=fail worst=6.962
+20:36:41   shoot k=10 restart 4/20: no closure (max residual 8.3e-04, nfev 41, 0s)
+20:36:41   shoot k=10 restart 5: closes, gate=fail worst=6.962
+20:36:42   shoot k=10 restart 6/20: no closure (max residual 8.3e-04, nfev 94, 1s)
+20:36:44   shoot k=10 restart 7/20: no closure (max residual 1.7e-03, nfev 162, 2s)
+20:36:45   shoot k=10 restart 8/20: no closure (max residual 1.7e-03, nfev 120, 1s)
+20:36:46   shoot k=10 restart 9/20: no closure (max residual 1.7e-03, nfev 87, 1s)
+20:36:46   shoot k=10 restart 10: closes, gate=fail worst=47.951
+20:36:47   shoot k=10 restart 11/20: no closure (max residual 8.8e-03, nfev 104, 1s)
+20:36:48   shoot k=10 restart 12: closes, gate=fail worst=6.593
+20:36:48   shoot k=10 restart 13/20: no closure (max residual 1.7e-03, nfev 100, 1s)
+20:36:49   shoot k=10 restart 14/20: no closure (max residual 4.1e-03, nfev 51, 0s)
+20:36:50   shoot k=10 restart 15: closes, gate=fail worst=7.464
+20:36:51   shoot k=10 restart 16: closes, gate=fail worst=7.464
+20:36:51   shoot k=10 restart 17: closes, gate=fail worst=45.574
+20:36:52   shoot k=10 restart 18/20: no closure (max residual 1.7e-03, nfev 93, 1s)
+20:36:52   shoot k=10 restart 19/20: no closure (max residual 1.7e-03, nfev 64, 1s)
+DONE

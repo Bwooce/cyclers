@@ -1,0 +1,33 @@
+[
+ {
+  "epoch_jd": 2456562.8890073784,
+  "gate_at_lambda1_minimax": {
+   "status": "pass",
+   "worst_ratio": 0.9608044154795498
+  },
+  "shoot_best": {
+   "status": "indeterminate",
+   "worst_ratio": 0.9917046996242402,
+   "worst_ratio_by_body": {
+    "Ganymede": 0.9917046996242402,
+    "Callisto": 0.40799592679809
+   },
+   "min_required_alt_km": 130.47471957213702,
+   "n_flybys": 39
+  },
+  "legs": [
+   {
+    "body": "Ganymede",
+    "t0_days": 16573.61762100838,
+    "miss_km": 417.87249527055894,
+    "dv_mid_ms": 0.38860868871224785,
+    "refly_miss_after_km": 2.2215178223884408e-05,
+    "dvinf_ms": -2.178853722277996
+   }
+  ],
+  "sum_dv_mid_ms": 0.38860868871224785,
+  "max_dv_mid_ms": 0.38860868871224785,
+  "max_abs_dvinf_ms": 2.178853722277996,
+  "max_miss_km": 417.87249527055894
+ }
+]
