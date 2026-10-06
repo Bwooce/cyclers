@@ -1,0 +1,45 @@
+16:10:56 ge epoch 0 (JD 2458597.6) blend lam=0.0000 conv=True res=5.6e-11 gate=pass worst=0.729 [elapsed 1s]
+16:10:59 ge epoch 0 (JD 2458597.6) blend lam=0.1000 conv=True res=5.0e-11 gate=pass worst=0.736 [elapsed 4s]
+16:11:01 ge epoch 0 (JD 2458597.6) blend lam=0.2000 conv=True res=6.5e-11 gate=pass worst=0.742 [elapsed 6s]
+16:11:04 ge epoch 0 (JD 2458597.6) blend lam=0.3000 conv=True res=7.4e-11 gate=pass worst=0.747 [elapsed 9s]
+16:11:07 ge epoch 0 (JD 2458597.6) blend lam=0.4000 conv=True res=4.5e-11 gate=pass worst=0.752 [elapsed 12s]
+16:11:09 ge epoch 0 (JD 2458597.6) blend lam=0.5000 conv=True res=4.0e-11 gate=pass worst=0.757 [elapsed 14s]
+16:11:12 ge epoch 0 (JD 2458597.6) blend lam=0.6000 conv=True res=6.6e-11 gate=pass worst=0.761 [elapsed 17s]
+16:11:15 ge epoch 0 (JD 2458597.6) blend lam=0.7000 conv=True res=5.6e-11 gate=pass worst=0.764 [elapsed 19s]
+16:11:17 ge epoch 0 (JD 2458597.6) blend lam=0.8000 conv=True res=6.3e-11 gate=pass worst=0.767 [elapsed 22s]
+16:11:19 ge epoch 0 (JD 2458597.6) blend lam=0.9000 conv=True res=7.3e-11 gate=no-directions worst=nan [elapsed 24s]
+16:11:21 ge epoch 0 (JD 2458597.6) blend lam=1.0000 conv=True res=4.4e-11 gate=no-directions worst=nan [elapsed 26s]
+16:11:22 ge epoch 0 (JD 2458597.6) blend lam=1.0000 conv=True res=4.4e-11 gate=no-directions worst=nan [elapsed 27s]
+  seed: block 28 at Ganymede (t = 18952.472 d, |V_inf| 3.17564 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 32 at Ganymede (t = 19001.841 d, |V_inf| 3.16224 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:12:22   shoot restart 0: 4787 evals, best max|res| so far 1.56e-04 [60s]
+16:13:22   shoot restart 0: 9095 evals, best max|res| so far 4.96e-05 [120s]
+16:13:44   shoot restart 0/20: no closure (max residual 3.0e-05, nfev 1184, 142s)
+16:13:50   shoot restart 1/20: no closure (max residual 1.3e+03, nfev 47, 6s)
+16:13:55   shoot restart 2/20: no closure (max residual 1.2e+03, nfev 36, 5s)
+16:14:00   shoot restart 3/20: no closure (max residual 1.7e+03, nfev 36, 5s)
+16:14:08   shoot restart 4/20: no closure (max residual 8.4e+02, nfev 50, 8s)
+16:15:08   shoot restart 5: 4066 evals, best max|res| so far 8.03e-01 [60s]
+16:16:08   shoot restart 5: 8218 evals, best max|res| so far 5.94e-01 [120s]
+16:17:08   shoot restart 5: 15170 evals, best max|res| so far 5.74e-01 [180s]
+16:18:08   shoot restart 5: 22619 evals, best max|res| so far 5.63e-01 [240s]
+16:19:08   shoot restart 5: 32049 evals, best max|res| so far 5.51e-01 [300s]
+16:19:45   shoot restart 5/20: no closure (max residual 5.7e-01, nfev 4200, 337s)
+16:19:48   shoot restart 6/20: no closure (max residual 1.5e+03, nfev 41, 3s)
+16:19:52   shoot restart 7/20: no closure (max residual 1.7e+03, nfev 42, 3s)
+16:19:55   shoot restart 8/20: no closure (max residual 1.2e+03, nfev 56, 4s)
+16:19:59   shoot restart 9/20: no closure (max residual 1.0e+03, nfev 42, 3s)
+16:20:59   shoot restart 10: 7096 evals, best max|res| so far 3.96e+02 [60s]
+16:21:59   shoot restart 10: 14094 evals, best max|res| so far 2.86e+02 [120s]
+16:22:59   shoot restart 10: 21366 evals, best max|res| so far 1.49e+02 [180s]
+16:23:12   shoot restart 10/20: no closure (max residual 1.2e+02, nfev 2550, 194s)
+16:23:16   shoot restart 11/20: no closure (max residual 6.2e+02, nfev 41, 3s)
+16:23:19   shoot restart 12/20: no closure (max residual 3.8e+01, nfev 40, 3s)
+16:23:22   shoot restart 13/20: no closure (max residual 9.8e+02, nfev 42, 3s)
+16:23:25   shoot restart 14/20: no closure (max residual 1.7e+03, nfev 36, 3s)
+16:23:29   shoot restart 15/20: no closure (max residual 5.5e+02, nfev 45, 4s)
+16:23:32   shoot restart 16/20: no closure (max residual 4.6e+02, nfev 42, 3s)
+16:23:40   shoot restart 17/20: no closure (max residual 2.8e+00, nfev 112, 8s)
+16:23:54   shoot restart 18/20: no closure (max residual 4.7e+00, nfev 209, 14s)
+16:23:57   shoot restart 19/20: no closure (max residual 6.2e+02, nfev 43, 3s)
+DONE

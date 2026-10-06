@@ -1362,6 +1362,17 @@ residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict wi
 - This run used the code from before 1feb8f2b. GanCal#1 has no half-rev leg, so the half-rev fix does
   not touch it.
 
+### 6.32 GanEur#316 launch A (10 cycles, R-S's 2019 epoch; the exact-flag validation run adopted by the lead), data `data/943_ganeur316_realeph/n10_rs2019_v2/`
+
+- Code 1feb8f2b (in the working tree at launch). The blend reaches lambda = 1; the seed fallback fires
+  at blocks 28 and 32.
+- Shoot: no closure in 20 restarts. Restart 0 stalls at 3.0e-5; restart 5 at 0.57; the others at 2.8-1.7e3.
+- Verdict by the 6.27 rule: the control does NOT decide. The ge candidates with fixed legs (all of
+  ge-1, ge-2, ge-3) are "not judged" at rung (d).
+- Both Jovian fixed-leg controls (C4@2013 and #316@2019) now end in the same 10-cycle shoot stall.
+  They are the reproducers for the stall item (approved by the lead, after em).
+- (The lead's failed first launch left `n10_rs2019/` and `n10_rs2019.log`; they are not this run.)
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
