@@ -580,6 +580,44 @@ Other gates:
 
 Approved next steps: robustness pre-registration (sec. 6.5); registry stamp for the rest of the cell.
 
+### 6.5 vm2-1 robustness: PRE-REGISTRATION (lead approval 2026-10-06), committed before any run
+
+(a) Venus altitude floor, 300 to 700 km in 50-km steps. Re-gate EVERY vm2 zero (all 6,744, exact
+    zeros unchanged) at each floor; report the gate-passing physical cyclers per floor, and the floor at
+    which vm2-1 stops passing. Its required altitude is 556.3 km, so the prediction is "passes up to
+    556 km". The question is whether any other vm2 zero joins or replaces it at other floors.
+
+(b) Mars mass:
+- In the patched-conic ideal model the Mars mass does not enter the zero; it enters only the Mars
+  available bend. So: (b1) find the smallest Mars GM fraction at which the 16.42-deg Mars turn is
+  available at 200 km.
+- (b2) The one-body (massless-Mars) member of the SAME structure. From the vm run it is the zero with
+  V_inf 6.110 / 5.866 km/s, Mars turn 0, Venus ratio 1.075 (gate FAIL). It is in R-S's archived class.
+- (b3) Is vm2-1 continuously connected to it? Use a homotopy that keeps the Mars magnitude match and
+  scales the allowed Mars turn, adding the planets' period ratio as the extra free parameter. Report
+  whether the path connects; no claim beyond that.
+
+(c) Neighbours:
+- A targeted enumeration of the same template, both cells (vm2 and vm):
+  - k = 2..5.
+  - Venus generic returns of 1-4 revs, both branches.
+  - V<->M transfers of 0-1 rev.
+  - up to one extra Venus full-rev or half-rev return.
+- Same seeds and gate as sec. 6.1. Report every gate-passing physical cycler with a nonzero Mars turn,
+  and whether vm2-1 is isolated or part of a k-series.
+
+(d) Real ephemeris: a patched-conic ephemeris continuation in the R-S 2007 style.
+- An OPEN chain of n consecutive vm2-1 cycles (n = 7, i.e. about 7 V-M synodic periods = 2337 d, the
+  near-commensurability noted by Gillespie & Ross), with every encounter date free and no periodic wrap.
+- Start in the R-S circular model; homotopy to fixed mean elements (Standish J2000 Venus/Mars, real
+  periods, e and i) in 10 steps.
+- Report per step: the convergence residual, the Venus and Mars turn ratios at every encounter of the
+  chain, and the epoch dependence (5 start epochs spread over one 32-yr cycle).
+- Pass at this rung: every encounter ballistic at the registry floors, at >= 1 epoch.
+- Then the #866 V3 lane only if that passes (a separate launch request).
+
+All four are diagnosis. None changes vm2-1's label.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
