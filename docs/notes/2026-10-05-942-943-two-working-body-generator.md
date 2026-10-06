@@ -1607,6 +1607,19 @@ Classification:
 - Real-ephemeris rung for vm2n-2 (Venus 2:1 full-revs, heliocentric): the Standish direct route (6.22)
   is controlled (D1, the H&M endpoint orbits). That is a launch request with its own pre-registration.
 
+### 6.38 6.33 control 2: GanEur#316@2019 with `--shoot-rel-time` PASSES (lead launch 2026-10-06), data `data/943_ganeur316_realeph/n10_rs2019_rel/`
+
+- 10 cycles, R-S's epoch (JD 2458597.6), blend to lambda = 1, then the shoot (old 0.3/0.6-rad
+  restarts; restart 0 is the unperturbed seed).
+- Restart 0 closes (max residual < 1e-6) with a gate pass at all 49 interior flybys, worst 0.804.
+  DOP853 re-fly: max arrival miss 1.5e-5 km, velocity difference 9.0e-11 km/s. The other 19 restarts do
+  not close (WEAK, old restarts).
+- Verdict by 6.33: PASS. This is the first decided 10-cycle Jovian control on a published member
+  (R-S 2007 Fig. 10(a): ballistic, 10 cycles, start 2019-04-24). It validates the shot fixed-leg path
+  for a HALF-REV leg on jup365. The full-rev path (C4) is still not validated.
+- With 6.32 (the absolute-time shoot stalled at 3.0e-5 at the same epoch), this confirms the 6.33
+  diagnosis on a second published member.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
