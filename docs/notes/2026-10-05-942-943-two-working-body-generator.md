@@ -1771,6 +1771,49 @@ Also received:
 - Grushevskii, Golubev, Koryanov, Tuchin & Tuchin, ISSFD 2017 paper 145: the same one-way cross-GAM
   template as Golubev 2014 (no periodic G-C sequence). No collision with gc-1, gc-2 or ge-1..3.
 
+### 6.45 POST-HOC AMENDMENT to 6.35 (owner ruling 2026-10-06, made AFTER seeing the 6.44 result)
+
+- The owner ruled that C4 GanCal#1@2013 VALIDATES the Jovian full-rev PATH.
+- The reason given: what a control of the chain tool tests is closure plus an independent re-fly, and
+  C4 closes at 10 cycles with a DOP853 miss of 2.8e-4 km. The gate verdict is recorded as it is:
+  "indeterminate, marginal as in the ideal model (0.961 ideal, 0.9917 at 10 cycles)".
+- This changes the 6.35 rule, which said an indeterminate C4 is NOT a pass. The change was decided
+  after the result was known; it is recorded here as such.
+- Consequences:
+  1. gc-1's caveat ("no Jovian full-rev positive control decided at 10 cycles", 6.19/6.26) is LIFTED.
+     gc-1's 10-cycle jup365 result (5/5 epochs, worst 0.755-0.761, re-fly <= 0.19 km) stands with no
+     caveat.
+  2. The ge shortlist (ge-1, ge-2, ge-3; all with full-rev legs) proceeds to rung (d), ge-2 first
+     (6.46).
+- Validated on published members at 10 cycles on jup365, by closure plus re-fly:
+  - the half-rev path (GanEur#316@2019, gate pass);
+  - the full-rev path (GanCal#1@2013, gate indeterminate).
+
+### 6.46 Rung (d) for ge-1, ge-2, ge-3: PRE-REGISTERED 2026-10-06, before running
+
+Method (the controlled one, 6.33-6.35 and 6.45): `scripts/run_942_realeph_chain.py`, cell ge,
+NAIF jup365, 10 cycles, 5 epochs from 2030-01-01 (every 6.4 yr), `--direct` (as C4),
+`--grow-chain --shoot-rel-time`, restarts 20 at sigma 0.03/0.05 rad, `--shoot-jac sparse
+--shoot-nfev-per-var 60`.
+- An epoch at which the direct date solve does not converge is "not reached", not a negative. Only if
+  NO epoch is reached is a second, blend-mode run (no `--direct`, otherwise identical) made.
+
+Candidates (dates from `data/943_cell_ge_gauntlet.json`):
+- ge-2: k3|LGanymede>Europa/1h|REuropa/3:2|LEuropa>Ganymede/0s, x 1.8485050651520303,
+  20.371856298672345 d.
+- ge-1: k1|LGanymede>Europa/0s|REuropa/1:1|LEuropa>Ganymede/0s, x 5.766356509352726,
+  10.502496731787025 d.
+- ge-3: k3|LGanymede>Ganymede/1h|LGanymede>Europa/1h|REuropa/1:1|LEuropa>Ganymede/1l, x
+  1.3659491806513222, 8.353073268406968, 17.769145064442366 d.
+
+RUNG PASS at >= 1 epoch (the C4 and #316 criteria, now judged on BOTH):
+- the 10-cycle closure (max residual < 1e-6);
+- a gate PASS at every interior flyby at the registry floors ("indeterminate" is reported, and is not
+  a pass for a candidate);
+- the DOP853 re-fly miss < 1 km at every segment (checker; `--include-failed` for any non-passing
+  closure).
+All epochs are reported. These are patched-conic results on jup365; the n-body lane stays unrun (#968).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
