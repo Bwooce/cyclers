@@ -54,6 +54,11 @@ from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 class VilmLeg:
     """One V∞-leveraging leg classified by the paper's n:m_K± scheme (pp.3-4).
 
+    Not the Sims, Longuski & Staugler 1997 (JGCD 20(3):409) K:L(M)± notation used
+    by the Rogers-based catalogue rows: there K counts Earth revolutions, M is the
+    revolution with the maneuver, and ± means encounter after/before the line of
+    apsides, so a "4:3(2)-" label does not map onto n:m_K± here.
+
     resonance:
         ``(n, m)`` — n (m) is the approximate number of minor-body (spacecraft)
         revolutions during the VILM.
