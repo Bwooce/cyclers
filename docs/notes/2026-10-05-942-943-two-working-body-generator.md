@@ -1351,6 +1351,17 @@ Validation with the exact launch-A flags (10 cycles, R-S epoch), after the fixes
 lambda = 1. The seed is used at blocks 28 and 32, and the shoot starts. Restart 0 stalls at a max
 residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict will be reported.
 
+### 6.31 C4 at R-S's 2013 epoch, 10 cycles (lead launch 2026-10-06 ~16:00), data `data/943_c4_rs2013/n10_direct/`
+
+- The direct date solve converges at lambda = 1 (JD 2456562.9); the minimax gate there is pass, worst 0.966.
+- Shoot: no closure in 20 restarts. Restart 0 (the unperturbed minimax seed) stalls at a max residual of
+  4.0e-6 (criterion 1e-6) after 3,074 evaluations. Four other restarts stop at 2.8-8.6; the rest fail
+  at once.
+- Verdict by the 6.29 rule: UNDECIDED. The gc-1 caveat stays. Restart 0's stall has the signature of the
+  6.19 long-chain stall (one cycle closes to 1e-9; ten cycles stall between 1e-6 and 1e-5).
+- This run used the code from before 1feb8f2b. GanCal#1 has no half-rev leg, so the half-rev fix does
+  not touch it.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
