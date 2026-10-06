@@ -1098,6 +1098,36 @@ failed. The correction point is moved to half a spacecraft revolution before arr
 remaining time = 0.5 x leg time / sc_revs. For the 1:1 legs (all of ev-A's, and ev-B's RE/1:1) this is
 the same point as before, so ev-A's numbers are unchanged.
 
+### 6.25 ev-A and ev-B on DE440 (2026-10-06), data `data/942_evAB_de440_closure_dv.json`
+
+Blend continuation reaches lambda = 1 at 5/5 epochs for ev-A and at 4/5 for ev-B (epoch 1 folds at
+lambda 0.70). At lambda = 1 with minimax directions the interior gate is: ev-A 0.580 at 5/5; ev-B 0.936,
+1.095, 0.758 and 1.033. The lambda = 1 shoot finds ballistic closures in every case, but all fail the
+gate (ev-A 1.12-2.99; ev-B 3.7-6.9): the closing directions are far from the minimax ones. So no
+gate-passing ballistic DE440 member was found; the closure Delta-V below is the measure 6.24 defines.
+
+| | ev-A (5 cycles, 5 Venus 1:1 legs) | ev-B (4 cycles, 4 Venus 3:2 + 4 Earth 1:1 legs) |
+|---|---|---|
+| Full-rev miss | 5,704-8,118 km | Venus 1,310-10,358 km; Earth 28,958-1,336,854 km |
+| Mid-course dv, sum per chain | 1.56-2.53 m/s (max 0.91 per leg) | 119-173 m/s (Venus 0.26-0.51 per leg; Earth 1.6-62 per leg) |
+| Induced arrival |V_inf| change | <= 1.70 m/s | Venus <= 2.4; Earth up to 200 m/s |
+
+Diagnosis of ev-B's Earth legs (checked, not assumed): on DE440 the Earth (not the Earth-Moon
+barycentre) moves with the lunar reflex. Its osculating heliocentric period at the four Earth
+departures of epoch 0 is 364.80, 365.77, 364.92 and 365.26 d, against the 365.25-d leg time. The 1:1 rule
+|v_sc| = |V_Earth| gives the spacecraft that period. The period errors (-0.45, +0.52, -0.33, +0.01 d)
+predict the misses (1.17, 1.34, 0.86 and 0.03 million km), which match the observed misses
+(1.18, 1.34, 0.88 and 0.03 million km). So the Earth-leg numbers measure the seed rule on a
+non-Keplerian Earth, not the cycler's need. A seed with a period matched to the Earth-Moon barycentre
+would be the fair measure; it is not computed here. ev-B's Earth figures are an upper bound for this seed.
+
+Reading:
+- ev-A on DE440: a few m/s of mid-course correction over 16 yr from the minimax solution (0.580). Near-
+  ballistic at the TCM level, but no ballistic gate-passing member was found.
+- ev-B on DE440: Venus legs like ev-A; Earth legs not fairly measured (above).
+- Standish (sec. 6.23): ev-A 5/5, ev-B 2/5, both ballistic and re-flown. That verdict stands; DE440
+  carries no pass/fail by the 6.18 amendment.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
