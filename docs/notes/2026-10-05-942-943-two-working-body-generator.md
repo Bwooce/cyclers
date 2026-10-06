@@ -1743,6 +1743,34 @@ Reading:
 - The em cell's own scope (<= 2 returns per block, 0-rev transfers) excludes both rows; they were
   solved by the same code path outside that scope, as GanEur#5 was for ge (sec. 5).
 
+### 6.44 C4@2013 with chain-length continuation (6.35), 10 cycles: result (2026-10-06), data `data/943_c4_rs2013/n10_grow/`
+
+| Cycles k | Best closure | Worst ratio (Ganymede) | Closing restarts of 20 |
+|---|---|---|---|
+| 1 | pass | 0.9636 | 14 |
+| 2-4 | indeterminate | 0.9731-0.9738 | 8-9 |
+| 5-10 | indeterminate | 0.9909-0.9917 | 3-10 |
+
+- At 10 cycles the best closure has max residual < 1e-6 (closed). Gate "indeterminate", worst 0.9917
+  (Ganymede); required minimum altitude 130.5 km against the 100-km floor; Callisto 0.408.
+- DOP853 re-fly (checker `--include-failed`): max arrival miss 2.8e-4 km, velocity difference
+  1.7e-10 km/s, over 40 segments.
+- Verdict by 6.35: closes, but only "indeterminate" (within the tidal turn scale of capacity). NOT a
+  pass; marginal as in the ideal model (0.961). The owner decides whether it validates the full-rev
+  path. The continuation follows the member from k = 1 (a gate pass) to k = 10 without a fold, and the
+  ratio settles at 0.992 from k = 6.
+- Run time about 1 h 50 min on a loaded machine (my process, started 16:53).
+
+Also received:
+- VanderVeen 1969 (Bellcomm TM-69-1013-2, read by corpus-file-opus on the page images):
+  - It affirms the 8-yr Earth-Venus repeat. Its "little reliability" verdict is about
+    Earth-Venus-Mercury only.
+  - corpus-file-opus's own arithmetic (not in the memo): 5 Venus synodic periods = 2,919.6 d against
+    8 yr = 2,922.0 d, i.e. a slip of -2.4 deg per 8 yr (-4.8 deg per 16 yr) that a 16-yr real-ephemeris
+    repeat (ev-A, ev-C) must absorb. Not a published objection.
+- Grushevskii, Golubev, Koryanov, Tuchin & Tuchin, ISSFD 2017 paper 145: the same one-way cross-GAM
+  template as Golubev 2014 (no periodic G-C sequence). No collision with gc-1, gc-2 or ge-1..3.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
