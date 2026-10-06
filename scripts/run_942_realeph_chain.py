@@ -215,6 +215,11 @@ def main() -> None:
         n_points=args.epochs,
     )
     circ, a, b = ENUM.cell_system(args.cell)
+    if circ.massless:
+        # A massless target in 3-D adds 2 equations per passage that dates alone cannot
+        # meet (plane and magnitude); R-S's ephemeris model has every body massive (p.2
+        # restricts masslessness to the ideal model). Use the both-massive cell.
+        raise SystemExit(f"cell {args.cell!r} has a massless body; use its both-massive cell")
     _, one = ENUM.parse_cycle_key(args.key, circ, a, b)
     t_cyc = one.period_s
     legs_chain = one.legs * args.n_cycles

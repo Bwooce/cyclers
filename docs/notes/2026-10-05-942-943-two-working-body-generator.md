@@ -818,6 +818,27 @@ adjudication", NOT novel. Gauntlet items still open for them:
   (astropy backend) ev-C passes at all 5 epochs, worst 0.869-0.914. The dates move by about 0.23 d
   against the Standish run. The DOP853 re-fly miss is <= 0.097 km.
 
+### 6.15 Chain-tool positive controls (PRE-REGISTERED 2026-10-06, before running)
+
+What happened: the chain tool was NOT run on a published member before the sec. 6.14 verdicts (lead's
+condition). Only one of our own candidates was used to validate it. That is why the full-rev defect
+reached the candidates. Controls, judged by the SAME criterion as the candidates (rung pass by the
+tool AND the independent DOP853 re-fly: miss < 1 km, V_inf error < 1e-6 km/s, at every leg):
+
+- C1, VenMar#45 (R-S 2007: "easily converges to ballistic" in a patched-conic ephemeris model, Fig. 9a).
+  Run in cell vm2 (Mars massive): R-S restrict masslessness to the ideal model (p.2). In 3-D a massless
+  target is over-determined by 2 equations per passage, so the tool now refuses massless cells.
+  - 7-cycle chain; Standish elements and DE440; 5 epochs.
+  - EXPECTED: pass.
+- C2, GanCal#5 (Lambert-only), in cell gc (Callisto massive). 10 cycles, jup365, 5 epochs.
+  - Sanity only: R-S printed no ephemeris result for #5.
+- C3, Hollister 1H (full-rev returns), cell ev.
+  - 5 cycles (16 yr), Standish, 5 epochs.
+  - EXPECTED to FAIL the re-fly under the current tool (the defect). This is a NEGATIVE control: it
+    shows the re-fly catches the defect.
+- After the full-rev fix: C4 = GanCal#1 (R-S 2007: "ballistic over 10 cycles", Fig. 9b; it contains an
+  f(2:1) leg) and C3 again. Both must pass by the re-fly before gc-1, ev-A or ev-B are judged.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
