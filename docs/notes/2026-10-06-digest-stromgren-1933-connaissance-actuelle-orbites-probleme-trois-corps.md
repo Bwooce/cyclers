@@ -7,8 +7,7 @@ family letters.
   This is an `ocrmypdf --force-ocr -l fra+eng` copy of the image-only ADS scan (source md5
   95ca8658eb921b1dcbb9964f45d23155, 50 pp., fetched by fetch-sonnet). The OCR text is about 11k words;
   the pages are figure-heavy (28 figure references).
-- I read the introduction and the section headings from the OCR. An English translation is to follow
-  (owner request). No numbers were taken.
+- I read the introduction and the section headings from the OCR. English translation: `...-en-translation.pdf` (50 pp., full, private research copy; translated from the page images). No numbers were taken.
 - Wanted list: the Strömgren row (1933/1935) is removed. The Copenhagen Publ. 100 form remains
   attribution-only and is not needed for content.
 
