@@ -1787,6 +1787,17 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
     two-working-body cell is open.
   - Verdicts and controls are in `docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`
     sec. 4.
+  - **STATUS 2026-10-06 (twobody-gen-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`
+    secs. 6.18-6.25):**
+    - Done: cells vm, vm2, ev. Pending the lead: em, then the vm2n/vmn neighbours.
+    - Candidates (all "pending owner adjudication, NOT novel"):
+      - ev-C: ballistic on Standish and DE440, 5/5 epochs, after the GM fix.
+      - ev-A: ballistic on Standish, 5/5.
+      - ev-B: ballistic on Standish, 2/5.
+      - ev-A and ev-B on DE440: no gate-passing ballistic member; ev-A's closure dv is 1.6-2.5 m/s
+        per 16 yr.
+    - vm2-1: ideal-model curiosity; its 7-cycle negative is path-limited.
+    - Controls passed: H&M endpoint (6 orbits), D1 (1H, direct route), VenMar#45.
 - `#943` — registered 2026-10-05, not dispatched (from `#938`, X1, rank 2 of 18). **HOLLISTER'S
   TWO-WORKING-BODY DATE-RESIDUAL CORRECTOR AT JUPITER (Ganymede-Callisto, Ganymede-Europa).**
   Sources: Hollister & Menning 1970; Hollister & Rall 1970; Russell & Strange 2009. Gate before
@@ -1803,6 +1814,15 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
   - Ganymede-Europa has BOTH one-body limits published (GanEur and EurGan rows). Ganymede-Callisto has
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
+  - **STATUS 2026-10-06 (twobody-gen-opus; same note, secs. 6.11, 6.19-6.21):**
+    - gc done:
+      - gc-2 is ballistic on jup365, 10 cycles, 5/5 epochs.
+      - gc-2 is not a GanCal member; no Callisto-mass path connects them in the patched conic.
+      - gc-1 passes in diagnostics (1 cycle 5/5; 10 cycles, epoch 0).
+    - C4 GanCal#1 cannot be decided at 10 cycles. The pre-registered gc-1 rung waits for the lead's
+      ruling on the control.
+    - gc-2 n-body lane: no control exists in this lane; waits for the lead's ruling.
+    - ge: crashed earlier; to be restarted after the ci-keeper kepler fix.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
