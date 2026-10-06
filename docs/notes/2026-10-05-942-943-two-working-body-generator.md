@@ -1090,6 +1090,14 @@ lambda = 1, i.e. the date solution with minimax directions):
   closure, with its gate verdict, when one is found).
 Runs: ev-A (5 cycles) and ev-B (4 cycles), DE440, 5 epochs, `--shoot-jac sparse`, default restarts.
 
+### 6.24a Amendment to 6.24 (before the ev-B numbers were produced)
+
+For ev-B's RV/3:2 leg (3 Venus periods, 2 spacecraft revolutions), a correction at half the leg time
+leaves exactly one spacecraft revolution. The position map is then singular, and the Newton solve
+failed. The correction point is moved to half a spacecraft revolution before arrival:
+remaining time = 0.5 x leg time / sc_revs. For the 1:1 legs (all of ev-A's, and ev-B's RE/1:1) this is
+the same point as before, so ev-A's numbers are unchanged.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

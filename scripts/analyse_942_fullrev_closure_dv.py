@@ -105,9 +105,12 @@ def main() -> None:
                     r0, w0 = real.state(blk.body, t0)
                     r1, v1 = CHECK.fly(mu, r0, w0 + fb.vinf_out, dt)
                     rb, wb = real.state(blk.body, t0 + dt)
-                    r_m, v_m = CHECK.fly(mu, r0, w0 + fb.vinf_out, 0.5 * dt)
-                    dv = mid_course(r_m, v_m, 0.5 * dt, rb, mu)
-                    r2, v2 = CHECK.fly(mu, r_m, v_m + dv, 0.5 * dt)  # independent re-fly
+                    # Correction half a spacecraft revolution before arrival (amendment 6.24a):
+                    # a whole revolution left would make the position map singular.
+                    t_rem = 0.5 * dt / getattr(leg, "sc_revs", 1)
+                    r_m, v_m = CHECK.fly(mu, r0, w0 + fb.vinf_out, dt - t_rem)
+                    dv = mid_course(r_m, v_m, t_rem, rb, mu)
+                    r2, v2 = CHECK.fly(mu, r_m, v_m + dv, t_rem)  # independent re-fly
                     rows.append(
                         {
                             "body": blk.body,
