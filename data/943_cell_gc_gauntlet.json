@@ -33,7 +33,8 @@
      "Callisto",
      null
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "liang-2024-cgcec-111-highperijove",
@@ -56,7 +57,8 @@
      "Europa",
      4.6685
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "liang-2024-cgcec-110-highperijove",
@@ -79,7 +81,8 @@
      "Europa",
      4.4853
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "liang-2024-cgcec-111-lowperijove",
@@ -102,7 +105,8 @@
      "Europa",
      12.0213
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "liang-2024-cgcec-ephemeris-2033",
@@ -125,7 +129,8 @@
      "Europa",
      null
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "russell-strange-2009-gancal-1",
@@ -143,7 +148,8 @@
      "Callisto",
      3.26
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "russell-strange-2009-gancal-5",
@@ -161,7 +167,8 @@
      "Callisto",
      3.34
     ]
-   ]
+   ],
+   "k": null
   }
  ],
  "empty_regions_same_pair": [
@@ -174,7 +181,8 @@
   "jovian-egcge-sobol-broadened-501-2026-06-30",
   "jupiter-galilean-symmetric-closure-litcovered-known-class-member-578",
   "jupiter-galilean-io-callisto-symmetric-closure-corpus-gap-578",
-  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22"
+  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22",
+  "jupiter-ganymede-callisto-two-working-body-rs2009-ideal-k1-3-943"
  ],
  "candidates": [
   {
@@ -263,7 +271,7 @@
     }
    ],
    "r_min_km": 888745.1090870866,
-   "r_max_km": 1955849.8748976307,
+   "r_max_km": 2294674.589943721,
    "min_required_alt_km": 1800.5596757266312,
    "max_turn_deg": 40.14826426385414,
    "cross_check": {
@@ -472,7 +480,9 @@
    "soi_fraction": 3.2213169888286774e-10,
    "collisions": [
     "LITERAL GanCal#5 (dV_inf 0.002, period 37.6 vs 37.6)",
-    "NEAR GanCal#1 (dV_inf 0.080, period 37.6 vs 37.6)"
+    "NEAR GanCal#1 (dV_inf 0.080, period 37.6 vs 37.6, encounters 2+1 vs 3+1)",
+    "CATALOGUE V_INF russell-strange-2009-gancal-1 (dV_inf 0.080, k None vs 3)",
+    "CATALOGUE V_INF russell-strange-2009-gancal-5 (dV_inf 0.002, k None vs 3)"
    ],
    "literature_offline": {
     "status": "published",
