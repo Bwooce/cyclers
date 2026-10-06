@@ -191,6 +191,7 @@ def main() -> None:
     ap.add_argument("--n-cycles", type=int, default=7)
     ap.add_argument("--epochs", type=int, default=5)
     ap.add_argument("--steps", type=int, default=10)
+    ap.add_argument("--only-epoch", type=int, default=None, help="run one epoch index only")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -213,6 +214,8 @@ def main() -> None:
     out = []
     t_run = time.time()
     for ie in range(args.epochs):
+        if args.only_epoch is not None and ie != args.only_epoch:
+            continue
         near = 2462502.5 + ie * 32.0 * 365.25 / args.epochs  # 2030-01-01 + i * 6.4 yr
         te, tshift, rot = epoch_for(eph, circ, near)
         sysm = Blend(circ, eph, tshift, rot, 0.0)

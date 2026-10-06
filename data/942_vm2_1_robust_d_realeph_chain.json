@@ -1,0 +1,515 @@
+{
+ "e0": {
+  "epoch_jd": 2462782.4,
+  "last_converged_lambda": 0.0672,
+  "venus_ratio_there": 1.006,
+  "last_gate_pass_lambda": 0.05,
+  "completed": true,
+  "steps": [
+   {
+    "jd": 2462782.4,
+    "lam": 0.0,
+    "conv": true,
+    "res": 4.2e-12,
+    "gate": "pass",
+    "V": 0.981,
+    "M": 0.418
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.029,
+    "gate": "fail",
+    "V": 1.02,
+    "M": 0.635
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.05,
+    "conv": true,
+    "res": 3.1e-12,
+    "gate": "pass",
+    "V": 0.997,
+    "M": 0.51
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.031,
+    "gate": "fail",
+    "V": 1.02,
+    "M": 0.635
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.075,
+    "conv": false,
+    "res": 0.0062,
+    "gate": "fail",
+    "V": 1.01,
+    "M": 0.568
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0625,
+    "conv": true,
+    "res": 3.1e-12,
+    "gate": "fail",
+    "V": 1.003,
+    "M": 0.538
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.075,
+    "conv": false,
+    "res": 0.0063,
+    "gate": "fail",
+    "V": 1.01,
+    "M": 0.568
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0688,
+    "conv": false,
+    "res": 0.00012,
+    "gate": "fail",
+    "V": 1.008,
+    "M": 0.553
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0656,
+    "conv": true,
+    "res": 3.5e-12,
+    "gate": "fail",
+    "V": 1.005,
+    "M": 0.545
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0688,
+    "conv": false,
+    "res": 0.00012,
+    "gate": "fail",
+    "V": 1.008,
+    "M": 0.553
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0672,
+    "conv": true,
+    "res": 3.2e-12,
+    "gate": "fail",
+    "V": 1.006,
+    "M": 0.549
+   },
+   {
+    "jd": 2462782.4,
+    "lam": 0.0687,
+    "conv": false,
+    "res": 0.00012,
+    "gate": "fail",
+    "V": 1.008,
+    "M": 0.553
+   }
+  ]
+ },
+ "e1": {
+  "epoch_jd": 2465105.9,
+  "last_converged_lambda": 0.0609,
+  "venus_ratio_there": 1.0,
+  "last_gate_pass_lambda": 0.0563,
+  "completed": true,
+  "steps": [
+   {
+    "jd": 2465105.9,
+    "lam": 0.0,
+    "conv": true,
+    "res": 3.2e-12,
+    "gate": "pass",
+    "V": 0.981,
+    "M": 0.418
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.042,
+    "gate": "fail",
+    "V": 1.035,
+    "M": 0.612
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.05,
+    "conv": true,
+    "res": 3.6e-12,
+    "gate": "pass",
+    "V": 0.994,
+    "M": 0.496
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.033,
+    "gate": "fail",
+    "V": 1.036,
+    "M": 0.623
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.075,
+    "conv": false,
+    "res": 0.013,
+    "gate": "fail",
+    "V": 1.01,
+    "M": 0.552
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0625,
+    "conv": false,
+    "res": 0.0009,
+    "gate": "indeterminate",
+    "V": 1.001,
+    "M": 0.522
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0563,
+    "conv": true,
+    "res": 3.2e-12,
+    "gate": "pass",
+    "V": 0.997,
+    "M": 0.509
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0625,
+    "conv": false,
+    "res": 0.0009,
+    "gate": "indeterminate",
+    "V": 1.001,
+    "M": 0.522
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0594,
+    "conv": true,
+    "res": 2.9e-12,
+    "gate": "indeterminate",
+    "V": 0.999,
+    "M": 0.515
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0625,
+    "conv": false,
+    "res": 0.0009,
+    "gate": "indeterminate",
+    "V": 1.001,
+    "M": 0.522
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0609,
+    "conv": true,
+    "res": 6.1e-12,
+    "gate": "indeterminate",
+    "V": 1.0,
+    "M": 0.519
+   },
+   {
+    "jd": 2465105.9,
+    "lam": 0.0625,
+    "conv": false,
+    "res": 0.0009,
+    "gate": "indeterminate",
+    "V": 1.001,
+    "M": 0.522
+   }
+  ]
+ },
+ "e2": {
+  "epoch_jd": 2467463.2,
+  "last_converged_lambda": 0.0672,
+  "venus_ratio_there": 1.003,
+  "last_gate_pass_lambda": 0.05,
+  "completed": true,
+  "steps": [
+   {
+    "jd": 2467463.2,
+    "lam": 0.0,
+    "conv": true,
+    "res": 2.5e-12,
+    "gate": "pass",
+    "V": 0.981,
+    "M": 0.418
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.032,
+    "gate": "fail",
+    "V": 1.025,
+    "M": 0.643
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.05,
+    "conv": true,
+    "res": 3.3e-12,
+    "gate": "pass",
+    "V": 0.996,
+    "M": 0.49
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.03,
+    "gate": "fail",
+    "V": 1.026,
+    "M": 0.641
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.075,
+    "conv": false,
+    "res": 0.0062,
+    "gate": "fail",
+    "V": 1.01,
+    "M": 0.545
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0625,
+    "conv": true,
+    "res": 3.6e-12,
+    "gate": "indeterminate",
+    "V": 1.001,
+    "M": 0.516
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.075,
+    "conv": false,
+    "res": 0.0062,
+    "gate": "fail",
+    "V": 1.01,
+    "M": 0.545
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0688,
+    "conv": false,
+    "res": 5.3e-05,
+    "gate": "fail",
+    "V": 1.005,
+    "M": 0.53
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0656,
+    "conv": true,
+    "res": 3.3e-12,
+    "gate": "indeterminate",
+    "V": 1.002,
+    "M": 0.523
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0688,
+    "conv": false,
+    "res": 5.3e-05,
+    "gate": "fail",
+    "V": 1.005,
+    "M": 0.53
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0672,
+    "conv": true,
+    "res": 3.5e-12,
+    "gate": "fail",
+    "V": 1.003,
+    "M": 0.526
+   },
+   {
+    "jd": 2467463.2,
+    "lam": 0.0687,
+    "conv": false,
+    "res": 5.3e-05,
+    "gate": "fail",
+    "V": 1.005,
+    "M": 0.53
+   }
+  ]
+ },
+ "e3": {
+  "epoch_jd": 2469784.5,
+  "last_converged_lambda": 0.0766,
+  "venus_ratio_there": 1.013,
+  "last_gate_pass_lambda": 0.0,
+  "completed": true,
+  "steps": [
+   {
+    "jd": 2469784.5,
+    "lam": 0.0,
+    "conv": true,
+    "res": 4.3e-12,
+    "gate": "pass",
+    "V": 0.981,
+    "M": 0.418
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.0034,
+    "gate": "fail",
+    "V": 1.038,
+    "M": 0.679
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.05,
+    "conv": true,
+    "res": 6.1e-12,
+    "gate": "indeterminate",
+    "V": 0.999,
+    "M": 0.517
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.0034,
+    "gate": "fail",
+    "V": 1.037,
+    "M": 0.679
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.075,
+    "conv": true,
+    "res": 4.2e-12,
+    "gate": "fail",
+    "V": 1.012,
+    "M": 0.588
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.1,
+    "conv": false,
+    "res": 0.0034,
+    "gate": "fail",
+    "V": 1.037,
+    "M": 0.679
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.0875,
+    "conv": false,
+    "res": 0.0026,
+    "gate": "fail",
+    "V": 1.023,
+    "M": 0.63
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.0813,
+    "conv": false,
+    "res": 0.0012,
+    "gate": "fail",
+    "V": 1.017,
+    "M": 0.608
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.0781,
+    "conv": false,
+    "res": 0.00021,
+    "gate": "fail",
+    "V": 1.014,
+    "M": 0.598
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.0766,
+    "conv": true,
+    "res": 3.1e-12,
+    "gate": "fail",
+    "V": 1.013,
+    "M": 0.593
+   },
+   {
+    "jd": 2469784.5,
+    "lam": 0.0781,
+    "conv": false,
+    "res": 0.00021,
+    "gate": "fail",
+    "V": 1.014,
+    "M": 0.598
+   }
+  ]
+ },
+ "e4": {
+  "epoch_jd": 2472130.0,
+  "last_converged_lambda": 0.125,
+  "venus_ratio_there": 1.041,
+  "last_gate_pass_lambda": 0.0,
+  "completed": false,
+  "steps": [
+   {
+    "jd": 2472130.0,
+    "lam": 0.0,
+    "conv": true,
+    "res": 3.4e-12,
+    "gate": "pass",
+    "V": 0.981,
+    "M": 0.418
+   },
+   {
+    "jd": 2472130.0,
+    "lam": 0.1,
+    "conv": true,
+    "res": 4.3e-12,
+    "gate": "fail",
+    "V": 1.018,
+    "M": 0.646
+   },
+   {
+    "jd": 2472130.0,
+    "lam": 0.2,
+    "conv": false,
+    "res": 0.045,
+    "gate": "fail",
+    "V": 1.379,
+    "M": 1.033
+   },
+   {
+    "jd": 2472130.0,
+    "lam": 0.15,
+    "conv": false,
+    "res": 0.027,
+    "gate": "fail",
+    "V": 1.076,
+    "M": 0.879
+   },
+   {
+    "jd": 2472130.0,
+    "lam": 0.125,
+    "conv": true,
+    "res": 1.5e-11,
+    "gate": "fail",
+    "V": 1.041,
+    "M": 0.751
+   }
+  ]
+ }
+}

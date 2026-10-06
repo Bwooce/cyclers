@@ -668,6 +668,29 @@ Numerical change only, with the criteria unchanged:
 
 The last converged lambda is reported for each epoch.
 
+### 6.9 vm2-1 robustness (d) result: it does NOT survive toward the real ephemeris
+
+Data: `data/942_vm2_1_robust_d_realeph_chain.json`. A 7-cycle open chain was continued from the R-S circular
+model toward Standish J2000 mean elements, at 5 epochs from 2030 to 2052.
+
+| Epoch (JD) | Last converged lambda | Venus ratio there | Last lambda with a gate pass |
+|---|---|---|---|
+| 2462782.4 | 0.067 (fold) | 1.006 | 0.050 |
+| 2465105.9 | 0.061 (fold) | 1.000 (indeterminate) | 0.056 |
+| 2467463.2 | 0.067 (fold) | 1.003 | 0.050 |
+| 2469784.5 | 0.077 (fold) | 1.013 | 0.0 (fails from the first step) |
+| 2472130.0 | 0.125 (run cut at the 10-min limit) | 1.041 | 0.0 |
+
+Findings:
+- At every epoch the Venus turn exceeds capacity within the first 5-8 % of the way from circular to the
+  real eccentricities and inclinations.
+- At four of the five epochs the chain solution itself ends at a fold before lambda = 0.08.
+- The single-cycle version (n = 1, epoch 0) continues to lambda = 1 but fails the gate from lambda = 0.2
+  (Venus ratio 1.23, Mars 1.47 at lambda = 1).
+
+Verdict at this rung: vm2-1 is an ideal-model-only object. Its 2 % Venus margin does not survive real
+orbit eccentricity (Mars e = 0.093) and inclination. The #866 V3 lane is not requested.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
