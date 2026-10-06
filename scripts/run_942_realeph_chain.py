@@ -504,6 +504,77 @@ def gate_eval(sysm: Blend, ev: ChainEval) -> dict:
     }
 
 
+def shoot_once(
+    shoot_sys: Any, legs_c: tuple, x_base: float, ys: np.ndarray, args: Any, label: str
+) -> tuple[np.ndarray, ChainEval | None, int, float]:
+    """One LM shoot of a chain from ``ys`` (dates, period, fixed-leg parameters), with the
+    sparse or dense forward-difference Jacobian and the Gauss-Newton polish of near-closures."""
+    t_r = time.time()
+    prog = {"n": 0, "best": math.inf, "t_beat": t_r}
+
+    def fun(yy: np.ndarray) -> np.ndarray:
+        out_r = _res(shoot_sys, legs_c, x_base, yy)
+        prog["n"] += 1
+        prog["best"] = min(prog["best"], float(np.max(np.abs(out_r))))
+        if time.time() - prog["t_beat"] > 60.0:
+            prog["t_beat"] = time.time()
+            print(
+                f"{time.strftime('%H:%M:%S')}   shoot {label}: {prog['n']} evals, "
+                f"best max|res| so far {prog['best']:.2e} [{time.time() - t_r:.0f}s]",
+                flush=True,
+            )
+        return out_r
+
+    jac: Any = "2-point"
+    if args.shoot_jac == "sparse":
+        # Same forward differences as LM's own, with columns that share no residual row
+        # perturbed together. Pattern: union of the nonzeros of the dense Jacobian at the start
+        # and at a nearby point.
+        j_a = approx_derivative(fun, ys, method="2-point")
+        kick = 1e-6 * np.random.default_rng(0).standard_normal(ys.size)
+        j_b = approx_derivative(fun, ys + kick, method="2-point")
+        pattern = (j_a != 0.0) | (j_b != 0.0)
+        groups = group_columns(pattern)
+
+        def jac(yy: np.ndarray, sp: tuple[np.ndarray, np.ndarray] = (pattern, groups)) -> Any:
+            d = approx_derivative(fun, yy, method="2-point", sparsity=sp)
+            return np.asarray(d.toarray())
+
+    sol = least_squares(
+        fun,
+        ys,
+        jac=jac,
+        method=args.shoot_method,
+        x_scale="jac",  # SciPy >= 1.16 default for lm; trf would default to 1
+        xtol=1e-14,
+        ftol=1e-14,
+        gtol=1e-14,
+        max_nfev=args.shoot_nfev_per_var * len(ys),
+    )
+    x_sol = sol.x
+    f_sol = np.asarray(sol.fun)
+    # Gauss-Newton polish of a near-closure: full or halved steps, accepted only if they reduce
+    # the max residual; the closure threshold is unchanged.
+    for _ in range(12):
+        m_now = float(np.max(np.abs(f_sol)))
+        if not 1e-6 <= m_now < 1e-2:
+            break
+        j_now = (
+            np.asarray(jac(x_sol))
+            if callable(jac)
+            else approx_derivative(fun, x_sol, method="2-point")
+        )
+        step = np.linalg.lstsq(j_now, -f_sol, rcond=None)[0]
+        for frac in (1.0, 0.5, 0.25):
+            f_try = fun(x_sol + frac * step)
+            if float(np.max(np.abs(f_try))) < m_now:
+                x_sol, f_sol = x_sol + frac * step, f_try
+                break
+        else:
+            break
+    return x_sol, chain_eval(shoot_sys, legs_c, x_base, x_sol), int(sol.nfev), time.time() - t_r
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--cell", required=True)
@@ -525,6 +596,16 @@ def main() -> None:
     # One solve at lambda = 1 from the ideal-model dates (no continuation); a seeding route that
     # does not depend on the homotopy path, for families whose continuation folds.
     ap.add_argument("--direct", action="store_true")
+    ap.add_argument(
+        "--restart-sigma",
+        default="0.03,0.05",
+        help="theta,phi std (rad) of the restart perturbations (was 0.3,0.6 before note 6.35)",
+    )
+    ap.add_argument(
+        "--grow-chain",
+        action="store_true",
+        help="chain-length continuation 1 -> n cycles in the shoot (note 6.35)",
+    )
     ap.add_argument(
         "--shoot-rel-time",
         action="store_true",
@@ -687,117 +768,111 @@ def main() -> None:
                 out_v[:n_dates] += shift
                 return out_v
 
-            best = None
-            tried = []
-            for r in range(args.shoot_restarts):
-                f0 = fixed0.copy()
-                if r > 0:
-                    f0[0::3] += rng.normal(0.0, 0.3, f0[0::3].size)
-                    f0[1::3] += rng.normal(0.0, 0.6, f0[1::3].size)
-                ys = np.concatenate([y_s, f0])
-                t_r = time.time()
-                prog = {"n": 0, "best": math.inf, "t_beat": t_r}
+            sig_th, sig_ph = (float(v) for v in args.restart_sigma.split(","))
 
-                def fun(
-                    yy: np.ndarray,
-                    s_: Any = shoot_sys,
-                    x0_: float = x_base,
-                    r: int = r,
-                    prog: dict[str, float] = prog,
-                    t_r: float = t_r,
-                ) -> np.ndarray:
-                    out_r = _res(s_, legs_chain, x0_, yy)
-                    prog["n"] += 1
-                    prog["best"] = min(prog["best"], float(np.max(np.abs(out_r))))
-                    if time.time() - prog["t_beat"] > 60.0:
-                        prog["t_beat"] = time.time()
+            def run_restarts(
+                legs_c: tuple,
+                y_c: np.ndarray,
+                f_seed: np.ndarray,
+                label: str,
+                shoot_sys: Any = shoot_sys,
+                x_base: float = x_base,
+                rng: np.random.Generator = rng,
+                sig_th: float = sig_th,
+                sig_ph: float = sig_ph,
+                to_abs: Any = to_abs,
+                n_full: int = len(y_s) + len(fixed0),
+            ) -> tuple[tuple[dict[str, Any], np.ndarray] | None, list[dict[str, Any]]]:
+                """Restart 0 from the seed, then perturbed seeds; the gate-best closure."""
+                best_c: tuple[dict[str, Any], np.ndarray] | None = None
+                tried_c: list[dict[str, Any]] = []
+                for r in range(args.shoot_restarts):
+                    f0 = f_seed.copy()
+                    if r > 0:
+                        f0[0::3] += rng.normal(0.0, sig_th, f0[0::3].size)
+                        f0[1::3] += rng.normal(0.0, sig_ph, f0[1::3].size)
+                    x_sol, ev, nfev, t_used = shoot_once(
+                        shoot_sys, legs_c, x_base, np.concatenate([y_c, f0]), args, f"{label}{r}"
+                    )
+                    worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
+                    if worst_res >= 1e-6:
+                        rec_r: dict[str, Any] = {
+                            "restart": r,
+                            "converged": False,
+                            "max_residual": worst_res,
+                            "nfev": nfev,
+                        }
+                        if worst_res < 1e-3 and len(x_sol) == n_full:
+                            rec_r["y_stall"] = to_abs(x_sol).tolist()  # kept for diagnosis
+                        elif worst_res < 1e-3:
+                            rec_r["y_stall_shoot_frame"] = x_sol.tolist()  # a shorter chain
+                        tried_c.append(rec_r)
                         print(
-                            f"{time.strftime('%H:%M:%S')}   shoot restart {r}: {prog['n']} evals, "
-                            f"best max|res| so far {prog['best']:.2e} [{time.time() - t_r:.0f}s]",
+                            f"{time.strftime('%H:%M:%S')}   shoot {label}{r}/"
+                            f"{args.shoot_restarts}: no closure (max residual "
+                            f"{worst_res:.1e}, nfev {nfev}, {t_used:.0f}s)",
                             flush=True,
                         )
-                    return out_r
-
-                jac: Any = "2-point"
-                if args.shoot_jac == "sparse":
-                    # Same forward differences as LM's own, with columns that share no
-                    # residual row perturbed together. Pattern: union of the nonzeros of
-                    # the dense Jacobian at the start and at a nearby point.
-                    j_a = approx_derivative(fun, ys, method="2-point")
-                    # Own generator: the restart perturbations keep their stream.
-                    kick = 1e-6 * np.random.default_rng(0).standard_normal(ys.size)
-                    j_b = approx_derivative(fun, ys + kick, method="2-point")
-                    pattern = (j_a != 0.0) | (j_b != 0.0)
-                    groups = group_columns(pattern)
-
-                    def jac(
-                        yy: np.ndarray, sp: tuple[np.ndarray, np.ndarray] = (pattern, groups)
-                    ) -> np.ndarray:
-                        d = approx_derivative(fun, yy, method="2-point", sparsity=sp)
-                        return np.asarray(d.toarray())
-
-                sol = least_squares(
-                    fun,
-                    ys,
-                    jac=jac,
-                    method=args.shoot_method,
-                    x_scale="jac",  # SciPy >= 1.16 default for lm; trf would default to 1
-                    xtol=1e-14,
-                    ftol=1e-14,
-                    gtol=1e-14,
-                    max_nfev=args.shoot_nfev_per_var * len(ys),
-                )
-                x_sol = sol.x
-                f_sol = np.asarray(sol.fun)
-                # Gauss-Newton polish of a near-closure: LM's damping crawls along the weakly
-                # determined crank angles. Full or halved steps, accepted only if they reduce
-                # the max residual; the closure threshold is unchanged.
-                for _ in range(12):
-                    m_now = float(np.max(np.abs(f_sol)))
-                    if not 1e-6 <= m_now < 1e-2:
-                        break
-                    j_now = (
-                        np.asarray(jac(x_sol))
-                        if callable(jac)
-                        else approx_derivative(fun, x_sol, method="2-point")
-                    )
-                    step = np.linalg.lstsq(j_now, -f_sol, rcond=None)[0]
-                    for frac in (1.0, 0.5, 0.25):
-                        f_try = fun(x_sol + frac * step)
-                        if float(np.max(np.abs(f_try))) < m_now:
-                            x_sol, f_sol = x_sol + frac * step, f_try
-                            break
-                    else:
-                        break
-                ev = chain_eval(shoot_sys, legs_chain, x_base, x_sol)
-                worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
-                if worst_res >= 1e-6:
-                    rec_r: dict[str, Any] = {
-                        "restart": r,
-                        "converged": False,
-                        "max_residual": worst_res,
-                    }
-                    if worst_res < 1e-3:
-                        rec_r["y_stall"] = to_abs(
-                            x_sol
-                        ).tolist()  # near-closure: kept for diagnosis
-                    tried.append(rec_r)
+                        continue
+                    assert ev is not None
+                    g = gate_eval(shoot_sys, ev)
+                    tried_c.append({"restart": r, "converged": True} | g)
+                    if best_c is None or g["worst_ratio"] < best_c[0]["worst_ratio"]:
+                        best_c = (g, np.array(x_sol))
                     print(
-                        f"{time.strftime('%H:%M:%S')}   shoot restart {r}/{args.shoot_restarts}: "
-                        f"no closure (max residual {worst_res:.1e}, nfev {sol.nfev}, "
-                        f"{time.time() - t_r:.0f}s)",
+                        f"{time.strftime('%H:%M:%S')}   shoot {label}{r}: closes, "
+                        f"gate={g['status']} worst={g['worst_ratio']:.3f}",
                         flush=True,
                     )
-                    continue
-                g = gate_eval(shoot_sys, ev)
-                tried.append({"restart": r, "converged": True} | g)
-                if best is None or g["worst_ratio"] < best[0]["worst_ratio"]:
-                    best = (g, to_abs(x_sol))
-                print(
-                    f"{time.strftime('%H:%M:%S')}   shoot restart {r}: closes, "
-                    f"gate={g['status']} worst={g['worst_ratio']:.3f}",
-                    flush=True,
-                )
+                return best_c, tried_c
+
+            if not args.grow_chain:
+                best_rel, tried = run_restarts(legs_chain, y_s, fixed0, "restart ")
+                best = None if best_rel is None else (best_rel[0], to_abs(best_rel[1]))
+            else:
+                # Chain-length continuation (note 6.35): the shoot at 1 cycle, then 2, ..., n,
+                # each seeded by the previous length's gate-best closure with one more cycle
+                # appended (the last cycle's dates moved by one cycle, its fixed parameters
+                # copied). Restarts at every length; a length without a closure ends the run.
+                one_legs = legs_chain[: len(legs_chain) // args.n_cycles]
+                nl_c = sum(isinstance(lg, LambertLeg) for lg in one_legs)
+                nf_c = len(one_legs) - nl_c
+                y1 = np.concatenate([y_s[: nl_c - 1], [y_s[n_dates] / args.n_cycles]])
+                seed = np.concatenate([y1, fixed0[: 3 * nf_c]])
+                grow: list[dict[str, Any]] = []
+                best = None
+                tried = []
+                for k in range(1, args.n_cycles + 1):
+                    legs_k = one_legs * k
+                    nd_k = k * nl_c - 1
+                    best_k, tried_k = run_restarts(
+                        legs_k, seed[: nd_k + 1], seed[nd_k + 1 :], f"k={k} restart "
+                    )
+                    grow.append(
+                        {
+                            "k": k,
+                            "best": None if best_k is None else best_k[0],
+                            "restarts": tried_k,
+                        }
+                    )
+                    tried = tried_k
+                    if best_k is None:
+                        print(f"  grow: no closure at {k} cycles; stop", flush=True)
+                        break
+                    if k == args.n_cycles:
+                        best = (best_k[0], to_abs(best_k[1]))
+                        break
+                    sol_k = best_k[1]
+                    dates = np.concatenate(
+                        [[0.0 if args.shoot_rel_time else x0 / DAY], sol_k[:nd_k]]
+                    )
+                    per = float(sol_k[nd_k])
+                    t1 = per / k
+                    dates_new = np.concatenate([dates, dates[-nl_c:] + t1])[1:]
+                    fixed_k = sol_k[nd_k + 1 :]
+                    fixed_new = np.concatenate([fixed_k, fixed_k[-3 * nf_c :]])
+                    seed = np.concatenate([dates_new, [per + t1], fixed_new])
+                rec_out["grow"] = grow
             rec_out["shoot_restarts"] = tried
             rec_out["rung_pass"] = best is not None and best[0]["status"] == "pass"
             if best is not None:

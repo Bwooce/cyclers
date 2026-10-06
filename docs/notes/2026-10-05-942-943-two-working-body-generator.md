@@ -1104,7 +1104,7 @@ Blend continuation reaches lambda = 1 at 5/5 epochs for ev-A and at 4/5 for ev-B
 lambda 0.70). At lambda = 1 with minimax directions the interior gate is: ev-A 0.580 at 5/5; ev-B 0.936,
 1.095, 0.758 and 1.033. The lambda = 1 shoot finds ballistic closures in every case, but all fail the
 gate (ev-A 1.12-2.99; ev-B 3.7-6.9): the closing directions are far from the minimax ones. So no
-gate-passing ballistic DE440 member was found; the closure Delta-V below is the measure 6.24 defines.
+gate-passing ballistic DE440 member was found (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35); the closure Delta-V below is the measure 6.24 defines.
 
 | | ev-A (5 cycles, 5 Venus 1:1 legs) | ev-B (4 cycles, 4 Venus 3:2 + 4 Earth 1:1 legs) |
 |---|---|---|
@@ -1133,7 +1133,7 @@ Reading:
 - Run: blend + shoot, `--shoot-nfev-per-var 60 --shoot-jac sparse`, 20 restarts. The code is from
   4735f609, which is before the GM fix c4ff9a41; the ideal Jovian GM is 126,686,535 km^3/s^2.
 - Result: the rung passes at 5/5 epochs, worst 0.755-0.761 (ideal 0.737). At every epoch only restart 0
-  (the unperturbed minimax seed) closes; the other 19 do not.
+  (the unperturbed minimax seed) closes; the other 19 do not (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35).
 - Re-fly (DOP853):
   - With the solver's GM: closure residual 1.1e-9, miss <= 2.6e-6 km (epoch 0, checked).
   - With JUP365's Jupiter-alone GM (126,686,534; 7.9e-9 lower), as the fixed checker now does: miss
@@ -1279,7 +1279,7 @@ TOF=375.7 days, Delta-v_TOTAL=0 m/s".
     later ones. At the R-S epoch (JD 2456562.9) the shoot closes with a gate pass, worst 0.964
     (Ganymede); DOP853 re-fly miss 4.1e-5 km. Two other runs at the same phase-matched JD (other
     restart seeds) closed only with gate fails (4.67) or not at all, so the closing solution depends on
-    the restart: one landing solution, not the only one.
+    the restart: one landing solution, not the only one (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35).
 - RUN (lead launch): `--direct`, 10 cycles, `--epochs 1 --first-epoch-jd 2456562.5`, `--shoot-jac
   sparse --shoot-nfev-per-var 60 --shoot-restarts 20`.
 - PASS = the sec. 6.17 criteria at this epoch: the date solve converges at lambda = 1, the shoot closes
@@ -1356,7 +1356,7 @@ residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict wi
 
 - The direct date solve converges at lambda = 1 (JD 2456562.9); the minimax gate there is pass, worst 0.966.
 - Shoot: no closure in 20 restarts. Restart 0 (the unperturbed minimax seed) stalls at a max residual of
-  4.0e-6 (criterion 1e-6) after 3,074 evaluations. Four other restarts stop at 2.8-8.6; the rest fail
+  4.0e-6 (criterion 1e-6) after 3,074 evaluations. Four other restarts (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35) stop at 2.8-8.6; the rest fail
   at once.
 - Verdict by the 6.29 rule: UNDECIDED. The gc-1 caveat stays. Restart 0's stall has the signature of the
   6.19 long-chain stall (one cycle closes to 1e-9; ten cycles stall between 1e-6 and 1e-5).
@@ -1367,7 +1367,8 @@ residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict wi
 
 - Code 1feb8f2b (in the working tree at launch). The blend reaches lambda = 1; the seed fallback fires
   at blocks 28 and 32.
-- Shoot: no closure in 20 restarts. Restart 0 stalls at 3.0e-5; restart 5 at 0.57; the others at 2.8-1.7e3.
+- Shoot: no closure in 20 restarts (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35). Restart 0 stalls at 3.0e-5; restart 5 at 0.57; the others at
+  2.8-1.7e3.
 - Verdict by the 6.27 rule: the control does NOT decide. The ge candidates with fixed legs (all of
   ge-1, ge-2, ge-3) are "not judged" at rung (d).
 - Both Jovian fixed-leg controls (C4@2013 and #316@2019) now end in the same 10-cycle shoot stall.
@@ -1459,7 +1460,7 @@ Acceptance check, ev H-leg zeros (8,464) reassessed with the new rule, against t
 C4@2013 with `--shoot-rel-time` (the 6.33 control), `data/943_c4_rs2013/n10_direct_rel/`:
 - Restart 0 closes in about 2 s (max residual below 1e-6; it stalled at 4.0e-6 before). The DOP853
   re-fly of that closure (checker `--include-failed`) misses by 3.8e-4 km. The closure is real.
-- It FAILS the gate: worst 5.106 (Ganymede), min altitude -2,605 km. No other restart closes.
+- It FAILS the gate: worst 5.106 (Ganymede), min altitude -2,605 km. No other restart closes (WEAK: restarts used the 0.3/0.6-rad perturbations, see 6.34-6.35).
 - Reading (fixed in 6.33): the stall is fixed, but the shoot finds a closure that is not the
   gate-passing member. The control is NOT passed; the gc-1 caveat stays.
 - Restart defect, found after the run: the restarts perturb every fixed leg's theta by N(0, 0.3) rad
@@ -1468,6 +1469,53 @@ C4@2013 with `--shoot-rel-time` (the 6.33 control), `data/943_c4_rs2013/n10_dire
   an infinite residual. 14 of 20 restarts died that way, so only about 6 were real attempts. Changes
   to the restarts, a chain-length continuation (1 -> 10 cycles from the 1-cycle gate-passing closure)
   or a gate-constrained shoot are method changes. Each needs pre-registration and lead approval.
+
+### 6.35 Chain-length continuation (lead ruling (b) with (a)): PRE-REGISTERED 2026-10-06, before the control runs
+
+Lead ruling: method (b), chain-length continuation, with (a) small-perturbation restarts; (c) only if
+(b) fails. The restart defect (6.34) is fixed regardless: `--restart-sigma` defaults to 0.03,0.05 rad
+(theta, phi). Statements in this note that rest on the old restarts are marked WEAK.
+
+Method (`scripts/run_942_realeph_chain.py --grow-chain`, with `--shoot-rel-time`):
+- Phase 1 (the date solve, `--direct` or blend) is unchanged and gives the seed.
+- The shoot runs at 1 cycle first: the seed's first-cycle dates, the period divided by n, and the
+  first cycle's minimax fixed-leg parameters.
+- The gate-best closure at k cycles seeds k + 1. The last cycle's dates are moved by one cycle
+  (period / k) and appended, the period is extended by one cycle, and the last cycle's (theta, phi,
+  tau) are copied.
+- At every length: restart 0 from the seed, then `--shoot-restarts` - 1 perturbed seeds (sigma
+  0.03/0.05 rad). A length without a closure ends the run (no closure).
+- Unchanged:
+  - the shoot (`shoot_once`: LM, the sparse forward-difference Jacobian, the polish);
+  - the 1e-6 closure threshold;
+  - the gate at the registry floors; "indeterminate" is not a pass (sec. 6.1);
+  - the DOP853 re-fly (< 1 km at every segment).
+- Validation slice (3 cycles, 3 restarts, C4@2013, before this pre-registration):
+  - k = 1 closes at restart 2 with a gate pass, 0.964;
+  - k = 2 and k = 3 close at restart 0, gate "indeterminate", 0.973-0.974.
+  - GanCal#1 is marginal in every model (ideal 0.961). An "indeterminate" verdict at 10 cycles is
+    therefore a live possibility.
+
+Control runs:
+1. C4@2013 (cell gc, `--direct`, 10 cycles, 20 restarts, epoch 2456562.5).
+2. Then GanEur#316@2019 (cell ge, blend, 10 cycles, 20 restarts, epoch 2458597.5).
+
+Readings, fixed now:
+- C4: PASS = a 10-cycle closure with a gate pass at every interior flyby and a re-fly miss < 1 km.
+  Then the full-rev path is validated and gc-1 and the ge shortlist go up the ladder (each
+  pre-registered).
+- C4 closes at 10 cycles but only "indeterminate" (within the tidal turn scale of capacity): NOT a pass.
+  It is reported as "closes, marginal as in the ideal model". The owner decides whether a marginal
+  control can validate; the caveat stays until then.
+- A gate fail, or no closure at some k: (b) fails, and (c) is next (with a lead ruling).
+
+Also recorded here: GanEur#316 B (5 standard epochs, 10 cycles, absolute-time shoot, the old
+restarts; descriptive by 6.27), `data/943_ganeur316_realeph/n10_std/`:
+- It closes with a gate pass at 3 of 5 epochs: JD 2462503.8 (0.853), 2464844.7 (0.820) and
+  2469519.5 (0.769). Each time restart 0 closes. DOP853 re-fly miss <= 2.4e-5 km.
+- At 2467178.6 and 2471853.3 the best restarts stop at 1.0e-3 and 1.3e-3 (WEAK).
+- So a published Jovian half-rev member closes ballistically over 10 cycles on jup365 with the
+  pre-6.33 shoot at 2030-2056 epochs, but not at R-S's own 2019 epoch (6.32).
 
 ## 7. Literal-collision checks (to be completed per candidate)
 
