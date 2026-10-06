@@ -244,6 +244,42 @@ class RampedKepler:
         return np.eye(3)
 
 
+class RelTime:
+    """A system whose times are seconds relative to ``t_ref`` (#943 long-chain stall, note 6.33).
+
+    The shoot's date unknowns were absolute days (about 16,600), so the forward-difference step
+    (sqrt(eps) x |y|, about 2.5e-4 d = 21 s) was set by the calendar, not by the problem, and the
+    evaluated state carried the rounding of t_ref + t. Here the unknowns are small offsets, and the
+    state at the rounded sum is corrected to first order by the rounding error (Fast2Sum)."""
+
+    def __init__(self, base: Any, t_ref: float) -> None:
+        self.base = base
+        self.t_ref = float(t_ref)
+
+    @property
+    def mu(self) -> float:
+        return float(self.base.mu)
+
+    @property
+    def lam(self) -> float:
+        return float(self.base.lam)
+
+    def state(self, code: str, t_s: float) -> tuple[Vec, Vec]:
+        big = self.t_ref + t_s
+        err = (self.t_ref - big) + t_s  # exact when |t_ref| >= |t_s|
+        r, v = self.base.state(code, big)
+        return r + err * v, v
+
+    def period_s(self, code: str) -> float:
+        return float(self.base.period_s(code))
+
+    def body(self, code: str) -> FlybyBody:
+        return self.base.body(code)  # type: ignore[no-any-return]
+
+    def wrap_rotation(self, code: str, dt_s: float) -> Vec:
+        return np.eye(3)
+
+
 def date_chain_residual(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
     """Ramp mode: dates [x0, y[:-1]] (days), chain period y[-1] (days); fixed legs timed at
     the model's current body period (exact in a Keplerian model)."""
@@ -488,6 +524,11 @@ def main() -> None:
     # One solve at lambda = 1 from the ideal-model dates (no continuation); a seeding route that
     # does not depend on the homotopy path, for families whose continuation folds.
     ap.add_argument("--direct", action="store_true")
+    ap.add_argument(
+        "--shoot-rel-time",
+        action="store_true",
+        help="shoot in dates relative to the epoch (note 6.33; fixes the long-chain stall)",
+    )
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -632,6 +673,19 @@ def main() -> None:
                 json.dumps({"x0": x0, "y": y.tolist(), "fixed0": fixed0.tolist()})
             )
             rng = np.random.default_rng(943 + ie)
+            # Shoot system and date origin: absolute (as before) or relative to x0 (note 6.33).
+            n_dates = len(y) - 1
+            shift = x0 / DAY if args.shoot_rel_time else 0.0
+            shoot_sys: Any = RelTime(sysm, x0) if args.shoot_rel_time else sysm
+            x_base = 0.0 if args.shoot_rel_time else x0
+            y_s = y.copy()
+            y_s[:n_dates] -= shift
+
+            def to_abs(v: np.ndarray, n_dates: int = n_dates, shift: float = shift) -> np.ndarray:
+                out_v = np.array(v, dtype=float)
+                out_v[:n_dates] += shift
+                return out_v
+
             best = None
             tried = []
             for r in range(args.shoot_restarts):
@@ -639,14 +693,14 @@ def main() -> None:
                 if r > 0:
                     f0[0::3] += rng.normal(0.0, 0.3, f0[0::3].size)
                     f0[1::3] += rng.normal(0.0, 0.6, f0[1::3].size)
-                ys = np.concatenate([y, f0])
+                ys = np.concatenate([y_s, f0])
                 t_r = time.time()
                 prog = {"n": 0, "best": math.inf, "t_beat": t_r}
 
                 def fun(
                     yy: np.ndarray,
-                    s_: Blend = sysm,
-                    x0_: float = x0,
+                    s_: Any = shoot_sys,
+                    x0_: float = x_base,
                     r: int = r,
                     prog: dict[str, float] = prog,
                     t_r: float = t_r,
@@ -714,7 +768,7 @@ def main() -> None:
                             break
                     else:
                         break
-                ev = chain_eval(sysm, legs_chain, x0, x_sol)
+                ev = chain_eval(shoot_sys, legs_chain, x_base, x_sol)
                 worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
                 if worst_res >= 1e-6:
                     rec_r: dict[str, Any] = {
@@ -723,7 +777,9 @@ def main() -> None:
                         "max_residual": worst_res,
                     }
                     if worst_res < 1e-3:
-                        rec_r["y_stall"] = x_sol.tolist()  # near-closure: kept for diagnosis
+                        rec_r["y_stall"] = to_abs(
+                            x_sol
+                        ).tolist()  # near-closure: kept for diagnosis
                     tried.append(rec_r)
                     print(
                         f"{time.strftime('%H:%M:%S')}   shoot restart {r}/{args.shoot_restarts}: "
@@ -732,10 +788,10 @@ def main() -> None:
                         flush=True,
                     )
                     continue
-                g = gate_eval(sysm, ev)
+                g = gate_eval(shoot_sys, ev)
                 tried.append({"restart": r, "converged": True} | g)
                 if best is None or g["worst_ratio"] < best[0]["worst_ratio"]:
-                    best = (g, x_sol)
+                    best = (g, to_abs(x_sol))
                 print(
                     f"{time.strftime('%H:%M:%S')}   shoot restart {r}: closes, "
                     f"gate={g['status']} worst={g['worst_ratio']:.3f}",

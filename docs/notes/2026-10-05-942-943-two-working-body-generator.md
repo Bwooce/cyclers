@@ -1373,6 +1373,51 @@ residual of 3.0e-5, like C4 in 6.19. The run continues (scratch); its verdict wi
   They are the reproducers for the stall item (approved by the lead, after em).
 - (The lead's failed first launch left `n10_rs2019/` and `n10_rs2019.log`; they are not this run.)
 
+### 6.33 The long-chain shoot stall: diagnosis, method and control, PRE-REGISTERED 2026-10-06 (before the control run)
+
+Lead approval: the stall item, with C4@2013 (GanCal#1, R-S Fig. 9(b): 10 cycles, 0 m/s) as the
+positive control. It must not be tuned on the candidates; development uses only C4 and GanEur#316.
+
+Diagnosis (C4@2013 restart-0 stall point, `data/943_c4_rs2013/n10_direct/`):
+- The residual is smooth at large steps but has a floor of about 5e-8 (second differences at steps of
+  1e-9 to 1e-8 d), from the rounding of absolute times. The shoot's date unknowns are absolute days
+  (about 16,600), so the body states carry the rounding of t (about 2.4e-7 s, i.e. 2.3e-6 km of
+  Ganymede position). A 14-d full-rev leg amplifies that about 25 times.
+- The forward-difference step that LM and the sparse Jacobian use is sqrt(eps) x |y|. For an
+  absolute date that is about 2.5e-4 d (21 s), set by the calendar, not by the problem. Over that step
+  the curvature term is far larger than the 1e-6 closure level.
+- Test (diagnosis only, not a verdict): from the stall point, the same LM, with the dates as offsets
+  from the chain's first date, converges from 4.0e-6 to 2.1e-8 in 9 evaluations. That closure FAILS
+  the gate (worst 5.11, Ganymede): the stall point had drifted from the minimax directions.
+
+Method (`scripts/run_942_realeph_chain.py --shoot-rel-time`):
+- In the shoot (phase 2) the date unknowns are offsets in days from x0. The system is wrapped by
+  `RelTime`: every state is taken at t_ref + t, corrected to first order by the rounding error of
+  that sum.
+- Everything else is unchanged:
+  - the dense or sparse forward-difference Jacobian;
+  - x_scale "jac", the tolerances, the restarts and the seed;
+  - the Gauss-Newton polish;
+  - the closure threshold of 1e-6;
+  - the gate and the re-fly.
+- Outputs are converted back to absolute days.
+
+Control runs (lead launches, with the same flags as 6.29 and 6.32 plus `--shoot-rel-time`):
+1. C4@2013: cell gc, 10 cycles, `--direct`, epoch 2456562.5.
+2. GanEur#316@2019: cell ge, 10 cycles, blend, epoch 2458597.5.
+
+PASS for each = the 6.17 criteria at that epoch:
+- the shoot closes (max residual < 1e-6) at some restart;
+- the gate passes at every interior flyby (the best closure by worst ratio);
+- the DOP853 re-fly miss is < 1 km at every segment.
+
+Readings, fixed now:
+- C4 passes: the stall item is closed. The tool may then judge Jovian fixed-leg rows, each in its own
+  pre-registered run.
+- Closures, but none passes the gate: the stall is fixed, and the open item becomes "the shoot finds
+  closures but not the gate-passing member". The caveat stays.
+- No closure: the method fails, and the caveat stays.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
