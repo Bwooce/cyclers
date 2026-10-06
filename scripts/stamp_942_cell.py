@@ -71,6 +71,8 @@ def main() -> None:
             "center": centre,
             "n_zeros": g["n_zeros"],
             "n_physical_cyclers": g["n_physical"],
+            "n_structure_errors_not_searched": g.get("n_structure_errors", 0),
+            "n_zero_assessment_errors": g.get("n_zero_assessment_errors", 0),
         },
         prune_gates=(
             "exact zero: max |V_inf magnitude residual| < 1e-8 km/s",

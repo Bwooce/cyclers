@@ -53,7 +53,12 @@ def main() -> None:
         for i, r in enumerate(recs):
             _, cycle = ENUM.parse_cycle_key(r["key"], system, a, b)
             x = np.asarray(r["x_days"]) * DAY
-            ass = assess(system, Zero(cycle, x, r["residual_kms"]))
+            try:
+                ass = assess(system, Zero(cycle, x, r["residual_kms"]))
+            except Exception as exc:  # recorded, never counted as a fail
+                fz.write(json.dumps(r | {"status": "error", "error": repr(exc)}) + "\n")
+                print(f"assessment ERROR {r['key']}: {exc!r}", flush=True)
+                continue
             rep = ass.report
             new = r | {
                 "status": ass.status,
@@ -69,7 +74,8 @@ def main() -> None:
                 "reassessed": True,
             }
             if new["status"] != r["status"] or (
-                (r["max_encounter_miss_km"] >= 1.0) != (new["max_encounter_miss_km"] >= 1.0)
+                (r.get("max_encounter_miss_km", 0.0) >= 1.0)
+                != (new["max_encounter_miss_km"] >= 1.0)
             ):
                 changed += 1
             fz.write(json.dumps(new, default=float) + "\n")

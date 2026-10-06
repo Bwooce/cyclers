@@ -273,27 +273,55 @@ def main(preflight: Callable[..., None] = _preflight_942, x1: bool = False) -> N
     done = set()
     if done_path.exists():
         for line in done_path.read_text().splitlines():
-            done.add(json.loads(line)["key"])
+            d = json.loads(line)
+            if not d.get("error"):  # errored structures are retried on resume
+                done.add(d["key"])
     t0 = time.time()
     n_new = 0
-    n_zero = n_pass = 0
+    n_zero = n_pass = n_err = n_zero_err = 0
     for i, (k, c) in enumerate(todo):
         key = cycle_key(c, k)
         if key in done:
             continue
         ts = time.time()
-        zeros = solve_structure(
-            system,
-            c,
-            phase_period_s=syn,
-            n_phase=args.n_phase,
-            n_split=args.n_split,
-            n_refine=args.n_refine,
-        )
+        try:
+            zeros = solve_structure(
+                system,
+                c,
+                phase_period_s=syn,
+                n_phase=args.n_phase,
+                n_split=args.n_split,
+                n_refine=args.n_refine,
+            )
+        except Exception as exc:  # one structure must never kill the cell
+            n_err += 1
+            with done_path.open("a") as fd:
+                fd.write(json.dumps({"key": key, "k": k, "error": repr(exc)}) + "\n")
+            log(f"[{i + 1}/{len(todo)}] {key}: ERROR in solve: {exc!r} (errors={n_err})")
+            continue
         statuses = []
         with (args.out / "zeros.jsonl").open("a") as fz:
             for z in zeros:
-                ass = assess(system, z)
+                try:
+                    ass = assess(system, z)
+                except Exception as exc:  # recorded, never counted as a fail
+                    n_zero_err += 1
+                    fz.write(
+                        json.dumps(
+                            {
+                                "key": key,
+                                "k": k,
+                                "x_days": (z.x / DAY).tolist(),
+                                "residual_kms": z.residual_kms,
+                                "status": "error",
+                                "error": repr(exc),
+                            }
+                        )
+                        + "\n"
+                    )
+                    statuses.append("error")
+                    log(f"    zero assessment ERROR in {key}: {exc!r}")
+                    continue
                 rep = ass.report
                 rec = {
                     "key": key,
@@ -336,7 +364,10 @@ def main(preflight: Callable[..., None] = _preflight_942, x1: bool = False) -> N
             f"[{i + 1}/{len(todo)}] {key}: {len(zeros)} zeros {statuses.count('pass')} pass "
             f"({time.time() - ts:.1f}s) totals zeros={n_zero} pass={n_pass} eta {eta / 60:.1f} min"
         )
-    log(f"DONE structures={len(todo)} zeros={n_zero} pass={n_pass}")
+    log(
+        f"DONE structures={len(todo)} zeros={n_zero} pass={n_pass} "
+        f"structure_errors={n_err} zero_assessment_errors={n_zero_err}"
+    )
 
 
 if __name__ == "__main__":

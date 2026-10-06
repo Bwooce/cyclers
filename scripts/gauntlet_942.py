@@ -229,6 +229,14 @@ def main() -> None:
     args = ap.parse_args()
     system, a, b = ENUM.cell_system(args.cell)
     n_struct, recs, groups, passing = ANALYSE.collect(args.dirs)
+    n_struct_err = sum(
+        1
+        for d in args.dirs
+        if (d / "structures.jsonl").exists()
+        for line in (d / "structures.jsonl").open()
+        if json.loads(line).get("error")
+    )
+    n_zero_err = sum(1 for r in recs if r.get("status") == "error")
     print(
         f"cell {args.cell}: structures {n_struct}, zeros {len(recs)}, physical {len(groups)}, "
         f"gate-passing {len(passing)}"
@@ -294,12 +302,18 @@ def main() -> None:
         "n_zeros": len(recs),
         "n_physical": len(groups),
         "n_gate_passing": len(passing),
+        "n_structure_errors": n_struct_err,
+        "n_zero_assessment_errors": n_zero_err,
         "catalogue_rows_same_pair": cat,
         "empty_regions_same_pair": reg,
         "candidates": results,
     }
     args.out.write_text(json.dumps(out, indent=1, default=float))
     print(f"catalogue rows on this pair: {len(cat)}; registry entries: {len(reg)}")
+    print(
+        f"ERRORS: structures {n_struct_err} (not searched, NOT empty), "
+        f"zero assessments {n_zero_err}"
+    )
 
 
 if __name__ == "__main__":

@@ -18,6 +18,8 @@ from pathlib import Path
 
 
 def flyby_seq(rec: dict) -> tuple[tuple[str, float, float], ...]:
+    if "flybys" not in rec:
+        return ()
     return tuple(
         (f["body"], round(float(f["vinf_kms"]), 3), round(float(f["turn_deg"]), 1))
         for f in rec["flybys"]
@@ -52,6 +54,8 @@ def collect(dirs: list[Path]) -> tuple[int, list[dict], dict[tuple, dict], dict[
             recs += [json.loads(line) for line in zp.open()]
     groups: dict[tuple, dict] = {}
     for r in recs:
+        if r.get("status") == "error":
+            continue
         seq = flyby_seq(r)
         fwd, rev = canonical(seq), canonical(tuple(reversed(seq)))
         key = (r["k"], min(fwd, rev))
@@ -68,7 +72,18 @@ def main() -> None:
     args = ap.parse_args()
     n_struct, recs, groups, passing = collect(args.dirs)
     status = Counter(r["status"] for r in recs)
+    n_struct_err = sum(
+        1
+        for d in args.dirs
+        if (d / "structures.jsonl").exists()
+        for line in (d / "structures.jsonl").open()
+        if json.loads(line).get("error")
+    )
     print(f"structures {n_struct}; zeros {len(recs)}; status {dict(status)}")
+    print(
+        f"ERRORS: structures that errored {n_struct_err} (not searched, NOT empty); "
+        f"zero assessments that errored {status.get('error', 0)}"
+    )
     print(f"physical cyclers (merged incl. mirrors) {len(groups)}; with a gate pass {len(passing)}")
     out = []
     for (k, seq), g in sorted(passing.items(), key=lambda kv: (kv[0][0], kv[0][1])):
