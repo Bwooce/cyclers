@@ -64,7 +64,7 @@ free returns.
 | # | Work | Held? | Earth-Venus content | Collides with ev-C? |
 |---|---|---|---|---|
 | 1 | Hollister 1969, JSR 6(4):366 (10.2514/3.29664); Hollister & Menning 1970, JSR 7(10):1193 (10.2514/3.30134); Menning 1968 thesis | held | the Earth-Venus cycler families with both bodies working (the in-run control) | no: ev-C is Earth-massless, outside the H&M itineraries (sec. 6.7) |
-| 2 | Ross, D., "A cycler-quartet between Venus and Sol/Terra L1", academia.edu 45489864 | not held | "2L4": a Venus-hosted, 2-synodic Venus-"Earth" (L1) cycler; legs 159 d and 123 d | POSSIBLE class collision (sec. 2); acquire |
+| 2 | Ross, D. R., "A cycler-quartet between Venus and Sol/Terra L1", academia.edu 45489864 | held (2026-10-06) | "2L4": powered, Venus-hosted, 2 synods, reaches only STL1 (aphelion 0.979 AU); v_inf V 3.864 km/s; legs 159/123 d | NO (sec. 5): nearest unrefereed class relative |
 | 3 | Russell & Strange 2007 (AAS 07-118) / 2009 (JGCD 32(1)) | held | the one-body architecture; VenMar#45 (Venus hosts, Mars massless); no Earth-Venus set | no; the R1(b) gate is OPEN against them |
 | 4 | Jones, Hernandez & Jesick 2017 (AAS 17-577) | held | VEM triple cyclers at low v_inf (seeds below 5 km/s at Earth and Mars) | no (v_inf far from 9.07/13.17) |
 | 5 | Hughes, Edelman, Saikia & Longuski 2015, "Fast Free Returns to Mars and Venus with Applications to Inspiration Mars", JSR 52(6):1712-1735 (10.2514/1.A33293) | not held (the 2014 AIAA 2014-4109 version is held) | one-shot Earth-Venus-Earth free returns for a human Venus flyby | no (not periodic; Earth hosts) |
@@ -83,3 +83,17 @@ items; none has an Earth-Venus cycler.
 - Until then, record ev-C as "candidate, pending owner adjudication, NOT novel", with the 2L4 manuscript
   as a possible class precedent (unrefereed).
 - **Acquire** Hughes et al. 2015 JSR and Hughes 2016 PhD for completeness (low collision risk).
+
+## 5. Resolution 2026-10-06: the Ross manuscript was read (batch 16) - NO COLLISION
+
+The owner supplied the manuscript. Digest: `2026-10-06-digest-ross-2021-cycler-quartet-venus-sol-terra-l1.md`.
+- "2L4" is POWERED ("needs adjustment at aphelion", abstract).
+- Its aphelion of 0.979 AU is inside Earth's perihelion, so it never encounters Earth. It targets
+  Sun-Earth L1.
+- Its Venus flyby as stated is infeasible: a 108.9-deg turn at v_inf 3,864 m/s needs closest approach
+  4,983 km from the centre, inside Venus (I re-derived 4,983 km).
+- ev-C (ballistic, Venus-hosted, a real Earth encounter, v_inf V 13.17 / E 9.07 km/s) is therefore NOT a
+  collision. The 2-synod period and the 123-d leg match are a same-period coincidence.
+- **Verdict: no collision; Ross 2L4 is the nearest unrefereed class relative.**
+- Hughes et al. 2015 JSR was also read (`2026-10-06-digest-hughes-et-al-2015-fast-free-returns-mars-venus.md`):
+  one-shot EVE free returns, no collision with ev-A or ev-C. The ev-C search found no refereed collision.

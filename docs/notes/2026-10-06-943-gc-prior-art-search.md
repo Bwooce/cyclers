@@ -99,3 +99,10 @@ Titan and methods papers.
   - Non-resonant and non-repeating, so not a cycler; no collision with gc-1 or gc-2.
 - The gc-2 / GanCal#1/#5 flag (sec. 2) was sent to twobody-gen-opus at the lead's request, with the
   pre-registered Callisto-mass-homotopy question.
+
+## 6. Follow-up 2026-10-06 (batch 16)
+
+- Lantukh & Russell 2012 (AIAA 2012-4749), row 8, was read
+  (`2026-10-06-digest-lantukh-russell-2012-n-pi-transfers-tour-design.md`). It covers same-body n-pi
+  sequences in normalised units, never names Ganymede, Callisto or Europa, and has no cycler. **No
+  collision.**
