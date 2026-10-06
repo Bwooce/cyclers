@@ -860,6 +860,25 @@ Full-rev fix (next, approved): on the real ephemeris each full-rev leg becomes a
 - Its |V_inf| is fixed by the junction.
 - Then C4 (GanCal#1) and C3 again must pass by the re-fly before gc-1, ev-A or ev-B are judged.
 
+### 6.17 Full-rev fix, and the runs that depend on it: PRE-REGISTERED 2026-10-06, before running
+
+Fix (`scripts/run_942_realeph_chain.py`, `chain_eval`): every fixed leg (full-rev, half-rev) is a shooting
+leg.
+- Unknowns: the departure direction (theta, phi about the body velocity) and the flight time tau.
+- |V_inf| is fixed by the junction.
+- Equations: the arrival position equals the body's position (3 residuals; 1 km counts as 1e-3 km/s).
+- The free-direction minimax is gone on the real ephemeris: the directions are solved for.
+- The re-fly checker now re-flies EVERY segment (Lambert and shot) with DOP853.
+- Unit check: gc-1, single cycle, epoch 0 converges at lambda = 1 with a re-fly miss of 3e-6 km.
+
+Runs, all with the same settings as sec. 6.13 (5 epochs; rung pass = lambda 1 reached, every interior
+flyby passes, and the re-fly miss is < 1 km at every segment):
+1. C4 GanCal#1 (published "ballistic over 10 cycles", R-S 2007 Fig. 9b): cell gc, 10 cycles, jup365.
+   EXPECTED pass. Dates from the gc zero: 0.991426, 26.049946, 35.954310 d.
+2. C3 Hollister 1H (published inclined-elliptic periodic): cell ev, 5 cycles, Standish. EXPECTED pass.
+3. Only if C4 and C3 pass: gc-1 (10 cycles), ev-A (5), ev-B (4).
+4. Regression: C1 VenMar#45, epoch 0 only (Lambert-only path unchanged).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

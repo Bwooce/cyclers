@@ -5,7 +5,10 @@ cycle key, including full-revolution and half-revolution legs, and to the Jovian
 
 A chain of n consecutive cycles is one Cycle of n x (legs). The first Lambert-leg start (the
 epoch) is fixed; every other start date and the chain period (hence the final arrival) are free,
-as in scripts/run_942_vm2_realeph.py. The wrap junction is the H&M closure "B"
+as in scripts/run_942_vm2_realeph.py. Fixed legs (full-rev, half-rev) are SHOT (2026-10-06 fix):
+direction (2 angles) and flight time are unknowns and the arrival must be at the body (3
+equations), so they close on the real ephemeris (the earlier version timed them at the ideal
+period and they did not close). The wrap junction is the H&M closure "B"
 magnitude match; it is a closure condition, NOT a flyby, so the wrap block's flybys are not
 gated. The planets/moons are a lambda-blend (position and velocity) of the ideal circular model,
 rotated into the bodies' mean orbital plane and phase-matched at the epoch, with the real
@@ -39,19 +42,22 @@ from scipy.optimize import least_squares
 
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.lambert import LambertError, lambert
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
     Cycle,
+    Flyby,
     FlybyBody,
     LambertLeg,
     MeanElementSystem,
     Vec,
     _blocks,
-    date_residual,
     eval_lambert_legs,
+    fixed_duration_s,
     gate_cycle,
+    kepler_step,
     optimise_block,
 )
 
@@ -156,25 +162,141 @@ class Blend:
         return np.eye(3)
 
 
-def chain_residual(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
-    """Date residual of the open chain: dates [x0, y[:-1]] (days), chain period y[-1] (days)."""
-    cyc = Cycle(legs, float(y[-1]) * DAY)
-    r = date_residual(sysm, cyc, np.concatenate([[x0], np.asarray(y[:-1]) * DAY]))  # type: ignore[arg-type]
-    n = sum(isinstance(lg, LambertLeg) for lg in legs)
-    return np.full(n, 1e3) if r is None else r
+def _fixed_basis(w: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    w_hat = w / np.linalg.norm(w)
+    ref = np.array([0.0, 0.0, 1.0])
+    e1 = ref - (ref @ w_hat) * w_hat
+    e1 /= np.linalg.norm(e1)
+    return w_hat, e1, np.cross(w_hat, e1)
 
 
-def interior_gate(sysm: Blend, cycle: Cycle, x: np.ndarray) -> dict:
-    legs = eval_lambert_legs(sysm, cycle, x)  # type: ignore[arg-type]
-    if legs is None:
-        return {"status": "lambert-fail"}
-    blocks = _blocks(sysm, cycle, legs)  # type: ignore[arg-type]
-    fl = []
-    for blk in blocks[:-1]:  # the last block is the closure, not a flyby
+def _dir(theta: float, phi: float, w: np.ndarray) -> np.ndarray:
+    w_hat, e1, e2 = _fixed_basis(w)
+    return (
+        math.sin(theta) * math.cos(phi) * e1
+        + math.sin(theta) * math.sin(phi) * e2
+        + math.cos(theta) * w_hat
+    )
+
+
+def _angles(u: np.ndarray, w: np.ndarray) -> tuple[float, float]:
+    w_hat, e1, e2 = _fixed_basis(w)
+    uh = u / np.linalg.norm(u)
+    return math.acos(max(-1.0, min(1.0, float(uh @ w_hat)))), math.atan2(
+        float(uh @ e2), float(uh @ e1)
+    )
+
+
+#: Position residual scale: 1 km of arrival miss counts as 1e-3 km/s of V_inf mismatch.
+POS_SCALE_KM = 1000.0
+
+
+@dataclass
+class ChainEval:
+    residual: np.ndarray
+    block_flybys: list[list[Flyby]]
+    segments: list[tuple[str, float, np.ndarray, str, float]]  # (from, t0, v0_sc, to, t1)
+
+
+def _res(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
+    ev = chain_eval(sysm, legs, x0, y)
+    n_fix = sum(not isinstance(lg, LambertLeg) for lg in legs)
+    n_lam = len(legs) - n_fix
+    return np.full(n_lam + 3 * n_fix, 1e3) if ev is None else ev.residual
+
+
+def chain_eval(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> ChainEval | None:
+    """Evaluate the open chain with SHOT fixed legs (full-rev / half-rev).
+
+    ``y`` (days, rad): starts of Lambert legs 2..N (days), the chain period (days), then
+    (theta, phi, tau_days) for each fixed leg in chain order. Each fixed leg leaves its body
+    with the junction's |V_inf| in direction (theta, phi) about the body velocity and is
+    propagated for tau; its arrival must be at the body (3 residuals). Each block ends with the
+    magnitude match against the next Lambert leg (1 residual). Square system.
+    """
+    lam_idx = [i for i, lg in enumerate(legs) if isinstance(lg, LambertLeg)]
+    fix_idx = [i for i, lg in enumerate(legs) if not isinstance(lg, LambertLeg)]
+    nl = len(lam_idx)
+    dates = [x0, *(np.asarray(y[: nl - 1]) * DAY).tolist()]
+    period = float(y[nl - 1]) * DAY
+    fp = {i: y[nl + 3 * q : nl + 3 * q + 3] for q, i in enumerate(fix_idx)}
+    res: list[float] = []
+    block_flybys: list[list[Flyby]] = []
+    segments: list[tuple[str, float, np.ndarray, str, float]] = []
+    lam_v: list[tuple[np.ndarray, np.ndarray, float, float]] = []
+    for j in range(nl):
+        i0, i1 = lam_idx[j], lam_idx[(j + 1) % nl]
+        between = []
+        q = (i0 + 1) % len(legs)
+        while q != i1:
+            between.append(q)
+            q = (q + 1) % len(legs)
+        t_next = dates[j + 1] if j < nl - 1 else dates[0] + period
+        t_arr = t_next - sum(float(fp[q][2]) * DAY for q in between)
+        leg = legs[i0]
+        if t_arr <= dates[j]:
+            return None
+        r1, w1 = sysm.state(leg.frm, dates[j])
+        r2, w2 = sysm.state(leg.to, t_arr)
+        try:
+            sols = lambert(r1, r2, t_arr - dates[j], mu=sysm.mu, max_revs=leg.nrev)
+        except (LambertError, ValueError):
+            return None
+        sol = next((s_ for s_ in sols if s_.n_revs == leg.nrev and s_.branch == leg.branch), None)
+        if sol is None:
+            return None
+        lam_v.append((sol.v1 - w1, sol.v2 - w2, dates[j], t_arr))
+        segments.append((leg.frm, dates[j], sol.v1, leg.to, t_arr))
+    for j in range(nl):
+        i0, i1 = lam_idx[j], lam_idx[(j + 1) % nl]
+        body = legs[i0].to
+        prev = lam_v[j][1]
+        t = lam_v[j][3]
+        fl: list[Flyby] = []
+        q = (i0 + 1) % len(legs)
+        while q != i1:
+            theta, phi, tau = float(fp[q][0]), float(fp[q][1]), float(fp[q][2]) * DAY
+            if tau <= 0.0:
+                return None
+            r, w = sysm.state(body, t)
+            u = float(np.linalg.norm(prev)) * _dir(theta, phi, w)
+            fl.append(Flyby(body, t, prev, u))
+            r_end, v_end = kepler_step(r, w + u, tau, sysm.mu)
+            rb, wb = sysm.state(body, t + tau)
+            res.extend(((r_end - rb) / POS_SCALE_KM).tolist())
+            segments.append((body, t, w + u, body, t + tau))
+            prev = v_end - wb
+            t += tau
+            q = (q + 1) % len(legs)
+        v_out = lam_v[(j + 1) % nl][0]
+        fl.append(Flyby(body, t, prev, v_out))
+        res.append(float(np.linalg.norm(prev) - np.linalg.norm(v_out)))
+        block_flybys.append(fl)
+    return ChainEval(np.asarray(res), block_flybys, segments)
+
+
+def initial_fixed_params(
+    sysm: Blend, cycle_ideal: Cycle, x_ideal: np.ndarray
+) -> list[tuple[float, float, float]]:
+    """(theta, phi, tau_days) per fixed leg from the ideal (lambda = 0) minimax directions."""
+    legs = eval_lambert_legs(sysm, cycle_ideal, x_ideal)  # type: ignore[arg-type]
+    assert legs is not None
+    out = []
+    for blk in _blocks(sysm, cycle_ideal, legs):  # type: ignore[arg-type]
+        if not blk.fixed:
+            continue
         res = optimise_block(sysm, blk)  # type: ignore[arg-type]
-        if res is None:
-            return {"status": "no-directions"}
-        fl.extend(res[0])
+        assert res is not None
+        fl = res[0]
+        for i, (leg, t0) in enumerate(blk.fixed):
+            _, w = sysm.state(blk.body, t0)
+            th, ph = _angles(fl[i].vinf_out, w)
+            out.append((th, ph, fixed_duration_s(sysm, leg) / DAY))  # type: ignore[arg-type]
+    return out
+
+
+def gate_eval(sysm: Blend, ev: ChainEval) -> dict:
+    fl = [f for blk in ev.block_flybys[:-1] for f in blk]  # last block is the closure
     rep = gate_cycle(sysm, fl)  # type: ignore[arg-type]
     by_body: dict[str, float] = {}
     for f, e in zip(fl, rep.gate.encounters, strict=True):
@@ -223,6 +345,7 @@ def main() -> None:
     _, one = ENUM.parse_cycle_key(args.key, circ, a, b)
     t_cyc = one.period_s
     legs_chain = one.legs * args.n_cycles
+    n_lam = sum(isinstance(lg, LambertLeg) for lg in legs_chain)
     x1 = np.array([float(v) for v in args.x_days.split(",")]) * DAY
     xs = np.concatenate([x1 + i * t_cyc for i in range(args.n_cycles)])
     real = real_ephemeris(args.cell, args.real)
@@ -261,16 +384,21 @@ def main() -> None:
         rot = in_plane_longitude(real, basis, a, te) - th[a]
         t_shift = te - x1[0]
         sysm = Blend(circ, real, basis, t_shift, rot, 0.0)
-        # Unknowns: every Lambert start except the first (the epoch is fixed) plus the
-        # chain period (the final arrival is free); closure B at the wrap. Square.
+        # Unknowns: every Lambert start except the first (the epoch is fixed), the chain
+        # period (the final arrival is free) and (theta, phi, tau) per fixed leg; closure B
+        # at the wrap. Square.
         x0 = xs[0] + t_shift
-        y = np.concatenate([xs[1:] + t_shift, [args.n_cycles * t_cyc]]) / DAY
+        cyc_ideal = Cycle(legs_chain, args.n_cycles * t_cyc)
+        fixed0 = initial_fixed_params(sysm, cyc_ideal, xs + t_shift)
+        y = np.concatenate(
+            [(xs[1:] + t_shift) / DAY, [args.n_cycles * t_cyc / DAY], np.ravel(fixed0)]
+        )
         lam, dlam, lam_done = 0.0, 0.1, 0.0
         steps = []
         while True:
             sysm.lam = lam
             sol = least_squares(
-                lambda yy, s_=sysm, x0_=x0: chain_residual(s_, legs_chain, x0_, yy),
+                lambda yy, s_=sysm, x0_=x0: _res(s_, legs_chain, x0_, yy),
                 y,
                 method="lm",
                 xtol=1e-14,
@@ -278,17 +406,16 @@ def main() -> None:
                 gtol=1e-14,
                 max_nfev=50 * len(y),
             )
-            res = chain_residual(sysm, legs_chain, x0, sol.x)
+            ev = chain_eval(sysm, legs_chain, x0, sol.x)
+            res = ev.residual if ev is not None else np.array([np.inf])
             conv = bool(np.max(np.abs(res)) < 1e-6)
-            cyc_now = Cycle(legs_chain, sol.x[-1] * DAY)
-            x_now = np.concatenate([[x0], sol.x[:-1] * DAY])
-            gate = interior_gate(sysm, cyc_now, x_now) if conv else {"status": "unconverged"}
+            gate = gate_eval(sysm, ev) if conv and ev is not None else {"status": "unconverged"}
             rec = {
                 "lambda": lam,
                 "converged": conv,
                 "max_residual_kms": float(np.max(np.abs(res))),
                 "max_date_shift_d": float(np.max(np.abs(sol.x - y))),
-                "chain_period_d": float(sol.x[-1]),
+                "chain_period_d": float(sol.x[n_lam - 1]),
             } | gate
             steps.append(rec)
             print(
@@ -321,7 +448,8 @@ def main() -> None:
                     s["lambda"] == 1.0 and s.get("status") == "pass" for s in conv_steps
                 ),
                 "steps": steps,
-                "final_x_days": [x0 / DAY, *y.tolist()],
+                "x0_days": x0 / DAY,
+                "final_y": y.tolist(),
             }
         )
         (args.out / "realeph_chain.json").write_text(json.dumps(out, indent=1, default=float))

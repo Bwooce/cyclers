@@ -24,13 +24,6 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.constants import SECONDS_PER_DAY
-from cyclerfinder.search.two_working_body import (
-    Cycle,
-    _blocks,
-    eval_lambert_legs,
-    fixed_duration_s,
-    optimise_block,
-)
 
 DAY = SECONDS_PER_DAY
 REPO = Path(__file__).resolve().parents[1]
@@ -70,40 +63,27 @@ def main() -> None:
     _, one = CHAIN.ENUM.parse_cycle_key(args.key, circ, a, b)
     legs_chain = one.legs * args.n_cycles
     real = CHAIN.real_ephemeris(args.cell, args.real)
+    n_lam = sum(isinstance(lg, CHAIN.LambertLeg) for lg in legs_chain)
     for path in args.chain:
         for ep in json.loads(path.read_text()):
             if not ep["rung_pass"]:
                 print(f"epoch JD {ep['epoch_jd']:.1f}: rung not passed, skipped")
                 continue
-            xs = ep["final_x_days"]
-            x0, y = xs[0], np.asarray(xs[1:])
-            cyc = Cycle(legs_chain, float(y[-1]) * DAY)
-            x = np.concatenate([[x0], y[:-1]]) * DAY
             sysm = CHAIN.Blend(circ, real, np.eye(3), 0.0, 0.0, 1.0)  # lambda = 1: real only
-            legs = eval_lambert_legs(sysm, cyc, x)
-            assert legs is not None
+            ev = CHAIN.chain_eval(sysm, legs_chain, ep["x0_days"] * DAY, np.asarray(ep["final_y"]))
+            assert ev is not None
             worst_miss = worst_dv = 0.0
-            for ev, li in zip(legs, cyc.lambert_index, strict=True):
-                leg = cyc.legs[li]
-                r0, w0 = real.state(leg.frm, ev.t_dep)
-                r1, v1 = fly(sysm.mu, r0, w0 + ev.vinf_dep, ev.t_arr - ev.t_dep)
-                rb, wb = real.state(leg.to, ev.t_arr)
+            for frm, t0, v0, to, t1 in ev.segments:
+                r0, _ = real.state(frm, t0)
+                r1, v1 = fly(sysm.mu, r0, v0, t1 - t0)
+                rb, _ = real.state(to, t1)
+                _, vk = CHAIN.kepler_step(r0, v0, t1 - t0, sysm.mu)
                 worst_miss = max(worst_miss, float(np.linalg.norm(r1 - rb)))
-                worst_dv = max(worst_dv, float(np.linalg.norm((v1 - wb) - ev.vinf_arr)))
-            for blk in _blocks(sysm, cyc, legs)[:-1]:
-                res = optimise_block(sysm, blk)
-                assert res is not None
-                fl = res[0]
-                for i, (leg, t0) in enumerate(blk.fixed):
-                    dt = fixed_duration_s(sysm, leg)
-                    r0, w0 = real.state(blk.body, t0)
-                    r1, v1 = fly(sysm.mu, r0, w0 + fl[i].vinf_out, dt)
-                    rb, wb = real.state(blk.body, t0 + dt)
-                    worst_miss = max(worst_miss, float(np.linalg.norm(r1 - rb)))
-                    worst_dv = max(worst_dv, float(np.linalg.norm((v1 - wb) - fl[i + 1].vinf_in)))
+                worst_dv = max(worst_dv, float(np.linalg.norm(v1 - vk)))
             print(
-                f"epoch JD {ep['epoch_jd']:.1f}: legs {len(legs)}, DOP853 max arrival miss "
-                f"{worst_miss:.3e} km, max V_inf vector error {worst_dv:.3e} km/s"
+                f"epoch JD {ep['epoch_jd']:.1f}: segments {len(ev.segments)} (Lambert {n_lam}), "
+                f"DOP853 max arrival miss {worst_miss:.3e} km, "
+                f"max velocity difference vs the solver's conic {worst_dv:.3e} km/s"
             )
 
 
