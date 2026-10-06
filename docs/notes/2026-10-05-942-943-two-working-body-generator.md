@@ -1009,6 +1009,30 @@ script (fresh cache); the ratio now scales as expected (201 at s = 0.001, 0.259 
 - Not tested: a continuation in a continuous-gravity model (CR4BP or n-body), where encounters are not
   fixed in number. That is an owner choice.
 
+### 6.22 Direct lambda = 1 route for the Standish full-rev rows: PRE-REGISTERED 2026-10-06 (before running)
+
+Why: ramp continuation folds for Hollister 1H, yet 1H-family orbits exist at lambda = 1 (sec. 6.18). So
+fold-based negatives mean nothing for ev-A or ev-B, and those need a route that does not depend on the
+homotopy path. The route itself must first be controlled (advisor point).
+
+Route (`--direct`, `scripts/run_942_realeph_chain.py`): one date solve at lambda = 1 (the real-period
+Standish mean-element model, where a full-rev leg timed at the Keplerian period is exact), started from
+the ideal-model dates phase-matched at each epoch. No continuation; nothing else changes. Same 5 epochs.
+
+Re-fly for ramp-mode output (`scripts/check_942_realeph_chain.py`): at lambda = 1 the ramped model is
+the mean-element system (checked to 1e-5 km over 16 yr), so every leg, full-revs included, is re-flown
+with DOP853 against it (`gauntlet_942.cross_check`). The junction |V_inf| mismatch is printed too (it
+includes the chain wrap, which closes in magnitude only).
+
+Control D1, Hollister 1H (k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s, x 474.597193, 1100.618380 d), cell ev,
+5 cycles:
+- PASS if at least one epoch converges (date residual < 1e-6), passes the gate on the interior flybys,
+  and re-flies with miss < 1 km and V_inf vector error < 1e-6 km/s. (A published 1H-family orbit exists
+  at lambda = 1, sec. 6.18, so a sound route should find one.) The landing solution's V_inf is compared
+  with H&M orbit 1 (descriptive).
+- If D1 fails at every epoch, the route cannot judge ev-A or ev-B, and they stay "not judged".
+Then, only if D1 passes, with the same settings and criteria: ev-A (5 cycles) and ev-B (4 cycles).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

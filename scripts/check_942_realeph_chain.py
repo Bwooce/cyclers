@@ -24,6 +24,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.constants import SECONDS_PER_DAY
+from cyclerfinder.search.two_working_body import cycle_flybys
 
 DAY = SECONDS_PER_DAY
 REPO = Path(__file__).resolve().parents[1]
@@ -39,6 +40,7 @@ def _load(name: str, path: Path) -> Any:
 
 
 CHAIN = _load("run_942_realeph_chain", REPO / "scripts" / "run_942_realeph_chain.py")
+GAUNTLET = _load("gauntlet_942", REPO / "scripts" / "gauntlet_942.py")
 
 
 def fly(mu: float, r0: np.ndarray, v0: np.ndarray, dt: float) -> tuple[np.ndarray, np.ndarray]:
@@ -68,6 +70,24 @@ def main() -> None:
         for ep in json.loads(path.read_text()):
             if not ep["rung_pass"]:
                 print(f"epoch JD {ep['epoch_jd']:.1f}: rung not passed, skipped")
+                continue
+            if ep.get("mode") == "ramp":
+                # Ramp mode stores dates only; at lambda = 1 the ramped model IS the
+                # Standish mean-element system (checked to 1e-5 km), so re-fly against it:
+                # Lambert legs from the dates, full-rev legs from the minimax directions.
+                y = np.asarray(ep["final_y_dates"])
+                x = np.concatenate([[ep["x0_days"]], y[:-1]]) * DAY
+                cyc = CHAIN.Cycle(legs_chain, float(y[-1]) * DAY)
+                flybys = cycle_flybys(real, cyc, x)
+                assert flybys is not None
+                cc = GAUNTLET.cross_check(real, cyc, x, flybys)
+                print(
+                    f"epoch JD {ep['epoch_jd']:.1f}: ramp mode, DOP853 max arrival miss "
+                    f"{cc['max_arrival_miss_km']:.3e} km, max V_inf vector error "
+                    f"{cc['max_vinf_vector_error_kms']:.3e} km/s (all legs, full-revs included), "
+                    f"max junction |V_inf| mismatch {cc['max_junction_mismatch_kms']:.3e} km/s "
+                    f"(includes the chain wrap, closed in magnitude only)"
+                )
                 continue
             sysm = CHAIN.Blend(circ, real, np.eye(3), 0.0, 0.0, 1.0)  # lambda = 1: real only
             ev = CHAIN.chain_eval(sysm, legs_chain, ep["x0_days"] * DAY, np.asarray(ep["final_y"]))

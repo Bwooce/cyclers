@@ -441,6 +441,9 @@ def main() -> None:
     ap.add_argument("--shoot-nfev-per-var", type=int, default=30)
     ap.add_argument("--shoot-method", default="lm", choices=["lm", "trf"])
     ap.add_argument("--shoot-jac", default="dense", choices=["dense", "sparse"])
+    # One solve at lambda = 1 from the ideal-model dates (no continuation); a seeding route that
+    # does not depend on the homotopy path, for families whose continuation folds.
+    ap.add_argument("--direct", action="store_true")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -514,7 +517,7 @@ def main() -> None:
         y = np.concatenate([(xs[1:] + t_shift) / DAY, [args.n_cycles * t_cyc / DAY]])
         r0 = date_chain_residual(sysm, legs_chain, x0, y)
         assert float(np.max(np.abs(r0))) < 1e-6, f"lambda=0 residual {np.max(np.abs(r0))}"
-        lam, dlam, lam_done = 0.0, 0.1, 0.0
+        lam, dlam, lam_done = (1.0 if args.direct else 0.0), 0.1, 0.0
         steps = []
         while True:
             sysm.lam = lam
@@ -555,6 +558,8 @@ def main() -> None:
                 lam_done = lam
                 lam = min(1.0, lam + dlam)
             else:
+                if args.direct:
+                    break
                 dlam /= 2.0
                 if dlam < 1.0 / 640:
                     break
