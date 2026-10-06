@@ -1620,6 +1620,34 @@ Classification:
 - With 6.32 (the absolute-time shoot stalled at 3.0e-5 at the same epoch), this confirms the 6.33
   diagnosis on a second published member.
 
+### 6.39 Real-ephemeris rung (d) for vm2n-2 and the em shortlist: PRE-REGISTERED 2026-10-06, before running
+
+Route: the 6.22 direct route on the Standish J2000 mean-element model (`--real mean --direct`, ramp
+mode; a full-rev leg timed at the Keplerian period is exact there). Its positive controls passed with
+the same criteria:
+- D1 (Hollister 1H, direct, 2/5);
+- the H&M endpoint orbits 1, 2, 11, 12, 13 and 15 (6.18);
+- C1 VenMar#45 (Lambert-only path).
+No control covers a tilted-circle half-rev on a non-circular body. em-3's verdict is therefore
+"uncontrolled leg type" whatever it shows.
+
+Runs (5 epochs from 2030-01-01, every 6.4 yr; `scripts/run_942_realeph_chain.py`):
+- vm2n-2: cell vm2, key k4|RV/2:1|RV/2:1|LV>M/0s|LM>V/0s, dates 282.4400200294492,
+  500.8850093560939; 5 cycles (18.3 yr).
+- em-1: cell em, k3|RE/2:1|LE>M/0s|LM>M/1l|LM>E/0s, dates 756.5892857142851, 1061.9235532084485,
+  2068.7907325058313; 3 cycles (19.2 yr).
+- em-2: cell em, k3|RE/1:1|RE/1:1|LE>M/0s|LM>M/1l|LM>E/0s, the same dates; 3 cycles.
+- em-3: cell em, k3|LE>E/1l|HE/1,0,a|LE>M/0s|LM>M/1l|LM>E/0s, dates 33.800011351304605,
+  748.8785600772824, 1062.738652758267, 2067.9756329569373; 3 cycles.
+
+PASS (the 6.22 criteria):
+- at >= 1 epoch the lambda = 1 date solve converges (< 1e-6);
+- every interior flyby passes the gate at the registry floors ("indeterminate" is not a pass);
+- the DOP853 re-fly against the mean-element system misses by < 1 km with V_inf vector error
+  < 1e-6 km/s.
+
+A non-converged epoch is not a negative. All results are on Standish fixed mean elements, not DE440.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
