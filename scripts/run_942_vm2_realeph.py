@@ -219,8 +219,9 @@ def main() -> None:
         y = np.array(base[1:]) + tshift / DAY
         d0 = base[0] + tshift / DAY
         steps = []
-        for k in range(args.steps + 1):
-            sysm.lam = k / args.steps
+        lam, dlam, lam_done = 0.0, 1.0 / args.steps, 0.0
+        while True:
+            sysm.lam = lam
             sol = least_squares(
                 lambda yy, s_=sysm, d_=d0: residual(s_, legs, d_, yy),
                 y,
@@ -228,13 +229,13 @@ def main() -> None:
                 xtol=1e-14,
                 ftol=1e-14,
                 gtol=1e-14,
-                max_nfev=200 * len(y),
+                max_nfev=50 * len(y),
             )
             res = residual(sysm, legs, d0, sol.x)
             ok = bool(np.max(np.abs(res)) < 1e-6)
             g = gate_chain(sysm, legs, np.concatenate([[d0], sol.x]))
             rec = {
-                "lambda": sysm.lam,
+                "lambda": lam,
                 "max_residual_kms": float(np.max(np.abs(res))),
                 "converged": ok,
                 "max_date_shift_d": float(np.max(np.abs(sol.x - y))),
@@ -242,16 +243,28 @@ def main() -> None:
             steps.append(rec)
             print(
                 f"{time.strftime('%H:%M:%S')} epoch {ie} (JD {te / DAY + 2440000:.1f}) "
-                f"lam={sysm.lam:.1f} conv={ok} res={rec['max_residual_kms']:.1e} "
+                f"lam={lam:.4f} conv={ok} res={rec['max_residual_kms']:.1e} "
                 f"gate={g.get('status')} V={g.get('max_venus_ratio', float('nan')):.3f} "
                 f"M={g.get('max_mars_ratio', float('nan')):.3f} "
                 f"shift={rec['max_date_shift_d']:.2f}d "
                 f"[elapsed {time.time() - t_run:.0f}s]",
                 flush=True,
             )
-            if not ok:
+            if ok:
+                y = sol.x
+                if lam >= 1.0:
+                    break
+                lam_done = lam
+                lam = min(1.0, lam + dlam)
+            else:
+                # step halving (amendment, results note sec. 6.8): retry from the last
+                # converged lambda with half the step, down to a 1/640 floor
+                dlam /= 2.0
+                if dlam < 1.0 / 640:
+                    break
+                lam = lam_done + dlam
+            if lam == 0.0:
                 break
-            y = sol.x
         out.append(
             {"epoch_jd": te / DAY + 2440000.0, "steps": steps, "final_dates_d": [d0, *y.tolist()]}
         )

@@ -656,6 +656,18 @@ All are "candidate, pending owner adjudication". NOT novel. Collision context:
 - Pisarevsky 2008: the method is general; its numbers are Earth-Mars only.
 - No Earth-Venus catalogue row other than the 15 H&M rows. The DOP853 re-fly miss is < 0.1 km for all 31.
 
+### 6.8 Amendment to (d), before its full run
+
+The first n = 7 attempt failed to converge at lambda = 0.1 at epoch 0 (residual 0.029 km/s), and the
+unconverged least-squares calls ran past the 10-minute limit. The single-cycle validation (n = 1) went to
+lambda = 1 in 10 steps.
+
+Numerical change only, with the criteria unchanged:
+- adaptive lambda step: 0.1, halved on failure, down to 1/640.
+- least-squares evaluation cap of 50 x unknowns.
+
+The last converged lambda is reported for each epoch.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
