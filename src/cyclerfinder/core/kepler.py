@@ -190,6 +190,10 @@ def _kepler_chi_newton_py(
     chi = chi0
     residual = 0.0
     converged = False
+    dx_last = inf
+    chi_par = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
+    if chi_par == 0.0:
+        chi_par = 1.0 if dt > 0.0 else -1.0
     for _iteration in range(_NEWTON_MAX_ITER):
         z = chi * chi * alpha
         c = stumpff_c_py(z)
@@ -227,17 +231,25 @@ def _kepler_chi_newton_py(
                 chi = chi_new
                 converged = True
                 break
-        if not (lo < chi_new < hi):
+        # Bisect (rtsafe rule, Press et al., Numerical Recipes, sec. 9.4) when the Newton step
+        # leaves the bracket or, once both sides are finite, is not at least halving the
+        # previous step: on the exponential (hyperbolic) side Newton otherwise creeps by
+        # about 1/sqrt(-alpha) per iteration.
+        both_finite = lo > -inf and hi < inf
+        if not (lo < chi_new < hi) or (both_finite and abs(chi_new - chi) > 0.5 * dx_last):
             if hi == inf:
-                chi_new = 2.0 * lo + 1.0
+                # far side still open: step out from lo by doubling, starting at the
+                # parabolic bootstrap (which has the sign of dt)
+                chi_new = max(2.0 * lo, chi_par)
             elif lo == -inf:
-                chi_new = 2.0 * hi - 1.0
+                chi_new = min(2.0 * hi, chi_par)
             else:
                 chi_new = 0.5 * (lo + hi)
                 if hi - lo <= _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
                     chi = chi_new
                     converged = True
                     break
+        dx_last = abs(chi_new - chi)
         chi = chi_new
     if not converged:
         return nan, 0.0, 0.0, 0.0, 0.0
@@ -297,6 +309,10 @@ def _kepler_chi_newton(
         hi = 0.0
     chi = chi0
     converged = False
+    dx_last = inf
+    chi_par = sqrt_mu * dt / r0_n if r0_n > 0.0 else 0.0
+    if chi_par == 0.0:
+        chi_par = 1.0 if dt > 0.0 else -1.0
     for _iteration in range(_NEWTON_MAX_ITER):
         z = chi * chi * alpha
         c = stumpff_c(z)
@@ -333,17 +349,25 @@ def _kepler_chi_newton(
                 chi = chi_new
                 converged = True
                 break
-        if not (lo < chi_new < hi):
+        # Bisect (rtsafe rule, Press et al., Numerical Recipes, sec. 9.4) when the Newton step
+        # leaves the bracket or, once both sides are finite, is not at least halving the
+        # previous step: on the exponential (hyperbolic) side Newton otherwise creeps by
+        # about 1/sqrt(-alpha) per iteration.
+        both_finite = lo > -inf and hi < inf
+        if not (lo < chi_new < hi) or (both_finite and abs(chi_new - chi) > 0.5 * dx_last):
             if hi == inf:
-                chi_new = 2.0 * lo + 1.0
+                # far side still open: step out from lo by doubling, starting at the
+                # parabolic bootstrap (which has the sign of dt)
+                chi_new = max(2.0 * lo, chi_par)
             elif lo == -inf:
-                chi_new = 2.0 * hi - 1.0
+                chi_new = min(2.0 * hi, chi_par)
             else:
                 chi_new = 0.5 * (lo + hi)
                 if hi - lo <= _NEWTON_TOL_DELTA_REL * max(abs(chi_new), 1.0):
                     chi = chi_new
                     converged = True
                     break
+        dx_last = abs(chi_new - chi)
         chi = chi_new
     if not converged:
         return nan, 0.0, 0.0, 0.0, 0.0

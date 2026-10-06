@@ -262,3 +262,87 @@ def test_shepperd_stm_near_radial_elliptic_963() -> None:
 
     r, v, _phi = shepperd_stm(_R0_963, _V0_963, _DT_963, _MU_963)
     _assert_matches_kepler_equation(r, v, _R0_963, _V0_963, _DT_963, _MU_963)
+
+
+# #963 follow-up regression (#943 ge enumeration, 2026-10-06): a hyperbolic Jovian arc whose
+# Vallado log guess has the wrong sign (chi0 = -1.46e4 for dt > 0). The first bracketed
+# version stepped to the far side and then crept along the exponential branch by about
+# 1/sqrt(-alpha) per Newton step until the iteration cap; the pre-#963 unbracketed Newton
+# converged here. Fixed by the rtsafe rule (bisect unless the Newton step halves the last one).
+_R0_963B = np.array([60975.13271686437, 668211.4577542809, 0.0])
+_V0_963B = np.array([-2.2680438045641047, -19.49165535209519, 0.0])
+_MU_963B = 126686535.0
+_DT_963B = 68880.05374745873
+
+
+def _hyperbolic_kepler_state(
+    r0: np.ndarray, v0: np.ndarray, dt: float, mu: float
+) -> tuple[np.ndarray, np.ndarray]:
+    """Independent hyperbolic reference: M = e sinh H - H by bisection, then the perifocal
+    state. Planar orbits only."""
+    rn = float(np.linalg.norm(r0))
+    h = float(r0[0] * v0[1] - r0[1] * v0[0])
+    a = 1.0 / (2.0 / rn - float(v0 @ v0) / mu)  # negative
+    ev = ((float(v0 @ v0) - mu / rn) * r0 - float(r0 @ v0) * v0) / mu
+    e = float(np.linalg.norm(ev))
+    w = float(np.arctan2(ev[1], ev[0]))
+    sinh_h0 = float(r0 @ v0) / (e * sqrt(-mu * a))
+    h0 = float(np.arcsinh(sinh_h0))
+    n = sqrt(mu / (-a) ** 3)
+    m = e * np.sinh(h0) - h0 + n * dt
+    lo, hi = -50.0, 50.0
+    for _ in range(300):
+        mid = 0.5 * (lo + hi)
+        if e * np.sinh(mid) - mid < m:
+            lo = mid
+        else:
+            hi = mid
+    hh = 0.5 * (lo + hi)
+    b = -a * sqrt(e * e - 1.0)
+    xp, yp = -a * (e - np.cosh(hh)), b * np.sinh(hh)
+    hdot = n / (e * np.cosh(hh) - 1.0)
+    vxp, vyp = a * np.sinh(hh) * hdot, b * np.cosh(hh) * hdot
+    sgn = 1.0 if h >= 0.0 else -1.0
+    cw, sw = np.cos(w), np.sin(w)
+    r = np.array([cw * xp - sw * sgn * yp, sw * xp + cw * sgn * yp, 0.0])
+    v = np.array([cw * vxp - sw * sgn * vyp, sw * vxp + cw * sgn * vyp, 0.0])
+    return r, v
+
+
+def test_kepler_hyperbolic_wrong_sign_guess_963() -> None:
+    r, v = propagate(_R0_963B, _V0_963B, _DT_963B, _MU_963B)
+    r_ref, v_ref = _hyperbolic_kepler_state(_R0_963B, _V0_963B, _DT_963B, _MU_963B)
+    assert float(np.linalg.norm(r - r_ref)) < 1e-9 * float(np.linalg.norm(r_ref))
+    assert float(np.linalg.norm(v - v_ref)) < 1e-9 * float(np.linalg.norm(v_ref))
+
+
+def test_kepler_hyperbolic_large_chi_sweep_963() -> None:
+    """Hyperbolic arcs from just above escape to 5x escape, started inbound (down to nearly
+    radial) and outbound, propagated forward and backward by up to 500 times r0 / v0, against
+    the hyperbolic Kepler equation. Each case runs in canonical units and in km units at a
+    Jovian scale (mu = 1.27e8 km^3/s^2, r0 = 6.7e5 km): the solver's absolute floors
+    (``max(|chi|, 1)``) make its behaviour unit-dependent, and the #943 failure occurred only
+    in km units."""
+    failures: list[str] = []
+    scales = ((1.0, 1.0), (126686535.0, 670987.7190261685))  # (mu, length unit)
+    for k_esc in (1.0001, 1.01, 1.2, 2.0, 5.0):
+        for gamma in (-1.55, -1.546, -1.2, -0.4, 0.0, 0.4, 1.2, 1.55):  # flight-path angle
+            for mult in (0.3, 1.41, 3.0, 40.0, 500.0):
+                for sign in (1.0, -1.0):
+                    for mu, length in scales:
+                        vn = k_esc * sqrt(2.0 * mu / length)
+                        r0 = np.array([length, 0.0, 0.0])
+                        v0 = vn * np.array([np.sin(gamma), np.cos(gamma), 0.0])
+                        dt = sign * mult * length / vn
+                        tag = f"k={k_esc} g={gamma} mult={mult} sign={sign} mu={mu:.3g}"
+                        try:
+                            r, v = propagate(r0, v0, dt, mu)
+                        except Exception as exc:
+                            failures.append(f"{tag}: {type(exc).__name__}")
+                            continue
+                        r_ref, v_ref = _hyperbolic_kepler_state(r0, v0, dt, mu)
+                        if float(np.linalg.norm(r - r_ref)) > 1e-8 * float(np.linalg.norm(r_ref)):
+                            failures.append(f"{tag}: r")
+                        if float(np.linalg.norm(v - v_ref)) > 1e-8 * float(np.linalg.norm(v_ref)):
+                            failures.append(f"{tag}: v")
+    assert not failures, f"{len(failures)} failing cases:\n" + "\n".join(failures[:40])
