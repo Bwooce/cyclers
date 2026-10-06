@@ -25,6 +25,12 @@ probe returning empty = image-only).
 - Tooling: `ocrmypdf` (PyPI, `uv add`) requires the `tesseract-ocr` +
   `ghostscript` system binaries (installed; helper `verify/ocr.py`, #400).
   No document stays a black-box image.
+- Language packs: `brew install tesseract-lang` (installed 2026-10-06, all languages, about 690 MB).
+  Use `-l rus+eng` for KIAM preprints and `-l fra+eng` for French scans. Russian TeX-typeset PDFs
+  with Type 3 fonts have garbled text layers: run `ocrmypdf --force-ocr`, file the original PDF
+  unchanged, and add the OCR text as a `.txt` sidecar.
+- Old solid RAR archives (inside KIAM source zips): `unar` (`brew install unar`); `7z` and `bsdtar`
+  cannot open them. Translations and renders: `tectonic` (`brew install tectonic`).
 
 #### Three content classes (the hybrid rule)
 OCR is bulk text only; two other content classes need Claude vision.
