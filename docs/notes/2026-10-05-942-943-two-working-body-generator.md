@@ -1195,6 +1195,64 @@ Step 2, chain control (`scripts/run_942_realeph_chain.py`, cell ge, jup365, blen
   half-rev legs. If it fails or does not decide: the ge candidates with fixed legs are "not judged" at
   rung (d).
 
+### 6.28 Results of 6.27 so far (2026-10-06)
+
+ge classification (22 gate-passing physical cyclers, `data/943_cell_ge_gauntlet.json`; the index is the
+row order in that file):
+- 16 are one-working-body (turn exactly 0 at one moon): R-S class members, NOT finds.
+  - Europa hosts (EurGan type), 9: #0, #4, #5, #7, #13, #14, #17, #19, #20. #17 is EurGan#131
+    (LITERAL: V_inf 2.402/4.103, 2 Europa + 1 Ganymede encounters, Europa 2:1 full-rev).
+  - Ganymede hosts (GanEur type), 7: #2, #6, #8, #9, #10, #12, #18. #6 is GanEur#43 (LITERAL).
+  - So the cell recovers two published rows in-run. GanEur#5 (k = 5) is outside k = 1-3.
+- 6 are two-working-body (both moons turn). All six contain a full-rev leg.
+
+| Name | Row | k | Key | V_inf G / E (km/s) | Ganymede turn, ratio | Europa turn, ratio | Worst |
+|---|---|---|---|---|---|---|---|
+| ge-1 | #1 | 1 | k1\|LG>E/0s\|RE/1:1\|LE>G/0s | 3.734 / 8.184 | 13.08 deg, 0.550 | 2 x 0.98 deg, 0.305 | 0.550 |
+| ge-2 | #15 | 3 | k3\|LG>E/1h\|RE/3:2\|LE>G/0s | 1.371 / 1.620 | 23.94 deg, 0.291 | 2 x 30.68 deg, 0.612 | 0.612 |
+| ge-3 | #21 | 3 | k3\|LG>G/1h\|LG>E/1h\|RE/1:1\|LE>G/1l | 3.881 / 8.413 | 2 x 19.71 deg, 0.883 | 2 x 0.56 deg, 0.182 | 0.883 |
+| ge-4 | #11 | 2 | k2\|LG>G/1h\|LG>E/0s\|RE/1:1\|LE>G/0s | 4.033 / 8.705 | 2 x 12.48 deg, 0.595 | 2 x 0.10 deg, 0.035 | 0.595 |
+| ge-5 | #16 | 3 | k3\|RG/1:1\|LG>E/0s\|RE/2:1\|LE>G/0s | 4.052 / 2.379 | 2 x 0.94 deg, 0.045 | 2 x 17.93 deg, 0.609 | 0.609 |
+| ge-6 | #3 | 2 | k2\|RG/1:1\|LG>E/0s\|LE>G/0s | 4.049 / 2.347 | 2 x 0.89 deg, 0.042 | 19.22 deg, 0.640 | 0.640 |
+
+(G = Ganymede, E = Europa in the keys.) ge-4, ge-5 and ge-6 are near-one-body by the rule proposed in
+6.27 (turn under 1 deg, ratio under 0.05 at one moon). ge-5 is within 0.05 km/s of EurGan#131 in
+V_inf, but it has an extra Ganymede full-rev (2 + 2 encounters against R-S's 2 + 1).
+- Checks, all 22: DOP853 re-fly miss <= 2.3e-4 km, V_inf vector error <= 4.2e-9 km/s, gate pass on
+  the integrated vectors. Offline literature_check: "published" for every row via the Jovian
+  body-pair anchor (a flag, not a verdict).
+- Collisions, two-working-body rows: no R-S row within 0.3 km/s except ge-5 (above). Clipper 11-F5
+  (Buffington et al. 2012) has one switch-flip E-G-G-G-E segment (E 3.89, G 2.75-2.79 km/s), one-shot
+  and not repeating: no collision. Lam et al. 2015 and the 21F31 tour (Cangahuala et al. 2025) have no
+  G-E chain. Liang 2024 CGCEC (three moons; E 4.5-12.0, G 7.0-10.5 km/s) and the Hernandez 2017 and
+  Lynam-Longuski 2011 Io-Europa-Ganymede triples are three-moon structures: no collision. Kumar,
+  Anderson & de la Llave 2023 (G-E resonant tori, CR4BP) is a different model: context only.
+- Every two-working-body ge row has a full-rev leg. So at rung (d) each carries the gc-1 caveat (no
+  Jovian full-rev positive control decided at 10 cycles), whatever GanEur#316 shows.
+
+GanEur#316 recall (`data/943_ganeur316_recall.json`):
+- The blind grid at n_split 6 did NOT reach it (seed density). Seeded from R-S's printed leg times
+  (`--seeded`), it is found: key k7|LG>G/1h|HG/3,1,p|LG>G/1h|LG>E/1l|LE>G/2l, dates 1.5316071495938,
+  21.6589661731763, 31.0545022800922, 38.6557803419799 d. It is the only gate-passer of the 200
+  structures.
+- Against Table 3: V_inf 3.198/3.813 (3.20/3.81); minimum altitude 1,447.9 km (1,447); r_min 592,973
+  km (592,969); Europa turn 0.0. PASS on V_inf, altitude and r_min.
+- r_max: ours 1,281,581 km against 1,496,829. Cause, checked: `leg_extent` samples the Lambert legs
+  only, and the half-rev's apoapsis (p = r_G, e = 0.28493: 1,070,338 / (1 - e) = 1,496,840 km) is not
+  sampled. With it the value matches to 1e-5. So the r_max (and r_min) reported for every zero with a
+  full-rev or half-rev leg, in every cell, covers the Lambert legs only. Descriptive values only; no
+  gate or zero is affected. Not fixed yet.
+- The h leg's tilt: our alpha at V_inf 3.198 is 4.14 deg; R-S print -3.98557. If that number is the
+  same tilt angle (not checked), the 4 % difference is unexplained; it does not enter the checks above.
+
+Chain control, 1-cycle slice at R-S's epoch (JD 2458597.5), `data/943_ganeur316_realeph/n1_rs2019/`:
+blend reaches lambda = 1 (worst 0.671), the shoot closes (restarts 0 and 2), gate pass, worst 0.751.
+DOP853 re-fly: miss 5.7e-6 km, velocity difference 9.1e-11 km/s. The 10-cycle control is a lead launch.
+
+em reassessment check (the em run used code from before 79193f6e): every pass (24) plus 2,000 random
+other zeros of the 28,090 were reassessed at HEAD. 3 changed, all "fail" to "no-directions"; no pass
+or indeterminate changed. The em gate-pass set stands.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

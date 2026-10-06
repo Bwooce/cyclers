@@ -1,0 +1,79 @@
+[
+ {
+  "key": "k7|LGanymede>Ganymede/1h|HGanymede/3,1,p|LGanymede>Ganymede/1h|LGanymede>Europa/1l|LEuropa>Ganymede/2l",
+  "x_days": [
+   1.5316071495938033,
+   21.65896617317633,
+   31.054502280092198,
+   38.65578034197989
+  ],
+  "seeded": true,
+  "residual_kms": 5.1958437552457326e-14,
+  "status": "pass",
+  "vinf_kms": {
+   "Ganymede": 3.19807622644931,
+   "Europa": 3.8130929365465978
+  },
+  "r_min_km": 592973.213951827,
+  "r_max_km": 1281581.4749125752,
+  "max_encounter_miss_km": 7.18667339009945e-08,
+  "min_required_alt_km": 1447.9108253830118,
+  "flybys": [
+   {
+    "body": "Ganymede",
+    "t_days": 10.927143256509664,
+    "vinf_kms": 3.19807622644931,
+    "turn_deg": 22.07946809729856,
+    "available_deg": 30.286700456152623,
+    "ratio": 0.7290153025835207,
+    "required_alt_km": 1447.9108253830118,
+    "rmin_radii": 1.5497003892874,
+    "status": "pass"
+   },
+   {
+    "body": "Ganymede",
+    "t_days": 21.65896617317633,
+    "vinf_kms": 3.198076226449299,
+    "turn_deg": 22.079468097298573,
+    "available_deg": 30.286700456152865,
+    "ratio": 0.7290153025835153,
+    "required_alt_km": 1447.9108253830523,
+    "rmin_radii": 1.549700389287409,
+    "status": "pass"
+   },
+   {
+    "body": "Ganymede",
+    "t_days": 31.054502280092198,
+    "vinf_kms": 3.1980762264492846,
+    "turn_deg": 10.439455079673643,
+    "available_deg": 30.286700456153234,
+    "ratio": 0.3446877646770102,
+    "required_alt_km": 7025.945426627006,
+    "rmin_radii": 3.667405249288875,
+    "status": "pass"
+   },
+   {
+    "body": "Europa",
+    "t_days": 38.65578034197989,
+    "vinf_kms": 3.8130929365465978,
+    "turn_deg": 0.0,
+    "available_deg": 13.448208017478677,
+    "ratio": 0.0,
+    "required_alt_km": Infinity,
+    "rmin_radii": Infinity,
+    "status": "pass"
+   },
+   {
+    "body": "Ganymede",
+    "t_days": 50.88811324024438,
+    "vinf_kms": 3.198076226449306,
+    "turn_deg": 10.439455079673186,
+    "available_deg": 30.286700456152687,
+    "ratio": 0.34468776467700135,
+    "required_alt_km": 7025.945426627237,
+    "rmin_radii": 3.667405249289002,
+    "status": "pass"
+   }
+  ]
+ }
+]

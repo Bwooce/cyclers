@@ -15,7 +15,12 @@ Expected (Table 3): V_inf G/E 3.20/3.81 km/s, period 49.4 d, minimum altitude at
 1,447 km, distance to Jupiter 592,969-1,496,829 km, transits G->E 7.60 d and E->G 12.23 d,
 Europa turn 0 (Europa is the massless target in R-S's ideal model).
 
-Usage: uv run python scripts/recall_943_ganeur316.py --out FILE [--limit N]
+Result (2026-10-06, note sec. 6.27): the blind grid at n_split 6 did NOT reach the member (seed
+density). ``--seeded`` starts every structure from R-S's printed leg times (Table 5: g legs
+1.31322, h leg 1.5 Ganymede periods; G->E transit 7.60 d), scans the phase in 0.02-d steps on
+the date residual, and corrects the best seed. That finds it; it is a seeded recall, not blind.
+
+Usage: uv run python scripts/recall_943_ganeur316.py --out FILE [--limit N] [--seeded]
 """
 
 from __future__ import annotations
@@ -28,8 +33,16 @@ import time
 from pathlib import Path
 from typing import Any
 
-from cyclerfinder.search.two_working_body import Cycle, HalfRevLeg, LambertLeg
-from cyclerfinder.search.two_working_body_enum import assess, flyby_table, solve_structure
+import numpy as np
+
+from cyclerfinder.search.two_working_body import (
+    Cycle,
+    HalfRevLeg,
+    LambertLeg,
+    correct_dates,
+    date_residual,
+)
+from cyclerfinder.search.two_working_body_enum import Zero, assess, flyby_table, solve_structure
 
 REPO = Path(__file__).resolve().parents[1]
 DAY = 86400.0
@@ -58,10 +71,27 @@ def candidate_cycles(period_s: float) -> list[Cycle]:
     return out
 
 
+def seeded_zeros(system: Any, cycle: Cycle, syn_s: float) -> list[Zero]:
+    """One zero per structure from R-S's printed leg times (Table 5), phase scanned."""
+    pg = system.period_s("Ganymede")
+    dg, dh, d_ge = 1.31322 * pg, 1.5 * pg, 7.60 * DAY
+    best: tuple[float, np.ndarray | None] = (np.inf, None)
+    for t0 in np.arange(0.0, syn_s, 0.02 * DAY):
+        x = np.array([t0, t0 + dg + dh, t0 + 2 * dg + dh, t0 + 2 * dg + dh + d_ge])
+        r = date_residual(system, cycle, x)
+        if r is not None and float(np.max(np.abs(r))) < best[0]:
+            best = (float(np.max(np.abs(r))), x)
+    if best[1] is None:
+        return []
+    sol = correct_dates(system, cycle, best[1], tol_kms=1e-8, max_nfev=200)
+    return [Zero(cycle, sol.x, sol.max_abs_residual_kms)] if sol.converged else []
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--limit", type=int, default=0, help="first N structures only (timing)")
+    ap.add_argument("--seeded", action="store_true", help="seed from R-S's leg times")
     args = ap.parse_args()
     system, a, b = ENUM.cell_system("ge")
     syn = system.synodic_s(a, b)
@@ -74,8 +104,12 @@ def main() -> None:
         key = ENUM.cycle_key(cyc, 7)
         ts = time.time()
         try:
-            zeros = solve_structure(
-                system, cyc, phase_period_s=syn, n_phase=36, n_split=6, n_refine=40
+            zeros = (
+                seeded_zeros(system, cyc, syn)
+                if args.seeded
+                else solve_structure(
+                    system, cyc, phase_period_s=syn, n_phase=36, n_split=6, n_refine=40
+                )
             )
         except Exception as exc:  # recorded, never counted as "absent"
             recs.append({"key": key, "error": repr(exc)})
@@ -86,6 +120,7 @@ def main() -> None:
             rec = {
                 "key": key,
                 "x_days": [float(v) / DAY for v in z.x],
+                "seeded": args.seeded,
                 "residual_kms": z.residual_kms,
                 "status": ass.status,
                 "vinf_kms": ass.vinf_kms,
