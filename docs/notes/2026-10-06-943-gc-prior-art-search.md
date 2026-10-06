@@ -85,3 +85,17 @@ Titan and methods papers.
   5. Lynam 2012 dissertation.
 - **File:** the two open-access Space Science Reviews papers (Boutonnet 2024; Cangahuala 2025) were
   downloaded and can be filed and digested now.
+
+## 5. Follow-up 2026-10-06: the two open-access papers filed and digested
+
+- Boutonnet, Langevin & Erd 2024 (JUICE): `2026-10-06-digest-boutonnet-langevin-erd-2024-designing-juice-trajectory.md`.
+  - Single C-G-C round trip: G v_inf about 3.3 km/s; C arrival 1.9-2.3 and outbound 1.8-2.4 km/s; a
+    50-day Ganymede-to-Callisto window cycle.
+  - One-shot; no collision. Nearest one-shot relative by v_inf (Callisto overlaps gc-1; Ganymede within
+    0.3 km/s of gc-2).
+- Cangahuala et al. 2025 (Clipper): `2026-10-06-digest-cangahuala-2025-europa-clipper-mission-design-plan-navigation.md`.
+  - The flown 21F31_V6 switch is a "Ganymede-Callisto Petal Rotation" (Table 2, page image): C01, G06,
+    C02-C07, G07, C08, C09; Callisto v_inf 3.53-3.59 mid-sequence, Ganymede 5.35 and 4.30.
+  - Non-resonant and non-repeating, so not a cycler; no collision with gc-1 or gc-2.
+- The gc-2 / GanCal#1/#5 flag (sec. 2) was sent to twobody-gen-opus at the lead's request, with the
+  pre-registered Callisto-mass-homotopy question.
