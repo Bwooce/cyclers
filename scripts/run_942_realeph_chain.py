@@ -39,6 +39,7 @@ from typing import Any
 
 import numpy as np
 from scipy.optimize import least_squares
+from scipy.optimize._numdiff import approx_derivative, group_columns
 
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
@@ -439,6 +440,7 @@ def main() -> None:
     # do not change with them.
     ap.add_argument("--shoot-nfev-per-var", type=int, default=30)
     ap.add_argument("--shoot-method", default="lm", choices=["lm", "trf"])
+    ap.add_argument("--shoot-jac", default="dense", choices=["dense", "sparse"])
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     preflight_search(
@@ -590,28 +592,50 @@ def main() -> None:
                     f0[1::3] += rng.normal(0.0, 0.6, f0[1::3].size)
                 ys = np.concatenate([y, f0])
                 t_r = time.time()
-                n_ev = [0]
+                prog = {"n": 0, "best": math.inf, "t_beat": t_r}
 
                 def fun(
                     yy: np.ndarray,
                     s_: Blend = sysm,
                     x0_: float = x0,
                     r: int = r,
-                    n_ev: list[int] = n_ev,
+                    prog: dict[str, float] = prog,
                     t_r: float = t_r,
                 ) -> np.ndarray:
-                    n_ev[0] += 1
-                    if n_ev[0] % 20000 == 0:
+                    out_r = _res(s_, legs_chain, x0_, yy)
+                    prog["n"] += 1
+                    prog["best"] = min(prog["best"], float(np.max(np.abs(out_r))))
+                    if time.time() - prog["t_beat"] > 60.0:
+                        prog["t_beat"] = time.time()
                         print(
-                            f"{time.strftime('%H:%M:%S')}   shoot restart {r}: {n_ev[0]} evals "
-                            f"[{time.time() - t_r:.0f}s]",
+                            f"{time.strftime('%H:%M:%S')}   shoot restart {r}: {prog['n']} evals, "
+                            f"best max|res| so far {prog['best']:.2e} [{time.time() - t_r:.0f}s]",
                             flush=True,
                         )
-                    return _res(s_, legs_chain, x0_, yy)
+                    return out_r
+
+                jac: Any = "2-point"
+                if args.shoot_jac == "sparse":
+                    # Same forward differences as LM's own, with columns that share no
+                    # residual row perturbed together. Pattern: union of the nonzeros of
+                    # the dense Jacobian at the start and at a nearby point.
+                    j_a = approx_derivative(fun, ys, method="2-point")
+                    # Own generator: the restart perturbations keep their stream.
+                    kick = 1e-6 * np.random.default_rng(0).standard_normal(ys.size)
+                    j_b = approx_derivative(fun, ys + kick, method="2-point")
+                    pattern = (j_a != 0.0) | (j_b != 0.0)
+                    groups = group_columns(pattern)
+
+                    def jac(
+                        yy: np.ndarray, sp: tuple[np.ndarray, np.ndarray] = (pattern, groups)
+                    ) -> np.ndarray:
+                        d = approx_derivative(fun, yy, method="2-point", sparsity=sp)
+                        return np.asarray(d.toarray())
 
                 sol = least_squares(
                     fun,
                     ys,
+                    jac=jac,
                     method=args.shoot_method,
                     x_scale="jac",  # SciPy >= 1.16 default for lm; trf would default to 1
                     xtol=1e-14,
@@ -619,10 +643,39 @@ def main() -> None:
                     gtol=1e-14,
                     max_nfev=args.shoot_nfev_per_var * len(ys),
                 )
-                ev = chain_eval(sysm, legs_chain, x0, sol.x)
+                x_sol = sol.x
+                f_sol = np.asarray(sol.fun)
+                # Gauss-Newton polish of a near-closure: LM's damping crawls along the weakly
+                # determined crank angles. Full or halved steps, accepted only if they reduce
+                # the max residual; the closure threshold is unchanged.
+                for _ in range(12):
+                    m_now = float(np.max(np.abs(f_sol)))
+                    if not 1e-6 <= m_now < 1e-2:
+                        break
+                    j_now = (
+                        np.asarray(jac(x_sol))
+                        if callable(jac)
+                        else approx_derivative(fun, x_sol, method="2-point")
+                    )
+                    step = np.linalg.lstsq(j_now, -f_sol, rcond=None)[0]
+                    for frac in (1.0, 0.5, 0.25):
+                        f_try = fun(x_sol + frac * step)
+                        if float(np.max(np.abs(f_try))) < m_now:
+                            x_sol, f_sol = x_sol + frac * step, f_try
+                            break
+                    else:
+                        break
+                ev = chain_eval(sysm, legs_chain, x0, x_sol)
                 worst_res = float("inf") if ev is None else float(np.max(np.abs(ev.residual)))
                 if worst_res >= 1e-6:
-                    tried.append({"restart": r, "converged": False, "max_residual": worst_res})
+                    rec_r: dict[str, Any] = {
+                        "restart": r,
+                        "converged": False,
+                        "max_residual": worst_res,
+                    }
+                    if worst_res < 1e-3:
+                        rec_r["y_stall"] = x_sol.tolist()  # near-closure: kept for diagnosis
+                    tried.append(rec_r)
                     print(
                         f"{time.strftime('%H:%M:%S')}   shoot restart {r}/{args.shoot_restarts}: "
                         f"no closure (max residual {worst_res:.1e}, nfev {sol.nfev}, "
@@ -633,7 +686,7 @@ def main() -> None:
                 g = gate_eval(sysm, ev)
                 tried.append({"restart": r, "converged": True} | g)
                 if best is None or g["worst_ratio"] < best[0]["worst_ratio"]:
-                    best = (g, sol.x)
+                    best = (g, x_sol)
                 print(
                     f"{time.strftime('%H:%M:%S')}   shoot restart {r}: closes, "
                     f"gate={g['status']} worst={g['worst_ratio']:.3f}",
