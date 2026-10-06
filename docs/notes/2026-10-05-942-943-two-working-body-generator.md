@@ -985,6 +985,30 @@ Interpretation rules, fixed now:
   encounter) has a different encounter count from gc-2 (two and two). No insertion test applies; it is
   compared by V_inf distance only (sec. 6.11 numbers).
 
+### 6.21 Result of 6.20 (2026-10-06), data `data/943_gc2_gancal_relation.json`
+
+Instrument check first: my first run showed no change of the Callisto ratio with s. Cause:
+`dataclasses.replace` handed the scaled system the original's flyby-body cache (`_fb`). Fixed in the
+script (fresh cache); the ratio now scales as expected (201 at s = 0.001, 0.259 at s = 1).
+
+- H1a: as stated in 6.20, no solution moves. gc-2's Callisto encounters (6.87 deg each) are feasible
+  down to s* = 0.2136 of Callisto's GM (ratio 0.695 at s = 0.316, 1.189 at s = 0.178). Below s*, gc-2
+  does not exist as a ballistic cycler; it does not become a GanCal member. GanCal#5 (Callisto turn 0)
+  passes at every s.
+- H1b: GanCal#5's G->C 1-rev leg (24.25 d; a 1,683,097 km, e 0.4205) is nearest Callisto in its interior
+  at 170,800 km, 2.90 d after leaving Ganymede (183,305 km at gc-2's insertion time of 2.60 d). That is
+  4.5 times Callisto's SOI (37,681 km). Excluding the last 0.5 d, the minimum is at the window edge
+  (148,120 km at 23.74 d), on the approach to the final arrival.
+- Rule applied (fixed in 6.20): the minimum is above the SOI, so: **the inserted encounter has no
+  counterpart on GanCal#5's leg; the relation between gc-2 and GanCal#5 is the shared G-G 1l leg and the
+  period only.** Descriptive only: GanCal#5's leg does pass Callisto at about 4.5 SOI near the time gc-2
+  meets it. gc-2's own legs are G->C and C->G on one conic (a 1,572,225 km, e 0.4120) and C->C 1-rev
+  (a 1,686,915 km, e 0.3856, close in a to GanCal#5's leg but not in e).
+- GanCal#1: different encounter count (three Ganymede and one Callisto against two and two); V_inf
+  distance only (sec. 6.11: 0.44 at G, 0.22 at C).
+- Not tested: a continuation in a continuous-gravity model (CR4BP or n-body), where encounters are not
+  fixed in number. That is an owner choice.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

@@ -1,0 +1,401 @@
+{
+ "note": "docs/notes/2026-10-05-942-943-two-working-body-generator.md 6.20",
+ "H1a_gc-2": [
+  {
+   "s": 0.001,
+   "status": "fail",
+   "worst_ratio": 201.01233242161112,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 201.01233242161112,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.0017782794100389228,
+   "status": "fail",
+   "worst_ratio": 113.0637589206932,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 113.0637589206932,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.0031622776601683794,
+   "status": "fail",
+   "worst_ratio": 63.60663873725757,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 63.60663873725757,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.005623413251903491,
+   "status": "fail",
+   "worst_ratio": 35.79485123897535,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 35.79485123897535,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.01,
+   "status": "fail",
+   "worst_ratio": 20.155124941808918,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 20.155124941808918,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.01778279410038923,
+   "status": "fail",
+   "worst_ratio": 11.360244843735723,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 11.360244843735723,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.03162277660168379,
+   "status": "fail",
+   "worst_ratio": 6.414492632547116,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 6.414492632547116,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.05623413251903491,
+   "status": "fail",
+   "worst_ratio": 3.6332432148299363,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 3.6332432148299363,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.1,
+   "status": "fail",
+   "worst_ratio": 2.069147390746086,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 2.069147390746086,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.1778279410038923,
+   "status": "fail",
+   "worst_ratio": 1.1894477233470808,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 1.1894477233470808,
+   "callisto_status": [
+    "fail",
+    "fail"
+   ]
+  },
+  {
+   "s": 0.31622776601683794,
+   "status": "pass",
+   "worst_ratio": 0.7883488232773511,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 0.6945175397643293,
+   "callisto_status": [
+    "pass",
+    "pass"
+   ]
+  },
+  {
+   "s": 0.5623413251903491,
+   "status": "pass",
+   "worst_ratio": 0.7883488232773511,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 0.41581966110272095,
+   "callisto_status": [
+    "pass",
+    "pass"
+   ]
+  },
+  {
+   "s": 1.0,
+   "status": "pass",
+   "worst_ratio": 0.7883488232773511,
+   "callisto_turn_deg": [
+    6.865445672232636,
+    6.865445672232211
+   ],
+   "callisto_ratio": 0.25853617854172667,
+   "callisto_status": [
+    "pass",
+    "pass"
+   ]
+  }
+ ],
+ "H1a_GanCal#5": [
+  {
+   "s": 0.001,
+   "status": "indeterminate",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "indeterminate"
+   ]
+  },
+  {
+   "s": 0.0017782794100389228,
+   "status": "indeterminate",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "indeterminate"
+   ]
+  },
+  {
+   "s": 0.0031622776601683794,
+   "status": "indeterminate",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "indeterminate"
+   ]
+  },
+  {
+   "s": 0.005623413251903491,
+   "status": "indeterminate",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "indeterminate"
+   ]
+  },
+  {
+   "s": 0.01,
+   "status": "indeterminate",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "indeterminate"
+   ]
+  },
+  {
+   "s": 0.01778279410038923,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.03162277660168379,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.05623413251903491,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.1,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.1778279410038923,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.31622776601683794,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 0.5623413251903491,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  },
+  {
+   "s": 1.0,
+   "status": "pass",
+   "worst_ratio": 0.9403820121792834,
+   "callisto_turn_deg": [
+    0.0
+   ],
+   "callisto_ratio": 0.0,
+   "callisto_status": [
+    "pass"
+   ]
+  }
+ ],
+ "H1a_gc2_s_star": 0.21362441129608092,
+ "H1a_gc2_at_s_star": {
+  "s": 0.21362441129608092,
+  "status": "indeterminate",
+  "worst_ratio": 0.9999948062244242,
+  "callisto_turn_deg": [
+   6.865445672232636,
+   6.865445672232211
+  ],
+  "callisto_ratio": 0.9999948062244242,
+  "callisto_status": [
+   "indeterminate",
+   "indeterminate"
+  ]
+ },
+ "H1b": {
+  "gancal5_GC_leg_days": 24.24904299900365,
+  "gancal5_GC_leg_a_km_e": [
+   1683097.1163464,
+   0.4205029026821063
+  ],
+  "min_distance_to_callisto_km": 148120.0964838788,
+  "at_days_after_departure": 23.74,
+  "callisto_soi_km": 37680.923494398325,
+  "gc2_insertion_days_after_departure": 2.6047488185927055,
+  "gc2_legs": {
+   "Ganymede>Ganymede": {
+    "days": 10.845876348392368,
+    "a_km_e": [
+     1181319.0075209336,
+     0.3300239684568973
+    ]
+   },
+   "Ganymede>Callisto": {
+    "days": 2.6047488185927055,
+    "a_km_e": [
+     1572224.9918110312,
+     0.411996682558182
+    ]
+   },
+   "Callisto>Callisto": {
+    "days": 21.514330837935567,
+    "a_km_e": [
+     1686915.203540928,
+     0.38560110662928576
+    ]
+   },
+   "Callisto>Ganymede": {
+    "days": 2.604748818592699,
+    "a_km_e": [
+     1572224.9918110343,
+     0.4119966825581823
+    ]
+   }
+  }
+ }
+}

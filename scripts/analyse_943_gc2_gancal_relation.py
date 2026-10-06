@@ -55,7 +55,8 @@ def scaled(circ: CircularSystem, s: float) -> CircularSystem:
     cal = circ.body("Callisto")
     over = dict(circ.flyby_overrides)
     over["Callisto"] = dataclasses.replace(cal, mu_km3_s2=cal.mu_km3_s2 * s)
-    return dataclasses.replace(circ, flyby_overrides=over)
+    # Fresh body cache: replace() would otherwise share the original (unscaled) one.
+    return dataclasses.replace(circ, flyby_overrides=over, _fb={})
 
 
 def verdict(circ: CircularSystem, cycle: Cycle, x: np.ndarray, s: float) -> dict[str, Any]:
