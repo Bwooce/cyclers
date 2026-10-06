@@ -1071,6 +1071,25 @@ Results with the fix (criteria as pre-registered):
     on DE440 get a closure Delta-V report (blend + shoot), not a pass/fail; not yet run.
 - Status: ev-A and ev-B are "candidate, pending owner adjudication, NOT novel", like ev-C.
 
+### 6.24 DE440 closure Delta-V for full-rev rows: definition, PRE-REGISTERED 2026-10-06 (before computing)
+
+Amendment 6.18 promised a closure Delta-V for full-rev candidates on DE440 but did not define it. On
+DE440 a full-rev leg timed at the Keplerian period, from the minimax direction, returns to its
+departure point while the planet has drifted by D (non-Keplerian motion over one period).
+
+Definition (script `scripts/analyse_942_fullrev_closure_dv.py`, input: the blend-mode chain at
+lambda = 1, i.e. the date solution with minimax directions):
+- For each full-rev leg: D = |planet position at arrival - spacecraft position at arrival| (DOP853
+  two-body re-fly), km.
+- A mid-course correction at half the leg's flight time retargets the arc onto the planet at the same
+  arrival time. It is solved exactly (two-body Newton on the 3 arrival-position equations) and reported
+  as dv_mid in m/s.
+- The induced junction error: the arrival |V_inf| changes; |change| in m/s is reported.
+- Per chain: sum of dv_mid, max dv_mid and max induced |V_inf| change, per epoch.
+- Descriptive only, no pass/fail. Reported next to the result of the lambda = 1 shoot (a ballistic
+  closure, with its gate verdict, when one is found).
+Runs: ev-A (5 cycles) and ev-B (4 cycles), DE440, 5 epochs, `--shoot-jac sparse`, default restarts.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
