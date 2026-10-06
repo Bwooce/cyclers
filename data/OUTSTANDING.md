@@ -157,7 +157,11 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
   counterpart on GanCal#5's leg; gc-2 needs at least 0.214 of Callisto's GM (6.21).
 - Not novel, recorded: vm-1 (an R-S VenMar class member, Mars massless); vm2-1 (ideal-model
   curiosity: does not survive the homotopy to the real ephemeris, 6.9-6.10).
-- Prior art checked, no collision found (offline corpus; the web literature search is still open):
+- Web prior-art searches (web, OpenAlex, arXiv, NTRS) are DONE for gc-1/gc-2
+  (`docs/notes/2026-10-06-943-gc-prior-art-search.md`, incl. Golubev et al. 2014 and the ISSFD 2024 /
+  JAS 2025 21F31 papers) and for ev-C (`docs/notes/2026-10-06-942-evC-prior-art-search.md`; D. Ross
+  resolved, no collision); no collision found. The web search is still OPEN for ge-*, em-* and ev-A.
+- Prior art checked in the offline corpus, no collision found:
   Hollister & Menning 1970 and Menning's variations; Jones 2017 VEM; Russell & Strange 2007/2009
   (EurGan, GanEur, GanCal, GanIo, VenMar rows); Campagnola et al. 2019 GCGC; Lam et al. 2015;
   Liang et al. 2024 CGCEC; Buffington et al. 2012 (Clipper 11-F5); Cangahuala et al. 2025 (21F31);
@@ -1850,7 +1854,9 @@ All rows: **candidate, pending owner adjudication, NOT novel.** Caveats:
     only the Ganymede-hosted limit.
   - Same digest, sec. 4.
   - **STATUS 2026-10-06 (twobody-gen-opus, then twobody-gen2-opus; note `docs/notes/2026-10-05-942-943-two-working-body-generator.md`, secs. 6.11-6.34):**
-    - Cells enumerated: gc, ge (ge re-run after the `#963` kepler fix). In-run LITERAL recalls:
+    - Cells enumerated: gc, ge. ge completed after the `#963` fix by resuming: about 1,135 structures
+      were computed before the crash on the pre-fix code (converged results are unaffected by that bug;
+      it only raised), the rest after; reassessed at HEAD with 0 verdict changes. In-run LITERAL recalls:
       GanCal#5 (gc), GanEur#43 and EurGan#131 (ge).
     - gc-1: G-C, both bend, 37.57 d, V_inf 2.397/1.807; jup365 10 cycles, 5/5 epochs, re-fly <= 0.19
       km. Caveat: no Jovian full-rev published control is decided at 10 cycles (C4 GanCal#1 undecided).
