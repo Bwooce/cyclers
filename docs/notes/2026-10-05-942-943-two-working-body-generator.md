@@ -1648,6 +1648,25 @@ PASS (the 6.22 criteria):
 
 A non-converged epoch is not a negative. All results are on Standish fixed mean elements, not DE440.
 
+### 6.40 Result of 6.39 (2026-10-06), data `data/942_rung_d_vm2n_em/`
+
+| Candidate | Epochs converged (direct) | Gate at the converged landings | Rung (d) |
+|---|---|---|---|
+| vm2n-2 | 1/5 (JD 2472014.4) | fail: Mars 5.91, Venus 1.47 | NOT PASSED |
+| em-1 | 1/5 (JD 2472366.1) | fail: Mars 2.94, Earth 1.07 | NOT PASSED |
+| em-2 | 1/5 (same epoch and dates as em-1) | fail: Mars 2.94, Earth 0.77 | NOT PASSED |
+| em-3 | 3/5 | fail: worst 3.2-24.3 (Mars) | NOT PASSED (uncontrolled leg type anyway) |
+
+- By 6.22 a non-converged epoch is not a negative, and the direct route finds one landing per epoch.
+  So these are "not passed by the controlled route", not proofs of absence.
+- At every converged landing the MARS flyby fails. Mars's real eccentricity (0.093) moves the V_inf
+  at Mars far from the ideal values, and the thin ideal margins (em: Mars 0.89-0.94) do not survive,
+  as with vm2-1 (6.9).
+- vm2n-2's ideal Mars margin (0.421) did not help at the one converged landing either.
+- A ramp-continuation run (6.18) could land on other solutions; that is not pre-registered and not run.
+- Status: vm2n-2 and em-1..3 stay "candidate, pending owner adjudication, NOT novel", recorded as
+  ideal-model members with no controlled real-ephemeris pass.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi

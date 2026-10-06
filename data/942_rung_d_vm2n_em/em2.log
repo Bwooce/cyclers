@@ -1,0 +1,6 @@
+17:31:44 em epoch 0 (JD 2462966.4) ramp lam=1.0000 conv=False res=4.3e-01 gate=unconverged worst=nan [elapsed 4s]
+17:31:48 em epoch 1 (JD 2465354.6) ramp lam=1.0000 conv=False res=4.3e-01 gate=unconverged worst=nan [elapsed 7s]
+17:31:50 em epoch 2 (JD 2467664.7) ramp lam=1.0000 conv=False res=1.0e+00 gate=unconverged worst=nan [elapsed 9s]
+17:31:51 em epoch 3 (JD 2469996.6) ramp lam=1.0000 conv=False res=2.1e-01 gate=unconverged worst=nan [elapsed 10s]
+17:31:52 em epoch 4 (JD 2472366.1) ramp lam=1.0000 conv=True res=3.6e-12 gate=fail worst=2.945 [elapsed 11s]
+DONE
