@@ -124,3 +124,4 @@
 - 23:41 AEDT: owner supplied Bruno-Varin 2009 SSR 43(2) family h BIG mu (Tables mu=0.3/0.4/0.5) -> family h tables gap fully closed with batch 31. Added to batch 34.
 
 - 2026-10-06 23:56 AEDT: pushed 51c366b2..c8208b6e (docs/OUTSTANDING only) after tests/data+tests/scripts clean (bk2qqhzfo). Waiting: corpus-file TR 32-464 verdict -> twobody-gen2 fills decision-summary placeholders.
+- 2026-10-07 00:26 AEDT: batch 30 (bccf4306, 15 digests) pushed. Schwaniger 1963 retrograde E-M PO -> register as task (V0 row proposal). corpus-file next: batch 33 TR 32-464.
