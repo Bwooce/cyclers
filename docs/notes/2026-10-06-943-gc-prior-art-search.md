@@ -106,3 +106,13 @@ Titan and methods papers.
   (`2026-10-06-digest-lantukh-russell-2012-n-pi-transfers-tour-design.md`). It covers same-body n-pi
   sequences in normalised units, never names Ganymede, Callisto or Europa, and has no cycler. **No
   collision.**
+
+## 7. Follow-up 2026-10-06 (batch 17): the 21F31 reference-trajectory paper read
+
+- Campagnola et al. 2024 ISSFD 19-3 (the conference form of the JAS 2025 paper, row 6 above):
+  `2026-10-06-digest-campagnola-et-al-2024-issfd-europa-clipper-21f31-reference-trajectory.md`.
+- "Cycler" appears once, as an untried option. The flown switch is a Callisto petal rotation with two
+  Ganymede v_inf levers (C v_inf 4.8 -> 3.6 -> 5.1 km/s). The pump-down is Ganymede 8.73-7.65 and Europa
+  6.30/6.38 km/s.
+- **No collision with gc-1, gc-2, ge-1, ge-2 or ge-3.** Reported to the lead and twobody-gen2-opus first.
+  The two-working-body G-C cycler record remains Campagnola 2019 GCGC alone.
