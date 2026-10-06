@@ -613,7 +613,7 @@ def main() -> None:
                     fun,
                     ys,
                     method=args.shoot_method,
-                    x_scale="jac" if args.shoot_method == "trf" else 1.0,
+                    x_scale="jac",  # SciPy >= 1.16 default for lm; trf would default to 1
                     xtol=1e-14,
                     ftol=1e-14,
                     gtol=1e-14,
