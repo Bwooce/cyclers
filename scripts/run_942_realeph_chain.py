@@ -219,7 +219,7 @@ def main() -> None:
             return ((d - target) % (2 * math.pi) + math.pi) % (2 * math.pi) - math.pi
 
         syn = circ.synodic_s(a, b)
-        grid = np.linspace(near_s, near_s + syn, 400)
+        grid = np.linspace(near_s, near_s + 1.1 * syn, 440)  # > one period: a crossing exists
         vals = [g(float(t)) for t in grid]
         te = None
         for i in range(len(grid) - 1):
