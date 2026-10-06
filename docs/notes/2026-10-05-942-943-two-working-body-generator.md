@@ -1825,6 +1825,13 @@ All epochs are reported. These are patched-conic results on jup365; the n-body l
   `--grow-from-one`, judged as in 6.45 (10-cycle closure plus re-fly < 1 km; gate recorded). The ge
   runs are judged as in 6.46.
 
+### 6.47 Lead ruling on the em recall control (2026-10-06)
+
+The em recall control (6.42-6.43) counts as PASSED for the gate-pass question, on the strength of
+R-O 2.5.1.+0: a blind recovery that met every pre-registered criterion. The Byrnes case-3 turn-split
+mismatch stays on record. em-1..em-5 are no longer conditional on a control gap; they remain
+"candidate, pending owner adjudication, NOT novel", with rung (d) not passed (6.40).
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
