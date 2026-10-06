@@ -2,8 +2,10 @@
  "cell": "ev",
  "n_structures": 2770,
  "n_zeros": 13915,
- "n_physical": 3534,
+ "n_physical": 4018,
  "n_gate_passing": 31,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
  "catalogue_rows_same_pair": [
   {
    "id": "jones-2017-vem-triple-family",
@@ -26,7 +28,8 @@
      "M",
      null
     ]
-   ]
+   ],
+   "k": 2
   },
   {
    "id": "vem-emeeve-3syn",
@@ -45,7 +48,8 @@
      "M",
      null
     ]
-   ]
+   ],
+   "k": 3
   },
   {
    "id": "jones-2017-vem-emevve-outbound",
@@ -100,7 +104,8 @@
      "E",
      5.67
     ]
-   ]
+   ],
+   "k": 2
   },
   {
    "id": "jones-2017-vem-meevem-inbound",
@@ -155,7 +160,8 @@
      "M",
      2.42
     ]
-   ]
+   ],
+   "k": 2
   },
   {
    "id": "hollister-menning-1970-ev-orbit-01",
@@ -173,7 +179,8 @@
      "V",
      6.7
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-02",
@@ -191,7 +198,8 @@
      "V",
      7.68
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-03",
@@ -209,7 +217,8 @@
      "V",
      7.39
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-04",
@@ -227,7 +236,8 @@
      "V",
      8.4
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-05",
@@ -245,7 +255,8 @@
      "V",
      5.6
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-06",
@@ -263,7 +274,8 @@
      "V",
      9.0
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-07",
@@ -281,7 +293,8 @@
      "V",
      6.67
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-08",
@@ -299,7 +312,8 @@
      "V",
      6.49
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-09",
@@ -317,7 +331,8 @@
      "V",
      8.28
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-10",
@@ -335,7 +350,8 @@
      "V",
      8.04
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-11",
@@ -353,7 +369,8 @@
      "V",
      8.04
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-12",
@@ -371,7 +388,8 @@
      "V",
      8.13
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-13",
@@ -389,7 +407,8 @@
      "V",
      7.45
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-14",
@@ -407,7 +426,8 @@
      "V",
      7.6
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "hollister-menning-1970-ev-orbit-15",
@@ -425,7 +445,8 @@
      "V",
      8.37
     ]
-   ]
+   ],
+   "k": 10
   },
   {
    "id": "damario-1992-galileo-veega",
@@ -466,7 +487,8 @@
      "J",
      5.9
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "cassini-huygens-vvejga",
@@ -494,7 +516,8 @@
      "J",
      10.427
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "mariner-10-venus-mercury",
@@ -509,7 +532,8 @@
      "Me",
      10.376
     ]
-   ]
+   ],
+   "k": null
   },
   {
    "id": "bepicolombo-earth-venus-mercury",
@@ -556,11 +580,13 @@
      "Me",
      1.892
     ]
-   ]
+   ],
+   "k": null
   }
  ],
  "empty_regions_same_pair": [
-  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133"
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133",
+  "heliocentric-earth-venus-two-working-body-earth-fullrev-only-ideal-k1-3-942"
  ],
  "candidates": [
   {
@@ -663,7 +689,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 107444358.34051187,
+   "r_min_km": 102297252.57160692,
    "r_max_km": 151005203.2103075,
    "min_required_alt_km": 13401.290653659667,
    "max_turn_deg": 87.59629740051169,
@@ -714,10 +740,10 @@
     ]
    ],
    "keys": [
-    "k2|RE/1:1|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
-    "k2|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s"
+    "k2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|HV/3,1,a|HV/1,0,a|LV>E/0s"
    ],
-   "key": "k2|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s",
+   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
    "mirror_pair": false,
    "vinf_kms": {
     "V": 3.1902719207924846,
@@ -733,16 +759,16 @@
      "body": "V",
      "t_days": 651.2147800415803,
      "vinf_kms": 3.1902719207924846,
-     "turn_deg": 92.21100778302767,
+     "turn_deg": 92.21100778302763,
      "available_deg": 113.02928176851867,
-     "ratio": 0.8158152147854364,
-     "required_alt_km": 6322.84875668382,
-     "rmin_radii": 2.044788121994085,
+     "ratio": 0.8158152147854361,
+     "required_alt_km": 6322.848756683835,
+     "rmin_radii": 2.0447881219940878,
      "status": "pass"
     },
     {
      "body": "V",
-     "t_days": 988.2674800415803,
+     "t_days": 763.5656800415803,
      "vinf_kms": 3.1902719207924823,
      "turn_deg": 0.0,
      "available_deg": 113.02928176851873,
@@ -755,11 +781,11 @@
      "body": "V",
      "t_days": 1100.6183800415804,
      "vinf_kms": 3.190271920792477,
-     "turn_deg": 92.21100778302777,
+     "turn_deg": 92.2110077830276,
      "available_deg": 113.0292817685189,
-     "ratio": 0.8158152147854356,
-     "required_alt_km": 6322.848756683864,
-     "rmin_radii": 2.044788121994088,
+     "ratio": 0.8158152147854342,
+     "required_alt_km": 6322.848756683928,
+     "rmin_radii": 2.044788121994099,
      "status": "pass"
     },
     {
@@ -787,14 +813,14 @@
    ],
    "r_min_km": 107444358.34051187,
    "r_max_km": 151005203.2103075,
-   "min_required_alt_km": 6322.84875668382,
-   "max_turn_deg": 92.21100778302777,
+   "min_required_alt_km": 6322.848756683835,
+   "max_turn_deg": 92.21100778302763,
    "cross_check": {
     "max_arrival_miss_km": 4.940606049631581e-05,
     "max_vinf_vector_error_kms": 1.1806103268640798e-11,
     "max_junction_mismatch_kms": 1.241673430740775e-12,
     "gate_status_integrated": "pass",
-    "worst_ratio_integrated": 0.8158152147857577
+    "worst_ratio_integrated": 0.8158152147861739
    },
    "soi_fraction": 8.016935880270253e-11,
    "collisions": [],
@@ -834,10 +860,10 @@
     ]
    ],
    "keys": [
-    "k2|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s",
-    "k2|RE/1:1|LE>V/0s|LV>V/1h|HV/1,0,p|LV>E/0s"
+    "k2|RE/1:1|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s",
+    "k2|RE/1:1|LE>V/0s|LV>V/1h|HV/1,0,a|LV>E/0s"
    ],
-   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s",
+   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s",
    "mirror_pair": true,
    "vinf_kms": {
     "V": 4.409911779934758,
@@ -854,22 +880,22 @@
      "body": "V",
      "t_days": 666.2199075460238,
      "vinf_kms": 4.409911779934758,
-     "turn_deg": 92.03182884075619,
+     "turn_deg": 92.03182884075612,
      "available_deg": 92.85614018230616,
-     "ratio": 0.9911227050797977,
-     "required_alt_km": 459.4775653912502,
-     "rmin_radii": 1.0759241160301452,
+     "ratio": 0.9911227050797969,
+     "required_alt_km": 459.4775653912611,
+     "rmin_radii": 1.0759241160301478,
      "status": "pass"
     },
     {
      "body": "V",
      "t_days": 778.5708075460238,
      "vinf_kms": 4.409911779934711,
-     "turn_deg": 89.22496902966205,
+     "turn_deg": 89.22496902966158,
      "available_deg": 92.85614018230747,
-     "ratio": 0.9608946576336661,
-     "required_alt_km": 1028.8596759749144,
-     "rmin_radii": 1.1700088694231094,
+     "ratio": 0.960894657633661,
+     "required_alt_km": 1028.8596759750108,
+     "rmin_radii": 1.1700088694231254,
      "status": "pass"
     },
     {
@@ -908,14 +934,14 @@
    ],
    "r_min_km": 90568728.04983287,
    "r_max_km": 152148366.6744634,
-   "min_required_alt_km": 459.4775653912502,
-   "max_turn_deg": 92.03182884075619,
+   "min_required_alt_km": 459.4775653912611,
+   "max_turn_deg": 92.03182884075612,
    "cross_check": {
     "max_arrival_miss_km": 8.145264766244747e-05,
     "max_vinf_vector_error_kms": 2.3203837846758255e-11,
     "max_junction_mismatch_kms": 2.2819079958935617e-11,
     "gate_status_integrated": "pass",
-    "worst_ratio_integrated": 0.9911227050797937
+    "worst_ratio_integrated": 0.9911227050797928
    },
    "soi_fraction": 1.3217015220972333e-10,
    "collisions": [],
@@ -1027,7 +1053,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 91449585.8081757,
+   "r_min_km": 86481240.10868938,
    "r_max_km": 151578695.189366,
    "min_required_alt_km": 4704.483030179753,
    "max_turn_deg": 86.76017758515813,
@@ -1222,7 +1248,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 81994955.37449022,
+   "r_min_km": 76539623.3470295,
    "r_max_km": 185933432.88932827,
    "min_required_alt_km": 7060.802724448834,
    "max_turn_deg": 31.761731525135026,
@@ -1343,8 +1369,8 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 94011283.40535751,
-   "r_max_km": 160970892.35603216,
+   "r_min_km": 89672533.52728914,
+   "r_max_km": 177595408.14344665,
    "min_required_alt_km": 19442.749762292784,
    "max_turn_deg": 30.142083833155606,
    "cross_check": {
@@ -1535,7 +1561,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 108210556.34939745,
+   "r_min_km": 78731213.62792212,
    "r_max_km": 167402732.96943644,
    "min_required_alt_km": 905.9717915839856,
    "max_turn_deg": 73.7452304834052,
@@ -1654,8 +1680,8 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 104462768.86426097,
-   "r_max_km": 166238658.2133991,
+   "r_min_km": 99260592.09099482,
+   "r_max_km": 180294108.20718405,
    "min_required_alt_km": 3537.5591972090924,
    "max_turn_deg": 66.5101080222803,
    "cross_check": {
@@ -1850,7 +1876,7 @@
     }
    ],
    "r_min_km": 77152664.32949619,
-   "r_max_km": 241411879.67992908,
+   "r_max_km": 250836522.5221217,
    "min_required_alt_km": 2700.8751669919757,
    "max_turn_deg": 21.366300574289557,
    "cross_check": {
@@ -1898,10 +1924,10 @@
     ]
    ],
    "keys": [
-    "k3|RE/1:1|LE>V/0s|HV/3,1,p|RV/3:2|LV>E/0s",
-    "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s"
+    "k3|RE/1:1|LE>V/0s|HV/3,1,a|RV/3:2|LV>E/0s",
+    "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,a|LV>E/0s"
    ],
-   "key": "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s",
+   "key": "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,a|LV>E/0s",
    "mirror_pair": true,
    "vinf_kms": {
     "V": 4.041313972720514,
@@ -1928,22 +1954,22 @@
      "body": "V",
      "t_days": 1336.4151233887737,
      "vinf_kms": 4.041313972720514,
-     "turn_deg": 92.09043919829645,
+     "turn_deg": 92.09043919829642,
      "available_deg": 98.56886560858291,
-     "ratio": 0.9342751246015928,
-     "required_alt_km": 1687.761153399253,
-     "rmin_radii": 1.2788858113948334,
+     "ratio": 0.9342751246015925,
+     "required_alt_km": 1687.7611533992658,
+     "rmin_radii": 1.2788858113948347,
      "status": "pass"
     },
     {
      "body": "V",
      "t_days": 1673.467823388774,
      "vinf_kms": 4.0413139727205145,
-     "turn_deg": 92.0904391061074,
+     "turn_deg": 92.09043910610743,
      "available_deg": 98.56886560858287,
-     "ratio": 0.9342751236663176,
-     "required_alt_km": 1687.7611748312293,
-     "rmin_radii": 1.2788858149362552,
+     "ratio": 0.9342751236663179,
+     "required_alt_km": 1687.7611748312247,
+     "rmin_radii": 1.2788858149362545,
      "status": "pass"
     },
     {
@@ -1970,17 +1996,17 @@
     }
    ],
    "r_min_km": 105653625.25462273,
-   "r_max_km": 151752824.21921754,
-   "min_required_alt_km": 1687.761153399253,
-   "max_turn_deg": 92.09043919829645,
+   "r_max_km": 175567836.270428,
+   "min_required_alt_km": 1687.7611533992658,
+   "max_turn_deg": 92.09043919829642,
    "cross_check": {
-    "max_arrival_miss_km": 0.000769487592035417,
-    "max_vinf_vector_error_kms": 2.0072762645718813e-10,
-    "max_junction_mismatch_kms": 5.3449689119133836e-11,
+    "max_arrival_miss_km": 0.0007892803907526248,
+    "max_vinf_vector_error_kms": 2.0733603441276486e-10,
+    "max_junction_mismatch_kms": 5.439382277927507e-11,
     "gate_status_integrated": "pass",
-    "worst_ratio_integrated": 0.9342751245937627
+    "worst_ratio_integrated": 0.9342751245936303
    },
-   "soi_fraction": 1.2486186156193342e-09,
+   "soi_fraction": 1.2807356467310907e-09,
    "collisions": [],
    "literature_offline": {
     "status": "published",
@@ -2091,7 +2117,7 @@
     }
    ],
    "r_min_km": 85161115.41601847,
-   "r_max_km": 154106901.813151,
+   "r_max_km": 178989970.26549044,
    "min_required_alt_km": 3332.92901002664,
    "max_turn_deg": 87.23008271686015,
    "cross_check": {
@@ -2226,8 +2252,8 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 101427703.0787172,
-   "r_max_km": 149597870.7,
+   "r_min_km": 78727374.01634237,
+   "r_max_km": 163841941.7790681,
    "min_required_alt_km": 1622.907797121382,
    "max_turn_deg": 82.7384313624596,
    "cross_check": {
@@ -2362,8 +2388,8 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 107603286.08122022,
-   "r_max_km": 149597870.7,
+   "r_min_km": 78681924.24806061,
+   "r_max_km": 160706790.55013165,
    "min_required_alt_km": 4250.885528681131,
    "max_turn_deg": 76.74569229877578,
    "cross_check": {
@@ -2416,15 +2442,15 @@
     ]
    ],
    "keys": [
-    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
-    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s",
-    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
-    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s"
+    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
+    "k3|RE/1:1|RE/2:3|LE>V/0s|HV/3,1,a|HV/1,0,a|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
+    "k3|RE/2:3|RE/1:1|LE>V/0s|HV/3,1,a|HV/1,0,a|LV>E/0s"
    ],
-   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s",
+   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
    "mirror_pair": false,
    "vinf_kms": {
-    "V": 3.7730097429660305,
+    "V": 3.773009742966031,
     "E": 5.582098706360165
    },
    "x_days": [
@@ -2436,20 +2462,20 @@
     {
      "body": "V",
      "t_days": 651.2147800415796,
-     "vinf_kms": 3.7730097429660305,
-     "turn_deg": 92.76201790356036,
+     "vinf_kms": 3.773009742966031,
+     "turn_deg": 92.76201790356033,
      "available_deg": 102.93656805886735,
-     "ratio": 0.9011570878340497,
-     "required_alt_km": 2650.0655200218616,
-     "rmin_radii": 1.4378970752539468,
+     "ratio": 0.9011570878340495,
+     "required_alt_km": 2650.0655200218725,
+     "rmin_radii": 1.4378970752539482,
      "status": "pass"
     },
     {
      "body": "V",
      "t_days": 763.5656800415796,
-     "vinf_kms": 3.773009742966024,
+     "vinf_kms": 3.7730097429660248,
      "turn_deg": 0.0,
-     "available_deg": 102.93656805886738,
+     "available_deg": 102.93656805886735,
      "ratio": 0.0,
      "required_alt_km": Infinity,
      "rmin_radii": Infinity,
@@ -2459,11 +2485,11 @@
      "body": "V",
      "t_days": 1100.6183800415797,
      "vinf_kms": 3.773009742966053,
-     "turn_deg": 92.76201790356068,
+     "turn_deg": 92.76201790356072,
      "available_deg": 102.93656805886738,
-     "ratio": 0.9011570878340526,
-     "required_alt_km": 2650.0655200217834,
-     "rmin_radii": 1.4378970752539162,
+     "ratio": 0.901157087834053,
+     "required_alt_km": 2650.065520021778,
+     "rmin_radii": 1.4378970752539153,
      "status": "pass"
     },
     {
@@ -2500,16 +2526,16 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 107603286.08122022,
-   "r_max_km": 149597870.7,
-   "min_required_alt_km": 2650.0655200217834,
-   "max_turn_deg": 92.76201790356068,
+   "r_min_km": 78681924.24806045,
+   "r_max_km": 160706790.55013096,
+   "min_required_alt_km": 2650.065520021778,
+   "max_turn_deg": 92.76201790356072,
    "cross_check": {
     "max_arrival_miss_km": 0.0005021545609831955,
     "max_vinf_vector_error_kms": 9.267837496140987e-11,
     "max_junction_mismatch_kms": 4.169997680492088e-12,
     "gate_status_integrated": "pass",
-    "worst_ratio_integrated": 0.9011570878346075
+    "worst_ratio_integrated": 0.9011570878346421
    },
    "soi_fraction": 8.148273464725516e-10,
    "collisions": [],
@@ -2554,10 +2580,10 @@
     ]
    ],
    "keys": [
-    "k3|RE/1:1|RE/1:1|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
-    "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s"
+    "k3|RE/1:1|RE/1:1|LE>V/0s|HV/3,1,a|RV/1:1|LV>E/0s",
+    "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s"
    ],
-   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s",
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s",
    "mirror_pair": true,
    "vinf_kms": {
     "V": 3.582425834005025,
@@ -2584,11 +2610,11 @@
      "body": "V",
      "t_days": 819.7411300415799,
      "vinf_kms": 3.5824258340050203,
-     "turn_deg": 89.85011466469246,
+     "turn_deg": 89.85011466469254,
      "available_deg": 106.14638743692558,
-     "ratio": 0.8464735996604998,
-     "required_alt_km": 4480.014370521173,
-     "rmin_radii": 1.7402779950628156,
+     "ratio": 0.8464735996605006,
+     "required_alt_km": 4480.014370521151,
+     "rmin_radii": 1.740277995062811,
      "status": "pass"
     },
     {
@@ -2636,7 +2662,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 108210556.34939748,
+   "r_min_km": 97155808.67131287,
    "r_max_km": 167327905.7755159,
    "min_required_alt_km": 3553.5519526944,
    "max_turn_deg": 92.92404972464107,
@@ -2645,7 +2671,7 @@
     "max_vinf_vector_error_kms": 1.9767270893852618e-11,
     "max_junction_mismatch_kms": 1.603339683242666e-11,
     "gate_status_integrated": "pass",
-    "worst_ratio_integrated": 0.8754329937027963
+    "worst_ratio_integrated": 0.8754329937027936
    },
    "soi_fraction": 1.6814621010263689e-10,
    "collisions": [],
@@ -2685,13 +2711,13 @@
     ]
    ],
    "keys": [
-    "k3|RE/2:3|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
-    "k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s"
+    "k3|RE/2:3|LE>V/0s|HV/3,1,a|RV/1:1|LV>E/0s",
+    "k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s"
    ],
-   "key": "k3|RE/2:3|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s",
+   "key": "k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s",
    "mirror_pair": true,
    "vinf_kms": {
-    "V": 3.5824258340050203,
+    "V": 3.582425834005025,
     "E": 5.923687346676164
    },
    "x_days": [
@@ -2703,34 +2729,34 @@
     {
      "body": "V",
      "t_days": 595.03933004158,
-     "vinf_kms": 3.5824258340050203,
-     "turn_deg": 92.92404972464116,
-     "available_deg": 106.14638743692558,
-     "ratio": 0.8754329937027635,
-     "required_alt_km": 3553.551952694329,
-     "rmin_radii": 1.5871892581867053,
+     "vinf_kms": 3.582425834005025,
+     "turn_deg": 88.77412098685782,
+     "available_deg": 106.14638743692545,
+     "ratio": 0.8363367150823608,
+     "required_alt_km": 4822.2827169326,
+     "rmin_radii": 1.7968344487479089,
      "status": "pass"
     },
     {
      "body": "V",
-     "t_days": 932.09203004158,
-     "vinf_kms": 3.582425834005021,
-     "turn_deg": 89.85011466469378,
+     "t_days": 819.7411300415799,
+     "vinf_kms": 3.5824258340050203,
+     "turn_deg": 89.85011466469254,
      "available_deg": 106.14638743692558,
-     "ratio": 0.8464735996605123,
-     "required_alt_km": 4480.0143705207565,
-     "rmin_radii": 1.7402779950627474,
+     "ratio": 0.8464735996605006,
+     "required_alt_km": 4480.014370521151,
+     "rmin_radii": 1.740277995062811,
      "status": "pass"
     },
     {
      "body": "V",
      "t_days": 1156.79383004158,
-     "vinf_kms": 3.582425834005016,
-     "turn_deg": 88.77412098686003,
+     "vinf_kms": 3.582425834005011,
+     "turn_deg": 92.92404972464107,
      "available_deg": 106.14638743692575,
-     "ratio": 0.8363367150823795,
-     "required_alt_km": 4822.282716931998,
-     "rmin_radii": 1.796834448747801,
+     "ratio": 0.8754329937027612,
+     "required_alt_km": 3553.5519526944,
+     "rmin_radii": 1.587189258186717,
      "status": "pass"
     },
     {
@@ -2756,10 +2782,10 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 108210556.34939748,
+   "r_min_km": 78731213.62792218,
    "r_max_km": 167327905.7755159,
    "min_required_alt_km": 1161.945300337392,
-   "max_turn_deg": 92.92404972464116,
+   "max_turn_deg": 92.92404972464107,
    "cross_check": {
     "max_arrival_miss_km": 0.0004406678019346933,
     "max_vinf_vector_error_kms": 8.037713472573977e-11,
@@ -3014,7 +3040,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 99600111.7058186,
+   "r_min_km": 78731213.6279222,
    "r_max_km": 167719992.53469598,
    "min_required_alt_km": 921.0716691778707,
    "max_turn_deg": 99.85337091861808,
@@ -3273,7 +3299,7 @@
     }
    ],
    "r_min_km": 102098264.7980049,
-   "r_max_km": 178040760.19577092,
+   "r_max_km": 235356271.43313283,
    "min_required_alt_km": 2670.8132085325205,
    "max_turn_deg": 59.73896383451186,
    "cross_check": {
@@ -3393,7 +3419,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 98055417.61015216,
+   "r_min_km": 91313127.28484945,
    "r_max_km": 252237333.32000524,
    "min_required_alt_km": 4584.165478360338,
    "max_turn_deg": 23.489722486334855,
@@ -3513,7 +3539,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 105706424.74389367,
+   "r_min_km": 102842123.72798441,
    "r_max_km": 205504647.16079184,
    "min_required_alt_km": 5280.516069184342,
    "max_turn_deg": 61.444119206224876,
@@ -3618,7 +3644,7 @@
     }
    ],
    "r_min_km": 105706424.74389367,
-   "r_max_km": 205504647.16079184,
+   "r_max_km": 340595480.4697444,
    "min_required_alt_km": 5280.516069184342,
    "max_turn_deg": 61.444119206224876,
    "cross_check": {
@@ -3721,7 +3747,7 @@
      "status": "pass"
     }
    ],
-   "r_min_km": 105706424.74389367,
+   "r_min_km": 66762225.8496235,
    "r_max_km": 205504647.16079184,
    "min_required_alt_km": 3862.6989827165553,
    "max_turn_deg": 61.444119206224876,

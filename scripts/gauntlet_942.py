@@ -52,6 +52,7 @@ from cyclerfinder.search.two_working_body import (
     gate_cycle,
     sphere_of_influence_km,
 )
+from cyclerfinder.search.two_working_body_enum import leg_extent
 
 REPO = Path(__file__).resolve().parents[1]
 DAY = 86400.0
@@ -212,8 +213,43 @@ def catalogue_rows(a: str, b: str) -> list[dict]:
                         (e.get("body"), e.get("vinf_kms"))
                         for e in (r.get("vinf_kms_at_encounters") or [])
                     ],
+                    "k": (r.get("period") or {}).get("k"),
                 }
             )
+    return out
+
+
+#: Pisarevsky, Kogan & Guelman 2008 Table 4 (p.739, digest sec. 3): the class-III two-massive-planet
+#: Earth-Mars cycler, k = 2, V_inf Earth 6.2 / Mars 5.7 km/s from the table's own elements (the
+#: printed column is interchanged).
+PISAREVSKY_T4 = {"E": 6.2, "M": 5.7, "k": 2}
+
+
+def catalogue_matches(line: dict, k: int, rows: list[dict]) -> list[str]:
+    """Catalogue rows on the pair whose listed V_inf at every body lies within 0.3 km/s of the
+    candidate's (per body, the nearest listed value): "CATALOGUE LITERAL?" when also the same k
+    and within 0.05 km/s, else "CATALOGUE NEAR" (same k) or "CATALOGUE V_INF" (another k)."""
+    out = []
+    v = line["vinf_kms"]
+    for r in rows:
+        per_body: dict[str, list[float]] = {}
+        for body, val in r["vinf"]:
+            if val is not None:
+                per_body.setdefault(body, []).append(float(val))
+        if not per_body or set(per_body) != set(v):
+            continue
+        dv = max(min(abs(v[c] - x) for x in per_body[c]) for c in v)
+        rk = r.get("k")
+        if dv <= 0.05 and rk == k:
+            out.append(f"CATALOGUE LITERAL? {r['id']} (dV_inf {dv:.3f}, k {rk})")
+        elif dv <= 0.3 and rk == k:
+            out.append(f"CATALOGUE NEAR {r['id']} (dV_inf {dv:.3f}, k {rk})")
+        elif dv <= 0.1:
+            out.append(f"CATALOGUE V_INF {r['id']} (dV_inf {dv:.3f}, k {rk} vs {k})")
+    if set(v) == {"E", "M"}:
+        dv = max(abs(v["E"] - PISAREVSKY_T4["E"]), abs(v["M"] - PISAREVSKY_T4["M"]))
+        if dv <= 0.3:
+            out.append(f"NEAR Pisarevsky 2008 Table 4 (dV_inf {dv:.2f}, k 2 vs {k})")
     return out
 
 
@@ -261,6 +297,7 @@ def main() -> None:
         kk, cycle = ENUM.parse_cycle_key(best["key"], system, a, b)
         x = np.asarray(best["x_days"]) * DAY
         fl = cycle_flybys(system, cycle, x)
+        ext = leg_extent(system, cycle, x, flybys=fl)
         assert fl is not None
         xc = cross_check(system, cycle, x, fl)
         soi = min(sphere_of_influence_km(system, c) for c in (a, b))
@@ -284,13 +321,15 @@ def main() -> None:
             "x_days": best["x_days"],
             "period_days": kk * system.synodic_s(a, b) / DAY,
             "flyby_table": best["flybys"],
-            "r_min_km": best["r_min_km"],
-            "r_max_km": best["r_max_km"],
+            # recomputed: stored zeros may predate the fixed-leg extent fix (note 6.30)
+            "r_min_km": ext[0],
+            "r_max_km": ext[1],
             "min_required_alt_km": best["min_required_alt_km"],
             "max_turn_deg": best["max_turn_deg"],
             "cross_check": xc,
             "soi_fraction": xc["max_arrival_miss_km"] / soi,
-            "collisions": collisions(args.cell, line, system, a, b),
+            "collisions": collisions(args.cell, line, system, a, b)
+            + catalogue_matches(line, k, cat),
             "literature_offline": {
                 "status": lit.status,
                 "citation": getattr(lit, "citation", None),

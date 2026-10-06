@@ -1,0 +1,186 @@
+16:19:27 ge epoch 0 (JD 2462503.8) blend lam=0.0000 conv=True res=8.1e-11 gate=pass worst=0.729 [elapsed 1s]
+16:19:29 ge epoch 0 (JD 2462503.8) blend lam=0.1000 conv=True res=8.6e-11 gate=pass worst=0.736 [elapsed 3s]
+16:19:31 ge epoch 0 (JD 2462503.8) blend lam=0.2000 conv=True res=7.7e-11 gate=pass worst=0.743 [elapsed 5s]
+16:19:33 ge epoch 0 (JD 2462503.8) blend lam=0.3000 conv=True res=7.8e-11 gate=pass worst=0.751 [elapsed 7s]
+16:19:35 ge epoch 0 (JD 2462503.8) blend lam=0.4000 conv=True res=8.0e-11 gate=pass worst=0.758 [elapsed 9s]
+16:19:37 ge epoch 0 (JD 2462503.8) blend lam=0.5000 conv=True res=6.7e-11 gate=pass worst=0.766 [elapsed 11s]
+16:19:39 ge epoch 0 (JD 2462503.8) blend lam=0.6000 conv=True res=6.8e-11 gate=pass worst=0.774 [elapsed 13s]
+16:19:41 ge epoch 0 (JD 2462503.8) blend lam=0.7000 conv=True res=9.2e-11 gate=pass worst=0.783 [elapsed 15s]
+16:19:43 ge epoch 0 (JD 2462503.8) blend lam=0.8000 conv=True res=8.3e-11 gate=pass worst=0.791 [elapsed 17s]
+16:19:45 ge epoch 0 (JD 2462503.8) blend lam=0.9000 conv=True res=3.1e-11 gate=no-directions worst=nan [elapsed 19s]
+16:19:47 ge epoch 0 (JD 2462503.8) blend lam=1.0000 conv=True res=7.3e-11 gate=no-directions worst=nan [elapsed 21s]
+16:19:48 ge epoch 0 (JD 2462503.8) blend lam=1.0000 conv=True res=7.3e-11 gate=no-directions worst=nan [elapsed 22s]
+  seed: block 20 at Ganymede (t = 22759.971 d, |V_inf| 3.15561 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 24 at Ganymede (t = 22809.353 d, |V_inf| 3.15504 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 28 at Ganymede (t = 22858.725 d, |V_inf| 3.18793 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:19:50   shoot restart 0: closes, gate=pass worst=0.853
+16:19:53   shoot restart 1/20: no closure (max residual 1.6e+03, nfev 38, 3s)
+16:19:56   shoot restart 2/20: no closure (max residual 2.0e+03, nfev 45, 3s)
+16:20:03   shoot restart 3/20: no closure (max residual 3.7e+02, nfev 82, 6s)
+16:20:05   shoot restart 4/20: no closure (max residual 1.2e+03, nfev 34, 3s)
+16:20:16   shoot restart 5/20: no closure (max residual 2.2e+00, nfev 147, 10s)
+16:20:19   shoot restart 6/20: no closure (max residual 1.6e+03, nfev 53, 4s)
+16:20:23   shoot restart 7/20: no closure (max residual 1.7e+03, nfev 46, 4s)
+16:20:26   shoot restart 8/20: no closure (max residual 8.1e+02, nfev 41, 3s)
+16:20:31   shoot restart 9/20: no closure (max residual 1.3e+03, nfev 55, 5s)
+16:20:41   shoot restart 10/20: no closure (max residual 4.9e+00, nfev 139, 11s)
+16:20:58   shoot restart 11/20: no closure (max residual 4.0e+02, nfev 209, 17s)
+16:21:03   shoot restart 12/20: no closure (max residual 3.6e+01, nfev 69, 5s)
+16:21:06   shoot restart 13/20: no closure (max residual 1.0e+03, nfev 43, 3s)
+16:21:10   shoot restart 14/20: no closure (max residual 1.7e+03, nfev 46, 4s)
+16:21:13   shoot restart 15/20: no closure (max residual 5.7e+02, nfev 37, 3s)
+16:21:16   shoot restart 16/20: no closure (max residual 7.5e+02, nfev 31, 3s)
+16:21:19   shoot restart 17/20: no closure (max residual 1.6e+03, nfev 46, 4s)
+16:21:24   shoot restart 18/20: no closure (max residual 9.7e+02, nfev 53, 4s)
+16:21:29   shoot restart 19/20: no closure (max residual 7.0e+02, nfev 70, 5s)
+16:21:30 ge epoch 1 (JD 2464844.7) blend lam=0.0000 conv=True res=7.2e-11 gate=pass worst=0.729 [elapsed 124s]
+16:21:32 ge epoch 1 (JD 2464844.7) blend lam=0.1000 conv=True res=1.2e-10 gate=pass worst=0.739 [elapsed 126s]
+16:21:34 ge epoch 1 (JD 2464844.7) blend lam=0.2000 conv=True res=7.8e-11 gate=pass worst=0.749 [elapsed 128s]
+16:21:36 ge epoch 1 (JD 2464844.7) blend lam=0.3000 conv=True res=1.3e-10 gate=pass worst=0.758 [elapsed 130s]
+16:21:38 ge epoch 1 (JD 2464844.7) blend lam=0.4000 conv=True res=9.9e-11 gate=pass worst=0.766 [elapsed 132s]
+16:21:40 ge epoch 1 (JD 2464844.7) blend lam=0.5000 conv=True res=1.2e-10 gate=pass worst=0.774 [elapsed 134s]
+16:21:42 ge epoch 1 (JD 2464844.7) blend lam=0.6000 conv=True res=1.1e-10 gate=pass worst=0.783 [elapsed 136s]
+16:21:44 ge epoch 1 (JD 2464844.7) blend lam=0.7000 conv=True res=9.7e-11 gate=pass worst=0.793 [elapsed 138s]
+16:21:46 ge epoch 1 (JD 2464844.7) blend lam=0.8000 conv=True res=8.6e-11 gate=no-directions worst=nan [elapsed 140s]
+16:21:49 ge epoch 1 (JD 2464844.7) blend lam=0.9000 conv=True res=1.2e-10 gate=no-directions worst=nan [elapsed 143s]
+16:21:51 ge epoch 1 (JD 2464844.7) blend lam=1.0000 conv=True res=9.9e-11 gate=no-directions worst=nan [elapsed 145s]
+16:21:51 ge epoch 1 (JD 2464844.7) blend lam=1.0000 conv=True res=9.9e-11 gate=no-directions worst=nan [elapsed 145s]
+  seed: block 0 at Ganymede (t = 24854.114 d, |V_inf| 3.15341 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 32 at Ganymede (t = 25248.933 d, |V_inf| 3.16733 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 36 at Ganymede (t = 25298.311 d, |V_inf| 3.14453 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:21:54   shoot restart 0: closes, gate=pass worst=0.820
+16:22:02   shoot restart 1/20: no closure (max residual 1.1e+01, nfev 104, 8s)
+16:22:05   shoot restart 2/20: no closure (max residual 1.9e+03, nfev 49, 4s)
+16:22:09   shoot restart 3/20: no closure (max residual 1.1e+03, nfev 48, 4s)
+16:22:12   shoot restart 4/20: no closure (max residual 1.3e+03, nfev 42, 3s)
+16:22:16   shoot restart 5/20: no closure (max residual 1.2e+03, nfev 47, 4s)
+16:22:18   shoot restart 6/20: no closure (max residual 1.3e+03, nfev 35, 3s)
+16:22:21   shoot restart 7/20: no closure (max residual 1.3e+03, nfev 31, 2s)
+16:22:25   shoot restart 8/20: no closure (max residual 1.2e+03, nfev 54, 4s)
+16:22:28   shoot restart 9/20: no closure (max residual 1.5e+03, nfev 40, 3s)
+16:22:31   shoot restart 10/20: no closure (max residual 7.3e+02, nfev 54, 4s)
+16:22:36   shoot restart 11/20: no closure (max residual 5.5e+02, nfev 55, 4s)
+16:22:51   shoot restart 12/20: no closure (max residual 4.1e+00, nfev 226, 15s)
+16:22:53   shoot restart 13/20: no closure (max residual 1.3e+03, nfev 28, 2s)
+16:22:56   shoot restart 14/20: no closure (max residual 8.2e+02, nfev 42, 3s)
+16:23:11   shoot restart 15/20: no closure (max residual 3.3e+00, nfev 209, 15s)
+16:23:14   shoot restart 16/20: no closure (max residual 2.0e+03, nfev 45, 3s)
+16:23:28   shoot restart 17/20: no closure (max residual 3.3e+00, nfev 195, 13s)
+16:23:31   shoot restart 18/20: no closure (max residual 1.5e+03, nfev 42, 3s)
+16:23:34   shoot restart 19/20: no closure (max residual 9.4e+02, nfev 42, 3s)
+16:23:35 ge epoch 2 (JD 2467178.6) blend lam=0.0000 conv=True res=7.3e-11 gate=pass worst=0.729 [elapsed 249s]
+16:23:37 ge epoch 2 (JD 2467178.6) blend lam=0.1000 conv=True res=1.4e-10 gate=pass worst=0.743 [elapsed 251s]
+16:23:40 ge epoch 2 (JD 2467178.6) blend lam=0.2000 conv=True res=1.4e-10 gate=pass worst=0.756 [elapsed 254s]
+16:23:42 ge epoch 2 (JD 2467178.6) blend lam=0.3000 conv=True res=1.8e-10 gate=pass worst=0.770 [elapsed 256s]
+16:23:44 ge epoch 2 (JD 2467178.6) blend lam=0.4000 conv=True res=1.3e-10 gate=pass worst=0.784 [elapsed 258s]
+16:23:46 ge epoch 2 (JD 2467178.6) blend lam=0.5000 conv=True res=1.4e-10 gate=pass worst=0.797 [elapsed 260s]
+16:23:48 ge epoch 2 (JD 2467178.6) blend lam=0.6000 conv=True res=1.2e-10 gate=pass worst=0.810 [elapsed 262s]
+16:23:50 ge epoch 2 (JD 2467178.6) blend lam=0.7000 conv=True res=8.9e-11 gate=no-directions worst=nan [elapsed 264s]
+16:23:52 ge epoch 2 (JD 2467178.6) blend lam=0.8000 conv=True res=7.4e-11 gate=no-directions worst=nan [elapsed 266s]
+16:23:54 ge epoch 2 (JD 2467178.6) blend lam=0.9000 conv=True res=1.2e-10 gate=no-directions worst=nan [elapsed 268s]
+16:23:56 ge epoch 2 (JD 2467178.6) blend lam=1.0000 conv=True res=1.8e-10 gate=no-directions worst=nan [elapsed 270s]
+16:23:57 ge epoch 2 (JD 2467178.6) blend lam=1.0000 conv=True res=1.1e-10 gate=no-directions worst=nan [elapsed 271s]
+  seed: block 0 at Ganymede (t = 27187.968 d, |V_inf| 3.17137 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 4 at Ganymede (t = 27237.332 d, |V_inf| 3.17959 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 32 at Ganymede (t = 27582.790 d, |V_inf| 3.14972 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 36 at Ganymede (t = 27632.177 d, |V_inf| 3.14039 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:24:22   shoot restart 0/20: no closure (max residual 1.0e-03, nfev 377, 25s)
+16:24:24   shoot restart 1/20: no closure (max residual 1.1e+03, nfev 42, 3s)
+16:24:33   shoot restart 2/20: no closure (max residual 2.9e+00, nfev 146, 9s)
+16:24:36   shoot restart 3/20: no closure (max residual 1.2e+03, nfev 43, 3s)
+16:24:39   shoot restart 4/20: no closure (max residual 1.1e+03, nfev 45, 3s)
+16:24:41   shoot restart 5/20: no closure (max residual 1.6e+03, nfev 32, 2s)
+16:24:43   shoot restart 6/20: no closure (max residual 6.5e+02, nfev 39, 2s)
+16:24:46   shoot restart 7/20: no closure (max residual 6.8e+02, nfev 31, 2s)
+16:24:51   shoot restart 8/20: no closure (max residual 4.8e+02, nfev 69, 5s)
+16:25:28   shoot restart 9/20: no closure (max residual 2.8e+00, nfev 598, 37s)
+16:25:39   shoot restart 10/20: no closure (max residual 1.4e+01, nfev 168, 11s)
+16:25:41   shoot restart 11/20: no closure (max residual 1.3e+03, nfev 36, 3s)
+16:25:43   shoot restart 12/20: no closure (max residual 2.0e+03, nfev 30, 2s)
+16:26:43   shoot restart 13: 8381 evals, best max|res| so far 7.70e+00 [60s]
+16:27:43   shoot restart 13: 16592 evals, best max|res| so far 7.70e+00 [120s]
+16:28:43   shoot restart 13: 24816 evals, best max|res| so far 7.70e+00 [180s]
+16:29:14   shoot restart 13/20: no closure (max residual 8.5e+00, nfev 3560, 211s)
+16:29:25   shoot restart 14/20: no closure (max residual 2.3e+01, nfev 168, 11s)
+16:29:28   shoot restart 15/20: no closure (max residual 1.2e+03, nfev 42, 3s)
+16:29:31   shoot restart 16/20: no closure (max residual 1.9e+03, nfev 42, 3s)
+16:29:34   shoot restart 17/20: no closure (max residual 1.7e+03, nfev 48, 3s)
+16:29:36   shoot restart 18/20: no closure (max residual 1.3e+03, nfev 32, 2s)
+16:29:39   shoot restart 19/20: no closure (max residual 1.1e+03, nfev 45, 3s)
+16:29:40 ge epoch 3 (JD 2469519.5) blend lam=0.0000 conv=True res=7.3e-11 gate=pass worst=0.729 [elapsed 614s]
+16:29:41 ge epoch 3 (JD 2469519.5) blend lam=0.1000 conv=True res=1.9e-10 gate=pass worst=0.738 [elapsed 615s]
+16:29:43 ge epoch 3 (JD 2469519.5) blend lam=0.2000 conv=True res=1.8e-10 gate=pass worst=0.746 [elapsed 617s]
+16:29:45 ge epoch 3 (JD 2469519.5) blend lam=0.3000 conv=True res=1.7e-10 gate=pass worst=0.755 [elapsed 619s]
+16:29:47 ge epoch 3 (JD 2469519.5) blend lam=0.4000 conv=True res=1.0e-10 gate=pass worst=0.763 [elapsed 621s]
+16:29:49 ge epoch 3 (JD 2469519.5) blend lam=0.5000 conv=True res=1.3e-10 gate=pass worst=0.772 [elapsed 623s]
+16:29:51 ge epoch 3 (JD 2469519.5) blend lam=0.6000 conv=True res=1.2e-10 gate=pass worst=0.780 [elapsed 625s]
+16:29:53 ge epoch 3 (JD 2469519.5) blend lam=0.7000 conv=True res=1.2e-10 gate=pass worst=0.788 [elapsed 627s]
+16:29:54 ge epoch 3 (JD 2469519.5) blend lam=0.8000 conv=True res=1.3e-10 gate=pass worst=0.797 [elapsed 628s]
+16:29:56 ge epoch 3 (JD 2469519.5) blend lam=0.9000 conv=True res=1.0e-10 gate=no-directions worst=nan [elapsed 630s]
+16:29:58 ge epoch 3 (JD 2469519.5) blend lam=1.0000 conv=True res=8.0e-11 gate=no-directions worst=nan [elapsed 632s]
+16:29:59 ge epoch 3 (JD 2469519.5) blend lam=1.0000 conv=True res=5.6e-11 gate=no-directions worst=nan [elapsed 633s]
+  seed: block 4 at Ganymede (t = 29578.229 d, |V_inf| 3.18598 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 8 at Ganymede (t = 29627.591 d, |V_inf| 3.17631 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:30:59   shoot restart 0: 7634 evals, best max|res| so far 6.15e-05 [60s]
+16:31:59   shoot restart 0: 15227 evals, best max|res| so far 1.29e-05 [120s]
+16:32:59   shoot restart 0: 22818 evals, best max|res| so far 2.76e-06 [180s]
+16:33:59   shoot restart 0: 30467 evals, best max|res| so far 6.92e-07 [240s]
+16:34:38   shoot restart 0: closes, gate=pass worst=0.769
+16:34:41   shoot restart 1/20: no closure (max residual 1.5e+03, nfev 43, 3s)
+16:34:43   shoot restart 2/20: no closure (max residual 2.1e+03, nfev 26, 2s)
+16:34:45   shoot restart 3/20: no closure (max residual 8.4e+02, nfev 29, 2s)
+16:34:48   shoot restart 4/20: no closure (max residual 1.2e+03, nfev 46, 3s)
+16:34:52   shoot restart 5/20: no closure (max residual 6.8e+02, nfev 40, 3s)
+16:34:54   shoot restart 6/20: no closure (max residual 1.6e+03, nfev 37, 3s)
+16:34:57   shoot restart 7/20: no closure (max residual 7.6e+00, nfev 42, 3s)
+16:35:00   shoot restart 8/20: no closure (max residual 1.3e+03, nfev 28, 2s)
+16:35:02   shoot restart 9/20: no closure (max residual 1.5e+03, nfev 39, 3s)
+16:35:10   shoot restart 10/20: no closure (max residual 2.9e+00, nfev 121, 8s)
+16:35:13   shoot restart 11/20: no closure (max residual 1.5e+03, nfev 34, 3s)
+16:35:20   shoot restart 12/20: no closure (max residual 2.8e+02, nfev 98, 7s)
+16:35:23   shoot restart 13/20: no closure (max residual 4.4e+02, nfev 47, 3s)
+16:35:27   shoot restart 14/20: no closure (max residual 1.6e+03, nfev 45, 3s)
+16:35:29   shoot restart 15/20: no closure (max residual 7.7e+02, nfev 33, 2s)
+16:35:32   shoot restart 16/20: no closure (max residual 1.0e+03, nfev 49, 3s)
+16:35:47   shoot restart 17/20: no closure (max residual 1.9e+02, nfev 206, 15s)
+16:35:49   shoot restart 18/20: no closure (max residual 2.1e+03, nfev 27, 2s)
+16:36:49   shoot restart 19: 7917 evals, best max|res| so far 6.42e+00 [60s]
+16:37:49   shoot restart 19: 16673 evals, best max|res| so far 5.99e+00 [120s]
+16:38:49   shoot restart 19: 26669 evals, best max|res| so far 5.32e+00 [180s]
+16:39:47   shoot restart 19/20: no closure (max residual 4.8e+00, nfev 4200, 238s)
+16:39:47 ge epoch 4 (JD 2471853.3) blend lam=0.0000 conv=True res=7.3e-11 gate=pass worst=0.729 [elapsed 1221s]
+16:39:49 ge epoch 4 (JD 2471853.3) blend lam=0.1000 conv=True res=1.3e-10 gate=pass worst=0.742 [elapsed 1223s]
+16:39:50 ge epoch 4 (JD 2471853.3) blend lam=0.2000 conv=True res=2.0e-10 gate=pass worst=0.754 [elapsed 1224s]
+16:39:51 ge epoch 4 (JD 2471853.3) blend lam=0.3000 conv=True res=1.1e-10 gate=pass worst=0.766 [elapsed 1225s]
+16:39:52 ge epoch 4 (JD 2471853.3) blend lam=0.4000 conv=True res=1.4e-10 gate=pass worst=0.777 [elapsed 1226s]
+16:39:53 ge epoch 4 (JD 2471853.3) blend lam=0.5000 conv=True res=1.1e-10 gate=pass worst=0.789 [elapsed 1227s]
+16:39:55 ge epoch 4 (JD 2471853.3) blend lam=0.6000 conv=True res=1.1e-10 gate=pass worst=0.800 [elapsed 1229s]
+16:39:56 ge epoch 4 (JD 2471853.3) blend lam=0.7000 conv=True res=1.3e-10 gate=pass worst=0.810 [elapsed 1230s]
+16:39:57 ge epoch 4 (JD 2471853.3) blend lam=0.8000 conv=True res=8.3e-11 gate=pass worst=0.822 [elapsed 1231s]
+16:39:58 ge epoch 4 (JD 2471853.3) blend lam=0.9000 conv=True res=1.1e-10 gate=no-directions worst=nan [elapsed 1232s]
+16:40:00 ge epoch 4 (JD 2471853.3) blend lam=1.0000 conv=True res=1.1e-10 gate=no-directions worst=nan [elapsed 1234s]
+16:40:00 ge epoch 4 (JD 2471853.3) blend lam=1.0000 conv=True res=8.7e-11 gate=no-directions worst=nan [elapsed 1234s]
+  seed: block 12 at Ganymede (t = 32010.793 d, |V_inf| 3.17386 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+  seed: block 16 at Ganymede (t = 32060.161 d, |V_inf| 3.17425 km/s, fixed legs ['HalfRevLeg']) has no minimax solution at lambda = 1.0; nearest-geometry directions used as the shoot seed
+16:41:00   shoot restart 0: 11340 evals, best max|res| so far 1.56e-03 [60s]
+16:41:53   shoot restart 0/20: no closure (max residual 1.3e-03, nfev 2430, 113s)
+16:41:55   shoot restart 1/20: no closure (max residual 4.1e+02, nfev 37, 2s)
+16:42:01   shoot restart 2/20: no closure (max residual 3.4e+02, nfev 177, 6s)
+16:42:08   shoot restart 3/20: no closure (max residual 1.9e+01, nfev 123, 6s)
+16:42:12   shoot restart 4/20: no closure (max residual 9.9e+02, nfev 55, 4s)
+16:42:15   shoot restart 5/20: no closure (max residual 1.7e+03, nfev 43, 3s)
+16:42:19   shoot restart 6/20: no closure (max residual 1.2e+03, nfev 58, 4s)
+16:42:21   shoot restart 7/20: no closure (max residual 7.9e+02, nfev 45, 3s)
+16:42:25   shoot restart 8/20: no closure (max residual 1.2e+03, nfev 60, 4s)
+16:42:35   shoot restart 9/20: no closure (max residual 2.0e+02, nfev 142, 10s)
+16:42:38   shoot restart 10/20: no closure (max residual 1.2e+03, nfev 46, 3s)
+16:42:42   shoot restart 11/20: no closure (max residual 4.5e-01, nfev 65, 4s)
+16:42:49   shoot restart 12/20: no closure (max residual 3.7e+00, nfev 134, 7s)
+16:42:51   shoot restart 13/20: no closure (max residual 1.5e+03, nfev 34, 2s)
+16:42:57   shoot restart 14/20: no closure (max residual 3.2e+00, nfev 99, 5s)
+16:43:00   shoot restart 15/20: no closure (max residual 6.6e+02, nfev 51, 3s)
+16:43:02   shoot restart 16/20: no closure (max residual 1.2e+03, nfev 36, 2s)
+16:43:05   shoot restart 17/20: no closure (max residual 1.8e+01, nfev 51, 3s)
+16:43:07   shoot restart 18/20: no closure (max residual 9.3e+02, nfev 46, 3s)
+16:43:20   shoot restart 19/20: no closure (max residual 3.1e+00, nfev 273, 13s)
+DONE
