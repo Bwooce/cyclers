@@ -1768,6 +1768,12 @@ Also received:
   - corpus-file-opus's own arithmetic (not in the memo): 5 Venus synodic periods = 2,919.6 d against
     8 yr = 2,922.0 d, i.e. a slip of -2.4 deg per 8 yr (-4.8 deg per 16 yr) that a 16-yr real-ephemeris
     repeat (ev-A, ev-C) must absorb. Not a published objection.
+- Lam, Buffington & Campagnola 2018 (AIAA 2018-0202, Clipper tours 17F12/17F13; read by corpus-file-opus):
+  - Ganymede appears only in the pump-down (V_inf 6.77-8.45 km/s), then the tour goes straight to
+    Europa (a single G -> E handoff).
+  - Callisto appears as one block of 8 flybys (the "switch flip", V_inf 2.73-3.63 km/s).
+  - The pattern is one-way (G^4 E^n C^8 E^n C), with no periodic two-body sequence. No collision with
+    gc-1, gc-2 or ge-1..3.
 - Grushevskii, Golubev, Koryanov, Tuchin & Tuchin, ISSFD 2017 paper 145: the same one-way cross-GAM
   template as Golubev 2014 (no periodic G-C sequence). No collision with gc-1, gc-2 or ge-1..3.
 
