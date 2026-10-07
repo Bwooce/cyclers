@@ -137,7 +137,8 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
 
 **Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
-part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
+part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint. Added
+2026-10-07 from `#971`: `#975` (R14, the Varin cascade), against the `#864` sec. 8 do-not-do item.
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
