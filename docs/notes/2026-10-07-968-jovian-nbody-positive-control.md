@@ -444,3 +444,36 @@ arrived, with criteria 1-6 pre-registered (5.3) and the continuation limit as am
 effect criterion 4b): criteria 1, 2, 3, 5, 6 PASS; criterion 4 FAIL as registered; 4b V_inf and
 Europa speed PASS, altitude FAIL as registered (34.8 km against a 20 km rule; the curve is not
 converged at s_G = 0.0055). The lead rules on whether that completes "lane validated".
+
+## 8. VERDICT (lead ruling 2026-10-08): lane validated, ideal continuous R-S model
+
+#968 = "lane validated (ideal continuous R-S model)". Two published controls (GanCal#5, GanEur#43):
+- close in the lane with the fixed wrap;
+- are held by the lane's own residual;
+- agree with an independent integrator (REBOUND IAS15);
+- continue on one smooth branch to the published V_inf and target speed in the patched-conic limit
+  (both PASS as pre-registered).
+
+Criterion 4 at full Ganymede mass FAILS for both. It tests the patched-conic approximation, not the
+lane: 0.1-0.3 km/s shifts for 1.9-3.2 km/s Ganymede cyclers. The 95,000 km pass explains 23 % of
+GanCal#5's shift; my earlier inference that it caused the shift is withdrawn (6.2). The GanEur#43
+altitude limit FAILS as registered (quadratic fit 8895.8 km against 8861, tolerance 20 km); the sqrt
+fit brackets it (8796 km) and the limit is not converged at s = 0.0055. This is recorded as a
+fit-rule limitation and was not re-registered after the fact. No deeper altitude run and no GanEur#5
+(option (i)). Real ephemeris (rung (b)) is not covered by this verdict.
+
+### 8.1 Criterion 4c for any FUTURE control (pre-registered now)
+
+The continuation in the working body's GM must reach s <= 0.01. The last computed point must lie
+within a tolerance stated before the run of the published value (V_inf, target speed, and altitude
+via r_p / s minus the radius). Any extrapolation rule (form of the fit, range of s) is fixed before
+the run, and the verdict is the last computed point unless the registered fit rule says otherwise.
+
+### 8.2 For the catalogue and the n-body rung of candidate rows
+
+R-S patched-conic values shift by 0.1-0.3 km/s in continuous gravity at these V_inf (1.9-3.2 km/s at
+Ganymede). A candidate's n-body standing must be judged by closure and by continuation to its own
+patched-conic limit, not by agreement with its patched-conic numbers at full mass. (This is the
+wording the n-body rung of #1025 and of the #942/#943 rows needs.) See also #1004 (gc-2's continuous
+branch folds at 0.164 of the real moon masses): a patched-conic real-ephemeris PASS does not imply
+that the orbit exists in continuous gravity.
