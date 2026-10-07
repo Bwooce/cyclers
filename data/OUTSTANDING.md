@@ -1930,17 +1930,27 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   shooting residuals turn into a defect sentinel (1e7 per component at about line 812, 1e9 at about
   line 1006), so a slow propagation under load reads as a large defect.
 - `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`); **DISPATCHED 2026-10-07 to
-  earthmoon-opus** (the Schwaniger row and the both-primary corrector control first, then `#997`). **ADD A V0 CATALOGUE ROW
-  `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger 1963 (NASA TN D-1833,
-  Sec. III.E, p.6-7) prints a retrograde ("counter-rotation") Earth-Moon symmetric periodic free-return
-  orbit: periselenum about 2150 km, period "about 650 hours". Reproduced at mu = 0.01215 in the digest
-  `docs/notes/2026-10-07-digest-schwaniger-1963-earth-moon-symmetrical-free-return.md`: periselenum
-  2202.5 km (464 km altitude), perigee 6555.0 km (177 km altitude), period 625.5 h = 26.06 d, C =
-  1.09727 with the mu(1 - mu) term (1.08542 without), perpendicular crossings, one period closes to
-  below 1 m; strongly unstable (finite-difference monodromy, largest eigenvalue about 5e2, rough).
-  Published 1963, so NOT novel (literature row, V0). Second use: a positive control for a corrector
-  regularised at BOTH primaries (`#948` R4), since it passes 177 km above the Earth and 464 km above
-  the Moon every period.
+  earthmoon-opus** (the Schwaniger row and the both-primary corrector control first, then `#997`).
+  **ADD A V0 CATALOGUE ROW `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger
+  1963 (NASA TN D-1833, Sec. III.E, p.6-7) prints a retrograde ("counter-rotation") Earth-Moon
+  symmetric periodic free-return orbit: periselenum about 2150 km, period "about 650 hours". Digest:
+  `docs/notes/2026-10-07-digest-schwaniger-1963-earth-moon-symmetrical-free-return.md`. Published 1963,
+  so NOT novel (literature row, V0). Second use: an agreement control at the real Earth-Moon mass ratio
+  for a corrector regularised at BOTH primaries (`#948` R4), with a close pass at each primary in one
+  orbit. **PROGRESS 2026-10-07 (earthmoon-opus, `b7650f78`; note
+  `docs/notes/2026-10-07-970-schwaniger-control.md`): (a)-(c) done.**
+  - The project corrector re-closes the 6555-km-perigee member at the registry mu: C = 1.0854167
+    (1.0974197 with the mu(1 - mu) term), period 6.0015 TU = 625.47 h = 26.06 d, periselene 2202.6 km.
+    (The bullet's earlier "C = 1.09727" was the Jacobi constant of the digest's 6-digit ROUNDED initial
+    condition, which belongs to a neighbouring member with perigee 6560 km.)
+  - Monodromy from the transition matrix: b_h = 525.30, b_v = -182.35, unstable in the plane and
+    vertically.
+  - Re-closed independently by the Moon-centred KS propagator and by Sundman r1 r2 to about 1e-5 km.
+    Pinned test: `tests/core/test_970_schwaniger_control.py`.
+  - Perigee 176.9 km altitude is BELOW the 200 km Earth floor, so Schwaniger is NOT a both-floors
+    cycler-class member (recorded in the draft row's `data_gaps`).
+  - Draft row `data/970_schwaniger/catalogue_row_draft.yaml`, validated, NOT inserted; insertion
+    queued for CPU (full ratchets).
 - `#971` — ✓ DONE 2026-10-07 (commit `36e253d0`; owner request 2026-10-07 19:10 AEDT; owner of the
   work: corpus-review2-fable; routes registered as `#973`-`#977`). **SECOND FABLE CROSS-PAPER REVIEW OF THE CORPUS.** Covers every digest
   added after the `#938` review note (commit `8b5567b7`, 2026-10-05 23:31 AEDT): about 85 digests,
@@ -2301,6 +2311,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     "theorem-generic" basis for e = 1 arcs.
   - Arenstorf 1963: a 3:1 orbit cannot pass near both bodies (2a < 1).
   - Digests: `docs/notes/2026-10-05-digest-{hitzl-1977,perko-1974,arenstorf-1963}-*.md`.
+  **Note (2026-10-07, from `#970`):** `core/` has no two-centre regularisation: a Sundman time
+  transformation (time only) and the Moon-centred KS propagator exist. A route is sketched in
+  `docs/notes/2026-10-07-970-schwaniger-control.md`: an Earth-centred `KSModel` subclass mirroring
+  `MoonCentredCR3BP`, switched by Aarseth's criterion, composing the fixed-time 6 x 6 segment matrices.
+  Schwaniger (`#970`) and the Bruno-Varin collision orbits (`#992`) are its controls.
 - `#949` — registered 2026-10-05, not dispatched (from `#938`, X4, rank 8 of 18). **THE DA
   TRANSFER-MAP ENUMERATOR AT TITAN (and at Pluto-Charon if the owner reopens that lane).** Sources:
   Zhou et al. 2025 (method); Ross & Roberts-Tsoukkas (3,2) Table I row as control. Gate before
