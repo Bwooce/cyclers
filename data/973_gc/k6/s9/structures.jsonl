@@ -1,0 +1,202 @@
+{"key": "k6|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.9290869235992432}
+{"key": "k6|LGanymede>Callisto/0s|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 0.7078609466552734}
+{"key": "k6|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.8769209384918213}
+{"key": "k6|LGanymede>Callisto/1l|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.5398101806640625}
+{"key": "k6|LGanymede>Callisto/1l|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.8339529037475586}
+{"key": "k6|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.129344940185547}
+{"key": "k6|LGanymede>Callisto/1h|RCallisto/2:1|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.0049548149108887}
+{"key": "k6|LGanymede>Callisto/1h|HCallisto/1,0,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.7972700595855713}
+{"key": "k6|LGanymede>Callisto/1h|LCallisto>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 5.526845932006836}
+{"key": "k6|LGanymede>Callisto/2l|RCallisto/1:2|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.6913228034973145}
+{"key": "k6|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.4812331199645996}
+{"key": "k6|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 2.7845981121063232}
+{"key": "k6|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "fail"], "secs": 0.645737886428833}
+{"key": "k6|LGanymede>Callisto/2h|HCallisto/3,1,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 1.1841540336608887}
+{"key": "k6|LGanymede>Callisto/2h|LCallisto>Callisto/2h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "indeterminate", "fail"], "secs": 3.9948177337646484}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 1.28218412399292}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/0s|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.12214994430542}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 6.176239728927612}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/1l|RCallisto/3:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.18510818481445312}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/1l|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.7898099422454834}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 2.670905113220215}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/1h|RCallisto/3:2|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.04605603218078613}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/1h|HCallisto/3,1,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.48810696601867676}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.347398042678833}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2l|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.5804898738861084}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2l|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.6242451667785645}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2h|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.6128091812133789}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.14438700675964355}
+{"key": "k6|RGanymede/1:1|LGanymede>Callisto/2h|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 3.300840139389038}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.3270227909088135}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.6382007598876953}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 7, "statuses": ["fail", "fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 2.0140860080718994}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.3712801933288574}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.4446430206298828}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 4.778685808181763}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.5973072052001953}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1h|HCallisto/1,0,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.7192268371582031}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/1h|LCallisto>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 2.135284900665283}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/2l|RCallisto/1:2|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.0157601833343506}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/2l|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.5143489837646484}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/2l|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.9930729866027832}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.0899689197540283}
+{"key": "k6|RGanymede/2:1|LGanymede>Callisto/2h|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.36502718925476074}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/0s|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.7280819416046143}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/0s|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["no-directions", "fail", "fail"], "secs": 0.7303810119628906}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 9, "statuses": ["fail", "no-directions", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 4.09482216835022}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.9097340106964111}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1l|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.2200160026550293}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1l|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.094839096069336}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["fail", "no-directions"], "secs": 0.8184230327606201}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1h|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.7772848606109619}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 12, "statuses": ["no-directions", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions"], "secs": 3.9457061290740967}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.1706600189208984}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 1.413651943206787}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 6.8684611320495605}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.1701598167419434}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2h|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "no-directions"], "secs": 0.9656529426574707}
+{"key": "k6|RGanymede/1:2|LGanymede>Callisto/2h|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 6.5921430587768555}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/2:1|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.6589760780334473}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/0s|HCallisto/3,1,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 1.018467664718628}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.044074058532715}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/1l|RCallisto/1:2|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.1385388374328613}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/1l|HCallisto/3,1,a|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.552670955657959}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.5229461193084717}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/1h|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 1.6251368522644043}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 7, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 4.0040669441223145}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.1284646987915039}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.7368288040161133}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2085368633270264}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.3630871772766113}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2h|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 2.0152721405029297}
+{"key": "k6|RGanymede/3:2|LGanymede>Callisto/2h|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2961878776550293}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/0s|RCallisto/3:2|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.113250732421875}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/0s|HCallisto/3,1,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.8721058368682861}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.6932611465454102}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1l|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.4464418888092041}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1l|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.320709228515625}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.490109920501709}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1h|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 1.0026500225067139}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.979696273803711}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.31543707847595215}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 1.270859956741333}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2343900203704834}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "no-directions", "fail"], "secs": 0.41858410835266113}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2h|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.5433120727539062}
+{"key": "k6|RGanymede/2:3|LGanymede>Callisto/2h|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.0426790714263916}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/0s|RCallisto/3:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.9698331356048584}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/0s|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["no-directions", "no-directions", "no-directions"], "secs": 0.2952880859375}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 8, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 3.4629697799682617}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/1l|RCallisto/3:2|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.07783889770507812}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/1l|HCallisto/3,1,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.6382908821105957}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/1h|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 0.7817211151123047}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/1h|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.731208324432373}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/1h|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.7633528709411621}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.5752360820770264}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2l|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 1.0408179759979248}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2l|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 5.967044115066528}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2h|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.6390368938446045}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 3, "statuses": ["no-directions", "no-directions", "no-directions"], "secs": 0.5756881237030029}
+{"key": "k6|HGanymede/1,0,p|LGanymede>Callisto/2h|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 6.389938116073608}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.7635393142700195}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/0s|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.6164500713348389}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 10.181254863739014}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.896437168121338}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.904700756072998}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 3.681276798248291}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.541590929031372}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1h|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.7945711612701416}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 9.617291927337646}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2l|RCallisto/2:1|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.5427629947662354}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.9738218784332275}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 4.289341926574707}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.1886162757873535}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2h|HCallisto/1,0,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.5254669189453125}
+{"key": "k6|HGanymede/1,0,a|LGanymede>Callisto/2h|LCallisto>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.8707661628723145}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "no-directions"], "secs": 0.9580998420715332}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/0s|HCallisto/3,1,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.6742689609527588}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 7, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 6.187402009963989}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1l|RCallisto/1:2|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "fail"], "secs": 3.960745096206665}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1l|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["fail", "no-directions"], "secs": 1.6294848918914795}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 2.5786869525909424}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1h|RCallisto/3:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.13013029098510742}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1h|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["no-directions", "fail", "fail"], "secs": 0.67171311378479}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/1h|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.6375110149383545}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/2l|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.752824068069458}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/2l|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.20461535453796387}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/2h|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["no-directions"], "secs": 2.286461114883423}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.47308897972106934}
+{"key": "k6|HGanymede/3,1,p|LGanymede>Callisto/2h|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 5.377675771713257}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.9788761138916016}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/0s|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.38097262382507324}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.6300718784332275}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 2.8234949111938477}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.45122289657592773}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 4.8305909633636475}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 1.1130192279815674}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1h|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.2768290042877197}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 5.9939610958099365}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2l|RCallisto/2:1|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.21140289306640625}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.8485269546508789}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.8813941478729248}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 3, "statuses": ["no-directions", "fail", "fail"], "secs": 0.6526100635528564}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2h|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.10933613777160645}
+{"key": "k6|HGanymede/3,1,a|LGanymede>Callisto/2h|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2285728454589844}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/3:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2711000442504883}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.457979917526245}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 12.415517807006836}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/1l|RCallisto/3:2|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.6229569911956787}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/1l|HCallisto/3,1,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 5.832850933074951}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.4969699382781982}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 16, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 6.867572784423828}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 8.353523969650269}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 7, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.09329891204834}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2l|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 2.761007070541382}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2l|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 10.801810026168823}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2h|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 14, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 12.675697088241577}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.4188990592956543}
+{"key": "k6|LGanymede>Ganymede/1l|LGanymede>Callisto/2h|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 8.4931480884552}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 12, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.977350950241089}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 10, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 6.683135986328125}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 16, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 13.66035008430481}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 6.237544059753418}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 7, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 5.8629350662231445}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 8.318528890609741}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 4.41978907585144}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 5.542917966842651}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 15.60844111442566}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|RCallisto/2:1|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 2.451215982437134}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|HCallisto/1,0,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 3.3697190284729004}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|LCallisto>Callisto/2l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 6.251291275024414}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|RCallisto/1:2|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 14, "statuses": ["fail", "fail", "fail", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 4.5467400550842285}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|HCallisto/1,0,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 9.315178871154785}
+{"key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|LCallisto>Callisto/2l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 7.617073059082031}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 16, "statuses": ["fail", "fail", "no-directions", "no-directions", "fail", "no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail", "fail", "fail", "no-directions"], "secs": 3.6483068466186523}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|HCallisto/3,1,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail"], "secs": 8.680974960327148}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/2h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 14.591525077819824}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1l|RCallisto/1:2|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 2, "statuses": ["fail", "no-directions"], "secs": 10.157120943069458}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1l|HCallisto/3,1,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 3.402916193008423}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 10.308370351791382}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1h|RCallisto/3:2|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.849614143371582}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1h|HCallisto/3,1,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 5.103470802307129}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/1h|LCallisto>Callisto/2h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 6.504210948944092}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|RCallisto/3:2|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.7217307090759277}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|HCallisto/3,1,a|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 4.149795055389404}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/2h|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 8, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 5.760541200637817}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/2h|RCallisto/2:3|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 5.645534992218018}
+{"key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/2h|HCallisto/3,1,a|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2221848964691162}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 13, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.0743930339813232}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|RCallisto/2:3|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 6, "statuses": ["no-directions", "fail", "indeterminate", "fail", "fail", "fail"], "secs": 2.68044114112854}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 24.630984783172607}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1l|RCallisto/1:1|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 13, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 8.884321928024292}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1l|RCallisto/2:3|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.2037837505340576}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1l|LCallisto>Callisto/1l|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 10.968248844146729}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 6.487395763397217}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|HCallisto/1,0,p|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 8, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 6.800871849060059}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 12, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 12.067896842956543}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2l|RCallisto/1:1|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 3.983652114868164}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2l|HCallisto/1,0,p|LCallisto>Ganymede/2l", "k": 6, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 3.490784168243408}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2l|LCallisto>Callisto/1h|LCallisto>Ganymede/1h", "k": 6, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 7.615969181060791}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|RCallisto/2:1|LCallisto>Ganymede/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.924842357635498}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|HCallisto/1,0,a|LCallisto>Ganymede/0s", "k": 6, "n_zeros": 8, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 8.93694806098938}
+{"key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|LCallisto>Callisto/1h|LCallisto>Ganymede/2h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 12.628511190414429}

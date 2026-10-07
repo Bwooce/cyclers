@@ -781,3 +781,92 @@ md5 of each `zeros.jsonl` (lines total 9,699):
 | s13 | 553 | 8c08456006dfbfcd0c5fb2f8dd3b7c96 |
 | s14 | 650 | 7351077a5bc3eeff47b2e08a922f09a1 |
 | s15 | 590 | 01fb38c41896f58f1b2279a5d5f572d8 |
+
+## 12. R11 result: gc (Ganymede-Callisto) k = 6 (lead launch; analysed 2026-10-08)
+
+Run: 24 shards of 24, launched by the lead.
+- 4,844 structures, all done once, 0 errors (`check` OK).
+- 13,897 exact zeros, 4,806 physical cyclers, **4 gate-passing**, 0 zero-assessment errors.
+- 0 structures at the n_refine ceiling.
+
+Gauntlet and screens (`data/973_gc/k6_gauntlet.json`):
+- DOP853 re-fly: largest miss 1.1e-4 km; gate "pass" on the integrated vectors for all 4.
+- Screens (2.6/2.7): all 4 pass. No impact, no model-invalid, no direction-dependent.
+- Classes: all 4 are W2.
+- Literal collisions: one NEAR. gc6-0 (G 1.673 / C 1.257) is within 0.253 km/s of the #576 n = 3 G-C
+  symmetric closure, at k = 3 against 6, with a different structure (#576 has no returns; gc6-0 has a
+  2-rev Ganymede return). It is recorded, not a collision. No match with R-S GanCal, GCGC, Liang 2024
+  or the catalogue rows.
+- Literature step: deferred (#1025).
+
+**Clean two-working-body members at k = 6: 4** (gc6-0, 1, 2, 3).
+
+Resonance structure: 6 synodic periods (75.139 d) are 4.502 Callisto and 10.502 Ganymede periods.
+That is half-period commensurate to 0.05 %. Sec. 11 predicted that this would favour the half-rev
+(n-pi) returns. **The prediction is not borne out.** None of the 4 passers uses a half-rev leg: all
+are generic Lambert returns (one has a 2-rev Ganymede return and 2-rev transfers). All need large
+turns (worst ratios 0.77-0.92), as at k = 5.
+
+The gate-passer count keeps falling with k: 51 (k = 4), 8 (k = 5), 4 (k = 6). The zero count keeps
+rising: 4,629, 9,699, 13,897. Only k = 4's near-integer window (3 Callisto and 7 Ganymede periods)
+produces the shallow-turn population.
+
+Notable members:
+- gc6-0 has the lowest Callisto V_inf of the route, 1.257 km/s. Callisto barely works (one flyby,
+  9.7 deg, ratio 0.12), while Ganymede turns 63 deg twice (ratio 0.92).
+- gc6-1 (G 1.607 / C 1.837) has the most margin: worst ratio 0.768, both moons turning 41-46 deg.
+- All 4 keep r_min at or above 879,637 km and r_max at or below 2.89 Gm.
+
+Candidate table, all 4 (period 75.1394 d; columns as in sec. 11; A = Ganymede, B = Callisto):
+
+| # | Class | Screen | Structure (key) | V_inf A / B (km/s) | A: flybys, max turn (deg), max ratio | B: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Closest unscheduled A / B (km) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| gc6-0 | W2 | pass | k6\|LGanymede>Ganymede/2h\|LGanymede>Callisto/2h\|LCallisto>Ganymede/2h | 1.673 / 1.257 | 2, 63.08, 0.919 | 1, 9.68, 0.123 | 0.919 | 879,637 / 1,883,137 | 10.2125, 27.3572, 56.3546 | 134,590 / 779,588 | 1.0e-05 |
+| gc6-1 | W2 | pass | k6\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.607 / 1.837 | 2, 46.03, 0.645 | 2, 40.99, 0.768 | 0.768 | 1,062,677 / 2,466,968 | 1.1855, 36.3842, 44.0069, 68.7023 | 872,129 / 532,898 | 6.3e-06 |
+| gc6-2 | W2 | pass | k6\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 2.468 / 2.012 | 2, 32.46, 0.742 | 2, 41.06, 0.860 | 0.860 | 1,058,639 / 2,892,497 | 0.5986, 36.9711, 43.9480, 68.7611 | 1,014,134 / 579,791 | 1.1e-04 |
+| gc6-3 | W2 | pass | k6\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/1h | 1.664 / 2.192 | 2, 61.37, 0.889 | 2, 30.75, 0.720 | 0.889 | 1,043,144 / 2,584,336 | 3.8525, 24.1611, 32.7416, 57.6765 | 835,935 / 669,337 | 5.1e-06 |
+
+Per-flyby detail (turn deg, ratio, required altitude km):
+
+| # | Ganymede flybys | Callisto flybys |
+|---|---|---|
+| gc6-0 | 2 x 63.08 (0.919, 587) | 1 x 9.68 (0.123, 46,920) |
+| gc6-1 | 2 x 46.03 (0.645, 3,330) | 2 x 40.99 (0.768, 1,540) |
+| gc6-2 | 2 x 32.46 (0.742, 1,552) | 2 x 41.06 (0.860, 876) |
+| gc6-3 | 2 x 61.37 (0.889, 794) | 2 x 30.75 (0.720, 1,734) |
+
+Status: "candidate, literature step deferred" (#1025). Not novel.
+
+Raw data (lead rule of 2026-10-08):
+- Committed: the shards' `settings.json` and `structures.jsonl` (`data/973_gc/k6/s*/`), plus the
+  gauntlet JSON and log.
+- Not committed: `zeros.jsonl`.
+- Full shard directories archived at `~/dev/references/cyclers-runs/973/gc/k6/` (21M; `diff -rq`
+  clean). md5 of each `zeros.jsonl` (lines total 13,897):
+
+| Shard (of 24) | Zero lines | md5 |
+|---|---|---|
+| s0 | 556 | 4ebdbf79cf95f8e995b7f90f8ebc7cb2 |
+| s1 | 553 | 76eda3b037f1392a1298b895b27c7093 |
+| s2 | 535 | 7e05daf37c7b4321b5188135b0a754f0 |
+| s3 | 570 | bb02fb6f0ffaedacaf529743eeeb566d |
+| s4 | 560 | 83d50bb29dcc40beb3f7f1e5879c81d2 |
+| s5 | 577 | 8f6f6235e2011dcde6bc59c5f2ab7c32 |
+| s6 | 554 | 7ef3c6d11e1ced1140a5a498bf1bb798 |
+| s7 | 615 | 6c0b33af564129e48563797f20f9e243 |
+| s8 | 579 | 15ef566aed16ebc25c1d9ace267a9048 |
+| s9 | 615 | e023db8909d2e29d4c45a8fb62381a23 |
+| s10 | 569 | e1e878abe302ca6059e0f0ce2627ae93 |
+| s11 | 612 | e69a2fafad2634dc4276ed1fcfe552bc |
+| s12 | 584 | 07f7086e35ca4f684ae71376378413f8 |
+| s13 | 624 | 7a820d193280138c985e3ed3b3de3c1a |
+| s14 | 579 | cf6f550670ea31f7a8a85c2981548451 |
+| s15 | 596 | 7c08d8d5b7e8cff0297474af2510f3fd |
+| s16 | 571 | 278ba3949f212ce530a9b7ea47e1ec73 |
+| s17 | 648 | fd7a52300afa68bc05bdb297608da080 |
+| s18 | 575 | 26259eecb8040a51fe3671c78e54a370 |
+| s19 | 595 | 922a3e55336074774f6d8714b528afb9 |
+| s20 | 515 | cdc105cf1c02819ddd51ff36d402bfed |
+| s21 | 574 | ae3ab3dfb813c3957827fdb032f4a94c |
+| s22 | 570 | e8f460b25931352ac1fd585268ffece6 |
+| s23 | 571 | 05e4a4448372efbc7361ffde0052efbe |

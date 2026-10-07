@@ -1,0 +1,7 @@
+cell gc: structures 4844, zeros 13897, physical 4806, gate-passing 4
+k=6 vinf={'Ganymede': 1.673, 'Callisto': 1.257} worst=0.919 xc_miss=9.95e-06km xc_dv=9.8e-11 gate_int=pass screen=pass collisions=['NEAR #576 symmetric closure Ganymede-Callisto n = 3 (dV_inf 0.253, k 3 vs 6)', 'NEAR #576 symmetric closure Callisto-Ganymede n = 3 (dV_inf 0.253, k 3 vs 6)']
+k=6 vinf={'Ganymede': 1.607, 'Callisto': 1.837} worst=0.768 xc_miss=6.25e-06km xc_dv=5.1e-11 gate_int=pass screen=pass collisions=[]
+k=6 vinf={'Ganymede': 2.468, 'Callisto': 2.012} worst=0.860 xc_miss=1.05e-04km xc_dv=8.4e-10 gate_int=pass screen=pass collisions=[]
+k=6 vinf={'Ganymede': 1.664, 'Callisto': 2.192} worst=0.889 xc_miss=5.08e-06km xc_dv=4.4e-11 gate_int=pass screen=pass collisions=[]
+catalogue rows on this pair: 7; registry entries: 11
+ERRORS: structures 0 (not searched, NOT empty), zero assessments 0

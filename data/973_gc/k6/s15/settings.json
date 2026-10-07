@@ -1,0 +1,19 @@
+{
+ "cell": "gc",
+ "k": "6",
+ "out": "data/973_gc/k6/s15",
+ "max_returns": "1,1",
+ "transfer_revs": "0,1,2",
+ "generic_revs": "1,2",
+ "visits": 1,
+ "resonant_only": "",
+ "n_phase": 36,
+ "n_split": 12,
+ "n_refine": 40,
+ "count_only": false,
+ "sample": 0,
+ "seed": 942,
+ "shard": "15/24",
+ "timing_pilot_s": 0.78,
+ "synodic_days": 12.523234941171111
+}
