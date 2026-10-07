@@ -152,7 +152,7 @@ Added 2026-10-08: `#1032`, a `stability_index_convention` schema field (four con
 
 | Name | Owner ruling 2026-10-07 | Pair, bodies that bend | Period / V_inf (km/s) | Real-ephemeris rung | Note sec. |
 |---|---|---|---|---|---|
-| gc-1 | **candidate-novel** (catalogue writeback by twobody-gen2-opus; gated on `#972` and `#1034`) | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km; no caveat since 6.45 | 6.11, 6.26, 6.45 |
+| gc-1 | **candidate-novel** (catalogue writeback by twobody-gen2-opus; gated on `#972` and the owner's decision on its inconclusive; `#1034`: exists at full mass in the continuous model) | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km; no caveat since 6.45 | 6.11, 6.26, 6.45 |
 | gc-2 | GanCal-family relative, NOT novel | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km; continuous R-S model: its branch FOLDS at sigma 0.164 of the moon masses, no full-mass gc-2 on that branch (`#1004`) | 6.11, 6.14, 6.21; `#1004` |
 | ev-C | **candidate-novel** under `#875` (ii) (known architecture at a never-treated body set) | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | **candidate-novel**, with the DE440 near-ballistic caveat | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
@@ -1855,8 +1855,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
       direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
       blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
-    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework) AND, for
-      gc-1, ON `#1034`; a gc-2 row must carry the `#1004` fold finding.
+    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework), plus the
+      owner's recorded decision where the gate is inconclusive (gc-1, ev-C). `#1034` is cleared (gc-1
+      exists at full mass); the gc-1 row must carry its continuous-gravity numbers and the `#1034` note;
+      a gc-2 row must carry the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: ev-C **candidate-novel** under `#875` (ii); ev-A **candidate-novel**
       (DE440 near-ballistic caveat); ev-B: retry with continuation at the failing epochs before deciding.
     - Candidates (the others stay **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
@@ -1896,8 +1898,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
       from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
       miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
-    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972` AND `#1034` (if gc-1 folds too, owner decision);
-      a gc-2 row must carry the `#1004` fold finding.
+    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972` only (plus the owner's recorded decision on the
+      gate's "inconclusive"); `#1034` is cleared: gc-1 exists in the continuous ideal model at full mass.
+      The gc-1 row must carry the continuous-gravity numbers and the `#1034` note; a gc-2 row must carry
+      the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: gc-1 **candidate-novel**; gc-2 a GanCal-family relative, NOT novel. The
       ge rows stay **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
@@ -2412,9 +2416,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   FULL-MASS gc-2 IN THE CONTINUOUS R-S MODEL**, and which seed family would find it. `#1004` showed only
   that the branch continued from the patched-conic gc-2 folds at sigma 0.164; absence on one branch is
   not absence.
-- `#1034` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus, about 30 min). **THE SAME JOINT-sigma
-  CONTINUATION FOR gc-1**, pre-registered, with the tangent rule enforced in code. GATES the gc-1
-  candidate-novel writeback; if gc-1 folds too, it goes to the owner for a decision.
+- `#1034` — ✓ DONE 2026-10-08 (jovian-nbody-opus; pre-registration `04a79e92`, amendment `3acceec8`, result
+  `17ad5c4c`; note `docs/notes/2026-10-08-1034-gc1-continuous-sigma.md`). **THE SAME JOINT-sigma
+  CONTINUATION FOR gc-1**, pre-registered, with the tangent rule enforced in code. **gc-1 EXISTS in the
+  continuous ideal R-S model.** The identity check at sigma = 0.05 failed as registered by 0.0007 km/s;
+  the identity check by the limit passes (sigma = 0.005: G 2.3944, C 1.8068 / 1.8070 against 2.3972 /
+  1.8067, monotone). Continuation 0.05 -> 1 with no fold, halving or impact. Full-mass orbit: G V_inf
+  2.130 km/s (turn 32.6 deg, altitude 2,962-2,964 km); C 1.785 / 1.843 km/s (altitudes 1,965 / 2,842
+  km, turns 39.8 / 33.4 deg); r 916,320-2,294,978 km; no unscheduled pass inside either Hill radius;
+  IAS15 re-fly 2.4e-6 km. The -0.27 km/s shift from the patched conic at Ganymede is of the same order
+  as the `#968` controls (not a failure under the `#968` note sec. 8.2 rule). The gc-1 writeback gate is
+  now `#972` only. Next for jovian-nbody-opus: `#968` rung (b), GanEur#316 on jup365 at 2019.
 - `#1035` — registered 2026-10-08 (from `#972`; BACKLOG, small). **LABEL CANDIDATE SIGNATURES
   (working bodies, return types) AT THE SOURCE IN THE OLD `literature_check` CALLERS** —
   `low_thrust_cycler_search`, `cislunar_bct_search`, `precursor_matcher`, `run_299`, `run_301`,
