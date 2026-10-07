@@ -1,0 +1,59 @@
+# Fornari & Pontani 2020, Tables 1 and 2: "remarkable" Earth-Mars cyclers of Family I and Family II.
+# Source: E. Fornari and M. Pontani, "A global exploration method to identify families of cycling Earth-Mars
+#   trajectories", Aerotecnica Missili & Spazio 99:187-194 (2020), doi 10.1007/s42496-020-00050-6.
+#   Table 1 p.189 (journal p. 3 of 8); Table 2 p.190.
+# Local file: cyclers_pdf/papers/fornari-pontani-2020-global-exploration-families-cycling-earth-mars-trajectories-aerotec-missili-spazio-99-187-doi-10.1007-s42496-020-00050-6.pdf
+# Transcribed from the page images (checked against the publisher text layer, which agrees cell for cell).
+#   No value here was computed by us. Numbers are strings exactly as printed.
+# Model: circular coplanar Earth and Mars orbits, Keplerian arcs, Tsyn = 779.87 d (paper value).
+#   ONE-WORKING-BODY: only Earth flybys bend the path. The Mars flyby is treated as negligible; the printed
+#   Mars flyby altitude is the altitude that gives a 2-deg hyperbolic deflection, "the minimum flyby altitude
+#   that allows neglecting the effect of Mars flyby" (p.189-190). Earth flyby altitudes are the values the
+#   required turn implies (a negative value, -967 km for Aldrin, means below the surface; the paper raises it
+#   to 400 km with two symmetric SOI maneuvers, 179 m/s total, Appendix).
+# Family I (Table 1): one ellipse per repetition period k*Tsyn, Earth flyby only.
+#   k = synodic periods per repetition; m = complete cycler revolutions; l = complete Earth revolutions.
+#   a = semi-major axis (km); e = eccentricity; t1 = Earth-to-Mars flight time (d).
+#   Our check (re-solving eqs. (1)-(4) with Tsyn = 779.87 d for rows k1, k8 m12, k15 m16, k15 m22, k30):
+#   a, e and t1 reproduce; v_inf agree to 0.006 km/s or better (see the digest).
+#   Text p.188 says the Aldrin case has "k and l both set to 1", but the printed row is k = 1, m = 1, l = 2;
+#   l = 2 is what reproduces (a 779.87-d repetition spans two complete Earth revolutions). Printed row kept.
+#   Table 1 prints an ellipsis row between k = 15 and k = 30; only printed rows are recorded. The paper reports
+#   3339 Family I solutions for k = 1-150 in total.
+# Family II (Table 2): two ellipses joined by an Earth slingshot.
+#   l1, l2 = Earth revolutions on arcs 1 and 2; m, s = cycler revolutions on arcs 1 and 2.
+#   The k = 2 row is the S1L1 cycler: a1 = 1.9506e+08 km, e1 = 0.2554, a2 = 1.5682e+08 km, e2 = 0.1609 (p.191 text).
+#   The paper reports 23 Family II solutions for k = 1-10 in total.
+family_1:
+  table: "Table 1. Some remarkable cyclers belonging to Family I"
+  page: "p.189"
+  columns: [k, m, l, a_km, e, t1_days, flyby_alt_earth_km, flyby_alt_mars_km, vinf_earth_kms, vinf_mars_kms]
+  rows:
+    - [1, 1, 2, "2.3928e+08", "0.3904", "145.33", "-967", "22,360", "6.393", "9.677"]
+    - [8, 10, 17, "2.1318e+08", "0.3035", "161.71", "18,311", "43,774", "4.553", "7.150"]
+    - [8, 11, 17, "2.0004e+08", "0.2571", "186.41", "26,885", "79,628", "3.899", "5.389"]
+    - [8, 12, 17, "1.8876e+08", "0.2119", "252.01", "40,929", "297,907", "3.250", "2.829"]
+    - [15, 16, 32, "2.3749e+08", "0.3707", "131.27", "78,133", "25,335", "5.129", "9.162"]
+    - [15, 17, 32, "2.2809e+08", "0.3447", "138.13", "89,850", "30,389", "4.795", "8.449"]
+    - [15, 18, 32, "2.1956e+08", "0.3192", "146.18", "104,102", "37,364", "4.463", "7.692"]
+    - [15, 19, 32, "2.1178e+08", "0.2942", "155.91", "121,694", "47,616", "4.135", "6.876"]
+    - [15, 20, 32, "2.0466e+08", "0.2696", "168.17", "143,776", "64,177", "3.809", "5.974"]
+    - [15, 21, 32, "1.9811e+08", "0.2454", "184.83", "172,041", "95,474", "3.485", "4.938"]
+    - [15, 22, 32, "1.9206e+08", "0.2216", "211.94", "209,065", "176,984", "3.163", "3.656"]
+    - [30, 43, 64, "1.9503e+08", "0.2349", "199.77", "71,610", "121,975", "3.432", "4.386"]
+family_2:
+  table: "Table 2. Some remarkable cyclers belonging to Family II"
+  page: "p.190"
+  columns: [k, l1, l2, m, s, t1_days, flyby_alt_earth_km, flyby_alt_mars_km, vinf_earth_kms, vinf_mars_kms]
+  rows:
+    - [2, 2, 1, 1, 1, "153.06", "31,598", "91,722", "4.726", "5.035"]
+    - [3, 2, 3, 1, 4, "118.64", "5641", "55,801", "7.537", "6.382"]
+    - [4, 3, 4, 1, 5, "102.41", "782", "22,606", "6.632", "9.631"]
+    - [4, 4, 3, 2, 4, "118.16", "2931", "40,312", "6.102", "7.428"]
+    - [4, 5, 2, 3, 3, "132.68", "3025", "68,525", "6.115", "5.790"]
+    - [4, 6, 1, 4, 2, "142.73", "275", "103,847", "6.746", "4.742"]
+    - [5, 5, 4, 3, 5, "170.23", "3576", "105,301", "3.751", "4.710"]
+    - [5, 7, 2, 4, 3, "136.59", "90", "55,769", "4.910", "6.384"]
+    - [8, 9, 7, 5, 5, "149.59", "46,261", "49,799", "4.066", "6.733"]
+  notes:
+    - "Row k = 2 is S1L1. The p.191 text gives t1 = 152.65 d and f1 = 141.0 deg; Table 2 prints t1 = 153.06 d. Both kept as printed (not reconciled)."
