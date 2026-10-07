@@ -2110,7 +2110,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Howett et al. 2021 show figure-only periodic orbits; `#320` returned Hydra-Nix V0-known. The
   cheapest Pluto cell if the owner reopens Pluto (Russell-Strange genome plus
   `verify/pluto_charon_realeph.py`). Source:
-  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4. **CONTROL RECALLED
+  2026-10-07:** the `#320` sweep reproduces 51 rows to 4e-14 km/s with the same 2 silvers, and
+  VenMar#45 gives an exact zero. The run uses the plu060.bsp-fitted moon periods (registry values are
+  about 1 % off; both recorded; see `#1022`).
 - `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
   OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the owner ADMITS this powered sub-cell, OVERRIDING `#864` sec. 8 (no powered
   "novel cycler" sweeps) FOR `#999` ONLY. QUEUED: starts when `#973` and CI free the machine. **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
@@ -2225,6 +2228,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   TWO GRAVITATING MASSES", SMITHSONIAN CONTRIB. ASTROPHYS. 3:69-78.** The R16 / R4 lineage source
   (no DOI found). Source: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 5 item
   14.
+- `#1022` — registered 2026-10-07 (from `#998`'s control run; BACKLOG). **VERIFY THE PLUTO SMALL-MOON
+  REGISTRY ENTRIES (STYX, NIX, KERBEROS, HYDRA SEMI-MAJOR AXES AND PERIODS) AGAINST plu060.bsp-FITTED
+  PERIODS AND A PUBLISHED SOURCE** (Brozovic et al. 2015 or Showalter & Hamilton 2015).
+  pluto-smallmoons-sonnet found registry period ratios to Charon of 3.99 (Nix) and 6.07 (Hydra)
+  against kernel-fitted 3.891 and 5.981, about 1 % off. `#998` uses the fitted values and records both.
+  The registry is in `src/cyclerfinder/core/satellites.py` (no Pluto small-moon entries under
+  `src/cyclerfinder/data`). Expected values must come from the published source, not from our fit.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
