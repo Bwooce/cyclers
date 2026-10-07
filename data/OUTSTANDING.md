@@ -2375,8 +2375,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     rows. Their "positive control (Liang Member D) PASSED" was the patched-conic prefilter only.
   - NOT affected: Member D (`#223`).
   - Classified NOT RE-RUNNABLE until `#1039` (the jup365 path is unvalidated): the EGGIE level-3 jup365
-    run and the `#318`/`#501` real-ephemeris n-body stages; retraction lines are appended to the seven
-    stamps. The ideal-model EGGIE stages also depend on `#1040`.
+    run and the `#318`/`#501` real-ephemeris n-body stages. Retraction lines on the seven stamps are TO BE
+    APPENDED by jovian-nbody-opus (step (c) of its order; not yet written). The ideal-model EGGIE stages also depend on `#1040`.
 - `#1024` — registered 2026-10-07 (from `#998`'s control check, pluto-smallmoons-sonnet's observation in
   commit `58930227`; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL OPTION FOR BINARIES IN THE TWO-WORKING-BODY
   / ONE-WORKING-NODE GENERATOR.** For Pluto-Charon (mu = 0.109) the ideal model puts Charon at 19,596 km
