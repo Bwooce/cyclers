@@ -126,3 +126,9 @@ table3_e1p4_crossings:
   - {k: 7, a: "0.892589909487"}
   - {k: 8, a: "0.892589911249"}
   - {k: 9, a: "0.892589912326"}
+conventions:   # reconciled 2026-10-07 (#971 papercut docs/papercuts/2026-10-07-corpus-review2-fable-bruno-varin-period-convention.md)
+  period_field: T_over_2pi   # in ALL five Bruno-Varin yamls, T_over_2pi = T/(2 pi), T the full period in the units of eq. (1)
+  period_source_definition: "SSR 2009 families c and i: header 'T/2pi' (T~ = T/(2 pi)); (1 - mu) = 0.99995 makes the difference below the printed precision"
+  jacobi: "printed C = barycentric Jacobi constant + mu(1 - mu) (Bruno's -2H with the +mu shift); subtract mu(1 - mu) for the usual barycentric value"
+  notes:
+    - "No rows changed 2026-10-07: the key was already T_over_2pi."
