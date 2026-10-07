@@ -2332,8 +2332,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   SEARCH IN `scripts/run_973_enumerate.py screen` WITH A ROOT-BRACKETED CLOSEST-APPROACH SEARCH PER BODY
   PER LEG.** The current search samples along the leg, so a pass between samples can be missed. Add a
   test that plants a pass between two samples.
-- `#1030` — registered 2026-10-07 (from `#997`, earthmoon-opus `d7998ba0`; BACKLOG, small; catalogue
-  wording). **CASOLIVA ROWS STORE THE VERTICAL STABILITY INDEX BUT THEIR NOTES SAY "STABLE".**
+- `#1030` — registered 2026-10-07 (from `#997`, earthmoon-opus `d7998ba0`; catalogue wording). **AUDIT
+  DONE 2026-10-08 (earthmoon-opus, `d5fa6f1c`; note `docs/notes/2026-10-08-1030-stability-index-audit.md`):**
+  50 CR3BP rows recomputed; six store k_perp, four of them correctly (Casoliva Eq. 8 max rule). Only the
+  two `#801` override rows, casoliva-1-2e and casoliva-7-3a, store the smaller (vertical) index while
+  in-plane flip-unstable (k_par -4.191 and -4.965) and say STABLE. CORRECTION to the text below:
+  casoliva-2-1b is in-plane STABLE (k_par 1.513) and vertically unstable. Patches held in
+  `data/1030_stability_audit/` (Casoliva wording; optional Vaquero c198/c246 wording "in-plane stable,
+  vertically unstable", which touches row text, so the frozen-census ratchets apply). The catalogue edit
+  is scheduled with the `#970` insertion in one ratchet window. Original text: **CASOLIVA ROWS STORE THE VERTICAL STABILITY INDEX BUT THEIR NOTES SAY "STABLE".**
   `casoliva-7-3a-em-cycler-2010` and `casoliva-2-1b-em-resonant-po-2010` store
   `orbit_elements.cr3bp.stability_index` = k_perp (-1.2985 and +2.037), which matches Casoliva's printed
   k through `#801`'s `_K_SIGNED_FORCE_PERP` override, while their notes say "STABLE". On the rows' own
@@ -2347,6 +2354,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   dominates. So FIRST grep the producing function(s) and audit every CR3BP row whose stored value
   equals k_perp rather than k_par (list them in this bullet), and only then fix the wording. Any
   `data/catalogue.yaml` edit runs all ratchets.
+- `#1031` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from the `#1030` audit).
+  **ross-rt-em-cycler-21-2025: STORED STATE CLOSES ONLY TO 1.1e-4, AND ITS STABILITY CLAIM DOES NOT
+  REPRODUCE.** Re-closed at its stored C, the orbit gives Barden nu = -1.35 (k_par -2.69) against a stored
+  0.050 called stable. Task: re-find the nu = 0 midpoint and re-check the row's V2 "|nu| < 1" claim;
+  evidence note first; the catalogue edit is held for the ratchet window. Control: ross-31 reproduces
+  its stored nu.
+- `#1032` — registered 2026-10-08 (from the `#1030` audit; **OWNER / SCHEMA DECISION**, not dispatched).
+  **`orbit_elements.cr3bp.stability_index` MIXES FOUR CONVENTIONS:** Barden nu; Casoliva's k (stable if
+  |k| < 2); the spectral radius on the 20 `#796` corridor rows; and a paper's own sp. Meanwhile
+  `docs/spec.md` (the cr3bp block, about line 615) says only "<= 1 stable; > 1 unstable". Proposal: a
+  `stability_index_convention` enum field (schema bump) with a backfill of every row, plus a notes
+  wording rule (state in-plane and vertical stability separately).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
