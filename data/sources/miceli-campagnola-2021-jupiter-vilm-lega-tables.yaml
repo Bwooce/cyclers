@@ -1,0 +1,46 @@
+# Miceli & Campagnola 2021, Tables 1-3: LEGA/ELGA vs EGA results for a Jupiter mission, V-infinity leveraging
+#   (exterior), Short ("-") and Long ("+") transfer, families 2:1, 3:1, 3:2.
+# Source: G. E. Miceli & S. Campagnola, "Effect of V-infinity Leveraging with Lunar-Earth Gravity Assist on Interplanetary
+#   Trajectories", 31st AAS/AIAA Space Flight Mechanics Meeting, 1-4 Feb 2021, paper AAS 21-392 (preprint prints "AAS XX-XXX";
+#   JPL CL#21-0437; number from NTRS 20220003813). No DOI found.
+# Local file (proposed name): miceli-campagnola-2021-v-infinity-leveraging-lunar-earth-gravity-assist-interplanetary-trajectories-AAS-21-392.pdf,
+#   20 pp., md5 f195b852bbb3b525d3c82b106d3444c5 (digital, good text layer). Table 1 p.18, Tables 2 and 3 p.19.
+# Columns: rp_post (AU), dv_tot (km/s), dv_lev (km/s), c3 (km2/s2). The paper prints comma decimals; written here with points.
+# Transcribed from page images; no value computed by us. Two witnesses (image reading and publisher text layer): 68 of 68
+#   cells agree (witness-comparison.tsv). Our consistency check (checks.py, ours): dv_launch = sqrt(c3 + 2 vc^2) - vc with
+#   vc at 185 km altitude gives dv_launch + dv_lev = dv_tot to 1e-4 km/s on all 17 rows.
+# Numbers are kept as printed (strings; trailing zeros kept as printed; "/" in the paper is an empty cell).
+tables:
+  "2:1-":
+    LEGA: {rp_post: "0.99914", dv_tot: "4.8606", dv_lev: "0.50389", c3: "26.1524"}
+    ELGA: {rp_post: "0.99916", dv_tot: "4.8606", dv_lev: "0.50389", c3: "26.1524"}
+    EGA: {rp_post: "0.99709", dv_tot: "4.89", dv_lev: "0.53221", c3: "26.1793"}
+  "2:1+":
+    LEGA: {rp_post: "0.91701", dv_tot: "4.8811", dv_lev: "0.46682", c3: "27.5539"}
+    ELGA: {rp_post: "0.91636", dv_tot: "4.8853", dv_lev: "0.47057", c3: "27.5665"}
+    EGA: {rp_post: "0.91311", dv_tot: "4.9067", dv_lev: "0.48937", c3: "27.6296"}
+  "3:1-":
+    LEGA: {rp_post: "0.999999", dv_tot: "5.391", dv_lev: "0.16409", c3: "48.0549"}
+    ELGA: {rp_post: "0.999999", dv_tot: "5.391", dv_lev: "0.16409", c3: "48.0549"}
+    EGA: {rp_post: "0.999999", dv_tot: "5.3977", dv_lev: "0.17058", c3: "48.0617"}
+  "3:1+":
+    LEGA: {rp_post: "0.96415", dv_tot: "5.4079", dv_lev: "0.1596", c3: "48.6127"}
+    ELGA: {rp_post: "0.96415", dv_tot: "5.4079", dv_lev: "0.1596", c3: "48.6127"}
+    EGA: {rp_post: "0.96283", dv_tot: "5.4146", dv_lev: "0.16557", c3: "48.6319"}
+  "3:2-":
+    LEGA: {rp_post: "0.97138", dv_tot: "5.1813", dv_lev: "1.3309", c3: "14.1044"}
+    ELGA: {rp_post: "0.9754", dv_tot: "5.1792", dv_lev: "1.329", c3: "14.1004"}
+    EGA: null   # printed "/" in all four columns (plain Earth flyby cannot reach Jupiter, p.17)
+  "3:2+":
+    LEGA: {rp_post: "0.83321", dv_tot: "5.0074", dv_lev: "1.1099", c3: "15.2026"}
+    ELGA: {rp_post: "0.83266", dv_tot: "5.0118", dv_lev: "1.1138", c3: "15.2159"}
+    EGA: {rp_post: "0.79164", dv_tot: "5.3468", dv_lev: "1.406", c3: "16.2177"}
+conventions:
+  model: "patched conics, ecliptic plane, Earth and Moon circular and coplanar, Moon phase free (pp.2, 6)"
+  naming: "(EI)n:m sigma_k (eq. 1, p.4): E exterior; Short = H- (family sign -), Long = H+ (family sign +); LEGA = Moon met before Earth perigee, ELGA = after, EGA = Earth flyby only at 200 km altitude (Sims et al. 1997 baseline)"
+  dv_launch: "from a 185 km circular Earth parking orbit, sqrt(v_inf^2 + 2 vc^2) - vc (eq. 8, p.5); c3 = v_inf^2 at launch"
+  dv_tot: "dv_launch + dv_VILM (eq. 7); dv_lev column is the leveraging maneuver dv_VILM (eq. 9)"
+  rp_post: "perihelion radius in AU, before the GA for Long transfer, after the GA for Short transfer (p.17)"
+  not_printed: [r_le1, r_va2, earth_flyby_altitude, perilune_altitude, moon_phase, launch_date]
+  headline_checks: {dv_tot_saving_3_2_plus_LEGA_vs_EGA_percent: "6.35 (ours; paper prints 6.4 and 6.5)", dv_lev_saving_3_2_plus_LEGA_percent: "21.06 (ours = paper)", dv_lev_saving_2_1_minus_percent: "5.32 (ours; paper 5.3)"}
+  errata_in_text: "eq. 11 prints delta_m = 2 sin(mu_m/(mu_m + rp v^2)); the inverse sine is missing"

@@ -1,0 +1,42 @@
+# Takubo, Campagnola, Pellegrini & Anderson 2026, Tables 2 and 4: V-infinity of the nominal Europa Clipper resonant
+#   orbits at Europa, Ganymede and Callisto, and the three escape-transfer solutions (Star vs COSMIC).
+# Source: Y. Takubo, S. Campagnola, E. Pellegrini & B. D. Anderson, "Preliminary Contingency Trajectory Planning for
+#   Europa Clipper's Galilean Moon Tour", AIAA SciTech 2026 Forum, paper AIAA 2026-1262, doi 10.2514/6.2026-1262
+#   (Crossref issued 2026-01-08). Copy read: JPL clearance copy CL#25-4815 (pdfTeX, created 2025-11-01), 16 pp.,
+#   md5 966251db3633bf3e6c40a09248c98beb. Table 2 is on p.5, Table 4 on p.13.
+# Transcribed from page images (110 dpi renders, read by eye). Second witness: the publisher's digital text layer
+#   (pdftotext -layout); it matches all 27 cells. Third witness for Table 4: slides 17-19 of the JPL deck CL#26-0101,
+#   which print the same 18 values (trailing zeros dropped: 55.3, 111.8, 189.5). See witness-comparison.tsv.
+# No value here was computed by us. Our check (check_table2.py / .out): with circular coplanar moon orbits and JPL mean
+#   constants, the six Ganymede and Callisto values of Table 2 are reproduced to the printed digit.
+# Units: km/s for V-infinity; m/s for delta-V; kRad for TID (total ionizing dose); days for flight time.
+# Numbers kept as printed (strings).
+table_2:
+  caption: "V-infinity of representative nominal Europa resonant orbits with respect to the Galilean moons"
+  page: 5
+  columns: [orbit, Vinf_Eu_km_s, Vinf_Ga_km_s, Vinf_Ca_km_s]
+  rows:
+    - {orbit: "Eu 4:1", Vinf_Eu_km_s: "4.0", Vinf_Ga_km_s: "6.644", Vinf_Ca_km_s: "5.077"}
+    - {orbit: "Eu 5:1", Vinf_Eu_km_s: "4.0", Vinf_Ga_km_s: "7.025", Vinf_Ca_km_s: "5.825"}
+    - {orbit: "Eu 6:1", Vinf_Eu_km_s: "4.5", Vinf_Ga_km_s: "7.429", Vinf_Ca_km_s: "6.376"}
+table_4:
+  caption: "Comparison of the initial guess solutions and the high-fidelity solutions"
+  page: 13
+  columns: [solution, sequence_final, terminal_orbit, model, total_dV_m_s, TID_kRad, flight_time_days]
+  rows:
+    - {solution: "A, E19 quasi-ballistic", sequence_final: "EEECCC", terminal_orbit: "Ca 2:1", model: "Star", total_dV_m_s: "13.89", TID_kRad: "299.13", flight_time_days: "169.96"}
+    - {solution: "A, E19 quasi-ballistic", sequence_final: "EEECCC", terminal_orbit: "Ca 2:1", model: "COSMIC", total_dV_m_s: "6.33", TID_kRad: "283.81", flight_time_days: "169.76"}
+    - {solution: "B, E19 low-TID", sequence_final: "EECCC (Star)", terminal_orbit: "Ca 2:1+", model: "Star", total_dV_m_s: "55.30", TID_kRad: "144.84", flight_time_days: "186.96"}
+    - {solution: "B, E19 low-TID", sequence_final: "EEECCC (untargeted Europa flyby added)", terminal_orbit: "Ca 2:1+", model: "COSMIC", total_dV_m_s: "112.72", TID_kRad: "175.48", flight_time_days: "186.94"}
+    - {solution: "C, E12 (COT1)", sequence_final: "EEGCCC", terminal_orbit: "Ca 4:2-", model: "Star", total_dV_m_s: "111.80", TID_kRad: "241.37", flight_time_days: "189.50"}
+    - {solution: "C, E12 (COT1)", sequence_final: "EEGCCC", terminal_orbit: "Ca 4:2-", model: "COSMIC", total_dV_m_s: "43.32", TID_kRad: "242.04", flight_time_days: "189.46"}
+conventions:
+  model_table_2: "circular coplanar moon orbits, patched conic, ephemeris-free (Sec. IV, p.5)"
+  resonance_notation: "rho = n:m, n moon revolutions, m spacecraft revolutions; n:m- short and n:m+ long non-resonant transfers (p.3)"
+  star_model: "full-ephemeris patched conic, Lambert legs joined by powered flybys (Delta-V_enc <= 10 m/s per encounter) (p.10)"
+  cosmic_model: "full-ephemeris N-body: Sun, Earth, Mars, Jupiter, Callisto, Ganymede, Europa, Io as point masses; no SRP, no J2 (p.10)"
+  sequence_field: "flyby letters from the text pp.12-13 (E Europa, G Ganymede, C Callisto); terminal orbits from the text and slides 17-19"
+  periodic: false   # all three are one-way escape transfers; none repeats
+  notes:
+    - "p.12 calls Solution A's EEECCC 'two Europa and two Callisto flybys'; the sequence string has three of each (the count perhaps excludes the trigger E19 and the final arrival). Kept as printed."
+    - "Ca 4:2- is printed unreduced (p.13 and slide 19)."

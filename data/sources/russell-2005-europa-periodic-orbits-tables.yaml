@@ -1,0 +1,129 @@
+# Russell 2005, Table 3: data for the representative 3D periodic orbits of Figures 15-18, Jupiter-Europa CR3BP.
+# Source: R. P. Russell, "Global Search for Planar and Three-Dimensional Periodic Orbits Near Europa", paper AAS 05-290,
+#   AAS/AIAA Astrodynamics Specialist Conference, Lake Tahoe CA, 2005 (JPL clearance number 05-2188 in the file name).
+#   Journal form: J. Astronaut. Sci. 54(2):199-226 (2006), doi 10.1007/BF03256483 (Crossref) - NOT HELD; not compared.
+# Local file: conference PDF, 26 pp., md5 da06ead940c1e4890b6c7193f393b330 (Word -> Acrobat Distiller 5.0.5, digital text layer).
+# Table 3 is on p.25 (pdf page = printed page). 76 rows, 13 columns. Caption: "Table 3: Data for representative 3D orbits
+#   illustrated in Figure 15-Figure 18". Rows 1-44 are the stable orbits (Figs. 15-16, "ordered in increasing x0"); rows 45-76
+#   are unstable (Figs. 17-18, "ordered in increasing instability"). The table does not print the figure panel letter.
+# Columns (header as printed): ID; N; x0 (km); v0 (km/s); w0 (km/s); T (days); sym (a); J (km^2/s^2); inc. (deg) (b);
+#   h_min. (km) (c); k1 (d); k2 (d); rho (d).
+# Footnotes as printed: "a Doubly-symmetric (D) or Axi-symmetric (A)."  "b pseudo inclination, range is between 0 and 90
+#   degrees, equal to tan^-1(w0 / v0)"  "c close approach altitude."  "d for all cases presented the ki values are non-complex.
+#   For stability, | ki | <= 2 or rho=1. For unstable orbits, rho is a scalar instability metric."
+# PRINT SLIP: footnote a says "(A)" but the sym column prints D and S only (47 D, 29 S). Integration (check_russell2005.out
+#   PART 3) shows every S row is axi-symmetric (perpendicular x-axis crossing at T/2). We keep "S" as printed.
+# Transcribed from page images; no value computed by us. Witnesses (witness-comparison.tsv): A = my reading of 400-dpi strips
+#   of p.25, every row; B = the publisher text layer (pdftotext -layout); C = tesseract 5.5.3, 400 dpi, psm 6, raw. A = B on
+#   all 988 cells. C = A on 862 cells raw; the rest are glyph noise ("N)" for S, "EO" for E0, digits split by a space, "," for
+#   "."); 4 cells kept noise after normalisation and were re-read on the image (1357937 k1, 1506466 hmin, 1507698 k1,
+#   1609237 k2). Numbers are kept as printed (strings; mantissa-E-exponent form as printed, e.g. "9.91361806E1").
+# Checks (ours, check_russell2005.py / .out; DOP853 rtol 1e-12 atol 1e-13, Eq. (1) model, Table 1 constants):
+#   - mu and TU recomputed from Table 1 equal the printed values (mu rel diff 1e-16; TU 48822.04433067 s). Collinear points
+#     ours 13,744.5 / -13,559.3 km vs printed 13,744 / -13,559 km (Table 2 footnote c).
+#   - All 76 rows: J from (x0, v0, w0) by Eq. (2) agrees with printed J to half a unit of the last digit (76/76);
+#     atan(w0/v0) agrees with printed inc. to 0.05 deg (76/76); rho from k1, k2 by Eq. (12) agrees within 1 percent (76/76).
+#   - All 76 rows by integration: the Nth y = 0 crossing falls at T/4 (D rows, 47/47) or T/2 (S rows, 29/29) within 1e-6 of
+#     the period, with the symmetry residual (D: u, w; S: z, u) below 1e-6 nondim in all 76 (max 2.1e-7). Stable rows return
+#     after one full period to |X(T)-X0| <= 2.0e-5 nondim (median 3.5e-8); Jacobi drift <= 2e-12.
+#   - hmin over the symmetric arc rounds to the printed value in 73/76; the 3 others print a slightly higher value
+#     (1261682: ours 34,139.9 vs 3.42E4; 1542144: 525.4 vs 5.26E2; 1606263: 648.2 vs 6.49E2). Consistent with a minimum
+#     sampled at integrator steps; we keep the printed value.
+
+table_3:
+  page: 25
+  rows:
+    - {ID: "1216180", N: "15", x0_km: "-5.38888889E4", v0_kms: "2.20016215", w0_kms: "0.23241350", T_days: "9.91361806E1", sym: "D", J_km2s2: "565.579", inc_deg: "6.0", hmin_km: "2.42E4", k1: "7.53E-1", k2: "-1.74E0", rho: "1"}
+    - {ID: "1227706", N: "16", x0_km: "-4.83708054E4", v0_kms: "2.02455647", w0_kms: "0.73731430", T_days: "1.08864020E2", sym: "D", J_km2s2: "565.075", inc_deg: "20.0", hmin_km: "4.56E4", k1: "-1.74E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1245359", N: "14", x0_km: "-4.42652349E4", v0_kms: "1.78351364", w0_kms: "1.57417442", T_days: "9.52268856E1", sym: "D", J_km2s2: "563.555", inc_deg: "41.4", hmin_km: "4.27E4", k1: "-1.07E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1251375", N: "13", x0_km: "-4.27989597E4", v0_kms: "1.83726468", w0_kms: "0.33348899", T_days: "8.72318410E1", sym: "D", J_km2s2: "565.560", inc_deg: "10.3", hmin_km: "4.08E4", k1: "-1.93E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1251472", N: "12", x0_km: "-4.27826678E4", v0_kms: "1.77688902", w0_kms: "1.03701719", T_days: "8.07451033E1", sym: "D", J_km2s2: "564.813", inc_deg: "30.3", hmin_km: "4.12E4", k1: "1.20E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1261682", N: "13", x0_km: "-4.03551678E4", v0_kms: "1.75115279", w0_kms: "0.49798404", T_days: "8.70214382E1", sym: "D", J_km2s2: "565.469", inc_deg: "15.9", hmin_km: "3.42E4", k1: "-1.56E0", k2: "-1.65E0", rho: "1"}
+    - {ID: "1319794", N: "5", x0_km: "-2.89996812E4", v0_kms: "1.14109433", w0_kms: "1.59105726", T_days: "3.15533851E1", sym: "D", J_km2s2: "563.965", inc_deg: "54.4", hmin_km: "2.59E4", k1: "1.30E-1", k2: "-1.93E0", rho: "1"}
+    - {ID: "1328368", N: "7", x0_km: "-2.75822819E4", v0_kms: "0.79326209", w0_kms: "3.19546760", T_days: "4.60257067E1", sym: "D", J_km2s2: "556.864", inc_deg: "76.1", hmin_km: "2.23E4", k1: "-2.36E-1", k2: "-5.47E-1", rho: "1"}
+    - {ID: "1329353", N: "14", x0_km: "-2.74030705E4", v0_kms: "1.19161155", w0_kms: "0.45551095", T_days: "3.95055903E1", sym: "S", J_km2s2: "566.066", inc_deg: "20.9", hmin_km: "2.22E4", k1: "8.49E-1", k2: "-1.39E0", rho: "1"}
+    - {ID: "1348961", N: "3", x0_km: "-2.43890604E4", v0_kms: "1.09970988", w0_kms: "0.42928366", T_days: "1.62064532E1", sym: "D", J_km2s2: "566.124", inc_deg: "21.3", hmin_km: "2.28E4", k1: "-1.11E0", k2: "-1.86E0", rho: "1"}
+    - {ID: "1357937", N: "11", x0_km: "-2.28413255E4", v0_kms: "1.05637236", w0_kms: "0.35406749", T_days: "2.83892476E1", sym: "S", J_km2s2: "566.199", inc_deg: "18.5", hmin_km: "2.11E4", k1: "1.69E0", k2: "-1.98E0", rho: "1"}
+    - {ID: "1374128", N: "15", x0_km: "-1.88497987E4", v0_kms: "0.93533819", w0_kms: "0.25374370", T_days: "6.34213758E1", sym: "D", J_km2s2: "566.344", inc_deg: "15.2", hmin_km: "1.70E4", k1: "1.14E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1387412", N: "10", x0_km: "-1.43695134E4", v0_kms: "0.82273252", w0_kms: "0.21717565", T_days: "3.01875505E1", sym: "D", J_km2s2: "566.473", inc_deg: "14.8", hmin_km: "1.11E4", k1: "-5.82E-1", k2: "-1.33E0", rho: "1"}
+    - {ID: "1412768", N: "11", x0_km: "-1.09644966E4", v0_kms: "0.78186509", w0_kms: "0.22057707", T_days: "2.49854049E1", sym: "D", J_km2s2: "566.565", inc_deg: "15.8", hmin_km: "9.16E3", k1: "4.06E-1", k2: "-2.00E0", rho: "1"}
+    - {ID: "1416479", N: "13", x0_km: "-1.00521477E4", v0_kms: "0.73042229", w0_kms: "0.25756442", T_days: "2.31248108E1", sym: "D", J_km2s2: "566.653", inc_deg: "19.4", hmin_km: "4.97E3", k1: "-1.78E0", k2: "-1.97E0", rho: "1"}
+    - {ID: "1427910", N: "15", x0_km: "-6.90780201E3", v0_kms: "0.66816745", w0_kms: "0.52088088", T_days: "2.19708850E1", sym: "D", J_km2s2: "566.757", inc_deg: "37.9", hmin_km: "6.33E2", k1: "3.50E-2", k2: "-1.73E0", rho: "1"}
+    - {ID: "1431086", N: "16", x0_km: "-4.57805369E3", v0_kms: "0.91664623", w0_kms: "0.19292502", T_days: "1.16287865E1", sym: "D", J_km2s2: "567.036", inc_deg: "11.9", hmin_km: "3.02E3", k1: "1.04E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1431502", N: "11", x0_km: "-2.63931208E3", v0_kms: "0.98198381", w0_kms: "0.59816765", T_days: "3.66411901E0", sym: "D", J_km2s2: "567.601", inc_deg: "31.3", hmin_km: "1.08E3", k1: "-1.98E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1440351", N: "4", x0_km: "2.80661224E3", v0_kms: "1.15769161", w0_kms: "0.51731633", T_days: "7.95973106E0", sym: "D", J_km2s2: "567.172", inc_deg: "24.1", hmin_km: "5.94E2", k1: "-8.68E-1", k2: "-1.96E0", rho: "1"}
+    - {ID: "1449568", N: "9", x0_km: "3.51004082E3", v0_kms: "0.89312066", w0_kms: "0.57479361", T_days: "6.26782759E0", sym: "S", J_km2s2: "567.200", inc_deg: "32.8", hmin_km: "1.95E3", k1: "-1.99E0", k2: "-1.99E0", rho: "1"}
+    - {ID: "1449639", N: "13", x0_km: "3.51004082E3", v0_kms: "0.68382762", w0_kms: "0.85141010", T_days: "2.12323776E1", sym: "D", J_km2s2: "567.135", inc_deg: "51.2", hmin_km: "1.60E3", k1: "1.98E0", k2: "-1.90E0", rho: "1"}
+    - {ID: "1449566", N: "15", x0_km: "3.51004082E3", v0_kms: "0.94827283", w0_kms: "0.51570043", T_days: "2.97760253E1", sym: "D", J_km2s2: "567.163", inc_deg: "28.5", hmin_km: "7.72E2", k1: "4.97E-1", k2: "-1.94E0", rho: "1"}
+    - {ID: "1451570", N: "12", x0_km: "3.63565306E3", v0_kms: "0.52686236", w0_kms: "0.90435700", T_days: "1.53448697E1", sym: "D", J_km2s2: "567.170", inc_deg: "59.8", hmin_km: "1.68E1", k1: "-1.77E0", k2: "-1.99E0", rho: "1"}
+    - {ID: "1463004", N: "4", x0_km: "4.32652041E3", v0_kms: "0.63233404", w0_kms: "0.49118888", T_days: "3.34340758E0", sym: "D", J_km2s2: "567.350", inc_deg: "37.8", hmin_km: "2.76E3", k1: "-9.15E-1", k2: "-2.00E0", rho: "1"}
+    - {ID: "1472520", N: "7", x0_km: "4.84153061E3", v0_kms: "0.47178282", w0_kms: "0.72636967", T_days: "6.35999329E0", sym: "S", J_km2s2: "567.090", inc_deg: "57.0", hmin_km: "3.05E3", k1: "-1.15E0", k2: "-1.23E0", rho: "1"}
+    - {ID: "1480596", N: "2", x0_km: "5.25605102E3", v0_kms: "0.61615530", w0_kms: "0.45236343", T_days: "3.21078235E0", sym: "D", J_km2s2: "567.156", inc_deg: "36.3", hmin_km: "3.55E3", k1: "-1.44E0", k2: "-1.99E0", rho: "1"}
+    - {ID: "1489671", N: "7", x0_km: "5.68313265E3", v0_kms: "0.43451902", w0_kms: "0.55331736", T_days: "9.87662356E0", sym: "D", J_km2s2: "567.160", inc_deg: "51.9", hmin_km: "4.06E3", k1: "-2.00E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1500107", N: "13", x0_km: "6.17302041E3", v0_kms: "0.19939772", w0_kms: "0.72537174", T_days: "2.78513050E1", sym: "D", J_km2s2: "567.007", inc_deg: "74.6", hmin_km: "2.27E3", k1: "-1.46E0", k2: "-1.68E0", rho: "1"}
+    - {ID: "1506466", N: "5", x0_km: "6.46192857E3", v0_kms: "0.25910759", w0_kms: "0.65136063", T_days: "9.93223453E0", sym: "D", J_km2s2: "567.040", inc_deg: "68.3", hmin_km: "4.24E3", k1: "-4.65E-1", k2: "-1.99E0", rho: "1"}
+    - {ID: "1507698", N: "16", x0_km: "6.51217347E3", v0_kms: "0.18620979", w0_kms: "0.69810413", T_days: "3.46549601E1", sym: "D", J_km2s2: "567.002", inc_deg: "75.1", hmin_km: "2.36E3", k1: "-4.37E-1", k2: "-9.26E-1", rho: "1"}
+    - {ID: "1508245", N: "5", x0_km: "6.53729592E3", v0_kms: "0.25898815", w0_kms: "0.64274970", T_days: "9.93580189E0", sym: "D", J_km2s2: "567.041", inc_deg: "68.1", hmin_km: "4.42E3", k1: "-1.45E-2", k2: "-1.98E0", rho: "1"}
+    - {ID: "1510389", N: "7", x0_km: "6.62522449E3", v0_kms: "0.22764513", w0_kms: "0.64215903", T_days: "6.65127933E0", sym: "S", J_km2s2: "567.045", inc_deg: "70.5", hmin_km: "4.84E3", k1: "1.98E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1516805", N: "13", x0_km: "6.90157143E3", v0_kms: "0.24526771", w0_kms: "0.61488819", T_days: "1.32368170E1", sym: "S", J_km2s2: "567.037", inc_deg: "68.3", hmin_km: "4.63E3", k1: "-1.98E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1524936", N: "13", x0_km: "7.24072449E3", v0_kms: "0.16093253", w0_kms: "0.65095131", T_days: "2.99916208E1", sym: "D", J_km2s2: "566.988", inc_deg: "76.1", hmin_km: "3.95E3", k1: "4.39E-1", k2: "-1.95E0", rho: "1"}
+    - {ID: "1536482", N: "5", x0_km: "7.79341837E3", v0_kms: "0.30569385", w0_kms: "0.43479349", T_days: "9.42502216E0", sym: "D", J_km2s2: "567.103", inc_deg: "54.9", hmin_km: "2.85E3", k1: "-1.19E0", k2: "-1.97E0", rho: "1"}
+    - {ID: "1542144", N: "15", x0_km: "8.10744898E3", v0_kms: "0.13522813", w0_kms: "0.48379377", T_days: "1.20042117E1", sym: "S", J_km2s2: "567.107", inc_deg: "74.4", hmin_km: "5.26E2", k1: "1.24E0", k2: "-1.76E0", rho: "1"}
+    - {ID: "1574993", N: "10", x0_km: "9.60223469E3", v0_kms: "0.19574278", w0_kms: "0.28856133", T_days: "8.85300281E0", sym: "S", J_km2s2: "567.148", inc_deg: "55.8", hmin_km: "1.06E3", k1: "1.53E0", k2: "-1.62E0", rho: "1"}
+    - {ID: "1574978", N: "14", x0_km: "9.60223469E3", v0_kms: "0.22971910", w0_kms: "0.25352166", T_days: "2.60567868E1", sym: "D", J_km2s2: "567.152", inc_deg: "47.8", hmin_km: "1.28E3", k1: "1.08E0", k2: "-1.91E0", rho: "1"}
+    - {ID: "1581767", N: "14", x0_km: "9.90370408E3", v0_kms: "0.21509958", w0_kms: "0.17287166", T_days: "1.17671228E1", sym: "S", J_km2s2: "567.180", inc_deg: "38.8", hmin_km: "4.93E2", k1: "5.76E-1", k2: "-9.13E-1", rho: "1"}
+    - {ID: "1586953", N: "13", x0_km: "1.01298061E4", v0_kms: "0.12645618", w0_kms: "0.29459818", T_days: "1.13900048E1", sym: "S", J_km2s2: "567.145", inc_deg: "66.8", hmin_km: "7.64E2", k1: "-1.55E0", k2: "-1.82E0", rho: "1"}
+    - {ID: "1596078", N: "7", x0_km: "1.05317653E4", v0_kms: "0.11978504", w0_kms: "0.16994878", T_days: "5.58429568E0", sym: "S", J_km2s2: "567.191", inc_deg: "54.8", hmin_km: "3.07E2", k1: "-1.17E0", k2: "-1.56E0", rho: "1"}
+    - {ID: "1605664", N: "16", x0_km: "1.10090918E4", v0_kms: "0.17861206", w0_kms: "0.17296747", T_days: "1.94798048E1", sym: "S", J_km2s2: "567.158", inc_deg: "44.1", hmin_km: "2.06E2", k1: "-1.76E0", k2: "-2.00E0", rho: "1"}
+    - {ID: "1606263", N: "4", x0_km: "1.10342143E4", v0_kms: "0.02419184", w0_kms: "0.42492975", T_days: "4.73215069E0", sym: "S", J_km2s2: "567.038", inc_deg: "86.7", hmin_km: "6.49E2", k1: "1.83E0", k2: "-4.52E-1", rho: "1"}
+    - {ID: "1609237", N: "1", x0_km: "1.12100714E4", v0_kms: "0.17785598", w0_kms: "0.09891667", T_days: "2.41012034E0", sym: "D", J_km2s2: "567.174", inc_deg: "29.1", hmin_km: "2.13E2", k1: "1.76E0", k2: "-7.48E-1", rho: "1"}
+    - {ID: "1550114", N: "6", x0_km: "8.49684694E3", v0_kms: "0.23926555", w0_kms: "0.43381321", T_days: "6.11147444E0", sym: "S", J_km2s2: "567.086", inc_deg: "61.1", hmin_km: "2.52E3", k1: "-2.04E0", k2: "-3.27E0", rho: "2.93E0"}
+    - {ID: "1502741", N: "3", x0_km: "6.29863265E3", v0_kms: "0.31905840", w0_kms: "0.64980487", T_days: "3.27437882E0", sym: "S", J_km2s2: "567.030", inc_deg: "63.8", hmin_km: "4.27E3", k1: "-1.82E0", k2: "-3.50E0", rho: "3.19E0"}
+    - {ID: "1505401", N: "2", x0_km: "6.41168367E3", v0_kms: "0.01516162", w0_kms: "0.72512880", T_days: "3.43247503E0", sym: "D", J_km2s2: "567.012", inc_deg: "88.8", hmin_km: "4.77E3", k1: "-2.00E0", k2: "-1.10E1", rho: "1.10E1"}
+    - {ID: "1428170", N: "3", x0_km: "-6.81005034E3", v0_kms: "0.35668804", w0_kms: "0.68175103", T_days: "3.67123649E0", sym: "D", J_km2s2: "566.895", inc_deg: "62.4", hmin_km: "5.11E3", k1: "-2.00E0", k2: "-1.19E1", rho: "1.18E1"}
+    - {ID: "1524871", N: "3", x0_km: "7.24072449E3", v0_kms: "0.03137750", w0_kms: "0.69425009", T_days: "3.41027619E0", sym: "S", J_km2s2: "566.955", inc_deg: "87.4", hmin_km: "5.32E3", k1: "-1.81E0", k2: "-1.36E1", rho: "1.35E1"}
+    - {ID: "1426791", N: "2", x0_km: "-7.26622483E3", v0_kms: "0.15356112", w0_kms: "0.76160114", T_days: "3.45364150E0", sym: "D", J_km2s2: "566.832", inc_deg: "78.6", hmin_km: "5.71E3", k1: "-3.89E0", k2: "-3.67E1", rho: "3.67E1"}
+    - {ID: "1417161", N: "2", x0_km: "-9.87293624E3", v0_kms: "0.56390318", w0_kms: "0.53604013", T_days: "4.10426372E0", sym: "D", J_km2s2: "566.655", inc_deg: "43.5", hmin_km: "8.31E3", k1: "-3.55E0", k2: "-6.51E1", rho: "6.51E1"}
+    - {ID: "1482378", N: "1", x0_km: "5.33141837E3", v0_kms: "0.14029454", w0_kms: "0.86662059", T_days: "3.03142037E0", sym: "D", J_km2s2: "566.954", inc_deg: "80.8", hmin_km: "3.77E3", k1: "1.32E0", k2: "-1.24E2", rho: "1.24E2"}
+    - {ID: "1406991", N: "2", x0_km: "-1.18442617E4", v0_kms: "0.77642010", w0_kms: "0.45940119", T_days: "5.30691679E0", sym: "S", J_km2s2: "566.393", inc_deg: "30.6", hmin_km: "7.61E2", k1: "1.96E2", k2: "-2.30E1", rho: "1.96E2"}
+    - {ID: "1464357", N: "2", x0_km: "4.38932653E3", v0_kms: "0.00263312", w0_kms: "1.40419427", T_days: "6.42279922E0", sym: "S", J_km2s2: "565.999", inc_deg: "89.9", hmin_km: "2.83E3", k1: "-3.81E0", k2: "-2.66E2", rho: "2.66E2"}
+    - {ID: "1376378", N: "1", x0_km: "-1.81655369E4", v0_kms: "0.74387369", w0_kms: "0.17620778", T_days: "2.32440307E0", sym: "S", J_km2s2: "566.679", inc_deg: "13.3", hmin_km: "2.96E3", k1: "-2.09E0", k2: "-3.53E2", rho: "3.53E2"}
+    - {ID: "1416418", N: "1", x0_km: "-1.00847315E4", v0_kms: "0.30140764", w0_kms: "1.02616364", T_days: "3.03682020E0", sym: "D", J_km2s2: "566.108", inc_deg: "73.6", hmin_km: "8.52E3", k1: "-7.03E0", k2: "-3.99E2", rho: "3.99E2"}
+    - {ID: "1538243", N: "1", x0_km: "7.88134694E3", v0_kms: "0.07051949", w0_kms: "0.88819045", T_days: "2.40015997E0", sym: "S", J_km2s2: "566.584", inc_deg: "85.5", hmin_km: "6.32E3", k1: "-2.14E0", k2: "-4.08E2", rho: "4.08E2"}
+    - {ID: "1420822", N: "2", x0_km: "-8.86283557E3", v0_kms: "0.03174888", w0_kms: "0.85205153", T_days: "2.38083605E0", sym: "S", J_km2s2: "566.583", inc_deg: "87.9", hmin_km: "7.30E3", k1: "-2.06E0", k2: "-4.39E2", rho: "4.39E2"}
+    - {ID: "1429697", N: "2", x0_km: "-6.02803691E3", v0_kms: "0.99350835", w0_kms: "0.22857417", T_days: "3.99321009E0", sym: "S", J_km2s2: "566.557", inc_deg: "13.0", hmin_km: "6.74E2", k1: "4.83E2", k2: "-2.54E0", rho: "4.83E2"}
+    - {ID: "1344834", N: "3", x0_km: "-2.50244463E4", v0_kms: "1.06720556", w0_kms: "0.59398454", T_days: "1.61707067E1", sym: "D", J_km2s2: "566.060", inc_deg: "29.1", hmin_km: "1.28E4", k1: "-1.20E2", k2: "-6.82E2", rho: "6.82E2"}
+    - {ID: "1352279", N: "3", x0_km: "-2.38677181E4", v0_kms: "0.99780131", w0_kms: "0.62452875", T_days: "7.83794453E0", sym: "S", J_km2s2: "566.105", inc_deg: "32.0", hmin_km: "3.29E3", k1: "5.25E1", k2: "-1.49E3", rho: "1.49E3"}
+    - {ID: "1584915", N: "3", x0_km: "1.00293163E4", v0_kms: "0.01978593", w0_kms: "0.66126393", T_days: "4.52087233E0", sym: "S", J_km2s2: "566.814", inc_deg: "88.3", hmin_km: "4.72E3", k1: "-5.07E2", k2: "-3.02E3", rho: "3.02E3"}
+    - {ID: "1369650", N: "2", x0_km: "-2.02346141E4", v0_kms: "0.86977938", w0_kms: "0.83967727", T_days: "9.86919522E0", sym: "D", J_km2s2: "565.868", inc_deg: "44.0", hmin_km: "1.64E4", k1: "-7.53E1", k2: "-3.60E3", rho: "3.60E3"}
+    - {ID: "1605591", N: "3", x0_km: "1.09965306E4", v0_kms: "0.02136769", w0_kms: "0.51863276", T_days: "4.88201569E0", sym: "S", J_km2s2: "566.951", inc_deg: "87.6", hmin_km: "1.11E3", k1: "-4.18E0", k2: "-4.59E3", rho: "4.59E3"}
+    - {ID: "1394657", N: "3", x0_km: "-1.31150336E4", v0_kms: "0.18290585", w0_kms: "0.42493343", T_days: "4.12260170E0", sym: "S", J_km2s2: "566.981", inc_deg: "66.7", hmin_km: "4.48E3", k1: "-1.26E2", k2: "-1.11E4", rho: "1.11E4"}
+    - {ID: "1456684", N: "3", x0_km: "3.94968367E3", v0_kms: "0.01037729", w0_kms: "1.07954634", T_days: "7.16576896E0", sym: "D", J_km2s2: "566.963", inc_deg: "89.4", hmin_km: "2.39E3", k1: "-9.11E1", k2: "-3.61E4", rho: "3.61E4"}
+    - {ID: "1401795", N: "2", x0_km: "-1.23493121E4", v0_kms: "0.09452075", w0_kms: "3.36673782", T_days: "1.06121186E1", sym: "D", J_km2s2: "555.857", inc_deg: "88.4", hmin_km: "7.89E3", k1: "-1.88E3", k2: "-5.03E4", rho: "5.03E4"}
+    - {ID: "1452028", N: "3", x0_km: "3.66077551E3", v0_kms: "0.00908213", w0_kms: "1.13212780", T_days: "7.01340821E0", sym: "D", J_km2s2: "566.972", inc_deg: "89.5", hmin_km: "2.10E3", k1: "-3.41E1", k2: "-6.49E4", rho: "6.49E4"}
+    - {ID: "1467111", N: "3", x0_km: "4.54006122E3", v0_kms: "0.19929656", w0_kms: "1.25464836", T_days: "8.57965374E0", sym: "S", J_km2s2: "566.310", inc_deg: "81.0", hmin_km: "2.98E3", k1: "-2.64E2", k2: "-7.76E4", rho: "7.76E4"}
+    - {ID: "1422603", N: "3", x0_km: "-8.42295302E3", v0_kms: "0.78470294", w0_kms: "0.45373928", T_days: "6.91411796E0", sym: "S", J_km2s2: "566.516", inc_deg: "30.0", hmin_km: "1.98E3", k1: "8.03E4", k2: "-2.39E1", rho: "8.03E4"}
+    - {ID: "1377892", N: "3", x0_km: "-1.76767785E4", v0_kms: "0.72871009", w0_kms: "0.46995860", T_days: "7.08977522E0", sym: "S", J_km2s2: "566.498", inc_deg: "32.8", hmin_km: "2.15E3", k1: "8.07E4", k2: "-3.12E1", rho: "8.07E4"}
+    - {ID: "1529456", N: "2", x0_km: "7.44170408E3", v0_kms: "0.12962822", w0_kms: "0.81496500", T_days: "6.87744331E0", sym: "D", J_km2s2: "566.736", inc_deg: "81.0", hmin_km: "3.37E3", k1: "5.16E-1", k2: "-3.11E5", rho: "3.11E5"}
+    - {ID: "1456274", N: "3", x0_km: "3.92456122E3", v0_kms: "0.12204927", w0_kms: "1.07198126", T_days: "8.90492158E0", sym: "D", J_km2s2: "566.975", inc_deg: "83.5", hmin_km: "2.36E3", k1: "1.95E0", k2: "-3.49E5", rho: "3.49E5"}
+    - {ID: "1489221", N: "6", x0_km: "5.65801020E3", v0_kms: "0.16422706", w0_kms: "0.81512762", T_days: "1.57210818E1", sym: "D", J_km2s2: "566.968", inc_deg: "78.6", hmin_km: "3.78E3", k1: "1.01E-1", k2: "-4.25E5", rho: "4.25E5"}
+    - {ID: "1408772", N: "3", x0_km: "-1.16650503E4", v0_kms: "0.17156078", w0_kms: "0.54422447", T_days: "5.62437457E0", sym: "D", J_km2s2: "566.884", inc_deg: "72.5", hmin_km: "1.41E3", k1: "-2.34E0", k2: "-6.23E5", rho: "6.23E5"}
+    - {ID: "1313405", N: "2", x0_km: "-3.00912416E4", v0_kms: "1.23585853", w0_kms: "0.24852279", T_days: "1.04408738E1", sym: "D", J_km2s2: "566.286", inc_deg: "11.4", hmin_km: "5.32E2", k1: "-4.16E2", k2: "-6.38E6", rho: "6.38E6"}
+
+conventions:
+  frame: "Jupiter-Europa CR3BP centred at Europa (Eq. 1, p.2): x-axis 'fixed opposing the direction to Jupiter' (Jupiter at x = -1 DU), z along Europa's orbital angular momentum, y completes the right-handed set; rotating frame"
+  equations: "x'' = 2v + (x+1-mu) + kappa (x+1) + mu/rE^3; y'' = -2u + y + kappa y; z'' = kappa z; kappa = -(1-mu)/rJ^3 - mu/rE^3; rJ = sqrt((x+1)^2+y^2+z^2), rE = sqrt(x^2+y^2+z^2) (Eq. 1, p.2)"
+  model: "circular restricted three-body problem only; point-mass Jupiter (no J2), circular Europa orbit, no ephemeris (Eq. 1, Table 1)"
+  mu: "2.528002607976249e-5 = GmE/(GmJ+GmE) (Table 1 footnote a, p.3)"
+  constants: "Jupiter-Europa distance 6.709e5 km; Europa radius 1560.70 km; GmE 3202.72 km^3/s^2; GmJ 1.2668654e8 km^3/s^2 (Table 1, p.3, from Bagenal et al. 2004); DU 670900 km; TU 48822.04433066813 s (p.3)"
+  units_printed: "dimensional: x0 km (from Europa's centre), v0 and w0 km/s (rotating-frame velocity), T days, J km^2/s^2, inc deg, hmin km. Nondimensional J = printed J / (DU/TU)^2 (ours: (DU/TU)^2 = 188.835509 km^2/s^2)"
+  jacobi: "J = (x+1-mu)^2 + y^2 + 2(1-mu)/rJ + 2 mu/rE - u^2 - v^2 - w^2 (Eq. 2, p.2), times (DU/TU)^2 for the printed km^2/s^2; larger J = lower energy"
+  state_printed: "initial state (x0, 0, 0, 0, v0, w0) on and perpendicular to the x-axis (pp.6-8, Eqs. 15, 21); v0 > 0 and w0 > 0 only (p.9); x0 > 0 starts direct, x0 < 0 retrograde (p.9)"
+  N: "number of xz-plane crossings from t = 0 to the terminal symmetric crossing: T/2 for axi-symmetric, T/4 for doubly-symmetric (p.8); Nmax = 16 (Table 2)"
+  period_field: "T is the full period in days: T = 2 tf (axi-symmetric) or T = 4 tf (doubly-symmetric), tf = time of the Nth crossing (p.8)"
+  symmetry_field: "D = doubly-symmetric (perpendicular x-axis crossing at t=0 and perpendicular xz-plane crossing at T/4: y = u = w = 0, Eq. 21); S (printed; footnote says A) = axi-symmetric (perpendicular x-axis crossings at 0 and T/2: y = z = u = 0, Eq. 15). Confirmed by integration on all 76 rows (ours)"
+  inc_field: "pseudo inclination = atan(w0/v0), 0-90 deg (footnote b); not an osculating inclination"
+  hmin_field: "close approach altitude above the 1560.70 km mean radius (footnote c)"
+  stability_field: "k_i = lambda_i + 1/lambda_i (p.5), the roots of the monodromy characteristic polynomial (Eqs. 9-10, 12), stable if real and |k_i| <= 2; rho = max(|lambda1|, |1/lambda1|, |lambda2|, |1/lambda2|) (Eq. 11), printed as 1 for stable orbits. Same definition as Restrepo-Russell 2018 b_i = lambda_i + 1/lambda_i (their Eq. 6, p.5). The paper does not say which k is horizontal or vertical"
+  row_counts: {table_3: 76, D: 47, S: 29, stable_rho_1: 44, unstable: 32}
+  not_in_this_file: "Table 1 (constants, in this block) and Table 2 (search grid; in the digest). No planar orbit is tabulated: every Table 3 row has w0 > 0"

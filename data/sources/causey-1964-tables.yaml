@@ -1,0 +1,74 @@
+# Causey 1964, Fig. 51 "Orbits with injection altitudes ~100 nautical miles" (a table printed as a figure).
+# Source: W. E. Causey, "Characteristic Features of Some Periodic Orbits in the Restricted Three Body Problem",
+#   NASA TM X-53108, George C. Marshall Space Flight Center (Aero-Astrodynamics Laboratory), Huntsville AL,
+#   17 August 1964. NTRS 19640019815 (accession N64-29729). No DOI (Crossref search 2026-10-08: no match).
+# Local file: causey-1964-characteristic-features-periodic-orbits-restricted-three-body-problem-nasa-tm-x-53108-ntrs-19640019815.pdf
+#   (force-OCR copy of the NTRS scan; scan md5 8e5b0c2ad86328eee23c740c29ed70d4, 65 pp.).
+# Page: report p.58 = PDF p.63. The table is printed sideways.
+# This is the ONLY numeric table in the report. Figs. 5-50 are graphs (velocity, period, closest approaches vs start
+#   radius); they are not transcribed.
+# Transcribed from page images; no value computed by us. Every cell was read on a 400 dpi render (A). Second witness:
+#   tesseract 5 psm 6 on the full table (B) and on each column crop with a digit whitelist (C). See
+#   witness-comparison.tsv and checks/witness_counts.py (+ _output.txt). Of the 49 value cells: 30 identical in A, B
+#   and C; 7 differ only by punctuation (decimal comma, trailing period, blank vs dash); 12 have a digit error in one
+#   OCR witness (5->9, 7->1, a dropped or doubled digit, garbling, run-on into the next cell). In all 12 the other
+#   OCR witness agrees with A, and where they apply the family ranges printed on pp.5-6 exclude the OCR reading
+#   (e.g. 96,713 km lies outside the class-B range 3,075-57,000 km). The 7 ratio/order/class entries were read on
+#   the image only (the OCR of those columns is garbled).
+# Numbers are kept as printed (strings, with the thousands comma). "-" = printed dash. Blank class = printed blank.
+#
+# COLUMNS (headers as printed)
+#   ratio            "Ratio" m/k: m = Moon revolutions while the probe makes k revolutions (p.3)
+#   order            "Order" n: an orbit of ratio nm/nk is "ratio m/k order n" (p.4)
+#   class            "Class": A = second perpendicular crossing of the Earth-Moon line on the back side of the Moon;
+#                    B = on the front side (p.4). Blank for order 1.
+#   first_approach_to_moon_km   "First Approach to Moon (km)": the starting radius, i.e. the perpendicular crossing
+#                    behind the Moon, measured from the Moon's centre (Fig. 44-50 axes: "Behind Center of Moon (km)")
+#   second_approach_to_moon_km  "Second Approach to Moon (km)"
+#   close_approach_to_earth_km  "Close Approach to Earth (km)" (from Earth's centre; injection altitude about
+#                    100 n.mi. per the caption)
+#   time_earth_to_moon_hr       "Time From Earth to Moon (hr)"
+#   time_on_inner_leg_pct       "Time On Inner Leg (%)": inner leg = perigee -> periselene -> perigee (p.5)
+#   velocity_space_fixed_m_s    "Velocity (Space-Fixed) (m/sec)" -- printed as 1083.6-1089.3. See note 1.
+#   period_day                  "Period (day)"
+#
+# NOTES (ours, from causey_fig51_check.py; not transcription)
+#   1. The printed velocity is one tenth of the geocentric inertial perigee (injection) speed of the orbit our
+#      integration finds: row 1 gives 10,888.7 m/s against printed 1088.9; row 5 gives 10,881.7 against 1088.2. The
+#      printed decimal point (or unit) is off by a factor of 10. Kept as printed.
+#   2. The time column equals the time from the perigee to the start point (the perpendicular crossing behind the
+#      Moon), by symmetry; rows 1 and 5 give 155 h and 208 h in our integration.
+#   3. The period converts with 1 TU = 105.13 hr (figure legends), i.e. P(day) = P(TU) x 105.13 / 24.
+#   4. Row 7, order: the digit "3" looks hand-written over the typed entry. Order 3 is consistent with the text
+#      (1/2 order 3 collides with Earth for starts below 2,310 km, p.6) and with the period axis of Fig. 14
+#      (18.1-18.6 TU; 80.4 d = 18.35 TU).
+#   5. Our integration reproduces every printed period, first-pass time and second lunar approach. Perigees agree to
+#      0-22 km; rows 2, 3 and 7 (near-Moon starts, Earth-grazing) are 22, 14 and 10 km off, and their printed speeds
+#      differ from ours by the amount those offsets imply. See digest-causey-1964.md section 3.
+tables:
+  - table: "Fig. 51"
+    report_page: "58"
+    pdf_page: "63"
+    caption: "ORBITS WITH INJECTION ALTITUDES ~100 NAUTICAL MILES"   # printed with an approx-equal sign
+    rows:
+      - {ratio: "1/2", order: "1", class: "",  first_approach_to_moon_km: "89,080",  second_approach_to_moon_km: "-",       close_approach_to_earth_km: "6,552", time_earth_to_moon_hr: "155", time_on_inner_leg_pct: "47.5", velocity_space_fixed_m_s: "1088.9", period_day: "27.2"}
+      - {ratio: "1/2", order: "2", class: "A", first_approach_to_moon_km: "1,931",   second_approach_to_moon_km: "130,395", close_approach_to_earth_km: "6,586", time_earth_to_moon_hr: "70",  time_on_inner_leg_pct: "10.9", velocity_space_fixed_m_s: "1086.7", period_day: "53.3"}
+      - {ratio: "1/2", order: "2", class: "B", first_approach_to_moon_km: "3,081",   second_approach_to_moon_km: "3,341",   close_approach_to_earth_km: "6,560", time_earth_to_moon_hr: "76",  time_on_inner_leg_pct: "11.6", velocity_space_fixed_m_s: "1087.9", period_day: "54.3"}
+      - {ratio: "1/2", order: "2", class: "B", first_approach_to_moon_km: "56,713",  second_approach_to_moon_km: "4,352",   close_approach_to_earth_km: "6,539", time_earth_to_moon_hr: "136", time_on_inner_leg_pct: "20.5", velocity_space_fixed_m_s: "1089.3", period_day: "55.2"}
+      - {ratio: "2/3", order: "1", class: "",  first_approach_to_moon_km: "182,551", second_approach_to_moon_km: "-",       close_approach_to_earth_km: "6,574", time_earth_to_moon_hr: "208", time_on_inner_leg_pct: "31.5", velocity_space_fixed_m_s: "1088.2", period_day: "55.0"}
+      - {ratio: "2/5", order: "1", class: "",  first_approach_to_moon_km: "19,484",  second_approach_to_moon_km: "-",       close_approach_to_earth_km: "6,599", time_earth_to_moon_hr: "107", time_on_inner_leg_pct: "16.4", velocity_space_fixed_m_s: "1083.6", period_day: "54.4"}
+      - {ratio: "1/2", order: "3", class: "A", first_approach_to_moon_km: "2,317",   second_approach_to_moon_km: "91,507",  close_approach_to_earth_km: "6,577", time_earth_to_moon_hr: "72",  time_on_inner_leg_pct: "7.5",  velocity_space_fixed_m_s: "1086.9", period_day: "80.4"}
+conventions:
+  model: "planar circular restricted three-body problem, Earth-Moon-probe (p.2)"
+  mass_ratio: "Earth/Moon mass ratio 80.45 (p.3); so mu = 1/81.45 = 0.0122774 (our arithmetic)"
+  length_unit: "Earth-Moon distance = 1; 385,000 km for conversion to physical units (p.3)"
+  time_unit: "period of the primaries = 2 pi (p.2); figure legends: 1 T.U. of time = 105.13 hr (e.g. Fig. 10, p.17)"
+  velocity_unit: "1 T.U. of velocity = 1017.42 m/sec (Fig. 44 legend, p.51)"
+  unit_note: "385,000 km / 105.13 hr = 1017.26 m/s, not 1017.42; 1017.42 m/s corresponds to 105.11 hr. The two printed units differ by 0.02 per cent (our arithmetic)."
+  frame: "rotating, origin at the barycentre, Earth and Moon on the x axis, Moon at x = 1 - mu = 0.98772 (the Fig. 44-50 axes give 1.08 TU = 35,527 km and 1.22 TU = 89,427 km behind the Moon centre, p.56)"
+  state_variables: "start at a perpendicular crossing of the Earth-Moon line on the far side of the Moon: y = 0, xdot = 0, x = 1 - mu + (first approach)/385,000 km; only the start radius is tabulated; the starting speed (rotating frame, TU) is given only as graphs (Figs. 44-50)"
+  symmetry: "all orbits are symmetric about the x axis (two perpendicular crossings suffice for periodicity, p.2)"
+  period_convention: "full period in the rotating frame, in days (column 'Period (day)')"
+  excluded: "orbits retrograde as they approach the Earth are neglected (p.3)"
+  velocity_column: "printed 'Velocity (Space-Fixed) (m/sec)'; our integration identifies it as the geocentric inertial perigee speed divided by 10 (header note 1)"
+  row_count: 7

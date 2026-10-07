@@ -1,0 +1,42 @@
+# Blanchard et al. 2023, Saturn-Enceladus CR3BP constants and stated results.
+# Source: J. T. Blanchard, M. W. Lo, R. L. Restrepo, D. Landau, B. D. Anderson, S. Elschot, "Quasi-Periodic Near
+#   Rectilinear Halo Orbits for Enceladus Jet Targeting", AAS 23-148 (AAS/AIAA Space Flight Mechanics Meeting, Austin TX,
+#   Jan 2023; JPL CL#23-4039). No DOI found.
+# Local file (proposed name): blanchard-lo-restrepo-landau-anderson-elschot-2023-quasi-periodic-nrho-enceladus-jet-targeting-AAS-23-148.pdf,
+#   18 pp., md5 d35c38b50003d12e0da7f408a9f8f7d0 (digital, good text layer). Constants p.3 (eqs 2-5), results pp.14-16.
+# The paper has no table. These are the printed constants and stated results. Transcribed from page images; no value
+#   computed by us. Two witnesses (image reading and text layer) agree on every value. Numbers as printed (strings).
+# NOT printed in the paper: rotation numbers, QPO periods, QPO Jacobi constants, any state vector, any family table.
+constants:
+  mu_saturn_enceladus: "1.9011097359e-7"   # eq. 2, p.3
+  R_km: "2.38042e5"                       # eq. 3 length unit
+  T_s: "1.88389e4"                        # eq. 4 time unit (period / 2 pi)
+  V_kms: "12.6357"                        # eq. 5 velocity unit
+  enceladus_soi_km: "about 488"           # p.1
+  europa_soi_km: "about 9700"             # p.1
+  moon_soi_km: "about 66000"              # p.1
+  saturn_earth_light_time_h: "1.1 to 1.5" # p.1
+base_orbit_fig8:                          # northern L2 NRHO, pp.14-15
+  family: "northern L2 NRHO, from the JPL online database of three-body periodic orbits"
+  rp_km: "340"
+  altitude_km: "88"
+  period_h: "12.8"
+  jacobi_C: "3.0000356"
+  stability_index_nu: "3.71"
+nrho_boundary_rp_km: "about 290"          # p.5; nu = 1 plateau about 230 to 290 km (Fig. 4, read by eye)
+qpo_results_stated:
+  count: "several dozen QPOs around northern NRHOs (p.14)"
+  fig8: "four isoenergetic QPOs of varying width about the same L2 NRHO; none intersects Enceladus (p.15)"
+  fig9_periapsis_altitude_colour_scale_km: "60 to 110"
+funnel:
+  max_position_offset_m: "500"
+  max_velocity_difference_ms: "1.3"
+  phase_targeting_dv_ms: "about 20 per revolution"
+  construction: "spatial: (x-x*)^T A (x-x*) = 1, atan2(ydot,xdot) fixed, C fixed (eq. 17); integrate backward"
+conventions:
+  frame: "rotating barycentric CR3BP, primary at -mu, secondary at 1-mu, nondimensional units R, T, V above"
+  jacobi: "C = 2 Omega - v.v with Omega = (x^2+y^2)/2 + (1-mu)/r1 + mu/r2 (eqs 6, 12); no mu(1-mu)/2 constant"
+  stability_index: "nu = (|lambda_max| + 1/|lambda_max|)/2 (eq. 14); nu = 1 stable; 3.71 means |lambda_max| = 7.28 (ours)"
+  rotation_number: "rho in radians per stroboscopic map; initial guess rho0 = atan(Im lambda6 / Re lambda6) (eq. 54)"
+  period_field: none
+  checks_ours: "V = R/T to 12.63566; SOIs R mu^0.4 give 487.8 km (Enceladus), 65,859 km (Moon), 9,725 km (Europa); 340 km - 252.1 km radius = 87.9 km; see checks.out"

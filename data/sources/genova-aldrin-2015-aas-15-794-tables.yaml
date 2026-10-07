@@ -1,0 +1,79 @@
+# Genova & Aldrin 2015, AAS 15-794, Table 1 "Monthly Earth-Moon Cycler Orbit Summary Table" (p.18), plus the per-cycler
+#   numbers printed in the body text (pp.3-10, 17-18), kept separately below the table.
+# Source: A. L. Genova (NASA Ames) and B. Aldrin (Buzz Aldrin Enterprises), "Circumlunar Free-Return Cycler Orbits for a
+#   Manned Earth-Moon Space Station", AAS 15-794, AAS/AIAA Astrodynamics Specialist Conference, Vail CO, 9-13 Aug 2015.
+#   NTRS 20160004674 (report numbers ARC-E-DAA-TN31042, AAS-15-794 per the NTRS record). No DOI (Crossref search: none).
+# Local file: upload ea5d7dce-20160004674_1.pdf, 20 pp., md5 ee35eda13c0aa2dcc105b4904faba63a (Word 2007 digital PDF;
+#   publisher text layer).
+# Transcribed from the page images: p.18 read on a 250-dpi render. Second witness: the digital text layer (pdftotext
+#   -layout). All 30 table cells and the footnote agree between the two witnesses (witness-comparison.tsv).
+# No value here was computed by us. Values we computed appear only in `note:` fields, marked "ours", or in
+#   scripts/check_genova_arith.out. Numbers are kept as printed (strings; the printed "≈" is written "~" everywhere below, in table cells and in quotes).
+#
+# MODEL (p.2, page image): "designed using AGI's System's Tool Kit (STK) Astrogator module, within a high-fidelity model that
+#   included gravity fields for the Earth (30X30), Moon (30X30), and Sun (4X0). The model also contained a Jacchia-Roberts
+#   atmospheric density model, solar radiation pressure, thermal radiation pressure, and the best-known ephemeris data for the
+#   Earth, Moon, and Sun. The orbits were propagated using a Runge-Kutta 8th/9th order numerical integrator. The orbit analysis
+#   time period occurs between 2018 and 2022 unless otherwise noted." (pp.2-3)
+#   So: full ephemeris with impulsive maintenance burns. NOT CR3BP, NOT bicircular. No state vector, Jacobi constant, epoch
+#   state or mass ratio is printed for any cycler (mu = 0.01215 appears only in the historical introduction, p.1).
+#
+# COLUMN HEADS (p.18, page image; an asterisk marks the columns tied to the footnote):
+#   name; "Cycler Period (Lunar Sidereal Months)"; "Max. Time between Perigee Passes (Earth Days)";
+#   "Time between Lunar Encounters (Lunar Sidereal Months*)"; "Time between Required "Figure-8" Segments (Lunar Sidereal
+#   Months*)"; "Min. ΔV Observed per Lunar Sidereal Month*"; "Max. ΔV Observed per Lunar Sidereal Month*".
+#   Footnote: "* One lunar sidereal month ≈ 27.32 Earth days". The Cycler Period head has no asterisk (as printed).
+tables:
+  - table: "1"
+    page: "18"
+    title: "Monthly Earth-Moon Cycler Orbit Summary Table"
+    columns: [name, period_sidereal_months, max_perigee_gap_days, lunar_encounter_gap_sidereal_months, figure8_gap_sidereal_months, min_dv_per_sidereal_month, max_dv_per_sidereal_month]
+    rows:
+      - {name: "Mushroom", period_sidereal_months: "~1", max_perigee_gap_days: "18.5", lunar_encounter_gap_sidereal_months: "~1", figure8_gap_sidereal_months: "~1", min_dv_per_sidereal_month: "~32 m/s", max_dv_per_sidereal_month: "~74 m/s"}
+      - {name: "Shamrock (i.e., 3-Leaf Clover)", period_sidereal_months: "~1", max_perigee_gap_days: "9.7", lunar_encounter_gap_sidereal_months: "~1", figure8_gap_sidereal_months: "~1", min_dv_per_sidereal_month: "~20 m/s", max_dv_per_sidereal_month: "~62 m/s", note: "text p.3-4 gives ~9.5 d holding-orbit perigee gaps; Table 1 prints 9.7"}
+      - {name: "4-Leaf Clover", period_sidereal_months: "~2", max_perigee_gap_days: "22", lunar_encounter_gap_sidereal_months: "~1", figure8_gap_sidereal_months: "~2", min_dv_per_sidereal_month: "~4 m/s", max_dv_per_sidereal_month: "~55 m/s"}
+      - {name: "Hybrid: (Mushroom & Shamrock)", period_sidereal_months: "~1", max_perigee_gap_days: "18.5", lunar_encounter_gap_sidereal_months: "~1", figure8_gap_sidereal_months: "~1", min_dv_per_sidereal_month: "~18 m/s", max_dv_per_sidereal_month: "~47 m/s", note: "text p.5 says the maximum 'is reduced to 45 m/s'; p.17 and Table 1 say 47"}
+      - {name: "Hybrid: (3 & 4-Leaf Clovers)", period_sidereal_months: "~1 or ~2", max_perigee_gap_days: "22", lunar_encounter_gap_sidereal_months: "~1", figure8_gap_sidereal_months: "~1 or ~2", min_dv_per_sidereal_month: "~4 m/s", max_dv_per_sidereal_month: "~37 m/s"}
+    footnote: "* One lunar sidereal month ~ 27.32 Earth days"
+
+text_values:   # body-text numbers per cycler, as printed; each quote read on the page image (pp.2-5, 8, 10, 11, 13-18 viewed) and in the text layer; not part of Table 1
+  shamrock:
+    - {page: "3", quote: "makes periodic close-approaches of the Earth every ~7 or ~9.5 days, with lunar encounters every ~26 days"}
+    - {page: "4", quote: "monthly lunar encounters were targeted to a 3,000 km perilune altitude on the lunar farside, with the cycling station flying in a circumlunar free-return, \"figure-8\" orbit with a targeted 3,000 km perigee altitude"}
+    - {page: "4", quote: "in 3:1 resonance with the Moon and resembles a three-leaf clover, or shamrock, as viewed in the Earth-Moon rotating frame"}
+    - {page: "4", quote: "After completing two sub-lunar Earth holding orbits (9.5 day period in each orbit)"}
+    - {page: "5", quote: "The shamrock cycler requires 19 to 60 m/s per cycle (26.3 days)"}
+    - {page: "5", quote: "The analysis period was 553 days, i.e., the time needed for the shamrock cycler to repeat itself in an inertial frame"}
+    - {page: "17-18", quote: "The perigee altitudes directly following the \"figure-8\" segments were targeted to 3,000 km for the shamrock cycler orbit (and 5,000 km for the other cyclers)"}
+  mushroom:
+    - {page: "4", quote: "By reversing the in-plane maneuvers just described, Aldrin's theorized C-1-R cycler orbit is realized"}
+    - {page: "5", quote: "the mushroom cycler orbit requires 29 to 70 m/s per cycle (25.7 days)"}
+  hybrid_mushroom_shamrock:
+    - {page: "5", quote: "The maximum ΔV required per cycle is reduced to 45 m/s from the 60 or 70 m/s maximum observed for the shamrock and mushroom cycler orbits, respectively."}
+    - {page: "17", quote: "requires the least amount of ΔV (maximum of 47 m/s and average of 31.5 m/s per lunar sidereal month)"}
+  four_leaf_clover:
+    - {page: "8", quote: "In 1963, Arenstorf18 presented a cycler orbit that resembles a four-leaf clover in the Earth-Moon rotating frame"}
+    - {page: "8", quote: "This reverse \"figure-8\" segment yields 22 days of wait time between Earth encounters. Otherwise, the wait time between perigee passes in the Earth phasing/holding orbits is 13 days. Lunar encounters occur every ~27.5 days"}
+    - {page: "8", quote: "This cycler orbit repeats itself every 55 days, measured as the time between perilune encounters during the required \"figure-8\" orbits."}
+    - {page: "8", quote: "Although this cycler orbit was discovered without deterministic ΔV required for maintenance, when the Moon is near perigee the required ΔV can increase to as much as 55 m/s per lunar sidereal month."}
+  hybrid_3_4_leaf:
+    - {page: "8", quote: "The maximum ΔV requirement per month is reduced to ~37 m/s (Fig. 13), with an average ΔV requirement of ~18 m/s per lunar sidereal month."}
+  arenstorf_monthly_big_loop:
+    - {page: "10", quote: "the latter cycler orbit contains an unfavorably high perigee altitude of ~40,000 km (Fig. 14)15-17"}
+    - {page: "10", quote: "a slightly lower C3 is needed to reach Arenstorf's high-perigee cycler orbit (~ -2.3 km2/s2 vs. ~ -1.75 km2/s2 for a low-perigee cycler orbit)"}
+    - {page: "17", quote: "Arenstorf's 2:1 resonance cycler (Fig. 14) to take advantage of the latter cycler's relatively high argument of perigee rotation rate"}
+    - {page: "11 (Fig. 16 legend)", quote: "Arenstorf Big Loop"}
+  arenstorf_3_to_1:
+    - {page: "3", quote: "Arenstorf18 presented a 3:1 resonance orbit but without the required close Earth passes (Fig. 2, center)"}
+    - {page: "3 (Fig. 2 caption)", quote: "Arenstorf18 shows no close-Earth approaches are possible for a 3:1 resonance cycler orbit in the restricted three body problem (center)."}
+
+conventions:
+  frame: "full ephemeris (STK Astrogator, Earth and Moon 30x30, Sun 4x0, Jacchia-Roberts, SRP, TRP; RK 8/9), 2018-2022 epochs; figures are drawn in Earth-inertial and Earth-Moon rotating frames"
+  state_printed: none   # no position/velocity, epoch state, Jacobi constant or mass ratio is printed for any cycler
+  period_field: "Table 1 'Cycler Period' in lunar sidereal months, approximate (~1, ~2); text gives 26.3 d (shamrock), 25.7 d (mushroom), 55 d (4-leaf)"
+  dv_field: "Table 1 min/max ΔV per lunar sidereal month (27.32 d); text gives per-cycle ranges (19-60, 29-70 m/s). Conversion per cycle -> per month (ours): x27.32/26.3 and x27.32/25.7 reproduces ~20/~62 and ~31/~74"
+  approx_sign: "the printed '~' is written '~'"
+  row_counts: {table_1: 5}
+  notes:
+    - "Every cell was read on the 250-dpi page image and matched the digital text layer (30 cells + footnote)."
+    - "The maintenance ΔV values are ephemeris-model results with impulsive burns; they are not CR3BP quantities and have no CR3BP analogue."
