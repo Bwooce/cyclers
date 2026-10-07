@@ -1,0 +1,222 @@
+{"key": "k4|LE>V/0s|RV/1:1|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.6098670959472656}
+{"key": "k4|LE>V/0s|RV/2:1|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.4552171230316162}
+{"key": "k4|LE>V/0s|RV/3:2|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.4947032928466797}
+{"key": "k4|LE>V/0s|RV/2:3|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.39014410972595215}
+{"key": "k4|LE>V/0s|HV/1,0,a|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.3582479953765869}
+{"key": "k4|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.135390043258667}
+{"key": "k4|LE>V/0s|HV/3,1,a|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.9895401000976562}
+{"key": "k4|LE>V/0s|LV>V/1h|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.3387699127197266}
+{"key": "k4|RE/1:1|LE>V/0s|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.15013408660888672}
+{"key": "k4|RE/1:1|LE>V/0s|RV/2:1|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "no-directions", "fail", "fail"], "secs": 0.3257181644439697}
+{"key": "k4|RE/1:1|LE>V/0s|RV/1:2|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.4263570308685303}
+{"key": "k4|RE/1:1|LE>V/0s|RV/2:3|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.6199710369110107}
+{"key": "k4|RE/1:1|LE>V/0s|HV/1,0,p|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.17687010765075684}
+{"key": "k4|RE/1:1|LE>V/0s|HV/3,1,p|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.5312919616699219}
+{"key": "k4|RE/1:1|LE>V/0s|HV/3,1,a|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.15680885314941406}
+{"key": "k4|RE/1:1|LE>V/0s|LV>V/1l|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.6972129344940186}
+{"key": "k4|RE/2:1|LE>V/0s|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.2506279945373535}
+{"key": "k4|RE/2:1|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 5.712692975997925}
+{"key": "k4|RE/2:1|LE>V/0s|RV/1:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "fail", "fail", "fail", "fail", "fail"], "secs": 0.4590129852294922}
+{"key": "k4|RE/2:1|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail", "fail"], "secs": 0.8874402046203613}
+{"key": "k4|RE/2:1|LE>V/0s|HV/1,0,p|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.16092610359191895}
+{"key": "k4|RE/2:1|LE>V/0s|HV/1,0,a|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.2136549949645996}
+{"key": "k4|RE/2:1|LE>V/0s|HV/3,1,a|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.7763268947601318}
+{"key": "k4|RE/2:1|LE>V/0s|LV>V/1l|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.8281190395355225}
+{"key": "k4|RE/2:1|LE>V/0s|LV>V/1h|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 19, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.223329782485962}
+{"key": "k4|RE/1:2|LE>V/0s|RV/1:1|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.529486894607544}
+{"key": "k4|RE/1:2|LE>V/0s|RV/2:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.5300769805908203}
+{"key": "k4|RE/1:2|LE>V/0s|RV/3:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 0.5422830581665039}
+{"key": "k4|RE/1:2|LE>V/0s|RV/2:3|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.7373359203338623}
+{"key": "k4|RE/1:2|LE>V/0s|HV/1,0,a|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.39749813079833984}
+{"key": "k4|RE/1:2|LE>V/0s|HV/3,1,p|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.22305703163146973}
+{"key": "k4|RE/1:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.6648509502410889}
+{"key": "k4|RE/1:2|LE>V/0s|LV>V/1h|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.7355649471282959}
+{"key": "k4|RE/3:2|LE>V/0s|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.9325809478759766}
+{"key": "k4|RE/3:2|LE>V/0s|RV/2:1|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.18730592727661133}
+{"key": "k4|RE/3:2|LE>V/0s|RV/1:2|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.41176700592041016}
+{"key": "k4|RE/3:2|LE>V/0s|RV/2:3|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.17863774299621582}
+{"key": "k4|RE/3:2|LE>V/0s|HV/1,0,p|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.1771106719970703}
+{"key": "k4|RE/3:2|LE>V/0s|HV/3,1,p|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.47136521339416504}
+{"key": "k4|RE/3:2|LE>V/0s|HV/3,1,a|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.35190677642822266}
+{"key": "k4|RE/3:2|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.9461250305175781}
+{"key": "k4|RE/2:3|LE>V/0s|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 1, "statuses": ["no-directions"], "secs": 0.09988212585449219}
+{"key": "k4|RE/2:3|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.1569528579711914}
+{"key": "k4|RE/2:3|LE>V/0s|RV/1:2|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "no-directions", "fail", "fail"], "secs": 0.33127284049987793}
+{"key": "k4|RE/2:3|LE>V/0s|RV/3:2|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 17, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.121108055114746}
+{"key": "k4|RE/2:3|LE>V/0s|HV/1,0,p|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.15232324600219727}
+{"key": "k4|RE/2:3|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.32427000999450684}
+{"key": "k4|RE/2:3|LE>V/0s|HV/3,1,a|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.4621708393096924}
+{"key": "k4|RE/2:3|LE>V/0s|LV>V/1l|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions"], "secs": 1.4378018379211426}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.3514571189880371}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.11020398139953613}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.0343029499053955}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|RV/3:2|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 0.9071831703186035}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|RV/2:3|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 16, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.004117012023926}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|HV/1,0,a|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.9444980621337891}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|HV/3,1,p|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "no-directions", "fail", "fail"], "secs": 0.33343005180358887}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|LV>V/1l|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "no-directions", "no-directions", "fail", "fail", "fail"], "secs": 1.863739252090454}
+{"key": "k4|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "fail", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 1.3152861595153809}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.7738630771636963}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|RV/2:1|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.13880109786987305}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|RV/1:2|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "fail"], "secs": 1.627263069152832}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|RV/2:3|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.13422107696533203}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.7798919677734375}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|HV/3,1,p|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "no-directions", "no-directions"], "secs": 1.2137868404388428}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|HV/3,1,a|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.6974749565124512}
+{"key": "k4|RE/1:1|RE/2:1|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "fail", "fail", "fail", "fail"], "secs": 1.7445859909057617}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.1962890625}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "no-directions", "fail", "fail", "fail"], "secs": 0.9521269798278809}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|RV/1:2|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 0.4353199005126953}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|RV/2:3|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.5703322887420654}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|HV/1,0,p|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.12564921379089355}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.5449678897857666}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|HV/3,1,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.1216092109680176}
+{"key": "k4|RE/1:1|RE/1:2|LE>V/0s|LV>V/1l|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions"], "secs": 3.68831205368042}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail", "no-directions"], "secs": 0.5265669822692871}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 1.952862024307251}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:2|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 1.2420620918273926}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/2:3|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 0.9064562320709229}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|HV/1,0,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail"], "secs": 0.879305362701416}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|HV/3,1,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.824293851852417}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.7924180030822754}
+{"key": "k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1h|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 4.127315998077393}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.6695477962493896}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|RV/2:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.5701701641082764}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|RV/3:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.5552258491516113}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|RV/2:3|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.8674418926239014}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,a|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.7640647888183594}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|HV/3,1,p|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.6492681503295898}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.9845249652862549}
+{"key": "k4|RE/1:1|RE/2:3|LE>V/0s|LV>V/1h|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.6190309524536133}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.9479949474334717}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|RV/2:1|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.6241340637207031}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|RV/1:2|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "no-directions", "fail"], "secs": 1.7721962928771973}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|RV/2:3|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.6227750778198242}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 17, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.9264020919799805}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|HV/3,1,p|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions"], "secs": 0.605400800704956}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|HV/3,1,a|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.8129010200500488}
+{"key": "k4|RE/2:1|RE/1:1|LE>V/0s|LV>V/1h|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "fail"], "secs": 1.713087797164917}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.5980398654937744}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.5872981548309326}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|RV/1:2|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "no-directions", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.9381952285766602}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|HV/1,0,p|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.10127782821655273}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.5864748954772949}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|HV/3,1,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.945004940032959}
+{"key": "k4|RE/2:1|RE/2:1|LE>V/0s|LV>V/1l|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 5.020658016204834}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "no-directions", "fail", "fail", "fail"], "secs": 0.5985369682312012}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.6732616424560547}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|RV/1:2|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.7274389266967773}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|RV/3:2|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions"], "secs": 0.6506791114807129}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|HV/1,0,p|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.17266511917114258}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|HV/1,0,a|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.6622610092163086}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|HV/3,1,a|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.0832641124725342}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|LV>V/1l|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 17, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.97611403465271}
+{"key": "k4|RE/2:1|RE/1:2|LE>V/0s|LV>V/1h|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 14, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 4.0023720264434814}
+{"key": "k4|RE/2:1|RE/3:2|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.8367888927459717}
+{"key": "k4|RE/2:1|RE/3:2|LE>V/0s|HV/1,0,a|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.8257222175598145}
+{"key": "k4|RE/2:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.9008030891418457}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 0.47766900062561035}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|RV/1:1|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.1974790096282959}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|RV/1:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.6497077941894531}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|RV/2:3|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.9715440273284912}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|HV/1,0,a|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail"], "secs": 0.6491940021514893}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|HV/3,1,p|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.39682888984680176}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|LV>V/1l|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions"], "secs": 1.3329041004180908}
+{"key": "k4|RE/2:1|RE/2:3|LE>V/0s|LV>V/1h|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.715019941329956}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 0.8096632957458496}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|RV/2:1|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.16589975357055664}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|RV/1:2|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.6643340587615967}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|RV/2:3|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "no-directions", "fail", "fail", "fail"], "secs": 0.7520928382873535}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|HV/1,0,p|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.9369280338287354}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|HV/3,1,p|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail", "fail"], "secs": 1.0432300567626953}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|HV/3,1,a|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.3817620277404785}
+{"key": "k4|RE/1:2|RE/1:1|LE>V/0s|LV>V/1h|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 2.6350409984588623}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.30054688453674316}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|RV/2:1|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.6872661113739014}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|RV/1:2|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["no-directions", "no-directions", "no-directions"], "secs": 0.1540670394897461}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|RV/2:3|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.7050247192382812}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|HV/1,0,p|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.20264601707458496}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.340764045715332}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|HV/3,1,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.6096787452697754}
+{"key": "k4|RE/1:2|RE/2:1|LE>V/0s|LV>V/1l|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 16, "statuses": ["no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "no-directions", "fail"], "secs": 3.482395887374878}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "no-directions"], "secs": 0.285534143447876}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|RV/1:1|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.1754601001739502}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|RV/1:2|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "no-directions", "fail", "fail"], "secs": 0.7836270332336426}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|RV/3:2|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 1.0083768367767334}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|HV/1,0,p|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["no-directions", "no-directions"], "secs": 0.10423493385314941}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|HV/1,0,a|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.12676715850830078}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|HV/3,1,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "fail", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 1.422428846359253}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|LV>V/1l|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 16, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.8767080307006836}
+{"key": "k4|RE/1:2|RE/1:2|LE>V/0s|LV>V/1h|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 13, "statuses": ["no-directions", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail"], "secs": 2.718453884124756}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|RV/1:1|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.6398849487304688}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|RV/1:2|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.6554038524627686}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|RV/2:3|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.14620089530944824}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 1.4948198795318604}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|HV/3,1,p|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.15305519104003906}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions"], "secs": 1.2272498607635498}
+{"key": "k4|RE/1:2|RE/3:2|LE>V/0s|LV>V/1h|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 1.5550618171691895}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "fail", "fail", "no-directions", "fail", "fail", "fail", "no-directions", "no-directions"], "secs": 1.2985868453979492}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|RV/2:1|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["no-directions", "fail"], "secs": 0.18543219566345215}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|RV/1:2|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.4517190456390381}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|RV/2:3|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 2, "statuses": ["no-directions", "fail"], "secs": 0.16954684257507324}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|HV/1,0,p|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.16043591499328613}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|HV/3,1,p|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "no-directions"], "secs": 0.5121588706970215}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|HV/3,1,a|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.5396249294281006}
+{"key": "k4|RE/1:2|RE/2:3|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 10, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "no-directions", "fail", "fail", "fail"], "secs": 1.2400550842285156}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.14651918411254883}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|RV/2:1|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.4540369510650635}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|RV/1:2|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "no-directions", "no-directions"], "secs": 1.1724469661712646}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|HV/1,0,p|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.17587780952453613}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.5957839488983154}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|HV/3,1,a|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail"], "secs": 0.5391778945922852}
+{"key": "k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.6711819171905518}
+{"key": "k4|RE/3:2|RE/2:1|LE>V/0s|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "no-directions"], "secs": 0.2771646976470947}
+{"key": "k4|RE/3:2|RE/2:1|LE>V/0s|RV/1:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "no-directions"], "secs": 0.38958001136779785}
+{"key": "k4|RE/3:2|RE/2:1|LE>V/0s|HV/1,0,a|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.44054102897644043}
+{"key": "k4|RE/3:2|RE/2:1|LE>V/0s|LV>V/1l|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.9656741619110107}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "fail", "fail", "fail", "no-directions"], "secs": 0.35205507278442383}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail"], "secs": 0.8119339942932129}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|RV/1:2|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.7867641448974609}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|RV/2:3|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "fail", "fail", "fail"], "secs": 0.6746439933776855}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|HV/1,0,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail"], "secs": 0.6746039390563965}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|HV/3,1,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail", "no-directions", "no-directions", "fail", "fail"], "secs": 1.114243984222412}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|LV>V/1l|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.6368961334228516}
+{"key": "k4|RE/3:2|RE/1:2|LE>V/0s|LV>V/1h|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 3.4761388301849365}
+{"key": "k4|RE/3:2|RE/2:3|LE>V/0s|RV/1:1|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.7461562156677246}
+{"key": "k4|RE/3:2|RE/2:3|LE>V/0s|HV/1,0,p|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 7, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.44298601150512695}
+{"key": "k4|RE/3:2|RE/2:3|LE>V/0s|HV/3,1,a|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.14191818237304688}
+{"key": "k4|RE/3:2|RE/2:3|LE>V/0s|LV>V/1h|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.5596787929534912}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.529775857925415}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|RV/2:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.3419182300567627}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|RV/3:2|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "fail", "fail", "fail"], "secs": 0.45484280586242676}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|RV/2:3|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.4987409114837646}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|HV/1,0,a|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.6848850250244141}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|HV/3,1,p|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.568091869354248}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.5727171897888184}
+{"key": "k4|RE/2:3|RE/1:1|LE>V/0s|LV>V/1h|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.3105220794677734}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 15, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.5231809616088867}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|RV/2:1|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.8086507320404053}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.1425161361694336}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|HV/1,0,p|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.1394481658935547}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|HV/3,1,p|RV/2:1|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.8557400703430176}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|HV/3,1,a|HV/3,1,a|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.34204602241516113}
+{"key": "k4|RE/2:3|RE/2:1|LE>V/0s|LV>V/1h|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "no-directions", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.562211036682129}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 0.27704286575317383}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|RV/2:1|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.6357040405273438}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|RV/1:2|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 3, "statuses": ["no-directions", "no-directions", "no-directions"], "secs": 0.13918590545654297}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|RV/2:3|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 8, "statuses": ["no-directions", "fail", "fail", "no-directions", "fail", "no-directions", "fail", "fail"], "secs": 0.6702001094818115}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|HV/1,0,p|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.18337202072143555}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s", "k": 4, "n_zeros": 11, "statuses": ["fail", "fail", "fail", "no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.2663447856903076}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|HV/3,1,a|RV/2:3|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail"], "secs": 1.497257947921753}
+{"key": "k4|RE/2:3|RE/1:2|LE>V/0s|LV>V/1l|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 16, "statuses": ["no-directions", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "no-directions", "fail"], "secs": 3.70859694480896}
+{"key": "k4|RE/2:3|RE/3:2|LE>V/0s|RV/1:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "no-directions", "fail"], "secs": 0.36647725105285645}
+{"key": "k4|RE/2:3|RE/3:2|LE>V/0s|RV/1:2|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.08902215957641602}
+{"key": "k4|RE/2:3|RE/3:2|LE>V/0s|HV/1,0,a|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "no-directions"], "secs": 0.24837493896484375}
+{"key": "k4|RE/2:3|RE/3:2|LE>V/0s|LV>V/1l|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.1458449363708496}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|RV/3:2|LV>E/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "fail", "fail"], "secs": 0.42433810234069824}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "pass", "pass"], "secs": 1.1949539184570312}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|RV/1:2|HV/3,1,p|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["no-directions", "no-directions", "no-directions", "fail", "fail"], "secs": 0.45020532608032227}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|HV/1,0,p|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.14914870262145996}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|HV/1,0,a|HV/1,0,p|LV>E/0s", "k": 4, "n_zeros": 6, "statuses": ["no-directions", "no-directions", "no-directions", "no-directions", "no-directions", "no-directions"], "secs": 0.15943002700805664}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|HV/3,1,a|RV/1:1|LV>E/0s", "k": 4, "n_zeros": 5, "statuses": ["fail", "fail", "no-directions", "fail", "fail"], "secs": 0.9916837215423584}
+{"key": "k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|HV/1,0,a|LV>E/0s", "k": 4, "n_zeros": 9, "statuses": ["fail", "fail", "fail", "fail", "fail", "fail", "no-directions", "fail", "fail"], "secs": 0.9686679840087891}

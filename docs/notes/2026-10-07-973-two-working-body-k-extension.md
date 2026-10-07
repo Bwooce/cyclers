@@ -870,3 +870,97 @@ Raw data (lead rule of 2026-10-08):
 | s21 | 574 | ae3ab3dfb813c3957827fdb032f4a94c |
 | s22 | 570 | e8f460b25931352ac1fd585268ffece6 |
 | s23 | 571 | 05e4a4448372efbc7361ffde0052efbe |
+
+## 13. R13 result: ev (Earth-Venus) k = 4 (lead launch; analysed 2026-10-08)
+
+Run: 16 shards of 16, with the cell-5 flags (Earth returns full-rev only).
+- 3,566 structures, all done once, 0 errors (`check` OK).
+- 22,586 exact zeros, 6,206 physical cyclers, **12 gate-passing**, 0 zero-assessment errors.
+- 0 structures at the n_refine ceiling.
+
+Gauntlet and screens (`data/973_ev/k4_gauntlet.json`):
+- DOP853 re-fly: largest miss 1.8e-3 km; gate "pass" on the integrated vectors for all 12.
+- Screens (2.6/2.7): 11 pass, 1 "reject: planet impact", 0 direction-dependent. The rejected ev4-2 has
+  a Venus HV(3,1,a) leg, the tilted circle, which meets Venus at 1/3 of the leg (2.7 (i), physical in
+  the ideal model). It is not a published member.
+- Classes: all 12 are W2. In 4 of them (ev4-4, 5, 8, 9) one of the three Earth flybys has a 0.0-deg turn (an Earth
+  full-rev pair joined without a turn), but every member has at least one Earth and one Venus turn of
+  1 deg or more.
+- Literal collisions: none.
+  - Hollister orbits I-III are k = 2 topologies only.
+  - No catalogue row is within the bands. That includes the 15 H&M 1970 rows, which are k = 10, so
+    only the 0.1 km/s "CATALOGUE V_INF" band applies to them.
+  - Nearest H&M row by per-body V_inf, per transfer skeleton: orbit 5 (E 5.15 / V 5.6) at 0.69-1.74
+    km/s.
+  - Structurally no k = 4 one-visit structure can equal an H&M orbit (sec. 6.5 check).
+- Literature step: deferred (#1025). Sources to attribute as in R13: Hollister 1969, H&M 1970,
+  VanderVeen 1969.
+
+**Clean members: 11.** They share only 5 distinct transfer skeletons (V_inf E / V; members differing
+only in the order or type of the Earth and Venus return blocks):
+
+| Skeleton (E / V km/s) | Members | Worst ratio (best member) | r_min / r_max (AU) of the best member |
+|---|---|---|---|
+| 4.462 / 5.197 | ev4-0 | 0.858 | 0.616 / 1.641 |
+| 4.595 / 4.529 | ev4-1 | 0.835 | 0.672 / 1.641 |
+| 6.806 / 4.017 | ev4-3 | 0.990 | 0.722 / 2.196 |
+| 6.830 / 4.038 | ev4-4, 5, 6, 7 | 0.779 (ev4-4, 6, 7) | 0.496 / 1.168 (ev4-4) |
+| 6.893 / 3.968 | ev4-8, 9, 10, 11 | 0.939 (all four; the Venus turn binds) | 0.495 / 1.173 (ev4-8) |
+
+Resonance structure (model periods: Earth 1 yr, Venus 0.61520 yr; synodic 1.5988 yr):
+
+| k | Period (yr) | in Earth periods | in Venus periods |
+|---|---|---|---|
+| 2 | 3.1975 | 3.198 | 5.198 |
+| 3 | 4.7963 | 4.796 | 7.796 |
+| 4 | 6.3950 | 6.395 | 10.395 |
+| 5 | 7.9938 | 7.994 | 12.994 |
+
+At k = 4 the cycle is 0.4 of a revolution off for both planets, with no near-commensurability. As at
+gc k = 5, every passer turns hard: Earth 37-84 deg, Venus 31-94 deg, worst ratios 0.78-0.99.
+
+Candidate table, all 12 (period 2,335.78 d = 6.395 yr; A = Earth, B = Venus; Lambert starts in days
+from the model epoch, both planets at angle 0 at t = 0):
+
+| # | Class | Screen | Structure (key) | V_inf A / B (km/s) | A: flybys, max turn (deg), max ratio | B: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Closest unscheduled A / B (km) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ev4-0 | W2 | pass | k4\|RE/3:2\|RE/1:1\|LE>V/0s\|LV>V/1l\|RV/1:1\|LV>E/0s | 4.462 / 5.197 | 3, 83.80, 0.858 | 3, 32.81, 0.401 | 0.858 | 92,198,207 / 245,490,544 | 438.5278, 600.1102, 1151.7230 | 7,060,609 / 21,981,230 | 3.4e-04 |
+| ev4-1 | W2 | pass | k4\|RE/1:1\|RE/3:2\|LE>V/0s\|RV/1:1\|RV/1:1\|LV>E/0s | 4.595 / 4.529 | 3, 79.94, 0.835 | 3, 66.70, 0.732 | 0.835 | 100,516,501 / 245,455,614 | 438.5278, 1100.6184 | 14,518,057 / 70,245,874 | 2.3e-04 |
+| ev4-2 | W2 | reject: planet impact | k4\|RE/1:1\|RE/2:3\|LE>V/0s\|RV/3:2\|HV/3,1,a\|LV>E/0s | 5.148 / 4.214 | 3, 74.87, 0.849 | 3, 92.51, 0.965 | 0.965 | 78,700,757 / 175,861,400 | 547.8750, 1673.4678 | 118,677,025 / 1 | 7.9e-04 |
+| ev4-3 | W2 | pass | k4\|RE/2:1\|RE/3:2\|LE>V/0s\|LV>E/0s | 6.806 / 4.017 | 3, 68.35, 0.990 | 1, 31.40, 0.317 | 0.990 | 107,988,489 / 328,536,056 | 329.1806, 583.9444 | 295,145,901 / 57,341,351 | 2.8e-04 |
+| ev4-4 | W2 | pass | k4\|RE/2:3\|RE/2:3\|LE>V/0s\|LV>V/1l\|RV/1:1\|LV>E/0s | 6.830 / 4.038 | 3, 38.32, 0.557 | 3, 76.86, 0.779 | 0.779 | 74,275,175 / 174,747,357 | 325.3446, 570.9186, 1120.1041 | 44,329,531 / 16,983,253 | 3.5e-04 |
+| ev4-5 | W2 | pass | k4\|RE/2:1\|RE/2:1\|LE>V/0s\|RV/1:1\|LV>V/1l\|LV>E/0s | 6.830 / 4.038 | 3, 57.79, 0.840 | 3, 76.86, 0.779 | 0.840 | 95,753,330 / 330,718,685 | 551.7110, 856.4308, 1180.9146 | 44,329,531 / 16,983,253 | 3.8e-04 |
+| ev4-6 | W2 | pass | k4\|RE/1:1\|RE/3:2\|LE>V/0s\|LV>V/1l\|RV/1:1\|LV>E/0s | 6.830 / 4.038 | 3, 37.68, 0.548 | 3, 76.86, 0.779 | 0.779 | 95,753,330 / 254,757,029 | 325.3446, 570.9186, 1120.1041 | 44,329,531 / 16,983,253 | 2.5e-04 |
+| ev4-7 | W2 | pass | k4\|RE/3:2\|RE/1:1\|LE>V/0s\|LV>V/1l\|RV/1:1\|LV>E/0s | 6.830 / 4.038 | 3, 37.68, 0.548 | 3, 76.86, 0.779 | 0.779 | 95,753,330 / 254,757,029 | 325.3446, 570.9186, 1120.1041 | 44,329,531 / 16,983,253 | 2.5e-04 |
+| ev4-8 | W2 | pass | k4\|RE/2:3\|RE/2:3\|LE>V/0s\|RV/1:1\|LV>V/1h\|LV>E/0s | 6.893 / 3.968 | 3, 38.30, 0.562 | 3, 93.67, 0.939 | 0.939 | 74,105,790 / 175,511,189 | 322.9502, 802.9221, 1110.8676 | 37,916,347 / 15,920,721 | 4.2e-04 |
+| ev4-9 | W2 | pass | k4\|RE/2:1\|RE/2:1\|LE>V/0s\|RV/1:1\|LV>V/1h\|LV>E/0s | 6.893 / 3.968 | 3, 56.67, 0.831 | 3, 93.67, 0.939 | 0.939 | 92,289,835 / 330,932,279 | 322.9502, 802.9221, 1110.8676 | 37,916,347 / 15,920,721 | 1.8e-03 |
+| ev4-10 | W2 | pass | k4\|RE/1:1\|RE/3:2\|LE>V/0s\|RV/1:1\|LV>V/1h\|LV>E/0s | 6.893 / 3.968 | 3, 36.87, 0.541 | 3, 93.67, 0.939 | 0.939 | 92,289,835 / 255,020,599 | 322.9502, 802.9221, 1110.8676 | 37,916,347 / 15,920,721 | 4.2e-04 |
+| ev4-11 | W2 | pass | k4\|RE/3:2\|RE/1:1\|LE>V/0s\|RV/1:1\|LV>V/1h\|LV>E/0s | 6.893 / 3.968 | 3, 36.87, 0.541 | 3, 93.67, 0.939 | 0.939 | 92,289,835 / 255,020,599 | 322.9502, 802.9221, 1110.8676 | 37,916,347 / 15,920,721 | 4.2e-04 |
+
+Status: "candidate, literature step deferred" (#1025). Not novel.
+
+Raw data (lead rule of 2026-10-08):
+- Committed: the shards' `settings.json` and `structures.jsonl` (`data/973_ev/k4/s*/`), plus the
+  gauntlet JSON and log.
+- Not committed: `zeros.jsonl`.
+- Full shard directories archived at `~/dev/references/cyclers-runs/973/ev/k4/` (36M; `diff -rq`
+  clean). md5 of each `zeros.jsonl` (lines total 22,586):
+
+| Shard (of 16) | Zero lines | md5 |
+|---|---|---|
+| s0 | 1407 | 58a128671615661e42ba451ee3f089f6 |
+| s1 | 1386 | 57b11781f7b9848da90d95046de0a945 |
+| s2 | 1458 | d003a7a3decd5519b190a9f83153b27c |
+| s3 | 1416 | 8bed2b19eead766c3298e42380b838f1 |
+| s4 | 1374 | 73f7e714297a66f3fdd70c85bf9c2a98 |
+| s5 | 1431 | 33ea59d7f53714e422457f588c424ad3 |
+| s6 | 1442 | 67455c8d7f0ddddba89c969f7bf5545e |
+| s7 | 1404 | b0b6bd58113f90958dd7fd6ec58fa07a |
+| s8 | 1436 | 7871bc0a4874c36216975f458ac11966 |
+| s9 | 1373 | 31427b1e8b415c1c2abea3854326d760 |
+| s10 | 1431 | 0af440a43ad98c3f79fffceb65b52533 |
+| s11 | 1420 | 4ece325c485b04a19d740aa4644c9ceb |
+| s12 | 1356 | b84fb4904d61621479d0c18b7c7b44bb |
+| s13 | 1441 | e6c33a84b0796cc7732dffd406e76ad5 |
+| s14 | 1426 | dde010805d48cb4d22f01976fb8972ab |
+| s15 | 1385 | 3585354a11f1344fc803092dee83b8f0 |
