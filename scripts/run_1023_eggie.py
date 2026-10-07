@@ -26,7 +26,7 @@ from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2
 from cyclerfinder.search.resonant_conic import (
     ideal_moon_smas,
     ideal_t_syn,
-    ideal_t_syn_consistent,
+    ideal_t_syn_rigid_repeat,
 )
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
@@ -71,7 +71,7 @@ def system(variant: str = "consistent", laplace_deg: float = 180.0) -> tuple[Cir
         t_syn = ideal_t_syn()
         smas = ideal_moon_smas()
     else:
-        t_syn = ideal_t_syn_consistent()
+        t_syn = ideal_t_syn_rigid_repeat()
         smas = ideal_moon_smas()
     # Io = Europa = 0; Ganymede from the Laplace angle lambda_I - 3 lambda_E + 2 lambda_G.
     th0 = {IO: 0.0, EUR: 0.0, GAN: math.radians(laplace_deg) / 2.0}

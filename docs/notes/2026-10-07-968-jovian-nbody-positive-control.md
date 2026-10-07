@@ -695,3 +695,9 @@ the model AS CODED, which uses `resonant_conic.ideal_t_syn` = the ideal Ganymede
 synodic period the smas are built for, `ideal_t_syn_consistent()` = (2 pi + Delta)/n_G = 7.105 d,
 all three moons advance exactly 20.8 deg per 4 T_syn, and the configuration repeats rigidly. See
 `docs/notes/2026-10-08-1023-jovian-void-rerun.md` secs. 1-2. The VOID list itself is unchanged.
+Addendum (2026-10-08, lead ruling on #1040): the coded model (`ideal_t_syn`, the Ganymede period) IS
+the paper's model; the Table 4 EGGIE is reproduced in it (#1023 note sec. 6.3), and the
+rigid-repeat period is now `ideal_t_syn_rigid_repeat`. So the sec. 2 statement "no exact periodic
+orbit exists" is correct for the paper's model: the published EGGIE is quasi-periodic. The VOID of
+the Stage-2/3/4 plateaus stands in the sense that they tested an unsatisfiable exact periodicity;
+#1041 replaces them with a quasi-periodic test.

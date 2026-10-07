@@ -251,3 +251,29 @@ the model in which the paper's EGGIE exists. The `ideal_t_syn` docstring's "(pap
 is supported by this result; the inconsistency is in the paper's model itself (its smas build in a
 rigid 5.2-deg shift that its Ganymede-period T_syn does not realise). Reported to the lead before any
 switch.
+
+## 7. Lead rulings 2026-10-08 on the variants and #1040 (recorded)
+
+- (ii): the 0.201 km/s root at 255 deg **qualifies under the literal V_inf rule and is rejected on
+  its leg times and the gate**. It fails the gate with 147/169-deg turns, and its leg times are
+  0.56 / 11.43 / 5.39 / 11.04 d against 1.59 / 8.60 / 7.34 / 10.69.
+- Identification rule tightened for future use, as a POST-HOC rule change (2026-10-08). The reason is
+  that V_inf alone matched a gate-failing, differently timed root within 0.2 km/s. A root identifies a
+  published object only if all three hold: V_inf within 0.5 km/s, each leg time within 10 %, and the
+  gate passes.
+- (iii) is the reproduction. **The paper's model is the Ganymede-period one.** Table 4 is
+  reproduced at 0.173 km/s, with leg times within 0.18 d and a gate pass. The published EGGIE is
+  quasi-periodic: the configuration does not repeat rigidly, and the date corrector accepts it
+  because the junctions match V_inf magnitudes only. This explains the #480 history.
+- #1040: the caller switch is REVERSED. `ideal_t_syn` stays the paper's model, with a docstring note
+  that its configuration has no rigid repeat. `ideal_t_syn_consistent` is RENAMED
+  `ideal_t_syn_rigid_repeat`, for exact-periodicity work only, and its test is renamed with it
+  (`tests/search/test_1023_ideal_t_syn_rigid_repeat.py`). No callers changed.
+
+### 7.1 Status of the sec. 2 impact list
+
+The #1040 impact on #480, #493 and EIGE is LIFTED: their model was the paper's. The impact list in
+sec. 2 is kept as a record but needs no action. It is separate from the #968 wrap VOID of the EGGIE
+Stage-2/3/4 plateaus. In the paper's model no exactly periodic EGGIE exists, so those correctors
+measured a periodicity that cannot be met. Those plateaus are superseded by the quasi-periodic test
+#1041, not re-run as they were.

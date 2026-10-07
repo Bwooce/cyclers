@@ -97,23 +97,29 @@ def ideal_moon_smas() -> dict[str, float]:
 
 
 def ideal_t_syn(mu: float = MU_JUPITER_KM3_S2) -> float:
-    """Ideal synodic period (s) = ideal Ganymede orbital period (paper p.3)."""
+    """Ideal synodic period (s) = ideal Ganymede orbital period (paper p.3).
+
+    This is the paper's own model: #1023/#1040 (2026-10-08) reproduce the Table 4 EGGIE in it
+    (V_inf within 0.173 km/s, leg times within 0.18 d, gate pass). Note that the configuration it
+    implies has NO rigid repeat: over one such period Ganymede advances 0, Europa -5.13 and Io
+    -15.38 deg (mod 360), so the paper's cyclers are quasi-periodic. For exact-periodicity work use
+    :func:`ideal_t_syn_rigid_repeat`.
+    """
     a_gan = ideal_moon_smas()["Ganymede"]
     return 2.0 * math.pi * math.sqrt(a_gan**3 / mu)
 
 
-def ideal_t_syn_consistent(mu: float = MU_JUPITER_KM3_S2) -> float:
-    """Synodic period (s) of the ideal model that :func:`ideal_moon_smas` builds (#1023).
+def ideal_t_syn_rigid_repeat(mu: float = MU_JUPITER_KM3_S2) -> float:
+    """The rigid-repeat synodic period (s) of the :func:`ideal_moon_smas` radii (#1023/#1040).
 
-    The smas are set so that in one synodic period every moon advances ``2 pi k + Delta``
-    (Io ``8 pi + Delta``, Europa ``4 pi + Delta``, Ganymede ``2 pi + Delta``; paper p.3). The
-    consistent synodic period is therefore ``T_syn = (2 pi + Delta) / n_Ganymede`` (7.1054 d with
-    the registry Io sma and this mu), and over it the whole configuration rotates rigidly by Delta.
-    :func:`ideal_t_syn` returns the ideal Ganymede period (7.0042 d) instead; over that period the
-    moons advance by different angles (Ganymede 0, Europa -5.13, Io -15.38 deg), so no exactly
-    periodic orbit exists in the model it implies. Neither value is the paper's printed
-    T_syn = 7.05 d (p.2), which suggests the paper's own a_Io differs from the registry Io; that
-    discrepancy is recorded, not resolved. :func:`ideal_t_syn` and its callers are unchanged here.
+    The smas are set so that in one synodic period every moon would advance ``2 pi k + Delta``
+    (Io ``8 pi + Delta``, Europa ``4 pi + Delta``, Ganymede ``2 pi + Delta``; paper p.3). The period
+    that realises that is ``T_syn = (2 pi + Delta) / n_Ganymede`` (7.1054 d with the registry Io sma
+    and this mu); over it the whole configuration rotates rigidly by Delta, so exactly periodic
+    orbits are well posed. It is NOT the paper's model: the paper uses the Ganymede period
+    (:func:`ideal_t_syn`, 7.0042 d), in which its Table 4 EGGIE is reproduced (#1023 note sec. 6.3).
+    Use this function for exact-periodicity work only. (The paper prints T_syn = 7.05 d, which
+    matches neither value.)
     """
     a_gan = ideal_moon_smas()["Ganymede"]
     n_gan = math.sqrt(mu / a_gan**3)
@@ -758,7 +764,7 @@ __all__ = [
     "eggie_resonant_sma",
     "ideal_moon_smas",
     "ideal_t_syn",
-    "ideal_t_syn_consistent",
+    "ideal_t_syn_rigid_repeat",
     "refine_eggie",
     "resonant_period",
     "resonant_sma",

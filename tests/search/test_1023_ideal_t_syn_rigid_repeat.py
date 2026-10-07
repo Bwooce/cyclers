@@ -1,4 +1,5 @@
-"""#1023: the ideal Galilean model's synodic period must be the one its smas are built for.
+"""#1023/#1040: the rigid-repeat synodic period of the ideal Galilean radii (renamed from
+``ideal_t_syn_consistent`` by the lead's #1040 ruling; ``ideal_t_syn`` stays the paper's model).
 
 ``resonant_conic.ideal_moon_smas`` sets the Europa and Ganymede smas so that every moon advances
 2*pi*k + Delta (Delta = 5.2 deg, Hernandez et al. 2017 p.3) in one synodic period, i.e.
@@ -17,7 +18,7 @@ from cyclerfinder.search.resonant_conic import (
     MU_JUPITER_KM3_S2,
     ideal_moon_smas,
     ideal_t_syn,
-    ideal_t_syn_consistent,
+    ideal_t_syn_rigid_repeat,
 )
 
 
@@ -32,7 +33,7 @@ def test_coded_ideal_t_syn_is_not_a_rigid_rotation() -> None:
 
 
 def test_consistent_t_syn_advances_every_moon_by_delta() -> None:
-    t = ideal_t_syn_consistent()
+    t = ideal_t_syn_rigid_repeat()
     for a in ideal_moon_smas().values():
         assert _advance_mod_2pi(a, t) == pytest.approx(IDEAL_DELTA_RAD, abs=1e-12)
     assert t / 86400.0 == pytest.approx(7.10536, abs=1e-4)
