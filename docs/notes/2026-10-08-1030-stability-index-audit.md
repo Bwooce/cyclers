@@ -79,17 +79,13 @@ of the first patch).
    - The planar Braik-Ross and Ross (E-M) rows: k_perp lies in [-2, 2], or slightly outside for
      ross-rt-em-cycler-32 (k_perp = -2.014, vertically weakly unstable), whose wording I have not
      reworded.
-2. **ross-rt-em-cycler-21-2025: the stored state does not reproduce the stored stability.**
-   - The stored state closes only to 1.1e-4 over the stored period.
-   - Re-closed at the stored C (dx0 -1.05e-6, dT -2.42e-4), the orbit has k_par = -2.69 (Barden
-     nu = -1.35, flip-unstable) and k_perp = -1.14. The stored value is nu = 0.050 ("stable",
-     Ross Table 3 midpoint).
-   - The stable window of a Ross family is narrow in C, so this may be sensitivity to mu or to
-     the rounding of the published state. It is NOT settled here, and no patch is proposed.
-   - It bears on the row's V2 claim (Barden |nu| < 1 in the published window) and should be its
-     own check: re-find the nu = 0 midpoint near the stored C.
-   - For comparison, ross-rt-em-cycler-31 re-closed this way reproduces its stored nu (0.01545)
-     exactly, and -11 gives |nu| = 0.003 against stored -0.0033 (both near zero).
+2. **ross-rt-em-cycler-21-2025: flag RETRACTED (`#1031`).** The first audit re-closed the row at
+   the C of its 10-digit rounded state (3.129389531068003), not at the stored C^stable
+   (3.129389531088256). The difference, 2e-11, is wider than the row's whole stable window in C
+   (1.8e-11), so the audit judged a neighbouring unstable member (nu = -1.35). Fixed in the
+   script. On the re-run, the row gives in-plane k_par = +0.048 and k_perp = -1.140: stable, and
+   consistent with the stored nu = 0.050. Details and an optional full-precision state patch are
+   in `docs/notes/2026-10-08-1031-ross-21-stability-recheck.md`.
 3. **The field mixes conventions** (sec. 1).
    - 20 corridor rows (`#796`: 10 Braik-Ross 3-D, 7 Lyapunov 3-D, 3 planar Braik-Ross) store the
      spectral radius (about 1.0). The Casoliva rows store k (stable < 2). The others store nu

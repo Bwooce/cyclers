@@ -110,7 +110,9 @@ def main() -> None:
                 continue
             # A rounded published state: re-close it at the stored C with the project's
             # symmetric corrector, then judge the corrected orbit (also give Barden's nu).
-            jc = jacobi_constant(s0, float(mu))
+            # the row's stored C, not the C of its rounded state: for ross-rt-em-cycler-21 the
+            # 10-digit state is 2e-11 off in C, more than its stable window is wide (#1031)
+            jc = float(c.get("jacobi_constant") or jacobi_constant(s0, float(mu)))
             orb = correct_symmetric_fixed_jacobi(
                 sysm, float(s0[0]), jc, float(per), ydot0_sign=float(np.sign(s0[4])), tol=1e-12
             )

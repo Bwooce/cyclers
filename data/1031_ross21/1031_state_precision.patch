@@ -1,0 +1,11 @@
+--- a/data/catalogue.yaml
++++ b/data/catalogue.yaml
+@@ -48375,7 +48375,7 @@
+       jacobi_constant: 3.129389531088256   # SOURCED: Ross Table 3 (p. 11) C^stable_(2,1).
+       period_nd: 19.44043166795154   # SOURCED: Ross Table 3 (p. 11) T^stable_(2,1) in TU.
+       stability_index: 0.05007   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
+-      state_nd: [0.7237335857, 0.0, 0.0, 0.0, 0.4137707374, 0.0]   # DERIVED (NOT a golden): x0 > 0 (U1+-side perpendicular crossing); recovered by our corrector, self-consistency-checked. Razor-thin stable window (Delta_p_m 4.23 km), so T lands ~2.7e-4 TU off the printed T^stable (results note §1) — the verdict and enforced C are exact.
++      state_nd: [0.7237335857, 0.0, 0.0, 0.0, 0.41377073737552744, 0.0]   # DERIVED (NOT a golden; #1031: ydot0 re-solved at fixed x0 to full precision, giving C = 3.1293895310882553 = C^stable to 1e-15 and Barden nu = +0.050; the earlier 10-digit ydot0 put the state 2e-11 off in C, more than the stable window is wide, 1.8e-11, docs/notes/2026-10-08-1031-ross-21-stability-recheck.md): x0 > 0 (U1+-side perpendicular crossing); recovered by our corrector, self-consistency-checked. Razor-thin stable window (Delta_p_m 4.23 km), so T lands ~2.7e-4 TU off the printed T^stable (results note §1) — the verdict and enforced C are exact.
+       lunit_km: 384400.0   # SOURCED: Ross p. 3.
+       tunit_s: 375699.8   # SOURCED: Ross p. 3.
+       jacobi_max: 3.129389531092325   # SOURCED: Ross Table 3 (p. 11) C^max_(2,1).
