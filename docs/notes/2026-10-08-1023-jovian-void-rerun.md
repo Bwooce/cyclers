@@ -48,6 +48,68 @@ Every resonant sma a = (mu (n_syn T_syn / (2 pi n_rev))^2)^(1/3) grows by +0.961
 
 Not affected: #968, #1004, #1034 (R-S model, no `resonant_conic`).
 
-## 3. EGGIE in the consistent ideal model: PRE-REGISTRATION
+## 3. EGGIE in the consistent ideal model: PRE-REGISTRATION (before any EGGIE run)
 
-(pending)
+Script `scripts/run_1023_eggie.py`; data `data/1023_eggie/`; live log `data/1023_eggie/live/`.
+
+### 3.1 Model
+
+- Io, Europa and Ganymede on circular coplanar orbits at the `ideal_moon_smas` radii, periods from
+  Kepler III with the lane mu. The synodic period is `ideal_t_syn_consistent()` = 7.1054 d and the
+  cycle is T = 4 T_syn = 28.4214 d. Over T every moon advances 20.8 deg, so the configuration
+  repeats RIGIDLY, rotated by 20.8 deg.
+- Initial phases (assumption, stated now): Io 0 and Europa 0 at t = 0, Ganymede 90 deg, i.e. the
+  Laplace angle lambda_I - 3 lambda_E + 2 lambda_G = 180 deg as in the real system. The formula
+  makes that angle constant in time (n_I - 3 n_E + 2 n_G = 0 exactly). The paper's own phases are not
+  printed.
+
+### 3.2 Step 1, the patched-conic EGGIE in this model
+
+- The #943 date corrector (`two_working_body.correct_dates`) on the cycle E>G | G>G | G>I | I>E
+  (Lambert legs; revolutions 0-2 and both branches enumerated per leg), period T, all three moons
+  massive. Seeds: Table 4 dates (0, 1.59, 10.19, 17.53 d) plus phase shifts over one synodic period.
+  The paper's ToFs serve only as seeds.
+- Accepted roots: max residual < 1e-9 km/s and an independent Kepler re-propagation miss < 1 km.
+- The root used is the one whose V_inf is nearest Table 4 (E 9.12, G 7.07, I 8.38 km/s). Its gate
+  (demanded vs available turn) is reported at the paper's 25 km floor and at the project floors. A
+  root that fails the 25 km gate is still continued (the paper's own EGGIE has 0.70 m/s of flyby
+  Delta-V), but it is labelled.
+
+### 3.3 Step 2, continuous gravity (corrector A)
+
+- Forward-backward multiple shooting. Nodes E, G1, G2, I (state and epoch each, periapsis gauge to
+  its own moon) and the wrap node E' = (Q x_E, t_E + T), with Q the 20.8 deg rotation. 28 unknowns,
+  28 residuals. Moon-relative node coordinates, DOP853 + analytic STM, rtol 1e-13.
+- Joint mass scale sigma on all three moons (GMs and softening radii x sigma): from 0.02 up to 1
+  (natural continuation, factor 1.2, halving to 1e-5), and down to 0.01 and 0.005 for the identity.
+  Intermediate points may be noise-floor-limited (as #968 amendment 11); verdict points may not.
+
+### 3.4 What "closes" means, and why the published object would meet it
+
+In this model the configuration repeats rigidly, so EXACT periodicity in the frame that rotates
+20.8 deg per cycle is a valid criterion (lead ruling (b)). CLOSES =
+1. at sigma = 1, every match and the wrap meet the lane floors (1e-3 km, 1e-6 km/s), gauges < 1e-9;
+2. every node altitude >= 25 km (the paper's floor), no unscheduled pass inside any of the three
+   moons' Hill radii;
+3. identity: at the smallest sigma <= 0.01 that converges at the floors, every V_inf is within
+   0.02 km/s of the step-1 patched-conic root (criterion 4c form); full-mass agreement with Table 4
+   is NOT a criterion (#968 sec. 8.2);
+4. IAS15 re-fly of every half-arc at sigma = 1: < 1e-2 km, 1e-7 km/s.
+
+Why the published object would meet it: the paper's EGGIE is a 4-synodic-period cycler of its
+ideal model with 0.70 m/s of flyby Delta-V ("can probably be optimized to zero"). In a model whose
+configuration repeats rigidly, a ballistic continuous-gravity counterpart, if it exists, is exactly
+periodic up to the rotation. Its sigma -> 0 limit is the patched-conic generating orbit (step 1).
+
+### 3.5 Outcomes (fixed now)
+
+- CLOSES: criteria 1-4 met. EGGIE exists in continuous gravity in the consistent ideal model.
+- DOES NOT CLOSE: a fold (two solutions at one sigma, bracket; #1004 checks 1-2) or an impact
+  (periapsis below the scaled radius or the 25 km floor) before sigma = 1. The diagnosed reason is
+  stated.
+- NUMERICAL STOP: six halvings without convergence and no fold evidence; undecided.
+- No step-1 root near Table 4 (all > 0.5 km/s away): EGGIE NOT RE-RUNNABLE in this model; the
+  roots found are listed.
+
+Expected outcome: CLOSES with probability about 0.6. EGGIE's V_inf (7-9 km/s) are high, and the
+patched conic is better there; a 0.94-type near-limit flyby is not expected at those speeds.
