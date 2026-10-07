@@ -573,12 +573,13 @@ def cmd_gauntlet(argv: list[str]) -> None:
             + liang_576_collisions(line),
             "literature": "DEFERRED (#973 note; runs after #972 lands)",
         }
+        rec |= screen_candidate(args.cell, rec)
         results.append(rec)
         print(
             f"k={k} vinf={ {c: round(v, 3) for c, v in best['vinf_kms'].items()} } "
             f"worst={best['worst_ratio']:.3f} xc_miss={xc['max_arrival_miss_km']:.2e}km "
             f"xc_dv={xc['max_vinf_vector_error_kms']:.1e} gate_int={xc['gate_status_integrated']} "
-            f"collisions={rec['collisions']}",
+            f"screen={rec['screen_status']} collisions={rec['collisions']}",
             flush=True,
         )
     out = {
@@ -804,9 +805,115 @@ def cmd_passes(argv: list[str]) -> None:
     args.out.write_text(json.dumps(res, indent=1, default=float))
 
 
+# ---------------------------------------------------------------------------
+# Pass-definition screens (amendment of 2026-10-07, #973 note sec. 2.6)
+# ---------------------------------------------------------------------------
+
+#: Cells whose central body is Jupiter; every other cell is heliocentric.
+JOVIAN_CELLS = frozenset({"gc", "ge", "gc1", "ge1", "ec", "ec576"})
+
+#: IAU 2015 Resolution B3 nominal solar radius (km). The registry holds no Sun entry and no
+#: floor for it, so the heliocentric screen is the bare photosphere radius.
+SUN_RADIUS_KM = 695_700.0
+
+
+def primary_floor_km(cell: str) -> tuple[str, float]:
+    """``(source, minimum allowed distance from the centre)`` for the r_min screen."""
+    if cell in JOVIAN_CELLS:
+        from cyclerfinder.verify.turn_gate import body_constants
+
+        bc = body_constants("Jupiter")
+        return (
+            f"registry Jupiter radius {bc.radius_km:.0f} km"
+            f" + registry safe_alt {bc.alt_floor_km:.0f} km",
+            bc.radius_km + bc.alt_floor_km,
+        )
+    return (f"IAU 2015 nominal solar radius {SUN_RADIUS_KM:.0f} km, no floor", SUN_RADIUS_KM)
+
+
+def screen_candidate(cell: str, cand: dict[str, Any]) -> dict[str, Any]:
+    """The two screens for one gate-passing cycler: r_min against the primary, and unscheduled
+    passes (interior distance minima along every leg) against each body's radius and SOI.
+
+    Status: "pass"; "reject: primary impact" (r_min at or below the primary floor);
+    "reject: moon impact" (an unscheduled pass closer than the body's radius); "model-invalid"
+    (an unscheduled pass inside the body's Laplace SOI). The first that applies, in that order."""
+    system, a, b = cell_system(cell)
+    _, cycle = ENUM.parse_cycle_key(cand["key"], system, a, b)
+    x = np.asarray(cand["x_days"]) * DAY
+    fl = cycle_flybys(system, cycle, x)
+    assert fl is not None
+    r_min, r_max = leg_extent(system, cycle, x, flybys=fl)
+    src, floor = primary_floor_km(cell)
+    cp = closest_unscheduled(system, cycle, x)
+    radius = {c: system.body(c).radius_km for c in system.bodies}
+    impacts = [p for p in cp if p["min_km"] < radius[p["body"]]]
+    inside = [p for p in cp if p["min_km"] < p["soi_km"]]
+    if r_min <= floor:
+        status = "reject: primary impact"
+    elif impacts:
+        status = "reject: moon impact" if cell in JOVIAN_CELLS else "reject: planet impact"
+    elif inside:
+        status = "model-invalid"
+    else:
+        status = "pass"
+    return {
+        "screen_status": status,
+        "r_min_km": r_min,
+        "r_max_km": r_max,
+        "primary_floor_km": floor,
+        "primary_floor_source": src,
+        "unscheduled_inside_soi": inside,
+        "closest_unscheduled_per_body": {
+            c: min((p for p in cp if p["body"] == c), key=lambda p: p["min_km"])
+            for c in {p["body"] for p in cp}
+        },
+    }
+
+
+def cmd_screen(argv: list[str]) -> None:
+    """Apply the two screens to every candidate of a gauntlet JSON (ours or #942/#943's)."""
+    ap = argparse.ArgumentParser(prog="screen")
+    ap.add_argument("gauntlet", type=Path)
+    ap.add_argument("--cell", default=None, help="default: the JSON's own cell")
+    ap.add_argument("--out", type=Path, required=True)
+    args = ap.parse_args(argv)
+    d = json.loads(args.gauntlet.read_text())
+    cell = args.cell or d["cell"]
+    res = []
+    for i, c in enumerate(d["candidates"]):
+        s = screen_candidate(cell, c)
+        res.append({"index": i, "key": c["key"], "vinf_kms": c["vinf_kms"], "k": c["k"]} | s)
+        near = ", ".join(
+            f"{b} {p['min_km']:,.0f} km"
+            for b, p in sorted(s["closest_unscheduled_per_body"].items())
+        )
+        print(
+            f"{i:3d} {s['screen_status']:24s} r_min {s['r_min_km']:,.0f} km; closest unscheduled: "
+            f"{near or 'none'} | {c['key']}",
+            flush=True,
+        )
+    counts: dict[str, int] = {}
+    for r in res:
+        counts[r["screen_status"]] = counts.get(r["screen_status"], 0) + 1
+    print(f"screen counts: {counts}")
+    args.out.write_text(
+        json.dumps(
+            {"source": str(args.gauntlet), "cell": cell, "counts": counts, "candidates": res},
+            indent=1,
+            default=float,
+        )
+    )
+
+
 def main() -> None:
     cmds = {"enumerate": cmd_enumerate, "recall": cmd_recall, "liang": cmd_liang}
-    cmds |= {"gauntlet": cmd_gauntlet, "check": cmd_check, "passes": cmd_passes}
+    cmds |= {
+        "gauntlet": cmd_gauntlet,
+        "check": cmd_check,
+        "passes": cmd_passes,
+        "screen": cmd_screen,
+    }
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: run_973_enumerate.py {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

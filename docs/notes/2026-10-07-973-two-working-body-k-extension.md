@@ -154,6 +154,39 @@ R11 (gc) first, then R13 (ev), then R12 (ec). Controls of a cell run before its 
 A control that fails to recall, a generator bug, or a cell/k that would take more than 60 min of wall
 time (with 2 workers) stops the route and goes to the lead.
 
+### 2.6 AMENDMENT (lead ruling 2026-10-07), written and committed BEFORE the re-screen of secs. 4-5
+
+Two screens join the PASS definition of sec. 2.2 (and of every two-working-body cell from now on). A
+gate-passing zero that fails either is not a pass. They are applied in this order; the first that
+applies is the recorded status.
+
+1. **Primary screen.** r_min (`leg_extent`, every leg, fixed legs included) must exceed the primary's
+   floor. Jovian cells (gc, ge, ec and their control cells): registry Jupiter radius 71,492 km plus the
+   registry safe altitude 5,000 km = 76,492 km (`verify/turn_gate.body_constants("Jupiter")`).
+   Heliocentric cells: the registry holds no Sun entry, so the IAU 2015 nominal solar radius, 695,700
+   km, with no floor. Status on failure: "reject: primary impact".
+2. **Unscheduled-pass screen.** Every leg is sampled (3,000 points, Kepler step) and every interior
+   local minimum of the distance to each body of the cell is refined (bounded minimisation). The leg
+   end points are the scheduled encounters and are not minima of this search.
+   - A minimum below the body's radius (the cell's flyby constants: R-S Table 2 for the moons, the
+     registry for the planets): "reject: moon impact" ("reject: planet impact" in heliocentric cells).
+   - Otherwise a minimum inside the body's Laplace sphere of influence (`sphere_of_influence_km`:
+     Ganymede 24,350 km, Callisto 37,681 km): "model-invalid". The leg was propagated as a conic
+     while inside that body's SOI. This is distinct from a gate fail.
+
+Scope and limits: only the bodies of the cell are checked (Io and Europa are not in the gc model, for
+example). The search is sampled; a pass that does not make a local minimum of the sampled distance
+could be missed.
+
+Implementation: `run_973_enumerate.py screen GAUNTLET.json --out F` (also run inside `gauntlet`, whose
+records now carry `screen_status`). The re-screen uses the committed shards and gauntlet JSONs; no
+re-enumeration. The post-hoc J class and the `passes` flags of sec. 4 are superseded by this
+pre-registered definition (they agree with it in substance; the primary floor now includes Jupiter's
+5,000 km safe altitude).
+
+Then, as a check on earlier work (not a re-enumeration): the same screens on the #942/#943 candidates
+gc-1, gc-2 (`data/943_cell_gc_gauntlet.json`), ev-A, ev-B, ev-C (`data/942_cell_ev_gauntlet.json`).
+
 ## 3. Controls and the Liang segments (results, 2026-10-07)
 
 ### 3.1 Recall controls (sec. 2.3): ALL RECALLED
