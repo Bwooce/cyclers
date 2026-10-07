@@ -429,3 +429,18 @@ Descriptive, not judged: r_p / s_G is still falling at the smallest s_G (8907 km
 about 6 km per 15 % step), so the limit is not polynomial in s_G over this range; a quadratic fit in
 sqrt(s_G) gives 8796 km. The two fits bracket 8861 km; the altitude limit is fit-dependent here, and
 the pre-registered rule is the verdict.
+
+## 7. Lead verdict on GanCal#5 (2026-10-08, ideal continuous model)
+
+PASSED, recorded as: criterion 4 FAIL as registered (it compared a full-mass continuous orbit with
+patched-conic numbers: a model mismatch in the criterion, now documented); identity shown by the
+pre-registered GM continuation: the branch is GanCal#5's and reproduces the published values in the
+patched-conic limit (V_inf 3.2375 vs 3.2383 patched conic vs 3.24 published; r_p / s 2963.6 vs
+2962.0; Callisto 3.3392 vs 3.3395). Amendment 5 (my softening-scaling error, fixed before the
+rerun) stays as written.
+
+"Lane validated" needs the second control. GanEur#43 was run (6.3, 6.5) before this verdict
+arrived, with criteria 1-6 pre-registered (5.3) and the continuation limit as amendment 7 (in
+effect criterion 4b): criteria 1, 2, 3, 5, 6 PASS; criterion 4 FAIL as registered; 4b V_inf and
+Europa speed PASS, altitude FAIL as registered (34.8 km against a 20 km rule; the curve is not
+converged at s_G = 0.0055). The lead rules on whether that completes "lane validated".
