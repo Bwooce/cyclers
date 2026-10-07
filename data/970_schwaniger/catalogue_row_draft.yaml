@@ -1,0 +1,108 @@
+# #970 DRAFT catalogue row. NOT inserted into data/catalogue.yaml: the lead schedules the insert
+# and the full-ratchet run. Values: scripts/run_970_schwaniger_control.py ->
+# data/970_schwaniger/control.json (registry mu result). Note:
+# docs/notes/2026-10-07-970-schwaniger-control.md.
+- id: schwaniger-1963-em-cislunar-retrograde-periodic-free-return
+  name: "Schwaniger 1963 retrograde (counter-rotation) cislunar symmetric periodic free return, Earth-Moon CR3BP (perigee 6555 km = 177 km altitude, periselene about 2200 km, T = 26.06 d)"
+  source: literature
+  our_status: known-reproduction   # published 1963 (NASA TN D-1833 sec. III.E); NOT novel
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # periodic in the rotating frame; one Earth perigee (177 km altitude) and one lunar pass (about 465 km altitude, inside the lunar SOI and Hill radius) every period. Perigee is 23 km BELOW the Earth registry floor (PLANETS["E"].safe_alt_km = 200 km); see data_gaps.
+  epoch_locked: false   # CR3BP periodic orbit, any epoch
+  n_returns: infinite   # strictly periodic
+  validation_level: V0   # internal consistency only: the source prints only graph-read "about" values (2150 km, 650 h), which this reproduction meets to +2.4% and -3.8%, outside the 1e-2 like-for-like V1 tolerance of the CR3BP rows
+  delta_v_kms: 0.0
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"   # the orbit is RETROGRADE about the Earth (inertial angular momentum at perigee < 0, "counter-rotation" in Schwaniger); the schema's sense field is the leg direction, so n/a
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.001502749598107 TU at the registry mu (625.47 h = 26.061 d, t_s = 375190.26 s). One
+      perigee and one perilune per period. Schwaniger prints "about 650 hours" (p.6, read off
+      Fig. 11); the 3.8% difference is within the graph-reading precision of the source. Not a
+      lunar-synodic multiple (the sidereal month is 27.32 d = 6.2832 TU).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: the conserved quantity is the Jacobi constant. Perigee speed 10,959.95 m/s Earth-relative inertial (10,977.42 m/s rotating frame) at r = 6555 km."
+  - body: "Moon"
+    vinf_kms:
+    note: "CR3BP periodic orbit; Jacobi-constant model. Periselene 2202.64 km from the Moon's centre at the start state."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit, symmetric about the Earth-Moon line (two perpendicular x-axis crossings: periselene at t = 0, perigee at T/2)."
+    cr3bp:
+      family: "Schwaniger 1963 counter-rotation cislunar symmetric free return of the first kind (Miele image theorem), periodic member (perigee on the Earth-Moon line, sec. III.E)"
+      mass_ratio: 0.01215058439469525   # registry: cyclerfinder.core.cr3bp.cr3bp_system("Earth", "Moon").mu. Schwaniger states no mass ratio; at the digest's mu = 0.012150 the member is periselene 2202.53 km, T = 6.001502596 TU (same to 1e-4 km and 2.5e-8 relative in T scale)
+      libration_point:
+      jacobi_constant: 1.0854167286545506   # DERIVED (#970, project corrector), project convention C = x^2 + y^2 + 2(1-mu)/r1 + 2mu/r2 - v^2 (no mu(1-mu) term). With the mu(1-mu) term: 1.0974196763. NOT a golden.
+      period_nd: 6.001502749598107   # DERIVED (#970). NOT a golden.
+      stability_index: 262.6519479051237   # DERIVED (#970): project convention, Barden half-period nu = (lambda + 1/lambda)/2. Full-period fixed-path monodromy: b_h = tr(M4) - 2 = 525.304, lambda_max = 525.302; vertical b_v = tr(Mz) = -182.351 (vertically unstable too). Strongly unstable.
+      state_nd: [0.9821193418196401, 0.0, 0.0, 0.0, -2.4712777483864743, 0.0]   # DERIVED (#970, NOT a golden): periselene start, Earth side of the Moon; perpendicular crossing
+      lunit_km: 384400.0   # registry
+      tunit_s: 375190.2618944357   # registry
+      perigee_km: 6555.0   # SOURCED as the defining condition: Schwaniger sec. II.C, injection and re-entry at r = 6555 km (100 n.mi. altitude), horizontal; the corrector solves for C so that the T/2 perpendicular crossing is at this radius
+      periselene_km: 2202.6403632094866   # DERIVED (#970); Schwaniger prints "about 2150 km" (p.6-7)
+      apogee_km: 531167.43   # DERIVED (#970), 1.382 L from the Earth
+      energy_regime:
+      tof_days_bounds: [26.06140495812372, 26.06140495812372]   # single-period CR3BP orbit
+  source_ephemeris:   # pure CR3BP
+  data_gaps:
+  - path: "orbit_elements.cr3bp.mass_ratio"
+    kind: "unknown"
+    note: "Schwaniger 1963 states no mass ratio, distance or GM. The row uses the registry mu; the digest's mu = 0.012150 and mu = 1/81.30 give 2202.5 km / 625.47 h and 2229.8 km / 625.4 h. The paper's 'about 2150 km / about 650 h' are graph readings."
+    todo_ref: "#970"
+  - path: "vinf_kms_at_encounters"
+    kind: "conflict"
+    note: "Schwaniger Fig. 9 injection speeds at 1938 km periselenum sit about 64 m/s below the digest's reproduction (constant offset, after allowing for the 2 omega r rotating/inertial split); times and longitudes match. A speed convention the report does not state. Unresolved."
+    todo_ref: "#970"
+  - path: "orbit_class"
+    kind: "uncertain"
+    note: "Perigee altitude 176.9 km is below the Earth registry floor of 200 km (core/constants.py PLANETS['E'].safe_alt_km, Russell 2004). The Moon pass (465 km altitude) clears the 100 km Moon floor. Kept as orbit_class cycler (periodic, ballistic, Earth and Moon pass every period) as the digest proposed; the lead/owner may prefer a note-only flag. The #997 perigee continuation tabulates the family members that clear both floors."
+    todo_ref: "#997"
+  legs: []
+  first_published:
+    authors: ["Schwaniger, A. J."]
+    year: 1963
+    title: "Trajectories in the Earth-Moon Space with Symmetrical Free Return Properties"
+    venue: "NASA TN D-1833 (Lunar Flight Study Series Vol. 5), NASA Marshall Space Flight Center, June 1963"
+    doi:
+    url: "https://ntrs.nasa.gov/citations/19630007117"
+    note: |
+      Sec. III.E (p.6-7): cross-plotting Fig. 15 gives "one cislunar case ... counter-rotational
+      injection at 180 degrees longitude and periselenum radius of about 2150 km", period "about
+      650 hours or about one month" (Fig. 11). Summary (p.7): "a periodic trajectory which
+      approaches the moon at about 2150 km radius approximately once each month." No initial
+      conditions printed.
+  corroborating_sources: []
+  priority_date: "1963-06-01"   # NASA TN D-1833 is dated June 1963; day not printed
+  notes: |
+    Reproduced by #970 with the project corrector (cyclerfinder.search.cr3bp_periodic.
+    correct_symmetric_fixed_jacobi, plain DOP853 rtol = atol = 1e-12 in physical time, no
+    regularisation) plus a secant on C for the perigee condition r1(T/2) = 6555 km. Full-period
+    closure 8.5e-7 km / 3.7e-7 m/s (plain); the Moon-centred KS propagator (core.cr3bp_ks) and the
+    Sundman r1*r2 propagator (core.cr3bp_regularized) re-close it to 1.1e-5 km and 8.7e-6 km. The
+    KS transition matrix gives b_h within 3e-8 of the plain one. det M = 1 - 2.3e-8; the trivial
+    eigenvalue pair is recovered at 0.99914 / 1.00086.
+
+    Positive control for CR3BP correctors and for any corrector regularised at both primaries
+    (#948 R4): tests/core/test_970_schwaniger_control.py. It is a WEAK regularisation control:
+    the plain integrator already handles the 177 km perigee and 465 km perilune.
+
+    Not a duplicate: no catalogue Earth-Moon row has C near 1.085 with T near 6.0 (digest grep
+    inventory). NOT the arenstorf-em-figure8-1963 orbit and must not fill that row's nulls.
+    Literature novelty check deferred to #972 (not needed for a literature row).
+  source_quotes:
+    "orbit_elements.cr3bp.periselene_km": "Schwaniger 1963 sec. III.E (p.6-7): 'one cislunar case is a periodic orbit which has counter-rotational injection at 180 degrees longitude and periselenum radius of about 2150 km.'"
+    "period": "Schwaniger 1963 sec. III.E: 'From the curve in Figure 11, the period is ascertained to be about 650 hours or about one month.'"
+    "orbit_elements.cr3bp.perigee_km": "Schwaniger 1963 sec. II.C: 'injection (and, therefore, reentry) is assumed to occur at 100 nautical mile altitude or 6555 km radius from the earth's center with horizontal path angle.'"
