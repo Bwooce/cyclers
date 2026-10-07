@@ -660,3 +660,30 @@ point. The open question is the formulation of an open real-ephemeris chain.
   recorded as "not achieved: lane validated in the ideal model only; the jup365 path stays
   unvalidated", with options (b) direction-only pinning and (c) closed chain registered as follow-ups,
   not run.
+
+### 9.7 Result of amendment 13, option (a): FAILED to start; rung (b) NOT ACHIEVED
+
+- The 3-cycle pinned chain did not converge even at its starting point, sigma = 0.02.
+  - From the patched-conic seed (|r| 1.4e4; mid-leg defects 2,100-7,060 km, the last two legs the
+    largest), damped Newton crawled: 1.407e4 -> 1.400e4 in five iterations.
+  - The full Newton step is not usable. It asks for moon-relative node moves of 10-430 km against
+    periapses of about 70-180 km. At step fraction 1 the residual grows to 4.8e6, at 0.5 a node
+    enters a moon's core, and at 0.25 the residual is 1.3e6.
+  - For comparison, at the same sigma the 1-cycle chain converged straight from its seed, and the
+    2-cycle chain's full step cut its residual from 8,400 to 1,300 (not pursued).
+  - Two solver aids were added without effect (an implementation choice, not a criterion): backtracking
+    down to step fraction 1e-3, and a cap holding each node's move to half its moon-relative distance.
+  - Seeding the 2-cycle chain from the converged 1-cycle solution was worse (2.2e4).
+- So (a) gives no verdict on the end-artefact question: the run never reached a continuation.
+  This is an initialisation failure of the longer pinned chain, not a physical result.
+- RECORDED, per the lead ruling 2026-10-08: **rung (b) not achieved; the lane is validated in the
+  ideal model only; the jup365 path stays unvalidated.** The two diagnosed failures are 9.4
+  (minimum-norm free ends: first node into Ganymede at sigma = 0.063) and 9.5 (pinned end
+  asymptotes: Europa impact at sigma = 0.62). The third attempt, (a), did not start (above).
+- Open formulation question: how to pose an open real-ephemeris chain in continuous gravity.
+  Follow-ups registered, NOT run:
+  - (b) pin only the end V_inf directions;
+  - (c) a closed multi-cycle chain (wrap magnitude match, free period), as the chain tool does;
+  - (a') the 3-cycle pinned chain with a Levenberg-Marquardt solver, or with a homotopy that turns
+    the end pins on gradually.
+  No further attempts without a new ruling.

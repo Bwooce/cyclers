@@ -316,8 +316,16 @@ def newton(c: Chain, z: Arr, iters: int, tag: str) -> tuple[Arr, dict[str, Any]]
         d = np.linalg.norm(j, axis=0)
         d[d == 0.0] = 1.0
         step = np.linalg.lstsq(j / d, -r, rcond=None)[0] / d
+        # Step cap: no node's moon-relative position moves by more than half its length.
+        cap = 1.0
+        for k in range(c.m):
+            rr = float(np.linalg.norm(z[7 * k : 7 * k + 3]))
+            dd = float(np.linalg.norm(step[7 * k : 7 * k + 3]))
+            if dd > 0.5 * rr:
+                cap = min(cap, 0.5 * rr / dd)
+        step = cap * step
         f0 = float(np.linalg.norm(r))
-        for alpha in (1.0, 0.5, 0.25, 0.125, 0.0625):
+        for alpha in [0.5**i for i in range(11)]:  # backtracking down to 1e-3
             rn = residual_and_jac(c, z + alpha * step, False)[0]
             if np.all(np.isfinite(rn)) and float(np.linalg.norm(rn)) < f0:
                 z = z + alpha * step
