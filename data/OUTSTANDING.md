@@ -2500,7 +2500,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `literature_check` lazily inside the functions that use it. Papercut:
   `docs/papercuts/2026-10-07-pluto-smallmoons-sonnet-gauntlet-imports-literature-check.md`.
 - `#1039` — registered 2026-10-08 (from `#968`); **DISPATCHED 2026-10-08 to jovian-nbody-opus**
-  (open-ended-chain formulation; time-boxed). **`#968` RUNG (b) FOLLOW-UPS, NOT RUN:** (b)
+  (open-ended-chain formulation; time-boxed). **CONTROL PASSED 2026-10-08 (`4f207271`, `ec393fdf`):**
+  formulation (b), direction-only end pins, is validated on the ideal control (the one-cycle EGGIE,
+  `#1043`). Next: (b) on jup365 with GanEur#316 (the `#968` rung (b) re-attempt), time box from 10:05
+  AEDT. **`#968` RUNG (b) FOLLOW-UPS, NOT RUN:** (b)
   direction-only end pins; (c) a closed multi-cycle chain; (a') the 3-cycle pinned chain with
   Levenberg-Marquardt or an end-pin homotopy. Until one succeeds, the Jovian n-body lane is validated
   in the ideal model only and the jup365 path is unvalidated.
@@ -2554,7 +2557,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   row gets a period note, a `data_gaps` entry for the `n_returns` conflict and a notes paragraph;
   `n_returns` stays `infinite`, because changing it forces an `orbit_class` change, which is an OWNER
   decision (`#1042`-b, on "Waiting on owner"). The Lynam-Longuski single-period row gets one notes
-  sentence. Seen but not patched, listed in the note: the AAS 17-608 confirmation on `first_published`,
+  sentence. The Hernandez wording must now say "one-cycle object confirmed in continuous gravity
+  (`#1043`)"; jovian-nbody-opus updates the patch after `#1039`. Seen but not patched, listed in the
+  note: the AAS 17-608 confirmation on `first_published`,
   Table 4 values on the family-seed row, and the GIPEIPE sibling. To apply: the next ratchet window,
   after the `#970` commit (3-way merge). **REVIEW THE
   CATALOGUE ROWS `hernandez-2017-jovian-ieg-triple-family` AND `lynam-longuski-2011-ieg-single-period`**
@@ -2572,6 +2577,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   at sigma 1 fails). The growing defect is at the pinned END Europa nodes (r_p / sigma 2,946 -> 6,904
   km); the interior nodes drift 8-13 %. Reading (INFERRED): the same end-pin artefact as `#968` rung
   (b), so it waits on `#1039`'s formulation.
+  **DECIDED 2026-10-08 (`#1039` pre-registration `4f207271`, result `ec393fdf`): CLOSES in continuous
+  gravity (ideal model) under formulation (b): the first continuous-gravity confirmation of a published
+  Jovian triple cycler in this project (one cycle; repeatability per `#1041`).** Formulation (b): end
+  V_inf DIRECTIONS pinned, plus the paper's in/out magnitude match and the chain span, magnitudes free.
+  The one-cycle EGGIE continues from sigma 0.02 to 1 in 23 steps at the lane floors, no fold; at sigma =
+  1, V_inf E 9.032, G 7.046 / 7.041, I 7.880 km/s, altitudes 1,028-7,726 km, no unscheduled Hill-radius
+  pass; IAS15 re-fly 1.0e-6 km; identity at sigma 0.01 / 0.005: 0.0044 / 0.0023 km/s. So the fold at
+  0.505 was the vector end pins.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
