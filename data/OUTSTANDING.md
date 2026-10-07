@@ -2536,12 +2536,25 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   the paper's own statement that ballistic repeatability "only lasts a few cycles". A pre-registered
   cycle-by-cycle MARCH from root (iii), the faithful quasi-periodic test (the first cycle at which the
   gate fails), is running. Follow-on: `#1042`.
-- `#1042` — registered 2026-10-08 (from `#1040`/`#1041`; BACKLOG, after the `#1041` march). **REVIEW THE
+  **FINAL 2026-10-08 (march pre-registration `113209fd`, result `cddf93b2`, logs `f9a65b0b`; note sec. 7):**
+  from root (iii), cycle 1 passes at the 25 km floor and at the project floors (V_inf 9.068 / 7.082 /
+  8.207, turns 1.5 / 5.9 / 5.0 / 0.9 deg, max ratio 0.74); cycle 2 FAILS at both floors (Io 55.6 deg at
+  4.65 km/s, ratio 3.72; Europa 1.72); cycle 3 has no exact root. From the Table 4 seed with the 28.22-d
+  total, cycle 1 solves to a different object and cycle 2 has no root. Conclusion: "the published EGGIE
+  is a one-cycle ballistic object in its own model; ballistic repeatability is limited to that,
+  consistent with the paper's own statement". Its one-cycle existence in continuous gravity was not
+  tested: `#1043`.
+- `#1042` — registered 2026-10-08 (from `#1040`/`#1041`); **PREPARATION DISPATCHED 2026-10-08 to
+  jovian-nbody-opus** (a review note and a patch file, no catalogue edit; applied in the next ratchet
+  window). **REVIEW THE
   CATALOGUE ROWS `hernandez-2017-jovian-ieg-triple-family` AND `lynam-longuski-2011-ieg-single-period`**
   against `#1040`/`#1041`: the published EGGIE is a one-cycle ballistic object in its own model. Check
   `orbit_class`, the `n_returns` and period wording, the validation level and the notes; add the
   `#1040` model note (Ganymede-period synodic period, no rigid repeat) and the `#1041` repeatability
   result to `notes`/`data_gaps`. All ratchets on any `data/catalogue.yaml` edit.
+- `#1043` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus; from `#1041`). **ONE-CYCLE EGGIE IN
+  CONTINUOUS GRAVITY:** an open one-cycle chain from root (iii), sigma continuation to 1, an IAS15
+  check. Success = the first continuous-gravity confirmation of a published Jovian triple cycler.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
