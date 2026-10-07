@@ -95,3 +95,44 @@ Hygiene (reviewer 11, 12; lead):
 
 Expected candidate results: unchanged from sec. 4 (every candidate is labelled, so F13/F14 do not
 apply to them).
+
+## 7. Lead rulings 2026-10-07 (F7 reading, F8), committed before the F7/F8 code
+
+**F7: correction of the sec. 4 expectation, and the ruled reading.**
+- Discrepancy found before coding: sec. 4 says H&M excludes ev-C "only by working-bodies". That is
+  wrong. ev-C is labelled working "one", return types {GEN}. H&M declares working "two" AND return types
+  {FR, SY}, so it excludes ev-C by working-bodies AND by return-types.
+- Under the literal F7 text ("ONLY by working-bodies"), F7 would not fire for ev-C. ev-C would then
+  return known-architecture-new-system via the R-S VenMar/VenMer "one" anchors and pass the gate.
+- Lead ruling (b), the intent reading. RULE TEXT: "if working-bodies is AMONG the exclusion reasons
+  for an anchor whose body set equals the candidate's, the result is inconclusive, listing that anchor."
+  Basis: a different-architecture object at a system the source treated goes to a human. H&M treated
+  Earth-Venus cyclers. Choosing the reading that passes our own candidate after seeing the discrepancy
+  would be tailoring.
+- Expected for ev-C: INCONCLUSIVE (H&M listed), then the owner's recorded decision. gc-1, gc-2, ev-A and
+  ev-B are unchanged under either reading.
+
+**F8 approved.** Page check of the held PDF
+(`hughes-edelman-longuski-2014-fast-mars-free-returns-venus-ga-AIAA-2014-4109.pdf`, p. 1):
+- title "Fast Mars Free-Returns via Venus Gravity Assist";
+- AIAA 2014-4109, AIAA/AAS Astrodynamics Specialist Conference, 4-7 Aug 2014, San Diego;
+- DOI 10.2514/6.2014-4109 (printed on the page);
+- authors Hughes, Edelman, Longuski, Loucks, Carrico, Titok.
+- The abstract describes one-shot free returns on E-V-M-E (and Venus-after-Mars) paths, 2015-2060
+  launches. It does not describe cyclers.
+
+The anchor is grounded to this paper:
+- body set {V, E, M} (kept); topology {"mga-tour"}; no n-bodies tag (F5);
+- citation and keywords rewritten to the paper; provenance verified-against-source.
+
+The old anchor comment "#350: extends Jones-Hernandez-Jesick AAS 17-577 VEM cycler family" was
+anachronistic: a 2014 citation cannot extend a 2017 paper. The lead checked the corpus: no held Hughes
+work treats VEM cyclers. The 2016 thesis preview's cycler chapters (IEG triple cyclers; Earth-Mars
+establishment) are covered by other anchors. The JSR 2015 version credits Hollister/H&M for E-V cyclers.
+
+**Parked, NOT implemented:** a sourced "future-work architecture" field on the R-S anchors. R-S AAS
+07-118 p. 18 names the massive-target architecture as future work. Such a field would let the gate
+express #875 (i)/(ii) for gc-1/gc-2/ev-C mechanically. Recorded as an option only.
+
+**After the v2 run (lead):** gc-1 and ev-C "inconclusive" is the spec's human-review path. The lead
+takes the gate diagnosis to the owner for a recorded decision. No row is written before that.
