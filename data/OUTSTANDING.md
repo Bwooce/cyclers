@@ -1948,7 +1948,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   dropped, pinned tests, and same-system different-architecture -> inconclusive. A Hughes-anchor
   grounding fix is proposed; its cited AAS 14-822 cannot be found. Notes:
   `docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md` and the v2 pre-registration
-  `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md` (`fed50171`, `5c41d8ae`).
+  `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md` (`fed50171`, `5e4bdc18`).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
