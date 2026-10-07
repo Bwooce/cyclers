@@ -1910,6 +1910,16 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
   EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
   published Jovian cycler control in that lane before any Jovian candidate is put through it.
+  **LANE VALIDATED in the ideal continuous R-S model (lead ruling 2026-10-08 ~00:15 AEDT; note
+  `docs/notes/2026-10-07-968-jovian-nbody-positive-control.md`; commits `39991271`, `25c043dd`,
+  `e1746934`, `2a507705` and earlier, with the wrap fix `b9c27f77`):** two published controls,
+  GanCal#5 and GanEur#43, close in the lane with the fixed wrap, are held by its own residual, are
+  confirmed by an independent integrator (IAS15), and continue on one smooth branch to the published
+  V_inf and target speed in the patched-conic limit (PASS). Criterion 4 at full Ganymede mass FAILS for
+  both: that is a test of the patched-conic approximation (0.1-0.3 km/s shifts), not of the lane. The
+  GanEur#43 altitude limit FAILS as registered (a limitation of the fit rule). The 95,000-km-pass
+  explanation for GanCal#5's shift was withdrawn (it explains 23 % of the shift). Rung (b), the real
+  ephemeris, is NOT yet done. Next: `#1004` (jovian-nbody-opus), then rung (b).
 - `#969` — registered 2026-10-06 (found by `#963`'s test run; NOT dispatched). **REMOVE WALL-CLOCK
   BUDGETS FROM CORRECTNESS ASSERTIONS.** `test_656_grid_seed_search_recovers_admitted_pc_32_seed`
   passes `per_call_timeout=5` (SIGALRM, seconds) to `_grid_seed_search`; under load (16-20 on 8
@@ -2005,8 +2015,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
-- `#974` — registered 2026-10-07 (from `#971` R15; **DISPATCHABLE after the Henon 2003 Tables
-  VI-XIII transcription**, which goes to corpus-file-opus now as the first step. Batch 36 verdict
+- `#974` — registered 2026-10-07 (from `#971` R15; **DISPATCHABLE, CPU-QUEUED for the morning window with
+  `#975`**. Step 1 DONE 2026-10-08: Henon 2003 Tables VI-XIII transcribed into `data/sources` (`3ae69a42`,
+  68 rows, two-witness digits). Batch 36 verdict
   (`293ecc7a`): Perko 1982 I and II and Perko 1983 cover SYMMETRIC families only and give no explicit
   continuation bound; the asymmetric Henon 2003 families are NOT covered, which is the novelty
   opening R15 claims. The same scope line applies to `#944`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
