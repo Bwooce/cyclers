@@ -1,0 +1,52 @@
+  0 model-invalid            r_min 759,541 km; closest unscheduled: Callisto 1,121,436 km, Ganymede 9,432 km | k4|RGanymede/1:1|LGanymede>Callisto/1h|LCallisto>Ganymede/2l
+  1 pass                     r_min 1,070,335 km; closest unscheduled: Callisto 2,861,790 km, Ganymede 937,659 km | k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s
+  2 pass                     r_min 940,161 km; closest unscheduled: Callisto 537,850 km, Ganymede 234,539 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s
+  3 pass                     r_min 795,584 km; closest unscheduled: Callisto 1,086,995 km, Ganymede 326,063 km | k4|LGanymede>Callisto/2h|LCallisto>Ganymede/2l
+  4 pass                     r_min 785,058 km; closest unscheduled: Callisto 1,096,482 km, Ganymede 711,528 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/2h
+  5 pass                     r_min 1,070,335 km; closest unscheduled: Callisto 616,458 km, Ganymede 900,439 km | k4|LGanymede>Callisto/1l|LCallisto>Ganymede/2h
+  6 pass                     r_min 709,202 km; closest unscheduled: Callisto 1,102,074 km, Ganymede 780,710 km | k4|RGanymede/3:2|LGanymede>Callisto/2l|LCallisto>Ganymede/0s
+  7 pass                     r_min 873,051 km; closest unscheduled: Callisto 669,137 km, Ganymede 618,324 km | k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s
+  8 pass                     r_min 984,807 km; closest unscheduled: Callisto 705,684 km, Ganymede 106,557 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+  9 pass                     r_min 726,015 km; closest unscheduled: Callisto 1,153,771 km, Ganymede 806,899 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|LCallisto>Ganymede/0s
+ 10 pass                     r_min 464,563 km; closest unscheduled: Callisto 129,111 km, Ganymede 512,601 km | k4|RGanymede/1:1|LGanymede>Callisto/2l|LCallisto>Ganymede/2h
+ 11 model-invalid            r_min 1,070,338 km; closest unscheduled: Callisto 790,328 km, Ganymede 21,913 km | k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 12 reject: moon impact      r_min 1,070,334 km; closest unscheduled: Callisto 63,677 km, Ganymede 3 km | k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Ganymede/1h
+ 13 reject: moon impact      r_min 488,606 km; closest unscheduled: Callisto 32 km, Ganymede 98,732 km | k4|LGanymede>Callisto/2l|RCallisto/1:2|LCallisto>Ganymede/1h
+ 14 model-invalid            r_min 473,905 km; closest unscheduled: Callisto 7,912 km, Ganymede 590,015 km | k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/1h
+ 15 pass                     r_min 438,208 km; closest unscheduled: Callisto 208,917 km, Ganymede 388,919 km | k4|RGanymede/1:1|LGanymede>Callisto/2h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 16 model-invalid            r_min 1,069,915 km; closest unscheduled: Callisto 5,742 km, Ganymede 1,352,914 km | k4|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/0s
+ 17 model-invalid            r_min 1,070,334 km; closest unscheduled: Callisto 3,828 km, Ganymede 1,354,086 km | k4|LGanymede>Callisto/2h|LCallisto>Ganymede/0s
+ 18 pass                     r_min 1,070,334 km; closest unscheduled: Callisto 816,981 km, Ganymede 1,671,754 km | k4|RGanymede/2:1|LGanymede>Callisto/1h|LCallisto>Ganymede/0s
+ 19 pass                     r_min 969,653 km; closest unscheduled: Callisto 1,465,758 km, Ganymede 1,477,091 km | k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s
+ 20 pass                     r_min 1,070,333 km; closest unscheduled: Callisto 1,849,991 km, Ganymede 2,089,079 km | k4|LGanymede>Callisto/0s|LCallisto>Ganymede/1h
+ 21 reject: moon impact      r_min 288,525 km; closest unscheduled: Callisto 31 km, Ganymede 745,093 km | k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2l
+ 22 pass                     r_min 414,566 km; closest unscheduled: Callisto 493,006 km, Ganymede 653,939 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1l|LCallisto>Ganymede/2h
+ 23 model-invalid            r_min 281,595 km; closest unscheduled: Callisto 11,153 km, Ganymede 745,507 km | k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/0s
+ 24 pass                     r_min 367,198 km; closest unscheduled: Callisto 1,351,751 km, Ganymede 558,397 km | k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 25 pass                     r_min 357,770 km; closest unscheduled: Callisto 1,386,805 km, Ganymede 693,108 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 26 pass                     r_min 527,421 km; closest unscheduled: Callisto 1,351,631 km, Ganymede 408,194 km | k4|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s
+ 27 pass                     r_min 527,421 km; closest unscheduled: Callisto 1,351,631 km, Ganymede 377,808 km | k4|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l
+ 28 pass                     r_min 320,944 km; closest unscheduled: Callisto 185,038 km, Ganymede 1,009,509 km | k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 29 pass                     r_min 328,024 km; closest unscheduled: Callisto 1,458,670 km, Ganymede 740,436 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 30 pass                     r_min 297,589 km; closest unscheduled: Callisto 1,526,341 km, Ganymede 454,552 km | k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/1h
+ 31 pass                     r_min 397,621 km; closest unscheduled: Callisto 1,484,958 km, Ganymede 648,478 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 32 pass                     r_min 354,194 km; closest unscheduled: Callisto 1,361,089 km, Ganymede 595,392 km | k4|RGanymede/2:1|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/0s
+ 33 model-invalid            r_min 508,404 km; closest unscheduled: Callisto 25,844 km, Ganymede 1,566,631 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s
+ 34 model-invalid            r_min 508,404 km; closest unscheduled: Callisto 25,809 km, Ganymede 1,566,631 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l
+ 35 pass                     r_min 500,925 km; closest unscheduled: Callisto 45,969 km, Ganymede 1,568,895 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s
+ 36 pass                     r_min 281,779 km; closest unscheduled: Callisto 743,015 km, Ganymede 786,751 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s
+ 37 pass                     r_min 281,779 km; closest unscheduled: Callisto 771,375 km, Ganymede 786,751 km | k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l
+ 38 pass                     r_min 143,171 km; closest unscheduled: Callisto 285,872 km, Ganymede 196,345 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l
+ 39 model-invalid            r_min 96,759 km; closest unscheduled: Callisto 21,720 km, Ganymede 809,143 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|LCallisto>Ganymede/1h
+ 40 model-invalid            r_min 93,608 km; closest unscheduled: Callisto 36,932 km, Ganymede 802,016 km | k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|RCallisto/1:2|LCallisto>Ganymede/0s
+ 41 pass                     r_min 135,971 km; closest unscheduled: Callisto 1,401,694 km, Ganymede 151,840 km | k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s
+ 42 model-invalid            r_min 78,948 km; closest unscheduled: Callisto 1,414,519 km, Ganymede 23,690 km | k4|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s
+ 43 reject: primary impact   r_min 10,157 km; closest unscheduled: Callisto 342,098 km, Ganymede 889,846 km | k4|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s
+ 44 reject: primary impact   r_min 10,157 km; closest unscheduled: Callisto 277,409 km, Ganymede 889,846 km | k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/0s
+ 45 reject: primary impact   r_min 36,965 km; closest unscheduled: Callisto 1,193,299 km, Ganymede 170,823 km | k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/0s
+ 46 reject: primary impact   r_min 36,965 km; closest unscheduled: Callisto 1,193,299 km, Ganymede 171,249 km | k4|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/0s
+ 47 reject: primary impact   r_min 33,310 km; closest unscheduled: Callisto 42,815 km, Ganymede 1,023,810 km | k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s
+ 48 reject: primary impact   r_min 33,310 km; closest unscheduled: Callisto 42,608 km, Ganymede 1,023,810 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/1l
+ 49 reject: primary impact   r_min 29,981 km; closest unscheduled: Callisto 1,179,816 km, Ganymede 1,028,525 km | k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s
+ 50 reject: primary impact   r_min 185 km; closest unscheduled: Callisto 786,704 km, Ganymede 75,786 km | k4|LGanymede>Callisto/2l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l
+screen counts: {'model-invalid': 11, 'pass': 29, 'reject: moon impact': 3, 'reject: primary impact': 8}

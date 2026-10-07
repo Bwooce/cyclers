@@ -1,0 +1,1122 @@
+{
+ "source": "data/942_cell_ev_gauntlet.json",
+ "cell": "ev",
+ "counts": {
+  "reject: planet impact": 9,
+  "pass": 22
+ },
+ "candidates": [
+  {
+   "index": 0,
+   "key": "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.190271920792486,
+    "E": 2.994071820948365
+   },
+   "k": 2,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 102297252.57160692,
+   "r_max_km": 151005203.2103075,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.28511357658430925,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824692,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.28511357658430925,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824692,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 1,
+   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.1902719207924846,
+    "E": 2.994071820948365
+   },
+   "k": 2,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 107444358.34051187,
+   "r_max_km": 151005203.2103075,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5006479784840719,
+     "t_days": 875.916578225266,
+     "frac_of_leg": 0.333333327944519,
+     "soi_km": 616271.1194672836
+    },
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.28511357658430925,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824692,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5006479784840719,
+     "t_days": 875.916578225266,
+     "frac_of_leg": 0.333333327944519,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.28511357658430925,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824692,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 2,
+   "key": "k2|RE/1:1|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 4.409911779934758,
+    "E": 3.5120349845953442
+   },
+   "k": 2,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 90568728.04983287,
+   "r_max_km": 152148366.6744634,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.33443725081737785,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.49999999698246833,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 17641828.29956456,
+     "t_days": 932.0920301341329,
+     "frac_of_leg": 0.5000000003014321,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.33443725081737785,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.49999999698246833,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 3,
+   "key": "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 7.068520211653379,
+    "E": 4.049562351100343
+   },
+   "k": 2,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 86481240.10868938,
+   "r_max_km": 151578695.189366,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.3856237506784013,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824694,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1l",
+     "body": "V",
+     "min_km": 30165647.948312297,
+     "t_days": 763.5656799832582,
+     "frac_of_leg": 0.49999999982372423,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.3856237506784013,
+     "t_days": 1459.8609656338137,
+     "frac_of_leg": 0.4999999969824694,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 4,
+   "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 8.817634487709023,
+    "E": 4.404792448105944
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 88930608.01277082,
+   "r_max_km": 238895943.1169094,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 5723282.986647352,
+     "t_days": 583.9443846369581,
+     "frac_of_leg": 0.4999999975924356,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 47110597.337249644,
+     "t_days": 583.9443880348601,
+     "frac_of_leg": 0.5000000015685967,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 5,
+   "key": "k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 10.364004702191608,
+    "E": 4.892825050758517
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 76539623.3470295,
+   "r_max_km": 185933432.88932827,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 200339040.00257248,
+     "t_days": 1280.2396733546864,
+     "frac_of_leg": 0.499999999942425,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 152190166.00654507,
+     "t_days": 1334.1733528140082,
+     "frac_of_leg": 0.5910986119147416,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 6,
+   "key": "k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 6.0219071616193585,
+    "E": 5.599157062461449
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 89672533.52728914,
+   "r_max_km": 177595408.14344665,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1l",
+     "body": "V",
+     "min_km": 25574285.521260995,
+     "t_days": 777.7944149648947,
+     "frac_of_leg": 0.4999999998172389,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 38479444.96226566,
+     "t_days": 1178.6869802200447,
+     "frac_of_leg": 0.06723532306355079,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 7,
+   "key": "k2|RE/1:1|RE/1:1|LE>V/0s|LV>E/0s",
+   "vinf_kms": {
+    "V": 4.156041701356047,
+    "E": 6.039496188118888
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 108210556.34939745,
+   "r_max_km": 167402732.96943644,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/1:1",
+     "body": "V",
+     "min_km": 241489896.18163508,
+     "t_days": 1456.1464617776346,
+     "frac_of_leg": 0.7892065390523226,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LE>V/0s",
+     "body": "E",
+     "min_km": 41017129.48728454,
+     "t_days": 580.1924082956791,
+     "frac_of_leg": 0.9828437370733671,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 8,
+   "key": "k2|RE/2:3|LE>V/0s|LV>E/0s",
+   "vinf_kms": {
+    "V": 4.156041701356047,
+    "E": 6.039496188118888
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 78731213.62792212,
+   "r_max_km": 167402732.96943644,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:3",
+     "body": "V",
+     "min_km": 175343000.63763526,
+     "t_days": 942.2260273825804,
+     "frac_of_leg": 0.19108453661027586,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LE>V/0s",
+     "body": "E",
+     "min_km": 41017129.48728454,
+     "t_days": 580.1924082956791,
+     "frac_of_leg": 0.9828437370733671,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 9,
+   "key": "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.282135860597094,
+    "E": 6.144459351198307
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 99260592.09099482,
+   "r_max_km": 180294108.20718405,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/1:1",
+     "body": "V",
+     "min_km": 216582730.2296397,
+     "t_days": 1481.6269064881308,
+     "frac_of_leg": 0.791850795613644,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LE>V/0s",
+     "body": "E",
+     "min_km": 42176841.00429802,
+     "t_days": 591.5808455133366,
+     "frac_of_leg": 0.8362066086211544,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 10,
+   "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 13.166434198896294,
+    "E": 9.074921385818076
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 76145744.95980752,
+   "r_max_km": 247052034.27473998,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 17052069.090553846,
+     "t_days": 605.2640563791629,
+     "frac_of_leg": 0.5000000041857877,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 55198101.46837852,
+     "t_days": 591.5111721733024,
+     "frac_of_leg": 0.48330862805707564,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 11,
+   "key": "k2|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 12.771040009056176,
+    "E": 13.846437101377987
+   },
+   "k": 2,
+   "screen_status": "pass",
+   "r_min_km": 77152664.32949619,
+   "r_max_km": 250836522.5221217,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1l",
+     "body": "V",
+     "min_km": 55762769.34914436,
+     "t_days": 772.8011246622601,
+     "frac_of_leg": 0.4999999998487822,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/2:1",
+     "body": "E",
+     "min_km": 155168585.05788428,
+     "t_days": 1324.309783916896,
+     "frac_of_leg": 0.8454982553055814,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 12,
+   "key": "k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,a|LV>E/0s",
+   "vinf_kms": {
+    "V": 4.041313972720514,
+    "E": 3.3390321797077496
+   },
+   "k": 3,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 105653625.25462273,
+   "r_max_km": 175567836.270428,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.6342016068731332,
+     "t_days": 1448.7660215724595,
+     "frac_of_leg": 0.33333332794451936,
+     "soi_km": 616271.1194672836
+    },
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.3179628531601056,
+     "t_days": 2043.8053523282003,
+     "frac_of_leg": 0.49999999698246905,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.6342016068731332,
+     "t_days": 1448.7660215724595,
+     "frac_of_leg": 0.33333332794451936,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.3179628531601056,
+     "t_days": 2043.8053523282003,
+     "frac_of_leg": 0.49999999698246905,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 13,
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.817507180510697,
+    "E": 4.296204639641904
+   },
+   "k": 3,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 85161115.41601847,
+   "r_max_km": 178989970.26549044,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.40911048826552154,
+     "t_days": 2043.8053523282006,
+     "frac_of_leg": 0.4999999969824699,
+     "soi_km": 924635.2319893346
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 23049440.933378994,
+     "t_days": 830.8360734895034,
+     "frac_of_leg": 0.500000000331161,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 0.40911048826552154,
+     "t_days": 2043.8053523282006,
+     "frac_of_leg": 0.4999999969824699,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 14,
+   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.928535943747064,
+    "E": 5.055720770045381
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 78727374.01634237,
+   "r_max_km": 163841941.7790681,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:3",
+     "body": "V",
+     "min_km": 24446210.156183444,
+     "t_days": 2126.9642194229177,
+     "frac_of_leg": 0.7789433425714214,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/2:3",
+     "body": "E",
+     "min_km": 226277417.0723753,
+     "t_days": 1894.7466568339457,
+     "frac_of_leg": 0.4610548243113634,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 15,
+   "key": "k3|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.7730097429660363,
+    "E": 5.582098706360165
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 78681924.24806061,
+   "r_max_km": 160706790.55013165,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:3",
+     "body": "V",
+     "min_km": 18711917.107483122,
+     "t_days": 1369.6175275257233,
+     "frac_of_leg": 0.22677531477421387,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/2:3",
+     "body": "E",
+     "min_km": 225863617.74827632,
+     "t_days": 1541.7756224677648,
+     "frac_of_leg": 0.46244690264832944,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 16,
+   "key": "k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.773009742966031,
+    "E": 5.582098706360165
+   },
+   "k": 3,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 78681924.24806045,
+   "r_max_km": 160706790.55013096,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5920967727605958,
+     "t_days": 875.9165782252653,
+     "frac_of_leg": 0.333333327944519,
+     "soi_km": 616271.1194672836
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5920967727605958,
+     "t_days": 875.9165782252653,
+     "frac_of_leg": 0.333333327944519,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/2:3",
+     "body": "E",
+     "min_km": 225863617.74827534,
+     "t_days": 1961.890699122777,
+     "frac_of_leg": 0.5375530993013241,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 17,
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.582425834005025,
+    "E": 5.923687346676164
+   },
+   "k": 3,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 97155808.67131287,
+   "r_max_km": 167327905.7755159,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5621885076201236,
+     "t_days": 932.0920282252655,
+     "frac_of_leg": 0.3333333279445189,
+     "soi_km": 616271.1194672836
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5621885076201236,
+     "t_days": 932.0920282252655,
+     "frac_of_leg": 0.3333333279445189,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 40166559.92562661,
+     "t_days": 1169.1877350011769,
+     "frac_of_leg": 0.053935946274590835,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 18,
+   "key": "k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.582425834005025,
+    "E": 5.923687346676164
+   },
+   "k": 3,
+   "screen_status": "reject: planet impact",
+   "r_min_km": 78731213.62792218,
+   "r_max_km": 167327905.7755159,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5621885076201236,
+     "t_days": 932.0920282252655,
+     "frac_of_leg": 0.3333333279445189,
+     "soi_km": 616271.1194672836
+    }
+   ],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "HV/3,1,a",
+     "body": "V",
+     "min_km": 0.5621885076201236,
+     "t_days": 932.0920282252655,
+     "frac_of_leg": 0.3333333279445189,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 40166559.92562661,
+     "t_days": 1169.1877350011769,
+     "frac_of_leg": 0.053935946274590835,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 19,
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.7014223874055068,
+    "E": 5.992399780078692
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 99600111.7058186,
+   "r_max_km": 167719992.53469598,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/1:1",
+     "body": "V",
+     "min_km": 1670686.6186148,
+     "t_days": 714.3043912359238,
+     "frac_of_leg": 0.501235318894502,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 40496076.31519057,
+     "t_days": 1167.437812691265,
+     "frac_of_leg": 0.07309082687280398,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 20,
+   "key": "k3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s",
+   "vinf_kms": {
+    "V": 3.7014223874055068,
+    "E": 5.992399780078692
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 78731213.6279222,
+   "r_max_km": 167719992.53469598,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/1:1",
+     "body": "V",
+     "min_km": 1670686.6186148,
+     "t_days": 714.3043912359238,
+     "frac_of_leg": 0.501235318894502,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 40496076.31519057,
+     "t_days": 1167.437812691265,
+     "frac_of_leg": 0.07309082687280398,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 21,
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|RV/1:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 4.340450665458962,
+    "E": 6.24499098754335
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 90838510.80411266,
+   "r_max_km": 168803291.67520073,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 17372045.54528471,
+     "t_days": 763.5656799493354,
+     "frac_of_leg": 0.4999999996997091,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>E/0s",
+     "body": "E",
+     "min_km": 41871030.84093717,
+     "t_days": 1164.5066786586856,
+     "frac_of_leg": 0.09254134294474775,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 22,
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+   "vinf_kms": {
+    "V": 6.126868239008418,
+    "E": 6.263673982398454
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 102098264.7980049,
+   "r_max_km": 235356271.43313283,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LE>V/0s",
+     "body": "V",
+     "min_km": 26731449.243363358,
+     "t_days": 564.9402360783013,
+     "frac_of_leg": 0.6692838580658581,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 36057244.08298636,
+     "t_days": 883.2632989489332,
+     "frac_of_leg": 0.3802008104959948,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 23,
+   "key": "k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s",
+   "vinf_kms": {
+    "V": 10.9319376214333,
+    "E": 8.011994836033171
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 91313127.28484945,
+   "r_max_km": 252237333.32000524,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/3:2",
+     "body": "V",
+     "min_km": 54573167.201874785,
+     "t_days": 1664.335083376171,
+     "frac_of_leg": 0.8302024080606866,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 1172392.3137508899,
+     "t_days": 1484.173764040427,
+     "frac_of_leg": 0.5629425413755303,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 24,
+   "key": "k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 102842123.72798441,
+   "r_max_km": 205504647.16079184,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/1:1",
+     "body": "V",
+     "min_km": 86765896.30336426,
+     "t_days": 1682.6097584942236,
+     "frac_of_leg": 0.3531424134197683,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 23478722.01629895,
+     "t_days": 881.9987340268048,
+     "frac_of_leg": 0.6221218068984408,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 25,
+   "key": "k3|RE/2:1|LE>V/0s|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 105706424.74389367,
+   "r_max_km": 340595480.4697444,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:1",
+     "body": "V",
+     "min_km": 120150552.86430791,
+     "t_days": 1765.614497233719,
+     "frac_of_leg": 0.7901985013566953,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 23478722.01629895,
+     "t_days": 881.9987340268048,
+     "frac_of_leg": 0.6221218068984408,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 26,
+   "key": "k3|RE/2:3|LE>V/0s|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.238915223575792,
+    "E": 9.427994529973164
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 66762225.8496235,
+   "r_max_km": 205504647.16079184,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:3",
+     "body": "V",
+     "min_km": 34645217.59206981,
+     "t_days": 1385.5710621090607,
+     "frac_of_leg": 0.2699473923564782,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 23478722.01629895,
+     "t_days": 881.9987340268048,
+     "frac_of_leg": 0.6221218068984408,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 27,
+   "key": "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 5.972404467930978,
+    "E": 11.064592191188249
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 104097795.0020358,
+   "r_max_km": 235213857.0715215,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 212308351.35143328,
+     "t_days": 1388.8312693113983,
+     "frac_of_leg": 0.5000000000970948,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 18642545.651860233,
+     "t_days": 1466.8776135295361,
+     "frac_of_leg": 0.6238638582859304,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 28,
+   "key": "k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "vinf_kms": {
+    "V": 6.126868239007952,
+    "E": 11.121552938864003
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 103741037.34093358,
+   "r_max_km": 235599659.57669127,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/3:2",
+     "body": "V",
+     "min_km": 211914750.71812153,
+     "t_days": 1613.0152458321625,
+     "frac_of_leg": 0.5300603556446045,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 9412423.605942132,
+     "t_days": 861.873536969395,
+     "frac_of_leg": 0.37321340509221324,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 29,
+   "key": "k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 6.126868239008016,
+    "E": 11.121552938864074
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 103741037.34093332,
+   "r_max_km": 235599659.57669264,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 211951593.6903308,
+     "t_days": 1615.642017785086,
+     "frac_of_leg": 0.5000000000962141,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 44453051.72327148,
+     "t_days": 880.442500901251,
+     "frac_of_leg": 0.3754130484909315,
+     "soi_km": 924635.2319893346
+    }
+   }
+  },
+  {
+   "index": 30,
+   "key": "k3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "vinf_kms": {
+    "V": 13.716254346055747,
+    "E": 17.03381868807729
+   },
+   "k": 3,
+   "screen_status": "pass",
+   "r_min_km": 81455389.8914592,
+   "r_max_km": 360429761.23496276,
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/2:1",
+     "body": "V",
+     "min_km": 67444402.48164314,
+     "t_days": 451.8129578181668,
+     "frac_of_leg": 0.7793888461510057,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LV>V/1h",
+     "body": "E",
+     "min_km": 32826676.591800403,
+     "t_days": 581.1735974506222,
+     "frac_of_leg": 0.05281989324719795,
+     "soi_km": 924635.2319893346
+    }
+   }
+  }
+ ]
+}

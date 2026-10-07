@@ -1,0 +1,32 @@
+  0 reject: planet impact    r_min 102,297,253 km; closest unscheduled: E 0 km | k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s
+  1 reject: planet impact    r_min 107,444,358 km; closest unscheduled: E 0 km, V 1 km | k2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s
+  2 reject: planet impact    r_min 90,568,728 km; closest unscheduled: E 0 km, V 17,641,828 km | k2|RE/1:1|LE>V/0s|HV/1,0,a|LV>V/1h|LV>E/0s
+  3 reject: planet impact    r_min 86,481,240 km; closest unscheduled: E 0 km, V 30,165,648 km | k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s
+  4 pass                     r_min 88,930,608 km; closest unscheduled: E 47,110,597 km, V 5,723,283 km | k2|LE>V/0s|LV>V/1h|LV>E/0s
+  5 pass                     r_min 76,539,623 km; closest unscheduled: E 152,190,166 km, V 200,339,040 km | k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s
+  6 pass                     r_min 89,672,534 km; closest unscheduled: E 38,479,445 km, V 25,574,286 km | k2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s
+  7 pass                     r_min 108,210,556 km; closest unscheduled: E 41,017,129 km, V 241,489,896 km | k2|RE/1:1|RE/1:1|LE>V/0s|LV>E/0s
+  8 pass                     r_min 78,731,214 km; closest unscheduled: E 41,017,129 km, V 175,343,001 km | k2|RE/2:3|LE>V/0s|LV>E/0s
+  9 pass                     r_min 99,260,592 km; closest unscheduled: E 42,176,841 km, V 216,582,730 km | k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s
+ 10 pass                     r_min 76,145,745 km; closest unscheduled: E 55,198,101 km, V 17,052,069 km | k2|LE>V/0s|LV>V/1h|LV>E/0s
+ 11 pass                     r_min 77,152,664 km; closest unscheduled: E 155,168,585 km, V 55,762,769 km | k2|LE>V/0s|LV>V/1l|RV/2:1|LV>E/0s
+ 12 reject: planet impact    r_min 105,653,625 km; closest unscheduled: E 0 km, V 1 km | k3|RE/1:1|LE>V/0s|RV/3:2|HV/3,1,a|LV>E/0s
+ 13 reject: planet impact    r_min 85,161,115 km; closest unscheduled: E 0 km, V 23,049,441 km | k3|RE/1:1|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s
+ 14 pass                     r_min 78,727,374 km; closest unscheduled: E 226,277,417 km, V 24,446,210 km | k3|RE/1:1|RE/2:3|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s
+ 15 pass                     r_min 78,681,924 km; closest unscheduled: E 225,863,618 km, V 18,711,917 km | k3|RE/2:3|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s
+ 16 reject: planet impact    r_min 78,681,924 km; closest unscheduled: E 225,863,618 km, V 1 km | k3|RE/1:1|RE/2:3|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s
+ 17 reject: planet impact    r_min 97,155,809 km; closest unscheduled: E 40,166,560 km, V 1 km | k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s
+ 18 reject: planet impact    r_min 78,731,214 km; closest unscheduled: E 40,166,560 km, V 1 km | k3|RE/2:3|LE>V/0s|RV/1:1|HV/3,1,a|LV>E/0s
+ 19 pass                     r_min 99,600,112 km; closest unscheduled: E 40,496,076 km, V 1,670,687 km | k3|RE/1:1|RE/1:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s
+ 20 pass                     r_min 78,731,214 km; closest unscheduled: E 40,496,076 km, V 1,670,687 km | k3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s
+ 21 pass                     r_min 90,838,511 km; closest unscheduled: E 41,871,031 km, V 17,372,046 km | k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|RV/1:1|LV>E/0s
+ 22 pass                     r_min 102,098,265 km; closest unscheduled: E 36,057,244 km, V 26,731,449 km | k3|RE/1:1|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s
+ 23 pass                     r_min 91,313,127 km; closest unscheduled: E 1,172,392 km, V 54,573,167 km | k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s
+ 24 pass                     r_min 102,842,124 km; closest unscheduled: E 23,478,722 km, V 86,765,896 km | k3|RE/1:1|RE/1:1|LE>V/0s|LV>V/1h|LV>E/0s
+ 25 pass                     r_min 105,706,425 km; closest unscheduled: E 23,478,722 km, V 120,150,553 km | k3|RE/2:1|LE>V/0s|LV>V/1h|LV>E/0s
+ 26 pass                     r_min 66,762,226 km; closest unscheduled: E 23,478,722 km, V 34,645,218 km | k3|RE/2:3|LE>V/0s|LV>V/1h|LV>E/0s
+ 27 pass                     r_min 104,097,795 km; closest unscheduled: E 18,642,546 km, V 212,308,351 km | k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s
+ 28 pass                     r_min 103,741,037 km; closest unscheduled: E 9,412,424 km, V 211,914,751 km | k3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s
+ 29 pass                     r_min 103,741,037 km; closest unscheduled: E 44,453,052 km, V 211,951,594 km | k3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s
+ 30 pass                     r_min 81,455,390 km; closest unscheduled: E 32,826,677 km, V 67,444,402 km | k3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s
+screen counts: {'reject: planet impact': 9, 'pass': 22}
