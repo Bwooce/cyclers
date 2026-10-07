@@ -29,6 +29,9 @@ probe returning empty = image-only).
   Use `-l rus+eng` for KIAM preprints and `-l fra+eng` for French scans. Russian TeX-typeset PDFs
   with Type 3 fonts have garbled text layers: run `ocrmypdf --force-ocr`, file the original PDF
   unchanged, and add the OCR text as a `.txt` sidecar.
+  Without the full pack: make a scratch dir, put `rus.traineddata` from tessdata_best
+  (github.com/tesseract-ocr/tessdata_best) in it, symlink the system `configs/` directory
+  (`$(brew --prefix)/share/tessdata/configs`) into it, and run with `TESSDATA_PREFIX=<dir>`.
 - Old solid RAR archives (inside KIAM source zips): `unar` (`brew install unar`); `7z` and `bsdtar`
   cannot open them. Translations and renders: `tectonic` (`brew install tectonic`).
 - ADS article scans (JBIG2 stencil masks, producer `jb2pdf.py`): `ocrmypdf --redo-ocr` drops the page
