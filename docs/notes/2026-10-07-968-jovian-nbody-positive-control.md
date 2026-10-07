@@ -244,3 +244,21 @@ AMENDMENT 4 (before running): (a) lane corrector B is also run from corrector A'
 (nodes and epochs from `a_state.json`): criterion 5 then asks whether the lane's own residual, with
 the fixed wrap, holds that orbit at its floors and agrees with A; (b) the patched-conic-seed lane run
 gets up to 3 more chunks of 40 evaluations; if still unconverged it is recorded as a seed failure.
+
+### 4.6 Lane B from orbit A (amendment 4) and the GM continuation so far; AMENDMENT 5
+
+- Lane B seeded from orbit A (`b_state_aseed.json`): the lane residual starts at 0.068 km /
+  2.4e-5 km/s (its rails are a 0.02-d spline of Ganymede; A uses the exact circle) and converges to
+  3.7e-6 km / 5.2e-9 km/s, wrap 3.8e-7 km. V_inf at both Ganymede nodes agrees with A to 6e-8 km/s and
+  the node distances to 4e-5 km. Criterion 5 PASS. The old translation-only wrap could not hold this
+  orbit (Ganymede advances 90.4 deg per period). From the patched-conic seed, 160 evaluations stall
+  at leg dv 1.5-3.5 km/s (`b_state_pcseed.json`): a seed failure, as with Member D.
+- GM continuation (amendment 3.2), `data/968_control/gm.json`: converged at s_G = 1, 0.95, 0.855,
+  0.7695 (V_inf 3.0403, 3.0506, 3.0698, 3.0867 km/s), then failed at 0.73 and 0.6925. Cause: at
+  s_G = 0.7695 the periapsis is 2430 km, against a softening radius of 0.7695^(1/3) x 2631 = 2412 km.
+  The pre-registered s^(1/3) radius scaling shrinks slower than r_p, which scales with s_G, so the
+  flyby runs into the softened core. My error in the pre-registration.
+- AMENDMENT 5 (before the further runs): the softening radius scales linearly with s_G (r_surf =
+  s_G x 2631 km), so r_p / r_surf is constant along the continuation, as in the patched-conic limit.
+  Points already converged are unaffected (their periapses lie above both radii). Expectation
+  unchanged: V_inf -> 3.24 and r_p / s_G -> about 2962 km as s_G -> 0.
