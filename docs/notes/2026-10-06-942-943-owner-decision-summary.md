@@ -216,3 +216,19 @@ at t = 0).
 | ev-A | Standish 5/5; DE440 near-ballistic | none (Minovitch 1963 none; web search done) | candidate-novel, or Hollister-Menning class member | Hollister 1969; Hollister & Menning 1970 |
 | ev-B | Standish 2/5 | none (Minovitch 1963 none; web search done) | as ev-A | as ev-A |
 | ge-1..3, em-1..5, vm2-1, vm2n-2 | not passed / negative (conditional) | none | not candidate-novel (ideal-model members only) | — |
+
+## 6. Owner rulings (2026-10-07; asked by the lead with AskUserQuestion, the owner's own answers)
+
+- **gc-1: candidate-novel.** Attribution: Hollister & Menning 1970 (method); Russell & Strange 2007/2009
+  (ideal model; the future-work statement); Campagnola et al. 2019 (class). Reopen if any later source
+  collides.
+- **gc-2: a GanCal-family relative of R-S GanCal#5, NOT candidate-novel.**
+- **ev-C: candidate-novel under `#875` (ii).** Attribution: Russell & Strange 2007/2009, re-applied to
+  Earth-Venus with Venus hosting.
+- **ev-A: candidate-novel.** Attribution: Hollister 1969; Hollister & Menning 1970. The row must state the
+  DE440 standing: near-ballistic, 1.56-2.53 m/s of mid-course correction per 16-yr chain (results note
+  6.25).
+- **ev-B: undecided.** Retry with the continuation methods (6.35, 6.48) at the 3 Standish epochs that
+  failed the gate or did not converge, with the same gate and DOP853 re-fly. The epoch-by-epoch result
+  goes back to the owner.
+- Recorded in the results note, sec. 6.54. The catalogue writeback for gc-1, gc-2, ev-C and ev-A follows.

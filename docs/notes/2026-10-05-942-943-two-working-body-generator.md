@@ -2008,6 +2008,16 @@ growth):
 - Hollister 1963 Sc.D. thesis: one-shot powered E-V-M round trips (an opportunity repeating about every
   6 yr). No collision with ev-A, ev-B or ev-C. Recorded in `2026-10-07-942-evAB-prior-art-search.md`.
 
+### 6.54 Owner rulings under `#875` (2026-10-07)
+
+See `2026-10-06-942-943-owner-decision-summary.md` sec. 6:
+- gc-1: candidate-novel.
+- gc-2: a GanCal-family relative, NOT candidate-novel.
+- ev-C: candidate-novel under (ii).
+- ev-A: candidate-novel, with the DE440 near-ballistic standing stated.
+- ev-B: retry with continuation at its 3 failing or non-converged Standish epochs.
+The attributions are as listed there.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
