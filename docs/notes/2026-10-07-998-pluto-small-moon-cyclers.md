@@ -22,7 +22,7 @@ Pluto-system barycentre NAIF 9), not taken from the registry:
 | Styx | 20.16195 | 3.1566 | 42168 | not in registry | - |
 | Nix | 24.85472 | 3.8913 | 48481 | 49300 | 3.989 |
 | Kerberos | 32.16798 | 5.0363 | 57577 | not in registry | - |
-| Hydra | 38.20202 | 5.9810 | 64569 | 65200 | 6.067 |
+| Hydra | 38.20202 | 5.9810 | 64579 | 65200 | 6.067 |
 
 The brief's ratios (3.16, 3.89, 5.04, 5.98) agree with the fit. The registry Nix and Hydra values
 are 1.7 and 1.0 percent off in a (papercut filed). The registry is not edited.
@@ -140,11 +140,11 @@ Charon flybys per cycle; 3 / 4 / 1 / 2 have two. The moon is met once per cycle,
 
 ## 4. Independent re-fly, SOI self-consistency
 
-Every gate-passing cycler (456) was re-flown leg by leg with DOP853 (rtol 1e-13, `scripts/gauntlet_942.py`
+Every gate-passing cycler (457) was re-flown leg by leg with DOP853 (rtol 1e-13, `scripts/gauntlet_942.py`
 cross_check, imported with the literature module stubbed out): the integrated gate status agrees with
-the generator's on all 456. For the strong set the largest arrival miss at any body is under 0.005 km,
+the generator's on all 457. For the strong set the largest arrival miss at any body is under 0.005 km,
 the largest V_inf vector error 3.2e-9 km/s, and the miss as a fraction of the smaller of the Charon
-and moon SOI at most 2.2e-6 (Charon SOI 8070 km; the four small-moon SOIs are about 150-300 km). Over all 456 the largest miss is 3.4 km (Kerberos, none in the strong set) and the
+and moon SOI at most 2.2e-6 (Charon SOI 8070 km; the four small-moon SOIs are about 150-300 km). Over all 457 the largest miss is 3.4 km (Kerberos, none in the strong set) and the
 largest SOI fraction 1.4e-2. Data: `data/998_pluto_smallmoons/<cell>_gauntlet.json`. A small moon is
 met at its centre by construction; whether a body 5-18 km across can be met to the km level is not
 addressed.
@@ -221,11 +221,11 @@ binaries is registered as its own task, and src is not patched here):
 
 ### 6.1 Real-ephemeris check of every gate-passing candidate (lead ruling)
 
-The same script, run on all 456 gate-passing cyclers (`--pool all`, one cycle, five epochs;
+The same script, run on all 457 gate-passing cyclers (`--pool all`, one cycle, five epochs;
 `<cell>_realeph_all_n1.json`). Strong set (224): the demanded-turn gate passes at all five epochs for
 219 (Styx 106 of 108, Nix 44 of 46, Kerberos 40 of 41, Hydra 29 of 29), and 217 of those also refit to
 under 1 m/s at every epoch (the worst strong residual is 17 m/s, Hydra, in 2 cycles that close
-above 1 m/s but below 10). The 232 gate-passing cyclers outside the strong set refit as well
+above 1 m/s but below 10). The 233 gate-passing cyclers outside the strong set refit as well
 (residual under 1 m/s at every epoch for 212, gate pass at every epoch for 209), so the real-ephemeris
 step does not separate them; the strong filters rest on the patched-conic argument in sec. 3, not on
 this step. Not done: the three-cycle chain was run only for the 12 best-ratio cyclers.
@@ -251,7 +251,7 @@ Assumed or not done:
 ## 8. Result
 
 This is not a zero. In the ideal circular-coplanar model, with Charon as the only massive node and
-Charon returns up to 2 per cycle, the enumeration finds 456 gate-passing one-working-node cyclers
+Charon returns up to 2 per cycle, the enumeration finds 457 gate-passing one-working-node cyclers
 (183 Styx, 149 Nix, 62 Kerberos, 63 Hydra), 224 of them after the two extra filters. Their V_inf at
 Charon is 0.16-0.36 km/s, their periods 23-56 d (k = 3-6), and the 12 best close to under 1 m/s on
 plu060 states at five epochs. They are candidates pending the literature gate (#972) and adjudication.
