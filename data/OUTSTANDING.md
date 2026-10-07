@@ -2352,7 +2352,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   casoliva-2-1b is in-plane STABLE (k_par 1.513) and vertically unstable. Patches held in
   `data/1030_stability_audit/` (Casoliva wording; optional Vaquero c198/c246 wording "in-plane stable,
   vertically unstable", which touches row text, so the frozen-census ratchets apply). The catalogue edit
-  is scheduled with the `#970` insertion in one ratchet window. Original text: **CASOLIVA ROWS STORE THE VERTICAL STABILITY INDEX BUT THEIR NOTES SAY "STABLE".**
+  is scheduled with the `#970` insertion in one ratchet window. The audit's flag on
+  ross-rt-em-cycler-21-2025 was RETRACTED by `#1031` (`f1310e93`): its stability claim holds, and the
+  audit note and `audit.json` are corrected. Original text: **CASOLIVA ROWS STORE THE VERTICAL STABILITY INDEX BUT THEIR NOTES SAY "STABLE".**
   `casoliva-7-3a-em-cycler-2010` and `casoliva-2-1b-em-resonant-po-2010` store
   `orbit_elements.cr3bp.stability_index` = k_perp (-1.2985 and +2.037), which matches Casoliva's printed
   k through `#801`'s `_K_SIGNED_FORCE_PERP` override, while their notes say "STABLE". On the rows' own
@@ -2366,12 +2368,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   dominates. So FIRST grep the producing function(s) and audit every CR3BP row whose stored value
   equals k_perp rather than k_par (list them in this bullet), and only then fix the wording. Any
   `data/catalogue.yaml` edit runs all ratchets.
-- `#1031` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from the `#1030` audit).
-  **ross-rt-em-cycler-21-2025: STORED STATE CLOSES ONLY TO 1.1e-4, AND ITS STABILITY CLAIM DOES NOT
-  REPRODUCE.** Re-closed at its stored C, the orbit gives Barden nu = -1.35 (k_par -2.69) against a stored
-  0.050 called stable. Task: re-find the nu = 0 midpoint and re-check the row's V2 "|nu| < 1" claim;
-  evidence note first; the catalogue edit is held for the ratchet window. Control: ross-31 reproduces
-  its stored nu.
+- `#1031` — ✓ DONE 2026-10-08 (earthmoon-opus, `f1310e93`; from the `#1030` audit).
+  **ross-rt-em-cycler-21-2025: THE ROW'S V2 "|nu| < 1" CLAIM HOLDS; the `#1030` flag on it is RETRACTED.**
+  The audit had re-closed at the C of the 10-digit rounded state, 2e-11 off, which is wider than the
+  row's whole stable window in C (1.8e-11), so it judged a neighbouring unstable member. Fixed-x0 scan:
+  |nu| < 1 for x0 in [0.723732775, 0.723734308]; the nu = +1 edge at C = 3.12938953109233 equals the
+  paper's C^max to 5e-15; the nu = 0 midpoint at C = 3.129389531087740 equals C^stable to 5e-13; at the
+  row's own x0 nu = +0.050 (stored 0.05007); vertically stable too (k_perp about -1.14). Unresolved
+  aside: the perilune change across the window is 0.0046 km against the paper's Delta_p_m of 4.23 km
+  (a different quantity or definition; the verdict is unchanged). Optional precision patch (ydot0 at
+  full precision) in `data/1031_ross21/`, held for the ratchet window with `#970`/`#1030`. The `#1030`
+  audit note and `audit.json` were corrected in the same commit.
 - `#1032` — registered 2026-10-08 (from the `#1030` audit; **OWNER / SCHEMA DECISION**, not dispatched).
   **`orbit_elements.cr3bp.stability_index` MIXES FOUR CONVENTIONS:** Barden nu; Casoliva's k (stable if
   |k| < 2); the spectral radius on the 20 `#796` corridor rows; and a paper's own sp. Meanwhile
