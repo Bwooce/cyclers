@@ -1,0 +1,41 @@
+2026-10-07T21:41:37+00:00 pc: 156 distinct roots; nearest Table 4: [{"legs": "(0, 'single')(1, 'high')(1, 'low')(1, 'low')", "x_days": [-0.7200617643150139, 3.2092424233520895, 11.747487854409027, 18.52679303524618], "vinf": {"Ganymede": 6.497448129535897, "Io": 7.857940019237687, "Europa": 9.772149467715142}, "dist_table4": 0.6521494677151427, "turns_deg": [117.53259055708295, 0.536620598958935, 129.77801584510075, 163.4994858736899], "flyby_bodies": ["Ganymede", "Ganymede", "Io", "Europa"], "gate25": "fail", "gate_project": "fail", "miss_km": 4.519375640383894e-07}, {"legs": "(0, 'single')(1, 'low')(1, 'low')(1, 'high')", "x_days": [-1.231295579537677, 0.43480567620427785, 11.63909451919064, 17.975346775814916], "vinf": {"Ganymede": 6.303860754939777, "Io": 7.553659166858688, "Europa": 8.381760841272982}, "dist_table4": 0.8263408331413125, "turns_deg": [145.8438184734222, 144.06361940105444, 136.9178596931398, 2.8633952645978535], "flyby_bodies": ["Ganymede", "Ganymede", "Io", "Europa"], "gate25": "fail", "gate_project": "fail", "miss_km": 5.921742014902074e-08}, {"legs": "(0, 'single')(1, 'high')(1, 'low')(1, 'high')", "x_days": [4.213553442170784, 9.229173783577316, 15.3791182446481, 22.45051826212082], "vinf": {"Ganymede": 7.010047609528301, "Io": 7.551336785309088, "Europa": 8.6410068690669}, "dist_table4": 0.8286632146909128, "turns_deg": [21.417725905455992, 115.00966870774212, 131.77483849115302, 171.04227617659873], "flyby_bodies": ["Ganymede", "Ganymede", "Io", "Europa"], "gate25": "fail", "gate_project": "fail", "miss_km": 2.0534727269503887e-07}]
+2026-10-07T21:51:12+00:00 pc consistent laplace=180.0: 156 roots, nearest 0.652 km/s
+2026-10-07T21:51:12+00:00 pc consistent: 156 roots; nearest 0.652 km/s ({"Ganymede": 6.497448129535897, "Io": 7.857940019237687, "Europa": 9.772149467715142}); gate-passing 0, nearest nan
+2026-10-07T21:52:02+00:00 pc tsyn705 laplace=180.0: 166 roots, nearest 0.507 km/s
+2026-10-07T21:52:02+00:00 pc tsyn705: 166 roots; nearest 0.507 km/s ({"Ganymede": 6.672986727351183, "Io": 8.529069110534785, "Europa": 9.626961857082307}); gate-passing 0, nearest nan
+2026-10-07T21:53:04+00:00 pc laplace laplace=0.0: 133 roots, nearest 0.551 km/s
+2026-10-07T21:53:47+00:00 pc laplace laplace=15.0: 136 roots, nearest 0.466 km/s
+2026-10-07T21:54:37+00:00 pc laplace laplace=30.0: 152 roots, nearest 0.671 km/s
+2026-10-07T21:55:36+00:00 pc laplace laplace=45.0: 147 roots, nearest 0.667 km/s
+2026-10-07T21:56:39+00:00 pc laplace laplace=60.0: 149 roots, nearest 0.627 km/s
+2026-10-07T21:57:24+00:00 pc laplace laplace=75.0: 154 roots, nearest 0.587 km/s
+2026-10-07T21:58:05+00:00 pc laplace laplace=90.0: 154 roots, nearest 0.545 km/s
+2026-10-07T21:58:50+00:00 pc laplace laplace=105.0: 160 roots, nearest 0.922 km/s
+2026-10-07T21:59:35+00:00 pc laplace laplace=120.0: 148 roots, nearest 0.632 km/s
+2026-10-07T22:01:36+00:00 pc laplace laplace=0.0: 133 roots, nearest 0.551 km/s
+2026-10-07T22:02:21+00:00 pc laplace laplace=15.0: 136 roots, nearest 0.466 km/s
+2026-10-07T22:03:15+00:00 pc laplace laplace=30.0: 152 roots, nearest 0.671 km/s
+2026-10-07T22:04:21+00:00 pc laplace laplace=45.0: 147 roots, nearest 0.667 km/s
+2026-10-07T22:05:27+00:00 pc laplace laplace=60.0: 149 roots, nearest 0.627 km/s
+2026-10-07T22:06:16+00:00 pc laplace laplace=75.0: 154 roots, nearest 0.587 km/s
+2026-10-07T22:07:00+00:00 pc laplace laplace=90.0: 154 roots, nearest 0.545 km/s
+2026-10-07T22:07:49+00:00 pc laplace laplace=105.0: 160 roots, nearest 0.922 km/s
+2026-10-07T22:08:31+00:00 pc laplace laplace=120.0: 148 roots, nearest 0.632 km/s
+2026-10-07T22:09:13+00:00 pc laplace laplace=135.0: 147 roots, nearest 0.637 km/s
+2026-10-07T22:09:53+00:00 pc laplace laplace=150.0: 160 roots, nearest 0.660 km/s
+2026-10-07T22:10:21+00:00 pc laplace laplace=165.0: 156 roots, nearest 0.648 km/s
+2026-10-07T22:10:52+00:00 pc laplace laplace=180.0: 156 roots, nearest 0.652 km/s
+2026-10-07T22:11:23+00:00 pc laplace laplace=195.0: 157 roots, nearest 0.400 km/s
+2026-10-07T22:11:59+00:00 pc laplace laplace=210.0: 175 roots, nearest 0.483 km/s
+2026-10-07T22:12:31+00:00 pc laplace laplace=225.0: 163 roots, nearest 0.664 km/s
+2026-10-07T22:13:06+00:00 pc laplace laplace=240.0: 171 roots, nearest 0.208 km/s
+2026-10-07T22:13:26+00:00 pc laplace laplace=255.0: 165 roots, nearest 0.201 km/s
+2026-10-07T22:13:48+00:00 pc laplace laplace=270.0: 157 roots, nearest 0.589 km/s
+2026-10-07T22:14:04+00:00 pc laplace laplace=285.0: 146 roots, nearest 0.789 km/s
+2026-10-07T22:14:20+00:00 pc laplace laplace=300.0: 159 roots, nearest 0.791 km/s
+2026-10-07T22:14:40+00:00 pc laplace laplace=315.0: 145 roots, nearest 0.803 km/s
+2026-10-07T22:14:59+00:00 pc laplace laplace=330.0: 144 roots, nearest 0.719 km/s
+2026-10-07T22:15:15+00:00 pc laplace laplace=345.0: 139 roots, nearest 0.635 km/s
+2026-10-07T22:15:15+00:00 pc laplace: 3673 roots; nearest 0.201 km/s ({"Ganymede": 7.2706034346432205, "Io": 8.213132026022247, "Europa": 9.130760722752965}); gate-passing 11, nearest 1.246
+2026-10-07T22:16:23+00:00 pc coded laplace=180.0: 126 roots, nearest 0.173 km/s
+2026-10-07T22:16:23+00:00 pc coded: 126 roots; nearest 0.173 km/s ({"Ganymede": 7.081891313977472, "Io": 8.206998771112488, "Europa": 9.067897989140569}); gate-passing 1, nearest 0.173
