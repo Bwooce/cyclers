@@ -102,6 +102,24 @@ def ideal_t_syn(mu: float = MU_JUPITER_KM3_S2) -> float:
     return 2.0 * math.pi * math.sqrt(a_gan**3 / mu)
 
 
+def ideal_t_syn_consistent(mu: float = MU_JUPITER_KM3_S2) -> float:
+    """Synodic period (s) of the ideal model that :func:`ideal_moon_smas` builds (#1023).
+
+    The smas are set so that in one synodic period every moon advances ``2 pi k + Delta``
+    (Io ``8 pi + Delta``, Europa ``4 pi + Delta``, Ganymede ``2 pi + Delta``; paper p.3). The
+    consistent synodic period is therefore ``T_syn = (2 pi + Delta) / n_Ganymede`` (7.1054 d with
+    the registry Io sma and this mu), and over it the whole configuration rotates rigidly by Delta.
+    :func:`ideal_t_syn` returns the ideal Ganymede period (7.0042 d) instead; over that period the
+    moons advance by different angles (Ganymede 0, Europa -5.13, Io -15.38 deg), so no exactly
+    periodic orbit exists in the model it implies. Neither value is the paper's printed
+    T_syn = 7.05 d (p.2), which suggests the paper's own a_Io differs from the registry Io; that
+    discrepancy is recorded, not resolved. :func:`ideal_t_syn` and its callers are unchanged here.
+    """
+    a_gan = ideal_moon_smas()["Ganymede"]
+    n_gan = math.sqrt(mu / a_gan**3)
+    return (2.0 * math.pi + IDEAL_DELTA_RAD) / n_gan
+
+
 def resonant_sma(n_syn: int, n_rev: int, t_syn: float, mu: float = MU_JUPITER_KM3_S2) -> float:
     """Spacecraft semi-major axis (km) for the ``n_syn:n_rev`` resonance (Eq. 1).
 
@@ -740,6 +758,7 @@ __all__ = [
     "eggie_resonant_sma",
     "ideal_moon_smas",
     "ideal_t_syn",
+    "ideal_t_syn_consistent",
     "refine_eggie",
     "resonant_period",
     "resonant_sma",

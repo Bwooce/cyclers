@@ -17,6 +17,7 @@ from cyclerfinder.search.resonant_conic import (
     MU_JUPITER_KM3_S2,
     ideal_moon_smas,
     ideal_t_syn,
+    ideal_t_syn_consistent,
 )
 
 
@@ -30,11 +31,8 @@ def test_coded_ideal_t_syn_is_not_a_rigid_rotation() -> None:
     assert max(adv.values()) - min(adv.values()) > math.radians(10.0)
 
 
-@pytest.mark.xfail(strict=True, reason="#1023: ideal_t_syn_consistent added in the next commit")
 def test_consistent_t_syn_advances_every_moon_by_delta() -> None:
-    import cyclerfinder.search.resonant_conic as rc
-
-    t = rc.ideal_t_syn_consistent()  # type: ignore[attr-defined]
+    t = ideal_t_syn_consistent()
     for a in ideal_moon_smas().values():
         assert _advance_mod_2pi(a, t) == pytest.approx(IDEAL_DELTA_RAD, abs=1e-12)
     assert t / 86400.0 == pytest.approx(7.10536, abs=1e-4)
