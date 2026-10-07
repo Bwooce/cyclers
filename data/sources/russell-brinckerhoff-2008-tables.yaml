@@ -1,0 +1,140 @@
+# Russell & Brinckerhoff 2008, Tables 1-3 and the Appendix gravity field: circulating eccentric orbits at planetary moons.
+# Source: R. P. Russell and A. T. Brinckerhoff, "Eccentric Orbits around Planetary Moons", paper AAS 08-181,
+#   AAS/AIAA Space Flight Mechanics Meeting, Galveston TX, Jan. 2008 (preprint; page 1 asks readers to cite the journal form).
+#   Journal form: J. Guid. Control Dyn. 32(2):424-436 (2009), "Circulating Eccentric Orbits Around Planetary Moons",
+#   doi 10.2514/1.38593 (Crossref; the preprint banner says pp. 423-435, Crossref says 424-436) - NOT HELD; not compared.
+# Local file: preprint PDF, 19 pp., md5 27bfd2bddc7cdcbd5d3519217e2272a0 (Word -> Acrobat Distiller 8.1.0, digital text layer).
+# Locations (pdf page = page index in the 19-page file): Table 1 p.3; Table 2 p.9; Table 3 p.11; Appendix p.18.
+# Transcribed from 300-dpi page images; no value computed by us. Witnesses: A = my reading of the page image; B = the
+#   publisher text layer (pdftotext -layout). A = B on every Table 1, 2, 3 cell and on the Appendix (checked by eye against
+#   the layer; no mismatch). Numbers are kept as printed, as strings.
+# Checks (ours, check_russell_brinckerhoff2008.py / .out):
+#   - Table 1: N_s = sqrt((mu_s+mu_p)/a_s^3) and TU = 1/N_s reproduce the printed values to the printed digits.
+#     LU: the printed 45749.9268762215 km equals (mu_s/N_s^2)^(1/3), the Hill unit.
+#   - Table 2 (Eqs. 15-18 with Ts/T = 10): for the 16 rows with a printed i_max, a_max, e_max, C1 and i_max reproduce to the
+#     last printed digit for the Earth, Jupiter and Saturn rows and within 0.1 percent for the Uranus and Neptune rows (we used
+#     rounded true mu_p). Charon is 4 percent off in a_max (see below). T_c reproduces within 1 percent for 14 of 16 rows
+#     (Charon 1.6 percent off; Tethys not, because C1 = 0.600 sits on the bifurcation and T_c is very sensitive) when the
+#     quadrature (Eq. 11) starts from an initial e0 = 0.001 at omega = 0, that is C2 = 0.4 e0^2. The paper does not print
+#     this e0 for Table 2. T_c grows without bound as C2 -> 0 (e0 = 1e-6 gives about 1.9 times the printed value).
+#   - PRINT SLIP in Table 2: the Uranus, Neptune and Pluto sub-headers print mu_p = 398479.14 km3/s2 (the Earth value, a
+#     copy of the first sub-header). The rows reproduce only with the true mu_p of each planet (Uranus 5.79e6, Neptune 6.84e6,
+#     Pluto system ~0.9e3 km3/s2). With the printed 398479.14 the rows do not reproduce (Ariel a_max 2507 km vs printed 1028).
+#     The printed mu_p cells are kept as printed in the "mu_p_as_printed" fields.
+#   - Charon: with mu_p = 981.6 (Pluto system) ours is a_max 1810 / e_max 0.617; with Pluto alone (869.6) ours is 1885 / 0.632;
+#     printed 1880 / 0.631. The printed row is close to the Pluto-alone value; the paper does not say which.
+#   - Table 3: (a, e, i, omega, Omega, nu) recomputed from the printed Cartesian state with the Table 1 mu_s agree with the
+#     printed elements to the printed digits for both orbits (read as inertial-frame state per the table footnote).
+conventions:
+  frame_table3: "non-rotating frame aligned with the IAU Ganymede body-fixed frame at epoch (Table 3 footnote)"
+  hill_units: "normalised with the moon mean motion N_s = 1 (Eq. 2 text); LU = (mu_s/N_s^2)^(1/3), TU = 1/N_s"
+  Ts_over_T: "10 (Table 2 footnote b); T = spacecraft period"
+  altmin_km: 100  # Table 2 footnote a: rp = r + alt_min, alt_min = 100 km, r is the moon mean radius
+  negative_emax: "no figure-eight orbit exists at this period ratio (text, p.9); i_max and T_c printed N/A"
+  Tc_note: "Tc is the full cycle period of the e-omega contour (Eq. 11), here for a figure-eight orbit with small non-zero e0"
+  units: {mu: km3/s2, lengths: km, Ts: days, angles: deg, Tc: days}
+
+table_1_jupiter_ganymede:
+  page: 3
+  mu_ganymede_km3s2: "9886.99742842995"
+  mu_jupiter_km3s2: "1.26618626797685e8"
+  jupiter_ganymede_distance_km: "1.0704e6"
+  ganymede_mean_radius_km: "2631.2"
+  hill_time_unit_s: "98413.2095723724"
+  hill_length_unit_km: "45749.9268762215"
+  system_mean_motion_rad_s: "1.016123754468760e-5"
+
+table_2:
+  page: 9
+  caption: "Figure-eight science orbits with maximum inclinations (b) for different moon systems"
+  columns: [satellite, mu_s_km3s2, rp_km, a_s_km, Ts_days, a_max_km, e_max, C1, i_max_deg, Tc_days]
+  rows:
+    # planet: mu_p_as_printed in km3/s2
+    - {planet: Earth, mu_p_as_printed: "398479.14", satellite: Moon, mu_s: "4902.801", rp: "1838", a_s: "384400", Ts: "27.46", a_max: "19119", e_max: "0.904", C1: "0.110", i_max: "70.6", Tc: "832.7"}
+    - {planet: Mars, mu_p_as_printed: "42815.397", satellite: Phobos, mu_s: "0.0007158", rp: "111", a_s: "9380", Ts: "0.32", a_max: "5", e_max: "-20.500", C1: "-251.57", i_max: "N/A", Tc: "N/A"}
+    - {planet: Mars, mu_p_as_printed: "42815.397", satellite: Deimos, mu_s: "0.000098", rp: "106", a_s: "23460", Ts: "1.26", a_max: "7", e_max: "-14.944", C1: "-133.39", i_max: "N/A", Tc: "N/A"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Io, mu_s: "5959.916", rp: "1922", a_s: "421800", Ts: "1.77", a_max: "3281", e_max: "0.414", C1: "0.497", i_max: "45.2", Tc: "98.0"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Europa, mu_s: "3202.739", rp: "1661", a_s: "671100", Ts: "3.55", a_max: "4244", e_max: "0.609", C1: "0.378", i_max: "52.1", Tc: "147.4"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Ganymede, mu_s: "9887.834", rp: "2731", a_s: "1070400", Ts: "7.16", a_max: "9856", e_max: "0.723", C1: "0.286", i_max: "57.6", Tc: "259.6"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Callisto, mu_s: "7179.289", rp: "2510", a_s: "1882700", Ts: "16.69", a_max: "15581", e_max: "0.839", C1: "0.178", i_max: "65.1", Tc: "537.8"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Amalthea, mu_s: "0.138", rp: "183", a_s: "181400", Ts: "0.50", a_max: "40", e_max: "-3.562", C1: "-7.011", i_max: "N/A", Tc: "N/A"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Thebe, mu_s: "0.1", rp: "149", a_s: "221900", Ts: "0.68", a_max: "44", e_max: "-2.379", C1: "-2.795", i_max: "N/A", Tc: "N/A"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Adrastea, mu_s: "0.0005", rp: "108", a_s: "129000", Ts: "0.30", a_max: "4", e_max: "-23.633", C1: "-334.52", i_max: "N/A", Tc: "N/A"}
+    - {planet: Jupiter, mu_p_as_printed: "126649960", satellite: Metis, mu_s: "0.008", rp: "122", a_s: "128000", Ts: "0.30", a_max: "11", e_max: "-10.063", C1: "-60.160", i_max: "N/A", Tc: "N/A"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Mimas, mu_s: "2.53", rp: "299", a_s: "185540", Ts: "0.94", a_max: "162", e_max: "-0.843", C1: "0.174", i_max: "N/A", Tc: "N/A"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Enceladus, mu_s: "7.21", rp: "352", a_s: "238040", Ts: "1.37", a_max: "295", e_max: "-0.195", C1: "0.577", i_max: "N/A", Tc: "N/A"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Tethys, mu_s: "41.21", rp: "636", a_s: "294670", Ts: "1.89", a_max: "653", e_max: "0.025", C1: "0.600", i_max: "39.3", Tc: "193.9"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Dione, mu_s: "73.113", rp: "663", a_s: "377420", Ts: "2.74", a_max: "1012", e_max: "0.345", C1: "0.528", i_max: "43.4", Tc: "172.6"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Rhea, mu_s: "154.07", rp: "865", a_s: "527070", Ts: "4.52", a_max: "1812", e_max: "0.523", C1: "0.436", i_max: "48.7", Tc: "210.6"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Titan, mu_s: "8978.19", rp: "2676", a_s: "1221870", Ts: "15.95", a_max: "16286", e_max: "0.836", C1: "0.181", i_max: "64.8", Tc: "515.4"}
+    - {planet: Saturn, mu_p_as_printed: "37918950", satellite: Hyperion, mu_s: "0.37", rp: "233", a_s: "1500880", Ts: "21.71", a_max: "691", e_max: "0.663", C1: "0.336", i_max: "54.5", Tc: "843.4"}
+    - {planet: Uranus, mu_p_as_printed: "398479.14", satellite: Ariel, mu_s: "90.3", rp: "679", a_s: "190900", Ts: "2.52", a_max: "1028", e_max: "0.340", C1: "0.531", i_max: "43.2", Tc: "160.9"}
+    - {planet: Uranus, mu_p_as_printed: "398479.14", satellite: Umbriel, mu_s: "78.2", rp: "685", a_s: "266000", Ts: "4.15", a_max: "1366", e_max: "0.499", C1: "0.451", i_max: "47.8", Tc: "200.4"}
+    - {planet: Uranus, mu_p_as_printed: "398479.14", satellite: Titania, mu_s: "235.3", rp: "889", a_s: "436300", Ts: "8.72", a_max: "3234", e_max: "0.725", C1: "0.285", i_max: "57.8", Tc: "315.5"}
+    - {planet: Uranus, mu_p_as_printed: "398479.14", satellite: Oberon, mu_s: "201.1", rp: "861", a_s: "583500", Ts: "13.48", a_max: "4104", e_max: "0.790", C1: "0.225", i_max: "61.7", Tc: "455.8"}
+    - {planet: Uranus, mu_p_as_printed: "398479.14", satellite: Miranda, mu_s: "4.4", rp: "336", a_s: "129900", Ts: "1.42", a_max: "256", e_max: "-0.314", C1: "0.541", i_max: "N/A", Tc: "N/A"}
+    - {planet: Neptune, mu_p_as_printed: "398479.14", satellite: Triton, mu_s: "1427.9", rp: "1453", a_s: "354800", Ts: "5.87", a_max: "4531", e_max: "0.679", C1: "0.323", i_max: "55.4", Tc: "223.7"}
+    - {planet: Pluto, mu_p_as_printed: "398479.14", satellite: Charon, mu_s: "108", rp: "693", a_s: "17536", Ts: "5.70", a_max: "1880", e_max: "0.631", C1: "0.361", i_max: "53.1", Tc: "230.1"}
+
+table_3:
+  page: 11
+  caption: "Example periodic orbits in Hill's model plus 4x4 Ganymede gravity field"
+  frame: "non-rotating frame aligned with the IAU Ganymede body-fixed frame at epoch"
+  note: "Orbit names are revolutions of the spacecraft : revolutions of the moon base ratio (12:81 means 81 spacecraft revolutions, 12 plus a node-regression term of moon revolutions, text p.11)."
+  orbits:
+    "12:81 unstable orbit":
+      x0_km: "-1.10294724E+04"
+      y0_km: "6.09916977E+02"
+      z0_km: "-9.92043402E-15"
+      u0_kms: "-2.56020704E-02"
+      v0_kms: "-4.71573204E-01"
+      w0_kms: "8.73907974E-01"
+      a0_km: "1.23072793E+04"
+      e0: "1.02457203E-01"
+      i0_deg: "6.16128288E+01"
+      omega0_deg: "2.94588490E-01"
+      Omega0_deg: "1.76834834E+02"
+      nu0_deg: "-2.94588490E-01"
+      Tc_day: "7.75866851E+01"
+      avg_i_deg: "56.18"
+    "9:56 stable orbit":
+      x0_km: "1.27215637E+04"
+      y0_km: "2.74572065E+03"
+      z0_km: "0.00000000E+00"
+      u0_kms: "-5.19574390E-01"
+      v0_kms: "3.16290562E-01"
+      w0_kms: "6.25411458E-01"
+      a0_km: "1.30393130E+04"
+      e0: "5.05659039E-01"
+      i0_deg: "5.61929409E+01"
+      omega0_deg: "1.20188898E+02"
+      Omega0_deg: "1.21794367E+01"
+      nu0_deg: "-1.20188898E+02"
+      Tc_day: "5.70386714E+01"
+      avg_i_deg: "56.22"
+
+appendix_ganymede_4x4_field:
+  page: 18
+  note: "normalised coefficients, representative; J2 and C22 estimated from Galileo flyby data, the rest representative (p.3). Used for JIMO studies."
+  coefficients:
+    J2: "5.911042930573900E-05"
+    J3: "-3.921720290616328E-07"
+    J4: "1.619380392450006E-06"
+    C21: "-1.089379888322607E-08"
+    S21: "-1.204834981027450E-06"
+    C22: "6.152429561579210E-05"
+    S22: "-5.410422638487023E-06"
+    C31: "-6.863916460740865E-06"
+    S31: "-5.971806445404929E-06"
+    C32: "-6.481431518636326E-06"
+    S32: "1.019584456216980E-05"
+    C33: "-7.575116779515599E-06"
+    S33: "-8.279091297771898E-07"
+    C41: "4.018167872716952E-06"
+    S41: "5.830284294524415E-06"
+    C42: "-9.205006749291541E-07"
+    S42: "-7.719921073220343E-06"
+    C43: "1.807800500915109E-06"
+    S43: "3.883084011103666E-06"
+    C44: "3.101357600870122E-07"
+    S44: "5.656462546498310E-06"
