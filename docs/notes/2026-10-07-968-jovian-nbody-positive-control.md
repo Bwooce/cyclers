@@ -607,3 +607,31 @@ rows (weight 1e3 per km/s), so the system is square: 7M unknowns, 6(M-1) + M + 6
 sigma -> 0 limit this is the patched-conic chain itself. The continuation restarts at sigma = 0.02.
 Everything else is as amendments 8-11. A pass then means the interior of the chain closes in
 continuous gravity with its ends held on the patched-conic asymptotes.
+
+### 9.5 Rung (b) result under amendment 12 (`data/968_rungb/sigma_n1.json`): Europa impact at sigma = 0.62
+
+With the end asymptotes pinned, the one-cycle chain converged at the lane floors from sigma = 0.02 up
+to 0.518. Three intermediate points (0.0288-0.0415) were noise-floor-limited; every point from
+0.178 up met the floors. The interior flybys moved steadily. At sigma = 0.622 the solve converged,
+but with the Europa periapsis at 967.9 km against a scaled Europa radius of 970.6 km (altitude
+-2.8 km), so the acceptance check stopped the run.
+
+| sigma | V_inf G1 / G2 / G3 / E / G4 | Europa r_p / sigma (km) | Europa alt (km) |
+|---|---|---|---|
+| 0.02 | 3.198 / 3.199 / 3.203 / 3.787 / 3.183 | 3,240 | 33.6 |
+| 0.282 | 3.198 / 3.197 / 3.236 / 3.783 / 3.183 | 2,239 | 191.5 |
+| 0.518 | 3.198 / 3.194 / 3.259 / 3.786 / 3.183 | 1,722 | 83.7 |
+| 0.622 | (converged, rejected) | 1,556 | -2.8 |
+
+Reading (INFERRED, not shown): the two end V_inf vectors are held at their patched-conic values.
+At full mass the R-S values shift by 0.1-0.3 km/s in continuous gravity (sec. 8.2), so the
+interior has to absorb the whole shift, and the Europa flyby (turn 7.2 deg at 3.79 km/s in the
+chain) is driven into the surface. In the real ten-cycle chain every flyby could shift together.
+So this may be an artefact of pinning the ends, not a property of #316.
+
+Status: two distinct, diagnosed approaches have not closed the real-ephemeris control.
+- Minimum-norm free ends: the first node drifted into Ganymede at sigma = 0.063.
+- Pinned end asymptotes: Europa impact at sigma = 0.62.
+
+Per the brief this is a stop-and-ask. The lane itself converged at its floors at every accepted
+point. The open question is the formulation of an open real-ephemeris chain.
