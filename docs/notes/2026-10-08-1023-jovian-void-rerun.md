@@ -194,3 +194,13 @@ Readings, fixed now:
 Expected outcomes, stated now: (i) a near root with probability 0.4; (ii) at some angle 0.35;
 (iii) 0.35. Overall I expect at least one variant to give a root within 0.5 km/s, with probability
 about 0.6.
+
+### 6.1 Result (i), T_syn = 7.05 d (`data/1023_eggie/pc_roots_tsyn705.json`)
+
+Smas rebuilt for T_syn = 7.05 d: Io 419,606, Europa 664,490, Ganymede 1,049,800 km (the
+pre-registration's "417,834" for Io was a guess; the computed value is 419,606). 166 exact roots.
+Nearest to Table 4: 0.507 km/s (E 9.627, G 6.673, I 8.529). Gate-passing roots: NONE. Not within
+0.5 km/s, by 0.007 km/s.
+
+The search script was refactored for the variants; the consistent model re-run reproduces 3.6
+exactly (156 roots, nearest 0.652 km/s).

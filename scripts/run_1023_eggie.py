@@ -23,7 +23,11 @@ from numpy.typing import NDArray
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2
-from cyclerfinder.search.resonant_conic import ideal_moon_smas, ideal_t_syn_consistent
+from cyclerfinder.search.resonant_conic import (
+    ideal_moon_smas,
+    ideal_t_syn,
+    ideal_t_syn_consistent,
+)
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
     Cycle,
@@ -53,23 +57,55 @@ def _log(msg: str) -> None:
         fh.write(line + "\n")
 
 
-def system() -> CircularSystem:
-    smas = ideal_moon_smas()
-    th0 = {IO: 0.0, EUR: 0.0, GAN: math.pi / 2.0}  # Laplace angle 180 deg (sec. 3.1)
+def system(variant: str = "consistent", laplace_deg: float = 180.0) -> tuple[CircularSystem, float]:
+    """The ideal model and the cycle period T for a variant (note secs. 3.1 and 6)."""
+    if variant == "tsyn705":  # T_syn = 7.05 d as printed; smas rebuilt for it (sec. 6 (i))
+        t_syn = 7.05 * DAY
+        d = math.radians(5.2)
+        k = {IO: 8.0, EUR: 4.0, GAN: 2.0}
+        smas = {
+            m: (MU_JUPITER_KM3_S2 / ((k[m] * math.pi + d) / t_syn) ** 2) ** (1.0 / 3.0)
+            for m in MOONS
+        }
+    elif variant == "coded":  # the OLD coded model (sec. 6 (iii))
+        t_syn = ideal_t_syn()
+        smas = ideal_moon_smas()
+    else:
+        t_syn = ideal_t_syn_consistent()
+        smas = ideal_moon_smas()
+    # Io = Europa = 0; Ganymede from the Laplace angle lambda_I - 3 lambda_E + 2 lambda_G.
+    th0 = {IO: 0.0, EUR: 0.0, GAN: math.radians(laplace_deg) / 2.0}
     bodies = {
         m: (smas[m], 2.0 * math.pi * math.sqrt(smas[m] ** 3 / MU_JUPITER_KM3_S2), th0[m])
         for m in MOONS
     }
-    return CircularSystem(MU_JUPITER_KM3_S2, bodies)
+    return CircularSystem(MU_JUPITER_KM3_S2, bodies), 4.0 * t_syn
 
 
-def period_s() -> float:
-    return 4.0 * ideal_t_syn_consistent()
+def stage_pc(variant: str = "consistent") -> None:
+    angles = [float(a) for a in range(0, 360, 15)] if variant == "laplace" else [180.0]
+    out = []
+    for ang in angles:
+        circ, t = system("consistent" if variant == "laplace" else variant, ang)
+        roots = search(circ, t)
+        for q in roots:
+            q["laplace_deg"] = ang
+        out.extend(roots)
+        near = roots[0]["dist_table4"] if roots else float("nan")
+        _log(f"pc {variant} laplace={ang}: {len(roots)} roots, nearest {near:.3f} km/s")
+    out.sort(key=lambda q: q["dist_table4"])
+    name = "pc_roots.json" if variant == "consistent" else f"pc_roots_{variant}.json"
+    (OUT / name).write_text(json.dumps(out, indent=1))
+    gp = [q for q in out if q["gate25"] == "pass"]
+    best = out[0]["dist_table4"] if out else float("nan")
+    _log(
+        f"pc {variant}: {len(out)} roots; nearest {best:.3f} "
+        f"km/s ({json.dumps(out[0]['vinf']) if out else '-'}); gate-passing {len(gp)}, nearest "
+        f"{gp[0]['dist_table4'] if gp else float('nan'):.3f}"
+    )
 
 
-def stage_pc() -> None:
-    circ = system()
-    t = period_s()
+def search(circ: CircularSystem, t: float) -> list[dict]:  # type: ignore[type-arg]
     seeds_days = np.array([0.0, 1.59, 10.19, 17.53])
     revs = [(0, "single"), (1, "low"), (1, "high"), (2, "low"), (2, "high")]
     roots = []
@@ -116,8 +152,7 @@ def stage_pc() -> None:
             ):
                 roots.append(row)
     roots.sort(key=lambda q: q["dist_table4"])
-    (OUT / "pc_roots.json").write_text(json.dumps(roots, indent=1))
-    _log(f"pc: {len(roots)} distinct roots; nearest: {json.dumps(roots[:3]) if roots else 'none'}")
+    return roots
 
 
 def main() -> None:
@@ -135,10 +170,13 @@ def main() -> None:
     )
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=["pc"], required=True)
+    ap.add_argument(
+        "--variant", choices=["consistent", "tsyn705", "laplace", "coded"], default="consistent"
+    )
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     if args.stage == "pc":
-        stage_pc()
+        stage_pc(args.variant)
 
 
 if __name__ == "__main__":
