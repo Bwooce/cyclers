@@ -1964,12 +1964,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (P 0.4). Each with the existing generator: enumeration, turn gate, DOP853 re-fly and recall controls
   first. The literature step and the real-ephemeris rung are DEFERRED until `#972` lands. Cost about
   1 agent-day per route. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3.
-- `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched). **HENON 2003 ASYMMETRIC SECOND-SPECIES
+- `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched; **PAPERS ACQUIRED 2026-10-07 (Perko 1982
+  I and II, Perko 1983), DIGEST PENDING (`#960` batch 36)**; dispatch decision after the digest
+  verdicts; the same papers also gate `#945`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
   HILL FAMILIES, AND THE STABLE Hg FAMILY, SCALED TO EUROPA, GANYMEDE, TITAN, TRITON AND TITANIA.**
   Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
   family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
-- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **GATED on acquiring Voyatzis &
-  Kotoulas 2005**, PSS 53:1189-1199, doi 10.1016/j.pss.2005.05.001, on the `#960` wanted list (row 22, Tier B, `b1b7e8ea`), for the collision check; then
+- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **PAPER ACQUIRED 2026-10-07, DIGEST
+  PENDING (`#960` batch 36)**; dispatch decision after the digest verdict. Was gated on Voyatzis &
+  Kotoulas 2005, PSS 53:1189-1199, doi 10.1016/j.pss.2005.05.001, on the `#960` wanted list (row 22, Tier B, `b1b7e8ea`), for the collision check; then
   dispatchable). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS RATIOS.** Lead ruling
   2026-10-07: the `#864` sec. 8 item that could apply ("no more `#563`-class symmetric-closure
   sweeps") does not bar it: R14 is a bifurcation continuation of a published family cascade at new
@@ -2174,8 +2177,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (corpus-file-opus). **MINOVITCH JPL TR 32-464 (1963): FULL DIGEST.** Key-page verdict: no
   collision with the #942 candidates; the full digest is in progress. Source:
   `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
-- `#1014` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
-  row 63; gates `#980` and the R11 pruning table, low). **ACQUIRE LYNAM 2014 PART I.** Acta
+- `#1014` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ ACQUIRED 2026-10-07
+  (owner upload; was wanted list row 67), digest pending (`#960` batch 36); gates `#980` and the R11
+  pruning table, low. **ACQUIRE LYNAM 2014 PART I.** Acta
   Astronautica 94:246-252, doi 10.1016/j.actaastro.2013.07.018 (Part II held). Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 4;
   `docs/notes/2026-10-05-960-wanted-papers.md`.
@@ -2184,8 +2188,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   FAMILIES".** The cascade proof or construction behind R14. Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 3;
   `docs/notes/2026-10-05-960-wanted-papers.md`.
-- `#1016` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
-  row 22, Tier B; gates `#975`). **ACQUIRE VOYATZIS & KOTOULAS 2005.** Planet. Space Sci.
+- `#1016` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ ACQUIRED 2026-10-07
+  (owner upload; was wanted list row 22, Tier B), digest pending (`#960` batch 36); gates `#975`.
+  **ACQUIRE VOYATZIS & KOTOULAS 2005.** Planet. Space Sci.
   53:1189-1199, doi 10.1016/j.pss.2005.05.001: R14's literal-collision check. Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 1;
   `docs/notes/2026-10-05-960-wanted-papers.md`.
@@ -2220,7 +2225,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X2.
 - `#945` — registered 2026-10-05, not dispatched (from `#938`, R2, rank 4 of 18). **IO-CONTAINING
   JOVIAN TRIPLES WITH LIANG'S ALTERNATING-DOUBLE-CYCLER CONSTRUCTION.** Sources: Liang et al. 2024
-  (JGCD); Lynam & Longuski 2011; Hernandez et al. 2017. Gate before dispatch: none. Cost (GUESS):
+  (JGCD); Lynam & Longuski 2011; Hernandez et al. 2017. Gate before dispatch: none (lead 2026-10-07:
+  Perko 1982 I/II and 1983, acquired, digest pending in `#960` batch 36, bear on it). Cost (GUESS):
   1-3 agent-days. P(novel row): 0.4. Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R2.
 - `#946` — registered 2026-10-05, not dispatched (from `#938`, X3, rank 5 of 18). **ELLIPTIC
