@@ -1981,6 +1981,21 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (P 0.4). Each with the existing generator: enumeration, turn gate, DOP853 re-fly and recall controls
   first. The literature step and the real-ephemeris rung are DEFERRED until `#972` lands. Cost about
   1 agent-day per route. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3.
+  **PROGRESS 2026-10-07 (twobody-ext-opus; `ab24925e`, `eb67c13a`, `cbc59f4c`; note
+  `docs/notes/2026-10-07-973-two-working-body-k-extension.md`):**
+  - Controls all recalled: gc-1, GanCal#5, ev-A, ev-C, Hollister 1H, the six `#576` E-C closures; Liang
+    2024's C-G-C and C-E-C halves reproduce as open segments.
+  - R11, gc k = 4: 4,068 structures, 1,439 physical cyclers, 51 gate-passing, all re-fly-agreeing, no
+    literal collision. 10 clean two-working-body members, e.g. gc4-1 (G 1.472 / C 1.581 km/s, ratios
+    0.47 / 0.68) and gc4-8 (G 2.42 / C 2.49, ratios 0.31 / 0.29). 8 of the 51 have a leg inside
+    Jupiter and 14 an unscheduled SOI pass, so two new screens (r_min > R_primary; an unscheduled SOI
+    pass is model-invalid) are being pre-registered and applied, also retroactively to the
+    `#942`/`#943` candidates. All "candidate, pending owner adjudication, NOT novel". Follow-on: `#1025`.
+  - R12, ec k = 1-4: 0 gate-passing (best worst ratio 1.36 at k = 4): a CONDITIONAL clean negative; the
+    stamp text is in the note for `data/empty_regions.jsonl` (not yet written there). Option: `#1026`.
+  - R13 (ev k = 4-5) and gc k = 5-6: launch commands in note sec. 6; the lead launches.
+  - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
+    `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
 - `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched; **PAPERS ACQUIRED 2026-10-07 (Perko 1982
   I and II, Perko 1983), DIGEST PENDING (`#960` batch 36)**; dispatch decision after the digest
   verdicts; the same papers also bear on `#944`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
@@ -2275,6 +2290,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
   `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
   the real-ephemeris step decides.
+- `#1025` — registered 2026-10-07 (from `#973`; GATED on `#972` and the chain tool). **THE gc k = 4 CLEAN
+  TWO-WORKING-BODY MEMBERS THROUGH THE LITERATURE STEP AND REAL-EPHEMERIS RUNG (d)** (jup365, 10 cycles,
+  5 epochs), after the two new screens of `#973`. Plus prior-art notes: the JUICE C-G-C round trip and
+  Lynam's capture windows at 50.09 d.
+- `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
+  k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
