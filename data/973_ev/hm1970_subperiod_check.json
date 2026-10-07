@@ -1,0 +1,396 @@
+{
+ "source": "Hollister & Menning 1970 Table 3 via hollister_menning_1970.load_table3/block_types",
+ "note": "each block = E pair, E->V, two Venus returns, V->E = 2 synodic periods (3.2 yr); 5 blocks = 16 yr = k 10. A k=4 or k=5 one-visit #973 structure has one E->V per 4 or 5 synodic periods, so it cannot equal any Table 3 orbit or a sub-period of one.",
+ "orbits": {
+  "1": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": true
+  },
+  "2": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": true
+  },
+  "3": {
+   "blocks": [
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": true
+  },
+  "4": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "5": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "6": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "7": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "8": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "9": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "10": {
+   "blocks": [
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "11": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "12": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FS"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "13": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "14": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  },
+  "15": {
+   "blocks": [
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "FR",
+     "FF"
+    ],
+    [
+     "SY",
+     "FF"
+    ],
+    [
+     "FR",
+     "FS"
+    ],
+    [
+     "SY",
+     "FF"
+    ]
+   ],
+   "n_E_to_V_transfers_per_16yr": 5,
+   "block_periodic_k2": false
+  }
+ }
+}

@@ -1,0 +1,1764 @@
+[
+ {
+  "name": "gc-1 (#943 cell gc, k = 3)",
+  "cell": "gc",
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "expected_vinf_kms": {
+   "Ganymede": 2.3972188633350457,
+   "Callisto": 1.806685534631882
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "data/943_cell_gc_gauntlet.json",
+  "n_zeros": 7,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.7668554552143636,
+     11.345133170720146,
+     31.824260091382452
+    ],
+    "residual_kms": 4.8183679268731794e-14,
+    "status": "pass",
+    "worst_ratio": 0.7372999972110205,
+    "max_encounter_miss_km": 6.490433478206472e-08,
+    "vinf_kms": {
+     "Ganymede": 2.397218863335046,
+     "Callisto": 1.8066855346318382
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.345133170720146,
+      "vinf_kms": 2.397218863335046,
+      "turn_deg": 29.35324656305371,
+      "available_deg": 45.44341378541337,
+      "ratio": 0.6459296104307121,
+      "required_alt_km": 2436.5059427793403,
+      "rmin_radii": 1.9250212387165146,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.135243887678747,
+      "vinf_kms": 1.8066855346318382,
+      "turn_deg": 40.14826426385614,
+      "available_deg": 54.45309157157832,
+      "ratio": 0.7372999972110205,
+      "required_alt_km": 1800.5596757265284,
+      "rmin_radii": 1.7477407291223124,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 31.824260091382452,
+      "vinf_kms": 1.806685534631859,
+      "turn_deg": 40.14826426385464,
+      "available_deg": 54.45309157157832,
+      "ratio": 0.7372999972109929,
+      "required_alt_km": 1800.5596757267576,
+      "rmin_radii": 1.7477407291223672,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.3365602787277,
+      "vinf_kms": 2.3972188633350333,
+      "turn_deg": 29.353246563053798,
+      "available_deg": 45.44341378541381,
+      "ratio": 0.6459296104307078,
+      "required_alt_km": 2436.505942779396,
+      "rmin_radii": 1.9250212387165277,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     1.178101770450965,
+     11.756379485956748,
+     34.95769587700576
+    ],
+    "residual_kms": 6.084022174945858e-14,
+    "status": "pass",
+    "worst_ratio": 0.7372999972110045,
+    "max_encounter_miss_km": 3.4054665494332916e-07,
+    "vinf_kms": {
+     "Ganymede": 2.3972188633350457,
+     "Callisto": 1.806685534631882
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.756379485956748,
+      "vinf_kms": 2.3972188633350457,
+      "turn_deg": 29.35324656305264,
+      "available_deg": 45.44341378541389,
+      "ratio": 0.6459296104306811,
+      "required_alt_km": 2436.505942779673,
+      "rmin_radii": 1.925021238716607,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 18.268679673302056,
+      "vinf_kms": 1.806685534631882,
+      "turn_deg": 40.14826426385385,
+      "available_deg": 54.453091571576785,
+      "ratio": 0.7372999972109991,
+      "required_alt_km": 1800.5596757266758,
+      "rmin_radii": 1.7477407291223732,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.95769587700576,
+      "vinf_kms": 1.806685534631884,
+      "turn_deg": 40.14826426385414,
+      "available_deg": 54.453091571576785,
+      "ratio": 0.7372999972110045,
+      "required_alt_km": 1800.5596757266312,
+      "rmin_radii": 1.7477407291223517,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.747806593964306,
+      "vinf_kms": 2.3972188633350697,
+      "turn_deg": 29.353246563051837,
+      "available_deg": 45.44341378541309,
+      "ratio": 0.6459296104306748,
+      "required_alt_km": 2436.505942779717,
+      "rmin_radii": 1.9250212387166372,
+      "status": "pass"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     9.297199966703477,
+     15.749269915638749,
+     39.65259545477963
+    ],
+    "residual_kms": 1.2434497875801753e-14,
+    "status": "fail",
+    "worst_ratio": 11.385288150548199,
+    "max_encounter_miss_km": 3.9841325342694746e-07,
+    "vinf_kms": {
+     "Ganymede": 10.718935362371543,
+     "Callisto": 6.741861884033381
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 15.749269915638749,
+      "vinf_kms": 10.718935362371543,
+      "turn_deg": 17.328410216791813,
+      "available_deg": 3.4975143832123834,
+      "ratio": 4.954492910727098,
+      "required_alt_km": -2148.780567472403,
+      "rmin_radii": 0.18421390756552627,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 22.963579251075927,
+      "vinf_kms": 6.741861884033381,
+      "turn_deg": 74.54359338682376,
+      "available_deg": 6.547361156005042,
+      "ratio": 11.385288150548199,
+      "required_alt_km": -2305.1323732052597,
+      "rmin_radii": 0.042719114117417065,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 39.65259545477963,
+      "vinf_kms": 6.741861884033382,
+      "turn_deg": 74.54359338682374,
+      "available_deg": 6.547361156005042,
+      "ratio": 11.385288150548197,
+      "required_alt_km": -2305.1323732052597,
+      "rmin_radii": 0.04271911411741708,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 46.866904790216815,
+      "vinf_kms": 10.718935362371543,
+      "turn_deg": 17.328410216792026,
+      "available_deg": 3.4975143832123834,
+      "ratio": 4.954492910727159,
+      "required_alt_km": -2148.78056747241,
+      "rmin_radii": 0.18421390756552358,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.131772203397943,
+     12.475104556697113,
+     30.37902506103011
+    ],
+    "residual_kms": 3.375077994860476e-14,
+    "status": "fail",
+    "worst_ratio": 6.4150606947379885,
+    "max_encounter_miss_km": 1.3501632000491234e-06,
+    "vinf_kms": {
+     "Ganymede": 9.584216729161708,
+     "Callisto": 7.071618473205078
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 12.475104556697113,
+      "vinf_kms": 9.584216729161708,
+      "turn_deg": 27.853223694480423,
+      "available_deg": 4.341848817942959,
+      "ratio": 6.415060694737976,
+      "required_alt_km": -2294.3940914349078,
+      "rmin_radii": 0.1289316281568308,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 13.690008857326406,
+      "vinf_kms": 7.071618473205078,
+      "turn_deg": 0.5613886827011072,
+      "available_deg": 5.981556253728444,
+      "ratio": 0.09385328146854433,
+      "required_alt_km": 26752.953400602477,
+      "rmin_radii": 12.110030481977773,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 30.37902506103011,
+      "vinf_kms": 7.071618473205061,
+      "turn_deg": 0.561388682700458,
+      "available_deg": 5.9815562537285,
+      "ratio": 0.09385328146843491,
+      "required_alt_km": 26752.953400636652,
+      "rmin_radii": 12.110030481991902,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 43.70147702691128,
+      "vinf_kms": 9.584216729161696,
+      "turn_deg": 27.853223694480626,
+      "available_deg": 4.341848817942982,
+      "ratio": 6.4150606947379885,
+      "required_alt_km": -2294.394091434909,
+      "rmin_radii": 0.1289316281568299,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.04813038447399406,
+     6.391462737773162,
+     36.402930907358034
+    ],
+    "residual_kms": 5.5067062021407764e-14,
+    "status": "fail",
+    "worst_ratio": 6.415060694737933,
+    "max_encounter_miss_km": 1.344759747192659e-06,
+    "vinf_kms": {
+     "Ganymede": 9.584216729161685,
+     "Callisto": 7.071618473205043
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 6.391462737773162,
+      "vinf_kms": 9.584216729161685,
+      "turn_deg": 27.853223694480434,
+      "available_deg": 4.34184881794299,
+      "ratio": 6.415060694737933,
+      "required_alt_km": -2294.3940914349055,
+      "rmin_radii": 0.12893162815683132,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.713914703654332,
+      "vinf_kms": 7.071618473205043,
+      "turn_deg": 0.5613886827011072,
+      "available_deg": 5.9815562537285,
+      "ratio": 0.09385328146854345,
+      "required_alt_km": 26752.95340060276,
+      "rmin_radii": 12.11003048197789,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 36.402930907358034,
+      "vinf_kms": 7.071618473205046,
+      "turn_deg": 0.5613886827011072,
+      "available_deg": 5.9815562537285,
+      "ratio": 0.09385328146854345,
+      "required_alt_km": 26752.95340060276,
+      "rmin_radii": 12.110030481977883,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 37.61783520798733,
+      "vinf_kms": 9.584216729161671,
+      "turn_deg": 27.85322369448052,
+      "available_deg": 4.341848817943017,
+      "ratio": 6.415060694737913,
+      "required_alt_km": -2294.3940914349046,
+      "rmin_radii": 0.12893162815683118,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.7668554552143636,
+     11.345133170720146,
+     31.824260091382452
+    ],
+    "residual_kms": 4.8183679268731794e-14,
+    "status": "pass",
+    "worst_ratio": 0.7372999972110205,
+    "max_encounter_miss_km": 6.490433478206472e-08,
+    "vinf_kms": {
+     "Ganymede": 2.397218863335046,
+     "Callisto": 1.8066855346318382
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.345133170720146,
+      "vinf_kms": 2.397218863335046,
+      "turn_deg": 29.35324656305371,
+      "available_deg": 45.44341378541337,
+      "ratio": 0.6459296104307121,
+      "required_alt_km": 2436.5059427793403,
+      "rmin_radii": 1.9250212387165146,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.135243887678747,
+      "vinf_kms": 1.8066855346318382,
+      "turn_deg": 40.14826426385614,
+      "available_deg": 54.45309157157832,
+      "ratio": 0.7372999972110205,
+      "required_alt_km": 1800.5596757265284,
+      "rmin_radii": 1.7477407291223124,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 31.824260091382452,
+      "vinf_kms": 1.806685534631859,
+      "turn_deg": 40.14826426385464,
+      "available_deg": 54.45309157157832,
+      "ratio": 0.7372999972109929,
+      "required_alt_km": 1800.5596757267576,
+      "rmin_radii": 1.7477407291223672,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.3365602787277,
+      "vinf_kms": 2.3972188633350333,
+      "turn_deg": 29.353246563053798,
+      "available_deg": 45.44341378541381,
+      "ratio": 0.6459296104307078,
+      "required_alt_km": 2436.505942779396,
+      "rmin_radii": 1.9250212387165277,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     1.178101770450965,
+     11.756379485956748,
+     34.95769587700576
+    ],
+    "residual_kms": 6.084022174945858e-14,
+    "status": "pass",
+    "worst_ratio": 0.7372999972110045,
+    "max_encounter_miss_km": 3.4054665494332916e-07,
+    "vinf_kms": {
+     "Ganymede": 2.3972188633350457,
+     "Callisto": 1.806685534631882
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.756379485956748,
+      "vinf_kms": 2.3972188633350457,
+      "turn_deg": 29.35324656305264,
+      "available_deg": 45.44341378541389,
+      "ratio": 0.6459296104306811,
+      "required_alt_km": 2436.505942779673,
+      "rmin_radii": 1.925021238716607,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 18.268679673302056,
+      "vinf_kms": 1.806685534631882,
+      "turn_deg": 40.14826426385385,
+      "available_deg": 54.453091571576785,
+      "ratio": 0.7372999972109991,
+      "required_alt_km": 1800.5596757266758,
+      "rmin_radii": 1.7477407291223732,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.95769587700576,
+      "vinf_kms": 1.806685534631884,
+      "turn_deg": 40.14826426385414,
+      "available_deg": 54.453091571576785,
+      "ratio": 0.7372999972110045,
+      "required_alt_km": 1800.5596757266312,
+      "rmin_radii": 1.7477407291223517,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.747806593964306,
+      "vinf_kms": 2.3972188633350697,
+      "turn_deg": 29.353246563051837,
+      "available_deg": 45.44341378541309,
+      "ratio": 0.6459296104306748,
+      "required_alt_km": 2436.505942779717,
+      "rmin_radii": 1.9250212387166372,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.9557459811428537,
+     11.567488960028248,
+     33.3909779841941
+    ],
+    "residual_kms": 2.220446049250313e-14,
+    "status": "fail",
+    "worst_ratio": 1.2230605128544503,
+    "max_encounter_miss_km": 3.32386789653378e-06,
+    "vinf_kms": {
+     "Ganymede": 2.5509567176186048,
+     "Callisto": 1.4392679536503439
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.567488960028248,
+      "vinf_kms": 2.5509567176186048,
+      "turn_deg": 23.731163527715836,
+      "available_deg": 41.86061386216459,
+      "ratio": 0.5669091142775876,
+      "required_alt_km": 3236.39698914609,
+      "rmin_radii": 2.228700451460168,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 16.7019617804904,
+      "vinf_kms": 1.4392679536503439,
+      "turn_deg": 85.10763859336939,
+      "available_deg": 69.58579538696755,
+      "ratio": 1.2230605128544503,
+      "required_alt_km": -749.0384919250528,
+      "rmin_radii": 0.6889375033533831,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 33.3909779841941,
+      "vinf_kms": 1.4392679536503428,
+      "turn_deg": 85.10763859336939,
+      "available_deg": 69.58579538696766,
+      "ratio": 1.2230605128544485,
+      "required_alt_km": -749.038491925048,
+      "rmin_radii": 0.6889375033533841,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.525450804656195,
+      "vinf_kms": 2.5509567176186123,
+      "turn_deg": 23.731163527715392,
+      "available_deg": 41.86061386216463,
+      "ratio": 0.5669091142775765,
+      "required_alt_km": 3236.396989146233,
+      "rmin_radii": 2.2287004514602056,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.692917958078186,
+     18.35355192426403,
+     39.652595454779636
+    ],
+    "residual_kms": 1.9984014443252818e-14,
+    "status": "fail",
+    "worst_ratio": 20.450554816581995,
+    "max_encounter_miss_km": 5.519608776611135e-09,
+    "vinf_kms": {
+     "Ganymede": 7.177956560004163,
+     "Callisto": 3.2779270969001053
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 18.35355192426403,
+      "vinf_kms": 7.177956560004163,
+      "turn_deg": 153.81825188198513,
+      "available_deg": 7.521470848177876,
+      "ratio": 20.450554816581995,
+      "required_alt_km": -2628.8795640360254,
+      "rmin_radii": 0.0019439772072795962,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 22.96357925107593,
+      "vinf_kms": 3.2779270969001053,
+      "turn_deg": 79.24578576939925,
+      "available_deg": 23.53572835335615,
+      "ratio": 3.3670419958810816,
+      "required_alt_km": -2028.4447074808695,
+      "rmin_radii": 0.1576226297836921,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 39.652595454779636,
+      "vinf_kms": 3.2779270969001155,
+      "turn_deg": 79.24578576939932,
+      "available_deg": 23.53572835335615,
+      "ratio": 3.367041995881085,
+      "required_alt_km": -2028.4447074808704,
+      "rmin_radii": 0.15762262978369068,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 44.262622781591524,
+      "vinf_kms": 7.177956560004162,
+      "turn_deg": 153.81825188198485,
+      "available_deg": 7.521470848177882,
+      "ratio": 20.450554816581942,
+      "required_alt_km": -2628.8795640360254,
+      "rmin_radii": 0.001943977207279629,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "GanCal#5 as found by the #943 gc run (k = 3)",
+  "cell": "gc",
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+  "expected_vinf_kms": {
+   "Ganymede": 3.2382967099423876,
+   "Callisto": 3.3395255782891637
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "data/943_cell_gc_gauntlet.json",
+  "n_zeros": 10,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.9793896965179728,
+     11.741650887933663,
+     35.99069388693731
+    ],
+    "residual_kms": 1.5498713423767185e-13,
+    "status": "pass",
+    "worst_ratio": 0.9403820121792834,
+    "max_encounter_miss_km": 7.097358699503355e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2382967099423876,
+     "Callisto": 3.3395255782891637
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.741650887933663,
+      "vinf_kms": 3.2382967099423876,
+      "turn_deg": 27.946111780487524,
+      "available_deg": 29.717828944562594,
+      "ratio": 0.9403820121792834,
+      "required_alt_km": 328.0186418784115,
+      "rmin_radii": 1.124532514000912,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.99069388693731,
+      "vinf_kms": 3.3395255782891637,
+      "turn_deg": 0.0,
+      "available_deg": 22.836361979819344,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.54909452003131,
+      "vinf_kms": 3.2382967099424267,
+      "turn_deg": 27.94611178048436,
+      "available_deg": 29.717828944563063,
+      "ratio": 0.9403820121791622,
+      "required_alt_km": 328.0186418789049,
+      "rmin_radii": 1.1245325140010487,
+      "status": "pass"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     11.088198018578153,
+     22.517750853009105,
+     41.29119679220985
+    ],
+    "residual_kms": 2.220446049250313e-14,
+    "status": "fail",
+    "worst_ratio": 7.000631748055406,
+    "max_encounter_miss_km": 4.308939800439809e-09,
+    "vinf_kms": {
+     "Ganymede": 6.193740461333562,
+     "Callisto": 4.069031300639849
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 22.517750853009105,
+      "vinf_kms": 6.193740461333562,
+      "turn_deg": 5.732859089687038,
+      "available_deg": 9.884651115037565,
+      "ratio": 0.5799758659125169,
+      "required_alt_km": 2262.40777702998,
+      "rmin_radii": 1.8589247445064414,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 41.29119679220985,
+      "vinf_kms": 4.069031300639849,
+      "turn_deg": 114.75401143227423,
+      "available_deg": 16.39195083560136,
+      "ratio": 7.000631748055406,
+      "required_alt_km": -2326.778090459559,
+      "rmin_radii": 0.03373002887892064,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 48.657902842091495,
+      "vinf_kms": 6.193740461333539,
+      "turn_deg": 5.7328590896872935,
+      "available_deg": 9.884651115037638,
+      "ratio": 0.5799758659125385,
+      "required_alt_km": 2262.407777029789,
+      "rmin_radii": 1.858924744506367,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     2.9617956813931112,
+     18.157523236064346,
+     35.07227252667992
+    ],
+    "residual_kms": 2.313704783318826e-13,
+    "status": "fail",
+    "worst_ratio": 1.9320360980506133,
+    "max_encounter_miss_km": 1.2154992002624344e-06,
+    "vinf_kms": {
+     "Ganymede": 2.2640563286930693,
+     "Callisto": 1.5650450994626117
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 18.157523236064346,
+      "vinf_kms": 2.2640563286930693,
+      "turn_deg": 94.42306452257365,
+      "available_deg": 48.872308658127395,
+      "ratio": 1.9320360980506133,
+      "required_alt_km": -1934.4660689363777,
+      "rmin_radii": 0.2655785615275461,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.07227252667992,
+      "vinf_kms": 1.5650450994626117,
+      "turn_deg": 65.16181686973249,
+      "available_deg": 63.8979405248693,
+      "ratio": 1.019779610023132,
+      "required_alt_km": 104.06680126554556,
+      "rmin_radii": 1.0432171101601087,
+      "status": "indeterminate"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 40.531500504906454,
+      "vinf_kms": 2.2640563286930586,
+      "turn_deg": 94.42306452257334,
+      "available_deg": 48.87230865812793,
+      "ratio": 1.9320360980505857,
+      "required_alt_km": -1934.466068936359,
+      "rmin_radii": 0.26557856152755105,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     4.467616311846389,
+     15.775740725951835,
+     34.05061883487634
+    ],
+    "residual_kms": 2.6645352591003757e-14,
+    "status": "fail",
+    "worst_ratio": 14.617363132488364,
+    "max_encounter_miss_km": 7.010039252120927e-08,
+    "vinf_kms": {
+     "Ganymede": 5.668026783684374,
+     "Callisto": 3.2178412545116126
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 15.775740725951835,
+      "vinf_kms": 5.668026783684374,
+      "turn_deg": 169.77558937277618,
+      "available_deg": 11.614652234740966,
+      "ratio": 14.617363132488364,
+      "required_alt_km": -2632.7708032579458,
+      "rmin_radii": 0.0004666654297851524,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.05061883487634,
+      "vinf_kms": 3.2178412545116126,
+      "turn_deg": 94.11867458661916,
+      "available_deg": 24.24705402100245,
+      "ratio": 3.8816540147555623,
+      "required_alt_km": -2154.227820614384,
+      "rmin_radii": 0.10538711768505576,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 42.03732113535973,
+      "vinf_kms": 5.668026783684359,
+      "turn_deg": 169.77558937277618,
+      "available_deg": 11.614652234740975,
+      "ratio": 14.617363132488354,
+      "required_alt_km": -2632.7708032579458,
+      "rmin_radii": 0.00046666542978515463,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.6167334317534887,
+     16.7227924219335,
+     33.24476464919005
+    ],
+    "residual_kms": 4.3076653355456074e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758996,
+    "max_encounter_miss_km": 4.853627818695469e-06,
+    "vinf_kms": {
+     "Ganymede": 3.340910926567595,
+     "Callisto": 1.685217611534662
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 16.7227924219335,
+      "vinf_kms": 3.340910926567595,
+      "turn_deg": 138.67133982827488,
+      "available_deg": 28.331138152408403,
+      "ratio": 4.894661805758996,
+      "required_alt_km": -2573.0875599304723,
+      "rmin_radii": 0.02312545181075461,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 33.24476464919005,
+      "vinf_kms": 1.685217611534662,
+      "turn_deg": 0.0,
+      "available_deg": 58.97155436542464,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.18643825526683,
+      "vinf_kms": 3.340910926567611,
+      "turn_deg": 14.486037839079343,
+      "available_deg": 28.331138152408375,
+      "ratio": 0.5113115386029033,
+      "required_alt_km": 3506.506091757443,
+      "rmin_radii": 2.3312475671060615,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.9793896965179728,
+     11.741650887933663,
+     35.99069388693731
+    ],
+    "residual_kms": 1.5498713423767185e-13,
+    "status": "pass",
+    "worst_ratio": 0.9403820121792834,
+    "max_encounter_miss_km": 7.097358699503355e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2382967099423876,
+     "Callisto": 3.3395255782891637
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.741650887933663,
+      "vinf_kms": 3.2382967099423876,
+      "turn_deg": 27.946111780487524,
+      "available_deg": 29.717828944562594,
+      "ratio": 0.9403820121792834,
+      "required_alt_km": 328.0186418784115,
+      "rmin_radii": 1.124532514000912,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.99069388693731,
+      "vinf_kms": 3.3395255782891637,
+      "turn_deg": 0.0,
+      "available_deg": 22.836361979819344,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.54909452003131,
+      "vinf_kms": 3.2382967099424267,
+      "turn_deg": 27.94611178048436,
+      "available_deg": 29.717828944563063,
+      "ratio": 0.9403820121791622,
+      "required_alt_km": 328.0186418789049,
+      "rmin_radii": 1.1245325140010487,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.7833010425405255,
+     16.88936003272053,
+     34.5195585864984
+    ],
+    "residual_kms": 2.353672812205332e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758689,
+    "max_encounter_miss_km": 1.2561130202062141e-06,
+    "vinf_kms": {
+     "Ganymede": 3.340910926567607,
+     "Callisto": 1.6852176115366935
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 16.88936003272053,
+      "vinf_kms": 3.340910926567607,
+      "turn_deg": 138.67133982826508,
+      "available_deg": 28.33113815240817,
+      "ratio": 4.894661805758689,
+      "required_alt_km": -2573.0875599304422,
+      "rmin_radii": 0.023125451810766022,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.5195585864984,
+      "vinf_kms": 1.6852176115366935,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 58.97155436534496,
+      "ratio": 1.4477719901399104e-08,
+      "required_alt_km": 339296511890.6667,
+      "rmin_radii": 140903868.0642303,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.35300586605386,
+      "vinf_kms": 3.34091092656762,
+      "turn_deg": 14.486037839069477,
+      "available_deg": 28.33113815240813,
+      "ratio": 0.5113115386025595,
+      "required_alt_km": 3506.5060917621377,
+      "rmin_radii": 2.331247567107857,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     3.853472014332299,
+     19.959531004512296,
+     35.6330275272634
+    ],
+    "residual_kms": 2.4646951146678475e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758907,
+    "max_encounter_miss_km": 1.8291294655199123e-06,
+    "vinf_kms": {
+     "Ganymede": 3.3409109265676054,
+     "Callisto": 1.6852176115351596
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 19.959531004512296,
+      "vinf_kms": 3.3409109265676054,
+      "turn_deg": 14.486037839077056,
+      "available_deg": 28.33113815240832,
+      "ratio": 0.5113115386028236,
+      "required_alt_km": 3506.5060917585315,
+      "rmin_radii": 2.3312475671064887,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.6330275272634,
+      "vinf_kms": 1.6852176115351596,
+      "turn_deg": 0.0,
+      "available_deg": 58.971554365405325,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 41.42317683784564,
+      "vinf_kms": 3.340910926567596,
+      "turn_deg": 138.67133982827187,
+      "available_deg": 28.3311381524083,
+      "ratio": 4.894661805758907,
+      "required_alt_km": -2573.087559930463,
+      "rmin_radii": 0.02312545181075818,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.191261200401735,
+     17.98903755233264,
+     40.19950273341911
+    ],
+    "residual_kms": 5.1514348342607263e-14,
+    "status": "fail",
+    "worst_ratio": 24.290256570892044,
+    "max_encounter_miss_km": 2.0979017289336546e-08,
+    "vinf_kms": {
+     "Ganymede": 7.751590148868995,
+     "Callisto": 5.217512036760776
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 17.98903755233264,
+      "vinf_kms": 7.751590148868995,
+      "turn_deg": 158.1086653156205,
+      "available_deg": 6.509139368461384,
+      "ratio": 24.290256570891934,
+      "required_alt_km": -2630.950834675872,
+      "rmin_radii": 0.0011576178147790408,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 40.19950273341911,
+      "vinf_kms": 5.217512036760776,
+      "turn_deg": 0.0,
+      "available_deg": 10.5384420144837,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 43.760966023915074,
+      "vinf_kms": 7.751590148868974,
+      "turn_deg": 158.10866531562112,
+      "available_deg": 6.50913936846138,
+      "ratio": 24.290256570892044,
+      "required_alt_km": -2630.950834675872,
+      "rmin_radii": 0.0011576178147789775,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     3.753165184825009,
+     19.80841552744221,
+     34.93489614079521
+    ],
+    "residual_kms": 4.618527782440651e-14,
+    "status": "fail",
+    "worst_ratio": 4.673914529287521,
+    "max_encounter_miss_km": 1.7375124370239996e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2663354059770127,
+     "Callisto": 1.5730793938142924
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 19.80841552744221,
+      "vinf_kms": 3.2663354059770127,
+      "turn_deg": 15.077232392849952,
+      "available_deg": 29.32985901610172,
+      "ratio": 0.5140574451644224,
+      "required_alt_km": 3503.4340459257946,
+      "rmin_radii": 2.3300812626901197,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.93489614079521,
+      "vinf_kms": 1.5730793938142924,
+      "turn_deg": 5.714985091777008,
+      "available_deg": 63.553583458161256,
+      "ratio": 0.089923884394958,
+      "required_alt_km": 52887.40660930028,
+      "rmin_radii": 22.963208724792175,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 41.32287000833835,
+      "vinf_kms": 3.2663354059769856,
+      "turn_deg": 137.08525419731535,
+      "available_deg": 29.329859016102343,
+      "ratio": 4.673914529287521,
+      "required_alt_km": -2564.9807220314065,
+      "rmin_radii": 0.02620321866689158,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.5458580160623,
+     24.60947907010522,
+     38.43299412849873
+    ],
+    "residual_kms": 4.085620730620576e-14,
+    "status": "fail",
+    "worst_ratio": 23.125971216992163,
+    "max_encounter_miss_km": 5.217062247399645e-07,
+    "vinf_kms": {
+     "Ganymede": 7.471562518161797,
+     "Callisto": 3.3984178956003763
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 24.60947907010522,
+      "vinf_kms": 7.471562518161797,
+      "turn_deg": 161.33860799908916,
+      "available_deg": 6.976511666698917,
+      "ratio": 23.125971216992163,
+      "required_alt_km": -2631.625044798509,
+      "rmin_radii": 0.0009016534553875556,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 38.43299412849873,
+      "vinf_kms": 3.3984178956003763,
+      "turn_deg": 37.15468362316718,
+      "available_deg": 22.194598775322692,
+      "ratio": 1.6740416891193377,
+      "required_alt_km": -1078.4173521793011,
+      "rmin_radii": 0.5521522623840104,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 44.11556283957564,
+      "vinf_kms": 7.471562518161806,
+      "turn_deg": 161.33860799908902,
+      "available_deg": 6.976511666698923,
+      "ratio": 23.12597121699212,
+      "required_alt_km": -2631.625044798509,
+      "rmin_radii": 0.000901653455387568,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "GanCal#5 against R-S 2009 Table 3 (published 3.24 / 3.34 km/s)",
+  "cell": "gc",
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+  "expected_vinf_kms": {
+   "Ganymede": 3.24,
+   "Callisto": 3.34
+  },
+  "tolerance_kms": 0.05,
+  "expected_source": "published",
+  "n_zeros": 10,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.9793896965179728,
+     11.741650887933663,
+     35.99069388693731
+    ],
+    "residual_kms": 1.5498713423767185e-13,
+    "status": "pass",
+    "worst_ratio": 0.9403820121792834,
+    "max_encounter_miss_km": 7.097358699503355e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2382967099423876,
+     "Callisto": 3.3395255782891637
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.741650887933663,
+      "vinf_kms": 3.2382967099423876,
+      "turn_deg": 27.946111780487524,
+      "available_deg": 29.717828944562594,
+      "ratio": 0.9403820121792834,
+      "required_alt_km": 328.0186418784115,
+      "rmin_radii": 1.124532514000912,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.99069388693731,
+      "vinf_kms": 3.3395255782891637,
+      "turn_deg": 0.0,
+      "available_deg": 22.836361979819344,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.54909452003131,
+      "vinf_kms": 3.2382967099424267,
+      "turn_deg": 27.94611178048436,
+      "available_deg": 29.717828944563063,
+      "ratio": 0.9403820121791622,
+      "required_alt_km": 328.0186418789049,
+      "rmin_radii": 1.1245325140010487,
+      "status": "pass"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     11.088198018578153,
+     22.517750853009105,
+     41.29119679220985
+    ],
+    "residual_kms": 2.220446049250313e-14,
+    "status": "fail",
+    "worst_ratio": 7.000631748055406,
+    "max_encounter_miss_km": 4.308939800439809e-09,
+    "vinf_kms": {
+     "Ganymede": 6.193740461333562,
+     "Callisto": 4.069031300639849
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 22.517750853009105,
+      "vinf_kms": 6.193740461333562,
+      "turn_deg": 5.732859089687038,
+      "available_deg": 9.884651115037565,
+      "ratio": 0.5799758659125169,
+      "required_alt_km": 2262.40777702998,
+      "rmin_radii": 1.8589247445064414,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 41.29119679220985,
+      "vinf_kms": 4.069031300639849,
+      "turn_deg": 114.75401143227423,
+      "available_deg": 16.39195083560136,
+      "ratio": 7.000631748055406,
+      "required_alt_km": -2326.778090459559,
+      "rmin_radii": 0.03373002887892064,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 48.657902842091495,
+      "vinf_kms": 6.193740461333539,
+      "turn_deg": 5.7328590896872935,
+      "available_deg": 9.884651115037638,
+      "ratio": 0.5799758659125385,
+      "required_alt_km": 2262.407777029789,
+      "rmin_radii": 1.858924744506367,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     2.9617956813931112,
+     18.157523236064346,
+     35.07227252667992
+    ],
+    "residual_kms": 2.313704783318826e-13,
+    "status": "fail",
+    "worst_ratio": 1.9320360980506133,
+    "max_encounter_miss_km": 1.2154992002624344e-06,
+    "vinf_kms": {
+     "Ganymede": 2.2640563286930693,
+     "Callisto": 1.5650450994626117
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 18.157523236064346,
+      "vinf_kms": 2.2640563286930693,
+      "turn_deg": 94.42306452257365,
+      "available_deg": 48.872308658127395,
+      "ratio": 1.9320360980506133,
+      "required_alt_km": -1934.4660689363777,
+      "rmin_radii": 0.2655785615275461,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.07227252667992,
+      "vinf_kms": 1.5650450994626117,
+      "turn_deg": 65.16181686973249,
+      "available_deg": 63.8979405248693,
+      "ratio": 1.019779610023132,
+      "required_alt_km": 104.06680126554556,
+      "rmin_radii": 1.0432171101601087,
+      "status": "indeterminate"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 40.531500504906454,
+      "vinf_kms": 2.2640563286930586,
+      "turn_deg": 94.42306452257334,
+      "available_deg": 48.87230865812793,
+      "ratio": 1.9320360980505857,
+      "required_alt_km": -1934.466068936359,
+      "rmin_radii": 0.26557856152755105,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     4.467616311846389,
+     15.775740725951835,
+     34.05061883487634
+    ],
+    "residual_kms": 2.6645352591003757e-14,
+    "status": "fail",
+    "worst_ratio": 14.617363132488364,
+    "max_encounter_miss_km": 7.010039252120927e-08,
+    "vinf_kms": {
+     "Ganymede": 5.668026783684374,
+     "Callisto": 3.2178412545116126
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 15.775740725951835,
+      "vinf_kms": 5.668026783684374,
+      "turn_deg": 169.77558937277618,
+      "available_deg": 11.614652234740966,
+      "ratio": 14.617363132488364,
+      "required_alt_km": -2632.7708032579458,
+      "rmin_radii": 0.0004666654297851524,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.05061883487634,
+      "vinf_kms": 3.2178412545116126,
+      "turn_deg": 94.11867458661916,
+      "available_deg": 24.24705402100245,
+      "ratio": 3.8816540147555623,
+      "required_alt_km": -2154.227820614384,
+      "rmin_radii": 0.10538711768505576,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 42.03732113535973,
+      "vinf_kms": 5.668026783684359,
+      "turn_deg": 169.77558937277618,
+      "available_deg": 11.614652234740975,
+      "ratio": 14.617363132488354,
+      "required_alt_km": -2632.7708032579458,
+      "rmin_radii": 0.00046666542978515463,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.6167334317534887,
+     16.7227924219335,
+     33.24476464919005
+    ],
+    "residual_kms": 4.3076653355456074e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758996,
+    "max_encounter_miss_km": 4.853627818695469e-06,
+    "vinf_kms": {
+     "Ganymede": 3.340910926567595,
+     "Callisto": 1.685217611534662
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 16.7227924219335,
+      "vinf_kms": 3.340910926567595,
+      "turn_deg": 138.67133982827488,
+      "available_deg": 28.331138152408403,
+      "ratio": 4.894661805758996,
+      "required_alt_km": -2573.0875599304723,
+      "rmin_radii": 0.02312545181075461,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 33.24476464919005,
+      "vinf_kms": 1.685217611534662,
+      "turn_deg": 0.0,
+      "available_deg": 58.97155436542464,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.18643825526683,
+      "vinf_kms": 3.340910926567611,
+      "turn_deg": 14.486037839079343,
+      "available_deg": 28.331138152408375,
+      "ratio": 0.5113115386029033,
+      "required_alt_km": 3506.506091757443,
+      "rmin_radii": 2.3312475671060615,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.9793896965179728,
+     11.741650887933663,
+     35.99069388693731
+    ],
+    "residual_kms": 1.5498713423767185e-13,
+    "status": "pass",
+    "worst_ratio": 0.9403820121792834,
+    "max_encounter_miss_km": 7.097358699503355e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2382967099423876,
+     "Callisto": 3.3395255782891637
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 11.741650887933663,
+      "vinf_kms": 3.2382967099423876,
+      "turn_deg": 27.946111780487524,
+      "available_deg": 29.717828944562594,
+      "ratio": 0.9403820121792834,
+      "required_alt_km": 328.0186418784115,
+      "rmin_radii": 1.124532514000912,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.99069388693731,
+      "vinf_kms": 3.3395255782891637,
+      "turn_deg": 0.0,
+      "available_deg": 22.836361979819344,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.54909452003131,
+      "vinf_kms": 3.2382967099424267,
+      "turn_deg": 27.94611178048436,
+      "available_deg": 29.717828944563063,
+      "ratio": 0.9403820121791622,
+      "required_alt_km": 328.0186418789049,
+      "rmin_radii": 1.1245325140010487,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     0.7833010425405255,
+     16.88936003272053,
+     34.5195585864984
+    ],
+    "residual_kms": 2.353672812205332e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758689,
+    "max_encounter_miss_km": 1.2561130202062141e-06,
+    "vinf_kms": {
+     "Ganymede": 3.340910926567607,
+     "Callisto": 1.6852176115366935
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 16.88936003272053,
+      "vinf_kms": 3.340910926567607,
+      "turn_deg": 138.67133982826508,
+      "available_deg": 28.33113815240817,
+      "ratio": 4.894661805758689,
+      "required_alt_km": -2573.0875599304422,
+      "rmin_radii": 0.023125451810766022,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.5195585864984,
+      "vinf_kms": 1.6852176115366935,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 58.97155436534496,
+      "ratio": 1.4477719901399104e-08,
+      "required_alt_km": 339296511890.6667,
+      "rmin_radii": 140903868.0642303,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 38.35300586605386,
+      "vinf_kms": 3.34091092656762,
+      "turn_deg": 14.486037839069477,
+      "available_deg": 28.33113815240813,
+      "ratio": 0.5113115386025595,
+      "required_alt_km": 3506.5060917621377,
+      "rmin_radii": 2.331247567107857,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     3.853472014332299,
+     19.959531004512296,
+     35.6330275272634
+    ],
+    "residual_kms": 2.4646951146678475e-14,
+    "status": "fail",
+    "worst_ratio": 4.894661805758907,
+    "max_encounter_miss_km": 1.8291294655199123e-06,
+    "vinf_kms": {
+     "Ganymede": 3.3409109265676054,
+     "Callisto": 1.6852176115351596
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 19.959531004512296,
+      "vinf_kms": 3.3409109265676054,
+      "turn_deg": 14.486037839077056,
+      "available_deg": 28.33113815240832,
+      "ratio": 0.5113115386028236,
+      "required_alt_km": 3506.5060917585315,
+      "rmin_radii": 2.3312475671064887,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 35.6330275272634,
+      "vinf_kms": 1.6852176115351596,
+      "turn_deg": 0.0,
+      "available_deg": 58.971554365405325,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 41.42317683784564,
+      "vinf_kms": 3.340910926567596,
+      "turn_deg": 138.67133982827187,
+      "available_deg": 28.3311381524083,
+      "ratio": 4.894661805758907,
+      "required_alt_km": -2573.087559930463,
+      "rmin_radii": 0.02312545181075818,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.191261200401735,
+     17.98903755233264,
+     40.19950273341911
+    ],
+    "residual_kms": 5.1514348342607263e-14,
+    "status": "fail",
+    "worst_ratio": 24.290256570892044,
+    "max_encounter_miss_km": 2.0979017289336546e-08,
+    "vinf_kms": {
+     "Ganymede": 7.751590148868995,
+     "Callisto": 5.217512036760776
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 17.98903755233264,
+      "vinf_kms": 7.751590148868995,
+      "turn_deg": 158.1086653156205,
+      "available_deg": 6.509139368461384,
+      "ratio": 24.290256570891934,
+      "required_alt_km": -2630.950834675872,
+      "rmin_radii": 0.0011576178147790408,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 40.19950273341911,
+      "vinf_kms": 5.217512036760776,
+      "turn_deg": 0.0,
+      "available_deg": 10.5384420144837,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 43.760966023915074,
+      "vinf_kms": 7.751590148868974,
+      "turn_deg": 158.10866531562112,
+      "available_deg": 6.50913936846138,
+      "ratio": 24.290256570892044,
+      "required_alt_km": -2630.950834675872,
+      "rmin_radii": 0.0011576178147789775,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     3.753165184825009,
+     19.80841552744221,
+     34.93489614079521
+    ],
+    "residual_kms": 4.618527782440651e-14,
+    "status": "fail",
+    "worst_ratio": 4.673914529287521,
+    "max_encounter_miss_km": 1.7375124370239996e-06,
+    "vinf_kms": {
+     "Ganymede": 3.2663354059770127,
+     "Callisto": 1.5730793938142924
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 19.80841552744221,
+      "vinf_kms": 3.2663354059770127,
+      "turn_deg": 15.077232392849952,
+      "available_deg": 29.32985901610172,
+      "ratio": 0.5140574451644224,
+      "required_alt_km": 3503.4340459257946,
+      "rmin_radii": 2.3300812626901197,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 34.93489614079521,
+      "vinf_kms": 1.5730793938142924,
+      "turn_deg": 5.714985091777008,
+      "available_deg": 63.553583458161256,
+      "ratio": 0.089923884394958,
+      "required_alt_km": 52887.40660930028,
+      "rmin_radii": 22.963208724792175,
+      "status": "pass"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 41.32287000833835,
+      "vinf_kms": 3.2663354059769856,
+      "turn_deg": 137.08525419731535,
+      "available_deg": 29.329859016102343,
+      "ratio": 4.673914529287521,
+      "required_alt_km": -2564.9807220314065,
+      "rmin_radii": 0.02620321866689158,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+    "k": 3,
+    "x_days": [
+     6.5458580160623,
+     24.60947907010522,
+     38.43299412849873
+    ],
+    "residual_kms": 4.085620730620576e-14,
+    "status": "fail",
+    "worst_ratio": 23.125971216992163,
+    "max_encounter_miss_km": 5.217062247399645e-07,
+    "vinf_kms": {
+     "Ganymede": 7.471562518161797,
+     "Callisto": 3.3984178956003763
+    },
+    "flybys": [
+     {
+      "body": "Ganymede",
+      "t_days": 24.60947907010522,
+      "vinf_kms": 7.471562518161797,
+      "turn_deg": 161.33860799908916,
+      "available_deg": 6.976511666698917,
+      "ratio": 23.125971216992163,
+      "required_alt_km": -2631.625044798509,
+      "rmin_radii": 0.0009016534553875556,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 38.43299412849873,
+      "vinf_kms": 3.3984178956003763,
+      "turn_deg": 37.15468362316718,
+      "available_deg": 22.194598775322692,
+      "ratio": 1.6740416891193377,
+      "required_alt_km": -1078.4173521793011,
+      "rmin_radii": 0.5521522623840104,
+      "status": "fail"
+     },
+     {
+      "body": "Ganymede",
+      "t_days": 44.11556283957564,
+      "vinf_kms": 7.471562518161806,
+      "turn_deg": 161.33860799908902,
+      "available_deg": 6.976511666698923,
+      "ratio": 23.12597121699212,
+      "required_alt_km": -2631.625044798509,
+      "rmin_radii": 0.000901653455387568,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ }
+]

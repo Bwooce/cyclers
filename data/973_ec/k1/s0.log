@@ -1,0 +1,40 @@
+2026-10-07T11:04:33+00:00 cell ec k=1: 37 structures (T = 4.51 d)
+2026-10-07T11:04:33+00:00 total to run: 37 (shard 0/1)
+2026-10-07T11:04:33+00:00 [1/37] k1|LEuropa>Callisto/0s|LCallisto>Europa/0s: 2 zeros 0 pass (0.2s) totals zeros=2 pass=0 eta 0.1 min
+2026-10-07T11:04:33+00:00 [2/37] k1|LEuropa>Callisto/0s|LCallisto>Europa/1l: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.1 min
+2026-10-07T11:04:33+00:00 [3/37] k1|LEuropa>Callisto/0s|LCallisto>Europa/1h: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.1 min
+2026-10-07T11:04:33+00:00 [4/37] k1|LEuropa>Callisto/0s|LCallisto>Europa/2l: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [5/37] k1|LEuropa>Callisto/0s|LCallisto>Europa/2h: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [6/37] k1|LEuropa>Callisto/1l|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [7/37] k1|LEuropa>Callisto/1l|LCallisto>Europa/1l: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [8/37] k1|LEuropa>Callisto/1l|LCallisto>Europa/1h: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [9/37] k1|LEuropa>Callisto/1h|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [10/37] k1|LEuropa>Callisto/1h|LCallisto>Europa/1l: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [11/37] k1|LEuropa>Callisto/1h|LCallisto>Europa/1h: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [12/37] k1|LEuropa>Callisto/2l|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [13/37] k1|LEuropa>Callisto/2h|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=2 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [14/37] k1|REuropa/1:1|LEuropa>Callisto/0s|LCallisto>Europa/0s: 2 zeros 0 pass (0.2s) totals zeros=4 pass=0 eta 0.0 min
+2026-10-07T11:04:33+00:00 [15/37] k1|REuropa/1:2|LEuropa>Callisto/0s|LCallisto>Europa/0s: 2 zeros 0 pass (0.1s) totals zeros=6 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [16/37] k1|HEuropa/1,0,p|LEuropa>Callisto/0s|LCallisto>Europa/0s: 4 zeros 0 pass (0.1s) totals zeros=10 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [17/37] k1|HEuropa/1,0,p|LEuropa>Callisto/0s|LCallisto>Europa/1l: 0 zeros 0 pass (0.0s) totals zeros=10 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [18/37] k1|HEuropa/1,0,p|LEuropa>Callisto/0s|LCallisto>Europa/1h: 0 zeros 0 pass (0.0s) totals zeros=10 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [19/37] k1|HEuropa/1,0,p|LEuropa>Callisto/1l|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=10 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [20/37] k1|HEuropa/1,0,p|LEuropa>Callisto/1h|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=10 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [21/37] k1|HEuropa/1,0,a|LEuropa>Callisto/0s|LCallisto>Europa/0s: 4 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [22/37] k1|HEuropa/1,0,a|LEuropa>Callisto/0s|LCallisto>Europa/1l: 0 zeros 0 pass (0.0s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [23/37] k1|HEuropa/1,0,a|LEuropa>Callisto/0s|LCallisto>Europa/1h: 0 zeros 0 pass (0.0s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [24/37] k1|HEuropa/1,0,a|LEuropa>Callisto/1l|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:34+00:00 [25/37] k1|HEuropa/1,0,a|LEuropa>Callisto/1h|LCallisto>Europa/0s: 0 zeros 0 pass (0.0s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:37+00:00 [26/37] k1|LEuropa>Europa/1l|LEuropa>Callisto/0s|LCallisto>Europa/0s: 0 zeros 0 pass (3.3s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:37+00:00 [27/37] k1|LEuropa>Europa/1l|LEuropa>Callisto/0s|LCallisto>Europa/1l: 0 zeros 0 pass (0.1s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:38+00:00 [28/37] k1|LEuropa>Europa/1l|LEuropa>Callisto/0s|LCallisto>Europa/1h: 0 zeros 0 pass (0.1s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:38+00:00 [29/37] k1|LEuropa>Europa/1l|LEuropa>Callisto/1l|LCallisto>Europa/0s: 0 zeros 0 pass (0.1s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:38+00:00 [30/37] k1|LEuropa>Europa/1l|LEuropa>Callisto/1h|LCallisto>Europa/0s: 0 zeros 0 pass (0.1s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:39+00:00 [31/37] k1|LEuropa>Europa/1h|LEuropa>Callisto/0s|LCallisto>Europa/0s: 0 zeros 0 pass (0.9s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:39+00:00 [32/37] k1|LEuropa>Europa/1h|LEuropa>Callisto/0s|LCallisto>Europa/1l: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:39+00:00 [33/37] k1|LEuropa>Europa/1h|LEuropa>Callisto/0s|LCallisto>Europa/1h: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:39+00:00 [34/37] k1|LEuropa>Europa/1h|LEuropa>Callisto/1l|LCallisto>Europa/0s: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:40+00:00 [35/37] k1|LEuropa>Europa/1h|LEuropa>Callisto/1h|LCallisto>Europa/0s: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:40+00:00 [36/37] k1|LEuropa>Europa/2l|LEuropa>Callisto/0s|LCallisto>Europa/0s: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:40+00:00 [37/37] k1|LEuropa>Europa/2h|LEuropa>Callisto/0s|LCallisto>Europa/0s: 0 zeros 0 pass (0.2s) totals zeros=14 pass=0 eta 0.0 min
+2026-10-07T11:04:40+00:00 DONE structures=37 zeros=14 pass=0 structure_errors=0 zero_assessment_errors=0

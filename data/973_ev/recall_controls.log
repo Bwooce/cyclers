@@ -1,0 +1,3 @@
+    2.0s ev-A (#942 cell ev, k = 2): 13 zeros, recalled=True (closest max dV_inf 0.0000 km/s; tol 0.001); hit statuses ['pass']
+    2.9s ev-C (#942 cell ev, k = 2): 16 zeros, recalled=True (closest max dV_inf 0.0000 km/s; tol 0.001); hit statuses ['pass', 'pass']
+    3.5s Hollister 1H, orbit I topology (#942 in-run control, k = 2, the 2.99 / 3.19 member): 6 zeros, recalled=True (closest max dV_inf 0.0000 km/s; tol 0.001); hit statuses ['pass']

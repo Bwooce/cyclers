@@ -597,9 +597,105 @@ def cmd_gauntlet(argv: list[str]) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# Completeness check of a finished cell/k
+# ---------------------------------------------------------------------------
+
+
+def _expected_keys(settings: dict[str, Any]) -> set[str]:
+    """Every structure key run_942's main() would run for these settings (all shards)."""
+    from cyclerfinder.search.two_working_body_enum import CatalogueSpec, structures
+
+    system, a, b = cell_system(settings["cell"])
+    ma, mb = (int(v) for v in settings["max_returns"].split(","))
+    if system.body(b).massless:
+        mb = 0
+    generic = tuple(int(v) for v in settings["generic_revs"].split(","))
+    res_only = {c for c in settings["resonant_only"].split(",") if c}
+    spec = {
+        c: CatalogueSpec(half_revs=(), generic_revs=())
+        if c in res_only
+        else CatalogueSpec(generic_revs=generic)
+        for c in (a, b)
+    }
+    t_revs = tuple(int(v) for v in settings["transfer_revs"].split(","))
+    keys = set()
+    for k in (int(v) for v in settings["k"].split(",")):
+        for c in structures(
+            system,
+            a,
+            b,
+            k,
+            max_returns={a: ma, b: mb},
+            spec=spec,
+            transfer_revs=t_revs,
+            visits=int(settings["visits"]),
+        ):
+            keys.add(ENUM.cycle_key(c, k))
+    return keys
+
+
+#: Settings that must agree between the shard directories of one cell/k.
+_SAME = ("cell", "k", "max_returns", "transfer_revs", "generic_revs", "resonant_only", "visits")
+_SEEDS = ("n_phase", "n_split", "n_refine")
+
+
+def cmd_check(argv: list[str]) -> None:
+    """Validate the shard directories of one cell/k: same settings, every structure of the cell
+    done exactly once without error, zero lines not duplicated; count structures whose zeros hit
+    n_refine (seed saturation). Exit 1 on any failure."""
+    ap = argparse.ArgumentParser(prog="check")
+    ap.add_argument("dirs", nargs="+", type=Path)
+    args = ap.parse_args(argv)
+    sets = [json.loads((d / "settings.json").read_text()) for d in args.dirs]
+    bad = []
+    for name in _SAME + _SEEDS:
+        if len({str(s[name]) for s in sets}) != 1:
+            bad.append(f"settings differ in {name}: {sorted({str(s[name]) for s in sets})}")
+    want = _expected_keys(sets[0])
+    done: dict[str, int] = {}
+    errors = 0
+    sat = 0
+    n_refine = int(sets[0]["n_refine"])
+    for d in args.dirs:
+        for line in (d / "structures.jsonl").read_text().splitlines():
+            rec = json.loads(line)
+            if rec.get("error"):
+                errors += 1
+                continue
+            done[rec["key"]] = done.get(rec["key"], 0) + 1
+            sat += rec["n_zeros"] >= n_refine
+    zl = [ln for d in args.dirs for ln in (d / "zeros.jsonl").read_text().splitlines()]
+    zkeys = [
+        (json.loads(ln)["key"], tuple(round(x, 6) for x in json.loads(ln)["x_days"])) for ln in zl
+    ]
+    missing = want - set(done)
+    extra = set(done) - want
+    dup = [k for k, n in done.items() if n > 1]
+    n_dup_zero = len(zkeys) - len(set(zkeys))
+    for cond, msg in (
+        (missing, f"{len(missing)} structures not done"),
+        (extra, f"{len(extra)} structures outside the cell"),
+        (dup, f"{len(dup)} structures done more than once"),
+        (errors, f"{errors} errored structure lines"),
+        (n_dup_zero, f"{n_dup_zero} duplicated zero lines"),
+    ):
+        if cond:
+            bad.append(msg)
+    print(
+        f"cell {sets[0]['cell']} k={sets[0]['k']}: expected {len(want)} structures, done "
+        f"{len(done)}, zero lines {len(zl)}, structures at the n_refine ceiling ({n_refine}): {sat}"
+    )
+    for b in bad:
+        print("FAIL", b)
+    if bad:
+        raise SystemExit(1)
+    print("OK")
+
+
 def main() -> None:
     cmds = {"enumerate": cmd_enumerate, "recall": cmd_recall, "liang": cmd_liang}
-    cmds["gauntlet"] = cmd_gauntlet
+    cmds |= {"gauntlet": cmd_gauntlet, "check": cmd_check}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: run_973_enumerate.py {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

@@ -1,7 +1,8 @@
 # #973: the two-working-body generator at longer periods (gc k = 4-6, ev k = 4-5) and a Europa-Callisto cell (ec k = 1-4)
 
-Status: PRE-REGISTRATION (secs. 1-2), written and committed before any production run. Results follow
-in secs. 3-6 as each route finishes.
+Status: pre-registration (secs. 1-2, committed ab24925e before any production run); controls and Liang
+segments (sec. 3); R11 gc k = 4 done (sec. 4, 51 gate-passers); R12 ec k = 1-4 done (sec. 5, none);
+gc k = 5-6 and R13 ev k = 4-5 handed to the lead with launch commands (sec. 6).
 Novelty language: every gate-passing cycler here is "candidate, literature step deferred". Nothing in
 this note is called novel. No catalogue writes. No real-ephemeris runs.
 
@@ -151,3 +152,302 @@ not evidence of coverage.
 R11 (gc) first, then R13 (ev), then R12 (ec). Controls of a cell run before its production run is read.
 A control that fails to recall, a generator bug, or a cell/k that would take more than 60 min of wall
 time (with 2 workers) stops the route and goes to the lead.
+
+## 3. Controls and the Liang segments (results, 2026-10-07)
+
+### 3.1 Recall controls (sec. 2.3): ALL RECALLED
+
+Data: `data/973_gc/recall_controls.json`, `data/973_ev/recall_controls.json`,
+`data/973_ec/recall_controls.json` (logs beside them). Every hit is an exact zero (max |residual|
+< 2e-13 km/s) with Kepler-step encounter miss < 1e-5 km.
+
+| Control | Cell | Zeros of the structure | Recalled zero V_inf (km/s) | Max dV_inf vs expected | Gate at the floor |
+|---|---|---|---|---|---|
+| gc-1 | gc | 7 | G 2.39722, C 1.80669 | < 1e-5 | pass, worst 0.737 |
+| GanCal#5 (run value) | gc | 10 | G 3.23830, C 3.33953 | < 1e-5 | pass, worst 0.940 |
+| GanCal#5 (published R-S Table 3, tol 0.05) | gc | 10 | same | 0.0017 | pass |
+| ev-A | ev | 13 | E 4.89283, V 10.36400 | < 1e-5 | pass |
+| ev-C | ev | 16 | E 9.07492, V 13.16643 | < 1e-5 | pass (2 zeros, one per mirror) |
+| Hollister 1H, orbit I topology | ev | 6 | E 2.99407, V 3.19027 | < 1e-5 | pass |
+| #576 E-C n = 3, both anchors | ec576 | 6 / 6 | E 6.47945, C 4.05858 | < 1e-5 | FAIL, worst 28.87 |
+| #576 E-C n = 4, both anchors | ec576 | 6 / 8 | E 4.02544, C 4.36172 | < 1e-5 | FAIL, worst 8.33 |
+| #576 E-C n = 5, both anchors | ec576 | 6 / 6 | E 4.15159, C 4.98224 | < 1e-5 | FAIL, worst 11.43 |
+| same six, in the ec cell (R-S constants; reported only) | ec | 6 / 6 / 6 / 8 / 6 / 6 | n=3: E 6.48193, C 4.05888; n=4: E 4.02736, C 4.36188; n=5: E 4.14983, C 4.98188 | 0.0025 / 0.0019 / 0.0018 (the model-constant shift) | FAIL, 28.90 / 8.33 / 11.42 |
+
+- The 6 #576 rows are 3 physical cyclers; the Europa-first and Callisto-first orders give the same
+  zero in each case (6 -> 3).
+- All three #576 closures FAIL the #888/#937 demanded-turn gate (worst ratios 8-29). #576 judged them
+  by bend capacity before the turn gate existed. This is consistent with the #943 note (6.11), which
+  found no #576 closure among the gate-passers.
+- The n = 3 and n = 4 closures also appear in the ec production run (sec. 5) as zeros of
+  `k3|LEuropa>Callisto/0s|LCallisto>Europa/0s` and the k = 4 key, at the ec-cell values above.
+
+### 3.2 Liang 2024 open segments (sec. 2.4): REPRODUCED, 6 of 6
+
+Data: `data/973_liang_open_segments.json` (the single run, 2026-10-07 21:20 AEDT; see 2.4 on its
+timing relative to the pre-registration commit).
+
+| Member | Segment | Days | Legs (rev, branch) | Ours: start, middle in/out, end (km/s) | Printed | Max dev. | Tolerance range |
+|---|---|---|---|---|---|---|---|
+| A | C-G-C (gc) | 50.067 | 1 high, 1 low | 5.6706, 6.9873/6.9878, 5.6676 | 5.6730, 6.9919, 5.6698 | 0.0046 | 0.017-0.058 |
+| B | C-G-C (gc) | 50.067 | same | same as A (Liang's first two rows are identical) | same | 0.0046 | same |
+| C | C-G-C (gc) | 50.067 | 1 high, 1 low | 7.6394, 10.4857/10.4859, 7.6371 | 7.6433, 10.4922, 7.6409 | 0.0065 | 0.016-0.057 |
+| A | C-E-C (ec) | 49.909 | 1 high, 1 low | 5.6723, 4.6822/4.6814, 5.8742 | 5.6698, 4.6685, 5.8721 | 0.0137 | 0.058-0.137 |
+| B | C-E-C (ec) | 49.968 | 1 high, 1 low | 5.6720, 4.4978/4.4970, 5.7931 | 5.6698, 4.4853, 5.7914 | 0.0125 | 0.058-0.138 |
+| C | C-E-C (ec) | 50.063 | 1 high, 1 low | 7.6275, 11.9807/11.9806, 7.7701 | 7.6409, 12.0213, 7.7838 | 0.0407 | 0.057-0.138 |
+
+- Middle-flyby |in| - |out| is 1e-4 to 8e-4 km/s in all six. The end moon sits 0.039 deg from Liang's
+  position (the period difference of the two models over the segment).
+- Leg identification is unambiguous: the runner-up Lambert solution is 1.0-3.4 km/s worse.
+- Reading: the gc cell's Lambert machinery reaches Liang's C-G-C geometry, at gc k = 4's period
+  (50.067 d against 50.09 d), and the ec constants reproduce Liang's C-E-C legs. These are open
+  segments of a three-moon cycle, not closures; they are not candidates and not collisions.
+
+## 4. R11 result: gc (Ganymede-Callisto) k = 4 (2026-10-07)
+
+Run: 4,068 structures (all done once, 0 errors; `check` OK), 4,629 exact zeros, 1,439 physical
+cyclers, **51 gate-passing** (0 zero-assessment errors). 0 structures reached the n_refine ceiling (no
+seed saturation seen). Gauntlet: `data/973_gc/k4_gauntlet.json` (log `k4_gauntlet.log`).
+
+Shard layout as run (the first four 8-way shards ran 8-10 min each under CI load, so the rest was
+split 16-way to keep each tool call under 10 min): `s0`-`s3` are shards 0-3 of 8; `s4`, `s5`, `s6`,
+`s7`, `s12`, `s13`, `s14`, `s15` are those shards of 16. Together they cover every residue mod 8
+exactly once (checked by `run_973_enumerate.py check`). Wall time 41 min with 2 workers under CI load
+(load average 17-30); mean 1.07 s per structure, against the 0.21 s pilot at low load.
+
+Gauntlet, all 51:
+- DOP853 re-fly: largest arrival miss 0.49 km (gc4-50; all others < 0.03 km), largest V_inf vector
+  error 4.8e-6 km/s, gate on the integrated vectors "pass" for all 51. Largest miss / smallest SOI
+  2.0e-5.
+- Gate at H&M's 1.1-radius floor: 50 of 51 pass.
+- Largest demanded turn 54.6 deg; no near-180 demand.
+- Literal collisions: none with R-S GanCal#1/#5 (k = 3 rows; no V_inf within 0.3), Campagnola 2019 GCGC
+  (none within 0.5 of 3.5/4.5), or Liang 2024 Tables 3/5/7 (no candidate within 0.3 km/s of a member's
+  per-moon V_inf). One NEAR: gc4-7 (G 3.823 / C 2.378) is within 0.149 km/s of the #576 n = 1
+  Ganymede-Callisto symmetric closure, at another k (1 vs 4) and another structure; recorded, not a
+  collision. Catalogue rows on the pair (7: R-S family, GanCal#1/#5, the four Liang rows): no match.
+- Literature step: DEFERRED (sec. 1).
+
+What the 51 are. A classification added AFTER the run (descriptive, not a gate; thresholds are mine):
+- **J, 8: the conic passes inside Jupiter** (r_min < 71,492 km, down to 185 km from the centre).
+  The pre-registered pass definition and the #942/#943 gauntlet have no primary-impact screen, so these
+  pass the gate as registered; they are not physical trajectories. Papercut filed.
+- **P, 18: pass-through.** One moon has every demanded turn below 0.01 deg (it is a node on a single
+  conic, not a working body). Six of them form three near-twin pairs that share one conic (same r_min/r_max
+  to 1 km; the pass-through moon is met at the other crossing); three more such pairs are in class J.
+- **S, 13: shallow.** Both moons turn, but one moon by less than 1 deg.
+- **W2, 12: both moons turn by at least 1 deg** (two working bodies in the sense of the #943 brief).
+
+Why k = 4 holds many near-zero-turn members: in this model 4 G-C synodic periods (50.09 d) are within
+0.02 d of 3 Callisto periods (50.07 d) and 7 Ganymede periods (50.08 d) (Lynam 2015's 3:4:7 window).
+A spacecraft orbit commensurate with that cycle meets both moons again with a small slip, and a small
+turn removes it. This is the expected physics of the window, not a solver effect.
+
+Ten of the 12 W2 members keep r_min above 0.3 Gm. gc4-38 and gc4-41 dip to 136,000-143,000 km
+(1.9-2.0 Jupiter radii, inside Io's orbit). The lowest-V_inf W2 members (all with r_min at or above
+Ganymede's orbit, 1,070,335 km, i.e. perijove at Ganymede, or 0.94-0.98 Gm):
+
+- gc4-1: G 1.472 / C 1.581 km/s; Ganymede 2 x 36.1 deg (ratio 0.467), Callisto 2 x 42.8 deg (0.677);
+  `k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s`.
+- gc4-2: G 1.738 / C 1.857; turns 54.6 / 41.1 deg (0.826 / 0.779); two generic returns.
+- gc4-8: G 2.419 / C 2.486; turns 13.7 / 10.5 deg (0.306 / 0.293); two generic returns. The largest
+  margin of the W2 set.
+- gc4-19: G 2.357 / C 4.109; turns 41.8 / 5.0 deg (0.899 / 0.311).
+
+These are "candidate, literature step deferred", NOT novel. Nearest published relatives named by the
+#943 prior-art note: the JUICE C-G-C round trip and the Lynam capture windows (one-shot), Liang 2024's
+C-G-C half (sec. 3.2: two to four times the V_inf of these four, open, part of a three-moon cycle).
+
+Candidate table, all 51 (model epoch: both moons at angle 0 at t = 0; period 50.093 d; "Lambert
+starts" are the solved start dates of the Lambert legs in key order; flyby count per moon per cycle):
+
+| # | Class | Structure (key) | V_inf G / C (km/s) | G: flybys, max turn (deg), max ratio | C: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|
+| gc4-0 | W2 | k4\|RGanymede/1:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/2l | 3.194 / 1.553 | 2, 23.29, 0.767 | 1, 1.25, 0.019 | 0.767 | 759,541 / 1,882,591 | 4.345, 21.408 | 2.5e-06 |
+| gc4-1 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 1.472 / 1.581 | 2, 36.13, 0.467 | 2, 42.79, 0.677 | 0.677 | 1,070,335 / 2,243,803 | 10.564, 31.965 | 8.4e-06 |
+| gc4-2 | W2 | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.738 / 1.857 | 2, 54.58, 0.826 | 2, 41.08, 0.779 | 0.826 | 940,161 / 2,473,504 | 1.044, 11.479, 18.954, 43.662 | 9.4e-06 |
+| gc4-3 | P | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/2l | 4.300 / 1.880 | 1, 0.00, 0.000 | 1, 1.28, 0.025 | 0.025 | 795,584 / 1,882,594 | 10.452, 36.615 | 1.0e-04 |
+| gc4-4 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2h | 4.388 / 1.913 | 2, 0.85, 0.047 | 1, 6.30, 0.124 | 0.124 | 785,058 / 1,915,782 | 2.241, 20.389, 26.406 | 4.6e-05 |
+| gc4-5 | P | k4\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 1.579 / 2.041 | 1, 1.05, 0.014 | 1, 0.00, 0.000 | 0.014 | 1,070,335 / 2,038,405 | 7.474, 24.158 | 7.8e-06 |
+| gc4-6 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 5.007 / 2.135 | 2, 3.91, 0.270 | 1, 1.31, 0.030 | 0.270 | 709,202 / 2,056,858 | 1.532, 24.228 | 8.9e-04 |
+| gc4-7 | S | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 3.823 / 2.378 | 2, 0.16, 0.007 | 2, 34.16, 0.894 | 0.894 | 873,051 / 2,422,525 | 0.723, 24.960, 47.860 | 7.7e-06 |
+| gc4-8 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 2.419 / 2.486 | 2, 13.72, 0.306 | 2, 10.51, 0.293 | 0.306 | 984,807 / 2,264,287 | 2.782, 22.264, 26.635, 48.504 | 1.9e-06 |
+| gc4-9 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 5.004 / 2.511 | 2, 0.14, 0.010 | 1, 0.00, 0.000 | 0.010 | 726,015 / 1,956,299 | 5.078, 22.919, 50.134 | 6.1e-04 |
+| gc4-10 | W2 | k4\|RGanymede/1:1\|LGanymede>Callisto/2l\|LCallisto>Ganymede/2h | 6.447 / 2.751 | 2, 5.70, 0.620 | 1, 1.40, 0.045 | 0.620 | 464,563 / 1,882,607 | 0.427, 20.778 | 5.3e-04 |
+| gc4-11 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 1.820 / 2.816 | 2, 51.45, 0.817 | 2, 1.35, 0.045 | 0.817 | 1,070,338 / 2,308,510 | 10.732, 14.218, 35.875 | 9.1e-06 |
+| gc4-12 | P | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 1.855 / 2.922 | 2, 52.46, 0.851 | 1, 0.00, 0.000 | 0.851 | 1,070,334 / 2,327,904 | 10.696, 14.146 | 7.0e-06 |
+| gc4-13 | P | k4\|LGanymede>Callisto/2l\|RCallisto/1:2\|LCallisto>Ganymede/1h | 6.833 / 2.937 | 1, 0.00, 0.000 | 2, 2.28, 0.082 | 0.082 | 488,606 / 1,882,611 | 0.148, 36.614 | 4.0e-05 |
+| gc4-14 | S | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 6.963 / 3.006 | 2, 0.51, 0.064 | 1, 6.59, 0.244 | 0.244 | 473,905 / 1,906,050 | 6.120, 25.130, 44.805 | 5.4e-05 |
+| gc4-15 | S | k4\|RGanymede/1:1\|LGanymede>Callisto/2h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 6.760 / 3.063 | 2, 5.49, 0.652 | 2, 0.61, 0.023 | 0.652 | 438,208 / 1,912,566 | 0.704, 21.711, 37.621 | 4.1e-05 |
+| gc4-16 | S | k4\|LGanymede>Callisto/1h\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 2, 0.02, 0.001 | 0.020 | 1,069,915 / 2,696,073 | 1.755, 48.818 | 2.9e-05 |
+| gc4-17 | P | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 1, 0.00, 0.000 | 0.020 | 1,070,334 / 2,695,657 | 1.755, 48.818 | 9.6e-05 |
+| gc4-18 | P | k4\|RGanymede/2:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 2.253 / 3.889 | 2, 37.84, 0.770 | 1, 0.00, 0.000 | 0.770 | 1,070,334 / 2,872,965 | 3.517, 36.402 | 1.5e-03 |
+| gc4-19 | W2 | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.357 / 4.109 | 2, 41.77, 0.899 | 2, 5.01, 0.311 | 0.899 | 969,653 / 3,047,178 | 3.498, 36.486 | 1.5e-04 |
+| gc4-20 | P | k4\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 2.736 / 4.851 | 1, 1.00, 0.026 | 1, 0.00, 0.000 | 0.026 | 1,070,333 / 3,864,538 | 10.866, 13.360 | 1.9e-04 |
+| gc4-21 | P | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2l | 9.229 / 5.002 | 2, 0.15, 0.033 | 1, 0.00, 0.000 | 0.033 | 288,525 / 2,087,948 | 7.776, 31.074, 37.671 | 1.2e-04 |
+| gc4-22 | P | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 8.288 / 5.013 | 2, 0.14, 0.024 | 1, 0.00, 0.000 | 0.024 | 414,566 / 2,265,347 | 8.115, 20.043, 31.709 | 1.2e-04 |
+| gc4-23 | S | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|RCallisto/1:2\|LCallisto>Ganymede/0s | 9.315 / 5.064 | 2, 0.16, 0.034 | 2, 0.37, 0.033 | 0.034 | 281,595 / 2,092,521 | 7.783, 31.056, 54.343 | 1.3e-04 |
+| gc4-24 | S | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.664 / 5.109 | 2, 2.28, 0.433 | 2, 0.32, 0.029 | 0.433 | 367,198 / 2,404,135 | 7.115, 15.052, 29.725 | 4.8e-05 |
+| gc4-25 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.152 / 5.228 | 2, 3.46, 0.586 | 2, 7.30, 0.695 | 0.695 | 357,770 / 2,395,646 | 4.216, 20.830, 30.242, 44.898 | 2.1e-05 |
+| gc4-26 | P | k4\|LGanymede>Callisto/0s\|LCallisto>Callisto/2l\|LCallisto>Ganymede/0s | 7.680 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 9.595, 20.607, 50.659 | 4.2e-05 |
+| gc4-27 | P | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 7.704 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 3.318, 19.336, 39.377 | 2.3e-05 |
+| gc4-28 | W2 | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.857 / 5.551 | 2, 4.44, 0.880 | 2, 7.50, 0.797 | 0.880 | 320,944 / 2,601,280 | 7.082, 30.488, 33.880, 53.783 | 2.2e-05 |
+| gc4-29 | S | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.128 / 5.598 | 2, 0.49, 0.103 | 2, 1.33, 0.143 | 0.143 | 328,024 / 2,375,598 | 10.214, 22.349, 39.024, 53.648 | 3.1e-05 |
+| gc4-30 | P | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/1h | 9.660 / 5.973 | 1, 0.00, 0.000 | 2, 0.29, 0.035 | 0.035 | 297,589 / 2,380,474 | 10.122, 26.965, 41.587 | 1.6e-05 |
+| gc4-31 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.924 / 6.077 | 2, 0.70, 0.141 | 2, 0.92, 0.116 | 0.141 | 397,621 / 2,756,713 | 6.771, 30.798, 34.050, 53.612 | 1.1e-05 |
+| gc4-32 | S | k4\|RGanymede/2:1\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.477 / 6.320 | 2, 2.82, 0.636 | 2, 0.23, 0.031 | 0.636 | 354,194 / 3,005,379 | 1.749, 16.781, 36.187 | 9.2e-06 |
+| gc4-33 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 8.544 / 6.509 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 12.437, 44.079, 47.246 | 6.8e-05 |
+| gc4-34 | P | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 8.544 / 6.527 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 0.117, 18.567, 32.155 | 7.7e-05 |
+| gc4-35 | S | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 8.615 / 6.570 | 2, 0.13, 0.025 | 2, 0.14, 0.021 | 0.025 | 500,925 / 3,275,187 | 6.416, 24.891, 42.878 | 3.2e-05 |
+| gc4-36 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 10.467 / 7.065 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 7.632, 31.111, 54.803 | 1.8e-04 |
+| gc4-37 | P | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 10.467 / 7.086 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 2.967, 29.582, 39.248 | 8.8e-05 |
+| gc4-38 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 11.460 / 7.217 | 2, 2.75, 0.897 | 2, 4.89, 0.849 | 0.897 | 143,171 / 2,703,105 | 0.961, 16.537, 19.356, 38.175 | 5.9e-05 |
+| gc4-39 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 12.226 / 7.252 | 2, 0.18, 0.068 | 1, 0.00, 0.000 | 0.068 | 96,759 / 2,285,287 | 0.527, 15.873, 35.320 | 9.9e-05 |
+| gc4-40 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|RCallisto/1:2\|LCallisto>Ganymede/0s | 12.285 / 7.291 | 2, 0.18, 0.069 | 2, 0.24, 0.042 | 0.069 | 93,608 / 2,286,215 | 9.165, 24.494, 56.461 | 1.0e-04 |
+| gc4-41 | W2 | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 11.828 / 7.513 | 2, 1.49, 0.516 | 2, 2.32, 0.435 | 0.516 | 135,971 / 2,662,003 | 8.685, 28.884, 36.396, 51.267 | 2.5e-04 |
+| gc4-42 | S | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 13.421 / 8.882 | 2, 2.12, 0.939 | 2, 0.28, 0.071 | 0.939 | 78,948 / 3,298,961 | 5.747, 15.271, 30.643 | 2.8e-05 |
+| gc4-43 | J | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 15.080 / 9.633 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 10.288, 39.261, 58.015 | 8.1e-03 |
+| gc4-44 | J | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 15.080 / 9.661 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 7.206, 28.326, 49.580 | 2.4e-02 |
+| gc4-45 | J | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.510 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 3.612, 26.416, 42.175 | 5.4e-04 |
+| gc4-46 | J | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/2h\|LCallisto>Ganymede/0s | 14.536 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 9.839, 23.290, 57.623 | 1.3e-03 |
+| gc4-47 | J | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 14.637 / 9.726 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 3.761, 40.199, 42.500 | 8.2e-05 |
+| gc4-48 | J | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Ganymede/1l | 14.637 / 9.750 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 2.567, 16.223, 39.067 | 1.3e-04 |
+| gc4-49 | J | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.744 / 9.819 | 2, 0.14, 0.073 | 2, 0.07, 0.022 | 0.073 | 29,981 / 3,085,784 | 5.679, 19.368, 29.648, 45.491 | 1.8e-03 |
+| gc4-50 | J | k4\|LGanymede>Callisto/2l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 15.993 / 10.251 | 1, 0.00, 0.000 | 2, 0.46, 0.156 | 0.156 | 185 / 2,692,527 | 3.232, 24.253, 41.025 | 4.9e-01 |
+
+## 5. R12 result: ec (Europa-Callisto, both massive) k = 1-4 (2026-10-07): NO GATE-PASSING CYCLER
+
+Run: 2,014 structures (all done once, 0 errors; `check` OK per k), 462 exact zeros, 215 physical
+cyclers (merged within each k: 7 / 31 / 55 / 122), **0 gate-passing**. 0 structures at the n_refine
+ceiling. Data: `data/973_ec/k1/s0`, `k2/s0`, `k3/s0`, `k4/s0`, `k4/s1` (k = 4 as 2 shards of 2);
+gauntlet summary `data/973_ec/k1-4_gauntlet.json`. Wall time 7 min (mean 0.29-0.34 s per structure).
+
+| k | Period (d) | Structures | Zeros | Gate fail | No minimax directions | Lowest worst ratio (structure) |
+|---|---|---|---|---|---|---|
+| 1 | 4.51 | 37 | 14 | 7 | 7 | 110.7 (k1\|HEuropa/1,0,a\|LEuropa>Callisto/0s\|LCallisto>Europa/0s) |
+| 2 | 9.02 | 177 | 48 | 38 | 10 | 8.10 (k2\|HEuropa/1,0,a\|LEuropa>Callisto/0s\|LCallisto>Europa/0s) |
+| 3 | 13.54 | 470 | 112 | 77 | 35 | 4.76 (k3\|REuropa/2:1\|LEuropa>Callisto/0s\|LCallisto>Europa/0s) |
+| 4 | 18.05 | 1,330 | 288 | 209 | 79 | 1.36 (k4\|LEuropa>Europa/1l\|LEuropa>Callisto/0s\|LCallisto>Europa/0s; E 4.37, C 3.65 km/s, largest turn 14.3 deg) |
+
+- In-run recall: the #576 n = 3 and n = 4 closures are zeros of the plain E->C->E structures at k = 3
+  and k = 4, with the ec-cell values of sec. 3.1. Both fail the gate (28.9, 8.32).
+- Reading: in this cell the E-C period at k <= 4 (at most 18 d, about one Callisto period) leaves the
+  transfers fast and the V_inf high relative to what Europa and Callisto can turn; the best zero needs
+  1.36 times the available turn. The trend with k (110 -> 8.1 -> 4.8 -> 1.36) says the first gate
+  passers, if any, lie at k >= 5. That is outside this pre-registration; Liang's C-E-C half sits at
+  about 11 synodic periods.
+- Proposed registry stamp (for the lead; `data/empty_regions.jsonl` not edited): region
+  `jupiter-europa-callisto-two-working-body-rs2009-ideal-k1-4-973`, centre Jupiter, template
+  `[A-block, A->B, B-block, B->A]` one visit, k 1-4, returns 1,1, transfer revs 0,1,2, generic revs 1,2,
+  catalogue as #943 gc, seeds 36/12/40/0.03, method `two_working_body.correct_dates` + minimax turn
+  gate (ballistic, coplanar, patched-conic, circular), points 2,014 structures, zeros 462, physical 215,
+  gate-passing 0, errors 0, prune gates as #943 gc. Empty is conditional on this catalogue and these
+  seeds.
+
+## 6. Not run by #973: gc k = 5, 6 and ev k = 4, 5 (lead ruling 2026-10-07: the lead launches them)
+
+Each is over 60 min of wall time with 2 workers while CI runs. Controls for both cells are already
+recalled (sec. 3.1), so the production runs can start without them.
+
+### 6.1 Launch commands (from the repo root; foreground or as the lead prefers)
+
+One block per cell/k; set the four variables, then run the three commands. Each shard writes its own
+directory `data/973_<cell>/k<k>/s<i>/` and log `s<i>.log`.
+
+```sh
+# gc k = 5:  CELL=gc K=5 N=16 PILOT=0.5  FLAGS="--max-returns 1,1 --transfer-revs 0,1,2 --generic-revs 1,2"
+# gc k = 6:  CELL=gc K=6 N=24 PILOT=0.78 FLAGS="--max-returns 1,1 --transfer-revs 0,1,2 --generic-revs 1,2"
+# ev k = 4:  CELL=ev K=4 N=16 PILOT=0.8  FLAGS="--max-returns 2,2 --transfer-revs 0 --generic-revs 1 --resonant-only E"
+# ev k = 5:  CELL=ev K=5 N=24 PILOT=0.91 FLAGS="--max-returns 2,2 --transfer-revs 0 --generic-revs 1 --resonant-only E"
+export CELL=gc K=5 N=16 PILOT=0.5 FLAGS="--max-returns 1,1 --transfer-revs 0,1,2 --generic-revs 1,2"
+mkdir -p data/973_$CELL/k$K
+seq 0 $((N-1)) | xargs -n1 -P2 sh -c 'uv run python scripts/run_973_enumerate.py enumerate --cell $CELL --k $K --out data/973_$CELL/k$K/s$0 --shard $0/$N --timing-pilot-s $PILOT --n-phase 36 --n-split 12 --n-refine 40 $FLAGS > data/973_$CELL/k$K/s$0.log 2>&1; echo "shard $0 exit $?: $(tail -1 data/973_$CELL/k$K/s$0.log)"'
+uv run python scripts/run_973_enumerate.py check data/973_$CELL/k$K/s*/
+uv run python scripts/run_973_enumerate.py gauntlet --cell $CELL data/973_$CELL/k$K/s*/ --out data/973_$CELL/k${K}_gauntlet.json | tee data/973_$CELL/k${K}_gauntlet.log
+```
+
+- `xargs -n1` with `sh -c '... $0 ...'` is used because macOS `xargs -I` refuses commands over 255
+  bytes. `-P2` = 2 workers; raise it when the machine is idle (shards are independent).
+- A subset of shards can be run by replacing `seq 0 $((N-1))` with a list, e.g. `printf "0\n1\n"`.
+- The command line was checked with `--count-only` (gc k = 5: 287 structures in shard 0 of 16).
+
+### 6.2 Expected runtime (structure counts from sec. 2.1; per-structure times measured)
+
+| Cell/k | Structures | Pilot s/structure (load 3-4) | Serial, idle | 2 workers, idle | 2 workers, CI load (x5, as gc k4) |
+|---|---|---|---|---|---|
+| gc k5 | 4,589 | about 0.5 (between the k4 and k6 pilots; not measured) | 38 min | 19 min | 1.6 h |
+| gc k6 | 4,844 | 0.78 | 63 min | 32 min | 2.6 h |
+| ev k4 | 3,566 | about 0.8 (not measured; ev k5 pilot) | 48 min | 24 min | 2.0 h |
+| ev k5 | 4,070 | 0.91 | 62 min | 31 min | 2.6 h |
+
+The gc k4 pilot (0.21 s, 24 structures, low load) underestimated the full run (1.07 s mean, CI load 17-30)
+by 5x. Each progress line in a shard log carries the running totals and an ETA; a shard that stops
+writing for more than about 5 min while its process is gone has died.
+
+### 6.3 Resume and checkpoint behaviour
+
+- Each shard appends one line per finished structure to `structures.jsonl` (with its zero count and
+  time) and one line per zero to `zeros.jsonl`. Re-running the same shard command with the same
+  `--out` skips every key already in `structures.jsonl` (errored structures are retried).
+- Hazard: the zero lines of a structure are written BEFORE its structure line. A shard killed between
+  the two writes solves that structure again on resume and writes its zeros twice. `check` counts
+  duplicated zero lines and fails on them; the physical-cycler merge in the gauntlet is not affected,
+  only the raw zero count. If `check` reports duplicates after a resume, delete the duplicate zero
+  lines of the one structure named in the last `structures.jsonl` line before the kill (or re-run that
+  shard into a fresh directory).
+- Never mix `--shard i/N` layouts in one cell/k unless the union covers every residue once (sec. 4 did
+  8-way plus 16-way; `check` verifies coverage from the structure keys, not from the layout).
+
+### 6.4 Validating a finished cell/k
+
+`uv run python scripts/run_973_enumerate.py check data/973_<cell>/k<k>/s*/` regenerates the full
+structure list from the shards' `settings.json` and fails (exit 1) if: settings differ between shards;
+any structure is missing, extra, done twice or errored; or a zero line is duplicated. It prints the
+number of structures whose zero count reached n_refine (seed saturation; report it). Read a known
+state first: on gc k4 it prints `expected 4068 structures, done 4068, zero lines 4629, ... ceiling
+(40): 0` and `OK`.
+
+### 6.5 Analysis of those runs (for the fresh agent)
+
+Same as sec. 4: `gauntlet` on the shard dirs; then the classes J (r_min below the primary radius:
+Jupiter 71,492 km; for ev the Sun is never reached by these conics, but check r_min against the solar
+radius 695,700 km anyway), P (a moon with every turn < 0.01 deg), S (one moon < 1 deg), W2 (both >=
+1 deg); the candidate table as in sec. 4 (`flyby_table`, `x_days`, `r_min_km`, `r_max_km`,
+`cross_check`); seed-saturation count from `check`. For ev k = 4/5, the H&M check of sec. 2.2 is done
+(below). The literature step and rung (d) stay deferred until #972 lands.
+
+ev, H&M 1970 sub-period check (done, `data/973_ev/hm1970_subperiod_check.json`): every Table 3 orbit is
+5 blocks of [E pair, E->V, two Venus returns, V->E], each block 2 synodic periods (3.2 yr); orbits 1-3
+repeat block by block (k = 2), orbits 4-15 have no sub-period (k = 10 only). Every H&M orbit has one
+E->V transfer per 2 synodic periods; a #973 ev structure at k = 4 or 5 has one per 4 or 5. So no k = 4
+or k = 5 ev structure can equal an H&M orbit or a sub-period of one. The catalogue V_inf comparison
+(the 15 H&M rows) still runs in the gauntlet.
+
+## 7. Verified and assumed
+
+Verified (by a command whose output is in the data files):
+- Every control of sec. 2.3 recalls, at 1e-3 km/s (run values, #576 in its own model) and 0.05 km/s
+  (GanCal#5 published).
+- Liang 2024 C-G-C and C-E-C halves of members A, B, C reproduce within the #222 tolerance in our cells.
+- gc k4 and ec k1-4: every structure of the cell solved exactly once, 0 errors, 0 duplicated zero lines,
+  0 seed-saturated structures.
+- The 51 gc k4 gate-passers: DOP853 re-fly miss <= 0.49 km, gate pass on integrated vectors, SOI
+  fraction <= 2e-5.
+
+Assumed or not checked:
+- That 36/12/40 seeds are dense enough at k = 4 (free time about 1.3x that of k = 3). No structure hit
+  the n_refine ceiling, which is necessary for completeness, not sufficient. A doubled-seed sample was
+  not run.
+- The ec cell's constants are R-S 2009 Table 2's; R-S treated no Europa-Callisto pair, so no published
+  E-C row tests the cell beyond Liang's open segments.
+- Novelty: not assessed (literature step deferred).
+- The J/P/S/W2 classes are descriptive; their thresholds (R_J, 0.01 deg, 1 deg) were chosen after the
+  run and judge nothing.
+
+## 8. Papercuts
+
+- `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`: the #942/#943 pass
+  definition and gauntlet do not reject conics that pass inside the central body.
+- `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`: the 24-structure pilot ran at low
+  load and underestimated the CI-loaded run by 5x; the 10-min tool-call limit then forced a mixed
+  8/16-way shard layout.

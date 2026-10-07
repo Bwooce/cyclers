@@ -1,0 +1,464 @@
+[
+ {
+  "member": "A",
+  "cell": "gc",
+  "sequence": [
+   "Callisto",
+   "Ganymede",
+   "Callisto"
+  ],
+  "segment_days": 50.06700000000001,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Ganymede",
+    "tof_days": 31.8973,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 5.670582860847943,
+    "vinf_arr_kms": 6.987282077703967,
+    "printed_dep_arr_kms": [
+     5.673,
+     6.9919
+    ],
+    "selection_margin_kms": 1.1389876360633453,
+    "n_lambert_solutions": 7
+   },
+   {
+    "from": "Ganymede",
+    "to": "Callisto",
+    "tof_days": 18.169700000000006,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 6.987775342130393,
+    "vinf_arr_kms": 5.667550282814985,
+    "printed_dep_arr_kms": [
+     6.9919,
+     5.6698
+    ],
+    "selection_margin_kms": 2.9047146482637856,
+    "n_lambert_solutions": 5
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   6.987282077703967,
+   6.987775342130393
+  ],
+  "middle_flyby_mismatch_kms": 0.0004932644264261654,
+  "max_abs_vinf_minus_printed_kms": 0.0046179222960329724,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.670582860847943,
+    "printed_kms": 5.673,
+    "tolerance_kms": 0.016698891155658546
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 6.987282077703967,
+    "printed_kms": 6.9919,
+    "tolerance_kms": 0.05652211519410199
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 6.987775342130393,
+    "printed_kms": 6.9919,
+    "tolerance_kms": 0.05652211519410199
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.667550282814985,
+    "printed_kms": 5.6698,
+    "tolerance_kms": 0.05777085479971304
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.039412613746917666,
+  "liang_member_reproduction_worst_kms": 0.015157773190565216
+ },
+ {
+  "member": "A",
+  "cell": "ec",
+  "sequence": [
+   "Callisto",
+   "Europa",
+   "Callisto"
+  ],
+  "segment_days": 49.909000000000006,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Europa",
+    "tof_days": 29.934300000000004,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 5.672296567066023,
+    "vinf_arr_kms": 4.682196099074531,
+    "printed_dep_arr_kms": [
+     5.6698,
+     4.6685
+    ],
+    "selection_margin_kms": 2.753352915211937,
+    "n_lambert_solutions": 5
+   },
+   {
+    "from": "Europa",
+    "to": "Callisto",
+    "tof_days": 19.974700000000002,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 4.6814425325060816,
+    "vinf_arr_kms": 5.874162973879572,
+    "printed_dep_arr_kms": [
+     4.6685,
+     5.8721
+    ],
+    "selection_margin_kms": 3.159732924671907,
+    "n_lambert_solutions": 3
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   4.682196099074531,
+   4.6814425325060816
+  ],
+  "middle_flyby_mismatch_kms": 0.000753566568449493,
+  "max_abs_vinf_minus_printed_kms": 0.013696099074531176,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.672296567066023,
+    "printed_kms": 5.6698,
+    "tolerance_kms": 0.05777085479971304
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 4.682196099074531,
+    "printed_kms": 4.6685,
+    "tolerance_kms": 0.13722216142292362
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 4.6814425325060816,
+    "printed_kms": 4.6685,
+    "tolerance_kms": 0.13722216142292362
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.874162973879572,
+    "printed_kms": 5.8721,
+    "tolerance_kms": 0.09871320472104078
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.03928823655269236,
+  "liang_member_reproduction_worst_kms": 0.015157773190565216
+ },
+ {
+  "member": "B",
+  "cell": "gc",
+  "sequence": [
+   "Callisto",
+   "Ganymede",
+   "Callisto"
+  ],
+  "segment_days": 50.06700000000001,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Ganymede",
+    "tof_days": 31.8973,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 5.670582860847943,
+    "vinf_arr_kms": 6.987282077703967,
+    "printed_dep_arr_kms": [
+     5.673,
+     6.9919
+    ],
+    "selection_margin_kms": 1.1389876360633453,
+    "n_lambert_solutions": 7
+   },
+   {
+    "from": "Ganymede",
+    "to": "Callisto",
+    "tof_days": 18.169700000000006,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 6.987775342130393,
+    "vinf_arr_kms": 5.667550282814985,
+    "printed_dep_arr_kms": [
+     6.9919,
+     5.6698
+    ],
+    "selection_margin_kms": 2.9047146482637856,
+    "n_lambert_solutions": 5
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   6.987282077703967,
+   6.987775342130393
+  ],
+  "middle_flyby_mismatch_kms": 0.0004932644264261654,
+  "max_abs_vinf_minus_printed_kms": 0.0046179222960329724,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.670582860847943,
+    "printed_kms": 5.673,
+    "tolerance_kms": 0.016698891155658546
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 6.987282077703967,
+    "printed_kms": 6.9919,
+    "tolerance_kms": 0.05652211519410199
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 6.987775342130393,
+    "printed_kms": 6.9919,
+    "tolerance_kms": 0.05652211519410199
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.667550282814985,
+    "printed_kms": 5.6698,
+    "tolerance_kms": 0.05777085479971304
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.039412613746917666,
+  "liang_member_reproduction_worst_kms": 0.013724985328203765
+ },
+ {
+  "member": "B",
+  "cell": "ec",
+  "sequence": [
+   "Callisto",
+   "Europa",
+   "Callisto"
+  ],
+  "segment_days": 49.9684,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Europa",
+    "tof_days": 30.284999999999993,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 5.672014766169631,
+    "vinf_arr_kms": 4.497757644136801,
+    "printed_dep_arr_kms": [
+     5.6698,
+     4.4853
+    ],
+    "selection_margin_kms": 3.0502163954501587,
+    "n_lambert_solutions": 5
+   },
+   {
+    "from": "Europa",
+    "to": "Callisto",
+    "tof_days": 19.683400000000002,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 4.497006092354475,
+    "vinf_arr_kms": 5.793123202331585,
+    "printed_dep_arr_kms": [
+     4.4853,
+     5.7914
+    ],
+    "selection_margin_kms": 3.4302387397778675,
+    "n_lambert_solutions": 3
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   4.497757644136801,
+   4.497006092354475
+  ],
+  "middle_flyby_mismatch_kms": 0.0007515517823257767,
+  "max_abs_vinf_minus_printed_kms": 0.012457644136801171,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.672014766169631,
+    "printed_kms": 5.6698,
+    "tolerance_kms": 0.05777085479971304
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 4.497757644136801,
+    "printed_kms": 4.4853,
+    "tolerance_kms": 0.13770404467107733
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 4.497006092354475,
+    "printed_kms": 4.4853,
+    "tolerance_kms": 0.13770404467107733
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 5.793123202331585,
+    "printed_kms": 5.7914,
+    "tolerance_kms": 0.09876193291806591
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.03933499607996795,
+  "liang_member_reproduction_worst_kms": 0.013724985328203765
+ },
+ {
+  "member": "C",
+  "cell": "gc",
+  "sequence": [
+   "Callisto",
+   "Ganymede",
+   "Callisto"
+  ],
+  "segment_days": 50.066900000000004,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Ganymede",
+    "tof_days": 32.2542,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 7.639398941028303,
+    "vinf_arr_kms": 10.48566262920766,
+    "printed_dep_arr_kms": [
+     7.6433,
+     10.4922
+    ],
+    "selection_margin_kms": 1.0037462025174309,
+    "n_lambert_solutions": 9
+   },
+   {
+    "from": "Ganymede",
+    "to": "Callisto",
+    "tof_days": 17.812700000000003,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 10.485866443828645,
+    "vinf_arr_kms": 7.637108187807599,
+    "printed_dep_arr_kms": [
+     10.4922,
+     7.6409
+    ],
+    "selection_margin_kms": 1.7963835280438323,
+    "n_lambert_solutions": 5
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   10.48566262920766,
+   10.485866443828645
+  ],
+  "middle_flyby_mismatch_kms": 0.00020381462098484349,
+  "max_abs_vinf_minus_printed_kms": 0.006537370792340624,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 7.639398941028303,
+    "printed_kms": 7.6433,
+    "tolerance_kms": 0.016316371755651843
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 10.48566262920766,
+    "printed_kms": 10.4922,
+    "tolerance_kms": 0.05640310181645188
+   },
+   {
+    "moon": "Ganymede",
+    "ours_kms": 10.485866443828645,
+    "printed_kms": 10.4922,
+    "tolerance_kms": 0.05640310181645188
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 7.637108187807599,
+    "printed_kms": 7.6409,
+    "tolerance_kms": 0.05738825336570461
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.03941253502732418,
+  "liang_member_reproduction_worst_kms": 0.048191429961963905
+ },
+ {
+  "member": "C",
+  "cell": "ec",
+  "sequence": [
+   "Callisto",
+   "Europa",
+   "Callisto"
+  ],
+  "segment_days": 50.0629,
+  "legs": [
+   {
+    "from": "Callisto",
+    "to": "Europa",
+    "tof_days": 31.1267,
+    "n_revs": 1,
+    "branch": "high",
+    "vinf_dep_kms": 7.627538918128416,
+    "vinf_arr_kms": 11.980745097620014,
+    "printed_dep_arr_kms": [
+     7.6409,
+     12.0213
+    ],
+    "selection_margin_kms": 1.2147641314366826,
+    "n_lambert_solutions": 9
+   },
+   {
+    "from": "Europa",
+    "to": "Callisto",
+    "tof_days": 18.936199999999996,
+    "n_revs": 1,
+    "branch": "low",
+    "vinf_dep_kms": 11.980607871927475,
+    "vinf_arr_kms": 7.770094159577406,
+    "printed_dep_arr_kms": [
+     12.0213,
+     7.7838
+    ],
+    "selection_margin_kms": 2.656282658553482,
+    "n_lambert_solutions": 5
+   }
+  ],
+  "middle_flyby_vinf_in_out_kms": [
+   11.980745097620014,
+   11.980607871927475
+  ],
+  "middle_flyby_mismatch_kms": 0.00013722569253893369,
+  "max_abs_vinf_minus_printed_kms": 0.04069212807252498,
+  "per_flyby": [
+   {
+    "moon": "Callisto",
+    "ours_kms": 7.627538918128416,
+    "printed_kms": 7.6409,
+    "tolerance_kms": 0.05738825336570461
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 11.980745097620014,
+    "printed_kms": 12.0213,
+    "tolerance_kms": 0.13821973844998647
+   },
+   {
+    "moon": "Europa",
+    "ours_kms": 11.980607871927475,
+    "printed_kms": 12.0213,
+    "tolerance_kms": 0.13821973844998647
+   },
+   {
+    "moon": "Callisto",
+    "ours_kms": 7.770094159577406,
+    "printed_kms": 7.7838,
+    "tolerance_kms": 0.09845685361568834
+   }
+  ],
+  "reproduced": true,
+  "end_moon_angle_offset_deg": -0.03940938623686777,
+  "liang_member_reproduction_worst_kms": 0.048191429961963905
+ }
+]

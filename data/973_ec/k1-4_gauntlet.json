@@ -1,0 +1,156 @@
+{
+ "cell": "ec",
+ "dirs": [
+  "data/973_ec/k1/s0",
+  "data/973_ec/k2/s0",
+  "data/973_ec/k3/s0",
+  "data/973_ec/k4/s0",
+  "data/973_ec/k4/s1"
+ ],
+ "n_structures": 2014,
+ "n_zeros": 462,
+ "n_physical": 215,
+ "n_gate_passing": 0,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "russell-strange-2009-jovian-multimoon-family",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": [
+    [
+     "Io",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Callisto",
+     null
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-111-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.6685
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-110-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.4853
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-111-lowperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     7.6433
+    ],
+    [
+     "Ganymede",
+     10.4922
+    ],
+    [
+     "Europa",
+     12.0213
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-ephemeris-2033",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ]
+   ],
+   "k": null
+  }
+ ],
+ "empty_regions_same_pair": [
+  "jovian-IEG-vilm-2026-06-09",
+  "jovian-perm-vilm-2026-06-09",
+  "jupiter-galilean-amalthea-repeated-moon-quasicycler-2026-06-24",
+  "jovian-cgcec-sobol-smoke-318-2026-06-30",
+  "jovian-egce-sobol-broadened-501-2026-06-30",
+  "jovian-egcge-sobol-broadened-501-2026-06-30",
+  "jupiter-galilean-symmetric-closure-litcovered-known-class-member-578",
+  "jupiter-galilean-io-callisto-symmetric-closure-corpus-gap-578",
+  "jupiter-europa-callisto-ccr4bp-torus-connection-703-2026-07-24",
+  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22"
+ ],
+ "candidates": []
+}

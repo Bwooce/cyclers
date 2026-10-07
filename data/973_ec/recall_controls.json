@@ -1,0 +1,3480 @@
+[
+ {
+  "name": "#576 closure anchor Europa n = 3 in ec576",
+  "cell": "ec576",
+  "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 6.47944942207288,
+   "Callisto": 4.0585842638899114
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     4.512392023802011,
+     11.280980059505026
+    ],
+    "residual_kms": 9.769962616701378e-15,
+    "status": "fail",
+    "worst_ratio": 28.8724889726873,
+    "max_encounter_miss_km": 2.327061041595204e-07,
+    "vinf_kms": {
+     "Callisto": 4.058584263889914,
+     "Europa": 6.479449422072888
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.280980059505026,
+      "vinf_kms": 4.058584263889914,
+      "turn_deg": 99.67497126001136,
+      "available_deg": 16.452329464734316,
+      "ratio": 6.0584108453253,
+      "required_alt_km": -2275.8300280149815,
+      "rmin_radii": 0.055789724094518565,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 18.049568095208045,
+      "vinf_kms": 6.479449422072888,
+      "turn_deg": 145.34515108093228,
+      "available_deg": 5.034036075602121,
+      "ratio": 28.8724889726873,
+      "required_alt_km": -1557.1734320550229,
+      "rmin_radii": 0.0023235314870432636,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     2.2561960119010096,
+     9.024784047604042
+    ],
+    "residual_kms": 3.552713678800501e-14,
+    "status": "fail",
+    "worst_ratio": 141.74312533885197,
+    "max_encounter_miss_km": 4.2422174957059003e-08,
+    "vinf_kms": {
+     "Callisto": 6.746032510679465,
+     "Europa": 14.851058498119997
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 9.024784047604042,
+      "vinf_kms": 6.746032510679465,
+      "turn_deg": 82.2461585054799,
+      "available_deg": 6.534280709473224,
+      "ratio": 12.586872551441143,
+      "required_alt_km": -2328.188373325471,
+      "rmin_radii": 0.03406697368565292,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 15.793372083307043,
+      "vinf_kms": 14.851058498119997,
+      "turn_deg": 140.78898588163776,
+      "available_deg": 0.9932685309786049,
+      "ratio": 141.74312533885197,
+      "required_alt_km": -1559.9063171560504,
+      "rmin_radii": 0.0005725799871537012,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     3.356705933745682,
+     14.853664108543997
+    ],
+    "residual_kms": 5.684341886080802e-14,
+    "status": "fail",
+    "worst_ratio": 186.0333852108051,
+    "max_encounter_miss_km": 8.446972532882479e-08,
+    "vinf_kms": {
+     "Callisto": 9.229119012839336,
+     "Europa": 17.717729163059246
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 14.853664108543997,
+      "vinf_kms": 9.229119012839336,
+      "turn_deg": 0.0,
+      "available_deg": 3.5850250786690854,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 16.893882005151713,
+      "vinf_kms": 17.717729163059246,
+      "turn_deg": 130.1591050217431,
+      "available_deg": 0.699654553263396,
+      "ratio": 186.0333852108051,
+      "required_alt_km": -1559.7525624967484,
+      "rmin_radii": 0.0006710901481621421,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     1.1556860900563326,
+     3.1959039866640593
+    ],
+    "residual_kms": 3.730349362740526e-14,
+    "status": "fail",
+    "worst_ratio": 186.0333852108052,
+    "max_encounter_miss_km": 3.7635993727735877e-07,
+    "vinf_kms": {
+     "Callisto": 9.229119012839288,
+     "Europa": 17.717729163059232
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 3.1959039866640593,
+      "vinf_kms": 9.229119012839288,
+      "turn_deg": 0.0,
+      "available_deg": 3.5850250786691147,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 14.692862161462367,
+      "vinf_kms": 17.717729163059232,
+      "turn_deg": 130.1591050217433,
+      "available_deg": 0.6996545532633968,
+      "ratio": 186.0333852108052,
+      "required_alt_km": -1559.7525624967484,
+      "rmin_radii": 0.0006710901481621372,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     4.512392023802011,
+     11.280980059505026
+    ],
+    "residual_kms": 9.769962616701378e-15,
+    "status": "fail",
+    "worst_ratio": 28.8724889726873,
+    "max_encounter_miss_km": 2.327061041595204e-07,
+    "vinf_kms": {
+     "Callisto": 4.058584263889914,
+     "Europa": 6.479449422072888
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.280980059505026,
+      "vinf_kms": 4.058584263889914,
+      "turn_deg": 99.67497126001136,
+      "available_deg": 16.452329464734316,
+      "ratio": 6.0584108453253,
+      "required_alt_km": -2275.8300280149815,
+      "rmin_radii": 0.055789724094518565,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 18.049568095208045,
+      "vinf_kms": 6.479449422072888,
+      "turn_deg": 145.34515108093228,
+      "available_deg": 5.034036075602121,
+      "ratio": 28.8724889726873,
+      "required_alt_km": -1557.1734320550229,
+      "rmin_radii": 0.0023235314870432636,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     3.8499428721464026,
+     6.177720775769785
+    ],
+    "residual_kms": 3.730349362740526e-14,
+    "status": "fail",
+    "worst_ratio": 12.55579359529987,
+    "max_encounter_miss_km": 1.4829602578193609e-05,
+    "vinf_kms": {
+     "Callisto": 5.225438505238814,
+     "Europa": 5.045035797830568
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 6.177720775769785,
+      "vinf_kms": 5.225438505238814,
+      "turn_deg": 0.0,
+      "available_deg": 10.500901173105786,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 17.387118943552437,
+      "vinf_kms": 5.045035797830568,
+      "turn_deg": 101.41782537870732,
+      "available_deg": 8.077372776872664,
+      "ratio": 12.55579359529987,
+      "required_alt_km": -1524.0453208937486,
+      "rmin_radii": 0.023548615521688385,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     0.6624491516556126,
+     11.871847319438263
+    ],
+    "residual_kms": 1.1102230246251565e-13,
+    "status": "fail",
+    "worst_ratio": 12.55579359529956,
+    "max_encounter_miss_km": 7.667078383844772e-06,
+    "vinf_kms": {
+     "Callisto": 5.225438505238786,
+     "Europa": 5.045035797830607
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.871847319438263,
+      "vinf_kms": 5.225438505238786,
+      "turn_deg": 0.0,
+      "available_deg": 10.500901173105888,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 14.199625223061645,
+      "vinf_kms": 5.045035797830607,
+      "turn_deg": 101.41782537870503,
+      "available_deg": 8.07737277687268,
+      "ratio": 12.55579359529956,
+      "required_alt_km": -1524.0453208937458,
+      "rmin_radii": 0.023548615521689714,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Europa n = 3 in ec",
+  "cell": "ec",
+  "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 6.47944942207288,
+   "Callisto": 4.0585842638899114
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     2.255535516700492,
+     9.022142066801953
+    ],
+    "residual_kms": 3.197442310920451e-14,
+    "status": "fail",
+    "worst_ratio": 141.7281804749,
+    "max_encounter_miss_km": 2.397138192548184e-09,
+    "vinf_kms": {
+     "Callisto": 6.743803815846286,
+     "Europa": 14.84787615613342
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 9.022142066801953,
+      "vinf_kms": 6.743803815846286,
+      "turn_deg": 82.23979802544862,
+      "available_deg": 6.543802280477399,
+      "ratio": 12.56758601506048,
+      "required_alt_km": -2325.81881922426,
+      "rmin_radii": 0.03412839733211796,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 15.788748616903494,
+      "vinf_kms": 14.84787615613342,
+      "turn_deg": 140.81720290074168,
+      "available_deg": 0.9935723610427664,
+      "ratio": 141.7281804749,
+      "required_alt_km": -1560.1072857768959,
+      "rmin_radii": 0.0005718861134555238,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     3.35517359431243,
+     14.848083447693028
+    ],
+    "residual_kms": 2.6645352591003757e-14,
+    "status": "fail",
+    "worst_ratio": 186.03826257498395,
+    "max_encounter_miss_km": 2.603780596338115e-07,
+    "vinf_kms": {
+     "Callisto": 9.227343160091976,
+     "Europa": 17.71528753267792
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 14.848083447693028,
+      "vinf_kms": 9.227343160091976,
+      "turn_deg": 0.0,
+      "available_deg": 3.5894276304204187,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 16.888386694515432,
+      "vinf_kms": 17.71528753267792,
+      "turn_deg": 130.18263972566695,
+      "available_deg": 0.6997627150661869,
+      "ratio": 186.03826257498395,
+      "required_alt_km": -1559.953346876393,
+      "rmin_radii": 0.0006705016807220353,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     1.1558974390885746,
+     3.19620068591098
+    ],
+    "residual_kms": 3.019806626980426e-14,
+    "status": "fail",
+    "worst_ratio": 186.03826257498383,
+    "max_encounter_miss_km": 3.9724444550040897e-07,
+    "vinf_kms": {
+     "Callisto": 9.22734316009193,
+     "Europa": 17.71528753267792
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 3.19620068591098,
+      "vinf_kms": 9.22734316009193,
+      "turn_deg": 0.0,
+      "available_deg": 3.5894276304204538,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 14.689110539291578,
+      "vinf_kms": 17.71528753267792,
+      "turn_deg": 130.1826397256669,
+      "available_deg": 0.6997627150661869,
+      "ratio": 186.03826257498383,
+      "required_alt_km": -1559.953346876393,
+      "rmin_radii": 0.0006705016807220383,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     1.0168187546661218e-15,
+     6.766606550101498
+    ],
+    "residual_kms": 4.440892098500626e-15,
+    "status": "fail",
+    "worst_ratio": 28.902346979854396,
+    "max_encounter_miss_km": 2.0641544749203712e-07,
+    "vinf_kms": {
+     "Callisto": 4.058875012786313,
+     "Europa": 6.481933815967594
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 6.766606550101498,
+      "vinf_kms": 4.058875012786313,
+      "turn_deg": 99.65663397855245,
+      "available_deg": 16.46281435607089,
+      "ratio": 6.053438484034334,
+      "required_alt_km": -2273.4722454867187,
+      "rmin_radii": 0.05586700768823971,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 13.533213100203003,
+      "vinf_kms": 6.481933815967594,
+      "turn_deg": 145.3720673804222,
+      "available_deg": 5.0297668726262925,
+      "ratio": 28.902346979854396,
+      "required_alt_km": -1557.382059503158,
+      "rmin_radii": 0.002317706916618882,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     0.6620747526979813,
+     11.867919151545957
+    ],
+    "residual_kms": 7.194245199571014e-14,
+    "status": "fail",
+    "worst_ratio": 12.576450872263498,
+    "max_encounter_miss_km": 6.861619020447718e-06,
+    "vinf_kms": {
+     "Callisto": 5.225722798183038,
+     "Europa": 5.047537138456557
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.867919151545957,
+      "vinf_kms": 5.225722798183038,
+      "turn_deg": 0.0,
+      "available_deg": 10.508297148164692,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 14.195287852900984,
+      "vinf_kms": 5.047537138456557,
+      "turn_deg": 101.4796026171978,
+      "available_deg": 8.0690175350666,
+      "ratio": 12.576450872263498,
+      "required_alt_km": -1524.353321881716,
+      "rmin_radii": 0.02347641135059798,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 3,
+    "x_days": [
+     3.8489962807030262,
+     6.176364982058058
+    ],
+    "residual_kms": 1.687538997430238e-14,
+    "status": "fail",
+    "worst_ratio": 12.576450872263626,
+    "max_encounter_miss_km": 1.5088176192557518e-05,
+    "vinf_kms": {
+     "Callisto": 5.2257227981830106,
+     "Europa": 5.047537138456551
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 6.176364982058058,
+      "vinf_kms": 5.2257227981830106,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 10.508297148164809,
+      "ratio": 8.124757362811146e-08,
+      "required_alt_km": 35285689604.663124,
+      "rmin_radii": 14653526.583331818,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 17.38220938090603,
+      "vinf_kms": 5.047537138456551,
+      "turn_deg": 101.47960261719788,
+      "available_deg": 8.069017535066525,
+      "ratio": 12.576450872263626,
+      "required_alt_km": -1524.3533218817165,
+      "rmin_radii": 0.023476411350597956,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Europa n = 4 in ec576",
+  "cell": "ec576",
+  "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 4.025441588214227,
+   "Callisto": 4.361716665278256
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     4.974304788360134e-16,
+     9.02478404760401
+    ],
+    "residual_kms": 2.6645352591003757e-15,
+    "status": "fail",
+    "worst_ratio": 8.33143023561893,
+    "max_encounter_miss_km": 2.3176957403631137e-08,
+    "vinf_kms": {
+     "Callisto": 4.361716665278246,
+     "Europa": 4.025441588214244
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 9.02478404760401,
+      "vinf_kms": 4.361716665278246,
+      "turn_deg": 120.911554458903,
+      "available_deg": 14.512700825600884,
+      "ratio": 8.33143023561893,
+      "required_alt_km": -2353.8992068129287,
+      "rmin_radii": 0.02339990589846543,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 18.049568095208045,
+      "vinf_kms": 4.025441588214244,
+      "turn_deg": 72.82399964888924,
+      "available_deg": 12.210082364341426,
+      "ratio": 5.964251302805781,
+      "required_alt_km": -1425.4753556438238,
+      "rmin_radii": 0.0867021042774065,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     2.837679067715176,
+     12.211274868386244
+    ],
+    "residual_kms": 1.4210854715202004e-14,
+    "status": "fail",
+    "worst_ratio": 22.080225324869538,
+    "max_encounter_miss_km": 1.3818650716658608e-08,
+    "vinf_kms": {
+     "Callisto": 8.379960667930561,
+     "Europa": 16.708712436505692
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 12.211274868386244,
+      "vinf_kms": 8.379960667930561,
+      "turn_deg": 95.38524679557429,
+      "available_deg": 4.3199399187353125,
+      "ratio": 22.080225324869538,
+      "required_alt_km": -2374.294667203542,
+      "rmin_radii": 0.014938112598621774,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 20.88724716292322,
+      "vinf_kms": 16.708712436505692,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 0.7861125317778859,
+      "ratio": 1.5359356592306384e-06,
+      "required_alt_km": 1088754183.4789555,
+      "rmin_radii": 697562.624473959,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     1.6747129560868645,
+     10.35068525062392
+    ],
+    "residual_kms": 3.375077994860476e-14,
+    "status": "fail",
+    "worst_ratio": 22.080225324869538,
+    "max_encounter_miss_km": 1.5371981206253095e-07,
+    "vinf_kms": {
+     "Callisto": 8.379960667930575,
+     "Europa": 16.708712436505735
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 10.35068525062392,
+      "vinf_kms": 8.379960667930575,
+      "turn_deg": 95.3852467955742,
+      "available_deg": 4.319939918735308,
+      "ratio": 22.080225324869538,
+      "required_alt_km": -2374.294667203542,
+      "rmin_radii": 0.01493811259862175,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 19.72428105129491,
+      "vinf_kms": 16.708712436505735,
+      "turn_deg": 0.0,
+      "available_deg": 0.7861125317778821,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     4.974304788360134e-16,
+     9.02478404760401
+    ],
+    "residual_kms": 2.6645352591003757e-15,
+    "status": "fail",
+    "worst_ratio": 8.33143023561893,
+    "max_encounter_miss_km": 2.3176957403631137e-08,
+    "vinf_kms": {
+     "Callisto": 4.361716665278246,
+     "Europa": 4.025441588214244
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 9.02478404760401,
+      "vinf_kms": 4.361716665278246,
+      "turn_deg": 120.911554458903,
+      "available_deg": 14.512700825600884,
+      "ratio": 8.33143023561893,
+      "required_alt_km": -2353.8992068129287,
+      "rmin_radii": 0.02339990589846543,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 18.049568095208045,
+      "vinf_kms": 4.025441588214244,
+      "turn_deg": 72.82399964888924,
+      "available_deg": 12.210082364341426,
+      "ratio": 5.964251302805781,
+      "required_alt_km": -1425.4753556438238,
+      "rmin_radii": 0.0867021042774065,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     1.1195438666883144,
+     16.663335370589284
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 4.535837074528736,
+    "max_encounter_miss_km": 3.5364679824086507e-07,
+    "vinf_kms": {
+     "Callisto": 5.875472707546259,
+     "Europa": 4.263249185691533
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 16.663335370589284,
+      "vinf_kms": 5.875472707546259,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 8.463717095384256,
+      "ratio": 1.426581555265129e-07,
+      "required_alt_km": 19737431558.759655,
+      "rmin_radii": 8188787.2750527505,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 19.16911196189636,
+      "vinf_kms": 4.263249185691533,
+      "turn_deg": 49.93511218560734,
+      "available_deg": 11.009018041238948,
+      "ratio": 4.535837074528736,
+      "required_alt_km": -1319.5493107264472,
+      "rmin_radii": 0.1545686117846953,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     3.3928481571136957,
+     5.898624748420773
+    ],
+    "residual_kms": 1.7763568394002505e-15,
+    "status": "fail",
+    "worst_ratio": 4.535837074528736,
+    "max_encounter_miss_km": 1.6533434995121486e-07,
+    "vinf_kms": {
+     "Callisto": 5.875472707546243,
+     "Europa": 4.263249185691526
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.898624748420773,
+      "vinf_kms": 5.875472707546243,
+      "turn_deg": 0.0,
+      "available_deg": 8.463717095384299,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 21.442416252321742,
+      "vinf_kms": 4.263249185691526,
+      "turn_deg": 49.93511218560745,
+      "available_deg": 11.00901804123897,
+      "ratio": 4.535837074528736,
+      "required_alt_km": -1319.5493107264474,
+      "rmin_radii": 0.15456861178469525,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     2.2561960119010083,
+     11.280980059505035
+    ],
+    "residual_kms": 3.197442310920451e-14,
+    "status": "fail",
+    "worst_ratio": 211.75361656597553,
+    "max_encounter_miss_km": 1.492027674336282e-08,
+    "vinf_kms": {
+     "Callisto": 10.056001005322852,
+     "Europa": 20.535686482159228
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.280980059505035,
+      "vinf_kms": 10.056001005322852,
+      "turn_deg": 83.87796891672848,
+      "available_deg": 3.034516673850273,
+      "ratio": 27.641294457051693,
+      "required_alt_km": -2375.0686939544726,
+      "rmin_radii": 0.01461697964798059,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 20.305764107109052,
+      "vinf_kms": 20.535686482159228,
+      "turn_deg": 110.45599561733569,
+      "available_deg": 0.5216250726132047,
+      "ratio": 211.75361656597553,
+      "required_alt_km": -1559.149000355017,
+      "rmin_radii": 0.0010577906490152138,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Europa n = 4 in ec",
+  "cell": "ec",
+  "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 4.025441588214227,
+   "Callisto": 4.361716665278256
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     2.8354721567463916,
+     12.20606522952247
+    ],
+    "residual_kms": 2.6645352591003757e-14,
+    "status": "fail",
+    "worst_ratio": 22.07821623196444,
+    "max_encounter_miss_km": 6.852088185310455e-08,
+    "vinf_kms": {
+     "Callisto": 8.385523600460974,
+     "Europa": 16.7240763783566
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 12.20606522952247,
+      "vinf_kms": 8.385523600460974,
+      "turn_deg": 95.33566033510182,
+      "available_deg": 4.318087083370285,
+      "ratio": 22.07821623196444,
+      "required_alt_km": -2371.9880101198096,
+      "rmin_radii": 0.014955145299082418,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 20.8797562903504,
+      "vinf_kms": 16.7240763783566,
+      "turn_deg": 0.0,
+      "available_deg": 0.7845851053807783,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     1.6755988766545886,
+     10.349289937482457
+    ],
+    "residual_kms": 3.552713678800501e-14,
+    "status": "fail",
+    "worst_ratio": 22.078216231964355,
+    "max_encounter_miss_km": 1.0202433591620662e-07,
+    "vinf_kms": {
+     "Callisto": 8.385523600460942,
+     "Europa": 16.72407637835653
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 10.349289937482457,
+      "vinf_kms": 8.385523600460942,
+      "turn_deg": 95.33566033510198,
+      "available_deg": 4.31808708337031,
+      "ratio": 22.078216231964355,
+      "required_alt_km": -2371.9880101198096,
+      "rmin_radii": 0.014955145299082456,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 19.719883010258595,
+      "vinf_kms": 16.72407637835653,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 0.7845851053807856,
+      "ratio": 1.5389258111645293e-06,
+      "required_alt_km": 1086755022.4796166,
+      "rmin_radii": 696192.5582829047,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     4.511071033400995,
+     13.533213100202955
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 8.324583724906164,
+    "max_encounter_miss_km": 8.253386554511477e-08,
+    "vinf_kms": {
+     "Callisto": 4.361877726640288,
+     "Europa": 4.0273587823526285
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 13.533213100202955,
+      "vinf_kms": 4.361877726640288,
+      "turn_deg": 120.89794378865948,
+      "available_deg": 14.523001724031824,
+      "ratio": 8.324583724906164,
+      "required_alt_km": -2351.574159337421,
+      "rmin_radii": 0.023432658082466376,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.555355167005,
+      "vinf_kms": 4.0273587823526285,
+      "turn_deg": 72.9049750817298,
+      "available_deg": 12.19834120716229,
+      "ratio": 5.976630251900434,
+      "required_alt_km": -1426.1224366403703,
+      "rmin_radii": 0.08640458895555944,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     1.1188529676853411,
+     16.657799212733227
+    ],
+    "residual_kms": 1.2434497875801753e-14,
+    "status": "fail",
+    "worst_ratio": 4.5231027616261255,
+    "max_encounter_miss_km": 3.5244678600826926e-07,
+    "vinf_kms": {
+     "Callisto": 5.875276316128325,
+     "Europa": 4.262044507644054
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 16.657799212733227,
+      "vinf_kms": 5.875276316128325,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 8.471169153733559,
+      "ratio": 1.4253265963808303e-07,
+      "required_alt_km": 19738753849.227604,
+      "rmin_radii": 8197157.914131051,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 19.163137101289347,
+      "vinf_kms": 4.262044507644054,
+      "turn_deg": 49.81502406526105,
+      "available_deg": 11.013462813157883,
+      "ratio": 4.5231027616261255,
+      "required_alt_km": -1318.6703666777582,
+      "rmin_radii": 0.1552399957221275,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     3.392218065715662,
+     5.897555954271785
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 4.523102761626118,
+    "max_encounter_miss_km": 1.6723416543818644e-07,
+    "vinf_kms": {
+     "Callisto": 5.8752763161283115,
+     "Europa": 4.262044507644052
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.897555954271785,
+      "vinf_kms": 5.8752763161283115,
+      "turn_deg": 0.0,
+      "available_deg": 8.47116915373359,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 21.43650219931967,
+      "vinf_kms": 4.262044507644052,
+      "turn_deg": 49.81502406526095,
+      "available_deg": 11.013462813157876,
+      "ratio": 4.523102761626118,
+      "required_alt_km": -1318.6703666777576,
+      "rmin_radii": 0.15523999572212813,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 4,
+    "x_days": [
+     2.255535516700498,
+     11.277677583502491
+    ],
+    "residual_kms": 1.4210854715202004e-14,
+    "status": "fail",
+    "worst_ratio": 211.8431131182362,
+    "max_encounter_miss_km": 1.052706105972482e-08,
+    "vinf_kms": {
+     "Callisto": 10.057367759815179,
+     "Europa": 20.54084643100119
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.277677583502491,
+      "vinf_kms": 10.057367759815179,
+      "turn_deg": 83.85915728287695,
+      "available_deg": 3.0363191929477793,
+      "ratio": 27.618689588910826,
+      "required_alt_km": -2372.7588553763662,
+      "rmin_radii": 0.01463502683705715,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 20.299819650304507,
+      "vinf_kms": 20.54084643100119,
+      "turn_deg": 110.43421674396266,
+      "available_deg": 0.5213018970426756,
+      "ratio": 211.8431131182362,
+      "required_alt_km": -1559.3486094973348,
+      "rmin_radii": 0.001057905510996344,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Europa n = 5 in ec576",
+  "cell": "ec576",
+  "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 4.1515873200656666,
+   "Callisto": 4.982241420452103
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     4.7158984536374055e-15,
+     11.28098005950504
+    ],
+    "residual_kms": 1.0658141036401503e-14,
+    "status": "fail",
+    "worst_ratio": 11.428247384377974,
+    "max_encounter_miss_km": 3.526519675188979e-08,
+    "vinf_kms": {
+     "Callisto": 4.982241420452091,
+     "Europa": 4.151587320065664
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.28098005950504,
+      "vinf_kms": 4.982241420452091,
+      "turn_deg": 130.84602151914999,
+      "available_deg": 11.44935151631492,
+      "ratio": 11.428247384377974,
+      "required_alt_km": -2381.487020099999,
+      "rmin_radii": 0.011954105256607487,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.56196011901006,
+      "vinf_kms": 4.151587320065664,
+      "turn_deg": 67.1016869941087,
+      "available_deg": 11.550582404943523,
+      "ratio": 5.809376933702486,
+      "required_alt_km": -1410.4015097831305,
+      "rmin_radii": 0.09635987328092595,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     4.7158984536374055e-15,
+     11.28098005950504
+    ],
+    "residual_kms": 1.0658141036401503e-14,
+    "status": "fail",
+    "worst_ratio": 11.428247384377974,
+    "max_encounter_miss_km": 3.526519675188979e-08,
+    "vinf_kms": {
+     "Callisto": 4.982241420452091,
+     "Europa": 4.151587320065664
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.28098005950504,
+      "vinf_kms": 4.982241420452091,
+      "turn_deg": 130.84602151914999,
+      "available_deg": 11.44935151631492,
+      "ratio": 11.428247384377974,
+      "required_alt_km": -2381.487020099999,
+      "rmin_radii": 0.011954105256607487,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.56196011901006,
+      "vinf_kms": 4.151587320065664,
+      "turn_deg": 67.1016869941087,
+      "available_deg": 11.550582404943523,
+      "ratio": 5.809376933702486,
+      "required_alt_km": -1410.4015097831305,
+      "rmin_radii": 0.09635987328092595,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     2.256196011901009,
+     13.537176071406039
+    ],
+    "residual_kms": 3.552713678800501e-15,
+    "status": "fail",
+    "worst_ratio": 169.91497447248747,
+    "max_encounter_miss_km": 2.0961912662243314e-08,
+    "vinf_kms": {
+     "Callisto": 8.77868249470697,
+     "Europa": 16.36950328289027
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 13.537176071406039,
+      "vinf_kms": 8.77868249470697,
+      "turn_deg": 105.01890589425341,
+      "available_deg": 3.949495744131435,
+      "ratio": 26.59045931377474,
+      "required_alt_km": -2386.0496278740834,
+      "rmin_radii": 0.0100611426485984,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 24.818156130911063,
+      "vinf_kms": 16.36950328289027,
+      "turn_deg": 139.1255501733527,
+      "available_deg": 0.8187951097616758,
+      "ratio": 169.91497447248747,
+      "required_alt_km": -1559.9971317101324,
+      "rmin_radii": 0.0005143953676752952,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     4.452729232512633,
+     5.775326399536976
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 157.6943918058979,
+    "max_encounter_miss_km": 3.5548870665059577e-06,
+    "vinf_kms": {
+     "Callisto": 9.289874001513915,
+     "Europa": 14.912104732075317
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.775326399536976,
+      "vinf_kms": 9.289874001513915,
+      "turn_deg": 0.0,
+      "available_deg": 3.5397158932220387,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 27.01468935152269,
+      "vinf_kms": 14.912104732075317,
+      "turn_deg": 155.36404608105937,
+      "available_deg": 0.9852223931482171,
+      "ratio": 157.6943918058979,
+      "required_alt_km": -1560.4606181077984,
+      "rmin_radii": 0.0002174409868026473,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     0.05966279128938266,
+     21.299025743275095
+    ],
+    "residual_kms": 9.059419880941277e-14,
+    "status": "fail",
+    "worst_ratio": 157.6943918058968,
+    "max_encounter_miss_km": 1.6922300204779262e-06,
+    "vinf_kms": {
+     "Callisto": 9.289874001513912,
+     "Europa": 14.912104732075296
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 21.299025743275095,
+      "vinf_kms": 9.289874001513912,
+      "turn_deg": 0.0,
+      "available_deg": 3.5397158932220485,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.62162291029944,
+      "vinf_kms": 14.912104732075296,
+      "turn_deg": 155.36404608105963,
+      "available_deg": 0.9852223931482257,
+      "ratio": 157.6943918058968,
+      "required_alt_km": -1560.4606181077984,
+      "rmin_radii": 0.0002174409868026438,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     2.7283787715134453,
+     5.195537155793067
+    ],
+    "residual_kms": 3.552713678800501e-15,
+    "status": "fail",
+    "worst_ratio": 49.96283915090301,
+    "max_encounter_miss_km": 4.898886109301362e-06,
+    "vinf_kms": {
+     "Callisto": 7.23208778959105,
+     "Europa": 8.47295848806775
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.195537155793067,
+      "vinf_kms": 7.23208778959105,
+      "turn_deg": 0.0,
+      "available_deg": 5.72716659632234,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 25.290338890523504,
+      "vinf_kms": 8.47295848806775,
+      "turn_deg": 149.78604895586918,
+      "available_deg": 2.9979491058038086,
+      "ratio": 49.96283915090301,
+      "required_alt_km": -1559.2030621579593,
+      "rmin_radii": 0.0010231534098158713,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     1.784013252288567,
+     21.878814987019005
+    ],
+    "residual_kms": 3.197442310920451e-14,
+    "status": "fail",
+    "worst_ratio": 49.96283915090276,
+    "max_encounter_miss_km": 2.3833521530649936e-06,
+    "vinf_kms": {
+     "Callisto": 7.232087789591054,
+     "Europa": 8.47295848806774
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 21.878814987019005,
+      "vinf_kms": 7.232087789591054,
+      "turn_deg": 0.0,
+      "available_deg": 5.7271665963223555,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 24.345973371298623,
+      "vinf_kms": 8.47295848806774,
+      "turn_deg": 149.7860489558693,
+      "available_deg": 2.9979491058038255,
+      "ratio": 49.96283915090276,
+      "required_alt_km": -1559.2030621579593,
+      "rmin_radii": 0.0010231534098158674,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Europa n = 5 in ec",
+  "cell": "ec",
+  "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+  "expected_vinf_kms": {
+   "Europa": 4.1515873200656666,
+   "Callisto": 4.982241420452103
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     2.6947991163642317e-15,
+     11.27767758350252
+    ],
+    "residual_kms": 1.687538997430238e-14,
+    "status": "fail",
+    "worst_ratio": 11.417018409317789,
+    "max_encounter_miss_km": 2.1206769229351917e-08,
+    "vinf_kms": {
+     "Callisto": 4.981878992431217,
+     "Europa": 4.149825376480228
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 11.27767758350252,
+      "vinf_kms": 4.981878992431217,
+      "turn_deg": 130.83878438839272,
+      "available_deg": 11.459978402207975,
+      "ratio": 11.417018409317789,
+      "required_alt_km": -2379.1736352069556,
+      "rmin_radii": 0.011971081724686188,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.55535516700501,
+      "vinf_kms": 4.149825376480228,
+      "turn_deg": 66.97910706584427,
+      "available_deg": 11.558182205242767,
+      "ratio": 5.794951652125945,
+      "required_alt_km": -1409.929855227911,
+      "rmin_radii": 0.09677779934150457,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     2.2555355167005007,
+     13.533213100203007
+    ],
+    "residual_kms": 1.0658141036401503e-14,
+    "status": "fail",
+    "worst_ratio": 170.0183091870359,
+    "max_encounter_miss_km": 2.086564005461396e-08,
+    "vinf_kms": {
+     "Callisto": 8.78026509394508,
+     "Europa": 16.375160835034556
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 13.533213100203007,
+      "vinf_kms": 8.78026509394508,
+      "turn_deg": 104.99915904545112,
+      "available_deg": 3.9514842911582546,
+      "ratio": 26.572080592701504,
+      "required_alt_km": -2383.7428480018907,
+      "rmin_radii": 0.010073568105527049,
+      "status": "fail"
+     },
+     {
+      "body": "Europa",
+      "t_days": 24.810890683705512,
+      "vinf_kms": 16.375160835034556,
+      "turn_deg": 139.098080480591,
+      "available_deg": 0.8181358886916715,
+      "ratio": 170.0183091870359,
+      "required_alt_km": -1560.1965470698049,
+      "rmin_radii": 0.000514703991156369,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     4.451691548212917,
+     5.774009364856489
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 157.82220281604202,
+    "max_encounter_miss_km": 3.651686312155429e-06,
+    "vinf_kms": {
+     "Callisto": 9.292004303228751,
+     "Europa": 14.91930370394899
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.774009364856489,
+      "vinf_kms": 9.292004303228751,
+      "turn_deg": 0.0,
+      "available_deg": 3.5411679610017033,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 27.00704671521793,
+      "vinf_kms": 14.91930370394899,
+      "turn_deg": 155.32273687276918,
+      "available_deg": 0.9841627736866262,
+      "ratio": 157.82220281604202,
+      "required_alt_km": -1560.6597850463236,
+      "rmin_radii": 0.0002179467992801893,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     0.05937948518808736,
+     21.292416835549513
+    ],
+    "residual_kms": 4.973799150320701e-14,
+    "status": "fail",
+    "worst_ratio": 157.82220281603935,
+    "max_encounter_miss_km": 1.770647076016601e-06,
+    "vinf_kms": {
+     "Callisto": 9.292004303228712,
+     "Europa": 14.919303703948923
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 21.292416835549513,
+      "vinf_kms": 9.292004303228712,
+      "turn_deg": 0.0,
+      "available_deg": 3.541167961001761,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 22.6147346521931,
+      "vinf_kms": 14.919303703948923,
+      "turn_deg": 155.32273687276933,
+      "available_deg": 0.9841627736866437,
+      "ratio": 157.82220281603935,
+      "required_alt_km": -1560.6597850463236,
+      "rmin_radii": 0.00021794679928018918,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     2.7282849080508416,
+     5.195287799403309
+    ],
+    "residual_kms": 2.842170943040401e-14,
+    "status": "fail",
+    "worst_ratio": 49.89697035234833,
+    "max_encounter_miss_km": 5.5977913833248e-06,
+    "vinf_kms": {
+     "Callisto": 7.230909648683871,
+     "Europa": 8.468530627121112
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 5.195287799403309,
+      "vinf_kms": 7.230909648683871,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 5.733745658146409,
+      "ratio": 1.4890329937090368e-07,
+      "required_alt_km": 18429156137.240387,
+      "rmin_radii": 7653305.043704449,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 25.28364007505585,
+      "vinf_kms": 8.468530627121112,
+      "turn_deg": 149.7234674481798,
+      "available_deg": 3.0006524723025247,
+      "ratio": 49.89697035234833,
+      "required_alt_km": -1559.3945637680235,
+      "rmin_radii": 0.0010284665163206117,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LEuropa>Callisto/0s|LCallisto>Europa/0s",
+    "k": 5,
+    "x_days": [
+     1.7827861253501638,
+     21.87113840100271
+    ],
+    "residual_kms": 2.3092638912203256e-14,
+    "status": "fail",
+    "worst_ratio": 49.896970352348575,
+    "max_encounter_miss_km": 2.8975013642517497e-06,
+    "vinf_kms": {
+     "Callisto": 7.230909648683905,
+     "Europa": 8.468530627121144
+    },
+    "flybys": [
+     {
+      "body": "Callisto",
+      "t_days": 21.87113840100271,
+      "vinf_kms": 7.230909648683905,
+      "turn_deg": 0.0,
+      "available_deg": 5.733745658146351,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Europa",
+      "t_days": 24.33814129235517,
+      "vinf_kms": 8.468530627121144,
+      "turn_deg": 149.72346744817958,
+      "available_deg": 3.0006524723025056,
+      "ratio": 49.896970352348575,
+      "required_alt_km": -1559.3945637680235,
+      "rmin_radii": 0.0010284665163206226,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 3 in ec576",
+  "cell": "ec576",
+  "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.058584263889907,
+   "Europa": 6.479449422072882
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     2.2561960119010087,
+     9.024784047604024
+    ],
+    "residual_kms": 8.881784197001252e-15,
+    "status": "fail",
+    "worst_ratio": 28.872488972687247,
+    "max_encounter_miss_km": 2.1645438140514938e-07,
+    "vinf_kms": {
+     "Europa": 6.479449422072875,
+     "Callisto": 4.058584263889909
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 9.024784047604024,
+      "vinf_kms": 6.479449422072875,
+      "turn_deg": 145.34515108093217,
+      "available_deg": 5.034036075602126,
+      "ratio": 28.872488972687247,
+      "required_alt_km": -1557.1734320550229,
+      "rmin_radii": 0.0023235314870432944,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.793372083307043,
+      "vinf_kms": 4.058584263889909,
+      "turn_deg": 99.67497126001125,
+      "available_deg": 16.45232946473432,
+      "ratio": 6.058410845325291,
+      "required_alt_km": -2275.830028014981,
+      "rmin_radii": 0.05578972409451892,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     3.1959039866640535,
+     14.692862161462369
+    ],
+    "residual_kms": 4.973799150320701e-14,
+    "status": "fail",
+    "worst_ratio": 186.03338521080565,
+    "max_encounter_miss_km": 1.787809242006864e-08,
+    "vinf_kms": {
+     "Europa": 17.717729163059275,
+     "Callisto": 9.229119012839345
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 14.692862161462369,
+      "vinf_kms": 17.717729163059275,
+      "turn_deg": 130.15910502174324,
+      "available_deg": 0.6996545532633948,
+      "ratio": 186.03338521080565,
+      "required_alt_km": -1559.7525624967484,
+      "rmin_radii": 0.0006710901481621355,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 16.733080058070087,
+      "vinf_kms": 9.229119012839345,
+      "turn_deg": 0.0,
+      "available_deg": 3.585025078669059,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     1.3164880371379641,
+     3.3567059337456806
+    ],
+    "residual_kms": 2.842170943040401e-14,
+    "status": "fail",
+    "worst_ratio": 186.03338521080622,
+    "max_encounter_miss_km": 1.4505648076514645e-07,
+    "vinf_kms": {
+     "Europa": 17.71772916305928,
+     "Callisto": 9.229119012839364
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 3.3567059337456806,
+      "vinf_kms": 17.71772916305928,
+      "turn_deg": 130.15910502174341,
+      "available_deg": 0.6996545532633934,
+      "ratio": 186.03338521080622,
+      "required_alt_km": -1559.7525624967484,
+      "rmin_radii": 0.0006710901481621308,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 14.853664108543997,
+      "vinf_kms": 9.229119012839364,
+      "turn_deg": 0.0,
+      "available_deg": 3.5850250786690494,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     2.2561960119010087,
+     9.024784047604024
+    ],
+    "residual_kms": 8.881784197001252e-15,
+    "status": "fail",
+    "worst_ratio": 28.872488972687247,
+    "max_encounter_miss_km": 2.1645438140514938e-07,
+    "vinf_kms": {
+     "Europa": 6.479449422072875,
+     "Callisto": 4.058584263889909
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 9.024784047604024,
+      "vinf_kms": 6.479449422072875,
+      "turn_deg": 145.34515108093217,
+      "available_deg": 5.034036075602126,
+      "ratio": 28.872488972687247,
+      "required_alt_km": -1557.1734320550229,
+      "rmin_radii": 0.0023235314870432944,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.793372083307043,
+      "vinf_kms": 4.058584263889909,
+      "turn_deg": 99.67497126001125,
+      "available_deg": 16.45232946473432,
+      "ratio": 6.058410845325291,
+      "required_alt_km": -2275.830028014981,
+      "rmin_radii": 0.05578972409451892,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     1.6653287519677673,
+     12.874726919750419
+    ],
+    "residual_kms": 1.6076029396572267e-13,
+    "status": "fail",
+    "worst_ratio": 12.555793595299308,
+    "max_encounter_miss_km": 1.4979276407239968e-05,
+    "vinf_kms": {
+     "Europa": 5.0450357978306,
+     "Callisto": 5.225438505238781
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 12.874726919750419,
+      "vinf_kms": 5.0450357978306,
+      "turn_deg": 101.4178253787042,
+      "available_deg": 8.077372776872776,
+      "ratio": 12.555793595299308,
+      "required_alt_km": -1524.0453208937445,
+      "rmin_radii": 0.02354861552169041,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.2025048233738,
+      "vinf_kms": 5.225438505238781,
+      "turn_deg": 0.0,
+      "available_deg": 10.500901173105978,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     2.8470632718342257,
+     5.174841175457621
+    ],
+    "residual_kms": 8.43769498715119e-14,
+    "status": "fail",
+    "worst_ratio": 12.55579359529986,
+    "max_encounter_miss_km": 6.149620114334028e-06,
+    "vinf_kms": {
+     "Europa": 5.045035797830545,
+     "Callisto": 5.225438505238797
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 5.174841175457621,
+      "vinf_kms": 5.045035797830545,
+      "turn_deg": 101.41782537870819,
+      "available_deg": 8.077372776872739,
+      "ratio": 12.55579359529986,
+      "required_alt_km": -1524.0453208937492,
+      "rmin_radii": 0.023548615521687973,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 16.384239343240257,
+      "vinf_kms": 5.225438505238797,
+      "turn_deg": 0.0,
+      "available_deg": 10.500901173105936,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     4.512392023802,
+     11.280980059505026
+    ],
+    "residual_kms": 1.7763568394002505e-14,
+    "status": "fail",
+    "worst_ratio": 141.7431253388522,
+    "max_encounter_miss_km": 4.324464903012601e-08,
+    "vinf_kms": {
+     "Europa": 14.851058498119995,
+     "Callisto": 6.746032510679479
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.280980059505026,
+      "vinf_kms": 14.851058498119995,
+      "turn_deg": 140.78898588163779,
+      "available_deg": 0.9932685309786033,
+      "ratio": 141.7431253388522,
+      "required_alt_km": -1559.9063171560504,
+      "rmin_radii": 0.0005725799871537013,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 18.049568095208034,
+      "vinf_kms": 6.746032510679479,
+      "turn_deg": 82.24615850548025,
+      "available_deg": 6.534280709473198,
+      "ratio": 12.58687255144125,
+      "required_alt_km": -2328.1883733254717,
+      "rmin_radii": 0.03406697368565243,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 3 in ec",
+  "cell": "ec",
+  "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.058584263889907,
+   "Europa": 6.479449422072882
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     3.1962006859109855,
+     14.68911053929158
+    ],
+    "residual_kms": 1.5987211554602254e-14,
+    "status": "fail",
+    "worst_ratio": 186.03826257498355,
+    "max_encounter_miss_km": 3.300433556184518e-07,
+    "vinf_kms": {
+     "Europa": 17.715287532677916,
+     "Callisto": 9.227343160091923
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 14.68911053929158,
+      "vinf_kms": 17.715287532677916,
+      "turn_deg": 130.18263972566677,
+      "available_deg": 0.6997627150661875,
+      "ratio": 186.03826257498355,
+      "required_alt_km": -1559.953346876393,
+      "rmin_radii": 0.0006705016807220413,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 16.72941378611399,
+      "vinf_kms": 9.227343160091923,
+      "turn_deg": 0.0,
+      "available_deg": 3.5894276304204547,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     1.31487034749002,
+     3.3551735943124292
+    ],
+    "residual_kms": 7.105427357601002e-15,
+    "status": "fail",
+    "worst_ratio": 186.03826257498358,
+    "max_encounter_miss_km": 6.550118195085978e-08,
+    "vinf_kms": {
+     "Europa": 17.715287532677912,
+     "Callisto": 9.227343160091916
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 3.3551735943124292,
+      "vinf_kms": 17.715287532677912,
+      "turn_deg": 130.1826397256668,
+      "available_deg": 0.6997627150661875,
+      "ratio": 186.03826257498358,
+      "required_alt_km": -1559.953346876393,
+      "rmin_radii": 0.0006705016807220416,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 14.848083447693023,
+      "vinf_kms": 9.227343160091916,
+      "turn_deg": 0.0,
+      "available_deg": 3.5894276304204555,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     2.2555355167004962,
+     9.022142066802003
+    ],
+    "residual_kms": 1.7763568394002505e-15,
+    "status": "fail",
+    "worst_ratio": 28.902346979854276,
+    "max_encounter_miss_km": 2.0469452887912012e-07,
+    "vinf_kms": {
+     "Europa": 6.481933815967582,
+     "Callisto": 4.058875012786309
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 9.022142066802003,
+      "vinf_kms": 6.481933815967582,
+      "turn_deg": 145.37206738042207,
+      "available_deg": 5.0297668726263085,
+      "ratio": 28.902346979854276,
+      "required_alt_km": -1557.382059503158,
+      "rmin_radii": 0.0023177069166189115,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.788748616903499,
+      "vinf_kms": 4.058875012786309,
+      "turn_deg": 99.65663397855248,
+      "available_deg": 16.462814356070904,
+      "ratio": 6.053438484034332,
+      "required_alt_km": -2273.4722454867187,
+      "rmin_radii": 0.05586700768823977,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     2.845777084743944,
+     5.173145786098974
+    ],
+    "residual_kms": 2.398081733190338e-14,
+    "status": "fail",
+    "worst_ratio": 12.57645087226361,
+    "max_encounter_miss_km": 6.871837004193529e-06,
+    "vinf_kms": {
+     "Europa": 5.047537138456551,
+     "Callisto": 5.225722798183021
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 5.173145786098974,
+      "vinf_kms": 5.047537138456551,
+      "turn_deg": 101.47960261719797,
+      "available_deg": 8.069017535066541,
+      "ratio": 12.57645087226361,
+      "required_alt_km": -1524.3533218817165,
+      "rmin_radii": 0.023476411350597904,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 16.378990184946947,
+      "vinf_kms": 5.225722798183021,
+      "turn_deg": 0.0,
+      "available_deg": 10.508297148164765,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     1.665293948657063,
+     12.871138347505033
+    ],
+    "residual_kms": 7.105427357601002e-14,
+    "status": "fail",
+    "worst_ratio": 12.57645087226357,
+    "max_encounter_miss_km": 1.5080125190907489e-05,
+    "vinf_kms": {
+     "Europa": 5.0475371384565415,
+     "Callisto": 5.225722798183018
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 12.871138347505033,
+      "vinf_kms": 5.0475371384565415,
+      "turn_deg": 101.47960261719889,
+      "available_deg": 8.06901753506664,
+      "ratio": 12.57645087226357,
+      "required_alt_km": -1524.3533218817172,
+      "rmin_radii": 0.023476411350597293,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 15.198507048860066,
+      "vinf_kms": 5.225722798183018,
+      "turn_deg": 0.0,
+      "available_deg": 10.508297148164795,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k3|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 3,
+    "x_days": [
+     3.974828696637242e-14,
+     6.766606550101511
+    ],
+    "residual_kms": 1.7763568394002505e-14,
+    "status": "fail",
+    "worst_ratio": 141.72818047490065,
+    "max_encounter_miss_km": 1.1044803577511408e-07,
+    "vinf_kms": {
+     "Europa": 14.847876156133445,
+     "Callisto": 6.743803815846315
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 6.766606550101511,
+      "vinf_kms": 14.847876156133445,
+      "turn_deg": 140.8172029007417,
+      "available_deg": 0.9935723610427619,
+      "ratio": 141.72818047490065,
+      "required_alt_km": -1560.1072857768959,
+      "rmin_radii": 0.0005718861134555199,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 13.533213100203044,
+      "vinf_kms": 6.743803815846315,
+      "turn_deg": 82.23979802544895,
+      "available_deg": 6.5438022804773555,
+      "ratio": 12.567586015060611,
+      "required_alt_km": -2325.8188192242615,
+      "rmin_radii": 0.03412839733211734,
+      "status": "fail"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 4 in ec576",
+  "cell": "ec576",
+  "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.36171666527825,
+   "Europa": 4.025441588214236
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 8,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     4.512392023801976,
+     13.53717607140603
+    ],
+    "residual_kms": 8.881784197001252e-15,
+    "status": "fail",
+    "worst_ratio": 8.331430235618877,
+    "max_encounter_miss_km": 7.480352539952705e-08,
+    "vinf_kms": {
+     "Europa": 4.025441588214235,
+     "Callisto": 4.361716665278253
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 13.53717607140603,
+      "vinf_kms": 4.025441588214235,
+      "turn_deg": 72.82399964888945,
+      "available_deg": 12.21008236434152,
+      "ratio": 5.964251302805752,
+      "required_alt_km": -1425.4753556438234,
+      "rmin_radii": 0.08670210427740632,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 22.56196011901002,
+      "vinf_kms": 4.361716665278253,
+      "turn_deg": 120.911554458903,
+      "available_deg": 14.512700825600977,
+      "ratio": 8.331430235618877,
+      "required_alt_km": -2353.8992068129287,
+      "rmin_radii": 0.02339990589846535,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.3259012030198811,
+     10.69949700369088
+    ],
+    "residual_kms": 2.4868995751603507e-14,
+    "status": "fail",
+    "worst_ratio": 22.08022532486968,
+    "max_encounter_miss_km": 2.647605197768584e-07,
+    "vinf_kms": {
+     "Europa": 16.70871243650572,
+     "Callisto": 8.379960667930579
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 10.69949700369088,
+      "vinf_kms": 16.70871243650572,
+      "turn_deg": 0.0,
+      "available_deg": 0.7861125317778841,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.375469298227923,
+      "vinf_kms": 8.379960667930579,
+      "turn_deg": 95.38524679557447,
+      "available_deg": 4.319939918735292,
+      "ratio": 22.08022532486968,
+      "required_alt_km": -2374.2946672035423,
+      "rmin_radii": 0.014938112598621626,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.186490820782312,
+     11.862463115319223
+    ],
+    "residual_kms": 7.105427357601002e-15,
+    "status": "fail",
+    "worst_ratio": 22.08022532486922,
+    "max_encounter_miss_km": 5.240500074330486e-08,
+    "vinf_kms": {
+     "Europa": 16.70871243650559,
+     "Callisto": 8.379960667930494
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.862463115319223,
+      "vinf_kms": 16.70871243650559,
+      "turn_deg": 0.0,
+      "available_deg": 0.7861125317778954,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.236058915990355,
+      "vinf_kms": 8.379960667930494,
+      "turn_deg": 95.38524679557428,
+      "available_deg": 4.319939918735374,
+      "ratio": 22.08022532486922,
+      "required_alt_km": -2374.2946672035414,
+      "rmin_radii": 0.014938112598622013,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     4.512392023801976,
+     13.53717607140603
+    ],
+    "residual_kms": 8.881784197001252e-15,
+    "status": "fail",
+    "worst_ratio": 8.331430235618877,
+    "max_encounter_miss_km": 7.480352539952705e-08,
+    "vinf_kms": {
+     "Europa": 4.025441588214235,
+     "Callisto": 4.361716665278253
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 13.53717607140603,
+      "vinf_kms": 4.025441588214235,
+      "turn_deg": 72.82399964888945,
+      "available_deg": 12.21008236434152,
+      "ratio": 5.964251302805752,
+      "required_alt_km": -1425.4753556438234,
+      "rmin_radii": 0.08670210427740632,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 22.56196011901002,
+      "vinf_kms": 4.361716665278253,
+      "turn_deg": 120.911554458903,
+      "available_deg": 14.512700825600977,
+      "ratio": 8.331430235618877,
+      "required_alt_km": -2353.8992068129287,
+      "rmin_radii": 0.02339990589846535,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.126159299183254,
+     5.631935890490326
+    ],
+    "residual_kms": 8.881784197001252e-15,
+    "status": "fail",
+    "worst_ratio": 4.535837074528763,
+    "max_encounter_miss_km": 3.555698618285322e-07,
+    "vinf_kms": {
+     "Europa": 4.2632491856915395,
+     "Callisto": 5.875472707546248
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 5.631935890490326,
+      "vinf_kms": 4.2632491856915395,
+      "turn_deg": 49.93511218560752,
+      "available_deg": 11.009018041238923,
+      "ratio": 4.535837074528763,
+      "required_alt_km": -1319.5493107264492,
+      "rmin_radii": 0.15456861178469397,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.1757273943913,
+      "vinf_kms": 5.875472707546248,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 8.463717095384297,
+      "ratio": 1.4265815552651222e-07,
+      "required_alt_km": 19737431558.759754,
+      "rmin_radii": 8188787.275052782,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.3862327246187651,
+     16.93002422851973
+    ],
+    "residual_kms": 1.7763568394002505e-14,
+    "status": "fail",
+    "worst_ratio": 4.535837074528731,
+    "max_encounter_miss_km": 1.6862147542182269e-07,
+    "vinf_kms": {
+     "Europa": 4.263249185691534,
+     "Callisto": 5.875472707546239
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 16.93002422851973,
+      "vinf_kms": 4.263249185691534,
+      "turn_deg": 49.93511218560739,
+      "available_deg": 11.00901804123897,
+      "ratio": 4.535837074528731,
+      "required_alt_km": -1319.549310726447,
+      "rmin_radii": 0.154568611784695,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.43580081982681,
+      "vinf_kms": 5.875472707546239,
+      "turn_deg": 1.2074182697257333e-06,
+      "available_deg": 8.46371709538432,
+      "ratio": 1.4265815552651185e-07,
+      "required_alt_km": 19737431558.759815,
+      "rmin_radii": 8188787.275052807,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     2.2561960119010096,
+     11.280980059505032
+    ],
+    "residual_kms": 4.618527782440651e-14,
+    "status": "fail",
+    "worst_ratio": 211.7536165659758,
+    "max_encounter_miss_km": 2.2167873932315993e-08,
+    "vinf_kms": {
+     "Europa": 20.535686482159228,
+     "Callisto": 10.056001005322852
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.280980059505032,
+      "vinf_kms": 20.535686482159228,
+      "turn_deg": 110.45599561733582,
+      "available_deg": 0.5216250726132047,
+      "ratio": 211.7536165659758,
+      "required_alt_km": -1559.149000355017,
+      "rmin_radii": 0.0010577906490152084,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 20.305764107109052,
+      "vinf_kms": 10.056001005322852,
+      "turn_deg": 83.87796891672846,
+      "available_deg": 3.0345166738502725,
+      "ratio": 27.64129445705169,
+      "required_alt_km": -2375.0686939544726,
+      "rmin_radii": 0.01461697964798059,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.4517769060066292,
+     18.282861153693762
+    ],
+    "residual_kms": 8.171241461241152e-14,
+    "status": "fail",
+    "worst_ratio": 225.76981455093343,
+    "max_encounter_miss_km": 1.4246971580530457e-08,
+    "vinf_kms": {
+     "Europa": 20.723101454132625,
+     "Callisto": 11.113537306009544
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 18.282861153693762,
+      "vinf_kms": 20.723101454132625,
+      "turn_deg": 115.65617438384513,
+      "available_deg": 0.5122747459127368,
+      "ratio": 225.76981455093343,
+      "required_alt_km": -1559.4471606544998,
+      "rmin_radii": 0.0008667602162352956,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.501345001214673,
+      "vinf_kms": 11.113537306009544,
+      "turn_deg": 0.0,
+      "available_deg": 2.4963673298302327,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.0606151177953835,
+     4.279098965316297
+    ],
+    "residual_kms": 1.4210854715202004e-14,
+    "status": "fail",
+    "worst_ratio": 225.769814550934,
+    "max_encounter_miss_km": 1.6531897978183647e-08,
+    "vinf_kms": {
+     "Europa": 20.7231014541326,
+     "Callisto": 11.11353730600953
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 4.279098965316297,
+      "vinf_kms": 20.7231014541326,
+      "turn_deg": 115.65617438384528,
+      "available_deg": 0.5122747459127363,
+      "ratio": 225.769814550934,
+      "required_alt_km": -1559.4471606544998,
+      "rmin_radii": 0.0008667602162352923,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.110183213003427,
+      "vinf_kms": 11.11353730600953,
+      "turn_deg": 0.0,
+      "available_deg": 2.4963673298302327,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 4 in ec",
+  "cell": "ec",
+  "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.36171666527825,
+   "Europa": 4.025441588214236
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 8,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.3271478706804936,
+     10.697740943456607
+    ],
+    "residual_kms": 2.4868995751603507e-14,
+    "status": "fail",
+    "worst_ratio": 22.078216231964433,
+    "max_encounter_miss_km": 1.5706122568703425e-07,
+    "vinf_kms": {
+     "Europa": 16.72407637835662,
+     "Callisto": 8.385523600460973
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 10.697740943456607,
+      "vinf_kms": 16.72407637835662,
+      "turn_deg": 0.0,
+      "available_deg": 0.7845851053807763,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.3714320042845,
+      "vinf_kms": 8.385523600460973,
+      "turn_deg": 95.33566033510162,
+      "available_deg": 4.318087083370278,
+      "ratio": 22.078216231964433,
+      "required_alt_km": -2371.988010119809,
+      "rmin_radii": 0.01495514529908251,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.1839231627204803,
+     11.857614223548397
+    ],
+    "residual_kms": 1.4210854715202004e-14,
+    "status": "fail",
+    "worst_ratio": 22.07821623196451,
+    "max_encounter_miss_km": 7.435846424554929e-08,
+    "vinf_kms": {
+     "Europa": 16.72407637835662,
+     "Callisto": 8.385523600460981
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.857614223548397,
+      "vinf_kms": 16.72407637835662,
+      "turn_deg": 0.0,
+      "available_deg": 0.784585105380776,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.228207296324484,
+      "vinf_kms": 8.385523600460981,
+      "turn_deg": 95.33566033510171,
+      "available_deg": 4.318087083370266,
+      "ratio": 22.07821623196451,
+      "required_alt_km": -2371.9880101198096,
+      "rmin_radii": 0.014955145299082439,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.55215266028073e-14,
+     9.022142066802004
+    ],
+    "residual_kms": 1.1546319456101628e-14,
+    "status": "fail",
+    "worst_ratio": 8.324583724906166,
+    "max_encounter_miss_km": 1.572641737956777e-07,
+    "vinf_kms": {
+     "Europa": 4.027358782352632,
+     "Callisto": 4.361877726640287
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 9.022142066802004,
+      "vinf_kms": 4.027358782352632,
+      "turn_deg": 72.90497508172905,
+      "available_deg": 12.198341207162176,
+      "ratio": 5.976630251900428,
+      "required_alt_km": -1426.1224366403687,
+      "rmin_radii": 0.08640458895556119,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 18.044284133604023,
+      "vinf_kms": 4.361877726640287,
+      "turn_deg": 120.89794378865959,
+      "available_deg": 14.523001724031836,
+      "ratio": 8.324583724906166,
+      "required_alt_km": -2351.574159337421,
+      "rmin_radii": 0.023432658082466282,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.386484920870783,
+     16.92543116591867
+    ],
+    "residual_kms": 1.0658141036401503e-14,
+    "status": "fail",
+    "worst_ratio": 4.523102761626156,
+    "max_encounter_miss_km": 1.6618824405181837e-07,
+    "vinf_kms": {
+     "Europa": 4.262044507644053,
+     "Callisto": 5.875276316128327
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 16.92543116591867,
+      "vinf_kms": 4.262044507644053,
+      "turn_deg": 49.81502406526139,
+      "available_deg": 11.013462813157883,
+      "ratio": 4.523102761626156,
+      "required_alt_km": -1318.670366677761,
+      "rmin_radii": 0.1552399957221258,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.43076905447479,
+      "vinf_kms": 5.875276316128327,
+      "turn_deg": 0.0,
+      "available_deg": 8.471169153733554,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.1245861125302157,
+     5.629924001086342
+    ],
+    "residual_kms": 1.7763568394002505e-15,
+    "status": "fail",
+    "worst_ratio": 4.523102761626149,
+    "max_encounter_miss_km": 3.510187835220521e-07,
+    "vinf_kms": {
+     "Europa": 4.262044507644049,
+     "Callisto": 5.875276316128311
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 5.629924001086342,
+      "vinf_kms": 4.262044507644049,
+      "turn_deg": 49.815024065261284,
+      "available_deg": 11.013462813157876,
+      "ratio": 4.523102761626149,
+      "required_alt_km": -1318.6703666777603,
+      "rmin_radii": 0.15523999572212668,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.168870246134222,
+      "vinf_kms": 5.875276316128311,
+      "turn_deg": 0.0,
+      "available_deg": 8.471169153733586,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     2.2555355167005047,
+     11.277677583502506
+    ],
+    "residual_kms": 3.552713678800501e-15,
+    "status": "fail",
+    "worst_ratio": 211.84311311823654,
+    "max_encounter_miss_km": 1.5886426559553986e-08,
+    "vinf_kms": {
+     "Europa": 20.540846431001185,
+     "Callisto": 10.05736775981518
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.277677583502506,
+      "vinf_kms": 20.540846431001185,
+      "turn_deg": 110.43421674396284,
+      "available_deg": 0.5213018970426756,
+      "ratio": 211.84311311823654,
+      "required_alt_km": -1559.3486094973348,
+      "rmin_radii": 0.0010579055109963377,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 20.29981965030451,
+      "vinf_kms": 10.05736775981518,
+      "turn_deg": 83.85915728287696,
+      "available_deg": 3.036319192947777,
+      "ratio": 27.618689588910854,
+      "required_alt_km": -2372.7588553763662,
+      "rmin_radii": 0.014635026837057138,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     1.4518834378165708,
+     18.277762241131086
+    ],
+    "residual_kms": 9.237055564881302e-14,
+    "status": "fail",
+    "worst_ratio": 225.87586800515777,
+    "max_encounter_miss_km": 5.556621724871485e-09,
+    "vinf_kms": {
+     "Europa": 20.729411451011426,
+     "Callisto": 11.115390226399715
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 18.277762241131086,
+      "vinf_kms": 20.729411451011426,
+      "turn_deg": 115.62655753172076,
+      "available_deg": 0.5119031021458232,
+      "ratio": 225.87586800515777,
+      "required_alt_km": -1559.6465516056087,
+      "rmin_radii": 0.0008670393301673669,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 19.496167571420578,
+      "vinf_kms": 11.115390226399715,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 2.4977066579698115,
+      "ratio": 3.418230253450015e-07,
+      "required_alt_km": 7799051966.474306,
+      "rmin_radii": 3238809.9561770353,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k4|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 4,
+    "x_days": [
+     3.059187595584436,
+     4.277592925873927
+    ],
+    "residual_kms": 3.552713678800501e-15,
+    "status": "fail",
+    "worst_ratio": 225.8758680051588,
+    "max_encounter_miss_km": 1.2333982216902712e-09,
+    "vinf_kms": {
+     "Europa": 20.72941145101141,
+     "Callisto": 11.115390226399725
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 4.277592925873927,
+      "vinf_kms": 20.72941145101141,
+      "turn_deg": 115.62655753172096,
+      "available_deg": 0.5119031021458218,
+      "ratio": 225.8758680051588,
+      "required_alt_km": -1559.6465516056087,
+      "rmin_radii": 0.000867039330167361,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 21.103471729188442,
+      "vinf_kms": 11.115390226399725,
+      "turn_deg": 0.0,
+      "available_deg": 2.497706657969806,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 5 in ec576",
+  "cell": "ec576",
+  "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.982241420452083,
+   "Europa": 4.151587320065686
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": true,
+  "hits": [
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     2.256196011901056,
+     13.537176071406044
+    ],
+    "residual_kms": 2.3092638912203256e-14,
+    "status": "fail",
+    "worst_ratio": 11.42824738437799,
+    "max_encounter_miss_km": 6.816064899732225e-08,
+    "vinf_kms": {
+     "Europa": 4.1515873200656666,
+     "Callisto": 4.982241420452092
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 13.537176071406044,
+      "vinf_kms": 4.1515873200656666,
+      "turn_deg": 67.101686994109,
+      "available_deg": 11.550582404943544,
+      "ratio": 5.809376933702503,
+      "required_alt_km": -1410.4015097831314,
+      "rmin_radii": 0.09635987328092496,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 24.81815613091111,
+      "vinf_kms": 4.982241420452092,
+      "turn_deg": 130.84602151914999,
+      "available_deg": 11.449351516314904,
+      "ratio": 11.42824738437799,
+      "required_alt_km": -2381.487020099999,
+      "rmin_radii": 0.011954105256607487,
+      "status": "fail"
+     }
+    ]
+   }
+  ],
+  "all_zeros": [
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     2.256196011901056,
+     13.537176071406044
+    ],
+    "residual_kms": 2.3092638912203256e-14,
+    "status": "fail",
+    "worst_ratio": 11.42824738437799,
+    "max_encounter_miss_km": 6.816064899732225e-08,
+    "vinf_kms": {
+     "Europa": 4.1515873200656666,
+     "Callisto": 4.982241420452092
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 13.537176071406044,
+      "vinf_kms": 4.1515873200656666,
+      "turn_deg": 67.101686994109,
+      "available_deg": 11.550582404943544,
+      "ratio": 5.809376933702503,
+      "required_alt_km": -1410.4015097831314,
+      "rmin_radii": 0.09635987328092496,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 24.81815613091111,
+      "vinf_kms": 4.982241420452092,
+      "turn_deg": 130.84602151914999,
+      "available_deg": 11.449351516314904,
+      "ratio": 11.42824738437799,
+      "required_alt_km": -2381.487020099999,
+      "rmin_radii": 0.011954105256607487,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     4.512392023802004,
+     15.793372083307041
+    ],
+    "residual_kms": 1.4210854715202004e-14,
+    "status": "fail",
+    "worst_ratio": 169.91497447248616,
+    "max_encounter_miss_km": 1.2412297479120866e-08,
+    "vinf_kms": {
+     "Europa": 16.369503282890246,
+     "Callisto": 8.77868249470696
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 15.793372083307041,
+      "vinf_kms": 16.369503282890246,
+      "turn_deg": 139.12555017335248,
+      "available_deg": 0.8187951097616807,
+      "ratio": 169.91497447248616,
+      "required_alt_km": -1559.9971317101324,
+      "rmin_radii": 0.0005143953676753018,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 27.07435214281206,
+      "vinf_kms": 8.77868249470696,
+      "turn_deg": 105.01890589425348,
+      "available_deg": 3.9494957441314518,
+      "ratio": 26.590459313774645,
+      "required_alt_km": -2386.0496278740834,
+      "rmin_radii": 0.010061142648598398,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     1.262934375734967,
+     22.50229732772068
+    ],
+    "residual_kms": 2.4868995751603507e-14,
+    "status": "fail",
+    "worst_ratio": 157.6943918058982,
+    "max_encounter_miss_km": 3.661263768989338e-06,
+    "vinf_kms": {
+     "Europa": 14.912104732075324,
+     "Callisto": 9.28987400151391
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 22.50229732772068,
+      "vinf_kms": 14.912104732075324,
+      "turn_deg": 155.36404608105954,
+      "available_deg": 0.9852223931482166,
+      "ratio": 157.6943918058982,
+      "required_alt_km": -1560.4606181077984,
+      "rmin_radii": 0.00021744098680264506,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 23.82489449474502,
+      "vinf_kms": 9.28987400151391,
+      "turn_deg": 0.0,
+      "available_deg": 3.5397158932220516,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     3.2494576480670494,
+     4.572054815091391
+    ],
+    "residual_kms": 7.105427357601002e-15,
+    "status": "fail",
+    "worst_ratio": 157.69439180589833,
+    "max_encounter_miss_km": 1.9097369946727464e-06,
+    "vinf_kms": {
+     "Europa": 14.912104732075326,
+     "Callisto": 9.28987400151392
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 4.572054815091391,
+      "vinf_kms": 14.912104732075326,
+      "turn_deg": 155.36404608105963,
+      "available_deg": 0.9852223931482162,
+      "ratio": 157.69439180589833,
+      "required_alt_km": -1560.4606181077984,
+      "rmin_radii": 0.00021744098680264297,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 25.811417767077106,
+      "vinf_kms": 9.28987400151392,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 3.5397158932220343,
+      "ratio": 2.411983537680038e-07,
+      "required_alt_km": 11165330285.387089,
+      "rmin_radii": 4632341.49097087,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     0.6831451319910484,
+     20.777946866721493
+    ],
+    "residual_kms": 1.5987211554602254e-14,
+    "status": "fail",
+    "worst_ratio": 49.96283915090319,
+    "max_encounter_miss_km": 5.497960953967864e-06,
+    "vinf_kms": {
+     "Europa": 8.472958488067768,
+     "Callisto": 7.232087789591094
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 20.777946866721493,
+      "vinf_kms": 8.472958488067768,
+      "turn_deg": 149.7860489558694,
+      "available_deg": 2.9979491058038015,
+      "ratio": 49.96283915090319,
+      "required_alt_km": -1559.2030621579593,
+      "rmin_radii": 0.001023153409815848,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 23.245105251001103,
+      "vinf_kms": 7.232087789591094,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 5.727166596322276,
+      "ratio": 1.490743514951788e-07,
+      "required_alt_km": 18423149665.711613,
+      "rmin_radii": 7643509.968058583,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     3.8292468918109623,
+     6.296405276090574
+    ],
+    "residual_kms": 3.552713678800501e-14,
+    "status": "fail",
+    "worst_ratio": 49.96283915090306,
+    "max_encounter_miss_km": 2.69630930236987e-06,
+    "vinf_kms": {
+     "Europa": 8.472958488067762,
+     "Callisto": 7.232087789591088
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 6.296405276090574,
+      "vinf_kms": 8.472958488067762,
+      "turn_deg": 149.78604895586946,
+      "available_deg": 2.9979491058038112,
+      "ratio": 49.96283915090306,
+      "required_alt_km": -1559.2030621579595,
+      "rmin_radii": 0.0010231534098158427,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 26.39120701082102,
+      "vinf_kms": 7.232087789591088,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 5.727166596322285,
+      "ratio": 1.4907435149517856e-07,
+      "required_alt_km": 18423149665.711647,
+      "rmin_radii": 7643509.968058595,
+      "status": "pass"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "#576 closure anchor Callisto n = 5 in ec",
+  "cell": "ec",
+  "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+  "expected_vinf_kms": {
+   "Callisto": 4.982241420452083,
+   "Europa": 4.151587320065686
+  },
+  "tolerance_kms": 0.001,
+  "expected_source": "#576 symmetric-closure jsonl",
+  "n_zeros": 6,
+  "recalled": false,
+  "hits": [],
+  "all_zeros": [
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     2.2555355167005064,
+     13.533213100203008
+    ],
+    "residual_kms": 4.440892098500626e-15,
+    "status": "fail",
+    "worst_ratio": 11.417018409317789,
+    "max_encounter_miss_km": 4.501827307792391e-08,
+    "vinf_kms": {
+     "Europa": 4.149825376480235,
+     "Callisto": 4.981878992431215
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 13.533213100203008,
+      "vinf_kms": 4.149825376480235,
+      "turn_deg": 66.9791070658442,
+      "available_deg": 11.558182205242716,
+      "ratio": 5.794951652125964,
+      "required_alt_km": -1409.9298552279115,
+      "rmin_radii": 0.09677779934150443,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 24.810890683705516,
+      "vinf_kms": 4.981878992431215,
+      "turn_deg": 130.8387843883927,
+      "available_deg": 11.459978402207973,
+      "ratio": 11.417018409317789,
+      "required_alt_km": -2379.1736352069556,
+      "rmin_radii": 0.0119710817246862,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     1.690765179166718e-14,
+     11.27767758350251
+    ],
+    "residual_kms": 3.552713678800501e-15,
+    "status": "fail",
+    "worst_ratio": 170.01830918703632,
+    "max_encounter_miss_km": 1.8955421074022208e-08,
+    "vinf_kms": {
+     "Europa": 16.37516083503457,
+     "Callisto": 8.780265093945086
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 11.27767758350251,
+      "vinf_kms": 16.37516083503457,
+      "turn_deg": 139.09808048059102,
+      "available_deg": 0.8181358886916696,
+      "ratio": 170.01830918703632,
+      "required_alt_km": -1560.1965470698049,
+      "rmin_radii": 0.0005147039911563682,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 22.555355167005025,
+      "vinf_kms": 8.780265093945086,
+      "turn_deg": 104.99915904545111,
+      "available_deg": 3.9514842911582484,
+      "ratio": 26.572080592701543,
+      "required_alt_km": -2383.7428480018907,
+      "rmin_radii": 0.01007356810552704,
+      "status": "fail"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     3.2481327019455146,
+     4.570450518589087
+    ],
+    "residual_kms": 5.329070518200751e-15,
+    "status": "fail",
+    "worst_ratio": 157.82220281604253,
+    "max_encounter_miss_km": 1.8468387934139135e-06,
+    "vinf_kms": {
+     "Europa": 14.919303703948993,
+     "Callisto": 9.292004303228751
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 4.570450518589087,
+      "vinf_kms": 14.919303703948993,
+      "turn_deg": 155.32273687276924,
+      "available_deg": 0.9841627736866232,
+      "ratio": 157.82220281604253,
+      "required_alt_km": -1560.6597850463236,
+      "rmin_radii": 0.0002179467992801872,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 25.803487868950523,
+      "vinf_kms": 9.292004303228751,
+      "turn_deg": 0.0,
+      "available_deg": 3.5411679610017006,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     1.2629383314554885,
+     22.495975681816926
+    ],
+    "residual_kms": 2.3092638912203256e-14,
+    "status": "fail",
+    "worst_ratio": 157.82220281604236,
+    "max_encounter_miss_km": 3.64704547520851e-06,
+    "vinf_kms": {
+     "Europa": 14.919303703948994,
+     "Callisto": 9.292004303228754
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 22.495975681816926,
+      "vinf_kms": 14.919303703948994,
+      "turn_deg": 155.3227368727692,
+      "available_deg": 0.9841627736866242,
+      "ratio": 157.82220281604236,
+      "required_alt_km": -1560.6597850463236,
+      "rmin_radii": 0.00021794679928018918,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 23.8182934984605,
+      "vinf_kms": 9.292004303228754,
+      "turn_deg": 0.0,
+      "available_deg": 3.5411679610017006,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     3.8268542673987036,
+     6.293857158751165
+    ],
+    "residual_kms": 2.6645352591003757e-14,
+    "status": "fail",
+    "worst_ratio": 49.89697035234857,
+    "max_encounter_miss_km": 2.460304742901571e-06,
+    "vinf_kms": {
+     "Europa": 8.46853062712114,
+     "Callisto": 7.230909648683869
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 6.293857158751165,
+      "vinf_kms": 8.46853062712114,
+      "turn_deg": 149.72346744817978,
+      "available_deg": 3.0006524723025096,
+      "ratio": 49.89697035234857,
+      "required_alt_km": -1559.3945637680235,
+      "rmin_radii": 0.001028466516320611,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 26.382209434403713,
+      "vinf_kms": 7.230909648683869,
+      "turn_deg": 0.0,
+      "available_deg": 5.733745658146405,
+      "ratio": 0.0,
+      "required_alt_km": Infinity,
+      "rmin_radii": Infinity,
+      "status": "pass"
+     }
+    ]
+   },
+   {
+    "key": "k5|LCallisto>Europa/0s|LEuropa>Callisto/0s",
+    "k": 5,
+    "x_days": [
+     0.6842167660022946,
+     20.77256904165485
+    ],
+    "residual_kms": 1.1546319456101628e-14,
+    "status": "fail",
+    "worst_ratio": 49.89697035234899,
+    "max_encounter_miss_km": 6.031892385273292e-06,
+    "vinf_kms": {
+     "Europa": 8.468530627121169,
+     "Callisto": 7.230909648683923
+    },
+    "flybys": [
+     {
+      "body": "Europa",
+      "t_days": 20.77256904165485,
+      "vinf_kms": 8.468530627121169,
+      "turn_deg": 149.72346744817963,
+      "available_deg": 3.0006524723024817,
+      "ratio": 49.89697035234899,
+      "required_alt_km": -1559.3945637680235,
+      "rmin_radii": 0.0010284665163206104,
+      "status": "fail"
+     },
+     {
+      "body": "Callisto",
+      "t_days": 23.239571933007305,
+      "vinf_kms": 7.230909648683923,
+      "turn_deg": 8.537736462515939e-07,
+      "available_deg": 5.733745658146318,
+      "ratio": 1.4890329937090606e-07,
+      "required_alt_km": 18429156137.240074,
+      "rmin_radii": 7653305.043704338,
+      "status": "pass"
+     }
+    ]
+   }
+  ]
+ }
+]
