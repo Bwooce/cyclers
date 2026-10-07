@@ -204,3 +204,24 @@ Nearest to Table 4: 0.507 km/s (E 9.627, G 6.673, I 8.529). Gate-passing roots: 
 
 The search script was refactored for the variants; the consistent model re-run reproduces 3.6
 exactly (156 roots, nearest 0.652 km/s).
+
+### 6.2 Result (ii), Laplace-angle sweep (`data/1023_eggie/pc_roots_laplace.json`)
+
+24 angles, 3,673 exact roots in all. Nearest-root distance per angle (km/s): 0: 0.551, 15: 0.466,
+30: 0.671, 45: 0.667, 60: 0.627, 75: 0.587, 90: 0.545, 105: 0.922, 120: 0.632, 135: 0.637,
+150: 0.660, 165: 0.648, 180: 0.652, 195: 0.400, 210: 0.483, 225: 0.664, 240: 0.208, 255: 0.201,
+270: 0.589, 285: 0.789, 300: 0.791, 315: 0.803, 330: 0.719, 345: 0.635.
+
+- Nearest overall: 0.201 km/s at Laplace angle 255 deg (V_inf E 9.131, G 7.271, I 8.213), and
+  0.208 at 240 deg. These are within the pre-registered 0.5 km/s.
+- BUT that root is not the Table 4 object:
+  - its demanded turns are 146.7 (G1), 11.5 (G2), 1.2 (I) and 168.8 (E) deg, which fail the gate at
+    every floor (a 147-deg turn at 7.3 km/s needs a periapsis below the surface);
+  - its leg times are E>G 0.56, G>G 11.43, G>I 5.39 and I>E 11.04 d, against Table 4's 1.59, 8.60,
+    7.34 and 10.69 d.
+- Gate-passing roots exist in this variant (11), but the nearest is 1.246 km/s from Table 4
+  (Laplace angle 120 deg).
+- Reading, honestly stated: by the literal pre-registered rule (V_inf within 0.5 km/s), (ii)
+  qualifies. The rule was too weak: V_inf alone does not identify the published object, and a
+  root that needs impossible turns has no continuous-gravity counterpart. I do NOT start the
+  continuous steps from it. The lead rules on whether (ii) counts as a reproduction (my view: no).

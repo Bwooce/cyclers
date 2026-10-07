@@ -84,8 +84,12 @@ def system(variant: str = "consistent", laplace_deg: float = 180.0) -> tuple[Cir
 
 def stage_pc(variant: str = "consistent") -> None:
     angles = [float(a) for a in range(0, 360, 15)] if variant == "laplace" else [180.0]
-    out = []
+    part = OUT / f"pc_partial_{variant}.json"  # per-angle checkpoint (resume)
+    out = json.loads(part.read_text()) if part.exists() else []
+    done = {q["laplace_deg"] for q in out}
     for ang in angles:
+        if ang in done:
+            continue
         circ, t = system("consistent" if variant == "laplace" else variant, ang)
         roots = search(circ, t)
         for q in roots:
@@ -93,9 +97,11 @@ def stage_pc(variant: str = "consistent") -> None:
         out.extend(roots)
         near = roots[0]["dist_table4"] if roots else float("nan")
         _log(f"pc {variant} laplace={ang}: {len(roots)} roots, nearest {near:.3f} km/s")
+        part.write_text(json.dumps(out))
     out.sort(key=lambda q: q["dist_table4"])
     name = "pc_roots.json" if variant == "consistent" else f"pc_roots_{variant}.json"
     (OUT / name).write_text(json.dumps(out, indent=1))
+    part.unlink(missing_ok=True)
     gp = [q for q in out if q["gate25"] == "pass"]
     best = out[0]["dist_table4"] if out else float("nan")
     _log(
