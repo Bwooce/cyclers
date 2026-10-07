@@ -1,5 +1,13 @@
 # #707 — CCR4BP catalogue schema design proposal for `#701`'s Umbriel-Titania torus/homoclinic connection
 
+> **Notice (2026-10-07, `#911`):** the six Uranian (1,1) quasi-cycler rows, including `#312`'s
+> `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, were WITHDRAWN from the catalogue on 2026-10-04
+> (`#888`: a demanded-turn check found they are not ballistic trajectories; upheld by `#937`), and
+> `umbriel-1-2-torus-homoclinic-uranus-2026` was WITHDRAWN on 2026-10-03 (`#882`: its connection is not a
+> trajectory of its own model). `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Any
+> statement below that calls these rows novel, validated or catalogued is superseded. This note is a
+> dated record and is otherwise not rewritten.
+
 **Date**: 2026-07-24
 **Scope**: design proposal only. No `data/catalogue.schema.json` or `data/catalogue.yaml`
 change is made by this note. This is the last design step before a writeback decision on

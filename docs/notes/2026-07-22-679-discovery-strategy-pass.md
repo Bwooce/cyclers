@@ -1,5 +1,13 @@
 # #679 — Second fresh discovery-strategy pass (2026-07-22), downstream of #661
 
+> **Notice (2026-10-07, `#911`):** the six Uranian (1,1) quasi-cycler rows, including `#312`'s
+> `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, were WITHDRAWN from the catalogue on 2026-10-04
+> (`#888`: a demanded-turn check found they are not ballistic trajectories; upheld by `#937`), and
+> `umbriel-1-2-torus-homoclinic-uranus-2026` was WITHDRAWN on 2026-10-03 (`#882`: its connection is not a
+> trajectory of its own model). `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Any
+> statement below that calls these rows novel, validated or catalogued is superseded. This note is a
+> dated record and is otherwise not rewritten.
+
 Analysis-only (no code, no catalogue writes, no dispatches), mirroring `#605`/`#645`/`#661`'s
 format. This pass exists because `#661`'s entire 5-item shortlist is exhausted (`#662`
 formulation-blocked, `#664`/`#665`/`#666`/`#667` all executed) and the concurrent W-Z

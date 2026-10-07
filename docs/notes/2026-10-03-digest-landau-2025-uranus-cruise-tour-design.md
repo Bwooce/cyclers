@@ -1,5 +1,13 @@
 # Digest — Landau et al. (2025), "Uranus Cruise and Tour Design Impacts on Science, Cost, and Risk" (IEEE Aerospace Conference)
 
+> **Notice (2026-10-07, `#911`):** the six Uranian (1,1) quasi-cycler rows, including `#312`'s
+> `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, were WITHDRAWN from the catalogue on 2026-10-04
+> (`#888`: a demanded-turn check found they are not ballistic trajectories; upheld by `#937`), and
+> `umbriel-1-2-torus-homoclinic-uranus-2026` was WITHDRAWN on 2026-10-03 (`#882`: its connection is not a
+> trajectory of its own model). `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Any
+> statement below that calls these rows novel, validated or catalogued is superseded. This note is a
+> dated record and is otherwise not rewritten.
+
 **Digested:** 2026-10-03 (text-layer PDF, no OCR needed; read in full, 17 pages; Table 3 read from the
 rendered page image as well as the text layer and the two agree). **Purpose:** the Uranus Orbiter and
 Probe (UOP) mission-design read that the six catalogued Uranian two-moon quasi-cyclers were

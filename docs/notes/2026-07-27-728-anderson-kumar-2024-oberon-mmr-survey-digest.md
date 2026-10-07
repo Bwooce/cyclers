@@ -1,5 +1,13 @@
 # Digest: Anderson & Kumar 2024 (AAS 24-288)
 
+> **Notice (2026-10-07, `#911`):** the six Uranian (1,1) quasi-cycler rows, including `#312`'s
+> `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, were WITHDRAWN from the catalogue on 2026-10-04
+> (`#888`: a demanded-turn check found they are not ballistic trajectories; upheld by `#937`), and
+> `umbriel-1-2-torus-homoclinic-uranus-2026` was WITHDRAWN on 2026-10-03 (`#882`: its connection is not a
+> trajectory of its own model). `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Any
+> statement below that calls these rows novel, validated or catalogued is superseded. This note is a
+> dated record and is otherwise not rewritten.
+
 **Paper:** "A Survey of Oberon Mean Motion Resonant Unstable Orbit Properties and Connections for
 Uranian Tours." 2024 AAS/AIAA Astrodynamics Specialist Conference, AAS 24-288, 19 pages.
 **Authors:** Bhanu Kumar (Postdoctoral Researcher, Institute for Mathematics, Heidelberg University),

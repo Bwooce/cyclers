@@ -1,5 +1,13 @@
 # #714 — CCR5BP/CRNBP (N≥5-body) discovery-strategy pass (2026-07-27)
 
+> **Notice (2026-10-07, `#911`):** the six Uranian (1,1) quasi-cycler rows, including `#312`'s
+> `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, were WITHDRAWN from the catalogue on 2026-10-04
+> (`#888`: a demanded-turn check found they are not ballistic trajectories; upheld by `#937`), and
+> `umbriel-1-2-torus-homoclinic-uranus-2026` was WITHDRAWN on 2026-10-03 (`#882`: its connection is not a
+> trajectory of its own model). `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Any
+> statement below that calls these rows novel, validated or catalogued is superseded. This note is a
+> dated record and is otherwise not rewritten.
+
 Analysis-only (no code, no catalogue writes, no dispatches), mirroring `#686`'s format and —
 per the dispatch's own mandate — leading with an honest TRACTABILITY verdict before any
 shortlist. The question: with the CCR4BP arc (`#689`-`#708`) complete and one genuine novel

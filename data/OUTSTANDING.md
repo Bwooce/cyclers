@@ -59,6 +59,13 @@ repaired and its status (partly done under `#937`, owner ruling) recorded; `#938
 registered. The `data/README.md` stale counts above were fixed in the same pass (live catalogue:
 392 rows on 2026-10-05).
 
+**Notice (2026-10-07, `#911`): no catalogue row is novel today.** The six Uranian (1,1) quasi-cycler
+rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
+torus row on 2026-10-03 (`#882`); `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Older
+bullets below that call `#312`, the Umbriel torus or the N = 5 torus "the confirmed novel finding" or
+"written back" are superseded. Current candidate-novel results (not yet catalogued): gc-1, ev-C and ev-A
+(`#942`/`#943`, owner rulings 2026-10-07, table below).
+
 **PRIORITY as of 2026-09-07 (post-`#864` wrap-up) — read this before anything else.** The standing
 roadmap is `docs/notes/2026-09-05-864-project-feasibility-future-review.md` (sec. 7 table + calendar,
 sec. 7a "Revised ranking (final synthesis)", sec. 8 do-not-do list, sec. 10 owner decisions). All of
@@ -2280,7 +2287,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   continuation. These are needed to carry the Earth-Moon cyclers into the elliptic problem
   and to test Park & Howell's folds on them (`#897` candidate), and to settle the one
   Neelakantan & Ramanan orbit the project cannot reproduce (`#910`).
-- `#911` — registered 2026-10-04. **STALE CLAIMS ABOUT WITHDRAWN ROWS IN OLDER NOTES.** Eighteen
+- `#911` — ✓ DONE 2026-10-07 (ci-keeper-opus): a dated notice now heads the 24 notes and specs that
+  name a withdrawn row or call `#312` or the Umbriel torus novel (the `#882` and `#888` notes already
+  carried one); `README.md` and `data/README.md` contain no such claim; CURRENT STATE carries the same
+  notice for this file's older bullets. Original registration: registered 2026-10-04. **STALE CLAIMS
+  ABOUT WITHDRAWN ROWS IN OLDER NOTES.** Eighteen
   notes under `docs/notes/` name the seven withdrawn rows, and several call a project result
   "confirmed novel" (`2026-07-19-659-antiope-adjudication-fable.md`,
   `2026-07-22-679-discovery-strategy-pass.md`, and the Kumar 2026 multishooting digest, which
