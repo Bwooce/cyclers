@@ -2341,7 +2341,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (the `#997` family continuation agrees, b_h = -4.97). Fix: notes wording "vertically stable, in-plane
   unstable", and check every other `#801`-override row: the override set is {1-2e, 3-2a, 7-3a}, and
   `casoliva-1-2e-em-resonant-po-2010` also says "(STABLE, k=1.9998)" (3-2a is not a catalogue row).
-  Any `data/catalogue.yaml` edit runs all ratchets.
+  WIDER (lead 2026-10-07): under the plain max rule (stored value = whichever of k_par and k_perp is
+  larger in magnitude; `StabilityIndex` in `src/cyclerfinder/search/earth_moon_resonant_families.py`)
+  the field's sign and any "stable" wording are unreliable for every row whose vertical index
+  dominates. So FIRST grep the producing function(s) and audit every CR3BP row whose stored value
+  equals k_perp rather than k_par (list them in this bullet), and only then fix the wording. Any
+  `data/catalogue.yaml` edit runs all ratchets.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
