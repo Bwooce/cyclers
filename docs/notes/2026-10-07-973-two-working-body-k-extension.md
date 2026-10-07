@@ -751,6 +751,33 @@ Callisto 200 km):
 | gc5-6 | 2 x 45.27 (0.890, 657) | 2 x 13.98 (0.573, 2,636) |
 | gc5-7 | 2 x 15.63 (0.967, 208) | 2 x 10.43 (0.788, 988) |
 
-Status: "candidate, literature step deferred" (#1025). Not novel. The raw shard directories
-`data/973_gc/k5/` (15 MB) are not committed in this commit; the gauntlet JSON and log are. Whether to
-commit them, as for k = 4, is the lead's choice.
+Status: "candidate, literature step deferred" (#1025). Not novel. Raw data (lead rule 2026-10-08, from k = 5 on):
+- Committed: each shard's `settings.json` and `structures.jsonl` (`data/973_gc/k5/s*/`), plus the
+  gauntlet JSON and log.
+- Not committed: `zeros.jsonl`.
+- The full shard directories (zeros and logs) are archived outside the repo at
+  `~/dev/references/cyclers-runs/973/gc/k5/` (14 MB; `diff -rq` against the working copy was
+  clean at archive time).
+- The gauntlet can be reproduced either from the archive, or by re-running the committed driver with
+  the committed settings (`--shard i/16`, the sec. 6.1 gc k = 5 line).
+
+md5 of each `zeros.jsonl` (lines total 9,699):
+
+| Shard (of 16) | Zero lines | md5 |
+|---|---|---|
+| s0 | 575 | 7c1d0a26706142378a11418d67ca36f4 |
+| s1 | 593 | 03ee13931ff81b827268d8752da9a9fe |
+| s2 | 628 | ae0aeaf13fa24d6fbc44e1cafa1cd377 |
+| s3 | 584 | 3a13849930190dde754c3e3eaaea0bbc |
+| s4 | 625 | 12c0d7ec9ed703325f4a920b9be81867 |
+| s5 | 565 | 8f354d4f57d1258f9811f1cfab905880 |
+| s6 | 637 | 009d4fe9640dba54a99ec72dc0cafe19 |
+| s7 | 608 | cbf438647c292a0f0052012329a06dda |
+| s8 | 680 | 563af646966ebb8a4c879d72a5e2ff9a |
+| s9 | 644 | 58599ce1dec683c91105218025a02249 |
+| s10 | 585 | 63add7b154667be5cbbadcff1592d715 |
+| s11 | 573 | ccf5bc395d69e3ec949cdc1074915a30 |
+| s12 | 609 | acd80ded40e88de31a88206cba1bede8 |
+| s13 | 553 | 8c08456006dfbfcd0c5fb2f8dd3b7c96 |
+| s14 | 650 | 7351077a5bc3eeff47b2e08a922f09a1 |
+| s15 | 590 | 01fb38c41896f58f1b2279a5d5f572d8 |
