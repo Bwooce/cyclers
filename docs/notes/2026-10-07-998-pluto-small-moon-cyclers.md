@@ -22,7 +22,7 @@ Pluto-system barycentre NAIF 9), not taken from the registry:
 | Styx | 20.16195 | 3.1566 | 42168 | not in registry | - |
 | Nix | 24.85472 | 3.8913 | 48481 | 49300 | 3.989 |
 | Kerberos | 32.16798 | 5.0363 | 57577 | not in registry | - |
-| Hydra | 38.20202 | 5.9810 | 64579 | 65200 | 6.067 |
+| Hydra | 38.20202 | 5.9810 | 64569 | 65200 | 6.067 |
 
 The brief's ratios (3.16, 3.89, 5.04, 5.98) agree with the fit. The registry Nix and Hydra values
 are 1.7 and 1.0 percent off in a (papercut filed). The registry is not edited.
