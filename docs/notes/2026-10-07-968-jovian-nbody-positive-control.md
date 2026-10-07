@@ -381,3 +381,36 @@ periapsis states.
   is a smooth finite-Ganymede-mass effect on one branch. Which part of continuous gravity carries the
   rest (the near-limit flyby itself, at turn ratio 0.94, or Ganymede's distant pull along the legs)
   is not decomposed: an open item, not needed for the lane verdict.
+
+### 6.3 Second control GanEur#43 (5.3), `data/968_control2/`
+
+Corrector A converged straight from the patched-conic seed (61 evaluations; FD check of all 11
+columns at the seed, worst 1.5e-7). `a_check.json`, `lane_state.json`:
+
+| Criterion | Value | Verdict |
+|---|---|---|
+| 1. continuity | 5.4e-8 km, 1.8e-11 km/s; gauge 2e-15 | PASS |
+| 2. Europa hit | 0 km (pinned) | PASS |
+| 3. sequence; alt >= 100 km | no Ganymede approach inside its Hill radius other than the flyby; 10,036 km | PASS |
+| 4. V_inf G within 0.10 of 1.87 | 1.9993 (diff 0.129) | FAIL |
+| 4. Europa speed within 0.10 of 3.89 | 4.1755 (diff 0.286) | FAIL |
+| 4. alt within 150 km of 8861 | 10,036 (diff 1175) | FAIL |
+| 4. r_min within 2 % of 564,558 | 550,879 (-2.4 %) | FAIL |
+| 4. r_max within 2 % of 1,072,330 | 1,085,176 (+1.2 %) | pass |
+| 5. lane (fixed wrap) seeded from A | seed 7.6e-3, converged 4.8e-8; V_inf agrees to 6e-9 km/s, node distance to 1e-5 km | PASS |
+| 6. IAS15 half-arcs | max 3.6e-6 km, 4.1e-11 km/s; full period 4.1e-6 km | PASS |
+
+So the second control, chosen for having no unscheduled pass and a moderate turn ratio (0.37),
+ALSO fails criterion 4, with a V_inf shift of +0.13 km/s at Ganymede and +0.29 km/s at Europa. My
+expectation in 5.3 (within 0.03 km/s) was wrong. Two controls now show that the patched-conic
+values of these low-V_inf (1.9-3.2 km/s) Ganymede cyclers move by 0.1-0.3 km/s when Ganymede's
+gravity is continuous. That suggests criterion 4 at full mass tests the patched-conic
+approximation, not the lane. This is my reading, for the lead.
+
+### 6.4 AMENDMENT 7 (before the run): GanEur#43 GM continuation
+
+Same method as 4.7/5.1 (pinned, fixed T, Ganymede GM scaled by s_G, softening radius by s_G,
+secant predictor in log s). Pass rule, fixed now: the quadratic fit over the converged points with
+s_G <= 0.12 must extrapolate to V_inf G within 0.01 km/s of 1.87, Europa speed within 0.01 km/s of
+3.89, and altitude (r_p / s_G - 2634 km) within 20 km of 8861 km (the R-S table value 8861; our
+patched-conic solve gives 8862.2).
