@@ -553,3 +553,22 @@ massless Europa would contradict the seed.
   NOT claimed under this choice; if the continuation stops, the result is reported as a numerical
   stop. Criteria 7 (i)-(iii), the acceptance checks (item 6) and the meaning (item 10) are unchanged.
   With N = 1 the chain is the five flybys of cycle 1 (G 9.39 d, G 20.12, G 29.51, E 37.10, G 49.34).
+
+### 9.2 AMENDMENT 10 (before the runs it covers)
+
+With amendment 9 the sigma = 0.005, 0.01 and 0.02 solves stalled at mid-leg position defects of
+0.015, 0.010 and 0.003 km (velocity defects about 1e-7 km/s, below the floor). Diagnosis: the
+residual is noisy at that level. Perturbing a node coordinate by 1e-6 km changes the residual by
+100 % more than the Jacobian predicts, because tiny periapses (20-80 km at small sigma) amplify the
+DOP853 step-to-step error. The exact spkezr ephemeris in place of the spline gives the same stall
+(0.007 km), so the spline is not the cause. With rtol 1e-13 / atol 1e-12 the sigma = 0.02 solve
+converges (8.5e-4 km, 8.4e-9 km/s).
+
+AMENDMENT 10:
+- Integrator tolerance rtol 1e-13, atol 1e-12 for all rung-(b) arcs.
+- The continuation starts at sigma = 0.02 (not 0.005) and goes up to 1.
+- Criterion 7 (ii) reads: the continuation also goes DOWN from 0.02 to 0.01 and 0.005. The verdict
+  point is the smallest sigma <= 0.01 that converges at the lane floors. Its per-flyby V_inf must be
+  within 0.01 km/s of the reconstructed chain. If no sigma <= 0.01 converges at the floors,
+  criterion (ii) FAILS (a numerical-floor failure, reported as such).
+- Everything else as amendments 8-9.
