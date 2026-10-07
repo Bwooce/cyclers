@@ -95,3 +95,38 @@ s_C = 1 about 12,208 km, R-S radius 2408): surface reached near s_C = 0.197, 200
 ## 8. Results
 
 (pending)
+
+### 8.1 Stage 1 so far: a fold in the joint mass scale (2026-10-08)
+
+- Natural continuation in sigma from 0.05 (`data/1004_gc2/sigma.json`) converged at sigma = 0.05 with
+  V_inf G 3.6042, C 3.0248 (patched conic 3.617 / 3.039: within the 0.02 of sec. 3, identity OK),
+  then at 0.0625 ... 0.1615. Callisto r_p / sigma fell 12,073 -> 11,320 km at an increasing rate;
+  the step to 0.1696 failed.
+- Pseudo-arclength from 0.1615 (`cont_J.json`): sigma rose to 0.16395, then the tangent's sigma
+  component changed sign and the branch came back DOWN in sigma: 0.15953, 0.147, ..., 0.0571, with
+  Callisto r_p / sigma 10,996 -> 10,224 km, Callisto turns 8.0 -> 8.9 deg, V_inf C 2.944 -> 2.892.
+  At sigma about 0.098 the two branches differ: V_inf C 3.009 vs 2.906 km/s, r_p / sigma 11,875 vs
+  10,446 km. Reading (not yet verified): the gc-2 branch from the patched-conic limit FOLDS at sigma
+  about 0.164 and does not reach the physical masses along this path.
+- Rule violation, disclosed: sec. 3 required a singular-value gap > 10 in [J_z | J_s] before each
+  step; the code did not enforce it, and the logged gap was about 1.0-1.1 at every step. J_z
+  (column-scaled) has four singular values of 6e-7 to 2.6e-6, against 3e-4 for the next. The
+  converged points are solutions (each meets the floors), but the tangent was not well defined by
+  the registered test.
+
+### 8.2 AMENDMENT 1 (before the runs it covers)
+
+The fold claim must not rest on the tangent. Checks, each with its pass rule:
+1. Two solutions at one sigma: at sigma = 0.150 and 0.160, damped Newton at FIXED sigma from the
+   nearest lower-branch point and from the nearest upper-branch point. Fold supported if both
+   converge to the floors and differ by more than 0.02 km/s in V_inf C and 100 km in Callisto
+   r_p / sigma.
+2. Fold bracket: natural continuation on the lower branch from 0.1615 upward in steps of 0.0005 (then
+   0.0001 near failure); record the last converged sigma and that steps down to 1e-5 fail beyond it.
+3. Independent cross-check: IAS15 re-fly of the eight half-arcs of each of the two sigma = 0.150
+   solutions (agreement < 1e-2 km, 1e-7 km/s).
+4. Direct attempt at the physical masses: damped Newton at sigma = 1 from the patched-conic seed and
+   from each branch's last point (offsets scaled); record convergence and, if it converges, the
+   geometry (a different orbit is reported as such, not as gc-2).
+5. The weak J_z directions: recompute J_z at rtol 1e-13 at one point; if the four small singular
+   values move by more than a factor 3, they are integration noise; otherwise structural.
