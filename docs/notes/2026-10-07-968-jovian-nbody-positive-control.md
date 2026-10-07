@@ -572,3 +572,19 @@ AMENDMENT 10:
   within 0.01 km/s of the reconstructed chain. If no sigma <= 0.01 converges at the floors,
   criterion (ii) FAILS (a numerical-floor failure, reported as such).
 - Everything else as amendments 8-9.
+
+### 9.3 AMENDMENT 11 (before the runs it covers)
+
+Continuation from sigma = 0.02 converged at 0.022, 0.0264, 0.0317 and 0.0380 (V_inf rising:
+G 3.203 -> 3.223, E 3.794 -> 3.818). It then failed at 0.0456, 0.0418, 0.0399 and 0.0390. Each of
+these Newton solves ended at 1.3-1.7e-3 km mid-leg position defects with velocity defects of 1-2e-8
+km/s, just above the 1e-3 km floor. That is the integration-noise floor of 9.2 (flyby amplification
+of the DOP853 local error at 100-200 km periapses), not a divergence.
+
+AMENDMENT 11, a path-following rule only:
+- An INTERMEDIATE continuation point (0.02 < sigma < 1) may be accepted when Newton stalls with
+  dr < 1e-2 km and dv < 1e-6 km/s. It is flagged "noise-floor-limited" in the data and used only as a
+  predictor for the next step.
+- The VERDICT points still need the lane floors (1e-3 km, 1e-6 km/s) unchanged: sigma = 1 for
+  criterion (i) and the identity point sigma <= 0.01 for (ii).
+- The acceptance checks (item 6) apply to every accepted point, flagged or not.
