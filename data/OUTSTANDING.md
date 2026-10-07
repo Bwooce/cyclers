@@ -139,7 +139,8 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
 items) from the `#938` and `#971` notes, the `#942`/`#943` owner summary, the `#972` v2 note and the
 website follow-ups: 1 dispatched (`#1008`), 1 in progress (`#1013`), 21 backlog, 6 gated on other
 work, 6 acquisitions or fetches (plus 2 low), 5 owner-ruling or owner-option items (`#997`-`#1000`,
-`#1004`). Other unheld papers named by the two notes are tracked as rows of the `#960` wanted list.
+`#1004`), all OPENED by the owner 2026-10-07 ~21:50 AEDT (`#997`, `#998`, `#1004` dispatched; `#999`,
+`#1000` queued for CPU; `#999` is an explicit owner override of `#864` sec. 8 for that sub-cell only). Other unheld papers named by the two notes are tracked as rows of the `#960` wanted list.
 
 **Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
@@ -1903,7 +1904,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       0.804, re-fly 1.5e-5 km); full-rev path by C4 GanCal#1 at R-S's 2013 epoch (re-fly 2.8e-4 km, gate
       indeterminate 0.9917), per the OWNER RULING of 2026-10-06 (note 6.45), a post-hoc amendment to
       6.35 recorded as such.
-- `#968` — registered 2026-10-06 (from `#943`, lead ruling; NOT dispatched; for the owner). **JOVIAN
+- `#968` — registered 2026-10-06 (from `#943`, lead ruling); **DISPATCHED 2026-10-07 to jovian-nbody-opus**
+  together with `#1004` (control first, then gc-2). **JOVIAN
   N-BODY LANE VALIDATION.** The Jovian n-body (V3) lane has never closed a published cycler (Member D,
   EGGIE), so it has no positive control and cannot judge gc-2 or any Jovian candidate. Find and pass a
   published Jovian cycler control in that lane before any Jovian candidate is put through it.
@@ -1922,8 +1924,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (the 600 s pytest-timeout on the 73c test under load) and
   `docs/papercuts/processed/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md` (the 5 s
   SIGALRM budget in `test_656` and `pluto_charon_kk_sweep`).
-- `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`; NOT dispatched; register
-  only, `data/catalogue.yaml` not edited). **ADD A V0 CATALOGUE ROW
+- `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`); **DISPATCHED 2026-10-07 to
+  earthmoon-opus** (the Schwaniger row and the both-primary corrector control first, then `#997`). **ADD A V0 CATALOGUE ROW
   `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger 1963 (NASA TN D-1833,
   Sec. III.E, p.6-7) prints a retrograde ("counter-rotation") Earth-Moon symmetric periodic free-return
   orbit: periselenum about 2150 km, period "about 650 hours". Reproduced at mu = 0.01215 in the digest
@@ -1966,7 +1968,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   1 agent-day per route. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3.
 - `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched; **PAPERS ACQUIRED 2026-10-07 (Perko 1982
   I and II, Perko 1983), DIGEST PENDING (`#960` batch 36)**; dispatch decision after the digest
-  verdicts; the same papers also gate `#945`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
+  verdicts; the same papers also bear on `#944`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
   HILL FAMILIES, AND THE STABLE Hg FAMILY, SCALED TO EUROPA, GANYMEDE, TITAN, TRITON AND TITANIA.**
   Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
   family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
@@ -2095,25 +2097,29 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   item 13 lanes). **DIAGNOSTICS FOR THE TORUS AND GATEWAY LANES: O'BRIEN FREQUENCY-COUNT FILTER,
   JEFFERYS SECTION-ATLAS EXTENSION, KOLTSOVA-LERMAN PERIODIC FAMILIES ON AN L1/L2 LOOP.** Not cycler
   routes. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
-- `#997` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
-  (Earth-Moon, `#864` sec. 8). **EARTH-MOON BOTH-PRIMARY LINEAGE: NEWTON'S OTHER alpha/beta TYPES,
+- `#997` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
+  OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the Earth-Moon gate of 2026-10-05 is OPEN for this task. DISPATCHED to earthmoon-opus after
+  `#970`. **EARTH-MOON BOTH-PRIMARY LINEAGE: NEWTON'S OTHER alpha/beta TYPES,
   HOELKER-WINSTON FIG. 90 LEMNISCATE, SCHWANIGER PERIGEE CONTINUATION.** R16 (`#976`) takes the
   lineage to the moons instead; Schwaniger itself is `#970` (control). Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
-- `#998` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
-  (Pluto-Charon lane closed by `#864` sec. 8). **PLUTO-CHARON ONE-WORKING-NODE CYCLERS WITH STYX,
+- `#998` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
+  OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the Pluto gate is OPEN for this cell. DISPATCHED to pluto-smallmoons-sonnet.
+  **PLUTO-CHARON ONE-WORKING-NODE CYCLERS WITH STYX,
   NIX, KERBEROS OR HYDRA AS PASSIVE TARGETS.** Period ratios to Charon 3.16, 3.89, 5.04, 5.98;
   Howett et al. 2021 show figure-only periodic orbits; `#320` returned Hydra-Nix V0-known. The
   cheapest Pluto cell if the owner reopens Pluto (Russell-Strange genome plus
   `verify/pluto_charon_realeph.py`). Source:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
-- `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
-  (powered-cycler admissibility, `#864` sec. 8). **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
+- `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
+  OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the owner ADMITS this powered sub-cell, OVERRIDING `#864` sec. 8 (no powered
+  "novel cycler" sweeps) FOR `#999` ONLY. QUEUED: starts when `#973` and CI free the machine. **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
   DEEP-SPACE MANOEUVRES.** Powered (Merrill-class forced trajectory); a `#867` sub-cell only if the
   owner's admissibility rule allows. Source:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
-- `#1000` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
-  (Earth-Moon re-sweep, `#864` sec. 8, W2). **EARTH-MOON EXTERIOR FRANZ-RUSSELL / RESTREPO-RUSSELL
+- `#1000` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
+  OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the Earth-Moon gate of 2026-10-05 is OPEN for this task. QUEUED: starts when `#973` and
+  CI free the machine. **EARTH-MOON EXTERIOR FRANZ-RUSSELL / RESTREPO-RUSSELL
   COMPLEMENT GRID SEARCH (ASYMMETRIC, EARTH-CIRCULATING).** The databases' exclusions are recorded
   so that absence from them is not misread as novelty. Source:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
@@ -2133,7 +2139,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   near the rings. The six Uranian rows this was written for are withdrawn (`#888`); the filter
   stands for future candidates. Source:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
-- `#1004` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER OPTION. **gc-2: A
+- `#1004` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer):
+  DISPATCHED to jovian-nbody-opus with `#968` (the `#968` control first, then gc-2). **gc-2: A
   CONTINUOUS-GRAVITY CHECK (CR4BP OR n-BODY) OF THE GanCal#5 RELATION.** In the patched conic no
   Callisto-mass path joins gc-2 and GanCal#5 (note 6.21); a continuous-gravity model, where the
   encounter count is not fixed, is the open test. The n-body lane has no control (`#968`). Source:
@@ -2219,14 +2226,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (no DOI found). Source: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 5 item
   14.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
-  SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
+  SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
+  existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
+  on `#974`.) Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
   pass. Cost (GUESS): 5-8 agent-days. P(novel row): 0.4. Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X2.
 - `#945` — registered 2026-10-05, not dispatched (from `#938`, R2, rank 4 of 18). **IO-CONTAINING
   JOVIAN TRIPLES WITH LIANG'S ALTERNATING-DOUBLE-CYCLER CONSTRUCTION.** Sources: Liang et al. 2024
-  (JGCD); Lynam & Longuski 2011; Hernandez et al. 2017. Gate before dispatch: none (lead 2026-10-07:
-  Perko 1982 I/II and 1983, acquired, digest pending in `#960` batch 36, bear on it). Cost (GUESS):
+  (JGCD); Lynam & Longuski 2011; Hernandez et al. 2017. Gate before dispatch: none. Cost (GUESS):
   1-3 agent-days. P(novel row): 0.4. Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3 R2.
 - `#946` — registered 2026-10-05, not dispatched (from `#938`, X3, rank 5 of 18). **ELLIPTIC
