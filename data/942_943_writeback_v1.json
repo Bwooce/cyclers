@@ -1,0 +1,68 @@
+{
+ "gc-1": {
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "x_days": [
+   1.178101770450965,
+   11.756379485956748,
+   34.95769587700576
+  ],
+  "lamberthub_max_diff_mps_per_leg": [
+   1.6446656675179693e-10,
+   8.881784197001252e-12,
+   5.02429586778808e-12
+  ],
+  "dop853_refly_max_miss_km": 2.029436314816706e-06,
+  "dop853_max_vinf_vector_error_kms": 1.112321196710538e-11,
+  "gate_on_integrated_vectors": "pass"
+ },
+ "gc-2": {
+  "key": "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "x_days": [
+   0.8386792963893684,
+   11.684555644781737,
+   14.289304463374442,
+   35.80363530131001
+  ],
+  "lamberthub_max_diff_mps_per_leg": [
+   2.7270982875689705e-10,
+   3.972054645195637e-12,
+   2.3658720844716246e-09,
+   6.9368952146101875e-12
+  ],
+  "dop853_refly_max_miss_km": 6.0580509487155895e-06,
+  "dop853_max_vinf_vector_error_kms": 4.7608245807549554e-11,
+  "gate_on_integrated_vectors": "pass"
+ },
+ "ev-A": {
+  "key": "k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+  "x_days": [
+   583.944386694386,
+   984.2215547169349,
+   1576.2577920606109
+  ],
+  "lamberthub_max_diff_mps_per_leg": [
+   2.5121479338940403e-11,
+   5.995566172523748e-10,
+   3.2171190647067565e-11
+  ],
+  "dop853_refly_max_miss_km": 0.0006649536525585708,
+  "dop853_max_vinf_vector_error_kms": 1.9085777958960717e-10,
+  "gate_on_integrated_vectors": "pass"
+ },
+ "ev-C": {
+  "key": "k2|LE>V/0s|LV>V/1h|LV>E/0s",
+  "x_days": [
+   70.45968113073174,
+   193.2883086954084,
+   1017.2397971651454
+  ],
+  "lamberthub_max_diff_mps_per_leg": [
+   1.5295311772062915e-11,
+   5.728578676879116e-11,
+   1.0094021721709631e-10
+  ],
+  "dop853_refly_max_miss_km": 0.0815703201925112,
+  "dop853_max_vinf_vector_error_kms": 2.254719101097768e-08,
+  "gate_on_integrated_vectors": "pass"
+ }
+}
