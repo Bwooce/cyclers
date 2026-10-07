@@ -1,9 +1,10 @@
 # #973: the two-working-body generator at longer periods (gc k = 4-6, ev k = 4-5) and a Europa-Callisto cell (ec k = 1-4)
 
-Status: pre-registration (secs. 1-2, committed ab24925e before any production run); controls and Liang
-segments (sec. 3); R11 gc k = 4 done (sec. 4, 51 gate-passers, of which 10
-are two-working-body members with no Jupiter pass and no unscheduled SOI pass); R12 ec k = 1-4 done (sec. 5, none);
-gc k = 5-6 and R13 ev k = 4-5 handed to the lead with launch commands (sec. 6).
+Status: DONE for gc k = 4 and ec k = 1-4. Pre-registration secs. 1-2 (commit ab24925e); amendment 2.6
+(two screens, commit 94dda754); controls and Liang segments sec. 3; gc k = 4 sec. 4, re-screened in sec. 9;
+final candidate set sec. 10: 10 clean two-working-body members at k = 4. ec k = 1-4: empty (sec. 5,
+stamped). gc k = 5-6 and ev k = 4-5 are launched by the lead (sec. 6). The ev screen question is open
+(sec. 9.2). The literature step and rung (d) are #1025.
 Novelty language: every gate-passing cycler here is "candidate, literature step deferred". Nothing in
 this note is called novel. No catalogue writes. No real-ephemeris runs.
 
@@ -427,6 +428,9 @@ uv run python scripts/run_973_enumerate.py check data/973_$CELL/k$K/s*/
 uv run python scripts/run_973_enumerate.py gauntlet --cell $CELL data/973_$CELL/k$K/s*/ --out data/973_$CELL/k${K}_gauntlet.json | tee data/973_$CELL/k${K}_gauntlet.log
 ```
 
+Since amendment 2.6, `gauntlet` also applies both screens; each record carries `screen_status`.
+For ev, the tilted-circle question in sec. 9.2 decides how the R-leg rejections are read.
+
 - `xargs -n1` with `sh -c '... $0 ...'` is used because macOS `xargs -I` refuses commands over 255
   bytes. `-P2` = 2 workers; raise it when the machine is idle (shards are independent).
 - A subset of shards can be run by replacing `seq 0 $((N-1))` with a list, e.g. `printf "0\n1\n"`.
@@ -517,3 +521,105 @@ Assumed or not checked:
 - `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`: the 24-structure pilot ran at low
   load and underestimated the CI-loaded run by 5x; the 10-min tool-call limit then forced a mixed
   8/16-way shard layout.
+
+## 9. Re-screen under amendment 2.6 (2026-10-07, after commit 94dda754)
+
+### 9.1 gc k = 4 and ec
+
+The re-screen runs on the committed gauntlet JSON (`run_973_enumerate.py screen`); there is no
+re-enumeration. Data: `data/973_gc/k4_screen.json` and its log.
+
+| Status | Count | By the sec. 4 class |
+|---|---|---|
+| pass | 29 | W2 10, P-C 7, P-G 4, S-C 3, S-G 5 |
+| model-invalid (unscheduled pass inside a moon's SOI) | 11 | W2 2 (gc4-0, gc4-11), P-C 4, S-C 2, S-G 3 |
+| reject: moon impact | 3 | P-C 2 (gc4-12, gc4-21), P-G 1 (gc4-13) |
+| reject: primary impact (r_min <= 76,492 km) | 8 | J 8 |
+
+- The primary floor now includes Jupiter's 5,000 km safe altitude, but no candidate moves because of it.
+  The three lowest non-J r_min values (78,948, 93,608 and 96,759 km) are all model-invalid on other
+  grounds.
+- Every gc rejection comes from a Lambert leg, so it does not depend on a free-direction choice (see
+  9.2).
+- ec k = 1-4 had no gate-passer, and the screens can only remove, so the result stays empty. Registry
+  stamp appended: `jupiter-europa-callisto-two-working-body-rs2009-ideal-k1-4-973` in
+  `data/empty_regions.jsonl`, with both screens listed among its prune gates.
+
+The 10 clean W2 members all pass the screens. They are the R11 candidate set at k = 4 (sec. 10). The
+other 19 screen-passers are pass-through (P) or shallow (S) members, close to the one-working-body
+architecture, and are not carried forward as two-working-body candidates.
+
+### 9.2 The #942/#943 candidates, and a finding about tilted-circle fixed legs
+
+Data: `data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`.
+
+- gc-1, gc-2 and GanCal#5 (#943 gc): all pass. gc-2's closest unscheduled pass is Ganymede at
+  33,899 km on its Callisto-Callisto leg (SOI 24,350 km).
+- ev-A, ev-B and ev-C pass.
+  - ev-A: closest Earth 152,190,166 km, Venus 200,339,040 km.
+  - ev-B: closest Earth 1,172,392 km, about 1.27 times Earth's Laplace SOI.
+  - ev-C: closest Earth 47,110,597 km, Venus 5,723,283 km.
+- The full #942 ev gate-passing set (31) screens to 22 pass and 9 "reject: planet impact". All 9 come
+  from FIXED legs whose flyby direction is a pure tilted circle (e about 3e-16, a equal to the
+  planet's orbit radius, i about 5-6 deg):
+  - an Earth 1:1 full-rev at its minimax direction meets Earth again at half the leg, 0.3 km from its
+    centre;
+  - a Venus (3,1,apo) half-rev, which is the tilted circle by the 6.34 rule, meets Venus at 1/3 of
+    the leg.
+- The 9 include the Hollister 1H member 2.99/3.19 (the #942 in-run control) and one 2H member
+  (4.05/7.07). The other 1H member (6.14/5.28) and the other 2H member pass.
+- For the half-rev legs the re-encounter is physical, because the leg is the tilted circle. For a
+  full-rev n:m leg the direction is free on a circle; the minimax landed on the tilted circle, and a
+  direction off it would not meet the planet again. The screen's verdict on those legs therefore
+  depends on the direction choice, not on the cycler.
+- This is held for the lead's ruling (asked 2026-10-07). Until then the ev cell's screened results
+  are not final, and the gc and ec results are unaffected.
+
+### 9.3 Addendum text for the #942/#943 generator note (for the lead to relay; that note is mid-edit)
+
+> Addendum (2026-10-07, from #973): the pass definition of sec. 6.1 had two gaps. It never compared
+> r_min with the primary's radius, and it never looked for a leg passing inside a body's SOI between
+> the scheduled encounters (`encounter_self_consistency` and the DOP853 re-fly check only the leg end
+> points). #973 amendment 2.6 adds both: r_min must exceed the primary radius plus the registry floor
+> (Jupiter 71,492 + 5,000 km; Sun 695,700 km), and an interior distance minimum below a body's radius
+> is an impact rejection, while one inside its Laplace SOI makes the structure model-invalid. Applied
+> to this note's candidates (`data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`), gc-1,
+> gc-2, GanCal#5, ev-A, ev-B and ev-C all pass (ev-B's closest unscheduled Earth pass is 1.27 Earth
+> SOI). 9 of the 31 ev gate-passers, including the Hollister 1H member 2.99/3.19, fail as planet
+> impacts. In each case a fixed leg's direction is the tilted circle (e = 0, a = the planet's orbit
+> radius), which meets the planet again mid-leg. On full-rev legs this comes from the minimax
+> direction choice; the lead's ruling on it is pending. The vm, vm2, em, ge cells have not been
+> re-screened.
+
+## 10. Final candidate table: R11, Ganymede-Callisto, k = 4 (the clean two-working-body members)
+
+Status: "candidate, literature step deferred". The literature step and rung (d) are task #1025, which
+waits for #972 and the chain tool. Not novel, and no catalogue writes.
+
+Model: circular coplanar, R-S 2009 Table 2 constants, both moons at angle 0 at t = 0. Period 50.0929 d
+(4 Ganymede-Callisto synodic periods). "Lambert starts" are the solved start dates of the Lambert
+legs, in key order. Turns are the demanded turns at the minimax directions; ratio = demanded /
+available at the registry floor (Ganymede 100 km, Callisto 200 km). Every member is an exact zero
+(residual < 1e-8 km/s), passes the gate at every flyby (also on the DOP853-integrated vectors) and
+passes both amendment-2.6 screens.
+
+| # | Structure (key) | Lambert starts (d) | V_inf G / C (km/s) | Ganymede flybys: turn deg (ratio, required alt km) | Callisto flybys: turn deg (ratio, required alt km) | Worst ratio | r_min / r_max (km) | Closest unscheduled G / C (km) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|
+| gc4-1 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 10.5642, 31.9650 | 1.4719 / 1.5814 | 36.13 (0.467, 7,521); 36.13 (0.467, 7,521) | 42.79 (0.677, 2,592); 42.79 (0.677, 2,592) | 0.677 | 1,070,335 / 2,243,803 | 937,659 / 2,861,790 | 8.4e-06 |
+| gc4-2 | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.0438, 11.4794, 18.9537, 43.6625 | 1.7380 / 1.8572 | 54.58 (0.826, 1,232); 54.58 (0.826, 1,232) | 41.08 (0.779, 1,443); 41.08 (0.779, 1,443) | 0.826 | 940,161 / 2,473,504 | 234,539 / 537,850 | 9.4e-06 |
+| gc4-6 | k4\|RGanymede/3:2\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 1.5319, 24.2277 | 5.0073 / 2.1348 | 3.91 (0.270, 8,532); 3.91 (0.270, 8,532) | 1.31 (0.030, 133,459) | 0.270 | 709,202 / 2,056,858 | 780,710 / 1,102,074 | 8.9e-04 |
+| gc4-8 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 2.7824, 22.2641, 26.6353, 48.5041 | 2.4191 / 2.4855 | 13.72 (0.306, 9,820); 13.72 (0.306, 9,820) | 10.51 (0.293, 9,118); 10.51 (0.293, 9,118) | 0.306 | 984,807 / 2,264,287 | 106,557 / 705,684 | 1.9e-06 |
+| gc4-10 | k4\|RGanymede/1:1\|LGanymede>Callisto/2l\|LCallisto>Ganymede/2h | 0.4268, 20.7783 | 6.4468 / 2.7512 | 5.70 (0.620, 1,917); 5.70 (0.620, 1,917) | 1.40 (0.045, 74,348) | 0.620 | 464,563 / 1,882,607 | 512,601 / 129,111 | 5.3e-04 |
+| gc4-19 | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 3.4984, 36.4856 | 2.3565 / 4.1090 | 41.77 (0.899, 580); 41.77 (0.899, 580) | 5.01 (0.311, 6,905); 5.01 (0.311, 6,905) | 0.899 | 969,653 / 3,047,178 | 1,477,091 / 1,465,758 | 1.5e-04 |
+| gc4-25 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 4.2162, 20.8302, 30.2416, 44.8978 | 8.1525 / 5.2279 | 3.46 (0.586, 2,139); 3.46 (0.586, 2,139) | 7.30 (0.695, 1,458); 7.30 (0.695, 1,458) | 0.695 | 357,770 / 2,395,646 | 693,108 / 1,386,805 | 2.1e-05 |
+| gc4-28 | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 7.0815, 30.4882, 33.8800, 53.7826 | 8.8570 / 5.5509 | 4.44 (0.880, 491); 4.44 (0.880, 491) | 7.50 (0.797, 924); 7.50 (0.797, 924) | 0.880 | 320,944 / 2,601,280 | 1,009,509 / 185,038 | 2.2e-05 |
+| gc4-38 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 0.9608, 16.5373, 19.3562, 38.1754 | 11.4600 / 7.2168 | 2.75 (0.897, 424); 2.75 (0.897, 424) | 4.89 (0.849, 689); 4.89 (0.849, 689) | 0.897 | 143,171 / 2,703,105 | 196,345 / 285,872 | 5.9e-05 |
+| gc4-41 | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 8.6852, 28.8845, 36.3961, 51.2666 | 11.8283 / 7.5126 | 1.49 (0.516, 2,732); 1.49 (0.516, 2,732) | 2.32 (0.435, 3,744); 2.32 (0.435, 3,744) | 0.516 | 135,971 / 2,662,003 | 151,840 / 1,401,694 | 2.5e-04 |
+
+Notes on the set:
+- gc4-6 and gc4-10 meet Callisto once per cycle with a turn of 1.3-1.4 deg (ratio 0.03-0.05). They are
+  W2 by the 1-deg line, but Callisto barely works.
+- gc4-38 and gc4-41 reach 136,000-143,000 km from Jupiter (1.9-2.0 Jupiter radii, inside Io's orbit;
+  Io is not in this model).
+- The lowest V_inf is gc4-1 (G 1.47 / C 1.58 km/s, perijove at Ganymede's orbit). The largest margin
+  is gc4-8 (ratios 0.31 / 0.29).
