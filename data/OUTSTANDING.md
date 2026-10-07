@@ -1942,6 +1942,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `n_bodies` tag is unsourced; (5) no pinned tests and no triple-cycler control; (6) an equal-body-set
   working-body exclusion should return inconclusive, not not-found. Sequence: pre-registration v2 ->
   fixes -> controls and pinned tests -> re-review -> only then the `#942`/`#943` catalogue rows.
+  **PROGRESS 2026-10-07 (twobody-gen2-opus):** done in `2e16b56b`: declared-scope tags and the
+  Hollister / Hollister-Menning Earth-Venus anchor. v2 fixes in progress: architecture-match guard,
+  alternating-rule closing-body fix, body-set gating of anchor-synthesised hits, the Hughes tag
+  dropped, pinned tests, and same-system different-architecture -> inconclusive. A Hughes-anchor
+  grounding fix is proposed; its cited AAS 14-822 cannot be found. Notes:
+  `docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md` and a v2 note (to come).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
