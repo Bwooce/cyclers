@@ -1993,6 +1993,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   NOT-FOUND, ev-B NOT-FOUND, ev-C INCONCLUSIVE (H&M). 18 pinned tests. F13 had 12 literal sites, not 7;
   all fixed. Two old tests retrofitted (unlabelled R-S signature -> inconclusive naming R-S; labelled
   -> published). 12 load timeouts are being re-run alone. Follow-on: `#1035`.
+  **Lead ruling (A), 2026-10-08:** "F14 (architecture-scoped anchors match only labelled signatures) is
+  kept as pre-registered. The two old tests that fed an unlabelled R-S signature and expected
+  'published' are RETROFITTED, not exempted: each becomes two cases, unlabelled -> 'inconclusive' with
+  the R-S anchor named (asserted), labelled 'one' -> 'published'. The consequence (old unlabelled
+  pipelines lose the R-S citation on rediscoveries, safe direction) is recorded as a post-hoc amendment
+  and fixed at the source by `#1035`. Option (B), narrowing F14 to H&M-type anchors, was refused as a
+  rule change after seeing a test result."
 - `#973` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-ext-opus; from `#971`
   R11, R12, R13). **EXTEND THE `#942`/`#943` TWO-WORKING-BODY GENERATOR TO NEW CELLS.** R11:
   Ganymede-Callisto at k = 4, 5, 6 (the 50.09-d class; P(gate-passing ideal member at k = 4) 0.5).
