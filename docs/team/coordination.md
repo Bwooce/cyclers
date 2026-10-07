@@ -13,6 +13,7 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 4. Commit each item as it finishes. No Co-Authored-By / Claude-Session / AI attribution lines.
 5. Never create branches. Never delete files you did not create this session.
 6. Commit messages start with the task number (`#NNN: ...`).
+7. Report a commit hash only from `git log -1` AFTER the commit returns; never from memory (four wrong hashes on 2026-10-07).
 
 ## Shared files (diff before commit)
 - `data/OUTSTANDING.md` (CURRENT STATE block is edited in place)
@@ -30,6 +31,12 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 - Background agents hang forever on a permission prompt (seen 2026-10-05: auto mode was switched off for a few minutes and the Fable reviewer froze for 2 h, still listed as "running"). Liveness check = the agent's transcript mtime under `~/.claude/projects/<proj>/<session>/subagents/`, not the agent list.
 - Teammate messages addressed to "team-lead" go to the file mailbox `~/.claude/teams/session-<id>/inboxes/team-lead.json`, which the in-process lead conversation never reads; "main" is queued straight into the lead conversation. Briefs say "message main". Verified 2026-10-05 from delivery receipts. Original note: (2026-10-05: refcheck-sonnet, corpus-review-fable-2, twobody-gen-opus and corpus-file-opus reports all lost). Briefs must tell teammates to message the lead session by its ListAgents name ("main" works; "team-lead" and "cyclers" do not). A lost report can be recovered from the agent's transcript (`subagents/agent-a<name>-*.jsonl`, SendMessage tool_use input).
 - Teammates read their own mailbox only between turns: a teammate deep in one long turn does not see messages (the first #938 Fable reviewer has 5 unread lead messages in its inbox file). Put must-know items in the brief; ask for a receipt within the first minute.
+
+## Launch and numerics rules (from the papercut review 2026-10-07)
+- Validate a long-compute launch with the EXACT launch command and flags (same script, --n-cycles, epochs, cells), cutting only wall time (fewer restarts, a --sample); a shorter chain or one cell does not cover per-cell branches (two launches lost on 2026-10-06).
+- Every new phase of an instrumented script gets its own progress lines before its first pilot.
+- Before passing a kwarg the code used to leave at default, check the library's CURRENT default (`inspect.signature`); SciPy 1.16 changed lm's x_scale and a stall was misread as a no-root result.
+- An independent checker takes every physical constant (GM, states, periods) from the reference model, never from the object under test, and prints them.
 
 ## Papercuts
 Friction you work around goes in `docs/papercuts/YYYY-MM-DD-<agent-name>-<slug>.md`, one file per entry (format: the `papercuts` skill; see existing entries). Fill in "Seen before". Commit the one file by path with your work. The lead reviews at 10 unprocessed entries, at handover, or when the user asks; processed entries move to `docs/papercuts/processed/` with a `Disposition:` line.

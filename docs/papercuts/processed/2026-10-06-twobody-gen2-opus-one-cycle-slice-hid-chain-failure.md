@@ -19,3 +19,5 @@ Workaround/fix:
 - The shoot gets a nearest-geometry seed where the blend has no minimax solution.
 
 Suggested fix: validate long-compute launches with the EXACT launch flags (same --n-cycles and epoch options; cut only the wall time, e.g. --shoot-restarts), not a shorter chain.
+
+Disposition: Promoted (seen twice): same coordination.md rule as the slice-missed-task-number-branch entry.

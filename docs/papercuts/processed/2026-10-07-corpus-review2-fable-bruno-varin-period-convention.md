@@ -15,3 +15,5 @@ Workaround: the small-mu yaml header states its convention; the reader applied i
 Suggested fix: add a per-table `period_convention` field (`T_over_2pi` or `one_minus_mu_T_over_2pi`) to
 all five Bruno-Varin yamls and make any future loader read it; the same files also print C = -2H + mu
 (barycentric Jacobi + mu(1 - mu)), stated in the headers, which the field could carry too.
+
+Disposition: Fix now: corpus-file-opus adds a per-table period_convention (and C convention) field to all Bruno-Varin yamls and reconciles the loaders/tests (dispatched 2026-10-07).

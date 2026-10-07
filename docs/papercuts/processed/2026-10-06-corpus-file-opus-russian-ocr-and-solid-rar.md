@@ -19,3 +19,5 @@ Workaround:
 
 Suggested fix: `brew install tesseract-lang` (all languages, about 650 MB), or a note in
 `docs/notes/corpus-document-policy.md` giving the TESSDATA_PREFIX recipe and `unar` for old RARs.
+
+Disposition: Promoted: TESSDATA_PREFIX + rus.traineddata recipe and `unar` go in docs/notes/corpus-document-policy.md (corpus-file-opus, dispatched 2026-10-07). `unar` is installed.

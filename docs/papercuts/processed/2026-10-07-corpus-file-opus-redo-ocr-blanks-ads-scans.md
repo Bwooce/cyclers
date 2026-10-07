@@ -10,3 +10,5 @@ Two digest subagents caught it by rendering pages. NTRS scans were not affected.
 Workaround: re-ran with `ocrmypdf --force-ocr` (about 1 MB per paper) and checked every page renders against the original.
 Suggested fix: the corpus policy now says to use `--force-ocr` for ADS scans and to render-check one page of
 any OCR output before filing (`docs/notes/corpus-document-policy.md`).
+
+Disposition: Promoted: already in docs/notes/corpus-document-policy.md (--force-ocr for ADS scans; render-check one page before filing).
