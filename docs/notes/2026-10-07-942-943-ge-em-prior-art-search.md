@@ -53,10 +53,18 @@ real-ephemeris negatives (conditional), and em-1..3 do not pass rung (d). See
   2026-06-11 forward-citation sweep.
   - Also not held: Pelle et al. 2019, "Earth-Mars cyclers for a sustainable human exploration of Mars",
     Acta Astronautica 154:286 (an architecture trade, low risk).
-- **Verdict: no collision found among held and open sources.** Fornari & Pontani 2020 is the one
-  source to acquire before any em row could be proposed. No em row is proposed now.
+- **Fornari & Pontani 2020 — RESOLVED 2026-10-07** (read by corpus-file-opus on the page images;
+  Aerotecnica Missili & Spazio 99:187-194):
+  - Mars is a MASSLESS target: "Mars flyby can be proven to have negligible effect on the spacecraft
+    trajectory" (p.188). The tabulated Mars altitude is the one giving only a 2-deg deflection, i.e.
+    the altitude at which the Mars flyby can be neglected (p.189-190).
+  - The only bending body is Earth: the one-working-body R-O/R-S class. The method cannot produce
+    em-1..5, which have Mars turns of 2 x 38.4 deg and 5.6-5.9 deg.
+  - Family II's only k = 3 row (7.537 / 6.382 km/s) is far from em-1/2/3. No row is near R-O 2.5.1.+0.
+  - corpus-file-opus re-solved five Family I rows to 0.006 km/s.
+- **Verdict: no collision** with em-1..em-5 among held and open sources (Fornari & Pontani included).
 
-## Acquire (priority order)
+## Acquire
 
-1. Fornari, E. & Pontani, M. (2020), Aerotecnica Missili & Spazio, doi 10.1007/s42496-020-00050-6 (em).
-2. Pelle, S. et al. (2019), Acta Astronautica 154:286-294 (em, low risk).
+1. Pelle, S. et al. (2019), Acta Astronautica 154:286-294 (em, low risk). Fornari & Pontani 2020 is now
+   resolved (above).

@@ -195,8 +195,8 @@ at t = 0).
 
 - Minovitch JPL TR 32-464 (1963): full digest in progress (corpus-file-opus); the key-page verdict above is no collision.
 - Web prior-art search: done for all (`2026-10-07-942-943-ge-em-prior-art-search.md` for ge and em: no
-  collision). To acquire before any em row is proposed: Fornari & Pontani 2020 (AM&S,
-  10.1007/s42496-020-00050-6), a global search for cycling E-M families, not held. Pending for
+  collision). Fornari & Pontani 2020 (AM&S, 10.1007/s42496-020-00050-6) is resolved: Mars is
+  massless there (one-working-body class); no em collision. Pending for
   ev-A/ev-B: Crocco 1956 (corpus-file-opus queue). Hollister 1963 Sc.D. was checked: one-shot powered
   E-V-M round trips, no collision with ev-A, ev-B or ev-C (related history only).
 - The Jovian n-body lane (#968): no positive control, so gc-1 and gc-2 have no n-body check.
