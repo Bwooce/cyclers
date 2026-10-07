@@ -113,3 +113,24 @@ periodic up to the rotation. Its sigma -> 0 limit is the patched-conic generatin
 
 Expected outcome: CLOSES with probability about 0.6. EGGIE's V_inf (7-9 km/s) are high, and the
 patched conic is better there; a 0.94-type near-limit flyby is not expected at those speeds.
+
+### 3.6 Result of step 1: EGGIE NOT RE-RUNNABLE in the consistent model (`data/1023_eggie/pc_roots.json`)
+
+- The date corrector found 156 distinct exact roots (residual < 1e-9 km/s, Kepler re-fly miss < 1 km)
+  of the E>G | G>G | G>I | I>E cycle over all 50 revolution/branch combinations and 12 seed phases.
+- The nearest root to Table 4 is 0.652 km/s away (V_inf E 9.772, G 6.497, I 7.858). It demands turns
+  of 117.5, 0.5, 129.8 and 163.5 deg, which is physically impossible at these speeds.
+- NONE of the 156 roots passes the turn gate, at the paper's 25 km floor or at the project floors.
+- By the rule fixed in 3.5 (all roots > 0.5 km/s from Table 4), EGGIE is NOT RE-RUNNABLE in the
+  consistent ideal model. The continuous-gravity steps were not run (no generating orbit).
+- Conditional on two inputs:
+  1. The phase assumption: Laplace angle 180 deg, as in the real system. The paper does not print
+     its phases.
+  2. The model: the paper's printed T_syn = 7.05 d matches neither the coded 7.004 d nor the
+     consistent 7.105 d (sec. 1), so the paper's own ideal model is not pinned down by what it
+     prints.
+- The #480 history fits this reading. The resonant-conic seed put the V_inf on the Table 4 values
+  but was "structurally NON-ballistic" (forward-verify correction note), and the paper's own EGGIE
+  needs 0.70 m/s of flyby Delta-V.
+- Follow-up suggestions, not run: the same root search (i) in a T_syn = 7.05 d model and (ii) over
+  the Laplace angle; for #1040.
