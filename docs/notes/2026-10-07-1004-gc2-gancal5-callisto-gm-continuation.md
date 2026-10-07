@@ -156,3 +156,22 @@ sigma = 0.164 of the real moon masses. Along this path gc-2 does not reach the p
 three direct attempts at sigma = 1 found no orbit. Not shown: that no gc-2-like orbit exists at
 sigma = 1 by another path (an isola or a branch from a different seed). Stage 2 as registered
 (continuing down in s_C from sigma = 1) has no starting orbit. The lead rules on how #1004 proceeds.
+
+## 9. RESULT (lead ruling 2026-10-08)
+
+Recorded as: **gc-2's branch folds at sigma = 0.164 in the continuous R-S model; there is no
+full-mass gc-2 on that branch; the GanCal#5 relation question is moot on this branch in continuous
+gravity.** Evidence: checks 1-5 of 8.3. Disclosed: the pre-registered tangent rule (singular-value
+gap > 10) was not enforced in code (logged gap about 1); the fold rests on checks 1-2, which do not
+use the tangent. Limits: absence on one branch is not absence; an isola or another seed is untested
+(registered as #1033, not run); ideal model, not the ephemeris. The Callisto-only continuation from
+the lower branch was NOT run (a different question, by ruling). The owner's "GanCal-family relative"
+ruling is refined, not reopened: in continuous gravity the patched-conic relation has no full-mass
+counterpart on gc-2's own branch.
+
+Diagnosis of the weak J_z directions (after 8.3, descriptive): the four weakest right singular
+vectors of the column-scaled J_z are planar combinations of all four nodes' positions and epochs
+with node shifts of about 1e-4 km and 1e-5 s per unit scaled step: directions of tiny physical size
+in the column-norm scaling, which dominates by the velocity columns (norms up to 4.6e6). They make
+the smallest singular values of [J_z | J_s] nearly equal, which is why the gap test failed; #1034
+handles this (its sec. 3).
