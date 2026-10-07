@@ -1925,14 +1925,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Published 1963, so NOT novel (literature row, V0). Second use: a positive control for a corrector
   regularised at BOTH primaries (`#948` R4), since it passes 177 km above the Earth and 464 km above
   the Moon every period.
-- `#971` — registered and DISPATCHED 2026-10-07 (owner request 2026-10-07 19:10 AEDT; owner of the
-  work: corpus-review2-fable). **SECOND FABLE CROSS-PAPER REVIEW OF THE CORPUS.** Covers every digest
+- `#971` — ✓ DONE 2026-10-07 (commit `36e253d0`; owner request 2026-10-07 19:10 AEDT; owner of the
+  work: corpus-review2-fable; routes registered as `#973`-`#977`). **SECOND FABLE CROSS-PAPER REVIEW OF THE CORPUS.** Covers every digest
   added after the `#938` review note (commit `8b5567b7`, 2026-10-05 23:31 AEDT): about 85 digests,
   `#960` batches 19-35 plus the owner's uploads. Looks for untried routes to novel cycler-class orbits
   from technique x case correlations between the new papers and the held corpus, as `#938` sec. 3a
   did. Analysis only: no code, no catalogue edit. Output:
-  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` and a technique x case matrix delta CSV. In
-  progress.
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` and a technique x case matrix delta CSV.
 - `#972` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-gen2-opus; from the Fable
   review of `2e16b56b`). **`literature_check` DECLARED-SCOPE GATE REWORK.** Blocker: a
   `candidate-novel` row cannot sit on an inconclusive gate (spec 16.5). Defects: (1) known-
@@ -1949,6 +1948,31 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   grounding fix is proposed; its cited AAS 14-822 cannot be found. Notes:
   `docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md` and the v2 pre-registration
   `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md` (`fed50171`, `5e4bdc18`).
+- `#973` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-ext-opus; from `#971`
+  R11, R12, R13). **EXTEND THE `#942`/`#943` TWO-WORKING-BODY GENERATOR TO NEW CELLS.** R11:
+  Ganymede-Callisto at k = 4, 5, 6 (the 50.09-d class; P(gate-passing ideal member at k = 4) 0.5).
+  R13: Earth-Venus at k = 4, 5 (the 8-yr class; P 0.45). R12: a new Europa-Callisto `ec` cell, k = 1-4
+  (P 0.4). Each with the existing generator: enumeration, turn gate, DOP853 re-fly and recall controls
+  first. The literature step and the real-ephemeris rung are DEFERRED until `#972` lands. Cost about
+  1 agent-day per route. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3.
+- `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched). **HENON 2003 ASYMMETRIC SECOND-SPECIES
+  HILL FAMILIES, AND THE STABLE Hg FAMILY, SCALED TO EUROPA, GANYMEDE, TITAN, TRITON AND TITANIA.**
+  Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
+  family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
+- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **OWNER RULING PENDING** on the
+  `#864` sec. 8 do-not-do item). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS
+  RATIOS.** Read Voyatzis & Kotoulas 2005 first (not held). Cost 3-5 agent-days (GUESS); P(solver finds
+  i_5 and i_6) 0.6, P(a cycler-class loop member) 0.3. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R14.
+- `#976` — registered 2026-10-07 (from `#971` R16; NOT dispatched; likely known-class). **NEWTON-ARENSTORF
+  PLANET-MOON CYCLERS CONTINUED IN mu TO JUPITER-GANYMEDE AND SATURN-TITAN.** Gated by the Restrepo &
+  Russell 2018 database (a member inside it is known). Cost 1-2 agent-days (GUESS); P(continuation)
+  0.6, P(a member outside the database) 0.25. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R16.
+- `#977` — registered 2026-10-07 (from `#971`; BACKLOG). **THE FIVE TRANSFER CELLS X9-X13 OF THE `#971`
+  NOTE:** X9 an alignment-census pre-screen (Lynam's phase-angle / dynamics-line census); X10 the
+  Fornari-Pontani closed-form census re-hosted, with its 3,339-row cross-match; X11 inter-body VILT as
+  the cost axis for near-miss closures; X12 an n-pi BVP enumeration of gc-1's sibling return blocks
+  (Lantukh-Russell); X13 theorem-level ejection-collision controls for the second-species lanes.
+  Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3-4.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
