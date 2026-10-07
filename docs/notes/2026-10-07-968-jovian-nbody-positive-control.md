@@ -134,3 +134,37 @@ pinned as in 3.2); whether the other moons act as perturbers is fixed in the ame
 ## 4. Results
 
 (pending)
+
+### 4.1 First attempt (pre-registered corrector A, hand LM loop): plateau, not converged
+
+- Seed match defects (km, km/s): leg B->C 287,856 / 1.94, leg C->A 8,066 / 0.069, leg A->B' 54,867 /
+  0.391. Analytic Jacobian FD check at the seed: relative column errors 2e-7 to 1e-4.
+- The hand LM loop (normal equations) stopped at |r| 164.75 (match dv 0.108 km/s, dr 0.85 km); a
+  rerun with column-scaled augmented least squares reached |r| 98.6 (dv 0.097 km/s) and crawled.
+  States kept: `data/968_control/a_state_normaleq_plateau.json`, `a_state_scaledlm_plateau.json`.
+- Diagnosis so far: the stop is a stationary point that is not a root. The residual lies along the
+  second-weakest scaled singular direction (sv 2e-6); the Gauss-Newton step there is 3e4 km and a
+  line search raises the residual from alpha = 0.01. The FD check of all 18 columns at the plateau
+  passes (worst 3e-3, the out-of-plane columns). The node Jacobi constants differ
+  (B -172.692, C -172.629, A -172.606 km^2/s^2); Jacobi is conserved along each arc to 1e-11.
+- Found while diagnosing: the published patched-conic GanCal#5 B->C leg passes GANYMEDE at 94,989 km
+  (3.0 Hill radii) at t = 25.15 d with v_rel 2.70 km/s. The R-S model does not see this encounter;
+  its impulse estimate 2 mu/(b v) is 0.077 km/s, the scale of the plateau. INFERRED link, not shown.
+- A bug in my own script, fixed: the FD step for the gauge rows was chosen by column index mod 6,
+  which is right only for node B. The gauge derivative is now analytic (it is a small row at weight
+  1e4; not believed to be the plateau cause).
+
+### 4.2 AMENDMENT 1 (before the runs it covers; criteria of sec. 3.4 unchanged)
+
+- Solver for corrector A: scipy `least_squares` trf with the analytic Jacobian (a real trust region)
+  replaces the hand LM loop. Restart from the patched-conic seed.
+- Diagnostic run (does not replace the control): the same three-leg shooting with T FREE, the
+  Callisto pin DROPPED (C a free node at a fixed epoch), and the Jacobi constant at B FIXED (dJ = 0
+  first, from the plateau state). Outcomes and their reading, fixed now:
+  - It converges to the floors: the corrector works; map T(J) over a small J range. If 3 S_GC is
+    inside the range, a seed is interpolated and the pinned, fixed-T control is rerun (amendment 2).
+    If T(J) turns back before 3 S_GC, there is no fixed-period continuation of GanCal#5 near the
+    seed: a diagnosed negative on the published-orbit side, not on the lane.
+  - It stalls near 0.1 km/s with T free: the corrector or formulation is at fault; go to approach 2,
+    a continuation in Ganymede's GM from s_G about 1e-4 (the patched-conic limit) to 1, with the
+    softening radius scaled.
