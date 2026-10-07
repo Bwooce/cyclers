@@ -1,0 +1,19 @@
+{
+ "cell": "pn",
+ "k": "1,2,3,4,5,6",
+ "out": "data/998_pluto_smallmoons/pn",
+ "max_returns": "2,0",
+ "transfer_revs": "0,1",
+ "generic_revs": "1,2",
+ "visits": 1,
+ "resonant_only": "",
+ "n_phase": 24,
+ "n_split": 10,
+ "n_refine": 60,
+ "count_only": false,
+ "sample": 0,
+ "seed": 942,
+ "shard": "3/4",
+ "timing_pilot_s": 1.0,
+ "synodic_days": 8.59632135797482
+}

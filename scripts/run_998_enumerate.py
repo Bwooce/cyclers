@@ -37,7 +37,7 @@ import types
 from pathlib import Path
 from typing import Any
 
-from cyclerfinder.core.satellites import PRIMARIES
+from cyclerfinder.core.satellites import PRIMARIES, SATELLITES, _sat
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import CircularSystem, FlybyBody
 
@@ -65,6 +65,13 @@ CELLS = {"ps": "Styx", "pn": "Nix", "pk": "Kerberos", "ph": "Hydra"}
 
 def pluto_system(moon: str) -> CircularSystem:
     mu = PRIMARIES["Pluto"]
+    if moon not in SATELLITES:
+        # Styx and Kerberos are not in the registry; the SOI diagnostic of the generator looks
+        # every encounter body up there. Add them to the in-process dict only (no file edit),
+        # with the fitted Kepler a and the approximate target constants above.
+        per = PERIODS_D[moon] * DAY
+        a_fit = (mu * (per / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
+        SATELLITES[moon] = _sat(moon, "Pluto", TARGET_GM[moon], RADII_KM[moon], a_fit, 10.0)
     bodies = {}
     for m in ("Charon", moon):
         per = PERIODS_D[m] * DAY

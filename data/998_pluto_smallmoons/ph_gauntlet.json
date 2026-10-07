@@ -1,0 +1,4747 @@
+{
+ "cell": "ph",
+ "moon": "Hydra",
+ "n_structures": 6287,
+ "n_zeros": 1837,
+ "n_physical": 493,
+ "n_gate_passing": 63,
+ "n_zero_assessment_errors": 0,
+ "catalogue_pluto_rows": [
+  "ross-rt-pc-cycler-32-2026",
+  "pc-cycler-51-2026"
+ ],
+ "candidates": [
+  {
+   "k": 3,
+   "key": "k3|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k3|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.6461778126930807,
+    5.569443425253613
+   ],
+   "n_member_zeros": 2,
+   "period_days": 23.008603497529446,
+   "vinf_charon_kms": 0.306741287040344,
+   "vinf_moon_kms": 0.11016033556170912,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.073951310222528,
+     "vinf_kms": 0.306741287040344,
+     "turn_deg": 58.23416795606571,
+     "available_deg": 75.90002374256484,
+     "ratio": 0.7672483496656393,
+     "required_alt_km": 583.7667085381602,
+     "rmin_radii": 1.9633114002279868,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 23.654781310222525,
+     "vinf_kms": 0.30674128704034387,
+     "turn_deg": 58.234167956065875,
+     "available_deg": 75.9000237425649,
+     "ratio": 0.7672483496656409,
+     "required_alt_km": 583.7667085381556,
+     "rmin_radii": 1.9633114002279781,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.7672483496656409,
+   "max_turn_deg": 58.234167956065875,
+   "min_required_alt_km": 583.7667085381556,
+   "status_hm_floor": "pass",
+   "r_min_km": 15250.836568829289,
+   "r_max_km": 67137.75492126748,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1189.7667085381602,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 12.834163568820406,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6089692075353372,
+   "cross_check": {
+    "max_arrival_miss_km": 2.6545699653625545e-07,
+    "max_vinf_vector_error_kms": 3.531393765657494e-12,
+    "max_junction_mismatch_kms": 7.461808948505677e-13,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7672483496741731
+   },
+   "soi_fraction": 7.674065325947438e-10,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 4,
+   "key": "k4|HCharon/3,1,p|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|HCharon/3,1,p|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k4|RCharon/1:1|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.5716728348917175,
+    9.958640824966444
+   ],
+   "n_member_zeros": 4,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.227525891343565,
+   "vinf_moon_kms": 0.08174224244624484,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.281760831597644,
+     "vinf_kms": 0.227525891343565,
+     "turn_deg": 66.34241871056834,
+     "available_deg": 96.11015518326883,
+     "ratio": 0.6902748058627362,
+     "required_alt_km": 1090.3463195401152,
+     "rmin_radii": 2.799251352376428,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 24.862590831597643,
+     "vinf_kms": 0.22752589134356482,
+     "turn_deg": 66.34241877700715,
+     "available_deg": 96.11015518326894,
+     "ratio": 0.6902748065540132,
+     "required_alt_km": 1090.3463162175995,
+     "rmin_radii": 2.7992513468937235,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 31.24981083159764,
+     "vinf_kms": 0.22752589134356482,
+     "turn_deg": 15.254787441685982,
+     "available_deg": 96.11015518326894,
+     "ratio": 0.15872191042244374,
+     "required_alt_km": 12785.76705303518,
+     "rmin_radii": 22.098625500058017,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6902748065540132,
+   "max_turn_deg": 66.34241877700715,
+   "min_required_alt_km": 1090.3463162175995,
+   "status_hm_floor": "pass",
+   "r_min_km": 2504.924548226504,
+   "r_max_km": 67426.88013376738,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 13391.76705303518,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 2.1079900262783005,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8209878769588688,
+   "cross_check": {
+    "max_arrival_miss_km": 7.863376586786674e-07,
+    "max_vinf_vector_error_kms": 1.5209376636808652e-11,
+    "max_junction_mismatch_kms": 1.4798273717531174e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6902748065625446
+   },
+   "soi_fraction": 2.2732143585179486e-09,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 4,
+   "key": "k4|HCharon/3,1,p|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|HCharon/3,1,p|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k4|RCharon/1:2|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.5716728348917175,
+    9.958640824966444
+   ],
+   "n_member_zeros": 4,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.227525891343565,
+   "vinf_moon_kms": 0.08174224244624484,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.281760831597644,
+     "vinf_kms": 0.227525891343565,
+     "turn_deg": 66.34241871056834,
+     "available_deg": 96.11015518326883,
+     "ratio": 0.6902748058627362,
+     "required_alt_km": 1090.3463195401152,
+     "rmin_radii": 2.799251352376428,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 24.862590831597643,
+     "vinf_kms": 0.2275258913435648,
+     "turn_deg": 66.34241877700697,
+     "available_deg": 96.11015518326894,
+     "ratio": 0.6902748065540112,
+     "required_alt_km": 1090.3463162176095,
+     "rmin_radii": 2.799251346893741,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 31.24981083159764,
+     "vinf_kms": 0.22752589134356482,
+     "turn_deg": 38.46535898836622,
+     "available_deg": 96.11015518326894,
+     "ratio": 0.4002215886033898,
+     "required_alt_km": 3566.3756528606464,
+     "rmin_radii": 6.88510833805386,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6902748065540112,
+   "max_turn_deg": 66.34241877700697,
+   "min_required_alt_km": 1090.3463162176095,
+   "status_hm_floor": "pass",
+   "r_min_km": 624.8599464453611,
+   "r_max_km": 67426.88013376738,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 4172.375652860646,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.5258435971096197,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8209878769588688,
+   "cross_check": {
+    "max_arrival_miss_km": 2.3245494427605718e-05,
+    "max_vinf_vector_error_kms": 7.4175832580272e-10,
+    "max_junction_mismatch_kms": 4.3637715663180643e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6902748065608343
+   },
+   "soi_fraction": 6.720012849502339e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 4,
+   "key": "k4|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    1.9393174111894422,
+    19.128473353072707
+   ],
+   "n_member_zeros": 2,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.24196553822999378,
+   "vinf_moon_kms": 0.11058315724408854,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.03662540789537,
+     "vinf_kms": 0.24196553822999378,
+     "turn_deg": 66.81158523819089,
+     "available_deg": 92.04987018923586,
+     "ratio": 0.7258194400583056,
+     "required_alt_km": 873.3345332474432,
+     "rmin_radii": 2.441146094467728,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.61745540789537,
+     "vinf_kms": 0.2419655382299939,
+     "turn_deg": 66.81158523819093,
+     "available_deg": 92.04987018923586,
+     "ratio": 0.725819440058306,
+     "required_alt_km": 873.3345332474419,
+     "rmin_radii": 2.4411460944677223,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.725819440058306,
+   "max_turn_deg": 66.81158523819093,
+   "min_required_alt_km": 873.3345332474419,
+   "status_hm_floor": "pass",
+   "r_min_km": 15250.836568829294,
+   "r_max_km": 85672.2232216073,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1479.3345332474432,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 12.834163568820411,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7719942263421571,
+   "cross_check": {
+    "max_arrival_miss_km": 2.533447277135364e-07,
+    "max_vinf_vector_error_kms": 3.507847719427715e-12,
+    "max_junction_mismatch_kms": 6.757927550893328e-13,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7258194400669898
+   },
+   "soi_fraction": 7.323913160422249e-10,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 4,
+   "key": "k4|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|LCharon>Charon/1h|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k4|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    3.3109732479855047,
+    9.962472797027903,
+    16.041526636026454
+   ],
+   "n_member_zeros": 4,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.2548137233954997,
+   "vinf_moon_kms": 0.09500763000586455,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.962472797027903,
+     "vinf_kms": 0.2548137233954997,
+     "turn_deg": 25.521461210292394,
+     "available_deg": 88.58141255777208,
+     "ratio": 0.2881130529911961,
+     "required_alt_km": 5157.91369189082,
+     "rmin_radii": 9.511408732493097,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.60189124469143,
+     "vinf_kms": 0.25481372339549896,
+     "turn_deg": 34.352114139169714,
+     "available_deg": 88.58141255777224,
+     "ratio": 0.38780273589298975,
+     "required_alt_km": 3293.349415539312,
+     "rmin_radii": 6.434569992639129,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.98911124469143,
+     "vinf_kms": 0.25481372339549935,
+     "turn_deg": 8.830652928877356,
+     "available_deg": 88.58141255777224,
+     "ratio": 0.09968968290179454,
+     "required_alt_km": 18985.5101337826,
+     "rmin_radii": 32.32922464320552,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.38780273589298975,
+   "max_turn_deg": 34.352114139169714,
+   "min_required_alt_km": 3293.349415539312,
+   "status_hm_floor": "pass",
+   "r_min_km": 28.74121916357005,
+   "r_max_km": 69777.97610660817,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 19591.5101337826,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.024186837636598547,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7330688316084106,
+   "cross_check": {
+    "max_arrival_miss_km": 0.06281618093017871,
+    "max_vinf_vector_error_kms": 2.093453157319738e-06,
+    "max_junction_mismatch_kms": 1.2007095159805026e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.38780273589417114
+   },
+   "soi_fraction": 0.0001815945641948402,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 4,
+   "key": "k4|LCharon>Charon/1h|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|LCharon>Charon/1h|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k4|RCharon/1:1|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    4.593287747161992,
+    17.63200729620439,
+    23.711061135202957
+   ],
+   "n_member_zeros": 4,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.25481372339549957,
+   "vinf_moon_kms": 0.09500763000586435,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.24478729620439,
+     "vinf_kms": 0.25481372339549957,
+     "turn_deg": 12.261148408353373,
+     "available_deg": 88.58141255777211,
+     "ratio": 0.13841671807115005,
+     "required_alt_km": 13060.948275792645,
+     "rmin_radii": 22.55271992705056,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 17.63200729620439,
+     "vinf_kms": 0.25481372339549957,
+     "turn_deg": 13.260312801939115,
+     "available_deg": 88.58141255777211,
+     "ratio": 0.14969633492004703,
+     "required_alt_km": 11912.600682061247,
+     "rmin_radii": 20.657756901091158,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 35.27142574386792,
+     "vinf_kms": 0.25481372339549957,
+     "turn_deg": 25.521461210292227,
+     "available_deg": 88.58141255777211,
+     "ratio": 0.2881130529911941,
+     "required_alt_km": 5157.9136918908725,
+     "rmin_radii": 9.511408732493184,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.2881130529911941,
+   "max_turn_deg": 25.521461210292227,
+   "min_required_alt_km": 5157.9136918908725,
+   "status_hm_floor": "pass",
+   "r_min_km": 264.68724945910867,
+   "r_max_km": 69777.97610660791,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 13666.948275792645,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.22274446643028586,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.733068831608411,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0003265105114917092,
+    "max_vinf_vector_error_kms": 4.023697665337942e-09,
+    "max_junction_mismatch_kms": 2.5523514968206484e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.288113052994934
+   },
+   "soi_fraction": 9.439054262989339e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 4,
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    2.0492025677809633,
+    7.732376460497136
+   ],
+   "n_member_zeros": 2,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.2728820058690137,
+   "vinf_moon_kms": 0.10453253159332483,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 19.95290056448689,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 45.16020918754718,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.538071428725461,
+     "required_alt_km": 1679.9223931376155,
+     "rmin_radii": 3.7721491635934234,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.340120564486888,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 45.16020918754716,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.5380714287254608,
+     "required_alt_km": 1679.9223931376164,
+     "rmin_radii": 3.7721491635934266,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.72734056448689,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 45.16020918754716,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.5380714287254608,
+     "required_alt_km": 1679.9223931376164,
+     "rmin_radii": 3.7721491635934266,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.538071428725461,
+   "max_turn_deg": 45.16020918754718,
+   "min_required_alt_km": 1679.9223931376155,
+   "status_hm_floor": "pass",
+   "r_min_km": 2052.354701271668,
+   "r_max_km": 71853.09427911404,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 2285.9223931376164,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 1.727135152126288,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.684530289538372,
+   "cross_check": {
+    "max_arrival_miss_km": 2.0376682257228143e-05,
+    "max_vinf_vector_error_kms": 3.3836210369158734e-10,
+    "max_junction_mismatch_kms": 1.2248219105615021e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5380714295196373
+   },
+   "soi_fraction": 5.890671287945728e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 4,
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k4|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    2.0492025677809633,
+    7.732376460497136
+   ],
+   "n_member_zeros": 4,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.2728820058690137,
+   "vinf_moon_kms": 0.10453253159332483,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 19.95290056448689,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 49.36183328421009,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.5881326202330093,
+     "required_alt_km": 1381.4212688277933,
+     "rmin_radii": 3.2795730508709457,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.340120564486888,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 49.36183328421012,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.5881326202330096,
+     "required_alt_km": 1381.4212688277914,
+     "rmin_radii": 3.279573050870943,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.72734056448689,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 49.361833284210114,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.5881326202330095,
+     "required_alt_km": 1381.421268827792,
+     "rmin_radii": 3.2795730508709435,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5881326202330096,
+   "max_turn_deg": 49.36183328421012,
+   "min_required_alt_km": 1381.4212688277914,
+   "status_hm_floor": "pass",
+   "r_min_km": 2413.719852685884,
+   "r_max_km": 71853.09427911404,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1987.4212688277933,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.031237778916001,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.684530289538372,
+   "cross_check": {
+    "max_arrival_miss_km": 1.991422832000066e-05,
+    "max_vinf_vector_error_kms": 2.8320759163447313e-10,
+    "max_junction_mismatch_kms": 9.957157320883425e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.588132620693052
+   },
+   "soi_fraction": 5.756981019057276e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 4,
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k4|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    2.0492025677809633,
+    7.732376460497136
+   ],
+   "n_member_zeros": 2,
+   "period_days": 30.678137996705928,
+   "vinf_charon_kms": 0.27288200586901373,
+   "vinf_moon_kms": 0.10453253159332483,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 19.95290056448689,
+     "vinf_kms": 0.27288200586901373,
+     "turn_deg": 50.148324235874014,
+     "available_deg": 83.9297661548745,
+     "ratio": 0.59750344285883,
+     "required_alt_km": 1331.2866262326195,
+     "rmin_radii": 3.1968426175455757,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.340120564486888,
+     "vinf_kms": 0.27288200586901373,
+     "turn_deg": 50.148324235873126,
+     "available_deg": 83.9297661548745,
+     "ratio": 0.5975034428588194,
+     "required_alt_km": 1331.2866262326745,
+     "rmin_radii": 3.1968426175456677,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.72734056448689,
+     "vinf_kms": 0.2728820058690137,
+     "turn_deg": 50.14832423587395,
+     "available_deg": 83.92976615487453,
+     "ratio": 0.597503442858829,
+     "required_alt_km": 1331.286626232624,
+     "rmin_radii": 3.1968426175455833,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.59750344285883,
+   "max_turn_deg": 50.148324235874014,
+   "min_required_alt_km": 1331.2866262326195,
+   "status_hm_floor": "pass",
+   "r_min_km": 2413.719852685884,
+   "r_max_km": 71853.09427911404,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1937.2866262326745,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.031237778916001,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6845302895383719,
+   "cross_check": {
+    "max_arrival_miss_km": 6.311677057617494e-06,
+    "max_vinf_vector_error_kms": 5.184005159349811e-11,
+    "max_junction_mismatch_kms": 2.139194377193121e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.597503442941676
+   },
+   "soi_fraction": 1.8246353529365374e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.10391168116246532,
+    11.598505366908839,
+    19.28992417704488,
+    26.94554265491362
+   ],
+   "n_member_zeros": 1,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.14277938738325557,
+   "vinf_moon_kms": 0.061909564640379285,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.598505366908839,
+     "vinf_kms": 0.14277938738325557,
+     "turn_deg": 0.5058706806167245,
+     "available_deg": 123.41825203999836,
+     "ratio": 0.004098831998145444,
+     "required_alt_km": 1173148.9322633604,
+     "rmin_radii": 1936.8893271672293,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 19.28992417704488,
+     "vinf_kms": 0.14277938738325446,
+     "turn_deg": 33.63482277273073,
+     "available_deg": 123.41825203999836,
+     "ratio": 0.2725271361146007,
+     "required_alt_km": 12178.221618322214,
+     "rmin_radii": 21.096075277759414,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.45158417704488,
+     "vinf_kms": 0.1427793873832558,
+     "turn_deg": 34.14069345334759,
+     "available_deg": 123.41825203999824,
+     "ratio": 0.2766259681127475,
+     "required_alt_km": 11919.436727619592,
+     "rmin_radii": 20.669037504322475,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.2766259681127475,
+   "max_turn_deg": 34.14069345334759,
+   "min_required_alt_km": 11919.436727619592,
+   "status_hm_floor": "pass",
+   "r_min_km": 5607.15908736866,
+   "r_max_km": 68559.23014028111,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1173754.9322633604,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 4.718639306041117,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.3082840731479013,
+   "cross_check": {
+    "max_arrival_miss_km": 1.7783206270003115e-05,
+    "max_vinf_vector_error_kms": 2.411552117350988e-10,
+    "max_junction_mismatch_kms": 2.2284885048406977e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.276625968124456
+   },
+   "soi_fraction": 5.140926342175476e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    7.63233588303474,
+    31.220988283727486,
+    40.62255730330851
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.22457672507513896,
+   "vinf_moon_kms": 0.08072282643558933,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 24.83376828372749,
+     "vinf_kms": 0.22457672507513896,
+     "turn_deg": 14.027269467272228,
+     "available_deg": 96.96071734423818,
+     "ratio": 0.144669613132826,
+     "required_alt_km": 14518.91165170782,
+     "rmin_radii": 24.95860008532643,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 31.220988283727493,
+     "vinf_kms": 0.22457672507513887,
+     "turn_deg": 14.351030100573563,
+     "available_deg": 96.9607173442382,
+     "ratio": 0.14800870387152057,
+     "required_alt_km": 14132.19818364478,
+     "rmin_radii": 24.320459048918767,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 45.98000837891715,
+     "vinf_kms": 0.2245767250751391,
+     "turn_deg": 0.32376063330012106,
+     "available_deg": 96.9607173442382,
+     "ratio": 0.003339090738682125,
+     "required_alt_km": 741876.6223850072,
+     "rmin_radii": 1225.2188488201411,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.14800870387152057,
+   "max_turn_deg": 14.351030100573563,
+   "min_required_alt_km": 14132.19818364478,
+   "status_hm_floor": "pass",
+   "r_min_km": 2551.6417897247966,
+   "r_max_km": 67382.36507449762,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 742482.6223850072,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 2.1473043757677326,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8317691801090669,
+   "cross_check": {
+    "max_arrival_miss_km": 2.8568583291342345e-05,
+    "max_vinf_vector_error_kms": 2.7648597216647674e-10,
+    "max_junction_mismatch_kms": 2.67217914462492e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.1480087038763823
+   },
+   "soi_fraction": 8.258858395453471e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:2|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    7.63233588303474,
+    31.220988283727486,
+    40.62255730330851
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.22457672507513896,
+   "vinf_moon_kms": 0.08072282643558933,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 24.83376828372749,
+     "vinf_kms": 0.22457672507513896,
+     "turn_deg": 36.471621232618354,
+     "available_deg": 96.96071734423818,
+     "ratio": 0.3761484262037141,
+     "required_alt_km": 4012.941947702847,
+     "rmin_radii": 7.622016415351232,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 31.220988283727493,
+     "vinf_kms": 0.22457672507513887,
+     "turn_deg": 36.79538186591975,
+     "available_deg": 96.9607173442382,
+     "ratio": 0.37948751694240923,
+     "required_alt_km": 3955.8100141625555,
+     "rmin_radii": 7.527739297297942,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 45.98000837891715,
+     "vinf_kms": 0.2245767250751391,
+     "turn_deg": 0.32376063330012106,
+     "available_deg": 96.9607173442382,
+     "ratio": 0.003339090738682125,
+     "required_alt_km": 741876.6223850072,
+     "rmin_radii": 1225.2188488201411,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.37948751694240923,
+   "max_turn_deg": 36.79538186591975,
+   "min_required_alt_km": 3955.8100141625555,
+   "status_hm_floor": "pass",
+   "r_min_km": 397.23050027263514,
+   "r_max_km": 67382.36507449762,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 742482.6223850072,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.3342846926471726,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8317691801090669,
+   "cross_check": {
+    "max_arrival_miss_km": 7.82780220585296e-05,
+    "max_vinf_vector_error_kms": 2.1714521118656576e-09,
+    "max_junction_mismatch_kms": 1.3154861089326175e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.37948751239658657
+   },
+   "soi_fraction": 2.2629302022599625e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|LCharon>Charon/2h|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    6.103037689128894,
+    12.098966544763268,
+    25.28905018501131,
+    30.716656035150848
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.25811721008528077,
+   "vinf_moon_kms": 0.10753458637722979,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 12.098966544763268,
+     "vinf_kms": 0.25811721008528077,
+     "turn_deg": 0.6891534726699684,
+     "available_deg": 87.71134324172573,
+     "ratio": 0.007857062122178592,
+     "required_alt_km": 262603.18497889664,
+     "rmin_radii": 434.33858907408666,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 25.28905018501131,
+     "vinf_kms": 0.2581172100852808,
+     "turn_deg": 21.120092216266904,
+     "available_deg": 87.71134324172573,
+     "ratio": 0.2407908878793653,
+     "required_alt_km": 6491.093810380065,
+     "rmin_radii": 11.71137592471957,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.45071018501131,
+     "vinf_kms": 0.25811721008528055,
+     "turn_deg": 21.8092456889362,
+     "available_deg": 87.71134324172583,
+     "ratio": 0.24864795000153597,
+     "required_alt_km": 6219.677739303124,
+     "rmin_radii": 11.263494619312057,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.24864795000153597,
+   "max_turn_deg": 21.8092456889362,
+   "min_required_alt_km": 6219.677739303124,
+   "status_hm_floor": "pass",
+   "r_min_km": 471.6748798779053,
+   "r_max_km": 77951.38536311316,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 263209.18497889664,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.3969324916922539,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7236867252114305,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00011789198737487686,
+    "max_vinf_vector_error_kms": 1.9713538835967618e-09,
+    "max_junction_mismatch_kms": 1.436664232024043e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.2486479499981505
+   },
+   "soi_fraction": 3.4081257014335747e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/2:3|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1h|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/2:3|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    3.239061011061221,
+    9.650633506943638,
+    14.821214734932436
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.2795654581525674,
+   "vinf_moon_kms": 0.1161544178102807,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.650633506943638,
+     "vinf_kms": 0.2795654581525674,
+     "turn_deg": 26.998640591880218,
+     "available_deg": 82.27484189689982,
+     "ratio": 0.3281518380273855,
+     "required_alt_km": 3851.9400009582687,
+     "rmin_radii": 7.356336635244665,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 28.812293506943636,
+     "vinf_kms": 0.2795654581525676,
+     "turn_deg": 61.434366577517395,
+     "available_deg": 82.27484189689976,
+     "ratio": 0.7466968657867737,
+     "required_alt_km": 694.1174443117077,
+     "rmin_radii": 2.1454083239467123,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.58673350694364,
+     "vinf_kms": 0.2795654581525675,
+     "turn_deg": 61.4343665775174,
+     "available_deg": 82.27484189689982,
+     "ratio": 0.7466968657867735,
+     "required_alt_km": 694.1174443117097,
+     "rmin_radii": 2.1454083239467128,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.7466968657867737,
+   "max_turn_deg": 61.4343665775174,
+   "min_required_alt_km": 694.1174443117077,
+   "status_hm_floor": "pass",
+   "r_min_km": 2.3394336252051198,
+   "r_max_km": 79253.46277126021,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 4457.940000958269,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.00196872307094599,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6681655155887942,
+   "cross_check": {
+    "max_arrival_miss_km": 0.2915294911485542,
+    "max_vinf_vector_error_kms": 3.6398824980610206e-06,
+    "max_junction_mismatch_kms": 2.24544745774935e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7466968658528063
+   },
+   "soi_fraction": 0.0008427792029239911,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1h|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    3.3282303451968143,
+    9.739802841079232,
+    14.451888836840283
+   ],
+   "n_member_zeros": 3,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.27956545815256756,
+   "vinf_moon_kms": 0.13026921744420455,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.739802841079232,
+     "vinf_kms": 0.27956545815256756,
+     "turn_deg": 29.094336052010743,
+     "available_deg": 82.27484189689977,
+     "ratio": 0.35362372483765364,
+     "required_alt_km": 3441.1361958413977,
+     "rmin_radii": 6.678442567395042,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 35.28868284107923,
+     "vinf_kms": 0.2795654581525674,
+     "turn_deg": 57.43448640940765,
+     "available_deg": 82.27484189689982,
+     "ratio": 0.6980807873369105,
+     "required_alt_km": 861.7846811479053,
+     "rmin_radii": 2.4220869325873027,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.675902841079235,
+     "vinf_kms": 0.2795654581525674,
+     "turn_deg": 57.43448640940775,
+     "available_deg": 82.27484189689982,
+     "ratio": 0.6980807873369117,
+     "required_alt_km": 861.7846811479005,
+     "rmin_radii": 2.4220869325872947,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6980807873369117,
+   "max_turn_deg": 57.43448640940775,
+   "min_required_alt_km": 861.7846811479005,
+   "status_hm_floor": "pass",
+   "r_min_km": 2.3394336252051198,
+   "r_max_km": 96071.37811418586,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 4047.1361958413977,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.00196872307094599,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6681655155887938,
+   "cross_check": {
+    "max_arrival_miss_km": 0.2899355359594204,
+    "max_vinf_vector_error_kms": 3.6199814154677626e-06,
+    "max_junction_mismatch_kms": 2.2331702957401056e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6980807873354001
+   },
+   "soi_fraction": 0.0008381712564740375,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:2|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/2h|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:2|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.314294574014754,
+    17.11308706989717,
+    22.1359271415567
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.2944812046968889,
+   "vinf_moon_kms": 0.1221615150292099,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.11308706989717,
+     "vinf_kms": 0.2944812046968889,
+     "turn_deg": 20.76187950290598,
+     "available_deg": 78.70654414421959,
+     "ratio": 0.26378847818375195,
+     "required_alt_km": 4960.433885354513,
+     "rmin_radii": 9.185534464281362,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 36.27474706989716,
+     "vinf_kms": 0.29448120469688915,
+     "turn_deg": 56.49248777143287,
+     "available_deg": 78.70654414421949,
+     "ratio": 0.7177609992368328,
+     "required_alt_km": 755.7374462910448,
+     "rmin_radii": 2.247091495529777,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 42.661967069897166,
+     "vinf_kms": 0.2944812046968891,
+     "turn_deg": 56.492487771432664,
+     "available_deg": 78.7065441442195,
+     "ratio": 0.71776099923683,
+     "required_alt_km": 755.7374462910543,
+     "rmin_radii": 2.247091495529792,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.7177609992368328,
+   "max_turn_deg": 56.49248777143287,
+   "min_required_alt_km": 755.7374462910448,
+   "status_hm_floor": "pass",
+   "r_min_km": 1.8271953547281483,
+   "r_max_km": 80016.18895816628,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 5566.433885354513,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.0015376549311858524,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6343223116042256,
+   "cross_check": {
+    "max_arrival_miss_km": 1.2839805781961318,
+    "max_vinf_vector_error_kms": 1.5590199357341295e-05,
+    "max_junction_mismatch_kms": 1.034965249574471e-05,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7177609992358152
+   },
+   "soi_fraction": 0.0037118444655419476,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|LCharon>Charon/1h|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:2|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    3.9869991224897396,
+    16.78579161837215,
+    21.631897444633996
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.31815436692603105,
+   "vinf_moon_kms": 0.13171287342301957,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 16.78579161837215,
+     "vinf_kms": 0.31815436692603105,
+     "turn_deg": 11.809021936716498,
+     "available_deg": 73.38709082574968,
+     "ratio": 0.16091415811475404,
+     "required_alt_km": 8535.17963359774,
+     "rmin_radii": 15.084454840920351,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 35.94745161837215,
+     "vinf_kms": 0.31815436692603133,
+     "turn_deg": 55.35965344074592,
+     "available_deg": 73.3870908257496,
+     "ratio": 0.7543513827546585,
+     "required_alt_km": 602.2602774798661,
+     "rmin_radii": 1.9938288407258515,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 42.33467161837215,
+     "vinf_kms": 0.3181543669260313,
+     "turn_deg": 55.359653440745916,
+     "available_deg": 73.3870908257496,
+     "ratio": 0.7543513827546584,
+     "required_alt_km": 602.2602774798665,
+     "rmin_radii": 1.9938288407258524,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.7543513827546585,
+   "max_turn_deg": 55.35965344074592,
+   "min_required_alt_km": 602.2602774798661,
+   "status_hm_floor": "pass",
+   "r_min_km": 1.3302970358461226,
+   "r_max_km": 80941.28771565278,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 9141.17963359774,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.0011194959487049758,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5871237924285874,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0818300631060476,
+    "max_vinf_vector_error_kms": 1.1453980018592308e-05,
+    "max_junction_mismatch_kms": 8.252052261792375e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7543513827549119
+   },
+   "soi_fraction": 0.0031274499011804263,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    1.4996749386420845,
+    9.048653319186654
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.34443231893100057,
+   "vinf_moon_kms": 0.12432175440589549,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.2984674345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 36.74722936051794,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.5407811040571354,
+     "required_alt_km": 1336.9468439286477,
+     "rmin_radii": 3.206182910773346,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.0729074345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 36.74722936051216,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.5407811040570504,
+     "required_alt_km": 1336.946843929079,
+     "rmin_radii": 3.2061829107740576,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.8473474345245,
+     "vinf_kms": 0.3444323189310006,
+     "turn_deg": 36.74722936052104,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.540781104057181,
+     "required_alt_km": 1336.946843928417,
+     "rmin_radii": 3.2061829107729642,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.540781104057181,
+   "max_turn_deg": 36.74722936052104,
+   "min_required_alt_km": 1336.946843928417,
+   "status_hm_floor": "pass",
+   "r_min_km": 5418.707534210386,
+   "r_max_km": 65690.2050880377,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1942.946843929079,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 4.56005010032011,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "cross_check": {
+    "max_arrival_miss_km": 8.844298813450636e-06,
+    "max_vinf_vector_error_kms": 9.758597579609464e-11,
+    "max_junction_mismatch_kms": 2.8268165586098348e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5407811040583449
+   },
+   "soi_fraction": 2.5567880199891377e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    1.4996749386420845,
+    9.048653319186654
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.34443231893100057,
+   "vinf_moon_kms": 0.12432175440589549,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.2984674345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 42.01617762055671,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6183202194372216,
+     "required_alt_km": 994.3522104395329,
+     "rmin_radii": 2.640845231748404,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.460127434524495,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 42.016177620556775,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6183202194372225,
+     "required_alt_km": 994.3522104395297,
+     "rmin_radii": 2.6408452317483984,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.8473474345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 42.01617762055672,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6183202194372217,
+     "required_alt_km": 994.3522104395329,
+     "rmin_radii": 2.6408452317484032,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6183202194372225,
+   "max_turn_deg": 42.016177620556775,
+   "min_required_alt_km": 994.3522104395297,
+   "status_hm_floor": "pass",
+   "r_min_km": 9818.80022754924,
+   "r_max_km": 65690.2050880377,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1600.3522104395329,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 8.262896766430396,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "cross_check": {
+    "max_arrival_miss_km": 3.366285296646399e-06,
+    "max_vinf_vector_error_kms": 3.486196242866447e-11,
+    "max_junction_mismatch_kms": 2.3449686636922706e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6183202194378813
+   },
+   "soi_fraction": 9.731554869269606e-09,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:2|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/2:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/2:3|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    1.4996749386420845,
+    9.048653319186654
+   ],
+   "n_member_zeros": 8,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.34443231893100057,
+   "vinf_moon_kms": 0.12432175440589549,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.2984674345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 42.22118234920729,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6213371185456944,
+     "required_alt_km": 982.7883696569636,
+     "rmin_radii": 2.6217629862326133,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.460127434524495,
+     "vinf_kms": 0.3444323189310005,
+     "turn_deg": 42.22118234920742,
+     "available_deg": 67.95213272954057,
+     "ratio": 0.6213371185456961,
+     "required_alt_km": 982.7883696569572,
+     "rmin_radii": 2.621762986232602,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.8473474345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 42.22118234920744,
+     "available_deg": 67.95213272954057,
+     "ratio": 0.6213371185456964,
+     "required_alt_km": 982.7883696569556,
+     "rmin_radii": 2.621762986232599,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6213371185456964,
+   "max_turn_deg": 42.22118234920744,
+   "min_required_alt_km": 982.7883696569556,
+   "status_hm_floor": "pass",
+   "r_min_km": 4126.324230926784,
+   "r_max_km": 65690.2050880377,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1588.7883696569636,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 3.4724600108783847,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "cross_check": {
+    "max_arrival_miss_km": 1.1316472568279077e-05,
+    "max_vinf_vector_error_kms": 1.9700867014577416e-10,
+    "max_junction_mismatch_kms": 4.257205699076394e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.621337118546356
+   },
+   "soi_fraction": 3.271465844992523e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    1.4996749386420845,
+    9.048653319186654
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.34443231893100057,
+   "vinf_moon_kms": 0.12432175440589549,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.2984674345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 44.74923812306845,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6585405979997271,
+     "required_alt_km": 849.1174114100884,
+     "rmin_radii": 2.401183847211367,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.0729074345245,
+     "vinf_kms": 0.34443231893100057,
+     "turn_deg": 44.74923812306845,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6585405979997271,
+     "required_alt_km": 849.1174114100884,
+     "rmin_radii": 2.401183847211367,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.8473474345245,
+     "vinf_kms": 0.3444323189310006,
+     "turn_deg": 44.74923812306845,
+     "available_deg": 67.95213272954054,
+     "ratio": 0.6585405979997271,
+     "required_alt_km": 849.1174114100884,
+     "rmin_radii": 2.401183847211366,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6585405979997271,
+   "max_turn_deg": 44.74923812306845,
+   "min_required_alt_km": 849.1174114100884,
+   "status_hm_floor": "pass",
+   "r_min_km": 12586.717660109733,
+   "r_max_km": 65690.2050880377,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1455.1174114100884,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 10.59220538593767,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "cross_check": {
+    "max_arrival_miss_km": 3.4525891039807445e-06,
+    "max_vinf_vector_error_kms": 3.1198217269462645e-11,
+    "max_junction_mismatch_kms": 9.57633972120675e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6585405980404275
+   },
+   "soi_fraction": 9.981049538464091e-09,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    5.57715657409017,
+    33.44640599419119
+   ],
+   "n_member_zeros": 1,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.3491700532333669,
+   "vinf_moon_kms": 0.1368323188259245,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 37.53760906997259,
+     "vinf_kms": 0.3491700532333669,
+     "turn_deg": 52.13581884371407,
+     "available_deg": 67.0224042850104,
+     "ratio": 0.7778864306629221,
+     "required_alt_km": 504.12210540878164,
+     "rmin_radii": 1.8318846623907281,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 43.92482906997259,
+     "vinf_kms": 0.3491700532333669,
+     "turn_deg": 52.135818843714006,
+     "available_deg": 67.0224042850104,
+     "ratio": 0.7778864306629211,
+     "required_alt_km": 504.1221054087839,
+     "rmin_radii": 1.831884662390732,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.7778864306629221,
+   "max_turn_deg": 52.13581884371407,
+   "min_required_alt_km": 504.12210540878164,
+   "status_hm_floor": "pass",
+   "r_min_km": 0.9569588793138865,
+   "r_max_km": 73799.43399524211,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 1110.122105408784,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.0008053175791583662,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.534971417959727,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0059499742987372,
+    "max_vinf_vector_error_kms": 2.4707931369023893e-06,
+    "max_junction_mismatch_kms": 1.106767940795006e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7778864306647398
+   },
+   "soi_fraction": 0.002908089038199193,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.464150453760851,
+    26.79987713318241
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.35939785159396975,
+   "vinf_moon_kms": 0.1610359564456496,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 30.037382949643263,
+     "vinf_kms": 0.35939785159396975,
+     "turn_deg": 43.07153385439514,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.6619711094912932,
+     "required_alt_km": 810.27909984094,
+     "rmin_radii": 2.337094224159967,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 36.424602949643266,
+     "vinf_kms": 0.35939785159396975,
+     "turn_deg": 17.960891375103007,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.2760429018205557,
+     "required_alt_km": 3834.7996795990693,
+     "rmin_radii": 7.328052276566121,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 42.81182294964327,
+     "vinf_kms": 0.3593978515939698,
+     "turn_deg": 43.07153385439455,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.6619711094912841,
+     "required_alt_km": 810.2790998409694,
+     "rmin_radii": 2.337094224160014,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6619711094912932,
+   "max_turn_deg": 43.07153385439514,
+   "min_required_alt_km": 810.27909984094,
+   "status_hm_floor": "pass",
+   "r_min_km": 4106.082361582885,
+   "r_max_km": 101432.89610660438,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 4440.799679599069,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 3.45542570191272,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5197471205208002,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0449648530470555e-05,
+    "max_vinf_vector_error_kms": 1.7682471601570234e-10,
+    "max_junction_mismatch_kms": 1.925104520239529e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.661971109494398
+   },
+   "soi_fraction": 3.0208766957502045e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.6407550470626687,
+    3.8782608635235207
+   ],
+   "n_member_zeros": 2,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.35939785159396986,
+   "vinf_moon_kms": 0.16103595644564964,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 26.213987542945084,
+     "vinf_kms": 0.35939785159396986,
+     "turn_deg": 40.05949594833796,
+     "available_deg": 65.06557950466213,
+     "ratio": 0.615678769839706,
+     "required_alt_km": 970.8275937193914,
+     "rmin_radii": 2.6020257322102167,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.60120754294508,
+     "vinf_kms": 0.35939785159396986,
+     "turn_deg": 40.05949594833784,
+     "available_deg": 65.06557950466213,
+     "ratio": 0.615678769839704,
+     "required_alt_km": 970.8275937193991,
+     "rmin_radii": 2.6020257322102287,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.98842754294508,
+     "vinf_kms": 0.35939785159396975,
+     "turn_deg": 40.05949594833792,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.6156787698397053,
+     "required_alt_km": 970.827593719395,
+     "rmin_radii": 2.602025732210223,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.615678769839706,
+   "max_turn_deg": 40.05949594833796,
+   "min_required_alt_km": 970.8275937193914,
+   "status_hm_floor": "pass",
+   "r_min_km": 8784.5991234663,
+   "r_max_km": 101432.89610660444,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1576.8275937193991,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 7.392576894274426,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5197471205208001,
+   "cross_check": {
+    "max_arrival_miss_km": 7.5788353963149246e-06,
+    "max_vinf_vector_error_kms": 7.837146094528987e-11,
+    "max_junction_mismatch_kms": 2.0886292695365682e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6156787698577088
+   },
+   "soi_fraction": 2.1909566779107313e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 5,
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k5|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k5|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.464150453760851,
+    26.79987713318241
+   ],
+   "n_member_zeros": 4,
+   "period_days": 38.347672495882414,
+   "vinf_charon_kms": 0.35939785159396975,
+   "vinf_moon_kms": 0.1610359564456496,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 30.037382949643263,
+     "vinf_kms": 0.35939785159396975,
+     "turn_deg": 41.761885372556236,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.6418429788912257,
+     "required_alt_km": 877.1708303685327,
+     "rmin_radii": 2.4474766177698557,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 36.424602949643266,
+     "vinf_kms": 0.3593978515939697,
+     "turn_deg": 41.76188537255617,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.6418429788912248,
+     "required_alt_km": 877.1708303685359,
+     "rmin_radii": 2.447476617769861,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 42.81182294964327,
+     "vinf_kms": 0.35939785159396975,
+     "turn_deg": 43.07153389753115,
+     "available_deg": 65.06557950466214,
+     "ratio": 0.661971110154255,
+     "required_alt_km": 810.279097706438,
+     "rmin_radii": 2.337094220637686,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.661971110154255,
+   "max_turn_deg": 43.07153389753115,
+   "min_required_alt_km": 810.279097706438,
+   "status_hm_floor": "pass",
+   "r_min_km": 4106.082369337069,
+   "r_max_km": 101432.89610660438,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1483.170830368536,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 3.455425708438163,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.5197471205208002,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0449858681192678e-05,
+    "max_vinf_vector_error_kms": 1.76829503954406e-10,
+    "max_junction_mismatch_kms": 1.3048340186117002e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6619711097015447
+   },
+   "soi_fraction": 3.0209374479771534e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|LCharon>Charon/1l|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|LCharon>Charon/1l|LCharon>Hydra/1l|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.7433146098595185,
+    10.894970825380465,
+    39.5063532591286
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.12185686811979395,
+   "vinf_moon_kms": 0.05079323255517343,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 10.894970825380465,
+     "vinf_kms": 0.12185686811979395,
+     "turn_deg": 19.13755686883522,
+     "available_deg": 131.03216137694207,
+     "ratio": 0.14605236353983306,
+     "required_alt_km": 35232.32690268772,
+     "rmin_radii": 59.139153304765074,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.76052160491841,
+     "vinf_kms": 0.12185686811979367,
+     "turn_deg": 19.13755686883518,
+     "available_deg": 131.03216137694213,
+     "ratio": 0.14605236353983272,
+     "required_alt_km": 35232.32690268795,
+     "rmin_radii": 59.139153304765486,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.14605236353983306,
+   "max_turn_deg": 19.13755686883522,
+   "min_required_alt_km": 35232.32690268772,
+   "status_hm_floor": "pass",
+   "r_min_km": 11025.675121981027,
+   "r_max_km": 65521.33186558138,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 35838.32690268795,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 9.278528252108918,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.5329131740337687,
+   "cross_check": {
+    "max_arrival_miss_km": 1.5198918011116494e-06,
+    "max_vinf_vector_error_kms": 1.769715325156509e-11,
+    "max_junction_mismatch_kms": 5.839342898106281e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.14605236360074422
+   },
+   "soi_fraction": 4.393837466065696e-09,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.2731399983351124,
+    11.74363039118907,
+    27.128686993394002,
+    35.09774888041448
+   ],
+   "n_member_zeros": 1,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.13186417491573305,
+   "vinf_moon_kms": 0.0577198025845324,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.74363039118907,
+     "vinf_kms": 0.13186417491573305,
+     "turn_deg": 21.09402533964757,
+     "available_deg": 127.35083059909421,
+     "ratio": 0.16563712415863585,
+     "required_alt_km": 26627.90959630322,
+     "rmin_radii": 44.94044487838525,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.128686993394002,
+     "vinf_kms": 0.13186417491573715,
+     "turn_deg": 16.29727051526342,
+     "available_deg": 127.35083059909118,
+     "ratio": 0.12797145050877842,
+     "required_alt_km": 36341.2927735519,
+     "rmin_radii": 60.96912998935955,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.290346993394,
+     "vinf_kms": 0.13186417491573327,
+     "turn_deg": 37.39129585491123,
+     "available_deg": 127.35083059909421,
+     "ratio": 0.29360857466741314,
+     "required_alt_km": 12328.252232849934,
+     "rmin_radii": 21.343650549255866,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.29360857466741314,
+   "max_turn_deg": 37.39129585491123,
+   "min_required_alt_km": 12328.252232849934,
+   "status_hm_floor": "pass",
+   "r_min_km": 6158.2248180525785,
+   "r_max_km": 67617.53491349706,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 36947.2927735519,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 5.1823822419023635,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.4165788289859504,
+   "cross_check": {
+    "max_arrival_miss_km": 1.196131609006543e-05,
+    "max_vinf_vector_error_kms": 1.6885112307015657e-10,
+    "max_junction_mismatch_kms": 1.6125728530269612e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.293608574681908
+   },
+   "soi_fraction": 3.457882905976886e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.41513616324280883,
+    30.128568454910575,
+    37.4908728077491
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.13949779665237416,
+   "vinf_moon_kms": 0.05265801191854487,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.354128454910576,
+     "vinf_kms": 0.13949779665237416,
+     "turn_deg": 12.459231456313802,
+     "available_deg": 124.5912657964973,
+     "ratio": 0.1000008417657803,
+     "required_alt_km": 44187.29286139108,
+     "rmin_radii": 73.91632485378064,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.128568454910575,
+     "vinf_kms": 0.1394977966523741,
+     "turn_deg": 5.842459812869281,
+     "available_deg": 124.59126579649732,
+     "ratio": 0.046893012728614014,
+     "required_alt_km": 100927.3936507295,
+     "rmin_radii": 167.5468542091244,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.432343158301705,
+     "vinf_kms": 0.13949779665237444,
+     "turn_deg": 18.301691269182847,
+     "available_deg": 124.59126579649725,
+     "ratio": 0.1468938544943925,
+     "required_alt_km": 28225.570593529512,
+     "rmin_radii": 47.57684916423997,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.1468938544943925,
+   "max_turn_deg": 18.301691269182847,
+   "min_required_alt_km": 28225.570593529512,
+   "status_hm_floor": "pass",
+   "r_min_km": 9034.195480679156,
+   "r_max_km": 64927.45286068005,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 101533.3936507295,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 7.602621796414337,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.339060565614665,
+   "cross_check": {
+    "max_arrival_miss_km": 2.59713011690876e-05,
+    "max_vinf_vector_error_kms": 3.045315402922587e-10,
+    "max_junction_mismatch_kms": 3.0108146531482305e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.14689385450521072
+   },
+   "soi_fraction": 7.508013138550397e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    5.654475042618881,
+    22.593467334286665,
+    31.534937684839313
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.13949779665237536,
+   "vinf_moon_kms": 0.052658011918545244,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 22.593467334286665,
+     "vinf_kms": 0.13949779665237536,
+     "turn_deg": 18.301691269182967,
+     "available_deg": 124.59126579649694,
+     "ratio": 0.14689385449439382,
+     "required_alt_km": 28225.5705935289,
+     "rmin_radii": 47.576849164238986,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.89724203767777,
+     "vinf_kms": 0.13949779665237602,
+     "turn_deg": 38.99853067009153,
+     "available_deg": 124.59126579649661,
+     "ratio": 0.31301175424118804,
+     "required_alt_km": 10276.011818725137,
+     "rmin_radii": 17.95711521241772,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.67168203767777,
+     "vinf_kms": 0.13949779665237583,
+     "turn_deg": 20.69683940090855,
+     "available_deg": 124.5912657964968,
+     "ratio": 0.16611789974679345,
+     "required_alt_km": 24294.090866458464,
+     "rmin_radii": 41.0892588555419,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.31301175424118804,
+   "max_turn_deg": 38.99853067009153,
+   "min_required_alt_km": 10276.011818725137,
+   "status_hm_floor": "pass",
+   "r_min_km": 4951.130946411067,
+   "r_max_km": 64927.45286068012,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 28831.5705935289,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 4.16656647850801,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.3390605656146537,
+   "cross_check": {
+    "max_arrival_miss_km": 3.3926734020487506e-05,
+    "max_vinf_vector_error_kms": 4.163491140505621e-10,
+    "max_junction_mismatch_kms": 3.4153421757388003e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3130117542491129
+   },
+   "soi_fraction": 9.807839935147678e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.6748937718242338,
+    23.836290751735287,
+    41.843942015503146
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.14497045366915037,
+   "vinf_moon_kms": 0.08305068064346291,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.061850751735287,
+     "vinf_kms": 0.14497045366915037,
+     "turn_deg": 8.757882482103508,
+     "available_deg": 122.63956704567157,
+     "ratio": 0.07141155740416166,
+     "required_alt_km": 60465.55899103263,
+     "rmin_radii": 100.77815015021886,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 23.836290751735287,
+     "vinf_kms": 0.1449704536691502,
+     "turn_deg": 9.747432496552955,
+     "available_deg": 122.63956704567167,
+     "ratio": 0.07948032377611831,
+     "required_alt_km": 53766.936222821125,
+     "rmin_radii": 89.72431719937455,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.69210076688312,
+     "vinf_kms": 0.14497045366915073,
+     "turn_deg": 18.50531497865629,
+     "available_deg": 122.63956704567151,
+     "ratio": 0.15089188118027871,
+     "required_alt_km": 25743.557850703924,
+     "rmin_radii": 43.481118565517875,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.15089188118027871,
+   "max_turn_deg": 18.50531497865629,
+   "min_required_alt_km": 25743.557850703924,
+   "status_hm_floor": "pass",
+   "r_min_km": 9354.958191785709,
+   "r_max_km": 82347.5788220346,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 61071.55899103263,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 7.872555913309525,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.2885108224440753,
+   "cross_check": {
+    "max_arrival_miss_km": 5.662657390385316e-06,
+    "max_vinf_vector_error_kms": 6.603606251062635e-11,
+    "max_junction_mismatch_kms": 6.586531320351696e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15089188118595054
+   },
+   "soi_fraction": 1.6370110149400752e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    4.277218246617682,
+    14.664175226528744,
+    19.51233397790872
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.14497045366915146,
+   "vinf_moon_kms": 0.08305068064346302,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.664175226528744,
+     "vinf_kms": 0.14497045366915146,
+     "turn_deg": 18.505314978656273,
+     "available_deg": 122.63956704567121,
+     "ratio": 0.15089188118027894,
+     "required_alt_km": 25743.55785070363,
+     "rmin_radii": 43.48111856551749,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 37.51998524167657,
+     "vinf_kms": 0.14497045366915123,
+     "turn_deg": 41.7607270368327,
+     "available_deg": 122.63956704567126,
+     "ratio": 0.34051593660046847,
+     "required_alt_km": 8509.930683244414,
+     "rmin_radii": 15.042789906343918,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.29442524167657,
+     "vinf_kms": 0.14497045366915134,
+     "turn_deg": 23.25541205817624,
+     "available_deg": 122.63956704567126,
+     "ratio": 0.1896240554201881,
+     "required_alt_km": 19393.40338735838,
+     "rmin_radii": 33.002315820723354,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.34051593660046847,
+   "max_turn_deg": 41.7607270368327,
+   "min_required_alt_km": 8509.930683244414,
+   "status_hm_floor": "pass",
+   "r_min_km": 4661.447758227736,
+   "r_max_km": 82347.57882203496,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 26349.55785070363,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 3.9227869714951917,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.2885108224440658,
+   "cross_check": {
+    "max_arrival_miss_km": 4.898870384189927e-05,
+    "max_vinf_vector_error_kms": 6.095746404679417e-10,
+    "max_junction_mismatch_kms": 4.964696154186043e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.34051593660829904
+   },
+   "soi_fraction": 1.4162087208911894e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.5858276994062526,
+    17.54182371682918,
+    42.414498453142365
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.16242698426294433,
+   "vinf_moon_kms": 0.10085279615693032,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.15460371682918,
+     "vinf_kms": 0.16242698426294433,
+     "turn_deg": 7.871468636809781,
+     "available_deg": 116.56797639542769,
+     "ratio": 0.06752685325949036,
+     "required_alt_km": 53964.28394216763,
+     "rmin_radii": 90.04997350192679,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 17.54182371682918,
+     "vinf_kms": 0.16242698426294458,
+     "turn_deg": 25.993676986353293,
+     "available_deg": 116.56797639542769,
+     "ratio": 0.22299157787706847,
+     "required_alt_km": 13254.345502511627,
+     "rmin_radii": 22.8718572648706,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.603034694465144,
+     "vinf_kms": 0.16242698426294466,
+     "turn_deg": 18.122208349543484,
+     "available_deg": 116.56797639542769,
+     "ratio": 0.1554647246175779,
+     "required_alt_km": 20908.36749218755,
+     "rmin_radii": 35.5022565877681,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.22299157787706847,
+   "max_turn_deg": 25.993676986353293,
+   "min_required_alt_km": 13254.345502511627,
+   "status_hm_floor": "pass",
+   "r_min_km": 6308.856399576441,
+   "r_max_km": 98968.96037096759,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 54570.28394216763,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 5.309144491775175,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.150030577338884,
+   "cross_check": {
+    "max_arrival_miss_km": 3.636125252722049e-06,
+    "max_vinf_vector_error_kms": 4.628332769781604e-11,
+    "max_junction_mismatch_kms": 4.626365956994505e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.22299157790147772
+   },
+   "soi_fraction": 1.0511632048434294e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:2|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/1:2|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    6.973047699406251,
+    17.541823716829196,
+    42.41449845314237
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.16242698426294594,
+   "vinf_moon_kms": 0.10085279615693055,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.541823716829196,
+     "vinf_kms": 0.16242698426294594,
+     "turn_deg": 18.122208349543342,
+     "available_deg": 116.56797639542718,
+     "ratio": 0.15546472461757735,
+     "required_alt_km": 20908.367492187335,
+     "rmin_radii": 35.50225658776787,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.60303469446514,
+     "vinf_kms": 0.16242698426294616,
+     "turn_deg": 54.77173593538276,
+     "available_deg": 116.56797639542711,
+     "ratio": 0.46986949271199174,
+     "required_alt_km": 4115.375424984546,
+     "rmin_radii": 7.791048556080109,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.990254694465136,
+     "vinf_kms": 0.16242698426294602,
+     "turn_deg": 36.6495275858391,
+     "available_deg": 116.56797639542718,
+     "ratio": 0.31440476809441137,
+     "required_alt_km": 8163.6386212725265,
+     "rmin_radii": 14.47135086018566,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.46986949271199174,
+   "max_turn_deg": 54.77173593538276,
+   "min_required_alt_km": 4115.375424984546,
+   "status_hm_floor": "pass",
+   "r_min_km": 2084.140017439948,
+   "r_max_km": 98968.96037096776,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 21514.367492187335,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 1.7538837140788928,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.1500305773388724,
+   "cross_check": {
+    "max_arrival_miss_km": 2.8986994663278117e-05,
+    "max_vinf_vector_error_kms": 4.2236795738936507e-10,
+    "max_junction_mismatch_kms": 2.5262195113562314e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.46986949271467005
+   },
+   "soi_fraction": 8.379816450552834e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/1:1|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    6.557564706182243,
+    30.175868382423698,
+    34.736469230470476
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.16840177581866522,
+   "vinf_moon_kms": 0.08905790218764678,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.7886483824237,
+     "vinf_kms": 0.16840177581866522,
+     "turn_deg": 4.818542335430124,
+     "available_deg": 114.54509718803007,
+     "ratio": 0.042066770675660656,
+     "required_alt_km": 84652.08633005393,
+     "rmin_radii": 140.6899114357325,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.175868382423698,
+     "vinf_kms": 0.16840177581866506,
+     "turn_deg": 22.789440884457026,
+     "available_deg": 114.54509718803021,
+     "ratio": 0.19895605699340652,
+     "required_alt_km": 14589.548928056223,
+     "rmin_radii": 25.07516324761747,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.57477170124113,
+     "vinf_kms": 0.16840177581866494,
+     "turn_deg": 17.970898549027087,
+     "available_deg": 114.54509718803028,
+     "ratio": 0.15688928631774743,
+     "required_alt_km": 19607.172804028283,
+     "rmin_radii": 33.35507063370994,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.19895605699340652,
+   "max_turn_deg": 22.789440884457026,
+   "min_required_alt_km": 14589.548928056223,
+   "status_hm_floor": "pass",
+   "r_min_km": 5899.13378604087,
+   "r_max_km": 83348.50986157829,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 85258.08633005393,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 4.96434720696867,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.1092281989262949,
+   "cross_check": {
+    "max_arrival_miss_km": 8.548302837411259e-06,
+    "max_vinf_vector_error_kms": 1.0105395388868584e-10,
+    "max_junction_mismatch_kms": 9.918652010831863e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.19895605701292401
+   },
+   "soi_fraction": 2.471218888793399e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/1:2|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    6.557564706182243,
+    30.175868382423698,
+    34.736469230470476
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.16840177581866522,
+   "vinf_moon_kms": 0.08905790218764678,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.7886483824237,
+     "vinf_kms": 0.16840177581866522,
+     "turn_deg": 32.68806468663266,
+     "available_deg": 114.54509718803007,
+     "ratio": 0.28537288359862295,
+     "required_alt_km": 8947.797949625721,
+     "rmin_radii": 15.765343151197554,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.175868382423698,
+     "vinf_kms": 0.16840177581866506,
+     "turn_deg": 50.65896323565956,
+     "available_deg": 114.54509718803021,
+     "ratio": 0.4422621699163685,
+     "required_alt_km": 4397.665986908219,
+     "rmin_radii": 8.256874565855126,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.57477170124113,
+     "vinf_kms": 0.16840177581866494,
+     "turn_deg": 17.970898549027087,
+     "available_deg": 114.54509718803028,
+     "ratio": 0.15688928631774743,
+     "required_alt_km": 19607.172804028283,
+     "rmin_radii": 33.35507063370994,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.4422621699163685,
+   "max_turn_deg": 50.65896323565956,
+   "min_required_alt_km": 4397.665986908219,
+   "status_hm_floor": "pass",
+   "r_min_km": 1884.1665150104157,
+   "r_max_km": 83348.50986157829,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 20213.172804028283,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 1.5855983463859427,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.1092281989262949,
+   "cross_check": {
+    "max_arrival_miss_km": 2.702764592008776e-05,
+    "max_vinf_vector_error_kms": 6.533510164276333e-10,
+    "max_junction_mismatch_kms": 4.799053099358019e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.4422621685994901
+   },
+   "soi_fraction": 7.813390609540871e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.5231685115486713,
+    11.228142364436309,
+    42.68919357330541
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.17526184874028028,
+   "vinf_moon_kms": 0.11222574089122503,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.228142364436309,
+     "vinf_kms": 0.17526184874028028,
+     "turn_deg": 17.89042053916561,
+     "available_deg": 112.25798180747283,
+     "ratio": 0.15936880612951368,
+     "required_alt_km": 18154.450021525838,
+     "rmin_radii": 30.957838319349484,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.54037550660756,
+     "vinf_kms": 0.17526184874027995,
+     "turn_deg": 17.890420539165632,
+     "available_deg": 112.25798180747304,
+     "ratio": 0.15936880612951357,
+     "required_alt_km": 18154.45002152595,
+     "rmin_radii": 30.957838319349555,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.15936880612951368,
+   "max_turn_deg": 17.890420539165632,
+   "min_required_alt_km": 18154.450021525838,
+   "status_hm_floor": "pass",
+   "r_min_km": 7224.816261965794,
+   "r_max_km": 114414.75805634515,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 18760.45002152595,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 6.079959826614318,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 1.0658109556070003,
+   "cross_check": {
+    "max_arrival_miss_km": 1.4782366592178189e-05,
+    "max_vinf_vector_error_kms": 1.618802235628578e-10,
+    "max_junction_mismatch_kms": 1.5893378280118498e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15936880612812848
+   },
+   "soi_fraction": 4.273417102607238e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    5.159444222701114,
+    22.593037672123174,
+    26.54474457706611
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.18788915175705823,
+   "vinf_moon_kms": 0.10730073622472333,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 22.593037672123174,
+     "vinf_kms": 0.18788915175705823,
+     "turn_deg": 17.85337111709553,
+     "available_deg": 108.14863556475935,
+     "ratio": 0.16508179713839236,
+     "required_alt_km": 15757.335736690915,
+     "rmin_radii": 27.00220418595859,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.17665121776,
+     "vinf_kms": 0.1878891517570589,
+     "turn_deg": 17.853371117095424,
+     "available_deg": 108.14863556475932,
+     "ratio": 0.16508179713839144,
+     "required_alt_km": 15757.33573669101,
+     "rmin_radii": 27.00220418595859,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.16508179713839236,
+   "max_turn_deg": 17.85337111709553,
+   "min_required_alt_km": 15757.335736690915,
+   "status_hm_floor": "pass",
+   "r_min_km": 5667.221357036453,
+   "r_max_km": 100104.03751799434,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 16363.33573669101,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 4.769184008277752,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.99418192450438,
+   "cross_check": {
+    "max_arrival_miss_km": 2.7063617012319836e-05,
+    "max_vinf_vector_error_kms": 3.077349607242533e-10,
+    "max_junction_mismatch_kms": 2.9579955151959325e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.16508179713445684
+   },
+   "soi_fraction": 7.823789450605019e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/3:2|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    0.06789821661606159,
+    31.066521495504762,
+    40.52303948028984
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2091352889898283,
+   "vinf_moon_kms": 0.07543338158708605,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.904861495504763,
+     "vinf_kms": 0.2091352889898283,
+     "turn_deg": 13.303595212856031,
+     "available_deg": 101.53264281531673,
+     "ratio": 0.1310277645097318,
+     "required_alt_km": 17910.27484493509,
+     "rmin_radii": 30.554908985041404,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 31.066521495504762,
+     "vinf_kms": 0.20913528898982844,
+     "turn_deg": 7.425373022572438,
+     "available_deg": 101.53264281531673,
+     "ratio": 0.07313286463033228,
+     "required_alt_km": 34430.86668004862,
+     "rmin_radii": 57.81661168324846,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.08510521167495,
+     "vinf_kms": 0.20913528898982814,
+     "turn_deg": 20.728968235428244,
+     "available_deg": 101.53264281531679,
+     "ratio": 0.20416062914006172,
+     "required_alt_km": 10451.797876629093,
+     "rmin_radii": 18.24719121555954,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.20416062914006172,
+   "max_turn_deg": 20.728968235428244,
+   "min_required_alt_km": 10451.797876629093,
+   "status_hm_floor": "pass",
+   "r_min_km": 2487.1208932484174,
+   "r_max_km": 67096.61358715616,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 35036.86668004862,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 2.093007568163273,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8931825871644878,
+   "cross_check": {
+    "max_arrival_miss_km": 4.0165111838731126e-05,
+    "max_vinf_vector_error_kms": 5.28419667836702e-10,
+    "max_junction_mismatch_kms": 4.511091777903431e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.20416062913489255
+   },
+   "soi_fraction": 1.1611285296536166e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "keys": [
+    "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|LCharon>Charon/2l|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|LCharon>Charon/2l|LCharon>Hydra/1l|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.182252823650111,
+    16.068665389109793,
+    27.49956255623194
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2159737908880756,
+   "vinf_moon_kms": 0.08503464582681006,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 16.068665389109793,
+     "vinf_kms": 0.2159737908880756,
+     "turn_deg": 20.787904280444142,
+     "available_deg": 99.48331290029537,
+     "ratio": 0.20895870547936307,
+     "required_alt_km": 9727.172760321728,
+     "rmin_radii": 17.051440198550676,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.199459818709,
+     "vinf_kms": 0.2159737908880756,
+     "turn_deg": 20.787904280444018,
+     "available_deg": 99.48331290029537,
+     "ratio": 0.20895870547936182,
+     "required_alt_km": 9727.172760321802,
+     "rmin_radii": 17.0514401985508,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.20895870547936307,
+   "max_turn_deg": 20.787904280444142,
+   "min_required_alt_km": 9727.172760321728,
+   "status_hm_floor": "pass",
+   "r_min_km": 2206.87564120357,
+   "r_max_km": 71166.75795721571,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 10333.172760321802,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 1.857170446186628,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.8649012350953788,
+   "cross_check": {
+    "max_arrival_miss_km": 8.48495932817748e-05,
+    "max_vinf_vector_error_kms": 1.117720978013716e-09,
+    "max_junction_mismatch_kms": 9.464396488745308e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.20895870554142715
+   },
+   "soi_fraction": 2.45290698765018e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    5.7960771515695715,
+    30.612738752615034,
+    34.56140310095621
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.23586636632504535,
+   "vinf_moon_kms": 0.10867226628470414,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.838298752615035,
+     "vinf_kms": 0.23586636632504535,
+     "turn_deg": 15.352964091286307,
+     "available_deg": 93.74383654171105,
+     "ratio": 0.16377571750495887,
+     "required_alt_km": 11764.082508167345,
+     "rmin_radii": 20.41267740621674,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.612738752615034,
+     "vinf_kms": 0.23586636632504493,
+     "turn_deg": 5.681679269870545,
+     "available_deg": 93.74383654171129,
+     "ratio": 0.06060856350105198,
+     "required_alt_km": 35967.04789773852,
+     "rmin_radii": 60.3515641876871,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.81328414662847,
+     "vinf_kms": 0.23586636632504487,
+     "turn_deg": 21.0346433611562,
+     "available_deg": 93.74383654171129,
+     "ratio": 0.22438428100600344,
+     "required_alt_km": 7935.081058652568,
+     "rmin_radii": 14.094193166093293,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.22438428100600344,
+   "max_turn_deg": 21.0346433611562,
+   "min_required_alt_km": 7935.081058652568,
+   "status_hm_floor": "pass",
+   "r_min_km": 1459.3869199914752,
+   "r_max_km": 85546.45824069143,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 36573.04789773852,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 1.2281300344958976,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7919569093200247,
+   "cross_check": {
+    "max_arrival_miss_km": 5.7732488641052624e-05,
+    "max_vinf_vector_error_kms": 7.678909101506142e-10,
+    "max_junction_mismatch_kms": 6.200772950659683e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.2243842810026881
+   },
+   "soi_fraction": 1.668981774983831e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    5.170304744914422,
+    17.212526345959876,
+    34.46440739163213
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.23586636632504415,
+   "vinf_moon_kms": 0.10867226628470394,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.212526345959876,
+     "vinf_kms": 0.23586636632504415,
+     "turn_deg": 21.034643361156643,
+     "available_deg": 93.74383654171142,
+     "ratio": 0.22438428100600788,
+     "required_alt_km": 7935.081058652375,
+     "rmin_radii": 14.094193166093023,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.41307173997331,
+     "vinf_kms": 0.23586636632504387,
+     "turn_deg": 27.459510829909412,
+     "available_deg": 93.74383654171146,
+     "ratio": 0.29292070650096835,
+     "required_alt_km": 5522.257128560807,
+     "rmin_radii": 10.1126355256779,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.18751173997331,
+     "vinf_kms": 0.23586636632504396,
+     "turn_deg": 6.424867468753087,
+     "available_deg": 93.74383654171146,
+     "ratio": 0.06853642549496396,
+     "required_alt_km": 31519.78878558871,
+     "rmin_radii": 53.01285278149948,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.29292070650096835,
+   "max_turn_deg": 27.459510829909412,
+   "min_required_alt_km": 5522.257128560807,
+   "status_hm_floor": "pass",
+   "r_min_km": 824.3104167347512,
+   "r_max_km": 85546.45824069153,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 32125.78878558871,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.6936888132077348,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7919569093200287,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0001191196071997163,
+    "max_vinf_vector_error_kms": 1.5128364359242555e-09,
+    "max_junction_mismatch_kms": 1.0573210640352215e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.29292070649729385
+   },
+   "soi_fraction": 3.4436148196492227e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1l"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    2.806789916929028,
+    8.669508071647405,
+    20.240258654634832
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2383026661056325,
+   "vinf_moon_kms": 0.09350992969733106,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 8.669508071647405,
+     "vinf_kms": 0.2383026661056325,
+     "turn_deg": 23.34755059416506,
+     "available_deg": 93.06350168566317,
+     "ratio": 0.2508776284071616,
+     "required_alt_km": 6759.396561223479,
+     "rmin_radii": 12.154119737992527,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 42.43677691198792,
+     "vinf_kms": 0.23830266610563272,
+     "turn_deg": 14.566943699668808,
+     "available_deg": 93.06350168566308,
+     "ratio": 0.15652692447433364,
+     "required_alt_km": 12262.754230956838,
+     "rmin_radii": 21.235568037882572,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.82399691198792,
+     "vinf_kms": 0.23830266610563267,
+     "turn_deg": 8.780606894496172,
+     "available_deg": 93.06350168566311,
+     "ratio": 0.09435070393282725,
+     "required_alt_km": 21932.447436377155,
+     "rmin_radii": 37.192157485770856,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.2508776284071616,
+   "max_turn_deg": 23.34755059416506,
+   "min_required_alt_km": 6759.396561223479,
+   "status_hm_floor": "pass",
+   "r_min_km": 898.7367193090647,
+   "r_max_km": 72225.75151589826,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 22538.447436377155,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.756321399738336,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7838602964035936,
+   "cross_check": {
+    "max_arrival_miss_km": 9.382330863024479e-05,
+    "max_vinf_vector_error_kms": 1.0045375746966271e-09,
+    "max_junction_mismatch_kms": 8.387571748258438e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.25087762764850574
+   },
+   "soi_fraction": 2.712327077153116e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:2|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1l"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    4.089104416105509,
+    16.33904257082389,
+    27.9097931538113
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2383026661056326,
+   "vinf_moon_kms": 0.0935099296973311,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.95182257082389,
+     "vinf_kms": 0.2383026661056326,
+     "turn_deg": 12.940897647831806,
+     "available_deg": 93.06350168566311,
+     "ratio": 0.1390544887462086,
+     "required_alt_km": 14105.072175837051,
+     "rmin_radii": 24.275696659797113,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 16.33904257082389,
+     "vinf_kms": 0.2383026661056328,
+     "turn_deg": 36.28844824199691,
+     "available_deg": 93.06350168566311,
+     "ratio": 0.3899321171533708,
+     "required_alt_km": 3525.2905616853495,
+     "rmin_radii": 6.817311157896604,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.1063114111644,
+     "vinf_kms": 0.2383026661056326,
+     "turn_deg": 23.347550594165156,
+     "available_deg": 93.06350168566311,
+     "ratio": 0.25087762840716277,
+     "required_alt_km": 6759.396561223429,
+     "rmin_radii": 12.154119737992456,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.3899321171533708,
+   "max_turn_deg": 36.28844824199691,
+   "min_required_alt_km": 3525.2905616853495,
+   "status_hm_floor": "pass",
+   "r_min_km": 182.32590403395676,
+   "r_max_km": 72225.75151589823,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 14711.072175837051,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.1534342371740779,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7838602964035932,
+   "cross_check": {
+    "max_arrival_miss_km": 0.001225055232971136,
+    "max_vinf_vector_error_kms": 3.610954572734754e-08,
+    "max_junction_mismatch_kms": 2.1819200057837662e-08,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.38993204282018534
+   },
+   "soi_fraction": 3.541497872869314e-06,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    3.050095981965333,
+    15.348826375281655,
+    18.62416652060376
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.26478058865148973,
+   "vinf_moon_kms": 0.13690175130958485,
+   "n_charon_flybys": 2,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.348826375281655,
+     "vinf_kms": 0.26478058865148973,
+     "turn_deg": 21.609936067683726,
+     "available_deg": 85.98313212329349,
+     "ratio": 0.2513276212908442,
+     "required_alt_km": 5953.349016046646,
+     "rmin_radii": 10.824008277304678,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 49.06730297702423,
+     "vinf_kms": 0.26478058865148957,
+     "turn_deg": 21.609936067683623,
+     "available_deg": 85.98313212329359,
+     "ratio": 0.25132762129084274,
+     "required_alt_km": 5953.349016046704,
+     "rmin_radii": 10.824008277304754,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.2513276212908442,
+   "max_turn_deg": 21.609936067683726,
+   "min_required_alt_km": 5953.349016046646,
+   "status_hm_floor": "pass",
+   "r_min_km": 597.0442148454272,
+   "r_max_km": 117760.91695509844,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 6559.349016046704,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 0.502435592733676,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7054746703248433,
+   "cross_check": {
+    "max_arrival_miss_km": 2.7064290171355392e-05,
+    "max_vinf_vector_error_kms": 4.915852016131485e-10,
+    "max_junction_mismatch_kms": 3.2945307593124085e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.2513276212888821
+   },
+   "soi_fraction": 7.823984053364826e-08,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/2:3|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/3:2|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.9305433635914365,
+    10.011097819989496
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2661890151003506,
+   "vinf_moon_kms": 0.09536951091952586,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.011650358650325,
+     "vinf_kms": 0.2661890151003506,
+     "turn_deg": 51.26484351816671,
+     "available_deg": 85.62240315115749,
+     "ratio": 0.598731659372652,
+     "required_alt_km": 1358.016017343619,
+     "rmin_radii": 3.2409505236693383,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.786090358650323,
+     "vinf_kms": 0.2661890151003506,
+     "turn_deg": 51.26484351816678,
+     "available_deg": 85.62240315115749,
+     "ratio": 0.5987316593726528,
+     "required_alt_km": 1358.0160173436152,
+     "rmin_radii": 3.240950523669332,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.947750358650325,
+     "vinf_kms": 0.2661890151003505,
+     "turn_deg": 51.264843518166714,
+     "available_deg": 85.62240315115751,
+     "ratio": 0.5987316593726518,
+     "required_alt_km": 1358.0160173436227,
+     "rmin_radii": 3.240950523669342,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5987316593726528,
+   "max_turn_deg": 51.26484351816678,
+   "min_required_alt_km": 1358.0160173436152,
+   "status_hm_floor": "pass",
+   "r_min_km": 6280.77157574611,
+   "r_max_km": 67674.21964162202,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1964.0160173436227,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 5.28551003597249,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7017419498581016,
+   "cross_check": {
+    "max_arrival_miss_km": 2.6761684604488974e-05,
+    "max_vinf_vector_error_kms": 3.0557725040570226e-10,
+    "max_junction_mismatch_kms": 1.074451638771734e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5987316594769415
+   },
+   "soi_fraction": 7.736504163272304e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/2:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/3:2|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.3274186397026409,
+    5.327971178363473
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2661890151003502,
+   "vinf_moon_kms": 0.09536951091952574,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 14.408525634761533,
+     "vinf_kms": 0.2661890151003502,
+     "turn_deg": 53.143594398458255,
+     "available_deg": 85.62240315115757,
+     "ratio": 0.620673940961908,
+     "required_alt_km": 1244.0884241245865,
+     "rmin_radii": 3.0529511949250603,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.182965634761533,
+     "vinf_kms": 0.2661890151003502,
+     "turn_deg": 53.14359439845833,
+     "available_deg": 85.62240315115757,
+     "ratio": 0.6206739409619089,
+     "required_alt_km": 1244.0884241245826,
+     "rmin_radii": 3.0529511949250536,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.344625634761535,
+     "vinf_kms": 0.26618901510035026,
+     "turn_deg": 53.14359439845832,
+     "available_deg": 85.62240315115757,
+     "ratio": 0.6206739409619088,
+     "required_alt_km": 1244.0884241245833,
+     "rmin_radii": 3.0529511949250536,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6206739409619089,
+   "max_turn_deg": 53.14359439845833,
+   "min_required_alt_km": 1244.0884241245826,
+   "status_hm_floor": "pass",
+   "r_min_km": 12572.967691004927,
+   "r_max_km": 67674.2196416221,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1850.0884241245865,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 10.580634259871184,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.7017419498581026,
+   "cross_check": {
+    "max_arrival_miss_km": 1.131344053664342e-05,
+    "max_vinf_vector_error_kms": 1.0338721734698803e-10,
+    "max_junction_mismatch_kms": 5.2463255961754385e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6206739410486444
+   },
+   "soi_fraction": 3.2705893185062754e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    7.597576357059685,
+    26.452691171913827,
+    50.18995916220697
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2692236470652891,
+   "vinf_moon_kms": 0.13097400153145514,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 13.678251171913828,
+     "vinf_kms": 0.2692236470652891,
+     "turn_deg": 3.507446464980983,
+     "available_deg": 84.85054499810691,
+     "ratio": 0.041336758238373565,
+     "required_alt_km": 45762.15676553942,
+     "rmin_radii": 76.51511017415746,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.452691171913827,
+     "vinf_kms": 0.269223647065289,
+     "turn_deg": 27.045381471531147,
+     "available_deg": 84.850544998107,
+     "ratio": 0.3187413996237093,
+     "required_alt_km": 4190.37184736926,
+     "rmin_radii": 7.914805028662137,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 53.61478335211858,
+     "vinf_kms": 0.2692236470652891,
+     "turn_deg": 23.53793500655024,
+     "available_deg": 84.85054499810694,
+     "ratio": 0.2774046413853368,
+     "required_alt_km": 5106.986812110999,
+     "rmin_radii": 9.427370977080853,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.3187413996237093,
+   "max_turn_deg": 27.045381471531147,
+   "min_required_alt_km": 4190.37184736926,
+   "status_hm_floor": "pass",
+   "r_min_km": 134.2636190165187,
+   "r_max_km": 102569.53408380234,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 46368.15676553942,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.11298798200498082,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6938320631323592,
+   "cross_check": {
+    "max_arrival_miss_km": 0.03415061371852495,
+    "max_vinf_vector_error_kms": 5.297348610872446e-07,
+    "max_junction_mismatch_kms": 3.640099105473027e-07,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.31874043433949095
+   },
+   "soi_fraction": 9.872561055717505e-05,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": true,
+   "x_days": [
+    4.225446824792119,
+    23.08056163964626,
+    26.505385829557866
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2692236470652888,
+   "vinf_moon_kms": 0.13097400153145503,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 10.30612163964626,
+     "vinf_kms": 0.2692236470652888,
+     "turn_deg": 16.79803961342229,
+     "available_deg": 84.85054499810701,
+     "ratio": 0.19797208861530644,
+     "required_alt_km": 7951.832524448731,
+     "rmin_radii": 14.121835848925299,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 23.08056163964626,
+     "vinf_kms": 0.2692236470652888,
+     "turn_deg": 6.739895393127953,
+     "available_deg": 84.85054499810704,
+     "ratio": 0.07943255277003011,
+     "required_alt_km": 22832.442214472205,
+     "rmin_radii": 38.677297383617486,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.242653819851014,
+     "vinf_kms": 0.2692236470652886,
+     "turn_deg": 23.537935006549986,
+     "available_deg": 84.85054499810711,
+     "ratio": 0.2774046413853333,
+     "required_alt_km": 5106.986812111103,
+     "rmin_radii": 9.42737097708101,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.2774046413853333,
+   "max_turn_deg": 23.537935006549986,
+   "min_required_alt_km": 5106.986812111103,
+   "status_hm_floor": "pass",
+   "r_min_km": 281.45862306569893,
+   "r_max_km": 102569.53408380222,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 23438.442214472205,
+   "rp_within_charon_soi": false,
+   "r_min_over_pluto_radius": 0.23685822020171585,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.69383206313236,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00017334458014284308,
+    "max_vinf_vector_error_kms": 3.0568361914203305e-09,
+    "max_junction_mismatch_kms": 2.0782466858548787e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.27740464138347043
+   },
+   "soi_fraction": 5.01119823275566e-07,
+   "collisions_320": [],
+   "strong": false
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1l|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.849404006657623,
+    33.77087808408827
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2711446395831263,
+   "vinf_moon_kms": 0.1061485909906943,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 38.09217100171651,
+     "vinf_kms": 0.2711446395831263,
+     "turn_deg": 45.5541607201781,
+     "available_deg": 84.36572509485704,
+     "ratio": 0.5399605191439893,
+     "required_alt_km": 1678.5156760268906,
+     "rmin_radii": 3.7698278482291916,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.47939100171651,
+     "vinf_kms": 0.2711446395831263,
+     "turn_deg": 45.55416072017812,
+     "available_deg": 84.36572509485705,
+     "ratio": 0.5399605191439896,
+     "required_alt_km": 1678.5156760268906,
+     "rmin_radii": 3.7698278482291903,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.86661100171651,
+     "vinf_kms": 0.27114463958312685,
+     "turn_deg": 45.55416072017812,
+     "available_deg": 84.36572509485705,
+     "ratio": 0.5399605191439896,
+     "required_alt_km": 1678.5156760268906,
+     "rmin_radii": 3.769827848229176,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5399605191439896,
+   "max_turn_deg": 45.55416072017812,
+   "min_required_alt_km": 1678.5156760268906,
+   "status_hm_floor": "pass",
+   "r_min_km": 2042.803013092849,
+   "r_max_km": 73425.40322801162,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 2284.5156760268906,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 1.719097040387822,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6889164350603384,
+   "cross_check": {
+    "max_arrival_miss_km": 2.070125402744939e-05,
+    "max_vinf_vector_error_kms": 3.4694826037583926e-10,
+    "max_junction_mismatch_kms": 1.2526851778105197e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5399605191422726
+   },
+   "soi_fraction": 5.984501362124845e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/1l|LHydra>Charon/0s",
+    "k6|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:2|RCharon/1:1|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|RCharon/1:2|RCharon/1:1|LCharon>Hydra/1l|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.849404006657623,
+    33.77087808408827
+   ],
+   "n_member_zeros": 8,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2711446395831263,
+   "vinf_moon_kms": 0.1061485909906943,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 38.09217100171651,
+     "vinf_kms": 0.2711446395831263,
+     "turn_deg": 49.70417876825033,
+     "available_deg": 84.36572509485704,
+     "ratio": 0.5891513255218891,
+     "required_alt_km": 1384.6636791206631,
+     "rmin_radii": 3.2849235629053846,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.47939100171651,
+     "vinf_kms": 0.2711446395831263,
+     "turn_deg": 49.70417876825037,
+     "available_deg": 84.36572509485705,
+     "ratio": 0.5891513255218895,
+     "required_alt_km": 1384.6636791206615,
+     "rmin_radii": 3.2849235629053792,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.86661100171651,
+     "vinf_kms": 0.27114463958312685,
+     "turn_deg": 49.70417876825037,
+     "available_deg": 84.36572509485705,
+     "ratio": 0.5891513255218895,
+     "required_alt_km": 1384.6636791206608,
+     "rmin_radii": 3.2849235629053664,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5891513255218895,
+   "max_turn_deg": 49.70417876825037,
+   "min_required_alt_km": 1384.6636791206608,
+   "status_hm_floor": "pass",
+   "r_min_km": 2573.087588292617,
+   "r_max_km": 73425.40322801162,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1990.6636791206631,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.1653518373244274,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6889164350603384,
+   "cross_check": {
+    "max_arrival_miss_km": 2.0044778941140078e-05,
+    "max_vinf_vector_error_kms": 2.1106873860809222e-10,
+    "max_junction_mismatch_kms": 4.5562220662986874e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5891513255209092
+   },
+   "soi_fraction": 5.7947217457301206e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1h",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1h",
+    "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1l",
+    "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/1h|LHydra>Charon/0s",
+    "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/1l|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.2555014941659135,
+    4.5767944117941735
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.27114463958312696,
+   "vinf_moon_kms": 0.1061485909906941,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 33.498268489224806,
+     "vinf_kms": 0.27114463958312696,
+     "turn_deg": 50.43003265676539,
+     "available_deg": 84.36572509485687,
+     "ratio": 0.5977549840301167,
+     "required_alt_km": 1338.4038468707395,
+     "rmin_radii": 3.208587206057326,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.885488489224805,
+     "vinf_kms": 0.27114463958312696,
+     "turn_deg": 50.43003265676534,
+     "available_deg": 84.36572509485687,
+     "ratio": 0.5977549840301162,
+     "required_alt_km": 1338.4038468707427,
+     "rmin_radii": 3.2085872060573313,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.27270848922481,
+     "vinf_kms": 0.27114463958312685,
+     "turn_deg": 50.43003265676542,
+     "available_deg": 84.36572509485693,
+     "ratio": 0.5977549840301167,
+     "required_alt_km": 1338.4038468707408,
+     "rmin_radii": 3.2085872060573264,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5977549840301167,
+   "max_turn_deg": 50.43003265676542,
+   "min_required_alt_km": 1338.4038468707395,
+   "status_hm_floor": "pass",
+   "r_min_km": 2573.0875882926457,
+   "r_max_km": 73425.4032280117,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1944.4038468707427,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.1653518373244514,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6889164350603367,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00010841811091000453,
+    "max_vinf_vector_error_kms": 1.0008853705850786e-09,
+    "max_junction_mismatch_kms": 9.112529064658759e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5977549841174213
+   },
+   "soi_fraction": 3.1342465126006044e-07,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.20240095796701404,
+    3.912459777817308
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2795190626000429,
+   "vinf_moon_kms": 0.12275443973824346,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 20.67072795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 47.702724226200864,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.5797171181613535,
+     "required_alt_km": 1394.3157852894253,
+     "rmin_radii": 3.300851130840636,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.44516795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 47.70272422620084,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.5797171181613533,
+     "required_alt_km": 1394.3157852894265,
+     "rmin_radii": 3.3008511308406376,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.21960795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 47.70272422620088,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.5797171181613537,
+     "required_alt_km": 1394.3157852894246,
+     "rmin_radii": 3.300851130840634,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5797171181613537,
+   "max_turn_deg": 47.70272422620088,
+   "min_required_alt_km": 1394.3157852894246,
+   "status_hm_floor": "pass",
+   "r_min_km": 5118.460126290223,
+   "r_max_km": 86089.79351349341,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 2000.3157852894265,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 4.307380397450327,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "cross_check": {
+    "max_arrival_miss_km": 2.731031985864574e-05,
+    "max_vinf_vector_error_kms": 3.461875281559559e-10,
+    "max_junction_mismatch_kms": 1.3336437509892107e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5797171181557058
+   },
+   "soi_fraction": 7.89510848847199e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.20240095796701404,
+    3.912459777817308
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2795190626000429,
+   "vinf_moon_kms": 0.12275443973824346,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 20.67072795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.22530795750161,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6225260378261577,
+     "required_alt_km": 1177.4169163336064,
+     "rmin_radii": 2.9429322051709677,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.83238795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.225307957501606,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6225260378261576,
+     "required_alt_km": 1177.416916333607,
+     "rmin_radii": 2.942932205170969,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.21960795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.22530795750164,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.622526037826158,
+     "required_alt_km": 1177.4169163336053,
+     "rmin_radii": 2.942932205170966,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.622526037826158,
+   "max_turn_deg": 51.22530795750164,
+   "min_required_alt_km": 1177.4169163336053,
+   "status_hm_floor": "pass",
+   "r_min_km": 9579.871207440603,
+   "r_max_km": 86089.79351349341,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1783.416916333607,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 8.06182883736481,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "cross_check": {
+    "max_arrival_miss_km": 6.896833593724302e-06,
+    "max_vinf_vector_error_kms": 7.045056143845478e-11,
+    "max_junction_mismatch_kms": 3.727518294027732e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6225260379749726
+   },
+   "soi_fraction": 1.993797572903697e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:2|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.20240095796701404,
+    3.912459777817308
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2795190626000429,
+   "vinf_moon_kms": 0.12275443973824346,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 20.67072795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.57503480345772,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6267761648905985,
+     "required_alt_km": 1157.5588901459794,
+     "rmin_radii": 2.910163185059371,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.83238795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.575034803457676,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.626776164890598,
+     "required_alt_km": 1157.5588901459812,
+     "rmin_radii": 2.9101631850593748,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.21960795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.57503480345769,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6267761648905982,
+     "required_alt_km": 1157.5588901459807,
+     "rmin_radii": 2.9101631850593743,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6267761648905985,
+   "max_turn_deg": 51.57503480345772,
+   "min_required_alt_km": 1157.5588901459794,
+   "status_hm_floor": "pass",
+   "r_min_km": 3039.7138134794386,
+   "r_max_km": 86089.79351349341,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1763.5588901459812,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.5580356925687444,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "cross_check": {
+    "max_arrival_miss_km": 8.7463848432361e-06,
+    "max_vinf_vector_error_kms": 1.3149993260881542e-10,
+    "max_junction_mismatch_kms": 4.640365869335028e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6267761650647284
+   },
+   "soi_fraction": 2.528482184635252e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/2:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.20240095796701404,
+    3.912459777817308
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2795190626000429,
+   "vinf_moon_kms": 0.12275443973824346,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 20.67072795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.77729516191413,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6292341752877958,
+     "required_alt_km": 1146.2015675987643,
+     "rmin_radii": 2.8914217287108324,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.44516795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.77729516191417,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6292341752877961,
+     "required_alt_km": 1146.2015675987625,
+     "rmin_radii": 2.891421728710828,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.21960795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 51.77729516191428,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6292341752877976,
+     "required_alt_km": 1146.201567598756,
+     "rmin_radii": 2.891421728710818,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6292341752877976,
+   "max_turn_deg": 51.77729516191428,
+   "min_required_alt_km": 1146.201567598756,
+   "status_hm_floor": "pass",
+   "r_min_km": 6219.33055869188,
+   "r_max_km": 86089.79351349341,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1752.2015675987643,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 5.233805064959926,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "cross_check": {
+    "max_arrival_miss_km": 5.4211285718587636e-06,
+    "max_vinf_vector_error_kms": 8.678047716341447e-11,
+    "max_junction_mismatch_kms": 1.4490020294744e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.629234175283913
+   },
+   "soi_fraction": 1.567187730729952e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.20240095796701404,
+    3.912459777817308
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2795190626000429,
+   "vinf_moon_kms": 0.12275443973824346,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 20.67072795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 53.012506981300355,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6442453396996621,
+     "required_alt_km": 1078.7989736840889,
+     "rmin_radii": 2.780196326211368,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.44516795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 53.01250698130045,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6442453396996632,
+     "required_alt_km": 1078.798973684084,
+     "rmin_radii": 2.78019632621136,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.21960795302591,
+     "vinf_kms": 0.2795190626000429,
+     "turn_deg": 53.01250698130039,
+     "available_deg": 82.28620948350829,
+     "ratio": 0.6442453396996626,
+     "required_alt_km": 1078.7989736840873,
+     "rmin_radii": 2.780196326211365,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6442453396996632,
+   "max_turn_deg": 53.01250698130045,
+   "min_required_alt_km": 1078.798973684084,
+   "status_hm_floor": "pass",
+   "r_min_km": 13133.065367104002,
+   "r_max_km": 86089.79351349341,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1684.7989736840889,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 11.051977924012457,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "cross_check": {
+    "max_arrival_miss_km": 4.660516751361447e-06,
+    "max_vinf_vector_error_kms": 3.9407232459757926e-11,
+    "max_junction_mismatch_kms": 1.6975698624577262e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6442453397481979
+   },
+   "soi_fraction": 1.3473033474081128e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:3|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:2|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.17719766089644015,
+    3.5303262442508836
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2871719404499747,
+   "vinf_moon_kms": 0.1366935146860953,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 27.032744655955337,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 47.055309356573275,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.5850194393395671,
+     "required_alt_km": 1330.3590066991749,
+     "rmin_radii": 3.195311892242863,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.80718465595534,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 47.05530935657327,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.585019439339567,
+     "required_alt_km": 1330.3590066991753,
+     "rmin_radii": 3.1953118922428634,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.19440465595533,
+     "vinf_kms": 0.28717194044997507,
+     "turn_deg": 47.05530935657325,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.5850194393395667,
+     "required_alt_km": 1330.3590066991771,
+     "rmin_radii": 3.195311892242858,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5850194393395671,
+   "max_turn_deg": 47.055309356573275,
+   "min_required_alt_km": 1330.3590066991749,
+   "status_hm_floor": "pass",
+   "r_min_km": 2079.644294491804,
+   "r_max_km": 102751.21952258935,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1936.3590066991771,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 1.750100390887658,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "cross_check": {
+    "max_arrival_miss_km": 2.9643161825211906e-05,
+    "max_vinf_vector_error_kms": 3.58715029852218e-10,
+    "max_junction_mismatch_kms": 1.482792222340379e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5850194393389586
+   },
+   "soi_fraction": 8.569507049449281e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:3|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.17719766089644015,
+    3.5303262442508836
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2871719404499747,
+   "vinf_moon_kms": 0.1366935146860953,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 27.032744655955337,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 49.09368780445802,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6103617659133229,
+     "required_alt_km": 1204.328556836298,
+     "rmin_radii": 2.9873408528651773,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.41996465595534,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 49.093687804458156,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6103617659133247,
+     "required_alt_km": 1204.3285568362894,
+     "rmin_radii": 2.987340852865164,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.19440465595534,
+     "vinf_kms": 0.28717194044997507,
+     "turn_deg": 49.093687804458064,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6103617659133235,
+     "required_alt_km": 1204.328556836295,
+     "rmin_radii": 2.9873408528651657,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6103617659133247,
+   "max_turn_deg": 49.093687804458156,
+   "min_required_alt_km": 1204.3285568362894,
+   "status_hm_floor": "pass",
+   "r_min_km": 5361.650022526327,
+   "r_max_km": 102751.21952258935,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1810.328556836298,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 4.512034017105384,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "cross_check": {
+    "max_arrival_miss_km": 2.2420945654739298e-05,
+    "max_vinf_vector_error_kms": 3.354418642068616e-10,
+    "max_junction_mismatch_kms": 1.0606643341404265e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6103617659128656
+   },
+   "soi_fraction": 6.481645007254017e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.17719766089644015,
+    3.5303262442508836
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2871719404499747,
+   "vinf_moon_kms": 0.1366935146860953,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 27.032744655955337,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 51.6371723968949,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6419838708486163,
+     "required_alt_km": 1061.5017660158856,
+     "rmin_radii": 2.7516530792341345,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.80718465595534,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 51.63717239689489,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6419838708486162,
+     "required_alt_km": 1061.5017660158856,
+     "rmin_radii": 2.7516530792341345,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.19440465595533,
+     "vinf_kms": 0.28717194044997507,
+     "turn_deg": 51.63717239689483,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6419838708486155,
+     "required_alt_km": 1061.501766015889,
+     "rmin_radii": 2.7516530792341327,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6419838708486163,
+   "max_turn_deg": 51.6371723968949,
+   "min_required_alt_km": 1061.5017660158856,
+   "status_hm_floor": "pass",
+   "r_min_km": 9599.630802108593,
+   "r_max_km": 102751.21952258935,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1667.501766015889,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 8.07845729370411,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "cross_check": {
+    "max_arrival_miss_km": 5.004232273140405e-06,
+    "max_vinf_vector_error_kms": 5.3054336281091284e-11,
+    "max_junction_mismatch_kms": 2.6543878206553018e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6419838708928732
+   },
+   "soi_fraction": 1.4466676663784581e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:2|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/2:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    0.17719766089644015,
+    3.5303262442508836
+   ],
+   "n_member_zeros": 4,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2871719404499747,
+   "vinf_moon_kms": 0.1366935146860953,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 27.032744655955337,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 52.586327598167905,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6537843297402419,
+     "required_alt_km": 1011.878170621249,
+     "rmin_radii": 2.669765958120873,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.80718465595534,
+     "vinf_kms": 0.2871719404499747,
+     "turn_deg": 52.58632759816793,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6537843297402423,
+     "required_alt_km": 1011.8781706212476,
+     "rmin_radii": 2.6697659581208706,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.19440465595533,
+     "vinf_kms": 0.28717194044997507,
+     "turn_deg": 52.586327598167934,
+     "available_deg": 80.43375346585812,
+     "ratio": 0.6537843297402423,
+     "required_alt_km": 1011.8781706212476,
+     "rmin_radii": 2.669765958120864,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6537843297402423,
+   "max_turn_deg": 52.586327598167934,
+   "min_required_alt_km": 1011.8781706212476,
+   "status_hm_floor": "pass",
+   "r_min_km": 3148.824366795323,
+   "r_max_km": 102751.21952258935,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1617.878170621249,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.64985640561754,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "cross_check": {
+    "max_arrival_miss_km": 4.754785607424908e-06,
+    "max_vinf_vector_error_kms": 8.698513933736611e-11,
+    "max_junction_mismatch_kms": 1.006528194125167e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6537843297695258
+   },
+   "soi_fraction": 1.3745554209670229e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.938864599805209,
+    35.01160244455305
+   ],
+   "n_member_zeros": 1,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2922215628099253,
+   "vinf_moon_kms": 0.14541612824221317,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 38.1816315948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 45.33625086562979,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.5721662193108313,
+     "required_alt_km": 1375.458525136738,
+     "rmin_radii": 3.2697335398296006,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.5688515948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 45.33625086562986,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.5721662193108322,
+     "required_alt_km": 1375.4585251367348,
+     "rmin_radii": 3.2697335398295944,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9560715948641,
+     "vinf_kms": 0.29222156280992545,
+     "turn_deg": 45.33625086562981,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.5721662193108317,
+     "required_alt_km": 1375.4585251367375,
+     "rmin_radii": 3.2697335398295952,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.5721662193108322,
+   "max_turn_deg": 45.33625086562986,
+   "min_required_alt_km": 1375.4585251367348,
+   "status_hm_floor": "pass",
+   "r_min_km": 1657.539562810964,
+   "r_max_km": 118179.59469662889,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1981.458525136738,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 1.3948830790296762,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "cross_check": {
+    "max_arrival_miss_km": 9.960132841307355e-05,
+    "max_vinf_vector_error_kms": 1.481756036131537e-09,
+    "max_junction_mismatch_kms": 6.133810681596685e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.5721662193095145
+   },
+   "soi_fraction": 2.879363176583965e-07,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+    "k6|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.938864599805209,
+    35.01160244455305
+   ],
+   "n_member_zeros": 2,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2922215628099253,
+   "vinf_moon_kms": 0.14541612824221317,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 38.1816315948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 49.38009553916718,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6232015668342903,
+     "required_alt_km": 1126.034928499662,
+     "rmin_radii": 2.8581434463690796,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.5688515948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 49.38009553916717,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6232015668342902,
+     "required_alt_km": 1126.0349284996626,
+     "rmin_radii": 2.8581434463690796,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9560715948641,
+     "vinf_kms": 0.29222156280992545,
+     "turn_deg": 49.3800955391672,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6232015668342905,
+     "required_alt_km": 1126.034928499661,
+     "rmin_radii": 2.8581434463690734,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6232015668342905,
+   "max_turn_deg": 49.3800955391672,
+   "min_required_alt_km": 1126.034928499661,
+   "status_hm_floor": "pass",
+   "r_min_km": 2472.9698616090195,
+   "r_max_km": 118179.59469662889,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1732.0349284996626,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 2.08109893260037,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "cross_check": {
+    "max_arrival_miss_km": 2.0156292728720876e-05,
+    "max_vinf_vector_error_kms": 4.4178562579095784e-10,
+    "max_junction_mismatch_kms": 1.0212458656511103e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6232015668334753
+   },
+   "soi_fraction": 5.8269591364112885e-08,
+   "collisions_320": [],
+   "strong": true
+  },
+  {
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "keys": [
+    "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s"
+   ],
+   "mirror_pair": false,
+   "x_days": [
+    4.938864599805209,
+    35.01160244455305
+   ],
+   "n_member_zeros": 1,
+   "period_days": 46.01720699505889,
+   "vinf_charon_kms": 0.2922215628099253,
+   "vinf_moon_kms": 0.14541612824221317,
+   "n_charon_flybys": 3,
+   "charon_flybys": [
+    {
+     "body": "Charon",
+     "t_days": 38.1816315948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 49.74639912439515,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6278245017589508,
+     "required_alt_km": 1105.5106583590089,
+     "rmin_radii": 2.824275013793744,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.5688515948641,
+     "vinf_kms": 0.2922215628099253,
+     "turn_deg": 49.74639912439515,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6278245017589508,
+     "required_alt_km": 1105.5106583590089,
+     "rmin_radii": 2.824275013793744,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9560715948641,
+     "vinf_kms": 0.2922215628099255,
+     "turn_deg": 49.746399124395154,
+     "available_deg": 79.23615434730988,
+     "ratio": 0.6278245017589508,
+     "required_alt_km": 1105.5106583590082,
+     "rmin_radii": 2.8242750137937387,
+     "status": "pass"
+    }
+   ],
+   "worst_ratio": 0.6278245017589508,
+   "max_turn_deg": 49.746399124395154,
+   "min_required_alt_km": 1105.5106583590082,
+   "status_hm_floor": "pass",
+   "r_min_km": 8800.837824521854,
+   "r_max_km": 118179.59469662889,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1711.5106583590089,
+   "rp_within_charon_soi": true,
+   "r_min_over_pluto_radius": 7.406242383675717,
+   "soi_charon_km": 8069.5871346525555,
+   "soi_moon_km": 345.9144342161072,
+   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "cross_check": {
+    "max_arrival_miss_km": 7.882036063977817e-06,
+    "max_vinf_vector_error_kms": 8.164183954947685e-11,
+    "max_junction_mismatch_kms": 3.00970914857146e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6278245017745485
+   },
+   "soi_fraction": 2.2786086049978415e-08,
+   "collisions_320": [],
+   "strong": true
+  }
+ ]
+}
