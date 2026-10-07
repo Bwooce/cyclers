@@ -188,6 +188,35 @@ pre-registered definition (they agree with it in substance; the primary floor no
 Then, as a check on earlier work (not a re-enumeration): the same screens on the #942/#943 candidates
 gc-1, gc-2 (`data/943_cell_gc_gauntlet.json`), ev-A, ev-B, ev-C (`data/942_cell_ev_gauntlet.json`).
 
+### 2.7 AMENDMENT (lead ruling 2026-10-07, after 94dda754 and 2fd1c05a; before the 2.7 re-screen)
+
+The ruling was option (c) of the question in sec. 9.2, with (b) registered as the generator task #1027.
+
+Why: the 2.6 screen rejected the Hollister 1H member 2.99/3.19, a member of a published family flown
+in the ephemeris (generator note 6.23, D1). It did so on a quantity our own chooser picked freely: the
+direction of a full-revolution return. That is a defect of the screen's scope, not evidence against
+the orbit. The positive control did its job by exposing it.
+
+The unscheduled-pass screen of 2.6 is split by leg type:
+- (i) **Fixed-geometry legs.** These are Lambert legs (direction set by the solve) and half-rev legs
+  (discrete directions; HV(3,1,a) is the tilted circle by the 6.34 rule). The screen applies as written:
+  impact rejection or model-invalid. A tilted-circle half-rev that meets its body mid-leg is a physical
+  rejection in the ideal model.
+- (ii) **Free-direction full-rev n:m legs (R legs).** A mid-leg pass inside an SOI is a CONSTRAINT on the
+  direction choice, not a rejection. Until the generator re-picks the direction under that constraint
+  (#1027: `optimise_block` minimax subject to no unscheduled pass inside any SOI on the leg; the
+  expectation is the same or a slightly worse worst ratio), such a candidate is reported as
+  "pass, direction-dependent (tilted-circle minimax)". It is listed separately, never dropped silently,
+  and never counted as clean.
+
+The ev in-run control is NOT void. Its V_inf recall (sec. 3.1) stands. Under (ii) the screen flags it,
+because its Earth 1:1 return at the minimax direction is the tilted circle (e = 3e-16, i = 5.76 deg),
+which meets Earth again at half the leg.
+
+Implementation: `screen_candidate` in `scripts/run_973_enumerate.py`; the leg type is read from the leg
+key (R = full-rev). The re-screen of secs. 9.1-9.2 is repeated under 2.7. It applies to ev k = 4/5 when
+those runs finish.
+
 ## 3. Controls and the Liang segments (results, 2026-10-07)
 
 ### 3.1 Recall controls (sec. 2.3): ALL RECALLED

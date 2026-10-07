@@ -835,9 +835,11 @@ def screen_candidate(cell: str, cand: dict[str, Any]) -> dict[str, Any]:
     """The two screens for one gate-passing cycler: r_min against the primary, and unscheduled
     passes (interior distance minima along every leg) against each body's radius and SOI.
 
-    Status: "pass"; "reject: primary impact" (r_min at or below the primary floor);
-    "reject: moon impact" (an unscheduled pass closer than the body's radius); "model-invalid"
-    (an unscheduled pass inside the body's Laplace SOI). The first that applies, in that order."""
+    Status, the first that applies: "reject: primary impact" (r_min at or below the primary
+    floor); "reject: moon impact" (an unscheduled pass closer than the body's radius on a
+    fixed-geometry leg); "model-invalid" (such a pass inside the body's Laplace SOI); "pass,
+    direction-dependent (tilted-circle minimax)" (SOI passes only on free-direction full-rev legs,
+    amendment 2.7); "pass"."""
     system, a, b = cell_system(cell)
     _, cycle = ENUM.parse_cycle_key(cand["key"], system, a, b)
     x = np.asarray(cand["x_days"]) * DAY
@@ -847,14 +849,21 @@ def screen_candidate(cell: str, cand: dict[str, Any]) -> dict[str, Any]:
     src, floor = primary_floor_km(cell)
     cp = closest_unscheduled(system, cycle, x)
     radius = {c: system.body(c).radius_km for c in system.bodies}
-    impacts = [p for p in cp if p["min_km"] < radius[p["body"]]]
-    inside = [p for p in cp if p["min_km"] < p["soi_km"]]
+    # amendment 2.7: a full-rev n:m leg's direction is free; a re-encounter on it is a constraint on
+    # that choice (#1027), so it flags the candidate instead of rejecting it
+    free = [p for p in cp if p["leg"].startswith("R")]
+    fixed = [p for p in cp if not p["leg"].startswith("R")]
+    impacts = [p for p in fixed if p["min_km"] < radius[p["body"]]]
+    inside = [p for p in fixed if p["min_km"] < p["soi_km"]]
+    flagged = [p for p in free if p["min_km"] < p["soi_km"]]
     if r_min <= floor:
         status = "reject: primary impact"
     elif impacts:
         status = "reject: moon impact" if cell in JOVIAN_CELLS else "reject: planet impact"
     elif inside:
         status = "model-invalid"
+    elif flagged:
+        status = "pass, direction-dependent (tilted-circle minimax)"
     else:
         status = "pass"
     return {
@@ -864,6 +873,7 @@ def screen_candidate(cell: str, cand: dict[str, Any]) -> dict[str, Any]:
         "primary_floor_km": floor,
         "primary_floor_source": src,
         "unscheduled_inside_soi": inside,
+        "direction_dependent_inside_soi": flagged,
         "closest_unscheduled_per_body": {
             c: min((p for p in cp if p["body"] == c), key=lambda p: p["min_km"])
             for c in {p["body"] for p in cp}
@@ -889,7 +899,7 @@ def cmd_screen(argv: list[str]) -> None:
             for b, p in sorted(s["closest_unscheduled_per_body"].items())
         )
         print(
-            f"{i:3d} {s['screen_status']:24s} r_min {s['r_min_km']:,.0f} km; closest unscheduled: "
+            f"{i:3d} {s['screen_status']:50s} r_min {s['r_min_km']:,.0f} km; closest unscheduled: "
             f"{near or 'none'} | {c['key']}",
             flush=True,
         )
