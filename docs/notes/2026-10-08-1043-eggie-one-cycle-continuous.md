@@ -75,3 +75,43 @@ its seed; that one failed only at sigma 0.62, through a Europa flyby with a 7.2-
 - The #1043 criteria (sec. 3) are the 25 km floor and no unscheduled pass inside a Hill radius, and
   they are unchanged. The inherited SOI bound is switched off for #1043 (`SOI_LIMIT = inf` in the
   wrapper), and the continuation resumes from its checkpoint at sigma = 0.178.
+
+## 5. Result: DOES NOT CLOSE, a fold at sigma = 0.5050 driven by the pinned end Europa nodes
+
+Data: `data/1043_eggie/sigma_n1.json`, `monitor_n1.json`, `two_n1.json` and `direct_sigma1.json`.
+
+- Identity: at sigma = 0.02 every node V_inf matches the patched-conic chain (E 9.0679, G 7.082,
+  I 8.198, against 9.068 / 7.082 / 8.207). The continuation is on root (iii)'s branch.
+- Natural continuation met the lane floors at every accepted point from sigma = 0.02 to 0.505009 (no
+  noise-floor-limited points). Steps beyond 0.50502 fail down to a 1e-5 step.
+- Fold check (sec. 4, #1004 checks):
+  - The monitor-variable continuation passed the turning point. Sigma peaked at 0.505011 and the
+    second branch runs back down (0.4552 after 120 points).
+  - Two solutions at fixed sigma: at 0.48 they differ by 0.082 km/s in V_inf and 1,634 km in r_p; at
+    0.46 by 0.109 km/s and 2,192 km. Both above the 0.02 km/s and 100 sigma km thresholds: FOLD
+    SUPPORTED.
+- Direct Newton at sigma = 1, from the seed and from the lower branch's end: no convergence (dr 1.2e4
+  and 7.2e4 km).
+- The growing defect is at the END Europa nodes, which carry the pinned asymptotes:
+
+  | sigma | r_p / sigma (km): E0 | G1 | G2 | I | E1 |
+  |---|---|---|---|---|---|
+  | 0.02 | 2,850 | 3,648 | 4,340 | 10,549 | 2,946 |
+  | 0.37 | 2,871 | 3,532 | 4,267 | 9,689 | 4,368 |
+  | 0.505 (fold) | 3,792 | 3,357 | 4,172 | 9,198 | 6,904 |
+  | 0.455, upper branch | 5,259 | 3,238 | 4,101 | 9,002 | 10,220 |
+
+  The interior nodes (G1, G2, I) drift by 8-13 %, while E1's scaled periapsis grows 2.3x to the fold.
+  All altitudes stay above the floors; there is no impact.
+- Reading (INFERRED): as in #968 rung (b), holding the end asymptotes at their patched-conic values
+  forces the end flybys to absorb the full-mass shift, and the branch folds. The interior of the
+  one-cycle EGGIE stays close to its patched-conic geometry up to half mass. So the fold says the
+  pinned-end formulation has no solution beyond sigma = 0.505. It does not say the one-cycle EGGIE
+  fails to exist; that question needs an end condition that lets the ends move (the #1039
+  formulation question).
+- Outcome by sec. 4: DOES NOT CLOSE (fold at sigma = 0.505, with the end Europa nodes as the growing
+  defect). The continuous existence of the published one-cycle EGGIE is undecided under this
+  formulation.
+
+Amendments made before the runs they cover: 1 (unclamped seed periapses), 2 (the inherited SOI bound
+removed). Expected outcome (CLOSES, probability 0.7) was not met.

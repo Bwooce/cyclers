@@ -169,9 +169,16 @@ def build(n: int) -> Any:
     seq = [e0, *fl[:-1], e_end]
     z = []
     for f in seq:
+        # No SOI cap (#1043): a small turn needs a periapsis beyond 0.6 SOI, and the lane's default
+        # clamp there would give the seed a wrong turn (0.7 deg at Io, about 0.1 km/s).
         r, v, _ = periapsis_node(
-            f["body"], f["t_s"], np.asarray(f["vinf_in"]), np.asarray(f["vinf_out"]), eph
-        )  # type: ignore[arg-type]
+            f["body"],
+            f["t_s"],
+            np.asarray(f["vinf_in"]),
+            np.asarray(f["vinf_out"]),
+            eph,  # type: ignore[arg-type]
+            max_offset_km=1.0e12,
+        )
         rm, vm = eph.state(f["body"], f["t_s"])
         z.extend([*(r - rm), *(v - vm), f["t_s"]])
     c = Chain3(

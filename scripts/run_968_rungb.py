@@ -54,6 +54,7 @@ W = np.array([1.0, 1.0, 1.0, 1e3, 1e3, 1e3])
 W_GAUGE = 1e4
 RTOL, ATOL = 1e-13, 1e-12  # amendment 10
 FLOOR_KM = {GAN: 100.0, EUR: 100.0}
+SOI_LIMIT = 0.5  # rung (b) acceptance (amendment 8 item 6); callers may override
 Arr = NDArray[np.float64]
 
 
@@ -452,7 +453,7 @@ def stage_sigma(n_cycles: int) -> None:
         noise_ok = sg < 1.0 and max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6  # amendment 11
         if floor_ok or noise_ok:
             desc = describe(c, z, sg)
-            bad = [n for n in desc["nodes"] if not n["floor_ok"] or n["rp_over_soi"] > 0.5]
+            bad = [n for n in desc["nodes"] if not n["floor_ok"] or n["rp_over_soi"] > SOI_LIMIT]
             if bad:
                 _log(f"sigma={sg:.6g}: acceptance FAILED at nodes {bad}; stop")
                 rec["acceptance_fail"] = {"sigma": sg, "nodes": bad}
