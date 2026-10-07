@@ -1991,9 +1991,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     Jupiter and 14 an unscheduled SOI pass, so two new screens (r_min > R_primary; an unscheduled SOI
     pass is model-invalid) are being pre-registered and applied, also retroactively to the
     `#942`/`#943` candidates. All "candidate, pending owner adjudication, NOT novel". Follow-on: `#1025`.
-  - R12, ec k = 1-4: 0 gate-passing (best worst ratio 1.36 at k = 4): a CONDITIONAL clean negative; the
-    stamp text is in the note for `data/empty_regions.jsonl` (not yet written there). Option: `#1026`.
-  - R13 (ev k = 4-5) and gc k = 5-6: launch commands in note sec. 6; the lead launches.
+  - R12, ec k = 1-4: 0 gate-passing (best worst ratio 1.36 at k = 4): a CONDITIONAL clean negative,
+    STAMPED in `data/empty_regions.jsonl` (`2fd1c05a`, region
+    `jupiter-europa-callisto-two-working-body-rs2009-ideal-k1-4-973`). Option: `#1026`.
+  - **R11 (gc k = 4) and R12 (ec) DONE 2026-10-07 (`d43ccda9`).** Final R11 table in note sec. 10: 10
+    clean two-working-body members at 50.0929 d, each an exact zero, gate-passing on the DOP853
+    vectors and passing both amendment-2.6 screens; "candidate, literature step deferred" (`#1025`),
+    not novel, no catalogue writes. Re-screen (`2fd1c05a`): gc k = 4 29 pass / 11 model-invalid / 3
+    moon impact / 8 primary impact; the `#943` gc candidates pass; `#942` ev 22 pass / 9 planet impact
+    (tilted-circle fixed legs: "direction-dependent", `#1027`).
+  - R13 (ev k = 4-5) and gc k = 5-6: RUNNING from the lead session since 2026-10-07 22:23 AEDT (runner
+    log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
 - `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched; **PAPERS ACQUIRED 2026-10-07 (Perko 1982
@@ -2307,6 +2315,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   artefact. Lead ruling 2026-10-07: those are reported as a pass with the flag "direction-dependent",
   not rejected; fixed-geometry legs (HV(3,1,a), Lambert legs) are screened as written. gc-1, gc-2, ev-A,
   ev-B and ev-C pass both screens.
+- `#1028` — registered 2026-10-07 (from `#973`; BACKLOG, small). **RE-SCREEN THE `#942` vm, vm2, em AND ge
+  GAUNTLETS UNDER THE AMENDMENT-2.6 SCREENS** (primary impact; unscheduled SOI pass) and record the
+  counts in `docs/notes/2026-10-05-942-943-two-working-body-generator.md`. Those cells are not proposed
+  as finds.
+- `#1029` — registered 2026-10-07 (from `#973`; BACKLOG, small). **REPLACE THE SAMPLED UNSCHEDULED-PASS
+  SEARCH IN `scripts/run_973_enumerate.py screen` WITH A ROOT-BRACKETED CLOSEST-APPROACH SEARCH PER BODY
+  PER LEG.** The current search samples along the leg, so a pass between samples can be missed. Add a
+  test that plants a pass between two samples.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
