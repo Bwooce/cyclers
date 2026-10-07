@@ -2115,10 +2115,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Howett et al. 2021 show figure-only periodic orbits; `#320` returned Hydra-Nix V0-known. The
   cheapest Pluto cell if the owner reopens Pluto (Russell-Strange genome plus
   `verify/pluto_charon_realeph.py`). Source:
-  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4. **CONTROL RECALLED
-  2026-10-07:** the `#320` sweep reproduces 51 rows to 4e-14 km/s with the same 2 silvers, and
-  VenMar#45 gives an exact zero. The run uses the plu060.bsp-fitted moon periods (registry values are
-  about 1 % off; both recorded; see `#1022`).
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4. **CONTROL (commit
+  `58930227`):** VenMar#45 only (generator path, exact zero). The `#320` re-run (51 rows to 4e-14 km/s,
+  same 2 silvers) is a self-regression of the old pipeline, not a published control; no published
+  Charon-flyby control exists. The run uses the plu060.bsp-fitted moon periods (registry values are
+  about 1 % off; both recorded; see `#1022`). The ideal model mis-places Charon for a binary (`#1024`),
+  so `#998`'s ideal results are SEEDS ONLY until `#1024`; the real-ephemeris step decides.
 - `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
   OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the owner ADMITS this powered sub-cell, OVERRIDING `#864` sec. 8 (no powered
   "novel cycler" sweeps) FOR `#999` ONLY. QUEUED: starts when `#973` and CI free the machine. **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
@@ -2240,7 +2242,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   against kernel-fitted 3.891 and 5.981, about 1 % off. `#998` uses the fitted values and records both.
   The registry is in `src/cyclerfinder/core/satellites.py` (no Pluto small-moon entries under
   `src/cyclerfinder/data`). Expected values must come from the published source, not from our fit.
-- `#1023` — registered 2026-10-07 (from `#968`; GATED on `#968`'s fix commit). **RE-RUN EVERY JOVIAN
+- `#1023` — registered 2026-10-07 (from `#968`; gate CLEARED: the fix landed as `b9c27f77`, with the
+  pinned test `8d79b3fa`; now dispatchable). **RE-RUN EVERY JOVIAN
   n-BODY NEGATIVE COMPUTED WITH THE TRANSLATION-ONLY PERIODICITY WRAP.** In `jovian_defect_residual`
   (`src/cyclerfinder/nbody/jovian.py`, the "periodicity wrap" block, lines about 1012-1024) and
   `subarc_defect_residual` (`src/cyclerfinder/nbody/jovian_ideal.py`, about 358-368) the wrap compares
@@ -2251,6 +2254,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   checked by the lead and by ci-keeper-opus (no rotation term in either function); NOT yet shown by a
   re-run. Member D's failure is separate (`shoot_cycle` has no wrap). Void results to list here from
   the `#968` note when jovian-nbody-opus commits it.
+- `#1024` — registered 2026-10-07 (from `#998`'s control check; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL
+  OPTION FOR BINARIES IN THE TWO-WORKING-BODY / ONE-WORKING-NODE GENERATOR.** Its ideal model puts the
+  secondary on a Kepler circle about the PRIMARY's centre, with a radius set by the system GM. For
+  Pluto-Charon (mu = 0.12, lead's figure) that puts Charon at 19,596 km, not the barycentric 17,464 km:
+  a 12 % error in Charon's speed. Task: both bodies on circles about the barycentre, with the
+  spacecraft legs about the barycentre using the primary's GM, or a CR3BP-consistent patched model.
+  Controls: VenMar#45 and a Pluto-Charon control. Applies to `#998`, `#949` and the binary-star cases.
+  Until it lands, `#998`'s ideal results are seeds only and the real-ephemeris step decides.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
