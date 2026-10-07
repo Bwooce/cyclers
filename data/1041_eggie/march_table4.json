@@ -1,0 +1,73 @@
+{
+ "start": "table4",
+ "cycles": [
+  {
+   "cycle": 1,
+   "converged": true,
+   "dates_days": [
+    -1.2850949155410367,
+    0.37899569129723204,
+    8.952017979911325,
+    15.959340270958862,
+    26.934905084458965
+   ],
+   "gate_25km": "pass",
+   "encounters_25km": [
+    {
+     "body": "Ganymede",
+     "vinf": 6.3250815181370275,
+     "turn": 0.569215235661235,
+     "ratio": 0.05828128857729746,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "vinf": 6.325081518137139,
+     "turn": 2.1661101355997805,
+     "ratio": 0.2217855074740724,
+     "status": "pass"
+    },
+    {
+     "body": "Io",
+     "vinf": 6.377231637399017,
+     "turn": 0.48510472366635765,
+     "ratio": 0.05752150989715268,
+     "status": "pass"
+    }
+   ],
+   "gate_project": "pass",
+   "encounters_project": [
+    {
+     "body": "Ganymede",
+     "vinf": 6.3250815181370275,
+     "turn": 0.569215235661235,
+     "ratio": 0.05979043141110091,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "vinf": 6.325081518137139,
+     "turn": 2.1661101355997805,
+     "ratio": 0.22752844860348906,
+     "status": "pass"
+    },
+    {
+     "body": "Io",
+     "vinf": 6.377231637399017,
+     "turn": 0.48510472366635765,
+     "ratio": 0.05968994807474255,
+     "status": "pass"
+    }
+   ]
+  },
+  {
+   "cycle": 2,
+   "converged": false,
+   "max_residual": 0.04528125096800473
+  }
+ ],
+ "first_gate_fail": {
+  "25km": null,
+  "project": null
+ }
+}

@@ -29,12 +29,14 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
+from cyclerfinder.core.lambert import lambert
 from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2, JovianRestrictedNBody, periapsis_node
 from cyclerfinder.search.two_working_body import (
     Cycle,
+    Flyby,
     LambertLeg,
     correct_dates,
     cycle_flybys,
@@ -302,6 +304,149 @@ def stage_drift(n: int) -> None:
     R._log(f"drift n{n}: {json.dumps(rows)}")
 
 
+MARCH_LEGS = (
+    (EUR, GAN, 0, "single"),
+    (GAN, GAN, 1, "high"),
+    (GAN, IO, 1, "low"),
+    (IO, EUR, 1, "high"),
+)
+
+
+def _leg(
+    eph: CircEphem, frm: str, to: str, nrev: int, br: str, t0: float, t1: float
+) -> tuple[Arr, Arr] | None:
+    r1, w1 = eph.state(frm, t0)
+    r2, w2 = eph.state(to, t1)
+    if t1 <= t0:
+        return None
+    try:
+        sols = lambert(r1, r2, t1 - t0, mu=eph.circ.mu, max_revs=nrev)
+    except Exception:
+        return None
+    sol = next((q for q in sols if q.n_revs == nrev and q.branch == br), None)
+    return None if sol is None else (np.asarray(sol.v1 - w1), np.asarray(sol.v2 - w2))
+
+
+def _cycle_legs(eph: CircEphem, dates: list[float]) -> list[tuple[Arr, Arr]] | None:
+    """dates = [E_k, G1, G2, I, E_{k+1}] (s); the four legs' (V_inf dep, V_inf arr)."""
+    out = []
+    for (frm, to, nr, br), t0, t1 in zip(MARCH_LEGS, dates[:-1], dates[1:], strict=True):
+        lg = _leg(eph, frm, to, nr, br, t0, t1)
+        if lg is None:
+            return None
+        out.append(lg)
+    return out
+
+
+def march(start: str, n_max: int = 10) -> None:
+    from scipy.optimize import least_squares
+
+    eph = CircEphem()
+    root = json.loads((ROOT / "data/1023_eggie/pc_roots_coded.json").read_text())[0]
+    x = np.asarray(root["x_days"]) * DAY  # [E0, G1, G2, I] (Lambert-leg starts)
+    t_cyc = eph.period
+    cycles = []
+    if start == "root":
+        dates = [*x.tolist(), x[0] + t_cyc]
+        legs = _cycle_legs(eph, dates)
+        assert legs is not None
+        # E_0's inbound: root (iii)'s closing I>E arrival, rotated back by Europa's own advance.
+        v_in_e0 = advance(eph, EUR, t_cyc).T @ legs[3][1]
+    else:  # Table 4 seed, E_1 fixed at E_0 + 28.22 d, no inbound at E_0
+        tofs = np.array([1.59, 8.60, 7.34]) * DAY
+        e0 = float(x[0])
+        e1 = e0 + 28.22 * DAY
+
+        def res1(y: Arr) -> Arr:
+            d = [e0, *y.tolist(), e1]
+            lg = _cycle_legs(eph, d)
+            if lg is None:
+                return np.full(3, 1e3)
+            return np.array(
+                [np.linalg.norm(lg[k][1]) - np.linalg.norm(lg[k + 1][0]) for k in range(3)]
+            )
+
+        sol = least_squares(
+            res1, e0 + np.cumsum(tofs), x_scale=DAY, xtol=1e-15, ftol=1e-15, gtol=1e-15
+        )
+        dates = [e0, *sol.x.tolist(), e1]
+        legs = _cycle_legs(eph, dates)
+        assert legs is not None and float(np.max(np.abs(res1(sol.x)))) < 1e-9, (
+            "Table-4 cycle 1 did not solve"
+        )
+        v_in_e0 = None
+    for k in range(n_max):
+        if k > 0:
+            e_k = dates[-1]
+            v_in = legs[3][1]  # previous I>E arrival
+            prev = np.asarray(dates[1:]) + t_cyc
+
+            def res(y: Arr, e_k: float = e_k, v_in: Arr = v_in) -> Arr:
+                d = [e_k, *y.tolist()]
+                lg = _cycle_legs(eph, d)
+                if lg is None:
+                    return np.full(4, 1e3)
+                r = [np.linalg.norm(lg[0][0]) - np.linalg.norm(v_in)]
+                r += [np.linalg.norm(lg[j][1]) - np.linalg.norm(lg[j + 1][0]) for j in range(3)]
+                return np.asarray(r)
+
+            sol = least_squares(
+                res, prev, x_scale=DAY, xtol=1e-15, ftol=1e-15, gtol=1e-15, max_nfev=2000
+            )
+            rmax = float(np.max(np.abs(res(sol.x))))
+            if rmax > 1e-9:
+                R._log(
+                    f"march {start}: cycle {k + 1} corrector failed (max residual {rmax:.2e}); stop"
+                )
+                cycles.append({"cycle": k + 1, "converged": False, "max_residual": rmax})
+                break
+            dates = [e_k, *sol.x.tolist()]
+            legs = _cycle_legs(eph, dates)
+            assert legs is not None
+            v_in_e = v_in
+        else:
+            v_in_e = v_in_e0
+        fl = []
+        if v_in_e is not None:
+            fl.append(Flyby(EUR, dates[0], np.asarray(v_in_e), legs[0][0]))
+        for j, body in ((1, GAN), (2, GAN), (3, IO)):
+            fl.append(Flyby(body, dates[j], legs[j - 1][1], legs[j][0]))
+        row: dict[str, Any] = {
+            "cycle": k + 1,
+            "converged": True,
+            "dates_days": [d / DAY for d in dates],
+        }
+        for floor_lab, floor in (("25km", 25.0), ("project", None)):
+            rep = gate_cycle(eph.circ, fl, alt_floor_km=floor)
+            row[f"gate_{floor_lab}"] = rep.status
+            row[f"encounters_{floor_lab}"] = [
+                {
+                    "body": e.body,
+                    "vinf": 0.5 * (e.vinf_in_kms + e.vinf_out_kms),
+                    "turn": e.demanded_turn_deg,
+                    "ratio": e.ratio,
+                    "status": e.status,
+                }
+                for e in rep.gate.encounters
+            ]
+        cycles.append(row)
+        enc = row["encounters_25km"]
+        R._log(
+            f"march {start} cycle {k + 1}: gate25 {row['gate_25km']} project {row['gate_project']} "
+            + " ".join(
+                f"{e['body'][0]} {e['vinf']:.3f}/{e['turn']:.1f}/{e['ratio']:.2f}" for e in enc
+            )
+        )
+    first = {
+        lab: next((c["cycle"] for c in cycles if c.get(f"gate_{lab}") not in (None, "pass")), None)
+        for lab in ("25km", "project")
+    }
+    (OUT / f"march_{start}.json").write_text(
+        json.dumps({"start": start, "cycles": cycles, "first_gate_fail": first}, indent=1)
+    )
+    R._log(f"march {start}: first gate fail {first}")
+
+
 def main() -> None:
     preflight_search(
         task_no=1041,
@@ -316,8 +461,11 @@ def main() -> None:
         n_points=1,
     )
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["pc", "sigma", "down", "ias15", "drift"], required=True)
+    ap.add_argument(
+        "--stage", choices=["pc", "sigma", "down", "ias15", "drift", "march"], required=True
+    )
     ap.add_argument("--n-cycles", type=int, default=3)
+    ap.add_argument("--start", choices=["root", "table4"], default="root")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     n = args.n_cycles
@@ -327,6 +475,8 @@ def main() -> None:
         R.stage_sigma(n)
     elif args.stage == "down":
         R.stage_down(n)
+    elif args.stage == "march":
+        march(args.start)
     elif args.stage == "ias15":
         stage_ias15(n)
     else:

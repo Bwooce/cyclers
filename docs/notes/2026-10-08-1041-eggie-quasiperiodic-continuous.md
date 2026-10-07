@@ -116,3 +116,30 @@ Script `scripts/run_1041_eggie.py --stage march`; data `data/1041_eggie/march_<s
 - Conclusion rule (lead): if cycle 1 stands (a gate pass) and the march fails by cycle 2-3, record
   "the published EGGIE is a one-cycle ballistic object in its own model; ballistic repeatability is
   limited to that, consistent with the paper's own statement", then stop.
+
+## 7. Result of the march (`data/1041_eggie/march_root.json`, `march_table4.json`)
+
+Per encounter: V_inf (km/s) / demanded turn (deg) / gate ratio at the 25 km floor.
+
+| Start | Cycle | Gate 25 km / project | E | G1 | G2 | I |
+|---|---|---|---|---|---|---|
+| A, root (iii) | 1 | pass / pass | 9.068 / 1.5 / 0.56 | 7.082 / 5.9 / 0.74 | 7.082 / 5.0 / 0.63 | 8.207 / 0.9 / 0.18 |
+| A | 2 | **fail / fail** | 9.068 / 4.7 / **1.72** | 6.065 / 8.2 / 0.77 | 6.065 / 2.8 / 0.27 | 4.647 / 55.6 / **3.72** |
+| A | 3 | corrector fails (no exact root; max residual 0.91 km/s) | | | | |
+| B, Table 4 seed | 1 | pass / pass | (no inbound) | 6.325 / 0.6 / 0.06 | 6.325 / 2.2 / 0.22 | 6.377 / 0.5 / 0.06 |
+| B | 2 | corrector fails (no exact root; max residual 0.045 km/s) | | | | |
+
+- Start A: the gate first fails at cycle 2, at both the 25 km floor and the project floors. The
+  failing flybys are Io (55.6 deg demanded, ratio 3.72) and Europa (ratio 1.72). At cycle 3 no
+  ballistic continuation exists.
+- Start B: with E_1 fixed at the Table 4 total (28.22 d), cycle 1 solves to a DIFFERENT small-turn
+  object (V_inf G 6.33, I 6.38, against Table 4's 7.07 / 8.38). Its second cycle has no root. Start B
+  is descriptive only: the 28.22 d total does not pin the published object in this model; root (iii),
+  whose cycle is 28.02 d, does.
+- Expected outcome met: the gate fails by cycle 2, with Io as the failing flyby.
+
+**Conclusion (lead rule, sec. 6): the published EGGIE is a one-cycle ballistic object in its own
+model; ballistic repeatability is limited to that, consistent with the paper's own statement** (p.10:
+ballistic repeatability "in general will only last for a few cycles", then maintenance Delta-V). Its
+one-cycle existence in continuous gravity was not tested here: #1041 stopped at the patched-conic
+stage by its own rules. The catalogue IEG-row consequences are a separate task (lead).
