@@ -161,7 +161,9 @@ Added 2026-10-08: `#1032`, a `stability_index_convention` schema field (four con
 | em-1, em-2, em-3 | no ruling (Fornari & Pontani 2020 now held and read: Mars massless, no em collision) | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | no ruling | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
-Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
+Owner decision 2026-10-08 ~03:20: the `#972` gate's "inconclusive" for gc-1, gc-2 and ev-C is decided
+by the rulings below; each row records gate result, anchor, prior-art note and decision. Writeback waits
+only for `#972`'s commit and re-review. Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
 **candidate-novel** (spec 16.4/16.5 wording; attribution to the architecture's authors, Russell & Strange
 for ev-C); gc-2 is a GanCal-family relative, NOT novel; ev-B waits for a continuation retry at its
 failing epochs. All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
@@ -1855,10 +1857,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
       direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
       blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
-    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework), plus the
-      owner's recorded decision where the gate is inconclusive (gc-1, ev-C). `#1034` is cleared (gc-1
-      exists at full mass); the gc-1 row must carry its continuous-gravity numbers and the `#1034` note;
-      a gc-2 row must carry the `#1004` fold finding.
+    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972`'s COMMIT AND RE-REVIEW ONLY. OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
+      gc-1, gc-2 and ev-C is decided by the 2026-10-07 rulings (gc-1 candidate-novel; gc-2 GanCal-family
+      relative; ev-C candidate-novel under `#875` (ii)); each row records the gate result, the named
+      anchor, the resolving prior-art note and the decision.
+      `#1034` is cleared (gc-1 exists at full mass); the gc-1 row must carry its continuous-gravity
+      numbers and the `#1034` note; a gc-2 row must carry the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: ev-C **candidate-novel** under `#875` (ii); ev-A **candidate-novel**
       (DE440 near-ballistic caveat); ev-B: retry with continuation at the failing epochs before deciding.
     - Candidates (the others stay **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
@@ -1898,8 +1902,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
       from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
       miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
-    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972` only (plus the owner's recorded decision on the
-      gate's "inconclusive"); `#1034` is cleared: gc-1 exists in the continuous ideal model at full mass.
+    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972`'s COMMIT AND RE-REVIEW ONLY. OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
+      gc-1, gc-2 and ev-C is decided by the 2026-10-07 rulings (gc-1 candidate-novel; gc-2 GanCal-family
+      relative; ev-C candidate-novel under `#875` (ii)); each row records the gate result, the named
+      anchor, the resolving prior-art note and the decision.
+      `#1034` is cleared: gc-1 exists in the continuous ideal model at full mass.
       The gc-1 row must carry the continuous-gravity numbers and the `#1034` note; a gc-2 row must carry
       the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: gc-1 **candidate-novel**; gc-2 a GanCal-family relative, NOT novel. The
@@ -2030,7 +2037,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     not novel, no catalogue writes. Re-screen (`2fd1c05a`): gc k = 4 29 pass / 11 model-invalid / 3
     moon impact / 8 primary impact; the `#943` gc candidates pass; `#942` ev 22 pass / 9 planet impact
     (tilted-circle fixed legs: "direction-dependent", `#1027`).
-  - R13 (ev k = 4-5) and gc k = 5-6: RUNNING from the lead session since 2026-10-07 22:23 AEDT (runner
+  - R13 (ev k = 4-5) and gc k = 5-6: ALL RUNS DONE 2026-10-08 03:20 AEDT (gc k6, ev k4, ev k5; gauntlets
+    exit 0); twobody-ext-opus is analysing. They ran from the lead session since 2026-10-07 22:23 AEDT (runner
     log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
@@ -2194,6 +2202,16 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Charon-flyby control exists. The run uses the plu060.bsp-fitted moon periods (registry values are
   about 1 % off; both recorded; see `#1022`). The ideal model mis-places Charon for a binary (`#1024`),
   so `#998`'s ideal results are SEEDS ONLY until `#1024`; the real-ephemeris step decides.
+  **✓ DONE 2026-10-08 (pluto-smallmoons-sonnet; commits `58930227`, `34f5d108`, `5ac235c7`, `68dc9741`,
+  `c061f745`, `a07bb4af`, `d229f174`, `25cdc772`; note `docs/notes/2026-10-07-998-pluto-small-moon-cyclers.md`):
+  NOT a zero.** Ideal one-working-node cyclers (Charon working, small moons as passive targets), cells
+  Styx / Nix / Kerberos / Hydra: structures 7,104 / 6,908 / 6,532 / 6,287; gate-passing 183 / 149 / 62 /
+  63 = 457; "strong" (Pluto surface clear, Charon periapsis inside the SOI) 108 / 46 / 41 / 29 = 224.
+  V_inf at Charon 0.16-0.36 km/s, periods 23-56 d, worst ratios 0.36-0.81; all re-flown; plu060
+  real-ephemeris refits under 1 m/s for 217 of 219 strong candidates at 5 epochs. No literal collision
+  (`#320`, the catalogue, Howett 2021 figure-only). Controls: VenMar#45 and the `#320` self-regression
+  only. The 12 % one-centre offset is recorded as a modelling limit (`#1024`). Literature step deferred
+  (`#1036`); nothing is called novel. 3 papercuts. Follow-ons: `#1036`, `#1037`, `#1038`.
 - `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
   OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the owner ADMITS this powered sub-cell, OVERRIDING `#864` sec. 8 (no powered
   "novel cycler" sweeps) FOR `#999` ONLY. QUEUED: starts when `#973` and CI free the machine. **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
@@ -2433,6 +2451,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `run_432`, `run_435`, `campaign_468`, `verify_327`, `branch_c32`, `gauntlet_run_274`,
   `literature_check_review_queue` — so that Russell-Strange rediscoveries get their citation back under
   F14. Until then an unlabelled rediscovery reads "inconclusive, naming R-S" (the safe direction).
+- `#1036` — registered 2026-10-08 (from `#998`; GATED on `#972`). **`#998` LITERATURE STEP AND ADJUDICATION
+  OF THE 224 "STRONG" PLUTO-CHARON CANDIDATES.** Architecture: Russell-Strange one-working-node at a new
+  system, a `#875` (ii) candidate. Needs the `#1024` barycentric model or an n-body check before any row.
+- `#1037` — registered 2026-10-08 (from `#998`; BACKLOG). **ADD STYX AND KERBEROS TO THE SATELLITE
+  REGISTRY** (`src/cyclerfinder/core/satellites.py`) with sourced elements; the `#998` driver carried
+  them in-process. Pairs with `#1022`.
+- `#1038` — registered 2026-10-08 (from `#998`'s papercuts; BACKLOG, small). **`gauntlet_942` AND `scan_320`
+  IMPORT `literature_check` AT MODULE LEVEL**, so a task that must not load that module cannot reuse
+  their re-fly functions. Fix (papercut): move `cross_check`, `fly` and the DOP853 re-fly into a small
+  module with no literature import (e.g. `search/two_working_body_refly.py`), and import
+  `literature_check` lazily inside the functions that use it. Papercut:
+  `docs/papercuts/2026-10-07-pluto-smallmoons-sonnet-gauntlet-imports-literature-check.md`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
