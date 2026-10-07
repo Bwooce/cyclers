@@ -50,3 +50,16 @@ altitudes. Full-mass agreement with Table 4 is NOT a criterion (#968 sec. 8.2).
 Expected outcome: CLOSES with probability about 0.7. The V_inf are high (7-9 km/s), the turns small
 (1-6 deg), and the analogous one-cycle pinned control (#968 rung (b), N = 1) converged straight from
 its seed; that one failed only at sigma 0.62, through a Europa flyby with a 7.2-deg turn.
+
+### 2.1 AMENDMENT 1 (seed construction, before the continuation that counts)
+
+- The first sigma = 0.02 attempt stalled at 4.1e4 km and 1.42 km/s. Diagnosis: the I>E leg's seed
+  defect did not shrink with sigma (2.7e5 km at both sigma = 0.001 and 0.02). `periapsis_node` clamps
+  the periapsis distance to 0.6 x the moon's SOI by default. Io's 0.9-deg turn at 8.2 km/s needs
+  r_p = 11,170 km, beyond the 6,330 km cap, so the clamped seed node turned by about 1.6 deg instead
+  of 0.9: about 0.1 km/s of error carried over a 10.8-day leg.
+- Fix: the seed nodes use `max_offset_km = 1e12` (no clamp). Seed defects now scale with sigma
+  (sigma 0.001: <= 419 km, 0.014 km/s; sigma 0.02: <= 9,383 km, 0.32 km/s). This is a seed
+  construction fix only; criteria unchanged.
+- The same clamp did not affect #968 rung (b): its turns of 10-24 deg at Ganymede and 7.2 deg at
+  Europa give periapses inside the cap.
