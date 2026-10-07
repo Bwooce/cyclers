@@ -2004,14 +2004,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
-- `#974` — registered 2026-10-07 (from `#971` R15; NOT dispatched; **PAPERS ACQUIRED 2026-10-07 (Perko 1982
-  I and II, Perko 1983), DIGEST PENDING (`#960` batch 36)**; dispatch decision after the digest
-  verdicts; the same papers also bear on `#944`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
+- `#974` — registered 2026-10-07 (from `#971` R15; **DISPATCHABLE after the Henon 2003 Tables
+  VI-XIII transcription**, which goes to corpus-file-opus now as the first step. Batch 36 verdict
+  (`293ecc7a`): Perko 1982 I and II and Perko 1983 cover SYMMETRIC families only and give no explicit
+  continuation bound; the asymmetric Henon 2003 families are NOT covered, which is the novelty
+  opening R15 claims. The same scope line applies to `#944`). **HENON 2003 ASYMMETRIC SECOND-SPECIES
   HILL FAMILIES, AND THE STABLE Hg FAMILY, SCALED TO EUROPA, GANYMEDE, TITAN, TRITON AND TITANIA.**
   Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
   family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
-- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **PAPER ACQUIRED 2026-10-07, DIGEST
-  PENDING (`#960` batch 36)**; dispatch decision after the digest verdict. Was gated on Voyatzis &
+- `#975` — registered 2026-10-07 (from `#971` R14; **DISPATCHABLE, CPU-QUEUED** (the lead starts it in
+  the morning window when the `#973` long runs finish). Batch 36 verdict (`293ecc7a`): Voyatzis &
+  Kotoulas 2005 treats only an EXTERIOR closed p = -7 family at the Neptune mass ratio, figure only,
+  with no interior i_5-i_8, so there is no collision with the R14 target. Was gated on Voyatzis &
   Kotoulas 2005, PSS 53:1189-1199, doi 10.1016/j.pss.2005.05.001, on the `#960` wanted list (row 22, Tier B, `b1b7e8ea`), for the collision check; then
   dispatchable). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS RATIOS.** Lead ruling
   2026-10-07: the `#864` sec. 8 item that could apply ("no more `#563`-class symmetric-closure
@@ -2227,8 +2231,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (corpus-file-opus). **MINOVITCH JPL TR 32-464 (1963): FULL DIGEST.** Key-page verdict: no
   collision with the #942 candidates; the full digest is in progress. Source:
   `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
-- `#1014` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ ACQUIRED 2026-10-07
-  (owner upload; was wanted list row 67), digest pending (`#960` batch 36); gates `#980` and the R11
+- `#1014` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ DONE 2026-10-07
+  (owner upload; was wanted list row 67), digested in `#960` batch 36 (`293ecc7a`); gated `#980` and the R11
   pruning table, low. **ACQUIRE LYNAM 2014 PART I.** Acta
   Astronautica 94:246-252, doi 10.1016/j.actaastro.2013.07.018 (Part II held). Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 4;
@@ -2238,8 +2242,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   FAMILIES".** The cascade proof or construction behind R14. Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 3;
   `docs/notes/2026-10-05-960-wanted-papers.md`.
-- `#1016` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ ACQUIRED 2026-10-07
-  (owner upload; was wanted list row 22, Tier B), digest pending (`#960` batch 36); gates `#975`.
+- `#1016` — registered 2026-10-07 (owner: "log all possible tasks"); status: ✓ DONE 2026-10-07
+  (owner upload; was wanted list row 22, Tier B), digested in `#960` batch 36 (`293ecc7a`); gated `#975`.
   **ACQUIRE VOYATZIS & KOTOULAS 2005.** Planet. Space Sci.
   53:1189-1199, doi 10.1016/j.pss.2005.05.001: R14's literal-collision check. Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 1;
@@ -2325,8 +2329,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   test that plants a pass between two samples.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
-  existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
-  on `#974`.) Sources: Font, Nunes & Simo
+  existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
+  give no explicit continuation bound, so asymmetric second-species orbits are not covered by them;
+  they bear on this task and on `#974`.) Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
   pass. Cost (GUESS): 5-8 agent-days. P(novel row): 0.4. Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X2.
