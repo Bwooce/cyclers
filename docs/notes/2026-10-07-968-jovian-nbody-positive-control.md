@@ -635,3 +635,28 @@ Status: two distinct, diagnosed approaches have not closed the real-ephemeris co
 
 Per the brief this is a stop-and-ask. The lane itself converged at its floors at every accepted
 point. The open question is the formulation of an open real-ephemeris chain.
+
+### 9.6 AMENDMENT 13, lead ruling option (a), run ONCE (before the run)
+
+- Chain: N = 3 cycles, the first 15 flybys of the reconstructed chain (cycle 1: nodes 1-5, cycle 2:
+  nodes 6-10, cycle 3: nodes 11-15), end asymptotes pinned as in amendment 12 (node 1 inbound,
+  node 15 outbound). The method, tolerances, noise-floor rule, acceptance checks and criteria are as
+  in amendments 8-12. The continuation starts at sigma = 0.02 and goes up to 1, then down to 0.01 and
+  0.005 for criterion (ii) on the middle-cycle nodes.
+- Verdict on the MIDDLE cycle (nodes 6-10):
+  - PASS: sigma = 1 is reached at the lane floors, with every acceptance check passing (all nodes),
+    criterion (ii) holds on nodes 6-10 (V_inf within 0.01 km/s of the chain at sigma <= 0.01), and the
+    IAS15 re-fly passes.
+  - If the run stops on an acceptance failure at an END-cycle node while the middle-cycle Europa
+    periapsis is still above its scaled radius: (a) FAILS, and the result supports the end-artefact
+    reading (the middle cycle survives further than the ends).
+  - If the middle-cycle Europa (node 9) impacts: (a) FAILS, and the formulation, not the ends, is the
+    issue.
+- Expected outcome (stated now): if the end artefact is the cause, the middle-cycle Europa periapsis
+  stays above the scaled radius to sigma = 1 and the floors hold. My expectation: about 50 %, since
+  the ends still hold patched-conic V_inf one cycle away.
+- Budget: calls under 8 minutes, checkpointed (`data/968_rungb/sigma_n3.json`); if more than about 2
+  hours of calls are needed, stop and hand the launch command to the lead. If (a) fails, rung (b) is
+  recorded as "not achieved: lane validated in the ideal model only; the jup365 path stays
+  unvalidated", with options (b) direction-only pinning and (c) closed chain registered as follow-ups,
+  not run.
