@@ -1,0 +1,300 @@
+{
+ "cell": "ps",
+ "moon": "Styx",
+ "candidates": [
+  {
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/1h",
+   "k": 4,
+   "ideal": {
+    "worst_ratio": 0.47877901329418965,
+    "vinf_charon_kms": 0.25341344750364136,
+    "vinf_moon_kms": 0.11225480366377316,
+    "period_days": 37.39566881644867
+   },
+   "n_cycles": 1,
+   "epochs": [
+    {
+     "epoch_utc": "2030-01-06T20:31:51.492",
+     "residual_ideal_model_kms": 1.27675647831893e-15,
+     "residual_before_kms": 0.008510948764260784,
+     "residual_after_kms": 7.298604030315309e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 3.003393102179721,
+     "gate_status": "pass",
+     "worst_ratio": 0.5630485885797912,
+     "max_turn_deg": 48.354459244745726,
+     "vinf_charon_kms": [
+      0.26518368895298516,
+      0.2651836889529852,
+      0.26518368895298516
+     ],
+     "encounter_miss_km": 2.2181270020063468e-09
+    },
+    {
+     "epoch_utc": "2031-02-12T20:30:15.566",
+     "residual_ideal_model_kms": 1.27675647831893e-15,
+     "residual_before_kms": 0.011835296804205656,
+     "residual_after_kms": 4.951086437681061e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.347009916709697,
+     "gate_status": "pass",
+     "worst_ratio": 0.5630401038928361,
+     "max_turn_deg": 48.35518661029825,
+     "vinf_charon_kms": [
+      0.2651736017923127,
+      0.2651736017923127,
+      0.2651736017923127
+     ],
+     "encounter_miss_km": 2.661255598064909e-08
+    },
+    {
+     "epoch_utc": "2032-03-11T12:11:04.262",
+     "residual_ideal_model_kms": 1.27675647831893e-15,
+     "residual_before_kms": 0.007394928183467507,
+     "residual_after_kms": 0.0001269099274338197,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 2.7242076148851386,
+     "gate_status": "pass",
+     "worst_ratio": 0.5630474425792397,
+     "max_turn_deg": 48.357385352948484,
+     "vinf_charon_kms": [
+      0.2651627360825288,
+      0.2651627360825288,
+      0.2651627360825288
+     ],
+     "encounter_miss_km": 3.423616864562976e-10
+    },
+    {
+     "epoch_utc": "2033-04-17T12:16:11.072",
+     "residual_ideal_model_kms": 1.27675647831893e-15,
+     "residual_before_kms": 0.01140189003531359,
+     "residual_after_kms": 0.00013146192720530335,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.219110451523318,
+     "gate_status": "pass",
+     "worst_ratio": 0.5630586520806689,
+     "max_turn_deg": 48.35657157254377,
+     "vinf_charon_kms": [
+      0.2651750427138058,
+      0.2651750427138058,
+      0.2651750427138058
+     ],
+     "encounter_miss_km": 2.47170525612975e-08
+    },
+    {
+     "epoch_utc": "2034-05-24T12:07:53.524",
+     "residual_ideal_model_kms": 1.27675647831893e-15,
+     "residual_before_kms": 0.011385876137203946,
+     "residual_after_kms": 3.5956680066370127e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.278413915560102,
+     "gate_status": "pass",
+     "worst_ratio": 0.563092409045863,
+     "max_turn_deg": 48.357853427052405,
+     "vinf_charon_kms": [
+      0.2651862458904301,
+      0.26518624589043016,
+      0.26518624589043016
+     ],
+     "encounter_miss_km": 2.7459022921543823e-08
+    }
+   ]
+  },
+  {
+   "key": "k3|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "k": 3,
+   "ideal": {
+    "worst_ratio": 0.48223843648041326,
+    "vinf_charon_kms": 0.1621053597072531,
+    "vinf_moon_kms": 0.0789181005905648,
+    "period_days": 28.0467516123365
+   },
+   "n_cycles": 1,
+   "epochs": [
+    {
+     "epoch_utc": "2030-01-06T20:31:51.492",
+     "residual_ideal_model_kms": 4.163336342344337e-16,
+     "residual_before_kms": 0.003326163820734862,
+     "residual_after_kms": 1.598734446938877e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 1.173426505809928,
+     "gate_status": "pass",
+     "worst_ratio": 0.5576784436323425,
+     "max_turn_deg": 61.39106047373477,
+     "vinf_charon_kms": [
+      0.18189417304547276,
+      0.18189417304547278,
+      0.18189417304547278
+     ],
+     "encounter_miss_km": 2.9330323686284925e-11
+    },
+    {
+     "epoch_utc": "2031-02-12T20:30:15.566",
+     "residual_ideal_model_kms": 4.163336342344337e-16,
+     "residual_before_kms": 0.005412713018156795,
+     "residual_after_kms": 5.076428716310372e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 0.8401828045353048,
+     "gate_status": "pass",
+     "worst_ratio": 0.5576540669702967,
+     "max_turn_deg": 61.3883343391155,
+     "vinf_charon_kms": [
+      0.18189440836582538,
+      0.18189440836582538,
+      0.18189440836582538
+     ],
+     "encounter_miss_km": 6.638689302761487e-11
+    },
+    {
+     "epoch_utc": "2032-03-11T12:11:04.262",
+     "residual_ideal_model_kms": 4.163336342344337e-16,
+     "residual_before_kms": 0.004467029149163915,
+     "residual_after_kms": 5.1673546169022773e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 0.4645539550728022,
+     "gate_status": "pass",
+     "worst_ratio": 0.5576727507318596,
+     "max_turn_deg": 61.39255291047753,
+     "vinf_charon_kms": [
+      0.18188248745398242,
+      0.18188248745398247,
+      0.18188248745398242
+     ],
+     "encounter_miss_km": 6.638689721035362e-11
+    },
+    {
+     "epoch_utc": "2033-04-17T12:16:11.072",
+     "residual_ideal_model_kms": 4.163336342344337e-16,
+     "residual_before_kms": 0.005622566139310253,
+     "residual_after_kms": 1.771822661091781e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 0.6519625426563046,
+     "gate_status": "pass",
+     "worst_ratio": 0.5576991009864342,
+     "max_turn_deg": 61.39500862555397,
+     "vinf_charon_kms": [
+      0.18188494177818443,
+      0.18188494177818446,
+      0.18188494177818443
+     ],
+     "encounter_miss_km": 1.412735444198574e-10
+    },
+    {
+     "epoch_utc": "2034-05-24T12:07:53.524",
+     "residual_ideal_model_kms": 4.163336342344337e-16,
+     "residual_before_kms": 0.00794579208538207,
+     "residual_after_kms": 2.9010147799994745e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 1.0407005684069068,
+     "gate_status": "pass",
+     "worst_ratio": 0.5576928621510031,
+     "max_turn_deg": 61.39433003882757,
+     "vinf_charon_kms": [
+      0.18188489643397399,
+      0.18188489643397399,
+      0.18188489643397399
+     ],
+     "encounter_miss_km": 1.1647215793100241e-10
+    }
+   ]
+  },
+  {
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "k": 5,
+   "ideal": {
+    "worst_ratio": 0.4882761491380121,
+    "vinf_charon_kms": 0.18605582529598744,
+    "vinf_moon_kms": 0.08601602524991009,
+    "period_days": 46.74458602056084
+   },
+   "n_cycles": 1,
+   "epochs": [
+    {
+     "epoch_utc": "2030-01-06T20:31:51.492",
+     "residual_ideal_model_kms": 4.440892098500626e-16,
+     "residual_before_kms": 0.0036978520962490102,
+     "residual_after_kms": 2.648814932931513e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.839949243817763,
+     "gate_status": "pass",
+     "worst_ratio": 0.5681078152157161,
+     "max_turn_deg": 58.45375672194769,
+     "vinf_charon_kms": [
+      0.2046695524913727,
+      0.2046695524913727,
+      0.20466955249137272
+     ],
+     "encounter_miss_km": 3.0219458932026355e-10
+    },
+    {
+     "epoch_utc": "2031-02-12T20:30:15.566",
+     "residual_ideal_model_kms": 4.440892098500626e-16,
+     "residual_before_kms": 0.00425743283780472,
+     "residual_after_kms": 8.169804556332037e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.840587867357988,
+     "gate_status": "pass",
+     "worst_ratio": 0.5680852633993205,
+     "max_turn_deg": 58.452152108645826,
+     "vinf_charon_kms": [
+      0.20466543843606022,
+      0.20466543843606025,
+      0.20466543843606025
+     ],
+     "encounter_miss_km": 1.4708038858799998e-10
+    },
+    {
+     "epoch_utc": "2032-03-11T12:11:04.262",
+     "residual_ideal_model_kms": 4.440892098500626e-16,
+     "residual_before_kms": 0.0031059364121542032,
+     "residual_after_kms": 8.145346893348996e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.246637673379478,
+     "gate_status": "pass",
+     "worst_ratio": 0.5680715136764009,
+     "max_turn_deg": 58.448106816639495,
+     "vinf_charon_kms": [
+      0.20468055827035503,
+      0.204680558270355,
+      0.20468055827035503
+     ],
+     "encounter_miss_km": 3.3955354044299837e-10
+    },
+    {
+     "epoch_utc": "2033-04-17T12:16:11.072",
+     "residual_ideal_model_kms": 4.440892098500626e-16,
+     "residual_before_kms": 0.00402732723582673,
+     "residual_after_kms": 2.5861580989387827e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 4.689425219528946,
+     "gate_status": "pass",
+     "worst_ratio": 0.5680942569970061,
+     "max_turn_deg": 58.44999318927572,
+     "vinf_charon_kms": [
+      0.2046831657620556,
+      0.2046831657620556,
+      0.20468316576205564
+     ],
+     "encounter_miss_km": 1.2815810694580662e-10
+    },
+    {
+     "epoch_utc": "2034-05-24T12:07:53.524",
+     "residual_ideal_model_kms": 4.440892098500626e-16,
+     "residual_before_kms": 0.003725472652540057,
+     "residual_after_kms": 4.819048975079215e-05,
+     "converged_1e-6": false,
+     "date_shift_hours_max": 3.7858290362416946,
+     "gate_status": "pass",
+     "worst_ratio": 0.5680757818596082,
+     "max_turn_deg": 58.44810079811382,
+     "vinf_charon_kms": [
+      0.20468311704326592,
+      0.20468311704326592,
+      0.20468311704326594
+     ],
+     "encounter_miss_km": 1.4069930932545832e-10
+    }
+   ]
+  }
+ ]
+}
