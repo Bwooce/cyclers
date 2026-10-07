@@ -1963,7 +1963,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
   family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
 - `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **GATED on acquiring Voyatzis &
-  Kotoulas 2005**, PSS 53:1189-1199, on the `#960` wanted list (row 52, Tier D), for the collision check; then
+  Kotoulas 2005**, PSS 53:1189-1199, doi 10.1016/j.pss.2005.05.001, on the `#960` wanted list (row 22, Tier B, `b1b7e8ea`), for the collision check; then
   dispatchable). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS RATIOS.** Lead ruling
   2026-10-07: the `#864` sec. 8 item that could apply ("no more `#563`-class symmetric-closure
   sweeps") does not bar it: R14 is a bifurcation continuation of a published family cascade at new
