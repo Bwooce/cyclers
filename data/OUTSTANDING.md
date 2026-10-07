@@ -135,6 +135,12 @@ superseded by the `#859` pilot (harness built, Stage A NOT run) and formally SHE
 under `#865`; `#790` blocked on the G1 corrector (`#872`); `#795` absorbed into `#871`. The wrap-up
 commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-05, `#939`).
 
+**All-tasks sweep (2026-10-07, owner: "log all possible tasks"):** `#980`-`#1021` registered (42
+items) from the `#938` and `#971` notes, the `#942`/`#943` owner summary, the `#972` v2 note and the
+website follow-ups: 1 dispatched (`#1008`), 1 in progress (`#1013`), 21 backlog, 6 gated on other
+work, 6 acquisitions or fetches (plus 2 low), 5 owner-ruling or owner-option items (`#997`-`#1000`,
+`#1004`). Other unheld papers named by the two notes are tracked as rows of the `#960` wanted list.
+
 **Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
 part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
@@ -150,7 +156,7 @@ part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible c
 | ev-A | **candidate-novel**, with the DE440 near-ballistic caveat | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | not decided: retry with continuation at the failing epochs first (twobody-gen2-opus running) | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
 | ge-1, ge-2, ge-3 | no ruling (rung (d) conditional negatives) | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056, two validated methods): ge-1, ge-2 and ge-3 NOT PASSED, real-ephemeris NEGATIVE, conditional on the method (every closure gate-fails: ge-1 5/5 epochs, best 2.57-6.60; ge-3 3/5, 2.88-3.32; ge-2 (homotopy rerun, 6.51: one 10-cycle closure, gate fail 7.93; gate fails from k = 2 at every epoch); the blend lambda = 1 gate passes are an artefact: the full-rev legs miss the moon by 748-3,192 km (6.49) | 6.28, 6.29, 6.46-6.51 |
-| em-1, em-2, em-3 | no ruling; acquire Fornari & Pontani 2020 before any em row is proposed | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
+| em-1, em-2, em-3 | no ruling (Fornari & Pontani 2020 now held and read: Mars massless, no em collision) | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | no ruling | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
 Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
@@ -1973,7 +1979,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   PLANET-MOON CYCLERS CONTINUED IN mu TO JUPITER-GANYMEDE AND SATURN-TITAN.** Gated by the Restrepo &
   Russell 2018 database (a member inside it is known). Cost 1-2 agent-days (GUESS); P(continuation)
   0.6, P(a member outside the database) 0.25. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R16.
-- `#977` — registered 2026-10-07 (from `#971`; BACKLOG). **THE FIVE TRANSFER CELLS X9-X13 OF THE `#971`
+- `#977` — registered 2026-10-07 (from `#971`; BACKLOG; SPLIT 2026-10-07 into `#980` (X9), `#981`/`#982`
+  (X10), `#983` (X11), `#984` (X12), `#985` (X13), which carry the work). **THE FIVE TRANSFER CELLS X9-X13 OF THE `#971`
   NOTE:** X9 an alignment-census pre-screen (Lynam's phase-angle / dynamics-line census); X10 the
   Fornari-Pontani closed-form census re-hosted, with its 3,339-row cross-match; X11 inter-body VILT as
   the cost axis for near-miss closures; X12 an n-pi BVP enumeration of gc-1's sibling return blocks
@@ -1992,6 +1999,220 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   check, note sec. 6.21). Make it `field(default_factory=dict, init=False, compare=False)`, created in
   `__post_init__`; add a pinned test; audit the other `dataclasses.replace` uses on dataclasses with
   cache fields. Papercut: `docs/papercuts/processed/2026-10-06-twobody-gen-opus-circularsystem-replace-shares-cache.md`.
+- `#980` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **X9: LYNAM'S
+  PHASE-ANGLE / DYNAMICS-LINE ALIGNMENT CENSUS AS A CYCLER-PERIOD PRE-SCREEN.** Closed-form
+  re-alignment epochs (Lynam 2015 CMDA 121) inverted: for which k does a pair's phase return within
+  the corrector's basin after k synodic periods, with real mean motions and eccentricities; ranks k
+  for `#973` and `#945`, gives the real-ephemeris slip per cycle. Control: Lynam's 50.12-50.13 d C-G
+  window spacing and the 37.6 d G-I clock. Diagnostic, no novelty. Cost: hours. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X9 (was part of `#977`).
+- `#981` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **X10a:
+  FORNARI-PONTANI CLOSED-FORM KEPLERIAN CYCLER CENSUS RE-HOSTED AT VENUS (EARTH MASSLESS) AND AT
+  GANYMEDE (CALLISTO MASSLESS).** One nonlinear equation in e per integer set, no Lambert: an
+  independent second code path for the ev-C class and a re-derivation of Russell & Strange's GanCal
+  rows. Fornari & Pontani 2020 is held (digest 2026-10-07). Validation, no novelty. Cost 0.5-1
+  agent-day (with `#982`). Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X10
+  (was part of `#977`).
+- `#982` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **X10b:
+  CROSS-MATCH FORNARI-PONTANI'S 3,339 FAMILY I MEMBERS (k UP TO 150) AGAINST THE CATALOGUE'S
+  RUSSELL-OCAMPO LADDER.** Census nobody has done; the `#960` digest proposes k = 8 and k = 15 as
+  the first checks. Paper held. Census, no novelty. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X10 (was part of `#977`).
+- `#983` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on the
+  two-working-body generator exposing leg states. **X11: INTER-BODY VILT AND LINEARISED VILT AS THE
+  COST AXIS FOR NEAR-MISS CLOSURES.** Minimum apse impulse per cycle (Lantukh-Russell-Campagnola
+  2015; Campagnola-Strange-Russell 2010 linear VILT) as a descriptive `dv_band` for every
+  two-working-body member that fails rung (d): ge-1..3, em-1..5, vm2n-2, ev-B epochs. Powered, so
+  never a novel cycler (`#864` sec. 8); a cost column only. Cost 1-2 agent-days. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X11 (was part of `#977`).
+- `#984` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **X12:
+  LANTUKH-RUSSELL n-pi SEQUENCE BVP TO ENUMERATE gc-1'S SIBLING RETURN BLOCKS.** Every same-body
+  return sequence between gc-1's two inter-moon legs at the same V_inf; a completeness check on
+  `#943`'s return catalogue. P(novel) 0.1. Cost: hours. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X12 (was part of `#977`).
+- `#985` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **X13:
+  THEOREM-LEVEL CONTROLS FOR THE SECOND-SPECIES LANES.** Chenciner & Llibre 1988 (exactly four
+  transversal ejection-collision orbits at large C), Lacomba & Llibre 1988 Lemma B.4 (the EC orbit
+  r0(C) table for C = 4.33-50, which no paper prints), Birkhoff 1915 sec. 20 (k,l) windows as a
+  completeness checklist. Feeds `#899`/`#916`, `#948`, `#974`, `#944`. Cost 1-2 agent-days. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 X13 (was part of `#977`).
+- `#986` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on `#1018`
+  (Campagnola-Skerritt-Russell AAS 11-245). **CWIC TWO-MOON PATCHED FLYBY-MAP CHECK OF gc-1 AS THE
+  `#968` POSITIVE-CONTROL ROUTE.** Anderson, Campagnola & Lantoine 2016's CWIC closure at Ganymede
+  3:4, C = 2.99 is a published single-moon periodic orbit; a Ganymede-map x Callisto-map product
+  with a fixed point at k = 3 would be a continuous-gravity check of gc-1 with that orbit as
+  control. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3, "Links that remove a
+  named obstacle" (1).
+- `#987` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **PRUSSING 2000
+  TANGENTIAL LAMBERT BRANCH IN `core/lambert.py`.** The tangential branch and the t_min,N criterion
+  close the `LambertGeometryError` hole for resonant same-orbit legs at 0 or 180 degrees, for any
+  enumerator that builds integer-year Earth-Earth legs by Lambert. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3, Links (2).
+- `#988` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG.
+  **BREAKWELL-PERKO BIAS CALIBRATION AS A SEED FOR EPHEMERIS CONTINUATION.** One accurately
+  integrated trajectory calibrates the gross flyby biases (Breakwell & Perko 1965 p.19): a cheap
+  predictor-corrector seed for the rung-(d) continuation of patched-conic members, which today
+  restarts from the ideal model. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec.
+  3, Links (3).
+- `#989` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **GOODYEAR 1965
+  mu-PARTIALS: A GM-SENSITIVITY COLUMN FOR ROWS WHOSE CLOSURE DEPENDS ON A MOON'S GM.** Example:
+  gc-2 needs at least 0.214 of Callisto's GM (owner summary 2.2). Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3, Links (4).
+- `#990` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **PFENNIGER
+  COMPLEX-INSTABILITY CLASSIFIER FOR GENUINELY 3D BRANCHES (`#438`/`#444` 3D-lift classifier).**
+  Complex instability cannot occur on planar-orbit families (Delta = 4(a - a_v)^2), so it is needed
+  only on genuinely 3D branches. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 4
+  (T44 tooling).
+- `#991` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **R17: HAND THE
+  1960s EARTH-VENUS-MARS SEEDS TO `#867` AND THE vm2 LANE.** Young 1966's 1977 E-V-M-V-E (674-679 d)
+  and 6.4-yr near-repeat as seeds for `#867`'s two-Venus classes; VanderVeen's 32-yr Venus-Mars
+  period as a chain-length target for vm2 (R1(c)); Crocco's a = 1 AU second-flyby correction as a
+  VISIT-type analogue. Not a new route. Cost: none beyond the receiving lanes. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R17.
+- `#992` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (useful once
+  `#948` builds the corrector). **BRUNO-VARIN P1-START ORBITS AS POSITIVE CONTROLS FOR A
+  BOTH-PRIMARY REGULARISED CORRECTOR.** c6, i25, i37, i38 at mu = 5e-5 and family c'' orbit 2 (the
+  rectilinear P2 -> P1 collision ellipse, a = 0.71333): parked as cycler sources (they pass inside
+  the planet), kept as the cleanest finite-mu controls for `#948` R4; alongside Schwaniger `#970`.
+  Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#993` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **FAMILY h AT
+  mu = 0.1 AND 0.2 AS A THREE-mu REGRESSION SUITE FOR THE SYMMETRIC CODE.** Bruno-Varin tables, 177
+  rows; never both-primary, so not a cycler source. Convention trap: T~ carries a (1 - mu) factor in
+  the small-mu tables only. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#994` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on `#974` and
+  `#1017` (Henon 1974 II). **3D LIFTS OF R15'S ASYMMETRIC SECOND-SPECIES PARENTS.** Only the
+  asymmetric second-species parents would make a 3D branch new (lifts of published planar parents
+  are known-class-member under `#438`/`#444`); Omega_zz ~ -1/r^3 at the collision passes needs
+  regularised handling. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#995` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on `#951` (R5).
+  **VENUS-MERCURY 9:23 RESONANT CYCLER (MANNING ARITHMETIC) AS A CONCRETE R5 SUB-TARGET.** R5's AAS
+  07-118 gate is met (three Venus-Mercury ideal cyclers held). Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#996` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (low; `#864`
+  item 13 lanes). **DIAGNOSTICS FOR THE TORUS AND GATEWAY LANES: O'BRIEN FREQUENCY-COUNT FILTER,
+  JEFFERYS SECTION-ATLAS EXTENSION, KOLTSOVA-LERMAN PERIODIC FAMILIES ON AN L1/L2 LOOP.** Not cycler
+  routes. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#997` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
+  (Earth-Moon, `#864` sec. 8). **EARTH-MOON BOTH-PRIMARY LINEAGE: NEWTON'S OTHER alpha/beta TYPES,
+  HOELKER-WINSTON FIG. 90 LEMNISCATE, SCHWANIGER PERIGEE CONTINUATION.** R16 (`#976`) takes the
+  lineage to the moons instead; Schwaniger itself is `#970` (control). Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+- `#998` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
+  (Pluto-Charon lane closed by `#864` sec. 8). **PLUTO-CHARON ONE-WORKING-NODE CYCLERS WITH STYX,
+  NIX, KERBEROS OR HYDRA AS PASSIVE TARGETS.** Period ratios to Charon 3.16, 3.89, 5.04, 5.98;
+  Howett et al. 2021 show figure-only periodic orbits; `#320` returned Hydra-Nix V0-known. The
+  cheapest Pluto cell if the owner reopens Pluto (Russell-Strange genome plus
+  `verify/pluto_charon_realeph.py`). Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#999` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
+  (powered-cycler admissibility, `#864` sec. 8). **JONES ONE-SYNODIC VEM CLASS RESCUED BY SMALL
+  DEEP-SPACE MANOEUVRES.** Powered (Merrill-class forced trajectory); a `#867` sub-cell only if the
+  owner's admissibility rule allows. Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#1000` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER RULING
+  (Earth-Moon re-sweep, `#864` sec. 8, W2). **EARTH-MOON EXTERIOR FRANZ-RUSSELL / RESTREPO-RUSSELL
+  COMPLEMENT GRID SEARCH (ASYMMETRIC, EARTH-CIRCULATING).** The databases' exclusions are recorded
+  so that absence from them is not misread as novelty. Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#1001` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (census, inside
+  `#905` deduplication). **CENSUS: STABILITY OF CASOLIVA'S CLASS-2 L1-HOMOCLINIC-SHADOWING ORBITS;
+  BROUCKE E1/F AND KUMAR-MORENO FIG. 12/13 FAMILIES AS CYCLERS; LEIVA-BRIOZZO ATLAS LABEL MAPPING.**
+  Published families; census only, not a discovery route. Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#1002` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (low). **WITTAL
+  2022 EARTH-TO-NRHO 5-PETAL PAIR REPRODUCTION.** Figure-only in an unstated model; no sourced
+  initial condition; Earth-Moon. Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#1003` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **URANIAN
+  MISSION-RELEVANCE FILTER FOR ANY URANIAN CANDIDATE.** Ring clearance (periapsis >= 5,000 km above
+  the rings, crossing radius >= 51,140 km), Simon et al. 2026's 30 days between encounters (an
+  achieved property of the UOP baseline, not a requirement) and Strange 2013's 2 km/s v_inf floor
+  near the rings. The six Uranian rows this was written for are withdrawn (`#888`); the filter
+  stands for future candidates. Source:
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+- `#1004` — registered 2026-10-07 (owner: "log all possible tasks"); status: OWNER OPTION. **gc-2: A
+  CONTINUOUS-GRAVITY CHECK (CR4BP OR n-BODY) OF THE GanCal#5 RELATION.** In the patched conic no
+  Callisto-mass path joins gc-2 and GanCal#5 (note 6.21); a continuous-gravity model, where the
+  encounter count is not fixed, is the open test. The n-body lane has no control (`#968`). Source:
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+- `#1005` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **PISAREVSKY
+  2008 FIG. 14 (CLASS I.1 GRAPHICAL POINTS): DIGITISE FOR THE em COLLISION CHECK.** The only part of
+  Pisarevsky 2008 not yet checked against em-1..em-5. Source:
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+- `#1006` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **vm2n-2 AND
+  em: A RAMP-CONTINUATION REAL-EPHEMERIS ATTEMPT.** Rung (d) by the Standish direct route did not
+  pass (note 6.40); the ramp continuation and other landings are untested. Source:
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+- `#1007` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on the
+  `#942`/`#943` catalogue writeback (after `#972`). **V2-BALLISTIC CAMPAIGN FOR gc-1, gc-2, ev-C AND
+  ev-A, THEN THE V3 JUDGMENT.** Lead plan (lead log 2026-10-07 18:47): rows written at V1, the V2
+  campaign after. Source: `docs/team/lead-log.md` 2026-10-07 18:47.
+- `#1008` — registered 2026-10-07 (owner: "log all possible tasks"); status: DISPATCHED
+  (twobody-gen2-opus, owner ruling 2026-10-07). **ev-B: STANDISH RAMP-MODE k-CYCLE GROWTH RETRY AT
+  ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
+  `docs/notes/2026-10-05-942-943-two-working-body-generator.md`. Source: owner rulings 2026-10-07;
+  note 6.55.
+- `#1009` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (parked by
+  `#972`). **A SOURCED "FUTURE-WORK ARCHITECTURE" FIELD ON THE RUSSELL-STRANGE ANCHORS.** R-S AAS
+  07-118 p.18 names the massive-target architecture as future work; the field would let
+  `literature_check` express `#875` (i)/(ii) for gc-1, gc-2 and ev-C mechanically. (The R-S 2009
+  Titan-Enceladus anchor tag, the other item in that note, is already done, H12.) Source:
+  `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md`.
+- `#1010` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on the
+  `#942`/`#943` catalogue writeback. **cyclers.space RE-SYNC AFTER THE WRITEBACK: sync, test, build,
+  push.** The site renders `data/catalogue.yaml` and does not auto-sync (separate repo
+  `Bwooce/cyclers.space`). Source: lead instruction 2026-10-07.
+- `#1011` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG.
+  **cyclers.space HERO VISUALISATION SCENE FOR THE NEW CANDIDATE ROWS.** Originally assessed (about
+  1-2 days) for `#312`'s Uranian family, which is now withdrawn (`#888`); would now apply to the
+  `#942`/`#943` rows once written. Source: OUTSTANDING `#569` follow-ups.
+- `#1012` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG
+  (corpus-file-opus queue). **CROCCO 1956: READ FOR THE ev-A / ev-B PRIOR-ART CHECK.** Still pending
+  for ev-A and ev-B in the owner summary. Source:
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+- `#1013` — registered 2026-10-07 (owner: "log all possible tasks"); status: IN PROGRESS
+  (corpus-file-opus). **MINOVITCH JPL TR 32-464 (1963): FULL DIGEST.** Key-page verdict: no
+  collision with the #942 candidates; the full digest is in progress. Source:
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+- `#1014` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
+  row 63; gates `#980` and the R11 pruning table, low). **ACQUIRE LYNAM 2014 PART I.** Acta
+  Astronautica 94:246-252, doi 10.1016/j.actaastro.2013.07.018 (Part II held). Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 4;
+  `docs/notes/2026-10-05-960-wanted-papers.md`.
+- `#1015` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
+  row 16; gates `#975`'s construction). **ACQUIRE BRUNO & VARIN KIAM PREPRINT 35/2007 "COMPLEX
+  FAMILIES".** The cascade proof or construction behind R14. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 3;
+  `docs/notes/2026-10-05-960-wanted-papers.md`.
+- `#1016` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
+  row 22, Tier B; gates `#975`). **ACQUIRE VOYATZIS & KOTOULAS 2005.** Planet. Space Sci.
+  53:1189-1199, doi 10.1016/j.pss.2005.05.001: R14's literal-collision check. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 1;
+  `docs/notes/2026-10-05-960-wanted-papers.md`.
+- `#1017` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (on the wanted
+  list since `b1b7e8ea`; gates `#994`). **ACQUIRE HENON 1974 "VERTICAL STABILITY OF PERIODIC ORBITS
+  IN THE RESTRICTED PROBLEM. II. HILL'S CASE".** A&A 30:317-321: the printed a_v of the Hill
+  families, needed before any 3D claim on R15's objects. Source:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 2;
+  `docs/notes/2026-10-05-960-wanted-papers.md`.
+- `#1018` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (wanted list
+  row 50; gates `#986`). **ACQUIRE CAMPAGNOLA, SKERRITT & RUSSELL AAS 11-245 (CWIC) AND BOUTONNET &
+  SCHOENMAEKERS AAS 12-207.** The CWIC model paper behind Anderson 2016, and the JUICE round-trip
+  design detail. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 5;
+  `docs/notes/2026-10-05-960-wanted-papers.md`.
+- `#1019` — registered 2026-10-07 (owner: "log all possible tasks"); status: FETCH (data, not a
+  paper; gates `#976`). **FETCH THE RESTREPO & RUSSELL 2018 RPO DATABASE FILES FOR JUPITER-GANYMEDE
+  AND SATURN-TITAN.** Needed for R16's literal check; the `#377` ingest decision deferred the
+  database. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 8.
+- `#1020` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (low; NOT on
+  the wanted list). **ACQUIRE LYNAM & LONGUSKI 2009, AAS 09-424 (GANYMEDE-CALLISTO DOUBLE-CAPTURE
+  TABLES).** Captures, not cyclers. Source: `docs/notes/2026-10-07-971-fable-corpus-review-2.md`
+  sec. 6 item 6.
+- `#1021` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (low; NOT on
+  the wanted list). **ACQUIRE NEWTON, R. R. 1959, "PERIODIC ORBITS OF A PLANETOID PASSING CLOSE TO
+  TWO GRAVITATING MASSES", SMITHSONIAN CONTRIB. ASTROPHYS. 3:69-78.** The R16 / R4 lineage source
+  (no DOI found). Source: `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 5 item
+  14.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
