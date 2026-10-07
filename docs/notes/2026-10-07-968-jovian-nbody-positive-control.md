@@ -184,3 +184,31 @@ pinned as in 3.2); whether the other moons act as perturbers is fixed in the ame
   control from the bracketed point (amendment 3, criteria of 3.4 unchanged). If T turns back below
   3 S_GC in both directions within the explored range, GanCal#5 has no fixed-period continuation
   on this family: a diagnosed negative on the published-orbit side, with the T(J) curve as evidence.
+
+### 4.4 Family result (amendment 2) and AMENDMENT 3 (before the runs it covers)
+
+- The pseudo-arclength attempt took steps along an exactly null direction (the node-A slide; sv
+  1e-16) and did not move; replaced by natural-parameter continuation in T (J free), recorded in
+  `data/968_control/tcont.json`. Every step converged to |r| < 1e-5 (lane floors met by 2-3 orders):
+
+| T (d) | J (km^2/s^2) | V_inf B / A (km/s) | alt B / A (km, R-S radius) |
+|---|---|---|---|
+| 37.518130 | -172.6919 | 3.1528 / 3.1532 | 536.7 / 573.8 |
+| 37.5300 | -172.7658 | 3.1293 / 3.1293 | 556.5 / 562.9 |
+| 37.5500 | -172.9046 | 3.0843 / 3.0843 | 568.3 / 568.3 |
+| 37.569705 (= 3 S_GC) | -173.0387 | 3.0403 / 3.0403 | 576.5 / 576.5 |
+
+- So a Ganymede-only periodic orbit with GanCal#5's topology and EXACTLY its period exists in
+  continuous gravity, but with V_inf 3.040 km/s (published 3.24) and Ganymede altitude 576.5 km
+  (published 328). Along this family dV_inf/dT is about -2.2 km/s per day; the member with
+  V_inf = 3.24 would have T about 37.475 d. From T = 37.5325 d on, the two flybys are equal (a
+  symmetric orbit).
+- AMENDMENT 3 (criteria of 3.4 unchanged, and still judged as registered):
+  1. Pinned control: seed corrector A (fixed T, Callisto pin) from the T = 3 S_GC member, time-shifted
+     so that Callisto sits at the orbit's inbound crossing of Callisto's radius nearest the old C node
+     (`--stage pinseed`), then `--stage a`, `--stage check`.
+  2. Identity check (is this orbit the continuation of the published one?): continuation in
+     Ganymede's GM, s_G from 1 down toward the patched-conic limit, at fixed T = 3 S_GC with the
+     Callisto pin, softening radius scaled as s_G^(1/3) * R. Expected: V_inf tends to 3.24 and the
+     altitude, scaled by s_G, to the patched-conic r_p as s_G -> 0. Needs a GM/radius override on
+     `jovian_stm` (additive kwarg, pinned by a fast test; #1004 needs the same knob).
