@@ -134,3 +134,29 @@ patched conic is better there; a 0.94-type near-limit flyby is not expected at t
   needs 0.70 m/s of flyby Delta-V.
 - Follow-up suggestions, not run: the same root search (i) in a T_syn = 7.05 d model and (ii) over
   the Laplace angle; for #1040.
+
+## 4. Real-ephemeris items: NOT RE-RUNNABLE until #1039 (lead ruling (c))
+
+| Item | Classification | Reason |
+|---|---|---|
+| EGGIE level-3 jup365 (`2026-06-30-480-eggie-level3-nbody.md` and its CORRECTION; `...-eggie-realeph-stm.md`) | NOT RE-RUNNABLE until #1039 | `jovian_shoot` closes a real-ephemeris cycle with a periodicity wrap; the real configuration does not repeat, so even the rotation-fixed wrap is only approximately satisfiable; the open-chain formulation is unsolved (#968 sec. 9) |
+| #318 CGCEC Sobol smoke n-body stage | NOT RE-RUNNABLE until #1039 | same |
+| #501 broadened joint-search n-body stage (6 sequences) | NOT RE-RUNNABLE until #1039 | same |
+
+Registry: seven APPEND-ONLY re-stamps in `data/empty_regions.jsonl` (lines 120-126), one per void
+stamp, region_id `<old>-nbody-retracted-1023`. Each keeps the patched-conic prefilter result, drops
+the `n-body-shoot` / `analytic-stm` capability tags and the jovian_shoot prune gate, records the
+retracted n_shot / n_close, carries the method sha, and says in `verdict` why the n-body stage is
+retracted (translation-only wrap plus a non-repeating real configuration). Script
+`scripts/run_1023_retractions.py` (idempotent). The original seven lines are untouched.
+Checks: tests/data/test_empty_regions.py, test_empty_regions_da_hotm.py, test_method_capability.py,
+the registry-reading script tests and tests/scripts/test_scripts_call_preflight.py pass.
+
+## 5. Summary per VOID item
+
+| Item | Outcome |
+|---|---|
+| EGGIE Stage 2 / 3 / 4 ideal-model plateaus | NOT RE-RUNNABLE in the consistent ideal model: no patched-conic EGGIE near Table 4, none gate-passing (3.6); in the coded model no periodic orbit exists (sec. 1) |
+| EGGIE level-3 real-ephemeris | NOT RE-RUNNABLE until #1039 (sec. 4) |
+| #318 n-body stage (1 stamp) | NOT RE-RUNNABLE until #1039; re-stamped as retracted |
+| #501 n-body stages (6 stamps) | NOT RE-RUNNABLE until #1039; re-stamped as retracted |
