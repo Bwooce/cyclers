@@ -2375,8 +2375,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     rows. Their "positive control (Liang Member D) PASSED" was the patched-conic prefilter only.
   - NOT affected: Member D (`#223`).
   - Classified NOT RE-RUNNABLE until `#1039` (the jup365 path is unvalidated): the EGGIE level-3 jup365
-    run and the `#318`/`#501` real-ephemeris n-body stages. Retraction lines on the seven stamps are TO BE
-    APPENDED by jovian-nbody-opus (step (c) of its order; not yet written). The ideal-model EGGIE stages also depend on `#1040`.
+    run and the `#318`/`#501` real-ephemeris n-body stages. Retraction re-stamps for the seven stamps
+    WRITTEN (`2535eaf4`, append-only, region ids ending `-nbody-retracted-1023`).
+  - UPDATE 2026-10-08 (`#1040`): EGGIE is REPRODUCED in the paper's own model (T_syn = the ideal Ganymede
+    period); it is quasi-periodic there. The "not re-runnable" and "no exact periodic orbit" points apply
+    to the rigid-repeat model only. The `#480` ideal stages, `#493` and EIGE are no longer void on the
+    `#1040` count; the `#480` n-body stages listed above stay void under the wrap fix. The
+    continuous-gravity EGGIE in the paper's model is `#1041`.
 - `#1024` — registered 2026-10-07 (from `#998`'s control check, pluto-smallmoons-sonnet's observation in
   commit `58930227`; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL OPTION FOR BINARIES IN THE TWO-WORKING-BODY
   / ONE-WORKING-NODE GENERATOR.** For Pluto-Charon (mu = 0.109) the ideal model puts Charon at 19,596 km
@@ -2495,8 +2500,19 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   direction-only end pins; (c) a closed multi-cycle chain; (a') the 3-cycle pinned chain with
   Levenberg-Marquardt or an end-pin homotopy. Until one succeeds, the Jovian n-body lane is validated
   in the ideal model only and the jup365 path is unvalidated.
-- `#1040` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus; found under `#1023`; a second
-  shared-code defect). **IDEAL SYNODIC PERIOD INCONSISTENT WITH THE IDEAL MOON ORBITS**
+- `#1040` — ✓ RESOLVED 2026-10-08, NO CALLER SWITCH (jovian-nbody-opus; variants `d8a8c8c7`, `8d5e4ec8`,
+  `b76d366a`, `baf86726`; found under `#1023`). **RESULT:** the OLD coded model (T_syn = the ideal
+  Ganymede period, 7.0042 d) REPRODUCES the published EGGIE: one gate-passing root 0.173 km/s from
+  Table 4 (V_inf 9.068 / 7.082 / 8.207 against 9.12 / 7.07 / 8.38; leg times 1.57 / 8.42 / 7.27 / 10.76
+  against 1.59 / 8.60 / 7.34 / 10.69 d). The consistent-period model has no gate-passing root within
+  0.5 km/s, and T_syn = 7.05 d as printed has none either. So the paper's own model is the
+  Ganymede-period one and its EGGIE is QUASI-periodic (the three-moon configuration does not repeat
+  rigidly); the date corrector accepts it because the junctions match V_inf magnitudes. **Lead
+  ruling:** no caller switch; `ideal_t_syn` stays as the paper's model, with a docstring note; the
+  additive function is renamed `ideal_t_syn_rigid_repeat`, for exact-periodicity work; the void on
+  `#480`, `#493` and EIGE is LIFTED (their model was the paper's); the identification rule is tightened
+  to V_inf within 0.5 km/s AND leg times within 10 % AND a gate pass (recorded as post-hoc).
+  Follow-on: `#1041`. Original registration (first described as a second shared-code defect): **IDEAL SYNODIC PERIOD INCONSISTENT WITH THE IDEAL MOON ORBITS**
   (`src/cyclerfinder/search/resonant_conic.py`, `ideal_t_syn()` and `ideal_moon_smas()`, lines about
   85-102). `ideal_t_syn()` returns the ideal Ganymede period, 7.0042 d, while `ideal_moon_smas()` builds
   the moons for a 5.2 deg shift per SYNODIC period, whose consistent value is T_syn = (2 pi + Delta) /
@@ -2509,6 +2525,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `#480` Stage 1-4 ideal results, `#493` and the EIGE construction; not `#968`, `#1004` or `#1034`.
   Scope dispatched: a pinned test, an ADDITIVE `ideal_t_syn_consistent()` and an impact list, with the
   callers unchanged. The caller switch and the re-runs are the lead's decision from that list.
+- `#1041` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus; from `#1040`). **CONTINUOUS-GRAVITY
+  EGGIE IN THE PAPER'S MODEL UNDER A QUASI-PERIODIC CRITERION:** an n-cycle chain from the variant (iii)
+  root, per-cycle defects, a per-moon wrap, sigma continuation to 1, and an IAS15 check. Success: EGGIE
+  exists as a quasi-periodic continuous-gravity object.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
