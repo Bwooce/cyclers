@@ -152,8 +152,8 @@ Added 2026-10-08: `#1032`, a `stability_index_convention` schema field (four con
 
 | Name | Owner ruling 2026-10-07 | Pair, bodies that bend | Period / V_inf (km/s) | Real-ephemeris rung | Note sec. |
 |---|---|---|---|---|---|
-| gc-1 | **candidate-novel** (catalogue writeback by twobody-gen2-opus) | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km; no caveat since 6.45 | 6.11, 6.26, 6.45 |
-| gc-2 | GanCal-family relative, NOT novel | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km | 6.11, 6.14, 6.21 |
+| gc-1 | **candidate-novel** (catalogue writeback by twobody-gen2-opus; gated on `#972` and `#1034`) | Ganymede-Callisto, both | 37.57 d; G 2.397 / C 1.807 | jup365, 10 cycles, 5/5 epochs (worst 0.755-0.761), DOP853 re-fly <= 0.19 km; no caveat since 6.45 | 6.11, 6.26, 6.45 |
+| gc-2 | GanCal-family relative, NOT novel | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km; continuous R-S model: its branch FOLDS at sigma 0.164 of the moon masses, no full-mass gc-2 on that branch (`#1004`) | 6.11, 6.14, 6.21; `#1004` |
 | ev-C | **candidate-novel** under `#875` (ii) (known architecture at a never-treated body set) | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | **candidate-novel**, with the DE440 near-ballistic caveat | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
 | ev-B | not decided: retry with continuation at the failing epochs first (twobody-gen2-opus running) | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
@@ -1855,7 +1855,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
       direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
       blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
-    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework).
+    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework) AND, for
+      gc-1, ON `#1034`; a gc-2 row must carry the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: ev-C **candidate-novel** under `#875` (ii); ev-A **candidate-novel**
       (DE440 near-ballistic caveat); ev-B: retry with continuation at the failing epochs before deciding.
     - Candidates (the others stay **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
@@ -1895,7 +1896,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
       from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
       miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
-    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972`.
+    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972` AND `#1034` (if gc-1 folds too, owner decision);
+      a gc-2 row must carry the `#1004` fold finding.
     - OWNER RULINGS 2026-10-07: gc-1 **candidate-novel**; gc-2 a GanCal-family relative, NOT novel. The
       ge rows stay **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
@@ -2208,7 +2210,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   CONTINUOUS-GRAVITY CHECK (CR4BP OR n-BODY) OF THE GanCal#5 RELATION.** In the patched conic no
   Callisto-mass path joins gc-2 and GanCal#5 (note 6.21); a continuous-gravity model, where the
   encounter count is not fixed, is the open test. The n-body lane has no control (`#968`). Source:
-  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
+  `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4. **RESULT 2026-10-08
+  (jovian-nbody-opus; `244ed721`, `31c874fc`, `80986bb6`; `data/1004_gc2/`):** in the continuous R-S
+  model (Ganymede and Callisto as point masses, joint GM scale sigma), gc-2 matches the patched-conic
+  gc-2 at sigma = 0.05 (V_inf 3.604 / 3.025 against 3.617 / 3.039), but its branch FOLDS at sigma =
+  0.1639-0.1640 onto a sibling branch; no full-mass gc-2 exists on that branch; direct Newton at sigma
+  = 1 stalls at 0.41-0.44 km/s; the GanCal#5 relation is moot on this branch. Limits: absence on one
+  branch is not absence (an isola or another seed is untested: `#1033`); ideal model only; the
+  pre-registered tangent rule was not enforced in code (disclosed; the fold rests on the two-solution
+  and bracket checks). Follow-on for gc-1: `#1034`.
 - `#1005` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG. **PISAREVSKY
   2008 FIG. 14 (CLASS I.1 GRAPHICAL POINTS): DIGITISE FOR THE em COLLISION CHECK.** The only part of
   Pisarevsky 2008 not yet checked against em-1..em-5. Source:
@@ -2385,6 +2395,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `docs/spec.md` (the cr3bp block, about line 615) says only "<= 1 stable; > 1 unstable". Proposal: a
   `stability_index_convention` enum field (schema bump) with a backfill of every row, plus a notes
   wording rule (state in-plane and vertical stability separately).
+- `#1033` — registered 2026-10-08 (from `#1004`; BACKLOG). **ISOLA / ALTERNATIVE-SEED SEARCH FOR A
+  FULL-MASS gc-2 IN THE CONTINUOUS R-S MODEL**, and which seed family would find it. `#1004` showed only
+  that the branch continued from the patched-conic gc-2 folds at sigma 0.164; absence on one branch is
+  not absence.
+- `#1034` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus, about 30 min). **THE SAME JOINT-sigma
+  CONTINUATION FOR gc-1**, pre-registered, with the tangent rule enforced in code. GATES the gc-1
+  candidate-novel writeback; if gc-1 folds too, it goes to the owner for a decision.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
