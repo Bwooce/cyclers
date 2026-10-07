@@ -63,3 +63,15 @@ its seed; that one failed only at sigma 0.62, through a Europa flyby with a 7.2-
   construction fix only; criteria unchanged.
 - The same clamp did not affect #968 rung (b): its turns of 10-24 deg at Ganymede and 7.2 deg at
   Europa give periapses inside the cap.
+
+### 2.2 AMENDMENT 2 (code aligned with the registered criteria, before continuing)
+
+- The continuation converged at the floors at every step from sigma = 0.02 up to 0.178. It then
+  stopped at sigma = 0.214 on an acceptance check that #1043 never registered: "periapsis within
+  0.5 SOI". That check was inherited from the #968 rung-(b) code (amendment 8 item 6).
+- The Io node tripped it (r_p / SOI = 0.51). Its 0.9-deg turn at 8.2 km/s needs r_p of about
+  11,000 km at full mass, about 1.06 Io SOI even in the patched conic. So for this object the bound
+  is wrong, not the orbit.
+- The #1043 criteria (sec. 3) are the 25 km floor and no unscheduled pass inside a Hill radius, and
+  they are unchanged. The inherited SOI bound is switched off for #1043 (`SOI_LIMIT = inf` in the
+  wrapper), and the continuation resumes from its checkpoint at sigma = 0.178.
