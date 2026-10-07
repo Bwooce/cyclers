@@ -1,0 +1,55 @@
+--- a/data/catalogue.yaml
++++ b/data/catalogue.yaml
+@@ -9691,6 +9691,10 @@
+       are tabulated in the full AAS proceedings PDF which was not
+       accessible to this ingest (AAS Astrodynamics Specialist
+       Conference proceedings are paywalled / library-only).
++      #1042 (2026-10-08): the paper's Table 4 EGGIE member spans 4
++      synodic periods (printed total 28.22 d); reproduced by #1023 in the
++      paper's ideal model, whose synodic period is the ideal Ganymede
++      period (7.004 d), with cycle 28.02 d.
+   vinf_kms_at_encounters:
+   - body: "Io"
+     vinf_kms:
+@@ -9748,6 +9752,11 @@
+     note: "Patched-conic model; CR3BP stability index not applicable."
+     source_hint: "Full Hernandez et al. 2017 paper"
+     todo_ref: "#76-cr3bp-backfill"
++  - path: "n_returns"
++    kind: "conflict"
++    note: "The abstract says these cyclers 'repeat indefinitely'. In the paper's own ideal model (synodic period = the ideal Ganymede period, so the moon configuration has no rigid repeat) the Table 4 EGGIE, reproduced by #1023 at 0.173 km/s with leg times within 0.18 d, is ballistic for ONE cycle only: marched cycle by cycle, the turn gate fails at cycle 2 (Io demands 55.6 deg, ratio 3.72) and no exact root exists at cycle 3 (#1041). Consistent with the paper's p.10 statement that ballistic repeatability lasts only a few cycles. n_returns left 'infinite' for the family seed pending an owner decision."
++    source_hint: "docs/notes/2026-10-08-1041-eggie-quasiperiodic-continuous.md sec. 7; docs/notes/2026-10-08-1023-jovian-void-rerun.md sec. 6.3"
++    todo_ref: "#1042"
+   legs: []
+   first_published:
+     authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
+@@ -9805,6 +9814,20 @@
+     Family-seed entry per the same convention as the VEM-triple
+     sibling. Individual members must be split out as per-entry records
+     once the full paper text is accessible.
++
++    #1040/#1041/#1043 (2026-10-08). Model: the paper's ideal model uses
++    the ideal Ganymede period as its synodic period, while its moon
++    radii are built for a rigid 5.2-deg shift per synodic period; in
++    that model the configuration does not repeat rigidly (per cycle
++    Ganymede 0, Europa -20.5, Io -61.5 deg), so its cyclers are
++    quasi-periodic. Reproduction: Table 4 EGGIE reproduced in that model
++    (V_inf 9.068/7.082/8.207 km/s against 9.12/7.07/8.38; leg times
++    1.57/8.42/7.27/10.76 d against 1.59/8.60/7.34/10.69; gate pass).
++    Repeatability: one cycle ballistic in its own model (the gate fails
++    at cycle 2). Continuous gravity: undecided; with the chain ends
++    pinned to the patched-conic asymptotes the one-cycle EGGIE folds at
++    0.505 of the real moon masses, with the end Europa flybys as the
++    growing defect (#1043; formulation-limited, #1039).
+   source_quotes:
+     "first_published.title": |
+       Semantic Scholar metadata for paper
+@@ -52289,7 +52312,7 @@
+     doi: "10.1016/j.actaastro.2011.03.011"
+     url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
+   source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"
+-  notes: "Lynam-Longuski 2011: single-period IEG triple cycler (E-perijove-I-G-apojove-E), Laplace period 7.05 d, total Delta-V ~11 m/s (patched-conic ephemeris/MALTO); ballistic version needs a -175 km Europa flyby. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion."
++  notes: "Lynam-Longuski 2011: single-period IEG triple cycler (E-perijove-I-G-apojove-E), Laplace period 7.05 d, total Delta-V ~11 m/s (patched-conic ephemeris/MALTO); ballistic version needs a -175 km Europa flyby. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion. #1042 (2026-10-08): the #493 reproduction used the Hernandez 2017 ideal model with T_Laplace = the ideal Ganymede period, 7.004 d (sourced 7.055 d, -0.72 %); that model has no rigid repeat of the moon configuration (#1040); its rigid-repeat alternative gives 7.105 d (+0.71 %, also inside the 1 % gate). No validation change."
+ 
+ - id: lynam-longuski-2011-gipeipe
+   name: "Lynam-Longuski indefinitely-repeatable GIPEIPE Io-Europa-Ganymede triple cycler"
