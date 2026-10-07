@@ -526,3 +526,30 @@ massless Europa would contradict the seed.
    at 3.2 km/s and the ideal-model controls closed); full-mass V_inf shifted by 0.1-0.3 km/s.
 10. Meaning of a pass: the lane works on jup365 rails, in 3-D, with two massive moons, as an open
    chain. It does not validate periodicity (no wrap) or any candidate.
+
+### 9.1 Rung (b) so far, and AMENDMENT 9 (before the runs it covers)
+
+- Step 1 (seed reconstruction, `scripts/run_968_rungb_seed.py`, tool pinned at 1e4b7aeb): PASS.
+  Max residual 1.4e-8, gate worst 0.80384, minimum required altitude 982.05 km. The flyby list (50
+  encounters over 10 cycles; 5 per cycle: G, G, G, E, G) is in `data/968_rungb/seed_chain.json`.
+- Step 2 (time and frame): chain time + (2440000 - 2451545) x 86400 s = lane TDB seconds past J2000;
+  Ganymede and Europa positions from the chain's `Ephemeris("spice")` and the lane's
+  `JovianEphemeris` agree to 0.0 km at three seed epochs (same kernel, same J2000 frame). PASS.
+- Step 3 (spline ephemeris): at a 0.01-d grid the spline velocity error was 6.2e-6 km/s (fails the
+  registered 1e-6); at a 0.004-d grid 4.6e-5 km and 4.1e-7 km/s: PASS (the grid is an implementation
+  choice; the threshold is unchanged).
+- Node coordinates changed to moon-relative (r_rel, v_rel, epoch): with absolute coordinates the
+  sigma = 0.005 problem was so stiff that no Newton step descended (an epoch change of 1 s moved a
+  20-km periapsis node by 10 km relative to its moon). A reparametrisation, not a criterion change.
+- The anchored chain (node 0 a fixed state one day after the first departure) is WRONG as
+  designed: a fixed full state at a fixed time fixes the whole downstream trajectory, so the
+  encounters are no longer constraints, and the Jacobian has two exact null directions (singular
+  values 3e-16; right null vectors on the last node's state, left null vectors on the anchor leg's
+  rows). Newton stalled at |r| 4.18 (anchor-leg dv 3.9e-3 km/s). My design error, after the advisor
+  suggestion "anchor the first node"; no result is drawn from it.
+- AMENDMENT 9: no anchor. Nodes 1..M (the chain's flybys) are all free, with periapsis gauges and
+  M - 1 forward-backward legs: 7M unknowns, 7M - 6 residuals, so six free directions (the open
+  chain's end freedom). Steps are MINIMUM-NORM Gauss-Newton (column-scaled lstsq). Fold detection is
+  NOT claimed under this choice; if the continuation stops, the result is reported as a numerical
+  stop. Criteria 7 (i)-(iii), the acceptance checks (item 6) and the meaning (item 10) are unchanged.
+  With N = 1 the chain is the five flybys of cycle 1 (G 9.39 d, G 20.12, G 29.51, E 37.10, G 49.34).
