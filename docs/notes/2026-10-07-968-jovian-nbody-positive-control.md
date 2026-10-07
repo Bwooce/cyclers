@@ -687,3 +687,11 @@ point. The open question is the formulation of an open real-ephemeris chain.
   - (a') the 3-cycle pinned chain with a Levenberg-Marquardt solver, or with a homotopy that turns
     the end pins on gradually.
   No further attempts without a new ruling.
+
+## 10. Correction to sec. 2 (2026-10-08, #1023)
+
+The statement in sec. 2 that the ideal three-moon EGGIE model has no exact periodic orbit holds for
+the model AS CODED, which uses `resonant_conic.ideal_t_syn` = the ideal Ganymede period. With the
+synodic period the smas are built for, `ideal_t_syn_consistent()` = (2 pi + Delta)/n_G = 7.105 d,
+all three moons advance exactly 20.8 deg per 4 T_syn, and the configuration repeats rigidly. See
+`docs/notes/2026-10-08-1023-jovian-void-rerun.md` secs. 1-2. The VOID list itself is unchanged.
