@@ -212,3 +212,35 @@ pinned as in 3.2); whether the other moons act as perturbers is fixed in the ame
      Callisto pin, softening radius scaled as s_G^(1/3) * R. Expected: V_inf tends to 3.24 and the
      altitude, scaled by s_G, to the patched-conic r_p as s_G -> 0. Needs a GM/radius override on
      `jovian_stm` (additive kwarg, pinned by a fast test; #1004 needs the same knob).
+
+### 4.5 Pinned control result (amendment 3, step 1) and lane corrector B, first run; AMENDMENT 4
+
+Corrector A, pinned layout, seeded per amendment 3 (`--stage pinseed`: inbound Callisto-radius
+crossing at 35.9997 d, time shift -0.04134 d): converged in 11 evaluations. `data/968_control/a_check.json`:
+
+| Criterion (3.4) | Value | Verdict |
+|---|---|---|
+| 1. continuity (floors 1e-3 km, 1e-6 km/s) | max match 3.2e-6 km, 1.6e-11 km/s; gauge 3e-13 | PASS |
+| 2. Callisto hit | 0 km (pinned) | PASS |
+| 3. sequence G, G, C; alt >= 100 km | Ganymede inside its Hill radius only at A and B; 576.5 km both | PASS |
+| 4. V_inf G within 0.10 of 3.24 | 3.0403 (diff 0.200) | FAIL |
+| 4. Callisto speed within 0.10 of 3.34 | 3.2513 (diff 0.089) | pass |
+| 4. min Ganymede alt within 150 km of 328 | 576.5 (diff 248) | FAIL |
+| 4. r_min within 2 % of 821,915 | 841,395 (+2.37 %) | FAIL |
+| 4. r_max within 2 % of 2,390,844 | 2,376,185 (-0.61 %) | pass |
+| 6. IAS15 re-fly of the six half-arcs | max 2.2e-5 km, 1.4e-10 km/s | PASS |
+| 6. IAS15 full period from B (descriptive) | return miss 2.4e-3 km, 8.7e-7 km/s | (DOP853 single shot: 1.5 km) |
+
+So, as registered, the control FAILS criterion 4: the continuous orbit with GanCal#5's topology,
+period and Callisto hit exists and closes to the floors on two integrators, but it sits 0.20 km/s
+below the printed V_inf, with the flyby 248 km higher.
+
+Lane corrector B from the patched-conic periapsis seed (the Member D / EGGIE seed type): seed defect
+5.4e5 km; after 40 evaluations still 2.4e5 km (leg dv up to 2.95 km/s); not converged
+(`data/968_control/b_state_pcseed.json`). Forward node-to-node legs from periapsis nodes put the
+24-day B->C leg 2.3e5 km off; this is the seed weakness the Member D note (sec. 5) already named.
+
+AMENDMENT 4 (before running): (a) lane corrector B is also run from corrector A's converged orbit
+(nodes and epochs from `a_state.json`): criterion 5 then asks whether the lane's own residual, with
+the fixed wrap, holds that orbit at its floors and agrees with A; (b) the patched-conic-seed lane run
+gets up to 3 more chunks of 40 evaluations; if still unconverged it is recorded as a seed failure.
