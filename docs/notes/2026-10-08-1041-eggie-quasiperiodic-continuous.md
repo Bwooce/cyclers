@@ -91,3 +91,28 @@ step 1:
   cycle by cycle from root (iii), with each new cycle's four dates solved from the junction magnitude
   matches given the previous cycle's end. That would show after how many cycles the gate first fails
   without spreading the mismatch over all cycles. Proposed as a follow-up.
+
+## 6. Cycle-by-cycle MARCH: PRE-REGISTRATION (lead go 2026-10-08; before running)
+
+Script `scripts/run_1041_eggie.py --stage march`; data `data/1041_eggie/march_<start>.json`.
+
+- Model: the paper's (sec. 1). Legs per cycle are E>G 0s, G>G 1h, G>I 1l, I>E 1h (root (iii)'s
+  topology).
+- March (open chain, no spreading): cycle k starts at the Europa encounter E_k (its date fixed by the
+  previous cycle, its inbound V_inf the previous I>E arrival). The four unknown dates G1, G2, I and
+  E_{k+1} are solved from the four junction magnitude matches at E_k, G1, G2 and I (least squares
+  from the previous cycle's dates + T). Exact: max residual < 1e-9 km/s.
+- Start A, root (iii): cycle 1 is root (iii) itself (its closing magnitude match gives E_1's inbound).
+- Start B, the Table 4 values: E_0 at root (iii)'s E date. Cycle 1 has its G1, G2 and I dates solved
+  from the three interior junction matches, seeded at the Table 4 leg times (1.59, 8.60, 7.34 d), with
+  E_1 fixed at E_0 + 28.22 d (the Table 4 total). There is no inbound at E_0, so that junction is
+  not imposed. It is then marched as in A.
+- Recorded per cycle: V_inf at every node, demanded turns, gate ratios and status at the paper's
+  25 km floor and at the project floors (`gate_cycle`). The march runs for up to 10 cycles, or until
+  the corrector fails (recorded as such).
+- Reported: the first cycle at which the gate fails, at each floor, for each start.
+- Expected outcome: the gate fails by cycle 2 (probability 0.7) or cycle 3 (0.2), with Io as the
+  failing flyby, from Io's -61.5 deg per-cycle shift.
+- Conclusion rule (lead): if cycle 1 stands (a gate pass) and the march fails by cycle 2-3, record
+  "the published EGGIE is a one-cycle ballistic object in its own model; ballistic repeatability is
+  limited to that, consistent with the paper's own statement", then stop.
