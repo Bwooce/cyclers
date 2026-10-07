@@ -2037,7 +2037,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     not novel, no catalogue writes. Re-screen (`2fd1c05a`): gc k = 4 29 pass / 11 model-invalid / 3
     moon impact / 8 primary impact; the `#943` gc candidates pass; `#942` ev 22 pass / 9 planet impact
     (tilted-circle fixed legs: "direction-dependent", `#1027`).
-  - **COMPLETE 2026-10-08** (gc k6 `a48ccc85`, ev k4 `52f0acb7`, ev k5 `e73d09ca`; note secs. 12-14).
+  - **COMPLETE 2026-10-08** (gc k5 `434f1409` (note sec. 11) and `9028bd48` (shard settings and
+    structures; zeros archived), gc k6 `a48ccc85`, ev k4 `52f0acb7`, ev k5 `e73d09ca`; note secs. 11-14).
     Clean two-working-body members: gc k4 10, k5 6, k6 4 (20 in all; gate-passers 51 / 8 / 4; only the
     k4 3:4:7 window is shallow); ev k4 11 (5 skeletons), ev k5 11 (8 skeletons; one sun-grazer at 12.5
     solar radii is flagged not credible); ec k1-4 empty (stamped). No literal collision anywhere; the
