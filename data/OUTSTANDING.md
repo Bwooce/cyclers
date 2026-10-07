@@ -2529,6 +2529,19 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   EGGIE IN THE PAPER'S MODEL UNDER A QUASI-PERIODIC CRITERION:** an n-cycle chain from the variant (iii)
   root, per-cycle defects, a per-moon wrap, sigma continuation to 1, and an IAS15 check. Success: EGGIE
   exists as a quasi-periodic continuous-gravity object.
+  **RESULT 2026-10-08 (`3fbb8895`; pre-registration `c7625a8b`): DOES NOT CLOSE AT STEP 1.** A closed 2-
+  or 3-cycle patched-conic chain seeded from root (iii) converges exactly but fails the gate (Io
+  demanded turn 86.7 deg in cycle 2, 131.2 deg in cycle 3; V_inf drifts off Table 4 because the closed
+  chain spreads the mismatch). The growing defect is Io's -61.5 deg per-cycle shift, consistent with
+  the paper's own statement that ballistic repeatability "only lasts a few cycles". A pre-registered
+  cycle-by-cycle MARCH from root (iii), the faithful quasi-periodic test (the first cycle at which the
+  gate fails), is running. Follow-on: `#1042`.
+- `#1042` — registered 2026-10-08 (from `#1040`/`#1041`; BACKLOG, after the `#1041` march). **REVIEW THE
+  CATALOGUE ROWS `hernandez-2017-jovian-ieg-triple-family` AND `lynam-longuski-2011-ieg-single-period`**
+  against `#1040`/`#1041`: the published EGGIE is a one-cycle ballistic object in its own model. Check
+  `orbit_class`, the `n_returns` and period wording, the validation level and the notes; add the
+  `#1040` model note (Ganymede-period synodic period, no rigid repeat) and the `#1041` repeatability
+  result to `notes`/`data_gaps`. All ratchets on any `data/catalogue.yaml` edit.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
