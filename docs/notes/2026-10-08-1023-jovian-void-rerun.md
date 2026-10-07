@@ -225,3 +225,29 @@ exactly (156 roots, nearest 0.652 km/s).
   qualifies. The rule was too weak: V_inf alone does not identify the published object, and a
   root that needs impossible turns has no continuous-gravity counterpart. I do NOT start the
   continuous steps from it. The lead rules on whether (ii) counts as a reproduction (my view: no).
+
+### 6.3 Result (iii), the OLD coded model (`data/1023_eggie/pc_roots_coded.json`)
+
+126 exact roots. Nearest to Table 4: **0.173 km/s, and it is GATE-PASSING** (25 km and project
+floors), the only gate-passing root of this variant:
+
+| | V_inf E / G / I (km/s) | leg times E>G, G>G, G>I, I>E (d) | turns G1 / G2 / I / E (deg) |
+|---|---|---|---|
+| this root (legs 0s, 1h, 1l, 1h) | 9.068 / 7.082 / 8.207 | 1.57, 8.42, 7.27, 10.76 (sum 28.02) | 5.9 / 5.0 / 0.9 / 1.5 |
+| Table 4 | 9.12 / 7.07 / 8.38 | 1.59, 8.60, 7.34, 10.69 (sum 28.22) | (altitudes 1,444-6,263 km) |
+
+Reading by the rule fixed in sec. 6: the root lies within 0.5 km/s in (iii), and in (i) and (ii) no
+gate-passing root lies within 0.5 km/s (the (ii) near roots fail the gate with 147-169 deg turns).
+So **the paper's own model is the Ganymede-period one** (T_syn = the ideal Ganymede period, as
+`ideal_t_syn` codes it), and its EGGIE is reproduced there: V_inf within 0.17 km/s, leg times
+within 0.18 d, small turns. In that model the configuration does not repeat rigidly (Europa
+-20.5 deg, Io -61.5 deg, Ganymede 0 per cycle), so the published EGGIE is QUASI-periodic: it
+repeats only up to that non-rigid shift, and it closes in the date corrector because the junctions
+match V_inf magnitudes only. This explains the #480 history: no exact periodic orbit existed for the
+correctors to find.
+
+Consequence for #1040: switching the callers to `ideal_t_syn_consistent` would move them AWAY from
+the model in which the paper's EGGIE exists. The `ideal_t_syn` docstring's "(paper p.3)" attribution
+is supported by this result; the inconsistency is in the paper's model itself (its smas build in a
+rigid 5.2-deg shift that its Ganymede-period T_syn does not realise). Reported to the lead before any
+switch.
