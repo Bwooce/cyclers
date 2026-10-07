@@ -31,15 +31,8 @@
      "soi_km": 24349.739180045828
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2l",
-     "body": "Ganymede",
-     "min_km": 9432.148141715697,
-     "t_days": 25.83953398182625,
-     "frac_of_leg": 0.17127272571050234,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/1:1",
      "body": "Callisto",
@@ -47,6 +40,14 @@
      "t_days": 48.834161237520135,
      "frac_of_leg": 0.216818844797666,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 9432.148141715697,
+     "t_days": 25.83953398182625,
+     "frac_of_leg": 0.17127272571050234,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -64,15 +65,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:1",
-     "body": "Ganymede",
-     "min_km": 937658.8717062402,
-     "t_days": 23.754742296155303,
-     "frac_of_leg": 0.5080442146646192,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/3:2",
      "body": "Callisto",
@@ -80,6 +74,14 @@
      "t_days": 47.77041762839404,
      "frac_of_leg": 0.39960106298957093,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:1",
+     "body": "Ganymede",
+     "min_km": 937658.8717062402,
+     "t_days": 23.754742296155303,
+     "frac_of_leg": 0.5080442146646192,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -97,15 +99,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/1l",
-     "body": "Ganymede",
-     "min_km": 234539.24730657254,
-     "t_days": 6.261617468662143,
-     "frac_of_leg": 0.49999999981568594,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/0s",
      "body": "Callisto",
@@ -113,6 +108,14 @@
      "t_days": 13.488706130007206,
      "frac_of_leg": 0.26882843300491266,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/1l",
+     "body": "Ganymede",
+     "min_km": 234539.24730657254,
+     "t_days": 6.261617468662143,
+     "frac_of_leg": 0.49999999981568594,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -130,15 +133,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2l",
-     "body": "Ganymede",
-     "min_km": 326063.0106244935,
-     "t_days": 42.72070823101747,
-     "frac_of_leg": 0.25515676684761784,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2h",
      "body": "Callisto",
@@ -146,6 +142,14 @@
      "t_days": 11.568382035075317,
      "frac_of_leg": 0.042680186829614594,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 326063.0106244935,
+     "t_days": 42.72070823101747,
+     "frac_of_leg": 0.25515676684761784,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -163,15 +167,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 711527.6484397221,
-     "t_days": 47.690428221150775,
-     "frac_of_leg": 0.8209017791790286,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Ganymede/2h",
      "body": "Callisto",
@@ -179,6 +176,14 @@
      "t_days": 51.14308265480353,
      "frac_of_leg": 0.9540665842286452,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 711527.6484397221,
+     "t_days": 47.690428221150775,
+     "frac_of_leg": 0.8209017791790286,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -196,15 +201,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 900439.4123286956,
-     "t_days": 24.81077935085125,
-     "frac_of_leg": 0.019529407881274653,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Ganymede/2h",
      "body": "Callisto",
@@ -212,6 +210,14 @@
      "t_days": 30.82097631827606,
      "frac_of_leg": 0.19943061567647308,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 900439.4123286956,
+     "t_days": 24.81077935085125,
+     "frac_of_leg": 0.019529407881274653,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -229,15 +235,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/0s",
-     "body": "Ganymede",
-     "min_km": 780710.3131554457,
-     "t_days": 25.02284540062497,
-     "frac_of_leg": 0.13400542462694398,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/3:2",
      "body": "Callisto",
@@ -245,6 +244,14 @@
      "t_days": 50.89145444163255,
      "frac_of_leg": 0.9658323125784737,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/0s",
+     "body": "Ganymede",
+     "min_km": 780710.3131554457,
+     "t_days": 25.02284540062497,
+     "frac_of_leg": 0.13400542462694398,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -262,15 +269,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/2l",
-     "body": "Ganymede",
-     "min_km": 618324.0923948194,
-     "t_days": 4.512166240000088,
-     "frac_of_leg": 0.15634527572389884,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/0s",
      "body": "Callisto",
@@ -278,6 +278,14 @@
      "t_days": 26.01108725396199,
      "frac_of_leg": 0.1692006264476418,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 618324.0923948194,
+     "t_days": 4.512166240000088,
+     "frac_of_leg": 0.15634527572389884,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -295,15 +303,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 106557.25331219575,
-     "t_days": 37.56970482575425,
-     "frac_of_leg": 0.500000000102471,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Callisto/1h",
      "body": "Callisto",
@@ -311,6 +312,14 @@
      "t_days": 37.569704812754196,
      "frac_of_leg": 0.4999999995080166,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 106557.25331219575,
+     "t_days": 37.56970482575425,
+     "frac_of_leg": 0.500000000102471,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -328,15 +337,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/0s",
-     "body": "Ganymede",
-     "min_km": 806898.6619074219,
-     "t_days": 50.2589938117331,
-     "frac_of_leg": 0.02482334179739184,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2h",
      "body": "Callisto",
@@ -344,6 +346,14 @@
      "t_days": 23.944895369051558,
      "frac_of_leg": 0.03769791234147247,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/0s",
+     "body": "Ganymede",
+     "min_km": 806898.6619074219,
+     "t_days": 50.2589938117331,
+     "frac_of_leg": 0.02482334179739184,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -361,15 +371,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 512600.87404475757,
-     "t_days": 24.131382431552186,
-     "frac_of_leg": 0.14845221947158938,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Ganymede/2h",
      "body": "Callisto",
@@ -377,6 +380,14 @@
      "t_days": 36.83370443252879,
      "frac_of_leg": 0.7108269422617335,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 512600.87404475757,
+     "t_days": 24.131382431552186,
+     "frac_of_leg": 0.14845221947158938,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -403,15 +414,8 @@
      "soi_km": 24349.739180045828
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 21913.21847996978,
-     "t_days": 25.046470237365245,
-     "frac_of_leg": 0.5000000163928541,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Callisto/1h",
      "body": "Callisto",
@@ -419,6 +423,14 @@
      "t_days": 25.046469894593454,
      "frac_of_leg": 0.5000000005656893,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 21913.21847996978,
+     "t_days": 25.046470237365245,
+     "frac_of_leg": 0.5000000163928541,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -445,15 +457,8 @@
      "soi_km": 24349.739180045828
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 3.4349136217422624,
-     "t_days": 25.010522840454456,
-     "frac_of_leg": 0.43148281578215514,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Ganymede/1h",
      "body": "Callisto",
@@ -461,6 +466,14 @@
      "t_days": 35.771229075327824,
      "frac_of_leg": 0.8588525345282789,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 3.4349136217422624,
+     "t_days": 25.010522840454456,
+     "frac_of_leg": 0.43148281578215514,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -487,15 +500,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:2",
-     "body": "Ganymede",
-     "min_km": 98732.1507234762,
-     "t_days": 31.301318434350573,
-     "frac_of_leg": 0.681658592494083,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2l",
      "body": "Callisto",
@@ -503,6 +509,14 @@
      "t_days": 3.223146657570154,
      "frac_of_leg": 0.1555031698802848,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:2",
+     "body": "Ganymede",
+     "min_km": 98732.1507234762,
+     "t_days": 31.301318434350573,
+     "frac_of_leg": 0.681658592494083,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -537,15 +551,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/2l",
-     "body": "Ganymede",
-     "min_km": 590014.7811499333,
-     "t_days": 15.624949191246083,
-     "frac_of_leg": 0.4999999952877678,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2l",
      "body": "Callisto",
@@ -553,6 +560,14 @@
      "t_days": 27.85188353394846,
      "frac_of_leg": 0.13832861214073716,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 590014.7811499333,
+     "t_days": 15.624949191246083,
+     "frac_of_leg": 0.4999999952877678,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -570,15 +585,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 388918.73883401323,
-     "t_days": 24.415722782544282,
-     "frac_of_leg": 0.17002160479274256,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2h",
      "body": "Callisto",
@@ -586,6 +594,14 @@
      "t_days": 5.3484237824185215,
      "frac_of_leg": 0.22110428941675672,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 388918.73883401323,
+     "t_days": 24.415722782544282,
+     "frac_of_leg": 0.17002160479274256,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -612,15 +628,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:1",
-     "body": "Ganymede",
-     "min_km": 1352913.9248440815,
-     "t_days": 40.29483213488929,
-     "frac_of_leg": 0.48928163954563825,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -628,6 +637,14 @@
      "t_days": 15.435998816768551,
      "frac_of_leg": 0.4504126341702372,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:1",
+     "body": "Ganymede",
+     "min_km": 1352913.9248440815,
+     "t_days": 40.29483213488929,
+     "frac_of_leg": 0.48928163954563825,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -654,15 +671,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Callisto/2h",
-     "body": "Ganymede",
-     "min_km": 1354086.21523337,
-     "t_days": 13.308003383461458,
-     "frac_of_leg": 0.2454767096984973,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2h",
      "body": "Callisto",
@@ -670,6 +680,14 @@
      "t_days": 32.12613514500984,
      "frac_of_leg": 0.6453287411444163,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/2h",
+     "body": "Ganymede",
+     "min_km": 1354086.21523337,
+     "t_days": 13.308003383461458,
+     "frac_of_leg": 0.2454767096984973,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -687,15 +705,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 1671754.312679398,
-     "t_days": 14.763376120060975,
-     "frac_of_leg": 0.3419900684862459,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -703,6 +714,14 @@
      "t_days": 18.875074682487146,
      "frac_of_leg": 0.46702559547642647,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 1671754.312679398,
+     "t_days": 14.763376120060975,
+     "frac_of_leg": 0.3419900684862459,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -720,15 +739,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:1",
-     "body": "Ganymede",
-     "min_km": 1477090.9630896053,
-     "t_days": 28.03333187568468,
-     "frac_of_leg": 0.49354593151331194,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/2:1",
      "body": "Callisto",
@@ -736,6 +748,14 @@
      "t_days": 50.963492815692774,
      "frac_of_leg": 0.8163543083198738,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:1",
+     "body": "Ganymede",
+     "min_km": 1477090.9630896053,
+     "t_days": 28.03333187568468,
+     "frac_of_leg": 0.49354593151331194,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -753,15 +773,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 2089079.3054072352,
-     "t_days": 29.685808162688076,
-     "frac_of_leg": 0.3429823375097614,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Ganymede/1h",
      "body": "Callisto",
@@ -769,6 +782,14 @@
      "t_days": 51.31294848774506,
      "frac_of_leg": 0.7973444708161053,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 2089079.3054072352,
+     "t_days": 29.685808162688076,
+     "frac_of_leg": 0.3429823375097614,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -803,15 +824,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2l",
-     "body": "Ganymede",
-     "min_km": 745092.9511086575,
-     "t_days": 48.761522583562936,
-     "frac_of_leg": 0.5490799569943248,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2h",
      "body": "Callisto",
@@ -819,6 +833,14 @@
      "t_days": 20.986216563695834,
      "frac_of_leg": 0.5669962819286521,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 745092.9511086575,
+     "t_days": 48.761522583562936,
+     "frac_of_leg": 0.5490799569943248,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -836,15 +858,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 653938.6616412873,
-     "t_days": 39.125837532230875,
-     "frac_of_leg": 0.2798734240105644,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -852,6 +867,14 @@
      "t_days": 16.997822374883818,
      "frac_of_leg": 0.7446771634417447,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 653938.6616412873,
+     "t_days": 39.125837532230875,
+     "frac_of_leg": 0.2798734240105644,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -878,15 +901,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:2",
-     "body": "Ganymede",
-     "min_km": 745506.9231906483,
-     "t_days": 40.13700096700657,
-     "frac_of_leg": 0.14878725031080273,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2h",
      "body": "Callisto",
@@ -894,6 +910,14 @@
      "t_days": 20.961817331799065,
      "frac_of_leg": 0.56628312657619,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:2",
+     "body": "Ganymede",
+     "min_km": 745506.9231906483,
+     "t_days": 40.13700096700657,
+     "frac_of_leg": 0.14878725031080273,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -911,15 +935,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 558396.5409042,
-     "t_days": 19.282344313980207,
-     "frac_of_leg": 0.28831180837845316,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/3:2",
      "body": "Callisto",
@@ -927,6 +944,14 @@
      "t_days": 36.3046659593493,
      "frac_of_leg": 0.026085330613908175,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 558396.5409042,
+     "t_days": 19.282344313980207,
+     "frac_of_leg": 0.28831180837845316,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -944,15 +969,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 693107.5486089002,
-     "t_days": 33.495270789514244,
-     "frac_of_leg": 0.22199871209186142,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/0s",
      "body": "Callisto",
@@ -960,6 +978,14 @@
      "t_days": 22.036573998519255,
      "frac_of_leg": 0.12817974070194948,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 693107.5486089002,
+     "t_days": 33.495270789514244,
+     "frac_of_leg": 0.22199871209186142,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -977,15 +1003,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/2l",
-     "body": "Ganymede",
-     "min_km": 408193.5526645137,
-     "t_days": 48.68903970139213,
-     "frac_of_leg": 0.9344603872179986,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/0s",
      "body": "Callisto",
@@ -993,6 +1012,14 @@
      "t_days": 10.586443728712178,
      "frac_of_leg": 0.09006078068697004,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/2l",
+     "body": "Ganymede",
+     "min_km": 408193.5526645137,
+     "t_days": 48.68903970139213,
+     "frac_of_leg": 0.9344603872179986,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1010,15 +1037,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1l",
-     "body": "Ganymede",
-     "min_km": 377807.543286896,
-     "t_days": 42.594288638069806,
-     "frac_of_leg": 0.22923617743578525,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Callisto/1h",
      "body": "Callisto",
@@ -1026,6 +1046,14 @@
      "t_days": 29.356368670199807,
      "frac_of_leg": 0.49999999711571097,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1l",
+     "body": "Ganymede",
+     "min_km": 377807.543286896,
+     "t_days": 42.594288638069806,
+     "frac_of_leg": 0.22923617743578525,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1043,15 +1071,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 1009509.2570488296,
-     "t_days": 22.437055548179014,
-     "frac_of_leg": 0.6560327702068118,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2h",
      "body": "Callisto",
@@ -1059,6 +1080,14 @@
      "t_days": 18.78485245376136,
      "frac_of_leg": 0.500000001794563,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 1009509.2570488296,
+     "t_days": 22.437055548179014,
+     "frac_of_leg": 0.6560327702068118,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1076,15 +1105,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 740435.8521215342,
-     "t_days": 41.48479970450593,
-     "frac_of_leg": 0.16827620018042766,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -1092,6 +1114,14 @@
      "t_days": 10.903065935657056,
      "frac_of_leg": 0.0567979553230459,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 740435.8521215342,
+     "t_days": 41.48479970450593,
+     "frac_of_leg": 0.16827620018042766,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1109,15 +1139,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 454551.5166759367,
-     "t_days": 48.02082814115037,
-     "frac_of_leg": 0.3453966329512612,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -1125,6 +1148,14 @@
      "t_days": 19.432024392556535,
      "frac_of_leg": 0.5527785401304063,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 454551.5166759367,
+     "t_days": 48.02082814115037,
+     "frac_of_leg": 0.3453966329512612,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1142,15 +1173,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 648477.5571910131,
-     "t_days": 18.78485214999952,
-     "frac_of_leg": 0.4999999891057016,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Callisto/1h",
      "body": "Callisto",
@@ -1158,6 +1182,14 @@
      "t_days": 43.83132217407969,
      "frac_of_leg": 0.49999999386476335,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 648477.5571910131,
+     "t_days": 18.78485214999952,
+     "frac_of_leg": 0.4999999891057016,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1175,15 +1207,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 595391.5001942274,
-     "t_days": 26.825742259651555,
-     "frac_of_leg": 0.5176121159633923,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/2:1",
      "body": "Callisto",
@@ -1191,6 +1216,14 @@
      "t_days": 51.38903678456562,
      "frac_of_leg": 0.9683633649300069,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 595391.5001942274,
+     "t_days": 26.825742259651555,
+     "frac_of_leg": 0.5176121159633923,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1217,15 +1250,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/0s",
-     "body": "Ganymede",
-     "min_km": 1566631.0491733162,
-     "t_days": 48.94854807965081,
-     "frac_of_leg": 0.11141803625372862,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1h",
      "body": "Callisto",
@@ -1233,6 +1259,14 @@
      "t_days": 30.511283402157478,
      "frac_of_leg": 0.5712231203533388,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/0s",
+     "body": "Ganymede",
+     "min_km": 1566631.0491733162,
+     "t_days": 48.94854807965081,
+     "frac_of_leg": 0.11141803625372862,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1259,15 +1293,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/1l",
-     "body": "Ganymede",
-     "min_km": 1566631.0491733623,
-     "t_days": 4.986331082343979,
-     "frac_of_leg": 0.2639364478030178,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -1275,6 +1302,14 @@
      "t_days": 15.419966032975102,
      "frac_of_leg": 0.8294222770822894,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/1l",
+     "body": "Ganymede",
+     "min_km": 1566631.0491733623,
+     "t_days": 4.986331082343979,
+     "frac_of_leg": 0.2639364478030178,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1292,15 +1327,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "RCallisto/1:1",
-     "body": "Ganymede",
-     "min_km": 1568894.6321060383,
-     "t_days": 40.76964410252514,
-     "frac_of_leg": 0.873696091238111,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -1308,6 +1336,14 @@
      "t_days": 9.535639728673766,
      "frac_of_leg": 0.16885290248587062,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "RCallisto/1:1",
+     "body": "Ganymede",
+     "min_km": 1568894.6321060383,
+     "t_days": 40.76964410252514,
+     "frac_of_leg": 0.873696091238111,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1325,15 +1361,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 786750.5470108811,
-     "t_days": 19.371316347967593,
-     "frac_of_leg": 0.4999999718241211,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -1341,6 +1370,14 @@
      "t_days": 35.98878273352895,
      "frac_of_leg": 0.20589152739706243,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 786750.5470108811,
+     "t_days": 19.371316347967593,
+     "frac_of_leg": 0.4999999718241211,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1358,15 +1395,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1l",
-     "body": "Ganymede",
-     "min_km": 786750.5470076086,
-     "t_days": 41.32101615256653,
-     "frac_of_leg": 0.15010038040142792,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2l",
      "body": "Callisto",
@@ -1374,6 +1404,14 @@
      "t_days": 20.472569510425632,
      "frac_of_leg": 0.6577354337371283,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1l",
+     "body": "Ganymede",
+     "min_km": 786750.5470076086,
+     "t_days": 41.32101615256653,
+     "frac_of_leg": 0.15010038040142792,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1391,15 +1429,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 196345.40070660756,
-     "t_days": 29.50038670664655,
-     "frac_of_leg": 0.539033757890779,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1h",
      "body": "Callisto",
@@ -1407,6 +1438,14 @@
      "t_days": 3.259565909572723,
      "frac_of_leg": 0.1475803150089485,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 196345.40070660756,
+     "t_days": 29.50038670664655,
+     "frac_of_leg": 0.539033757890779,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1441,15 +1480,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Ganymede/1h",
-     "body": "Ganymede",
-     "min_km": 809143.0014590885,
-     "t_days": 43.46972352677157,
-     "frac_of_leg": 0.5326561606970085,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2l",
      "body": "Callisto",
@@ -1457,6 +1489,14 @@
      "t_days": 18.63800406741428,
      "frac_of_leg": 0.14216361026296262,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 809143.0014590885,
+     "t_days": 43.46972352677157,
+     "frac_of_leg": 0.5326561606970085,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1483,15 +1523,8 @@
      "soi_km": 37680.923494398325
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 802015.6940340564,
-     "t_days": 31.65367288238003,
-     "frac_of_leg": 0.4686193800906048,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1h",
      "body": "Callisto",
@@ -1499,6 +1532,14 @@
      "t_days": 23.09089412231808,
      "frac_of_leg": 0.9084570251087537,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 802015.6940340564,
+     "t_days": 31.65367288238003,
+     "frac_of_leg": 0.4686193800906048,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1516,15 +1557,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1l",
-     "body": "Ganymede",
-     "min_km": 151839.8697406976,
-     "t_days": 37.524474986807725,
-     "frac_of_leg": 0.07588094657961808,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2l",
      "body": "Callisto",
@@ -1532,6 +1566,14 @@
      "t_days": 19.68632424868093,
      "frac_of_leg": 0.5446289805192676,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 151839.8697406976,
+     "t_days": 37.524474986807725,
+     "frac_of_leg": 0.07588094657961808,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1558,15 +1600,8 @@
      "soi_km": 24349.739180045828
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1l",
-     "body": "Ganymede",
-     "min_km": 23689.98787590993,
-     "t_days": 28.213449393212095,
-     "frac_of_leg": 0.8419748187479891,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "RGanymede/2:1",
      "body": "Callisto",
@@ -1574,6 +1609,14 @@
      "t_days": 48.23355198090884,
      "frac_of_leg": 0.46839182584820604,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 23689.98787590993,
+     "t_days": 28.213449393212095,
+     "frac_of_leg": 0.8419748187479891,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1591,15 +1634,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 889846.0170566466,
-     "t_days": 18.034202686209234,
-     "frac_of_leg": 0.26734741679286533,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -1607,6 +1643,14 @@
      "t_days": 41.23244360410263,
      "frac_of_leg": 0.10510723598996283,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 889846.0170566466,
+     "t_days": 18.034202686209234,
+     "frac_of_leg": 0.26734741679286533,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1624,15 +1668,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Callisto/2l",
-     "body": "Ganymede",
-     "min_km": 889846.0170568071,
-     "t_days": 36.071753347212166,
-     "frac_of_leg": 0.3644467496244192,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2l",
      "body": "Callisto",
@@ -1640,6 +1677,14 @@
      "t_days": 16.36146227711028,
      "frac_of_leg": 0.43350075730264753,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/2l",
+     "body": "Ganymede",
+     "min_km": 889846.0170568071,
+     "t_days": 36.071753347212166,
+     "frac_of_leg": 0.3644467496244192,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1657,15 +1702,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1l",
-     "body": "Ganymede",
-     "min_km": 170823.2074536592,
-     "t_days": 39.950738435525246,
-     "frac_of_leg": 0.8588336146540022,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
      "body": "Callisto",
@@ -1673,6 +1711,14 @@
      "t_days": 9.249124284871339,
      "frac_of_leg": 0.2471971911361684,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 170823.2074536592,
+     "t_days": 39.950738435525246,
+     "frac_of_leg": 0.8588336146540022,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1690,15 +1736,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/2h",
-     "body": "Ganymede",
-     "min_km": 171248.94371831912,
-     "t_days": 46.177385728071876,
-     "frac_of_leg": 0.6666198957165426,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LCallisto>Callisto/2h",
      "body": "Callisto",
@@ -1706,6 +1745,14 @@
      "t_days": 40.456800773057005,
      "frac_of_leg": 0.5000000004855232,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/2h",
+     "body": "Ganymede",
+     "min_km": 171248.94371831912,
+     "t_days": 46.177385728071876,
+     "frac_of_leg": 0.6666198957165426,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1723,15 +1770,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Ganymede/2h",
-     "body": "Ganymede",
-     "min_km": 1023810.4015267408,
-     "t_days": 15.70537043459585,
-     "frac_of_leg": 0.3277954082244451,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/2h",
      "body": "Callisto",
@@ -1739,6 +1779,14 @@
      "t_days": 26.652028192405965,
      "frac_of_leg": 0.628221392789275,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 1023810.4015267408,
+     "t_days": 15.70537043459585,
+     "frac_of_leg": 0.3277954082244451,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1756,15 +1804,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LGanymede>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 1023810.4012998218,
-     "t_days": 28.166764484873177,
-     "frac_of_leg": 0.5228401479913878,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -1772,6 +1813,14 @@
      "t_days": 4.8214233239181175,
      "frac_of_leg": 0.16508692690366136,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 1023810.4012998218,
+     "t_days": 28.166764484873177,
+     "frac_of_leg": 0.5228401479913878,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1789,15 +1838,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1l",
-     "body": "Ganymede",
-     "min_km": 1028524.960793372,
-     "t_days": 31.311473490467367,
-     "frac_of_leg": 0.10499016074504128,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Ganymede/1l",
      "body": "Callisto",
@@ -1805,6 +1847,14 @@
      "t_days": 12.523234940082297,
      "frac_of_leg": 0.49999999992046257,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 1028524.960793372,
+     "t_days": 31.311473490467367,
+     "frac_of_leg": 0.10499016074504128,
+     "soi_km": 24349.739180045828
     }
    }
   },
@@ -1822,15 +1872,8 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
-    "Ganymede": {
-     "leg": "LCallisto>Callisto/1h",
-     "body": "Ganymede",
-     "min_km": 75786.14585009932,
-     "t_days": 31.968865480493417,
-     "frac_of_leg": 0.46002121013923125,
-     "soi_km": 24349.739180045828
-    },
     "Callisto": {
      "leg": "LGanymede>Callisto/2l",
      "body": "Callisto",
@@ -1838,6 +1881,14 @@
      "t_days": 7.5929238643212384,
      "frac_of_leg": 0.2074562437548374,
      "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 75786.14585009932,
+     "t_days": 31.968865480493417,
+     "frac_of_leg": 0.46002121013923125,
+     "soi_km": 24349.739180045828
     }
    }
   }

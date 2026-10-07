@@ -3,8 +3,8 @@
 Status: DONE for gc k = 4 and ec k = 1-4. Pre-registration secs. 1-2 (commit ab24925e); amendment 2.6
 (two screens, commit 94dda754); controls and Liang segments sec. 3; gc k = 4 sec. 4, re-screened in sec. 9;
 final candidate set sec. 10: 10 clean two-working-body members at k = 4. ec k = 1-4: empty (sec. 5,
-stamped). gc k = 5-6 and ev k = 4-5 are launched by the lead (sec. 6). The ev screen question is open
-(sec. 9.2). The literature step and rung (d) are #1025.
+stamped). gc k = 5-6 and ev k = 4-5 are launched by the lead (sec. 6). The ev screen question is ruled (amendment
+2.7; sec. 9.2). The literature step and rung (d) are #1025.
 Novelty language: every gate-passing cycler here is "candidate, literature step deferred". Nothing in
 this note is called novel. No catalogue writes. No real-ephemeris runs.
 
@@ -588,21 +588,32 @@ Data: `data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`.
   - ev-A: closest Earth 152,190,166 km, Venus 200,339,040 km.
   - ev-B: closest Earth 1,172,392 km, about 1.27 times Earth's Laplace SOI.
   - ev-C: closest Earth 47,110,597 km, Venus 5,723,283 km.
-- The full #942 ev gate-passing set (31) screens to 22 pass and 9 "reject: planet impact". All 9 come
-  from FIXED legs whose flyby direction is a pure tilted circle (e about 3e-16, a equal to the
-  planet's orbit radius, i about 5-6 deg):
-  - an Earth 1:1 full-rev at its minimax direction meets Earth again at half the leg, 0.3 km from its
-    centre;
-  - a Venus (3,1,apo) half-rev, which is the tilted circle by the 6.34 rule, meets Venus at 1/3 of
-    the leg.
-- The 9 include the Hollister 1H member 2.99/3.19 (the #942 in-run control) and one 2H member
-  (4.05/7.07). The other 1H member (6.14/5.28) and the other 2H member pass.
-- For the half-rev legs the re-encounter is physical, because the leg is the tilted circle. For a
-  full-rev n:m leg the direction is free on a circle; the minimax landed on the tilted circle, and a
-  direction off it would not meet the planet again. The screen's verdict on those legs therefore
-  depends on the direction choice, not on the cycler.
-- This is held for the lead's ruling (asked 2026-10-07). Until then the ev cell's screened results
-  are not final, and the gc and ec results are unaffected.
+- The full #942 ev gate-passing set has 31 cyclers. The first screen (2.6) gave 22 pass and 9 "reject:
+  planet impact". In all 9 a fixed leg's flyby direction is a pure tilted circle (e about 3e-16, a equal
+  to the planet's orbit radius, i about 5-6 deg), which meets the planet again mid-leg:
+  - on an Earth 1:1 full-rev at its minimax direction, at half the leg, 0.3 km from Earth's centre;
+  - on a Venus (3,1,apo) half-rev (the tilted circle by the 6.34 rule), at 1/3 of the leg.
+- Under amendment 2.7 (re-screen 2026-10-07; data replaced in place) the result is **22 pass, 4 pass
+  flagged "direction-dependent (tilted-circle minimax)", and 5 reject: planet impact**:
+
+| # (gauntlet index) | k | Structure | V_inf E / V (km/s) | 2.7 status | Leg that re-meets the planet |
+|---|---|---|---|---|---|
+| 0 | 2 | k2\|RE/1:1\|LE>V/0s\|RV/1:1\|RV/1:1\|LV>E/0s | 2.99 / 3.19 | direction-dependent: Hollister 1H, the in-run control | RE/1:1 (Earth, half-leg) |
+| 2 | 2 | k2\|RE/1:1\|LE>V/0s\|HV/1,0,a\|LV>V/1h\|LV>E/0s | 3.51 / 4.41 | direction-dependent (the Menning-variation skeleton of 6.12) | RE/1:1 |
+| 3 | 2 | k2\|RE/1:1\|LE>V/0s\|LV>V/1l\|RV/1:1\|LV>E/0s | 4.05 / 7.07 | direction-dependent: Hollister 2H member | RE/1:1 |
+| 13 | 3 | k3\|RE/1:1\|LE>V/0s\|LV>V/1h\|RV/3:2\|LV>E/0s | 4.30 / 5.82 | direction-dependent | RE/1:1 |
+| 1 | 2 | k2\|RE/1:1\|LE>V/0s\|HV/1,0,a\|HV/3,1,a\|LV>E/0s | 2.99 / 3.19 | reject: planet impact (the 1H variant with a half-rev pair at Venus) | HV/3,1,a (Venus, 1/3 of the leg); its RE/1:1 too |
+| 12 | 3 | k3\|RE/1:1\|LE>V/0s\|RV/3:2\|HV/3,1,a\|LV>E/0s | 3.34 / 4.04 | reject: planet impact | HV/3,1,a; its RE/1:1 too |
+| 16 | 3 | k3\|RE/1:1\|RE/2:3\|LE>V/0s\|HV/1,0,a\|HV/3,1,a\|LV>E/0s | 5.58 / 3.77 | reject: planet impact | HV/3,1,a |
+| 17 | 3 | k3\|RE/1:1\|RE/1:1\|LE>V/0s\|RV/1:1\|HV/3,1,a\|LV>E/0s | 5.92 / 3.58 | reject: planet impact | HV/3,1,a |
+| 18 | 3 | k3\|RE/2:3\|LE>V/0s\|RV/1:1\|HV/3,1,a\|LV>E/0s | 5.92 / 3.58 | reject: planet impact | HV/3,1,a |
+
+- The ev in-run control is not void: its V_inf recall stands (sec. 3.1). The screen flags it under 2.7
+  (ii) because its Earth 1:1 return at the minimax direction is the tilted circle. The other 1H member
+  (6.14/5.28) and the other 2H member (5.60/6.02) pass outright. ev-A, ev-B and ev-C pass outright.
+- The 4 flagged cyclers wait for #1027 (direction re-picked under the no-unscheduled-pass constraint).
+  The 5 rejections are physical in the ideal model.
+- gc k = 4 is unchanged under 2.7 (every gc flag is on a Lambert leg), as are the #943 gc candidates.
 
 ### 9.3 Addendum text for the #942/#943 generator note (for the lead to relay; that note is mid-edit)
 
@@ -614,11 +625,12 @@ Data: `data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`.
 > is an impact rejection, while one inside its Laplace SOI makes the structure model-invalid. Applied
 > to this note's candidates (`data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`), gc-1,
 > gc-2, GanCal#5, ev-A, ev-B and ev-C all pass (ev-B's closest unscheduled Earth pass is 1.27 Earth
-> SOI). 9 of the 31 ev gate-passers, including the Hollister 1H member 2.99/3.19, fail as planet
-> impacts. In each case a fixed leg's direction is the tilted circle (e = 0, a = the planet's orbit
-> radius), which meets the planet again mid-leg. On full-rev legs this comes from the minimax
-> direction choice; the lead's ruling on it is pending. The vm, vm2, em, ge cells have not been
-> re-screened.
+> SOI). Of the 31 ev gate-passers, 9 have a fixed leg whose direction is the tilted circle (e = 0,
+> a = the planet's orbit radius), which meets the planet again mid-leg. Under the lead's ruling
+> (#973 amendment 2.7) the 5 with a tilted-circle half-rev (Venus 3,1,apo) are physical rejections.
+> The 4 whose only re-encounter is on a free-direction Earth 1:1 full-rev, including the Hollister 1H
+> member 2.99/3.19 (the in-run control, whose recall stands), are "pass, direction-dependent" until
+> #1027 re-picks those directions. The vm, vm2, em and ge cells have not been re-screened.
 
 ## 10. Final candidate table: R11, Ganymede-Callisto, k = 4 (the clean two-working-body members)
 

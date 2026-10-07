@@ -2,7 +2,8 @@
  "source": "data/942_cell_ev_gauntlet.json",
  "cell": "ev",
  "counts": {
-  "reject: planet impact": 9,
+  "pass, direction-dependent (tilted-circle minimax)": 4,
+  "reject: planet impact": 5,
   "pass": 22
  },
  "candidates": [
@@ -14,12 +15,13 @@
     "E": 2.994071820948365
    },
    "k": 2,
-   "screen_status": "reject: planet impact",
+   "screen_status": "pass, direction-dependent (tilted-circle minimax)",
    "r_min_km": 102297252.57160692,
    "r_max_km": 151005203.2103075,
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
-   "unscheduled_inside_soi": [
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -61,7 +63,9 @@
      "t_days": 875.916578225266,
      "frac_of_leg": 0.333333327944519,
      "soi_km": 616271.1194672836
-    },
+    }
+   ],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -98,12 +102,13 @@
     "E": 3.5120349845953442
    },
    "k": 2,
-   "screen_status": "reject: planet impact",
+   "screen_status": "pass, direction-dependent (tilted-circle minimax)",
    "r_min_km": 90568728.04983287,
    "r_max_km": 152148366.6744634,
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
-   "unscheduled_inside_soi": [
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -140,12 +145,13 @@
     "E": 4.049562351100343
    },
    "k": 2,
-   "screen_status": "reject: planet impact",
+   "screen_status": "pass, direction-dependent (tilted-circle minimax)",
    "r_min_km": 86481240.10868938,
    "r_max_km": 151578695.189366,
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
-   "unscheduled_inside_soi": [
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -188,6 +194,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -221,6 +228,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -254,6 +262,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1l",
@@ -287,6 +296,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/1:1",
@@ -320,6 +330,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/2:3",
@@ -353,6 +364,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/1:1",
@@ -386,6 +398,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -419,6 +432,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1l",
@@ -459,7 +473,9 @@
      "t_days": 1448.7660215724595,
      "frac_of_leg": 0.33333332794451936,
      "soi_km": 616271.1194672836
-    },
+    }
+   ],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -496,12 +512,13 @@
     "E": 4.296204639641904
    },
    "k": 3,
-   "screen_status": "reject: planet impact",
+   "screen_status": "pass, direction-dependent (tilted-circle minimax)",
    "r_min_km": 85161115.41601847,
    "r_max_km": 178989970.26549044,
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
-   "unscheduled_inside_soi": [
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [
     {
      "leg": "RE/1:1",
      "body": "E",
@@ -544,6 +561,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/2:3",
@@ -577,6 +595,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/2:3",
@@ -619,6 +638,7 @@
      "soi_km": 616271.1194672836
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "HV/3,1,a",
@@ -661,6 +681,7 @@
      "soi_km": 616271.1194672836
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "HV/3,1,a",
@@ -703,6 +724,7 @@
      "soi_km": 616271.1194672836
     }
    ],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "HV/3,1,a",
@@ -736,6 +758,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RV/1:1",
@@ -769,6 +792,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RV/1:1",
@@ -802,6 +826,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -835,6 +860,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LE>V/0s",
@@ -868,6 +894,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RV/3:2",
@@ -901,6 +928,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/1:1",
@@ -934,6 +962,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/2:1",
@@ -967,6 +996,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RE/2:3",
@@ -1000,6 +1030,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -1033,6 +1064,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RV/3:2",
@@ -1066,6 +1098,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "LV>V/1h",
@@ -1099,6 +1132,7 @@
    "primary_floor_km": 695700.0,
    "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "V": {
      "leg": "RV/2:1",

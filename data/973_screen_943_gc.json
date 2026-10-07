@@ -19,6 +19,7 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "Ganymede": {
      "leg": "LGanymede>Ganymede/1l",
@@ -44,6 +45,7 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "Callisto": {
      "leg": "LCallisto>Callisto/1h",
@@ -77,6 +79,7 @@
    "primary_floor_km": 76492.0,
    "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
    "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
    "closest_unscheduled_per_body": {
     "Callisto": {
      "leg": "LGanymede>Callisto/1h",
