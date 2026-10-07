@@ -1911,8 +1911,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `search/real_binary_kk_sweep.py`, plus `core/cr3bp.py`'s `#652` wall-clock budget event, which
   terminates a propagation. Fix: an evaluation- or step-count budget, or a wall-clock guard that is
   reported as a timeout and kept out of pass/fail. NOT "raise the timeout". Past negatives from these
-  sweeps run under load are suspect (bug-fix rule). Papercut:
-  `docs/papercuts/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md`.
+  sweeps run under load are suspect (bug-fix rule). Evidence, two papercuts (papercut review
+  2026-10-07, `d2b3714e`): `docs/papercuts/processed/2026-10-05-ci-keeper-opus-ci-timeout-from-shared-mac-load.md`
+  (the 600 s pytest-timeout on the 73c test under load) and
+  `docs/papercuts/processed/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md` (the 5 s
+  SIGALRM budget in `test_656` and `pluto_charon_kk_sweep`).
 - `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`; NOT dispatched; register
   only, `data/catalogue.yaml` not edited). **ADD A V0 CATALOGUE ROW
   `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger 1963 (NASA TN D-1833,
@@ -1976,6 +1979,19 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   the cost axis for near-miss closures; X12 an n-pi BVP enumeration of gc-1's sibling return blocks
   (Lantukh-Russell); X13 theorem-level ejection-collision controls for the second-species lanes.
   Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3-4.
+- `#978` — registered 2026-10-07 (papercut review `d2b3714e`; owner of the work: corpus-file-opus;
+  NOT dispatched; backlog). **CORPUS_INDEX ROWS CARRY THE TITLE-PAGE AUTHOR, TITLE AND REPORT OR THESIS
+  NUMBER**, not the filer's guess, and `scripts/check_wanted_vs_corpus.py` matches on those fields too.
+  Origin: the Rall thesis was held under the supervisor's name, so the wanted-list check missed it
+  (`docs/papercuts/processed/2026-10-05-main-rall-thesis-held-under-wrong-name.md`).
+- `#979` — registered 2026-10-07 (papercut review `d2b3714e`; owner of the work: the twobody lane,
+  after `#972`; NOT dispatched; backlog). **`CircularSystem._fb` CACHE MUST NOT BE SHARED BY
+  `dataclasses.replace`.** In `src/cyclerfinder/search/two_working_body.py` the flyby-body cache is
+  `field(default_factory=dict, repr=False)`, so `dataclasses.replace` hands the copy the original's
+  cache: a GM-scaled system kept the unscaled flyby bodies (found by the `#943` GM-sweep instrument
+  check, note sec. 6.21). Make it `field(default_factory=dict, init=False, compare=False)`, created in
+  `__post_init__`; add a pinned test; audit the other `dataclasses.replace` uses on dataclasses with
+  cache fields. Papercut: `docs/papercuts/processed/2026-10-06-twobody-gen-opus-circularsystem-replace-shares-cache.md`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
