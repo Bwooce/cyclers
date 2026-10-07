@@ -264,3 +264,18 @@ Files: `scripts/run_998_enumerate.py`, `scripts/gauntlet_998.py`, `scripts/reale
 `<cell>_gauntlet.json`, `<cell>_realeph_n1.json`, `<cell>_realeph_n3.json`). The per-zero records
 (`<cell>/zeros.jsonl`, 34 MB) are not committed; they regenerate by re-running the enumeration with the
 settings in `settings.json`.
+
+## 9. Archive of the per-zero records
+
+The four `zeros.jsonl` files were copied (cp, diff -q clean) to `~/dev/references/cyclers-runs/998/<cell>/zeros.jsonl`.
+The originals remain untracked in `data/998_pluto_smallmoons/<cell>/`; nothing was deleted.
+
+| Cell | Archive path | Lines | md5 |
+|---|---|---|---|
+| ps (Styx) | `~/dev/references/cyclers-runs/998/ps/zeros.jsonl` | 11414 | 180fb792069c2f25a4757f21c4d395bb |
+| pn (Nix) | `~/dev/references/cyclers-runs/998/pn/zeros.jsonl` | 6503 | a0035a912998a19ad56b2a63989fddf2 |
+| pk (Kerberos) | `~/dev/references/cyclers-runs/998/pk/zeros.jsonl` | 3111 | a69d216f1f60cbf8e546166ada8c8fbf |
+| ph (Hydra) | `~/dev/references/cyclers-runs/998/ph/zeros.jsonl` | 1837 | 4fb00a1ff0f18a045ac2f9dce220e894 |
+
+The line counts equal the exact-zero counts in sec. 3. The literature step and the adjudication of the
+224 strong candidates are task #1036, waiting for #972.
