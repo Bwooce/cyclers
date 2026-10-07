@@ -63,3 +63,31 @@ Europa -20.50, Io -61.51 deg).
 Expected outcome: CLOSES with probability about 0.5. EGGIE's V_inf of 7-9 km/s favour small
 patched-conic to continuous shifts and the turns are small (1-6 deg), but #968 rung (b) showed that a
 pinned 3-cycle chain can fail to start.
+
+## 5. Result: the patched-conic n-cycle seed fails the gate (n = 3 and n = 2); #1041 stops at step 1
+
+`data/1041_eggie/pc_chain_n3.json`, `pc_chain_n2.json`. The date corrector, seeded from root (iii)
+tiled over n cycles, converges exactly in both cases (residual 2e-13 and 1.6e-13 km/s; re-fly miss
+5e-6 and 1e-6 km). Neither root passes the gate, so neither passes the pre-registered acceptance of
+step 1:
+
+| n | flybys in time order: body, V_inf (km/s), demanded turn (deg) |
+|---|---|
+| 3 | G 6.818 5.9, G 6.818 3.5, I 7.827 0.2, E 8.917 3.4, G 6.224 4.4, G 6.224 3.0, **I 5.418 86.7**, E 8.065 0.1, G 6.320 3.8, G 6.320 0.04, **I 7.354 131.2**, E 8.622 2.4 |
+| 2 | G 5.938 0.2, G 5.938 0.4, I 5.840 2.4, E 8.166 3.2, G 5.836 3.5, G 5.836 0.6, **I 5.410 90.9**, E 7.940 1.0 |
+
+- The defect that grows is the Io turn in the second cycle (87-91 deg) and in the third (131 deg).
+  The first cycle stays small-turn. This is consistent with the model: Io's position shifts by
+  -61.5 deg per cycle relative to Ganymede (and Europa by -20.5), so the cycle-1 geometry does not
+  carry over at Io.
+- The V_inf also drift away from Table 4 when n cycles are solved together (G 5.9-6.8 km/s against
+  7.07): the closed n-cycle chain distributes the mismatch over all cycles.
+- By sec. 4 this is DOES NOT CLOSE, with the growing defect identified (the cycle-2 Io turn), at the
+  patched-conic seed stage; the continuous steps 2-4 were not run. The n = 1 object is root (iii)
+  itself (one cycle, a gate pass).
+- This matches the paper (p.10): ballistic repeatability "in general will only last for a few
+  cycles", then maintenance Delta-V.
+- Not tested (a more faithful quasi-periodic test, not pre-registered here): MARCHING the open chain
+  cycle by cycle from root (iii), with each new cycle's four dates solved from the junction magnitude
+  matches given the previous cycle's end. That would show after how many cycles the gate first fails
+  without spreading the mismatch over all cycles. Proposed as a follow-up.
