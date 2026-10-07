@@ -2144,7 +2144,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `#970`. **EARTH-MOON BOTH-PRIMARY LINEAGE: NEWTON'S OTHER alpha/beta TYPES,
   HOELKER-WINSTON FIG. 90 LEMNISCATE, SCHWANIGER PERIGEE CONTINUATION.** R16 (`#976`) takes the
   lineage to the moons instead; Schwaniger itself is `#970` (control). Source:
-  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5.
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 5. **✓ DONE 2026-10-07 (earthmoon-opus,
+  `727da734`, `d7998ba0`): ALL KNOWN-CLASS.** Families F1 (19), F3 (20) and F4 3/7-retrograde (37
+  candidates); every candidate is excluded by Franz-Russell's 350,000-km rule (maximum Moon-distance
+  test, not the perigee proxy) and lies inside the Restrepo-Russell search domain. Casoliva 7-3a sits on
+  the 3/7-retrograde family. The Restrepo-Russell membership cross-match is running. Side finding:
+  `#1030`.
 - `#998` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
   OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the Pluto gate is OPEN for this cell. DISPATCHED to pluto-smallmoons-sonnet.
   **PLUTO-CHARON ONE-WORKING-NODE CYCLERS WITH STYX,
@@ -2327,6 +2332,16 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   SEARCH IN `scripts/run_973_enumerate.py screen` WITH A ROOT-BRACKETED CLOSEST-APPROACH SEARCH PER BODY
   PER LEG.** The current search samples along the leg, so a pass between samples can be missed. Add a
   test that plants a pass between two samples.
+- `#1030` — registered 2026-10-07 (from `#997`, earthmoon-opus `d7998ba0`; BACKLOG, small; catalogue
+  wording). **CASOLIVA ROWS STORE THE VERTICAL STABILITY INDEX BUT THEIR NOTES SAY "STABLE".**
+  `casoliva-7-3a-em-cycler-2010` and `casoliva-2-1b-em-resonant-po-2010` store
+  `orbit_elements.cr3bp.stability_index` = k_perp (-1.2985 and +2.037), which matches Casoliva's printed
+  k through `#801`'s `_K_SIGNED_FORCE_PERP` override, while their notes say "STABLE". On the rows' own
+  states `planar_stability_index` gives k_par = -4.965 and 1.513, so both are in-plane FLIP-UNSTABLE
+  (the `#997` family continuation agrees, b_h = -4.97). Fix: notes wording "vertically stable, in-plane
+  unstable", and check every other `#801`-override row: the override set is {1-2e, 3-2a, 7-3a}, and
+  `casoliva-1-2e-em-resonant-po-2010` also says "(STABLE, k=1.9998)" (3-2a is not a catalogue row).
+  Any `data/catalogue.yaml` edit runs all ratchets.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
