@@ -160,3 +160,37 @@ the registry-reading script tests and tests/scripts/test_scripts_call_preflight.
 | EGGIE level-3 real-ephemeris | NOT RE-RUNNABLE until #1039 (sec. 4) |
 | #318 n-body stage (1 stamp) | NOT RE-RUNNABLE until #1039; re-stamped as retracted |
 | #501 n-body stages (6 stamps) | NOT RE-RUNNABLE until #1039; re-stamped as retracted |
+
+## 6. EGGIE model variants (#1040 work, lead ruling): PRE-REGISTRATION (before any variant run)
+
+Same root search as 3.2 (cycle E>G | G>G | G>I | I>E, all 50 revolution/branch combinations, 12
+seed phases over one synodic period, exact roots with residual < 1e-9 km/s and re-fly miss < 1 km,
+gate at 25 km and at the project floors). Reported per variant: the root count, the nearest-root
+distance to Table 4 (max over the three moons of |V_inf - Table 4|), and the nearest gate-passing
+root. One commit per variant, data `data/1023_eggie/pc_roots_<variant>.json`.
+
+- (i) `tsyn705`: T_syn = 7.05 d as printed (p.2). Smas rebuilt consistently for that period: with
+  Delta = 5.2 deg, n_I = (8 pi + Delta)/T_syn, n_E = (4 pi + Delta)/T_syn, n_G = (2 pi + Delta)/T_syn,
+  and a = (mu / n^2)^(1/3) with the lane mu. Io is therefore NOT the registry Io (a_Io
+  417,834 km instead of 421,800; computed in the run). Cycle 4 x 7.05 = 28.20 d (Table 4 total
+  28.22 d). Laplace angle 180 deg.
+- (ii) `laplace`: the consistent model (3.1), Laplace angle swept 0-345 deg in 15-deg steps (Ganymede's
+  initial phase = (angle - lambda_I + 3 lambda_E)/2 with Io = Europa = 0). The nearest root is
+  reported over all angles and per angle.
+- (iii) `coded`: the OLD coded model, the `ideal_moon_smas` radii with T = 4 x `ideal_t_syn()` =
+  28.017 d. Laplace angle 180 deg. The date residual matches V_inf MAGNITUDES at junctions only, so it
+  is solvable although the configuration does not repeat rigidly. A root here is quasi-periodic, not
+  exactly periodic.
+
+Readings, fixed now:
+- A root within 0.5 km/s of Table 4 in (iii) and in no other variant: the paper's own model is the
+  Ganymede-period one, and its EGGIE is quasi-periodic in the rigid-rotation sense. This would explain
+  the #480 history.
+- A root within 0.5 km/s in (i) or (ii): EGGIE is reproducible in that variant, and the continuous
+  steps 2-3 of sec. 3 become runnable there (a separate pre-registration).
+- No root within 0.5 km/s in any variant: the Table 4 object is unreproduced under every model we can
+  build; ESCALATION to the owner.
+
+Expected outcomes, stated now: (i) a near root with probability 0.4; (ii) at some angle 0.35;
+(iii) 0.35. Overall I expect at least one variant to give a root within 0.5 km/s, with probability
+about 0.6.
