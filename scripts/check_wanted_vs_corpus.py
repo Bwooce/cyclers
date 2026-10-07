@@ -32,6 +32,7 @@ list; a paper held in another form (report, preprint, thesis) is marked
 
 Usage::
 
+    python scripts/check_wanted_vs_corpus.py            # the #960 list
     python scripts/check_wanted_vs_corpus.py docs/notes/2026-10-05-960-wanted-papers.md
     python scripts/check_wanted_vs_corpus.py LIST --papers ../cyclers_pdf/papers --pages 3
 
@@ -54,6 +55,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PAPERS = REPO_ROOT.parent / "cyclers_pdf" / "papers"
 DEFAULT_INDEX = REPO_ROOT / "docs" / "notes" / "CORPUS_INDEX.md"
+DEFAULT_WANTED = REPO_ROOT / "docs" / "notes" / "2026-10-05-960-wanted-papers.md"
 
 #: Groups of surname spellings that name the same author (compared after accent folding).
 ALIAS_GROUPS: tuple[frozenset[str], ...] = (
@@ -301,7 +303,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument(
-        "wanted", type=Path, help="markdown wanted list with '| N | citation | DOI |' rows"
+        "wanted",
+        type=Path,
+        nargs="?",
+        default=DEFAULT_WANTED,
+        help="markdown wanted list with '| N | citation | DOI |' rows (default: the #960 list)",
     )
     ap.add_argument("--papers", type=Path, default=DEFAULT_PAPERS)
     ap.add_argument("--index", type=Path, default=DEFAULT_INDEX)
