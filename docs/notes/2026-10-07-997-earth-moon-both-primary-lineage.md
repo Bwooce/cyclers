@@ -111,6 +111,23 @@ novelty claim.
 - **Newton 1959, Hoelker-Winston 1968, Schwaniger 1963** are themselves the published sources: a
   member continued from their seed is known-class (`known-class-member`) by construction.
 
+### 0.7 Amendments (each recorded before the runs it affects)
+
+- 2026-10-07 22:06 AEDT, after the first F1 run, before the F2-F5 runs. New stop rule: **the start
+  crossing and the T/2 crossing swap.** At that point the curve in (x0, ydot0) passes through an
+  orbit of period T/2 and then retraces the same orbits from the other symmetric crossing. This is
+  a period-halving end point (b_h -> +2 for this family, -2 for the half-period family). The first
+  F1 run went past it and retraced 300 members that were already computed; I checked this by
+  matching (C, T, perigee) and by showing that member 242's T/2 crossing is member 15's start.
+  That run is kept in scratch only.
+- 2026-10-07 22:14 AEDT, after the first F4 seed pass, before any F4 continuation or rho < 0.03 run:
+  - The seed rho set for F4 is {0.005, 0.01, 0.02, 0.03, 0.06, 0.1, 0.15, 0.2}. The script's
+    first pass had used only 0.03-0.2, which cannot reach 4/11 and most of 3/8: they need
+    r_a < 2a, so rho < 0.019 (4/11) or rho < 0.040 (3/8).
+  - A seed that closes with |t_half - pi alpha| > 0.15 pi alpha is dropped as "not the
+    alpha/beta type". In the first pass such seeds were lunar captures with many loops, for
+    example 2/5-d at rho = 0.03 closed with t_half = 3.1, not 6.3.
+
 ## 1. Results
 
 (filled in after the runs; see sections below)
