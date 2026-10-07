@@ -588,3 +588,22 @@ AMENDMENT 11, a path-following rule only:
 - The VERDICT points still need the lane floors (1e-3 km, 1e-6 km/s) unchanged: sigma = 1 for
   criterion (i) and the identity point sigma <= 0.01 for (ii).
 - The acceptance checks (item 6) apply to every accepted point, flagged or not.
+
+### 9.4 AMENDMENT 12 (before the runs it covers): pin the open chain's end asymptotes
+
+Under amendment 9's minimum-norm steps, the continuation reached sigma = 0.0602, five of its
+points noise-floor-limited. It then stopped at sigma = 0.0632 on the acceptance check: the FIRST
+node's Ganymede periapsis fell to 2.6 km altitude (floor sigma x 100 = 6.3 km); its r_p / sigma
+went 3707 -> 2731 km while the interior nodes stayed near their seeds. The first node has no
+inbound leg, so its periapsis radius is one of the six free directions. The minimum-norm step let it
+drift, which is an artefact of the open end and not a property of the orbit. Those points are kept
+in `sigma_n1_minnorm.json` and not used.
+
+AMENDMENT 12: the six free directions are removed by pinning the end asymptotes to the
+reconstructed chain. At the first node the inbound V_inf vector, and at the last node the outbound
+V_inf vector, both computed from the node's moon-relative two-body hyperbola (asymptote at true
+anomaly -/+ acos(-1/e)), must equal the chain's patched-conic vectors at those flybys. That is 6
+rows (weight 1e3 per km/s), so the system is square: 7M unknowns, 6(M-1) + M + 6 rows. In the
+sigma -> 0 limit this is the patched-conic chain itself. The continuation restarts at sigma = 0.02.
+Everything else is as amendments 8-11. A pass then means the interior of the chain closes in
+continuous gravity with its ends held on the patched-conic asymptotes.
