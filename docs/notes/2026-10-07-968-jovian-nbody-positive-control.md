@@ -355,3 +355,29 @@ PERIAPSIS seeds with node-to-node forward legs it stalls at km/s velocity defect
 km/s after 160 evaluations; Member D and EGGIE used the same seed type). A re-run of the voided
 EGGIE / #318 / #501 results should seed from a forward-backward (mid-leg match) solution, not from
 periapsis states.
+
+## 6. Results of amendment 6
+
+### 6.1 GM continuation (5.1)
+
+- Post-hoc tolerances on the 4.7 fit: V_inf 3.2375 (|diff| 0.0025 <= 0.01), altitude 329.6 km
+  (|diff| 1.6 <= 10), Callisto speed 3.3392 (|diff| 0.0008 <= 0.01): within, but judged after the
+  data.
+- Fresh prediction (written in 5.1 before the runs): s_G = 0.030 gave V_inf 3.2306 (predicted 3.2305)
+  and r_p / s_G 2973.7 km (2973.7); s_G = 0.026 gave 3.2315 (3.2314) and 2972.3 km (2972.4). Both
+  within 0.002 km/s and 3 km: PASS. The branch from the full-mass orbit to the published patched-conic
+  limit is shown.
+
+### 6.2 The unscheduled pass, impulsive-kick patched conic (5.2), `data/968_control/kick.json`
+
+- Tool check: with the kick switched off, the solver reproduces GanCal#5 exactly (V_inf 3.2383,
+  altitude 328.0 km, Callisto 3.3395; residual 7e-12).
+- With the kick: the pass is at 91,414 km, v_rel 2.670 km/s, turn 1.739 deg. Ganymede V_inf 3.1937
+  km/s, altitudes 331.9 / 332.6 km, Callisto speed 3.3217 km/s (residual 6e-5; the closest-approach
+  search tolerance; not pushed further).
+- Reading fixed in 5.2: neither branch. The pass explains 0.045 of the 0.198 km/s V_inf shift (23 %)
+  and 4 km of the 248 km altitude shift (about 2 %). My earlier inference (4.1, 4.5) that the pass
+  is the cause is therefore WRONG for most of the shift. What 6.1 does show is that the whole shift
+  is a smooth finite-Ganymede-mass effect on one branch. Which part of continuous gravity carries the
+  rest (the near-limit flyby itself, at turn ratio 0.94, or Ganymede's distant pull along the legs)
+  is not decomposed: an open item, not needed for the lane verdict.
