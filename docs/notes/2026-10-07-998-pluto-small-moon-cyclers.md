@@ -39,7 +39,11 @@ about 12 percent above its barycentric speed. Wobble of Pluto is ignored. The re
 ## 2. Controls
 
 Two controls. Neither is a Charon-flyby control; the #320 result cannot be recalled by the #998
-generator (reasons below). The lead accepted this on 2026-10-07.
+generator (reasons below). Lead ruling 2026-10-07: accepted. The #320 re-run is a self-regression of the
+old pipeline; VenMar#45 is the only control of the generator path; no published Charon-flyby cycler
+exists to serve as a positive control. Every #998 result is therefore generator-level and
+real-ephemeris-decided: the ideal model is a SEED generator only, and the plu060 step (sec. 6) is the
+arbiter for every gate-passing candidate.
 
 1. #320 self-regression. `run_998_enumerate.py control320` re-runs #320's own Pluto sweep through
    its own code (`scan_320_epoch_aware_moon_systems._per_system_sweep`; the module-level import of
@@ -202,7 +206,10 @@ real-ephemeris cyclers: they close to under 1 m/s (0.5 percent of V_inf) in a pa
 model, which is the level at which Russell and Strange call a cycler ballistic before a full n-body
 optimisation. `converged` at the 1e-6 km/s tolerance was false for all of them.
 
-Limits of this check, stated plainly:
+Limits of this check, stated plainly (the first is a modelling limit of the one-centre patched conic
+for a binary with mass ratio 0.11: Charon's ideal radius from the system GM is 19,596 km, its
+barycentric radius in the kernel 17,464 km, about 12 percent in speed; a barycentric ideal model for
+binaries is registered as its own task, and src is not patched here):
 - The model is the barycentre-centred patched conic. Pluto's own 2100 km wobble and the 12 percent
   offset between Charon's ideal radius (19,596 km) and its barycentric radius (17,464 km) enter only
   through the kernel states of the bodies; the spacecraft still feels one point mass at the barycentre.
@@ -211,6 +218,17 @@ Limits of this check, stated plainly:
 - Closure is the H&M magnitude/vector residual, not a periodic-orbit solve; a three-cycle chain is the
   longest tested.
 - Only the 12 best-ratio strong cyclers were checked, not the 224.
+
+### 6.1 Real-ephemeris check of every gate-passing candidate (lead ruling)
+
+The same script, run on all 456 gate-passing cyclers (`--pool all`, one cycle, five epochs;
+`<cell>_realeph_all_n1.json`). Strong set (224): the demanded-turn gate passes at all five epochs for
+219 (Styx 106 of 108, Nix 44 of 46, Kerberos 40 of 41, Hydra 29 of 29), and 217 of those also refit to
+under 1 m/s at every epoch (the worst strong residual is 17 m/s, Hydra, in 2 cycles that close
+above 1 m/s but below 10). The 232 gate-passing cyclers outside the strong set refit as well
+(residual under 1 m/s at every epoch for 212, gate pass at every epoch for 209), so the real-ephemeris
+step does not separate them; the strong filters rest on the patched-conic argument in sec. 3, not on
+this step. Not done: the three-cycle chain was run only for the 12 best-ratio cyclers.
 
 ## 7. What was verified and what was assumed
 

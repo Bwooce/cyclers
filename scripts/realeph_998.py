@@ -134,6 +134,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--cell", required=True)
     ap.add_argument("--top", type=int, default=3)
+    ap.add_argument("--pool", choices=("strong", "all"), default="strong")
     ap.add_argument("--n-cycles", type=int, default=1)
     ap.add_argument("--epochs", type=int, default=5)
     ap.add_argument("--out", type=Path, required=True)
@@ -145,7 +146,10 @@ def main() -> None:
     g = json.loads(
         (REPO / "data" / "998_pluto_smallmoons" / f"{args.cell}_gauntlet.json").read_text()
     )
-    strong = sorted((c for c in g["candidates"] if c["strong"]), key=lambda c: c["worst_ratio"])
+    strong = sorted(
+        (c for c in g["candidates"] if c["strong"] or args.pool == "all"),
+        key=lambda c: c["worst_ratio"],
+    )
     picks = strong[: args.top]
 
     sp.furnsh(str(LSK))
@@ -192,11 +196,11 @@ def main() -> None:
                 ]
             rec["encounter_miss_km"] = encounter_self_consistency(eph, cyc, sol.x)
             rows.append(rec)
-            print(cand["key"][:60], rec, flush=True)
         out.append(
             {
                 "key": cand["key"],
                 "k": cand["k"],
+                "strong": cand["strong"],
                 "ideal": {
                     "worst_ratio": cand["worst_ratio"],
                     "vinf_charon_kms": cand["vinf_charon_kms"],
