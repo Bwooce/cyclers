@@ -1923,6 +1923,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Published 1963, so NOT novel (literature row, V0). Second use: a positive control for a corrector
   regularised at BOTH primaries (`#948` R4), since it passes 177 km above the Earth and 464 km above
   the Moon every period.
+- `#971` — registered and DISPATCHED 2026-10-07 (owner request 2026-10-07 19:10 AEDT; owner of the
+  work: corpus-review2-fable). **SECOND FABLE CROSS-PAPER REVIEW OF THE CORPUS.** Covers every digest
+  added after the `#938` review note (commit `8b5567b7`, 2026-10-05 23:31 AEDT): about 85 digests,
+  `#960` batches 19-35 plus the owner's uploads. Looks for untried routes to novel cycler-class orbits
+  from technique x case correlations between the new papers and the held corpus, as `#938` sec. 3a
+  did. Analysis only: no code, no catalogue edit. Output:
+  `docs/notes/2026-10-07-971-fable-corpus-review-2.md` and a technique x case matrix delta CSV. In
+  progress.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
