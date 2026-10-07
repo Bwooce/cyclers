@@ -289,3 +289,69 @@ full-mass continuation sits 0.20 km/s lower in V_inf. The failed criterion 4 com
 continuous-gravity orbit with a patched-conic display value; the tolerance (0.10 km/s, 150 km) was
 set too tight for a 0.94 turn-ratio Ganymede flyby plus an unmodelled 95,000 km Ganymede pass.
 This is my reading; the verdict as registered stays FAIL on criterion 4, and the lead rules on it.
+
+## 5. Lead ruling 2026-10-07 and AMENDMENT 6 (written before the runs it covers)
+
+Ruling: #968 is a PARTIAL. "The lane closes a GanCal#5-topology orbit at 3 S_GC in the continuous
+R-S model; the published patched-conic values are not reproduced; criterion 4 FAILED as
+pre-registered." Criterion 4 is not loosened. To make the shift explanation SHOWN, and to validate
+the lane, three things, each pre-registered here.
+
+### 5.1 GM continuation: tolerances (stated after the data in 4.7 exist; said plainly)
+
+The 35 points of 4.7 were computed before this tolerance was written, so judging them now is
+post hoc. Tolerance, as asked by the lead: the s_G -> 0 limit (quadratic fit, s_G <= 0.12) must give
+V_inf within 0.01 km/s of 3.24 and altitude (r_p / s_G - 2634 km) within 10 km of 328 km; Callisto
+speed within 0.01 km/s of 3.34. On the 4.7 fit these read 3.2375, 329.6 km, 3.3392 (post hoc).
+A genuine prediction, written now from that fit, before the runs: continuing to s_G = 0.030 and
+0.026, the pinned solution must give V_inf 3.2305 and 3.2314 km/s (within 0.002) and r_p / s_G
+2973.7 and 2972.4 km (within 3 km).
+
+### 5.2 Is the 0.2 km/s shift the unscheduled Ganymede pass? (independent patched-conic route)
+
+- Done before this amendment, diagnostic only: the lead's suggested zero-SOI insertion of the pass as a
+  scheduled Ganymede encounter (`two_working_body.correct_dates`, legs LG>G/1l | LG>G/0s | LG>C/0s |
+  LC>G/0s, seeded at the GanCal#5 dates plus the pass at 25.15 d) converges, but to a DIFFERENT
+  orbit: V_inf 2.143 km/s, turns 53.6 and 67.5 deg. The other three rev/branch splits of the B->C leg
+  do not converge. A zero-SOI model forces the craft through Ganymede's centre, a 95,000 km move,
+  so it cannot represent a distant pass. Not used as evidence either way.
+- Pre-registered route: an impulsive-kick patched conic (`scripts/run_968_kick.py`). Kepler legs
+  about Jupiter; the scheduled Ganymede flybys stay zero-SOI, as in R-S; the B->C leg is propagated
+  by Kepler steps, and at its closest approach to Ganymede the Ganymede-relative velocity is rotated
+  toward Ganymede by delta = 2 atan(mu_G / (d v_rel^2)), with d the Kepler closest-approach distance,
+  in the plane of the relative position and velocity. Unknowns: the three dates and the B->C
+  departure velocity (planar). Residuals: arrival at Callisto (position) at its date, V_inf magnitude
+  match at B and A, vector match at Callisto. Solved by least squares from the GanCal#5 dates; the
+  kick is recomputed inside every residual call.
+- Reading, fixed now: Ganymede V_inf within 0.05 km/s of 3.040 and Ganymede altitude within 100 km
+  of 576 km: the shift is the pass, SHOWN. V_inf within 0.05 km/s of 3.24: the pass is NOT the
+  cause. Anything between: the pass explains a stated fraction (V_inf shift / 0.198).
+
+### 5.3 Second published control: GanEur#43 (Russell & Strange 2009)
+
+- Choice: GanEur#43 against GanEur#5. #43 is in the #943 ge gauntlet as a LITERAL recall (key
+  `k2|LGanymede>Europa/1h|LEuropa>Ganymede/1l`, R-S Table 2 constants, Europa massless); #5 would
+  need a new solve. Screen for unscheduled Ganymede passes (Kepler legs, 0.002-d grid, local minima of
+  the Ganymede distance): #43 has none inside 51 Hill radii apart from its one scheduled flyby
+  (GanCal#5, same screen: the 94,988 km = 3.00 R_H pass). Ganymede turn ratio 0.37 (22.7 of 61.0 deg).
+- Published values: V_inf G 1.87, E 3.89 km/s; Ganymede altitude 8861 km; r 564,558 to 1,072,330 km;
+  period 14.10 d (2 G-E synodic periods).
+- Model and criteria: as 3.1 and 3.4, with Europa as the massless target (its centre hit pinned) and
+  one Ganymede flyby node per period (one periapsis gauge). Criterion 3: Ganymede inside its Hill
+  radius only at the scheduled flyby, altitude >= 100 km. Criterion 4: V_inf G within 0.10 of 1.87,
+  Europa speed within 0.10 of 3.89, altitude within 150 km of 8861, r_min and r_max within 2 %.
+  Criterion 5: the lane (fixed wrap) seeded from corrector A's solution (not from periapsis states)
+  holds it and agrees on V_inf (1e-3 km/s) and altitude (1 km). Criterion 6: IAS15 half-arc re-fly.
+- Method: corrector A, pinned layout, trf from the patched-conic seed. If it does not converge in
+  200 evaluations, the fallback is the 4.3-4.4 route (T free, then continuation in T to 2 S_GE, then
+  the Callisto-style pin by time shift), recorded as such.
+- Expected (stated now): converges; V_inf G within 0.03 km/s and altitude within 100 km of the
+  published values (moderate turn, no unscheduled pass); criteria 1-6 pass.
+
+### 5.4 Context for #1023 (the VOID re-run): seed type matters
+
+The lane's residual, with the fixed wrap, holds a correct orbit (4.6), but from patched-conic
+PERIAPSIS seeds with node-to-node forward legs it stalls at km/s velocity defects (GanCal#5: 1.5-3.5
+km/s after 160 evaluations; Member D and EGGIE used the same seed type). A re-run of the voided
+EGGIE / #318 / #501 results should seed from a forward-backward (mid-leg match) solution, not from
+periapsis states.
