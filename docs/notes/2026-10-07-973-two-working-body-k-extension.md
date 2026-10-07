@@ -613,6 +613,11 @@ Data: `data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`.
   (6.14/5.28) and the other 2H member (5.60/6.02) pass outright. ev-A, ev-B and ev-C pass outright.
 - The 4 flagged cyclers wait for #1027 (direction re-picked under the no-unscheduled-pass constraint).
   The 5 rejections are physical in the ideal model.
+- idx 1 is a member of a published class: it is the Hollister 1H variant with the Venus half-rev pair.
+  Its rejection holds for the IDEAL circular model only. There, the HV(3,1,a) leg is a tilted circle
+  and meets Venus again at 1/3 of the leg. The published orbit exists in the real ephemeris, where
+  that leg is not a tilted circle. Whenever a published or control member is rejected on fixed-leg
+  geometry, the real-ephemeris rung decides, not the ideal-model screen.
 - gc k = 4 is unchanged under 2.7 (every gc flag is on a Lambert leg), as are the #943 gc candidates.
 
 ### 9.3 Addendum text for the #942/#943 generator note (for the lead to relay; that note is mid-edit)
