@@ -1,0 +1,14 @@
+cell ev: structures 4070, zeros 24120, physical 7293, gate-passing 11
+k=5 vinf={'V': 6.284, 'E': 5.227} worst=0.931 xc_miss=7.72e-04km xc_dv=1.8e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 6.284, 'E': 5.227} worst=0.931 xc_miss=1.01e-03km xc_dv=1.7e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 10.788, 'E': 8.627} worst=0.915 xc_miss=9.40e-04km xc_dv=2.4e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 5.546, 'E': 10.3} worst=0.622 xc_miss=2.42e-03km xc_dv=3.5e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 6.339, 'E': 11.699} worst=0.801 xc_miss=1.10e-03km xc_dv=2.0e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 6.339, 'E': 11.699} worst=0.801 xc_miss=1.47e-02km xc_dv=2.4e-09 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 7.251, 'E': 13.184} worst=0.622 xc_miss=6.96e-03km xc_dv=1.2e-09 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 7.251, 'E': 13.184} worst=0.622 xc_miss=4.06e-03km xc_dv=7.2e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 7.946, 'E': 14.253} worst=0.855 xc_miss=7.73e-02km xc_dv=1.4e-08 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 8.497, 'E': 15.068} worst=0.309 xc_miss=3.35e-02km xc_dv=6.2e-09 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'V': 42.154, 'E': 34.174} worst=0.944 xc_miss=4.06e-02km xc_dv=1.2e-08 gate_int=pass screen=pass collisions=[]
+catalogue rows on this pair: 23; registry entries: 3
+ERRORS: structures 0 (not searched, NOT empty), zero assessments 0

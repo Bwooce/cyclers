@@ -1,10 +1,10 @@
 # #973: the two-working-body generator at longer periods (gc k = 4-6, ev k = 4-5) and a Europa-Callisto cell (ec k = 1-4)
 
-Status: DONE for gc k = 4 and ec k = 1-4. Pre-registration secs. 1-2 (commit ab24925e); amendment 2.6
-(two screens, commit 94dda754); controls and Liang segments sec. 3; gc k = 4 sec. 4, re-screened in sec. 9;
-final candidate set sec. 10: 10 clean two-working-body members at k = 4. ec k = 1-4: empty (sec. 5,
-stamped). gc k = 5-6 and ev k = 4-5 are launched by the lead (sec. 6). The ev screen question is ruled (amendment
-2.7; sec. 9.2). The literature step and rung (d) are #1025.
+Status: ALL ROUTES DONE (ideal model). The pass definition is secs. 2.2 + 2.6 + 2.7.
+- gc: clean two-working-body members k = 4: 10 (sec. 10), k = 5: 6 (sec. 11), k = 6: 4 (sec. 12).
+- ec k = 1-4: empty (sec. 5, stamped).
+- ev: clean members k = 4: 11 in 5 transfer skeletons (sec. 13); k = 5: 11 in 8 skeletons (sec. 14).
+- The literature step and rung (d) are #1025.
 Novelty language: every gate-passing cycler here is "candidate, literature step deferred". Nothing in
 this note is called novel. No catalogue writes. No real-ephemeris runs.
 
@@ -964,3 +964,100 @@ Raw data (lead rule of 2026-10-08):
 | s13 | 1441 | e6c33a84b0796cc7732dffd406e76ad5 |
 | s14 | 1426 | dde010805d48cb4d22f01976fb8972ab |
 | s15 | 1385 | 3585354a11f1344fc803092dee83b8f0 |
+
+## 14. R13 result: ev (Earth-Venus) k = 5, the 8-year class (lead launch; analysed 2026-10-08)
+
+Run: 24 shards of 24, cell-5 flags.
+- 4,070 structures, all done once, 0 errors (`check` OK).
+- 24,120 exact zeros, 7,293 physical cyclers, **11 gate-passing**, 0 zero-assessment errors.
+- 0 structures at the n_refine ceiling.
+
+Gauntlet and screens (`data/973_ev/k5_gauntlet.json`):
+- DOP853 re-fly: largest miss 0.077 km (ev5-8); gate "pass" on the integrated vectors for all 11.
+- Screens (2.6/2.7): all 11 pass. No impact, no model-invalid, no direction-dependent.
+- Classes: all 11 are W2.
+- Literal collisions: none (bands and checks as in sec. 13). Nearest H&M row by per-body V_inf: orbit
+  7 (E 5.51 / V 6.67) at 0.39 km/s from the 5.23 / 6.28 skeleton. That row is a k = 10, 16-yr orbit
+  of 3.2-yr blocks, so structurally it is not this object (sec. 6.5 check). Every other skeleton is
+  2.4 km/s or more from any H&M row.
+- Literature step: deferred (#1025). Attribution per R13: Hollister 1969, H&M 1970, and VanderVeen
+  1969 for the 8-yr repeat. Ross c.2021's "5(1.0)10" is a powered, uncomputed concept, with no
+  numbers to compare.
+
+**Clean members: 11, in 8 distinct transfer skeletons:**
+
+| Skeleton (E / V km/s) | Members | Worst ratio (best member) | r_min / r_max (AU) of the best member |
+|---|---|---|---|
+| 5.227 / 6.284 | ev5-0, 1 | 0.931 | 0.524 / 1.573 (ev5-0) |
+| 8.627 / 10.788 | ev5-2 | 0.915 | 0.448 / 1.283 |
+| 10.300 / 5.546 | ev5-3 | 0.622 | 0.723 / 2.302 |
+| 11.699 / 6.339 | ev5-4, 5 | 0.801 | 0.713 / 1.855 (ev5-4) |
+| 13.184 / 7.251 | ev5-6, 7 | 0.622 | 0.719 / 2.390 (ev5-6) |
+| 14.253 / 7.946 | ev5-8 | 0.855 | 0.684 / 2.422 |
+| 15.068 / 8.497 | ev5-9 | 0.309 | 0.653 / 2.448 |
+| 34.174 / 42.154 | ev5-10 | 0.944 | 0.058 / 2.510 (a sun-grazer at 12.5 solar radii; not a credible design, like vm-1) |
+
+Resonance structure: k = 5 is 7.9938 Earth years and 12.9938 Venus periods. That is the 8:13 near
+repeat (VanderVeen 1969), 2.3 d short of 8 yr in this model.
+
+Unlike gc k = 4's 3:4:7 window, this window does not produce a shallow-turn population. Only ev5-9
+(Venus 4 deg, ratio 0.08; Earth 7.5 deg) is near-shallow. A likely reason, not verified: a spacecraft
+orbit nearly commensurate with 8 yr needs a leg of several revolutions. This cell allows 0-rev
+transfers, at most 2 returns per block, Earth returns full-rev only, and generic Venus returns of
+1 rev. Those cannot represent such an orbit, whereas gc k = 4's 2-rev transfers and generic returns
+can.
+
+The R13 hypothesis (a k = 5 member continues to the ephemeris with less slip than the k = 2 members)
+is a rung (d) question, deferred to #1025.
+
+Candidate table, all 11 (period 2,919.72 d = 7.994 yr; A = Earth, B = Venus):
+
+| # | Class | Screen | Structure (key) | V_inf A / B (km/s) | A: flybys, max turn (deg), max ratio | B: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Closest unscheduled A / B (km) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ev5-0 | W2 | pass | k5\|RE/2:3\|RE/2:3\|LE>V/0s\|RV/2:1\|LV>V/1h\|LV>E/0s | 5.227 / 6.284 | 3, 44.14, 0.507 | 3, 63.98, 0.931 | 0.931 | 78,325,463 / 235,385,265 | 425.7677, 1038.5366, 1665.1141 | 35,103,870 / 29,094,324 | 7.7e-04 |
+| ev5-1 | W2 | pass | k5\|RE/3:2\|RE/1:1\|LE>V/0s\|RV/2:1\|LV>V/1h\|LV>E/0s | 5.227 / 6.284 | 3, 75.80, 0.870 | 3, 63.98, 0.931 | 0.931 | 100,409,143 / 246,532,652 | 425.7677, 1038.5366, 1665.1141 | 24,524,768 / 29,094,324 | 1.0e-03 |
+| ev5-2 | W2 | pass | k5\|RE/2:3\|RE/2:3\|LE>V/0s\|LV>V/1h\|RV/3:2\|LV>E/0s | 8.627 / 10.788 | 3, 48.79, 0.915 | 3, 31.35, 0.882 | 0.915 | 67,030,086 / 191,862,117 | 438.5278, 683.7930, 1651.9845 | 21,076,939 / 41,180,471 | 9.4e-04 |
+| ev5-3 | W2 | pass | k5\|RE/2:1\|RE/3:2\|LE>V/0s\|RV/3:2\|LV>E/0s | 10.300 / 5.546 | 3, 23.70, 0.556 | 2, 48.07, 0.622 | 0.622 | 108,210,556 / 344,301,393 | 90.2803, 1119.0698 | 64,109,731 / 68,509,456 | 2.4e-03 |
+| ev5-4 | W2 | pass | k5\|RE/3:2\|LE>V/0s\|RV/3:2\|RV/3:2\|LV>E/0s | 11.699 / 6.339 | 2, 5.40, 0.151 | 3, 54.55, 0.801 | 0.801 | 106,674,051 / 277,455,252 | 572.6106, 1979.8693 | 83,951,195 / 78,653,288 | 1.1e-03 |
+| ev5-5 | W2 | pass | k5\|RE/1:1\|RE/2:1\|LE>V/0s\|RV/3:2\|RV/3:2\|LV>E/0s | 11.699 / 6.339 | 3, 27.27, 0.763 | 3, 54.55, 0.801 | 0.801 | 96,514,760 / 347,123,226 | 572.6106, 1979.8693 | 83,951,195 / 52,551,585 | 1.5e-02 |
+| ev5-6 | W2 | pass | k5\|RE/2:1\|RE/2:1\|LE>V/0s\|RV/2:1\|RV/2:1\|LV>E/0s | 13.184 / 7.251 | 3, 7.91, 0.264 | 3, 36.78, 0.622 | 0.622 | 107,589,705 / 357,527,343 | 576.7598, 1529.5965 | 75,316,262 / 131,681,385 | 7.0e-03 |
+| ev5-7 | W2 | pass | k5\|RE/1:1\|RE/3:2\|LE>V/0s\|RV/2:1\|RV/2:1\|LV>E/0s | 13.184 / 7.251 | 3, 16.21, 0.541 | 3, 36.78, 0.622 | 0.622 | 85,020,967 / 290,125,917 | 576.7598, 1529.5965 | 75,316,262 / 74,316,418 | 4.1e-03 |
+| ev5-8 | W2 | pass | k5\|RE/2:1\|RE/3:2\|LE>V/0s\|RV/2:1\|LV>E/0s | 14.253 / 7.946 | 3, 8.00, 0.301 | 2, 45.45, 0.855 | 0.855 | 102,300,942 / 362,285,352 | 78.9489, 1121.5077 | 66,474,956 / 75,351,730 | 7.7e-02 |
+| ev5-9 | W2 | pass | k5\|RE/3:2\|RE/3:2\|LE>V/0s\|LV>E/0s | 15.068 / 8.497 | 3, 7.52, 0.309 | 1, 4.05, 0.083 | 0.309 | 97,752,829 / 366,241,714 | 581.2806, 630.0483 | 127,368,071 / 52,869,872 | 3.4e-02 |
+| ev5-10 | W2 | pass | k5\|RE/3:2\|LE>V/0s\|LV>V/1h\|RV/3:2\|LV>E/0s | 34.174 / 42.154 | 2, 5.34, 0.944 | 3, 2.13, 0.665 | 0.944 | 8,663,796 / 375,516,803 | 347.6357, 406.2838, 1789.9378 | 8,220,107 / 88,145,280 | 4.1e-02 |
+
+Status: "candidate, literature step deferred" (#1025). Not novel.
+
+Raw data (lead rule of 2026-10-08):
+- Committed: the shards' `settings.json` and `structures.jsonl` (`data/973_ev/k5/s*/`), plus the
+  gauntlet JSON and log.
+- Not committed: `zeros.jsonl`.
+- Full shard directories archived at `~/dev/references/cyclers-runs/973/ev/k5/` (40M; `diff -rq`
+  clean). md5 of each `zeros.jsonl` (lines total 24,120):
+
+| Shard (of 24) | Zero lines | md5 |
+|---|---|---|
+| s0 | 1017 | 3a4b744a25ad7194f4d1c154be81ef1a |
+| s1 | 923 | 3d2ba5dcda01688e3fd3393539a97431 |
+| s2 | 966 | 1463e2971a156df915b60c7c6f532c90 |
+| s3 | 972 | eb6951b00217a94ef1d1bc12acd50f31 |
+| s4 | 1031 | 329613b150b255e3b249e5f8b77d39cf |
+| s5 | 988 | b43322c5cb469a95e5b0e43503091e76 |
+| s6 | 1065 | fa49b47f21cf8180cd3d31bd74c253d5 |
+| s7 | 1008 | 52d242497b8c73580c1fe20d6c7e8426 |
+| s8 | 1078 | 51babf8752b787d0055c23525cdbf9e5 |
+| s9 | 1040 | be5f375bfc7e852fee90ef2e756f8ab1 |
+| s10 | 1014 | b9aae75760d577233a1917fae54eac12 |
+| s11 | 1054 | 3ce97bf02081d3c411ea26516d0a572c |
+| s12 | 979 | 8237ed5ccd73a9135e8d699158e5ad30 |
+| s13 | 966 | de9362b61e528a9caef48bad83a1d3db |
+| s14 | 925 | 4775cd0a18f7416ad75b5730121e64d6 |
+| s15 | 975 | fb155af7db1f85d9ee8bae8211416499 |
+| s16 | 963 | a28c897961de348fe34308d4dcc032bb |
+| s17 | 1071 | 9cf405c3673cb36a2c648ca7b3f106e6 |
+| s18 | 1005 | e4280b810f71af3c53f8e3ae1f055d96 |
+| s19 | 1024 | 7de5c4f20e84b19c6473e4329234cdfb |
+| s20 | 1045 | d27b60bcfc6fb4389c794718fbedc8a5 |
+| s21 | 1020 | 04a9550a42c56e7ab4025b61ed701df2 |
+| s22 | 1012 | 088b4c5228947bf563720b2a6f9d1eb7 |
+| s23 | 979 | bcf15e7fe4a8a4d711a92a9d04c9f691 |

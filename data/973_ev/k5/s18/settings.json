@@ -1,0 +1,19 @@
+{
+ "cell": "ev",
+ "k": "5",
+ "out": "data/973_ev/k5/s18",
+ "max_returns": "2,2",
+ "transfer_revs": "0",
+ "generic_revs": "1",
+ "visits": 1,
+ "resonant_only": "E",
+ "n_phase": 36,
+ "n_split": 12,
+ "n_refine": 40,
+ "count_only": false,
+ "sample": 0,
+ "seed": 942,
+ "shard": "18/24",
+ "timing_pilot_s": 0.91,
+ "synodic_days": 583.9443866943866
+}

@@ -1,0 +1,2265 @@
+{
+ "cell": "ev",
+ "dirs": [
+  "data/973_ev/k5/s0",
+  "data/973_ev/k5/s1",
+  "data/973_ev/k5/s10",
+  "data/973_ev/k5/s11",
+  "data/973_ev/k5/s12",
+  "data/973_ev/k5/s13",
+  "data/973_ev/k5/s14",
+  "data/973_ev/k5/s15",
+  "data/973_ev/k5/s16",
+  "data/973_ev/k5/s17",
+  "data/973_ev/k5/s18",
+  "data/973_ev/k5/s19",
+  "data/973_ev/k5/s2",
+  "data/973_ev/k5/s20",
+  "data/973_ev/k5/s21",
+  "data/973_ev/k5/s22",
+  "data/973_ev/k5/s23",
+  "data/973_ev/k5/s3",
+  "data/973_ev/k5/s4",
+  "data/973_ev/k5/s5",
+  "data/973_ev/k5/s6",
+  "data/973_ev/k5/s7",
+  "data/973_ev/k5/s8",
+  "data/973_ev/k5/s9"
+ ],
+ "n_structures": 4070,
+ "n_zeros": 24120,
+ "n_physical": 7293,
+ "n_gate_passing": 11,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "jones-2017-vem-triple-family",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     null
+    ],
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "vem-emeeve-3syn",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     null
+    ],
+    [
+     "M",
+     null
+    ]
+   ],
+   "k": 3
+  },
+  {
+   "id": "jones-2017-vem-emevve-outbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.72
+    ],
+    [
+     "M",
+     2.5
+    ],
+    [
+     "E",
+     5.81
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "V",
+     7.0
+    ],
+    [
+     "E",
+     4.21
+    ],
+    [
+     "M",
+     2.79
+    ],
+    [
+     "E",
+     5.04
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "V",
+     4.49
+    ],
+    [
+     "E",
+     5.67
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "jones-2017-vem-meevem-inbound",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "M",
+    "V"
+   ],
+   "vinf": [
+    [
+     "M",
+     3.85
+    ],
+    [
+     "E",
+     3.48
+    ],
+    [
+     "E",
+     3.42
+    ],
+    [
+     "V",
+     5.16
+    ],
+    [
+     "E",
+     3.84
+    ],
+    [
+     "M",
+     3.12
+    ],
+    [
+     "E",
+     2.98
+    ],
+    [
+     "E",
+     2.92
+    ],
+    [
+     "V",
+     4.31
+    ],
+    [
+     "E",
+     4.97
+    ],
+    [
+     "M",
+     2.42
+    ]
+   ],
+   "k": 2
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-01",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.75
+    ],
+    [
+     "V",
+     6.7
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-02",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.8
+    ],
+    [
+     "V",
+     7.68
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-03",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.43
+    ],
+    [
+     "V",
+     7.39
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-04",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.05
+    ],
+    [
+     "V",
+     8.4
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-05",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.15
+    ],
+    [
+     "V",
+     5.6
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-06",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.23
+    ],
+    [
+     "V",
+     9.0
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-07",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.51
+    ],
+    [
+     "V",
+     6.67
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-08",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     6.43
+    ],
+    [
+     "V",
+     6.49
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-09",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.41
+    ],
+    [
+     "V",
+     8.28
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-10",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.04
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-11",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.04
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-12",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     4.5
+    ],
+    [
+     "V",
+     8.13
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-13",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.36
+    ],
+    [
+     "V",
+     7.45
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-14",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.45
+    ],
+    [
+     "V",
+     7.6
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "hollister-menning-1970-ev-orbit-15",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     5.63
+    ],
+    [
+     "V",
+     8.37
+    ]
+   ],
+   "k": 10
+  },
+  {
+   "id": "damario-1992-galileo-veega",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Gaspra",
+    "Ida",
+    "J",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.8
+    ],
+    [
+     "V",
+     6.2
+    ],
+    [
+     "E",
+     8.9
+    ],
+    [
+     "Gaspra",
+     8.0
+    ],
+    [
+     "E",
+     8.9
+    ],
+    [
+     "Ida",
+     12.4
+    ],
+    [
+     "J",
+     5.9
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "cassini-huygens-vvejga",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "J",
+    "S",
+    "V"
+   ],
+   "vinf": [
+    [
+     "V",
+     6.008
+    ],
+    [
+     "V",
+     9.452
+    ],
+    [
+     "E",
+     16.048
+    ],
+    [
+     "J",
+     10.427
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "mariner-10-venus-mercury",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Me",
+    "V"
+   ],
+   "vinf": [
+    [
+     "Me",
+     10.376
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "bepicolombo-earth-venus-mercury",
+   "our_status": null,
+   "bodies": [
+    "E",
+    "Me",
+    "V"
+   ],
+   "vinf": [
+    [
+     "E",
+     3.993
+    ],
+    [
+     "V",
+     7.979
+    ],
+    [
+     "V",
+     8.022
+    ],
+    [
+     "Me",
+     6.659
+    ],
+    [
+     "Me",
+     6.423
+    ],
+    [
+     "Me",
+     3.64
+    ],
+    [
+     "Me",
+     2.748
+    ],
+    [
+     "Me",
+     2.612
+    ],
+    [
+     "Me",
+     1.892
+    ]
+   ],
+   "k": null
+  }
+ ],
+ "empty_regions_same_pair": [
+  "heliocentric-vem-triple-cycler-max-one-rev-topology-scans-invalidated-110-120-122-133",
+  "heliocentric-earth-venus-two-working-body-earth-fullrev-only-ideal-k1-3-942",
+  "heliocentric-earth-venus-two-working-body-earth-fullrev-only-ideal-k1-3-942-reassessed-halfrev-rule"
+ ],
+ "candidates": [
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     5.227,
+     27.1
+    ],
+    [
+     "E",
+     5.227,
+     44.1
+    ],
+    [
+     "V",
+     6.284,
+     12.3
+    ],
+    [
+     "V",
+     6.284,
+     64.0
+    ],
+    [
+     "V",
+     6.284,
+     64.0
+    ],
+    [
+     "E",
+     5.227,
+     44.1
+    ]
+   ],
+   "keys": [
+    "k5|RE/2:3|RE/2:3|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+    "k5|RE/2:3|RE/2:3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k5|RE/2:3|RE/2:3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.283602888120312,
+    "E": 5.226536217456998
+   },
+   "x_days": [
+    425.76771352000327,
+    1038.5365655905155,
+    1665.114097593466
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.9311171233822116,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 589.1329655905155,
+     "vinf_kms": 6.283602888120312,
+     "turn_deg": 63.97884331243587,
+     "available_deg": 68.7119178734869,
+     "ratio": 0.9311171233822112,
+     "required_alt_km": 1251.3904274370034,
+     "rmin_radii": 1.2067798716806575,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1038.5365655905155,
+     "vinf_kms": 6.283602888120351,
+     "turn_deg": 63.97884331243589,
+     "available_deg": 68.7119178734869,
+     "ratio": 0.9311171233822116,
+     "required_alt_km": 1251.390427436998,
+     "rmin_radii": 1.2067798716806415,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1665.114097593466,
+     "vinf_kms": 6.283602888120425,
+     "turn_deg": 12.33730106450346,
+     "available_deg": 68.71191787348602,
+     "ratio": 0.17955110912810188,
+     "required_alt_km": 62288.77528826117,
+     "rmin_radii": 11.292603074830707,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1884.4896469919363,
+     "vinf_kms": 5.226536217456998,
+     "turn_deg": 44.14332530579803,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.5065516947233973,
+     "required_alt_km": 17862.26541583641,
+     "rmin_radii": 3.8005458985651153,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2614.9896469919363,
+     "vinf_kms": 5.226536217456998,
+     "turn_deg": 27.12472809580093,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.31126057882265185,
+     "required_alt_km": 41254.371842004555,
+     "rmin_radii": 7.468091206257338,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3345.4896469919363,
+     "vinf_kms": 5.226536217457024,
+     "turn_deg": 44.143325305799465,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.5065516947234137,
+     "required_alt_km": 17862.265415835216,
+     "rmin_radii": 3.80054589856489,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 78325462.64267865,
+   "r_max_km": 235385265.321196,
+   "min_required_alt_km": 1251.390427436998,
+   "max_turn_deg": 63.97884331243589,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0007716537225406801,
+    "max_vinf_vector_error_kms": 1.7639732273373197e-10,
+    "max_junction_mismatch_kms": 4.6212811355417216e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9311171233891521
+   },
+   "soi_fraction": 1.2521335142359295e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>E/0s",
+     "body": "V",
+     "min_km": 29094324.413577933,
+     "t_days": 1761.7045872181488,
+     "frac_of_leg": 0.44029742553139956,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LE>V/0s",
+     "body": "E",
+     "min_km": 35103870.384845145,
+     "t_days": 568.9443293323351,
+     "frac_of_leg": 0.8764202545993894,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     5.227,
+     75.8
+    ],
+    [
+     "E",
+     5.227,
+     75.8
+    ],
+    [
+     "E",
+     5.227,
+     75.8
+    ],
+    [
+     "V",
+     6.284,
+     12.3
+    ],
+    [
+     "V",
+     6.284,
+     64.0
+    ],
+    [
+     "V",
+     6.284,
+     64.0
+    ]
+   ],
+   "keys": [
+    "k5|RE/1:1|RE/3:2|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+    "k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+    "k5|RE/3:2|RE/1:1|LE>V/0s|LV>V/1h|RV/2:1|LV>E/0s",
+    "k5|RE/3:2|RE/1:1|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k5|RE/3:2|RE/1:1|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.283602888120312,
+    "E": 5.226536217456998
+   },
+   "x_days": [
+    425.76771352000327,
+    1038.5365655905155,
+    1665.114097593466
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.9311171233822116,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 589.1329655905155,
+     "vinf_kms": 6.283602888120312,
+     "turn_deg": 63.97884331243587,
+     "available_deg": 68.7119178734869,
+     "ratio": 0.9311171233822112,
+     "required_alt_km": 1251.3904274370034,
+     "rmin_radii": 1.2067798716806575,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1038.5365655905155,
+     "vinf_kms": 6.283602888120351,
+     "turn_deg": 63.97884331243589,
+     "available_deg": 68.7119178734869,
+     "ratio": 0.9311171233822116,
+     "required_alt_km": 1251.390427436998,
+     "rmin_radii": 1.2067798716806415,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1665.114097593466,
+     "vinf_kms": 6.283602888120425,
+     "turn_deg": 12.33730106450346,
+     "available_deg": 68.71191787348602,
+     "ratio": 0.17955110912810188,
+     "required_alt_km": 62288.77528826117,
+     "rmin_radii": 11.292603074830707,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1884.4896469919363,
+     "vinf_kms": 5.226536217456998,
+     "turn_deg": 75.80243150186732,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.8698449850668984,
+     "required_alt_km": 2783.548973414009,
+     "rmin_radii": 1.4364203800285271,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2980.2396469919363,
+     "vinf_kms": 5.226536217456998,
+     "turn_deg": 75.80243150186728,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.869844985066898,
+     "required_alt_km": 2783.5489734140183,
+     "rmin_radii": 1.4364203800285278,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3345.4896469919363,
+     "vinf_kms": 5.226536217457024,
+     "turn_deg": 75.80243150186732,
+     "available_deg": 87.1447588975149,
+     "ratio": 0.8698449850668984,
+     "required_alt_km": 2783.548973414011,
+     "rmin_radii": 1.4364203800285125,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 100409142.94132584,
+   "r_max_km": 246532651.6580694,
+   "min_required_alt_km": 1251.390427436998,
+   "max_turn_deg": 75.80243150186732,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0010078945040640675,
+    "max_vinf_vector_error_kms": 1.6549565036006932e-10,
+    "max_junction_mismatch_kms": 1.1484502238090499e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9311171233891521
+   },
+   "soi_fraction": 1.6354725578172647e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>E/0s",
+     "body": "V",
+     "min_km": 29094324.413577933,
+     "t_days": 1761.7045872181488,
+     "frac_of_leg": 0.44029742553139956,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/1:1",
+     "body": "E",
+     "min_km": 24524767.64376322,
+     "t_days": 3169.045967788361,
+     "frac_of_leg": 0.5169235340080084,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     8.627,
+     48.8
+    ],
+    [
+     "E",
+     8.627,
+     48.8
+    ],
+    [
+     "E",
+     8.627,
+     48.8
+    ],
+    [
+     "V",
+     10.788,
+     7.0
+    ],
+    [
+     "V",
+     10.788,
+     31.4
+    ],
+    [
+     "V",
+     10.788,
+     24.4
+    ]
+   ],
+   "keys": [
+    "k5|RE/2:3|RE/2:3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k5|RE/2:3|RE/2:3|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k5|RE/2:3|RE/2:3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 10.787897650593763,
+    "E": 8.626832063628662
+   },
+   "x_days": [
+    438.5278066528037,
+    683.7930449797789,
+    1651.984501797764
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.9147495754208219,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 683.7930449797789,
+     "vinf_kms": 10.787897650593763,
+     "turn_deg": 24.363541586798203,
+     "available_deg": 35.552098100931715,
+     "ratio": 0.6852912454739121,
+     "required_alt_km": 4385.285508353239,
+     "rmin_radii": 1.7246249889872518,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 977.8791017977642,
+     "vinf_kms": 10.787897650593672,
+     "turn_deg": 31.350451425322465,
+     "available_deg": 35.552098100931694,
+     "ratio": 0.8818171950448371,
+     "required_alt_km": 1488.2482406422168,
+     "rmin_radii": 1.2459182789653023,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1651.984501797764,
+     "vinf_kms": 10.787897650593742,
+     "turn_deg": 6.986909838524003,
+     "available_deg": 35.552098100931694,
+     "ratio": 0.19652594957091718,
+     "required_alt_km": 36966.49685308117,
+     "rmin_radii": 7.1083474095443675,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1897.2497401247367,
+     "vinf_kms": 8.626832063628662,
+     "turn_deg": 48.78597367100311,
+     "available_deg": 53.33260050824249,
+     "ratio": 0.9147495754208216,
+     "required_alt_km": 1234.5109950894785,
+     "rmin_radii": 1.1935535400210875,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2627.7497401247365,
+     "vinf_kms": 8.626832063628662,
+     "turn_deg": 48.785973671003035,
+     "available_deg": 53.33260050824249,
+     "ratio": 0.9147495754208201,
+     "required_alt_km": 1234.5109950894976,
+     "rmin_radii": 1.1935535400210904,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3358.2497401247365,
+     "vinf_kms": 8.626832063628687,
+     "turn_deg": 48.785973671003134,
+     "available_deg": 53.33260050824249,
+     "ratio": 0.9147495754208219,
+     "required_alt_km": 1234.5109950894712,
+     "rmin_radii": 1.1935535400210795,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 67030085.52025653,
+   "r_max_km": 191862116.76611182,
+   "min_required_alt_km": 1234.5109950894712,
+   "max_turn_deg": 48.785973671003134,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0009395697060064379,
+    "max_vinf_vector_error_kms": 2.3508944745115455e-10,
+    "max_junction_mismatch_kms": 9.206146955875738e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9147495754477417
+   },
+   "soi_fraction": 1.5246044741129841e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>V/1h",
+     "body": "V",
+     "min_km": 41180470.82914095,
+     "t_days": 830.8360732416124,
+     "frac_of_leg": 0.4999999994996052,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 21076939.23736152,
+     "t_days": 1415.3443959483966,
+     "frac_of_leg": 0.6489568161753824,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     10.3,
+     22.7
+    ],
+    [
+     "E",
+     10.3,
+     23.7
+    ],
+    [
+     "V",
+     5.546,
+     48.1
+    ],
+    [
+     "V",
+     5.546,
+     48.1
+    ],
+    [
+     "E",
+     10.3,
+     23.7
+    ]
+   ],
+   "keys": [
+    "k5|RE/2:1|RE/3:2|LE>V/0s|RV/3:2|LV>E/0s",
+    "k5|RE/3:2|RE/2:1|LE>V/0s|RV/3:2|LV>E/0s"
+   ],
+   "key": "k5|RE/2:1|RE/3:2|LE>V/0s|RV/3:2|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 5.545720666222667,
+    "E": 10.299562168157514
+   },
+   "x_days": [
+    90.28025161410277,
+    1119.069798998606
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.6219331946613739,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 444.96439899860604,
+     "vinf_kms": 5.545720666222667,
+     "turn_deg": 48.06781914217445,
+     "available_deg": 77.28775301718073,
+     "ratio": 0.6219331946613739,
+     "required_alt_km": 9320.535048347483,
+     "rmin_radii": 2.540126086180554,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1119.069798998606,
+     "vinf_kms": 5.545720666222669,
+     "turn_deg": 48.06781914217445,
+     "available_deg": 77.28775301718073,
+     "ratio": 0.6219331946613739,
+     "required_alt_km": 9320.535048347483,
+     "rmin_radii": 2.5401260861805515,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1183.7521850860358,
+     "vinf_kms": 10.299562168157514,
+     "turn_deg": 23.704987278433922,
+     "available_deg": 42.636583066669836,
+     "ratio": 0.5559776504924653,
+     "required_alt_km": 8158.620504154157,
+     "rmin_radii": 2.2791541643201074,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1914.2521850860358,
+     "vinf_kms": 10.299562168157514,
+     "turn_deg": 22.705426180138115,
+     "available_deg": 42.636583066669836,
+     "ratio": 0.5325339074342371,
+     "required_alt_km": 8952.715747651771,
+     "rmin_radii": 2.403656858993742,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3010.0021850860358,
+     "vinf_kms": 10.299562168157507,
+     "turn_deg": 23.704987278442545,
+     "available_deg": 42.636583066669914,
+     "ratio": 0.5559776504926663,
+     "required_alt_km": 8158.62050414764,
+     "rmin_radii": 2.279154164319082,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 108210556.34939745,
+   "r_max_km": 344301393.0726907,
+   "min_required_alt_km": 8158.62050414764,
+   "max_turn_deg": 48.06781914217445,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0024232572629591625,
+    "max_vinf_vector_error_kms": 3.5007505376287823e-10,
+    "max_junction_mismatch_kms": 3.325428821199239e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.621933194661673
+   },
+   "soi_fraction": 3.9321285492882935e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/3:2",
+     "body": "V",
+     "min_km": 68509456.49263184,
+     "t_days": 2884.398312344715,
+     "frac_of_leg": 0.8853717793827786,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 64109730.513688,
+     "t_days": 856.966964591535,
+     "frac_of_leg": 0.6111841940339432,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     11.699,
+     5.4
+    ],
+    [
+     "E",
+     11.699,
+     5.4
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ]
+   ],
+   "keys": [
+    "k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s"
+   ],
+   "key": "k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 6.338942597491668,
+    "E": 11.699359204753389
+   },
+   "x_days": [
+    572.6106145815984,
+    1979.8692506947948
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.8008659347908349,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 631.6584506947947,
+     "vinf_kms": 6.338942597491668,
+     "turn_deg": 54.55005111800868,
+     "available_deg": 68.11383622185876,
+     "ratio": 0.800865934790834,
+     "required_alt_km": 3505.514281474806,
+     "rmin_radii": 1.5792515088857533,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1305.7638506947947,
+     "vinf_kms": 6.338942597491667,
+     "turn_deg": 54.55005111800822,
+     "available_deg": 68.11383622185876,
+     "ratio": 0.8008659347908272,
+     "required_alt_km": 3505.5142814749424,
+     "rmin_radii": 1.5792515088857766,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1979.8692506947948,
+     "vinf_kms": 6.338942597491666,
+     "turn_deg": 54.550051118008774,
+     "available_deg": 68.11383622185879,
+     "ratio": 0.8008659347908349,
+     "required_alt_km": 3505.5142814747824,
+     "rmin_radii": 1.5792515088857497,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2396.582548053532,
+     "vinf_kms": 11.699359204753389,
+     "turn_deg": 5.400773133619097,
+     "available_deg": 35.7396940636552,
+     "ratio": 0.1511141400371222,
+     "required_alt_km": 52521.47337434081,
+     "rmin_radii": 9.234610415916249,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3492.332548053532,
+     "vinf_kms": 11.699359204753375,
+     "turn_deg": 5.400773133618962,
+     "available_deg": 35.73969406365532,
+     "ratio": 0.1511141400371179,
+     "required_alt_km": 52521.473374342626,
+     "rmin_radii": 9.234610415916514,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 106674051.44187583,
+   "r_max_km": 277455252.3165212,
+   "min_required_alt_km": 3505.5142814747824,
+   "max_turn_deg": 54.550051118008774,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0010985839673296428,
+    "max_vinf_vector_error_kms": 2.0157078117891264e-10,
+    "max_junction_mismatch_kms": 1.368523072642347e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8008659347920737
+   },
+   "soi_fraction": 1.7826309437951263e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "LV>E/0s",
+     "body": "V",
+     "min_km": 78653288.19591823,
+     "t_days": 2364.927398330263,
+     "frac_of_leg": 0.9240361420575988,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 83951194.92133443,
+     "t_days": 909.9998227820743,
+     "frac_of_leg": 0.41290482480525975,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     11.699,
+     25.7
+    ],
+    [
+     "E",
+     11.699,
+     27.3
+    ],
+    [
+     "E",
+     11.699,
+     27.3
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ],
+    [
+     "V",
+     6.339,
+     54.6
+    ]
+   ],
+   "keys": [
+    "k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+    "k5|RE/2:1|RE/1:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s"
+   ],
+   "key": "k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 6.338942597491668,
+    "E": 11.699359204753389
+   },
+   "x_days": [
+    572.6106145815984,
+    1979.8692506947948
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.8008659347908349,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 631.6584506947947,
+     "vinf_kms": 6.338942597491668,
+     "turn_deg": 54.55005111800868,
+     "available_deg": 68.11383622185876,
+     "ratio": 0.800865934790834,
+     "required_alt_km": 3505.514281474806,
+     "rmin_radii": 1.5792515088857533,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1305.7638506947947,
+     "vinf_kms": 6.338942597491667,
+     "turn_deg": 54.55005111800822,
+     "available_deg": 68.11383622185876,
+     "ratio": 0.8008659347908272,
+     "required_alt_km": 3505.5142814749424,
+     "rmin_radii": 1.5792515088857766,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1979.8692506947948,
+     "vinf_kms": 6.338942597491666,
+     "turn_deg": 54.550051118008774,
+     "available_deg": 68.11383622185879,
+     "ratio": 0.8008659347908349,
+     "required_alt_km": 3505.5142814747824,
+     "rmin_radii": 1.5792515088857497,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2396.582548053532,
+     "vinf_kms": 11.699359204753389,
+     "turn_deg": 25.689645088151455,
+     "available_deg": 35.7396940636552,
+     "ratio": 0.7187986848011676,
+     "required_alt_km": 3809.1348041107894,
+     "rmin_radii": 1.5972174639884327,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2761.832548053532,
+     "vinf_kms": 11.699359204753389,
+     "turn_deg": 27.26705494033457,
+     "available_deg": 35.7396940636552,
+     "ratio": 0.7629347607668326,
+     "required_alt_km": 3064.46721105465,
+     "rmin_radii": 1.4804643128635604,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3492.332548053532,
+     "vinf_kms": 11.699359204753375,
+     "turn_deg": 27.26705494036806,
+     "available_deg": 35.73969406365532,
+     "ratio": 0.762934760767767,
+     "required_alt_km": 3064.467211039807,
+     "rmin_radii": 1.48046431286123,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 96514760.37796725,
+   "r_max_km": 347123225.899299,
+   "min_required_alt_km": 3064.467211039807,
+   "max_turn_deg": 54.550051118008774,
+   "cross_check": {
+    "max_arrival_miss_km": 0.014670297982568935,
+    "max_vinf_vector_error_kms": 2.426573796627652e-09,
+    "max_junction_mismatch_kms": 2.242405372498979e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8008659347920737
+   },
+   "soi_fraction": 2.380494155762194e-08,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/1:1",
+     "body": "V",
+     "min_km": 52551584.6289118,
+     "t_days": 2495.22238429975,
+     "frac_of_leg": 0.2700611533092904,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 83951194.92133443,
+     "t_days": 909.9998227820743,
+     "frac_of_leg": 0.41290482480525975,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     13.184,
+     0.0
+    ],
+    [
+     "E",
+     13.184,
+     7.9
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ],
+    [
+     "E",
+     13.184,
+     7.9
+    ]
+   ],
+   "keys": [
+    "k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s"
+   ],
+   "key": "k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 7.250741929882771,
+    "E": 13.184365965861742
+   },
+   "x_days": [
+    576.7597610823756,
+    1529.5964896661067
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.6224730375540454,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 630.7892896661067,
+     "vinf_kms": 7.250741929882771,
+     "turn_deg": 36.782299912811126,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.6224730375540446,
+     "required_alt_km": 7354.18066256096,
+     "rmin_radii": 2.215205502918298,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1080.1928896661068,
+     "vinf_kms": 7.250741929882771,
+     "turn_deg": 36.78229991280825,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.622473037553996,
+     "required_alt_km": 7354.180662562439,
+     "rmin_radii": 2.215205502918543,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1529.5964896661067,
+     "vinf_kms": 7.250741929882773,
+     "turn_deg": 36.78229991281117,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.6224730375540454,
+     "required_alt_km": 7354.180662560938,
+     "rmin_radii": 2.2152055029182933,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2035.4816945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 7.913600722859693,
+     "available_deg": 29.960422529263695,
+     "ratio": 0.264135150802033,
+     "required_alt_km": 24559.752999652006,
+     "rmin_radii": 4.8506154696351,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2765.9816945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 0.0007017240338440567,
+     "available_deg": 29.960422529263695,
+     "ratio": 2.3421700183255134e-05,
+     "required_alt_km": 374451426.89166385,
+     "rmin_radii": 58709.589497476125,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3496.4816945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 7.9136007228596466,
+     "available_deg": 29.960422529263695,
+     "ratio": 0.2641351508020314,
+     "required_alt_km": 24559.752999652203,
+     "rmin_radii": 4.85061546963513,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 107589704.81019394,
+   "r_max_km": 357527342.6036086,
+   "min_required_alt_km": 7354.180662560938,
+   "max_turn_deg": 36.78229991281117,
+   "cross_check": {
+    "max_arrival_miss_km": 0.006964633392587207,
+    "max_vinf_vector_error_kms": 1.2414393048878512e-09,
+    "max_junction_mismatch_kms": 1.2390692916142143e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6224730375534945
+   },
+   "soi_fraction": 1.1301249032418667e-08,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/2:1",
+     "body": "V",
+     "min_km": 131681384.82654569,
+     "t_days": 2932.506470308442,
+     "frac_of_leg": 0.22795999418772572,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/2:1",
+     "body": "E",
+     "min_km": 75316262.27773936,
+     "t_days": 1130.0548736261896,
+     "frac_of_leg": 0.11095145646381718,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     13.184,
+     5.1
+    ],
+    [
+     "E",
+     13.184,
+     16.2
+    ],
+    [
+     "E",
+     13.184,
+     16.2
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ],
+    [
+     "V",
+     7.251,
+     36.8
+    ]
+   ],
+   "keys": [
+    "k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+    "k5|RE/3:2|RE/1:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s"
+   ],
+   "key": "k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 7.250741929882771,
+    "E": 13.184365965861742
+   },
+   "x_days": [
+    576.7597610823756,
+    1529.5964896661067
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.6224730375540454,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 630.7892896661067,
+     "vinf_kms": 7.250741929882771,
+     "turn_deg": 36.782299912811126,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.6224730375540446,
+     "required_alt_km": 7354.18066256096,
+     "rmin_radii": 2.215205502918298,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1080.1928896661068,
+     "vinf_kms": 7.250741929882771,
+     "turn_deg": 36.78229991280825,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.622473037553996,
+     "required_alt_km": 7354.180662562439,
+     "rmin_radii": 2.215205502918543,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1529.5964896661067,
+     "vinf_kms": 7.250741929882773,
+     "turn_deg": 36.78229991281117,
+     "available_deg": 59.09059138905691,
+     "ratio": 0.6224730375540454,
+     "required_alt_km": 7354.180662560938,
+     "rmin_radii": 2.2152055029182933,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2035.4816945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 16.21494775014037,
+     "available_deg": 29.960422529263695,
+     "ratio": 0.5412122520736314,
+     "required_alt_km": 7588.261274676556,
+     "rmin_radii": 2.189730053568394,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2400.7316945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 16.21494775013356,
+     "available_deg": 29.960422529263695,
+     "ratio": 0.5412122520734042,
+     "required_alt_km": 7588.261274683341,
+     "rmin_radii": 2.1897300535694577,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3496.4816945543084,
+     "vinf_kms": 13.184365965861742,
+     "turn_deg": 5.054122418581665,
+     "available_deg": 29.960422529263695,
+     "ratio": 0.16869329575192324,
+     "required_alt_km": 43336.39975729721,
+     "rmin_radii": 7.794523190282241,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 85020966.9957482,
+   "r_max_km": 290125916.517134,
+   "min_required_alt_km": 7354.180662560938,
+   "max_turn_deg": 36.78229991281117,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0040606945948406335,
+    "max_vinf_vector_error_kms": 7.209965861256809e-10,
+    "max_junction_mismatch_kms": 7.147455960421212e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6224730375534945
+   },
+   "soi_fraction": 6.589136609794038e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/3:2",
+     "body": "V",
+     "min_km": 74316417.87452213,
+     "t_days": 2474.4614478401645,
+     "frac_of_leg": 0.06728702102291213,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/2:1",
+     "body": "E",
+     "min_km": 75316262.27773936,
+     "t_days": 1130.0548736261896,
+     "frac_of_leg": 0.11095145646381718,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     14.253,
+     7.2
+    ],
+    [
+     "E",
+     14.253,
+     8.0
+    ],
+    [
+     "E",
+     14.253,
+     8.0
+    ],
+    [
+     "V",
+     7.946,
+     45.5
+    ],
+    [
+     "V",
+     7.946,
+     45.5
+    ]
+   ],
+   "keys": [
+    "k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s",
+    "k5|RE/3:2|RE/2:1|LE>V/0s|RV/2:1|LV>E/0s"
+   ],
+   "key": "k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 7.946352981119471,
+    "E": 14.252613904361546
+   },
+   "x_days": [
+    78.94890628723721,
+    1121.5077100169285
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.8548704274855029,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 672.1041100169284,
+     "vinf_kms": 7.946352981119471,
+     "turn_deg": 45.45079123939378,
+     "available_deg": 53.16687743320556,
+     "ratio": 0.8548704274855029,
+     "required_alt_km": 2120.847325801922,
+     "rmin_radii": 1.350449011170548,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1121.5077100169285,
+     "vinf_kms": 7.946352981119486,
+     "turn_deg": 45.45079123939378,
+     "available_deg": 53.16687743320556,
+     "ratio": 0.8548704274855029,
+     "required_alt_km": 2120.8473258019203,
+     "rmin_radii": 1.3504490111705427,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1172.4208397591701,
+     "vinf_kms": 14.252613904361546,
+     "turn_deg": 7.2114141395973625,
+     "available_deg": 26.56576284750633,
+     "ratio": 0.27145518767868854,
+     "required_alt_km": 22860.57399479594,
+     "rmin_radii": 4.584208679555791,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1902.9208397591701,
+     "vinf_kms": 14.252613904361544,
+     "turn_deg": 8.0043234331182,
+     "available_deg": 26.56576284750633,
+     "ratio": 0.30130222418474795,
+     "required_alt_km": 19774.111461815668,
+     "rmin_radii": 4.100295817072551,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2998.67083975917,
+     "vinf_kms": 14.252613904361528,
+     "turn_deg": 8.00432343311651,
+     "available_deg": 26.565762847506413,
+     "ratio": 0.3013022241846834,
+     "required_alt_km": 19774.11146182171,
+     "rmin_radii": 4.100295817073491,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 102300941.8682381,
+   "r_max_km": 362285351.6871971,
+   "min_required_alt_km": 2120.8473258019203,
+   "max_turn_deg": 45.45079123939378,
+   "cross_check": {
+    "max_arrival_miss_km": 0.07730688513533558,
+    "max_vinf_vector_error_kms": 1.3822734221772349e-08,
+    "max_junction_mismatch_kms": 1.3683671085118476e-08,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8548704275046701
+   },
+   "soi_fraction": 1.2544297906116568e-07,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/3:2",
+     "body": "V",
+     "min_km": 75351730.27716708,
+     "t_days": 2964.3854243845135,
+     "frac_of_leg": 0.9687105495097816,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "LE>V/0s",
+     "body": "E",
+     "min_km": 66474956.24705336,
+     "t_days": 623.7343980453791,
+     "frac_of_leg": 0.9184535317781819,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     15.068,
+     0.0
+    ],
+    [
+     "E",
+     15.068,
+     7.5
+    ],
+    [
+     "V",
+     8.497,
+     4.1
+    ],
+    [
+     "E",
+     15.068,
+     7.5
+    ]
+   ],
+   "keys": [
+    "k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s"
+   ],
+   "key": "k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "V": 8.49740480703555,
+    "E": 15.0679354444767
+   },
+   "x_days": [
+    581.2805847605132,
+    630.048277434297
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.3091013238171659,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 630.048277434297,
+     "vinf_kms": 8.49740480703555,
+     "turn_deg": 4.0512737951554385,
+     "available_deg": 48.991660595522355,
+     "ratio": 0.08269313074735231,
+     "required_alt_km": 116732.9748430142,
+     "rmin_radii": 20.288967719193298,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 1309.5025182324462,
+     "vinf_kms": 15.0679354444767,
+     "turn_deg": 7.518112821027611,
+     "available_deg": 24.322486646723622,
+     "ratio": 0.3091013238171659,
+     "required_alt_km": 18644.708109887586,
+     "rmin_radii": 3.9232216413488117,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2405.252518232446,
+     "vinf_kms": 15.067935444476701,
+     "turn_deg": 8.537736462515939e-07,
+     "available_deg": 24.32248664672361,
+     "ratio": 3.510223517243055e-08,
+     "required_alt_km": 235635182453.00888,
+     "rmin_radii": 36944203.11623063,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3501.002518232446,
+     "vinf_kms": 15.067935444476717,
+     "turn_deg": 7.518112821027561,
+     "available_deg": 24.32248664672361,
+     "ratio": 0.30910132381716393,
+     "required_alt_km": 18644.708109887753,
+     "rmin_radii": 3.92322164134883,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 97752828.54977539,
+   "r_max_km": 366241714.2468066,
+   "min_required_alt_km": 18644.708109887586,
+   "max_turn_deg": 7.518112821027611,
+   "cross_check": {
+    "max_arrival_miss_km": 0.033518788710804284,
+    "max_vinf_vector_error_kms": 6.154006316728053e-09,
+    "max_junction_mismatch_kms": 6.146782638438708e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3091013241346813
+   },
+   "soi_fraction": 5.438967956145431e-08,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RE/3:2",
+     "body": "V",
+     "min_km": 52869872.19765368,
+     "t_days": 2485.00124569882,
+     "frac_of_leg": 0.07278003875553188,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RE/3:2",
+     "body": "E",
+     "min_km": 127368070.78627782,
+     "t_days": 1556.3594564520274,
+     "frac_of_leg": 0.22528582087116697,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "E",
+     34.174,
+     5.3
+    ],
+    [
+     "E",
+     34.174,
+     5.3
+    ],
+    [
+     "V",
+     42.154,
+     0.6
+    ],
+    [
+     "V",
+     42.154,
+     1.5
+    ],
+    [
+     "V",
+     42.154,
+     2.1
+    ]
+   ],
+   "keys": [
+    "k5|RE/3:2|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+    "k5|RE/3:2|LE>V/0s|RV/3:2|LV>V/1h|LV>E/0s"
+   ],
+   "key": "k5|RE/3:2|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "mirror_pair": true,
+   "vinf_kms": {
+    "V": 42.1542916749295,
+    "E": 34.174139786820746
+   },
+   "x_days": [
+    347.6356544568128,
+    406.2837903925977,
+    1789.9377921809792
+   ],
+   "period_days": 2919.721933471933,
+   "worst_ratio": 0.9440228153333926,
+   "status_hm_floor": "fail",
+   "flyby_table": [
+    {
+     "body": "V",
+     "t_days": 406.2837903925977,
+     "vinf_kms": 42.1542916749295,
+     "turn_deg": 0.642443853246488,
+     "available_deg": 3.206269958805928,
+     "ratio": 0.20037110458588633,
+     "required_alt_km": 26373.86056541752,
+     "rmin_radii": 5.358019195184432,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1115.832392180979,
+     "vinf_kms": 42.15429167492974,
+     "turn_deg": 1.490434734793852,
+     "available_deg": 3.2062699588058576,
+     "ratio": 0.464850045050152,
+     "required_alt_km": 7821.415433456627,
+     "rmin_radii": 2.29241142031406,
+     "status": "pass"
+    },
+    {
+     "body": "V",
+     "t_days": 1789.9377921809792,
+     "vinf_kms": 42.154291674930406,
+     "turn_deg": 2.132878588037342,
+     "available_deg": 3.2062699588058576,
+     "ratio": 0.6652211496351077,
+     "required_alt_km": 3587.8921845613504,
+     "rmin_radii": 1.592863641323415,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 2171.607587928746,
+     "vinf_kms": 34.174139786820746,
+     "turn_deg": 5.3380532075201375,
+     "available_deg": 5.654580716499889,
+     "ratio": 0.9440228153333926,
+     "required_alt_km": 609.9744744563959,
+     "rmin_radii": 1.0956352104786078,
+     "status": "pass"
+    },
+    {
+     "body": "E",
+     "t_days": 3267.357587928746,
+     "vinf_kms": 34.174139786820156,
+     "turn_deg": 5.338053207517334,
+     "available_deg": 5.65458071650026,
+     "ratio": 0.9440228153328347,
+     "required_alt_km": 609.974474460726,
+     "rmin_radii": 1.0956352104792484,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 8663795.6883415,
+   "r_max_km": 375516802.7371419,
+   "min_required_alt_km": 609.9744744563959,
+   "max_turn_deg": 5.3380532075201375,
+   "cross_check": {
+    "max_arrival_miss_km": 0.040580901068844925,
+    "max_vinf_vector_error_kms": 1.172274239215696e-08,
+    "max_junction_mismatch_kms": 1.0164328045902948e-08,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.94402281551528
+   },
+   "soi_fraction": 6.584910405005482e-08,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 695700.0,
+   "primary_floor_source": "IAU 2015 nominal solar radius 695700 km, no floor",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "V": {
+     "leg": "RV/3:2",
+     "body": "V",
+     "min_km": 88145279.91475382,
+     "t_days": 1528.9859022096,
+     "frac_of_leg": 0.6128915597303047,
+     "soi_km": 616271.1194672836
+    },
+    "E": {
+     "leg": "RV/3:2",
+     "body": "E",
+     "min_km": 8220106.699838173,
+     "t_days": 1439.5640933462603,
+     "frac_of_leg": 0.48023899699554595,
+     "soi_km": 924635.2319893346
+    }
+   },
+   "class_973": "W2"
+  }
+ ]
+}
