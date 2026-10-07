@@ -210,10 +210,12 @@ def arc(p: Problem, x: Arr, t0: float, t1: float) -> tuple[Arr, Arr]:
         x[3:],
         t0,
         t1,
-        ephem=p.circ,
+        ephem=p.circ,  # type: ignore[arg-type]
         moons=FORCE_MOONS,
         rtol=RTOL,
-        atol=ATOL,  # type: ignore[arg-type]
+        atol=ATOL,
+        mu_overrides=p.mus,
+        radius_overrides=p.surf,
     )
     return np.concatenate([rf, vf]), phi
 
@@ -782,6 +784,56 @@ def stage_pinseed() -> None:
     )
 
 
+def stage_gm(s_list: list[float], max_nfev: int) -> None:
+    """Amendment 3.2: continuation of the pinned control in Ganymede's GM, s_G from 1 down.
+
+    Softening radius scaled linearly with s (amendment 5). Predictor: secant in log s, or at the
+    start the Ganymede-relative node offsets scaled with s (patched-conic r_p is proportional to
+    GM at fixed V_inf and turn), velocities kept."""
+    p = build_problem()
+    mu0, r0 = p.mus[GAN], p.surf[GAN]
+    path = OUT / "gm.json"
+    rec = json.loads(path.read_text()) if path.exists() else {"points": []}
+    good = [q for q in rec["points"] if q["converged"]]
+    if good:
+        z, s_prev = np.asarray(good[-1]["z"]), float(good[-1]["s"])
+    else:
+        z, s_prev = np.asarray(json.loads((OUT / "a_state.json").read_text())["z"]), 1.0
+    lay = Layout("pin")
+    hist = [(float(q["s"]), np.asarray(q["z"])) for q in good[-2:]]
+    for s_g in s_list:
+        if len(hist) == 2:  # secant predictor in log s
+            (s0, z0), (s1, z1) = hist
+            zs = z1 + (z1 - z0) * (math.log(s_g) - math.log(s1)) / (math.log(s1) - math.log(s0))
+        else:
+            zs = z.copy()
+            for i0, it in ((0, 6), (11, 17)):
+                rg, _ = p.circ.state(GAN, float(zs[it]))
+                zs[i0 : i0 + 3] = rg + (zs[i0 : i0 + 3] - rg) * (s_g / s_prev)
+        p.mus[GAN] = s_g * mu0
+        p.surf[GAN] = s_g * r0  # amendment 5: linear, like r_p
+        zn, info = solve_trf(p, zs, lay, max_nfev, f"gm s={s_g:.4g}")
+        ok = converged(info)
+        pt: dict[str, Any] = {"s": s_g, "converged": ok, "norm": info["norm"], "z": zn.tolist()}
+        if ok:
+            nd = nodes(p, zn, lay)
+            gan = []
+            for idx in (0, 2):
+                v, d = vinf_gan(p, nd[idx][0], nd[idx][2])
+                gan.append({"vinf_kms": v, "rp_km": d, "rp_over_s_km": d / s_g})
+            _, vc = p.circ.state(CAL, nd[1][2])
+            pt["ganymede"] = gan
+            pt["callisto_speed_kms"] = float(np.linalg.norm(nd[1][0][3:] - vc))
+            z, s_prev = zn, s_g
+            hist = [*hist[-1:], (s_g, zn)]
+        rec["points"].append(pt)
+        path.write_text(json.dumps(rec))
+        msg = json.dumps(pt.get("ganymede")) if ok else ""
+        _log(f"gm s={s_g:.4g}: converged={ok} |r| {info['norm']:.3e} {msg}")
+        if not ok:
+            break
+
+
 def main() -> None:
     preflight_search(
         task_no=968,
@@ -797,7 +849,9 @@ def main() -> None:
     )
     ap = argparse.ArgumentParser()
     ap.add_argument(
-        "--stage", choices=["a", "free", "family", "tcont", "pinseed", "check", "b"], required=True
+        "--stage",
+        choices=["a", "free", "family", "tcont", "pinseed", "gm", "check", "b"],
+        required=True,
     )
     ap.add_argument("--max-nfev", type=int, default=40)
     ap.add_argument("--dj", type=float, default=0.0)
@@ -809,6 +863,8 @@ def main() -> None:
     args = ap.parse_args()
     if args.stage == "a":
         stage_a(args.max_nfev)
+    elif args.stage == "gm":
+        stage_gm([float(v) for v in args.t_list.split(",")], args.max_nfev)
     elif args.stage == "pinseed":
         stage_pinseed()
     elif args.stage == "tcont":

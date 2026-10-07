@@ -262,3 +262,30 @@ gets up to 3 more chunks of 40 evaluations; if still unconverged it is recorded 
   s_G x 2631 km), so r_p / r_surf is constant along the continuation, as in the patched-conic limit.
   Points already converged are unaffected (their periapses lie above both radii). Expectation
   unchanged: V_inf -> 3.24 and r_p / s_G -> about 2962 km as s_G -> 0.
+
+### 4.7 Identity check result (amendments 3.2 and 5): the s_G = 1 orbit IS GanCal#5's continuation
+
+`data/968_control/gm.json`: 35 converged points of the pinned, fixed-T problem from s_G = 1 down to
+s_G = 0.036 (Ganymede GM scaled by s_G, softening radius by s_G after amendment 5). The run stopped
+at s_G = 0.032 (|r| 4.6e-2 within 80 evaluations; the flyby time scale shrinks with s_G and the
+arcs get stiff; not pursued further). Selected points (V_inf at both Ganymede flybys is equal):
+
+| s_G | V_inf G (km/s) | r_p / s_G (km) | Callisto speed (km/s) |
+|---|---|---|---|
+| 1 | 3.0403 | 3210.5 | 3.2513 |
+| 0.5072 | 3.1371 | 3098.0 | |
+| 0.2191 | 3.1917 | 3027.7 | |
+| 0.1048 | 3.2144 | 2996.7 | 3.3291 |
+| 0.0526 | 3.2255 | 2981.1 | 3.3340 |
+| 0.036 | 3.2292 | 2975.7 | 3.3356 |
+| s_G -> 0 (quadratic fit, s_G <= 0.12, 12 points) | 3.2375 | 2963.6 | 3.3392 |
+| patched conic (#943 enumerator) / published | 3.2383 / 3.24 | 2962.0 (alt 328) | 3.3395 / 3.34 |
+
+Reading: the continuous orbit at full Ganymede mass is joined, by a smooth branch with no fold, to
+an orbit whose s_G -> 0 limit reproduces the published GanCal#5 V_inf (to 0.001 km/s), periapsis
+(r_p / s_G to 1.6 km of the patched-conic 2962 km) and Callisto speed (to 0.0003 km/s). So the
+published orbit closes in the lane's continuous model in the patched-conic limit, and its
+full-mass continuation sits 0.20 km/s lower in V_inf. The failed criterion 4 compared a
+continuous-gravity orbit with a patched-conic display value; the tolerance (0.10 km/s, 150 km) was
+set too tight for a 0.94 turn-ratio Ganymede flyby plus an unmodelled 95,000 km Ganymede pass.
+This is my reading; the verdict as registered stays FAIL on criterion 4, and the lead rules on it.
