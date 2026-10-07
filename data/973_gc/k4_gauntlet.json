@@ -286,7 +286,17 @@
    "soi_fraction": 1.0418528201384586e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LCallisto>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 9432.148141715697,
+     "t_days": 25.83953398182625,
+     "frac_of_leg": 0.17127272571050234,
+     "soi_km": 24349.739180045828
+    }
+   ]
   },
   {
    "k": 4,
@@ -388,7 +398,8 @@
    "soi_fraction": 3.4624128215129965e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -492,7 +503,8 @@
    "soi_fraction": 3.8617980985015027e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -563,7 +575,8 @@
    "soi_fraction": 4.226903195361986e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -651,7 +664,8 @@
    "soi_fraction": 1.884098359501607e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -724,7 +738,8 @@
    "soi_fraction": 3.2125260324482585e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -815,7 +830,8 @@
    "soi_fraction": 3.6725431079393915e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -921,7 +937,8 @@
     "NEAR #576 symmetric closure Callisto-Ganymede n = 1 (dV_inf 0.149, k 1 vs 4)"
    ],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -1025,7 +1042,8 @@
    "soi_fraction": 7.837501034604996e-11,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -1113,7 +1131,8 @@
    "soi_fraction": 2.514786705989835e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -1200,7 +1219,8 @@
    "soi_fraction": 2.19052642032027e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -1303,7 +1323,17 @@
    "soi_fraction": 3.746015900696342e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 21913.21847996978,
+     "t_days": 25.046470237365245,
+     "frac_of_leg": 0.5000000163928541,
+     "soi_km": 24349.739180045828
+    }
+   ]
   },
   {
    "k": 4,
@@ -1392,7 +1422,17 @@
    "soi_fraction": 2.89267542189349e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LCallisto>Ganymede/1h",
+     "body": "Ganymede",
+     "min_km": 3.4349136217422624,
+     "t_days": 25.010522840454456,
+     "frac_of_leg": 0.43148281578215514,
+     "soi_km": 24349.739180045828
+    }
+   ]
   },
   {
    "k": 4,
@@ -1481,7 +1521,17 @@
    "soi_fraction": 1.63611996144048e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-G",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Callisto/2l",
+     "body": "Callisto",
+     "min_km": 31.897918557688747,
+     "t_days": 3.223146657570154,
+     "frac_of_leg": 0.1555031698802848,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -1569,7 +1619,25 @@
    "soi_fraction": 2.2350142059667e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/2l",
+     "body": "Callisto",
+     "min_km": 23470.846727902597,
+     "t_days": 11.412975412989514,
+     "frac_of_leg": 0.27844258459381555,
+     "soi_km": 37680.923494398325
+    },
+    {
+     "leg": "LGanymede>Callisto/2l",
+     "body": "Callisto",
+     "min_km": 7912.078494173123,
+     "t_days": 27.85188353394846,
+     "frac_of_leg": 0.13832861214073716,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -1674,7 +1742,8 @@
    "soi_fraction": 1.7005153676517255e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -1763,7 +1832,17 @@
    "soi_fraction": 1.2079060542105662e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Callisto/1h",
+     "body": "Callisto",
+     "min_km": 5742.406909484947,
+     "t_days": 15.435998816768551,
+     "frac_of_leg": 0.4504126341702372,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -1838,7 +1917,17 @@
    "soi_fraction": 3.950384599113814e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Callisto/2h",
+     "body": "Callisto",
+     "min_km": 3828.153538161814,
+     "t_days": 32.12613514500984,
+     "frac_of_leg": 0.6453287411444163,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -1927,7 +2016,8 @@
    "soi_fraction": 6.19889354184761e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2029,7 +2119,8 @@
    "soi_fraction": 6.023584430315724e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2102,7 +2193,8 @@
    "soi_fraction": 7.63871400087814e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2194,7 +2286,25 @@
    "soi_fraction": 4.879387028284315e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Callisto",
+     "min_km": 30.866426413688796,
+     "t_days": 20.986216563695834,
+     "frac_of_leg": 0.5669962819286521,
+     "soi_km": 37680.923494398325
+    },
+    {
+     "leg": "LCallisto>Ganymede/2l",
+     "body": "Callisto",
+     "min_km": 22375.158065568874,
+     "t_days": 54.37286250396608,
+     "frac_of_leg": 0.8268911708324753,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -2284,7 +2394,8 @@
    "soi_fraction": 4.9983902959175955e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2387,7 +2498,17 @@
    "soi_fraction": 5.229074838306924e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Callisto",
+     "min_km": 11152.974536854752,
+     "t_days": 20.961817331799065,
+     "frac_of_leg": 0.56628312657619,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -2490,7 +2611,8 @@
    "soi_fraction": 1.955924751673352e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2594,7 +2716,8 @@
    "soi_fraction": 8.699041945460224e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2681,7 +2804,8 @@
    "soi_fraction": 1.7385049206906573e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2770,7 +2894,8 @@
    "soi_fraction": 9.332331219184965e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2874,7 +2999,8 @@
    "soi_fraction": 9.235392574302418e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -2979,7 +3105,8 @@
    "soi_fraction": 1.2847359457770513e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3068,7 +3195,8 @@
    "soi_fraction": 6.740845824009552e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3172,7 +3300,8 @@
    "soi_fraction": 4.487764763086206e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3276,7 +3405,8 @@
    "soi_fraction": 3.777575963885557e-10,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3363,7 +3493,17 @@
    "soi_fraction": 2.788352523852503e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/1h",
+     "body": "Callisto",
+     "min_km": 25843.599050942335,
+     "t_days": 30.511283402157478,
+     "frac_of_leg": 0.5712231203533388,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -3451,7 +3591,17 @@
    "soi_fraction": 3.1662570294605144e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/1l",
+     "body": "Callisto",
+     "min_km": 25809.07747097897,
+     "t_days": 15.419966032975102,
+     "frac_of_leg": 0.8294222770822894,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -3554,7 +3704,8 @@
    "soi_fraction": 1.3069822602449678e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3644,7 +3795,8 @@
    "soi_fraction": 7.561390413358276e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3732,7 +3884,8 @@
    "soi_fraction": 3.5996189157778197e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3837,7 +3990,8 @@
    "soi_fraction": 2.4030859706558217e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -3927,7 +4081,25 @@
    "soi_fraction": 4.0553019820907035e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "P"
+   "class_973": "P-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/1h",
+     "body": "Callisto",
+     "min_km": 26168.61042989972,
+     "t_days": 1.910868522036646,
+     "frac_of_leg": 0.09018125488334498,
+     "soi_km": 37680.923494398325
+    },
+    {
+     "leg": "LGanymede>Callisto/2l",
+     "body": "Callisto",
+     "min_km": 21719.85217410349,
+     "t_days": 18.63800406741428,
+     "frac_of_leg": 0.14216361026296262,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -4033,7 +4205,17 @@
    "soi_fraction": 4.231986024467141e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-G",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LGanymede>Ganymede/1h",
+     "body": "Callisto",
+     "min_km": 36932.173842179895,
+     "t_days": 23.09089412231808,
+     "frac_of_leg": 0.9084570251087537,
+     "soi_km": 37680.923494398325
+    }
+   ]
   },
   {
    "k": 4,
@@ -4137,7 +4319,8 @@
    "soi_fraction": 1.0081252469958435e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "W2"
+   "class_973": "W2",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4240,7 +4423,17 @@
    "soi_fraction": 1.1452765692375972e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "S"
+   "class_973": "S-C",
+   "unscheduled_soi_pass_973": [
+    {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 23689.98787590993,
+     "t_days": 28.213449393212095,
+     "frac_of_leg": 0.8419748187479891,
+     "soi_km": 24349.739180045828
+    }
+   ]
   },
   {
    "k": 4,
@@ -4328,7 +4521,8 @@
    "soi_fraction": 3.308265583631142e-07,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4418,7 +4612,8 @@
    "soi_fraction": 9.975317326155989e-07,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4506,7 +4701,8 @@
    "soi_fraction": 2.229588309058109e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4594,7 +4790,8 @@
    "soi_fraction": 5.519421349216642e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4681,7 +4878,8 @@
    "soi_fraction": 3.3880546481107173e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4771,7 +4969,8 @@
    "soi_fraction": 5.283044277886373e-09,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4875,7 +5074,8 @@
    "soi_fraction": 7.286749675399288e-08,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   },
   {
    "k": 4,
@@ -4963,7 +5163,8 @@
    "soi_fraction": 2.0070520575420945e-05,
    "collisions": [],
    "literature": "DEFERRED (#973 note; runs after #972 lands)",
-   "class_973": "J"
+   "class_973": "J",
+   "unscheduled_soi_pass_973": []
   }
  ]
 }

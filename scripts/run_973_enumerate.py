@@ -49,7 +49,12 @@ import numpy as np
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.data.preflight import preflight_search
-from cyclerfinder.search.two_working_body import CircularSystem, cycle_flybys, moon_circular
+from cyclerfinder.search.two_working_body import (
+    CircularSystem,
+    cycle_flybys,
+    moon_circular,
+    sphere_of_influence_km,
+)
 from cyclerfinder.search.two_working_body_enum import (
     assess,
     flyby_table,
@@ -693,9 +698,115 @@ def cmd_check(argv: list[str]) -> None:
     print("OK")
 
 
+# ---------------------------------------------------------------------------
+# Unscheduled close passes
+# ---------------------------------------------------------------------------
+
+
+def _leg_arcs(system: Any, cycle: Any, x: np.ndarray, fl: list[Any]) -> list[tuple]:
+    """Every leg as ``(label, t0, r0, v0, duration)`` (Lambert legs and fixed returns)."""
+    from cyclerfinder.search.two_working_body import (
+        _blocks,
+        eval_lambert_legs,
+        fixed_duration_s,
+    )
+
+    legs = eval_lambert_legs(system, cycle, x)
+    assert legs is not None
+    arcs = []
+    for ev, li in zip(legs, cycle.lambert_index, strict=True):
+        leg = cycle.legs[li]
+        r0, w0 = system.state(leg.frm, ev.t_dep)
+        arcs.append((ENUM.leg_key(leg), ev.t_dep, r0, w0 + ev.vinf_dep, ev.t_arr - ev.t_dep))
+    for blk in _blocks(system, cycle, legs):
+        for leg, t0 in blk.fixed:
+            fb = next(f for f in fl if abs(f.t_s - t0) < 1.0 and f.body == blk.body)
+            r0, w0 = system.state(blk.body, t0)
+            arcs.append(
+                (ENUM.leg_key(leg), t0, r0, w0 + fb.vinf_out, fixed_duration_s(system, leg))
+            )
+    return arcs
+
+
+def closest_unscheduled(system: Any, cycle: Any, x: np.ndarray, n: int = 3000) -> list[dict]:
+    """Interior local minima of the distance to each body along every leg (the scheduled
+    encounters are the leg end points, so an interior minimum is a pass the cycle does not
+    schedule), refined by bounded minimisation. Returns the closest per (leg, body)."""
+    from scipy.optimize import minimize_scalar
+
+    from cyclerfinder.search.two_working_body import kepler_step
+
+    fl = cycle_flybys(system, cycle, x)
+    assert fl is not None
+    out = []
+    for label, t0, r0, v0, dur in _leg_arcs(system, cycle, x, fl):
+        ts = np.linspace(0.0, dur, n)
+
+        def dist(t: float, body: str, t0: float = t0, r0: Any = r0, v0: Any = v0) -> float:
+            r = kepler_step(r0, v0, float(t), system.mu)[0] if t > 0 else r0
+            return float(np.linalg.norm(r - system.state(body, t0 + t)[0]))
+
+        for body in system.bodies:
+            d = np.array([dist(t, body) for t in ts])
+            best = None
+            for i in range(1, n - 1):
+                if d[i] <= d[i - 1] and d[i] <= d[i + 1]:
+                    res = minimize_scalar(
+                        lambda t, b=body: dist(t, b),
+                        bounds=(ts[i - 1], ts[i + 1]),
+                        method="bounded",
+                        options={"xatol": 1.0},
+                    )
+                    if best is None or res.fun < best[0]:
+                        best = (float(res.fun), float(res.x))
+            if best is not None:
+                out.append(
+                    {
+                        "leg": label,
+                        "body": body,
+                        "min_km": best[0],
+                        "t_days": (t0 + best[1]) / DAY,
+                        "frac_of_leg": best[1] / dur,
+                        "soi_km": sphere_of_influence_km(system, body),
+                    }
+                )
+    return out
+
+
+def cmd_passes(argv: list[str]) -> None:
+    """For every candidate of a gauntlet JSON: unscheduled passes inside a body's SOI."""
+    ap = argparse.ArgumentParser(prog="passes")
+    ap.add_argument("gauntlet", type=Path)
+    ap.add_argument("--out", type=Path, required=True)
+    args = ap.parse_args(argv)
+    d = json.loads(args.gauntlet.read_text())
+    system, a, b = cell_system(d["cell"])
+    res = []
+    for i, c in enumerate(d["candidates"]):
+        _, cycle = ENUM.parse_cycle_key(c["key"], system, a, b)
+        x = np.asarray(c["x_days"]) * DAY
+        cp = closest_unscheduled(system, cycle, x)
+        inside = [p for p in cp if p["min_km"] < p["soi_km"]]
+        res.append({"index": i, "key": c["key"], "passes": cp, "inside_soi": inside})
+        print(
+            f"{i:3d} {c['key']}: closest unscheduled "
+            + ", ".join(
+                f"{p['body']} {min(q['min_km'] for q in cp if q['body'] == p['body']):,.0f} km"
+                for p in {q["body"]: q for q in cp}.values()
+            )
+            + (
+                f"  INSIDE SOI: {[(p['leg'], p['body'], round(p['min_km'])) for p in inside]}"
+                if inside
+                else ""
+            ),
+            flush=True,
+        )
+    args.out.write_text(json.dumps(res, indent=1, default=float))
+
+
 def main() -> None:
     cmds = {"enumerate": cmd_enumerate, "recall": cmd_recall, "liang": cmd_liang}
-    cmds |= {"gauntlet": cmd_gauntlet, "check": cmd_check}
+    cmds |= {"gauntlet": cmd_gauntlet, "check": cmd_check, "passes": cmd_passes}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: run_973_enumerate.py {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

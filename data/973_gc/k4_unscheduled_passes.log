@@ -1,0 +1,51 @@
+  0 k4|RGanymede/1:1|LGanymede>Callisto/1h|LCallisto>Ganymede/2l: closest unscheduled Ganymede 9,432 km, Callisto 1,121,436 km  INSIDE SOI: [('LCallisto>Ganymede/2l', 'Ganymede', 9432)]
+  1 k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s: closest unscheduled Ganymede 937,659 km, Callisto 2,861,790 km
+  2 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 234,539 km, Callisto 537,850 km
+  3 k4|LGanymede>Callisto/2h|LCallisto>Ganymede/2l: closest unscheduled Ganymede 326,063 km, Callisto 1,086,995 km
+  4 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/2h: closest unscheduled Ganymede 711,528 km, Callisto 1,096,482 km
+  5 k4|LGanymede>Callisto/1l|LCallisto>Ganymede/2h: closest unscheduled Ganymede 900,439 km, Callisto 616,458 km
+  6 k4|RGanymede/3:2|LGanymede>Callisto/2l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 780,710 km, Callisto 1,102,074 km
+  7 k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s: closest unscheduled Ganymede 618,324 km, Callisto 669,137 km
+  8 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 106,557 km, Callisto 705,684 km
+  9 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 806,899 km, Callisto 1,153,771 km
+ 10 k4|RGanymede/1:1|LGanymede>Callisto/2l|LCallisto>Ganymede/2h: closest unscheduled Ganymede 512,601 km, Callisto 129,111 km
+ 11 k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 21,913 km, Callisto 790,328 km  INSIDE SOI: [('LCallisto>Callisto/1h', 'Ganymede', 21913)]
+ 12 k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Ganymede/1h: closest unscheduled Ganymede 3 km, Callisto 63,677 km  INSIDE SOI: [('LCallisto>Ganymede/1h', 'Ganymede', 3)]
+ 13 k4|LGanymede>Callisto/2l|RCallisto/1:2|LCallisto>Ganymede/1h: closest unscheduled Ganymede 98,732 km, Callisto 32 km  INSIDE SOI: [('LGanymede>Callisto/2l', 'Callisto', 32)]
+ 14 k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/1h: closest unscheduled Ganymede 590,015 km, Callisto 7,912 km  INSIDE SOI: [('LGanymede>Ganymede/2l', 'Callisto', 23471), ('LGanymede>Callisto/2l', 'Callisto', 7912)]
+ 15 k4|RGanymede/1:1|LGanymede>Callisto/2h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 388,919 km, Callisto 208,917 km
+ 16 k4|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,352,914 km, Callisto 5,742 km  INSIDE SOI: [('LGanymede>Callisto/1h', 'Callisto', 5742)]
+ 17 k4|LGanymede>Callisto/2h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,354,086 km, Callisto 3,828 km  INSIDE SOI: [('LGanymede>Callisto/2h', 'Callisto', 3828)]
+ 18 k4|RGanymede/2:1|LGanymede>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,671,754 km, Callisto 816,981 km
+ 19 k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,477,091 km, Callisto 1,465,758 km
+ 20 k4|LGanymede>Callisto/0s|LCallisto>Ganymede/1h: closest unscheduled Ganymede 2,089,079 km, Callisto 1,849,991 km
+ 21 k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2l: closest unscheduled Ganymede 745,093 km, Callisto 31 km  INSIDE SOI: [('LGanymede>Ganymede/2h', 'Callisto', 31), ('LCallisto>Ganymede/2l', 'Callisto', 22375)]
+ 22 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1l|LCallisto>Ganymede/2h: closest unscheduled Ganymede 653,939 km, Callisto 493,006 km
+ 23 k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/0s: closest unscheduled Ganymede 745,507 km, Callisto 11,153 km  INSIDE SOI: [('LGanymede>Ganymede/2h', 'Callisto', 11153)]
+ 24 k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 558,397 km, Callisto 1,351,751 km
+ 25 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 693,108 km, Callisto 1,386,805 km
+ 26 k4|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 408,194 km, Callisto 1,351,631 km
+ 27 k4|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l: closest unscheduled Ganymede 377,808 km, Callisto 1,351,631 km
+ 28 k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,009,509 km, Callisto 185,038 km
+ 29 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 740,436 km, Callisto 1,458,670 km
+ 30 k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/1h: closest unscheduled Ganymede 454,552 km, Callisto 1,526,341 km
+ 31 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 648,478 km, Callisto 1,484,958 km
+ 32 k4|RGanymede/2:1|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 595,392 km, Callisto 1,361,089 km
+ 33 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,566,631 km, Callisto 25,844 km  INSIDE SOI: [('LGanymede>Ganymede/1h', 'Callisto', 25844)]
+ 34 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l: closest unscheduled Ganymede 1,566,631 km, Callisto 25,809 km  INSIDE SOI: [('LGanymede>Ganymede/1l', 'Callisto', 25809)]
+ 35 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,568,895 km, Callisto 45,969 km
+ 36 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 786,751 km, Callisto 743,015 km
+ 37 k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l: closest unscheduled Ganymede 786,751 km, Callisto 771,375 km
+ 38 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l: closest unscheduled Ganymede 196,345 km, Callisto 285,872 km
+ 39 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|LCallisto>Ganymede/1h: closest unscheduled Ganymede 809,143 km, Callisto 21,720 km  INSIDE SOI: [('LGanymede>Ganymede/1h', 'Callisto', 26169), ('LGanymede>Callisto/2l', 'Callisto', 21720)]
+ 40 k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|RCallisto/1:2|LCallisto>Ganymede/0s: closest unscheduled Ganymede 802,016 km, Callisto 36,932 km  INSIDE SOI: [('LGanymede>Ganymede/1h', 'Callisto', 36932)]
+ 41 k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 151,840 km, Callisto 1,401,694 km
+ 42 k4|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 23,690 km, Callisto 1,414,519 km  INSIDE SOI: [('LCallisto>Callisto/1l', 'Ganymede', 23690)]
+ 43 k4|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 889,846 km, Callisto 342,098 km
+ 44 k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 889,846 km, Callisto 277,409 km
+ 45 k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 170,823 km, Callisto 1,193,299 km
+ 46 k4|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/0s: closest unscheduled Ganymede 171,249 km, Callisto 1,193,299 km
+ 47 k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,023,810 km, Callisto 42,815 km
+ 48 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/1l: closest unscheduled Ganymede 1,023,810 km, Callisto 42,608 km
+ 49 k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s: closest unscheduled Ganymede 1,028,525 km, Callisto 1,179,816 km
+ 50 k4|LGanymede>Callisto/2l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l: closest unscheduled Ganymede 75,786 km, Callisto 786,704 km

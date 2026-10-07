@@ -1,7 +1,8 @@
 # #973: the two-working-body generator at longer periods (gc k = 4-6, ev k = 4-5) and a Europa-Callisto cell (ec k = 1-4)
 
 Status: pre-registration (secs. 1-2, committed ab24925e before any production run); controls and Liang
-segments (sec. 3); R11 gc k = 4 done (sec. 4, 51 gate-passers); R12 ec k = 1-4 done (sec. 5, none);
+segments (sec. 3); R11 gc k = 4 done (sec. 4, 51 gate-passers, of which 10
+are two-working-body members with no Jupiter pass and no unscheduled SOI pass); R12 ec k = 1-4 done (sec. 5, none);
 gc k = 5-6 and R13 ev k = 4-5 handed to the lead with launch commands (sec. 6).
 Novelty language: every gate-passing cycler here is "candidate, literature step deferred". Nothing in
 this note is called novel. No catalogue writes. No real-ephemeris runs.
@@ -228,24 +229,50 @@ Gauntlet, all 51:
   collision. Catalogue rows on the pair (7: R-S family, GanCal#1/#5, the four Liang rows): no match.
 - Literature step: DEFERRED (sec. 1).
 
-What the 51 are. A classification added AFTER the run (descriptive, not a gate; thresholds are mine):
-- **J, 8: the conic passes inside Jupiter** (r_min < 71,492 km, down to 185 km from the centre).
-  The pre-registered pass definition and the #942/#943 gauntlet have no primary-impact screen, so these
-  pass the gate as registered; they are not physical trajectories. Papercut filed.
-- **P, 18: pass-through.** One moon has every demanded turn below 0.01 deg (it is a node on a single
-  conic, not a working body). Six of them form three near-twin pairs that share one conic (same r_min/r_max
-  to 1 km; the pass-through moon is met at the other crossing); three more such pairs are in class J.
-- **S, 13: shallow.** Both moons turn, but one moon by less than 1 deg.
-- **W2, 12: both moons turn by at least 1 deg** (two working bodies in the sense of the #943 brief).
+What the 51 are. Two checks were added AFTER the run; they are descriptive, they judge nothing, and the
+thresholds are mine.
 
-Why k = 4 holds many near-zero-turn members: in this model 4 G-C synodic periods (50.09 d) are within
-0.02 d of 3 Callisto periods (50.07 d) and 7 Ganymede periods (50.08 d) (Lynam 2015's 3:4:7 window).
+(a) Unscheduled passes (`run_973_enumerate.py passes`, `data/973_gc/k4_unscheduled_passes.json`): every
+leg is sampled (3,000 points, Kepler step) and each interior minimum of the distance to either moon is
+refined. A minimum inside a moon's Laplace sphere of influence (Ganymede 24,350 km, Callisto 37,681 km)
+is an encounter the cycle does not schedule, so the patched-conic cycle is not valid there. Read
+against a known state first: on the #943 gc gate-passers (gc-1, gc-2, GanCal#5) it flags none; the
+closest is gc-2's Ganymede pass at 33,899 km on its Callisto-Callisto leg (1.4 SOI). On gc k = 4 it
+flags **14 of 51**, three of them at 3-32 km from a moon's centre (inside the moon: gc4-12 Ganymede,
+gc4-13 and gc4-21 Callisto).
+
+(b) Architecture, by the demanded turns:
+- **J, 8: a leg passes inside Jupiter** (r_min < 71,492 km, down to 185 km from the centre). The
+  pre-registered pass definition and the #942/#943 gauntlet have no primary-impact screen, so these pass
+  as registered; they are not physical trajectories. Papercut filed.
+- **P-C, 13: Callisto passes through** (every Callisto turn < 0.01 deg): Ganymede does all the work and
+  Callisto is in effect a massless target. This is Russell & Strange 2009's Ganymede -> Callisto
+  architecture (their Table 1 lists that system; the GanCal rows). Our R-S digest does not record the
+  largest period they searched, so whether k = 4 lies inside their search is not known. 6 of the 13
+  have an unscheduled SOI pass.
+- **P-G, 5: Ganymede passes through** (Callisto does the work, Ganymede a target): the reverse system,
+  Callisto -> Ganymede, which R-S Table 1 does not list. 1 of the 5 has an unscheduled pass (gc4-13,
+  inside Callisto).
+- **S-C, 5 / S-G, 8: shallow.** Both moons turn, but Callisto (S-C) or Ganymede (S-G) by less than
+  1 deg; near the P architecture of the same letter. 2 and 3 of them have an unscheduled SOI pass.
+- **W2, 12: both moons turn by at least 1 deg** (two working bodies in the sense of the #943 brief). 2
+  have an unscheduled SOI pass: gc4-0 (Ganymede, 9,432 km) and gc4-11 (Ganymede, 21,913 km). **10 W2
+  members have neither a Jupiter pass nor an unscheduled SOI pass**: gc4-1, 2, 6, 8, 10, 19, 25, 28, 38,
+  41. These ten are the two-working-body candidates of R11 at k = 4.
+
+Three pairs in P (gc4-26/27 P-G, gc4-33/34 and gc4-36/37 P-C) and three in J share r_min and r_max to 1 km (the extremes come from a leg they have
+in common) but differ by 0.02 km/s at the pass-through moon; they are distinct zeros and stay as
+separate rows. gc4-16 and gc4-17 have the same V_inf and nearly the same extremes; both have an
+unscheduled Callisto pass (5,742 and 3,828 km), so neither is a clean representation.
+
+Why k = 4 holds many near-zero-turn members: in this model 4 G-C synodic periods (50.093 d) are within
+0.03 d of 3 Callisto periods (50.067 d) and 7 Ganymede periods (50.082 d) (Lynam 2015's 3:4:7 window).
 A spacecraft orbit commensurate with that cycle meets both moons again with a small slip, and a small
 turn removes it. This is the expected physics of the window, not a solver effect.
 
-Ten of the 12 W2 members keep r_min above 0.3 Gm. gc4-38 and gc4-41 dip to 136,000-143,000 km
-(1.9-2.0 Jupiter radii, inside Io's orbit). The lowest-V_inf W2 members (all with r_min at or above
-Ganymede's orbit, 1,070,335 km, i.e. perijove at Ganymede, or 0.94-0.98 Gm):
+Of the ten W2 candidates, eight keep r_min above 0.3 Gm; gc4-38 and gc4-41 dip to 136,000-143,000 km
+(1.9-2.0 Jupiter radii, inside Io's orbit). The lowest-V_inf ones (r_min at Ganymede's orbit,
+1,070,335 km, i.e. perijove at Ganymede, or 0.94-0.98 Gm):
 
 - gc4-1: G 1.472 / C 1.581 km/s; Ganymede 2 x 36.1 deg (ratio 0.467), Callisto 2 x 42.8 deg (0.677);
   `k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s`.
@@ -258,62 +285,63 @@ These are "candidate, literature step deferred", NOT novel. Nearest published re
 #943 prior-art note: the JUICE C-G-C round trip and the Lynam capture windows (one-shot), Liang 2024's
 C-G-C half (sec. 3.2: two to four times the V_inf of these four, open, part of a three-moon cycle).
 
-Candidate table, all 51 (model epoch: both moons at angle 0 at t = 0; period 50.093 d; "Lambert
+Candidate table, all 51, with both checks (model epoch: both moons at angle 0 at t = 0; period 50.093 d; "Lambert
 starts" are the solved start dates of the Lambert legs in key order; flyby count per moon per cycle):
 
-| # | Class | Structure (key) | V_inf G / C (km/s) | G: flybys, max turn (deg), max ratio | C: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Re-fly miss (km) |
-|---|---|---|---|---|---|---|---|---|---|
-| gc4-0 | W2 | k4\|RGanymede/1:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/2l | 3.194 / 1.553 | 2, 23.29, 0.767 | 1, 1.25, 0.019 | 0.767 | 759,541 / 1,882,591 | 4.345, 21.408 | 2.5e-06 |
-| gc4-1 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 1.472 / 1.581 | 2, 36.13, 0.467 | 2, 42.79, 0.677 | 0.677 | 1,070,335 / 2,243,803 | 10.564, 31.965 | 8.4e-06 |
-| gc4-2 | W2 | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.738 / 1.857 | 2, 54.58, 0.826 | 2, 41.08, 0.779 | 0.826 | 940,161 / 2,473,504 | 1.044, 11.479, 18.954, 43.662 | 9.4e-06 |
-| gc4-3 | P | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/2l | 4.300 / 1.880 | 1, 0.00, 0.000 | 1, 1.28, 0.025 | 0.025 | 795,584 / 1,882,594 | 10.452, 36.615 | 1.0e-04 |
-| gc4-4 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2h | 4.388 / 1.913 | 2, 0.85, 0.047 | 1, 6.30, 0.124 | 0.124 | 785,058 / 1,915,782 | 2.241, 20.389, 26.406 | 4.6e-05 |
-| gc4-5 | P | k4\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 1.579 / 2.041 | 1, 1.05, 0.014 | 1, 0.00, 0.000 | 0.014 | 1,070,335 / 2,038,405 | 7.474, 24.158 | 7.8e-06 |
-| gc4-6 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 5.007 / 2.135 | 2, 3.91, 0.270 | 1, 1.31, 0.030 | 0.270 | 709,202 / 2,056,858 | 1.532, 24.228 | 8.9e-04 |
-| gc4-7 | S | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 3.823 / 2.378 | 2, 0.16, 0.007 | 2, 34.16, 0.894 | 0.894 | 873,051 / 2,422,525 | 0.723, 24.960, 47.860 | 7.7e-06 |
-| gc4-8 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 2.419 / 2.486 | 2, 13.72, 0.306 | 2, 10.51, 0.293 | 0.306 | 984,807 / 2,264,287 | 2.782, 22.264, 26.635, 48.504 | 1.9e-06 |
-| gc4-9 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 5.004 / 2.511 | 2, 0.14, 0.010 | 1, 0.00, 0.000 | 0.010 | 726,015 / 1,956,299 | 5.078, 22.919, 50.134 | 6.1e-04 |
-| gc4-10 | W2 | k4\|RGanymede/1:1\|LGanymede>Callisto/2l\|LCallisto>Ganymede/2h | 6.447 / 2.751 | 2, 5.70, 0.620 | 1, 1.40, 0.045 | 0.620 | 464,563 / 1,882,607 | 0.427, 20.778 | 5.3e-04 |
-| gc4-11 | W2 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 1.820 / 2.816 | 2, 51.45, 0.817 | 2, 1.35, 0.045 | 0.817 | 1,070,338 / 2,308,510 | 10.732, 14.218, 35.875 | 9.1e-06 |
-| gc4-12 | P | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 1.855 / 2.922 | 2, 52.46, 0.851 | 1, 0.00, 0.000 | 0.851 | 1,070,334 / 2,327,904 | 10.696, 14.146 | 7.0e-06 |
-| gc4-13 | P | k4\|LGanymede>Callisto/2l\|RCallisto/1:2\|LCallisto>Ganymede/1h | 6.833 / 2.937 | 1, 0.00, 0.000 | 2, 2.28, 0.082 | 0.082 | 488,606 / 1,882,611 | 0.148, 36.614 | 4.0e-05 |
-| gc4-14 | S | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 6.963 / 3.006 | 2, 0.51, 0.064 | 1, 6.59, 0.244 | 0.244 | 473,905 / 1,906,050 | 6.120, 25.130, 44.805 | 5.4e-05 |
-| gc4-15 | S | k4\|RGanymede/1:1\|LGanymede>Callisto/2h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 6.760 / 3.063 | 2, 5.49, 0.652 | 2, 0.61, 0.023 | 0.652 | 438,208 / 1,912,566 | 0.704, 21.711, 37.621 | 4.1e-05 |
-| gc4-16 | S | k4\|LGanymede>Callisto/1h\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 2, 0.02, 0.001 | 0.020 | 1,069,915 / 2,696,073 | 1.755, 48.818 | 2.9e-05 |
-| gc4-17 | P | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 1, 0.00, 0.000 | 0.020 | 1,070,334 / 2,695,657 | 1.755, 48.818 | 9.6e-05 |
-| gc4-18 | P | k4\|RGanymede/2:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 2.253 / 3.889 | 2, 37.84, 0.770 | 1, 0.00, 0.000 | 0.770 | 1,070,334 / 2,872,965 | 3.517, 36.402 | 1.5e-03 |
-| gc4-19 | W2 | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.357 / 4.109 | 2, 41.77, 0.899 | 2, 5.01, 0.311 | 0.899 | 969,653 / 3,047,178 | 3.498, 36.486 | 1.5e-04 |
-| gc4-20 | P | k4\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 2.736 / 4.851 | 1, 1.00, 0.026 | 1, 0.00, 0.000 | 0.026 | 1,070,333 / 3,864,538 | 10.866, 13.360 | 1.9e-04 |
-| gc4-21 | P | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2l | 9.229 / 5.002 | 2, 0.15, 0.033 | 1, 0.00, 0.000 | 0.033 | 288,525 / 2,087,948 | 7.776, 31.074, 37.671 | 1.2e-04 |
-| gc4-22 | P | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 8.288 / 5.013 | 2, 0.14, 0.024 | 1, 0.00, 0.000 | 0.024 | 414,566 / 2,265,347 | 8.115, 20.043, 31.709 | 1.2e-04 |
-| gc4-23 | S | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|RCallisto/1:2\|LCallisto>Ganymede/0s | 9.315 / 5.064 | 2, 0.16, 0.034 | 2, 0.37, 0.033 | 0.034 | 281,595 / 2,092,521 | 7.783, 31.056, 54.343 | 1.3e-04 |
-| gc4-24 | S | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.664 / 5.109 | 2, 2.28, 0.433 | 2, 0.32, 0.029 | 0.433 | 367,198 / 2,404,135 | 7.115, 15.052, 29.725 | 4.8e-05 |
-| gc4-25 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.152 / 5.228 | 2, 3.46, 0.586 | 2, 7.30, 0.695 | 0.695 | 357,770 / 2,395,646 | 4.216, 20.830, 30.242, 44.898 | 2.1e-05 |
-| gc4-26 | P | k4\|LGanymede>Callisto/0s\|LCallisto>Callisto/2l\|LCallisto>Ganymede/0s | 7.680 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 9.595, 20.607, 50.659 | 4.2e-05 |
-| gc4-27 | P | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 7.704 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 3.318, 19.336, 39.377 | 2.3e-05 |
-| gc4-28 | W2 | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.857 / 5.551 | 2, 4.44, 0.880 | 2, 7.50, 0.797 | 0.880 | 320,944 / 2,601,280 | 7.082, 30.488, 33.880, 53.783 | 2.2e-05 |
-| gc4-29 | S | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.128 / 5.598 | 2, 0.49, 0.103 | 2, 1.33, 0.143 | 0.143 | 328,024 / 2,375,598 | 10.214, 22.349, 39.024, 53.648 | 3.1e-05 |
-| gc4-30 | P | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/1h | 9.660 / 5.973 | 1, 0.00, 0.000 | 2, 0.29, 0.035 | 0.035 | 297,589 / 2,380,474 | 10.122, 26.965, 41.587 | 1.6e-05 |
-| gc4-31 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.924 / 6.077 | 2, 0.70, 0.141 | 2, 0.92, 0.116 | 0.141 | 397,621 / 2,756,713 | 6.771, 30.798, 34.050, 53.612 | 1.1e-05 |
-| gc4-32 | S | k4\|RGanymede/2:1\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.477 / 6.320 | 2, 2.82, 0.636 | 2, 0.23, 0.031 | 0.636 | 354,194 / 3,005,379 | 1.749, 16.781, 36.187 | 9.2e-06 |
-| gc4-33 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 8.544 / 6.509 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 12.437, 44.079, 47.246 | 6.8e-05 |
-| gc4-34 | P | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 8.544 / 6.527 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 0.117, 18.567, 32.155 | 7.7e-05 |
-| gc4-35 | S | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 8.615 / 6.570 | 2, 0.13, 0.025 | 2, 0.14, 0.021 | 0.025 | 500,925 / 3,275,187 | 6.416, 24.891, 42.878 | 3.2e-05 |
-| gc4-36 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 10.467 / 7.065 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 7.632, 31.111, 54.803 | 1.8e-04 |
-| gc4-37 | P | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 10.467 / 7.086 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 2.967, 29.582, 39.248 | 8.8e-05 |
-| gc4-38 | W2 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 11.460 / 7.217 | 2, 2.75, 0.897 | 2, 4.89, 0.849 | 0.897 | 143,171 / 2,703,105 | 0.961, 16.537, 19.356, 38.175 | 5.9e-05 |
-| gc4-39 | P | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 12.226 / 7.252 | 2, 0.18, 0.068 | 1, 0.00, 0.000 | 0.068 | 96,759 / 2,285,287 | 0.527, 15.873, 35.320 | 9.9e-05 |
-| gc4-40 | S | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|RCallisto/1:2\|LCallisto>Ganymede/0s | 12.285 / 7.291 | 2, 0.18, 0.069 | 2, 0.24, 0.042 | 0.069 | 93,608 / 2,286,215 | 9.165, 24.494, 56.461 | 1.0e-04 |
-| gc4-41 | W2 | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 11.828 / 7.513 | 2, 1.49, 0.516 | 2, 2.32, 0.435 | 0.516 | 135,971 / 2,662,003 | 8.685, 28.884, 36.396, 51.267 | 2.5e-04 |
-| gc4-42 | S | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 13.421 / 8.882 | 2, 2.12, 0.939 | 2, 0.28, 0.071 | 0.939 | 78,948 / 3,298,961 | 5.747, 15.271, 30.643 | 2.8e-05 |
-| gc4-43 | J | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 15.080 / 9.633 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 10.288, 39.261, 58.015 | 8.1e-03 |
-| gc4-44 | J | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 15.080 / 9.661 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 7.206, 28.326, 49.580 | 2.4e-02 |
-| gc4-45 | J | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.510 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 3.612, 26.416, 42.175 | 5.4e-04 |
-| gc4-46 | J | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/2h\|LCallisto>Ganymede/0s | 14.536 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 9.839, 23.290, 57.623 | 1.3e-03 |
-| gc4-47 | J | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 14.637 / 9.726 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 3.761, 40.199, 42.500 | 8.2e-05 |
-| gc4-48 | J | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Ganymede/1l | 14.637 / 9.750 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 2.567, 16.223, 39.067 | 1.3e-04 |
-| gc4-49 | J | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.744 / 9.819 | 2, 0.14, 0.073 | 2, 0.07, 0.022 | 0.073 | 29,981 / 3,085,784 | 5.679, 19.368, 29.648, 45.491 | 1.8e-03 |
-| gc4-50 | J | k4\|LGanymede>Callisto/2l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 15.993 / 10.251 | 1, 0.00, 0.000 | 2, 0.46, 0.156 | 0.156 | 185 / 2,692,527 | 3.232, 24.253, 41.025 | 4.9e-01 |
+| # | Class | Unscheduled pass inside SOI (moon, km from centre) | Structure (key) | V_inf G / C (km/s) | G: flybys, max turn (deg), max ratio | C: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| gc4-0 | W2 | G 9,432 | k4\|RGanymede/1:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/2l | 3.194 / 1.553 | 2, 23.29, 0.767 | 1, 1.25, 0.019 | 0.767 | 759,541 / 1,882,591 | 4.345, 21.408 | 2.5e-06 |
+| gc4-1 | W2 | none | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 1.472 / 1.581 | 2, 36.13, 0.467 | 2, 42.79, 0.677 | 0.677 | 1,070,335 / 2,243,803 | 10.564, 31.965 | 8.4e-06 |
+| gc4-2 | W2 | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.738 / 1.857 | 2, 54.58, 0.826 | 2, 41.08, 0.779 | 0.826 | 940,161 / 2,473,504 | 1.044, 11.479, 18.954, 43.662 | 9.4e-06 |
+| gc4-3 | P-G | none | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/2l | 4.300 / 1.880 | 1, 0.00, 0.000 | 1, 1.28, 0.025 | 0.025 | 795,584 / 1,882,594 | 10.452, 36.615 | 1.0e-04 |
+| gc4-4 | S-G | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2h | 4.388 / 1.913 | 2, 0.85, 0.047 | 1, 6.30, 0.124 | 0.124 | 785,058 / 1,915,782 | 2.241, 20.389, 26.406 | 4.6e-05 |
+| gc4-5 | P-C | none | k4\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 1.579 / 2.041 | 1, 1.05, 0.014 | 1, 0.00, 0.000 | 0.014 | 1,070,335 / 2,038,405 | 7.474, 24.158 | 7.8e-06 |
+| gc4-6 | W2 | none | k4\|RGanymede/3:2\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 5.007 / 2.135 | 2, 3.91, 0.270 | 1, 1.31, 0.030 | 0.270 | 709,202 / 2,056,858 | 1.532, 24.228 | 8.9e-04 |
+| gc4-7 | S-G | none | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 3.823 / 2.378 | 2, 0.16, 0.007 | 2, 34.16, 0.894 | 0.894 | 873,051 / 2,422,525 | 0.723, 24.960, 47.860 | 7.7e-06 |
+| gc4-8 | W2 | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 2.419 / 2.486 | 2, 13.72, 0.306 | 2, 10.51, 0.293 | 0.306 | 984,807 / 2,264,287 | 2.782, 22.264, 26.635, 48.504 | 1.9e-06 |
+| gc4-9 | P-C | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 5.004 / 2.511 | 2, 0.14, 0.010 | 1, 0.00, 0.000 | 0.010 | 726,015 / 1,956,299 | 5.078, 22.919, 50.134 | 6.1e-04 |
+| gc4-10 | W2 | none | k4\|RGanymede/1:1\|LGanymede>Callisto/2l\|LCallisto>Ganymede/2h | 6.447 / 2.751 | 2, 5.70, 0.620 | 1, 1.40, 0.045 | 0.620 | 464,563 / 1,882,607 | 0.427, 20.778 | 5.3e-04 |
+| gc4-11 | W2 | G 21,913 | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 1.820 / 2.816 | 2, 51.45, 0.817 | 2, 1.35, 0.045 | 0.817 | 1,070,338 / 2,308,510 | 10.732, 14.218, 35.875 | 9.1e-06 |
+| gc4-12 | P-C | G 3 (inside the moon) | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 1.855 / 2.922 | 2, 52.46, 0.851 | 1, 0.00, 0.000 | 0.851 | 1,070,334 / 2,327,904 | 10.696, 14.146 | 7.0e-06 |
+| gc4-13 | P-G | C 32 (inside the moon) | k4\|LGanymede>Callisto/2l\|RCallisto/1:2\|LCallisto>Ganymede/1h | 6.833 / 2.937 | 1, 0.00, 0.000 | 2, 2.28, 0.082 | 0.082 | 488,606 / 1,882,611 | 0.148, 36.614 | 4.0e-05 |
+| gc4-14 | S-G | C 7,912 | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 6.963 / 3.006 | 2, 0.51, 0.064 | 1, 6.59, 0.244 | 0.244 | 473,905 / 1,906,050 | 6.120, 25.130, 44.805 | 5.4e-05 |
+| gc4-15 | S-C | none | k4\|RGanymede/1:1\|LGanymede>Callisto/2h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 6.760 / 3.063 | 2, 5.49, 0.652 | 2, 0.61, 0.023 | 0.652 | 438,208 / 1,912,566 | 0.704, 21.711, 37.621 | 4.1e-05 |
+| gc4-16 | S-C | C 5,742 | k4\|LGanymede>Callisto/1h\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 2, 0.02, 0.001 | 0.020 | 1,069,915 / 2,696,073 | 1.755, 48.818 | 2.9e-05 |
+| gc4-17 | P-C | C 3,828 | k4\|LGanymede>Callisto/2h\|LCallisto>Ganymede/0s | 2.138 / 3.631 | 1, 1.03, 0.020 | 1, 0.00, 0.000 | 0.020 | 1,070,334 / 2,695,657 | 1.755, 48.818 | 9.6e-05 |
+| gc4-18 | P-C | none | k4\|RGanymede/2:1\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 2.253 / 3.889 | 2, 37.84, 0.770 | 1, 0.00, 0.000 | 0.770 | 1,070,334 / 2,872,965 | 3.517, 36.402 | 1.5e-03 |
+| gc4-19 | W2 | none | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 2.357 / 4.109 | 2, 41.77, 0.899 | 2, 5.01, 0.311 | 0.899 | 969,653 / 3,047,178 | 3.498, 36.486 | 1.5e-04 |
+| gc4-20 | P-C | none | k4\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1h | 2.736 / 4.851 | 1, 1.00, 0.026 | 1, 0.00, 0.000 | 0.026 | 1,070,333 / 3,864,538 | 10.866, 13.360 | 1.9e-04 |
+| gc4-21 | P-C | C 31 (inside the moon) | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/2l | 9.229 / 5.002 | 2, 0.15, 0.033 | 1, 0.00, 0.000 | 0.033 | 288,525 / 2,087,948 | 7.776, 31.074, 37.671 | 1.2e-04 |
+| gc4-22 | P-C | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1l\|LCallisto>Ganymede/2h | 8.288 / 5.013 | 2, 0.14, 0.024 | 1, 0.00, 0.000 | 0.024 | 414,566 / 2,265,347 | 8.115, 20.043, 31.709 | 1.2e-04 |
+| gc4-23 | S-G | C 11,153 | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|RCallisto/1:2\|LCallisto>Ganymede/0s | 9.315 / 5.064 | 2, 0.16, 0.034 | 2, 0.37, 0.033 | 0.034 | 281,595 / 2,092,521 | 7.783, 31.056, 54.343 | 1.3e-04 |
+| gc4-24 | S-C | none | k4\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.664 / 5.109 | 2, 2.28, 0.433 | 2, 0.32, 0.029 | 0.433 | 367,198 / 2,404,135 | 7.115, 15.052, 29.725 | 4.8e-05 |
+| gc4-25 | W2 | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.152 / 5.228 | 2, 3.46, 0.586 | 2, 7.30, 0.695 | 0.695 | 357,770 / 2,395,646 | 4.216, 20.830, 30.242, 44.898 | 2.1e-05 |
+| gc4-26 | P-G | none | k4\|LGanymede>Callisto/0s\|LCallisto>Callisto/2l\|LCallisto>Ganymede/0s | 7.680 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 9.595, 20.607, 50.659 | 4.2e-05 |
+| gc4-27 | P-G | none | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 7.704 / 5.335 | 1, 0.00, 0.000 | 2, 0.21, 0.020 | 0.020 | 527,421 / 2,583,488 | 3.318, 19.336, 39.377 | 2.3e-05 |
+| gc4-28 | W2 | none | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.857 / 5.551 | 2, 4.44, 0.880 | 2, 7.50, 0.797 | 0.880 | 320,944 / 2,601,280 | 7.082, 30.488, 33.880, 53.783 | 2.2e-05 |
+| gc4-29 | S-G | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.128 / 5.598 | 2, 0.49, 0.103 | 2, 1.33, 0.143 | 0.143 | 328,024 / 2,375,598 | 10.214, 22.349, 39.024, 53.648 | 3.1e-05 |
+| gc4-30 | P-G | none | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/1h | 9.660 / 5.973 | 1, 0.00, 0.000 | 2, 0.29, 0.035 | 0.035 | 297,589 / 2,380,474 | 10.122, 26.965, 41.587 | 1.6e-05 |
+| gc4-31 | S-G | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 8.924 / 6.077 | 2, 0.70, 0.141 | 2, 0.92, 0.116 | 0.141 | 397,621 / 2,756,713 | 6.771, 30.798, 34.050, 53.612 | 1.1e-05 |
+| gc4-32 | S-C | none | k4\|RGanymede/2:1\|LGanymede>Callisto/1l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/0s | 9.477 / 6.320 | 2, 2.82, 0.636 | 2, 0.23, 0.031 | 0.636 | 354,194 / 3,005,379 | 1.749, 16.781, 36.187 | 9.2e-06 |
+| gc4-33 | P-C | C 25,844 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 8.544 / 6.509 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 12.437, 44.079, 47.246 | 6.8e-05 |
+| gc4-34 | P-C | C 25,809 | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 8.544 / 6.527 | 2, 0.13, 0.024 | 1, 0.00, 0.000 | 0.024 | 508,404 / 3,264,088 | 0.117, 18.567, 32.155 | 7.7e-05 |
+| gc4-35 | S-G | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|RCallisto/1:1\|LCallisto>Ganymede/0s | 8.615 / 6.570 | 2, 0.13, 0.025 | 2, 0.14, 0.021 | 0.025 | 500,925 / 3,275,187 | 6.416, 24.891, 42.878 | 3.2e-05 |
+| gc4-36 | P-C | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 10.467 / 7.065 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 7.632, 31.111, 54.803 | 1.8e-04 |
+| gc4-37 | P-C | none | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Ganymede/1l | 10.467 / 7.086 | 2, 0.14, 0.038 | 1, 0.00, 0.000 | 0.038 | 281,779 / 2,835,570 | 2.967, 29.582, 39.248 | 8.8e-05 |
+| gc4-38 | W2 | none | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 11.460 / 7.217 | 2, 2.75, 0.897 | 2, 4.89, 0.849 | 0.897 | 143,171 / 2,703,105 | 0.961, 16.537, 19.356, 38.175 | 5.9e-05 |
+| gc4-39 | P-C | C 21,720 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/2l\|LCallisto>Ganymede/1h | 12.226 / 7.252 | 2, 0.18, 0.068 | 1, 0.00, 0.000 | 0.068 | 96,759 / 2,285,287 | 0.527, 15.873, 35.320 | 9.9e-05 |
+| gc4-40 | S-G | C 36,932 | k4\|LGanymede>Ganymede/1h\|LGanymede>Callisto/1h\|RCallisto/1:2\|LCallisto>Ganymede/0s | 12.285 / 7.291 | 2, 0.18, 0.069 | 2, 0.24, 0.042 | 0.069 | 93,608 / 2,286,215 | 9.165, 24.494, 56.461 | 1.0e-04 |
+| gc4-41 | W2 | none | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 11.828 / 7.513 | 2, 1.49, 0.516 | 2, 2.32, 0.435 | 0.516 | 135,971 / 2,662,003 | 8.685, 28.884, 36.396, 51.267 | 2.5e-04 |
+| gc4-42 | S-C | G 23,690 | k4\|RGanymede/2:1\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 13.421 / 8.882 | 2, 2.12, 0.939 | 2, 0.28, 0.071 | 0.939 | 78,948 / 3,298,961 | 5.747, 15.271, 30.643 | 2.8e-05 |
+| gc4-43 | J | none | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/0s | 15.080 / 9.633 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 10.288, 39.261, 58.015 | 8.1e-03 |
+| gc4-44 | J | none | k4\|LGanymede>Ganymede/2l\|LGanymede>Callisto/2l\|LCallisto>Ganymede/0s | 15.080 / 9.661 | 2, 0.21, 0.116 | 1, 0.00, 0.000 | 0.116 | 10,157 / 2,679,136 | 7.206, 28.326, 49.580 | 2.4e-02 |
+| gc4-45 | J | none | k4\|LGanymede>Callisto/1h\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.510 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 3.612, 26.416, 42.175 | 5.4e-04 |
+| gc4-46 | J | none | k4\|LGanymede>Callisto/1l\|LCallisto>Callisto/2h\|LCallisto>Ganymede/0s | 14.536 / 9.666 | 1, 0.00, 0.000 | 2, 0.29, 0.087 | 0.087 | 36,965 / 3,075,878 | 9.839, 23.290, 57.623 | 1.3e-03 |
+| gc4-47 | J | none | k4\|LGanymede>Ganymede/2h\|LGanymede>Callisto/0s\|LCallisto>Ganymede/0s | 14.637 / 9.726 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 3.761, 40.199, 42.500 | 8.2e-05 |
+| gc4-48 | J | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/1h\|LCallisto>Ganymede/1l | 14.637 / 9.750 | 2, 0.18, 0.094 | 1, 0.00, 0.000 | 0.094 | 33,310 / 3,082,660 | 2.567, 16.223, 39.067 | 1.3e-04 |
+| gc4-49 | J | none | k4\|LGanymede>Ganymede/1l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 14.744 / 9.819 | 2, 0.14, 0.073 | 2, 0.07, 0.022 | 0.073 | 29,981 / 3,085,784 | 5.679, 19.368, 29.648, 45.491 | 1.8e-03 |
+| gc4-50 | J | none | k4\|LGanymede>Callisto/2l\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 15.993 / 10.251 | 1, 0.00, 0.000 | 2, 0.46, 0.156 | 0.156 | 185 / 2,692,527 | 3.232, 24.253, 41.025 | 4.9e-01 |
+
 
 ## 5. R12 result: ec (Europa-Callisto, both massive) k = 1-4 (2026-10-07): NO GATE-PASSING CYCLER
 
@@ -413,7 +441,8 @@ Same as sec. 4: `gauntlet` on the shard dirs; then the classes J (r_min below th
 Jupiter 71,492 km; for ev the Sun is never reached by these conics, but check r_min against the solar
 radius 695,700 km anyway), P (a moon with every turn < 0.01 deg), S (one moon < 1 deg), W2 (both >=
 1 deg); the candidate table as in sec. 4 (`flyby_table`, `x_days`, `r_min_km`, `r_max_km`,
-`cross_check`); seed-saturation count from `check`. For ev k = 4/5, the H&M check of sec. 2.2 is done
+`cross_check`); `passes` on the gauntlet JSON (unscheduled passes inside a moon's or planet's SOI);
+seed-saturation count from `check`. For ev k = 4/5, the H&M check of sec. 2.2 is done
 (below). The literature step and rung (d) stay deferred until #972 lands.
 
 ev, H&M 1970 sub-period check (done, `data/973_ev/hm1970_subperiod_check.json`): every Table 3 orbit is
@@ -432,7 +461,8 @@ Verified (by a command whose output is in the data files):
 - gc k4 and ec k1-4: every structure of the cell solved exactly once, 0 errors, 0 duplicated zero lines,
   0 seed-saturated structures.
 - The 51 gc k4 gate-passers: DOP853 re-fly miss <= 0.49 km, gate pass on integrated vectors, SOI
-  fraction <= 2e-5.
+  fraction <= 2e-5. 8 pass inside Jupiter; 14 have an unscheduled pass inside a moon's SOI (the check
+  flags none on the three #943 gc gate-passers).
 
 Assumed or not checked:
 - That 36/12/40 seeds are dense enough at k = 4 (free time about 1.3x that of k = 3). No structure hit
@@ -442,12 +472,15 @@ Assumed or not checked:
   E-C row tests the cell beyond Liang's open segments.
 - Novelty: not assessed (literature step deferred).
 - The J/P/S/W2 classes are descriptive; their thresholds (R_J, 0.01 deg, 1 deg) were chosen after the
-  run and judge nothing.
+  run and judge nothing. The unscheduled-pass check is a sampled search (3,000 points per leg,
+  then bounded refinement); a pass between samples that does not make a local minimum of the sampled
+  distance could be missed.
 
 ## 8. Papercuts
 
 - `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`: the #942/#943 pass
-  definition and gauntlet do not reject conics that pass inside the central body.
+  definition and gauntlet do not reject conics that pass inside the central body, nor legs that pass
+  through a moon's SOI between scheduled encounters.
 - `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`: the 24-structure pilot ran at low
   load and underestimated the CI-loaded run by 5x; the 10-min tool-call limit then forced a mixed
   8/16-way shard layout.

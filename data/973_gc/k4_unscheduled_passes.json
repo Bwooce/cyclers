@@ -1,0 +1,2365 @@
+[
+ {
+  "index": 0,
+  "key": "k4|RGanymede/1:1|LGanymede>Callisto/1h|LCallisto>Ganymede/2l",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 500507.8621017479,
+    "t_days": 7.8274008218183955,
+    "frac_of_leg": 0.2041146707970719,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 9432.148141715697,
+    "t_days": 25.83953398182625,
+    "frac_of_leg": 0.17127272571050234,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 2574288.324427687,
+    "t_days": 39.4457264981102,
+    "frac_of_leg": 0.6971142455419247,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/1:1",
+    "body": "Callisto",
+    "min_km": 1121436.0233038864,
+    "t_days": 48.834161237520135,
+    "frac_of_leg": 0.216818844797666,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 9432.148141715697,
+    "t_days": 25.83953398182625,
+    "frac_of_leg": 0.17127272571050234,
+    "soi_km": 24349.739180045828
+   }
+  ]
+ },
+ {
+  "index": 1,
+  "key": "k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "RCallisto/1:1",
+    "body": "Ganymede",
+    "min_km": 937658.8717062402,
+    "t_days": 23.754742296155303,
+    "frac_of_leg": 0.5080442146646192,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Ganymede",
+    "min_km": 2140675.7546568653,
+    "t_days": 49.92534485683419,
+    "frac_of_leg": 0.5000000001120569,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Callisto",
+    "min_km": 2861789.578623645,
+    "t_days": 47.77041762839404,
+    "frac_of_leg": 0.39960106298957093,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 2,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 234539.24730657254,
+    "t_days": 6.261617468662143,
+    "frac_of_leg": 0.49999999981568594,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 537849.9610628842,
+    "t_days": 13.488706130007206,
+    "frac_of_leg": 0.26882843300491266,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 971199.024544974,
+    "t_days": 36.531305637553864,
+    "frac_of_leg": 0.7113914095128472,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 590924.975348292,
+    "t_days": 31.308087348662525,
+    "frac_of_leg": 0.4999999998273815,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 537849.9610629007,
+    "t_days": 49.12746857584083,
+    "frac_of_leg": 0.731171566994084,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 3,
+  "key": "k4|LGanymede>Callisto/2h|LCallisto>Ganymede/2l",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Ganymede",
+    "min_km": 698942.1599799321,
+    "t_days": 15.021466142413784,
+    "frac_of_leg": 0.17466309092739368,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 1086994.8620537613,
+    "t_days": 11.568382035075317,
+    "frac_of_leg": 0.042680186829614594,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 326063.0106244935,
+    "t_days": 42.72070823101747,
+    "frac_of_leg": 0.25515676684761784,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 1875469.110434224,
+    "t_days": 53.995206400286925,
+    "frac_of_leg": 0.7263051779884093,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 4,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/2h",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 1862760.6220599858,
+    "t_days": 11.314800732441924,
+    "frac_of_leg": 0.49999999994226413,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1913545.815276148,
+    "t_days": 9.055805195947634,
+    "frac_of_leg": 0.37551975419068323,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 711527.6484401916,
+    "t_days": 25.032114199465155,
+    "frac_of_leg": 0.7716396665482941,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 711527.6484397221,
+    "t_days": 47.690428221150775,
+    "frac_of_leg": 0.8209017791790286,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 1096481.8797466105,
+    "t_days": 51.14308265480353,
+    "frac_of_leg": 0.9540665842286452,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 5,
+  "key": "k4|LGanymede>Callisto/1l|LCallisto>Ganymede/2h",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1492716.7838536922,
+    "t_days": 19.593235148463844,
+    "frac_of_leg": 0.7263887732759972,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 2456812.968855544,
+    "t_days": 9.733446869290558,
+    "frac_of_leg": 0.13543807003717023,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 900439.4123286956,
+    "t_days": 24.81077935085125,
+    "frac_of_leg": 0.019529407881274653,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 616458.0888814513,
+    "t_days": 30.82097631827606,
+    "frac_of_leg": 0.19943061567647308,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 6,
+  "key": "k4|RGanymede/3:2|LGanymede>Callisto/2l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 835142.4136565705,
+    "t_days": 18.498440373498326,
+    "frac_of_leg": 0.7475621834344991,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 1306639.0120314397,
+    "t_days": 7.423756887796713,
+    "frac_of_leg": 0.25960155259478357,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 780710.3131554457,
+    "t_days": 25.02284540062497,
+    "frac_of_leg": 0.13400542462694398,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Ganymede",
+    "min_km": 830731.8183769948,
+    "t_days": 47.010732858698226,
+    "frac_of_leg": 0.7850279136861147,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Callisto",
+    "min_km": 1102073.5337042091,
+    "t_days": 50.89145444163255,
+    "frac_of_leg": 0.9658323125784737,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 7,
+  "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 618324.0923948194,
+    "t_days": 4.512166240000088,
+    "frac_of_leg": 0.15634527572389884,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 2587668.6649967367,
+    "t_days": 14.44479386862888,
+    "frac_of_leg": 0.5661480652301066,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 669136.7406168025,
+    "t_days": 26.01108725396199,
+    "frac_of_leg": 0.1692006264476418,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RCallisto/1:1",
+    "body": "Ganymede",
+    "min_km": 1092524.2650161465,
+    "t_days": 39.44844880415323,
+    "frac_of_leg": 0.49600986942229003,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 8,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 2055144.435221883,
+    "t_days": 12.523234942825582,
+    "frac_of_leg": 0.5000000000849231,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 2825380.0461719623,
+    "t_days": 14.145564189840748,
+    "frac_of_leg": 0.5832745621665634,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 106557.25331219575,
+    "t_days": 37.56970482575425,
+    "frac_of_leg": 0.500000000102471,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 705683.9405004602,
+    "t_days": 37.569704812754196,
+    "frac_of_leg": 0.4999999995080166,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 9,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 1797745.5734686027,
+    "t_days": 13.998633403789519,
+    "frac_of_leg": 0.49999999976899523,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1615426.7296801768,
+    "t_days": 16.249984326019916,
+    "frac_of_leg": 0.626192370749197,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Ganymede",
+    "min_km": 806898.6619076034,
+    "t_days": 27.831212056647626,
+    "frac_of_leg": 0.18049842868284008,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 1153771.2592648256,
+    "t_days": 23.944895369051558,
+    "frac_of_leg": 0.03769791234147247,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 806898.6619074219,
+    "t_days": 50.2589938117331,
+    "frac_of_leg": 0.02482334179739184,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 10,
+  "key": "k4|RGanymede/1:1|LGanymede>Callisto/2l|LCallisto>Ganymede/2h",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 1165828.8702455785,
+    "t_days": 8.608003600180941,
+    "frac_of_leg": 0.40199371186829147,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 129111.26749527034,
+    "t_days": 4.722898976355793,
+    "frac_of_leg": 0.21109312818036138,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 512600.87404475757,
+    "t_days": 24.131382431552186,
+    "frac_of_leg": 0.14845221947158938,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 129111.26748857052,
+    "t_days": 36.83370443252879,
+    "frac_of_leg": 0.7108269422617335,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 11,
+  "key": "k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 21913.21847996978,
+    "t_days": 25.046470237365245,
+    "frac_of_leg": 0.5000000163928541,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 790327.9753327485,
+    "t_days": 25.046469894593454,
+    "frac_of_leg": 0.5000000005656893,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Ganymede",
+    "min_km": 2140675.754656865,
+    "t_days": 50.09293976242729,
+    "frac_of_leg": 0.49999999989483856,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Callisto",
+    "min_km": 2918332.9143116446,
+    "t_days": 51.92189739216977,
+    "frac_of_leg": 0.5852118806696355,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 21913.21847996978,
+    "t_days": 25.046470237365245,
+    "frac_of_leg": 0.5000000163928541,
+    "soi_km": 24349.739180045828
+   }
+  ]
+ },
+ {
+  "index": 12,
+  "key": "k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 3.4349136217422624,
+    "t_days": 25.010522840454456,
+    "frac_of_leg": 0.43148281578215514,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 63677.496839598796,
+    "t_days": 35.771229075327824,
+    "frac_of_leg": 0.8588525345282789,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Ganymede",
+    "min_km": 2140675.7546568653,
+    "t_days": 50.056992166211174,
+    "frac_of_leg": 0.5000000001043737,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Callisto",
+    "min_km": 2906371.6952209026,
+    "t_days": 48.140010498332906,
+    "frac_of_leg": 0.4106870435468642,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 3.4349136217422624,
+    "t_days": 25.010522840454456,
+    "frac_of_leg": 0.43148281578215514,
+    "soi_km": 24349.739180045828
+   }
+  ]
+ },
+ {
+  "index": 13,
+  "key": "k4|LGanymede>Callisto/2l|RCallisto/1:2|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 991452.0432256534,
+    "t_days": 8.1503942281977,
+    "frac_of_leg": 0.4046382914296749,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 31.897918557688747,
+    "t_days": 3.223146657570154,
+    "frac_of_leg": 0.1555031698802848,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 581007.770952634,
+    "t_days": 40.83577354679045,
+    "frac_of_leg": 0.3098114820410844,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RCallisto/1:2",
+    "body": "Ganymede",
+    "min_km": 98732.1507234762,
+    "t_days": 31.301318434350573,
+    "frac_of_leg": 0.681658592494083,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 31.897918557688747,
+    "t_days": 3.223146657570154,
+    "frac_of_leg": 0.1555031698802848,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 14,
+  "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 590014.7811499333,
+    "t_days": 15.624949191246083,
+    "frac_of_leg": 0.4999999952877678,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 23470.846727902597,
+    "t_days": 11.412975412989514,
+    "frac_of_leg": 0.27844258459381555,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 934832.9713283288,
+    "t_days": 33.07693311555032,
+    "frac_of_leg": 0.4039023251083079,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 7912.078494173123,
+    "t_days": 27.85188353394846,
+    "frac_of_leg": 0.13832861214073716,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 934832.9713278943,
+    "t_days": 48.265905539046855,
+    "frac_of_leg": 0.3033943694103696,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 23470.846727902597,
+    "t_days": 11.412975412989514,
+    "frac_of_leg": 0.27844258459381555,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 7912.078494173123,
+    "t_days": 27.85188353394846,
+    "frac_of_leg": 0.13832861214073716,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 15,
+  "key": "k4|RGanymede/1:1|LGanymede>Callisto/2h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Ganymede",
+    "min_km": 1164396.4320930005,
+    "t_days": 8.887321592040529,
+    "frac_of_leg": 0.38956797019188194,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 208916.63793728864,
+    "t_days": 5.3484237824185215,
+    "frac_of_leg": 0.22110428941675672,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 388918.73883401323,
+    "t_days": 24.415722782544282,
+    "frac_of_leg": 0.17002160479274256,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 16,
+  "key": "k4|LGanymede>Callisto/1h|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1354925.7130107654,
+    "t_days": 13.307065442347806,
+    "frac_of_leg": 0.3803221423907436,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 5742.406909484947,
+    "t_days": 15.435998816768551,
+    "frac_of_leg": 0.4504126341702372,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RCallisto/1:1",
+    "body": "Ganymede",
+    "min_km": 1352913.9248440815,
+    "t_days": 40.29483213488929,
+    "frac_of_leg": 0.48928163954563825,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 5742.406909484947,
+    "t_days": 15.435998816768551,
+    "frac_of_leg": 0.4504126341702372,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 17,
+  "key": "k4|LGanymede>Callisto/2h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Ganymede",
+    "min_km": 1354086.21523337,
+    "t_days": 13.308003383461458,
+    "frac_of_leg": 0.2454767096984973,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 3828.153538161814,
+    "t_days": 32.12613514500984,
+    "frac_of_leg": 0.6453287411444163,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 3828.153538161814,
+    "t_days": 32.12613514500984,
+    "frac_of_leg": 0.6453287411444163,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 18,
+  "key": "k4|RGanymede/2:1|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1671754.312679398,
+    "t_days": 14.763376120060975,
+    "frac_of_leg": 0.3419900684862459,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 816981.2975441725,
+    "t_days": 18.875074682487146,
+    "frac_of_leg": 0.46702559547642647,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Callisto",
+    "min_km": 1479444.8951070593,
+    "t_days": 50.994939197137526,
+    "frac_of_leg": 0.8172286916831034,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 19,
+  "key": "k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1925871.269339789,
+    "t_days": 14.528173898378364,
+    "frac_of_leg": 0.6767514935490729,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RCallisto/1:1",
+    "body": "Ganymede",
+    "min_km": 1477090.9630896053,
+    "t_days": 28.03333187568468,
+    "frac_of_leg": 0.49354593151331194,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Callisto",
+    "min_km": 1465758.3730648295,
+    "t_days": 50.963492815692774,
+    "frac_of_leg": 0.8163543083198738,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 20,
+  "key": "k4|LGanymede>Callisto/0s|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 2089079.3054072352,
+    "t_days": 29.685808162688076,
+    "frac_of_leg": 0.3429823375097614,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1849990.5745949163,
+    "t_days": 51.31294848774506,
+    "frac_of_leg": 0.7973444708161053,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 21,
+  "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2l",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 964473.004191176,
+    "t_days": 23.06523576681803,
+    "frac_of_leg": 0.6562329471256987,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 30.866426413688796,
+    "t_days": 20.986216563695834,
+    "frac_of_leg": 0.5669962819286521,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1293763.5826481967,
+    "t_days": 32.69785300978333,
+    "frac_of_leg": 0.24612127426902172,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 745092.9511086575,
+    "t_days": 48.761522583562936,
+    "frac_of_leg": 0.5490799569943248,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 22375.158065568874,
+    "t_days": 54.37286250396608,
+    "frac_of_leg": 0.8268911708324753,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 30.866426413688796,
+    "t_days": 20.986216563695834,
+    "frac_of_leg": 0.5669962819286521,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 22375.158065568874,
+    "t_days": 54.37286250396608,
+    "frac_of_leg": 0.8268911708324753,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 22,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1l|LCallisto>Ganymede/2h",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1184860.1746856044,
+    "t_days": 14.079367694508193,
+    "frac_of_leg": 0.4999999998753277,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 493006.32210522145,
+    "t_days": 16.997822374883818,
+    "frac_of_leg": 0.7446771634417447,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1166322.5451189803,
+    "t_days": 28.522694712429022,
+    "frac_of_leg": 0.7268358453768881,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 653938.6616412873,
+    "t_days": 39.125837532230875,
+    "frac_of_leg": 0.2798734240105644,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 1349951.475966645,
+    "t_days": 38.745993668470504,
+    "frac_of_leg": 0.2655391127376822,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 23,
+  "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|RCallisto/1:2|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 954042.8377214659,
+    "t_days": 15.782168180449236,
+    "frac_of_leg": 0.3437200279727965,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 11152.974536854752,
+    "t_days": 20.961817331799065,
+    "frac_of_leg": 0.56628312657619,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1309282.1725620227,
+    "t_days": 32.63852344184416,
+    "frac_of_leg": 0.23990030519281888,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RCallisto/1:2",
+    "body": "Ganymede",
+    "min_km": 745506.9231906483,
+    "t_days": 40.13700096700657,
+    "frac_of_leg": 0.14878725031080273,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RCallisto/1:2",
+    "body": "Callisto",
+    "min_km": 1311950.7521197984,
+    "t_days": 49.2723471939111,
+    "frac_of_leg": 0.6961739935076345,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 11152.974536854752,
+    "t_days": 20.961817331799065,
+    "frac_of_leg": 0.56628312657619,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 24,
+  "key": "k4|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1144202.4146390338,
+    "t_days": 13.294477963833538,
+    "frac_of_leg": 0.7785617886389848,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1365195.653500839,
+    "t_days": 8.480029417654407,
+    "frac_of_leg": 0.1719344407270645,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 558396.5409042,
+    "t_days": 19.282344313980207,
+    "frac_of_leg": 0.28831180837845316,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Ganymede",
+    "min_km": 619200.5070557637,
+    "t_days": 48.19130154296704,
+    "frac_of_leg": 0.5798885230406874,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/3:2",
+    "body": "Callisto",
+    "min_km": 1351751.2873340412,
+    "t_days": 36.3046659593493,
+    "frac_of_leg": 0.026085330613908175,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 25,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 1465145.4357323006,
+    "t_days": 12.246471749015939,
+    "frac_of_leg": 0.48334154519119055,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1982485.5923939643,
+    "t_days": 11.398284136176711,
+    "frac_of_leg": 0.43228889289357486,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1291025.833496753,
+    "t_days": 26.477677381702687,
+    "frac_of_leg": 0.6000654436314723,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1386805.245950437,
+    "t_days": 22.036573998519255,
+    "frac_of_leg": 0.12817974070194948,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 693107.5486089002,
+    "t_days": 33.495270789514244,
+    "frac_of_leg": 0.22199871209186142,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1291025.8334967685,
+    "t_days": 48.661732265322094,
+    "frac_of_leg": 0.3999345563683423,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1386805.2459504465,
+    "t_days": 53.10283564850775,
+    "frac_of_leg": 0.8718202592980969,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 26,
+  "key": "k4|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1322082.380934363,
+    "t_days": 14.752353606290326,
+    "frac_of_leg": 0.46834683227538354,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1351630.5133088792,
+    "t_days": 10.586443728712178,
+    "frac_of_leg": 0.09006078068697004,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 408193.5526645137,
+    "t_days": 48.68903970139213,
+    "frac_of_leg": 0.9344603872179986,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 2251255.2358396756,
+    "t_days": 34.62767695462165,
+    "frac_of_leg": 0.4665493804463763,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 27,
+  "key": "k4|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1323358.5784838349,
+    "t_days": 8.496399573650717,
+    "frac_of_leg": 0.3232799812565931,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 2251255.2358395373,
+    "t_days": 5.315134895062706,
+    "frac_of_leg": 0.1246648182196426,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1123223.073634118,
+    "t_days": 30.018232499146137,
+    "frac_of_leg": 0.5330245331795624,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1351630.5133088594,
+    "t_days": 29.356368670199807,
+    "frac_of_leg": 0.49999999711571097,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 377807.543286896,
+    "t_days": 42.594288638069806,
+    "frac_of_leg": 0.22923617743578525,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 2251255.2358396663,
+    "t_days": 53.39760264318259,
+    "frac_of_leg": 0.9990247352672338,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 28,
+  "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 1009509.2570488296,
+    "t_days": 22.437055548179014,
+    "frac_of_leg": 0.6560327702068118,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 185037.58450503895,
+    "t_days": 18.78485245376136,
+    "frac_of_leg": 0.500000001794563,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1465178.9055830045,
+    "t_days": 51.27151601788702,
+    "frac_of_leg": 0.8738304621254712,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1392006.757606914,
+    "t_days": 43.8313222238333,
+    "frac_of_leg": 0.49999999646952475,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 29,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1305259.7623124223,
+    "t_days": 16.28137638194145,
+    "frac_of_leg": 0.49999999987702676,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 1458669.6470030076,
+    "t_days": 10.903065935657056,
+    "frac_of_leg": 0.0567979553230459,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 918343.5298101902,
+    "t_days": 30.829814113731423,
+    "frac_of_leg": 0.5086014206348956,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1462580.1976786547,
+    "t_days": 31.677372704753065,
+    "frac_of_leg": 0.5594298305066567,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 740435.8521215342,
+    "t_days": 41.48479970450593,
+    "frac_of_leg": 0.16827620018042766,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 30,
+  "key": "k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 735236.5565181318,
+    "t_days": 18.62684216511273,
+    "frac_of_leg": 0.5049735048083089,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1526341.268500768,
+    "t_days": 19.432024392556535,
+    "frac_of_leg": 0.5527785401304063,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 763834.4250319224,
+    "t_days": 29.351708101464563,
+    "frac_of_leg": 0.16325117895854593,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 454551.5166759367,
+    "t_days": 48.02082814115037,
+    "frac_of_leg": 0.3453966329512612,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1526341.2685011663,
+    "t_days": 49.11950079558638,
+    "frac_of_leg": 0.4043776606769525,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 31,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 648477.5571910131,
+    "t_days": 18.78485214999952,
+    "frac_of_leg": 0.4999999891057016,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 2075785.3349195116,
+    "t_days": 17.833043411980718,
+    "frac_of_leg": 0.4603858343078059,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1458149.279059516,
+    "t_days": 43.58662137201761,
+    "frac_of_leg": 0.4874911848185519,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1484958.4421405587,
+    "t_days": 43.83132217407969,
+    "frac_of_leg": 0.49999999386476335,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 32,
+  "key": "k4|RGanymede/2:1|LGanymede>Callisto/1l|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1236503.9313867344,
+    "t_days": 14.980280847137474,
+    "frac_of_leg": 0.8801844560767524,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 595391.5001942274,
+    "t_days": 26.825742259651555,
+    "frac_of_leg": 0.5176121159633923,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1524971.8361606847,
+    "t_days": 26.483977439969685,
+    "frac_of_leg": 0.500000008169301,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Ganymede",
+    "min_km": 1674494.8657192944,
+    "t_days": 42.961793375388474,
+    "frac_of_leg": 0.37942031154928674,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Callisto",
+    "min_km": 1361089.0576699534,
+    "t_days": 51.38903678456562,
+    "frac_of_leg": 0.9683633649300069,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 33,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 1580539.6225037114,
+    "t_days": 28.257626697680237,
+    "frac_of_leg": 0.49999997241651856,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 25843.599050942335,
+    "t_days": 30.511283402157478,
+    "frac_of_leg": 0.5712231203533388,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1566631.0491733162,
+    "t_days": 48.94854807965081,
+    "frac_of_leg": 0.11141803625372862,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 25843.599050942335,
+    "t_days": 30.511283402157478,
+    "frac_of_leg": 0.5712231203533388,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 34,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1566631.0491733623,
+    "t_days": 4.986331082343979,
+    "frac_of_leg": 0.2639364478030178,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 25809.07747097897,
+    "t_days": 15.419966032975102,
+    "frac_of_leg": 0.8294222770822894,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 2129866.035408754,
+    "t_days": 27.46266851863929,
+    "frac_of_leg": 0.6546728807817547,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1580539.62250357,
+    "t_days": 34.38834941579438,
+    "frac_of_leg": 0.12370922142504265,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 39529.060700093854,
+    "t_days": 48.8735013535271,
+    "frac_of_leg": 0.9260053480289175,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 25809.07747097897,
+    "t_days": 15.419966032975102,
+    "frac_of_leg": 0.8294222770822894,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 35,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1580799.3928604717,
+    "t_days": 11.306896501034323,
+    "frac_of_leg": 0.26472356416997117,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 45968.712147116006,
+    "t_days": 9.535639728673766,
+    "frac_of_leg": 0.16885290248587062,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 2144406.9652293418,
+    "t_days": 47.6338823978677,
+    "frac_of_leg": 0.34892581475229006,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RCallisto/1:1",
+    "body": "Ganymede",
+    "min_km": 1568894.6321060383,
+    "t_days": 40.76964410252514,
+    "frac_of_leg": 0.873696091238111,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 36,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 786750.5470108811,
+    "t_days": 19.371316347967593,
+    "frac_of_leg": 0.4999999718241211,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1445571.8530093129,
+    "t_days": 20.503414696913353,
+    "frac_of_leg": 0.548218263629361,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1294050.7859958278,
+    "t_days": 44.107210410476476,
+    "frac_of_leg": 0.5485442494865655,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 743014.6111038327,
+    "t_days": 35.98878273352895,
+    "frac_of_leg": 0.20589152739706243,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 37,
+  "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 1294050.7859965255,
+    "t_days": 16.58512341939557,
+    "frac_of_leg": 0.5116695450122885,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 771374.9888253458,
+    "t_days": 20.472569510425632,
+    "frac_of_leg": 0.6577354337371283,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1237334.1897770138,
+    "t_days": 38.429703623834385,
+    "frac_of_leg": 0.9153696568925402,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 786750.5470076086,
+    "t_days": 41.32101615256653,
+    "frac_of_leg": 0.15010038040142792,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 38,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 1009086.7512593168,
+    "t_days": 8.405391065682094,
+    "frac_of_leg": 0.47793924598641363,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 285871.9464750367,
+    "t_days": 3.259565909572723,
+    "frac_of_leg": 0.1475803150089485,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 196345.40070660756,
+    "t_days": 29.50038670664655,
+    "frac_of_leg": 0.539033757890779,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1657116.2462062854,
+    "t_days": 28.765804112274015,
+    "frac_of_leg": 0.500000029552293,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 849407.9969335285,
+    "t_days": 40.11684314074231,
+    "frac_of_leg": 0.15075332444820966,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 39,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/2l|LCallisto>Ganymede/1h",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 894245.3063014107,
+    "t_days": 7.860234999623605,
+    "frac_of_leg": 0.4778520423946011,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 26168.61042989972,
+    "t_days": 1.910868522036646,
+    "frac_of_leg": 0.09018125488334498,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 809143.0014591662,
+    "t_days": 23.023471673513733,
+    "frac_of_leg": 0.36767222116267345,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 21719.85217410349,
+    "t_days": 18.63800406741428,
+    "frac_of_leg": 0.14216361026296262,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 809143.0014590885,
+    "t_days": 43.46972352677157,
+    "frac_of_leg": 0.5326561606970085,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 1725093.2787527035,
+    "t_days": 41.4880484534421,
+    "frac_of_leg": 0.4031306173408605,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 26168.61042989972,
+    "t_days": 1.910868522036646,
+    "frac_of_leg": 0.09018125488334498,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 21719.85217410349,
+    "t_days": 18.63800406741428,
+    "frac_of_leg": 0.14216361026296262,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 40,
+  "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/1h|RCallisto/1:2|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Ganymede",
+    "min_km": 885387.8818086926,
+    "t_days": 17.169454744111377,
+    "frac_of_leg": 0.5221600802537941,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 36932.173842179895,
+    "t_days": 23.09089412231808,
+    "frac_of_leg": 0.9084570251087537,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 802015.6940340564,
+    "t_days": 31.65367288238003,
+    "frac_of_leg": 0.4686193800906048,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1730040.568579178,
+    "t_days": 33.607195010412134,
+    "frac_of_leg": 0.596484872425828,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RCallisto/1:2",
+    "body": "Ganymede",
+    "min_km": 818255.061591994,
+    "t_days": 52.10149946186066,
+    "frac_of_leg": 0.7387746433172455,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RCallisto/1:2",
+    "body": "Callisto",
+    "min_km": 1729777.7840881422,
+    "t_days": 50.25719133781382,
+    "frac_of_leg": 0.6282643471119167,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LGanymede>Ganymede/1h",
+    "body": "Callisto",
+    "min_km": 36932.173842179895,
+    "t_days": 23.09089412231808,
+    "frac_of_leg": 0.9084570251087537,
+    "soi_km": 37680.923494398325
+   }
+  ]
+ },
+ {
+  "index": 41,
+  "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 934366.843457872,
+    "t_days": 18.78485167115083,
+    "frac_of_leg": 0.4999999633349795,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 1401693.9197644633,
+    "t_days": 19.68632424868093,
+    "frac_of_leg": 0.5446289805192676,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 151839.8697406976,
+    "t_days": 37.524474986807725,
+    "frac_of_leg": 0.07588094657961808,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 42,
+  "key": "k4|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1489494.248504689,
+    "t_days": 13.812559753244154,
+    "frac_of_leg": 0.8468657692818952,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 23689.98787590993,
+    "t_days": 28.213449393212095,
+    "frac_of_leg": 0.8419748187479891,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1864432.3118256603,
+    "t_days": 34.89136468312507,
+    "frac_of_leg": 0.39020253488266177,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1793234.8679077895,
+    "t_days": 40.86504851755463,
+    "frac_of_leg": 0.9388138955601958,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Ganymede",
+    "min_km": 2149758.511510641,
+    "t_days": 49.437772934328535,
+    "frac_of_leg": 0.5525495427689855,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "RGanymede/2:1",
+    "body": "Callisto",
+    "min_km": 1414519.4809110188,
+    "t_days": 48.23355198090884,
+    "frac_of_leg": 0.46839182584820604,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": [
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 23689.98787590993,
+    "t_days": 28.213449393212095,
+    "frac_of_leg": 0.8419748187479891,
+    "soi_km": 24349.739180045828
+   }
+  ]
+ },
+ {
+  "index": 43,
+  "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 889846.0170566466,
+    "t_days": 18.034202686209234,
+    "frac_of_leg": 0.26734741679286533,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 785162.5130301769,
+    "t_days": 24.319259570332324,
+    "frac_of_leg": 0.4842755480730435,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 963395.9769109272,
+    "t_days": 40.043510624865974,
+    "frac_of_leg": 0.0417085191254869,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 342097.7833768955,
+    "t_days": 41.23244360410263,
+    "frac_of_leg": 0.10510723598996283,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 963395.9769104777,
+    "t_days": 59.59911739772165,
+    "frac_of_leg": 0.6695076017468792,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1653870.317533884,
+    "t_days": 60.12041917149008,
+    "frac_of_leg": 0.8897744641863902,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 44,
+  "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/2l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Ganymede",
+    "min_km": 963395.9769118994,
+    "t_days": 27.543725677572965,
+    "frac_of_leg": 0.9629652812001317,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2l",
+    "body": "Callisto",
+    "min_km": 277408.8791357274,
+    "t_days": 16.36146227711028,
+    "frac_of_leg": 0.43350075730264753,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 889846.0170568071,
+    "t_days": 36.071753347212166,
+    "frac_of_leg": 0.3644467496244192,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 784313.8526657508,
+    "t_days": 33.206997846626564,
+    "frac_of_leg": 0.2296584463876145,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 45,
+  "key": "k4|LGanymede>Callisto/1h|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1019474.7099255075,
+    "t_days": 15.538305159863537,
+    "frac_of_leg": 0.5229955826976918,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1193299.029486294,
+    "t_days": 9.249124284871339,
+    "frac_of_leg": 0.2471971911361684,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 170823.2074536592,
+    "t_days": 39.950738435525246,
+    "frac_of_leg": 0.8588336146540022,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 1847959.1540884397,
+    "t_days": 28.370322320356046,
+    "frac_of_leg": 0.1240260877213158,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1133508.3436415114,
+    "t_days": 53.00285672710235,
+    "frac_of_leg": 0.9390928408648971,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1829388.660896964,
+    "t_days": 53.07745970017418,
+    "frac_of_leg": 0.9455634011620005,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 46,
+  "key": "k4|LGanymede>Callisto/1l|LCallisto>Callisto/2h|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1025403.0143223808,
+    "t_days": 21.629638255244817,
+    "frac_of_leg": 0.8765461883433592,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 1847959.1540888306,
+    "t_days": 21.335602622923357,
+    "frac_of_leg": 0.8546865992225694,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/2h",
+    "body": "Ganymede",
+    "min_km": 171248.94371831912,
+    "t_days": 46.177385728071876,
+    "frac_of_leg": 0.6666198957165426,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/2h",
+    "body": "Callisto",
+    "min_km": 1193299.0294861537,
+    "t_days": 40.456800773057005,
+    "frac_of_leg": 0.5000000004855232,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1127621.5069758173,
+    "t_days": 59.2220677820218,
+    "frac_of_leg": 0.692468339459294,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1847959.1540871514,
+    "t_days": 59.5779976881207,
+    "frac_of_leg": 0.846637979565246,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 47,
+  "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Ganymede",
+    "min_km": 1023810.4015267408,
+    "t_days": 15.70537043459585,
+    "frac_of_leg": 0.3277954082244451,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/2h",
+    "body": "Callisto",
+    "min_km": 42814.683746314244,
+    "t_days": 26.652028192405965,
+    "frac_of_leg": 0.628221392789275,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1113038.9159408996,
+    "t_days": 40.91906914612682,
+    "frac_of_leg": 0.3131179271308332,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Callisto",
+    "min_km": 1826037.3356491283,
+    "t_days": 40.53833246922107,
+    "frac_of_leg": 0.14765556974102234,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1113038.915941022,
+    "t_days": 53.13388998407688,
+    "frac_of_leg": 0.9365465503326231,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Callisto",
+    "min_km": 1838579.3844536424,
+    "t_days": 53.22684021718422,
+    "frac_of_leg": 0.9447325562294118,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 48,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1113038.9159423278,
+    "t_days": 15.50234562932206,
+    "frac_of_leg": 0.9472386225394028,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 42607.70575402234,
+    "t_days": 4.8214233239181175,
+    "frac_of_leg": 0.16508692690366136,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 1023810.4012998218,
+    "t_days": 28.166764484873177,
+    "frac_of_leg": 0.5228401479913878,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1199863.185920157,
+    "t_days": 21.94434627568763,
+    "frac_of_leg": 0.25045634718418847,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1023810.4013045006,
+    "t_days": 40.71604689721059,
+    "frac_of_leg": 0.1213065664678173,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 1831497.6408441733,
+    "t_days": 41.020793039486755,
+    "frac_of_leg": 0.14372621245340564,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 49,
+  "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+  "passes": [
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 1097993.3903774433,
+    "t_days": 6.406055748886712,
+    "frac_of_leg": 0.053142871996658465,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 1179816.3094502806,
+    "t_days": 12.523234940082297,
+    "frac_of_leg": 0.49999999992046257,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LGanymede>Callisto/0s",
+    "body": "Ganymede",
+    "min_km": 1825005.725864574,
+    "t_days": 27.06362016039049,
+    "frac_of_leg": 0.7485969285425572,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Ganymede",
+    "min_km": 1028524.960793372,
+    "t_days": 31.311473490467367,
+    "frac_of_leg": 0.10499016074504128,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1l",
+    "body": "Callisto",
+    "min_km": 1806486.7546234934,
+    "t_days": 31.60885638823538,
+    "frac_of_leg": 0.12376050725240534,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/0s",
+    "body": "Ganymede",
+    "min_km": 1825005.72586457,
+    "t_days": 48.07578948663577,
+    "frac_of_leg": 0.2514030714574014,
+    "soi_km": 24349.739180045828
+   }
+  ],
+  "inside_soi": []
+ },
+ {
+  "index": 50,
+  "key": "k4|LGanymede>Callisto/2l|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+  "passes": [
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Ganymede",
+    "min_km": 962771.5459510538,
+    "t_days": 10.715794582695526,
+    "frac_of_leg": 0.35601262565063113,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LGanymede>Callisto/2l",
+    "body": "Callisto",
+    "min_km": 786703.8300670097,
+    "t_days": 7.5929238643212384,
+    "frac_of_leg": 0.2074562437548374,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Ganymede",
+    "min_km": 75786.14585009932,
+    "t_days": 31.968865480493417,
+    "frac_of_leg": 0.46002121013923125,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Callisto/1h",
+    "body": "Callisto",
+    "min_km": 1882197.2508646417,
+    "t_days": 32.63939324075383,
+    "frac_of_leg": 0.49999996982372097,
+    "soi_km": 37680.923494398325
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Ganymede",
+    "min_km": 783761.7602581731,
+    "t_days": 52.49195935969948,
+    "frac_of_leg": 0.9322833828402672,
+    "soi_km": 24349.739180045828
+   },
+   {
+    "leg": "LCallisto>Ganymede/1l",
+    "body": "Callisto",
+    "min_km": 1459612.431872135,
+    "t_days": 43.18938092835189,
+    "frac_of_leg": 0.1759385934698199,
+    "soi_km": 37680.923494398325
+   }
+  ],
+  "inside_soi": []
+ }
+]
