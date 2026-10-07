@@ -2296,6 +2296,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Lynam's capture windows at 50.09 d.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
+- `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
+  queue). **CHOOSE THE FREE DIRECTION OF A FULL-REV n:m RETURN LEG BY MINIMAX TURN RATIO SUBJECT TO NO
+  UNSCHEDULED PASS INSIDE ANY BODY'S SOI ALONG THE LEG** (`src/cyclerfinder/search/two_working_body.py`,
+  `optimise_block`). Today the minimax lands on the tilted circle (e about 3e-16, a = the planet's
+  orbit radius, i 5-6 deg), which re-meets the planet at half the leg in the ideal model. Expected: the
+  same or a slightly worse worst ratio. Controls: Hollister 1H and the `#942` ev in-run control must
+  pass the screen after the change; every `#942`/`#943` candidate is re-gated. Background: `#973`'s new
+  screens (`94dda754`) flag 9 of the 31 `#942` ev cyclers, Hollister 1H among them, on this chooser
+  artefact. Lead ruling 2026-10-07: those are reported as a pass with the flag "direction-dependent",
+  not rejected; fixed-geometry legs (HV(3,1,a), Lambert legs) are screened as written. gc-1, gc-2, ev-A,
+  ev-B and ev-C pass both screens.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
