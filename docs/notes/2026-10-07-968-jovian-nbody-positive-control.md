@@ -168,3 +168,19 @@ pinned as in 3.2); whether the other moons act as perturbers is fixed in the ame
   - It stalls near 0.1 km/s with T free: the corrector or formulation is at fault; go to approach 2,
     a continuation in Ganymede's GM from s_G about 1e-4 (the patched-conic limit) to 1, with the
     softening radius scaled.
+
+### 4.3 T-free diagnostic result (amendment 1), and AMENDMENT 2 (before the runs it covers)
+
+- From the plateau state, with T free, Callisto unpinned and J at B fixed (dJ = 0), trf converged:
+  |r| 3.2e-6, match dr 5.6e-6 km, dv 2.8e-11 km/s, gauge 6e-14. So corrector A is NOT the cause of the
+  plateau: it closes a Ganymede-only periodic orbit near GanCal#5 to far below the lane floors.
+  That orbit has T = 37.518130 d, against 3 S_GC = 37.569705 d (short by 0.0516 d, 74 min), Jacobi
+  -172.691866 km^2/s^2. State: `data/968_control/free_state_J0.json`.
+- A J step of +0.02 stalled at J = -172.6746 (T 37.5184): the family may fold in J there.
+- AMENDMENT 2: map the family by pseudo-arclength continuation (T and J both free; tangent from the
+  smallest right singular vector of the column-scaled Jacobian; trf corrector with the arclength
+  row), both directions from `free_state_J0.json`, recording T, J, V_inf and altitudes per point.
+  Reading, fixed now: if T reaches 3 S_GC on the family, bracket it and rerun the pinned, fixed-T
+  control from the bracketed point (amendment 3, criteria of 3.4 unchanged). If T turns back below
+  3 S_GC in both directions within the explored range, GanCal#5 has no fixed-period continuation
+  on this family: a diagnosed negative on the published-orbit side, with the T(J) curve as evidence.
