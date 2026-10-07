@@ -100,9 +100,35 @@ the patched-conic values). Its exact definition is written before it runs.
   3.196 -> 3.001 and E 3.795 -> 3.510 km/s by sigma = 0.365. The Europa altitude (scaled) peaks near
   sigma 0.23 (183 km) and then falls (58 km at 0.365).
 - Comparison with #968 9.5 (vector pins): there the same interior Europa flyby went below the surface
-  at sigma = 0.62. So for GanEur#316 the Europa failure is NOT an end artefact; under (b) it comes
-  earlier, through the V_inf slide. Reading (INFERRED): a ballistic continuous-gravity GanEur#316 cycle
-  near the patched-conic one needs a Europa periapsis that the full masses push below the surface; or
-  the span condition (fixed chain duration) forces the slide.
+  at sigma = 0.62. [The reading first written here, "NOT an end artefact; it comes earlier through the
+  V_inf slide", is WITHDRAWN; see 5.3.]
 - Status against #1039: formulation (b) removes the artefact for the EGGIE control, but does not close
   the jup365 control GanEur#316. Next, as registered: (a') (pre-registered separately).
+
+### 5.3 Correction: formulation (b) as written is inconsistent with a real-ephemeris open-chain seed
+
+- Row 3 of (b) forces |V_inf in, first| = |V_inf out, last|. That holds by construction for the EGGIE
+  control: its closed one-cycle chain carries the date corrector's wrap magnitude match.
+- GanEur#316's one-cycle chain is cut from an open 10-cycle real-ephemeris chain and has no such match.
+  In the seed, |V_inf in, first| = 3.19817 and |V_inf out, last| = 3.18290 km/s, a 0.0153 km/s gap.
+- At sigma = 0.02 under (b) the row pulled the two ends together (3.1959 and 3.1959). Node 5 therefore
+  sat 0.013 km/s from the chain (3.1959 against 3.1829), outside the 0.01 identity tolerance.
+- So the run left the chain's own branch at the start. The V_inf slide and the sigma = 0.383 stop
+  are NOT a verdict on GanEur#316. The same interior Europa node failing under both end treatments
+  is noted, but it does not separate the ends from the orbit.
+- Record fix: in vector mode the end-row convergence check was changed from the vector norm to the
+  largest component (looser by up to sqrt(3)). Future vector-mode runs are therefore not tested exactly
+  as #968 9.5 was. No existing result changes.
+
+### 5.4 AMENDMENT (b') (before the runs it covers)
+
+- (b') is (b) with row 3 holding |V_inf in, first| - |V_inf out, last| at its PATCHED-CONIC SEED value,
+  instead of zero. For the EGGIE control that value is zero (its closed chain), so the 5.1 control
+  result carries over unchanged.
+- The span row is kept.
+- GanEur#316, one cycle, under (b'): stage sigma, then stage down, so that criterion 7 (ii) is
+  judged (V_inf within 0.01 km/s of the chain at sigma <= 0.01).
+- Expected outcome: reaches sigma = 1 with probability about 0.4. The interior Europa flyby failed
+  under vector pins at 0.62, and that node is not an end node.
+- Stop at about 14:05 AEDT either way. (a') is attempted only with time left, and with the EGGIE
+  control first.
