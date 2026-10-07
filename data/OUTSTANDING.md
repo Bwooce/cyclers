@@ -1847,6 +1847,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
       direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
       blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
+    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972` (literature_check gate rework).
     - OWNER RULINGS 2026-10-07: ev-C **candidate-novel** under `#875` (ii); ev-A **candidate-novel**
       (DE440 near-ballistic caveat); ev-B: retry with continuation at the failing epochs before deciding.
     - Candidates (the others stay **candidate, pending owner adjudication, NOT novel**; full table in CURRENT
@@ -1886,6 +1887,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
       from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
       miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
+    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972`.
     - OWNER RULINGS 2026-10-07: gc-1 **candidate-novel**; gc-2 a GanCal-family relative, NOT novel. The
       ge rows stay **candidate, pending owner adjudication, NOT novel**; table and prior-art list in CURRENT
       STATE.
@@ -1931,6 +1933,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   did. Analysis only: no code, no catalogue edit. Output:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` and a technique x case matrix delta CSV. In
   progress.
+- `#972` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-gen2-opus; from the Fable
+  review of `2e16b56b`). **`literature_check` DECLARED-SCOPE GATE REWORK.** Blocker: a
+  `candidate-novel` row cannot sit on an inconclusive gate (spec 16.5). Defects: (1) known-
+  architecture-at-a-new-system false positive when a same-system anchor is dropped for another
+  reason; (2) the alternating rule gives a false negative on a repeated closing body; (3) the Aldrin
+  anchor's synthetic text floors every heliocentric Earth candidate at inconclusive; (4) the Hughes
+  `n_bodies` tag is unsourced; (5) no pinned tests and no triple-cycler control; (6) an equal-body-set
+  working-body exclusion should return inconclusive, not not-found. Sequence: pre-registration v2 ->
+  fixes -> controls and pinned tests -> re-review -> only then the `#942`/`#943` catalogue rows.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** Sources: Font, Nunes & Simo
   2002, 2009; Anderson & Lo (symmetric-subset control). Gate before dispatch: the `#896` controls
