@@ -2011,7 +2011,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   pipelines lose the R-S citation on rediscoveries, safe direction) is recorded as a post-hoc amendment
   and fixed at the source by `#1035`. Option (B), narrowing F14 to H&M-type anchors, was refused as a
   rule change after seeing a test result."
-- `#973` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-ext-opus; from `#971`
+- `#973` — ✓ DONE 2026-10-08 (owner of the work: twobody-ext-opus; registered 2026-10-07 from `#971`
   R11, R12, R13). **EXTEND THE `#942`/`#943` TWO-WORKING-BODY GENERATOR TO NEW CELLS.** R11:
   Ganymede-Callisto at k = 4, 5, 6 (the 50.09-d class; P(gate-passing ideal member at k = 4) 0.5).
   R13: Earth-Venus at k = 4, 5 (the 8-yr class; P 0.45). R12: a new Europa-Callisto `ec` cell, k = 1-4
@@ -2037,8 +2037,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     not novel, no catalogue writes. Re-screen (`2fd1c05a`): gc k = 4 29 pass / 11 model-invalid / 3
     moon impact / 8 primary impact; the `#943` gc candidates pass; `#942` ev 22 pass / 9 planet impact
     (tilted-circle fixed legs: "direction-dependent", `#1027`).
-  - R13 (ev k = 4-5) and gc k = 5-6: ALL RUNS DONE 2026-10-08 03:20 AEDT (gc k6, ev k4, ev k5; gauntlets
-    exit 0); twobody-ext-opus is analysing. They ran from the lead session since 2026-10-07 22:23 AEDT (runner
+  - **COMPLETE 2026-10-08** (gc k6 `a48ccc85`, ev k4 `52f0acb7`, ev k5 `e73d09ca`; note secs. 12-14).
+    Clean two-working-body members: gc k4 10, k5 6, k6 4 (20 in all; gate-passers 51 / 8 / 4; only the
+    k4 3:4:7 window is shallow); ev k4 11 (5 skeletons), ev k5 11 (8 skeletons; one sun-grazer at 12.5
+    solar radii is flagged not credible); ec k1-4 empty (stamped). No literal collision anywhere; the
+    nearest H&M rows are 0.39-1.74 km/s away and structurally k10 block orbits. Raw shards archived
+    under `~/dev/references/cyclers-runs/973/` with md5s in the note (working-tree copies deleted by the
+    lead after a `diff -rq` check). All 42 go on as `#1025`. R13 and gc k5/k6 ran from 2026-10-07 22:23
+    to 2026-10-08 03:20 AEDT (gauntlets exit 0). They ran from the lead session since 2026-10-07 22:23 AEDT (runner
     log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
@@ -2364,10 +2370,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
   `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
   the real-ephemeris step decides.
-- `#1025` — registered 2026-10-07 (from `#973`; GATED on `#972` and the chain tool). **THE gc k = 4 CLEAN
-  TWO-WORKING-BODY MEMBERS THROUGH THE LITERATURE STEP AND REAL-EPHEMERIS RUNG (d)** (jup365, 10 cycles,
-  5 epochs), after the two new screens of `#973`. Plus prior-art notes: the JUICE C-G-C round trip and
-  Lynam's capture windows at 50.09 d.
+- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; GATED on `#972` for the literature step
+  and on the chain tool for rung (d)). **ALL 42 CLEAN TWO-WORKING-BODY MEMBERS OF `#973`** (Ganymede-
+  Callisto 20: k4 10, k5 6, k6 4; Earth-Venus 22: k4 11, k5 11): the literature step (after `#972`),
+  real-ephemeris rung (d) with the chain tool (jup365 for gc, 10 cycles, 5 epochs; the `#942` ev
+  route for ev), the `#1034`-style continuous-gravity sigma continuation for the 20 gc members, and
+  prior-art notes (the JUICE C-G-C round trip; Lynam's capture windows at 50.09 d; the H&M k10 block
+  orbits for ev). Owner adjudication after. The ev k5 sun-grazer (12.5 solar radii) is flagged not
+  credible.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
