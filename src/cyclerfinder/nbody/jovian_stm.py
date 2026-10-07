@@ -37,7 +37,7 @@ coarse rails cache) for gradient fidelity.
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Protocol
 
 import numpy as np
@@ -110,6 +110,8 @@ def propagate_with_stm(
     moons: Sequence[str] = GALILEAN,
     rtol: float = 1e-11,
     atol: float = 1e-9,
+    mu_overrides: Mapping[str, float] | None = None,
+    radius_overrides: Mapping[str, float] | None = None,
 ) -> tuple[Vec3, Vec3, Mat6]:
     """Co-integrate the state and the 6x6 STM over one Jupiter-central leg.
 
@@ -121,10 +123,16 @@ def propagate_with_stm(
     rails cache) so the gravity gradient matches the propagated trajectory exactly.
     Moon-surface softening matches :class:`JovianRestrictedNBody`: a real flyby
     above the moon surface integrates exactly (the STM is valid there).
+
+    ``mu_overrides`` / ``radius_overrides`` (#968/#1004, additive) replace a moon's GM
+    and softening radius (km^3/s^2, km) for continuation in a moon's mass; moons not
+    named keep the registry values. Default: registry values, unchanged behaviour.
     """
     moons = tuple(moons)
     mus = {m: SATELLITES[m].mu_km3_s2 for m in moons}
     surf = {m: SATELLITES[m].radius_eq_km for m in moons}
+    mus.update({m: float(v) for m, v in (mu_overrides or {}).items() if m in mus})
+    surf.update({m: float(v) for m, v in (radius_overrides or {}).items() if m in surf})
     r0 = np.asarray(r0, dtype=np.float64)
     v0 = np.asarray(v0, dtype=np.float64)
 
