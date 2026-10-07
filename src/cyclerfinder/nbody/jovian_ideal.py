@@ -310,7 +310,8 @@ def subarc_defect_residual(
     2. ``n-2`` interior flyby hinges (one per interior ENCOUNTER only; interior
        continuity nodes have none) — read from the carried ``vinf_in/out`` constants.
     3. The 6-component periodicity wrap between the first and last encounter nodes
-       (which are node 0 and node ``M-1``), in the home-moon-relative frame.
+       (which are node 0 and node ``M-1``), in the home-moon-relative frame, rotated
+       by the home moon's advance (:func:`~cyclerfinder.nbody.jovian.wrap_rotation`).
 
     With ``sub.n_subarcs == 1`` (``encounter_idx == range(n)``) this is term-for-term
     the same residual as :func:`jovian_defect_residual` on the encounter nodes.
@@ -319,6 +320,7 @@ def subarc_defect_residual(
         _W_VEL,
         JovianRestrictedNBody,
         _jovian_flyby_hinge_km,
+        wrap_rotation,
     )
     from cyclerfinder.nbody.shooter import _STATE_DIM
 
@@ -362,12 +364,16 @@ def subarc_defect_residual(
     r_wrap_pl, v_wrap_pl = ephem.state(sub.sequence[-1], sub.epochs[i_last])
     s0 = states[i0]
     sn = states[i_last]
+    # Rotated by the home moon's advance over the period (#968, see wrap_rotation).
+    rot = wrap_rotation(
+        ephem, sub.sequence[0], sub.epochs[i0], sub.sequence[-1], sub.epochs[i_last]
+    )
     rel0_r = s0[:3] - np.asarray(r_home, dtype=np.float64)
     rel0_v = s0[3:] - np.asarray(v_home, dtype=np.float64)
     reln_r = sn[:3] - np.asarray(r_wrap_pl, dtype=np.float64)
     reln_v = sn[3:] - np.asarray(v_wrap_pl, dtype=np.float64)
-    res.extend(float(x) for x in (reln_r - rel0_r))
-    res.extend(float(x) * _W_VEL for x in (reln_v - rel0_v))
+    res.extend(float(x) for x in (reln_r - rot @ rel0_r))
+    res.extend(float(x) * _W_VEL for x in (reln_v - rot @ rel0_v))
 
     return np.asarray(res, dtype=np.float64)
 

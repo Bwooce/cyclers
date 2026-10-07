@@ -45,7 +45,7 @@ from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.satellites import SATELLITES
-from cyclerfinder.nbody.jovian import _W_VEL, GALILEAN, MU_JUPITER_KM3_S2
+from cyclerfinder.nbody.jovian import _W_VEL, GALILEAN, MU_JUPITER_KM3_S2, wrap_rotation
 
 if TYPE_CHECKING:
     from cyclerfinder.nbody.jovian_ideal import SubarcSeed
@@ -194,8 +194,9 @@ def jovian_stm_jacobian(
       with velocity rows scaled), where ``R_W = diag(1,1,1,W,W,W)``.
     - The flyby hinges read ``seed.vinf_in/out`` (carried constants), so their rows
       are identically zero — matching what FD sees.
-    - The wrap residual ``(node_{n-1} - r_wrap_pl) - (node_0 - r_home)`` (velocity
-      rows ``*W``) gives ``-R_W`` on node 0 and ``+R_W`` on node ``n-1`` (the moon
+    - The wrap residual ``(node_{n-1} - r_wrap_pl) - Q (node_0 - r_home)`` (velocity
+      rows ``*W``; ``Q`` the home moon's advance rotation, #968) gives
+      ``-R_W blockdiag(Q, Q)`` on node 0 and ``+R_W`` on node ``n-1`` (the moon
       states are epoch-fixed constants).
 
     A leg whose analytic propagation fails leaves its ``Phi`` block zero (the
@@ -241,9 +242,14 @@ def jovian_stm_jacobian(
 
     # Hinge rows (n_leg : n_leg + n_hinge) are constant in x -> left zero.
 
-    # Periodicity wrap rows.
+    # Periodicity wrap rows: d/dnode_0 is -R_W @ blockdiag(Q, Q), Q the home moon's
+    # advance rotation (#968); d/dnode_{n-1} is +R_W.
     wrap = slice(n_leg + n_hinge, n_leg + n_hinge + _STATE_DIM)
-    jac[wrap, 0:_STATE_DIM] = -rw
+    q = wrap_rotation(ephem, seed.sequence[0], seed.epochs[0], seed.sequence[-1], seed.epochs[-1])  # type: ignore[arg-type]
+    qq = np.zeros((_STATE_DIM, _STATE_DIM), dtype=np.float64)
+    qq[0:3, 0:3] = q
+    qq[3:6, 3:6] = q
+    jac[wrap, 0:_STATE_DIM] = -rw @ qq
     jac[wrap, (n - 1) * _STATE_DIM : n * _STATE_DIM] = rw
 
     return jac
@@ -320,7 +326,11 @@ def subarc_stm_jacobian(
     i0 = sub.encounter_idx[0]
     i_last = sub.encounter_idx[-1]
     wrap = slice(n_leg + n_hinge, n_leg + n_hinge + _STATE_DIM)
-    jac[wrap, i0 * _STATE_DIM : (i0 + 1) * _STATE_DIM] = -rw
+    q = wrap_rotation(ephem, sub.sequence[0], sub.epochs[i0], sub.sequence[-1], sub.epochs[i_last])  # type: ignore[arg-type]
+    qq = np.zeros((_STATE_DIM, _STATE_DIM), dtype=np.float64)
+    qq[0:3, 0:3] = q
+    qq[3:6, 3:6] = q
+    jac[wrap, i0 * _STATE_DIM : (i0 + 1) * _STATE_DIM] = -rw @ qq
     jac[wrap, i_last * _STATE_DIM : (i_last + 1) * _STATE_DIM] = rw
 
     return jac

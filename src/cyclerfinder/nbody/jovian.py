@@ -958,6 +958,39 @@ def _jovian_flyby_hinge_km(vinf_in: Vec3, vinf_out: Vec3, moon: str) -> float:
     return max(0.0, r_safe - r_p)
 
 
+def moon_orbit_frame(r_km: Vec3, v_km_s: Vec3) -> NDArray[np.float64]:
+    """Columns ``(r_hat, h_hat x r_hat, h_hat)``: the moon's instantaneous orbital frame."""
+    r_hat = r_km / float(np.linalg.norm(r_km))
+    h = np.cross(r_km, v_km_s)
+    h_hat = h / float(np.linalg.norm(h))
+    return np.column_stack([r_hat, np.cross(h_hat, r_hat), h_hat])
+
+
+def wrap_rotation(
+    ephem: JovianEphemeris,
+    home_moon: str,
+    t0_sec: float,
+    wrap_moon: str,
+    tn_sec: float,
+) -> NDArray[np.float64]:
+    """Rotation carrying the home moon's orbital frame at ``t0`` onto the wrap moon's at ``tn``.
+
+    A cycler repeats ROTATED by the home moon's angular advance over the period, so the
+    periodicity wrap compares the end node's moon-relative state with the start node's
+    moon-relative state rotated by this matrix (#968). In a circular coplanar model it
+    is the rotation about the orbit normal by the moon's advance; on a real ephemeris it
+    maps the moon's instantaneous frame ``(r_hat, h_hat x r_hat, h_hat)`` at ``t0`` onto
+    the one at ``tn`` (the actual angular advance, in the moon's orbital plane). It is the
+    identity when the advance is 0 mod 360 deg in a fixed plane, where the earlier
+    translation-only wrap was correct.
+    """
+    r0, v0 = ephem.state(home_moon, t0_sec)
+    rn, vn = ephem.state(wrap_moon, tn_sec)
+    f0 = moon_orbit_frame(np.asarray(r0, dtype=np.float64), np.asarray(v0, dtype=np.float64))
+    fn = moon_orbit_frame(np.asarray(rn, dtype=np.float64), np.asarray(vn, dtype=np.float64))
+    return np.asarray(fn @ f0.T, dtype=np.float64)
+
+
 def jovian_defect_residual(
     seed: ShootingSeed,
     *,
@@ -1009,18 +1042,20 @@ def jovian_defect_residual(
     for i in range(1, n - 1):
         res.append(_jovian_flyby_hinge_km(seed.vinf_in[i], seed.vinf_out[i], seed.sequence[i]))
 
-    # 3. Periodicity wrap in the home-moon-relative frame (a pure moon-ephemeris
-    #    shift of the home moon is not charged as a defect).
+    # 3. Periodicity wrap in the home-moon-relative frame, rotated by the home moon's
+    #    advance over the period (#968: a translation-only wrap is unsatisfiable by a
+    #    cycler unless the advance is 0 mod 360 deg).
     r_home, v_home = ephem.state(seed.sequence[0], seed.epochs[0])
     r_wrap_pl, v_wrap_pl = ephem.state(seed.sequence[-1], seed.epochs[-1])
+    rot = wrap_rotation(ephem, seed.sequence[0], seed.epochs[0], seed.sequence[-1], seed.epochs[-1])
     s0 = seed.node_states[0]
     sn = seed.node_states[-1]
     rel0_r = np.asarray(s0[:3], dtype=np.float64) - np.asarray(r_home, dtype=np.float64)
     rel0_v = np.asarray(s0[3:], dtype=np.float64) - np.asarray(v_home, dtype=np.float64)
     reln_r = np.asarray(sn[:3], dtype=np.float64) - np.asarray(r_wrap_pl, dtype=np.float64)
     reln_v = np.asarray(sn[3:], dtype=np.float64) - np.asarray(v_wrap_pl, dtype=np.float64)
-    res.extend(float(x) for x in (reln_r - rel0_r))
-    res.extend(float(x) * _W_VEL for x in (reln_v - rel0_v))
+    res.extend(float(x) for x in (reln_r - rot @ rel0_r))
+    res.extend(float(x) * _W_VEL for x in (reln_v - rot @ rel0_v))
 
     return np.asarray(res, dtype=np.float64)
 
@@ -1166,8 +1201,10 @@ __all__ = [
     "jovian_defect_residual",
     "jovian_shoot",
     "jup365_kernel_path",
+    "moon_orbit_frame",
     "optimize_cycle",
     "periapsis_node",
     "shoot_cycle",
     "tdb_sec_from_iso",
+    "wrap_rotation",
 ]

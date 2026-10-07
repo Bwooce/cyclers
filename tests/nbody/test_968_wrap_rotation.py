@@ -101,10 +101,6 @@ def _frame(r: Vec, v: Vec) -> NDArray[np.float64]:
 
 INCLS = [0.0, math.radians(25.0)]
 
-_WRAP_BUG = pytest.mark.xfail(
-    strict=True, reason="#968: lane wrap is translation-only; fixed in the next commit"
-)
-
 
 @pytest.mark.parametrize("incl", INCLS)
 def test_fixture_is_rotating_frame_periodic_with_nonzero_advance(incl: float) -> None:
@@ -123,7 +119,6 @@ def test_fixture_is_rotating_frame_periodic_with_nonzero_advance(incl: float) ->
     assert float(np.linalg.norm(rel1[3:] - rot @ rel0[3:])) < 1e-12
 
 
-@_WRAP_BUG
 @pytest.mark.parametrize("incl", INCLS)
 def test_lane_wrap_is_zero_on_rotating_frame_periodic_orbit(incl: float) -> None:
     eph, seed, cache = _case(incl)
@@ -134,7 +129,6 @@ def test_lane_wrap_is_zero_on_rotating_frame_periodic_orbit(incl: float) -> None
     assert float(np.linalg.norm(wrap[3:])) < 1e-6  # velocity rows carry the 1e3 weight
 
 
-@_WRAP_BUG
 @pytest.mark.parametrize("incl", INCLS)
 def test_subarc_wrap_is_zero_on_rotating_frame_periodic_orbit(incl: float) -> None:
     eph, seed, cache = _case(incl)
@@ -157,7 +151,6 @@ def test_subarc_wrap_is_zero_on_rotating_frame_periodic_orbit(incl: float) -> No
     assert float(np.linalg.norm(res[-6:])) < 1e-6
 
 
-@_WRAP_BUG
 @pytest.mark.parametrize("incl", INCLS)
 def test_stm_jacobian_wrap_rows_match_residual(incl: float) -> None:
     """The analytic wrap rows equal the exact (linear) derivative of the wrap residual."""
