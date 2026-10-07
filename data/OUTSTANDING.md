@@ -145,6 +145,7 @@ work, 6 acquisitions or fetches (plus 2 low), 5 owner-ruling or owner-option ite
 **Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
 part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
+Added 2026-10-08: `#1032`, a `stability_index_convention` schema field (four conventions mixed today).
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
