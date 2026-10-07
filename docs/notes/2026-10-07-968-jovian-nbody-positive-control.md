@@ -477,3 +477,52 @@ patched-conic limit, not by agreement with its patched-conic numbers at full mas
 wording the n-body rung of #1025 and of the #942/#943 rows needs.) See also #1004 (gc-2's continuous
 branch folds at 0.164 of the real moon masses): a patched-conic real-ephemeris PASS does not imply
 that the orbit exists in continuous gravity.
+
+## 9. Rung (b), GanEur#316 on jup365 at 2019: AMENDMENT 8 to sec. 3.6 (before any rung-(b) run)
+
+What is published (AAS 07-118 p.15, Fig. 10(a) title; generator note 6.27): "10 cycles in ephemeris
+model, 40 G. & 10 E. flybys, start=4-24-2019, TOF=493.5 days, Delta-v_TOTAL=0 m/s". Topology,
+epoch and ballistic status only; no per-flyby numbers. The per-flyby reference values below are
+therefore OUR real-ephemeris patched-conic reconstruction (#943 note 6.38,
+`data/943_ganeur316_realeph/n10_rs2019_rel/`), not published numbers.
+
+Sec. 3.6 is amended (it said Europa stays massless): the chain was solved in the both-massive cell
+"ge" (the chain tool refuses massless targets in 3-D) and Europa bends in it (gate ratio 0.569), so a
+massless Europa would contradict the seed.
+
+1. Seed reconstruction, its own positive control. The chain tool is copied from commit 1e4b7aeb (the
+   version that produced the 6.38 run) into my scratch directory, run once with `chain_eval` at
+   lambda = 1 in the chain's own system, and the flyby list (body, epoch, V_inf in/out) plus the tool
+   hash written to `data/968_rungb/seed_chain.json`; it is not imported again. PASS only if the
+   reconstruction reproduces the stored result: max residual < 1e-6, gate worst 0.804 (to 1e-3),
+   minimum required altitude 982 km (to 1 km).
+2. Time and frame: the chain's times (seconds past JD 2440000, `core.Ephemeris` spice backend) are
+   converted to the lane's TDB seconds past J2000; Ganymede's and Europa's positions from both must
+   agree to < 1 km at one seed flyby epoch, else stop.
+3. Model: jup365 rails (a spline wrapper with `.state()`, validated once against spkezr: position
+   < 0.1 km and velocity < 1e-6 km/s at 20 epochs), Ganymede and Europa massive with GMs and radii
+   scaled by sigma; Io and Callisto OFF during the continuation (the chain does not model them).
+4. Open chain, N = 1 cycle (5 flybys) for the verdict, then N = 2 (descriptive if N = 1 passes);
+   10 cycles only as a descriptive extension within 8-minute calls. Nodes at each flyby periapsis
+   (state, epoch, periapsis gauge relative to its moon), forward-backward mid-leg matches, no wrap.
+   The FIRST node is anchored (state and epoch fixed at the sigma-scaled patched-conic periapsis of
+   the first flyby), so the system is square: 7N - 7 unknowns, 6(N-1) + (N-1) residuals.
+5. Continuation in sigma: start sigma = 0.005 (seed offsets scaled), natural continuation upward to
+   1 (factor 1.2, halving to 1e-5); a fold, if any, is checked as in #1004 amendment 1.
+6. Acceptance at every point (binding constraints): each node is a periapsis of its moon (gauge),
+   within 0.5 SOI of it, and above the sigma-scaled floor (Ganymede 100 km, Europa 100 km, times
+   sigma, above sigma x radius); an unscheduled pass inside any of the four moons' Hill radii
+   (sigma-scaled for G and E, unscaled for Io and Callisto, which are off) is recorded and stops the
+   run.
+7. Criteria (4c form): (i) closure at sigma = 1 at the lane floors (1e-3 km, 1e-6 km/s); (ii) the
+   continuation reaches sigma <= 0.01 and the last computed point (sigma = 0.005) is within 0.01 km/s
+   of the reconstructed chain's per-flyby V_inf; (iii) IAS15 re-fly of every half-arc at sigma = 1 on
+   the lane's own `JovianRailsCache(JovianEphemeris)` and `JovianRestrictedNBody` with
+   moons = (Ganymede, Europa) at registry GMs, agreement < 1e-2 km, 1e-7 km/s (a wall-clock stop
+   is reported as "timeout"). Agreement with the chain's values at full mass is NOT a criterion.
+8. Extra step at sigma = 1 (descriptive): switch Io and Callisto on at full mass and re-converge;
+   record whether it converges and the V_inf shifts.
+9. Expected outcome: closes at sigma = 1 for N = 1 and N = 2 (GanEur#316 has turn ratios up to 0.80
+   at 3.2 km/s and the ideal-model controls closed); full-mass V_inf shifted by 0.1-0.3 km/s.
+10. Meaning of a pass: the lane works on jup365 rails, in 3-D, with two massive moons, as an open
+   chain. It does not validate periodicity (no wrap) or any candidate.
