@@ -1,0 +1,1535 @@
+{
+ "rows": [
+  {
+   "key": [
+    [
+     "Charon",
+     "Hydra",
+     "Charon"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.03858195516125271,
+   "new_residual": 0.03858195516125276,
+   "old_vinf": [
+    0.2907182083003625,
+    0.14406493387290648,
+    0.26709134858700895
+   ],
+   "new_vinf": [
+    0.29071820830036255,
+    0.14406493387290653,
+    0.26709134858700895
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 5.551115123125783e-17
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Hydra",
+     "Charon"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.02183078051359047,
+   "new_residual": 0.021830780513590664,
+   "old_vinf": [
+    0.08621450397518948,
+    0.07106033080981076,
+    0.08520834102258543
+   ],
+   "new_vinf": [
+    0.08621450397518955,
+    0.07106033080981058,
+    0.08520834102258634
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 9.159339953157541e-16
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Hydra",
+     "Charon"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.008297462945654421,
+   "new_residual": 0.008297462945654421,
+   "old_vinf": [
+    0.18028575209341083,
+    0.06698864781466134,
+    0.18858321503906525
+   ],
+   "new_vinf": [
+    0.18028575209341083,
+    0.06698864781466134,
+    0.18858321503906525
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.010868594216278005,
+   "new_residual": 0.010868594216278005,
+   "old_vinf": [
+    0.11525091207804777,
+    0.10707905564027925,
+    0.12611950629432578
+   ],
+   "new_vinf": [
+    0.11525091207804783,
+    0.10707905564027922,
+    0.12611950629432583
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 5.551115123125783e-17
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "old_residual": 0.036244836217981524,
+   "new_residual": 0.036244836217981344,
+   "old_vinf": [
+    0.24366922774704172,
+    0.1507814586652276,
+    0.2572062554578514
+   ],
+   "new_vinf": [
+    0.24366922774704153,
+    0.15078145866522757,
+    0.25720625545785164
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.220446049250313e-16
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.008849834080529695,
+   "new_residual": 0.008849834080529473,
+   "old_vinf": [
+    0.293946551292042,
+    0.155601233264205,
+    0.2850967172115123
+   ],
+   "new_vinf": [
+    0.29394655129204167,
+    0.1556012332642038,
+    0.2850967172115122
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.1934897514720433e-15
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.00431339412423061,
+   "new_residual": 0.0043133941242732635,
+   "old_vinf": [
+    0.05394668359118775,
+    0.04711631371383998,
+    0.05826007771541836
+   ],
+   "new_vinf": [
+    0.053946683591148875,
+    0.04711631371385445,
+    0.05826007771542214
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 4.265338082731773e-14
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "old_residual": 0.014201786537571703,
+   "new_residual": 0.014201786537571592,
+   "old_vinf": [
+    0.243004468920279,
+    0.12098045860228393,
+    0.2572062554578507
+   ],
+   "new_vinf": [
+    0.2430044689202791,
+    0.12098045860228304,
+    0.2572062554578507
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 8.881784197001252e-16
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "old_residual": 0.03416170752597447,
+   "new_residual": 0.03416170752597464,
+   "old_vinf": [
+    0.2891998490000878,
+    0.13289775284202665,
+    0.2831811795203554
+   ],
+   "new_vinf": [
+    0.28919984900008794,
+    0.13289775284202668,
+    0.283181179520355
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.885780586188048e-16
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "old_residual": 0.011924956362204309,
+   "new_residual": 0.011924956362204309,
+   "old_vinf": [
+    0.2891998490000879,
+    0.13289775284202665,
+    0.2772748926378836
+   ],
+   "new_vinf": [
+    0.2891998490000879,
+    0.13289775284202665,
+    0.2772748926378836
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Charon",
+     "Nix",
+     "Charon"
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "old_residual": 0.011680603635472922,
+   "new_residual": 0.011680603635473186,
+   "old_vinf": [
+    0.2432335729524209,
+    0.10609965261390492,
+    0.24429282430344834
+   ],
+   "new_vinf": [
+    0.24323357295242082,
+    0.10609965261390523,
+    0.24429282430344867
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.3306690738754696e-16
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Charon",
+     "Hydra"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.014303217525132042,
+   "new_residual": 0.014303217525132042,
+   "old_vinf": [
+    0.13322628780464213,
+    0.27966428627853585,
+    0.11892307027951009
+   ],
+   "new_vinf": [
+    0.13322628780464213,
+    0.27966428627853585,
+    0.11892307027951009
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Charon",
+     "Hydra"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.027709041893578534,
+   "new_residual": 0.02770904189357859,
+   "old_vinf": [
+    0.10644058683807411,
+    0.29874139509946507,
+    0.13414962873165265
+   ],
+   "new_vinf": [
+    0.10644058683807411,
+    0.29874139509946507,
+    0.1341496287316527
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 5.551115123125783e-17
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Charon",
+     "Hydra"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.015130340438085532,
+   "new_residual": 0.015130340438085532,
+   "old_vinf": [
+    0.06871220013007705,
+    0.1712796785281103,
+    0.07417166184013993
+   ],
+   "new_vinf": [
+    0.06871220013007705,
+    0.1712796785281103,
+    0.07417166184013993
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.008212065596197207,
+   "new_residual": 0.008212065596199199,
+   "old_vinf": [
+    0.062122847126080495,
+    0.04921093795430025,
+    0.05391078152988329
+   ],
+   "new_vinf": [
+    0.06212284712608244,
+    0.049210937954300794,
+    0.05391078152988324
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.9914625504213745e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "old_residual": 0.011216460959146857,
+   "new_residual": 0.011216460959152935,
+   "old_vinf": [
+    0.13133568218404312,
+    0.15030833691919146,
+    0.124220518544
+   ],
+   "new_vinf": [
+    0.13133568218404315,
+    0.15030833691919146,
+    0.12422051854401048
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.0477729794899915e-14
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     0,
+     3
+    ]
+   ],
+   "old_residual": 0.019247094380232782,
+   "new_residual": 0.019247094380234003,
+   "old_vinf": [
+    0.13133568218404315,
+    0.15030833691919146,
+    0.11208858780381037
+   ],
+   "new_vinf": [
+    0.13133568218404296,
+    0.15030833691919124,
+    0.11208858780380895
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.4155343563970746e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.005252574058186715,
+   "new_residual": 0.005252574058186715,
+   "old_vinf": [
+    0.0559415081101072,
+    0.04565522801195295,
+    0.0579597114996597
+   ],
+   "new_vinf": [
+    0.0559415081101072,
+    0.04565522801195295,
+    0.0579597114996597
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.0013705186501648953,
+   "new_residual": 0.0013705186501648953,
+   "old_vinf": [
+    0.01479257909726326,
+    0.0313207226865164,
+    0.014468509287724121
+   ],
+   "new_vinf": [
+    0.01479257909726326,
+    0.0313207226865164,
+    0.014468509287724121
+   ],
+   "old_physical": true,
+   "new_physical": true,
+   "old_silver": true,
+   "new_silver": true,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "old_residual": 0.012961705860284313,
+   "new_residual": 0.012961705860284313,
+   "old_vinf": [
+    0.0472248223775209,
+    0.05016426510321408,
+    0.03426311651723659
+   ],
+   "new_vinf": [
+    0.0472248223775209,
+    0.05016426510321408,
+    0.03426311651723659
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     1,
+     3
+    ]
+   ],
+   "old_residual": 0.04065965918425929,
+   "new_residual": 0.0406596591842623,
+   "old_vinf": [
+    0.05602415097518502,
+    0.041856975960316664,
+    0.0458429528595719
+   ],
+   "new_vinf": [
+    0.05602415097518621,
+    0.041856975960317025,
+    0.04584295285957469
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.011479954295737e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "old_residual": 0.026851641699160766,
+   "new_residual": 0.026851641699160766,
+   "old_vinf": [
+    0.06082197114566869,
+    0.10089909934656806,
+    0.07391679371169994
+   ],
+   "new_vinf": [
+    0.06082197114566869,
+    0.10089909934656806,
+    0.07391679371169994
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "old_residual": 0.019902047440464997,
+   "new_residual": 0.019902047440464997,
+   "old_vinf": [
+    0.041978372950636,
+    0.0651217338306621,
+    0.04385219302879491
+   ],
+   "new_vinf": [
+    0.041978372950636,
+    0.0651217338306621,
+    0.04385219302879491
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "old_residual": 0.00802461676330904,
+   "new_residual": 0.008024616763309227,
+   "old_vinf": [
+    0.03359815157876909,
+    0.04740119197160349,
+    0.04151978641557376
+   ],
+   "new_vinf": [
+    0.03359815157876882,
+    0.04740119197160354,
+    0.04151978641557405
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.914335439641036e-16
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     2,
+     3
+    ]
+   ],
+   "old_residual": 0.03511544317297365,
+   "new_residual": 0.03511544317297585,
+   "old_vinf": [
+    0.0335981515787699,
+    0.0474011919716023,
+    0.0458429528595719
+   ],
+   "new_vinf": [
+    0.03359815157876909,
+    0.04740119197160349,
+    0.0458429528595747
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.8033131371785203e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "old_residual": 0.016960668544563184,
+   "new_residual": 0.01696066854455683,
+   "old_vinf": [
+    0.13356789712390574,
+    0.1737903234985481,
+    0.13622950232343303
+   ],
+   "new_vinf": [
+    0.13356789712389622,
+    0.17379032349854162,
+    0.136229502323433
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 9.520162436160717e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "old_residual": 0.045774984752125145,
+   "new_residual": 0.04577498475212414,
+   "old_vinf": [
+    0.046103628402584515,
+    0.08165815163180132,
+    0.05304142841584699
+   ],
+   "new_vinf": [
+    0.04610362840258402,
+    0.08165815163180046,
+    0.05304142841584765
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.0061396160665481e-15
+  },
+  {
+   "key": [
+    [
+     "Hydra",
+     "Nix",
+     "Hydra"
+    ],
+    [
+     3,
+     2
+    ]
+   ],
+   "old_residual": 0.03884933748736179,
+   "new_residual": 0.0388493374873609,
+   "old_vinf": [
+    0.046103628402584515,
+    0.08165815163180132,
+    0.02846416678966017
+   ],
+   "new_vinf": [
+    0.046103628402584,
+    0.08165815163180042,
+    0.028464166789660135
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 9.020562075079397e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.00673659535425164,
+   "new_residual": 0.00673659535425164,
+   "old_vinf": [
+    0.17123243819053532,
+    0.2930130516717277,
+    0.16449584283628368
+   ],
+   "new_vinf": [
+    0.17123243819053532,
+    0.2930130516717277,
+    0.16449584283628368
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "old_residual": 0.042795946632423365,
+   "new_residual": 0.042795946632423504,
+   "old_vinf": [
+    0.17123243819053524,
+    0.2930130516717273,
+    0.12843649155811188
+   ],
+   "new_vinf": [
+    0.17123243819053532,
+    0.2930130516717277,
+    0.12843649155811182
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.885780586188048e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.00706177303155428,
+   "new_residual": 0.007061773031553004,
+   "old_vinf": [
+    0.14743161227978455,
+    0.2484532338016714,
+    0.15449338531133883
+   ],
+   "new_vinf": [
+    0.14743161227978577,
+    0.24845323380167098,
+    0.15449338531133877
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.27675647831893e-15
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.0029190293520508226,
+   "new_residual": 0.002919029352051017,
+   "old_vinf": [
+    0.054248319976962896,
+    0.1393100329889218,
+    0.05455442687320096
+   ],
+   "new_vinf": [
+    0.054248319976962896,
+    0.1393100329889218,
+    0.05455442687320106
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.942890293094024e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "old_residual": 0.013725379414291139,
+   "new_residual": 0.013725379414291139,
+   "old_vinf": [
+    0.14216187097240285,
+    0.2858546584189825,
+    0.1284364915581117
+   ],
+   "new_vinf": [
+    0.14216187097240285,
+    0.2858546584189825,
+    0.1284364915581117
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "old_residual": 0.044215746973799736,
+   "new_residual": 0.04421574697379964,
+   "old_vinf": [
+    0.11027763833753909,
+    0.25008206855270226,
+    0.15449338531133883
+   ],
+   "new_vinf": [
+    0.11027763833753913,
+    0.25008206855270165,
+    0.15449338531133877
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 6.106226635438361e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "old_residual": 0.014607327162629136,
+   "new_residual": 0.014607327162628997,
+   "old_vinf": [
+    0.11027763833753909,
+    0.25008206855270226,
+    0.12488496550016823
+   ],
+   "new_vinf": [
+    0.11027763833753913,
+    0.25008206855270165,
+    0.12488496550016813
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 6.106226635438361e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Charon",
+     "Nix"
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "old_residual": 0.002595805544250651,
+   "new_residual": 0.0025958055442506234,
+   "old_vinf": [
+    0.14259833452644072,
+    0.3280161203218788,
+    0.14519414007069137
+   ],
+   "new_vinf": [
+    0.14259833452644075,
+    0.3280161203218788,
+    0.14519414007069137
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.7755575615628914e-17
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "old_residual": 0.0058494976057903506,
+   "new_residual": 0.005849497605790177,
+   "old_vinf": [
+    0.033472011924295046,
+    0.05572793267739614,
+    0.029115892376400953
+   ],
+   "new_vinf": [
+    0.03347201192429459,
+    0.055727932677395654,
+    0.02911589237640085
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 4.85722573273506e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "old_residual": 0.02181465812215074,
+   "new_residual": 0.021814658122151026,
+   "old_vinf": [
+    0.05243731158923304,
+    0.06041057419563137,
+    0.07091235511687272
+   ],
+   "new_vinf": [
+    0.05243731158923322,
+    0.06041057419563158,
+    0.0709123551168724
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.191891195797325e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     0,
+     3
+    ]
+   ],
+   "old_residual": 0.02776138055890086,
+   "new_residual": 0.02776138055890086,
+   "old_vinf": [
+    0.11552088026087252,
+    0.10479752384511941,
+    0.14328226081977338
+   ],
+   "new_vinf": [
+    0.11552088026087252,
+    0.10479752384511941,
+    0.14328226081977338
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "old_residual": 0.0030539289776091577,
+   "new_residual": 0.003053928977609005,
+   "old_vinf": [
+    0.03308267173634869,
+    0.05171323346346188,
+    0.03132498281128064
+   ],
+   "new_vinf": [
+    0.03308267173634885,
+    0.05171323346346242,
+    0.03132498281128093
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 5.412337245047638e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "old_residual": 0.0007025366310337219,
+   "new_residual": 0.0007025366310337219,
+   "old_vinf": [
+    0.01696769332404834,
+    0.028709509735306858,
+    0.01767022995508206
+   ],
+   "new_vinf": [
+    0.01696769332404834,
+    0.028709509735306858,
+    0.01767022995508206
+   ],
+   "old_physical": true,
+   "new_physical": true,
+   "old_silver": true,
+   "new_silver": true,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "old_residual": 0.01996908385458278,
+   "new_residual": 0.01996908385458278,
+   "old_vinf": [
+    0.0179248445041341,
+    0.02467264510904282,
+    0.03789392835871688
+   ],
+   "new_vinf": [
+    0.0179248445041341,
+    0.02467264510904282,
+    0.03789392835871688
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     1,
+     3
+    ]
+   ],
+   "old_residual": 0.03310843667932124,
+   "new_residual": 0.03310843667932063,
+   "old_vinf": [
+    0.11017382414045084,
+    0.0898023903726117,
+    0.14328226081977208
+   ],
+   "new_vinf": [
+    0.11017382414045214,
+    0.08980239037261811,
+    0.14328226081977277
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 6.411537967210279e-15
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     2,
+     0
+    ]
+   ],
+   "old_residual": 0.01979513429990975,
+   "new_residual": 0.019795134299908968,
+   "old_vinf": [
+    0.05102305902717417,
+    0.03728215635289477,
+    0.03122792472726442
+   ],
+   "new_vinf": [
+    0.05102305902717338,
+    0.03728215635289565,
+    0.03122792472726441
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 8.743006318923108e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "old_residual": 0.019681147654301352,
+   "new_residual": 0.019681147654301352,
+   "old_vinf": [
+    0.04071399597370406,
+    0.02579763627622821,
+    0.021032848319402705
+   ],
+   "new_vinf": [
+    0.04071399597370406,
+    0.02579763627622821,
+    0.021032848319402705
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "old_residual": 0.008619850395503812,
+   "new_residual": 0.008619850395503607,
+   "old_vinf": [
+    0.051023059027174474,
+    0.037282156352894634,
+    0.056414014305516666
+   ],
+   "new_vinf": [
+    0.0510230590271746,
+    0.037282156352894454,
+    0.05641401430551669
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.0469737016526324e-16
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     2,
+     3
+    ]
+   ],
+   "old_residual": 0.024326804314290358,
+   "new_residual": 0.024326804314290358,
+   "old_vinf": [
+    0.0567502533696932,
+    0.027999063635926198,
+    0.08107705768398356
+   ],
+   "new_vinf": [
+    0.0567502533696932,
+    0.027999063635926198,
+    0.08107705768398356
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 0.0
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "old_residual": 0.046450778053015944,
+   "new_residual": 0.046450778053017464,
+   "old_vinf": [
+    0.08469617801096344,
+    0.050100103647117596,
+    0.03824539995794749
+   ],
+   "new_vinf": [
+    0.08469617801096468,
+    0.05010010364711784,
+    0.03824539995794722
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.519617764955683e-15
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "old_residual": 0.04558280199384195,
+   "new_residual": 0.04558280199384375,
+   "old_vinf": [
+    0.08469617801096344,
+    0.050100103647117596,
+    0.03911337601712148
+   ],
+   "new_vinf": [
+    0.08469617801096468,
+    0.05010010364711784,
+    0.039113376017120935
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 1.797173521111972e-15
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     3,
+     2
+    ]
+   ],
+   "old_residual": 0.026018087796054856,
+   "new_residual": 0.026018087796057063,
+   "old_vinf": [
+    0.08469617801096344,
+    0.050100103647117596,
+    0.05867809021490858
+   ],
+   "new_vinf": [
+    0.08469617801096468,
+    0.05010010364711784,
+    0.05867809021490762
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 2.2065682614424986e-15
+  },
+  {
+   "key": [
+    [
+     "Nix",
+     "Hydra",
+     "Nix"
+    ],
+    [
+     3,
+     3
+    ]
+   ],
+   "old_residual": 0.027342371368377777,
+   "new_residual": 0.0273423713683746,
+   "old_vinf": [
+    0.1159398894513943,
+    0.0751402014798827,
+    0.14328226081977208
+   ],
+   "new_vinf": [
+    0.11593988945139728,
+    0.07514020147988323,
+    0.14328226081977188
+   ],
+   "old_physical": false,
+   "new_physical": false,
+   "old_silver": false,
+   "new_silver": false,
+   "max_abs_diff": 3.1780134079895106e-15
+  }
+ ],
+ "extra_in_rerun": []
+}
