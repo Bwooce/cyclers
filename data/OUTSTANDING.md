@@ -1933,6 +1933,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   GanEur#43 altitude limit FAILS as registered (a limitation of the fit rule). The 95,000-km-pass
   explanation for GanCal#5's shift was withdrawn (it explains 23 % of the shift). Rung (b), the real
   ephemeris, is NOT yet done. Next: `#1004` (jovian-nbody-opus), then rung (b).
+  **FINAL 2026-10-08 (`3ba87de5`, `9efd8b5d`; note sec. 9.7): RUNG (b) NOT ACHIEVED. "Lane validated in
+  the ideal model only; the jup365 path stays unvalidated."** Option (a), a 3-cycle pinned chain, failed
+  to initialise at sigma = 0.02 (damped Newton crawled 1.407e4 -> 1.400e4): an initialisation failure,
+  not a physical result. Untried options are `#1039`.
 - `#969` — registered 2026-10-06 (found by `#963`'s test run; NOT dispatched). **REMOVE WALL-CLOCK
   BUDGETS FROM CORRECTNESS ASSERTIONS.** `test_656_grid_seed_search_recovers_admitted_pc_32_seed`
   passes `per_call_timeout=5` (SIGALRM, seconds) to `_grid_seed_search`; under load (16-20 on 8
@@ -2348,8 +2352,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   against kernel-fitted 3.891 and 5.981, about 1 % off. `#998` uses the fitted values and records both.
   The registry is in `src/cyclerfinder/core/satellites.py` (no Pluto small-moon entries under
   `src/cyclerfinder/data`). Expected values must come from the published source, not from our fit.
-- `#1023` — registered 2026-10-07 (from `#968`; gate CLEARED: the fix landed as `b9c27f77`, with the
-  pinned test `8d79b3fa`; now dispatchable). **RE-RUN EVERY JOVIAN
+- `#1023` — registered 2026-10-07 (from `#968`; gate cleared by the fix `b9c27f77`, pinned test `8d79b3fa`);
+  **DISPATCHED 2026-10-08 to jovian-nbody-opus**, with the seeding lesson: seed from a converged
+  continuous-model solution, not from patched-conic periapsis states. **RE-RUN EVERY JOVIAN
   n-BODY NEGATIVE COMPUTED WITH THE TRANSLATION-ONLY PERIODICITY WRAP.** In `jovian_defect_residual`
   (`src/cyclerfinder/nbody/jovian.py`, the "periodicity wrap" block, lines about 1012-1024) and
   `subarc_defect_residual` (`src/cyclerfinder/nbody/jovian_ideal.py`, about 358-368) the wrap compares
@@ -2358,8 +2363,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (Europa-hosted, 4 T_syn = 28.02 d, Europa advances 339.5 deg) could never close in that model,
   which is consistent with its 0.1-0.4 km/s plateaus. INFERRED by jovian-nbody-opus; the code was
   checked by the lead and by ci-keeper-opus (no rotation term in either function); NOT yet shown by a
-  re-run. Member D's failure is separate (`shoot_cycle` has no wrap). Void results to list here from
-  the `#968` note when jovian-nbody-opus commits it.
+  re-run. Member D's failure is separate (`shoot_cycle` has no wrap). VOID results (`#968` note sec. 2.1):
+  - `#480` EGGIE: Stage 2 n-body verdict, Stage 3 STM, Stage 4 sub-arc, the level-3 real-ephemeris run
+    and its correction, and the real-ephemeris STM note (all `docs/notes/2026-06-29/30-480-eggie-*`).
+    The skip reason in `tests/verify/test_ieg_reproduction_golden.py` rests on these runs. The ideal
+    three-moon model has no exact periodic orbit at all, so the re-run needs a criterion other than
+    exact periodicity there.
+  - `#318` (`scripts/scan_318_joint_sobol_smoke.py`) and `#501` (`scripts/scan_501_broadened_joint_search.py`):
+    the n-body stage ("26 shot, 0 closed") and the n-body part of the seven empty-region stamps
+    `jovian-cgcec-sobol-smoke-318-2026-06-30` and the six `jovian-*-sobol-broadened-501-2026-06-30`
+    rows. Their "positive control (Liang Member D) PASSED" was the patched-conic prefilter only.
+  - NOT affected: Member D (`#223`).
 - `#1024` — registered 2026-10-07 (from `#998`'s control check, pluto-smallmoons-sonnet's observation in
   commit `58930227`; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL OPTION FOR BINARIES IN THE TWO-WORKING-BODY
   / ONE-WORKING-NODE GENERATOR.** For Pluto-Charon (mu = 0.109) the ideal model puts Charon at 19,596 km
@@ -2474,6 +2488,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   module with no literature import (e.g. `search/two_working_body_refly.py`), and import
   `literature_check` lazily inside the functions that use it. Papercut:
   `docs/papercuts/2026-10-07-pluto-smallmoons-sonnet-gauntlet-imports-literature-check.md`.
+- `#1039` — registered 2026-10-08 (from `#968`; BACKLOG). **`#968` RUNG (b) FOLLOW-UPS, NOT RUN:** (b)
+  direction-only end pins; (c) a closed multi-cycle chain; (a') the 3-cycle pinned chain with
+  Levenberg-Marquardt or an end-pin homotopy. Until one succeeds, the Jovian n-body lane is validated
+  in the ideal model only and the jup365 path is unvalidated.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
