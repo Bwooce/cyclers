@@ -2374,6 +2374,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     `jovian-cgcec-sobol-smoke-318-2026-06-30` and the six `jovian-*-sobol-broadened-501-2026-06-30`
     rows. Their "positive control (Liang Member D) PASSED" was the patched-conic prefilter only.
   - NOT affected: Member D (`#223`).
+  - Classified NOT RE-RUNNABLE until `#1039` (the jup365 path is unvalidated): the EGGIE level-3 jup365
+    run and the `#318`/`#501` real-ephemeris n-body stages; retraction lines are appended to the seven
+    stamps. The ideal-model EGGIE stages also depend on `#1040`.
 - `#1024` — registered 2026-10-07 (from `#998`'s control check, pluto-smallmoons-sonnet's observation in
   commit `58930227`; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL OPTION FOR BINARIES IN THE TWO-WORKING-BODY
   / ONE-WORKING-NODE GENERATOR.** For Pluto-Charon (mu = 0.109) the ideal model puts Charon at 19,596 km
@@ -2492,6 +2495,20 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   direction-only end pins; (c) a closed multi-cycle chain; (a') the 3-cycle pinned chain with
   Levenberg-Marquardt or an end-pin homotopy. Until one succeeds, the Jovian n-body lane is validated
   in the ideal model only and the jup365 path is unvalidated.
+- `#1040` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus; found under `#1023`; a second
+  shared-code defect). **IDEAL SYNODIC PERIOD INCONSISTENT WITH THE IDEAL MOON ORBITS**
+  (`src/cyclerfinder/search/resonant_conic.py`, `ideal_t_syn()` and `ideal_moon_smas()`, lines about
+  85-102). `ideal_t_syn()` returns the ideal Ganymede period, 7.0042 d, while `ideal_moon_smas()` builds
+  the moons for a 5.2 deg shift per SYNODIC period, whose consistent value is T_syn = (2 pi + Delta) /
+  n_G = 7.1054 d. Over 4 x 7.0042 d the moons advance Ganymede 0 / Europa -20.50 / Io -61.51 deg (no
+  rigid rotation, so no EGGIE periodic orbit can exist in the model as coded); over 4 x 7.1054 d all
+  three advance 20.8 deg (rigid). The paper prints T_syn = 7.05 d, which matches neither. (Verified on
+  the code by the lead, and the numbers reproduced by ci-keeper-opus.) Users: `eggie_resonant_sma`
+  (cycle 28.02 against 28.42 d), `eige_ballistic.EIGE_RESONANT_SMA_KM`, `ll2011_ballistic.T_LAPLACE_S`
+  (`#493` matched 7.004 to the sourced 7.055 at -0.72 %; the consistent value is +0.71 %). Affects the
+  `#480` Stage 1-4 ideal results, `#493` and the EIGE construction; not `#968`, `#1004` or `#1034`.
+  Scope dispatched: a pinned test, an ADDITIVE `ideal_t_syn_consistent()` and an impact list, with the
+  callers unchanged. The caller switch and the re-runs are the lead's decision from that list.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
