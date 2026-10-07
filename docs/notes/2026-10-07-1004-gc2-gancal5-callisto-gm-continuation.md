@@ -130,3 +130,29 @@ The fold claim must not rest on the tangent. Checks, each with its pass rule:
    geometry (a different orbit is reported as such, not as gc-2).
 5. The weak J_z directions: recompute J_z at rtol 1e-13 at one point; if the four small singular
    values move by more than a factor 3, they are integration noise; otherwise structural.
+
+### 8.3 Results of amendment 1 (`data/1004_gc2/verify.json`)
+
+1. Two solutions at one sigma: PASS (fold supported).
+   - sigma = 0.150: lower branch V_inf G/C 3.5756/2.9815, Callisto r_p / sigma 11,507 km, turn 7.52 deg;
+     upper branch 3.5548/2.9340, 10,849 km, 8.19 deg (diff 0.047 km/s, 657 km).
+   - sigma = 0.160: lower 2.9704 / 11,356 km; upper 2.9452 / 11,006 km (diff 0.025 km/s, 350 km).
+   Both converge at fixed sigma to the floors, so the two branches are two orbits, not a tangent artefact.
+2. Fold bracket: on the lower branch, natural continuation converges up to sigma = 0.16393 and fails at
+   0.16395 and 0.16399 (steps down to 2e-5). The pseudo-arclength run turned at 0.16395. Fold at
+   sigma_f = 0.1639-0.1640.
+3. IAS15 re-fly of the eight half-arcs of both sigma = 0.150 solutions: max 4.7e-5 km, 2.6e-10 km/s
+   (lower); 1.5e-5 km, 8.8e-11 km/s (upper). PASS.
+4. Direct attempts at the physical masses (sigma = 1): from the patched-conic seed, from the lower
+   branch's last point and from the upper branch's last point (offsets scaled): none converges in
+   40 evaluations; each stalls at a velocity mismatch of 0.41-0.44 km/s.
+5. The four weak J_z directions are not integration noise: the smallest singular values agree to
+   1e-9 relative between rtol 1e-12 and 1e-13. They are structural (cause not identified); the fold
+   claim does not use them (checks 1-2 do not use the tangent).
+
+Reading: in the ideal continuous model (R-S constants, both moons point masses), the gc-2 branch that
+starts at the patched-conic gc-2 (sigma -> 0) meets a sibling branch of the same topology in a fold at
+sigma = 0.164 of the real moon masses. Along this path gc-2 does not reach the physical masses, and
+three direct attempts at sigma = 1 found no orbit. Not shown: that no gc-2-like orbit exists at
+sigma = 1 by another path (an isola or a branch from a different seed). Stage 2 as registered
+(continuing down in s_C from sigma = 1) has no starting orbit. The lead rules on how #1004 proceeds.
