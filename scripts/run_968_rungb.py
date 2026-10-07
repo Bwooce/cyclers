@@ -481,7 +481,10 @@ def stage_sigma(n_cycles: int) -> None:
         sg = 0.02  # amendment 10
         c.set_sigma(sg)
         z, info = newton(c, scale_offsets(c, c.seed, sg), 40, f"n{n_cycles} sigma={sg}")
-        if not converged(info):
+        # The start is not a verdict point (identity is judged going down): the amendment-11
+        # noise-floor rule applies to it too (#1039).
+        start_ok = converged(info) or (max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6)
+        if not start_ok:
             _log("sigma: no convergence at 0.02; stop")
             return
         pts.append({"sigma": sg, "z": z.tolist(), **describe(c, z, sg)})

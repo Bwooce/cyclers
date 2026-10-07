@@ -86,3 +86,23 @@ the patched-conic values). Its exact definition is written before it runs.
   identity at sigma <= 0.01 and IAS15. Full-mass V_inf: E 9.03, G 7.04-7.05, I 7.88 km/s. The lead
   records this against #1043.
 - Next, as registered: formulation (b) on jup365 GanEur#316, one cycle (#968 rung (b)).
+
+### 5.2 Formulation (b) on jup365 GanEur#316, one cycle: STOPS at sigma = 0.383 (Europa below the scaled floor)
+
+`data/1039_b_ganeur316/sigma_n1.json`.
+- The start point at sigma = 0.02 reached 1.6e-3 km, just above the floor, at the integration-noise
+  floor of #968 9.2. The amendment-11 noise-floor rule was applied to the start, which is not a verdict
+  point (code change in `run_968_rungb.stage_sigma`, made before this run).
+- The continuation converged at the floors up to sigma = 0.365. Then the INTERIOR Europa flyby (node
+  4 of 5, not an end node) fell to 23.1 km altitude at sigma = 0.383, under the scaled floor of
+  38.3 km. The acceptance check stopped the run.
+- Unlike the EGGIE control, freeing the end magnitudes lets the whole chain slide in V_inf: G
+  3.196 -> 3.001 and E 3.795 -> 3.510 km/s by sigma = 0.365. The Europa altitude (scaled) peaks near
+  sigma 0.23 (183 km) and then falls (58 km at 0.365).
+- Comparison with #968 9.5 (vector pins): there the same interior Europa flyby went below the surface
+  at sigma = 0.62. So for GanEur#316 the Europa failure is NOT an end artefact; under (b) it comes
+  earlier, through the V_inf slide. Reading (INFERRED): a ballistic continuous-gravity GanEur#316 cycle
+  near the patched-conic one needs a Europa periapsis that the full masses push below the surface; or
+  the span condition (fixed chain duration) forces the slide.
+- Status against #1039: formulation (b) removes the artefact for the EGGIE control, but does not close
+  the jup365 control GanEur#316. Next, as registered: (a') (pre-registered separately).

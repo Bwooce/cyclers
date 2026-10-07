@@ -49,11 +49,20 @@ def main() -> None:
     )
     ap = argparse.ArgumentParser()
     ap.add_argument("--form", choices=["b"], required=True)
-    ap.add_argument("--target", choices=["eggie"], required=True)
+    ap.add_argument("--target", choices=["eggie", "ganeur316"], required=True)
     ap.add_argument("--stage", choices=["sigma", "down", "ias15"], required=True)
     args = ap.parse_args()
     out = ROOT / "data" / f"1039_{args.form}_{args.target}"
     out.mkdir(parents=True, exist_ok=True)
+    if args.target == "ganeur316":  # #968 rung (b), one cycle, jup365 (amendments 8-12 otherwise)
+        rb = _load("run_968_rungb", ROOT / "scripts" / "run_968_rungb.py")
+        rb.OUT = out
+        rb.END_MODE = "direction"
+        seed = out / "seed_chain.json"
+        if not seed.exists():
+            shutil.copy(ROOT / "data" / "968_rungb" / "seed_chain.json", seed)
+        {"sigma": rb.stage_sigma, "down": rb.stage_down, "ias15": rb.stage_ias15}[args.stage](1)
+        return
     w = _load("run_1043_eggie", ROOT / "scripts" / "run_1043_eggie.py")
     w.OUT = out
     w.Q.OUT = out
