@@ -1987,6 +1987,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   grounding fix is proposed; its cited AAS 14-822 cannot be found. Notes:
   `docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md` and the v2 pre-registration
   `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md` (`fed50171`, `5e4bdc18`).
+  **v2 RESULT 2026-10-08 (twobody-gen2-opus; coded; commit pending, after the lead's ruling (A)):** all
+  26 controls published (9 members, 15 H&M rows labelled from Table 3, Jones VEM, Liang CGE).
+  Candidates as pre-registered: gc-1 INCONCLUSIVE (R-S G-C), gc-2 INCONCLUSIVE (R-S G-C), ev-A
+  NOT-FOUND, ev-B NOT-FOUND, ev-C INCONCLUSIVE (H&M). 18 pinned tests. F13 had 12 literal sites, not 7;
+  all fixed. Two old tests retrofitted (unlabelled R-S signature -> inconclusive naming R-S; labelled
+  -> published). 12 load timeouts are being re-run alone. Follow-on: `#1035`.
 - `#973` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-ext-opus; from `#971`
   R11, R12, R13). **EXTEND THE `#942`/`#943` TWO-WORKING-BODY GENERATOR TO NEW CELLS.** R11:
   Ganymede-Callisto at k = 4, 5, 6 (the 50.09-d class; P(gate-passing ideal member at k = 4) 0.5).
@@ -2402,6 +2408,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
 - `#1034` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus, about 30 min). **THE SAME JOINT-sigma
   CONTINUATION FOR gc-1**, pre-registered, with the tangent rule enforced in code. GATES the gc-1
   candidate-novel writeback; if gc-1 folds too, it goes to the owner for a decision.
+- `#1035` — registered 2026-10-08 (from `#972`; BACKLOG, small). **LABEL CANDIDATE SIGNATURES
+  (working bodies, return types) AT THE SOURCE IN THE OLD `literature_check` CALLERS** —
+  `low_thrust_cycler_search`, `cislunar_bct_search`, `precursor_matcher`, `run_299`, `run_301`,
+  `run_432`, `run_435`, `campaign_468`, `verify_327`, `branch_c32`, `gauntlet_run_274`,
+  `literature_check_review_queue` — so that Russell-Strange rediscoveries get their citation back under
+  F14. Until then an unlabelled rediscovery reads "inconclusive, naming R-S" (the safe direction).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
