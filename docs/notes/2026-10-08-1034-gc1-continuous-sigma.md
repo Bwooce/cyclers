@@ -92,3 +92,38 @@ Identity by the limit, as in #968 sec. 8.1 (criterion 4c style): converge at sig
 computed point (sigma = 0.005) V_inf G within 0.005 km/s of 2.3972 and C within 0.005 of 1.8067
 (the #943 patched-conic values), and the G shift falls monotonically with sigma. If it passes, the
 upward continuation starts from the sigma = 0.05 point as registered; if not, the run stops.
+
+## 9. Results (`data/1034_gc1/`)
+
+- Identity by the limit (amendment 1, `identity.json`): sigma = 0.02, 0.01, 0.005 gave V_inf G 2.3877,
+  2.3921, 2.3944 and C 1.8069/1.8080, 1.8068/1.8074, 1.8068/1.8070. At sigma = 0.005, G is 0.0028
+  and C 0.0003 from the patched-conic 2.3972 / 1.8067 (tolerance 0.005), and the G shift falls
+  monotonically: PASS. The branch is gc-1's.
+- Natural continuation from sigma = 0.05 (`sigma.json`): every step converged at factor 1.2, no
+  halving, no impact, through sigma = 0.06, 0.072, ..., 0.770, 0.924, 1. No fold: the monitor-variable
+  stage and the fold checks of sec. 3 were not needed.
+- **gc-1 REACHES sigma = 1: it exists in the continuous ideal model** (R-S constants, both moons point
+  masses with real GMs and radii). Full-mass orbit:
+
+| Node | t (d) | V_inf (km/s) | periapsis (km) | altitude (R-S radius) | turn (deg) |
+|---|---|---|---|---|---|
+| Ganymede | 11.7 | 2.1298 | 5598.3 | 2964 km | 32.55 |
+| Callisto | 18.5 | 1.7845 | 4373.0 | 1965 km | 39.77 |
+| Callisto | 35.1 | 1.8428 | 5249.7 | 2842 km | 33.37 |
+| Ganymede | 38.8 | 2.1294 | 5595.9 | 2962 km | 32.57 |
+
+  r from 916,320 to 2,294,978 km; the C-C arc at mid-time has a 1,881,915 km, e 0.2199. All
+  altitudes are far above the floors (100 / 200 km). The two Callisto flybys are no longer
+  symmetric. Against the patched conic (V_inf G 2.397, C 1.807; 2,437 / 1,801 km required altitudes)
+  the full-mass shift is -0.27 km/s at Ganymede, the same order as #968's controls; per #968 sec. 8.2
+  that is not a failure criterion.
+- Sequence (descriptive, DOP853 over one period at 0.002 d): Ganymede distance minima at the node
+  (5,599 km) and at 280,861 and 957,807 km; Callisto minima only at the two nodes. No unscheduled
+  pass inside either Hill radius.
+- IAS15 re-fly of the eight half-arcs at sigma = 1: max 2.4e-6 km, 1.1e-11 km/s: PASS. (Full-period
+  DOP853 single shot from the first node: 17 km return miss, descriptive; flyby amplification.)
+- Tangent rule: no pseudo-arclength step was taken, so the gap test never applied.
+
+Meaning (fixed in sec. 6): gc-1 EXISTS in the continuous ideal model on its own branch, with
+full-mass V_inf 2.130 (G) and 1.785 / 1.843 (C). Real ephemeris in continuous gravity is a separate
+rung, not run.
