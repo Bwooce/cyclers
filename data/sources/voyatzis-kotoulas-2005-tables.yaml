@@ -1,0 +1,72 @@
+# Voyatzis & Kotoulas 2005, Table 1: bifurcation points (BPs) of the circular problem that start families of the
+#   planar ELLIPTIC restricted problem, Sun-Neptune.
+# Source: G. Voyatzis and T. Kotoulas, "Planar periodic orbits in exterior resonances with Neptune",
+#   Planetary and Space Science 53(11):1189-1199 (2005), doi 10.1016/j.pss.2005.05.001 (Crossref-checked).
+#   Table 1 is on p.1195.
+# Local file: 39a3b1ac-voyatzis2005.pdf, 11 pp., md5 4bb4af5446c24d3569a9e6221182967a (publisher PDF, text layer).
+# Transcribed from the page image (PDF p.7, 200 dpi, zoomed). The text layer agreed with the image in every cell.
+#   No value here was computed by us. Our computed values appear only in `note:` fields, marked "ours".
+#   The printed em dash (no BP) is kept as "-". Numbers as printed (strings).
+#
+# WHAT THIS TABLE IS, AND IS NOT
+#   It is NOT a table of initial conditions. Each cell gives e0 (the initial eccentricity of the small body) with a
+#   two-letter stability code, and below it h (the Jacobi constant, eq. (2)) in brackets. The paper prints no x0 or
+#   ydot0 for any orbit, and no number at all for the closed family I_6/7 + II_7/8 + II^u_7/8 (Fig. 1 only).
+#   Caption (image): "We present the corresponding initial eccentricity value e0 and the Jacobi constant h in
+#   brackets. The symbol "S" or "U" denotes the stability character of the periodic orbits close to the bifurcation
+#   point." Text p.1195: "The first symbol refers to family E^{p/q}_{lp} and the second one to family E^{p/q}_{la}."
+#   BP0 lies on the circular family C (e0 = 0). For first-order resonances all BPs lie on family II (p.1195). For
+#   5/7 and 7/9, BP1 and BP3 lie on II, BP2 and BP4 on I (p.1196). For 4/7, 5/8, 7/10, BP1-BP3 lie on II (p.1197).
+#   For 3/5, BP1 lies on II, BP2 on a stable segment of I (p.1196).
+#
+# FRAME (p.1190-1191, eqs. (1)-(2), image-checked)
+#   Planar circular restricted problem, rotating frame Oxy with origin at the barycentre O. Sun (mass 1 - mu) at
+#   x = -mu, Neptune (mass mu) at x = 1 - mu (eq. (1) r1, r2 at r = 1; Fig. 5 caption). G = 1, a' = 1, T' = 2 pi.
+#   mu = 5.178e-5 (p.1191, image).
+#   Symmetric orbits start at x(0) = x0, y(0) = 0, xdot(0) = 0, ydot(0) = ydot0 (p.1191).
+#
+# Checks: check_vk2005_table1.py -> check_vk2005_table1.out (our integration; see the digest sec. 3).
+table1_bifurcation_points:
+  - {res: "2/3",  BP0: "-", BP1: {e0: "0.469", stab: "SU", h: "-1.393"}, BP2: "-", BP3: "-", BP4: "-",
+     note: "ours: BP1 with T = 6 pi fixed gives e0 = 0.4692, h = -1.39241 (x0 = +1.925672, aphelion). h differs by 6e-4, one unit in the last printed digit"}
+  - {res: "3/4",  BP0: "-", BP1: {e0: "0.329", stab: "SU", h: "-1.452"}, BP2: "-", BP3: "-", BP4: "-",
+     note: "ours: BP1 with T = 8 pi gives e0 = 0.3291, h = -1.45203 (x0 = +1.610099, aphelion); agrees"}
+  - {res: "4/5",  BP0: "-", BP1: {e0: "0.253", stab: "SU", h: "-1.473"}, BP2: {e0: "0.871", stab: "SU", h: "-0.960"}, BP3: "-", BP4: "-",
+     note: "ours: BP1 with T = 10 pi gives e0 = 0.2531, h = -1.47299 (agrees). BP2 gives e0 = 0.8715, h = -0.95900 (x0 = +2.172422): h differs by 1.0e-3, e0 by 5e-4"}
+  - {res: "5/6",  BP0: "-", BP1: {e0: "0.205", stab: "SU", h: "-1.483"}, BP2: {e0: "0.749", stab: "SU", h: "-1.146"}, BP3: "-", BP4: "-",
+     note: "ours: BP1 with T = 12 pi gives e0 = 0.2052, h = -1.48278 (agrees). BP2 (fixed-h method, period free): at h = -1.146 a symmetric orbit with T/(2 pi) = 6.00000, x0 = +1.976456 (aphelion), e0 = 0.7496; agrees"}
+  - {res: "6/7",  BP0: "-", BP1: {e0: "0.172", stab: "UU", h: "-1.488"}, BP2: {e0: "0.649", stab: "SU", h: "-1.253"}, BP3: {e0: "0.960", stab: "SU", h: "-0.743"}, BP4: "-",
+     note: "ours (T = 14 pi): BP1 e0 = 0.1720, h = -1.48816; BP2 e0 = 0.6482-0.6484, h = -1.25267; BP3 e0 = 0.9608, h = -0.74273. All agree within rounding except BP2/BP3 e0 by 6e-4 to 8e-4"}
+  - {res: "3/5",  BP0: {e0: "0.0", stab: "UU", h: "-1.541"}, BP1: {e0: "0.427", stab: "US", h: "-1.428"}, BP2: {e0: "0.800", stab: "SU", h: "-1.065"}, BP3: "-", BP4: "-",
+     note: "ours: BP0 Kepler estimate h = -1.54127 (agrees); BP1 with T = 10 pi gives e0 = 0.4270, h = -1.42790 (x0 = -2.005978, aphelion; agrees). BP2 not reproduced to the printed digits: no apsis state has e = 0.800 at h = -1.065 (max h for e = 0.8 is -1.0671); at h = -1.065 the nearby symmetric orbits have T/(2 pi) = 4.952 and 5.029, e0 = 0.8022"}
+  - {res: "5/7",  BP0: {e0: "0.0", stab: "UU", h: "-1.518"}, BP1: {e0: "0.278", stab: "SU", h: "-1.474"}, BP2: {e0: "0.562", stab: "SU", h: "-1.325"}, BP3: {e0: "0.778", stab: "US", h: "-1.102"}, BP4: {e0: "0.936", stab: "SU", h: "-0.792"},
+     note: "ours: BP0 Kepler estimate h = -1.51817 (agrees)"}
+  - {res: "7/9",  BP0: {e0: "0.0", stab: "UU", h: "-1.510"}, BP1: {e0: "0.203", stab: "SU", h: "-1.487"}, BP2: {e0: "0.427", stab: "SU", h: "-1.406"}, BP3: {e0: "0.606", stab: "US", h: "-1.287"}, BP4: {e0: "0.766", stab: "SU", h: "-1.122"},
+     note: "ours: BP0 Kepler estimate h = -1.51020 (agrees)"}
+  - {res: "4/7",  BP0: {e0: "0.0", stab: "UU", h: "-1.549"}, BP1: {e0: "0.027", stab: "UU", h: "-1.549"}, BP2: {e0: "0.400", stab: "UU", h: "-1.408"}, BP3: {e0: "0.900", stab: "SU", h: "-0.864"}, BP4: "-",
+     note: "ours: BP0 Kepler estimate h = -1.54932 (agrees). BP1 printed with the same h as BP0"}
+  - {res: "5/8",  BP0: {e0: "0.0", stab: "UU", h: "-1.535"}, BP1: {e0: "0.029", stab: "SU", h: "-1.535"}, BP2: {e0: "0.335", stab: "US", h: "-1.468"}, BP3: {e0: "0.800", stab: "SU", h: "-1.067"}, BP4: "-",
+     note: "ours: BP0 Kepler estimate h = -1.53506 (agrees). BP1 printed with the same h as BP0"}
+  - {res: "7/10", BP0: {e0: "0.0", stab: "UU", h: "-1.520"}, BP1: {e0: "0.025", stab: "SU", h: "-1.520"}, BP2: {e0: "0.249", stab: "US", h: "-1.485"}, BP3: {e0: "0.905", stab: "SU", h: "-0.872"}, BP4: "-",
+     note: "ours: BP0 Kepler estimate h = -1.52038 (agrees). BP1 printed with the same h as BP0. The text layer garbles the row label as '10 7'; the image reads 7/10"}
+conventions:
+  period_field: none   # the table prints no period; the period is fixed by the definition of a BP
+  period_source_definition: >-
+    p.1191: in the elliptic case the periodic orbits "are isolated points in the plane x0 - ydot0 for a particular
+    value of e' and their period is T = 2k pi, k = 1, 2, ...". p.1195: the resonant orbits of the circular problem
+    "are bifurcation points (BPs) ... for the elliptic problem (e' != 0) when their period is a multiple of
+    T' = 2 pi". p.1196 (BP0): circular orbits on family C "where the period is T = q pi ... are continued for
+    e' != 0, providing periodic orbits of period T = 2 q pi". Our checks use T = 2 q pi for every row (ours).
+  jacobi: >-
+    h of eq. (2): h = (xdot^2 + ydot^2 - (x^2 + y^2))/2 - (1 - mu)/r1 - mu/r2, barycentric frame. h = -C/2 for the
+    usual barycentric Jacobi constant C = x^2 + y^2 + 2(1 - mu)/r1 + 2 mu/r2 - v^2.
+  e0: >-
+    p.1196: "e0 = e(0) is the eccentricity value of the orbit that corresponds to the initial conditions of the
+    periodic orbit". The paper does not say whether the osculating orbit is Sun-centred or barycentric, or which
+    GM it uses. Our checks use Sun-centred with GM = 1 - mu (the choice changes e0 by about 1e-5).
+  stability_code: >-
+    Two letters, S (stable) or U (unstable), for the orbits close to the BP. First letter: family E^{p/q}_{lp}
+    (Neptune initially at perihelion); second: E^{p/q}_{la} (Neptune initially at aphelion) (p.1195).
+  notes:
+    - "Two-letter cells are printed with a space (e.g. '0.469 SU'); split here into e0 and stab."
+    - "BP1 of 4/7, 5/8, 7/10 has e0 = 0.027, 0.029, 0.025 and the same printed h as BP0: near-circular orbits next to the circular family."

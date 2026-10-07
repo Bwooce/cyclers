@@ -1,0 +1,58 @@
+# Source: A. E. Lynam, "Broad-search algorithms for the spacecraft trajectory design of Callisto-Ganymede-Io triple flyby
+# sequences from 2024 to 2040, Part I: Heuristic pruning of the search space", Acta Astronautica 94(1):246-252 (2014),
+# doi 10.1016/j.actaastro.2013.07.018. Open access (CC BY). File md5 548a9f72aa82c5791c1cc3e3e5bd624f, 7 pp.
+# Transcribed 2026-10-07 (#960 batch 36, digest dg36-lynam1). Tables 1-3 were read on 200 dpi page renders (pp.248, 250, 251).
+# Numbers as printed (strings). The paper has NO table of alignment windows, dates or phase-angle values, and prints NO
+# polynomial coefficients for eq. (13). The bounding curves exist only as the thick lines of Fig. 2 (p.249).
+# The Fig. 2 extents below are reads from the image, approximate (about +/- 2 deg), and are marked as such.
+table_1_ccefpc_model_inputs_outputs:   # p.248
+  inputs:
+    - {name: "initial semi-major axis a, km", range: "-1.7e6 to 1.2e6", note: "footnote a: parabolas have infinite a, so the range runs -1.7e6 down to -inf and +inf down to 1.2e6, not through 0"}
+    - {name: "initial eccentricity e", range: "0.6 to 1.3"}
+    - {name: "Callisto flyby type", value: "Energy-reducing"}
+    - {name: "Callisto flyby hp, km", value: "100"}
+    - {name: "Ganymede flyby type", value: "Energy-increasing or Energy-reducing"}
+    - {name: "Ganymede flyby hp, km", value: "1500"}
+    - {name: "Io flyby type", value: "Energy-reducing"}
+    - {name: "Io flyby hp, km", value: "300"}
+    - {name: "Io flyby position", value: "Before perijove or after perijove", note: "footnote b: Callisto and Ganymede flybys always occur before perijove in this model"}
+  outputs: ["p_Ca,Ga", "p_Ga,Io", "T_Ca,Ga", "T_Ga,Io", "dlambda_Ca,Ga", "dlambda_Ga,Io"]
+table_2_data_reduction_of_time_vectors:   # p.250; Minutes at 1-min sampling, 2024-2040
+  rows:
+    - {ganymede_flyby: "Combined minutes in 16 years", io_flyby: "-", vector_length: "8.42e6", pct_of_minutes: "100"}
+    - {ganymede_flyby: "Energy-reducing", io_flyby: "Before PJ", vector_length: "14,747", pct_of_minutes: "0.175"}
+    - {ganymede_flyby: "Energy-increasing", io_flyby: "Before PJ", vector_length: "11,052", pct_of_minutes: "0.131"}
+    - {ganymede_flyby: "Energy-reducing", io_flyby: "After PJ", vector_length: "45,512", pct_of_minutes: "0.541"}
+    - {ganymede_flyby: "Energy-increasing", io_flyby: "After PJ", vector_length: "55,978", pct_of_minutes: "0.665"}
+    - {ganymede_flyby: "Total reduced times", io_flyby: "-", vector_length: "127,289", pct_of_minutes: "1.513"}
+    - {ganymede_flyby: "Unique reduced times", io_flyby: "-", vector_length: "82,110", pct_of_minutes: "0.976"}
+    - {ganymede_flyby: "Impossible times pruned", io_flyby: "-", vector_length: "8.33e6", pct_of_minutes: "99.024"}
+  text_figures:
+    - {where: "abstract", value: "8,415,358 Lambert calls (blind search) to find 127,289 triple flybys; search space reduced by 99%"}
+    - {where: "p.250 sec. 3", value: "combined minutes analysed 8.41 million (the table says 8.42e6)"}
+    - {where: "p.250 sec. 3", value: "55,179 of the 82,110 unique times have two triple-flyby solutions", note: "INCONSISTENT with the table: total - unique = 127,289 - 82,110 = 45,179, and that is the double count if no time has more than two solutions. The printed 55,179 is probably a misprint for 45,179. Both readings checked on the 200 dpi image of p.250."}
+table_3_matlab_runtime_seconds:   # p.251
+  rows:
+    - {segment: "Total runtime", comp_time_s: "167.459", pct: "100"}
+    - {segment: "CCEFPC model", comp_time_s: "0.132", pct: "0.079"}
+    - {segment: "Interpolation structures", comp_time_s: "0.239", pct: "0.143"}
+    - {segment: "Ephemeris reading", comp_time_s: "162.773", pct: "97.202"}
+    - {segment: "Phase angle calculation and data reduction", comp_time_s: "4.315", pct: "2.577"}
+  note: "Rows sum to 167.459 s. Hardware: desktop PC, 2 x Intel Xeon E5-2687W 3.10 GHz, single-core vectorised MATLAB."
+fig_2_region_extents_approximate:   # p.249, read from the image; the bounding polynomials themselves are not tabulated
+  axes: {x: "dlambda_Ga,Io, deg, axis -60 to about +95", y: "dlambda_Ca,Ga, deg, axis -4 to 12"}
+  regions:
+    - {region: "Io flyby after perijove (energy-reducing circles; energy-increasing crosses)", dlambda_Ga_Io_deg: "about -57 to +48", dlambda_Ca_Ga_deg: "about -4 to +12"}
+    - {region: "Io flyby before perijove (energy-reducing dots; energy-increasing plus signs)", dlambda_Ga_Io_deg: "about +40 to +95", dlambda_Ca_Ga_deg: "about -2 to +12"}
+  note: "Each set is 1780 patched-conic propagations (1780 distinct (a, e)). Shapes are roughly quadrilaterals with curved sides."
+setup_numbers:
+  ephemeris: "jup230l.bsp (Jacobson), 1-min sampling, eight 2-yr intervals 2024-2040"
+  minutes_per_2yr_printed: "about 1.05 million"
+  numbers_extracted_per_2yr_printed: "about 9.45 million doubles (3 moons x 3 components x minutes)"
+  phase_angles_per_2yr_printed: "2.10 million"
+  orbit_normal: "from Ganymede positions 19 min apart (eq. 14)"
+  moon_inclinations: "all within one degree of each other (printed)"
+conventions:
+  phase_angle_definition: "dlambda_Ca,Ga = angle from Ganymede to Callisto at the Ganymede-flyby epoch; dlambda_Ga,Io = angle from Io (at the Ganymede-flyby epoch) to Ganymede; sign from the scalar triple product with n (eqs. 11, 12, 15, 16)"
+  units: "degrees in Fig. 2; km, s for the model"
+  checks_done: "see checks_part1.out: Table 2 rows sum, percentages, 8,333,248 pruned, Table 3 sum all agree; 55,179 vs 45,179 disagrees"
