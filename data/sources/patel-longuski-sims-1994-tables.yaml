@@ -1,0 +1,42 @@
+# Patel, M. R., Longuski, J. M. & Sims, J. A. (1994), "Mars Free Return Trajectories",
+# AIAA/AAS Astrodynamics Conference, Scottsdale AZ, Aug 1994, paper AIAA-94-3766-CP, proceedings pp. 473-481,
+# doi 10.2514/6.1994-3766 (Crossref).
+# NOTE: the JSR 1998 version (doi 10.2514/2.3333) prints the SAME two tables with the SAME numbers.
+# They are transcribed here because the project digest of the JSR version did not transcribe the down-escalator
+# columns of Table 2. Two witnesses (page image at 400 dpi + tesseract psm 6 / digit whitelist) agree on every cell;
+# see witness-comparison.tsv.
+# Table 2 (p.479): 'Up/Down Escalator Orbits (From Byrnes et al.[4])'. Columns: encounter; date (calendar date,
+#   as printed, month abbreviations as printed); v (km/s): approach V_inf for Earth/Mars rows, Delta-V for Maneuver rows.
+#   null = printed dash; one cell (down escalator, Maneuver after Mars-8, V) is blank in 1994 and a dash in 1998.
+# Table 3 (p.480): 'Summary of Henon's Results'. Columns: tau/pi (yrs), eta/pi, semi-major axis (AU), eccentricity,
+#   period (yrs). Numbers as printed, quoted as strings to keep trailing zeros.
+table_2_escalators:
+  source_page: 479
+  rows:
+    - {encounter: Earth-1, up_date: "Nov 19, 1996", up_v_kms: "6.19", down_date: "Jun 5, 1995", down_v_kms: "5.88"}
+    - {encounter: Mars-2, up_date: "May 1,1997", up_v_kms: "10.69", down_date: "Jan 20, 1997", down_v_kms: "8.52"}
+    - {encounter: Earth-3, up_date: "Jan 1, 1999", up_v_kms: "5.94", down_date: "July 9, 1997", down_v_kms: "5.95"}
+    - {encounter: Mars-4, up_date: "May 28, 1999", up_v_kms: "11.74", down_date: "Mar 7, 1999", down_v_kms: "7.35"}
+    - {encounter: Earth-5, up_date: "Feb 8, 2001", up_v_kms: "5.67", down_date: "Aug 17, 1999", down_v_kms: "6.01"}
+    - {encounter: Maneuver, up_date: null, up_v_kms: null, down_date: "Sep 28, 2000", down_v_kms: "0.27"}
+    - {encounter: Mars-6, up_date: "Jul 6, 2001", up_v_kms: "10.22", down_date: "May 15, 2001", down_v_kms: "6.60"}
+    - {encounter: Maneuver, up_date: "Mar 13, 2002", up_v_kms: "0.54", down_date: null, down_v_kms: null}
+    - {encounter: Earth-7, up_date: "Apr 16, 2003", up_v_kms: "5.67", down_date: "Oct 8, 2001", down_v_kms: "5.88"}
+    - {encounter: Maneuver, up_date: null, up_v_kms: null, down_date: "Dec 4, 2002", down_v_kms: "1.11"}
+    - {encounter: Mars-8, up_date: "Sep 12, 2003", up_v_kms: "7.28", down_date: "Aug 7, 2003", down_v_kms: "7.30"}
+    - {encounter: Maneuver, up_date: "May 17, 2004", up_v_kms: "0.74", down_date: null, down_v_kms: null}
+    - {encounter: Earth-9, up_date: "Jul 7, 2005", up_v_kms: "5.87", down_date: "Jan 2, 2004", down_v_kms: "5.39"}
+    - {encounter: Maneuver, up_date: null, up_v_kms: null, down_date: "Feb 2, 2005", down_v_kms: "0.66"}
+    - {encounter: Mars-10, up_date: "Dec 13, 2005", up_v_kms: "6.05", down_date: "Oct 10, 2005", down_v_kms: "9.96"}
+    - {encounter: Maneuver, up_date: "Jul 23, 2006", up_v_kms: "0.45", down_date: null, down_v_kms: null}
+    - {encounter: Earth-11, up_date: "Sep 6, 2007", up_v_kms: "5.87", down_date: "Mar 12, 2006", down_v_kms: "5.48"}
+    - {encounter: Mars-12, up_date: "Feb 16, 2008", up_v_kms: "7.43", down_date: "Nov 19, 2007", down_v_kms: "11.59"}
+    - {encounter: Earth-13, up_date: "Oct 10, 2009", up_v_kms: "5.89", down_date: "Apr 16, 2008", down_v_kms: "5.96"}
+    - {encounter: Mars-14, up_date: "Mar 28, 2010", up_v_kms: "8.66", down_date: "Dec 13, 2009", down_v_kms: "10.55"}
+    - {encounter: Earth-15, up_date: "Nov 13, 2011", up_v_kms: "5.81", down_date: "May 22, 2010", down_v_kms: "5.93"}
+table_3_henon:
+  source_page: 480
+  rows:
+    - {tau_over_pi_yr: "2.00000", eta_over_pi: "1.00000", a_AU: "1.58740", e: "0.37004", period_yr: "2.00141"}
+    - {tau_over_pi_yr: "3.00000", eta_over_pi: "2.00000", a_AU: "1.31037", e: "0.23686", period_yr: "1.50003"}
+    - {tau_over_pi_yr: "3.00000", eta_over_pi: "1.00000", a_AU: "2.08008", e: "0.51925", period_yr: "3.00083"}

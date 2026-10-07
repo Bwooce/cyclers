@@ -1,0 +1,220 @@
+# Henon 2003, Tables VI-XIII: numerical data for the new symmetric families Ha, Hb, Hc, Hd, Hg, He, Hf and family g3
+#   of Hill's problem.
+# Source: M. Henon, "New Families of Periodic Orbits in Hill's Problem of Three Bodies", Celestial Mechanics and
+#   Dynamical Astronomy 85(3):223-246 (2003), doi 10.1023/A:1022518422926. Received 29 April 2002, revised 8 July 2002,
+#   accepted 22 August 2002.
+# Local file: henon-2003-new-families-periodic-orbits-hill-problem-three-bodies-cmda-85-223-doi-10.1023-A-1022518422926.pdf,
+#   24 pp., md5 5b9283c22fea14f924e29f52dbe42217 (digital, has a text layer; the text layer drops Gamma, Sigma and primes).
+# Journal page = pdf page + 222. Tables: VI p.234, VII p.236, VIII p.238, IX p.239, X p.240, XI p.241, XII p.242, XIII p.243.
+# Transcribed from the page images: every cell was read on 300 dpi page renders. Second witness: tesseract 5.5.3 at 400 dpi,
+#   psm 6, on each table crop (one pass with a digit whitelist, one pass without it; the whitelist pass dropped most minus
+#   signs, so only the second pass witnesses the signs). Comparison: witness-comparison.tsv. Of 272 cells: 252 agree with the
+#   raw OCR; 19 agree only after removing OCR glyph noise ('3.' for N = 3, '~O' for 0, a stray '=' or a split minus; each
+#   re-read on the image, image reading kept); 1 disagreement (IX row 5 xi1: OCR noise suggested a minus; a 400 dpi zoom
+#   shows 0.731366, no minus). The digital text layer also matched every cell. No value here was computed by us; values we
+#   computed appear only inside `note:` fields or in check_henon2003.out, marked as ours. Numbers are kept as printed
+#   (strings, trailing zeros kept); the printed minus sign (U+2212) is written "-".
+#
+# EQUATIONS AND UNITS (p.223, eq. 1; p.224, eq. 2; read on the page image)
+#   "xi'' = 2 eta' + 3 xi - xi/(xi^2 + eta^2)^(3/2),  eta'' = -2 xi' - eta/(xi^2 + eta^2)^(3/2)"   (1)
+#   "Here xi and eta are the relative coordinates of M3 with respect to M2. Body M1 is at -infinity on the xi-axis." (p.223)
+#   Units: the paper does not define them. The form of (1) fixes them (INFERRED, ours): time unit = 1/n (n = angular rate
+#   of M2 about M1; the frame rotates at unit rate) and length unit = (G m2 / n^2)^(1/3) = a (m2/(m1 + m2))^(1/3), so that
+#   the M2 term has unit coefficient. p.244 gives one stated value: "one Hill's unit equals 1.443 million kilometers" for
+#   Sun-Earth-probe (page image). Note (ours): a (m_Earth/m_Sun)^(1/3) = 1.496e8 km x 0.01442 = 2.16 million km, and
+#   0.01443 AU = 2.16 million km; the printed 1.443 million km matches neither this unit nor the Hill radius
+#   a (mu/3)^(1/3) = 1.50 million km. Kept as printed; it does not affect the tables.
+#
+# JACOBI CONSTANT (p.224, eq. 2, page image)
+#   "Gamma = 3 xi^2 + 2/(xi^2 + eta^2)^(1/2) - xi'^2 - eta'^2"   (2)
+#   Sign convention: Gamma = 2 x (effective potential) - v^2, so larger Gamma = lower energy. The Gamma column is this Gamma.
+#
+# INITIAL CONDITIONS (sec. 1.3, p.224)
+#   "To compute a periodic symmetric orbit numerically, we start at one of its two perpendicular crossings of the xi-axis.
+#    We specify the two quantities Gamma and xi0. The initial position and velocity are then known: there is eta0 = 0,
+#    xi'0 = 0, and eta'0 is computed from (2). We assume that the initial motion is upwards, and therefore we choose the
+#    positive determination of eta'0."
+#   So the printed state is (Gamma, xi0): position (xi0, 0), velocity (0, +sqrt(3 xi0^2 + 2/|xi0| - Gamma)).
+#   No velocity is printed.
+#   N: "we call an orbit N-periodic if it intersects the xi-axis 2N times" (p.223); "Successive crossings are numbered,
+#    starting from 0 for the initial crossing. For the orbit to be periodic, the crossing with number N should be also
+#    perpendicular to the xi-axis" (pp.224-225).
+#   xi1: NOT defined in words in the paper. It is the xi of crossing N, the second perpendicular crossing (INFERRED; our
+#    integrations from every printed row reach crossing N at xi1 with xi' ~ 0, see check_henon2003.out).
+#
+# PERIOD: NOT PRINTED. Tables VI-XIII have only the columns N, Gamma, xi0, xi1. Any period or half-period in our outputs
+#   is ours (half period = time of crossing N, full period = time of crossing 2N).
+#
+# SYMMETRY (sec. 1.2, p.224, page image)
+#   Sigma:  (xi, eta, xi', eta', t) -> (xi, -eta, -xi', eta', -t)   "a symmetry with respect to the xi-axis" (3)
+#   Sigma': (xi, eta, xi', eta', t) -> (-xi, eta, xi', -eta', -t)   "a symmetry with respect to the eta-axis" (4)
+#   Sigma Sigma': (xi, eta, xi', eta', t) -> (-xi, -eta, -xi', -eta', t)   "a symmetry with respect to the origin" (5)
+#   "In the present paper, as in H5, we restrict our attention to periodic orbits which are symmetric under Sigma." (p.224)
+#   Every tabulated family is Sigma-symmetric (symmetric about the xi-axis). g3 is also Sigma'-symmetric (p.242).
+#   ASYMMETRIC FAMILIES: NONE are tabulated. Table IV (p.232) lists asymmetric SECOND-SPECIES orbits only, and p.233 says
+#   "The continuation into Hill families is not known at present for any of these asymmetric second species orbits."
+#   p.245, remark 6: "To my knowledge, no such orbit has been described in the literature so far."
+#   Mirror families: Ha', Hb', Hc', Hd', Hg', He', Hf' are the images of Ha ... Hf under Sigma Sigma' (symmetry about the
+#   origin; pp.235, 235, 236, 237, 240, 242, 242, read on the page images). They are not tabulated.
+#
+# STABILITY: NOT PRINTED. No stability column is in Tables VI-XIII, and the paper does not define the index a; it is
+#   defined in H5 (Henon 1969, A&A 1:223), not held. What the paper says (pages):
+#   - p.225: "family g' began at a critical point of family g, where the stability index is a = 1."
+#   - p.225: "When a = cos 2 pi m/n, with m and n integers, the family of simple-periodic orbits intersects a family of
+#     n-periodic orbits (Henon, 1965). In particular, when a = -1, we have an intersection with a family of
+#     double-periodic orbits. ... When a = -1/2, we have an intersection with a family of triple-periodic orbits."
+#   - p.236: Hc meets "the family g' described three times, corresponding to a stability index a = -1/2" at Gamma = 4.279538.
+#   - p.245, remark 7: "the orbits exhibited here are strongly unstable in most cases, with large positive or negative values
+#     of the stability index a. ... There are, however, small intervals of stability in the vicinity of the extremums of
+#     Gamma. Family Hg exhibits also a comparatively large interval of stability on its first branch, between
+#     Gamma = 1.914252 and the minimum Gamma = 0.823630."
+#   (The meaning of |a| < 1 as the stable range is H5's convention, not restated here; do not cite it to this paper.)
+#
+# NOTES ON PRINTED TEXT (kept as printed)
+#   - Abstract, p.223: "begun in Henon (1996) for simple-periodic orbits". The introduction names this work H5 = Henon
+#     (1969), and the reference list has no 1996 item. Probable misprint for 1969.
+#   - Hg: p.237 calls 3.836201 "a maximum of Gamma"; p.245 calls 0.823630 "the minimum Gamma" (the reflection orbit, f
+#     described four times, p.239). Both are rows of Table X.
+#   - g3 maximum 3.806201 (p.242) and Hg maximum 3.836201 (p.237) differ in one digit; each agrees with its own table and
+#     both rows integrate as printed (check_henon2003.out), so neither is a misprint.
+#   - No misprints were found in the table cells.
+tables:
+  - table: VI
+    family: Ha
+    journal_page: "234"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Ha' (Sigma Sigma'), not tabulated"
+    text: "maximum Gamma = 4.271428: a critical orbit of g' (a = -1, p.225 page image) described twice; ejection orbit at Gamma = 3.70365; N = 2 -> 3; limits {i, -2, e} (= {-2, e, i}) (pp.233-234)"
+    rows:
+      - {N: "2", Gamma: "4.271428", xi0: "0.073664", xi1: "0.073664", note: "maximum Gamma (a reflection, not a fold); critical orbit of g' described twice (all crossings perpendicular)"}
+      - {N: "2", Gamma: "4.2", xi0: "0.136336", xi1: "0.030784"}
+      - {N: "2", Gamma: "4", xi0: "0.213909", xi1: "0.007154"}
+      - {N: "3", Gamma: "3", xi0: "0.298714", xi1: "0.020679"}
+      - {N: "3", Gamma: "2", xi0: "0.219733", xi1: "0.094718"}
+      - {N: "3", Gamma: "1", xi0: "0.129601", xi1: "0.210478"}
+      - {N: "3", Gamma: "0", xi0: "0.055643", xi1: "0.366872"}
+      - {N: "3", Gamma: "-1", xi0: "0.020978", xi1: "0.620046"}
+  - table: VII
+    family: Hb
+    journal_page: "236"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Hb' (Sigma Sigma'), not tabulated"
+    text: "maximum Gamma = 4.246126; one branch stays N = 2, limit {-1, e, i}; other branch ejection at Gamma = 3.68239, N = 3, limit {-2, -1} (p.235)"
+    rows:
+      - {N: "2", Gamma: "0", xi0: "-1.200558", xi1: "0.055405"}
+      - {N: "2", Gamma: "2", xi0: "-0.881078", xi1: "0.219192"}
+      - {N: "2", Gamma: "3", xi0: "-0.832787", xi1: "0.297475"}
+      - {N: "2", Gamma: "4", xi0: "-0.770873", xi1: "0.206348"}
+      - {N: "2", Gamma: "4.246126", xi0: "-0.736183", xi1: "0.073930", note: "maximum Gamma"}
+      - {N: "2", Gamma: "4", xi0: "-0.774764", xi1: "0.008701"}
+      - {N: "3", Gamma: "3", xi0: "-0.836537", xi1: "0.019904"}
+      - {N: "3", Gamma: "2", xi0: "-0.884781", xi1: "0.093533"}
+      - {N: "3", Gamma: "0", xi0: "-1.204266", xi1: "0.364626"}
+  - table: VIII
+    family: Hc
+    journal_page: "238"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Hc' (Sigma Sigma'), not tabulated"
+    text: "maximum Gamma = 4.282668; meets g' described three times (a = -1/2) at Gamma = 4.279538; one branch: tangency at 3.701196, N 3 -> 5, limit {+2, i, e, +2}; other branch: ejection at 3.70517, N = 4, limit {i, e, +2, i, e} (p.236)"
+    rows:
+      - {N: "5", Gamma: "0", xi0: "0.074256", xi1: "-0.055644"}
+      - {N: "5", Gamma: "2", xi0: "0.283798", xi1: "-0.219737"}
+      - {N: "5", Gamma: "3", xi0: "0.410788", xi1: "-0.298735"}
+      - {N: "3", Gamma: "4", xi0: "0.563974", xi1: "-0.214394"}
+      - {N: "3", Gamma: "4.2", xi0: "0.603407", xi1: "-0.137842"}
+      - {N: "3", Gamma: "4.279538", xi0: "0.578326", xi1: "-0.081219", note: "intersection with g' described three times"}
+      - {N: "3", Gamma: "4.282668", xi0: "0.554615", xi1: "-0.070956", note: "maximum Gamma"}
+      - {N: "3", Gamma: "4.2", xi0: "0.446226", xi1: "-0.028395"}
+      - {N: "3", Gamma: "4", xi0: "0.377847", xi1: "-0.006829"}
+      - {N: "4", Gamma: "3", xi0: "0.307512", xi1: "-0.020682"}
+      - {N: "4", Gamma: "2", xi0: "0.221745", xi1: "-0.094719"}
+      - {N: "4", Gamma: "0", xi0: "0.055878", xi1: "-0.366872"}
+  - table: IX
+    family: Hd
+    journal_page: "239"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Hd' (Sigma Sigma'), not tabulated"
+    text: "maximum Gamma = 4.262466; one branch: tangency at 3.68382, N 3 -> 5, limit {+2, +1, +2}; other branch N = 3, limit {+1, i, e, i, e} (p.237)"
+    rows:
+      - {N: "5", Gamma: "0", xi0: "0.074192", xi1: "1.204272"}
+      - {N: "5", Gamma: "2", xi0: "0.283611", xi1: "0.884784"}
+      - {N: "5", Gamma: "3", xi0: "0.410483", xi1: "0.836539"}
+      - {N: "3", Gamma: "4", xi0: "0.562796", xi1: "0.774767"}
+      - {N: "3", Gamma: "4.262466", xi0: "0.560336", xi1: "0.731366", note: "maximum Gamma"}
+      - {N: "3", Gamma: "4", xi0: "0.383140", xi1: "0.769739"}
+      - {N: "3", Gamma: "3", xi0: "0.307604", xi1: "0.832762"}
+      - {N: "3", Gamma: "2", xi0: "0.221762", xi1: "0.881073"}
+      - {N: "3", Gamma: "0", xi0: "0.055881", xi1: "1.200557"}
+  - table: X
+    family: Hg
+    journal_page: "240"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Hg' (Sigma Sigma'), not tabulated"
+    text: "maximum Gamma = 3.836201 (N = 3 briefly); one branch: ejection at 3.78760, N 3 -> 4, inclined ejection at 2.433055, f described four times at 0.823630 (reflection); other branch: ejection at 3.71730, N 3 -> 4, limit {+2, i, -1, e} (pp.237-240)"
+    rows:
+      - {N: "4", Gamma: "0.823630", xi0: "-0.469009", xi1: "-0.469009", note: "family f described four times (reflection; minimum Gamma per p.245)"}
+      - {N: "4", Gamma: "1", xi0: "-0.576556", xi1: "-0.349485"}
+      - {N: "4", Gamma: "2", xi0: "-0.713192", xi1: "-0.141288"}
+      - {N: "4", Gamma: "2.433055", xi0: "-0.738557", xi1: "-0.087418", note: "inclined ejection orbit"}
+      - {N: "4", Gamma: "3", xi0: "-0.758920", xi1: "-0.035354"}
+      - {N: "3", Gamma: "3.836201", xi0: "-0.775927", xi1: "-0.000468", note: "maximum Gamma"}
+      - {N: "4", Gamma: "3", xi0: "-0.832461", xi1: "-0.020745"}
+      - {N: "4", Gamma: "2", xi0: "-0.880957", xi1: "-0.094756"}
+      - {N: "4", Gamma: "0", xi0: "-1.200508", xi1: "-0.366902"}
+  - table: XI
+    family: He
+    journal_page: "241"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "He' (Sigma Sigma'), not tabulated"
+    text: "from limit {+3}, Gamma rises to a maximum -8.615196, then falls to -infinity with limit {+1, e, i}; N = 3 throughout (pp.240-241)"
+    rows:
+      - {N: "3", Gamma: "-20", xi0: "0.00021509", xi1: "5.094872"}
+      - {N: "3", Gamma: "-8.615196", xi0: "0.00076893", xi1: "3.557963", note: "maximum Gamma"}
+      - {N: "3", Gamma: "-20", xi0: "0.00004568", xi1: "5.848469"}
+  - table: XII
+    family: Hf
+    journal_page: "242"
+    symmetry: "Sigma (about the xi-axis)"
+    mirror_family: "Hf' (Sigma Sigma'), not tabulated"
+    text: "from limit {+1, +1, i, e}, maximum Gamma = 4.246114, ejection at 3.67716, N 3 -> 4, limit {+2, +1, +1}; the two branches are ~1e-4 apart in xi0 (p.242)"
+    rows:
+      - {N: "3", Gamma: "0", xi0: "0.094874", xi1: "-0.055402"}
+      - {N: "3", Gamma: "2", xi0: "0.301000", xi1: "-0.219188"}
+      - {N: "3", Gamma: "3", xi0: "0.425740", xi1: "-0.297466"}
+      - {N: "3", Gamma: "4", xi0: "0.580101", xi1: "-0.206306"}
+      - {N: "3", Gamma: "4.246114", xi0: "0.641444", xi1: "-0.073920", note: "maximum Gamma"}
+      - {N: "3", Gamma: "4", xi0: "0.580186", xi1: "-0.008702"}
+      - {N: "4", Gamma: "3", xi0: "0.425832", xi1: "-0.019904"}
+      - {N: "4", Gamma: "2", xi0: "0.301107", xi1: "-0.093533"}
+      - {N: "4", Gamma: "0", xi0: "0.095008", xi1: "-0.364619"}
+  - table: XIII
+    family: g3
+    journal_page: "243"
+    symmetry: "Sigma (about the xi-axis) and Sigma' (about the eta-axis); hence xi1 = -xi0"
+    mirror_family: "none (self-symmetric under Sigma')"
+    text: "entirely triple-periodic; maximum Gamma = 3.806201; one branch -> {+1, -1}, meets f described three times at -1.411618 and 0.015388; two vertical ejections at 2.238611; other branch -> {+1, i, -1, e} (p.242)"
+    rows:
+      - {N: "3", Gamma: "-4", xi0: "-2.490440", xi1: "2.490440"}
+      - {N: "3", Gamma: "-1.411618", xi0: "-1.199879", xi1: "1.199879", note: "intersection with f described three times"}
+      - {N: "3", Gamma: "-0.7", xi0: "-0.779678", xi1: "0.779678"}
+      - {N: "3", Gamma: "0.015388", xi0: "-0.655072", xi1: "0.655072", note: "intersection with f described three times"}
+      - {N: "3", Gamma: "1", xi0: "-0.698379", xi1: "0.698379"}
+      - {N: "3", Gamma: "2.238611", xi0: "-0.752381", xi1: "0.752381", note: "orbit with two vertical ejections"}
+      - {N: "3", Gamma: "3.806201", xi0: "-0.778960", xi1: "0.778960", note: "maximum Gamma"}
+      - {N: "3", Gamma: "2", xi0: "-0.880924", xi1: "0.880924"}
+      - {N: "3", Gamma: "0", xi0: "-1.200457", xi1: "1.200457"}
+conventions:
+  frame: "Hill's problem, eq. (1) p.223: xi'' = 2 eta' + 3 xi - xi/r^3, eta'' = -2 xi' - eta/r^3; M2 at the origin, M1 at -infinity on the xi-axis; unit rotation rate"
+  jacobi: "Gamma = 3 xi^2 + 2/r - xi'^2 - eta'^2 (eq. 2, p.224); larger Gamma = lower energy"
+  state_printed: "Gamma, xi0 at crossing 0 (eta = 0, xi' = 0, eta' > 0 from eq. 2, sec. 1.3 p.224); xi1 = xi at crossing N (inferred, integration-confirmed); no velocity printed"
+  N: "half the number of xi-axis crossings per period (p.223)"
+  period_field: none   # no period is printed in Tables VI-XIII; any period in our outputs is ours
+  stability_field: none   # no stability column; index a is H5's, not defined in this paper (see header)
+  symmetric_families: [Ha, Hb, Hc, Hd, Hg, He, Hf, g3]   # all Sigma-symmetric; g3 also Sigma'-symmetric
+  asymmetric_families: []   # none tabulated; asymmetric orbits appear only as second-species sequences (Table IV, p.232)
+  row_counts: {VI: 8, VII: 9, VIII: 12, IX: 9, X: 9, XI: 3, XII: 9, XIII: 9, total: 68}
+  notes:
+    - "Filer check (check_henon2003.py / .out, ours; DOP853 rtol 1e-13 atol 1e-14). One row per table (VI G=2, VII G=2, VIII G=4, IX G=3, X G=2, XI G=-20 first, XII G=2, XIII G=1): xi0* root-found at the printed Gamma matches the printed xi0 within half a unit of the last printed digit, and xi at crossing N matches the printed xi1 likewise, in all 8 tables. The full period (crossing 2N) returns to the start to 1e-12 .. 2e-7."
+    - "All 68 rows: velocity real at xi0 and xi1 (68/68). Root-find at fixed Gamma succeeds on 57 rows; 55/57 reproduce xi0 and 55/57 reproduce xi1 to half a unit. Misses by one unit in the last digit (rounding level, not misprints): VII Gamma=2 N=3 xi0 (ours -0.8847815), VIII Gamma=3 N=5 xi1 (ours -0.2987355); and the He fold row (Gamma=-8.615196: ours 0.00076897 vs 0.00076893, xi1 3.55793 vs 3.557963), where xi0 is ill-conditioned."
+    - "The 11 rows without a simple root: Gamma folds (Hb, Hc, Hd, Hg, Hf, g3 maxima), intersection rows (Hc 4.279538; g3 -1.411618, 0.015388), and the two ejection rows (Hg 2.433055, g3 2.238611), whose orbits pass through M2 and stop the unregularised integrator. Intersection rows give xidot_N ~ 1e-12 from the printed state (the k-fold simple orbit). Fold tests: for Hb, Hg, He and g3 (PART 4) a maximum of Gamma lies within 1e-5 of the printed Gamma, and the two roots at Gamma - 1e-5 straddle the printed xi0 (root midpoint 2.7e-6 from the printed xi0 for Hb, 6.5e-8 for He; a location test, not a digit match); for Hc and Hd (PART 5) xidot_N is flat in xi0 with its extremum at the printed xi0 and changes sign between Gamma_p - 1e-5 and Gamma_p + 1e-5; the Hf maximum is not cleanly confirmed (nearby grid points hit collisions; printed state gives xidot_N = -2.2e-5)."
+    - "The Jacobi value at t = 0 is not an independent check: eta'0 is computed from the printed Gamma. Non-circular checks used: real velocity at xi0 and xi1, xi at crossing N vs printed xi1, Jacobi drift along the integration (<= 2e-9)."

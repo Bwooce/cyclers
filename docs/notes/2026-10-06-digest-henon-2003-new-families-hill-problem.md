@@ -84,3 +84,19 @@ So the table reads as stated, to the 6 printed decimals.
 Held: Hénon 1997 and 2001 (Generating Families I and II, LNP m52/m65). Not held, already in the wanted
 list: Hénon 1969 (H5, A&A 1:223, "Hill's case: periodic orbits and their stability") and Hénon 1970
 (A&A 9:24, "Hill's case: non-periodic orbits"). Not held, not added: Strömgren 1935 (background).
+
+## Addendum 2026-10-08 (#974 step 1): Tables VI-XIII transcribed
+
+- `data/sources/henon-2003-hill-families-tables.yaml`: all 68 rows of Tables VI-XIII (families Ha, Hb, Hc, Hd, Hg,
+  He, Hf and g3), every cell read on 300-dpi page images; second witness tesseract 400 dpi (272 cells: 252 agree
+  raw, 19 after removing glyph noise, 1 OCR error overruled on a zoomed image). The conventions block quotes eq. (1)
+  and (2) and the Sigma symmetry definitions.
+- The tables print only N, Gamma, xi0, xi1 (xi1 = the second perpendicular crossing, inferred). They print NO period
+  and NO stability index. Every tabulated family is Sigma-symmetric (about the xi-axis); g3 is also Sigma'-symmetric.
+  NO asymmetric family is tabulated (asymmetric orbits appear only as second-species limits in Table IV, p.232-233).
+- Filer's check (DOP853, rtol 1e-13): a perpendicular-crossing root exists near the printed xi0 for 57 of 68 rows,
+  and for 55 of those 57 both xi0 and xi1 reproduce to half a unit in the last printed digit (the other two miss by
+  about 5e-7 and 3e-5). The 11 rows without a simple root are the printed folds (Gamma maxima: a separate grid check
+  shows two roots on one side and none on the other), intersections and ejection orbits. No cell misprint found.
+  Script and output: `cyclers_pdf/papers/henon-2003-...-check_henon2003.py` and `.out`.
+
