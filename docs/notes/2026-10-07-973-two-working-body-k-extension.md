@@ -669,3 +669,88 @@ Notes on the set:
   Io is not in this model).
 - The lowest V_inf is gc4-1 (G 1.47 / C 1.58 km/s, perijove at Ganymede's orbit). The largest margin
   is gc4-8 (ratios 0.31 / 0.29).
+
+## 11. R11 result: gc (Ganymede-Callisto) k = 5 (lead launch; analysed 2026-10-08)
+
+Run: launched by the lead with the sec. 6.1 commands (16 shards of 16). Results:
+- 4,589 structures, all done once, 0 errors (`check` OK).
+- 9,699 exact zeros, 3,106 physical cyclers, **8 gate-passing**, 0 zero-assessment errors.
+- 0 structures at the n_refine ceiling.
+
+Gauntlet and screens: `data/973_gc/k5_gauntlet.json` and its log. The gauntlet applies the 2.6/2.7
+screens; the sec. 4 classes were added by the analysis.
+- DOP853 re-fly: largest miss 1.1e-4 km, gate "pass" on the integrated vectors for all 8.
+- Screens: 7 pass, 1 model-invalid. gc5-2 makes an unscheduled Ganymede pass at 3,562 km on its 2-rev
+  Ganymede-Ganymede leg, a Lambert leg, so the rejection is fixed-geometry. No primary impact, no
+  moon impact, no direction-dependent flag.
+- Classes: W2 7 (6 pass, 1 model-invalid) and P-C 1 (gc5-1: Callisto passes through, the R-S Ganymede
+  -> Callisto architecture). No J, no S.
+- Literal collisions: none. Checked against R-S GanCal#1/#5, Campagnola 2019 GCGC, Liang 2024 Tables
+  3/5/7 per-moon V_inf, the #576 G-C closures and the 7 catalogue rows on the pair. None is within
+  the NEAR bands.
+- Literature step: deferred (#1025).
+
+**Clean two-working-body members at k = 5: 6** (gc5-0, 3, 4, 5, 6, 7).
+
+Why k = 5 differs from k = 4. In this model (R-S 2009 Table 2 periods) k G-C synodic periods are:
+
+| k | Period (d) | in Callisto periods | in Ganymede periods |
+|---|---|---|---|
+| 3 | 37.570 | 2.251 | 5.251 |
+| 4 | 50.093 | 3.002 | 7.002 |
+| 5 | 62.616 | 3.752 | 8.752 |
+| 6 | 75.139 | 4.502 | 10.502 |
+
+At k = 4 the cycle is within 0.2 % of 3 Callisto and 7 Ganymede periods (the 3:4:7 window). A
+spacecraft orbit commensurate with the cycle meets both moons again with a small slip, so many
+near-zero-turn members pass the gate (sec. 4: 18 P and 13 S of 51).
+
+At k = 5 the cycle is about three quarters of a period off a whole revolution of each moon
+(3.752 and 8.752; the moons' phases repeat with respect to each other, but not with respect to
+inertial space). The nearest whole-revolution counts, 4 Callisto (66.76 d) and 9 Ganymede (64.39 d),
+miss the cycle by 4.1 d and 1.8 d. No spacecraft orbit commensurate with the cycle returns to both
+moons with a small slip, so the moons must turn the orbit by large angles:
+- All 7 W2 members demand 10-68 deg at each moon. Their worst ratios are 0.76-0.97, against 0.01-0.94
+  at k = 4.
+- Only 1 P member survives.
+- The gate-passer count drops from 51 to 8, although the zero count roughly doubles (4,629 -> 9,699).
+
+At k = 6 the cycle is within 0.05 % of 4.5 Callisto and 10.5 Ganymede periods: half-period
+commensurate. This is a structure the half-rev returns can use; it is noted here as a prediction
+for the k = 6 run, not as a result.
+
+The k = 5 set is the lowest-V_inf of the route so far:
+- gc5-0: G 1.490 / C 1.255 km/s, with turns of 68 / 64 deg (ratios 0.89 / 0.82).
+- gc5-3: G 1.54 / C 1.83, the largest margin (worst ratio 0.761).
+All 6 clean members keep r_min at or above 678,771 km (outside Europa's orbit) and r_max at or below
+2.93 Gm.
+
+Candidate table, all 8 (period 62.6162 d; model epoch as in sec. 10; the screen status is the
+2.6/2.7 status):
+
+| # | Class | Screen | Structure (key) | V_inf G / C (km/s) | G: flybys, max turn (deg), max ratio | C: flybys, max turn, max ratio | Worst ratio | r_min / r_max (km) | Lambert starts (d) | Closest unscheduled G / C (km) | Re-fly miss (km) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| gc5-0 | W2 | pass | k5\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1h | 1.490 / 1.255 | 2, 68.21, 0.891 | 2, 64.45, 0.816 | 0.891 | 945,432 / 2,085,249 | 5.5332, 23.3428, 28.6227, 51.2839 | 124,906 / 370,431 | 1.2e-05 |
+| gc5-1 | P-C | pass | k5\|LGanymede>Ganymede/2h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/1l | 1.499 / 1.578 | 2, 68.78, 0.903 | 1, 0.00, 0.000 | 0.903 | 1,032,361 / 1,938,679 | 5.3970, 32.5034, 51.5014 | 868,341 / 350,185 | 8.6e-06 |
+| gc5-2 | W2 | model-invalid | k5\|LGanymede>Ganymede/2h\|LGanymede>Callisto/1h\|LCallisto>Ganymede/2h | 3.292 / 1.645 | 2, 27.77, 0.958 | 1, 35.19, 0.581 | 0.958 | 704,892 / 1,892,585 | 0.0926, 16.8994, 34.4372 | 3,562 / 766,149 | 1.4e-05 |
+| gc5-3 | W2 | pass | k5\|LGanymede>Ganymede/2l\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.536 / 1.831 | 2, 31.90, 0.428 | 2, 40.81, 0.761 | 0.761 | 1,053,110 / 2,464,863 | 1.3327, 23.7138, 31.4858, 56.1769 | 964,228 / 532,023 | 5.4e-06 |
+| gc5-4 | W2 | pass | k5\|RGanymede/3:2\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 1.745 / 1.902 | 2, 55.77, 0.848 | 2, 39.56, 0.773 | 0.848 | 1,058,116 / 2,488,277 | 10.7318, 18.9386, 43.6776 | 983,320 / 557,262 | 6.6e-06 |
+| gc5-5 | W2 | pass | k5\|LGanymede>Callisto/0s\|LCallisto>Callisto/2l\|LCallisto>Ganymede/0s | 1.936 / 2.760 | 1, 49.86, 0.848 | 2, 16.82, 0.546 | 0.848 | 1,070,338 / 2,654,042 | 12.5232, 22.5166, 65.1460 | 362,630 / 547,077 | 1.9e-05 |
+| gc5-6 | W2 | pass | k5\|RGanymede/2:1\|LGanymede>Callisto/0s\|LCallisto>Callisto/1l\|LCallisto>Ganymede/0s | 2.191 / 3.206 | 2, 45.27, 0.890 | 2, 13.98, 0.573 | 0.890 | 1,070,338 / 2,925,405 | 0.8929, 12.2320, 37.8609 | 660,651 / 445,194 | 1.8e-05 |
+| gc5-7 | W2 | pass | k5\|LGanymede>Ganymede/1h\|LGanymede>Callisto/0s\|LCallisto>Callisto/1h\|LCallisto>Ganymede/1l | 4.701 / 4.597 | 2, 15.63, 0.967 | 2, 10.43, 0.788 | 0.967 | 678,771 / 2,926,921 | 3.4184, 21.4057, 24.9696, 45.4855 | 516,757 / 201,809 | 1.1e-04 |
+
+Clean members, per-flyby detail (turn deg, ratio, required altitude km; registry floors Ganymede 100 km,
+Callisto 200 km):
+
+| # | Ganymede flybys | Callisto flybys |
+|---|---|---|
+| gc5-0 | 2 x 68.21 (0.891, 854) | 2 x 64.45 (0.816, 1,583) |
+| gc5-3 | 2 x 31.90 (0.428, 8,419) | 2 x 40.81 (0.761, 1,594) |
+| gc5-4 | 2 x 55.77 (0.848, 1,062) | 2 x 39.56 (0.773, 1,472) |
+| gc5-5 | 1 x 49.86 (0.848, 985) | 2 x 16.82 (0.546, 3,093) |
+| gc5-6 | 2 x 45.27 (0.890, 657) | 2 x 13.98 (0.573, 2,636) |
+| gc5-7 | 2 x 15.63 (0.967, 208) | 2 x 10.43 (0.788, 988) |
+
+Status: "candidate, literature step deferred" (#1025). Not novel. The raw shard directories
+`data/973_gc/k5/` (15 MB) are not committed in this commit; the gauntlet JSON and log are. Whether to
+commit them, as for k = 4, is the lead's choice.

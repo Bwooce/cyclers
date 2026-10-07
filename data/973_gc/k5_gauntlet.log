@@ -1,0 +1,11 @@
+cell gc: structures 4589, zeros 9699, physical 3106, gate-passing 8
+k=5 vinf={'Ganymede': 1.49, 'Callisto': 1.255} worst=0.891 xc_miss=1.23e-05km xc_dv=9.9e-11 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Ganymede': 1.499, 'Callisto': 1.578} worst=0.903 xc_miss=8.55e-06km xc_dv=8.1e-11 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Ganymede': 3.292, 'Callisto': 1.645} worst=0.958 xc_miss=1.38e-05km xc_dv=1.2e-10 gate_int=pass screen=model-invalid collisions=[]
+k=5 vinf={'Ganymede': 1.536, 'Callisto': 1.831} worst=0.761 xc_miss=5.40e-06km xc_dv=3.9e-11 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Callisto': 1.902, 'Ganymede': 1.745} worst=0.848 xc_miss=6.56e-06km xc_dv=5.2e-11 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Callisto': 2.76, 'Ganymede': 1.936} worst=0.848 xc_miss=1.85e-05km xc_dv=8.2e-11 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Callisto': 3.206, 'Ganymede': 2.191} worst=0.890 xc_miss=1.79e-05km xc_dv=1.4e-10 gate_int=pass screen=pass collisions=[]
+k=5 vinf={'Ganymede': 4.701, 'Callisto': 4.597} worst=0.967 xc_miss=1.07e-04km xc_dv=9.7e-10 gate_int=pass screen=pass collisions=[]
+catalogue rows on this pair: 7; registry entries: 11
+ERRORS: structures 0 (not searched, NOT empty), zero assessments 0

@@ -1,0 +1,1186 @@
+{
+ "cell": "gc",
+ "dirs": [
+  "data/973_gc/k5/s0",
+  "data/973_gc/k5/s1",
+  "data/973_gc/k5/s10",
+  "data/973_gc/k5/s11",
+  "data/973_gc/k5/s12",
+  "data/973_gc/k5/s13",
+  "data/973_gc/k5/s14",
+  "data/973_gc/k5/s15",
+  "data/973_gc/k5/s2",
+  "data/973_gc/k5/s3",
+  "data/973_gc/k5/s4",
+  "data/973_gc/k5/s5",
+  "data/973_gc/k5/s6",
+  "data/973_gc/k5/s7",
+  "data/973_gc/k5/s8",
+  "data/973_gc/k5/s9"
+ ],
+ "n_structures": 4589,
+ "n_zeros": 9699,
+ "n_physical": 3106,
+ "n_gate_passing": 8,
+ "n_structure_errors": 0,
+ "n_zero_assessment_errors": 0,
+ "catalogue_rows_same_pair": [
+  {
+   "id": "russell-strange-2009-jovian-multimoon-family",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede",
+    "Io"
+   ],
+   "vinf": [
+    [
+     "Io",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Callisto",
+     null
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-111-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.6685
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-110-highperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     5.673
+    ],
+    [
+     "Ganymede",
+     6.9919
+    ],
+    [
+     "Europa",
+     4.4853
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-111-lowperijove",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     7.6433
+    ],
+    [
+     "Ganymede",
+     10.4922
+    ],
+    [
+     "Europa",
+     12.0213
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "liang-2024-cgcec-ephemeris-2033",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Europa",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Callisto",
+     null
+    ],
+    [
+     "Ganymede",
+     null
+    ],
+    [
+     "Europa",
+     null
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "russell-strange-2009-gancal-1",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Ganymede",
+     3.18
+    ],
+    [
+     "Callisto",
+     3.26
+    ]
+   ],
+   "k": null
+  },
+  {
+   "id": "russell-strange-2009-gancal-5",
+   "our_status": null,
+   "bodies": [
+    "Callisto",
+    "Ganymede"
+   ],
+   "vinf": [
+    [
+     "Ganymede",
+     3.24
+    ],
+    [
+     "Callisto",
+     3.34
+    ]
+   ],
+   "k": null
+  }
+ ],
+ "empty_regions_same_pair": [
+  "jovian-IEG-vilm-2026-06-09",
+  "jovian-perm-vilm-2026-06-09",
+  "jupiter-galilean-amalthea-repeated-moon-quasicycler-2026-06-24",
+  "jovian-cgcec-sobol-smoke-318-2026-06-30",
+  "jovian-gcg-sobol-broadened-501-2026-06-30",
+  "jovian-egce-sobol-broadened-501-2026-06-30",
+  "jovian-egcge-sobol-broadened-501-2026-06-30",
+  "jupiter-galilean-symmetric-closure-litcovered-known-class-member-578",
+  "jupiter-galilean-io-callisto-symmetric-closure-corpus-gap-578",
+  "jupiter-galilean-closed-tour-sequence-energy-pruning-791-stage0-2026-08-22",
+  "jupiter-ganymede-callisto-two-working-body-rs2009-ideal-k1-3-943"
+ ],
+ "candidates": [
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     1.255,
+     64.4
+    ],
+    [
+     "Callisto",
+     1.255,
+     64.4
+    ],
+    [
+     "Ganymede",
+     1.49,
+     68.2
+    ],
+    [
+     "Ganymede",
+     1.49,
+     68.2
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1h",
+    "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/1h|LCallisto>Callisto/1h|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 1.490277193481892,
+    "Callisto": 1.2547861910437526
+   },
+   "x_days": [
+    5.533210441782488,
+    23.342803239916936,
+    28.622740424778055,
+    51.28385102897413
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.8908095880166281,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 23.342803239916936,
+     "vinf_kms": 1.490277193481892,
+     "turn_deg": 68.20549250368434,
+     "available_deg": 76.56573685466245,
+     "ratio": 0.8908095880165356,
+     "required_alt_km": 854.470955467817,
+     "rmin_radii": 1.3244005146042677,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 28.622740424778055,
+     "vinf_kms": 1.2547861910437526,
+     "turn_deg": 64.44970338901113,
+     "available_deg": 79.01044615563416,
+     "ratio": 0.8157111689011174,
+     "required_alt_km": 1583.2346705892537,
+     "rmin_radii": 1.6574894811416874,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 51.28385102897413,
+     "vinf_kms": 1.254786191043796,
+     "turn_deg": 64.44970338898958,
+     "available_deg": 79.0104461556341,
+     "ratio": 0.8157111689008452,
+     "required_alt_km": 1583.234670591798,
+     "rmin_radii": 1.6574894811426317,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 68.14938514763804,
+     "vinf_kms": 1.4902771934818775,
+     "turn_deg": 68.2054925036909,
+     "available_deg": 76.56573685466186,
+     "ratio": 0.8908095880166281,
+     "required_alt_km": 854.470955467084,
+     "rmin_radii": 1.3244005146040376,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 945431.9412979382,
+   "r_max_km": 2085249.4898485034,
+   "min_required_alt_km": 854.470955467084,
+   "max_turn_deg": 68.2054925036909,
+   "cross_check": {
+    "max_arrival_miss_km": 1.226256483094668e-05,
+    "max_vinf_vector_error_kms": 9.861277711409803e-11,
+    "max_junction_mismatch_kms": 5.2366111447099684e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8908095880139436
+   },
+   "soi_fraction": 5.036014858424286e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Callisto",
+     "min_km": 370430.8454162216,
+     "t_days": 39.95329573412482,
+     "frac_of_leg": 0.5000000003198752,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Ganymede/2l",
+     "body": "Ganymede",
+     "min_km": 124905.93603049523,
+     "t_days": 14.438006821590529,
+     "frac_of_leg": 0.4999999989186061,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     1.578,
+     0.0
+    ],
+    [
+     "Ganymede",
+     1.499,
+     68.8
+    ],
+    [
+     "Ganymede",
+     1.499,
+     68.8
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2h",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Ganymede/2l",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/1l",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/1l|LCallisto>Ganymede/1h",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|LCallisto>Ganymede/0s",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/2l|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 1.4989329657523878,
+    "Callisto": 1.5779904473502944
+   },
+   "x_days": [
+    5.3970150589344525,
+    32.50342797159534,
+    51.50141849662077
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.9030357499882242,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 32.50342797159534,
+     "vinf_kms": 1.4989329657523878,
+     "turn_deg": 68.78168402655668,
+     "available_deg": 76.16717724348698,
+     "ratio": 0.9030357499882035,
+     "required_alt_km": 756.5388752523295,
+     "rmin_radii": 1.287220529708537,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 51.50141849662077,
+     "vinf_kms": 1.5779904473502944,
+     "turn_deg": 0.0,
+     "available_deg": 63.3441771889001,
+     "ratio": 0.0,
+     "required_alt_km": Infinity,
+     "rmin_radii": Infinity,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 68.01318976479,
+     "vinf_kms": 1.498932965752389,
+     "turn_deg": 68.7816840265582,
+     "available_deg": 76.16717724348689,
+     "ratio": 0.9030357499882242,
+     "required_alt_km": 756.5388752521699,
+     "rmin_radii": 1.287220529708478,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1032361.1966718275,
+   "r_max_km": 1938678.747788786,
+   "min_required_alt_km": 756.5388752521699,
+   "max_turn_deg": 68.7816840265582,
+   "cross_check": {
+    "max_arrival_miss_km": 8.552191707728963e-06,
+    "max_vinf_vector_error_kms": 8.110950768756586e-11,
+    "max_junction_mismatch_kms": 2.6488589099926685e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9030357500281907
+   },
+   "soi_fraction": 3.512231340341144e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Callisto",
+     "min_km": 350185.42338802427,
+     "t_days": 18.51832780397044,
+     "frac_of_leg": 0.484066733112712,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LGanymede>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 868340.8704614239,
+     "t_days": 50.258307139466794,
+     "frac_of_leg": 0.9345661660628545,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "P-C"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     1.645,
+     35.2
+    ],
+    [
+     "Ganymede",
+     3.292,
+     27.8
+    ],
+    [
+     "Ganymede",
+     3.292,
+     27.8
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/2h",
+    "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|LCallisto>Ganymede/1h"
+   ],
+   "key": "k5|LGanymede>Ganymede/2h|LGanymede>Callisto/1h|LCallisto>Ganymede/2h",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 3.2917049401125675,
+    "Callisto": 1.6450867967704932
+   },
+   "x_days": [
+    0.09255850979682388,
+    16.899415371348642,
+    34.43718566975053
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.9581139986670587,
+   "status_hm_floor": "indeterminate",
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 16.899415371348642,
+     "vinf_kms": 3.2917049401125675,
+     "turn_deg": 27.770713675115655,
+     "available_deg": 28.984769780788948,
+     "ratio": 0.9581139986670527,
+     "required_alt_km": 256.07617661654467,
+     "rmin_radii": 1.0972195051695188,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 34.43718566975053,
+     "vinf_kms": 1.6450867967704932,
+     "turn_deg": 35.1878286882641,
+     "available_deg": 60.56415665677484,
+     "ratio": 0.5810008861789031,
+     "required_alt_km": 3715.489836867483,
+     "rmin_radii": 2.5429775070047436,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 62.70873321565238,
+     "vinf_kms": 3.291704940112559,
+     "turn_deg": 27.77071367511601,
+     "available_deg": 28.98476978078914,
+     "ratio": 0.9581139986670587,
+     "required_alt_km": 256.076176616521,
+     "rmin_radii": 1.0972195051695064,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 704892.0134659533,
+   "r_max_km": 1892584.8350929315,
+   "min_required_alt_km": 256.076176616521,
+   "max_turn_deg": 35.1878286882641,
+   "cross_check": {
+    "max_arrival_miss_km": 1.3827910200594608e-05,
+    "max_vinf_vector_error_kms": 1.2160287108469451e-10,
+    "max_junction_mismatch_kms": 1.1934853105799448e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9581139986543986
+   },
+   "soi_fraction": 5.678874052140292e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "model-invalid",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 3562.4015082475953,
+     "t_days": 41.23798182711283,
+     "frac_of_leg": 0.24055266682237675,
+     "soi_km": 24349.739180045828
+    }
+   ],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LGanymede>Ganymede/2h",
+     "body": "Callisto",
+     "min_km": 766148.998294336,
+     "t_days": 0.5738281701480017,
+     "frac_of_leg": 0.02863531618765396,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Ganymede/2h",
+     "body": "Ganymede",
+     "min_km": 3562.4015082475953,
+     "t_days": 41.23798182711283,
+     "frac_of_leg": 0.24055266682237675,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     1.831,
+     40.8
+    ],
+    [
+     "Callisto",
+     1.831,
+     40.8
+    ],
+    [
+     "Ganymede",
+     1.536,
+     31.9
+    ],
+    [
+     "Ganymede",
+     1.536,
+     31.9
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 1.5364874688314774,
+    "Callisto": 1.8309218584872662
+   },
+   "x_days": [
+    1.3326927071363586,
+    23.71377717520583,
+    31.485782221605913,
+    56.176862366591855
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.7612434319645713,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 23.71377717520583,
+     "vinf_kms": 1.5364874688314774,
+     "turn_deg": 31.899743636571532,
+     "available_deg": 74.464506725338,
+     "ratio": 0.4283885711381074,
+     "required_alt_km": 8419.306302981533,
+     "rmin_radii": 4.196395711078628,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 31.485782221605913,
+     "vinf_kms": 1.8309218584872662,
+     "turn_deg": 40.805149279831454,
+     "available_deg": 53.60328584316842,
+     "ratio": 0.7612434319645713,
+     "required_alt_km": 1593.6136781801392,
+     "rmin_radii": 1.6617997002409204,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 56.176862366591855,
+     "vinf_kms": 1.8309218584872635,
+     "turn_deg": 40.80514927983151,
+     "available_deg": 53.603285843168536,
+     "ratio": 0.7612434319645708,
+     "required_alt_km": 1593.613678180146,
+     "rmin_radii": 1.6617997002409228,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 63.948867412991916,
+     "vinf_kms": 1.5364874688314814,
+     "turn_deg": 31.89974363656862,
+     "available_deg": 74.46450672533769,
+     "ratio": 0.42838857113807005,
+     "required_alt_km": 8419.306302982786,
+     "rmin_radii": 4.196395711079121,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1053110.381931075,
+   "r_max_km": 2464862.603168172,
+   "min_required_alt_km": 1593.6136781801392,
+   "max_turn_deg": 40.80514927983151,
+   "cross_check": {
+    "max_arrival_miss_km": 5.3990388260051105e-06,
+    "max_vinf_vector_error_kms": 3.924001770505846e-11,
+    "max_junction_mismatch_kms": 2.6968205446564752e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7612434319660758
+   },
+   "soi_fraction": 2.2172881549505572e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LGanymede>Callisto/0s",
+     "body": "Callisto",
+     "min_km": 532022.8222815515,
+     "t_days": 25.965652145673584,
+     "frac_of_leg": 0.2897418307146882,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 964227.5145226767,
+     "t_days": 49.0679258454342,
+     "frac_of_leg": 0.7120848306589262,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     1.902,
+     39.6
+    ],
+    [
+     "Callisto",
+     1.902,
+     39.6
+    ],
+    [
+     "Ganymede",
+     1.745,
+     55.8
+    ],
+    [
+     "Ganymede",
+     1.745,
+     55.8
+    ]
+   ],
+   "keys": [
+    "k5|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Callisto": 1.902013177681793,
+    "Ganymede": 1.7448121512306196
+   },
+   "x_days": [
+    10.731822916666657,
+    18.938610173182827,
+    43.67756453267268
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.8479707577287937,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Callisto",
+     "t_days": 18.938610173182827,
+     "vinf_kms": 1.902013177681793,
+     "turn_deg": 39.56130588653379,
+     "available_deg": 51.204285597592154,
+     "ratio": 0.7726170851682409,
+     "required_alt_km": 1471.5416973958904,
+     "rmin_radii": 1.611105356061384,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 43.67756453267268,
+     "vinf_kms": 1.9020131776817975,
+     "turn_deg": 39.561305886533184,
+     "available_deg": 51.20428559759156,
+     "ratio": 0.7726170851682381,
+     "required_alt_km": 1471.541697395904,
+     "rmin_radii": 1.6111053560614126,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 51.88435178918888,
+     "vinf_kms": 1.7448121512306196,
+     "turn_deg": 55.771097438582196,
+     "available_deg": 65.77007158591134,
+     "ratio": 0.847970757728793,
+     "required_alt_km": 1062.4148564631219,
+     "rmin_radii": 1.4033465666147005,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 73.34799762252221,
+     "vinf_kms": 1.7448121512306272,
+     "turn_deg": 55.77109743858224,
+     "available_deg": 65.77007158591134,
+     "ratio": 0.8479707577287937,
+     "required_alt_km": 1062.4148564631168,
+     "rmin_radii": 1.403346566614686,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1058116.069263229,
+   "r_max_km": 2488277.0022534817,
+   "min_required_alt_km": 1062.4148564631168,
+   "max_turn_deg": 55.77109743858224,
+   "cross_check": {
+    "max_arrival_miss_km": 6.556049236102625e-06,
+    "max_vinf_vector_error_kms": 5.212249458978533e-11,
+    "max_junction_mismatch_kms": 2.7145841130504778e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8479707577450467
+   },
+   "soi_fraction": 2.692451523864859e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LGanymede>Callisto/0s",
+     "body": "Callisto",
+     "min_km": 557262.4926133414,
+     "t_days": 13.19720205411361,
+     "frac_of_leg": 0.30040734094690336,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 983319.9670355595,
+     "t_days": 36.50867951889827,
+     "frac_of_leg": 0.7102187542124458,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     2.76,
+     16.8
+    ],
+    [
+     "Callisto",
+     2.76,
+     16.8
+    ],
+    [
+     "Ganymede",
+     1.936,
+     49.9
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Callisto": 2.7599964517540947,
+    "Ganymede": 1.9364454161808076
+   },
+   "x_days": [
+    12.523234941171106,
+    22.516637426848863,
+    65.1460071613489
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.8477878748757004,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Callisto",
+     "t_days": 22.516637426848863,
+     "vinf_kms": 2.7599964517540947,
+     "turn_deg": 16.820898589803598,
+     "available_deg": 30.787146780658837,
+     "ratio": 0.5463610743029573,
+     "required_alt_km": 3093.137884720857,
+     "rmin_radii": 2.2845256996348846,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 65.1460071613489,
+     "vinf_kms": 2.7599964517540947,
+     "turn_deg": 16.82089858980353,
+     "available_deg": 30.787146780658883,
+     "ratio": 0.5463610743029544,
+     "required_alt_km": 3093.1378847208916,
+     "rmin_radii": 2.284525699634895,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 75.13940964702667,
+     "vinf_kms": 1.9364454161808076,
+     "turn_deg": 49.856055544653145,
+     "available_deg": 58.80722881530107,
+     "ratio": 0.8477878748757004,
+     "required_alt_km": 985.3686913816364,
+     "rmin_radii": 1.3740959344653092,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1070337.8773284326,
+   "r_max_km": 2654041.5860949224,
+   "min_required_alt_km": 985.3686913816364,
+   "max_turn_deg": 49.856055544653145,
+   "cross_check": {
+    "max_arrival_miss_km": 1.850126899281032e-05,
+    "max_vinf_vector_error_kms": 8.185503775402778e-11,
+    "max_junction_mismatch_kms": 8.184652955378624e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.8477878748893541
+   },
+   "soi_fraction": 7.598138467114168e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LCallisto>Callisto/2l",
+     "body": "Callisto",
+     "min_km": 547077.4876990817,
+     "t_days": 43.83132236487273,
+     "frac_of_leg": 0.5000000016602133,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/2l",
+     "body": "Ganymede",
+     "min_km": 362629.66885768675,
+     "t_days": 61.22642020287111,
+     "frac_of_leg": 0.9080543066226553,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     3.206,
+     14.0
+    ],
+    [
+     "Callisto",
+     3.206,
+     14.0
+    ],
+    [
+     "Ganymede",
+     2.191,
+     45.3
+    ],
+    [
+     "Ganymede",
+     2.191,
+     45.3
+    ]
+   ],
+   "keys": [
+    "k5|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s"
+   ],
+   "key": "k5|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Callisto": 3.205754485045455,
+    "Ganymede": 2.191255487313694
+   },
+   "x_days": [
+    0.892931140525538,
+    12.231994959785078,
+    37.86094480489927
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.8896954420375933,
+   "status_hm_floor": "pass",
+   "flyby_table": [
+    {
+     "body": "Callisto",
+     "t_days": 12.231994959785078,
+     "vinf_kms": 3.205754485045455,
+     "turn_deg": 13.9758089853664,
+     "available_deg": 24.393752074803686,
+     "ratio": 0.5729257615847468,
+     "required_alt_km": 2635.553239481168,
+     "rmin_radii": 2.0944988536051268,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 37.86094480489927,
+     "vinf_kms": 3.205754485045465,
+     "turn_deg": 13.975808985366244,
+     "available_deg": 24.393752074803512,
+     "ratio": 0.5729257615847445,
+     "required_alt_km": 2635.553239481186,
+     "rmin_radii": 2.0944988536051405,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 49.200008624158876,
+     "vinf_kms": 2.191255487313694,
+     "turn_deg": 45.27359813914602,
+     "available_deg": 50.88662479315369,
+     "ratio": 0.8896954420375931,
+     "required_alt_km": 657.0496926628148,
+     "rmin_radii": 1.2494493897732781,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 63.5091058463811,
+     "vinf_kms": 2.1912554873136934,
+     "turn_deg": 45.273598139146046,
+     "available_deg": 50.88662479315371,
+     "ratio": 0.8896954420375933,
+     "required_alt_km": 657.0496926628125,
+     "rmin_radii": 1.2494493897732772,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1070337.8773284326,
+   "r_max_km": 2925404.7875781273,
+   "min_required_alt_km": 657.0496926628125,
+   "max_turn_deg": 45.273598139146046,
+   "cross_check": {
+    "max_arrival_miss_km": 1.78513176770561e-05,
+    "max_vinf_vector_error_kms": 1.4119493630766495e-10,
+    "max_junction_mismatch_kms": 8.394351880269824e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.889695442071818
+   },
+   "soi_fraction": 7.331215149805356e-10,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "RGanymede/2:1",
+     "body": "Callisto",
+     "min_km": 445193.9963956041,
+     "t_days": 56.35455723664156,
+     "frac_of_leg": 0.5000000000958537,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1l",
+     "body": "Ganymede",
+     "min_km": 660651.0174523209,
+     "t_days": 13.065715401065285,
+     "frac_of_leg": 0.032530417606601414,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  },
+  {
+   "k": 5,
+   "flybys": [
+    [
+     "Callisto",
+     4.597,
+     10.4
+    ],
+    [
+     "Callisto",
+     4.597,
+     10.4
+    ],
+    [
+     "Ganymede",
+     4.701,
+     15.6
+    ],
+    [
+     "Ganymede",
+     4.701,
+     15.6
+    ]
+   ],
+   "keys": [
+    "k5|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l"
+   ],
+   "key": "k5|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+   "mirror_pair": false,
+   "vinf_kms": {
+    "Ganymede": 4.700900429142045,
+    "Callisto": 4.5973153427433
+   },
+   "x_days": [
+    3.4184399137665666,
+    21.405740132660576,
+    24.96963122329088,
+    45.485474068389586
+   ],
+   "period_days": 62.616174705855556,
+   "worst_ratio": 0.9668896276312231,
+   "status_hm_floor": "indeterminate",
+   "flyby_table": [
+    {
+     "body": "Ganymede",
+     "t_days": 21.405740132660576,
+     "vinf_kms": 4.700900429142045,
+     "turn_deg": 15.634584245352903,
+     "available_deg": 16.16997824628233,
+     "ratio": 0.9668896276312231,
+     "required_alt_km": 208.23407059473539,
+     "rmin_radii": 1.0790562151080467,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 24.96963122329088,
+     "vinf_kms": 4.5973153427433,
+     "turn_deg": 10.4334560636459,
+     "available_deg": 13.234598994215652,
+     "ratio": 0.7883469735808373,
+     "required_alt_km": 988.2376060766028,
+     "rmin_radii": 1.4103976769420976,
+     "status": "pass"
+    },
+    {
+     "body": "Callisto",
+     "t_days": 45.485474068389586,
+     "vinf_kms": 4.59731534274319,
+     "turn_deg": 10.433456063629672,
+     "available_deg": 13.234598994216547,
+     "ratio": 0.7883469735795577,
+     "required_alt_km": 988.2376060826564,
+     "rmin_radii": 1.4103976769445714,
+     "status": "pass"
+    },
+    {
+     "body": "Ganymede",
+     "t_days": 66.03461461962213,
+     "vinf_kms": 4.700900429142374,
+     "turn_deg": 15.634584245324344,
+     "available_deg": 16.16997824628087,
+     "ratio": 0.9668896276295446,
+     "required_alt_km": 208.23407060040972,
+     "rmin_radii": 1.079056215110163,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 678770.597882342,
+   "r_max_km": 2926921.200930726,
+   "min_required_alt_km": 208.23407059473539,
+   "max_turn_deg": 15.634584245352903,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00010732673939491778,
+    "max_vinf_vector_error_kms": 9.682282826935768e-10,
+    "max_junction_mismatch_kms": 9.616423213287817e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.9668896276705913
+   },
+   "soi_fraction": 4.407716181324443e-09,
+   "collisions": [],
+   "literature": "DEFERRED (#973 note; runs after #972 lands)",
+   "screen_status": "pass",
+   "primary_floor_km": 76492.0,
+   "primary_floor_source": "registry Jupiter radius 71492 km + registry safe_alt 5000 km",
+   "unscheduled_inside_soi": [],
+   "direction_dependent_inside_soi": [],
+   "closest_unscheduled_per_body": {
+    "Callisto": {
+     "leg": "LCallisto>Ganymede/1l",
+     "body": "Callisto",
+     "min_km": 201808.77895604447,
+     "t_days": 62.28806710311964,
+     "frac_of_leg": 0.8176786271347116,
+     "soi_km": 37680.923494398325
+    },
+    "Ganymede": {
+     "leg": "LCallisto>Callisto/1h",
+     "body": "Ganymede",
+     "min_km": 516756.9768271494,
+     "t_days": 34.301937997047496,
+     "frac_of_leg": 0.4548829333612355,
+     "soi_km": 24349.739180045828
+    }
+   },
+   "class_973": "W2"
+  }
+ ]
+}
