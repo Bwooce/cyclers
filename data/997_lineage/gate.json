@@ -432,20 +432,20 @@
    },
    {
     "family": "F3 Newton 1/2 direct",
-    "file": "F3-7_m.jsonl",
+    "file": "F3-8_p.jsonl",
     "between_k": [
-     39,
-     40
+     10,
+     11
     ],
-    "dT": -7.1411705695737595,
+    "dT": -6.687898305500784,
     "interp": {
-     "x0": 0.9992776102217629,
-     "ydot0": -1.580582920038192,
-     "x_half": -1.2034006729480773,
-     "T": 5.425200148247438,
-     "perigee_alt_km": 61513.760245266545,
-     "periselene_alt_km": 2655.5980105664958,
-     "b_h": 91.61720073149564
+     "x0": 1.074960360545939,
+     "ydot0": -0.8197730189130918,
+     "x_half": -1.1615323735946466,
+     "T": 5.878472412320413,
+     "perigee_alt_km": 51719.721553108124,
+     "periselene_alt_km": 31748.047235142316,
+     "b_h": -4.576659528266933
     },
     "crossing_match": false
    }
@@ -506,6 +506,25 @@
    },
    {
     "family": "F2 Newton 1/2 retrograde",
+    "file": "F2-4_p.jsonl",
+    "between_k": [
+     14,
+     15
+    ],
+    "dT": 0.08770565546785392,
+    "interp": {
+     "x0": 1.110180469430808,
+     "ydot0": -1.6440754791752041,
+     "x_half": -1.1506708971990516,
+     "T": 6.370878923150564,
+     "perigee_alt_km": 55508.75231852288,
+     "periselene_alt_km": 45286.657090275,
+     "b_h": 1.3109844730552287
+    },
+    "crossing_match": false
+   },
+   {
+    "family": "F2 Newton 1/2 retrograde",
     "file": "F2-5_p.jsonl",
     "between_k": [
      20,
@@ -520,25 +539,6 @@
      "perigee_alt_km": 55529.16100089907,
      "periselene_alt_km": 45285.972449957415,
      "b_h": 1.3093036202521826
-    },
-    "crossing_match": false
-   },
-   {
-    "family": "F1 Schwaniger retrograde cislunar",
-    "file": "F1-0_p.jsonl",
-    "between_k": [
-     20,
-     21
-    ],
-    "dT": -0.7120981172549925,
-    "interp": {
-     "x0": 0.9791711284827502,
-     "ydot0": -2.294600611183243,
-     "x_half": 0.12029430197254372,
-     "T": 5.571075150427718,
-     "perigee_alt_km": 44533.677319566654,
-     "periselene_alt_km": 1598.5335699099596,
-     "b_h": 215.7365543192156
     },
     "crossing_match": false
    }
@@ -686,21 +686,21 @@
     "crossing_match": false
    },
    {
-    "family": "F1 Schwaniger retrograde cislunar",
-    "file": "F1-0_p.jsonl",
+    "family": "F2 Newton 1/2 retrograde",
+    "file": "F2-4_m.jsonl",
     "between_k": [
-     16,
-     17
+     6,
+     7
     ],
-    "dT": -6.847761033060922,
+    "dT": -6.239612847716035,
     "interp": {
-     "x0": 0.9806194862168408,
-     "ydot0": -2.367480299748995,
-     "x_half": 0.06435878195379607,
-     "T": 5.718621229454738,
-     "perigee_alt_km": 23032.06342436007,
-     "periselene_alt_km": 1041.784856925525,
-     "b_h": 323.5630767123641
+     "x0": 1.1596857439574337,
+     "ydot0": -1.5695224113124087,
+     "x_half": -1.2002991272791248,
+     "T": 6.3267694147996245,
+     "perigee_alt_km": 31638.76969919109,
+     "periselene_alt_km": 64316.4846183061,
+     "b_h": 1.4824993308828538
     },
     "crossing_match": false
    }
@@ -1004,6 +1004,25 @@
   "matches": [
    {
     "family": "F3 Newton 1/2 direct",
+    "file": "F3-10_m.jsonl",
+    "between_k": [
+     14,
+     15
+    ],
+    "dT": -2.093930770730168e-05,
+    "interp": {
+     "x0": 1.1171397044424425,
+     "ydot0": -0.8517481413741097,
+     "x_half": -1.1937072951879277,
+     "T": 6.0279973898977826,
+     "perigee_alt_km": 36785.483023825844,
+     "periselene_alt_km": 47961.78702899575,
+     "b_h": -1.8552359019706748
+    },
+    "crossing_match": true
+   },
+   {
+    "family": "F3 Newton 1/2 direct",
     "file": "F3-11_m.jsonl",
     "between_k": [
      22,
@@ -1037,25 +1056,6 @@
      "perigee_alt_km": 50660.20469612508,
      "periselene_alt_km": 1060.5791542385696,
      "b_h": 204.79989129410558
-    },
-    "crossing_match": false
-   },
-   {
-    "family": "F3 Newton 1/2 direct",
-    "file": "F3-6_m.jsonl",
-    "between_k": [
-     32,
-     33
-    ],
-    "dT": -0.605766499597693,
-    "interp": {
-     "x0": 0.9951279137892789,
-     "ydot0": -1.9572005474432046,
-     "x_half": -1.2708941919419878,
-     "T": 5.422251829607797,
-     "perigee_alt_km": 50660.06130056179,
-     "periselene_alt_km": 1060.4547019196598,
-     "b_h": 204.79875679557844
     },
     "crossing_match": false
    }
@@ -1109,6 +1109,25 @@
    },
    {
     "family": "F3 Newton 1/2 direct",
+    "file": "F3-10_m.jsonl",
+    "between_k": [
+     14,
+     15
+    ],
+    "dT": -0.0002085136470633131,
+    "interp": {
+     "x0": 1.114033245360189,
+     "ydot0": -0.8474037586976256,
+     "x_half": -1.1912119517262483,
+     "T": 6.018903201742249,
+     "perigee_alt_km": 37903.040615399856,
+     "periselene_alt_km": 46767.66415777752,
+     "b_h": -2.021994148372917
+    },
+    "crossing_match": true
+   },
+   {
+    "family": "F3 Newton 1/2 direct",
     "file": "F3-11_m.jsonl",
     "between_k": [
      22,
@@ -1125,25 +1144,6 @@
      "b_h": -2.028402891802006
     },
     "crossing_match": true
-   },
-   {
-    "family": "F3 Newton 1/2 direct",
-    "file": "F3-6_m.jsonl",
-    "between_k": [
-     31,
-     32
-    ],
-    "dT": -0.5983809294067672,
-    "interp": {
-     "x0": 0.9953359674783239,
-     "ydot0": -1.930793082681822,
-     "x_half": -1.265540287563608,
-     "T": 5.420730785982545,
-     "perigee_alt_km": 51537.57230742773,
-     "periselene_alt_km": 1140.4305399885625,
-     "b_h": 195.1012082680832
-    },
-    "crossing_match": false
    }
   ]
  },
@@ -1174,6 +1174,25 @@
   "periselene_alt_km": 15937.615341337803,
   "closure": 1.9383812495323257e-10,
   "matches": [
+   {
+    "family": "F3 Newton 1/2 direct",
+    "file": "F3-8_m.jsonl",
+    "between_k": [
+     13,
+     14
+    ],
+    "dT": -0.0001353542529090035,
+    "interp": {
+     "x0": 1.033811718313522,
+     "ydot0": -0.9091458857769309,
+     "x_half": -1.1399800318108397,
+     "T": 5.662708230526213,
+     "perigee_alt_km": 64740.25886830845,
+     "periselene_alt_km": 15930.509161038748,
+     "b_h": -4.639669269791949
+    },
+    "crossing_match": true
+   },
    {
     "family": "F3 Newton 1/2 direct",
     "file": "F3-9_m.jsonl",
@@ -1209,25 +1228,6 @@
      "perigee_alt_km": 68058.482935802,
      "periselene_alt_km": 6996.686846322602,
      "b_h": 17.52200270147627
-    },
-    "crossing_match": false
-   },
-   {
-    "family": "F3 Newton 1/2 direct",
-    "file": "F3-7_m.jsonl",
-    "between_k": [
-     19,
-     20
-    ],
-    "dT": -0.15871647443199066,
-    "interp": {
-     "x0": 1.0105659413870571,
-     "ydot0": -1.1674665736189758,
-     "x_half": -1.151638597252293,
-     "T": 5.504127110347131,
-     "perigee_alt_km": 68059.1883495743,
-     "periselene_alt_km": 6994.832510505577,
-     "b_h": 17.525980535981006
     },
     "crossing_match": false
    }
@@ -1281,6 +1281,25 @@
    },
    {
     "family": "F3 Newton 1/2 direct",
+    "file": "F3-8_p.jsonl",
+    "between_k": [
+     12,
+     13
+    ],
+    "dT": -0.3289606064537516,
+    "interp": {
+     "x0": 1.0904716215170696,
+     "ydot0": -0.8235394934420374,
+     "x_half": -1.1728293153512173,
+     "T": 5.94064381843227,
+     "perigee_alt_km": 46306.07727438416,
+     "periselene_alt_km": 37710.57595248235,
+     "b_h": -3.476099507031279
+    },
+    "crossing_match": false
+   },
+   {
+    "family": "F3 Newton 1/2 direct",
     "file": "F3-6_m.jsonl",
     "between_k": [
      21,
@@ -1295,25 +1314,6 @@
      "perigee_alt_km": 57825.5032102892,
      "periselene_alt_km": 1913.0192171390654,
      "b_h": 128.67308801948664
-    },
-    "crossing_match": false
-   },
-   {
-    "family": "F3 Newton 1/2 direct",
-    "file": "F3-7_m.jsonl",
-    "between_k": [
-     46,
-     47
-    ],
-    "dT": -0.8518212746328464,
-    "interp": {
-     "x0": 0.9973453729858541,
-     "ydot0": -1.7236511970408332,
-     "x_half": -1.226846659596033,
-     "T": 5.417783150253175,
-     "perigee_alt_km": 57825.46487468089,
-     "periselene_alt_km": 1912.8460170831963,
-     "b_h": 128.67238467790347
     },
     "crossing_match": false
    }

@@ -140,19 +140,19 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
 ### 1.1 Verdict
 
 - **All cycler-class candidates are known-class.** There are three candidate stretches, on F1, F3
-  and F4 3/7-retrograde. All three are continuations of published seeds (Schwaniger 1963, Newton
-  1959). The 3/7-retrograde stretch also contains the catalogued Casoliva et al. 2010 7-3a orbit.
+  and F4 3/7-retrograde. F1 and F3 are continuations of published seeds (Schwaniger 1963, Newton 1959). F4
+  3/7-r comes from Newton's published alpha/beta construction. The 3/7-retrograde stretch also contains the catalogued Casoliva et al. 2010 7-3a orbit.
   F3 contains the catalogued Vaquero 2:1 rows. Nothing is called novel; the literature step stays
   with `#972`.
 - **No new catalogue row is proposed.** Members are known-class-member by construction (sec. 0.6).
 
-| family | distinct members | C range | T range (d) | cycler-class candidates | catalogue rows on the family |
+| family | members (C to 1e-4; overlapping runs not merged) | C range | T range (d) | cycler-class candidates | catalogue rows on the family |
 |---|---|---|---|---|---|
 | F1 Schwaniger retrograde cislunar | 46 | -0.612 ... 1.094 | 23.1-26.1 | 19: perigee 507-34,561 km alt, periselene 475-1,332 km alt, C 0.582-1.077, T 24.5-26.0 d | none (Schwaniger's row is the `#970` draft) |
-| F2 Newton 1/2 retrograde | 146 | -0.489 ... 1.218 | 27.3-34.3 | 0 (low-perigee members have periselene 80,000-91,000 km alt, outside the Hill radius; low-periselene members have perigee > 44,000 km alt) | casoliva-2-1b (on segment B, exact crossing match) |
-| F3 Newton 1/2 direct (mixed, zero-velocity, direct) | 241 | 1.928 ... 2.670 | 23.5-27.0 | 10: perigee 27,800-35,730 km alt, periselene 105-57,500 km alt, C 2.240-2.441 | vaquero-21-c198, -c246, -c247, -c266 |
-| F4 3/7 retrograde | 38 | 0.900 ... 1.355 | 81.4-82.3 | 38 (all but the floor member): perigee 2,087-28,880 km alt, periselene 14,335-29,325 km alt | casoliva-7-3a (exact crossing match) |
-| F4 2/3 retrograde | 76 | -0.637 ... -0.035 | 54.9-61.8 | 0 (perigee > 100,000 km alt) | none |
+| F2 Newton 1/2 retrograde | 206 | -0.489 ... 1.218 | 27.3-34.3 | 0 (low-perigee members have periselene 80,000-91,000 km alt, outside the Hill radius; low-periselene members have perigee > 44,000 km alt) | casoliva-2-1b (on segment B, exact crossing match) |
+| F3 Newton 1/2 direct (mixed, zero-velocity, direct) | 301 | 1.928 ... 2.670 | 23.5-27.0 | 20: perigee 26,267-35,730 km alt, periselene 105-59,141 km alt, C 2.240-2.441 | vaquero-21-c198, -c246, -c247, -c266 |
+| F4 3/7 retrograde | 38 | 0.900 ... 1.355 | 81.4-82.3 | 37 (all but the floor member): perigee 2,087-28,880 km alt, periselene 14,335-29,325 km alt | casoliva-7-3a (exact crossing match) |
+| F4 2/3 retrograde | 86 | -0.637 ... -0.035 | 54.9-61.8 | 0 (perigee > 100,000 km alt) | none |
 | F4 3/4 retrograde | 56 | -0.682 ... 0.295 | 78.2-88.5 | 0 (perigee > 44,000 km alt) | none |
 | F4 2/5, 3/8, 4/11 and the direct senses | - | - | - | no seed of the type (sec. 1.4) | - |
 | F5 Hoelker-Winston Fig. 89/90 | 0 at registry mu | - | - | 0 (sec. 1.5) | - |
@@ -165,8 +165,15 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
   - Exact matches, where the crossing state agrees to < 1e-3 and T to < 1e-3 relative:
     - casoliva-7-3a-em-cycler-2010 on F4 3/7-r: perpendicular crossing (1.05875, -1.51230)
       against the interpolated (1.05874, -1.51231). Perigee 19,267 against 19,268 km alt;
-      periselene 25,515 against 25,515 km alt. b_h = -4.97 in my convention; the row's own
-      Casoliva k convention differs.
+      periselene 25,515 against 25,515 km alt.
+      - Stability. The family gives b_h = -4.97 in the plane (flip-unstable) and b_v about
+        -1.30 at this C. `planar_stability_index` on the row's own state and period gives k_par
+        = -4.965 and k_perp = -1.2985.
+      - The row's stored stability_index (-1.2985) is k_perp, the VERTICAL index, chosen by
+        `#801`'s `_K_SIGNED_FORCE_PERP` override to match Casoliva's printed k = -1.2990.
+      - The row's notes call the orbit "STABLE, k=-1.2990". It is vertically stable but
+        in-plane flip-unstable. Flagged to the lead, not edited.
+      - The same holds for casoliva-2-1b: stored k = +2.037 = k_perp, and k_par = 1.513.
     - casoliva-2-1b on F2.
     - vaquero-21-c198, -c246, -c247 and -c266 on F3.
   - No match: casoliva-7-3b and -7-3c (not x-axis symmetric, so outside this symmetric lineage);
@@ -178,8 +185,20 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
   JG/ST only; question sent to the lead). Their paper states no impact filter. F1's 177 km
   perigee member and F2-F3's floor members could have been kept or dropped by their pipeline;
   unknown.
-- **Franz & Russell 2022.** Every candidate has an Earth pass far beyond 350,000 km from the Moon,
-  so it is **excluded by construction**. Absence from that database means nothing here.
+- **Franz & Russell 2022.** Every candidate is excluded by construction. Their rule discards any
+  orbit that is EVER more than about 350,000 km from the Moon. So the test is the maximum Moon
+  distance over the whole period. Over the candidates, that maximum is at least 750,040 km (F1),
+  840,352 km (F3) and 778,306 km (F4 3/7-r) (`summary.json`, `candidate_min_of_max_moon_distance_km`).
+  Every family winds about the Earth and crosses the x-axis on the far side of the Earth.
+  Absence from that database means nothing here.
+  - **Correction to sec. 0.6.** The pre-registered argument ("an Earth pass below about 34,000 km
+    from the Earth's centre is more than 350,000 km from the Moon") covers only perigee radii
+    below 34,400 km. It does not cover the F1, F3 and F4 candidates with perigee radii of
+    34,400-42,164 km. The max-distance test above covers all of them.
+  - The per-member `franz_russell_domain` flag in the JSONL files of this run used that perigee
+    proxy and is WRONG for those members. The script now uses the maximum Moon distance
+    (`r2max_km`), and `summary.json` carries the correct test. The JSONL flags were not
+    rewritten.
 - **Published seeds.** F1 is Schwaniger's own family (he published only the 6555 km member). F2
   and F3 are Newton's type 1/2. F4 3/7-r is Newton's general alpha/beta type ("T_P = 2 pi
   alpha/beta", described but not computed by Newton). It is also Casoliva's 7:3 class and
@@ -194,6 +213,15 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
 - Hoelker-Winston Fig. 89 (mu = 1/80): ydot0 = -0.8483581, P/2 = 9.97328, which reproduces the
   digest. Fig. 94 (libration): ydot0 = -0.8478460, P/2 = 4.19518, also reproduced.
 - The F1 seed is the `#970` member. F1 continuation passes back through the seed's numbers.
+- Seed coverage (sec. 0.3 says both directions from every seed):
+  - Run to a stop both ways: F1-0; F2-1, F2-3, F2-5; F3-6, F3-7, F3-9, F3-11; F4 3/7-r, 2/3-r
+    (rho 0.02, 0.06, 0.2), 3/4-r; 2/5-d.
+  - Run for 50 s per direction (truncated by the time budget, `stop` = null): F2-2, F2-4, F3-8,
+    F3-10.
+  - Not run: F4 2/3-r at rho 0.03, 0.1 and 0.15.
+  - Every seed in the last two groups lies on an already computed segment. Its (x0, ydot0) is
+    within 5e-6 to 2.2e-4 of the C-interpolated curve of another seed's run. F3-8 is the only
+    one whose nearest curve is the 2/5-d run, which is the doubled F3 orbit.
 - Every member records det M4 and the full-period closure of the half-period-corrected state.
   Over all F1-F4 members: |det M4 - 1| <= 2.6e-7 (2.7e-8 on the candidates), and full-period
   closure <= 2.7e-9 (nondimensional).
@@ -247,7 +275,7 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
   the plane, segment B is linearly stable (b_h 1.0-1.5); vertically it is just unstable (b_v about 2.04-2.4).
 - F3: several period-doubling stops (C = 2.466-2.478 and 2.667); lunar-floor impact at C = 2.227-2.230 (near-Moon branch); Earth-floor impact at C = 1.928.
 - F4 3/7-r: period doubling at C = 0.900; Earth-floor impact at C = 1.355 (perigee 189 km alt).
-  Flip-unstable throughout (b_h -1.8 to -30.5). Vertically stable for C below about 1.065 (|b_v| < 2).
+  Flip-unstable (b_h from -1.8 at the period-doubling end to -30.5). Vertically stable for C below about 1.065 (|b_v| < 2).
 - F4 2/3-r and 3/4-r: period doubling at both ends of every segment.
 
 ### 1.7 Member tables (sampled; every member is in the JSONL)
@@ -275,46 +303,47 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
 | 1.08542 | 6.0015 | 26.06 | 0.98212 | 177 | 465 | 525 | -182 |  |  |
 | 1.09392 | 6.0082 | 26.09 | 0.98214 | -148 | 456 | 530 | -183 |  | impact at the physical surface |
 
-#### F2 (146 distinct members)
+#### F2 (206 distinct members)
 
 | C | T (TU) | T (d) | x0 | perigee alt (km) | periselene alt (km) | b_h | b_v | cand. | note |
 |---|---|---|---|---|---|---|---|---|---|
 | -0.48906 | 7.8695 | 34.17 | 1.00112 | 174164 | 3365 | 2.26 | 42.9 |  |  |
 | -0.48823 | 7.8543 | 34.11 | 1.00158 | 175908 | 3541 | -2.48 | 41.5 |  | period doubling (b_h crosses -2) |
-| -0.48164 | 7.8929 | 34.27 | 0.99988 | 167302 | 2887 | 21.2 | 46.8 |  |  |
-| -0.42256 | 7.8601 | 34.13 | 0.99753 | 145195 | 1986 | 97.7 | 55.2 |  |  |
-| -0.07780 | 7.4843 | 32.50 | 0.99358 | 72326 | 467 | 472 | 150 |  |  |
+| -0.47295 | 7.8944 | 34.28 | 0.99930 | 162989 | 2664 | 34.1 | 48.7 |  |  |
+| -0.13849 | 7.5521 | 32.79 | 0.99398 | 82282 | 619 | 416 | 123 |  |  |
 | 0.04113 | 6.7037 | 29.11 | 1.02908 | 116721 | 14113 | -2.56 | 5.95 |  | period doubling (b_h crosses -2) |
 | 0.05810 | 6.6816 | 29.01 | 1.03074 | 114356 | 14750 | -2.18 | 5.54 |  | period doubling (b_h crosses -2) |
 | 0.12612 | 7.2581 | 31.52 | 0.99261 | 44771 | 93 | 638 | 246 |  | impact at floor |
-| 0.15581 | 6.5699 | 28.53 | 1.04240 | 100652 | 19234 | -0.501 | 3.81 |  |  |
-| 0.35857 | 6.4206 | 27.88 | 1.07981 | 72355 | 33613 | 1.01 | 2.42 |  |  |
-| 0.45014 | 6.3829 | 27.72 | 1.10103 | 60306 | 41769 | 1.25 | 2.23 |  |  |
-| 0.58126 | 6.3482 | 27.57 | 1.13193 | 44681 | 53647 | 1.41 | 2.12 |  |  |
-| 0.81832 | 6.3136 | 27.42 | 1.18053 | 22161 | 72330 | 1.51 | 2.06 |  |  |
-| 0.95110 | 6.3013 | 27.36 | 1.20168 | 12668 | 80461 | 1.53 | 2.05 |  |  |
+| 0.15758 | 6.5681 | 28.52 | 1.04265 | 100403 | 19329 | -0.478 | 3.78 |  |  |
+| 0.23226 | 6.5011 | 28.23 | 1.05443 | 89881 | 23856 | 0.308 | 3.03 |  |  |
+| 0.37460 | 6.4129 | 27.85 | 1.08342 | 70192 | 34999 | 1.07 | 2.37 |  |  |
+| 0.47879 | 6.3737 | 27.68 | 1.10785 | 56711 | 44390 | 1.3 | 2.2 |  |  |
+| 0.62425 | 6.3400 | 27.53 | 1.14164 | 40044 | 57380 | 1.44 | 2.1 |  |  |
+| 0.72595 | 6.3245 | 27.46 | 1.16313 | 30056 | 65642 | 1.49 | 2.07 |  |  |
+| 0.91305 | 6.3045 | 27.38 | 1.19610 | 15172 | 78312 | 1.52 | 2.05 |  |  |
 | 1.11365 | 6.2889 | 27.31 | 1.22132 | 3819 | 88010 | 1.52 | 2.04 |  |  |
 | 1.21722 | 6.2818 | 27.28 | 1.23031 | -332 | 91463 | 1.51 | 2.04 |  | impact at the physical surface |
 | 1.21802 | 6.2817 | 27.28 | 1.23036 | -360 | 91485 | 1.51 | 2.04 |  | impact at the physical surface |
 
-#### F3 (241 distinct members)
+#### F3 (301 distinct members)
 
 | C | T (TU) | T (d) | x0 | perigee alt (km) | periselene alt (km) | b_h | b_v | cand. | note |
 |---|---|---|---|---|---|---|---|---|---|
 | 1.92811 | 6.2191 | 27.01 | 1.21982 | 10 | 87432 | 1.06 | 2.06 |  | impact at floor |
-| 2.13527 | 6.1801 | 26.84 | 1.19164 | 9893 | 76599 | 0.59 | 2.1 |  |  |
+| 2.20360 | 6.1613 | 26.76 | 1.17940 | 14278 | 71894 | 0.335 | 2.13 |  |  |
 | 2.22742 | 5.5010 | 23.89 | 0.99256 | 32123 | 75 | 440 | 96.8 |  | impact at floor |
 | 2.22975 | 5.4999 | 23.88 | 0.99258 | 32291 | 80 | 437 | 96.3 |  | impact at floor |
-| 2.31035 | 5.4656 | 23.73 | 0.99316 | 38308 | 303 | 355 | 78.5 |  |  |
-| 2.40938 | 5.4331 | 23.59 | 0.99426 | 46314 | 728 | 255 | 58 |  |  |
+| 2.31403 | 6.1201 | 26.58 | 1.15607 | 22701 | 62926 | -0.28 | 2.2 |  |  |
+| 2.38243 | 5.4406 | 23.63 | 0.99390 | 44069 | 589 | 282 | 63.4 |  |  |
 | 2.46595 | 6.0228 | 26.15 | 1.11532 | 37442 | 47261 | -1.95 | 2.46 |  | period doubling (b_h crosses -2) |
+| 2.47232 | 5.4204 | 23.54 | 0.99539 | 51741 | 1159 | 193 | 45.8 |  |  |
 | 2.47786 | 6.0118 | 26.11 | 1.11159 | 38780 | 45830 | -2.15 | 2.5 |  | period doubling (b_h crosses -2) |
-| 2.48689 | 5.4187 | 23.53 | 0.99572 | 53032 | 1289 | 179 | 43.1 |  |  |
-| 2.53356 | 5.4174 | 23.52 | 0.99711 | 57238 | 1821 | 135 | 34.7 |  |  |
-| 2.58078 | 5.8781 | 25.53 | 1.07481 | 51775 | 31691 | -4.59 | 3.18 |  |  |
-| 2.59843 | 5.4321 | 23.59 | 1.00051 | 63162 | 3128 | 75.2 | 23.4 |  |  |
-| 2.63551 | 5.4596 | 23.71 | 1.00453 | 66384 | 4676 | 41.5 | 16.9 |  |  |
-| 2.66272 | 5.6479 | 24.53 | 1.03146 | 65346 | 15026 | -4.07 | 6.08 |  |  |
+| 2.47847 | 6.0112 | 26.10 | 1.11140 | 38850 | 45756 | -2.16 | 2.5 |  | period doubling (b_h crosses -2) |
+| 2.52612 | 5.9592 | 25.88 | 1.09550 | 44529 | 39645 | -3.13 | 2.72 |  |  |
+| 2.57925 | 5.4249 | 23.56 | 0.99921 | 61418 | 2631 | 92.6 | 26.7 |  |  |
+| 2.60306 | 5.8349 | 25.34 | 1.06530 | 55014 | 28033 | -5.25 | 3.5 |  |  |
+| 2.63567 | 5.7539 | 24.99 | 1.04941 | 60192 | 21926 | -5.92 | 4.32 |  |  |
+| 2.65952 | 5.5026 | 23.89 | 1.01036 | 68039 | 6915 | 18.1 | 12.1 |  |  |
 | 2.66661 | 5.6208 | 24.41 | 1.02726 | 66337 | 13414 | -2.56 | 6.73 |  | period doubling (b_h crosses -2) |
 | 2.66668 | 5.6202 | 24.41 | 1.02718 | 66357 | 13379 | -2.52 | 6.75 |  | period doubling (b_h crosses -2) |
 | 2.66755 | 5.6121 | 24.37 | 1.02594 | 66624 | 12903 | -1.93 | 6.98 |  | period doubling (b_h crosses -2) |
@@ -339,24 +368,24 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
 | 1.30792 | 18.7539 | 81.44 | 1.10876 | 2087 | 17957 | -24.8 | -13.6 | yes |  |
 | 1.35473 | 18.7460 | 81.40 | 1.11456 | 189 | 16488 | -30.5 | -17.2 |  | impact at floor |
 
-#### F4 2/3-r (76 distinct members)
+#### F4 2/3-r (86 distinct members)
 
 | C | T (TU) | T (d) | x0 | perigee alt (km) | periselene alt (km) | b_h | b_v | cand. | note |
 |---|---|---|---|---|---|---|---|---|---|
-| -0.63672 | 14.2350 | 61.82 | 1.00785 | 220985 | 5951 | 1.11 | 0.274 |  |  |
-| -0.63615 | 14.2143 | 61.73 | 1.00848 | 222296 | 6194 | -1.26 | 0.909 |  | period doubling (b_h crosses -2) |
+| -0.63676 | 14.2395 | 61.83 | 1.00771 | 220660 | 5896 | 1.66 | 0.114 |  |  |
 | -0.63576 | 14.2056 | 61.69 | 1.00873 | 222756 | 6291 | -2.17 | 1.13 |  | period doubling (b_h crosses -2) |
-| -0.63227 | 14.1569 | 61.48 | 1.01005 | 224668 | 6795 | -6.44 | 2.03 |  |  |
+| -0.63569 | 14.2733 | 61.98 | 1.00652 | 217484 | 5438 | 5.97 | -1.52 |  |  |
+| -0.62467 | 14.0862 | 61.17 | 1.01176 | 226044 | 7454 | -10.5 | 2.74 |  |  |
+| -0.61558 | 14.3295 | 62.23 | 1.00314 | 203195 | 4141 | -5.92 | -10.3 |  | period doubling (b_h crosses -2) |
 | -0.52643 | 13.5372 | 58.78 | 1.02498 | 216086 | 12534 | -11.5 | 2.53 |  |  |
-| -0.44418 | 13.2042 | 57.34 | 1.03891 | 200508 | 17890 | -6.08 | 1.67 |  |  |
-| -0.41182 | 13.0955 | 56.87 | 1.04645 | 193508 | 20788 | -4.45 | 1.5 |  |  |
-| -0.39025 | 13.0304 | 56.58 | 1.05238 | 188590 | 23067 | -3.56 | 1.44 |  |  |
+| -0.43830 | 13.1835 | 57.25 | 1.04017 | 199270 | 18375 | -5.75 | 1.63 |  |  |
+| -0.40646 | 13.0788 | 56.79 | 1.04785 | 192305 | 21327 | -4.21 | 1.48 |  |  |
+| -0.37383 | 12.9849 | 56.39 | 1.05744 | 184717 | 25012 | -2.99 | 1.41 |  |  |
 | -0.36283 | 12.9564 | 56.26 | 1.06111 | 182065 | 26423 | -2.66 | 1.4 |  | period doubling (b_h crosses -2) |
-| -0.34880 | 12.9225 | 56.12 | 1.06614 | 178610 | 28356 | -2.29 | 1.4 |  |  |
 | -0.32488 | 12.8708 | 55.89 | 1.07559 | 172574 | 31992 | -1.79 | 1.41 |  | period doubling (b_h crosses -2) |
-| -0.23842 | 12.7437 | 55.34 | 1.11778 | 149929 | 48206 | -1.05 | 1.51 |  |  |
-| -0.15159 | 12.6828 | 55.07 | 1.16580 | 127991 | 58633 | -1.24 | 1.55 |  |  |
-| -0.11458 | 12.6683 | 55.01 | 1.18600 | 119313 | 58247 | -1.46 | 1.55 |  |  |
+| -0.30597 | 12.8354 | 55.74 | 1.08385 | 167691 | 35164 | -1.51 | 1.43 |  |  |
+| -0.16992 | 12.6921 | 55.12 | 1.15563 | 132453 | 58839 | -1.16 | 1.55 |  |  |
+| -0.11802 | 12.6694 | 55.02 | 1.18415 | 120099 | 58280 | -1.43 | 1.55 |  |  |
 | -0.08478 | 12.6596 | 54.97 | 1.20181 | 112656 | 57989 | -1.66 | 1.55 |  |  |
 | -0.03495 | 12.6493 | 54.93 | 1.22716 | 102178 | 57703 | -2.03 | 1.54 |  | period doubling (b_h crosses -2) |
 
@@ -393,9 +422,9 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
 
 ## 3. Hand-offs
 
-- `#972` (literature): the three candidate stretches above are known-class by construction; no
-  novelty check needed unless the owner wants the F1 interior (perigee 200-35,000 km) checked
-  against RR's Earth-Moon files.
+- `#972` (literature): the pre-registered rule labels the three candidate stretches above
+  known-class-member (continuations of published seeds; two contain catalogued published orbits).
+  The adjudication is `#972`'s. The RR Earth-Moon files would settle literal membership.
 - `#1019` / lead: whether the RR Earth-Moon folder is fetched.
 - `#948`: F1's down-perigee end (Earth-surface impact at C = 1.09) and F2/F3's floor stops are
   natural entry points for a both-primary regularised continuation to collision.
