@@ -70,7 +70,9 @@ def _log(msg: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     line = f"{datetime.now(UTC).isoformat(timespec='seconds')} {msg}"
     print(line, flush=True)
-    with (OUT / "runlog.txt").open("a") as fh:
+    # Live log under data/*/live/ (gitignored): never a tracked file being appended.
+    (OUT / "live").mkdir(parents=True, exist_ok=True)
+    with (OUT / "live" / "runlog.txt").open("a") as fh:
         fh.write(line + "\n")
 
 

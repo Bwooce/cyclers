@@ -49,3 +49,4 @@ nohup.out
 
 # Transient run-logs from detached long runs (scratch, not deliverables)
 data/runlogs/
+data/*/live/
