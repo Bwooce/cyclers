@@ -1924,6 +1924,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (the 600 s pytest-timeout on the 73c test under load) and
   `docs/papercuts/processed/2026-10-06-ci-keeper-opus-wallclock-budget-in-correctness-test.md` (the 5 s
   SIGALRM budget in `test_656` and `pluto_charon_kk_sweep`).
+  Further evidence (2026-10-07, from `#968`): `JovianRestrictedNBody.propagate` has `max_wall_sec`
+  (60 s default, `src/cyclerfinder/nbody/jovian.py` about lines 212 and 281; 30 s in
+  `jovian_defect_residual`, about line 968); a wall-clock timeout sets `converged = False`, which the
+  shooting residuals turn into a defect sentinel (1e7 per component at about line 812, 1e9 at about
+  line 1006), so a slow propagation under load reads as a large defect.
 - `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`); **DISPATCHED 2026-10-07 to
   earthmoon-opus** (the Schwaniger row and the both-primary corrector control first, then `#997`). **ADD A V0 CATALOGUE ROW
   `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger 1963 (NASA TN D-1833,
@@ -2235,6 +2240,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   against kernel-fitted 3.891 and 5.981, about 1 % off. `#998` uses the fitted values and records both.
   The registry is in `src/cyclerfinder/core/satellites.py` (no Pluto small-moon entries under
   `src/cyclerfinder/data`). Expected values must come from the published source, not from our fit.
+- `#1023` — registered 2026-10-07 (from `#968`; GATED on `#968`'s fix commit). **RE-RUN EVERY JOVIAN
+  n-BODY NEGATIVE COMPUTED WITH THE TRANSLATION-ONLY PERIODICITY WRAP.** In `jovian_defect_residual`
+  (`src/cyclerfinder/nbody/jovian.py`, the "periodicity wrap" block, lines about 1012-1024) and
+  `subarc_defect_residual` (`src/cyclerfinder/nbody/jovian_ideal.py`, about 358-368) the wrap compares
+  the end node's moon-relative state with the start node's in inertial axes and never rotates it by the
+  home moon's advance over the cycle, so it can close only when that advance is 0 mod 360 deg. EGGIE
+  (Europa-hosted, 4 T_syn = 28.02 d, Europa advances 339.5 deg) could never close in that model,
+  which is consistent with its 0.1-0.4 km/s plateaus. INFERRED by jovian-nbody-opus; the code was
+  checked by the lead and by ci-keeper-opus (no rotation term in either function); NOT yet shown by a
+  re-run. Member D's failure is separate (`shoot_cycle` has no wrap). Void results to list here from
+  the `#968` note when jovian-nbody-opus commits it.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
