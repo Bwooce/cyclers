@@ -137,8 +137,7 @@ commits (`ec088b01` and the one after it) are on `origin/main` (checked 2026-10-
 
 **Waiting on owner (2026-10-05, from `#938`):** `#948` (R4) and `#956` (R9), both Earth-Moon
 lanes in tension with `#864` sec. 8; `#949` (X4), whether to reopen the Pluto-Charon lane (the Titan
-part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint. Added
-2026-10-07 from `#971`: `#975` (R14, the Varin cascade), against the `#864` sec. 8 do-not-do item.
+part is un-gated); `#950` (R6), whether a near-Earth asteroid is an admissible cycler endpoint.
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
@@ -1960,9 +1959,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   HILL FAMILIES, AND THE STABLE Hg FAMILY, SCALED TO EUROPA, GANYMEDE, TITAN, TRITON AND TITANIA.**
   Needs Henon 2003 Tables VI-XIII transcribed first. Cost 3-5 agent-days (GUESS); P(an asymmetric Hill
   family closes) 0.7, P(outside every published family) 0.45. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R15.
-- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **OWNER RULING PENDING** on the
-  `#864` sec. 8 do-not-do item). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS
-  RATIOS.** Read Voyatzis & Kotoulas 2005 first (not held). Cost 3-5 agent-days (GUESS); P(solver finds
+- `#975` — registered 2026-10-07 (from `#971` R14; NOT dispatched; **GATED on acquiring Voyatzis &
+  Kotoulas 2005**, PSS 53:1189, on the `#960` wanted list Tier B, for the collision check; then
+  dispatchable). **THE VARIN CLOSED-FAMILY CASCADE i_5-i_8 AT THE SATELLITE MASS RATIOS.** Lead ruling
+  2026-10-07: the `#864` sec. 8 item that could apply ("no more `#563`-class symmetric-closure
+  sweeps") does not bar it: R14 is a bifurcation continuation of a published family cascade at new
+  mass ratios, not a closure sweep. Not an owner-ruling item. Cost 3-5 agent-days (GUESS); P(solver finds
   i_5 and i_6) 0.6, P(a cycler-class loop member) 0.3. Detail: `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 3 R14.
 - `#976` — registered 2026-10-07 (from `#971` R16; NOT dispatched; likely known-class). **NEWTON-ARENSTORF
   PLANET-MOON CYCLERS CONTINUED IN mu TO JUPITER-GANYMEDE AND SATURN-TITAN.** Gated by the Restrepo &
