@@ -51,3 +51,38 @@ the patched-conic values). Its exact definition is written before it runs.
 ## 5. Results
 
 (pending)
+
+## 5. Results
+
+(Time box start: 2026-10-08 10:05 AEDT, not 10:20 as written in the header.)
+
+### 5.1 Formulation (b) on the positive control (one-cycle EGGIE, ideal model): PASS
+
+`data/1039_b_eggie/sigma_n1.json`.
+- Identity at sigma = 0.02: V_inf 9.0669 / 7.0808 / 7.0807 / 8.1985 / 9.0669 km/s against the chain's
+  9.068 / 7.082 / 7.082 / 8.207 / 9.068 (max difference 0.0085 <= 0.02).
+- The continuation converged at the lane floors at every step from 0.02 to sigma = 1, in 23 points:
+  no failed step, no noise-floor-limited point, no fold.
+- At sigma = 1:
+
+  | Node | V_inf (km/s) | r_p (km) | altitude (km) |
+  |---|---|---|---|
+  | E0 | 9.032 | 2,643 | 1,082 |
+  | G1 | 7.046 | 3,659 | 1,028 |
+  | G2 | 7.041 | 4,396 | 1,764 |
+  | I | 7.880 | 9,547 | 7,726 |
+  | E1 | 9.032 | 3,225 | 1,664 |
+
+  All above the 25 km floor; no unscheduled pass inside any Hill radius.
+- Beyond the control criterion, with #1043's own criteria:
+  - IAS15 re-fly of every half-arc at sigma = 1: max 1.0e-6 km, PASS.
+  - Identity going down: sigma = 0.01 max |dV_inf| 0.0044, sigma = 0.005 0.0023 km/s (converged at the
+    floors), PASS.
+- Reading: with the end MAGNITUDES free (directions pinned, the paper's magnitude match at the ends,
+  the span held), the fold of #1043 at sigma = 0.505 disappears. The #1043 artefact WAS the vector end
+  pins.
+- Consequence for #1043: under formulation (b) the published one-cycle EGGIE CLOSES in continuous
+  gravity (ideal model), meeting every #1043 criterion: floors, the 25 km floor, no unscheduled pass,
+  identity at sigma <= 0.01 and IAS15. Full-mass V_inf: E 9.03, G 7.04-7.05, I 7.88 km/s. The lead
+  records this against #1043.
+- Next, as registered: formulation (b) on jup365 GanEur#316, one cycle (#968 rung (b)).

@@ -219,8 +219,60 @@ def asymptote(mu: float, r: Arr, v: Arr, which: str) -> Arr:
     return -vinf * (math.cos(nu) * p_hat - math.sin(nu) * q_hat)
 
 
+END_MODE = "vector"  # "vector": #968 amendment 12; "direction": #1039 formulation (b)
+
+
+def _perp(u: Arr) -> tuple[Arr, Arr]:
+    a = np.array([1.0, 0.0, 0.0]) if abs(u[0]) < 0.9 else np.array([0.0, 1.0, 0.0])
+    e1 = np.cross(u, a)
+    e1 /= float(np.linalg.norm(e1))
+    return e1, np.cross(u, e1)
+
+
+def end_rows_direction(c: Chain, z: Arr) -> tuple[Arr, Arr]:
+    """#1039 (b): end V_inf directions pinned (2 + 2 rows), |V_inf in, first| = |V_inf out, last|
+    (1 row), and the chain span t_last - t_first equal to the seed's (1 row). Rows are scaled so
+    that a row value of 1e-3 is 1e-6 rad, 1e-6 km/s, or 1e-3 s."""
+    n = 7 * c.m
+    k_last = c.m - 1
+    span0 = float(c.seed[7 * k_last + 6] - c.seed[6])
+    u_in = c.vin_first / float(np.linalg.norm(c.vin_first))
+    u_out = c.vout_last / float(np.linalg.norm(c.vout_last))
+    p_in, p_out = _perp(u_in), _perp(u_out)
+    mu0, mu1 = c.mus[c.moons[0]], c.mus[c.moons[k_last]]
+    i0, i1 = 7 * k_last, 7 * k_last + 3
+
+    def f(zz: Arr) -> Arr:
+        vi = asymptote(mu0, zz[0:3], zz[3:6], "in")
+        vo = asymptote(mu1, zz[i0:i1], zz[i1 : i1 + 3], "out")
+        ui, uo = vi / float(np.linalg.norm(vi)), vo / float(np.linalg.norm(vo))
+        return 1e3 * np.array(
+            [
+                float(p_in[0] @ ui),
+                float(p_in[1] @ ui),
+                float(p_out[0] @ uo),
+                float(p_out[1] @ uo),
+                float(np.linalg.norm(vi) - np.linalg.norm(vo)),
+                (float(zz[7 * k_last + 6] - zz[6]) - span0) * 1e-3,
+            ]
+        )
+
+    res = f(z)
+    jac = np.zeros((6, n))
+    for j in [*range(0, 7), *range(7 * k_last, 7 * k_last + 7)]:
+        jj = j - (0 if j < 7 else 7 * k_last)
+        hstep = 1e-4 * max(1.0, abs(float(z[j]))) if jj < 3 else (1e-8 if jj < 6 else 1e-2)
+        zp, zm = z.copy(), z.copy()
+        zp[j] += hstep
+        zm[j] -= hstep
+        jac[:, j] = (f(zp) - f(zm)) / (2 * hstep)
+    return res, jac
+
+
 def end_rows(c: Chain, z: Arr, nd: list[tuple[Arr, Arr, float, Arr]]) -> tuple[Arr, Arr]:
     """Amendment 12: inbound asymptote at node 1, outbound at node M (6 rows, weight 1e3)."""
+    if END_MODE == "direction":
+        return end_rows_direction(c, z)
     n = 7 * c.m
     res = np.zeros(6)
     jac = np.zeros((6, n))
@@ -288,8 +340,8 @@ def residual_and_jac(c: Chain, z: Arr, want_jac: bool = True) -> tuple[Arr, Arr,
     er, ej = end_rows(c, z, nd)
     res.extend(er.tolist())
     info["end_asymptote_kms"] = [
-        float(np.linalg.norm(er[:3])) / 1e3,
-        float(np.linalg.norm(er[3:])) / 1e3,
+        float(np.max(np.abs(er[:3]))) / 1e3,
+        float(np.max(np.abs(er[3:]))) / 1e3,
     ]
     if want_jac:
         rows.append(ej)
