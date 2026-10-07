@@ -42,6 +42,8 @@ Exclusion rules, added to `_declared_scope_exclusion`, each returning a reason s
 
 ## 2. Mechanical derivation of a candidate's labels (no per-row hand setting)
 
+(The 1e-6-deg working-body threshold below is SUPERSEDED by amendment A1, sec. 8: 0.05 deg.)
+
 From the cycle key and the ideal-model flyby table (`scripts/gauntlet_942.py`, the same code for every
 candidate):
 - `working_bodies` = "two" if every body in the key has a demanded turn > 1e-6 deg at some encounter,
@@ -132,6 +134,9 @@ against GEN for gc-1 and gc-2; the labels are whatever the derivation gives.)
   turn resolution with which the results note's sec. 6.1 dedupe rule (and every "turn 0" classification
   in secs. 6.3-6.37) defines a zero turn.
 - No tag was changed. ALL controls and the candidates are re-run with this derivation.
+- Effect on candidates: ev-C's label flips from "two" to "one" (its Earth turn is a 1.5e-6-deg
+  round-off); its outcome does not change (inconclusive 0.475 under either label, confirmed by the
+  adversarial reviewer's probe). No other candidate is near the threshold.
 - The first-run candidate outputs (recorded in the scratch log for transparency):
   - gc-1 and gc-2: not-found;
   - ev-A, ev-B, ev-C: "inconclusive" at 0.475, the best hit being the Aldrin Earth-Mars anchor's

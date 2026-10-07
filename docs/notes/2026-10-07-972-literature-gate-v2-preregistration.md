@@ -67,3 +67,31 @@ part of this pre-registration.
 - Run the controls and candidates (`scripts/litcheck_942_943_scope.py`, extended with the triple-cycler
   controls), the pinned tests, one full suite (tee'd), ruff and full mypy.
 - Re-review (Fable). Its verdict is recorded here before any row is drafted.
+
+## 6. Amendment (lead addendum 2026-10-07, after the reviewer's full report), committed before any code
+
+| # | Rule | Basis | Probe (pinned test) |
+|---|---|---|---|
+| F13 | Seven callers compare the status literally (`low_thrust_cycler_search.py:319`, `cislunar_bct_search.py:216`, `precursor_matcher.py:135`, `scripts/campaign_468_multirev_tour.py:339`, `scripts/verify_327_umbriel_silver.py:492`, `scripts/run_299_lit_check_3d_family.py:215`, `scripts/run_435_high_e_er3bp.py:253`). They go through ONE helper, `literature_check.is_literature_fresh(status)` = status in {"not-found", "known-architecture-new-system"}. run_435's fixed-key counter gets the new key. | reviewer finding 13 | a test that the helper accepts both fresh statuses and rejects "published" and "inconclusive"; and an AST/grep ratchet over src/ and scripts/ that no code compares a literature status to the literal "not-found" outside the helper |
+| F14 | An anchor that declares an architecture scope (`working_bodies_scope` or `return_types_scope`) is matched only by a signature that DECLARES the corresponding label. An unlabelled signature cannot be checked against that scope, so it does not match that anchor. | reviewer finding 14: an unlabelled Sun {V, E} signature (e.g. a VEM row with a partial derived sequence) must not be cited to Hollister/H&M at 0.85 | Sun, (V, E), unlabelled: today "published" 0.85 via Hollister/H&M; must not match H&M |
+
+Consequences of F14 for the controls (rule fixed now):
+- The 15 catalogued H&M rows are then labelled MECHANICALLY from the sourced per-encounter table
+  `data/sources/hollister-menning-1970-table3.yaml` (Table 3 transcription):
+  - working_bodies "two" if both planets have a turn theta >= 0.05 deg somewhere;
+  - return types from each consecutive same-planet encounter interval divided by that planet's period
+    (Earth 365.25 d, Venus 224.70 d): within 5 % of 1 -> "FR"; in (1, 2) -> "SY"; else "GEN".
+  - Expected: all 15 labelled "two" with return types within {FR, SY}, and "published" via H&M.
+- The R-S anchors (working_bodies_scope "one"): every recovered R-S control is labelled, so unaffected.
+- F14 also applies to the GCGC anchor (working "two"). No control is unlabelled there.
+
+Hygiene (reviewer 11, 12; lead):
+- H11: v1 note sec. 2 (the 1e-6-deg threshold) is marked SUPERSEDED by its sec. 8 (A1). A1 states that
+  ev-C's label flips ("two" to "one") and its outcome does not (inconclusive 0.475 under either label;
+  reviewer probe). Done in this commit.
+- H12: the R-S 2009 anchor comments say the AAS 07-118 statement is quoted for the 2009 rows (the same
+  rows and nomenclature, 2007 digest sec. 0). The R-S 2009 Titan-Enceladus anchor gets the same
+  `working_bodies_scope="one"` (the same source statement covers it).
+
+Expected candidate results: unchanged from sec. 4 (every candidate is labelled, so F13/F14 do not
+apply to them).
