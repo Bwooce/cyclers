@@ -414,3 +414,18 @@ secant predictor in log s). Pass rule, fixed now: the quadratic fit over the con
 s_G <= 0.12 must extrapolate to V_inf G within 0.01 km/s of 1.87, Europa speed within 0.01 km/s of
 3.89, and altitude (r_p / s_G - 2634 km) within 20 km of 8861 km (the R-S table value 8861; our
 patched-conic solve gives 8862.2).
+
+### 6.5 GanEur#43 GM continuation result (amendment 7), `data/968_control2/gm.json`
+
+58 converged points from s_G = 1 to 0.0055 (stopped at 0.0047, |r| 0.21 within 60 evaluations).
+V_inf G falls monotonically 1.9993 -> 1.8722 km/s, Europa speed 4.1755 -> 3.8981 (at s_G = 0.02),
+r_p / s_G 12,669.6 -> 11,541.2 km.
+
+Judged as registered (quadratic fit over the 17 points with s_G <= 0.12):
+- V_inf G 1.8716 km/s (|diff| from 1.87: 0.0016 <= 0.01): PASS.
+- Europa speed 3.8930 km/s (|diff| from 3.89: 0.003 <= 0.01): PASS.
+- altitude 8895.8 km (|diff| from 8861: 34.8 > 20): FAIL as registered.
+Descriptive, not judged: r_p / s_G is still falling at the smallest s_G (8907 km altitude at s_G = 0.0055,
+about 6 km per 15 % step), so the limit is not polynomial in s_G over this range; a quadratic fit in
+sqrt(s_G) gives 8796 km. The two fits bracket 8861 km; the altitude limit is fit-dependent here, and
+the pre-registered rule is the verdict.
