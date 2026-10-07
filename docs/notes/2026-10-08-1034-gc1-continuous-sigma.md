@@ -76,3 +76,19 @@ before sigma = 1 (probability about 0.6).
 ## 8. Results
 
 (pending)
+
+### 8.1 Identity check at sigma = 0.05: FAIL as registered (by 0.0007 km/s)
+
+Converged at sigma = 0.05 from the patched-conic seed: V_inf G 2.3763 / 2.3763, C 1.8070 / 1.8097
+(the two Callisto nodes differ by 0.0027). Ganymede is 0.0207 km/s from 2.397, against a 0.02
+tolerance; Callisto passes. By sec. 2 the run stopped. The likely reason is the finite-mass shift
+already at sigma = 0.05 (GanCal#5 shifted 0.013 km/s at s = 0.05 with V_inf 3.24; gc-1's V_inf is
+lower), but that is a reading, not a check.
+
+### 8.2 AMENDMENT 1 (before the runs it covers)
+
+Identity by the limit, as in #968 sec. 8.1 (criterion 4c style): converge at sigma = 0.02, 0.01 and
+0.005 (from the patched-conic seed, offsets scaled, then each from the previous). Pass: at the last
+computed point (sigma = 0.005) V_inf G within 0.005 km/s of 2.3972 and C within 0.005 of 1.8067
+(the #943 patched-conic values), and the G shift falls monotonically with sigma. If it passes, the
+upward continuation starts from the sigma = 0.05 point as registered; if not, the run stops.
