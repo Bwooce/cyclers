@@ -1,0 +1,69 @@
+# #972 literature_check gate v2 fixes — PRE-REGISTRATION (2026-10-07), committed before any code
+
+Follows `2026-10-07-942-943-literature-gate-scope-preregistration.md` (v1, commit 2e16b56b) and the
+Fable adversarial review (findings 2-7). Lead approval 2026-10-07: option (b), fixes 2-7. Whatever the
+gate returns after these changes is the result. A waiver of spec sec. 16.5 for an "inconclusive"
+candidate is the OWNER's decision only.
+
+## 1. The fixes (one rule each; the probe that exposed it becomes a pinned test)
+
+| # | Rule | Source / basis | Probe (pinned test) |
+|---|---|---|---|
+| F2 | `_architecture_anchors` returns nothing when ANY anchor with the same primary and the same `working_bodies_scope` has a body set containing the candidate's bodies, whatever its other scopes. A system the source treated is never "never-treated". | the meaning of #875 (ii), spec sec. 16.4 | Jupiter, (Ganymede, Callisto, Ganymede), working "one", topology {"resonant-hopping"}: today "known-architecture-new-system" citing R-S G-Io/G-E; must NOT return it |
+| F3 | The alternating test first drops a final encounter equal to the first (a closing repeat), then reads the sequence cyclically. | the catalogue convention that repeats the closing body (e.g. "Callisto-Ganymede-Callisto-Europa-Callisto") | Jupiter, (G, C, G, C, G), working "two": today not-found; must return "published" (Campagnola GCGC), like (G, C, G, C) |
+| F4 | A search hit synthesised from a corpus anchor (`anchor_name` set) is scored only if that anchor passes `_candidate_anchors` for the signature (same primary, the candidate's bodies within the anchor's body set, no declared-scope exclusion). Real web hits (no anchor identity) are unchanged. | the matcher's own structural-fingerprint rule (`_candidate_anchors` docstring: "A heliocentric Earth-Mars candidate cannot collide with a Jovian moon anchor and vice versa") | Sun, (E, J), unlabelled: today "inconclusive" 0.575 via Koon-Lo-Marsden (body set {Jupiter}); must not be scored from that anchor |
+| F5 | Drop the Hughes anchor's `n_bodies_scope=3` tag (unconditional, lead). | the tag was not quoted from its source | — |
+| F6 | Pinned tests under `tests/search/` (each < 2 s): each tag, positive and negative (the n-bodies, working-bodies, return-types and alternating exclusions, with a mutated-tag negative check), the new status, F2, F3, F4 and F7 probes, and the controls below. | lead/reviewer | the probes above |
+| F7 | If an anchor is excluded ONLY by "working-bodies" and its body set EQUALS the candidate's body set, a literal result of "not-found" or "known-architecture-new-system" becomes "inconclusive", naming the anchor. A different-architecture object at a system the source treated goes to a human. | reviewer finding 7: the gc-2/GanCal#5 case | gc-2 |
+
+## 2. A further finding, for the lead's decision (F8, NOT applied unless approved)
+
+The Hughes anchor ("Hughes-Edelman-Longuski VEM cycler extensions (2014)") cites "AAS 14-822 /
+'Venus-Earth-Mars Cyclers' extension paper (2014)", with provenance "inherited-unverified".
+- A web search finds no AAS 14-822 by these authors.
+- Their held 2014 paper is AIAA 2014-4109, "Fast Mars Free-Returns via Venus Gravity Assist". It is
+  one-shot free returns, not cyclers (CORPUS_INDEX rows 152 and 398; digest of the JSR 2015 version).
+- With F5 the anchor is untagged and body-set {V, E, M}, so it would claim any E-V candidate as
+  "published" (confidence 0.85) on an unverified citation.
+- PROPOSED F8: ground the anchor to AIAA 2014-4109 (citation, doi 10.2514/6.2014-4109, provenance
+  verified-against-source after a page check), with topology {"mga-tour"} (one-shot free returns).
+- Expected outcomes are given below both WITH and WITHOUT F8.
+
+## 3. Positive controls (each must return "published")
+
+- The 9 recovered members: GanCal#5, GanCal#1, GanEur#43, EurGan#131, GanEur#316, VenMar#45, Hollister
+  1H, Hollister 2H, R-O 2.5.1.+0 (labels derived as in v1 + A1).
+- The 15 catalogued H&M rows, unlabelled.
+- NEW triple-cycler control: catalogue row `jones-2017-vem-emevve-outbound` (Jones, Hernandez & Jesick
+  2017, AAS 17-577; held, mined in `2026-06-05-jones-aas17-577-vem-mining.md`).
+  - Signature: primary Sun, sequence E, M, E, V, V, E (3 bodies), k = 2, V_inf from the row, unlabelled.
+  - Expected: published via the Jones VEM anchor (n_bodies 3).
+  - Negative: with the Jones tag mutated to n_bodies 2, it must NOT match Jones.
+- Also: `liang-2024-cgcec-111-highperijove` (sequence C, G, C, E, C): expected published via Liang
+  (n_bodies 3).
+
+## 4. Expected candidate results (written before running)
+
+| Candidate | Labels | Without F8 | With F8 | Why |
+|---|---|---|---|---|
+| gc-1 | two; {FR, SY} | INCONCLUSIVE | INCONCLUSIVE | F7: R-S Ganymede-Callisto (one) is excluded only by working-bodies and has the same body set {G, C} |
+| gc-2 | two; {SY} | INCONCLUSIVE | INCONCLUSIVE | F7, the same anchor (the lead's stated expectation) |
+| ev-A | two; {FR, GEN} | PUBLISHED via the Hughes anchor (0.85) | NOT-FOUND | F4 removes the Aldrin floor; without F8 the untagged Hughes {V, E, M} anchor matches; with F8 it is excluded by topology. H&M is excluded by return-types (not working-bodies, so F7 does not apply); F2 blocks the architecture match because H&M (two) contains {E, V} |
+| ev-B | two; {FR, FR-3:2, GEN} | PUBLISHED via Hughes | NOT-FOUND | as ev-A |
+| ev-C | one; {GEN} | PUBLISHED via Hughes | INCONCLUSIVE | with F8: F7 applies, because H&M (two) is excluded only by working-bodies and has body set {E, V}. No "known-architecture-new-system": the gate escalates the same-system, different-architecture case to a human |
+
+So after these fixes, ev-A and ev-B (with F8) would pass the gate. gc-1, gc-2 and ev-C would be
+"inconclusive": rows for gc-1 and ev-C then need the owner's decision. gc-2 is known-class-member by
+the owner's ruling, so the gate's escalation is consistent with it.
+
+Note for the owner (not applied): R-S AAS 07-118 p.18 names the massive target as future work, so
+gc-1, gc-2 (at R-S's Ganymede-Callisto) and ev-C are case (i) or (ii) of #875 by the human reading. A
+sourced "future-work architecture" field on the R-S anchors could let the gate express that. It is not
+part of this pre-registration.
+
+## 5. Process
+
+- Implement F2-F7 (and F8 only if the lead approves).
+- Run the controls and candidates (`scripts/litcheck_942_943_scope.py`, extended with the triple-cycler
+  controls), the pinned tests, one full suite (tee'd), ruff and full mypy.
+- Re-review (Fable). Its verdict is recorded here before any row is drafted.
