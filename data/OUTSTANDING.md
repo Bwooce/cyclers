@@ -2254,14 +2254,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   checked by the lead and by ci-keeper-opus (no rotation term in either function); NOT yet shown by a
   re-run. Member D's failure is separate (`shoot_cycle` has no wrap). Void results to list here from
   the `#968` note when jovian-nbody-opus commits it.
-- `#1024` — registered 2026-10-07 (from `#998`'s control check; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL
-  OPTION FOR BINARIES IN THE TWO-WORKING-BODY / ONE-WORKING-NODE GENERATOR.** Its ideal model puts the
-  secondary on a Kepler circle about the PRIMARY's centre, with a radius set by the system GM. For
-  Pluto-Charon (mu = 0.12, lead's figure) that puts Charon at 19,596 km, not the barycentric 17,464 km:
-  a 12 % error in Charon's speed. Task: both bodies on circles about the barycentre, with the
-  spacecraft legs about the barycentre using the primary's GM, or a CR3BP-consistent patched model.
-  Controls: VenMar#45 and a Pluto-Charon control. Applies to `#998`, `#949` and the binary-star cases.
-  Until it lands, `#998`'s ideal results are seeds only and the real-ephemeris step decides.
+- `#1024` — registered 2026-10-07 (from `#998`'s control check, pluto-smallmoons-sonnet's observation in
+  commit `58930227`; BACKLOG). **A BARYCENTRIC CIRCULAR MODEL OPTION FOR BINARIES IN THE TWO-WORKING-BODY
+  / ONE-WORKING-NODE GENERATOR.** For Pluto-Charon (mu = 0.109) the ideal model puts Charon at 19,596 km
+  on a circle with the system GM: that is the correct RELATIVE two-body orbit. The inconsistency is that
+  the spacecraft legs are propagated about Pluto's centre as if it were inertial, while the
+  Pluto-centred frame accelerates at mu times Charon's acceleration. The 11 % figure is the (1 - mu)
+  ratio between relative and barycentric speed (barycentric radius 17,466 km). Task: both bodies on
+  circles about the barycentre, with the spacecraft legs about the barycentre using the primary's GM,
+  or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
+  `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
+  the real-ephemeris step decides.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, acquired 2026-10-07, digest pending in `#960` batch 36; they bear on this task and
