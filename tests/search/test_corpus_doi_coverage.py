@@ -137,11 +137,6 @@ DOI_ALLOWLIST: dict[str, str] = {
         "Cycler Spacecraft Using the S1L1 Cycler' -- S1L1 spacecraft-design "
         "paper, not yet anchored."
     ),
-    "10.2514/3.30134": (
-        "Hollister & Menning 1970, 'Periodic Swing-By Orbits between Earth "
-        "and Venus' -- foundational Earth-Venus swing-by paper predating "
-        "Aldrin, not yet anchored."
-    ),
     "10.1016/j.actaastro.2011.03.011": (
         "Lynam & Longuski 2011, 'Laplace-resonant triple-cyclers for "
         "missions to Jupiter' -- a Jovian IEG-adjacent triple-cycler paper "

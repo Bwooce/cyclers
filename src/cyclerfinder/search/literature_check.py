@@ -62,7 +62,7 @@ from typing import Any, Literal
 SearchFn = Callable[[str], Sequence["SearchResult"]]
 FetchFn = Callable[[str, str], str]
 
-Status = Literal["published", "not-found", "inconclusive"]
+Status = Literal["published", "not-found", "inconclusive", "known-architecture-new-system"]
 
 # Citation provenance (#486): a citation is either confirmed against the actual
 # source ("verified-against-source") or copied from prior notes without grounding
@@ -180,6 +180,20 @@ class CandidateSignature:
     broken-plane cyclers against the spatial-CR3BP corpus.
     """
 
+    working_bodies: str | None = None
+    """Optional ``"one"`` / ``"two"``: whether every encounter body bends in the
+    candidate's ideal model (``"two"``) or one is a massless target (``"one"``).
+    Derived mechanically from the demanded turns (#942/#943, declared-scope
+    pre-registration ``docs/notes/2026-10-07-942-943-literature-gate-scope-
+    preregistration.md``). ``None`` = undeclared, no filter."""
+
+    return_types: frozenset[str] | None = None
+    """Optional set of the candidate's same-body return types, derived from its
+    cycle key: ``"FR"`` (1:1 full-rev), ``"FR-n:m"``, ``"HR"`` (half-rev),
+    ``"SY"`` (Menning's symmetric return: one extra revolution, flight time
+    between one and two body periods) and ``"GEN"`` (any other same-body
+    Lambert return). ``None`` = undeclared, no filter (#942/#943)."""
+
     @property
     def is_moon_tour(self) -> bool:
         """A non-solar primary => a planetary-satellite (moon-tour) cycler."""
@@ -222,6 +236,9 @@ class LiteratureCheckResult:
             "published": "match",
             "not-found": "no-match",
             "inconclusive": "inconclusive",
+            # #875 (ii): a known architecture at a never-treated system is
+            # novelty-claimable with an attribution obligation.
+            "known-architecture-new-system": "no-match",
         }[self.status]
         return {
             "checked": True,
@@ -371,6 +388,27 @@ class CorpusAnchor:
     candidate is never matched to it on spatial grounds. Added by #434 Task 4
     for the spatial-CR3BP known corpus (:mod:`cyclerfinder.genome.known_corpus_3d`).
     """
+
+    n_bodies_scope: int | None = None
+    """Number of distinct encounter bodies in the anchor's family (e.g. 3 for a
+    triple cycler). When set, a candidate with a different number of distinct
+    encounter bodies is out of scope (#942/#943). ``None`` = no filter."""
+
+    working_bodies_scope: str | None = None
+    """``"one"`` (ideal model with one working flyby body and a massless
+    target, e.g. Russell & Strange) or ``"two"`` (every encounter body bends).
+    Excludes a candidate that declares the other value (#942/#943)."""
+
+    return_types_scope: frozenset[str] | None = None
+    """The same-body return types the anchor's authors COMPUTED (labels as in
+    :attr:`CandidateSignature.return_types`). A candidate declaring a type
+    outside this set is out of scope (#942/#943)."""
+
+    alternating_scope: bool | None = None
+    """``True`` when the anchor's family visits its bodies strictly alternately
+    (no two consecutive encounters at the same body, read cyclically); a
+    candidate sequence with a consecutive same-body encounter is then out of
+    scope (#942/#943)."""
 
     jacobi_band: tuple[float, float] | None = None
     """Optional Jacobi-constant band (C_min, C_max) the 3D anchor's published
@@ -617,6 +655,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Liang et al. Callisto-Ganymede-Europa triple cyclers",
+        # #942/#943: title "Callisto-Ganymede-Europa Triple Cyclers" (three bodies).
+        n_bodies_scope=3,
         primary="Jupiter",
         body_set=frozenset({"Callisto", "Ganymede", "Europa"}),
         # #350: 'triple cycler' = repeated CGE encounter sequence.
@@ -633,6 +673,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Hernandez/Jones/Jesick Io-Europa-Ganymede triple cyclers",
+        # #942/#943: title "One Class of Io-Europa-Ganymede Triple Cyclers".
+        n_bodies_scope=3,
         primary="Jupiter",
         # #483 (2026-06-26): system GROUNDED against the source title. This is a
         # DISTINCT Jovian-moon paper -- "One Class of Io-Europa-Ganymede Triple
@@ -701,6 +743,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # -----------------------------------------------------------------------
     CorpusAnchor(
         name="Russell-Strange 2009 Ganymede-Io ideal-model moon cycler",
+        # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
+        # ideal model is considered massless" (one working body); p.18 names
+        # removing it as future work.
+        working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Io"}),
         # R-S's free-return architecture IS the (k1, k2) repeated-moon
@@ -727,6 +773,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Russell-Strange 2009 Ganymede-Europa ideal-model moon cycler",
+        # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
+        # ideal model is considered massless" (one working body); p.18 names
+        # removing it as future work.
+        working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Europa"}),
         topology_label=frozenset({"repeated-moon"}),
@@ -753,6 +803,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler",
+        # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
+        # ideal model is considered massless" (one working body); p.18 names
+        # removing it as future work.
+        working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Callisto"}),
         topology_label=frozenset({"repeated-moon"}),
@@ -823,6 +877,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # -----------------------------------------------------------------------
     CorpusAnchor(
         name="Russell-Strange 2007 Venus-Mars ideal-model free-return cycler",
+        # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
+        # ideal model is considered massless" (one working body); p.18 names
+        # removing it as future work.
+        working_bodies_scope="one",
         primary="Sun",
         body_set=frozenset({"V", "M"}),
         topology_label=frozenset({"repeated-moon"}),
@@ -847,6 +905,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler",
+        # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
+        # ideal model is considered massless" (one working body); p.18 names
+        # removing it as future work.
+        working_bodies_scope="one",
         primary="Sun",
         body_set=frozenset({"V", "Me"}),
         topology_label=frozenset({"repeated-moon"}),
@@ -876,6 +938,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # Per docs/notes/2026-10-05-digest-campagnola-2019-europa-clipper-
         # tour-design-techniques.md.
         name="Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019)",
+        # #942/#943: Fig. 11 flybys "G1, C2, G3, C4, G5", "repeating two GCGC cycles";
+        # both moons host flybys (two working bodies, strictly alternating).
+        working_bodies_scope="two",
+        alternating_scope=True,
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Callisto"}),
         topology_label=frozenset({"repeated-moon"}),
@@ -966,7 +1032,46 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         doi=None,
     ),
     CorpusAnchor(
+        # #942/#943 (2026-10-07): the published Earth-Venus TWO-working-body
+        # periodic swing-by orbits, missing from the corpus until now (an E-V
+        # candidate could only hit the VEM triple-cycler anchors). Scope from the
+        # sources (digests 2026-10-05-digest-hollister-1969-...,
+        # 2026-10-05-digest-menning-1968-mit-thesis-..., and the H&M 1970 Table 3
+        # recheck): flybys at both planets; every computed orbit is built from
+        # full-revolution (FR, TFR) and symmetric (SY, FRSY) returns (Menning 1968
+        # App. A-1); Hollister 1969 orbits I-III are 1H, 2H, 3H.
+        name="Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970)",
+        primary="Sun",
+        body_set=frozenset({"E", "V"}),
+        topology_label=frozenset({"repeated-moon"}),
+        n_bodies_scope=2,
+        working_bodies_scope="two",
+        return_types_scope=frozenset({"FR", "SY"}),
+        authors=("Hollister", "Menning"),
+        keywords=(
+            "Earth-Venus periodic orbit",
+            "periodic swing-by orbits between Earth and Venus",
+            "Earth Venus cycler",
+        ),
+        citation="Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' "
+        "J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; "
+        "Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between "
+        "Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), "
+        "DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); "
+        "Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' "
+        "S.M. thesis, MIT (1968).",
+        doi="10.2514/3.30134",
+        key="hollister-menning-1970-ev",
+        year=1970,
+        title="Periodic Swing-By Orbits between Earth and Venus",
+        venue="Journal of Spacecraft and Rockets 7(10):1193-1199",
+        provenance="verified-against-source",
+        system="heliocentric",
+    ),
+    CorpusAnchor(
         name="Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        # #942/#943: title "Low Excess Speed Triple Cyclers of Venus, Earth, and Mars".
+        n_bodies_scope=3,
         primary="Sun",
         # #483 (2026-06-26): system GROUNDED against the source title -- "Low
         # Excess Speed Triple Cyclers of Venus, Earth, and Mars" (AAS 17-577,
@@ -1544,6 +1649,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        # #942/#943: E-V-M sequences (body set {V, E, M}).
+        n_bodies_scope=3,
         primary="Sun",
         body_set=frozenset({"V", "E", "M"}),
         # #350: extends Jones-Hernandez-Jesick AAS 17-577 VEM cycler family
@@ -2971,7 +3078,51 @@ def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> 
         and not _spatial_topology_matches(sig, anchor)
     ):
         return "topology-3d"
+    # #942/#943 declared scopes (pre-registration
+    # docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md).
+    if (
+        anchor.n_bodies_scope is not None
+        and sig.sequence
+        and len(set(sig.sequence)) != anchor.n_bodies_scope
+    ):
+        return "n-bodies"
+    if (
+        sig.working_bodies is not None
+        and anchor.working_bodies_scope is not None
+        and sig.working_bodies != anchor.working_bodies_scope
+    ):
+        return "working-bodies"
+    if (
+        sig.return_types is not None
+        and anchor.return_types_scope is not None
+        and not sig.return_types <= anchor.return_types_scope
+    ):
+        return "return-types"
+    if anchor.alternating_scope and _has_consecutive_same_body(sig.sequence):
+        return "alternating"
     return None
+
+
+def _has_consecutive_same_body(sequence: tuple[str, ...]) -> bool:
+    """Two consecutive encounters at the same body, reading ``sequence`` cyclically."""
+    n = len(sequence)
+    return n > 1 and any(sequence[i] == sequence[(i + 1) % n] for i in range(n))
+
+
+def _architecture_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
+    """Anchors whose declared architecture (``working_bodies_scope``) matches the
+    signature's at the same primary but at a DIFFERENT body set: the #875 (ii)
+    "known architecture at a never-treated system" case (#942/#943)."""
+    if sig.working_bodies is None:
+        return []
+    seq_set = frozenset(sig.sequence)
+    return [
+        a
+        for a in _corpus_for(sig)
+        if a.primary == sig.primary
+        and a.working_bodies_scope == sig.working_bodies
+        and not seq_set <= a.body_set
+    ]
 
 
 def offline_corpus_search(query: str) -> list[SearchResult]:
@@ -3273,6 +3424,23 @@ def check_literature(
             matched_url=best_hit.url if best_hit else None,
             notes="Cycler-adjacent literature surfaced but could not be confirmed "
             "as the same family; a human must adjudicate (not certified novel)."
+            + _scope_note(scope_excluded),
+        )
+
+    arch = _architecture_anchors(sig)
+    if arch:
+        names = "; ".join(a.name for a in arch)
+        return LiteratureCheckResult(
+            status="known-architecture-new-system",
+            citation=arch[0].citation,
+            doi=arch[0].doi,
+            confidence=round(best_conf, 3),
+            query_trail=trail,
+            notes="No published cycler matched the structural fingerprint, but the "
+            "candidate's declared architecture (working bodies: "
+            f"{sig.working_bodies}) is a published one at another system: {names}. "
+            "Spec sec. 16.4 #875 (ii): candidate-novel with a MANDATORY attribution "
+            "to that architecture's source, wording 'first computed at <system>'."
             + _scope_note(scope_excluded),
         )
 

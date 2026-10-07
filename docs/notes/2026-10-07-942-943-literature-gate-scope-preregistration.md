@@ -121,3 +121,19 @@ against GEN for gc-1 and gc-2; the labels are whatever the derivation gives.)
 - A fresh adversarial reviewer (Fable; Opus if unavailable) reviews the diff and this note before the
   catalogue writeback.
 - The writeback rows record the gate result as returned.
+
+## 8. Amendment A1 (2026-10-07, after the first control run; the controls failed, so this is allowed by sec. 0)
+
+- First run: every control returned "published" EXCEPT EurGan#131, which returned
+  "known-architecture-new-system". The cause is in the label derivation, not a tag:
+  - its Ganymede turn in the ge cell is a round-off 1.2e-6 deg, above the 1e-6-deg threshold of sec. 2;
+  - ev-C's Earth turn (1.5e-6 deg) is mislabelled the same way.
+- Fix: a body "works" if its demanded turn is >= 0.05 deg at some encounter. That is half the 0.1-deg
+  turn resolution with which the results note's sec. 6.1 dedupe rule (and every "turn 0" classification
+  in secs. 6.3-6.37) defines a zero turn.
+- No tag was changed. ALL controls and the candidates are re-run with this derivation.
+- The first-run candidate outputs (recorded in the scratch log for transparency):
+  - gc-1 and gc-2: not-found;
+  - ev-A, ev-B, ev-C: "inconclusive" at 0.475, the best hit being the Aldrin Earth-Mars anchor's
+    synthetic title ("cycler" plus "Earth" named = 0.30 + 0.175, above the 0.45 inconclusive floor).
+  - Nothing is adjusted in response to them.
