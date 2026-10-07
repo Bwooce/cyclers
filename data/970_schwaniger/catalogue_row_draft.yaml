@@ -9,7 +9,7 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  orbit_class: cycler   # periodic in the rotating frame; one Earth perigee (177 km altitude) and one lunar pass (about 465 km altitude, inside the lunar SOI and Hill radius) every period. Perigee is 23 km BELOW the Earth registry floor (PLANETS["E"].safe_alt_km = 200 km); see data_gaps.
+  orbit_class: cycler   # per Schwaniger's own description (a periodic free return): one Earth perigee (177 km altitude) and one lunar pass (about 465 km altitude) every period. Perigee is below this project's 200-km Earth floor; see data_gaps (lead ruling 2026-10-07).
   epoch_locked: false   # CR3BP periodic orbit, any epoch
   n_returns: infinite   # strictly periodic
   validation_level: V0   # internal consistency only: the source prints only graph-read "about" values (2150 km, 650 h), which this reproduction meets to +2.4% and -3.8%, outside the 1e-2 like-for-like V1 tolerance of the CR3BP rows
@@ -66,10 +66,10 @@
     kind: "conflict"
     note: "Schwaniger Fig. 9 injection speeds at 1938 km periselenum sit about 64 m/s below the digest's reproduction (constant offset, after allowing for the 2 omega r rotating/inertial split); times and longitudes match. A speed convention the report does not state. Unresolved."
     todo_ref: "#970"
-  - path: "orbit_class"
-    kind: "uncertain"
-    note: "Perigee altitude 176.9 km is below the Earth registry floor of 200 km (core/constants.py PLANETS['E'].safe_alt_km, Russell 2004). The Moon pass (465 km altitude) clears the 100 km Moon floor. Kept as orbit_class cycler (periodic, ballistic, Earth and Moon pass every period) as the digest proposed; the lead/owner may prefer a note-only flag. The #997 perigee continuation tabulates the family members that clear both floors."
-    todo_ref: "#997"
+  - path: "orbit_elements.cr3bp.perigee_km"
+    kind: "not-applicable"
+    note: "Perigee 176.9 km altitude is below this project's 200-km Earth floor (PLANETS['E'].safe_alt_km); not a both-floors cycler-class member under the #888 gate. Floors govern this project's novelty claims, not literature rows: the published orbit is recorded as published (lead ruling 2026-10-07, #970)."
+    todo_ref: "#970"
   legs: []
   first_published:
     authors: ["Schwaniger, A. J."]
@@ -98,6 +98,10 @@
     Positive control for CR3BP correctors and for any corrector regularised at both primaries
     (#948 R4): tests/core/test_970_schwaniger_control.py. It is a WEAK regularisation control:
     the plain integrator already handles the 177 km perigee and 465 km perilune.
+
+    The C = 1.09727 quoted in the digest-era summaries (with the mu(1-mu) term) belongs to the
+    6-digit rounded initial state, a neighbouring member with perigee 6560 km; the 6555 km member
+    reproduced here has C = 1.0854167 (1.0974197 with mu(1-mu)).
 
     Not a duplicate: no catalogue Earth-Moon row has C near 1.085 with T near 6.0 (digest grep
     inventory). NOT the arenstorf-em-figure8-1963 orbit and must not fill that row's nulls.

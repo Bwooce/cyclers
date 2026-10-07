@@ -179,12 +179,13 @@ candidate flags, Restrepo-Russell and Franz-Russell domain flags), `seeds.json`,
   - No match: casoliva-7-3b and -7-3c (not x-axis symmetric, so outside this symmetric lineage);
     Casoliva 1-2c/d/e, 2-1a and 3-2c; Vaquero 3:1 c254 and c313; Ross/Roberts-Tsoukkas;
     Braik-Ross. These are other classes; none of them is a member of these families.
-- **Restrepo & Russell 2018.** Every computed member has a perpendicular crossing within 5 x_L1
-  of the Moon, N <= 10 to T/2 and max r1 < 5. So every member is **inside the RR global-search
-  domain**. Membership is **unchecked**: the Earth-Moon data files are not held (`#1019` covers
-  JG/ST only; question sent to the lead). Their paper states no impact filter. F1's 177 km
-  perigee member and F2-F3's floor members could have been kept or dropped by their pipeline;
-  unknown.
+- **Restrepo & Russell 2018.** Every computed member lies inside the RR search domain as the paper
+  states it. The Earth-Moon files are now held and have been cross-matched (sec. 1.8):
+  - F3 is in RR at the family level. RR records match F3 members along the same branches, and they
+    bracket the F3-10/F3-11 candidate stretch (RR-matched members at C = 2.324 and 2.479).
+  - F1 and F4 3/7-r are outside RR's populated energy range: no RR Earth-Moon record has J < 2.119,
+    and these candidates have C = 0.58-1.31. Their absence from RR is a coverage gap. It is not
+    evidence of novelty.
 - **Franz & Russell 2022.** Every candidate is excluded by construction. Their rule discards any
   orbit that is EVER more than about 350,000 km from the Moon. So the test is the maximum Moon
   distance over the whole period. Over the candidates, that maximum is at least 750,040 km (F1),
@@ -407,6 +408,44 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
 | 0.29524 | 17.9972 | 78.15 | 1.42351 | 44626 | 4297 | 223 | -90 |  | period doubling (b_h crosses -2) |
 
 
+### 1.8 Restrepo-Russell 2018 Earth-Moon cross-match
+
+- Data: the authors' files, read in place (outside the repo; Apache 2.0; cite Restrepo & Russell
+  2018, CMDA 130:49). Path: `Earth_Sys/Moon/`, 8 searches, 112,630 records. Script
+  `scripts/run_997_rr_crossmatch.py`, output `data/997_lineage/rr_crossmatch.json`.
+- Conventions checked on the first record of each file:
+  - RR's J (column 3 + 3) equals the project's C (no mu(1-mu) term) after the shift
+    X = x + 1 - mu from their Moon-centred frame.
+  - The global searches use mu = 0.0121437 (GM 398,600 / 4,900); the local searches use
+    0.0121506. The registry value is 0.0121505844.
+- Match rule, fixed before reading the results:
+  - |J - C| < 5e-3 and |T_RR - T| / T < 5e-3;
+  - and a perpendicular crossing (x, vy) within 5e-3 of one of the target's crossings, in both
+    components.
+  - The tolerance absorbs the mass-ratio offset of the global files.
+- RR populated range: J 2.119 to 5.607. Only 113 records have J < 2.5.
+- Positive controls (the catalogue rows on the #997 families):
+  - vaquero-21-c266 (C = 2.660) matches one RR global-search record: J = 2.6598, T = 5.6643,
+    crossing difference 1.4e-3. That difference is consistent with the mass-ratio offset.
+  - vaquero-21-c246 and -c247 (C = 2.46-2.47) have no individual RR record within tolerance.
+    Their F3 branch is RR-matched at C = 2.483-2.509 (`F3-9_p`), so they sit between RR's samples
+    of a family that RR covers.
+  - vaquero-21-c198 (1.98), casoliva-2-1b (1.196) and casoliva-7-3a (1.022) are below RR's
+    J range. RR cannot contain them.
+- Candidates:
+  - F1 (19) and F4 3/7-r (37): C = 0.58-1.31, outside RR's J range, 0 matched.
+  - F3 (20): all inside the J range, and no individual candidate is matched. At the family level,
+    RR matches 100 of the 311 F3 members inside the J range, along every branch:
+    - The F3-10/F3-11 direct-branch candidates (C = 2.355-2.441) are bracketed by RR-matched
+      members at 2.324 and 2.479 on the same continuation.
+    - The near-Moon-branch candidates (F3-6/F3-7, C = 2.240-2.277, periselene 105-200 km alt) lie
+      past the last RR-matched member of that branch (C = 2.408), toward the lunar floor. RR has
+      no records there.
+  - So F3 is an RR-covered family. Its candidate stretches are members of that family that RR's
+    grid sampled sparsely or not at all.
+- **Verdict unchanged: all known-class.** F1 and F4 3/7-r are known-class through their
+  published sources (Schwaniger; Newton's construction; Casoliva 7-3a on F4 3/7-r), not through RR.
+
 ## 2. Verified vs assumed
 
 - Verified: every listed member is a corrected symmetric periodic orbit. It has |xdot(T/2)| <
@@ -414,7 +453,8 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
   catalogue matches are crossing-state matches, not C-only matches. Newton's 11 rows and
   Hoelker-Winston's Figs. 89 and 94 reproduce.
 - Assumed or not checked:
-  - Restrepo-Russell membership (data not held).
+  - Restrepo-Russell: matched only at the sampled points; their files hold no F1 or F4 3/7-r
+    energies.
   - Behaviour inside the period-doubling gaps.
   - Members between sampled steps; the steps are adaptive, and every candidate interval is
     bounded by sampled members.
@@ -424,7 +464,7 @@ mu(1 - mu) = 0.0120030 for the other convention); b_h = tr(M4) - 2, b_v = tr(Mz)
 
 - `#972` (literature): the pre-registered rule labels the three candidate stretches above
   known-class-member (continuations of published seeds; two contain catalogued published orbits).
-  The adjudication is `#972`'s. The RR Earth-Moon files would settle literal membership.
-- `#1019` / lead: whether the RR Earth-Moon folder is fetched.
+  The adjudication is `#972`'s. RR covers F3 at the family level but holds none of F1's or F4
+  3/7-r's energies (sec. 1.8).
 - `#948`: F1's down-perigee end (Earth-surface impact at C = 1.09) and F2/F3's floor stops are
   natural entry points for a both-primary regularised continuation to collision.
