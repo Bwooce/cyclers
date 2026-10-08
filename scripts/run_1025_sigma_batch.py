@@ -870,6 +870,100 @@ def summary() -> None:
         print(" | ".join(f"{k}={v}" for k, v in row.items() if v is not None))
 
 
+def scan(p: P, z: Arr, sigma: float) -> list[dict[str, Any]]:
+    """#1025 amendment 2: closest approaches to both moons along every leg (DOP853, rtol 1e-12,
+    0.0005-day sampling), other than the node periapses at the leg ends. ``inside_body``: inside
+    sigma x R (an unscheduled impact); minima inside 3 Hill radii are listed."""
+    from scipy.integrate import solve_ivp
+
+    nd = nodes(p, z)
+    found = []
+    for k in range(p.m):
+        x0, _, t0, _ = nd[k]
+        t1 = nd[k + 1][2]
+        sol = solve_ivp(
+            lambda t, y: accel(p, y, t),
+            (t0, t1),
+            x0,
+            method="DOP853",
+            rtol=1e-12,
+            atol=1e-10,
+            dense_output=True,
+        )
+        ts = np.linspace(t0, t1, int((t1 - t0) / (0.0005 * DAY)) + 2)
+        ys = sol.sol(ts)
+        for moon in MOONS:
+            mu = sigma * SATELLITES[moon].mu_km3_s2
+            hill = SATELLITES[moon].sma_km * (mu / (3.0 * MU_JUPITER_KM3_S2)) ** (1.0 / 3.0)
+            dist = np.linalg.norm(
+                ys[:3].T - np.array([p.circ.state(moon, float(t))[0] for t in ts]), axis=1
+            )
+            for i in range(1, len(ts) - 1):
+                if dist[i] <= dist[i - 1] and dist[i] <= dist[i + 1] and dist[i] < 3.0 * hill:
+                    found.append(
+                        {
+                            "leg": k,
+                            "moon": moon,
+                            "t_days": float(ts[i] / DAY),
+                            "dist_km": float(dist[i]),
+                            "hill_km": float(hill),
+                            "inside_hill": bool(dist[i] < hill),
+                            "inside_body": bool(dist[i] <= sigma * SATELLITES[moon].radius_eq_km),
+                        }
+                    )
+    return found
+
+
+def analyse() -> None:
+    """Per-member table with the amendment-2 scan (note sec. 10)."""
+    rows = []
+    for mid, _key, _vg, _vc in MEMBERS:
+        r = json.loads((OUT / f"{mid}.json").read_text())
+        p = build(mid)
+        pc = describe(p, p.seed, 1.0)
+        row: dict[str, Any] = {
+            "member": mid,
+            "k": int(_key.split("|")[0][1:]),
+            "outcome": r.get("outcome"),
+            "reason": r.get("reason"),
+            "sigma_f": r.get("sigma_f"),
+            "sigma_i": r.get("sigma_i"),
+            "identity": r.get("identity"),
+            "pc": [
+                {
+                    "moon": n["moon"],
+                    "vinf": n["vinf_kms"],
+                    "alt_km": n["rp_km"] - SATELLITES[n["moon"]].radius_eq_km,
+                    "turn": n["turn_deg"],
+                }
+                for n in pc
+            ],
+            "ias15": r.get("ias15"),
+        }
+        if r.get("points"):
+            q = r["points"][-1]
+            p.set_sigma(q["sigma"])
+            row["scan_sigma"] = q["sigma"]
+            row["scan"] = scan(p, np.asarray(q["z"]), q["sigma"])
+            row["unscheduled_impact"] = any(x["inside_body"] for x in row["scan"])
+            row["end"] = [
+                {
+                    "moon": n["moon"],
+                    "vinf": n["vinf_kms"],
+                    "alt_km": n["rp_km"] - q["sigma"] * SATELLITES[n["moon"]].radius_eq_km,
+                    "turn": n["turn_deg"],
+                }
+                for n in q["nodes"]
+            ]
+        if row["outcome"] == "EXISTS" and row.get("unscheduled_impact"):
+            row["outcome_final"] = "IMPACT (unscheduled)"
+        else:
+            row["outcome_final"] = row["outcome"]
+        rows.append(row)
+        _log(f"analyse {mid}: {row['outcome_final']} scan {len(row.get('scan', []))} minima")
+    (OUT / "analysis.json").write_text(json.dumps(rows, indent=1))
+
+
 def main() -> None:
     preflight_search(
         task_no=1025,
@@ -888,10 +982,14 @@ def main() -> None:
     ap.add_argument("--worker", default="0/1")
     ap.add_argument("--max-wall", type=float, default=420.0)
     ap.add_argument("--summary", action="store_true")
+    ap.add_argument("--analyse", action="store_true")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     if args.summary:
         summary()
+        return
+    if args.analyse:
+        analyse()
         return
     ids = (
         [m[0] for m in MEMBERS if m[0] not in CONTROLS]
