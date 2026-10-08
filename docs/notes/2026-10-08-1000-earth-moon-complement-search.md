@@ -303,3 +303,14 @@ with `diff -rq`: identical, 58 files, 16,704 records.
 - Foreground calls under 8 minutes (`--max-seconds 420`), with JSONL checkpoints under
   `data/1000_complement/shooting/`.
 - A timing pilot of 20 control seeds goes first.
+
+- **Amendment A2** (2026-10-08 11:58 AEDT). Made after the 20-seed timing pilot and before any
+  control run.
+  - What the pilot showed: 17 of 20 solves impacted, and 3 hit the iteration limit. The skeleton
+    transform is right: with mu = 1e-9 one arc closes on the next node to 6e-7. But with the real
+    mu, the lunar perturbation shifts the revolution time by a few per cent. At a PERIGEE node,
+    that becomes an O(1) velocity mismatch, because the angular rate there is about 100 rad/TU.
+  - Change: the multiple-shooting nodes move to the skeleton's p APOCENTRES, where the dynamics
+    are slow. The node-0 phase condition (r1 . v = 0) is unchanged, and now picks an apogee.
+    Classification and the k-minimal test start from the orbit's first perigee after node 0.
+
