@@ -2503,7 +2503,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (open-ended-chain formulation; time-boxed). **CONTROL PASSED 2026-10-08 (`4f207271`, `ec393fdf`):**
   formulation (b), direction-only end pins, is validated on the ideal control (the one-cycle EGGIE,
   `#1043`). Next: (b) on jup365 with GanEur#316 (the `#968` rung (b) re-attempt), time box from 10:05
-  AEDT. **`#968` RUNG (b) FOLLOW-UPS, NOT RUN:** (b)
+  AEDT.
+  **FINAL 2026-10-08 (`4f207271`, `ec393fdf`, `e34abfa1`, `54c9dcf0`, `9ed27524`; note
+  `docs/notes/2026-10-08-1039-open-chain-formulation.md`): RUNG (b) STAYS NOT ACHIEVED; the jup365 lane
+  is still unvalidated by a published control.** Formulation (b) is validated on the closed-chain
+  control (`#1043` closes). On jup365 GanEur#316, (b) stopped at sigma 0.383 because row 3 forced a
+  magnitude equality the open seed does not have (a 0.0153 km/s gap; the first reading was withdrawn).
+  Formulation (b'), with the gap held at the seed value, stops at sigma 0.367 with the INTERIOR Europa
+  flyby at 14.2 km, under the scaled 36.7 km floor. The same interior node fails under vector pins
+  (0.62), (b) (0.38) and (b') (0.37), so for `#316` the ends are not the cause. Criterion 7(ii) at sigma
+  0.01 fails at the integration-noise floor, as registered. (a') was not run (no 3-cycle control exists,
+  `#1041`). Next: `#1044`. **`#968` RUNG (b) FOLLOW-UPS, NOT RUN:** (b)
   direction-only end pins; (c) a closed multi-cycle chain; (a') the 3-cycle pinned chain with
   Levenberg-Marquardt or an end-pin homotopy. Until one succeeds, the Jovian n-body lane is validated
   in the ideal model only and the jup365 path is unvalidated.
@@ -2585,6 +2595,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   1, V_inf E 9.032, G 7.046 / 7.041, I 7.880 km/s, altitudes 1,028-7,726 km, no unscheduled Hill-radius
   pass; IAS15 re-fly 1.0e-6 km; identity at sigma 0.01 / 0.005: 0.0044 / 0.0023 km/s. So the fold at
   0.505 was the vector end pins.
+- `#1044` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus, about 1 h; from `#1039`). **A SECOND
+  REAL-EPHEMERIS CONTROL UNDER FORMULATION (b'): GanCal#1 AT 2013; THEN gc-1 ITSELF AT ONE EPOCH UNDER
+  (b').** Either it validates the jup365 lane, or it establishes that the chain tool's patched-conic
+  real-ephemeris passes do not survive continuous gravity at these altitudes; in that case the finding
+  goes into every Jovian row's `data_gaps`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
