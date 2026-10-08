@@ -2363,7 +2363,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   which PASSES (worst 0.933, re-fly 0.017 km). Epoch 1: 2 and 3 cycles pass (0.914, 0.875), 4 cycles
   FAIL (the ramp stalls at lambda 0.711). Epochs 2 and 4 converge to the gate-failing 6.23 chain (1.092,
   1.034): FAIL. Conditional on the method (no growth path was tried at epochs 2 and 4, because step 1
-  did not stall). The owner's decision on ev-B has been asked.
+  did not stall). The owner's decision on ev-B has been asked; the question now includes the `#415` dV
+  band (twobody-gen2-opus is computing ev-B's per-7-cycle dV).
 - `#1009` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (parked by
   `#972`). **A SOURCED "FUTURE-WORK ARCHITECTURE" FIELD ON THE RUSSELL-STRANGE ANCHORS.** R-S AAS
   07-118 p.18 names the massive-target architecture as future work; the field would let
@@ -2484,6 +2485,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   prior-art notes (the JUICE C-G-C round trip; Lynam's capture windows at 50.09 d; the H&M k10 block
   orbits for ev). Owner adjudication after. The ev k5 sun-grazer (12.5 solar radii) is flagged not
   credible.
+  Amendment 2 (2026-10-08, from `#1033`): a post-hoc unscheduled-pass scan at sigma 1 for every member; a
+  driver bug (LinAlgError on a failed propagation probe) was fixed in `95ce7550`.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
@@ -2548,10 +2551,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `docs/spec.md` (the cr3bp block, about line 615) says only "<= 1 stable; > 1 unstable". Proposal: a
   `stability_index_convention` enum field (schema bump) with a backfill of every row, plus a notes
   wording rule (state in-plane and vertical stability separately).
-- `#1033` — registered 2026-10-08 (from `#1004`; BACKLOG). **ISOLA / ALTERNATIVE-SEED SEARCH FOR A
+- `#1033` — ✓ DONE 2026-10-08 (`6578a0d7`, `95ce7550`, `cd97d3e5`). Registered 2026-10-08 (from `#1004`).
+  **ISOLA / ALTERNATIVE-SEED SEARCH FOR A
   FULL-MASS gc-2 IN THE CONTINUOUS R-S MODEL**, and which seed family would find it. `#1004` showed only
   that the branch continued from the patched-conic gc-2 folds at sigma 0.164; absence on one branch is
-  not absence.
+  not absence. **RESULT: outcome (iii), IMPACT:** the full-mass G-C-C-G "orbit" found passes 83 km from
+  Ganymede's centre (inside the force model's softened core), so it is not physical; the observation is
+  withdrawn, and gc-2's fold statement stands. Side fix: a `#1025` driver bug (LinAlgError on a failed
+  propagation probe) fixed in `95ce7550`; amendment 2 to `#1025` (a post-hoc unscheduled-pass scan at
+  sigma 1 for every member) is registered.
 - `#1034` — ✓ DONE 2026-10-08 (jovian-nbody-opus; pre-registration `04a79e92`, amendment `3acceec8`, result
   `17ad5c4c`; note `docs/notes/2026-10-08-1034-gc1-continuous-sigma.md`). **THE SAME JOINT-sigma
   CONTINUATION FOR gc-1**, pre-registered, with the tangent rule enforced in code. **gc-1 EXISTS in the
@@ -2643,7 +2651,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   is a one-cycle ballistic object in its own model; ballistic repeatability is limited to that,
   consistent with the paper's own statement". Its one-cycle existence in continuous gravity was not
   tested: `#1043`.
-- `#1042` — registered 2026-10-08 (from `#1040`/`#1041`); **PREPARED (`51b44f45`; note
+- `#1042` — ✓ DONE 2026-10-08 except `#1042`-b (owner): the IEG-row patch landed in `994916e2` (earthmoon-opus; suite in foreground chunks, every file exit 0, timeouts split and re-run alone; no census ratchet moved): the Hernandez
+  and Lynam-Longuski rows carry the model note, the one-cycle repeatability, the `#1043` continuous-gravity
+  closure and the `n_returns` data_gaps conflict. Registered 2026-10-08 (from `#1040`/`#1041`); **PREPARED (`51b44f45`; note
   `docs/notes/2026-10-08-1042-ieg-rows-review.md`; patch `data/1042_ieg_rows/ieg_rows.patch`, 55 lines
   against the catalogue at `5da84b2b`; validate and schema pass; full ratchets NOT run).** The Hernandez
   row gets a period note, a `data_gaps` entry for the `n_returns` conflict and a notes paragraph;
@@ -2735,9 +2745,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   2,370-signature probe changes only in the no-topology half; the {repeated-moon} rows are identical
   across v2, v3 and A1; candidates md5-identical). The review's remaining findings widen `#1052`. **The v3
   gate is usable for `#1025`, `#1036` and `#1047` with LABELLED, TOPOLOGIED signatures only.**
-- `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
+- `#1046` — ✓ CLOSED 2026-10-08, NO VERDICT (jovian-nbody-opus; apojove form `bc55a16a`..`e5f0902a`, crank form
+  `e3ae1b2b`, `8aedacd2`). Registered 2026-10-08 (from `#1044`). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
-  V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
+  V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1. **RESULT:** the EGGIE control
+  passes under both forms; GanCal#1@2013 and gc-1 (epoch e2) stall in the same out-of-plane null
+  direction across the full-revolution leg under every formulation (end pins, apojove node, explicit
+  crank): the obstruction is an out-of-plane inconsistency near the chain, not a parametrisation. The
+  jup365 lane stays unvalidated. The gc-1 `data_gaps` sentence "obstruction: out-of-plane mismatch across
+  the full-revolution leg (`#1046`)" goes in at the next catalogue window. Follow-up: `#1055`.
 - `#1047` — registered 2026-10-08 (from `#1000`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **LITERATURE STEP AND ADJUDICATION FOR
   THE `#1000` FAMILIES A, B AND D, THE NINE SYMMETRIC FAMILIES, AND (widened 2026-10-08, from `#1048`) THE
   3:1 RETROGRADE AND 7:2 PROGRADE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
@@ -2760,7 +2776,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   perigees: a seed-design issue (`#1054`). Note sec. 7 (`ebc04b3a`) corrects `#1000` sec. 4.1: family C
   passes through the MIRROR image of casoliva-7-3b (the 7-3c orientation); its known-class verdict is
   unchanged.
-- `#1049` — registered 2026-10-08 (from `#1000`; catalogue evidence; the first finding WITHDRAWN, the notes
+- `#1049` — ✓ DONE 2026-10-08 (folded into `#1053`, landed in `994916e2`). Registered 2026-10-08 (from `#1000`;
+  catalogue evidence; the first finding WITHDRAWN, the notes
   work folded into `#1053`). **casoliva-7-3b AND
   casoliva-7-3c ARE PROBABLY MIRROR IMAGES** (identical printed C and k): verify and note on both rows.
   Already shown in code: `tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`
@@ -2799,7 +2816,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   G1' is not self-consistent ("resonant"-only anchors are never capped). Candidate rule: cap any anchor
   with NO cycler-class label, after checking the Earth-Moon `[]` anchors. Also the remaining ratchet
   evasions (a Call with a status argument; NamedExpr) and nits.
-- `#1053` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1049`). **LEAD RULING (a): RE-DERIVE
+- `#1053` — ✓ DONE 2026-10-08: landed in `994916e2` (earthmoon-opus; suite in foreground chunks, every file exit 0, timeouts split and re-run alone; no census ratchet moved): 7-3c re-derived as the exact mirror of 7-3b, both rows' notes
+  state the pair, `validate.py` evidence text. Registered and dispatched 2026-10-08 (earthmoon-opus; from `#1049`). **LEAD RULING (a): RE-DERIVE
   casoliva-7-3c AS THE EXACT MIRROR OF THE casoliva-7-3b ROW AT C = 1.068655**, and have BOTH rows' notes
   state the mirror relation and cite `#899` (`tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`).
   The 7-3c row today sits on the mirror branch but at C = 1.067197 (printed: 1.068762 for both). Patch
@@ -2817,6 +2835,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   1.3 times the floor, omega chosen by the target lunar-pass distance, and a perigee step limit; the
   current seeds impact in 93-94 % of solves when the skeleton passes near the Moon or the seed perigee
   is at the floor.
+- `#1055` — registered 2026-10-08 (from `#1046`; BACKLOG). **A SEED CORRECTED WITH THE OUT-OF-PLANE ROWS** for
+  the Jovian n-body lane's full-revolution legs, to remove the out-of-plane inconsistency that stalls
+  GanCal#1@2013 and gc-1 under every formulation (`#1046`).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
