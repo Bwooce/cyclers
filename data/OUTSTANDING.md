@@ -165,7 +165,7 @@ Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` k
 | gc-2 | GanCal-family relative, NOT novel; CATALOGUED V1 as `known-class-member` (`ganymede-callisto-two-working-body-cycler-gc2-2026`, `275c9e28`) | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km; continuous R-S model: its branch FOLDS at sigma 0.164 of the moon masses, no full-mass gc-2 on that branch (`#1004`) | 6.11, 6.14, 6.21; `#1004` |
 | ev-C | **candidate-novel** under `#875` (ii) (known architecture at a never-treated body set); CATALOGUED V1 (`earth-venus-venus-hosted-cycler-evc-2026`, `275c9e28`) | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | **candidate-novel**, with the DE440 near-ballistic caveat; CATALOGUED V1 (`earth-venus-two-working-body-cycler-eva-2026`, `275c9e28`) | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
-| ev-B | not decided: retry with continuation at the failing epochs first (twobody-gen2-opus running) | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
+| ev-B | not decided: the continuation retry (`#1008`, done 2026-10-08) leaves Standish at 2/5 (epochs 0 and 3); OWNER DECISION ASKED | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
 | ge-1, ge-2, ge-3 | no ruling (rung (d) conditional negatives) | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056, two validated methods): ge-1, ge-2 and ge-3 NOT PASSED, real-ephemeris NEGATIVE, conditional on the method (every closure gate-fails: ge-1 5/5 epochs, best 2.57-6.60; ge-3 3/5, 2.88-3.32; ge-2 (homotopy rerun, 6.51: one 10-cycle closure, gate fail 7.93; gate fails from k = 2 at every epoch); the blend lambda = 1 gate passes are an artefact: the full-rev legs miss the moon by 748-3,192 km (6.49) | 6.28, 6.29, 6.46-6.51 |
 | em-1, em-2, em-3 | no ruling (Fornari & Pontani 2020 now held and read: Mars massless, no em collision) | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | no ruling | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
@@ -2356,6 +2356,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
   `docs/notes/2026-10-05-942-943-two-working-body-generator.md`. Source: owner rulings 2026-10-07;
   note 6.55.
+  **✓ DONE 2026-10-08 (amendment 6.55a `6b3b1668`, made before the runs; code `6ac27fb5`; results `e33aa901`,
+  note 6.55b; `data/942_evB_ramp/`): RESULT UNCHANGED, ev-B passes the 16-yr Standish chain at 2 of 5
+  epochs (0 and 3).** The pre-registered 1-cycle start failed its natural positive control in a smoke
+  test, so it was amended to a 4-cycle ramp continuation with epoch 0 (a known pass) as the control,
+  which PASSES (worst 0.933, re-fly 0.017 km). Epoch 1: 2 and 3 cycles pass (0.914, 0.875), 4 cycles
+  FAIL (the ramp stalls at lambda 0.711). Epochs 2 and 4 converge to the gate-failing 6.23 chain (1.092,
+  1.034): FAIL. Conditional on the method (no growth path was tried at epochs 2 and 4, because step 1
+  did not stall). The owner's decision on ev-B has been asked.
 - `#1009` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (parked by
   `#972`). **A SOURCED "FUTURE-WORK ARCHITECTURE" FIELD ON THE RUSSELL-STRANGE ANCHORS.** R-S AAS
   07-118 p.18 names the massive-target architecture as future work; the field would let
