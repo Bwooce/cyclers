@@ -1,5 +1,6 @@
-"""#1049: is the catalogue's casoliva-7-3c row the mirror image of casoliva-7-3b, or an
-un-mirrored member of the same asymmetric family branch?
+"""#1049: are the catalogue's casoliva-7-3b and casoliva-7-3c rows one orbit and its mirror?
+Each row is tested, directly and mirrored, against the #1000 family-C continuation branch solved at
+the row's own C, and the 7-3c row is compared with the mirror of the 7-3b row.
 
 Solves the #1000 family C (continuation members in
 data/1000_complement/continuation/7_3_ret_wE-10_wM-1_p.jsonl) at the 7-3c row's C, then compares
@@ -51,22 +52,31 @@ def distance(a_set: list[tuple[float, float]], b_set: list[tuple[float, float]])
 def main() -> None:
     with (REPO / "data" / "catalogue.yaml").open() as fh:
         rows = {r["id"]: r for r in yaml.safe_load(fh)}
-    c7c = rows["casoliva-7-3c-em-cycler-2010"]["orbit_elements"]["cr3bp"]
-    s6 = np.array(c7c["state_nd"])
-    s = np.array([s6[0], s6[1], s6[3], s6[4]])
-    mirror = np.array([s[0], -s[1], -s[2], s[3]])
-    c, period = c7c["jacobi_constant"], c7c["period_nd"]
     fam_file = REPO / "data" / "1000_complement" / "continuation" / "7_3_ret_wE-10_wM-1_p.jsonl"
     with fam_file.open() as fh:
         fam = [json.loads(line) for line in fh if "s_perigee" in line]
-    near = min(fam, key=lambda m: abs(m["C"] - c))
-    nodes, taus = cn.nodes_from(np.array(near["s_perigee"]), near["T"], 7)
-    res = sh.shoot(nodes, taus, c, step_max=0.01, max_it=60)
-    print(f"start member C {near['C']:.6f}; family member at C(7-3c) converged: {res['converged']}")
-    member = perigees(np.array(res["nodes"][0]), res["T"])
-    print(f"member T {res['T']:.9f}, 7-3c row T {period:.9f}")
-    print(f"distance mirror(7-3c) to the member: {distance(perigees(mirror, period), member):.2e}")
-    print(f"distance 7-3c (un-mirrored) to the member: {distance(perigees(s, period), member):.2e}")
+    sets = {}
+    for rid in ("casoliva-7-3b-em-cycler-2010", "casoliva-7-3c-em-cycler-2010"):
+        c = rows[rid]["orbit_elements"]["cr3bp"]
+        s6 = np.array(c["state_nd"])
+        s = np.array([s6[0], s6[1], s6[3], s6[4]])
+        mirror = np.array([s[0], -s[1], -s[2], s[3]])
+        near = min(fam, key=lambda m: abs(m["C"] - c["jacobi_constant"]))
+        nodes, taus = cn.nodes_from(np.array(near["s_perigee"]), near["T"], 7)
+        res = sh.shoot(nodes, taus, c["jacobi_constant"], step_max=0.01, max_it=60)
+        member = perigees(np.array(res["nodes"][0]), res["T"])
+        direct = distance(perigees(s, c["period_nd"]), member)
+        mirrored = distance(perigees(mirror, c["period_nd"]), member)
+        print(
+            f"{rid}: C {c['jacobi_constant']:.9f}; vs the family-C branch member at this C: "
+            f"direct {direct:.2e}, mirrored {mirrored:.2e}"
+        )
+        sets[rid] = (s, mirror, c["period_nd"])
+    b, c7 = sets["casoliva-7-3b-em-cycler-2010"], sets["casoliva-7-3c-em-cycler-2010"]
+    c_set = perigees(c7[0], c7[2])
+    d_mir = distance(c_set, perigees(b[1], b[2]))
+    d_dir = distance(c_set, perigees(b[0], b[2]))
+    print(f"7-3c row vs mirror(7-3b row): {d_mir:.2e}; 7-3c row vs 7-3b row: {d_dir:.2e}")
 
 
 if __name__ == "__main__":
