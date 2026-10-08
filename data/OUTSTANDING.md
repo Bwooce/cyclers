@@ -165,7 +165,7 @@ Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` k
 | gc-2 | GanCal-family relative, NOT novel; CATALOGUED V1 as `known-class-member` (`ganymede-callisto-two-working-body-cycler-gc2-2026`, `275c9e28`) | Ganymede-Callisto, both | 37.57 d; G 3.617 / C 3.039 | jup365, 10 cycles, 5/5 (worst 0.813-0.823), re-fly <= 2.4e-5 km; continuous R-S model: its branch FOLDS at sigma 0.164 of the moon masses, no full-mass gc-2 on that branch (`#1004`) | 6.11, 6.14, 6.21; `#1004` |
 | ev-C | **candidate-novel** under `#875` (ii) (known architecture at a never-treated body set); CATALOGUED V1 (`earth-venus-venus-hosted-cycler-evc-2026`, `275c9e28`) | Earth-Venus, Venus only (Earth massless; R-S architecture at Venus) | k = 2; E 9.07 / V 13.17 | Standish and DE440, 5 cycles (16 yr), 5/5 (worst 0.869-0.914) | 6.12, 6.14 |
 | ev-A | **candidate-novel**, with the DE440 near-ballistic caveat; CATALOGUED V1 (`earth-venus-two-working-body-cycler-eva-2026`, `275c9e28`) | Earth-Venus, both | k = 2; E 4.89 / V 10.36 | Standish 5/5 (0.58); DE440 near-ballistic: 1.6-2.5 m/s mid-course per 16 yr, no gate-passing ballistic member | 6.12, 6.23, 6.25 |
-| ev-B | not decided: the continuation retry (`#1008`, done 2026-10-08) leaves Standish at 2/5 (epochs 0 and 3); OWNER DECISION ASKED | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
+| ev-B | **candidate-novel** V1 by OWNER DECISION 2026-10-08 evening; band flagged: strictly-ballistic at the best window, window-dependent (2/5 epochs ballistic, 3/5 above 300 m/s per 7 cycles); row prepared for the next window (`#1008`) | Earth-Venus, both | k = 3; E 8.01 / V 10.93 | Standish 2/5 | 6.12, 6.23, 6.25 |
 | ge-1, ge-2, ge-3 | no ruling (rung (d) conditional negatives) | Ganymede-Europa, both (all have a full-rev leg) | ge-1 k1 3.734/8.184; ge-2 k3 1.371/1.620; ge-3 k3 3.881/8.413 | rung (d) (patched conic, jup365, 10 cycles, epochs 2030-2056, two validated methods): ge-1, ge-2 and ge-3 NOT PASSED, real-ephemeris NEGATIVE, conditional on the method (every closure gate-fails: ge-1 5/5 epochs, best 2.57-6.60; ge-3 3/5, 2.88-3.32; ge-2 (homotopy rerun, 6.51: one 10-cycle closure, gate fail 7.93; gate fails from k = 2 at every epoch); the blend lambda = 1 gate passes are an artefact: the full-rev legs miss the moon by 748-3,192 km (6.49) | 6.28, 6.29, 6.46-6.51 |
 | em-1, em-2, em-3 | no ruling (Fornari & Pontani 2020 now held and read: Mars massless, no em collision) | Earth-Mars, both | k3; 5.333/4.713, 5.333/4.713, 4.684/4.539 | shortlist; worst ratios 0.939-0.983 (thin); em recall control PASSED (R-O 2.5.1.+0, blind; lead ruling, note 6.47); rung (d) Standish direct NOT passed (converged landings fail at Mars, 2.9-24) | 6.36, 6.40, 6.47 |
 | vm2n-2 | no ruling | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
@@ -175,8 +175,8 @@ by the rulings below; each row records gate result, anchor, prior-art note and d
 2026-10-08 (`275c9e28`, twobody-gen2-opus; rows at V1; five census ratchets extended; both ratchet
 chunks exit 0).** Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
 **candidate-novel** (spec 16.4/16.5 wording; attribution to the architecture's authors, Russell & Strange
-for ev-C); gc-2 is a GanCal-family relative, NOT novel; ev-B waits for a continuation retry at its
-failing epochs. All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
+for ev-C); gc-2 is a GanCal-family relative, NOT novel. Owner decision 2026-10-08 evening: ev-B is
+candidate-novel V1 with its band flagged (row in the next window). All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
 - Jovian controls validated at 10 cycles on jup365 (closure plus DOP853 re-fly): the HALF-REV path by
   GanEur#316 at R-S's 2019 epoch (6.38: gate pass 0.804, re-fly 1.5e-5 km) and the FULL-REV path by
   C4 GanCal#1 at R-S's 2013 epoch (6.44-6.45: closes at 10 cycles, re-fly 2.8e-4 km; gate
@@ -2347,10 +2347,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   em: A RAMP-CONTINUATION REAL-EPHEMERIS ATTEMPT.** Rung (d) by the Standish direct route did not
   pass (note 6.40); the ramp continuation and other landings are untested. Source:
   `docs/notes/2026-10-06-942-943-owner-decision-summary.md` sec. 4.
-- `#1007` — registered 2026-10-07 (owner: "log all possible tasks"); status: GATED on the
-  `#942`/`#943` catalogue writeback (after `#972`). **V2-BALLISTIC CAMPAIGN FOR gc-1, gc-2, ev-C AND
+- `#1007` — registered 2026-10-07 (owner: "log all possible tasks"); status: RUNNING (twobody-gen2-opus;
+  the writeback landed in `275c9e28`). **V2-BALLISTIC CAMPAIGN FOR gc-1, gc-2, ev-C AND
   ev-A, THEN THE V3 JUDGMENT.** Lead plan (lead log 2026-10-07 18:47): rows written at V1, the V2
-  campaign after. Source: `docs/team/lead-log.md` 2026-10-07 18:47.
+  campaign after. Source: `docs/team/lead-log.md` 2026-10-07 18:47. **OWNER DECISION 2026-10-08 evening:
+  AMEND THE SPEC for patched-conic multi-arc rows** (spec amendment `93170995`; pre-registration
+  `d31f7211`): V2-ballistic = 3 or more continuous real-ephemeris cycles, bounded drift, a gate pass,
+  re-fly under 1 km, at 3 or more of 5 epochs, with a published positive control and a broken-flyby
+  negative control. **First control STOPPED as pre-registered:** Hollister 1H under the ramp
+  continuation fails 5 of 5 epochs (stalls at lambda 0.29-0.39). Lead ruling: run the gc lane now
+  (GanEur#316 control, the negatives, then gc-1 and gc-2), and pre-register one H&M Table 3 orbit at
+  H&M's own epoch as the ev control; 1H's failure is recorded as a control-choice lesson.
 - `#1008` — registered 2026-10-07 (owner: "log all possible tasks"); status: DISPATCHED
   (twobody-gen2-opus, owner ruling 2026-10-07). **ev-B: STANDISH RAMP-MODE k-CYCLE GROWTH RETRY AT
   ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
@@ -2363,8 +2370,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   which PASSES (worst 0.933, re-fly 0.017 km). Epoch 1: 2 and 3 cycles pass (0.914, 0.875), 4 cycles
   FAIL (the ramp stalls at lambda 0.711). Epochs 2 and 4 converge to the gate-failing 6.23 chain (1.092,
   1.034): FAIL. Conditional on the method (no growth path was tried at epochs 2 and 4, because step 1
-  did not stall). The owner's decision on ev-B has been asked; the question now includes the `#415` dV
-  band (twobody-gen2-opus is computing ev-B's per-7-cycle dV).
+  did not stall). **OWNER DECISION 2026-10-08 evening (the owner's own answer): ev-B is CANDIDATE-NOVEL, V1, with its band flagged ("strictly-ballistic at the best window; window-dependent: 2/5 epochs ballistic, 3/5 above 300 m/s per 7 cycles").** The row is prepared
+  by twobody-gen2-opus for the next catalogue window, together with the `#1046` gc-1 `data_gaps` sentence.
 - `#1009` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (parked by
   `#972`). **A SOURCED "FUTURE-WORK ARCHITECTURE" FIELD ON THE RUSSELL-STRANGE ANCHORS.** R-S AAS
   07-118 p.18 names the massive-target architecture as future work; the field would let
@@ -2487,6 +2494,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   credible.
   Amendment 2 (2026-10-08, from `#1033`): a post-hoc unscheduled-pass scan at sigma 1 for every member; a
   driver bug (LinAlgError on a failed propagation probe) was fixed in `95ce7550`.
+  **CONTINUOUS-GRAVITY BATCH DONE 2026-10-08 (jovian-nbody-opus, `2272c1f8`, note sec. 10):** of the 20 gc
+  members, 15 EXIST at full mass (identity, IAS15 and unscheduled-pass checks all pass; lowest altitudes
+  207-400 km); gc6-3 FOLDS at sigma 0.748; gc5-0 and gc5-4 IMPACT; gc4-19 and gc5-7 hit a NUMERICAL STOP
+  (undecided). V_inf shifts 0-0.67 km/s against the patched conic. Real-ephemeris continuous gravity is
+  untested for all of them (the lane limit, `#1046`). **The literature step for all 42 members is
+  DISPATCHED to twobody-ext-opus** (labelled signatures, the v3 gate, prior-art notes, an owner summary).
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
