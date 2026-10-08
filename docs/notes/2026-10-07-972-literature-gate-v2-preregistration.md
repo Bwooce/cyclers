@@ -289,3 +289,18 @@ predates the code and matched, and ruling (b) was the stricter direction.
 false not-found" holds only for EQUAL body sets. A signature whose body set is a strict subset of a
 working-scope anchor's (e.g. a single-moon repeated-moon signature) can read "not-found" in v2 where
 v1 read "published" (via the wrong family). Disposition of findings 1-7: lead's ruling.
+
+### 9.1 The reviewer's findings, verbatim (lead ruling 2026-10-08)
+
+> 1. MAJOR — Hughes now claims "published 0.85" for any unlabelled, untopologied Sun E-V signature. Probe: Sun (E,V), (V,V,V,E), (E,V,E) with topology_label=frozenset(): v1 published via Hollister; v2 published via "Hughes ... one-shot free returns, not cyclers". `signature_from_review_entry` (lc.py:3627-3633) sets no topology_label, so every review-queue E-V entry gets this. F5 removed the n_bodies guard; F8's mga-tour tag only bites when the signature declares a topology. Novelty-safe direction but a false "published" with a wrong source, the failure F8 was approved to prevent. Fix: F14-style "topology-unlabelled" exclusion for anchors whose topology_label has no cycler class, or never let a non-cycler anchor reach "published". Pin: Sun (E,V) unlabelled, no topology, must not cite Hughes.
+> 2. MAJOR — Sec. 8 claim "the direction is safe: the result is never a false not-found" is wrong. F7 needs body-set EQUALITY; a strict subset escapes it. Saturn ("Titan",) repeated-moon (the shape of run_627:391, run_629:381, run_633:347) and Jupiter ("Ganymede","Ganymede") repeated-moon: v1 published 0.95 (R-S) -> v2 not-found 0.0. v1's citation was the wrong family, but the safety statement and #1035's scope understate the change. Fix: make F7 fire on `seq_set <= a.body_set` (consistent with _candidate_anchors), or correct sec. 8 and extend #1035 to single-moon signatures.
+> 3. MINOR — F4 removes v1's accidental safety net for a mis-stamped primary. `signature_from_review_entry` defaults primary to "Sun" (lc.py:3627), phase_match.py:222 likewise. Probe: gancal-1, ganio-53, titenc-37 with primary "Sun": v1 inconclusive 0.65 -> v2 not-found 0.0. Fix: missing audit primary must raise or return inconclusive.
+> 4. MINOR — H&M return_types_scope {"FR","SY"} omits "HR". Menning ch. 2 (digest lines 42-43): half-revolution return is a special case of FR; p.42 names HR sequences at Venus as variations. `labels()` emits "HR", so an E-V two-working-body candidate with an HR Venus return would be excluded from H&M and read not-found. Not ev-A/B's case. Fix: add "HR" with the digest citation.
+> 5. MINOR — F13 ratchet misses `status in FRESH` (Name), `match` statements, `.startswith("not-found")`, and files where the literal lives in an imported constant (pre-filter at test line 253). Catches !=, in-set, .get()==, is, ternary. Fix: also walk ast.Match/MatchValue and flag `*status` names compared to Name constants.
+> 6. NIT — `_declared_scope_exclusions` docstring says "or None" (lc.py:3069) but returns [].
+> 7. NIT — test_f4 (test_972:153-156) accepts any status except the old one; assert status == "not-found" and the footprint-note count.
+
+Lead rulings 2026-10-08:
+- The row step proceeds (gc-1, gc-2, ev-C, ev-A).
+- Then #1045 (pre-registered first) implements v3 fixes for findings 1-7.
+- v2 is not used on any other candidate set (#1025, #1036) until #1045 lands.
