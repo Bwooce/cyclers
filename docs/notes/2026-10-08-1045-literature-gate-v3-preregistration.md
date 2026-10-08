@@ -114,3 +114,20 @@ Findings (summarised; the full text is the reviewer's hand-back of 2026-10-08):
 8. Candidates confirmed: gc-1, gc-2, ev-C inconclusive; ev-A, ev-B not-found; controls 26/26.
 
 Disposition: lead's ruling.
+
+## 6. Amendment A1 (lead approval 2026-10-08), committed before the A1 code
+
+| # | Finding | Rule | Probe (pinned test) |
+|---|---|---|---|
+| G1' | 1 | Replaces G1's test. An anchor is capped (for a signature with no topology label) when its declared `topology_label` contains a TOUR label ({"mga-tour", "pump-tour", "ephemeris"}) and NO cycler-class label. CYCLER_CLASSES = {"repeated-moon", "halo", "nrho", "tulip", "binary-coorbital", "quasi-satellite", "retrograde-satellite", "axisymmetric", "planar"}. "resonant" alone is not a cycler class. | Jupiter (Ganymede, Callisto, Ganymede), untopologied, period 3: not "published", and the citation is not Niehoff. The Sun E-V probes of G1 still hold. |
+| A1-2 | 2 | When the best hit came from a capped anchor and the result is "inconclusive", the notes also name the F7 anchors (`_different_architecture_same_system`), when there are any. | Sun (E, V), untopologied and unlabelled: the inconclusive notes name the H&M anchor. |
+| A1-3 | 3 | The `_declared_scope_exclusions` docstring's first line is corrected. | — |
+| A1-4 | 4 | The F13 ratchet (in the test) also flags: (a) a comparison of a name assigned, in the same function or module, from a status access; (b) a comparison of a status access with an Attribute (e.g. `mod.OTHER_SET`, `consts.NOT_FOUND`). | Synthetic snippets: `st = r.status` then `st in FRESH`; `r.status in mod.OTHER_SET`; `r.status == consts.NOT_FOUND`: all flagged. The current src/ and scripts/ tree: clean. |
+| A1-5 | 5 | The H&M anchor comment says Menning p.42 names HR variations but Table 3 computes none ("anticipated, not tabulated"). | — |
+| A1-6 | 6 | F7's inclusion test requires a non-empty sequence (`seq_set and seq_set <= a.body_set`). | Jupiter, (), working "two": not inconclusive via F7. |
+
+Expected: the 26 controls and the five candidates unchanged. The catalogue probe (v2 against v3-A1)
+moves rows only toward "inconclusive". If any candidate or control changes: STOP and report.
+
+The untopologied Pergola (Uranus) and Howett (Pluto) limit is recorded, not fixed here; the lead
+registered it as #1052.
