@@ -224,3 +224,82 @@ casoliva-7-3b, which is asymmetric, C = 1.068655, T = 18.8496):
 
 My recommendation is (1) with the 7-3b/c control, then (2) as the pitchfork-parent gate. Each
 needs its own pre-registration amendment before it runs.
+
+**Archive of the rejected scan.** The rejected scan was copied to
+`~/dev/references/cyclers-runs/1000/scan/` (outside the repo), with `cp -R`. I confirmed the copy
+with `diff -rq`: identical, 58 files, 16,704 records.
+- md5 of the concatenated JSONL (`cat *.jsonl | md5`, in name order): a70eff2a8c5541e0f1768ff39fd27dfc.
+- md5 of the per-file md5 list: f230a4c921a94f25c6b304c5d340f8e2.
+- The working-tree copy was then deleted. `refined.jsonl` stays committed.
+
+## 2. Redesign: pre-registration amendment A (lead ruling 2026-10-08; committed before any run of it)
+
+### 2.1 Method (1): multiple shooting from near-Keplerian p:q skeletons
+
+- **Skeleton.** An Earth-centred two-body ellipse (GM = 1 - mu) in the INERTIAL frame, either
+  sense, with period T_P = 2 pi q / p. So p revolutions take q lunar sidereal months (2 pi q TU),
+  and a = (q/p)^(2/3) (1 - mu)^(1/3).
+  - It is given by its perigee radius r_p and the rotating-frame angle omega of the perigee at
+    t = 0. omega carries both the orientation and the phase relative to the Moon.
+  - It must cross the lunar orbit: r_p < 1 < r_a = 2a - r_p.
+- **Seed grid** (fixed now):
+  - **p:q in {2:1, 1:2, 3:2, 5:2, 1:3, 2:3, 4:3, 5:3, 7:3, 8:3}.** These are all ratios with
+    q <= 3 (T <= 6 pi) whose ellipse can cross the lunar orbit with r_p at or above the Earth
+    floor. 3:1 and 7:2 cannot (2a < 1), and 4:1 cannot either.
+  - Sense: inertial prograde or retrograde.
+  - r_p: 8 values, log-spaced from 6,578 to 42,164 km, keeping only those with r_a > 1.
+  - omega: 36 values, step 10 deg.
+  - At most 10 x 2 x 8 x 36 = 5,760 seeds.
+- **Multiple shooting.**
+  - N = p arcs, the nodes at the skeleton's p perigees (one per revolution), each node mapped to
+    the rotating frame.
+  - Unknowns: the N planar node states and the N arc durations (5N).
+  - Constraints: continuity at every node, with the last arc closing on node 0 (4N); node 0 at
+    a perigee, (r1 . v) = 0 (1); and, in the control runs only, C = C_target (1).
+  - Newton step: the minimum-norm least-squares solution. The STM of each arc comes from the
+    4 x 4 variational equations (DOP853, 1e-12).
+  - At most 25 iterations; the step is limited to 0.1 in the node-state norm.
+  - Converged when the continuity residual is < 1e-10 (nondimensional). Then:
+    - a full single-shooting closure from node 0 over T = sum of the durations must be < 1e-6.
+      This is looser than sec. 0.9 because lambda^(1/1) applies over the whole period;
+    - the k-minimal reduction is applied;
+    - the orbit is classified as in sec. 0.4.
+- **Control FIRST, hard stop.** Only the 7:3 seeds are run first: C fixed to the row values,
+  1.068655371747616 (7-3b) and 1.0671969118897233 (7-3c), both senses (1,152 solves).
+  - **Pass:** a converged ASYMMETRIC orbit matches each row. Its perigee set contains the row's
+    perigees to 1e-6 (ln r_p, omega) and T matches to 1e-6 relative.
+  - **If either row is not recovered, method (1) is rejected and I stop.**
+  - Then the full grid runs with C free (no C constraint). Every converged orbit is classified,
+    deduped (sec. 0.4) and gated (sec. 0.5).
+  - Each new asymmetric cycler-class family is continued in C under sec. 0.3's rules.
+
+### 2.2 Method (2): symmetry-breaking at b = +2 pitchforks (also the parent gate)
+
+- **Parents.**
+  - (a) Every adjacent member pair along the `#997` family checkpoints
+    (`data/997_lineage/*.jsonl`) where the in-plane index b_h crosses +2.
+  - (b) Restrepo-Russell Earth-Moon records with |b_h - 2| < 0.02 whose orbit has a perigee at
+    or below the GEO radius and a lunar pass inside the Hill radius (checked by propagation).
+    At most 200 of these, chosen by smallest |b_h - 2|.
+- **Branching.**
+  - At the bisected pitchfork member (b_h = 2 to 1e-6), take the monodromy eigenvector of the
+    double eigenvalue +1 that is ANTISYMMETRIC under the x-axis reflection.
+  - Perturb along it by +-1e-4. Solve with the multiple shooting of 2.1 at C = C_parent +- 1e-5
+    (both sides, both signs).
+  - Accept an asymmetric solution that does not collapse back onto the parent: its distance in
+    the section is > 1e-5.
+  - Continue each branch in C with sec. 0.3's rules.
+- **Control FIRST, hard stop.** The 7-3b/c family recovered by (1) is continued in C until its
+  b_h reaches +2 or it meets a symmetric orbit. That is its pitchfork parent.
+  - Method (2), applied to that parent, must regenerate the 7-3b/c branch.
+  - **If (1) finds no pitchfork along 7-3b/c within its continuation range, the control for (2)
+    is "not applicable".** That is recorded; then (2) runs as a parent gate only, and makes no
+    complement claim.
+  - **If the parent exists and (2) fails to regenerate the branch, method (2) is rejected.**
+
+### 2.3 Compute
+
+- Script `scripts/run_1000_shooting.py` (preflight task 1000), Pool(2).
+- Foreground calls under 8 minutes (`--max-seconds 420`), with JSONL checkpoints under
+  `data/1000_complement/shooting/`.
+- A timing pilot of 20 control seeds goes first.
