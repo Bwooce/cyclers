@@ -157,6 +157,15 @@ classes found" is a result.
   logarithm makes the 0.3 threshold about one grid cell in both coordinates. Newton refinement
   uses the same z.
 
+- 2026-10-08 11:45 AEDT, after the scan and before any Newton run. The scan finished: 16,704 seeds
+  at 0.02-0.13 s per seed, and 329 seeds pass the candidate filter. The tolerances are set to
+  what a 1e-12 integration of orbits with lambda up to about 1e3 can deliver:
+  - Newton converged: |P^k(z) - z| < 1e-8 (was 1e-9);
+  - full-period closure < 1e-7 (was 1e-8);
+  - symmetric test: |xdot| < 1e-6 at a y = 0 crossing (was 1e-7).
+  Also: the k-minimality test uses |P^d(z) - z| < 1e-6, and the control-level candidates are
+  refined first.
+
 ## 1. Results
 
 (after the runs)
