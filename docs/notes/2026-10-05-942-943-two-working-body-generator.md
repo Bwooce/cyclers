@@ -2110,6 +2110,40 @@ cycles but not 4.
 Conditional: step 2 ran only where step 1 stalled, as pre-registered. A growth path at epochs 2 and 4
 might reach a different branch; that was not tested. The owner decides on the result.
 
+### 6.57 Deterministic dV under the #415 bands, ev-B / ev-A / ev-C (lead ruling 2026-10-08): PRE-REGISTERED before computing
+
+Bands: `docs/notes/2026-06-22-dv-band-definitions.md` and `cyclerfinder.verify.dv_band_acceptance`.
+They are Russell's totals over a 7-cycle real-ephemeris propagation:
+- strictly ballistic < 1 m/s;
+- essentially ballistic < 10 m/s;
+- low maintenance < 300 m/s.
+A chain of n cycles is scaled pro-rata (x 7/n).
+
+Measures at every interior flyby of each converged chain (the same chains as before, no re-solve):
+- the #888 gate's two turn-deficit prices: `impulse_beyond_bend_kms` and the Oberth-credited
+  `impulse_periapsis_kms` (`verify.turn_gate`), each 0 where the demanded turn is within the bend at
+  the registry floor;
+- the full-rev directions are the chain tool's minimax ones (`interior_gate`). These minimise the worst
+  ratio, not dV, so the figures are upper-bound-style surrogates for that direction choice;
+- plus the chain's own mid-course closure dV where the chain tool reports one (ev-A DE440: 6.25,
+  `data/942_evAB_de440_closure_dv.json`; 0 for ramp-mode chains, which close exactly).
+- Reported per epoch: cycles, the dV per chain (both measures), per cycle, per 7 cycles, and the band.
+  The best epoch is the minimum per-7-cycle total.
+
+Chains:
+- ev-B, Standish:
+  - epochs 0 and 3: the 6.23 4-cycle passes;
+  - epochs 2 and 4: the 6.55b converged gate-failing 4-cycle chains;
+  - epoch 1: the 3-cycle chain of 6.55b (no 4-cycle chain exists; reported per 3 cycles, scaled x 7/3,
+    and flagged).
+- ev-A: Standish, 5 cycles, 5 epochs (6.23); DE440, 5 cycles, the 6.25 closure dV.
+- ev-C (CONTROL): Standish and DE440, 5 cycles, 5 epochs. Expected about 0 at every epoch.
+  - The control is weak: gate-passing chains have a zero deficit by definition.
+  - The non-trivial check is that the pricing code returns a non-zero dV on a gate-failing chain (ev-B
+    epoch 2 or 4) whose worst ratio is > 1.
+
+No row is written; the owner decides the threshold.
+
 ### 6.56 Addendum (2026-10-07, from #973, relayed by the lead)
 
 The pass definition of sec. 6.1 had two gaps:
