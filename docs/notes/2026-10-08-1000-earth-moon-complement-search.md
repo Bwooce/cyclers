@@ -314,3 +314,22 @@ with `diff -rq`: identical, 58 files, 16,704 records.
     are slow. The node-0 phase condition (r1 . v = 0) is unchanged, and now picks an apogee.
     Classification and the k-minimal test start from the orbit's first perigee after node 0.
 
+
+## 3. Method (1) control: PASSED (2026-10-08 12:10 AEDT)
+
+- **Run.** 7:3 seeds at the two row C values, 1,152 solves at about 0.5 s per seed with Pool(2),
+  in two foreground calls. Output: `data/1000_complement/shooting/control.jsonl`.
+  - Status: 176 converged, 950 impacted (the arcs pass inside the Earth or the Moon during the
+    iterations), 26 reached the iteration limit.
+- **Converged orbits.**
+  - Symmetric, T = 18.827-18.828 (k = 7): 126. Their perigee and periselene are about 15,800
+    and 29,300 km alt, which is the `#997` F4 3/7-r family at these C. There are also 3 other
+    symmetric k = 7 orbits (T = 18.446 and 18.961).
+  - Asymmetric: 47. Every one is either the catalogue row or its mirror image under
+    (x, y, t) -> (x, -y, -t), matched by perigee section point to 1e-6 and T to 1e-6:
+    - casoliva-7-3b-em-cycler-2010 (C = 1.068655): **22 seeds converge onto the row**, and 1
+      onto its mirror. Best section distance 2.2e-11.
+    - casoliva-7-3c-em-cycler-2010 (C = 1.067197): **1 seed onto the row** (distance 8.3e-10),
+      and 23 onto its mirror.
+- **Both positive controls are recovered from skeletons alone**, without seeding from the rows.
+  Method (1) is accepted and proceeds to the full grid (sec. 2.1) with C free.
