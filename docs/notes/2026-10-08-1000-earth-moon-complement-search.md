@@ -150,6 +150,13 @@ classes found" is a result.
   I report it and either hand the lead one launch command or reduce the grid. A reduction is
   recorded as an amendment BEFORE it is run.
 
+### 0.9 Amendments (each recorded before the runs it affects)
+
+- 2026-10-08, before the pilot: the seed residual is |P^k(z) - z| with z = (ln r_p, omega), not r_p
+  in units of 6,578 km. The r_p grid is log-spaced (ratio 1.31 per step, ln step 0.27), so the
+  logarithm makes the 0.3 threshold about one grid cell in both coordinates. Newton refinement
+  uses the same z.
+
 ## 1. Results
 
 (after the runs)
