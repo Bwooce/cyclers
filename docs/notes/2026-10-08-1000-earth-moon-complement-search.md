@@ -333,3 +333,73 @@ with `diff -rq`: identical, 58 files, 16,704 records.
       and 23 onto its mirror.
 - **Both positive controls are recovered from skeletons alone**, without seeding from the rows.
   Method (1) is accepted and proceeds to the full grid (sec. 2.1) with C free.
+
+## 4. Method (1) grid, continuations, and the method (2) control: PASSED (2026-10-08 13:40 AEDT)
+
+### 4.1 Method (1) full grid (C free)
+
+- **Run.** 5,760 seeds in `data/1000_complement/shooting/grid.jsonl`.
+  - Status: 1,505 converged, 3,101 impacted during the iterations, 650 reached the iteration
+    limit, and 504 skipped because their skeleton does not cross the lunar orbit.
+  - Of the 1,505 converged orbits, 213 are cycler-class candidates: 191 symmetric and 22
+    asymmetric.
+  - The asymmetric candidates form four families (p:q, inertial sense, winding about the Earth,
+    winding about the Moon):
+
+| family | grid members | C | T (TU) | perigee alt (km) | periselene alt (km) | b (in-plane) | max Moon distance (km) |
+|---|---|---|---|---|---|---|---|
+| A: 5:2 prograde, wE 3, wM 0 | 3 | 2.478-2.592 | 12.71-12.73 (about 4 pi) | 3,164-8,748 | 13,153-16,348 | -83 to -121 | about 790,000 |
+| B: 5:3 retrograde, wE -8, wM -2 | 4 | 0.728-0.864 | 18.89-18.90 (about 6 pi) | 3,385-10,789 | 18,881-21,188 | +127 to +239 | about 950,000 |
+| C: 7:3 retrograde, wE -10, wM -1 | 13 | 0.882-1.163 | 18.80-19.12 | 4,229-26,908 | 5,673-12,520 | +2.0 to +118 | about 800,000 |
+| D: 7:3 prograde, wE 4, wM -1 | 2 | 2.422-2.547 | 18.66-18.82 | 365-5,754 | 10,768-13,774 | +512 to +719 | about 810,000 |
+
+- **Continuations** (`data/1000_complement/continuation/`, `scripts/run_1000_continue.py`).
+  - Fixed-C multiple shooting, with the sec. 0.3 rules.
+  - Two corrector aids, neither a rule change:
+    - a secant predictor, with a fall-back to the previous nodes;
+    - each new member keeps the perigee nearest to the previous member's.
+  - b is taken from the product of the per-arc STMs. On these orbits, single shooting over the
+    whole period drifts off the orbit and gives a wrong b: one member gave -508 by single
+    shooting against +115 from the arc STMs.
+
+| family | continued C range | candidates | stop (each direction) |
+|---|---|---|---|
+| A | 2.4107-2.5804 | 84 | max steps / max steps |
+| B | 0.6703-0.9418 | 78 | max steps / Earth floor at C 0.9418 |
+| C | 0.9239-1.1188 | 46 | loss of convergence at 0.924 / max steps |
+| D | 2.4136-2.5601 | 34 | Earth floor at 2.4136 / loss of convergence at 2.5601 |
+
+- Family C passes through casoliva-7-3b. Interpolated at the row's C = 1.068655, the
+  continuation members (C = 1.0658 and 1.0700) give T = 18.84964 against the row's 18.8496,
+  and perigee 9,333 km alt against the row's 9,332. **Family C is the Casoliva 7-3b/c class.**
+  It is known-class.
+- No continuation of A, B or D reached b = +2 or met a symmetric orbit. Within the computed
+  ranges, **no pitchfork parent is found for A, B or D** (sec. 0.5 item 5).
+
+### 4.2 Method (2) control: PASSED
+
+- **Approach** (`scripts/run_1000_pitchfork.py control`).
+  - Family C's lowest-C grid member (C = 0.881505, T = 19.12309, b = 2.023) was continued
+    downward. Its minimum |xdot| at a y = 0 crossing fell from 9.5e-3 to 4e-10: the asymmetric
+    branch closes onto a SYMMETRIC orbit.
+  - Bisection on that symmetric family gives the **pitchfork parent: C = 0.881428101,
+    T = 19.123728, b = +2.000000** (`control_approach.json`; states in
+    `control_parent_and_seed_states.json`).
+- **Branching.**
+  - The antisymmetric-eigenvector perturbation with C fixed failed: all 36 solves were
+    ill-conditioned at the bifurcation. It was replaced by the standard symmetry-breaking
+    parameter: node 0 is placed at the parent's perpendicular crossing and solved with
+    y(node 0) = 0 and xdot(node 0) = eta, with C free.
+  - For eta = +-1e-4 ... +-3e-2, every solve converges to an asymmetric orbit
+    (`control_branch.json`). C rises roughly as eta^2, from 0.881428 to 0.882275. The +eta
+    and -eta solutions are mirror images: same C and T to 1e-12.
+- **Match.** At eta = +-0.01 the branch is at C = 0.8815145, T = 19.1230159. Interpolated to the
+  grid member's C = 0.881505, it gives T = 19.123094 against the grid member's 19.12309.
+- **So method (2), applied at the parent, regenerates the 7-3b/c branch.** With 4.1, the chain
+  is: pitchfork parent (C 0.8814) -> branch -> grid members (C 0.88-0.92) -> continuation
+  (0.92-1.12) -> casoliva-7-3b (C 1.0687). Method (2) is accepted.
+- The parent is a symmetric 7:3 retrograde family at C = 0.8814 and T = 19.124.
+  - It is not `#997` F4 3/7-r: that family stops at C 0.8997 with T 18.95.
+  - It lies below RR's J range (2.119), so RR cannot contain it.
+  - Its identity against the catalogue's symmetric casoliva-7-3a (C 1.0216, T = 6 pi) is
+    checked next, by continuing the parent family (sec. 5).

@@ -111,10 +111,16 @@ def jac_c(s: Arr) -> tuple[float, Arr]:
     return c, np.array([dcx, dcy, -2 * vx, -2 * vy])
 
 
-def shoot(nodes: list[Arr], taus: list[float], c_target: float | None) -> dict[str, Any]:
+def shoot(
+    nodes: list[Arr],
+    taus: list[float],
+    c_target: float | None,
+    step_max: float = STEP_MAX,
+    max_it: int = MAX_IT,
+) -> dict[str, Any]:
     n = len(nodes)
     xv = np.concatenate([np.concatenate(nodes), np.array(taus)])
-    for it in range(1, MAX_IT + 1):
+    for it in range(1, max_it + 1):
         s = [xv[4 * i : 4 * i + 4] for i in range(n)]
         tau = xv[4 * n :]
         if np.any(tau <= 0):
@@ -151,14 +157,15 @@ def shoot(nodes: list[Arr], taus: list[float], c_target: float | None) -> dict[s
                 "s0": s[0].tolist(),
                 "T": float(np.sum(tau)),
                 "taus": tau.tolist(),
+                "nodes": [x.tolist() for x in s],
                 "cont_res": cont,
             }
         dx = np.linalg.lstsq(jm, -f, rcond=None)[0]
         nrm = float(np.linalg.norm(dx[: 4 * n], ord=np.inf))
-        if nrm > STEP_MAX:
-            dx *= STEP_MAX / nrm
+        if nrm > step_max:
+            dx *= step_max / nrm
         xv = xv + dx
-    return {"converged": False, "why": "max iterations", "it": MAX_IT}
+    return {"converged": False, "why": "max iterations", "it": max_it}
 
 
 def solve_seed(seed: tuple[int, int, int, int, int, float | None]) -> dict[str, Any]:
