@@ -153,3 +153,37 @@ sigma JSON and the LM checkpoint).
     full-revolution leg), and the end form is not the issue.
 - Order: GanCal#1 first (about 5 s per evaluation now), gc-1 if the time box allows (35-110 s per
   evaluation).
+
+### 6.5 Amendment-2 diagnostic results: the obstruction is INTERIOR (the full-revolution leg)
+
+- GanCal#1 (`data/1046_gancal1/freeend.json`): with the end rows removed, the first min-norm
+  Gauss-Newton step does not lower the residual (2.532 -> 2.532), and the line search fails, so the
+  run stops after one step. The leg-0 velocity mismatch stays at 2.47e-3 km/s. The end directions
+  drift only 3.8e-5 and 2.2e-6 rad, the magnitude gap 2.1e-5 km/s and the span 0.11 s. Freeing the
+  ends gives the solver nothing to use.
+- gc-1 e2: the call reached its 470 s limit after two Gauss-Newton evaluations (about 3.5 min each
+  under load 19), so there is no JSON. From the runlog: |r| 0.02750 -> 0.02746, with the leg-3
+  velocity mismatch unchanged at 2.74e-5 km/s. The same stall with free ends.
+- Reading (registered in 6.4): the (b') end pins are NOT the obstruction. The residual that will not
+  go is interior: an out-of-plane velocity mismatch across the full-revolution leg (gc-1: the 1:1
+  Callisto return; GanCal#1: the 1-rev G-G leg), along a near-null out-of-plane direction. The
+  apojove nodes do not remove it. The diagnostic is short (one and two steps), so this is a
+  diagnosis, not a proof.
+
+## 7. Verdict of #1046 (time used: 16:04-17:21 AEDT, about 1 h 20 min of the 4 h box)
+
+- Formulation: apojove nodes are sound. The ideal EGGIE control reproduces #1039 (b) exactly, with
+  five apsis nodes.
+- Real ephemeris: NEITHER object starts at sigma = 0.02.
+  - gc-1 e2: stationary at |r| 0.0275, the same structure as #1044.
+  - GanCal#1: still crawling after about 200 evaluations; no stationary point shown.
+  NO VERDICT on either object. The jup365 lane is still not validated by a published control. The gc-1
+  row's real-ephemeris continuous-gravity standing remains UNDECIDED (#1044 wording stands).
+- New: the obstruction is located. It is an out-of-plane velocity mismatch across the
+  full-revolution leg, along a near-null out-of-plane direction (moon orbit frame, 94-100 %), and it
+  is not caused by the end pins. A next formulation must give that leg an out-of-plane control that
+  the matching rows can see. Candidates, not run (the lead rules):
+  - the resonant-circle parametrisation with the crank (out-of-plane rotation of V_inf about the moon
+    velocity) as an explicit unknown;
+  - or a node at the full-revolution leg's line of nodes (where an out-of-plane velocity change is
+    most effective) instead of its apojove.
