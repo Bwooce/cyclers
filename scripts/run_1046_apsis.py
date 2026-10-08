@@ -31,7 +31,7 @@ import numpy as np
 from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
-from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2
+from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2, moon_orbit_frame
 from cyclerfinder.search.two_working_body import kepler_step
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -227,7 +227,9 @@ def main() -> None:
     )
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=["eggie", "gancal1", "gc1"], required=True)
-    ap.add_argument("--stage", choices=["build", "sigma", "down", "ias15", "diag"], required=True)
+    ap.add_argument(
+        "--stage", choices=["build", "sigma", "down", "ias15", "diag", "freeend"], required=True
+    )
     args = ap.parse_args()
     out = ROOT / "data" / f"1046_{args.target}"
     out.mkdir(parents=True, exist_ok=True)
@@ -254,7 +256,8 @@ def main() -> None:
         seed = out / "seed_chain.json"
         if not seed.exists():
             shutil.copy(ROOT / "data" / f"1044_{args.target}" / "seed_chain.json", seed)
-        _install_lm_best(rb)  # amendment 1
+        if args.stage != "freeend":
+            _install_lm_best(rb)  # amendment 1
         ias15 = rb.stage_ias15
         install(rb)
     if args.stage == "build":
@@ -272,7 +275,84 @@ def main() -> None:
     if args.stage == "diag":
         diag(rb, out)
         return
+    if args.stage == "freeend":
+        freeend(rb, out)
+        return
     {"sigma": rb.stage_sigma, "down": rb.stage_down, "ias15": ias15}[args.stage](1)
+
+
+def _frame(c: Any, k: int, t: float) -> Any:
+    """The orbit frame (r_hat, h_hat x r_hat, h_hat) of node k's moon (an apsis node: the next
+    flyby node's moon) at t."""
+    moon = next(m for m in c.moons[k:] if m != APO)
+    rm, vm = c.eph.state(moon, t)
+    return moon_orbit_frame(np.asarray(rm), np.asarray(vm))
+
+
+def frame_shares(c: Any, z: Any, weak: Any, r: Any) -> dict[str, Any]:
+    """Squared shares (radial, along-track, orbit-normal) of the weakest right vector's position and
+    velocity blocks per node (unscaled columns), and of each leg's velocity residual, in the orbit
+    frame of the node's moon. The lane frame is the ephemeris frame (not Jupiter-equatorial)."""
+    out: dict[str, Any] = {"nodes": [], "legs": []}
+    for k in range(c.m):
+        fr = _frame(c, k, float(z[7 * k + 6]))
+        row = {
+            "node": k,
+            "moon": c.moons[k],
+            "block_norm": float(np.linalg.norm(weak[7 * k : 7 * k + 7])),
+        }
+        for lab, sl in (("r", slice(7 * k, 7 * k + 3)), ("v", slice(7 * k + 3, 7 * k + 6))):
+            p = fr.T @ weak[sl]
+            n2 = float(p @ p)
+            row[lab] = [float(x * x / n2) for x in p] if n2 > 0 else None
+        out["nodes"].append(row)
+    for k in range(c.m - 1):
+        fr = _frame(c, k + 1, float(z[7 * (k + 1) + 6]))
+        p = fr.T @ r[6 * k + 3 : 6 * k + 6]
+        n2 = float(p @ p)
+        out["legs"].append(
+            {"leg": k, "dv_norm_rows": math.sqrt(n2), "shares": [float(x * x / n2) for x in p]}
+        )
+    return out
+
+
+def freeend(rb: Any, out: Path) -> None:
+    """AMENDMENT 2 (a DIAGNOSTIC, not a verdict): from the sigma-0.02 LM checkpoint, drop the six
+    (b') end rows (zero rows, so the system is underdetermined) and run the plain damped
+    Gauss-Newton (min-norm lstsq steps), 20 iterations. Reports whether the leg matches and gauges
+    reach the floors with free ends, and how far the end V_inf directions and the magnitude gap
+    drift from the pins."""
+    c = rb.build(1)
+    c.set_sigma(0.02)
+    z0 = np.load(out / "lm_checkpoint.npy")
+    pinned = rb.end_rows
+
+    def free(cc: Any, zz: Any, nd: Any) -> tuple[Any, Any]:
+        return np.zeros(6), np.zeros((6, 7 * cc.m))
+
+    rb.end_rows = free
+    z, info = rb.newton(c, z0, 20, "freeend")
+    rb.end_rows = pinned
+    er0, _ = pinned(c, z0, None)
+    er1, _ = pinned(c, z, None)
+    rep = {
+        "converged_free": bool(rb.converged(info)),
+        "dr": info["dr"],
+        "dv": info["dv"],
+        "gauge_max": float(max(abs(g) for g in info["gauge"])),
+        "pin_rows_at_start": er0.tolist(),
+        "pin_rows_at_end": er1.tolist(),
+        "dir_drift_first_rad": float(np.linalg.norm(er1[0:2])) / 1e3,
+        "dir_drift_last_rad": float(np.linalg.norm(er1[2:4])) / 1e3,
+        "mag_gap_vs_seed_kms": float(er1[4]) / 1e3,
+        "span_vs_seed_s": float(er1[5]),
+        "node_moves_km": [
+            float(np.linalg.norm(z[7 * k : 7 * k + 3] - z0[7 * k : 7 * k + 3])) for k in range(c.m)
+        ],
+        "epoch_moves_s": [float(z[7 * k + 6] - z0[7 * k + 6]) for k in range(c.m)],
+    }
+    (out / "freeend.json").write_text(json.dumps(rep, indent=1))
+    rb._log(f"freeend: {json.dumps(rep)}")
 
 
 def diag(rb: Any, out: Path) -> None:
@@ -301,6 +381,7 @@ def diag(rb: Any, out: Path) -> None:
         "dr": info["dr"],
         "dv": info["dv"],
     }
+    rep["frame_shares"] = frame_shares(c, z, vt[-1] / d, r)
     (out / "diag.json").write_text(json.dumps(rep, indent=1))
     rb._log(f"diag: {json.dumps(rep)}")
 

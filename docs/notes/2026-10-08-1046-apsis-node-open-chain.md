@@ -107,3 +107,49 @@ sigma JSON and the LM checkpoint).
 - Cost under this load (40-70): a residual-plus-Jacobian evaluation takes about 17 s for GanCal#1
   and about 110 s for gc-1. Every arc that starts at a flyby node takes 15-35 s at sigma 0.02, while
   arcs from an apsis node take 0.1 s. So gc-1 gets about 4 LM evaluations per call.
+
+### 6.3 Real-ephemeris objects at sigma = 0.02 (`data/1046_gc1/`, `data/1046_gancal1/`)
+
+- gc-1 e2 (21 LM evaluations, 4 calls): |r| 2.8e3 -> 0.107 -> 0.0275, then flat (0.0278-0.0275 over
+  the last 6 evaluations). DOES NOT START. Structure (`diag.json`): 99.9 % of the residual lies on the
+  weakest left singular vector (singular value 2.3e-6; #1044 without apsis nodes: 1.5e-6). It is the
+  velocity rows of leg 3, the APO-to-Callisto second half of the 1:1 return (dv 2.7e-5 km/s). Every
+  other leg is at or near its floor. Same structure as #1044. The apsis node did not change the
+  conditioning.
+- GanCal#1 at 2013 (about 200 LM evaluations, 8 calls): |r| 3.3e5 -> 4.24 in 9 evaluations, then a
+  slow crawl: 4.24 -> 2.53, slowing to about 5 % per 6 minutes (the last 75 evaluations). DID NOT
+  START within about 200 evaluations; still descending, so no stationary point is shown. 99.7 % of
+  the residual lies on the weakest left vector (singular value 1.1e-5), on the velocity rows of leg
+  0, the G-to-APO first half of the 1-rev G-G leg (dv 2.5e-3 km/s).
+- Frame of the weak direction (`frame_shares` in `diag.json`; each block projected on the orbit
+  frame (r_hat, h_hat x r_hat, h_hat) of its node's moon; the lane frame is the ephemeris frame, not
+  Jupiter-equatorial, so raw z components were not used):
+  - gc-1: the stalled leg-3 velocity residual is 100.0 % orbit-normal. The weakest right vector is
+    dominated by the APO node in the 1:1 return (block norm 0.44; position and velocity 100 %
+    orbit-normal). The Callisto nodes on either side are 96-99 % orbit-normal.
+  - GanCal#1: the leg-0 velocity residual is 99.3 % orbit-normal. The weakest right vector is
+    dominated by the APO node in the G-G leg (block 0.20; 94 % / 96 % orbit-normal) and the APO node
+    in the 2:1 return (block 0.02; 98-99 %).
+  So in both objects the near-degenerate direction is the OUT-OF-PLANE motion across a
+  full-revolution leg, and the residual that will not go is an out-of-plane velocity mismatch there.
+  This fits the Kepler limit, where the out-of-plane variational map over a full period is close to
+  the identity: an out-of-plane change at one end of a full-revolution leg comes back almost
+  unchanged at the other end, so the matching rows hardly see it (INFERRED, not tested).
+
+### 6.4 AMENDMENT 2: free-end DIAGNOSTIC (registered before it runs; not a verdict)
+
+- Question: is the obstruction the (b') end pins, or the interior full-revolution leg? The answer
+  decides which form comes next: the resonant-circle parametrisation (interior) or a different end
+  form (pins).
+- Method (`--stage freeend`): from each object's sigma-0.02 LM checkpoint, the six end rows are set
+  to zero rows (the system is underdetermined) and the plain damped Gauss-Newton of rungb
+  (min-norm lstsq steps, step cap, backtracking) runs for 20 iterations. LM is not used: it needs at
+  least as many rows as unknowns. Recorded: convergence of matches and gauges; the drift of the end
+  V_inf directions and of the magnitude gap from the pins; node and epoch moves.
+- Readings, fixed now:
+  - matches and gauges reach the lane floors with free ends -> the pins are the obstruction (the
+    pinned problem has no root near the chain), and the drift is the size of the inconsistency;
+  - they stall at the same out-of-plane velocity residual -> the obstruction is interior (the
+    full-revolution leg), and the end form is not the issue.
+- Order: GanCal#1 first (about 5 s per evaluation now), gc-1 if the time box allows (35-110 s per
+  evaluation).
