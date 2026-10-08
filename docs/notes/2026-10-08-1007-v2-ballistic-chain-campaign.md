@@ -88,3 +88,22 @@ see a broken chain.
 - Report per row and epoch: n, the 4 criteria, D and W maxima, growth ratios, verdict.
 - If a positive control fails or a negative control passes: STOP and report.
 - Row-level V2 promotions go in the next catalogue window, with the ratchets (lead).
+
+## 5. Result of the first control (2026-10-08): the ev POSITIVE CONTROL FAILS -> STOP
+
+Hollister 1H: Standish, 5 cycles, ramp continuation, the 5 standard epochs (`data/1007_v2/hollister1H_ramp/`).
+The continuation stalls at every epoch:
+
+| Epoch (JD) | Last converged lambda |
+|---|---|
+| 2462984.5 | 0.288 |
+| 2465314.3 | 0.391 |
+| 2467656.4 | 0.375 |
+| 2469988.2 | 0.366 |
+| 2472323.5 | 0.350 |
+
+- 0/5 epochs give a chain. For comparison, the `--direct` solve (6.23 D1) converged and passed the
+  gate at 2/5.
+- Per sec. 3: the lane has no ev positive control, so the campaign STOPS and is reported. No
+  substitution was made after seeing the result.
+- The gc controls, the negative controls and the rows were NOT run.
