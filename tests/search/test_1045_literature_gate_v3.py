@@ -132,8 +132,33 @@ def test_g5_ratchet_flags_evasion_forms() -> None:
         "get_vs_name": "ok = d.get('status') != WANT\n",
         "subscript_vs_name": "ok = d['status'] == WANT\n",
         "literal": "ok = r.status == 'not-found'\n",
+        # #1045 A1-4
+        "alias": "st = r.status\nok = st in FRESH\n",
+        "attr_set": "ok = r.status in mod.OTHER_SET\n",
+        "attr_const": "ok = r.status == consts.NOT_FOUND\n",
     }
     for name, src in forms.items():
         assert flag(src), name
     assert not flag("ok = r.status in FRESH_STATUSES\n")
+    assert not flag("ok = r.status in lc.FRESH_STATUSES\n")
     assert not flag("ok = is_literature_fresh(r.status)\n")
+
+
+# --- #1045 A1: G1' (mixed-label tour anchors), A1-2, A1-6 -----------------------------------
+
+
+def test_a1_jovian_untopologied_not_published_by_niehoff() -> None:
+    r = _check(_sig("Jupiter", ("Ganymede", "Callisto", "Ganymede"), period_k=3))
+    assert r.status != "published", r
+    assert "Niehoff" not in str(r.citation), r
+
+
+def test_a1_capped_best_hit_names_f7_anchor() -> None:
+    r = _check(_sig("Sun", ("E", "V")))
+    assert r.status == "inconclusive", r
+    assert "Hollister / Hollister-Menning" in r.notes.split("Corpus anchors consulted")[0], r
+
+
+def test_a1_empty_sequence_not_f7() -> None:
+    r = _check(_sig("Jupiter", (), working_bodies="two"))
+    assert "different declared architecture" not in r.notes, r

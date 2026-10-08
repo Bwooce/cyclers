@@ -1059,6 +1059,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # #1045 G4: + "HR". Menning 1968 ch. 2, pp.7-10: "The half-revolution return is
         # a special case" of the full-revolution return (digest
         # 2026-10-05-digest-menning-1968-mit-thesis-earth-venus-periodic-orbits.md).
+        # Menning p.42 names HR variations, but Table 3 computes none: anticipated,
+        # not tabulated (#1045 A1-5).
         return_types_scope=frozenset({"FR", "SY", "HR"}),
         authors=("Hollister", "Menning"),
         keywords=(
@@ -3070,7 +3072,7 @@ def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> 
 
 
 def _declared_scope_exclusions(sig: CandidateSignature, anchor: CorpusAnchor) -> list[str]:
-    """Every reason ``anchor``'s DECLARED scope excludes ``sig``, or ``None`` if it does not.
+    """Every reason ``anchor``'s DECLARED scope excludes ``sig`` (empty when none does).
 
     These are the filters under which the candidate and the anchor each
     state a scope and the two are incompatible. Each needs a declaration on
@@ -3193,6 +3195,7 @@ def _different_architecture_same_system(sig: CandidateSignature) -> list[CorpusA
         a
         for a in _corpus_for(sig)
         if a.primary == sig.primary
+        and bool(seq_set)
         and seq_set <= a.body_set
         and any(r.startswith("working-bodies") for r in _declared_scope_exclusions(sig, a))
     ]
@@ -3388,7 +3391,23 @@ clean not-found: the search found cycler-adjacent material it could not rule out
 as the same family, so a human must look (we do not certify novelty on it)."""
 
 TOUR_ONLY_TOPOLOGIES: frozenset[str] = frozenset({"mga-tour", "pump-tour", "ephemeris"})
-"""Topology labels of anchors that are not periodic cyclers (#1045 G1)."""
+"""Tour / non-trajectory topology labels (#1045 G1)."""
+
+CYCLER_CLASSES: frozenset[str] = frozenset(
+    {
+        "repeated-moon",
+        "halo",
+        "nrho",
+        "tulip",
+        "binary-coorbital",
+        "quasi-satellite",
+        "retrograde-satellite",
+        "axisymmetric",
+        "planar",
+    }
+)
+"""Topology labels of periodic-orbit / cycler classes (#1045 A1 G1'). "resonant"
+alone is not a cycler class."""
 
 TOUR_ONLY_CAP: float = MATCH_THRESHOLD - 0.01
 """Ceiling on a tour-only anchor's hit for a signature that declares no topology
@@ -3397,8 +3416,11 @@ TOUR_ONLY_CAP: float = MATCH_THRESHOLD - 0.01
 
 
 def _is_tour_only(anchor: CorpusAnchor) -> bool:
-    """An anchor whose declared topology is only tours / ephemeris sources (#1045 G1)."""
-    return bool(anchor.topology_label) and anchor.topology_label <= TOUR_ONLY_TOPOLOGIES
+    """An anchor with a tour label and no cycler-class label (#1045 A1 G1'; G1 required
+    every label to be a tour label, which missed e.g. {"mga-tour", "pump-tour",
+    "resonant"})."""
+    labels = anchor.topology_label
+    return bool(labels & TOUR_ONLY_TOPOLOGIES) and not (labels & CYCLER_CLASSES)
 
 
 MAX_QUERIES: int = 8
@@ -3454,6 +3476,7 @@ def check_literature(
     corpus_by_name = {a.name: a for a in _corpus_for(sig)}
     scope_excluded: dict[str, str] = {}
     off_footprint: set[str] = set()
+    best_capped = False
 
     for q in queries:
         trail.append(q)
@@ -3482,9 +3505,13 @@ def check_literature(
                 # #1045 G1: a tour-only anchor cannot make an untopologied
                 # signature "published"; at most "inconclusive".
                 conf = min(conf, TOUR_ONLY_CAP)
+                capped = True
+            else:
+                capped = False
             if conf > best_conf:
                 best_conf = conf
                 best_hit = r
+                best_capped = capped
         if best_conf >= MATCH_THRESHOLD:
             break  # short-circuit on a confident hit
 
@@ -3524,6 +3551,17 @@ def check_literature(
         )
 
     if best_conf >= INCONCLUSIVE_FLOOR:
+        capped_note = ""
+        if best_capped:
+            # #1045 A1-2: the best hit is a capped tour anchor; name the F7 anchors too.
+            f7 = _different_architecture_same_system(sig)
+            capped_note = " The best hit is a tour-only anchor, capped below 'published' (#1045)."
+            if f7:
+                capped_note += (
+                    " A source treated these bodies with a different declared architecture: "
+                    + "; ".join(a.name for a in f7)
+                    + "."
+                )
         return LiteratureCheckResult(
             status="inconclusive",
             citation=best_hit.title if best_hit else None,
@@ -3533,6 +3571,7 @@ def check_literature(
             matched_url=best_hit.url if best_hit else None,
             notes="Cycler-adjacent literature surfaced but could not be confirmed "
             "as the same family; a human must adjudicate (not certified novel)."
+            + capped_note
             + _scope_note(scope_excluded)
             + _footprint_note(off_footprint),
         )

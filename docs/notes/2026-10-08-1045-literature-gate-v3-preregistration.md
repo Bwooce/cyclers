@@ -131,3 +131,27 @@ moves rows only toward "inconclusive". If any candidate or control changes: STOP
 
 The untopologied Pergola (Uranus) and Howett (Pluto) limit is recorded, not fixed here; the lead
 registered it as #1052.
+
+## 7. A1 results (2026-10-08), recorded after the run
+
+- Controls and candidates UNCHANGED: 26/26 published; the Jones negative holds; gc-1, gc-2 and ev-C
+  inconclusive; ev-A and ev-B not-found. `data/942_943_litcheck_scope.json` is byte-unchanged.
+- Catalogue probe, v2 against v3-A1 (790 signatures, `probe_v2_v3a1.out`): 29 change, all
+  published -> inconclusive, all in the no-topology half. 0 move toward fresh.
+  - The 17 of sec. 4.
+  - The 10 R-S Jovian rows (ganio-53/185/403, ganeur-5/43/316, eurgan-131/159, gancal-1/5) and
+    gc-1/gc-2. Without a topology label, v2 cited them to tour papers (Niehoff etc.). This is the
+    G1' fix.
+- Jupiter (Ganymede, Callisto, Ganymede) untopologied: inconclusive 0.69 (the capped
+  Strange/Campagnola/Russell tour anchor), not Niehoff. Sun (E, V) untopologied: the inconclusive
+  notes name the H&M anchor (A1-2).
+- Pinned tests: test_1045 (+3 A1 tests, +3 ratchet forms), test_972 and test_literature_check pass.
+  The src/ and scripts/ ratchet is clean.
+- Full set (tee'd, 2026-10-08):
+  - tests/data, tests/scripts and test_catalogue_rediscovery: EXIT 0 (15:57-16:04 AEDT).
+  - tests/search: EXIT 1 (16:04-17:03, load up to 23 with the #1025 batch and CI on the box). The
+    only failure was the known load-sensitive Earth-Moon test
+    `test_known_close_pair_73c_plateaus_just_outside_guard` (600-s timeout).
+  - The lead re-ran it alone at 17:04-17:08 AEDT, load 5: EXIT 0.
+- ruff clean; mypy src tests clean (939 files).
+- Next: the read-only review of the A1 diff.

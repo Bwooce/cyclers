@@ -273,12 +273,37 @@ def _is_status_access(node: ast.expr) -> bool:
 
 def _status_compare_violations_in(text: str, filename: str = "<src>") -> list[int]:
     """Lines comparing a literature status outside ``is_literature_fresh`` (#972 F13,
-    widened by #1045 G5): a literal "not-found" in a comparison, a ``match`` case or a
-    ``startswith``/``endswith`` call; or a status access compared with a NAME other
-    than ``FRESH_STATUSES``."""
+    widened by #1045 G5 and A1-4): a literal "not-found" in a comparison, a ``match``
+    case or a ``startswith``/``endswith`` call; or a status access (including a name
+    assigned from one) compared with a NAME or an ATTRIBUTE other than
+    ``FRESH_STATUSES``."""
     if _NF not in text and "status" not in text:
         return []
     tree = ast.parse(text, filename=filename)
+    aliases: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign) and _is_status_access(node.value):
+            aliases |= {t.id for t in node.targets if isinstance(t, ast.Name)}
+        elif (
+            isinstance(node, ast.AnnAssign)
+            and node.value is not None
+            and isinstance(node.target, ast.Name)
+            and _is_status_access(node.value)
+        ):
+            aliases.add(node.target.id)
+
+    def is_status(x: ast.expr) -> bool:
+        return _is_status_access(x) or (isinstance(x, ast.Name) and x.id in aliases)
+
+    def is_other_ref(x: ast.expr) -> bool:
+        if is_status(x):
+            return False
+        if isinstance(x, ast.Name):
+            return x.id != "FRESH_STATUSES"
+        if isinstance(x, ast.Attribute):
+            return x.attr != "FRESH_STATUSES"
+        return False
+
     lines: list[int] = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Compare):
@@ -295,12 +320,7 @@ def _status_compare_violations_in(text: str, filename: str = "<src>") -> list[in
                     lines.append(node.lineno)
                     break
             else:
-                if any(_is_status_access(x) for x in sides) and any(
-                    isinstance(x, ast.Name)
-                    and not _is_status_access(x)
-                    and x.id != "FRESH_STATUSES"
-                    for x in sides
-                ):
+                if any(is_status(x) for x in sides) and any(is_other_ref(x) for x in sides):
                     lines.append(node.lineno)
         elif isinstance(node, ast.MatchValue):
             if isinstance(node.value, ast.Constant) and node.value.value == _NF:
