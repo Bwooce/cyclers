@@ -2744,7 +2744,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   perigees: a seed-design issue (`#1054`). Note sec. 7 (`ebc04b3a`) corrects `#1000` sec. 4.1: family C
   passes through the MIRROR image of casoliva-7-3b (the 7-3c orientation); its known-class verdict is
   unchanged.
-- `#1049` — registered 2026-10-08 (from `#1000`; BACKLOG, small; catalogue evidence). **casoliva-7-3b AND
+- `#1049` — registered 2026-10-08 (from `#1000`; catalogue evidence; the first finding WITHDRAWN, the notes
+  work folded into `#1053`). **casoliva-7-3b AND
   casoliva-7-3c ARE PROBABLY MIRROR IMAGES** (identical printed C and k): verify and note on both rows.
   Already shown in code: `tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`
   (`#899`, `cb8d011d`) asserts that the printed 7-3c crossing is the mirror image of a 7-3b crossing to
@@ -2755,7 +2756,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   the MIRROR of the 7-3b row (7-3b row: mirrored 1.3e-11, direct 0.41); the 7-3c row is ON that mirror
   branch (direct 5.2e-10), which is the correct orientation, as in Casoliva's printed pair; it differs
   from the exact mirror of the 7-3b row (2.6e-3) only because it sits at C = 1.067197 rather than the
-  7-3b row's 1.068655 (printed: 1.068762 for both). Superseded by `#1053`.
+  7-3b row's 1.068655 (printed: 1.068762 for both); the section distance 2.6e-3 is within V1's 1e-2.
+  **FINDING WITHDRAWN; the notes patch is FOLDED INTO `#1053`.**
 - `#1050` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1000`). **CONTINUE `#1000`'s
   FAMILIES A AND D UPWARD IN C, PAST THE 40-STEP CAP,** to test their connection to Liang 2017's 5:2 and
   7:3 polygonal-like orbits (C 3.10 / 3.19, no lunar pass).
@@ -2774,10 +2776,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   UNTOPOLOGIED-SIGNATURE LIMIT OUTSIDE G1:** the Pergola anchor (tagged halo) gives Uranus (Umbriel,
   Titania) -> published, and the Howett anchor (no topology) gives Pluto (Charon, Nix) -> published,
   for untopologied signatures.
-- `#1053` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1049`). **RE-DERIVE THE
-  casoliva-7-3c ROW AT THE PRINTED C (1.068762) ON THE MIRROR BRANCH**; the row now sits at C =
-  1.067197. Evidence note plus a patch for the next ratchet window. (Supersedes the withdrawn `#1049`
-  patch.)
+- `#1053` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1049`). **LEAD RULING (a): RE-DERIVE
+  casoliva-7-3c AS THE EXACT MIRROR OF THE casoliva-7-3b ROW AT C = 1.068655**, and have BOTH rows' notes
+  state the mirror relation and cite `#899` (`tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`).
+  The 7-3c row today sits on the mirror branch but at C = 1.067197 (printed: 1.068762 for both). Patch
+  preparation now; applied in the next ratchet window. The `#1049` notes patch is folded in here. The
+  `#1000` sec. 4.1 wording is being corrected ("through its mirror image"); family C's known-class verdict
+  is unchanged.
 - `#1054` — registered 2026-10-08 (from `#1048`; BACKLOG). **`#1000` SEED-DESIGN FIX:** perigee r_p at least
   1.3 times the floor, omega chosen by the target lunar-pass distance, and a perigee step limit; the
   current seeds impact in 93-94 % of solves when the skeleton passes near the Moon or the seed perigee
