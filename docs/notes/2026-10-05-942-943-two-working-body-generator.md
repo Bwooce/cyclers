@@ -2018,6 +2018,31 @@ See `2026-10-06-942-943-owner-decision-summary.md` sec. 6:
 - ev-B: retry with continuation at its 3 failing or non-converged Standish epochs.
 The attributions are as listed there.
 
+### 6.55 ev-B retry with continuation (owner ruling 2026-10-07; lead method ruling): PRE-REGISTERED before running
+
+- Epochs: the 3 Standish epochs of 6.23 that did not pass:
+  - epoch 1 (JD 2465390.1): the direct solve did not converge;
+  - epoch 2 (JD 2467728.3): gate fail, 1.092;
+  - epoch 4 (JD 2472400.0): gate fail, 1.034.
+  Epochs 0 and 3 passed and are not re-run.
+- Model: Standish J2000 mean elements, ramp mode (full-rev legs exact). Not DE440: the 6.25 lunar-reflex
+  issue.
+- Method (`scripts/run_942_realeph_chain.py --real mean --direct --grow-chain --grow-from-one`;
+  `ramp_solve`):
+  - Solve 1 cycle directly at lambda = 1. If that fails, use the ramp-lambda continuation from the ideal
+    model at that length (6.18).
+  - Then grow 1 -> 2 -> 3 -> 4 cycles. Each length is seeded from the previous solution with its last
+    cycle's dates moved by one cycle and appended. A direct lambda = 1 solve comes first, then the ramp
+    continuation at that length if the direct solve fails.
+  - The full-rev directions are the minimax ones at every length (ramp mode).
+- PASS at an epoch:
+  - the 4-cycle solve converges (< 1e-6);
+  - every interior flyby passes the gate at the registry floors ("indeterminate" is not a pass);
+  - the DOP853 re-fly against the mean-element system misses by < 1 km with V_inf vector error
+    < 1e-6 km/s (checker, ramp path).
+- Reported epoch by epoch, with the lengths reached and the worst ratio at each length. The owner decides
+  on the result.
+
 ## 7. Literal-collision checks (to be completed per candidate)
 
 R1(a) gate addition (lead ruling, 2026-10-05): Rall 1969 and Rall & Hollister 1971 (JSR 8(10):1017, doi
@@ -2042,3 +2067,25 @@ Against:
 - The near-180 threshold (provisional 175 deg).
 - The catalogue `model_assumption` of the 15 H&M rows.
 - The two YAML transcription fixes.
+
+### 6.56 Addendum (2026-10-07, from #973, relayed by the lead)
+
+The pass definition of sec. 6.1 had two gaps:
+- it never compared r_min with the primary's radius;
+- it never looked for a leg passing inside a body's SOI between the scheduled encounters
+  (`encounter_self_consistency` and the DOP853 re-fly check only the leg end points).
+
+#973 amendment 2.6 (94dda754) adds both checks:
+- r_min must exceed the primary radius plus the registry floor (Jupiter 71,492 + 5,000 km; Sun
+  695,700 km);
+- an interior distance minimum below a body's radius is an impact rejection;
+- an interior minimum inside a body's Laplace SOI makes the structure model-invalid.
+
+Results on this note's candidates (`data/973_screen_943_gc.json`, `data/973_screen_942_ev.json`):
+- gc-1, gc-2, GanCal#5, ev-A, ev-B and ev-C all pass. ev-B's closest unscheduled Earth pass is
+  1.27 Earth SOI.
+- 9 of the 31 ev gate-passers are flagged, including the Hollister 1H member 2.99/3.19. In each case
+  a fixed leg's direction is the tilted circle (e = 0, a = the planet's orbit radius), which meets
+  the planet again mid-leg. On full-rev legs this comes from the minimax direction choice.
+- The lead ruled: free-direction full-rev legs are flagged "direction-dependent", not rejected (#1027).
+- The vm, vm2, em and ge cells have not been re-screened (#1028).

@@ -277,7 +277,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 224 -> 222 (2026-06-23, #388): russell-ocampo-4.3.1-5 then -2.5.1+0 ingested
     # their McConaghy-2005 Table 2 descriptors, each moving from
     # MULTI_ENCOUNTER_SEQUENCE to DESCRIPTOR_CLOSABLE. Pure census shift.
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 222,
+    # 222 -> 224 (2026-10-08, #942/#943): +2 heliocentric two-working-body generator rows
+    # (ev-C V-V-E, ev-A V-V-V-E): multi-encounter sequences. Pure census shift.
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 224,
     # #106: free_return_arcs[]-bearing SnLm rows; 12->13 (4.3.1-5) ->14 (2.5.1+0), #388
     ExclusionReason.DESCRIPTOR_CLOSABLE: 14,
     ExclusionReason.MISSING_LEG_TOFS: 15,
@@ -347,7 +349,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 93 -> 94 (2026-10-08, #970): +1 schwaniger-1963-em-cislunar-retrograde-periodic-free-return
     # (Schwaniger 1963 Earth-Moon retrograde periodic free return, literature row, V0;
     # Earth-centred CR3BP, so non-heliocentric).
-    ExclusionReason.NON_HELIOCENTRIC: 94,
+    # 94 -> 96 (2026-10-08, #942/#943): +2 Jovian two-working-body generator rows (gc-1,
+    # gc-2; primary Jupiter, so non-heliocentric).
+    ExclusionReason.NON_HELIOCENTRIC: 96,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

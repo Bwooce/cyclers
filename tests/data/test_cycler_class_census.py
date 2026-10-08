@@ -450,11 +450,19 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # multi-arc 292 -> 297.
         # WITHDRAWN 2026-10-04 (#888, owner decision): all five, with the #312 row
         # above, for the same reason. multi-arc 297 -> 291.
+        # #942/#943 (2026-10-08): the four two-working-body generator rows (gc-1, gc-2,
+        # ev-C, ev-A), multi-arc (three or four Lambert/full-rev legs per cycle, no single
+        # ellipse). multi-arc 291 -> 295.
+        "ganymede-callisto-two-working-body-cycler-gc1-2026",
+        "ganymede-callisto-two-working-body-cycler-gc2-2026",
+        "earth-venus-venus-hosted-cycler-evc-2026",
+        "earth-venus-two-working-body-cycler-eva-2026",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 291, (
-    f"Allowlist must have 297 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+# #942/#943 (2026-10-08): + the four two-working-body generator rows: 291 -> 295.
+assert len(MULTI_ARC_ALLOWLIST) == 295, (
+    f"Allowlist must have 295 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -729,6 +737,10 @@ def test_census_distribution() -> None:
     the Schwaniger 1963 retrograde Earth-Moon periodic free return reproduced with the
     project's CR3BP corrector (literature row, V0; genuine planar CR3BP periodic orbit,
     rotating-frame, Jacobi-constant identity): non-keplerian 55->56.
+
+    #942/#943 (2026-10-08) admitted the four two-working-body generator rows (gc-1,
+    gc-2, ev-C, ev-A; this-project, V1; three or four legs per cycle, no single
+    ellipse): multi-arc 291->295.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
@@ -736,7 +748,9 @@ def test_census_distribution() -> None:
     # preserved in data/withdrawn/): multi-arc 297 -> 291.
     # #970 (2026-10-08): + schwaniger-1963-em-cislunar-retrograde-periodic-free-return:
     # non-keplerian 55 -> 56.
-    expected = {"single-ellipse": 46, "multi-arc": 291, "non-keplerian": 56}
+    # #942/#943 (2026-10-08): + the four two-working-body generator rows (gc-1, gc-2,
+    # ev-C, ev-A): multi-arc 291 -> 295.
+    expected = {"single-ellipse": 46, "multi-arc": 295, "non-keplerian": 56}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

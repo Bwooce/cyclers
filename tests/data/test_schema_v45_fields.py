@@ -371,6 +371,14 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # base (fixed-Jacobi corrector, winding topology, Barden stability,
         # independent Radau crosscheck, #660 body-clearance gate).
         "pc-cycler-51-2026": "V1",
+        # #942/#943 (2026-10-08): the four two-working-body generator rows, each V1 --
+        # lamberthub izzo2015+gooding1990 agreement on every Lambert leg and an
+        # independent DOP853 re-fly of every leg (validate._V1_942_943;
+        # tests/search/test_942_943_writeback_v1.py). NOT V2 (no multi-lap campaign).
+        "ganymede-callisto-two-working-body-cycler-gc1-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc2-2026": "V1",
+        "earth-venus-venus-hosted-cycler-evc-2026": "V1",
+        "earth-venus-two-working-body-cycler-eva-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

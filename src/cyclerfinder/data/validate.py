@@ -499,6 +499,25 @@ _VALIDATION_LEVELS: frozenset[str] = frozenset({"V0", "V1", "V2", "V3", "V4", "V
 # Kepler forward re-propagation residual), demonstrated with teeth by the slow
 # Axis-A integration tests. Everything else (incl. the Aldrin INBOUND row, which
 # no test builds/cross-checks on real ephemeris) stays V0.
+# #942/#943 two-working-body generator rows (writeback 2026-10-08): the shared spec §14 V1
+# evidence text; each row's entry appends its own numbers. Recomputed by
+# tests/search/test_942_943_writeback_v1.py from data/942_943_writeback_v1.json.
+_V1_942_943: str = (
+    "spec §14 V1 (#942/#943 writeback, 2026-10-08), assigned against the WRITTEN criteria. "
+    "CONSISTENCY gate: every Lambert leg of the representative ideal-model zero (the cell gauntlet "
+    "files) re-solved with lamberthub izzo2015 + gooding1990 agrees with the in-house solver to "
+    "< 1e-3 m/s. Re-propagation gate: every leg (Lambert and fixed full-rev legs) re-flown with "
+    "scipy DOP853 from the solved departure state meets the arrival body to < 1 km, and the turn "
+    "gate passes on the integrated vectors (scripts/v1_942_943_writeback.py, "
+    "data/942_943_writeback_v1.json, tests/search/test_942_943_writeback_v1.py). shared with "
+    "primary path: the same (r1, r2, dt) inputs, the same ideal circular-coplanar body states and "
+    "the same encounter dates; only the Lambert algorithm and the integrator differ. INDEPENDENCE "
+    "companion (re-derived inputs, not gating this V1 claim): the real-ephemeris patched-conic "
+    "chains, whose body states come from an ephemeris instead of the ideal model. NOT V2: no "
+    "multi-lap bounded-drift campaign has been run; real-ephemeris chains are not claimed as V3 "
+    "(V3 cannot skip V2). "
+)
+
 _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ("aldrin-classic-em-k1-outbound", "V1"): (
         "spec §14 V1: real-DE440 Aldrin cycler — lamberthub izzo2015+gooding1990 "
@@ -1547,6 +1566,31 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "docs/notes/2026-08-09-799-vaquero-em-cycler-family-reproduction.md + "
         "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
         "src/cyclerfinder/search/vaquero_em_cyclers.py."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc1-2026", "V1"): (
+        _V1_942_943
+        + "Row: gc-1 (lamberthub <= 1.6e-10 m/s; DOP853 re-fly 2.0e-6 km). Real-ephemeris "
+        "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 0.19 km "
+        "(data/943_gc1_realeph/)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc2-2026", "V1"): (
+        _V1_942_943
+        + "Row: gc-2 (lamberthub <= 2.4e-9 m/s; DOP853 re-fly 6.1e-6 km). Real-ephemeris "
+        "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 2.4e-5 km "
+        "(data/942_943_ladder_realeph_chains.json)."
+    ),
+    ("earth-venus-venus-hosted-cycler-evc-2026", "V1"): (
+        _V1_942_943
+        + "Row: ev-C (lamberthub <= 1.0e-10 m/s; DOP853 re-fly 0.082 km). Real-ephemeris "
+        "companion: Standish mean elements and DE440, 5 cycles (16 yr), 5/5 epochs, re-fly "
+        "<= 0.116 km (data/942_direct_route_and_gm_fix.json)."
+    ),
+    ("earth-venus-two-working-body-cycler-eva-2026", "V1"): (
+        _V1_942_943
+        + "Row: ev-A (lamberthub <= 6.0e-10 m/s; DOP853 re-fly 6.6e-4 km). Real-ephemeris "
+        "companion: Standish mean elements, 5 cycles, 5/5 epochs, re-fly <= 1.9e-3 km "
+        "(data/942_direct_route_and_gm_fix.json); DE440 near-ballistic (1.56-2.53 m/s per "
+        "16-yr chain, data/942_evAB_de440_closure_dv.json)."
     ),
 }
 

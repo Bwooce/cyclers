@@ -245,7 +245,11 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # Same convention as the Casoliva/Vaquero rows: NO orbit_source/vinf_source
     # provenance tags (its identity is a Jacobi/period/state tuple) -> 'unvalidated' on
     # the source-pair tier axis; its evidence lives on the validation_level axis.
-    "unvalidated": 114,
+    # 114 -> 118 (2026-10-08, #942/#943): +4 two-working-body generator rows (gc-1, gc-2,
+    # ev-C, ev-A; this-project, V1). Their V_inf values are DERIVED by the generator with
+    # no orbit_source/vinf_source provenance-registry tags -> 'unvalidated' on the
+    # source-pair tier axis; their evidence lives on the validation_level axis.
+    "unvalidated": 118,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent
