@@ -2723,19 +2723,39 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
 - `#1047` — registered 2026-10-08 (from `#1000`; GATED on `#1045`). **LITERATURE STEP AND ADJUDICATION FOR
-  THE `#1000` FAMILIES A, B AND D AND THE NINE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
+  THE `#1000` FAMILIES A, B AND D, THE NINE SYMMETRIC FAMILIES, AND (widened 2026-10-08, from `#1048`) THE
+  3:1 RETROGRADE AND 7:2 PROGRADE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
   (computed members of Casoliva's Class 1 p-q resonant class). The explicit row-by-row collision table
   (dispatched) comes first.
-- `#1048` — registered 2026-10-08 (from `#1000`); **DISPATCHED 2026-10-08 to earthmoon-opus** (3:1, 7:2 and
+- `#1048` — ✓ DONE 2026-10-08 (earthmoon-opus; `4d5ca7b6`, `9158c685`, `c4acd7fa`; note
+  `docs/notes/2026-10-08-1048-1000-coverage-gaps.md`). Registered 2026-10-08 (from `#1000`); dispatched to earthmoon-opus (3:1, 7:2 and
   4:1 seeds with vaquero-31-c254 as the control; the continuation cap lifted; the 54 % impacts), then
   the `#1049` patch preparation. **`#1000` COVERAGE GAPS:** seeds for 3:1, 7:2
   and 4:1 (vaquero-31-c254 exists, but its Kepler skeleton never reaches the Moon), the 40-step
   continuation cap, and the 54 % of solves that impact a primary.
+  **RESULTS:** (a) the control passed (21 of 576 3:1 skeleton seeds converge onto vaquero-31-c254, crossing
+  to 3e-12); the 3:1 / 7:2 / 4:1 grid (1,728 seeds, 1,321 converged) is ALL SYMMETRIC, so no new
+  asymmetric family (A, B, D stand); 50 cycler-class candidates in three families: 3:1 prograde
+  known-class (RR 16 of 18, plus Vaquero), 3:1 retrograde (C 1.32-1.65, below RR's range) unmatched,
+  7:2 prograde (C 2.74-2.82) unmatched; 4:1 none. (b) The cap lifted: A spans C 2.4022-3.0968, B
+  0.0159-0.9418, D 2.4136-2.5601; the perigee is always the binding limit (Earth floor or GEO); no
+  stop qualifies as a fold under the 10x rule; all three ends are "loss of convergence (unexplained)".
+  (c) Impacts: 93 % when the skeleton passes within 5,000 km of the Moon, 94 % at floor-level seed
+  perigees: a seed-design issue (`#1054`). Note sec. 7 (`ebc04b3a`) corrects `#1000` sec. 4.1: family C
+  passes through the MIRROR image of casoliva-7-3b (the 7-3c orientation); its known-class verdict is
+  unchanged.
 - `#1049` — registered 2026-10-08 (from `#1000`; BACKLOG, small; catalogue evidence). **casoliva-7-3b AND
   casoliva-7-3c ARE PROBABLY MIRROR IMAGES** (identical printed C and k): verify and note on both rows.
   Already shown in code: `tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`
   (`#899`, `cb8d011d`) asserts that the printed 7-3c crossing is the mirror image of a 7-3b crossing to
   1e-9. Neither catalogue row's notes say so yet; the remaining work is the note (ratchets on any edit).
+  **2026-10-08 (earthmoon-opus):** a first patch (`c4acd7fa`) said the catalogue's 7-3c row was an
+  UN-mirrored member of the 7-3b branch; that was WRONG and is withdrawn (`ebc04b3a`, the patch file
+  removed in `5dc23d61`). Corrected fact (`scripts/check_1049_mirror.py`): the `#1000` family-C branch is
+  the MIRROR of the 7-3b row (7-3b row: mirrored 1.3e-11, direct 0.41); the 7-3c row is ON that mirror
+  branch (direct 5.2e-10), which is the correct orientation, as in Casoliva's printed pair; it differs
+  from the exact mirror of the 7-3b row (2.6e-3) only because it sits at C = 1.067197 rather than the
+  7-3b row's 1.068655 (printed: 1.068762 for both). Superseded by `#1053`.
 - `#1050` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1000`). **CONTINUE `#1000`'s
   FAMILIES A AND D UPWARD IN C, PAST THE 40-STEP CAP,** to test their connection to Liang 2017's 5:2 and
   7:3 polygonal-like orbits (C 3.10 / 3.19, no lunar pass).
@@ -2754,6 +2774,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   UNTOPOLOGIED-SIGNATURE LIMIT OUTSIDE G1:** the Pergola anchor (tagged halo) gives Uranus (Umbriel,
   Titania) -> published, and the Howett anchor (no topology) gives Pluto (Charon, Nix) -> published,
   for untopologied signatures.
+- `#1053` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1049`). **RE-DERIVE THE
+  casoliva-7-3c ROW AT THE PRINTED C (1.068762) ON THE MIRROR BRANCH**; the row now sits at C =
+  1.067197. Evidence note plus a patch for the next ratchet window. (Supersedes the withdrawn `#1049`
+  patch.)
+- `#1054` — registered 2026-10-08 (from `#1048`; BACKLOG). **`#1000` SEED-DESIGN FIX:** perigee r_p at least
+  1.3 times the floor, omega chosen by the target lunar-pass distance, and a perigee step limit; the
+  current seeds impact in 93-94 % of solves when the skeleton passes near the Moon or the seed perigee
+  is at the floor.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
