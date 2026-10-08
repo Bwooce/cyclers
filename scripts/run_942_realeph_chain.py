@@ -281,6 +281,51 @@ class RelTime:
         return np.eye(3)
 
 
+def ramp_solve(
+    sysm: Any, legs: tuple, x0: float, y0: np.ndarray, lam_start: float, label: str
+) -> tuple[np.ndarray, bool, list[dict[str, Any]]]:
+    """The phase-1 date solve on a chain ``legs`` (ramp mode): from ``lam_start`` (1.0 =
+    direct, 0.0 = continuation from the ideal model) to lambda = 1 with the adaptive step
+    (0.1, halved on failure down to 1/640). Returns (y, reached lambda = 1, steps)."""
+    lam, dlam, lam_done = lam_start, 0.1, 0.0
+    y = np.array(y0, dtype=float)
+    steps: list[dict[str, Any]] = []
+    while True:
+        sysm.lam = lam
+        sol = least_squares(
+            lambda yy: date_chain_residual(sysm, legs, x0, yy),
+            y,
+            method="lm",
+            xtol=1e-14,
+            ftol=1e-14,
+            gtol=1e-14,
+            max_nfev=50 * len(y),
+        )
+        res = date_chain_residual(sysm, legs, x0, sol.x)
+        conv = bool(np.max(np.abs(res)) < 1e-6)
+        steps.append(
+            {"lambda": lam, "converged": conv, "max_residual_kms": float(np.max(np.abs(res)))}
+        )
+        print(
+            f"{time.strftime('%H:%M:%S')}   {label} lam={lam:.4f} conv={conv} "
+            f"res={steps[-1]['max_residual_kms']:.1e}",
+            flush=True,
+        )
+        if conv:
+            y = sol.x
+            if lam >= 1.0:
+                return y, True, steps
+            lam_done = lam
+            lam = min(1.0, lam + dlam)
+        else:
+            if lam_start >= 1.0:
+                return y, False, steps
+            dlam /= 2.0
+            if dlam < 1.0 / 640:
+                return y, False, steps
+            lam = lam_done + dlam
+
+
 def date_chain_residual(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
     """Ramp mode: dates [x0, y[:-1]] (days), chain period y[-1] (days); fixed legs timed at
     the model's current body period (exact in a Keplerian model)."""
@@ -805,7 +850,66 @@ def main() -> None:
             "x0_days": x0 / DAY,
             "final_y_dates": y.tolist(),
         }
-        if ramp:
+        if ramp and args.grow_chain and not reached:
+            # note 6.55: the first length failed directly -> ramp-lambda continuation there.
+            y_ideal = np.concatenate([(xs[1:] + t_shift) / DAY, [n_ph * t_cyc / DAY]])
+            y, reached, st1 = ramp_solve(sysm, legs_chain, x0, y_ideal, 0.0, f"k={n_ph} ramp")
+            rec_out["k1_ramp_steps"] = st1
+            rec_out["final_y_dates"] = y.tolist()
+            if reached:
+                sysm.lam = 1.0
+                rec_out["k1_ramp_gate"] = interior_gate(
+                    sysm,
+                    Cycle(legs_chain, float(y[-1]) * DAY),
+                    np.concatenate([[x0], y[:-1] * DAY]),
+                )
+        if ramp and args.grow_chain and reached and n_ph < args.n_cycles:
+            # Ramp-mode chain-length growth (note 6.55): k -> k+1 cycles, each seeded by the
+            # k-cycle solution with its last cycle's dates moved by one cycle and appended; a
+            # direct lambda = 1 solve first, then the ramp-lambda continuation at that length
+            # from the ideal model (6.18) if the direct solve fails.
+            one_legs = legs_chain[: len(legs_chain) // n_ph]
+            nl_c = sum(isinstance(lg, LambertLeg) for lg in one_legs)
+            grow: list[dict[str, Any]] = []
+            y_k, ok = y, True
+            for k in range(n_ph + 1, args.n_cycles + 1):
+                legs_k = one_legs * k
+                dates = np.concatenate([[x0 / DAY], y_k[:-1]])
+                per = float(y_k[-1])
+                t1 = per / (k - 1)
+                seed = np.concatenate([dates, dates[-nl_c:] + t1])[1:]
+                seed = np.concatenate([seed, [per + t1]])
+                y_new, ok, st = ramp_solve(sysm, legs_k, x0, seed, 1.0, f"k={k} direct")
+                route = "direct"
+                if not ok:
+                    xs_k = np.concatenate([x1 + i * t_cyc for i in range(k)])
+                    y_ideal = np.concatenate([(xs_k[1:] + t_shift) / DAY, [k * t_cyc / DAY]])
+                    y_new, ok, st2 = ramp_solve(sysm, legs_k, x0, y_ideal, 0.0, f"k={k} ramp")
+                    st = st + st2
+                    route = "ramp-continuation"
+                rec_k: dict[str, Any] = {"k": k, "route": route, "converged": ok, "steps": st}
+                if ok:
+                    sysm.lam = 1.0
+                    rec_k |= interior_gate(
+                        sysm,
+                        Cycle(legs_k, float(y_new[-1]) * DAY),
+                        np.concatenate([[x0], y_new[:-1] * DAY]),
+                    )
+                    y_k = y_new
+                print(
+                    f"  grow k={k}: {route} converged={ok} gate={rec_k.get('status')} "
+                    f"worst={rec_k.get('worst_ratio', float('nan'))}",
+                    flush=True,
+                )
+                grow.append(rec_k)
+                if not ok:
+                    break
+            rec_out["grow"] = grow
+            rec_out["final_y_dates"] = y_k.tolist()
+            rec_out["rung_pass"] = bool(
+                ok and grow and grow[-1]["k"] == args.n_cycles and grow[-1].get("status") == "pass"
+            )
+        elif ramp:
             rec_out["rung_pass"] = reached and conv_steps[-1].get("status") == "pass"
         elif reached and any(not isinstance(lg, LambertLeg) for lg in legs_chain):
             # Phase 2 (blend mode, lambda = 1 = the real ephemeris): shoot every fixed leg,
