@@ -2274,6 +2274,20 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Hoelker-Winston and Genova-Aldrin (dispatched); then the parent identity, method (2) on the `#997`
   parents and the RR records, the gates, and the classification of the 191 symmetric candidates. The
   literature step is gated on `#1045`. Nothing is called novel.
+  **FINAL 2026-10-08 (earthmoon-opus; 12 commits `00f6f5e7` .. `b464791a`; note
+  `docs/notes/2026-10-08-1000-earth-moon-complement-search.md`; `data/1000_complement/`):** method (1),
+  multiple shooting from p:q skeletons, passes its independent control. Three asymmetric cycler-class
+  families lie outside Restrepo-Russell and Franz-Russell by construction: A, 5:2 prograde (C 2.41-2.59,
+  T about 4 pi, perigee altitude 495-8,748 km, b -110 to -121); B, 5:3 retrograde (C 0.67-0.94, T about
+  6 pi, perigee 200-14,500 km, b +115 to +136); D, 7:3 prograde (C 2.41-2.56, perigee 267-6,400 km, b
+  110-800). Asymmetry confirmed node by node; no catalogue row on any; no pitchfork parent within range.
+  Family C is the Casoliva 7-3b/c class, with its symmetric parent at C 0.8814 (eta variant,
+  descriptive). **CORRECTION:** method (2) did NOT pass as pre-registered (the eigenvector perturbation
+  failed 36 of 36); the replacement eta variant is accepted as a method with a self-referential control,
+  so its results are descriptive. Nine symmetric resonant families are unmatched by `#997`/RR (below RR's
+  J range). Reading for the literature step: computed members of Casoliva's Class 1 p-q resonant class
+  at untabulated p:q or sense, to be shown row by row (dispatched). Nothing called novel; literature
+  step `#1047`, gated on `#1045`. Gaps: `#1048`; side flag: `#1049`.
 - `#1001` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (census, inside
   `#905` deduplication). **CENSUS: STABILITY OF CASOLIVA'S CLASS-2 L1-HOMOCLINIC-SHADOWING ORBITS;
   BROUCKE E1/F AND KUMAR-MORENO FIG. 12/13 FAMILIES AS CYCLERS; LEIVA-BRIOZZO ATLAS LABEL MAPPING.**
@@ -2660,6 +2674,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
 - `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
+- `#1047` — registered 2026-10-08 (from `#1000`; GATED on `#1045`). **LITERATURE STEP AND ADJUDICATION FOR
+  THE `#1000` FAMILIES A, B AND D AND THE NINE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
+  (computed members of Casoliva's Class 1 p-q resonant class). The explicit row-by-row collision table
+  (dispatched) comes first.
+- `#1048` — registered 2026-10-08 (from `#1000`; BACKLOG). **`#1000` COVERAGE GAPS:** seeds for 3:1, 7:2
+  and 4:1 (vaquero-31-c254 exists, but its Kepler skeleton never reaches the Moon), the 40-step
+  continuation cap, and the 54 % of solves that impact a primary.
+- `#1049` — registered 2026-10-08 (from `#1000`; BACKLOG, small; catalogue evidence). **casoliva-7-3b AND
+  casoliva-7-3c ARE PROBABLY MIRROR IMAGES** (identical printed C and k): verify and note on both rows.
+  Already shown in code: `tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`
+  (`#899`, `cb8d011d`) asserts that the printed 7-3c crossing is the mirror image of a 7-3b crossing to
+  1e-9. Neither catalogue row's notes say so yet; the remaining work is the note (ratchets on any edit).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
