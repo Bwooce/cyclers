@@ -136,3 +136,83 @@ express #875 (i)/(ii) for gc-1/gc-2/ev-C mechanically. Recorded as an option onl
 
 **After the v2 run (lead):** gc-1 and ev-C "inconclusive" is the spec's human-review path. The lead
 takes the gate diagnosis to the owner for a recorded decision. No row is written before that.
+
+## 8. Results and after-the-fact amendment (2026-10-08), recorded after the run
+
+**Run** (`scripts/litcheck_942_943_scope.py`, output in `data/942_943_litcheck_scope.json`):
+- All 26 controls return "published":
+  - the 9 recovered members;
+  - the 15 H&M rows, all labelled "two" {FR, SY};
+  - Jones VEM and Liang CGE.
+- The Jones mutated-tag negative (n_bodies 2) does not match Jones.
+- The candidates match the pre-registered expectations (sec. 4 with F8, sec. 7 for ev-C):
+
+| Candidate | Result | Anchor named |
+|---|---|---|
+| gc-1 | inconclusive | R-S 2009 Ganymede-Callisto (F7) |
+| gc-2 | inconclusive | R-S 2009 Ganymede-Callisto (F7) |
+| ev-A | not-found | |
+| ev-B | not-found | |
+| ev-C | inconclusive | H&M (F7, ruling (b)) |
+
+So ev-A and ev-B pass the gate. gc-1, gc-2 and ev-C go on the owner path.
+
+**Deviations (stated, accepted by the lead 2026-10-08):**
+1. F13: there were 12 literal comparison sites, not 7. All go through `is_literature_fresh`. The
+   five extra sites are `gauntlet_run_274`, `branch_c32_b0_p389_2_gates`,
+   `run_301_subfamily_validation`, `literature_check_review_queue` and `run_432_er3bp_discovery`.
+   The AST ratchet covers all of src/ and scripts/. Positive control: it flags the old code at
+   `branch_c32...:409` and `precursor_matcher.py:135`.
+2. F14 H&M labels: computed from `hollister_menning_1970.load_table3`, which is the Table 3 YAML with
+   that module's documented print-error date fixes (they predate #972). The lead ruled this the right
+   source. With the raw printed dates, orbits 2, 6 and 8 give a GEN interval, each at a documented
+   print error (e.g. orbit 8 "4870" for 5870). With the fixes, all 15 are {FR, SY}, which agrees
+   with the module's `block_types`.
+3. F14 + F7: an unlabelled signature against a working-scope anchor gives the reason
+   "working-bodies-unlabelled". When the body set is equal, F7 makes the result "inconclusive", not
+   "not-found". This is the conservative combination.
+
+**Consequence NOT predicted by this pre-registration:** under F14 (with H12's Titan-Enceladus tag),
+every old pipeline that feeds UNLABELLED signatures loses the R-S citation on R-S rediscoveries.
+- Same body set: the result is "inconclusive" via F7. Otherwise, the R-S author bonus is lost on web
+  hits.
+- The direction is safe: the result is never a false "not-found".
+- The fix is to label signatures at the source. Registered by the lead as #1035: label the
+  signatures in the old callers (`low_thrust_cycler_search`, `cislunar_bct_search`,
+  `precursor_matcher`, the `run_*` scripts), derived mechanically from turns as in the scope script.
+
+Two existing tests in `tests/search/test_literature_check.py` were retrofitted (lead ruling (A); not
+exempted). Every other assertion is kept:
+- `test_russell_strange_2009_double_cyclers_flagged_published` now uses labelled "one" signatures
+  and still expects "published" via R-S.
+- The new `test_russell_strange_2009_unlabelled_signature_not_cleared`: unlabelled Ganymede-Io
+  returns "inconclusive" and names the R-S paper (title and DOI URL).
+  - The unlabelled Titan-Enceladus case on that test's web backend still reads "published" (0.75).
+  - Reason: that hit has no anchor identity and scores on its text alone. Real web hits are
+    unchanged by design (F4).
+- `test_880_same_scope_anchor_still_flags_published` now uses a labelled "one" Titan-Enceladus
+  signature and expects "published".
+- The new `test_880_unlabelled_same_system_anchor_goes_to_a_human`: unlabelled returns
+  "inconclusive", naming the R-S Titan-Enceladus anchor.
+
+**Full suite** (tests/data tests/search tests/scripts, tee'd, 2026-10-07 21:07 to 2026-10-08 00:47
+AEDT, load average up to 48):
+- 14 failures: the 2 above, plus 12 pytest timeouts in heavy CR3BP tests. Those tests do not import
+  `literature_check`; they mention it only in docstrings.
+- The 12 were re-run outside the suite (call times; setup in brackets where it was large):
+  - Re-run 1, 2026-10-08 01:10-01:29 AEDT, 4 workers, load average 34-70: 10 passed.
+    - Neptune-Triton families: `test_continue_32_esm4_hc1_family_777_reaches_jacobi_bound` 920.6 s
+      (its own 1200 s limit), `test_continue_23_family_reaches_jacobi_bound_and_matches_printed_members`
+      414.9 s, `test_continue_47_esm4_pair_777_reaches_jacobi_bound` 212.9 s.
+    - Neptune-Triton connections: `test_find_homoclinic_returns_known_primary_combo` 255.3 s.
+    - Earth-Moon class 1: `test_known_close_pair_73b_plateau_independent_of_fd_step` 379.5 s (+172.8 s
+      setup), `test_find_homoclinic_narrow_diagonal_window_is_honest_empty` 149.9 s (+77.0 s).
+    - #549 binary sweep: `test_549_orcus_vanth_32_clean_negative_aware` 278.2 s,
+      `test_549_didymos_dimorphos_11_clean_negative_aware` 121.7 s.
+    - Jovian: `test_find_homoclinic_default_target_unchanged` 221.8 s,
+      `test_5_6_li_continues_smoothly_toward_c_flyby` 215.6 s.
+    - Two timed out again at 600 s under that load: `test_known_close_pair_73c_plateaus_just_outside_guard`
+      and `test_find_homoclinic_default_k_range_is_too_narrow_for_this_orbit`.
+  - Re-run 2, 2026-10-08 08:01 AEDT, serial (-n 0), load average about 4: both passed, 133.4 s and
+    111.4 s (+16 s setup each).
+  - All 12 pass. Their timeouts in the suite were CPU contention.
