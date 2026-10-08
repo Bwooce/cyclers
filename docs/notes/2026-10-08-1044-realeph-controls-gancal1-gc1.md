@@ -55,3 +55,17 @@ lane's `JovianRailsCache(JovianEphemeris)` (registry GMs): < 1e-2 km, 1e-7 km/s.
   control, whatever the control's outcome; the control's outcome conditions how it is read.
 - Expected: PASS with probability about 0.5 (moderate turn ratios 0.65-0.76; required altitudes
   1,650-2,440 km in the patched conic; the ideal-model gc-1 closed in continuous gravity, #1034).
+
+## 4. Reconstructions (step 1) and AMENDMENT 1 (before the counted runs)
+
+- GanCal#1 at 2013 (tool 7d753140): max residual 5.6e-8; worst ratio 0.99170 (Ganymede; Callisto
+  0.408); minimum required altitude 130.47 km. PASS. `data/1044_gancal1/seed_chain.json`.
+- gc-1 e2 (tool 4735f609): max residual 1.6e-9; worst ratio 0.75512 (Callisto; Ganymede 0.661);
+  minimum required altitude 1,675.28 km. PASS. `data/1044_gc1/seed_chain.json`.
+- The first GanCal#1 start at sigma = 0.02 stalled at 2e4 km. The seed defects did not scale with
+  sigma (3.1e4 km at both 0.001 and 0.02). This is the #1043 cause again: the second Ganymede flyby
+  (turn 4.0 deg) and the Callisto flyby (0.97 deg) need periapses of 28,327 km and 79,393 km, beyond
+  the lane's default 0.6-SOI clamp (19,030 and 30,084 km).
+- AMENDMENT 1: the seed periapsis nodes are unclamped (`SEED_CAP_KM = 1e12`, as in #1043). This is a
+  seed construction fix only; criteria unchanged. The rung-(b) GanEur#316 runs were not affected:
+  their periapses lie inside the clamp.
