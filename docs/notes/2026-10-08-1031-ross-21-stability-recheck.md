@@ -84,3 +84,7 @@ The `#1030` flag (nu = -1.35 at "the stored C") was my error, and I retract it.
 - I re-ran it; `data/1030_stability_audit/audit.json` is regenerated. ross-21 is now k_par =
   +0.048, k_perp = -1.140, stable. ross-31 is unchanged (nu = 0.01545 reproduced).
 - The `#1030` note's sec. 3 item 2 is corrected to point here.
+
+## 6. Applied (2026-10-08)
+
+The precision patch was applied in the lead's ratchet window of 2026-10-08, in the same commit as the `#970` row and the `#1030` wording.

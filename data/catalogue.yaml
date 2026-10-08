@@ -48375,7 +48375,7 @@
       jacobi_constant: 3.129389531088256   # SOURCED: Ross Table 3 (p. 11) C^stable_(2,1).
       period_nd: 19.44043166795154   # SOURCED: Ross Table 3 (p. 11) T^stable_(2,1) in TU.
       stability_index: 0.05007   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
-      state_nd: [0.7237335857, 0.0, 0.0, 0.0, 0.4137707374, 0.0]   # DERIVED (NOT a golden): x0 > 0 (U1+-side perpendicular crossing); recovered by our corrector, self-consistency-checked. Razor-thin stable window (Delta_p_m 4.23 km), so T lands ~2.7e-4 TU off the printed T^stable (results note §1) — the verdict and enforced C are exact.
+      state_nd: [0.7237335857, 0.0, 0.0, 0.0, 0.41377073737552744, 0.0]   # DERIVED (NOT a golden; #1031: ydot0 re-solved at fixed x0 to full precision, giving C = 3.1293895310882553 = C^stable to 1e-15 and Barden nu = +0.050; the earlier 10-digit ydot0 put the state 2e-11 off in C, more than the stable window is wide, 1.8e-11, docs/notes/2026-10-08-1031-ross-21-stability-recheck.md): x0 > 0 (U1+-side perpendicular crossing); recovered by our corrector, self-consistency-checked. Razor-thin stable window (Delta_p_m 4.23 km), so T lands ~2.7e-4 TU off the printed T^stable (results note §1) — the verdict and enforced C are exact.
       lunit_km: 384400.0   # SOURCED: Ross p. 3.
       tunit_s: 375699.8   # SOURCED: Ross p. 3.
       jacobi_max: 3.129389531092325   # SOURCED: Ross Table 3 (p. 11) C^max_(2,1).
@@ -55891,7 +55891,7 @@
       libration_point:
       jacobi_constant: 2.762981478376233   # DERIVED (#801, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=2.7629814961 verbatim -- reproduces it to 6.41e-09 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=3.64e-14 over one period. NOT a golden.
       period_nd: 12.566371124796076   # DERIVED (#801 corrector); reproduces Casoliva's own printed T=12.5663706144 TU to 4.06e-08 relative. NOT a golden.
-      stability_index: 1.999775886521569   # DERIVED (#801, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing) does not have -- see data_gaps below. k_par=-4.191373, k_perp=1.999776, k_signed=1.999776; THIS ROW is one of 3 (with 3-2a, 7-3a) where the naive max(|.|) selection picks the WRONG block (|k_par|>|k_perp| here, yet Casoliva's printed k matches k_perp, not k_par) -- #801 added an explicit per-designation override (_K_SIGNED_FORCE_PERP in earth_moon_resonant_families.py) calibrated against this exact match. Reproduces Casoliva's own printed k=1.9997758212 to 3.27e-08 relative -- her own printed STABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      stability_index: 1.999775886521569   # DERIVED (#801, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing) does not have -- see data_gaps below. k_par=-4.191373, k_perp=1.999776, k_signed=1.999776; THIS ROW is one of 3 (with 3-2a, 7-3a) where the naive max(|.|) selection picks the WRONG block (|k_par|>|k_perp| here, yet Casoliva's printed k matches k_perp, not k_par) -- #801 added an explicit per-designation override (_K_SIGNED_FORCE_PERP in earth_moon_resonant_families.py) calibrated against this exact match. Reproduces Casoliva's own printed k=1.9997758212 to 3.27e-08 relative -- her printed k is reproduced as this project's k_perp (the VERTICAL index); her STABLE verdict holds for the vertical block only: the in-plane index on this orbit is k_par=-4.191, flip-unstable (#1030). NOT a golden, NOT this project's usual Barden nu.
       state_nd: [2.159869249114997, 1.9764033570772119e-07, 4.8069119756681544e-20, 0.2293727274811744, -1.66727019559511, 1.7816521895432033e-20]   # DERIVED (#801, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-2.1598692556, u_i=-0.2293727086, v_i=1.6672704485 in HER frame/convention) at this project's own registry mu. Closure residual 8.49e-12; x0 reproduces Casoliva's own printed x_i to 3.00e-09 relative.
       lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
@@ -55938,7 +55938,7 @@
     note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
   priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
   notes: |
-    Casoliva 2010 Table 3 Class 1 row "1-2e" -- (1,2) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=2.7630, T=2*pi*2 TU (STABLE, k=1.9998). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live #797/#801 directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+    Casoliva 2010 Table 3 Class 1 row "1-2e" -- (1,2) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=2.7630, T=2*pi*2 TU (Casoliva: STABLE, k=1.9998; this project's monodromy: vertically stable, k_perp=+1.9998; in-plane flip-unstable, k_par=-4.191; #1030). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live #797/#801 directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
 
     ADMISSION (#801, completing #797's own deferred writeback): #797 excluded this row because #780's original max(|kappa_par|,|kappa_perp|) selection rule reproduced the WRONG stability index (picked k_par=-4.191373 vs Casoliva's printed k=1.9997758212). #801 found and fixed the root cause: this row's printed k is k_perp, not k_par, despite |k_par|>|k_perp| -- see the stability_index field's own comment for the calibration evidence. With the fix, #780's table3_gate_report() now reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=3.00e-09, period_rel_err=4.06e-08, jacobi_rel_err=6.41e-09, k_rel_err=3.27e-08), AND an independent Radau integrator cross-check passes (radau_djacobi=3.64e-14).
 
@@ -56311,7 +56311,7 @@
       libration_point:
       jacobi_constant: 1.021572524890086   # DERIVED (#801, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.0215696153 verbatim -- reproduces it to 2.85e-06 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=1.90e-12 over one period. NOT a golden.
       period_nd: 18.849558588581477   # DERIVED (#801 corrector); reproduces Casoliva's own printed T=18.8495559215 TU to 1.41e-07 relative. NOT a golden.
-      stability_index: -1.2985315811762783   # DERIVED (#801, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing) does not have -- see data_gaps below. k_par=-4.965237, k_perp=-1.298532, k_signed=-1.298532; THIS ROW is one of 3 (with 1-2e, 3-2a) where the naive max(|.|) selection picks the WRONG block (|k_par|>|k_perp| here, yet Casoliva's printed k matches k_perp, not k_par) -- #801 added an explicit per-designation override (_K_SIGNED_FORCE_PERP in earth_moon_resonant_families.py) calibrated against this exact match. Reproduces Casoliva's own printed k=-1.2990228617 to 3.78e-04 relative -- her own printed STABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      stability_index: -1.2985315811762783   # DERIVED (#801, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing) does not have -- see data_gaps below. k_par=-4.965237, k_perp=-1.298532, k_signed=-1.298532; THIS ROW is one of 3 (with 1-2e, 3-2a) where the naive max(|.|) selection picks the WRONG block (|k_par|>|k_perp| here, yet Casoliva's printed k matches k_perp, not k_par) -- #801 added an explicit per-designation override (_K_SIGNED_FORCE_PERP in earth_moon_resonant_families.py) calibrated against this exact match. Reproduces Casoliva's own printed k=-1.2990228617 to 3.78e-04 relative -- her printed k is reproduced as this project's k_perp (the VERTICAL index); her STABLE verdict holds for the vertical block only: the in-plane index on this orbit is k_par=-4.965, flip-unstable (#1030). NOT a golden, NOT this project's usual Barden nu.
       state_nd: [0.8938403738043593, 6.834220768388577e-06, 1.478933578472856e-21, 0.48312871925313605, -1.4082498841591833, 4.40494806246266e-22]   # DERIVED (#801, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-0.8938394486, u_i=-0.4831113793, v_i=1.4082724890 in HER frame/convention) at this project's own registry mu. Closure residual 1.17e-09; x0 reproduces Casoliva's own printed x_i to 1.04e-06 relative.
       lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
@@ -56358,7 +56358,7 @@
     note: "Conference precursor to the 2010 JGCD journal paper this row's Table 3 digit-grade values are sourced to; strictly planar 4-state formulation, same Class 1 p-q resonant family concept."
   priority_date: "2010-08-12"   # PDF CreationDate (Article-in-Advance online-first timestamp, pdfinfo on the corpus PDF) -- exact print-issue date (JGCD 33(5), Sept-Oct 2010) not independently found; used as the best-evidenced lower-bound proxy, flagged not silently guessed.
   notes: |
-    Casoliva 2010 Table 3 Class 1 row "7-3a" -- (7,3) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.0216, T=2*pi*3 TU (STABLE, k=-1.2990). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live #797/#801 directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
+    Casoliva 2010 Table 3 Class 1 row "7-3a" -- (7,3) p-q resonant near-Keplerian Earth-Moon periodic orbit at C_J=1.0216, T=2*pi*3 TU (Casoliva: STABLE, k=-1.2990; this project's monodromy: vertically stable, k_perp=-1.2985; in-plane flip-unstable, k_par=-4.965; #1030). One of the 9 of Casoliva's own 16 Table 3 rows that BOTH satisfies its own p-q resonance relation (footnote-e) AND physically exists in the Earth-Moon system (footnote-d, does not fly through Earth) -- both flags re-confirmed live #797/#801 directly from #780's own gate module output (earth_moon_resonant_families.table3_row/table3_gate_report), not inherited from any prior written summary.
 
     ADMISSION (#801, completing #797's own deferred writeback): #797 excluded this row because #780's original max(|kappa_par|,|kappa_perp|) selection rule reproduced the WRONG stability index (picked k_par=-4.965237 vs Casoliva's printed k=-1.2990228617). #801 found and fixed the root cause: this row's printed k is k_perp, not k_par, despite |k_par|>|k_perp| -- see the stability_index field's own comment for the calibration evidence. With the fix, #780's table3_gate_report() now reports this row converged=True, passed=True -- x0/period/Jacobi/stability-index ALL reproduce Casoliva's own printed Table 3 values within the 1e-2 gate tolerance (x0_rel_err=1.04e-06, period_rel_err=1.41e-07, jacobi_rel_err=2.85e-06, k_rel_err=3.78e-04), AND an independent Radau integrator cross-check passes (radau_djacobi=1.90e-12).
 
@@ -56586,7 +56586,7 @@
     "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own casoliva_periselene_km/DERIVE cross-check, both well inside the lunar SOI/Hill radius."
 
 - id: vaquero-21-c198-em-resonant-po-2013
-  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=1.98 printed-TOF family endpoint (6.39 d) (CR3BP, STABLE, NO lunar encounter -- periselene 86,911 km, outside lunar SOI/Hill radius)"
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=1.98 printed-TOF family endpoint (6.39 d) (CR3BP, in-plane stable, vertically unstable, NO lunar encounter -- periselene 86,911 km, outside lunar SOI/Hill radius)"
   source: literature
   trajectory_regime: ballistic
   model_assumption: cr3bp
@@ -56626,7 +56626,7 @@
       libration_point:
       jacobi_constant: 1.9800000000000062   # DERIVED value at a SOURCED target (#799): the fixed-Jacobi symmetric corrector enforces C to the continuation-grid target -- HER OWN printed 2:1 family endpoint C=1.98 (see source_quotes) -- to machine eps; the recorded value's ~1e-14 offset from 1.98 is grid-float accumulation, not a recovered-vs-printed gap. Independent Radau cross-check preserves Jacobi to dJ=1.30e-12 over one period.
       period_nd: 6.211141776252044   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
-      stability_index: 0.48520150202970636   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=0.48520150202970636, |lambda|=0.9999999999999999 -> STABLE (|nu| <= 1; out-of-plane nu_z=1.0347). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
+      stability_index: 0.48520150202970636   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=0.48520150202970636, |lambda|=0.9999999999999999 -> in-plane STABLE (|nu| <= 1); vertically UNSTABLE (out-of-plane nu_z=1.0347 > 1; #1030). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
       state_nd: [1.2139445950765162, 0.0, 0.0, 0.0, -1.1011440751334407, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 5.93e-14, independent-Radau dJ=1.30e-12. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
       lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
@@ -56671,11 +56671,11 @@
     note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
   priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
   notes: |
-    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=1.98 -- circumlunar, naturally L2-connected (STABLE, Barden nu=0.4852). Her own printed 2:1 family low-energy endpoint (C=1.98, printed Earth->Moon TOF 6.39 d, recovered 6.3987 d, 0.14% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=1.98 -- circumlunar, naturally L2-connected (in-plane stable, Barden nu=0.4852; vertically unstable, nu_z=1.0347). Her own printed 2:1 family low-energy endpoint (C=1.98, printed Earth->Moon TOF 6.39 d, recovered 6.3987 d, 0.14% relative). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
 
     SELECTION (#811): one of the four printed-TOF family endpoints -- the only members whose admission is anchored by a digit-grade Vaquero print (her 6.39 d Earth->Moon TOF at C=1.98, recovered at 6.3987 d, 0.14% relative). The four endpoints + the 2:1 stability-transition bracket (vaquero-21-c246/c247) are #811's own minimum representative subset of #799's 129-member record; the full record stays in data/found/799_vaquero_em_cycler_families/results.json.
 
-    ORBIT_CLASS = resonant_po, NOT cycler (#811, per-member check): closest lunar approach 86911.0 km = 1.313x the lunar SOI (66,182.9 km), 1.413x the Hill radius (61,524.1 km) -- at this low-C end the orbit never enters the Moon's sphere of influence: an Earth-resonant periodic orbit, exactly resonant_po's v4.9 carve-out ('it never encounters the secondary'), mirroring em-cycler-21-3d-spatial-2026 and the casoliva-*-resonant-po rows. Vaquero labels the whole family 'cyclers' under her own broader criterion 2 (surface contact OR a small L1/L2-LPO connection); this schema's SOI discriminator governs the catalogue class. Cross-checked two independent ways: #799's dense DOP853 propagation and #811's standalone Radau re-derivation, agreeing to <0.1 km. Honesty note: this row is STABLE (Barden nu=0.4852); resonant_po's descriptive 'stable' prose fits here (unlike some casoliva rows), and only epoch_locked=false/n_returns=infinite is schema-enforced.
+    ORBIT_CLASS = resonant_po, NOT cycler (#811, per-member check): closest lunar approach 86911.0 km = 1.313x the lunar SOI (66,182.9 km), 1.413x the Hill radius (61,524.1 km) -- at this low-C end the orbit never enters the Moon's sphere of influence: an Earth-resonant periodic orbit, exactly resonant_po's v4.9 carve-out ('it never encounters the secondary'), mirroring em-cycler-21-3d-spatial-2026 and the casoliva-*-resonant-po rows. Vaquero labels the whole family 'cyclers' under her own broader criterion 2 (surface contact OR a small L1/L2-LPO connection); this schema's SOI discriminator governs the catalogue class. Cross-checked two independent ways: #799's dense DOP853 propagation and #811's standalone Radau re-derivation, agreeing to <0.1 km. Honesty note: this row is in-plane STABLE (Barden nu=0.4852; vertically unstable, nu_z=1.0347); resonant_po's descriptive 'stable' prose fits here (unlike some casoliva rows), and only epoch_locked=false/n_returns=infinite is schema-enforced.
 
     MODEL: pure planar CR3BP (PCR3BP), this project's own DE440-registry mu/l*/t* throughout (mu=0.01215058439469525, l*=384,400 km, t*=375,190.26 s). Vaquero's own mu for Sec. 4.4 is UNSTATED (her Ch. 2 gives only the generic definition); registry mu per project policy + #780's lineage evidence. Her Purdue/Howell frame convention (Earth at (-mu,0), Moon at (1-mu,0)) matches this project's own -- x0 compares directly, NO coordinate flip (unlike the Casoliva rows). No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
 
@@ -56688,7 +56688,7 @@
     "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('it never encounters the secondary') + this row's own periselene_km (86911.0 km = 1.313x SOI, 1.413x Hill), #799-DOP853 and #811-standalone-Radau cross-checked, mirroring em-cycler-21-3d-spatial-2026/#797's reasoning."
 
 - id: vaquero-21-c246-em-cycler-2013
-  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=2.46 last linearly stable member (stability transition) (CR3BP, STABLE, genuine lunar encounter -- periselene 49,700 km, inside lunar SOI)"
+  name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=2.46 last linearly stable member (stability transition) (CR3BP, in-plane stable, vertically unstable, genuine lunar encounter -- periselene 49,700 km, inside lunar SOI)"
   source: literature
   trajectory_regime: ballistic
   model_assumption: cr3bp
@@ -56728,7 +56728,7 @@
       libration_point:
       jacobi_constant: 2.4599999999999964   # DERIVED (#799 continuation, dC=0.01 grid): Vaquero prints NO per-member C inside the family interior -- this C=2.46 is #799's own grid point, inside her printed range [1.98, 2.66] (the range endpoints are her prints; this member's C is not). Independent Radau cross-check preserves Jacobi to dJ=4.30e-13 over one period.
       period_nd: 6.02801832920549   # DERIVED (#799 corrector/continuation); Vaquero prints NO period for any member of these families. NOT a golden.
-      stability_index: -0.9273979208811873   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=-0.9273979208811873, |lambda|=0.9999999999999986 -> STABLE (|nu| <= 1; out-of-plane nu_z=1.2211). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
+      stability_index: -0.9273979208811873   # DERIVED (#799, cr3bp_periodic.barden_stability -- this project's USUAL Barden half-period nu convention, directly comparable to the braik-ross-*-cycler-2026 rows and UNLIKE the casoliva-* rows' own Casoliva-Eq.-6-8 full-period k): nu=-0.9273979208811873, |lambda|=0.9999999999999986 -> in-plane STABLE (|nu| <= 1); vertically UNSTABLE (out-of-plane nu_z=1.2211 > 1; #1030). Vaquero prints NO per-member stability value; her family-level criterion 4 ('stable or possess small unstable modes', p.170) is the sourced constraint this value is checked against. NOT a golden.
       state_nd: [1.117142555344532, 0.0, 0.0, 0.0, -0.8517405492876177, 0.0]   # DERIVED (#799, NOT a golden): Tisserand-matched two-body apoapsis seed + fixed-Jacobi symmetric corrector (cr3bp_periodic.correct_symmetric_fixed_jacobi) + cr3bp_continuation.continue_family walk at rtol=atol=1e-13; perpendicular +x-axis crossing (x0 inside Fig. 4.44's own plotted x0 band, on the correct side), crossing residual 7.44e-15, independent-Radau dJ=4.30e-13. Vaquero prints NO IC anywhere for these families (Fig. 4.44's x0 axis is unlabeled -- #787 digest).
       lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
@@ -56777,7 +56777,7 @@
     note: "Criteria lineage, NOT a record of these specific orbits: Vaquero's own four cycler-selection criteria are explicitly 'consistent with the criteria for cyclers established by Mondelo and Villac [105, 106]' (p.170), her refs [105]/[106] being this group's own 2008 AIAA / 2010 JGCD papers. #787's cross-check found NO exact numeric orbit match between her 2:1/3:1 families and Casoliva's own Table 3 rows (different C values on presumably related underlying families -- e.g. her 2:1 range [1.98, 2.66] vs Casoliva 2-1a/b at C=0.4887/1.1964)."
   priority_date: "2013-08-09"   # PDF CreationDate (pdfinfo -rawdates D:20130809130434-04'00' on the corpus PDF) -- the title page prints only "August 2013" (degree month); used as the best-evidenced lower-bound proxy, flagged not silently guessed.
   notes: |
-    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=2.46 -- circumlunar, naturally L2-connected (STABLE, Barden nu=-0.9274). An interior member selected as part of the 2:1 stability-transition bracket (see SELECTION below). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
+    Vaquero 2013 (Purdue Ph.D. dissertation) Sec. 4.4.7 'Earth-Moon Periodic Cyclers', 2:1 interior-resonant family member at C=2.46 -- circumlunar, naturally L2-connected (in-plane stable, Barden nu=-0.9274; vertically unstable, nu_z=1.2211). An interior member selected as part of the 2:1 stability-transition bracket (see SELECTION below). No digit-grade IC/period/stability table exists anywhere in her chapter (Fig. 4.44's x0 axis is unlabeled) -- the prose C-ranges/endpoint TOFs are her only printed numbers, so #799 reproduced the families by direct continuation against those prose values; this row writes back #799's digit-grade, Radau-cross-checked IC. REPRODUCTION of a published result, nothing novel claimed (#780 precedent: the reproduction target IS the published record; literature_check.py not in play).
 
     SELECTION (#811): the last linearly STABLE member of the 2:1 family on #799's dC=0.01 grid -- with its successor vaquero-21-c247 it brackets the family's stability transition (linearly stable through C=2.46, |lambda|<=5.73 above -- #799's note), the family-structure feature Vaquero's own criterion 4 ('stable or possess small unstable modes') makes load-bearing and her own free-transfer prose (p.171-172) implicitly requires (unstable 2:1 members must exist in the [2.54, 2.66] overlap band -- and do, above this transition). The four printed-TOF endpoints + this bracket are #811's own minimum representative subset of #799's 129-member record.
 
@@ -57202,3 +57202,116 @@
     "orbit_elements.cr3bp.stability_index": "Vaquero 2013, Sec. 4.4.7 (p.170): \"only resonant cyclers that are stable or possess small unstable modes are considered in this investigation\" (her criterion 4 -- the family-level stability constraint; she prints NO per-member stability value, Fig. 4.44's nu-arrows are graphical only)."
     "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu = 0.01215058439469525, re-verified this task (#811) against data/found/799_vaquero_em_cycler_families/results.json's own recorded mu. Vaquero's own mu for Sec. 4.4 is UNSTATED -- see the field's own comment."
     "orbit_class": "data/README.md/catalogue.schema.json v4.9 resonant_po definition ('it never encounters the secondary') + this row's own periselene_km (66995.2 km = 1.012x SOI, 1.089x Hill), #799-DOP853 and #811-standalone-Radau cross-checked, mirroring em-cycler-21-3d-spatial-2026/#797's reasoning."
+
+# ---------------------------------------------------------------------------
+# Schwaniger 1963 (NASA TN D-1833 sec. III.E) — retrograde Earth-Moon symmetric periodic
+# free return, reproduced by #970 (docs/notes/2026-10-07-970-schwaniger-control.md)
+# ---------------------------------------------------------------------------
+- id: schwaniger-1963-em-cislunar-retrograde-periodic-free-return
+  name: "Schwaniger 1963 retrograde (counter-rotation) cislunar symmetric periodic free return, Earth-Moon CR3BP (perigee 6555 km = 177 km altitude, periselene about 2200 km, T = 26.06 d)"
+  source: literature
+  our_status: known-reproduction   # published 1963 (NASA TN D-1833 sec. III.E); NOT novel
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler   # per Schwaniger's own description (a periodic free return): one Earth perigee (177 km altitude) and one lunar pass (about 465 km altitude) every period. Perigee is below this project's 200-km Earth floor; see data_gaps (lead ruling 2026-10-07).
+  epoch_locked: false   # CR3BP periodic orbit, any epoch
+  n_returns: infinite   # strictly periodic
+  validation_level: V0   # internal consistency only: the source prints only graph-read "about" values (2150 km, 650 h), which this reproduction meets to +2.4% and -3.8%, outside the 1e-2 like-for-like V1 tolerance of the CR3BP rows
+  delta_v_kms: 0.0
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"   # the orbit is RETROGRADE about the Earth (inertial angular momentum at perigee < 0, "counter-rotation" in Schwaniger); the schema's sense field is the leg direction, so n/a
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T = 6.001502749598107 TU at the registry mu (625.47 h = 26.061 d, t_s = 375190.26 s). One
+      perigee and one perilune per period. Schwaniger prints "about 650 hours" (p.6, read off
+      Fig. 11); the 3.8% difference is within the graph-reading precision of the source. Not a
+      lunar-synodic multiple (the sidereal month is 27.32 d = 6.2832 TU).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: the conserved quantity is the Jacobi constant. Perigee speed 10,959.95 m/s Earth-relative inertial (10,977.42 m/s rotating frame) at r = 6555 km."
+  - body: "Moon"
+    vinf_kms:
+    note: "CR3BP periodic orbit; Jacobi-constant model. Periselene 2202.64 km from the Moon's centre at the start state."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit, symmetric about the Earth-Moon line (two perpendicular x-axis crossings: periselene at t = 0, perigee at T/2)."
+    cr3bp:
+      family: "Schwaniger 1963 counter-rotation cislunar symmetric free return of the first kind (Miele image theorem), periodic member (perigee on the Earth-Moon line, sec. III.E)"
+      mass_ratio: 0.01215058439469525   # registry: cyclerfinder.core.cr3bp.cr3bp_system("Earth", "Moon").mu. Schwaniger states no mass ratio; at the digest's mu = 0.012150 the member is periselene 2202.53 km, T = 6.001502596 TU (same to 1e-4 km and 2.5e-8 relative in T scale)
+      libration_point:
+      jacobi_constant: 1.0854167286545506   # DERIVED (#970, project corrector), project convention C = x^2 + y^2 + 2(1-mu)/r1 + 2mu/r2 - v^2 (no mu(1-mu) term). With the mu(1-mu) term: 1.0974196763. NOT a golden.
+      period_nd: 6.001502749598107   # DERIVED (#970). NOT a golden.
+      stability_index: 262.6519479051237   # DERIVED (#970): project convention, Barden half-period nu = (lambda + 1/lambda)/2. Full-period fixed-path monodromy: b_h = tr(M4) - 2 = 525.304, lambda_max = 525.302; vertical b_v = tr(Mz) = -182.351 (vertically unstable too). Strongly unstable.
+      state_nd: [0.9821193418196401, 0.0, 0.0, 0.0, -2.4712777483864743, 0.0]   # DERIVED (#970, NOT a golden): periselene start, Earth side of the Moon; perpendicular crossing
+      lunit_km: 384400.0   # registry
+      tunit_s: 375190.2618944357   # registry
+      perigee_km: 6555.0   # SOURCED as the defining condition: Schwaniger sec. II.C, injection and re-entry at r = 6555 km (100 n.mi. altitude), horizontal; the corrector solves for C so that the T/2 perpendicular crossing is at this radius
+      periselene_km: 2202.6403632094866   # DERIVED (#970); Schwaniger prints "about 2150 km" (p.6-7)
+      apogee_km: 531167.43   # DERIVED (#970), 1.382 L from the Earth
+      energy_regime:
+      tof_days_bounds: [26.06140495812372, 26.06140495812372]   # single-period CR3BP orbit
+  source_ephemeris:   # pure CR3BP
+  data_gaps:
+  - path: "orbit_elements.cr3bp.mass_ratio"
+    kind: "unknown"
+    note: "Schwaniger 1963 states no mass ratio, distance or GM. The row uses the registry mu; the digest's mu = 0.012150 and mu = 1/81.30 give 2202.5 km / 625.47 h and 2229.8 km / 625.4 h. The paper's 'about 2150 km / about 650 h' are graph readings."
+    todo_ref: "#970"
+  - path: "vinf_kms_at_encounters"
+    kind: "conflict"
+    note: "Schwaniger Fig. 9 injection speeds at 1938 km periselenum sit about 64 m/s below the digest's reproduction (constant offset, after allowing for the 2 omega r rotating/inertial split); times and longitudes match. A speed convention the report does not state. Unresolved."
+    todo_ref: "#970"
+  - path: "orbit_elements.cr3bp.perigee_km"
+    kind: "not-applicable"
+    note: "Perigee 176.9 km altitude is below this project's 200-km Earth floor (PLANETS['E'].safe_alt_km); not a both-floors cycler-class member under the #888 gate. Floors govern this project's novelty claims, not literature rows: the published orbit is recorded as published (lead ruling 2026-10-07, #970)."
+    todo_ref: "#970"
+  legs: []
+  first_published:
+    authors: ["Schwaniger, A. J."]
+    year: 1963
+    title: "Trajectories in the Earth-Moon Space with Symmetrical Free Return Properties"
+    venue: "NASA TN D-1833 (Lunar Flight Study Series Vol. 5), NASA Marshall Space Flight Center, June 1963"
+    doi:
+    url: "https://ntrs.nasa.gov/citations/19630007117"
+    note: |
+      Sec. III.E (p.6-7): cross-plotting Fig. 15 gives "one cislunar case ... counter-rotational
+      injection at 180 degrees longitude and periselenum radius of about 2150 km", period "about
+      650 hours or about one month" (Fig. 11). Summary (p.7): "a periodic trajectory which
+      approaches the moon at about 2150 km radius approximately once each month." No initial
+      conditions printed.
+  corroborating_sources: []
+  priority_date: "1963-06-01"   # NASA TN D-1833 is dated June 1963; day not printed
+  notes: |
+    Reproduced by #970 with the project corrector (cyclerfinder.search.cr3bp_periodic.
+    correct_symmetric_fixed_jacobi, plain DOP853 rtol = atol = 1e-12 in physical time, no
+    regularisation) plus a secant on C for the perigee condition r1(T/2) = 6555 km. Full-period
+    closure 8.5e-7 km / 3.7e-7 m/s (plain); the Moon-centred KS propagator (core.cr3bp_ks) and the
+    Sundman r1*r2 propagator (core.cr3bp_regularized) re-close it to 1.1e-5 km and 8.7e-6 km. The
+    KS transition matrix gives b_h within 3e-8 of the plain one. det M = 1 - 2.3e-8; the trivial
+    eigenvalue pair is recovered at 0.99914 / 1.00086.
+
+    Positive control for CR3BP correctors and for any corrector regularised at both primaries
+    (#948 R4): tests/core/test_970_schwaniger_control.py. It is a WEAK regularisation control:
+    the plain integrator already handles the 177 km perigee and 465 km perilune.
+
+    The C = 1.09727 quoted in the digest-era summaries (with the mu(1-mu) term) belongs to the
+    6-digit rounded initial state, a neighbouring member with perigee 6560 km; the 6555 km member
+    reproduced here has C = 1.0854167 (1.0974197 with mu(1-mu)).
+
+    Not a duplicate: no catalogue Earth-Moon row has C near 1.085 with T near 6.0 (digest grep
+    inventory). NOT the arenstorf-em-figure8-1963 orbit and must not fill that row's nulls.
+    Literature novelty check deferred to #972 (not needed for a literature row).
+  source_quotes:
+    "orbit_elements.cr3bp.periselene_km": "Schwaniger 1963 sec. III.E (p.6-7): 'one cislunar case is a periodic orbit which has counter-rotational injection at 180 degrees longitude and periselenum radius of about 2150 km.'"
+    "period": "Schwaniger 1963 sec. III.E: 'From the curve in Figure 11, the period is ascertained to be about 650 hours or about one month.'"
+    "orbit_elements.cr3bp.perigee_km": "Schwaniger 1963 sec. II.C: 'injection (and, therefore, reentry) is assumed to occur at 100 nautical mile altitude or 6555 km radius from the earth's center with horizontal path angle.'"

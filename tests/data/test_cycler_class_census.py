@@ -590,10 +590,16 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # a family+mu the source paper never computed (genuine planar CR3BP periodic
         # orbit, rotating-frame, Jacobi-constant identity). non-keplerian 55->56.
         "pc-cycler-51-2026",
+        # #970 (2026-10-08): Schwaniger 1963 (NASA TN D-1833 sec. III.E) retrograde
+        # Earth-Moon symmetric periodic free return, a literature row reproduced at V0
+        # (genuine planar CR3BP periodic orbit, rotating-frame, Jacobi-constant
+        # identity). non-keplerian 55->56.
+        "schwaniger-1963-em-cislunar-retrograde-periodic-free-return",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 55
+# #970 (2026-10-08): + schwaniger-1963-em-cislunar-retrograde-periodic-free-return: 55 -> 56.
+assert len(NON_KEPLERIAN_IDS) == 56
 
 
 # ---------------------------------------------------------------------------
@@ -718,12 +724,19 @@ def test_census_distribution() -> None:
     the two manifold arcs are joined). The row is preserved in data/withdrawn/
     and returns only as a new row if the rebuild verifies one: non-keplerian
     56->55.
+
+    #970 (2026-10-08) admitted schwaniger-1963-em-cislunar-retrograde-periodic-free-return,
+    the Schwaniger 1963 retrograde Earth-Moon periodic free return reproduced with the
+    project's CR3BP corrector (literature row, V0; genuine planar CR3BP periodic orbit,
+    rotating-frame, Jacobi-constant identity): non-keplerian 55->56.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
     # #888 (2026-10-04): the six Uranian (1,1) quasi_cycler rows WITHDRAWN (not ballistic;
     # preserved in data/withdrawn/): multi-arc 297 -> 291.
-    expected = {"single-ellipse": 46, "multi-arc": 291, "non-keplerian": 55}
+    # #970 (2026-10-08): + schwaniger-1963-em-cislunar-retrograde-periodic-free-return:
+    # non-keplerian 55 -> 56.
+    expected = {"single-ellipse": 46, "multi-arc": 291, "non-keplerian": 56}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

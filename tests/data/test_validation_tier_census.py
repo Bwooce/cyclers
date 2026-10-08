@@ -240,7 +240,12 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # data/withdrawn/).
     # 119 -> 113 (2026-10-04, #888): the six Uranian (1,1) quasi_cycler rows WITHDRAWN by
     # owner decision (not ballistic trajectories; preserved in data/withdrawn/).
-    "unvalidated": 113,
+    # 113 -> 114 (2026-10-08, #970): +1 schwaniger-1963-em-cislunar-retrograde-periodic-
+    # free-return (Schwaniger 1963 Earth-Moon periodic free return, literature row, V0).
+    # Same convention as the Casoliva/Vaquero rows: NO orbit_source/vinf_source
+    # provenance tags (its identity is a Jacobi/period/state tuple) -> 'unvalidated' on
+    # the source-pair tier axis; its evidence lives on the validation_level axis.
+    "unvalidated": 114,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

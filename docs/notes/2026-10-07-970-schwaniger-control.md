@@ -129,3 +129,7 @@ orbit_class. NOT inserted into `data/catalogue.yaml`; the lead schedules that an
   identities, agreement with the digest's independent script, verbatim source quotes.
 - Assumed: the mass ratio (Schwaniger states none; two values reported); the reading that his
   "periodic trajectory" is the 6555 km member (his own sec. II.C condition).
+
+## 6. Insertion (2026-10-08)
+
+The row was inserted at the end of `data/catalogue.yaml` in the lead's ratchet window of 2026-10-08, with the lead's rulings applied (floor data_gap, the 1.09727 note), together with the `#1030` and `#1031` patches.

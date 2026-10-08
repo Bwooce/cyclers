@@ -344,7 +344,10 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # Uranus) WITHDRAWN from the catalogue by owner decision; preserved in data/withdrawn/.
     # 99 -> 93 (2026-10-04, #888): the six Uranian (1,1) quasi_cycler rows WITHDRAWN by
     # owner decision (not ballistic trajectories; preserved in data/withdrawn/).
-    ExclusionReason.NON_HELIOCENTRIC: 93,
+    # 93 -> 94 (2026-10-08, #970): +1 schwaniger-1963-em-cislunar-retrograde-periodic-free-return
+    # (Schwaniger 1963 Earth-Moon retrograde periodic free return, literature row, V0;
+    # Earth-centred CR3BP, so non-heliocentric).
+    ExclusionReason.NON_HELIOCENTRIC: 94,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

@@ -112,3 +112,7 @@ of the first patch).
 - I checked that both patches applied in sequence still validate against
   `data/catalogue.schema.json`. The ratchets (names appear in some frozen censuses) are the lead's
   scheduled run.
+
+## 5. Applied (2026-10-08)
+
+Both patches (Casoliva and the optional Vaquero wording) were applied to `data/catalogue.yaml` in the lead's ratchet window of 2026-10-08, in the same commit as the `#970` row and the `#1031` patch.
