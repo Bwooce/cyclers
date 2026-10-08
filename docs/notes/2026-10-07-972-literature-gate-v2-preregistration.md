@@ -216,3 +216,76 @@ AEDT, load average up to 48):
   - Re-run 2, 2026-10-08 08:01 AEDT, serial (-n 0), load average about 4: both passed, 133.4 s and
     111.4 s (+16 s setup each).
   - All 12 pass. Their timeouts in the suite were CPU contention.
+
+## 9. Re-review verdict (fresh Fable reviewer, 2026-10-08), recorded before any row is drafted
+
+**VERDICT: PASS-WITH-NITS.** The candidate results and the pre-registered fixes hold. Two MAJOR items
+lie outside the candidates' path. They must be fixed or recorded before v2 is trusted on unlabelled
+or untopologied pipelines (the review queue).
+
+Method:
+- read the 5fc5431d diff, sec. 1-8, the run script and its JSON;
+- ran test_972 and test_literature_check serially (53 passed);
+- ran all 393 catalogue rows, unlabelled, under v1 (1e57b001) and v2. Primary inferred; topology
+  {repeated-moon} and none;
+- pipeline-shaped probes, the Table 3 ratio check, and AST-ratchet evasion probes.
+- Scratch output: `scratchpad/fable-972-review/probe2.out`.
+
+Fidelity (Q1): F2, F3, F4, F5/F8, F7 reading (b), F13 (12 callers), F14 and H12 all match the rule
+texts; H11 is present. The two retrofits are genuine retrofits, not exemptions (Q6).
+
+Merits (Q4): correct.
+- The Table 3 same-planet ratios span [0.997, 1.482] in every orbit (all FR/SY).
+- ev-A's V-V return is 823.95/224.7 = 3.67 Venus periods (GEN); ev-B carries RV/3:2.
+- Confidence 0.0 comes by construction: the offline backend emits only anchor hits, and all are
+  excluded; the notes name H&M [return-types].
+- gc-1/gc-2: GCGC is excluded [alternating]; F7 names R-S G-C.
+- ev-C: ruling (b) fires.
+- Deviation 2 was verified from the raw YAML.
+- The reviewer found no missing published two-working-body E-V family with non-FR/SY returns.
+
+Catalogue probe, v1 to v2 (unlabelled):
+
+| Change | Rows | What they are |
+|---|---|---|
+| published to known-architecture-new-system | 0 | |
+| published to inconclusive | 45 | 15 H&M and 30 R-S: the acknowledged #1035 consequence |
+| published to not-found | 1 | cassini-titan-tour; v1's citation was the wrong family (R-S Titan-Enceladus) |
+
+F4 flips no pipeline-shaped catalogued row.
+
+Findings:
+1. MAJOR. The grounded Hughes anchor gives "published 0.85" for any unlabelled, UNTOPOLOGIED Sun E-V
+   signature (topology_label empty), citing a non-cycler paper.
+   - `signature_from_review_entry` sets no topology, so every review-queue E-V entry gets this.
+   - Novelty-safe direction, but a wrong source: the failure F8 was meant to prevent.
+   - Fix: an F14-style "topology-unlabelled" exclusion for anchors with no cycler topology, or no
+     "published" from a non-cycler anchor. Pin: Sun (E, V), no labels, no topology, must not cite
+     Hughes.
+2. MAJOR. The sec. 8 statement "the direction is safe: never a false not-found" is WRONG.
+   - F7 needs body-set EQUALITY; a strict subset escapes it.
+   - Saturn ("Titan",) and Jupiter ("Ganymede", "Ganymede"), repeated-moon, unlabelled (the shape of
+     run_627/629/633): v1 published 0.95 (R-S, the wrong family) to v2 not-found 0.0.
+   - Fix: F7 on `seq_set <= a.body_set` (consistent with `_candidate_anchors`), or correct sec. 8 and
+     extend #1035 to single-moon signatures.
+3. MINOR. F4 removes v1's accidental safety net for a mis-stamped primary.
+   - `signature_from_review_entry` and phase_match.py:222 default the primary to "Sun".
+   - gancal-1, ganio-53 and titenc-37 with primary "Sun": v1 inconclusive 0.65, v2 not-found.
+   - Fix: a missing audit primary raises or returns inconclusive.
+4. MINOR. The H&M return_types_scope {FR, SY} omits "HR". Menning ch. 2 treats the half-revolution
+   return as a special case of FR (digest lines 42-43). Not ev-A/B's case. Fix: add "HR" with the
+   citation.
+5. MINOR. The F13 ratchet misses: `status in <Name>`; match statements; `.startswith("not-found")`;
+   a literal held in an imported constant. Fix: walk ast.Match; flag status names compared to
+   constants.
+6. NIT. The `_declared_scope_exclusions` docstring says "or None"; the function returns [].
+7. NIT. test_f4 accepts any status except the old one. Fix: assert "not-found" and the footprint
+   note.
+
+The reviewer: nothing else undermines "ev-A/ev-B pass the gate". The sec. 4 expectation (with F8)
+predates the code and matched, and ruling (b) was the stricter direction.
+
+**Correction of sec. 8** (finding 2): the statement "the direction is safe: the result is never a
+false not-found" holds only for EQUAL body sets. A signature whose body set is a strict subset of a
+working-scope anchor's (e.g. a single-moon repeated-moon signature) can read "not-found" in v2 where
+v1 read "published" (via the wrong family). Disposition of findings 1-7: lead's ruling.
