@@ -107,3 +107,39 @@ The continuation stalls at every epoch:
 - Per sec. 3: the lane has no ev positive control, so the campaign STOPS and is reported. No
   substitution was made after seeing the result.
 - The gc controls, the negative controls and the rows were NOT run.
+
+## 6. gc lane results (2026-10-08; `scripts/v2_chain_1007.py --lane gc`, `data/1007_v2/v2_chain_gc.{json,log}`)
+
+Controls, as pre-registered:
+- POSITIVE, R-S GanEur#316, 10 cycles: PASS at 3/5 epochs (2462503.8, 2464844.7, 2469519.5). The other
+  two epochs have no stored chain (the 6.4x run did not converge there). The R-S-epoch 2019 chain also
+  passes all four criteria.
+- NEGATIVE, gc-1 epoch 0 with the 2nd Lambert start + 0.05 d: FAILS as required (junction mismatch
+  0.23 km/s, re-fly miss 1.3e4 km).
+- GanCal#1 at 2013 (reported): criteria 1, 3 and 4 hold; the gate is "indeterminate" 0.992, as
+  expected.
+
+Rows, LITERAL verdict under sec. 2:
+
+| Row | Epochs passing | Failing criteria |
+|---|---|---|
+| gc-1 | 0/5 | criterion 1 at all 5 (the mixed residual 1.4-1.9e-4); also criterion 4 at 2 epochs (D 0.222 and 0.195 d against the 0.190 band) |
+| gc-2 | 2/5 (2464840.6, 2469524.3) | criterion 4 at 3 epochs: the W band (0.340-0.358 km/s against 0.304). D and growth hold everywhere |
+
+gc-2 needed one adapter fix before the run: the ladder file stores 4n dates then the period, not an end
+date. The first run read it wrongly ("chain-eval-fail" at 5/5). Corrected before judging; the fix is
+format only.
+
+Two findings about the pre-registered instrument, for the lead (NOT applied):
+1. Criterion 1 as written ("shot fixed legs also carry their arrival miss / 1000 km") contradicts the
+   spec amendment, which reads "|V_inf| continuity at every junction < 1e-6 km/s".
+   - gc-1's shot full-rev legs close to 0.16-0.19 km (that is criterion 3's business, < 1 km).
+     Scaled by 1/1000 this gives 1.6-1.9e-4 in criterion 1.
+   - The junction-only |V_inf| residual is 8.6e-7 at every gc-1 epoch (< 1e-6).
+   - Under the spec's wording gc-1 would pass criterion 1 at 5/5, and overall at 3/5 (epochs 0-2;
+     epochs 3 and 4 fail the D band).
+2. W measures the real-versus-ideal |V_inf| OFFSET as well as drift. gc-2's W is 0.34-0.36 km/s with
+   no growth (W growth 1.0-2.0); this is a systematic ephemeris offset, not lap-over-lap drift. The
+   growth test already captures drift.
+
+The verdicts above are the pre-registered ones. Any change of criterion is the lead's/owner's.

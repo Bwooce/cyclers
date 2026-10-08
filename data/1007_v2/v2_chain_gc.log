@@ -1,0 +1,22 @@
+CONTROL+ GanEur#316 JD 2462503.8: n=10 cont=9.7e-09 gate=pass (0.853) refly=1.25e-05 km D=0.083/0.380 d W=0.089/0.320 km/s growth D 2.50 W 1.06 -> PASS [1111]
+CONTROL+ GanEur#316 JD 2464844.7: n=10 cont=2.5e-08 gate=pass (0.820) refly=2.41e-05 km D=0.065/0.380 d W=0.162/0.320 km/s growth D 1.17 W 0.57 -> PASS [1111]
+CONTROL+ GanEur#316 JD 2467178.6: no chain stored -> FAIL
+CONTROL+ GanEur#316 JD 2469519.5: n=10 cont=4.0e-07 gate=pass (0.769) refly=2.39e-05 km D=0.032/0.380 d W=0.099/0.320 km/s growth D 0.80 W 1.54 -> PASS [1111]
+CONTROL+ GanEur#316 JD 2471853.3: no chain stored -> FAIL
+REPORT GanEur#316@2019 JD 2458597.6: n=10 cont=1.4e-08 gate=pass (0.804) refly=1.46e-05 km D=0.056/0.380 d W=0.108/0.320 km/s growth D 1.04 W 0.51 -> PASS [1111]
+REPORT GanCal#1@2013 JD 2456562.9: n=10 cont=5.6e-08 gate=indeterminate (0.992) refly=2.75e-04 km D=0.125/0.130 d W=0.138/0.318 km/s growth D 1.37 W 0.93 -> FAIL [1011]
+CONTROL- gc-1 e0 broken: n=10 cont=9.6e+00 gate=pass (0.758) refly=1.33e+04 km D=0.165/0.190 d W=0.262/0.181 km/s growth D 1.14 W 0.93 -> FAIL [0100]
+CONTROLS: positive PASS, negative FAILS as required
+gc-1 JD 2462511.7: n=10 cont=1.6e-04 gate=pass (0.758) refly=1.88e-01 km D=0.165/0.190 d W=0.079/0.181 km/s growth D 1.14 W 0.93 -> FAIL [0111]
+gc-1 JD 2464840.9: n=10 cont=1.9e-04 gate=pass (0.756) refly=1.88e-01 km D=0.158/0.190 d W=0.073/0.181 km/s growth D 1.15 W 0.95 -> FAIL [0111]
+gc-1 JD 2467182.8: n=10 cont=1.8e-04 gate=pass (0.755) refly=1.88e-01 km D=0.132/0.190 d W=0.054/0.181 km/s growth D 1.04 W 1.13 -> FAIL [0111]
+gc-1 JD 2469524.7: n=10 cont=1.4e-04 gate=pass (0.761) refly=1.88e-01 km D=0.222/0.190 d W=0.068/0.181 km/s growth D 1.16 W 1.10 -> FAIL [0110]
+gc-1 JD 2471854.0: n=10 cont=1.8e-04 gate=pass (0.757) refly=1.88e-01 km D=0.195/0.190 d W=0.071/0.181 km/s growth D 1.07 W 1.08 -> FAIL [0110]
+gc-2 JD 2462511.3: n=10 cont=9.2e-08 gate=pass (0.819) refly=1.14e-05 km D=0.120/0.130 d W=0.358/0.304 km/s growth D 1.29 W 1.99 -> FAIL [1110]
+gc-2 JD 2464840.6: n=10 cont=9.3e-08 gate=pass (0.817) refly=1.21e-05 km D=0.102/0.130 d W=0.170/0.304 km/s growth D 1.63 W 1.00 -> PASS [1111]
+gc-2 JD 2467182.5: n=10 cont=9.2e-08 gate=pass (0.814) refly=2.44e-05 km D=0.103/0.130 d W=0.340/0.304 km/s growth D 1.41 W 1.47 -> FAIL [1110]
+gc-2 JD 2469524.3: n=10 cont=9.2e-08 gate=pass (0.823) refly=6.32e-06 km D=0.038/0.130 d W=0.162/0.304 km/s growth D 1.01 W 1.21 -> PASS [1111]
+gc-2 JD 2471853.7: n=10 cont=9.2e-08 gate=pass (0.813) refly=1.32e-05 km D=0.085/0.130 d W=0.346/0.304 km/s growth D 1.28 W 1.47 -> FAIL [1110]
+gc-1: V2 FAIL (0/5 epochs)
+gc-2: V2 FAIL (2/5 epochs)
+wrote data/1007_v2/v2_chain_gc.json
