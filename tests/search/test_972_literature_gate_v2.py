@@ -153,7 +153,9 @@ def test_f3_closing_repeat_dropped() -> None:
 def test_f4_off_footprint_anchor_hit_not_scored() -> None:
     r = _check(_sig("Sun", ("E", "J")))
     assert "Koon" not in str(r.citation), r
-    assert not (r.status == "inconclusive" and r.confidence == pytest.approx(0.575)), r
+    # #1045 G7: the exact outcome, not just "not the old one".
+    assert r.status == "not-found", r
+    assert "outside the candidate's primary/body-set footprint were not scored" in r.notes, r
 
 
 # --- F7 (ruling (b)): different architecture at a treated system -> inconclusive ----------------
@@ -248,26 +250,73 @@ def test_f13_helper() -> None:
     assert not is_literature_fresh(None)
 
 
-def _literal_not_found_compares(path: Path) -> list[int]:
-    text = path.read_text()
-    if '"not-found"' not in text and "'not-found'" not in text:
+_NF = "not-found"
+
+
+def _is_status_access(node: ast.expr) -> bool:
+    """``x_status`` / ``obj.status`` / ``d["status"]`` / ``d.get("status")`` (#1045 G5)."""
+    if isinstance(node, ast.Name):
+        return node.id.endswith("status")
+    if isinstance(node, ast.Attribute):
+        return node.attr.endswith("status")
+    if isinstance(node, ast.Subscript):
+        return isinstance(node.slice, ast.Constant) and node.slice.value == "status"
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+        return (
+            node.func.attr == "get"
+            and bool(node.args)
+            and isinstance(node.args[0], ast.Constant)
+            and node.args[0].value == "status"
+        )
+    return False
+
+
+def _status_compare_violations_in(text: str, filename: str = "<src>") -> list[int]:
+    """Lines comparing a literature status outside ``is_literature_fresh`` (#972 F13,
+    widened by #1045 G5): a literal "not-found" in a comparison, a ``match`` case or a
+    ``startswith``/``endswith`` call; or a status access compared with a NAME other
+    than ``FRESH_STATUSES``."""
+    if _NF not in text and "status" not in text:
         return []
-    tree = ast.parse(text, filename=str(path))
+    tree = ast.parse(text, filename=filename)
     lines: list[int] = []
     for node in ast.walk(tree):
-        if not isinstance(node, ast.Compare):
-            continue
-        for side in (node.left, *node.comparators):
-            consts = (
-                [side]
-                if isinstance(side, ast.Constant)
-                else list(side.elts)
-                if isinstance(side, (ast.Tuple, ast.List, ast.Set))
-                else []
-            )
-            if any(isinstance(c, ast.Constant) and c.value == "not-found" for c in consts):
-                lines.append(node.lineno)
+        if isinstance(node, ast.Compare):
+            sides = (node.left, *node.comparators)
+            for side in sides:
+                consts = (
+                    [side]
+                    if isinstance(side, ast.Constant)
+                    else list(side.elts)
+                    if isinstance(side, (ast.Tuple, ast.List, ast.Set))
+                    else []
+                )
+                if any(isinstance(c, ast.Constant) and c.value == _NF for c in consts):
+                    lines.append(node.lineno)
+                    break
+            else:
+                if any(_is_status_access(x) for x in sides) and any(
+                    isinstance(x, ast.Name)
+                    and not _is_status_access(x)
+                    and x.id != "FRESH_STATUSES"
+                    for x in sides
+                ):
+                    lines.append(node.lineno)
+        elif isinstance(node, ast.MatchValue):
+            if isinstance(node.value, ast.Constant) and node.value.value == _NF:
+                lines.append(node.value.lineno)
+        elif (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr in ("startswith", "endswith")
+            and any(isinstance(a, ast.Constant) and a.value == _NF for a in node.args)
+        ):
+            lines.append(node.lineno)
     return lines
+
+
+def _literal_not_found_compares(path: Path) -> list[int]:
+    return _status_compare_violations_in(path.read_text(), str(path))
 
 
 def test_f13_no_literal_not_found_comparisons() -> None:

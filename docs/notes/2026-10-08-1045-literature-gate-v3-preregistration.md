@@ -50,3 +50,26 @@ literature status.
 - Run: the controls and candidates (`scripts/litcheck_942_943_scope.py`); the catalogue probe; the
   literature test files.
 - Then one full suite (tee'd, one at a time), ruff and full mypy; commit; one more read-only review.
+
+## 4. Results (2026-10-08), recorded after the run
+
+- Controls and candidates (`scripts/litcheck_942_943_scope.py`): all 26 controls return "published", and
+  the Jones mutated-tag negative holds. The five candidates are IDENTICAL to v2 (gc-1, gc-2 and ev-C
+  inconclusive; ev-A and ev-B not-found). `data/942_943_litcheck_scope.json` is byte-unchanged.
+- Catalogue probe, v2 (5fc5431d) against v3:
+  - 790 signatures: every row with a sequence, unlabelled, once with topology {repeated-moon} and once
+    with none (`scratchpad/twobody-gen2-opus/probe_v2_v3.py`, `.out`).
+  - 17 change, all published -> inconclusive, all in the no-topology half: the 15 H&M rows, ev-A and
+    ev-C, which v2 cited to the Hughes one-shot free-return paper. That is finding 1, fixed by G1.
+  - 0 rows move toward "not-found" or "known-architecture-new-system".
+- Pinned tests: `tests/search/test_1045_literature_gate_v3.py` (G1-G5, 7 tests), test_f4 tightened
+  (G7); the F13 ratchet over src/ and scripts/ stays clean under the wider G5 rule (0.6 s).
+- Full set (tee'd, 2026-10-08, load average up to 22):
+  - tests/data, tests/scripts and test_catalogue_rediscovery: EXIT 0 (14:15-14:21 AEDT).
+  - tests/search: EXIT 1 (14:21-15:14). The only failures were the two load-sensitive Earth-Moon class 1
+    tests, both 600-s timeouts: `test_known_close_pair_73c_plateaus_just_outside_guard` and
+    `test_find_homoclinic_default_k_range_is_too_narrow_for_this_orbit`.
+  - The lead re-ran both alone (15:15-15:19 AEDT, load 4.5): EXIT 0. Their serial call times on the
+    #972 re-run were 133.4 s and 111.4 s.
+- ruff clean; mypy src tests clean (939 files).
+- Next: a read-only review of the v3 diff.

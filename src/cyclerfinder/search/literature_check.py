@@ -1056,7 +1056,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         topology_label=frozenset({"repeated-moon"}),
         n_bodies_scope=2,
         working_bodies_scope="two",
-        return_types_scope=frozenset({"FR", "SY"}),
+        # #1045 G4: + "HR". Menning 1968 ch. 2, pp.7-10: "The half-revolution return is
+        # a special case" of the full-revolution return (digest
+        # 2026-10-05-digest-menning-1968-mit-thesis-earth-venus-periodic-orbits.md).
+        return_types_scope=frozenset({"FR", "SY", "HR"}),
         authors=("Hollister", "Menning"),
         keywords=(
             "Earth-Venus periodic orbit",
@@ -3060,7 +3063,8 @@ def _corpus_for(sig: CandidateSignature) -> tuple[CorpusAnchor, ...]:
 
 
 def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> str | None:
-    """The first reason :func:`_declared_scope_exclusions` gives, or ``None``."""
+    """The first reason :func:`_declared_scope_exclusions` gives, or ``None`` when
+    that list is empty."""
     reasons = _declared_scope_exclusions(sig, anchor)
     return reasons[0] if reasons else None
 
@@ -3068,9 +3072,9 @@ def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> 
 def _declared_scope_exclusions(sig: CandidateSignature, anchor: CorpusAnchor) -> list[str]:
     """Every reason ``anchor``'s DECLARED scope excludes ``sig``, or ``None`` if it does not.
 
-    These are the three filters under which the candidate and the anchor each
+    These are the filters under which the candidate and the anchor each
     state a scope and the two are incompatible. Each needs a declaration on
-    BOTH sides; an undeclared side falls through (returns ``None``), which
+    BOTH sides; an undeclared side falls through (adds no reason), which
     preserves the historical body-set-only match for un-annotated anchors and
     un-annotated candidates.
 
@@ -3177,17 +3181,19 @@ def _architecture_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
 
 
 def _different_architecture_same_system(sig: CandidateSignature) -> list[CorpusAnchor]:
-    """#972 F7 (lead ruling (b)): anchors of the same primary whose body set EQUALS
-    the candidate's and whose exclusion reasons include the working-bodies scope
-    (declared and different, or undeclared on the candidate under F14). Such an
-    object, at a system the source treated with another architecture, goes to a
-    human: the result is ``inconclusive``, not ``not-found``."""
+    """#972 F7 (lead ruling (b)): anchors of the same primary whose body set
+    CONTAINS the candidate's (#1045 G2; v2 required equality, which let a strict
+    subset such as a single-moon signature escape to ``not-found``) and whose
+    exclusion reasons include the working-bodies scope (declared and different,
+    or undeclared on the candidate under F14). Such an object, at a system the
+    source treated with another architecture, goes to a human: the result is
+    ``inconclusive``, not ``not-found``."""
     seq_set = frozenset(sig.sequence)
     return [
         a
         for a in _corpus_for(sig)
         if a.primary == sig.primary
-        and a.body_set == seq_set
+        and seq_set <= a.body_set
         and any(r.startswith("working-bodies") for r in _declared_scope_exclusions(sig, a))
     ]
 
@@ -3381,6 +3387,20 @@ INCONCLUSIVE_FLOOR: float = 0.45
 clean not-found: the search found cycler-adjacent material it could not rule out
 as the same family, so a human must look (we do not certify novelty on it)."""
 
+TOUR_ONLY_TOPOLOGIES: frozenset[str] = frozenset({"mga-tour", "pump-tour", "ephemeris"})
+"""Topology labels of anchors that are not periodic cyclers (#1045 G1)."""
+
+TOUR_ONLY_CAP: float = MATCH_THRESHOLD - 0.01
+"""Ceiling on a tour-only anchor's hit for a signature that declares no topology
+(#1045 G1): below :data:`MATCH_THRESHOLD`, so such a hit gives at most
+``inconclusive``. A signature that declares a topology is filtered by #349 instead."""
+
+
+def _is_tour_only(anchor: CorpusAnchor) -> bool:
+    """An anchor whose declared topology is only tours / ephemeris sources (#1045 G1)."""
+    return bool(anchor.topology_label) and anchor.topology_label <= TOUR_ONLY_TOPOLOGIES
+
+
 MAX_QUERIES: int = 8
 """Cap the live-search fan-out per candidate (cost + politeness)."""
 
@@ -3414,6 +3434,17 @@ def check_literature(
     (real web hits) and signatures or anchors that declare no scope are
     handled exactly as before.
     """
+    if not sig.primary:
+        # #1045 G3: never guess the system (a review entry without an audit primary).
+        return LiteratureCheckResult(
+            status="inconclusive",
+            citation=None,
+            doi=None,
+            confidence=0.0,
+            query_trail=[],
+            notes="Primary unknown: the signature carries no primary, so the system "
+            "cannot be checked; rerun with the primary stamped (not certified novel).",
+        )
     queries = build_queries(sig)[:max_queries]
     trail: list[str] = []
     best_conf = 0.0
@@ -3447,6 +3478,10 @@ def check_literature(
                     off_footprint.add(source.name)
                     continue
             conf = _result_matches_fingerprint(sig, r)
+            if source is not None and not sig.topology_label and _is_tour_only(source):
+                # #1045 G1: a tour-only anchor cannot make an untopologied
+                # signature "published"; at most "inconclusive".
+                conf = min(conf, TOUR_ONLY_CAP)
             if conf > best_conf:
                 best_conf = conf
                 best_hit = r
@@ -3624,7 +3659,9 @@ def signature_from_review_entry(entry: Any) -> CandidateSignature:
     audit = getattr(entry, "verdict_audit", {}) or {}
     n_rev = audit.get("n_rev") or []
     return CandidateSignature(
-        primary=audit.get("primary", "Sun"),
+        # #1045 G3: a missing audit primary is "", never a guessed "Sun";
+        # check_literature then returns "inconclusive".
+        primary=str(audit.get("primary") or ""),
         sequence=tuple(entry.sequence),
         period_k=getattr(entry, "period_k", None),
         vinf_per_encounter_kms=tuple(entry.vinf_per_encounter_kms),
