@@ -557,9 +557,14 @@ def monitor_step(p: P, rec: dict[str, Any]) -> bool:
             row[j] = 1.0
             jac = np.vstack([np.hstack([jzz, js[:, None]]), row[None, :]])
             f = np.concatenate([r, [y[j] - target]])
+            if not (np.all(np.isfinite(jac)) and np.all(np.isfinite(f))):
+                break  # a sigma-derivative probe hit a failed propagation: a failed attempt
             dc = np.linalg.norm(jac, axis=0)
             dc[dc == 0.0] = 1.0
-            step = np.linalg.lstsq(jac / dc, -f, rcond=None)[0] / dc
+            try:
+                step = np.linalg.lstsq(jac / dc, -f, rcond=None)[0] / dc
+            except np.linalg.LinAlgError:
+                break
             f0 = float(np.linalg.norm(f))
             for alpha in [0.5**i for i in range(8)]:
                 yt = y + alpha * step
