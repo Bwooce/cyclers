@@ -403,3 +403,74 @@ with `diff -rq`: identical, 58 files, 16,704 records.
   - It lies below RR's J range (2.119), so RR cannot contain it.
   - Its identity against the catalogue's symmetric casoliva-7-3a (C 1.0216, T = 6 pi) is
     checked next, by continuing the parent family (sec. 5).
+
+## 5. Method (2) runs, gates and verdict (2026-10-08 14:00 AEDT)
+
+### 5.1 Method (2) on the `#997` and RR parents
+
+- **`#997` b = +2 crossings** (`data/1000_complement/pitchfork/parents997.jsonl`): six member
+  pairs.
+  - Folds (C extremal; no asymmetric branch, as expected): F2-1 near C -0.489, and F3-6/F3-7
+    near C 2.6695.
+  - Pitchforks that give an asymmetric branch:
+    - 2:3 retrograde at C = -0.620969, T 14.325. The branch has perigee about 206,000 km alt:
+      **not cycler-class**.
+    - 3:4 retrograde at C = 0.274826, T 17.999. The branch has perigee about 47,000 km alt,
+      above the GEO radius: **not cycler-class**.
+- **RR records:** 10,223 have |b_h - 2| < 0.02 (mostly near-Moon families). **None** has a perigee
+  at or below the GEO radius and a lunar pass inside the Hill radius (checked by propagation at
+  RR's own mu). So no RR parent is in cycler geometry.
+- **Family C's parent** (sec. 4.2) is a symmetric 7:3 retrograde family at C = 0.8814,
+  T = 19.124.
+  - Continued upward to C = 0.939, its T rises to 19.157, moving away from casoliva-7-3a
+    (C 1.0216, T 18.8496), which lies on `#997` F4 3/7-r. So it is a separate symmetric family.
+  - It is below RR's J range.
+  - File: `pitchfork/parent_family_toward_7-3a.json`.
+
+### 5.2 Gates (`scripts/run_1000_gate.py`, `data/1000_complement/gate_summary.json`)
+
+All 213 method (1) cycler-class candidates are excluded from Franz-Russell: their maximum Moon
+distance is 750,000-1,950,000 km.
+
+| family (p:q, sense, wE, wM) | sym | candidates | C | perigee alt (km) | periselene alt (km) | `#997` | RR | label |
+|---|---|---|---|---|---|---|---|---|
+| 2:1 pro, 1, -1 | S | 4 | 2.382-2.443 | 28,777-34,958 | 49,910-56,478 | F3 | 1 of 4 matched | known-class (Newton 1/2 direct = Vaquero 2:1) |
+| 7:3 ret, -10, -1 | S | 70 | 0.864-1.341 | 707-30,987 | 6,902-29,312 | F4 3/7-r (C >= 0.90) | below J range | known-class (Newton's alpha/beta, contains casoliva-7-3a); the C < 0.90 part is family C's parent family (5.1) |
+| 7:3 ret, -10, -1 | A | 13 (+46 continued) | 0.882-1.163 | 4,229-26,908 | 5,673-12,520 | - | excluded (asym) | **known-class: Casoliva 7-3b/c** (passes through the row) |
+| 5:2 pro, 3, 0 | A | 3 (+84) | 2.411-2.580 | 495-8,748 | 11,772-16,348 | - | excluded (asym) | asymmetric, no catalogue row |
+| 5:3 ret, -8, -2 | A | 4 (+78) | 0.670-0.942 | 200-14,548 | 17,876-22,444 | - | excluded (asym) | asymmetric, no catalogue row |
+| 7:3 pro, 4, -1 | A | 2 (+34) | 2.414-2.560 | 267-6,373 | 10,716-14,064 | - | excluded (asym) | asymmetric, no catalogue row |
+| 7:3 pro, 4, -1 | S | 50 | 2.432-2.468 | 11,007-12,865 | 5,900-7,515 | - | 0 (in J range; RR sparse here) | symmetric, unmatched |
+| 5:2 pro, 3, -1 | S | 11 | 2.219-2.242 | 1,503-2,803 | 8,192-15,448 | - | 0 (in J range) | symmetric, unmatched |
+| 5:2 ret, -7, 0 / -7, -1 | S | 26 + 12 | 1.009-1.469 | 605-32,712 | 8,854-39,527 | - | below J range | symmetric, unmatched |
+| 2:3 ret, -5, -2 | S | 10 | -0.128-0.193 | 10,391-35,077 | 22,104-51,262 | - | below J range | symmetric, unmatched |
+| 4:3 ret, -7, -2 | S | 4 | 0.313-0.351 | 30,814-34,447 | 57,253-59,209 | - | below J range | symmetric, unmatched |
+| 7:3 ret, -10, 0; 7:3 ret, -9, 0; 8:3 ret, -11, 0 | S | 1; 1; 2 | 0.84-1.28 | 14,133-24,023 | 7,213-29,594 | - | below J range | symmetric, unmatched |
+
+### 5.3 Verdict (nothing called novel; literature with `#972`)
+
+1. **The positive controls pass for both methods.** casoliva-7-3b and 7-3c are recovered from
+   skeletons. Their family, continued, passes through the row. Its pitchfork parent regenerates
+   it.
+2. **Asymmetric cycler-class families outside RR and FR by construction:** A (5:2 prograde),
+   B (5:3 retrograde) and D (7:3 prograde). No catalogue row lies on them, and no symmetric
+   pitchfork parent was reached within their continuation ranges.
+   - They are near-Keplerian p:q resonant Earth-Moon cyclers. That CLASS is Casoliva et al.
+     2010's Class 1, which includes the asymmetric 7-3b/c. Casoliva tabulates only p-q = 1-2,
+     2-1, 3-2 and 7-3. So under spec sec. 16.4 these are at most computed members of a
+     published class, at p:q values or senses the source did not tabulate.
+   - That is my reading, not an adjudication. **`#972` decides.** All three are strongly
+     unstable (|b| about 100-800), and A, B and D each reach the Earth floor at one end.
+3. **Family C is the Casoliva 7-3b/c class:** known-class (the rows are on it).
+4. **Symmetric candidates.**
+   - F3 (Vaquero 2:1) and F4 3/7-r (Casoliva 7-3a) are known.
+   - Nine other symmetric resonant families are unmatched by `#997` and RR: most lie below RR's
+     J range (2.119), and RR is sparse below J 2.5. Symmetric, so in RR's class but not in its
+     files. Also for `#972`.
+5. **Coverage limits** (so that "not found" is not over-read):
+   - The p:q set excludes 3:1, 7:2 and 4:1, because their Kepler skeleton cannot cross the lunar
+     orbit. Yet a catalogued 3:1 cycler exists (vaquero-31-c254, perigee 792 km alt), held there
+     by lunar perturbation. **The seed rule misses perturbation-enabled resonances.**
+   - 54% of the grid solves impacted and 11% hit the iteration limit.
+   - Continuations stopped mostly at the 40-step cap.
+   - The grid is one 10 deg orientation sampling at a single (free) C per seed.

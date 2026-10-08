@@ -342,6 +342,109 @@ def cmd_control() -> None:
             print(f"branch eta={r.get('eta')}: {r.get('why') or r.get('status')}", flush=True)
 
 
+def sym_parent_solution(
+    x0: float, yd0: float, period: float, c: float, n: int = 9
+) -> dict[str, Any]:
+    """Multiple-shooting solution of a symmetric orbit given at its perpendicular crossing."""
+    s0 = np.array([x0, 0.0, 0.0, yd0])
+    nodes, taus = cn.nodes_from(s0, period, n)
+    return sh.shoot(nodes, taus, c, step_max=0.005, max_it=80)
+
+
+def classify_branch(br: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    for r in br:
+        if not r.get("converged"):
+            continue
+        sn = np.array(r["nodes"][0])
+        sp = solve_ivp(
+            base.eom,
+            (0.0, r["T"]),
+            sn,
+            args=(MU,),
+            method="DOP853",
+            rtol=1e-12,
+            atol=1e-12,
+            events=base._dr1,
+        )
+        if not len(sp.t_events[0]):
+            continue
+        sper = np.asarray(sp.y_events[0][0])
+        m = base.classify(sper, r["T"])
+        m.pop("perp_crossings", None)
+        b_ms = float(np.trace(monodromy(r)) - 2.0)
+        r.update(
+            {
+                k: m[k]
+                for k in (
+                    "symmetric",
+                    "perigee_alt_km",
+                    "periselene_alt_km",
+                    "max_moon_km",
+                    "cycler_class_candidate",
+                    "passes_with_50km_moon_floor",
+                    "wind_E",
+                    "wind_M",
+                )
+            }
+        )
+        r["b_ms"] = b_ms
+        r.pop("nodes", None)
+        r.pop("taus", None)
+    return br
+
+
+def cmd_parents997(max_seconds: float) -> None:
+    import itertools
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    out_f = OUT / "parents997.jsonl"
+    done = set()
+    if out_f.exists():
+        done = {json.loads(line)["parent"] for line in out_f.read_text().splitlines()}
+    t0 = time.time()
+    for f in sorted(glob.glob(str(REPO / "data" / "997_lineage" / "F*_[pm].jsonl"))):
+        rows = [json.loads(line) for line in Path(f).read_text().splitlines()]
+        for a, b in itertools.pairwise(rows):
+            if (a["b_h"] - 2.0) * (b["b_h"] - 2.0) >= 0:
+                continue
+            m = a if abs(a["b_h"] - 2.0) < abs(b["b_h"] - 2.0) else b
+            tag = f"{Path(f).stem}:k{m['k']}"
+            if tag in done:
+                continue
+            # fold (C extremal) or pitchfork (C monotone): look at the C trend around the pair
+            kind = (
+                "fold?"
+                if (b["C"] - a["C"]) * (a["C"] - rows[max(a["k"] - 1, 0)]["C"]) < 0
+                else "pitchfork?"
+            )
+            res = sym_parent_solution(m["x0"], m["ydot0"], m["T"], m["C"])
+            rec: dict[str, Any] = {
+                "parent": tag,
+                "C": m["C"],
+                "T": m["T"],
+                "b_member": m["b_h"],
+                "kind_guess": kind,
+                "parent_converged": res["converged"],
+            }
+            if res["converged"]:
+                rec["branch"] = classify_branch(branch_eta(res, tag))
+            with out_f.open("a") as fh:
+                fh.write(json.dumps(rec) + "\n")
+            n_asym = sum(
+                1
+                for r in rec.get("branch", [])
+                if r.get("converged") and not r.get("symmetric", True)
+            )
+            print(
+                f"{tag}: C={m['C']:.5f} b={m['b_h']:.3f} {kind} parent={res['converged']} "
+                f"asym branch solutions={n_asym}",
+                flush=True,
+            )
+            if time.time() - t0 > max_seconds:
+                print("time budget reached", flush=True)
+                return
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["control", "parents997", "parentsRR"])
@@ -362,6 +465,8 @@ def main() -> None:
     t0 = time.time()
     if args.cmd == "control":
         cmd_control()
+    elif args.cmd == "parents997":
+        cmd_parents997(args.max_seconds)
     print(f"done in {time.time() - t0:.0f} s")
     _ = (glob, math, lin)
 
