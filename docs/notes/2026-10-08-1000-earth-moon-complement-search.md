@@ -439,6 +439,43 @@ CONSISTENT with family A, but that is not shown by continuation.
   - It is below RR's J range.
   - File: `pitchfork/parent_family_toward_7-3a.json`.
 
+### 5.1b Literal collision check of A, B and D against the held Earth-Moon p:q sources (lead request 2026-10-08)
+
+- **Match rule** (stated before looking). A published orbit is a literal member of a family if
+  all of these hold:
+  - the p:q is the same, and the inertial sense is the same;
+  - |dC| < 0.01;
+  - |dT| / T < 1e-3;
+  - the perigee and periselene altitudes agree within 10%;
+  - the model is the Earth-Moon CR3BP (mu about 0.01215).
+- Published members at another mass ratio, or at a C outside the family's computed range, are
+  recorded as class-level only.
+
+| source (held; digest) | p:q content | A: 5:2 pro (C 2.41-2.59) | B: 5:3 ret (C 0.67-0.94) | D: 7:3 pro (C 2.41-2.56) |
+|---|---|---|---|---|
+| Casoliva et al. 2010 JGCD, Table 3 (`#725`, `#780`; catalogue casoliva-* rows) | Earth-Moon members only at 1-2, 2-1, 3-2 and 7-3 (a-d). 7-3a/b/c/d all wind retrograde about the Earth (wE -10). 7-3d, recomputed here from the Table 3 state: C 1.289, asymmetric, wE -10, perigee inside the Earth | no member; class-level: the text (p.1627) names 5-2 as an allowable resonance whose perigee is forced toward the 7,000 km lower bound, "periselene is also small". No 5-2 member is tabulated | no member | no member: every 7-3 row is retrograde (family C type) |
+| Casoliva et al. 2008 AIAA, Table 2 (`2026-10-04-digest-casoliva-2008-...`) | seeds at mu = 1e-6: 12a, 21a, 23a/b, 32a/b, **52a**, 54a/b, **73a** | class-level only: 52a (5-2, C 1.046, T 12.565, symmetric start) is at mu = 1e-6, not Earth-Moon | no 5-3 seed | class-level only: 73a at mu = 1e-6 |
+| Liang, Xu & Xu 2017 (`2026-10-06-digest-...`) | 5:2 and 7:3 polygonal-like orbits at C 3.0996 and 3.1858, apoapsis about 0.82 and 0.75 L, no lunar encounter | no: C differs by 0.5 or more, and there is no lunar pass | - | no: C differs by about 0.6, and there is no lunar pass |
+| Liang, Xu, Peng & Xu 2020 (`2026-10-05-digest-...`) | 2:1 only (C 2.0934) | no | no | no |
+| Vaquero 2013/2014 (`#787`, `#799`, `#811`) | 2:1 and 3:1 Earth-Moon families | no | no | no |
+| Newton 1959 (`#997`) | type 1/2 only (p:q 2:1) | no | no | no |
+| Hoelker & Winston 1968 (`#997`) | n* labels -1/4 ... +1, including +2/5, +3/5, +3/7, +4/9, +5/11 and +5/8 (mean motions, so exterior p:q). No 5/2, 5/3 or 7/3; mu = 1/80; perigees 0.55 L or more | no | no | no |
+| Genova & Aldrin 2015 (batch 40 digest) | 2:1 (mushroom), 3:1 (shamrock), Arenstorf 4-leaf | no | no | no |
+
+**Result.**
+- **No held source has a literal member of A, B or D.**
+- All three: "candidate, literature step deferred (`#972` v3, `#1045`)". Nothing is called
+  novel.
+- Class-level context for `#972`:
+  - A falls under Casoliva 2010's named-but-untabulated 5-2 resonance, whose perigee is
+    forced low, and under the 2008 small-mu seed 52a.
+  - D has the same p:q as Casoliva's 7-3 class and the 73a seed, but the opposite sense about
+    the Earth.
+  - A and D share their p:q with Liang 2017's polygonal-like orbits, which lie at a different
+    energy and have no lunar pass. Whether A or D connects to those families is not known,
+    because the continuations stopped at the 40-step cap.
+- Family C remains the Casoliva 7-3b/c class. Its continuation passes through the 7-3b row.
+
 ### 5.2 Gates (`scripts/run_1000_gate.py`, `data/1000_complement/gate_summary.json`)
 
 All 213 method (1) cycler-class candidates are excluded from Franz-Russell: their maximum Moon
@@ -507,7 +544,11 @@ distance is 750,000-1,950,000 km.
     stand.
   - One grid member of A (C 2.478) did not re-solve and is not counted.
   - The b values in sec. 4.1 come from these arc-STM products.
-- **Amendment A3 (method (2) branching).**
+- **Amendment A3 (method (2) branching) - FORMAL, accepted by the lead 2026-10-08 ~14:20 AEDT.**
+  - Date of the change: 2026-10-08 13:30 AEDT.
+  - Reason: the fixed-C perturbation variant was 36/36 ill-conditioned at the bifurcation. That
+    was a numerical failure of the corrector: no solve converged, so no branch or other result
+    existed to read when the change was made.
   - The pre-registered step perturbed along the monodromy eigenvector at fixed C +- dC. It
     failed the control 36 of 36 times: every solve was ill-conditioned at the bifurcation, a
     known property of fixed-C shooting at a pitchfork. By the sec. 2.2 hard stop, **that
