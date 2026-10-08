@@ -35,6 +35,15 @@ OUT = REPO / "data" / "1000_complement" / "shooting"
 MU = base.MU
 GM_E = 1.0 - MU
 PQ = [(2, 1), (1, 2), (3, 2), (5, 2), (1, 3), (2, 3), (4, 3), (5, 3), (7, 3), (8, 3)]
+# #1048 (a): ratios whose Kepler skeleton never reaches the Moon (2a < 1); the r_a > 1 filter is
+# dropped for them and the lunar perturbation enters through the multiple-shooting correction
+PQ_GAPS = [(3, 1), (7, 2), (4, 1)]
+VAQUERO_31 = {
+    "C": 2.54,
+    "T": 6.269604424886022,
+    "x0": 0.9013301668020125,
+    "ydot0": -0.8462249954358775,
+}
 RP = [r / base.L_KM for r in base.RP_KM]
 OMEGA = base.OMEGA
 CONTROLS = {
@@ -173,7 +182,7 @@ def solve_seed(seed: tuple[int, int, int, int, int, float | None]) -> dict[str, 
     rec: dict[str, Any] = {"p": p, "q": q, "sense": sense, "ir": ir, "iw": iw, "C_target": c_target}
     rp = RP[ir]
     a = (q / p) ** (2.0 / 3.0) * GM_E ** (1.0 / 3.0)
-    if not (rp < 1.0 < 2 * a - rp):
+    if (p, q) not in PQ_GAPS and not (rp < 1.0 < 2 * a - rp):
         rec["status"] = "no lunar-orbit crossing"
         return rec
     nodes, tp = skeleton_nodes(p, q, sense, rp, OMEGA[iw])
@@ -283,6 +292,26 @@ def control_report() -> None:
         print(f"{rid}: {len(hits)} seeds converged onto the row; first: {hits[:3]}")
 
 
+def control31_report() -> None:
+    """#1048 (a) control: is vaquero-31-c254 recovered from 3:1 skeletons at C = 2.54?"""
+    recs = [json.loads(line) for line in (OUT / "control31.jsonl").read_text().splitlines()]
+    conv = [r for r in recs if r["status"] == "converged"]
+    print(f"control31: {len(recs)} solved, {len(conv)} converged")
+    hits = []
+    for r in conv:
+        if abs(r["T"] - VAQUERO_31["T"]) / VAQUERO_31["T"] > 1e-4:
+            continue
+        perp = base.classify(np.array(r["s_perigee"]), r["T"])["perp_crossings"]
+        d = min(
+            (max(abs(p[1] - VAQUERO_31["x0"]), abs(p[2] - VAQUERO_31["ydot0"])) for p in perp),
+            default=float("inf"),
+        )
+        if d < 1e-3:
+            hits.append((r["sense"], r["ir"], r["iw"], d))
+    print(f"vaquero-31-c254: {len(hits)} seeds converged onto the row; first: {hits[:3]}")
+    print("T values of converged:", sorted({round(r["T"], 4) for r in conv})[:20])
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -291,9 +320,17 @@ def main() -> None:
         sp.add_argument("--max-seconds", type=float, default=420.0)
         sp.add_argument("--pilot-s", type=float, default=None)
     sub.add_parser("control-report")
+    for name in ("control31", "gaps"):
+        sp = sub.add_parser(name)
+        sp.add_argument("--max-seconds", type=float, default=420.0)
+        sp.add_argument("--pilot-s", type=float, default=None)
+    sub.add_parser("control31-report")
     args = ap.parse_args()
     if args.cmd == "control-report":
         control_report()
+        return
+    if args.cmd == "control31-report":
+        control31_report()
         return
     control_seeds = [
         (7, 3, sense, ir, iw, c_t)
@@ -309,9 +346,26 @@ def main() -> None:
         for ir in range(len(RP))
         for iw in range(len(OMEGA))
     ]
-    seeds = {"pilot": control_seeds[::58][:20], "control": control_seeds, "grid": grid_seeds}[
-        args.cmd
+    control31_seeds = [
+        (3, 1, sense, ir, iw, VAQUERO_31["C"])
+        for sense in (1, -1)
+        for ir in range(len(RP))
+        for iw in range(len(OMEGA))
     ]
+    gap_seeds = [
+        (p, q, sense, ir, iw, None)
+        for p, q in PQ_GAPS
+        for sense in (1, -1)
+        for ir in range(len(RP))
+        for iw in range(len(OMEGA))
+    ]
+    seeds = {
+        "pilot": control_seeds[::58][:20],
+        "control": control_seeds,
+        "grid": grid_seeds,
+        "control31": control31_seeds,
+        "gaps": gap_seeds,
+    }[args.cmd]
     preflight_search(
         task_no=1000,
         region_id=f"em-complement-multiple-shooting-{args.cmd}",
