@@ -453,6 +453,31 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 > gate the same physics **passes** (per-cycle encounter V∞-continuity ≤1e-6 km/s,
 > intra-cycle Kepler-reprop residual ≤0.002 km, in-family maintenance ΔV
 > 2.76–2.91 km/s/cycle over 3 consecutive cycles).
+>
+> **Amendment (2026-10-08, owner decision, #1007): V2-ballistic for patched-conic
+> multi-arc rows.** Applies to `cycler_class: multi-arc` rows whose defining model
+> is the ideal circular-coplanar patched conic AND whose cycle period is an exact
+> multiple of the synodic period in that model (first case: the #942/#943
+> two-working-body rows). In that model every multi-cycle template repeats exactly,
+> so the defining-model V2 test cannot fail: #830 showed (with a negative control,
+> `tests/search/test_830_multiarc_v2_ballistic.py`) that even a chain with a
+> multi-km/s V∞ break "passes". For this class only, V2-ballistic is judged in the
+> real-ephemeris patched-conic chain instead:
+>
+> - **≥ 3 continuous cycles** solved ballistically in the real-ephemeris chain
+>   (|V∞| continuity at every junction < 1e-6 km/s);
+> - **bounded drift**: the per-cycle encounter-date offsets and |V∞| against the
+>   ideal-model template oscillate within a band without lap-over-lap growth (metric
+>   and thresholds pre-registered in the #1007 note);
+> - **the demanded-turn gate passes at every flyby** (#888/#937; "indeterminate" is
+>   not a pass);
+> - **DOP853 re-fly** of every leg misses < 1 km;
+> - at **≥ 3 of 5 epochs**.
+>
+> Controls, run first: a **positive control**, a published member of the same lane
+> through the same pipeline (Hollister 1H or a Hollister-Menning orbit for
+> Earth-Venus; R-S GanCal#1 at 2013 for Ganymede-Callisto), must pass. A **negative
+> control**, the same chain with one flyby's V∞ deliberately broken, must fail.
 
 > **Note — the V3 class-split (V3-ballistic / V3-powered), 2026-06-08.** V3 is
 > split for the same reason V2 is: a single ΔV bar cannot judge a ballistic and a
