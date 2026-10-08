@@ -2713,6 +2713,12 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   subset. **Lead ruling: amendment A1 APPROVED** (G1': cap any anchor that has a tour label and no
   cycler-class label, with a `CYCLER_CLASSES` set and a pinned test for (G, C, G); plus the minors and
   nits), pre-registered, in the same cycle, then reviewed again. Outside G1: `#1052`.
+  **A1 PROGRESS 2026-10-08 (pre-registration `613feba9`, v3 note sec. 6; code uncommitted):** candidates and
+  the 26 controls UNCHANGED (scope JSON byte-identical). Probe over 790 signatures: 29 change, all
+  published -> inconclusive in the no-topology half (the 17 from v3, plus the 10 R-S Jovian rows and
+  gc-1 / gc-2 that v2 had cited to tour papers: the G1' fix). Jupiter (G, C, G) untopologied now reads
+  inconclusive, not Niehoff. New pinned tests pass; ruff and mypy clean. Full suite queued behind a CI
+  pytest on the runner (the lead watches the logs); then the commit and the read-only review.
 - `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
