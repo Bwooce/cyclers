@@ -1,0 +1,300 @@
+{
+ "grid": {
+  "by_skeleton_min_moon_km": {
+   ">60000": {
+    "n": 2370,
+    "impact": 0.477,
+    "converged": 0.335,
+    "other": 0.188
+   },
+   "20000-60000": {
+    "n": 1445,
+    "impact": 0.606,
+    "converged": 0.309,
+    "other": 0.085
+   },
+   "5000-20000": {
+    "n": 1048,
+    "impact": 0.696,
+    "converged": 0.231,
+    "other": 0.073
+   },
+   "<5000": {
+    "n": 393,
+    "impact": 0.934,
+    "converged": 0.053,
+    "other": 0.013
+   }
+  },
+  "by_rp_km": {
+   "6578": {
+    "n": 720,
+    "impact": 0.936,
+    "converged": 0.031,
+    "other": 0.033
+   },
+   "8578": {
+    "n": 720,
+    "converged": 0.129,
+    "impact": 0.801,
+    "other": 0.069
+   },
+   "11185": {
+    "n": 720,
+    "converged": 0.229,
+    "impact": 0.667,
+    "other": 0.104
+   },
+   "14584": {
+    "n": 648,
+    "converged": 0.318,
+    "impact": 0.556,
+    "other": 0.127
+   },
+   "19018": {
+    "n": 648,
+    "converged": 0.381,
+    "impact": 0.48,
+    "other": 0.139
+   },
+   "24798": {
+    "n": 648,
+    "converged": 0.409,
+    "impact": 0.424,
+    "other": 0.167
+   },
+   "32335": {
+    "n": 576,
+    "converged": 0.443,
+    "impact": 0.368,
+    "other": 0.189
+   },
+   "42164": {
+    "n": 576,
+    "converged": 0.438,
+    "impact": 0.368,
+    "other": 0.194
+   }
+  },
+  "by_pq_sense": {
+   "1:2 pro": {
+    "n": 288,
+    "converged": 0.226,
+    "impact": 0.764,
+    "other": 0.01
+   },
+   "1:2 ret": {
+    "n": 288,
+    "impact": 0.333,
+    "converged": 0.042,
+    "other": 0.625
+   },
+   "1:3 pro": {
+    "n": 288,
+    "impact": 0.656,
+    "converged": 0.333,
+    "other": 0.01
+   },
+   "1:3 ret": {
+    "n": 288,
+    "converged": 0.035,
+    "impact": 0.361,
+    "other": 0.604
+   },
+   "2:1 pro": {
+    "n": 288,
+    "impact": 0.392,
+    "converged": 0.597,
+    "other": 0.01
+   },
+   "2:1 ret": {
+    "n": 288,
+    "impact": 0.538,
+    "converged": 0.406,
+    "other": 0.056
+   },
+   "2:3 pro": {
+    "n": 288,
+    "impact": 0.712,
+    "converged": 0.215,
+    "other": 0.073
+   },
+   "2:3 ret": {
+    "n": 288,
+    "impact": 0.538,
+    "converged": 0.188,
+    "other": 0.274
+   },
+   "3:2 pro": {
+    "n": 288,
+    "impact": 0.399,
+    "converged": 0.559,
+    "other": 0.042
+   },
+   "3:2 ret": {
+    "n": 288,
+    "impact": 0.472,
+    "converged": 0.528
+   },
+   "4:3 pro": {
+    "n": 288,
+    "impact": 0.826,
+    "converged": 0.153,
+    "other": 0.021
+   },
+   "4:3 ret": {
+    "n": 288,
+    "impact": 0.549,
+    "converged": 0.215,
+    "other": 0.236
+   },
+   "5:2 pro": {
+    "n": 216,
+    "impact": 0.639,
+    "converged": 0.278,
+    "other": 0.083
+   },
+   "5:2 ret": {
+    "n": 216,
+    "impact": 0.731,
+    "converged": 0.259,
+    "other": 0.009
+   },
+   "5:3 pro": {
+    "n": 288,
+    "impact": 0.639,
+    "converged": 0.347,
+    "other": 0.014
+   },
+   "5:3 ret": {
+    "n": 288,
+    "impact": 0.545,
+    "converged": 0.417,
+    "other": 0.038
+   },
+   "7:3 pro": {
+    "n": 288,
+    "impact": 0.597,
+    "converged": 0.253,
+    "other": 0.149
+   },
+   "7:3 ret": {
+    "n": 288,
+    "impact": 0.701,
+    "converged": 0.295,
+    "other": 0.003
+   },
+   "8:3 pro": {
+    "n": 108,
+    "impact": 0.963,
+    "other": 0.037
+   },
+   "8:3 ret": {
+    "n": 108,
+    "impact": 0.944,
+    "converged": 0.037,
+    "other": 0.019
+   }
+  }
+ },
+ "gaps": {
+  "by_skeleton_min_moon_km": {
+   "20000-60000": {
+    "n": 210,
+    "impact": 0.329,
+    "converged": 0.41,
+    "other": 0.262
+   },
+   ">60000": {
+    "n": 1518,
+    "impact": 0.132,
+    "converged": 0.814,
+    "other": 0.054
+   }
+  },
+  "by_rp_km": {
+   "6578": {
+    "n": 216,
+    "impact": 0.856,
+    "converged": 0.139,
+    "other": 0.005
+   },
+   "8578": {
+    "n": 216,
+    "impact": 0.292,
+    "other": 0.079,
+    "converged": 0.63
+   },
+   "11185": {
+    "n": 216,
+    "converged": 0.856,
+    "impact": 0.069,
+    "other": 0.074
+   },
+   "14584": {
+    "n": 216,
+    "converged": 0.884,
+    "impact": 0.028,
+    "other": 0.088
+   },
+   "19018": {
+    "n": 216,
+    "converged": 0.917,
+    "impact": 0.005,
+    "other": 0.079
+   },
+   "24798": {
+    "n": 216,
+    "converged": 0.921,
+    "other": 0.079
+   },
+   "32335": {
+    "n": 216,
+    "converged": 0.898,
+    "other": 0.102
+   },
+   "42164": {
+    "n": 216,
+    "converged": 0.87,
+    "other": 0.13
+   }
+  },
+  "by_pq_sense": {
+   "3:1 pro": {
+    "n": 288,
+    "impact": 0.16,
+    "converged": 0.823,
+    "other": 0.017
+   },
+   "3:1 ret": {
+    "n": 288,
+    "impact": 0.156,
+    "converged": 0.514,
+    "other": 0.33
+   },
+   "4:1 pro": {
+    "n": 288,
+    "impact": 0.139,
+    "converged": 0.854,
+    "other": 0.007
+   },
+   "4:1 ret": {
+    "n": 288,
+    "impact": 0.073,
+    "converged": 0.854,
+    "other": 0.073
+   },
+   "7:2 pro": {
+    "n": 288,
+    "impact": 0.25,
+    "converged": 0.75
+   },
+   "7:2 ret": {
+    "n": 288,
+    "impact": 0.16,
+    "converged": 0.792,
+    "other": 0.049
+   }
+  }
+ }
+}
