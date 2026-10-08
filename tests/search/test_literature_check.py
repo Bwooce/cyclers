@@ -15,6 +15,7 @@ self-validation (real queries + verdicts) is recorded in the build note
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Sequence
 
 import pytest
@@ -506,7 +507,10 @@ RS_IO_CALLISTO_SIG = CandidateSignature(
 
 @pytest.mark.parametrize(
     "sig",
-    [RS_GANYMEDE_IO_SIG, RS_TITAN_ENCELADUS_SIG],
+    [
+        dataclasses.replace(RS_GANYMEDE_IO_SIG, working_bodies="one"),
+        dataclasses.replace(RS_TITAN_ENCELADUS_SIG, working_bodies="one"),
+    ],
     ids=["ganymede-io", "titan-enceladus"],
 )
 def test_russell_strange_2009_double_cyclers_flagged_published(
@@ -514,7 +518,12 @@ def test_russell_strange_2009_double_cyclers_flagged_published(
 ) -> None:
     """R-S 2009 Galilean (Ganymede-Io) and Saturnian (Titan-Enceladus)
     double-cycler candidates must now be flagged ``published`` -- the #577
-    false-clear this task's new anchors exist to close."""
+    false-clear this task's new anchors exist to close.
+
+    #972 retrofit: the R-S anchors declare ``working_bodies_scope="one"`` and,
+    under F14, match only a signature that declares that label, so the
+    candidates here carry it. The unlabelled case is
+    :func:`test_russell_strange_2009_unlabelled_signature_not_cleared`."""
     result = check_literature(sig, search=_rs_2009_search)
     assert result.status == "published", (
         f"R-S 2009 double-cycler candidate not flagged as published: {result}"
@@ -525,6 +534,21 @@ def test_russell_strange_2009_double_cyclers_flagged_published(
         f"citation does not point at Russell-Strange 2009: {result.citation!r}"
     )
     assert result.confidence >= 0.70
+    assert not is_novelty_claimable(result.to_review_block())
+
+
+def test_russell_strange_2009_unlabelled_signature_not_cleared() -> None:
+    """#972 F14 retrofit, unlabelled half: without a working-bodies label the R-S
+    anchor cannot be matched, so the Ganymede-Io candidate loses the anchor's
+    author bonus and reads ``inconclusive`` on the R-S hit (never a false
+    ``not-found``); the result still names the R-S paper. (The unlabelled
+    Titan-Enceladus candidate still reads ``published`` here: this backend's hit
+    is a real-web-style hit with no anchor identity and scores 0.75 on its
+    text alone.)"""
+    result = check_literature(RS_GANYMEDE_IO_SIG, search=_rs_2009_search)
+    assert result.status == "inconclusive", result
+    assert result.citation == "Cycler Trajectories in Planetary Moon Systems"
+    assert result.matched_url == "https://doi.org/10.2514/1.36610"
     assert not is_novelty_claimable(result.to_review_block())
 
 
@@ -652,10 +676,25 @@ def test_880_same_scope_anchor_still_flags_published() -> None:
     tour = check_literature(tour_sig, search=offline_corpus_search)
     assert tour.status == "published", tour
 
-    rs = check_literature(RS_TITAN_ENCELADUS_SIG, search=offline_corpus_search)
+    # #972 retrofit: the R-S anchor declares working_bodies_scope="one" (H12), so
+    # the candidate must declare the label to match it (F14).
+    rs = check_literature(
+        dataclasses.replace(RS_TITAN_ENCELADUS_SIG, working_bodies="one"),
+        search=offline_corpus_search,
+    )
     assert rs.status == "published", rs
     blob = ((rs.citation or "") + " " + (rs.matched_url or "") + " " + (rs.doi or "")).lower()
     assert "russell" in blob or "10.2514/1.36610" in blob, rs
+
+
+def test_880_unlabelled_same_system_anchor_goes_to_a_human() -> None:
+    """#972 F14 + F7 retrofit, unlabelled half: an unlabelled Titan-Enceladus
+    candidate cannot be checked against the R-S anchor's working-bodies scope;
+    the body set is the anchor's, so the result is ``inconclusive`` naming it."""
+    rs = check_literature(RS_TITAN_ENCELADUS_SIG, search=offline_corpus_search)
+    assert rs.status == "inconclusive", rs
+    assert "Russell-Strange 2009 Titan-Enceladus ideal-model moon cycler" in rs.notes, rs
+    assert not is_novelty_claimable(rs.to_review_block())
 
 
 def test_880_live_hits_without_anchor_identity_are_unaffected() -> None:

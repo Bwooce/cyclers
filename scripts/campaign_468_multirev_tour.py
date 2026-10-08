@@ -32,6 +32,7 @@ from cyclerfinder.search.literature_check import (
     CandidateSignature,
     SearchResult,
     check_literature,
+    is_literature_fresh,
 )
 from cyclerfinder.search.releg_moontour import (
     PoweredCycleVerdict,
@@ -336,7 +337,7 @@ def main() -> None:
         )
         if in_band:
             lit = _lit_check(sk, verdict)
-            novel = lit["status"] == "not-found"
+            novel = is_literature_fresh(lit["status"])
             row["lit_check"] = lit
             row["novel"] = novel
             proposals.append(

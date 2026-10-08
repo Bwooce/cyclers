@@ -48,6 +48,7 @@ from cyclerfinder.search.literature_check import (
     SearchFn,
     SearchResult,
     check_literature,
+    is_literature_fresh,
     offline_corpus_search,
     signature_from_review_entry,
 )
@@ -141,7 +142,7 @@ def main() -> None:
         updated.append(new_entry)
         if result.status == "published":
             n_pub += 1
-        elif result.status == "not-found":
+        elif is_literature_fresh(result.status):
             n_nf += 1
         else:
             n_inc += 1

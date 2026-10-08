@@ -170,13 +170,20 @@ def _report_phase(
             _print_progress(
                 f"  {phase} BIFURCATION: {rec['label']} e_star={t.e_star} target_e={t.target_e}"
             )
-    lit = {"published": 0, "not-found": 0, "inconclusive": 0}
+    lit = {
+        "published": 0,
+        "not-found": 0,
+        "known-architecture-new-system": 0,
+        "inconclusive": 0,
+    }
     for rec in records:
         status = str(rec["literature_status"])
         lit[status] = lit.get(status, 0) + 1
     _print_progress(
         f"{phase} literature breakdown: published={lit['published']} "
-        f"not-found={lit['not-found']} inconclusive={lit['inconclusive']}"
+        f"not-found={lit['not-found']} "
+        f"known-architecture-new-system={lit['known-architecture-new-system']} "
+        f"inconclusive={lit['inconclusive']}"
     )
 
 

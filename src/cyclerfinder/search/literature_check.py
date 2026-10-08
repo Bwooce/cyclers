@@ -745,7 +745,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Russell-Strange 2009 Ganymede-Io ideal-model moon cycler",
         # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
         # ideal model is considered massless" (one working body); p.18 names
-        # removing it as future work.
+        # removing it as future work. #972 H12: quoted from AAS 07-118, the
+        # conference parent of these 2009 rows (R-S 2009 ref. [26]; the same rows
+        # and nomenclature).
         working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Io"}),
@@ -775,7 +777,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Russell-Strange 2009 Ganymede-Europa ideal-model moon cycler",
         # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
         # ideal model is considered massless" (one working body); p.18 names
-        # removing it as future work.
+        # removing it as future work. #972 H12: quoted from AAS 07-118, the
+        # conference parent of these 2009 rows (R-S 2009 ref. [26]; the same rows
+        # and nomenclature).
         working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Europa"}),
@@ -805,7 +809,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler",
         # #942/#943: AAS 07-118 p.2, "one of the two orbiting celestial bodies in the
         # ideal model is considered massless" (one working body); p.18 names
-        # removing it as future work.
+        # removing it as future work. #972 H12: quoted from AAS 07-118, the
+        # conference parent of these 2009 rows (R-S 2009 ref. [26]; the same rows
+        # and nomenclature).
         working_bodies_scope="one",
         primary="Jupiter",
         body_set=frozenset({"Ganymede", "Callisto"}),
@@ -831,6 +837,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Russell-Strange 2009 Titan-Enceladus ideal-model moon cycler",
+        # #972 H12: AAS 07-118 p.2 (the conference parent of these 2009 rows, R-S
+        # 2009 ref. [26]), "one of the two orbiting celestial bodies in the ideal
+        # model is considered massless" (one working body), as for the Jovian rows.
+        working_bodies_scope="one",
         primary="Saturn",
         body_set=frozenset({"Titan", "Enceladus"}),
         # NOT the same object as the Davis-Phillips-McCarthy Saturnian Ocean
@@ -1648,23 +1658,34 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         doi=None,
     ),
     CorpusAnchor(
-        name="Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        # #942/#943: E-V-M sequences (body set {V, E, M}).
-        n_bodies_scope=3,
+        name="Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014)",
+        # #972 F8 (2026-10-07): grounded against the held PDF, p. 1. The old
+        # citation ("AAS 14-822 'Venus-Earth-Mars Cyclers' extension paper") is
+        # not findable, and its comment "extends Jones AAS 17-577" was
+        # anachronistic for a 2014 paper. The authors' held 2014 paper is
+        # one-shot Earth-Venus-Mars-Earth free returns, NOT cyclers, hence
+        # topology "mga-tour". No n-bodies tag (F5: it was not quoted from the
+        # source). Pre-registration
+        # docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md.
         primary="Sun",
         body_set=frozenset({"V", "E", "M"}),
-        # #350: extends Jones-Hernandez-Jesick AAS 17-577 VEM cycler family
-        # (repeated Venus-Earth-Mars encounter sequence).
-        topology_label=frozenset({"repeated-moon"}),
+        topology_label=frozenset({"mga-tour"}),
         authors=("Hughes", "Edelman", "Longuski"),
         keywords=(
-            "Venus-Earth-Mars cycler extension",
-            "VEM tour extension",
-            "outbound-inbound Venus-Earth-Mars",
+            "Mars free-return via Venus gravity assist",
+            "Earth-Venus-Mars-Earth free return",
+            "Inspiration Mars alternative launch opportunity",
         ),
-        citation="Hughes, Edelman & Longuski, AAS 14-822 / 'Venus-Earth-Mars "
-        "Cyclers' extension paper (2014)",
-        doi=None,
+        citation="Hughes, K. M., Edelman, P. J., Longuski, J. M., Loucks, M. E., "
+        "Carrico, J. P. & Titok, D. A., 'Fast Mars Free-Returns via Venus Gravity "
+        "Assist,' AIAA 2014-4109, AIAA/AAS Astrodynamics Specialist Conference, "
+        "San Diego (2014); one-shot free returns, not cyclers",
+        doi="10.2514/6.2014-4109",
+        year=2014,
+        title="Fast Mars Free-Returns via Venus Gravity Assist",
+        venue="AIAA/AAS Astrodynamics Specialist Conference, AIAA 2014-4109",
+        provenance="verified-against-source",
+        system="heliocentric",
     ),
     CorpusAnchor(
         name="Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
@@ -3039,7 +3060,13 @@ def _corpus_for(sig: CandidateSignature) -> tuple[CorpusAnchor, ...]:
 
 
 def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> str | None:
-    """Why ``anchor``'s DECLARED scope excludes ``sig``, or ``None`` if it does not.
+    """The first reason :func:`_declared_scope_exclusions` gives, or ``None``."""
+    reasons = _declared_scope_exclusions(sig, anchor)
+    return reasons[0] if reasons else None
+
+
+def _declared_scope_exclusions(sig: CandidateSignature, anchor: CorpusAnchor) -> list[str]:
+    """Every reason ``anchor``'s DECLARED scope excludes ``sig``, or ``None`` if it does not.
 
     These are the three filters under which the candidate and the anchor each
     state a scope and the two are incompatible. Each needs a declaration on
@@ -3060,24 +3087,31 @@ def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> 
     Used by :func:`_candidate_anchors` and, since #880, by
     :func:`check_literature` to keep an excluded anchor from being resurrected
     through its own synthetic search hit.
+
+    #972 F14: the architecture scopes (working bodies, return types) are the
+    exception to "an undeclared side falls through". An anchor that declares
+    one is matched only by a signature that declares the same label; an
+    unlabelled signature cannot be checked against it ("working-bodies-
+    unlabelled", "return-types-unlabelled").
     """
+    reasons: list[str] = []
     if sig.period_band_tu is not None and anchor.period_band_tu is not None:
         c_min, c_max = sig.period_band_tu
         a_min, a_max = anchor.period_band_tu
         if c_max < a_min or c_min > a_max:
-            return "period-band"
+            reasons.append("period-band")
     if (
         sig.topology_label
         and anchor.topology_label
         and not (sig.topology_label & anchor.topology_label)
     ):
-        return "topology-label"
+        reasons.append("topology-label")
     if (
         sig.topology_3d is not None
         and anchor.topology_3d is not None
         and not _spatial_topology_matches(sig, anchor)
     ):
-        return "topology-3d"
+        reasons.append("topology-3d")
     # #942/#943 declared scopes (pre-registration
     # docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md).
     if (
@@ -3085,26 +3119,37 @@ def _declared_scope_exclusion(sig: CandidateSignature, anchor: CorpusAnchor) -> 
         and sig.sequence
         and len(set(sig.sequence)) != anchor.n_bodies_scope
     ):
-        return "n-bodies"
+        reasons.append("n-bodies")
     if (
         sig.working_bodies is not None
         and anchor.working_bodies_scope is not None
         and sig.working_bodies != anchor.working_bodies_scope
     ):
-        return "working-bodies"
+        reasons.append("working-bodies")
     if (
         sig.return_types is not None
         and anchor.return_types_scope is not None
         and not sig.return_types <= anchor.return_types_scope
     ):
-        return "return-types"
+        reasons.append("return-types")
     if anchor.alternating_scope and _has_consecutive_same_body(sig.sequence):
-        return "alternating"
-    return None
+        reasons.append("alternating")
+    if anchor.working_bodies_scope is not None and sig.working_bodies is None:
+        reasons.append("working-bodies-unlabelled")
+    if anchor.return_types_scope is not None and sig.return_types is None:
+        reasons.append("return-types-unlabelled")
+    return reasons
 
 
 def _has_consecutive_same_body(sequence: tuple[str, ...]) -> bool:
-    """Two consecutive encounters at the same body, reading ``sequence`` cyclically."""
+    """Two consecutive encounters at the same body, reading ``sequence`` cyclically.
+
+    #972 F3: a final encounter equal to the first is a closing repeat (the
+    catalogue convention, e.g. "Callisto-Ganymede-Callisto-Europa-Callisto")
+    and is dropped before the cyclic test.
+    """
+    if len(sequence) > 1 and sequence[-1] == sequence[0]:
+        sequence = sequence[:-1]
     n = len(sequence)
     return n > 1 and any(sequence[i] == sequence[(i + 1) % n] for i in range(n))
 
@@ -3112,16 +3157,38 @@ def _has_consecutive_same_body(sequence: tuple[str, ...]) -> bool:
 def _architecture_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
     """Anchors whose declared architecture (``working_bodies_scope``) matches the
     signature's at the same primary but at a DIFFERENT body set: the #875 (ii)
-    "known architecture at a never-treated system" case (#942/#943)."""
+    "known architecture at a never-treated system" case (#942/#943).
+
+    #972 F2: empty when ANY anchor of the same primary and the same
+    ``working_bodies_scope`` contains the candidate's bodies, whatever its other
+    scopes: a system the architecture's sources treated is never "never-treated".
+    """
     if sig.working_bodies is None:
         return []
+    seq_set = frozenset(sig.sequence)
+    same_arch = [
+        a
+        for a in _corpus_for(sig)
+        if a.primary == sig.primary and a.working_bodies_scope == sig.working_bodies
+    ]
+    if any(seq_set <= a.body_set for a in same_arch):
+        return []
+    return same_arch
+
+
+def _different_architecture_same_system(sig: CandidateSignature) -> list[CorpusAnchor]:
+    """#972 F7 (lead ruling (b)): anchors of the same primary whose body set EQUALS
+    the candidate's and whose exclusion reasons include the working-bodies scope
+    (declared and different, or undeclared on the candidate under F14). Such an
+    object, at a system the source treated with another architecture, goes to a
+    human: the result is ``inconclusive``, not ``not-found``."""
     seq_set = frozenset(sig.sequence)
     return [
         a
         for a in _corpus_for(sig)
         if a.primary == sig.primary
-        and a.working_bodies_scope == sig.working_bodies
-        and not seq_set <= a.body_set
+        and a.body_set == seq_set
+        and any(r.startswith("working-bodies") for r in _declared_scope_exclusions(sig, a))
     ]
 
 
@@ -3355,6 +3422,7 @@ def check_literature(
     anchors = _candidate_anchors(sig)
     corpus_by_name = {a.name: a for a in _corpus_for(sig)}
     scope_excluded: dict[str, str] = {}
+    off_footprint: set[str] = set()
 
     for q in queries:
         trail.append(q)
@@ -3371,6 +3439,12 @@ def check_literature(
                 reason = _declared_scope_exclusion(sig, source)
                 if reason is not None:
                     scope_excluded[source.name] = reason
+                    continue
+                # #972 F4: a hit synthesised from an anchor outside the
+                # candidate's structural footprint (other primary, or bodies the
+                # anchor's family does not visit) is not scored either.
+                if source not in anchors:
+                    off_footprint.add(source.name)
                     continue
             conf = _result_matches_fingerprint(sig, r)
             if conf > best_conf:
@@ -3424,7 +3498,24 @@ def check_literature(
             matched_url=best_hit.url if best_hit else None,
             notes="Cycler-adjacent literature surfaced but could not be confirmed "
             "as the same family; a human must adjudicate (not certified novel)."
-            + _scope_note(scope_excluded),
+            + _scope_note(scope_excluded)
+            + _footprint_note(off_footprint),
+        )
+
+    other_arch = _different_architecture_same_system(sig)
+    if other_arch:
+        names = "; ".join(a.name for a in other_arch)
+        return LiteratureCheckResult(
+            status="inconclusive",
+            citation=other_arch[0].citation,
+            doi=other_arch[0].doi,
+            confidence=round(best_conf, 3),
+            query_trail=trail,
+            notes="No published cycler matched the structural fingerprint, but a "
+            "source treated the SAME body set with a different declared "
+            f"architecture (working bodies): {names}. #972 F7: a different-"
+            "architecture object at a treated system goes to a human (not "
+            "certified novel)." + _scope_note(scope_excluded) + _footprint_note(off_footprint),
         )
 
     arch = _architecture_anchors(sig)
@@ -3441,7 +3532,8 @@ def check_literature(
             f"{sig.working_bodies}) is a published one at another system: {names}. "
             "Spec sec. 16.4 #875 (ii): candidate-novel with a MANDATORY attribution "
             "to that architecture's source, wording 'first computed at <system>'."
-            + _scope_note(scope_excluded),
+            + _scope_note(scope_excluded)
+            + _footprint_note(off_footprint),
         )
 
     return LiteratureCheckResult(
@@ -3452,7 +3544,9 @@ def check_literature(
         query_trail=trail,
         notes="No published cycler matched the structural fingerprint. "
         "NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence "
-        "of absence; the human + V0-V5 gauntlet still govern." + _scope_note(scope_excluded),
+        "of absence; the human + V0-V5 gauntlet still govern."
+        + _scope_note(scope_excluded)
+        + _footprint_note(off_footprint),
     )
 
 
@@ -3464,6 +3558,16 @@ def _scope_note(scope_excluded: dict[str, str]) -> str:
     return (
         f" Corpus anchors consulted but excluded by declared scope "
         f"({len(scope_excluded)}): {listed}."
+    )
+
+
+def _footprint_note(off_footprint: set[str]) -> str:
+    """Audit suffix counting corpus hits outside the structural footprint (#972 F4)."""
+    if not off_footprint:
+        return ""
+    return (
+        f" {len(off_footprint)} corpus anchor hit(s) outside the candidate's "
+        "primary/body-set footprint were not scored."
     )
 
 
@@ -3491,6 +3595,22 @@ def is_novelty_claimable(literature_check: dict[str, Any] | None) -> bool:
     status = literature_check.get("status") or literature_check.get("result")
     # Accept either the structured status or the legacy result mapping.
     return status not in ("published", "match", "inconclusive", None)
+
+
+FRESH_STATUSES: frozenset[str] = frozenset({"not-found", "known-architecture-new-system"})
+"""Statuses under which no published cycler matched (#972 F13). The second one
+still requires the #875 (ii) attribution; see :func:`check_literature`."""
+
+
+def is_literature_fresh(status: str | None) -> bool:
+    """Did the literature check find no published match? (#972 F13)
+
+    The ONE place a caller turns a literature status into "fresh". Callers must
+    not compare a status to the literal ``"not-found"``: that silently treats
+    ``"known-architecture-new-system"`` as a match. Necessary-not-sufficient for
+    novelty, like :func:`is_novelty_claimable`.
+    """
+    return status in FRESH_STATUSES
 
 
 def signature_from_review_entry(entry: Any) -> CandidateSignature:

@@ -43,6 +43,7 @@ from cyclerfinder.search.literature_check import (
     CandidateSignature,
     SearchResult,
     check_literature,
+    is_literature_fresh,
 )
 
 FAMILY_PATH = Path("/home/bruce/dev/cyclers/data/family_296_3d_em_11.jsonl")
@@ -212,7 +213,7 @@ def main() -> int:
         verdict_kind = (
             "likely-rediscovery"
             if result.status == "published"
-            else ("literature-fresh" if result.status == "not-found" else "inconclusive")
+            else ("literature-fresh" if is_literature_fresh(result.status) else "inconclusive")
         )
         out_records.append(
             {

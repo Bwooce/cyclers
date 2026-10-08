@@ -66,6 +66,7 @@ from cyclerfinder.search.discovery_campaign import (
     ClosureResult,
     RepeatedMoonTarget,
 )
+from cyclerfinder.search.literature_check import is_literature_fresh
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 QUEUE_PATH = REPO_ROOT / "data" / "gauntlet_queue.jsonl"
@@ -140,8 +141,8 @@ def run_v0(row: dict[str, Any]) -> tuple[bool, str]:
     """
     lit_status = row.get("literature_check_status")
     p_fp = row.get("ml_flagger_p_fp")
-    if lit_status != "not-found":
-        return False, f"V0 FAIL: literature_check_status={lit_status!r} (need 'not-found')"
+    if not is_literature_fresh(lit_status):
+        return False, f"V0 FAIL: literature_check_status={lit_status!r} (need a fresh status)"
     if p_fp is None or p_fp > V0_PFP_GATE:
         return False, f"V0 FAIL: ml_flagger_p_fp={p_fp} > {V0_PFP_GATE}"
     return True, f"V0 PASS: literature 'not-found', p_fp={p_fp:.3f} <= {V0_PFP_GATE}"

@@ -73,6 +73,7 @@ from cyclerfinder.search.five_tier_prioritizer import (  # noqa: E402
 from cyclerfinder.search.literature_check import (  # noqa: E402
     CandidateSignature,
     check_literature,
+    is_literature_fresh,
 )
 from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
@@ -489,7 +490,7 @@ def main() -> int:
     p_fp_silver_max = 0.75  # matches P_FP_SILVER_MAX (gauntlet V0 gate, #274)
     closure_pass = two_moon["residual_kms"] < closure_threshold
     independent_pass = cross_check_max_dr_km < 1.0  # < 1 km
-    lit_fresh = lit_result.status == "not-found"
+    lit_fresh = is_literature_fresh(lit_result.status)
     ml_silver_pass = p_fp <= p_fp_silver_max
     basin_gate_pass = (
         basin["best_gate_passing_residual_kms"] is not None

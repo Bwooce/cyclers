@@ -56,6 +56,7 @@ from cyclerfinder.search.literature_check import (
     CandidateSignature,
     SearchResult,
     check_literature,
+    is_literature_fresh,
 )
 from cyclerfinder.search.physical_sanity import flyby_is_useful
 from cyclerfinder.search.reachable_representatives import braik_ross_system
@@ -406,7 +407,10 @@ def main() -> None:
 
     p389_2_passes = bool(
         physical_pass
-        and lit_result["lit_check_status"] in ("not-found", "inconclusive")
+        and (
+            is_literature_fresh(lit_result["lit_check_status"])
+            or lit_result["lit_check_status"] == "inconclusive"
+        )
         and ml_result["ml_passes"]
     )
 

@@ -250,13 +250,20 @@ def main() -> None:
                 f"  BIFURCATION: {rec['label']} ({rec['primary']}-{rec['secondary']}) "
                 f"e_star={t.e_star} target_e={t.target_e}"
             )
-    lit = {"published": 0, "not-found": 0, "inconclusive": 0}
+    lit = {
+        "published": 0,
+        "not-found": 0,
+        "known-architecture-new-system": 0,
+        "inconclusive": 0,
+    }
     for rec in all_records:
         status = str(rec["literature_status"])
         lit[status] = lit.get(status, 0) + 1
     _print_progress(
         f"OVERALL literature breakdown: published={lit['published']} "
-        f"not-found={lit['not-found']} inconclusive={lit['inconclusive']}"
+        f"not-found={lit['not-found']} "
+        f"known-architecture-new-system={lit['known-architecture-new-system']} "
+        f"inconclusive={lit['inconclusive']}"
     )
 
     _print_progress(f"Campaign complete in {time.time() - t0:.1f}s")

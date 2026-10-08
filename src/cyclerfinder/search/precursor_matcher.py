@@ -72,6 +72,7 @@ from cyclerfinder.search.literature_check import (
     LiteratureCheckResult,
     SearchFn,
     check_literature,
+    is_literature_fresh,
 )
 from cyclerfinder.search.tisserand_mga_window import (
     MGAChainCandidate,
@@ -132,7 +133,7 @@ class PrecursorMatch:
         A fresh hit is a CANDIDATE for the V0-V5 gauntlet, NOT a novelty
         claim.
         """
-        return self.literature_check.status == "not-found"
+        return is_literature_fresh(self.literature_check.status)
 
     def quality_score(self) -> float:
         """Combined ranking score (lower is better).

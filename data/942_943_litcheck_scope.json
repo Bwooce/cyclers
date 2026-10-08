@@ -157,8 +157,10 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -170,8 +172,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -183,8 +188,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -196,8 +204,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -209,8 +220,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -222,8 +236,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -235,8 +252,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -248,8 +268,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -261,8 +284,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -274,8 +300,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -287,8 +316,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -300,8 +332,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -313,8 +348,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -326,8 +364,11 @@
     "E",
     "V"
    ],
-   "working_bodies": null,
-   "return_types": null,
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
    "status": "published",
    "confidence": 0.85,
    "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
@@ -339,11 +380,47 @@
     "E",
     "V"
    ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
+   "status": "published",
+   "confidence": 0.85,
+   "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
+   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+  },
+  {
+   "name": "jones-2017-vem-emevve-outbound",
+   "sequence": [
+    "E",
+    "M",
+    "E",
+    "V",
+    "V",
+    "E"
+   ],
    "working_bodies": null,
    "return_types": null,
    "status": "published",
    "confidence": 0.85,
-   "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
+   "citation": "Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 (NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
+   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+  },
+  {
+   "name": "liang-2024-cgcec-111-highperijove",
+   "sequence": [
+    "Callisto",
+    "Ganymede",
+    "Callisto",
+    "Europa",
+    "Callisto"
+   ],
+   "working_bodies": null,
+   "return_types": null,
+   "status": "published",
+   "confidence": 0.95,
+   "citation": "Liang, Yang, Li, Bai & Qin, JGCD Engineering Note 2024 (Callisto-Ganymede-Europa Triple Cyclers)",
    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
   }
  ],
@@ -361,10 +438,10 @@
     "FR",
     "SY"
    ],
-   "status": "not-found",
-   "confidence": 0.4,
-   "citation": null,
-   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski VEM cycler extensions (2014) [n-bodies]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 12 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   },
   {
    "name": "gc-2",
@@ -378,10 +455,10 @@
    "return_types": [
     "SY"
    ],
-   "status": "not-found",
-   "confidence": 0.4,
-   "citation": null,
-   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski VEM cycler extensions (2014) [n-bodies]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 12 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   },
   {
    "name": "ev-A",
@@ -396,10 +473,10 @@
     "FR",
     "GEN"
    ],
-   "status": "inconclusive",
-   "confidence": 0.475,
-   "citation": "Aldrin Earth-Mars cycler (E M cycler)",
-   "notes": "Cycler-adjacent literature surfaced but could not be confirmed as the same family; a human must adjudicate (not certified novel). Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski VEM cycler extensions (2014) [n-bodies]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   },
   {
    "name": "ev-B",
@@ -416,10 +493,10 @@
     "FR-3:2",
     "GEN"
    ],
-   "status": "inconclusive",
-   "confidence": 0.475,
-   "citation": "Aldrin Earth-Mars cycler (E M cycler)",
-   "notes": "Cycler-adjacent literature surfaced but could not be confirmed as the same family; a human must adjudicate (not certified novel). Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski VEM cycler extensions (2014) [n-bodies]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   },
   {
    "name": "ev-C",
@@ -433,9 +510,29 @@
     "GEN"
    ],
    "status": "inconclusive",
-   "confidence": 0.475,
-   "citation": "Aldrin Earth-Mars cycler (E M cycler)",
-   "notes": "Cycler-adjacent literature surfaced but could not be confirmed as the same family; a human must adjudicate (not certified novel). Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [working-bodies]; Hughes-Edelman-Longuski VEM cycler extensions (2014) [n-bodies]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
+   "confidence": 0.0,
+   "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970). #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [working-bodies]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
+  }
+ ],
+ "negatives": [
+  {
+   "name": "NEG jones n_bodies=2",
+   "sequence": [
+    "E",
+    "M",
+    "E",
+    "V",
+    "V",
+    "E"
+   ],
+   "working_bodies": null,
+   "return_types": null,
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (11): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [n-bodies]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies-unlabelled]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 10 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "passes": true
   }
  ]
 }

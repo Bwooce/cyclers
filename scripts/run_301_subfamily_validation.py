@@ -59,6 +59,7 @@ from cyclerfinder.search.literature_check import (
     CandidateSignature,
     SearchResult,
     check_literature,
+    is_literature_fresh,
 )
 
 INPUT_PATH = Path("/home/bruce/dev/cyclers/data/family_296_3d_subfamilies_299.jsonl")
@@ -344,7 +345,7 @@ def main() -> int:
             if lit_status == "published":
                 n_lit_published += 1
                 lit_fresh = False
-            elif lit_status == "not-found":
+            elif is_literature_fresh(lit_status):
                 n_lit_fresh += 1
                 lit_fresh = True
             else:

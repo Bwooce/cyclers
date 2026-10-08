@@ -54,6 +54,7 @@ from cyclerfinder.search.literature_check import (
     CandidateSignature,
     LiteratureCheckResult,
     SearchFn,
+    is_literature_fresh,
 )
 from cyclerfinder.search.literature_check import (
     check_literature as _check_literature,
@@ -316,7 +317,7 @@ def _is_novelty_claimable(literature_check: dict[str, Any]) -> bool:
     """
     if not literature_check or not literature_check.get("checked"):
         return False
-    return literature_check.get("status") == "not-found"
+    return is_literature_fresh(literature_check.get("status"))
 
 
 def search_low_thrust_cyclers(

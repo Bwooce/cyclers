@@ -36,7 +36,11 @@ import numpy as np
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.wsb as wsb
 import cyclerfinder.genome.bct_transfer as bct
-from cyclerfinder.search.literature_check import CandidateSignature, SearchResult
+from cyclerfinder.search.literature_check import (
+    CandidateSignature,
+    SearchResult,
+    is_literature_fresh,
+)
 
 BCTClassification = Literal["transfer", "quasi_cycler_candidate"]
 
@@ -213,4 +217,4 @@ def is_novel_emittable(
     NOT-emittable (a not-found we cannot trust).
     """
     result = bct.check_bct_novelty(sig, search=search_fn)
-    return result.status == "not-found"
+    return is_literature_fresh(result.status)

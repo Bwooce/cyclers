@@ -7,14 +7,21 @@ encounter, topology {"repeated-moon"}, and the two MECHANICAL labels:
   "one" (amendment A1: half the sec. 6.1 0.1-deg turn resolution);
 - return_types: per same-body leg of the cycle key: R<b>/1:1 -> FR, other R -> FR-n:m, H -> HR,
   L<b>><b> with flight time / body period in (1, 2) -> SY (Menning's symmetric return), else GEN.
-The catalogued H&M rows have no cycle key, so their labels are left undeclared.
+The catalogued H&M rows have no cycle key. #972 F14 (v2 pre-registration sec. 6): they are labelled
+from the Table 3 transcription as loaded by `hollister_menning_1970.load_table3` (the printed dates
+with that module's documented print-error date fixes): "two" if both planets turn >= 0.05 deg;
+return types from consecutive same-planet encounter intervals over the planet period (within 5 % of
+1 -> FR, in (1, 2) -> SY, else GEN; the closing repeat is not a return).
+#972 sec. 3: triple-cycler controls (Jones VEM, Liang CGE; unlabelled) and a mutated-tag negative.
 
 Usage: uv run python scripts/litcheck_942_943_scope.py
 """
 
 from __future__ import annotations
 
+import dataclasses
 import importlib.util
+import itertools
 import json
 from pathlib import Path
 from typing import Any
@@ -22,6 +29,8 @@ from typing import Any
 import numpy as np
 import yaml  # type: ignore[import-untyped]
 
+from cyclerfinder.search import literature_check as lc
+from cyclerfinder.search.hollister_menning_1970 import load_table3
 from cyclerfinder.search.literature_check import (
     CandidateSignature,
     check_literature,
@@ -93,6 +102,27 @@ def labels(cell: str, key: str, x_days: list[float]) -> tuple[Any, ...]:
                 rtypes.add("SY" if leg.nrev == 1 and 1.0 < ratio < 2.0 else "GEN")
     primary = "Jupiter" if cell in ("gc", "ge") else "Sun"
     return primary, seq, k, vinf, working, frozenset(rtypes)
+
+
+#: Mean sidereal periods (days) for the H&M interval labels.
+HM_PERIOD_DAYS = {"E": 365.25, "V": 224.70}
+
+
+def hm_labels(orbit: int) -> tuple[str, frozenset[str]]:
+    """(working_bodies, return_types) of H&M orbit ``orbit`` from Table 3 (#972 F14)."""
+    rows = load_table3()[orbit]
+    working = (
+        "two"
+        if all(any(r.theta_deg >= TURN_EPS_DEG for r in rows if r.planet == p) for p in "EV")
+        else "one"
+    )
+    rtypes: set[str] = set()
+    for a, b in itertools.pairwise(rows):
+        if a.planet != b.planet:
+            continue
+        ratio = (b.date - a.date) / HM_PERIOD_DAYS[a.planet]
+        rtypes.add("FR" if abs(ratio - 1.0) <= 0.05 else "SY" if 1.0 < ratio < 2.0 else "GEN")
+    return working, frozenset(rtypes)
 
 
 def run(name: str, sig: CandidateSignature) -> dict[str, Any]:
@@ -178,12 +208,14 @@ def main() -> None:
     controls.append(("R-O 2.5.1.+0", "em", ro["key"], ro["x_days"]))
     for name, cell, key, xd in controls:
         out["controls"].append(run(name, sig_of(cell, key, xd)))
-    # catalogued H&M rows: labels undeclared (no cycle key)
+    # catalogued H&M rows: labels from Table 3 (#972 F14)
     cat = yaml.safe_load((REPO / "data" / "catalogue.yaml").read_text())
     rows = cat if isinstance(cat, list) else cat.get("cyclers", [])
+    by_id = {str(r.get("id", "")): r for r in rows}
     for r in rows:
         if str(r.get("id", "")).startswith("hollister-menning-1970-ev-orbit-"):
             enc = r.get("vinf_kms_at_encounters") or []
+            working, rtypes = hm_labels(int(str(r["id"]).rsplit("-", 1)[1]))
             sig = CandidateSignature(
                 primary="Sun",
                 sequence=tuple(str(e["body"]) for e in enc) or ("E", "V"),
@@ -192,8 +224,39 @@ def main() -> None:
                     float(e["vinf_kms"]) for e in enc if e.get("vinf_kms") is not None
                 ),
                 topology_label=frozenset({"repeated-moon"}),
+                working_bodies=working,
+                return_types=rtypes,
             )
             out["controls"].append(run(r["id"], sig))
+    # triple-cycler controls (#972 sec. 3), unlabelled
+    triples: dict[str, CandidateSignature] = {}
+    for rid, primary in (
+        ("jones-2017-vem-emevve-outbound", "Sun"),
+        ("liang-2024-cgcec-111-highperijove", "Jupiter"),
+    ):
+        r = by_id[rid]
+        triples[rid] = CandidateSignature(
+            primary=primary,
+            sequence=tuple(str(r["sequence_canonical"]).split("-")),
+            period_k=(r.get("period") or {}).get("k"),
+            vinf_per_encounter_kms=tuple(
+                float(e["vinf_kms"]) for e in r.get("vinf_kms_at_encounters") or []
+            ),
+            topology_label=frozenset({"repeated-moon"}),
+        )
+        out["controls"].append(run(rid, triples[rid]))
+    # mutated-tag negative: Jones tagged n_bodies 2 must not match Jones
+    original = lc.KNOWN_CORPUS
+    try:
+        lc.KNOWN_CORPUS = tuple(
+            dataclasses.replace(a, n_bodies_scope=2) if a.name.startswith("Jones et al. VEM") else a
+            for a in original
+        )
+        neg = run("NEG jones n_bodies=2", triples["jones-2017-vem-emevve-outbound"])
+    finally:
+        lc.KNOWN_CORPUS = original
+    neg["passes"] = "Jones" not in str(neg["citation"])
+    out["negatives"] = [neg]
     for name, path, pick in (
         ("gc-1", gc, {"Ganymede": 2.397}),
         ("gc-2", gc, {"Ganymede": 3.617}),
@@ -205,6 +268,7 @@ def main() -> None:
     (REPO / "data" / "942_943_litcheck_scope.json").write_text(json.dumps(out, indent=1))
     bad = [c["name"] for c in out["controls"] if c["status"] != "published"]
     print("CONTROLS NOT PUBLISHED:", bad if bad else "none")
+    print("NEGATIVES FAILED:", [n["name"] for n in out["negatives"] if not n["passes"]] or "none")
 
 
 if __name__ == "__main__":
