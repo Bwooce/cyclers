@@ -69,3 +69,21 @@ lane's `JovianRailsCache(JovianEphemeris)` (registry GMs): < 1e-2 km, 1e-7 km/s.
 - AMENDMENT 1: the seed periapsis nodes are unclamped (`SEED_CAP_KM = 1e12`, as in #1043). This is a
   seed construction fix only; criteria unchanged. The rung-(b) GanEur#316 runs were not affected:
   their periapses lie inside the clamp.
+
+### 4.1 AMENDMENT 2 (solver only; criteria unchanged; before the counted runs)
+
+- With amendment 1 both chains start at sigma = 0.02 with seed defects that scale with sigma
+  (GanCal#1 up to 3,464 km and 0.0085 km/s; gc-1 up to 1,867 km and 0.013 km/s). But the damped
+  line-search Newton crawls on both. A full step RAISES the residual: GanCal#1 4.0e3 -> 6.6e5 at a
+  full step and 5.8e3 at 0.1; gc-1 2.4e3 -> 1.1e4 at a full step and 2.4e3 at 0.25.
+- What drives it:
+  - GanCal#1: its weak flybys (G2 4.0 deg, Callisto 1.0 deg; patched-conic periapses 28,000 and
+    79,000 km) make the Newton step ask for node moves larger than the nodes' moon distances.
+  - gc-1: the steps ask for epoch moves of 500-840 s at its Callisto nodes, on either side of the 1:1
+    full-revolution return.
+  - Both objects carry a FULL-revolution resonant leg (2:1 and 1:1); GanEur#316, which converged
+    directly, has a half-revolution one.
+- AMENDMENT 2: Levenberg-Marquardt (scipy `least_squares` method lm, analytic Jacobian, checkpointed
+  so that a call can stop and the next resume), then the damped-Newton polish.
+- A diagnostic LM run on gc-1 at sigma = 0.02 took the residual from 2.4e3 to 0.17 in 30 evaluations
+  (410 s at machine load 42). The continuation reuses that state.
