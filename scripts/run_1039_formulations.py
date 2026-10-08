@@ -48,7 +48,7 @@ def main() -> None:
         n_points=1,
     )
     ap = argparse.ArgumentParser()
-    ap.add_argument("--form", choices=["b"], required=True)
+    ap.add_argument("--form", choices=["b", "bp"], required=True)
     ap.add_argument("--target", choices=["eggie", "ganeur316"], required=True)
     ap.add_argument("--stage", choices=["sigma", "down", "ias15"], required=True)
     args = ap.parse_args()
@@ -57,7 +57,7 @@ def main() -> None:
     if args.target == "ganeur316":  # #968 rung (b), one cycle, jup365 (amendments 8-12 otherwise)
         rb = _load("run_968_rungb", ROOT / "scripts" / "run_968_rungb.py")
         rb.OUT = out
-        rb.END_MODE = "direction"
+        rb.END_MODE = "direction" if args.form == "b" else "direction_seedmag"
         seed = out / "seed_chain.json"
         if not seed.exists():
             shutil.copy(ROOT / "data" / "968_rungb" / "seed_chain.json", seed)
@@ -67,7 +67,7 @@ def main() -> None:
     w.OUT = out
     w.Q.OUT = out
     w.Q.R.OUT = out
-    w.Q.R.END_MODE = "direction"
+    w.Q.R.END_MODE = "direction" if args.form == "b" else "direction_seedmag"
     seed = out / "pc_chain_n1.json"
     if not seed.exists():
         shutil.copy(ROOT / "data" / "1043_eggie" / "pc_chain_n1.json", seed)

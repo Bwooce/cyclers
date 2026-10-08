@@ -132,3 +132,33 @@ the patched-conic values). Its exact definition is written before it runs.
   under vector pins at 0.62, and that node is not an end node.
 - Stop at about 14:05 AEDT either way. (a') is attempted only with time left, and with the EGGIE
   control first.
+
+### 5.5 Result of (b') on jup365 GanEur#316, one cycle (`data/1039_bp_ganeur316/sigma_n1.json`)
+
+- Start at sigma = 0.02: V_inf 3.1903 / 3.1911 / 3.1955 / 3.7757 / 3.1750 km/s against the chain's
+  3.1982 / 3.1990 / 3.2011 / 3.7882 / 3.1829. The end magnitude gap is now held at the seed's
+  0.0153 km/s.
+- The continuation converged at the floors up to sigma = 0.333, with one noise-floor-limited
+  intermediate point.
+- STOP at sigma = 0.367: the INTERIOR Europa flyby (node 4) is at 14.2 km altitude, under the scaled
+  floor of 36.7 km.
+- The V_inf slide is the same as under (b) (G 3.19 -> 3.02, E 3.78 -> 3.53 by sigma 0.333), so it was
+  not caused by (b)'s row 3.
+- Criterion 7 (ii) going down: sigma = 0.01 stalls at the integration-noise floor (dr 1.25e-3 km,
+  dv 1.7e-8 km/s, just above the 1e-3 km floor), so as registered (ii) FAILS. Descriptively, at that
+  point max |dV_inf| against the chain is 0.0069 km/s, inside 0.01.
+- Reading: under all three end treatments (vector pins, (b), (b')) the same interior Europa flyby of
+  GanEur#316 runs into Europa before full mass (sigma 0.62, 0.38, 0.37). The ends are therefore not
+  the cause for this object. The cause is INFERRED to be the interior Europa flyby itself: its turn
+  (7.2 deg at 3.79 km/s in the patched conic) is not sustainable in continuous gravity as the
+  surrounding legs shift. Rung (b) stays NOT ACHIEVED. The jup365 lane is still unvalidated by a
+  published control.
+
+### 5.6 (a') not run: no valid positive control for an N = 3 chain
+
+- (a') (an N = 3 chain with LM or an end-pin homotopy) needs the same positive control, a 3-cycle
+  EGGIE reaching sigma = 1. #1041 showed that a 3-cycle EGGIE does not exist even in the patched conic
+  (the gate fails at cycle 2), so no control exists for (a').
+- For GanEur#316 the failing flyby is interior in every cycle, so diluting the end effect with N = 3
+  cannot move it.
+- (a') was therefore not run, and the remaining time box is returned.

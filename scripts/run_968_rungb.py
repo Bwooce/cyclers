@@ -219,7 +219,7 @@ def asymptote(mu: float, r: Arr, v: Arr, which: str) -> Arr:
     return -vinf * (math.cos(nu) * p_hat - math.sin(nu) * q_hat)
 
 
-END_MODE = "vector"  # "vector": #968 amendment 12; "direction": #1039 formulation (b)
+END_MODE = "vector"  # "vector": #968 am. 12; "direction": #1039 (b); "direction_seedmag": (b')
 
 
 def _perp(u: Arr) -> tuple[Arr, Arr]:
@@ -241,6 +241,12 @@ def end_rows_direction(c: Chain, z: Arr) -> tuple[Arr, Arr]:
     p_in, p_out = _perp(u_in), _perp(u_out)
     mu0, mu1 = c.mus[c.moons[0]], c.mus[c.moons[k_last]]
     i0, i1 = 7 * k_last, 7 * k_last + 3
+    # (b'): hold the magnitude difference at the seed's (0 for a closed chain such as the EGGIE).
+    dmag0 = (
+        float(np.linalg.norm(c.vin_first) - np.linalg.norm(c.vout_last))
+        if END_MODE == "direction_seedmag"
+        else 0.0
+    )
 
     def f(zz: Arr) -> Arr:
         vi = asymptote(mu0, zz[0:3], zz[3:6], "in")
@@ -252,7 +258,7 @@ def end_rows_direction(c: Chain, z: Arr) -> tuple[Arr, Arr]:
                 float(p_in[1] @ ui),
                 float(p_out[0] @ uo),
                 float(p_out[1] @ uo),
-                float(np.linalg.norm(vi) - np.linalg.norm(vo)),
+                float(np.linalg.norm(vi) - np.linalg.norm(vo)) - dmag0,
                 (float(zz[7 * k_last + 6] - zz[6]) - span0) * 1e-3,
             ]
         )
@@ -271,7 +277,7 @@ def end_rows_direction(c: Chain, z: Arr) -> tuple[Arr, Arr]:
 
 def end_rows(c: Chain, z: Arr, nd: list[tuple[Arr, Arr, float, Arr]]) -> tuple[Arr, Arr]:
     """Amendment 12: inbound asymptote at node 1, outbound at node M (6 rows, weight 1e3)."""
-    if END_MODE == "direction":
+    if END_MODE in ("direction", "direction_seedmag"):
         return end_rows_direction(c, z)
     n = 7 * c.m
     res = np.zeros(6)
