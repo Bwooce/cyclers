@@ -1991,7 +1991,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   from technique x case correlations between the new papers and the held corpus, as `#938` sec. 3a
   did. Analysis only: no code, no catalogue edit. Output:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` and a technique x case matrix delta CSV.
-- `#972` — registered and DISPATCHED 2026-10-07 (owner of the work: twobody-gen2-opus; from the Fable
+- `#972` — registered and DISPATCHED 2026-10-07; v2 COMMITTED 2026-10-08 (`5fc5431d`), re-review pending
+  (owner of the work: twobody-gen2-opus; from the Fable
   review of `2e16b56b`). **`literature_check` DECLARED-SCOPE GATE REWORK.** Blocker: a
   `candidate-novel` row cannot sit on an inconclusive gate (spec 16.5). Defects: (1) known-
   architecture-at-a-new-system false positive when a same-system anchor is dropped for another
@@ -2007,7 +2008,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   grounding fix is proposed; its cited AAS 14-822 cannot be found. Notes:
   `docs/notes/2026-10-07-942-943-literature-gate-scope-preregistration.md` and the v2 pre-registration
   `docs/notes/2026-10-07-972-literature-gate-v2-preregistration.md` (`fed50171`, `5e4bdc18`).
-  **v2 RESULT 2026-10-08 (twobody-gen2-opus; coded; commit pending, after the lead's ruling (A)):** all
+  **v2 RESULT 2026-10-08 (twobody-gen2-opus; COMMITTED as `5fc5431d`, v2 note results sec. 8 in
+  `5d2cab04`; RE-REVIEW PENDING, twobody-gen2-opus):** all
   26 controls published (9 members, 15 H&M rows labelled from Table 3, Jones VEM, Liang CGE).
   Candidates as pre-registered: gc-1 INCONCLUSIVE (R-S G-C), gc-2 INCONCLUSIVE (R-S G-C), ev-A
   NOT-FOUND, ev-B NOT-FOUND, ev-C INCONCLUSIVE (H&M). 18 pinned tests. F13 had 12 literal sites, not 7;
