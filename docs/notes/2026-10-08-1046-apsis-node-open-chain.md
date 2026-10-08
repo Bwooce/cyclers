@@ -85,4 +85,25 @@ sigma JSON and the LM checkpoint).
 
 ## 6. Results
 
-(pending)
+### 6.1 Control: one-cycle EGGIE with five apsis nodes (`data/1046_eggie/`): PASS
+
+- Sigma 0.02 to 1 in 23 points, every point at the lane floors (no noise-floor point). No
+  unscheduled Hill-radius pass at sigma = 1.
+- Full mass: V_inf 9.0323 / 7.0457 / 7.0411 / 7.8799 / 9.0323 km/s. Every flyby node equals the #1039
+  (b) result (`data/1039_b_eggie/sigma_n1.json`) to < 1e-6 km/s in V_inf and < 1e-3 km in r_p. Same
+  orbit, as expected. Altitudes 1,082 / 1,028 / 1,764 / 7,726 / 1,664 km (floor 25 km).
+- Identity going down: sigma 0.01 max |dV_inf| 0.0044, sigma 0.005 0.0023 km/s, both at the floors.
+  PASS.
+- IAS15 re-fly of every half-arc at sigma = 1: max 1.3e-7 km. PASS.
+- Wall time 6.4 min for the whole control (machine load 8-70).
+
+### 6.2 AMENDMENT 1 (solver bookkeeping only; before the real-ephemeris calls that follow it)
+
+- The #1044 LM wrapper checkpoints the LAST evaluated point. That can be a rejected LM trial, so a
+  call stopped by `timeout 470` resumes from a worse point. #1046 uses its own copy of the wrapper,
+  which keeps the BEST evaluated point (`_install_lm_best`). Criteria and everything else are
+  unchanged. The first GanCal#1 call (16:10-16:18) and the first gc-1 call (16:19-16:27) ran before
+  this change. Their final checkpoints were each that call's best point, so nothing is lost.
+- Cost under this load (40-70): a residual-plus-Jacobian evaluation takes about 17 s for GanCal#1
+  and about 110 s for gc-1. Every arc that starts at a flyby node takes 15-35 s at sigma 0.02, while
+  arcs from an apsis node take 0.1 s. So gc-1 gets about 4 LM evaluations per call.

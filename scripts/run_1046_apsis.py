@@ -159,6 +159,59 @@ def install(rb: Any) -> None:
     rb.build, rb.scale_offsets, rb.describe = build, scale_offsets, describe
 
 
+def _install_lm_best(rb: Any) -> None:
+    """#1044 amendment 2 (LM, analytic Jacobian, then the damped-Newton polish), with #1046
+    AMENDMENT 1: the checkpoint keeps the BEST evaluated point, not the last (the last can be a
+    rejected LM trial, so a resumed call would restart from a worse point)."""
+    from scipy.optimize import least_squares
+
+    newton0 = rb.newton
+    ckpt = rb.OUT / "lm_checkpoint.npy"
+
+    def newton_lm(c: Any, z: Any, iters: int, tag: str) -> tuple[Any, dict[str, Any]]:
+        if ckpt.exists():
+            zc = np.load(ckpt)
+            if zc.shape == z.shape and float(np.max(np.abs(zc[6::7] - z[6::7]))) < 3600.0:
+                z = zc
+        cache: dict[str, Any] = {"best": np.inf}
+
+        def fun(zz: Any) -> Any:
+            try:
+                r, j, info = rb.residual_and_jac(c, zz)
+            except RuntimeError:
+                return np.full(7 * c.m, 1e6)
+            cache["z"], cache["j"] = zz.copy(), j
+            nr = float(np.linalg.norm(r))
+            if nr < cache["best"]:
+                cache["best"] = nr
+                np.save(ckpt, zz)
+            rb._log(f"{tag} lm |r| {nr:.3e} dr {max(info['dr']):.2e} dv {max(info['dv']):.2e}")
+            return r
+
+        def jac(zz: Any) -> Any:
+            if "z" in cache and np.array_equal(cache["z"], zz):
+                return cache["j"]
+            return rb.residual_and_jac(c, zz)[1]
+
+        sol = least_squares(
+            fun,
+            z,
+            jac=jac,
+            method="lm",
+            x_scale="jac",
+            max_nfev=25,
+            xtol=1e-15,
+            ftol=1e-15,
+            gtol=1e-15,
+        )
+        zf, info = newton0(c, np.asarray(sol.x), 6, tag + " polish")
+        if rb.converged(info) or (max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6):
+            ckpt.unlink(missing_ok=True)
+        return zf, info
+
+    rb.newton = newton_lm
+
+
 def main() -> None:
     preflight_search(
         task_no=1046,
@@ -174,7 +227,7 @@ def main() -> None:
     )
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=["eggie", "gancal1", "gc1"], required=True)
-    ap.add_argument("--stage", choices=["build", "sigma", "down", "ias15"], required=True)
+    ap.add_argument("--stage", choices=["build", "sigma", "down", "ias15", "diag"], required=True)
     args = ap.parse_args()
     out = ROOT / "data" / f"1046_{args.target}"
     out.mkdir(parents=True, exist_ok=True)
@@ -201,7 +254,7 @@ def main() -> None:
         seed = out / "seed_chain.json"
         if not seed.exists():
             shutil.copy(ROOT / "data" / f"1044_{args.target}" / "seed_chain.json", seed)
-        w._install_lm(rb)
+        _install_lm_best(rb)  # amendment 1
         ias15 = rb.stage_ias15
         install(rb)
     if args.stage == "build":
@@ -216,7 +269,40 @@ def main() -> None:
                 f"build: seed at sigma {sg}: |r| {np.linalg.norm(r):.3e} dr {max(inf['dr']):.3e}"
             )
         return
+    if args.stage == "diag":
+        diag(rb, out)
+        return
     {"sigma": rb.stage_sigma, "down": rb.stage_down, "ias15": ias15}[args.stage](1)
+
+
+def diag(rb: Any, out: Path) -> None:
+    """Residual structure at the LM checkpoint (sigma 0.02): per-row-group norms, the smallest
+    singular values of the column-scaled Jacobian and where the weakest left vector lives."""
+    c = rb.build(1)
+    c.set_sigma(0.02)
+    z = np.load(out / "lm_checkpoint.npy")
+    r, j, info = rb.residual_and_jac(c, z)
+    nleg = c.m - 1
+    groups = {f"leg{k} {c.moons[k]}-{c.moons[k + 1]}": r[6 * k : 6 * k + 6] for k in range(nleg)}
+    groups.update(
+        {f"gauge{k} {c.moons[k]}": r[6 * nleg + k : 6 * nleg + k + 1] for k in range(c.m)}
+    )
+    groups["ends"] = r[6 * nleg + c.m :]
+    d = np.linalg.norm(j, axis=0)
+    d[d == 0.0] = 1.0
+    u, sv, vt = np.linalg.svd(j / d)
+    rep: dict[str, Any] = {
+        "residual_norm": float(np.linalg.norm(r)),
+        "groups": {k: float(np.linalg.norm(v)) for k, v in groups.items()},
+        "sv_smallest": sv[-5:].tolist(),
+        "weak_left_top_rows": [int(i) for i in np.argsort(-np.abs(u[:, -1]))[:6]],
+        "weak_right_top_cols": [int(i) for i in np.argsort(-np.abs(vt[-1]))[:6]],
+        "residual_on_weak_left": float(abs(u[:, -1] @ r)),
+        "dr": info["dr"],
+        "dv": info["dv"],
+    }
+    (out / "diag.json").write_text(json.dumps(rep, indent=1))
+    rb._log(f"diag: {json.dumps(rep)}")
 
 
 if __name__ == "__main__":
