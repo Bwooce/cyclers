@@ -2255,7 +2255,11 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   CI free the machine. **EARTH-MOON EXTERIOR FRANZ-RUSSELL / RESTREPO-RUSSELL
   COMPLEMENT GRID SEARCH (ASYMMETRIC, EARTH-CIRCULATING).** The databases' exclusions are recorded
   so that absence from them is not misread as novelty. Source:
-  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
+  `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4. **RUNNING 2026-10-08:** the first
+  formulation FAILED its positive control and was rejected (`d33eb6a4`; basin width 1e-3 against a grid
+  step of 0.27). Method (1), multiple shooting from p:q skeletons, PASSES the control (`ada7b15a`: both
+  asymmetric Casoliva rows recovered; 47 of 47 asymmetric solutions are those rows or their mirrors).
+  The full grid is running, then method (2).
 - `#1001` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (census, inside
   `#905` deduplication). **CENSUS: STABILITY OF CASOLIVA'S CLASS-2 L1-HOMOCLINIC-SHADOWING ORBITS;
   BROUCKE E1/F AND KUMAR-MORENO FIG. 12/13 FAMILIES AS CYCLERS; LEIVA-BRIOZZO ATLAS LABEL MAPPING.**
@@ -2622,6 +2626,16 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (b').** Either it validates the jup365 lane, or it establishes that the chain tool's patched-conic
   real-ephemeris passes do not survive continuous gravity at these altitudes; in that case the finding
   goes into every Jovian row's `data_gaps`.
+  **FINAL 2026-10-08 (pre-registration `8cc2c759`, amendments `e3ea9119` and `039d12ca`, result
+  `f83eac79`; `#1042` patch refresh 2 `d67b24a0`): NO VERDICT on GanCal#1@2013 or on gc-1 (epoch e2).** Both
+  chain-tool seed reconstructions pass (GanCal#1 ratio 0.99170, minimum altitude 130.47 km; gc-1 ratio
+  0.75512, minimum altitude 1,675 km), but neither starts at sigma 0.02 on jup365: gc-1's
+  Levenberg-Marquardt stalls at a non-root stationary point on the velocity rows of its 16.7-d Callisto
+  full-rev return; GanCal#1's Newton steps exceed the node distances around its 2:1 full-rev return.
+  Reading (INFERRED): the periapsis-node / mid-leg-match formulation is ill-conditioned across a
+  full-revolution return; the chain tool shoots such legs separately. The jup365 lane stays
+  unvalidated; gc-1's real-ephemeris continuous-gravity standing is UNDECIDED (untested, not failed).
+  Follow-on: `#1046`.
 - `#1045` — registered 2026-10-08 (from the `#972` re-review; DISPATCHED to run AFTER the `#942`/`#943`
   rows are written). **`literature_check` GATE v3:** fix the two MAJORs (the Hughes mga-tour anchor's
   wrong-source "published 0.85" on unlabelled Sun E-V signatures; F7's body-set equality, which turns
@@ -2629,6 +2643,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   in the H&M scope; the F13 ratchet gaps; two nits); pinned tests; controls and candidates re-run with
   identical statuses expected; then a read-only review. Gates `#1025` and `#1036` (v2 is not used on
   them).
+- `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
+  THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
+  V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
