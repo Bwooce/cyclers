@@ -2692,6 +2692,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   in the H&M scope; the F13 ratchet gaps; two nits); pinned tests; controls and candidates re-run with
   identical statuses expected; then a read-only review. Gates `#1025` and `#1036` (v2 is not used on
   them).
+  **PROGRESS 2026-10-08 (twobody-gen2-opus; pre-registration `ed347550`, written before the code; code
+  UNCOMMITTED pending the full suite):** fixes G1 (tour-only anchors capped below "published" for
+  untopologied signatures), G2 (F7 on body-set INCLUSION), G3 (a missing review-entry primary ->
+  inconclusive), G4 ("HR" added to the H&M scope, Menning ch. 2), G5 (a wider F13 ratchet), G6 / G7
+  (nits); 7 new pinned tests; 26 of 26 controls published; the five candidates IDENTICAL to v2 (scope
+  JSON byte-unchanged). Catalogue probe, v2 against v3 over 790 signatures: 17 change, all published ->
+  inconclusive with no topology (the 15 H&M rows, and ev-A / ev-C, which v2 had cited to Hughes: exactly
+  MAJOR 1); 0 toward not-found or known-architecture-new-system. Full suite running (the lead watches the
+  logs); then mypy, the commit and the read-only review.
 - `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
