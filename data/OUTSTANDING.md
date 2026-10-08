@@ -2708,7 +2708,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   THE `#1000` FAMILIES A, B AND D AND THE NINE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
   (computed members of Casoliva's Class 1 p-q resonant class). The explicit row-by-row collision table
   (dispatched) comes first.
-- `#1048` — registered 2026-10-08 (from `#1000`; BACKLOG). **`#1000` COVERAGE GAPS:** seeds for 3:1, 7:2
+- `#1048` — registered 2026-10-08 (from `#1000`); **DISPATCHED 2026-10-08 to earthmoon-opus** (3:1, 7:2 and
+  4:1 seeds with vaquero-31-c254 as the control; the continuation cap lifted; the 54 % impacts), then
+  the `#1049` patch preparation. **`#1000` COVERAGE GAPS:** seeds for 3:1, 7:2
   and 4:1 (vaquero-31-c254 exists, but its Kepler skeleton never reaches the Moon), the 40-step
   continuation cap, and the 54 % of solves that impact a primary.
 - `#1049` — registered 2026-10-08 (from `#1000`; BACKLOG, small; catalogue evidence). **casoliva-7-3b AND
@@ -2719,6 +2721,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
 - `#1050` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1000`). **CONTINUE `#1000`'s
   FAMILIES A AND D UPWARD IN C, PAST THE 40-STEP CAP,** to test their connection to Liang 2017's 5:2 and
   7:3 polygonal-like orbits (C 3.10 / 3.19, no lunar pass).
+  **✓ DONE 2026-10-08 (earthmoon-opus; pre-registration `f12aa4ff`, results `a9ac9658`; note
+  `docs/notes/2026-10-08-1050-continue-a-d-toward-liang-2017.md`): DOES NOT CONNECT under the
+  pre-registered rule, for A or D.** A (5:2 prograde) was continued from C 2.5804 to 3.09677 (164 steps)
+  and stopped at a probable fold 0.0028 below Liang's C; its nearest perigee has (a, e, omega) = (0.592,
+  0.394, 1.432) against Liang's (0.562, 0.466, 1.363): a +5 % and e -15 % against the 2 % rule, so no
+  match. D does not continue past C 2.56 (0.63 below Liang's). Also found: Liang's printed (a, e, omega)
+  states reproduce the printed C but are NOT CR3BP periodic orbits (frozen-torus / averaged states), so
+  a literal match was unlikely. Follow-on: `#1051`.
+- `#1051` — registered 2026-10-08 (from `#1050`; BACKLOG). **PSEUDO-ARCLENGTH CONTINUATION OF `#1000`
+  FAMILY A PAST ITS FOLD NEAR C 3.097**, to decide whether its other branch reaches a Liang 2017-type
+  orbit.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
