@@ -73,3 +73,44 @@ literature status.
     #972 re-run were 133.4 s and 111.4 s.
 - ruff clean; mypy src tests clean (939 files).
 - Next: a read-only review of the v3 diff.
+
+## 5. Read-only review verdict (fresh Fable reviewer, 2026-10-08)
+
+**VERDICT: FAIL (narrow).** One MAJOR remains: G1 does not close finding 1 on the Jupiter pipeline.
+- The 26 controls, the negative and the five candidates are unchanged (independently re-run;
+  the JSON is byte-identical), so the row results stand.
+- G1-G5 and G7 match the pre-registered rule text; the G1 problem is in the RULE, not the code.
+- Probes, v2 against v3:
+  - unlabelled: 790 signatures, reproducing the 17 changes;
+  - labelled: 1364 signatures (Sun, Jupiter and Saturn rows, both topologies, working bodies "one"
+    and "two"): 34 changes, all published -> inconclusive via G1, 0 toward fresh.
+
+Findings (summarised; the full text is the reviewer's hand-back of 2026-10-08):
+1. MAJOR. The Niehoff anchor is tagged {"mga-tour", "pump-tour", "resonant"}, so it is not
+   "tour-only" and the cap never applies.
+   - Jupiter (Ganymede, Callisto, Ganymede) untopologied, period 3 (the review-queue gancal shape)
+     gives "published" 0.95 citing Niehoff, "Touring the Galilean Satellites". The same holds for
+     (Europa, Ganymede), (Io, Europa) and the 4-moon sets.
+   - Fix: cap anchors with any tour label and NO cycler-class label, or drop "resonant" from Niehoff.
+     Pin a Jupiter probe.
+   - Known limit, outside G1: Uranus (Umbriel, Titania) untopologied gives published via Pergola et
+     al. (halo-tagged), and Pluto (Charon, Nix) via Howett (no topology label).
+2. MINOR. The cap value shadows F7. Sun (E, V) untopologied gives inconclusive 0.69 citing the
+   Hughes hit; H&M appears only in the excluded-anchor list. Fix: when the best hit is capped, also
+   name the F7 anchors.
+3. MINOR. G6 is incomplete: `_declared_scope_exclusions`'s first docstring line still says "or None".
+4. MINOR. G5 evasions remain:
+   - an alias (`st = r.status; st in FRESH`), the realistic one;
+   - an Attribute set or constant (`mod.OTHER_SET`, `consts.NOT_FOUND`);
+   - a dict, a walrus, `.startswith('not-')`.
+   Extended to tests/, the rule would flag 11 legitimate literal asserts in 7 files (report only).
+5. NIT. G4 (HR) is faithful and has a positive control: the HV form of Hollister 1H
+   (k2|RE/1:1|LE>V/0s|HV/1,0,a|HV/3,1,a|LV>E/0s) reads not-found under v2 and published via H&M
+   under v3. So v2 gave a false not-found there. 3 of the 6 HR-bearing gauntlet candidates flip
+   not-found -> published; none is a writeback candidate. Fix: the anchor comment should say Menning
+   p.42 names HR variations but Table 3 computes none.
+6. NIT. G2: `seq_set <= a.body_set` is vacuously true for an empty sequence. Fix: add `seq_set and`.
+7. G3: no caller relies on the old "Sun" default.
+8. Candidates confirmed: gc-1, gc-2, ev-C inconclusive; ev-A, ev-B not-found; controls 26/26.
+
+Disposition: lead's ruling.
