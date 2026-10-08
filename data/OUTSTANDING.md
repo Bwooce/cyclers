@@ -2467,8 +2467,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
   `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
   the real-ephemeris step decides.
-- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; GATED on `#1045` (the v3 gate; v2 is NOT
-  used here) for the literature step
+- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`); the literature step
   and on the chain tool for rung (d)). **ALL 42 CLEAN TWO-WORKING-BODY MEMBERS OF `#973`** (Ganymede-
   Callisto 20: k4 10, k5 6, k6 4; Earth-Venus 22: k4 11, k5 11): the literature step (after `#972`),
   real-ephemeris rung (d) with the chain tool (jup365 for gc, 10 cycles, 5 epochs; the `#942` ev
@@ -2561,7 +2560,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `run_432`, `run_435`, `campaign_468`, `verify_327`, `branch_c32`, `gauntlet_run_274`,
   `literature_check_review_queue` — so that Russell-Strange rediscoveries get their citation back under
   F14. Until then an unlabelled rediscovery reads "inconclusive, naming R-S" (the safe direction).
-- `#1036` — registered 2026-10-08 (from `#998`; GATED on `#1045` (the v3 gate; v2 is NOT used here)). **`#998` LITERATURE STEP AND ADJUDICATION
+- `#1036` — registered 2026-10-08 (from `#998`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **`#998` LITERATURE STEP AND ADJUDICATION
   OF THE 224 "STRONG" PLUTO-CHARON CANDIDATES.** Architecture: Russell-Strange one-working-node at a new
   system, a `#875` (ii) candidate. Needs the `#1024` barycentric model or an n-body check before any row.
 - `#1037` — registered 2026-10-08 (from `#998`; BACKLOG). **ADD STYX AND KERBEROS TO THE SATELLITE
@@ -2685,7 +2684,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   full-revolution return; the chain tool shoots such legs separately. The jup365 lane stays
   unvalidated; gc-1's real-ephemeris continuous-gravity standing is UNDECIDED (untested, not failed).
   Follow-on: `#1046`.
-- `#1045` — registered 2026-10-08 (from the `#972` re-review; DISPATCHED to run AFTER the `#942`/`#943`
+- `#1045` — ✓ DONE 2026-10-08 (A1 committed `cb3020f2`; read-only review PASS-WITH-NITS). Registered 2026-10-08
+  (from the `#972` re-review; dispatched to run after the `#942`/`#943`
   rows are written). **`literature_check` GATE v3:** fix the two MAJORs (the Hughes mga-tour anchor's
   wrong-source "published 0.85" on unlabelled Sun E-V signatures; F7's body-set equality, which turns
   strict-subset shapes into a false not-found) and the minors (F4 against a mis-stamped primary; "HR"
@@ -2719,10 +2719,17 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   gc-1 / gc-2 that v2 had cited to tour papers: the G1' fix). Jupiter (G, C, G) untopologied now reads
   inconclusive, not Niehoff. New pinned tests pass; ruff and mypy clean. Full suite queued behind a CI
   pytest on the runner (the lead watches the logs); then the commit and the read-only review.
+  **A1 DONE 2026-10-08:** committed `cb3020f2` (pre-registration `613feba9`; v3 note sec. 7: the suites
+  exited 0 and 1, the 1 being only the 73c load timeout, which passes alone). Read-only review
+  PASS-WITH-NITS (v3 note sec. 8, commit pending): the Niehoff MAJOR is closed (568 untopologied subset
+  signatures, no "published" cites a tour source; all 24 capped anchors are non-cycler sources; a
+  2,370-signature probe changes only in the no-topology half; the {repeated-moon} rows are identical
+  across v2, v3 and A1; candidates md5-identical). The review's remaining findings widen `#1052`. **The v3
+  gate is usable for `#1025`, `#1036` and `#1047` with LABELLED, TOPOLOGIED signatures only.**
 - `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
-- `#1047` — registered 2026-10-08 (from `#1000`; GATED on `#1045`). **LITERATURE STEP AND ADJUDICATION FOR
+- `#1047` — registered 2026-10-08 (from `#1000`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **LITERATURE STEP AND ADJUDICATION FOR
   THE `#1000` FAMILIES A, B AND D, THE NINE SYMMETRIC FAMILIES, AND (widened 2026-10-08, from `#1048`) THE
   3:1 RETROGRADE AND 7:2 PROGRADE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
   (computed members of Casoliva's Class 1 p-q resonant class). The explicit row-by-row collision table
@@ -2775,7 +2782,14 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
 - `#1052` — registered 2026-10-08 (from the `#1045` review; BACKLOG). **ANCHOR TAGGING FOR THE
   UNTOPOLOGIED-SIGNATURE LIMIT OUTSIDE G1:** the Pergola anchor (tagged halo) gives Uranus (Umbriel,
   Titania) -> published, and the Howett anchor (no topology) gives Pluto (Charon, Nix) -> published,
-  for untopologied signatures.
+  for untopologied signatures. **WIDENED 2026-10-08 (the `#1045` A1 review):** untopologied signatures still
+  read "published" via non-cycler, NON-tour anchors at every moon primary: Saturn via
+  Davis-Phillips-McCarthy (halo / nrho / tulip), Neptune via Miceli-Bosanac {resonant}, Mars via Wallace,
+  Earth (Moon,) via Braik-Ross, Sun (Jupiter,) via Koon-Lo-Marsden-Ross, Sun (E,) and (M,) via Aldrin,
+  on production paths (`saturn_uranus_campaign.py` about lines 339-345; `signature_from_review_entry`).
+  G1' is not self-consistent ("resonant"-only anchors are never capped). Candidate rule: cap any anchor
+  with NO cycler-class label, after checking the Earth-Moon `[]` anchors. Also the remaining ratchet
+  evasions (a Call with a status argument; NamedExpr) and nits.
 - `#1053` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1049`). **LEAD RULING (a): RE-DERIVE
   casoliva-7-3c AS THE EXACT MIRROR OF THE casoliva-7-3b ROW AT C = 1.068655**, and have BOTH rows' notes
   state the mirror relation and cite `#899` (`tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`).
