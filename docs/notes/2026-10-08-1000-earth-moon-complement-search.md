@@ -374,7 +374,9 @@ member. A's grid member at C = 2.5916 lies just beyond A's continued range (whic
 2.5804). It has the same topology and a b on trend (-121 against -120 at 2.580). It is
 CONSISTENT with family A, but that is not shown by continuation.
 
-- Family C passes through casoliva-7-3b. Interpolated at the row's C = 1.068655, the
+- Family C passes through the MIRROR IMAGE of casoliva-7-3b (the 7-3c orientation; corrected
+  2026-10-08, see the `#1048` note sec. 7: T and perigee altitude are mirror-invariant, and a
+  direct test gives the branch = mirror(7-3b row) to 1.3e-11). Interpolated at the row's C = 1.068655, the
   continuation members (C = 1.0658 and 1.0700) give T = 18.84964 against the row's 18.8496,
   and perigee 9,333 km alt against the row's 9,332. **Family C is the Casoliva 7-3b/c class.**
   It is known-class.
