@@ -139,6 +139,10 @@ def main() -> None:
     ap.add_argument("--dir", type=int, choices=[1, -1], default=1)
     ap.add_argument("--max-seconds", type=float, default=420.0)
     ap.add_argument("--list", action="store_true")
+    # #1050: extend an existing run past its cap: new file, start from its last converged member
+    ap.add_argument("--extend", action="store_true")
+    ap.add_argument("--max-steps", type=int, default=MAX_STEPS)
+    ap.add_argument("--c-max", type=float, default=None)
     args = ap.parse_args()
     fams = families()
     if args.list or args.family is None:
@@ -162,6 +166,13 @@ def main() -> None:
     p = seed["p"]
     OUT.mkdir(parents=True, exist_ok=True)
     f = OUT / f"{args.family}_{'p' if args.dir > 0 else 'm'}.jsonl"
+    if args.extend:
+        src = [json.loads(line) for line in f.read_text().splitlines()]
+        f = OUT / f"{args.family}_{'p' if args.dir > 0 else 'm'}_ext.jsonl"
+        if not f.exists():
+            last_ok = [x for x in src if "stop" not in x][-1]
+            start = {**last_ok, "k": 0, "extended_from_C": last_ok["C"]}
+            f.write_text(json.dumps(start) + "\n")
     rows = [json.loads(line) for line in f.read_text().splitlines()] if f.exists() else []
     if rows and rows[-1].get("stop"):
         print("already stopped:", rows[-1]["stop"])
@@ -187,7 +198,7 @@ def main() -> None:
     while time.time() - t0 < args.max_seconds:
         prev = rows[-1]
         k = prev["k"] + 1
-        if k > MAX_STEPS:
+        if k > args.max_steps:
             stop = "max steps"
             prev["stop"] = stop
             with f.open("a") as fh:
@@ -228,6 +239,8 @@ def main() -> None:
             stop = "impact at floor"
         if (prev["b_h"] + 2.0) * (m["b_h"] + 2.0) < 0:
             stop = "period doubling (b crosses -2)"
+        if args.c_max is not None and args.dir * (m["C"] - args.c_max) >= 0:
+            stop = f"reached C limit {args.c_max}"
         m["b_crossed_plus2"] = bool((prev["b_h"] - 2.0) * (m["b_h"] - 2.0) < 0)
         if stop:
             m["stop"] = stop
