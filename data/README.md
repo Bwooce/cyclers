@@ -11,7 +11,7 @@ Files
 - `catalogue.yaml` — published-cycler seed catalogue with full attribution per spec.md §16. **Sole source of truth.** Edits go through the same process as code: change values, change source quotes, commit.
 - `OUTSTANDING.md` — long-form research questions / source-access gaps / paradigm-mismatch flags log. The YAML's per-entry `notes:` field handles short-form caveats; OUTSTANDING handles the discussion threads.
 
-**A note on numbers in this file.** Row counts, per-field backfill tallies, and "current only member" claims below are frequently labelled with the date they were true (e.g. "2026-06-05 backfill status", "Backfill stats (initial v2 rev, 2026-06-01)") — read those as point-in-time historical snapshots, not live figures; the catalogue has grown substantially since most of them were written (393 rows as of 2026-10-08, 392 on 2026-10-05 and 399 on 2026-08-21, versus the 237 several older passages still cite). Where a passage states a count WITHOUT a date qualifier, treat it as similarly liable to have gone stale and re-derive it from `catalogue.yaml` directly (e.g. `python3 -c "import yaml; print(len(yaml.safe_load(open('catalogue.yaml'))))"`) rather than trusting the prose.
+**A note on numbers in this file.** Row counts, per-field backfill tallies, and "current only member" claims below are frequently labelled with the date they were true (e.g. "2026-06-05 backfill status", "Backfill stats (initial v2 rev, 2026-06-01)") — read those as point-in-time historical snapshots, not live figures; the catalogue has grown substantially since most of them were written (397 rows as of 2026-10-08 after the `#942`/`#943` writeback, 392 on 2026-10-05 and 399 on 2026-08-21, versus the 237 several older passages still cite). Where a passage states a count WITHOUT a date qualifier, treat it as similarly liable to have gone stale and re-derive it from `catalogue.yaml` directly (e.g. `python3 -c "import yaml; print(len(yaml.safe_load(open('catalogue.yaml'))))"`) rather than trusting the prose.
 
 Conventions
 -----------
@@ -92,7 +92,7 @@ A second optional top-level field, `trajectory_regime:`, was added on
 2026-06-01 to make the *trajectory class* explicit:
 
 - `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
-  required to close the cycle. All but 3 of the catalogue's 393 entries (2026-10-08) are ballistic
+  required to close the cycle. All but 3 of the catalogue's 397 entries (2026-10-08) are ballistic
   (the 2 powered Aldrin establishment variants + `lynam-longuski-2011-ieg-single-period`
   excepted; re-verified live 2026-10-08, not a static count — query
   `trajectory_regime` directly rather than trusting this number as it ages).

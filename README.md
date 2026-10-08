@@ -41,12 +41,16 @@ for the full taxonomy, V0–V5 gauntlet extension, and migration record.
 | Low-thrust (v2) — Sims-Flanagan model: leg model, feasibility/NLP constraints, two-phase DE+SLSQP solve, powered-maintenance evaluator (machinery only — no sourced powered rows exist) | ✓ done |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
-393-entry (as of 2026-10-08) published-cycler seed library (incl. the C21 3D out-of-plane `known-class-member` cycler — a computed member of the Antoniadou & Libert 2019 spatial-resonant class — Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 12 `mga_tour` rows (six Uranian two-moon `quasi_cycler` rows computed by this project in June-July 2026 were WITHDRAWN on 2026-10-04: a turn-angle check found that they are not ballistic trajectories, see `#888`), + the **first Pluto-Charon (3,2) cycler** and the binary (k₁,k₂)-cycler μ-family reproduced from Ross-Roberts-Tsoukkas 2026, the 5 rows added 2026-06-30 (4 still V1, the Pluto-Charon representative later promoted to V2 via #505 on 2026-07-01) that closed the long-open #315/#252/#255 binary-star thread) (a Uranus-Umbriel-Titania four-body torus-connection row added 2026-07-24 was WITHDRAWN on 2026-10-03: a review found its connection was not a trajectory of its own model, see `#882`) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+397-entry (as of 2026-10-08) published-cycler seed library (incl. the C21 3D out-of-plane `known-class-member` cycler — a computed member of the Antoniadou & Libert 2019 spatial-resonant class — Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 12 `mga_tour` rows (six Uranian two-moon `quasi_cycler` rows computed by this project in June-July 2026 were WITHDRAWN on 2026-10-04: a turn-angle check found that they are not ballistic trajectories, see `#888`), + the **first Pluto-Charon (3,2) cycler** and the binary (k₁,k₂)-cycler μ-family reproduced from Ross-Roberts-Tsoukkas 2026, the 5 rows added 2026-06-30 (4 still V1, the Pluto-Charon representative later promoted to V2 via #505 on 2026-07-01) that closed the long-open #315/#252/#255 binary-star thread) (a Uranus-Umbriel-Titania four-body torus-connection row added 2026-07-24 was WITHDRAWN on 2026-10-03: a review found its connection was not a trajectory of its own model, see `#882`) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
 broad classes, Niehoff VISIT, Jones VEM family, the 15-orbit Hollister–Menning Earth–Venus
 family, plus lunar and Jovian family seeds), + 9 Casoliva 2010 Table 3 Earth-Moon p:q
 resonant-family rows (3 `cycler` + 6 `resonant_po` since `#801` reclassified 7-3a on 2026-08-09, same-model CR3BP reproduction via `#780`'s
 gate module, added 2026-08-08/09 via `#797`/`#801`), + the Schwaniger 1963 retrograde Earth-Moon
-periodic free return (V0, added 2026-10-08 via `#970`). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
+periodic free return (V0, added 2026-10-08 via `#970`). Four rows computed by this project's two-working-body
+generator were added on 2026-10-08 (`#942`/`#943`, V1): three are `candidate-novel` by the owner's rulings
+(`ganymede-callisto-two-working-body-cycler-gc1-2026`, `earth-venus-venus-hosted-cycler-evc-2026`,
+`earth-venus-two-working-body-cycler-eva-2026`) and one is `known-class-member`
+(`ganymede-callisto-two-working-body-cycler-gc2-2026`); no row is `verified-novel`. Every numerical value carries a source quote per [`data/README.md`](data/README.md)
 conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
 auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 
