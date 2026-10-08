@@ -714,6 +714,12 @@ def main() -> None:
         help="with --grow-chain: the phase-1 date solve on one cycle only (note 6.46a)",
     )
     ap.add_argument(
+        "--grow-start",
+        type=int,
+        default=None,
+        help="with --grow-chain: the phase-1 date solve on this many cycles (note 6.55a)",
+    )
+    ap.add_argument(
         "--shoot-rel-time",
         action="store_true",
         help="shoot in dates relative to the epoch (note 6.33; fixes the long-chain stall)",
@@ -741,7 +747,7 @@ def main() -> None:
     _, one = ENUM.parse_cycle_key(args.key, circ, a, b)
     t_cyc = one.period_s
     # --grow-from-one: phase 1 (the date solve) on one cycle only; the shoot grows it (note 6.46a)
-    n_ph = 1 if args.grow_from_one else args.n_cycles
+    n_ph = 1 if args.grow_from_one else (args.grow_start or args.n_cycles)
     legs_chain = one.legs * n_ph
     x1 = np.array([float(v) for v in args.x_days.split(",")]) * DAY
     xs = np.concatenate([x1 + i * t_cyc for i in range(n_ph)])
@@ -850,8 +856,9 @@ def main() -> None:
             "x0_days": x0 / DAY,
             "final_y_dates": y.tolist(),
         }
-        if ramp and args.grow_chain and not reached:
-            # note 6.55: the first length failed directly -> ramp-lambda continuation there.
+        if ramp and args.grow_chain and args.direct and not reached:
+            # note 6.55: the first length failed directly -> ramp-lambda continuation there
+            # (without --direct, phase 1 above already was that continuation).
             y_ideal = np.concatenate([(xs[1:] + t_shift) / DAY, [n_ph * t_cyc / DAY]])
             y, reached, st1 = ramp_solve(sysm, legs_chain, x0, y_ideal, 0.0, f"k={n_ph} ramp")
             rec_out["k1_ramp_steps"] = st1
