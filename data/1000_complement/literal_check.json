@@ -1,0 +1,869 @@
+[
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "1-2a",
+  "printed_pq": "1-2",
+  "C": 1.0963633786,
+  "T": 12.5663706144,
+  "wE": -1.0000000100864677,
+  "N_inertial": 0.9999999899200303,
+  "pq": [
+   1,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": 3742.1021657121137,
+  "periselene_alt_km": 235978.7345877137,
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "1-2b",
+  "printed_pq": "1-2",
+  "C": 1.479991904,
+  "T": 12.5663706144,
+  "wE": -0.9999999899251505,
+  "N_inertial": 1.0000000100813473,
+  "pq": [
+   1,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": 28476.369012234714,
+  "periselene_alt_km": 204425.0794782524,
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "1-2c",
+  "printed_pq": "1-2",
+  "C": 1.5691874798,
+  "T": 12.5663706144,
+  "wE": -0.9999999842016972,
+  "N_inertial": 1.0000000158048006,
+  "pq": [
+   1,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": 38472.492486353505,
+  "periselene_alt_km": 337812.14883939055,
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "1-2d",
+  "printed_pq": "1-2",
+  "C": 2.5803060666,
+  "T": 12.5663706144,
+  "wE": -1.0000001997824912,
+  "N_inertial": 0.9999998002240067,
+  "pq": [
+   1,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": 212806.35262228796,
+  "periselene_alt_km": 601847.0896169558,
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "1-2e",
+  "printed_pq": "1-2",
+  "C": 2.7629814961,
+  "T": 12.5663706144,
+  "wE": -0.9999998589596982,
+  "N_inertial": 1.0000001410467996,
+  "pq": [
+   1,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": 281521.42650659033,
+  "periselene_alt_km": 266586.2270353414,
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "2-1a",
+  "printed_pq": "2-1",
+  "C": 0.4887353098,
+  "T": 6.2831853072,
+  "wE": -3.0000074575202,
+  "N_inertial": -2.000007457516951,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 65763.28057093805,
+  "periselene_alt_km": 88649.90864051881,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "2-1b",
+  "printed_pq": "2-1",
+  "C": 1.1964188553,
+  "T": 6.2831853072,
+  "wE": -2.9999999703738394,
+  "N_inertial": -1.9999999703705904,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 412.24562628429976,
+  "periselene_alt_km": 90851.63277972085,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "2-1c",
+  "printed_pq": "2-1",
+  "C": 1.7351680041,
+  "T": 6.190573,
+  "wE": -1.0000698498528067,
+  "N_inertial": -0.014809556331582874,
+  "pq": [
+   0,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": -5918.572379482094,
+  "periselene_alt_km": 3909.1334023591303,
+  "verdict": {
+   "A": "p:q 0:1 differs",
+   "B": "p:q 0:1 differs",
+   "D": "p:q 0:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "2-1d",
+  "printed_pq": "2-1",
+  "C": 1.9521613046,
+  "T": 6.2831853072,
+  "wE": 0.9999477221368297,
+  "N_inertial": 1.9999477221400785,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": -5168.582418056332,
+  "periselene_alt_km": 3888.0926917591364,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "3-2a",
+  "printed_pq": "3-2",
+  "C": 0.1258650202,
+  "T": 12.635632,
+  "wE": -5.00000448264084,
+  "N_inertial": -2.9889811907507084,
+  "pq": [
+   3,
+   2
+  ],
+  "sense": -1,
+  "perigee_alt_km": 73379.10438900169,
+  "periselene_alt_km": 58284.218665356406,
+  "verdict": {
+   "A": "p:q 3:2 differs",
+   "B": "p:q 3:2 differs",
+   "D": "p:q 3:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "3-2c",
+  "printed_pq": "3-2",
+  "C": 0.7089330385,
+  "T": 12.5663706144,
+  "wE": -5.000000741798527,
+  "N_inertial": -3.0000007417920287,
+  "pq": [
+   3,
+   2
+  ],
+  "sense": -1,
+  "perigee_alt_km": 8703.914279025867,
+  "periselene_alt_km": 82595.39227522103,
+  "verdict": {
+   "A": "p:q 3:2 differs",
+   "B": "p:q 3:2 differs",
+   "D": "p:q 3:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "3-2d",
+  "printed_pq": "3-2",
+  "C": 1.6505940399,
+  "T": 12.5663706144,
+  "wE": 1.0000016616204797,
+  "N_inertial": 3.0000016616269773,
+  "pq": [
+   3,
+   2
+  ],
+  "sense": 1,
+  "perigee_alt_km": -1031.5677746741658,
+  "periselene_alt_km": 182284.27830888084,
+  "verdict": {
+   "A": "p:q 3:2 differs",
+   "B": "p:q 3:2 differs",
+   "D": "p:q 3:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "7-3a",
+  "printed_pq": "7-3",
+  "C": 1.0215696153,
+  "T": 18.8495559215,
+  "wE": -9.99999153242376,
+  "N_inertial": -6.999991532429929,
+  "pq": [
+   7,
+   3
+  ],
+  "sense": -1,
+  "perigee_alt_km": 19270.71571282136,
+  "periselene_alt_km": 25511.676049620648,
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q, opposite sense"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "7-3b",
+  "printed_pq": "7-3",
+  "C": 1.06876239,
+  "T": 18.8495559215,
+  "wE": -10.00000081989603,
+  "N_inertial": -7.0000008199021995,
+  "pq": [
+   7,
+   3
+  ],
+  "sense": -1,
+  "perigee_alt_km": 9327.601464950425,
+  "periselene_alt_km": 11469.330147831914,
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q, opposite sense"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "7-3c",
+  "printed_pq": "7-3",
+  "C": 1.06876239,
+  "T": 18.8495559215,
+  "wE": -9.999985960698893,
+  "N_inertial": -6.999985960705063,
+  "pq": [
+   7,
+   3
+  ],
+  "sense": -1,
+  "perigee_alt_km": 9335.248315200257,
+  "periselene_alt_km": 11477.355506853408,
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q, opposite sense"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2010 Table 3",
+  "orbit": "7-3d",
+  "printed_pq": "7-3",
+  "C": 1.2892422741,
+  "T": 18.9972028186,
+  "wE": -9.995869228310635,
+  "N_inertial": -6.972370494811158,
+  "pq": [
+   7,
+   3
+  ],
+  "sense": -1,
+  "perigee_alt_km": -1270.1378209183085,
+  "periselene_alt_km": 1656.651580149332,
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q, opposite sense"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-21-c198-em-resonant-po-2013",
+  "C": 1.9800000000000062,
+  "T": 6.211141776252044,
+  "wE": 1.0000000000126608,
+  "N_inertial": 1.9885339159477486,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 2032.2845548055293,
+  "periselene_alt_km": 85173.58694736032,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-21-c246-em-cycler-2013",
+  "C": 2.4599999999999964,
+  "T": 6.02801832920549,
+  "wE": 1.0000000000183566,
+  "N_inertial": 1.9593889141599585,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 36784.58483680333,
+  "periselene_alt_km": 47962.88290637881,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-21-c247-em-cycler-2013",
+  "C": 2.469999999999996,
+  "T": 6.019111715389312,
+  "wE": 1.0000000000253293,
+  "N_inertial": 1.9579713825518756,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 37893.70852466016,
+  "periselene_alt_km": 46778.46103943954,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-21-c266-em-cycler-2013",
+  "C": 2.659999999999992,
+  "T": 5.662843584779122,
+  "wE": 1.000000000041666,
+  "N_inertial": 1.9012695485154918,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 64737.40751247888,
+  "periselene_alt_km": 15937.615341337782,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-31-c254-em-cycler-2013",
+  "C": 2.5400000000000054,
+  "T": 6.269604424886022,
+  "wE": 2.0000000000588973,
+  "N_inertial": 2.9978385355103274,
+  "pq": [
+   3,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 792.2041485101126,
+  "periselene_alt_km": 31520.59923998554,
+  "verdict": {
+   "A": "p:q 3:1 differs",
+   "B": "p:q 3:1 differs",
+   "D": "p:q 3:1 differs"
+  }
+ },
+ {
+  "source": "Vaquero 2013 (catalogue row)",
+  "orbit": "vaquero-31-c313-em-resonant-po-2013",
+  "C": 3.129999999999993,
+  "T": 6.45496522207971,
+  "wE": 2.000000000058241,
+  "N_inertial": 3.0273396226385008,
+  "pq": [
+   3,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 51532.053020284344,
+  "periselene_alt_km": 65257.795754817,
+  "verdict": {
+   "A": "p:q 3:1 differs",
+   "B": "p:q 3:1 differs",
+   "D": "p:q 3:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F2-1",
+  "C": -0.483008273049955,
+  "T": 7.891795463997953,
+  "wE": -3.0000000002024527,
+  "N_inertial": -1.7439817422369808,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 168106.53539367736,
+  "periselene_alt_km": 2933.45271433484,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F2-2",
+  "C": 0.20603327507740277,
+  "T": 6.522874327361963,
+  "wE": -3.0000000000815636,
+  "N_inertial": -1.9618523077146852,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 93574.81457952342,
+  "periselene_alt_km": 22153.45266927506,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F2-3",
+  "C": 0.4457938011960074,
+  "T": 6.384384814338254,
+  "wE": -3.0000000000840887,
+  "N_inertial": -1.983893598281323,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 60858.63657051555,
+  "periselene_alt_km": 41373.45265458686,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F2-4",
+  "C": 0.6625555814355408,
+  "T": 6.333566857384404,
+  "wE": -3.000000000046006,
+  "N_inertial": -1.9919815272902768,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 36119.72357584726,
+  "periselene_alt_km": 60593.452672739346,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F2-5",
+  "C": 0.9393595437614932,
+  "T": 6.3022610468998135,
+  "wE": -3.000000000037336,
+  "N_inertial": -1.9969640017677273,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": -1,
+  "perigee_alt_km": 13422.58326308654,
+  "periselene_alt_km": 79813.45265508749,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-6",
+  "C": 2.5915243637421264,
+  "T": 5.42914418219378,
+  "wE": 1.0000000000615394,
+  "N_inertial": 1.8640751334162853,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 62535.99987947708,
+  "periselene_alt_km": 2933.45271433484,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-7",
+  "C": 2.6695351808423595,
+  "T": 5.571641531574961,
+  "wE": 1.0000000000631104,
+  "N_inertial": 1.886754290949364,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 67685.09718972347,
+  "periselene_alt_km": 10614.14911433485,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-8",
+  "C": 2.6345741034127244,
+  "T": 5.75714143239727,
+  "wE": 1.000000000051872,
+  "N_inertial": 1.9162775170970523,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 60006.9018908516,
+  "periselene_alt_km": 22153.452714334853,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-9",
+  "C": 2.5131538804083853,
+  "T": 5.974780848706455,
+  "wE": 1.0000000000209042,
+  "N_inertial": 1.9509159059833263,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 42929.97726130914,
+  "periselene_alt_km": 41373.45270464857,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-10",
+  "C": 2.339496998592055,
+  "T": 6.107886340665333,
+  "wE": 1.0000000000196647,
+  "N_inertial": 1.9721003029800208,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 24898.36532300815,
+  "periselene_alt_km": 60593.452682906536,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+  "orbit": "F3-11",
+  "C": 2.0827953202657215,
+  "T": 6.1920698571177475,
+  "wE": 1.0000000000204876,
+  "N_inertial": 1.9854985257511033,
+  "pq": [
+   2,
+   1
+  ],
+  "sense": 1,
+  "perigee_alt_km": 6920.289687103256,
+  "periselene_alt_km": 79813.45266111195,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "12a",
+  "pq": [
+   1,
+   2
+  ],
+  "sense": null,
+  "C": null,
+  "T": null,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 1:2 differs",
+   "B": "p:q 1:2 differs",
+   "D": "p:q 1:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "21a",
+  "pq": [
+   2,
+   1
+  ],
+  "sense": null,
+  "C": null,
+  "T": null,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "23a/b",
+  "pq": [
+   2,
+   3
+  ],
+  "sense": null,
+  "C": null,
+  "T": null,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 2:3 differs",
+   "B": "p:q 2:3 differs",
+   "D": "p:q 2:3 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "32a/b",
+  "pq": [
+   3,
+   2
+  ],
+  "sense": null,
+  "C": null,
+  "T": null,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 3:2 differs",
+   "B": "p:q 3:2 differs",
+   "D": "p:q 3:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "52a",
+  "pq": [
+   5,
+   2
+  ],
+  "sense": null,
+  "C": 1.046188270497447,
+  "T": 12.565149240510692,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)",
+   "B": "p:q 5:2 differs",
+   "D": "p:q 5:2 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "54a/b",
+  "pq": [
+   5,
+   4
+  ],
+  "sense": null,
+  "C": null,
+  "T": null,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 5:4 differs",
+   "B": "p:q 5:4 differs",
+   "D": "p:q 5:4 differs"
+  }
+ },
+ {
+  "source": "Casoliva et al. 2008 Table 2 (seeds)",
+  "orbit": "73a",
+  "pq": [
+   7,
+   3
+  ],
+  "sense": null,
+  "C": 0.8957501590757784,
+  "T": 18.849280340234433,
+  "mu_note": "mu = 1e-6 seed, not Earth-Moon",
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+  }
+ },
+ {
+  "source": "Liang, Xu & Xu 2017",
+  "orbit": "5:2 PLPO",
+  "pq": [
+   5,
+   2
+  ],
+  "sense": null,
+  "C": 3.0996,
+  "T": null,
+  "note": "apoapsis about 0.82 L, no lunar pass",
+  "verdict": {
+   "A": "same p:q (sense not printed); C 3.0996 outside the family's computed range",
+   "B": "p:q 5:2 differs",
+   "D": "p:q 5:2 differs"
+  }
+ },
+ {
+  "source": "Liang, Xu & Xu 2017",
+  "orbit": "7:3 PLPO",
+  "pq": [
+   7,
+   3
+  ],
+  "sense": null,
+  "C": 3.1858,
+  "T": null,
+  "note": "apoapsis about 0.75 L, no lunar pass",
+  "verdict": {
+   "A": "p:q 7:3 differs",
+   "B": "p:q 7:3 differs",
+   "D": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+  }
+ },
+ {
+  "source": "Liang, Xu, Peng & Xu 2020",
+  "orbit": "2:1 resonant cycler orbit",
+  "pq": [
+   2,
+   1
+  ],
+  "sense": null,
+  "C": 2.0934,
+  "T": null,
+  "verdict": {
+   "A": "p:q 2:1 differs",
+   "B": "p:q 2:1 differs",
+   "D": "p:q 2:1 differs"
+  }
+ },
+ {
+  "source": "Hoelker & Winston 1968",
+  "orbit": "all 39 captions",
+  "pq": null,
+  "why_no_pq": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80",
+  "verdict": {
+   "A": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80",
+   "B": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80",
+   "D": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+  }
+ },
+ {
+  "source": "Genova & Aldrin 2015 (AAS 15-794)",
+  "orbit": "5 cyclers",
+  "pq": null,
+  "why_no_pq": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state",
+  "verdict": {
+   "A": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state",
+   "B": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state",
+   "D": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+  }
+ }
+]

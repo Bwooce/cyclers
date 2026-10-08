@@ -476,6 +476,88 @@ CONSISTENT with family A, but that is not shown by continuation.
     because the continuations stopped at the 40-step cap.
 - Family C remains the Casoliva 7-3b/c class. Its continuation passes through the 7-3b row.
 
+### 5.1c Explicit literal collision table, row by row (lead ruling 2026-10-08)
+
+Produced by `scripts/run_1000_literal.py`; data in `data/1000_complement/literal_check.json`.
+
+- **p:q and sense of every published orbit that has a state.** Each is propagated at the
+  registry mu. With w_E the winding number about the Earth in the rotating frame, the inertial
+  revolutions per period are N = w_E + T/(2 pi). Then p:q = |N| : round(T/(2 pi)), and the
+  sense is sign(N).
+  - Casoliva's printed p-q labels come out as computed: 1-2 -> 1:2, 7-3 -> 7:3, and so on. This
+    confirms the p = spacecraft revolutions convention.
+  - Rows c and d of Casoliva's Table 3 pass through the Earth (perigee altitude < 0), so their
+    winding numbers are not reliable. 2-1c gives "0:1".
+- **Rule:** sec. 5.1b. A literal member needs the same p:q and sense, a C inside the family's
+  computed range +- 0.01, |dT|/T < 1e-3, perigee and periselene altitudes within 10%, and the
+  Earth-Moon mu.
+- Families: A = 5:2 prograde (C 2.411-2.592), B = 5:3 retrograde (C 0.670-0.942), D = 7:3
+  prograde (C 2.414-2.560).
+
+| source | orbit | p:q (sense) | C | T | perigee alt (km) | periselene alt (km) | vs A (5:2 pro) | vs B (5:3 ret) | vs D (7:3 pro) |
+|---|---|---|---|---|---|---|---|---|---|
+| Casoliva et al. 2010 Table 3 | 1-2a | 1:2 (pro) | 1.0964 | 12.566 | 3742 | 235979 | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2010 Table 3 | 1-2b | 1:2 (pro) | 1.4800 | 12.566 | 28476 | 204425 | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2010 Table 3 | 1-2c | 1:2 (pro) | 1.5692 | 12.566 | 38472 | 337812 | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2010 Table 3 | 1-2d | 1:2 (pro) | 2.5803 | 12.566 | 212806 | 601847 | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2010 Table 3 | 1-2e | 1:2 (pro) | 2.7630 | 12.566 | 281521 | 266586 | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2010 Table 3 | 2-1a | 2:1 (ret) | 0.4887 | 6.283 | 65763 | 88650 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Casoliva et al. 2010 Table 3 | 2-1b | 2:1 (ret) | 1.1964 | 6.283 | 412 | 90852 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Casoliva et al. 2010 Table 3 | 2-1c | 0:1 (ret) | 1.7352 | 6.191 | -5919 | 3909 | p:q 0:1 differs | p:q 0:1 differs | p:q 0:1 differs |
+| Casoliva et al. 2010 Table 3 | 2-1d | 2:1 (pro) | 1.9522 | 6.283 | -5169 | 3888 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Casoliva et al. 2010 Table 3 | 3-2a | 3:2 (ret) | 0.1259 | 12.636 | 73379 | 58284 | p:q 3:2 differs | p:q 3:2 differs | p:q 3:2 differs |
+| Casoliva et al. 2010 Table 3 | 3-2c | 3:2 (ret) | 0.7089 | 12.566 | 8704 | 82595 | p:q 3:2 differs | p:q 3:2 differs | p:q 3:2 differs |
+| Casoliva et al. 2010 Table 3 | 3-2d | 3:2 (pro) | 1.6506 | 12.566 | -1032 | 182284 | p:q 3:2 differs | p:q 3:2 differs | p:q 3:2 differs |
+| Casoliva et al. 2010 Table 3 | 7-3a | 7:3 (ret) | 1.0216 | 18.850 | 19271 | 25512 | p:q 7:3 differs | p:q 7:3 differs | same p:q, opposite sense |
+| Casoliva et al. 2010 Table 3 | 7-3b | 7:3 (ret) | 1.0688 | 18.850 | 9328 | 11469 | p:q 7:3 differs | p:q 7:3 differs | same p:q, opposite sense |
+| Casoliva et al. 2010 Table 3 | 7-3c | 7:3 (ret) | 1.0688 | 18.850 | 9335 | 11477 | p:q 7:3 differs | p:q 7:3 differs | same p:q, opposite sense |
+| Casoliva et al. 2010 Table 3 | 7-3d | 7:3 (ret) | 1.2892 | 18.997 | -1270 | 1657 | p:q 7:3 differs | p:q 7:3 differs | same p:q, opposite sense |
+| Vaquero 2013 (catalogue row) | vaquero-21-c198-em-resonant-po-2013 | 2:1 (pro) | 1.9800 | 6.211 | 2032 | 85174 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Vaquero 2013 (catalogue row) | vaquero-21-c246-em-cycler-2013 | 2:1 (pro) | 2.4600 | 6.028 | 36785 | 47963 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Vaquero 2013 (catalogue row) | vaquero-21-c247-em-cycler-2013 | 2:1 (pro) | 2.4700 | 6.019 | 37894 | 46778 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Vaquero 2013 (catalogue row) | vaquero-21-c266-em-cycler-2013 | 2:1 (pro) | 2.6600 | 5.663 | 64737 | 15938 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Vaquero 2013 (catalogue row) | vaquero-31-c254-em-cycler-2013 | 3:1 (pro) | 2.5400 | 6.270 | 792 | 31521 | p:q 3:1 differs | p:q 3:1 differs | p:q 3:1 differs |
+| Vaquero 2013 (catalogue row) | vaquero-31-c313-em-resonant-po-2013 | 3:1 (pro) | 3.1300 | 6.455 | 51532 | 65258 | p:q 3:1 differs | p:q 3:1 differs | p:q 3:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F2-1 | 2:1 (ret) | -0.4830 | 7.892 | 168107 | 2933 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F2-2 | 2:1 (ret) | 0.2060 | 6.523 | 93575 | 22153 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F2-3 | 2:1 (ret) | 0.4458 | 6.384 | 60859 | 41373 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F2-4 | 2:1 (ret) | 0.6626 | 6.334 | 36120 | 60593 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F2-5 | 2:1 (ret) | 0.9394 | 6.302 | 13423 | 79813 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-6 | 2:1 (pro) | 2.5915 | 5.429 | 62536 | 2933 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-7 | 2:1 (pro) | 2.6695 | 5.572 | 67685 | 10614 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-8 | 2:1 (pro) | 2.6346 | 5.757 | 60007 | 22153 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-9 | 2:1 (pro) | 2.5132 | 5.975 | 42930 | 41373 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-10 | 2:1 (pro) | 2.3395 | 6.108 | 24898 | 60593 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Newton 1959 Table 1 (registry mu, #997 seed) | F3-11 | 2:1 (pro) | 2.0828 | 6.192 | 6920 | 79813 | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 12a | 1:2 (?) | - | - | - | - | p:q 1:2 differs | p:q 1:2 differs | p:q 1:2 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 21a | 2:1 (?) | - | - | - | - | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 23a/b | 2:3 (?) | - | - | - | - | p:q 2:3 differs | p:q 2:3 differs | p:q 2:3 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 32a/b | 3:2 (?) | - | - | - | - | p:q 3:2 differs | p:q 3:2 differs | p:q 3:2 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 52a | 5:2 (?) | 1.0462 | 12.565 | - | - | same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon) | p:q 5:2 differs | p:q 5:2 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 54a/b | 5:4 (?) | - | - | - | - | p:q 5:4 differs | p:q 5:4 differs | p:q 5:4 differs |
+| Casoliva et al. 2008 Table 2 (seeds) | 73a | 7:3 (?) | 0.8958 | 18.849 | - | - | p:q 7:3 differs | p:q 7:3 differs | same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon) |
+| Liang, Xu & Xu 2017 | 5:2 PLPO | 5:2 (?) | 3.0996 | - | - | - | same p:q (sense not printed); C 3.0996 outside the family's computed range | p:q 5:2 differs | p:q 5:2 differs |
+| Liang, Xu & Xu 2017 | 7:3 PLPO | 7:3 (?) | 3.1858 | - | - | - | p:q 7:3 differs | p:q 7:3 differs | same p:q (sense not printed); C 3.1858 outside the family's computed range |
+| Liang, Xu, Peng & Xu 2020 | 2:1 resonant cycler orbit | 2:1 (?) | 2.0934 | - | - | - | p:q 2:1 differs | p:q 2:1 differs | p:q 2:1 differs |
+| Hoelker & Winston 1968 | all 39 captions | - | - | - | - | - | no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80 | no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80 | no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80 |
+| Genova & Aldrin 2015 (AAS 15-794) | 5 cyclers | - | - | - | - | - | 2:1, 3:1 and the Arenstorf 4-leaf; no C or state | 2:1, 3:1 and the Arenstorf 4-leaf; no C or state | 2:1, 3:1 and the Arenstorf 4-leaf; no C or state |
+
+**Reading, shown row by row.**
+- **No row is a literal member of A, B or D.**
+- **Same p:q and sense as A or D:** only Liang 2017's 5:2 and 7:3 orbits, and their sense is not
+  printed. They sit at C 3.10 and 3.19, outside the families' ranges, with no lunar pass.
+- **Same p:q, opposite sense to D:** all four of Casoliva's Earth-Moon 7-3 rows (7-3a/b/c/d).
+  Every one is retrograde, and D is prograde.
+- **Same p:q, but not Earth-Moon:** Casoliva 2008's 5-2 and 7-3 seeds, at mu = 1e-6.
+- **B (5:3) shares its p:q with no row at all.**
+- So "members of Casoliva's Class 1 at untabulated p:q or sense" is what the table shows:
+  - Casoliva 2010 tabulates Earth-Moon members only at 1-2, 2-1, 3-2 and 7-3 (7-3 retrograde
+    only).
+  - A is at the 5-2 resonance that her text names as allowable but does not tabulate.
+  - B is at 5-3, which she does not tabulate.
+  - D is 7-3 in the prograde sense, which she does not tabulate.
+- Labels: **A, B and D: "candidate, literature step deferred (`#972` v3, `#1045`)".**
+
 ### 5.2 Gates (`scripts/run_1000_gate.py`, `data/1000_complement/gate_summary.json`)
 
 All 213 method (1) cycler-class candidates are excluded from Franz-Russell: their maximum Moon
@@ -544,7 +626,16 @@ distance is 750,000-1,950,000 km.
     stand.
   - One grid member of A (C 2.478) did not re-solve and is not counted.
   - The b values in sec. 4.1 come from these arc-STM products.
-- **Amendment A3 (method (2) branching) - FORMAL, accepted by the lead 2026-10-08 ~14:20 AEDT.**
+- **Amendment A3 (method (2) branching) - FORMAL, accepted by the lead 2026-10-08 ~14:20 AEDT,
+  with a ruling on status.**
+  - **The eta variant's control is SELF-REFERENTIAL.** It was checked on the same case that
+    rejected the pre-registered variant.
+  - Every result that rests on it is labelled **"eta variant, descriptive"**: the two
+    non-cycler-class branches of 5.1 (2:3-r at C -0.621 and 3:4-r at C 0.275), and family C's
+    parent identity (the symmetric 7:3 retrograde family at C 0.8814).
+  - **Needed (registered):** an independent control for the eta variant. A published asymmetric
+    bifurcation from a symmetric Earth-Moon family would serve.
+  - The cycler-class verdict rests on method (1), whose control is independent and passed.
   - Date of the change: 2026-10-08 13:30 AEDT.
   - Reason: the fixed-C perturbation variant was 36/36 ill-conditioned at the bifurcation. That
     was a numerical failure of the corrector: no solve converged, so no branch or other result
