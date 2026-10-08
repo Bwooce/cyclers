@@ -2701,6 +2701,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   inconclusive with no topology (the 15 H&M rows, and ev-A / ev-C, which v2 had cited to Hughes: exactly
   MAJOR 1); 0 toward not-found or known-architecture-new-system. Full suite running (the lead watches the
   logs); then mypy, the commit and the read-only review.
+  **v3 COMMITTED (`bd94fe68`, pushed). READ-ONLY REVIEW 2026-10-08: FAIL (narrow)** (verdict in the v3 note
+  sec. 5, commit pending). The candidates (re-run, JSON byte-identical) and the 26 controls are
+  unchanged, so the catalogue rows stand; G1-G5 and G7 match their text; labelled probe over 1,364
+  signatures: 34 changes, all published -> inconclusive. MAJOR in the G1 rule: the Niehoff "Touring the
+  Galilean Satellites" anchor carries {mga-tour, pump-tour, resonant}, and "resonant" makes it not
+  tour-only, so an untopologied Jupiter (Ganymede, Callisto, Ganymede) review-queue signature reads
+  "published 0.95 citing Niehoff" (finding 1 again, on the Jovian pipeline). Minors: the cap shadows
+  F7's anchor naming; a docstring "or None"; the ratchet misses status aliases and Attribute constants.
+  Nits: "HR" also fixed a v2 false not-found (Hollister 1H, HV form); an empty sequence is vacuously a
+  subset. **Lead ruling: amendment A1 APPROVED** (G1': cap any anchor that has a tour label and no
+  cycler-class label, with a `CYCLER_CLASSES` set and a pinned test for (G, C, G); plus the minors and
+  nits), pre-registered, in the same cycle, then reviewed again. Outside G1: `#1052`.
 - `#1046` — registered 2026-10-08 (from `#1044`; BACKLOG). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1.
@@ -2732,6 +2744,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
 - `#1051` — registered 2026-10-08 (from `#1050`; BACKLOG). **PSEUDO-ARCLENGTH CONTINUATION OF `#1000`
   FAMILY A PAST ITS FOLD NEAR C 3.097**, to decide whether its other branch reaches a Liang 2017-type
   orbit.
+- `#1052` — registered 2026-10-08 (from the `#1045` review; BACKLOG). **ANCHOR TAGGING FOR THE
+  UNTOPOLOGIED-SIGNATURE LIMIT OUTSIDE G1:** the Pergola anchor (tagged halo) gives Uranus (Umbriel,
+  Titania) -> published, and the Howett anchor (no topology) gives Pluto (Charon, Nix) -> published,
+  for untopologied signatures.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
