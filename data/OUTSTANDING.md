@@ -1960,8 +1960,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `jovian_defect_residual`, about line 968); a wall-clock timeout sets `converged = False`, which the
   shooting residuals turn into a defect sentinel (1e7 per component at about line 812, 1e9 at about
   line 1006), so a slow propagation under load reads as a large defect.
-- `#970` — registered 2026-10-07 (from `#960` batch 30, commit `bccf4306`); **DISPATCHED 2026-10-07 to
-  earthmoon-opus** (the Schwaniger row and the both-primary corrector control first, then `#997`).
+- `#970` — ✓ DONE 2026-10-08 (row inserted in `32972e63`: `cycler_class` non-keplerian, `orbit_class`
+  cycler, V0, tier unvalidated; four census ratchets extended; full suite exit 0). Registered 2026-10-07
+  (from `#960` batch 30, commit `bccf4306`); dispatched 2026-10-07 to
+  earthmoon-opus (the Schwaniger row and the both-primary corrector control first, then `#997`).
   **ADD A V0 CATALOGUE ROW `schwaniger-1963-em-cislunar-retrograde-periodic-free-return`.** Schwaniger
   1963 (NASA TN D-1833, Sec. III.E, p.6-7) prints a retrograde ("counter-rotation") Earth-Moon
   symmetric periodic free-return orbit: periselenum about 2150 km, period "about 650 hours". Digest:
@@ -2425,7 +2427,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   SEARCH IN `scripts/run_973_enumerate.py screen` WITH A ROOT-BRACKETED CLOSEST-APPROACH SEARCH PER BODY
   PER LEG.** The current search samples along the leg, so a pass between samples can be missed. Add a
   test that plants a pass between two samples.
-- `#1030` — registered 2026-10-07 (from `#997`, earthmoon-opus `d7998ba0`; catalogue wording). **AUDIT
+- `#1030` — ✓ DONE 2026-10-08 (Casoliva and Vaquero wording fixes applied in `32972e63`). Registered
+  2026-10-07 (from `#997`, earthmoon-opus `d7998ba0`; catalogue wording). **AUDIT
   DONE 2026-10-08 (earthmoon-opus, `d5fa6f1c`; note `docs/notes/2026-10-08-1030-stability-index-audit.md`):**
   50 CR3BP rows recomputed; six store k_perp, four of them correctly (Casoliva Eq. 8 max rule). Only the
   two `#801` override rows, casoliva-1-2e and casoliva-7-3a, store the smaller (vertical) index while
@@ -2449,7 +2452,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   dominates. So FIRST grep the producing function(s) and audit every CR3BP row whose stored value
   equals k_perp rather than k_par (list them in this bullet), and only then fix the wording. Any
   `data/catalogue.yaml` edit runs all ratchets.
-- `#1031` — ✓ DONE 2026-10-08 (earthmoon-opus, `f1310e93`; from the `#1030` audit).
+- `#1031` — ✓ DONE 2026-10-08 (earthmoon-opus, `f1310e93`; the precision patch applied in `32972e63`; from
+  the `#1030` audit).
   **ross-rt-em-cycler-21-2025: THE ROW'S V2 "|nu| < 1" CLAIM HOLDS; the `#1030` flag on it is RETRACTED.**
   The audit had re-closed at the C of the 10-digit rounded state, 2e-11 off, which is wider than the
   row's whole stable window in C (1.8e-11), so it judged a neighbouring unstable member. Fixed-x0 scan:
@@ -2567,7 +2571,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   row gets a period note, a `data_gaps` entry for the `n_returns` conflict and a notes paragraph;
   `n_returns` stays `infinite`, because changing it forces an `orbit_class` change, which is an OWNER
   decision (`#1042`-b, on "Waiting on owner"). The Lynam-Longuski single-period row gets one notes
-  sentence. The Hernandez wording must now say "one-cycle object confirmed in continuous gravity
+  sentence. The patch WAITS FOR THE NEXT ratchet window (the `#970` window closed with `32972e63`). The
+  Hernandez wording must now say "one-cycle object confirmed in continuous gravity
   (`#1043`)"; jovian-nbody-opus updates the patch after `#1039`. Seen but not patched, listed in the
   note: the AAS 17-608 confirmation on `first_published`,
   Table 4 values on the family-seed row, and the GIPEIPE sibling. To apply: the next ratchet window,
