@@ -187,3 +187,59 @@ sigma JSON and the LM checkpoint).
     velocity) as an explicit unknown;
   - or a node at the full-revolution leg's line of nodes (where an out-of-plane velocity change is
     most effective) instead of its apojove.
+
+## 8. FORM (a): crank as an explicit unknown across each full-revolution leg (PRE-REGISTRATION)
+
+Lead ruling 2026-10-08 (after the sec. 7 report): form (a) only, inside the remaining box (stop by
+about 20:00 AEDT with a report either way). Registered before any form-(a) run.
+
+### 8.1 Why a reparametrisation can help
+
+Sec. 6.3-6.5: the stuck residual is out-of-plane, along a near-null direction dominated by the
+apsis node inside the full-revolution leg, and GanCal#1's LM crawls slowly. A finite rotation of
+that leg about the line through Jupiter and the encounter point (the crank of the resonant V_inf on
+its circle) is a CURVED path in Cartesian node coordinates. Gauss-Newton and LM steps along its
+straight tangent leave the valley, which fits a crawl. With the crank angle as an explicit unknown,
+a step moves along the arc exactly. This changes the parametrisation, not the solution set. If the
+obstruction is a real inconsistency rather than a curved valley, form (a) will not help either,
+and that is then the answer.
+
+### 8.2 Definition
+
+- Full-revolution leg: a leg between two consecutive flyby nodes of the SAME moon (EGGIE: the G-G
+  1-rev leg; GanCal#1: the G-G 2:1 return; gc-1: the C-C 1:1 return). The first apsis node inside
+  each such leg becomes a CRANK node.
+- Crank node unknowns: u (6, a state offset), the epoch t, and one extra unknown kappa (the crank
+  angle), stored after the 7m node unknowns. Its state is x = R6(kappa) (x_ref + u), where x_ref is
+  the seed apsis state, R the rotation by kappa about a_hat (the unit vector from Jupiter to the
+  moon at the leg's departure node at its seed epoch), and R6 = blockdiag(R, R). The Jacobian
+  columns are exact: dx/du = R6, dx/dkappa = R6'(kappa) (x_ref + u).
+- One extra row per crank node removes the redundancy between u and kappa: u is orthogonal to the
+  rotation generator g = d/dkappa [R6 x_ref] at kappa = 0, in the weighted metric (velocity x 1e3):
+  row = (W u) . (W g) / |W g| (km). The system stays square (7m + q unknowns and rows).
+- Seed: u = 0, kappa = 0, so the start is IDENTICAL to the sec. 2 apsis formulation; only the
+  coordinates differ.
+- Everything else as secs. 2-3 (end forms, solvers including amendment 1, floors, schedule,
+  criteria, IAS15). Data in `data/1046a_<target>/`.
+
+### 8.3 Order, criteria, meaning
+
+1. EGGIE control: the sec. 3 criteria, including the same orbit as #1039 (b) (V_inf < 1e-3 km/s,
+   r_p < 1 km per node). If it fails: stop and report; no real-ephemeris run.
+2. GanCal#1@2013, then gc-1 e2: the #1044 criteria (i)-(iv).
+- An object that STARTS at sigma 0.02 where the apsis form did not: the obstruction was the curved
+  out-of-plane valley (the parametrisation), and the run goes up as far as it goes.
+- An object that stalls at the same residual (gc-1 near 0.0275; GanCal#1 not below about 2.5) with
+  kappa moving little: the out-of-plane obstruction is a real inconsistency near the chain. No
+  verdict on the object; the formulation question is closed for this lane.
+
+### 8.4 Expectations
+
+EGGIE control passes with probability about 0.85. gc-1 starts with probability about 0.25: its
+apsis-form residual was flat, not crawling, which points to an inconsistency rather than a curved
+valley. GanCal#1 starts with probability about 0.35: it was still crawling.
+
+Implementation check (before the runs): on the EGGIE at sigma 0.02 with kappa = 0.003, the analytic
+Jacobian columns for kappa, a crank-node position, a crank-node velocity and its epoch agree with
+central differences to a relative 1e-8 or better. Crank nodes: EGGIE node 2 (G-G leg); one per
+real-ephemeris object (sec. 8.2).

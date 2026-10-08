@@ -159,6 +159,110 @@ def install(rb: Any) -> None:
     rb.build, rb.scale_offsets, rb.describe = build, scale_offsets, describe
 
 
+def _rot(axis: Any, k: float) -> tuple[Any, Any]:
+    """Rodrigues rotation by k about the unit axis, and its derivative in k."""
+    kx = np.array([[0.0, -axis[2], axis[1]], [axis[2], 0.0, -axis[0]], [-axis[1], axis[0], 0.0]])
+    r = np.eye(3) + math.sin(k) * kx + (1.0 - math.cos(k)) * (kx @ kx)
+    dr = math.cos(k) * kx + math.sin(k) * (kx @ kx)
+    return r, dr
+
+
+def _blk(m: Any) -> Any:
+    out = np.zeros((6, 6))
+    out[:3, :3] = m
+    out[3:, 3:] = m
+    return out
+
+
+W6 = np.array([1.0, 1.0, 1.0, 1e3, 1e3, 1e3])
+
+
+def install_crank(rb: Any) -> None:
+    """Sec. 8 (form (a)): the first apsis node inside each same-moon leg becomes a crank node. Its
+    7 slots hold w (the unrotated absolute state) and t; the crank angle kappa is an extra unknown
+    after the 7m node unknowns; x = R6(kappa) w about the Jupiter-to-moon line at the departure
+    node. One extra row per crank node: (W (w - x_ref)) . g_hat = 0, g = d/dkappa [R6 x_ref]."""
+    build0, nodes0, end0, rj0 = rb.build, rb.nodes, rb.end_rows, rb.residual_and_jac
+
+    def build(n_cycles: int) -> Any:
+        c = build0(n_cycles)
+        crank: dict[int, dict[str, Any]] = {}
+        last_moon, last_k = None, -1
+        for k, moon in enumerate(c.moons):
+            if moon != APO:
+                last_moon, last_k = moon, k
+                continue
+            nxt = next(m for m in c.moons[k:] if m != APO)
+            if nxt == last_moon and (k - 1 == last_k):  # first apsis node of a same-moon leg
+                t_dep = float(c.seed[7 * last_k + 6])
+                rm, _ = c.eph.state(last_moon, t_dep)
+                axis = np.asarray(rm) / float(np.linalg.norm(rm))
+                x_ref = c.seed[7 * k : 7 * k + 6].copy()
+                _, dr = _rot(axis, 0.0)
+                g = W6 * (_blk(dr) @ x_ref)
+                crank[k] = {
+                    "e": len(crank),
+                    "axis": axis,
+                    "x_ref": x_ref,
+                    "g_hat": g / np.linalg.norm(g),
+                }
+        c.crank = crank
+        c.seed = np.concatenate([c.seed, np.zeros(len(crank))])
+        return c
+
+    def nodes(c: Any, z: Any) -> Any:
+        if not getattr(c, "crank", None) or APO not in c.moons:
+            return nodes0(c, z)
+        nm = 7 * c.m
+        out = nodes0(c, z[:nm])
+        n = len(z)
+        res = []
+        for k, (x, dx, t, dt) in enumerate(out[: c.m]):
+            dxn = np.zeros((6, n))
+            dxn[:, :nm] = dx
+            dtn = np.zeros(n)
+            dtn[:nm] = dt
+            if k in c.crank:
+                cr = c.crank[k]
+                kap = float(z[nm + cr["e"]])
+                r, dr = _rot(cr["axis"], kap)
+                w = z[7 * k : 7 * k + 6]
+                x = _blk(r) @ w
+                dxn = np.zeros((6, n))
+                dxn[:, 7 * k : 7 * k + 6] = _blk(r)
+                dxn[:, nm + cr["e"]] = _blk(dr) @ w
+            res.append((x, dxn, t, dtn))
+        res.extend(out[c.m :])  # rungb's open chain returns exactly c.m nodes
+        return res
+
+    def end_rows(c: Any, z: Any, nd: Any) -> tuple[Any, Any]:
+        nm = 7 * c.m
+        r, j = end0(c, z[:nm], nd)
+        jj = np.zeros((j.shape[0], len(z)))
+        jj[:, : j.shape[1]] = j
+        return r, jj
+
+    def residual_and_jac(c: Any, z: Any, want_jac: bool = True) -> Any:
+        r, j, info = rj0(c, z, want_jac)
+        if not getattr(c, "crank", None):
+            return r, j, info
+        rows, extra = [], []
+        for k, cr in c.crank.items():
+            d = W6 * (z[7 * k : 7 * k + 6] - cr["x_ref"])
+            extra.append(float(d @ cr["g_hat"]))
+            if want_jac:
+                row = np.zeros(len(z))
+                row[7 * k : 7 * k + 6] = W6 * cr["g_hat"]
+                rows.append(row)
+        info["crank"] = [float(z[7 * c.m + cr["e"]]) for cr in c.crank.values()]
+        r = np.concatenate([r, extra])
+        if want_jac:
+            j = np.vstack([j, np.asarray(rows)])
+        return r, j, info
+
+    rb.build, rb.nodes, rb.end_rows, rb.residual_and_jac = build, nodes, end_rows, residual_and_jac
+
+
 def _install_lm_best(rb: Any) -> None:
     """#1044 amendment 2 (LM, analytic Jacobian, then the damped-Newton polish), with #1046
     AMENDMENT 1: the checkpoint keeps the BEST evaluated point, not the last (the last can be a
@@ -179,7 +283,7 @@ def _install_lm_best(rb: Any) -> None:
             try:
                 r, j, info = rb.residual_and_jac(c, zz)
             except RuntimeError:
-                return np.full(7 * c.m, 1e6)
+                return np.full(len(zz), 1e6)
             cache["z"], cache["j"] = zz.copy(), j
             nr = float(np.linalg.norm(r))
             if nr < cache["best"]:
@@ -230,8 +334,10 @@ def main() -> None:
     ap.add_argument(
         "--stage", choices=["build", "sigma", "down", "ias15", "diag", "freeend"], required=True
     )
+    ap.add_argument("--form", choices=["apsis", "crank"], default="apsis")
     args = ap.parse_args()
-    out = ROOT / "data" / f"1046_{args.target}"
+    tag = "1046" if args.form == "apsis" else "1046a"
+    out = ROOT / "data" / f"{tag}_{args.target}"
     out.mkdir(parents=True, exist_ok=True)
     if args.target == "eggie":
         w = _load("run_1043_eggie", ROOT / "scripts" / "run_1043_eggie.py")
@@ -243,6 +349,8 @@ def main() -> None:
             shutil.copy(ROOT / "data" / "1043_eggie" / "pc_chain_n1.json", seed)
         ias15 = w.Q.stage_ias15
         install(rb)
+        if args.form == "crank":
+            install_crank(rb)
         w.Q.build = rb.build  # Q.stage_ias15 calls its module-level build()
     else:
         w = _load("run_1044_run", ROOT / "scripts" / "run_1044_run.py")
@@ -260,9 +368,15 @@ def main() -> None:
             _install_lm_best(rb)  # amendment 1
         ias15 = rb.stage_ias15
         install(rb)
+        if args.form == "crank":
+            install_crank(rb)
     if args.stage == "build":
         c = rb.build(1)
-        info = {"moons": c.moons, "apsis_inserted": c.apsis_inserted}
+        info = {
+            "moons": c.moons,
+            "apsis_inserted": c.apsis_inserted,
+            "crank_nodes": sorted(getattr(c, "crank", {})),
+        }
         (out / "build.json").write_text(json.dumps(info, indent=1))
         rb._log(f"build: nodes {c.moons}; apsis {c.apsis_inserted}")
         for sg in (0.02,):
