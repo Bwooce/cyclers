@@ -23,7 +23,7 @@
    legs: []
    first_published:
      authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
-@@ -9805,6 +9814,20 @@
+@@ -9805,6 +9814,28 @@
      Family-seed entry per the same convention as the VEM-triple
      sibling. Individual members must be split out as per-entry records
      once the full paper text is accessible.
@@ -37,14 +37,22 @@
 +    (V_inf 9.068/7.082/8.207 km/s against 9.12/7.07/8.38; leg times
 +    1.57/8.42/7.27/10.76 d against 1.59/8.60/7.34/10.69; gate pass).
 +    Repeatability: one cycle ballistic in its own model (the gate fails
-+    at cycle 2). Continuous gravity: undecided; with the chain ends
-+    pinned to the patched-conic asymptotes the one-cycle EGGIE folds at
-+    0.505 of the real moon masses, with the end Europa flybys as the
-+    growing defect (#1043; formulation-limited, #1039).
++    at cycle 2). Continuous gravity: the one-cycle EGGIE CLOSES in
++    continuous gravity in the ideal model (#1043 under the #1039
++    formulation (b): end V_inf directions pinned, magnitudes free):
++    joint moon-mass continuation to the real masses at the lane floors,
++    full-mass V_inf E 9.03, G 7.04-7.05, I 7.88 km/s, altitudes
++    1,028-7,726 km, identity with the patched conic at 0.5 % mass
++    (0.002 km/s), IAS15 re-fly 1e-6 km. With the end V_inf vectors
++    pinned it folds at 0.505 of the real masses (an artefact of that
++    formulation). Real ephemeris: not tested; the jup365 lane has no
++    validated published control (#968 rung (b), GanEur#316, not
++    achieved: its interior Europa flyby falls below the surface before
++    full mass under every end formulation tried).
    source_quotes:
      "first_published.title": |
        Semantic Scholar metadata for paper
-@@ -52289,7 +52312,7 @@
+@@ -52289,7 +52320,7 @@
      doi: "10.1016/j.actaastro.2011.03.011"
      url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
    source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"

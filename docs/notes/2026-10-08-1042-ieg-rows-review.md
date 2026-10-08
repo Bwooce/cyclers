@@ -63,3 +63,17 @@ Proposed (in the patch): one sentence appended to `notes`.
 
 Not reviewed (out of scope): `lynam-longuski-2011-gipeipe`, the sibling row. Its notes share the
 "#491 ingestion" suffix; the #1040 sentence would apply to it equally if the lead wants it.
+
+## 3. Refresh (2026-10-08, after #1039 and the lead's #1043 record)
+
+The Hernandez row's continuous-gravity sentence in the patch now says the one-cycle EGGIE CLOSES
+in continuous gravity in the ideal model (#1043 under #1039 formulation (b): full-mass V_inf
+E 9.03, G 7.04-7.05, I 7.88 km/s; altitudes 1,028-7,726 km; identity at 0.5 % mass 0.002 km/s;
+IAS15 1e-6 km). It notes the vector-pin fold at 0.505 as an artefact of that formulation, and says
+the real ephemeris is untested: the jup365 lane has no validated published control (#968 rung (b),
+GanEur#316, not achieved).
+
+The patch was regenerated against `data/catalogue.yaml` at HEAD; the file's last commit is still
+5da84b2b. It is 63 lines. `git apply --check` passes against the current working tree, which also
+holds another agent's uncommitted edit elsewhere in the file. The patched copy passes
+`validate_catalogue` (0 errors) and the JSON schema. Other hunks are unchanged.
