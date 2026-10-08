@@ -2467,9 +2467,10 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
   `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
   the real-ephemeris step decides.
-- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`); the literature step
-  and on the chain tool for rung (d)). **ALL 42 CLEAN TWO-WORKING-BODY MEMBERS OF `#973`** (Ganymede-
-  Callisto 20: k4 10, k5 6, k6 4; Earth-Venus 22: k4 11, k5 11): the literature step (after `#972`),
+- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`); rung (d) waits
+  on the chain tool). **ALL 42 CLEAN TWO-WORKING-BODY MEMBERS OF `#973`** (Ganymede-
+  Callisto 20: k4 10, k5 6, k6 4; Earth-Venus 22: k4 11, k5 11): the literature step (v3 gate, labelled and
+  topologied signatures),
   real-ephemeris rung (d) with the chain tool (jup365 for gc, 10 cycles, 5 epochs; the `#942` ev
   route for ev), the `#1034`-style continuous-gravity sigma continuation for the 20 gc members, and
   prior-art notes (the JUICE C-G-C round trip; Lynam's capture windows at 50.09 d; the H&M k10 block
