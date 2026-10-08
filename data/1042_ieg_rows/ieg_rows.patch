@@ -23,7 +23,7 @@
    legs: []
    first_published:
      authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
-@@ -9805,6 +9814,28 @@
+@@ -9805,6 +9814,30 @@
      Family-seed entry per the same convention as the VEM-triple
      sibling. Individual members must be split out as per-entry records
      once the full paper text is accessible.
@@ -48,11 +48,13 @@
 +    formulation). Real ephemeris: not tested; the jup365 lane has no
 +    validated published control (#968 rung (b), GanEur#316, not
 +    achieved: its interior Europa flyby falls below the surface before
-+    full mass under every end formulation tried).
++    full mass under every end formulation tried; #1044: GanCal#1 at
++    2013 did not start, the open-chain formulation failing across its
++    full-revolution return).
    source_quotes:
      "first_published.title": |
        Semantic Scholar metadata for paper
-@@ -52289,7 +52320,7 @@
+@@ -52289,7 +52322,7 @@
      doi: "10.1016/j.actaastro.2011.03.011"
      url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
    source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"

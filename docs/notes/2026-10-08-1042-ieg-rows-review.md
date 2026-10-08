@@ -77,3 +77,7 @@ The patch was regenerated against `data/catalogue.yaml` at HEAD; the file's last
 5da84b2b. It is 63 lines. `git apply --check` passes against the current working tree, which also
 holds another agent's uncommitted edit elsewhere in the file. The patched copy passes
 `validate_catalogue` (0 errors) and the JSON schema. Other hunks are unchanged.
+
+Refresh 2 (after #1044): the Hernandez paragraph's real-ephemeris sentence also cites #1044 (GanCal#1
+at 2013 did not start: the open-chain formulation fails across its full-revolution return).
+Regenerated against HEAD and validated as before. #1044 does not otherwise touch the IEG rows.
