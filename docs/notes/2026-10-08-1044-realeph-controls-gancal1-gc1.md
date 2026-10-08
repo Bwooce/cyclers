@@ -87,3 +87,33 @@ lane's `JovianRailsCache(JovianEphemeris)` (registry GMs): < 1e-2 km, 1e-7 km/s.
   so that a call can stop and the next resume), then the damped-Newton polish.
 - A diagnostic LM run on gc-1 at sigma = 0.02 took the residual from 2.4e3 to 0.17 in 30 evaluations
   (410 s at machine load 42). The continuation reuses that state.
+
+## 5. Result: neither chain STARTS at sigma = 0.02. No verdict on either; time box reached.
+
+- gc-1 e2 (LM, then Newton): the residual fell from 2.4e3 to 0.0155, and then stalled over two
+  further calls. It sits at a stationary point that is not a root:
+  - the residual is concentrated on the VELOCITY rows of leg 2, the 16.7-day Callisto-Callisto 1:1
+    full-revolution return (up to 1.4e-5 km/s);
+  - it lies along the weakest left singular vector of the column-scaled Jacobian (singular value
+    1.5e-6, against 3.8e-5 for the next);
+  - every other leg, gauge and end row is at or near its floor.
+  The full-revolution return is the near-degenerate part of the problem: a 1:1 return leaves a
+  one-parameter family of resonant directions, and the #943 chain tool had to shoot that leg
+  separately for the same reason. Reading (INFERRED): the periapsis-node, mid-leg-match formulation is
+  ill-conditioned across a full-revolution return. This is not a property of gc-1.
+- GanCal#1 at 2013: the Newton step at the start asks for node moves larger than the nodes' moon
+  distances at its weak flybys (G2 4.0 deg, Callisto 1.0 deg), on either side of its 2:1
+  full-revolution return. The line search crawls; a 200-evaluation LM diagnostic exceeded the 8-minute
+  call. No converged start.
+- So #1044 gives NO verdict on either object. The jup365 lane is still not validated by a published
+  control. The gc-1 row's real-ephemeris continuous-gravity standing is UNDECIDED, limited by the
+  formulation rather than tested.
+- What the three real-ephemeris attempts now share: the closed-chain EGGIE (no full-revolution leg)
+  passes under (b); GanEur#316 (a half-revolution leg) converges but loses its interior Europa flyby;
+  the two full-revolution objects (GanCal#1, gc-1) do not start. Proposed follow-up, not run: a
+  full-revolution-aware formulation. Put a node at the resonant leg's apojove with its own gauge, or
+  parametrise the 1:1 / 2:1 return by its V_inf direction on the resonant circle, as the chain tool
+  does.
+- Suggested data_gaps wording for the gc rows (lead's decision): "real-ephemeris continuous-gravity
+  standing untested: the open-chain n-body formulation does not converge across a full-revolution
+  return (#1044); the ideal-model continuous-gravity closure stands (#1034)".

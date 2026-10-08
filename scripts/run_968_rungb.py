@@ -53,7 +53,12 @@ ALL4 = ("Io", "Europa", "Ganymede", "Callisto")
 W = np.array([1.0, 1.0, 1.0, 1e3, 1e3, 1e3])
 W_GAUGE = 1e4
 RTOL, ATOL = 1e-13, 1e-12  # amendment 10
-FLOOR_KM = {GAN: 100.0, EUR: 100.0}
+FLOOR_KM = {GAN: 100.0, EUR: 100.0, "Callisto": 200.0}
+# #1044: per-cycle encounter count, force moons and sigma-scaled moons (defaults: GanEur#316)
+PER_CYCLE = 5
+SEED_CAP_KM: float | None = None  # None: the lane default (0.6 SOI); #1044 sets 1e12 (no clamp)
+FORCE: tuple[str, ...] = (GAN, EUR)
+SCALED: tuple[str, ...] = (GAN, EUR)
 SOI_LIMIT = 0.5  # rung (b) acceptance (amendment 8 item 6); callers may override
 Arr = NDArray[np.float64]
 
@@ -96,7 +101,7 @@ class Chain:
     chain_vinf: list[float]  # the reconstructed chain's V_inf at nodes 1..M
     vin_first: Arr  # amendment 12: the chain's inbound V_inf vector at node 1
     vout_last: Arr  # and its outbound V_inf vector at node M
-    force: tuple[str, ...] = (GAN, EUR)
+    force: tuple[str, ...] = (GAN, EUR)  # build() passes FORCE
     mus: dict[str, float] = field(default_factory=dict)
     surf: dict[str, float] = field(default_factory=dict)
 
@@ -108,14 +113,14 @@ class Chain:
         self.mus = {k: s * SATELLITES[k].mu_km3_s2 for k in self.force}
         self.surf = {k: s * SATELLITES[k].radius_eq_km for k in self.force}
         for k in self.force:
-            if k not in (GAN, EUR):  # Io / Callisto (step 8) always at full mass
+            if k not in SCALED:  # moons outside SCALED (step 8) stay at full mass
                 self.mus[k] = SATELLITES[k].mu_km3_s2
                 self.surf[k] = SATELLITES[k].radius_eq_km
 
 
 def build(n_cycles: int) -> Chain:
     d = json.loads((OUT / "seed_chain.json").read_text())
-    fl = d["flybys"][: 5 * n_cycles]
+    fl = d["flybys"][: PER_CYCLE * n_cycles]
     x0 = d["x0_s_past_jd2440000"] + OFF
     t_end = fl[-1]["t_s_past_jd2440000"] + OFF
     eph = SplineEphem(x0 - 2 * DAY, t_end + 2 * DAY)
@@ -126,7 +131,12 @@ def build(n_cycles: int) -> Chain:
     for f in fl:
         t = f["t_s_past_jd2440000"] + OFF
         r, v, _ = periapsis_node(
-            f["body"], t, np.asarray(f["vinf_in"]), np.asarray(f["vinf_out"]), eph.j
+            f["body"],
+            t,
+            np.asarray(f["vinf_in"]),
+            np.asarray(f["vinf_out"]),
+            eph.j,
+            max_offset_km=SEED_CAP_KM,
         )
         rm, vm = eph.state(f["body"], t)
         z.extend([*(r - rm), *(v - vm), t])  # moon-relative node coordinates
@@ -139,6 +149,7 @@ def build(n_cycles: int) -> Chain:
         [f["vinf_kms"] for f in fl],
         np.asarray(fl[0]["vinf_in"], dtype=np.float64),
         np.asarray(fl[-1]["vinf_out"], dtype=np.float64),
+        force=FORCE,
     )
 
 
@@ -595,7 +606,7 @@ def stage_ias15(n_cycles: int) -> None:
     nd = nodes(c, z)
     lo = min(t for _, _, t, _ in nd) - DAY
     hi = max(t for _, _, t, _ in nd) + DAY
-    cache = JovianRailsCache((GAN, EUR), c.eph.j, lo, hi)
+    cache = JovianRailsCache(FORCE, c.eph.j, lo, hi)
     prop = JovianRestrictedNBody()
     rows = []
     for k in range(c.m - 1):
@@ -605,7 +616,7 @@ def stage_ias15(n_cycles: int) -> None:
         for lab, x0, t0 in (("fwd", xp, tp), ("bwd", xn, tn)):
             xd, _ = arc(c, x0, t0, tm)
             a = prop.propagate(
-                x0[:3], x0[3:], t0, tm, moons=(GAN, EUR), cache=cache, max_wall_sec=3000.0
+                x0[:3], x0[3:], t0, tm, moons=FORCE, cache=cache, max_wall_sec=3000.0
             )
             if not a.converged or abs(a.t1_sec - tm) > 1e-6:
                 rows.append({"leg": k, "dir": lab, "status": "timeout"})
