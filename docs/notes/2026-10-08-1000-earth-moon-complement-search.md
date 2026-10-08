@@ -166,6 +166,61 @@ classes found" is a result.
   Also: the k-minimality test uses |P^d(z) - z| < 1e-6, and the control-level candidates are
   refined first.
 
-## 1. Results
+## 1. Results: the formulation FAILS its positive control and is rejected (sec. 0.6)
 
-(after the runs)
+Runs 2026-10-08 11:20-11:47 AEDT.
+- The scan is complete: 16,704 seeds, 0.02-0.13 s per seed, Pool(2), foreground calls of at most
+  7 minutes. 329 seeds passed the candidate filter.
+- Newton ran on 96 of them, control levels first. **None converged.** 76 reached the iteration
+  limit, and 20 lost the k-th return.
+
+**Why: a check on the control itself** (scratch scripts; numbers from the catalogue row
+casoliva-7-3b, which is asymmetric, C = 1.068655, T = 18.8496):
+- **The map is right.** The row's orbit has exactly 7 perigees per period (radii 15,710-33,919 km,
+  all inside the grid's r_p range). At its 3rd perigee, z = (ln r_p, omega) = (-3.19736, 2.41093
+  rad), retrograde sheet, the residual is |P^7(z) - z| = 4.5e-8. Newton started there converges
+  in 2 iterations to 8.5e-10.
+- **The basin is far smaller than the grid.** The residual grows about 66 times faster than a
+  perturbation in ln r_p:
+  - perturbation 0.001 gives residual 0.066;
+  - perturbation 0.005 gives 0.22, already nonlinear;
+  - perturbation 0.05 gives 0.79.
+  The monodromy has lambda about 57 for 7-3b. Newton from a 0.05 offset fails. The grid spacing
+  is 0.27 in ln r_p and 0.17 rad in omega.
+- **The filter cannot see the control.** At the cells next to the control fixed point (C =
+  1.0687, retrograde sheet, k = 7), the scan residuals are 0.47-3.1, all above the 0.3 threshold.
+  Over the whole level, only 14 cells are below 0.5.
+
+**Conclusion.**
+- A coarse return-map grid with a residual-threshold filter cannot find strongly unstable fixed
+  points. The Earth-Moon cycler-class orbits are all strongly unstable (lambda 10-1e3). Their
+  linear basin in the section is about 1e-3 wide, 100 times finer than any affordable global grid.
+- Under the pre-registration, this formulation is rejected. **No result of the form "nothing
+  found" is stated from it.** The 96 non-convergences are a property of the method, not of the
+  region.
+- Data kept: the scan JSONL (`data/1000_complement/scan/`, 6.9 MB, not committed; kept locally
+  for re-use) and `data/1000_complement/refined.jsonl` (the 96 failed refinements).
+
+**Proposed redesign** (for the lead's decision; nothing has run):
+1. **Multiple shooting from near-Keplerian resonant skeletons.** This is the construction Casoliva
+   et al. used for the 7-3 class.
+   - For each p:q Earth resonance (a = (q/p)^(2/3) about the Earth, with the apocentre or
+     pericentre chosen to meet the Moon), take the Kepler ellipse at an ARBITRARY orientation
+     and phase (that is what lets asymmetric orbits appear).
+   - Correct it by multiple shooting: N arcs, one per perigee, with continuity, fixed C and
+     periodicity constraints, and the phase condition removed.
+   - Multiple shooting spreads the instability over N arcs, so the basin per arc is lambda^(1/N)
+     wider.
+   - Positive control first: 7-3b/c from p:q = 7:3 skeletons.
+2. **Symmetry breaking at pitchforks.** Asymmetric families branch from symmetric ones where b
+   crosses +2.
+   - Locate b = +2 points along the `#997` families and along RR's symmetric records (RR stores
+     b_h).
+   - Branch along the antisymmetric eigenvector.
+   - This finds only asymmetric families connected to known symmetric parents, so it needs no
+     separate known-class gate, but it is not a complement search.
+3. A local fine grid (ln r_p and omega steps of about 1e-3) around the scan's best cells. This is
+   too expensive globally: about 1e5 times the current grid.
+
+My recommendation is (1) with the 7-3b/c control, then (2) as the pitchfork-parent gate. Each
+needs its own pre-registration amendment before it runs.

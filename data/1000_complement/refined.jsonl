@@ -1,0 +1,96 @@
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 27, "k": 3, "res0": 0.23096774011190369, "t_k": 5.8954806731001215, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 9, "k": 3, "res0": 0.23334333312388442, "t_k": 6.069961532589504, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 3, "k": 5, "res0": 0.1588865691016945, "t_k": 12.906785357635664, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 24, "k": 5, "res0": 0.2355202951146948, "t_k": 12.92923317039916, "converged": false, "why": "no k-th return", "it": 6}
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 7, "k": 5, "res0": 0.08415317939898422, "t_k": 12.487734587415734, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 29, "k": 5, "res0": 0.09166552384018452, "t_k": 12.518903310803045, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 7, "iw": 1, "k": 5, "res0": 0.2522200093742729, "t_k": 12.206217558338242, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 4, "iw": 16, "k": 6, "res0": 0.23050669398769363, "t_k": 18.937830988276133, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 1, "k": 6, "res0": 0.29864952464521943, "t_k": 19.214156293620814, "converged": false, "why": "no k-th return", "it": 3}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 20, "k": 7, "res0": 0.11227555120804106, "t_k": 19.043712882682126, "converged": false, "why": "no k-th return", "it": 3}
+{"C": 1.0672, "sense": -1, "ir": 1, "iw": 0, "k": 6, "res0": 0.014168812730067804, "t_k": 18.968608349651124, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 5, "iw": 31, "k": 7, "res0": 0.279913372311302, "t_k": 19.0859283181907, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 0, "k": 7, "res0": 0.1834219732573069, "t_k": 18.930615781934574, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 34, "k": 7, "res0": 0.213426929140548, "t_k": 18.97443103473106, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 1.0687, "sense": -1, "ir": 3, "iw": 29, "k": 2, "res0": 0.19554103738812242, "t_k": 6.244952294207261, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0672, "sense": -1, "ir": 6, "iw": 14, "k": 7, "res0": 0.25761818508036965, "t_k": 18.63391717157507, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 9, "k": 3, "res0": 0.27170104841679893, "t_k": 5.984244220424741, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 27, "k": 3, "res0": 0.2503445742825423, "t_k": 5.829985792439953, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 3, "k": 5, "res0": 0.15749667484882449, "t_k": 12.907790396598825, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 24, "k": 5, "res0": 0.23277853904238788, "t_k": 12.932740961384859, "converged": false, "why": "no k-th return", "it": 7}
+{"C": 1.0687, "sense": -1, "ir": 4, "iw": 31, "k": 5, "res0": 0.19243143306697885, "t_k": 12.408175602906056, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 34, "k": 5, "res0": 0.2342081027584848, "t_k": 12.972891229381878, "converged": false, "why": "no k-th return", "it": 10}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 7, "k": 5, "res0": 0.07048600485238515, "t_k": 12.475403838972387, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 29, "k": 5, "res0": 0.08446594708515402, "t_k": 12.5110024720032, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 7, "iw": 1, "k": 5, "res0": 0.27520784802925385, "t_k": 12.185493992557081, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 1, "iw": 0, "k": 6, "res0": 0.1352303096038732, "t_k": 18.881761613437597, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 4, "iw": 15, "k": 6, "res0": 0.16596423715348732, "t_k": 18.83867898881687, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 1, "k": 6, "res0": 0.29967811408953676, "t_k": 19.211188363988818, "converged": false, "why": "no k-th return", "it": 3}
+{"C": 1.0687, "sense": -1, "ir": 4, "iw": 35, "k": 6, "res0": 0.2579258361063329, "t_k": 19.084114973138973, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 3, "iw": 4, "k": 7, "res0": 0.1849477635540434, "t_k": 19.03446990753141, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 5, "iw": 31, "k": 7, "res0": 0.297546890592802, "t_k": 19.103515950091634, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 0, "k": 7, "res0": 0.1627032300075452, "t_k": 18.91702667492235, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 19, "k": 7, "res0": 0.1463984788557413, "t_k": 18.859205093248683, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 14, "k": 7, "res0": 0.2606077585335532, "t_k": 18.631243240133873, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 13, "k": 3, "res0": 0.2989214558800005, "t_k": 12.45443648099737, "converged": false, "why": "max iterations", "it": 15}
+{"C": 1.0687, "sense": -1, "ir": 6, "iw": 21, "k": 7, "res0": 0.20145566092007489, "t_k": 18.731122435037513, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 6, "iw": 23, "k": 3, "res0": 0.19899661394090146, "t_k": 12.488341319861119, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 6, "iw": 30, "k": 3, "res0": 0.22756531078805434, "t_k": 12.613215994578416, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 7, "iw": 0, "k": 3, "res0": 0.23503691839767243, "t_k": 12.466148852695268, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 24, "k": 4, "res0": 0.2906535969841136, "t_k": 18.64850318042559, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 4, "iw": 22, "k": 5, "res0": 0.20412921177388269, "t_k": 25.347635914443565, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 6, "k": 5, "res0": 0.20009235524266478, "t_k": 25.013540699157705, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 11, "k": 5, "res0": 0.21655335110561194, "t_k": 25.10554108101426, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 18, "k": 5, "res0": 0.09389790370640602, "t_k": 25.281840408831094, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 7, "iw": 4, "k": 5, "res0": 0.07936363334620422, "t_k": 18.92767903078972, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 7, "iw": 11, "k": 5, "res0": 0.22178473098993937, "t_k": 19.11315050391651, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 7, "iw": 24, "k": 5, "res0": 0.09617366964702072, "t_k": 18.9222971347662, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 5, "iw": 21, "k": 6, "res0": 0.14555711065787694, "t_k": 25.097589715965466, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 0.5, "sense": -1, "ir": 7, "iw": 32, "k": 5, "res0": 0.24129970329839373, "t_k": 18.85815121546335, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 6, "iw": 1, "k": 6, "res0": 0.07903817264017911, "t_k": 25.163683696835783, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 6, "iw": 12, "k": 6, "res0": 0.19153781418773153, "t_k": 25.333222020166147, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 7, "k": 2, "res0": 0.2723906312406914, "t_k": 6.542755103757199, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 23, "k": 2, "res0": 0.1770774528542686, "t_k": 6.310024448609598, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.5, "sense": -1, "ir": 6, "iw": 31, "k": 6, "res0": 0.23501931618347482, "t_k": 25.433106855928933, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 13, "k": 3, "res0": 0.25948123073674484, "t_k": 12.664507855711943, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 22, "k": 3, "res0": 0.2059334422013416, "t_k": 12.598270762293184, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 5, "iw": 30, "k": 3, "res0": 0.15130264945473015, "t_k": 12.685852734474954, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 6, "iw": 0, "k": 3, "res0": 0.22278597590885973, "t_k": 12.454938595623933, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 10, "k": 4, "res0": 0.28816855134715674, "t_k": 19.209410120733185, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 5, "iw": 33, "k": 4, "res0": 0.2987613430976912, "t_k": 18.800304217440704, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 19, "k": 5, "res0": 0.2554767490245512, "t_k": 25.474748747902158, "converged": false, "why": "no k-th return", "it": 5}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 25, "k": 4, "res0": 0.24804587296509537, "t_k": 12.817524003658608, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 32, "k": 5, "res0": 0.11762103843464446, "t_k": 25.08932614828009, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 5, "iw": 28, "k": 5, "res0": 0.19640459759240622, "t_k": 19.06820764333309, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 6, "iw": 11, "k": 5, "res0": 0.17225418757119737, "t_k": 19.046133205350447, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 6, "iw": 24, "k": 5, "res0": 0.09785787841295955, "t_k": 18.893206684118013, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 13, "k": 6, "res0": 0.25058955101638364, "t_k": 24.887974121746563, "converged": false, "why": "no k-th return", "it": 6}
+{"C": 0.6, "sense": -1, "ir": 4, "iw": 22, "k": 6, "res0": 0.18679407302422607, "t_k": 24.947459691487264, "converged": false, "why": "no k-th return", "it": 4}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 19, "k": 5, "res0": 0.27148393684967603, "t_k": 19.185826548997934, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 9, "k": 6, "res0": 0.29932449548954004, "t_k": 19.07973701571876, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 5, "iw": 1, "k": 6, "res0": 0.16783538175117527, "t_k": 25.29493922238694, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 6, "iw": 23, "k": 2, "res0": 0.18940312809159682, "t_k": 6.344390383037521, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 10, "k": 2, "res0": 0.21299791951738858, "t_k": 6.133010219594848, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.6, "sense": -1, "ir": 7, "iw": 26, "k": 6, "res0": 0.2803378257016839, "t_k": 19.087623404337105, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 28, "k": 2, "res0": 0.12008362083911009, "t_k": 6.238455850450941, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 35, "k": 2, "res0": 0.12759413966723057, "t_k": 6.276562243702871, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 0, "k": 3, "res0": 0.23892592404973073, "t_k": 12.51262643315671, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 19, "k": 3, "res0": 0.2635643875368425, "t_k": 12.869373685431944, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 11, "k": 4, "res0": 0.21745946027740978, "t_k": 12.57862072348747, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 17, "k": 4, "res0": 0.29994896592411985, "t_k": 12.482426857699144, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 28, "k": 4, "res0": 0.14374193591759105, "t_k": 12.67325444171829, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 35, "k": 4, "res0": 0.28088982256734996, "t_k": 12.353089314575492, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 1, "iw": 23, "k": 5, "res0": 0.19411712158208352, "t_k": 25.072995558326074, "converged": false, "why": "no k-th return", "it": 3}
+{"C": 0.7, "sense": -1, "ir": 3, "iw": 5, "k": 5, "res0": 0.1831205922424565, "t_k": 24.970096442635214, "converged": false, "why": "no k-th return", "it": 12}
+{"C": 0.7, "sense": -1, "ir": 3, "iw": 30, "k": 5, "res0": 0.23267273130370034, "t_k": 24.90182065023851, "converged": false, "why": "no k-th return", "it": 13}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 22, "k": 5, "res0": 0.24557129398777117, "t_k": 18.935496748695098, "converged": false, "why": "no k-th return", "it": 7}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 10, "k": 5, "res0": 0.2828982722089765, "t_k": 18.675693817038468, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 24, "k": 5, "res0": 0.2168951986066163, "t_k": 19.057150132502766, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 6, "iw": 4, "k": 5, "res0": 0.17973053548301948, "t_k": 19.027388581863793, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 3, "iw": 14, "k": 6, "res0": 0.05943719261089806, "t_k": 25.06521770097192, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 3, "iw": 22, "k": 6, "res0": 0.16736489919294195, "t_k": 24.958245513281412, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 14, "k": 6, "res0": 0.22200050934177964, "t_k": 19.07469626727116, "converged": false, "why": "no k-th return", "it": 2}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 0, "k": 6, "res0": 0.10321824264952557, "t_k": 25.193479636656345, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 5, "iw": 19, "k": 6, "res0": 0.196024232523758, "t_k": 25.430097387090065, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 10, "k": 6, "res0": 0.1902605833221189, "t_k": 18.918615329930397, "converged": false, "why": "max iterations", "it": 15}
+{"C": 0.7, "sense": -1, "ir": 7, "iw": 19, "k": 6, "res0": 0.26384395749665673, "t_k": 18.90176369476145, "converged": false, "why": "max iterations", "it": 15}
