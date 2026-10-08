@@ -2068,6 +2068,30 @@ Against:
 - The catalogue `model_assumption` of the 15 H&M rows.
 - The two YAML transcription fixes.
 
+### 6.55a Amendment to 6.55 (2026-10-08, lead ruling (b)), committed before any pre-registered epoch is run
+
+Reason: the 6.55 method failed its natural positive control. Epoch 0 (JD 2463054.0) passes as a 4-cycle
+direct solve (6.23, worst 0.933). In a scratch smoke test of 6.55 at that epoch (code 7566a358):
+- the 1-cycle direct solve did not converge (0.049 km/s);
+- the 1-cycle ramp-lambda continuation stalled at lambda 0.842;
+- so the chain never grew, and a known pass read as a fail.
+A 1-cycle chain is a different closure problem (its wrap junction), not a smaller version of the
+4-cycle one.
+
+Amended method (Standish mean elements, ramp mode, unchanged otherwise):
+1. At the 4-cycle length, the ramp-lambda continuation from the ideal model (6.18; lambda 0 -> 1,
+   step 0.1 halved down to 1/640). Command: `--real mean --n-cycles 4` (no `--direct`, no growth).
+2. If step 1 stalls: start at 2 cycles with the same ramp continuation, then grow 2 -> 3 -> 4. Each
+   length is seeded from the previous one (last cycle's dates moved by one cycle), a direct
+   lambda = 1 solve first, then the ramp continuation at that length. Command:
+   `--real mean --n-cycles 4 --grow-chain --grow-start 2`.
+
+POSITIVE CONTROL: epoch 0 must PASS under this method. If it does not, stop and report; no further
+amendment.
+
+Then epochs 1, 2 and 4. The PASS criteria of 6.55 are unchanged, and the checker re-fly is run at every
+epoch.
+
 ### 6.56 Addendum (2026-10-07, from #973, relayed by the lead)
 
 The pass definition of sec. 6.1 had two gaps:
