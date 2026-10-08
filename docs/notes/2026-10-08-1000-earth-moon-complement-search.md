@@ -346,12 +346,12 @@ with `diff -rq`: identical, 58 files, 16,704 records.
   - The asymmetric candidates form four families (p:q, inertial sense, winding about the Earth,
     winding about the Moon):
 
-| family | grid members | C | T (TU) | perigee alt (km) | periselene alt (km) | b (in-plane) | max Moon distance (km) |
+| family | grid members | C | T (TU) | perigee alt (km) | periselene alt (km) | b (in-plane, from arc STMs; sec. 6) | max Moon distance (km) |
 |---|---|---|---|---|---|---|---|
-| A: 5:2 prograde, wE 3, wM 0 | 3 | 2.478-2.592 | 12.71-12.73 (about 4 pi) | 3,164-8,748 | 13,153-16,348 | -83 to -121 | about 790,000 |
-| B: 5:3 retrograde, wE -8, wM -2 | 4 | 0.728-0.864 | 18.89-18.90 (about 6 pi) | 3,385-10,789 | 18,881-21,188 | +127 to +239 | about 950,000 |
-| C: 7:3 retrograde, wE -10, wM -1 | 13 | 0.882-1.163 | 18.80-19.12 | 4,229-26,908 | 5,673-12,520 | +2.0 to +118 | about 800,000 |
-| D: 7:3 prograde, wE 4, wM -1 | 2 | 2.422-2.547 | 18.66-18.82 | 365-5,754 | 10,768-13,774 | +512 to +719 | about 810,000 |
+| A: 5:2 prograde, wE 3, wM 0 | 3 | 2.478-2.592 | 12.71-12.73 (about 4 pi) | 3,164-8,748 | 13,153-16,348 | -110 to -121 | about 790,000 |
+| B: 5:3 retrograde, wE -8, wM -2 | 4 | 0.728-0.864 | 18.89-18.90 (about 6 pi) | 3,385-10,789 | 18,881-21,188 | +115 to +130 | about 950,000 |
+| C: 7:3 retrograde, wE -10, wM -1 | 13 | 0.882-1.163 | 18.80-19.12 | 4,229-26,908 | 5,673-12,520 | +2.0 to +80 | about 800,000 |
+| D: 7:3 prograde, wE 4, wM -1 | 2 | 2.422-2.547 | 18.66-18.82 | 365-5,754 | 10,768-13,774 | +512 to +718 | about 810,000 |
 
 - **Continuations** (`data/1000_complement/continuation/`, `scripts/run_1000_continue.py`).
   - Fixed-C multiple shooting, with the sec. 0.3 rules.
@@ -362,12 +362,17 @@ with `diff -rq`: identical, 58 files, 16,704 records.
     whole period drifts off the orbit and gives a wrong b: one member gave -508 by single
     shooting against +115 from the arc STMs.
 
-| family | continued C range | candidates | stop (each direction) |
+| family | continued C range | distinct members (candidates) | stop (each direction) |
 |---|---|---|---|
-| A | 2.4107-2.5804 | 84 | max steps / max steps |
-| B | 0.6703-0.9418 | 78 | max steps / Earth floor at C 0.9418 |
-| C | 0.9239-1.1188 | 46 | loss of convergence at 0.924 / max steps |
-| D | 2.4136-2.5601 | 34 | Earth floor at 2.4136 / loss of convergence at 2.5601 |
+| A | 2.4109-2.5804 | 81 (81) | max steps / max steps |
+| B | 0.6703-0.9418 | 77 (76) | max steps / Earth floor at C 0.9418 |
+| C | 0.9239-1.1188 | 43 (43) | loss of convergence at 0.924 / max steps |
+| D | 2.4136-2.5601 | 33 (32) | Earth floor at 2.4136 / loss of convergence at 2.5601 |
+
+Counts are de-duplicated: the seed appears in both direction files, and stop rows repeat a
+member. A's grid member at C = 2.5916 lies just beyond A's continued range (which ends at
+2.5804). It has the same topology and a b on trend (-121 against -120 at 2.580). It is
+CONSISTENT with family A, but that is not shown by continuation.
 
 - Family C passes through casoliva-7-3b. Interpolated at the row's C = 1.068655, the
   continuation members (C = 1.0658 and 1.0700) give T = 18.84964 against the row's 18.8496,
@@ -376,7 +381,7 @@ with `diff -rq`: identical, 58 files, 16,704 records.
 - No continuation of A, B or D reached b = +2 or met a symmetric orbit. Within the computed
   ranges, **no pitchfork parent is found for A, B or D** (sec. 0.5 item 5).
 
-### 4.2 Method (2) control: PASSED
+### 4.2 Method (2) control (see sec. 6, amendment A3: the pre-registered variant FAILED; the replacement passed)
 
 - **Approach** (`scripts/run_1000_pitchfork.py control`).
   - Family C's lowest-C grid member (C = 0.881505, T = 19.12309, b = 2.023) was continued
@@ -395,9 +400,14 @@ with `diff -rq`: identical, 58 files, 16,704 records.
     and -eta solutions are mirror images: same C and T to 1e-12.
 - **Match.** At eta = +-0.01 the branch is at C = 0.8815145, T = 19.1230159. Interpolated to the
   grid member's C = 0.881505, it gives T = 19.123094 against the grid member's 19.12309.
-- **So method (2), applied at the parent, regenerates the 7-3b/c branch.** With 4.1, the chain
-  is: pitchfork parent (C 0.8814) -> branch -> grid members (C 0.88-0.92) -> continuation
-  (0.92-1.12) -> casoliva-7-3b (C 1.0687). Method (2) is accepted.
+- **So the eta variant, applied at the parent, regenerates the 7-3b/c branch.** With 4.1, the
+  chain is: pitchfork parent (C 0.8814) -> branch -> grid members (C 0.88-0.92) -> continuation
+  (0.92-1.12) -> casoliva-7-3b (C 1.0687).
+- **Status.** The branching step AS PRE-REGISTERED (eigenvector perturbation at fixed C +- dC)
+  failed this control, 36 of 36. Under the hard-stop rule that rejects it. The eta variant was
+  introduced after that failure and checked on the SAME control, so the control is not an
+  independent test of it (sec. 6, A3). Results from the eta variant are labelled as such and
+  await the lead's ruling.
 - The parent is a symmetric 7:3 retrograde family at C = 0.8814 and T = 19.124.
   - It is not `#997` F4 3/7-r: that family stops at C 0.8997 with T 18.95.
   - It lies below RR's J range (2.119), so RR cannot contain it.
@@ -408,10 +418,12 @@ with `diff -rq`: identical, 58 files, 16,704 records.
 
 ### 5.1 Method (2) on the `#997` and RR parents
 
-- **`#997` b = +2 crossings** (`data/1000_complement/pitchfork/parents997.jsonl`): six member
-  pairs.
+- **`#997` b = +2 crossings** (`data/1000_complement/pitchfork/parents997.jsonl`; eta variant,
+  pending the ruling in sec. 6): six member pairs.
   - Folds (C extremal; no asymmetric branch, as expected): F2-1 near C -0.489, and F3-6/F3-7
-    near C 2.6695.
+    near C 2.6695. The JSONL's automatic guess marks F3-6/F3-7 "pitchfork?". The fold call
+    rests on C being at its maximum there (`#997` F3's C range ends at 2.6695) and on no
+    asymmetric branch appearing.
   - Pitchforks that give an asymmetric branch:
     - 2:3 retrograde at C = -0.620969, T 14.325. The branch has perigee about 206,000 km alt:
       **not cycler-class**.
@@ -460,7 +472,8 @@ distance is 750,000-1,950,000 km.
      2-1, 3-2 and 7-3. So under spec sec. 16.4 these are at most computed members of a
      published class, at p:q values or senses the source did not tabulate.
    - That is my reading, not an adjudication. **`#972` decides.** All three are strongly
-     unstable (|b| about 100-800), and A, B and D each reach the Earth floor at one end.
+     unstable (|b| about 100-800). B and D reach the Earth floor at one end (C 0.9418 and
+     2.4136). A stopped at the step cap in both directions; its lowest perigee is 495 km alt.
 3. **Family C is the Casoliva 7-3b/c class:** known-class (the rows are on it).
 4. **Symmetric candidates.**
    - F3 (Vaquero 2:1) and F4 3/7-r (Casoliva 7-3a) are known.
@@ -474,3 +487,43 @@ distance is 750,000-1,950,000 km.
    - 54% of the grid solves impacted and 11% hit the iteration limit.
    - Continuations stopped mostly at the 40-step cap.
    - The grid is one 10 deg orientation sampling at a single (free) C per seed.
+
+## 6. Checks after review, and amendment A3 (2026-10-08 14:10 AEDT)
+
+- **A, B and D are asymmetric** (`scripts/run_1000_asym_check.py`,
+  `data/1000_complement/asym_check.json`).
+  - Every asymmetric grid member, and every 5th continuation member, was re-solved by multiple
+    shooting. The minimum |xdot| at any y = 0 crossing was then taken ARC BY ARC from the
+    nodes, not from one full-period integration (which drifts).
+
+| family | min over members of min |xdot| at y = 0 |
+|---|---|
+| A | 0.0917-0.0919 |
+| B | 0.150-0.174 |
+| D | 0.012-0.038 |
+| C (Casoliva 7-3b/c) | 0.0095 at its lowest grid member, next to the pitchfork; 0.08-0.26 elsewhere |
+
+  - All values are 1e4 or more times the 1e-6 symmetry threshold, so the asymmetric labels
+    stand.
+  - One grid member of A (C 2.478) did not re-solve and is not counted.
+  - The b values in sec. 4.1 come from these arc-STM products.
+- **Amendment A3 (method (2) branching).**
+  - The pre-registered step perturbed along the monodromy eigenvector at fixed C +- dC. It
+    failed the control 36 of 36 times: every solve was ill-conditioned at the bifurcation, a
+    known property of fixed-C shooting at a pitchfork. By the sec. 2.2 hard stop, **that
+    variant is rejected.**
+  - Replacement, introduced after the failure (13:30 AEDT): the symmetry-breaking parameter.
+    Node 0 is placed at the parent's perpendicular crossing, with y(node 0) = 0 and xdot(node 0)
+    = eta, and C free.
+  - On the same control it regenerates the 7-3b/c branch (sec. 4.2). Because the control was
+    used to develop it, that is not an independent validation.
+  - Everything produced by it is labelled "eta variant": the control branch, `parents997.jsonl`,
+    and sec. 5.1. **Ruling requested from the lead.** None of it changes the cycler-class
+    verdict: A, B and D come from method (1), and method (2) found nothing cycler-class.
+- **Evidence-only flag (no catalogue edit).** Casoliva 2010 Table 3 prints 7-3b and 7-3c with the
+  SAME C (1.0687623900) and the SAME k (57.3519357), which suggests they are mirror images of
+  each other. The catalogue's casoliva-7-3c row sits at C = 1.067197 (`#801`'s reproduction),
+  and here its mirror is recovered 23 times against 1 for the row orientation.
+- **Correction to commit e450d69d.** That commit's message describes these note edits, but they
+  failed to apply (a text-anchor mismatch). It committed only the check script and its output.
+  The edits are applied in the next commit.
