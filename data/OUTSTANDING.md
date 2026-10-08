@@ -2783,6 +2783,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   preparation now; applied in the next ratchet window. The `#1049` notes patch is folded in here. The
   `#1000` sec. 4.1 wording is being corrected ("through its mirror image"); family C's known-class verdict
   is unchanged.
+  **PREPARED 2026-10-08 (`74ae54eb`; note `docs/notes/2026-10-08-1053-casoliva-7-3c-row-rederivation.md`):**
+  7-3c re-derived as the exact mirror of the 7-3b row at C = 1.068655371747616, T = 18.849632202115544,
+  closure 4.4e-9. It matches the printed 7-3c initial condition to 5e-6 / 8e-7 / 1.5e-5, T to 4e-6
+  relative and k to 7e-5 relative; periselene 13,204 km against the printed 13,210 km; k_par 57.356,
+  k_perp -2.270 (the same as 7-3b). Patches in `data/1053_casoliva_7-3c_rederive/` (catalogue, plus the
+  `validate.py` evidence text); schema, validate and invariants: 0 errors; no frozen ratchet is expected
+  to move. Window: together with `#1042`, after the `#1045` A1 suite; earthmoon-opus applies.
 - `#1054` — registered 2026-10-08 (from `#1048`; BACKLOG). **`#1000` SEED-DESIGN FIX:** perigee r_p at least
   1.3 times the floor, omega chosen by the target lunar-pass distance, and a perigee step limit; the
   current seeds impact in 93-94 % of solves when the skeleton passes near the Moon or the seed perigee
