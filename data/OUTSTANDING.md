@@ -2250,7 +2250,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   DEEP-SPACE MANOEUVRES.** Powered (Merrill-class forced trajectory); a `#867` sub-cell only if the
   owner's admissibility rule allows. Source:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 4.
-- `#1000` — registered 2026-10-07 (owner: "log all possible tasks"); status: OPENED by the
+- `#1000` — ✓ COMPLETE 2026-10-08 (collision table `308068ea`, `55740dd9`). Registered 2026-10-07 (owner:
+  "log all possible tasks"); status: OPENED by the
   OWNER RULING 2026-10-07 ~21:50 AEDT (the owner's own answer): the Earth-Moon gate of 2026-10-05 is OPEN for this task. QUEUED: starts when `#973` and
   CI free the machine. **EARTH-MOON EXTERIOR FRANZ-RUSSELL / RESTREPO-RUSSELL
   COMPLEMENT GRID SEARCH (ASYMMETRIC, EARTH-CIRCULATING).** The databases' exclusions are recorded
@@ -2288,6 +2289,15 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   J range). Reading for the literature step: computed members of Casoliva's Class 1 p-q resonant class
   at untabulated p:q or sense, to be shown row by row (dispatched). Nothing called novel; literature
   step `#1047`, gated on `#1045`. Gaps: `#1048`; side flag: `#1049`.
+  **COLLISION TABLE DONE 2026-10-08 (`308068ea`, `55740dd9`; note sec. 5.1b): NO held source has a literal
+  member of A (5:2 prograde), B (5:3 retrograde) or D (7:3 prograde)** under the rule: same p:q and
+  sense, |dC| < 0.01, |dT| / T < 1e-3, altitudes within 10 %, Earth-Moon mu. All three are labelled
+  "candidate, literature step deferred (`#972` v3, `#1045`)". Class-level context: Casoliva 2010 names
+  5-2 as allowable but tabulates only 1-2, 2-1, 3-2 and 7-3 (all four 7-3 rows wind retrograde, so D has
+  the opposite sense); Casoliva 2008 seeds 52a / 73a are at mu = 1e-6 only; Liang 2017 has 5:2 and 7:3
+  polygonal-like orbits at C 3.10 / 3.19 with no lunar pass (a connection to A or D is unknown, because
+  of the continuation cap: `#1050`); Liang 2020 is 2:1 only; Vaquero 2:1 and 3:1; Newton 1/2;
+  Hoelker-Winston none; Genova-Aldrin 2:1, 3:1 and the Arenstorf 4-leaf.
 - `#1001` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (census, inside
   `#905` deduplication). **CENSUS: STABILITY OF CASOLIVA'S CLASS-2 L1-HOMOCLINIC-SHADOWING ORBITS;
   BROUCKE E1/F AND KUMAR-MORENO FIG. 12/13 FAMILIES AS CYCLERS; LEIVA-BRIOZZO ATLAS LABEL MAPPING.**
@@ -2686,6 +2696,9 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   Already shown in code: `tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror`
   (`#899`, `cb8d011d`) asserts that the printed 7-3c crossing is the mirror image of a 7-3b crossing to
   1e-9. Neither catalogue row's notes say so yet; the remaining work is the note (ratchets on any edit).
+- `#1050` — registered and DISPATCHED 2026-10-08 (earthmoon-opus; from `#1000`). **CONTINUE `#1000`'s
+  FAMILIES A AND D UPWARD IN C, PAST THE 40-STEP CAP,** to test their connection to Liang 2017's 5:2 and
+  7:3 polygonal-like orbits (C 3.10 / 3.19, no lunar pass).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
