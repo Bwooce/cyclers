@@ -51,3 +51,38 @@ another limit (about 0.25).
 ## 5. Results
 
 (pending)
+
+### 5.1 Run (`data/1033_gc2_descent/`; two calls, 17:22 and 17:26 AEDT)
+
+- Sigma = 1 reconverged at the floors: V_inf 3.507 / 2.9323 / 2.9323 / 3.507. IAS15 6.2e-6 km,
+  9.6e-9 km/s.
+- The descent converged at the floors to sigma = 0.8208, with almost no change (V_inf 3.5096 /
+  2.9221; C r_p / sigma 11,090 km). It then could not step below 0.82072: steps down to a relative
+  1e-5 failed, and that last point met only the noise floor (dr 9.9e-3 km).
+- The monitor stage crashed on its first attempt: a NaN sigma-derivative made lstsq fail. That is a
+  bug in the shared #1025 `monitor_step`, fixed in 95ce7550 (#1025 amendment 1). After the fix it
+  ended with six halvings without convergence: a numerical stop.
+
+### 5.2 Why: the orbit flies through Ganymede (diagnostic, `scan` in the scratch dir; DOP853 at
+0.0005 d, rtol 1e-12)
+
+- On leg 1 (Callisto 14.33 d to Callisto 35.76 d) the trajectory passes Ganymede at t = 25.05 d at a
+  distance of 83 km from Ganymede's CENTRE at sigma = 1 (94 km at sigma 0.8208). Ganymede's radius is
+  2,631 km, which is also the softening radius at sigma = 1. The path crosses the moon's interior,
+  where the softened force is harmonic. No other pass inside 3 Hill radii.
+- The residual is also extremely sensitive to sigma there: a relative change of 1e-6 in sigma moves
+  the leg-1 match by 3.5 km. That is why the descent stalls.
+- The #1025 driver checks impact only at the flyby NODES (r_p <= sigma R). This pass is not a node,
+  so it was missed. By the impact rule of #1034 sec. 4 ("every periapsis above sigma R"), this
+  closest approach to Ganymede is a periapsis inside the body.
+
+## 6. Outcome (iii): IMPACT. The starting orbit is not a physical orbit.
+
+- The full-mass G-C-C-G "orbit" from the #1025 control's check 6 passes through Ganymede (83 km from
+  the centre). It exists only because the force model softens the moon's interior. It is not a
+  second gc-2 branch and not a new object. The #1025 sec. 7 observation is withdrawn: gc-2's "folds
+  at 0.164" statement stands, and no addendum to the row is needed.
+- Consequence for #1025 (recorded there as amendment 2): every EXISTS member must also pass an
+  unscheduled-pass scan at sigma = 1, with no closest approach to either moon inside sigma x R,
+  before it counts as EXISTS. I will run that scan when I analyse the batch. #1034's gc-1 had this
+  scan and passed it (its Ganymede minima were at 5,599, 280,861 and 957,807 km).
