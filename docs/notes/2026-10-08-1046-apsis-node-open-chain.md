@@ -243,3 +243,32 @@ Implementation check (before the runs): on the EGGIE at sigma 0.02 with kappa = 
 Jacobian columns for kappa, a crank-node position, a crank-node velocity and its epoch agree with
 central differences to a relative 1e-8 or better. Crank nodes: EGGIE node 2 (G-G leg); one per
 real-ephemeris object (sec. 8.2).
+
+## 9. Form (a) results (`data/1046a_<target>/`, 17:30-17:58 AEDT)
+
+- EGGIE control: PASS. Sigma 0.02 to 1 in 23 points at the floors. No unscheduled Hill-radius pass.
+  Every flyby node equals #1039 (b) to < 1e-7 km/s and < 1e-4 km. Identity going down: 0.0044 at
+  sigma 0.01 and 0.0023 at 0.005. IAS15 1.7e-7 km. The crank stays at about 1e-21 rad, as it should in
+  the coplanar ideal model.
+- GanCal#1@2013 (about 150 LM evaluations, 6 calls, from the seed): the same crawl as the apsis form,
+  |r| 3.3e5 -> 4.25 -> 2.61 (apsis form: 4.24 -> 2.53 over about 200). The crank moved only
+  -1.5e-3 -> -1.0e-3 rad. 99.96 % of the residual lies on the weakest left vector (sv 1.2e-5, apsis
+  form 1.1e-5). It is leg 0's velocity rows, 99.6 % orbit-normal. The weakest right vector now
+  includes the crank (col 42). DID NOT START.
+- gc-1 e2 (about 25 evaluations, 1 call, from the seed): |r| fell to 0.0209 and then stayed flat
+  (0.0209-0.0211 over the last 7 evaluations). Crank 6.0e-4 rad. 99.9 % on the weakest left vector
+  (sv 2.4e-6, apsis form 2.3e-6), on leg 3 (the second half of the 1:1 Callisto return), 100 %
+  orbit-normal velocity. The crank is in the weakest right vector. DOES NOT START.
+- Reading (sec. 8.3): both objects stall at the same structure, with the crank moving little and
+  sitting in the null direction itself. Making the crank explicit does not lift the smallest
+  singular value (2.4e-6 and 1.2e-5, unchanged). The out-of-plane obstruction is therefore not the
+  curvature of the valley in Cartesian coordinates. It is an out-of-plane inconsistency close to the
+  chain that no local reparametrisation removes. The formulation question is CLOSED for this lane:
+  #1044, the apojove form and the crank form all stall in the same direction.
+- No verdict on gc-1 or GanCal#1 in real-ephemeris continuous gravity. The jup365 lane is still not
+  validated by a published control. The data_gaps wording sent to twobody-gen2-opus stands
+  ("obstruction: out-of-plane mismatch across the full-revolution leg (#1046)").
+- What is left untested (not proposed for this box): the out-of-plane mismatch is about 2e-5 km/s
+  (gc-1) and 2.6e-3 km/s (GanCal#1) at sigma 0.02. Two possible sources are the chain tool's
+  real-ephemeris seed and the inclinations of the jup365 moons. A seed from a real-ephemeris
+  patched-conic chain corrected with the out-of-plane rows included is a separate task.
