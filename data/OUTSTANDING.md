@@ -165,8 +165,8 @@ Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` k
 | vm2n-2 | no ruling | Venus-Mars, both | k4; V 6.221 / M 4.864 | the vm2-1 neighbour with more margin (worst 0.421 vs 0.981); rung (d) Standish direct NOT passed (1/5 converged, Mars 5.91) | 6.37, 6.40 |
 
 Owner decision 2026-10-08 ~03:20: the `#972` gate's "inconclusive" for gc-1, gc-2 and ev-C is decided
-by the rulings below; each row records gate result, anchor, prior-art note and decision. Writeback waits
-only for `#972`'s commit and re-review. Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
+by the rulings below; each row records gate result, anchor, prior-art note and decision. Writeback IN
+PROGRESS 2026-10-08 (twobody-gen2-opus; `#972` committed and re-reviewed). Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
 **candidate-novel** (spec 16.4/16.5 wording; attribution to the architecture's authors, Russell & Strange
 for ev-C); gc-2 is a GanCal-family relative, NOT novel; ev-B waits for a continuation retry at its
 failing epochs. All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
@@ -1860,7 +1860,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
     - Cells enumerated: vm, vm2, ev, em, vm2n, vmn. Controls passed: H&M endpoint (6 orbits), D1 (1H,
       direct route), VenMar#45 (in-run LITERAL in vm and vmn), and the em recall control (R-O 2.5.1.+0,
       blind; ruled PASSED by the lead, note 6.47; the Byrnes case-3 turn-split mismatch stays on record).
-    - CATALOGUE WRITEBACK (gc-1, ev-C, ev-A) IS BLOCKED ON `#972`'s COMMIT AND RE-REVIEW ONLY. OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
+    - CATALOGUE WRITEBACK (gc-1, gc-2, ev-C, ev-A): IN PROGRESS 2026-10-08, rows being written by
+      twobody-gen2-opus in one ratchet window (`#972` committed `5fc5431d` and re-reviewed PASS-WITH-NITS). OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
       gc-1, gc-2 and ev-C is decided by the 2026-10-07 rulings (gc-1 candidate-novel; gc-2 GanCal-family
       relative; ev-C candidate-novel under `#875` (ii)); each row records the gate result, the named
       anchor, the resolving prior-art note and the decision.
@@ -1905,7 +1906,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
       (homotopy rerun after a SpiceyError fix, 6.51): one 10-cycle closure (gate fail 7.93), gate fails
       from k = 2 at every epoch. The blend lambda = 1 gate passes were an artefact (the full-rev legs
       miss the moon by 748-3,192 km, 6.49). All three stay candidate, NOT novel, in the ideal model.
-    - CATALOGUE WRITEBACK of gc-1 IS BLOCKED ON `#972`'s COMMIT AND RE-REVIEW ONLY. OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
+    - CATALOGUE WRITEBACK of gc-1 (and gc-2): IN PROGRESS 2026-10-08, rows being written by
+      twobody-gen2-opus in one ratchet window (`#972` committed `5fc5431d` and re-reviewed PASS-WITH-NITS). OWNER DECISION 2026-10-08 ~03:20 AEDT (the owner's own answer): the `#972` gate's "inconclusive" for
       gc-1, gc-2 and ev-C is decided by the 2026-10-07 rulings (gc-1 candidate-novel; gc-2 GanCal-family
       relative; ev-C candidate-novel under `#875` (ii)); each row records the gate result, the named
       anchor, the resolving prior-art note and the decision.
@@ -2015,6 +2017,18 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   NOT-FOUND, ev-B NOT-FOUND, ev-C INCONCLUSIVE (H&M). 18 pinned tests. F13 had 12 literal sites, not 7;
   all fixed. Two old tests retrofitted (unlabelled R-S signature -> inconclusive naming R-S; labelled
   -> published). 12 load timeouts are being re-run alone. Follow-on: `#1035`.
+  **RE-REVIEW 2026-10-08 (fresh Fable, read-only; findings verbatim in the v2 note sec. 9.1, `5f68a5a1`):
+  PASS-WITH-NITS** for the five candidate results and the pre-registered fixes (rule fidelity exact;
+  retrofits genuine). Catalogue-wide probe of all 393 rows, v1 against v2: 0 published ->
+  known-architecture-new-system; 1 published -> not-found (cassini-titan-tour, whose v1 citation was the
+  wrong family); 45 published -> inconclusive (the `#1035` consequence); F4 flips no pipeline-shaped
+  row. Two MAJORs outside the candidates' path: (1) the Hughes mga-tour anchor returns "published 0.85"
+  for unlabelled, untopologied Sun E-V review-queue signatures (a wrong-source false published); (2) F7
+  requires body-set EQUALITY, so strict-subset pipeline shapes (Saturn ("Titan",), Jupiter ("Ganymede",
+  "Ganymede")) go published -> NOT-FOUND, a false not-found route, and sec. 8's safety claim is wrong
+  (correction pending). Minors: F4 against a mis-stamped primary (default "Sun"); the H&M scope omits
+  "HR"; F13 ratchet gaps; two nits. Lead rulings: the writeback of gc-1, gc-2, ev-C and ev-A proceeds
+  now; the fixes are `#1045`; v2 is NOT used on `#1025`/`#1036` until `#1045` lands.
   **Lead ruling (A), 2026-10-08:** "F14 (architecture-scoped anchors match only labelled signatures) is
   kept as pre-registered. The two old tests that fed an unlabelled R-S signature and expected
   'published' are RETROFITTED, not exempted: each becomes two cases, unlabelled -> 'inconclusive' with
@@ -2400,7 +2414,8 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   or a CR3BP-consistent patched model. Controls: VenMar#45 and a Pluto-Charon control. Applies to
   `#998`, `#949` and the binary-star cases. Until it lands, `#998`'s ideal results are seeds only and
   the real-ephemeris step decides.
-- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; GATED on `#972` for the literature step
+- `#1025` — registered 2026-10-07, WIDENED 2026-10-08 (from `#973`; GATED on `#1045` (the v3 gate; v2 is NOT
+  used here) for the literature step
   and on the chain tool for rung (d)). **ALL 42 CLEAN TWO-WORKING-BODY MEMBERS OF `#973`** (Ganymede-
   Callisto 20: k4 10, k5 6, k6 4; Earth-Venus 22: k4 11, k5 11): the literature step (after `#972`),
   real-ephemeris rung (d) with the chain tool (jup365 for gc, 10 cycles, 5 epochs; the `#942` ev
@@ -2493,7 +2508,7 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   `run_432`, `run_435`, `campaign_468`, `verify_327`, `branch_c32`, `gauntlet_run_274`,
   `literature_check_review_queue` — so that Russell-Strange rediscoveries get their citation back under
   F14. Until then an unlabelled rediscovery reads "inconclusive, naming R-S" (the safe direction).
-- `#1036` — registered 2026-10-08 (from `#998`; GATED on `#972`). **`#998` LITERATURE STEP AND ADJUDICATION
+- `#1036` — registered 2026-10-08 (from `#998`; GATED on `#1045` (the v3 gate; v2 is NOT used here)). **`#998` LITERATURE STEP AND ADJUDICATION
   OF THE 224 "STRONG" PLUTO-CHARON CANDIDATES.** Architecture: Russell-Strange one-working-node at a new
   system, a `#875` (ii) candidate. Needs the `#1024` barycentric model or an n-body check before any row.
 - `#1037` — registered 2026-10-08 (from `#998`; BACKLOG). **ADD STYX AND KERBEROS TO THE SATELLITE
@@ -2607,6 +2622,13 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   (b').** Either it validates the jup365 lane, or it establishes that the chain tool's patched-conic
   real-ephemeris passes do not survive continuous gravity at these altitudes; in that case the finding
   goes into every Jovian row's `data_gaps`.
+- `#1045` — registered 2026-10-08 (from the `#972` re-review; DISPATCHED to run AFTER the `#942`/`#943`
+  rows are written). **`literature_check` GATE v3:** fix the two MAJORs (the Hughes mga-tour anchor's
+  wrong-source "published 0.85" on unlabelled Sun E-V signatures; F7's body-set equality, which turns
+  strict-subset shapes into a false not-found) and the minors (F4 against a mis-stamped primary; "HR"
+  in the H&M scope; the F13 ratchet gaps; two nits); pinned tests; controls and candidates re-run with
+  identical statuses expected; then a read-only review. Gates `#1025` and `#1036` (v2 is not used on
+  them).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
