@@ -1,0 +1,710 @@
+{
+ "note": "6.57",
+ "rows": [
+  {
+   "object": "ev-B",
+   "model": "standish",
+   "epoch_jd": 2463053.9857117133,
+   "cycles": 4,
+   "recorded_worst_ratio": 0.9327704207483843,
+   "priced": {
+    "worst_ratio": 0.9327704207485452,
+    "status": "pass",
+    "n_flybys": 18,
+    "deficit_beyond_bend_mps": 7.782710543578194e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 7.782710543578194e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 1.9456776358945484e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.3619743451261838e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-B",
+   "model": "standish",
+   "epoch_jd": 2470059.6539020585,
+   "cycles": 4,
+   "recorded_worst_ratio": 0.7573872329579578,
+   "priced": {
+    "worst_ratio": 0.7573872329577594,
+    "status": "pass",
+    "n_flybys": 18,
+    "deficit_beyond_bend_mps": 8.481362071672561e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 8.481362071672561e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 2.1203405179181402e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.484238362542698e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-B",
+   "model": "standish",
+   "epoch_jd": 2467728.3170119263,
+   "cycles": 4,
+   "recorded_worst_ratio": 1.0915131615748175,
+   "priced": {
+    "worst_ratio": 1.091513161574365,
+    "status": "fail",
+    "n_flybys": 18,
+    "deficit_beyond_bend_mps": 560.7863892737406,
+    "deficit_periapsis_mps": 1367.077210499467,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 560.7863892737406,
+    "periapsis": 1367.077210499467
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 140.19659731843515,
+    "periapsis": 341.7693026248667
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 981.3761812290461,
+    "periapsis": 2392.385118374067
+   },
+   "band_beyond_bend": "above-low-maintenance",
+   "band_periapsis": "above-low-maintenance",
+   "note": ""
+  },
+  {
+   "object": "ev-B",
+   "model": "standish",
+   "epoch_jd": 2472399.9507301715,
+   "cycles": 4,
+   "recorded_worst_ratio": 1.0338529534940706,
+   "priced": {
+    "worst_ratio": 1.0338529534934995,
+    "status": "fail",
+    "n_flybys": 18,
+    "deficit_beyond_bend_mps": 197.52546023662745,
+    "deficit_periapsis_mps": 464.9821885315575,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 197.52546023662745,
+    "periapsis": 464.9821885315575
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 49.38136505915686,
+    "periapsis": 116.24554713288937
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 345.66955541409806,
+    "periapsis": 813.7188299302256
+   },
+   "band_beyond_bend": "above-low-maintenance",
+   "band_periapsis": "above-low-maintenance",
+   "note": ""
+  },
+  {
+   "object": "ev-B",
+   "model": "standish",
+   "epoch_jd": 2465390.0917715104,
+   "cycles": 3,
+   "recorded_worst_ratio": 0.875234575054571,
+   "priced": {
+    "worst_ratio": 0.8752345750546007,
+    "status": "pass",
+    "n_flybys": 13,
+    "deficit_beyond_bend_mps": 1.0252176534698776e-08,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 1.0252176534698776e-08,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 3.417392178232925e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 2.3921745247630478e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "FLAG: 3-cycle chain (no 4-cycle chain at this epoch), scaled x 7/3"
+  },
+  {
+   "object": "ev-A",
+   "model": "standish",
+   "epoch_jd": 2462508.1337531363,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5794852420977238,
+   "priced": {
+    "worst_ratio": 0.5794852420977202,
+    "status": "pass",
+    "n_flybys": 19,
+    "deficit_beyond_bend_mps": 4.4363648542219154e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 4.4363648542219154e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 8.87272970844383e-10,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 6.210910795910681e-09,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-A",
+   "model": "standish",
+   "epoch_jd": 2464843.783979896,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5797624474362315,
+   "priced": {
+    "worst_ratio": 0.5797624474362929,
+    "status": "pass",
+    "n_flybys": 19,
+    "deficit_beyond_bend_mps": 4.4116112036784145e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 4.4116112036784145e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 8.823222407356829e-10,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 6.17625568514978e-09,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-A",
+   "model": "standish",
+   "epoch_jd": 2467763.5074703586,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5797571675904326,
+   "priced": {
+    "worst_ratio": 0.5797571675904436,
+    "status": "pass",
+    "n_flybys": 19,
+    "deficit_beyond_bend_mps": 4.158742600238536e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 4.158742600238536e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 8.317485200477072e-10,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 5.82223964033395e-09,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-A",
+   "model": "standish",
+   "epoch_jd": 2469516.662149077,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5797130229021724,
+   "priced": {
+    "worst_ratio": 0.5797130229021732,
+    "status": "pass",
+    "n_flybys": 19,
+    "deficit_beyond_bend_mps": 8.53842249402687e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 8.53842249402687e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 1.707684498805374e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.1953791491637618e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-A",
+   "model": "standish",
+   "epoch_jd": 2472436.3025972205,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5796806461950905,
+   "priced": {
+    "worst_ratio": 0.5796806461951571,
+    "status": "pass",
+    "n_flybys": 19,
+    "deficit_beyond_bend_mps": 5.800271960664142e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 5.800271960664142e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 1.1600543921328284e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 8.120380744929799e-09,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-C",
+   "model": "standish",
+   "epoch_jd": 2462579.6116172452,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8899688085069378,
+   "priced": {
+    "worst_ratio": 0.8899688085067358,
+    "status": "pass",
+    "n_flybys": 14,
+    "deficit_beyond_bend_mps": 9.2415661011696e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 9.2415661011696e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 1.8483132202339201e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.293819254163744e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-C",
+   "model": "standish",
+   "epoch_jd": 2464912.8403833564,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8906593761015822,
+   "priced": {
+    "worst_ratio": 0.8906593761016227,
+    "status": "pass",
+    "n_flybys": 14,
+    "deficit_beyond_bend_mps": 5.779571936708814e-09,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 5.779571936708814e-09,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 1.1559143873417628e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 8.09140071139234e-09,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-C",
+   "model": "standish",
+   "epoch_jd": 2467248.8484494914,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.878167141971005,
+   "priced": {
+    "worst_ratio": 0.8781671419709984,
+    "status": "pass",
+    "n_flybys": 14,
+    "deficit_beyond_bend_mps": 1.0787003626656718e-08,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 1.0787003626656718e-08,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 2.1574007253313436e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.5101805077319403e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-C",
+   "model": "standish",
+   "epoch_jd": 2469586.529881462,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.9137578984219336,
+   "priced": {
+    "worst_ratio": 0.9137578984218612,
+    "status": "pass",
+    "n_flybys": 14,
+    "deficit_beyond_bend_mps": 1.0522737155881988e-08,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 1.0522737155881988e-08,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 2.1045474311763977e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.4731832018234782e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-C",
+   "model": "standish",
+   "epoch_jd": 2471918.8536285455,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.868546793704766,
+   "priced": {
+    "worst_ratio": 0.8685467937048841,
+    "status": "pass",
+    "n_flybys": 14,
+    "deficit_beyond_bend_mps": 1.1038776539876244e-08,
+    "deficit_periapsis_mps": 0.0,
+    "periapsis_nonfinite": 0
+   },
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 1.1038776539876244e-08,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 2.2077553079752486e-09,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 1.545428715582674e-08,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": ""
+  },
+  {
+   "object": "ev-A",
+   "model": "de440",
+   "epoch_jd": 2462507.9792662235,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5796243358494895,
+   "priced": null,
+   "closure_dv_mps": 2.52279551830519,
+   "per_chain_mps": {
+    "beyond_bend": 2.52279551830519,
+    "periapsis": 2.52279551830519
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.5045591036610381,
+    "periapsis": 0.5045591036610381
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 3.531913725627266,
+    "periapsis": 3.531913725627266
+   },
+   "band_beyond_bend": "essentially-ballistic",
+   "band_periapsis": "essentially-ballistic",
+   "note": "closure dV of the full-rev legs (6.25); minimax gate pass -> deficit 0"
+  },
+  {
+   "object": "ev-A",
+   "model": "de440",
+   "epoch_jd": 2464843.6185434926,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5798675255062037,
+   "priced": null,
+   "closure_dv_mps": 2.2694468822339062,
+   "per_chain_mps": {
+    "beyond_bend": 2.2694468822339062,
+    "periapsis": 2.2694468822339062
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.45388937644678123,
+    "periapsis": 0.45388937644678123
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 3.1772256351274684,
+    "periapsis": 3.1772256351274684
+   },
+   "band_beyond_bend": "essentially-ballistic",
+   "band_periapsis": "essentially-ballistic",
+   "note": "closure dV of the full-rev legs (6.25); minimax gate pass -> deficit 0"
+  },
+  {
+   "object": "ev-A",
+   "model": "de440",
+   "epoch_jd": 2467763.303171352,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.579822402007166,
+   "priced": null,
+   "closure_dv_mps": 1.559717194779367,
+   "per_chain_mps": {
+    "beyond_bend": 1.559717194779367,
+    "periapsis": 1.559717194779367
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.3119434389558734,
+    "periapsis": 0.3119434389558734
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 2.183604072691114,
+    "periapsis": 2.183604072691114
+   },
+   "band_beyond_bend": "essentially-ballistic",
+   "band_periapsis": "essentially-ballistic",
+   "note": "closure dV of the full-rev legs (6.25); minimax gate pass -> deficit 0"
+  },
+  {
+   "object": "ev-A",
+   "model": "de440",
+   "epoch_jd": 2469516.4161934354,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5797622699277702,
+   "priced": null,
+   "closure_dv_mps": 2.533127307573945,
+   "per_chain_mps": {
+    "beyond_bend": 2.533127307573945,
+    "periapsis": 2.533127307573945
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.5066254615147889,
+    "periapsis": 0.5066254615147889
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 3.5463782306035228,
+    "periapsis": 3.5463782306035228
+   },
+   "band_beyond_bend": "essentially-ballistic",
+   "band_periapsis": "essentially-ballistic",
+   "note": "closure dV of the full-rev legs (6.25); minimax gate pass -> deficit 0"
+  },
+  {
+   "object": "ev-A",
+   "model": "de440",
+   "epoch_jd": 2472436.0210419046,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.5797078203863603,
+   "priced": null,
+   "closure_dv_mps": 2.0496345591873673,
+   "per_chain_mps": {
+    "beyond_bend": 2.0496345591873673,
+    "periapsis": 2.0496345591873673
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.40992691183747343,
+    "periapsis": 0.40992691183747343
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 2.869488382862314,
+    "periapsis": 2.869488382862314
+   },
+   "band_beyond_bend": "essentially-ballistic",
+   "band_periapsis": "essentially-ballistic",
+   "note": "closure dV of the full-rev legs (6.25); minimax gate pass -> deficit 0"
+  },
+  {
+   "object": "ev-C",
+   "model": "de440",
+   "epoch_jd": 2462579.4683002075,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8894797038408254,
+   "priced": null,
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "ballistic shoot, gate pass -> deficit 0, no closure dV"
+  },
+  {
+   "object": "ev-C",
+   "model": "de440",
+   "epoch_jd": 2464912.672877191,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8906848393929707,
+   "priced": null,
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "ballistic shoot, gate pass -> deficit 0, no closure dV"
+  },
+  {
+   "object": "ev-C",
+   "model": "de440",
+   "epoch_jd": 2467248.635367688,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8782118672412529,
+   "priced": null,
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "ballistic shoot, gate pass -> deficit 0, no closure dV"
+  },
+  {
+   "object": "ev-C",
+   "model": "de440",
+   "epoch_jd": 2469586.2953833546,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.9138029969020504,
+   "priced": null,
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "ballistic shoot, gate pass -> deficit 0, no closure dV"
+  },
+  {
+   "object": "ev-C",
+   "model": "de440",
+   "epoch_jd": 2471918.579849004,
+   "cycles": 5,
+   "recorded_worst_ratio": 0.8688226266525347,
+   "priced": null,
+   "closure_dv_mps": 0.0,
+   "per_chain_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_cycle_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "per_7_cycles_mps": {
+    "beyond_bend": 0.0,
+    "periapsis": 0.0
+   },
+   "band_beyond_bend": "strictly-ballistic",
+   "band_periapsis": "strictly-ballistic",
+   "note": "ballistic shoot, gate pass -> deficit 0, no closure dV"
+  }
+ ]
+}

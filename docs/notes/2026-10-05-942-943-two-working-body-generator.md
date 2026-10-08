@@ -2144,6 +2144,36 @@ Chains:
 
 No row is written; the owner decides the threshold.
 
+### 6.57a Results of 6.57 (2026-10-08; `scripts/dv_band_942.py`, `data/942_dv_band.json`)
+
+Instrument check: the re-derived worst ratio of every Standish chain equals the recorded one to 1e-12.
+Per 7 cycles = the per-chain total x 7/n. The two prices are beyond-bend and Oberth-credited
+periapsis. At Venus V_inf of about 11 km/s the periapsis price is the HIGHER one: the flyby is outside
+the deep-well regime.
+
+| Object | Model | Epoch (JD) | Cycles | Worst ratio | dV per 7 cycles, beyond-bend / periapsis (m/s) | Band |
+|---|---|---|---|---|---|---|
+| ev-B | Standish | 2463054.0 | 4 | 0.933 | 0 / 0 | strictly ballistic |
+| ev-B | Standish | 2465390.1 | 3 (FLAG: no 4-cycle chain) | 0.875 | 0 / 0 | strictly ballistic (3 cycles only) |
+| ev-B | Standish | 2467728.3 | 4 | 1.092 | 981.4 / 2392.4 | above low-maintenance |
+| ev-B | Standish | 2470059.7 | 4 | 0.757 | 0 / 0 | strictly ballistic |
+| ev-B | Standish | 2472400.0 | 4 | 1.034 | 345.7 / 813.7 | above low-maintenance |
+| ev-A | Standish | all 5 | 5 | 0.579-0.580 | 0 / 0 | strictly ballistic |
+| ev-A | DE440 | 2462508.0 / 2464843.6 / 2467763.3 / 2469516.4 / 2472436.0 | 5 | 0.580 (minimax) | 3.53 / 3.18 / 2.18 / 3.55 / 2.87 (closure dV only) | essentially ballistic |
+| ev-C (control) | Standish and DE440 | all 5 | 5 | 0.869-0.914 | 0 / 0 | strictly ballistic |
+
+Best epoch per object:
+- ev-B: 0 m/s at epochs 0 and 3 (and epoch 1 for 3 cycles).
+- ev-A: 0 on Standish; 2.18 m/s per 7 cycles on DE440 (JD 2467763.3).
+- ev-C: 0.
+
+Code check: the pricing returns non-zero dV on the gate-failing ev-B chains (epochs 2 and 4).
+
+Reading: ev-B is strictly ballistic at the epochs where its chain passes. At epochs 2 and 4 the
+converged chain needs 346-2392 m/s per 7 cycles of turn-deficit impulse, above Russell's low-maintenance
+ceiling. Those figures are for the minimax directions (not dV-optimal), so they are upper-bound-style.
+The owner decides the threshold; no row is written.
+
 ### 6.56 Addendum (2026-10-07, from #973, relayed by the lead)
 
 The pass definition of sec. 6.1 had two gaps:
