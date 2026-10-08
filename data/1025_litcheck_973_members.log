@@ -1,0 +1,50 @@
+GanCal#5: published (0.95) labels=one ['SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+Hollister 1H: published (0.85) labels=two ['FR'] cit=Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spac
+gc-1: inconclusive (0.0) labels=two ['FR', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc-2: inconclusive (0.0) labels=two ['SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+ev-A: not-found (0.0) labels=two ['FR', 'GEN'] cit=None
+ev-B: not-found (0.0) labels=two ['FR', 'FR-3:2', 'GEN'] cit=None
+ev-C: inconclusive (0.0) labels=one ['GEN'] cit=Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spac
+gc4-1: inconclusive (0.0) labels=two ['FR', 'FR-3:2'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-2: inconclusive (0.0) labels=two ['SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-6: inconclusive (0.0) labels=two ['FR-3:2'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-8: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-10: inconclusive (0.0) labels=two ['FR'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-19: inconclusive (0.0) labels=two ['FR', 'FR-2:1'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-25: inconclusive (0.0) labels=two ['GEN'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-28: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-38: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc4-41: inconclusive (0.0) labels=two ['GEN'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-0: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-3: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-4: inconclusive (0.0) labels=two ['FR-3:2', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-5: inconclusive (0.0) labels=two ['GEN'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-6: inconclusive (0.0) labels=two ['FR-2:1', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc5-7: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc6-0: published (0.85) labels=two ['GEN'] cit=Campagnola, S., Buffington, B. B., Lam, T., Petropoulos, A. E. & Pelle
+gc6-1: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc6-2: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+gc6-3: inconclusive (0.0) labels=two ['GEN', 'SY'] cit=Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moo
+ev4-0: not-found (0.0) labels=two ['FR', 'FR-3:2', 'SY'] cit=None
+ev4-1: not-found (0.0) labels=two ['FR', 'FR-3:2'] cit=None
+ev4-3: not-found (0.0) labels=two ['FR-2:1', 'FR-3:2'] cit=None
+ev4-4: not-found (0.0) labels=two ['FR', 'FR-2:3', 'SY'] cit=None
+ev4-5: not-found (0.0) labels=two ['FR', 'FR-2:1', 'SY'] cit=None
+ev4-6: not-found (0.0) labels=two ['FR', 'FR-3:2', 'SY'] cit=None
+ev4-7: not-found (0.0) labels=two ['FR', 'FR-3:2', 'SY'] cit=None
+ev4-8: not-found (0.0) labels=two ['FR', 'FR-2:3', 'SY'] cit=None
+ev4-9: not-found (0.0) labels=two ['FR', 'FR-2:1', 'SY'] cit=None
+ev4-10: not-found (0.0) labels=two ['FR', 'FR-3:2', 'SY'] cit=None
+ev4-11: not-found (0.0) labels=two ['FR', 'FR-3:2', 'SY'] cit=None
+ev5-0: not-found (0.0) labels=two ['FR-2:1', 'FR-2:3', 'GEN'] cit=None
+ev5-1: not-found (0.0) labels=two ['FR', 'FR-2:1', 'FR-3:2', 'GEN'] cit=None
+ev5-2: not-found (0.0) labels=two ['FR-2:3', 'FR-3:2', 'SY'] cit=None
+ev5-3: not-found (0.0) labels=two ['FR-2:1', 'FR-3:2'] cit=None
+ev5-4: not-found (0.0) labels=two ['FR-3:2'] cit=None
+ev5-5: not-found (0.0) labels=two ['FR', 'FR-2:1', 'FR-3:2'] cit=None
+ev5-6: not-found (0.0) labels=two ['FR-2:1'] cit=None
+ev5-7: not-found (0.0) labels=two ['FR', 'FR-2:1', 'FR-3:2'] cit=None
+ev5-8: not-found (0.0) labels=two ['FR-2:1', 'FR-3:2'] cit=None
+ev5-9: not-found (0.0) labels=two ['FR-3:2'] cit=None
+ev5-10: not-found (0.0) labels=two ['FR-3:2', 'GEN'] cit=None
+CHECKS NOT AS EXPECTED: none

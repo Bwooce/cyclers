@@ -1,0 +1,1020 @@
+{
+ "checks": [
+  {
+   "name": "GanCal#5",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "one",
+   "return_types": [
+    "SY"
+   ],
+   "status": "published",
+   "confidence": 0.95,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable.",
+   "expected": "published",
+   "as_expected": true
+  },
+  {
+   "name": "Hollister 1H",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR"
+   ],
+   "status": "published",
+   "confidence": 0.85,
+   "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
+   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable.",
+   "expected": "published",
+   "as_expected": true
+  },
+  {
+   "name": "gc-1",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 12 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "expected": "inconclusive",
+   "as_expected": true
+  },
+  {
+   "name": "gc-2",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 12 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "expected": "inconclusive",
+   "as_expected": true
+  },
+  {
+   "name": "ev-A",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "GEN"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "expected": "not-found",
+   "as_expected": true
+  },
+  {
+   "name": "ev-B",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "GEN"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "expected": "not-found",
+   "as_expected": true
+  },
+  {
+   "name": "ev-C",
+   "sequence": [
+    "V",
+    "V",
+    "E"
+   ],
+   "working_bodies": "one",
+   "return_types": [
+    "GEN"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Hollister, W. M., 'Periodic Orbits for Interplanetary Flight,' J. Spacecraft and Rockets 6(4):366-369 (1969), DOI 10.2514/3.29664; Hollister, W. M. & Menning, M. D., 'Periodic Swing-By Orbits between Earth and Venus,' J. Spacecraft and Rockets 7(10):1193-1199 (1970), DOI 10.2514/3.30134 (catalogue rows hollister-menning-1970-ev-orbit-01..15); Menning, M. D., 'Freefall Periodic Orbits Connecting Earth and Venus,' S.M. thesis, MIT (1968).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970). #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [working-bodies]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "expected": "inconclusive",
+   "as_expected": true
+  }
+ ],
+ "members": [
+  {
+   "name": "gc4-1",
+   "sequence": [
+    "Callisto",
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RGanymede/3:2|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-2",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 12 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/1l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-6",
+   "sequence": [
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-3:2"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RGanymede/3:2|LGanymede>Callisto/2l|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-8",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-10",
+   "sequence": [
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (20): Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RGanymede/1:1|LGanymede>Callisto/2l|LCallisto>Ganymede/2h",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-19",
+   "sequence": [
+    "Callisto",
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-25",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 10 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-28",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 10 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-38",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 10 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+   "period_k": 4
+  },
+  {
+   "name": "gc4-41",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (21): Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 10 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 4
+  },
+  {
+   "name": "gc5-0",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1h",
+   "period_k": 5
+  },
+  {
+   "name": "gc5-3",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 5
+  },
+  {
+   "name": "gc5-4",
+   "sequence": [
+    "Callisto",
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RGanymede/3:2|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 5
+  },
+  {
+   "name": "gc5-5",
+   "sequence": [
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|LGanymede>Callisto/0s|LCallisto>Callisto/2l|LCallisto>Ganymede/0s",
+   "period_k": 5
+  },
+  {
+   "name": "gc5-6",
+   "sequence": [
+    "Callisto",
+    "Callisto",
+    "Ganymede",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RGanymede/2:1|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 5
+  },
+  {
+   "name": "gc5-7",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1h|LCallisto>Ganymede/1l",
+   "period_k": 5
+  },
+  {
+   "name": "gc6-0",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN"
+   ],
+   "status": "published",
+   "confidence": 0.85,
+   "citation": "Campagnola, S., Buffington, B. B., Lam, T., Petropoulos, A. E. & Pellegrini, E., 'Tour Design Techniques for the Europa Clipper Mission,' Journal of Guidance, Control, and Dynamics 42(12):2615-2626 (2019). Sec. III.C, Fig. 11: two GCGC cycles (G1-G5, G5-G9), ~90 deg apse rotation each; Table 3 v_inf 3.5/4.5 km/s.",
+   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable.",
+   "key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/2h|LCallisto>Ganymede/2h",
+   "period_k": 6
+  },
+  {
+   "name": "gc6-1",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k6|LGanymede>Ganymede/2h|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 6
+  },
+  {
+   "name": "gc6-2",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k6|LGanymede>Ganymede/2l|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/0s",
+   "period_k": 6
+  },
+  {
+   "name": "gc6-3",
+   "sequence": [
+    "Ganymede",
+    "Callisto",
+    "Callisto",
+    "Ganymede"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "GEN",
+    "SY"
+   ],
+   "status": "inconclusive",
+   "confidence": 0.0,
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+   "notes": "No published cycler matched the structural fingerprint, but a source treated the SAME body set with a different declared architecture (working bodies): Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. #972 F7: a different-architecture object at a treated system goes to a human (not certified novel). Corpus anchors consulted but excluded by declared scope (22): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Campagnola et al. Ganymede-Callisto GCGC cycler for apse rotation (2019) [alternating]; Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014) [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Heaton-Strange-Longuski resonance-hopping pump tours (2002) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Liang et al. Callisto-Ganymede-Europa triple cyclers [n-bodies]; Niehoff Galilean multi-flyby tour paradigm (1970, foundational) [topology-label]; Petropoulos-Longuski Jovian pump-tour combinatorics (2000) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Russell-Strange 2007 Venus-Mars ideal-model free-return cycler [working-bodies]; Russell-Strange 2007 Venus-Mercury ideal-model free-return cycler [working-bodies]; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler [working-bodies]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Strange/Campagnola/Russell moon-tour & V-infinity-leveraging [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 11 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k6|LGanymede>Ganymede/1h|LGanymede>Callisto/0s|LCallisto>Callisto/1l|LCallisto>Ganymede/1h",
+   "period_k": 6
+  },
+  {
+   "name": "ev4-0",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (10): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 2 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-1",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (10): Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 2 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-3",
+   "sequence": [
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/2:1|RE/3:2|LE>V/0s|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-4",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:3",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-5",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/2:1|RE/2:1|LE>V/0s|RV/1:1|LV>V/1l|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-6",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-7",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-8",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:3",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/2:3|RE/2:3|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-9",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/2:1|RE/2:1|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-10",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev4-11",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k4|RE/3:2|RE/1:1|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s",
+   "period_k": 4
+  },
+  {
+   "name": "ev5-0",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1",
+    "FR-2:3",
+    "GEN"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/2:3|RE/2:3|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-1",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1",
+    "FR-3:2",
+    "GEN"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/3:2|RE/1:1|LE>V/0s|RV/2:1|LV>V/1h|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-2",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:3",
+    "FR-3:2",
+    "SY"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/2:3|RE/2:3|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-3",
+   "sequence": [
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/2:1|RE/3:2|LE>V/0s|RV/3:2|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-4",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-5",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-6",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-7",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR",
+    "FR-2:1",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-8",
+   "sequence": [
+    "V",
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-2:1",
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-9",
+   "sequence": [
+    "V",
+    "E",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-3:2"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s",
+   "period_k": 5
+  },
+  {
+   "name": "ev5-10",
+   "sequence": [
+    "V",
+    "V",
+    "V",
+    "E",
+    "E"
+   ],
+   "working_bodies": "two",
+   "return_types": [
+    "FR-3:2",
+    "GEN"
+   ],
+   "status": "not-found",
+   "confidence": 0.0,
+   "citation": null,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (9): Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970) [return-types]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [n-bodies]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored.",
+   "key": "k5|RE/3:2|LE>V/0s|LV>V/1h|RV/3:2|LV>E/0s",
+   "period_k": 5
+  }
+ ]
+}
