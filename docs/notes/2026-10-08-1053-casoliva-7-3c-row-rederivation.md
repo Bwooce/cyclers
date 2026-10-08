@@ -77,3 +77,31 @@ Script: `scripts/check_1053_7_3c_mirror.py`. Output: `data/1053_casoliva_7-3c_re
 - **Docstring note for the lead:** `src/cyclerfinder/search/earth_moon_class1_resonant_connections.py`
   quotes "7-3c (k=57.0431" from the old row. It is descriptive text, not a test. Updating it is
   optional.
+
+## 3. Applied (lead's window, 2026-10-08 17:08-19:05 AEDT, together with `#1042`)
+
+- **Pre-check:** `git diff data/catalogue.yaml` was empty at 931682f7.
+- **Patches**, all applied cleanly with `git apply`:
+  - `data/1042_ieg_rows/ieg_rows.patch`;
+  - this task's `1053_7-3c_rederive.patch`;
+  - this task's `1053_validate_evidence.patch`.
+- **Validation:** schema OK (397 rows); `validate_catalogue` and `validate_schema_invariants`
+  return 0 errors.
+- **Full ratchet set** (`tests/data`, `tests/search`, `tests/scripts`,
+  `tests/test_catalogue_rediscovery.py`). It ran in foreground chunks under 8 minutes, at machine
+  load 5-32. Every module ended EXIT 0, or EXIT 5 for the modules marked entirely slow and
+  deselected by the default `-m 'not slow'`.
+  - The chunks that hit their own timeout (124) under load were split and re-run, file by file
+    where needed.
+  - Each slow file then passed alone:
+    - `test_504_pluto_charon_kk_sweep` (219 s);
+    - `test_earth_moon_class1_resonant_connections` (73c test 298 s, default_k_range 216 s;
+      EXIT 0, 1 XPASS of the known cross-platform item);
+    - `test_neptune_triton_resonant_families` (255 s);
+    - `test_neptune_triton_resonant_connections` (114 s);
+    - `test_saturn_titan_resonant_connections`;
+    - `test_variational_crnbp_torus` (151 s);
+    - `test_variational_qbcp_torus` (91 s).
+  - No FAILED or ERROR line in any log.
+  - Logs: `<scratch>/earthmoon-opus/win2/`.
+- **No census ratchet moved**, as expected.

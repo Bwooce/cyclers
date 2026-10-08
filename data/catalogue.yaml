@@ -9691,6 +9691,10 @@
       are tabulated in the full AAS proceedings PDF which was not
       accessible to this ingest (AAS Astrodynamics Specialist
       Conference proceedings are paywalled / library-only).
+      #1042 (2026-10-08): the paper's Table 4 EGGIE member spans 4
+      synodic periods (printed total 28.22 d); reproduced by #1023 in the
+      paper's ideal model, whose synodic period is the ideal Ganymede
+      period (7.004 d), with cycle 28.02 d.
   vinf_kms_at_encounters:
   - body: "Io"
     vinf_kms:
@@ -9748,6 +9752,11 @@
     note: "Patched-conic model; CR3BP stability index not applicable."
     source_hint: "Full Hernandez et al. 2017 paper"
     todo_ref: "#76-cr3bp-backfill"
+  - path: "n_returns"
+    kind: "conflict"
+    note: "The abstract says these cyclers 'repeat indefinitely'. In the paper's own ideal model (synodic period = the ideal Ganymede period, so the moon configuration has no rigid repeat) the Table 4 EGGIE, reproduced by #1023 at 0.173 km/s with leg times within 0.18 d, is ballistic for ONE cycle only: marched cycle by cycle, the turn gate fails at cycle 2 (Io demands 55.6 deg, ratio 3.72) and no exact root exists at cycle 3 (#1041). Consistent with the paper's p.10 statement that ballistic repeatability lasts only a few cycles. n_returns left 'infinite' for the family seed pending an owner decision."
+    source_hint: "docs/notes/2026-10-08-1041-eggie-quasiperiodic-continuous.md sec. 7; docs/notes/2026-10-08-1023-jovian-void-rerun.md sec. 6.3"
+    todo_ref: "#1042"
   legs: []
   first_published:
     authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
@@ -9805,6 +9814,30 @@
     Family-seed entry per the same convention as the VEM-triple
     sibling. Individual members must be split out as per-entry records
     once the full paper text is accessible.
+
+    #1040/#1041/#1043 (2026-10-08). Model: the paper's ideal model uses
+    the ideal Ganymede period as its synodic period, while its moon
+    radii are built for a rigid 5.2-deg shift per synodic period; in
+    that model the configuration does not repeat rigidly (per cycle
+    Ganymede 0, Europa -20.5, Io -61.5 deg), so its cyclers are
+    quasi-periodic. Reproduction: Table 4 EGGIE reproduced in that model
+    (V_inf 9.068/7.082/8.207 km/s against 9.12/7.07/8.38; leg times
+    1.57/8.42/7.27/10.76 d against 1.59/8.60/7.34/10.69; gate pass).
+    Repeatability: one cycle ballistic in its own model (the gate fails
+    at cycle 2). Continuous gravity: the one-cycle EGGIE CLOSES in
+    continuous gravity in the ideal model (#1043 under the #1039
+    formulation (b): end V_inf directions pinned, magnitudes free):
+    joint moon-mass continuation to the real masses at the lane floors,
+    full-mass V_inf E 9.03, G 7.04-7.05, I 7.88 km/s, altitudes
+    1,028-7,726 km, identity with the patched conic at 0.5 % mass
+    (0.002 km/s), IAS15 re-fly 1e-6 km. With the end V_inf vectors
+    pinned it folds at 0.505 of the real masses (an artefact of that
+    formulation). Real ephemeris: not tested; the jup365 lane has no
+    validated published control (#968 rung (b), GanEur#316, not
+    achieved: its interior Europa flyby falls below the surface before
+    full mass under every end formulation tried; #1044: GanCal#1 at
+    2013 did not start, the open-chain formulation failing across its
+    full-revolution return).
   source_quotes:
     "first_published.title": |
       Semantic Scholar metadata for paper
@@ -52289,7 +52322,7 @@
     doi: "10.1016/j.actaastro.2011.03.011"
     url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
   source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"
-  notes: "Lynam-Longuski 2011: single-period IEG triple cycler (E-perijove-I-G-apojove-E), Laplace period 7.05 d, total Delta-V ~11 m/s (patched-conic ephemeris/MALTO); ballistic version needs a -175 km Europa flyby. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion."
+  notes: "Lynam-Longuski 2011: single-period IEG triple cycler (E-perijove-I-G-apojove-E), Laplace period 7.05 d, total Delta-V ~11 m/s (patched-conic ephemeris/MALTO); ballistic version needs a -175 km Europa flyby. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion. #1042 (2026-10-08): the #493 reproduction used the Hernandez 2017 ideal model with T_Laplace = the ideal Ganymede period, 7.004 d (sourced 7.055 d, -0.72 %); that model has no rigid repeat of the moon configuration (#1040); its rigid-repeat alternative gives 7.105 d (+0.71 %, also inside the 1 % gate). No validation change."
 
 - id: lynam-longuski-2011-gipeipe
   name: "Lynam-Longuski indefinitely-repeatable GIPEIPE Io-Europa-Ganymede triple cycler"
@@ -56472,6 +56505,13 @@
     MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
 
     REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 8.40e-11. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=1.59e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 13269.2 km and min Earth distance 15933.2 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+
+    MIRROR PAIR (#1053): this row and casoliva-7-3c-em-cycler-2010 are ONE asymmetric orbit and its
+    mirror image under (x, y, t) -> (x, -y, -t), at the same C (1.068655371747616) and period, as
+    Casoliva's printed 7-3b/7-3c pair is (same printed C_J 1.0687623900 and k 57.3519357):
+    tests/search/test_second_species_continuation.py::test_7_3b_and_7_3c_are_one_orbit_and_its_mirror
+    (#899, cb8d011d) asserts the printed relation to 1e-9. Evidence:
+    docs/notes/2026-10-08-1053-casoliva-7-3c-row-rederivation.md.
   source_quotes:
     "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", C_J column = 1.0687623900."
     "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"7-3b\", T column = 18.8495559215 TU (=2*pi*3 exactly, her own Eq. 18)."
@@ -56486,10 +56526,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- Casoliva's own printed periselene r_pM=13210.3 km (independently DERIVE-cross-checked this task at 13169.9 km via direct dense propagation) sits WELL INSIDE the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). #797 admission + orbit_class determination.
+  orbit_class: cycler   # schema v4.7 (task #294): STRICT transport cycler -- Casoliva's own printed periselene r_pM=13210.3 km (DERIVE cross-check of the #1053 re-derived orbit: 13204.2 km via direct dense propagation) sits WELL INSIDE the lunar SOI (66182.9 km) and Hill radius (61524.1 km) -- a genuine lunar flyby each period, satisfying cycler's own 'transports between encounters' definition (data/README.md). #797 admission + orbit_class determination.
   epoch_locked: false   # schema v4.7 (task #294); CR3BP periodic orbit reachable at any epoch, not real-ephemeris-locked
   n_returns: infinite   # schema v4.7 (task #294); strictly periodic, unbounded returns
-  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "7-3c" -- x0/period/Jacobi/stability-index all reproduce the paper's own printed digit-grade values within 1e-2 relative (closure_residual=1.47e-09), AND an independent Radau integrator cross-check passes (radau_djacobi=2.19e-12). See notes: block + source_quotes for the full per-quantity numbers.
+  validation_level: V1   # spec §14 V1 like-for-like (#797, reusing #780's own gate module table3_gate_report): same-model CR3BP full-state Newton reproduction of Casoliva 2010 Table 3 row "7-3c" -- RE-DERIVED by #1053 as the exact mirror image of the casoliva-7-3b row (#797 reproduction): its printed-section crossing reproduces Casoliva's printed x_i/u_i/v_i to 5.4e-06/7.8e-07/1.5e-05 absolute, period to 4.05e-06 relative, Jacobi to 1.00e-04 relative, k to 7.35e-05 relative (closure_residual=4.4e-09); all within 1e-2. See notes: block + source_quotes for the full per-quantity numbers.
   delta_v_kms:
   v_infinity_leveraging_dv_kms:
   fleet_size:
@@ -56503,7 +56543,7 @@
     k: 1
     years:
     note: |
-      T = 18.8505691606650 TU nondim (Casoliva 2010 Table 3 "7-3c" prints T=18.8495559215 TU exactly = 2*pi*3 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 5.38e-05 relative). 81.858217 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
+      T = 18.8496322021155 TU nondim (#1053; Casoliva 2010 Table 3 "7-3c" prints T=18.8495559215 TU exactly = 2*pi*3 per her own Eq. 18 p-q-resonance identity -- Casoliva's nondim TU convention is angle/radian-based, hence convention-independent of any project vs paper t_s difference; reproduced here to 4.05e-06 relative). 81.854149 d is a DERIVED convenience conversion via this project's own DE440-registry t_s (375190.2619 s, TU_DAYS=4.34247988 d) -- Casoliva's Table 3 prints NO days column for this row (unlike Braik-Ross's own Table 2), so there is no published day-figure to reproduce against; years: null (CR3BP, rotating-frame periodic orbit).
   vinf_kms_at_encounters:
   - body: "E"
     vinf_kms:
@@ -56519,17 +56559,17 @@
       family: "Casoliva 2010 Class 1 (p,q)=(7,3) resonant Earth-Moon cycler, Table 3 row '7-3c'"
       mass_ratio: 0.01215058439469525   # SOURCED: this project's own DE440 registry (cyclerfinder.core.cr3bp.cr3bp_system('Earth','Moon').mu), per #780's own explicit module policy (Casoliva/Vaquero lineage uses the SAME registry mu/l*/t* anchoring 322 existing catalogue rows, NOT Casoliva's own displayed mu_EM=0.0121529529 -- differs from the paper's own printed value by 1.95e-04 relative, an explicit task instruction per #780's module docstring, not an oversight).
       libration_point:
-      jacobi_constant: 1.0671969118897233   # DERIVED (#797, reusing #780's table3_gate_report/recover_table3_row): full-state Newton corrector at this project's own registry mu, NOT a fixed-Jacobi corrector, so this is the recovered value, not Casoliva's own printed C_J=1.0687623900 verbatim -- reproduces it to 1.46e-03 relative (see source_quotes). Independent Radau integrator cross-check preserves Jacobi to dJ=2.19e-12 over one period. NOT a golden.
-      period_nd: 18.850569160664993   # DERIVED (#797 corrector); reproduces Casoliva's own printed T=18.8495559215 TU to 5.38e-05 relative. NOT a golden.
-      stability_index: 57.04311630270262   # DERIVED (#797, planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. k_par=57.043116, k_perp=-2.253139, k_signed=57.043116; reproduces Casoliva's own printed k=57.3519357463 to 5.38e-03 relative -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
-      state_nd: [0.946182643867633, 4.344682426662323e-05, -4.234992885085817e-22, 0.42786762494145186, -1.5132148719027556, -1.2566408726156288e-22]   # DERIVED (#797, NOT a golden): full-state single-shooting Newton correction (cyclerfinder.search.cr3bp_periodic.correct_periodic, via #780's recover_table3_row) seeded from the validated 180-degree-rotation flip of Casoliva's own printed Table 3 IC (x_i=-0.9462620909, u_i=-0.4279513671, v_i=1.5130807007 in HER frame/convention) at this project's own registry mu. Closure residual 1.47e-09; x0 reproduces Casoliva's own printed x_i to 8.40e-05 relative.
+      jacobi_constant: 1.068655371747616   # DERIVED (#1053): identical to the casoliva-7-3b row's (the mirror image has the same C); the stored state's own C agrees to 5e-11. Reproduces Casoliva's printed C_J=1.0687623900 to 1.00e-04 relative (registry mu, as #797 for 7-3b). Superseded value: 1.0671969118897233 (#797). NOT a golden.
+      period_nd: 18.849632202115544   # DERIVED (#1053): the casoliva-7-3b row's period (mirror image); reproduces Casoliva's printed T=18.8495559215 TU to 4.05e-06 relative. Superseded value: 18.850569160664993 (#797). NOT a golden.
+      stability_index: 57.356153373425   # DERIVED (#1053, on the re-derived state; superseded #797 value 57.04311630270262), planar_stability_index -- Casoliva's OWN Eq. 6-8 full-period k=max(|kappa_par|,|kappa_perp|) convention, NOT this project's usual Barden half-period nu: Barden's G-matrix half-period factorization requires a symmetric PERPENDICULAR x-axis crossing, which this row's own printed IC (a general Poincare y=0 crossing, Casoliva's own text: 'we have not used this property [the perpendicular crossings] in this paper') does not have -- see data_gaps below. #1053: k_par=57.356153, k_perp=-2.269616 (both as for the 7-3b row), k_signed=57.356153; reproduces Casoliva's own printed k=57.3519357463 to 7.35e-05 relative (in-plane and vertically unstable) -- her own printed UNSTABLE verdict is reproduced. NOT a golden, NOT this project's usual Barden nu.
+      state_nd: [0.9462675230681173, 0.0, 0.0, 0.42795058568089944, -1.5130957243229706, 0.0]   # DERIVED (#1053, NOT a golden): the exact mirror image (x, y, t) -> (x, -y, -t) of the casoliva-7-3b row's orbit, re-phased to its y=0 crossing nearest Casoliva's printed 7-3c IC (printed x_i=-0.9462620909, u_i=-0.4279513671, v_i=1.5130807007 in HER frame; 180-degree flip). Matches the printed IC to 5.4e-06/7.8e-07/1.5e-05 absolute; closure residual 4.4e-09. Superseded #797 state: [0.946182643867633, 4.344682426662323e-05, 0, 0.42786762494145186, -1.5132148719027556, 0] (C 1.067197, on the same mirror branch but 1.5e-3 off in C).
       lunit_km: 384400.0   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       tunit_s: 375190.2618944357   # SOURCED: this project's own DE440 registry (see mass_ratio comment).
       casoliva_periselene_km: 13210.299318079999   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_pM column (periselene, Moon-relative, nondim r_pm=0.0343660232 LU converted at this project's own registry lunit_km=384400.0). Independently DERIVE-cross-checked this task by direct dense propagation of the recovered orbit over one full period: min lunar distance 13169.9 km, agreeing to 3.06e-03 relative -- the decisive datum for this row's orbit_class determination (see orbit_class comment above).
-      casoliva_perigee_km: 15705.70272456   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_pE column (perigee, Earth-relative, nondim r_pe=0.0408577074 LU). DERIVE cross-check (min Earth distance over one period): 15798.8 km, agreeing to 5.93e-03 relative.
+      casoliva_perigee_km: 15705.70272456   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_pE column (perigee, Earth-relative, nondim r_pe=0.0408577074 LU). DERIVE cross-check of the #1053 orbit (min Earth distance over one period): 15710.5 km, agreeing to 3.0e-04 relative.
       casoliva_apogee_km: 456900.79023156   # SOURCED: Casoliva 2010 Table 3 "7-3c" r_aE column (apogee, Earth-relative, nondim r_ae=1.1886076749 LU).
       energy_regime:
-      tof_days_bounds: [81.85821736399389, 81.85821736399389]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from this project's own reproduction.
+      tof_days_bounds: [81.85414864034166, 81.85414864034166]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from the #1053 re-derivation.
   source_ephemeris:        # v4.2 backfill: pure CR3BP, no ephemeris dependency.
   data_gaps:
   - path: "orbit_elements.cr3bp.state_nd"
@@ -56577,6 +56617,17 @@
     MODEL: pure planar CR3BP (PCR3BP), this project's own registry mu/l*/t* throughout (NOT Casoliva's own displayed mu_EM=0.0121529529), per #780's own explicit module policy. No bicircular/solar-gravity/lunar-eccentricity/ephemeris refinement.
 
     REPRODUCTION (#797, reusing #780's gate module unmodified): full-state single-shooting Newton periodicity correction (cyclerfinder.search.cr3bp_periodic.correct_periodic) seeded from the validated 180-degree-rotation coordinate flip of Casoliva's own printed Table 3 IC. Closure residual 1.47e-09. Independent Radau integrator cross-check (crosscheck_periodic) passes, preserving Jacobi to dJ=2.19e-12 over one period. #797's own independent DERIVE re-verification (this task, not merely inherited from #780): direct dense propagation (scipy solve_ivp DOP853, rtol=atol=1e-12, 4000-point t_eval grid) of the corrected orbit over one full period, confirming min lunar distance 13169.9 km and min Earth distance 15798.8 km both agree with Casoliva's own printed r_pM/r_pE columns to <1e-3 relative -- an independent confirmation of BOTH the orbit's identity and the orbit_class determination above, not a re-run of #780's own gate.
+
+    CORRECTION (#1053, 2026-10-08): this row was RE-DERIVED as the exact mirror image (x, y, t) ->
+    (x, -y, -t) of casoliva-7-3b-em-cycler-2010, so the two rows are one asymmetric orbit and its
+    mirror at the same C and period, as Casoliva's printed 7-3b/7-3c pair is (same printed C_J
+    1.0687623900 and k 57.3519357; tests/search/test_second_species_continuation.py::
+    test_7_3b_and_7_3c_are_one_orbit_and_its_mirror, #899 cb8d011d). The previous (#797) state
+    was on the same mirror branch but at C = 1.067197 (1.5e-3 off, within the V1 1e-2 tolerance)
+    and is superseded; the #797 per-quantity numbers quoted above describe that previous state.
+    The re-derived orbit reproduces the printed 7-3c IC to 5.4e-06/7.8e-07/1.5e-05 (x, u, v),
+    T to 4.05e-06, C_J to 1.00e-04 and k to 7.35e-05 relative. Evidence:
+    docs/notes/2026-10-08-1053-casoliva-7-3c-row-rederivation.md (scripts/check_1053_7_3c_mirror.py).
   source_quotes:
     "orbit_elements.cr3bp.jacobi_constant": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", C_J column = 1.0687623900."
     "orbit_elements.cr3bp.period_nd": "Casoliva 2010 Table 3 (p.1630) row \"7-3c\", T column = 18.8495559215 TU (=2*pi*3 exactly, her own Eq. 18)."

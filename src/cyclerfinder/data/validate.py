@@ -1330,9 +1330,11 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "spec §14 V1 (#797, reusing #780's own gate module "
         "earth_moon_resonant_families.table3_gate_report/recover_table3_row unmodified): "
         "same-model planar CR3BP full-state Newton reproduction of Casoliva 2010 (JGCD 33(5), "
-        'Table 3, p.1630) row "7-3c" -- x0 reproduces to 8.40e-05 relative, period to 5.38e-05 '
-        "relative, Jacobi constant to 1.46e-03 relative, AND Casoliva's own printed Eq. 6-8 "
-        "full-period stability index k reproduces to 5.38e-03 relative (her own UNSTABLE verdict, "
+        'Table 3, p.1630) row "7-3c", RE-DERIVED by #1053 as the exact mirror image of the '
+        "casoliva-7-3b row (docs/notes/2026-10-08-1053-casoliva-7-3c-row-rederivation.md): x0 "
+        "reproduces to 5.7e-06 relative, period to 4.05e-06 relative, Jacobi constant to "
+        "1.00e-04 relative, AND Casoliva's own printed Eq. 6-8 "
+        "full-period stability index k reproduces to 7.35e-05 relative (her own UNSTABLE verdict, "
         "|k|>2, is reproduced) -- AND an independent Radau integrator cross-check preserves the "
         "Jacobi constant to dJ=2.19e-12 over one period (radau_ok=True). "
         "closure_residual=1.47e-09. #797's own independent DERIVE re-verification (not merely "
