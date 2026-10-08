@@ -155,3 +155,47 @@ registered it as #1052.
   - The lead re-ran it alone at 17:04-17:08 AEDT, load 5: EXIT 0.
 - ruff clean; mypy src tests clean (939 files).
 - Next: the read-only review of the A1 diff.
+
+## 8. Read-only review of A1 (fresh Fable reviewer, 2026-10-08)
+
+**VERDICT: PASS-WITH-NITS.** The previous MAJOR is CLOSED.
+- All A1 items match the sec. 6 rule text. A1-4(a) is module-wide, broader than "same function or
+  module"; benign.
+- Probe 1: 568 untopologied, unlabelled signatures (every 1-4 body subset of every anchor body set,
+  with repeat forms and periods). At Jupiter, every pair, triple, repeat form and the 4-moon set is
+  inconclusive 0.69. The only Jupiter "published" results are via Liang and Hernandez, both genuine
+  triple-cycler sources. No "published" anywhere cites a tour source.
+- No false caps: all 24 anchors capped by G1' are tours, MGA/DSM optimisers, flown trajectories,
+  one-shot free returns or an ephemeris. Rogers-Hughes-Longuski-Aldrin {mga-tour, repeated-moon} is
+  correctly not capped.
+- Probe 2: 2370 signatures (v2, v3, A1 x topologies x working labels). Every change is in the
+  no-topology half; the {repeated-moon} rows are identical under all three. 0 move toward fresh. The
+  cap floors at 0.69 > 0.45, so a capped hit is always "inconclusive".
+- Candidates: the reviewer's own re-run is md5-identical to `data/942_943_litcheck_scope.json`.
+  gc-1, gc-2 and ev-C are inconclusive; ev-A and ev-B not-found; the 26 controls are published.
+
+Findings:
+1. MINOR. The #1052 limit is wider than stated. Untopologied signatures read "published" via
+   non-cycler, NON-tour anchors at every moon primary:
+   - Saturn (Titan,) and (Titan, Enceladus) via Davis-Phillips-McCarthy {halo, nrho, tulip};
+   - Neptune (Triton,) via Miceli-Bosanac {resonant};
+   - Mars via Wallace []; Earth (Moon,) via Braik-Ross [];
+   - Sun (Jupiter,) via Koon-Lo-Marsden-Ross [];
+   - Sun (E,) and (M,) via Aldrin (one-body subsets).
+   These are production paths (`saturn_uranus_campaign.py:339-345`, `signature_from_review_entry`
+   build untopologied signatures). G1' is also not self-consistent: {"resonant"}-only anchors are
+   "not a cycler class" but are never capped (no tour label). Fix (for #1052): cap any anchor with
+   NO cycler-class label, after checking the Earth-Moon [] anchors.
+2. MINOR. Ratchet evasions remain:
+   - a helper with a non-status parameter;
+   - `r.status.strip() in X`, `str(r.status) == ...`, `'not-' in r.status`, `FRESH_MAP[r.status]`;
+   - tuple unpacking, getattr, walrus and chained aliases.
+   Fix: treat a Call with a status-access argument as a status access; add NamedExpr to the alias
+   collector.
+3. NIT. The alias set is module-wide (cross-function false positive possible; none in the tree).
+4. NIT. `best_capped` follows strict improvement only: an uncapped 0.69 hit followed by a capped one
+   suppresses the A1-2 note. Status is unaffected.
+5. NIT (report). Extended to tests/, the ratchet would flag 11 lines in 6 files.
+
+Disposition: lead's ruling. Finding 1 belongs to #1052 (scope to be widened). Findings 2-4 do not
+affect any status.
