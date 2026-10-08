@@ -2259,7 +2259,21 @@ failing epochs. All other rows stay **candidate, pending owner adjudication, NOT
   formulation FAILED its positive control and was rejected (`d33eb6a4`; basin width 1e-3 against a grid
   step of 0.27). Method (1), multiple shooting from p:q skeletons, PASSES the control (`ada7b15a`: both
   asymmetric Casoliva rows recovered; 47 of 47 asymmetric solutions are those rows or their mirrors).
-  The full grid is running, then method (2).
+  **PROGRESS 2026-10-08 (earthmoon-opus; grid `a9589ae0`, `022748e9`):** method (1) full grid, C free:
+  5,760 seeds, 1,505 converged, 213 cycler-class candidates (191 symmetric, 22 asymmetric). The
+  asymmetric ones form 4 families: A, 5:2 prograde (C 2.41-2.58, T about 4 pi, perigee altitude
+  495-8,137 km, b about -110); B, 5:3 retrograde (C 0.67-0.94, T about 6 pi, b about +120); C, 7:3
+  retrograde = the Casoliva 7-3b/c class (the continuation passes through casoliva-7-3b: T 18.84964
+  against the row's 18.8496, perigee 9,333 against 9,332 km); D, 7:3 prograde (C 2.41-2.56, b 500-800).
+  Method (2) control PASSED: family C closes onto a symmetric parent at the pitchfork C = 0.881428101 (b
+  = 2.000000), and the symmetry-breaking parameter regenerates the branch (T 19.123094 against
+  19.12309; +eta and -eta are mirrors). The fixed-C perturbation variant was ill-conditioned (36 of 36)
+  and was replaced; recorded as a formal amendment. A, B and D lie outside the Restrepo-Russell and
+  Franz-Russell domains by construction (maximum Moon distance 790,000-950,000 km). Next: a literal
+  collision check of A, B and D against Casoliva 2010, Liang 2017/2020, Vaquero, Newton,
+  Hoelker-Winston and Genova-Aldrin (dispatched); then the parent identity, method (2) on the `#997`
+  parents and the RR records, the gates, and the classification of the 191 symmetric candidates. The
+  literature step is gated on `#1045`. Nothing is called novel.
 - `#1001` — registered 2026-10-07 (owner: "log all possible tasks"); status: BACKLOG (census, inside
   `#905` deduplication). **CENSUS: STABILITY OF CASOLIVA'S CLASS-2 L1-HOMOCLINIC-SHADOWING ORBITS;
   BROUCKE E1/F AND KUMAR-MORENO FIG. 12/13 FAMILIES AS CYCLERS; LEIVA-BRIOZZO ATLAS LABEL MAPPING.**
