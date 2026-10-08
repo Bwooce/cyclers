@@ -2092,6 +2092,24 @@ amendment.
 Then epochs 1, 2 and 4. The PASS criteria of 6.55 are unchanged, and the checker re-fly is run at every
 epoch.
 
+### 6.55b ev-B results under 6.55a (2026-10-08; code 6ac27fb5; `data/942_evB_ramp/`)
+
+Standish mean elements, ramp mode. Pass criteria as in 6.55.
+
+| Epoch | JD | Step 1: 4-cycle ramp continuation | Step 2: 2 -> 3 -> 4 growth | Checker re-fly | Verdict |
+|---|---|---|---|---|---|
+| 0 (CONTROL) | 2463054.0 | converged at lambda 1, gate PASS, worst 0.933 (= 6.23) | not needed | miss 0.017 km, V_inf vector error 4.7e-9 km/s | control PASSES |
+| 1 | 2465390.1 | stalls at lambda 0.711 | k = 2 pass (worst 0.914); k = 3 pass (0.875); k = 4: direct fails (0.15 km/s), ramp stalls at 0.711 | — (k = 4 not reached) | FAIL at 4 cycles; 3 cycles gate-passing |
+| 2 | 2467728.3 | converged, gate FAIL, worst 1.092 (the 6.23 solution) | not run: step 1 did not stall | — | FAIL |
+| 4 | 2472400.0 | converged, gate FAIL, worst 1.034 (the 6.23 solution) | not run: step 1 did not stall | — | FAIL |
+
+Result: ev-B passes the 16-yr Standish chain at 2 of 5 epochs (0 and 3, from 6.23). Epochs 2 and 4
+converge to a gate-failing chain (Venus ratio 1.03-1.09). Epoch 1 closes and passes the gate for 3
+cycles but not 4.
+
+Conditional: step 2 ran only where step 1 stalled, as pre-registered. A growth path at epochs 2 and 4
+might reach a different branch; that was not tested. The owner decides on the result.
+
 ### 6.56 Addendum (2026-10-07, from #973, relayed by the lead)
 
 The pass definition of sec. 6.1 had two gaps:
