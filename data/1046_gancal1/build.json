@@ -1,0 +1,22 @@
+{
+ "moons": [
+  "Ganymede",
+  "APO",
+  "Ganymede",
+  "APO",
+  "Callisto",
+  "Ganymede"
+ ],
+ "apsis_inserted": [
+  {
+   "after_node": 0,
+   "t_days_after": 6.494860007940205,
+   "r_km": 2406761.635085499
+  },
+  {
+   "after_node": 1,
+   "t_days_after": 6.286457381685161,
+   "r_km": 2351760.4295329293
+  }
+ ]
+}

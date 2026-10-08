@@ -1,0 +1,41 @@
+{
+ "moons": [
+  "Europa",
+  "Ganymede",
+  "APO",
+  "APO",
+  "Ganymede",
+  "APO",
+  "Io",
+  "APO",
+  "APO",
+  "Europa"
+ ],
+ "apsis_inserted": [
+  {
+   "after_node": 1,
+   "t_days_after": 1.5710014366780507,
+   "r_km": 1446610.511795771
+  },
+  {
+   "after_node": 1,
+   "t_days_after": 6.849149063582455,
+   "r_km": 1446610.511795771
+  },
+  {
+   "after_node": 2,
+   "t_days_after": 4.078086946171072,
+   "r_km": 1554330.62562213
+  },
+  {
+   "after_node": 3,
+   "t_days_after": 2.675437414668152,
+   "r_km": 1495455.5655649903
+  },
+  {
+   "after_node": 3,
+   "t_days_after": 8.400892661858796,
+   "r_km": 1495455.5655649898
+  }
+ ]
+}
