@@ -1,0 +1,97 @@
+{
+ "ev-A": [
+  {
+   "epoch": 0,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "A1",
+     "epoch": 0,
+     "epoch_jd": 2462507.9792662235,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5916329544548375
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.1479923107025711,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 1,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "A1",
+     "epoch": 1,
+     "epoch_jd": 2464843.6185434926,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.584622326210922
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.5706801694975405,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 2,
+   "outcome": "NOT RUN",
+   "routes": []
+  },
+  {
+   "epoch": 3,
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "A1",
+     "epoch": 3,
+     "epoch_jd": 2469516.4161934354,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.79375,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "A2",
+     "epoch": 3,
+     "epoch_jd": 2469516.4161934354,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
+  },
+  {
+   "epoch": 4,
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "A1",
+     "epoch": 4,
+     "epoch_jd": 2472436.0210419046,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.840625,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "A2",
+     "epoch": 4,
+     "epoch_jd": 2472436.0210419046,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
+  }
+ ]
+}

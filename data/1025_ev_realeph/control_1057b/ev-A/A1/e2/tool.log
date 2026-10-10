@@ -1,0 +1,72 @@
+10:49:34 ev epoch 2 (JD 2467763.3) blend lam=0.0000 conv=True res=1.8e-13 gate=pass worst=0.574 [elapsed 1s]
+10:49:34 ev epoch 2 (JD 2467763.3) blend lam=0.1000 conv=True res=2.1e-13 gate=pass worst=0.574 [elapsed 1s]
+10:49:34 ev epoch 2 (JD 2467763.3) blend lam=0.2000 conv=True res=5.2e-13 gate=pass worst=0.575 [elapsed 1s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.3000 conv=True res=5.7e-13 gate=pass worst=0.575 [elapsed 1s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.4000 conv=True res=5.6e-13 gate=pass worst=0.576 [elapsed 1s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.5000 conv=True res=1.7e-13 gate=pass worst=0.577 [elapsed 1s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.6000 conv=True res=4.2e-13 gate=pass worst=0.578 [elapsed 1s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.7000 conv=True res=7.6e-13 gate=pass worst=0.579 [elapsed 2s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.8000 conv=True res=7.7e-13 gate=pass worst=0.581 [elapsed 2s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=0.9000 conv=True res=1.1e-12 gate=pass worst=0.582 [elapsed 2s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=1.0000 conv=True res=6.4e-13 gate=pass worst=0.584 [elapsed 2s]
+10:49:35 ev epoch 2 (JD 2467763.3) blend lam=1.0000 conv=True res=5.4e-13 gate=pass worst=0.584 [elapsed 2s]
+10:49:36   shoot k=1 restart 0: closes, gate=pass worst=0.770
+10:49:37   shoot k=1 restart 1: closes, gate=pass worst=0.770
+10:49:38   shoot k=1 restart 2: closes, gate=pass worst=0.770
+10:49:38   shoot k=1 restart 3: closes, gate=pass worst=0.770
+10:49:39   shoot k=1 restart 4: closes, gate=pass worst=0.770
+10:49:40   shoot k=1 restart 5: closes, gate=pass worst=0.770
+10:49:41   shoot k=1 restart 6: closes, gate=pass worst=0.770
+10:49:42   shoot k=1 restart 7: closes, gate=pass worst=0.770
+10:49:42   shoot k=1 restart 8: closes, gate=pass worst=0.770
+10:49:43   shoot k=1 restart 9: closes, gate=pass worst=0.770
+10:49:44   shoot k=1 restart 10: closes, gate=pass worst=0.770
+10:49:45   shoot k=1 restart 11: closes, gate=pass worst=0.770
+10:49:46   shoot k=1 restart 12: closes, gate=pass worst=0.770
+Traceback (most recent call last):
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 1076, in <module>
+    main()
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 1027, in main
+    best_k, tried_k = run_restarts(
+                      ^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 971, in run_restarts
+    x_sol, ev, nfev, t_used = shoot_fn(
+                              ^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 660, in shoot_homotopy
+    y_try, _, n, _ = shoot_once(shoot_sys, legs_c, x_base, y, args, label, offset=off)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 636, in shoot_once
+    f_try = fun(x_sol + frac * step)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 581, in fun
+    out_r = _res(shoot_sys, legs_c, x_base, yy)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 400, in _res
+    ev = chain_eval(sysm, legs, x0, y)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 449, in chain_eval
+    r2, w2 = sysm.state(leg.to, t_arr)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 271, in state
+    r, v = self.base.state(code, big)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 162, in state
+    re, ve = self.real.state(code, t_s)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/scripts/run_942_realeph_chain.py", line 94, in state
+    r, v = self.eph.state(code, t_s + JD_2440000_S_FROM_J2000)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/src/cyclerfinder/core/ephemeris.py", line 717, in state
+    r, v = self._backend_impl.state(body, t_sec)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/src/cyclerfinder/core/ephemeris.py", line 485, in state
+    body_pos, body_vel = get_body_barycentric_posvel(astropy_name, t)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/.venv/lib/python3.11/site-packages/astropy/coordinates/solar_system.py", line 368, in get_body_barycentric_posvel
+    return _get_body_barycentric_posvel(body, time, ephemeris)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bruce/dev/cyclers/.venv/lib/python3.11/site-packages/astropy/coordinates/solar_system.py", line 317, in _get_body_barycentric_posvel
+    for body_p_or_v, p_or_v in zip(
+  File "/Users/bruce/dev/cyclers/.venv/lib/python3.11/site-packages/jplephem/spk.py", line 229, in generate
+    raise OutOfRangeError(
+jplephem.exceptions.OutOfRangeError: segment only covers dates 1549-12-31 through 2650-01-25
