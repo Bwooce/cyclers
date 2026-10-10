@@ -192,3 +192,20 @@ Lead ruling (a), 2026-10-08. Lesson recorded from sec. 5: a published object wit
 - If it FAILS: STOP and report. The ev V2 question then waits (lead ruling).
 - The ev NEGATIVE control (sec. 3: ev-C epoch 0 with the 2nd Lambert start + 1 d) runs with it and must
   fail.
+
+### 8.1 Result (2026-10-11 09:21 AEDT): the H&M orbit 1 control FAILS -> STOP
+
+- The chain tool phase-matched the ideal cycle at JD 2440790.5. Its first Lambert start (E->V) is 15 d
+  before H&M's printed E->V departure (JD 2440806), so this is the same 1969 window.
+- Direct solve (`data/1007_v2/hm_orbit1_direct/`): no convergence (residual 0.42 km/s).
+- Ramp continuation (`data/1007_v2/hm_orbit1_ramp/`): stalls at lambda 0.398. At that lambda the chain
+  is closed and gate-passing (worst 0.738), but it never reaches lambda = 1.
+- This is the same failure mode as Hollister 1H at the 2030-2056 epochs (sec. 5).
+
+Per sec. 8 and the lead's ruling, the ev V2 question WAITS. The negative control was not run.
+
+Diagnosis (not tested): both ev controls fail at the IDEAL -> REAL continuation, not at the criteria.
+The full-rev-only 1H/orbit-1 branch of the circular model does not continue to the inclined-elliptic
+orbit H&M published. A route that seeds the chain from H&M's PRINTED dates was not pre-registered and
+was not run. It would test the published object directly (stage-1 of the H&M reproduction converged
+from those dates; `data/942_hm1970_control_summary.json`).
