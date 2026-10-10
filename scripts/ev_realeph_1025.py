@@ -209,7 +209,9 @@ def classify(ep: dict[str, Any], route: str, n: int, d: Path) -> dict[str, Any]:
 _KEY = [""]  # the current member's key, for the checker
 
 
-def ladder(tag: str, key: str, xd: str, n: int, model: str, epochs: list[int]) -> list[dict]:
+def ladder(
+    tag: str, key: str, xd: str, n: int, model: str, epochs: list[int]
+) -> list[dict[str, Any]]:
     _KEY[0] = key
     res = []
     for ie in epochs:
@@ -298,7 +300,7 @@ def _deb_eval(tag: str, key: str, n: int, route: str, ie: int) -> dict[str, Any]
     return out
 
 
-def ladder_deb(tag: str, key: str, xd: str, n: int, epochs: list[int]) -> list[dict]:
+def ladder_deb(tag: str, key: str, xd: str, n: int, epochs: list[int]) -> list[dict[str, Any]]:
     _KEY[0] = key
     res = []
     for ie in epochs:
@@ -372,7 +374,7 @@ def standish_band(tag: str) -> dict[str, Any]:
     dvb = _load("dv_band_942", REPO / "scripts" / "dv_band_942.py")
     real = dvb.CHAIN.real_ephemeris("ev", "mean")
     key, _, n = members()[tag]
-    per_epoch = []
+    per_epoch: list[dict[str, Any]] = []
     for ie in EPOCHS:
         cands = []
         for route in ("S1", "S2", "S3"):
