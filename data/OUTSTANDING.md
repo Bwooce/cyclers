@@ -2358,6 +2358,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   continuation fails 5 of 5 epochs (stalls at lambda 0.29-0.39). Lead ruling: run the gc lane now
   (GanEur#316 control, the negatives, then gc-1 and gc-2), and pre-register one H&M Table 3 orbit at
   H&M's own epoch as the ev control; 1H's failure is recorded as a control-choice lesson.
+  **gc LANE DONE 2026-10-08 (twobody-gen2-opus, `#1007` note sec. 6):** the controls behave (GanEur#316 3/5;
+  the broken gc-1 chain fails). Literal results: gc-1 0/5, gc-2 2/5. Two instrument findings: criterion 1
+  as pre-registered contradicted the spec wording (lead ruling: corrected to the spec, junction-only;
+  gc-1 is then 3/5, marginal); the W band measures the real-against-ideal offset, not drift. **OWNER DECISIONS 2026-10-08 evening (the owner's own answers, recorded 2026-10-11):**
+  "bounded drift" is judged by GROWTH ONLY, with the offset recorded (a decision made after seeing the
+  results, recorded as such); under it gc-2 is 5/5 (2/5 under W). The V2 promotions go in the next
+  catalogue window.
 - `#1008` — registered 2026-10-07 (owner: "log all possible tasks"); status: DISPATCHED
   (twobody-gen2-opus, owner ruling 2026-10-07). **ev-B: STANDISH RAMP-MODE k-CYCLE GROWTH RETRY AT
   ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
@@ -2500,6 +2507,18 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   (undecided). V_inf shifts 0-0.67 km/s against the patched conic. Real-ephemeris continuous gravity is
   untested for all of them (the lane limit, `#1046`). **The literature step for all 42 members is
   DISPATCHED to twobody-ext-opus** (labelled signatures, the v3 gate, prior-art notes, an owner summary).
+  **LITERATURE STEP DONE 2026-10-08 (twobody-ext-opus; pre-registration `05a18d39`, results `ee0c2430`; owner
+  summary `docs/notes/2026-10-08-1025-owner-summary.md`):** gc 19 of 20 inconclusive, naming R-S G-C (as
+  pre-registered); gc6-0 read "published 0.85 via Campagnola GCGC", a convention ARTEFACT (its cycle is
+  G G C; `sig_of`'s time-ordered (G, C, G) plus `#972`'s F3 closing-repeat drop reads as alternating;
+  with a rotated start it is inconclusive like the rest), recorded as such, not as a collision (fix:
+  `#1056`). ev 22 of 22 not-found (H&M excluded on return types: 2:1, 3:2 and 2:3 full-rev returns).
+  **OWNER DECISIONS 2026-10-08 evening (the owner's own answers, recorded 2026-10-11):** (1) gc: the 15 members that EXIST at full mass are written as candidate-novel V1 rows, one
+  each, with a family relation to gc-1; the FOLDS / IMPACT / NUMERICAL STOP members are note-only;
+  DISPATCHED to twobody-gen2-opus for one catalogue window, together with the ev-B row, the gc-1 `#1046`
+  sentence and the `#1007` V2 promotions. (2) ev: rung (d) real-ephemeris chains and dV bands for the 22
+  members BEFORE any row; DISPATCHED to twobody-ext-opus. Note: CI run 37754627536 on `ee0c2430` FAILED
+  (one test: the F13 ratchet flags `scripts/litcheck_1025_973_members.py:75`; under investigation).
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
@@ -2851,6 +2870,9 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
 - `#1055` — registered 2026-10-08 (from `#1046`; BACKLOG). **A SEED CORRECTED WITH THE OUT-OF-PLANE ROWS** for
   the Jovian n-body lane's full-revolution legs, to remove the out-of-plane inconsistency that stalls
   GanCal#1@2013 and gc-1 under every formulation (`#1046`).
+- `#1056` — registered 2026-10-08 (from `#1025`; BACKLOG, small). **A CLOSING-REPEAT FLAG ON SIGNATURES (OR A
+  ROTATED START IN `sig_of`)** so that `#972`'s F3 rule cannot read a consecutive-same-moon cycle (G G C) as
+  alternating. Papercut `docs/papercuts/2026-10-08-twobody-ext-opus-closing-repeat-rule-vs-time-ordered-flybys.md`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
