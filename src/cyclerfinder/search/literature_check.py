@@ -3687,6 +3687,17 @@ def is_literature_fresh(status: str | None) -> bool:
     return status in FRESH_STATUSES
 
 
+def literature_status_matches(actual: str | None, expected: str | None) -> bool:
+    """Does a returned literature status equal a pre-registered expectation?
+
+    Bookkeeping only (#1025, 2026-10-11): scripts that record whether a run
+    matched its pre-registration use this instead of a literal comparison, so
+    the #972 F13 ratchet keeps every freshness decision in
+    :func:`is_literature_fresh`. It never decides novelty.
+    """
+    return actual == expected
+
+
 def signature_from_review_entry(entry: Any) -> CandidateSignature:
     """Build a :class:`CandidateSignature` from a review-queue entry.
 

@@ -162,3 +162,10 @@ def test_a1_capped_best_hit_names_f7_anchor() -> None:
 def test_a1_empty_sequence_not_f7() -> None:
     r = _check(_sig("Jupiter", (), working_bodies="two"))
     assert "different declared architecture" not in r.notes, r
+
+
+def test_literature_status_matches_is_plain_equality() -> None:
+    """#1025 bookkeeping helper: equality only, never a freshness decision."""
+    assert lc.literature_status_matches("inconclusive", "inconclusive")
+    assert not lc.literature_status_matches("not-found", "inconclusive")
+    assert not lc.is_literature_fresh("inconclusive")

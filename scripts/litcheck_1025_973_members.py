@@ -22,6 +22,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from cyclerfinder.search.literature_check import literature_status_matches
+
 REPO = Path(__file__).resolve().parents[1]
 
 
@@ -72,7 +74,7 @@ def main() -> None:
         for name, path, pick, key, expect in CHECKS:
             rec = SCOPE.run(name, SCOPE.sig_of(*SCOPE.from_gauntlet(path, pick, key)))
             rec["expected"] = expect
-            rec["as_expected"] = rec["status"] == expect
+            rec["as_expected"] = literature_status_matches(rec["status"], expect)
             out["checks"].append(rec)
     screen4 = json.loads((REPO / "data/973_gc/k4_screen.json").read_text())
     for tag, (path, idx) in MEMBERS.items():
