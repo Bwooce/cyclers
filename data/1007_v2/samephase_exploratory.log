@@ -1,0 +1,14 @@
+gc-1 JD 2462511.7: L=4 n=10 cont=8.6e-07 D'max=0.035/0.185 d W'max=0.0212/0.175 km/s growth D 0.90 W 0.25 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-1 JD 2464840.9: L=4 n=10 cont=8.6e-07 D'max=0.037/0.186 d W'max=0.0227/0.176 km/s growth D 0.82 W 0.32 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-1 JD 2467182.8: L=4 n=10 cont=8.6e-07 D'max=0.016/0.185 d W'max=0.0139/0.176 km/s growth D 1.23 W 0.55 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-1 JD 2469524.7: L=4 n=10 cont=8.6e-07 D'max=0.030/0.185 d W'max=0.0130/0.175 km/s growth D 0.79 W 0.63 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-1 JD 2471854.0: L=4 n=10 cont=8.6e-07 D'max=0.018/0.186 d W'max=0.0084/0.176 km/s growth D 0.72 W 0.63 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-2 JD 2462511.3: L=4 n=10 cont=9.2e-08 D'max=0.057/0.125 d W'max=0.3421/0.303 km/s growth D 1.01 W 0.06 -> drift FAIL, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-2 JD 2464840.6: L=4 n=10 cont=9.3e-08 D'max=0.040/0.128 d W'max=0.1600/0.302 km/s growth D 1.01 W 0.06 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-2 JD 2467182.5: L=4 n=10 cont=9.2e-08 D'max=0.046/0.126 d W'max=0.3195/0.303 km/s growth D 1.00 W 0.06 -> drift FAIL, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-2 JD 2469524.3: L=4 n=10 cont=9.2e-08 D'max=0.038/0.129 d W'max=0.1574/0.303 km/s growth D 0.36 W 0.07 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+gc-2 JD 2471853.7: L=4 n=10 cont=9.2e-08 D'max=0.056/0.127 d W'max=0.3370/0.303 km/s growth D 0.65 W 0.06 -> drift FAIL, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+NEGATIVE gc-1 e0 broken: L=4 n=10 cont=2.3e-01 D'max=0.043/0.185 d W'max=0.2509/0.175 km/s growth D 0.74 W 0.02 -> drift FAIL, continuity FAIL [exploratory, under the draft metric, awaiting the owner]
+POSITIVE H&M orbit 1 (printed, 10 cycles): L=5 n=10 cont=1.4e-12 D'max=2.093/7.524 d W'max=0.3006/0.454 km/s growth D 0.88 W 1.06 -> drift PASS, continuity PASS [exploratory, under the draft metric, awaiting the owner]
+H&M: max shift from print 6.750 d, chain period 11682.207 d (2 x 5844 = 11688)
+wrote data/1007_v2/samephase_exploratory.json

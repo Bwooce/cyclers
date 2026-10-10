@@ -361,3 +361,38 @@ judged at its epoch.
   - Not computed: this is an expectation, not a result.
 
 Nothing in this section has been run.
+
+### 8.5 EXPLORATORY pre-check of the sec. 8.4 draft metric (2026-10-11) — exploratory, under the draft metric, awaiting the owner
+
+Not a spec or catalogue change. Run: `scripts/v2_samephase_1007.py` (`data/1007_v2/samephase_exploratory.{json,log}`),
+on the EXISTING chains (gc, L = 4, n = 10, 6 comparisons). The H&M chain is new: solved from the
+printed dates over two periods (10 cycles, L = 5, 5 comparisons). Continuity is junction-only.
+
+| Chain | Continuity | D' max / band (d) | W' max / band (km/s) | Growth D / W | Draft drift |
+|---|---|---|---|---|---|
+| gc-1, 5 epochs | 8.6e-7 (pass) | 0.016-0.037 / 0.185 | 0.008-0.023 / 0.175 | 0.72-1.23 / 0.25-0.63 | PASS 5/5 |
+| gc-2, JD 2464840.6 and 2469524.3 | 9.3e-8 (pass) | 0.038-0.040 / 0.13 | 0.157-0.160 / 0.30 | <= 1.01 / 0.06-0.07 | PASS |
+| gc-2, JD 2462511.3, 2467182.5 and 2471853.7 | 9.2e-8 (pass) | 0.046-0.057 / 0.13 | **0.319-0.342** / 0.30 | <= 1.01 / 0.06 | FAIL (W' band) |
+| NEGATIVE: gc-1 e0, + 0.05 d | **0.23 (fail)** | 0.043 / 0.185 | 0.25 / 0.175 | 0.74 / 0.02 | FAIL, as required |
+| POSITIVE: H&M orbit 1, printed, 10 cycles | 1.4e-12 (pass) | 2.09 / 7.52 | 0.30 / 0.45 | 0.88 / 1.06 | **PASS** |
+
+- The H&M solve converges within 6.75 d of the printed dates over the 32 yr. The chain period is
+  11682.2 d against 2 x 5844.
+- The draft metric passes the published orbit that the current metric failed (sec. 8.3).
+
+Readings (exploratory):
+- gc-1: 5/5 under the draft metric, against 3/5 (marginal) under the current wording. As sec. 8.4
+  expected, the two D-band misses were accumulated phase.
+- gc-2: 2/5 under the draft metric as written, against 5/5 under the current wording, so it would
+  NOT hold.
+  - Every gc-2 W' failure is at i = 0: cycle 4 against cycle 0, with W' 0.16-0.34 km/s. Every later
+    comparison is <= 0.022 km/s.
+  - The cause is the chain's first departure leg. It is the open chain's START and has no incoming
+    junction constraining its |V_inf|. Only its magnitude closure at the far end of the chain ties it,
+    so it is an end effect, not drift.
+  - gc-1 does not show it, because its chain starts on a shot full-rev block.
+  - A refinement for the owner: exclude cycle 0 (the unconstrained start), i.e. compare i = 1 ..
+    n-L-1. Under that refinement gc-2 would pass 5/5 (W' <= 0.022). Not applied; for the owner's
+    decision with the rest of sec. 8.4.
+- The H&M positive control passes with margin. The ev rows are not computed (they need new 10-cycle
+  chains). Nothing here changes any row.
