@@ -313,3 +313,260 @@
 2026-10-11T06:57:40+1100 ev5-10 std e4: FAIL
 2026-10-11T07:04:44+1100 ev4-1 D1 e0: NOT RUN (timeout 420 s)
 2026-10-11T07:04:44+1100 ev4-1 de e0: NOT RUN
+2026-10-11T07:07:23+1100 ev4-1 DB1 e0 JD 2462949.6: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:07:36+1100 ev4-1 deb e0: reached=True route=DB1 gate=pass worst=0.8185507426670929 closure E/V=132.9187425728793/9.735902353284974 m/s per7=332.86083816407523
+2026-10-11T07:07:39+1100 ev4-1 DB1 e1 JD 2465278.5: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:07:40+1100 ev4-1 deb e1: reached=True route=DB1 gate=pass worst=0.7746126947418341 closure E/V=184.7616622946736/9.443589898722486 m/s per7=453.14558845544406
+2026-10-11T07:07:43+1100 ev4-1 DB1 e2 JD 2467618.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:07:45+1100 ev4-1 deb e2: reached=True route=DB1 gate=pass worst=0.794884367178222 closure E/V=184.37315608777197/9.42487579555256 m/s per7=452.19540773019423
+2026-10-11T07:07:48+1100 ev4-1 DB1 e3 JD 2469954.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:07:49+1100 ev4-1 deb e3: reached=True route=DB1 gate=pass worst=0.820591729094448 closure E/V=122.2585037452791/9.896395089447246 m/s per7=308.36143061669407
+2026-10-11T07:07:52+1100 ev4-1 DB1 e4 JD 2472285.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:07:53+1100 ev4-1 deb e4: reached=True route=DB1 gate=pass worst=0.8256050648428157 closure E/V=140.2485988067204/8.61411263851505 m/s per7=347.3463267108875
+2026-10-11T07:08:02+1100 ev4-0 DB1 e0 JD 2462949.6: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:08:04+1100 ev4-0 DB2 e0 JD 2462949.6: NOT REACHED worst=None refly=None (2s)
+2026-10-11T07:08:04+1100 ev4-0 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:08+1100 ev4-0 DB1 e1 JD 2465278.5: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:08:10+1100 ev4-0 DB2 e1 JD 2465278.5: NOT REACHED worst=None refly=None (2s)
+2026-10-11T07:08:10+1100 ev4-0 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:14+1100 ev4-0 DB1 e2 JD 2467618.2: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:08:15+1100 ev4-0 DB2 e2 JD 2467618.2: NOT REACHED worst=None refly=None (2s)
+2026-10-11T07:08:15+1100 ev4-0 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:19+1100 ev4-0 DB1 e3 JD 2469954.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:20+1100 ev4-0 DB2 e3 JD 2469954.2: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:20+1100 ev4-0 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:24+1100 ev4-0 DB1 e4 JD 2472285.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:25+1100 ev4-0 DB2 e4 JD 2472285.0: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:27+1100 ev4-0 deb e4: reached=True route=DB2 gate=fail worst=2.3910009300521966 closure E/V=120.2685948015002/2.174551083977509 m/s per7=67627.41185926704
+2026-10-11T07:08:30+1100 ev4-3 DB1 e0 JD 2462833.7: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:32+1100 ev4-3 DB2 e0 JD 2462833.7: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:32+1100 ev4-3 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:35+1100 ev4-3 DB1 e1 JD 2465176.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:36+1100 ev4-3 DB2 e1 JD 2465176.2: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:36+1100 ev4-3 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:39+1100 ev4-3 DB1 e2 JD 2467503.9: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:40+1100 ev4-3 DB2 e2 JD 2467503.9: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:40+1100 ev4-3 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:43+1100 ev4-3 DB1 e3 JD 2469845.9: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:44+1100 ev4-3 DB2 e3 JD 2469845.9: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:44+1100 ev4-3 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:47+1100 ev4-3 DB1 e4 JD 2472179.7: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:49+1100 ev4-3 DB2 e4 JD 2472179.7: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:08:49+1100 ev4-3 deb e4: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:08:52+1100 ev4-4 DB1 e0 JD 2462829.6: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:53+1100 ev4-4 deb e0: reached=True route=DB1 gate=pass worst=0.9198440704829626 closure E/V=15.463542130300599/4.583031760666437 m/s per7=46.77533909045
+2026-10-11T07:08:57+1100 ev4-4 DB1 e1 JD 2465172.5: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:08:58+1100 ev4-4 deb e1: reached=True route=DB1 gate=pass worst=0.9456779178566446 closure E/V=16.259188125892486/2.7837820080363587 m/s per7=44.43359699560995
+2026-10-11T07:09:01+1100 ev4-4 DB1 e2 JD 2467500.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:02+1100 ev4-4 deb e2: reached=True route=DB1 gate=pass worst=0.9790849456000587 closure E/V=16.27856281588006/2.2713916793261038 m/s per7=43.28322716825992
+2026-10-11T07:09:05+1100 ev4-4 DB1 e3 JD 2469841.8: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:06+1100 ev4-4 deb e3: reached=True route=DB1 gate=pass worst=0.8308093238842656 closure E/V=18.351244849830707/3.560076593060192 m/s per7=51.12641672049445
+2026-10-11T07:09:09+1100 ev4-4 DB1 e4 JD 2472176.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:11+1100 ev4-4 deb e4: reached=True route=DB1 gate=pass worst=0.7719128233387501 closure E/V=18.009942923836846/3.6023707829176046 m/s per7=50.42873201553415
+2026-10-11T07:09:14+1100 ev4-5 DB1 e0 JD 2463057.8: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:15+1100 ev4-5 deb e0: reached=True route=DB1 gate=fail worst=1.105734435170899 closure E/V=5.462372387980282/4.599028005276395 m/s per7=1810.0865291802163
+2026-10-11T07:09:19+1100 ev4-5 DB1 e1 JD 2465394.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:20+1100 ev4-5 deb e1: reached=True route=DB1 gate=pass worst=0.9187614393027843 closure E/V=6.8448047406881845/4.113197474378147 m/s per7=25.568671838881535
+2026-10-11T07:09:23+1100 ev4-5 DB1 e2 JD 2467732.1: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:24+1100 ev4-5 deb e2: reached=True route=DB1 gate=fail worst=1.6776022186583848 closure E/V=7.688067709412513/4.1996735298902115 m/s per7=11486.65873217568
+2026-10-11T07:09:29+1100 ev4-5 DB1 e3 JD 2470063.6: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:09:30+1100 ev4-5 DB2 e3 JD 2470063.6: NOT REACHED worst=None refly=None (1s)
+2026-10-11T07:09:30+1100 ev4-5 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:09:33+1100 ev4-5 DB1 e4 JD 2472403.8: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:34+1100 ev4-5 deb e4: reached=True route=DB1 gate=pass worst=0.8638991649587682 closure E/V=6.368913803445645/4.041292500212412 m/s per7=24.290481390899856
+2026-10-11T07:09:37+1100 ev4-6 DB1 e0 JD 2462829.6: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:39+1100 ev4-6 deb e0: reached=True route=DB1 gate=pass worst=0.9198440704829626 closure E/V=16.002371557073282/4.583031760666437 m/s per7=48.03260775286142
+2026-10-11T07:09:43+1100 ev4-6 DB1 e1 JD 2465172.5: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:44+1100 ev4-6 deb e1: reached=True route=DB1 gate=pass worst=0.9456779178566446 closure E/V=55.40705540879909/2.7837820080363587 m/s per7=135.77862065573447
+2026-10-11T07:09:47+1100 ev4-6 DB1 e2 JD 2467500.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:09:48+1100 ev4-6 deb e2: reached=True route=DB1 gate=pass worst=0.9790849456000587 closure E/V=145.96164482247164/2.2713916793261038 m/s per7=345.8770851836313
+2026-10-11T07:09:52+1100 ev4-6 DB1 e3 JD 2469841.8: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:09:53+1100 ev4-6 deb e3: reached=True route=DB1 gate=pass worst=0.8308093238842656 closure E/V=199.54438202362266/3.560076593060192 m/s per7=473.91040345932765
+2026-10-11T07:09:57+1100 ev4-6 DB1 e4 JD 2472176.2: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:09:59+1100 ev4-6 deb e4: reached=True route=DB1 gate=pass worst=0.7719128233387501 closure E/V=86.59146583153955/3.6023707829176046 m/s per7=210.45228546679107
+2026-10-11T07:10:06+1100 ev4-7 DB1 e0 JD 2462829.6: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:10:10+1100 ev4-7 deb e0: reached=True route=DB1 gate=pass worst=0.9198440704829626 closure E/V=123.34659872949354/4.583031760666437 m/s per7=298.5024711551769
+2026-10-11T07:10:17+1100 ev4-7 DB1 e1 JD 2465172.5: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:10:20+1100 ev4-7 deb e1: reached=True route=DB1 gate=pass worst=0.9456779178566446 closure E/V=125.55955395599156/2.7837820080363587 m/s per7=299.46778393249684
+2026-10-11T07:10:28+1100 ev4-7 DB1 e2 JD 2467500.2: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:10:30+1100 ev4-7 deb e2: reached=True route=DB1 gate=pass worst=0.9790849456000587 closure E/V=142.93491329185102/2.2713916793261038 m/s per7=338.81471161219264
+2026-10-11T07:10:37+1100 ev4-7 DB1 e3 JD 2469841.8: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:10:40+1100 ev4-7 deb e3: reached=True route=DB1 gate=pass worst=0.8308093238842656 closure E/V=93.05206301032632/3.560076593060192 m/s per7=225.42832576163005
+2026-10-11T07:10:48+1100 ev4-7 DB1 e4 JD 2472176.2: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:10:50+1100 ev4-7 deb e4: reached=True route=DB1 gate=pass worst=0.7719128233387501 closure E/V=132.6658669474774/3.6023707829176046 m/s per7=317.95922140397187
+2026-10-11T07:10:59+1100 ev4-8 DB1 e0 JD 2462827.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:11:03+1100 ev4-8 deb e0: reached=True route=DB1 gate=fail worst=1.3133197472104492 closure E/V=14.796094278089324/5.977913698490337 m/s per7=6291.742063281169
+2026-10-11T07:11:13+1100 ev4-8 DB1 e1 JD 2465170.1: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:11:16+1100 ev4-8 DB2 e1 JD 2465170.1: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:11:16+1100 ev4-8 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:11:28+1100 ev4-8 DB1 e2 JD 2467497.9: NOT REACHED worst=None refly=None (12s)
+2026-10-11T07:11:32+1100 ev4-8 DB2 e2 JD 2467497.9: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:11:32+1100 ev4-8 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:11:42+1100 ev4-8 DB1 e3 JD 2469839.2: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:11:45+1100 ev4-8 DB2 e3 JD 2469839.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:11:45+1100 ev4-8 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:11:53+1100 ev4-8 DB1 e4 JD 2472174.0: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:11:56+1100 ev4-8 deb e4: reached=True route=DB1 gate=fail worst=1.235827754972733 closure E/V=18.144987175177054/5.611517750146287 m/s per7=5906.705605701649
+2026-10-11T07:12:05+1100 ev4-9 DB1 e0 JD 2462827.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:12:09+1100 ev4-9 deb e0: reached=True route=DB1 gate=fail worst=1.3133197472104492 closure E/V=5.408494560119882/5.977913698490337 m/s per7=6269.837663939289
+2026-10-11T07:12:20+1100 ev4-9 DB1 e1 JD 2465170.1: NOT REACHED worst=None refly=None (11s)
+2026-10-11T07:12:24+1100 ev4-9 DB2 e1 JD 2465170.1: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:12:24+1100 ev4-9 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:12:36+1100 ev4-9 DB1 e2 JD 2467497.9: NOT REACHED worst=None refly=None (12s)
+2026-10-11T07:12:39+1100 ev4-9 DB2 e2 JD 2467497.9: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:12:39+1100 ev4-9 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:12:49+1100 ev4-9 DB1 e3 JD 2469839.2: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:12:52+1100 ev4-9 DB2 e3 JD 2469839.2: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:12:52+1100 ev4-9 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:13:01+1100 ev4-9 DB1 e4 JD 2472174.0: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:13:04+1100 ev4-9 deb e4: reached=True route=DB1 gate=fail worst=1.235827754972733 closure E/V=9.796921233334798/5.611517750146287 m/s per7=5887.226785170672
+2026-10-11T07:13:13+1100 ev4-10 DB1 e0 JD 2462827.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:13:17+1100 ev4-10 deb e0: reached=True route=DB1 gate=fail worst=1.3133197472104492 closure E/V=79.57615015723236/5.977913698490337 m/s per7=6442.895526999174
+2026-10-11T07:13:27+1100 ev4-10 DB1 e1 JD 2465170.1: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:13:31+1100 ev4-10 DB2 e1 JD 2465170.1: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:13:31+1100 ev4-10 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:13:44+1100 ev4-10 DB1 e2 JD 2467497.9: NOT REACHED worst=None refly=None (13s)
+2026-10-11T07:13:48+1100 ev4-10 DB2 e2 JD 2467497.9: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:13:48+1100 ev4-10 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:13:58+1100 ev4-10 DB1 e3 JD 2469839.2: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:14:02+1100 ev4-10 DB2 e3 JD 2469839.2: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:14:02+1100 ev4-10 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:14:10+1100 ev4-10 DB1 e4 JD 2472174.0: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:14:13+1100 ev4-10 deb e4: reached=True route=DB1 gate=fail worst=1.235827754972733 closure E/V=70.55776629072544/5.611517750146287 m/s per7=6029.0020903045715
+2026-10-11T07:14:22+1100 ev4-11 DB1 e0 JD 2462827.1: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:14:26+1100 ev4-11 deb e0: reached=True route=DB1 gate=fail worst=1.3133197472104492 closure E/V=68.89395729166932/5.977913698490337 m/s per7=6417.970410312857
+2026-10-11T07:14:37+1100 ev4-11 DB1 e1 JD 2465170.1: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:14:41+1100 ev4-11 DB2 e1 JD 2465170.1: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:14:41+1100 ev4-11 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:14:53+1100 ev4-11 DB1 e2 JD 2467497.9: NOT REACHED worst=None refly=None (12s)
+2026-10-11T07:14:57+1100 ev4-11 DB2 e2 JD 2467497.9: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:14:57+1100 ev4-11 deb e2: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:15:07+1100 ev4-11 DB1 e3 JD 2469839.2: NOT REACHED worst=None refly=None (10s)
+2026-10-11T07:15:11+1100 ev4-11 DB2 e3 JD 2469839.2: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:15:11+1100 ev4-11 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:15:19+1100 ev4-11 DB1 e4 JD 2472174.0: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:15:22+1100 ev4-11 deb e4: reached=True route=DB1 gate=fail worst=1.235827754972733 closure E/V=107.19904965574784/5.611517750146287 m/s per7=6114.498418156298
+2026-10-11T07:15:32+1100 ev5-0 DB1 e0 JD 2462937.0: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:15:35+1100 ev5-0 DB2 e0 JD 2462937.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:15:35+1100 ev5-0 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:15:43+1100 ev5-0 DB1 e1 JD 2465266.4: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:15:46+1100 ev5-0 DB2 e1 JD 2465266.4: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:15:46+1100 ev5-0 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:15:52+1100 ev5-0 DB1 e2 JD 2467604.4: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:15:56+1100 ev5-0 deb e2: reached=True route=DB1 gate=fail worst=1.1203474111375122 closure E/V=12.389483399423868/69.5517714631683 m/s per7=7157.581343177162
+2026-10-11T07:16:03+1100 ev5-0 DB1 e3 JD 2469942.3: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:16:07+1100 ev5-0 DB2 e3 JD 2469942.3: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:16:07+1100 ev5-0 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:16:14+1100 ev5-0 DB1 e4 JD 2472271.9: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:16:18+1100 ev5-0 DB2 e4 JD 2472271.9: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:16:18+1100 ev5-0 deb e4: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:16:24+1100 ev5-1 DB1 e0 JD 2462937.0: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:16:27+1100 ev5-1 DB2 e0 JD 2462937.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:16:27+1100 ev5-1 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:16:34+1100 ev5-1 DB1 e1 JD 2465266.4: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:16:38+1100 ev5-1 DB2 e1 JD 2465266.4: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:16:38+1100 ev5-1 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:16:43+1100 ev5-1 DB1 e2 JD 2467604.4: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:16:46+1100 ev5-1 deb e2: reached=True route=DB1 gate=fail worst=1.1203474111375122 closure E/V=102.16455948592119/69.5517714631683 m/s per7=7471.794109479899
+2026-10-11T07:16:53+1100 ev5-1 DB1 e3 JD 2469942.3: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:16:56+1100 ev5-1 DB2 e3 JD 2469942.3: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:16:56+1100 ev5-1 deb e3: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:17:04+1100 ev5-1 DB1 e4 JD 2472271.9: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:17:07+1100 ev5-1 DB2 e4 JD 2472271.9: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:17:07+1100 ev5-1 deb e4: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:17:13+1100 ev5-2 DB1 e0 JD 2462949.6: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:17:17+1100 ev5-2 deb e0: reached=True route=DB1 gate=pass worst=0.7847300424492446 closure E/V=243.0075455814845/3.3923286986324457 m/s per7=862.3995599982688
+2026-10-11T07:17:23+1100 ev5-2 DB1 e1 JD 2465278.5: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:17:25+1100 ev5-2 deb e1: reached=True route=DB1 gate=fail worst=1.349271063399384 closure E/V=20.49560555958013/4.227918009572868 m/s per7=36320.88724874788
+2026-10-11T07:17:33+1100 ev5-2 deb e2: reached=True route=DB1 gate=pass worst=0.8053022366693025 closure E/V=20.32850432722146/3.466655313272633 m/s per7=83.28305875180021
+2026-10-11T07:17:39+1100 ev5-2 DB1 e3 JD 2469954.2: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:17:41+1100 ev5-2 deb e3: reached=True route=DB1 gate=pass worst=0.8684532209201451 closure E/V=19.729693387501023/4.026003212164688 m/s per7=83.14493811835516
+2026-10-11T07:17:50+1100 ev5-2 DB1 e4 JD 2472285.0: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:17:54+1100 ev5-2 DB2 e4 JD 2472285.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:17:54+1100 ev5-2 deb e4: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:18:02+1100 ev5-3 DB1 e0 JD 2462599.6: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:18:05+1100 ev5-3 DB2 e0 JD 2462599.6: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:18:05+1100 ev5-3 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:18:10+1100 ev5-3 DB1 e1 JD 2464932.0: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:18:14+1100 ev5-3 deb e1: reached=True route=DB1 gate=pass worst=0.5674269666335647 closure E/V=3.5008413709040305/5.175159766707198 m/s per7=30.366003983383237
+2026-10-11T07:18:19+1100 ev5-3 DB1 e2 JD 2467268.9: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:18:22+1100 ev5-3 deb e2: reached=True route=DB1 gate=pass worst=0.5453015130493063 closure E/V=3.8523062848603153/8.35480779249801 m/s per7=42.72489927157279
+2026-10-11T07:18:27+1100 ev5-3 DB1 e3 JD 2469605.9: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:18:30+1100 ev5-3 deb e3: reached=True route=DB1 gate=pass worst=0.6066080485911727 closure E/V=2.6936966374043902/2.06059294153086 m/s per7=16.64001352856219
+2026-10-11T07:18:35+1100 ev5-3 DB1 e4 JD 2471938.3: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:18:38+1100 ev5-3 deb e4: reached=True route=DB1 gate=pass worst=0.5571705465664469 closure E/V=3.770722010507923/20.031362889822816 m/s per7=83.30729715391556
+2026-10-11T07:18:45+1100 ev5-4 DB1 e0 JD 2463078.3: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:18:49+1100 ev5-4 deb e0: reached=True route=DB1 gate=pass worst=0.6282446476743327 closure E/V=4.081432345484693/7.921093519318884 m/s per7=42.00884052778576
+2026-10-11T07:18:57+1100 ev5-4 DB1 e1 JD 2465415.8: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:19:00+1100 ev5-4 DB2 e1 JD 2465415.8: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:19:00+1100 ev5-4 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:19:07+1100 ev5-4 DB1 e2 JD 2467752.3: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:19:09+1100 ev5-4 deb e2: reached=True route=DB1 gate=pass worst=0.7439112592187836 closure E/V=5.037173086829142/18.909257648249373 m/s per7=83.8125075760933
+2026-10-11T07:19:16+1100 ev5-4 DB1 e3 JD 2470084.8: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:19:19+1100 ev5-4 deb e3: reached=True route=DB1 gate=pass worst=0.5885429828137713 closure E/V=4.218889827295341/18.789706745785423 m/s per7=80.5300880082489
+2026-10-11T07:19:25+1100 ev5-4 DB1 e4 JD 2472424.8: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:19:27+1100 ev5-4 deb e4: reached=True route=DB1 gate=pass worst=0.5845838465273604 closure E/V=3.884416923619258/69.33338336539799 m/s per7=256.2623010128215
+2026-10-11T07:19:36+1100 ev5-5 DB1 e0 JD 2463078.3: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:19:40+1100 ev5-5 deb e0: reached=True route=DB1 gate=pass worst=0.7739926687396231 closure E/V=115.37688736108616/7.921093519318884 m/s per7=431.5429330823039
+2026-10-11T07:19:49+1100 ev5-5 DB1 e1 JD 2465415.8: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:19:52+1100 ev5-5 DB2 e1 JD 2465415.8: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:19:52+1100 ev5-5 deb e1: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:20:00+1100 ev5-5 DB1 e2 JD 2467752.3: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:20:03+1100 ev5-5 deb e2: reached=True route=DB1 gate=pass worst=0.7825909029943522 closure E/V=27.016812658415517/18.909257648249373 m/s per7=160.74124607664146
+2026-10-11T07:20:11+1100 ev5-5 DB1 e3 JD 2470084.8: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:20:14+1100 ev5-5 deb e3: reached=True route=DB1 gate=pass worst=0.7558750221216388 closure E/V=61.588267387510705/18.789706745785423 m/s per7=281.3229094690139
+2026-10-11T07:20:23+1100 ev5-5 DB1 e4 JD 2472424.8: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:20:27+1100 ev5-5 deb e4: reached=True route=DB1 gate=pass worst=0.7625277222951107 closure E/V=88.0457685117778/69.33338336539799 m/s per7=550.8270315713955
+2026-10-11T07:20:36+1100 ev5-6 DB1 e0 JD 2463082.4: NOT REACHED worst=None refly=None (9s)
+2026-10-11T07:20:39+1100 ev5-6 DB2 e0 JD 2463082.4: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:20:39+1100 ev5-6 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:20:48+1100 ev5-6 DB1 e1 JD 2465420.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:20:52+1100 ev5-6 deb e1: reached=True route=DB1 gate=pass worst=0.5392342523673542 closure E/V=6.366217451784548/4.326596278110472 m/s per7=37.424848060405026
+2026-10-11T07:21:01+1100 ev5-6 DB1 e2 JD 2467756.3: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:21:04+1100 ev5-6 deb e2: reached=True route=DB1 gate=pass worst=0.5866726153974079 closure E/V=6.168945033954012/9.305471438819499 m/s per7=54.160457655840865
+2026-10-11T07:21:12+1100 ev5-6 DB1 e3 JD 2470089.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:21:15+1100 ev5-6 deb e3: reached=True route=DB1 gate=pass worst=0.4153424787006579 closure E/V=5.678805797326033/7.4744050847336485 m/s per7=46.03623809110614
+2026-10-11T07:21:23+1100 ev5-6 DB1 e4 JD 2472428.9: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:21:26+1100 ev5-6 deb e4: reached=True route=DB1 gate=pass worst=0.40505968567280404 closure E/V=4.96175594008932/15.33329095537077 m/s per7=71.03266413975194
+2026-10-11T07:21:35+1100 ev5-7 DB1 e0 JD 2463082.4: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:21:38+1100 ev5-7 DB2 e0 JD 2463082.4: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:21:38+1100 ev5-7 deb e0: reached=False route=DB2 gate=None worst=None closure E/V=None/None m/s per7=None
+2026-10-11T07:21:45+1100 ev5-7 DB1 e1 JD 2465420.1: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:21:49+1100 ev5-7 deb e1: reached=True route=DB1 gate=pass worst=0.5392342523673542 closure E/V=86.50152666646477/4.326596278110472 m/s per7=317.8984303118088
+2026-10-11T07:21:57+1100 ev5-7 DB1 e2 JD 2467756.3: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:22:00+1100 ev5-7 deb e2: reached=True route=DB1 gate=pass worst=0.5866726153974079 closure E/V=105.97620707896543/9.305471438819499 m/s per7=403.4858748132478
+2026-10-11T07:22:08+1100 ev5-7 DB1 e3 JD 2470089.1: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:22:11+1100 ev5-7 deb e3: reached=True route=DB1 gate=pass worst=0.530686075306556 closure E/V=84.24965974952455/7.4744050847336485 m/s per7=321.0342269237012
+2026-10-11T07:22:19+1100 ev5-7 DB1 e4 JD 2472428.9: NOT REACHED worst=None refly=None (8s)
+2026-10-11T07:22:22+1100 ev5-7 deb e4: reached=True route=DB1 gate=pass worst=0.546239833963843 closure E/V=70.10834403563155/15.33329095537077 m/s per7=299.0457224739644
+2026-10-11T07:22:29+1100 ev5-8 DB1 e0 JD 2462588.1: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:22:34+1100 ev5-8 deb e0: reached=True route=DB1 gate=pass worst=0.6023968609671543 closure E/V=3.6428654505857025/17.606300290494975 m/s per7=74.37208010420994
+2026-10-11T07:22:40+1100 ev5-8 DB1 e1 JD 2464921.0: NOT REACHED worst=None refly=None (7s)
+2026-10-11T07:22:43+1100 ev5-8 deb e1: reached=True route=DB1 gate=pass worst=0.6217974196273578 closure E/V=3.992084811826313/21.095513928517143 m/s per7=87.80659559336591
+2026-10-11T07:22:49+1100 ev5-8 DB1 e2 JD 2467257.3: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:22:52+1100 ev5-8 deb e2: reached=True route=DB1 gate=pass worst=0.7086972912972928 closure E/V=4.565482224928669/13.864901886005088 m/s per7=64.50634439202855
+2026-10-11T07:22:58+1100 ev5-8 DB1 e3 JD 2469594.7: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:23:00+1100 ev5-8 deb e3: reached=True route=DB1 gate=pass worst=0.8193057462822692 closure E/V=3.71578636064258/47.705543195941274 m/s per7=179.97465345094162
+2026-10-11T07:23:06+1100 ev5-8 DB1 e4 JD 2471927.0: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:23:09+1100 ev5-8 deb e4: reached=True route=DB1 gate=pass worst=0.6475716913091691 closure E/V=3.6380273582488947/12.81399709252318 m/s per7=57.58208558461154
+2026-10-11T07:23:14+1100 ev5-9 DB1 e0 JD 2462505.2: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:23:18+1100 ev5-9 deb e0: reached=True route=DB1 gate=pass worst=0.3063729258130615 closure E/V=10.834579712835305/0 m/s per7=37.9210290013865
+2026-10-11T07:23:23+1100 ev5-9 DB1 e1 JD 2464841.0: NOT REACHED worst=None refly=None (6s)
+2026-10-11T07:23:27+1100 ev5-9 DB2 e1 JD 2464841.0: NOT REACHED worst=None refly=None (3s)
+2026-10-11T07:23:29+1100 ev5-9 deb e1: reached=True route=DB2 gate=pass worst=0.3189343642035647 closure E/V=9.358420373492342/0 m/s per7=32.754471310059635
+2026-10-11T07:23:34+1100 ev5-9 DB1 e2 JD 2467760.7: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:23:37+1100 ev5-9 deb e2: reached=True route=DB1 gate=pass worst=0.3148658335399314 closure E/V=11.79954504128218/0 m/s per7=41.29840764889453
+2026-10-11T07:23:41+1100 ev5-9 DB1 e3 JD 2470093.7: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:23:44+1100 ev5-9 deb e3: reached=True route=DB1 gate=pass worst=0.3044602555618036 closure E/V=9.687312745075786/0 m/s per7=33.90559461108609
+2026-10-11T07:23:49+1100 ev5-9 DB1 e4 JD 2472433.4: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:23:51+1100 ev5-9 deb e4: reached=True route=DB1 gate=pass worst=0.3104959286023318 closure E/V=10.76243784255843/0 m/s per7=37.66853246226055
+2026-10-11T07:23:56+1100 ev5-10 DB1 e0 JD 2462853.8: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:23:59+1100 ev5-10 deb e0: reached=True route=DB1 gate=pass worst=0.9418134985018576 closure E/V=6.726178354343324/0.28916999021972106 m/s per7=24.553719244459494
+2026-10-11T07:24:04+1100 ev5-10 DB1 e1 JD 2465193.8: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:24:06+1100 ev5-10 deb e1: reached=True route=DB1 gate=fail worst=1.0675086792439272 closure E/V=5.397928549865685/1.7521558006228612 m/s per7=1616.3339139493148
+2026-10-11T07:24:10+1100 ev5-10 DB1 e2 JD 2467521.9: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:24:12+1100 ev5-10 deb e2: reached=True route=DB1 gate=fail worst=1.4977638872276502 closure E/V=5.4784463621226465/0.5566455227778413 m/s per7=22803.37187431834
+2026-10-11T07:24:17+1100 ev5-10 DB1 e3 JD 2469865.6: NOT REACHED worst=None refly=None (5s)
+2026-10-11T07:24:19+1100 ev5-10 deb e3: reached=True route=DB1 gate=fail worst=1.5873098233777787 closure E/V=6.617152290621739/1.5151046160387789 m/s per7=24816.877237020053
+2026-10-11T07:24:23+1100 ev5-10 DB1 e4 JD 2472196.7: NOT REACHED worst=None refly=None (4s)
+2026-10-11T07:24:25+1100 ev5-10 deb e4: reached=True route=DB1 gate=fail worst=1.0039419980136721 closure E/V=6.077005372207551/1.7878471315902011 m/s per7=179.55483327745918

@@ -1,7 +1,8 @@
 # #1025: real-ephemeris rung (d) and #415 dV bands for the 22 clean #973 Earth-Venus members
 
-Status: PRE-REGISTRATION (secs. 1-5), written and committed before any member is run. Results in
-sec. 6.
+Status: DONE for Standish and DE440 (amendment A1). Pre-registration secs. 1-5 (commit 4e18f740);
+amendment A1 sec. 5a (64c2736f, before any DE440 result); results sec. 6; the deferred DE440 shoot
+launch sec. 7.
 Owner decision of 2026-10-08 (relayed by the lead on 2026-10-11): rung (d) before any row decision. No
 catalogue rows are written, and nothing is called novel.
 
@@ -153,6 +154,120 @@ DE440 now follows the 6.18/6.24 reading for all 22 members. There is no DE440 pa
 The D1 shoot (a pass/fail by ballistic closure) is deferred to a lead launch, for the members with
 Standish >= 4/5 only: ev4-1, 4, 6, 7; ev5-4, 5, 6, 7, 8, 9 (sec. 7 has the command).
 
-## 6. Results
+## 6. Results (2026-10-11)
 
-(Filled in after the runs.)
+Data: `data/1025_ev_realeph/`:
+- `<member>/<route>/e<i>/` (chain, tool log, checker log; DE440 closure_dv.json);
+- `<member>/de440_blend.json`;
+- `summary.json`;
+- the static `runlog.txt`.
+
+Controls (sec. 3), all reproduce their record:
+- C1 (Hollister 1H, direct): pass at epochs 1 and 2, worst 0.862 / 0.822, re-fly <= 1.4e-4 km.
+- C2 (ev-A): 5/5, worst 0.580, re-fly <= 1.9e-3 km.
+- C3 (ev-B epoch 0, 6.55a step 1): pass, worst 0.933, re-fly 0.017 km.
+
+Instrument check (dV): the worst ratio re-derived by `price_chain` equals the chain tool's to 3e-12 at
+every priced epoch.
+
+Standish (pass / fail / not reached):
+- 5 / 0 / 0: ev4-1, 4, 6, 7; ev5-9.
+- 4 / 0 / 1: ev5-4, 5, 6, 7, 8.
+- 3 passes: ev5-2 (1 fail, 1 not reached), ev5-3 (2 not reached).
+- 2 / 2 / 1: ev4-5.
+- 1 / 4 / 0: ev5-10 (the sun-grazer).
+- No pass: ev4-0, 8, 9, 10, 11 (0 / 2 / 3); ev5-0, 1 (0 / 1 / 4); ev4-3 (0 / 0 / 5).
+- Every pass re-flies (DOP853 against the mean-element system) with a miss below 1e-3 km and a V_inf
+  vector error below 1e-6 km/s.
+- Against the expectations of sec. 5: the k = 4 skeletons 4.595 / 4.529 (ev4-1) and 6.830 / 4.038
+  (ev4-4, 6, 7; ev4-5 2/5) did far better than expected (5/5, against "at most 1 pass").
+  - The binding Venus ratio falls on the real eccentricities: ev4-4/6/7 run at 0.774-0.981 against
+    the ideal 0.779, and ev4-1 at 0.775-0.826 against 0.835.
+  - The 6.893 / 3.968 skeleton (ev4-8 to 11) and 6.806 / 4.017 (ev4-3) got 0, as expected. So did
+    ev5-0/1.
+  - ev5-9 (ideal 0.309) is 5/5, as expected.
+
+Standish dV band:
+- A passing Standish chain closes exactly and has no turn deficit, so its band is "strictly
+  ballistic": the figures are about 1e-8 m/s, numerical zero. That is true by construction, the same
+  weak control as 6.57.
+- The gate-failing chains need 5,800 to 68,000 m/s per 7 cycles of turn-deficit impulse at the
+  minimax directions (upper-bound style).
+
+DE440 (amendment A1: blend to lambda 1, no shoot):
+- The closure dV is the mid-course correction that puts each full-rev leg back on its planet.
+- The Earth legs dominate it. Earth-leg misses are 11,000 to 1.34 million km (Venus legs 1,200-34,000 km): the
+  lunar reflex of DE440's Earth against the 1:1 seed rule (6.25). So the "total" column is an UPPER
+  BOUND.
+- The Venus legs plus the turn deficit are the part the reflex does not inflate.
+- At the best epoch, the Venus part is essentially ballistic (< 10 m/s per 7 cycles) for ev4-4, 5, 7;
+  ev5-3, 9 and 10. It is low-maintenance (< 300) for the other Standish passers.
+- ev5-9 has no Venus full-rev leg; its whole closure dV is Earth's.
+- Window dependence: for one member the per-7 total varies by 1.2x to about 10x across the reached epochs
+  where the minimax gate passes, and by far more where an epoch's minimax gate fails (column 7).
+
+Table (all 22; best epoch = the minimum over the epochs and routes, which is optimistic):
+
+| Member | Standish pass / fail / not reached (of 5) | Standish passing epochs (worst ratio range) | Standish band, best epoch (per 7 cycles, beyond-bend) | DE440 reached / minimax gate pass (of 5) | DE440 per 7 cycles, best epoch: total (upper bound) / Venus legs + deficit | DE440 range of total per 7 cycles |
+|---|---|---|---|---|---|---|
+| ev4-0 | 0 / 2 / 3 | - | above-low-maintenance, e0 (4.86e+04 m/s) | 1 / 0 | e4: 67627.4 (above-low-maintenance) / 67346.8 (above-low-maintenance) | 67627.4-67627.4 m/s |
+| ev4-1 | 5 / 0 / 0 | e0, e1, e2, e3, e4 (0.775-0.826) | strictly-ballistic, e1 (3.74e-09 m/s) | 5 / 5 | e3: 308.4 (above-low-maintenance) / 23.1 (low-maintenance) | 308.4-453.1 m/s |
+| ev4-3 | 0 / 0 / 5 | - | n/a | 0 / 0 | n/a | n/a |
+| ev4-4 | 5 / 0 / 0 | e0, e1, e2, e3, e4 (0.774-0.981) | strictly-ballistic, e0 (5.03e-09 m/s) | 5 / 5 | e2: 43.3 (low-maintenance) / 5.3 (essentially-ballistic) | 43.3-51.1 m/s |
+| ev4-5 | 2 / 2 / 1 | e1, e4 (0.863-0.921) | strictly-ballistic, e4 (1.39e-08 m/s) | 4 / 2 | e4: 24.3 (low-maintenance) / 9.4 (essentially-ballistic) | 24.3-11486.7 m/s |
+| ev4-6 | 5 / 0 / 0 | e0, e1, e2, e3, e4 (0.774-0.981) | strictly-ballistic, e0 (5.02e-09 m/s) | 5 / 5 | e0: 48.0 (low-maintenance) / 10.7 (low-maintenance) | 48.0-473.9 m/s |
+| ev4-7 | 5 / 0 / 0 | e0, e1, e2, e3, e4 (0.774-0.981) | strictly-ballistic, e0 (5.02e-09 m/s) | 5 / 5 | e3: 225.4 (low-maintenance) / 8.3 (essentially-ballistic) | 225.4-338.8 m/s |
+| ev4-8 | 0 / 2 / 3 | - | above-low-maintenance, e4 (5.78e+03 m/s) | 2 / 0 | e4: 5906.7 (above-low-maintenance) / 5864.4 (above-low-maintenance) | 5906.7-6291.7 m/s |
+| ev4-9 | 0 / 2 / 3 | - | above-low-maintenance, e4 (5.78e+03 m/s) | 2 / 0 | e4: 5887.2 (above-low-maintenance) / 5864.4 (above-low-maintenance) | 5887.2-6269.8 m/s |
+| ev4-10 | 0 / 2 / 3 | - | above-low-maintenance, e4 (5.78e+03 m/s) | 2 / 0 | e4: 6029.0 (above-low-maintenance) / 5864.4 (above-low-maintenance) | 6029.0-6442.9 m/s |
+| ev4-11 | 0 / 2 / 3 | - | above-low-maintenance, e4 (5.78e+03 m/s) | 2 / 0 | e4: 6114.5 (above-low-maintenance) / 5864.4 (above-low-maintenance) | 6114.5-6418.0 m/s |
+| ev5-0 | 0 / 1 / 4 | - | above-low-maintenance, e2 (7.14e+03 m/s) | 1 / 0 | e2: 7157.6 (above-low-maintenance) / 7114.2 (above-low-maintenance) | 7157.6-7157.6 m/s |
+| ev5-1 | 0 / 1 / 4 | - | above-low-maintenance, e2 (7.14e+03 m/s) | 1 / 0 | e2: 7471.8 (above-low-maintenance) / 7114.2 (above-low-maintenance) | 7471.8-7471.8 m/s |
+| ev5-2 | 3 / 1 / 1 | e0, e2, e3 (0.784-0.869) | strictly-ballistic, e0 (1.25e-08 m/s) | 4 / 3 | e3: 83.1 (low-maintenance) / 14.1 (low-maintenance) | 83.1-36320.9 m/s |
+| ev5-3 | 3 / 0 / 2 | e0, e1, e4 (0.548-0.567) | strictly-ballistic, e0 (2.5e-09 m/s) | 4 / 4 | e3: 16.6 (low-maintenance) / 7.2 (essentially-ballistic) | 16.6-83.3 m/s |
+| ev5-4 | 4 / 0 / 1 | e0, e2, e3, e4 (0.585-0.742) | strictly-ballistic, e3 (3.25e-09 m/s) | 4 / 4 | e0: 42.0 (low-maintenance) / 27.7 (low-maintenance) | 42.0-256.3 m/s |
+| ev5-5 | 4 / 0 / 1 | e0, e2, e3, e4 (0.755-0.780) | strictly-ballistic, e3 (3.22e-09 m/s) | 4 / 4 | e2: 160.7 (low-maintenance) / 66.2 (low-maintenance) | 160.7-550.8 m/s |
+| ev5-6 | 4 / 0 / 1 | e0, e2, e3, e4 (0.405-0.561) | strictly-ballistic, e0 (7.79e-09 m/s) | 4 / 4 | e1: 37.4 (low-maintenance) / 15.1 (low-maintenance) | 37.4-71.0 m/s |
+| ev5-7 | 4 / 0 / 1 | e0, e2, e3, e4 (0.533-0.561) | strictly-ballistic, e0 (6.99e-09 m/s) | 4 / 4 | e4: 299.0 (low-maintenance) / 53.7 (low-maintenance) | 299.0-403.5 m/s |
+| ev5-8 | 4 / 0 / 1 | e0, e1, e3, e4 (0.602-0.797) | strictly-ballistic, e0 (2.72e-09 m/s) | 5 / 5 | e4: 57.6 (low-maintenance) / 44.8 (low-maintenance) | 57.6-180.0 m/s |
+| ev5-9 | 5 / 0 / 0 | e0, e1, e2, e3, e4 (0.304-0.318) | strictly-ballistic, e0 (5.31e-09 m/s) | 5 / 5 | e1: 32.8 (low-maintenance) / 0.0 (strictly-ballistic) | 32.8-41.3 m/s |
+| ev5-10 | 1 / 4 / 0 | e0 (0.940-0.940) | strictly-ballistic, e0 (6.77e-08 m/s) | 5 / 1 | e0: 24.6 (low-maintenance) / 1.0 (essentially-ballistic) | 24.6-24816.9 m/s |
+
+No row is written; nothing is called novel.
+
+## 7. Deferred: the DE440 shoot (lead launch; ruling (c), part (a))
+
+Members (Standish >= 4/5): ev4-1, 4, 6, 7; ev5-4, 5, 6, 7, 8, 9. Route ladder D1 -> D2 of sec. 2, with
+the pass criterion of sec. 2 (a ballistic shoot closure at lambda 1 that passes the gate and re-flies
+< 1 km).
+
+Command (from the repo root; 2 workers; resumable):
+
+```sh
+printf "ev4-1
+ev4-4
+ev4-6
+ev4-7
+ev5-4
+ev5-5
+ev5-6
+ev5-7
+ev5-8
+ev5-9
+" | xargs -n1 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run $0 de --root de440_shoot --timeout 1800'
+uv run python scripts/ev_realeph_1025.py shootcheck
+```
+
+- Output: `data/1025_ev_realeph/de440_shoot/<member>/{D1,D2}/e<i>/`.
+- Live logs: `tool.live.log`, gitignored by `data/1025_ev_realeph/de440_shoot/.gitignore`. The
+  static `tool.log`, `realeph_chain.json` and `check.log` are committed.
+- Progress lines go to `data/1025_ev_realeph/runlog.txt`.
+- Runtime: about 35 s per shoot restart and 20 restarts, so about 12 min per epoch and route (ev4-1
+  e0, measured). 10 members x 5 epochs is about 10 h serial and 5 h on 2 workers.
+- `--timeout 1800` is per epoch and route. A timeout writes no result file and is reported "NOT RUN",
+  never a fail.
+- Resume: re-run the same command. Epochs with a `realeph_chain.json` are skipped; timed-out epochs
+  are tried again.
+- `shootcheck` prints PASS / FAIL / NOT REACHED / NOT RUN per member and epoch and writes
+  `de440_shoot/summary.json`. A fresh agent then reads that file. The sec. 5 expectation stands:
+  no gate-passing ballistic closure.

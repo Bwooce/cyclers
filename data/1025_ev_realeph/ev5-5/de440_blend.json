@@ -1,0 +1,93 @@
+[
+ {
+  "route": "DB1",
+  "epoch": 0,
+  "epoch_jd": 2463078.348180587,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "pass",
+   "worst_ratio": 0.7739926687396231
+  },
+  "closure_dv_earth_mps": 115.37688736108616,
+  "closure_dv_venus_mps": 7.921093519318884,
+  "max_miss_earth_km": 1343132.0927672563,
+  "max_miss_venus_km": 22485.33767885259,
+  "deficit_beyond_bend_mps": 2.5319573601947766e-10,
+  "n_priced_flybys": 9,
+  "per7_total_mps": 431.5429330823039,
+  "band_total_upper_bound": "above-low-maintenance",
+  "per7_venus_plus_deficit_mps": 27.723827318502277,
+  "band_venus_plus_deficit": "low-maintenance"
+ },
+ {
+  "route": "DB2",
+  "epoch": 1,
+  "epoch_jd": 2465415.8469522,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB1",
+  "epoch": 2,
+  "epoch_jd": 2467752.2870677374,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "pass",
+   "worst_ratio": 0.7825909029943522
+  },
+  "closure_dv_earth_mps": 27.016812658415517,
+  "closure_dv_venus_mps": 18.909257648249373,
+  "max_miss_earth_km": 337826.9765285202,
+  "max_miss_venus_km": 25386.183142701466,
+  "deficit_beyond_bend_mps": 9.469528238779558e-10,
+  "n_priced_flybys": 9,
+  "per7_total_mps": 160.74124607664146,
+  "band_total_upper_bound": "low-maintenance",
+  "per7_venus_plus_deficit_mps": 66.18240177218715,
+  "band_venus_plus_deficit": "low-maintenance"
+ },
+ {
+  "route": "DB1",
+  "epoch": 3,
+  "epoch_jd": 2470084.840281342,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "pass",
+   "worst_ratio": 0.7558750221216388
+  },
+  "closure_dv_earth_mps": 61.588267387510705,
+  "closure_dv_venus_mps": 18.789706745785423,
+  "max_miss_earth_km": 899171.9256733026,
+  "max_miss_venus_km": 23617.234346745903,
+  "deficit_beyond_bend_mps": 7.078327096441998e-10,
+  "n_priced_flybys": 9,
+  "per7_total_mps": 281.3229094690139,
+  "band_total_upper_bound": "low-maintenance",
+  "per7_venus_plus_deficit_mps": 65.76397361272639,
+  "band_venus_plus_deficit": "low-maintenance"
+ },
+ {
+  "route": "DB1",
+  "epoch": 4,
+  "epoch_jd": 2472424.7516399054,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "pass",
+   "worst_ratio": 0.7625277222951107
+  },
+  "closure_dv_earth_mps": 88.0457685117778,
+  "closure_dv_venus_mps": 69.33338336539799,
+  "max_miss_earth_km": 1279092.0415474835,
+  "max_miss_venus_km": 27897.388638229393,
+  "deficit_beyond_bend_mps": 3.657964585488633e-10,
+  "n_priced_flybys": 9,
+  "per7_total_mps": 550.8270315713955,
+  "band_total_upper_bound": "above-low-maintenance",
+  "per7_venus_plus_deficit_mps": 242.66684178017329,
+  "band_venus_plus_deficit": "low-maintenance"
+ }
+]

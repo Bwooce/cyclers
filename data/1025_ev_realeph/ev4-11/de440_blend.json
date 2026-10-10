@@ -1,0 +1,65 @@
+[
+ {
+  "route": "DB1",
+  "epoch": 0,
+  "epoch_jd": 2462827.0805474287,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "fail",
+   "worst_ratio": 1.3133197472104492
+  },
+  "closure_dv_earth_mps": 68.89395729166932,
+  "closure_dv_venus_mps": 5.977913698490337,
+  "max_miss_earth_km": 647251.3352013761,
+  "max_miss_venus_km": 33767.22882963661,
+  "deficit_beyond_bend_mps": 2675.686876286779,
+  "n_priced_flybys": 15,
+  "per7_total_mps": 6417.970410312857,
+  "band_total_upper_bound": "above-low-maintenance",
+  "per7_venus_plus_deficit_mps": 6257.217843298962,
+  "band_venus_plus_deficit": "above-low-maintenance"
+ },
+ {
+  "route": "DB2",
+  "epoch": 1,
+  "epoch_jd": 2465170.1101151323,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 2,
+  "epoch_jd": 2467497.9486124567,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 3,
+  "epoch_jd": 2469839.2009872277,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB1",
+  "epoch": 4,
+  "epoch_jd": 2472173.9533774755,
+  "reached": true,
+  "last_converged_lambda": 1.0,
+  "minimax_gate": {
+   "status": "fail",
+   "worst_ratio": 1.235827754972733
+  },
+  "closure_dv_earth_mps": 107.19904965574784,
+  "closure_dv_venus_mps": 5.611517750146287,
+  "max_miss_earth_km": 1192567.4555183,
+  "max_miss_venus_km": 26797.190419525832,
+  "deficit_beyond_bend_mps": 2507.68875466109,
+  "n_priced_flybys": 15,
+  "per7_total_mps": 6114.498418156298,
+  "band_total_upper_bound": "above-low-maintenance",
+  "per7_venus_plus_deficit_mps": 5864.367302292886,
+  "band_venus_plus_deficit": "above-low-maintenance"
+ }
+]

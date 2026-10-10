@@ -37,6 +37,9 @@ CHAIN_TOOL = REPO / "scripts" / "run_942_realeph_chain.py"
 CHECK_TOOL = REPO / "scripts" / "check_942_realeph_chain.py"
 CLOSURE_TOOL = REPO / "scripts" / "analyse_942_fullrev_closure_dv.py"
 TIMEOUT_S = 420
+#: Overridable by `run --root/--timeout` (the lead-launched DE440 shoot, note sec. 7).
+ROOT = [OUT]
+TIMEOUT = [TIMEOUT_S]
 EPOCHS = range(5)
 
 #: Route ladder (sec. 2): name -> extra chain-tool flags.
@@ -104,7 +107,7 @@ def run_route(
     tag: str, key: str, xd: str, n: int, route: str, ie: int, extra: list[str] | None = None
 ) -> dict[str, Any]:
     """One chain-tool call (one epoch); then the checker if the tool reports a rung pass."""
-    d = OUT / tag / route / f"e{ie}"
+    d = ROOT[0] / tag / route / f"e{ie}"
     res_path = d / "realeph_chain.json"
     if res_path.exists():
         return classify(json.loads(res_path.read_text())[0], route, n, d)
@@ -116,11 +119,17 @@ def run_route(
     ]  # fmt: skip
     t0 = time.time()
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=TIMEOUT_S, cwd=REPO)
-        (d / "tool.log").write_text(p.stdout + p.stderr)
-    except subprocess.TimeoutExpired as exc:
-        (d / "tool.log").write_text(f"TIMEOUT after {TIMEOUT_S} s\n{exc.stdout or ''}")
-        log(f"{tag} {route} e{ie}: NOT RUN (timeout {TIMEOUT_S} s)")
+        # live log (gitignored under de440_shoot/), copied to the static tool.log at the end
+        with (d / "tool.live.log").open("w") as live:
+            p = subprocess.run(
+                cmd, stdout=live, stderr=subprocess.STDOUT, timeout=TIMEOUT[0], cwd=REPO
+            )
+        (d / "tool.log").write_text((d / "tool.live.log").read_text())
+    except subprocess.TimeoutExpired:
+        (d / "tool.log").write_text(
+            f"TIMEOUT after {TIMEOUT[0]} s\n" + (d / "tool.live.log").read_text()
+        )
+        log(f"{tag} {route} e{ie}: NOT RUN (timeout {TIMEOUT[0]} s)")
         return {"route": route, "epoch": ie, "outcome": "NOT RUN", "reason": "timeout"}
     if not res_path.exists():
         log(f"{tag} {route} e{ie}: NOT RUN (no output; exit {p.returncode})")
@@ -263,9 +272,13 @@ def _deb_eval(tag: str, key: str, n: int, route: str, ie: int) -> dict[str, Any]
     out["max_miss_earth_km"] = max((r["miss_km"] for r in rows if r["body"] == "E"), default=0.0)
     out["max_miss_venus_km"] = max((r["miss_km"] for r in rows if r["body"] == "V"), default=0.0)
     dvb = _load("dv_band_942", REPO / "scripts" / "dv_band_942.py")
-    pr = dvb.price_chain(
-        dvb.CHAIN.real_ephemeris("ev", "de440"), key, n, ep["x0_days"], ep["final_y_dates"]
-    )
+    # lambda = 1 blend (real states, model periods for the fixed-leg timing), as in the
+    # closure-dV script; DE440Planets alone has no period
+    import numpy as np
+
+    circ = dvb.CHAIN.ENUM.cell_system("ev")[0]
+    sys1 = dvb.CHAIN.Blend(circ, dvb.CHAIN.real_ephemeris("ev", "de440"), np.eye(3), 0.0, 0.0, 1.0)
+    pr = dvb.price_chain(sys1, key, n, ep["x0_days"], ep["final_y_dates"])
     out["deficit_beyond_bend_mps"] = pr["deficit_beyond_bend_mps"]
     out["n_priced_flybys"] = pr["n_flybys"]
     s7 = 7.0 / n
@@ -319,7 +332,12 @@ def cmd_run(argv: list[str]) -> None:
     ap.add_argument("member")
     ap.add_argument("model", choices=["std", "de", "deb"])
     ap.add_argument("--epochs", default="0,1,2,3,4")
+    ap.add_argument("--root", default=None, help="subdirectory of data/1025_ev_realeph")
+    ap.add_argument("--timeout", type=int, default=TIMEOUT_S, help="seconds per epoch and route")
     a = ap.parse_args(argv)
+    if a.root:
+        ROOT[0] = OUT / a.root
+    TIMEOUT[0] = a.timeout
     key, xd, n = members()[a.member]
     if a.model == "deb":
         ladder_deb(a.member, key, xd, n, [int(v) for v in a.epochs.split(",")])
@@ -420,6 +438,25 @@ def cmd_summary(argv: list[str]) -> None:
             for o in ("PASS", "FAIL", "NOT REACHED", "NOT RUN")
         }
         rec["standish_band"] = standish_band(tag)
+        dbj = OUT / tag / "de440_blend.json"
+        if dbj.exists():
+            db = json.loads(dbj.read_text())
+            reached = [e for e in db if e.get("reached")]
+            best_db = min(reached, key=lambda e: e["per7_total_mps"], default=None)
+            rec["de440_blend"] = {
+                "per_epoch": db,
+                "reached": len(reached),
+                "minimax_gate_pass": sum(
+                    (e.get("minimax_gate") or {}).get("status") == "pass" for e in reached
+                ),
+                "best": best_db,
+                "range_per7_total_mps": [
+                    min(e["per7_total_mps"] for e in reached),
+                    max(e["per7_total_mps"] for e in reached),
+                ]
+                if reached
+                else None,
+            }
         out[tag] = rec
         c = rec["standish_counts"]
         b = rec["standish_band"]["best"]
@@ -437,8 +474,43 @@ def cmd_summary(argv: list[str]) -> None:
     (OUT / "summary.json").write_text(json.dumps(out, indent=1, default=float))
 
 
+#: The lead-launched DE440 shoot (note sec. 7): the Standish >= 4/5 members.
+SHOOT_MEMBERS = [
+    "ev4-1", "ev4-4", "ev4-6", "ev4-7", "ev5-4", "ev5-5", "ev5-6", "ev5-7", "ev5-8", "ev5-9",
+]  # fmt: skip
+
+
+def cmd_shootcheck(argv: list[str]) -> None:
+    """Outcome per member and epoch of the DE440 shoot under data/1025_ev_realeph/de440_shoot/;
+    an epoch with no result file is "NOT RUN" (resume by re-running the launch command)."""
+    ROOT[0] = OUT / "de440_shoot"
+    allm = members()
+    res: dict[str, Any] = {}
+    for tag in SHOOT_MEMBERS:
+        key, _, n = allm[tag]
+        _KEY[0] = key
+        outs = []
+        for ie in EPOCHS:
+            tried = []
+            for route in ("D1", "D2"):
+                d = ROOT[0] / tag / route / f"e{ie}"
+                if (d / "realeph_chain.json").exists():
+                    ep = json.loads((d / "realeph_chain.json").read_text())[0]
+                    tried.append(classify(ep, route, n, d))
+            outs.append({"epoch": ie, "outcome": epoch_outcome(tried) if tried else "NOT RUN",
+                         "routes": tried})  # fmt: skip
+        res[tag] = outs
+        print(tag, " ".join(f"e{o['epoch']}:{o['outcome']}" for o in outs), flush=True)
+    (ROOT[0] / "summary.json").write_text(json.dumps(res, indent=1, default=float))
+
+
 def main() -> None:
-    cmds = {"control": cmd_control, "run": cmd_run, "summary": cmd_summary}
+    cmds = {
+        "control": cmd_control,
+        "run": cmd_run,
+        "summary": cmd_summary,
+        "shootcheck": cmd_shootcheck,
+    }
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: ev_realeph_1025.py {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

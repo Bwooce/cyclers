@@ -1,0 +1,37 @@
+[
+ {
+  "route": "DB2",
+  "epoch": 0,
+  "epoch_jd": 2462833.748468928,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 1,
+  "epoch_jd": 2465176.179686466,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 2,
+  "epoch_jd": 2467503.912239146,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 3,
+  "epoch_jd": 2469845.944573963,
+  "reached": false,
+  "last_converged_lambda": null
+ },
+ {
+  "route": "DB2",
+  "epoch": 4,
+  "epoch_jd": 2472179.685576972,
+  "reached": false,
+  "last_converged_lambda": null
+ }
+]

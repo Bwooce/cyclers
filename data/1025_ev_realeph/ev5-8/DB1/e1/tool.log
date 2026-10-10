@@ -1,0 +1,13 @@
+07:22:36 ev epoch 1 (JD 2464921.0) blend lam=0.0000 conv=True res=5.8e-13 gate=pass worst=0.855 [elapsed 1s]
+07:22:37 ev epoch 1 (JD 2464921.0) blend lam=0.1000 conv=True res=1.3e-12 gate=pass worst=0.825 [elapsed 1s]
+07:22:37 ev epoch 1 (JD 2464921.0) blend lam=0.2000 conv=True res=5.0e-13 gate=pass worst=0.796 [elapsed 2s]
+07:22:37 ev epoch 1 (JD 2464921.0) blend lam=0.3000 conv=True res=3.0e-13 gate=pass worst=0.770 [elapsed 2s]
+07:22:38 ev epoch 1 (JD 2464921.0) blend lam=0.4000 conv=True res=1.3e-12 gate=pass worst=0.744 [elapsed 3s]
+07:22:38 ev epoch 1 (JD 2464921.0) blend lam=0.5000 conv=True res=9.3e-13 gate=pass worst=0.721 [elapsed 3s]
+07:22:38 ev epoch 1 (JD 2464921.0) blend lam=0.6000 conv=True res=4.2e-13 gate=pass worst=0.698 [elapsed 3s]
+07:22:38 ev epoch 1 (JD 2464921.0) blend lam=0.7000 conv=True res=8.2e-13 gate=pass worst=0.677 [elapsed 3s]
+07:22:39 ev epoch 1 (JD 2464921.0) blend lam=0.8000 conv=True res=8.0e-13 gate=pass worst=0.658 [elapsed 4s]
+07:22:39 ev epoch 1 (JD 2464921.0) blend lam=0.9000 conv=True res=9.4e-13 gate=pass worst=0.639 [elapsed 4s]
+07:22:39 ev epoch 1 (JD 2464921.0) blend lam=1.0000 conv=True res=4.0e-13 gate=pass worst=0.622 [elapsed 4s]
+07:22:40 ev epoch 1 (JD 2464921.0) blend lam=1.0000 conv=True res=4.0e-13 gate=pass worst=0.622 [elapsed 4s]
+DONE

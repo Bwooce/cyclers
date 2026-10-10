@@ -1,0 +1,226 @@
+[
+ {
+  "epoch_jd": 2469845.944573963,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 0.5593750000000001,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 0.0,
+    "converged": true,
+    "max_residual_kms": 2.6645352591003757e-13,
+    "max_date_shift_d": 0.0,
+    "chain_period_d": 7007.33264033264,
+    "status": "pass",
+    "worst_ratio": 0.9899042791999505,
+    "worst_ratio_by_body": {
+     "V": 0.31735198133869635,
+     "E": 0.9899042791999505
+    },
+    "min_required_alt_km": 335.75423441272505,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.1,
+    "converged": true,
+    "max_residual_kms": 7.767120280277595e-13,
+    "max_date_shift_d": 2.105718618809078,
+    "chain_period_d": 7005.226921713831,
+    "status": "pass",
+    "worst_ratio": 0.9815315261323571,
+    "worst_ratio_by_body": {
+     "V": 0.31725783020765846,
+     "E": 0.9815315261323571
+    },
+    "min_required_alt_km": 450.4637208429849,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.2,
+    "converged": true,
+    "max_residual_kms": 4.298783551348606e-13,
+    "max_date_shift_d": 2.232004746210805,
+    "chain_period_d": 7002.99491696762,
+    "status": "pass",
+    "worst_ratio": 0.9737740848425775,
+    "worst_ratio_by_body": {
+     "V": 0.3195904121677746,
+     "E": 0.9737740848425775
+    },
+    "min_required_alt_km": 558.2610091173601,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.30000000000000004,
+    "converged": true,
+    "max_residual_kms": 1.5365486660812167e-13,
+    "max_date_shift_d": 2.3087787368322097,
+    "chain_period_d": 7000.686138230788,
+    "status": "pass",
+    "worst_ratio": 0.9666287725212734,
+    "worst_ratio_by_body": {
+     "V": 0.32461480589835146,
+     "E": 0.9666287725212734
+    },
+    "min_required_alt_km": 658.5849439818094,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.4,
+    "converged": true,
+    "max_residual_kms": 2.8421709430404007e-13,
+    "max_date_shift_d": 2.3338276002123166,
+    "chain_period_d": 6998.352310630576,
+    "status": "pass",
+    "worst_ratio": 0.9601116002158215,
+    "worst_ratio_by_body": {
+     "V": 0.33280558923722176,
+     "E": 0.9601116002158215
+    },
+    "min_required_alt_km": 750.5857791132821,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5,
+    "converged": true,
+    "max_residual_kms": 2.708944180085382e-13,
+    "max_date_shift_d": 2.4118150629319643,
+    "chain_period_d": 6995.940495567644,
+    "status": "pass",
+    "worst_ratio": 0.9543736141578841,
+    "worst_ratio_by_body": {
+     "V": 0.3457120758699934,
+     "E": 0.9543736141578841
+    },
+    "min_required_alt_km": 831.2574901633789,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.6,
+    "converged": false,
+    "max_residual_kms": 0.027178856648256478,
+    "max_date_shift_d": 2.607945473014297,
+    "chain_period_d": 6993.332550094629,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.55,
+    "converged": true,
+    "max_residual_kms": 3.304023721284466e-13,
+    "max_date_shift_d": 1.5480931962756586,
+    "chain_period_d": 6994.392402371368,
+    "status": "pass",
+    "worst_ratio": 0.9522553308434655,
+    "worst_ratio_by_body": {
+     "V": 0.3573119710711482,
+     "E": 0.9522553308434655
+    },
+    "min_required_alt_km": 859.8593585208528,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.6000000000000001,
+    "converged": false,
+    "max_residual_kms": 0.02717884826307948,
+    "max_date_shift_d": 1.081481881563377,
+    "chain_period_d": 6993.332547164628,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5750000000000001,
+    "converged": false,
+    "max_residual_kms": 0.009905311396470218,
+    "max_date_shift_d": 1.2974698534817435,
+    "chain_period_d": 6993.474612395712,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5625,
+    "converged": false,
+    "max_residual_kms": 0.0013819906457772646,
+    "max_date_shift_d": 1.407946640123555,
+    "chain_period_d": 6993.550573171825,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.55625,
+    "converged": true,
+    "max_residual_kms": 4.0678571622265736e-13,
+    "max_date_shift_d": 0.4889063318769331,
+    "chain_period_d": 6994.067276864824,
+    "status": "pass",
+    "worst_ratio": 0.9521962206562947,
+    "worst_ratio_by_body": {
+     "V": 0.3601799332993523,
+     "E": 0.9521962206562947
+    },
+    "min_required_alt_km": 860.1866826550258,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5625,
+    "converged": false,
+    "max_residual_kms": 0.0013819924404261386,
+    "max_date_shift_d": 0.9190119236736791,
+    "chain_period_d": 6993.5505854088615,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5593750000000001,
+    "converged": true,
+    "max_residual_kms": 2.8066438062523957e-13,
+    "max_date_shift_d": 0.4474895890161861,
+    "chain_period_d": 6993.810234487414,
+    "status": "pass",
+    "worst_ratio": 0.9523090976702554,
+    "worst_ratio_by_body": {
+     "V": 0.3625863610430996,
+     "E": 0.9523090976702554
+    },
+    "min_required_alt_km": 858.1107714176296,
+    "n_flybys": 9
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5625000000000001,
+    "converged": false,
+    "max_residual_kms": 0.0013819918181621205,
+    "max_date_shift_d": 0.4715347600795212,
+    "chain_period_d": 6993.550580342589,
+    "status": "unconverged"
+   },
+   {
+    "phase": "blend",
+    "lambda": 0.5609375000000001,
+    "converged": false,
+    "max_residual_kms": 0.0003222977128531923,
+    "max_date_shift_d": 0.48544630251126364,
+    "chain_period_d": 6993.560297555701,
+    "status": "unconverged"
+   }
+  ],
+  "x0_days": 29845.94457396283,
+  "final_y_dates": [
+   30100.26002850871,
+   32182.056877789633,
+   32435.263470545695,
+   34519.421918151216,
+   34773.84968166608,
+   6993.810234487414
+  ],
+  "rung_pass": false
+ }
+]

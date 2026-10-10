@@ -1,0 +1,12 @@
+07:08:05 ev epoch 1 (JD 2465278.5) blend lam=0.0000 conv=True res=8.7e-13 gate=pass worst=0.858 [elapsed 0s]
+07:08:05 ev epoch 1 (JD 2465278.5) blend lam=0.1000 conv=True res=1.7e-12 gate=pass worst=0.854 [elapsed 1s]
+07:08:05 ev epoch 1 (JD 2465278.5) blend lam=0.2000 conv=True res=1.1e-12 gate=pass worst=0.862 [elapsed 1s]
+07:08:06 ev epoch 1 (JD 2465278.5) blend lam=0.3000 conv=False res=2.6e-01 gate=unconverged worst=nan [elapsed 1s]
+07:08:06 ev epoch 1 (JD 2465278.5) blend lam=0.2500 conv=False res=8.8e-02 gate=unconverged worst=nan [elapsed 2s]
+07:08:07 ev epoch 1 (JD 2465278.5) blend lam=0.2250 conv=True res=2.7e-12 gate=pass worst=0.862 [elapsed 2s]
+07:08:07 ev epoch 1 (JD 2465278.5) blend lam=0.2500 conv=False res=8.8e-02 gate=unconverged worst=nan [elapsed 3s]
+07:08:07 ev epoch 1 (JD 2465278.5) blend lam=0.2375 conv=False res=4.3e-02 gate=unconverged worst=nan [elapsed 3s]
+07:08:08 ev epoch 1 (JD 2465278.5) blend lam=0.2313 conv=False res=2.0e-02 gate=unconverged worst=nan [elapsed 3s]
+07:08:08 ev epoch 1 (JD 2465278.5) blend lam=0.2281 conv=False res=7.9e-03 gate=unconverged worst=nan [elapsed 3s]
+07:08:08 ev epoch 1 (JD 2465278.5) blend lam=0.2266 conv=False res=2.1e-03 gate=unconverged worst=nan [elapsed 4s]
+DONE
