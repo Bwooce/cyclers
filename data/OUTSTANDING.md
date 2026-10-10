@@ -2532,9 +2532,11 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   the gate passing at 5/5 for ev4-1, ev4-4, ev4-6, ev4-7, ev5-8 and ev5-9; 4/5 for ev5-3, ev5-4, ev5-5,
   ev5-6 and ev5-7; the non-passers reach 0-2/5. Delta-v bands at the best epoch (Venus legs plus the
   deficit; the Earth closure is an upper bound because of the lunar reflex): essentially ballistic (< 10
-  m/s) ev4-4, ev4-5, ev4-7, ev5-3, ev5-9 and ev5-10; low-maintenance: the other Standish passers;
+  m/s) ev4-4, ev4-5, ev4-7, ev5-3, ev5-9 and ev5-10 (the `#415` band is defined at the best epoch only, so
+  ev4-5 and ev5-10 are window-dependent: Standish 2/5 and 1/5); low-maintenance: the other Standish passers;
   non-passers 5.8-68 km/s. The pre-registered DE440 D1/D2 SHOOT for the 10 Standish >= 4/5 members was
-  LAUNCHED by the lead at 08:12 AEDT 2026-10-11 (2 workers, about 5 h; `data/1025_ev_realeph/de440_shoot/`);
+  LAUNCHED by the lead at 07:27 AEDT 2026-10-11 (2 workers; expected done about 12:30 AEDT;
+  `data/1025_ev_realeph/de440_shoot/`);
   owner adjudication of the 22 ev members follows it.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
