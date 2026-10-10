@@ -483,3 +483,86 @@ What it would change:
   comes before any re-run of the members.
 
 Registered as `#1058` (a chain-tool change in a shared tool, with its own check), from `#1057`.
+
+### 9.3 Result of step 1 (lead launch 2026-10-11 10:22-10:33 AEDT; commit 3ae396f7)
+
+Data: `data/1025_ev_realeph/control_1057/ev-A/D1/e<i>/` (static `tool.log`, `realeph_chain.json`) and
+`control_1057/summary.json`. The figures below were re-read from those files.
+
+**ev-A FAILS at all 5 epochs.**
+- The blend reached lambda 1 at every epoch, so D2 never ran. The minimax gate there passes at every
+  epoch (worst 0.58).
+- The shoot then CLOSES ballistically at every epoch: 17, 19, 18, 18 and 20 of 20 restarts converge.
+  Most land on one or two distinct closures; the distinct worst ratios per epoch are 4, 3, 2, 2 and 4.
+- None of the 20 restarts at any epoch ended at nfev <= 3.
+- Every closure fails the #888 gate at VENUS. The best closure per epoch:
+
+| Epoch | JD | Closing restarts | Best closure worst ratio (Venus) | Earth ratio | Required Venus periapsis altitude |
+|---|---|---|---|---|---|
+| e0 | 2462508.0 | 17 / 20 | 1.148 | 0.355 | -848 km |
+| e1 | 2464843.6 | 19 / 20 | 1.571 | 0.487 | -2,961 km |
+| e2 | 2467763.3 | 18 / 20 | 1.117 | 0.492 | -627 km |
+| e3 | 2469516.4 | 18 / 20 | 2.314 | 0.493 | -4,614 km |
+| e4 | 2472436.0 | 20 / 20 | 1.151 | 0.494 | -862 km |
+
+- A negative required altitude is below the surface. At the best epoch (e2) the required periapsis is
+  627 km below Venus's surface, i.e. 927 km below the 300-km registry floor.
+
+Against the sec. 9.1 pre-registered meanings:
+- The outcome is "FAIL at every epoch": the D1 shoot route CANNOT judge a full-rev Earth-Venus chain on
+  DE440.
+- The 22 are decided on the Standish and DE440-blend evidence alone. The owner options (a)-(d) stand as
+  written.
+- The members' sec. 8 NOT REACHED results stay CONDITIONAL. They are not a judged negative.
+- This matches the pre-run expectation and the #942 6.25 precedent (closures found, all gate failures,
+  1.12-2.99, then with the old restarts). It reproduces that precedent at today's restart settings.
+
+What it says about ev-A itself:
+- Its Standish standing is unchanged: 5/5, gate-passing, re-flown (C2, sec. 3).
+- Its catalogue row (`earth-venus-two-working-body-cycler-eva-2026`) already says "NEAR-BALLISTIC on
+  DE440, no gate-passing ballistic member found". Its `data_gaps` entry still calls the DE440 shoot
+  restarts "old 0.3/0.6-rad (WEAK)", and that is now superseded.
+- Proposed `data_gaps` text, for a LATER catalogue window, not applied now:
+  > "On DE440 (astropy Earth, not the Earth-Moon barycentre) the chain-tool shoot at today's settings
+  > (restarts 0.03/0.05 rad; #1057 step 1, 2026-10-11) closes ballistic 5-cycle chains at all 5
+  > epochs, but every closure fails the #888 gate at Venus: best epoch JD 2467763.3, worst ratio 1.117,
+  > required periapsis 627 km below the surface (927 km below the 300-km floor). The blend's minimax
+  > solution at lambda 1 passes the gate (0.58) but does not close; its closure dV is 1.56-2.53 m/s per
+  > 16-yr chain (6.25)."
+- The near-ballistic statement (a few m/s from the gate-passing minimax solution) still holds. What
+  changed is that the restart caveat on the shoot is gone.
+
+Why ev-A had no dead restarts, against 481 of 920 for the members. This is an inference from the
+structure; it was not instrumented:
+- ev-A has 1 fixed leg per cycle (the Venus 1:1), so 5 fixed legs in its 5-cycle chain.
+- The ten members have 2 to 4 fixed legs per cycle: ev5-9 two Earth full-revs; ev4-4 two Earth and
+  one Venus; ev4-1 two Earth and two Venus. So up to 12 perturbed fixed-leg directions per chain
+  (ev4-1, 3 cycles).
+- Several members have two Earth full-revs back to back. Under #1058's reading (a seed outside the
+  domain), each extra perturbed leg is another chance for a downstream junction to fail.
+- The DE440 Earth (lunar reflex) moves the Earth full-rev arrivals. ev-A has no Earth full-rev at all;
+  Earth is only a Lambert junction there.
+- #1058's check (it records the failure reason per draw) would test this.
+
+Is step 2 (the Earth-Moon barycentre) still worth running?
+- **As a positive control for the shoot: not as specified.**
+  - The control fails at VENUS, and ev-A has no Earth full-rev leg, so replacing the Earth by the
+    barycentre cannot change ev-A's failure.
+  - For the members, the barycentre might let more chains close, but the control shows that a closure
+    is not the problem. The shoot finds closures readily, and they fail the gate.
+- The failure mode is the one #942 6.48 described on jup365. The blend's minimax solution passes the
+  gate, but the free-direction shoot lands on other, gate-failing closures. The fix there was the
+  anchored shoot (`--shoot-homotopy 10`, with `--grow-chain --grow-from-one --shoot-rel-time`). It
+  continues from the minimax seed to the closure connected to it. It passed both of its jup365 controls
+  (6.50: C4@2013 indeterminate 0.9917; GanEur#316 pass 0.741).
+- **Proposed instead, as `#1057` step 1b** (pre-registration to be written before any run; lead launch):
+  ev-A on DE440 with the 6.48 anchored-shoot flags.
+  - Pass criterion identical to the members' (closure, gate pass at the registry floors, re-fly
+    < 1 km).
+  - A PASS would give the DE440 shoot its first positive control, and the members would then need a
+    re-run with the same flags.
+  - A FAIL would show that ev-A's gate-passing DE440 neighbourhood has no ballistic closure at this
+    chain length.
+  - Expected cost: of the order of step 1 (about 10-30 min on 2 workers).
+- Step 2 (the barycentre) is kept in `#1057` as a later diagnostic for the members' closure EXISTENCE,
+  not as the shoot's control.
