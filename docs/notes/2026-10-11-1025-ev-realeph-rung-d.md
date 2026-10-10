@@ -640,3 +640,61 @@ Ratchet rule:
   FAIL / 49 NOT REACHED on route D1).
 - Only a re-run of the members on route A1/A2, pre-registered on its own, can.
 - Until then the members' DE440 shoot results stay as recorded and conditional.
+
+### 9.5 Result of step 1b (lead launch 2026-10-11 10:38-10:50 AEDT; commit 2ebae89b)
+
+Data: `data/1025_ev_realeph/control_1057b/ev-A/{A1,A2}/e<i>/` and `control_1057b/summary.json`. The
+figures below were re-read from the chain files (the `grow` records per length).
+
+**No PASS at any epoch.** e0 and e1 FAIL, e2 NOT RUN, e3 and e4 NOT REACHED.
+
+| Epoch | JD | Phase-1 blend (1 cycle) | Grow-chain closures by length: closing restarts, best worst ratio (required Venus altitude) | Outcome |
+|---|---|---|---|---|
+| e0 | 2462508.0 | lambda 1, minimax gate pass 0.592 | k1 16/20, PASS 0.708 (3,835 km); k2 18/20, PASS 0.701 (4,074 km); k3 20/20, PASS 0.757 (3,109 km); k4 20/20, fail 1.513 (-2,669 km); k5 19/20, fail 1.148 (-848 km) | FAIL (k = 5 closure fails the gate) |
+| e1 | 2464843.6 | lambda 1, pass 0.585 | k1 19/20, PASS 0.763 (2,995 km); k2 20/20, fail 1.303; k3 20/20, fail 1.197; k4 15/20, fail 1.327; k5 17/20, fail 1.571 (-2,961 km) | FAIL |
+| e2 | - | - | the tool crashed: a solver step left DE440's date range (jplephem OutOfRangeError, "segment only covers dates 1549-12-31 through 2650-01-25"), exit 1, no result file | NOT RUN |
+| e3 | 2469516.4 | stalls at lambda 0.794 (A2 direct: does not converge) | none | NOT REACHED |
+| e4 | 2472436.0 | stalls at lambda 0.841 (A2 direct: does not converge) | none | NOT REACHED |
+
+- The k = 5 closures at e0 and e1 are the same as step 1's best closures: worst 1.148 and 1.571, the
+  same required altitudes -848 and -2,961 km.
+- With `--grow-from-one`, phase 1 runs on 1 cycle. Its blend stalls at e3 and e4, where step 1's
+  5-cycle blend reached lambda 1. That is a property of the 1-cycle wrap junction (as in #942 6.55a),
+  not of the epoch.
+
+Against the sec. 9.4 meanings:
+- No PASS at any epoch, so the anchored shoot cannot judge a full-rev Earth-Venus chain on DE440
+  either.
+- The 22 are decided on the Standish and DE440-blend evidence. The owner options stand as written.
+- The members' D1 results stay as recorded and conditional (the ratchet rule of 9.4).
+
+What the k = 3 pass / k = 4 fail pattern says about ev-A as a DE440 ballistic object:
+- At e0 the grow chain finds gate-passing ballistic closures at 1, 2 and 3 cycles: 3 cycles = 6.4 yr,
+  worst ratio 0.757. The best closure's lowest required periapsis altitude is 3,109 km at
+  k = 3 (3,835 and 4,074 km at k = 1 and 2). The anchoring follows them
+  continuously from the gate-passing minimax seed.
+- From 4 cycles on, every closure found violates the Venus floor: k = 4 needs a periapsis 2,669 km
+  below the surface, and k = 5 848 km below.
+- So on DE440 at e0, ev-A is a gate-passing ballistic chain for about 6.4 yr. Over 12.8-16 yr the
+  ballistic continuation needs Venus flybys that are physically impossible.
+- At e1 the gate-passing ballistic chain lasts only 1 cycle (3.2 yr).
+- This is consistent with the "near-ballistic" reading (a few m/s of correction per 16-yr chain from
+  the minimax solution, 6.25). It is a reading, not a computed link.
+- Limits:
+  - the k = 3 closures were not re-flown independently (the checker runs only on the final k = 5
+    result, and the per-length states are not stored);
+  - one epoch only;
+  - 3 cycles is below the 5-cycle (16-yr) length of the pre-registered criterion, so it is not a
+    pass.
+
+Does it belong in ev-A's proposed `data_gaps` sentence (9.3)? Yes, as a descriptive clause with its
+limits stated. Proposed addition, for a later window, not applied now:
+> "With the anchored shoot (#942 6.48 method; #1057 step 1b) the ballistic DE440 chain at JD 2462508.0
+> passes the gate for 1-3 cycles (6.4 yr; worst 0.757, lowest required periapsis altitude
+> 3,109 km) and violates
+> the Venus floor from 4 cycles on (the 3-cycle closures not independently re-flown); at JD
+> 2464843.6 it passes for 1 cycle only."
+
+The e2 crash is registered as `#1059`: a date guard in the chain tool, so an out-of-range trial step is
+a rejected step, not a crash. A correctness fix: e2 of step 1b is NOT RUN, not a negative, until it is
+re-run under the guard.

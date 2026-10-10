@@ -2937,6 +2937,15 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   check: ev4-7 e2's nfev <= 3 count falls to about 0. If it does not, use a growing finite domain
   penalty instead. A correctness fix: the 49 NOT REACHED of `#1025` sec. 8 must be re-run under it
   before they count. Run it only after `#1057` shows the shoot can pass a known cycler.
+- `#1059` — registered 2026-10-11 (from `#1057` step 1b; DEFECT, small; NOT dispatched). **A DATE GUARD IN THE CHAIN
+  TOOL'S SHOOT.** In `#1057` step 1b, ev-A e2 (DE440, anchored shoot) crashed: a solver trial step went
+  outside DE440's date range (jplephem `OutOfRangeError`, "segment only covers dates 1549-12-31
+  through 2650-01-25"), exit 1, no result. `scripts/run_942_realeph_chain.py` `_res` and `_safe_eval`
+  catch only `SpiceyError` (the jup365 fix of `#942` 6.50). They should also treat the astropy/jplephem
+  out-of-range error, or any trial date outside the kernel's span, as a failed evaluation (the 1e3
+  penalty, i.e. a rejected step). Test: a synthetic out-of-range date returns the penalty and does not
+  raise. A correctness fix: step 1b e2 is NOT RUN, not a negative, until it is re-run under the guard
+  (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md` sec. 9.5).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
