@@ -1,0 +1,26 @@
+[
+ {
+  "epoch_jd": 2467257.504009549,
+  "mode": "ramp",
+  "last_converged_lambda": null,
+  "steps": [
+   {
+    "phase": "ramp",
+    "lambda": 1.0,
+    "converged": false,
+    "max_residual_kms": 0.0006088585794792323,
+    "max_date_shift_d": 3.693052540304052,
+    "chain_period_d": 5839.961719626986,
+    "status": "unconverged"
+   }
+  ],
+  "x0_days": 27257.504009548888,
+  "final_y_dates": [
+   28300.06281327858,
+   30177.225943020825,
+   31219.784746750516,
+   5839.443866943866
+  ],
+  "rung_pass": false
+ }
+]

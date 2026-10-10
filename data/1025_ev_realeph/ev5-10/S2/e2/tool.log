@@ -1,0 +1,13 @@
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.0000 conv=True res=6.6e-12 gate=pass worst=0.944 [elapsed 0s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.1000 conv=True res=9.4e-12 gate=pass worst=0.948 [elapsed 0s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.2000 conv=True res=4.3e-12 gate=pass worst=0.959 [elapsed 1s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.3000 conv=True res=1.3e-11 gate=pass worst=0.978 [elapsed 1s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.4000 conv=True res=6.1e-12 gate=fail worst=1.003 [elapsed 1s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.5000 conv=True res=2.2e-12 gate=fail worst=1.035 [elapsed 1s]
+06:57:32 ev epoch 2 (JD 2467522.1) ramp lam=0.6000 conv=True res=8.5e-12 gate=fail worst=1.071 [elapsed 1s]
+06:57:33 ev epoch 2 (JD 2467522.1) ramp lam=0.7000 conv=True res=8.1e-12 gate=fail worst=1.139 [elapsed 1s]
+06:57:33 ev epoch 2 (JD 2467522.1) ramp lam=0.8000 conv=True res=4.6e-12 gate=fail worst=1.258 [elapsed 2s]
+06:57:33 ev epoch 2 (JD 2467522.1) ramp lam=0.9000 conv=True res=3.7e-12 gate=fail worst=1.379 [elapsed 2s]
+06:57:33 ev epoch 2 (JD 2467522.1) ramp lam=1.0000 conv=True res=1.2e-11 gate=fail worst=1.500 [elapsed 2s]
+06:57:33 ev epoch 2 (JD 2467522.1) ramp lam=1.0000 conv=True res=1.2e-11 gate=fail worst=1.500 [elapsed 2s]
+DONE

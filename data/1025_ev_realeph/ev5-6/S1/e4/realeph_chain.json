@@ -1,0 +1,33 @@
+[
+ {
+  "epoch_jd": 2472429.1691055726,
+  "mode": "ramp",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "ramp",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 4.902744876744691e-13,
+    "max_date_shift_d": 2.0415656719678736,
+    "chain_period_d": 5837.402301271898,
+    "status": "pass",
+    "worst_ratio": 0.40521291104137885,
+    "worst_ratio_by_body": {
+     "V": 0.40521291104137885,
+     "E": 0.26541039469204475
+    },
+    "min_required_alt_km": 16874.73303547918,
+    "n_flybys": 9
+   }
+  ],
+  "x0_days": 32429.169105572844,
+  "final_y_dates": [
+   33381.00086266225,
+   35349.093292788915,
+   36301.15199100814,
+   5837.402301271898
+  ],
+  "rung_pass": true
+ }
+]

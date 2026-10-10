@@ -1,0 +1,30 @@
+06:48:24 ev epoch 3 (JD 2469846.2) ramp lam=0.0000 conv=True res=2.6e-13 gate=pass worst=0.990 [elapsed 1s]
+06:48:25 ev epoch 3 (JD 2469846.2) ramp lam=0.1000 conv=True res=2.8e-13 gate=pass worst=0.981 [elapsed 1s]
+06:48:25 ev epoch 3 (JD 2469846.2) ramp lam=0.2000 conv=True res=5.7e-13 gate=pass worst=0.972 [elapsed 2s]
+06:48:25 ev epoch 3 (JD 2469846.2) ramp lam=0.3000 conv=True res=2.7e-13 gate=pass worst=0.964 [elapsed 2s]
+06:48:26 ev epoch 3 (JD 2469846.2) ramp lam=0.4000 conv=True res=1.2e-13 gate=pass worst=0.957 [elapsed 3s]
+06:48:26 ev epoch 3 (JD 2469846.2) ramp lam=0.5000 conv=True res=1.9e-13 gate=pass worst=0.950 [elapsed 3s]
+06:48:27 ev epoch 3 (JD 2469846.2) ramp lam=0.6000 conv=True res=2.6e-13 gate=pass worst=0.943 [elapsed 4s]
+06:48:27 ev epoch 3 (JD 2469846.2) ramp lam=0.7000 conv=True res=1.8e-13 gate=pass worst=0.937 [elapsed 4s]
+06:48:28 ev epoch 3 (JD 2469846.2) ramp lam=0.8000 conv=True res=1.4e-13 gate=pass worst=0.932 [elapsed 4s]
+06:48:28 ev epoch 3 (JD 2469846.2) ramp lam=0.9000 conv=True res=1.4e-13 gate=pass worst=0.927 [elapsed 5s]
+06:48:28 ev epoch 3 (JD 2469846.2) ramp lam=1.0000 conv=True res=1.6e-13 gate=pass worst=0.924 [elapsed 5s]
+06:48:29 ev epoch 3 (JD 2469846.2) ramp lam=1.0000 conv=True res=1.6e-13 gate=pass worst=0.924 [elapsed 6s]
+06:48:30   k=3 direct lam=1.0000 conv=False res=9.5e-02
+06:48:30   k=3 ramp lam=0.0000 conv=True res=2.4e-13
+06:48:30   k=3 ramp lam=0.1000 conv=True res=5.1e-13
+06:48:30   k=3 ramp lam=0.2000 conv=True res=2.3e-13
+06:48:30   k=3 ramp lam=0.3000 conv=True res=1.7e-13
+06:48:30   k=3 ramp lam=0.4000 conv=True res=2.8e-13
+06:48:30   k=3 ramp lam=0.5000 conv=True res=2.3e-13
+06:48:31   k=3 ramp lam=0.6000 conv=False res=3.1e-02
+06:48:31   k=3 ramp lam=0.5500 conv=True res=2.9e-13
+06:48:32   k=3 ramp lam=0.6000 conv=False res=3.1e-02
+06:48:32   k=3 ramp lam=0.5750 conv=False res=1.4e-02
+06:48:33   k=3 ramp lam=0.5625 conv=False res=6.0e-03
+06:48:33   k=3 ramp lam=0.5563 conv=False res=1.8e-03
+06:48:33   k=3 ramp lam=0.5531 conv=True res=3.1e-13
+06:48:34   k=3 ramp lam=0.5563 conv=False res=1.8e-03
+06:48:34   k=3 ramp lam=0.5547 conv=False res=7.4e-04
+  grow k=3: ramp-continuation converged=False gate=None worst=nan
+DONE

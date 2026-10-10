@@ -245,8 +245,116 @@ def cmd_run(argv: list[str]) -> None:
         log(f"{a.member} {a.model} e{r['epoch']}: {r['outcome']}")
 
 
+def _chain_dates(route: str, ep: dict[str, Any], n: int) -> tuple[float, list[float]] | None:
+    """(x0_days, y) of the full-length lambda = 1 chain a route produced, else None."""
+    steps = [s for s in ep.get("steps", []) if s.get("converged")]
+    if route == "S3":
+        grow = ep.get("grow") or []
+        if grow and grow[-1]["k"] == n and grow[-1].get("converged"):
+            return ep["x0_days"], ep["final_y_dates"]
+        return None
+    if steps and steps[-1]["lambda"] >= 1.0:
+        return ep["x0_days"], ep["final_y_dates"]
+    return None
+
+
+def standish_band(tag: str) -> dict[str, Any]:
+    """Sec. 4: per epoch, price the passing chain (else the lowest-worst converged chain)."""
+    dvb = _load("dv_band_942", REPO / "scripts" / "dv_band_942.py")
+    real = dvb.CHAIN.real_ephemeris("ev", "mean")
+    key, _, n = members()[tag]
+    per_epoch = []
+    for ie in EPOCHS:
+        cands = []
+        for route in ("S1", "S2", "S3"):
+            d = OUT / tag / route / f"e{ie}"
+            p = d / "realeph_chain.json"
+            if not p.exists():
+                continue
+            ep = json.loads(p.read_text())[0]
+            cl = classify(ep, route, n, d)
+            ch = _chain_dates(route, ep, n)
+            if ch is not None:
+                cands.append((cl["outcome"] != "PASS", cl.get("worst_ratio") or 9.0, route, ep, ch))
+        if not cands:
+            per_epoch.append({"epoch": ie, "per7_beyond_bend_mps": None, "band": "n/a"})
+            continue
+        _, _, route, ep, (x0, y) = min(cands, key=lambda c: (c[0], c[1]))
+        pr = dvb.price_chain(real, key, n, x0, y)
+        r = dvb.row(tag, "standish", {"epoch_jd": ep["epoch_jd"]}, n, pr, 0.0, route)
+        per_epoch.append(
+            {
+                "epoch": ie,
+                "route": route,
+                "epoch_jd": ep["epoch_jd"],
+                "worst_ratio": pr["worst_ratio"],
+                "n_priced_flybys": pr["n_flybys"],
+                "per7_beyond_bend_mps": r["per_7_cycles_mps"]["beyond_bend"],
+                "per7_periapsis_mps": r["per_7_cycles_mps"]["periapsis"],
+                "band": r["band_beyond_bend"],
+            }
+        )
+    vals = [e["per7_beyond_bend_mps"] for e in per_epoch if e["per7_beyond_bend_mps"] is not None]
+    best = min(
+        (e for e in per_epoch if e["per7_beyond_bend_mps"] is not None),
+        key=lambda e: e["per7_beyond_bend_mps"],
+        default=None,
+    )
+    return {
+        "per_epoch": per_epoch,
+        "best": best,
+        "range_per7_mps": [min(vals), max(vals)] if vals else None,
+    }
+
+
+def cmd_summary(argv: list[str]) -> None:
+    out: dict[str, Any] = {}
+    for tag, (key, _, n) in members().items():
+        if not (OUT / tag).exists():
+            continue
+        rec: dict[str, Any] = {"key": key, "cycles": n}
+        outs = []
+        for ie in EPOCHS:
+            tried = []
+            for route in ("S1", "S2", "S3"):
+                d = OUT / tag / route / f"e{ie}"
+                if (d / "realeph_chain.json").exists():
+                    _KEY[0] = key
+                    tried.append(
+                        classify(json.loads((d / "realeph_chain.json").read_text())[0], route, n, d)
+                    )
+            outs.append(
+                {
+                    "epoch": ie,
+                    "outcome": epoch_outcome(tried) if tried else "NOT RUN",
+                    "routes": tried,
+                }
+            )
+        rec["standish"] = outs
+        rec["standish_counts"] = {
+            o: sum(e["outcome"] == o for e in outs)
+            for o in ("PASS", "FAIL", "NOT REACHED", "NOT RUN")
+        }
+        rec["standish_band"] = standish_band(tag)
+        out[tag] = rec
+        c = rec["standish_counts"]
+        b = rec["standish_band"]["best"]
+        best_s = (
+            "n/a"
+            if b is None
+            else "{:.2f} m/s ({}, e{})".format(b["per7_beyond_bend_mps"], b["band"], b["epoch"])
+        )
+        print(
+            f"{tag}: Standish {c['PASS']} pass / {c['FAIL']} fail / {c['NOT REACHED']} not reached"
+            f" / {c['NOT RUN']} not run; best per-7 {best_s}"
+            f"; range {rec['standish_band']['range_per7_mps']}",
+            flush=True,
+        )
+    (OUT / "summary.json").write_text(json.dumps(out, indent=1, default=float))
+
+
 def main() -> None:
-    cmds = {"control": cmd_control, "run": cmd_run}
+    cmds = {"control": cmd_control, "run": cmd_run, "summary": cmd_summary}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: ev_realeph_1025.py {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])
