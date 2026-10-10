@@ -1,0 +1,182 @@
+# Henon 1974, Tables 1-6 and eq. (7): vertical stability of the plane periodic orbits of Hill's problem
+#   (families a, c, f, g, g').
+# Source: M. Henon, "Vertical Stability of Periodic Orbits in the Restricted Problem. II. Hill's Case",
+#   Astronomy and Astrophysics 30:317-321 (1974), ADS 1974A&A....30..317H. Received October 26, 1973. No DOI.
+# Local file: image-only ADS scan, 5 pp., md5 8822c83329f1e01b50d2a576b9861c15; OCR copy (ocrmypdf --force-ocr -l eng)
+#   md5 1449147d7e1291f8a2dc0ecd8a76e7d2. PDF page n = journal page 316 + n.
+# Tables: 1 p.319 (right column); 2, 3 p.320 (left column); 4 p.320 (right column); 5, 6 p.321. Eq. (7) p.317.
+#   Pages 318 and the figures (Figs. 1-6) carry no numeric tables.
+# Transcribed from the page images: every cell was read on 400 dpi crops of the original scan (witness C, decides).
+#   Witness A: tesseract 5.5.3 at 400 dpi, psm 6, digit whitelist "0123456789.-+ " (a second pass without the whitelist
+#   witnesses the minus signs). Witness B: macOS Vision (VNRecognizeTextRequest, .accurate, no language correction).
+#   Cell-by-cell comparison: witness-comparison.tsv; counts in conventions.notes. The OCR text layer of the OCR copy
+#   was NOT used for any value (it turns the g'_2 names into "£53v", "253" and so on).
+# No value here was computed by us. Values we computed are only in `note:` fields, marked "ours", and in
+#   recompute_av.out. Numbers are kept as printed (strings, trailing zeros kept); the printed minus sign is "-";
+#   "+inf"/"-inf" are the printed infinity signs; "." marks an empty cell.
+#
+# EQUATIONS AND UNITS (sec. 2, p.317, page image)
+#   Derived from the restricted problem (Paper I eqs. 1-3) by
+#     "x = 1 - mu + mu^(1/3) xi,  y = mu^(1/3) eta,  z = mu^(1/3) zeta"   (1)
+#     "r2 = mu^(1/3) rho,  Omega = 3/2 + mu^(2/3) Omega'"                  (2)
+#   "so that the second body is the origin of the new coordinates, and letting mu -> 0":
+#     "xi'' = 2 eta' + Omega'_xi,  eta'' = -2 xi' + Omega'_eta,  zeta'' = Omega'_zeta"   (3)
+#     "Omega' = 3/2 xi^2 - 1/2 zeta^2 + 1/rho,  rho^2 = xi^2 + eta^2 + zeta^2"          (4)
+#   Units (INFERRED, ours; not stated in this paper): Paper I uses unit separation and unit angular rate; lengths
+#   scale by mu^(1/3) (eq. 1) and time is not rescaled, so the length unit is a mu^(1/3) and the time unit is 1/n.
+#   The planar part of (3)-(4) is Henon 2003 eq. (1), so the units and Gamma are the same as in Henon 2003 and H5. M1 (the large body) is on the -xi side (x = 1 - mu
+#   at the origin, M1 at x = -mu), as in Henon 2003.
+#
+# JACOBI CONSTANT (eq. 5, p.317, page image)
+#   "Gamma = 2 Omega' - (xi'^2 + eta'^2 + zeta'^2)"   (5)
+#   For plane orbits: Gamma = 3 xi^2 + 2/rho - xi'^2 - eta'^2, the same Gamma as Henon 1969 (H5) and Henon 2003 eq. (2).
+#
+# VERTICAL VARIATIONAL EQUATION (eq. 6, p.317, page image)
+#   "d^2 Delta zeta / dt^2 = Omega'_zetazeta Delta zeta = -[1 + (xi^2 + eta^2)^(-3/2)] Delta zeta"   (6)
+#   The "1 +" comes from the -1/2 zeta^2 term of (4). (The form zeta'' = -zeta/r^3 lacks it and is wrong for Hill.)
+#
+# VERTICAL STABILITY INDEX (p.317: "we define as in I a vertical stability index a_v; an orbit will be vertically
+#   stable if |a_v| < 1." The definition is in Paper I, Henon 1973, A&A 28:415, pp.416-417, read on its page images):
+#   Paper I eq. (9): full-revolution map (Delta z_2, Delta w_2) = [[a_v, b_v], [c_v, d_v]] (Delta z_0, Delta w_0),
+#     with w = z' (vertical velocity); eq. (12) a_v d_v - b_v c_v = 1; eq. (13) eigenvalues "lambda^2 - (a_v + d_v)
+#     lambda + 1 = 0"; "If |a_v + d_v| > 2 ... the vertical motion is unstable. If |a_v + d_v| < 2, the roots are
+#     complex conjugate with modulus 1 and the vertical motion is stable in general."
+#   Half-orbit coefficients, eq. (21): from crossing 0 to the next crossing (crossing N for an N-periodic orbit)
+#     "Delta z'_1 = A_v eps', Delta w'_1 = C_v eps'; Delta z''_1 = B_v eps'', Delta w''_1 = D_v eps''"
+#     for initial conditions (19) "Delta z'_0 = eps', Delta w'_0 = 0" and (20) "Delta z''_0 = 0, Delta w''_0 = eps''".
+#   Eq. (16): "a_v = d_v = A_v D_v + B_v C_v,  b_v = 2 B_v D_v,  c_v = 2 A_v C_v"; eq. (17) "|a_v| < 1".
+#   So a_v = half the trace of the full-period vertical monodromy (= cos phi in the 1974 eq. 14).
+#   "We shall call a_v the vertical stability index." (Paper I p.417)
+#   VERTICAL CRITICAL ORBIT: a_v = +-1 (Paper I p.417). Paper I eq. (22): "a_v - 1 = 2 B_v C_v,  a_v + 1 = 2 A_v D_v",
+#     so one of A_v, B_v, C_v, D_v vanishes: Type A_v or D_v means a_v = -1; Type B_v or C_v means a_v = +1.
+#   Horizontal index a (columns "a" of Fig. 2, 4, 6; Types A, B, C, D without v) is H5's index; |a| < 1 is
+#     horizontally stable. Three-dimensional stability needs |a| < 1 and |a_v| < 1 (p.318).
+#
+# STATE PRINTED IN TABLE 1 (p.319; columns Name, xi_0, xi_1, Gamma, eta'_0, eta'_1, Type)
+#   As in Paper I Table 1: xi_0 and xi_1 are the abscissas of the two perpendicular crossings of the xi axis (crossing 0
+#   and the crossing half a period later); eta'_0 and eta'_1 are only the SIGNS of eta' there. No velocity value,
+#   no period and no a_v value are printed (a_v = +-1 by definition at a "v" orbit; see the Type rule above).
+#
+# SYMMETRY. All orbits are plane and symmetric about the xi axis (p.317). "In Hill's case there is a symmetry with
+#   respect to the second body. This symmetry transforms family a into family c; therefore Figs. 1 and 2 are also
+#   valid for family c." (p.318). Family c has no rows of its own. Families f and g are also symmetric about the
+#   eta axis (stated in the H5 Table 1 caption, not in this paper; xi_1 = -xi_0 for g in Table 1). No asymmetric family is treated.
+#
+# NAMES (Paper I p.417): "b_2 4v": family letter, subscript = half the number of xi-axis crossings (omitted when 1),
+#   identification number, and "v" for a vertical critical orbit. Here g'_2 means g' with subscript 2.
+tables:
+  - table: "eq. (7)"
+    journal_page: "317"
+    text: "Family a begins at L2, xi = 0.693361..., Gamma = 4.326749...; a_v computed from the numbers given by Szebehely (1967)"
+    rows:
+      - {orbit: "L2 (infinitesimal orbits of family a)", a_v: "0.976516...", note: "vertically stable start of family a"}
+  - table: "1"
+    caption: "Characteristics of particular orbits (horizontal and vertical critical orbits, ejection orbits, end orbits)"
+    journal_page: "319"
+    columns: [name, xi0, xi1, Gamma, etadot0_sign, etadot1_sign, type]
+    families:
+      - family: a
+        symmetry: "about the xi axis; family c is its image under the symmetry about M2 (p.318)"
+        rows:
+          - {name: "L2", xi0: "0.693361", xi1: "0.693361", Gamma: "4.326749", etadot0_sign: "+", etadot1_sign: "-", type: ".", note: "start: L2"}
+          - {name: "a1v", xi0: "0.581265", xi1: "0.774657", Gamma: "4.005313", etadot0_sign: "+", etadot1_sign: "-", type: "C_v"}
+          - {name: "a2v", xi0: "0.212661", xi1: "0.949136", Gamma: "1.228063", etadot0_sign: "+", etadot1_sign: "-", type: "B_v"}
+          - {name: "a3v", xi0: "0.092988", xi1: "1.218163", Gamma: "-0.029389", etadot0_sign: "+", etadot1_sign: "-", type: "A_v"}
+          - {name: ".", xi0: "0", xi1: "+inf", Gamma: "-inf", etadot0_sign: ".", etadot1_sign: ".", type: ".", note: "end of family"}
+      - family: g
+        symmetry: "about the xi axis and the eta axis (xi1 = -xi0)"
+        rows:
+          - {name: "(M2)", xi0: "0", xi1: "0", Gamma: "+inf", etadot0_sign: ".", etadot1_sign: ".", type: ".", note: "start: collapses on M2"}
+          - {name: "g1", xi0: "0.283498", xi1: "-0.283498", Gamma: "4.499986", etadot0_sign: "+", etadot1_sign: "-", type: "C", note: "horizontal critical orbit, = g'1"}
+          - {name: "g1v", xi0: "0.310842", xi1: "-0.310842", Gamma: "3.057455", etadot0_sign: "+", etadot1_sign: "-", type: "A_v-D_v", note: "tangent to a_v = -1 (p.319)"}
+          - {name: "g2v", xi0: "0.164715", xi1: "-0.164715", Gamma: "1.383094", etadot0_sign: "+", etadot1_sign: "-", type: "C_v"}
+          - {name: ".", xi0: "0", xi1: "0", Gamma: "-inf", etadot0_sign: ".", etadot1_sign: ".", type: ".", note: "end of family"}
+      - family: "g'"
+        symmetry: "about the xi axis"
+        rows:
+          - {name: "g'1=g1", xi0: "0.283498", xi1: "-0.283498", Gamma: "4.499986", etadot0_sign: "+", etadot1_sign: "-", type: "C", note: "origin of g' at the horizontal critical orbit g1"}
+          - {name: "g'1v", xi0: "0.086462", xi1: "-0.570854", Gamma: "4.285184", etadot0_sign: "+", etadot1_sign: "-", type: "A_v"}
+          - {name: "g'2v", xi0: "0.082216", xi1: "-0.576960", Gamma: "4.280603", etadot0_sign: "+", etadot1_sign: "-", type: "D_v"}
+          - {name: "g'2", xi0: "0.073664", xi1: "-0.587694", Gamma: "4.271428", etadot0_sign: "+", etadot1_sign: "-", type: "A", note: "horizontal critical orbit (H5 a = -1); = maximum-Gamma row of Henon 2003 family Ha (Table VI)"}
+          - {name: ".", xi0: "0", xi1: "-0.509084", Gamma: "3.684489", etadot0_sign: ".", etadot1_sign: "-", type: ".", note: "ejection orbit (xi0 = 0); subscript changes to 2 after it"}
+          - {name: "g'_2 3v", xi0: "0.004399", xi1: "-0.464697", Gamma: "3.390160", etadot0_sign: "-", etadot1_sign: "-", type: "C_v"}
+          - {name: "g'_2 4v", xi0: "0.285816", xi1: "-0.114197", Gamma: "0.477157", etadot0_sign: "-", etadot1_sign: "-", type: "B_v"}
+          - {name: "g'_2 5v", xi0: "0.408116", xi1: "-0.059949", Gamma: "-0.219529", etadot0_sign: "-", etadot1_sign: "-", type: "D_v", note: "a small stray dot is printed just left of the xi1 minus sign (print mark, not a decimal point)"}
+          - {name: "g'_2 3", xi0: "1.743460", xi1: "-0.004302", Gamma: "-4.692192", etadot0_sign: "-", etadot1_sign: "-", type: "D", note: "horizontal critical orbit; H5 Table 10 g'_2 3 (-4.69219, 0.004302)"}
+          - {name: "g'_2 4", xi0: "1.746112", xi1: "-0.004283", Gamma: "-4.704787", etadot0_sign: "-", etadot1_sign: "-", type: "B", note: "horizontal critical orbit; H5 Table 10 g'_2 4 (-4.70479, 0.004283)"}
+          - {name: ".", xi0: "+inf", xi1: "0", Gamma: "-inf", etadot0_sign: ".", etadot1_sign: ".", type: ".", note: "end of family"}
+  - table: "2"
+    caption: "Family f: check on asymptotic formula for Gamma -> +inf"
+    journal_page: "320"
+    columns: [Gamma, a_v_formula_14, a_v_exact]
+    rows:
+      - {Gamma: "1", a_v_formula_14: "0.1798", a_v_exact: "0.3907"}
+      - {Gamma: "2", a_v_formula_14: "0.5727", a_v_exact: "0.6527"}
+      - {Gamma: "3", a_v_formula_14: "0.7660", a_v_exact: "0.7994"}
+      - {Gamma: "4", a_v_formula_14: "0.8627", a_v_exact: "0.8783"}
+      - {Gamma: "5", a_v_formula_14: "0.9143", a_v_exact: "0.9221"}
+      - {Gamma: "6", a_v_formula_14: "0.9435", a_v_exact: "0.9478"}
+  - table: "3"
+    caption: "Family g: check on asymptotic formula for Gamma -> +inf"
+    journal_page: "320"
+    columns: [Gamma, a_v_formula_14, a_v_exact]
+    rows:
+      - {Gamma: "5", a_v_formula_14: "0.6235", a_v_exact: "0.5388"}
+      - {Gamma: "6", a_v_formula_14: "0.8285", a_v_exact: "0.8021"}
+      - {Gamma: "7", a_v_formula_14: "0.9066", a_v_exact: "0.8962"}
+      - {Gamma: "8", a_v_formula_14: "0.9432", a_v_exact: "0.9383"}
+  - table: "4"
+    caption: "Coefficient Q4 given by (21)"
+    journal_page: "320"
+    columns: [n, Q4]
+    rows:
+      - {n: "1", Q4: "-0.540757"}
+      - {n: "2", Q4: "-0.334456"}
+      - {n: "3", Q4: "-0.240706"}
+      - {n: "4", Q4: "-0.187780"}
+      - {n: "5", Q4: "-0.153869"}
+      - {n: "6", Q4: "-0.130309"}
+      - {n: "7", Q4: "-0.112995"}
+      - {n: "8", Q4: "-0.099737"}
+      - {n: "9", Q4: "-0.089261"}
+      - {n: "10", Q4: "-0.080774"}
+  - table: "5"
+    caption: "Families a and c: check on asymptotic formula for Gamma -> -inf"
+    journal_page: "321"
+    columns: [Gamma, a_v_formula_20, a_v_exact]
+    rows:
+      - {Gamma: "-4", a_v_formula_20: "-4.326", a_v_exact: "-8.215"}
+      - {Gamma: "-9", a_v_formula_20: "-14.60", a_v_exact: "-18.42"}
+      - {Gamma: "-16", a_v_formula_20: "-34.61", a_v_exact: "-38.37"}
+      - {Gamma: "-36", a_v_formula_20: "-116.8", a_v_exact: "-120.5"}
+      - {Gamma: "-100", a_v_formula_20: "-540.8", a_v_exact: "-544.2"}
+  - table: "6"
+    caption: "Family g': check on asymptotic formula for Gamma -> -inf"
+    journal_page: "321"
+    columns: [Gamma, a_v_formula_20, a_v_exact]
+    rows:
+      - {Gamma: "-4", a_v_formula_20: "-2.676", a_v_exact: "-8.510"}
+      - {Gamma: "-9", a_v_formula_20: "-9.030", a_v_exact: "-14.86"}
+      - {Gamma: "-16", a_v_formula_20: "-21.41", a_v_exact: "-27.14"}
+      - {Gamma: "-36", a_v_formula_20: "-72.24", a_v_exact: "-77.90"}
+      - {Gamma: "-100", a_v_formula_20: "-334.5", a_v_exact: "-340.0"}
+conventions:
+  frame: "Hill's problem, eqs. (3)-(4) p.317: xi'' = 2 eta' + 3 xi - xi/rho^3, eta'' = -2 xi' - eta/rho^3, zeta'' = -zeta - zeta/rho^3; M2 at the origin, M1 on the -xi side at infinity; unit rotation rate; length unit a mu^(1/3)"
+  jacobi: "Gamma = 2 Omega' - v^2 (eq. 5); plane: Gamma = 3 xi^2 + 2/rho - xi'^2 - eta'^2; larger Gamma = lower energy; same Gamma as H5 and Henon 2003"
+  vertical_equation: "Delta zeta'' = -[1 + (xi^2 + eta^2)^(-3/2)] Delta zeta (eq. 6)"
+  stability_index: "a_v = A_v D_v + B_v C_v = half the trace of the full-period 2x2 vertical monodromy (Paper I eqs. 9, 16); |a_v| < 1 vertically stable (p.317; Paper I eq. 17); a_v = +-1 vertical critical orbit; Type A_v/D_v -> a_v = -1, B_v/C_v -> a_v = +1 (Paper I eq. 22)"
+  state_printed: "Table 1: xi0, xi1 = abscissas of the two perpendicular xi-axis crossings half a period apart; Gamma; signs of eta' at the two crossings; Type. Tables 2, 3, 5, 6: Gamma and a_v only (no xi0); the family member is fixed by Gamma and the family (H5 Tables 2-5 give xi at the same Gamma)"
+  period_field: none   # no period printed; H5 Tables 2-5 give T/2 for the same families
+  a_v_values_printed: "eq. (7) (L2, 0.976516); Tables 2, 3, 5, 6 'Exact value' columns (20 values); Table 1 rows named ...v carry a_v = +-1 by definition (sign from the Type)"
+  symmetric_families: [a, c, f, g, "g'"]   # all symmetric about the xi axis; c = image of a under the symmetry about M2 (no rows of its own); f, g also symmetric about the eta axis
+  asymmetric_families: []
+  families_with_table1_rows: [a, g, "g'"]   # family f has no critical orbit: all f orbits are vertically and three-dimensionally stable (p.318)
+  page_references: {eq_1_to_6: "317", eq_7: "317", table_1: "319", tables_2_3_4: "320", tables_5_6: "321", fig_1_2_3_4: "318", fig_5_6: "319", asymptotics_eq_8_to_21: "319-321"}
+  row_counts: {eq7: 1, table_1: 21, table_1_family_a: 5, table_1_family_g: 5, "table_1_family_g'": 11, table_2: 6, table_3: 4, table_4: 10, table_5: 5, table_6: 5, total: 52}
+  notes:
+    - "Table 1 sign convention for g' differs from H5 Table 5: here xi0 = H5's second xi column and xi1 = minus H5's first xi column for the simple-periodic part (g'2: 0.073664 / -0.587694 vs H5 0.07366 / 0.58769). For the g'_2 rows, eta'_0 is printed '-' and xi0 > 0: these are the images, under the symmetry about M2, of H5's (xi < 0, eta' > 0) start (g'_2 3: here 1.743460 / -0.004302; H5 Table 5 at Gamma -4.69219: 0.004302 / -1.74346)."
+    - "Witnesses (witness-comparison.tsv, 138 numeric cells; infinity signs, names, signs and types not counted): A (tesseract, whitelist) agrees on 113, loses only the minus on 19, drops a decimal point on 5 and misreads 1 (-77.90 as 7190); A2 (tesseract, no whitelist) agrees on 132 and differs on the same 6; B (Vision) agrees on 119, gives no token on 17 single-character cells (Gamma and n columns) and merges a neighbouring mark on 2. No cell has A and B agreeing with each other against the image. Every disagreement was settled on the 400 dpi crop."
+    - "Recomputation (recompute_av.py / .out, ours; DOP853 rtol 1e-13 atol 1e-14, eq. 6 vertical equation, a_v = A_v D_v + B_v C_v and checked against half the full-period trace): eq. (7) L2 value 0.976516 reproduced analytically (cos 2T); all 20 'Exact value' a_v of Tables 2, 3, 5, 6 reproduced to the printed digits; for the 9 transversal vertical critical orbits of Table 1, the Gamma where a_v = +-1 and its xi0, xi1 reproduce all 6 printed decimals (27/27 cells), and the vanishing coefficient matches the printed Type in 10/10 rows; g1v is a tangency to a_v = -1 at Gamma 3.057455 (A_v = D_v = 1.3e-8 there)."
+    - "Printed formula columns (crosscheck.py / .out, ours): Table 2 Gamma = 1 and 4 formula values 0.1798 and 0.8627 do not follow from the exact root of eq. (10) (0.1801, 0.8629); they are copied from H5 Table 11, where rho0 was solved about 1e-4 off (H5 transcription oddity 2). Table 4 n = 3: eq. (21) gives Q4 = -0.24070548, which rounds to -0.240705; printed -0.240706 (one unit in the last place). All other formula cells (8 of Tables 2-3, 9 of Table 4, 10 of Tables 5-6) reproduce. Kept as printed."
+    - "Ejection orbit of g' (Table 1, Gamma 3.684489, xi1 -0.509084): our extrapolation of the g' family to xi0 = 0 gives Gamma 3.684488 +- 2e-6, far crossing -0.509084 (ejection_check.out), so the 1974 value stands; H5 Table 5 prints 3.68448 (looks like 3.684489 truncated, not rounded)."
+    - "Henon 2003 Table VI (family Ha) maximum-Gamma row (Gamma 4.271428, xi0 0.073664, xi1 0.073664, 'critical orbit of g' described twice') is the g'2 row of Table 1 (Gamma 4.271428, xi0 0.073664): same orbit, H5 a = -1. Its a_v is NOT printed; ours (gprime2_av.out): a_v(g'2) = -0.944739 once round, so the Ha maximum (g'2 described twice) has a_v = 2 a_v^2 - 1 = 0.785065 (vertically stable). No other 1974 row shares a Gamma with the 68 Henon 2003 rows."
