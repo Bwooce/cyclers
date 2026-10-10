@@ -2,271 +2,1001 @@
  "ev4-1": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462949.6386739793,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8185507426670929
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465278.5122642415,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7746126947418341
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467618.19394506,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.794884367178222
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469954.2308032387,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.820591729094448
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472285.0422060685,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8256050648428157
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev4-4": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462829.6355068125,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9198440704829626
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.7626437022388142,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465172.450842845,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9456779178566446
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467500.2342781806,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9790849456000587
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469841.798208975,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8308093238842656
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472176.157895658,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7719128233387501
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev4-6": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462829.6355068125,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9198440704829626
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465172.450842845,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9456779178566446
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467500.2342781806,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9790849456000587
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469841.798208975,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8308093238842656
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472176.157895658,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7719128233387501
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev4-7": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462829.6355068125,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9198440704829626
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465172.450842845,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9456779178566446
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467500.2342781806,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.9790849456000587
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469841.798208975,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8308093238842656
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472176.157895658,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7719128233387501
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-4": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2463078.348180587,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.6282446476743327
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465415.8469522,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.709375,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "D2",
+     "epoch": 1,
+     "epoch_jd": 2465415.8469522,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467752.2870677374,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7439112592187836
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2470084.840281342,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5885429828137713
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472424.7516399054,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5845838465273604
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-5": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2463078.348180587,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7739926687396231
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465415.8469522,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.709375,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "D2",
+     "epoch": 1,
+     "epoch_jd": 2465415.8469522,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467752.2870677374,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7825909029943522
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2470084.840281342,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7558750221216388
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472424.7516399054,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7625277222951107
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-6": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2463082.4434439577,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.46406250000000004,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "D2",
+     "epoch": 0,
+     "epoch_jd": 2463082.4434439577,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465420.1159669734,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5392342523673542
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467756.313364724,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5866726153974079
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2470089.0732677663,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.4153424787006579
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472428.882733395,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.40505968567280404
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-7": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2463082.4434439577,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.46406250000000004,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "D2",
+     "epoch": 0,
+     "epoch_jd": 2463082.4434439577,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": null,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2465420.1159669734,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5392342523673542
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467756.313364724,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5866726153974079
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2470089.0732677663,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.530686075306556
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472428.882733395,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.546239833963843
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-8": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462588.0912501146,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.6023968609671543
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2464920.9765796,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.6217974196273578
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467257.292888582,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.7086972912972928
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469594.707572278,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.8193057462822692
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2471927.0290491134,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.6475716913091691
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ],
  "ev5-9": [
   {
    "epoch": 0,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462505.2497741827,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.3063729258130615
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 1,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2464841.024701934,
+     "blend_reached_lambda1": false,
+     "last_converged_lambda": 0.4734375,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    },
+    {
+     "route": "D2",
+     "epoch": 1,
+     "epoch_jd": 2464841.024701934,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.3189343642035647
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 2,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467760.7091053664,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.3148658335399314
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 3,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2470093.689833698,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.3044602555618036
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   },
   {
    "epoch": 4,
-   "outcome": "NOT RUN",
-   "routes": []
+   "outcome": "NOT REACHED",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472433.376613629,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.3104959286023318
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": null,
+     "outcome": "NOT REACHED"
+    }
+   ]
   }
  ]
 }

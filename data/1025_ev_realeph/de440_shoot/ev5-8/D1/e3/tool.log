@@ -1,0 +1,33 @@
+09:12:29 ev epoch 3 (JD 2469594.7) blend lam=0.0000 conv=True res=4.3e-13 gate=pass worst=0.855 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.1000 conv=True res=9.9e-13 gate=pass worst=0.851 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.2000 conv=True res=8.9e-13 gate=pass worst=0.847 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.3000 conv=True res=1.3e-12 gate=pass worst=0.843 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.4000 conv=True res=5.5e-13 gate=pass worst=0.839 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.5000 conv=True res=7.5e-13 gate=pass worst=0.835 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.6000 conv=True res=9.5e-13 gate=pass worst=0.832 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.7000 conv=True res=2.0e-12 gate=pass worst=0.828 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.8000 conv=True res=1.1e-12 gate=pass worst=0.825 [elapsed 1s]
+09:12:30 ev epoch 3 (JD 2469594.7) blend lam=0.9000 conv=True res=4.9e-13 gate=pass worst=0.822 [elapsed 2s]
+09:12:31 ev epoch 3 (JD 2469594.7) blend lam=1.0000 conv=True res=1.3e-12 gate=pass worst=0.819 [elapsed 2s]
+09:12:31 ev epoch 3 (JD 2469594.7) blend lam=1.0000 conv=True res=1.3e-12 gate=pass worst=0.819 [elapsed 2s]
+09:12:32   shoot restart 0/20: no closure (max residual 1.7e+01, nfev 68, 1s)
+09:12:35   shoot restart 1/20: no closure (max residual 1.4e+04, nfev 161, 3s)
+09:12:38   shoot restart 2/20: no closure (max residual 1.5e+01, nfev 177, 3s)
+09:12:38   shoot restart 3/20: no closure (max residual inf, nfev 4, 0s)
+09:12:38   shoot restart 4/20: no closure (max residual inf, nfev 2, 0s)
+09:12:38   shoot restart 5/20: no closure (max residual inf, nfev 2, 0s)
+09:12:41   shoot restart 6/20: no closure (max residual 8.2e+03, nfev 178, 3s)
+09:12:41   shoot restart 7/20: no closure (max residual inf, nfev 3, 0s)
+09:12:42   shoot restart 8/20: no closure (max residual 1.0e+05, nfev 61, 1s)
+09:12:46   shoot restart 9/20: no closure (max residual 1.4e+05, nfev 227, 4s)
+09:12:56   shoot restart 10/20: no closure (max residual 8.8e+03, nfev 660, 10s)
+09:12:56   shoot restart 11/20: no closure (max residual inf, nfev 2, 0s)
+09:12:57   shoot restart 12/20: no closure (max residual 9.2e+01, nfev 60, 1s)
+09:12:57   shoot restart 13/20: no closure (max residual inf, nfev 3, 0s)
+09:12:57   shoot restart 14/20: no closure (max residual inf, nfev 3, 0s)
+09:12:57   shoot restart 15/20: no closure (max residual inf, nfev 2, 0s)
+09:13:06   shoot restart 16/20: no closure (max residual 2.1e+05, nfev 660, 9s)
+09:13:08   shoot restart 17/20: no closure (max residual 7.6e+03, nfev 104, 2s)
+09:13:08   shoot restart 18/20: no closure (max residual inf, nfev 2, 0s)
+09:13:18   shoot restart 19/20: no closure (max residual 5.4e+04, nfev 660, 10s)
+DONE

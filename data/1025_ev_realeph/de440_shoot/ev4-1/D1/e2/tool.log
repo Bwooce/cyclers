@@ -1,0 +1,48 @@
+08:17:11 ev epoch 2 (JD 2467618.2) blend lam=0.0000 conv=True res=4.1e-13 gate=pass worst=0.835 [elapsed 2s]
+08:17:12 ev epoch 2 (JD 2467618.2) blend lam=0.1000 conv=True res=8.0e-13 gate=pass worst=0.831 [elapsed 2s]
+08:17:12 ev epoch 2 (JD 2467618.2) blend lam=0.2000 conv=True res=9.5e-13 gate=pass worst=0.826 [elapsed 2s]
+08:17:13 ev epoch 2 (JD 2467618.2) blend lam=0.3000 conv=True res=4.7e-13 gate=pass worst=0.822 [elapsed 3s]
+08:17:13 ev epoch 2 (JD 2467618.2) blend lam=0.4000 conv=True res=8.9e-13 gate=pass worst=0.818 [elapsed 3s]
+08:17:14 ev epoch 2 (JD 2467618.2) blend lam=0.5000 conv=True res=6.4e-13 gate=pass worst=0.814 [elapsed 4s]
+08:17:14 ev epoch 2 (JD 2467618.2) blend lam=0.6000 conv=True res=1.0e-12 gate=pass worst=0.810 [elapsed 4s]
+08:17:14 ev epoch 2 (JD 2467618.2) blend lam=0.7000 conv=True res=4.7e-13 gate=pass worst=0.806 [elapsed 5s]
+08:17:15 ev epoch 2 (JD 2467618.2) blend lam=0.8000 conv=True res=4.7e-13 gate=pass worst=0.802 [elapsed 5s]
+08:17:15 ev epoch 2 (JD 2467618.2) blend lam=0.9000 conv=True res=6.3e-13 gate=pass worst=0.799 [elapsed 6s]
+08:17:16 ev epoch 2 (JD 2467618.2) blend lam=1.0000 conv=True res=4.4e-13 gate=pass worst=0.795 [elapsed 6s]
+08:17:16 ev epoch 2 (JD 2467618.2) blend lam=1.0000 conv=True res=4.4e-13 gate=pass worst=0.795 [elapsed 7s]
+08:18:17   shoot restart 0: 9333 evals, best max|res| so far 1.40e-01 [60s]
+08:19:01   shoot restart 0/20: no closure (max residual 7.3e-02, nfev 1260, 104s)
+08:20:01   shoot restart 1: 9668 evals, best max|res| so far 1.40e+00 [60s]
+08:20:35   shoot restart 1/20: no closure (max residual 1.3e+00, nfev 1260, 94s)
+08:21:35   shoot restart 2: 9330 evals, best max|res| so far 2.59e+00 [60s]
+08:22:21   shoot restart 2/20: no closure (max residual 2.6e+00, nfev 1260, 105s)
+08:23:21   shoot restart 3: 9347 evals, best max|res| so far 1.35e+00 [60s]
+08:24:03   shoot restart 3/20: no closure (max residual 1.2e+00, nfev 1260, 102s)
+08:25:03   shoot restart 4: 9187 evals, best max|res| so far 2.66e+00 [60s]
+08:25:48   shoot restart 4/20: no closure (max residual 2.5e+00, nfev 1260, 106s)
+08:25:49   shoot restart 5/20: no closure (max residual inf, nfev 2, 0s)
+08:26:49   shoot restart 6: 9006 evals, best max|res| so far 6.73e+00 [60s]
+08:27:36   shoot restart 6/20: no closure (max residual 6.1e+00, nfev 1260, 107s)
+08:28:36   shoot restart 7: 9092 evals, best max|res| so far 3.48e+00 [60s]
+08:29:23   shoot restart 7/20: no closure (max residual 3.1e+00, nfev 1260, 107s)
+08:30:23   shoot restart 8: 9572 evals, best max|res| so far 2.02e+00 [60s]
+08:31:06   shoot restart 8/20: no closure (max residual 1.9e+00, nfev 1260, 104s)
+08:32:06   shoot restart 9: 9306 evals, best max|res| so far 3.31e+00 [60s]
+08:32:44   shoot restart 9/20: no closure (max residual 3.2e+00, nfev 1260, 98s)
+08:33:44   shoot restart 10: 12978 evals, best max|res| so far 3.79e-01 [60s]
+08:33:57   shoot restart 10/20: no closure (max residual 4.0e-01, nfev 1260, 73s)
+08:34:57   shoot restart 11: 12958 evals, best max|res| so far 4.55e+00 [60s]
+08:35:07   shoot restart 11/20: no closure (max residual 4.0e+00, nfev 1260, 70s)
+08:36:07   shoot restart 12: 12573 evals, best max|res| so far 4.03e-01 [60s]
+08:36:24   shoot restart 12/20: no closure (max residual 3.9e-01, nfev 1260, 77s)
+08:36:24   shoot restart 13/20: no closure (max residual inf, nfev 2, 0s)
+08:37:24   shoot restart 14: 12938 evals, best max|res| so far 3.83e-01 [60s]
+08:37:38   shoot restart 14/20: no closure (max residual 3.4e-01, nfev 1260, 74s)
+08:38:38   shoot restart 15: 14262 evals, best max|res| so far 1.26e+00 [60s]
+08:38:46   shoot restart 15/20: no closure (max residual 1.2e+00, nfev 1260, 68s)
+08:39:46   shoot restart 16: 14997 evals, best max|res| so far 3.90e-01 [60s]
+08:39:49   shoot restart 16/20: no closure (max residual 3.9e-01, nfev 1260, 63s)
+08:40:48   shoot restart 17/20: no closure (max residual 3.5e-01, nfev 1260, 59s)
+08:41:34   shoot restart 18/20: no closure (max residual 3.9e-01, nfev 1260, 46s)
+08:42:18   shoot restart 19/20: no closure (max residual 4.0e-01, nfev 1260, 44s)
+DONE

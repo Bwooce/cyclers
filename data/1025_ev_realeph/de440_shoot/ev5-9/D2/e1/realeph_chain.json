@@ -1,0 +1,173 @@
+[
+ {
+  "epoch_jd": 2464841.024701934,
+  "mode": "blend+shoot",
+  "last_converged_lambda": 1.0,
+  "steps": [
+   {
+    "phase": "blend",
+    "lambda": 1.0,
+    "converged": true,
+    "max_residual_kms": 3.801403636316536e-13,
+    "max_date_shift_d": 3.10033258488329,
+    "chain_period_d": 5841.824067981953,
+    "status": "pass",
+    "worst_ratio": 0.3189343642035647,
+    "worst_ratio_by_body": {
+     "V": 0.06866873708005129,
+     "E": 0.3189343642035647
+    },
+    "min_required_alt_km": 17661.849379764713,
+    "n_flybys": 5
+   }
+  ],
+  "x0_days": 24841.024701933657,
+  "final_y_dates": [
+   24892.026108236107,
+   27761.020662880353,
+   27812.614660664254,
+   5841.824067981953
+  ],
+  "shoot_restarts": [
+   {
+    "restart": 0,
+    "converged": false,
+    "max_residual": 0.0008408801625012785,
+    "nfev": 480,
+    "y_stall": [
+     24892.028902704453,
+     27761.066460442722,
+     27812.77459110867,
+     5842.274480351499,
+     1.6014823574929777,
+     -356.92644765520504,
+     1095.777970840932,
+     1.6021212146559705,
+     -1.75162149555853,
+     1095.759169991314,
+     1.6015494142058238,
+     -1.8119056035058603,
+     1095.7664322873977,
+     1.602033882581037,
+     -1.571164081079524,
+     1095.759806878105
+    ]
+   },
+   {
+    "restart": 1,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 2,
+    "converged": false,
+    "max_residual": 1.2549521197626827,
+    "nfev": 480
+   },
+   {
+    "restart": 3,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 4,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 5,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 6,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 3
+   },
+   {
+    "restart": 7,
+    "converged": false,
+    "max_residual": 2.2165086669407383,
+    "nfev": 480
+   },
+   {
+    "restart": 8,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 3
+   },
+   {
+    "restart": 9,
+    "converged": false,
+    "max_residual": 44975.16079975778,
+    "nfev": 244
+   },
+   {
+    "restart": 10,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 11,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 12,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 13,
+    "converged": false,
+    "max_residual": 1.6066431323136676,
+    "nfev": 480
+   },
+   {
+    "restart": 14,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 15,
+    "converged": false,
+    "max_residual": 49432.165952593925,
+    "nfev": 120
+   },
+   {
+    "restart": 16,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 17,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 2
+   },
+   {
+    "restart": 18,
+    "converged": false,
+    "max_residual": 1.3986830788952442,
+    "nfev": 480
+   },
+   {
+    "restart": 19,
+    "converged": false,
+    "max_residual": Infinity,
+    "nfev": 4
+   }
+  ],
+  "rung_pass": false
+ }
+]
