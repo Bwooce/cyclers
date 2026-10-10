@@ -2523,6 +2523,19 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   ratchet flagged `scripts/litcheck_1025_973_members.py:75`); FIXED by the lead in `62cdb87e` (a
   `literature_status_matches()` bookkeeping helper with a pinned test; the ratchet's catch is recorded as its
   positive control), pushed with `6c90018c`.
+  **ev RUNG (d) DONE 2026-10-11 (twobody-ext-opus; pre-registration `4e18f740`, amendment A1 `64c2736f` made before
+  any DE440 result, results `1e662351`; note `docs/notes/2026-10-11-1025-ev-realeph-rung-d.md` and the owner
+  summary sec. 5):** the controls reproduce (1H direct 2/5, ev-A 5/5, ev-B epoch 0). Standish 16-yr chains:
+  5/5 for ev4-1, ev4-4, ev4-6, ev4-7 and ev5-9; 4/5 for ev5-4, ev5-5, ev5-6, ev5-7 and ev5-8; 3/5 for ev5-2
+  and ev5-3; 2/5 ev4-5; 1/5 ev5-10 (the sun-grazer); 0/5 the other nine. Every pass re-flies to under
+  1e-3 km. DE440 under amendment A1 (blend to lambda 1, no shoot, per note 6.18/6.24): reached 5/5 with
+  the gate passing at 5/5 for ev4-1, ev4-4, ev4-6, ev4-7, ev5-8 and ev5-9; 4/5 for ev5-3, ev5-4, ev5-5,
+  ev5-6 and ev5-7; the non-passers reach 0-2/5. Delta-v bands at the best epoch (Venus legs plus the
+  deficit; the Earth closure is an upper bound because of the lunar reflex): essentially ballistic (< 10
+  m/s) ev4-4, ev4-5, ev4-7, ev5-3, ev5-9 and ev5-10; low-maintenance: the other Standish passers;
+  non-passers 5.8-68 km/s. The pre-registered DE440 D1/D2 SHOOT for the 10 Standish >= 4/5 members was
+  LAUNCHED by the lead at 08:12 AEDT 2026-10-11 (2 workers, about 5 h; `data/1025_ev_realeph/de440_shoot/`);
+  owner adjudication of the 22 ev members follows it.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
@@ -2982,7 +2995,9 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   perturber).** Sources: Kumar et al. 2021; the `#889` solver. Gate before dispatch: none. Cost
   (GUESS): 2-3 agent-days. P(novel row): 0 (dynamical object, not a cycler). Detail:
   `docs/notes/2026-10-05-938-fable-corpus-novel-paths-review.md` sec. 3a X8.
-- `#960` — **DONE 2026-10-05: FILED, DIGESTED AND INDEXED Pisarevsky, Kogan & Guelman 2008 (JGCD
+- `#960` — (2026-10-11: a wanted-list DOI lookup note, `docs/notes/2026-10-11-960-wanted-doi-lookup.md`
+  (refs2-sonnet, `40926b35`, `689bd9eb`), is pushed; corpus-file-opus folds it into the list after batch 42.)
+  **DONE 2026-10-05: FILED, DIGESTED AND INDEXED Pisarevsky, Kogan & Guelman 2008 (JGCD
   31(3), doi 10.2514/1.30046) and Russell & Strange AAS 07-118 (2007)**, the `#942`/`#943` gate papers.
   - Digests: `docs/notes/2026-10-05-digest-pisarevsky-kogan-guelman-2008-two-planet-periodic-trajectories.md`
     and `docs/notes/2026-10-05-digest-russell-strange-2007-aas-07-118-planetary-moon-cyclers.md`.
