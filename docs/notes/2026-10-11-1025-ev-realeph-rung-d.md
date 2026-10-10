@@ -1,6 +1,6 @@
 # #1025: real-ephemeris rung (d) and #415 dV bands for the 22 clean #973 Earth-Venus members
 
-Status: DONE for Standish and DE440 (amendment A1). Pre-registration secs. 1-5 (commit 4e18f740);
+Status: DONE: Standish, DE440 (amendment A1) and the deferred DE440 shoot (sec. 8). Pre-registration secs. 1-5 (commit 4e18f740);
 amendment A1 sec. 5a (64c2736f, before any DE440 result); results sec. 6; the deferred DE440 shoot
 launch sec. 7.
 Owner decision of 2026-10-08 (relayed by the lead on 2026-10-11): rung (d) before any row decision. No
@@ -244,19 +244,13 @@ the pass criterion of sec. 2 (a ballistic shoot closure at lambda 1 that passes 
 Command (from the repo root; 2 workers; resumable):
 
 ```sh
-printf "ev4-1
-ev4-4
-ev4-6
-ev4-7
-ev5-4
-ev5-5
-ev5-6
-ev5-7
-ev5-8
-ev5-9
-" | xargs -n1 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run $0 de --root de440_shoot --timeout 1800'
+for m in ev4-1 ev4-4 ev4-6 ev4-7 ev5-4 ev5-5 ev5-6 ev5-7 ev5-8 ev5-9; do echo $m; done | xargs -n1 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run $0 de --root de440_shoot --timeout 1800'
 uv run python scripts/ev_realeph_1025.py shootcheck
 ```
+
+(Rewritten on 2026-10-11 after the run as an equivalent `for` loop: the original `printf` line had been
+written with literal line breaks inside its quotes. The lead's launch used the same member list,
+flags and 2 workers.)
 
 - Output: `data/1025_ev_realeph/de440_shoot/<member>/{D1,D2}/e<i>/`.
 - Live logs: `tool.live.log`, gitignored by `data/1025_ev_realeph/de440_shoot/.gitignore`. The
@@ -271,3 +265,124 @@ uv run python scripts/ev_realeph_1025.py shootcheck
 - `shootcheck` prints PASS / FAIL / NOT REACHED / NOT RUN per member and epoch and writes
   `de440_shoot/summary.json`. A fresh agent then reads that file. The sec. 5 expectation stands:
   no gate-passing ballistic closure.
+
+## 8. Results of the DE440 shoot (lead launch 2026-10-11 07:27-09:14 AEDT; commit 2858c349)
+
+Data: `data/1025_ev_realeph/de440_shoot/`. Contents:
+- `summary.json` from `shootcheck`;
+- per member, route and epoch: the static `tool.log` and `realeph_chain.json`, including every
+  restart's residual and the shoot start state.
+The figures below were re-derived from those files for this section.
+
+Run:
+- The sec. 7 command, 2 workers, `--timeout 1800`. No epoch timed out, so no "NOT RUN".
+- 10 members x 5 epochs.
+- D1's blend reached lambda 1 in 45 member-epochs. The 5 that stalled went to D2 as the ladder says:
+  ev5-4 e1 and ev5-5 e1 (at lambda 0.709), ev5-6 e0 and ev5-7 e0 (0.464), ev5-9 e1 (0.473).
+- D2 reached lambda 1 only for ev5-9 e1. The other four direct solves did not converge.
+- So 46 full-length shoots of 20 restarts each (920 restarts).
+- About half the restarts were not real attempts. 481 of the 920 ended at 3 or fewer function
+  evaluations: the 6.34 defect, where the first LM step leaves the domain even at the 0.03/0.05-rad
+  perturbations. 439 ran their budget.
+
+**Outcome: 0 PASS, 1 FAIL, 49 NOT REACHED.**
+- NOT REACHED here means no shoot closure (max residual >= 1e-6), or no lambda 1 on either route.
+- The single FAIL is ev4-4 e0. Restart 0, the unperturbed seed, closed ballistically, but the chain
+  passes BELOW the Earth's surface: the Earth turn ratio is 1.763, with a required periapsis altitude
+  of -4,953 km. Venus is 0.961.
+- The sec. 5 expectation, "no gate-passing ballistic closure", is met.
+
+Best shoot residuals per member: the smallest max-over-junctions residual over all restarts and
+epochs; in brackets, the range of the per-epoch best.
+
+| Member | Best residual (epoch, route) | Per-epoch best, range |
+|---|---|---|
+| ev4-7 | 0.0020 (e2, D1) | 0.0020-0.0065 at all five epochs |
+| ev5-9 | 0.0008 (e1, D2); D1 best 0.0032 (e3) | 0.0008-0.030 |
+| ev4-6 | 0.0026 (e4) | 0.0026-0.50 (e3 0.50) |
+| ev4-4 | 0.0039 (e1) | e1-e4 0.0039-0.012; e0 is the FAIL closure (best non-closing restart 0.031) |
+| ev4-1 | 0.073 (e2) | 0.073-0.46 |
+| ev5-4 | 0.21 (e2) | 0.21-2.0 |
+| ev5-7 | 0.32 (e1) | 0.32-3.7 |
+| ev5-8 | 0.41 (e0) | 0.41-15.1 |
+| ev5-5 | 0.66 (e2) | 0.66-3.5 |
+| ev5-6 | 0.99 (e1) | 0.99-1.2 |
+
+What a near-closure means physically:
+- The shoot residual is in km/s. Each junction contributes its V_inf-magnitude mismatch, and each
+  fixed-leg arrival contributes its position miss scaled as 1 km = 1e-3 km/s
+  (`run_942_realeph_chain.py`, `POS_SCALE_KM`). The reported figure is the WORST single component.
+- A residual of 0.002 therefore means: at the worst junction, the V_inf magnitudes differ by about
+  2 m/s, or a full-rev leg misses its planet by about 2 km. Every other component is smaller.
+- The best members stop with a worst junction defect of 0.8-7 m/s (or a 0.8-7 km miss) at: all five
+  epochs of ev4-7, four of ev5-9, two of ev4-6 and one of ev4-4. ev4-4's other three non-FAIL
+  epochs stop at 9.5-12 m/s.
+- That is the same order as the sec. 6 DE440 closure-dV figures for the Venus legs at their best
+  epochs: essentially ballistic or low-maintenance, i.e. a few to tens of m/s per 7 cycles. It does
+  not contradict them.
+- It is NOT a pass. The pre-registered criterion is a closure (< 1e-6), and none was met. A
+  worst-component residual is not a dV, so it cannot be put into a band. And the minimiser stopped
+  at a local residual floor, not at a closure.
+
+Siblings share their Venus part:
+- ev4-4, ev4-6 and ev4-7 have identical x0_days, identical final_y_dates and identical blend steps at
+  every epoch. Their lambda 1 minimax worst ratios are identical: 0.920, 0.946, 0.979, 0.831 and
+  0.772 at e0-e4, all Venus-bound.
+  - They differ only in the order of their Earth full-rev returns in the shoot's fixed-leg seed:
+    2 + 2 yr (ev4-4, RE/2:3 twice), 1 + 3 yr (ev4-6), 3 + 1 yr (ev4-7).
+- ev5-4/ev5-5 and ev5-6/ev5-7 also have identical dates at every epoch. Their Earth blocks differ
+  (ev5-4 one 3:2 return against ev5-5's 1:1 + 2:1; ev5-6 2:1 + 2:1 against ev5-7's 1:1 + 3:2), so
+  their Earth turns and worst ratios differ at some epochs.
+- So the 10 shoot members represent **6 distinct real-ephemeris transfer-and-Venus chains**:
+  - ev4-1;
+  - ev4-4/6/7;
+  - ev5-4/5;
+  - ev5-6/7;
+  - ev5-8;
+  - ev5-9.
+- Grouped the same way (same transfer V_inf, same Venus block, same Earth-block length), the 22 members
+  are **14 distinct chains**:
+  - ev4-0;
+  - ev4-1;
+  - ev4-3;
+  - ev4-4/6/7;
+  - ev4-5 (its Venus block is in the other order);
+  - ev4-8/9/10/11;
+  - ev5-0/1;
+  - ev5-2;
+  - ev5-3;
+  - ev5-4/5;
+  - ev5-6/7;
+  - ev5-8;
+  - ev5-9;
+  - ev5-10.
+
+Positive control for the DE440 shoot (sec. 3 stop rule): **none exists at these settings.**
+- The only earlier DE440 shoots of full-rev cyclers are ev-A and ev-B in #942 6.25
+  (`docs/notes/2026-10-05-942-943-two-working-body-generator.md` sec. 6.25):
+  - the shoot found ballistic closures at every reached epoch, but all failed the gate (ev-A
+    1.12-2.99, ev-B 3.7-6.9);
+  - they used the old 0.3/0.6-rad restarts (marked WEAK in 6.34-6.35).
+- No DE440 shoot has ever closed a known cycler WITH a gate pass:
+  - VenMar#45 (6.16, C1) and ev-C (6.23) pass on DE440, but they have no fixed legs, so no shoot
+    runs.
+  - The H&M endpoint control of 6.18 is on Standish, not DE440.
+  - The Jovian gate-passing shoot closures (GanEur#316, 6.35/6.38) used jup365 and other flags.
+- So "no closure" here is CONDITIONAL on the formulation: DE440's Earth with its lunar reflex, a 1:1
+  seed timed on that Earth, 20 restarts of which about half die at the first step, and no
+  chain-length continuation. It is not evidence that no ballistic DE440 orbit exists near these
+  members.
+- Registered as `#1057` (sec. 9). Cheapest control first:
+  - (1) ev-A on DE440 with today's D1 settings at its 5 epochs: does today's shoot still find the
+    closures 6.25 found? About 1 h on 2 workers.
+  - (2) Then the same shoot for ev4-7, the best near-closure, with the Earth replaced by the
+    Earth-Moon barycentre (a body DE440 carries): does the lunar reflex block the closure? That is a small
+    chain-tool option, a code change.
+  - Only a gate-passing closure in (2) would give the DE440 shoot a positive control.
+
+No row is written; nothing is called novel.
+
+## 9. Registered follow-on
+
+- `#1057`: the DE440 shoot positive control (sec. 8): (1) ev-A on DE440 with today's D1 settings;
+  (2) the ev4-7 shoot with the Earth-Moon barycentre. Lead launch. Small code change for (2).

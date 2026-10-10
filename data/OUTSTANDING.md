@@ -2892,6 +2892,17 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
 - `#1056` — registered 2026-10-08 (from `#1025`; BACKLOG, small). **A CLOSING-REPEAT FLAG ON SIGNATURES (OR A
   ROTATED START IN `sig_of`)** so that `#972`'s F3 rule cannot read a consecutive-same-moon cycle (G G C) as
   alternating. Papercut `docs/papercuts/2026-10-08-twobody-ext-opus-closing-repeat-rule-vs-time-ordered-flybys.md`.
+- `#1057` — registered 2026-10-11 (from `#1025`; lead launch; small code change for step 2). **A POSITIVE CONTROL FOR
+  THE DE440 SHOOT** of full-rev Earth-Venus chains. `#1025`'s shoot (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md`
+  sec. 8) found no gate-passing closure for the ten best ev members (0 PASS, 1 FAIL below the Earth's
+  surface, 49 no closure), and no DE440 shoot has ever closed a known full-rev cycler with a gate pass.
+  So "no closure" is conditional on the formulation. Steps: (1) ev-A on DE440 with today's D1 settings
+  (`--real de440 --shoot-jac sparse`, restarts 0.03/0.05), 5 epochs, about 1 h on 2 workers: does the
+  shoot still find the closures `#942` 6.25 found with the old restarts? (2) The ev4-7 shoot (best
+  near-closure, worst-junction residual 0.002) with the Earth replaced by the Earth-Moon barycentre,
+  a new chain-tool option: does DE440's lunar reflex block the closure? Only a gate-passing closure in
+  (2) gives the shoot a positive control. Also note: about half of all restarts die at the first LM step
+  (481 of 920), the `#942` 6.34 defect.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
