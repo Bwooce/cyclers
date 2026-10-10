@@ -209,3 +209,34 @@ The full-rev-only 1H/orbit-1 branch of the circular model does not continue to t
 orbit H&M published. A route that seeds the chain from H&M's PRINTED dates was not pre-registered and
 was not run. It would test the published object directly (stage-1 of the H&M reproduction converged
 from those dates; `data/942_hm1970_control_summary.json`).
+
+### 8.2 ev positive control, take 3: H&M orbit 1 seeded from its PRINTED dates — PRE-REGISTERED (2026-10-11), before running
+
+Lead ruling 2026-10-11. This tests the published object directly; there is no ideal -> real
+continuation.
+
+- Seed: H&M 1970 Table 3 orbit 1 via `hollister_menning_1970.load_table3` (the printed dates with the
+  module's documented print-error fixes; orbit 1 has none).
+  - Lambert-leg starts per block k = 0..4: E->V at the block's second Earth date (row 5k+1), V->E at
+    its third Venus date (row 5k+4).
+  - Chain start x0 = the first E->V date (JD 2440806). Chain-period seed 5844 d (H&M's 16-yr repeat).
+  - Key `k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s` x 5 cycles (orbit 1's five identical blocks).
+- Model: Standish J2000 mean elements as the ev rows' rung (d) uses them: `MeanElementSystem()`, NO
+  H&M period overrides. H&M assumed exact 16-yr periodicity; we do not, so the open chain's period is
+  free.
+- Solve: the chain tool's date residual (`date_chain_residual`, junction |V_inf| magnitudes) at the real
+  model directly, Levenberg-Marquardt from the printed seed, no continuation.
+- Judged by `scripts/v2_chain_1007.py`'s `judge` (ramp mode) under the sec. 7 amended rules. The template
+  is the ideal 1H zero (474.597193, 1100.618380 d).
+- PASS: the solve converges (< 1e-6 km/s) and all four criteria hold at this single published epoch.
+- Expected: PASS. The solution should lie within a few days of the printed dates, since H&M round to
+  one day and assume exact periodicity.
+- Meaning:
+  - A PASS shows the ev lane and the V2 criteria accept the published object at its epoch. The failures
+    in secs. 5 and 8.1 were then the ideal -> real continuation route, not the lane.
+  - A FAIL means that, at its own dates, the lane cannot reproduce the published 16-yr orbit as a
+    V2-ballistic chain.
+  - Either way, no ev-member V2 judgement follows from this alone; the ev V2 question stays with the
+    owner.
+- The ev NEGATIVE control (ev-C epoch 0, the 2nd Lambert start + 1 d, no re-solve) runs in the same
+  script and must FAIL.
