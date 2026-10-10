@@ -375,10 +375,31 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # lamberthub izzo2015+gooding1990 agreement on every Lambert leg and an
         # independent DOP853 re-fly of every leg (validate._V1_942_943;
         # tests/search/test_942_943_writeback_v1.py). NOT V2 (no multi-lap campaign).
-        "ganymede-callisto-two-working-body-cycler-gc1-2026": "V1",
-        "ganymede-callisto-two-working-body-cycler-gc2-2026": "V1",
+        # 2026-10-11 (#1007): gc-1 and gc-2 V1 -> V2-ballistic under the 2026-10-08 owner
+        # spec amendment (real-ephemeris chain; gc-1 3/5 marginal, gc-2 5/5).
+        "ganymede-callisto-two-working-body-cycler-gc1-2026": "V2",
+        "ganymede-callisto-two-working-body-cycler-gc2-2026": "V2",
         "earth-venus-venus-hosted-cycler-evc-2026": "V1",
         "earth-venus-two-working-body-cycler-eva-2026": "V1",
+        # 2026-10-11 (owner decisions of 2026-10-08): ev-B (#1008) and the 15 #1025
+        # Ganymede-Callisto members, each V1 (validate._V1_942_943 / _V1_1025;
+        # tests/search/test_942_943_writeback_v1.py).
+        "earth-venus-two-working-body-cycler-evb-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-1-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-2-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-6-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-8-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-10-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-25-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-28-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-38-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc4-41-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc5-3-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc5-5-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc5-6-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc6-0-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc6-1-2026": "V1",
+        "ganymede-callisto-two-working-body-cycler-gc6-2-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
@@ -393,7 +414,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # 1 -> 6 (#569, 2026-07-11): + the 5 Uranian symmetric-closure quasi-cycler
     # representatives, each #312-equivalent V4 (windowed); #566 gauntlet + #567
     # duty-cycle scan + #568 verdict; tests/verify/test_566_five_representatives_v4.py.
-    assert sum(1 for lvl in byid.values() if lvl == "V2") == 8
+    # 8 -> 10 (2026-10-11, #1007): gc-1 and gc-2 V2-ballistic (owner spec amendment).
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 10
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     # 6 -> 0 (#888, 2026-10-04): all six Uranian V4 rows WITHDRAWN (not ballistic: the V4
     # gauntlet matched V-infinity magnitudes at the flybys and never the directions).

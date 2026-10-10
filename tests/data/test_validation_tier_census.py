@@ -249,7 +249,9 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # ev-C, ev-A; this-project, V1). Their V_inf values are DERIVED by the generator with
     # no orbit_source/vinf_source provenance-registry tags -> 'unvalidated' on the
     # source-pair tier axis; their evidence lives on the validation_level axis.
-    "unvalidated": 118,
+    # 118 -> 134 (2026-10-11): +16 this-project rows (ev-B; the 15 #1025 gc members), same
+    # convention as the #942/#943 rows (no provenance-registry tags).
+    "unvalidated": 134,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

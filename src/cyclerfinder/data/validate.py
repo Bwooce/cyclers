@@ -518,6 +518,37 @@ _V1_942_943: str = (
     "(V3 cannot skip V2). "
 )
 
+# #1025 Ganymede-Callisto members (owner decision 2026-10-08): the spec §14 V1 evidence of the
+# #973 ideal-model zeros (tests/search/test_942_943_writeback_v1.py recomputes it).
+_V1_1025: str = (
+    "spec §14 V1 (#1025 writeback, 2026-10-11), assigned against the WRITTEN criteria. "
+    "CONSISTENCY gate: every Lambert leg of the #973 ideal-model zero "
+    "(data/973_gc/k*_gauntlet.json) re-solved with lamberthub izzo2015 + gooding1990 agrees "
+    "with the in-house solver to < 1e-3 m/s. Re-propagation gate: the #973 gauntlet's DOP853 "
+    "re-fly of every leg (Lambert and full-rev) meets the arrival body to < 1 km and the turn "
+    "gate passes on the integrated vectors (scripts/writeback_1025_gc.py, "
+    "data/1025_writeback_v1.json). shared with primary path: the same inputs and ideal "
+    "circular-coplanar body states; only the Lambert algorithm and the integrator differ. "
+    "Companion (not gating): the #1025 continuous-gravity closure at full mass in the ideal "
+    "model. NOT V2: no real-ephemeris chain has been run for these members. "
+)
+
+# #1007 V2-ballistic promotions (gc-1, gc-2; owner spec amendment 2026-10-08).
+_V2_1007: str = (
+    "spec §14 V2-ballistic under the owner amendment of 2026-10-08 for exact-commensurate "
+    "patched-conic multi-arc rows (#1007; docs/notes/2026-10-08-1007-v2-ballistic-chain- "
+    "campaign.md secs. 6-7; scripts/v2_chain_1007.py --rules amended; "
+    "data/1007_v2/v2_chain_gc_amended.json): >= 3 continuous ballistic cycles in the real- "
+    "ephemeris (NAIF jup365) patched-conic chain with junction |V_inf| continuity < 1e-6 km/s, "
+    "the demanded-turn gate passing at every flyby, DOP853 re-fly < 1 km and bounded drift "
+    "(date band; no lap-over-lap growth), at >= 3 of 5 epochs; positive control R-S GanEur#316 "
+    "3/5, broken-chain negative control fails. Criterion 1 and the drift reading were amended "
+    "AFTER seeing the results (lead: junction-only per the spec text; owner: growth-only "
+    "drift). INDEPENDENCE gate: real-ephemeris body states, not the ideal model the row was "
+    "found in. shared with primary path: the chain tool's Lambert solver and fixed-leg shoot, "
+    "and the cycle structure. Also carries the row's V1 evidence (_V1_942_943). "
+)
+
 _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ("aldrin-classic-em-k1-outbound", "V1"): (
         "spec §14 V1: real-DE440 Aldrin cycler — lamberthub izzo2015+gooding1990 "
@@ -1569,14 +1600,18 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "docs/notes/2026-08-10-811-vaquero-em-cycler-family-writeback.md. "
         "src/cyclerfinder/search/vaquero_em_cyclers.py."
     ),
-    ("ganymede-callisto-two-working-body-cycler-gc1-2026", "V1"): (
-        _V1_942_943
+    ("ganymede-callisto-two-working-body-cycler-gc1-2026", "V2"): (
+        _V2_1007
+        + "Row: gc-1 V2 3/5, MARGINAL (junction 8.6e-7; 2 epochs fail the D band). "
+        + _V1_942_943
         + "Row: gc-1 (lamberthub <= 1.6e-10 m/s; DOP853 re-fly 2.0e-6 km). Real-ephemeris "
         "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 0.19 km "
         "(data/943_gc1_realeph/)."
     ),
-    ("ganymede-callisto-two-working-body-cycler-gc2-2026", "V1"): (
-        _V1_942_943
+    ("ganymede-callisto-two-working-body-cycler-gc2-2026", "V2"): (
+        _V2_1007
+        + "Row: gc-2 V2 5/5; |V_inf| offset 0.16-0.36 km/s, growth 1.0-2.0. "
+        + _V1_942_943
         + "Row: gc-2 (lamberthub <= 2.4e-9 m/s; DOP853 re-fly 6.1e-6 km). Real-ephemeris "
         "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 2.4e-5 km "
         "(data/942_943_ladder_realeph_chains.json)."
@@ -1593,6 +1628,56 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "companion: Standish mean elements, 5 cycles, 5/5 epochs, re-fly <= 1.9e-3 km "
         "(data/942_direct_route_and_gm_fix.json); DE440 near-ballistic (1.56-2.53 m/s per "
         "16-yr chain, data/942_evAB_de440_closure_dv.json)."
+    ),
+    ("earth-venus-two-working-body-cycler-evb-2026", "V1"): (
+        _V1_942_943 + "Row: ev-B (lamberthub <= 6.2e-10 m/s; DOP853 re-fly "
+        "2.2e-03 km). Real-ephemeris companion: Standish mean elements, "
+        "2/5 epochs ballistic (band flagged, owner decision 2026-10-08; note 6.57a)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-1-2026", "V1"): (
+        _V1_1025 + "Row: gc4-1 (lamberthub <= 9.8e-12 m/s; DOP853 re-fly 8.4e-06 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-2-2026", "V1"): (
+        _V1_1025 + "Row: gc4-2 (lamberthub <= 3.9e-08 m/s; DOP853 re-fly 9.4e-06 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-6-2026", "V1"): (
+        _V1_1025 + "Row: gc4-6 (lamberthub <= 1.4e-11 m/s; DOP853 re-fly 8.9e-04 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-8-2026", "V1"): (
+        _V1_1025 + "Row: gc4-8 (lamberthub <= 5.9e-11 m/s; DOP853 re-fly 1.9e-06 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-10-2026", "V1"): (
+        _V1_1025 + "Row: gc4-10 (lamberthub <= 3.1e-08 m/s; DOP853 re-fly 5.3e-04 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-25-2026", "V1"): (
+        _V1_1025 + "Row: gc4-25 (lamberthub <= 2.3e-09 m/s; DOP853 re-fly 2.1e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-28-2026", "V1"): (
+        _V1_1025 + "Row: gc4-28 (lamberthub <= 8.0e-10 m/s; DOP853 re-fly 2.2e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-38-2026", "V1"): (
+        _V1_1025 + "Row: gc4-38 (lamberthub <= 1.7e-09 m/s; DOP853 re-fly 5.9e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc4-41-2026", "V1"): (
+        _V1_1025 + "Row: gc4-41 (lamberthub <= 1.1e-11 m/s; DOP853 re-fly 2.5e-04 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc5-3-2026", "V1"): (
+        _V1_1025 + "Row: gc5-3 (lamberthub <= 3.6e-10 m/s; DOP853 re-fly 5.4e-06 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc5-5-2026", "V1"): (
+        _V1_1025 + "Row: gc5-5 (lamberthub <= 1.5e-09 m/s; DOP853 re-fly 1.9e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc5-6-2026", "V1"): (
+        _V1_1025 + "Row: gc5-6 (lamberthub <= 4.0e-10 m/s; DOP853 re-fly 1.8e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc6-0-2026", "V1"): (
+        _V1_1025 + "Row: gc6-0 (lamberthub <= 1.3e-08 m/s; DOP853 re-fly 1.0e-05 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc6-1-2026", "V1"): (
+        _V1_1025 + "Row: gc6-1 (lamberthub <= 6.8e-10 m/s; DOP853 re-fly 6.3e-06 km)."
+    ),
+    ("ganymede-callisto-two-working-body-cycler-gc6-2-2026", "V1"): (
+        _V1_1025 + "Row: gc6-2 (lamberthub <= 5.3e-10 m/s; DOP853 re-fly 1.1e-04 km)."
     ),
 }
 

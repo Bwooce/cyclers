@@ -457,12 +457,31 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "ganymede-callisto-two-working-body-cycler-gc2-2026",
         "earth-venus-venus-hosted-cycler-evc-2026",
         "earth-venus-two-working-body-cycler-eva-2026",
+        # 2026-10-11 (owner decisions of 2026-10-08): ev-B (#1008) and the 15 #1025
+        # Ganymede-Callisto members that exist at full mass. multi-arc 295 -> 311.
+        "earth-venus-two-working-body-cycler-evb-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-1-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-2-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-6-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-8-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-10-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-25-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-28-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-38-2026",
+        "ganymede-callisto-two-working-body-cycler-gc4-41-2026",
+        "ganymede-callisto-two-working-body-cycler-gc5-3-2026",
+        "ganymede-callisto-two-working-body-cycler-gc5-5-2026",
+        "ganymede-callisto-two-working-body-cycler-gc5-6-2026",
+        "ganymede-callisto-two-working-body-cycler-gc6-0-2026",
+        "ganymede-callisto-two-working-body-cycler-gc6-1-2026",
+        "ganymede-callisto-two-working-body-cycler-gc6-2-2026",
     ]
 )
 
 # #942/#943 (2026-10-08): + the four two-working-body generator rows: 291 -> 295.
-assert len(MULTI_ARC_ALLOWLIST) == 295, (
-    f"Allowlist must have 295 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+# 2026-10-11: + ev-B and the 15 #1025 gc members: 295 -> 311.
+assert len(MULTI_ARC_ALLOWLIST) == 311, (
+    f"Allowlist must have 311 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -741,6 +760,9 @@ def test_census_distribution() -> None:
     #942/#943 (2026-10-08) admitted the four two-working-body generator rows (gc-1,
     gc-2, ev-C, ev-A; this-project, V1; three or four legs per cycle, no single
     ellipse): multi-arc 291->295.
+
+    2026-10-11 (owner decisions of 2026-10-08) admitted ev-B (#1008) and the 15 #1025
+    Ganymede-Callisto members that exist at full mass (this-project, V1): multi-arc 295->311.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
@@ -750,7 +772,8 @@ def test_census_distribution() -> None:
     # non-keplerian 55 -> 56.
     # #942/#943 (2026-10-08): + the four two-working-body generator rows (gc-1, gc-2,
     # ev-C, ev-A): multi-arc 291 -> 295.
-    expected = {"single-ellipse": 46, "multi-arc": 295, "non-keplerian": 56}
+    # 2026-10-11: + ev-B and the 15 #1025 gc members: multi-arc 295 -> 311.
+    expected = {"single-ellipse": 46, "multi-arc": 311, "non-keplerian": 56}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
