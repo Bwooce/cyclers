@@ -59,13 +59,20 @@ repaired and its status (partly done under `#937`, owner ruling) recorded; `#938
 registered. The `data/README.md` stale counts above were fixed in the same pass (live catalogue:
 392 rows on 2026-10-05).
 
-**Novelty status (updated 2026-10-08, writeback `275c9e28`): the catalogue has THREE `candidate-novel`
-rows and NO `verified-novel` row.** They are `ganymede-callisto-two-working-body-cycler-gc1-2026` (gc-1),
-`earth-venus-venus-hosted-cycler-evc-2026` (ev-C, `#875` (ii)) and
-`earth-venus-two-working-body-cycler-eva-2026` (ev-A), all V1, by the owner rulings of 2026-10-07 and
-the owner decision of 2026-10-08 on the `#972` gate's "inconclusive" for gc-1 and ev-C (each row records
-the gate result, the named anchor, the resolving prior-art note and the decision); gc-2
-(`ganymede-callisto-two-working-body-cycler-gc2-2026`) is `known-class-member`, a GanCal-family relative.
+**Novelty status (updated 2026-10-11, catalogue window `c90568bf`; counted from `data/catalogue.yaml`):
+413 rows; 19 `candidate-novel`; 0 `verified-novel`.** The 19: gc-1
+(`ganymede-callisto-two-working-body-cycler-gc1-2026`, V2), ev-C (`earth-venus-venus-hosted-cycler-evc-2026`,
+`#875` (ii)), ev-A (`earth-venus-two-working-body-cycler-eva-2026`), ev-B
+(`earth-venus-two-working-body-cycler-evb-2026`, band flagged: strictly ballistic at the best window,
+window-dependent), and the 15 Ganymede-Callisto `#973`/`#1025` members gc4-1, gc4-2, gc4-6, gc4-8, gc4-10,
+gc4-25, gc4-28, gc4-38, gc4-41, gc5-3, gc5-5, gc5-6, gc6-0, gc6-1, gc6-2
+(`ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`, V1, family relation to gc-1 recorded); all
+others V1. gc-2 (`ganymede-callisto-two-working-body-cycler-gc2-2026`) is `known-class-member`, V2.
+Standing caveats: the evidence is patched conic plus chain-tool real ephemeris; the gc members' standing
+in continuous gravity is the ideal-model sigma continuation of `#1025` (real-ephemeris continuous
+gravity untested, the jup365 lane is unvalidated, `#1046`); ev-B's dV band is window-dependent; gc-1's
+V2 is MARGINAL (3/5 under the corrected criterion 1), recorded in its row. Each row records its owner
+decision (2026-10-07 / 2026-10-08) and its `#972` gate result.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
 rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
 torus row on 2026-10-03 (`#882`); `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Older
@@ -155,6 +162,9 @@ Added 2026-10-08: `#1032`, a `stability_index_convention` schema field (four con
 Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` keeps `n_returns: infinite`
 (the published EGGIE is a one-cycle ballistic object in its own model, `#1041`); changing it forces an
 `orbit_class` change.
+Added 2026-10-11: the adjudication of the 22 `#1025` Earth-Venus members, options (a)-(d) in
+`docs/notes/2026-10-08-1025-owner-summary.md` sec. 6 (to be asked after `#1057` step 1); and the `#1007`
+drift-metric wording (the sec. 8.4 DRAFT same-phase metric, cycle i against i + L, awaiting the owner).
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
@@ -173,7 +183,9 @@ Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` k
 Owner decision 2026-10-08 ~03:20: the `#972` gate's "inconclusive" for gc-1, gc-2 and ev-C is decided
 by the rulings below; each row records gate result, anchor, prior-art note and decision. **Writeback DONE
 2026-10-08 (`275c9e28`, twobody-gen2-opus; rows at V1; five census ratchets extended; both ratchet
-chunks exit 0).** Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
+chunks exit 0).** **Catalogue window `c90568bf` (2026-10-11):** 16 more rows (ev-B and the 15 gc members as
+candidate-novel V1), gc-1 and gc-2 promoted to V2 (the V2 count is now 10), the `#1046` gc-1 `data_gaps`
+sentence; catalogue 413 rows. Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
 **candidate-novel** (spec 16.4/16.5 wording; attribution to the architecture's authors, Russell & Strange
 for ev-C); gc-2 is a GanCal-family relative, NOT novel. Owner decision 2026-10-08 evening: ev-B is
 candidate-novel V1 with its band flagged (row in the next window). All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
@@ -2364,8 +2376,15 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   as pre-registered contradicted the spec wording (lead ruling: corrected to the spec, junction-only;
   gc-1 is then 3/5, marginal); the W band measures the real-against-ideal offset, not drift. **OWNER DECISIONS 2026-10-08 evening (the owner's own answers, recorded 2026-10-11):**
   "bounded drift" is judged by GROWTH ONLY, with the offset recorded (a decision made after seeing the
-  results, recorded as such); under it gc-2 is 5/5 (2/5 under W). The V2 promotions go in the next
-  catalogue window.
+  results, recorded as such); under it gc-2 is 5/5 (2/5 under W). The V2 promotions LANDED in the catalogue
+  window `c90568bf` (gc-1 and gc-2 at V2; gc-1 3/5 MARGINAL, recorded in its row).
+  **ev CONTROL (2026-10-11):** take 2 (H&M orbit 1 at its own 1969 epoch, `c4149e7e`) FAILED (`3ff1d5bf`: direct
+  no convergence; the ramp stalls at lambda 0.398). Take 3 (H&M orbit 1 from its printed dates, Standish,
+  direct LM, `1f62b592`) CONVERGES (2.9 d from the print, gate pass, re-fly 3e-4 km) but FAILS the drift
+  criterion (D 39.5 d against the 8.8 d band: the 16-yr geometric breathing); the negative control fails
+  as required (`3fb5d27f`). A sec. 8.4 DRAFT (`f00e40cf`) proposes a same-phase drift metric (cycle i
+  against i + L, L the geometric repeat, >= 2L cycles, no template), not run, awaiting the owner. ev V2
+  waits.
 - `#1008` — registered 2026-10-07 (owner: "log all possible tasks"); status: DISPATCHED
   (twobody-gen2-opus, owner ruling 2026-10-07). **ev-B: STANDISH RAMP-MODE k-CYCLE GROWTH RETRY AT
   ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
@@ -2538,6 +2557,14 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   LAUNCHED by the lead at 07:27 AEDT 2026-10-11 (2 workers; expected done about 12:30 AEDT;
   `data/1025_ev_realeph/de440_shoot/`);
   owner adjudication of the 22 ev members follows it.
+  **DE440 SHOOT RESULT (07:27-09:14 AEDT 2026-10-11; `2858c349`, write-up `9e7f8a3f`, rung-d note sec. 8): 0 PASS /
+  1 FAIL / 49 no closure, CONDITIONAL on the formulation.** 46 full-length lambda-1 runs with 20 restarts
+  each found no gate-passing ballistic closure; the one closure (ev4-4 epoch 0) passes below the
+  Earth's surface (worst ratio 1.76, FAIL); near-closures ev4-7 (2e-3), ev5-9, ev4-4, ev4-6; 481 of 920
+  restarts died at nfev <= 3 (`#1058`); the 22 members are 14 distinct chains (6 of the best 10). No
+  DE440 shoot has ever closed a known full-rev cycler, so the shoot positive control `#1057` is RUNNING
+  from the lead session since 10:22 AEDT 2026-10-11 (step 1, ev-A). The owner's adjudication of the 22
+  (options (a)-(d), owner summary sec. 6) is asked after `#1057` step 1.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
