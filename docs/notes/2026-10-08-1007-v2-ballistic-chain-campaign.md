@@ -143,3 +143,24 @@ Two findings about the pre-registered instrument, for the lead (NOT applied):
    growth test already captures drift.
 
 The verdicts above are the pre-registered ones. Any change of criterion is the lead's/owner's.
+
+## 7. Amended rules and re-judgement (2026-10-11), recorded as made AFTER seeing the sec. 6 results
+
+- Criterion 1 (lead ruling 2026-10-08): corrected to the spec amendment's own wording, junction-only
+  |V_inf| continuity < 1e-6 km/s. The shot legs' arrival miss belongs to criterion 3. This is a
+  post-hoc correction of a pre-registration error against the spec text, which predates the results.
+- W (OWNER decision 2026-10-08 evening): "bounded drift" is judged by GROWTH only. The systematic
+  real-versus-ideal |V_inf| offset is recorded in the row, not banded.
+  - Changed after seeing results; recorded as such.
+  - The D band and both growth tests are unchanged.
+
+Run: `scripts/v2_chain_1007.py --lane gc --rules amended` (`data/1007_v2/v2_chain_gc_amended.{json,log}`).
+- Controls are unchanged in outcome: GanEur#316 passes 3/5; the broken gc-1 chain still fails
+  (junction 0.23 km/s).
+
+| Row | Registered rules | Amended rules | Notes |
+|---|---|---|---|
+| gc-1 | 0/5 | **3/5 PASS** (epochs 2462511.7, 2464840.9, 2467182.8) | MARGINAL: junction residual 8.6e-7 against 1e-6. Epochs 3-4 fail the D band (0.222 / 0.195 d against 0.190) |
+| gc-2 | 2/5 | **5/5 PASS** | Systematic |V_inf| offset to record: W 0.16-0.36 km/s, growth 1.0-2.0 |
+
+V2 promotions for gc-1 and gc-2 go in the next catalogue window (lead).

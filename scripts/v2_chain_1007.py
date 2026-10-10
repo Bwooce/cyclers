@@ -33,6 +33,13 @@ from cyclerfinder.search.two_working_body import (
 )
 
 REPO = Path(__file__).resolve().parents[1]
+
+#: The rule set. "registered": sec. 2 of the note as committed (d31f7211). "amended": the lead's
+#: post-hoc correction of criterion 1 to the spec wording (junction-only |V_inf| continuity; the
+#: arrival miss is criterion 3) and the owner decision of 2026-10-08 that W is judged by growth
+#: only (the systematic real-versus-ideal offset is recorded, not banded). Both recorded as made
+#: after seeing the sec. 6 results.
+RULES = "registered"
 DAY = 86400.0
 OUT = REPO / "data" / "1007_v2"
 
@@ -160,10 +167,12 @@ def judge(
     band_w = BAND_W_FRAC * min(tpl["vinf_dep"])
     gd_ok, gd = _growth_ok(d_i, FLOOR_D_DAYS)
     gw_ok, gw = _growth_ok(w_i, FLOOR_W_KMS)
-    c1 = cont < CONT_TOL
+    junction = float(out.get("junction_vinf_max_kms", cont))
+    c1 = (junction if RULES == "amended" else cont) < CONT_TOL
     c2 = gate.get("status") == "pass"
     c3 = refly_km < REFLY_KM and vec_err < VINF_VEC_TOL
-    c4 = max(d_i) <= band_d and max(w_i) <= band_w and gd_ok and gw_ok
+    w_band_ok = True if RULES == "amended" else max(w_i) <= band_w
+    c4 = max(d_i) <= band_d and w_band_ok and gd_ok and gw_ok
     out |= {
         "continuity_max": cont,
         "gate": {k: gate.get(k) for k in ("status", "worst_ratio")},
@@ -177,6 +186,7 @@ def judge(
         "growth_W": gw,
         "D_by_cycle": d_i,
         "W_by_cycle": w_i,
+        "rules": RULES,
         "c1_continuity": c1,
         "c2_gate": c2,
         "c3_refly": c3,
@@ -342,11 +352,16 @@ def lane_gc() -> dict[str, Any]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lane", required=True, choices=["gc"])
+    ap.add_argument("--rules", default="registered", choices=["registered", "amended"])
     args = ap.parse_args()
+    global RULES
+    RULES = args.rules
     OUT.mkdir(parents=True, exist_ok=True)
     res = lane_gc()
-    (OUT / f"v2_chain_{args.lane}.json").write_text(json.dumps(res, indent=1, default=float))
-    print("wrote", (OUT / f"v2_chain_{args.lane}.json").relative_to(REPO), flush=True)
+    suffix = "" if RULES == "registered" else "_amended"
+    path = OUT / f"v2_chain_{args.lane}{suffix}.json"
+    path.write_text(json.dumps(res, indent=1, default=float))
+    print("wrote", path.relative_to(REPO), flush=True)
 
 
 if __name__ == "__main__":
