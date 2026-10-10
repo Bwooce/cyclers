@@ -1,0 +1,33 @@
+10:25:54 ev epoch 3 (JD 2469516.4) blend lam=0.0000 conv=True res=8.9e-13 gate=pass worst=0.574 [elapsed 1s]
+10:25:54 ev epoch 3 (JD 2469516.4) blend lam=0.1000 conv=True res=6.2e-13 gate=pass worst=0.574 [elapsed 1s]
+10:25:54 ev epoch 3 (JD 2469516.4) blend lam=0.2000 conv=True res=7.4e-13 gate=pass worst=0.575 [elapsed 1s]
+10:25:55 ev epoch 3 (JD 2469516.4) blend lam=0.3000 conv=True res=8.7e-13 gate=pass worst=0.575 [elapsed 1s]
+10:25:55 ev epoch 3 (JD 2469516.4) blend lam=0.4000 conv=True res=8.9e-13 gate=pass worst=0.576 [elapsed 1s]
+10:25:55 ev epoch 3 (JD 2469516.4) blend lam=0.5000 conv=True res=6.1e-13 gate=pass worst=0.576 [elapsed 2s]
+10:25:55 ev epoch 3 (JD 2469516.4) blend lam=0.6000 conv=True res=7.9e-13 gate=pass worst=0.577 [elapsed 2s]
+10:25:55 ev epoch 3 (JD 2469516.4) blend lam=0.7000 conv=True res=8.0e-13 gate=pass worst=0.578 [elapsed 2s]
+10:25:56 ev epoch 3 (JD 2469516.4) blend lam=0.8000 conv=True res=7.7e-13 gate=pass worst=0.578 [elapsed 2s]
+10:25:56 ev epoch 3 (JD 2469516.4) blend lam=0.9000 conv=True res=8.2e-13 gate=pass worst=0.579 [elapsed 2s]
+10:25:56 ev epoch 3 (JD 2469516.4) blend lam=1.0000 conv=True res=9.2e-13 gate=pass worst=0.580 [elapsed 2s]
+10:25:56 ev epoch 3 (JD 2469516.4) blend lam=1.0000 conv=True res=1.0e-12 gate=pass worst=0.580 [elapsed 2s]
+10:25:57   shoot restart 0: closes, gate=fail worst=2.986
+10:25:57   shoot restart 1: closes, gate=fail worst=2.314
+10:25:57   shoot restart 2: closes, gate=fail worst=2.314
+10:25:58   shoot restart 3: closes, gate=fail worst=2.314
+10:25:58   shoot restart 4: closes, gate=fail worst=2.314
+10:25:59   shoot restart 5: closes, gate=fail worst=2.314
+10:26:23   shoot restart 6/20: no closure (max residual 9.3e-02, nfev 900, 24s)
+10:26:23   shoot restart 7: closes, gate=fail worst=2.314
+10:26:24   shoot restart 8: closes, gate=fail worst=2.314
+10:26:24   shoot restart 9: closes, gate=fail worst=2.314
+10:26:25   shoot restart 10: closes, gate=fail worst=2.314
+10:26:35   shoot restart 11: closes, gate=fail worst=2.314
+10:26:36   shoot restart 12: closes, gate=fail worst=2.314
+10:26:36   shoot restart 13: closes, gate=fail worst=2.314
+10:26:37   shoot restart 14: closes, gate=fail worst=2.986
+10:26:37   shoot restart 15: closes, gate=fail worst=2.314
+10:26:37   shoot restart 16: closes, gate=fail worst=2.314
+10:26:38   shoot restart 17: closes, gate=fail worst=2.314
+10:26:39   shoot restart 18/20: no closure (max residual 3.0e-03, nfev 59, 1s)
+10:26:39   shoot restart 19: closes, gate=fail worst=2.314
+DONE

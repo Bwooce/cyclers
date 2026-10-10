@@ -1,0 +1,104 @@
+{
+ "ev-A": [
+  {
+   "epoch": 0,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 0,
+     "epoch_jd": 2462507.9792662235,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5796243358494895
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.1479923107481809,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 1,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 1,
+     "epoch_jd": 2464843.6185434926,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5798675255062037
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.5706805782774218,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 2,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 2,
+     "epoch_jd": 2467763.303171352,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.579822402007166
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.1171652447750855,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 3,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 3,
+     "epoch_jd": 2469516.4161934354,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5797622699277702
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 2.3142412548628166,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  },
+  {
+   "epoch": 4,
+   "outcome": "FAIL",
+   "routes": [
+    {
+     "route": "D1",
+     "epoch": 4,
+     "epoch_jd": 2472436.0210419046,
+     "blend_reached_lambda1": true,
+     "minimax_gate_lambda1": {
+      "status": "pass",
+      "worst_ratio": 0.5797078203863603
+     },
+     "last_converged_lambda": 1.0,
+     "worst_ratio": 1.1513906566158387,
+     "outcome": "FAIL",
+     "gate_status": "fail"
+    }
+   ]
+  }
+ ]
+}
