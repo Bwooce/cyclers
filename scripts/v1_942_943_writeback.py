@@ -37,6 +37,8 @@ CANDIDATES = {
     "gc-2": ("gc", "data/943_cell_gc_gauntlet.json", {"Ganymede": 3.617}),
     "ev-A": ("ev", "data/942_cell_ev_gauntlet.json", {"E": 4.893, "V": 10.364}),
     "ev-C": ("ev", "data/942_cell_ev_gauntlet.json", {"E": 9.075, "V": 13.166}),
+    # owner decision 2026-10-08: ev-B candidate-novel V1 (band flagged)
+    "ev-B": ("ev", "data/942_cell_ev_gauntlet.json", {"E": 8.012, "V": 10.932}),
 }
 
 

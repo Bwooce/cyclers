@@ -58,6 +58,88 @@ ROWS = {
         "data/942_cell_ev_gauntlet.json",
         {"E": 4.893, "V": 10.364},
     ),
+    # owner decision 2026-10-08: ev-B candidate-novel V1 (band flagged)
+    "earth-venus-two-working-body-cycler-evb-2026": (
+        "ev",
+        "data/942_cell_ev_gauntlet.json",
+        {"E": 8.012, "V": 10.932},
+    ),
+    # owner decision 2026-10-08 (#1025): the 15 gc members that EXIST at full mass
+    "ganymede-callisto-two-working-body-cycler-gc4-1-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 1.4719, "Callisto": 1.5814},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-2-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 1.7380, "Callisto": 1.8572},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-6-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 5.0073, "Callisto": 2.1348},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-8-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 2.4191, "Callisto": 2.4855},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-10-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 6.4468, "Callisto": 2.7512},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-25-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 8.1525, "Callisto": 5.2279},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-28-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 8.8570, "Callisto": 5.5509},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-38-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 11.4600, "Callisto": 7.2168},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc4-41-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 11.8283, "Callisto": 7.5126},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc5-3-2026": (
+        "gc",
+        "data/973_gc/k5_gauntlet.json",
+        {"Ganymede": 1.5365, "Callisto": 1.8309},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc5-5-2026": (
+        "gc",
+        "data/973_gc/k5_gauntlet.json",
+        {"Ganymede": 1.9364, "Callisto": 2.7600},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc5-6-2026": (
+        "gc",
+        "data/973_gc/k5_gauntlet.json",
+        {"Ganymede": 2.1913, "Callisto": 3.2058},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc6-0-2026": (
+        "gc",
+        "data/973_gc/k6_gauntlet.json",
+        {"Ganymede": 1.6730, "Callisto": 1.2566},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc6-1-2026": (
+        "gc",
+        "data/973_gc/k6_gauntlet.json",
+        {"Ganymede": 1.6071, "Callisto": 1.8373},
+    ),
+    "ganymede-callisto-two-working-body-cycler-gc6-2-2026": (
+        "gc",
+        "data/973_gc/k6_gauntlet.json",
+        {"Ganymede": 2.4676, "Callisto": 2.0120},
+    ),
 }
 
 
@@ -68,7 +150,7 @@ def test_writeback_row_v1_evidence(row_id: str) -> None:
     cell, path, pick = ROWS[row_id]
     g = json.loads((REPO / path).read_text())
     rows = [
-        c for c in g["candidates"] if all(abs(c["vinf_kms"][q] - v) < 0.01 for q, v in pick.items())
+        c for c in g["candidates"] if all(abs(c["vinf_kms"][q] - v) < 2e-3 for q, v in pick.items())
     ]
     assert len(rows) == 1
     c = rows[0]

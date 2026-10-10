@@ -64,5 +64,21 @@
   "dop853_refly_max_miss_km": 0.0815703201925112,
   "dop853_max_vinf_vector_error_kms": 2.254719101097768e-08,
   "gate_on_integrated_vectors": "pass"
+ },
+ "ev-B": {
+  "key": "k3|RE/1:1|LE>V/0s|LV>V/1l|RV/3:2|LV>E/0s",
+  "x_days": [
+   547.5969022070199,
+   597.6931769759217,
+   1778.7965570094584
+  ],
+  "lamberthub_max_diff_mps_per_leg": [
+   7.32410687763558e-12,
+   6.240678079404622e-10,
+   3.2609576817829514e-10
+  ],
+  "dop853_refly_max_miss_km": 0.0022263181325626077,
+  "dop853_max_vinf_vector_error_kms": 5.505821063499774e-10,
+  "gate_on_integrated_vectors": "pass"
  }
 }
