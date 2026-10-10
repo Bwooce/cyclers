@@ -277,3 +277,87 @@ Diagnosis (for the owner; nothing is changed here):
      real continuation from 1H (sec. 8.1) could not reach it.
    - Under the owner's growth-only W rule this does not change the verdict, but the template should be
      orbit 1's own circular counterpart.
+
+### 8.4 DRAFT — same-phase drift metric. PROPOSED, NOT RUN, AWAITING THE OWNER (written 2026-10-11)
+
+Why: sec. 8.3 showed that criterion 4's D compares each cycle with a strictly periodic chain. For
+Earth-Venus it then reads the 16-yr geometric breathing as drift, and the published H&M orbit 1 fails.
+Spec §14 asks for drift "tolerant of geometric breathing". This draft makes the criterion compare
+cycles at the SAME geometric phase.
+
+**Geometric repeat L (per system and cycle period P).** L is the smallest integer such that, for every
+encounter body, L P / T_body lies within 0.02 rev of an integer (T = the body's real mean period).
+Values (real periods; computed for this draft):
+
+| Lane | P | L | L P |
+|---|---|---|---|
+| ev, k = 2 (ev-A, ev-C, H&M orbit 1) | 3.197 yr | 5 | 16.0 yr |
+| ev, k = 3 (ev-B) | 4.796 yr | 5 | 24.0 yr |
+| gc, k = 3 (gc-1, gc-2) | 37.57 d | 4 | 150.3 d |
+| gc, k = 4 | 50.09 d | 1 | 50.1 d |
+| gc, k = 5 | 62.62 d | 4 | 250.5 d |
+| gc, k = 6 | 75.14 d | 2 | 150.3 d |
+
+**Metric.** The chain must have n >= 2L cycles (Earth-Venus k = 2: >= 10 cycles, 32 yr). For
+i = 0 .. n-L-1:
+- D'_i = max over Lambert legs j of |t_(i+L)j - t_ij - L P_mean|;
+- W'_i = max over j of | |V_inf,dep|_(i+L)j - |V_inf,dep|_ij |.
+
+The chain is compared with ITSELF one geometric period later, so NO ideal-model template is needed.
+This also removes sec. 8.3's second problem (the wrong-member template). The systematic real-versus-ideal
+offset is still recorded in the row, not banded (the owner's 2026-10-08 decision stands).
+
+Band (project convention, unchanged in spirit):
+- max D' <= 0.05 x the chain's shortest Lambert-leg flight time;
+- max W' <= 0.10 x the chain's smallest |V_inf,dep|.
+
+No growth: over i, the max of the second half <= 2 x the max of the first half, ignoring growth below
+0.5 d (D') and 0.05 km/s (W').
+
+Criteria 1-3 are unchanged: junction-only continuity < 1e-6 km/s; the gate at every flyby; DOP853
+re-fly < 1 km. The epoch rule is unchanged: >= 3 of 5 epochs; a published single-epoch control is
+judged at its epoch.
+
+**Controls (run first).**
+- POSITIVE, ev: H&M orbit 1 from its printed dates (sec. 8.2 route).
+  - Two H&M periods: the printed dates plus the same dates + 5844 d, 10 cycles, Standish, a direct LM
+    solve.
+  - Expected PASS. Only cycle i against i+5 is compared, so the 16-yr breathing cancels. What remains
+    is the real non-commensurability (Earth 0.013, Venus 0.012 rev per 16 yr), absorbed by the chain's
+    mean period. Its size is about the 2.9-d print-rounding scale against a band of about 8 d.
+- POSITIVE, gc: R-S GanEur#316, the existing 10-cycle jup365 chains. GanEur#316's cycle and L must be
+  computed first (k may differ from 3; if L > 5, the existing chains are too short and it needs a
+  20-cycle run). Expected PASS at >= 3/5, as under the current metric.
+- NEGATIVE: the broken-date chain (2nd Lambert start + 1 d), as before; it must fail continuity.
+  - LIMIT: no chain with genuine secular drift is in hand, so the drift criterion itself has no
+    negative control.
+  - A candidate negative: the ev-B epoch-2 or epoch-4 chain. These converge but gate-fail, so they
+    test the gate, not drift. I would state this limit in the pre-registration rather than invent a
+    synthetic drift.
+
+**Runtime.**
+- ev: the H&M control and the ev rows need NEW 10-cycle chains. ev-A and ev-C on Standish are stored at
+  5 cycles. That is 1 + 2 x 5 runs of seconds to about a minute each (5-cycle ramp chains took 10-15 s).
+- gc: the existing 10-cycle chains suffice for L = 4 (n >= 8).
+- Total well under 30 minutes. No long compute.
+
+**The spec §14 wording change it needs** (in the 2026-10-08 amendment's "bounded drift" bullet):
+- Current: "bounded drift: the per-cycle encounter-date offsets and |V∞| against the ideal-model
+  template oscillate within a band without lap-over-lap growth".
+- Proposed: "bounded SAME-PHASE drift: with L the system's geometric repeat (the smallest L for which
+  every encounter body's mean-anomaly advance over L cycles is within 0.02 rev of an integer), the chain
+  has ≥ 2L cycles, and the encounter dates and |V∞| of cycle i+L against cycle i stay within a band
+  without growth. The systematic offset against the ideal model is recorded, not banded."
+
+**Effect on the gc rows already promoted to V2 (gc-1, gc-2; window of 2026-10-11).**
+- They would be RE-JUDGED under the new wording on their existing 10-cycle chains (L = 4, n = 10,
+  6 comparisons each), before the wording takes effect. A row that then fails 3/5 goes back to V1 in the
+  next window, with the reason recorded.
+- Expected: both HOLD.
+  - D' removes the periodic part and keeps any secular part.
+  - Their current D (0.03-0.22 d) is already small, and their growth ratios are 1.0-2.0.
+  - gc-1's two D-band failures (0.222 / 0.195 d against 0.190) are the kind of accumulated phase that
+    D' should not count. They may turn into passes, which would lift gc-1 from 3/5 to 5/5.
+  - Not computed: this is an expectation, not a result.
+
+Nothing in this section has been run.
