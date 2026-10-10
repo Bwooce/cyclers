@@ -2085,7 +2085,8 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
     log in the lead's scratchpad; shard logs `data/973_<cell>/k<k>/s<i>.log`).
   - Papercuts: `docs/papercuts/2026-10-07-twobody-ext-opus-no-primary-impact-screen.md`,
     `docs/papercuts/2026-10-07-twobody-ext-opus-pilot-under-load.md`.
-- `#974` — registered 2026-10-07 (from `#971` R15; **DISPATCHABLE, CPU-QUEUED for the morning window with
+- `#974` — (2026-10-11: Henon 1974 A&A 30:317, the missing vertical-stability input, ACQUIRED; transcription
+  pending in `#960` batch 42, corpus-file-opus.) Registered 2026-10-07 (from `#971` R15; **DISPATCHABLE, CPU-QUEUED for the morning window with
   `#975`**. Step 1 DONE 2026-10-08: Henon 2003 Tables VI-XIII transcribed into `data/sources` (`3ae69a42`,
   68 rows, two-witness digits). Batch 36 verdict
   (`293ecc7a`): Perko 1982 I and II and Perko 1983 cover SYMMETRIC families only and give no explicit
@@ -2418,7 +2419,8 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   53:1189-1199, doi 10.1016/j.pss.2005.05.001: R14's literal-collision check. Source:
   `docs/notes/2026-10-07-971-fable-corpus-review-2.md` sec. 6 item 1;
   `docs/notes/2026-10-05-960-wanted-papers.md`.
-- `#1017` — registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (on the wanted
+- `#1017` — ✓ ACQUIRED 2026-10-11 (owner upload; wanted row 21); OCR and transcription pending in `#960` batch 42
+  (corpus-file-opus). Registered 2026-10-07 (owner: "log all possible tasks"); status: ACQUIRE (on the wanted
   list since `b1b7e8ea`; gates `#994`). **ACQUIRE HENON 1974 "VERTICAL STABILITY OF PERIODIC ORBITS
   IN THE RESTRICTED PROBLEM. II. HILL'S CASE".** A&A 30:317-321: the printed a_v of the Hill
   families, needed before any 3D claim on R15's objects. Source:
@@ -2517,8 +2519,10 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   each, with a family relation to gc-1; the FOLDS / IMPACT / NUMERICAL STOP members are note-only;
   DISPATCHED to twobody-gen2-opus for one catalogue window, together with the ev-B row, the gc-1 `#1046`
   sentence and the `#1007` V2 promotions. (2) ev: rung (d) real-ephemeris chains and dV bands for the 22
-  members BEFORE any row; DISPATCHED to twobody-ext-opus. Note: CI run 37754627536 on `ee0c2430` FAILED
-  (one test: the F13 ratchet flags `scripts/litcheck_1025_973_members.py:75`; under investigation).
+  members BEFORE any row; DISPATCHED to twobody-ext-opus. CI run 37754627536 on `ee0c2430` FAILED (the F13
+  ratchet flagged `scripts/litcheck_1025_973_members.py:75`); FIXED by the lead in `62cdb87e` (a
+  `literature_status_matches()` bookkeeping helper with a pinned test; the ratchet's catch is recorded as its
+  positive control), pushed with `6c90018c`.
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
