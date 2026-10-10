@@ -53,6 +53,10 @@ ROUTES = {
     "DB1": ["--real", "de440", "--shoot-restarts", "0"],
     "DB2": ["--real", "de440", "--direct", "--shoot-restarts", "0"],
 }
+#: #1057 step 1b (note sec. 9.4): the #942 6.48 anchored shoot on top of D1 / D2.
+ANCHORED = ["--shoot-homotopy", "10", "--grow-chain", "--grow-from-one", "--shoot-rel-time"]
+ROUTES["A1"] = ROUTES["D1"] + ANCHORED
+ROUTES["A2"] = ROUTES["D2"] + ANCHORED
 
 #: Route controls (sec. 3): name -> (key, x_days, cycles, route, epochs, recorded passes).
 CONTROLS = {
@@ -218,10 +222,11 @@ def ladder(tag: str, key: str, xd: str, n: int, model: str, epochs: list[int]) -
                 if r2["outcome"] == "NOT REACHED" and n >= 3:
                     tried.append(run_route(tag, key, xd, n, "S3", ie))
         else:
-            r1 = run_route(tag, key, xd, n, "D1", ie)
+            first, second = ("A1", "A2") if model == "dea" else ("D1", "D2")
+            r1 = run_route(tag, key, xd, n, first, ie)
             tried = [r1]
             if r1["outcome"] == "NOT REACHED" and not r1.get("blend_reached_lambda1"):
-                tried.append(run_route(tag, key, xd, n, "D2", ie))
+                tried.append(run_route(tag, key, xd, n, second, ie))
         res.append({"epoch": ie, "routes": tried, "outcome": epoch_outcome(tried)})
     return res
 
@@ -332,7 +337,7 @@ def cmd_control(argv: list[str]) -> None:
 def cmd_run(argv: list[str]) -> None:
     ap = argparse.ArgumentParser(prog="run")
     ap.add_argument("member")
-    ap.add_argument("model", choices=["std", "de", "deb"])
+    ap.add_argument("model", choices=["std", "de", "deb", "dea"])
     ap.add_argument("--epochs", default="0,1,2,3,4")
     ap.add_argument("--root", default=None, help="subdirectory of data/1025_ev_realeph")
     ap.add_argument("--timeout", type=int, default=TIMEOUT_S, help="seconds per epoch and route")
@@ -498,7 +503,7 @@ def cmd_shootcheck(argv: list[str]) -> None:
         outs = []
         for ie in EPOCHS:
             tried = []
-            for route in ("D1", "D2"):
+            for route in ("D1", "D2", "A1", "A2"):
                 d = ROOT[0] / tag / route / f"e{ie}"
                 if (d / "realeph_chain.json").exists():
                     ep = json.loads((d / "realeph_chain.json").read_text())[0]

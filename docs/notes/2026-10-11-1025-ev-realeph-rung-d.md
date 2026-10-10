@@ -566,3 +566,77 @@ Is step 2 (the Earth-Moon barycentre) still worth running?
   - Expected cost: of the order of step 1 (about 10-30 min on 2 workers).
 - Step 2 (the barycentre) is kept in `#1057` as a later diagnostic for the members' closure EXISTENCE,
   not as the shoot's control.
+
+### 9.4 PRE-REGISTRATION (2026-10-11, before the run): `#1057` step 1b, ev-A with the anchored shoot
+
+Why: step 1 (9.3) showed the #942 6.48 failure mode on DE440. The blend's minimax solution passes the
+gate, but the free-direction shoot lands on other closures, all gate-failing. On jup365 the anchored
+shoot fixed this and passed both its controls (6.48 method; 6.50 results: C4@2013 indeterminate 0.9917,
+GanEur#316 pass 0.741). This step tests it on DE440 for the first time.
+
+Object: ev-A, as in 9.1 (the C2 key and dates, 5 cycles, the tool's 5 standard epochs).
+
+Route ladder:
+- A1 = D1 + the 6.48 flags: `--real de440 --shoot-jac sparse --shoot-homotopy 10 --grow-chain
+  --grow-from-one --shoot-rel-time`.
+- A2, only where A1's phase-1 blend does not reach lambda 1: A1 + `--direct`.
+- Everything else as in the members' runs: 20 restarts at 0.03/0.05 rad, the closure threshold
+  1e-6, `classify`, the checker.
+- The anchored method, from 6.48:
+  - the phase-1 date solve on 1 cycle;
+  - at 1 cycle each restart follows a 10-step Newton homotopy from the minimax seed to the closure
+    connected to it;
+  - the chain then grows 1 -> 5 cycles, each length seeded by the previous gate-best closure;
+  - a length without a closure ends the run.
+
+Tool change (the smallest): `scripts/ev_realeph_1025.py` gains the model `dea` (routes A1/A2, i.e.
+D1/D2 plus the 6.48 flags), and `shootcheck` also reads A1/A2. No test in `tests/scripts` covers this
+script. Regression check: `shootcheck --root control_1057 --members ev-A` still reads FAIL at all 5
+epochs, and its `summary.json` is byte-unchanged.
+
+Command (from the repo root; 2 workers; resumable):
+
+```sh
+mkdir -p data/1025_ev_realeph/control_1057b
+printf '%s\n' 0,1,2 3,4 | xargs -n1 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run ev-A dea --root control_1057b --timeout 1800 --epochs $0'
+uv run python scripts/ev_realeph_1025.py shootcheck --root control_1057b --members ev-A
+```
+
+- Output: `data/1025_ev_realeph/control_1057b/ev-A/{A1,A2}/e<i>/` (static `tool.log`,
+  `realeph_chain.json`, `check.log`). The live logs are gitignored (the directory's `.gitignore`,
+  added with this note).
+- Expected runtime:
+  - Step 1 took 101-215 s per epoch.
+  - The anchored shoot runs its 20 restarts at each length 1, 2, 3, 4, 5, plus the 10-step
+    homotopy at length 1, so roughly 3-6x step 1: about 5-20 min per epoch, and 15-60 min for 5
+    epochs on 2 workers.
+  - Bounded by `--timeout 1800`: at most 3 epochs x 30 min = 1.5 h. A timeout is "NOT RUN", never a
+    fail.
+
+PASS criterion: identical to the members' (sec. 2):
+- a ballistic shoot closure at lambda 1, of the full length (5 cycles), max residual < 1e-6;
+- the #888 gate passes at the registry floors on every interior flyby ("indeterminate" is not a pass);
+- the checker's DOP853 re-fly misses by < 1 km.
+
+Meanings, written before the run:
+- **PASS at >= 1 epoch:** the anchored shoot is a usable judge of a full-rev Earth-Venus chain on DE440
+  (its first DE440 positive control). The members would then need to be run on it too. Costs,
+  extrapolated from the members' shoot (4.7 min per shoot average) times the 3-6x of the anchored
+  method. Step 1b's measured time replaces these figures:
+  - the ten Standish >= 4/5 members: about 4-8 h on 2 workers;
+  - one member per distinct chain (the 6 among the ten): about 2.5-5 h;
+  - all 22 members: about 9-17 h;
+  - the 14 distinct chains of the 22: about 6-11 h.
+  - Siblings share the transfer and Venus part but differ in their Earth full-rev legs, so a run per
+    chain judges the shared part only. A member-level verdict needs that member run.
+- **FAIL or NOT REACHED at every epoch:** the shoot formulation still cannot judge a full-rev
+  Earth-Venus chain on DE440. The 22 are decided on the Standish and DE440-blend evidence. The owner
+  options (sec. 6 of the owner summary) stand as written.
+- **Expectation, before the run:** not stated as a prediction. The jup365 controls passed with this
+  method, but the DE440 step 1 closures all failed the gate. Either outcome is plausible.
+
+Ratchet rule:
+- This is a NEW route. A pass on it does not change any member's recorded result (sec. 8: 0 PASS / 1
+  FAIL / 49 NOT REACHED on route D1).
+- Only a re-run of the members on route A1/A2, pre-registered on its own, can.
+- Until then the members' DE440 shoot results stay as recorded and conditional.
