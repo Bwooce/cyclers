@@ -46,6 +46,9 @@ ROUTES = {
     "S3": ["--real", "mean", "--grow-chain", "--grow-start", "2"],
     "D1": ["--real", "de440", "--shoot-jac", "sparse"],
     "D2": ["--real", "de440", "--direct", "--shoot-jac", "sparse"],
+    # amendment A1 (note sec. 5a): blend to lambda 1, no shoot (the 6.18/6.24 reading)
+    "DB1": ["--real", "de440", "--shoot-restarts", "0"],
+    "DB2": ["--real", "de440", "--direct", "--shoot-restarts", "0"],
 }
 
 #: Route controls (sec. 3): name -> (key, x_days, cycles, route, epochs, recorded passes).
@@ -220,6 +223,84 @@ def epoch_outcome(tried: list[dict[str, Any]]) -> str:
     return "NOT RUN"
 
 
+# ---------------------------------------------------------------------------
+# DE440 under amendment A1 (note sec. 5a): blend to lambda 1, no shoot
+# ---------------------------------------------------------------------------
+
+
+def _deb_eval(tag: str, key: str, n: int, route: str, ie: int) -> dict[str, Any] | None:
+    """Reached / minimax gate / closure dV (Earth, Venus) / deficit for one DB route and epoch."""
+    d = OUT / tag / route / f"e{ie}"
+    p = d / "realeph_chain.json"
+    if not p.exists():
+        return None
+    ep = json.loads(p.read_text())[0]
+    steps = [s for s in ep.get("steps", []) if s.get("converged")]
+    reached = bool(steps) and steps[-1]["lambda"] >= 1.0
+    out: dict[str, Any] = {
+        "route": route,
+        "epoch": ie,
+        "epoch_jd": ep["epoch_jd"],
+        "reached": reached,
+    }
+    out["last_converged_lambda"] = ep.get("last_converged_lambda")
+    if not reached:
+        return out
+    out["minimax_gate"] = {
+        "status": steps[-1].get("status"),
+        "worst_ratio": steps[-1].get("worst_ratio"),
+    }
+    cj = d / "closure_dv.json"
+    if not cj.exists():
+        subprocess.run(
+            ["uv", "run", "python", str(CLOSURE_TOOL), "--cell", "ev", "--key", key,
+             "--n-cycles", str(n), "--real", "de440", "--chain", str(p), "--out", str(cj)],
+            capture_output=True, text=True, timeout=TIMEOUT_S, cwd=REPO, check=True,
+        )  # fmt: skip
+    rows = json.loads(cj.read_text())[0]["legs"]
+    out["closure_dv_earth_mps"] = sum(r["dv_mid_ms"] for r in rows if r["body"] == "E")
+    out["closure_dv_venus_mps"] = sum(r["dv_mid_ms"] for r in rows if r["body"] == "V")
+    out["max_miss_earth_km"] = max((r["miss_km"] for r in rows if r["body"] == "E"), default=0.0)
+    out["max_miss_venus_km"] = max((r["miss_km"] for r in rows if r["body"] == "V"), default=0.0)
+    dvb = _load("dv_band_942", REPO / "scripts" / "dv_band_942.py")
+    pr = dvb.price_chain(
+        dvb.CHAIN.real_ephemeris("ev", "de440"), key, n, ep["x0_days"], ep["final_y_dates"]
+    )
+    out["deficit_beyond_bend_mps"] = pr["deficit_beyond_bend_mps"]
+    out["n_priced_flybys"] = pr["n_flybys"]
+    s7 = 7.0 / n
+    tot = out["closure_dv_earth_mps"] + out["closure_dv_venus_mps"] + pr["deficit_beyond_bend_mps"]
+    out["per7_total_mps"] = tot * s7
+    out["band_total_upper_bound"] = dvb.band(tot * s7)
+    ven = out["closure_dv_venus_mps"] + pr["deficit_beyond_bend_mps"]
+    out["per7_venus_plus_deficit_mps"] = ven * s7
+    out["band_venus_plus_deficit"] = dvb.band(ven * s7)
+    return out
+
+
+def ladder_deb(tag: str, key: str, xd: str, n: int, epochs: list[int]) -> list[dict]:
+    _KEY[0] = key
+    res = []
+    for ie in epochs:
+        run_route(tag, key, xd, n, "DB1", ie)
+        ev = _deb_eval(tag, key, n, "DB1", ie)
+        if ev is None or not ev["reached"]:
+            run_route(tag, key, xd, n, "DB2", ie)
+            ev2 = _deb_eval(tag, key, n, "DB2", ie)
+            ev = ev2 if ev2 is not None else ev
+        res.append(ev or {"epoch": ie, "reached": False, "route": None, "not_run": True})
+        e = res[-1]
+        log(
+            f"{tag} deb e{ie}: reached={e.get('reached')} route={e.get('route')} "
+            f"gate={(e.get('minimax_gate') or {}).get('status')} "
+            f"worst={(e.get('minimax_gate') or {}).get('worst_ratio')} "
+            f"closure E/V={e.get('closure_dv_earth_mps')}/{e.get('closure_dv_venus_mps')} m/s "
+            f"per7={e.get('per7_total_mps')}"
+        )
+    (OUT / tag / "de440_blend.json").write_text(json.dumps(res, indent=1, default=float))
+    return res
+
+
 def cmd_control(argv: list[str]) -> None:
     name = argv[0]
     key, xd, n, route, epochs, recorded = CONTROLS[name]
@@ -236,10 +317,13 @@ def cmd_control(argv: list[str]) -> None:
 def cmd_run(argv: list[str]) -> None:
     ap = argparse.ArgumentParser(prog="run")
     ap.add_argument("member")
-    ap.add_argument("model", choices=["std", "de"])
+    ap.add_argument("model", choices=["std", "de", "deb"])
     ap.add_argument("--epochs", default="0,1,2,3,4")
     a = ap.parse_args(argv)
     key, xd, n = members()[a.member]
+    if a.model == "deb":
+        ladder_deb(a.member, key, xd, n, [int(v) for v in a.epochs.split(",")])
+        return
     res = ladder(a.member, key, xd, n, a.model, [int(v) for v in a.epochs.split(",")])
     for r in res:
         log(f"{a.member} {a.model} e{r['epoch']}: {r['outcome']}")

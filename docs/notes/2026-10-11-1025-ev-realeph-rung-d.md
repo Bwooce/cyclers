@@ -127,6 +127,32 @@ Pilots disclosed (scratch, before this note): ev4-0 at epoch 0, 3 cycles.
 - D2: does not converge.
 These are not results. The pre-registered run repeats them under this protocol.
 
+## 5a. AMENDMENT A1 (lead ruling (c), 2026-10-11), committed before any DE440 result is read
+
+Why: the pre-registered D1 shoot costs about 35 s per restart, so about 12 min per epoch and route.
+- Measured on ev4-1 epoch 0, the only DE440 call made: it timed out at 420 s after 15 restarts,
+  none closing. Its log shows the blend reaching lambda 1 with the minimax gate passing (0.819).
+  That is disclosed here. It is kept as "NOT RUN" under D1 and is not used as a result.
+- The #942 amendment 6.18 also gives full-rev candidates no DE440 pass/fail, only the closure dV
+  (6.24).
+
+DE440 now follows the 6.18/6.24 reading for all 22 members. There is no DE440 pass column.
+- Route DB1: `--real de440 --shoot-restarts 0`, the blend continuation to lambda 1 with no shoot.
+- Route DB2, only if DB1 does not reach lambda 1: `--real de440 --direct --shoot-restarts 0`.
+- Per epoch: whether lambda 1 was reached (y/n); the #888 gate at lambda 1 with the minimax
+  directions (status, worst ratio).
+- The closure dV of the full-rev legs (`analyse_942_fullrev_closure_dv.py`, 6.24a), Earth legs and
+  Venus legs separately. The Earth figures are an UPPER BOUND, because DE440's Earth carries the lunar
+  reflex (6.25).
+- The turn-deficit price at the minimax directions (`price_chain` on DE440), non-zero only where that
+  gate fails.
+- Per 7 cycles: (closure + deficit) x 7/N, with the band; plus the band of the Venus legs alone (the
+  part the lunar reflex does not inflate).
+- Summary per member: "DE440: reached r/5, minimax gate pass g/5", the best-epoch band, and the range.
+
+The D1 shoot (a pass/fail by ballistic closure) is deferred to a lead launch, for the members with
+Standish >= 4/5 only: ev4-1, 4, 6, 7; ev5-4, 5, 6, 7, 8, 9 (sec. 7 has the command).
+
 ## 6. Results
 
 (Filled in after the runs.)
