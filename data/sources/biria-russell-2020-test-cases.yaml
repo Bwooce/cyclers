@@ -1,0 +1,117 @@
+# Biria & Russell (2019/2020), JAS 67(1):1-27: the two published examples (inputs and every printed result).
+# Source: A. D. Biria and R. P. Russell, "Analytical Solution to the Vinti Problem in Oblate Spheroidal Equinoctial
+#   Orbital Elements", The Journal of the Astronautical Sciences 67(1):1-27, doi 10.1007/s40295-019-00179-y
+#   (Crossref-checked 2026-10-11: online 2019-05-21, issue March 2020). Conference form AAS 17-659.
+# Local file: Springer publisher PDF, 27 pp., md5 af84bca8439220f8dc9cd4b3694c05ba (digital text layer).
+#   PDF page n = journal page n.
+# Witnesses: every value below was read on the 150 dpi page image (pp.21-25) AND in the publisher text layer
+#   (pdftotext -layout). The two agree for every printed number. Figure readings are marked "figure reading"
+#   and are NOT printed numbers.
+# No value in an `expected_published` field was computed by us. Our arithmetic (assumed constants) is ONLY in
+#   `our_arithmetic` fields and in checks.py / checks.out, and is never a golden.
+#
+# PIN LEVEL (summary)
+#   Neither example prints a propagated state, an element value at any time, or any error number. Nothing here
+#   pins a state. What can be pinned:
+#   - example_1: one printed scalar relation (spheroidal p is "almost 640 km" below the spherical 7,300 km). The
+#     inputs are INCOMPLETE (mu, Re, e_K, angles, t_i and tf are not printed). Weak golden.
+#   - example_2: inputs COMPLETE for the initial state (osculating Keplerian, mu, Re, J2). The printed outputs are
+#     qualitative ("a little over a year (about 10 revolutions)"). Figure-level check only.
+
+conventions:
+  units: {length: km, time: s, mu: km^3/s^2, angles: deg as printed (the supplement code wants rad)}
+  potential: >-
+    Symmetric Vinti potential V = -mu rho / (rho^2 + c^2 eta^2) (Eq. 3, p.4, page image), with c^2 = Re^2 J2
+    (Eq. 4, p.5, text layer). J3 = 0 throughout. The potential implies J4 = -J2^2, J6 = +J2^3, ... (p.5).
+  mu: "per case: example_2 prints 3.7931e7 km^3/s^2; example_1 prints none (the pinned p relation does not depend on mu)"
+  J2: "per case: example_1 5.08e-2 (exaggerated Earth); example_2 1.6291e-2 (Saturn, Jacobson 2006)"
+  Re: "per case: example_2 prints 60,330 km; example_1 prints none (our check assumes 6378.137 km)"
+  J3: 0 (not used anywhere in the paper or in the supplement code)
+  frame: >-
+    Primary-centred inertial frame, X and Y in the equator, Z along the spin pole. The OS (oblate spheroidal) and
+    inertial frames share the origin (p.5). No epoch, no body pole orientation: the examples are pure body-frame
+    problems.
+  keplerian_input_elements: >-
+    "Initial osculating spherical orbit parameters" rp, e_K, I_K, Omega_K, omega_K, f_K (subscript K = Keplerian, as
+    opposed to spheroidal, p.24). They are converted to r, v with two-body formulas and the body mu (the supplement
+    driver does p = rp (1 + e) and koe2rv_adb(mu, [p; e; I; Omega; omega; f])).
+  equinoctial_elements: >-
+    Modified OS equinoctial set {p, q1, q2, p1, p2, L} (Eq. 21-22, p.8): q1 = e cos(omega' + K Omega'),
+    q2 = e sin(omega' + K Omega'), p1 = tan^K(I/2) cos Omega', p2 = tan^K(I/2) sin Omega', L = f + omega' + K Omega',
+    K = +1 direct, -1 retrograde (Eq. 23). Both examples are direct (K = +1).
+  scope: bounded orbits only (abstract; Conclusions p.25; the code returns without output if spheroidal e >= 1 - 1e-4)
+
+cases:
+  - id: example_1
+    page: "pp.21-23 (text p.21-22; Figs. 3, 4, 5)"
+    body: "Earth (named: 'low Earth orbit (LEO)'), with J2 exaggerated"
+    inputs_published:
+      rp_km: "7,300"            # p.21: "initial periapsis radius of rp = 7, 300 km"
+      orbit: "nominally circular equatorial"   # p.21 and the Fig. 3 / Fig. 5 captions
+      J2: "5.08 x 10^-2"        # p.22 and the Fig. 3 / Fig. 5 captions: "an order of magnitude above Earth's"
+      duration: "approximately 18 orbits"      # p.21; Fig. 3 time axis runs to about 9 x 10^4 s (figure reading)
+    inputs_not_printed: [mu, Re, e_K (only "nominally circular"; e_K = 0 follows from the constant spherical p = rp), I_K (only "equatorial"), Omega_K, omega_K, f_K, t_i, tf]
+    expected_published:
+      - quantity: spherical (osculating) semilatus rectum
+        value: "constant, 7,300 km"           # p.22: "the spherical p is constant and maintains the value of 7,300 km"
+      - quantity: spheroidal semilatus rectum
+        value: "almost 640 km smaller than 7,300 km"   # p.22, printed words
+        figure_reading: "Fig. 3a p axis: about 6662 km (axis ticks 6660, 6662, 6664)"   # figure reading
+      - quantity: p1, p2
+        value: "0 throughout (equatorial)"     # Fig. 3, figure reading
+    pin_level: weak  # one printed scalar relation; inputs incomplete
+    our_arithmetic: >-
+      checks.py (ours, NOT a golden). e_K = 0 follows from the printed constant spherical p = 7,300 km = rp (1 + e),
+      and I = 0 from "equatorial"; only Re is assumed. With rp = 7300 km, Re = 6378.137 km and any mu, the
+      equatorial Vinti turning points give spheroidal p = 6662.36 km (gap 637.6 km) and spheroidal e = 0.0691.
+      The gap does not depend on mu (mu doubled gives the same digits) and moves by 0.03 km for Re = 6378.000 km.
+      This matches "almost 640 km" and the Fig. 3a axis, and the 0.07 swing of the spheroidal q1, q2 in Fig. 3a.
+      It is a reproduction with assumed e_K, I and Re, not a published value.
+
+  - id: example_2
+    page: "pp.23-25 (text p.24; Figs. 6, 7)"
+    body: Saturn ("Saturn orbit insertion scenario")
+    inputs_published:
+      mu_km3_s2: "3.7931 x 10^7"      # p.24
+      Re_km: "60, 330"                # p.24 (printed with a thin space: 60,330 km)
+      J2: "≈ 1.6291 x 10^-2"          # p.24, from Jacobson et al. 2006 (ref. 20)
+      J4_as_printed: "≈ 9.36 x 10^-4" # p.24. Printed positive; Saturn's J4 is negative in the usual convention.
+                                      #   Not used by the propagator (Vinti implies J4 = -J2^2). Kept as printed.
+      rp_km: "61, 330"                # p.24
+      e_K: "0.99"
+      I_K_deg: "10"
+      Omega_K_deg: "30"
+      omega_K_deg: "11"
+      f_K_deg: "6"
+      duration: "a little over a year (about 10 revolutions)"   # p.24; Fig. 7 time axis to about 3.5 x 10^7 s
+      t_i_s: "not printed (the supplement driver default is 0)"
+    expected_published:
+      - quantity: J4 fraction captured
+        value: "roughly 28% of J4"     # p.24 (and p.25: "the effect of neglecting 72% of J4")
+      - quantity: revolutions in the run
+        value: "about 10 revolutions in a little over a year"   # p.24
+      - quantity: element behaviour
+        value: >-
+          spheroidal and spherical q1, q2, p1, p2, L similar; p distinctly different (Fig. 7: spherical about
+          1.22 x 10^5 km, spheroidal about 1.20 x 10^5 km, figure reading); q1, q2, p1, p2 step at each periapsis
+          passage (p.24-25)
+    pin_level: figure-level  # inputs complete; no printed numeric output
+    our_arithmetic: >-
+      checks.py (ours, NOT a golden). (a) Initial osculating spherical elements by Eq. 22 with K = +1:
+      p = 122,046.7 km, q1 = 0.7472, q2 = 0.6495, p1 = 0.0758, p2 = 0.0437, L = 47.00 deg. These match the t = 0
+      values of p, q1, q2, p1, p2 in Fig. 7 (figure reading; L at t = 0 is not legible), which confirms the printed inputs and K = +1. (b) The Keplerian e_K = 0.99
+      gives a_K = 6.133 x 10^6 km and a period of 179 d, which cannot fit 10 revolutions in a year. The Vinti energy
+      at the initial state (J2 potential term at 61,500 km) is -7.946 km^2/s^2 against the Keplerian -3.092, so
+      the orbit is much more tightly bound: 2-body-equivalent a = 2.39 x 10^6 km, period about 43.5 d, 10 revolutions
+      = 3.76 x 10^7 s = 1.19 yr, apoapsis about 4.7 x 10^6 km. This fits the printed "a little over a year (about
+      10 revolutions)" and the Fig. 6 extent (about 4.5 x 10^6 km). So the printed inputs are consistent; the
+      osculating e_K = 0.99 at periapsis is not the orbit's real eccentricity.
+
+supplement_driver_case:
+  note: >-
+    The held supplement (v1.10, 2024) driver does NOT run either paper example. Its built-in state is code-only, not
+    published: Earth Re = 6378.137 km, mu = 3.986004415e5 km^3/s^2, J2 = 1.0826360229840e-3; rp = 6700 km,
+    e = 0.10, I = 40 deg, Omega = 30 deg, omega = 11 deg, f = 6 deg; 5 revolutions, 100 samples per revolution,
+    t_i = 0. It shares only Omega, omega and f with example_2. To run example_2: set consts to the Saturn values
+    above, rp = 61330, ecc = 0.99, inc = 10 deg, and sims.nOrb = 10 (or sims.tof for "a little over a year").
+    The v1.10 quadrant fix (Nov 2024) post-dates the paper's figures.

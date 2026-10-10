@@ -1,0 +1,83 @@
+# Taylor 1981, Tables 1-3 and the Fig. 5 caption: horseshoe periodic orbits, Sun-Jupiter mass ratio, family h(27,28) and six
+#   other symmetric families, with their asymmetric bifurcation orbits.
+# Source: D. B. Taylor, "Horseshoe Periodic Orbits in the Restricted Problem of Three Bodies for a Sun-Jupiter Mass Ratio",
+#   Astronomy and Astrophysics 103:288-294 (1981), ADS 1981A&A...103..288T. Received May 19, accepted July 14, 1981.
+#   No DOI (Crossref has no A&A record for 1981; checked 2026-10-11).
+# Local file: ADS JBIG2 scan, 7 pp., md5 44fbbfb5a5059be14b98d16a87d1687a; OCR copy (ocrmypdf --force-ocr -l eng) md5
+#   7cd79bf4dea69ca85b86584db27287ef. PDF page n = journal page 287 + n.
+# Tables: 1 p.289 (PDF p.2); 2 p.292 (PDF p.5, under Fig. 4); 3 p.293 (PDF p.6); Fig. 5 caption p.293.
+# Transcribed from the page images: every cell was read on 300-400 dpi crops of the original scan (witness C, decides).
+#   Witness A: tesseract 5.5.3, psm 6, on separate 400 dpi crops of each table (NOT the OCR text layer). Cell-by-cell
+#   comparison: witness-comparison-taylor.tsv; counts in conventions.notes.
+# No value here was computed by us. Values we computed are only in `note:` fields, marked "ours", and in integ_taylor.out and
+#   stability_check.out. Numbers are kept as printed (strings, trailing zeros kept); the printed minus sign is "-".
+#
+# EQUATIONS, FRAME AND UNITS (sec. 2, p.289, read on the page image)
+#   Planar circular restricted problem in the rotating frame, origin at the centre of mass of S and J:
+#     "x'' - 2 y' = dW/dx,  y'' + 2 x' = dW/dy"   (1),   W = (x^2 + y^2)/2 + (1 - mu)/r1 + mu/r2,
+#     r1 = ((x + mu)^2 + y^2)^(1/2), r2 = ((x + mu - 1)^2 + y^2)^(1/2).
+#   "S" (Sun, mass 1 - mu) at (-mu, 0); "J" (Jupiter, mass mu) at (1 - mu, 0).
+#   "For the Sun-Jupiter system mu is taken to be 0.000953875 which corresponds to the value for the mass of Jupiter used by
+#   Rabe (1961)."  "The gravitational constant is taken as 1 so that the angular velocity of the rotating coordinate system
+#   is 1 and the period of revolution is 2 pi."
+#   Jacobi constant: "C = x^2 + y^2 + 2(1 - mu)/r1 + 2 mu/r2 - xdot^2 - ydot^2".  Larger C = lower energy.
+#   Printed state: the orbit starts on the x axis, perpendicular (y = 0, xdot = 0); Tables 1-3 print x and ydot at that start.
+#   Columns: T/2pi = period divided by 2 pi (so 29.2386 means 29.2386 Jupiter periods); s = horizontal stability index
+#   (from Hill's equation, Deprit and Henrard 1967); s_v = vertical stability index "as described by Henon (1973)".
+#   |s| < 1 and |s_v| < 1 mean stable (Fig. 2 legend). "> 10^4" is printed in Table 1 rows d and e for s.
+#   Motion is retrograde in the rotating frame (p.290).
+tables:
+  - table: "1"
+    caption: "The initial conditions, Jacobi constant, period divided by 2 pi and the stability indices for the orbits illustrating the evolution of family h(27,28) in Fig. 3"
+    journal_page: "289"
+    columns: [orbit, x, ydot, C, T_over_2pi, s, s_v]
+    rows:
+      - {orbit: "a", x: "-1.06201", ydot: "0.10851", C: "3.00013", T_over_2pi: "29.2266", s: "123.25", s_v: "-0.0219", note: "28 loops (Fig. 3a)"}
+      - {orbit: "b", x: "-1.02745", ydot: "0.04032", C: "3.00149", T_over_2pi: "29.2386", s: "1.1767", s_v: "-0.0829", note: "smooth horseshoe, Rabe's horseshoe, near the asymmetric bifurcation (Fig. 3b, p.291)"}
+      - {orbit: "c", x: "-0.97668", ydot: "-0.06118", C: "2.99893", T_over_2pi: "28.2234", s: "297.54", s_v: "-0.0146", note: "27 loops (Fig. 3c)"}
+      - {orbit: "d", x: "-0.76665", ydot: "-0.51230", C: "2.93589", T_over_2pi: "28.1080", s: ">10^4", s_v: "0.5083", note: "Fig. 3d"}
+      - {orbit: "e", x: "-0.42413", ydot: "-1.51123", C: "2.61911", T_over_2pi: "28.0348", s: ">10^4", s_v: "0.6796", note: "Fig. 3e"}
+      - {orbit: "f", x: "-0.11239", ydot: "-4.00533", C: "1.90214", T_over_2pi: "28.0064", s: "1.0154", s_v: "0.9610", note: "Fig. 3f, close approaches to Sun and Jupiter"}
+  - table: "2"
+    caption: "The initial conditions, Jacobi constant, period divided by 2 pi, the stability indices and the name of the family to which the orbit is a member for the smooth horseshoes illustrated in Fig. 4"
+    journal_page: "292"
+    columns: [orbit, x, ydot, C, T_over_2pi, s, s_v, family]
+    rows:
+      - {orbit: "a", x: "-1.06206", ydot: "0.09265", C: "3.00334", T_over_2pi: "18.1334", s: "-10.2204", s_v: "0.4387", family: "h(16,17)"}
+      - {orbit: "b", x: "-1.06456", ydot: "0.09238", C: "3.00428", T_over_2pi: "15.0578", s: "-24.206", s_v: "0.7215", family: "h(13,14)"}
+      - {orbit: "c", x: "-1.07912", ydot: "0.11595", C: "3.00521", T_over_2pi: "12.3894", s: "5.9007", s_v: "-1.0187", family: "h(10,11)"}
+      - {orbit: "d", x: "-1.09137", ydot: "0.13177", C: "3.00705", T_over_2pi: "9.3743", s: "-38.599", s_v: "-0.8998", family: "h(9,8)"}
+  - table: "3"
+    caption: "The initial conditions, Jacobi constant, period divided by 2 pi and the vertical stability index for the asymmetric bifurcation orbits"
+    journal_page: "293"
+    columns: [family, x, ydot, C, T_over_2pi, s_v]
+    note: "These are symmetric orbits of family h(n,m) at which the asymmetric family ha(n,m) branches off (the start of ha(n,m)); the row is perpendicular at y = 0 like Tables 1-2. The asymmetric family has x_dot > 0 (p.293: the x component of the initial conditions for asymmetric orbits is chosen to be positive)."
+    rows:
+      - {family: "h(27,28)", x: "-1.02680", ydot: "0.03897", C: "3.001491", T_over_2pi: "29.1966", s_v: "0.1801"}
+      - {family: "h(20,21)", x: "-1.03136", ydot: "0.04083", C: "3.002106", T_over_2pi: "22.2728", s_v: "-0.3376"}
+      - {family: "h(16,17)", x: "-1.05691", ydot: "0.08350", C: "3.003226", T_over_2pi: "18.3366", s_v: "-0.7272"}
+      - {family: "h(13,14)", x: "-1.06857", ydot: "0.10140", C: "3.004029", T_over_2pi: "15.3692", s_v: "-0.9100"}
+      - {family: "h(10,11)", x: "-1.07931", ydot: "0.11627", C: "3.005213", T_over_2pi: "12.3840", s_v: "-1.0172"}
+      - {family: "h(9,9)", x: "-1.05828", ydot: "0.07617", C: "3.004842", T_over_2pi: "10.4102", s_v: "-0.7694"}
+      - {family: "h(9,8)", x: "-1.09147", ydot: "0.13205", C: "3.007025", T_over_2pi: "9.3878", s_v: "-0.8200"}
+  - table: "Fig. 5 caption"
+    journal_page: "293"
+    text: "Asymmetric periodic orbit of family ha(27,28): x = -1.10662, xdot = 0.03106, ydot = 0.19381, C = 2.99413, T/2pi = 29.1734, s = -815.739, s_v = 0.2906"
+    rows:
+      - {family: "ha(27,28)", x: "-1.10662", xdot: "0.03106", ydot: "0.19381", C: "2.99413", T_over_2pi: "29.1734", s: "-815.739", s_v: "0.2906", note: "y = 0 is assumed (not printed); ours: integrating one full period from y = 0 closes to 2.5e-2 in y, see integ_taylor.out"}
+conventions:
+  frame: "planar CR3BP, rotating barycentric frame; Sun (mass 1 - mu) at (-mu, 0), Jupiter (mass mu) at (1 - mu, 0); mu = 0.000953875 (printed, p.289); G = 1, angular rate 1, Jupiter period 2 pi"
+  jacobi: "C = x^2 + y^2 + 2(1 - mu)/r1 + 2 mu/r2 - xdot^2 - ydot^2 (p.289); r1 = Sun distance, r2 = Jupiter distance"
+  stability_index: "s horizontal, s_v vertical; |s| < 1 stable. s is the half-trace of the leading pair of the full-period planar monodromy matrix (ours, taylor_correct.out: reproduced for Table 1 a, b, c, f and Table 2 a to the printed digits after correcting the ICs)"
+  state_printed: "x0 and ydot0 at a perpendicular crossing of the x axis (y = 0, xdot = 0); T/2pi = full period over 2 pi"
+  period_field: "T_over_2pi (full period divided by 2 pi)"
+  symmetric_families: ["h(27,28)", "h(20,21)", "h(16,17)", "h(13,14)", "h(10,11)", "h(9,9)", "h(9,8)"]
+  asymmetric_families: ["ha(n,m): one per symmetric family (Table 3 start orbit); mirror images in the line SJ also exist and have x_dot < 0"]
+  page_references: {table_1: "289", fig_1_frame: "289", eq_1_and_C: "289", mu: "289", fig_2: "290", fig_3: "291", fig_4_table_2: "292", table_3_fig_5: "293", conjectures: "293-294", references: "294"}
+  row_counts: {table_1: 6, table_2: 4, table_3: 7, fig_5_caption: 1, total: 18}
+  notes:
+    - "Witnesses (witness-comparison-taylor.tsv, 102 cells, the 'orbit' and 'family' names not counted): tesseract at 400 dpi agrees with the page-image reading on 99 cells; 2 cells (s = '> 10^4' in rows d, e) are not compared; 1 cell differs: Table 3 h(27,28) s_v, image 0.1801, one tesseract pass 0.1501 and a second pass 0.1801 (the 8 / 5 confusion). Image decides: 0.1801."
+    - "Closure, uncorrected (taylor_events.py / .out, ours; DOP853 rtol 1e-12, mu 0.000953875): C from the printed (x, ydot) agrees with the printed C to 2.1e-6 .. 4.2e-6 in Tables 1-2 rows a-d, 7e-7 or better in Table 3 (C printed to 6 decimals while x, ydot have 5), but differs by 4.3e-5 (Table 1 e) and 7.9e-5 (Table 1 f). At the y = 0 crossing nearest in time to the printed half period pi * T/2pi (time offset 0.000 to 0.076, and -0.249 for Table 1 e), |xdot| is 2e-6 (1 a), 7.5e-5 (1 b), 4.1e-3 (1 c), 7.7e-3 (1 d), 0.18 (1 e), 1.7e-2 (1 f), 3.8e-5 .. 2.6e-4 (Table 2), 1.8e-5 .. 1.1e-3 (Table 3). The largest residuals are in the long-looped, strongly unstable rows (s > 300) with 5-digit ydot."
+    - "Closure, corrected (taylor_correct.py / .out, ours): holding the printed x0, a Newton solve for (ydot0, half period) gives an exactly periodic symmetric orbit for all 17 rows (fsolve residual below 3e-11). The corrections are small: ydot0 by 1.6e-5 or less (Table 1 e: -1.511214 against printed -1.51123), T/2pi by 7e-4 or less. So all 17 printed rows are the orbits of their families to the printed precision, and frame, mu and units are confirmed."
+    - "Stability index (taylor_correct.out, ours): s = half-trace of the leading eigenvalue pair of the full-period planar monodromy matrix of the corrected orbit. Table 1: a 123.2 (printed 123.25), b 1.178 (1.1767), c 297.6 (297.54), d 1.8e4 and e 1.2e4 (printed > 10^4), f 1.015 (1.0154). Table 2: a -10.22 (-10.2204), b -24.25 (-24.206), c 5.794 (5.9007, 1.8 percent off), d -38.67 (-38.599). Table 3 (asymmetric bifurcation, s = +1 by Fig. 2): h(27,28) 1.002, h(20,21) 0.997, h(13,14) 1.000, h(10,11) 1.000, h(16,17) 1.013, h(9,9) 1.24, h(9,8) 2.94 when x is held and 1.000 when C is held (so the printed x of h(9,8) is the less precise number). h(9,9) stays 1.23 in both modes. The uncorrected 5-digit ICs give wrong s for the long-period rows (e.g. -15.9 for Table 2 a): the s of these orbits needs ICs refined first."
+    - "Fig. 5 asymmetric orbit: C ours 2.994126 against printed 2.99413; one full period (29.1734 * 2 pi) returns within 1.8e-3 in x and 2.5e-2 in y (s = -815.739, 5-digit ICs)."

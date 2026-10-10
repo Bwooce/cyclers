@@ -1,0 +1,121 @@
+# Bruno & Varin 2007, KIAM Preprint 35/2007, Tables 2 and 3: critical orbits of the generating family i
+#   (mu = 0) and the birth / death values mu'_k, mu''_k of the closed families i_k.
+# Source: A. D. Bruno, V. P. Varin, "Slozhnye semeistva periodicheskikh reshenii ogranichennoi zadachi"
+#   ("Complicated families of periodic solutions of the restricted problem"), Preprint of the Keldysh Institute
+#   of Applied Mathematics RAS No. 35, Moscow, 2007, 18 pp. CC BY 4.0 (cover page and library page).
+#   https://library.keldysh.ru/preprint.asp?id=2007-35 ; PDF https://keldysh.ru/papers/2007/source/prep2007_35.pdf
+#   Table 2 p.17 (PDF p.18) and p.18 (PDF p.19, "Table 2 (end)"); Table 3 p.18 (PDF p.19).
+#   Sec. 6.2-6.3 text values p.5-6 (PDF pp.6-7).
+# Local file: prep2007_35.pdf, 19 PDF pages (library cover + 18 preprint pages), md5 ef50600a0c6b4015417f2640d9f2ce65.
+#
+# WITNESSES
+#   A (decides): the page image, 300 dpi crops of PDF pp.18-19, every cell read.
+#   B: the ocrmypdf --force-ocr -l rus+eng sidecar (prep2007_35-ocr-rus.txt). The PDF text layer is a legacy
+#     Type 3 font and is unusable. Check run (compare_ssr2008.py): every numeric cell of A with 3 or more characters (172 cells)
+#     occurs as a string in B's Table 2 text. This is a bag-of-strings test, not cell by cell: a repeated value such
+#     as 0.7631 would pass even if one cell were misread. B drops or garbles
+#     symbols only: the minus-plus sign on row 18_1 e~(0) ("2"), the Tr cell of rows 22 and 28 (blank), the
+#     infinity signs ("oo", "co"), and the subscripts on k ("51" for 5_1). Those cells are as read on A.
+#   C (per-cell witness): JAMM 71:933 Table 2 p.946 and Table 3 p.952, read cell by cell on 250 dpi page images.
+#     Every preprint cell equals JAMM or differs by one unit in the last digit (33 cells in Table 2, listed in
+#     `jamm:`); each difference is explained against SSR 2008 (compare_ssr2008.out). Table 3 differs in one cell.
+#   No value here was computed by us. Values are strings, exactly as printed. "inf" = the printed infinity sign;
+#     "+-2" = plus-minus sign, "-+2" = minus-plus sign.
+#
+# RELATION TO OTHER PRINTS OF THE SAME TABLES (see the digest, sec. 2)
+#   - JAMM 71:933 (2007) Table 2 p.946 and Table 3 p.952 are the journal form of these tables. Every JAMM cell
+#     was read on its 250 dpi page image. Cells where JAMM differs are given in `jamm:` on the row.
+#   - Bruno & Varin 2008, Sol. Syst. Res. 42(2):154, Table 2 (data/sources/bruno-varin-2008-ssr-tables.yaml,
+#     table2_family_i_mu0) prints the same 39 orbits to 5-6 digits.
+#   - Varin 2008 (KIAM 16/2008) and Varin & Bruno 2009 SSR 43(3):253 Table 2 print mu'_k, mu''_k to 9 digits
+#     (data/sources/varin-bruno-2009-closed-families-tables.yaml).
+#
+# conventions block: see `conventions:` at the end.
+table_2:
+  caption: "Таблица 2. (Table 2.) Critical orbits of the generating family i (mu = 0)"
+  page: "pp.17-18 (PDF pp.18-19)"
+  mu: 0.0
+  period_convention: T_over_2pi   # header "T/(2pi)"; T the full period. At mu = 0 there is no (1 - mu) factor.
+  n_orbits: 39
+  columns: [k, T_over_2pi, C, Tr, a_0, e_0, a_T2, e_T2]
+  notes:
+    - "The subscript m in k_m is the number of arc-solutions the orbit is made of (text p.3). Written k: \"5_1\"."
+    - "Tr is the printed plane trace entry. A pair [x, y] is the jump of Tr across that orbit; two pairs on two printed lines (rows 11_2, 23_2, 39_2) are kept as one string."
+    - "T_over_2pi rows 12_2, 13_2, 14_2, 24_2, 25_2, 26_2, 30_3-34_3 print 4 significant digits; the others print exact fractions or integers."
+    - "Row 18_1 a~(T/2) = 23.872 in both prints. SSR 2008 prints 23.93659 for this cell. Not resolved here."
+  rows:
+    - {k: "1",    T_over_2pi: "1/2",   C: "3.4668",  Tr: "-2",              a_0: "-0.4807", e_0: "1",       a_T2: "0.4807", e_T2: "1"}
+    - {k: "2",    T_over_2pi: "1",     C: "3.1748",  Tr: "2",               a_0: "-0.6300", e_0: "1",       a_T2: "0.6300", e_T2: "1"}
+    - {k: "3",    T_over_2pi: "1",     C: "1.5874",  Tr: "2",               a_0: "-0.6300", e_0: "+-2",     a_T2: "0.6300", e_T2: "+-2"}
+    - {k: "4",    T_over_2pi: "1",     C: "0",       Tr: "2",               a_0: "-0.6300", e_0: "-1",      a_T2: "0.6300", e_T2: "-1"}
+    - {k: "5_1",  T_over_2pi: "1",     C: "0.3027",  Tr: "[2, +inf]",       a_0: "-0.6300", e_0: "-0.4126", a_T2: "0.6300", e_T2: "-0.4126"}
+    - {k: "6_1",  T_over_2pi: "1",     C: "1.7935",  Tr: "+inf",            a_0: "-0.5575", e_0: "0",       a_T2: "0.6657", e_T2: "-0.4978"}
+    - {k: "7_1",  T_over_2pi: "1",     C: "2.8720",  Tr: "[+inf, 2]",       a_0: "-0.6300", e_0: "0.4126",  a_T2: "0.6300", e_T2: "0.4126"}
+    - {k: "8",    T_over_2pi: "1",     C: "3.1748",  Tr: "2",               a_0: "-0.6300", e_0: "1",       a_T2: "0.6300", e_T2: "1"}
+    - {k: "9",    T_over_2pi: "3/2",   C: "3.0925",  Tr: "-2",              a_0: "-0.7113", e_0: "1",       a_T2: "0.7113", e_T2: "1",       jamm: {C: "3.0926", a_0: "-0.7114", a_T2: "0.7114"}}
+    - {k: "10",   T_over_2pi: "2",     C: "3.0575",  Tr: "2",               a_0: "-0.7631", e_0: "1",       a_T2: "0.7631", e_T2: "1"}
+    - {k: "11_2", T_over_2pi: "2",     C: "2.0876",  Tr: "[2, -inf], [-inf, +inf]", a_0: "-0.7631", e_0: "0.1044", a_T2: "0.7631", e_T2: "1.8955", jamm: {e_T2: "1.8956"}}
+    - {k: "12_2", T_over_2pi: "2.281", C: "2.8741",  Tr: "[+inf, -inf]",    a_0: "-0.6328", e_0: "0.4182",  a_T2: "0.9001", e_T2: "1.3695",  jamm: {a_0: "-0.6329"}}
+    - {k: "13_2", T_over_2pi: "2.055", C: "1.7935",  Tr: "-inf",            a_0: "-0.5575", e_0: "0",       a_T2: "0.7377", e_T2: "1.9669",  jamm: {T_over_2pi: "2.056"}}
+    - {k: "14_2", T_over_2pi: "1.973", C: "1.4018",  Tr: "-inf",            a_0: "-0.5548", e_0: "-0.0368", a_T2: "0.7133", e_T2: "+-2",     jamm: {T_over_2pi: "1.974"}}
+    - {k: "15_2", T_over_2pi: "2",     C: "-0.2960", Tr: "[-inf, 2]",       a_0: "-0.7631", e_0: "-0.6067", a_T2: "0.7631", e_T2: "-1.3932", jamm: {e_0: "-0.6068"}}
+    - {k: "16",   T_over_2pi: "2",     C: "-0.4367", Tr: "2",               a_0: "-0.7631", e_0: "-1",      a_T2: "0.7631", e_T2: "-1"}
+    - {k: "17_1", T_over_2pi: "2",     C: "-0.3505", Tr: "[2, +inf]",       a_0: "-0.7631", e_0: "-1.3104", a_T2: "0.7631", e_T2: "-0.6896"}
+    - {k: "18_1", T_over_2pi: "2",     C: "1.4845",  Tr: "+inf",            a_0: "-0.6736", e_0: "-+2",     a_T2: "23.872", e_T2: "-1.9581"}
+    - {k: "19_1", T_over_2pi: "2",     C: "2.9712",  Tr: "[+inf, 2]",       a_0: "-0.7631", e_0: "1.3104",  a_T2: "0.7631", e_T2: "0.6896"}
+    - {k: "20",   T_over_2pi: "2",     C: "3.0575",  Tr: "2",               a_0: "-0.7631", e_0: "1",       a_T2: "0.7631", e_T2: "1"}
+    - {k: "21",   T_over_2pi: "5/2",   C: "3.0392",  Tr: "-2",              a_0: "-0.7990", e_0: "1",       a_T2: "0.7990", e_T2: "1",       jamm: {a_0: "-0.7991", a_T2: "0.7991"}}
+    - {k: "22",   T_over_2pi: "3",     C: "3.0285",  Tr: "2",               a_0: "-0.8254", e_0: "1",       a_T2: "0.8254", e_T2: "1",       jamm: {a_0: "-0.8255", a_T2: "0.8255"}}
+    - {k: "23_2", T_over_2pi: "3",     C: "2.5673",  Tr: "[2, -inf], [-inf, +inf]", a_0: "-0.8254", e_0: "1.6657", a_T2: "0.8254", e_T2: "1.6657", jamm: {a_0: "-0.8255", a_T2: "0.8255"}}
+    - {k: "24_2", T_over_2pi: "3.347", C: "2.9712",  Tr: "[+inf, -inf]",    a_0: "-0.7634", e_0: "1.3099",  a_T2: "0.9507", e_T2: "1.1765"}
+    - {k: "25_2", T_over_2pi: "3.088", C: "1.4845",  Tr: "-inf",            a_0: "-0.6736", e_0: "+-2",     a_T2: "0.7548", e_T2: "1.9214"}
+    - {k: "26_2", T_over_2pi: "2.990", C: "1.4018",  Tr: "-inf",            a_0: "-0.6717", e_0: "-1.9985", a_T2: "0.7133", e_T2: "+-2",     jamm: {a_0: "-0.6718"}}
+    - {k: "27_2", T_over_2pi: "3",     C: "-0.5544", Tr: "[-inf, 2]",       a_0: "-0.8254", e_0: "-1.2358", a_T2: "0.8254", e_T2: "-1.2357", jamm: {a_0: "-0.8255", a_T2: "0.8255", e_T2: "-1.2358"}}
+    - {k: "28",   T_over_2pi: "3",     C: "-0.6057", Tr: "2",               a_0: "-0.8254", e_0: "-1",      a_T2: "0.8254", e_T2: "-1",      jamm: {a_0: "-0.8255", a_T2: "0.8255"}}
+    - {k: "29_1", T_over_2pi: "3",     C: "-0.5646", Tr: "[2, +inf]",       a_0: "-0.8254", e_0: "-0.7886", a_T2: "0.8254", e_T2: "-0.7885", jamm: {a_0: "-0.8255", a_T2: "0.8255", e_T2: "-0.7886"}}
+    - {k: "30_3", T_over_2pi: "2.858", C: "-0.2960", Tr: "+inf",            a_0: "-0.7631", e_0: "-0.6067", a_T2: "1.0894", e_T2: "-1.0821"}
+    - {k: "31_3", T_over_2pi: "2.973", C: "1.4018",  Tr: "+inf",            a_0: "-0.5548", e_0: "-0.0368", a_T2: "2.0701", e_T2: "-2.4830"}
+    - {k: "32_3", T_over_2pi: "3.111", C: "1.7935",  Tr: "+inf",            a_0: "-0.5575", e_0: "0",       a_T2: "1.5137", e_T2: "-2.6606"}
+    - {k: "33_3", T_over_2pi: "3.575", C: "2.8741",  Tr: "[+inf, -inf]",    a_0: "-0.6328", e_0: "0.4182",  a_T2: "1.1566", e_T2: "-1.1354", jamm: {a_0: "-0.6329"}}
+    - {k: "34_3", T_over_2pi: "3.103", C: "2.0876",  Tr: "[-inf, +inf]",    a_0: "-0.7631", e_0: "0.1044",  a_T2: "1.4578", e_T2: "-2.6859"}
+    - {k: "35_1", T_over_2pi: "3",     C: "2.9874",  Tr: "[+inf, 2]",       a_0: "-0.8254", e_0: "0.7885",  a_T2: "0.8254", e_T2: "0.7885",  jamm: {a_0: "-0.8255", a_T2: "0.8255"}}
+    - {k: "36",   T_over_2pi: "3",     C: "3.0285",  Tr: "2",               a_0: "-0.8254", e_0: "1",       a_T2: "0.8254", e_T2: "1",       jamm: {a_0: "-0.8255", a_T2: "0.8255"}}
+    - {k: "37",   T_over_2pi: "7/2",   C: "3.0216",  Tr: "-2",              a_0: "-0.8457", e_0: "1",       a_T2: "0.8457", e_T2: "1"}
+    - {k: "38",   T_over_2pi: "4",     C: "3.0170",  Tr: "2",               a_0: "-0.8617", e_0: "1",       a_T2: "0.8617", e_T2: "1",       jamm: {a_0: "-0.8618", a_T2: "0.8618"}}
+    - {k: "39_2", T_over_2pi: "4",     C: "2.7447",  Tr: "[2, -inf], [-inf, +inf]", a_0: "-0.8617", e_0: "0.4786", a_T2: "0.8617", e_T2: "1.5213", jamm: {a_0: "-0.8618", a_T2: "0.8618", e_T2: "1.5214"}}
+table_3:
+  caption: "Таблица 3. (Table 3.) mu'_k, mu''_k and their normalised values"
+  page: "p.18 (PDF p.19)"
+  columns: [k, mu_p, mu_pp, mu_p_over_mu_p1, mu_pp_over_mu_pp1, k_pow_minus_8_3]
+  notes:
+    - "Row 4 mu'_k is printed 9.543·10^-5 (page image, 300 dpi). JAMM Table 3 (p.952, image) prints 9.543·10^-4 for the same cell, which breaks mu'_4 < mu''_4. The preprint value is right; the JAMM value is a journal misprint."
+    - "Mantissas are printed with a centred dot: \"4.131 · 10^-3\"."
+  rows:
+    - {k: "1", mu_p: "4.131e-3", mu_pp: "3.669e-2", mu_p_over_mu_p1: "1",     mu_pp_over_mu_pp1: "1",     k_pow_minus_8_3: "1"}
+    - {k: "2", mu_p: "6.617e-4", mu_pp: "5.273e-3", mu_p_over_mu_p1: "0.160", mu_pp_over_mu_pp1: "0.144", k_pow_minus_8_3: "0.157"}
+    - {k: "3", mu_p: "2.153e-4", mu_pp: "1.882e-3", mu_p_over_mu_p1: "0.052", mu_pp_over_mu_pp1: "0.051", k_pow_minus_8_3: "0.053"}
+    - {k: "4", mu_p: "9.543e-5", mu_pp: "8.866e-4", mu_p_over_mu_p1: "0.023", mu_pp_over_mu_pp1: "0.024", k_pow_minus_8_3: "0.025", jamm: {mu_p: "9.543e-4"}}
+text_values_sec_6_2_6_3:
+  page: "pp.5-6 (PDF pp.6-7), page image 200 dpi"
+  notes:
+    - "Printed with \"≈\". Same digits in JAMM pp.950-952 (text layer). Varin 2008 / Varin & Bruno 2009 give 9 digits."
+  rows:
+    - {k: "1", mu_p: "4.1313e-3",  mu_pp: "3.66863e-2"}
+    - {k: "2", mu_p: "6.61705e-4", mu_pp: "5.27272e-3"}
+    - {k: "3", mu_p: "2.15292e-4", mu_pp: "1.88241e-3"}
+    - {k: "4", mu_p: "9.54305e-5", mu_pp: "8.86552e-4"}
+  other_mu_values_named:
+    - "Fig. 10 a-c: mu = mu_J = 9.5388e-4, 2e-3, 3e-3; Fig. 10 d: mu'_1."
+    - "Fig. 11 a: i_1 at mu = 5e-3, mu_M = 1.2155e-2, 2.3e-2, 3.5e-2 (JAMM p.951, page image, lists only mu_M and 2.3e-2); unclosed curves at 5e-3."
+    - "Fig. 11 b: mu = 5e-4. Fig. 11 d: i_2 at 7e-4, mu_J, 2.5e-3, 5e-3."
+    - "Sec. 6.4: mu_M ≈ 1.2155092e-2 (Earth-Moon): closed family i_1 exists, not indicated by Broucke 1968 [15]."
+    - "Sec. 6.5: mu = 5.178e-5 (Sun-Neptune), families with pieces Id_p, p = -2 ... -7, computed in [9] (Voyatzis & Kotoulas 2005 PSS)."
+conventions:
+  frame: "Planar circular restricted problem, synodic frame, origin at P1 (mass 1 - mu), P2 at (1, 0); units |P1P2| = 1, angular rate 1 (Bruno-Varin eq. (1.2), as in JAMM 71:933 and SSR 2008). P3 is the massless body."
+  mu: "Both tables are at mu = 0 (generating family). Table 3 lists mu values, not orbits."
+  period_field: T_over_2pi
+  period_printed_as: "header \"T/(2pi)\"; T the full period. The (1 - mu) factor that Bruno & Varin 2009 SSR tables carry at mu > 0 vanishes here because mu = 0."
+  jacobi: "C = -2H (Bruno-Varin Hamiltonian). At mu = 0 the +mu shift seen in the SSR 2009 family-h tables vanishes, so C is the usual mu = 0 Jacobi constant: C = 1/a + 2 sqrt(a) on the circular rows (e~ = 1)."
+  a_e_coordinates: "a~, e~ are the 'celestial' coordinates of the point on the symmetry plane (SSR 2008 eq. (6)): x1 = a~ (2 - |e~|), y2|y2| = e~/x1 at mu = 0; a = |a~|, e = |1 - |e~||. |e~| = 2 is a collision with P1."
+  trace: "Tr printed plainly (no log compression in the cells shown): +-2, +-inf, or [before, after] pairs."
+  rounding: "The preprint mostly TRUNCATES to 4 decimals where JAMM ROUNDS (see the digest sec. 2 and compare_ssr2008.out). Neither print is wrong; use SSR 2008 for 5-digit values."

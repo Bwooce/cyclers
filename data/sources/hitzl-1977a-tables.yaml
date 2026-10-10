@@ -1,0 +1,65 @@
+# Hitzl 1977a, Table 1: consecutive collision orbits, parameters for mu = 0.
+# Source: D. L. Hitzl, "On the Perko Timing Condition for Second Species Orbits in the Restricted Problem",
+#   Astronomy and Astrophysics 54:47-55 (1977), ADS 1977A&A....54...47H. Received May 21, 1976. No DOI (Crossref has
+#   no record; checked 2026-10-11).
+# Local file: image-only ADS JBIG2 scan, 9 pp., md5 ac40bb1ecfcec0742f64be57fb71ade0; OCR copy
+#   (ocrmypdf --force-ocr -l eng) md5 bf3545358351cb44bcb3f23b452c02be. PDF page n = journal page 46 + n.
+# Table 1 is on p.53 (top, full width). No other numeric table in the paper.
+# Transcribed from the page image (400 dpi crop; the image decides). Second witness: tesseract 5 at 400 dpi, psm 6,
+#   on the same crop (tess_table1_psm6.txt), NOT the ocrmypdf text layer. 96 numeric cells (tau/pi to T) compared:
+#   94 agree, 2 differ (C24 T: tesseract drops the point; B1 T: tesseract "5.10777", image "5.70777", and
+#   T = 2 tau = 5.70777 from the printed tau/pi). n*, Fig. and the sign column agree by eye.
+#   Comparison file: witness-comparison-hitzl1977a.tsv.
+# No value here was computed by us. Values we computed are in note: fields marked "ours" and in recompute_table1.out,
+#   twobody_check.out, crosscheck_paperI.out, paperI_miss.out. Numbers kept as printed (strings); minus is "-".
+#
+# EQUATIONS (pp.47-51, page images)
+#   Frame: inertial x, y with the Earth M1 (mass 1) at the origin; the Moon M2 (massless at mu = 0) on a circle of
+#     radius 1, period 2 pi: "x = cos t, y = sin t" (2). Particle M3 on a Kepler ellipse:
+#     "x = sigma0 a (sigma2 cos E - e), y = sigma0 sigma1 sigma2 a (1 - e^2)^(1/2) sin E" (3);
+#     "t = a^(3/2) (E - sigma2 e sin E)" (4). Collisions with the Moon at t = -tau and t = +tau, E = -eta and +eta.
+#   Switch functions (1): sigma0 = +1 if the apse at t = 0 is at x > 0, -1 if x < 0; sigma1 = +1 direct, -1 retrograde;
+#     sigma2 = +1 if M3 is at perigee at t = 0, -1 if at apogee. sigma = sigma0 sigma2 (8).
+#   "a = (1 - sigma c_tau c_eta)/s_eta^2,  e = (sigma2 c_eta - sigma0 c_tau)/(1 - sigma c_tau c_eta)" (7).
+#   Henon timing condition: "F0(tau, eta; sigma, sigma_eta) = sigma_eta (1 - sigma c_tau c_eta)^(1/2)
+#     [eta (1 - sigma c_tau c_eta) - s_eta (c_eta - sigma c_tau)] - tau s_eta^3 = 0" (9), sigma_eta = sgn(sin eta).
+#   x0 = sigma0 a (sigma2 - e) (28), the position at t = E = 0; x1 = -sigma0 a (sigma2 + e) (29), at E = pi
+#     ("the particle only reaches this location if eta/pi >= 1").
+#   Jacobi constant at mu = 0: "C = 2 sigma1 (a (1 - e^2))^(1/2) + 1/a" (33), from eq. (30)
+#     x^2 + y^2 + 2(1-mu)/r1 + 2 mu/r2 - xdot^2 - ydot^2 = C (rotating frame, Moon at x = 1, y = 0).
+#   Closed form along consecutive collision orbits: C(tau, eta; sigma, sigma_eta) =
+#     2 sigma sigma_eta s_tau/(1 - sigma c_tau c_eta)^(1/2) + sin^2 eta/(1 - sigma c_tau c_eta) (34).
+#   Critical orbits: extrema of C on a characteristic, G* = 0 (eqs. 35-37), as in Hitzl & Henon 1977 (Celest. Mech.) (Celest. Mech.).
+source: {bibcode: 1977A&A....54...47H, journal: A&A, volume: 54, pages: 47-55, table: 1, page: 53}
+conventions:
+  mu: "0 (limiting case; all rows)"
+  units: "Earth-Moon distance 1, Moon angular rate 1, Earth mass 1 (G = 1); Moon period 2 pi"
+  frame_for_x0_x1: "x axis through the Moon at t = 0 (Moon at (1, 0)); Earth at the origin. Same axis in the inertial and rotating frames at t = 0."
+  columns:
+    name: "family name; A_i, B_i, C_ij after Henon 1968; (k) marks a critical orbit, ~ marks an orbit near a degenerate one"
+    fig: "figure number in the paper"
+    n_star: "one-half the number of times the orbit intersects the x axis during one orbital period (p.51)"
+    tau_over_pi: "half the time between the two Moon collisions, over pi; T = 2 tau"
+    eta_over_pi: "eccentric anomaly at the collision, over pi"
+    signs: "sigma0 sigma1 sigma2 (eq. 1)"
+    a: "semimajor axis (eq. 7)"
+    e: "eccentricity (eq. 7)"
+    x0: "x at t = 0 (eq. 28)"
+    x1: "x at E = pi (eq. 29)"
+    C: "Jacobi constant at mu = 0 (eq. 33)"
+    T: "orbit period 2 tau"
+    critical: "printed Yes/No column: yes, no, or \"almost\" (printed in quotes)"
+  printed_rounding: "tau/pi and eta/pi are rounded to 5 decimals; a, e, x0, x1, C were computed from these rounded values (ours: recompute_table1.out reproduces 69 of 72 cells to the printed digits; the 3 others are A0(-1) x0, C and T, which follow the unrounded tau of Hitzl & Henon 1977 (Celest. Mech.)). For the critical rows C23(1) and C24(2) this rounding moves a, e, x0, C by up to 6e-4 from Hitzl & Henon 1977 (Celest. Mech. 15:421) Tables I-II, which gives 10-digit tau/pi, eta/pi. Use Hitzl & Henon 1977 (Celest. Mech.) for those rows."
+table_1:
+  - {name: "A1", fig: "3,4", n_star: 3, tau_over_pi: "1.85000", eta_over_pi: "1.50741", signs: "--+", a: "1.02129", e: "0.89571", x0: "-0.10651", x1: "1.93607", C: "0.08044", T: "11.62389", critical: "no"}
+  - {name: "A0(-1)", fig: "5", n_star: 1, tau_over_pi: "0.21345", eta_over_pi: "0.39333", signs: "--+", a: "1.41019", e: "0.88445", x0: "-0.16294", x1: "2.65743", C: "-0.39913", T: "1.34113", critical: "yes", note: "T printed 1.34113 follows tau/pi 0.2134482407 (Hitzl & Henon 1977 (Celest. Mech.)), not the rounded 0.21345 (ours: 1.34115). Same orbit as Hitzl & Henon 1977 (Celest. Mech.) Table II A0(-1), all fields equal."}
+  - {name: "C12", fig: "6", n_star: 3, tau_over_pi: "0.96601", eta_over_pi: "2.08512", signs: "+--", a: "0.58772", e: "0.72733", x0: "-1.01519", x1: "0.16026", C: "0.64921", T: "6.06962", critical: "no", note: "ours: the printed (tau, eta) miss the timing condition (9) by F0 = 6.0e-5; the Kepler arc misses the Moon by 1.8e-3 at t = tau. At the printed eta, F0 = 0 at tau/pi = 0.966098. a, e, T are consistent with the printed 0.96601. Unresolved: possible transposed digits (0.96610), or a coarse point on a characteristic where dF0/deta is small (-0.057)."}
+  - {name: "C23", fig: "7", n_star: 5, tau_over_pi: "1.91025", eta_over_pi: "3.30000", signs: "--+", a: "0.66527", e: "0.85601", x0: "-0.09579", x1: "1.23475", C: "0.65984", T: "12.00245", critical: "no", note: "Fig. 7 caption: 'A closely related orbit of this type appears in Huang (1962), as Figure 1'."}
+  - {name: "C23(1)", fig: "8", n_star: 2, tau_over_pi: "1.99451", eta_over_pi: "2.99244", signs: "-++", a: "0.76372", e: "0.30948", x0: "-0.52736", x1: "1.00007", C: "2.97140", T: "12.53188", critical: "yes", note: "Hitzl & Henon 1977 (Celest. Mech.) (10-digit tau, eta) gives a 0.76343, e 0.30997, x0 -0.52679, C 2.97130, T 12.53191; this table's values follow the 5-digit rounding (ours: Moon miss 3.0e-3 here against 2.2e-8 with the 10-digit values). Fig. 8 caption: 'An orbit of this type is presented by Huang as Figure 2'."}
+  - {name: "C24", fig: "9", n_star: 6, tau_over_pi: "1.94797", eta_over_pi: "4.20000", signs: "---", a: "0.58400", e: "0.88049", x0: "1.09820", x1: "-0.06979", C: "0.98777", T: "12.23946", critical: "no"}
+  - {name: "C24(2)", fig: "10", n_star: 6, tau_over_pi: "2.12158", eta_over_pi: "3.77226", signs: "---", a: "0.69627", e: "0.57793", x0: "1.09867", x1: "-0.29388", C: "0.07428", T: "13.33028", critical: "yes", note: "Hitzl & Henon 1977 (Celest. Mech.) gives a 0.69628, e 0.57791, x1 -0.29389, C 0.07423, T 13.33030 (rounding of tau, eta; ours)."}
+  - {name: "B1", fig: "11", n_star: 2, tau_over_pi: "0.90842", eta_over_pi: "1.33223", signs: "+-+", a: "0.69301", e: "0.88066", x0: "0.08270", x1: "-1.30333", C: "0.65422", T: "5.70777", critical: "no", note: "ours: F0 = 1.2e-4 at the printed (tau, eta); Moon miss 1.4e-4."}
+  - {name: "B2", fig: "12", n_star: 4, tau_over_pi: "1.90000", eta_over_pi: "2.40819", signs: "---", a: "0.79369", e: "0.91382", x0: "1.51899", x1: "-0.06840", C: "0.53632", T: "11.93805", critical: "no"}
+  - {name: "B3", fig: "13", n_star: 6, tau_over_pi: "2.81858", eta_over_pi: "3.41923", signs: "+-+", a: "0.84169", e: "0.74925", x0: "0.21105", x1: "-1.47233", C: "-0.02712", T: "17.70966", critical: "no"}
+  - {name: "B1~B1(0)", fig: "14", n_star: 1, tau_over_pi: "1.40000", eta_over_pi: "1.40658", signs: "+++", a: "0.99377", e: "0.02166", x0: "0.97225", x1: "-1.01530", C: "2.99956", T: "8.79646", critical: "almost"}
+  - {name: "B2~B2(0)", fig: "15", n_star: 2, tau_over_pi: "2.40000", eta_over_pi: "2.44486", signs: "-+-", a: "0.97572", e: "0.14434", x0: "1.11656", x1: "-0.83489", C: "2.97977", T: "15.07964", critical: "almost"}

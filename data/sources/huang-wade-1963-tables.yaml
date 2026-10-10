@@ -1,0 +1,161 @@
+# Huang & Wade 1963, Tables I-VI: planar direct and retrograde 2/3-resonant Earth-Moon periodic orbits, their period
+#   variation, and two 3D initial-condition sequences.
+# Source: Su-Shu Huang and Clarence Wade, Jr., "Preliminary Study of Periodic Orbits of Interest for Moon Probes. II",
+#   The Astronomical Journal 68(6):388-391 (August 1963), doi 10.1086/108988, ADS 1963AJ.....68..388H.
+#   Received 11 October 1962.
+# Local file: ADS scan (200 dpi colour JPX plus 600 dpi JBIG2 mask per page), 4 pp., md5 439006dcdcb5f73b1f7241958455cbb3;
+#   OCR copy (ocrmypdf --force-ocr -l eng) md5 62cf94d76e7f18b35cf67552cadec8d1. PDF page n = journal page 387 + n.
+#   PDF page 1 also carries the end of Westerman's preceding paper (AJ 68:382-388).
+# Tables I-II p.389 (left column), III p.389 (right), IV p.390 (left), V-VI p.390 (right). No table on p.388 or p.391.
+# Transcribed from the page images (400 dpi crops; the image decides). Second witness: tesseract 5 psm 6 on 400 dpi
+#   crops of each table (witness-tesseract/w63_*.txt). Cell-by-cell comparison: witness-comparison-huangwade1963.tsv.
+#   Em-dash minus signs and "-+" (a plus sign read as two glyphs) were normalized before comparing.
+#   The ocrmypdf text layer was NOT used for any value (it reads Table V 0.585 row p1 as "12.5604"; the image is 12.5694).
+# No value here was computed by us. Values we computed are only in `note:` fields, marked "ours".
+# Numbers are kept as printed (strings, trailing zeros kept); minus is "-", the printed plus sign is "+".
+conventions:
+  frame: >-
+    As Huang 1962 (cited p.388 "the symbols used here have been defined" there): rotating frame, origin at the
+    Earth-Moon barycentre, unit length = Earth-Moon separation, total mass 1, Earth (1 - mu) at x = -mu, Moon (mu)
+    at x = 1 - mu, lunar period 2 pi. mu = 0.01215 is printed in Huang 1962 (p.304, p.308), not in this paper.
+    Our integration at that mu reproduces every printed p1 (integrate_huang.out), which confirms frame and mu.
+  initial_conditions_planar: "x = x0, y = 0, xdot = 0, ydot = ydot0 (eq. 2, p.388)"
+  initial_conditions_3d: "x = x0, y = 0, z = 0, xdot = 0, ydot = ydot0, zdot = zdot0 (eq. 3, p.390); sequences (eq. 4): (1) x0 = -0.39215, (2) x0 = -ydot0"
+  period_p_n: >-
+    "the time interval between two successive crossings over the x axis by the third body at points near to each
+    other" (p.388); p1, p2, ... are the periods of successive cycles. For the 3D tables p_n(z=0) and p_n(y=0) are
+    the intervals between successive passages through the xy and xz planes at x near x0 (p.390).
+  Delta: "Delta_{n+1,n} = p_{n+1} - p_n (eq. 1, p.388). A periodic orbit has Delta = 0."
+  bracket: >-
+    "For each value of x0 in both tables, two values of ydot0 are given - one with Delta_2,1 being positive and the
+    other with Delta_2,1 negative. Therefore, the correct value of ydot0 ... must lie somewhere between" (p.389).
+  integration: >-
+    Fourth-order Runge-Kutta, double precision, IBM 7090, Delta t = 0.0078125; Jacobi constant constant to at least
+    six significant figures over 4 pi; Lagrange four-point inverse interpolation for p_n (pp.388-389). Tables V-VI in
+    single precision (p.390).
+  selection: "far-side closest lunar distance between 0.08 and 0.20 (p.388)"
+  units_time: "lunar period 2 pi; 4 pi = two sidereal months"
+  notes: >-
+    Witness counts (witness_compare.out; value cells, row labels not counted): Table I 42, II 45, III 20, IV 52 plus
+    8 header cells, V 84, VI 24; 275 value cells in all. Tesseract agrees with the image on 274; the one difference
+    is a print speck read as a minus sign before 12.726670 (Table IV header). Row labels (n) all agree.
+    Two printed sign slips in Table I (see its note). The text says the direct family is unstable and the
+    retrograde family stable; Table III shows growth ratios of about 8.5-10, Table IV bounded oscillation.
+tables:
+  - table: "I"
+    caption: "Initial conditions for periodic orbits in direct motion."
+    journal_page: "389"
+    columns: [x0, ydot0, p1, Delta_2_1]
+    blank_x0_means: "same x0 as the row above (printed once per pair)"
+    rows:
+      - ["-0.39215", "-1.6102480", "11.643597", "-0.000457"]
+      - ["", "-1.6102481", "11.643566", "-0.000380"]
+      - ["-0.37215", "-1.7014694", "11.780075", "-0.000091"]
+      - ["", "-1.7014695", "11.780050", "+0.000453"]
+      - ["-0.35215", "-1.7982280", "11.900590", "-0.000175"]
+      - ["", "-1.7982281", "11.900571", "+0.000161"]
+      - ["-0.33215", "-1.9013902", "12.004325", "-0.000025"]
+      - ["", "-1.9013903", "12.004311", "+0.000178"]
+      - ["-0.31215", "-2.0120181", "12.092292", "-0.000105"]
+      - ["", "-2.0120182", "12.092282", "-0.000014"]
+      - ["-0.29215", "-2.1314275", "12.166330", "-0.000034"]
+      - ["", "-2.1314276", "12.166323", "+0.000036"]
+    note: >-
+      Printed sign slips (ours, see integrate_huang.out): x0 -0.39215 second row prints -0.000380, and x0 -0.31215
+      second row prints -0.000014. The text says each pair has one positive and one negative Delta_2_1. Table III
+      prints +0.000014 for ydot0 -2.0120182 at n = 1. Our RK4 replay with the paper's step gives -0.000456/+0.000380
+      and -0.000106/+0.000015. So both are minus signs that should be plus. Kept as printed.
+  - table: "II"
+    caption: "Initial conditions for periodic orbits in retrograde motion."
+    journal_page: "389"
+    columns: [x0, ydot0, p1, Delta_2_1]
+    blank_x0_means: "same x0 as the row above"
+    rows:
+      - ["-0.49215", "2.1636769", "12.836882", "+0.000002"]
+      - ["", "2.1636770", "12.836887", "-0.000013"]
+      - ["-0.47215", "2.1937505", "12.791218", "+0.000009"]
+      - ["", "2.1937506", "12.791223", "-0.000005"]
+      - ["-0.45215", "2.2272677", "12.755097", "+0.000004"]
+      - ["", "2.2272678", "12.755102", "-0.000011"]
+      - ["-0.43215", "2.2645059", "12.726637", "+0.000015"]
+      - ["", "2.2645060", "12.726642", "0.000000"]
+      - ["", "2.2645061", "12.726648", "-0.000017"]
+      - ["-0.41215", "2.3058168", "12.704262", "+0.000010"]
+      - ["", "2.3058169", "12.704268", "-0.000007"]
+      - ["-0.39215", "2.3516410", "12.686682", "+0.000009"]
+      - ["", "2.3516411", "12.686689", "-0.000011"]
+  - table: "III"
+    caption: "Variation in period for the direct orbit (x0 = -0.31215)."
+    journal_page: "389"
+    columns: [n, "Delta_n+1_n (ydot0=-2.0120181)", "|ratio| (ydot0=-2.0120181)", "Delta_n+1_n (ydot0=-2.0120182)", "|ratio| (ydot0=-2.0120182)"]
+    ratio_means: "|Delta_n+1,n / Delta_n,n-1|"
+    rows:
+      - ["1", "-0.000105", "", "+0.000014", ""]
+      - ["2", "+0.000909", "8.7", "-0.000131", "9.4"]
+      - ["3", "-0.007777", "8.6", "+0.001124", "8.6"]
+      - ["4", "+0.066079", "8.5", "-0.009618", "8.6"]
+      - ["5", "-0.644121", "9.7", "+0.081658", "8.5"]
+      - ["6", "", "", "-0.841578", "10.3"]
+    note: "Every printed ratio equals the ratio of the printed Deltas to the printed digit (ours)."
+  - table: "IV"
+    caption: "Variation in period (Delta_n+1,n) for the retrograde orbit (x0 = -0.43215)."
+    journal_page: "390"
+    header_rows:
+      - ["ydot0", "2.2645060", "2.2645065", "2.2645070", "2.2645075"]
+      - ["p1", "12.726642", "12.726670", "12.726698", "12.726726"]
+    columns: [n, "ydot0=2.2645060", "ydot0=2.2645065", "ydot0=2.2645070", "ydot0=2.2645075"]
+    rows:
+      - ["1", "0.000000", "-0.000079", "-0.000158", "-0.000237"]
+      - ["2", "+0.000002", "+0.000082", "+0.000164", "+0.000246"]
+      - ["3", "-0.000003", "-0.000006", "-0.000012", "-0.000018"]
+      - ["4", "-0.000001", "-0.000077", "-0.000152", "-0.000227"]
+      - ["5", "+0.000004", "+0.000087", "+0.000169", "+0.000252"]
+      - ["6", "-0.000003", "-0.000013", "-0.000021", "-0.000034"]
+      - ["7", "+0.000002", "-0.000073", "-0.000149", "-0.000217"]
+      - ["8", "0.000000", "+0.000089", "+0.000177", "+0.000259"]
+      - ["9", "-0.000003", "-0.000022", "-0.000039", "-0.000054"]
+      - ["10", "-0.000001", "-0.000066", "-0.000136", "-0.000202"]
+      - ["11", "+0.000006", "+0.000089", "+0.000178", "+0.000263"]
+      - ["12", "-0.000005", "-0.000027", "-0.000046", "-0.000072"]
+      - ["13", "+0.000001", "-0.000059", "-0.000130", "-0.000186"]
+    note: "A print speck sits before 12.726670 in the p1 row; it is not a minus sign (image)."
+  - table: "V"
+    caption: "First sequence of initial conditions which lead to p1(z=0) = p1(y=0) (x0 = -0.39215)."
+    journal_page: "390"
+    columns: [ydot0, zdot0, "x(y=z=0)", p1]
+    precision: "single precision (text p.390)"
+    rows:
+      - ["0.075", "1.88403", "-0.3916", "12.5757"]
+      - ["0.105", "1.75045", "-0.3921", "12.5655"]
+      - ["0.135", "1.75491", "-0.3921", "12.5661"]
+      - ["0.165", "1.82376", "-0.3885", "12.5583"]
+      - ["0.195", "1.89940", "-0.3917", "12.5772"]
+      - ["0.225", "1.97678", "-0.4169", "12.5408"]
+      - ["0.255", "1.97886", "-0.4167", "12.5419"]
+      - ["0.285", "1.98049", "-0.4165", "12.5428"]
+      - ["0.315", "1.98166", "-0.4164", "12.5438"]
+      - ["0.345", "1.98237", "-0.4162", "12.5448"]
+      - ["0.375", "1.98263", "-0.4160", "12.5457"]
+      - ["0.405", "1.98244", "-0.4158", "12.5467"]
+      - ["0.435", "1.98179", "-0.4156", "12.5476"]
+      - ["0.465", "1.90610", "-0.3919", "12.5810"]
+      - ["0.495", "1.97913", "-0.4151", "12.5494"]
+      - ["0.525", "1.83067", "-0.3892", "12.5653"]
+      - ["0.555", "1.69759", "-0.3920", "12.5688"]
+      - ["0.585", "1.63092", "-0.3922", "12.5694"]
+      - ["0.615", "1.75632", "-0.3921", "12.5756"]
+      - ["0.645", "1.75205", "-0.3921", "12.5762"]
+      - ["0.675", "1.88475", "-0.3921", "12.5846"]
+  - table: "VI"
+    caption: "Second sequence of initial conditions which lead to p1(z=0) = p1(y=0)."
+    journal_page: "390"
+    columns: [x0, zdot0, "x(y=z=0)", p1]
+    ydot0_rule: "ydot0 = -x0 (eq. 4, sequence 2): zero inertial velocity in the plane, launch perpendicular to the Moon's orbit plane"
+    precision: "single precision (text p.390)"
+    rows:
+      - ["-0.39215", "1.98258", "-0.4159", "12.5463"]
+      - ["-0.37215", "2.05440", "-0.3927", "12.5479"]
+      - ["-0.35215", "2.13174", "-0.3695", "12.5495"]
+      - ["-0.33215", "2.21547", "-0.3467", "12.5510"]
+      - ["-0.31215", "2.24207", "-0.3120", "12.5850"]
+      - ["-0.29215", "2.34458", "-0.2921", "12.5863"]

@@ -1,0 +1,133 @@
+# Jorba 2001, Tables 1-5 and the printed single-value results: normal behaviour of invariant curves.
+# Source: A. Jorba, "Numerical computation of the normal behaviour of invariant curves of n-dimensional maps",
+#   Nonlinearity 14:943-976 (2001), doi 10.1088/0951-7715/14/5/303. Received 25 Oct 2000, final form 3 May 2001,
+#   published 2 July 2001.
+# Local file: 35 pp. (IOPscience cover page + 34 journal pages 943-976), md5 974de013e766688c7c2dc0db55bd3797.
+#   PDF page n = journal page 942 + n.
+# Tables: 1 p.956, 2 p.958, 3 p.962, 4 p.963, 5 p.972 (PDF pages 15, 17, 21, 22, 31).
+# Transcribed from page images at 120 dpi (witness A, decides). Witness B: the PDF text layer, which is clean (publisher
+#   typesetting). Cell check: every cell string below was searched in the text layer by script (see
+#   jorba-2001-yaml-verify.out). No value here was computed by us. Our values are only in `note:` fields marked "ours"
+#   and in jorba_checks.py / jorba_checks.out.
+# Numbers are kept as printed, with the thin-space digit grouping removed; strings keep trailing zeros.
+# "arg" columns are in radians. "modulus"/"arg" describe eigenvalues of the discretised operator T_{-omega} o A(theta).
+conventions:
+  eigenproblem: "A(theta) psi(theta) = lambda psi(theta + omega)   (eq. 7, p.946)"
+  invariance_of_spectrum: "if lambda is an eigenvalue then lambda*exp(i k omega) is one, for all integers k (Prop. 2.2, p.946)"
+  norm_column: "||psi||^(1) = sum_j |psi_j| |j|, eigenvector scaled to sup norm 1 (sec. 3.2 p.951, sec. 3.7 p.954)"
+  error_column: "norm of the last two Fourier coefficients of the eigenfunction (p.956)"
+  rows_shown: "eigenvalues with positive argument only (complex-conjugate pairs); sorted by the norm column"
+  table_1_2_system: "quasi-periodic Hill equation x'=y, y'=-(a^2+b(cos th1+cos th2))x, th1'=omega1, th2'=omega2 (eq. 15, p.954), section th1=0"
+  table_1_2_parameters: "a^2=0.7, b=0.2, omega1=1, omega2=gamma=(1+sqrt5)/2, cocycle frequency omega=4*pi/(1+sqrt5)=3.883222077450 9332 (p.956)"
+  table_1_N: "N=10 for the printed table (N=8 gave error estimate 5.6e-12; N=10 gave 1.3e-14); Figure 1 uses N=10 and N=64"
+  table_2_N: "N=16 (eq. 17, the 2-torus version, A(2 eta) psi(eta) = lambda psi(eta + omega/2))"
+  table_3_4_system: "bicircular problem (BCP) time-of-the-Sun section, a symplectic map of R^6; parameters (mu, m_S, a_S, omega_S) are NOT printed in this paper (cited to Castella-Jorba 2000 and Simo et al. 1995)"
+tables:
+  table_1_hill_a2_0.7_b_0.2_N10:
+    page: 956
+    columns: [modulus, arg, norm1, error]
+    rows:
+      - ["1.421399533740337", "1.199981614864327", "1.069409e+01", "1.334772e-14"]
+      - ["0.703531960059501", "1.199981614864327", "1.069409e+01", "1.326585e-14"]
+      - ["1.421399533740339", "2.683240462586607", "2.360600e+01", "3.917410e-13"]
+      - ["0.703531960059501", "2.683240462586607", "2.360600e+01", "3.928163e-13"]
+      - ["0.703531960059501", "0.283277232857952", "3.291719e+01", "5.593418e-12"]
+      - ["1.421399533740338", "0.283277232857953", "3.291719e+01", "5.594009e-12"]
+      - ["0.689449522457020", "0.000000000000000", "3.939715e+01", "2.489513e+00"]
+      - ["1.450432508004731", "0.000000000000000", "4.203193e+01", "2.638401e+00"]
+      - ["0.703531960059501", "2.116685996870700", "4.216431e+01", "6.078403e-10"]
+      - ["1.421399533740338", "2.116685996870700", "4.216431e+01", "6.078433e-10"]
+      - ["0.703531960059500", "1.766536080580232", "5.141098e+01", "1.776935e-08"]
+      - ["1.421399533740338", "1.766536080580234", "5.141098e+01", "1.777005e-08"]
+      - ["1.421399533740338", "0.633427149148420", "5.954887e+01", "5.827280e-07"]
+      - ["0.703531960059499", "0.633427149148421", "5.954887e+01", "5.827439e-07"]
+      - ["0.703531960059502", "3.033390378877072", "6.879551e+01", "2.166215e-05"]
+      - ["1.421399533740338", "3.033390378877072", "6.879551e+01", "2.166279e-05"]
+      - ["1.421399533742152", "0.849831698578568", "7.804176e+01", "5.779757e-04"]
+      - ["0.703531960058603", "0.849831698578568", "7.804176e+01", "5.780239e-04"]
+      - ["1.421399531120573", "1.550131531929425", "8.727686e+01", "8.881366e-02"]
+      - ["0.703531961356172", "1.550131531929425", "8.727694e+01", "8.881353e-02"]
+      - ["1.421425197061718", "2.333140113852317", "9.138071e+01", "2.636837e+00"]
+      - ["0.703519258042659", "2.333140113852317", "9.145307e+01", "2.637177e+00"]
+    note: "Rows 7-8 (arg 0, error about 2.5) and the last rows (error 1e-2 to 3) are the inaccurate eigenvalues; the printed text calls rows 1-2 'frequency halving': arg = pi - omega/2 = 1.1999816148643267 (p.957). Ours: rows 1-6 reproduce to all printed digits (jorba_checks.out sec. B)."
+  table_2_hill_a2_0.7_b_0.2_N16_half_frequency:
+    page: 958
+    columns: [modulus, arg, norm1, error]
+    rows:
+      - ["0.703531960059501", "3.141592653589793", "6.996840e+00", "1.324833e-13"]
+      - ["1.421399533740336", "3.141592653589793", "6.996840e+00", "1.371380e-13"]
+      - ["1.421399533740341", "1.199981614864327", "1.484924e+01", "5.604540e-12"]
+      - ["0.703531960059501", "1.199981614864327", "1.484924e+01", "5.603432e-12"]
+      - ["1.421399533740337", "0.741629423861141", "2.771934e+01", "1.006327e-11"]
+      - ["0.703531960059500", "0.741629423861141", "2.771934e+01", "1.006374e-11"]
+      - ["1.421399533740337", "2.683240462586607", "3.802773e+01", "6.080422e-10"]
+      - ["0.703531960059499", "2.683240462586606", "3.802773e+01", "6.080418e-10"]
+      - ["1.421399533740337", "1.658333805867512", "4.734173e+01", "6.120827e-10"]
+      - ["0.703531960059499", "1.658333805867513", "4.734173e+01", "6.120796e-10"]
+    note: "The first two eigenvalues are real and negative (arg pi), so the system reduces to a real constant matrix (p.958). Ours: arg pi, 1.199981614864, 0.741629423861, 2.683240462587 reproduce (modulus to 12 digits); the norm column does not reproduce because our normalisation differs (jorba_checks.out sec. B)."
+  table_3_bcp_unstable_curve_VF1:
+    page: 962
+    rotation_number_omega: "0.535033339385478"
+    zdot_at_z0: "0.080508698608030"
+    columns: [label, modulus, arg]
+    rows:
+      - ["lambda1", "1.091942641437887", "0.000000000000000"]
+      - ["lambda2", "0.915799019152856", "0.000000000000000"]
+      - ["lambda3", "0.999999999999985", "2.035517841801725"]
+      - ["lambda4", "0.999999999999985", "-2.035517841801725"]
+    note: "Saddle x centre; the two neutral directions (tangent and its symplectic conjugate) are skipped. Printed |lambda1 lambda2 - 1| about 4e-15. Ours: product - 1 = -4.33e-15 from the printed digits."
+  table_4_bcp_unstable_curve_VF3:
+    page: 963
+    rotation_number_omega: "0.505512051568360"
+    zdot_at_z0: "0.895865023909962"
+    columns: [label, modulus, arg]
+    rows:
+      - ["lambda1", "1.000103145715284", "0.436023756155351"]
+      - ["lambda2", "1.000103145715284", "-0.436023756155351"]
+      - ["lambda3", "0.999896864922655", "1.447047859292059"]
+      - ["lambda4", "0.999896864922655", "-1.447047859292059"]
+    note: "Complex saddle: printed |(alpha1 + 2 omega) - alpha3| about 1e-14. Ours: 1.2e-14 from the printed digits, and |lambda1||lambda3| = 0.9999999999999977."
+  table_5_system_18_rotation_N16:
+    page: 972
+    system: "x_bar = A(theta) x, theta_bar = theta + omega, A(theta) = [[cos t, -sin t],[sin t, cos t]] (eq. 18, p.966; non-reducible, from Rychlik 1992); omega is not printed"
+    columns: [modulus_a, arg_a, modulus_b, arg_b]
+    printed_pattern: "all moduli 1 to 1e-15; the arguments are k * 2pi/33 for k = 1..16 (each twice) plus two zeros; 2pi/(2N+1) = 0.19039955476301777202 (p.971)"
+    rows:
+      - ["0.999999999999999", "0.190399554763017", "1.000000000000000", "1.713595992867160"]
+      - ["1.000000000000000", "0.190399554763017", "0.999999999999999", "1.903995547630178"]
+      - ["1.000000000000000", "0.380799109526036", "1.000000000000000", "1.903995547630177"]
+      - ["1.000000000000000", "0.380799109526036", "1.000000000000000", "2.094395102393195"]
+      - ["1.000000000000001", "0.571198664289053", "1.000000000000000", "2.094395102393195"]
+      - ["1.000000000000000", "0.571198664289053", "1.000000000000000", "2.284794657156213"]
+      - ["1.000000000000001", "0.761598219052071", "1.000000000000000", "2.284794657156214"]
+      - ["0.999999999999999", "0.761598219052071", "0.999999999999999", "2.475194211919231"]
+      - ["1.000000000000000", "0.951997773815089", "1.000000000000000", "2.475194211919231"]
+      - ["1.000000000000000", "0.951997773815089", "1.000000000000000", "2.665593766682249"]
+      - ["1.000000000000000", "1.142397328578107", "1.000000000000000", "2.665593766682249"]
+      - ["0.999999999999999", "1.142397328578107", "1.000000000000000", "2.855993321445267"]
+      - ["1.000000000000000", "1.332796883341124", "1.000000000000000", "2.855993321445267"]
+      - ["1.000000000000000", "1.332796883341125", "1.000000000000001", "3.046392876208285"]
+      - ["1.000000000000001", "1.523196438104143", "1.000000000000001", "3.046392876208284"]
+      - ["1.000000000000000", "1.523196438104142", "1.000000000000000", "0.000000000000000"]
+      - ["1.000000000000000", "1.713595992867160", "1.000000000000000", "0.000000000000000"]
+    note: "Ours: the discretised operator for any irrational omega gives arguments within 1.7e-15 of multiples of 2pi/33 (jorba_checks.out sec. D). This table is an artefact-of-truncation signature for a NON-reducible system, not a physical result."
+single_values:
+  hill_example_1:
+    where: "p.955"
+    parameters: "a^2=1, b=0.1, omega1=sqrt2, omega2=sqrt3 (system of Jorba-Ramirez-Ros-Villanueva 1997)"
+    flow_frequency_alpha: "0.996203551143221"
+    map_argument_nu: "1.857169546872597"
+    relation: "alpha*2pi/omega1 + nu = 2pi (mod 2pi), residual printed about 0.8e-15"
+    N: 8
+    accuracy: "10^-12 requested, error below 10^-14 obtained; eigenproblem dimension 34"
+    note: "Ours: nu = 1.857169546872602 (5e-15 from printed), jorba_checks.out sec. C. Our check of the printed residual gives 2.7e-15, not 0.8e-15, from the printed 15-digit values (rounding of the printed digits)."
+  golden_frequency:
+    where: "p.956"
+    omega: "3.883222077450 9332"
+    pi_minus_half_omega: "1.199981614864 3267"
+  hill_scan:
+    where: "p.958"
+    parameters: "b=0.2, a^2 in [0.25, 1.00], N chosen automatically between 8 and 14 for 1e-12; N=14 needs 29 evaluations of A(theta2) and a dimension-58 eigenproblem"
+  bcp_family_data:
+    where: "pp.961-964, Fig. 4 and Figs. 6-7"
+    note: "Fig. 4 axes: zdot at z=0 from 0 to 0.9, rotation number from 0.505 to 0.55 (read on the image: VF1 starts near 0.535, VF2 near 0.545-0.547, VF3 ends near 0.505 at zdot 0.9). Figure readings are approximate and are not goldens."

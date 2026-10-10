@@ -1,0 +1,42 @@
+# Hollister 1966, the two worked Venus-swingby Mars round trips of 1970-72 (printed numbers, p.926).
+# Source: W. M. Hollister, "Predicting Launch Dates for Mars Transfer via Venus", J. Spacecraft and Rockets 3(6):925-927
+#   (Engineering Note, June 1966), doi 10.2514/3.28562. Presented as AIAA Preprint 64-647 (Los Angeles, 24-26 Aug 1964);
+#   revision received 28 Sep 1965.
+# Local file: 3 pp., md5 4aedfe92c28051b78e6d7fcbaf0137d8. Page 3 (p.927) also carries an unrelated note (Goldstein,
+#   Braun and Rose, thermionic diode); only its top-left reference list belongs to Hollister.
+# Read on the page images at 110 dpi (witness A, decides); witness B is the PDF text layer (publisher typesetting, matches).
+# No value here was computed by us. Our values are only in `note:` fields marked "ours" and in lambert_check.py/.out.
+conventions:
+  units: "velocities in EMOS (Earth mean orbital speed, 'approximately 18.5 miles per sec', p.926); distances at Venus in planet radii"
+  v_inf_meaning: "hyperbolic excess speed relative to the named planet"
+  delta_v_at_venus: "velocity increment added (trip 1) or subtracted (trip 2) at periapsis of the Venus flyby"
+  both_flybys_pass: "southern, sunlit side of Venus"
+  stay_at_mars: "10 days"
+  parking_orbits: "Earth 1.1 Earth radii (trip 1); Mars 1.3 Martian radii (trip 2)"
+  mars_opposition_1971: "trip 1 arrives 84 days before; trip 2 departs 56 days after (p.925 bottom)"
+trip_1_earth_venus_mars_earth:
+  mission_length_days_printed: 370          # Fig. 4 caption
+  earth_departure: {date: "1970-09-01", longitude_deg_east_of_aries: 338, parking_orbit_burn_EMOS: 0.126, v_inf_EMOS: 0.126}
+  venus_approach: {date: "1970-12-31", v_inf_in_EMOS: 0.174, periapsis_radii: 1.70, delta_v_EMOS: 0.022, v_inf_out_EMOS: 0.211, rotation_deg: 57}
+  mars_arrival: {date: "1971-05-19", v_inf_EMOS: 0.343, note_printed: "could decelerate by a drag brake in the Martian atmosphere"}
+  earth_return: {date: "1971-09-06"}
+  note: "Ours (lambert_check.out, Standish mean elements, Sun-only Lambert, Venus on 30 Dec): Earth 0.127, Venus in 0.175 / out 0.211, turn 59.0 deg, Mars 0.341. Periapsis impulse from the printed v_inf pair at 1.70 Rv: 0.0216 (printed 0.022). All within 0.003."
+trip_2_earth_mars_venus_earth:
+  mission_length_days_printed: 400          # Fig. 5 caption
+  earth_departure: {date: "1971-06-18"}
+  mars_arrival: {date: "1971-09-26"}
+  mars_departure: {date: "1971-10-06", longitude_deg_east_of_aries: 353, parking_orbit_burn_EMOS: 0.141, v_inf_EMOS: 0.196}   # Oct 6 = 26 Sep + 10 days stay
+  venus_approach: {date: "1972-04-03", v_inf_in_EMOS: 0.244, periapsis_radii: 1.2, delta_v_EMOS: -0.033, v_inf_out_EMOS: 0.186}
+  earth_arrival: {date: "1972-07-22", v_inf_EMOS: 0.230, note_printed: "direct descent to the Earth's surface"}
+  note: "The printed text gives no Mars departure date; 6 Oct 1971 is 26 Sep + the 10-day stay (ours). Ours (lambert_check.out): Mars departure 0.197, Venus in 0.243 / out 0.184, Earth arrival 0.228. Periapsis impulse from the printed pair at 1.2 Rv: -0.0325 (printed -0.033)."
+rule_inputs_printed:
+  min_energy_spacing_days: 140       # E-V, V-M, M-E alignments in that order, 'about 140 days' apart (p.925)
+  longer_trip_spacing_days: 200      # allow the path inside Venus's orbit (p.925)
+  min_energy_windows_prior_to_oppositions: [1965, 1971, 1978]
+  longer_trip_outbound_prior_to_oppositions: [1967, 1973, 1980]
+  longer_trip_return_after_oppositions: [1969, 1975, 1982]
+  v_m_sun_alignment_angle_deg: {outbound_min_energy: "about 70 ahead of the Earth-Sun line", return_min_energy: "about 70 behind"}
+  venus_gains_on_earth_deg_per_day: "slightly greater than 1/2"
+  mars_falls_behind_earth_deg_per_day: "slightly less than 1/2"
+  figures_not_digitised: "Fig. 1a/1b (dial charts of Mars oppositions 1965-78 and Venus conjunctions 1970-77), Fig. 2 (alignment dates 1964-80 on a Julian-date strip, ticks 2439000-2444000), Fig. 3 (dated V-M alignment directions); Fig. 3 labels are in note below"
+  fig3_labels: ["FEB 71", "FEB 72", "DEC 72", "DEC 73", "OCT 74", "OCT 75", "AUG 76", "AUG 77", "JUNE 78", "JUNE 79", "APR 80", "APR 81"]

@@ -1,0 +1,119 @@
+# Schanzle 1967, Tables I-III and the Figs. 9-22 caption values: continuation of Rabe's horseshoe orbit (barycentric frame).
+# Source: A. F. Schanzle, "Horseshoe-Shaped Orbits in the Jupiter-Sun Restricted Problem", The Astronomical Journal 72:149-157
+#   (March 1967), doi 10.1086/110211, ADS 1967AJ.....72..149S. Received 29 August 1966.
+# Local file: ADS 200 dpi JPX scan, 9 pp., md5 2135960a6c830510c7982c42cde74593; OCR copy (ocrmypdf --force-ocr -l eng, the scan
+#   is rasterised by it) md5 273e14b8ec9ce01538d5efcefd2a4a27. PDF page n = journal page 148 + n.
+# Tables: I and II p.156 (PDF p.8); III p.157 (PDF p.9). Caption values: Figs. 9-14 p.153, Figs. 15-20 p.154, Figs. 21-22 p.155.
+# Transcribed from the page images: every cell was read on 300-400 dpi renders of the original scan (witness C, decides).
+#   Witness A: tesseract 5.5.3, psm 6, on separate 400 dpi crops (NOT the OCR text layer). The scan is 200 dpi, so the
+#   small figure captions are weaker for tesseract than the tables. Cross-check: the caption values against Table I
+#   (caption_vs_table1.out). Comparison: witness-comparison-schanzle.tsv.
+# No value here was computed by us. Values we computed are in integ_schanzle.out, fitmu_schanzle.out and stability_check.out only.
+#   Numbers kept as printed (strings); the printed minus sign is "-"; exponent cells are written as 1e-9 style strings
+#   (printed as "-3 x 10^-10").
+#
+# EQUATIONS, FRAME AND UNITS (Introduction, p.149, read on the page image)
+#   "The equations of motion for the restricted problem in the barycentric system are
+#      xddot - 2 ydot = x - [mu (x + mu - 1)/r1^3] - [(1 - mu)(x + mu)/r2^3],
+#      yddot + 2 xdot = y - (mu y / r1^3) - [(1 - mu) y / r2^3],
+#    where r1^2 = (x + mu - 1)^2 + y^2, r2^2 = (x + mu)^2 + y^2."
+#   So r1 is the JUPITER distance (Jupiter at (1 - mu, 0), mass mu) and r2 the SUN distance (Sun at (-mu, 0), mass 1 - mu).
+#   This is the same frame as Taylor 1981. No transformation is needed for the Table I and II rows (barycentric); they are
+#   not Jovicentric.
+#   "The unit of length is the Jupiter-sun distance, the sum of the masses is the unit of mass, and the unit of time is such
+#   that the gravitational constant becomes unity." So Jupiter's period is 2 pi time units. Confirmed by p.156: "one unit of
+#   time = 1.8879 earth years" (11.86223 / 2 pi = 1.8879) and "commensurability exists for 1/2 T = 91.1077" (29 pi).
+#   mu is NOT printed anywhere in the paper. Rabe's value 0.000953875 (printed by Taylor 1981) reproduces the printed
+#   Jacobi constants of Table I to 1e-8 (ours, fitmu_schanzle.out: fitted mu 0.000953844 to 0.000953917 per row, mean
+#   0.0009538767), and is used for every integration here (ours).
+#   Jacobi constant (formula not printed): C = x^2 + y^2 + 2 (1 - mu)/r2 + 2 mu/r1 - xdot^2 - ydot^2 reproduces Table I (ours).
+#   Names: "d0 = 1.06" is Rabe's parameter (1961) for the orbit x0 = -1.026903545 ("Rabe's periodic orbit").
+#   Orbits start on the x axis at x0 (y = 0, xdot = 0) with ydot0 > 0; "Crossing" is the first perpendicular crossing of the
+#   x axis after departure, at time 1/2 T (a half period). "Final" (Table II) is the state at time T (a full period).
+tables:
+  - table: "I"
+    caption: "Initial and crossing conditions"
+    journal_page: "156"
+    columns: [state, x, xdot, ydot, half_T, C]
+    note: "xdot of the Crossing rows is the residual of the search (printed as e.g. -3 x 10^-10); the Initial rows have xdot = 0 by construction. The runs are by the fourth-order Runge-Kutta method (p.155)."
+    rows:
+      - {state: "Initial", x: "-1.026903545", xdot: "0", ydot: "+0.039195940", half_T: "0", C: "3.00149010"}
+      - {state: "Crossing", x: "-0.970127615", xdot: "-3e-10", ydot: "-0.047658759", half_T: "91.7570380", C: "3.00149010"}
+      - {state: "Initial", x: "-1.1", xdot: "0", ydot: "+0.181820531", half_T: "0", C: "2.99587418"}
+      - {state: "Crossing", x: "-0.899961908", xdot: "-2e-8", ydot: "-0.193943363", half_T: "91.7234374", C: "2.99587418"}
+      - {state: "Initial", x: "-1.2", xdot: "0", ydot: "+0.369890946", half_T: "0", C: "2.97044973"}
+      - {state: "Crossing", x: "-0.803717732", xdot: "-6e-9", ydot: "-0.406923716", half_T: "91.5411205", C: "2.97044973"}
+      - {state: "Initial", x: "-1.3", xdot: "0", ydot: "+0.552405919", half_T: "0", C: "2.92380014"}
+      - {state: "Crossing", x: "-0.706844760", xdot: "+5e-7", ydot: "-0.638391873", half_T: "91.4159707", C: "2.92380014"}
+      - {state: "Initial", x: "-1.4", xdot: "0", ydot: "+0.731115256", half_T: "0", C: "2.85444752"}
+      - {state: "Crossing", x: "-0.609606594", xdot: "-9e-7", ydot: "-0.895081160", half_T: "91.3293166", C: "2.85444752"}
+      - {state: "Initial", x: "-1.5", xdot: "0", ydot: "+0.907645992", half_T: "0", C: "2.75985126"}
+      - {state: "Crossing", x: "-0.512149311", xdot: "+7e-7", ydot: "-1.188433481", half_T: "91.2660184", C: "2.75985126"}
+      - {state: "Initial", x: "-1.6", xdot: "0", ydot: "+1.083697373", half_T: "0", C: "2.63588664"}
+      - {state: "Crossing", x: "-0.414623774", xdot: "+1e-6", ydot: "-1.538680234", half_T: "91.2181072", C: "2.63588662"}
+      - {state: "Initial", x: "-1.7", xdot: "0", ydot: "+1.261324851", half_T: "0", C: "2.47577468"}
+      - {state: "Crossing", x: "-0.317293190", xdot: "-1e-6", ydot: "-1.985609228", half_T: "91.1816006", C: "2.47577468"}
+      - {state: "Initial", x: "-1.8", xdot: "0", ydot: "+1.443469807", half_T: "0", C: "2.26771630"}
+      - {state: "Crossing", x: "-0.220863716", xdot: "+1e-5", ydot: "-2.620799381", half_T: "91.1542143", C: "2.26771630"}
+      - {state: "Initial", x: "-1.9", xdot: "0", ydot: "+1.639477501", half_T: "0", C: "1.97492731"}
+      - {state: "Crossing", x: "-0.123600857", xdot: "+1e-5", ydot: "-3.785955508", half_T: "91.1293187", C: "1.97492729"}
+      - {state: "Initial", x: "-2.0", xdot: "0", ydot: "+1.998096500", half_T: "0", C: "1.00776933"}
+      - {state: "Crossing", x: "-0.000957480", xdot: "+5e-5", ydot: "-744.471140", half_T: "91.1341365", C: "1.00776931"}
+  - table: "II"
+    caption: "Initial, crossing, and final conditions as determined by the Runge-Kutta and power series methods"
+    journal_page: "156"
+    columns: [block_x0, state, x_RK, x_PS, xdot_RK, xdot_PS, ydot_RK, ydot_PS, half_T_RK, half_T_PS]
+    note: "half_T column is headed 1/2 T in the print; the Final rows show it at one full period T (about 183), so the printed column holds the elapsed time. R.K. = Runge-Kutta in the barycentric frame; P.S. = Steffensen power series (Jovicentric system, p.149). One printed cell reads \"- .899961936\" (leading 0 missing in the print) and is kept as \"-.899961936\"."
+    rows:
+      - {block_x0: "-1.026903545", state: "Initial", x_RK: "-1.026903545", x_PS: "-1.026903545", xdot_RK: "0", xdot_PS: "0", ydot_RK: "+0.039195940", ydot_PS: "+0.039195940", half_T_RK: "0", half_T_PS: "0"}
+      - {block_x0: "-1.026903545", state: "Crossing", x_RK: "-0.970127615", x_PS: "-0.970127603", xdot_RK: "-3e-10", xdot_PS: "-1e-9", ydot_RK: "-0.047658759", ydot_PS: "-0.047658782", half_T_RK: "91.757038", half_T_PS: "91.757027"}
+      - {block_x0: "-1.026903545", state: "Final", x_RK: "-1.026903524", x_PS: "-1.026903532", xdot_RK: "-3e-9", xdot_PS: "+3e-9", ydot_RK: "+0.039195883", ydot_PS: "+0.039195913", half_T_RK: "183.514070", half_T_PS: "183.514056"}
+      - {block_x0: "-1.1", state: "Initial", x_RK: "-1.100000000", x_PS: "-1.100000000", xdot_RK: "0", xdot_PS: "0", ydot_RK: "0.181820531", ydot_PS: "+0.181820531", half_T_RK: "0", half_T_PS: "0"}
+      - {block_x0: "-1.1", state: "Crossing", x_RK: "-0.899961908", x_PS: "-.899961936", xdot_RK: "-2e-8", xdot_PS: "-6e-7", ydot_RK: "-0.193943363", ydot_PS: "-0.193943323", half_T_RK: "91.723437", half_T_PS: "91.723440"}
+      - {block_x0: "-1.1", state: "Final", x_RK: "-1.100000027", x_PS: "-1.099997564", xdot_RK: "-3e-6", xdot_PS: "+2e-5", ydot_RK: "0.181820927", ydot_PS: "+0.181816882", half_T_RK: "183.446834", half_T_PS: "183.446186"}
+      - {block_x0: "-1.2", state: "Initial", x_RK: "-1.200000000", x_PS: "-1.200000000", xdot_RK: "0", xdot_PS: "0", ydot_RK: "0.369890946", ydot_PS: "0.369890946", half_T_RK: "0", half_T_PS: "0"}
+      - {block_x0: "-1.2", state: "Crossing", x_RK: "-0.803717732", x_PS: "-0.803717277", xdot_RK: "-6e-9", xdot_PS: "+7e-8", ydot_RK: "-0.406923716", ydot_PS: "-0.406923769", half_T_RK: "91.541120", half_T_PS: "91.541125"}
+      - {block_x0: "-1.2", state: "Final", x_RK: "-1.200035390", x_PS: "-1.200067861", xdot_RK: "-4e-6", xdot_PS: "-7e-6", ydot_RK: "0.369938990", ydot_PS: "0.369982831", half_T_RK: "183.080098", half_T_PS: "183.080314"}
+  - table: "III"
+    caption: "Characteristic exponents"
+    journal_page: "157"
+    columns: [x0, cosh_OmegaT]
+    note: "cosh(Omega T) is the characteristic-exponent measure of first-order stability (p.157): -1 < cosh < +1 stable, > 1 unstable. All four printed rows are above 1 (unstable). Same quantity as the half-trace of the one-period planar monodromy matrix (ours, stability_check.out: 1.0372, 2.1938, 50.66, 748.4)."
+    rows:
+      - {x0: "-1.026903545", cosh_OmegaT: "1.034"}
+      - {x0: "-1.03", cosh_OmegaT: "2.194"}
+      - {x0: "-1.05", cosh_OmegaT: "52.45"}
+      - {x0: "-1.10", cosh_OmegaT: "744.1"}
+  - table: "Figs. 9-22 captions"
+    journal_page: "153-155"
+    columns: [figure, x0, ydot0, C, half_T]
+    note: "Each figure plots half of a periodic orbit; the caption prints x0, ydot0, C, T/2 (the printed T/2 is the half period). Values are shortened (7-8 digits; T/2 to 5 decimals) versions of Table I where both exist. Figs. 10, 11 and 12 (x0 = -1.03, -1.05, -1.075) have no row in Table I. The T/2 of Figs. 14 and 16 (91.54110, 91.32930) differs from Table I (91.5411205, 91.3293166) by 2.1e-5 and 1.7e-5."
+    rows:
+      - {figure: "9", x0: "-1.0269035", ydot0: "0.03919594", C: "3.0014901", half_T: "91.75704"}
+      - {figure: "10", x0: "-1.03", ydot0: "0.04551460", C: "3.0014622", half_T: "91.97108"}
+      - {figure: "11", x0: "-1.05", ydot0: "0.08506838", C: "3.0008697", half_T: "91.86565"}
+      - {figure: "12", x0: "-1.075", ydot0: "0.13371004", C: "2.9990076", half_T: "91.78101"}
+      - {figure: "13", x0: "-1.1", ydot0: "0.18182053", C: "2.9958741", half_T: "91.72344"}
+      - {figure: "14", x0: "-1.2", ydot0: "0.36989094", C: "2.9704497", half_T: "91.54110"}
+      - {figure: "15", x0: "-1.3", ydot0: "0.55240591", C: "2.9238001", half_T: "91.41597"}
+      - {figure: "16", x0: "-1.4", ydot0: "0.73111525", C: "2.8544475", half_T: "91.32930"}
+      - {figure: "17", x0: "-1.5", ydot0: "0.90764599", C: "2.7598512", half_T: "91.26602"}
+      - {figure: "18", x0: "-1.6", ydot0: "1.0836973", C: "2.6358866", half_T: "91.21811"}
+      - {figure: "19", x0: "-1.7", ydot0: "1.2613248", C: "2.4757746", half_T: "91.18160"}
+      - {figure: "20", x0: "-1.8", ydot0: "1.4434698", C: "2.2677162", half_T: "91.15421"}
+      - {figure: "21", x0: "-1.9", ydot0: "1.6394775", C: "1.9749272", half_T: "91.12932"}
+      - {figure: "22", x0: "-2.0", ydot0: "1.9980965", C: "1.0077693", half_T: "91.13414"}
+conventions:
+  frame: "planar CR3BP, barycentric rotating frame (eq. p.149); Sun (mass 1 - mu) at (-mu, 0), Jupiter (mass mu) at (1 - mu, 0); r1 = Jupiter distance, r2 = Sun distance; length unit = Jupiter-Sun distance; time unit: G = 1, Jupiter period = 2 pi"
+  mu: "not printed; 0.000953875 (Rabe's value, printed by Taylor 1981) fits to 1e-8 in C (ours, fitmu_schanzle.out)"
+  jacobi: "formula not printed; C = x^2 + y^2 + 2(1-mu)/r2 + 2 mu/r1 - v^2 reproduces Table I (ours)"
+  state_printed: "x0, xdot0 = 0, ydot0 at the x axis; Crossing = first perpendicular x-axis crossing at 1/2 T; Final = state at T"
+  period_field: "half_T (1/2 T); T/2 over pi = number of Jupiter periods in the half period, e.g. 91.757038/pi = 29.2073"
+  stability_index: "cosh(Omega T) (Table III), > 1 unstable; no horizontal-index Hill-equation number is printed for the other orbits"
+  symmetric_families: ["Rabe's horseshoe class, x0 = -1.026903545 ... -2.0 (one class, traced by continuation in x0 at the first crossing)"]
+  asymmetric_families: []
+  page_references: {equations: "149", method_and_criterion: "149", fig_3: "150-151", fig_9_to_14: "153", fig_15_to_20: "154", fig_21_22_23_24: "155", table_I_II: "156", table_III_stability_conclusions: "157"}
+  row_counts: {table_I: 22, table_II: 9, table_III: 4, fig_captions: 14, total: 49}
+  notes:
+    - "Witnesses (witness-comparison-schanzle.tsv, 246 cells): tesseract at 400 dpi agrees exactly with the page-image reading on 163 cells; on 15 more the digits appear inside a glued token and on 3 more a truncated prefix matches (weaker agreement); 23 exponent cells (11 in Table I, 12 in Table II): a tight 2x crop of the xdot columns gives all 23 mantissas and signs correctly but garbles most exponents, so each exponent has one witness (the image); 34 zeros are not compared; 8 cells differ (1 plus sign garbled to '-+-' in Table II; 7 caption cells where tesseract garbles a 200 dpi caption line: Fig. 9 ydot0, Fig. 13 x0, Fig. 16 ydot0, Fig. 17 x0, Fig. 18 x0, Fig. 19 T/2, Fig. 20 T/2). The 14 captions agree with Table I within caption shortening on all 11 orbits that appear in both (caption_vs_table1.out)."
+    - "Closure (integ_schanzle.py / .out, ours; DOP853 rtol 1e-13 atol 1e-13; mu 0.000953875): the printed C is reproduced from (x0, ydot0) to 2e-8 in all 11 rows. At the printed half period the orbit reaches the printed crossing x and ydot to 3e-10 .. 2e-6 for x0 = -1.026903545 .. -1.9 (worst ydot 1.8e-6 at -1.2), with |y| < 6e-5 and |xdot| < 1.3e-4 (except x0 = -1.9: 3.2e-4). The x0 = -2.0 row is a collision orbit (printed crossing x = -0.000957480 = -mu, i.e. at the Sun; ydot = -744) and is not reproduced (ours ends 4.6e-4 from the Sun, ydot -5.7). Table II full period: x0 = -1.026903545 returns within 1.3e-8 in x and 2.5e-8 in ydot (ours final x -1.026903532 equals the printed P.S. value). For x0 = -1.1 and -1.2 our full-period return errors (2.3e-6 and 1.5e-4) are the expected amplification of the 9-digit initial-condition truncation (monodromy eigenvalue about 1.5e3 at -1.1) and are of the size of the P.S. column errors (2.4e-6 and 6.8e-5); we do not reproduce the much smaller R.K. column drift, so it is not evidence of better closure."
