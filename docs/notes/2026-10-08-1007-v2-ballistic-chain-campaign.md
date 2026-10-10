@@ -164,3 +164,31 @@ Run: `scripts/v2_chain_1007.py --lane gc --rules amended` (`data/1007_v2/v2_chai
 | gc-2 | 2/5 | **5/5 PASS** | Systematic |V_inf| offset to record: W 0.16-0.36 km/s, growth 1.0-2.0 |
 
 V2 promotions for gc-1 and gc-2 go in the next catalogue window (lead).
+
+## 8. ev positive control, take 2: Hollister-Menning 1970 orbit 1 at its own epoch — PRE-REGISTERED (2026-10-11), before running
+
+Lead ruling (a), 2026-10-08. Lesson recorded from sec. 5: a published object with no epoch (Hollister
+1969 orbit I) is a poor real-ephemeris control.
+
+- Object: H&M 1970 Table 3 orbit 1.
+  - Its five blocks are identical (Earth full-rev, Venus full-rev twice; `block_types`), so it is a
+    true repeating k = 2 cycle, as the drift metric needs.
+  - Its structure is Hollister 1H: key `k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s`, ideal dates
+    474.597193, 1100.618380 d.
+  - Chosen over orbit 2 by stage-1 reproduction quality (0.68 of encounters within tolerance against
+    0.64). It is not one of the open orbits 3-8.
+- Epoch: H&M's own. Table 3 orbit 1's first Earth date is JD 2440441, used as `--first-epoch-jd
+  2440441 --epochs 1`. The chain tool phase-matches the ideal cycle near that date.
+- Length: 5 cycles = 16 yr = H&M's published period (5 blocks); >= 3 cycles as the amendment requires.
+- Model: Standish J2000 mean elements, the ev rows' rung (d) model. H&M used an inclined-elliptic model
+  of the same kind.
+- Route, in this order: the direct lambda = 1 solve (`--direct`); if it does not converge, the ramp
+  continuation (no `--direct`). The ev rows used both routes.
+- Criteria: the four of sec. 2 under the sec. 7 amended rules (junction-only continuity; drift by D band
+  and growth only).
+- PASS rule for this control: all four criteria hold at its single published epoch. H&M published one
+  epoch, so the 3-of-5 rule does not apply to it.
+- Expected: PASS. H&M computed this orbit as periodic at these dates in an inclined-elliptic model.
+- If it FAILS: STOP and report. The ev V2 question then waits (lead ruling).
+- The ev NEGATIVE control (sec. 3: ev-C epoch 0 with the 2nd Lambert start + 1 d) runs with it and must
+  fail.
