@@ -240,3 +240,40 @@ continuation.
     owner.
 - The ev NEGATIVE control (ev-C epoch 0, the 2nd Lambert start + 1 d, no re-solve) runs in the same
   script and must FAIL.
+
+### 8.3 Result of take 3 (2026-10-11 09:24 AEDT; `scripts/v2_hm_printed_1007.py`, `data/1007_v2/hm_orbit1_printed.{json,log}`)
+
+POSITIVE control, H&M orbit 1 from its printed dates: **FAIL**, on criterion 4 only.
+- The solve converges from the print: residual 1.14 km/s at the printed dates -> 6.0e-13. The largest
+  date shift from the print is 2.88 d. The chain period is 5842.37 d (print 5844).
+- Criterion 1 (continuity) holds. Criterion 2: the gate passes (worst 0.883). Criterion 3: re-fly
+  3.4e-4 km.
+- Criterion 4 FAILS:
+  - D per cycle 0 / 18.8 / 19.0 / 13.1 / 39.5 d against the 8.8-d band;
+  - D growth ratio 2.08 against 2.0.
+  - W growth is 1.22, which holds; W's offset 2.2-3.5 km/s is recorded, not banded.
+
+NEGATIVE control (ev-C epoch 0, + 1 d): FAILS as required (junction 0.22 km/s).
+
+Per sec. 8.2, the ev lane cannot reproduce the published 16-yr orbit as a V2-ballistic chain under the
+sec. 2/7 drift criterion. STOP; the ev V2 question stays with the owner.
+
+Diagnosis (for the owner; nothing is changed here):
+1. D measures GEOMETRIC BREATHING, not drift, for an Earth-Venus chain.
+   - D compares each cycle with a strictly periodic chain at the chain's own mean period. The
+     Earth-Venus geometry only repeats after 16 yr (5 cycles, H&M's period), so within one 16-yr span
+     the cycles must differ.
+   - H&M's own published orbit departs up to 39.5 d from 3.2-yr periodicity. That is the planets, not
+     instability.
+   - The 5-cycle window spans exactly one geometric period, so the growth test (second half against
+     first half) also reads breathing as growth.
+   - Spec §14 asks for drift "tolerant of geometric breathing". A breathing-tolerant form would compare
+     SAME-PHASE cycles (cycle i against cycle i + 5) over >= 2 geometric periods (>= 10 cycles,
+     32 yr). The gc lane passed because the Galilean geometry breathes far less.
+2. The control's template is the wrong member.
+   - H&M orbit 1 has 1H's STRUCTURE but not its V_inf: about 4.6 km/s (H&M V_r 0.155 EMOS), against
+     1H's ideal 2.99/3.19.
+   - So the ideal 1H zero is not orbit 1's circular counterpart. This also explains why the ideal ->
+     real continuation from 1H (sec. 8.1) could not reach it.
+   - Under the owner's growth-only W rule this does not change the verdict, but the template should be
+     orbit 1's own circular counterpart.

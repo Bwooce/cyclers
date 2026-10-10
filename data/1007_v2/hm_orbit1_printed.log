@@ -1,0 +1,5 @@
+seed residual 1.137e+00 km/s -> solved 6.022e-13 km/s; max date shift from print 2.884 d; chain period 5842.366 d (print 5844)
+CONTROL+ H&M orbit 1: n=5 cont=6.0e-13 gate=pass (0.883) refly=3.38e-04 km D=39.544/8.831 d W=3.540/0.299 km/s growth D 2.08 W 1.22 -> FAIL [1110]
+CONTROL- ev-C e0 broken: n=5 cont=2.2e-01 gate=pass (0.890) refly=8.98e-02 km D=11.270/6.141 d W=1.082/0.907 km/s growth D 1.55 W 1.49 -> FAIL [0110]
+CONTROL+ FAIL; CONTROL- FAILS as required
+wrote data/1007_v2/hm_orbit1_printed.json
