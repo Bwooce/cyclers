@@ -2903,6 +2903,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   a new chain-tool option: does DE440's lunar reflex block the closure? Only a gate-passing closure in
   (2) gives the shoot a positive control. Also note: about half of all restarts die at the first LM step
   (481 of 920), the `#942` 6.34 defect.
+- `#1058` — registered 2026-10-11 (from `#1057`; small chain-tool change; NOT dispatched). **THE SHOOT RESTART
+  DEFECT**: 481 of 920 restarts in `#1025`'s DE440 shoot ended at nfev <= 3. The proposed fix
+  (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md` sec. 9.2) re-draws a restart's perturbation until
+  `chain_eval` succeeds at the seed (<= 200 draws), with the same 20 LM runs per shoot. Pre-registered
+  check: ev4-7 e2's nfev <= 3 count falls to about 0. If it does not, use a growing finite domain
+  penalty instead. A correctness fix: the 49 NOT REACHED of `#1025` sec. 8 must be re-run under it
+  before they count. Run it only after `#1057` shows the shoot can pass a known cycler.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and

@@ -100,6 +100,8 @@ def members() -> dict[str, tuple[str, str, int]]:
             c = g["candidates"][i]
             assert c["screen_status"] == "pass", (k, i)
             out[f"ev{k}-{i}"] = (c["key"], ",".join(repr(float(v)) for v in c["x_days"]), n)
+    # #1057 step 1 (note sec. 9): ev-A, 5 cycles, the C2 key and dates, as a DE440 shoot control
+    out["ev-A"] = (CONTROLS["C2"][0], CONTROLS["C2"][1], CONTROLS["C2"][2])
     return out
 
 
@@ -483,10 +485,14 @@ SHOOT_MEMBERS = [
 def cmd_shootcheck(argv: list[str]) -> None:
     """Outcome per member and epoch of the DE440 shoot under data/1025_ev_realeph/de440_shoot/;
     an epoch with no result file is "NOT RUN" (resume by re-running the launch command)."""
-    ROOT[0] = OUT / "de440_shoot"
+    ap = argparse.ArgumentParser(prog="shootcheck")
+    ap.add_argument("--root", default="de440_shoot")
+    ap.add_argument("--members", default=",".join(SHOOT_MEMBERS))
+    a = ap.parse_args(argv)
+    ROOT[0] = OUT / a.root
     allm = members()
     res: dict[str, Any] = {}
-    for tag in SHOOT_MEMBERS:
+    for tag in a.members.split(","):
         key, _, n = allm[tag]
         _KEY[0] = key
         outs = []
@@ -501,6 +507,7 @@ def cmd_shootcheck(argv: list[str]) -> None:
                          "routes": tried})  # fmt: skip
         res[tag] = outs
         print(tag, " ".join(f"e{o['epoch']}:{o['outcome']}" for o in outs), flush=True)
+    ROOT[0].mkdir(parents=True, exist_ok=True)
     (ROOT[0] / "summary.json").write_text(json.dumps(res, indent=1, default=float))
 
 

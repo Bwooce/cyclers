@@ -382,7 +382,104 @@ Positive control for the DE440 shoot (sec. 3 stop rule): **none exists at these 
 
 No row is written; nothing is called novel.
 
-## 9. Registered follow-on
+## 9. PRE-REGISTRATION (2026-10-11, before the run): `#1057` step 1, the DE440 shoot control on ev-A; and a proposed step 0 (restart fix)
 
-- `#1057`: the DE440 shoot positive control (sec. 8): (1) ev-A on DE440 with today's D1 settings;
-  (2) the ev4-7 shoot with the Earth-Moon barycentre. Lead launch. Small code change for (2).
+### 9.1 Step 1: ev-A on DE440 with today's D1 settings
+
+Object:
+- ev-A: k2|LE>V/0s|RV/1:1|LV>V/1h|LV>E/0s, ideal dates 583.944386694386, 984.2215547169349 and
+  1576.2577920606109 d (the C2 control's key and dates);
+- 5 cycles, 16 yr, as in #942 6.23/6.25;
+- the tool's 5 standard epochs.
+
+Settings and ladder: identical to the members' (sec. 2, sec. 7):
+- D1 `--real de440 --shoot-jac sparse`, 20 restarts at 0.03/0.05 rad;
+- D2 (`--direct`) only where D1's blend does not reach lambda 1;
+- the same `classify` and the same checker.
+
+Tool change for this, the only one: `scripts/ev_realeph_1025.py` can now address ev-A, as member
+"ev-A" (the C2 key and dates, 5 cycles). Also, `shootcheck` takes `--root` and `--members`.
+
+Command (from the repo root; 2 workers; resumable):
+
+```sh
+mkdir -p data/1025_ev_realeph/control_1057
+printf '%s\n' 0,1,2 3,4 | xargs -n1 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run ev-A de --root control_1057 --timeout 1800 --epochs $0'
+uv run python scripts/ev_realeph_1025.py shootcheck --root control_1057 --members ev-A
+```
+
+- Output: `data/1025_ev_realeph/control_1057/ev-A/{D1,D2}/e<i>/` (static `tool.log`,
+  `realeph_chain.json`, `check.log`). Live logs `tool.live.log` are gitignored there.
+- `control_1057/summary.json` is written by `shootcheck`. Progress goes to
+  `data/1025_ev_realeph/runlog.txt`.
+- Expected runtime: the members' shoots averaged 4.7 min each (46 in 107 min on 2 workers). ev-A's
+  shoot is about the same size: 5 cycles x (3 Lambert + 1 full-rev leg) gives 30 unknowns, against
+  36 for a k = 4 member. So about 15-30 min on 2 workers. The worst case is bounded by the timeout:
+  3 epochs x 1800 s = 1.5 h.
+- A timeout is "NOT RUN", never a fail; resume by re-running the command.
+
+PASS criterion: identical to the members' (sec. 2):
+- a ballistic shoot closure at lambda 1 (max residual < 1e-6);
+- the #888 gate passes at the registry floors on every interior flyby ("indeterminate" is not a pass);
+- the checker's DOP853 re-fly misses by < 1 km.
+
+What each outcome means for the 22:
+- **PASS at >= 1 epoch:** today's DE440 shoot can close a known full-rev Earth-Venus cycler with a gate
+  pass. The shoot then becomes a usable judge of the members. Their sec. 8 "no closure" results stand
+  as recorded, but are now a formulation-checked negative. They still carry the restart-defect caveat
+  of 9.2 until step 0 is run.
+- **FAIL (closures that fail the gate, as all the #942 6.25 ev-A closures did) or NOT REACHED (no
+  closure) at every epoch:** the route cannot judge a full-rev Earth-Venus chain on DE440.
+  - The 22 are then decided on the Standish and DE440-blend evidence alone. The owner summary's
+    options (sec. 6 there) stay as written.
+  - Step 2 of `#1057` (the Earth-Moon barycentre for the Earth) is the next control.
+- **Expectation, before the run:** FAIL or NOT REACHED at all five epochs, by the 6.25 precedent (blend
+  to lambda 1 at 5/5; closures found but all gate failures, 1.12-2.99). A PASS would contradict that
+  precedent and be checked first, in this order: the checker's re-fly, the gate floors, then the
+  epoch.
+
+### 9.2 Proposed step 0 (NOT implemented): the restart defect
+
+The defect:
+- 481 of 920 restarts (52 %) ended at 3 or fewer function evaluations with an infinite recorded
+  residual.
+- Reading of the code (inferred, not instrumented): `_res` returns a constant 1e3 penalty vector where
+  `chain_eval` fails (no Lambert solution, or a flight-time failure). The residual recorded at the end
+  is from `_safe_eval`, which returns None there, hence "inf".
+- A perturbed seed that is itself outside the domain therefore starts LM on a constant function. Its
+  Jacobian is zero, so LM stops at once (nfev about 2). The restart was never a real attempt.
+- (#942 6.34 described it as LM's first step leaving the domain. The nfev of 2 is more consistent with
+  the seed itself being out of the domain. Step 0's own check below tells the two apart.)
+
+Proposed fix (chain tool, `run_restarts`), with the same budget of 20 LM runs per shoot:
+- Before restart r > 0 is run, evaluate `chain_eval` at the perturbed seed.
+- If it fails, re-draw the perturbation (same distribution, same rng stream), up to 200 draws.
+- Only an in-domain seed starts LM. Count the draws and record them.
+- If 200 draws all fail, record the restart as "no in-domain seed"; it is not a closure attempt.
+- Restart 0, the unperturbed seed, is unchanged.
+
+The fix does NOT change:
+- the closure threshold;
+- the perturbation scale;
+- the number of LM runs;
+- the gate or the re-fly.
+
+Pre-registered check of the fix (before any re-run is read):
+- On one shoot from sec. 8 (ev4-7 e2), the number of restarts ending at nfev <= 3 must fall to about 0.
+- If it does not, the 6.34 reading (the first STEP leaves the domain) is the right one. The cheapest
+  fix is then a finite domain penalty that grows with the distance to the domain, so LM backtracks.
+  That is a separate amendment.
+
+What it would change:
+- About twice as many real closure attempts per shoot. The count of attempts changes for certain.
+- Whether the result changes is not known in advance:
+  - for ev4-7 and ev5-9 the real attempts that ran already reached residuals of 0.0008-0.002 and
+    stopped at a floor;
+  - more real attempts raise the chance of a closure but do not guarantee one.
+- By the rule that a correctness fix invalidates prior negatives, the 49 NOT REACHED of sec. 8 would
+  have to be re-run under the fix before they count as negatives. Cost: about 2x today's shoot time,
+  roughly 4-5 h on 2 workers for the ten members.
+- Order: step 1 (9.1) first. If step 1 or step 2 shows the shoot can pass a known cycler, step 0 then
+  comes before any re-run of the members.
+
+Registered as `#1058` (a chain-tool change in a shared tool, with its own check), from `#1057`.
