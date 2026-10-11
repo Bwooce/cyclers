@@ -1,0 +1,65 @@
+# Liang, Xu and Xu 2016, Table 1 (minimum time of flight against Jacobi constant) and the numbers printed in the text.
+# Source: Y. Liang, M. Xu, S. Xu, "The classification of cislunar trajectories and its applications in the Earth-Moon
+#   system", Astrophysics and Space Science 361:5 (2016), doi 10.1007/s10509-015-2577-z. Received 19 May 2015, accepted
+#   16 November 2015, published online 2 December 2015.
+# Local file: 19 pp., text layer, md5 a19f655b0be5d7350f7ccf9e6c73fb45 (private corpus, papers/ directory).
+# Table 1 is on journal page 6 (PDF page 6).
+# Witnesses: A = pdftotext -layout; B = pdftotext -raw; C = the PDF page rendered at 110 dpi and read cell by cell.
+#   All 12 Table 1 rows agree across A, B and C. Every text-block number below was found verbatim in both A and B,
+#   and the GEO deorbiting block and the LRSS block were also read on the page renders (PDF pages 16 and 18).
+# No value here was computed by us. Our values are only in `note:` fields, marked "ours". Numbers are kept as printed.
+conventions:
+  model: "planar circular restricted three-body problem, Earth-Moon, mu = 0.0121516, distance unit 384400 km (unit not printed; ours), Moon period 2 pi"
+  jacobi: "C = -(xdot^2 + ydot^2) + 2 Omega; C1 = 3.1884 (L1), C2 = 3.1722 (L2)"
+  section: "Sigma1: x = x_L1 = 0.83691257, xdot > 0; y0 in [-0.50, 0.50], C in [1.99, 3.19], theta in [-pi/2, pi/2]; grid dC 0.01, dtheta 0.005 deg, dy0 0.01"
+  resonance_label: "printed definition p T_M = q T_S/C, a_S/C = (p/q)^(2/3), E_S/C = -(q/p)^(2/3)/2. This is the REVERSE of Casoliva 2010 Eq. 9 (q T_moon = p T_spacecraft). The printed 1:2 cycler has period about 14 days, so it is Casoliva's p=2, q=1 (ours, inferred from the printed period)."
+tables:
+  - table: "1"
+    caption: "Minimum TOF corresponding to certain values of Jacobi energy C"
+    journal_page: "6"
+    columns: [C, TOF_days]
+    rows:
+      - {C: "3.18", TOF_days: "67.4244"}
+      - {C: "3.08", TOF_days: "41.8138"}
+      - {C: "2.98", TOF_days: "45.9003"}
+      - {C: "2.88", TOF_days: "30.8022"}
+      - {C: "2.78", TOF_days: "4.7950"}
+      - {C: "2.68", TOF_days: "4.3102"}
+      - {C: "2.58", TOF_days: "4.3084"}
+      - {C: "2.48", TOF_days: "4.2464"}
+      - {C: "2.38", TOF_days: "3.4042"}
+      - {C: "2.28", TOF_days: "3.3654"}
+      - {C: "2.18", TOF_days: "3.2545"}
+      - {C: "2.08", TOF_days: "3.1319"}
+    note: "Not monotone at C = 3.08 / 2.98 (41.8138 then 45.9003): printed so on the page, not a transcription slip. The text says 'over 45 days' at 2.98 and 'over 60 days' at 3.18."
+text_values:
+  - block: "GEO deorbiting strategy (sec. 4.1, journal page 16)"
+    items:
+      - {quantity: "ion engine Isp", value: "3.7265e4 s"}
+      - {quantity: "spacecraft mass", value: "1000 kg"}
+      - {quantity: "selected perigee a, e (Earth low-thrust segment final point)", value: "a 1.8317e5 km, e 0.6145"}
+      - {quantity: "Earth low-thrust initial point (GEO)", value: "a 4.2164e4 km, e 0"}
+      - {quantity: "selected perilune a, e (Moon low-thrust segment initial point)", value: "a 2.5213e5 km, e 0.7801"}
+      - {quantity: "Moon low-thrust final point", value: "a 0.7688e4 km, e 0.4622"}
+      - {quantity: "total TOF", value: "56.5745 d = 30 d (Earth low thrust) + 2.1845 d (Moon low thrust) + 24.39 d (low-energy segment)"}
+      - {quantity: "fuel", value: "74.63 kg"}
+  - block: "Periodic cislunar relay (LRSS) orbit (sec. 4.2, Fig. 18, journal page 18)"
+    items:
+      - {quantity: "period", value: "about 77.6 d = 29.53 d around the Moon + 48 d around the Earth"}
+      - {quantity: "perilune radius", value: "about 1946 km (208 km altitude)"}
+      - {quantity: "perigee radius", value: "about 6513.4 km (113.4 km altitude)"}
+      - {quantity: "apogee radius", value: "6710.8 km (310.8 km altitude)"}
+      - {quantity: "initial conditions, C, sense, p:q", value: "not printed"}
+    note: "The printed Earth perigee and apogee (altitude 113 to 311 km) do not describe the orbit drawn in Fig. 18, whose Earth-region loops reach about 0.2 to 0.8 of the Earth-Moon distance. Ours; the discrepancy is in the paper."
+  - block: "1:2 resonance cycler (sec. 3.3.2, Figs. 2, 10, 13)"
+    items:
+      - {quantity: "printed period", value: "about 14 days (text, citing Casoliva et al. 2010)"}
+      - {quantity: "Fig. 2 annotation on the red curve", value: "C = 2.25, TOF = 14 days"}
+      - {quantity: "Fig. 2 other annotations", value: "C = 3.18, TOF > 70 days (SMART-like); C = 2.26, TOF = 3.2 days (direct)"}
+      - {quantity: "initial conditions, sense", value: "not printed; four samples are drawn in Fig. 10 without values"}
+  - block: "Other printed numbers"
+    items:
+      - {quantity: "TOF intervals", value: "direct 2-6 d; low-energy 70-120 d (Parker and Anderson 2013); stepped intervals 3-5 d, 30-40 d, > 60 d"}
+      - {quantity: "minimum parking orbit radius", value: "0.20"}
+      - {quantity: "propagation limits", value: "28 d in the Moon's region, 84 d in the Earth's; he <= 0.35 (140800 km), hm <= 0.15; tolerance 1e-5 (3 km)"}
+      - {quantity: "worked insertion example", value: "text: C 2.13, E -0.09, r 0.0052; Fig. 12 caption: C = 3.13, E = -0.09 (the paper disagrees with itself on C)"}
