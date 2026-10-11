@@ -62,6 +62,7 @@ class Target:
     def __init__(self, name: str, out: Path) -> None:
         self.name, self.out = name, out
         self.ckpt_tag = "start"
+        self.max_wall = 430.0
         out.mkdir(parents=True, exist_ok=True)
         if name in IDEAL:
             self.b = _load("run_1025_sigma_batch", ROOT / "scripts" / "run_1025_sigma_batch.py")
@@ -188,27 +189,34 @@ def stage_start(t: Target) -> None:
 
 
 def stage_neg(t: Target) -> None:
+    """Negative control: the family moved off the root by +- 0.5 L along each of the q null
+    directions of the base frame (arclength rows about the corrected seed); Newton (40) must FAIL
+    to start from every such point."""
     rec = json.loads((t.out / "fix.json").read_text())
-    if rec["q"] != 1 or rec["z_star"] is None:
-        t.log("neg: only for q = 1 with a root")
+    q = int(rec["q"])
+    if q == 0 or rec["z_star"] is None:
+        t.log("neg: needs q >= 1 and a root")
         return
     t.set_sigma(SIGMA0)
     z0 = t.scale(t.seed, SIGMA0)
-    fr = family_frame(t.rj, z0, 1, TOL)  # the same base and vectors as the fix stage
-    d, u_n, v_n, z_ref = fr.d, fr.u_n, fr.v_n, fr.base.z
+    fr = family_frame(t.rj, z0, q, TOL)  # the same base and vectors as the fix stage
+    d, u_n, v_n = fr.d, fr.u_n, fr.v_n
     zs = np.asarray(rec["z_star"])
     big_l = float(rec["newton_length"])
     out = {}
-    for lab, da in (("plus", 0.5 * big_l), ("minus", -0.5 * big_l)):
-        a = float(rec["alpha_star"]) + da
-        br = bordered_solve(t.rj, zs + (v_n[:, 0] * da) / d, d, u_n, v_n, z_ref, np.array([a]), TOL)
-        row: dict[str, Any] = {"alpha": a, "family_point": bool(br.converged)}
-        if br.converged:
-            t.ckpt_tag = f"neg_{lab}"
-            _, info, ok = t.newton(br.z, 40)
-            row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
-        out[lab] = row
-        t.log(f"neg {lab}: {row}")
+    for i in range(q):
+        for sgn, lab in ((1.0, "plus"), (-1.0, "minus")):
+            key = f"v{i}_{lab}"
+            a = np.zeros(q)
+            a[i] = sgn * 0.5 * big_l
+            br = bordered_solve(t.rj, zs + (v_n @ a) / d, d, u_n, v_n, zs, a, TOL)
+            row: dict[str, Any] = {"offset": a.tolist(), "family_point": bool(br.converged)}
+            if br.converged:
+                t.ckpt_tag = f"neg_{key}"
+                _, info, ok = t.newton(br.z, 40)
+                row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
+            out[key] = row
+            t.log(f"neg {key}: {row}")
     (t.out / "neg.json").write_text(json.dumps(out))
 
 
@@ -224,7 +232,7 @@ def stage_cont(t: Target) -> None:
             _, _, info = b.residual_and_jac(t.p, z, False)
             pt = b._point(t.p, z, SIGMA0, info)
             path.write_text(json.dumps({"member": t.name, "points": [pt], "stage": "identity"}))
-        b.run_member(t.name, time.monotonic() + 430.0)
+        b.run_member(t.name, time.monotonic() + t.max_wall)
         return
     rb = t.rb
     path = t.out / "sigma_n1.json"
@@ -256,8 +264,10 @@ def main() -> None:
     ap.add_argument(
         "--stage", choices=["fix", "start", "neg", "cont", "down", "ias15"], required=True
     )
+    ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
     args = ap.parse_args()
     t = Target(args.target, ROOT / "data" / f"1055_{args.target}")
+    t.max_wall = args.max_wall
     if args.stage == "down":
         t.rb.stage_down(1)
         return

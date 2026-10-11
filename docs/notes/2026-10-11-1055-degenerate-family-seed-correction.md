@@ -259,3 +259,22 @@ Changes:
    1e-6 km/s). The pre-registered 1e-3 |g(0)| alone would ask for g below the noise when g(0) is
    already small. The START criteria (sec. 4, amendment 3) are unchanged.
 The 8 tests pass.
+
+### gc4-19 (ideal model), after amendments 4-5 (12:06-12:24 AEDT)
+
+- Fix: q = 2. Base |g(0)| 7.7e-3 (weighted), L = 1.96e5 (scaled). Two Newton steps on the reduced
+  equations give |g| 5.3e-6: root at |alpha*| = 1.92e5, about 1 L from the base, so an O(1) move
+  along the family, as sec. 1 predicted. Corrected-seed V_inf 4.1099 / 4.1082 / 2.3562 / 2.3564
+  (raw seed at sigma 0.02: 4.109 / 4.109 / 2.3565 / 2.3565).
+- START: converges at the FLOORS at sigma 0.02 (dr 8.3e-4 km, dv 2.3e-9 km/s). #1025 never got a
+  start for gc4-19.
+- NEGATIVE CONTROL: from the family moved 0.5 L off the root along each null direction (4 points),
+  Newton fails every time (dv 5.3e-4, 5.2e-4, 9.4e-6 and 5.6e-6 km/s, all above 1e-6). The start
+  depends on the correction: PASS.
+- IDENTITY (#1025 gate): shifts 0.0009 / 0.0004 / 0.0002 / 0.0001 km/s at sigma 0.02 / 0.01 / 0.005 /
+  0.0025, monotone, PASS. The corrected member's limit equals the chain tool's patched-conic V_inf
+  to 1e-4 (amendment 2's Richardson limit is within 0.05 by a wide margin). The family move changes
+  the geometry along the degenerate direction, not the V_inf.
+- Continuation (#1025 rules) is slow: a factor-1.2 step does not converge within the 25 + 15
+  budget, and a 2.5 % step needs 8-12 Newton iterations (diagnostic, scratch). The run needs more
+  than three 8-minute calls, so it goes to the lead (`--max-wall`).
