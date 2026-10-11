@@ -3084,7 +3084,10 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   the caller has recorded NOT RUN (seen in `#1025` sec. 11.6, ev5-9 e0: a 150-s timeout, the child ran 1,568 s more).
   `scripts/ev_realeph_1025.py` is fixed (own session plus `os.killpg` on timeout). Scan `scripts/` for other such calls,
   apply the same fix, and check each one's past output directories for result files newer than their timeout log.
-- `#1069` — registered 2026-10-11 (papercut review; BACKLOG, process, OWNER DECISION QUEUED). **SHORT HOOKS ON THE
+- `#1069` — ✓ DONE 2026-10-12 (ci-keeper-opus; owner decision 2026-10-12: "Hook trusts a fresh suite log", option (a);
+  design pre-registered in `docs/notes/2026-10-12-1069-hook-trusts-fresh-suite-log.md`; `scripts/suite_record.py`,
+  `scripts/ratchet_hook.sh`, `tests/scripts/test_1069_suite_record.py`; lead workflow in coordination.md). Registered
+  2026-10-11 (papercut review). **SHORT HOOKS ON THE
   CATALOGUE-WINDOW COMMIT.** The pre-commit "catalogue ratchets" step re-runs the tests/data ratchets inside the
   hook; on a loaded machine that is 15 minutes during which pre-commit holds every other agent's unstaged edits in
   a stash and overwrites them on restore (three agents lost edits on 2026-10-11, papercuts of the lead, ci-keeper

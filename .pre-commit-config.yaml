@@ -67,10 +67,15 @@ repos:
       # Fires ONLY when data/catalogue.yaml is staged (the only thing that moves
       # these counts); the slow optimizer-rediscovery test is excluded -- only
       # the fast census-classification assertions run (~70 s).
+      # #1069 (owner decision 2026-10-12, "Hook trusts a fresh suite log"):
+      # scripts/ratchet_hook.sh skips the re-run when the lead's window suite
+      # left an ok record (scripts/suite_record.py) under an hour old, on
+      # exactly the tree being committed, covering these targets; otherwise it
+      # runs `uv run pytest` with the same arguments. verbose shows which.
       - id: catalogue-ratchets
         name: catalogue ratchets
         entry: >-
-          uv run pytest
+          scripts/ratchet_hook.sh
           tests/data/test_cycler_class_census.py
           tests/data/test_validation_tier_census.py
           tests/data/test_validate_catalogue.py
@@ -84,6 +89,7 @@ repos:
         language: system
         files: ^data/catalogue\.yaml$
         pass_filenames: false
+        verbose: true
       # Cycler-network registry gate (task #570): any data/cycler_networks.yaml
       # edit (or a change to the schema/validator themselves) re-runs the
       # referential-integrity + taxi-cost cross-check ratchet locally, before
@@ -101,7 +107,9 @@ repos:
       # on a data/catalogue.yaml edit: a row_ref target could be renamed/removed.
       - id: manifold-connection-ratchets
         name: manifold connection ratchets
-        entry: uv run pytest tests/data/test_manifold_connections.py -q
+        # #1069: trusts a fresh window-suite record like catalogue-ratchets.
+        entry: scripts/ratchet_hook.sh tests/data/test_manifold_connections.py -q
         language: system
         files: ^(data/manifold_connections\.yaml|data/manifold_connection\.schema\.json|src/cyclerfinder/data/validate_connections\.py|data/catalogue\.yaml)$
         pass_filenames: false
+        verbose: true
