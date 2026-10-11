@@ -78,7 +78,8 @@ Signature: primary Pluto, sequence (Charon, Nix), period_k 4, V_inf (0.178, 0.13
 | same, working_bodies two | published, Howett |
 | sequence (Nix, Hydra), {repeated-moon} | published, Howett |
 | topology {pump-tour} at Pluto | published, Howett (Howett swallows it) |
-| topology {mga-tour} at Pluto | published, Howett (Stern is not even in the footprint for this sequence) |
+| topology {mga-tour} at Pluto | published, cites Howett (in-footprint: Howett and Stern; Howett is first in corpus order) |
+| topology {resonant}, sequence (Nix, Hydra) | in-footprint: Howett and Showalter-Hamilton; published |
 | topology {resonant} at Pluto | published, Howett |
 | unlabelled at Pluto | published, Howett |
 | the same {repeated-moon} signature with primary Jupiter (wrong system) | known-architecture-new-system, citing Russell-Strange |
@@ -93,9 +94,11 @@ Signature: primary Pluto, sequence (Charon, Nix), period_k 4, V_inf (0.178, 0.13
 | C3 | negative, topology: the same signature with {pump-tour} at Pluto | not published (not-found) | No Pluto anchor carries pump-tour or an empty label after the edit; baseline is "published", so this control fails before the edit and must pass after it. |
 
 Additional checks, recorded not gated:
-- {mga-tour} at Pluto with a sequence inside Stern's body set: published, citing Stern; with working_bodies "two"
-  the Stern scope "one" excludes it.
-- {resonant} at Pluto: not-found (baseline: published). Showalter would not match a trajectory topology.
+- {mga-tour} at Pluto, sequence (Charon, Nix): published, citing Stern (Howett no longer in the footprint); with
+  working_bodies "two" Stern's scope "one" excludes it, giving not-found.
+- {resonant} at Pluto, sequence (Charon, Nix): not-found (baseline: published via Howett only). Sequence (Nix, Hydra): not-found
+  (baseline: published, Howett and Showalter in footprint); after D3 Showalter carries {ephemeris} and never matches a
+  trajectory topology.
 - Every other control of the gate (`scripts/litcheck_942_943_scope.py`: 26 controls, the negative and the five
   candidates) must give output identical to its before-run; none is at Pluto.
 - If C1 fails (for instance if the footprint rule drops Howett for the label change), report it; do not move a
