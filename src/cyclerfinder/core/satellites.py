@@ -38,6 +38,23 @@ class SatelliteData:
     # not the same-sense ``1/|1/Ta-1/Tb|``, and its phase must be advanced
     # with a NEGATIVE mean motion, not a positive one.
     retrograde: bool = False
+    # SOURCED MEAN MOTION (#1022d, owner decision 2026-10-11 "Store the fitted period beside a").
+    # When a source prints a TRUE mean motion that is not the Kepler rate of the printed
+    # ``sma_km`` (the Pluto small moons: ``sma_km`` is the mean OSCULATING a, the printed rate is
+    # the precessing-ellipse one), it is stored here, ``mean_motion_deg_day`` follows it, and
+    # ``kepler_sma_km`` is the radius of the circle that has that rate about the primary. ``None``
+    # (the default, every other moon): nothing is stored, ``mean_motion_deg_day`` is Kepler III on
+    # ``sma_km`` and ``kepler_sma_km`` is ``sma_km`` (bit-identical to before the change).
+    mean_motion_sourced_deg_day: float | None = None
+    mean_motion_source: str = ""
+
+    @property
+    def kepler_sma_km(self) -> float:
+        """Radius of the circle with this moon's mean motion about its primary (Kepler III)."""
+        if self.mean_motion_sourced_deg_day is None:
+            return self.sma_km
+        n_rad_s = math.radians(self.mean_motion_sourced_deg_day) / 86400.0
+        return float((PRIMARIES[self.primary] / n_rad_s**2) ** (1.0 / 3.0))
 
 
 URANIAN_PRINTED_PERIODS_DAYS: dict[str, float] = {
@@ -171,6 +188,8 @@ def _sat(
     safe_alt_km: float,
     *,
     retrograde: bool = False,
+    mean_motion_sourced_deg_day: float | None = None,
+    mean_motion_source: str = "",
 ) -> SatelliteData:
     """Build a SatelliteData with mean motion DERIVED from sma + primary mu.
 
@@ -184,9 +203,15 @@ def _sat(
         mu_km3_s2=mu_km3_s2,
         radius_eq_km=radius_eq_km,
         sma_km=sma_km,
-        mean_motion_deg_day=mean_motion_deg_day_about(sma_km, mu_primary=PRIMARIES[primary]),
+        mean_motion_deg_day=(
+            mean_motion_deg_day_about(sma_km, mu_primary=PRIMARIES[primary])
+            if mean_motion_sourced_deg_day is None
+            else mean_motion_sourced_deg_day
+        ),
         safe_alt_km=safe_alt_km,
         retrograde=retrograde,
+        mean_motion_sourced_deg_day=mean_motion_sourced_deg_day,
+        mean_motion_source=mean_motion_source,
     )
 
 
@@ -318,19 +343,63 @@ SATELLITES: dict[str, SatelliteData] = {
     # Charon: GM 106.1 km^3/s^2, mean R 606.0 km, a 19600 km.
     "Charon": _sat("Charon", "Pluto", 106.1, 606.0, 19600.0, 100.0),
     # Nix: GM 0.0015 km^3/s^2, mean R 18.0 km, a 49300 km.
-    "Nix": _sat("Nix", "Pluto", 0.0015, 18.0, 49300.0, 10.0),
+    # Nix mean motion (#1022d): Table 11 n = 14.484 deg/day (precessing ellipse, 1-sigma 4e-6).
+    # The a above is Table 10 (mean osculating), so its Kepler rate is 2.5 percent slow. Source
+    # for all four small-moon rates: M. Brozovic and R. A. Jacobson (2024), AJ 167:256, Table 11
+    # (digest docs/notes/2026-10-11-digest-brozovic-jacobson-2024-...-pluto-satellites-aj.md).
+    "Nix": _sat(
+        "Nix",
+        "Pluto",
+        0.0015,
+        18.0,
+        49300.0,
+        10.0,
+        mean_motion_sourced_deg_day=14.484,
+        mean_motion_source="Brozovic and Jacobson 2024, AJ 167:256, Table 11",
+    ),
     # Hydra: GM 0.0020 km^3/s^2, mean R 18.5 km, a 65200 km.
-    "Hydra": _sat("Hydra", "Pluto", 0.0020, 18.5, 65200.0, 10.0),
+    # Hydra mean motion (#1022d): Table 11 n = 9.424 deg/day (1-sigma 2e-6); same source and reason.
+    "Hydra": _sat(
+        "Hydra",
+        "Pluto",
+        0.0020,
+        18.5,
+        65200.0,
+        10.0,
+        mean_motion_sourced_deg_day=9.424,
+        mean_motion_source="Brozovic and Jacobson 2024, AJ 167:256, Table 11",
+    ),
     # Styx and Kerberos (#1037, added 2026-10-11), same JPL SSD pages as Nix/Hydra above, accessed
     # 2026-10-11 (ssd.jpl.nasa.gov/sats/phys_par/ and /sats/elem/, ephemeris PLU060; page reference
     # M. Brozovic and R. A. Jacobson 2024, "Post-New Horizons orbits and masses for the satellites
     # of Pluto", AJ 167:256). Each value is the page's printed value:
     # Styx: GM < 0.0003 km^3/s^2 (an UPPER LIMIT, not a measurement; stored as the limit), mean
     # radius 5.2 km, a 43200 km (mean-element table; period printed 20.16 d).
-    "Styx": _sat("Styx", "Pluto", 0.0003, 5.2, 43200.0, 10.0),
+    # Styx mean motion (#1022d): Table 11 n = 17.855 deg/day (1-sigma 2e-5); same source and reason.
+    "Styx": _sat(
+        "Styx",
+        "Pluto",
+        0.0003,
+        5.2,
+        43200.0,
+        10.0,
+        mean_motion_sourced_deg_day=17.855,
+        mean_motion_source="Brozovic and Jacobson 2024, AJ 167:256, Table 11",
+    ),
     # Kerberos: GM < 0.0002 km^3/s^2 (UPPER LIMIT, stored as the limit), mean radius 6.0 km,
     # a 58300 km (mean-element table; period printed 32.17 d).
-    "Kerberos": _sat("Kerberos", "Pluto", 0.0002, 6.0, 58300.0, 10.0),
+    # Kerberos mean motion (#1022d): Table 11 n = 11.191 deg/day (1-sigma 7e-6); same source and
+    # reason.
+    "Kerberos": _sat(
+        "Kerberos",
+        "Pluto",
+        0.0002,
+        6.0,
+        58300.0,
+        10.0,
+        mean_motion_sourced_deg_day=11.191,
+        mean_motion_source="Brozovic and Jacobson 2024, AJ 167:256, Table 11",
+    ),
     # --- Completeness additions to existing systems (added 2026-06-14) ---
     # Jupiter Amalthea: JPL SSD phys_par ref JUP365 + mean elements, accessed
     # 2026-06-14. GM 0.16456 km^3/s^2, mean R 83.5 km, a 181400 km (tiny inner
@@ -444,3 +513,17 @@ SATELLITES: dict[str, SatelliteData] = {
     # prograde) -- Kepler-III self-check gives 2.738 d, matches to <0.3%.
     "CleoSelene": _sat("CleoSelene", "Kleopatra", 4.005e-5, 4.45, 655.0, 10.0),
 }
+
+
+def orbit_circle(moon: str) -> tuple[float, float]:
+    """``(radius_km, mean_motion_rad_day)`` of a moon's circular-orbit model about its primary.
+
+    #1022d. A moon with a sourced mean motion (the Pluto small moons) gets that rate and the
+    Kepler radius of it, so that ``v = n r`` agrees with ``sqrt(mu / r)``. Every other moon gets
+    exactly what the consumers computed before: ``sma_km`` and ``sqrt(mu / sma^3)`` per day,
+    bit for bit.
+    """
+    sat = SATELLITES[moon]
+    if sat.mean_motion_sourced_deg_day is None:
+        return sat.sma_km, math.sqrt(PRIMARIES[sat.primary] / sat.sma_km**3) * 86400.0
+    return sat.kepler_sma_km, math.radians(sat.mean_motion_sourced_deg_day)

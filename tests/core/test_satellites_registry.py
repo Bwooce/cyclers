@@ -67,6 +67,12 @@ def test_moon_present_and_keyed_by_full_name(moon: str) -> None:
 @pytest.mark.parametrize("moon", _ALL_MOONS)
 def test_mean_motion_is_derived_not_handcopied(moon: str) -> None:
     s = SATELLITES[moon]
+    if s.mean_motion_sourced_deg_day is not None:
+        # #1022d: the four Pluto small moons carry a sourced mean motion (Brozovic and Jacobson 2024
+        # Table 11); its literal values are pinned in test_satellites_pluto_small_moons.py.
+        assert s.mean_motion_deg_day == s.mean_motion_sourced_deg_day
+        assert s.mean_motion_source
+        return
     expected = mean_motion_deg_day_about(s.sma_km, mu_primary=PRIMARIES[s.primary])
     assert s.mean_motion_deg_day == pytest.approx(expected, rel=1e-12)
 
