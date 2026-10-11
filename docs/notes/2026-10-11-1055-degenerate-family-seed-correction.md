@@ -501,3 +501,35 @@ limit x_days (3.498195, 36.485538), the #973 `correct_dates` lands on the gc4-19
   under any formulation: #1044, #1046 apsis and #1046 crank all failed.
 - Negative control: running at 14:15. The +0.5 L point is at |r| 5.6 with dv 5.4e-3 km/s after
   about 33 of its 40 iterations, which is failing to start as required. Result pending.
+
+### 12.1 Negative control as run (`neg.json`, 14:37 AEDT) and AMENDMENT 8 (registered before it runs)
+
+As run (the sec. 3 item 3 procedure, base null frame, offsets +-0.5 L = +-2.29e5 about the root):
+- v0_plus: a family point was constructed, and Newton (40) FAILED to start: dr 1.29 km, dv 5.3e-3
+  km/s (floors 1e-2 km noise rule, 1e-6 km/s). As required.
+- v0_minus: the bordered corrector could not construct a family point, so no start was attempted.
+  This is not a test.
+
+How the pre-registration reads it: sec. 3 item 3 asks for BOTH points to fail. One point is a valid
+failure; the other is missing. So the negative control is INCOMPLETE, neither satisfied nor
+violated. Two weaknesses of the as-run procedure also matter:
+- The offsets were taken along the BASE frame's null vector, but the root sits 2.7 L along a curved
+  family (amendment 7). At the root, the base vector is not the family tangent. The "minus" point
+  then lies off the family, which plausibly explains why it could not be constructed.
+- The SVD sign of the base vector is not tied to the scan's direction of travel. So which of
+  v0_plus / v0_minus lies beyond the root and which lies back towards the base is not recorded.
+
+AMENDMENT 8, registered now at 14:45 AEDT, before the run:
+- `--stage neg2`: the null pair is recomputed at the root (the local frame, as amendment 7 traces
+  the family). It is oriented along the scan's direction of travel, from `fix_state.json`'s secant
+  segment.
+- On EACH side, beyond the root (+0.5 L, then +0.25 L if the first cannot be constructed) and back
+  towards the base (-0.5 L, then -0.25 L), the first constructed point is started with Newton (40).
+- SATISFIED if the first constructed point on each side fails to start. The original v0_plus failure
+  stands as supporting evidence. If a side has no constructible point at 0.5 L or 0.25 L, the
+  control is one-sided, and that is said plainly with the GanCal#1 verdict.
+- VIOLATED if either side's point starts. Then the start is not shown to depend on the correction,
+  and the GanCal#1 continuation result (launched by the lead at 14:38) is not used as #1055
+  evidence.
+- Expected runtime: about 2 x (corrector + up to 40 Newton iterations) at 0.5-1.5 min each, i.e.
+  0.5-1.5 h, running alongside the lead's continuation.

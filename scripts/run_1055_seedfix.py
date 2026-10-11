@@ -265,6 +265,49 @@ def stage_neg(t: Target) -> None:
     (t.out / "neg.json").write_text(json.dumps(out))
 
 
+def stage_neg2(t: Target) -> None:
+    """Amendment 8 (q = 1): the negative control in the LOCAL null frame at the root (as amendment
+    7 traces the family), oriented along the scan's direction of travel, on BOTH sides: beyond the
+    root (0.5 L, then 0.25 L if not constructible) and back towards the base (-0.5 L, then -0.25 L).
+    The first constructed point on each side is started with Newton (40) and must FAIL."""
+    rec = json.loads((t.out / "fix.json").read_text())
+    assert int(rec["q"]) == 1 and rec["z_star"] is not None
+    t.set_sigma(SIGMA0)
+    zs = np.asarray(rec["z_star"])
+    big_l = float(rec["newton_length"])
+    _, js = t.rj(zs)
+    d = column_scales(js)
+    u, _, vt = scaled_svd(js, d)
+    u_n, v_n = u[:, -1:], vt[-1:].T
+    fz = json.loads((t.out / "fix_state.json").read_text())["family"]
+    vk = np.asarray(fz.get("seg_v", fz["vk"]), dtype=np.float64)
+    sgn_scan = float(fz.get("seg_sgn", -1.0))
+    # orient v along the scan's direction of travel: positive offsets lie beyond the root
+    if float(v_n[:, 0] @ vk) * sgn_scan < 0.0:
+        v_n = -v_n
+    out: dict[str, Any] = {"frame": "local at the root, + = beyond the root", "tried": []}
+    for side, fracs in (("beyond", (0.5, 0.25)), ("back", (-0.5, -0.25))):
+        for frac in fracs:
+            a = np.array([frac * big_l])
+            br = bordered_solve(t.rj, zs + (v_n @ a) / d, d, u_n, v_n, zs, a, TOL)
+            row: dict[str, Any] = {
+                "side": side,
+                "frac_L": frac,
+                "offset": a.tolist(),
+                "family_point": bool(br.converged),
+            }
+            if br.converged:
+                t.ckpt_tag = f"neg2_{frac}"
+                _, info, ok = t.newton(br.z, 40)
+                row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
+            out["tried"].append(row)
+            t.log(f"neg2 {side} {frac}: {row}")
+            (t.out / "neg2.json").write_text(json.dumps(out))
+            if br.converged:
+                break
+    (t.out / "neg2.json").write_text(json.dumps(out))
+
+
 def stage_limit(t: Target) -> None:
     """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
     (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
@@ -338,7 +381,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
-        "--stage", choices=["fix", "start", "neg", "cont", "down", "ias15", "limit"], required=True
+        "--stage",
+        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2"],
+        required=True,
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
     args = ap.parse_args()
@@ -356,6 +401,7 @@ def main() -> None:
         "neg": stage_neg,
         "cont": stage_cont,
         "limit": stage_limit,
+        "neg2": stage_neg2,
     }[args.stage](t)
 
 
