@@ -1,0 +1,12 @@
+2026-10-11T16:03:58+1100 ps k3|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s: defect max 7.9 -> 3.0 m/s
+2026-10-11T16:03:58+1100 ps k5|RCharon/2:3|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h: defect max 4.3 -> 1.2 m/s
+2026-10-11T16:03:58+1100 pn k4|LCharon>Charon/1l|LCharon>Nix/0s|LNix>Charon/0s: defect max 31.1 -> 2.4 m/s
+2026-10-11T16:03:58+1100 pn k4|RCharon/1:2|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s: defect max 12.3 -> 3.4 m/s
+2026-10-11T16:03:58+1100 pn k3|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s: defect max 10.2 -> 2.6 m/s
+2026-10-11T16:03:58+1100 pk k6|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/0s: defect max 5.4 -> 1.6 m/s
+2026-10-11T16:03:58+1100 pk k6|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s: defect max 14.0 -> 1.6 m/s
+2026-10-11T16:03:58+1100 pk k6|RCharon/2:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s: defect max 7.3 -> 2.6 m/s
+2026-10-11T16:03:58+1100 ph k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s: defect max 6.3 -> 3.1 m/s
+2026-10-11T16:03:58+1100 ph k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s: defect max 5.2 -> 3.1 m/s
+2026-10-11T16:03:58+1100 ph k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s: defect max 32.0 -> 24.9 m/s
+2026-10-11T16:03:58+1100 defect fell for 11 of 11; median 7.9 -> 2.6 m/s

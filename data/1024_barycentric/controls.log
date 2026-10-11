@@ -1,0 +1,6 @@
+2026-10-11T16:00:50+1100 off path VenMar#45: max |dV_inf| 0.0e+00 km/s, status pass, ok=True
+2026-10-11T16:00:50+1100 off path gc-1: max |dV_inf| 0.0e+00 km/s, status pass, ok=True
+2026-10-11T16:00:50+1100 off path GanCal#5: max |dV_inf| 0.0e+00 km/s, status pass, ok=True
+2026-10-11T16:00:51+1100 on path VenMar#45: {"name": "VenMar#45", "secondary": "V", "mass_fraction": 2.4478429060135852e-06, "tolerance_kms": 0.00086, "outcome": "CONTINUES", "last_lambda": 1.0, "vinf_on_kms": {"M": 12.964791127971123, "V": 8.219726938214801}, "vinf_off_kms": {"M": 12.96475955374864, "V": 8.219573173685143}, "max_abs_dvinf_kms": 0.00015376452965831788, "status_on": "pass", "status_off": "pass", "date_shift_s_max": 21.576195023953915, "published_dev_kms": 0.004791127971122577, "ok": true}
+2026-10-11T16:00:51+1100 on path gc-1: {"name": "gc-1", "secondary": "Ganymede", "mass_fraction": 7.804348204264134e-05, "tolerance_kms": 0.0085, "outcome": "CONTINUES", "last_lambda": 1.0, "vinf_on_kms": {"Ganymede": 2.397577044031944, "Callisto": 1.806900298437479}, "vinf_off_kms": {"Ganymede": 2.3972188633350457, "Callisto": 1.806685534631882}, "max_abs_dvinf_kms": 0.00035818069689819154, "status_on": "pass", "status_off": "pass", "date_shift_s_max": 36.72347006677592, "ok": true}
+2026-10-11T16:00:51+1100 CONTROLS NOT OK: none

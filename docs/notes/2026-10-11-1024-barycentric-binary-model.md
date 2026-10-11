@@ -239,3 +239,125 @@ The criteria are unchanged:
 
 The continuation is re-run in full after this amendment. The controls are unaffected: they reached
 lambda = 1 through the same code, and are re-run anyway.
+
+## 8. Results (2026-10-11, 16:00-16:04 AEDT; code at the amendment-A2 commit)
+
+Data: `data/1024_barycentric/`:
+- `controls.json`;
+- `<cell>_continue.json`, one record per #998 gate-passer, keyed by gauntlet index;
+- `realeph_defect.json`;
+- a static log beside each.
+Wall time about 4 min in all (1 s per member).
+
+### 8.1 Code and controls
+
+Code:
+- `two_working_body.py` edits: commit 80b3420c.
+- The bit-identity regression on the Keplerian ev, gc, vm and pn cells (459 rows) passes after the
+  edits.
+- A full-rev n:m leg from the barycentric Charon re-flies onto Charon to < 1 km (Kepler step and
+  DOP853, n:m = 1:1, 2:1, 1:2, 3:2). Positive control of that test: the old 1:1 shortcut, forced on,
+  misses by 19,270 km.
+- `half_rev_vectors` refuses the barycentric Charon.
+- `mypy src tests` clean.
+
+Controls (sec. 5), all OK:
+- **Off path, bitwise:** VenMar#45, gc-1 and GanCal#5 give their stored V_inf exactly (|dV_inf| = 0).
+  At lambda = 0, every one of the 409 non-excluded #998 members has a residual <= 1.6e-14 km/s and a
+  Charon V_inf equal to the stored value to <= 3.1e-16 km/s.
+- **On path:**
+  - VenMar#45 with Venus as the secondary (mass fraction 2.45e-6): |dV_inf| 1.5e-4 km/s (tolerance
+    8.6e-4), published 8.22 / 12.96 within 0.005, gate pass, dates moved by up to 22 s.
+  - gc-1 with Ganymede as the secondary (7.80e-5): |dV_inf| 3.6e-4 km/s (tolerance 8.5e-3), gate pass,
+    dates moved by up to 37 s.
+
+### 8.2 The 457 #998 gate-passers under the option
+
+| Cell | Gate-passing | Continues to mass fraction 0.1088 | Folds / stops | Excluded (half-rev) | Gate pass at the end | Strong at the end | of which strong in #998 | newly strong |
+|---|---|---|---|---|---|---|---|---|
+| Styx (ps) | 183 | 140 | 16 | 27 | 139 | 55 | 54 of 108 | 1 |
+| Nix (pn) | 149 | 127 | 7 | 15 | 116 | 59 | 41 of 46 | 18 |
+| Kerberos (pk) | 62 | 59 | 1 | 2 | 55 | 36 | 36 of 41 | 0 |
+| Hydra (ph) | 63 | 57 | 2 | 4 | 52 | 25 | 24 of 29 | 1 |
+| all | 457 | 383 | 26 | 48 | 362 | 175 | 155 of 224 | 20 |
+
+- "Strong" is the #998 definition with the Pluto surface measured from the MOVING Pluto. The Charon
+  SOI is the run-time value (7,192 km after #1060). With the 8,070-km SOI the strong count is 176:
+  one Nix member is the difference.
+- **The 224 #998 strong members:**
+  - 204 continue, and 203 of them still pass the gate (one is "indeterminate");
+  - 3 fold or stop (all Styx; a fold is not a negative);
+  - 17 are excluded (half-rev, listed in sec. 3a).
+  - Of the 204, 155 stay strong. 48 lose the strong label on the Pluto-surface screen: once Pluto
+    moves (up to +-2,131 km against the origin-based r_min), their closest approach to it is below
+    1,188.3 km.
+- **The 20 newly strong members** were outside #998's strong set on the old Pluto-surface screen (18:
+  Nix 17, Hydra 1) or on the SOI screen (2).
+- **What moved, for the 204 continued strong members:**
+  - Charon V_inf rose by +0.003 to +0.023 km/s (median +0.011).
+  - The worst gate ratio changed by -5 % to +18 % (median +11 %).
+  - Dates moved by hours.
+  - The pre-registered expectation (sec. 6) was V_inf shifts of 0.02-0.06 km/s of mixed sign and ratio
+    changes of "tens of percent either way". The observed shifts are smaller and all positive. The
+    expectation overstated them.
+- **Diagnostic (sec. 2, "does not fix"):** the continued strong members reach r_min / a_C = 0.06-0.83
+  (median 0.23), and spend 5-50 % of their Lambert-leg time (median 16 %) inside 2 a_C. Every one of
+  them flies deep inside the binary, where the barycentre monopole is not the field. The Pluto-surface
+  screen is evaluated in that region, so the 48 "lost" and 20 "gained" labels are no more reliable
+  than the monopole there.
+
+### 8.3 The real-world test (sec. 5, control 3): PASSED as predicted
+
+The plu060 defect on the ideal dates, before the refit, for the 12 best strong cyclers (#998 sec. 6),
+now seeded from their continued barycentric zeros:
+- 11 of the 12 continued. The defect fell for all 11.
+- The median of the per-cycler maxima over 5 epochs fell from 7.9 to 2.6 m/s (-67 %).
+- Prediction (written before the run): at least 9 of 12 fall and the median falls by at least 30 %.
+  MET.
+- Per cycler, #998 -> barycentric (max over epochs, m/s):
+
+| Cycler | #998 | Barycentric |
+|---|---|---|
+| Styx k3 | 7.9 | 3.0 |
+| Styx k5 | 4.3 | 1.2 |
+| Nix k4 (generic) | 31.1 | 2.4 |
+| Nix k4 (1:2 pair) | 12.3 | 3.4 |
+| Nix k3 | 10.2 | 2.6 |
+| Kerberos k6 (1:2) | 5.4 | 1.6 |
+| Kerberos k6 (2:1 pair) | 14.0 | 1.6 |
+| Kerberos k6 (2:1, 3:2) | 7.3 | 2.6 |
+| Hydra k4 | 6.3 | 3.1 |
+| Hydra k6 | 5.2 | 3.1 |
+| Hydra k5 | 32.0 | 24.9 |
+| Styx k4 | 11.8 | did not continue (stops at lambda 0.978) |
+
+  The Hydra k5 outlier is one epoch (32.0 -> 24.9); its other epochs are 0.5-3.0 m/s.
+
+Reading: the 12 % Charon-state error was the dominant part of #998's ideal-to-kernel defect. With the
+option on, the ideal model is a better seed generator for the plu060 step.
+
+### 8.4 A finding about #998 sec. 6.1 (not fixed here)
+
+`scripts/realeph_998.py`'s `EphSystem` uses the kernel Charon states (barycentric, about 0.199 km/s),
+but it has no `is_keplerian`. So `resonant_circle` still takes the 1:1 shortcut |v_sc| = |V_Charon|
+there. For a spacecraft about the 975.5 monopole that is not the speed of a 1:1 return; the return
+needs about 0.249 km/s at Charon's barycentric radius (sec. 3). The test of 8.1 shows the shortcut
+misses by about 19,000 km in the barycentric circle.
+- 135 of the 457 #998 gate-passers (90 of the 224 strong) have an RCharon/1:1 leg. Their #998 sec. 6.1
+  kernel "refit to under 1 m/s" assumed a full-rev return that the conic does not make.
+- The 12 best of sec. 6 have no 1:1 leg and are unaffected.
+- Fix: `EphSystem.is_keplerian` returns False for Charon. That is a #998 script change, owned by its
+  task, then a re-run of sec. 6.1 for those 135. Proposed as a task for the lead to register.
+
+### 8.5 What this means for #998 / #1036
+
+- With the option on, 155 of the 224 strong #998 cyclers stay strong (204 continue). 20 others become
+  strong. 48 lose the label to the moving-Pluto screen. 17 half-rev members cannot be run in this
+  model. 3 do not continue.
+- The option brings the ideal seeds closer to plu060 (sec. 8.3). It does not fix the field inside the
+  binary, where every one of them flies.
+- #1036's adjudication should use the barycentric continued members (`data/1024_barycentric/`) as the
+  ideal-model record, with the 8.4 caveat for the 1:1 members until sec. 6.1 is re-run.
+- No catalogue edit; nothing is called novel.
+- A full barycentric re-enumeration (about 27,000 structures; it would find members that do not
+  continue from the old model) is offered as a lead launch.
