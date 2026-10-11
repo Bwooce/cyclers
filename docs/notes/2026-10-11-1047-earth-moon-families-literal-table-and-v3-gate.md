@@ -243,3 +243,18 @@ Window patch (apply script in my scratchpad, one match asserted per edit):
    - No other ratchet is expected to move. Catalogue 423 -> 426 rows; candidate-novel unchanged
      (29); known-class-member +3.
 4. `tests/search/test_1047_rows_writeback_v1.py`: its catalogue check stops skipping and must pass.
+
+### 9.1 Dry run (2026-10-11 15:08-16:04 AEDT; scratch worktree at 7feb2bf5, removed)
+
+- Apply script: every anchor matched once (8 edits after the fix below). Patch: 6 files, +487 / -4.
+- check-jsonschema on the patched catalogue: ok. ruff check and format on the touched files: clean.
+  mypy (the hook's file set, src + tests, worktree src first on the path): no issues in 944 files.
+- `tests/search/test_1047_rows_writeback_v1.py` plus `tests/test_catalogue_rediscovery.py`: pass. The
+  writeback test's catalogue check runs, with no skip.
+- `tests/data` (82 files, in chunks under 8 minutes): first chunk FAILED
+  `test_non_keplerian_ids_match_ratchet`. **Pre-registration miss:** the id-level ratchet
+  `NON_KEPLERIAN_IDS` (56 -> 59, its own size assertion) also moves with the non-keplerian count; I
+  had listed only the count. Added to the apply script (the three ids, size 59); the worktree was
+  rebuilt from HEAD and re-patched. Then all 82 files passed (EXIT 0 in every chunk).
+- Final ratchet deltas: non-keplerian count 56 -> 59 and NON_KEPLERIAN_IDS +3 (59); unvalidated
+  144 -> 147; V1 census +3; NON_HELIOCENTRIC 111 -> 114. Nothing else moved.
