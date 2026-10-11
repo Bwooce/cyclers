@@ -1,0 +1,80 @@
+{
+ "member": "gc4-19",
+ "key": "k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s",
+ "x_days": [
+  3.4983571077014988,
+  36.485552031090684
+ ],
+ "period_days": 50.092939764684445,
+ "k": 4,
+ "vinf_kms": {
+  "Callisto": 4.1090099196775025,
+  "Ganymede": 2.3565041026250473
+ },
+ "by_body": {
+  "Callisto": {
+   "turn": 5.005228155925934,
+   "alt": 6904.880583834873,
+   "ratio": 0.3105519764992481
+  },
+  "Ganymede": {
+   "turn": 41.767008889233054,
+   "alt": 580.4912443317767,
+   "ratio": 0.8990243819846874
+  }
+ },
+ "worst_ratio": 0.8990243819846874,
+ "sequence": [
+  "Callisto",
+  "Callisto",
+  "Ganymede",
+  "Ganymede"
+ ],
+ "r_min_km": 969653.3687340205,
+ "r_max_km": 3047177.911280124,
+ "transit_times_days": [
+  14.309,
+  16.298,
+  16.689,
+  2.797
+ ],
+ "lamberthub_max_diff_mps_per_leg": [
+  6.312669931598292e-12,
+  2.1556631856153974e-12
+ ],
+ "dop853_refly_max_miss_km": 0.00014667270980717282,
+ "dop853_max_vinf_vector_error_kms": 5.779394011550387e-10,
+ "gate_on_integrated_vectors": "pass",
+ "full_mass_nodes": [
+  {
+   "moon": "Callisto",
+   "t_days": 19.776881034621713,
+   "vinf_kms": 4.144527681033862,
+   "rp_km": 9673.019114260911,
+   "turn_deg": 4.747610254247754
+  },
+  {
+   "moon": "Callisto",
+   "t_days": 36.47658852040933,
+   "vinf_kms": 4.061634384356097,
+   "rp_km": 9139.82467257385,
+   "turn_deg": 5.210058030646001
+  },
+  {
+   "moon": "Ganymede",
+   "t_days": 39.25867867036066,
+   "vinf_kms": 2.3355548014634464,
+   "rp_km": 3328.3139354938044,
+   "turn_deg": 41.29202354239777
+  },
+  {
+   "moon": "Ganymede",
+   "t_days": 53.58254732715769,
+   "vinf_kms": 2.335167750965237,
+   "rp_km": 3198.8540274843544,
+   "turn_deg": 42.41887120011154
+  }
+ ],
+ "ias15_max_km": 1.5243748652581151e-05,
+ "literature_status": "inconclusive"
+}

@@ -1,0 +1,118 @@
+
+- id: ganymede-callisto-two-working-body-cycler-gc4-19-2026
+  name: "Computed Ganymede-Callisto two-working-body ballistic cycler gc4-19 (k = 4, both moons bend; #973/#1025/#1055)"
+  source: this-project
+  our_status: candidate-novel   # DRAFT, OWNER DECISION PENDING (held 2026-10-11 until GanCal#1 on jup365 reports): proposed as for the 15 #1025 members (a member of gc-1's class, gc-1's attribution).
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [14.309, 16.298, 16.689, 2.797]   # DERIVED (this project): per-leg durations in cycle order (key k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2 (no real-ephemeris chain).
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "Ganymede"
+    turning_angle_deg: 41.77
+    min_altitude_km: 580
+  - body: "Callisto"
+    turning_angle_deg: 5.01
+    min_altitude_km: 6905
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Callisto"]
+  sequence_canonical: "Callisto-Callisto-Ganymede-Ganymede"
+  sense: "n/a"
+  period:
+    pair: "Ganymede-Callisto"
+    k: 4
+    years:
+    note: "DERIVED (this project): 4 Ganymede-Callisto synodic periods = 50.093 d in the Russell & Strange 2009 Table 2 ideal model."
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 2.357
+    note: "DERIVED (this project, #973 ideal-model patched-conic zero; data/973_gc/k4_gauntlet.json). Largest demanded/available turn ratio 0.899 at the 100-km floor."
+  - body: "Callisto"
+    vinf_kms: 4.109
+    note: "DERIVED (this project). Largest demanded/available turn ratio 0.311 at the 200-km floor."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc (no single ellipse). Distance from Jupiter 969,653-3,047,178 km (#973 extents, all legs)."
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell & Strange 2009 Table 2 constants); continuous-gravity ideal-model rung (#1025 rules, reached from the #1055 corrected seed)"
+  data_gaps:
+  - path: "vinf_kms_at_encounters"
+    kind: "unknown"
+    note: "Real-ephemeris standing untested. The patched-conic real-ephemeris chain (rung (d)) was not run for this member (#973 note), and real-ephemeris continuous gravity is untested (lane limit: the open-chain n-body formulation does not converge across a full-revolution return, #1044/#1046)."
+    source_hint: "docs/notes/2026-10-07-973-two-working-body-k-extension.md; docs/notes/2026-10-08-1025-sigma-batch.md sec. 10"
+    todo_ref: "#1025"
+  - path: "notes"
+    kind: "method"
+    note: "Continuous-gravity closure (ideal model) reached from the #1055 degenerate-family-corrected seed: the raw seed does not start (#1025 NUMERICAL STOP at sigma 0.02). The method passed its pre-registered controls A (gc-1 ideal) and B (GanEur#316 jup365), and the negative control holds (4/4 off-root starts fail). The branch's sigma -> 0 limit is this #973 member (Richardson, within 14 s; #973 gate re-check, fd5ee948)."
+    source_hint: "docs/notes/2026-10-11-1055-degenerate-family-seed-correction.md secs. 8, 10, 10.1; docs/notes/2026-10-11-1055-gc4-19-973-gate.md"
+    todo_ref: "#1055"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "METHOD source: the two-working-body date-residual corrector, generalised here to the Jovian moons (as for gc-1)."
+  - authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics 32(1):143-157"
+    doi: "10.2514/1.36610"
+    note: "MODEL source: the ideal circular-coplanar Galilean model; their cyclers have one working body and a massless target (AAS 07-118 p.2), and AAS 07-118 p.18 names removing that assumption as future work."
+  - authors: ["Campagnola, S.", "Buffington, B. B.", "Lam, T.", "Petropoulos, A. E.", "Pellegrini, E."]
+    year: 2019
+    title: "Tour Design Techniques for the Europa Clipper Mission"
+    venue: "Journal of Guidance, Control, and Dynamics 42(12):2615-2626"
+    doi: "10.2514/1.G004309"
+    note: "PRIOR ART: the one published two-working-body Ganymede-Callisto cycler (GCGC, a single trajectory, not a searched class); as for gc-1."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-07"
+    description: "Exact zero of the Hollister-Menning date residual in the Ganymede-Callisto cell at k = 4, gate-passing at both moons, clean under the #973 amendment-2.6 screens"
+    task_chain: "#943 -> #973 -> #1025 -> #1055"
+    evidence_files: ["data/973_gc/k4_gauntlet.json", "data/1055_gc4-19/gc4-19.json", "data/1055_gc4-19/fix.json", "data/1055_gc4-19/neg.json", "data/1055_gc4-19/limit.json", "data/1055_gc4-19/v1_evidence.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k4 gc cell"
+    cell_id: "gc k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s"
+  priority_date: "2026-10-07"
+  notes: |
+    Member gc4-19 of the two-working-body Ganymede-Callisto class of gc-1
+    (ganymede-callisto-two-working-body-cycler-gc1-2026): both moons bend; k = 4
+    (50.093 d); structure k4|RGanymede/2:1|LGanymede>Callisto/0s|RCallisto/1:1|LCallisto>Ganymede/0s. Ideal-model Lambert-leg starts
+    3.498357, 36.485552 d (model epoch: all bodies at angle 0 at t = 0).
+    Worst demanded/available turn ratio 0.899.
+
+    V1 evidence (data/1055_gc4-19/v1_evidence.json): lamberthub <= 6.3e-12 m/s on every Lambert leg;
+    #973 DOP853 re-fly 1.5e-04 km, gate passes on the integrated vectors.
+
+    Continuous gravity (#1025 rules, docs/notes/2026-10-11-1055-degenerate-family-seed-correction.md
+    sec. 10; ideal model with point-mass moons at real GMs, not the ephemeris): EXISTS, reached
+    from the #1055 degenerate-family-corrected seed (the raw seed does not start, #1025). The joint-mass branch reaches the full
+    masses (identity by the limit, IAS15 re-fly 1.5e-05 km, no unscheduled minimum
+    inside 3 Hill radii). Full-mass nodes: C 4.145 km/s, altitude 7,263 km, turn 4.7 deg; C 4.062 km/s, altitude 6,730 km, turn 5.2 deg; G 2.336 km/s, altitude 697 km, turn 41.3 deg; G 2.335 km/s, altitude 568 km, turn 42.4 deg. Patched-conic values above.
+
+    Real ephemeris: untested. Rung (d) (the patched-conic chain tool) was not run for this member,
+    and real-ephemeris continuous gravity is untested (lane limit, #1044/#1046).
+
+    Literature: literature_check v3-A1 (#1025): "inconclusive", naming the Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler (one working body; rule F7). Resolving notes: as for gc-1 (docs/notes/2026-10-06-943-gc-prior-art-search.md)
+    and docs/notes/2026-10-08-1025-literature-step.md. OWNER DECISION 2026-10-08: written
+    candidate-novel as a member of gc-1's class, with gc-1's attribution (Hollister & Menning 1970
+    method; Russell & Strange 2007/2009 model; Campagnola et al. 2019 nearest prior art). Wording:
+    "first computed", never "new class".
