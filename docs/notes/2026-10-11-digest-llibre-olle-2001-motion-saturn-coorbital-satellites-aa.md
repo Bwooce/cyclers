@@ -80,8 +80,8 @@ horseshoe initial x values for C = 2.9 and two for C = 3.01.
   family structure at three mass ratios: a continuum in x at fixed C near L3, symmetric with two orthogonal crossings,
   with collision orbits and non-horseshoe symmetric orbits interleaved.
 - **Taylor's finding against this paper.** Taylor 1981 reports many distinct symmetric families h(n,m) at the Sun-Jupiter
-  value. This paper reports a continuum at fixed C and does not classify families by loop counts. It does not cite
-  Taylor's families as such (Taylor is cited for segments of several families at mu_SJ only).
+  value. This paper reports a continuum at fixed C and does not classify families by loop counts. It cites Taylor
+  only for segments of several families at mu_SJ.
 - **Saturn moon rows and #523.** The catalogue and the corpus index hold no Janus, Epimetheus, horseshoe or tadpole row.
   `#523` (co-orbital-exchange cyclers) names Janus-Epimetheus and is not built. This paper is the only held numeric source
   at the Janus mass ratio, and it supports the encounter criterion question in `#523`: its horseshoe orbits pass the small
@@ -127,8 +127,8 @@ horseshoe initial x values for C = 2.9 and two for C = 3.01.
 
 ## Citation mining
 
-Held: Szebehely 1967, Taylor 1981 and Schanzle 1967 (Rabe 1961 is cited with Taylor), Llibre, Martinez and Simo 1985,
-Hénon and Petit 1986 only as cited (Petit and Hénon 1986 is not checked).
+Held: Szebehely 1967, Taylor 1981 (cited here) and Llibre, Martinez and Simo 1985. Schanzle 1967 is held but this paper
+does not cite it.
 On the wanted list: the Barrabes and Mikkola 2005 paper and Henrard 2002 in the same row as this paper.
 Not held and not wanted before today (one new low-priority row):
 - Dermott and Murray (1981), Icarus 48:1 and 48:12, the coorbital motion of 1980S1 and 1980S3. The paper compares with
