@@ -468,3 +468,12 @@ table_30:
     - objective: "Ganymede"
       sub_rows: ["N150 X, N600 X", "N150 X, N1200 X", "N75 X, N300 X, N1200 X"]
 
+
+report_errata:
+  note: "The report ends with a one-page ERRATA sheet (PDF page 120). The table values above are as originally printed; the sheet says the following (read on the render; the word 'EDE' is printed so, probably for EOE)."
+  items:
+    - "Page 2: the first sentence describing the study constraints should read: 'Only high-thrust propulsion systems are considered. Within this category, however, ...'"
+    - "Page 56: t = mission duration (weeks)."
+    - "Page 107: second sentence of the second paragraph: delete the exclusion of Ganymede."
+    - "Page 108, Table 29: the entries for 'EDE Flyby' requirements should be on three separate lines."
+    - "Page 108, Table 30: enter 'F' under the 100,000 kg chemical propulsion module for the Vesta, Ceres and Jupiter flybys; for nuclear systems the module mass for Vesta flybys is 75,000 kg, not 1,200,000 kg."
