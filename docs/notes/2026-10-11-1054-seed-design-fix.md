@@ -342,3 +342,23 @@ Data: `data/1054_seed_design/grid_f1.jsonl` (5,256 seeds, all solved) and `grid_
   computes as 4:2 and the 7:3 pro wE3 key as 6:3. Their minimal period still has p perigees (k_min = p).
   So the "p:q" label of these two depends on whether perigees or inertial revolutions are counted. This is
   the same kind of case as #1047's "7:3 ret wE-9 wM0" (computes 6:3).
+
+## 10. Closing #1054: F1 becomes the default seed design (lead ruling 2026-10-12; pre-registered)
+
+Change:
+- `scripts/run_1000_shooting.py` gains `RP_F1` (the F1 rows, the same expression as
+  `run_1054_seed_design.RP_NEW`, which now refers to it) and a `--seed-design {f1,legacy}` option on
+  every seeding command (pilot, control, grid, control31, gaps). The default is **f1**.
+- `legacy` is the #1000/#1048 design. `RP` keeps its legacy rows, because the committed records index
+  them by `ir`.
+- F1 runs write to `<tag>_f1.jsonl`, so the committed legacy files and their checkpoints are untouched.
+- `solve_seed` keeps its 6-tuple signature for the legacy path. A 7th element names the design.
+
+Expected (written before the change):
+- the existing reproduction tests pass bit-for-bit through the legacy path (`tests/scripts/test_1054_seed_design.py`:
+  20 #1000 seeds, status and iteration count; the F3 opt-in seeds);
+- new tests also pass bit-for-bit:
+  - 3 #1048 gaps seeds reproduce `gaps.jsonl`;
+  - a legacy 7-tuple gives the same record as the 6-tuple;
+  - an f1 seed reproduces its arm E record.
+- `RP_NEW == RP_F1` exactly.

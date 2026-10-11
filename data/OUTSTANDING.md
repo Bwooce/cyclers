@@ -2977,6 +2977,12 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   yield under 1 sigma, the converged gap about 2 sigma; F3 turns impacts into stalls). A test pins the
   reproduction of 20 old seeds and the old floor-row skeleton-arc impact >= 0.80, with an F3 opt-in
   regression and no bound for the falsified F1+F2 design. Next: F1 alone.
+  **CLOSED 2026-10-12 (earthmoon-opus):** F1 alone (perigee rows from 1.3 x floor) is not falsified in the paired
+  pilot (`e2a30f42`) nor in the full grid (`00c1358f`, `58fd4b4a`: impact 0.537 < 0.590, converged 0.328 > 0.286,
+  all 15 `#1000` family keys found; four new keys known-class at class level only). F1 is now the default seed
+  design of `scripts/run_1000_shooting.py` (`--seed-design legacy` reproduces the committed `#1000`/`#1048`
+  records bit-for-bit; tests in `tests/scripts/test_1054_seed_design.py`). Note:
+  `docs/notes/2026-10-11-1054-seed-design-fix.md` secs. 6-10.
 - `#1055` — registered 2026-10-08 (from `#1046`; BACKLOG). **A SEED CORRECTED WITH THE OUT-OF-PLANE ROWS** for
   the Jovian n-body lane's full-revolution legs, to remove the out-of-plane inconsistency that stalls
   GanCal#1@2013 and gc-1 under every formulation (`#1046`).

@@ -4,6 +4,9 @@ docs/notes/2026-10-08-1000-earth-moon-complement-search.md sec. 2.1).
     uv run python scripts/run_1000_shooting.py control   # 7:3 seeds at the 7-3b/7-3c C values
     uv run python scripts/run_1000_shooting.py grid      # full seed grid, C free
 
+Seeding commands take --seed-design {f1,legacy} (default f1, #1054). legacy reproduces the committed
+#1000/#1048 records (data/1000_complement/shooting/<tag>.jsonl); f1 runs write <tag>_f1.jsonl.
+
 Every call runs in the foreground under --max-seconds and resumes from its checkpoint.
 """
 
@@ -44,7 +47,12 @@ VAQUERO_31 = {
     "x0": 0.9013301668020125,
     "ydot0": -0.8462249954358775,
 }
+# the #1000/#1048 ("legacy") perigee rows; the committed records index them by ir
 RP = [r / base.L_KM for r in base.RP_KM]
+# #1054 F1 (docs/notes/2026-10-11-1054-seed-design-fix.md secs. 6-10): perigee rows from 1.3 x
+# floor, the default seed design since 2026-10-12; "legacy" reproduces the committed records
+RP_F1 = [r / base.L_KM for r in np.geomspace(1.3 * base.FLOOR_E, base.GEO_KM, 8)]
+SEED_DESIGNS = {"legacy": RP, "f1": RP_F1}
 OMEGA = base.OMEGA
 CONTROLS = {
     "casoliva-7-3b-em-cycler-2010": 1.068655371747616,
@@ -204,10 +212,15 @@ def shoot(
     return {"converged": False, "why": "max iterations", "it": max_it, "n_halved": n_halved}
 
 
-def solve_seed(seed: tuple[int, int, int, int, int, float | None]) -> dict[str, Any]:
-    p, q, sense, ir, iw, c_target = seed
+def solve_seed(seed: tuple[Any, ...]) -> dict[str, Any]:
+    """(p, q, sense, ir, iw, C_target) on the legacy rows, or with a 7th element naming the seed
+    design ("legacy" or "f1"); a non-legacy record carries "seed_design"."""
+    p, q, sense, ir, iw, c_target = seed[:6]
+    design = seed[6] if len(seed) > 6 else "legacy"
     rec: dict[str, Any] = {"p": p, "q": q, "sense": sense, "ir": ir, "iw": iw, "C_target": c_target}
-    return solve_values(rec, p, q, sense, RP[ir], OMEGA[iw], c_target)
+    if design != "legacy":
+        rec["seed_design"] = design
+    return solve_values(rec, p, q, sense, SEED_DESIGNS[design][ir], OMEGA[iw], c_target)
 
 
 def solve_values(
@@ -292,7 +305,9 @@ def run(tag: str, seeds: list[tuple[Any, ...]], max_seconds: float) -> None:
     if f.exists():
         for line in f.read_text().splitlines():
             d = json.loads(line)
-            done.add((d["p"], d["q"], d["sense"], d["ir"], d["iw"], d["C_target"]))
+            key = (d["p"], d["q"], d["sense"], d["ir"], d["iw"], d["C_target"])
+            design = d.get("seed_design", "legacy")
+            done.add(key if design == "legacy" else (*key, design))
     todo = [s for s in seeds if tuple(s) not in done]
     print(f"{tag}: {len(done)} done, {len(todo)} to go", flush=True)
     t0, n = time.time(), 0
@@ -359,11 +374,13 @@ def main() -> None:
         sp = sub.add_parser(name)
         sp.add_argument("--max-seconds", type=float, default=420.0)
         sp.add_argument("--pilot-s", type=float, default=None)
+        sp.add_argument("--seed-design", choices=["f1", "legacy"], default="f1")
     sub.add_parser("control-report")
     for name in ("control31", "gaps"):
         sp = sub.add_parser(name)
         sp.add_argument("--max-seconds", type=float, default=420.0)
         sp.add_argument("--pilot-s", type=float, default=None)
+        sp.add_argument("--seed-design", choices=["f1", "legacy"], default="f1")
     sub.add_parser("control31-report")
     args = ap.parse_args()
     if args.cmd == "control-report":
@@ -406,9 +423,13 @@ def main() -> None:
         "control31": control31_seeds,
         "gaps": gap_seeds,
     }[args.cmd]
+    tag = args.cmd
+    if args.seed_design != "legacy":
+        seeds = [(*sd, args.seed_design) for sd in seeds]
+        tag = f"{args.cmd}_{args.seed_design}"
     preflight_search(
         task_no=1000,
-        region_id=f"em-complement-multiple-shooting-{args.cmd}",
+        region_id=f"em-complement-multiple-shooting-{tag}",
         method=MethodCapability(
             genome="near-Keplerian p:q skeleton, multiple shooting (N = p arcs), Earth-Moon CR3BP",
             corrector="minimum-norm Newton on continuity + perigee phase (+ C in controls)",
@@ -419,7 +440,7 @@ def main() -> None:
         n_points=len(seeds),
         timing_pilot_seconds_per_point=args.pilot_s,
     )
-    run(args.cmd, seeds, args.max_seconds)
+    run(tag, seeds, args.max_seconds)
 
 
 if __name__ == "__main__":

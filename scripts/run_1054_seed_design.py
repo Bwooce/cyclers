@@ -48,7 +48,7 @@ FLOOR_KM = sh.base.FLOOR_E
 RP_MIN_KM = 1.3 * FLOOR_KM
 BAND_KM = (20000.0, 60000.0)
 # pre-registration sec. 2
-RP_NEW = [r / L_KM for r in np.geomspace(RP_MIN_KM, sh.base.GEO_KM, 8)]
+RP_NEW = sh.RP_F1  # the F1 rows, defined once in run_1000_shooting (sec. 10)
 TARGETS_KM = (5000.0, 10000.0, 20000.0, 40000.0, 80000.0)
 OM_SCAN = np.radians(np.arange(360.0))
 DROP = 0.2

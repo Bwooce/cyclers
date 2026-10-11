@@ -112,3 +112,51 @@ def test_f3_opt_in_reproduces_arm_b(seed: tuple[int, int, int, int, int]) -> Non
         rec["n_halved"],
     )
     assert out["n_halved"] > 0
+
+
+# --- sec. 10: F1 is the default seed design; the legacy path reproduces the committed records ---
+
+GAPS_SEEDS = [(3, 1, 1, 0, 0), (3, 1, 1, 0, 1), (3, 1, 1, 7, 0)]
+
+
+@pytest.mark.parametrize("seed", GAPS_SEEDS)
+def test_legacy_gaps_seed_reproduces_1048_record(seed: tuple[int, int, int, int, int]) -> None:
+    path = REPO / "data" / "1000_complement" / "shooting" / "gaps.jsonl"
+    recs = {
+        (r["p"], r["q"], r["sense"], r["ir"], r["iw"]): r
+        for r in map(json.loads, path.read_text().splitlines())
+    }
+    rec = recs[seed]
+    out = sh.solve_seed((*seed, None, "legacy"))
+    assert (out["status"], out["it"]) == (rec["status"], rec["it"])
+    if rec["status"] == "converged":
+        assert out["C"] == rec["C"]
+        assert out["T"] == rec["T"]
+    assert "seed_design" not in out
+
+
+def test_legacy_seven_tuple_equals_six_tuple() -> None:
+    seed = REPRO_SEEDS[0]
+    assert sh.solve_seed((*seed, None)) == sh.solve_seed((*seed, None, "legacy"))
+
+
+def test_f1_rows_are_the_1054_rows() -> None:
+    assert sh.RP_F1 is sd.RP_NEW
+    assert sh.SEED_DESIGNS["f1"] is sh.RP_F1
+    assert sh.SEED_DESIGNS["legacy"] is sh.RP
+
+
+@pytest.mark.parametrize("seed", [(2, 1, 1, 0, 24), (7, 3, -1, 3, 11)])
+def test_f1_seed_reproduces_arm_e_record(seed: tuple[int, int, int, int, int]) -> None:
+    path = REPO / "data" / "1054_seed_design" / "arm_E.jsonl"
+    recs = {
+        (r["p"], r["q"], r["sense"], r["irn"], r["k"]): r
+        for r in map(json.loads, path.read_text().splitlines())
+    }
+    rec = recs[seed]
+    out = sh.solve_seed((*seed, None, "f1"))
+    assert out["seed_design"] == "f1"
+    assert (out["status"], out["it"]) == (rec["status"], rec["it"])
+    if rec["status"] == "converged":
+        assert out["C"] == rec["C"]
+        assert out["T"] == rec["T"]
