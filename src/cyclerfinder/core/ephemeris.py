@@ -191,8 +191,9 @@ class _CentredCircularBackend:
     its mean-motion circle ABOUT THE PRIMARY (Jupiter/Saturn/…), returning
     planet-centred inertial ``(r, v)`` in km / km·s⁻¹. It reads
     :data:`cyclerfinder.core.satellites.SATELLITES` (not ``PLANETS``), uses
-    ``sma_km`` directly (NO ``* AU_KM``) and the about-primary
-    ``mean_motion_deg_day`` (Kepler III with the primary's GM). Coplanar (z == 0),
+    ``kepler_sma_km`` directly (NO ``* AU_KM``; it is ``sma_km`` for a moon with no sourced
+    rate, #1022d) and the about-primary ``mean_motion_deg_day`` (Kepler III with the primary's GM,
+    or the sourced mean motion). Coplanar (z == 0),
     every moon at ``theta == 0`` at ``t_sec == 0`` — the same convention as the
     heliocentric circular backend, one centre down.
 
@@ -212,7 +213,7 @@ class _CentredCircularBackend:
         # KeyError is the right error if the caller passes an unknown moon (or a
         # moon of a different primary than this backend's centre).
         moon = self._moons[body]
-        a_km = moon.sma_km
+        a_km = moon.kepler_sma_km  # the circle that has the registry mean motion (#1022d)
         n_rad_s = moon.mean_motion_deg_day * (pi / 180.0) / SECONDS_PER_DAY
         theta = n_rad_s * t_sec
         cos_t = cos(theta)
