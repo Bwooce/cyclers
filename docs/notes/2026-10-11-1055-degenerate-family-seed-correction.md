@@ -533,3 +533,30 @@ AMENDMENT 8, registered now at 14:45 AEDT, before the run:
   evidence.
 - Expected runtime: about 2 x (corrector + up to 40 Newton iterations) at 0.5-1.5 min each, i.e.
   0.5-1.5 h, running alongside the lead's continuation.
+
+### 12.2 AMENDMENT 9 (registered 14:55 AEDT, BEFORE the trigger; reactive to a foreseen trigger, and said so)
+
+- What I saw (`sigma_n1.json` of the lead's 14:38 continuation, points at sigma 0.02 and 0.024): the
+  corrected member's weak G2 flyby has its periapsis at 2,123 km at sigma 0.024. That is rp/SOI =
+  0.388, and 88,000 km at full scale, against the chain tool's 28,327 km. rp/SOI grows about as
+  sigma^0.6, so rungb's acceptance (rp/SOI > 0.5, from #968 rung (b), inherited through #1044
+  criterion (ii)) will stop the run within a step or two, near sigma 0.03. It has not fired yet.
+- The precedent: #1043 met the same issue with the EGGIE's 0.9-deg Io flyby, whose periapsis lies
+  beyond the SOI even in the patched conic. It dropped the SOI bound and kept the floors and the
+  unscheduled-pass check.
+- AMENDMENT 9 (lead to accept or reject): for #1055's jup365 targets, the 0.5-SOI acceptance is
+  dropped (`--soi-limit inf`). Unchanged: the floors at every point, IAS15 (#1044 iv), identity
+  (amendment 2), and the inside-body scan at sigma = 1 (`--stage scan`: DOP853, rtol 1e-12,
+  0.0005 d, all four moons; the same algorithm as #1025 amendment 2, whose positive control flagged
+  the #1033 interior pass). rp/SOI per node is recorded as a flag. If the lead rejects it, GanCal#1
+  fails #1044 (ii) at about sigma 0.03, and the full-mass question stays open.
+- The relaunch resumes from the last accepted point of `sigma_n1.json` (rungb's resume), so nothing
+  computed is lost.
+
+### 12.3 Results (pending: neg2 launched 14:40; continuation launched 14:38)
+
+To be filled against:
+- neg2: SATISFIED if the first constructed point on each side fails to start (amendment 8).
+- continuation: sigma = 1 at the floors (#1044 i); the floors at every point (ii, with amendment 9
+  if accepted); identity going down (amendment 2: Cauchy limit, and a Richardson limit within
+  0.05 km/s of the chain); IAS15 < 1e-2 km, < 1e-7 km/s (iv); the inside-body scan clean.

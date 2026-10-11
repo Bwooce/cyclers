@@ -39,6 +39,7 @@ from cyclerfinder.nbody.degenerate_family import (
     family_root_nd,
     scaled_svd,
 )
+from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2 as MU_J
 
 ROOT = Path(__file__).resolve().parents[1]
 SIGMA0 = 0.02
@@ -308,6 +309,57 @@ def stage_neg2(t: Target) -> None:
     (t.out / "neg2.json").write_text(json.dumps(out))
 
 
+def stage_scan(t: Target) -> None:
+    """#1025 amendment 2 on jup365: closest approaches to all four moons along every leg of the
+    sigma = 1 point of sigma_n1.json (DOP853, rtol 1e-12, 0.0005-day sampling); minima inside
+    3 Hill radii listed, ``inside_body`` if inside the moon's radius (scan.json)."""
+    from scipy.integrate import solve_ivp
+
+    rb, c = t.rb, t.c
+    rec = json.loads((t.out / "sigma_n1.json").read_text())
+    q = rec["points"][-1]
+    assert q["sigma"] >= 1.0, q["sigma"]
+    z = np.asarray(q["z"])
+    c.set_sigma(1.0)
+    nd = rb.nodes(c, z)
+    found = []
+    for k in range(len(nd) - 1):
+        x0, _, t0, _ = nd[k]
+        t1 = nd[k + 1][2]
+        sol = solve_ivp(
+            lambda tt, y: rb.accel(c, y, tt),
+            (t0, t1),
+            x0,
+            method="DOP853",
+            rtol=1e-12,
+            atol=1e-10,
+            dense_output=True,
+        )
+        ts = np.linspace(t0, t1, int((t1 - t0) / (0.0005 * 86400.0)) + 2)
+        ys = sol.sol(ts)
+        for moon in rb.ALL4:
+            mu = SATELLITES[moon].mu_km3_s2
+            hill = SATELLITES[moon].sma_km * (mu / (3.0 * MU_J)) ** (1.0 / 3.0)
+            dist = np.linalg.norm(
+                ys[:3].T - np.array([c.eph.position(moon, float(tt)) for tt in ts]), axis=1
+            )
+            for i in range(1, len(ts) - 1):
+                if dist[i] <= dist[i - 1] and dist[i] <= dist[i + 1] and dist[i] < 3.0 * hill:
+                    found.append(
+                        {
+                            "leg": k,
+                            "moon": moon,
+                            "t_days": float(ts[i] / 86400.0),
+                            "dist_km": float(dist[i]),
+                            "inside_hill": bool(dist[i] < hill),
+                            "inside_body": bool(dist[i] <= SATELLITES[moon].radius_eq_km),
+                        }
+                    )
+    out = {"minima": found, "any_inside_body": any(f["inside_body"] for f in found)}
+    (t.out / "scan.json").write_text(json.dumps(out))
+    t.log(f"scan: {len(found)} minima within 3 Hill radii; inside a body: {out['any_inside_body']}")
+
+
 def stage_limit(t: Target) -> None:
     """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
     (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
@@ -382,12 +434,20 @@ def main() -> None:
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
         "--stage",
-        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2"],
+        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2", "scan"],
         required=True,
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
+    ap.add_argument(
+        "--soi-limit",
+        type=float,
+        default=None,
+        help="jup365: rungb SOI acceptance (amendment 9: inf drops it; default keeps 0.5)",
+    )
     args = ap.parse_args()
     t = Target(args.target, ROOT / "data" / f"1055_{args.target}")
+    if args.soi_limit is not None and hasattr(t, "rb"):
+        t.rb.SOI_LIMIT = args.soi_limit
     t.max_wall = args.max_wall
     if args.stage == "down":
         t.rb.stage_down(1)
@@ -402,6 +462,7 @@ def main() -> None:
         "cont": stage_cont,
         "limit": stage_limit,
         "neg2": stage_neg2,
+        "scan": stage_scan,
     }[args.stage](t)
 
 
