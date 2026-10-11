@@ -1,0 +1,85 @@
+# Longuski and Williams 1991, Tables I and II and the numbers printed in the text.
+# Source: J. M. Longuski and S. N. Williams, "Automated design of gravity-assist trajectories to Mars and the outer planets",
+#   Celestial Mechanics and Dynamical Astronomy 52:207-220 (1991). Received 7 August 1990, revised 25 March 1991, accepted
+#   5 August 1991. The DOI 10.1007/BF00048484 is not printed on the scan; it is the one the wanted list recorded as confirmed.
+# Local file: 14 pp., a 300 dpi bilevel scan (CCITT images) with a hidden OCR text layer from the source, md5
+#   4223bc81123b179ffd1c36c703c73337 (private corpus, papers/ directory). Journal page n = PDF page n - 206.
+# Tables: I p.211 (PDF p.5, printed rotated 90 degrees); II p.216 (PDF p.10).
+# Witnesses: A = pdftotext -layout and B = pdftotext -raw of the hidden OCR layer (one OCR run, two extractors, so not
+#   independent of each other); C = the page image (170 dpi for Table I after rotation, 130 dpi for Table II) read cell by cell.
+#   C decides. Every numeric cell of Table I and Table II was also found verbatim in both A and B (counts matched), and the
+#   layer scrambles the row order of both tables, so the layer was used only as a digit check. The four-digit codes print
+#   spaced ("5 0 0 1") and are read from the image.
+# No value here was computed by us. Our values are only in `note:` fields, marked "ours". Numbers are kept as printed (strings).
+conventions:
+  table_I_columns: "event, four-digit code (target planet number, spacecraft revolutions about the Sun, target-planet revolutions about the Sun, orbit number among the available solutions; 5 Jupiter, 6 Saturn, 7 Uranus, 8 Neptune, 9 Pluto; the first column 5 or 6 etc. is the target of that leg, so the Earth row carries the code of the leg it starts), planet, hp = flyby altitude (km), theta = flyby angle (deg), vinf (km/s), period of the heliocentric orbit of the leg (days), rp and ra = periapsis and apoapsis of that orbit (AU), C3 = vis viva (km2/s2), Tf = flight time of the leg (days), sum_Tf = cumulative flight time (days)"
+  launch: "Table I: launch date 8/20/1977 at 0:0:0 (Voyager II), launch V-infinity 10.20 km/s"
+tables:
+  - table: "I"
+    caption: "Results for variations of the 1977 Voyager Grand Tour"
+    journal_page: "211"
+    columns: [event, code, planet, hp_km, theta_deg, vinf_kms, period_d, rp_au, ra_au, C3, Tf_d, sum_Tf_d]
+    note: "Four solution blocks. Blank cells are blank on the page. The printed cumulative times differ from the sums of the printed leg times by 0.1 d in several rows (ours: for example 660.0 + 737.3 = 1397.3 against 1397.4), consistent with rounding of unrounded values."
+    blocks:
+      - block: "1: Earth 5001, Jupiter 6001, Saturn 7001, Uranus 8001, Neptune 9000"
+        comment: "This gets all the way to Neptune"
+        rows:
+          - {event: "1", code: "5001", planet: "Earth", hp_km: "200", theta_deg: "-18.26", vinf_kms: "10.20", period_d: "2760.42", rp_au: "1.00", ra_au: "6.70", C3: "", Tf_d: "660.0", sum_Tf_d: "660.0"}
+          - {event: "2", code: "6001", planet: "Jupiter", hp_km: "491547", theta_deg: "4.96", vinf_kms: "8.39", period_d: "", rp_au: "5.07", ra_au: "", C3: "87.8", Tf_d: "737.3", sum_Tf_d: "1397.4"}
+          - {event: "3", code: "7001", planet: "Saturn", hp_km: "73491", theta_deg: "-27.80", vinf_kms: "11.81", period_d: "", rp_au: "9.57", ra_au: "", C3: "272.7", Tf_d: "1513.1", sum_Tf_d: "2910.6"}
+          - {event: "4", code: "8001", planet: "Uranus", hp_km: "59080", theta_deg: "135.43", vinf_kms: "15.99", period_d: "", rp_au: "14.66", ra_au: "", C3: "352.2", Tf_d: "1232.0", sum_Tf_d: "4142.6"}
+          - {event: "5", code: "9000", planet: "Neptune", hp_km: "", theta_deg: "", vinf_kms: "18.09", period_d: "", rp_au: "", ra_au: "", C3: "", Tf_d: "", sum_Tf_d: ""}
+      - block: "2: Earth 5001, Jupiter 6002, Saturn (arrival only)"
+        rows:
+          - {event: "1", code: "5001", planet: "Earth", hp_km: "200", theta_deg: "-18.26", vinf_kms: "10.20", period_d: "2760.42", rp_au: "1.00", ra_au: "6.70", C3: "", Tf_d: "660.0", sum_Tf_d: "660.0"}
+          - {event: "2", code: "6002", planet: "Jupiter", hp_km: "1012867", theta_deg: "-85.38", vinf_kms: "8.39", period_d: "7985.44", rp_au: "5.17", ra_au: "10.46", C3: "", Tf_d: "4796.7", sum_Tf_d: "5456.8"}
+          - {event: "", code: "", planet: "Saturn", hp_km: "", theta_deg: "", vinf_kms: "5.55", period_d: "", rp_au: "", ra_au: "", C3: "", Tf_d: "", sum_Tf_d: ""}
+      - block: "3: Earth 5001, Jupiter 6003, Saturn (arrival only)"
+        rows:
+          - {event: "1", code: "5001", planet: "Earth", hp_km: "200", theta_deg: "-18.26", vinf_kms: "10.20", period_d: "2760.42", rp_au: "1.00", ra_au: "6.70", C3: "", Tf_d: "660.0", sum_Tf_d: "660.0"}
+          - {event: "2", code: "6003", planet: "Jupiter", hp_km: "783550", theta_deg: "90.18", vinf_kms: "8.39", period_d: "7992.19", rp_au: "5.18", ra_au: "10.46", C3: "", Tf_d: "4812.7", sum_Tf_d: "5472.8"}
+          - {event: "", code: "", planet: "Saturn", hp_km: "", theta_deg: "", vinf_kms: "5.23", period_d: "", rp_au: "", ra_au: "", C3: "", Tf_d: "", sum_Tf_d: ""}
+      - block: "4: Earth 5002, Jupiter 6001, Saturn 7001, Uranus 8001, Neptune 9000"
+        comment: "This gets all the way to Neptune"
+        rows:
+          - {event: "1", code: "5002", planet: "Earth", hp_km: "200", theta_deg: "-15.67", vinf_kms: "10.20", period_d: "2615.17", rp_au: "1.00", ra_au: "6.42", C3: "", Tf_d: "684.9", sum_Tf_d: "684.9"}
+          - {event: "2", code: "6001", planet: "Jupiter", hp_km: "565507", theta_deg: "4.93", vinf_kms: "7.94", period_d: "", rp_au: "5.03", ra_au: "", C3: "63.8", Tf_d: "766.7", sum_Tf_d: "1451.6"}
+          - {event: "3", code: "7001", planet: "Saturn", hp_km: "92058", theta_deg: "-27.78", vinf_kms: "11.10", period_d: "", rp_au: "9.58", ra_au: "", C3: "242.8", Tf_d: "1567.1", sum_Tf_d: "3018.8"}
+          - {event: "4", code: "8001", planet: "Uranus", hp_km: "73163", theta_deg: "134.90", vinf_kms: "15.20", period_d: "", rp_au: "14.47", ra_au: "", C3: "315.8", Tf_d: "1278.6", sum_Tf_d: "4297.4"}
+          - {event: "5", code: "9000", planet: "Neptune", hp_km: "", theta_deg: "", vinf_kms: "17.22", period_d: "", rp_au: "", ra_au: "", C3: "", Tf_d: "", sum_Tf_d: ""}
+  - table: "II"
+    caption: "Multiple encounter opportunities with far outer planets"
+    journal_page: "216"
+    columns: [launch, planets, flight_time_d, comment]
+    note: "The comment cell '\" \" \"' on the page is a ditto mark for the comment above it. Resolved here: rows 3 to 5 repeat 'Three-planet opportunity', the last two rows repeat 'Two-planet opportunity', as the page prints them."
+    rows:
+      - {launch: "1996", planets: "Jupiter-Uranus-Neptune-Pluto", flight_time_d: "7400", comment: "Last opportunity for four planets"}
+      - {launch: "1993-1995", planets: "Jupiter-Uranus-Neptune", flight_time_d: "2500", comment: "Three-planet opportunity"}
+      - {launch: "1998", planets: "Jupiter-Saturn-Uranus", flight_time_d: "5000", comment: "ditto: Three-planet opportunity"}
+      - {launch: "2005-2007", planets: "Jupiter-Uranus-Neptune", flight_time_d: "4700", comment: "ditto: Three-planet opportunity"}
+      - {launch: "2016-2019", planets: "Jupiter-Saturn-Neptune", flight_time_d: "2500", comment: "ditto: Three-planet opportunity"}
+      - {launch: "2021-2022", planets: "Jupiter-Uranus-Neptune", flight_time_d: "6500", comment: "Last opportunity for E578"}
+      - {launch: "2036", planets: "Jupiter-Saturn-Uranus", flight_time_d: "3800", comment: "Three-planet opportunity"}
+      - {launch: "2037", planets: "Jupiter-Saturn-Uranus", flight_time_d: "4200", comment: "ditto: Three-planet opportunity"}
+      - {launch: "Every 14 years", planets: "Jupiter-Uranus", flight_time_d: "1500", comment: "Two-planet opportunity"}
+      - {launch: "Every 13 years", planets: "Jupiter-Neptune", flight_time_d: "2500", comment: "ditto: Two-planet opportunity"}
+      - {launch: "Every 13 years", planets: "Jupiter-Pluto", flight_time_d: "2500", comment: "ditto: Two-planet opportunity"}
+text_values:
+  - block: "Method (sections 2 and 3)"
+    items:
+      - {quantity: "Venus period used in the worked example", value: "225 days (flight-time ranges 0-225 d for 0 target revolutions, 225-450 d for 1, and so on)"}
+      - {quantity: "bending angle", value: "delta = 2 asin[1/(1 + Rp Vinf^2/mu)]; a solution exists if the required bending angle is below delta"}
+      - {quantity: "vis viva", value: "C3 = Vinf . Vinf (twice the energy)"}
+  - block: "Outer planet grand tours (section 4)"
+    items:
+      - {quantity: "paths searched 1985-2050", value: "E56789, E5679, E5689, E56879, E5789, E579, E589, E59 (E Earth, 5 Jupiter, 6 Saturn, 7 Uranus, 8 Neptune, 9 Pluto)"}
+      - {quantity: "initial search", value: "Earth launch V-infinity 12 km/s (Voyager II 10.2 km/s), launch dates every 20 days"}
+      - {quantity: "next E56789 opportunity", value: "9 June 2153, 175.8 years after the Voyager II launch and 186.0 years after the first possible opportunity in 1967 (search window 1965-01-01 to 2180-01-01); the family follows the Uranus-Neptune synodic period, printed as 172 years"}
+      - {quantity: "four-planet path E5789", value: "exists in 1995 (Fig. 6); last launch with Pluto in 1996, minimum flight time about 7400 days (20 years); searched 1995-1997 at V-infinity 11, 12, 13, 14 km/s, none to Pluto in 1997"}
+      - {quantity: "E59 fast trajectories", value: "every 13 years, about 2500 days (7 years)"}
+  - block: "Venus gravity assist to Mars (section 5)"
+    items:
+      - {quantity: "ideal V-infinity at Earth", value: "about 3 km/s to Mars and about 2.5 km/s to Venus"}
+      - {quantity: "search", value: "ballistic and VEGA (E234) for 30 years from 1995, plotted below launch vis viva 12.25 km2/s2; Venus swingby E24 only found in 2015"}
+      - {quantity: "minimum launch vis viva", value: "Venus swingby 11 against VEGA 9 km2/s2 in the same time frame; over the 30 years, ballistic 7.75 km2/s2 in 2018, VEGA 7.59 km2/s2 in 2010"}
+      - {quantity: "years with VEGA clearly below nearby ballistics", value: "2002, 2008, 2010, 2020, 2021, 2023; comparable in 2004, 2012, 2015; no mode available between 2004 and 2008"}
