@@ -1,0 +1,215 @@
+{
+ "A": {
+  "family": "A",
+  "id": "earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026",
+  "seed": {
+   "file": "data/1000_complement/continuation/5_2_pro_wE3_wM0_p.jsonl (line 1, k = 0)",
+   "C": 2.4818625405815755,
+   "T": 12.712603845035172,
+   "s_perigee": [
+    0.007585049111578169,
+    0.06575828405208183,
+    -4.914147238858065,
+    1.4748530972181948
+   ],
+   "closure_multiple_shooting_seed": 1.3260075055810958e-06
+  },
+  "mass_ratio": 0.01215058439469525,
+  "lunit_km": 384400.0,
+  "tunit_s": 375190.2618944357,
+  "state_nd": [
+   0.007585052498738436,
+   0.0657582830468676,
+   3.851612367153725e-28,
+   -4.914147198955228,
+   1.4748532286336935,
+   -1.622937209161151e-25
+  ],
+  "period_nd": 12.712603845043912,
+  "jacobi_constant": 2.4818625405692707,
+  "converged": true,
+  "closure_residual": 3.744679513064522e-11,
+  "closure_plain_dop853": 9.851603239786905e-08,
+  "radau_ok_crosscheck_periodic": true,
+  "radau_dj": 1.8971491044794675e-12,
+  "radau_closure_full_period": 1.5553603726164842e-09,
+  "radau_arc_max_diff": 4.567617957928762e-11,
+  "radau_arcs": 20,
+  "k_par_full_period_stm": -110.09616505452868,
+  "k_perp": -8.417690919967772,
+  "k_signed": -110.09616505452868,
+  "k_par_arc_stm_product": -110.09707194408838,
+  "k_eig_agree": true,
+  "perigee_km": 9710.076056145415,
+  "perigee_alt_km": 3331.9390561454156,
+  "apogee_km": 411731.2838999758,
+  "periselene_km": 14980.426718733912,
+  "periselene_alt_km": 13243.026718733912,
+  "max_moon_km": 795599.542131841,
+  "wind_E": 3.000000008548766,
+  "wind_M": -1.1226524013449742e-10,
+  "symmetric": false,
+  "perp_crossings": [],
+  "cycler_class_candidate": true,
+  "period_days": 55.20422645812772,
+  "inertial_N": 5.023273750056539,
+  "pq": [
+   5,
+   2
+  ],
+  "pq_expected": [
+   5,
+   2
+  ],
+  "sense": "prograde",
+  "mirror_min_distance_nd": 0.0988740186770777,
+  "floors_km": {
+   "earth": 6578.137,
+   "moon": 1837.4
+  },
+  "geo_km": 42164.0,
+  "hill_km": 61273.87545790641
+ },
+ "B": {
+  "family": "B",
+  "id": "earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026",
+  "seed": {
+   "file": "data/1000_complement/continuation/5_3_ret_wE-8_wM-2_p.jsonl (line 1, k = 0)",
+   "C": 0.8604292804405986,
+   "T": 18.886675526606325,
+   "s_perigee": [
+    -0.03364194653865011,
+    -0.014412226712374684,
+    -4.840002086693562,
+    7.217360627093632
+   ],
+   "closure_multiple_shooting_seed": 4.030144439025136e-06
+  },
+  "mass_ratio": 0.01215058439469525,
+  "lunit_km": 384400.0,
+  "tunit_s": 375190.2618944357,
+  "state_nd": [
+   -0.033641946537662316,
+   -0.014412226713891843,
+   1.0254698730196898e-27,
+   -4.840002086693564,
+   7.217360627093654,
+   1.9599251731971817e-24
+  ],
+  "period_nd": 18.886675526609444,
+  "jacobi_constant": 0.8604292803677112,
+  "converged": true,
+  "closure_residual": 6.668334466143811e-11,
+  "closure_plain_dop853": 7.1125518812655e-06,
+  "radau_ok_crosscheck_periodic": false,
+  "radau_dj": 2.3021584638627246e-12,
+  "radau_closure_full_period": 6.36145253557022e-07,
+  "radau_arc_max_diff": 4.5634723188764104e-10,
+  "radau_arcs": 20,
+  "k_par_full_period_stm": 115.37797628017142,
+  "k_perp": 0.2998625790709699,
+  "k_signed": 115.37797628017142,
+  "k_par_arc_stm_product": 115.29478319431655,
+  "k_eig_agree": true,
+  "perigee_km": 9946.909318680542,
+  "perigee_alt_km": 3568.7723186805424,
+  "apogee_km": 579763.5794002323,
+  "periselene_km": 22859.262797621715,
+  "periselene_alt_km": 21121.862797621714,
+  "max_moon_km": 956712.3746696194,
+  "wind_E": -8.000000187050281,
+  "wind_M": -2.0000000039708863,
+  "symmetric": false,
+  "perp_crossings": [],
+  "cycler_class_candidate": true,
+  "period_days": 82.01500853175725,
+  "inertial_N": -4.9940924184176625,
+  "pq": [
+   5,
+   3
+  ],
+  "pq_expected": [
+   5,
+   3
+  ],
+  "sense": "retrograde",
+  "mirror_min_distance_nd": 2.163986587549738,
+  "floors_km": {
+   "earth": 6578.137,
+   "moon": 1837.4
+  },
+  "geo_km": 42164.0,
+  "hill_km": 61273.87545790641
+ },
+ "D": {
+  "family": "D",
+  "id": "earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026",
+  "seed": {
+   "file": "data/1000_complement/continuation/7_3_pro_wE4_wM-1_p.jsonl (line 1, k = 0)",
+   "C": 2.547266749814082,
+   "T": 18.66471811060122,
+   "s_perigee": [
+    -0.04097446222196201,
+    -0.10961833306369095,
+    3.7357584959035623,
+    -0.9823087385896808
+   ],
+   "closure_multiple_shooting_seed": 9.07707206303409e-07
+  },
+  "mass_ratio": 0.01215058439469525,
+  "lunit_km": 384400.0,
+  "tunit_s": 375190.2618944357,
+  "state_nd": [
+   -0.040974445096916876,
+   -0.10961833976697322,
+   -1.262177556913857e-28,
+   3.7357585350380034,
+   -0.9823084204834679,
+   -1.214525764207394e-26
+  ],
+  "period_nd": 18.66471809530478,
+  "jacobi_constant": 2.547266755561992,
+  "converged": true,
+  "closure_residual": 5.316170781260214e-12,
+  "closure_plain_dop853": 8.351487366880325e-07,
+  "radau_ok_crosscheck_periodic": false,
+  "radau_dj": 2.346567384847731e-12,
+  "radau_closure_full_period": 4.181379538797269e-08,
+  "radau_arc_max_diff": 1.8206495814182287e-11,
+  "radau_arcs": 28,
+  "k_par_full_period_stm": 717.9459021638613,
+  "k_perp": -1.8882397731994223,
+  "k_signed": 717.9459021638613,
+  "k_par_arc_stm_product": 717.9395414413884,
+  "k_eig_agree": true,
+  "perigee_km": 12131.639769919791,
+  "perigee_alt_km": 5753.502769919792,
+  "apogee_km": 429880.07538678125,
+  "periselene_km": 15511.829220989246,
+  "periselene_alt_km": 13774.429220989246,
+  "max_moon_km": 808186.8746068157,
+  "wind_E": 3.999999950862183,
+  "wind_M": -1.0000000018279462,
+  "symmetric": false,
+  "perp_crossings": [],
+  "cycler_class_candidate": true,
+  "period_days": 81.05116285142608,
+  "inertial_N": 6.970582097146685,
+  "pq": [
+   7,
+   3
+  ],
+  "pq_expected": [
+   7,
+   3
+  ],
+  "sense": "prograde",
+  "mirror_min_distance_nd": 0.10496706705124728,
+  "floors_km": {
+   "earth": 6578.137,
+   "moon": 1837.4
+  },
+  "geo_km": 42164.0,
+  "hill_km": 61273.87545790641
+ }
+}
