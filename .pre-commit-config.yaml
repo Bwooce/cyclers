@@ -6,6 +6,20 @@
 # `uv run pre-commit install` in this clone (no PATH change needed after that).
 # Run manually across the tree with: uv run pre-commit run --all-files
 repos:
+  # #1063: catalogue-window lock, FIRST so nothing else runs while a window is
+  # open. NOTE: pre-commit stashes the unstaged files of the whole tree before
+  # its first hook, so this entry alone still stashes and restores other agents'
+  # files; scripts/githooks/pre-commit runs the same check BEFORE pre-commit and
+  # is the real guard (enable once per clone: git config core.hooksPath
+  # scripts/githooks). This entry covers clones that have not done that.
+  - repo: local
+    hooks:
+      - id: window-lock
+        name: catalogue window lock (#1063)
+        entry: scripts/window_lock_check.sh
+        language: system
+        always_run: true
+        pass_filenames: false
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.29.4
     hooks:

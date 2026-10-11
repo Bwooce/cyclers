@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# #1063: git pre-commit hook for this clone, enabled once per clone with
+#   git config core.hooksPath scripts/githooks
+# It runs the catalogue-window lock check FIRST, before pre-commit stashes the
+# unstaged files of the whole tree, so a refused commit touches nothing. Then it
+# hands over to the hook that `uv run pre-commit install` wrote to
+# <git common dir>/hooks/pre-commit (ruff, mypy, the catalogue ratchets).
+set -u
+
+repo_root=$(git rev-parse --show-toplevel)
+"$repo_root/scripts/window_lock_check.sh" || exit 1
+
+installed="$(git rev-parse --git-common-dir)/hooks/pre-commit"
+if [ -x "$installed" ]; then
+    exec "$installed" "$@"
+fi
+echo "pre-commit hook not installed in this clone: run 'uv run pre-commit install'" >&2
+exit 1
