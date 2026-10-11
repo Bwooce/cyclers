@@ -57,7 +57,7 @@
     source_hint: "docs/notes/2026-10-07-973-two-working-body-k-extension.md; docs/notes/2026-10-08-1025-sigma-batch.md sec. 10"
     todo_ref: "#1025"
   - path: "notes"
-    kind: "method"
+    kind: "uncertain"
     note: "Continuous-gravity closure (ideal model) reached from the #1055 degenerate-family-corrected seed: the raw seed does not start (#1025 NUMERICAL STOP at sigma 0.02). The method passed its pre-registered controls A (gc-1 ideal) and B (GanEur#316 jup365), and the negative control holds (4/4 off-root starts fail). The branch's sigma -> 0 limit is this #973 member (Richardson, within 14 s; #973 gate re-check, fd5ee948)."
     source_hint: "docs/notes/2026-10-11-1055-degenerate-family-seed-correction.md secs. 8, 10, 10.1; docs/notes/2026-10-11-1055-gc4-19-973-gate.md"
     todo_ref: "#1055"

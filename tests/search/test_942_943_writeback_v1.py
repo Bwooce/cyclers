@@ -90,6 +90,13 @@ ROWS: dict[str, tuple[Any, ...]] = {
         "data/973_gc/k4_gauntlet.json",
         {"Ganymede": 6.4468, "Callisto": 2.7512},
     ),
+    # owner decision 2026-10-11 (#1055): gc4-19, reached in continuous gravity from the #1055
+    # degenerate-family-corrected seed; its V1 evidence is the same #973-zero recomputation.
+    "ganymede-callisto-two-working-body-cycler-gc4-19-2026": (
+        "gc",
+        "data/973_gc/k4_gauntlet.json",
+        {"Ganymede": 2.3565, "Callisto": 4.1090},
+    ),
     "ganymede-callisto-two-working-body-cycler-gc4-25-2026": (
         "gc",
         "data/973_gc/k4_gauntlet.json",

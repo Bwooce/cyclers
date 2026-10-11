@@ -1020,3 +1020,54 @@ Small-sigma start acceptance (the lead's request; applies only if (1) selects it
   3. amendment 10 on the root, by me, from the down stage of `start_forced` (`--stage limit` is
      ideal-only; for jup365 I will use rungb's `stage_down` after a start), before any
      continuation.
+
+### 12.3 (FINAL) Negative control, amendment 8 (`data/1055_gancal1/neg2.json`, finished 17:10 AEDT)
+
+Local null frame at the root, oriented along the scan's direction of travel; the first constructed
+point on each side, started with Newton (40), noise-floor rule:
+- BEYOND the root (+0.5 L): a family point was constructed; NOT started (dr 5.05 km, dv 1.18e-2
+  km/s after 40 iterations).
+- BACK towards the base (-0.5 L): a family point was constructed; NOT started (dr 2.71 km, dv 8.9e-3
+  km/s).
+- The original v0_plus (base frame, sec. 12.1) also failed: dr 1.29 km, dv 5.3e-3 km/s.
+- SATISFIED: both sides fail, so the start at the root depends on the correction.
+
+CLOSING VERDICT, GanCal#1@2013 on jup365 (#1055 target), controls complete:
+- Under the ORIGINAL PRE-REGISTRATION, GanCal#1 FAILS #1044 criterion (ii) at sigma 0.0415 (the weak
+  G2 flyby passes 0.5 SOI).
+- Under AMENDMENT 9 (0.5-SOI acceptance dropped, as #1043 did for weak flybys):
+  - the #1055-corrected seed STARTS at sigma 0.02, the first start under any formulation;
+  - the negative control (amendment 8) confirms that the start depends on the correction;
+  - the branch tracks at the floors to sigma 0.7374;
+  - it then FOLDS at sigma 0.730-0.738 (undecided by the pre-registered two-solution rule;
+    confirmed by the post-hoc amendment 12, R^2 0.994);
+  - so there is NO full-mass orbit on this branch.
+- Under AMENDMENT 10, the branch is a DIFFERENT member of the degenerate patched-conic family (G2
+  periapsis near 89,000 km against the chain tool's 28,327 km). The chain tool's own GanCal#1@2013
+  object is a NON-ROOT of the first-order solvability condition (sec. 12.7). It is therefore not
+  the small-mass limit of any continuous-gravity orbit within the scanned domain, and it is
+  untested at full mass by any construction here.
+- The jup365 lane is NOT validated on a full-revolution chain at full mass by GanCal#1. What
+  GanCal#1 does establish:
+  - the seed correction starts a jup365 full-revolution chain, with the dependence controlled;
+  - member identity must be checked, not assumed;
+  - the #1044/#1046 negatives are explained (starts from a non-root).
+
+## 14. OWNER DECISION on gc4-19 (2026-10-11)
+
+Question as the lead put it to the owner: GanCal#1 has reported. The #1055 method's controls pass,
+including the amendment-8 negative control (neg2: both sides fail). On jup365 the corrected
+GanCal#1 branch is a sibling member of the degenerate family: it folds at about 74 % moon mass,
+and the chain tool's own member is a non-root. gc4-19 continues its own #973 member and passes
+amendment 10 (member identity: r_p / sigma within 0.4 %, turns within 0.1 deg, epochs within 14 s
+in the limit). Should gc4-19 become a catalogue row?
+
+OWNER DECISION (verbatim label): "Candidate-novel V1 row, like the 15".
+
+The row is prepared from the draft (`data/1055_gc4-19/gc4-19_row_draft.yaml`, e8643bb9), with:
+- the decision text and date replacing the DRAFT comment;
+- one data_gaps clause naming the method controls (A, B, and the amendment-8 negative control;
+  secs. 8, 12.3);
+- the member-identity pass (sec. 10.1, amendment 10).
+It is applied in catalogue window 4 by the lead. The writeback test's extension (gc4-19's V1
+evidence recomputed from the #973 gauntlet) is committed first, as its prerequisite.

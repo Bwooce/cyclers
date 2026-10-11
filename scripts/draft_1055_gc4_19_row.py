@@ -117,7 +117,7 @@ REPLACE = [
         '    todo_ref: "#1025"\n',
         '    todo_ref: "#1025"\n'
         '  - path: "notes"\n'
-        '    kind: "method"\n'
+        '    kind: "uncertain"\n'
         '    note: "Continuous-gravity closure (ideal model) reached from the #1055 degenerate-family-corrected seed: the raw seed does not start (#1025 NUMERICAL STOP at sigma 0.02). The method passed its pre-registered controls A (gc-1 ideal) and B (GanEur#316 jup365), and the negative control holds (4/4 off-root starts fail). The branch\'s sigma -> 0 limit is this #973 member (Richardson, within 14 s; #973 gate re-check, fd5ee948)."\n'
         '    source_hint: "docs/notes/2026-10-11-1055-degenerate-family-seed-correction.md secs. 8, 10, 10.1; docs/notes/2026-10-11-1055-gc4-19-973-gate.md"\n'
         '    todo_ref: "#1055"\n',
