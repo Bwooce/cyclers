@@ -157,7 +157,18 @@ Tests (fast):
 
 ## 8. Results
 
-(pending)
+Summary at 12:55 AEDT. The details are in the dated subsections below, which are interleaved with
+the amendments in the order they happened.
+
+| Item | Pre-registered criterion | Result |
+|---|---|---|
+| Control A, gc-1 ideal | q = 1, alpha* = 0; start V_inf equals #1025 at sigma 0.02 to 1e-4; sigma = 1 with V_inf equal to #1034 to 2e-3 | PASS. q = 1, g(0) = 7.0e-14, root at the base, seed unchanged. Start at the floors, V_inf 2.38775 / 1.80691 / 1.80797 / 2.38774 (equal to 1e-5). #1025 identity 0.0095 / 0.0052 / 0.0028 / 0.0015 passes. Sigma = 1: 2.1298 / 1.7845 / 1.8428 / 2.1294 (equal). IAS15 passes. |
+| Control B, GanEur#316 jup365 (b') | q = 0, or a root near 0; the start at the same sigma-0.02 point to 1e-4 | PASS. q = 0 (sv_min 1.53e-5 at 0.02, 1.25e-5 at 0.005), seed unchanged. Start (amendment 3 rule): dr 3.0e-3 km, dv 5.1e-8 km/s, V_inf 3.19029 / 3.19107 / 3.19554 / 3.77569 / 3.17503 (equal to #1039 (b') to 1e-5). |
+| Negative control (mechanism), on gc4-19 | every start from the family 0.5 L off the root fails (40 iterations) | PASS. 4 of 4 fail: dv 5.3e-4, 5.2e-4, 9.4e-6, 5.6e-6 km/s (above 1e-6). |
+| gc4-19 ideal, start | START at the floors; identity (amendment 2) | STARTS. q = 2, root at 1.0 L (|g| 7.7e-3 -> 5.3e-6). dr 8.3e-4 km, dv 2.3e-9 km/s. Identity shifts 0.0009 / 0.0004 / 0.0002 / 0.0001 against the chain tool's V_inf, so the limit is the chain's own V_inf. PASS. |
+| gc4-19 continuation | #1025 outcome rules plus the amendment-2 scan | RUNNING (lead launch 12:37). The first step, sigma 0.024, converged at 12:44 after about 30 min at machine load about 45. |
+| GanCal#1@2013 | fix, start, negative control | RUNNING (lead launch 12:37). Detection q = 1 (sv 1.27e-5 -> 3.18e-6). |
+| gc-1 e2 | fix, start, negative control | Queued after GanCal#1 (lead). |
 
 ### Amendment 1 (implementation, before any run)
 
@@ -297,3 +308,26 @@ fix call ran on the same target from 12:39 to 12:44, concurrently with it. It wr
 `fix_state.json` (paused in phase frame2), which the lead's process does not read. I make no further
 GanCal#1 calls while the lead's run is alive. `fix_state.json` stays: a valid partial state of the
 same method, used only if the stage is re-run.
+
+## 9. Prepared jup365 continuation commands (run only after a target's start and negative control pass)
+
+From /Users/bruce/dev/cyclers, for `<t>` = gancal1 or gc1e2:
+
+    uv run python scripts/run_1055_seedfix.py --target <t> --stage cont && \
+    uv run python scripts/run_1055_seedfix.py --target <t> --stage down && \
+    uv run python scripts/run_1055_seedfix.py --target <t> --stage ias15
+
+- cont: writes `sigma_n1.json` with the corrected start as its first point, then rungb's
+  `stage_sigma` (natural continuation 0.02 -> 1, factor 1.2, halving to 1e-5, the noise-floor rule
+  for intermediate points, the #1044 acceptance at every point, the unscheduled Hill-radius scan at
+  sigma = 1). Resumable per point; no time limit of its own.
+- down: rungb's `stage_down` (sigma 0.01 and 0.005 from the start). The amendment-2 identity
+  (Cauchy limit plus a Richardson limit within 0.05 km/s) is computed from it in the analysis.
+- ias15: rungb's `stage_ias15` at sigma = 1, every half-arc, on `JovianRailsCache` with registry GMs
+  (#1044 criterion iv).
+- After the run I apply the amendment-2 inside-body scan to the sigma = 1 point (at 0.0005-day
+  sampling, as #1025 sec. 10).
+- Runtime: about 23 natural steps if none fail. Each step costs 3-10 evaluations at 5-40 s
+  (GanCal#1) or 35-110 s (gc-1 e2), depending on the machine load. That is about 0.5-2.5 h for
+  GanCal#1 and 2-8 h for gc-1 e2, plus the down and ias15 stages (minutes for GanCal#1; up to 1 h
+  for gc-1 e2).
