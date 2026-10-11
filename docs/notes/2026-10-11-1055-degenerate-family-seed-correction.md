@@ -486,3 +486,18 @@ Independent check (twobody-ext-opus, `docs/notes/2026-10-11-1055-gc4-19-973-gate
 limit x_days (3.498195, 36.485538), the #973 `correct_dates` lands on the gc4-19 gauntlet zero within
 1e-8 s (date residual 7.4e-5 km/s before correction), and it passes the full #973 gate (worst ratio
 0.899, both screens, DOP853 5.3e-5 km).
+
+## 12. GanCal#1@2013 on jup365 under amendment 7 (lead launch 13:04 AEDT)
+
+- Fix (`fix.json`, 13:33; one call, 1,786 s): q = 1, L = 4.59e5. Curved-family scan:
+  - + direction: no sign change within 3 L;
+  - - direction: g = -4.03 (base), -6.66, -8.07, -7.02, -1.65 and +3.67 at path -2.9e5, -5.8e5, -8.8e5,
+    -1.17e6 and -1.46e6. The secant root is at path -1.26e6 (about 2.7 L, inside the 3 L range),
+    |g| = 1.9e-3.
+  - No domain bound was reached.
+- START (`start.json`, 13:34): CONVERGED. Two Newton iterations from the corrected seed, dr 1.56e-3
+  km, dv 9.3e-7 km/s, ends within 1e-6 (amendment 3 rule). V_inf 3.0976 / 3.0761 / 3.2533 / 3.1626 km/s
+  (raw seed at sigma 0.02: 3.0994 / 3.0958 / 3.2513 / 3.1644). This is the first start of GanCal#1
+  under any formulation: #1044, #1046 apsis and #1046 crank all failed.
+- Negative control: running at 14:15. The +0.5 L point is at |r| 5.6 with dv 5.4e-3 km/s after
+  about 33 of its 40 iterations, which is failing to start as required. Result pending.
