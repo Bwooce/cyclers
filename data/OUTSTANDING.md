@@ -3084,6 +3084,21 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   the caller has recorded NOT RUN (seen in `#1025` sec. 11.6, ev5-9 e0: a 150-s timeout, the child ran 1,568 s more).
   `scripts/ev_realeph_1025.py` is fixed (own session plus `os.killpg` on timeout). Scan `scripts/` for other such calls,
   apply the same fix, and check each one's past output directories for result files newer than their timeout log.
+- `#1069` — registered 2026-10-11 (papercut review; BACKLOG, process, OWNER DECISION QUEUED). **SHORT HOOKS ON THE
+  CATALOGUE-WINDOW COMMIT.** The pre-commit "catalogue ratchets" step re-runs the tests/data ratchets inside the
+  hook; on a loaded machine that is 15 minutes during which pre-commit holds every other agent's unstaged edits in
+  a stash and overwrites them on restore (three agents lost edits on 2026-10-11, papercuts of the lead, ci-keeper
+  and pluto-smallmoons). Options: (a) the hook trusts a fresh window-suite log (same tree hash) and skips the
+  re-run; (b) a light catalogue hook (schema, counts, id uniqueness) with the ratchets in the window suite and CI
+  only; (c) `pre-commit run --no-stash` semantics for pathspec commits. The owner decides whether a local gate
+  moves to CI.
+- `#1070` — registered 2026-10-11 (papercut review; BACKLOG, small). **`scripts/commit.sh` WRAPPER** that commits by
+  pathspec and prints `COMMITTED <hash> <subject>` on its own line, so a reported hash comes from tool output
+  (seven invented hashes on 2026-10-11).
+- `#1071` — registered 2026-10-11 (papercut review, from twobody-ext's `#1024` entry; BACKLOG, small). **STABLE
+  CANDIDATE IDS IN THE TWO-WORKING-BODY GAUNTLET JSONS** (cell + index, or key + a hash of x_days): a candidate's
+  `key` is not unique (ps 183 candidates, 181 keys; pk 62, 56) and `#1024`'s first run was keyed on it. Grep the
+  downstream dict builders keyed by `c["key"]`.
 - `#1067` — registered 2026-10-11 (from the Brozovic-Jacobson 2024 digest, `#1022d`; BACKLOG, small, Pluto). **STYX AND
   KERBEROS REGISTRY GM ARE UPPER BOUNDS, NOT THE VALUES PLU060 USED.** `src/cyclerfinder/core/satellites.py` stores
   0.0003 and 0.0002 km^3/s^2 (Table 8 1-sigma upper bounds, `#1037`); PLU060 was integrated with held values 0.04e-3

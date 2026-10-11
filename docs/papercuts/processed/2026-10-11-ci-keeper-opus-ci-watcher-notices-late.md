@@ -7,3 +7,5 @@
 What happened: I watched CI runs with `run_in_background` loops that exit when a run completes, and waited for their completion notices. Run 38107321585 finished at 15:02 AEDT, but its notice reached me only at 16:00, after the lead asked for a status. The lead had seen no report since 14:11. Every later run was cancelled by newer pushes through the concurrency group, so the one green run was the only result, and it was late.
 Workaround: switched to the Monitor tool, which streams each status change as an event, and reported the missed results.
 Suggested fix: for any result someone is blocked on, use a streaming monitor (one event per status change), not a single completion notice, and check the output file yourself at the expected finish time. Also: hold pushes while waiting for one run, because each push cancels the queued run (the lead now does this).
+
+Disposition (2026-10-11 19:58, lead): Promoted (coordination.md launch rules: a result someone is blocked on is watched with a streaming monitor, one event per status change, and its output file is read at the expected finish time; completion notices alone are not a signal).
