@@ -1,0 +1,95 @@
+# Kotoulas and Voyatzis 2004, CMDA 88:343-363, "Comparative study of the 2:3 and 3:4 resonant motion with Neptune: an application of
+# symplectic mappings and low frequency analysis", DOI 10.1023/B:CELE.0000023391.85690.31: every printed number.
+# Local file: 21 pp., publisher PDF (Kluwer, A4) with a text layer, md5 0743699683d9296e5f577efa9f314560.
+#   PDF page n = journal page 342 + n (PDF p.1 = journal p.343).
+# The paper has ONE table (Table I, printed p.361, PDF p.19): the coefficients of the corrected averaged Hamiltonian of the two symplectic
+# mappings. It prints NO periodic-orbit initial conditions, no periods of orbit families and no stability indices. The other numbers are in
+# the text and in the figure captions.
+# Witnesses for Table I (three): A = the publisher text layer (pdftotext -layout); B = the 300 dpi page render, every cell read by eye;
+#   C = tesseract (psm 6) on a 300 dpi crop of the table. A, B and C agree on all 58 printed values (29 coefficients, a 2:3 and a 3:4 value each). Other numbers: A and the 70 dpi render B for the figure captions and the text.
+# All values in this file are as printed. Anything of ours is in a `check:` field.
+
+constants:
+  - {name: "mu, Neptune (normalized mass)", value: "5.178e-5", page: 362, note: "printed '5.178 x 10^-5', Appendix A, after Table I; the same mu as Voyatzis and Kotoulas 2005 PSS"}
+  - {name: "synodic period T of the resonant periodic orbit, 2:3", value: "6 pi", page: 362}
+  - {name: "synodic period T of the resonant periodic orbit, 3:4", value: "8 pi", page: 362,
+     check: "2 q pi with q = 3 and 4: the same rule the 2005 digest uses (T = 2 q pi for a bifurcation point of resonance p/q)"}
+  - {name: "eccentricity of Neptune", value: "0.00912", page: 347}
+  - {name: "a_R, resonant stable fixed points, 2:3", value: "about 39.405 AU", page: 346}
+  - {name: "a_R, resonant stable fixed points, 3:4", value: "about 36.415 AU", page: 346,
+     check: "a_R(2:3)/a_R(3:4) = 1.08211; Kepler (9/8)^(2/3) = 1.08169, 0.04 percent lower. Neptune's a is not printed; Kepler with 30.07 AU gives 39.403 and 36.427 AU"}
+  - {name: "validity limit of mapping M23 (family F23 of fixed points becomes unstable)", value: "e = 0.63", page: 346}
+  - {name: "validity limit of mapping M34 (resonant fixed points stable up to)", value: "e = 0.46", page: 346,
+     note: "Conclusions (p.359) and Sec. 6 say 'e < 0.45' and 'up to e = 0.4' for stability of the 3:4 region with inclinations below 3 deg; Sec. 2 says 0.46 for the fixed points"}
+  - {name: "Kozai resonance relocated to, mapping M23", value: "e about 0.25", page: 345}
+  - {name: "Kozai resonance relocated to, mapping M34", value: "e about 0.20", page: 345}
+  - {name: "Newton-Raphson tolerance for the implicit mapping", value: "1e-14", page: 347}
+  - {name: "significant destruction of invariant curves in the planar circular Poincare map", value: "e about 0.3 (2:3), e about 0.2 (3:4)", page: 346}
+  - {name: "start of homoclinic chaos near the separatrix", value: "e0 > 0.1", page: 346}
+
+table_I_coefficients_of_the_corrected_averaged_hamiltonian:   # printed p.361, header 'Coefficient 2:3 3:4' twice, two column groups per row
+  columns: [coefficient, value_2_3, value_3_4]
+  rows:
+    - [A11, 1.895, 2.710]
+    - [A20, 0.880, 1.881]
+    - [A22, 1.576, 0.613]
+    - [A31, 0.999, 2.996]
+    - [A33, 6.451, 3.419]
+    - [B00, -1.545, -2.345]
+    - [B11, -1.527, -3.452]
+    - [B12, -10.151, -21.017]
+    - [K3, -3.519, -7.526]
+    - [L8, 1.750, 3.664]
+    - [L3, 2.544, 9.882]
+    - [L6, -39.799, -116.03]
+    - [M7, 16.984, 47.957]
+    - [L4, 38.525, 113.26]
+    - [L5, -9.367, -24.072]
+    - [M6, -12.679, -38.970]
+    - [K2, 0.0, 629.39]
+    - [M3, 0.0, 1712.9]
+    - [M4, 0.0, -186.03]
+    - [L7, 0.0, -18.333]
+    - [P2, 0.0, -795.83]
+    - [P6, 0.0, -316.42]
+    - [C11, -0.003287, -0.005200]
+    - [C12, -0.001966, -0.002650]
+    - [B31, 0.0, -5.5]
+    - [B32, 0.0, 1.15]
+    - [d1, 0.0873, -0.0165]
+    - [d2, 0.0279, 0.0900]
+    - [d3, -0.00055, -0.0005]
+  last_row_of_the_printed_table: "a final printed row of three dashes (no coefficient); not a value"
+  note: "The printed table has two column groups per row. Left group: A11, A22, A33, B11, K3, L3, M7, L5, K2, M4, P2, C11, B31, d1, d3. Right group: A20, A31, B00, B12, L8, L6, L4, M6, M3, L7, P6, C12, B32, d2 and a dash row. Here the rows follow the order of the Appendix A formulas; every cell keeps its printed coefficient label and values."
+  structure: "Appendix A gives the terms they multiply: H0 = -((p+q)/p) L - 1/(2 L^2), L = (p/q)(N - S - Sz); H1 = -{e A11 cos(sigma) + e^2 (A20 + A22 cos 2 sigma) + e^3 (A31 cos sigma + A33 cos 3 sigma)}; H2, H3, H4 and the correction Hcor with C11 N^2 + C12 N, the B31 and B32 terms in nu, and (d1 S^2 + d2 S + d3) Sz. The coefficient names K2, M3, M4, L7, P2, P6, B31 and B32 are zero for 2:3."
+
+orbit_initial_conditions_in_text:   # the only orbit initial conditions printed; mapping orbits, not periodic orbits
+  - {orbit: "T0 (regular, 2:3)", a_AU: 39.4, e: 0.3, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", note: "does not leave the resonance for at least 4 Gy", fig: 2a, page: 347}
+  - {orbit: "T1 (weakly chaotic, 2:3)", a_AU: 39.6, e: 0.3, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", fig: 2b, page: 347}
+  - {orbit: "T2 (strongly chaotic, 2:3)", a_AU: 39.9, e: 0.3, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", note: "ejected in under about 100 My", fig: 3a, page: 348}
+  - {orbit: "T3 (sticky, 2:3)", a_AU: 39.7, e: 0.3, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", note: "changes at about 500 My, 1.4 Gy and 2.5 Gy; ejected at 2.5 Gy", fig: 3b, page: 348}
+  - {orbit: "T4 (stable chaos, 2:3)", a_AU: 39.65, e: 0.23, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", note: "does not leave for at least 4 Gy", fig: 3c, page: 348}
+  - {orbit: "regular trajectory near 3:4 (Fig. 5a)", a_AU: 36.42, e: 0.3, i_deg: 5, sigma_nu_sigmaz: "pi, pi, pi", page: 351}
+
+grids_and_run_parameters:
+  - {item: "2:3 grid", value: "22 x 31 points, 38.8 < a < 40 AU, 0 < e < 0.65, i = 5 deg", page: 350}
+  - {item: "3:4 grid", value: "23 x 30 points, 35.9 < a < 36.9 AU, 0 < e < 0.5, i = 5 deg", page: 350}
+  - {item: "integration length", value: "up to 4 Gy", page: 350}
+  - {item: "escape condition", value: "|a(t) - a_R| > 1.5 AU", page: 350}
+  - {item: "Fig. 4 classes", value: "squares: escape in t < 100 My; triangles: 100 My < t < 1 Gy; stars: 1 Gy < t < 4 Gy", page: 349}
+  - {item: "LFP series length", value: "131,072 iterations of S_n, Hanning window, b = b8 (eight lowest frequencies)", page: 351, check: "131,072 x 3 x 164.8 yr = 64.8 My (2:3) and x 4 = 86.4 My (3:4); printed '65 and 86 My'. 2 pi = 164.8 yr, our Neptune period"}
+  - {item: "LFP map inclinations, 2:3", value: "Fig. 7: 0 (planar), 5 deg (3D circular), 3 deg (3D elliptic); Fig. 8: 5, 10 and 15 deg (panels a, b, c)", page: 353}
+  - {item: "2:3 stable region width in a, e > 0.2", value: "about 0.7 AU (2:3) against 0.25 AU (3:4)", page: 357}
+  - {item: "stability for inclinations below 3 deg", value: "e < 0.63 (2:3), e < 0.45 (3:4)", page: 359}
+  - {item: "3:4 stability disappears", value: "for i > 15 deg; a small region at e about 0.12 disappears at i = 27 deg", page: 358}
+  - {item: "2:3 effective stability", value: "extends up to i of about 20 deg and above in the low-eccentricity domain, i >= 20 deg", page: 359}
+  - {item: "Kozai stabilisation, 2:3 / 3:4", value: "up to i about 20 deg / about 10 deg", page: 359}
+  - {item: "object 1996KY1", value: "a = 39.52 AU, e = 0.1, i = 31 deg", page: 356}
+
+figure_notes:
+  - {fig: 1, page: 346, text: "Upper row: mapping Poincare sections at 2:3 and 3:4 for e0 = 0.1 and 0.4; bottom row: the planar circular R3BP sections at the same energies. Axes e cos(sigma) and e sin(sigma), about +-0.37 and +-0.25 for the e0 = 0.4 panels (axis ticks read at 70 dpi)."}
+  - {fig: 4, page: 349, text: "Phase space on the a-e plane for 2:3 (a 38.8 to 40.0 AU, e 0 to 0.65) and 3:4 (a 35.9 to 36.9 AU, e 0 to 0.5): families F23 and F34, bold separatrix S, thin curves f_sigma and f_omega-bar, Kozai borders K-, K+; squares, triangles, stars for escape times."}
+  - {figs: [5, 6], page: 351, text: "Power spectra of S_n for regular and chaotic orbits; the eight lowest frequencies and the value b = b8 marked."}
+  - {figs: [7, 8, 9, 10], pages: [353, 355, 356, 358], text: "LFP gray-scale maps on the a-e plane for the planar circular, planar elliptic, 3D circular and 3D elliptic cases (2:3: Figs. 7-8; 3:4: Figs. 9-10); the circle in Fig. 8c marks Pluto, roughly."}
+  - {fig: 11, page: 359, text: "LFP maps on the e-i plane for 2:3 (a = 39.4 AU) and 3:4 (a(0) = 36.4 AU)."}
+  - {note: "No figure has a printed numerical value except axes and captions. Map shapes are not transcribed."}
