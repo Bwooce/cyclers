@@ -1,0 +1,227 @@
+{
+ "_note": "#1022d regression fixture: values of the registry BEFORE the change, recorded from the pre-change code (a bitwise regression reference for the moons that must not change; NOT a golden of correctness)",
+ "moons": {
+  "Moon": {
+   "primary": "Earth",
+   "sma_km": 384400.0,
+   "mean_motion_deg_day": 13.194253296806396,
+   "circle_rate_rad_day": 0.2302831623713882
+  },
+  "Io": {
+   "primary": "Jupiter",
+   "sma_km": 421800.0,
+   "mean_motion_deg_day": 203.39568679031618,
+   "circle_rate_rad_day": 3.5499244188461545
+  },
+  "Europa": {
+   "primary": "Jupiter",
+   "sma_km": 671100.0,
+   "mean_motion_deg_day": 101.34929777446446,
+   "circle_rate_rad_day": 1.768878940748566
+  },
+  "Ganymede": {
+   "primary": "Jupiter",
+   "sma_km": 1070400.0,
+   "mean_motion_deg_day": 50.313259254706004,
+   "circle_rate_rad_day": 0.8781320314041282
+  },
+  "Callisto": {
+   "primary": "Jupiter",
+   "sma_km": 1882700.0,
+   "mean_motion_deg_day": 21.56899542017691,
+   "circle_rate_rad_day": 0.3764499864296649
+  },
+  "Mimas": {
+   "primary": "Saturn",
+   "sma_km": 185540.0,
+   "mean_motion_deg_day": 381.48580074475933,
+   "circle_rate_rad_day": 6.658183272603087
+  },
+  "Enceladus": {
+   "primary": "Saturn",
+   "sma_km": 238040.0,
+   "mean_motion_deg_day": 262.5184272623866,
+   "circle_rate_rad_day": 4.5818109028858895
+  },
+  "Tethys": {
+   "primary": "Saturn",
+   "sma_km": 294670.0,
+   "mean_motion_deg_day": 190.6034781812356,
+   "circle_rate_rad_day": 3.326658260015735
+  },
+  "Dione": {
+   "primary": "Saturn",
+   "sma_km": 377420.0,
+   "mean_motion_deg_day": 131.49139737497725,
+   "circle_rate_rad_day": 2.2949578222415816
+  },
+  "Rhea": {
+   "primary": "Saturn",
+   "sma_km": 527070.0,
+   "mean_motion_deg_day": 79.6768690346148,
+   "circle_rate_rad_day": 1.3906237023343437
+  },
+  "Titan": {
+   "primary": "Saturn",
+   "sma_km": 1221870.0,
+   "mean_motion_deg_day": 22.5734117439784,
+   "circle_rate_rad_day": 0.3939803583407785
+  },
+  "Phobos": {
+   "primary": "Mars",
+   "sma_km": 9375.0,
+   "mean_motion_deg_day": 1128.6135490243043,
+   "circle_rate_rad_day": 19.69802241309255
+  },
+  "Deimos": {
+   "primary": "Mars",
+   "sma_km": 23457.0,
+   "mean_motion_deg_day": 285.16319536207925,
+   "circle_rate_rad_day": 4.977036664576106
+  },
+  "Miranda": {
+   "primary": "Uranus",
+   "sma_km": 129846.0,
+   "mean_motion_deg_day": 254.6851416489312,
+   "circle_rate_rad_day": 4.44509427768199
+  },
+  "Ariel": {
+   "primary": "Uranus",
+   "sma_km": 190929.0,
+   "mean_motion_deg_day": 142.8363109742306,
+   "circle_rate_rad_day": 2.4929639179028333
+  },
+  "Umbriel": {
+   "primary": "Uranus",
+   "sma_km": 265986.0,
+   "mean_motion_deg_day": 86.8676963163256,
+   "circle_rate_rad_day": 1.5161273143424314
+  },
+  "Titania": {
+   "primary": "Uranus",
+   "sma_km": 436298.0,
+   "mean_motion_deg_day": 41.349631046047136,
+   "circle_rate_rad_day": 0.7216872062383896
+  },
+  "Oberon": {
+   "primary": "Uranus",
+   "sma_km": 583511.0,
+   "mean_motion_deg_day": 26.734551378145866,
+   "circle_rate_rad_day": 0.466605945592233
+  },
+  "Triton": {
+   "primary": "Neptune",
+   "sma_km": 354800.0,
+   "mean_motion_deg_day": 61.246140740360275,
+   "circle_rate_rad_day": 1.0689468100591244
+  },
+  "Proteus": {
+   "primary": "Neptune",
+   "sma_km": 117600.0,
+   "mean_motion_deg_day": 320.9542730982171,
+   "circle_rate_rad_day": 5.6017088139089495
+  },
+  "Charon": {
+   "primary": "Pluto",
+   "sma_km": 19600.0,
+   "mean_motion_deg_day": 56.346365066133174,
+   "circle_rate_rad_day": 0.9834295919347364
+  },
+  "Nix": {
+   "primary": "Pluto",
+   "sma_km": 49300.0,
+   "mean_motion_deg_day": 14.124713022265624,
+   "circle_rate_rad_day": 0.2465227481378543
+  },
+  "Hydra": {
+   "primary": "Pluto",
+   "sma_km": 65200.0,
+   "mean_motion_deg_day": 9.287067843626762,
+   "circle_rate_rad_day": 0.16208991172737686
+  },
+  "Styx": {
+   "primary": "Pluto",
+   "sma_km": 43200.0,
+   "mean_motion_deg_day": 17.219652839976227,
+   "circle_rate_rad_day": 0.3005396381079775
+  },
+  "Kerberos": {
+   "primary": "Pluto",
+   "sma_km": 58300.0,
+   "mean_motion_deg_day": 10.983662498619932,
+   "circle_rate_rad_day": 0.19170107452874496
+  },
+  "Amalthea": {
+   "primary": "Jupiter",
+   "sma_km": 181400.0,
+   "mean_motion_deg_day": 721.1833275285566,
+   "circle_rate_rad_day": 12.587023575861972
+  },
+  "Iapetus": {
+   "primary": "Saturn",
+   "sma_km": 3561700.0,
+   "mean_motion_deg_day": 4.5357457437717645,
+   "circle_rate_rad_day": 0.07916369726213636
+  },
+  "Hyperion": {
+   "primary": "Saturn",
+   "sma_km": 1481500.0,
+   "mean_motion_deg_day": 16.907610031666763,
+   "circle_rate_rad_day": 0.29509346369580775
+  },
+  "Romulus": {
+   "primary": "Sylvia",
+   "sma_km": 1340.6,
+   "mean_motion_deg_day": 98.87166344851966,
+   "circle_rate_rad_day": 1.7256360641003985
+  },
+  "Remus": {
+   "primary": "Sylvia",
+   "sma_km": 694.2,
+   "mean_motion_deg_day": 265.334516441041,
+   "circle_rate_rad_day": 4.630960931083192
+  },
+  "ElektraBeta": {
+   "primary": "Elektra",
+   "sma_km": 1297.58,
+   "mean_motion_deg_day": 70.32426629535196,
+   "circle_rate_rad_day": 1.2273899909031667
+  },
+  "ElektraGamma": {
+   "primary": "Elektra",
+   "sma_km": 501.0,
+   "mean_motion_deg_day": 293.12295859549664,
+   "circle_rate_rad_day": 5.115960740678429
+  },
+  "ElektraDelta": {
+   "primary": "Elektra",
+   "sma_km": 608.1,
+   "mean_motion_deg_day": 219.20170061738142,
+   "circle_rate_rad_day": 3.8257914017441923
+  },
+  "PetitPrince": {
+   "primary": "Eugenia",
+   "sma_km": 1164.4,
+   "mean_motion_deg_day": 76.80241530130886,
+   "circle_rate_rad_day": 1.3404550204919123
+  },
+  "EugeniaS2": {
+   "primary": "Eugenia",
+   "sma_km": 610.7,
+   "mean_motion_deg_day": 202.20239401609084,
+   "circle_rate_rad_day": 3.529097530995665
+  },
+  "AlexHelios": {
+   "primary": "Kleopatra",
+   "sma_km": 499.0,
+   "mean_motion_deg_day": 197.73891846464122,
+   "circle_rate_rad_day": 3.4511951865406
+  },
+  "CleoSelene": {
+   "primary": "Kleopatra",
+   "sma_km": 655.0,
+   "mean_motion_deg_day": 131.48645692446306,
+   "circle_rate_rad_day": 2.2948715951135776
+  }
+ }
+}
