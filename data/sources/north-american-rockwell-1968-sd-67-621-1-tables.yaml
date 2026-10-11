@@ -1,0 +1,470 @@
+# North American Rockwell Space Division, "Technological Requirements Common to Manned Planetary Missions,
+#   Technical Summary", Report SD 67-621-1, contract NAS2-3918, January 1968 (NTRS 19680009382), 120 PDF pages.
+#   Prepared by R. D. Meston (Project Engineer); approved by A. Codik (Project Manager). This is volume 1 of 5
+#   (appendices SD 67-621-2 to -5 are not held).
+# Local scan: NTRS scan, md5 2776c48ecd05d0b7eff94d09b895948e. PDF page = printed page + 7 for the body.
+# Tables 1-16 and 17-30 are transcribed here. Table 19 (meteoroid damage criteria) and Table 20 (ECLSS
+#   component list) hold words only and are not transcribed.
+# Method (three witnesses): (1) the NTRS text layer, which is garbage on the rotated table pages 21-35 (tables
+#   1-16) and readable elsewhere; (2) a new tesseract layer (ocrmypdf --force-ocr, 250 dpi); (3) Apple Vision
+#   on 200 dpi renders rotated upright (tables 1-16). Every number was then read by eye on the 200 dpi renders
+#   (300 dpi crops where the scan is damaged) and the rows were checked by arithmetic closure (dates add up,
+#   delta-V columns add up). No value was computed by us. Where a printed row fails closure, the printed value
+#   is kept and the failure is listed under closure_exceptions.
+# Units as printed: JD = Julian date minus 2440000; trip, stay and mission times in days; delta-V and entry
+#   speed in "kps" (km/s) in tables 1-10 and "km/s" in 13-16. Values are strings, as printed.
+# Mission-structure legend (tables 2-10): dv1 Earth departure increment, dv2 plane change increment, dv3
+#   planetary orbit insertion increment, dvtp total transplanetary increment, dvte planetary departure
+#   increment (return injection), entry_kps = Earth entry speed (or the target entry speed where the column is
+#   labelled so). Each opportunity year has three rows for stay times 0, 30 and 60 days.
+# Parking orbits: Mercury, Vesta, Ceres and (Ganymede) one planetary radius; Venus aerobraker and retrobraker
+#   1000 km; Mars 800 km; Jupiter 14 Jupiter radii.
+
+closure_exceptions:
+  note: "Printed rows that fail arithmetic closure; kept as printed. Each was confirmed on the render. Not claimed as errors: rounding, midcourse allowances and trip times rounded to 5 days are all possible."
+  items:
+    - "T3 1990/7830/60: printed arrival 7990 but departure 7830 + trip 100 = 7930; printed departure from Venus also 7990 (= 7930 + 60)."
+    - "T4 1991/8415/30 and 1991/8400/60: printed arrival JD is 5 days later than departure + trip (8555 against 8550; 8550 against 8535)."
+    - "T5 1988/7350/0: dvtp + dvte = 8.23, printed total 8.28."
+    - "T6 1986 (rows 1-3) and 1988 (rows 1-2): printed dvtp exceeds dv1 + dv2 + dv3 by 0.03 to 0.04 (for example 6.10 against 6.06); every other column closes."
+    - "T7 1985/6070/0: arrival JD 6410 against departure 6070 + trip 330 = 6400; dv1 + dv2 + dv3 = 9.92 against printed dvtp 9.82."
+    - "T8 1980/4550/0: arrival 4880 against 4550 + trip 300 = 4850, total time 745 against 715; the figures close if the trip time is 330."
+    - "T8 1980/4545/30: dv1 + dv2 + dv3 = 14.96 against printed dvtp 15.00."
+    - "T8 1989/7775/0: total time 800 against trip 385 + stay 0 + trip 405 = 790."
+    - "T8 1989/7805/60: arrival 8140 against 7805 + trip 310 = 8115; departure 8175 closes with 8115 + 60."
+    - "T11 outbound 1988/7210: dv1 + dvswing + dv3 + dv4 = 13.55 against printed dvttp 14.50; the printed mission total 21.46 matches 14.50 + 6.96."
+    - "T16 1984/5643/30: dv1 + dv2 + dv3 = 12.25 against printed total 12.33. 1995/9660/0: 10.25 against 10.22."
+    - "T15 all nine rows: printed total delta-V is 0.02 below dv1 + dv2 in rows 1-3 (8.06 against 8.08, 8.10 against 8.12, 8.08 against 8.10)."
+
+table_01:
+  title: "Table 1. Flyby Baseline Missions"
+  page: "p.14 (PDF 21)"
+  columns: [target, year, dep_jd, trip1, arr_jd, trip2, entry_kps, total_time, total_dv]
+  rows:
+    - {target: "Vesta", year: "1991", dep_jd: "8590", trip1: "430", arr_jd: "9020", trip2: "300", entry_kps: "12.43", total_time: "730", total_dv: "4.57"}
+    - {target: "Vesta", year: "1993", dep_jd: "9138", trip1: "245", arr_jd: "9383", trip2: "851", entry_kps: "14.14", total_time: "1096", total_dv: "6.32"}
+    - {target: "Ceres", year: "1993", dep_jd: "9175", trip1: "315", arr_jd: "9490", trip2: "779", entry_kps: "13.22", total_time: "1094", total_dv: "5.37"}
+    - {target: "Ceres", year: "1992", dep_jd: "8745", trip1: "354", arr_jd: "9099", trip2: "742", entry_kps: "16.00", total_time: "1096", total_dv: "8.30"}
+    - {target: "Jupiter", year: "1991", dep_jd: "8570", trip1: "708", arr_jd: "9278", trip2: "672", entry_kps: "17.72", total_time: "1380", total_dv: "6.80"}
+    - {target: "Jupiter", year: "1985", dep_jd: "6170", trip1: "520", arr_jd: "6690", trip2: "515", entry_kps: "15.21", total_time: "1035", total_dv: "7.10"}
+
+table_02:
+  title: "Table 2. Mercury Baseline Missions (Direct)"
+  page: "p.15 (PDF 22)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1988", dep_jd: "7344", trip1: "125", dv1: "7.32", dv2: "0.0", dv3: "9.81", dvtp: "17.13", arr_jd: "7469", stay: "63", dep2_jd: "7532", trip2: "123", dvte: "6.96", entry_kps: "15.02", total_time: "311", total_dv: "24.09"}
+    - {year: "1990", dep_jd: "8022", trip1: "135", dv1: "8.57", dv2: "0.0", dv3: "6.54", dvtp: "15.10", arr_jd: "8157", stay: "77", dep2_jd: "8234", trip2: "157", dvte: "7.83", entry_kps: "16.96", total_time: "369", total_dv: "22.94"}
+    - {year: "1992", dep_jd: "8752", trip1: "105", dv1: "6.83", dv2: "0.0", dv3: "6.36", dvtp: "13.18", arr_jd: "8857", stay: "179", dep2_jd: "9036", trip2: "80", dvte: "6.51", entry_kps: "15.59", total_time: "364", total_dv: "19.69"}
+
+table_03:
+  title: "Table 3. Venus Aerobraker Baseline Missions"
+  page: "p.15 (PDF 22)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dvtp, target_entry_kps, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1988", dep_jd: "7240", trip1: "120", dv1: "3.57", dv2: "0.0", dvtp: "3.57", target_entry_kps: "11.6", arr_jd: "7360", stay: "0", dep2_jd: "7360", trip2: "275", dvte: "3.87", entry_kps: "13.7", total_time: "395", total_dv: "7.44"}
+    - {year: "1988", dep_jd: "7240", trip1: "110", dv1: "3.75", dv2: "0.0", dvtp: "3.75", target_entry_kps: "12.2", arr_jd: "7350", stay: "30", dep2_jd: "7380", trip2: "285", dvte: "3.86", entry_kps: "14.0", total_time: "425", total_dv: "7.61"}
+    - {year: "1988", dep_jd: "7240", trip1: "110", dv1: "3.75", dv2: "0.0", dvtp: "3.75", target_entry_kps: "12.2", arr_jd: "7350", stay: "60", dep2_jd: "7410", trip2: "310", dvte: "4.08", entry_kps: "14.3", total_time: "480", total_dv: "7.83"}
+    - {year: "1990", dep_jd: "7840", trip1: "100", dv1: "3.81", dv2: "0.0", dvtp: "3.81", target_entry_kps: "11.4", arr_jd: "7940", stay: "0", dep2_jd: "7940", trip2: "280", dvte: "3.74", entry_kps: "13.6", total_time: "380", total_dv: "7.55"}
+    - {year: "1990", dep_jd: "7835", trip1: "100", dv1: "3.81", dv2: "0.0", dvtp: "3.81", target_entry_kps: "11.8", arr_jd: "7935", stay: "30", dep2_jd: "7965", trip2: "290", dvte: "3.87", entry_kps: "14.0", total_time: "420", total_dv: "7.68"}
+    - {year: "1990", dep_jd: "7830", trip1: "100", dv1: "3.86", dv2: "0.0", dvtp: "3.86", target_entry_kps: "12.2", arr_jd: "7990", stay: "60", dep2_jd: "7990", trip2: "310", dvte: "4.17", entry_kps: "14.5", total_time: "470", total_dv: "8.03"}
+    - {year: "1991", dep_jd: "8415", trip1: "115", dv1: "3.68", dv2: "0.0", dvtp: "3.68", target_entry_kps: "10.9", arr_jd: "8530", stay: "0", dep2_jd: "8530", trip2: "270", dvte: "3.76", entry_kps: "13.5", total_time: "385", total_dv: "7.44"}
+    - {year: "1991", dep_jd: "8405", trip1: "110", dv1: "3.78", dv2: "0.0", dvtp: "3.78", target_entry_kps: "12.0", arr_jd: "8515", stay: "30", dep2_jd: "8545", trip2: "285", dvte: "3.96", entry_kps: "13.7", total_time: "425", total_dv: "7.74"}
+    - {year: "1991", dep_jd: "8425", trip1: "130", dv1: "3.62", dv2: "0.0", dvtp: "3.62", target_entry_kps: "10.6", arr_jd: "8555", stay: "60", dep2_jd: "8615", trip2: "345", dvte: "4.19", entry_kps: "14.9", total_time: "535", total_dv: "7.81"}
+
+table_04:
+  title: "Table 4. Venus Retrobraker Baseline Missions"
+  page: "p.16 (PDF 23)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1988", dep_jd: "7180", trip1: "200", dv1: "4.15", dv2: "0.0", dv3: "3.48", dvtp: "7.63", arr_jd: "7380", stay: "0", dep2_jd: "7380", trip2: "285", dvte: "3.86", entry_kps: "14.01", total_time: "485", total_dv: "11.49"}
+    - {year: "1988", dep_jd: "7170", trip1: "200", dv1: "4.26", dv2: "0.0", dv3: "3.39", dvtp: "7.66", arr_jd: "7370", stay: "30", dep2_jd: "7400", trip2: "300", dvte: "3.97", entry_kps: "14.19", total_time: "530", total_dv: "11.63"}
+    - {year: "1988", dep_jd: "7165", trip1: "200", dv1: "4.32", dv2: "0.0", dv3: "3.37", dvtp: "7.70", arr_jd: "7365", stay: "60", dep2_jd: "7425", trip2: "325", dvte: "4.27", entry_kps: "14.40", total_time: "585", total_dv: "11.97"}
+    - {year: "1990", dep_jd: "7850", trip1: "100", dv1: "3.90", dv2: "0.0", dv3: "3.57", dvtp: "7.47", arr_jd: "7950", stay: "0", dep2_jd: "7950", trip2: "280", dvte: "3.75", entry_kps: "13.72", total_time: "380", total_dv: "11.22"}
+    - {year: "1990", dep_jd: "7850", trip1: "100", dv1: "3.90", dv2: "0.0", dv3: "3.57", dvtp: "7.47", arr_jd: "7950", stay: "30", dep2_jd: "7980", trip2: "300", dvte: "4.06", entry_kps: "14.27", total_time: "430", total_dv: "11.53"}
+    - {year: "1990", dep_jd: "7850", trip1: "115", dv1: "3.97", dv2: "0.0", dv3: "3.30", dvtp: "7.27", arr_jd: "7965", stay: "60", dep2_jd: "8025", trip2: "335", dvte: "4.32", entry_kps: "15.05", total_time: "510", total_dv: "11.58"}
+    - {year: "1991", dep_jd: "8415", trip1: "130", dv1: "3.64", dv2: "0.0", dv3: "3.23", dvtp: "6.87", arr_jd: "8545", stay: "0", dep2_jd: "8545", trip2: "285", dvte: "3.96", entry_kps: "13.66", total_time: "415", total_dv: "10.83"}
+    - {year: "1991", dep_jd: "8415", trip1: "135", dv1: "3.64", dv2: "0.0", dv3: "3.20", dvtp: "6.84", arr_jd: "8555", stay: "30", dep2_jd: "8585", trip2: "325", dvte: "4.20", entry_kps: "14.36", total_time: "490", total_dv: "11.04"}
+    - {year: "1991", dep_jd: "8400", trip1: "135", dv1: "3.64", dv2: "0.0", dv3: "3.20", dvtp: "6.84", arr_jd: "8550", stay: "60", dep2_jd: "8610", trip2: "345", dvte: "4.19", entry_kps: "14.89", total_time: "540", total_dv: "11.02"}
+
+table_05:
+  title: "Table 5. Mars Aerobraker Baseline Missions (Direct)"
+  page: "p.17 (PDF 24)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dvtp, target_entry_kps, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1986", dep_jd: "6540", trip1: "120", dv1: "3.92", dv2: "0.0", dvtp: "3.92", target_entry_kps: "9.5", arr_jd: "6660", stay: "0", dep2_jd: "6660", trip2: "250", dvte: "3.66", entry_kps: "14.0", total_time: "370", total_dv: "7.58"}
+    - {year: "1986", dep_jd: "6540", trip1: "125", dv1: "3.84", dv2: "0.0", dvtp: "3.84", target_entry_kps: "8.9", arr_jd: "6665", stay: "30", dep2_jd: "6695", trip2: "255", dvte: "4.14", entry_kps: "14.7", total_time: "410", total_dv: "7.98"}
+    - {year: "1986", dep_jd: "6540", trip1: "120", dv1: "3.92", dv2: "0.0", dvtp: "3.92", target_entry_kps: "9.5", arr_jd: "6660", stay: "60", dep2_jd: "6720", trip2: "260", dvte: "4.54", entry_kps: "15.5", total_time: "440", total_dv: "8.46"}
+    - {year: "1988", dep_jd: "7350", trip1: "125", dv1: "4.06", dv2: "0.0", dvtp: "4.06", target_entry_kps: "7.7", arr_jd: "7475", stay: "0", dep2_jd: "7475", trip2: "280", dvte: "4.17", entry_kps: "15.9", total_time: "405", total_dv: "8.28"}
+    - {year: "1988", dep_jd: "7350", trip1: "120", dv1: "4.14", dv2: "0.0", dvtp: "4.14", target_entry_kps: "8.1", arr_jd: "7470", stay: "30", dep2_jd: "7500", trip2: "270", dvte: "4.46", entry_kps: "16.8", total_time: "420", total_dv: "8.60"}
+    - {year: "1988", dep_jd: "7350", trip1: "125", dv1: "4.06", dv2: "0.0", dvtp: "4.06", target_entry_kps: "7.7", arr_jd: "7475", stay: "60", dep2_jd: "7535", trip2: "260", dvte: "4.98", entry_kps: "18.6", total_time: "445", total_dv: "9.03"}
+    - {year: "1993", dep_jd: "8900", trip1: "160", dv1: "4.39", dv2: "0.0", dvtp: "4.39", target_entry_kps: "9.1", arr_jd: "9060", stay: "0", dep2_jd: "9060", trip2: "257", dvte: "4.45", entry_kps: "19.8", total_time: "417", total_dv: "8.84"}
+    - {year: "1993", dep_jd: "8900", trip1: "140", dv1: "4.89", dv2: "0.0", dvtp: "4.89", target_entry_kps: "10.9", arr_jd: "9040", stay: "30", dep2_jd: "9070", trip2: "246", dvte: "4.73", entry_kps: "19.8", total_time: "416", total_dv: "9.62"}
+    - {year: "1993", dep_jd: "8895", trip1: "120", dv1: "6.16", dv2: "0.0", dvtp: "6.16", target_entry_kps: "13.8", arr_jd: "9015", stay: "60", dep2_jd: "9075", trip2: "239", dvte: "5.00", entry_kps: "19.8", total_time: "419", total_dv: "11.16"}
+
+table_06:
+  title: "Table 6. Mars Retrobraker Baseline Missions (Direct)"
+  page: "p.18 (PDF 25)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1986", dep_jd: "6545", trip1: "180", dv1: "3.57", dv2: "0.0", dv3: "2.49", dvtp: "6.10", arr_jd: "6725", stay: "0", dep2_jd: "6725", trip2: "260", dvte: "4.62", entry_kps: "15.7", total_time: "440", total_dv: "10.71"}
+    - {year: "1986", dep_jd: "6540", trip1: "180", dv1: "3.56", dv2: "0.0", dv3: "2.57", dvtp: "6.17", arr_jd: "6720", stay: "30", dep2_jd: "6750", trip2: "260", dvte: "5.06", entry_kps: "16.8", total_time: "470", total_dv: "11.23"}
+    - {year: "1986", dep_jd: "6545", trip1: "180", dv1: "3.57", dv2: "0.0", dv3: "2.49", dvtp: "6.10", arr_jd: "6725", stay: "60", dep2_jd: "6785", trip2: "250", dvte: "5.55", entry_kps: "18.2", total_time: "490", total_dv: "11.64"}
+    - {year: "1988", dep_jd: "7335", trip1: "190", dv1: "3.75", dv2: "0.0", dv3: "2.23", dvtp: "6.02", arr_jd: "7525", stay: "0", dep2_jd: "7525", trip2: "265", dvte: "4.83", entry_kps: "18.2", total_time: "455", total_dv: "10.85"}
+    - {year: "1988", dep_jd: "7330", trip1: "190", dv1: "3.79", dv2: "0.0", dv3: "2.28", dvtp: "6.10", arr_jd: "7520", stay: "30", dep2_jd: "7550", trip2: "255", dvte: "5.23", entry_kps: "19.4", total_time: "475", total_dv: "11.33"}
+    - {year: "1988", dep_jd: "7330", trip1: "180", dv1: "3.81", dv2: "0.0", dv3: "2.47", dvtp: "6.28", arr_jd: "7510", stay: "60", dep2_jd: "7570", trip2: "240", dvte: "5.72", entry_kps: "19.8", total_time: "480", total_dv: "12.00"}
+    - {year: "1993", dep_jd: "8810", trip1: "260", dv1: "5.84", dv2: "0.0", dv3: "2.79", dvtp: "8.63", arr_jd: "9070", stay: "0", dep2_jd: "9070", trip2: "246", dvte: "4.73", entry_kps: "19.8", total_time: "506", total_dv: "13.36"}
+    - {year: "1993", dep_jd: "8780", trip1: "260", dv1: "6.86", dv2: "0.0", dv3: "2.78", dvtp: "9.64", arr_jd: "9040", stay: "30", dep2_jd: "9070", trip2: "246", dvte: "4.73", entry_kps: "19.8", total_time: "536", total_dv: "14.37"}
+    - {year: "1993", dep_jd: "8770", trip1: "240", dv1: "7.42", dv2: "0.0", dv3: "3.33", dvtp: "10.76", arr_jd: "9010", stay: "60", dep2_jd: "9070", trip2: "246", dvte: "4.73", entry_kps: "19.8", total_time: "546", total_dv: "15.49"}
+
+table_07:
+  title: "Table 7. Vesta Baseline Missions"
+  page: "p.19 (PDF 26)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1985", dep_jd: "6070", trip1: "330", dv1: "4.35", dv2: "0.15", dv3: "5.42", dvtp: "9.82", arr_jd: "6410", stay: "0", dep2_jd: "6410", trip2: "390", dvte: "5.05", entry_kps: "12.34", total_time: "720", total_dv: "14.87"}
+    - {year: "1985", dep_jd: "6080", trip1: "320", dv1: "4.32", dv2: "0.0", dv3: "5.25", dvtp: "9.58", arr_jd: "6400", stay: "30", dep2_jd: "6430", trip2: "370", dvte: "4.87", entry_kps: "12.78", total_time: "720", total_dv: "14.44"}
+    - {year: "1985", dep_jd: "6080", trip1: "310", dv1: "4.40", dv2: "0.0", dv3: "5.27", dvtp: "9.67", arr_jd: "6390", stay: "60", dep2_jd: "6450", trip2: "350", dvte: "5.01", entry_kps: "12.89", total_time: "720", total_dv: "14.67"}
+    - {year: "1987", dep_jd: "7035", trip1: "435", dv1: "6.66", dv2: "0.0", dv3: "5.38", dvtp: "12.04", arr_jd: "7470", stay: "0", dep2_jd: "7470", trip2: "290", dvte: "5.32", entry_kps: "14.62", total_time: "725", total_dv: "17.36"}
+    - {year: "1987", dep_jd: "7035", trip1: "425", dv1: "6.74", dv2: "0.0", dv3: "5.42", dvtp: "12.15", arr_jd: "7460", stay: "30", dep2_jd: "7490", trip2: "270", dvte: "5.48", entry_kps: "14.6?", total_time: "725", total_dv: "17.63"}
+    - {year: "1987", dep_jd: "7035", trip1: "435", dv1: "6.66", dv2: "0.0", dv3: "5.38", dvtp: "12.04", arr_jd: "7470", stay: "60", dep2_jd: "7530", trip2: "345", dvte: "5.72", entry_kps: "15.91", total_time: "840", total_dv: "17.77"}
+    - {year: "1991", dep_jd: "8605", trip1: "380", dv1: "4.39", dv2: "1.22", dv3: "5.53", dvtp: "11.14", arr_jd: "8985", stay: "0", dep2_jd: "8985", trip2: "375", dvte: "5.11", entry_kps: "13.378", total_time: "755", total_dv: "16.25"}
+    - {year: "1991", dep_jd: "8620", trip1: "345", dv1: "5.96", dv2: "0.0", dv3: "5.18", dvtp: "11.14", arr_jd: "8965", stay: "30", dep2_jd: "8995", trip2: "365", dvte: "5.14", entry_kps: "13.35", total_time: "740", total_dv: "16.28"}
+    - {year: "1991", dep_jd: "8620", trip1: "320", dv1: "5.96", dv2: "0.0", dv3: "5.20", dvtp: "11.16", arr_jd: "8940", stay: "60", dep2_jd: "9000", trip2: "365", dvte: "5.24", entry_kps: "13.54", total_time: "745", total_dv: "16.41"}
+  notes:
+    - "Row 1985/6070: printed dv1 + dv2 + dv3 = 9.92 but dvtp is printed 9.82; kept as printed (confirmed at 300 dpi)."
+    - "Row 1985/6080/30: the first digit of total dv is partly lost on the scan; read 14.44 (closure gives 14.45)."
+    - "Rows 1987/7035/0 and /30: the last digits of total dv are damaged; 17.36 and 17.63 are fixed by dvtp + dvte closure (the 17.63 reading also shows on the scan)."
+    - "Row 1987/7035/30: the entry speed is damaged (14.6 and an unreadable digit)."
+
+table_08:
+  title: "Table 8. Ceres Baseline Missions"
+  page: "p.20 (PDF 27)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1980", dep_jd: "4550", trip1: "300", dv1: "8.59", dv2: "0.0", dv3: "6.16", dvtp: "14.75", arr_jd: "4880", stay: "0", dep2_jd: "4880", trip2: "415", dvte: "6.53", entry_kps: "19.05", total_time: "745", total_dv: "21.28"}
+    - {year: "1980", dep_jd: "4545", trip1: "315", dv1: "8.34", dv2: "0.0", dv3: "6.62", dvtp: "15.00", arr_jd: "4860", stay: "30", dep2_jd: "4890", trip2: "410", dvte: "6.65", entry_kps: "19.41", total_time: "755", total_dv: "21.65"}
+    - {year: "1980", dep_jd: "4540", trip1: "300", dv1: "8.09", dv2: "0.0", dv3: "7.25", dvtp: "15.34", arr_jd: "4840", stay: "60", dep2_jd: "4900", trip2: "405", dvte: "6.80", entry_kps: "19.80", total_time: "765", total_dv: "22.14"}
+    - {year: "1989", dep_jd: "7775", trip1: "385", dv1: "4.79", dv2: "4.53", dv3: "5.29", dvtp: "14.61", arr_jd: "8160", stay: "0", dep2_jd: "8160", trip2: "405", dvte: "6.87", entry_kps: "19.8", total_time: "800", total_dv: "21.47"}
+    - {year: "1989", dep_jd: "7770", trip1: "380", dv1: "4.78", dv2: "4.54", dv3: "5.43", dvtp: "14.75", arr_jd: "8150", stay: "30", dep2_jd: "8180", trip2: "385", dvte: "7.17", entry_kps: "19.8", total_time: "795", total_dv: "21.92"}
+    - {year: "1989", dep_jd: "7805", trip1: "310", dv1: "7.83", dv2: "0.0", dv3: "7.53", dvtp: "15.37", arr_jd: "8140", stay: "60", dep2_jd: "8175", trip2: "390", dvte: "7.07", entry_kps: "19.8", total_time: "760", total_dv: "22.44"}
+    - {year: "1991", dep_jd: "8260", trip1: "350", dv1: "5.10", dv2: "0.0", dv3: "6.33", dvtp: "11.43", arr_jd: "8610", stay: "0", dep2_jd: "8610", trip2: "425", dvte: "7.24", entry_kps: "19.8", total_time: "775", total_dv: "18.67"}
+    - {year: "1991", dep_jd: "8255", trip1: "340", dv1: "5.26", dv2: "0.0", dv3: "6.57", dvtp: "11.83", arr_jd: "8595", stay: "30", dep2_jd: "8625", trip2: "410", dvte: "7.61", entry_kps: "19.8", total_time: "780", total_dv: "19.44"}
+    - {year: "1991", dep_jd: "8250", trip1: "330", dv1: "5.61", dv2: "0.0", dv3: "6.88", dvtp: "12.49", arr_jd: "8580", stay: "60", dep2_jd: "8640", trip2: "395", dvte: "8.07", entry_kps: "19.8", total_time: "785", total_dv: "20.56"}
+  notes:
+    - "Total dv values in the last column are partly damaged on the scan for 1980 (all three rows), 1991 (all three rows); they were read from the visible digits and agree with dvtp + dvte (to 0.01)."
+    - "Row 1980/4550: printed trip time 300 but arrive minus depart is 330 and the printed total time 745 = 330 + 0 + 415. Kept as printed."
+    - "Row 1989/7775: printed trip2 405 (damaged) gives total 790, printed total is 800. Kept as printed."
+    - "Row 1989/7805: printed arrival 8140 but depart JD 8175 minus stay 60 is 8115. Kept as printed."
+
+table_09:
+  title: "Table 9. Jupiter Baseline Missions"
+  page: "p.21 (PDF 28)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1985", dep_jd: "6173", trip1: "717", dv1: "6.55", dv2: "0.0", dv3: "6.05", dvtp: "12.60", arr_jd: "6890", stay: "0", dep2_jd: "6890", trip2: "705", dvte: "6.10", entry_kps: "14.4", total_time: "1422", total_dv: "18.70"}
+    - {year: "1985", dep_jd: "6173", trip1: "702", dv1: "6.55", dv2: "0.0", dv3: "6.13", dvtp: "12.68", arr_jd: "6875", stay: "30", dep2_jd: "6905", trip2: "690", dvte: "6.18", entry_kps: "14.4", total_time: "1422", total_dv: "18.86"}
+    - {year: "1985", dep_jd: "6173", trip1: "687", dv1: "6.57", dv2: "0.0", dv3: "6.22", dvtp: "12.79", arr_jd: "6860", stay: "60", dep2_jd: "6920", trip2: "675", dvte: "6.27", entry_kps: "14.4", total_time: "1422", total_dv: "19.06"}
+    - {year: "1987", dep_jd: "6974", trip1: "711", dv1: "6.54", dv2: "0.0", dv3: "5.99", dvtp: "12.53", arr_jd: "7685", stay: "0", dep2_jd: "7685", trip2: "712", dvte: "6.28", entry_kps: "14.4", total_time: "1423", total_dv: "18.81"}
+    - {year: "1987", dep_jd: "6974", trip1: "696", dv1: "6.56", dv2: "0.0", dv3: "6.07", dvtp: "12.63", arr_jd: "7670", stay: "30", dep2_jd: "7700", trip2: "697", dvte: "6.39", entry_kps: "14.4", total_time: "1423", total_dv: "19.02"}
+    - {year: "1987", dep_jd: "6974", trip1: "681", dv1: "6.59", dv2: "0.0", dv3: "6.16", dvtp: "12.75", arr_jd: "7655", stay: "60", dep2_jd: "7715", trip2: "683", dvte: "6.51", entry_kps: "14.4", total_time: "1424", total_dv: "19.26"}
+    - {year: "1990", dep_jd: "8174", trip1: "716", dv1: "6.83", dv2: "0.0", dv3: "6.29", dvtp: "13.12", arr_jd: "8890", stay: "0", dep2_jd: "8890", trip2: "699", dvte: "6.56", entry_kps: "14.7", total_time: "1415", total_dv: "19.68"}
+    - {year: "1990", dep_jd: "8174", trip1: "706", dv1: "6.84", dv2: "0.0", dv3: "6.36", dvtp: "13.20", arr_jd: "8880", stay: "30", dep2_jd: "8910", trip2: "680", dvte: "6.74", entry_kps: "14.7", total_time: "1416", total_dv: "19.94"}
+    - {year: "1990", dep_jd: "8174", trip1: "696", dv1: "6.85", dv2: "0.0", dv3: "6.44", dvtp: "13.29", arr_jd: "8870", stay: "60", dep2_jd: "8930", trip2: "660", dvte: "6.94", entry_kps: "14.8", total_time: "1416", total_dv: "20.23"}
+
+table_10:
+  title: "Table 10. Ganymede Baseline Missions"
+  page: "p.22 (PDF 29)"
+  columns: [year, dep_jd, trip1, dv1, dv2, dv3, dvtp, arr_jd, stay, dep2_jd, trip2, dvte, entry_kps, total_time, total_dv]
+  rows:
+    - {year: "1985", dep_jd: "6173", trip1: "717", dv1: "6.55", dv2: "0.0", dv3: "4.89", dvtp: "11.44", arr_jd: "6890", stay: "0", dep2_jd: "6890", trip2: "705", dvte: "4.94", entry_kps: "14.4", total_time: "1422", total_dv: "16.38"}
+    - {year: "1985", dep_jd: "6173", trip1: "702", dv1: "6.55", dv2: "0.0", dv3: "4.97", dvtp: "11.52", arr_jd: "6875", stay: "30", dep2_jd: "6905", trip2: "690", dvte: "5.02", entry_kps: "14.4", total_time: "1422", total_dv: "16.54"}
+    - {year: "1985", dep_jd: "6173", trip1: "687", dv1: "6.57", dv2: "0.0", dv3: "5.06", dvtp: "11.63", arr_jd: "6860", stay: "60", dep2_jd: "6920", trip2: "675", dvte: "5.10", entry_kps: "14.4", total_time: "1422", total_dv: "16.73"}
+    - {year: "1987", dep_jd: "6974", trip1: "711", dv1: "6.54", dv2: "0.0", dv3: "4.84", dvtp: "11.38", arr_jd: "7685", stay: "0", dep2_jd: "7685", trip2: "712", dvte: "5.11", entry_kps: "14.4", total_time: "1423", total_dv: "16.49"}
+    - {year: "1987", dep_jd: "6974", trip1: "696", dv1: "6.56", dv2: "0.0", dv3: "4.91", dvtp: "11.47", arr_jd: "7670", stay: "30", dep2_jd: "7700", trip2: "697", dvte: "5.21", entry_kps: "14.4", total_time: "1423", total_dv: "16.68"}
+    - {year: "1987", dep_jd: "6974", trip1: "681", dv1: "6.59", dv2: "0.0", dv3: "5.00", dvtp: "11.59", arr_jd: "7655", stay: "60", dep2_jd: "7715", trip2: "683", dvte: "5.32", entry_kps: "14.4", total_time: "1424", total_dv: "16.91"}
+    - {year: "1990", dep_jd: "8174", trip1: "716", dv1: "6.83", dv2: "0.0", dv3: "5.12", dvtp: "11.95", arr_jd: "8890", stay: "0", dep2_jd: "8890", trip2: "699", dvte: "5.36", entry_kps: "14.7", total_time: "1415", total_dv: "17.31"}
+    - {year: "1990", dep_jd: "8174", trip1: "706", dv1: "6.84", dv2: "0.0", dv3: "5.18", dvtp: "12.02", arr_jd: "8880", stay: "30", dep2_jd: "8910", trip2: "680", dvte: "5.52", entry_kps: "14.7", total_time: "1416", total_dv: "17.54"}
+    - {year: "1990", dep_jd: "8174", trip1: "696", dv1: "6.85", dv2: "0.0", dv3: "5.25", dvtp: "12.10", arr_jd: "8870", stay: "60", dep2_jd: "8930", trip2: "660", dvte: "5.69", entry_kps: "14.8", total_time: "1416", total_dv: "17.79"}
+
+table_11:
+  title: "Table 11. Outbound Swingby - Mercury Missions"
+  page: "p.23 (PDF 30)"
+  parts:
+  - name: "outbound"
+    columns: [year, dep_jd, dv1, ev_trip, dv2, arr_venus_jd, dvswing, vm_trip, dv3, arr_mercury_jd, dv4, dvttp]
+    rows:
+      - {year: "1985", dep_jd: "6200", dv1: "4.58", ev_trip: "160", dv2: "0.0", arr_venus_jd: "6360", dvswing: "0.45", vm_trip: "108", dv3: "1.93", arr_mercury_jd: "6468", dv4: "6.46", dvttp: "13.42"}
+      - {year: "1986", dep_jd: "6650", dv1: "3.87", ev_trip: "190", dv2: "0.0", arr_venus_jd: "6840", dvswing: "3.72", vm_trip: "74", dv3: "0.0", arr_mercury_jd: "6914", dv4: "4.44", dvttp: "12.03"}
+      - {year: "1988", dep_jd: "7210", dv1: "3.96", ev_trip: "180", dv2: "0.0", arr_venus_jd: "7390", dvswing: "2.32", vm_trip: "100", dv3: "0.0", arr_mercury_jd: "7490", dv4: "7.27", dvttp: "14.50"}
+  - name: "return"
+    columns: [year, arr_mercury_jd, stay, dep_mercury_jd, dvte, trans_earth_time, dv5, dvtte, arr_earth_jd, entry_kps, duration, dvtotal]
+    rows:
+      - {year: "1985", arr_mercury_jd: "6468", stay: "18", dep_mercury_jd: "6486", dvte: "6.55", trans_earth_time: "75", dv5: "0.0", dvtte: "6.55", arr_earth_jd: "6561", entry_kps: "16.37", duration: "361", dvtotal: "19.97"}
+      - {year: "1986", arr_mercury_jd: "6914", stay: "42", dep_mercury_jd: "6956", dvte: "11.21", trans_earth_time: "85", dv5: "0.0", dvtte: "11.21", arr_earth_jd: "7041", entry_kps: "13.91", duration: "391", dvtotal: "23.24"}
+      - {year: "1988", arr_mercury_jd: "7490", stay: "42", dep_mercury_jd: "7532", dvte: "6.96", trans_earth_time: "123", dv5: "0.0", dvtte: "6.96", arr_earth_jd: "7655", entry_kps: "15.02", duration: "445", dvtotal: "21.46"}
+  notes:
+    - "Row 1988: printed dv1 + dvswing + dv3 + dv4 = 3.96 + 2.32 + 0.0 + 7.27 = 13.55 but dvttp is printed 14.50; the printed total dvtotal 21.46 matches dvttp + dvtte. Kept as printed."
+
+table_12:
+  title: "Table 12. Inbound Swingby - Mercury Missions"
+  page: "p.24 (PDF 31)"
+  parts:
+  - name: "outbound to Mercury"
+    columns: [year, dep_jd, dv1, em_trip, dv2, arr_mercury_jd, dv3, dvttp, stay, dep_mercury_jd]
+    rows:
+      - {year: "1981", dep_jd: "4710", dv1: "6.75", em_trip: "90", dv2: "0.0", arr_mercury_jd: "4800", dv3: "8.19", dvttp: "14.94", stay: "54", dep_mercury_jd: "4854"}
+      - {year: "1987", dep_jd: "7008", dv1: "6.36", em_trip: "115", dv2: "0.0", arr_mercury_jd: "7123", dv3: "10.95", dvttp: "17.31", stay: "37", dep_mercury_jd: "7160"}
+      - {year: "1992", dep_jd: "8752", dv1: "6.83", em_trip: "105", dv2: "0.0", arr_mercury_jd: "8857", dv3: "6.35", dvttp: "13.18", stay: "35", dep_mercury_jd: "8892"}
+  - name: "return via Venus swingby"
+    columns: [year, dep_mercury_jd, dv4, mv_trip, dv5, arr_venus_jd, dvswing, ve_trip, dv6, dvtte, arr_earth_jd, entry_kps, duration, dvtotal]
+    rows:
+      - {year: "1981", dep_mercury_jd: "4854", dv4: "7.65", mv_trip: "80", dv5: "0.0", arr_venus_jd: "4934", dvswing: "1.63", ve_trip: "160", dv6: "0.0", dvtte: "9.28", arr_earth_jd: "5094", entry_kps: "12.39", duration: "384", dvtotal: "24.22"}
+      - {year: "1987", dep_mercury_jd: "7160", dv4: "7.71", mv_trip: "100", dv5: "0.0", arr_venus_jd: "7260", dvswing: "1.43", ve_trip: "170", dv6: "0.0", dvtte: "9.13", arr_earth_jd: "7430", entry_kps: "12.00", duration: "422", dvtotal: "26.44"}
+      - {year: "1992", dep_mercury_jd: "8892", dv4: "7.65", mv_trip: "80", dv5: "0.0", arr_venus_jd: "8972", dvswing: "1.66", ve_trip: "160", dv6: "0.0", dvtte: "9.31", arr_earth_jd: "9132", entry_kps: "11.63", duration: "380", dvtotal: "22.49"}
+
+table_13:
+  title: "Table 13. Outbound Swingby - Mars Aerobraker Missions"
+  page: "p.25 (PDF 32)"
+  columns: [mission_year, dep_jd, dv1, dt1, venus_jd, hp_vr, dt2, arr_mars_jd, mars_entry_kms, stay, dep_mars_jd, dv3, dt3, arr_earth_jd, earth_entry_kms, total_time, total_dv]
+  rows:
+    - {mission_year: "1986", dep_jd: "6143", dv1: "3.93", dt1: "172", venus_jd: "6315", hp_vr: "0.97", dt2: "160", arr_mars_jd: "6475", mars_entry_kms: "9.15", stay: "0", dep_mars_jd: "6475", dv3: "1.94", dt3: "213", arr_earth_jd: "6688", earth_entry_kms: "11.68", total_time: "545", total_dv: "5.87"}
+    - {mission_year: "1986", dep_jd: "6141", dv1: "3.93", dt1: "174", venus_jd: "6315", hp_vr: "0.82", dt2: "150", arr_mars_jd: "6465", mars_entry_kms: "10.06", stay: "30", dep_mars_jd: "6495", dv3: "1.96", dt3: "202", arr_earth_jd: "6697", earth_entry_kms: "11.59", total_time: "556", total_dv: "5.89"}
+    - {mission_year: "1986", dep_jd: "6141", dv1: "3.92", dt1: "173", venus_jd: "6314", hp_vr: "0.73", dt2: "146", arr_mars_jd: "6460", mars_entry_kms: "10.59", stay: "60", dep_mars_jd: "6520", dv3: "2.12", dt3: "194", arr_earth_jd: "6714", earth_entry_kms: "11.58", total_time: "573", total_dv: "6.04"}
+    - {mission_year: "1993", dep_jd: "8509", dv1: "4.18", dt1: "161", venus_jd: "8670", hp_vr: "1.49", dt2: "155", arr_mars_jd: "8825", mars_entry_kms: "7.89", stay: "0", dep_mars_jd: "8825", dv3: "2.24", dt3: "290", arr_earth_jd: "9115", earth_entry_kms: "11.41", total_time: "606", total_dv: "6.42"}
+    - {mission_year: "1993", dep_jd: "8493", dv1: "4.28", dt1: "175", venus_jd: "8668", hp_vr: "1.45", dt2: "132", arr_mars_jd: "8800", mars_entry_kms: "8.17", stay: "30", dep_mars_jd: "8830", dv3: "2.25", dt3: "287", arr_earth_jd: "9117", earth_entry_kms: "11.41", total_time: "624", total_dv: "6.53"}
+    - {mission_year: "1993", dep_jd: "8493", dv1: "4.28", dt1: "175", venus_jd: "8668", hp_vr: "1.45", dt2: "132", arr_mars_jd: "8800", mars_entry_kms: "8.17", stay: "60", dep_mars_jd: "8860", dv3: "2.55", dt3: "267", arr_earth_jd: "9127", earth_entry_kms: "11.46", total_time: "634", total_dv: "6.83"}
+    - {mission_year: "1999", dep_jd: "10835", dv1: "4.16", dt1: "168", venus_jd: "11003", hp_vr: "0.63", dt2: "157", arr_mars_jd: "11160", mars_entry_kms: "8.51", stay: "0", dep_mars_jd: "11160", dv3: "1.98", dt3: "298", arr_earth_jd: "11458", earth_entry_kms: "12.84", total_time: "623", total_dv: "6.14"}
+    - {mission_year: "1999", dep_jd: "10835", dv1: "4.16", dt1: "168", venus_jd: "11003", hp_vr: "0.63", dt2: "157", arr_mars_jd: "11160", mars_entry_kms: "8.51", stay: "30", dep_mars_jd: "11190", dv3: "2.10", dt3: "288", arr_earth_jd: "11478", earth_entry_kms: "13.44", total_time: "643", total_dv: "6.26"}
+    - {mission_year: "1999", dep_jd: "10835", dv1: "4.16", dt1: "168", venus_jd: "11003", hp_vr: "0.63", dt2: "157", arr_mars_jd: "11160", mars_entry_kms: "8.51", stay: "60", dep_mars_jd: "11220", dv3: "2.29", dt3: "278", arr_earth_jd: "11498", earth_entry_kms: "14.07", total_time: "663", total_dv: "6.45"}
+  notes:
+    - "The printed legend names the Depart Mars velocity increment 'dV2' while the column header reads dV3; kept as the column header."
+    - "hp is the Venus swingby altitude in Venus radii (legend). Velocities are km/s as printed in this table (other tables say kps)."
+
+table_14:
+  title: "Table 14. Outbound Swingby - Mars Retrobraker"
+  page: "p.26 (PDF 33)"
+  columns: [mission_year, dep_jd, dv1, dt1, venus_jd, hp_vr, dt2, arr_mars_jd, dv2, stay, dep_mars_jd, dv3, dt3, arr_earth_jd, earth_entry_kms, total_time, total_dv]
+  rows:
+    - {mission_year: "1986", dep_jd: "6155", dv1: "4.01", dt1: "163", venus_jd: "6318", hp_vr: "1.32", dt2: "207", arr_mars_jd: "6525", dv2: "3.66", stay: "0", dep_mars_jd: "6525", dv3: "2.17", dt3: "193", arr_earth_jd: "6718", earth_entry_kms: "11.60", total_time: "563", total_dv: "9.84"}
+    - {mission_year: "1986", dep_jd: "6153", dv1: "3.99", dt1: "164", venus_jd: "6317", hp_vr: "1.31", dt2: "203", arr_mars_jd: "6520", dv2: "3.72", stay: "30", dep_mars_jd: "6550", dv3: "2.49", dt3: "190", arr_earth_jd: "6740", earth_entry_kms: "11.87", total_time: "587", total_dv: "10.20"}
+    - {mission_year: "1986", dep_jd: "6153", dv1: "3.99", dt1: "164", venus_jd: "6317", hp_vr: "1.31", dt2: "203", arr_mars_jd: "6520", dv2: "3.72", stay: "60", dep_mars_jd: "6580", dv3: "2.72", dt3: "240", arr_earth_jd: "6820", earth_entry_kms: "12.94", total_time: "667", total_dv: "10.43"}
+    - {mission_year: "1993", dep_jd: "8512", dv1: "4.20", dt1: "157", venus_jd: "8669", hp_vr: "1.53", dt2: "151", arr_mars_jd: "8820", dv2: "4.48", stay: "0", dep_mars_jd: "8820", dv3: "2.26", dt3: "294", arr_earth_jd: "9114", earth_entry_kms: "11.41", total_time: "602", total_dv: "10.92"}
+    - {mission_year: "1993", dep_jd: "8510", dv1: "4.18", dt1: "158", venus_jd: "8668", hp_vr: "1.54", dt2: "147", arr_mars_jd: "8815", dv2: "4.49", stay: "30", dep_mars_jd: "8845", dv3: "2.33", dt3: "277", arr_earth_jd: "9122", earth_entry_kms: "11.42", total_time: "612", total_dv: "10.98"}
+    - {mission_year: "1993", dep_jd: "8509", dv1: "4.17", dt1: "159", venus_jd: "8668", hp_vr: "1.55", dt2: "142", arr_mars_jd: "8810", dv2: "4.52", stay: "60", dep_mars_jd: "8870", dv3: "2.77", dt3: "260", arr_earth_jd: "9130", earth_entry_kms: "11.50", total_time: "621", total_dv: "11.46"}
+    - {mission_year: "1999", dep_jd: "10840", dv1: "4.18", dt1: "165", venus_jd: "11005", hp_vr: "0.81", dt2: "210", arr_mars_jd: "11215", dv2: "3.31", stay: "0", dep_mars_jd: "11215", dv3: "2.25", dt3: "280", arr_earth_jd: "11495", earth_entry_kms: "13.98", total_time: "655", total_dv: "9.73"}
+    - {mission_year: "1999", dep_jd: "10838", dv1: "4.18", dt1: "167", venus_jd: "11005", hp_vr: "0.81", dt2: "205", arr_mars_jd: "11210", dv2: "3.35", stay: "30", dep_mars_jd: "11240", dv3: "2.44", dt3: "272", arr_earth_jd: "11512", earth_entry_kms: "14.50", total_time: "674", total_dv: "9.95"}
+    - {mission_year: "1999", dep_jd: "10838", dv1: "4.18", dt1: "167", venus_jd: "11005", hp_vr: "0.81", dt2: "205", arr_mars_jd: "11210", dv2: "3.35", stay: "60", dep_mars_jd: "11270", dv3: "2.72", dt3: "260", arr_earth_jd: "11530", earth_entry_kms: "15.00", total_time: "692", total_dv: "10.23"}
+  notes:
+    - "dv2 is the Mars orbit-insertion increment and dv3 the Mars departure increment (legend). Velocities km/s."
+
+table_15:
+  title: "Table 15. Inbound Swingby - Mars Aerobraker Missions"
+  page: "p.27 (PDF 34)"
+  columns: [mission_year, dep_jd, dv1, dt1, arr_mars_jd, mars_entry_kms, stay, dep_mars_jd, dv2, dt2, venus_jd, hp_vr, dt3, arr_earth_jd, earth_entry_kms, total_time, total_dv]
+  rows:
+    - {mission_year: "1982", dep_jd: "4940", dv1: "3.60", dt1: "300", arr_mars_jd: "5240", mars_entry_kms: "5.73", stay: "0", dep_mars_jd: "5240", dv2: "4.48", dt2: "149", venus_jd: "5389", hp_vr: "1.24", dt3: "160", arr_earth_jd: "5549", earth_entry_kms: "12.15", total_time: "609", total_dv: "8.06"}
+    - {mission_year: "1982", dep_jd: "4931", dv1: "3.64", dt1: "284", arr_mars_jd: "5215", mars_entry_kms: "5.78", stay: "30", dep_mars_jd: "5245", dv2: "4.48", dt2: "145", venus_jd: "5390", hp_vr: "1.26", dt3: "160", arr_earth_jd: "5550", earth_entry_kms: "12.14", total_time: "619", total_dv: "8.10"}
+    - {mission_year: "1982", dep_jd: "4955", dv1: "3.62", dt1: "225", arr_mars_jd: "5180", mars_entry_kms: "6.78", stay: "60", dep_mars_jd: "5240", dv2: "4.48", dt2: "149", venus_jd: "5389", hp_vr: "1.24", dt3: "160", arr_earth_jd: "5549", earth_entry_kms: "12.15", total_time: "594", total_dv: "8.08"}
+    - {mission_year: "1988", dep_jd: "7354", dv1: "3.73", dt1: "181", arr_mars_jd: "7535", mars_entry_kms: "5.61", stay: "0", dep_mars_jd: "7535", dv2: "3.81", dt2: "210", venus_jd: "7745", hp_vr: "0.93", dt3: "160", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "551", total_dv: "7.52"}
+    - {mission_year: "1988", dep_jd: "7342", dv1: "3.76", dt1: "168", arr_mars_jd: "7510", mars_entry_kms: "6.00", stay: "30", dep_mars_jd: "7540", dv2: "3.82", dt2: "205", venus_jd: "7745", hp_vr: "0.97", dt3: "160", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "563", total_dv: "7.58"}
+    - {mission_year: "1988", dep_jd: "7340", dv1: "3.98", dt1: "140", arr_mars_jd: "7480", mars_entry_kms: "7.16", stay: "60", dep_mars_jd: "7540", dv2: "3.82", dt2: "205", venus_jd: "7745", hp_vr: "0.97", dt3: "160", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "565", total_dv: "7.78"}
+    - {mission_year: "1995", dep_jd: "9660", dv1: "3.85", dt1: "215", arr_mars_jd: "9875", mars_entry_kms: "6.95", stay: "0", dep_mars_jd: "9875", dv2: "3.44", dt2: "181", venus_jd: "10056", hp_vr: "0.74", dt3: "158", arr_earth_jd: "10214", earth_entry_kms: "12.24", total_time: "554", total_dv: "7.28"}
+    - {mission_year: "1995", dep_jd: "9660", dv1: "3.95", dt1: "195", arr_mars_jd: "9855", mars_entry_kms: "7.91", stay: "30", dep_mars_jd: "9885", dv2: "3.49", dt2: "172", venus_jd: "10057", hp_vr: "0.75", dt3: "158", arr_earth_jd: "10215", earth_entry_kms: "12.23", total_time: "555", total_dv: "7.44"}
+    - {mission_year: "1995", dep_jd: "9660", dv1: "4.17", dt1: "175", arr_mars_jd: "9835", mars_entry_kms: "9.21", stay: "60", dep_mars_jd: "9895", dv2: "3.61", dt2: "163", venus_jd: "10058", hp_vr: "0.74", dt3: "159", arr_earth_jd: "10217", earth_entry_kms: "12.21", total_time: "557", total_dv: "7.77"}
+  notes:
+    - "Here the Venus swingby comes on the return leg (Mars to Venus to Earth). dv2 is the Mars departure increment; the legend calls dV2 the 'Planetary orbit insertion incremental velocity', kept as printed. Velocities km/s."
+
+table_16:
+  title: "Table 16. Inbound Swingby - Mars Retrobraker Missions"
+  page: "p.28 (PDF 35)"
+  columns: [mission_year, dep_jd, dv1, dt1, arr_mars_jd, dv2, stay, dep_mars_jd, dv3, dt2, venus_jd, hp_vr, dt3, arr_earth_jd, earth_entry_kms, total_time, total_dv]
+  rows:
+    - {mission_year: "1984", dep_jd: "5669", dv1: "4.02", dt1: "266", arr_mars_jd: "5935", dv2: "2.85", stay: "0", dep_mars_jd: "5935", dv3: "4.25", dt2: "157", venus_jd: "6092", hp_vr: "0.75", dt3: "138", arr_earth_jd: "6230", earth_entry_kms: "12.58", total_time: "561", total_dv: "11.12"}
+    - {mission_year: "1984", dep_jd: "5643", dv1: "4.57", dt1: "262", arr_mars_jd: "5905", dv2: "3.43", stay: "30", dep_mars_jd: "5935", dv3: "4.25", dt2: "157", venus_jd: "6092", hp_vr: "0.75", dt3: "138", arr_earth_jd: "6230", earth_entry_kms: "12.58", total_time: "587", total_dv: "12.33"}
+    - {mission_year: "1984", dep_jd: "5622", dv1: "5.18", dt1: "263", arr_mars_jd: "5885", dv2: "3.78", stay: "60", dep_mars_jd: "5945", dv3: "4.64", dt2: "158", venus_jd: "6103", hp_vr: "0.11", dt3: "141", arr_earth_jd: "6244", earth_entry_kms: "12.86", total_time: "622", total_dv: "13.58"}
+    - {mission_year: "1988", dep_jd: "7350", dv1: "3.71", dt1: "190", arr_mars_jd: "7540", dv2: "2.09", stay: "0", dep_mars_jd: "7540", dv3: "3.82", dt2: "205", venus_jd: "7745", hp_vr: "1.00", dt3: "160", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "555", total_dv: "9.62"}
+    - {mission_year: "1988", dep_jd: "7344", dv1: "3.75", dt1: "171", arr_mars_jd: "7515", dv2: "2.45", stay: "30", dep_mars_jd: "7545", dv3: "3.87", dt2: "200", venus_jd: "7745", hp_vr: "1.02", dt3: "160", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "561", total_dv: "10.07"}
+    - {mission_year: "1988", dep_jd: "7340", dv1: "3.81", dt1: "160", arr_mars_jd: "7500", dv2: "2.84", stay: "60", dep_mars_jd: "7560", dv3: "4.20", dt2: "186", venus_jd: "7746", hp_vr: "1.04", dt3: "159", arr_earth_jd: "7905", earth_entry_kms: "11.95", total_time: "565", total_dv: "10.85"}
+    - {mission_year: "1995", dep_jd: "9660", dv1: "3.82", dt1: "240", arr_mars_jd: "9900", dv2: "2.72", stay: "0", dep_mars_jd: "9900", dv3: "3.71", dt2: "159", venus_jd: "10059", hp_vr: "0.74", dt3: "159", arr_earth_jd: "10218", earth_entry_kms: "12.21", total_time: "558", total_dv: "10.22"}
+    - {mission_year: "1995", dep_jd: "9660", dv1: "3.82", dt1: "225", arr_mars_jd: "9885", dv2: "3.16", stay: "30", dep_mars_jd: "9915", dv3: "4.17", dt2: "145", venus_jd: "10060", hp_vr: "0.70", dt3: "160", arr_earth_jd: "10220", earth_entry_kms: "12.19", total_time: "560", total_dv: "11.13"}
+    - {mission_year: "1995", dep_jd: "9585", dv1: "5.16", dt1: "270", arr_mars_jd: "9855", dv2: "3.16", stay: "60", dep_mars_jd: "9915", dv3: "4.17", dt2: "145", venus_jd: "10060", hp_vr: "0.70", dt3: "160", arr_earth_jd: "10220", earth_entry_kms: "12.19", total_time: "635", total_dv: "12.48"}
+  notes:
+    - "The printed Total Mission column header reads 'Total Mission Total (km/s)'; it is the total mission delta-V."
+    - "Row 1984/5622: printed hp is 0.11 Venus radii (the neighbouring rows read 0.75); kept as printed."
+
+table_17:
+  title: "Table 17. Planetary Excursion Module Characteristic-Velocity Requirements (Circular Parking Orbits)"
+  page: "p.42 (PDF 49)"
+  units: "metres per second"
+  rows:
+    - {objective: "Mercury",   descent_dv: "3830", ascent_dv: "4000"}
+    - {objective: "Mars",      descent_dv: "1220", ascent_dv: "4880"}
+    - {objective: "Vesta",     descent_dv: "328",  ascent_dv: "328"}
+    - {objective: "Ceres",     descent_dv: "556",  ascent_dv: "565"}
+    - {objective: "Ganymede",  descent_dv: "2470", ascent_dv: "2700"}
+
+table_18:
+  title: "Table 18. Meteoroid Flux Models"
+  page: "p.48 (PDF 55)"
+  notes: "phi = particles per square metre per second; m = particle mass (grams); r = heliocentric radius (AU). Formulas kept as printed."
+  rows:
+    - {environment: "Cometary", flux: "Log phi_c = -14.44 - 1.34 Log m", particle_density_gm_cc: "0.5", impact_velocity_km_s: "30 r^(-1/2)"}
+    - {environment: "Nominal asteroidal", flux: "Log phi_a = -17.27 + 3.44 r - 0.61 r^2 - 0.73 Log m", particle_density_gm_cc: "3.5", impact_velocity_km_s: "15 r^(-1/2)"}
+    - {environment: "Maximum asteroidal", flux: "Log phi_a = -21.00 + 8 r - 1.43 r^2 - 0.91 Log m", particle_density_gm_cc: "3.5", impact_velocity_km_s: "15 r^(-1/2)"}
+
+table_21:
+  title: "Table 21. Environmental Control and Life Support Subsystem Scaling Equations"
+  page: "p.64 (PDF 71)"
+  notes: "M = mass excluding leakage and repressurization (kg); V = volume (m^3); P = electrical power (W); Nc = crew size; dt = time (days). Coefficients as printed."
+  rows:
+    - {closure: "Open < 90 days",  M: "408 + 330 Nc + 0.09 dt + 6.204 Nc dt",  V: "7.6 + 3.93 Nc + 0.001 dt + 0.0197 Nc dt",   P: "835 + 105 Nc"}
+    - {closure: "Open > 90 days",  M: "408 + 330 Nc + 0.09 dt + 11.317 Nc dt", V: "7.6 + 3.93 Nc + 0.001 dt + 0.02597 Nc dt",  P: "835 + 105 Nc"}
+    - {closure: "Water Recovery Only", M: "468 + 367 Nc + 0.09 dt + 1.981 Nc dt", V: "7.7 + 3.95 Nc + 0.001 dt + 0.01466 Nc dt", P: "985 + 205 Nc"}
+    - {closure: "Water and Oxygen Recovery", M: "471 + 323 Nc + 0.09 dt + 0.997 Nc dt", V: "7.7 + 3.39 Nc + 0.0007 dt + 0.0066 Nc dt", P: "860 + 400 Nc"}
+
+table_22:
+  title: "Table 22. Fixed Parameters for Comparison of Optical and Radio Space Communication"
+  page: "p.67 (PDF 74)"
+  notes: "Columns are S-band, millimetre, CO2 (heterodyne) and GaAs (non-coherent). Where a cell prints several values (antenna sizes), they are listed in printed order. NA as printed. Read on a 200 dpi render; the footnote block at the foot of the page (transmissivities) was read at 120 dpi."
+  parameters:
+    - {parameter: "Frequency", s_band: "2.3 GHz", millimeter: "94 GHz", co2: "28,300 GHz", gaas: "357,000 GHz"}
+    - {parameter: "Wavelength", s_band: "13.05 cm", millimeter: "3.19 mm", co2: "10.6 microns", gaas: "0.8400 microns"}
+    - {parameter: "Spacecraft antenna diameter (m)", s_band: ["4.88", "15.2"], millimeter: ["0.304", "0.67", "4.58"], co2: ["0.014", "0.178", "1"], gaas: ["0.10", "1 m"]}
+    - {parameter: "Spacecraft antenna gain (db) [A]", s_band: ["38.8", "48.7"], millimeter: ["47", "53.8", "70"], co2: ["73.22", "94.8", "109.6"], gaas: ["111.5", "131.5"]}
+    - {parameter: "Beam angle (arc-sec) [B]", s_band: ["6750", "2150"], millimeter: ["2640", "1200", "165"], co2: ["180", "15", "2.67"], gaas: ["2.12", "0.21"]}
+    - {parameter: "Ground antenna diameter D_R (m)", s_band: "64 (210 ft)", millimeter: "4.58 (15 ft)", co2: "2", gaas: "10"}
+    - {parameter: "Ground antenna gain (db)", s_band: "61", millimeter: "70", co2: "NA [F]", gaas: "NA [F]"}
+    - {parameter: "Ground antenna area (effective) A_R (-dbm^2)", s_band: "32.5", millimeter: "9.56", co2: "4.96", gaas: "18.9"}
+    - {parameter: "Modulation efficiency (db) [C]", s_band: "10", millimeter: "10", co2: "10", gaas: "10"}
+    - {parameter: "Performance margin M (db) [D]", s_band: "10", millimeter: "10", co2: "20", gaas: "20"}
+    - {parameter: "Receiver system noise temperature (K)", s_band: "35", millimeter: "400", co2: "NA", gaas: "NA"}
+    - {parameter: "Noise spectral density, KT (radio spectrum)", s_band: "4.83 x 10^-22", millimeter: "5.52 x 10^-21", co2: "NA", gaas: "NA"}
+    - {parameter: "Noise spectral density, KT (db)", s_band: "-213", millimeter: "-203", co2: "NA", gaas: "NA"}
+    - {parameter: "Noise spectral density, hf (optical spectrum)", s_band: "NA", millimeter: "NA", co2: "1.88 x 10^-20", gaas: ""}
+    - {parameter: "Noise spectral density, hf (db)", s_band: "NA", millimeter: "NA", co2: "-197.3 dbw-cps^-1", gaas: ""}
+    - {parameter: "Detector responsivity", s_band: "NA", millimeter: "NA", co2: "", gaas: "0.002 amp-watt^-1"}
+    - {parameter: "Quantum efficiency", s_band: "NA", millimeter: "NA", co2: "0.20", gaas: ""}
+    - {parameter: "Modulation", s_band: "PCM/PSK/PM", millimeter: "PCM/PSK/PM", co2: "PCM/PL", gaas: "PCM/PL"}
+    - {parameter: "Efficiency (percent)", s_band: "50", millimeter: "40", co2: "40", gaas: "50"}
+  range_equations: "Printed as formulas (P_T G_T = B R^2 (xi) M 4 pi psi / A_R for the radio columns; the optical columns carry D_R^2 eta). Not transcribed symbol by symbol: the scan resolution does not support it."
+  transmissivity_footnote:
+    gaas: {transmitter_optics: "0.50 (-3 db)", atmosphere: "0.80 (-1 db)", filter: "0.20 (-7 db)", diffraction_farfield: "0.50 (-3 db)", receiving_optics: "0.50 (-3 db)", modulation: "0.50 (NA)", subtotal: "-17 db", tolerance: "-3 db", total: "-20 db"}
+    co2: {transmitter_optics: "0.50 (-3 db)", atmosphere: "0.36 (-4.5 db)", filter: "0.90 (-0.5 db)", diffraction_farfield: "0.50 (-3 db)", receiving_optics: "0.50 (-3 db)", modulation: "0.50 (-3 db)", subtotal: "-17 db", tolerance: "-3 db", total: "-20 db"}
+  other_printed_numbers: ["theta = 1.22 lambda / D (diffraction limit, optical beams)", "theta = 252,000 / D arc-seconds (radio beam angle, 3-db points)", "BER example for 10 cps/bit/sec: S-band 5 x 10^-6, optical 4 x 10^-3"]
+
+table_23:
+  title: "Table 23. Comparison of Candidate Liquid Propellants"
+  page: "p.73 (PDF 80)"
+  notes: "1. MHF-3 = 86 percent MMH + 14 percent N2H4. 2. 100 psia to vacuum, 100 percent theoretical shifting equilibrium, epsilon = 60. Temperatures in degrees F. Read on a 200 dpi render (page rotated)."
+  columns: [propellants, opt_mixture_ratio, bulk_density_lb_ft3, vacuum_isp_s, vacuum_density_impulse_1000_lbsec_ft3, chamber_temp, fuel_freeze, fuel_bp_14_7psia, fuel_bp_90psia, ox_freeze, ox_bp_14_7psia, ox_bp_90psia, regen_cooling_merit, stor_150F, stor_0F, stor_m150F]
+  rows:
+    - ["F2/N2H4", "2.27", "81.7", "430", "35.1", "7140", "35", "236", "355", "-363", "-307", "-266", "1.48", "0.0202", "0.0126", "0.0072"]
+    - ["N2F4/N2H4", "3.24", "89.2", "390", "34.8", "6950", "35", "236", "355", "-264", "-99", "-23", "1.56", "0.0218", "0.0318", "0.0184"]
+    - ["OF2/MMH", "2.42", "78.3", "416", "32.6", "6620", "-62", "189", "305", "-371", "-230", "-177", "1.11", "0.0222", "0.0237", "0.0255"]
+    - ["N2F4/MMH", "3.38", "85.5", "380", "32.5", "6600", "-62", "189", "305", "-264", "-99", "-23", "1.13", "0.0228", "0.0398", "0.0264"]
+    - ["87.5% FLOX/MMH", "2.75", "77.0", "421", "32.4", "7080", "-62", "189", "305", "-363", "-306", "-264", "0.85", "0.0202", "0.0210", "0.0169"]
+    - ["ClF5/MHF-3 (note 1)", "2.60", "90.4", "358", "32.4", "6350", "-65", "194", "310", "-153", "8", "104", "1.32", "0.0302", "0.0377", "0.0170"]
+    - ["N2F4/NH3", "4.50", "78.3", "381", "29.8", "6660", "-62", "189", "305", "-153", "8", "104", "1.26", "0.0305", "0.0380", "0.0172"]
+    - ["82% FLOX/CH4", "5.75", "66.1", "424", "28.0", "7090", "-296", "-259", "-197", "-363", "-305", "-262", "0.15", "0.0049", "0.0079", "0.0207"]
+    - ["OF2/B2H6", "3.75", "62.4", "444", "27.7", "6990", "-266", "-135", "-61", "-371", "-230", "-177", "0.18", "0.0079", "0.0183", "0.0410"]
+    - ["O2/CH4", "3.32", "51.2", "379", "19.4", "5370", "-296", "-259", "-197", "-362", "-297", "-258", "0.28", "0.0068", "0.0110", "0.0296"]
+    - ["F2/H2", "11.0", "35.0", "479", "16.8", "6660", "-435", "-423", "-408", "-363", "-307", "-266", "6.29", "0.0040", "0.0057", "0.0105"]
+    - ["O2/H2", "4.80", "19.8", "461", "9.1", "5070", "-435", "-423", "-408", "-362", "-297", "-258", "15.4", "0.0067", "0.0096", "0.0171"]
+
+table_24:
+  title: "Table 24. Competitive Auxiliary Power Subsystems for Mission Module"
+  page: "p.77 (PDF 84)"
+  rows:
+    - {nominal_power_kwe: "15 to 30", mission_duration_2_5_years: "Isotope (Rankine, Brayton, Thermoelectric); Reactor (Rankine, Brayton, Thermoelectric); Solar photovoltaic", mission_duration_4_years: "Isotope (Rankine, Brayton, Thermoelectric); Reactor (Rankine, Brayton, Thermoelectric)"}
+    - {nominal_power_kwe: "15", mission_duration_2_5_years: "Isotope (Rankine, Brayton, Thermoelectric); Solar photovoltaic", mission_duration_4_years: "Isotope (Rankine, Brayton, Thermoelectric)"}
+  note: "Solar photovoltaic systems omitted for the longer (4 year) missions, consistent with heliocentric radius 2.5 to 3 AU (printed footnote)."
+
+table_25:
+  title: "Table 25. Competitive Auxiliary Power Subsystems for Planetary Excursion Module"
+  page: "p.77 (PDF 84)"
+  columns: [nominal_power_kwe, operating_2_days, operating_10_days, operating_30_days, operating_60_days]
+  rows:
+    - ["20", "Fuel cells; Solar photovoltaic", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Solar photovoltaic; Isotope thermoelectric", "Solar photovoltaic; Isotope thermoelectric"]
+    - ["10", "Fuel cells; Solar photovoltaic; Chemical dynamic; Primary batteries", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Solar photovoltaic; Isotope thermoelectric", "Solar photovoltaic; Isotope thermoelectric"]
+    - ["5", "Fuel cells; Solar photovoltaic; Chemical dynamic; Primary batteries", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Fuel cells; Solar photovoltaic; Isotope thermoelectric"]
+    - ["2", "Fuel cells; Solar photovoltaic; Chemical dynamic; Primary batteries", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Fuel cells; Solar photovoltaic; Isotope thermoelectric", "Fuel cells; Solar photovoltaic; Isotope thermoelectric"]
+
+table_26:
+  title: "Table 26. Selected Electrical Power Subsystems"
+  page: "p.81 (PDF 88)"
+  rows:
+    - {module: "Mission module", subsystem: "Isotope/mercury rankine"}
+    - {module: "Planetary excursion module, descent stage", subsystem: "Isotope cascaded thermoelectric"}
+    - {module: "Planetary excursion module, ascent stage", subsystem: "Batteries"}
+    - {module: "Earth reentry module", subsystem: "Batteries"}
+
+table_27:
+  title: "Table 27. Conceptual Design Study Summary"
+  page: "p.84 (PDF 90)"
+  legend: "E = applicable existing designs; C = conceptual designs developed; - = none"
+  columns: [module, type, crew_2_6, crew_8_10, crew_14_16, crew_20]
+  rows:
+    - ["Mission module", "-", "E", "E", "C", "C"]
+    - ["Earth reentry module", "Apollo", "E", "E", "E", "E"]
+    - ["Earth reentry module", "Biconic", "E", "E", "C", "C"]
+    - ["Aerobraker", "Cryogenic propellant", "-", "E", "C", "-"]
+    - ["Aerobraker", "Storable propellant", "E", "E", "-", "-"]
+    - ["Aerobraker", "Nuclear", "-", "E", "-", "-"]
+    - ["Planetary excursion module", "Apollo", "E", "C", "-", "-"]
+    - ["Planetary excursion module", "Lifting body", "E", "C", "C", "-"]
+    - ["Planetary excursion module", "Ceres/Vesta retro", "C", "C", "-", "-"]
+    - ["Planetary excursion module", "Ganymede/Mercury retro", "C", "C", "-", "-"]
+
+table_28:
+  title: "Table 28. Planetary Excursion Module Mass Requirements"
+  page: "p.96 (PDF 102)"
+  units: "kg; occupancy time 28 days (printed note); blank = not printed"
+  columns: [objective, four_man_circular_e0, four_man_elliptical_e0_7, ten_man_circular_e0, ten_man_elliptical_e0_7]
+  rows:
+    - ["Mercury",  "61,900", "103,200", "112,100", "181,100"]
+    - ["Mars",     "40,400", "60,600",  "70,600",  "105,200"]
+    - ["Vesta",    "11,000", "",        "20,000",  ""]
+    - ["Ceres",    "12,000", "",        "23,000",  ""]
+    - ["Ganymede", "27,800", "36,400",  "50,500",  "65,200"]
+
+table_29:
+  title: "Table 29. Candidate Common Propulsion Modules"
+  page: "p.108 (PDF 114)"
+  legend: "N = nuclear propulsion; C = chemical propulsion (cryogenic or space storable); F = flyby mission (legend as printed; no F appears in the grid)"
+  columns_103_kg: [75, 100, 150, 300, 600, 1200]
+  grid_note: "Each propulsion-module combination prints several stacked sub-rows; the table does not label which mission each sub-row serves. Sub-rows are listed top to bottom with the module-mass columns that carry a mark."
+  combinations:
+    - combination: "NNN"
+      sub_rows: [{75: "N", 300: "N"}, {75: "N", 300: "N", 1200: "N"}, {75: "N", 600: "N"}, {75: "N", 1200: "N"}, {150: "N", 600: "N"}, {150: "N", 1200: "N"}, {300: "N", 1200: "N"}]
+    - combination: "NCC"
+      sub_rows: [{100: "C", 150: "N"}, {100: "C", 300: "N"}, {100: "C", 600: "N"}]
+    - combination: "CCC"
+      sub_rows: [{100: "C", 600: "C"}, {100: "C", 300: "C"}]
+    - combination: "EOE Aerobraker"
+      sub_rows: [{150: "N"}, {300: "N"}, {600: "N/C"}]
+    - combination: "EOE Flyby"
+      sub_rows: [{75: "N"}, {100: "C", 150: "N"}]
+
+table_30:
+  title: "Table 30. Applicability of Common Propulsion Modules"
+  page: "p.109 (PDF 115)"
+  legend: "X = propulsion system of specified type; C = chemical propulsion systems at planet arrival/departure; A = aerobraking capture; F = flyby"
+  columns: "propulsion-module mass (10^3 kg): nuclear 75, 150, 300, 600, 1200; chemical 100, 300, 600"
+  grid_note: "Stacked sub-rows per mission objective, listed top to bottom as nuclear/chemical column: mark."
+  objectives:
+    - objective: "Mercury"
+      sub_rows: ["N150 X, N600 X", "N75 X, N300 X, N1200 X"]
+    - objective: "Venus"
+      sub_rows: ["N150 A, N300 A, N600 A, C600 A", "N75 X, N300 X", "N150 X, N600 X", "N150 C, N300 C, N600 C, C100 X", "C100 X, C300 X"]
+    - objective: "Mars"
+      sub_rows: ["N150 A, N300 A, N600 A, C600 A", "N75 X, N300 X", "N150 X, N600 X", "N150 C, N300 C, N600 C, C100 X", "C100 X, C300 X"]
+    - objective: "Ceres"
+      sub_rows: ["N75 X, N300 X, N1200 X", "N75 F"]
+    - objective: "Vesta"
+      sub_rows: ["N75 X, N300 X, N1200 X", "N1200 F"]
+    - objective: "Jupiter"
+      sub_rows: ["N75 X, N1200 X", "N75 X, N600 X", "N150 X, N600 X", "N150 X, N1200 X", "N1200 X, C100 X", "N150 F"]
+    - objective: "Ganymede"
+      sub_rows: ["N150 X, N600 X", "N150 X, N1200 X", "N75 X, N300 X, N1200 X"]
+
