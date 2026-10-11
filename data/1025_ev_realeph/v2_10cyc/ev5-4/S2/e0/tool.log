@@ -1,0 +1,11 @@
+TIMEOUT after 420 s
+17:17:55 ev epoch 0 (JD 2463078.5) ramp lam=0.0000 conv=True res=1.1e-12 gate=pass worst=0.801 [elapsed 42s]
+17:18:43 ev epoch 0 (JD 2463078.5) ramp lam=0.1000 conv=True res=2.3e-12 gate=pass worst=0.787 [elapsed 90s]
+17:19:35 ev epoch 0 (JD 2463078.5) ramp lam=0.2000 conv=True res=1.2e-12 gate=pass worst=0.774 [elapsed 142s]
+17:20:34 ev epoch 0 (JD 2463078.5) ramp lam=0.3000 conv=True res=2.2e-12 gate=pass worst=0.761 [elapsed 201s]
+17:21:36 ev epoch 0 (JD 2463078.5) ramp lam=0.4000 conv=True res=2.5e-12 gate=pass worst=0.748 [elapsed 263s]
+17:22:02 ev epoch 0 (JD 2463078.5) ramp lam=0.5000 conv=False res=6.9e-03 gate=unconverged worst=nan [elapsed 288s]
+17:22:24 ev epoch 0 (JD 2463078.5) ramp lam=0.4500 conv=False res=1.7e-03 gate=unconverged worst=nan [elapsed 310s]
+17:23:29 ev epoch 0 (JD 2463078.5) ramp lam=0.4250 conv=True res=1.2e-12 gate=pass worst=0.744 [elapsed 376s]
+17:23:49 ev epoch 0 (JD 2463078.5) ramp lam=0.4500 conv=False res=1.7e-03 gate=unconverged worst=nan [elapsed 396s]
+17:24:06 ev epoch 0 (JD 2463078.5) ramp lam=0.4375 conv=False res=4.2e-04 gate=unconverged worst=nan [elapsed 413s]

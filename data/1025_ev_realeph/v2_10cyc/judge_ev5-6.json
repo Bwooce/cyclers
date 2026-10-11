@@ -1,0 +1,238 @@
+{
+ "member": "ev5-6",
+ "key": "k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+ "k": 5,
+ "L": 1,
+ "tol_rev": 0.02,
+ "cycles": 10,
+ "judgeable": true,
+ "epochs": [
+  {
+   "epoch": 0,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": false
+    },
+    {
+     "route": "S2",
+     "reached": false
+    },
+    {
+     "route": "S3",
+     "reached": false
+    }
+   ],
+   "epoch_jd": 2463082.588128443,
+   "pass": false,
+   "outcome": "NO 10-CYCLE CHAIN"
+  },
+  {
+   "epoch": 1,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": false
+    },
+    {
+     "route": "S2",
+     "reached": true,
+     "judged": {
+      "label": "ev5-6 S2 JD 2465420.3",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "c1_continuity": true,
+      "junction_kms": 3.218758592993254e-12,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.6098603226760169
+      },
+      "c3_refly": true,
+      "refly_max_km": 0.04579446565073224,
+      "c4": {
+       "judgeable": true,
+       "L": 1,
+       "cycles": 10,
+       "comparisons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ],
+       "Dprime_d": [
+        0.9050735378855279,
+        0.15620131111199953,
+        0.0403306991925092,
+        0.04331327703994248,
+        0.03980946821548059,
+        0.06551340675787287,
+        0.8680642840058681
+       ],
+       "Wprime_kms": [
+        0.04651078298978106,
+        0.02021900700949608,
+        0.01613523491457336,
+        0.016115173606639388,
+        0.016446392142798416,
+        0.017005287631278065,
+        0.020422775398186488
+       ],
+       "band_D_d": 2.3215241159857425,
+       "band_W_kms": 0.7216145076429383,
+       "slope_D_d_per_cycle": -0.010461600047295077,
+       "slope_W_kms_per_cycle": -0.003013582296535525,
+       "pass": true
+      },
+      "pass": true
+     }
+    }
+   ],
+   "epoch_jd": 2465420.3196370252,
+   "pass": true,
+   "outcome": "PASS"
+  },
+  {
+   "epoch": 2,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": false
+    }
+   ],
+   "epoch_jd": 2467756.52084464,
+   "pass": false,
+   "outcome": "NO 10-CYCLE CHAIN"
+  },
+  {
+   "epoch": 3,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev5-6 S1 JD 2470089.3",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "c1_continuity": true,
+      "junction_kms": 2.296829393344524e-12,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.41628282831380004
+      },
+      "c3_refly": true,
+      "refly_max_km": 0.07010361319846811,
+      "c4": {
+       "judgeable": true,
+       "L": 1,
+       "cycles": 10,
+       "comparisons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ],
+       "Dprime_d": [
+        0.1351138370546323,
+        0.13573114270093356,
+        0.1420033502536171,
+        0.14818437560006714,
+        0.1539433278476281,
+        0.1591102229531316,
+        0.16074025760008226
+       ],
+       "Wprime_kms": [
+        0.011905751688744637,
+        0.01098930388730679,
+        0.010026058484480238,
+        0.009016175473770538,
+        0.007967047321837839,
+        0.006887879049467749,
+        0.00581495483638772
+       ],
+       "band_D_d": 2.65553646473283,
+       "band_W_kms": 0.7501134212706788,
+       "slope_D_d_per_cycle": 0.004842049990527036,
+       "slope_W_kms_per_cycle": -0.0010190804069782579,
+       "pass": true
+      },
+      "pass": true
+     }
+    }
+   ],
+   "epoch_jd": 2470089.3194703804,
+   "pass": true,
+   "outcome": "PASS"
+  },
+  {
+   "epoch": 4,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev5-6 S1 JD 2472429.2",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "c1_continuity": true,
+      "junction_kms": 2.9878322038712213e-12,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.41435699634528494
+      },
+      "c3_refly": true,
+      "refly_max_km": 0.006502494475294982,
+      "c4": {
+       "judgeable": true,
+       "L": 1,
+       "cycles": 10,
+       "comparisons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ],
+       "Dprime_d": [
+        0.5387330521689364,
+        0.48326532124247024,
+        0.4847494239138541,
+        0.49032852533764526,
+        0.5008898168807718,
+        0.5895038722292156,
+        1.7600165245085009
+       ],
+       "Wprime_kms": [
+        0.007142444416420091,
+        0.005623751146274003,
+        0.006204683864599936,
+        0.0073550650967728615,
+        0.008483516560850113,
+        0.009607318952896904,
+        0.010006050196032845
+       ],
+       "band_D_d": 2.6299938080007284,
+       "band_W_kms": 0.7571961511275412,
+       "slope_D_d_per_cycle": 0.1390167111413965,
+       "slope_W_kms_per_cycle": 0.0006727423445833662,
+       "pass": true
+      },
+      "pass": true
+     }
+    }
+   ],
+   "epoch_jd": 2472429.1691055726,
+   "pass": true,
+   "outcome": "PASS"
+  }
+ ],
+ "passes": 3,
+ "verdict": "PASS"
+}

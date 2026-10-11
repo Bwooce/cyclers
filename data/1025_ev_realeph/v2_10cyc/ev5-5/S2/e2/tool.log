@@ -1,0 +1,6 @@
+TIMEOUT after 420 s
+17:18:15 ev epoch 2 (JD 2467752.5) ramp lam=0.0000 conv=True res=2.1e-12 gate=pass worst=0.801 [elapsed 65s]
+17:19:32 ev epoch 2 (JD 2467752.5) ramp lam=0.1000 conv=True res=3.4e-12 gate=pass worst=0.796 [elapsed 142s]
+17:20:48 ev epoch 2 (JD 2467752.5) ramp lam=0.2000 conv=True res=2.6e-12 gate=pass worst=0.795 [elapsed 218s]
+17:22:14 ev epoch 2 (JD 2467752.5) ramp lam=0.3000 conv=True res=2.9e-12 gate=pass worst=0.788 [elapsed 303s]
+17:23:39 ev epoch 2 (JD 2467752.5) ramp lam=0.4000 conv=True res=2.1e-12 gate=pass worst=0.779 [elapsed 388s]

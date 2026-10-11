@@ -1,0 +1,175 @@
+{
+ "member": "ev4-1",
+ "key": "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+ "k": 4,
+ "L": 38,
+ "tol_rev": 0.02,
+ "cycles": 10,
+ "judgeable": false,
+ "epochs": [
+  {
+   "epoch": 0,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev4-1 S1 JD 2462949.8",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "pass": false,
+      "c4": {
+       "judgeable": false,
+       "L": 38,
+       "cycles": 10,
+       "pass": false,
+       "reason": "n = 10 < 2L = 76 (tol 0.02 rev)"
+      },
+      "c1_continuity": true,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.8218868838834559
+      },
+      "c3_refly": true
+     }
+    }
+   ],
+   "epoch_jd": 2462949.80050907,
+   "pass": false,
+   "outcome": "C1-3 PASS",
+   "c123": true
+  },
+  {
+   "epoch": 1,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev4-1 S1 JD 2465278.7",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "pass": false,
+      "c4": {
+       "judgeable": false,
+       "L": 38,
+       "cycles": 10,
+       "pass": false,
+       "reason": "n = 10 < 2L = 76 (tol 0.02 rev)"
+      },
+      "c1_continuity": true,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.823672967011928
+      },
+      "c3_refly": true
+     }
+    }
+   ],
+   "epoch_jd": 2465278.686818896,
+   "pass": false,
+   "outcome": "C1-3 PASS",
+   "c123": true
+  },
+  {
+   "epoch": 2,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev4-1 S1 JD 2467618.4",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "pass": false,
+      "c4": {
+       "judgeable": false,
+       "L": 38,
+       "cycles": 10,
+       "pass": false,
+       "reason": "n = 10 < 2L = 76 (tol 0.02 rev)"
+      },
+      "c1_continuity": true,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.8218652585925715
+      },
+      "c3_refly": true
+     }
+    }
+   ],
+   "epoch_jd": 2467618.4311134205,
+   "pass": false,
+   "outcome": "C1-3 PASS",
+   "c123": true
+  },
+  {
+   "epoch": 3,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev4-1 S1 JD 2469954.5",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "pass": false,
+      "c4": {
+       "judgeable": false,
+       "L": 38,
+       "cycles": 10,
+       "pass": false,
+       "reason": "n = 10 < 2L = 76 (tol 0.02 rev)"
+      },
+      "c1_continuity": true,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.8215200990517176
+      },
+      "c3_refly": true
+     }
+    }
+   ],
+   "epoch_jd": 2469954.46743437,
+   "pass": false,
+   "outcome": "C1-3 PASS",
+   "c123": true
+  },
+  {
+   "epoch": 4,
+   "routes": [
+    {
+     "route": "S1",
+     "reached": true,
+     "judged": {
+      "label": "ev4-1 S1 JD 2472285.3",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "pass": false,
+      "c4": {
+       "judgeable": false,
+       "L": 38,
+       "cycles": 10,
+       "pass": false,
+       "reason": "n = 10 < 2L = 76 (tol 0.02 rev)"
+      },
+      "c1_continuity": true,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.8263665416953297
+      },
+      "c3_refly": true
+     }
+    }
+   ],
+   "epoch_jd": 2472285.3232667088,
+   "pass": false,
+   "outcome": "C1-3 PASS",
+   "c123": true
+  }
+ ],
+ "passes": 0,
+ "verdict": "NOT JUDGEABLE",
+ "reason": "n = 10 < 2L = 76 (sec. 11.1); chains are a c1-3 diagnostic",
+ "c123_epochs": 5
+}

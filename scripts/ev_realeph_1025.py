@@ -25,7 +25,9 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -41,6 +43,9 @@ TIMEOUT_S = 420
 #: Overridable by `run --root/--timeout` (the lead-launched DE440 shoot, note sec. 7).
 ROOT = [OUT]
 TIMEOUT = [TIMEOUT_S]
+#: `run --routes`: routes allowed to start (finished ones are always read back), so a timed-out
+#: route can be re-run alone inside one tool call (sec. 11.2).
+ALLOWED: list[set[str] | None] = [None]
 EPOCHS = range(5)
 
 #: Route ladder (sec. 2): name -> extra chain-tool flags.
@@ -118,6 +123,8 @@ def run_route(
     res_path = d / "realeph_chain.json"
     if res_path.exists():
         return classify(json.loads(res_path.read_text())[0], route, n, d)
+    if ALLOWED[0] is not None and route not in ALLOWED[0]:
+        return {"route": route, "epoch": ie, "outcome": "NOT RUN", "reason": "not in --routes"}
     d.mkdir(parents=True, exist_ok=True)
     cmd = [
         "uv", "run", "python", str(CHAIN_TOOL), "--cell", "ev", "--key", key, "--x-days", xd,
@@ -128,9 +135,17 @@ def run_route(
     try:
         # live log (gitignored under de440_shoot/), copied to the static tool.log at the end
         with (d / "tool.live.log").open("w") as live:
-            p = subprocess.run(
-                cmd, stdout=live, stderr=subprocess.STDOUT, timeout=TIMEOUT[0], cwd=REPO
+            # own process group: on a timeout the whole group is killed, so the python child of
+            # `uv run` cannot run on as an orphan and write a result later (sec. 11.6)
+            p = subprocess.Popen(
+                cmd, stdout=live, stderr=subprocess.STDOUT, cwd=REPO, start_new_session=True
             )
+            try:
+                p.wait(timeout=TIMEOUT[0])
+            except subprocess.TimeoutExpired:
+                os.killpg(p.pid, signal.SIGKILL)
+                p.wait()
+                raise
         (d / "tool.log").write_text((d / "tool.live.log").read_text())
     except subprocess.TimeoutExpired:
         (d / "tool.log").write_text(
@@ -347,9 +362,12 @@ def cmd_run(argv: list[str]) -> None:
     ap.add_argument(
         "--n-cycles", type=int, default=None, help="chain length (the V2 10-cycle chains, sec. 11)"
     )
+    ap.add_argument("--routes", default=None, help="comma list of routes allowed to start")
     a = ap.parse_args(argv)
     if a.root:
         ROOT[0] = OUT / a.root
+    if a.routes:
+        ALLOWED[0] = set(a.routes.split(","))
     TIMEOUT[0] = a.timeout
     key, xd, n = members()[a.member]
     if a.n_cycles:

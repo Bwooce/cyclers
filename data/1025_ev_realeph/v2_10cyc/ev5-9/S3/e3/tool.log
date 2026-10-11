@@ -1,0 +1,33 @@
+TIMEOUT after 420 s
+17:31:31 ev epoch 3 (JD 2470093.9) ramp lam=0.0000 conv=True res=4.3e-13 gate=pass worst=0.309 [elapsed 11s]
+17:31:38 ev epoch 3 (JD 2470093.9) ramp lam=0.1000 conv=True res=5.3e-13 gate=pass worst=0.309 [elapsed 18s]
+17:31:45 ev epoch 3 (JD 2470093.9) ramp lam=0.2000 conv=True res=3.4e-13 gate=pass worst=0.308 [elapsed 25s]
+17:31:51 ev epoch 3 (JD 2470093.9) ramp lam=0.3000 conv=True res=6.8e-13 gate=pass worst=0.308 [elapsed 31s]
+17:31:59 ev epoch 3 (JD 2470093.9) ramp lam=0.4000 conv=True res=3.1e-13 gate=pass worst=0.307 [elapsed 39s]
+17:32:07 ev epoch 3 (JD 2470093.9) ramp lam=0.5000 conv=True res=6.8e-13 gate=pass worst=0.307 [elapsed 47s]
+17:32:14 ev epoch 3 (JD 2470093.9) ramp lam=0.6000 conv=True res=1.8e-12 gate=pass worst=0.306 [elapsed 54s]
+17:32:21 ev epoch 3 (JD 2470093.9) ramp lam=0.7000 conv=True res=1.4e-12 gate=pass worst=0.306 [elapsed 61s]
+17:32:27 ev epoch 3 (JD 2470093.9) ramp lam=0.8000 conv=True res=2.1e-12 gate=pass worst=0.305 [elapsed 67s]
+17:32:33 ev epoch 3 (JD 2470093.9) ramp lam=0.9000 conv=True res=9.4e-13 gate=pass worst=0.305 [elapsed 73s]
+17:32:39 ev epoch 3 (JD 2470093.9) ramp lam=1.0000 conv=True res=6.5e-13 gate=pass worst=0.304 [elapsed 79s]
+17:32:45 ev epoch 3 (JD 2470093.9) ramp lam=1.0000 conv=True res=6.5e-13 gate=pass worst=0.304 [elapsed 85s]
+17:32:46   k=3 direct lam=1.0000 conv=True res=2.5e-12
+  grow k=3: direct converged=True gate=pass worst=0.3044226085444246
+17:33:00   k=4 direct lam=1.0000 conv=True res=1.5e-12
+  grow k=4: direct converged=True gate=pass worst=0.30450037578099987
+17:33:18   k=5 direct lam=1.0000 conv=True res=1.5e-12
+  grow k=5: direct converged=True gate=pass worst=0.30466344930997075
+17:33:46   k=6 direct lam=1.0000 conv=True res=1.4e-12
+  grow k=6: direct converged=True gate=pass worst=0.3048862217888305
+17:34:26   k=7 direct lam=1.0000 conv=True res=4.1e-12
+  grow k=7: direct converged=True gate=pass worst=0.3051774296227974
+17:35:18   k=8 direct lam=1.0000 conv=True res=1.5e-12
+  grow k=8: direct converged=True gate=pass worst=0.30547531004568373
+17:36:44   k=9 direct lam=1.0000 conv=False res=1.5e-03
+17:36:47   k=9 ramp lam=0.0000 conv=True res=2.8e-12
+17:36:57   k=9 ramp lam=0.1000 conv=True res=4.1e-12
+17:37:07   k=9 ramp lam=0.2000 conv=True res=3.9e-12
+17:37:25   k=9 ramp lam=0.3000 conv=False res=1.7e-04
+17:37:35   k=9 ramp lam=0.2500 conv=True res=1.7e-12
+17:37:49   k=9 ramp lam=0.3000 conv=False res=1.7e-04
+17:38:02   k=9 ramp lam=0.2750 conv=True res=2.1e-12

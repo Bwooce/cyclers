@@ -742,7 +742,7 @@ What was checked:
 
 The pre-registered deltas above are unchanged.
 
-## 11. V2-ballistic judgement of the 10 rows under the final spec sec. 14 wording: PRE-REGISTERED (2026-10-11 16:35 AEDT, before any 10-cycle chain or control is run)
+## 11. V2-ballistic judgement of the 10 rows under the final spec sec. 14 wording: PRE-REGISTERED (2026-10-11 16:20 AEDT, before any 10-cycle chain or control is run)
 
 Lead order, 2026-10-11. Rows: ev4-1, 4-4, 4-6, 4-7; ev5-4, 5-5, 5-6, 5-7, 5-8, 5-9 (V1 since window 2).
 No catalogue edit here; a promotion goes into a later window.
@@ -842,3 +842,123 @@ for m in ev5-4 ev5-5 ev5-6 ev5-7 ev5-8 ev5-9; do for e in 0 1 2 3 4; do echo "$m
 uv run python scripts/v2_ev10_1025.py judge
 uv run python scripts/v2_ev10_1025.py summary
 ```
+
+### 11.6 Results (2026-10-11 16:21-17:56 AEDT; load average 60-156; `data/1025_ev_realeph/v2_10cyc/`)
+
+Controls (`controls.json`), the same values as #1007 sec. 8.11:
+- Positive, H&M orbit 1, 10 cycles: PASS (continuity 1.4e-12, gate 0.894, re-fly 2.4e-4 km,
+  D' 2.093 / 7.524 d, W' 0.301 / 0.454 km/s).
+- Negative, gc-1 e0 broken: FAIL (continuity 2.3e-1, re-fly 1.3e4 km).
+- The controls behave, so the rows were judged.
+
+| Row | Verdict (>= 3 of 5) | e0 | e1 | e2 | e3 | e4 |
+|---|---|---|---|---|---|---|
+| ev4-1, 4-4, 4-6, 4-7 | **NOT JUDGEABLE** (L = 38, needs >= 76 cycles) | - | - | - | - | - |
+| ev5-4 | **FAIL, 2/5** (two epochs decided by a timeout, see below) | no chain (S1 no convergence; S2 timeout) | FAIL: D' 4.78 / 2.73 d | no chain (S1 no convergence; S2 timeout) | PASS | PASS |
+| ev5-5 | **FAIL, 2/5** (the same) | no chain (the same as ev5-4) | FAIL: D' 4.78 / 2.73 d | no chain (the same) | PASS | PASS |
+| ev5-6 | **PASS, 3/5** | no chain (S2 stops at lambda 0.21; S3 grows to 4 cycles) | PASS (S2) | no chain (S2 timeout) | PASS | PASS |
+| ev5-7 | **PASS, 4/5** | no chain (as ev5-6) | PASS (S2) | PASS (S2) | PASS | PASS |
+| ev5-8 | **PASS, 4/5** | PASS | PASS | no chain (S2 stops at lambda 0.17; S3 stops at lambda 0.96 at 2 cycles) | PASS | PASS |
+| ev5-9 | **PASS, 4/5** | PASS (S2; see the orphan note) | PASS | PASS | no chain (S2 stops at lambda 0.22; S3 timeout) | PASS |
+
+Details of the passing chains (all routes S1 unless marked; continuity <= 6.7e-12 km/s everywhere):
+
+| Row | Worst gate ratio over the passing epochs | Re-fly max | D' max / band (d) | W' max / band (km/s) | Slopes D', W' (per cycle) |
+|---|---|---|---|---|---|
+| ev5-4 | 0.589-0.598 | 8.3e-3 km | 0.12-0.34 / 2.83-2.91 | 0.011-0.013 / 0.66-0.67 | -0.006 .. -0.004 d; -0.0012 .. +0.0006 |
+| ev5-5 | 0.759-0.765 | 8.1e-3 km | as ev5-4 | as ev5-4 | as ev5-4 |
+| ev5-6 | 0.414-0.610 | 0.070 km | 0.16-1.76 / 2.32-2.66 | 0.010-0.047 / 0.72-0.76 | -0.010 .. +0.139 d; -0.0030 .. +0.0007 |
+| ev5-7 | 0.536-0.610 | 0.18 km | 0.16-1.76 / 2.32-2.66 | 0.010-0.047 / 0.72-0.76 | -0.033 .. +0.139 d; -0.0030 .. +0.0012 |
+| ev5-8 | 0.602-0.815 | 0.11 km | 0.06-1.00 / 2.53-2.62 | 0.008-0.041 / 0.79-0.82 | -0.004 .. +0.088 d; -0.0008 .. +0.0029 |
+| ev5-9 | 0.307-0.521 | 0.073 km | 0.78-1.40 / 2.11-2.41 | 0.008-0.027 / 0.85-0.88 | -0.005 .. +0.068 d; -0.0007 .. +0.0018 |
+
+The date band (5 % of the shortest Lambert leg, about 2.1-2.9 d) is the one that binds. W' stays below
+10 % of its band everywhere (largest: 0.058 / 0.63 km/s at ev5-4/5 e1).
+
+The ev5-4 / ev5-5 e1 failure:
+- Both rows fail on criterion 4 only. The gate passes (0.791) and the re-fly misses by 2.5e-3 to
+  9.6e-3 km.
+- D' is 4.78 d against a 2.73-d band, with a slope of -0.32 d per cycle.
+- The numbers are identical for the two siblings, since D' and W' come from the Lambert legs they share.
+
+Against the expectations of sec. 11.4:
+- As expected: ev5-9 (4/5), ev5-6 (3/5), ev5-7 (4/5) and ev5-8 (4/5).
+- Not as expected: ev5-4 and ev5-5 (expected 3-4/5 and 3/5; both got 2/5).
+- Siblings:
+  - Reachability was the same within each pair, except ev5-6 e2. There, S2 timed out at 420 s, while
+    ev5-7's S2 finished in 333 s.
+  - D' and W' are identical within each pair at every shared chain, as expected.
+  - No epoch was lost to the gate in any row. The expected "larger-ratio sibling loses an epoch on the
+    gate" did not happen.
+- Failure modes as they occurred:
+  - (1) No 10-cycle chain: 9 epochs. 4 are folds or no convergence (at ev5-9 e3 the S3 step then
+    timed out); 5 are S2 timeouts.
+  - (3) Drift: 1 shared case (ev5-4/5 e1).
+  - (2) Gate: none.
+- The 10-cycle worst ratios are close to the 2-cycle ones (sec. 6), except ev5-9 e2: 0.521 against 0.318.
+
+Disclosures:
+1. Timeouts decide ev5-4 and ev5-5:
+   - The S2 ramp at e0 and e2 did not finish in 420 s at load 80-150. Under sec. 11.2 such an epoch
+     counts as NO 10-CYCLE CHAIN, so both rows are FAIL at 2/5.
+   - This verdict rests on the machine's load, not on a fold. If both open epochs passed, the rows
+     would be 4/5.
+   - Proposed (lead launch, not done): the S2 route at ev5-4 and ev5-5 e0 and e2 with a 3,600-s
+     timeout, as one more step. Until then the rows stay V1.
+   - ev5-6 e2 (S2 timeout) and ev5-9 e3 (S3 timeout) would not change their rows' verdicts.
+2. Orphaned run, ev5-9 e0:
+   - The first S2 call there had a 150-s timeout. The orchestrator's `subprocess.run` killed only `uv`,
+     not the python child, so the chain tool ran on for 1,568 s and wrote its chain late.
+   - The next resumable call read that chain (gate 0.307, re-fly 0.043 km, D' 0.94 / 2.11 d).
+   - It took longer than the 420-s retry rule allows. Without it ev5-9 is 3/5, still PASS.
+   - Fixed: `run_route` now kills the process group (`start_new_session`, `killpg`), checked with a
+     3-s timeout. A scan of the rung (d) directories found no other late result. Papercut:
+     `docs/papercuts/2026-10-11-subprocess-timeout-leaves-uv-orphan.md`.
+3. Retry rule: after the first ev5-9 timeouts, every S2/S3 run used the 420-s timeout directly
+   (`--routes`, added to `ev_realeph_1025.py` during the run to start one route per call), not 150 s
+   and then 420 s. That is at least as generous as the pre-registered rule.
+
+Window action (a later window; no catalogue edit here):
+- ev5-6, ev5-7, ev5-8 and ev5-9 move V1 -> V2, with the slope diagnostics and the Standish-span caveat
+  of sec. 11.4 in the evidence.
+- ev5-4 and ev5-5 stay V1. Reason: 2/5 with two epochs open on timeouts, and e1 failing the drift band.
+- ev4-1, 4-4, 4-6 and 4-7 stay V1. Reason: not judgeable at L = 38.
+- Nothing is called novel.
+
+### 11.7 k = 4 diagnostic chains (lead order, 2026-10-11): PRE-REGISTERED 18:11 AEDT, before any k = 4 10-cycle chain
+
+The lead agreed with sec. 11.1: the k = 4 rows are NOT JUDGEABLE, and V2 is not reachable for them
+under the final wording. Their 10-cycle chains are still run, as a recorded diagnostic for the rows'
+data_gaps.
+- What is recorded: criteria 1-3 only (continuity, gate, re-fly) per epoch. The same-phase values at
+  L = 38 stay blank (`final_c4` returns judgeable = False).
+- Chains: the same ladder and tools as sec. 11.2 (10 cycles of k = 4, 64 yr), with `--timeout 420`.
+- `v2_ev10_1025.py judge` now judges these chains too. It records "C1-3 PASS/FAIL" per epoch, and the
+  verdict stays NOT JUDGEABLE.
+
+Expected, from the 3-cycle rung (d) results of sec. 6 (all 5/5 by S1):
+- ev4-1 (worst 0.775-0.826 at 3 cycles): criteria 1-3 at 3-5 of 5.
+- ev4-4, 4-6, 4-7 share their Lambert legs and the Venus block. Their 3-cycle worst ratios are
+  identical (0.774-0.981), so the binding flyby is at Venus. Expected: the three give the same gate
+  result at every epoch where all reach a chain, 2-4 of 5. The thin e2 margin (0.981) is the likeliest
+  gate failure over 64 yr.
+
+### 11.8 Result of the k = 4 diagnostic (2026-10-11 18:11-18:38 AEDT; `data/1025_ev_realeph/v2_10cyc/judge_ev4-*.json`)
+
+| Row | Verdict | Criteria 1-3 (continuity, gate, re-fly) at 10 cycles (64 yr) | Worst gate ratio per epoch e0-e4 |
+|---|---|---|---|
+| ev4-1 | NOT JUDGEABLE (L = 38) | 5/5 (all S1) | 0.822, 0.824, 0.822, 0.822, 0.826 |
+| ev4-4 | NOT JUDGEABLE (L = 38) | 5/5 (all S1) | 0.959, 0.959, 0.981, 0.974, 0.959 |
+| ev4-6 | NOT JUDGEABLE (L = 38) | 5/5 (all S1) | the same as ev4-4 |
+| ev4-7 | NOT JUDGEABLE (L = 38) | 5/5 (all S1) | the same as ev4-4 |
+
+- Re-fly miss <= 9.5e-4 km everywhere. Junction continuity is below 1e-6 km/s at every chain (1.4e-12
+  where printed).
+- The same-phase values at L = 38 are blank, as pre-registered.
+- Against sec. 11.7:
+  - ev4-1 is at the top of its expected range (5/5).
+  - ev4-4/6/7 give identical gate results at every epoch, as expected, but at 5/5 against the
+    expected 2-4. The e2 margin (0.981) holds over 64 yr.
+- Statement for the rows' data_gaps: "ballistic 10-cycle (64-yr) Standish chains close with the gate
+  and re-fly passing at 5/5 epochs (worst 0.83 / 0.98); V2 is not judgeable under the spec sec. 14
+  wording (geometric repeat L = 38 at 0.02 rev needs >= 76 cycles)".

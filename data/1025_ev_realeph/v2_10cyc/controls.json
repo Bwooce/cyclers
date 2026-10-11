@@ -1,0 +1,86 @@
+{
+ "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+ "positive": {
+  "label": "CONTROL+ H&M orbit 1 (10 cycles)",
+  "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+  "c1_continuity": true,
+  "junction_kms": 1.3518075547835906e-12,
+  "c2_gate": true,
+  "gate": {
+   "status": "pass",
+   "worst_ratio": 0.8941188247045622
+  },
+  "c3_refly": true,
+  "refly_max_km": 0.00024206092422113866,
+  "c4": {
+   "judgeable": true,
+   "L": 5,
+   "cycles": 10,
+   "comparisons": [
+    1,
+    2,
+    3
+   ],
+   "Dprime_d": [
+    2.0928528960985204,
+    1.8097595065910355,
+    1.835729580719999
+   ],
+   "Wprime_kms": [
+    0.09230232924404458,
+    0.06992647585121503,
+    0.3005502163240177
+   ],
+   "band_D_d": 7.524030414403658,
+   "band_W_kms": 0.45404928851897924,
+   "slope_D_d_per_cycle": -0.12856165768926076,
+   "slope_W_kms_per_cycle": 0.10412394353998651,
+   "pass": true
+  },
+  "pass": true,
+  "max_shift_from_print_d": 6.750149565265019
+ },
+ "negative": {
+  "label": "CONTROL- gc-1 e0 broken",
+  "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+  "c1_continuity": false,
+  "junction_kms": 0.22967847514754292,
+  "c2_gate": true,
+  "gate": {
+   "status": "pass",
+   "worst_ratio": 0.7583128384556385
+  },
+  "c3_refly": false,
+  "refly_max_km": 13320.074787664853,
+  "c4": {
+   "judgeable": true,
+   "L": 4,
+   "cycles": 10,
+   "comparisons": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "Dprime_d": [
+    0.0350301308676535,
+    0.026041805492695858,
+    0.023943100826272712,
+    0.03148157421992437
+   ],
+   "Wprime_kms": [
+    0.007153166299735059,
+    0.00141058933503313,
+    0.005296783424312945,
+    0.004810230295642981
+   ],
+   "band_D_d": 0.18500253754523066,
+   "band_W_kms": 0.1752155817509382,
+   "slope_D_d_per_cycle": -0.0012744374609610584,
+   "slope_W_kms_per_cycle": -0.00031426139229964294,
+   "pass": true
+  },
+  "pass": false
+ },
+ "controls_ok": true
+}

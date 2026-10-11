@@ -63,11 +63,7 @@ def judge_member(member: str, real: Any) -> dict[str, Any]:
     big_l = repeat_for_pair(k, "E", "V")
     out: dict[str, Any] = {"member": member, "key": key, "k": k, "L": big_l,
                            "tol_rev": GEOMETRIC_REPEAT_TOL_REV, "cycles": N_CYCLES}  # fmt: skip
-    if 2 * big_l > N_CYCLES:
-        reason = f"n = {N_CYCLES} < 2L = {2 * big_l}; no chain run (sec. 11.1)"
-        out |= {"judgeable": False, "passes": 0, "verdict": "NOT JUDGEABLE", "reason": reason}
-        print(f"{member}: NOT JUDGEABLE (L = {big_l})", flush=True)
-        return out
+    judgeable = 2 * big_l <= N_CYCLES
     circ, a, b = CHAIN.ENUM.cell_system("ev")
     _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
     nl = sum(isinstance(lg, LambertLeg) for lg in one.legs)
@@ -95,6 +91,21 @@ def judge_member(member: str, real: Any) -> dict[str, Any]:
         rec["outcome"] = "PASS" if rec["pass"] else ("FAIL" if judged else "NO 10-CYCLE CHAIN")
         epochs.append(rec)
     n_pass = sum(e["pass"] for e in epochs)
+    if not judgeable:
+        # sec. 11.7: the 10-cycle chains are a diagnostic of criteria 1-3 only
+        for e in epochs:
+            e["c123"] = any(
+                t["judged"]["c1_continuity"] and t["judged"]["c2_gate"] and t["judged"]["c3_refly"]
+                for t in e["routes"]
+                if t.get("reached") and "c1_continuity" in t["judged"]
+            )
+            if e["outcome"] == "FAIL":
+                e["outcome"] = "C1-3 PASS" if e["c123"] else "C1-3 FAIL"
+        reason = f"n = {N_CYCLES} < 2L = {2 * big_l} (sec. 11.1); chains are a c1-3 diagnostic"
+        out |= {"judgeable": False, "epochs": epochs, "passes": 0, "verdict": "NOT JUDGEABLE",
+                "reason": reason, "c123_epochs": sum(e["c123"] for e in epochs)}  # fmt: skip
+        print(f"{member}: NOT JUDGEABLE (L = {big_l}); c1-3 at {out['c123_epochs']}/5", flush=True)
+        return out
     out |= {"judgeable": True, "epochs": epochs, "passes": n_pass,
             "verdict": "PASS" if n_pass >= 3 else "FAIL"}  # fmt: skip
     print(f"{member}: V2 (final wording) {out['verdict']} ({n_pass}/5)", flush=True)
@@ -114,6 +125,7 @@ def cmd_summary() -> None:
         if p.exists():
             j = json.loads(p.read_text())
             rows[m] = {"L": j["L"], "verdict": j["verdict"], "passes": j["passes"],
+                       "c123_epochs": j.get("c123_epochs"),
                        "epochs": [e["outcome"] for e in j.get("epochs", [])]}  # fmt: skip
             print(m, rows[m], flush=True)
     _write("summary.json", rows)

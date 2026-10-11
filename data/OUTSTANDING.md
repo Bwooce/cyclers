@@ -3057,6 +3057,11 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   `str(r.status) == ...`, `r.status.strip() in X`), `NamedExpr`/walrus aliases, tuple-unpack and getattr
   aliases, and its alias set is module-wide (per-function scoping). Source: the `#1045` A1 review (v3 note
   sec. 8, findings 2-3). The anchor part of `#1052` is rule U: `docs/notes/2026-10-11-1052-rule-u-untopologied-signatures.md`.
+- `#1068` — registered 2026-10-11 (lead order, from twobody-ext-opus's papercut `docs/papercuts/2026-10-11-subprocess-timeout-leaves-uv-orphan.md`; BACKLOG, small). **SCAN THE SCRIPTS THAT WRAP `uv run` IN `subprocess.run(timeout=...)`.**
+  On a timeout, `subprocess.run` kills only `uv`; the python child runs on as an orphan and can write its result after
+  the caller has recorded NOT RUN (seen in `#1025` sec. 11.6, ev5-9 e0: a 150-s timeout, the child ran 1,568 s more).
+  `scripts/ev_realeph_1025.py` is fixed (own session plus `os.killpg` on timeout). Scan `scripts/` for other such calls,
+  apply the same fix, and check each one's past output directories for result files newer than their timeout log.
 - `#1067` — registered 2026-10-11 (from the Brozovic-Jacobson 2024 digest, `#1022d`; BACKLOG, small, Pluto). **STYX AND
   KERBEROS REGISTRY GM ARE UPPER BOUNDS, NOT THE VALUES PLU060 USED.** `src/cyclerfinder/core/satellites.py` stores
   0.0003 and 0.0002 km^3/s^2 (Table 8 1-sigma upper bounds, `#1037`); PLU060 was integrated with held values 0.04e-3

@@ -1,0 +1,132 @@
+{
+ "ev4-1": {
+  "L": 38,
+  "verdict": "NOT JUDGEABLE",
+  "passes": 0,
+  "c123_epochs": 5,
+  "epochs": [
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS"
+  ]
+ },
+ "ev4-4": {
+  "L": 38,
+  "verdict": "NOT JUDGEABLE",
+  "passes": 0,
+  "c123_epochs": 5,
+  "epochs": [
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS"
+  ]
+ },
+ "ev4-6": {
+  "L": 38,
+  "verdict": "NOT JUDGEABLE",
+  "passes": 0,
+  "c123_epochs": 5,
+  "epochs": [
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS"
+  ]
+ },
+ "ev4-7": {
+  "L": 38,
+  "verdict": "NOT JUDGEABLE",
+  "passes": 0,
+  "c123_epochs": 5,
+  "epochs": [
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS",
+   "C1-3 PASS"
+  ]
+ },
+ "ev5-4": {
+  "L": 1,
+  "verdict": "FAIL",
+  "passes": 2,
+  "c123_epochs": null,
+  "epochs": [
+   "NO 10-CYCLE CHAIN",
+   "FAIL",
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "PASS"
+  ]
+ },
+ "ev5-5": {
+  "L": 1,
+  "verdict": "FAIL",
+  "passes": 2,
+  "c123_epochs": null,
+  "epochs": [
+   "NO 10-CYCLE CHAIN",
+   "FAIL",
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "PASS"
+  ]
+ },
+ "ev5-6": {
+  "L": 1,
+  "verdict": "PASS",
+  "passes": 3,
+  "c123_epochs": null,
+  "epochs": [
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "PASS"
+  ]
+ },
+ "ev5-7": {
+  "L": 1,
+  "verdict": "PASS",
+  "passes": 4,
+  "c123_epochs": null,
+  "epochs": [
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "PASS",
+   "PASS",
+   "PASS"
+  ]
+ },
+ "ev5-8": {
+  "L": 1,
+  "verdict": "PASS",
+  "passes": 4,
+  "c123_epochs": null,
+  "epochs": [
+   "PASS",
+   "PASS",
+   "NO 10-CYCLE CHAIN",
+   "PASS",
+   "PASS"
+  ]
+ },
+ "ev5-9": {
+  "L": 1,
+  "verdict": "PASS",
+  "passes": 4,
+  "c123_epochs": null,
+  "epochs": [
+   "PASS",
+   "PASS",
+   "PASS",
+   "NO 10-CYCLE CHAIN",
+   "PASS"
+  ]
+ }
+}
