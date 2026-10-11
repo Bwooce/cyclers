@@ -85,3 +85,44 @@ From the literal table only:
 (a #1045 gate change in literature_check.py, outside my ownership), then rerun the controls and the
 families; or (b) accept the literal table plus a manual class-level reading of the anchors as the
 literature step for these families.
+
+## 6. Ruling (a) and pre-registration of the anchor labels (written before any rerun)
+
+Lead ruling 2026-10-11: option (a). I label the nine Earth-Moon anchors (the Earth-Moon part of
+#1052); I change the anchor entries in `literature_check.py` only.
+
+Rule for a label: the trajectory types the paper itself computes or designs, in the gate vocabulary.
+"resonant" = p:q Earth-resonant periodic orbits; "repeated-moon" = periodic orbits with a lunar
+encounter each period (the cycler class used for the Ross & Roberts-Tsoukkas anchors); "transfer" =
+a new anchor-only label for transfers or connections between orbits (no periodic family); a paper
+that also computes resonant orbits keeps "resonant" next to "transfer". "model-transition" = a new
+anchor-only label for a paper about moving trajectories between dynamical models.
+
+| anchor | label | grounding |
+|---|---|---|
+| Braik & Ross 2026, orbital networks | {"transfer", "resonant", "repeated-moon"} | mining note 2026-06-13-braik-ross-2026-orbital-networks-mining.md: Secs. 2-7 build a transfer-accessibility network; Table 2 holds 13 representative planar orbits at C_J 3.1294: Lyapunov, cyclers C11a/C11b/C21/C32, resonant R21/R31/R52 (S and U), DPO. Q1: no new cycler tuples |
+| Kumar, Rawat, Rosengren & Ross 2026 (ASR), resonant transport | {"resonant", "transfer"} | digest 2026-06-20-digest-kumar-2025.md: 4:1, 3:1, 2:1 unstable resonant orbits (Table 6, Figs. 7-12); 3:1-2:1 heteroclinics (Table 1) |
+| Kumar et al. 2024 (IAC), interior MMR | {"resonant", "transfer"} | digest 2026-07-15-kumar-2024-interior-mmr-heteroclinic-digest.md: 4:1, 3:1, 2:1 interior resonant families; heteroclinic connections |
+| Rawat et al. 2025 (AAS 25-569), exterior MMR | {"resonant", "transfer"} | digest 2026-07-15-rawat-2025-exterior-mmr-heteroclinic-digest.md: 1:3, 1:4 exterior resonant orbits; 1:3 to 2:1/3:1 heteroclinics through L1-L2 tubes |
+| Rawat et al. 2024 (AAS 24-368), resonance widths | {"resonant", "transfer"} | digest 2026-07-15-rawat-2024-resonance-widths-chaotic-zones-digest.md: 2:1, 3:1 stable and unstable resonant orbits and widths; 3:1-2:1 heteroclinic transfer times |
+| Casoliva et al. 2010 (JGCD), two classes | {"resonant", "repeated-moon"} | digest 2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md: Class 1 p-q resonant cyclers (sec. IV), Class 2 L1-Lyapunov homoclinic cyclers (sec. V); both periodic with a lunar encounter each period |
+| Rosengren et al. 2024 (AMOS), xGEO | {"resonant"} | digest 2026-07-15-rosengren-2024-xgeo-resonant-structure-digest.md: MMR widths (sec. 2.1.4), Kozai-Lidov (2.1.3), TLE case studies (sec. 4); no transfer design |
+| Hiraiwa et al. 2026, lobe dynamics | {"transfer", "resonant"} | mining note 2026-06-07-hiraiwa-lobe-dynamics-method-mining.md: low-energy transfers by lobe sequences (Ch. 3-4, Table 1); the unstable 7:2 and 3:1 resonant orbits are computed as manifold sources (Ch. 3.2) |
+| Sanaga, Park & Howell 2026 (JAS) | {"model-transition"} | no digest and no copy in the corpus; Crossref record of DOI 10.1007/s40295-026-00571-5 gives the title "Systematic Numerical Transitions of Cislunar Trajectories Across Dynamical Models" (no abstract). Title-level grounding only; flagged for a digest |
+
+Working-body scope: left unset (None) for all nine. Each paper has one secondary (the Moon), so the
+one/two working-body distinction (#942/#943, defined for two flyby bodies) does not apply; setting
+"one" would only add a "working-bodies-unlabelled" exclusion for unlabelled Earth-Moon signatures.
+
+Expected outcomes (written before the run):
+- Casoliva 7-3b positive ({"resonant"}): "published", citing Casoliva 2010 (not Braik & Ross). Risk
+  recorded: Braik & Ross now also carries "resonant" (its Table 2 orbits), and the citation is the
+  first corroborated anchor in corpus order, so it may still cite Braik & Ross; if it does, that is a
+  failed expectation and I report it, not change a label to fix it.
+- Jupiter negative: "known-architecture-new-system" (unchanged).
+- pump-tour negative: not "published" (no Earth-Moon anchor carries "pump-tour" or an empty label).
+- The gate's 26 controls (scripts/litcheck_942_943_scope.py; none is Earth-Moon): unchanged, all
+  "published"; the negative and the five candidates unchanged. Before-run saved.
+- tests/search -k literature and tests/scripts: green.
+- Families: the gate is class-level (it does not compare p:q), so every family with topology
+  {"resonant"} is expected to return "published" (known-class) from a "resonant" Earth-Moon anchor.
