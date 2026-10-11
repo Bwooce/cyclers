@@ -7,3 +7,5 @@
 What happened: my pathspec commit of `data/997_lineage/` and `scripts/run_997_*.py` failed four times in a row. Each time the message was "mypy ... Failed - files were modified by this hook", followed by "Stashed changes conflicted with hook auto-fixes... Rolling back fixes". mypy itself reported "Success: no issues found". At the same time, `data/968_control/runlog.txt` (tracked, modified, not mine) was being appended by another agent's long run. The whole-tree mypy hook takes about a minute. Any write to a tracked file in that window counts as "modified by this hook", so the commit is rejected.
 Workaround: wait for the other run to finish, or retry until a quiet window comes.
 Suggested fix: keep runlogs that grow during a run untracked (gitignored) and commit a final copy at the end, or have hooks diff only the committed paths.
+
+Disposition (2026-10-11, lead): Fixed and promoted. Cause seen three times (2026-10-05 main entry, this, jovian-nbody 2026-10-07). Live logs are gitignored under `data/*/live/` (4729072f) and `*.live.log` in run roots; rule promoted to docs/team/coordination.md (launch rules: a running process never appends to a tracked file).

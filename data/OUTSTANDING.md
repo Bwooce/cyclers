@@ -2946,6 +2946,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   penalty, i.e. a rejected step). Test: a synthetic out-of-range date returns the penalty and does not
   raise. A correctness fix: step 1b e2 is NOT RUN, not a negative, until it is re-run under the guard
   (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md` sec. 9.5).
+- `#1060` — registered 2026-10-11 (from the 2026-10-07 pluto-smallmoons-sonnet papercut; BACKLOG, small). **SOI FROM THE
+  SYSTEM'S OWN CONSTANTS, OR A PILOT `assess` PER NEW CELL.** `two_working_body.sphere_of_influence_km` raises
+  `KeyError` for a body outside the satellite registry, and `assess` calls it for every encounter body, so a
+  cell with an unregistered target (Kerberos, Styx in `#998`) fails every exact zero after the whole run. Fix:
+  take the SOI from `CircularSystem.bodies` (mu and semi-major axis are already there), or run one `assess` on a
+  pilot zero before the sweep; a pilot reports a zero count and an assessment-error count, not only solver timing.
+  Pairs with `#1037`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and

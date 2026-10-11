@@ -15,3 +15,5 @@ static copy is committed.
 Suggested fix: briefs say "a running process never appends to a tracked file; live logs under
 data/*/live/ or the scratch dir". Longer term, a hook mode that does not stash (or runs on the
 staged pathspec only) would remove the race for everyone.
+
+Disposition (2026-10-11, lead): Fixed and promoted, same cause as the earthmoon entry of the same day (`data/*/live/` gitignored, 4729072f; coordination.md launch rule). The hook-mode change (no stash / staged pathspec only) stays a known environment limit of pre-commit.

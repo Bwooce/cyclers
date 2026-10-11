@@ -37,6 +37,9 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 - Every new phase of an instrumented script gets its own progress lines before its first pilot.
 - Before passing a kwarg the code used to leave at default, check the library's CURRENT default (`inspect.signature`); SciPy 1.16 changed lm's x_scale and a stall was misread as a no-root result.
 - An independent checker takes every physical constant (GM, states, periods) from the reference model, never from the object under test, and prints them.
+- A running process never appends to a tracked file. Live logs go under `data/*/live/` (gitignored) or `*.live.log` in the run root; a final static copy is committed when the run ends. A growing tracked file makes every other agent's pre-commit hook fail (papercuts 2026-10-05, 2026-10-07 x2).
+- Pilot a long run at the load it will see (or scale the pilot rate by the current load average), and size shards for the 10-minute tool limit at the loaded rate. Every enumeration cell gets a coverage validator (every structure once, no duplicate zero lines) like `run_973_enumerate.py check` (papercut 2026-10-07).
+- The full ratchet set (`tests/data tests/search tests/scripts`) runs in foreground chunks under 8 minutes each, tee'd to logs, or the launch is handed to the lead. Teammates never background it: the completion notice does not reach them (papercut 2026-10-08, memory 2026-07-21).
 
 ## Papercuts
 Friction you work around goes in `docs/papercuts/YYYY-MM-DD-<agent-name>-<slug>.md`, one file per entry (format: the `papercuts` skill; see existing entries). Fill in "Seen before". Commit the one file by path with your work. The lead reviews at 10 unprocessed entries, at handover, or when the user asks; processed entries move to `docs/papercuts/processed/` with a `Disposition:` line.

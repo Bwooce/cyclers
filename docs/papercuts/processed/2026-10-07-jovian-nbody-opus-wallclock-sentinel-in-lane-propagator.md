@@ -14,3 +14,5 @@ Workaround: pass a large `max_wall_sec` and report a stop as "timeout", never as
 Suggested fix: under #969, an integration-step budget or a timeout reported outside the residual;
 past Jovian negatives computed under load (#480, #318, #501, already void for the wrap bug) should
 not be re-run with the 60 s default.
+
+Disposition (2026-10-11, lead): Backlog #969 (wall-clock budgets out of correctness values; the Jovian lane's `max_wall_sec=60` default and the 1e9/1e7 sentinel added to that entry's scope).
