@@ -60,10 +60,6 @@ from cyclerfinder.search.discovery_campaign import (  # noqa: E402
     _mean_motion_rad_day,
     _moon_state,
 )
-from cyclerfinder.search.literature_check import (  # noqa: E402
-    CandidateSignature,
-    _candidate_anchors,
-)
 from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
 )
@@ -227,6 +223,9 @@ def _per_system_sweep(
     n_offset: int = 24,
 ) -> dict[str, Any]:
     """Sweep one system's closed length-3 cycles over (n_rev1, n_rev2) x basin."""
+    # lazy: importing this module must not load search.literature_check (#1038)
+    from cyclerfinder.search.literature_check import CandidateSignature, _candidate_anchors
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     mu = PRIMARIES[primary]
     consts: dict[str, tuple[float, float]] = {}
