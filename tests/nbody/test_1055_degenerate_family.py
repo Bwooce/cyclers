@@ -244,3 +244,38 @@ def test_weak_direction_move_at_jovian_scale() -> None:
     assert abs(moves[0] / moves[1] - 4.0) < 1e-6
     assert abs(moves[0] / (c * 0.02 / eps) - 1.0) < 0.2  # c sigma / eps up to the column scales
     assert abs(ratios[0] / ratios[1] - 1.0) < 1e-6  # offsets scale with sigma too
+
+
+def test_forced_scan_finds_the_root_of_a_near_degenerate_family() -> None:
+    """Amendment 13: a weak direction of FIXED stiffness eps (it does not scale with sigma, so the
+    detection gives q = 0) with an O(sigma) forcing. Scanning it by declaration (the 1-d family
+    root) finds the member where the projected residual vanishes, w* = -c sigma / eps (km), set by
+    construction."""
+    eps, c, sigma = 2.7e-7, 1.0e-3, 0.02
+    w_star = -c * sigma / eps  # -74.07 km
+
+    def rj(z: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        x, vy, w = z
+        r = np.array(
+            [
+                x - 1.0e6 - 1e-9 * w**2,
+                1e3 * (vy - 3.0 - 1e-6 * w),
+                eps * w + c * sigma + 1e-2 * (vy - 3.0 - 1e-6 * w),
+            ]
+        )
+        j = np.array(
+            [
+                [1.0, 0.0, -2e-9 * w],
+                [0.0, 1e3, -1e-3],
+                [0.0, 1e-2, eps - 1e-8],
+            ]
+        )
+        return r, j
+
+    z0 = np.array([1.0e6, 3.0, 0.0])
+    j_hi = rj(z0)[1]
+    assert detect_degenerate(j_hi, j_hi, 4.0) == 0  # not sigma-proportional: no detection
+    res = family_root_1d(rj, z0, tol=1e-9, max_lengths=5.0)
+    assert res.status == "root", res.status
+    assert res.z_star is not None
+    assert abs(res.z_star[2] - w_star) < 1e-3 * abs(w_star)

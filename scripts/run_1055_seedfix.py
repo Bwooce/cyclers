@@ -67,6 +67,8 @@ class Target:
     def __init__(self, name: str, out: Path) -> None:
         self.name, self.out = name, out
         self.ckpt_tag = "start"
+        self.fix_tag = ""  # amendment 13: "_forced" for the forced near-degenerate scan
+        self.force_q = 0
         self.max_wall = 430.0
         out.mkdir(parents=True, exist_ok=True)
         if name in IDEAL:
@@ -184,7 +186,7 @@ class Target:
 def stage_fix(t: Target) -> None:
     """Detection, then the family root. Resumable (amendment 6): the detection and the 1-d family
     state live in fix_state.json; a call stops after --max-wall seconds and the next continues."""
-    sp = t.out / "fix_state.json"
+    sp = t.out / f"fix_state{t.fix_tag}.json"
     fs: dict[str, Any] = json.loads(sp.read_text()) if sp.exists() else {}
     t.set_sigma(SIGMA0)
     z0 = t.scale(t.seed, SIGMA0)
@@ -200,7 +202,12 @@ def stage_fix(t: Target) -> None:
         fs.update(q=q, sv_hi=s_hi[-4:].tolist(), sv_lo=s_lo[-4:].tolist(), family={})
         sp.write_text(json.dumps(fs))
     q = int(fs["q"])
+    if t.force_q:  # amendment 13: the scan along the weakest direction, by declaration
+        q = t.force_q
+        fs.setdefault("forced_q", q)
     rec: dict[str, Any] = {"q": q, "sv_hi": fs["sv_hi"], "sv_lo": fs["sv_lo"]}
+    if t.force_q:
+        rec["forced"] = True
     t0 = time.monotonic()
     if q == 0:
         rec.update(status="no degenerate direction (identity)", z_star=z0.tolist(), alpha_star=0.0)
@@ -247,15 +254,15 @@ def stage_fix(t: Target) -> None:
         rec["vinf_star"] = t.vinf(zs, SIGMA0)
         rec["vinf_seed"] = t.vinf(z0, SIGMA0)
         rec["move_scaled"] = float(np.linalg.norm(d * (zs - z0)))
-    (t.out / "fix.json").write_text(json.dumps(rec))
+    (t.out / f"fix{t.fix_tag}.json").write_text(json.dumps(rec))
     t.log(f"fix: {rec['status']} alpha* {rec.get('alpha_star')} wall {rec['wall_s']:.0f} s")
 
 
 def stage_start(t: Target) -> None:
-    if not (t.out / "fix.json").exists():
+    if not (t.out / f"fix{t.fix_tag}.json").exists():
         t.log("start: no fix.json (the fix stage has not finished)")
         raise SystemExit(1)
-    rec = json.loads((t.out / "fix.json").read_text())
+    rec = json.loads((t.out / f"fix{t.fix_tag}.json").read_text())
     if rec["z_star"] is None:
         t.log("start: no corrected seed")
         return
@@ -265,7 +272,7 @@ def stage_start(t: Target) -> None:
     if ok:
         out["z"] = z.tolist()
         out["vinf"] = t.vinf(z, SIGMA0)
-    (t.out / "start.json").write_text(json.dumps(out))
+    (t.out / f"start{t.fix_tag}.json").write_text(json.dumps(out))
     t.log(f"start: converged={ok} dr {out['dr']:.2e} dv {out['dv']:.2e} vinf {out.get('vinf')}")
 
 
@@ -273,10 +280,10 @@ def stage_neg(t: Target) -> None:
     """Negative control: the family moved off the root by +- 0.5 L along each of the q null
     directions of the base frame (arclength rows about the corrected seed); Newton (40) must FAIL
     to start from every such point."""
-    if not (t.out / "fix.json").exists():
+    if not (t.out / f"fix{t.fix_tag}.json").exists():
         t.log("neg: no fix.json (the fix stage has not finished)")
         raise SystemExit(1)
-    rec = json.loads((t.out / "fix.json").read_text())
+    rec = json.loads((t.out / f"fix{t.fix_tag}.json").read_text())
     q = int(rec["q"])
     if q == 0 or rec["z_star"] is None:
         t.log("neg: needs q >= 1 and a root")
@@ -296,12 +303,12 @@ def stage_neg(t: Target) -> None:
             br = bordered_solve(t.rj, zs + (v_n @ a) / d, d, u_n, v_n, zs, a, TOL)
             row: dict[str, Any] = {"offset": a.tolist(), "family_point": bool(br.converged)}
             if br.converged:
-                t.ckpt_tag = f"neg_{key}"
+                t.ckpt_tag = f"neg{t.fix_tag}_{key}"
                 _, info, ok = t.newton(br.z, 40)
                 row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
             out[key] = row
             t.log(f"neg {key}: {row}")
-    (t.out / "neg.json").write_text(json.dumps(out))
+    (t.out / f"neg{t.fix_tag}.json").write_text(json.dumps(out))
 
 
 def stage_neg2(t: Target) -> None:
@@ -309,7 +316,7 @@ def stage_neg2(t: Target) -> None:
     7 traces the family), oriented along the scan's direction of travel, on BOTH sides: beyond the
     root (0.5 L, then 0.25 L if not constructible) and back towards the base (-0.5 L, then -0.25 L).
     The first constructed point on each side is started with Newton (40) and must FAIL."""
-    rec = json.loads((t.out / "fix.json").read_text())
+    rec = json.loads((t.out / f"fix{t.fix_tag}.json").read_text())
     assert int(rec["q"]) == 1 and rec["z_star"] is not None
     t.set_sigma(SIGMA0)
     zs = np.asarray(rec["z_star"])
@@ -318,7 +325,7 @@ def stage_neg2(t: Target) -> None:
     d = column_scales(js)
     u, _, vt = scaled_svd(js, d)
     u_n, v_n = u[:, -1:], vt[-1:].T
-    fz = json.loads((t.out / "fix_state.json").read_text())["family"]
+    fz = json.loads((t.out / f"fix_state{t.fix_tag}.json").read_text())["family"]
     vk = np.asarray(fz.get("seg_v", fz["vk"]), dtype=np.float64)
     sgn_scan = float(fz.get("seg_sgn", -1.0))
     # orient v along the scan's direction of travel: positive offsets lie beyond the root
@@ -336,15 +343,15 @@ def stage_neg2(t: Target) -> None:
                 "family_point": bool(br.converged),
             }
             if br.converged:
-                t.ckpt_tag = f"neg2_{frac}"
+                t.ckpt_tag = f"neg2{t.fix_tag}_{frac}"
                 _, info, ok = t.newton(br.z, 40)
                 row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
             out["tried"].append(row)
             t.log(f"neg2 {side} {frac}: {row}")
-            (t.out / "neg2.json").write_text(json.dumps(out))
+            (t.out / f"neg2{t.fix_tag}.json").write_text(json.dumps(out))
             if br.converged:
                 break
-    (t.out / "neg2.json").write_text(json.dumps(out))
+    (t.out / f"neg2{t.fix_tag}.json").write_text(json.dumps(out))
 
 
 def stage_scan(t: Target) -> None:
@@ -558,7 +565,7 @@ def stage_limit(t: Target) -> None:
     """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
     (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
     the limit is the Richardson value 2 X(s) - X(2 s) from the two smallest sigmas (limit.json)."""
-    st = json.loads((t.out / "start.json").read_text())
+    st = json.loads((t.out / f"start{t.fix_tag}.json").read_text())
     z, s_prev = np.asarray(st["z"]), SIGMA0
     rows = [{"sigma": SIGMA0, "z": z.tolist()}]
     for sg in (0.01, 0.005, 0.0025, 0.00125):
@@ -586,7 +593,7 @@ def stage_limit(t: Target) -> None:
 
 
 def stage_cont(t: Target) -> None:
-    st = json.loads((t.out / "start.json").read_text())
+    st = json.loads((t.out / f"start{t.fix_tag}.json").read_text())
     assert st["converged"]
     z = np.asarray(st["z"])
     if hasattr(t, "p"):
@@ -684,11 +691,20 @@ def main() -> None:
         default=None,
         help="jup365: rungb SOI acceptance (amendment 9: inf drops it; default keeps 0.5)",
     )
+    ap.add_argument(
+        "--force-q",
+        type=int,
+        default=0,
+        help="amendment 13: scan the q weakest directions although they do not scale with sigma; "
+        "uses fix_forced.json, fix_state_forced.json, start_forced.json, neg_forced.json",
+    )
     args = ap.parse_args()
     t = Target(args.target, ROOT / "data" / f"1055_{args.target}")
     if args.soi_limit is not None and hasattr(t, "rb"):
         t.rb.SOI_LIMIT = args.soi_limit
     t.max_wall = args.max_wall
+    if args.force_q:
+        t.force_q, t.fix_tag, t.ckpt_tag = args.force_q, "_forced", "start_forced"
     if args.stage == "down":
         t.rb.stage_down(1)
         return

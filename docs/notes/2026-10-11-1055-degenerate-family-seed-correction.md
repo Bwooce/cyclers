@@ -989,3 +989,34 @@ Small-sigma start acceptance (the lead's request; applies only if (1) selects it
   twice, the Cauchy limit and the Richardson limit apply as in amendment 2.
 - Then natural continuation UP from s0 to sigma = 1 (amendment 9 rules), with the down stage, IAS15
   and the scan at the end.
+
+### 13.3 AMENDMENT 13, pre-built (registered 16:3x AEDT, before any gc-1 e2 use): the forced near-degenerate scan
+
+- WHAT: `--stage fix --force-q 1` runs the amendment-7 1-d family scan along the WEAKEST
+  column-scaled singular direction by declaration, although its singular value does not fall with
+  sigma (detection q = 0). It is for a near-degenerate family stiffened by the ephemeris
+  (gc-1 e2: sv 2.75e-7, sigma-independent; sec. 13.1).
+- Files: `fix_forced.json`, `fix_state_forced.json`, `start_forced.json`, `neg_forced.json` and
+  `neg2_forced.json`, plus the Newton checkpoint `newton_start_forced.npy`. The q = 0 records and
+  the running start's checkpoint are untouched. The continuation (`cont`) still writes the target's
+  `sigma_n1.json`, so the q = 0 and the forced paths must not both reach `cont`. Only one of them can,
+  by the reading of sec. 13.2.
+- Root criterion, tolerances, domain bound and both-sides scan: as amendments 5 and 7.
+- The root is accepted only under AMENDMENT 10 against gc-1's chain member: per node, in the limit
+  going down, V_inf 0.01 km/s, r_p / sigma 5 %, turn 0.2 deg or 5 %, epoch 60 s. A FAIL is reported
+  as "a different member of gc-1's near-degenerate family continues; gc-1's chain member does not".
+- Fast test `test_forced_scan_finds_the_root_of_a_near_degenerate_family`:
+  - the toy's weak direction has a FIXED stiffness 2.7e-7 and an O(sigma) forcing;
+  - detection gives q = 0;
+  - the forced scan finds the constructed root w* = -c sigma / eps = -74.07 km to 1e-3.
+  13 tests pass.
+- Code path check on the ideal gc-1 (`data/1055_gc-1/fix_forced.json`, 7 s): the forced scan
+  returns "root at base" (g = 7e-14), as for the unforced run.
+- SEQUENCE if the gc-1 e2 start stalls (lead launches each step):
+  1. `--stage weakscale`;
+  2. if move / offset is constant: `--stage fix --force-q 1` (resumable, `--max-wall 3600`, repeat
+     until `fix_forced.json` exists), then `--stage start --force-q 1` and
+     `--stage neg2 --force-q 1`;
+  3. amendment 10 on the root, by me, from the down stage of `start_forced` (`--stage limit` is
+     ideal-only; for jup365 I will use rungb's `stage_down` after a start), before any
+     continuation.
