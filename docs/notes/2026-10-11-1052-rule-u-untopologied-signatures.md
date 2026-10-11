@@ -248,3 +248,18 @@ Tests:
   clean (960 files).
 - The probe script's own status comparison was routed through `is_literature_fresh` (the F13
   ratchet flagged it).
+
+## #1066 pre-registration (2026-10-11, before code): two F13 ratchet extensions
+
+- #1066-1: a Call is itself a status access when one of its positional arguments is a status access,
+  or when it is a method call on a status access. `is_literature_fresh` and `is_novelty_claimable` are
+  excepted.
+  - Probes: `str(r.status) == consts.NOT_FOUND`, `r.status.strip() in WANT` and
+    `norm(r.status) != X` are flagged.
+  - `is_literature_fresh(r.status)` is not flagged.
+- #1066-2: a NamedExpr (walrus) assigned from a status access is an alias, and the NamedExpr itself
+  is a status access.
+  - Probes: `(st := r.status) in WANT` is flagged, and so is a later `st == FOO`.
+- Expected: `src/` and `scripts/` stay clean. Pinned tests go in `tests/search/test_1045_literature_gate_v3.py`.
+- Out of scope, still open: comparisons inside a helper with a non-status parameter name, tuple-unpack
+  and getattr aliases, and per-function alias scoping.
