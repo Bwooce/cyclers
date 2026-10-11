@@ -673,3 +673,52 @@ The fold test at the stop, by the #1004/#1025 rules:
   evaluations each, plus two solutions: 1.5-3.5 h (lead launch). Code: about 1 h to port
   `monitor_step` and `two_solutions` to the jup365 Target, with a fast test on the ideal gc-2 fold
   (it must reproduce sigma_f 0.1639 and the two-solution numbers of #1025 sec. 7).
+
+### 12.5.1 Fold-test code and its control (registered before the GanCal#1 fold run)
+
+- Code: `src/cyclerfinder/nbody/fold_tools.py` (`monitor_step`, `sigma_derivative`,
+  `fold_supported`), generalised from #1025's `monitor_step` and the #1004 two-solution rule. Two
+  fast tests (`tests/nbody/test_1055_fold_tools.py`):
+  - an analytic fold at sigma_f = 0.1639 with branches x = +-2e5 sqrt(sigma_f - sigma) km. The
+    monitor passes the turn, never exceeds sigma_f, and lands exactly on the other branch;
+  - the two-solution rule on the #1004 sec. 8.3 numbers.
+  Driver stage `--stage fold` (resumable per point, `fold.json`).
+- CONTROL, ideal gc-2 (`data/1055_gc-2/fold.json`, 15:36-15:41 AEDT), from #1025's natural points:
+  - monitor sigmas 0.163948, 0.163909, 0.163617, 0.160595 and 0.121001, identical to #1025 sec. 7;
+  - two solutions at 0.15001: max dV_inf 0.0475 km/s, d r_p / sigma 657 km;
+  - at 0.16001: 0.0252 km/s and 349 km (#1004: 0.047 / 657 and 0.025 / 350);
+  - status FOLDS. PASS.
+- AMENDMENT 11 (jup365 only): the monitor points and the two fixed-sigma solutions accept the
+  noise-floor rule (dr < 1e-2 km, dv < 1e-6 km/s, ends < 1e-6), as every intermediate jup365 point
+  of #1044 / #1055 does. The ideal control kept the floors.
+
+### 12.5.2 What the different-member finding means for the method (AMENDMENT 10, registered now)
+
+GanCal#1 (sec. 12.4) shows that a corrected seed can lie on a DIFFERENT member of the degenerate
+patched-conic family. The node epochs and V_inf magnitudes are the chain's, but a flyby's periapsis
+and turn are not (G2: 89,000 km and 1.3 deg against 28,327 km and 4.03 deg). An identity gate on
+V_inf alone (amendment 2) cannot see this, because the family is degenerate in V_inf by
+construction.
+
+AMENDMENT 10, part of the method's acceptance from now on, for every #1055-corrected seed used on any
+row (the gc rows, gc-1 e2, and any later use):
+- MEMBER IDENTITY. At the smallest converged sigma going down, and in the Richardson limit, every
+  flyby node must match the chain tool's patched-conic member within:
+  - V_inf: 0.01 km/s;
+  - r_p / sigma: 5 %;
+  - turn: 0.2 deg or 5 %, whichever is larger;
+  - node epoch: 60 s (the limit; the sigma-0.02 offsets are O(sigma) and are reported).
+- PASS: the closure is the chain tool's object. FAIL: the closure belongs to a different member of
+  the same family. It is then reported as such and may not stand for the chain tool's object.
+- Applied to the two targets so far:
+  - gc4-19: PASS. At sigma 0.0025, r_p / sigma is 9,315 / 9,310 / 3,222 / 3,203 km against 9,313 /
+    9,313 / 3,214 / 3,214 (within 0.4 %); the turns are within 0.1 deg; the Richardson limit of the
+    epochs is within 14 s; V_inf within 1e-4.
+  - GanCal#1: FAIL at G2 (r_p / sigma 89,399 km against 28,327 km; turn about 1.3 deg against
+    4.03 deg). The Callisto node (68,528 km at sigma 0.005 against 79,393 km) is still moving
+    towards the chain's value. As sec. 12.4 already said, the GanCal#1 closure attempt concerns a
+    different member.
+- Why this belongs to acceptance, not to analysis: the correction selects the member by the
+  first-order solvability condition. When that condition's root differs from the chain tool's
+  member, a "successful" closure validates a different orbit. Only a member-identity check makes
+  "the row's object exists in continuous gravity" a true statement.

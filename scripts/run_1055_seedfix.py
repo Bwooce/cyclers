@@ -39,13 +39,14 @@ from cyclerfinder.nbody.degenerate_family import (
     family_root_nd,
     scaled_svd,
 )
+from cyclerfinder.nbody.fold_tools import fold_supported, monitor_step
 from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2 as MU_J
 
 ROOT = Path(__file__).resolve().parents[1]
 SIGMA0 = 0.02
 TOL = 3e-3  # complement rows, weighted (amendment 5: above the sigma-0.02 noise floor)
 G_FLOOR = 1e-3  # amendment 5: a root is |g| below the start's noise-floor rule (weighted)
-IDEAL = ("gc-1", "gc4-19")
+IDEAL = ("gc-1", "gc4-19", "gc-2")  # gc-2: the fold-test control (sec. 12.5)
 FLOOR_KM = {"Ganymede": 100.0, "Callisto": 200.0, "Europa": 100.0}  # project floors
 REAL = {"ganeur316": "968_rungb", "gancal1": "1044_gancal1", "gc1e2": "1044_gc1"}
 
@@ -136,6 +137,42 @@ class Target:
             if ok:
                 break
         return zz, info, ok
+
+    def info(self, z: Any) -> dict[str, Any]:
+        if hasattr(self, "p"):
+            return dict(self.b.residual_and_jac(self.p, z, False)[2])
+        return dict(self.rb.residual_and_jac(self.c, z, False)[2])
+
+    def accept(self, z: Any, floors: bool) -> bool:
+        """At the current sigma: the lane floors, or (floors=False) the noise-floor rule."""
+        try:
+            inf = self.info(z)
+        except RuntimeError:
+            return False
+        if not all(np.isfinite(inf["dr"])):
+            return False
+        if hasattr(self, "p"):
+            return bool(self.b.converged(inf) or (not floors and self.b.noise_ok(inf)))
+        ends = max(inf.get("end_asymptote_kms", [0.0]))
+        noise = max(inf["dr"]) < 1e-2 and max(inf["dv"]) < 1e-6
+        return (bool(self.rb.converged(inf)) or (not floors and noise)) and ends < 1e-6
+
+    def nodes_vr(self, z: Any, s: float) -> list[tuple[float, float]]:
+        """Per flyby node (V_inf km/s, r_p km) at sigma s."""
+        self.set_sigma(s)
+        if hasattr(self, "p"):
+            return [(n["vinf_kms"], n["rp_km"]) for n in self.b.describe(self.p, z, s)]
+        return [(n["vinf_kms"], n["rp_km"]) for n in self.rb.describe(self.c, z, s)["nodes"]]
+
+    def solve_fixed(self, z: Any, s: float) -> tuple[Any, bool]:
+        """Newton at fixed sigma (the two-solution check): ideal, #1025 solve to the floors;
+        jup365, rungb Newton with the noise-floor rule (amendment 11 of #1055)."""
+        self.set_sigma(s)
+        if hasattr(self, "p"):
+            zz, inf = self.b.solve(self.p, z, 25, 30, False)
+            return zz, bool(self.b.converged(inf))
+        zz, _ = self.rb.newton(self.c, z, 25, f"{self.name} two s={s:.5g}")
+        return zz, self.accept(zz, floors=False)
 
     def vinf(self, z: Any, s: float) -> list[float]:
         if hasattr(self, "p"):
@@ -360,6 +397,88 @@ def stage_scan(t: Target) -> None:
     t.log(f"scan: {len(found)} minima within 3 Hill radii; inside a body: {out['any_inside_body']}")
 
 
+def stage_fold(t: Target) -> None:
+    """Sec. 12.5 fold test at a natural-continuation stop: monitor-variable continuation (generic
+    `fold_tools.monitor_step`, up to 30 points), then, if sigma turns back below 0.9 sigma_stop,
+    the two-solution check at 0.915 and 0.976 sigma_stop (#1004 / #1025 rule). Resumable per point
+    (fold.json). Source points: ideal, data/1025_sigma/<id>.json; jup365, sigma_n1.json."""
+    path = t.out / "fold.json"
+    src = (
+        ROOT / "data" / "1025_sigma" / f"{t.name}.json"
+        if hasattr(t, "p")
+        else t.out / "sigma_n1.json"
+    )
+    nat = json.loads(src.read_text())["points"]
+    st: dict[str, Any] = json.loads(path.read_text()) if path.exists() else {}
+    if "mon" not in st:
+        st.update(
+            sigma_stop=float(nat[-1]["sigma"]),
+            mon=[{"sigma": q["sigma"], "z": q["z"]} for q in nat[-2:]],
+            ratio=1.0,
+            status="monitor",
+        )
+        path.write_text(json.dumps(st))
+    floors = hasattr(t, "p")  # ideal: floors; jup365: the noise-floor rule (amendment 11)
+
+    def rjs(z: Any, s: float) -> tuple[Any, Any]:
+        t.set_sigma(s)
+        return t.rj(z)
+
+    def ok(z: Any, s: float) -> bool:
+        t.set_sigma(s)
+        return t.accept(z, floors)
+
+    deadline = time.monotonic() + t.max_wall
+    s_stop = float(st["sigma_stop"])
+    while st["status"] == "monitor" and time.monotonic() < deadline:
+        a, b = st["mon"][-2], st["mon"][-1]
+        step = monitor_step(
+            rjs,
+            np.asarray(a["z"]),
+            a["sigma"],
+            np.asarray(b["z"]),
+            b["sigma"],
+            ok,
+            ratio=float(st["ratio"]),
+        )
+        if not step.ok:
+            st["status"] = "monitor stop: seven halvings without convergence"
+        else:
+            st["mon"].append({"sigma": step.s, "z": step.z.tolist()})
+            st["ratio"] = step.ratio
+            t.log(f"fold: monitor sigma={step.s:.6f} ratio {step.ratio:.3g} comp {step.component}")
+            if step.s > s_stop * (1.0 + 1e-3):
+                st["status"] = "NOT A FOLD: sigma passed the stop upward"
+            elif step.s < 0.9 * s_stop:
+                st["status"] = "two"
+            elif len(st["mon"]) > 32:
+                st["status"] = "monitor stop: 30 points without a turn"
+        path.write_text(json.dumps(st))
+    if st["status"] == "two":
+        upper = [q for q in st["mon"][2:] if q["sigma"] < s_stop]
+        res = st.setdefault("two", {})
+        for sg in (round(0.915 * s_stop, 5), round(0.976 * s_stop, 5)):
+            if str(sg) in res or time.monotonic() > deadline:
+                continue
+            out: dict[str, Any] = {}
+            for lab, pts in (("lower", nat), ("upper", upper)):
+                q = min(pts, key=lambda p: abs(p["sigma"] - sg))
+                z, okk = t.solve_fixed(t.scale(np.asarray(q["z"]), sg / q["sigma"]), sg)
+                out[lab] = t.nodes_vr(z, sg) if okk else None
+            sup, dif = fold_supported(out["lower"], out["upper"], sg)
+            out.update(fold_supported=sup, d_vinf_d_rp_over_sigma=dif)
+            res[str(sg)] = out
+            t.log(f"fold: two solutions at {sg}: supported={sup} {dif}")
+            path.write_text(json.dumps(st))
+        if len(res) == 2:
+            sup2 = all(v["fold_supported"] for v in res.values())
+            st["status"] = (
+                "FOLDS" if sup2 else "NUMERICAL STOP: turn passed, two solutions not supported"
+            )
+            path.write_text(json.dumps(st))
+    t.log(f"fold: status {st['status']}")
+
+
 def stage_limit(t: Target) -> None:
     """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
     (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
@@ -434,7 +553,7 @@ def main() -> None:
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
         "--stage",
-        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2", "scan"],
+        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2", "scan", "fold"],
         required=True,
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
@@ -463,6 +582,7 @@ def main() -> None:
         "limit": stage_limit,
         "neg2": stage_neg2,
         "scan": stage_scan,
+        "fold": stage_fold,
     }[args.stage](t)
 
 
