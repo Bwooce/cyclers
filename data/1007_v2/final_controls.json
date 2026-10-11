@@ -13,6 +13,9 @@
   "c3_refly": true,
   "refly_max_km": 0.00024206092422113866,
   "c4": {
+   "judgeable": true,
+   "L": 5,
+   "cycles": 10,
    "comparisons": [
     1,
     2,
@@ -50,6 +53,9 @@
   "c3_refly": false,
   "refly_max_km": 13320.074787664853,
   "c4": {
+   "judgeable": true,
+   "L": 4,
+   "cycles": 10,
    "comparisons": [
     1,
     2,

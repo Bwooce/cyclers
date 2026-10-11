@@ -699,3 +699,34 @@ Lead request (from #1061). sec. 8.14 ev-C passed at 1/5 under the final wording;
   which branch the ramp continuation picked.
 - Not tested: other seeds that might reach a different 10-cycle solution. The pre-registered check
   found none.
+
+### 8.17 OWNER DECISION (2026-10-11): the geometric-repeat tolerance is 0.02 rev for ALL systems; L computed in code
+
+Owner decision, verbatim label: **"Set 0.02 rev now"**.
+- The strict 0.02-rev tolerance defines L for every system.
+- The Russell ch. 4 Earth-Mars rows would need 64-74 cycles for a V2 judgement. No such chain exists,
+  so nothing runs for them.
+
+Implemented (lead order):
+- `src/cyclerfinder/verify/geometric_repeat.py`: `GEOMETRIC_REPEAT_TOL_REV = 0.02` (a named constant),
+  the #1061 real periods, and `geometric_repeat` / `repeat_for_pair`.
+  - L = 4 (gc k = 3), 5 (Earth-Venus k = 2: ev-A, ev-C, H&M orbit 1), 49 (Earth-Venus k = 3:
+    ev-B), 37 / 32 (Earth-Mars k = 1 / 3).
+  - Test: `tests/verify/test_geometric_repeat.py`, including ev-B's edge: 0.020-0.021 rev at L = 5;
+    L = 5 if the tolerance were 0.021.
+- `scripts/v2_samephase_1007.py` no longer types L. Every same-phase call uses the computed values. A
+  chain shorter than 2L is reported NOT JUDGEABLE instead of asserting.
+- Consistency re-run (`--final-controls`, `--final-gc`, `--final-ev`; `data/1007_v2/final_*.{json,log}`):
+  every pass/fail is IDENTICAL to secs. 8.11-8.14.
+  - Controls: the positive passes, the negative fails.
+  - gc-1 5/5, gc-2 5/5, ev-A 5/5, ev-C 1/5, ev-B 0/5.
+  - The only change is ev-B's reason.
+
+**ev-B record.**
+- Its 10-cycle judgement in sec. 8.14 ran at a hard-coded L = 5. The rule gives L = 49, so ev-B is NOT
+  JUDGEABLE at 10 cycles: V2 needs >= 98 cycles, 470 yr.
+- Its standing therefore rests on the GATE FAILURE alone. At 10 cycles the gate fails or is
+  indeterminate at 3 of 5 epochs, and there is no chain at the 4th.
+- The verdict (V1) does not change. The row evidence text is drafted for the next window
+  (`scratchpad/twobody-gen2-opus/w3/evb_record_draft.md`), together with the spec §14 sentence for
+  the tolerance (`w3/spec_sentence_draft.md`).

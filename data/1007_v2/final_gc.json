@@ -14,6 +14,9 @@
    "c3_refly": true,
    "refly_max_km": 0.18787299829037457,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -53,6 +56,9 @@
    "c3_refly": true,
    "refly_max_km": 0.1881628541626226,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -92,6 +98,9 @@
    "c3_refly": true,
    "refly_max_km": 0.18845875735701595,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -131,6 +140,9 @@
    "c3_refly": true,
    "refly_max_km": 0.18843263009856295,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -170,6 +182,9 @@
    "c3_refly": true,
    "refly_max_km": 0.18796343566831208,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -211,6 +226,9 @@
    "c3_refly": true,
    "refly_max_km": 1.1360748381452376e-05,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -250,6 +268,9 @@
    "c3_refly": true,
    "refly_max_km": 1.2059830610096624e-05,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -289,6 +310,9 @@
    "c3_refly": true,
    "refly_max_km": 2.4397470197766133e-05,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -328,6 +352,9 @@
    "c3_refly": true,
    "refly_max_km": 6.324474809159856e-06,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -367,6 +394,9 @@
    "c3_refly": true,
    "refly_max_km": 1.3168727578806876e-05,
    "c4": {
+    "judgeable": true,
+    "L": 4,
+    "cycles": 10,
     "comparisons": [
      1,
      2,

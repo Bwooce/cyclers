@@ -25,11 +25,18 @@ from scipy.optimize import least_squares
 
 from cyclerfinder.search.hollister_menning_1970 import load_table3
 from cyclerfinder.search.two_working_body import Cycle, LambertLeg, eval_lambert_legs
+from cyclerfinder.verify.geometric_repeat import GEOMETRIC_REPEAT_TOL_REV, repeat_for_pair
 
 REPO = Path(__file__).resolve().parents[1]
 DAY = 86400.0
 OUT = REPO / "data" / "1007_v2" / "samephase_exploratory.json"
 LABEL = "exploratory, under the draft metric, awaiting the owner"
+
+# Geometric repeats at the owner's 0.02-rev tolerance (2026-10-11), computed, not typed
+# (cyclerfinder.verify.geometric_repeat): gc k = 3 -> 4; Earth-Venus k = 2 -> 5; k = 3 -> 49.
+L_GC3 = repeat_for_pair(3, "Ganymede", "Callisto")
+L_EV2 = repeat_for_pair(2, "E", "V")
+L_EV3 = repeat_for_pair(3, "E", "V")
 
 
 def _load(name: str, path: Path) -> Any:
@@ -152,7 +159,7 @@ def ev_rows() -> dict[str, Any]:
                 x, v, t, c = legs_data("ev", key, 10, "ramp", e["x0_days"], y, real)
                 for opt, st in (("a", 0), ("b", 1)):
                     rec[opt] = same_phase(f"{row} JD {e['epoch_jd']:.1f} ({opt})", x, v, t, c, 10,
-                                          nl, y[10 * nl - 1], 5, st, quiet=True)  # fmt: skip
+                                          nl, y[10 * nl - 1], L_EV2, st, quiet=True)  # fmt: skip
                     rec[opt]["v2_draft_pass"] = bool(
                         rec[opt]["drift_pass"]
                         and rec[opt]["continuity_pass"]
@@ -232,7 +239,7 @@ def rejudge_gc() -> dict[str, Any]:
     j = V2.judge("ev", key, [474.59719334719347, 1100.6183800415804], 10, "ramp", x0,
                  list(sol.x), real_ev, "H&M orbit 1")  # fmt: skip
     x, v, t, c = legs_data("ev", key, 10, "ramp", x0, list(sol.x), real_ev)
-    sp = same_phase("H&M", x, v, t, c, 10, 2, sol.x[-1], 5, 1, quiet=True)
+    sp = same_phase("H&M", x, v, t, c, 10, 2, sol.x[-1], L_EV2, 1, quiet=True)
     out["positive"] = _final("CONTROL+ H&M orbit 1 (10 cycles)", j, sp)
     # negative control
     real_gc = CHAIN.real_ephemeris("gc", "spice")
@@ -243,7 +250,7 @@ def rejudge_gc() -> dict[str, Any]:
     y_bad[0] += 0.05
     j = V2.judge("gc", g1["key"], g1["x_days"], 10, "blend", e["x0_days"], y_bad, real_gc, "neg")
     x, v, t, c = legs_data("gc", g1["key"], 10, "blend", e["x0_days"], y_bad, real_gc)
-    sp = same_phase("neg", x, v, t, c, 10, 3, y_bad[29], 4, 1, quiet=True)
+    sp = same_phase("neg", x, v, t, c, 10, 3, y_bad[29], L_GC3, 1, quiet=True)
     out["negative"] = _final("CONTROL- gc-1 e0 broken", j, sp)
     pos_ok, neg_ok = out["positive"]["pass"], not out["negative"]["pass"]
     out["controls_ok"] = {"positive": pos_ok, "negative": neg_ok}
@@ -259,7 +266,7 @@ def rejudge_gc() -> dict[str, Any]:
         j = V2.judge("gc", g1["key"], g1["x_days"], 10, "blend", e["x0_days"], e["final_y"],
                      real_gc, lab)  # fmt: skip
         x, v, t, c = legs_data("gc", g1["key"], 10, "blend", e["x0_days"], e["final_y"], real_gc)
-        sp = same_phase(lab, x, v, t, c, 10, 3, e["final_y"][29], 4, 1, quiet=True)
+        sp = same_phase(lab, x, v, t, c, 10, 3, e["final_y"][29], L_GC3, 1, quiet=True)
         rows.append(_final(lab, j, sp))
     out["gc-1"] = rows
     g2 = wb["gc-2"]
@@ -270,7 +277,7 @@ def rejudge_gc() -> dict[str, Any]:
         lab = f"gc-2 JD {e['epoch_jd']:.1f}"
         j = V2.judge("gc", g2["key"], g2["x_days"], 10, "blend", xs[0], y, real_gc, lab)
         x, v, t, c = legs_data("gc", g2["key"], 10, "blend", xs[0], y, real_gc)
-        sp = same_phase(lab, x, v, t, c, 10, 4, y[39], 4, 1, quiet=True)
+        sp = same_phase(lab, x, v, t, c, 10, 4, y[39], L_GC3, 1, quiet=True)
         rows.append(_final(lab, j, sp))
     out["gc-2"] = rows
     for name in ("gc-1", "gc-2"):
@@ -306,7 +313,7 @@ def explore_c() -> dict[str, Any]:
     j = V2.judge("ev", key, [474.59719334719347, 1100.6183800415804], 15, "ramp", x0,
                  list(sol.x), real_ev, "H&M orbit 1, 15 cycles")  # fmt: skip
     x, v, t, c = legs_data("ev", key, 15, "ramp", x0, list(sol.x), real_ev)
-    sp = same_phase("H&M 15", x, v, t, c, 15, 2, sol.x[-1], 5, 1, quiet=True)
+    sp = same_phase("H&M 15", x, v, t, c, 15, 2, sol.x[-1], L_EV2, 1, quiet=True)
     hm = {
         "max_shift_from_print_d": float(np.max(np.abs(sol.x[:-1] - y_seed[:-1]))),
         "chain_period_d": float(sol.x[-1]),
@@ -350,7 +357,7 @@ def explore_c() -> dict[str, Any]:
             ]
         for jd, x0g, y in chains:
             x, v, t, c = legs_data("gc", wb[row]["key"], 10, "blend", x0g, y, real_gc)
-            spg = same_phase(row, x, v, t, c, 10, nl, y[10 * nl - 1], 4, 1, quiet=True)
+            spg = same_phase(row, x, v, t, c, 10, nl, y[10 * nl - 1], L_GC3, 1, quiet=True)
             rec = {
                 "epoch_jd": jd, "Dprime_d": spg["Dprime_d"], "Wprime_kms": spg["Wprime_kms"],
                 "band_D_d": spg["band_D_d"], "band_W_kms": spg["band_W_kms"],
@@ -377,12 +384,21 @@ def final_c4(x: np.ndarray, vdep: list[float], tof: list[float], n: int, nl: int
     i = 1 .. n-L-2 (the first and last cycle excluded), band only; slopes are diagnostics."""
     p_mean = period_d / n
     idx = list(range(1, n - big_l - 1))
-    assert n >= 2 * big_l and idx, (n, big_l)
+    if n < 2 * big_l or not idx:
+        # not judgeable: the chain is shorter than two geometric repeats
+        return {
+            "judgeable": False,
+            "L": big_l,
+            "cycles": n,
+            "pass": False,
+            "reason": f"n = {n} < 2L = {2 * big_l} (tol {GEOMETRIC_REPEAT_TOL_REV} rev)",
+        }
     d = [max(abs(x[(i + big_l) * nl + j] - x[i * nl + j] - big_l * p_mean) for j in range(nl))
          for i in idx]  # fmt: skip
     w = [max(abs(vdep[(i + big_l) * nl + j] - vdep[i * nl + j]) for j in range(nl)) for i in idx]
     band_d, band_w = 0.05 * min(tof), 0.10 * min(vdep)
     return {
+        "judgeable": True, "L": big_l, "cycles": n,
         "comparisons": idx, "Dprime_d": d, "Wprime_kms": w, "band_D_d": band_d,
         "band_W_kms": band_w,
         "slope_D_d_per_cycle": _slope(d) if len(d) > 1 else 0.0,
@@ -402,6 +418,14 @@ def final_record(label: str, cell: str, key: str, x_tpl: list[float], n: int, mo
         return rec
     x, v, t, c = legs_data(cell, key, n, mode, x0, y, real)
     c4 = final_c4(x, v, t, n, nl, y[n * nl - 1], big_l)
+    if not c4["judgeable"]:
+        rec = {"label": label, "rules": FINAL, "pass": False, "c4": c4,
+               "c1_continuity": j["c1_continuity"], "c2_gate": j["c2_gate"], "gate": j["gate"],
+               "c3_refly": j["c3_refly"]}  # fmt: skip
+        print(
+            f"{label}: NOT JUDGEABLE ({c4['reason']}); c2 gate={j['c2_gate']} -> FAIL", flush=True
+        )
+        return rec
     rec = {
         "label": label, "rules": FINAL,
         "c1_continuity": j["c1_continuity"], "junction_kms": c,
@@ -452,7 +476,7 @@ def final_controls() -> dict[str, Any]:
     x0, y, extra = _hm_chain(10)
     out["positive"] = final_record(
         "CONTROL+ H&M orbit 1 (10 cycles)", "ev", "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
-        [474.59719334719347, 1100.6183800415804], 10, "ramp", x0, y, real_ev, 2, 5, extra,
+        [474.59719334719347, 1100.6183800415804], 10, "ramp", x0, y, real_ev, 2, L_EV2, extra,
     )  # fmt: skip
     real_gc = CHAIN.real_ephemeris("gc", "spice")
     g1 = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())["gc-1"]
@@ -460,7 +484,7 @@ def final_controls() -> dict[str, Any]:
     y_bad = list(e["final_y"])
     y_bad[0] += 0.05
     out["negative"] = final_record("CONTROL- gc-1 e0 broken", "gc", g1["key"], g1["x_days"], 10,
-                                   "blend", e["x0_days"], y_bad, real_gc, 3, 4)  # fmt: skip
+                                   "blend", e["x0_days"], y_bad, real_gc, 3, L_GC3)  # fmt: skip
     ok = out["positive"]["pass"] and not out["negative"]["pass"]
     out["controls_ok"] = ok
     print(f"CONTROLS {'behave' if ok else 'DO NOT behave: STOP'}", flush=True)
@@ -477,14 +501,27 @@ def final_gc() -> dict[str, Any]:
         e = json.loads(
             (REPO / "data" / "943_gc1_realeph" / f"e{i}" / "realeph_chain.json").read_text()
         )[0]
-        rows.append(final_record(f"gc-1 JD {e['epoch_jd']:.1f}", "gc", g1["key"], g1["x_days"], 10,
-                                 "blend", e["x0_days"], e["final_y"], real_gc, 3, 4))  # fmt: skip
+        rows.append(
+            final_record(
+                f"gc-1 JD {e['epoch_jd']:.1f}",
+                "gc",
+                g1["key"],
+                g1["x_days"],
+                10,
+                "blend",
+                e["x0_days"],
+                e["final_y"],
+                real_gc,
+                3,
+                L_GC3,
+            )
+        )
     out["gc-1"] = rows
     rows = []
     for e in json.loads((REPO / "data" / "942_943_ladder_realeph_chains.json").read_text())["gc2"]:
         xs = e["final_x_days"]
         rows.append(final_record(f"gc-2 JD {e['epoch_jd']:.1f}", "gc", g2["key"], g2["x_days"], 10,
-                                 "blend", xs[0], list(xs[1:]), real_gc, 4, 4))  # fmt: skip
+                                 "blend", xs[0], list(xs[1:]), real_gc, 4, L_GC3))  # fmt: skip
     out["gc-2"] = rows
     for name in ("gc-1", "gc-2"):
         k = sum(r["pass"] for r in out[name])
@@ -496,7 +533,11 @@ def final_ev() -> dict[str, Any]:
     out: dict[str, Any] = {"rules": FINAL}
     real = CHAIN.real_ephemeris("ev", "mean")
     wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())
-    for row, sub in (("ev-A", "ev10_evA"), ("ev-B", "ev10_evB"), ("ev-C", "ev10_evC")):
+    for row, sub, big_l in (
+        ("ev-A", "ev10_evA", L_EV2),
+        ("ev-B", "ev10_evB", L_EV3),
+        ("ev-C", "ev10_evC", L_EV2),
+    ):
         key, xt = wb[row]["key"], wb[row]["x_days"]
         circ, a, b = CHAIN.ENUM.cell_system("ev")
         _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
@@ -511,8 +552,21 @@ def final_ev() -> dict[str, Any]:
                 )
                 print(f"{row} JD {e['epoch_jd']:.1f}: no 10-cycle chain -> FAIL", flush=True)
                 continue
-            rows.append(final_record(f"{row} JD {e['epoch_jd']:.1f}", "ev", key, xt, 10, "ramp",
-                                     e["x0_days"], e["final_y_dates"], real, nl, 5))  # fmt: skip
+            rows.append(
+                final_record(
+                    f"{row} JD {e['epoch_jd']:.1f}",
+                    "ev",
+                    key,
+                    xt,
+                    10,
+                    "ramp",
+                    e["x0_days"],
+                    e["final_y_dates"],
+                    real,
+                    nl,
+                    big_l,
+                )
+            )
         out[row] = rows
         k = sum(r["pass"] for r in rows)
         print(f"{row}: V2 (final wording) {'PASS' if k >= 3 else 'FAIL'} ({k}/5)", flush=True)
@@ -547,7 +601,7 @@ def evc_branch() -> dict[str, Any]:
         if same:
             y10 = e10["final_y_dates"]
             rec["judged"] = final_record(lab + " (sec. 8.6 chain)", "ev", key, xt, 10, "ramp",
-                                         e10["x0_days"], y10, real, nl, 5)  # fmt: skip
+                                         e10["x0_days"], y10, real, nl, L_EV2)  # fmt: skip
         else:
             y5 = np.asarray(e5["final_y_dates"], dtype=float)
             p5 = float(y5[-1])
@@ -564,7 +618,7 @@ def evc_branch() -> dict[str, Any]:
             rec["resolve_max_shift_from_seed_d"] = float(np.max(np.abs(sol.x - seed)))
             if res < 1e-6:
                 rec["judged"] = final_record(lab + " (seeded re-solve)", "ev", key, xt, 10, "ramp",
-                                             x0, list(sol.x), real, nl, 5)  # fmt: skip
+                                             x0, list(sol.x), real, nl, L_EV2)  # fmt: skip
                 rec["resolved_y_days"] = sol.x.tolist()
             else:
                 rec["judged"] = {"label": lab, "pass": False, "error": "re-solve not converged"}
@@ -622,7 +676,7 @@ def main() -> None:
         )[0]
         x, v, t, c = legs_data("gc", g1["key"], 10, "blend", e["x0_days"], e["final_y"], real_gc)
         rows.append(same_phase(f"gc-1 JD {e['epoch_jd']:.1f}", x, v, t, c, 10, 3,
-                               e["final_y"][29], 4))  # fmt: skip
+                               e["final_y"][29], L_GC3))  # fmt: skip
     res["gc-1"] = rows
     g2 = wb["gc-2"]
     rows = []

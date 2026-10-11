@@ -14,6 +14,9 @@
    "c3_refly": true,
    "refly_max_km": 0.0018981622892712518,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -50,6 +53,9 @@
    "c3_refly": true,
    "refly_max_km": 0.0017503117751397458,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -86,6 +92,9 @@
    "c3_refly": true,
    "refly_max_km": 0.0017508334776304897,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -122,6 +131,9 @@
    "c3_refly": true,
    "refly_max_km": 0.0018955065626352961,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -158,6 +170,9 @@
    "c3_refly": true,
    "refly_max_km": 0.0018362076071486587,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -186,110 +201,59 @@
   {
    "label": "ev-B JD 2463054.0",
    "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "pass": false,
+   "c4": {
+    "judgeable": false,
+    "L": 49,
+    "cycles": 10,
+    "pass": false,
+    "reason": "n = 10 < 2L = 98 (tol 0.02 rev)"
+   },
    "c1_continuity": true,
-   "junction_kms": 2.3092638912203256e-12,
    "c2_gate": false,
    "gate": {
     "status": "fail",
     "worst_ratio": 1.0111426845975984
    },
-   "c3_refly": true,
-   "refly_max_km": 0.015881923895940567,
-   "c4": {
-    "comparisons": [
-     1,
-     2,
-     3
-    ],
-    "Dprime_d": [
-     2.2108613119471556,
-     1.8212869228718773,
-     1.7543250782528048
-    ],
-    "Wprime_kms": [
-     0.16588249769060504,
-     0.15799959359990012,
-     0.14428240235928946
-    ],
-    "band_D_d": 2.003873278198971,
-    "band_W_kms": 0.8167020817306634,
-    "slope_D_d_per_cycle": -0.2282681168471757,
-    "slope_W_kms_per_cycle": -0.010800047665657791,
-    "pass": false
-   },
-   "pass": false
+   "c3_refly": true
   },
   {
    "label": "ev-B JD 2465390.1",
    "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "pass": false,
+   "c4": {
+    "judgeable": false,
+    "L": 49,
+    "cycles": 10,
+    "pass": false,
+    "reason": "n = 10 < 2L = 98 (tol 0.02 rev)"
+   },
    "c1_continuity": true,
-   "junction_kms": 6.334488489301293e-12,
    "c2_gate": true,
    "gate": {
     "status": "pass",
     "worst_ratio": 0.995141188779758
    },
-   "c3_refly": true,
-   "refly_max_km": 0.033604163532226304,
-   "c4": {
-    "comparisons": [
-     1,
-     2,
-     3
-    ],
-    "Dprime_d": [
-     5.73047548201248,
-     6.270549362818201,
-     8.436754447231579
-    ],
-    "Wprime_kms": [
-     0.5200481141868156,
-     0.16089020836814782,
-     0.8789846803025174
-    ],
-    "band_D_d": 2.0227495987379442,
-    "band_W_kms": 0.8070635556210478,
-    "slope_D_d_per_cycle": 1.3531394826095486,
-    "slope_W_kms_per_cycle": 0.17946828305785079,
-    "pass": false
-   },
-   "pass": false
+   "c3_refly": true
   },
   {
    "label": "ev-B JD 2467728.3",
    "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "pass": false,
+   "c4": {
+    "judgeable": false,
+    "L": 49,
+    "cycles": 10,
+    "pass": false,
+    "reason": "n = 10 < 2L = 98 (tol 0.02 rev)"
+   },
    "c1_continuity": true,
-   "junction_kms": 3.4869884757426917e-12,
    "c2_gate": false,
    "gate": {
     "status": "fail",
     "worst_ratio": 1.01881954249693
    },
-   "c3_refly": true,
-   "refly_max_km": 0.0175734859596292,
-   "c4": {
-    "comparisons": [
-     1,
-     2,
-     3
-    ],
-    "Dprime_d": [
-     4.694613919740732,
-     4.989474500262077,
-     7.271515757127418
-    ],
-    "Wprime_kms": [
-     0.3497787235772858,
-     0.21048050744335534,
-     0.7708946555664795
-    ],
-    "band_D_d": 1.9722710027714019,
-    "band_W_kms": 0.8275493773640936,
-    "slope_D_d_per_cycle": 1.2884509186933422,
-    "slope_W_kms_per_cycle": 0.2105579659945968,
-    "pass": false
-   },
-   "pass": false
+   "c3_refly": true
   },
   {
    "label": "ev-B JD 2470059.7",
@@ -300,38 +264,21 @@
   {
    "label": "ev-B JD 2472400.0",
    "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "pass": false,
+   "c4": {
+    "judgeable": false,
+    "L": 49,
+    "cycles": 10,
+    "pass": false,
+    "reason": "n = 10 < 2L = 98 (tol 0.02 rev)"
+   },
    "c1_continuity": true,
-   "junction_kms": 2.7746693831431912e-12,
    "c2_gate": false,
    "gate": {
     "status": "indeterminate",
     "worst_ratio": 0.9994100187937774
    },
-   "c3_refly": true,
-   "refly_max_km": 0.0571240917822734,
-   "c4": {
-    "comparisons": [
-     1,
-     2,
-     3
-    ],
-    "Dprime_d": [
-     1.6780712851705175,
-     2.098445756093497,
-     1.4506322498727968
-    ],
-    "Wprime_kms": [
-     0.1352586625473755,
-     0.25968018888938715,
-     0.12283067715661389
-    ],
-    "band_D_d": 2.0168721447065474,
-    "band_W_kms": 0.8222337255922373,
-    "slope_D_d_per_cycle": -0.11371951764886022,
-    "slope_W_kms_per_cycle": -0.006213992695380802,
-    "pass": false
-   },
-   "pass": false
+   "c3_refly": true
   }
  ],
  "ev-C": [
@@ -348,6 +295,9 @@
    "c3_refly": true,
    "refly_max_km": 0.19652655964695448,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -384,6 +334,9 @@
    "c3_refly": true,
    "refly_max_km": 0.035068924816913316,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -420,6 +373,9 @@
    "c3_refly": true,
    "refly_max_km": 0.13653509776394784,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -456,6 +412,9 @@
    "c3_refly": true,
    "refly_max_km": 0.12975320073738636,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
@@ -492,6 +451,9 @@
    "c3_refly": true,
    "refly_max_km": 0.18568140345766276,
    "c4": {
+    "judgeable": true,
+    "L": 5,
+    "cycles": 10,
     "comparisons": [
      1,
      2,
