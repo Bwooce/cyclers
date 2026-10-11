@@ -1,0 +1,86 @@
+# Gobetz & Doll 1968, Tables I-III and the quoted critical constants of "A Survey of Impulsive Trajectories".
+# Source: F. W. Gobetz and J. R. Doll, "A Survey of Impulsive Trajectories", United Aircraft Research
+#   Laboratories (East Hartford, Connecticut) Report G-910557-11, final report under NASA contract
+#   NAS8-21091, June 1968, 124 pp., NTRS 19680026430. Journal form: AIAA Journal 7(5):801-834 (May 1969),
+#   DOI 10.2514/3.5231 (Crossref-confirmed 2026-10-11; the journal form is not held).
+# Local scan: NTRS scan, md5 dbac4cc329400964d64f6a8f8c71904c, 129 PDF pages. Report page numbers below are
+#   the printed numbers (PDF page = printed page + 5 for the body).
+# Transcribed with three witnesses: (1) the NTRS text layer (letter-spaced, many misreads), (2) a fresh
+#   ocrmypdf/tesseract layer, (3) the page render read by eye (110 dpi; Table II also at 250 dpi).
+#   Where witnesses disagreed the render decided; the disagreements are listed in the digest, sec. 6.
+#   No value in this file was computed by us.
+# These are survey tables about planet-centred orbit transfers. None of them is a cycler or a swingby
+#   number. They are filed for completeness under the corpus policy.
+
+table_i:
+  title: "Table I. Bibliography entries not included in survey (lists of bibliography entry numbers)"
+  page: "p.74 (PDF p.79)"
+  note: "Numbers are entry numbers of the report's 314-entry bibliography (the list runs to 315 as printed; see digest)."
+  not_acquired: [13, 15, 23, 43, 48, 49, 98, 99, 103, 131, 139, 140, 141, 161, 175, 182, 222, 223, 229, 230, 246, 254, 258, 271, 305]
+  reviewed_but_not_referenced_in_text: [1, 3, 4, 5, 10, 19, 21, 30, 41, 44, 60, 65, 68, 73, 76, 85, 91, 95, 118, 119, 120, 122, 128, 130, 133, 149, 157, 159, 160, 164, 165, 171, 173, 189, 191, 208, 210, 216, 218, 221, 226, 228, 232, 233, 245, 252, 255, 257, 262, 268, 284, 307, 309]
+  not_available_in_translation: [39, 46, 102, 195, 196, 197, 198, 200, 201]
+  terminal_phase_rendezvous: [14, 63, 64, 69, 89, 110, 111, 181, 256, 261, 279, 280, 281]
+  correction_maneuvers: [33, 71, 86, 145, 158, 166, 167, 236, 254, 264, 265]
+  interplanetary_applications: [36, 67, 117, 132, 162, 190, 211, 247, 248, 285]
+  computational_techniques: [16, 21, 36, 44, 85, 190, 247]
+
+table_ii:
+  title: "Table II. Location of points in Figure 13 (aligned coaxial orbit transfer, optimal-mode map)"
+  page: "p.75 (PDF p.80)"
+  note: "Figure 13 axes: rho = min(P1,P2)/max(P1,P2) (pericenter ratio) for point M; sigma = min(P1,P2)/max(A1,A2) for point N; i2 is the inclination between the orbit planes. Values kept as printed (strings)."
+  rows_rho:
+    - {point: "E",  rho: "1.0",     i2_deg: "60",     slope: "radial",          curve: "EB"}
+    - {point: "E1", rho: "1.0",     i2_deg: "60.185", slope: "radial",          curve: "E1L"}
+    - {point: "B",  rho: "0.33333", i2_deg: "0",      slope: "circumferential", curve: "EB"}
+    - {point: "C",  rho: "0.28942", i2_deg: "0",      slope: "circumferential", curve: "LC"}
+    - {point: "A",  rho: "1.0",     i2_deg: "0",      slope: "circumferential", curve: "AQ"}
+    - {point: "L",  rho: "0.388",   i2_deg: "37.54"}
+    - {point: "Q",  rho: "0.37194", i2_deg: "34.043"}
+    - {point: "K",  rho: "0.66023", i2_deg: "55.6"}
+    - {point: "curve AL, first",  rho: "0.534", i2_deg: "36.68"}
+    - {point: "curve AL, second", rho: "0.447", i2_deg: "36.88"}
+  rows_sigma:
+    - {point: "E1'", sigma: "1.0",     i2_deg: "60.185"}
+    - {point: "Q'",  sigma: "0.37194", i2_deg: "34.043"}
+    - {point: "A",   sigma: "1.0",     i2_deg: "0"}
+    - {point: "curve ARO, first",  sigma: "0.707",  i2_deg: "47.92"}
+    - {point: "curve ARO, second", sigma: "0.529",  i2_deg: "54.00"}
+    - {point: "curve ARO, third",  sigma: "0.3089", i2_deg: "58.488"}
+    - {point: "curve ARO, fourth", sigma: "0",      i2_deg: "60"}
+  printed_notes:
+    - "point Q' is symmetric with respect to point Q"
+    - "point E1' is symmetric with respect to point E1"
+    - "curve AQ' is symmetric with respect to curve AJQ"
+    - "curves E1L and LC are tangent at L"
+
+table_iii:
+  title: "Table III. Optimal transfer modes in Figure 13"
+  page: "p.76 (PDF p.81)"
+  note: "M and N are the end points of the vectors rho = OM and sigma = ON in Figure 13. Zone names are the letter strings as printed (primes on E1 and Q and O as printed)."
+  m_in_zone:
+    - {zone: "AJB",        mode: "Generalized Hohmann"}
+    - {zone: "AJE",        mode: "Either Generalized Hohmann or Three-Impulse"}
+    - {zone: "BJQLC",      mode: "Either Generalized Hohmann or through Infinity"}
+    - {zone: "JQLK",       mode: "Any mode can be optimal"}
+    - {zone: "EE1LK",      mode: "Either Three-Impulse or through Infinity"}
+    - {zone: "below E1LC", mode: "Through Infinity"}
+  n_in_zone:
+    - {zone: "AQ'CB",      mode: "Generalized Hohmann"}
+    - {zone: "Q'AR",       mode: "Either Generalized Hohmann or Three-Impulse"}
+    - {zone: "RAE1'",      mode: "Three-Impulse"}
+    - {zone: "CQ'O",       mode: "Either Generalized Hohmann or through Infinity"}
+    - {zone: "Q'RO",       mode: "Any mode can be optimal"}
+    - {zone: "ORE1'D",     mode: "Either Three-Impulse or through Infinity"}
+    - {zone: "below ODE1'", mode: "Through Infinity"}
+
+critical_constants_quoted_in_text:
+  note: "Numbers printed in the running text (not in tables). Each was read in the text layer and on the render; the report's own wording is kept."
+  items:
+    - {value: "11.93876", where: "p.24 (circle-to-circle: bi-parabolic transfer beats Hohmann above this radius ratio); also quoted as 11.938 on pp.32-35", meaning: "radius ratio above which transfer through infinity beats Hohmann"}
+    - {value: "15.58172", where: "p.25 (and 15.582 on p.55)", meaning: "radius ratio above which a bi-elliptic transfer always beats Hohmann for conjunction ratio greater than 1"}
+    - {value: "0.08376", where: "p.26", meaning: "inverse of 11.93876, as printed: r1/r2 less than this gives transfer through infinity for any inclination"}
+    - {value: "60.185 deg", where: "pp.26-27, 34", meaning: "inclination above which transfer through infinity is optimal for all radius ratios"}
+    - {value: "r1/r2 = 0.1505, di = 37.54 deg", where: "p.27", meaning: "single point at which all three noncoplanar circle-to-circle modes give equal delta-V"}
+    - {value: "0.53533", where: "p.36", meaning: "eccentricity below which the symmetric two-impulse solution is always optimal between congruent coplanar ellipses"}
+    - {value: "70.529 deg", where: "p.45", meaning: "optimum transfer angle for two-impulse ascent with r1 = r2"}
+    - {value: "0.001615 lambda^2 Vc", where: "p.66", meaning: "second-order delta-V penalty for finite-thrust escape from a circular orbit with optimal thrust-angle program (Lawden, ref 163); lambda = 1/a with a the constant thrust acceleration, as printed (read on the render; the text layers dropped the superscript)"}
