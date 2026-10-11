@@ -194,3 +194,26 @@ I report the #1025 / #1044 identity numbers against the chain as they come out. 
 with alpha* = 0, must also pass #1025's own identity gate unchanged.
 
 Driver: `scripts/run_1055_seedfix.py` (stages fix, start, neg, cont, down, ias15).
+
+### Amendment 3 (start criterion on jup365, before any counted start; 11:42 AEDT)
+
+On jup365 the START at sigma0 accepts the noise-floor rule (dr < 1e-2 km, dv < 1e-6 km/s, ends
+< 1e-6). That is the rule rungb's own start uses (#1039 amendment 11, #1044), and it is the rule
+under which the uncorrected GanEur#316 started in #1039, so control B is judged by the same
+criterion as the original. The first control-B start call (11:33) hit the 470 s limit at dr
+2.0e-3 km, dv 3.3e-8 km/s under a machine load of 35-146 (a CI runner with 6 workers). Verdict
+points at sigma = 1 still need the floors. The ideal-model start (#1025 closed chain) keeps the
+floors: control A met them.
+
+### Results so far
+
+- Control A (gc-1, ideal): PASS.
+  - Detection q = 1: sv_min 3.18e-6 at sigma 0.02 and 9.88e-7 at 0.005.
+  - g(0) = 7.0e-14, so the root is at the base (alpha* = 0) and the seed is unchanged.
+  - The start converges at the floors, and its V_inf 2.38775 / 1.80691 / 1.80797 / 2.38774 equals
+    the #1025 gc-1 sigma-0.02 point to 1e-5.
+  - The #1025 continuation repeats exactly: identity shifts 0.0095 / 0.0052 / 0.0028 / 0.0015, sigma 1
+    reached, full-mass V_inf 2.1298 / 1.7845 / 1.8428 / 2.1294 (#1034), IAS15 pass.
+  - `data/1055_gc-1/`.
+- Control B (GanEur#316, jup365): detection q = 0 (sv_min 1.53e-5 at 0.02, 1.25e-5 at 0.005), so the
+  corrected seed is the seed. The start runs under amendment 3.

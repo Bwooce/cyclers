@@ -113,7 +113,10 @@ class Target:
             return zz, info, bool(self.b.converged(info))
         zz, info = self.rb.newton(self.c, z, iters, f"{self.name} newton")
         ends = max(info.get("end_asymptote_kms", [0.0]))
-        return zz, info, bool(self.rb.converged(info)) and ends < 1e-6
+        # amendment 3: the start may be noise-floor-limited, as rungb's own start (#1039, #1044)
+        noise = max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6
+        ok = (bool(self.rb.converged(info)) or noise) and ends < 1e-6
+        return zz, info, ok
 
     def vinf(self, z: Any, s: float) -> list[float]:
         if hasattr(self, "p"):
