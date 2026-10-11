@@ -699,6 +699,8 @@ The e2 crash is registered as `#1059`: a date guard in the chain tool, so an out
 a rejected step, not a crash. A correctness fix: e2 of step 1b is NOT RUN, not a negative, until it is
 re-run under the guard.
 
+- Addendum 2026-10-11 (#1059): the guard now exists (`scripts/run_942_realeph_chain.py`: `_res`, `_safe_eval` and the ramp-mode residual treat jplephem `OutOfRangeError` like `SpiceyError`, as the 1e3 penalty). Step 1b e2 stays NOT RUN, not a negative, until it is re-run under the guard; it was not re-run in this change.
+
 ## 10. Catalogue window patch for the 10 ev rows: PRE-REGISTERED expected ratchet deltas (2026-10-11, before the dry run)
 
 Owner decision 2026-10-11: "(a) 10 rows, Standish >= 4/5" (owner summary sec. 7). The rows are ev4-1,

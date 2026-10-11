@@ -38,6 +38,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from jplephem.exceptions import OutOfRangeError
 from scipy.optimize import least_squares
 from scipy.optimize._numdiff import approx_derivative, group_columns
 from spiceypy.utils.exceptions import SpiceyError
@@ -81,6 +82,12 @@ def _load(name: str, path: Path) -> Any:
 
 
 ENUM = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
+
+
+#: A trial step outside an ephemeris kernel's span is a failed evaluation, never a crash: SPICE
+#: kernels raise SpiceyError (the jup365 case of #942 6.50), the astropy/jplephem DE440 backend
+#: raises OutOfRangeError (#1059: #1057 step 1b e2 crashed on it at a date past 2650-01-25).
+EPH_RANGE_ERRORS = (SpiceyError, OutOfRangeError)
 
 
 class DE440Planets:
@@ -330,7 +337,10 @@ def date_chain_residual(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> np.
     """Ramp mode: dates [x0, y[:-1]] (days), chain period y[-1] (days); fixed legs timed at
     the model's current body period (exact in a Keplerian model)."""
     cyc = Cycle(legs, float(y[-1]) * DAY)
-    r = date_residual(sysm, cyc, np.concatenate([[x0], np.asarray(y[:-1]) * DAY]))
+    try:
+        r = date_residual(sysm, cyc, np.concatenate([[x0], np.asarray(y[:-1]) * DAY]))
+    except EPH_RANGE_ERRORS:
+        r = None
     n = sum(isinstance(lg, LambertLeg) for lg in legs)
     return np.full(n, 1e3) if r is None else r
 
@@ -398,7 +408,7 @@ class ChainEval:
 def _res(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
     try:
         ev = chain_eval(sysm, legs, x0, y)
-    except SpiceyError:
+    except EPH_RANGE_ERRORS:
         # A trial step far outside the kernel's span (the 6.48 ge-2 run reached year 2230) is a
         # failed evaluation, not a crash of the whole run.
         ev = None
@@ -410,7 +420,7 @@ def _res(sysm: Blend, legs: tuple, x0: float, y: np.ndarray) -> np.ndarray:
 def _safe_eval(sysm: Any, legs: tuple, x0: float, y: np.ndarray) -> ChainEval | None:
     try:
         return chain_eval(sysm, legs, x0, y)
-    except SpiceyError:
+    except EPH_RANGE_ERRORS:
         return None
 
 
