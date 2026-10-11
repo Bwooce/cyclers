@@ -120,9 +120,9 @@ give "QPO-like" stacks because the invariant curve is not targeted.
 ### 5.4 Homotopy benefit and its limit (pp.21-24, Figs. 9, 10)
 - L1 Lyapunov orbit, period 17.0855 d, perilune start, 5 patch points per rev, 15 y from 1 Jan 2025, uniform rate: direct (1 step) analog goes strongly non-planar; a 3-step homotopy stays near the planar orbit
   (Fig. 9, CAPTION and text).
-- Monodromy eigenvalues (printed) [408.69, 0.002, 1, 1, 1.14, 0.87] (real pair near 1.14 and 0.87) and for a nearby orbit at 17.2594 d [408-ish 393.55, 0.002, 1, 1, 0.99 +- 0.12 i]: the centre pair goes from real to
+- Monodromy eigenvalues (printed) [408.69, 0.002, 1, 1, 1.14, 0.87] (real pair near 1.14 and 0.87) and for a nearby orbit at 17.2594 d [393.55, 0.002, 1, 1, 0.99 +- 0.12 i]: the centre pair goes from real to
   complex, a stability change that spawns the axial family (ref 10, Doedel et al. 2007, held). COMPUTED: the 17.0855 d list has product 0.81, not 1, because 0.002 is printed to one digit; consistent with a symplectic spectrum.
-- Reversal with the non-uniform rate: direct transition stays planar while a 20-step homotopy ends in the out-of-plane analog (Fig. 10a, viewed: 20-step crossings are scattered in z over about +-0.03 ndim,
+- Reversal with the non-uniform rate: direct transition stays planar while a 20-step homotopy ends in the out-of-plane analog (Fig. 10a, viewed, approximate from the axes: 20-step crossings scatter in z over about +-0.03 ndim,
   1-step crossings stay within about +-0.003). Fig. 10b (viewed): continuing the direct HFEM result back to eps = 0 with 20 steps does not return to the original Lyapunov orbit; the eps versus initial-y hodograph shows a
   broken bifurcation. The authors read this as a crossing between the out-of-plane centre manifold of the Lyapunov family and the nearby axial family, unconnectable without symmetry (refs 12, 16, 21, 25).
 - Lessons (p.23): results depend on number of homotopy steps and time rate; sensitivities tie to broken bifurcations; no single best formulation; computational cost not analysed.
