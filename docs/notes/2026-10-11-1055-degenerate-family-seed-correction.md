@@ -600,3 +600,76 @@ From `data/1055_gancal1/sigma_n1.json` (the lead's 14:38 continuation, stopped a
 - Under the original pre-registration this is the GanCal#1 result: it fails (ii) at sigma 0.0415. It
   says nothing about full-mass existence. The continued run under amendment 9 (lead relaunch 14:42:
   cont --soi-limit inf, down, ias15, scan) is reported separately and labelled as such.
+
+### 12.4 Continuation UNDER AMENDMENT 9 (lead relaunch 14:42-15:32 AEDT): classification and verdict
+
+From `data/1055_gancal1/sigma_n1.json` and the runlog:
+- 30 accepted points, sigma 0.02 to 0.737400, every node above its floor, no noise-floor-limited
+  point after the start region.
+- The natural step then collapsed: 0.737418 failed with the factor at 1.00001, "step below 1e-5 at
+  0.737400; stop" (`stopped_at` 0.737400). No sigma = 1 point exists, so the ias15 stage had nothing
+  to fly and the scan did not run (the chain used &&).
+- Last converged nodes (sigma 0.7374):
+  - G1: V_inf 3.0706, altitude 152 km (scaled floor 74 km);
+  - G2: 2.5660, rp 74,841 km, rp/SOI 3.47;
+  - C: 3.2908, rp 11,179 km;
+  - G3: 3.1356, altitude 339 km.
+  G2's rp is 2.36 times Ganymede's Hill radius (31,717 km): the "flyby" is now a distant encounter.
+
+Is the stop at 0.7374 a fold?
+- G2's rp against sigma over the last 10 points fits a square-root law, rp = rp_f - b sqrt(sigma_f -
+  sigma), with sigma_f = 0.73777, rp_f = 75,592 km and residuals 13-148 km. A straight line leaves
+  220-880 km. The derivative d rp / d sigma grows 2.8e5, 4.2e5, 6.5e5, 9.2e5, 1.3e6, 2.1e6, 4.4e6 km
+  over the last 8 points, which is the divergence a turning point produces.
+- No monitor-variable continuation and no two-solution check were run. rungb's `stage_sigma` has
+  neither; #1025 has both.
+- So under the #1025 outcome rules the classification is NUMERICAL STOP, with a FOLD SIGNATURE
+  (inferred, not shown).
+
+Identity (amendment 2), from the down stage (0.01 and 0.005 at the floors):
+- max |dV_inf| against the chain tool is 0.0100 at 0.01 and 0.0051 at 0.005: it halves with sigma,
+  a Cauchy limit. The Richardson limits are G1 3.0992, G2 3.0956, C 3.2515 and G3 3.1642, against
+  the chain's 3.0994 / 3.0958 / 3.2513 / 3.1644 (within 2e-4). PASS (0.05 band).
+- The node epochs converge to the chain's. Offsets at sigma 0.02, 0.01 and 0.005 are G2 -591, -293,
+  -146 s and C +118, +72, +41 s, falling in proportion to sigma.
+- BUT G2's periapsis does NOT converge to the chain's: rp / sigma = 88,617, 89,091 and 89,399 km
+  against the chain's 28,327 km. Its limit turn is about 1.3 deg against the chain's 4.03 deg. (The
+  Callisto node, 53,084 -> 61,742 -> 68,528 km, is still moving towards the chain's 79,393 km.)
+  For comparison, gc4-19's limit converges to its chain in every respect: rp / sigma 9,315 / 9,310 /
+  3,222 / 3,203 against 9,313 / 9,313 / 3,214 / 3,214, and turns 5.00 / 5.01 / 41.70 / 41.87 against
+  5.01 / 5.01 / 41.77 / 41.77.
+
+The answer to the lead's question (3): the corrected GanCal#1 branch is a DIFFERENT member of the
+degenerate patched-conic family. It has the chain tool's flyby epochs and V_inf magnitudes, but
+G2's periapsis is near 89,000 km (turn 1.3 deg) instead of 28,327 km (turn 4.03 deg), with the
+difference absorbed by the crank of the full-revolution return. It is not the chain tool's
+GanCal#1@2013 object. The identity gate as worded (V_inf only) passes. It does not by itself decide
+same-or-different, and the periapsis comparison does.
+
+VERDICT for #1055's GanCal#1 target, with both readings:
+- Under the original pre-registration: FAILS #1044 criterion (ii) at sigma 0.0415 (G2 rp/SOI 0.535,
+  sec. 12.2.2).
+- Under amendment 9: the corrected seed STARTS. The branch continues at the floors to 74 % of the
+  moon masses and stops there in a NUMERICAL STOP with a fold signature. The branch is a different
+  family member from the chain tool's object (G2's periapsis three times farther). No full-mass
+  point, so IAS15 and the scan do not apply.
+- So: the jup365 lane is NOT validated on a full-revolution chain at full mass by GanCal#1. The
+  method change itself is shown to work on jup365: a start where no formulation had one, identity
+  in V_inf and epochs, and a negative control pending (neg2).
+- Negative control (amendment 8): neg2 still running; the verdict above is conditional on it.
+
+### 12.5 Single most informative follow-up (PRE-REGISTERED here, NOT run)
+
+The fold test at the stop, by the #1004/#1025 rules:
+- Monitor-variable continuation from the last two points (sigma becomes an unknown; the
+  fastest-changing scaled state component is stepped), up to 30 points, using `monitor_step`
+  generalised to the Target face. Then, if sigma turns back below 0.9 sigma_f, two solutions at
+  fixed sigma 0.675 and 0.720 (0.915 and 0.976 x 0.7374), from the lower and upper branches.
+- FOLD supported if both converge at the floors and some node differs by > 0.02 km/s in V_inf and
+  > 100 km in r_p / sigma (the #1025 rule). FOLD then means "no full-mass orbit on this branch",
+  as for gc-2. If the monitor carries sigma past 0.7374 upward instead: NOT a fold; natural
+  continuation resumes towards sigma = 1 (which is then the jup365 verdict).
+- Runtime: about 15-40 s per evaluation at the current load, 30 monitor points of about 5-10
+  evaluations each, plus two solutions: 1.5-3.5 h (lead launch). Code: about 1 h to port
+  `monitor_step` and `two_solutions` to the jup365 Target, with a fast test on the ideal gc-2 fold
+  (it must reproduce sigma_f 0.1639 and the two-solution numbers of #1025 sec. 7).
