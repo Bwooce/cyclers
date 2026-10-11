@@ -6,6 +6,8 @@ docs/notes/2026-10-11-1054-seed-design-fix.md.
     uv run python scripts/run_1054_seed_design.py arm B|C|D --max-seconds 420   # pilot ablation
     uv run python scripts/run_1054_seed_design.py control --max-seconds 420     # 7-3b control
     uv run python scripts/run_1054_seed_design.py report
+    uv run python scripts/run_1054_seed_design.py grid-f1 --max-seconds 100000   # full F1 grid
+    uv run python scripts/run_1054_seed_design.py grid-f1-report
 
 `predict` reads the #1000 grid and #1048 gaps records and tabulates, per seed subset (all; r_p at
 least 1.3 x floor; skeleton lunar pass in the target band; both), the impact, converged and
@@ -186,6 +188,46 @@ def seed_id(sd: dict[str, Any]) -> str:
     return "|".join(str(sd.get(k)) for k in keys)
 
 
+def grid_f1_seeds() -> list[dict[str, Any]]:
+    """The full F1 grid (pre-registration sec. 8): the #1000 PQ set, both senses, the F1 rows,
+    the uniform 10-degree omega grid; seeds whose F1 skeleton does not cross the lunar orbit are
+    left out (as in #1000)."""
+    seeds = []
+    for p, q in sh.PQ:
+        a = (q / p) ** (2.0 / 3.0) * sh.GM_E ** (1.0 / 3.0)
+        for sense in (1, -1):
+            for irn, rp in enumerate(RP_NEW):
+                if not (rp < 1.0 < 2 * a - rp):
+                    continue
+                for iw in range(len(sh.OMEGA)):
+                    seeds.append(
+                        {"p": p, "q": q, "sense": sense, "irn": irn, "k": iw} | {"om": sh.OMEGA[iw]}
+                    )
+    return seeds
+
+
+def grid_f1_report() -> None:
+    f = OUT / "grid_f1.jsonl"
+    recs = [json.loads(x) for x in f.read_text().splitlines()]
+    old = [json.loads(x) for x in (SRC / "grid.jsonl").read_text().splitlines()]
+    old_fams = Counter(family_key(r) for r in old if r.get("cycler_class_candidate"))
+    new_fams = Counter(family_key(r) for r in recs if r.get("cycler_class_candidate"))
+    out = {
+        "n_solved": len(recs),
+        "n_seeds": len(grid_f1_seeds()),
+        "f1": stats(recs),
+        "old_grid": stats(old),
+        "old_families": dict(sorted(old_fams.items())),
+        "f1_families": dict(sorted(new_fams.items())),
+        "families_lost": sorted(set(old_fams) - set(new_fams)),
+        "family_keys_not_in_old_grid": sorted(set(new_fams) - set(old_fams)),
+    }
+    (OUT / "grid_f1_report.json").write_text(json.dumps(out, indent=1) + "\n")
+    print(json.dumps({k: v for k, v in out.items() if k not in ("f1", "old_grid")}, indent=1))
+    print("f1", {k: v for k, v in out["f1"].items() if k != "families"})
+    print("old", {k: v for k, v in out["old_grid"].items() if k != "families"})
+
+
 def run_jobs(
     tag: str, jobs: list[tuple[dict[str, Any], float | None, float | None]], max_s: float
 ) -> None:
@@ -203,8 +245,11 @@ def run_jobs(
             fh.flush()
             n += 1
             if n % 25 == 0:
+                rate = (time.time() - t0) / n
+                eta = time.strftime("%H:%M", time.localtime(time.time() + rate * (len(todo) - n)))
                 print(
-                    f"{time.strftime('%H:%M:%S')} {n} ({(time.time() - t0) / n:.2f} s/seed)",
+                    f"{time.strftime('%H:%M:%S')} {tag}: {len(done) + n} of {len(jobs)} "
+                    f"({rate:.2f} s/seed, ETA {eta} local)",
                     flush=True,
                 )
             if time.time() - t0 > max_s:
@@ -356,6 +401,9 @@ def main() -> None:
     sp = sub.add_parser("arm")
     sp.add_argument("arm", choices=["B", "C", "D", "E"])
     sp.add_argument("--max-seconds", type=float, default=420.0)
+    sp = sub.add_parser("grid-f1")
+    sp.add_argument("--max-seconds", type=float, default=420.0)
+    sub.add_parser("grid-f1-report")
     sp = sub.add_parser("control")
     sp.add_argument("--max-seconds", type=float, default=420.0)
     sp.add_argument("--design", choices=["f1f2f3", "f1"], default="f1f2f3")
@@ -379,6 +427,10 @@ def main() -> None:
     elif args.cmd == "arm":
         drop = None if args.arm in ("C", "E") else DROP
         run_jobs(f"arm_{args.arm}", [(sd, drop, None) for sd in arms()[args.arm]], args.max_seconds)
+    elif args.cmd == "grid-f1":
+        run_jobs("grid_f1", [(sd, None, None) for sd in grid_f1_seeds()], args.max_seconds)
+    elif args.cmd == "grid-f1-report":
+        grid_f1_report()
     elif args.cmd == "control" and args.design == "f1":
         # F1 alone: F1 rows x the uniform 10-degree omega grid, both senses, no F3
         c73b = sh.CONTROLS["casoliva-7-3b-em-cycler-2010"]

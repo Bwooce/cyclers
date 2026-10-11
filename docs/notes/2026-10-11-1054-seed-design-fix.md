@@ -252,3 +252,48 @@ Both are for the full-grid family count and its literal and literature step.
 checkpointed, Pool(2); hours) with the falsification test at full scale: none of the 15 #1000 families
 is lost. The command does not exist yet; it is a `grid-f1` subcommand of this script (to be added on
 request).
+
+## 8. Pre-registration of the full F1 grid (lead approval 2026-10-11 14:59; written before the run)
+
+Command (the lead launches and owns it; checkpointed and resumable; Pool(2); a progress line every
+25 seeds, with an ETA):
+
+    uv run python scripts/run_1054_seed_design.py grid-f1 --max-seconds 100000
+    uv run python scripts/run_1054_seed_design.py grid-f1-report     # after it completes
+
+Seeds: the #1000 PQ set (10 p:q), both senses, the F1 rows (8,552-42,164 km), the uniform
+10-degree omega grid: **5,256 seeds**. All of them cross the lunar orbit, the same count as the
+#1000 grid's solved seeds. Output: `data/1054_seed_design/grid_f1.jsonl`; report
+`grid_f1_report.json`. A 30-seed smoke run at 16:06 AEDT gave 0.74 s/seed at light load; its file
+was deleted.
+
+**Runtime:** the pilot ran at 3-5.4 s/seed under load (Pool(2)), so 5,256 seeds take about 4-8 h
+with the GanCal#1 runs on the machine, and about 1-3 h at light load.
+
+**Expected rates (from the paired pilot, sec. 7: impact -0.071, converged +0.042 against the same
+seeds' records):**
+- impact about 0.52 (range 0.48-0.56) against the #1000 grid's 0.590;
+- converged about 0.33 (range 0.30-0.36) against 0.286;
+- candidates per solve 0.04-0.06 (the #1000 grid: 0.0405). Reported, no criterion.
+
+**Falsification (any one):**
+1. Any of the 15 #1000 family keys is not found among the F1 grid's cycler-class candidates (the
+   lead's criterion; strict). Recorded risk: four keys have only 1-2 members in the #1000 grid
+   ("7:3 ret wE-10 wM0 sym" 1, "7:3 ret wE-9 wM0 sym" 1 (computes as 6:3), "8:3 ret wE-11 wM0
+   sym" 2, D "7:3 pro wE4 wM-1 asym" 2). A loss there counts under the criterion. The report says
+   which keys are lost and how many #1000 members they had.
+2. Impact rate >= 0.590 (not below the #1000 grid).
+3. Converged rate <= 0.286 (not above the #1000 grid).
+
+**The two family keys from the pilot** ("2:1 pro wE1 wM0 sym", C 2.190; "7:3 pro wE3 wM0 asym",
+C 2.752), and any other key that the F1 grid finds and the #1000 grid did not, are checked after
+the grid against the following. They are labelled known-reproduction, known-class or unmatched,
+and never "new" or "novel":
+- the literal table: the #1047 rule (`scripts/run_1047_literal.py`) against every published Earth-Moon
+  p:q orbit held as numbers (`data/1000_complement/literal_check.json`);
+- the Restrepo-Russell database: the #997 cross-match rule and tolerances
+  (`scripts/run_997_rr_crossmatch.py`) for symmetric keys. An asymmetric key is outside RR by
+  construction (RR holds axisymmetric orbits only), and that is stated, not counted as a match.
+  Franz-Russell: maximum Moon distance against its cutoff of about 350,000 km;
+- the #997 families (`data/997_lineage/`, F1-F4): same p:q, sense and windings, and C overlap;
+- the v3 literature gate (class level; it does not compare p:q).
