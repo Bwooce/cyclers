@@ -1,0 +1,196 @@
+# NASA SP-35, Space Flight Handbooks, Volume III (Planetary Flight Handbook), Part 6, "Mars Stopover Missions Using Venus Swingbys: General
+# Discussion, Contour Charts and Related Graphical Information", Douglas Aircraft Company for NASA (contract NAS 2-4175), 1968, NTRS 19680020626.
+# Study manager J. L. Horsewood; foreword by Jerry Deerwester (NASA/OART Mission Analysis Division), August 1967. 98 printed pages in 108 PDF pages.
+# Local file: 108 pp. scan; the filed copy is an ocrmypdf --redo-ocr -l eng copy (md5 dca8c25680e28c9baf5dd2c9fc4bea37, 5,009,169 bytes) of the
+# received scan (md5 e4f5c68d47910f815fe9380695362a17, 4,324,445 bytes). PDF page n = printed page n + 9 for the main text (printed p.1 = PDF p.10);
+# the front matter is roman-numbered (PDF pp.1-9).
+# THREE-WITNESS CHECK (Tables 1-1, 1-2, 2-1, 2-2, 2-3, 2-4): A = the text layer of the filed PDF; B = page images read by eye at 110 to 250 dpi;
+#   C = a fresh tesseract run (psm 6) on 250 dpi renders of the scan. B is the reference. A and C are poor: they confuse 4 with h, L or k, 7 with T, and
+#   drop or insert commas and spaces. Every cell where A or C differs from B in a digit (not only in a glyph) was settled by a zoomed 250 dpi look: see `settled:`.
+#   Script and output: `...-check_tables.py` and `...-check_tables.out` beside the PDF in the private papers directory (B values are its data block).
+# NOT TRANSCRIBED: Table 2-5 (Earth, Venus and Mars positions every 10 days for 1975-1999, about 910 rows of 15 columns, PDF pp.27-33).
+#   It is an ephemeris computed from the Table 2-1 fixed-ellipse elements and the text layer is unusable for it. Left out and flagged, not silently skipped.
+# CHART-READ values (figure data) are ONE witness (the plot) and are marked `chart_read: true`.
+# All values in `check:` fields are ours.
+
+constants_table_2_1:   # printed p.11
+  columns: [quantity, venus, earth, mars]
+  rows:
+    - ["Semi-major axis (AU)", 0.723332, 1.0, 1.523691]
+    - ["Eccentricity", 0.006793, 0.016726, 0.093368]
+    - ["Inclination to ecliptic (deg)", 3.39423, 0.0, 1.84991]
+    - ["Mean longitude of node (deg)", 76.31972, 0.0, 49.24903]
+    - ["Mean longitude of perihelion (deg)", 131.00831, 102.25253, 335.32269]
+    - ["Mean longitude at epoch (deg)", 174.29431, 100.15815, 258.76729]
+    - ["Mean motion (deg/day)", 1.602131, 0.985609, 0.524033]
+    - ["Sidereal period (days)", 224.701, 365.256, 686.98]
+    - ["Synodic period (days)", 583.92, null, 779.94]
+    - ["Mean orbital speed (EMOS)", 1.1758, 1.0, 0.8101]
+    - ["Gravitational parameter (1e5 km^3/s^2)", 3.248534, 3.986032, 0.429778]
+    - ["Planetary radius (km)", 6100, 6378, 3415]
+    - ["Inclination of equator to orbit plane (deg)", 0.0, 23.45, 23.984]
+    - ["Position of vernal equinox (deg)", 0.0, -102.27, -67.01]
+    - ["Parking orbit altitude (km)", null, 485, 500]
+    - ["Atmospheric entry altitude (km)", null, 120, 300]
+  footnotes: "1 AU = 149,599,000 km; epoch 1.5 Jan 1960 E.T. (JD 2436935.0); 1 EMOS = 29.766 km/s; GM_Sun = 1.32715445e11 km^3/s^2. Planet gravitational parameters are in units of 1e5 km^3/s^2."
+  settled: "Mars radius 3415 (text layer 3815, image at 250 dpi 3415); Mars equator inclination 23.984; Venus sidereal period 224.701 and Mars synodic period 779.94 (text layer glyph noise; confirmed at 250 dpi and by the mean-motion check)"
+  check: "Ours: 360 / mean motion gives sidereal periods 224.7007, 365.2564 and 686.9796 days (printed 224.701, 365.256, 686.98). Synodic periods 360 / (0.985609 - 0.524033) = 779.937 days (printed 779.94) and 360 / (1.602131 - 0.985609) = 583.921 days (printed 583.92). 1 / sqrt(a) = 1.17579 (Venus) and 0.81012 (Mars), printed 1.1758 and 0.8101. sqrt(GM_Sun / 1 AU) = 29.785 km/s, 0.06 percent above the printed 1 EMOS = 29.766 km/s; the handbook does not say how EMOS is defined."
+
+mission_opportunities_table_1_1:   # printed p.3
+  columns: [earth_mars_opposition_year, opposition_jd, mars_venus_alignment_jd, category, profile]
+  rows:
+    - [1975, 2442762, 2443016, 3, inbound_swingby]
+    - [1978, 2443530, 2443367, 5, outbound_swingby]
+    - [1978, 2443530, 2443685, 5, inbound_swingby]
+    - [1980, 2444295, 2444034, 3, outbound_swingby]
+    - [1982, 2445060, 2445366, 3, inbound_swingby]
+    - [1984, 2445832, 2445693, 5, outbound_swingby]
+    - [1984, 2445832, 2446032, 5, inbound_swingby]
+    - [1986, 2446622, 2446362, 3, outbound_swingby]
+    - [1988, 2447433, 2447701, 3, inbound_swingby]
+    - [1990, 2448223, 2448028, 5, outbound_swingby]
+    - [1990, 2448223, 2448370, 5, inbound_swingby]
+    - [1993, 2448995, 2448694, 3, outbound_swingby]
+    - [1995, 2449761, 2450027, 3, inbound_swingby]
+    - [1997, 2450525, 2450378, 5, outbound_swingby]
+    - [1997, 2450525, 2450694, 5, inbound_swingby]
+    - [1999, 2451293, 2451047, 3, outbound_swingby]
+  note: "Printed with the leading 244 or 245 only where it changes; the full JDs here are completed by us from the printed leading digits and from Tables 2-2 and 2-4. Dates are to the nearest day."
+  check: "Every opposition JD matches Table 2-2 to the nearest day and every alignment JD with its category matches Table 2-4, in the inbound column for an inbound profile and the outbound column for an outbound one: 16 rows consistent (script output; the 1995 row is flagged by the script only because Table 2-2 gives 2449760.5)."
+
+ranges_of_dates_table_1_2:   # printed p.5; Julian date minus 2440000
+  columns: [opportunity, direct_depart, direct_arrive, swingby_depart, swingby_passage, swingby_arrive]
+  rows:
+    - ["1975 Inbound", [2500, 2730], [2650, 2950], [2700, 2930], [3010, 3070], [3100, 3260]]
+    - ["1978 Outbound", [3460, 3640], [3620, 3880], [3140, 3220], [3280, 3360], [3460, 3580]]
+    - ["1978 Inbound", [3230, 3480], [3490, 3620], [3460, 3620], [3680, 3810], [3800, 4000]]
+    - ["1980 Outbound", [4100, 4390], [4300, 4630], [3800, 3920], [3990, 4030], [4100, 4330]]
+    - ["1982 Inbound", [4800, 5030], [5100, 5300], [5150, 5300], [5360, 5410], [5450, 5600]]
+    - ["1984 Outbound", [5750, 5970], [5830, 6200], [5470, 5580], [5560, 5650], [5750, 5910]]
+    - ["1984 Inbound", [5600, 5830], [5780, 6020], [5840, 6020], [6000, 6200], [6120, 6350]]
+    - ["1986 Outbound", [6410, 6690], [6600, 6900], [6110, 6230], [6300, 6340], [6410, 6630]]
+    - ["1988 Inbound", [7180, 7440], [7420, 7630], [7480, 7630], [7710, 7760], [7800, 7960]]
+    - ["1990 Outbound", [7850, 8260], [8180, 8500], [7770, 7870], [7930, 8010], [7980, 8200]]
+    - ["1990 Inbound", [7950, 8150], [8200, 8340], [8170, 8320], [8380, 8500], [8460, 8600]]
+    - ["1993 Outbound", [8760, 9010], [9000, 9250], [8470, 8590], [8650, 8710], [8760, 8950]]
+    - ["1995 Inbound", [9500, 9700], [9740, 9950], [9800, 9950], [10000, 10080], [10120, 10320]]
+    - ["1997 Outbound", [10370, 10660], [10550, 10800], [10060, 10300], [10230, 10360], [10370, 10600]]
+    - ["1997 Inbound", [10220, 10450], [10510, 10650], [10470, 10630], [10710, 10800], [10780, 11110]]
+    - ["1999 Outbound", [11100, 11360], [11300, 11550], [10790, 10910], [10980, 11030], [11100, 11300]]
+  settled: "1978 Outbound swingby depart 3140-3220 (text layer 3240-3220, image 3140-3220); 1986 Outbound direct depart 6410-6690 and 1990 Outbound swingby depart 7770-7870 (A and C both garbled, image clear at 250 dpi)"
+
+oppositions_of_mars_table_2_2:   # printed p.14
+  columns: [julian_date, calendar_date, heliocentric_longitude_deg]
+  rows:
+    - [2442762.1, "15.6 Dec 1975", 82.75]
+    - [2443530.5, "22.0 Jan 1978", 121.35]
+    - [2444294.7, "25.2 Feb 1980", 155.48]
+    - [2445059.9, "31.4 Mar 1982", 190.03]
+    - [2445831.9, "11.4 May 1984", 230.5]
+    - [2446621.8, "10.3 Jul 1986", 287.37]
+    - [2447432.7, "28.2 Sep 1988", 4.92]
+    - [2448223.3, "27.8 Nov 1990", 64.9]
+    - [2448995.4, "7.9 Jan 1993", 107.15]
+    - [2449760.5, "12.0 Feb 1995", 142.35]
+    - [2450524.8, "17.3 Mar 1997", 176.2]
+    - [2451293.2, "24.7 Apr 1999", 213.51]
+  settled: "none beyond glyph noise; A matches B on all 24 values"
+inferior_conjunctions_of_venus_table_2_3:   # printed p.14
+  columns: [julian_date, calendar_date, heliocentric_longitude_deg]
+  rows:
+    - [2442652.0, "27.5 Aug 1975", 333.42]
+    - [2443239.8, "6.3 Apr 1977", 196.11]
+    - [2443820.4, "7.9 Nov 1978", 44.85]
+    - [2444405.8, "15.3 Jun 1980", 264.05]
+    - [2444990.9, "21.4 Jan 1982", 120.75]
+    - [2445571.7, "25.2 Aug 1983", 331.09]
+    - [2446159.4, "3.9 Apr 1985", 193.73]
+    - [2446739.9, "5.4 Nov 1986", 42.33]
+    - [2447325.5, "13.0 Jun 1988", 261.79]
+    - [2447910.4, "18.9 Jan 1990", 118.18]
+    - [2448491.3, "22.8 Aug 1991", 328.77]
+    - [2449079.0, "1.5 Apr 1993", 191.35]
+    - [2449659.5, "3.0 Nov 1994", 39.8]
+    - [2450245.2, "10.7 Jun 1996", 259.52]
+    - [2450830.0, "16.5 Jan 1998", 115.6]
+    - [2451411.0, "20.5 Aug 1999", 326.46]
+  settled: "2450245.2 and 259.52 (text layer 24502k5 .2 and 259 252) confirmed at 250 dpi"
+mars_venus_alignments_table_2_4:   # printed p.15
+  columns: [julian_date, calendar_date, heliocentric_longitude_deg, category_inbound, category_outbound]
+  rows:
+    - [2442700.1, "14.6 Oct 1975", 49.97, 2, 7]
+    - [2443016.2, "25.7 Aug 1976", 197.9, 3, 6]
+    - [2443367.1, "11.6 Aug 1977", 38.68, 4, 5]
+    - [2443685.2, "25.7 Jun 1978", 189.71, 5, 4]
+    - [2444033.8, "9.3 Jun 1979", 26.79, 6, 3]
+    - [2444354.4, "24.9 Apr 1980", 181.71, 7, 2]
+    - [2444700.1, "5.6 Apr 1981", 14.32, 1, 1]
+    - [2445023.6, "23.1 Feb 1982", 173.84, 2, 7]
+    - [2445366.0, "31.5 Jan 1983", 1.32, 3, 6]
+    - [2445692.9, "24.4 Dec 1983", 166.08, 4, 5]
+    - [2446031.7, "27.2 Nov 1984", 347.93, 5, 4]
+    - [2446362.3, "23.8 Oct 1985", 158.37, 6, 3]
+    - [2446697.2, "23.7 Sep 1986", 334.33, 7, 2]
+    - [2447031.6, "24.1 Aug 1987", 150.68, 1, 1]
+    - [2447362.7, "20.2 Jul 1988", 320.72, 2, 7]
+    - [2447701.0, "23.5 Jun 1989", 142.97, 3, 6]
+    - [2448028.4, "16.9 May 1990", 307.33, 4, 5]
+    - [2448370.3, "23.8 Apr 1991", 135.19, 5, 4]
+    - [2448694.3, "12.8 Mar 1992", 294.34, 6, 3]
+    - [2449039.6, "21.1 Feb 1993", 127.31, 7, 2]
+    - [2449360.5, "8.0 Jan 1994", 281.87, 1, 1]
+    - [2449708.7, "22.2 Dec 1994", 119.28, 2, 7]
+    - [2450027.1, "5.6 Nov 1995", 270.0, 3, 6]
+    - [2450377.8, "21.3 Oct 1996", 111.06, 4, 5]
+    - [2450694.1, "2.6 Sep 1997", 258.73, 5, 4]
+    - [2451046.7, "21.2 Aug 1998", 102.6, 6, 3]
+    - [2451361.4, "1.9 Jul 1999", 248.05, 7, 2]
+  settled: "294.34 (text layer 294, 38) confirmed at 250 dpi; 2444354.4 and 320.72 (text layer truncated or glyph noise) agree between the image and the fresh OCR"
+  check: "Categories: inbound 2,3,4,5,6,7,1 repeating and outbound 7,6,5,4,3,2,1 repeating (script). Same-category spacing: inbound category 3 at 2349.8, 2335.0 and 2326.1 days; inbound category 5 at 2346.5, 2338.6 and 2323.8 days; the text says configurations repeat 'almost exactly' every 2338 days. Venus-Mars synodic period from Table 2-1 mean motions 360 / (1.602131 - 0.524033) = 333.9 days, times 7 = 2337.4 days. The mean spacing of the 27 alignments is (2451361.4 - 2442700.1) / 26 = 333.2 days. Opposition spacing in Table 2-2 runs 764 to 811 days (mean 775.6)."
+
+syzygistic_period_statements:   # text, printed pp.1-2
+  statements:
+    - "relative configurations among Earth, Mars and Venus repeat almost exactly every 2338 days (about 6.4 years); in this time Venus passes inferior conjunction four times, Mars passes opposition three times and Venus and Mars pass their mutual alignment seven times (confirmed on the image, 200 dpi)"
+    - "four swingby opportunities per syzygistic period (Category 3 and Category 5, inbound and outbound); 16 opportunities in 1975-1999"
+  check: "Ours: 4 x 583.92 = 2335.7; 3 x 779.94 = 2339.8; 7 x 333.91 = 2337.4 days; all within 0.2 percent of 2338."
+
+model_and_run_parameters:   # text, printed pp.1-8
+  - "patched-conic program; planetary orbits are fixed eccentric, mutually inclined ellipses (Table 2-1); Kepler's equation iterated to 0.01 percent of the time of flight"
+  - "swingby leg: post-encounter transfer time iterated until the departure speed matches the arrival speed within 3 m/s"
+  - "Venus swingby date incremented 2 days (Category 5) or 5 days (Category 3) at fixed launch or arrival date; launch (arrival) date incremented 10 days"
+  - "tape data limited to Venus passage distance greater than 0.95 Venus radii; the mission velocity charts use passage distance 1.1 Venus radii or greater"
+  - "stopover times 0, 30 and 60 days; parking orbit altitudes 485 km (Earth) and 500 km (Mars); atmospheric entry altitudes 120 km (Earth) and 300 km (Mars)"
+  - "fixed-ellipse error: heliocentric longitude differs by 0.1 to 0.2 deg from time-varying mean elements (checked for 1999); hyperbolic excess speeds change in the fourth significant digit"
+  - "bend angle at Venus: K = 2 arcsin(1 / (1 + r_p V_inf^2 / mu_Venus)), passage distance r_p from the centre of Venus (Fig. 2-2, 1 to 5 Venus radii)"
+
+opportunity_family_notes:   # from the discussion page before each chart set; Type 1/2 = Type of the first leg / Type of the second leg in flight order
+  columns: [opportunity, category, type_first_leg_second_leg, note]
+  rows:
+    - [1975 inbound, 3, "1/2", "only family in the date ranges; minimum-velocity cases mostly unaffected by the 1.1-radius constraint except long durations"]
+    - [1978 outbound, 5, "1/1", "extremely small departure window; one grid point satisfies the 1.1-radius constraint; two other families (1/2 and 2/1) with larger windows but longer durations"]
+    - [1978 inbound, 5, "1/2", "one of two 1/2 families in the tabular data, also 1/1, 2/1, 2/2 present; high mission velocities; three-dimensional fold effect"]
+    - [1980 outbound, 3, "2/1", "only family; aero-braking minima for 520, 560, 600, 640, 680 or 720 day durations lie below the 1.1-radius limit for some stopovers"]
+    - [1982 inbound, 3, "1/2", "only family; contours fold over on the right"]
+    - [1984 outbound, 5, "1/2", "two 1/2 families plus 1/1, 2/1, 2/2 in the tabular data; most minima on the 1.1-radius limit; at 680 days a direct return at the boundary of the range"]
+    - [1984 inbound, 5, "2/1", "a second 2/1 family around JD 2446100; 1/1, 1/2, 2/2 also present"]
+    - [1986 outbound, 3, "2/1", "one of the few Category 3 opportunities with a second family (slightly earlier swingby dates); cusps barely noticeable (Type 1 to 2 transition near the Mars-Earth node)"]
+    - [1988 inbound, 3, "1/2", "multiple solutions where passage-distance contours cross; a cut-out in the lower right of the swingby contours (the minimum Venus departure speed exceeds the arrival speed)"]
+    - [1990 outbound, 5, "2/1", "1/2 family above and a 1/1 family to the right; some aero minima on the 1.1-radius limit"]
+    - [1990 inbound, 5, "2/1", "two 2/1 families; 1/1 to the left, 1/2 and 2/2 to the right; several minima use outbound direct flights at the range boundary"]
+    - [1993 outbound, 3, "2/1", "only family; multiple solutions where passage-distance contours cross; one aero 30-day, 720-day case on the 1.1-radius limit"]
+    - [1995 inbound, 3, "1/2", "only family; all minima stationary and unaffected by the passage-distance constraint"]
+    - [1997 outbound, 5, "2/1", "another 2/1 family (launch before JD 2450100), two 1/2 families and a 1/1 family; nearly all minima affected by the constraint; entry speeds shown for all three stopover times"]
+    - [1997 inbound, 5, "1/2", "other families 1/2 (Earth arrival near JD 2450970), 2/1 and 1/1 (arrival near 2450800)"]
+    - [1999 outbound, 3, "2/1", "only family; cut-out in the upper left of the swingby contours (as 1988 inbound)"]
+  note: "Read from the discussion pages (PDF pp.37, 41, ..., 97), checked on the images for 1975 inbound, 1978 outbound and 1978 inbound; the rest are from the text layer, which is clean on these pages. Text, not tables, so one witness (A) for most."
+
+chart_read_values:   # ONE witness (the plot)
+  - {chart_read: true, fig: "3-1A", opportunity: "1975 inbound", axes: "left panel: Julian date leaving Earth 2442550 (17 May 75) to 2442700 (14 Oct 75) against date at Mars 2442700 (14 Oct 75) to 2442900 (1 May 76); right panel: date arriving Earth 2443100 (17 Nov 76) to 2443250 (16 Apr 77); tick labels 2442600 (6 Jul 75), 2650 (25 Aug 75), 2750 (3 Dec 75), 2800 (22 Jan 76), 2850 (12 Mar 76), 3150 (6 Jan 77), 3200 (25 Feb 77)", contour_labels: "speed at Earth and at Mars in EMOS x 10 (1.0 to 6.0 on the outbound legs, 1.0 to 3.0 on the swingby leg), Venus passage distance 1.0 to 6.0 Venus radii (labels 1.2 to 6.0 read), Venus swingby date labels 2443020, 3030, 3040, 3050", note: "values not read to better than about the contour spacing"}
+  - {chart_read: true, fig: "3-1B", opportunity: "1975 inbound", quantity: "minimum total mission velocity against mission duration (480 to 680 days), propulsive braking about 11 to 13 km/s depending on stopover (0, 30, 60 days), aerodynamic braking about 7.8 to 9.5 km/s", uncertainty_km_per_s: 0.7}
+  - {chart_read: true, fig: "3-1C", opportunity: "1975 inbound", quantity: "Earth entry speed for the 30-day stopover, about 14 km/s at 480 days falling to about 10.4 km/s near 570 days, about 10.5 km/s near 680 days; a discontinuity near 580 to 600 days", uncertainty_km_per_s: 0.5}
+  - {note: "The other 15 chart sets were not read for values: the numbers are in the three supplements (not in this document)."}
+
+tape_and_supplements:
+  - "Supplement A (zero-day stopover), B (30-day) and C (60-day): tabular trajectory data, 16 opportunities each, printed separately and 'available upon request' from the Ames Technical Information Division; NOT in this PDF. NTRS carries three records called the first, second and third of three supplements to this handbook: 20070014478, 20070014485, 20070014479 (the A, B, C order is inferred from first, second, third)."
+  - "Magnetic tape: one-way trajectory data (53-word swingby records, 26-word direct records), 800 bpi, IBM 7094 Fortran IV; block order outbound swingbys 1978, 1980, 1984, 1986, 1990, 1993, 1997, 1999; inbound swingbys 1975, 1978, 1982, 1984, 1988, 1990, 1995, 1997; then outbound direct (1975, 1978, 1982, 1984, 1988, 1990, 1995, 1997) and inbound direct (1978, 1980, 1984, 1986, 1990, 1993, 1997, 1999). Word map Table A-1 (printed p.97)."
+
