@@ -2972,6 +2972,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   scope, (D) unclear. Also assesses whether the original 3-lap rotating-frame gate is shorter than each system's
   geometric repeat. Output: `docs/notes/2026-10-11-1061-v2-negatives-sweep.md` with an (A)/(D) re-judgement list.
   No re-judgement is run under this task.
+- `#1062` — registered 2026-10-11 (lead ruling on `#1047`; BACKLOG, for twobody-gen2 later). **LITERATURE GATE:
+  CITE THE ANCHOR CLOSEST TO THE CANDIDATE, NOT THE FIRST IN CORPUS ORDER.** `build_queries` adds a keyword
+  query from the first in-footprint anchor, and `check_literature` cites the first anchor in `KNOWN_CORPUS`
+  order that the hit corroborates. For an Earth-Moon resonant signature that is always Braik & Ross 2026, even
+  for a literal Casoliva 2010 member. Status is not affected; the citation is. Test: the Casoliva 7-3b
+  signature (Earth, ("Moon",), 7:3, T 18.8496, topology {"resonant"}) must cite Casoliva 2010. Detail:
+  `docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md` secs. 7-8.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
