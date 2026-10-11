@@ -221,3 +221,21 @@ moving-Pluto screen.
   I run it; otherwise the lead gets the exact command.
 - No backgrounding. Commits by pathspec. Hashes are reported from `git log -1` in a step after the
   commit.
+
+## 7a. Amendment A2 (implementation bugs, found in the first continuation run before any analysis; 2026-10-11 16:00 AEDT)
+
+The first run of `continue` (before commit; its outputs are discarded) showed two implementation bugs.
+The criteria are unchanged:
+1. **Records keyed by the cycle key.** The #998 gauntlet's representative keys are not unique (two
+   merged groups can share a key), so members were lost (ps 183 -> 181, pk 62 -> 56). Records are now
+   keyed by the gauntlet index. The `realeph` step matches a #998 member by key AND its ideal worst
+   ratio.
+2. **Floating-point lambda.** Ten steps of 0.1 sum to 0.9999999999999999. The next step was then
+   about 1e-16, and the branch-jump guard, "scaled to the step", allowed only about 1e-16 of motion.
+   Any solver noise was rejected, and 81 of 107 "folds" ended at lambda = 1 - 1e-16. The fix:
+   - lambda snaps to 1 within 1e-9;
+   - the guard's scale is floored at the smallest legal step, 1/640 of lambda. That floor is inside
+     the pre-registered "halved down to 1/640", so the guard is unchanged for every legal step.
+
+The continuation is re-run in full after this amendment. The controls are unaffected: they reached
+lambda = 1 through the same code, and are re-run anyway.

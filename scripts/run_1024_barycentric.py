@@ -240,22 +240,24 @@ def cmd_continue(argv: list[str]) -> None:
         (REPO / "data" / "998_pluto_smallmoons" / f"{args.cell}_gauntlet.json").read_text()
     )
     i_sh, n_sh = (int(v) for v in args.members.split("/"))
-    cands = [c for j, c in enumerate(g["candidates"]) if j % n_sh == i_sh]
+    # gauntlet keys are not unique (two merged groups can share a representative key): index ids
+    cands = [(j, c) for j, c in enumerate(g["candidates"]) if j % n_sh == i_sh]
     _preflight(f"pluto-{args.cell}-barycentric-continuation-1024", len(cands))
     done: dict[str, Any] = {}
     if args.out.exists():
-        done = {r["key"]: r for r in json.loads(args.out.read_text())}
+        done = {r["index"]: r for r in json.loads(args.out.read_text())}
     off = DRV998.pluto_system(moon)
     a_rel = off.bodies["Charon"][0]
     mu_c = GM_CHARON / off.mu
     sys0 = barycentric_binary(off, "Charon", 0.0)
     sys1 = barycentric_binary(off, "Charon", mu_c)
     t_run = time.time()
-    for j, c in enumerate(cands):
-        if c["key"] in done:
+    for jj, (j, c) in enumerate(cands):
+        if j in done:
             continue
         t0 = time.time()
         rec: dict[str, Any] = {
+            "index": j,
             "key": c["key"],
             "strong_998": c["strong"],
             "worst_ratio_998": c["worst_ratio"],
@@ -269,6 +271,11 @@ def cmd_continue(argv: list[str]) -> None:
         r_zero = date_residual(sys0, cyc, x0)
         rec["lambda0_residual_off_kms"] = None if r_off is None else float(np.max(np.abs(r_off)))
         rec["lambda0_residual_kms"] = None if r_zero is None else float(np.max(np.abs(r_zero)))
+        if "|H" not in c["key"]:
+            a0 = assess(sys0, Zero(cyc, x0, 0.0))
+            rec["lambda0_max_dvinf_charon_kms"] = abs(
+                a0.vinf_kms.get("Charon", math.inf) - float(c["vinf_charon_kms"])
+            )
         if "|H" in c["key"]:
             rec["outcome"] = "EXCLUDED (half-rev leg)"
         else:
@@ -278,11 +285,11 @@ def cmd_continue(argv: list[str]) -> None:
             if rr["outcome"] == "CONTINUES":
                 rec |= reassess(sys1, cyc, np.asarray(rr["x"]))
         rec["secs"] = time.time() - t0
-        done[c["key"]] = rec
+        done[j] = rec
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(list(done.values()), indent=1, default=float))
         log(
-            f"{args.cell} [{j + 1}/{len(cands)}] {rec.get('outcome')} pass={rec.get('pass')} "
+            f"{args.cell} [{jj + 1}/{len(cands)}] #{j} {rec.get('outcome')} pass={rec.get('pass')} "
             f"strong={rec.get('strong')} worst={rec.get('worst_ratio')} "
             f"({rec['secs']:.1f}s; {time.time() - t_run:.0f}s total)"
         )
