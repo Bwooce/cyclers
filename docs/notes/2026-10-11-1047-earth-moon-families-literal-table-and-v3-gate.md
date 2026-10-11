@@ -258,3 +258,48 @@ Window patch (apply script in my scratchpad, one match asserted per edit):
   rebuilt from HEAD and re-patched. Then all 82 files passed (EXIT 0 in every chunk).
 - Final ratchet deltas: non-keplerian count 56 -> 59 and NON_KEPLERIAN_IDS +3 (59); unvalidated
   144 -> 147; V1 census +3; NON_HELIOCENTRIC 111 -> 114. Nothing else moved.
+
+## 10. What the three rows mean (for the owner summary)
+
+**What they are.** Rows A, B and D are three asymmetric periodic orbits of the planar Earth-Moon
+CR3BP. Each passes the Moon once per period, inside the Hill radius. They are p:q resonant: A
+makes 5 inertial revolutions about the Earth while the Moon makes 2, prograde. B is 5:3
+retrograde. D is 7:3 prograde. Each row is one member of a family that #1000 and #1048 continued
+over a range of Jacobi constant. All three are strongly unstable (|k| about 110, 115 and 720).
+
+**How they relate to Casoliva's class.** Casoliva et al. 2010 describe two classes of Earth-Moon
+cyclers. Their Class 1 is the near-Keplerian p-q resonant cycler: a spacecraft on an Earth orbit
+in p:q resonance with the Moon, corrected into an exact periodic orbit of the CR3BP. That class
+includes asymmetric orbits: their 7-3b and 7-3c are one asymmetric orbit and its mirror (#1053),
+and our family C contains them. A, B and D are the same kind of object. Casoliva's Table 3
+tabulates only p-q = 1-2, 2-1, 3-2 and 7-3, and her 7-3 rows are retrograde. So A (5:2), B (5:3)
+and D (7:3 prograde) are at p:q values or a sense that the source did not tabulate.
+
+**Why known-class-member and not candidate-novel.** Under the #875 policy the literal check comes
+first, then the class:
+- Literal: no published orbit held as numbers is a member of any of the three families (#1047 literal
+  table: Casoliva 2008 and 2010, Vaquero 2013, Newton 1959, Liang 2017 and 2020, Hoelker-Winston
+  1968, Genova-Aldrin 2015). So none of them is known-reproduction.
+- Class: the object class is published (Casoliva Class 1, including its asymmetric members). A
+  p:q resonant Earth-Moon periodic orbit is also the subject of the Kumar, Rawat, Rosengren & Ross
+  papers, and of Liang 2017 for the same 5:2 and 7:3 ratios, with different orbits. A new p:q value
+  or sense inside a published class is "a computed member of a published class" (spec sec. 16.4;
+  #875 (iii)). It is not an author-excluded class (#875 (i)) and not a new system (#875 (ii)).
+- The two databases that would hold such orbits leave them out by their own construction rules.
+  Restrepo-Russell keeps axisymmetric orbits only. Franz-Russell drops orbits that go further than
+  about 350,000 km from the Moon, and these reach 795,000-957,000 km. Their absence from those
+  databases is therefore not evidence of novelty.
+- The v3 literature gate returns "published" at class level. It does not compare p:q, so it
+  supports the class reading and says nothing about the specific families.
+
+**What would change the classification.**
+- To known-reproduction: a published orbit that falls on one of these families (a member of A, B or
+  D), found in a source not yet held as numbers. Examples are a Liang-type averaged orbit continued
+  through A's suspected fold near C 3.097 (#1050), or another author's p:q table.
+- To candidate-novel: only if the class reading is wrong. That would need evidence that these
+  orbits are not of Casoliva's Class 1 kind, for example a topology the near-Keplerian
+  resonant-cycler construction cannot produce. Nothing found so far points that way. Their windings,
+  resonance and continuation from p:q Kepler skeletons are exactly that construction.
+- Withdrawal: if the V1 evidence fails on a re-check. An example is a closure that does not hold arc
+  by arc with an independent integrator, or a periselene outside the Hill radius at the row's
+  state. The writeback test re-checks both on every run.
