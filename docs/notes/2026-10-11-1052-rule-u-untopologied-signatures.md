@@ -183,3 +183,17 @@ pre-registered. A 26-body anchor makes k = 4 about 36k shapes, about 3 h; the 1-
      byte-identical.
 
 The probe and the litcheck scripts re-run with U2 in place after the ruling.
+
+## Addendum A2 (2026-10-11): lead rulings on the A1 findings, recorded before the U2 run
+
+1. The stop rule is AMENDED: single-body Sun signatures, one distinct body E or M (e.g. (E,), (M,),
+   (M, M)), may move from published to inconclusive in ANY topology. That is the Aldrin fix's intent.
+   - Every other topologied signature must not change, EXCEPT under U2 (item 3).
+   - Nothing anywhere may move toward "not-found" or "known-architecture-new-system".
+2. The "byte-identical" expectation for `data/942_943_litcheck_scope.json` is corrected to: every
+   status identical; the notes may list the newly tagged anchors as "[n-bodies]" excluded, and the
+   footprint count may change. This is recorded as a PRE-REGISTRATION SLIP, not a result.
+3. U2 is added. Probe classification for topologied signatures: a published -> inconclusive move is
+   allowed only if the baseline citation is one of the 7 UNLABELLED anchors (U2 by design), or if
+   item 1 applies. Anything else is a violation.
+4. The 1-3-body subset deviation (instead of 1-4) is accepted; reason in A1.
