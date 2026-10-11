@@ -1,0 +1,116 @@
+# Uphoff, Roberts and Friedman 1976, "Orbit Design Concepts for Jupiter Orbiter Missions": every printed table and the numbers
+# printed in the text and on the figures.
+# Source: C. Uphoff (Vector Sciences, Inc., under JPL contract), P. H. Roberts and L. D. Friedman, Jet Propulsion Laboratory.
+#   J. Spacecraft and Rockets 13(6):348-355, June 1976. DOI 10.2514/3.57096. Presented as AIAA Paper 74-781, Anaheim,
+#   5-9 August 1974; submitted 2 January 1975; revision received 10 November 1975.
+# Local file: 8 pp., 300 dpi bilevel scan with a FineReader OCR layer, md5 d31e092e08af7c5dc25af7ef6343c13d.
+#   PDF page 1 = printed p.348 ... PDF page 8 = p.355. Table 1 on p.351 (PDF p.4). Table 2 on p.354 (PDF p.7).
+# Witnesses (three, per number): A = the OCR text layer (pdftotext raw order); B = the OCR text layer (pdftotext -layout);
+#   C = page render read by eye (130 dpi for every page; 300 dpi crop for Fig. 3). A and B are two extractions of ONE OCR
+#   pass, so they are not independent of each other on OCR misreads. C is the check that matters. A, B and C agree on every
+#   digit below except where a `note:` says otherwise. The OCR layer garbles Table 2 (rows out of order) and the equations
+#   (minus signs and subscripts); those were read from C.
+# Units as printed: R_J = Jupiter radii (the paper's R_J = 71372 km), days, km, deg, km/s, m/s. Everything under `ours:` is
+#   computed by us, never printed.
+table_1_semilatus_rectum_odd_n_pi_transfers_RJ:   # printed p.351; p = 2 r1 r2 / (r1 + r2) for circular coplanar satellite orbits
+  columns: [from_to, Io, Europa, Ganymede, Callisto]
+  rows:
+    - [Io,       5.9,  7.3,  8.5,  9.6]
+    - [Europa,   7.3,  9.4, 11.6, 13.9]
+    - [Ganymede, 8.5, 11.6, 15.0, 19.1]
+    - [Callisto, 9.6, 13.9, 19.1, 26.4]
+  note: "The printed caption says values of p for odd n-pi transfers; the text says p is given in Jupiter radii of 71372 km and the satellites are idealised as circular and coplanar. The diagonal is the satellite orbit radius itself (a circle: p = r)."
+  ours:
+    check: "From the printed diagonal (5.9, 9.4, 15.0, 26.4) the formula gives all ten off-diagonal values to the printed digit: Io-Europa 7.25 (printed 7.3), Io-Ganymede 8.47 (8.5), Io-Callisto 9.64 (9.6), Europa-Ganymede 11.56 (11.6), Europa-Callisto 13.87 (13.9), Ganymede-Callisto 19.14 (19.1). With the diagonal computed from standard mean orbit radii and R_J = 71372 km, Io-Callisto gives 9.7, one digit different, because Io's radius rounds to 5.91. The table is internally consistent."
+table_2_sample_satellite_tour:   # printed p.354 (PDF p.7); null = blank cell
+  columns: [orbit_no, R_p_RJ, period_days, date_mm_dd_yy, satellite, inbound_I_or_outbound_O, flyby_altitude_km, latitude_deg, smear_velocity_kms]
+  rows:
+    - ["Insertion", 14.0, null, "07-19-84", "Ganymede", "I", 1000, 0, 6.8]
+    - [1, 14.0, 104, "11-08-84", "Ganymede", "I", 1302, 9, 5.6]
+    - [2, 13.4, 43, "12-19-84", "Callisto", "I", 111000, -83, 6.4]
+    - [null, null, null, "12-21-84", "Ganymede", "I", 1268, -78, 5.6]
+    - [3, 13.2, 38, "01-31-85", "Callisto", "O", 5996, 0, 6.4]
+    - [20, 11.8, 15, "12-20-85", "Ganymede", "O", 10575, 0, 5.0]
+    - [null, null, null, "12-30-85", "Callisto", "I", 442000, 0, 5.9]
+    - [21, 11.4, 13, "01-01-86", "Ganymede", "I", 1155, 0, 5.5]
+    - [33, 8.4, 12, "07-08-86", "Europa", "I", 1114, -1, 5.8]
+    - [34, 8.5, 14, "07-23-86", "Europa", "I", 1389, -86, 5.8]
+    - [35, 8.5, 14, "08-06-86", "Europa", "I", 1388, 86, 5.8]
+    - [40, 9.8, 20, "10-27-86", "Ganymede", "I", 1750, -26, 7.3]
+    - [41, 10.5, 29, "11-25-86", "Ganymede", "I", 850, 0, 7.4]
+    - [42, 11.3, 57, null, null, null, null, null, null]
+  printed_rows_of_dots: "Rows of dots stand between orbit 3 and orbit 20, between 21 and 33, and between 35 and 40 (omitted encounters). The note '(Bow shock excursion ~ 12-25-85)' is printed between the rows of orbits 41 and 42."
+  note: "The text says the full sequence has 42 close (control) encounters: 28 with Ganymede, 9 with Callisto and 5 with Europa. The complete sequence is in the paper's ref. 5 (Mariner-Jupiter-Orbiter Study Report, JPL 760-120, July 1975). The text says the sequence begins with perijove at 14 R_J and slow lowering to a minimum of 8.4 R_J as the period falls from 105 to 14 days; the table prints 104 for orbit 1 and 14 for orbits 34 and 35. Orbit 2 carries two printed encounters (Callisto at 111,000 km, then Ganymede at 1268 km) and so does orbit 20 (Ganymede at 10575 km, then Callisto at 442,000 km). The 111,000 km and 442,000 km passes are standoff encounters in the text's sense (100,000 to 500,000 km). The column 'smear velocity' is not defined in the text."
+  ours:
+    day_intervals_between_consecutive_printed_encounters: {"07-19-84_to_11-08-84": 112, "11-08-84_to_12-19-84": 41, "12-19-84_to_12-21-84": 2, "12-21-84_to_01-31-85": 41, "12-20-85_to_12-30-85": 10, "12-30-85_to_01-01-86": 2, "07-08-86_to_07-23-86": 15, "07-23-86_to_08-06-86": 14, "10-27-86_to_11-25-86": 29}
+    reading: "Where two printed encounters are consecutive orbits, the interval matches the printed period of the second row to within 3 days (orbit 41: 29 against 29; orbit 35: 14 against 14; orbit 34: 15 against 14; orbit 2: 41 against 43; orbit 3: 41 against 38). Orbit 1: 112 d from insertion against a printed period of 104."
+    encounter_count: "28 + 9 + 5 = 42, equal to the 42 orbit numbers of the full sequence."
+    bow_shock_date_flag: "The note prints 12-25-85. It sits after orbit 41 (25 November 1986) and before orbit 42, and the text puts the excursion two and a half years after orbit insertion (19 July 1984 plus 2.5 years is mid-January 1987). 12-25-85 falls in orbit 20, whose period is 15 days, so it cannot be a bow-shock excursion. The OCR and the render both read 12-25-85. It is probably a misprint for 12-25-86. Recorded as printed."
+text_numbers:
+  sample_high_inclination_transfer_ganymede_to_europa:   # printed p.351
+    - {item: "target inclination", value: "near 30 deg"}
+    - {item: "pre-swingby orbit period", value: "37.4 days"}
+    - {item: "pre-swingby perijove radius", value: "6.0 R_J"}
+    - {item: "initial inclination to the Jovian equator", value: "27 deg"}
+    - {item: "date at Ganymede", value: "Aug. 24, 1984"}
+    - {item: "outbound Ganymede flyby altitude", value: "4300 km"}
+    - {item: "arrival at Europa", value: "Sept. 28, 1984; flight time 35 days"}
+    - {item: "transfer orbit perijove radius", value: "5.12 R_J"}
+    - {item: "semilatus rectum of the transfer orbit", value: "11.396 R_J (idealised value 11.6, Table 1)"}
+    - {item: "semi-major axis from the circular coplanar analysis", value: "45 R_J"}
+    - {item: "semi-major axis of the actual transfer orbit", value: "44.38 R_J"}
+    - {item: "return leg", value: "540-deg transfer from Europa inbound on Nov. 2 to Ganymede outbound on Dec. 9, flyby altitude at Europa greater than 6000 km"}
+  ours_transfer_check: "With a = 44.38 R_J and p = 11.396 R_J the ellipse has e = 0.8621 and perijove radius a(1 - e) = 6.12 R_J, not the printed 5.12; with the printed 5.12 and 11.396 the eccentricity would be p/r_p - 1 = 1.226 (not an ellipse). With 6.12 the true anomalies at Ganymede (15.0 R_J) and Europa (9.4 R_J) are 106.18 and 75.74 deg, which sum to 181.9 deg (an odd-n-pi arc, n = 1), and the time from outbound Ganymede to inbound Europa is 35.2 days, the printed 35. So the printed 5.12 is inconsistent with the paper's own p, a and flight time, and 6.12 is consistent with all three. Recorded as printed. Also: a = 45 R_J has a period of 37.19 days and a period of 37.4 days gives a = 45.17 R_J, so the '45 R_J' of the text is the 37.4 day pre-swingby orbit."
+  cranking_at_callisto_fig_3_text:
+    - {item: "flyby altitude example", value: "1300 km (0.5 R_Callisto)"}
+    - {item: "inclination reached", value: "50 deg in 0.75 years"}
+    - {item: "periapsis goes from", value: "4.2 R_J to 20 R_J in that time"}
+    - {item: "encounters for the entire sequence", value: "about 20"}
+    - {item: "typical maximum inclination by cranking", value: "of order 30-60 deg for realistic orbits"}
+    - {item: "swingbys needed to reach i_max from 0", value: "90 deg / delta (delta = largest crank per flyby)"}
+  fig_5_text:
+    - {item: "baseline insertion dV", value: "1290 m/s"}
+    - {item: "powered Ganymede swingby insertion", value: "at 13 R_J, 1740 m/s, a saving of 450 m/s against direct perijove insertion into the same orbit"}
+    - {item: "same dV: orbit period", value: "80-day orbit instead of the 400-day orbit of direct insertion at 13 R_J"}
+    - {item: "powered swingbys constrained to pass no closer than", value: "1000 km above the satellite surfaces"}
+    - {item: "pump", value: "repeated encounters can change the period by amounts that would need more than 5 km/s propulsively"}
+    - {item: "crank example", value: "start in a highly elliptic equatorial orbit of Callisto's period (about 16 days); after 20 encounters, a circular orbit at Callisto's distance inclined nearly 60 deg"}
+  launch_and_cruise:
+    - {item: "launch opportunities", value: "1980, 1981-1982 (most attractive), 1983"}
+    - {item: "arrival dates", value: "July 1984 to Dec. 1984 (Type 1, < 180 deg transfers); July 1984 to April 1985 (Type 2, > 180 deg)"}
+    - {item: "launch window and energy", value: "20-day window for C3 <= 80 km^2/s^2"}
+    - {item: "approach excess velocity", value: "under 6 km/s throughout the window"}
+    - {item: "interplanetary transfer", value: "about two and a half years"}
+  perturbations_and_navigation:
+    - {item: "oblateness: perijove below", value: "2 or 3 R_J gives a few tenths of a deg orientation change, targeting errors of several thousand km; tens of thousands of km at R_p = 1.1 R_J"}
+    - {item: "solar perturbation on large-apojove orbits", value: "perijove changes of a few tenths of R_J, targeting errors several tens of thousands of km"}
+    - {item: "low-order resonance perturbation", value: "period about 400 days, amplitude 0.35 R_J (about 25,000 km); total about 50,000 km in about 200 days (about 25 revolutions), about 2000 km per revolution"}
+    - {item: "targeting error from resonance perturbations", value: "10,000 to 50,000 km"}
+    - {item: "standoff encounters avoided if closer than", value: "100,000 km (moderately close: 100,000-500,000 km)"}
+    - {item: "Mariner-Jupiter-Saturn a priori / a posteriori position errors", value: "350 km / 20 km"}
+    - {item: "assumed 1981 a priori ephemeris", value: "50-100 km"}
+    - {item: "radio-alone 1 sigma position error", value: "about 400 km before in-flight satellite ephemeris determination, 50-200 km after"}
+    - {item: "optical navigation", value: "about 1 pixel (1 sigma) or about 20 microrad; extended-satellite centre finding about 1% of the apparent diameter, possibly 0.2%; position determination under 50 km (1 sigma); flybys under 400 km permissible"}
+    - {item: "navigation dV", value: "a few m/s per orbit (99%); 5-10 m/s mean per orbit for flybys of 500-2000 km; under 300 m/s for the whole mission; two, probably three impulses per orbit"}
+  sample_tour_text:
+    - {item: "close encounters with each of the three outer Galilean satellites", value: "1000-2000 km, passes above and below each satellite"}
+    - {item: "perijove", value: "begins at 14 R_J, slow lowering to a minimum of 8.4 R_J as the period falls from 105 to 14 days"}
+    - {item: "bow-shock excursion", value: "two and one half years after orbit insertion"}
+    - {item: "encounters", value: "28 with Ganymede, 9 with Callisto, 5 with Europa (42 in all)"}
+    - {item: "Io imaging distance at the minimum perijove", value: "186,000 km"}
+    - {item: "magnetopause / bow-shock region", value: "150-200 R_J"}
+    - {item: "alternative orbit", value: "shrunk to 14 x 26 R_J (Hohmann transfer between Ganymede and Callisto), a Ganymede orbiter for about 1 km/s extra retromaneuver"}
+    - {item: "cranking option", value: "several-month cranking sequence to 30 or 40 deg inclination"}
+    - {item: "other tours", value: "'only one of perhaps a hundred' that would meet the same objectives"}
+    - {item: "flower orbit", value: "four large orbits sampling the magnetopause 90 deg apart (ref. 16)"}
+  ours_text_checks: "Hohmann ellipse between Ganymede and Callisto: perijove 15.0 R_J and apojove 26.4 R_J from the printed Table 1 diagonal, so '14 x 26' is one R_J low at the perijove end. The minimum perijove 8.4 R_J less Io's orbit radius 5.9 R_J is 2.5 R_J = 178,000 km, against the printed 186,000 km (4.7 percent; the paper's geometry is not given). 20 Callisto revolutions of 16.69 days are 334 days = 0.91 years; the text gives 0.75 years (16.4 revolutions) for 50 deg at 1300 km altitude and 'about 20 encounters' for the entire sequence, which can both hold if 50 deg is reached before the end of the sequence."
+figure_labels:
+  fig_1_zero_patched_conic_geometry: "V (satellite jovicentric velocity), V_b and V_a (spacecraft jovicentric velocity before and after), V_inf_b and V_inf_a (excess velocity before and after)"
+  fig_2_cranking_and_pumping_geometry: "V_inf sphere on the satellite velocity; i = 0 satellite orbit plane; i = maximum circle; locus of return trajectories; angles alpha, beta_b, beta_a, epsilon, delta"
+  fig_3_one_to_one_orbit_cranking_at_callisto:
+    axes: "inclination 0 to 80 deg (left); periapsis radius 0 to 40 R_J (right); number of revolutions 0 to 60 (bottom); time 0 to 1000 days (top)"
+    curves: "inclination (solid) and periapsis radius (dashed) for swingby altitude H_S = 0, 2600 and 5200 km"
+    reading: "The inclination peak is near 59 deg at about 18 revolutions for 0 km, near 36 revolutions for 2600 km and near 54 revolutions for 5200 km (single-witness plot readings). The two axes give 1000 days / 60 revolutions = 16.7 days per revolution, Callisto's period."
+  fig_4_jupiter_orbiter_navigation_concepts: "nominal trajectory, actual trajectory, first nominal maneuver, retargeting maneuver, multi-nominal trajectory, transfer trajectory to regain nominal, new target and nominal target"
+  fig_5_jupiter_orbit_insertion_performance: "periapsis radius 0 to 30 R_J against insertion dV 0 to 8 km/s, with a baseline dV line at 1290 m/s, orbital period lines labelled along the top (800, 200, 100, 50, 30, 20 days and '10 days' on a line; the leftmost rotated label is not legible at 300 dpi), pump curves, 1-to-1 crank curves for each satellite, powered-swingby points and flyby, parabolic, probe, surface regions. Labelled satellites sit on the circular-orbit curve at periapsis radius about 26.4, 15, 9.4 and 5.9 R_J (Callisto, Ganymede, Europa, Io), ending at the insertion dV of about 4.8, 5.6, 6.6 and 8.0 km/s."
+  fig_6_sample_satellite_tour_profile: "Jupiter-centred plan view after the paper's ref. 14: orbit numbers 1, 5, 10, 12, 20, 40 and 42; the orbits of Callisto, Europa and Ganymede; the bow shock and magnetopause; the Sun direction"
