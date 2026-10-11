@@ -59,8 +59,12 @@ repaired and its status (partly done under `#937`, owner ruling) recorded; `#938
 registered. The `data/README.md` stale counts above were fixed in the same pass (live catalogue:
 392 rows on 2026-10-05).
 
-**Novelty status (updated 2026-10-11, catalogue window 2 `397df88d`; counted from `data/catalogue.yaml`):
-423 rows; 29 `candidate-novel`; 0 `verified-novel`; V2 count 11.** The 29: gc-1
+**Novelty status (updated 2026-10-11 evening, catalogue window 3; counted from `data/catalogue.yaml`):
+426 rows; 29 `candidate-novel`; 0 `verified-novel`; V2 count 11.** Window 3 added the three `#1047` Earth-Moon
+rows `earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026`, `earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026`
+and `earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026` as `known-class-member` V1 (computed members of the
+Casoliva 2010 Class 1 p-q resonant class; owner: "Rows for A, B, D only"), with row-text updates for `#1007`
+and `#1056`; `known-class-member` rows now 28. The 29: gc-1
 (`ganymede-callisto-two-working-body-cycler-gc1-2026`, V2) and 15 more Ganymede-Callisto members (gc4-1, 2, 6,
 8, 10, 25, 28, 38, 41, gc5-3, 5, 6, gc6-0, 1, 2; `ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`,
 V1, family relation to gc-1); 13 Earth-Venus rows: ev-A (`earth-venus-two-working-body-cycler-eva-2026`, V2),
@@ -74,6 +78,16 @@ judge them, `#1057`); the gc members' continuous-gravity standing is the ideal-m
 is window-dependent. V2 uses the 2026-10-11 spec sec. 14 V2-ballistic wording (bounded = the same-phase band,
 first and last cycle excluded, slope recorded), under which gc-1, gc-2 and ev-A pass 5/5 (`#1007` secs.
 8.10-8.14). Each row records its owner decision and its `#972` gate result.
+**ev-10 V2 judgement (`#1025` rung-d note secs. 11.6-11.8, `f36e0e44`):** under the final sec. 14 wording,
+ev5-7, ev5-8 and ev5-9 PASS 4/5 and ev5-6 PASS 3/5 (sec. 11.8 proposes all four V1 -> V2); ev5-4 and ev5-5 FAIL 2/5 (e0 and e2 open on load timeouts, e1
+over the drift band); the four k = 4 rows cannot be judged at L = 38 (their 10-cycle diagnostic chains pass
+criteria 1-3 at 5/5). No row has changed level yet (V2 count still 11); promotion goes through a window.
+**`#1055` GanCal#1 closing verdict (note sec. 12.3 FINAL, `71418396`):** the corrected seed starts on jup365
+(the first start under any formulation; the amendment-8 negative control fails on both sides, so the start
+depends on the correction), tracks to sigma 0.7374 and FOLDS (amendment 12, R^2 0.994): no full-mass orbit
+on that branch, and it is a different member of the degenerate family (G2 periapsis about 89,000 km against
+28,327 km); the chain tool's own GanCal#1@2013 object is a non-root. The jup365 lane is NOT validated on a
+full-revolution chain at full mass. gc4-19 passes the member-identity check on its own `#973` member.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
 rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
 torus row on 2026-10-03 (`#882`); `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Older
@@ -172,7 +186,14 @@ the gc4-19 row (`#1055`): "Hold until GanCal#1 on jup365 reports"; the 15 known-
 (`#1047`): "Rows for A, B, D only" (known-class-member V1; earthmoon-opus prepares the patch after `#1054` arm
 E); the Earth-Mars L rule for the Russell ch. 4 re-judge (`#1061` D item 2): "Set 0.02 rev now" (a strict
 tolerance for all systems; twobody-gen2-opus computes L in code first; ev-B's L is 49 under it, its verdict
-unchanged).
+unchanged). Added and DECIDED 2026-10-11 evening (verbatim labels): gc4-19 (`#1055` sec. 14):
+"Candidate-novel V1 row, like the 15" (supersedes "Hold"; row prepared from the draft, applied in catalogue
+window 4); the Pluto small-moon periods (`#1022`): "Store the fitted period beside a" (pre-registered as
+`#1022d`, `b99ffb56`; Brozovic-Jacobson 2024 Table 11 mean motions; `#1067` registered); the `#1052` gate
+rules (rule U, rule U2 and the Aldrin single-body fix, lead ruling on gate semantics) confirmed by the owner.
+**Corpus intake 2026-10-11 (`#960`):** 47 new digests and 40 new `data/sources` tables committed today
+(including Landau-Longuski 2007 semicyclers, North American Rockwell 1968 SD 67-621-1 with its errata sheet,
+Hénon 1966a/b, Brozovic-Jacobson 2024, Llibre-Olle 2001); CORPUS_INDEX and the wanted list updated with them.
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
