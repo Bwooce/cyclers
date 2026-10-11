@@ -317,8 +317,9 @@ Data: `data/1054_seed_design/grid_f1.jsonl` (5,256 seeds, all solved) and `grid_
 - The drop is in first-arc impacts (0.286 -> 0.200), as in the pilot. Later-iteration impacts rise a little
   (0.304 -> 0.338).
 - All 15 #1000 family keys are found, including the four 1-2-member keys flagged as at risk. Member counts
-  F1/#1000: 7:3 ret wE-10 wM0 1/1; "7:3 ret wE-9 wM0" 1/1; 8:3 ret 9/2; D 3/2. 12 of the 15 keys have as many
-  or more members than in #1000 (the exceptions: 2:3 ret 9/10; A and B equal).
+  F1/#1000: 7:3 ret wE-10 wM0 1/1; "7:3 ret wE-9 wM0" 1/1; 8:3 ret 9/2; D 3/2. 14 of the 15 keys have as many
+  or more members than in #1000; the exception is 2:3 ret, 9/10. (Corrected: the first version of this line,
+  in 00c1358f, said "12 of 15".)
 
 **Four family keys not in the #1000 grid**, checked as pre-registered (`scripts/run_1054_keys.py`,
 `data/1054_seed_design/new_keys_check.json`).
