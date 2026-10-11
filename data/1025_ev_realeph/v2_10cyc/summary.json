@@ -53,26 +53,26 @@
  },
  "ev5-4": {
   "L": 1,
-  "verdict": "FAIL",
-  "passes": 2,
+  "verdict": "PASS",
+  "passes": 3,
   "c123_epochs": null,
   "epochs": [
    "NO 10-CYCLE CHAIN",
    "FAIL",
-   "NO 10-CYCLE CHAIN",
+   "PASS",
    "PASS",
    "PASS"
   ]
  },
  "ev5-5": {
   "L": 1,
-  "verdict": "FAIL",
-  "passes": 2,
+  "verdict": "PASS",
+  "passes": 3,
   "c123_epochs": null,
   "epochs": [
    "NO 10-CYCLE CHAIN",
    "FAIL",
-   "NO 10-CYCLE CHAIN",
+   "PASS",
    "PASS",
    "PASS"
   ]

@@ -962,3 +962,25 @@ Expected, from the 3-cycle rung (d) results of sec. 6 (all 5/5 by S1):
 - Statement for the rows' data_gaps: "ballistic 10-cycle (64-yr) Standish chains close with the gate
   and re-fly passing at 5/5 epochs (worst 0.83 / 0.98); V2 is not judgeable under the spec sec. 14
   wording (geometric repeat L = 38 at 0.02 rev needs >= 76 cycles)".
+
+### 11.9 The ev5-4 / ev5-5 retries (lead launch 2026-10-12 09:11-09:14 AEDT; `--timeout 3600`; `data/1025_ev_realeph/v2_10cyc/lead_retry_ev5-{4,5}.out`)
+
+The S2 route was re-run at the two epochs that sec. 11.6 left open on timeouts, with S3 where S2 is
+not reached. The machine load was low this time.
+
+| Row | e0 | e2 | Verdict |
+|---|---|---|---|
+| ev5-4 | NO 10-CYCLE CHAIN: S2 not reached (39 s), S3 not reached (15 s) | **PASS** (S2, 48 s): gate 0.726, re-fly 2.7e-3 km, D' 0.54 / 2.82 d, W' 0.018 / 0.65 km/s, slopes -0.038 d and +0.0010 km/s per cycle | **PASS, 3/5** (e2, e3, e4) |
+| ev5-5 | the same (no chain) | **PASS** (S2, 64 s): gate 0.781, re-fly 1.0e-2 km; D' and W' as ev5-4 (shared Lambert legs) | **PASS, 3/5** (e2, e3, e4) |
+
+- e1 still fails the date band for both rows (D' 4.78 / 2.73 d), as in sec. 11.6.
+- **All six k = 5 rows now pass V2 under the final wording:** ev5-4 3/5, ev5-5 3/5, ev5-6 3/5, ev5-7
+  4/5, ev5-8 4/5, ev5-9 4/5.
+- Reading:
+  - The sec. 11.6 timeouts were load, not difficulty. At low load S2 finishes in under a minute at
+    e2, and at e0 it stops quickly, so e0 is a real no-chain.
+  - The same is likely for ev5-6 e2 (an S2 timeout at 420 s, not retried; ev5-6 passes without it).
+- `judge_ev5-4.json` and `judge_ev5-5.json` were re-judged by the lead with the same code;
+  `summary.json` was regenerated.
+- Window action: ev5-4 and ev5-5 join the V1 -> V2 promotions (six in all), with the e0 no-chain and
+  the e1 band failure in their evidence.

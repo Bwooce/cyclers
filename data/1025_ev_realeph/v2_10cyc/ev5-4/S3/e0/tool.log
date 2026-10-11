@@ -1,0 +1,36 @@
+09:12:17 ev epoch 0 (JD 2463078.5) ramp lam=0.0000 conv=True res=1.0e-12 gate=pass worst=0.801 [elapsed 1s]
+09:12:18 ev epoch 0 (JD 2463078.5) ramp lam=0.1000 conv=True res=6.1e-13 gate=pass worst=0.792 [elapsed 1s]
+09:12:18 ev epoch 0 (JD 2463078.5) ramp lam=0.2000 conv=True res=5.8e-13 gate=pass worst=0.771 [elapsed 2s]
+09:12:19 ev epoch 0 (JD 2463078.5) ramp lam=0.3000 conv=True res=5.5e-13 gate=pass worst=0.751 [elapsed 2s]
+09:12:19 ev epoch 0 (JD 2463078.5) ramp lam=0.4000 conv=True res=1.7e-13 gate=pass worst=0.732 [elapsed 3s]
+09:12:20 ev epoch 0 (JD 2463078.5) ramp lam=0.5000 conv=True res=3.8e-13 gate=pass worst=0.713 [elapsed 3s]
+09:12:20 ev epoch 0 (JD 2463078.5) ramp lam=0.6000 conv=True res=3.7e-13 gate=pass worst=0.694 [elapsed 4s]
+09:12:21 ev epoch 0 (JD 2463078.5) ramp lam=0.7000 conv=True res=3.7e-13 gate=pass worst=0.677 [elapsed 5s]
+09:12:22 ev epoch 0 (JD 2463078.5) ramp lam=0.8000 conv=True res=1.5e-12 gate=pass worst=0.660 [elapsed 5s]
+09:12:22 ev epoch 0 (JD 2463078.5) ramp lam=0.9000 conv=True res=1.1e-12 gate=pass worst=0.644 [elapsed 6s]
+09:12:23 ev epoch 0 (JD 2463078.5) ramp lam=1.0000 conv=True res=1.0e-12 gate=pass worst=0.629 [elapsed 6s]
+09:12:23 ev epoch 0 (JD 2463078.5) ramp lam=1.0000 conv=True res=1.0e-12 gate=pass worst=0.629 [elapsed 7s]
+09:12:23   k=3 direct lam=1.0000 conv=True res=5.8e-13
+  grow k=3: direct converged=True gate=pass worst=0.632314893936838
+09:12:25   k=4 direct lam=1.0000 conv=True res=7.3e-13
+  grow k=4: direct converged=True gate=pass worst=0.6442561128714622
+09:12:27   k=5 direct lam=1.0000 conv=False res=2.9e-03
+09:12:27   k=5 ramp lam=0.0000 conv=True res=1.1e-12
+09:12:27   k=5 ramp lam=0.1000 conv=True res=1.3e-12
+09:12:27   k=5 ramp lam=0.2000 conv=True res=1.3e-12
+09:12:27   k=5 ramp lam=0.3000 conv=True res=6.1e-13
+09:12:27   k=5 ramp lam=0.4000 conv=True res=2.0e-12
+09:12:28   k=5 ramp lam=0.5000 conv=True res=1.6e-12
+09:12:28   k=5 ramp lam=0.6000 conv=True res=5.6e-13
+09:12:28   k=5 ramp lam=0.7000 conv=True res=1.3e-12
+09:12:29   k=5 ramp lam=0.8000 conv=False res=4.8e-03
+09:12:29   k=5 ramp lam=0.7500 conv=False res=2.3e-03
+09:12:29   k=5 ramp lam=0.7250 conv=False res=1.1e-03
+09:12:29   k=5 ramp lam=0.7125 conv=False res=4.1e-04
+09:12:30   k=5 ramp lam=0.7062 conv=False res=7.4e-05
+09:12:30   k=5 ramp lam=0.7031 conv=True res=1.3e-12
+09:12:30   k=5 ramp lam=0.7063 conv=False res=7.4e-05
+09:12:30   k=5 ramp lam=0.7047 conv=True res=9.9e-13
+09:12:31   k=5 ramp lam=0.7063 conv=False res=7.4e-05
+  grow k=5: ramp-continuation converged=False gate=None worst=nan
+DONE

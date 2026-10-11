@@ -13,6 +13,14 @@
     {
      "route": "S1",
      "reached": false
+    },
+    {
+     "route": "S2",
+     "reached": false
+    },
+    {
+     "route": "S3",
+     "reached": false
     }
    ],
    "epoch_jd": 2463078.489459274,
@@ -88,11 +96,66 @@
     {
      "route": "S1",
      "reached": false
+    },
+    {
+     "route": "S2",
+     "reached": true,
+     "judged": {
+      "label": "ev5-5 S2 JD 2467752.5",
+      "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+      "c1_continuity": true,
+      "junction_kms": 2.8830271503466065e-12,
+      "c2_gate": true,
+      "gate": {
+       "status": "pass",
+       "worst_ratio": 0.7809960931420432
+      },
+      "c3_refly": true,
+      "refly_max_km": 0.01044562856852251,
+      "c4": {
+       "judgeable": true,
+       "L": 1,
+       "cycles": 10,
+       "comparisons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+       ],
+       "Dprime_d": [
+        0.5389545552429809,
+        0.0795230246653773,
+        0.09301382808143899,
+        0.0935241765396313,
+        0.09373216445919752,
+        0.09300846956421083,
+        0.1707896636366968
+       ],
+       "Wprime_kms": [
+        0.010319855765150265,
+        0.01315495197850769,
+        0.013656808796765674,
+        0.014079573134931245,
+        0.014414294942183936,
+        0.014698756534934354,
+        0.01806498193525119
+       ],
+       "band_D_d": 2.8199947637027063,
+       "band_W_kms": 0.6450048563678072,
+       "slope_D_d_per_cycle": -0.03845733745155095,
+       "slope_W_kms_per_cycle": 0.0009671597774490845,
+       "pass": true
+      },
+      "pass": true
+     }
     }
    ],
    "epoch_jd": 2467752.4941669046,
-   "pass": false,
-   "outcome": "NO 10-CYCLE CHAIN"
+   "pass": true,
+   "outcome": "PASS"
   },
   {
    "epoch": 3,
@@ -221,6 +284,6 @@
    "outcome": "PASS"
   }
  ],
- "passes": 2,
- "verdict": "FAIL"
+ "passes": 3,
+ "verdict": "PASS"
 }
