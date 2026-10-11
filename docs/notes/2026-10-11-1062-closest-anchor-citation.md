@@ -67,3 +67,23 @@ The status is "published" in every row, unchanged.
   mypy; commit.
 - The full suite runs only in a lead window, if the lead wants one. This is a code-only change, with
   no catalogue or census effect.
+
+## 5. Results (2026-10-11 14:12 AEDT)
+
+- `scripts/litcheck_942_943_scope.py`: `data/942_943_litcheck_scope.json` is BYTE-IDENTICAL (cmp).
+- `scripts/run_1047_gate.py` (`data/1047_literature/gate_results.json` updated):
+  - `positive_cites_casoliva` false -> TRUE; `controls_pass` true (unchanged);
+  - both negatives unchanged;
+  - all 18 entries keep status "published" under both topologies (asserted).
+  - Citations under {"resonant"}, as pre-registered:
+    - 7:3 entries -> Casoliva 2010;
+    - 2:1, 3:1, 5:2 -> Braik & Ross;
+    - 2:3, 4:3, 5:3, 7:2, 8:3 and the 6:3 orbit -> Kumar-Rawat-Rosengren-Ross (2026).
+  - Under {"repeated-moon"} the undeclared group cites Roberts-Tsoukkas & Ross instead. That anchor is
+    in the footprint only for that topology, and it precedes Kumar there in corpus order: the same
+    rule (first undeclared anchor). Sec. 3 did not state the repeated-moon variant.
+- Pinned tests: `tests/search/test_1062_closest_anchor.py`, 5 cases, pass.
+- The literature tests (`test_literature_check`, `test_972`, `test_1045`, `test_1062`) and
+  `tests/scripts/test_1038_scripts_import_without_literature_check.py`: EXIT 0.
+- ruff clean; mypy src tests clean (946 files).
+- No status changed anywhere.

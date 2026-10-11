@@ -2,13 +2,13 @@
  "controls": {
   "positive_casoliva_7-3b": {
    "status": "published",
-   "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+   "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
    "confidence": 0.95,
    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
   },
   "positive_casoliva_7-3b_repeated-moon": {
    "status": "published",
-   "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+   "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
    "confidence": 0.95,
    "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
   },
@@ -25,7 +25,7 @@
    "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (17): Aldrin Earth-Mars cycler [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; Genova-Aldrin purple Earth-Mars cycler precursors (2015) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [topology-label]; McConaghy Earth-Mars cycler dissertation (2004) [topology-label]; McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004) [topology-label]; McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005) [topology-label]; Pisarevsky-Kogan-Guelman two-planet periodic trajectories (2008) [topology-label]; Rall Earth-Mars free-fall periodic orbits, Sc.D. thesis (1969) [topology-label]; Rall-Hollister Earth-Mars periodic swing-by orbits (1971) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015) [topology-label]; Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   }
  },
- "positive_cites_casoliva": false,
+ "positive_cites_casoliva": true,
  "positive_pass": true,
  "negative_pass": true,
  "controls_pass": true,
@@ -74,13 +74,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -140,13 +140,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -250,13 +250,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -272,13 +272,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -294,13 +294,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -316,13 +316,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -338,13 +338,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -360,13 +360,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -382,13 +382,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, 'Two Classes of Cycler Trajectories in the Earth-Moon System,' Journal of Guidance, Control, and Dynamics 33(5), Sept-Oct 2010, pp. 1623-1640",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -404,13 +404,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }
@@ -426,13 +426,13 @@
    ],
    "resonant": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    },
    "repeated-moon": {
     "status": "published",
-    "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
+    "citation": "Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of AAS 25-621 (2026, VSGC manuscript)",
     "confidence": 0.95,
     "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
    }

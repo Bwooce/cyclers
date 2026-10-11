@@ -410,6 +410,12 @@ class CorpusAnchor:
     candidate sequence with a consecutive same-body encounter is then out of
     scope (#942/#943)."""
 
+    resonances_scope: frozenset[str] | None = None
+    """The p:q resonances the source COMPUTES, in :attr:`CandidateSignature.resonances`'s
+    convention (#1062). A RANKING aid only: it orders which in-footprint anchor is
+    queried and cited first (:func:`_ranked_anchors`); it never excludes an anchor
+    and never changes a score. ``None`` = not declared."""
+
     jacobi_band: tuple[float, float] | None = None
     """Optional Jacobi-constant band (C_min, C_max) the 3D anchor's published
     family spans (nondim CR3BP Jacobi). When set AND the candidate's
@@ -1261,6 +1267,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # Pre-registration:
         # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
         topology_label=frozenset({"transfer", "resonant", "repeated-moon"}),
+        # #1062: Table 2's resonant families R21, R31, R52 (digest
+        # 2026-06-13-braik-ross-2026-orbital-networks-mining.md line 26). The cyclers
+        # C11a/C11b/C21/C32 are (k1, k2) winding labels, not p:q, and are not listed.
+        resonances_scope=frozenset({"2:1", "3:1", "5:2"}),
         authors=("Braik", "Ross"),
         keywords=(
             "orbital network three-body problem",
@@ -1411,6 +1421,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # homoclinic cyclers (sec. V). Pre-registration:
         # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
         topology_label=frozenset({"resonant", "repeated-moon"}),
+        # #1062: Table 3's p-q classes 1-2, 2-1, 3-2, 7-3 (digest
+        # 2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md lines 78-88).
+        resonances_scope=frozenset({"1:2", "2:1", "3:2", "7:3"}),
         authors=("Casoliva", "Mondelo", "Villac", "Mease", "Barrabes", "Olle"),
         keywords=(
             "two classes cycler trajectories Earth-Moon system",
@@ -3311,6 +3324,20 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
 # ---------------------------------------------------------------------------
 
 
+def _closeness_rank(sig: CandidateSignature, anchor: CorpusAnchor) -> int:
+    """#1062: 0 if the anchor declares a resonance the signature carries, 1 if it
+    declares none, 2 if it declares only others. Every anchor is 1 for a signature
+    without resonances."""
+    if not sig.resonances or anchor.resonances_scope is None:
+        return 1
+    return 0 if set(sig.resonances) & anchor.resonances_scope else 2
+
+
+def _ranked_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
+    """:func:`_candidate_anchors` ordered closest first (#1062); ties keep corpus order."""
+    return sorted(_candidate_anchors(sig), key=lambda a: _closeness_rank(sig, a))
+
+
 def build_queries(sig: CandidateSignature) -> list[str]:
     """Build the ordered query trail for a signature (most-specific first).
 
@@ -3344,8 +3371,9 @@ def build_queries(sig: CandidateSignature) -> list[str]:
         regime = "high V-infinity" if vmax > 6.0 else "ballistic low V-infinity"
         queries.append(f"{uniq_tour} {regime} cycler")
 
-    # 4. Named-corpus author / keyword anchors for overlapping families.
-    for anchor in _candidate_anchors(sig):
+    # 4. Named-corpus author / keyword anchors for overlapping families, closest first
+    #    (#1062).
+    for anchor in _ranked_anchors(sig):
         for kw in anchor.keywords[:2]:
             queries.append(kw)
         queries.append(f"{anchor.authors[0]} {uniq_tour} cycler")
@@ -3559,7 +3587,7 @@ def check_literature(
         # Prefer a curated corpus citation/doi when an overlapping anchor exists
         # and the hit corroborates it (named author/keyword present in the hit).
         hay = (best_hit.title + " " + best_hit.snippet).lower()
-        for anchor in anchors:
+        for anchor in _ranked_anchors(sig):
             if any(a.lower() in hay for a in anchor.authors) or any(
                 kw.lower() in hay for kw in anchor.keywords
             ):
