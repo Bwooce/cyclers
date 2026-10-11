@@ -16,6 +16,7 @@ rule, encounter self-consistency). Output: one JSON line per structure in
 and one per zero in ``<out>/zeros.jsonl``. Progress with ETA every structure.
 
 Usage:
+  uv run python scripts/run_942_enumerate.py check DIR [DIR ...]   (coverage validator)
   uv run python scripts/run_942_enumerate.py --cell ev --k 2 --out DIR [--count-only]
       [--max-returns 2,2] [--transfer-revs 0] [--generic-revs 1] [--n-phase 24]
       [--n-split 10] [--n-refine 60] [--sample N --seed S] [--shard i/n]
@@ -27,6 +28,7 @@ import argparse
 import json
 import math
 import random
+import sys
 import time
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -165,9 +167,111 @@ def _preflight_942(**kwargs: Any) -> None:
     preflight_search(task_no=942, script_path=Path(__file__), **kwargs)
 
 
+def expected_keys(settings: dict[str, Any]) -> set[str]:
+    """Every structure key ``main()`` would run for these settings (all shards)."""
+    system, a, b = cell_system(settings["cell"])
+    ma, mb = (int(v) for v in str(settings["max_returns"]).split(","))
+    if system.body(b).massless:
+        mb = 0
+    generic = tuple(int(v) for v in str(settings["generic_revs"]).split(","))
+    res_only = {c for c in str(settings.get("resonant_only", "")).split(",") if c}
+    spec = {
+        c: (
+            CatalogueSpec(half_revs=(), generic_revs=())
+            if c in res_only
+            else CatalogueSpec(generic_revs=generic)
+        )
+        for c in (a, b)
+    }
+    t_revs = tuple(int(v) for v in str(settings["transfer_revs"]).split(","))
+    keys = set()
+    for k in (int(v) for v in str(settings["k"]).split(",")):
+        for c in structures(
+            system,
+            a,
+            b,
+            k,
+            max_returns={a: ma, b: mb},
+            spec=spec,
+            transfer_revs=t_revs,
+            visits=int(settings.get("visits", 1)),
+        ):
+            keys.add(cycle_key(c, k))
+    return keys
+
+
+#: Settings that must agree between the shard directories of one cell.
+_SAME = ("cell", "k", "max_returns", "transfer_revs", "generic_revs", "resonant_only", "visits")
+_SEEDS = ("n_phase", "n_split", "n_refine")
+
+
+def check_dirs(dirs: list[Path]) -> tuple[str, list[str]]:
+    """Coverage validator for the shard directories of one cell (modelled on
+    run_973_enumerate.py check): same settings, every structure of the cell done exactly once
+    without error, no duplicated zero lines. Returns ``(summary line, failures)``."""
+    sets = [json.loads((d / "settings.json").read_text()) for d in dirs]
+    bad: list[str] = []
+    for name in _SAME + _SEEDS:
+        vals = {str(st.get(name)) for st in sets}
+        if len(vals) != 1:
+            bad.append(f"settings differ in {name}: {sorted(vals)}")
+    want = expected_keys(sets[0])
+    done: dict[str, int] = {}
+    errors = 0
+    sat = 0
+    n_refine = int(sets[0]["n_refine"])
+    for d in dirs:
+        for line in (d / "structures.jsonl").read_text().splitlines():
+            rec = json.loads(line)
+            if rec.get("error"):
+                errors += 1
+                continue
+            done[rec["key"]] = done.get(rec["key"], 0) + 1
+            sat += rec["n_zeros"] >= n_refine
+    zl = [ln for d in dirs for ln in (d / "zeros.jsonl").read_text().splitlines() if ln.strip()]
+    zkeys = []
+    for ln in zl:
+        z = json.loads(ln)
+        zkeys.append((z["key"], tuple(round(x, 6) for x in z["x_days"])))
+    missing = want - set(done)
+    extra = set(done) - want
+    dup = [k for k, n in done.items() if n > 1]
+    n_dup_zero = len(zkeys) - len(set(zkeys))
+    for cond, msg in (
+        (missing, f"{len(missing)} structures not done"),
+        (extra, f"{len(extra)} structures outside the cell"),
+        (dup, f"{len(dup)} structures done more than once"),
+        (errors, f"{errors} errored structure lines"),
+        (n_dup_zero, f"{n_dup_zero} duplicated zero lines"),
+    ):
+        if cond:
+            bad.append(msg)
+    summary = (
+        f"cell {sets[0]['cell']} k={sets[0]['k']}: expected {len(want)} structures, done "
+        f"{len(done)}, zero lines {len(zl)}, structures at the n_refine ceiling ({n_refine}): {sat}"
+    )
+    return summary, bad
+
+
+def cmd_check(argv: list[str]) -> None:
+    ap = argparse.ArgumentParser(prog="check")
+    ap.add_argument("dirs", nargs="+", type=Path)
+    args = ap.parse_args(argv)
+    summary, bad = check_dirs(args.dirs)
+    print(summary)
+    for msg in bad:
+        print("FAIL", msg)
+    if bad:
+        raise SystemExit(1)
+    print("OK")
+
+
 def main(preflight: Callable[..., None] = _preflight_942, x1: bool = False) -> None:
     """Run one cell. ``preflight`` is the task-specific gate (#942 here, #943 in
     run_943_enumerate.py); ``x1`` selects which cells this entry point accepts."""
+    if len(sys.argv) > 1 and sys.argv[1] == "check":
+        cmd_check(sys.argv[2:])
+        return
     ap = argparse.ArgumentParser()
     ap.add_argument("--cell", required=True)
     ap.add_argument("--k", type=str, required=True, help="comma list of synodic multiples")
