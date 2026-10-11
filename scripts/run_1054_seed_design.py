@@ -159,7 +159,14 @@ def arms() -> dict[str, list[dict[str, Any]]]:
     new_s = []
     for key, n in sorted(want.items()):
         new_s += rng.sample(by[key], min(n, len(by[key])))
-    return {"B": old, "C": new_s, "D": new_s}
+    # E (F1 alone, pre-registration sec. 6): A's seeds paired, same (p, q, sense, row index,
+    # omega), with the perigee row moved to the F1 value RP_NEW[ir]; no F3
+    f1 = [
+        {"p": x["p"], "q": x["q"], "sense": x["sense"], "irn": x["ir"], "k": x["iw"]}
+        | {"om": sh.OMEGA[x["iw"]]}
+        for x in old
+    ]
+    return {"B": old, "C": new_s, "D": new_s, "E": f1}
 
 
 def solve(job: tuple[dict[str, Any], float | None, float | None]) -> dict[str, Any]:
@@ -304,7 +311,7 @@ def predict() -> None:
 
 def report() -> None:
     out: dict[str, Any] = {}
-    for arm in ("B", "C", "D"):
+    for arm in ("B", "C", "D", "E"):
         f = OUT / f"arm_{arm}.jsonl"
         if f.exists():
             out[arm] = stats([json.loads(x) for x in f.read_text().splitlines()])
@@ -312,30 +319,33 @@ def report() -> None:
     old = {seed_id(sd) for sd in arms()["B"]}
     recs = [json.loads(x) for x in (SRC / "grid.jsonl").read_text().splitlines()]
     out["A (records, B's seeds)"] = stats([r for r in recs if seed_id(r) in old])
-    f = OUT / "control.jsonl"
-    if f.exists():
-        recs = [json.loads(x) for x in f.read_text().splitlines()]
-        rid = "casoliva-7-3b-em-cycler-2010"
-        per, t_row = sh.row_perigees(rid)
-        hits = []
-        for r in recs:
-            if r["status"] != "converged":
-                continue
-            z = r["z0"]
-            d = min(
-                max(abs(z[0] - a), abs((z[1] - b + math.pi) % (2 * math.pi) - math.pi))
-                for a, b in per
-            )
-            if d < 1e-6 and abs(r["T"] - t_row) / t_row < 1e-6:
-                hits.append(seed_id(r))
-        out["control_7-3b"] = {
-            "n": len(recs),
-            "converged": sum(r["status"] == "converged" for r in recs),
-            "hits": len(hits),
-            "old_control": "22 of 1,152 seeds",
-        }
+    for tag in ("control", "control_f1"):
+        f = OUT / f"{tag}.jsonl"
+        if f.exists():
+            out[f"{tag}_7-3b"] = control_hits([json.loads(x) for x in f.read_text().splitlines()])
     (OUT / "report.json").write_text(json.dumps(out, indent=1) + "\n")
     print(json.dumps(out, indent=1))
+
+
+def control_hits(recs: list[dict[str, Any]]) -> dict[str, Any]:
+    rid = "casoliva-7-3b-em-cycler-2010"
+    per, t_row = sh.row_perigees(rid)
+    hits = []
+    for r in recs:
+        if r["status"] != "converged":
+            continue
+        z = r["z0"]
+        d = min(
+            max(abs(z[0] - a), abs((z[1] - b + math.pi) % (2 * math.pi) - math.pi)) for a, b in per
+        )
+        if d < 1e-6 and abs(r["T"] - t_row) / t_row < 1e-6:
+            hits.append(seed_id(r))
+    return {
+        "n": len(recs),
+        "converged": sum(r["status"] == "converged" for r in recs),
+        "hits": len(hits),
+        "old_control": "22 of 1,152 seeds",
+    }
 
 
 def main() -> None:
@@ -344,10 +354,11 @@ def main() -> None:
     sub.add_parser("predict")
     sub.add_parser("report")
     sp = sub.add_parser("arm")
-    sp.add_argument("arm", choices=["B", "C", "D"])
+    sp.add_argument("arm", choices=["B", "C", "D", "E"])
     sp.add_argument("--max-seconds", type=float, default=420.0)
     sp = sub.add_parser("control")
     sp.add_argument("--max-seconds", type=float, default=420.0)
+    sp.add_argument("--design", choices=["f1f2f3", "f1"], default="f1f2f3")
     args = ap.parse_args()
     preflight_search(
         task_no=1054,
@@ -366,8 +377,18 @@ def main() -> None:
     elif args.cmd == "report":
         report()
     elif args.cmd == "arm":
-        drop = None if args.arm == "C" else DROP
+        drop = None if args.arm in ("C", "E") else DROP
         run_jobs(f"arm_{args.arm}", [(sd, drop, None) for sd in arms()[args.arm]], args.max_seconds)
+    elif args.cmd == "control" and args.design == "f1":
+        # F1 alone: F1 rows x the uniform 10-degree omega grid, both senses, no F3
+        c73b = sh.CONTROLS["casoliva-7-3b-em-cycler-2010"]
+        seeds = [
+            {"p": 7, "q": 3, "sense": sense, "irn": irn, "k": iw, "om": sh.OMEGA[iw]}
+            for sense in (-1, 1)
+            for irn in range(len(RP_NEW))
+            for iw in range(len(sh.OMEGA))
+        ]
+        run_jobs("control_f1", [(sd, None, c73b) for sd in seeds], args.max_seconds)
     elif args.cmd == "control":
         c73b = sh.CONTROLS["casoliva-7-3b-em-cycler-2010"]
         seeds = [sd for sd in new_seeds()[0] if (sd["p"], sd["q"]) == (7, 3)]

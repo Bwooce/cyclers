@@ -158,3 +158,53 @@ reorder): 27 converged, **8 converge onto the 7-3b row**. Pass (hard stop cleare
 
 The full F1+F2+F3 grid that sec. 4 handed to the lead is withdrawn: it is not worth the compute
 until a ruling on the design.
+
+## 6. Lead ruling 2026-10-11 and pre-registration of F1 alone (written before any F1 run)
+
+Ruling: (a) now, (b) next. (a) The test keeps the reproduction checks and the old floor-row bound
+(>= 0.80). The F1+F2 design's 0.300 stays in sec. 5.1 with no bound. F3 stays in the code as an
+opt-in, default off, with its own test: three arm-B seeds re-solved with F3 on give their recorded
+status, iteration count and halving count. (b) F1 alone is the revised design. The pilot starts
+only after the lead reports the catalogue window green.
+
+**Design E (F1 alone):** perigee rows RP_NEW = geomspace(1.3 x 6,578.137, 42,164, 8) km = 8,552,
+10,741, 13,490, 16,943, 21,281, 26,728, 33,570, 42,164 km. The uniform 10-degree omega grid. No F2,
+no F3.
+
+**Pilot (paired):** arm E is arm A's 240 seeds (the B sample: seed 1054, the #1000 PQ set). Each seed
+keeps its (p, q, sense, row index, omega), and its perigee moves from RP[ir] to RP_NEW[ir]. Arm A is
+the #1000 record of those seeds (impact 0.496, converged 0.333, candidates per solve 0.0583). A seed
+whose F1 skeleton no longer crosses the lunar orbit drops out of the rates and is counted.
+
+**Expected effect, from the old records** (impact rate per row, interpolated in log r_p to the F1
+rows; per-row record rates 0.936, 0.801, 0.667, 0.556, 0.480, 0.424, 0.368, 0.368):
+- The population model gives A 0.577 and E 0.526: a paired drop of about 0.05. Most of it comes from
+  A's 30 floor-row seeds (28 impacts at 6,578 km; at 8,552 km the records give 0.80, about 24).
+- A's sample runs below the model (0.496 against 0.577), so the expected E is about 0.44 (range
+  0.38-0.50).
+- Converged: expected to rise by about the impact drop, to about 0.35-0.40.
+- Candidates per solve: no prediction that n = 240 can test (counts 10-14 per arm, sec. 5.2).
+
+**Bound (from the old records):** E impact <= 0.535, the records' rate for r_p >= 1.3 x floor.
+
+**Falsification (any one):**
+1. E impact > 0.535.
+2. E impact not below A's 0.496 (no paired reduction).
+3. E converged < 0.273 (A's 0.333 minus 2 SE, SE 0.030).
+4. Positive control: no seed converges onto the 7-3b row.
+
+Power: the expected paired drop of about 0.05 is about 1.5 sigma at n = 240. Criterion 2 can fail by
+chance about one time in ten even if F1 works as the records say. If it fails alone, I report it as
+weak evidence, not as a refutation.
+
+**Positive control (hard stop):** 7:3 seeds at 7-3b's C, F1 rows x 36 omegas, both senses, no F3:
+576 seeds, retrograde first. At least one seed must converge onto the 7-3b row. The per-seed rate is
+reported against the old 22 / 1,152.
+
+**After the pilot:** if E passes, the full F1 grid (about 5,000 seeds, hours) goes to the lead,
+checkpointed. At full scale the test is that none of the 15 #1000 families is lost.
+
+**Candidate next design (registered, not designed yet):** a perigee floor that rises as the
+skeleton's lunar pass gets closer: r_p,min(d) larger for smaller d. This is the principled form of
+F2. Sec. 5.1 shows that 8,551-13,000 km perigees with a close lunar pass give first-arc Earth hits.
+It is used only if F1 also fails.
