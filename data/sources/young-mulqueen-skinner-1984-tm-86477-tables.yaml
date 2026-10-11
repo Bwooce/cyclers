@@ -1,0 +1,1328 @@
+# Young, Mulqueen and Skinner 1984, NASA TM-86477, "Mars Exploration, Venus Swingby and Conjunction Class Mission Modes, Time Period 2000 to 2045".
+# Source: Archie C. Young, John A. Mulqueen, James E. Skinner (Program Development, NASA Marshall Space Flight Center), 31 August 1984, 82 pp.,
+#   NTRS 19850003653 (N85-11961). Local file: 82-page scan (Pdf.Capture 5.2, garbled text layer), source md5 b45edfdcc893e36666f1b78818ff7729;
+#   the filed copy is an ocrmypdf --force-ocr -l eng copy, md5 dc299ad48e5d125788ac277cb7929930 (the table pages are printed sideways and their OCR is unusable).
+#   PDF page n carries printed page n - 8 for pages 9 to 74.
+# DAY NUMBERS. The printed day numbers (for example 51996) are labelled "J.D. 2450000" and the appendix says "reckoned from JD 240-0000", but they
+#   behave as MODIFIED Julian dates (MJD = JD - 2400000.5): the dates printed on the report's own Figs. 14 and 24 are reproduced exactly by
+#   date = 1858-11-17 + day number (outbound 2025: launch 60196 = 9/9/23, Venus 60358 = 2/18/24, Mars 60494 = 7/3/24, Mars departure 60554 = 9/1/24,
+#   Earth 60810 = 5/15/25; conjunction 2031: 62860 = 12/25/30, 63142 = 10/3/31, 63642 = 2/14/33, 63858 = 9/18/33). Values below are the full day numbers
+#   (the table headings print a 2450000 or 2460000 offset; rows from 2022 on use 2460000, which the digits themselves show: 60154 and 0810 are 60154 and 60810).
+# EMOS = Earth mean orbital speed; V_inf columns are in EMOS in Tables 1 and 22.
+# Witnesses. Tables 1, 22 and the figure tables: A = page render read by eye (220 to 300 dpi), B = the independent printouts (Tables 2 to 18 and 23 to 29 give the same
+#   dates and, through C3, the same V_inf), C = arithmetic relations (launch + trip times; the months of Figs. 7 and 19; V_inf from C3). Stage-sizing tables 19-21 and 30-31:
+#   A = render, B = Tesseract text of the render (agreement on every digit that is not a slashed zero), C = relations (WSTG = WF + WBO, WO = sum of the stages and payloads,
+#   DV1 from the rocket equation at Isp 480 s). Printout records: ONE witness (render band read by eye, with Tesseract as a second read on the digits that are not slashed
+#   zeros); only the record of the optimum launch date of each table is transcribed, not the other launch-window records (see the digest).
+# No value is ours except in check blocks; check script and output: cyclers_pdf/papers/<filed name>-check.py and -check.out.
+conventions:
+  day_numbers: MJD-like, see header
+  emos_km_s: 29.78 (implied by C3 and the V_inf columns, see check)
+  isp_s: 480
+  mass_fraction_each_stage: 0.9
+  gravity_loss_G: 0.1111
+  propellant: LOX/LH2
+  venus_min_closest_approach: 0.1 planet radius altitude (330 n.mi), i.e. RCP >= 1.1 planet radii
+  capture_orbit: 24-hr ellipse, periapsis altitude 270 n.mi (Mars and Earth)
+  assembly_orbit: 270 n.mi circular Space Station orbit
+  stages: 'three stages: Earth escape, Mars capture and escape, Earth braking'
+  stopover_time_venus_missions_d: 60
+  mars_surface_stay_d: 30
+  crew: 6
+  excursion_crew: 3
+  weights_lb:
+    venus_mission_module: 83000
+    probes: 42000
+    mars_excursion_module: 95000
+    conjunction_mission_module: 117000
+    conjunction_pioneer_mars_base: 57000
+table_1:
+  caption: Mars Stopover Mission with Venus Swingby Mission Definition
+  printed_page: 36
+  pdf_page: 44
+  columns:
+  - mission (opposition year, mode)
+  - earth_mars_opposition_day
+  - launch_day
+  - launch_vinf_emos
+  - pass_venus_outbound_day
+  - venus_out_vinf_emos
+  - arrive_mars_day
+  - mars_arrival_vinf_emos
+  - leave_mars_day
+  - mars_departure_vinf_emos
+  - pass_venus_inbound_day
+  - venus_in_vinf_emos
+  - arrive_earth_day
+  - earth_arrival_vinf_emos
+  - total_mission_days
+  rows:
+  - opposition_year: '2001'
+    mode: inbound
+    opposition_day: 52073
+    launch_day: 51996
+    launch_vinf: 0.1018
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 52182
+    mars_arrive_vinf: 0.1283
+    mars_leave_day: 52242
+    mars_leave_vinf: 0.205
+    venus_in_day: 52436
+    venus_in_vinf: 0.2531
+    earth_arrive_day: 52602
+    earth_arrive_vinf: 0.1418
+    total_days: 606
+  - opposition_year: '2003'
+    mode: outbound
+    opposition_day: 52880
+    launch_day: 52510
+    launch_vinf: 0.1272
+    venus_out_day: 52631
+    venus_out_vinf: 0.1781
+    mars_arrive_day: 52812
+    mars_arrive_vinf: 0.2183
+    mars_leave_day: 52872
+    mars_leave_vinf: 0.1623
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 53120
+    earth_arrive_vinf: 0.2343
+    total_days: 610
+  - opposition_year: '2005'
+    mode: outbound
+    opposition_day: 53683
+    launch_day: 53164
+    launch_vinf: 0.1549
+    venus_out_day: 53330
+    venus_out_vinf: 0.3259
+    mars_arrive_day: 53505
+    mars_arrive_vinf: 0.2061
+    mars_leave_day: 53565
+    mars_leave_vinf: 0.123
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 53823
+    earth_arrive_vinf: 0.1256
+    total_days: 659
+  - opposition_year: '2007'
+    mode: inbound
+    opposition_day: 54460
+    launch_day: 54350
+    launch_vinf: 0.1741
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 54532
+    mars_arrive_vinf: 0.2028
+    mars_leave_day: 54592
+    mars_leave_vinf: 0.2446
+    venus_in_day: 54747
+    venus_in_vinf: 0.3308
+    earth_arrive_day: 54908
+    earth_arrive_vinf: 0.1515
+    total_days: 558
+  - opposition_year: '2010'
+    mode: double
+    opposition_day: 55225
+    launch_day: 54854
+    launch_vinf: 0.1735
+    venus_out_day: 54983
+    venus_out_vinf: 0.2463
+    mars_arrive_day: 55196
+    mars_arrive_vinf: 0.1456
+    mars_leave_day: 55256
+    mars_leave_vinf: 0.2294
+    venus_in_day: 55433
+    venus_in_vinf: 0.237
+    earth_arrive_day: 55590
+    earth_arrive_vinf: 0.1497
+    total_days: 736
+  - opposition_year: '2012'
+    mode: outbound
+    opposition_day: 55991
+    launch_day: 55528
+    launch_vinf: 0.1778
+    venus_out_day: 55689
+    venus_out_vinf: 0.357
+    mars_arrive_day: 55842
+    mars_arrive_vinf: 0.1795
+    mars_leave_day: 55902
+    mars_leave_vinf: 0.1402
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 56178
+    earth_arrive_vinf: 0.2535
+    total_days: 650
+  - opposition_year: '2014'
+    mode: inbound
+    opposition_day: 56755
+    launch_day: 56618
+    launch_vinf: 0.1162
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 56888
+    mars_arrive_vinf: 0.1229
+    mars_leave_day: 56948
+    mars_leave_vinf: 0.2135
+    venus_in_day: 57083
+    venus_in_vinf: 0.3321
+    earth_arrive_day: 57252
+    earth_arrive_vinf: 0.1491
+    total_days: 634
+  - opposition_year: '2016'
+    mode: inbound
+    opposition_day: 57529
+    launch_day: 57336
+    launch_vinf: 0.1957
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 57596
+    mars_arrive_vinf: 0.1642
+    mars_leave_day: 57656
+    mars_leave_vinf: 0.2447
+    venus_in_day: 57834
+    venus_in_vinf: 0.3958
+    earth_arrive_day: 57913
+    earth_arrive_vinf: 0.1828
+    total_days: 577
+  - opposition_year: '2018'
+    mode: outbound
+    opposition_day: 58325
+    launch_day: 57854
+    launch_vinf: 0.1709
+    venus_out_day: 58007
+    venus_out_vinf: 0.3345
+    mars_arrive_day: 58198
+    mars_arrive_vinf: 0.1865
+    mars_leave_day: 58258
+    mars_leave_vinf: 0.1223
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 58492
+    earth_arrive_vinf: 0.1886
+    total_days: 638
+  - opposition_year: '2020'
+    mode: inbound
+    opposition_day: 59134
+    launch_day: 59010
+    launch_vinf: 0.1612
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 59196
+    mars_arrive_vinf: 0.1326
+    mars_leave_day: 59256
+    mars_leave_vinf: 0.2114
+    venus_in_day: 59437
+    venus_in_vinf: 0.2764
+    earth_arrive_day: 59604
+    earth_arrive_vinf: 0.1365
+    total_days: 594
+  - opposition_year: '2022'
+    mode: outbound
+    opposition_day: 59922
+    launch_day: 59518
+    launch_vinf: 0.1229
+    venus_out_day: 59666
+    venus_out_vinf: 0.2012
+    mars_arrive_day: 59820
+    mars_arrive_vinf: 0.1946
+    mars_leave_day: 59880
+    mars_leave_vinf: 0.1736
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 60154
+    earth_arrive_vinf: 0.2744
+    total_days: 636
+  - opposition_year: '2025'
+    mode: outbound
+    opposition_day: 60694
+    launch_day: 60196
+    launch_vinf: 0.1679
+    venus_out_day: 60358
+    venus_out_vinf: 0.3758
+    mars_arrive_day: 60494
+    mars_arrive_vinf: 0.2146
+    mars_leave_day: 60554
+    mars_leave_vinf: 0.1216
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 60810
+    earth_arrive_vinf: 0.0947
+    total_days: 614
+  - opposition_year: '2027'
+    mode: inbound
+    opposition_day: 61455
+    launch_day: 61346
+    launch_vinf: 0.1349
+    venus_out_day: null
+    venus_out_vinf: null
+    mars_arrive_day: 61554
+    mars_arrive_vinf: 0.1978
+    mars_leave_day: 61614
+    mars_leave_vinf: 0.2132
+    venus_in_day: 61751
+    venus_in_vinf: 0.344
+    earth_arrive_day: 61916
+    earth_arrive_vinf: 0.1614
+    total_days: 570
+  - opposition_year: '2029'
+    mode: double
+    opposition_day: 62219
+    launch_day: 61856
+    launch_vinf: 0.1711
+    venus_out_day: 62008
+    venus_out_vinf: 0.246
+    mars_arrive_day: 62210
+    mars_arrive_vinf: 0.1789
+    mars_leave_day: 62270
+    mars_leave_vinf: 0.1864
+    venus_in_day: 62437
+    venus_in_vinf: 0.2374
+    earth_arrive_day: 62592
+    earth_arrive_vinf: 0.1956
+    total_days: 737
+  - opposition_year: '2031'
+    mode: outbound
+    opposition_day: 62989
+    launch_day: 62530
+    launch_vinf: 0.1674
+    venus_out_day: 62693
+    venus_out_vinf: 0.3516
+    mars_arrive_day: 62884
+    mars_arrive_vinf: 0.1712
+    mars_leave_day: 62944
+    mars_leave_vinf: 0.1265
+    venus_in_day: null
+    venus_in_vinf: null
+    earth_arrive_day: 63184
+    earth_arrive_vinf: 0.2764
+    total_days: 654
+  notes:
+  - Mars stay 60 d in every row (leave minus arrive).
+  - '2022 row: first printed digits are partly smudged (95?8); 9518 is fixed by 60154 - 636 and by Table 13''s launch record 59518.0.'
+  - '2003 row Venus pass printed 26?1 (smudge): 2631 fixed by the Table 3 record (52631.3).'
+  - '2029 row: printed Earth arrival 2592 (and 62592.0 in Table 17) gives 2592 - 1856 = 736 d, but the printed total is 737 d (Fig. 7 also says 737).'
+  fig7_launch_months:
+    '2001': March 2001
+    '2003': August 2002
+    '2005': June 2004
+    '2007': September 2007
+    '2010': January 2009
+    '2012': November 2010
+    '2014': November 2013
+    '2016': November 2015
+    '2018': April 2017
+    '2020': June 2020
+    '2022': October 2021
+    '2025': September 2023
+    '2027': November 2026
+    '2029': March 2028
+    '2031': January 2030
+table_22:
+  caption: Mars Conjunction Class Stopover Mission, Mission Definition
+  printed_page: 57
+  pdf_page: 65
+  rows:
+  - opposition_year: '2031'
+    opposition_day: 62989
+    leave_earth_day: 62860
+    leave_earth_vinf: 0.1107
+    arrive_mars_day: 63142
+    arrive_mars_vinf: 0.1165
+    leave_mars_day: 63642
+    leave_mars_vinf: 0.0826
+    arrive_earth_day: 63858
+    arrive_earth_vinf: 0.1202
+    outbound_d: 282
+    stopover_d: 500
+    inbound_d: 216
+    total_d: 998
+  - opposition_year: '2033'
+    opposition_day: 63775
+    leave_earth_day: 63706
+    leave_earth_vinf: 0.1016
+    arrive_mars_day: 63906
+    arrive_mars_vinf: 0.1111
+    leave_mars_day: 64456
+    leave_mars_vinf: 0.0996
+    arrive_earth_day: 64656
+    arrive_earth_vinf: 0.1013
+    outbound_d: 200
+    stopover_d: 550
+    inbound_d: 200
+    total_d: 950
+  - opposition_year: '2035'
+    opposition_day: 64584
+    leave_earth_day: 64508
+    leave_earth_vinf: 0.1091
+    arrive_mars_day: 64712
+    arrive_mars_vinf: 0.0876
+    leave_mars_day: 65242
+    leave_mars_vinf: 0.1202
+    arrive_earth_day: 65512
+    arrive_earth_vinf: 0.1129
+    outbound_d: 204
+    stopover_d: 530
+    inbound_d: 270
+    total_d: 1004
+  - opposition_year: '2037'
+    opposition_day: 65382
+    leave_earth_day: 65290
+    leave_earth_vinf: 0.1353
+    arrive_mars_day: 65646
+    arrive_mars_vinf: 0.0947
+    leave_mars_day: 65986
+    leave_mars_vinf: 0.1046
+    arrive_earth_day: 66276
+    arrive_earth_vinf: 0.0957
+    outbound_d: 356
+    stopover_d: 340
+    inbound_d: 290
+    total_d: 986
+  - opposition_year: '2040'
+    opposition_day: 66157
+    leave_earth_day: 66052
+    leave_earth_vinf: 0.1193
+    arrive_mars_day: 66392
+    arrive_mars_vinf: 0.0833
+    leave_mars_day: 66732
+    leave_mars_vinf: 0.0922
+    arrive_earth_day: 67036
+    arrive_earth_vinf: 0.0968
+    outbound_d: 340
+    stopover_d: 340
+    inbound_d: 304
+    total_d: 984
+  - opposition_year: '2042'
+    opposition_day: 66920
+    leave_earth_day: 66812
+    leave_earth_vinf: 0.105
+    arrive_mars_day: 67130
+    arrive_mars_vinf: 0.0836
+    leave_mars_day: 67470
+    leave_mars_vinf: 0.087
+    arrive_earth_day: 67802
+    arrive_earth_vinf: 0.1127
+    outbound_d: 318
+    stopover_d: 340
+    inbound_d: 332
+    total_d: 990
+  - opposition_year: '2044'
+    opposition_day: 67688
+    leave_earth_day: 67568
+    leave_earth_vinf: 0.1003
+    arrive_mars_day: 67874
+    arrive_mars_vinf: 0.094
+    leave_mars_day: 68214
+    leave_mars_vinf: 0.0866
+    arrive_earth_day: 68564
+    arrive_earth_vinf: 0.1318
+    outbound_d: 306
+    stopover_d: 340
+    inbound_d: 350
+    total_d: 996
+  fig19:
+  - opposition: May 2031
+    earth_launch: December 2030
+    stopover_d: 500
+    total_d: 998
+  - opposition: June 2033
+    earth_launch: April 2033
+    stopover_d: 550
+    total_d: 950
+  - opposition: September 2035
+    earth_launch: June 2035
+    stopover_d: 530
+    total_d: 1004
+  - opposition: November 2037
+    earth_launch: August 2037
+    stopover_d: 340
+    total_d: 986
+  - opposition: January 2040
+    earth_launch: September 2039
+    stopover_d: 340
+    total_d: 984
+  - opposition: February 2042
+    earth_launch: October 2041
+    stopover_d: 340
+    total_d: 990
+  - opposition: March 2044
+    earth_launch: November 2043
+    stopover_d: 340
+    total_d: 996
+  note: Column heading prints 'J.D. 2460000' for the opposition and 'J.D. 246000' for leave-Earth; both read as 2460000 offsets (2031 launch 62860).
+stage_sizing:
+  units: lb (weights), km/s (DV)
+  legend:
+    WPL: mission module
+    WMEM: Mars excursion module
+    WPROB1: probes ejected before Mars braking
+    WPROB2: probes carried into Mars orbit or Pioneer Mars base
+    WSTG3: Earth braking stage total
+    WF3: its propellant
+    WBO3: its dry weight
+    WSTG2: Mars braking and escape stage total
+    WF2: its propellant
+    WBO2: its dry weight
+    WSTG1: Earth escape stage total
+    WF1: its propellant
+    WBO1: its dry weight
+    WO: initial weight in low Earth orbit
+    DV1: Earth escape impulse
+    DV0: Venus powered swingby on the outbound leg (printed 0.00000 in every block)
+    DVS1: Mars braking impulse (DV2)
+    DVS2: Mars escape impulse (DV3)
+    DV4: Earth braking impulse
+  fixed_venus:
+    WPL: 83000
+    WMEM: 95000
+    WPROB1: 0
+    WPROB2: 42000
+  fixed_conjunction:
+    WPL: 117000
+    WMEM: 95000
+    WPROB1: 0
+    WPROB2: 57000
+  ISP1_2_3: 480.0
+  G1_2_3: 0.1111
+  C1_4: 1.0
+  DV0: 0.0
+  tables:
+    19: Venus swingby oppositions 2001 to 2010 (PDF p.62, printed p.54)
+    20: 2012 to 2020 (p.63, printed 55)
+    21: 2022 to 2031 (p.64, printed 56)
+    30: conjunction 2031 to 2040 (p.73, printed 65)
+    31: conjunction 2042 and 2044 (p.74, printed 66)
+  rows:
+  - table: 19
+    opposition_year: '2001'
+    mode: inbound
+    WSTG3: 28715
+    WF3: 25844
+    WBO3: 2871
+    WSTG2: 352989
+    WF2: 317693
+    WBO2: 35296
+    WSTG1: 869021
+    WF1: 782127
+    WBO1: 86894
+    WO: 1470725
+    DV1: 3.5721
+    DVS1: 1.5868
+    DVS2: 3.2387
+    DV4: 1.2385
+  - table: 19
+    opposition_year: '2003'
+    mode: outbound
+    WSTG3: 70203
+    WF3: 63183
+    WBO3: 7020
+    WSTG2: 808803
+    WF2: 727930
+    WBO2: 80873
+    WSTG1: 1759089
+    WF1: 1583196
+    WBO1: 175893
+    WO: 2858094
+    DV1: 3.8001
+    DVS1: 3.5548
+    DVS2: 2.274
+    DV4: 2.503
+  - table: 19
+    opposition_year: '2005'
+    mode: outbound
+    WSTG3: 24244
+    WF3: 21820
+    WBO3: 2424
+    WSTG2: 447263
+    WF2: 402541
+    WBO2: 44722
+    WSTG1: 1262168
+    WF1: 1135962
+    WBO1: 126205
+    WO: 1953675
+    DV1: 4.0998
+    DVS1: 3.2653
+    DVS2: 1.4904
+    DV4: 1.0708
+  - table: 19
+    opposition_year: '2007'
+    mode: inbound
+    WSTG3: 31718
+    WF3: 28546
+    WBO3: 3171
+    WSTG2: 1093887
+    WF2: 984508
+    WBO2: 109379
+    WSTG1: 2719261
+    WF1: 2447335
+    WBO1: 271926
+    WO: 4064865
+    DV1: 4.3377
+    DVS1: 3.1824
+    DVS2: 4.204
+    DV4: 1.3469
+  - table: 19
+    opposition_year: '2010'
+    mode: double
+    WSTG3: 31151
+    WF3: 28036
+    WBO3: 3115
+    WSTG2: 574101
+    WF2: 516696
+    WBO2: 57405
+    WSTG1: 1662341
+    WF1: 1496122
+    WBO1: 166219
+    WO: 2487593
+    DV1: 4.3301
+    DVS1: 2.1409
+    DVS2: 3.8255
+    DV4: 1.3267
+  - table: 20
+    opposition_year: '2012'
+    mode: outbound
+    WSTG3: 83384
+    WF3: 75046
+    WBO3: 8338
+    WSTG2: 495227
+    WF2: 445708
+    WBO2: 49518
+    WSTG1: 1647219
+    WF1: 1482512
+    WBO1: 164707
+    WO: 2445829
+    DV1: 4.386
+    DVS1: 2.6513
+    DVS2: 1.8183
+    DV4: 2.8231
+  - table: 20
+    opposition_year: '2014'
+    mode: inbound
+    WSTG3: 30939
+    WF3: 27845
+    WBO3: 3094
+    WSTG2: 365309
+    WF2: 328781
+    WBO2: 36528
+    WSTG1: 941438
+    WF1: 847303
+    WBO1: 94135
+    WO: 1557686
+    DV1: 3.6959
+    DVS1: 1.4853
+    DVS2: 3.4402
+    DV4: 1.3191
+  - table: 20
+    opposition_year: '2016'
+    mode: inbound
+    WSTG3: 43352
+    WF3: 39017
+    WBO3: 4335
+    WSTG2: 774196
+    WF2: 696783
+    WBO2: 77413
+    WSTG1: 2370706
+    WF1: 2133657
+    WBO1: 237049
+    WO: 3408254
+    DV1: 4.6299
+    DVS1: 2.3125
+    DVS2: 4.2049
+    DV4: 1.7385
+  - table: 20
+    opposition_year: '2018'
+    mode: outbound
+    WSTG3: 45827
+    WF3: 41245
+    WBO3: 4582
+    WSTG2: 403517
+    WF2: 363169
+    WBO2: 40348
+    WSTG1: 1328670
+    WF1: 1195815
+    WBO1: 132855
+    WO: 1998015
+    DV1: 4.2956
+    DVS1: 2.8093
+    DVS2: 1.4768
+    DV4: 2.8165
+  - table: 20
+    opposition_year: '2020'
+    mode: inbound
+    WSTG3: 27191
+    WF3: 24472
+    WBO3: 2719
+    WSTG2: 383401
+    WF2: 345065
+    WBO2: 38337
+    WSTG1: 1188768
+    WF1: 1069902
+    WBO1: 118866
+    WO: 1819361
+    DV1: 4.1748
+    DVS1: 1.6704
+    DVS2: 3.3904
+    DV4: 1.1822
+  - table: 21
+    opposition_year: '2022'
+    mode: outbound
+    WSTG3: 100164
+    WF3: 90148
+    WBO3: 10015
+    WSTG2: 781842
+    WF2: 703665
+    WBO2: 78177
+    WSTG1: 1731473
+    WF1: 1558341
+    WBO1: 173132
+    WO: 2833479
+    DV1: 3.7585
+    DVS1: 2.9938
+    DVS2: 2.5203
+    DV4: 3.1897
+  - table: 21
+    opposition_year: '2025'
+    mode: outbound
+    WSTG3: 17513
+    WF3: 15762
+    WBO3: 1751
+    WSTG2: 468466
+    WF2: 421623
+    WBO2: 46842
+    WSTG1: 1378652
+    WF1: 1240799
+    WBO1: 137853
+    WO: 2084630
+    DV1: 4.2572
+    DVS1: 3.4657
+    DVS2: 1.4637
+    DV4: 0.8029
+  - table: 21
+    opposition_year: '2027'
+    mode: inbound
+    WSTG3: 35043
+    WF3: 31539
+    WBO3: 3504
+    WSTG2: 792239
+    WF2: 713022
+    WBO2: 79217
+    WSTG1: 1735927
+    WF1: 1562350
+    WBO1: 173577
+    WO: 2783209
+    DV1: 3.879
+    DVS1: 3.065
+    DVS2: 3.4338
+    DV4: 1.4633
+  - table: 21
+    opposition_year: '2029'
+    mode: double
+    WSTG3: 49017
+    WF3: 44115
+    WBO3: 4901
+    WSTG2: 572377
+    WF2: 515144
+    WBO2: 57233
+    WSTG1: 1672040
+    WF1: 1504851
+    WBO1: 167189
+    WO: 2513434
+    DV1: 4.2982
+    DVS1: 2.6365
+    DVS2: 2.807
+    DV4: 1.9145
+  - table: 21
+    opposition_year: '2031'
+    mode: outbound
+    WSTG3: 101967
+    WF3: 91771
+    WBO3: 10196
+    WSTG2: 449763
+    WF2: 404790
+    WBO2: 44972
+    WSTG1: 1503840
+    WF1: 1353470
+    WBO1: 150371
+    WO: 2275570
+    DV1: 4.2522
+    DVS1: 2.4669
+    DVS2: 1.555
+    DV4: 3.2267
+  - table: 30
+    opposition_year: '2031'
+    mode: conjunction
+    WSTG3: 32294
+    WF3: 29065
+    WBO3: 3229
+    WSTG2: 167914
+    WF2: 151124
+    WBO2: 16790
+    WSTG1: 701248
+    WF1: 631129
+    WBO1: 70118
+    WO: 1170455
+    DV1: 3.6473
+    DVS1: 1.3754
+    DVS2: 0.8351
+    DV4: 1.0192
+  - table: 30
+    opposition_year: '2033'
+    mode: conjunction
+    WSTG3: 26454
+    WF3: 23809
+    WBO3: 2645
+    WSTG2: 168974
+    WF2: 152078
+    WBO2: 16896
+    WSTG1: 670145
+    WF1: 603136
+    WBO1: 67008
+    WO: 1134573
+    DV1: 3.5701
+    DVS1: 1.2778
+    DVS2: 1.0874
+    DV4: 0.8543
+  - table: 30
+    opposition_year: '2035'
+    mode: conjunction
+    WSTG3: 29911
+    WF3: 26920
+    WBO3: 2991
+    WSTG2: 152324
+    WF2: 137093
+    WBO2: 15231
+    WSTG1: 669878
+    WF1: 602896
+    WBO1: 66982
+    WO: 1121113
+    DV1: 3.6325
+    DVS1: 0.9879
+    DVS2: 1.4382
+    DV4: 0.9528
+  - table: 30
+    opposition_year: '2037'
+    mode: conjunction
+    WSTG3: 24950
+    WF3: 22455
+    WBO3: 2495
+    WSTG2: 142780
+    WF2: 128504
+    WBO2: 14277
+    WSTG1: 724991
+    WF1: 652498
+    WBO1: 72493
+    WO: 1161721
+    DV1: 3.8824
+    DVS1: 1.012
+    DVS2: 1.1685
+    DV4: 0.8106
+  - table: 30
+    opposition_year: '2040'
+    mode: conjunction
+    WSTG3: 25248
+    WF3: 22724
+    WBO3: 2525
+    WSTG2: 113777
+    WF2: 102400
+    WBO2: 11377
+    WSTG1: 631430
+    WF1: 568292
+    WBO1: 63137
+    WO: 1039454
+    DV1: 3.7246
+    DVS1: 0.8458
+    DVS2: 0.9735
+    DV4: 0.8193
+  - table: 31
+    opposition_year: '2042'
+    mode: conjunction
+    WSTG3: 29822
+    WF3: 26840
+    WBO3: 2982
+    WSTG2: 112263
+    WF2: 101037
+    WBO2: 11225
+    WSTG1: 600994
+    WF1: 540900
+    WBO1: 60094
+    WO: 1012079
+    DV1: 3.5988
+    DVS1: 0.8493
+    DVS2: 0.8969
+    DV4: 0.9503
+  - table: 31
+    opposition_year: '2044'
+    mode: conjunction
+    WSTG3: 36502
+    WF3: 32852
+    WBO3: 3650
+    WSTG2: 131330
+    WF2: 118198
+    WBO2: 13132
+    WSTG1: 627389
+    WF1: 564656
+    WBO1: 62733
+    WO: 1064221
+    DV1: 3.5599
+    DVS1: 0.9986
+    DVS2: 0.8904
+    DV4: 1.1336
+  notes:
+  - 'Reconstructed from smudged digits by the relations in the check (marked in the digest): 2003 WSTG3 70203 (the scan shows an 8 for a slashed zero), 2007 WF1 and WBO1, 2012 WSTG1, 2020 WO and DV4, 2040
+    WF2.'
+  - DV values print with five decimals ending in 0 (rounded to four); the printouts' DV1 and DV4 agree to about 3e-5 km/s.
+printout_records:
+  explanation: 'L1/L2/L3 = the three trajectory legs (see header): LAUNCH/DEPART/PASS, STOP/PASS/ARRIVE (MJD), C3-DD, RA, DECL, I1, V1, PSI1, ECCEN, SMA, THET1, THET2, PERIH, APHEL, T2(?), V2, PSI2, RA,
+    DECL, C3-PD/C3-AD; Venus line: RCP (closest-approach radius, planet radii), KAPPA (bend angle, deg), UP (pericentre speed, EMOS), AH, EH, ANMAX, INH, RAP, DECP, RAS, DECS, ETA, PASS CONDITION, DVCP
+    (km/s); CORD line(s): communication distances (AU); last line: DV1..DV4 (km/s), GAMA1..4, ETA1..4, ETA0 | Conjunction-class printout: line 1 = outbound leg (Earth to Mars), line 2 = inbound leg (Mars
+    to Earth, from the restart), CORD line (communication distances, AU), DV line (DV1..DV4 km/s, GAMA, ETA).'
+  day_number_note: launch-window records at 2-day launch steps; tokens '---' = not applicable; '[ill]' = unreadable in the scan
+  tables:
+    table_2:
+      table: 2
+      page: 45
+      opposition: '2001'
+      kind: inbound
+      sweep: 'launch (Earth) 51984 to 51996 in 2-day steps (selected record: the last of 7)'
+      launch: 51996
+      lines:
+      - 51996.0 52182.0 9.19 235.3 -53.1 -2.91 1.079 86.8 .171 1.191 | 22.1 163.0 --- --- 2.00 .779 93.4 351.4 9.5 3.82
+      - 52242.0 52435.6 37.30 351.8 20.3 6.29 .695 88.4 .327 1.054 | 176.8 340.3 --- 1.398 -6.80 1.353 85.2 164.9 -39.1 56.83
+      - 52435.6 52602.0 58.29 210.4 -4.6 -.98 1.240 101.6 .226 .806 | 286.1 537.7 .624 --- 3.57 .886 90.7 332.8 13.4 17.84
+      - 1.106 53.6 .4141 .908 2.218 116.8 46.7 81.08 -37.55 217.77 | .00 125.23 DARK SIDE TRAILING EDGE .00000
+      - .8658 1.2539 1.2411
+      - 3.57207 1.58676 3.23870 1.23852 2.13591 1.40089 1.98987 | 1.30099 8.73040 5.45333 1.79050 1.03424 18.64731
+    table_3:
+      table: 3
+      page: 46
+      opposition: '2003'
+      kind: outbound
+      sweep: 'launch 52508 to 52520 in 2-day steps (selected: 2nd of 7)'
+      launch: 52510
+      lines:
+      - 52510.0 52631.3 14.35 221.5 25.9 5.12 .910 93.9 .176 .870 | 199.0 350.8 --- --- -6.91 1.278 88.6 99.6 -59.7 28.13
+      - 52631.3 52812.0 29.46 82.2 14.7 1.95 1.361 90.3 .330 1.073 | 358.9 529.2 .719 --- -3.83 .694 95.2 333.4 -24.4 42.26
+      - 1.143 75.7 .3683 1.816 1.629 127.9 98.6 245.01 -65.55 170.59 | .00 83.62 LIGHT SIDE LEADING EDGE .00000
+      - 52872.0 53120.0(5312? smudged; Table 1 prints 3120) 23.37 310.1 -16.3 .54 .743 95.4 .254 1.117 | 196.5 441.3 .833 1.401 -2.01 1.045 103.6 214.0 -22.9 48.69
+      - .5282 .6184 .3764
+      - 3.80009 3.55475 2.27397 2.50299 2.24192 2.12866 1.62111 | 1.70193 14.89737 6.04410 2.24792 1.08367 33.39877
+    table_4:
+      table: 4
+      page: 47
+      opposition: '2005'
+      kind: outbound
+      sweep: 'launch 53154 to 53166 in 2-day steps (selected: 6th of 7)'
+      launch: 53164
+      lines:
+      - 53164.0 53330.0 21.28 153.6 -9.2 -3.39 .841 90.8 .282 .792 | 182.1 447.2 .569 --- .01 1.232 105.5 31.4 .0 94.23
+      - 53330.0 53505.0 92.51 54.2 2.5 .63 1.346 77.1 .369 1.031 | 50.0 183.9 --- 1.411 -2.32 .670 87.7 307.9 -27.1 37.71
+      - 2.261 22.9 .3968 .560 5.038 101.4 6.5 312.96 -6.35 210.61 | .00 102.28 DARK SIDE LEADING EDGE .00000
+      - 53565.0 53823.0 13.43 325.9 1.0 2.22 .772 91.2 .178 1.173 | 185.4 399.4 .964 1.383 -3.21 1.073 95.7 209.0 -42.4 13.99
+      - 1.3527 1.2979 .9334
+      - 4.09979 3.26530 1.49039 1.07079 2.38931 2.00114 1.37250 | 1.25545 10.23680 4.33371 1.60762 1.02891 24.45892
+    table_5:
+      table: 5
+      page: 48
+      opposition: '2007'
+      kind: inbound
+      sweep: 'launch 54340 to 54352 in 2-day steps (selected: 6th of 7)'
+      launch: 54350
+      lines:
+      - 54350.0 54532.0 26.90 99.8 43.1 2.98 1.145 94.2 .329 1.487 | 343.1 486.0 .997 [ill] 8 108.3 197.9 -18.4 6.04
+      - 54592.0 54746.9 53.09 99.3 24.7 .40 .631 108.2 .448 1.246 | 206.1 325.6 --- [ill] 6 79.5 282.7 7.1 97.09
+      - 54746.9 54908.0 98.99 321.0 11.8 3.36 1.214 105.4 .274 .783 | 269.1 533.8 .568 [ill] 6 92.3 93.7 18.3 20.36
+      - 1.107 38.0 .4659 .533 3.075 109.0 12.4 212.98 -7.18 320.72 | .00 107.59 DARK SIDE TRAILING EDGE .00000 (words partly unreadable)
+      - 1.0882 1.6536 1.3531
+      - 4.33766 3.18240 4.20398 1.34687 2.51316 1.96621 2.44279 | 1.33129 16.85921 [ill] 3944 1.03782 42.36991
+    table_6:
+      table: 6
+      page: 49
+      opposition: 2010 (outbound leg of the double swingby)
+      kind: double-outbound
+      sweep: 'launch 54848 to 54860 in 2-day steps (selected: 4th of 7)'
+      launch: 54854
+      lines:
+      - 54854.0 54982.5 26.72 23.9 -44.8 -8.15 .933 93.5 .155 .861 | 199.5 366.4 .727 --- 10.80 1.259 90.9 235.0 73.4 53.80
+      - 54982.5 55196.0 57.74 279.1 22.2 4.03 1.379 94.9 .393 1.183 | 342.4 528.8 .718 --- -2.12 .620 97.1 128.4 9.9 18.80
+      - 1.100 56.5 .4124 .938 2.173 117.4 77.2 114.27 37.00 338.02 | .00 125.23 DARK SIDE LEADING EDGE .21559
+      - .6541 .7466
+      - .6541 .7466 1.3977
+      - 4.33013 2.14091 .00000 .00000 2.50915 1.57592 .00000 | .00000 2.01741 1.06764 .00000 .00000 5.06198
+    table_7:
+      table: 7
+      page: 50
+      opposition: 2010 (inbound leg of the double swingby)
+      kind: double-inbound
+      sweep: 'Mars departure 55256 to 55268 in 2-day steps (selected: 1st of 7)'
+      launch: 55256
+      lines:
+      - 55256.0 55433.5 46.68 87.9 22.3 -.64 .635 105.8 .418 1.249 | 204.8 354.3 --- --- 2.46 1.395 88.3 261.7 14.6 49.84
+      - 55433.5 55590.0 44.27 276.7 49.5 5.59 1.257 91.4 .151 .856 | 349.0 545.1 .726 .985 -7.09 .929 89.1 43.2 -36.6 19.89
+      - 1.271 56.6 .3818 1.112 2.143 117.8 83.9 253.55 -47.10 348.64 | .00 88.02 LIGHT SIDE TRAILING EDGE .00000
+      - 1.4749 2.3764
+      - 1.4749 2.3764 1.3971
+      - 3.82548 1.32674 .00000 .00000 2.25405 1.32560 .00000 | .00000 1.88485 1.03715 .00000 .00000 4.24855
+    table_8:
+      table: 8
+      page: 51
+      opposition: '2012'
+      kind: outbound
+      sweep: 'launch 55520 to 55532 in 2-day steps (selected: 5th of 7)'
+      launch: 55528
+      lines:
+      - 55528.0 55688.8 28.06 327.0 4.0 3.39 .845 91.5 .297 .761 | 183.5 458.9 .535 --- .70 1.198 107.1 205.1 2.3 113.06
+      - 55688.8 55842.0 111.70 237.3 .8 .22 1.373 77.0 .426 1.157 | 44.8 161.2 --- --- 1.83 .630 103.0 127.1 26.8 28.59
+      - 1.211 32.2 .4734 .465 3.603 106.1 3.0 131.10 2.56 28.86 | .00 102.22 DARK SIDE LEADING EDGE .00000
+      - 55902.0 56178.0 17.44 75.9 11.1 -2.57 .664 95.6 .291 1.287 | 194.1 414.6 .912 1.662 2.75 1.099 101.5 359.1 12.4 57.00
+      - 1.4661 1.7688 1.2717
+      - 4.38601 2.65126 1.81828 2.82314 2.53911 1.75640 1.47152 | 1.82172 11.86868 5.61335 2.37598 1.09937 30.13591
+    table_9:
+      table: 9
+      page: 52
+      opposition: '2014'
+      kind: inbound
+      sweep: 'launch 56618 to 56630 in 2-day steps (selected: 1st of 7)'
+      launch: 56618
+      lines:
+      - 56618.0 56888.0 11.98 197.9 18.0 2.43 1.097 94.2 .202 1.218 | 334.4 540.8 .972 1.464 -.68 .738 89.8 304.2 -24.4 3.66
+      - 56948.0 57083.1 40.44 286.7 -28.1 -1.58 .682 99.0 .378 1.041 | 195.5 308.5 --- --- -.67 1.345 76.5 79.4 -2.6 97.84
+      - 57083.1 57252.0 98.82 102.7 -11.1 -3.13 1.225 105.9 .285 .788 | 270.4 540.4 .563 1.012 -1.32 .840 89.8 232.7 -26.7 19.71
+      - 1.959 24.7 .4136 .532 4.684 102.3 21.4 3.50 20.11 102.44 | .00 98.39 DARK SIDE LEADING EDGE .00000
+      - 1.2950 1.6164 1.3814
+      - 3.69589 1.48527 3.44017 1.31914 2.19284 1.37101 2.07689 | 1.32346 9.00274 5.70489 1.84029 1.03689 19.74156
+    table_10:
+      table: 10
+      page: 53
+      opposition: '2016'
+      kind: inbound
+      sweep: 'launch 57324 to 57336 in 2-day steps (selected: 7th of 7)'
+      launch: 57336
+      lines:
+      - 57336.0 57596.0 33.98 212.2 -2.8 1.76 1.079 100.7 .239 1.169 | 298.2 529.2 .890 --- .13 .730 93.3 321.8 -14.8 4.89
+      - 57656.0 57834.4 53.11 293.1 -29.6 -2.67 .678 101.2 .404 1.021 | 197.5 422.4 .609 --- 1.44 1.341 106.8 62.5 4.7 138.97
+      - 57834.4 57913.0 138.85 41.7 .1 .05 1.210 78.7 .334 .761 | 100.6 179.2 --- --- -3.38 .810 90.4 161.7 -8.6 29.65
+      - 1.665 21.2 .4769 .376 5.424 100.6 167.4 142.58 12.37 227.37 | .00 84.92 LIGHT SIDE LEADING EDGE .00000
+      - .3923 1.0284 .2826
+      - 4.62991 2.31248 4.20485 1.73847 2.67415 1.63442 2.44324 | 1.44678 14.63445 7.30497 2.10588 1.05169 39.13473
+    table_11:
+      table: 11
+      page: 54
+      opposition: '2018'
+      kind: outbound
+      sweep: 'launch 57854 to 57866(?) in 2-day steps (selected: 1st)'
+      launch: 57854
+      lines:
+      - 57854.0 58006.9 25.90 77.2 17.7 -1.06 .856 94.9 .277 .792 | 193.0 446.7 .572 --- -2.94 1.232 105.3 323.6 -10.5 99.27
+      - 58006.9 58198.0 96.99 351.5 -9.0 -2.22 1.370 78.1 .399 1.106 | 42.9 179.9 --- --- .41 .623 90.0 254.7 -21.8 30.37
+      - 1.706 27.5 .4240 .533 4.201 103.8 10.5 247.00 -3.04 142.71 | .00 104.27 DARK SIDE LEADING EDGE .00000
+      - 58258.0 58492.0 13.27 255.3 .0 3.79 .733 97.3 .244 1.214 | 204.0 408.4 .919 1.510 -2.47 1.100 98.9 128.0 4.0 31.54
+      - 1.3952 1.2146 .6996
+      - 4.29553 2.80925 1.47682 1.81650 2.49080 1.81635 1.36855 | 1.47096 10.07159 4.63565 1.87744 1.05464 25.08928
+    table_12:
+      table: 12
+      page: 55
+      opposition: '2020'
+      kind: inbound
+      sweep: 'launch 59004? to 59016 in 2-day steps (selected: 3rd/4th)'
+      launch: 59010
+      lines:
+      - 59010.0 59196.0 23.04 29.6 15.2 .43 1.105 95.5 .256 1.334 | 332.5 488.8 .992 --- -2.24 .773 103.4 109.9 9.8 3.95
+      - 59256.0 59436.9 39.65 41.7 24.3 2.50 .633 96.0 .387 1.136 | 189.7 329.7 --- --- -.84 1.372 81.7 233.5 -4.1 67.77
+      - 59436.9 59604.0 69.04 270.0 11.0 2.55 1.229 102.4 .234 .798 | 280.4 538.0 .611 --- 1.75 .882 90.6 28.6 23.9 16.54
+      - 1.507 39.2 .3942 .764 2.971 109.7 23.3 163.18 -25.02 274.99 | .00 110.00 DARK SIDE LEADING EDGE .00000
+      - .7311 1.2862 1.2560
+      - 4.17478 1.67035 3.39036 1.18219 2.42769 1.42599 2.05502 | 1.28551 9.43624 5.57808 1.78426 1.03242 22.90823
+    table_13:
+      table: 13
+      page: 56
+      opposition: '2022'
+      kind: outbound
+      sweep: 'launch 59512 to 59524 in 2-day steps (selected: 4th of 7)'
+      launch: 59518
+      lines:
+      - 59518.0 59665.6 13.40 309.2 -60.1 -4.92 .919 92.2 .166 .855 | 191.1 387.3 .713 --- 7.84 1.262 93.8 145.4 58.5 35.90
+      - 59665.6 59820.0 38.52 171.6 22.9 3.42 1.359 86.9 .342 1.094 | 12.2 157.8 --- --- -2.62 .708 100.7 44.6 7.5 33.58
+      - 2.676 40.3 .2933 1.406 2.904 110.1 70.8 18.54 42.41 281.48 | .00 95.21 DARK SIDE TRAILING EDGE .00000
+      - 59880.0 60154.0 26.75 16.5 -1.1 -1.89 .699 93.0 .280 1.161 | 187.7 439.0 .836 1.486 .13 1.053 104.6 313.7 -16.3 66.78
+      - .7309 .9800 .6412
+      - 3.75853 2.99376 2.52032 3.18968 2.22222 1.88896 1.70821 | 1.96925 14.98895 6.86820 2.66161 1.11934 33.30874
+    table_14:
+      table: 14
+      page: 57
+      opposition: '2025'
+      kind: outbound
+      sweep: 'launch 60194 to 60206 in 2-day steps (selected: 2nd of 7)'
+      launch: 60196
+      lines:
+      - 60196.0 60357.5 24.99 251.8 -21.1 .27 .825 91.4 .315 .766 | 183.0 459.1 .525 --- 3.41 1.204 108.1 125.3 10.4 125.32
+      - 60357.5 60494.0 122.00 147.6 7.1 2.06 1.333 71.5(7?1.5) .387 1.024 | 59.2 168.7 --- --- -.75 .670 97.0 21.3 6.7 40.84
+      - 1.764 22.3 .4542 .423 5.172 101.1 12.4 45.10 6.46 309.79 | .00 95.33 DARK SIDE TRAILING EDGE .00000
+      - 60554.0 60810.0 13.11 9.4 -2.3 -.96 .746 90.4 .184 1.237 | 182.0 369.3 1.009 1.465 -.89 1.082 91.4 319.8 -26.4 7.95
+      - 1.4440 1.7335 1.4349
+      - 4.25717 3.46570 1.46368 .80288 2.47055 2.08818 1.36473 | 1.18595 10.54663 4.23363 1.52181 1.02089 26.05603
+    table_15:
+      table: 15
+      page: 58
+      opposition: '2027'
+      kind: inbound
+      sweep: 'launch 61346 to 61358(?) in 2-day steps (selected: 1st)'
+      launch: 61346
+      lines:
+      - 61346.0 61554.0 16.15 149.9 35.1 2.49 1.133 91.9 .275 1.366 | 351.2 505.1 .990 --- -.75 .703 101.5 265.1 -26.5 5.89
+      - 61614.0 61750.5 40.34 178.4 -4.4 -1.58 .662 108.8 .437 1.197 | 208.7 319.1 --- --- 1.80 1.383 77.8 348.3 7.1 104.95
+      - 61750.5 61916.0 106.10 21.9 2.6 .79 1.212 106.7 .295 .782 | 266.4 537.6 .552 --- -3.28 .835 91.0 150.0 -6.2 23.09
+      - 1.212 33.7 .4650 .496 3.447 106.9 9.2 274.47 7.67 20.67 | .00 106.05 DARK SIDE TRAILING EDGE .00000
+      - 1.2930 1.7470 1.3769
+      - 3.87895 3.06496 3.43379 1.46330 2.27980 1.91775 2.07407 | 1.36462 13.85689 6.20838 1.89561 1.04178 31.59100
+    table_16:
+      table: 16
+      page: 59
+      opposition: 2029 (outbound leg of the double swingby)
+      kind: double-outbound
+      sweep: 'launch 61852 to 61864(?) in 2-day steps (selected: 3rd)'
+      launch: 61856
+      lines:
+      - 61856.0 62007.5 25.98 49.4 72.8 8.47 .915 91.5 .166 .857 | 187.6 386.4 .714 --- -10.05 1.262 93.7 288.9 -63.3 53.70
+      - 62007.5 62210.0 57.73 315.5 -26.2 -4.66 1.386 86.1 .398 1.194 | 13.7 169.8 --- --- 4.70 .611 96.6 219.6 1.2 28.38
+      - 1.741 41.0 .3613 .939 2.854 110.5 74.0 157.73 -40.20 71.96 | .00 86.77 LIGHT SIDE TRAILING EDGE .00000
+      - .8118 .6709
+      - .8118 .6709 1.3977
+      - 4.29874 2.63645 .00000 .00000 2.49247 1.75088 .00000 | .00000 2.28338 1.09003 .00000 .00000 5.69126
+    table_17:
+      table: 17
+      page: 60
+      opposition: 2029 (inbound leg of the double swingby)
+      kind: double-inbound
+      sweep: 'Mars departure 62270 to 62274(+) in 2-day steps (selected: 1st)'
+      launch: 62270
+      lines:
+      - 62270.0 62437.0 30.83 163.6 -4.5 -3.15 .655 106.0 .407 1.223 | 206.5 351.4 --- --- 3.26 1.390 87.5 324.7 19.4 50.03
+      - 62437.0 62592.0 47.43 350.6 66.4 9.70 1.260 93.0 .162 .860 | 338.5 537.3 .720 --- -10.54 .916 90.5 93.2 -35.6 33.93
+      - 1.471 49.9 .3675 1.073 2.371 114.9 77.5 307.94 -43.79 40.31 | .00 91.71 DARK SIDE TRAILING EDGE .00000
+      - 1.1570 2.3906
+      - 1.1570 2.3906 1.3974
+      - 2.80699 1.91445 .00000 .00000 1.81548 1.50190 .00000 | .00000 2.02094 1.05843 .00000 .00000 3.59391
+    table_18:
+      table: 18
+      page: 61
+      opposition: '2031'
+      kind: outbound
+      sweep: 'launch 62520 to 62532(+) in 2-day steps (selected: 6th)'
+      launch: 62530
+      lines:
+      - 62530.0 62693.1 24.87 25.9 21.4 1.95 .852 90.7 .286 .766 | 181.7 455.5 .547 --- -2.65 1.208 106.3 267.5 -8.8 109.70
+      - 62693.1 62884.0 107.76 300.9(300.P) -9.6 -2.47 1.382 78.0 .427 1.168 | 41.3 173.3 --- --- 2.27 .592 95.0 202.5 -1.2 26.01
+      - 1.226 32.9 .4683 .481 (3.)536 106.4 9.7 194.40 1.45 90.38 | .00 104.01 DARK SIDE TRAILING EDGE .00000
+      - 62944.0 63184.0 14.20 161.7 8.2 .04 .680 101.8 .320 1.292 | 207.9 417.4 .879 1.705 1.81 1.117 102.9 63.1 28.4 67.78
+      - 1.4681 1.3956 .8111
+      - 4.25216 2.46688 1.55504 3.22670 2.46793 1.68893 1.39148 | 1.98480 11.44191 5.68075 2.58735 1.12149 28.23781
+    table_23:
+      table: 23
+      page: 66
+      opposition: '2031'
+      kind: conjunction
+      sweep: 'launch 62854 to 62866 in 2-day steps (selected: 4th of 7)'
+      launch: 62860
+      lines:
+      - 62860.0 63142.0 10.88 229.1 15.3 3.10 1.092 93.3 .182 1.188 | 338.0 553.8 .973 1.404 -2.13 .769 87.0 313.5 -32.7 3.47
+      - 63642.0 63858.0 6.06 199.2 19.1 2.90 .699 96.6 .242 1.323 | 201.9 350.2 --- --- -1.42 1.111 88.1 94.2 10.1 12.82
+      - 1.2573 1.4295
+      - 3.64729 1.37537 .83505 1.01918 2.17032 1.33937 1.19412 | 1.24176 6.03876 3.92824 1.55897 1.02732 13.10601
+    table_24:
+      table: 24
+      page: 67
+      opposition: '2033'
+      kind: conjunction
+      sweep: 'launch 63700 to 63712 in 2-day steps (selected: 4th of 7)'
+      launch: 63706
+      lines:
+      - 63706.0 63906.0 9.15 267.1 -54.8 -2.82 1.074 86.9 .167 1.193 | 22.3 170.6 --- --- 1.30 .776 91.9 353.5 7.0 3.31
+      - 64456.0 64656.0 8.80 279.5 -29.3 -.74 .751 94.5 .192 1.227 | 198.9 348.5 --- --- 2.45 1.100 88.1 180.4 30.2 9.10
+      - .9772(.9?72) 1.0215
+      - 3.57008 1.27784 1.08741 .85427 2.13500 1.31190 1.25989 | 1.19900 5.95177 3.97033 1.51927 1.02238 12.70706
+    table_25:
+      table: 25
+      page: 68
+      opposition: '2035'
+      kind: conjunction
+      sweep: 'launch 64504 to 64516 in 2-day steps (selected: 3rd of 7)'
+      launch: 64508
+      lines:
+      - 64508.0 64712.0 10.55 355.9 9.2 1.01 1.090 89.3 .209 1.285 | 4.2 153.2 --- --- -2.64 .739 96.6 74.8 9.5 2.61
+      - 65242.0 65512.0 12.81 337.2 4.9 2.09 .774 89.2 .172 1.179 | 176.3 392.1 .976 1.382 -3.08 1.075 94.6 218.9 -47.7 11.31
+      - 1.1977 1.1049
+      - 3.63246 .90789 1.43822 .95273 2.16349 1.21274 1.35737 1.22436 | 5.76305 4.14390 1.56695 1.02530 12.46828
+    table_26:
+      table: 26
+      page: 69
+      opposition: '2037'
+      kind: conjunction
+      sweep: 'launch 65284 to 65296 in 2-day steps (selected: 4th of 7; first digit group smudged)'
+      launch: 65290
+      lines:
+      - 65290.0 65646.0 16.23 329.6 -21.4 -2.53 1.112 92.2 .254 1.352 | 349.2 563.1 1.008 1.696 3.29 .687 82.6 73.5 24.8 2.82
+      - 65986.0 66276.0 9.70 307.9 3.5 .52 .775 86.4 .170 1.209 | 162.0 374.7 1.003 1.414 -2.27 1.076 92.1 192.7 -26.4 8.13
+      - 2.4917 1.5060
+      - 3.88239 1.01196 1.16849 .81061 2.28147 1.23985 1.28178 1.18793 | 5.71505 3.95971 1.50981 1.02111 13.03871
+    table_27:
+      table: 27
+      page: 70
+      opposition: '2040'
+      kind: conjunction
+      sweep: 'launch 66044 to 66056 in 2-day steps (selected: 5th of 7)'
+      launch: 66052
+      lines:
+      - 66052.0 66392.0 12.63 92.3 10.1 -1.42 1.112 91.5 .242 1.324 | 352.5 562.8 1.003 1.644 2.93 .701 83.1 198.6 19.4 2.48
+      - 66732.0 67036.0 7.54 43.4 4.8 -1.42 .756 84.9 .189 1.249 | 167.2 363.2 1.014 1.486 -.46 1.083 90.5 242.3 -13.1 8.32
+      - 2.3376 1.8560
+      - 3.72459 .84577 .97348 .81929 2.70625 1.19684 1.22976 1.19013 | 5.31611 3.86241 1.50355 1.02136 11.72967
+    table_28:
+      table: 28
+      page: 71
+      opposition: '2042'
+      kind: conjunction
+      sweep: 'launch 66804 to 66816 in 2-day steps (selected: 5th of 7)'
+      launch: 66812
+      lines:
+      - 66812.0 67130.0 9.79 118.7 22.5 .16 1.109 90.9 .226 1.285 | 354.9 561.0 .995 1.575 1.71 .719 84.2 234.7 -4.8 2.49
+      - 67470.0 67802.0 6.72 81.0 -.5 -2.80 .734 83.2 .214 1.292 | 153.4 365.5 1.016 1.568 1.28 1.092 91.0 357.9 12.7 11.26
+      - 2.0846 2.1714
+      - 3.59877 .84930 .89693 .95029 2.14806 1.19774 1.20992 1.22371 | 6.30192 3.86759 1.54015 1.02523 11.38882
+    table_29:
+      table: 29
+      page: 72
+      opposition: '2044'
+      kind: conjunction
+      sweep: 'launch 67564 to 67576 in 2-day steps (selected: 3rd of 7)'
+      launch: 67568
+      lines:
+      - 67568.0 67874.0 8.92 162.7 30.9 1.93 1.103 91.6 .206 1.243 | 360.5 561.5 .987 1.498 -.09 .745 84.7 265.2 -24.6 2.80
+      - 68214.0 68564.0 6.65 120.8 -7.7 -3.31 .709 82.3 .238 1.329 | 153.6 367.4 1.013 1.645 2.55 1.104 91.4 15.0 30.2 15.42
+      - 1.7863 2.3882
+      - 3.55986 .99860 .89044 1.13355 2.13038 1.23634 1.20825 1.27230 | 5.58237 3.95381 1.59820 1.03088 11.89254
+  venus_passage:
+  - table: 2
+    opposition: '2001'
+    line: 1.106 53.6 .4141 .908 2.218 116.8 46.7 81.08 -37.55 217.77 | .00 125.23 DARK SIDE TRAILING EDGE .00000
+  - table: 3
+    opposition: '2003'
+    line: 1.143 75.7 .3683 1.816 1.629 127.9 98.6 245.01 -65.55 170.59 | .00 83.62 LIGHT SIDE LEADING EDGE .00000
+  - table: 4
+    opposition: '2005'
+    line: 2.261 22.9 .3968 .560 5.038 101.4 6.5 312.96 -6.35 210.61 | .00 102.28 DARK SIDE LEADING EDGE .00000
+  - table: 5
+    opposition: '2007'
+    line: 1.107 38.0 .4659 .533 3.075 109.0 12.4 212.98 -7.18 320.72 | .00 107.59 DARK SIDE TRAILING EDGE .00000 (words partly unreadable)
+  - table: 6
+    opposition: 2010 (outbound leg of the double swingby)
+    line: 1.100 56.5 .4124 .938 2.173 117.4 77.2 114.27 37.00 338.02 | .00 125.23 DARK SIDE LEADING EDGE .21559
+  - table: 7
+    opposition: 2010 (inbound leg of the double swingby)
+    line: 1.271 56.6 .3818 1.112 2.143 117.8 83.9 253.55 -47.10 348.64 | .00 88.02 LIGHT SIDE TRAILING EDGE .00000
+  - table: 8
+    opposition: '2012'
+    line: 1.211 32.2 .4734 .465 3.603 106.1 3.0 131.10 2.56 28.86 | .00 102.22 DARK SIDE LEADING EDGE .00000
+  - table: 9
+    opposition: '2014'
+    line: 1.959 24.7 .4136 .532 4.684 102.3 21.4 3.50 20.11 102.44 | .00 98.39 DARK SIDE LEADING EDGE .00000
+  - table: 10
+    opposition: '2016'
+    line: 1.665 21.2 .4769 .376 5.424 100.6 167.4 142.58 12.37 227.37 | .00 84.92 LIGHT SIDE LEADING EDGE .00000
+  - table: 11
+    opposition: '2018'
+    line: 1.706 27.5 .4240 .533 4.201 103.8 10.5 247.00 -3.04 142.71 | .00 104.27 DARK SIDE LEADING EDGE .00000
+  - table: 12
+    opposition: '2020'
+    line: 1.507 39.2 .3942 .764 2.971 109.7 23.3 163.18 -25.02 274.99 | .00 110.00 DARK SIDE LEADING EDGE .00000
+  - table: 13
+    opposition: '2022'
+    line: 2.676 40.3 .2933 1.406 2.904 110.1 70.8 18.54 42.41 281.48 | .00 95.21 DARK SIDE TRAILING EDGE .00000
+  - table: 14
+    opposition: '2025'
+    line: 1.764 22.3 .4542 .423 5.172 101.1 12.4 45.10 6.46 309.79 | .00 95.33 DARK SIDE TRAILING EDGE .00000
+  - table: 15
+    opposition: '2027'
+    line: 1.212 33.7 .4650 .496 3.447 106.9 9.2 274.47 7.67 20.67 | .00 106.05 DARK SIDE TRAILING EDGE .00000
+  - table: 16
+    opposition: 2029 (outbound leg of the double swingby)
+    line: 1.741 41.0 .3613 .939 2.854 110.5 74.0 157.73 -40.20 71.96 | .00 86.77 LIGHT SIDE TRAILING EDGE .00000
+  - table: 17
+    opposition: 2029 (inbound leg of the double swingby)
+    line: 1.471 49.9 .3675 1.073 2.371 114.9 77.5 307.94 -43.79 40.31 | .00 91.71 DARK SIDE TRAILING EDGE .00000
+  - table: 18
+    opposition: '2031'
+    line: 1.226 32.9 .4683 .481 (3.)536 106.4 9.7 194.40 1.45 90.38 | .00 104.01 DARK SIDE TRAILING EDGE .00000
+figures:
+  fig7:
+    caption: Mars stopover mission with Venus swingby (stopover time equal 60 days, time period 2000 to 2031)
+    rows:
+    - mission: 2001 inbound
+      earth_launch: March 2001
+    - mission: 2003 outbound
+      earth_launch: August 2002
+    - mission: 2005 outbound
+      earth_launch: June 2004
+    - mission: 2007 inbound
+      earth_launch: September 2007
+    - mission: 2010 double
+      earth_launch: January 2009
+    - mission: 2012 outbound
+      earth_launch: November 2010
+    - mission: 2014 inbound
+      earth_launch: November 2013
+    - mission: 2016 inbound
+      earth_launch: November 2015
+    - mission: 2018 outbound
+      earth_launch: April 2017
+    - mission: 2020 inbound
+      earth_launch: June 2020
+    - mission: 2022 outbound
+      earth_launch: October 2021
+    - mission: 2025 outbound
+      earth_launch: September 2023
+    - mission: 2027 inbound
+      earth_launch: November 2026
+    - mission: 2029 double
+      earth_launch: March 2028
+    - mission: 2031 outbound
+      earth_launch: January 2030
+  fig15:
+    text: two mission opportunities out of every three should be favourable; initial mass in LEO 1.47 to 4.1 million lb; third stage 24,000 to 102,000 lb, second stage 353,000 to 1,094,000 lb, first stage
+      870,000 to 2,720,000 lb; mission time 558 to 737 d; Earth departure C3 9.2 to 37.0 km2/s2
+    check: 'stage ranges: first stage 869,021 (2001) to 2,719,261 (2007) and second stage 352,989 to 1,093,887 agree with Tables 19 to 21; third stage MINIMUM stated 24,000 but Table 21 gives 17,513 lb
+      for 2025 (WF3 15,762, DV4 0.80 km/s): not consistent; maximum 101,967 (2031) / 100,164 (2022) vs stated 102,000 ok.'
+  fig25:
+    text: mission opportunity about every 26 months; initial mass in LEO 1.01 to 1.17 million lb; third stage 25,000 to 36,500 lb; second stage 112,000 to 169,000 lb; first stage 600,000 to 725,000 lb;
+      stopover 340 to 550 d; total mission time 950 to 1004 d; Earth departure C3 8.9 to 16.2 km2/s2
+    check: 'Tables 30, 31: WO 1,012,079 to 1,170,455 lb; WSTG3 24,950 to 36,502 lb (24,950 not 25,000: rounded); WSTG2 112,263 to 168,974; WSTG1 600,994 to 724,991: all inside the stated ranges'
+  fig14:
+    inbound_2014:
+      launch: 11/22/13
+      mars_arrival: 8/19/14
+      mars_departure: 10/16/14
+      venus_passage: 3/2/15
+      earth_arrival: 8/19/15
+    outbound_2025:
+      launch: 9/9/23
+      venus_passage: 2/18/24
+      mars_arrival: 7/3/24
+      mars_departure: 9/1/24
+      earth_arrival: 5/15/25
+    check: 2025 dates all equal 1858-11-17 + the Table 1 day numbers; the 2014 launch, Mars arrival and Venus passage agree, the Mars departure (table 56948 = 10/18/14) and Earth arrival (57252 = 8/18/15)
+      differ by 2 d and 1 d from the figure
+  fig24:
+    conjunction_2031:
+      launch: 12/25/30
+      mars_arrival: 10/3/31
+      mars_departure: 2/14/33
+      earth_arrival: 9/18/33
+    check: all four equal 1858-11-17 + Table 22 day numbers
+  fig1a_16:
+    text: study assumptions; see conventions block
+references:
+- Sohn, R. L., Venus Swingby Mode for Manned Mars Missions, J. Spacecraft and Rockets 1(5), Sept-Oct 1964
+- Space Flight Handbook, Vol. 3, Planetary Flight Handbook, NASA SP-35, prepared for MSFC, 1963
+- Hollister, W. M. and Prussing, J. E., Optimum Transfer to Mars via Venus, AIAA/ION Astrodynamics Specialist Conference, 16 September 1965 (as printed)
+- Deerwester, J. M., Initial Mass Savings Associated with the Venus Swingby Mode of Mars Round Trips, AIAA 2nd Aerospace Sciences Meeting, 25 January 1965
+- Integrated Manned Interplanetary Spacecraft Concept Definition, Vol. 1, The Boeing Company, NASA CR-66558, NASA contract NAS1-6774, January 1968
