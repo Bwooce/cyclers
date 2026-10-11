@@ -1,0 +1,141 @@
+# Titus 1965, AIAA Paper 65-515, "Powered Flybys of Mars": every printed number.
+# Source: Richard R. Titus, Research Laboratories, United Aircraft Corporation, East Hartford, Connecticut.
+#   AIAA Second Annual Meeting, San Francisco, 26-29 July 1965. DOI 10.2514/6.1965-515.
+# Local file: 16 pp. (two-up spreads, 783 x 610 pt), image scan; the filed copy is an ocrmypdf --redo-ocr -l eng copy,
+#   md5 39880f88938228c7ec5261169bf65e94 (source scan md5 7aab3cf16abeb70160c67e210ddede3e).
+#   PDF page 1 = cover, PDF p.2 = printed pp.1-2, ... PDF p.10 = printed pp.17-18, PDF pp.11-16 = Figs. 1-23.
+# Units are as printed: fps or ft/sec (feet per second), lb (pounds mass), days, Julian date, EMOS = Earth's mean orbital speed
+#   (the paper never states its value; ours, 29.78 km/s = 97,700 ft/s, is used only in `check:` fields).
+# Witnesses (three, per number): A = the OCR text layer (pdftotext); B = page images at 100 dpi, read by eye;
+#   C = crops at 250 dpi of each table and each figure annotation, read by eye. A, B and C agree on every digit below,
+#   except where a `note:` says otherwise. Internal arithmetic checks are in `check:` fields. No value is computed by us.
+# All numbers in `check:` fields are ours.
+
+transportation_system_constant_masses_lb:   # printed p.7 (PDF p.5), the list
+  items:
+    - {item: "Earth Entry Vehicle", value: 15000}
+    - {item: "Command Module", value: 10000}
+    - {item: "Power Supply", value: 1000}
+    - {item: "Radiation Shelter", value: 20000}
+    - {item: "Service Module", value: 5000}
+    - {item: "Added Structure", value: 4000}
+    - {item: "Corrective Propulsion", value: 5000}
+  check: "Sum = 60,000 lb. Plus the 14,500 lb life support of the 440-day example (3500 + 25 x 440 = 14,500) gives the printed 74,500 lb."
+
+transportation_system_text_numbers:       # printed p.7-8
+  - {item: "life support, basic", value: "3500 lb", page: 7}
+  - {item: "life support, per day for a crew of three", value: "25 lb/day", page: 7}
+  - {item: "example, 440-day mission life support", value: "14,500 lb", page: 7}
+  - {item: "example, 440-day mission spacecraft total", value: "74,500 lb", page: 7}
+  - {item: "primary propulsion", value: "liquid hydrogen and LOX, specific impulse 430 sec", page: 7}
+  - {item: "assumed maximum extension of the Martian atmosphere", value: "r_p = 1.09 planetary radii", page: 3}
+  - {item: "chosen passage distance at Mars", value: "r_p = 1.1 planetary radii", page: 3}
+  - {item: "direct Earth-entry speed the entry vehicle is assumed to survive", value: "65,000 ft/sec", page: 5}
+
+table_earth_escape_vs_hyperbolic_transfer_dv_fps:   # printed p.9-10, the table after "The following table shows these relationships"
+  columns: [opposition_year, earth_escape_dv_fps, hyperbolic_transfer_dv_fps]
+  rows:
+    - [1971, 12000, 5470]
+    - [1973, 12800, 8900]
+    - [1975, 13200, 12300]
+    - [1978, 13100, 12200]
+    - [1980, 12800, 11200]
+  note: "The OCR layer reads the 1975 year as '1919' and puts a stray space in '12, 200'; B and C read 1975 and 12,200. Conclusion 5 (p.16) says 'unfavorable years of 1975 through 1980' while the text before the table says 1975, 1978 and 1980."
+  check: "Hyperbolic transfer dV in EMOS from Figs. 5-9 times 97,700 ft/s: 0.056 -> 5,471; 0.091 -> 8,891; 0.126 -> 12,310; 0.125 -> 12,213; 0.115 -> 11,236. All five agree with the table to 0.1 percent. This is an independent witness on the table digits."
+
+table_nonoptimum_powered_flybys:    # printed p.14 (PDF p.8, right page)
+  columns: [opposition_year, total_trip_duration_days, earth_departure_speed_ft_per_s, dv_at_mars_ft_per_s, earth_entry_speed_ft_per_s]
+  rows:
+    - [1975, 510, 19100, 6550, 64500]
+    - [1978, 530, 21000, 6850, 64900]
+    - [1980, 520, 17150, 6650, 64800]
+  note: "The column headed 'Earth Departure' has units ft/sec, a speed (hyperbolic excess or departure speed; the paper does not say which). 'Earth Departure' of 19,100 ft/sec is far above the 12,000 to 13,200 ft/s Earth-escape dV of the optimum cases, as the text says ('high earth departure speeds')."
+
+figures_5_to_9_mars_encounter_asymptotes_emos:   # annotations on the five hyperbola plots, EMOS units
+  columns: [fig, opposition_year, v_inf_in_emos, v_inf_out_emos, dv_emos, page_pdf]
+  rows:
+    - [5, 1971, 0.150, 0.212, 0.056, 12]
+    - [6, 1973, 0.116, 0.234, 0.091, 12]
+    - [7, 1975, 0.136, 0.246, 0.126, 12]
+    - [8, 1978, 0.166, 0.261, 0.125, 12]
+    - [9, 1980, 0.190, 0.307, 0.115, 13]
+  note: "Fig. 9 prints the first value as 'V = 0.190' with the equals sign touching the digits. Read at 250 dpi as 0.190. The dV label in Fig. 9 reads 0.115 at 250 dpi; the table above gives 11,200 ft/s, which agrees (11,236). Plots carry no scale bar."
+  check: "v_inf_in x 29.78 km/s: 4.47, 3.45, 4.05, 4.94, 5.66 km/s; v_inf_out: 6.31, 6.97, 7.33, 7.77, 9.14 km/s. Ours."
+
+figures_16_to_20_heliocentric_dates_julian:  # dates printed beside the planet symbols on the plan views
+  # Earth symbol = Earth, circle symbol = Mars, Venus and Mercury symbols as drawn. Star symbols mark the dates at which the
+  # spacecraft trajectory crosses the orbit of Venus or Mercury (paper text p.11-12); the planet symbol with the same date
+  # shows that planet's position on that date.
+  items:
+    - {fig: 16, year: 1971, earth_departure_jd: 2441090, mars_flyby_jd: 2441240, earth_arrival_jd: 2441520,
+       crossings: {venus_orbit_jd: [2441426, 2441464]}, venus_jd_labelled: [2441426, 2441464]}
+    - {fig: 17, year: 1973, earth_departure_jd: 2441890, mars_flyby_jd: 2442070, earth_arrival_jd: 2442340,
+       crossings: {venus_orbit_jd: [2442247, 2442310], mercury_orbit_jd: [2442277]}, venus_jd_labelled: [2442247, 2442310], mercury_jd_labelled: [2442277]}
+    - {fig: 18, year: 1975, earth_departure_jd: 2442670, mars_flyby_jd: 2442870, earth_arrival_jd: 2443120,
+       crossings: {venus_orbit_jd: [2443037, 2443100], mercury_orbit_jd: [2443060]}, venus_jd_labelled: [2443037, 2443100], mercury_jd_labelled: [2443060]}
+    - {fig: 19, year: 1978, earth_departure_jd: 2443430, mars_flyby_jd: 2443640, earth_arrival_jd: 2443890,
+       crossings: {venus_orbit_jd: [2443805, 2443863], mercury_orbit_jd: [2443824]}, venus_jd_labelled: [2443805, 2443863], mercury_jd_labelled: [2443824]}
+    - {fig: 20, year: 1980, earth_departure_jd: 2444190, mars_flyby_jd: 2444400, earth_arrival_jd: 2444660,
+       crossings: {venus_orbit_jd: [2444562, 2444630], mercury_orbit_jd: [2444590]}, venus_jd_labelled: [2444562, 2444630], mercury_jd_labelled: [2444590]}
+  note: "Fig. 17: the Earth arrival label reads '244 12340' with a trajectory line through the fourth digit, and a Venus-crossing label reads '244 2247' with the same occlusion; both read as 2442340 and 2442247 from the unobstructed partner labels (2442247 beside the Venus symbol) and the trip-duration pattern. Departure dates are printed only for Earth with the Earth symbol; Mars flyby is the date at the heavy-circle encounter point. Assignment of the Earth departure and arrival labels to the two Earth symbols is by trip order (earlier date = departure)."
+  derived_by_us:
+    trip_days_departure_to_mars: {1971: 150, 1973: 180, 1975: 200, 1978: 210, 1980: 210}
+    trip_days_mars_to_earth: {1971: 280, 1973: 270, 1975: 250, 1978: 250, 1980: 260}
+    total_trip_days: {1971: 430, 1973: 450, 1975: 450, 1978: 460, 1980: 470}
+  check: "Total days match the powered-flyby points of Fig. 12 read at 100 dpi (about 430, 450, 450, 460, 470 days). Independent witness on the dates."
+
+fig_12_total_trip_time_vs_mass_in_earth_orbit:   # read off the plot, no values printed; +-5 days, +-0.05e6 lb
+  powered: {1971: [430, 0.4e6], 1973: [450, 0.6e6], 1975: [450, 0.78e6], 1978: [460, 0.77e6], 1980: [470, 0.71e6]}
+  ballistic: {1971: [510, 0.4e6], 1973: [520, 0.6e6], 1975: [530, 1.05e6], 1978: [540, 1.67e6], 1980: [540, 1.57e6]}
+  note: "Approximate plot reading, one witness (B and C of the plot). The values are not printed. Treat as shape only."
+
+fig_11_mass_in_earth_orbit_bars_1e6_lb:   # approximate bar reading, one witness, +-0.05e6
+  note: "The only numbers printed in the text for mass in Earth orbit: 1978 initial optimum powered flyby 750,000 lb; 1978 ballistic flyby 1.8 million lb; 1978 powered flyby with Venus swingby (the nonoptimum Venus case) 2,935,000 lb; 1980 Earth-retro mode 2,511,000 lb; 1980 perihelion-retro mode 1,561,000 lb; combination of 6250 ft/s perihelion retro and 8000 ft/s Earth retro 1,470,000 lb (all text, pp.13 and 15). Bars are read only in the plot."
+
+fig_13_earth_entry_speed_fps_x1e3:   # approximate bar reading, one witness
+  ballistic: {1971: 45, 1973: 48, 1975: 55, 1978: 59, 1980: 61}
+  powered: {1971: 52, 1973: 65, 1975: 72, 1978: 73, 1980: 73}
+  note: "Axis ticks every 10 (x 10^3 fps); a dashed line at 65 marks the hypothetical direct-entry limit. Bar tops read to about +-1. Text says the optimum powered flybys of 1975 and 1978 and 1980 exceed 70,000 ft/sec (p.11, 1975 'exceeds 70,000')."
+
+text_numbers_other:   # printed pp.9-16
+  items:
+    - {item: "ballistic and powered mass comparison, 1978 and 1980", value: "powered requires less than half the mass in Earth orbit of ballistic", page: 9}
+    - {item: "powered flyby trip time reduction", value: "almost three months for each opposition year", page: 9}
+    - {item: "Earth entry retro needed to reach 65,000 ft/sec", value: "as much as 9000 ft/sec", page: 10}
+    - {item: "entry vehicle mass braked in the retro", value: "15,000 lb entry vehicle instead of 75,000 lb spacecraft", page: 10}
+    - {item: "1975 Venus swingby: Venus passage distance for an Earth rendezvous", value: "1.8 Venus radii", page: 12}
+    - {item: "1975 Venus swingby: Mars-to-Earth transfer time increase", value: "23 days", page: 12}
+    - {item: "1975 Venus swingby: Earth entry speed", value: "57,200 ft/sec", page: 12}
+    - {item: "1975 optimum powered flyby Earth entry speed without Venus", value: "exceeds 70,000 ft/sec", page: 12}
+    - {item: "limiting Venus passage distance imposed", value: "1.2 planetary radii", page: 13}
+    - {item: "Venus passage distance needed for all Mars-Venus-Earth combinations with entry below 65,000 ft/sec", value: "0.5 planetary radii or less", page: 13}
+    - {item: "class of Venus-Earth transfers with entry speed below the limit", value: "about 400-day transit times; total durations over 700 days", page: 13}
+    - {item: "1978 Venus-case: Earth departure", value: "Julian date 2443290", page: 13}
+    - {item: "1978 Venus-case: Mars passage", value: "270 days after departure", page: 13}
+    - {item: "1978 Venus-case: Venus after Mars", value: "200 days", page: 13}
+    - {item: "1978 Venus-case: Venus flyby distance", value: "1.4 planet radii", page: 13}
+    - {item: "1978 Venus-case: Earth arrival", value: "Julian date 2443915, 625 days after departure", page: 13}
+    - {item: "1978 Venus-case: initial mass required", value: "2,935,000 lb (against 750,000 lb optimum powered and 1.8 million lb ballistic)", page: 13}
+    - {item: "nonoptimum powered flyby total trip durations", value: "510 to 530 days", page: 13}
+    - {item: "perihelion retro, 1980 case with 50,000 ft/sec entry limit", value: "perihelion dV 9400 ft/sec; Earth-retro dV alternative 24,000 ft/sec", page: 15}
+    - {item: "mass in Earth orbit, Earth-retro mode (1980, 50,000 ft/sec)", value: "2,511,000 lb", page: 15}
+    - {item: "mass in Earth orbit, perihelion-retro mode (1980, 50,000 ft/sec)", value: "1,561,000 lb", page: 15}
+    - {item: "combination: perihelion retro", value: "6250 ft/sec, giving an Earth approach speed of 58,000 ft/sec", page: 15}
+    - {item: "combination: additional Earth retro", value: "8000 ft/sec", page: 15}
+    - {item: "combination mass in Earth orbit", value: "1,470,000 lb", page: 15}
+    - {item: "low-entry-speed trips", value: "about 800 days duration when departure and entry speeds are both low", page: 15}
+  check: "Julian-date arithmetic: 2443290 + 625 = 2443915 as printed. 270 + 200 = 470 days to Venus, so the Venus-to-Earth leg is 155 days (ours). The OCR reads the combination mass as '1,470,000 ld'; B and C read 1,470,000 lb. The OCR text shows '1960 optimum' where B and C read 1980."
+
+fig_14_15_22_23_plots_reading_only:
+  items:
+    - {fig: 14, text: "Earth entry speed (x 10^3 fps, 36 to 76) against perihelion retro velocity (x 10^3 fps, 0 to 12), straight-line curves labelled 1971, 1973, 1975, 1978, 1980; a 'minimum entry speeds' line. No values printed."}
+    - {fig: 15, text: "1980 optimum powered flyby with perihelion retro: mass in Earth orbit (1.0 to 2.2 x 10^6 lb) and total trip duration (460 to 560 days) against perihelion retro velocity (0 to 12 x 10^3 fps); lines mark 65,000 fps Earth entry and the ballistic flyby. Trip duration rises from about 470 days at zero retro to about 525 days at 12,000 fps (plot reading, +-5 days)."}
+    - {fig: 22, text: "1975 nonoptimum powered flyby, Earth return date 2443090: sum of Earth-leave dV and dV at Mars (24 to 32 x 10^3 fps) against Earth departure date (JD 2442550 + 60 to 90) for Mars dates labelled 2800, 2810, 2820, 2830, 2840, 2850 (244xxxx). The lowest curve has its minimum near 25,500 fps (plot reading, +-300)."}
+    - {fig: 23, text: "1980 combination retro, Earth entry speed 50,000 fps: mass in Earth orbit (1.0 to 2.8 x 10^6 lb) against perihelion retro velocity (0 to 10 x 10^3 fps); marked points Earth retro dV = 24,000, 20,000, 16,000, 12,000, 8000, 4000, 0 fps; the curve has its minimum near the printed 1,470,000 lb (plot reading)."}
+    - {fig: 21, text: "Heliocentric longitude (axis 120 to 160 deg, wrapping at 360) of Venus against Julian date (2440000 + 1400 to 4800), as sawtooth traces, with the spacecraft intercept with the Venus orbit for 1971, 1973, 1975, 1978, 1980 marked."}
+    - {fig: 10, text: "Mars transfer dV (EMOS, 0 to 0.18) against true anomaly of the separation point (-160 to 160 deg) for 1971, 1973, 1975, 1978, 1980; the 1971 curve has its minimum near 0.056 (plot reading). Open circles mark the chosen points."}
+  note: "Plot readings carry no printed values and are shape only, one witness (B and C)."
+
+references_printed:
+  - {n: 1, text: "Gobetz, F. W.: Optimum Transfers Between Hyperbolic Asymptotes. UAC Research Laboratories Report A-110058-5, November 1962."}
+  - {n: 2, text: "Willis, E. A., Jr.: New Class of Optimal Interplanetary Trajectories with Specified Trip Time. NASA Lewis Research Center, AIAA Paper No. 65-66."}
