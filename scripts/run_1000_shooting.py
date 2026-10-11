@@ -120,27 +120,44 @@ def jac_c(s: Arr) -> tuple[float, Arr]:
     return c, np.array([dcx, dcy, -2 * vx, -2 * vy])
 
 
+def osc_perigee(s: Arr) -> float:
+    """Osculating two-body perigee radius about the Earth (GM = 1 - mu) of a rotating-frame state,
+    from the Earth-relative inertial velocity (#1054 F3)."""
+    rx, ry = s[0] + MU, s[1]
+    vx, vy = s[2] - ry, s[3] + rx
+    r = math.hypot(rx, ry)
+    h = rx * vy - ry * vx
+    en = 0.5 * (vx * vx + vy * vy) - GM_E / r
+    e = math.sqrt(max(0.0, 1.0 + 2.0 * en * h * h / GM_E**2))
+    return h * h / (GM_E * (1.0 + e))
+
+
 def shoot(
     nodes: list[Arr],
     taus: list[float],
     c_target: float | None,
     step_max: float = STEP_MAX,
     max_it: int = MAX_IT,
+    perigee_drop_max: float | None = None,
 ) -> dict[str, Any]:
+    """`perigee_drop_max` (#1054 F3; None = the #1000 path): each node's osculating Earth perigee
+    after a step must be at least max(Earth floor, (1 - perigee_drop_max) x its value before the
+    step); otherwise the step is halved, up to 10 times, and then taken."""
     n = len(nodes)
     xv = np.concatenate([np.concatenate(nodes), np.array(taus)])
+    n_halved = 0
     for it in range(1, max_it + 1):
         s = [xv[4 * i : 4 * i + 4] for i in range(n)]
         tau = xv[4 * n :]
         if np.any(tau <= 0):
-            return {"converged": False, "why": "negative duration", "it": it}
+            return {"converged": False, "why": "negative duration", "it": it, "n_halved": n_halved}
         m_rows = 4 * n + 1 + (1 if c_target is not None else 0)
         f = np.zeros(m_rows)
         jm = np.zeros((m_rows, 5 * n))
         for i in range(n):
             res = arc(s[i], float(tau[i]))
             if res is None:
-                return {"converged": False, "why": "impact", "it": it}
+                return {"converged": False, "why": "impact", "it": it, "n_halved": n_halved}
             sf, phi = res
             j = (i + 1) % n
             f[4 * i : 4 * i + 4] = sf - s[j]
@@ -168,25 +185,48 @@ def shoot(
                 "taus": tau.tolist(),
                 "nodes": [x.tolist() for x in s],
                 "cont_res": cont,
+                "n_halved": n_halved,
             }
         dx = np.linalg.lstsq(jm, -f, rcond=None)[0]
         nrm = float(np.linalg.norm(dx[: 4 * n], ord=np.inf))
         if nrm > step_max:
             dx *= step_max / nrm
+        if perigee_drop_max is not None:
+            floor = base.FLOOR_E / base.L_KM
+            lim = [max(floor, (1.0 - perigee_drop_max) * osc_perigee(si)) for si in s]
+            for _ in range(10):
+                xn = xv + dx
+                if all(osc_perigee(xn[4 * i : 4 * i + 4]) >= lim[i] for i in range(n)):
+                    break
+                dx *= 0.5
+                n_halved += 1
         xv = xv + dx
-    return {"converged": False, "why": "max iterations", "it": max_it}
+    return {"converged": False, "why": "max iterations", "it": max_it, "n_halved": n_halved}
 
 
 def solve_seed(seed: tuple[int, int, int, int, int, float | None]) -> dict[str, Any]:
     p, q, sense, ir, iw, c_target = seed
     rec: dict[str, Any] = {"p": p, "q": q, "sense": sense, "ir": ir, "iw": iw, "C_target": c_target}
-    rp = RP[ir]
+    return solve_values(rec, p, q, sense, RP[ir], OMEGA[iw], c_target)
+
+
+def solve_values(
+    rec: dict[str, Any],
+    p: int,
+    q: int,
+    sense: int,
+    rp: float,
+    om: float,
+    c_target: float | None,
+    perigee_drop_max: float | None = None,
+) -> dict[str, Any]:
+    """`solve_seed` on explicit (r_p, omega) values (#1054); `rec` carries the seed's labels."""
     a = (q / p) ** (2.0 / 3.0) * GM_E ** (1.0 / 3.0)
     if (p, q) not in PQ_GAPS and not (rp < 1.0 < 2 * a - rp):
         rec["status"] = "no lunar-orbit crossing"
         return rec
-    nodes, tp = skeleton_nodes(p, q, sense, rp, OMEGA[iw])
-    res = shoot(nodes, [tp] * p, c_target)
+    nodes, tp = skeleton_nodes(p, q, sense, rp, om)
+    res = shoot(nodes, [tp] * p, c_target, perigee_drop_max=perigee_drop_max)
     rec.update(res)
     rec["status"] = "converged" if res["converged"] else res["why"]
     if not res["converged"]:
