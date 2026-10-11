@@ -180,6 +180,13 @@ class CandidateSignature:
     broken-plane cyclers against the spatial-CR3BP corpus.
     """
 
+    closing_repeat: bool | None = None
+    """Whether :attr:`sequence` ends with a closing repeat of its first body (#1056).
+    ``None`` = infer it (the #972 F3 legacy rule: a final encounter equal to the first
+    is a closing repeat, the catalogue convention); ``False`` = the sequence lists
+    exactly one cycle with no closing repeat, so nothing is dropped; ``True`` = it
+    ends with a closing repeat, which is dropped."""
+
     working_bodies: str | None = None
     """Optional ``"one"`` / ``"two"``: whether every encounter body bends in the
     candidate's ideal model (``"two"``) or one is a massless target (``"one"``).
@@ -3189,7 +3196,9 @@ def _declared_scope_exclusions(sig: CandidateSignature, anchor: CorpusAnchor) ->
         and not sig.return_types <= anchor.return_types_scope
     ):
         reasons.append("return-types")
-    if anchor.alternating_scope and _has_consecutive_same_body(sig.sequence):
+    if anchor.alternating_scope and _has_consecutive_same_body(
+        sig.sequence, closing_repeat=sig.closing_repeat
+    ):
         reasons.append("alternating")
     if anchor.working_bodies_scope is not None and sig.working_bodies is None:
         reasons.append("working-bodies-unlabelled")
@@ -3198,14 +3207,22 @@ def _declared_scope_exclusions(sig: CandidateSignature, anchor: CorpusAnchor) ->
     return reasons
 
 
-def _has_consecutive_same_body(sequence: tuple[str, ...]) -> bool:
+def _has_consecutive_same_body(
+    sequence: tuple[str, ...], *, closing_repeat: bool | None = None
+) -> bool:
     """Two consecutive encounters at the same body, reading ``sequence`` cyclically.
 
     #972 F3: a final encounter equal to the first is a closing repeat (the
     catalogue convention, e.g. "Callisto-Ganymede-Callisto-Europa-Callisto")
-    and is dropped before the cyclic test.
+    and is dropped before the cyclic test. #1056: ``closing_repeat`` states it
+    instead of inferring it (``False``: one cycle, nothing dropped; ``True``: drop).
     """
-    if len(sequence) > 1 and sequence[-1] == sequence[0]:
+    drop = (
+        len(sequence) > 1 and sequence[-1] == sequence[0]
+        if closing_repeat is None
+        else closing_repeat and len(sequence) > 1
+    )
+    if drop:
         sequence = sequence[:-1]
     n = len(sequence)
     return n > 1 and any(sequence[i] == sequence[(i + 1) % n] for i in range(n))

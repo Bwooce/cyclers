@@ -54,3 +54,23 @@ It is wrong for a signature that lists exactly ONE cycle with no closing repeat.
 
 Implement; tests; run the two scripts; results as a section here; pathspec commits; the hash in a
 later step.
+
+## Results (2026-10-11 16:02 AEDT)
+
+1. `scripts/litcheck_942_943_scope.py`: `data/942_943_litcheck_scope.json` BYTE-IDENTICAL (cmp). The
+   26 controls, the negative and the five candidates are unchanged.
+2. `scripts/litcheck_1025_973_members.py` (42 members): exactly ONE status changes, gc6-0, from
+   "published" (Campagnola GCGC, 0.85) to "inconclusive", naming R-S 2009 Ganymede-Callisto (rule F7),
+   as its diagnostic read. The other 41 are unchanged. `data/1025_litcheck_973_members.{json,log}` are
+   updated.
+3. Pinned tests: `tests/search/test_1056_closing_repeat.py` (flag semantics; one-cycle G-C-G not
+   published and not citing Campagnola; explicit closing repeat still matches GCGC). These, the
+   literature tests (`test_literature_check`, `test_972`, `test_1045`, `test_1062`) and
+   `tests/scripts` test_1038 all EXIT 0.
+4. ruff clean.
+   - `mypy src tests` reports 1 error, in `tests/nbody/test_1055_degenerate_family.py:276`. That file is
+     another agent's uncommitted work in progress, not part of this change.
+   - The changed files here type-check: the error is the only one in 958 files.
+
+All as pre-registered. gc6-0's catalogue row notes say "published as run; convention artefact";
+updating them to the corrected gate result is a catalogue edit for the next window (not done here).

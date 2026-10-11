@@ -168,6 +168,8 @@ def sig_of(cell: str, key: str, x_days: list[float]) -> CandidateSignature:
         topology_label=frozenset({"repeated-moon"}),
         working_bodies=working,
         return_types=rtypes,
+        # #1056: one cycle's time-ordered flyby list, no closing repeat
+        closing_repeat=False,
     )
 
 
