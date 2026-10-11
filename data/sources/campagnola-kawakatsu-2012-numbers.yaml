@@ -1,0 +1,92 @@
+# Campagnola and Kawakatsu 2012, "Three-Dimensional Resonant Hopping Strategies and the Jupiter Magnetospheric Orbiter":
+# every printed number. The paper is an Engineering Note and has NO tables; this file holds the numbers printed in the text,
+# the equations and the figure labels.
+# Source: S. Campagnola (JAXA ISAS, then JPL) and Y. Kawakatsu (JAXA ISAS). J. Guidance, Control, and Dynamics 35(1):340-344,
+#   January-February 2012. DOI 10.2514/1.53334. Received 6 December 2010, revised 13 June 2011, accepted 13 June 2011.
+# Local file: 5 pp., text layer, md5 64795d64336d4f308ce0c40d8828ccf7. PDF page 1 = printed p.340 ... PDF p.5 = p.344 (references).
+# Witnesses (three, per number): A = pdftotext raw extraction; B = pdftotext -layout extraction; C = page render read by eye
+#   (150 dpi, whole pages; 220 dpi crops of Eqs. 4-7). Text numbers: A, B and C agree on every digit. The text layer
+#   garbles every equation (minus signs, exponents, fractions drop out), so the equations were read from C only and then
+#   checked by derivation (see `ours`). Figure labels are drawn graphics: witness C only.
+# Units as printed: km/s, degrees, days, years, Jupiter radii (R_J). Everything under `ours:` is computed by us.
+text_numbers:
+  jmo_mission:
+    - {item: "gravity assists needed for JMO", value: "10s", page: 340}
+    - {item: "branch-and-bound solutions for the stated boundary conditions", value: "almost 10,000", page: 340}
+    - {item: "run time for those solutions, 2.66 GHz Intel Core i7", value: "2 min", page: 343}
+    - {item: "solutions in the actual JMO design (looped initial conditions, longer transfers, relaxed minimum pericenter)", value: "several 100,000", page: 343}
+    - {item: "run time of the actual JMO design", value: "less than 12 h", page: 343}
+    - {item: "example solution: inclination on the Jovian equator", value: "48 deg", page: 340}
+    - {item: "example solution: time to reach it", value: "less than 1.5 years", page: 340}
+  initial_condition_for_jmo_hopping:
+    - {item: "orbit after insertion and pericenter raise", value: "200 day orbit", page: 342}
+    - {item: "resonance with Callisto", value: "12:1", page: 342}
+    - {item: "pericenter radius", value: "r_p = 16 R_J", page: 343}
+    - {item: "v_inf at Callisto", value: "6.717 km/s", page: 343}
+    - {item: "pump angle alpha_1_in", value: "85 deg", page: 343}
+    - {item: "crank angle k_1_in", value: "0 deg", page: 343}
+    - {item: "inclination it can lead to", value: "higher than 50 deg", page: 343}
+  constraints_and_targets:
+    - {item: "target orbit", value: "6:7 resonance with i > 30 deg", page: 343}
+    - {item: "maximum transfer time between two consecutive gravity assists", value: "t_max = 85 days (slightly above five Callisto revolutions)", page: 343}
+    - {item: "maximum total transfer time", value: "two years", page: 343}
+    - {item: "minimum pericenter radius, radiation mitigation", value: "r_p > 12 R_J", page: 343}
+    - {item: "gravity-assist altitude used in the maps and graphs", value: "100 km", page: 341}
+  worked_example_fig_2:
+    - {item: "v_inf at Callisto", value: "4 km/s", page: 341}
+    - {item: "level sets drawn", value: "r_p = 15 R_J, r_a = 40 R_J", page: 341}
+    - {item: "start", value: "alpha_in = 68 deg (rho = 4:1), k_in = 30 deg", page: 341}
+    - {item: "result of the drawn 100-km flyby", value: "a 2:1 resonant orbit with i = 15 deg", page: 341}
+equations:   # printed Eqs. 1-10, read from the render; symbols: M = moon, v_inf = hyperbolic excess speed vector, T = Tisserand parameter
+  eq_1: "delta = 2 arcsin( mu_M / (mu_M + (R_M + H) |v_inf|^2) ); |v_inf| conserved through the whole hopping sequence at the same moon (footnote: only ballistic trajectories are considered)"
+  eq_2: "|v_inf| = |v_M| sqrt(3 - T)"
+  eq_3: "T = 2 a_M / (r_a + r_p) + 2 cos i sqrt( 2 r_p r_a / (a_M (r_p + r_a)) )   (J = T)"
+  eq_4: "alpha = arccos( (1 - rho^(-2/3) - (|v_inf|/|v_M|)^2) / (2 |v_inf|/|v_M|) ), alpha in [0, pi], k in [-pi, pi]"
+  eq_5: "rho = (1 - 2 (|v_inf|/|v_M|) cos alpha - (|v_inf|/|v_M|)^2)^(-3/2); rho = n:m, n moon revolutions, m spacecraft revolutions"
+  eq_6: "i_max = arcsin(|v_inf|/|v_M|), reached at alpha = pi/2 + i_max and k = +-pi/2"
+  eq_7: "alpha_in in (delta, pi - delta)"
+  eq_8_9: "alpha_out in [alpha_in - delta, alpha_in + delta]; cos delta = cos alpha_in cos alpha_out + sin alpha_in sin alpha_out cos(k_out - k_in); k_out = k_in +- arccos((cos delta - cos alpha_in cos alpha_out)/(sin alpha_in sin alpha_out)); special cases for sin alpha_in = 0 and for alpha_in - delta < 0 or alpha_in + delta > pi"
+  eq_10: "i(r_a, r_p; T) = arccos( (T - 2 a_M/(r_a + r_p)) / (2 sqrt(2 r_p r_a / (a_M (r_a + r_p)))) )"
+figure_labels:
+  fig_2_alpha_k_chart: {moon: Callisto, v_inf_kms: 4, resonance_lines_labelled: ["4:1", "2:1", "1:1", "6:7"], level_sets: "i, omega, r_p = 15 R_J, r_a = 40 R_J"}
+  fig_3_ra_rp_i_graph: {i_max_deg: 40, left_moon_v_inf_kms: 7.0, right_moon_v_inf_kms: 5.3, note: "the paper's caption says Ganymede and Callisto; the labelled v_inf pair is 7.0 and 5.3 km/s, with the larger value on the left of the render. Which label belongs to which moon is not printed on the render; our v_inf for i_max = 40 deg is 6.99 km/s (Ganymede) and 5.27 km/s (Callisto)."}
+  fig_4_ra_rp_section_i0:
+    resonance_lines_upper_family: ["1:1", "4:3", "2:1", "3:1", "4:1", "5:1", "12:1", "6:7"]
+    resonance_lines_lower_family: ["2:1", "4:1", "6:1", "8:1", "10:1", "12:1", "28:1"]
+    i_max_level_sets_deg: [30, 40, 50, 30]
+    star: "typical JMO initial condition: r_a about 260 R_J, r_p = 16 R_J, on the 12:1 line of the upper family and the 28:1 line of the lower family"
+    axes: "r_a 0 to 300 R_J, r_p 10 to 28 R_J"
+  fig_5_solution_space: {tof_axis_years: [1.4, 2.0], inclination_axis_deg: [42, 50], example_circled: "TOF about 1.5 y, i about 48 deg", note: "dots in vertical bands about every 0.05 y; plot readings are single-witness"}
+  fig_6_pump_crank_sequence: {top_axis_resonances: ["12:1", "5:1", "3:1", "2:1", "3:2", "5:4", "1:1", "6:7"], pump_axis_deg: [80, 130], crank_axis_deg: [0, 90], first_point: "o = 85 deg, k = 0 deg"}
+  fig_7_ra_rp_i_sequence: {resonance_labels_in_order: ["12:1", "5:1", "3:1", "2:1", "3:2", "5:4", "1:1", "6:7"], inclination_axis_deg: [0, 60]}
+  fig_8_jupiter_centred_view: {label: "Ca1-Ca12", note: "twelve Callisto flybys, the 200 day orbit drawn as a thick line"}
+ours:
+  constants: "mu_Jupiter = 1.26686534e8 km^3/s^2, R_J = 71492 km, mean Galilean periods Io 1.769, Europa 3.5512, Ganymede 7.15455, Callisto 16.68902 d (ours, standard values, not from the paper). Circular moon orbits."
+  callisto_circular_speed_kms: 8.203
+  ganymede_circular_speed_kms: 10.879
+  initial_orbit_12_1:
+    period_days: 200.27
+    semi_major_axis_RJ: 138.2
+    r_a_RJ_for_r_p_16: 260.0
+    v_inf_kms_i0: 6.711
+    printed_v_inf_kms: 6.717
+    difference_percent: 0.09
+    pump_angle_deg_eq4: 85.1
+    printed_pump_angle_deg: 85
+    i_max_deg_eq6: 54.9
+    printed: "higher than 50 deg"
+    ganymede_revolutions_in_that_period: 27.99
+    note: "so the 12:1 Callisto orbit is also a 28:1 Ganymede orbit, which is what Fig. 4's star sits on"
+  fig_2_check: {rho_at_alpha_68_v_inf_4: 3.999, printed: "4:1"}
+  fig_3_check: {v_inf_for_i_max_40_ganymede_kms: 6.99, v_inf_for_i_max_40_callisto_kms: 5.27, printed_kms: [7.0, 5.3]}
+  fig_6_pump_angle_ladder_deg_from_eq4_at_v_inf_6_711:   # the resonance ladder of the example solution
+    "12:1": 85.1
+    "5:1": 90.4
+    "3:1": 95.3
+    "2:1": 100.5
+    "3:2": 105.3
+    "5:4": 108.9
+    "1:1": 114.1
+    "6:7": 118.4
+    note: "These are the pump angles of Fig. 6's labelled resonance lines (about 85, 90, 95, 100, 105, 109, 114, 118 on the axis) at constant v_inf, which is what Eq. 2 says the whole sequence must keep."
+  max_bend_at_callisto_100_km_v_inf_6_717_deg: 6.8   # GM_Callisto 7179 km^3/s^2, R_Callisto 2410.3 km; the flyby bend is small, so the sequence needs many flybys
