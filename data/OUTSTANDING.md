@@ -2990,6 +2990,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   for a literal Casoliva 2010 member. Status is not affected; the citation is. Test: the Casoliva 7-3b
   signature (Earth, ("Moon",), 7:3, T 18.8496, topology {"resonant"}) must cite Casoliva 2010. Detail:
   `docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md` secs. 7-8.
+- `#1063` — registered 2026-10-11 (from the lead's papercut `docs/papercuts/2026-10-11-main-window-hold-message-missed-mid-turn.md`; BACKLOG, small, mechanism). **A CATALOGUE-WINDOW LOCK ENFORCED BY THE PRE-COMMIT HOOK.** A
+  teammate mid-turn does not read a "hold commits" message and commits inside the window (8cde2928 at 13:12 on
+  2026-10-11); its hook stashes the lead's unstaged patched files while the ratchet suite reads them. Fix: an
+  untracked lock file the lead creates on window open and removes on green, and a hook step that refuses any
+  commit while it exists unless `CYCLERS_WINDOW_LEAD=1` is set, with a refusal text naming the lead and the
+  reason. Companion rule for `docs/team/coordination.md`: never kill processes by command-line pattern on the
+  shared machine (`docs/papercuts/2026-10-11-main-killed-sibling-pytest-by-pattern.md`).
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
