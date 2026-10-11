@@ -27,6 +27,7 @@ from typing import Any
 
 import numpy as np
 
+from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.nbody.degenerate_family import (
@@ -44,6 +45,7 @@ SIGMA0 = 0.02
 TOL = 3e-3  # complement rows, weighted (amendment 5: above the sigma-0.02 noise floor)
 G_FLOOR = 1e-3  # amendment 5: a root is |g| below the start's noise-floor rule (weighted)
 IDEAL = ("gc-1", "gc4-19")
+FLOOR_KM = {"Ganymede": 100.0, "Callisto": 200.0, "Europa": 100.0}  # project floors
 REAL = {"ganeur316": "968_rungb", "gancal1": "1044_gancal1", "gc1e2": "1044_gc1"}
 
 
@@ -69,6 +71,7 @@ class Target:
             self.b.OUT = out
             self.p = self.b.build(name)
             self.seed = self.p.seed
+            self.moons = list(self.p.moons)
             self.chain_vinf = list(self.p.pc_vinf)
         else:
             rb = _load("run_968_rungb", ROOT / "scripts" / "run_968_rungb.py")
@@ -85,6 +88,7 @@ class Target:
             self.rb = rb
             self.c = rb.build(1)
             self.seed = self.c.seed
+            self.moons = list(self.c.moons)
             self.chain_vinf = list(self.c.chain_vinf)
 
     def log(self, msg: str) -> None:
@@ -167,6 +171,14 @@ def stage_fix(t: Target) -> None:
             fs["family"] = state
             sp.write_text(json.dumps(fs))
 
+        def domain_ok(z: Any) -> bool:
+            """Amendment 7: every flyby node at or above the sigma-scaled surface plus floor."""
+            for k, moon in enumerate(t.moons):
+                floor = SATELLITES[moon].radius_eq_km + FLOOR_KM[moon]
+                if float(np.linalg.norm(z[7 * k : 7 * k + 3])) < SIGMA0 * floor:
+                    return False
+            return True
+
         res = family_root_1d(
             t.rj,
             z0,
@@ -176,6 +188,7 @@ def stage_fix(t: Target) -> None:
             state=fs["family"],
             save=save,
             deadline=t0 + t.max_wall,
+            domain_ok=domain_ok,
         )
         if res.status == "paused":
             t.log(f"fix: paused in phase {fs['family'].get('phase')}; run the stage again")
@@ -200,6 +213,9 @@ def stage_fix(t: Target) -> None:
 
 
 def stage_start(t: Target) -> None:
+    if not (t.out / "fix.json").exists():
+        t.log("start: no fix.json (the fix stage has not finished)")
+        raise SystemExit(1)
     rec = json.loads((t.out / "fix.json").read_text())
     if rec["z_star"] is None:
         t.log("start: no corrected seed")
@@ -218,6 +234,9 @@ def stage_neg(t: Target) -> None:
     """Negative control: the family moved off the root by +- 0.5 L along each of the q null
     directions of the base frame (arclength rows about the corrected seed); Newton (40) must FAIL
     to start from every such point."""
+    if not (t.out / "fix.json").exists():
+        t.log("neg: no fix.json (the fix stage has not finished)")
+        raise SystemExit(1)
     rec = json.loads((t.out / "fix.json").read_text())
     q = int(rec["q"])
     if q == 0 or rec["z_star"] is None:

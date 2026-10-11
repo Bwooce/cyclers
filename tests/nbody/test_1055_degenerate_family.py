@@ -172,3 +172,46 @@ def test_family_root_1d_resumes_from_its_state() -> None:
     assert res is not None and res.status == "root"
     assert res.z_star is not None and full.z_star is not None
     assert abs(res.z_star[2] - full.z_star[2]) < 1e-6 * W_ROOT
+
+
+R_CIRCLE = 1.0e5  # km
+THETA_ROOT = 2.0  # rad: 115 deg round the circle from the seed at theta = 0
+
+
+def toy_circle(sigma: float):  # type: ignore[no-untyped-def]
+    """A strongly curved family: the circle |(x, y)| = R (km), with a sigma-proportional row whose
+    root is at theta = THETA_ROOT. A straight (chord) scan from theta = 0 leaves the circle; the
+    pseudo-arclength scan must follow it round (amendment 7)."""
+
+    def rj(z):  # type: ignore[no-untyped-def]
+        x, y = z
+        rr = float(np.hypot(x, y))
+        th = float(np.arctan2(y, x))
+        r = np.array([rr - R_CIRCLE, sigma * 1e3 * (th - THETA_ROOT)])
+        j = np.array([[x / rr, y / rr], [sigma * 1e3 * (-y / rr**2), sigma * 1e3 * (x / rr**2)]])
+        return r, j
+
+    return rj
+
+
+def test_family_root_1d_follows_a_curved_family() -> None:
+    rj = toy_circle(0.02)
+    # in scaled units the arc is dominated by x (scale 1): the range is not the point here
+    res = family_root_1d(rj, np.array([R_CIRCLE, 0.0]), tol=1e-6, max_lengths=1e5)
+    assert res.status == "root", res.status
+    assert res.z_star is not None
+    th = float(np.arctan2(res.z_star[1], res.z_star[0]))
+    assert abs(th - THETA_ROOT) < 1e-3 * THETA_ROOT
+    assert abs(float(np.hypot(*res.z_star)) - R_CIRCLE) < 1e-3
+
+
+def test_family_root_1d_stops_at_a_domain_bound() -> None:
+    """A domain bound (here theta < 1 rad) ends the scan in that direction: no root, no crash."""
+    rj = toy_circle(0.02)
+    res = family_root_1d(
+        rj,
+        np.array([R_CIRCLE, 0.0]),
+        tol=1e-6,
+        domain_ok=lambda z: float(np.arctan2(z[1], z[0])) < 1.0,
+    )
+    assert res.status == "no sign change of g within the scanned range"

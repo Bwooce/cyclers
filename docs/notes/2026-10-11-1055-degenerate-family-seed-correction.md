@@ -379,3 +379,71 @@ massive, real GMs), with the same checks as the 15 #1025 EXISTS members. It is t
 clean #973 gc members to do so. Caveat for the row: it was reached from the #1055 corrected seed (a
 different member of the same degenerate patched-conic family; same V_inf). Nothing here is a
 novelty claim, and no catalogue write is made.
+
+## 11. GanCal#1 fix stage CRASHED (lead launch 12:37-12:58): diagnosis and AMENDMENT 7
+
+What ran: the lead's process loaded the pre-amendment-6 driver, i.e. a non-resumable fix call with
+no state saved. It used the module's fixed-vector 1-d scan (amendments 1 and 4). From its runlog:
+- Base: L = 4.59e5 (scaled), g(0) = -4.03 (weighted).
+- The + direction: g = -3.99, -3.91, -3.76, -3.48, -2.99, -2.28, -1.85, -1.71 at alpha = 4.6e3 ... 5.09e5
+  (1.1 L). The complements converged at every point (4e-4 to 2.5e-3).
+- At the next predictor, `propagate_with_stm` raised "Required step size is less than spacing
+  between numbers" inside `bordered_solve`'s FIRST residual evaluation. That evaluation was not
+  guarded, so the whole stage died. The - direction was never scanned, and no fix.json was written.
+  start and neg then stopped on the missing file. (Python exits 1 on a traceback; I checked that
+  `uv run python -c "raise RuntimeError"` returns 1. The "exit 0" in the lead's loop is the loop
+  wrapper's own status, so judge by the files.)
+
+Diagnosis:
+1. The degenerate direction is the WEAK Ganymede flyby, G2 (turn 4.0 deg). At the base, the
+   family's right null vector moves G2's moon-relative periapsis by 512 km per 5.09e5 of alpha,
+   against an offset of 432 km at sigma 0.02. It moves G1 by 13 km, the Callisto flyby by 184 km,
+   and G3 by 0.1 km. The family is the position of G2's periapsis around Ganymede at nearly fixed
+   V_inf: a CIRCLE-like family. A fixed-vector (chord) scan cuts across it towards the moon. The
+   linear prediction puts G2's offset at a minimum of 96 km near alpha = 4.2e5. That is 1.8 times
+   the sigma-scaled radius (52.6 km) and 1.75 times radius plus floor (54.6 km). So the scan was
+   skimming Ganymede when the integration failed. INFERRED: the crash point was not recorded, and
+   the nonlinear path may have passed closer.
+2. g rose monotonically, with a slope falling by about 0.6 per 1.47e5 of alpha. On the chord, an
+   extrapolation gives no zero before about 3 L. That is an extrapolation along the wrong (straight)
+   path, not a result.
+3. So the pre-registered procedure did NOT complete: + reached 1.1 L of 3 L and crashed, and - was
+   never scanned. GanCal#1 is NOT a clean negative under sec. 5 (b). It is a numerical failure of
+   the fix stage, caused by the fixed-vector scan on a curved family plus an unguarded predictor
+   evaluation.
+
+AMENDMENT 7 (method changes; registered before any further GanCal#1 or gc-1 e2 run):
+- (a) Curved-family tracing. The scan is pseudo-arclength: at each converged point the local null
+  pair (u, v) is recomputed (scales held at the base) and oriented continuously. The next step's
+  arclength row is v . (d (z - z_last)) = sgn h about the last point, and the secant predictor is
+  along the traced family. g on a step is the step's own u . r, so a sign change is detected on one
+  continuous function per segment, and the secant refines within that segment in that segment's
+  frame. This restores the pre-registration's own sec. 2 ("u and v recomputed at the converged
+  point"), which amendment 1 had replaced with fixed vectors. Fixed vectors were adequate for the
+  gentle families of the controls and of gc4-19, but not for GanCal#1's circle-like one.
+- (b) An unintegrable predictor (a `RuntimeError` in the corrector's first evaluation) counts as a
+  failed step, and the step is halved. It no longer crashes the stage.
+- (c) Domain bound: a converged family point with any flyby node's moon-relative distance below
+  sigma0 (R + floor) (Ganymede 100 km, Callisto 200 km, Europa 100 km floors) ends the scan in that
+  direction ("domain"). A root beyond it would be a below-floor (impact-side) member, outside the
+  physical domain.
+- (d) Both directions are always scanned (+ then -) to 3 L of path length or a bound, unchanged.
+- Tests: 11 pass. New: a circle family (R = 1e5 km; root 115 deg round from the seed, which no
+  chord in a fixed coordinate reaches) is followed to its root to 1e-3 rad; a domain bound ends a
+  scan cleanly with no root. gc4-19's result (sec. 10) used the fixed-vector scan, which found
+  its root at 1 L on a gentle family. It does not depend on (a), and it is not re-run.
+
+Corrected command (lead launch; resumable, each call continues from fix_state.json):
+
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage fix --max-wall 3600
+
+Repeat until `data/1055_gancal1/fix.json` exists (a paused call logs "fix: paused" and exits 0).
+Then:
+
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage start && \
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage neg
+
+`fix_state.json` holds my 12:39 partial base frame (phase frame2, the same method), which the
+first call resumes. The outcome rules are sec. 5: a root, then start and negative control; or "no
+sign change within 3 L" in both directions, or domain bounds on both sides, which is the clean
+negative (b) for this target.

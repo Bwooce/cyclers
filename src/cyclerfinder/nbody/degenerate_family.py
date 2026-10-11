@@ -103,7 +103,11 @@ def bordered_solve(
     z = onto(np.asarray(z_pred, dtype=np.float64))
     proj = np.eye(len(u_null)) - u_null @ u_null.T
     it = 0
-    r, j = rj(z)
+    try:
+        r, j = rj(z)
+    except RuntimeError:  # the predictor itself is not integrable: a failed corrector
+        nan = np.full(u_null.shape[1], np.nan)
+        return BorderedResult(z, False, 0, float("inf"), nan)
     for it in range(1, max_iter + 1):
         comp = proj @ r
         if float(np.max(np.abs(comp))) < tol:
@@ -185,6 +189,7 @@ def family_root_1d(
     state: dict[str, Any] | None = None,
     save: Callable[[dict[str, Any]], None] | None = None,
     deadline: float | None = None,
+    domain_ok: Callable[[Arr], bool] | None = None,
 ) -> FamilyResult:
     """q = 1: converge the complement at the base, scan alpha both ways along the fixed null
     direction for a sign change of g = u . r (the base's u), then a secant to
@@ -250,39 +255,70 @@ def family_root_1d(
                     st.update(phase="done", status="root at base", z_star=br.z.tolist(), a_star=0.0)
                 else:
                     st.update(phase="scan", sgn=1.0, a_prev=0.0, z_prev=br.z.tolist(), g_prev=g0)
-                    st.update(dzda=(v_n[:, 0] / d).tolist(), h=h_frac * st["big_l"])
+                    st.update(h=h_frac * st["big_l"], base_u=st["u"], base_v=st["v"])
+                    st.update(uk=st["u"], vk=st["v"], dzds=None)
             put(st)
         elif ph == "scan":
+            # Amendment 7: pseudo-arclength along the CURVED family. The frame (uk, vk) is the
+            # local left / right null pair at the last point (scales d fixed at the base),
+            # oriented continuously; a step solves the bordered system about the last point with
+            # the arclength row vk . (d (z - z_prev)) = sgn h, and g on the step is uk . r.
             big_l = float(st["big_l"])
             sgn, a_prev, h = float(st["sgn"]), float(st["a_prev"]), float(st["h"])
-            if abs(a_prev) >= max_lengths * big_l or h < 1e-4 * big_l:
+            if abs(a_prev) >= max_lengths * big_l or h < 1e-4 * big_l or st.get("bound"):
+                ends = st.setdefault("ends", {})
+                ends["+" if sgn > 0 else "-"] = st.pop("bound", None) or (
+                    "range" if abs(a_prev) >= max_lengths * big_l else "step"
+                )
                 if sgn > 0:
                     st.update(sgn=-1.0, a_prev=0.0, z_prev=st["base"], g_prev=st["g0"])
-                    st.update(dzda=(v_n[:, 0] / d).tolist(), h=h_frac * big_l)
+                    st.update(uk=st["base_u"], vk=st["base_v"], dzds=None, h=h_frac * big_l)
                 else:
                     st.update(phase="done", status="no sign change of g within the scanned range")
                 put(st)
                 continue
             if late():
                 return res
-            a = a_prev + sgn * h
             z_prev = arr("z_prev")
-            pred = z_prev + arr("dzda") * (a - a_prev)
-            br = bordered_solve(rj, pred, d, u_n, v_n, arr("base"), np.array([a]), tol)
+            uk, vk = arr("uk"), arr("vk")
+            tang = arr("dzds") if st.get("dzds") is not None else sgn * vk / d
+            br = bordered_solve(
+                rj, z_prev + tang * h, d, uk[:, None], vk[:, None], z_prev, np.array([sgn * h]), tol
+            )
             if not br.converged:
                 st["h"] = 0.5 * h
                 put(st)
                 progressed = True
                 continue
-            g = float(br.g[0])
-            st["scan"].append([a, g, br.complement_norm])
-            say(f"family: alpha {a:.4e} g {g:.4e} comp {br.complement_norm:.2e} it {br.iterations}")
-            if np.sign(g) != np.sign(float(st["g_prev"])):
-                st.update(phase="secant", lo=[a_prev, st["z_prev"], st["g_prev"]])
-                st["hi"] = [a, br.z.tolist(), g]
+            if domain_ok is not None and not domain_ok(br.z):
+                st["bound"] = "domain"
+                say(f"family: domain bound at path {a_prev + sgn * h:.4e}")
+                put(st)
+                progressed = True
+                continue
+            a = a_prev + sgn * h
+            g_seg = float(br.g[0])  # uk . r at the new point (the segment's own function)
+            st["scan"].append([a, g_seg, br.complement_norm])
+            say(
+                f"family: path {a:.4e} g {g_seg:.4e} comp {br.complement_norm:.2e} "
+                f"it {br.iterations}"
+            )
+            if np.sign(g_seg) != np.sign(float(st["g_prev"])):
+                st.update(
+                    phase="secant", seg_u=st["uk"], seg_v=st["vk"], seg_sgn=sgn, seg_a0=a_prev
+                )
+                st.update(lo=[0.0, st["z_prev"], st["g_prev"]], hi=[h, br.z.tolist(), g_seg])
             else:
-                st["dzda"] = ((br.z - z_prev) / (a - a_prev)).tolist()
-                st.update(a_prev=a, z_prev=br.z.tolist(), g_prev=g)
+                rn, jn = rj(br.z)
+                un_, _s, vtn = scaled_svd(jn, d)
+                u_new, v_new = un_[:, -1], vtn[-1]
+                if float(u_new @ uk) < 0.0:
+                    u_new = -u_new
+                if float(v_new @ vk) < 0.0:
+                    v_new = -v_new
+                st["dzds"] = ((br.z - z_prev) / h).tolist()
+                st.update(a_prev=a, z_prev=br.z.tolist(), g_prev=float(u_new @ rn))
+                st.update(uk=u_new.tolist(), vk=v_new.tolist())
                 if br.iterations <= 4:
                     st["h"] = 2.0 * h
             put(st)
@@ -290,29 +326,33 @@ def family_root_1d(
         elif ph == "secant":
             if late():
                 return res
-            a_lo, z_lo, g_lo = st["lo"]
-            a_hi, z_hi, g_hi = st["hi"]
+            t_lo, z_lo, g_lo = st["lo"]
+            t_hi, z_hi, g_hi = st["hi"]
             z_lo, z_hi = np.asarray(z_lo), np.asarray(z_hi)
-            a = a_hi - g_hi * (a_hi - a_lo) / (g_hi - g_lo)
-            w = (a - a_lo) / (a_hi - a_lo)
+            su, sv, sg = arr("seg_u")[:, None], arr("seg_v")[:, None], float(st["seg_sgn"])
+            t = t_hi - g_hi * (t_hi - t_lo) / (g_hi - g_lo)
+            w = (t - t_lo) / (t_hi - t_lo)
+            z_a = np.asarray(st["lo0"] if "lo0" in st else st["lo"][1], dtype=np.float64)
+            st.setdefault("lo0", st["lo"][1])
             br = bordered_solve(
-                rj, z_lo + w * (z_hi - z_lo), d, u_n, v_n, arr("base"), np.array([a]), tol
+                rj, z_lo + w * (z_hi - z_lo), d, su, sv, z_a, np.array([sg * t]), tol
             )
             st["n_secant"] = int(st.get("n_secant", 0)) + 1
             if not br.converged:
                 st.update(phase="done", status="secant corrector failed")
             else:
                 g = float(br.g[0])
+                a = float(st["seg_a0"]) + sg * t
                 st["scan"].append([a, g, br.complement_norm])
-                say(f"family: secant alpha {a:.4e} g {g:.4e}")
+                say(f"family: secant path {a:.4e} g {g:.4e}")
                 if abs(g) < max(1e-3 * abs(float(st["g0"])), g_floor):
                     st.update(phase="done", status="root", z_star=br.z.tolist(), a_star=a)
                 elif st["n_secant"] >= 40:
                     st.update(phase="done", status="secant did not converge")
                 elif np.sign(g) == np.sign(g_lo):
-                    st["lo"] = [a, br.z.tolist(), g]
+                    st["lo"] = [t, br.z.tolist(), g]
                 else:
-                    st["hi"] = [a, br.z.tolist(), g]
+                    st["hi"] = [t, br.z.tolist(), g]
             put(st)
             progressed = True
         else:  # done
