@@ -1,0 +1,255 @@
+# Petropoulos, Longuski and Bonfiglio 2000, Tables 1 to 6 (gravity-assist trajectories to Jupiter via Venus, Earth and Mars).
+# Source: A. E. Petropoulos, J. M. Longuski, E. P. Bonfiglio, "Trajectories to Jupiter via Gravity Assists from Venus, Earth,
+#   and Mars", Journal of Spacecraft and Rockets 37(6):776-783 (November-December 2000), doi 10.2514/2.3650. Presented as AIAA
+#   Paper 98-4284 (Boston, 10-12 August 1998); received 19 August 1999, revised 1 March 2000, accepted 13 March 2000.
+# Local file: 8 pp., text layer (AIAA web copy stamped "Downloaded by University of Washington on February 6, 2015"), md5
+#   7d3f306548b76524db368e915299d120 (private corpus, papers/ directory). Journal pages 776-783 = PDF pages 1-8.
+# Tables: 1 p.777 (PDF p.2); 2 and 3 p.779 (PDF p.4); 4 p.780 (PDF p.5); 5 p.781 (PDF p.6); 6 p.782 (PDF p.7).
+# Witnesses: A = pdftotext -layout; B = pdftotext -raw; C = the PDF pages rendered at 130 dpi and read row by row.
+#   A and B were parsed by one script (all rows of Tables 3 to 6, and all 39 entries of Table 2) and agree exactly: 151 rows
+#   in Tables 3 to 6 (30 + 44 + 42 + 35) and 39 entries in Table 2. C agrees with every row and every cell.
+#   The text layer prints infinity as "1" (V1 = V-infinity) and the minus sign as the glyph U+00A1; both were read as V-infinity
+#   and minus on the page render (for example "-964 (1)" and "-266, -604 (1, 3)"). Spaces after commas and before the
+#   parenthesis are dropped here; no digit was changed.
+# No value here was computed by us. Numbers and the "r" resonance flag are kept as printed (strings).
+conventions:
+  date: "YY-MM-DD as printed. Years 99 is 1999 and 00 to 31 are 2000 to 2031 (launch period 1 January 1999 to 31 December 2031). Table 3 dates are for the best case of each path."
+  path_letters: "V Venus, E Earth, M Mars, launch from Earth first (the leading letter is the first flyby body, Earth launch is implicit); the last letter is the last flyby before Jupiter. Table 2 and Fig. 3 use the same letters, with Jupiter appended as the destination in the PATH label of the figures (3 = Earth, 2 = Venus, 4 = Mars, 5 = Jupiter; for example PATH 3 2 3 3 5 is a VEEGA)."
+  columns: "launch_vinf = launch V-infinity (km/s); alt_or_dv = flyby altitude below 200 km (signed, plus or minus) or deep-space DeltaV (km/s, unsigned), parenthetical numbers are the flyby numbers (0 = Earth launch); arr_vinf = arrival V-infinity at Jupiter (km/s); tof_yr = time of flight (years); flyby_days = days after launch of each flyby, r = resonance on that leg"
+  resonance: "Sequential encounters of the same body are resonant if the time between them is an integer multiple of the body's orbital period (paper, Results section)."
+  tables_3_to_5: "unoptimized STOUR (patched-conic) results, launch date increment 5 days, launch V-infinity increment typically 0.25 km/s (VEEGAs) or 0.5 km/s (V3), 1 km/s for some paths"
+  table_6: "DeltaV-optimized with MIDAS (minimum of launch DeltaV plus deep-space DeltaV)"
+tables:
+  - table: "1"
+    caption: "Legend for launch-date plots"
+    journal_page: "777"
+    kind: "text legend (variable, description), not numeric"
+    rows:
+      - {variable: "PATH", description: "Planets encountered, including launch and destination bodies, e.g., PATH: 3 2 3 3 5 is a VEEGA from Earth to Jupiter. Maneuvers represented by 0."}
+      - {variable: "VINF", description: "Launch V-infinity. Without maneuvers present, the numerals 1, 2, 3, 4, ... on the plot represent the 1st, 2nd, 3rd, 4th, ... V-infinity in the VINF list above the plot. For example, in Fig. 1 the numeral 3 on the plot denotes a V-infinity of 3.50 km/s. With maneuvers, only one launch V-infinity is shown, as in Fig. 2, where a 1 represents a DeltaV between 0 and 1 km/s, a 2 represents 1-2 km/s, etc."}
+      - {variable: "SEARCH EVENT NO.", description: "Event in PATH for which data are plotted. For example, in Fig. 2, TOF to Jupiter is plotted because encounter with Jupiter is the 8th event in the PATH."}
+      - {variable: "ALTMIN", description: "Minimum flyby altitude permitted in the STOUR run."}
+      - {variable: "SEARCH MIN. ALT.", description: "Trajectories with flyby altitudes below this value are not included in the plot."}
+      - {variable: "LAUNCH DATES SEARCHED", description: "Launch-date range (YY/MM/DD) used in the STOUR run. For example, 99/1/1 means 1 Jan. 1999. The launch-date increment is also given, e.g., by 5.0 days."}
+      - {variable: "TFMAX", description: "Maximum allowable time of flight in the STOUR run."}
+  - table: "2"
+    caption: "Rank order of paths to Jupiter based on GAP analysis"
+    journal_page: "779"
+    columns: [rank, path, min_launch_vinf_kms]
+    note: "Minimum launch V-infinity required (footnote a). 39 paths reach Jupiter in the GAP (gravity assist potential) analysis: circular coplanar planetary orbits, tangential Earth launch, no overturning, flyby altitude down to 200 km, phasing ignored. The direct-launch minimum to Jupiter is 8.79 km/s (text)."
+    rows:
+      - {rank: "1", path: "VEVE", min_launch_vinf_kms: "2.53"}
+      - {rank: "2", path: "VEME", min_launch_vinf_kms: "2.60"}
+      - {rank: "3", path: "VEEM", min_launch_vinf_kms: "2.76"}
+      - {rank: "4", path: "VEMM", min_launch_vinf_kms: "2.83"}
+      - {rank: "5", path: "VEE", min_launch_vinf_kms: "2.86"}
+      - {rank: "6", path: "VVEE", min_launch_vinf_kms: "2.86"}
+      - {rank: "7", path: "VEEE", min_launch_vinf_kms: "2.86"}
+      - {rank: "8", path: "MEVE", min_launch_vinf_kms: "2.97"}
+      - {rank: "9", path: "MEME", min_launch_vinf_kms: "3.00"}
+      - {rank: "10", path: "VMEE", min_launch_vinf_kms: "3.07"}
+      - {rank: "11", path: "MEMM", min_launch_vinf_kms: "3.07"}
+      - {rank: "12", path: "VMVE", min_launch_vinf_kms: "3.11"}
+      - {rank: "13", path: "VMVV", min_launch_vinf_kms: "3.14"}
+      - {rank: "14", path: "MEEM", min_launch_vinf_kms: "3.15"}
+      - {rank: "15", path: "VEM", min_launch_vinf_kms: "3.16"}
+      - {rank: "16", path: "VVEM", min_launch_vinf_kms: "3.16"}
+      - {rank: "17", path: "MEE", min_launch_vinf_kms: "3.22"}
+      - {rank: "18", path: "MEEE", min_launch_vinf_kms: "3.22"}
+      - {rank: "19", path: "MMEE", min_launch_vinf_kms: "3.22"}
+      - {rank: "20", path: "VVE", min_launch_vinf_kms: "3.49"}
+      - {rank: "21", path: "VVVE", min_launch_vinf_kms: "3.49"}
+      - {rank: "22", path: "MEM", min_launch_vinf_kms: "3.68"}
+      - {rank: "23", path: "MMMM", min_launch_vinf_kms: "3.74"}
+      - {rank: "24", path: "VE", min_launch_vinf_kms: "3.83"}
+      - {rank: "25", path: "VVME", min_launch_vinf_kms: "3.94"}
+      - {rank: "26", path: "VVMV", min_launch_vinf_kms: "3.95"}
+      - {rank: "27", path: "MMM", min_launch_vinf_kms: "4.17"}
+      - {rank: "28", path: "VVMM", min_launch_vinf_kms: "4.77"}
+      - {rank: "29", path: "VVVM", min_launch_vinf_kms: "4.93"}
+      - {rank: "30", path: "ME", min_launch_vinf_kms: "4.95"}
+      - {rank: "31", path: "VVV", min_launch_vinf_kms: "5.21"}
+      - {rank: "32", path: "VVVV", min_launch_vinf_kms: "5.21"}
+      - {rank: "33", path: "MMEM", min_launch_vinf_kms: "5.31"}
+      - {rank: "34", path: "MEVV", min_launch_vinf_kms: "5.87"}
+      - {rank: "35", path: "MME", min_launch_vinf_kms: "6.08"}
+      - {rank: "36", path: "MM", min_launch_vinf_kms: "6.59"}
+      - {rank: "37", path: "MMME", min_launch_vinf_kms: "7.17"}
+      - {rank: "38", path: "VEMV", min_launch_vinf_kms: "7.38"}
+      - {rank: "39", path: "M", min_launch_vinf_kms: "7.84"}
+  - table: "3"
+    caption: "Best candidate(s) for each path (unoptimized)"
+    journal_page: "779"
+    columns: [path, date, launch_vinf, alt_or_dv, arr_vinf, tof_yr, flyby_days]
+    footnote: "Only flyby altitudes below 200 km are listed; they are prefixed with a + or - sign. The parenthetical numbers indicate the associated flyby number. Deep-space DeltaV, if present, are listed without a prefixed sign; the parenthetical numbers indicate the flyby number preceding the maneuver, with 0 signifying Earth launch. An r between the flyby times indicates that resonance occurs on that leg."
+    note: "The 25 paths listed are the selected set. Four of them have no feasible trajectory (flyby altitude 200 km or greater): VM, MV, VEV, MVM."
+    rows:
+      - {path: "E", date: "04-02-24", launch_vinf: "5.21", alt_or_dv: "0.875(0)", arr_vinf: "6.54", tof_yr: "4.1", flyby_days: "678"}
+      - {path: "E", date: "14-03-03", launch_vinf: "5.22", alt_or_dv: "0.585(0)", arr_vinf: "5.81", tof_yr: "6.7", flyby_days: "1411"}
+      - {path: "M", date: "31-02-12", launch_vinf: "8.00", alt_or_dv: "", arr_vinf: "6.20", tof_yr: "2.3", flyby_days: "96"}
+      - {path: "VV", date: "31-08-06", launch_vinf: "5.00", alt_or_dv: "0.376,1.160(1,2)", arr_vinf: "7.04", tof_yr: "4.2", flyby_days: "178,633"}
+      - {path: "VV", date: "31-08-14", launch_vinf: "5.00", alt_or_dv: "1.493(2)", arr_vinf: "7.24", tof_yr: "4.5", flyby_days: "174,r,624"}
+      - {path: "VE", date: "05-10-01", launch_vinf: "4.50", alt_or_dv: "0.179(2)", arr_vinf: "6.38", tof_yr: "5.1", flyby_days: "416,859"}
+      - {path: "VE", date: "15-07-06", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "7.62", tof_yr: "6.2", flyby_days: "177,891"}
+      - {path: "VM", note: "No feasible trajectories"}
+      - {path: "MV", note: "No feasible trajectories"}
+      - {path: "ME", date: "12-08-05", launch_vinf: "5.50", alt_or_dv: "", arr_vinf: "5.60", tof_yr: "5.0", flyby_days: "640,837"}
+      - {path: "ME", date: "26-11-15", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "8.94", tof_yr: "3.9", flyby_days: "145,777"}
+      - {path: "MM", date: "18-05-19", launch_vinf: "7.00", alt_or_dv: "", arr_vinf: "5.42", tof_yr: "6.3", flyby_days: "78,r,1452"}
+      - {path: "VVV", date: "01-04-22", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "7.21", tof_yr: "6.3", flyby_days: "397,772,1497"}
+      - {path: "VVV", date: "18-10-03", launch_vinf: "4.50", alt_or_dv: "0.403(2)", arr_vinf: "7.01", tof_yr: "5.7", flyby_days: "179,581,1289"}
+      - {path: "VVE", date: "20-03-08", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "6.03", tof_yr: "5.9", flyby_days: "103,592,1175"}
+      - {path: "VVM", date: "03-09-07", launch_vinf: "7.75", alt_or_dv: "-964(1)", arr_vinf: "6.60", tof_yr: "5.5", flyby_days: "408,r,1082,1180"}
+      - {path: "VEV", note: "No feasible trajectories"}
+      - {path: "VEE", date: "29-11-05", launch_vinf: "3.25", alt_or_dv: "", arr_vinf: "6.40", tof_yr: "5.6", flyby_days: "146,464,1291"}
+      - {path: "VEM", date: "26-06-13", launch_vinf: "4.25", alt_or_dv: "+183(3)", arr_vinf: "5.75", tof_yr: "5.2", flyby_days: "431,871,1007"}
+      - {path: "VMV", date: "05-10-31", launch_vinf: "5.50", alt_or_dv: "-266,-604(1,3)", arr_vinf: "7.13", tof_yr: "6.6", flyby_days: "404,834,1479"}
+      - {path: "MVM", note: "No feasible trajectories"}
+      - {path: "MEE", date: "00-12-21", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "8.06", tof_yr: "7.0", flyby_days: "746,1127,r,1858"}
+      - {path: "VVEE", date: "18-09-17", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "7.09", tof_yr: "6.8", flyby_days: "159,r,609,1041,r,1772"}
+      - {path: "VVMV", date: "18-10-24", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "6.98", tof_yr: "5.9", flyby_days: "175,570,667,1278"}
+      - {path: "VEVE", date: "26-08-27", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "8.27", tof_yr: "6.3", flyby_days: "176,695,1043,1590"}
+      - {path: "VEEM", date: "26-08-09", launch_vinf: "3.00", alt_or_dv: "", arr_vinf: "7.34", tof_yr: "6.5", flyby_days: "105,577,r,1672,1748"}
+      - {path: "VEME", date: "23-05-30", launch_vinf: "3.25", alt_or_dv: "", arr_vinf: "5.58", tof_yr: "6.4", flyby_days: "146,461,623,1276"}
+      - {path: "VMVV", date: "12-04-27", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "7.12", tof_yr: "7.0", flyby_days: "181,799,1101,1708"}
+      - {path: "VMVE", date: "21-10-27", launch_vinf: "4.00", alt_or_dv: "-346(4)", arr_vinf: "7.32", tof_yr: "3.6", flyby_days: "148,275,608,663"}
+      - {path: "VMVMV", date: "17-01-06", launch_vinf: "4.50", alt_or_dv: "+160(1)", arr_vinf: "7.02", tof_yr: "7.0", flyby_days: "136,800,994,1558,1665"}
+  - table: "4"
+    caption: "Promising trajectories including Earth flybys (unoptimized), listed by date"
+    journal_page: "780"
+    columns: [path, date, launch_vinf, alt_or_dv, arr_vinf, tof_yr, flyby_days]
+    footnote: "Only flyby altitudes below 200 km are listed; they are prefixed with a + or - sign. The parenthetical numbers indicate the associated flyby number. Deep-space DeltaV, if present, are listed without a prefixed sign; the parenthetical numbers indicate the flyby number preceding the maneuver. An r between the flyby times indicates that resonance occurs on that leg."
+    rows:
+      - {path: "VE", date: "99-03-27", launch_vinf: "4.50", alt_or_dv: "0.314(2)", arr_vinf: "5.79", tof_yr: "5.1", flyby_days: "339,947"}
+      - {path: "VEE", date: "99-05-21", launch_vinf: "3.00", alt_or_dv: "0.395(2)", arr_vinf: "5.90", tof_yr: "5.8", flyby_days: "155,438,1259"}
+      - {path: "VEE", date: "99-06-25", launch_vinf: "3.75", alt_or_dv: "", arr_vinf: "5.77", tof_yr: "7.0", flyby_days: "178,492,r,1588"}
+      - {path: "VEE", date: "00-08-23", launch_vinf: "3.50", alt_or_dv: "0.070(2)", arr_vinf: "6.53", tof_yr: "6.6", flyby_days: "374,754,1590"}
+      - {path: "VEE", date: "01-02-24", launch_vinf: "3.75", alt_or_dv: "", arr_vinf: "5.82", tof_yr: "6.6", flyby_days: "173,693,r,1424"}
+      - {path: "VEE", date: "02-07-15", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.07", tof_yr: "5.9", flyby_days: "145,633,1256"}
+      - {path: "VEE", date: "03-11-07", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "6.62", tof_yr: "6.5", flyby_days: "383,776,1623"}
+      - {path: "VE", date: "04-05-04", launch_vinf: "4.50", alt_or_dv: "0.794(2)", arr_vinf: "5.97", tof_yr: "4.4", flyby_days: "140,652"}
+      - {path: "VEE", date: "04-06-17", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "6.55", tof_yr: "6.0", flyby_days: "155,680,r,1410"}
+      - {path: "VEE", date: "05-10-12", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.65", tof_yr: "5.6", flyby_days: "162,476,1300"}
+      - {path: "VE", date: "06-12-10", launch_vinf: "4.50", alt_or_dv: "0.868(2)", arr_vinf: "6.32", tof_yr: "5.1", flyby_days: "433,835"}
+      - {path: "VEE", date: "07-02-24", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "6.56", tof_yr: "6.5", flyby_days: "359,772,1631"}
+      - {path: "VEE", date: "08-12-09", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "6.71", tof_yr: "5.7", flyby_days: "152,634,r,1365"}
+      - {path: "VEE", date: "09-01-24", launch_vinf: "3.75", alt_or_dv: "", arr_vinf: "5.60", tof_yr: "6.1", flyby_days: "167,484,1315"}
+      - {path: "VEME", date: "10-04-18", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "8.27", tof_yr: "6.4", flyby_days: "365,936,1512,1680"}
+      - {path: "VEE", date: "10-07-17", launch_vinf: "3.00", alt_or_dv: "0.431(2)", arr_vinf: "6.21", tof_yr: "6.6", flyby_days: "133,753,1568"}
+      - {path: "VEE", date: "11-09-20", launch_vinf: "4.25", alt_or_dv: "", arr_vinf: "5.99", tof_yr: "7.6", flyby_days: "416,777,r,1508"}
+      - {path: "VEE", date: "12-04-13", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "5.88", tof_yr: "6.1", flyby_days: "181,498,1329"}
+      - {path: "VEE", date: "13-10-29", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "5.68", tof_yr: "6.0", flyby_days: "91,401,r,1131"}
+      - {path: "VEE", date: "14-11-23", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "7.16", tof_yr: "7.3", flyby_days: "442,825,r,1921"}
+      - {path: "VEVE", date: "14-11-28", launch_vinf: "4.50", alt_or_dv: "", arr_vinf: "8.49", tof_yr: "7.0", flyby_days: "439,999,1289,1880"}
+      - {path: "VEE", date: "15-05-27", launch_vinf: "3.75", alt_or_dv: "", arr_vinf: "6.74", tof_yr: "5.9", flyby_days: "148,655,r,1386"}
+      - {path: "VE", date: "16-09-18", launch_vinf: "4.50", alt_or_dv: "0.255(2)", arr_vinf: "6.20", tof_yr: "5.1", flyby_days: "349,924"}
+      - {path: "VEE", date: "17-01-06", launch_vinf: "3.75", alt_or_dv: "", arr_vinf: "6.64", tof_yr: "6.5", flyby_days: "134,448,r,1179"}
+      - {path: "VE", date: "18-07-25", launch_vinf: "4.50", alt_or_dv: "-377,-40(1,2)", arr_vinf: "8.58", tof_yr: "4.5", flyby_days: "421,1051"}
+      - {path: "VEE", date: "18-09-08", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.03", tof_yr: "6.6", flyby_days: "160,679,r,1410"}
+      - {path: "VMVE", date: "19-10-23", launch_vinf: "4.00", alt_or_dv: "-172(4)", arr_vinf: "7.43", tof_yr: "5.6", flyby_days: "433,1024,1350,1400"}
+      - {path: "VEE", date: "20-03-26", launch_vinf: "3.00", alt_or_dv: "", arr_vinf: "6.75", tof_yr: "6.4", flyby_days: "171,506,r,1601"}
+      - {path: "VEE", date: "20-04-05", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.22", tof_yr: "5.4", flyby_days: "156,455,r,1186"}
+      - {path: "VMVE", date: "21-10-27", launch_vinf: "4.00", alt_or_dv: "-346(4)", arr_vinf: "7.32", tof_yr: "3.6", flyby_days: "148,275,608,663"}
+      - {path: "VVEE", date: "21-11-13", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.86", tof_yr: "7.1", flyby_days: "173,616,1087,r,1818"}
+      - {path: "VVE", date: "22-01-20", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "6.68", tof_yr: "5.9", flyby_days: "171,563,1390"}
+      - {path: "VEME", date: "23-05-30", launch_vinf: "3.25", alt_or_dv: "", arr_vinf: "5.58", tof_yr: "6.4", flyby_days: "146,461,623,1276"}
+      - {path: "VEE", date: "24-08-28", launch_vinf: "3.50", alt_or_dv: "", arr_vinf: "6.08", tof_yr: "6.8", flyby_days: "371,942,1538"}
+      - {path: "VEE", date: "25-02-23", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "6.60", tof_yr: "6.1", flyby_days: "177,699,r,1429"}
+      - {path: "VEM", date: "26-06-13", launch_vinf: "4.25", alt_or_dv: "+183(3)", arr_vinf: "5.75", tof_yr: "5.2", flyby_days: "431,871,1007"}
+      - {path: "VEEM", date: "26-08-09", launch_vinf: "3.00", alt_or_dv: "", arr_vinf: "7.34", tof_yr: "6.5", flyby_days: "105,577,r,1672,1748"}
+      - {path: "VE", date: "27-10-16", launch_vinf: "5.00", alt_or_dv: "-124(2)", arr_vinf: "6.09", tof_yr: "4.8", flyby_days: "390,792"}
+      - {path: "VEE", date: "28-03-09", launch_vinf: "3.50", alt_or_dv: "0.697(2)", arr_vinf: "6.09", tof_yr: "6.6", flyby_days: "121,746,1460"}
+      - {path: "VE", date: "28-03-19", launch_vinf: "4.50", alt_or_dv: "0.699(2)", arr_vinf: "6.05", tof_yr: "4.6", flyby_days: "201,712"}
+      - {path: "VEE", date: "29-11-05", launch_vinf: "3.25", alt_or_dv: "", arr_vinf: "6.40", tof_yr: "5.6", flyby_days: "146,464,1291"}
+      - {path: "VEVE", date: "30-12-24", launch_vinf: "4.50", alt_or_dv: "", arr_vinf: "7.63", tof_yr: "6.3", flyby_days: "422,824,913,1607"}
+      - {path: "VEE", date: "31-04-23", launch_vinf: "3.25", alt_or_dv: "0.674(2)", arr_vinf: "6.81", tof_yr: "6.2", flyby_days: "170,817,1529"}
+      - {path: "VE", date: "31-07-17", launch_vinf: "4.50", alt_or_dv: "0.690(2)", arr_vinf: "6.39", tof_yr: "4.1", flyby_days: "180,701"}
+  - table: "5"
+    caption: "Promising trajectories without Earth flybys (unoptimized), listed by date"
+    journal_page: "781"
+    columns: [path, date, launch_vinf, alt_or_dv, arr_vinf, tof_yr, flyby_days]
+    footnote: "Only flyby altitudes below 200 km are listed; they are prefixed with a + or - sign. The parenthetical numbers indicate the associated flyby number. Deep-space DeltaV, if present, are listed without a prefixed sign; the parenthetical numbers indicate the flyby number preceding the maneuver. An r between the flyby times indicates that resonance occurs on that leg."
+    rows:
+      - {path: "VMVV", date: "99-04-26", launch_vinf: "5.50", alt_or_dv: "", arr_vinf: "6.49", tof_yr: "6.7", flyby_days: "322,616,850,r,1524"}
+      - {path: "VVV", date: "00-08-23", launch_vinf: "4.50", alt_or_dv: "1.17(1)", arr_vinf: "6.99", tof_yr: "6.3", flyby_days: "365,860,1478"}
+      - {path: "VVV", date: "01-02-24", launch_vinf: "4.50", alt_or_dv: "0.145,0.230(1,2)", arr_vinf: "7.33", tof_yr: "6.4", flyby_days: "187,638,1548"}
+      - {path: "VVV", date: "01-04-22", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "7.21", tof_yr: "6.3", flyby_days: "397,772,1497"}
+      - {path: "VVV", date: "02-08-23", launch_vinf: "6.00", alt_or_dv: "+177,+17(1,3)", arr_vinf: "7.60", tof_yr: "5.5", flyby_days: "70,r,519,1246"}
+      - {path: "VMVV", date: "03-11-26", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "8.15", tof_yr: "7.2", flyby_days: "370,715,1243,1974"}
+      - {path: "VVV", date: "04-07-15", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "7.18", tof_yr: "6.9", flyby_days: "168,r,617,r,1741"}
+      - {path: "VVV", date: "05-10-31", launch_vinf: "4.50", alt_or_dv: "0.519,0.039(2,3)", arr_vinf: "7.16", tof_yr: "5.6", flyby_days: "85,580,1270"}
+      - {path: "VVV", date: "06-01-29", launch_vinf: "7.00", alt_or_dv: "-280(3)", arr_vinf: "6.82", tof_yr: "6.9", flyby_days: "382,963,r,1637"}
+      - {path: "VVMV", date: "07-04-14", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "7.07", tof_yr: "6.9", flyby_days: "324,r,774,895,1433"}
+      - {path: "VVV", date: "07-10-27", launch_vinf: "6.50", alt_or_dv: "", arr_vinf: "7.52", tof_yr: "6.0", flyby_days: "142,r,592,r,1491"}
+      - {path: "VVV", date: "08-12-04", launch_vinf: "4.50", alt_or_dv: "0.338,0.683(1,2)", arr_vinf: "7.11", tof_yr: "7.1", flyby_days: "435,893,1812"}
+      - {path: "VVV", date: "09-02-12", launch_vinf: "4.50", alt_or_dv: "1.004,0.554(2,3)", arr_vinf: "7.38", tof_yr: "7.0", flyby_days: "189,595,1246"}
+      - {path: "VVV", date: "10-05-18", launch_vinf: "4.50", alt_or_dv: "0.791,0.278,0.452(1,2,3)", arr_vinf: "7.15", tof_yr: "6.2", flyby_days: "347,786,1510"}
+      - {path: "VVV", date: "11-01-15", launch_vinf: "6.50", alt_or_dv: "-551(1)", arr_vinf: "7.28", tof_yr: "6.2", flyby_days: "154,r,603,r,1502"}
+      - {path: "VMVV", date: "12-04-27", launch_vinf: "4.00", alt_or_dv: "", arr_vinf: "7.12", tof_yr: "7.0", flyby_days: "181,799,1101,1708"}
+      - {path: "VVV", date: "13-09-04", launch_vinf: "6.50", alt_or_dv: "", arr_vinf: "7.37", tof_yr: "6.8", flyby_days: "327,r,776,1718"}
+      - {path: "VVV", date: "14-04-09", launch_vinf: "7.00", alt_or_dv: "-394,-366(1,3)", arr_vinf: "8.98", tof_yr: "5.2", flyby_days: "143,r,593,r,1267"}
+      - {path: "VVV", date: "15-07-29", launch_vinf: "6.50", alt_or_dv: "", arr_vinf: "8.94", tof_yr: "6.4", flyby_days: "418,792,1733"}
+      - {path: "VVV", date: "15-08-10", launch_vinf: "4.50", alt_or_dv: "0.617(2)", arr_vinf: "7.27", tof_yr: "6.7", flyby_days: "172,567,1502"}
+      - {path: "VVV", date: "16-12-27", launch_vinf: "6.00", alt_or_dv: "+177(3)", arr_vinf: "8.18", tof_yr: "6.4", flyby_days: "304,r,753,1689"}
+      - {path: "VMVMV", date: "17-01-06", launch_vinf: "4.50", alt_or_dv: "+160(1)", arr_vinf: "7.02", tof_yr: "7.0", flyby_days: "136,800,994,1558,1665"}
+      - {path: "VVV", date: "18-10-03", launch_vinf: "4.50", alt_or_dv: "0.403(2)", arr_vinf: "7.01", tof_yr: "5.7", flyby_days: "179,581,1289"}
+      - {path: "VVMV", date: "18-10-24", launch_vinf: "5.00", alt_or_dv: "", arr_vinf: "6.98", tof_yr: "5.9", flyby_days: "175,570,667,1278"}
+      - {path: "VVV", date: "19-01-11", launch_vinf: "6.50", alt_or_dv: "", arr_vinf: "6.86", tof_yr: "6.1", flyby_days: "155,728,r,1402"}
+      - {path: "VVV", date: "20-03-16", launch_vinf: "6.00", alt_or_dv: "+39(1)", arr_vinf: "8.46", tof_yr: "5.8", flyby_days: "79,r,529,1470"}
+      - {path: "VVV", date: "21-11-26", launch_vinf: "4.50", alt_or_dv: "0.338,0.522,0.649(1,2,3)", arr_vinf: "7.16", tof_yr: "5.7", flyby_days: "184,643,1331"}
+      - {path: "VVV", date: "22-03-14", launch_vinf: "6.50", alt_or_dv: "+33(1)", arr_vinf: "7.06", tof_yr: "6.8", flyby_days: "376,748,1692"}
+      - {path: "VVV", date: "22-12-26", launch_vinf: "4.50", alt_or_dv: "0.292,0.491,0.304(1,2,3)", arr_vinf: "6.53", tof_yr: "6.9", flyby_days: "478,945,1641"}
+      - {path: "VVV", date: "23-05-25", launch_vinf: "5.50", alt_or_dv: "", arr_vinf: "6.97", tof_yr: "6.9", flyby_days: "83,596,r,1720"}
+      - {path: "VVV", date: "24-08-17", launch_vinf: "4.50", alt_or_dv: "0.857,0.390,0.043(1,2,3)", arr_vinf: "7.46", tof_yr: "6.2", flyby_days: "365,797,1511"}
+      - {path: "VVV", date: "25-03-20", launch_vinf: "4.50", alt_or_dv: "0.138,0.244(1,2)", arr_vinf: "7.14", tof_yr: "6.4", flyby_days: "173,624,1531"}
+      - {path: "VVV", date: "25-05-12", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "10.50", tof_yr: "5.6", flyby_days: "160,535,1476"}
+      - {path: "VMVV", date: "26-08-07", launch_vinf: "4.50", alt_or_dv: "", arr_vinf: "7.11", tof_yr: "7.2", flyby_days: "419,515,795,1748"}
+      - {path: "VMVV", date: "26-08-07", launch_vinf: "4.50", alt_or_dv: "-34(4)", arr_vinf: "7.45", tof_yr: "6.2", flyby_days: "419,515,795,r,1469"}
+      - {path: "M", date: "27-02-08", launch_vinf: "8.00", alt_or_dv: "", arr_vinf: "5.87", tof_yr: "6.5", flyby_days: "1563"}
+      - {path: "VVV", date: "27-11-30", launch_vinf: "4.50", alt_or_dv: "0.230,1.097,0.176(1,2,3)", arr_vinf: "7.27", tof_yr: "6.7", flyby_days: "353,833,1473"}
+      - {path: "VVV", date: "28-07-15", launch_vinf: "6.00", alt_or_dv: "", arr_vinf: "7.32", tof_yr: "6.9", flyby_days: "165,r,614,r,1513"}
+      - {path: "VVV", date: "29-10-15", launch_vinf: "4.50", alt_or_dv: "0.396(2)", arr_vinf: "7.12", tof_yr: "6.2", flyby_days: "414,815,1524"}
+      - {path: "VVV", date: "30-12-19", launch_vinf: "4.50", alt_or_dv: "0.453,0.893(1,2)", arr_vinf: "8.64", tof_yr: "6.0", flyby_days: "399,884,1579"}
+      - {path: "M", date: "31-02-12", launch_vinf: "8.00", alt_or_dv: "", arr_vinf: "6.20", tof_yr: "2.3", flyby_days: "96"}
+      - {path: "VMVV", date: "31-04-23", launch_vinf: "5.50", alt_or_dv: "+142(4)", arr_vinf: "7.33", tof_yr: "7.2", flyby_days: "317,528,755,r,1429"}
+  - table: "6"
+    caption: "DeltaV-optimized trajectories, listed by date within each group"
+    journal_page: "782"
+    columns: [group, path, date, launch_vinf, dsm_dv, arr_vinf, tof_yr, flyby_days]
+    note: "Optimized versions of the Tables 4 and 5 trajectories up to 2010 plus noteworthy ones after 2010."
+    rows:
+      - {group: "with Earth flybys, 1999-2010", path: "VE", date: "99-03-27", launch_vinf: "4.50", dsm_dv: "0.298", arr_vinf: "5.80", tof_yr: "5.1", flyby_days: "339,947"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "99-05-16", launch_vinf: "3.03", dsm_dv: "0.276", arr_vinf: "6.10", tof_yr: "5.8", flyby_days: "157,438,1257"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "99-06-09", launch_vinf: "3.37", dsm_dv: "0", arr_vinf: "5.55", tof_yr: "7.3", flyby_days: "175,513,r,1608"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "00-08-11", launch_vinf: "3.07", dsm_dv: "0", arr_vinf: "6.55", tof_yr: "6.6", flyby_days: "387,766,1604"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "01-02-24", launch_vinf: "3.75", dsm_dv: "0", arr_vinf: "5.82", tof_yr: "6.6", flyby_days: "173,693,r,1423"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "02-07-23", launch_vinf: "3.40", dsm_dv: "0", arr_vinf: "6.56", tof_yr: "5.7", flyby_days: "140,624,1247"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "03-11-19", launch_vinf: "3.80", dsm_dv: "0", arr_vinf: "6.62", tof_yr: "6.5", flyby_days: "373,764,1610"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "04-03-12", launch_vinf: "3.56", dsm_dv: "0.471", arr_vinf: "6.36", tof_yr: "6.3", flyby_days: "122,740,r,1470"}
+      - {group: "with Earth flybys, 1999-2010", path: "VE", date: "04-04-23", launch_vinf: "4.14", dsm_dv: "0.719", arr_vinf: "6.03", tof_yr: "4.3", flyby_days: "145,663"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "05-10-28", launch_vinf: "3.14", dsm_dv: "0", arr_vinf: "6.65", tof_yr: "5.6", flyby_days: "153,458,1282"}
+      - {group: "with Earth flybys, 1999-2010", path: "VE", date: "06-12-16", launch_vinf: "4.05", dsm_dv: "0.813", arr_vinf: "6.20", tof_yr: "4.9", flyby_days: "429,822"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "07-02-28", launch_vinf: "3.93", dsm_dv: "0", arr_vinf: "6.56", tof_yr: "6.5", flyby_days: "355,768,1626"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "08-12-09", launch_vinf: "4.02", dsm_dv: "0", arr_vinf: "6.70", tof_yr: "5.7", flyby_days: "152,634,r,1364"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "09-01-21", launch_vinf: "3.68", dsm_dv: "0", arr_vinf: "5.50", tof_yr: "6.3", flyby_days: "172,488,1320"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEME", date: "10-04-06", launch_vinf: "3.69", dsm_dv: "0", arr_vinf: "8.27", tof_yr: "6.4", flyby_days: "377,947,1523,1692"}
+      - {group: "with Earth flybys, 1999-2010", path: "VEE", date: "10-07-21", launch_vinf: "2.94", dsm_dv: "0.360", arr_vinf: "6.21", tof_yr: "6.6", flyby_days: "129,747,1560"}
+      - {group: "without Earth flybys, 1999-2010", path: "VMVV", date: "99-04-27", launch_vinf: "5.46", dsm_dv: "0", arr_vinf: "6.49", tof_yr: "6.7", flyby_days: "320,615,848,r,1522"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "00-08-04", launch_vinf: "2.97", dsm_dv: "0.734", arr_vinf: "6.62", tof_yr: "6.6", flyby_days: "393,825,1523"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "01-03-04", launch_vinf: "3.89", dsm_dv: "0.360", arr_vinf: "7.33", tof_yr: "6.4", flyby_days: "173,r,628,r,1539"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "01-04-24", launch_vinf: "5.93", dsm_dv: "0", arr_vinf: "7.24", tof_yr: "6.3", flyby_days: "394,770,1494"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "02-08-25", launch_vinf: "4.54", dsm_dv: "0.438", arr_vinf: "7.92", tof_yr: "5.4", flyby_days: "77,527,1244"}
+      - {group: "without Earth flybys, 1999-2010", path: "VMVV", date: "03-12-01", launch_vinf: "3.94", dsm_dv: "0", arr_vinf: "8.05", tof_yr: "7.2", flyby_days: "365,710,1237,1968"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "04-07-09", launch_vinf: "5.34", dsm_dv: "0.037", arr_vinf: "8.60", tof_yr: "6.5", flyby_days: "162,r,611,r,1737"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "05-10-30", launch_vinf: "4.20", dsm_dv: "0.508", arr_vinf: "7.45", tof_yr: "6.3", flyby_days: "89,576,1278"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "06-01-04", launch_vinf: "5.34", dsm_dv: "0.171", arr_vinf: "6.83", tof_yr: "7.0", flyby_days: "403,991,r,1660"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVMV", date: "07-04-09", launch_vinf: "4.87", dsm_dv: "0", arr_vinf: "7.06", tof_yr: "6.9", flyby_days: "329,r,779,900,1438"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "07-10-10", launch_vinf: "5.78", dsm_dv: "0.011", arr_vinf: "8.36", tof_yr: "5.9", flyby_days: "155,r,605,r,1503"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "08-12-01", launch_vinf: "4.26", dsm_dv: "0.608", arr_vinf: "7.56", tof_yr: "6.9", flyby_days: "430,r,888,r,1805"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "09-02-21", launch_vinf: "3.77", dsm_dv: "1.044", arr_vinf: "7.36", tof_yr: "7.0", flyby_days: "173,565,r,1240"}
+      - {group: "without Earth flybys, 1999-2010", path: "VVV", date: "10-05-19", launch_vinf: "4.28", dsm_dv: "1.098", arr_vinf: "6.42", tof_yr: "7.0", flyby_days: "349,837,1483"}
+      - {group: "notable trajectories, 2011-2031", path: "VVMV", date: "18-11-02", launch_vinf: "4.67", dsm_dv: "0", arr_vinf: "7.05", tof_yr: "6.1", flyby_days: "164,563,660,1267"}
+      - {group: "notable trajectories, 2011-2031", path: "VMVE", date: "21-10-27", launch_vinf: "3.99", dsm_dv: "0.425", arr_vinf: "6.90", tof_yr: "3.7", flyby_days: "148,275,607"}
+      - {group: "notable trajectories, 2011-2031", path: "VEME", date: "23-05-28", launch_vinf: "3.25", dsm_dv: "0", arr_vinf: "5.58", tof_yr: "6.4", flyby_days: "147,463,624,1278"}
+      - {group: "notable trajectories, 2011-2031", path: "VEEM", date: "26-08-03", launch_vinf: "2.93", dsm_dv: "0", arr_vinf: "7.34", tof_yr: "6.6", flyby_days: "110,582,r,1678,1753"}
+      - {group: "notable trajectories, 2011-2031", path: "M", date: "31-02-15", launch_vinf: "7.84", dsm_dv: "0", arr_vinf: "5.83", tof_yr: "2.5", flyby_days: "95"}
