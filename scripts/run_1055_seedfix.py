@@ -265,6 +265,37 @@ def stage_neg(t: Target) -> None:
     (t.out / "neg.json").write_text(json.dumps(out))
 
 
+def stage_limit(t: Target) -> None:
+    """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
+    (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
+    the limit is the Richardson value 2 X(s) - X(2 s) from the two smallest sigmas (limit.json)."""
+    st = json.loads((t.out / "start.json").read_text())
+    z, s_prev = np.asarray(st["z"]), SIGMA0
+    rows = [{"sigma": SIGMA0, "z": z.tolist()}]
+    for sg in (0.01, 0.005, 0.0025, 0.00125):
+        t.set_sigma(sg)
+        zn, info = t.b.solve(t.p, t.scale(z, sg / s_prev), 40, 60, False)
+        if not t.b.converged(info):
+            t.log(f"limit: no convergence at sigma {sg}")
+            break
+        z, s_prev = zn, sg
+        rows.append({"sigma": sg, "z": z.tolist()})
+    for row in rows:
+        zz = np.asarray(row["z"])
+        t.set_sigma(row["sigma"])
+        row["epochs_days"] = [float(zz[7 * k + 6]) / 86400.0 for k in range(len(t.moons))]
+        row["vinf"] = t.vinf(zz, row["sigma"])
+    out: dict[str, Any] = {"moons": t.moons, "points": rows}
+    if len(rows) >= 3:
+        a, b = rows[-1], rows[-2]
+        out["limit_epochs_days"] = [
+            2 * x - y for x, y in zip(a["epochs_days"], b["epochs_days"], strict=True)
+        ]
+        out["limit_vinf"] = [2 * x - y for x, y in zip(a["vinf"], b["vinf"], strict=True)]
+    (t.out / "limit.json").write_text(json.dumps(out))
+    t.log(f"limit: epochs {out.get('limit_epochs_days')} vinf {out.get('limit_vinf')}")
+
+
 def stage_cont(t: Target) -> None:
     st = json.loads((t.out / "start.json").read_text())
     assert st["converged"]
@@ -307,7 +338,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
-        "--stage", choices=["fix", "start", "neg", "cont", "down", "ias15"], required=True
+        "--stage", choices=["fix", "start", "neg", "cont", "down", "ias15", "limit"], required=True
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
     args = ap.parse_args()
@@ -319,7 +350,13 @@ def main() -> None:
     if args.stage == "ias15":
         t.rb.stage_ias15(1)
         return
-    {"fix": stage_fix, "start": stage_start, "neg": stage_neg, "cont": stage_cont}[args.stage](t)
+    {
+        "fix": stage_fix,
+        "start": stage_start,
+        "neg": stage_neg,
+        "cont": stage_cont,
+        "limit": stage_limit,
+    }[args.stage](t)
 
 
 if __name__ == "__main__":

@@ -447,3 +447,31 @@ Then:
 first call resumes. The outcome rules are sec. 5: a root, then start and negative control; or "no
 sign change within 3 L" in both directions, or domain bounds on both sides, which is the clean
 negative (b) for this target.
+
+### 10.1 CORRECTION to sec. 10: the limit member IS the chain tool's member (13:04-13:12 AEDT)
+
+Sec. 10 said that the branch's sigma -> 0 limit is "a different member of the same family", with
+epochs shifted by up to about 11.5 min. That was WRONG. I read the shifts at the sigma-0.02 start
+as if they were the limit. The new driver stage `limit` (`data/1055_gc4-19/limit.json`) converges
+the corrected branch going down from the start at the floors (sigma 0.01, 0.005 and 0.0025; 0.00125
+does not converge within 40 + 60 iterations) and stores each point's node epochs.
+
+Node-epoch offsets from the #973 gauntlet's flyby epochs (s), nodes C, C, G, G:
+
+| sigma | C | C | G | G | V_inf (C, C, G, G) |
+|---|---|---|---|---|---|
+| 0.02 | -138 | -143 | -600 | -692 | 4.10987, 4.10822, 2.35619, 2.35643 |
+| 0.01 | -84 | -92 | -375 | -431 | 4.10945, 4.10863, 2.35634, 2.35647 |
+| 0.005 | -43 | -51 | -204 | -238 | 4.10923, 4.10882, 2.35641, 2.35649 |
+| 0.0025 | -20 | -28 | -106 | -126 | 4.10912, 4.10892, 2.35646, 2.35649 |
+| Richardson limit | -0.5 | -1.2 | -8.8 | -14.0 | 4.10901, 4.10901, 2.35650, 2.35650 |
+
+The shifts fall about in proportion to sigma, and the limit equals the gauntlet member to within
+14 s, which is the Richardson error. In #973 convention the limit's start dates are x_days =
+(3.498195, 36.485538), against the gauntlet's (3.498357, 36.485552).
+
+So the correction does not pick a different patched-conic member here. It moves the sigma-0.02
+start along the near-null direction by an amount proportional to sigma: about 10 min at the
+Ganymede nodes at sigma 0.02. In the limit that move vanishes. The full-mass orbit therefore
+continues gc4-19's own #973 member. The caveat in sec. 10 reduces to "reached from the #1055
+corrected seed", and no separate #973 gate run of a new member is needed.
