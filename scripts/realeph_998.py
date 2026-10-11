@@ -83,6 +83,14 @@ class EphSystem:
     def body(self, code: str) -> FlybyBody:
         return self._ideal.body(code)
 
+    def is_keplerian(self, code: str) -> bool:
+        """False for Charon (#1064): it moves about the barycentre at 17,464 km, a speed the conic
+        about the system GM does not give, so the Keplerian 1:1 shortcut of
+        ``two_working_body.resonant_circle`` (|v_sc| = |V_body|) would make a return that misses
+        Charon by about 19,000 km. The general a_sc path is used instead. The massless moons are
+        only Lambert targets, never full-rev or half-rev legs, so their value is unused."""
+        return code != "Charon"
+
     def wrap_rotation(self, code: str, dt_s: float) -> np.ndarray:
         return self._ideal.wrap_rotation(code, dt_s)
 
@@ -135,6 +143,9 @@ def main() -> None:
     ap.add_argument("--cell", required=True)
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--pool", choices=("strong", "all"), default="strong")
+    ap.add_argument(
+        "--slice", default="", help="a:b, run only candidates a..b-1 of the ranked pool (chunking)"
+    )
     ap.add_argument("--n-cycles", type=int, default=1)
     ap.add_argument("--epochs", type=int, default=5)
     ap.add_argument("--out", type=Path, required=True)
@@ -151,6 +162,9 @@ def main() -> None:
         key=lambda c: c["worst_ratio"],
     )
     picks = strong[: args.top]
+    if args.slice:
+        lo, hi = (int(v) for v in args.slice.split(":"))
+        picks = picks[lo:hi]
 
     sp.furnsh(str(LSK))
     sp.furnsh(ensure_pluto_kernel())
@@ -183,7 +197,15 @@ def main() -> None:
             rec["residual_after_kms"] = sol.max_abs_residual_kms
             rec["converged_1e-6"] = bool(sol.converged)
             rec["date_shift_hours_max"] = float(np.max(np.abs(sol.x - x0)) / 3600.0)
-            fl = cycle_flybys(eph, cyc, sol.x)
+            try:
+                fl = cycle_flybys(eph, cyc, sol.x)
+            except ValueError as exc:
+                # half-rev legs need a Keplerian body circle (#1024); Charon is not one here (#1064)
+                rec["gate_status"] = "refused-half-rev"
+                rec["refusal"] = str(exc)
+                rec["encounter_miss_km"] = encounter_self_consistency(eph, cyc, sol.x)
+                rows.append(rec)
+                continue
             if fl is None:
                 rec["gate_status"] = "no-directions"
             else:

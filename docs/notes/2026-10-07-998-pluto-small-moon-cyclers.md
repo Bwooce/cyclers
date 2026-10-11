@@ -298,3 +298,37 @@ The line counts equal the exact-zero counts in sec. 3. The literature step and t
   The per-zero `zeros.jsonl` files (archived, sec. 9) keep the `min_soi_km` of the original run.
 - `gauntlet_942.py` and `scan_320` no longer import `search.literature_check` at module level (#1038);
   the DOP853 re-fly lives in `search/two_working_body_refly.py`.
+
+## 11. Addendum 2026-10-11 (#1064): the real-ephemeris step with Charon declared non-Keplerian
+
+Defect found by #1024 (twobody-ext-opus, `docs/notes/2026-10-11-1024-barycentric-binary-model.md` sec. 8):
+`EphSystem` in `scripts/realeph_998.py` had no `is_keplerian`, so `resonant_circle` used the Keplerian 1:1
+shortcut (|v_sc| = |V_Charon|) with the kernel Charon speed. In the kernel Charon moves about the barycentre
+at 17,464 km, not on the 19,596-km Kepler circle, so the 1:1 return the conic makes is not the return the
+ephemeris needs. Measured on the kernel at one conjunction epoch, a 1:1 leg built that way misses Charon after
+one period by 18,214 / 18,824 / 19,279 km at V_inf 0.15 / 0.2 / 0.3 km/s; with the fix it misses by 0.196 km
+(Charon's own eccentricity), at all three. Test: `tests/scripts/test_1064_realeph_charon_not_keplerian.py`.
+
+Fix: `EphSystem.is_keplerian("Charon")` is False (the moons stay True; they are only Lambert targets). The
+general `a_sc` path is then used for any n:m return, and `half_rev_vectors` refuses Charon (a #1024 rule), which
+the script records as `refused-half-rev` instead of crashing.
+
+Rerun of sec. 6.1 on all 457 gate-passers (one cycle, five epochs; files
+`<cell>_realeph_all_n1_fix1064.json`; the old `<cell>_realeph_all_n1.json` stay as the record of the
+defective run; run in 50-60 member slices because of machine load):
+
+| Group | Members (strong) | Result |
+|---|---|---|
+| Neither a 1:1 nor a half-rev Charon leg | 280 (117) | bitwise unchanged (all gate statuses, residuals and ratios equal to 1e-12) |
+| 1:1 Charon leg, no half-rev | 129 (90) | gate pass at all 5 epochs: strong 90 of 90 before and after; non-strong 37 before, 39 after of 39. Date residual unchanged (it does not depend on the return). Worst gate ratio changed by -57 % to +12 % (median +0.3 %) over 645 epoch pairs. Charon V_inf unchanged to 1e-4 km/s. Largest real-ephemeris ratio over every non-refused member and epoch: 0.915, none above 1. |
+| Half-rev Charon leg (6 of the 48 also carry a 1:1 leg) | 48 (17) | NOT EVALUABLE in this model: `half_rev_vectors` refuses the barycentric Charon at all 5 epochs. Their earlier "pass" (strong 13 of 17 at all epochs) used the same Keplerian assumption and is withdrawn. The residual result (under 1 m/s at every epoch for all 48) concerns only the Lambert legs and stands. |
+
+The 12 best-ratio members of sec. 6 carry neither a 1:1 nor a half-rev Charon leg (checked from the data): their
+epoch records are identical before and after, and the three-cycle chains in `<cell>_realeph_n3.json` were not
+affected (no fixed 1:1 leg).
+
+Strong-set restatement of sec. 6.1 (224): evaluable 207; gate pass at all five epochs 206 of 207 (was 219 of
+224); also refit under 1 m/s at every epoch 205 of 207. The 17 strong members with a half-rev Charon leg have no
+valid real-ephemeris verdict in this model and must wait for a barycentric treatment of the half-rev return
+(#1024's option, which excludes them too). Nothing here is called novel; the literature step is unchanged
+(#1036).
