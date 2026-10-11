@@ -112,3 +112,47 @@ Additional checks, recorded not gated:
   2026-06-15 review note. The wanted-list rows are the remedy.
 - `literature_check.py` is untouched in this step; the two proposals that need code are the label edits (sec. 2)
   and the Jbara citation correction.
+
+## 7. Lead rulings (2026-10-11) and the record that results
+
+Rulings after sec. 1-6 were sent:
+- D1: option (b). Howett's topology label stays EMPTY. A label must come from the digest's text, and the digest left
+  it empty on purpose. If someone later re-reads Howett and cites the section that describes repeated-moon
+  cycler trajectories, (a) can be applied under its own pre-registration.
+- D2: agreed, no new anchor for Ross and Roberts-Tsoukkas.
+- D3: agreed, Showalter-Hamilton {resonant} to {ephemeris}. Stern gets working_bodies_scope "one" as proposed.
+- The tadpole anchor's citation is a data error: correct its title and authors to the arXiv:2510.13479 record
+  (Jbara, "Chaotic Dynamics and Zero-Velocity Structures in the Pluto-Charon CR3BP"), keep its label {binary-coorbital}.
+  Recorded here on 2026-10-11. The anchor itself is edited only after rule U lands.
+- The Brozovic anchor's provenance field marks the AJ 163:241 (2022) reference unverified.
+- Wanted rows: sent by message to corpus-file-opus on 2026-10-11 (Showalter-Hamilton, Brozovic 2015,
+  Brozovic-Jacobson 2024, Jbara, in that priority order).
+- Rule U (twobody-gen2-opus): an untopologied signature can read "published" only through an anchor carrying the
+  repeated-moon label; every other anchor's hit becomes inconclusive naming the anchor. Under rule U the
+  untopologied Pluto case resolves without relabelling Howett: an empty-label Howett caps an untopologied Pluto
+  signature at inconclusive, naming Howett, which is the honest reading until the digest supports a label.
+- The anchor edits (Showalter-Hamilton, Stern scope, tadpole citation, Brozovic provenance) are applied ONLY after
+  the lead says rule U's commit has landed; then C1-C3 and the gate's 26 controls and the #998 litcheck are rerun,
+  everything byte-identical except C3 and the Howett citations.
+
+Sec. 2 row 1 (Howett {repeated-moon}) and the D1 option (a) text of sec. 3 are therefore NOT adopted; the
+expected outcomes of sec. 5 for C1 and C3 change as follows.
+
+## 8. Expected gate outcomes for a #998-type signature, before and after rule U and the edits (check for gen2)
+
+Signature: primary Pluto, sequence (Charon, Nix), period_k 4, V_inf (0.178, 0.130) km/s, working_bodies "one".
+"Before" was run on the committed gate (f03cc22f, sec. 4); "after" is expected, not run.
+
+| Signature | Before rule U (measured) | After rule U, Howett left empty (expected) |
+|---|---|---|
+| labelled {repeated-moon}, one working body | published, cites Howett | published, cites Howett (an empty-label anchor is unrestricted for a LABELLED signature; rule U concerns untopologied signatures) |
+| UNLABELLED (no topology) | published, cites Howett | inconclusive, naming Howett (Howett carries no repeated-moon label) |
+| labelled {pump-tour} at Pluto (C3) | published, cites Howett | published, cites Howett: UNCHANGED, because Howett's empty label is unrestricted; the pre-registered C3 outcome "not-found" (sec. 5) no longer applies under D1 (b) and is withdrawn |
+| labelled {mga-tour}, sequence (Charon, Nix) | published, cites Howett (Stern also in footprint) | published, citing Howett or Stern by corpus order (unchanged in status) |
+| labelled {resonant}, sequence (Nix, Hydra) | published (Howett and Showalter in footprint) | published via Howett (unchanged in status), no longer able to cite Showalter once it carries {ephemeris} |
+| wrong system, primary Jupiter (C2) | known-architecture-new-system | unchanged |
+
+C3 therefore needs a replacement negative that does not depend on Howett: use {pump-tour} at a system whose anchors
+are all labelled (a negative that must stay "not published"), or the untopologied Pluto signature, which must
+change from "published" to "inconclusive" under rule U. Both are for gen2 to run with rule U; none is run here.
+Everything else of the gate's 26 controls and the #998 litcheck must be byte-identical after the anchor edits.
