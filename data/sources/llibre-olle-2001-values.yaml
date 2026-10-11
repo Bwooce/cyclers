@@ -1,0 +1,84 @@
+# Llibre and Olle 2001, every numeric value the paper prints. The paper has NO numbered tables; its numbers are in the text
+# and in figure captions, so they are transcribed here as blocks.
+# Source: J. Llibre and M. Olle, "The motion of Saturn coorbital satellites in the restricted three-body problem",
+#   Astronomy & Astrophysics 378:1087-1099 (2001), doi 10.1051/0004-6361:20011274. Received 7 March 2001, accepted 3 August 2001.
+# Local file: 13 pp., native text layer, md5 5d0787cd421c6ff80736f01b6e34cbd2 (private corpus, papers/ directory).
+#   Journal page n = PDF page n - 1086.
+# Witnesses: A = pdftotext -layout, B = pdftotext -raw, per-page scan of both for every long number; C = the PDF pages
+#   5 to 11 (journal pp. 1091 to 1097) rendered at 150 dpi and read. All values below agree in A, B and C.
+# Independent checks are ours and are marked "ours": check_llibre.py/.out (integration of the printed mu = 6.5e-9 orbit) and
+#   check_lpoints.py/.out (collinear points and their Jacobi constants), filed beside the PDF in the private corpus.
+# Numbers are kept as printed (strings).
+conventions:
+  model: "planar circular restricted three-body problem; big primary mass 1 - mu at (mu, 0), small primary mass mu at (mu - 1, 0); rotating frame, G = 1, angular rate 1; Omega = (x^2 + y^2)/2 + (1 - mu)/r1 + mu/r2 + mu(1 - mu)/2; Jacobi first integral x'^2 + y'^2 = 2 Omega - C"
+  horseshoe_definition: "a symmetric periodic orbit surrounding only L3, L4 and L5 with exactly two crossings of the x axis, both orthogonal; start (x, 0, 0, -y') at t = 0, second crossing at t = T/2"
+  equilibrium_ordering: "3 = C4 = C5 < C3 < C1 < C2 (printed, for 0 < mu < 1/2)"
+  stability: "alpha = 2 - trace(M) of the half-period monodromy matrix; stable if -2 < alpha < 2"
+  time_unit: "not printed. Periods in days are given only for Janus and Epimetheus (sec. 3.1)."
+blocks:
+  - block: "Real satellites used as targets (sec. 3.1, citing Murray and Dermott 1999)"
+    items:
+      - {quantity: "1980S3 (Epimetheus) horseshoe period", value: "2928.6 days"}
+      - {quantity: "minimum angular separation", value: "5.6 degrees"}
+      - {quantity: "semi-major axes of 1980S1 (Janus) and 1980S3", value: "151.472 km and 151.422 km (printed so; the unit is as printed, the real values are about 1.5e5 km)"}
+      - {quantity: "eccentricities of 1980S1 and 1980S3", value: "0.007 and 0.009"}
+      - {quantity: "mass parameter used", value: "mu = 3.5e-9 (Saturn and Janus; Yoder et al. 1989, Nicholson et al. 1992)"}
+      - {quantity: "Epimetheus rotating-frame orbital element", value: "r1 = 1.00033"}
+  - block: "Collinear points for mu = 3.5e-9 (sec. 3.1)"
+    items:
+      - {quantity: "x(L2), C2", value: "-.99894763, 3.000009966"}
+      - {quantity: "x(L1), C1", value: "-1.00105309, 3.000009961"}
+      - {quantity: "x(L3), C3", value: "1.0000000015, 3.000000007"}
+    note: "ours (check_lpoints.out): all six values reproduce to the printed digits (x(L2) -0.998947639, x(L1) -1.00105309238, x(L3) 1.00000000146)."
+  - block: "Selected stable horseshoe orbit fitted to Janus and Epimetheus (sec. 3.1, Fig. 6a); mu = 3.5e-9"
+    items:
+      - {quantity: "x(t = 0)", value: "1.0002979809"}
+      - {quantity: "x(T/2)", value: "0.9996731232"}
+      - {quantity: "T", value: "1465.3 days"}
+      - {quantity: "minimum angular separation", value: "4.42 degrees"}
+      - {quantity: "eccentricity", value: "0.9e-4"}
+      - {quantity: "Jacobi constant, y'(0), stability alpha", value: "not printed"}
+      - {quantity: "search range with half-period close to 1464 and separation close to 5.6 degrees", value: "x in [1.0002, 1.0004] (Fig. 5 axes: C = 3.00000006, 3.00000007, 3.00000008; half period T/2 in days 1200 to 1750)"}
+    note: "The printed T = 1465.3 days is almost certainly the half period: the real full period is 2928.6 days, the text says the half-period is close to 1464, and Fig. 5a plots T/2 in days. INFERRED from the paper's own numbers, not computed."
+  - block: "mu = 6.5e-9 constants (sec. 3.2)"
+    items:
+      - {quantity: "C3, C1", value: "3.000000013, 3.00001504"}
+      - {quantity: "family computed at C", value: "3.000000065 (Fig. 7: initial x against theta_min, x from 1.0005 to 1.0025)"}
+    note: "ours: C3 reproduces (3.000000013); C1 computes as 3.00001504585, printed truncated."
+  - block: "Horseshoe orbit, mu = 6.5e-9, C in [C3, C1) (Fig. 9a,b)"
+    items:
+      - {quantity: "x(t = 0), x(T/2)", value: "1.000158887628, 0.999841160777"}
+      - {quantity: "generating ellipses (mu = 0) give x", value: "1.0002043120 and 0.9997984943"}
+  - block: "Horseshoe orbit, mu = 6.5e-9 (Fig. 9c,d)"
+    items:
+      - {quantity: "initial conditions (x, y, x', y')", value: "(1.000294264596, 0, 0, -0.0004557622)"}
+      - {quantity: "x(T/2) printed", value: "0.999795834471204"}
+      - {quantity: "y'(T/2) printed", value: "0.00045569264"}
+      - {quantity: "generating circles (mu = 0, same C)", value: "retrograde x = r = 1.00029444, y' = -0.000441626; direct x = r = 0.999705659, y' = 0.0008486589"}
+      - {quantity: "C", value: "not printed here; the text uses C = 3.000000065 for this value of mu"}
+    note: "ours (check_llibre.out): C of the printed initial state is 3.000000065000049, so it is the C = 3.000000065 orbit. Integrating to the first return to y = 0 gives x = 0.999705835 and y' = 4.55692027e-4 (xdot -1.3e-7, the residual of the 10-digit y'). The printed y'(T/2) matches. The printed x(T/2) = 0.999795834471204 does NOT: it differs in the fourth decimal (0.99979 against 0.99970), and the printed generating direct circle r = 0.999705659 agrees with my 0.9997058. Probable printed digit slip (0.999705834471204). Not an erratum claim; the digits were read on the page render and are as printed."
+  - block: "Other Jacobi constants and orbits, mu = 6.5e-9"
+    items:
+      - {quantity: "Fig. 10 orbit", value: "C = 2.9999999 (loops intersect; no zero velocity curve)"}
+      - {quantity: "Fig. 11 return-point oscillation", value: "C = 3.000000065; Levi-Civita u,v; x = 1.003546, 1.0034566, 1.003517"}
+      - {quantity: "x interval of horseshoe orbits at C = 3.000000065", value: "[1.000131789, 1.003456]; return point tangent to the x axis at x(0) = 1.0034566 with x = -0.9986; oscillating for x in [1.00345665, 1.003518]"}
+      - {quantity: "L2 Lyapunov orbit at this C (Fig. 12a)", value: "x(t = 0) = -0.997761039, x(T/2) = -0.99981859"}
+      - {quantity: "Fig. 12b,c", value: "x(0) = 1.0035181 (surrounds the L2 orbit once); x1 = 1.0035181044137 (twice, turns down in a horseshoe); x2 = 1.0035181044138 (turns up, no horseshoe); collision orbit with m2 for x in (1.003518104418, 1.0035181044185); Fig. 12 caption lists 1.00351810441385 for the near-collision orbit"}
+      - {quantity: "C = 3.00001 (Fig. 13)", value: "increment 1e-9, 29 horseshoe orbits for x in [1.0018257, 1.00183346]; Fig. 13b labels x = 1.001833463292, 1.00182599711, 1.0018259868, 1.0018257012"}
+      - {quantity: "C = 3.000015", value: "x_o of the zero velocity curve 1.0022367, no horseshoe periodic orbits"}
+  - block: "mu = 0 model orbit (Fig. 8)"
+    items:
+      - {quantity: "sidereal ellipse a = (p/q)^(2/3)", value: "p = 21, q = 20, synodical period T = 2 pi p, ellipse described q times (10 = q/2 times in half a period)"}
+      - {quantity: "Jacobi constants", value: "C = 3.000001 (with zero velocity curve), C = 2.999 (none)"}
+  - block: "mu = 0.01 (sec. 4)"
+    items:
+      - {quantity: "C1, C3", value: "3.164219, 3.019898"}
+      - {quantity: "Fig. 14", value: "C = 3.0199 (in (C3, C1)) and C = 3.01 (below C3)"}
+      - {quantity: "Fig. 15 (C = 2.9)", value: "x = 2.16792965275 (a), x = 2.1571843149 (b)"}
+      - {quantity: "horseshoe orbits far from the zero velocity curve (C = 3.01)", value: "x = 2.009666525311 and x = 2.05523296943"}
+    note: "ours: C1 computes as 3.16421950854 and C3 as 3.01989771676, so the printed values agree (C1 truncated)."
+  - block: "Sun-Jupiter mu and ranges of mu (sec. 4)"
+    items:
+      - {quantity: "mu_SJ", value: "0.000953875 (the Rabe, Taylor value), C = 3.001906457 (Fig. 16, manifolds of the L3 Lyapunov orbit)"}
+      - {quantity: "regimes for 3 <= C < C3", value: "0 < mu <= 0.004 horseshoe-shaped manifolds and homoclinic orbits; mu in [0.0045, 0.099] manifolds may collide with m2 but some keep a horseshoe shape (Fig. 17: mu = 0.01, C = 3.01); mu >= 0.1 manifold flow no longer horseshoe-shaped (Fig. 18: mu = 0.1, C = 3.1); for mu = 0.1 and C3 <= C <= C1 no horseshoe periodic orbits"}
+    note: "ours: at mu = 0.000953875 C3 computes as 3.00190682099, so the paper's C = 3.001906457 is just below C3 as the section requires."
