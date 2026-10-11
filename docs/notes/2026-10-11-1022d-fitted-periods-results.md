@@ -23,7 +23,8 @@ decision: "Store the fitted period beside a". Old result files are untouched; ne
 |---|---|
 | Neptune scan_320, new code against the pre-change expression run on THIS machine | bitwise identical (8 rows) |
 | Neptune scan_320, new code against the committed `data/scan_320_epoch_aware_neptune.jsonl` | 7 of 8 rows equal to 1e-9; 5 equal bitwise; the 3 rows that differ bitwise differ in the last digits (1e-14 relative); one row (idx 5) picks a different one of two equal-residual cells (phase0 225 against 240 deg). Floating-point noise between machines, not the change. |
-| Saturn scan_320 | NOT RUN. The committed run took 94 s; at load 90 a sweep takes about 9 times longer (Neptune: 8 s then, 74 s now), so the two sweeps of the control would take about 25 minutes, over the 10-minute limit. Handed to the lead: `uv run python scripts/run_1022d_rerun.py control saturn`. The identical logic is proved for every Saturn moon by the unit test over all 37 moons (bit-identical `orbit_circle`). |
+| Saturn scan_320, new code against the pre-change expression run on THIS machine (launched by the lead, 238 s for the new-code sweep) | bitwise identical (62 rows) |
+| Saturn scan_320, new code against the committed `data/scan_320_epoch_aware_saturn.jsonl` | 23 of 62 rows identical bitwise, 36 equal to 1e-9; 25 further rows differ only by the choice among equal-residual cells (phase0_deg), as for Neptune; the last row is the trailing summary, whose top-5 near-miss list differs. Last-digit and tie noise between machines, not the change. Files: `control_saturn.json`, `scan_320_epoch_aware_saturn{,_oldpath}.jsonl`. |
 
 I changed the control from the pre-registered "bitwise against the committed file" to "bitwise against the pre-change
 expression on this machine", because the committed Neptune file was produced on another machine and is not bit
@@ -75,4 +76,4 @@ current form and was not run.
   stay so; no row depends on these rates.
 - The registry-based Pluto sweeps are now phased with the sourced mean motions; the old files stay as records of the
   registry-Kepler model.
-- Open: the Saturn control (handed to the lead).
+- The Saturn control passed (sec. 2). #1022d is DONE.
