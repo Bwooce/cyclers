@@ -20,7 +20,7 @@ _SATURNIAN = (
 _MARTIAN = ("Phobos", "Deimos")
 _URANIAN = ("Miranda", "Ariel", "Umbriel", "Titania", "Oberon")
 _NEPTUNIAN = ("Triton", "Proteus")
-_PLUTONIAN = ("Charon", "Nix", "Hydra")
+_PLUTONIAN = ("Charon", "Styx", "Nix", "Kerberos", "Hydra")
 # Small-body multi-moon systems (#607).
 _SYLVIAN = ("Romulus", "Remus")
 _ELEKTRAN = ("ElektraBeta", "ElektraGamma", "ElektraDelta")

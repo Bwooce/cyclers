@@ -9,3 +9,5 @@ Workaround: #998 builds its ideal model from the kernel-fitted periods and recor
 Suggested fix: verify the Pluto small-moon registry entries against plu060 and the published elements (the lead is registering a task); add Styx and Kerberos. Check whether the #320 Pluto rows (which used the registry sma) change if corrected.
 
 Disposition (2026-10-11, lead): Backlog #1022 (verify the Pluto small-moon registry against plu060 and a published source); Styx and Kerberos are #1037, dispatched to pluto-smallmoons-sonnet 2026-10-11.
+
+Addendum 2026-10-11 (#1037): the registry Nix (49300 km) and Hydra (65200 km) values are exactly the JPL SSD mean-element page's printed values (ssd.jpl.nasa.gov/sats/elem/, PLU060, accessed 2026-10-11), so they are not transcription errors. The page's printed a is not the Kepler radius of its own printed period about the system GM (1-4 percent apart for all four small moons; mechanism not investigated). Styx (43200 km) and Kerberos (58300 km) are now registered from the same page. The #998 driver keeps the kernel-fitted periods for its circles.

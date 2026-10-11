@@ -7,7 +7,9 @@ the four Pluto cells and the #320 recall control.
 
 Ideal model: circular, coplanar, primary mass = Pluto+Charon system GM (975.5 km^3/s^2, the
 registry PRIMARIES["Pluto"]), each body on a circle whose radius follows from its period by
-Kepler III (the R-S convention). Periods are the mean sidereal periods fitted to plu060.bsp
+Kepler III (the R-S convention). Target GM, radius and floor come from the satellite registry
+(Styx and Kerberos registered under #1037; before that this driver carried approximate values
+in-process). Periods are the mean sidereal periods fitted to plu060.bsp
 (3-year arc from 2030-01-01, positions relative to the Pluto-system barycentre); see
 docs/notes/2026-10-07-998-pluto-small-moon-cyclers.md sec. 1.
 
@@ -37,7 +39,7 @@ import types
 from pathlib import Path
 from typing import Any
 
-from cyclerfinder.core.satellites import PRIMARIES, SATELLITES, _sat
+from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import CircularSystem, FlybyBody
 
@@ -54,24 +56,16 @@ PERIODS_D = {
     "Kerberos": 32.16798,
     "Hydra": 38.20202,
 }
-#: Target constants (km, km^3/s^2): Nix and Hydra from the registry (satellites.py); Styx and
-#: Kerberos are approximate (not in the registry). The targets are massless (no turn), so these
-#: enter only the SOI diagnostic; non-zero GM keeps that diagnostic from collapsing to 0.
-TARGET_GM = {"Styx": 0.0007, "Nix": 0.0015, "Kerberos": 0.0011, "Hydra": 0.0020}
-RADII_KM = {"Styx": 5.0, "Nix": 18.0, "Kerberos": 6.0, "Hydra": 18.5}
 CHARON_GM, CHARON_RADIUS, CHARON_FLOOR = 106.1, 606.0, 100.0  # registry satellites.py
 CELLS = {"ps": "Styx", "pn": "Nix", "pk": "Kerberos", "ph": "Hydra"}
 
 
+# Target GM, radius and floor come from the satellite registry (Styx and Kerberos registered under
+# #1037; the first #998 runs carried approximate values for them in-process, which affected only
+# the SOI diagnostic columns). The circle radius comes from the kernel-fitted period, not from the
+# registry sma (JPL's printed mean a differs from the Kepler radius of the fitted period).
 def pluto_system(moon: str) -> CircularSystem:
     mu = PRIMARIES["Pluto"]
-    if moon not in SATELLITES:
-        # Styx and Kerberos are not in the registry; the SOI diagnostic of the generator looks
-        # every encounter body up there. Add them to the in-process dict only (no file edit),
-        # with the fitted Kepler a and the approximate target constants above.
-        per = PERIODS_D[moon] * DAY
-        a_fit = (mu * (per / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
-        SATELLITES[moon] = _sat(moon, "Pluto", TARGET_GM[moon], RADII_KM[moon], a_fit, 10.0)
     bodies = {}
     for m in ("Charon", moon):
         per = PERIODS_D[m] * DAY
@@ -79,7 +73,12 @@ def pluto_system(moon: str) -> CircularSystem:
         bodies[m] = (a, per, 0.0)
     over = {
         "Charon": FlybyBody("Charon", CHARON_GM, CHARON_RADIUS, CHARON_FLOOR),
-        moon: FlybyBody(moon, TARGET_GM[moon], RADII_KM[moon], 10.0),
+        moon: FlybyBody(
+            moon,
+            SATELLITES[moon].mu_km3_s2,
+            SATELLITES[moon].radius_eq_km,
+            SATELLITES[moon].safe_alt_km,
+        ),
     }
     return CircularSystem(mu, bodies, frozenset({moon}), flyby_overrides=over)
 
@@ -115,10 +114,10 @@ def cmd_control320(argv: list[str]) -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args(argv)
-    # The scan imports search.literature_check at module level; this task does not use that module
-    # (the literature step is deferred to #972), so the import is satisfied by an inert stand-in.
-    # Only the residual, V_inf and physical-gate fields are compared; the anchor-overlap field is
-    # not reproduced.
+    # The scan imports search.literature_check lazily, inside its sweep (#1038); this task does not
+    # use that module (the literature step is deferred to #972), so the import is satisfied by an
+    # inert stand-in for the whole sweep. Only the residual, V_inf and physical-gate fields are
+    # compared; the anchor-overlap field is not reproduced.
     stub = types.ModuleType("cyclerfinder.search.literature_check")
     stub.CandidateSignature = lambda **kw: kw  # type: ignore[attr-defined]
     stub._candidate_anchors = lambda sig: []  # type: ignore[attr-defined]
@@ -126,25 +125,25 @@ def cmd_control320(argv: list[str]) -> None:
     sys.modules["cyclerfinder.search.literature_check"] = stub
     try:
         scan = _load("scan_320", REPO / "scripts" / "scan_320_epoch_aware_moon_systems.py")
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        _preflight_998(
+            region_id="pluto-charon-hydra-nix-320-recall-control",
+            method=_method("#320 Vector B repeated-moon length-3 closed cycles, recall"),
+            n_points=90,
+            timing_pilot_seconds_per_point=2.0,
+        )
+        scan._per_system_sweep(
+            primary="Pluto",
+            moons=("Charon", "Hydra", "Nix"),
+            nrev_grid=(0, 1, 2, 3),
+            out_path=args.out,
+            sha="998-recall",
+        )
     finally:
         if real is not None:
             sys.modules["cyclerfinder.search.literature_check"] = real
         else:
             sys.modules.pop("cyclerfinder.search.literature_check", None)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    _preflight_998(
-        region_id="pluto-charon-hydra-nix-320-recall-control",
-        method=_method("#320 Vector B repeated-moon length-3 closed cycles, recall"),
-        n_points=90,
-        timing_pilot_seconds_per_point=2.0,
-    )
-    scan._per_system_sweep(
-        primary="Pluto",
-        moons=("Charon", "Hydra", "Nix"),
-        nrev_grid=(0, 1, 2, 3),
-        out_path=args.out,
-        sha="998-recall",
-    )
     old = _rows(REPO / "data" / "scan_320_epoch_aware_pluto.jsonl")
     new = _rows(args.out)
     report = []

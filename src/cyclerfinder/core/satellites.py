@@ -205,7 +205,7 @@ def _sat(
 # note line 352). For the bodies added 2026-06-14 (Mars/Uranus/Neptune/Pluto
 # moons + Jupiter Amalthea + Saturn Iapetus/Hyperion) there is no paper-anchored
 # altitude, so safe_alt_km is an ENGINEERING DEFAULT scaled to the moon's size:
-# 10 km for the tiny irregulars (Phobos/Deimos/Amalthea/Hyperion/Nix/Hydra,
+# 10 km for the tiny irregulars (Phobos/Deimos/Amalthea/Hyperion/Nix/Hydra/Styx/Kerberos,
 # mean radius < ~140 km), 100 km otherwise. This is a convention, not a sourced
 # constant; the Tisserand/V_inf screen self-prunes the low-mass bodies regardless.
 #
@@ -321,6 +321,16 @@ SATELLITES: dict[str, SatelliteData] = {
     "Nix": _sat("Nix", "Pluto", 0.0015, 18.0, 49300.0, 10.0),
     # Hydra: GM 0.0020 km^3/s^2, mean R 18.5 km, a 65200 km.
     "Hydra": _sat("Hydra", "Pluto", 0.0020, 18.5, 65200.0, 10.0),
+    # Styx and Kerberos (#1037, added 2026-10-11), same JPL SSD pages as Nix/Hydra above, accessed
+    # 2026-10-11 (ssd.jpl.nasa.gov/sats/phys_par/ and /sats/elem/, ephemeris PLU060; page reference
+    # M. Brozovic and R. A. Jacobson 2024, "Post-New Horizons orbits and masses for the satellites
+    # of Pluto", AJ 167:256). Each value is the page's printed value:
+    # Styx: GM < 0.0003 km^3/s^2 (an UPPER LIMIT, not a measurement; stored as the limit), mean
+    # radius 5.2 km, a 43200 km (mean-element table; period printed 20.16 d).
+    "Styx": _sat("Styx", "Pluto", 0.0003, 5.2, 43200.0, 10.0),
+    # Kerberos: GM < 0.0002 km^3/s^2 (UPPER LIMIT, stored as the limit), mean radius 6.0 km,
+    # a 58300 km (mean-element table; period printed 32.17 d).
+    "Kerberos": _sat("Kerberos", "Pluto", 0.0002, 6.0, 58300.0, 10.0),
     # --- Completeness additions to existing systems (added 2026-06-14) ---
     # Jupiter Amalthea: JPL SSD phys_par ref JUP365 + mean elements, accessed
     # 2026-06-14. GM 0.16456 km^3/s^2, mean R 83.5 km, a 181400 km (tiny inner

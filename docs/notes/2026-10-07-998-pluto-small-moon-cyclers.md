@@ -279,3 +279,16 @@ The originals remain untracked in `data/998_pluto_smallmoons/<cell>/`; nothing w
 
 The line counts equal the exact-zero counts in sec. 3. The literature step and the adjudication of the
 224 strong candidates are task #1036, waiting for #972.
+
+## 10. Addendum 2026-10-11 (#1037, #1038)
+
+- The registry Nix and Hydra semi-major axes in sec. 1 are the JPL SSD page's printed mean elements, not
+  errors; the page's a is not the Kepler radius of its printed period (1-4 percent apart for all four
+  moons). Styx and Kerberos are now in the registry (#1037) from the same page (accessed 2026-10-11).
+- The runs above carried approximate Styx and Kerberos GM (0.0007, 0.0011 km^3/s^2) and the fitted-Kepler
+  sma in-process. The page prints upper limits (< 0.0003, < 0.0002) and a of 43200 and 58300 km. Only the
+  SOI diagnostic columns (`min_soi_km`, `soi_fraction`, `soi_moon_km`) used these values; no gate, closure
+  or real-ephemeris verdict does. The committed Styx and Kerberos JSONs were not regenerated, so those
+  columns are stale by this change; the driver now reads the registry.
+- `gauntlet_942.py` and `scan_320` no longer import `search.literature_check` at module level (#1038);
+  the DOP853 re-fly lives in `search/two_working_body_refly.py`.

@@ -2,8 +2,9 @@
 
 For each cell (ps pn pk ph) in data/998_pluto_smallmoons/<cell>/ it takes every gate-passing merged
 group (scripts/analyse_942_enumeration.py rules), re-solves the extent of the best member, re-flies
-every leg with DOP853 (scripts/gauntlet_942.py cross_check, imported with the literature module
-stubbed: the literature step is deferred to #972 and nothing here calls it), and records:
+every leg with DOP853 (search/two_working_body_refly.py cross_check, re-exported by
+scripts/gauntlet_942.py; the literature step is deferred to #972 and nothing here calls
+it), and records:
 
   period, V_inf at Charon and at the target, Charon turn demanded / available and the ratio at the
   registry floor, required altitude, r_min / r_max of the whole cycle, the Pluto-surface check
@@ -20,8 +21,6 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
-import sys
-import types
 from pathlib import Path
 from typing import Any
 
@@ -46,19 +45,8 @@ def _load(name: str, path: Path) -> Any:
 
 
 def _load_gauntlet_942() -> Any:
-    stub = types.ModuleType("cyclerfinder.search.literature_check")
-    stub.CandidateSignature = object  # type: ignore[attr-defined]
-    stub.check_literature = None  # type: ignore[attr-defined]
-    stub.offline_corpus_search = None  # type: ignore[attr-defined]
-    real = sys.modules.get("cyclerfinder.search.literature_check")
-    sys.modules["cyclerfinder.search.literature_check"] = stub
-    try:
-        return _load("gauntlet_942", REPO / "scripts" / "gauntlet_942.py")
-    finally:
-        if real is not None:
-            sys.modules["cyclerfinder.search.literature_check"] = real
-        else:
-            sys.modules.pop("cyclerfinder.search.literature_check", None)
+    # gauntlet_942 imports search.literature_check lazily (#1038), so no stand-in is needed.
+    return _load("gauntlet_942", REPO / "scripts" / "gauntlet_942.py")
 
 
 def scan320_rows() -> list[dict[str, Any]]:
