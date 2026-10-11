@@ -1,0 +1,523 @@
+# Bayliss 1970, "Precision Targeting for Multiple Swingby Interplanetary Trajectories": every numeric table.
+# Source: S. S. Bayliss, Ph.D. thesis, Department of Aeronautics and Astronautics, MIT (submitted 11 May 1970), issued as
+#   Measurement Systems Laboratory report TE-39, June 1970, NASA grant NGR-22-009-207, NTRS 19700024926 (NASA CR-109936).
+#   Supervisor W. M. Hollister (chair); committee Vander Velde, McKay, R. H. Miller.
+# Local scan: 182 PDF pages, md5 f7a1bdd0dfa3f867c784f504e5612278. The scan omits the 'preceding page blank not filmed' pages, so
+#   PDF page = printed page minus 1 to 7, growing through the report (p.13 = PDF 12, p.74 = PDF 72, p.96 = PDF 94, p.101 = PDF 98,
+#   p.107 = PDF 104, p.157 = PDF 151, p.178 = PDF 172, p.189 = PDF 182). Page numbers below are the printed ones.
+# Units as printed: positions km, velocities km/s (Appendix E) or m/s (chapters 5-7 corrections and offsets), times days or Julian date.
+# Witnesses (three, per value): A = fresh ocrmypdf/tesseract layer (the NTRS text layer is not used); B = page renders read by eye and
+#   typed by hand (110 dpi for all pages, 260 dpi crops for the flagged cells); C = closure checks by script (ours, see `checks:`).
+#   Where A and B disagreed, C decided. The disagreements and the printed-value errors are in `errata:` and in the digest, sec. 6.
+# Every value under `checks:` or `ours:` is computed by us and is not a printed number. Printed values are kept as printed, errors included.
+
+meta:
+  report: TE-39
+  ntrs: 19700024926
+  degree: Ph.D. (Doctor of Philosophy), MIT, May 1970
+  sponsor: NASA grant NGR-22-009-207
+  planet_numbers: {1: Mercury, 2: Venus, 3: Earth, 4: Mars, 5: Jupiter, 6: Saturn, 7: Uranus, 8: Neptune}
+
+chapter_5_dual_planet_reconnaissance:   # Earth-Venus-Mars-Earth free-fall reconnaissance; printed pp.79-86
+  soi_points:   # printed JD as given in sec. x.1; azimuth and elevation in the planetocentric ecliptic frame, degrees
+    - {pt: 1, jd: 2441478.80000, location: "Earth SOI exit (launch)", azimuth_deg: 142.800, elevation_deg: -19.600}
+    - {pt: 2, jd: 2441634.11977, location: "Venus SOI entry", azimuth_deg: 332.249, elevation_deg: -2.637}
+    - {pt: 3, jd: 2441637.99955, location: "Venus SOI exit", azimuth_deg: 177.796, elevation_deg: 1.716}
+    - {pt: 4, jd: 2441787.28715, location: "Mars SOI entry", azimuth_deg: 43.066, elevation_deg: 4.118}
+    - {pt: 5, jd: 2441792.32920, location: "Mars SOI exit", azimuth_deg: 222.458, elevation_deg: 3.885}
+    - {pt: 6, jd: 2441949.20000, location: "Earth SOI entry (arrival)", azimuth_deg: 8.300, elevation_deg: 5.700}
+  heliocentric_and_planetocentric_legs:   # time of flight days, central angle traversed deg, orbital elements of the two-body reference legs
+    - {leg: "1-2", tof_days: 155.31977, central_angle_deg: 244.268, a: "0.80837 au", e: 0.25644, i_deg: 3.348}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "2-3", tof_days: 3.87978, central_angle_deg: 193.491, a: "0.72733 rp", e: 4.28637, i_deg: 3.053}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "3-4", tof_days: 149.28760, central_angle_deg: 122.855, a: "1.07057 au", e: 0.37045, i_deg: 3.290}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "4-5", tof_days: 5.04205, central_angle_deg: 184.410, a: "0.24513 rp", e: 13.00436, i_deg: 94.337}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "5-6", tof_days: 156.87080, central_angle_deg: 85.562, a: "1.06599 au", e: 0.37479, i_deg: 1.310}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+  c3_km2_s2: 18.378   # vis-viva energy at Earth for launch
+  reentry_speed_m_s: 15639.128
+  periapse_of_planetocentric_legs:   # radius km, radius in planet radii, speed km/s, turn angle deg
+    - {leg: "2-3", r_km: 14461.578, r_planet_radii: 2.3903, v_km_s: 10.904491, turn_deg: 13.491}
+    - {leg: "4-5", r_km: 10034.548, r_planet_radii: 2.9427, v_km_s: 7.737818, turn_deg: 4.41}
+  perturbations_last_cycle:   # dr in km, dv in m/s at the leg start (t1) and end (t2)
+    - {leg: "1-2", dr_t1_km: 35161.42, dv_t1_m_s: 39.727, dr_t2_km: 9331.04, dv_t2_m_s: 25.252}
+    - {leg: "2-3", dr_t1_km: 1482.11, dv_t1_m_s: 26.47, dr_t2_km: 1335.23, dv_t2_m_s: 23.669}
+    - {leg: "3-4", dr_t1_km: 11780.23, dv_t1_m_s: 26.099, dr_t2_km: 2069.76, dv_t2_m_s: 3.544}
+    - {leg: "4-5", dr_t1_km: 242.58, dv_t1_m_s: 3.347, dr_t2_km: 236.88, dv_t2_m_s: 3.248}
+    - {leg: "5-6", dr_t1_km: 4769.78, dv_t1_m_s: 3.698, dr_t2_km: 6545.68, dv_t2_m_s: 15.886}
+  midpoint_perturbations_last_cycle:   # km and m/s
+    - {leg: "1-2", dr_km: 9197.48, dv_m_s: 4.882}
+    - {leg: "2-3", dr_km: 324.23, dv_m_s: 50.435}
+    - {leg: "3-4", dr_km: 6059.22, dv_m_s: 0.448}
+    - {leg: "4-5", dr_km: 9.31, dv_m_s: 1.33}
+    - {leg: "5-6", dr_km: 3618.21, dv_m_s: 0.723}
+  velocity_offsets_last_cycle:   # m/s
+    - {leg: "1-2", dv_t1_m_s: 34.286, dv_t2_m_s: 24.139}
+    - {leg: "2-3", dv_t1_m_s: 19.034, dv_t2_m_s: 14.558}
+    - {leg: "3-4", dv_t1_m_s: 22.322, dv_t2_m_s: 3.211}
+    - {leg: "4-5", dv_t1_m_s: 2.221, dv_t2_m_s: 2.183}
+    - {leg: "5-6", dv_t1_m_s: 2.997, dv_t2_m_s: 14.982}
+  comparison_with_numerical_integration:   # velocity errors m/s at t1 and t2, final position error km
+    - {leg: "1-2", dv_t1_m_s: 0.125, dv_t2_m_s: 0.045, dr_t2_km: 5327.23}
+    - {leg: "2-3", dv_t1_m_s: 0.003, dv_t2_m_s: 0.0091, dr_t2_km: 9.71}
+    - {leg: "3-4", dv_t1_m_s: 0.043, dv_t2_m_s: 0.0041, dr_t2_km: 1306.6}
+    - {leg: "4-5", dv_t1_m_s: 0.0028, dv_t2_m_s: 0.003, dr_t2_km: 1.62}
+    - {leg: "5-6", dv_t1_m_s: 0.0017, dv_t2_m_s: 0.0173, dr_t2_km: 15.39}
+  periapse_difference_numerical_minus_two_body:   # dr km, dv m/s, dt seconds
+    - {leg: "2-3", dr_km: 8.3576, dv_m_s: 8.0255, dt: -29.142}
+    - {leg: "4-5", dr_km: 0.6106, dv_m_s: 1.1715, dt: -1.223}
+  corrections_per_point_m_s:   # velocity correction at each SOI point to fly the trajectory
+    values: [0.1250, 0.0448, 0.0340, 0.0022, 0.0030, 0.0173]
+    total_m_s: 0.2263
+  cost_function_history_km_s: "first cycle 3.87296 -> 2.81187 -> 0.35187 (OGS) then GNR 0.29405e-3, 0.34828e-9, 0.36653e-17; second 0.35299e-3 -> 0.14899e-9 -> 0.17063e-17; third 0.65610e-8 -> 0.10061e-16; fourth 0.31691e-12 (48 s on IBM 360/65)"
+
+chapter_6_grand_tour:   # Earth-Jupiter-Saturn-Uranus-Neptune free-fall Grand Tour, launch 1978; printed pp.89-96
+  soi_points:   # printed JD as given in sec. x.1; azimuth and elevation in the planetocentric ecliptic frame, degrees
+    - {pt: 1, jd: 2443787.00000, location: "Earth SOI exit (launch)", azimuth_deg: 101.424, elevation_deg: 8.720}
+    - {pt: 2, jd: 2444291.61927, location: "Jupiter SOI entry", azimuth_deg: 312.920, elevation_deg: 1.093}
+    - {pt: 3, jd: 2444457.85596, location: "Jupiter SOI exit", azimuth_deg: 180.066, elevation_deg: 4.253}
+    - {pt: 4, jd: 2444930.62043, location: "Saturn SOI entry", azimuth_deg: 16.039, elevation_deg: -3.433}
+    - {pt: 5, jd: 2445126.30248, location: "Saturn SOI exit", azimuth_deg: 281.565, elevation_deg: -2.502}
+    - {pt: 6, jd: 2446481.99628, location: "Uranus SOI entry", azimuth_deg: 94.166, elevation_deg: 1.665}
+    - {pt: 7, jd: 2446638.44605, location: "Uranus SOI exit", azimuth_deg: 291.444, elevation_deg: 2.975}
+    - {pt: 8, jd: 2447720.00000, location: "Neptune SOI entry (arrival)", azimuth_deg: 114.270, elevation_deg: -2.812}
+  heliocentric_and_planetocentric_legs:   # time of flight days, central angle traversed deg, orbital elements of the two-body reference legs
+    - {leg: "1-2", tof_days: 504.61927, central_angle_deg: 144.498, a: "4.61480 au", e: 0.78328, i_deg: 2.383}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "2-3", tof_days: 166.23669, central_angle_deg: 205.609, a: "17.22512 rp", e: 2.31355, i_deg: 6.881}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "3-4", tof_days: 472.76447, central_angle_deg: 25.902, a: "28.43593 au", e: 1.14287, i_deg: 2.857}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "4-5", tof_days: 195.68205, central_angle_deg: 223.050, a: "5.23592 rp", e: 1.46490, i_deg: 4.412}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "5-6", tof_days: 1355.69380, central_angle_deg: 54.438, a: "3.77866 au", e: 3.54820, i_deg: 2.836}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "6-7", tof_days: 156.44977, central_angle_deg: 189.035, a: "1.10298 rp", e: 6.36816, i_deg: 15.110}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "7-8", tof_days: 1081.55395, central_angle_deg: 17.392, a: "3.06068 au", e: 5.41387, i_deg: 2.821}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+  c3_km2_s2: 101.52   # vis-viva energy at Earth for launch
+  periapse_of_planetocentric_legs:   # radius km, radius in planet radii, speed km/s, turn angle deg
+    - {leg: "2-3", r_km: 1615506.286, r_planet_radii: 22.62614, v_km_s: 16.12154, turn_deg: 25.609}
+    - {leg: "4-5", r_km: 147025.929, r_planet_radii: 2.4342, v_km_s: 25.207545, turn_deg: 43.05}
+    - {leg: "6-7", r_km: 139143.535, r_planet_radii: 5.921, v_km_s: 17.530135, turn_deg: 9.035}
+  perturbations_last_cycle:   # dr in km, dv in m/s at the leg start (t1) and end (t2)
+    - {leg: "1-2", dr_t1_km: 144135.26, dv_t1_m_s: 20.974, dr_t2_km: 680081.06, dv_t2_m_s: 115.831}
+    - {leg: "2-3", dr_t1_km: 350124.98, dv_t1_m_s: 146.486, dr_t2_km: 317175.98, dv_t2_m_s: 126.799}
+    - {leg: "3-4", dr_t1_km: 681236.05, dv_t1_m_s: 117.365, dr_t2_km: 90828.5, dv_t2_m_s: 7.226}
+    - {leg: "4-5", dr_t1_km: 106229.23, dv_t1_m_s: 38.04, dr_t2_km: 51438.66, dv_t2_m_s: 18.086}
+    - {leg: "5-6", dr_t1_km: 847681.45, dv_t1_m_s: 46.614, dr_t2_km: 464247.07, dv_t2_m_s: 12.626}
+    - {leg: "6-7", dr_t1_km: 8764.69, dv_t1_m_s: 3.921, dr_t2_km: 7684.89, dv_t2_m_s: 3.384}
+    - {leg: "7-8", dr_t1_km: 246233.21, dv_t1_m_s: 11.917, dr_t2_km: 222593.0, dv_t2_m_s: 10.058}
+  midpoint_perturbations_last_cycle:   # km and m/s
+    - {leg: "1-2", dr_km: 276302.85, dv_m_s: 13.418}
+    - {leg: "2-3", dr_km: 14105.26, dv_m_s: 56.324}
+    - {leg: "3-4", dr_km: 367398.01, dv_m_s: 14.229}
+    - {leg: "4-5", dr_km: 174611.87, dv_m_s: 12147.092}
+    - {leg: "5-6", dr_km: 616749.98, dv_m_s: 3.755}
+    - {leg: "6-7", dr_km: 1673.59, dv_m_s: 29.264}
+    - {leg: "7-8", dr_km: 215439.75, dv_m_s: 2.071}
+  velocity_offsets_last_cycle:   # m/s
+    - {leg: "1-2", dv_t1_m_s: 16.8, dv_t2_m_s: 92.557}
+    - {leg: "2-3", dv_t1_m_s: 94.702, dv_t2_m_s: 81.347}
+    - {leg: "3-4", dv_t1_m_s: 100.21, dv_t2_m_s: 10.165}
+    - {leg: "4-5", dv_t1_m_s: 34.432, dv_t2_m_s: 20.439}
+    - {leg: "5-6", dv_t1_m_s: 42.388, dv_t2_m_s: 14.48}
+    - {leg: "6-7", dv_t1_m_s: 2.82, dv_t2_m_s: 2.104}
+    - {leg: "7-8", dv_t1_m_s: 10.56, dv_t2_m_s: 9.195}
+  comparison_with_numerical_integration:   # velocity errors m/s at t1 and t2, final position error km
+    - {leg: "1-2", dv_t1_m_s: 0.305, dv_t2_m_s: 0.139, dr_t2_km: 8185.05}
+    - {leg: "2-3", dv_t1_m_s: 0.622, dv_t2_m_s: 0.438, dr_t2_km: 8955.75}
+    - {leg: "3-4", dv_t1_m_s: 0.353, dv_t2_m_s: 0.089, dr_t2_km: 15348.52}
+    - {leg: "4-5", dv_t1_m_s: 0.335, dv_t2_m_s: 0.184, dr_t2_km: 239662.6}
+    - {leg: "5-6", dv_t1_m_s: 0.052, dv_t2_m_s: 0.095, dr_t2_km: 6444.35}
+    - {leg: "6-7", dv_t1_m_s: 0.0081, dv_t2_m_s: 0.0071, dr_t2_km: 1904.25}
+    - {leg: "7-8", dv_t1_m_s: 0.095, dv_t2_m_s: 0.095, dr_t2_km: 8833.5}
+  periapse_difference_numerical_minus_two_body:   # dr km, dv m/s, dt minutes
+    - {leg: "2-3", dr_km: 1025.172, dv_m_s: 29.075, dt: 18.5368}
+    - {leg: "4-5", dr_km: 40.068, dv_m_s: 5.083, dt: -116.5053}
+    - {leg: "6-7", dr_km: 8.162, dv_m_s: 1.216, dt: -1.5907}
+  corrections_per_point_m_s:   # velocity correction at each SOI point to fly the trajectory
+    values: [0.305, 0.667, 0.787, 0.424, 0.179, 0.103, 0.092, 0.095]
+    total_m_s: 2.652
+  cost_function_history_km2_s2: "first cycle 4.04945, 3.96201, 3.89372, 3.79476, 3.76557, 3.72571 ... 1.47623, 1.47268, 1.46821 (OGS, iterations 1-94) then GNR 0.47856e-2, 0.23789e-7, 0.80956e-13, 0.10929e-18; second 0.10898e-1 -> 0.10408e-5 -> 0.13908e-11 -> 0.32573e-17; third 0.10560e-5 -> 0.10959e-11 -> 0.19818e-17; fourth 0.15182e-9 -> 0.24154e-15; fifth 0.15638e-11 (172 s on IBM 360/65)"
+
+chapter_7_periodic_trajectory_segment:   # 3.59-yr segment of Earth-Venus periodic orbit I; NOT free-fall, powered; printed pp.101-111
+  soi_points:   # printed JD as given in sec. x.1; azimuth and elevation in the planetocentric ecliptic frame, degrees
+    - {pt: 1, jd: 2440811.29805, location: "Earth SOI exit (launch)", azimuth_deg: -68.845, elevation_deg: -71.474}
+    - {pt: 2, jd: 2440968.17351, location: "Venus SOI entry", azimuth_deg: 35.165, elevation_deg: -52.462}
+    - {pt: 3, jd: 2440974.71063, location: "Venus SOI exit", azimuth_deg: 157.616, elevation_deg: 18.414}
+    - {pt: 4, jd: 2441192.53554, location: "Venus SOI entry", azimuth_deg: 336.896, elevation_deg: -16.982}
+    - {pt: 5, jd: 2441199.05152, location: "Venus SOI exit", azimuth_deg: 154.209, elevation_deg: -54.071}
+    - {pt: 6, jd: 2441416.81361, location: "Venus SOI entry", azimuth_deg: 334.844, elevation_deg: 55.489}
+    - {pt: 7, jd: 2441423.35856, location: "Venus SOI exit", azimuth_deg: 90.723, elevation_deg: -121.732}
+    - {pt: 8, jd: 2441587.41963, location: "Earth SOI entry", azimuth_deg: 76.408, elevation_deg: -48.250}
+    - {pt: 9, jd: 2441598.42073, location: "Earth SOI exit", azimuth_deg: 3.803, elevation_deg: 41.428}
+    - {pt: 10, jd: 2441951.97897, location: "Earth SOI entry", azimuth_deg: 183.950, elevation_deg: -40.474}
+    - {pt: 11, jd: 2441962.96593, location: "Earth SOI exit", azimuth_deg: 314.174, elevation_deg: -42.542}
+    - {pt: 12, jd: 2442123.36905, location: "Venus SOI entry (arrival)", azimuth_deg: 151.149, elevation_deg: -65.069}
+  heliocentric_and_planetocentric_legs:   # time of flight days, central angle traversed deg, orbital elements of the two-body reference legs
+    - {leg: "1-2", tof_days: 156.87546, central_angle_deg: 196.498, a: "0.86448 au", e: 0.17688, i_deg: 7.058}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "2-3", tof_days: 6.53712, central_angle_deg: 208.873, a: "2.15499 rp", e: 2.07092, i_deg: 126.095}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "3-4", tof_days: 217.82491, central_angle_deg: 348.950, a: "0.72333 au", e: 0.13795, i_deg: 4.093}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "4-5", tof_days: 6.51598, central_angle_deg: 216.238, a: "2.14851 rp", e: 1.69163, i_deg: 91.594}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "5-6", tof_days: 217.76209, central_angle_deg: 348.831, a: "0.72333 au", e: 0.07569, i_deg: 7.270}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "6-7", tof_days: 6.54495, central_angle_deg: 208.537, a: "2.16000 rp", e: 2.09324, i_deg: 70.943}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "7-8", tof_days: 164.06107, central_angle_deg: 198.183, a: "0.86362 au", e: 0.16973, i_deg: 6.908}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "8-9", tof_days: 11.00109, central_angle_deg: 215.694, a: "3.26454 rp", e: 1.71393, i_deg: 59.504}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "9-10", tof_days: 353.55824, central_angle_deg: 348.607, a: "0.99995 au", e: 0.09105, i_deg: 5.438}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "10-11", tof_days: 10.98699, central_angle_deg: 227.708, a: "3.27180 rp", e: 1.35186, i_deg: 115.417}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+    - {leg: "11-12", tof_days: 159.40312, central_angle_deg: 192.359, a: "0.86564 au", e: 0.16374, i_deg: 6.373}   # a in au for heliocentric legs, in planet radii (rp) for planetocentric legs
+  c3_km2_s2: 18.427   # vis-viva energy at Earth for launch
+  periapse_of_planetocentric_legs:   # radius km, radius in planet radii, speed km/s, turn angle deg
+    - {leg: "2-3", r_km: 13962.344, r_planet_radii: 2.30783, v_km_s: 8.45835, turn_deg: 28.873}
+    - {leg: "4-5", r_km: 8990.13, r_planet_radii: 1.48597, v_km_s: 9.8686, turn_deg: 36.238}
+    - {leg: "6-7", r_km: 14286.449, r_planet_radii: 2.3614, v_km_s: 8.39219, turn_deg: 28.537}
+    - {leg: "8-9", r_km: 14865.25, r_planet_radii: 2.33065, v_km_s: 8.52453, turn_deg: 35.694}
+    - {leg: "10-11", r_km: 7342.533, r_planet_radii: 1.1512, v_km_s: 11.29118, turn_deg: 47.708}
+  perturbations_last_cycle:   # dr in km, dv in m/s at the leg start (t1) and end (t2)
+    - {leg: "1-2", dr_t1_km: 41314.08, dv_t1_m_s: 40.979, dr_t2_km: 32426.32, dv_t2_m_s: 40.633}
+    - {leg: "2-3", dr_t1_km: 2614.02, dv_t1_m_s: 26.988, dr_t2_km: 4091.55, dv_t2_m_s: 42.725}
+    - {leg: "3-4", dr_t1_km: 28220.08, dv_t1_m_s: 45.67, dr_t2_km: 29609.92, dv_t2_m_s: 46.557}
+    - {leg: "4-5", dr_t1_km: 4237.34, dv_t1_m_s: 44.509, dr_t2_km: 2906.04, dv_t2_m_s: 30.227}
+    - {leg: "5-6", dr_t1_km: 46910.76, dv_t1_m_s: 49.855, dr_t2_km: 48591.14, dv_t2_m_s: 50.337}
+    - {leg: "6-7", dr_t1_km: 2821.81, dv_t1_m_s: 29.843, dr_t2_km: 2253.46, dv_t2_m_s: 23.601}
+    - {leg: "7-8", dr_t1_km: 31659.97, dv_t1_m_s: 40.791, dr_t2_km: 40915.69, dv_t2_m_s: 38.892}
+    - {leg: "8-9", dr_t1_km: 3542.84, dv_t1_m_s: 21.977, dr_t2_km: 5319.98, dv_t2_m_s: 33.174}
+    - {leg: "9-10", dr_t1_km: 48817.55, dv_t1_m_s: 43.424, dr_t2_km: 59081.77, dv_t2_m_s: 46.252}
+    - {leg: "10-11", dr_t1_km: 5558.97, dv_t1_m_s: 34.485, dr_t2_km: 4081.22, dv_t2_m_s: 25.052}
+    - {leg: "11-12", dr_t1_km: 40283.06, dv_t1_m_s: 39.21, dr_t2_km: 23510.72, dv_t2_m_s: 35.092}
+  midpoint_perturbations_last_cycle:   # km and m/s
+    - {leg: "1-2", dr_km: 200104.06, dv_m_s: 13.023}
+    - {leg: "2-3", dr_km: 4079.14, dv_m_s: 810.701}
+    - {leg: "3-4", dr_km: 1096815.12, dv_m_s: 249.635}
+    - {leg: "4-5", dr_km: 4147.93, dv_m_s: 1694.559}
+    - {leg: "5-6", dr_km: 1415883.04, dv_m_s: 339.272}
+    - {leg: "6-7", dr_km: 1170.26, dv_m_s: 224.513}
+    - {leg: "7-8", dr_km: 184637.38, dv_m_s: 10.833}
+    - {leg: "8-9", dr_km: 4769.56, dv_m_s: 1010.601}
+    - {leg: "9-10", dr_km: 1845405.84, dv_m_s: 271.268}
+    - {leg: "10-11", dr_km: 5340.29, dv_m_s: 3490.696}
+    - {leg: "11-12", dr_km: 242051.23, dv_m_s: 12.239}
+  velocity_offsets_last_cycle:   # m/s
+    - {leg: "1-2", dv_t1_m_s: 18.892, dv_t2_m_s: 47.168}
+    - {leg: "2-3", dv_t1_m_s: 23.658, dv_t2_m_s: 36.195}
+    - {leg: "3-4", dv_t1_m_s: 136.154, dv_t2_m_s: 137.953}
+    - {leg: "4-5", dv_t1_m_s: 36.352, dv_t2_m_s: 22.588}
+    - {leg: "5-6", dv_t1_m_s: 179.485, dv_t2_m_s: 180.798}
+    - {leg: "6-7", dv_t1_m_s: 19.858, dv_t2_m_s: 17.587}
+    - {leg: "7-8", dv_t1_m_s: 36.508, dv_t2_m_s: 26.5}
+    - {leg: "8-9", dv_t1_m_s: 18.928, dv_t2_m_s: 25.041}
+    - {leg: "9-10", dv_t1_m_s: 168.229, dv_t2_m_s: 145.449}
+    - {leg: "10-11", dv_t1_m_s: 25.288, dv_t2_m_s: 19.274}
+    - {leg: "11-12", dv_t1_m_s: 37.285, dv_t2_m_s: 43.667}
+  comparison_with_numerical_integration:   # velocity errors m/s at t1 and t2, final position error km
+    - {leg: "1-2", dv_t1_m_s: 0.265, dv_t2_m_s: 0.397, dr_t2_km: 6474.9}
+    - {leg: "2-3", dv_t1_m_s: 0.019, dv_t2_m_s: 0.078, dr_t2_km: 307.75}
+    - {leg: "3-4", dv_t1_m_s: 4.091, dv_t2_m_s: 4.148, dr_t2_km: 3645.73}
+    - {leg: "4-5", dv_t1_m_s: 0.072, dv_t2_m_s: 0.02, dr_t2_km: 453.86}
+    - {leg: "5-6", dv_t1_m_s: 8.757, dv_t2_m_s: 8.83, dr_t2_km: 7159.38}
+    - {leg: "6-7", dv_t1_m_s: 0.03, dv_t2_m_s: 0.01, dr_t2_km: 360.25}
+    - {leg: "7-8", dv_t1_m_s: 0.279, dv_t2_m_s: 0.238, dr_t2_km: 7305.56}
+    - {leg: "8-9", dv_t1_m_s: 0.007, dv_t2_m_s: 0.052, dr_t2_km: 143.39}
+    - {leg: "9-10", dv_t1_m_s: 5.489, dv_t2_m_s: 5.574, dr_t2_km: 5829.96}
+    - {leg: "10-11", dv_t1_m_s: 0.045, dv_t2_m_s: 0.012, dr_t2_km: 1849.09}
+    - {leg: "11-12", dv_t1_m_s: 0.388, dv_t2_m_s: 0.24, dr_t2_km: 8008.43}
+  periapse_difference_numerical_minus_two_body:   # dr km, dv m/s, dt minutes
+    - {leg: "2-3", dr_km: 18.01, dv_m_s: 11.351, dt: 7.997}
+    - {leg: "4-5", dr_km: 19.81, dv_m_s: 6.743, dt: -6.991}
+    - {leg: "6-7", dr_km: 38.27, dv_m_s: 5.371, dt: -2.307}
+    - {leg: "8-9", dr_km: 66.57, dv_m_s: 14.038, dt: 9.291}
+    - {leg: "10-11", dr_km: 38.36, dv_m_s: 31.352, dt: 7.879}
+  impulse_required_per_point_m_s:   # the solution is powered; points 1 and 12 are boundary points with no impulse
+    values: [null, 0.181, 9.935, 10.380, 69.168, 70.561, 0.607, 2.240, 27.545, 27.402, 2.515, null]
+    total_m_s: 220.534
+  prediction_error_per_point_m_s:   # error of the analytic impulse prediction, from the numerical integrations
+    values: [0.265, 0.410, 4.166, 4.218, 8.749, 8.856, 0.277, 0.239, 5.532, 5.612, 0.386, 0.240]
+    total_m_s: 38.95
+  cost_function_history_km2_s2:   # optimum-gradient-step (OGS) iterations; only the printed lines are given
+    c1: [[init, 0.61931], [1, 0.4167], [2, 0.25163], [198, 0.0006968], [199, 0.0006964], [200, 0.0006961]]
+    c2: [[init, 0.023412], [1, 0.01379], [2, 0.013629], [3, 0.013415], [49, 0.012933], [50, 0.012926]]
+    c3: [[init, 0.012836], [1, 0.012824], [2, 0.012816], [79, 0.01225], [80, 0.012241]]
+    c4: [[init, 0.012155], [1, 0.01214], [2, 0.012131], [99, 0.011551], [100, 0.011545]]
+    c5: [[init, 0.011491]]
+  note: "No free-fall solution was found for the sequence; the generalized Newton-Raphson step diverged, so five OGS cycles were run (about 450 s on an IBM 360/65). The report does not prove that no zero of the cost function exists."
+
+appendix_c:
+  table_c1_gravitational_parameters_km3_s2:   # printed p.164 (PDF p.158)
+    sun: 0.1327154456e12
+    mercury: 0.2211924093e5
+    venus: 0.32528295482e6
+    earth: 0.39802852025e6
+    mars: 0.4290138858e5
+    jupiter: 0.12671486322e9
+    saturn: 0.3790137239e8
+    uranus: 0.580329029e7
+    neptune: 0.68714634755e7
+  table_c2_sphere_of_influence_radius_km:   # printed p.164
+    mercury: {laplace: 113455.7, enlarged: 318688.4}
+    venus: {laplace: 616362.0, enlarged: 1458966.1}
+    earth: {laplace: 923738.2, enlarged: 2157378.4}
+    mars: {laplace: 574520.1, enlarged: 1564377.2}
+    jupiter: {laplace: 48177614.0, enlarged: 76638659.8}
+    saturn: {laplace: 54505381.7, enlarged: 94129489.7}
+    uranus: {laplace: 51742213.6, enlarged: 101287919.7}
+    neptune: {laplace: 86747707.2, enlarged: 167883945.9}
+  mean_element_expansions:   # printed pp.157-159; T in Julian centuries of 36525 days from JD 2415020.0 (1900 Jan 0.5); angles in degrees, arcsec and seconds as printed; a in au
+    mercury:
+      - "a = 0.3870984"
+      - "e = 0.20561421 + 0.00002046T - 0.000000030T^2"
+      - "i = 7d0m10.37s + 6.699s T - 0.066s T^2"
+      - "Omega = 47d8m45.40s + 4266.75s T + 0.626s T^2"
+      - "varpi = 75d53m58.91s + 5599.76s T + 1.061s T^2"
+      - "L = 178d10m44.68s + 538106654.80s T + 1.084s T^2"
+    venus:
+      - "a = 0.72333015"
+      - "e = 0.00682069 - 0.00004774T + 0.000000091T^2"
+      - "i = 3d23m37.07s + 3.621s T - 0.0035s T^2"
+      - "Omega = 75d46m46.73s + 3239.46s T + 1.476s T^2"
+      - "varpi = 130d9m49.8s + 5068.93s T - 3.515s T^2"
+      - "L = 342d46m1.39s + 210669162.88s T + 1.1148s T^2"
+    earth:
+      - "a = 1.00000013"
+      - "e = 0.01675104 - 0.00004180T - 0.000000126T^2"
+      - "i = 0.0"
+      - "Omega = 0.0"
+      - "varpi = 101d13m15.0s + 6189.03s T + 1.63s T^2 + 0.012s T^3"
+      - "L = 99d41m48.04s + 129602768.13s T + 1.089s T^2"
+    mars:
+      - "a = 1.52368839"
+      - "e = 0.09331290 + 0.000092064T - 0.000000077T^2"
+      - "i = 1d51m1.20s - 2.430s T + 0.0454s T^2"
+      - "Omega = 48d47m11.19s + 2775.57s T - 0.005s T^2 - 0.0192s T^3"
+      - "varpi = 334d13m5.53s + 6628.73s T + 0.4675s T^2 - 0.0043s T^3"
+      - "L = 293d44m51.46s + 68910117.33s T + 1.1184s T^2"
+    jupiter:
+      - "a = 5.202561"
+      - "e = 0.04833475 + 0.000164180T - 0.0000004676T^2 - 0.0000000017T^3"
+      - "i = 1d18m31.45s - 20.506s T + 0.014s T^2"
+      - "Omega = 99d26m36.19s + 3637.908s T + 1.2680s T^2 - 0.03064s T^3"
+      - "varpi = 12d43m15.34s + 5795.862s T + 3.80258s T^2 - 0.01236s T^3"
+      - "L = 238d2m57.32s + 10930687.148s T + 1.20486s T^2 - 0.005936s T^3"
+    saturn:
+      - "a = 9.554747"
+      - "e = 0.05589232 - 0.0003455T - 0.000000728T^2 + 0.00000000074T^3"
+      - "i = 2d29m33.07s - 14.108s T - 0.05576s T^2 + 0.00016s T^3"
+      - "Omega = 112d47m25.40s + 3143.5025s T - 0.54785s T^2 - 0.0191s T^3"
+      - "varpi = 91d5m53.38s + 7050.297s T + 2.9749s T^2 + 0.0166s T^3"
+      - "L = 266d33m51.76s + 4404635.5810s T + 1.16835s T^2 - 0.021s T^3"
+    uranus:
+      - "a = 19.21814"
+      - "e = 0.0463444 - 0.00002658T + 0.000000077T^2"
+      - "i = 0d46m20.87s + 2.251s T + 0.1422s T^2"
+      - "Omega = 73d28m37.55s + 1795.204s T + 4.722s T^2"
+      - "varpi = 171d32m55.14s + 5343.958s T + 0.8539s T^2 - 0.00218s T^3"
+      - "L = 244d11m50.89s + 1547508.765s T + 1.16835s T^2 - 0.021s T^3"
+    neptune:
+      - "a = 30.10957"
+      - "e = 0.00899704 + 0.00000633T - 0.000000002T^2"
+      - "i = 1d46m45.27s - 34.357s T - 0.0328s T^2"
+      - "Omega = 130d40m52.89s + 3956.166s T + 0.89952s T^2 - 0.016984s T^3"
+      - "varpi = 46d43m38.37s + 5128.468s T + 1.40694s T^2 - 0.002176s T^3"
+      - "L = 84d27m28.78s + 791589.291s T + 1.15374s T^2 - 0.002176s T^3"
+  section_d2_quadrature_vs_numerical_integration:   # printed p.172-173 (PDF pp.166-167); perturbation magnitudes, km and m/s
+    - case: "heliocentric ellipse Earth to Venus (t1 2441478.8, tM 2441556.4599, t2 2441634.11977)"
+      dr_t1_km: {quadrature: 35164.67, numerical_integration: 35267.35, difference: 102.78}
+      dv_t1_m_s: {quadrature: 39.723, numerical_integration: 40.237, difference: 0.514}
+    - case: "planetocentric hyperbola about Venus (t1 2441634.11977, tM 2441636.0597, t2 2441637.99955)"
+      dr_t1_km: {quadrature: 1482.11, numerical_integration: 1512.57, difference: 30.46}
+      dv_t1_m_s: {quadrature: 26.47, numerical_integration: 26.489, difference: 0.19}
+    - case: "heliocentric ellipse Earth to Jupiter (t1 2443787.0, tM 2444040.0151, t2 2444293.03027)"
+      dr_t2_km: {quadrature: 687602.28, numerical_integration: 689394.07, difference: 1791.79}
+      dv_t2_m_s: {quadrature: 116.409, numerical_integration: 117.202, difference: 0.793}
+    - case: "planetocentric hyperbola about Jupiter (t1 2444293.03027, tM 2444376.7112, t2 2444460.39204)"
+      dr_t1_km: {quadrature: 355455.46, numerical_integration: 356310.0, difference: 854.54}
+      dv_t1_m_s: {quadrature: 147.69, numerical_integration: 148.114, difference: 0.424}
+
+appendix_e:   # printed pp.178-183 (PDF pp.172-177); planet numbers per meta.planet_numbers
+  e2_dual_planet_reconnaissance:
+    planetary_position_heliocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: -27683569, y: -149351633, z: 0}
+      - {pt: 2, planet: 2, x: -85946304, y: 64291179, z: 5849706}
+      - {pt: 3, planet: 2, x: -92494950, y: 54464844, z: 6090584}
+      - {pt: 4, planet: 4, x: 9298184, y: -216541101, z: -4783633}
+      - {pt: 5, planet: 4, x: 20235530, y: -214917173, z: -5017472}
+      - {pt: 6, planet: 3, x: 150071922, y: 1341038, z: 0}
+    planetary_velocity_km_s:
+      - {pt: 1, planet: 3, x: 28.803850, y: -5.536705, z: 0.0}
+      - {pt: 2, planet: 2, x: -21.115118, y: -28.219406, z: 0.824872}
+      - {pt: 3, planet: 2, x: -17.916849, y: -30.347939, z: 0.610865}
+      - {pt: 4, planet: 4, x: 25.142150, y: 3.112230, z: -0.550617}
+      - {pt: 5, planet: 4, x: 25.057758, y: 4.344065, z: -0.522634}
+      - {pt: 6, planet: 3, x: -0.752478, y: 29.680227, z: 0.0}
+    soi_points_planetocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: -1618847, y: 1228772, z: -723696}
+      - {pt: 2, planet: 2, x: 1289792, y: -678612, z: -67123}
+      - {pt: 3, planet: 2, x: -1457233, y: 56086, z: 43682}
+      - {pt: 4, planet: 4, x: 1139936, y: 1065458, z: 112352}
+      - {pt: 5, planet: 4, x: -1151504, y: -1053602, z: 1060012}
+      - {pt: 6, planet: 3, x: 2124226, y: 309891, z: 214270}
+    true_heliocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: 25.411804, y: -3.308020, z: -1.496488}
+      - {pt: 2, planet: 2, x: -28.702396, y: -24.100878, z: 1.225602}
+      - {pt: 3, planet: 2, x: -26.543009, y: -30.113072, z: 0.865247}
+      - {pt: 4, planet: 4, x: 19.925562, y: -1.771693, z: -1.114716}
+      - {pt: 5, planet: 4, x: 19.783087, y: -0.479968, z: 0.012257}
+      - {pt: 6, planet: 3, x: -11.562989, y: 27.887921, z: 0.623309}
+    true_planetocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: null, y: null, z: null}   # printed as a dash
+      - {pt: 2, planet: 2, x: -7.587318, y: 4.118546, z: 0.400726}
+      - {pt: 3, planet: 2, x: -8.626212, y: 0.234868, z: 0.254384}
+      - {pt: 4, planet: 4, x: -5.216591, y: -4.883929, z: -0.564099}
+      - {pt: 5, planet: 4, x: -5.274674, y: -4.824036, z: 0.534891}
+      - {pt: 6, planet: 3, x: null, y: null, z: null}   # printed as a dash
+  e3_grand_tour:
+    planetary_position_heliocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: 146373093, y: 30840193, z: 0}
+      - {pt: 2, planet: 5, x: -730966280, y: 341268726, z: 14992492}
+      - {pt: 3, planet: 5, x: -793050422, y: 172374356, z: 17066856}
+      - {pt: 4, planet: 6, x: -1392750100, y: -367498888, z: 61896089}
+      - {pt: 5, planet: 6, x: -1351245940, y: -523607941, z: 62947475}
+      - {pt: 6, planet: 7, x: -508598411, y: -2816199860, z: -3939139}
+      - {pt: 7, planet: 7, x: -417872638, y: -2835394500, z: -5185687}
+      - {pt: 8, planet: 8, x: 825783251, y: -4452305730, z: 72635448}
+    planetary_velocity_km_s:
+      - {pt: 1, planet: 3, x: -6.627671, y: 29.040716, z: 0.0}
+      - {pt: 2, planet: 5, x: -5.683434, y: -11.237136, z: 0.172861}
+      - {pt: 3, planet: 5, x: -2.929249, y: -12.166462, z: 0.114945}
+      - {pt: 4, planet: 6, x: 1.929444, y: -9.356882, z: 0.085318}
+      - {pt: 5, planet: 6, x: 2.952499, y: -9.024942, z: 0.038810}
+      - {pt: 6, planet: 7, x: 6.653486, y: -1.521178, z: -0.091945}
+      - {pt: 7, planet: 7, x: 6.689117, y: -1.304052, z: -0.091596}
+      - {pt: 8, planet: 8, x: 5.299626, y: 1.020036, z: -0.143199}
+    soi_points_planetocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: -422358, y: 2090193, z: 327087}
+      - {pt: 2, planet: 5, x: 52179576, y: -56112733, z: 1461922}
+      - {pt: 3, planet: 5, x: -76427535, y: -88025, z: 5684043}
+      - {pt: 4, planet: 6, x: 90303036, y: 25960699, z: -5635961}
+      - {pt: 5, planet: 6, x: 18853800, y: -92130386, z: -4109294}
+      - {pt: 6, planet: 7, x: -7355051, y: 100977635, z: 2943333}
+      - {pt: 7, planet: 7, x: 36980520, y: -94149082, z: 5256825}
+      - {pt: 8, planet: 8, x: -68924481, y: 152861419, z: -8235400}
+    true_heliocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: -8.729043, y: 38.773437, z: 1.658246}
+      - {pt: 2, planet: 5, x: -12.546516, y: -3.447447, z: 0.060104}
+      - {pt: 3, planet: 5, x: -13.280658, y: -12.488954, z: 0.910924}
+      - {pt: 4, planet: 6, x: -8.652141, y: -12.357576, z: 0.746294}
+      - {pt: 5, planet: 6, x: 5.181211, y: -19.749870, z: -0.442043}
+      - {pt: 6, planet: 7, x: 7.716297, y: -16.446444, z: -0.533078}
+      - {pt: 7, planet: 7, x: 12.174013, y: -15.208984, z: 0.691257}
+      - {pt: 8, planet: 8, x: 12.136149, y: -14.246205, z: 0.684301}
+    true_planetocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: null, y: null, z: null}   # printed as a dash
+      - {pt: 2, planet: 5, x: -6.862569, y: 7.789369, z: -0.232962}
+      - {pt: 3, planet: 5, x: -10.351326, y: -0.322564, z: 0.795978}
+      - {pt: 4, planet: 6, x: -10.581829, y: -3.000683, z: 0.660993}
+      - {pt: 5, planet: 6, x: 2.228758, y: -10.724730, z: -0.480851}
+      - {pt: 6, planet: 7, x: 1.062830, y: -14.925182, z: -0.441132}
+      - {pt: 7, planet: 7, x: 5.484978, y: -13.904982, z: 0.782847}
+      - {pt: 8, planet: 8, x: null, y: null, z: null}   # printed as a dash
+  e4_periodic_trajectory_segment:
+    planetary_position_heliocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: 115517131, y: -98137483, z: 0}
+      - {pt: 2, planet: 2, x: -98406259, y: 42926751, z: 6271195}
+      - {pt: 3, planet: 2, x: -104690651, y: 24078614, z: 6371004}
+      - {pt: 4, planet: 2, x: -97993845, y: 43854474, z: 6260237}
+      - {pt: 5, planet: 2, x: -104439345, y: 25127936, z: 6371140}
+      - {pt: 6, planet: 2, x: -97465377, y: 45010278, z: 6245750}
+      - {pt: 7, planet: 2, x: -104152073, y: 26274532, z: 6370544}
+      - {pt: 8, planet: 3, x: 149582514, y: 10210861, z: 0}
+      - {pt: 9, planet: 3, x: 144544696, y: 38009310, z: 0}
+      - {pt: 10, planet: 3, x: 149721363, y: 8463429, z: 0}
+      - {pt: 11, planet: 3, x: 145020497, y: 36278351, z: 0}
+      - {pt: 12, planet: 2, x: -96870027, y: -47526925, z: 4924934}
+    planetary_velocity_km_s:
+      - {pt: 1, planet: 3, x: 18.800505, y: 22.595294, z: 0.0}
+      - {pt: 2, planet: 2, x: -14.161646, y: -32.263762, z: 0.367108}
+      - {pt: 3, planet: 2, x: -8.029999, y: -34.286904, z: -0.014566}
+      - {pt: 4, planet: 2, x: -14.463523, y: -32.130379, z: 0.386568}
+      - {pt: 5, planet: 2, x: -8.371178, y: -34.206640, z: 0.006423}
+      - {pt: 6, planet: 2, x: -14.839637, y: -31.959383, z: 0.410832}
+      - {pt: 7, planet: 2, x: -8.744011, y: -34.114777, z: 0.029399}
+      - {pt: 8, planet: 3, x: -2.515094, y: 29.612395, z: 0.0}
+      - {pt: 9, planet: 3, x: -8.062106, y: 28.702144, z: 0.0}
+      - {pt: 10, planet: 3, x: -2.167525, y: 29.633935, z: 0.0}
+      - {pt: 11, planet: 3, x: -7.715572, y: 28.790893, z: 0.0}
+      - {pt: 12, planet: 2, x: 15.182219, y: -31.602193, z: -1.314630}
+    soi_points_planetocentric_ecliptic_km:
+      - {pt: 1, planet: 3, x: 247388, y: -639293, z: -2045577}
+      - {pt: 2, planet: 2, x: 726703, y: 511959, z: -1156885}
+      - {pt: 3, planet: 2, x: -1279966, y: 527150, z: 460850}
+      - {pt: 4, planet: 2, x: 1283436, y: -547542, z: -426113}
+      - {pt: 5, planet: 2, x: -770819, y: 372484, z: -1181388}
+      - {pt: 6, planet: 2, x: 748191, y: -351377, z: 1202217}
+      - {pt: 7, planet: 2, x: 9682, y: -767274, z: -1240878}
+      - {pt: 8, planet: 3, x: 337614, y: 1396334, z: -1609518}
+      - {pt: 9, planet: 3, x: 1614003, y: 107287, z: 1427503}
+      - {pt: 10, planet: 3, x: 1637219, y: -113046, z: -1400362}
+      - {pt: 11, planet: 3, x: 1107649, y: -1140039, z: -1458666}
+      - {pt: 12, planet: 2, x: -538663, y: 296754, z: -1323012}
+    true_heliocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: 17.323915, y: 20.157965, z: -3.267526}
+      - {pt: 2, planet: 2, x: -16.616974, y: -34.071864, z: 4.356735}
+      - {pt: 3, planet: 2, x: -12.484461, y: -32.404149, z: 1.506887}
+      - {pt: 4, planet: 2, x: -18.920016, y: -30.231828, z: 1.908059}
+      - {pt: 5, planet: 2, x: -11.046420, y: -32.921844, z: -4.047927}
+      - {pt: 6, planet: 2, x: -17.512140, y: -30.658423, z: -3.641063}
+      - {pt: 7, planet: 2, x: -8.650968, y: -36.809919, z: -4.202766}
+      - {pt: 8, planet: 3, x: -3.262805, y: 26.747620, z: 3.254240}
+      - {pt: 9, planet: 3, x: -4.699129, y: 28.972881, z: 2.858207}
+      - {pt: 10, planet: 3, x: 1.194127, y: 29.890394, z: 2.857028}
+      - {pt: 11, planet: 3, x: -5.477269, y: 26.475428, z: -2.992208}
+      - {pt: 12, planet: 2, x: 16.261390, y: -33.864871, z: 3.969588}
+    true_planetocentric_velocity_at_soi_points_km_s:
+      - {pt: 1, planet: 3, x: null, y: null, z: null}   # printed as a dash
+      - {pt: 2, planet: 2, x: -2.455124, y: -1.807893, z: 3.989942}
+      - {pt: 3, planet: 2, x: -4.455058, y: 1.883022, z: 1.531741}
+      - {pt: 4, planet: 2, x: -4.457173, y: 1.899298, z: 1.532338}
+      - {pt: 5, planet: 2, x: -2.631615, y: 1.269900, z: -4.102211}
+      - {pt: 6, planet: 2, x: -2.625721, y: 1.284945, z: -4.097597}
+      - {pt: 7, planet: 2, x: 0.093025, y: -2.694363, z: -4.232504}
+      - {pt: 8, planet: 3, x: -0.746902, y: -2.862650, z: 3.253536}
+      - {pt: 9, planet: 3, x: 3.351399, y: 0.267886, z: 2.882569}
+      - {pt: 10, planet: 3, x: 3.348385, y: 0.253327, z: 2.879679}
+      - {pt: 11, planet: 3, x: 2.239589, y: -2.317191, z: -2.991828}
+      - {pt: 12, planet: 2, x: null, y: null, z: null}   # printed as a dash
+
+errata:   # printed-value errors found by the closure checks; the printed values above are NOT altered
+  - id: e2_point5_planetocentric_z
+    where: "Appendix E.2, Planetocentric Coordinates of SOI Entry and Exit Points, point 5 (Mars exit), z; printed p.178"
+    printed: 1060012
+    problem: "With x = -1151504 and y = -1053602 the printed z gives a radius of 1886707 km. The enlarged Mars sphere of influence is 1564377.2 km (Table C.2), and every other Mars point sits on it within 0.6 km. The printed elevation of point 5 (sec. 5.1) is 3.885 deg, which needs z near 106000."
+    ours: {z_from_soi_radius_km: 106006.5, z_from_printed_elevation_km: 105993.0, likely_intended: "106012 (one zero and the comma dropped from the print)"}
+    witnesses: "A (OCR) and B (render, also a 260 dpi crop) both read 1,060,012; the print itself carries the error"
+  - id: e3_point2_true_heliocentric_vz_sign
+    where: "Appendix E.3, True Heliocentric Velocity at SOI Entry and Exit Points, point 2 (Jupiter entry), v_z; printed p.180"
+    printed: 0.060104
+    problem: "True planetocentric v_z at point 2 is -0.232962 and the planet v_z is 0.172861, so the heliocentric v_z must be -0.060101. The printed +0.060104 leaves a residual of 0.1202 km/s; with the minus sign the residual is 3e-6 km/s. A 260 dpi crop shows no minus sign in the print."
+    ours: {expected: -0.060101, residual_as_printed_km_s: 0.1202, residual_with_minus_km_s: 0.000003}
+  - id: e4_point10_planetocentric_x_sign
+    where: "Appendix E.4, Planetocentric Coordinates of SOI Entry and Exit Points, point 10 (Earth entry), x; printed p.182"
+    printed: 1637219
+    problem: "Point 10 is an SOI entry point, so the planetocentric position and velocity must have a negative dot product, as at all 9 other points with a printed velocity (-7.3e6 to -1.5e9 km2/s for entries). With the printed positive x the dot product is +1.4e6. The sec. 7.1 azimuth of point 10 is 183.950 deg, which needs a negative x (the printed x, y give -3.950 deg). Point 10 is also close to antipodal to exit point 9 in all three components, as a full-revolution return is expected to be."
+    ours: {expected_x: -1637219, dot_product_as_printed_km2_s: 1.421e6, dot_product_with_minus_km2_s: -9.543e6}
+  - id: e4_point12_julian_date
+    where: "Sec. 7.1 list of SOI points, point 12 (Venus SOI entry, arrival); printed p.102"
+    printed: 2442123.36905
+    problem: "The leg 11-12 time of flight is 159.40312 d, but the printed JDs of points 11 and 12 differ by 160.40312 d. The Venus position printed for point 12 in E.4 matches an independent ephemeris at JD 2442122.36905 (108 km, as for the other Venus rows) and is 3031000 km from the ephemeris at the printed JD. The leg sum (1311.07102 d) also matches JD 2442122.36905."
+    ours: {likely_correct_jd: 2442122.36905}
+  - id: calendar_dates_in_sec_6_1_and_7_1
+    where: "Sec. 6.1 (launch 'October 6, 1978', arrival 'July 13, 1989'); sec. 7.1 (launch 'August 11, 1970', arrival 'March 13, 1974')"
+    problem: "The printed calendar dates do not follow from the printed JDs by the standard conversion. Chapter 6: JD 2443787.0 is 1978 Oct 5 12:00 and JD 2447720.0 is 1989 Jul 12 12:00 (printed dates one day later). Chapter 7: JD 2440811.29805 is 1970 Aug 12 19:09 and JD 2442122.36905 is 1974 Mar 15 20:51 (printed dates 1.8 and 2.9 days earlier). The JD columns are the authority: they reproduce the printed planet positions through the Appendix C expansions."
+  - id: neptune_expansion_vs_e3_neptune_position
+    where: "Appendix C Neptune expansion (p.159) against Appendix E.3 point 8 planet position (p.179)"
+    problem: "Our evaluation of the printed Neptune expansion at JD 2447720.0 gives z = 72429125 km against the printed 72635448 km (0.28 percent in z, 206000 km). x and y agree to about 5000 km. All other Appendix C expansions used (Venus, Earth, Mars, Jupiter, Saturn, Uranus) reproduce the printed positions to 216 km or better. Cause not found. It affects only the Neptune arrival point of the Grand Tour example."
+  - id: ch7_leg_10_11_time_of_flight
+    where: "Sec. 7.1 leg table, leg 10-11"
+    problem: "Printed 10.98699 d against 10.98696 d from the printed JDs (2.6 s). Rounding level; no action."
+
+checks:   # computed by us (witness C); none of these is a printed number
+  soi_radius_closure: "|planetocentric position| equals the enlarged SOI radius of Table C.2 within 0.6 km for all 26 SOI points except E2 point 5 (see errata; the E4 point 10 sign does not change the radius) and the two Saturn points of E3 (3.0 and 3.9 km short of 94129489.7, a constant offset, not a misread digit)"
+  velocity_closure: "true heliocentric velocity minus planet velocity equals the true planetocentric velocity within 6e-4 km/s for E2 and E3 (after the sign erratum) and within 0.003 km/s for E4 points 2, 7, 8, 11. E4 points 3-6 and 9-10 differ by 0.01 to 0.05 km/s with the same sign at the entry and exit of each pass; read as a timing difference between the integrated and the conic crossing, not a misread digit"
+  azimuth_elevation_closure: "printed azimuth and elevation of all 26 SOI points follow from the Appendix E planetocentric coordinates to 0.001 deg, except E2 point 5 (z erratum) and E4 point 10 (x sign erratum; the printed azimuth 183.950 is the consistent one). Ch7 point 7 prints elevation -121.732 with azimuth 90.723, the same direction as azimuth -89.277 and elevation -58.268"
+  c3_closure: "|v_helio - v_planet|^2 - 2 mu_E / r_SOI at the launch point gives 18.343, 101.522 and 18.429 km2/s2 against printed 18.378, 101.520 and 18.427"
+  planetocentric_leg_closure: "for all 10 planetocentric legs: periapse radius in planet radii equals a (e - 1) from the printed elements to 1e-4; periapse radius km divided by that equals the radius used (Venus 6050, Earth 6378.2, Mars 3410, Jupiter 71400, Saturn 60400, Uranus 23500 km); central angle minus 180 deg equals the printed turn angle exactly"
+  heliocentric_central_angle_closure: "the angle between the heliocentric SOI-point vectors (planet position plus planetocentric coordinates, Appendix E) matches the printed central angle of all 13 heliocentric legs to 0.13 deg or better (0.108 and 0.121 deg for ch7 legs 1-2 and 7-8, 0.07 deg or less elsewhere), after the two E-table errata"
+  ch7_error_table_closure: "each printed per-point prediction error (sec. 7.4) lies between |a - b| and a + b, where a is the dv(t2) error of the leg before the point and b the dv(t1) error of the leg after it, for all 12 points"
+  ch7_v_inf_from_periapse_velocity: "v_inf = sqrt(v_p^2 - 2 mu / r_p) gives 4.995, 5.002, 4.989 km/s at the three Venus passes and 4.372, 4.367 km/s at the two Earth passes; launch v_inf from C3 is 4.293 km/s"
+  planet_velocity_closure: "eq. C.4 with the printed expansions reproduces all 26 printed planet-velocity rows to 4e-5 km/s (Earth, Venus, Mars), 1.5e-4 (Uranus, Neptune), 1.3e-3 (Saturn) and 5.8e-3 (Jupiter); E4 point 12 matches only at JD 2442122.36905 (4e-5 km/s)"
+  appendix_e_cells_confirmed_on_crops: "260 dpi crops agree with the typed values for E3 true heliocentric point 8 and E4 true heliocentric points 9, 11, 12, E4 planetocentric point 4, E4 positions 3 and 10, E2 planetocentric point 5 and E3 true heliocentric point 2 (the last two are printed errors, see errata)"
+  sums: "corrections ch5 0.2263 and ch6 2.652; ch7 impulses 220.534 and prediction errors 38.950 all equal the printed totals; leg times of flight sum to the SOI-JD span for ch5 and ch6 (ch7 differs by the point 12 erratum)"
+  ephemeris_closure: "printed Appendix C expansions evaluated by us reproduce the printed planet positions of E2, E3 and E4 (JD from the chapter lists): Earth to 11 km, Venus 126-136 km (constant z offset), Mars 204-216 km, Jupiter 5-9 km, Saturn 52-58 km, Uranus 146-148 km; Neptune fails (see errata)"
+  enlarged_soi_closure: "Table C.2 enlarged radius equals a (mu_p/mu_sun)^(1/3) with the Appendix C semi-major axis and an astronomical unit of 149599000 km for all planets (Mercury 149598979 km)"
