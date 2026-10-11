@@ -150,3 +150,50 @@ resonant signature. The citation reflects corpus order, not which paper is close
 Per the pre-registration this is a failed control, so the run stopped before the families
 (`data/1047_literature/gate_results.json`: controls_pass false, positive_cites_casoliva false). The
 families are not scored.
+
+## 8. Ruling (i), family scores and the proposed #875 classification
+
+Lead ruling 2026-10-11: (i). The positive control **passed at status level** ("published") and
+**failed the pre-registered citation** (it cites Braik & Ross, not Casoliva). Cause as in sec. 7:
+the gate cites the first in-footprint anchor in corpus order. The citation choice is registered as
+#1062 (c93b4f65, backlog for twobody-gen2; test case Casoliva 7-3b). The script now records the
+citation (`positive_cites_casoliva: false`) and gates on status only.
+
+Count correction: the table holds **18** entries, not the "19 families" in secs. 3-5 and my
+messages. 17 are families. The 18th is the one-orbit "7:3 ret wE-9 wM0" entry, whose computed p:q is
+6:3.
+
+All 18 entries return "published" 0.95, citing Braik & Ross, for both {"resonant"} and
+{"repeated-moon"} (`data/1047_literature/gate_results.json`). **The gate does not compare p:q,
+sense or symmetry.** It matches on primary, body set and topology class only, so "published" here
+means: the Earth-Moon resonant / repeated-lunar-encounter class is published (Casoliva 2010, Kumar,
+Rawat, Rosengren & Ross, Braik & Ross). It does not mean that this family's own p:q, or a member of it, is
+published. That information is in the literal table (sec. 2).
+
+| family (p:q, sense, winding, symmetry) | candidates | literal-table outcome | gate | proposed #875 |
+|---|---|---|---|---|
+| 7:3 ret wE-10 wM-1, asymmetric | 13 | literal members Casoliva 2010 7-3b, 7-3c | published (class) | known-reproduction |
+| 7:3 ret wE-10 wM-1, symmetric | 70 | literal member Casoliva 2010 7-3a | published (class) | known-reproduction |
+| 2:1 pro wE1 wM-1, symmetric | 4 | no member; Casoliva 2-1a/b opposite sense; Vaquero/Newton F3 rows outside the C range; class through #997 F3 and Ross & Roberts-Tsoukkas | published (class) | known-class-member |
+| 3:1 pro wE2 wM0, symmetric (#1048) | 18 | no member; Vaquero c254/c313 C outside the computed range | published (class) | known-class-member |
+| 3:1 ret wE-4 wM0, symmetric (#1048) | 17 | no member; Vaquero rows opposite sense | published (class) | known-class-member |
+| 2:3 ret wE-5 wM-2, symmetric | 10 | no member; Casoliva 2008 23a/b at mu 1e-6 (class only) | published (class) | known-class-member |
+| 4:3 ret wE-7 wM-2, symmetric | 4 | no member; no published row with this p:q | published (class) | known-class-member |
+| 5:2 pro wE3 wM-1, symmetric | 11 | no member; Casoliva 2008 52a (mu 1e-6), Liang 2017 5:2 (no literal match, #1050) | published (class) | known-class-member |
+| A: 5:2 pro wE3 wM0, asymmetric | 3 | no member; as above | published (class) | known-class-member |
+| 5:2 ret wE-7 wM-1, symmetric | 12 | no member; as above | published (class) | known-class-member |
+| 5:2 ret wE-7 wM0, symmetric | 26 | no member; as above | published (class) | known-class-member |
+| B: 5:3 ret wE-8 wM-2, asymmetric | 4 | no member; no published row with this p:q | published (class) | known-class-member |
+| 7:2 pro wE5 wM0, symmetric (#1048) | 15 | no member; no published row with this p:q | published (class) | known-class-member |
+| D: 7:3 pro wE4 wM-1, asymmetric | 2 | no member; Casoliva 7:3 rows opposite sense | published (class) | known-class-member |
+| 7:3 pro wE4 wM-1, symmetric | 50 | no member; Casoliva 7:3 rows opposite sense | published (class) | known-class-member |
+| 7:3 ret wE-10 wM0, symmetric | 1 | no member; Casoliva 7-3a/b/c C outside the range | published (class) | known-class-member |
+| 8:3 ret wE-11 wM0, symmetric | 2 | no member; no published row with this p:q | published (class) | known-class-member |
+| (one orbit, computed 6:3 ret wE-9 wM0) | 1 | not a family; no member | published (class) | not classified (one orbit, p:q inconsistent with its skeleton) |
+
+Reading of the known-class-member rows: under #875 the literal check comes first, and none of these
+has a literal member. The class (planar Earth-Moon p:q resonant periodic orbits with a lunar pass
+each period) is published, so they are known-class-member under #875 (iii). For 4:3 ret, B (5:3
+ret), 7:2 pro and 8:3 ret no published orbit with the same p:q is held as numbers. The class covers
+them, and the specific p:q is not documented in the held sources. Nothing here is candidate-novel.
+No catalogue edits.

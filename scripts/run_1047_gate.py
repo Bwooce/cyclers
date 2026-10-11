@@ -110,9 +110,10 @@ def main() -> None:
     unlabelled = [a.name for a in _candidate_anchors(s73) if not a.topology_label]
     s73r = sig((7, 3), (t73 * 0.999, t73 * 1.001), "resonant")
     order = [a.name for a in _candidate_anchors(s73r)]
-    # Pre-registration (#1047 note sec. 6): the positive control must cite Casoliva 2010.
+    # Pre-registration (#1047 note sec. 6) expected the positive control to cite Casoliva 2010; it
+    # cites Braik & Ross (corpus order, #1062). Lead ruling 2026-10-11 (i): the positive control is
+    # judged at status level; the citation outcome is recorded, not gated.
     pos_cites_casoliva = "Casoliva" in (controls["positive_casoliva_7-3b"]["citation"] or "")
-    pos_ok = pos_ok and pos_cites_casoliva
     out: dict[str, Any] = {
         "controls": controls,
         "positive_cites_casoliva": pos_cites_casoliva,
