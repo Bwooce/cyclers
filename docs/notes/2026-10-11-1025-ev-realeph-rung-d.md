@@ -721,3 +721,21 @@ Expected deltas:
   sequences, like ev-B); NON_HELIOCENTRIC unchanged (111); other exclusion reasons unchanged.
 
 Any other ratchet that moves in the dry run is a surprise. It is reported, not absorbed.
+
+Addendum (2026-10-11, before the window; lead request): commit 38bee4b5 adds three cross-references to
+the row text in `scripts/writeback_1025_ev.py`:
+- the #973 note secs. 13-14, as the enumeration, gauntlet and screen source;
+- `data/973_ev/hm1970_subperiod_check.json` (#973 secs. 2.2, 6.5), as the structural evidence behind
+  "outside those itineraries";
+- `docs/notes/2026-06-22-dv-band-definitions.md` and `dv_band_acceptance`, as the threshold source.
+
+What was checked:
+- `data/1025_ev_writeback_v1.json` is byte-identical (md5 bce09fd8...).
+- The apply script is unchanged (md5 3d89aa71...); it regenerates the row text from the writeback
+  script.
+- In a scratch worktree, the patched catalogue loads with 423 rows and no duplicate ids.
+- ruff is clean on the touched files.
+- The writeback test passes: 30 rows, 20 earlier plus the 10. The "31" in 54b2401f's message was a
+  miscount.
+
+The pre-registered deltas above are unchanged.
