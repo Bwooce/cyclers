@@ -197,3 +197,6 @@ each period) is published, so they are known-class-member under #875 (iii). For 
 ret), 7:2 pro and 8:3 ret no published orbit with the same p:q is held as numbers. The class covers
 them, and the specific p:q is not documented in the held sources. Nothing here is candidate-novel.
 No catalogue edits.
+
+Count: 2 known-reproduction + 15 known-class-member + 1 unclassified orbit = 18. (The commit message
+of bba3eeb8 says "16 families known-class-member"; the correct number is 15.)
