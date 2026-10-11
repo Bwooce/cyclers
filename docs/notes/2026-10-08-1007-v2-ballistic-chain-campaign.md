@@ -439,3 +439,32 @@ refinement. The owner's answer, verbatim option label: **"Same-phase, skip start
 - a pre-registered re-judge of gc-1 and gc-2 on their existing chains before the wording takes
   effect;
 - the offset against the ideal model recorded, not banded.
+
+### 8.7 Re-judge of gc-1 and gc-2 under the FINAL wording — PRE-REGISTERED (2026-10-11), before running
+
+The final wording (owner, 8.4a) has four criteria:
+1. junction-only |V_inf| continuity < 1e-6 km/s;
+2. the demanded-turn gate passes at every flyby;
+3. DOP853 re-fly < 1 km;
+4. bounded SAME-PHASE drift, option (b):
+   - L = 4 for gc k = 3;
+   - compare cycle i+L with cycle i for i = 1 .. n-L-1 (5 comparisons on the 10-cycle chains);
+   - D' <= 5 % of the chain's shortest Lambert leg and W' <= 10 % of its smallest |V_inf,dep|;
+   - no growth (second-half max <= 2 x first-half max; floors 0.5 d, 0.05 km/s);
+   - the ideal-model offset recorded, not banded.
+
+A row passes at >= 3 of 5 epochs.
+
+- Chains: the EXISTING ones (gc-1 `data/943_gc1_realeph/e0..e4`; gc-2 the ladder file); no re-solve.
+- Tool: `scripts/v2_samephase_1007.py --rejudge-gc`.
+  - Criteria 1-3 use `scripts/v2_chain_1007.py`'s `judge` (amended rules), as in sec. 7.
+  - Criterion 4 uses `same_phase(start=1)`.
+- Controls, first:
+  - POSITIVE: H&M orbit 1 from its printed dates, 10 cycles (sec. 8.5 route), judged by the same four
+    criteria (L = 5, i = 1..4). It must pass.
+  - NEGATIVE: gc-1 epoch 0, the 2nd Lambert start + 0.05 d. It must fail.
+- Expected (stated with knowledge of the sec. 8.5 exploratory option-(a) numbers, so not blind):
+  - gc-1: 5/5, no longer marginal on drift. Criterion 1 stays at 8.6e-7, the same margin as before.
+  - gc-2: 5/5. W' after the start cycle is <= 0.022 km/s.
+- If a control misbehaves: STOP and report. If a row fails: it is demoted to V1 in the window, with the
+  reason recorded.
