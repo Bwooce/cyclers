@@ -331,3 +331,51 @@ From /Users/bruce/dev/cyclers, for `<t>` = gancal1 or gc1e2:
   (GanCal#1) or 35-110 s (gc-1 e2), depending on the machine load. That is about 0.5-2.5 h for
   GanCal#1 and 2-8 h for gc-1 e2, plus the down and ias15 stages (minutes for GanCal#1; up to 1 h
   for gc-1 e2).
+
+## 10. gc4-19 continuation result (lead launch 12:37; finished 12:57 AEDT, exit 0)
+
+Checked against the #1025 outcome rules and #1025 amendment 2 (14:00 AEDT check brought forward):
+- Outcome EXISTS. 23 points, factor 1.2, sigma 0.02 -> 1, no passed stops, no impact at any point,
+  every node above the scaled floors at every point. Sigma = 1 is at the floors (dr 1.4e-5 km).
+- IAS15 re-fly of every half-arc at sigma = 1: max 1.5e-5 km, 5.4e-11 km/s, PASS (< 1e-2 km, < 1e-7
+  km/s).
+- Amendment-2 scan at sigma = 1 (DOP853, 0.0005 d, both moons, all legs): no minimum within 3 Hill
+  radii, so none inside a body. The positive control of the scan again flags the #1033 orbit
+  (Ganymede, 83 km, inside the body).
+- Identity (#1025 gate, sec. 8): 0.0009 / 0.0004 / 0.0002 / 0.0001 km/s, PASS. Amendment 2's
+  Richardson limit equals the chain tool's patched-conic V_inf to 1e-4.
+
+Full mass against the patched conic:
+
+| Node | t (d) | V_inf km/s (patched conic) | altitude km (patched conic) | turn deg (patched conic) |
+|---|---|---|---|---|
+| Callisto | 19.78 | 4.1445 (4.1090) | 7,263 (6,903) | 4.75 (5.01) |
+| Callisto | 36.48 | 4.0616 (4.1090) | 6,730 (6,903) | 5.21 (5.01) |
+| Ganymede | 39.26 | 2.3356 (2.3565) | 697 (583) | 41.29 (41.77) |
+| Ganymede | 53.58 | 2.3352 (2.3565) | 568 (583) | 42.42 (41.77) |
+
+What the correction changed, at the sigma-0.02 start against the raw seed scaled to 0.02:
+- the Ganymede node epochs moved by -600 s and -692 s, and the Callisto node epochs by -141 s and
+  -139 s;
+- the Ganymede nodes' moon-relative positions moved by 9 km (of 64 km) and their velocities by
+  0.17 km/s; the Callisto nodes by 0.5 km and 2.7e-3 km/s.
+That is the move along the two degenerate directions. The node V_inf is unchanged in the limit
+(identity to 1e-4).
+
+Evidence standing against the 15 EXISTS members of #1025 (c90568bf):
+- The same model, corrector, continuation rules, identity gate, IAS15 criterion, floors and
+  amendment-2 scan. All pass.
+- One difference: the start is the #1055-corrected seed, not the raw seed. The correction method
+  passed its pre-registered controls (A and B), and the negative control shows the start depends on
+  the correction.
+- The sigma -> 0 limit of the branch is a member of gc4-19's degenerate patched-conic family, with
+  the chain tool's V_inf at every node (to 1e-4). Its node epochs differ from the chain tool's
+  member by up to about 11.5 min, which is the family move. That member was not separately run
+  through the #973 patched-conic gate: its V_inf is the same, and its full-mass altitudes are far
+  above the floors.
+
+Statement: gc4-19 EXISTS in the continuous ideal model (R-S constants, Ganymede and Callisto
+massive, real GMs), with the same checks as the 15 #1025 EXISTS members. It is the 16th of the 20
+clean #973 gc members to do so. Caveat for the row: it was reached from the #1055 corrected seed (a
+different member of the same degenerate patched-conic family; same V_inf). Nothing here is a
+novelty claim, and no catalogue write is made.
