@@ -61,9 +61,9 @@
    "max_required_rp_charon_km": 1189.7667085381602,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 12.834163568820406,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6089692075353372,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6088526293235371,
    "cross_check": {
     "max_arrival_miss_km": 2.6545699653625545e-07,
     "max_vinf_vector_error_kms": 3.531393765657494e-12,
@@ -71,7 +71,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7672483496741731
    },
-   "soi_fraction": 7.674065325947438e-10,
+   "soi_fraction": 7.749086851909237e-10,
    "collisions_320": [],
    "strong": true
   },
@@ -137,9 +137,9 @@
    "max_required_rp_charon_km": 13391.76705303518,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 2.1079900262783005,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8209878769588688,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.8208307108863956,
    "cross_check": {
     "max_arrival_miss_km": 7.863376586786674e-07,
     "max_vinf_vector_error_kms": 1.5209376636808652e-11,
@@ -147,7 +147,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6902748065625446
    },
-   "soi_fraction": 2.2732143585179486e-09,
+   "soi_fraction": 2.295437261603965e-09,
    "collisions_320": [],
    "strong": false
   },
@@ -213,9 +213,9 @@
    "max_required_rp_charon_km": 4172.375652860646,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.5258435971096197,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8209878769588688,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.8208307108863956,
    "cross_check": {
     "max_arrival_miss_km": 2.3245494427605718e-05,
     "max_vinf_vector_error_kms": 7.4175832580272e-10,
@@ -223,7 +223,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6902748065608343
    },
-   "soi_fraction": 6.720012849502339e-08,
+   "soi_fraction": 6.785707575444787e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -277,9 +277,9 @@
    "max_required_rp_charon_km": 1479.3345332474432,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 12.834163568820411,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7719942263421571,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7718464393846011,
    "cross_check": {
     "max_arrival_miss_km": 2.533447277135364e-07,
     "max_vinf_vector_error_kms": 3.507847719427715e-12,
@@ -287,7 +287,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7258194400669898
    },
-   "soi_fraction": 7.323913160422249e-10,
+   "soi_fraction": 7.395511605049608e-10,
    "collisions_320": [],
    "strong": true
   },
@@ -354,9 +354,9 @@
    "max_required_rp_charon_km": 19591.5101337826,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.024186837636598547,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7330688316084106,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7329284963460397,
    "cross_check": {
     "max_arrival_miss_km": 0.06281618093017871,
     "max_vinf_vector_error_kms": 2.093453157319738e-06,
@@ -364,7 +364,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.38780273589417114
    },
-   "soi_fraction": 0.0001815945641948402,
+   "soi_fraction": 0.00018336982942045683,
    "collisions_320": [],
    "strong": false
   },
@@ -431,9 +431,9 @@
    "max_required_rp_charon_km": 13666.948275792645,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.22274446643028586,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.733068831608411,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7329284963460401,
    "cross_check": {
     "max_arrival_miss_km": 0.0003265105114917092,
     "max_vinf_vector_error_kms": 4.023697665337942e-09,
@@ -441,7 +441,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.288113052994934
    },
-   "soi_fraction": 9.439054262989339e-07,
+   "soi_fraction": 9.531330289367608e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -506,9 +506,9 @@
    "max_required_rp_charon_km": 2285.9223931376164,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 1.727135152126288,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.684530289538372,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6843992462670705,
    "cross_check": {
     "max_arrival_miss_km": 2.0376682257228143e-05,
     "max_vinf_vector_error_kms": 3.3836210369158734e-10,
@@ -516,7 +516,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5380714295196373
    },
-   "soi_fraction": 5.890671287945728e-08,
+   "soi_fraction": 5.9482583855518444e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -582,9 +582,9 @@
    "max_required_rp_charon_km": 1987.4212688277933,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.031237778916001,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.684530289538372,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6843992462670705,
    "cross_check": {
     "max_arrival_miss_km": 1.991422832000066e-05,
     "max_vinf_vector_error_kms": 2.8320759163447313e-10,
@@ -592,7 +592,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.588132620693052
    },
-   "soi_fraction": 5.756981019057276e-08,
+   "soi_fraction": 5.813261162975581e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -657,9 +657,9 @@
    "max_required_rp_charon_km": 1937.2866262326745,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.031237778916001,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6845302895383719,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6843992462670703,
    "cross_check": {
     "max_arrival_miss_km": 6.311677057617494e-06,
     "max_vinf_vector_error_kms": 5.184005159349811e-11,
@@ -667,7 +667,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.597503442941676
    },
-   "soi_fraction": 1.8246353529365374e-08,
+   "soi_fraction": 1.8424729556525717e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -734,9 +734,9 @@
    "max_required_rp_charon_km": 1173754.9322633604,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 4.718639306041117,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.3082840731479013,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.3080336213748283,
    "cross_check": {
     "max_arrival_miss_km": 1.7783206270003115e-05,
     "max_vinf_vector_error_kms": 2.411552117350988e-10,
@@ -744,7 +744,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.276625968124456
    },
-   "soi_fraction": 5.140926342175476e-08,
+   "soi_fraction": 5.1911839465436796e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -811,9 +811,9 @@
    "max_required_rp_charon_km": 742482.6223850072,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 2.1473043757677326,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8317691801090669,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.831609950114434,
    "cross_check": {
     "max_arrival_miss_km": 2.8568583291342345e-05,
     "max_vinf_vector_error_kms": 2.7648597216647674e-10,
@@ -821,7 +821,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.1480087038763823
    },
-   "soi_fraction": 8.258858395453471e-08,
+   "soi_fraction": 8.339596848048393e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -888,9 +888,9 @@
    "max_required_rp_charon_km": 742482.6223850072,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.3342846926471726,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8317691801090669,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.831609950114434,
    "cross_check": {
     "max_arrival_miss_km": 7.82780220585296e-05,
     "max_vinf_vector_error_kms": 2.1714521118656576e-09,
@@ -898,7 +898,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.37948751239658657
    },
-   "soi_fraction": 2.2629302022599625e-07,
+   "soi_fraction": 2.2850525676175478e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -966,9 +966,9 @@
    "max_required_rp_charon_km": 263209.18497889664,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.3969324916922539,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7236867252114305,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7235481860155489,
    "cross_check": {
     "max_arrival_miss_km": 0.00011789198737487686,
     "max_vinf_vector_error_kms": 1.9713538835967618e-09,
@@ -976,7 +976,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.2486479499981505
    },
-   "soi_fraction": 3.4081257014335747e-07,
+   "soi_fraction": 3.4414434775967077e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -1043,9 +1043,9 @@
    "max_required_rp_charon_km": 4457.940000958269,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.00196872307094599,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6681655155887942,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6680376051131414,
    "cross_check": {
     "max_arrival_miss_km": 0.2915294911485542,
     "max_vinf_vector_error_kms": 3.6398824980610206e-06,
@@ -1053,7 +1053,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7466968658528063
    },
-   "soi_fraction": 0.0008427792029239911,
+   "soi_fraction": 0.0008510181974030251,
    "collisions_320": [],
    "strong": false
   },
@@ -1120,9 +1120,9 @@
    "max_required_rp_charon_km": 4047.1361958413977,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.00196872307094599,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6681655155887938,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6680376051131409,
    "cross_check": {
     "max_arrival_miss_km": 0.2899355359594204,
     "max_vinf_vector_error_kms": 3.6199814154677626e-06,
@@ -1130,7 +1130,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6980807873354001
    },
-   "soi_fraction": 0.0008381712564740375,
+   "soi_fraction": 0.0008463652037506381,
    "collisions_320": [],
    "strong": false
   },
@@ -1197,9 +1197,9 @@
    "max_required_rp_charon_km": 5566.433885354513,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.0015376549311858524,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6343223116042256,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6342008799129731,
    "cross_check": {
     "max_arrival_miss_km": 1.2839805781961318,
     "max_vinf_vector_error_kms": 1.5590199357341295e-05,
@@ -1207,7 +1207,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7177609992358152
    },
-   "soi_fraction": 0.0037118444655419476,
+   "soi_fraction": 0.003748131390934186,
    "collisions_320": [],
    "strong": false
   },
@@ -1274,9 +1274,9 @@
    "max_required_rp_charon_km": 9141.17963359774,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.0011194959487049758,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5871237924285874,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5870113962006999,
    "cross_check": {
     "max_arrival_miss_km": 1.0818300631060476,
     "max_vinf_vector_error_kms": 1.1453980018592308e-05,
@@ -1284,7 +1284,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7543513827549119
    },
-   "soi_fraction": 0.0031274499011804263,
+   "soi_fraction": 0.003158023795718738,
    "collisions_320": [],
    "strong": false
   },
@@ -1349,9 +1349,9 @@
    "max_required_rp_charon_km": 1942.946843929079,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 4.56005010032011,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5422262339267081,
    "cross_check": {
     "max_arrival_miss_km": 8.844298813450636e-06,
     "max_vinf_vector_error_kms": 9.758597579609464e-11,
@@ -1359,7 +1359,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5407811040583449
    },
-   "soi_fraction": 2.5567880199891377e-08,
+   "soi_fraction": 2.5817831341396354e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1425,9 +1425,9 @@
    "max_required_rp_charon_km": 1600.3522104395329,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 8.262896766430396,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5422262339267081,
    "cross_check": {
     "max_arrival_miss_km": 3.366285296646399e-06,
     "max_vinf_vector_error_kms": 3.486196242866447e-11,
@@ -1435,7 +1435,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6183202194378813
    },
-   "soi_fraction": 9.731554869269606e-09,
+   "soi_fraction": 9.826690376365833e-09,
    "collisions_320": [],
    "strong": true
   },
@@ -1503,9 +1503,9 @@
    "max_required_rp_charon_km": 1588.7883696569636,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 3.4724600108783847,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5422262339267081,
    "cross_check": {
     "max_arrival_miss_km": 1.1316472568279077e-05,
     "max_vinf_vector_error_kms": 1.9700867014577416e-10,
@@ -1513,7 +1513,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.621337118546356
    },
-   "soi_fraction": 3.271465844992523e-08,
+   "soi_fraction": 3.3034476368328144e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1578,9 +1578,9 @@
    "max_required_rp_charon_km": 1455.1174114100884,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 10.59220538593767,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5423300550513906,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5422262339267081,
    "cross_check": {
     "max_arrival_miss_km": 3.4525891039807445e-06,
     "max_vinf_vector_error_kms": 3.1198217269462645e-11,
@@ -1588,7 +1588,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6585405980404275
    },
-   "soi_fraction": 9.981049538464091e-09,
+   "soi_fraction": 1.0078624101003204e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1642,9 +1642,9 @@
    "max_required_rp_charon_km": 1110.122105408784,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.0008053175791583662,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.534971417959727,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5348690055380508,
    "cross_check": {
     "max_arrival_miss_km": 1.0059499742987372,
     "max_vinf_vector_error_kms": 2.4707931369023893e-06,
@@ -1652,7 +1652,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.7778864306647398
    },
-   "soi_fraction": 0.002908089038199193,
+   "soi_fraction": 0.002936518464847519,
    "collisions_320": [],
    "strong": false
   },
@@ -1717,9 +1717,9 @@
    "max_required_rp_charon_km": 4440.799679599069,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 3.45542570191272,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5197471205208002,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5196476225672932,
    "cross_check": {
     "max_arrival_miss_km": 1.0449648530470555e-05,
     "max_vinf_vector_error_kms": 1.7682471601570234e-10,
@@ -1727,7 +1727,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.661971109494398
    },
-   "soi_fraction": 3.0208766957502045e-08,
+   "soi_fraction": 3.0504087325301545e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1792,9 +1792,9 @@
    "max_required_rp_charon_km": 1576.8275937193991,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 7.392576894274426,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5197471205208001,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.519647622567293,
    "cross_check": {
     "max_arrival_miss_km": 7.5788353963149246e-06,
     "max_vinf_vector_error_kms": 7.837146094528987e-11,
@@ -1802,7 +1802,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6156787698577088
    },
-   "soi_fraction": 2.1909566779107313e-08,
+   "soi_fraction": 2.2123754313760288e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1868,9 +1868,9 @@
    "max_required_rp_charon_km": 1483.170830368536,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 3.455425708438163,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.5197471205208002,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.5196476225672932,
    "cross_check": {
     "max_arrival_miss_km": 1.0449858681192678e-05,
     "max_vinf_vector_error_kms": 1.76829503954406e-10,
@@ -1878,7 +1878,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6619711097015447
    },
-   "soi_fraction": 3.0209374479771534e-08,
+   "soi_fraction": 3.050470078669792e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -1936,9 +1936,9 @@
    "max_required_rp_charon_km": 35838.32690268795,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 9.278528252108918,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.5329131740337687,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.5326197203181087,
    "cross_check": {
     "max_arrival_miss_km": 1.5198918011116494e-06,
     "max_vinf_vector_error_kms": 1.769715325156509e-11,
@@ -1946,7 +1946,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.14605236360074422
    },
-   "soi_fraction": 4.393837466065696e-09,
+   "soi_fraction": 4.436791542885687e-09,
    "collisions_320": [],
    "strong": false
   },
@@ -2013,9 +2013,9 @@
    "max_required_rp_charon_km": 36947.2927735519,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 5.1823822419023635,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.4165788289859504,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.4163076457722288,
    "cross_check": {
     "max_arrival_miss_km": 1.196131609006543e-05,
     "max_vinf_vector_error_kms": 1.6885112307015657e-10,
@@ -2023,7 +2023,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.293608574681908
    },
-   "soi_fraction": 3.457882905976886e-08,
+   "soi_fraction": 3.491687107685525e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2090,9 +2090,9 @@
    "max_required_rp_charon_km": 101533.3936507295,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 7.602621796414337,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.339060565614665,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.3388042221340757,
    "cross_check": {
     "max_arrival_miss_km": 2.59713011690876e-05,
     "max_vinf_vector_error_kms": 3.045315402922587e-10,
@@ -2100,7 +2100,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.14689385450521072
    },
-   "soi_fraction": 7.508013138550397e-08,
+   "soi_fraction": 7.581411341285366e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2167,9 +2167,9 @@
    "max_required_rp_charon_km": 28831.5705935289,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 4.16656647850801,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.3390605656146537,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.3388042221340644,
    "cross_check": {
     "max_arrival_miss_km": 3.3926734020487506e-05,
     "max_vinf_vector_error_kms": 4.163491140505621e-10,
@@ -2177,7 +2177,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.3130117542491129
    },
-   "soi_fraction": 9.807839935147678e-08,
+   "soi_fraction": 9.903721203689395e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2244,9 +2244,9 @@
    "max_required_rp_charon_km": 61071.55899103263,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 7.872555913309525,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.2885108224440753,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.2882641559694707,
    "cross_check": {
     "max_arrival_miss_km": 5.662657390385316e-06,
     "max_vinf_vector_error_kms": 6.603606251062635e-11,
@@ -2254,7 +2254,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.15089188118595054
    },
-   "soi_fraction": 1.6370110149400752e-08,
+   "soi_fraction": 1.6530144054691904e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2321,9 +2321,9 @@
    "max_required_rp_charon_km": 26349.55785070363,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 3.9227869714951917,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.2885108224440658,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.288264155969461,
    "cross_check": {
     "max_arrival_miss_km": 4.898870384189927e-05,
     "max_vinf_vector_error_kms": 6.095746404679417e-10,
@@ -2331,7 +2331,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.34051593660829904
    },
-   "soi_fraction": 1.4162087208911894e-07,
+   "soi_fraction": 1.4300535521258713e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -2398,9 +2398,9 @@
    "max_required_rp_charon_km": 54570.28394216763,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 5.309144491775175,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.150030577338884,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.149810420873561,
    "cross_check": {
     "max_arrival_miss_km": 3.636125252722049e-06,
     "max_vinf_vector_error_kms": 4.628332769781604e-11,
@@ -2408,7 +2408,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.22299157790147772
    },
-   "soi_fraction": 1.0511632048434294e-08,
+   "soi_fraction": 1.0614393576141922e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2475,9 +2475,9 @@
    "max_required_rp_charon_km": 21514.367492187335,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 1.7538837140788928,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.1500305773388724,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.1498104208735493,
    "cross_check": {
     "max_arrival_miss_km": 2.8986994663278117e-05,
     "max_vinf_vector_error_kms": 4.2236795738936507e-10,
@@ -2485,7 +2485,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.46986949271467005
    },
-   "soi_fraction": 8.379816450552834e-08,
+   "soi_fraction": 8.461737386940309e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2552,9 +2552,9 @@
    "max_required_rp_charon_km": 85258.08633005393,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 4.96434720696867,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.1092281989262949,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.1090158534771177,
    "cross_check": {
     "max_arrival_miss_km": 8.548302837411259e-06,
     "max_vinf_vector_error_kms": 1.0105395388868584e-10,
@@ -2562,7 +2562,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.19895605701292401
    },
-   "soi_fraction": 2.471218888793399e-08,
+   "soi_fraction": 2.4953774806411974e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2629,9 +2629,9 @@
    "max_required_rp_charon_km": 20213.172804028283,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 1.5855983463859427,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.1092281989262949,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.1090158534771177,
    "cross_check": {
     "max_arrival_miss_km": 2.702764592008776e-05,
     "max_vinf_vector_error_kms": 6.533510164276333e-10,
@@ -2639,7 +2639,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.4422621685994901
    },
-   "soi_fraction": 7.813390609540871e-08,
+   "soi_fraction": 7.889774176993888e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2694,9 +2694,9 @@
    "max_required_rp_charon_km": 18760.45002152595,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 6.079959826614318,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 1.0658109556070003,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 1.0656069217514554,
    "cross_check": {
     "max_arrival_miss_km": 1.4782366592178189e-05,
     "max_vinf_vector_error_kms": 1.618802235628578e-10,
@@ -2704,7 +2704,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.15936880612812848
    },
-   "soi_fraction": 4.273417102607238e-08,
+   "soi_fraction": 4.315193952098582e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2759,9 +2759,9 @@
    "max_required_rp_charon_km": 16363.33573669101,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 4.769184008277752,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.99418192450438,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.9939916029749357,
    "cross_check": {
     "max_arrival_miss_km": 2.7063617012319836e-05,
     "max_vinf_vector_error_kms": 3.077349607242533e-10,
@@ -2769,7 +2769,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.16508179713445684
    },
-   "soi_fraction": 7.823789450605019e-08,
+   "soi_fraction": 7.900274676943089e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -2836,9 +2836,9 @@
    "max_required_rp_charon_km": 35036.86668004862,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 2.093007568163273,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8931825871644878,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.8930116004749572,
    "cross_check": {
     "max_arrival_miss_km": 4.0165111838731126e-05,
     "max_vinf_vector_error_kms": 5.28419667836702e-10,
@@ -2846,7 +2846,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.20416062913489255
    },
-   "soi_fraction": 1.1611285296536166e-07,
+   "soi_fraction": 1.172479701481391e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -2904,9 +2904,9 @@
    "max_required_rp_charon_km": 10333.172760321802,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 1.857170446186628,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.8649012350953788,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.8647356624553775,
    "cross_check": {
     "max_arrival_miss_km": 8.48495932817748e-05,
     "max_vinf_vector_error_kms": 1.117720978013716e-09,
@@ -2914,7 +2914,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.20895870554142715
    },
-   "soi_fraction": 2.45290698765018e-07,
+   "soi_fraction": 2.476886562678512e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -2981,9 +2981,9 @@
    "max_required_rp_charon_km": 36573.04789773852,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 1.2281300344958976,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7919569093200247,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7918053007999734,
    "cross_check": {
     "max_arrival_miss_km": 5.7732488641052624e-05,
     "max_vinf_vector_error_kms": 7.678909101506142e-10,
@@ -2991,7 +2991,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.2243842810026881
    },
-   "soi_fraction": 1.668981774983831e-07,
+   "soi_fraction": 1.6852977110937782e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -3058,9 +3058,9 @@
    "max_required_rp_charon_km": 32125.78878558871,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.6936888132077348,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7919569093200287,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7918053007999775,
    "cross_check": {
     "max_arrival_miss_km": 0.0001191196071997163,
     "max_vinf_vector_error_kms": 1.5128364359242555e-09,
@@ -3068,7 +3068,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.29292070649729385
    },
-   "soi_fraction": 3.4436148196492227e-07,
+   "soi_fraction": 3.4772795368000185e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -3135,9 +3135,9 @@
    "max_required_rp_charon_km": 22538.447436377155,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.756321399738336,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7838602964035936,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7837102378611828,
    "cross_check": {
     "max_arrival_miss_km": 9.382330863024479e-05,
     "max_vinf_vector_error_kms": 1.0045375746966271e-09,
@@ -3145,7 +3145,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.25087762764850574
    },
-   "soi_fraction": 2.712327077153116e-07,
+   "soi_fraction": 2.7388427383565095e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -3212,9 +3212,9 @@
    "max_required_rp_charon_km": 14711.072175837051,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.1534342371740779,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7838602964035932,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7837102378611824,
    "cross_check": {
     "max_arrival_miss_km": 0.001225055232971136,
     "max_vinf_vector_error_kms": 3.610954572734754e-08,
@@ -3222,7 +3222,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.38993204282018534
    },
-   "soi_fraction": 3.541497872869314e-06,
+   "soi_fraction": 3.5761194930052256e-06,
    "collisions_320": [],
    "strong": false
   },
@@ -3277,9 +3277,9 @@
    "max_required_rp_charon_km": 6559.349016046704,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 0.502435592733676,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7054746703248433,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7053396175594177,
    "cross_check": {
     "max_arrival_miss_km": 2.7064290171355392e-05,
     "max_vinf_vector_error_kms": 4.915852016131485e-10,
@@ -3287,7 +3287,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.2513276212888821
    },
-   "soi_fraction": 7.823984053364826e-08,
+   "soi_fraction": 7.90047118213601e-08,
    "collisions_320": [],
    "strong": false
   },
@@ -3353,9 +3353,9 @@
    "max_required_rp_charon_km": 1964.0160173436227,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 5.28551003597249,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7017419498581016,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7016076116671927,
    "cross_check": {
     "max_arrival_miss_km": 2.6761684604488974e-05,
     "max_vinf_vector_error_kms": 3.0557725040570226e-10,
@@ -3363,7 +3363,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5987316594769415
    },
-   "soi_fraction": 7.736504163272304e-08,
+   "soi_fraction": 7.812136090195841e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -3429,9 +3429,9 @@
    "max_required_rp_charon_km": 1850.0884241245865,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 10.580634259871184,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.7017419498581026,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.7016076116671937,
    "cross_check": {
     "max_arrival_miss_km": 1.131344053664342e-05,
     "max_vinf_vector_error_kms": 1.0338721734698803e-10,
@@ -3439,7 +3439,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6206739410486444
    },
-   "soi_fraction": 3.2705893185062754e-08,
+   "soi_fraction": 3.302562541439247e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -3506,9 +3506,9 @@
    "max_required_rp_charon_km": 46368.15676553942,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.11298798200498082,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6938320631323592,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6936992391731037,
    "cross_check": {
     "max_arrival_miss_km": 0.03415061371852495,
     "max_vinf_vector_error_kms": 5.297348610872446e-07,
@@ -3516,7 +3516,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.31874043433949095
    },
-   "soi_fraction": 9.872561055717505e-05,
+   "soi_fraction": 9.969075036781319e-05,
    "collisions_320": [],
    "strong": false
   },
@@ -3583,9 +3583,9 @@
    "max_required_rp_charon_km": 23438.442214472205,
    "rp_within_charon_soi": false,
    "r_min_over_pluto_radius": 0.23685822020171585,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.69383206313236,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6936992391731046,
    "cross_check": {
     "max_arrival_miss_km": 0.00017334458014284308,
     "max_vinf_vector_error_kms": 3.0568361914203305e-09,
@@ -3593,7 +3593,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.27740464138347043
    },
-   "soi_fraction": 5.01119823275566e-07,
+   "soi_fraction": 5.060187617436458e-07,
    "collisions_320": [],
    "strong": false
   },
@@ -3661,9 +3661,9 @@
    "max_required_rp_charon_km": 2284.5156760268906,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 1.719097040387822,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6889164350603384,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6887845521258891,
    "cross_check": {
     "max_arrival_miss_km": 2.070125402744939e-05,
     "max_vinf_vector_error_kms": 3.4694826037583926e-10,
@@ -3671,7 +3671,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5399605191422726
    },
-   "soi_fraction": 5.984501362124845e-08,
+   "soi_fraction": 6.043005740865151e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -3743,9 +3743,9 @@
    "max_required_rp_charon_km": 1990.6636791206631,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.1653518373244274,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6889164350603384,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6887845521258891,
    "cross_check": {
     "max_arrival_miss_km": 2.0044778941140078e-05,
     "max_vinf_vector_error_kms": 2.1106873860809222e-10,
@@ -3753,7 +3753,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5891513255209092
    },
-   "soi_fraction": 5.7947217457301206e-08,
+   "soi_fraction": 5.851370842320268e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -3821,9 +3821,9 @@
    "max_required_rp_charon_km": 1944.4038468707427,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.1653518373244514,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6889164350603367,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6887845521258874,
    "cross_check": {
     "max_arrival_miss_km": 0.00010841811091000453,
     "max_vinf_vector_error_kms": 1.0008853705850786e-09,
@@ -3831,7 +3831,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5977549841174213
    },
-   "soi_fraction": 3.1342465126006044e-07,
+   "soi_fraction": 3.164886850691122e-07,
    "collisions_320": [],
    "strong": true
   },
@@ -3896,9 +3896,9 @@
    "max_required_rp_charon_km": 2000.3157852894265,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 4.307380397450327,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6681484883334415,
    "cross_check": {
     "max_arrival_miss_km": 2.731031985864574e-05,
     "max_vinf_vector_error_kms": 3.461875281559559e-10,
@@ -3906,7 +3906,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5797171181557058
    },
-   "soi_fraction": 7.89510848847199e-08,
+   "soi_fraction": 7.972290928454151e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -3972,9 +3972,9 @@
    "max_required_rp_charon_km": 1783.416916333607,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 8.06182883736481,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6681484883334415,
    "cross_check": {
     "max_arrival_miss_km": 6.896833593724302e-06,
     "max_vinf_vector_error_kms": 7.045056143845478e-11,
@@ -3982,7 +3982,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6225260379749726
    },
-   "soi_fraction": 1.993797572903697e-08,
+   "soi_fraction": 2.0132889024695815e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4048,9 +4048,9 @@
    "max_required_rp_charon_km": 1763.5588901459812,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.5580356925687444,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6681484883334415,
    "cross_check": {
     "max_arrival_miss_km": 8.7463848432361e-06,
     "max_vinf_vector_error_kms": 1.3149993260881542e-10,
@@ -4058,7 +4058,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6267761650647284
    },
-   "soi_fraction": 2.528482184635252e-08,
+   "soi_fraction": 2.5532005814434184e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4124,9 +4124,9 @@
    "max_required_rp_charon_km": 1752.2015675987643,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 5.233805064959926,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6681484883334415,
    "cross_check": {
     "max_arrival_miss_km": 5.4211285718587636e-06,
     "max_vinf_vector_error_kms": 8.678047716341447e-11,
@@ -4134,7 +4134,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.629234175283913
    },
-   "soi_fraction": 1.567187730729952e-08,
+   "soi_fraction": 1.5825085300760867e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4199,9 +4199,9 @@
    "max_required_rp_charon_km": 1684.7989736840889,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 11.051977924012457,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6682764200401229,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6681484883334415,
    "cross_check": {
     "max_arrival_miss_km": 4.660516751361447e-06,
     "max_vinf_vector_error_kms": 3.9407232459757926e-11,
@@ -4209,7 +4209,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6442453397481979
    },
-   "soi_fraction": 1.3473033474081128e-08,
+   "soi_fraction": 1.3604745609387349e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4275,9 +4275,9 @@
    "max_required_rp_charon_km": 1936.3590066991771,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 1.750100390887658,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6503429229330742,
    "cross_check": {
     "max_arrival_miss_km": 2.9643161825211906e-05,
     "max_vinf_vector_error_kms": 3.58715029852218e-10,
@@ -4285,7 +4285,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5850194393389586
    },
-   "soi_fraction": 8.569507049449281e-08,
+   "soi_fraction": 8.653282397753437e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4351,9 +4351,9 @@
    "max_required_rp_charon_km": 1810.328556836298,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 4.512034017105384,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6503429229330742,
    "cross_check": {
     "max_arrival_miss_km": 2.2420945654739298e-05,
     "max_vinf_vector_error_kms": 3.354418642068616e-10,
@@ -4361,7 +4361,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6103617659128656
    },
-   "soi_fraction": 6.481645007254017e-08,
+   "soi_fraction": 6.545009453415654e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4427,9 +4427,9 @@
    "max_required_rp_charon_km": 1667.501766015889,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 8.07845729370411,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6503429229330742,
    "cross_check": {
     "max_arrival_miss_km": 5.004232273140405e-06,
     "max_vinf_vector_error_kms": 5.3054336281091284e-11,
@@ -4437,7 +4437,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6419838708928732
    },
-   "soi_fraction": 1.4466676663784581e-08,
+   "soi_fraction": 1.460810263721791e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4503,9 +4503,9 @@
    "max_required_rp_charon_km": 1617.878170621249,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.64985640561754,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6504674453730883,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6503429229330742,
    "cross_check": {
     "max_arrival_miss_km": 4.754785607424908e-06,
     "max_vinf_vector_error_kms": 8.698513933736611e-11,
@@ -4513,7 +4513,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6537843297695258
    },
-   "soi_fraction": 1.3745554209670229e-08,
+   "soi_fraction": 1.3879930502834345e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4578,9 +4578,9 @@
    "max_required_rp_charon_km": 1981.458525136738,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 1.3948830790296762,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6391049221034963,
    "cross_check": {
     "max_arrival_miss_km": 9.960132841307355e-05,
     "max_vinf_vector_error_kms": 1.481756036131537e-09,
@@ -4588,7 +4588,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.5721662193095145
    },
-   "soi_fraction": 2.879363176583965e-07,
+   "soi_fraction": 2.907511779720709e-07,
    "collisions_320": [],
    "strong": true
   },
@@ -4654,9 +4654,9 @@
    "max_required_rp_charon_km": 1732.0349284996626,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 2.08109893260037,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6391049221034963,
    "cross_check": {
     "max_arrival_miss_km": 2.0156292728720876e-05,
     "max_vinf_vector_error_kms": 4.4178562579095784e-10,
@@ -4664,7 +4664,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6232015668334753
    },
-   "soi_fraction": 5.8269591364112885e-08,
+   "soi_fraction": 5.8839233851586305e-08,
    "collisions_320": [],
    "strong": true
   },
@@ -4729,9 +4729,9 @@
    "max_required_rp_charon_km": 1711.5106583590089,
    "rp_within_charon_soi": true,
    "r_min_over_pluto_radius": 7.406242383675717,
-   "soi_charon_km": 8069.5871346525555,
-   "soi_moon_km": 345.9144342161072,
-   "dwell_in_charon_soi_days": 0.6392272927813634,
+   "soi_charon_km": 8068.042330701088,
+   "soi_moon_km": 342.56551979521504,
+   "dwell_in_charon_soi_days": 0.6391049221034963,
    "cross_check": {
     "max_arrival_miss_km": 7.882036063977817e-06,
     "max_vinf_vector_error_kms": 8.164183954947685e-11,
@@ -4739,7 +4739,7 @@
     "gate_status_integrated": "pass",
     "worst_ratio_integrated": 0.6278245017745485
    },
-   "soi_fraction": 2.2786086049978415e-08,
+   "soi_fraction": 2.300884242141381e-08,
    "collisions_320": [],
    "strong": true
   }

@@ -144,8 +144,8 @@ Every gate-passing cycler (457) was re-flown leg by leg with DOP853 (rtol 1e-13,
 cross_check, imported with the literature module stubbed out): the integrated gate status agrees with
 the generator's on all 457. For the strong set the largest arrival miss at any body is under 0.005 km,
 the largest V_inf vector error 3.2e-9 km/s, and the miss as a fraction of the smaller of the Charon
-and moon SOI at most 2.2e-6 (Charon SOI 8070 km; the four small-moon SOIs are about 150-300 km). Over all 457 the largest miss is 3.4 km (Kerberos, none in the strong set) and the
-largest SOI fraction 1.4e-2. Data: `data/998_pluto_smallmoons/<cell>_gauntlet.json`. A small moon is
+and moon SOI at most 3.1e-6 after the 2026-10-11 regeneration (sec. 10; 2.2e-6 originally; Charon SOI 8068 km, the four small-moon SOIs about 100-340 km). Over all 457 the largest miss is 3.4 km (Kerberos, none in the strong set) and the
+largest SOI fraction 2.8e-2 (1.4e-2 originally). Data: `data/998_pluto_smallmoons/<cell>_gauntlet.json`. A small moon is
 met at its centre by construction; whether a body 5-18 km across can be met to the km level is not
 addressed.
 
@@ -288,7 +288,13 @@ The line counts equal the exact-zero counts in sec. 3. The literature step and t
 - The runs above carried approximate Styx and Kerberos GM (0.0007, 0.0011 km^3/s^2) and the fitted-Kepler
   sma in-process. The page prints upper limits (< 0.0003, < 0.0002) and a of 43200 and 58300 km. Only the
   SOI diagnostic columns (`min_soi_km`, `soi_fraction`, `soi_moon_km`) used these values; no gate, closure
-  or real-ephemeris verdict does. The committed Styx and Kerberos JSONs were not regenerated, so those
-  columns are stale by this change; the driver now reads the registry.
+  or real-ephemeris verdict does. All four `<cell>_gauntlet.json` files were regenerated on 2026-10-11 (after #1037 and #1060): the SOI
+  now comes from the registry GM and the system's own circle radius (#1060). Four fields changed in every
+  candidate (`soi_charon_km`, `soi_moon_km`, `dwell_in_charon_soi_days`, `soi_fraction`); no other field
+  changed, including `strong`, `rp_within_charon_soi`, the gate statuses, the re-fly errors and the
+  counts (183/108, 149/46, 62/41, 63/29). Charon SOI is now 8068 km (was 8070); the moon SOIs are Styx
+  about 105 km, Kerberos about 122 km (were 147 and 240 with the approximate GMs). The largest SOI
+  fraction over all gate-passing cyclers is now 2.8e-2 (Kerberos; was 1.4e-2), still far inside the SOI.
+  The per-zero `zeros.jsonl` files (archived, sec. 9) keep the `min_soi_km` of the original run.
 - `gauntlet_942.py` and `scan_320` no longer import `search.literature_check` at module level (#1038);
   the DOP853 re-fly lives in `search/two_working_body_refly.py`.
