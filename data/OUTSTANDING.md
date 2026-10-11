@@ -59,20 +59,21 @@ repaired and its status (partly done under `#937`, owner ruling) recorded; `#938
 registered. The `data/README.md` stale counts above were fixed in the same pass (live catalogue:
 392 rows on 2026-10-05).
 
-**Novelty status (updated 2026-10-11, catalogue window `c90568bf`; counted from `data/catalogue.yaml`):
-413 rows; 19 `candidate-novel`; 0 `verified-novel`.** The 19: gc-1
-(`ganymede-callisto-two-working-body-cycler-gc1-2026`, V2), ev-C (`earth-venus-venus-hosted-cycler-evc-2026`,
-`#875` (ii)), ev-A (`earth-venus-two-working-body-cycler-eva-2026`), ev-B
-(`earth-venus-two-working-body-cycler-evb-2026`, band flagged: strictly ballistic at the best window,
-window-dependent), and the 15 Ganymede-Callisto `#973`/`#1025` members gc4-1, gc4-2, gc4-6, gc4-8, gc4-10,
-gc4-25, gc4-28, gc4-38, gc4-41, gc5-3, gc5-5, gc5-6, gc6-0, gc6-1, gc6-2
-(`ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`, V1, family relation to gc-1 recorded); all
-others V1. gc-2 (`ganymede-callisto-two-working-body-cycler-gc2-2026`) is `known-class-member`, V2.
-Standing caveats: the evidence is patched conic plus chain-tool real ephemeris; the gc members' standing
-in continuous gravity is the ideal-model sigma continuation of `#1025` (real-ephemeris continuous
-gravity untested, the jup365 lane is unvalidated, `#1046`); ev-B's dV band is window-dependent; gc-1's
-V2 is MARGINAL (3/5 under the corrected criterion 1), recorded in its row. Each row records its owner
-decision (2026-10-07 / 2026-10-08) and its `#972` gate result.
+**Novelty status (updated 2026-10-11, catalogue window 2 `397df88d`; counted from `data/catalogue.yaml`):
+423 rows; 29 `candidate-novel`; 0 `verified-novel`; V2 count 11.** The 29: gc-1
+(`ganymede-callisto-two-working-body-cycler-gc1-2026`, V2) and 15 more Ganymede-Callisto members (gc4-1, 2, 6,
+8, 10, 25, 28, 38, 41, gc5-3, 5, 6, gc6-0, 1, 2; `ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`,
+V1, family relation to gc-1); 13 Earth-Venus rows: ev-A (`earth-venus-two-working-body-cycler-eva-2026`, V2),
+ev-B (V1, band flagged), ev-C (`earth-venus-venus-hosted-cycler-evc-2026`, V1, `#875` (ii)) and the ten `#973`
+members ev4-1, 4-4, 4-6, 4-7, ev5-4, 5-5, 5-6, 5-7, 5-8, 5-9 (`earth-venus-two-working-body-cycler-ev<k>-<n>-2026`,
+V1, owner ruling 2026-10-11 option (a) "10 rows"). gc-2 (`ganymede-callisto-two-working-body-cycler-gc2-2026`)
+is `known-class-member`, V2. Standing caveats: the evidence is patched conic plus chain-tool real ephemeris
+(for the ten Earth-Venus members, Standish at 4-5 of 5 epochs and the DE440 blend; the DE440 shoot cannot
+judge them, `#1057`); the gc members' continuous-gravity standing is the ideal-model sigma continuation of
+`#1025` (real-ephemeris continuous gravity untested; the jup365 lane is unvalidated, `#1046`); ev-B's dV band
+is window-dependent. V2 uses the 2026-10-11 spec sec. 14 V2-ballistic wording (bounded = the same-phase band,
+first and last cycle excluded, slope recorded), under which gc-1, gc-2 and ev-A pass 5/5 (`#1007` secs.
+8.10-8.14). Each row records its owner decision and its `#972` gate result.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
 rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
 torus row on 2026-10-03 (`#882`); `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Older
@@ -165,6 +166,11 @@ Added 2026-10-08: `#1042`-b, whether `hernandez-2017-jovian-ieg-triple-family` k
 Added 2026-10-11: the adjudication of the 22 `#1025` Earth-Venus members, options (a)-(d) in
 `docs/notes/2026-10-08-1025-owner-summary.md` sec. 6 (to be asked after `#1057` step 1); and the `#1007`
 drift-metric wording (the sec. 8.4 DRAFT same-phase metric, cycle i against i + L, awaiting the owner).
+[Both DECIDED 2026-10-11: ev-22 option (a), ten rows (window 2); V2 bounded = band only, ends skipped,
+slope as diagnostic.] Added 2026-10-11: a catalogue row for gc4-19 (the 16th gc member that EXISTS in
+continuous gravity, `#1055`); whether the 15 known-class Earth-Moon families of `#1047` become catalogue
+rows (known-class-member, like gc-2) or stay in the note; and the Earth-Mars L tolerance for the Russell ch.
+4 re-judge (`#1061` D list item 2).
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
@@ -185,7 +191,8 @@ by the rulings below; each row records gate result, anchor, prior-art note and d
 2026-10-08 (`275c9e28`, twobody-gen2-opus; rows at V1; five census ratchets extended; both ratchet
 chunks exit 0).** **Catalogue window `c90568bf` (2026-10-11):** 16 more rows (ev-B and the 15 gc members as
 candidate-novel V1), gc-1 and gc-2 promoted to V2 (the V2 count is now 10), the `#1046` gc-1 `data_gaps`
-sentence; catalogue 413 rows. Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
+sentence; catalogue 413 rows. **Catalogue window 2 `397df88d` (2026-10-11):** the ten Earth-Venus `#973` members as candidate-novel
+V1 rows (owner option (a)), ev-A V1 -> V2 under the final sec. 14 wording; catalogue 423 rows. Owner rulings 2026-10-07 (the owner's own answers, relayed by the lead): gc-1, ev-C and ev-A are
 **candidate-novel** (spec 16.4/16.5 wording; attribution to the architecture's authors, Russell & Strange
 for ev-C); gc-2 is a GanCal-family relative, NOT novel. Owner decision 2026-10-08 evening: ev-B is
 candidate-novel V1 with its band flagged (row in the next window). All other rows stay **candidate, pending owner adjudication, NOT novel.** Caveats:
@@ -2385,6 +2392,16 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   as required (`3fb5d27f`). A sec. 8.4 DRAFT (`f00e40cf`) proposes a same-phase drift metric (cycle i
   against i + L, L the geometric repeat, >= 2L cycles, no template), not run, awaiting the owner. ev V2
   waits.
+  **FINAL WORDING AND RESULTS 2026-10-11 (secs. 8.10-8.14):** OWNER DECISION (after a further-information round):
+  V2 bounded = "band only, ends skipped, slope as diagnostic" (the same-phase D' / W' within the band over >=
+  2L cycles, first and last cycle excluded, no growth test, slope recorded for V3; a decision made after the
+  published H&M orbit failed every growth test, recorded as such; the lead's earlier trend-fit ruling was
+  withdrawn). Sec. 8.10 pre-registration `d8f7f4a1`; 8.11 controls behave (`e342ef51`: H&M orbit 1 10-cycle
+  positive PASSES, the broken-chain negative fails); 8.12 gc-1 and gc-2 re-judged, both 5/5 PASS (`7093fb10`);
+  8.13 pre-registration `6e16d79a`; 8.14 ev lane (`9a0e0d76`): ev-A 5/5 PASS (promoted to V2 in window 2),
+  ev-B 0/5, ev-C 1/5 (as pre-registered); 8.14a / 8.15 (`7424293b`): L hard-coded and the ev-B 0.02-rev edge
+  recorded; an ev-C branch check and seeded re-solve pre-registered. Sweep of older negatives: `#1061`
+  (done, no further flips).
 - `#1008` — registered 2026-10-07 (owner: "log all possible tasks"); status: DISPATCHED
   (twobody-gen2-opus, owner ruling 2026-10-07). **ev-B: STANDISH RAMP-MODE k-CYCLE GROWTH RETRY AT
   ITS THREE FAILING EPOCHS, BEFORE THE OWNER DECIDES.** Pre-registered in note 6.55 of
@@ -2842,7 +2859,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   crank): the obstruction is an out-of-plane inconsistency near the chain, not a parametrisation. The
   jup365 lane stays unvalidated. The gc-1 `data_gaps` sentence "obstruction: out-of-plane mismatch across
   the full-revolution leg (`#1046`)" goes in at the next catalogue window. Follow-up: `#1055`.
-- `#1047` — registered 2026-10-08 (from `#1000`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **LITERATURE STEP AND ADJUDICATION FOR
+- `#1047` — ✓ DONE 2026-10-11 (earthmoon-opus; `c93b4f65`, `bba3eeb8`, `335d7ba0`; note
+  `docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md`): 18 Earth-Moon entries
+  scored; proposed `#875` classes: 2 known-reproduction (the 7:3 retrograde wM-1 families, symmetric and
+  asymmetric), 15 known-class-member (including the `#1000` families A, B and D), one 6:3 orbit
+  unclassified. The gate does not compare p:q. The positive control passes at status level but cites the
+  wrong anchor (corpus-order citation, `#1062`). Whether the 15 become catalogue rows is an owner
+  question. Registered 2026-10-08 (from `#1000`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **LITERATURE STEP AND ADJUDICATION FOR
   THE `#1000` FAMILIES A, B AND D, THE NINE SYMMETRIC FAMILIES, AND (widened 2026-10-08, from `#1048`) THE
   3:1 RETROGRADE AND 7:2 PROGRADE SYMMETRIC FAMILIES**, likely `#875` (iii) known-class
   (computed members of Casoliva's Class 1 p-q resonant class). The explicit row-by-row collision table
@@ -2923,9 +2946,19 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   1.3 times the floor, omega chosen by the target lunar-pass distance, and a perigee step limit; the
   current seeds impact in 93-94 % of solves when the skeleton passes near the Moon or the seed perigee
   is at the floor.
+  **RESULT 2026-10-11 (earthmoon-opus; `2c139345`, `72b4b497`, `f048aa67`): FALSIFIED AS PRE-REGISTERED** (the D
+  impact rate 0.588 is not below B's 0.392; C/D converged 0.237 against the records' 0.333; differences in
+  yield under 1 sigma, the converged gap about 2 sigma; F3 turns impacts into stalls). A test pins the
+  reproduction of 20 old seeds and the old floor-row skeleton-arc impact >= 0.80, with an F3 opt-in
+  regression and no bound for the falsified F1+F2 design. Next: F1 alone.
 - `#1055` — registered 2026-10-08 (from `#1046`; BACKLOG). **A SEED CORRECTED WITH THE OUT-OF-PLANE ROWS** for
   the Jovian n-body lane's full-revolution legs, to remove the out-of-plane inconsistency that stalls
   GanCal#1@2013 and gc-1 under every formulation (`#1046`).
+  **PROGRESS 2026-10-11:** gc4-19 EXISTS in the continuous ideal model from the corrected seed (`14dec6ec`: IAS15
+  1.5e-5 km, scan clean, identity 1e-4; the 16th clean gc member; `8cde2928`: its sigma -> 0 limit equals the
+  `#973` gauntlet member to within 14 s; `fd5ee948`: through the `#973` gate). A gc4-19 catalogue row awaits
+  the owner. GanCal#1 is running under amendment 7 (`47a5b62e`: pseudo-arclength family stage after a
+  chord-scan crash round the weak G2 flyby).
 - `#1056` — registered 2026-10-08 (from `#1025`; BACKLOG, small). **A CLOSING-REPEAT FLAG ON SIGNATURES (OR A
   ROTATED START IN `sig_of`)** so that `#972`'s F3 rule cannot read a consecutive-same-moon cycle (G G C) as
   alternating. Papercut `docs/papercuts/2026-10-08-twobody-ext-opus-closing-repeat-rule-vs-time-ordered-flybys.md`.
