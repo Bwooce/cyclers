@@ -1,0 +1,132 @@
+# Brozovic & Jacobson 2024, Tables 6-11: dynamical constants, PLU060 state vectors, masses, densities, mean
+#   osculating elements and mean precessing-ellipse elements for Charon, Styx, Nix, Kerberos and Hydra.
+# Source: M. Brozovic and R. A. Jacobson, "Post-New-Horizons Orbits and Masses for the Satellites of Pluto",
+#   The Astronomical Journal 167:256 (12 pp), 2024 June, doi 10.3847/1538-3881/ad39f0. Received 2023 Sep 21,
+#   revised 2024 Mar 25, accepted 2024 Apr 1, published 2024 May 8. Gold open access, CC BY 4.0.
+# Local file: publisher PDF (iopscience), 12 pp., text layer, md5 f9d5b237871b376a2fd3afdda733dcdc.
+#   PDF page n = journal page n.
+# Tables: 6 and 7 p.5; 8 and 9 p.8; 10 p.9; 11 p.10. Tables 1-5 (astrometry summaries: time span, type, points,
+#   rms) are not transcribed; they hold no dynamical value.
+# Witnesses: C = page image (Tables 6, 7, 10 at 220-250 dpi crops; 8, 9, 11 at 130 dpi), read cell by cell
+#   (decides); A = the publisher text layer (pdftotext -layout). A scripted search found all 151 numeric tokens of
+#   Tables 6, 7, 8, 10 and 11 in the text layer (checks/check_yaml_textlayer.out). Text-layer glyph losses:
+#   "L" for the ellipsis "...", "v" for varpi-dot, "W" for Omega-dot, the "x" of "x 10^-3" as a stray glyph,
+#   and the minus of Table 10's lower bounds as "-" fused to the digits. No cell disagrees.
+# No value here was computed by us. Our values are only in `note:` fields, marked "ours", and in
+#   checks/check_pluto.out and checks/check_plu060_kernel.out. Numbers are kept as printed (strings).
+#
+# MODEL (sec. 2.2, p.3-4): equations of motion and variational equations of Peters (1981); Cartesian, origin at
+#   the Pluto system barycentre, ICRF, TDB. Perturbers: Sun, Jupiter, Saturn, Uranus, Neptune (positions from
+#   DE440, GMs Table 6). Variable-order variable-step Gauss-Jackson; velocity error bound 1e-10 km/s; maximum
+#   step 1800 s. Weighted least squares; estimated: each satellite's epoch state and GM, system GM, observation
+#   biases. Solution name: PLU060 (sec. 5; Table 7 caption).
+# KERNEL IDENTITY (ours, checks/check_plu060_kernel.out): plu060.bsp (NAIF generic_kernels/spk/satellites,
+#   the project's pinned kernel) reproduces every Table 7 state at 2013-01-01 00:00:00 TDB
+#   (ET 410270400 s; JED 2456293.5, the kernel's "File Epoch") to 1e-8 m and 2e-9 mm/s. The kernel header
+#   carries the full-precision GMs (`kernel_gm` block below). So plu060.bsp IS this paper's solution.
+conventions:
+  frame: "ICRF (kernel: J2000), origin Pluto system barycentre (NAIF 9)"
+  time: "TDB; Table 7 epoch '2013 January 1 TDB', no time of day printed; 00:00 TDB confirmed by the kernel match (ours)"
+  units: "km, km/s, km^3/s^2, days, deg, g/cm^3"
+  elements_origin: "Table 10 and 11 note: Charon elements Plutocentric; small-satellite elements barycentric"
+  inclination_reference: "Table 10 note: i is relative to Charon's orbit pole (sec. 3.4)"
+  table10_definition: "mean of the OSCULATING elements over 400 yr (1800-01-01 to 2200-01-01) sampled daily; P = average of 2 pi sqrt(a^3/GM) (sec. 3.3); bounds are the min/max of that sampling, not fit uncertainties"
+  table11_definition: "single precessing ellipse (six elements + three rates) least-squares fit to the same 400 yr; n = mean longitude rate; varpi_dot apsidal and Omega_dot nodal rates; e listed only if > 1e-5, i only if > 1e-3 deg"
+  braces: "Table 8 values in {} are the formal 1-sigma from the covariance; the main sigma is inflated by about 2"
+  limits: "'<' values are 1-sigma upper bounds; Kerberos and Styx GM were HELD at 0.06e-3 and 0.04e-3 km^3/s^2 in the fit (1 g/cm^3)"
+tables:
+  - table: "6"
+    caption: "Dynamical Constants"
+    journal_page: "4 (PDF p.5)"
+    note: "External perturbers and their GM (km^3/s^2)"
+    rows:
+      - {constant: "Jovian system GM", value: "126712761.8414", reference: "JUP365"}
+      - {constant: "Saturnian system GM", value: "37940584.8418", reference: "Park et al. (2021)"}
+      - {constant: "Uranian system GM", value: "5794556.4000", reference: "Park et al. (2021)"}
+      - {constant: "Neptunian system GM", value: "6836531.6409", reference: "Brozovic et al. (2020)", note: "DE440 header in the same kernel prints GM8 6836527.100580 (ours, read); this is the NEP097-era value"}
+      - {constant: "Sun GM", value: "132713233263.3514", reference: "Park et al. (2021)", note: "kernel GM10 1.327132332633514e11 (same); DE440 GMS is 132712440041.279419 (Sun alone); ours: 132713233263.35 - 132712440041.28 = 793222.07, which equals the DE440 GMs of Mercury + Venus + EMB + Mars (22031.87 + 324858.59 + 403503.24 + 42828.38), so this is Sun plus inner planets; not stated in the paper"}
+  - table: "7"
+    caption: "State Vectors for the Satellites of Pluto for PLU060 Solution"
+    journal_page: "4 (PDF p.5)"
+    epoch: "2013 January 1 TDB"
+    columns: [satellite, x, y, z, vx, vy, vz]
+    rows:
+      - {satellite: Charon, x: "1294.898257234724", y: "3752.330500580489", z: "17005.43941754189", vx: "0.1454169209117114", vy: "0.1296974100920635", vz: "-0.03971683172210958"}
+      - {satellite: Styx, x: "-30520.02248137261", y: "-26611.57624235862", z: "12163.42941751980", vx: "0.02282041510217215", vy: "0.04308397332308175", vz: "0.1466220342172855"}
+      - {satellite: Nix, x: "9046.010082185421", y: "15238.22083948846", z: "45575.71781390853", vx: "0.1004196207525389", vy: "0.08653117164114708", vz: "-0.04802500972712307"}
+      - {satellite: Kerberos, x: "23562.50425832867", y: "28373.80607614666", z: "44574.91064501760", vx: "0.07933849058330816", vy: "0.06295028831203255", vz: "-0.08169691001834066"}
+      - {satellite: Hydra, x: "-43338.49591056207", y: "-43651.16694668883", z: "-20473.07290530275", vx: "-0.03742047408774844", vy: "-0.01834944312760025", vz: "0.1157852389287494"}
+  - table: "8"
+    caption: "Satellite Masses"
+    journal_page: "8"
+    units: "km^3/s^2"
+    columns: [object, brozovic_2015, porter_canup_2023, current_work]
+    rows:
+      - {object: System, brozovic_2015: "975.5 +- 1.5 {0.2}", porter_canup_2023: "...", current_work: "975.4 +- 0.2 {0.09}", note: "text p.6 gives the formal value 975.41 +- 0.09; text p.6 also says Brozovic 2015 had 975.2 +- 0.2 formal, Table 8 prints 975.5 (kept visible)"}
+      - {object: Pluto, brozovic_2015: "869.6 +- 1.8", porter_canup_2023: "...", current_work: "869.3 +- 0.4"}
+      - {object: Charon, brozovic_2015: "105.9 +- 1.0 {0.3}", porter_canup_2023: "...", current_work: "106.1 +- 0.3 {0.12}", note: "text p.6 gives the formal value 106.10 +- 0.14; Table 8 prints {0.12} (kept visible)"}
+      - {object: Nix, brozovic_2015: "(3.0 +- 2.7) x 10^-3", porter_canup_2023: "(1.75 +- 0.35) x 10^-3", current_work: "(1.50 +- 0.52) x 10^-3", note: "text p.8 gives 0.0014 +- 0.0005 (kept visible); kernel 1.496176e-3"}
+      - {object: Hydra, brozovic_2015: "(3.2 +- 2.8) x 10^-3", porter_canup_2023: "(2.01 +- 0.20) x 10^-3", current_work: "(2.01 +- 0.27) x 10^-3"}
+      - {object: Kerberos, brozovic_2015: "(1.1 +- 0.6) x 10^-3", porter_canup_2023: "<0.05 x 10^-3", current_work: "<0.17 x 10^-3", note: "held at 0.06e-3 in the fit (Table 8 note; text: 6e-5, R 6 km); kernel 6.038e-5"}
+      - {object: Styx, brozovic_2015: "<1.0 x 10^-3", porter_canup_2023: "<0.03 x 10^-3", current_work: "<0.33 x 10^-3", note: "held at 0.04e-3 in the fit (Table 8 note; text: 4e-5, R 5.25 km); kernel 4.045e-5"}
+    derived_in_text:
+      - {quantity: "mc/mp", value: "0.1220 +- 0.0003", page: "6"}
+      - {quantity: "GM_Pluto", value: "869.3 +- 0.4", page: "6"}
+  - table: "9"
+    caption: "Satellite Densities"
+    journal_page: "8"
+    units: "g/cm^3"
+    columns: [object, brozovic_2015, porter_canup_2023, current_work]
+    rows:
+      - {object: Pluto, brozovic_2015: "1.89 +- 0.6 [1.854 +- 0.005]", porter_canup_2023: "...", current_work: "1.853 +- 0.004"}
+      - {object: Charon, brozovic_2015: "1.72 +- 0.02 [1.702 +- 0.017]", porter_canup_2023: "...", current_work: "1.705 +- 0.006"}
+      - {object: Nix, brozovic_2015: "<1.68 [<3.36]", porter_canup_2023: "1.03 +- 0.20", current_work: "0.88 +- 0.31"}
+      - {object: Hydra, brozovic_2015: "<0.88 [<3.62]", porter_canup_2023: "1.22 +- 0.15", current_work: "1.21 +- 0.19"}
+      - {object: Kerberos, brozovic_2015: "...", porter_canup_2023: "<2.03", current_work: "<2.8"}
+      - {object: Styx, brozovic_2015: "...", porter_canup_2023: "<2.20", current_work: "..."}
+    note: "Sizes used (Table 9 note): Pluto R 1188.3 +- 0.8 km, Charon R 606.0 +- 0.5 km (Stern et al. 2018); Nix D 36.5 +- 0.5 km, Hydra D 36.2 +- 1.0 km (Porter et al. 2021); Kerberos D 12 km. Ours: densities reproduce from these (1.853, 1.705, 0.883, 1.212)."
+  - table: "10"
+    caption: "Mean Keplerian Osculating Orbital Elements for the Satellites of Pluto"
+    journal_page: "9"
+    columns: [element, Charon, Styx, Nix, Kerberos, Hydra]
+    rows:
+      - {element: "a (km)", Charon: "19595.764 +0.007/-0.008", Styx: "43163 +677/-1085", Nix: "49340 +419/-666", Kerberos: "58272 +268/-366", Hydra: "65175 +195/-247"}
+      - {element: "e", Charon: "1.61 +0.01/-0.01 x 10^-4", Styx: "0.025 +0.016/-0.020", Nix: "0.015 +0.010/-0.014", Kerberos: "0.010 +0.007/-0.010", Hydra: "0.009 +0.007/-0.009"}
+      - {element: "i (deg)", Charon: "...", Styx: "0.049 +0.006/-0.006", Nix: "0.022 +0.002/-0.002", Kerberos: "0.422 +0.006/-0.006", Hydra: "0.280 +0.003/-0.003"}
+      - {element: "P (days)", Charon: "6.387221 +0.000005/-0.000003", Styx: "20.89 +0.49/-0.79", Nix: "25.51 +0.33/-0.51", Kerberos: "32.75 +0.23/-0.30", Hydra: "38.74 +0.17/-0.22"}
+    note: "Ours: Kepler P from a with the kernel GM_P+GM_C (975.4273) agrees with printed P to 0.05 percent for every column (Charon 6.3872216 against 6.387221). Period ratios to Charon (printed in sec. 4.1): 3.27:3.99:5.13:6.07."
+  - table: "11"
+    caption: "Mean Precessing Ellipse Model Orbital Elements for the Satellites of Pluto"
+    journal_page: "10"
+    columns: [element, Charon, Styx, Nix, Kerberos, Hydra]
+    rows:
+      - {element: "a (km)", Charon: "19595.764", Styx: "42410", Nix: "48689", Kerberos: "57749", Hydra: "64719"}
+      - {element: "e", Charon: "1.61 x 10^-4", Styx: "...", Nix: "...", Kerberos: "...", Hydra: "0.006"}
+      - {element: "i (deg)", Charon: "...", Styx: "...", Nix: "...", Kerberos: "0.42", Hydra: "0.28"}
+      - {element: "n (deg/day)", Charon: "56.362530", Styx: "17.855", Nix: "14.484", Kerberos: "11.191", Hydra: "9.424"}
+      - {element: "P (days)", Charon: "6.387222", Styx: "20.16", Nix: "24.85", Kerberos: "32.17", Hydra: "38.20"}
+      - {element: "varpi_dot (deg/day)", Charon: "2.5 x 10^-6", Styx: "...", Nix: "...", Kerberos: "...", Hydra: "0.070"}
+      - {element: "Omega_dot (deg/day)", Charon: "...", Styx: "...", Nix: "...", Kerberos: "-0.11", Hydra: "-0.071"}
+    note: "Ours: P = 360/n to the printed digits. Kepler P from Table 11 a (GM 975.4273) is LONGER than the printed P by 0.87, 0.67, 0.45, 0.36 percent (Styx, Nix, Kerberos, Hydra): the Table 11 a is not the Kepler radius of n. Period ratios to Charon (printed in sec. 4.1): 3.16:3.89:5.04:5.98."
+text_values:
+  - {quantity: "Charon orbit pole R.A.", value: "133.0073 + 0.0036 T deg", T: "Julian centuries from J2000", page: "1, 10", note: "kernel ZACPL9 133.0073, DACPL9 0.0036"}
+  - {quantity: "Charon orbit pole decl.", value: "-6.2449 + 2.5 x 10^-5 T deg", page: "1, 10", note: "kernel ZDEPL9 -6.2449, DDEPL9 2.5e-5"}
+  - {quantity: "mean motion 1-sigma (deg/day)", value: "Charon 9e-7, Styx 2e-5, Nix 4e-6, Kerberos 7e-6, Hydra 2e-6", page: "10"}
+  - {quantity: "nC - 5 nKerberos + 4 Omega_dot_Kerberos", value: "-0.03 deg/day", page: "10", note: "ours from Table 11: -0.0325"}
+  - {quantity: "nC - 6 nHydra + 4 varpi_dot_Hydra + Omega_dot_Hydra", value: "0.03 deg/day", page: "10", note: "ours from Table 11: 0.0275"}
+  - {quantity: "3 nStyx - 5 nNix + 2 nHydra", value: "-7.3 x 10^-3 deg/day", page: "11", note: "ours from the rounded Table 11 rates: -7.0e-3 (rounding allows several e-3); Showalter & Hamilton 2015: -7 +- 1 x 10^-3"}
+  - {quantity: "Phi = 3 lambda_Styx - 5 lambda_Nix + 2 lambda_Hydra", value: "circulates, period about 140 yr", page: "11", note: "ours 360/7.0e-3 deg/day = 141 yr"}
+  - {quantity: "Charon pole precession rate about Pluto's heliocentric pole", value: "3.79 x 10^-3 deg/century (period 9.5 Myr)", page: "9", note: "inputs n_sun 145.75 deg/century, Q 119.7 deg, J2 0, gamma 0.4"}
+  - {quantity: "Pluto heliocentric (DE441, 30000 yr)", value: "pole R.A. 314.087 deg, decl. 66.531 deg; apsidal rate -0.00897 deg/century; nodal rate -0.00181 deg/century; mean sidereal period 246.99 yr", page: "9"}
+  - {quantity: "PLU043 against PLU060 at 2015-07-14 (max difference)", value: "Charon 2 km radial/along-track, 5 km out of plane; along-track Styx 244, Nix 47, Kerberos 106, Hydra 81 km", page: "7"}
+kernel_gm:
+  source: "plu060.bsp comment area (SATEPHGEN/28, 21-Mar-2024; read by us, checks/check_plu060_kernel.out); NOT printed in the paper"
+  units: "km^3/s^2"
+  Charon: "1.061011388236118E+02"
+  Nix: "1.496176095836919E-03"
+  Hydra: "2.007962473606101E-03"
+  Kerberos: "6.038450780269370E-05"
+  Styx: "4.045391585487917E-05"
+  Pluto: "8.693261226311508E+02"
+  System: "9.754308664317557E+02"
+  note: "Ours: GM_P + GM_C = 975.42726; mu = GM_C/(GM_P+GM_C) = 0.1087740; the same kernel's DE440 header prints GM9 (Pluto system) 975.500000"
