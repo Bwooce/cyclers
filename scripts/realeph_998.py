@@ -29,6 +29,7 @@ import numpy as np
 import spiceypy as sp
 from scipy.optimize import brentq
 
+from cyclerfinder.data.candidate_ids import record_id
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
     Cycle,
@@ -221,6 +222,7 @@ def main() -> None:
         out.append(
             {
                 "key": cand["key"],
+                "record_id": record_id(cand),  # #1071: the gauntlet cid when it has one
                 "k": cand["k"],
                 "strong": cand["strong"],
                 "ideal": {

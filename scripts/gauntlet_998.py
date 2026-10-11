@@ -27,6 +27,7 @@ from typing import Any
 import numpy as np
 import yaml  # type: ignore[import-untyped]
 
+from cyclerfinder.data.candidate_ids import candidate_cid
 from cyclerfinder.search.two_working_body import cycle_flybys, sphere_of_influence_km
 from cyclerfinder.search.two_working_body_enum import leg_extent
 
@@ -176,6 +177,8 @@ def main() -> None:
             "soi_fraction": xc["max_arrival_miss_km"] / min(soi_charon, soi_moon),
             "collisions_320": collide_320(moon, vc, vm, period_d),
         }
+        # #1071: stable id (new writes only; committed files are addressed by index)
+        rec["cid"] = candidate_cid(args.cell, len(results), best["x_days"])
         results.append(rec)
         if (i + 1) % 20 == 0 or i + 1 == len(items):
             print(f"[{i + 1}/{len(items)}]", flush=True)

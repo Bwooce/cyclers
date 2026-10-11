@@ -29,6 +29,7 @@ from numpy.typing import NDArray
 from scipy.optimize import least_squares
 
 from cyclerfinder.core.satellites import SATELLITES
+from cyclerfinder.data.candidate_ids import index_by_key
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.nbody.jovian import (
@@ -74,10 +75,9 @@ def build() -> tuple[Any, Arr]:
     """Problem (from run_968_control) and the patched-conic seed z = [x_B, t_B, v_E, t_E]."""
     enum = CTL._load_enum()
     circ, a, b = enum.cell_system("ge1")  # R-S Table 2, Europa massless
-    cands = {
-        c["key"]: c
-        for c in json.loads((ROOT / "data/943_cell_ge_gauntlet.json").read_text())["candidates"]
-    }
+    cands = index_by_key(
+        json.loads((ROOT / "data/943_cell_ge_gauntlet.json").read_text())["candidates"]
+    )
     _, cyc = enum.parse_cycle_key(KEY, circ, a, b)
     x = np.asarray(cands[KEY]["x_days"]) * DAY
     fl = cycle_flybys(circ, cyc, x)

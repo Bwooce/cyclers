@@ -34,6 +34,7 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import minimize_scalar
 
 from cyclerfinder.core.satellites import SATELLITES
+from cyclerfinder.data.candidate_ids import index_by_key
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.nbody.jovian import JovianRestrictedNBody, periapsis_node
@@ -94,10 +95,9 @@ class Problem:
 def build_problem() -> Problem:
     enum = _load_enum()
     circ, a, b = enum.cell_system("gc1")  # R-S Table 2, Callisto massless
-    cands = {
-        c["key"]: c
-        for c in json.loads((ROOT / "data/943_cell_gc_gauntlet.json").read_text())["candidates"]
-    }
+    cands = index_by_key(
+        json.loads((ROOT / "data/943_cell_gc_gauntlet.json").read_text())["candidates"]
+    )
     _, cyc = enum.parse_cycle_key(KEY, circ, a, b)
     x = np.asarray(cands[KEY]["x_days"]) * DAY
     fl = cycle_flybys(circ, cyc, x)

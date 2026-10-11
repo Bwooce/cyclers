@@ -37,6 +37,7 @@ from typing import Any
 import numpy as np
 import yaml  # type: ignore[import-untyped]
 
+from cyclerfinder.data.candidate_ids import candidate_cid
 from cyclerfinder.search.two_working_body import cycle_flybys, sphere_of_influence_km
 from cyclerfinder.search.two_working_body_enum import leg_extent
 from cyclerfinder.search.two_working_body_refly import cross_check, fly  # noqa: F401
@@ -260,6 +261,8 @@ def main() -> None:
                 "notes": getattr(lit, "notes", None),
             },
         }
+        # #1071: stable id (new writes only; committed files are addressed by index)
+        rec["cid"] = candidate_cid(args.cell, len(results), best["x_days"])
         results.append(rec)
         print(
             f"k={k} vinf={ {kk2: round(vv, 3) for kk2, vv in best['vinf_kms'].items()} } "

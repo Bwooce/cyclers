@@ -31,6 +31,7 @@ from typing import Any
 
 import numpy as np
 
+from cyclerfinder.data.candidate_ids import record_id
 from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import (
@@ -262,6 +263,7 @@ def cmd_continue(argv: list[str]) -> None:
         rec: dict[str, Any] = {
             "index": j,
             "key": c["key"],
+            "record_id": record_id(c),  # #1071: cid when the gauntlet file has one
             "strong_998": c["strong"],
             "worst_ratio_998": c["worst_ratio"],
             "vinf_charon_998": c["vinf_charon_kms"],
@@ -432,7 +434,12 @@ def cmd_realeph(argv: list[str]) -> None:
             hits = [
                 x
                 for x in recs
-                if x["key"] == cand["key"]
+                if (
+                    x["record_id"] == cand["record_id"]
+                    if "record_id" in x and "record_id" in cand
+                    else True
+                )
+                and x["key"] == cand["key"]
                 and abs(x["worst_ratio_998"] - cand["ideal"]["worst_ratio"]) < 1e-9
             ]
             assert len(hits) == 1, (cell, cand["key"], len(hits))

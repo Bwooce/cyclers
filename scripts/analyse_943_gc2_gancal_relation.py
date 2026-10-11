@@ -19,6 +19,7 @@ from typing import Any
 
 import numpy as np
 
+from cyclerfinder.data.candidate_ids import index_by_key
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
     Cycle,
@@ -84,7 +85,7 @@ def elements(r: np.ndarray, v: np.ndarray, mu: float) -> tuple[float, float]:
 
 
 def main() -> None:
-    cands = {c["key"]: c for c in json.loads(GAUNTLET.read_text())["candidates"]}
+    cands = index_by_key(json.loads(GAUNTLET.read_text())["candidates"])
     circ, a, b = ENUM.cell_system("gc")
     note = "docs/notes/2026-10-05-942-943-two-working-body-generator.md 6.20"
     out: dict[str, Any] = {"note": note}
