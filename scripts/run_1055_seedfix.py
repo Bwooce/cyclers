@@ -479,6 +479,55 @@ def stage_fold(t: Target) -> None:
     t.log(f"fold: status {st['status']}")
 
 
+def stage_foldsqrt(t: Target) -> None:
+    """Sec. 12.6 (post-hoc amendment 12): separation of the two fixed-sigma solutions at sigma
+    0.65, 0.69 and 0.72 (lower start: nearest natural point; upper start: nearest monitor point
+    after the turn). A fold predicts separation^2 linear in sigma, vanishing at sigma_f. Writes
+    foldsqrt.json; resumable per sigma."""
+    path = t.out / "foldsqrt.json"
+    out: dict[str, Any] = json.loads(path.read_text()) if path.exists() else {"rows": {}}
+    nat = json.loads((t.out / "sigma_n1.json").read_text())["points"]
+    fold = json.loads((t.out / "fold.json").read_text())
+    s_stop = float(fold["sigma_stop"])
+    upper = [q for q in fold["mon"][2:] if q["sigma"] < s_stop]
+    for sg in (0.65, 0.69, 0.72):
+        if str(sg) in out["rows"]:
+            continue
+        sol: dict[str, Any] = {}
+        for lab, pts in (("lower", nat), ("upper", upper)):
+            q = min(pts, key=lambda p: abs(p["sigma"] - sg))
+            z, okk = t.solve_fixed(t.scale(np.asarray(q["z"]), sg / q["sigma"]), sg)
+            sol[lab] = t.nodes_vr(z, sg) if okk else None
+        row: dict[str, Any] = dict(sol)
+        if sol["lower"] and sol["upper"]:
+            row["d_rp_over_sigma"] = [
+                abs(a[1] - b[1]) / sg for a, b in zip(sol["lower"], sol["upper"], strict=True)
+            ]
+            row["d_vinf"] = [
+                abs(a[0] - b[0]) for a, b in zip(sol["lower"], sol["upper"], strict=True)
+            ]
+        out["rows"][str(sg)] = row
+        t.log(f"foldsqrt {sg}: {row.get('d_rp_over_sigma')} {row.get('d_vinf')}")
+        path.write_text(json.dumps(out))
+    rows = out["rows"]
+    if all(r.get("d_rp_over_sigma") for r in rows.values()) and len(rows) == 3:
+        sig = np.array([float(k) for k in rows])
+        k = int(np.argmax(rows[str(sig[0])]["d_rp_over_sigma"]))  # the most separated node
+        y = np.array([rows[str(x)]["d_rp_over_sigma"][k] ** 2 for x in sig])
+        c1, c0 = np.polyfit(sig, y, 1)
+        fit = c1 * sig + c0
+        r2 = 1.0 - float(np.sum((y - fit) ** 2)) / float(np.sum((y - y.mean()) ** 2))
+        out.update(node=k, sigma_f_fit=float(-c0 / c1), r2=r2)
+        out["distinct"] = all(max(r["d_rp_over_sigma"]) > 1000.0 for r in rows.values())
+        out["fold_confirmed"] = bool(
+            out["distinct"] and abs(out["sigma_f_fit"] - 0.73777) < 1e-2 and r2 > 0.95
+        )
+        path.write_text(json.dumps(out))
+        t.log(
+            f"foldsqrt: sigma_f fit {out['sigma_f_fit']:.5f} r2 {r2:.4f} -> {out['fold_confirmed']}"
+        )
+
+
 def stage_resume(t: Target) -> None:
     """After a fold test whose status is "NOT A FOLD" (jup365): append the monitor points beyond
     the natural stop to sigma_n1.json (as accepted points, in increasing sigma) and resume rungb's
@@ -621,6 +670,7 @@ def main() -> None:
         "scan": stage_scan,
         "fold": stage_fold,
         "resume": stage_resume,
+        "foldsqrt": stage_foldsqrt,
     }[args.stage](t)
 
 

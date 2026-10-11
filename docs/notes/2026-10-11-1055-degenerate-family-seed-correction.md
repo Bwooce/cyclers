@@ -734,3 +734,58 @@ the analysis:
     uv run python scripts/run_1055_seedfix.py --target gancal1 --stage down && \
     uv run python scripts/run_1055_seedfix.py --target gancal1 --stage ias15 && \
     uv run python scripts/run_1055_seedfix.py --target gancal1 --stage scan
+
+## 12.6 Fold test on GanCal#1 (lead launch 15:43; ended 15:46 AEDT): result and reading
+
+From `data/1055_gancal1/fold.json` and `live/lead_fold_1.out`:
+- The monitor (state component 11, the stepped one: G2's moon-relative velocity) went from sigma
+  0.737364 and 0.737400 (the last two natural points) through 0.737395, 0.737307, 0.736748 and
+  0.730763 to 0.607634. sigma DECREASED after the turn, by 0.13 in total: the branch turns back.
+  Status "two" was reached at 0.6076 < 0.9 sigma_stop.
+- Two fixed-sigma solves, all four converged (amendment 11 noise rule), lower start = nearest
+  natural point, upper start = nearest monitor point after the turn:
+  - sigma 0.67472: two DIFFERENT orbits. G2 rp 62,924 km (lower) against 81,027 km (upper),
+    i.e. 26,830 km in rp / sigma, with V_inf 2.5840 against 2.5748. The Callisto node differs by
+    0.0203 km/s and 477 km rp / sigma, which meets the #1025 rule (> 0.02 and > 100 at one node):
+    SUPPORTED.
+  - sigma 0.71970: two DIFFERENT orbits again. G2 rp 69,423 against 78,710 km (12,904 km in
+    rp / sigma), but the largest V_inf difference at any node is 0.0108 km/s (Callisto), below
+    the rule's 0.02: NOT SUPPORTED.
+- So the status "NUMERICAL STOP: turn passed, two solutions not supported" does not mean the two
+  solves collapsed onto one point or failed. They are two distinct converged orbits at each sigma.
+  At 0.976 sigma_f their V_inf separation is smaller than the fixed 0.02 km/s threshold. That
+  threshold was set on gc-2, where the branches separate mainly in V_inf. GanCal#1's branches
+  separate mainly in G2's periapsis. Near a fold the separation shrinks as sqrt(sigma_f - sigma).
+  From 0.67472 to 0.71970 the predicted ratio is about 0.53. Observed: 0.48 in G2 rp / sigma and
+  0.53 in the Callisto V_inf difference.
+
+VERDICT for GanCal#1 under the pre-registration (unchanged by this reading):
+- Original pre-registration: FAILS #1044 (ii) at sigma 0.0415.
+- Amendment 9: NUMERICAL STOP at sigma 0.7374. The fold is UNDECIDED by the pre-registered rule
+  (supported at 0.915 sigma_f, not at 0.976 sigma_f). No full-mass orbit is shown.
+- Amendment 10: the branch is a DIFFERENT member of the degenerate family (G2 periapsis), so even a
+  decided fold or a full-mass closure would concern that member, not the chain tool's
+  GanCal#1@2013 object.
+- Evidence beyond the rule (reported, not a verdict): the monitor turns back by 0.13 in sigma, two
+  distinct converged orbits exist at both test sigmas, and their separation follows the square-root
+  scaling of a fold. All of this points to a fold at about sigma 0.7377 on this member's branch.
+
+Would one further step decide it cheaply? PRE-REGISTERED here as AMENDMENT 12, post-hoc: written
+after the 15:46 result, and labelled so in any statement of its outcome. It is not run without the
+lead's launch.
+- `--stage foldsqrt`: the same two fixed-sigma solves at sigma 0.65, 0.69 and 0.72. FOLD CONFIRMED
+  if all six converge, the two solutions are distinct at every sigma (some node > 1,000 km in
+  rp / sigma), and the square of the most separated node's rp / sigma separation is linear in sigma
+  with R^2 > 0.95, vanishing at sigma_f within 0.01 of 0.73777 (the natural-stop fit, sec. 12.4).
+  The tolerance is wide because the two existing points alone extrapolate to 0.7332: higher-order
+  terms matter about 0.06 below the fold. Runtime: 6 solves at about 20-40 s each plus the
+  integrations, i.e. 5-10 minutes.
+- What it would add: a decided fold for this member's branch, so "no full-mass orbit on this
+  branch", as for gc-2. It would NOT test the chain tool's object (amendment 10), and so it does not
+  change whether the jup365 lane is validated on a full-revolution chain at full mass. My
+  recommendation: run it only if a decided GanCal#1 statement is wanted for the record. The
+  method's open question is now amendment 10's member selection, not this fold.
+
+Command (lead launch):
+
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage foldsqrt
