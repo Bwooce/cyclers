@@ -321,7 +321,7 @@ def row_yaml(e: dict[str, Any]) -> str:
   - path: "trajectory_regime"
     kind: "uncertain"
     note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at {c["PASS"]} of 5 epochs ({c["FAIL"]} fail, {c["NOT REACHED"]} not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at {e["de440_blend_reached"]}/5 with the minimax gate passing at {e["de440_blend_gate_pass"]}/5; mid-course closure dV per 7 cycles at the best epoch {db["per7_total_mps"]:.1f} m/s ({db["band_total_upper_bound"]}; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit {db["per7_venus_plus_deficit_mps"]:.1f} m/s ({db["band_venus_plus_deficit"]}); range over the reached epochs {rng[0]:.1f}-{rng[1]:.1f} m/s."
-    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json"
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
     todo_ref: "#1025"
   - path: "validation_level"
     kind: "unknown"
@@ -342,13 +342,13 @@ def row_yaml(e: dict[str, Any]) -> str:
     title: "Periodic Swing-By Orbits between Earth and Venus"
     venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
     doi: "10.2514/3.30134"
-    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). {m} carries n:m full-revolution returns other than 1:1, outside those itineraries."
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). {m} carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
 {"".join(vdv)}  discovery_run:
     finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
     discovery_date: "2026-10-08"
     description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = {k} (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
     task_chain: "#942 -> #971 -> #973 -> #1025"
-    evidence_files: ["data/973_ev/k{k}_gauntlet.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k{k}_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
     finder_version:
     run_id: "#973 k{k} ev cell (lead launch)"
     cell_id: "ev {e["key"]}"
@@ -357,7 +357,8 @@ def row_yaml(e: dict[str, Any]) -> str:
     Member {m} of the #973 Earth-Venus two-working-body set: both planets bend; k = {k}
     ({e["period_days"]:.3f} d, {years:.3f} yr); structure {e["key"]}. Ideal-model Lambert-leg
     starts {", ".join(f"{v:.6f}" for v in e["x_days"])} d (model epoch: both planets at angle 0 at
-    t = 0). Worst demanded/available turn ratio {e["worst_ratio"]:.3f}.
+    t = 0). Worst demanded/available turn ratio {e["worst_ratio"]:.3f}. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
 
     Family: the same two-working-body Earth-Venus class as ev-A
     (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
