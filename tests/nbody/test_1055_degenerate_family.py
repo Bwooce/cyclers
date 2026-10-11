@@ -215,3 +215,32 @@ def test_family_root_1d_stops_at_a_domain_bound() -> None:
         domain_ok=lambda z: float(np.arctan2(z[1], z[0])) < 1.0,
     )
     assert res.status == "no sign change of g within the scanned range"
+
+
+def test_weak_direction_move_at_jovian_scale() -> None:
+    """A near-degenerate direction with an ephemeris-like fixed stiffness (eps) and a forcing
+    proportional to sigma: the implied move along it is c sigma / eps, so it shrinks in proportion
+    to sigma (the gc-1 e2 reading, sec. 13.1). Node offsets at km scale (7 unknowns per node)."""
+    from cyclerfinder.nbody.degenerate_family import weak_direction_move
+
+    eps, c, n = 2.7e-7, 1.0e-3, 7
+    q, _ = np.linalg.qr(np.random.default_rng(1055).normal(size=(n, n)))
+    j = q @ np.diag([1.0, 0.9, 0.8, 0.7, 0.6, 0.5, eps]) @ q.T  # columns of norm ~1: no rescaling
+
+    def system(sigma: float) -> tuple[np.ndarray, np.ndarray]:
+        z = np.zeros(n)
+        z[0:3] = sigma * np.array([2.0e4, 1.0e4, 5.0e3])  # node offset, km (proportional to sigma)
+        r = c * sigma * q[:, -1]  # O(sigma) forcing along the weak left vector
+        return r, z
+
+    moves, ratios = [], []
+    for sigma in (0.02, 0.005):
+        r, z = system(sigma)
+        wm = weak_direction_move(r, j, z, n_nodes=1)
+        assert wm.sv_min < 1e-5 < wm.sv_next  # the weak direction survives column scaling
+        moves.append(float(np.linalg.norm(wm.dz)))
+        ratios.append(wm.move_over_offset[0])
+    # the move is c sigma / eps up to the column scaling, so it is proportional to sigma
+    assert abs(moves[0] / moves[1] - 4.0) < 1e-6
+    assert abs(moves[0] / (c * 0.02 / eps) - 1.0) < 0.2  # c sigma / eps up to the column scales
+    assert abs(ratios[0] / ratios[1] - 1.0) < 1e-6  # offsets scale with sigma too

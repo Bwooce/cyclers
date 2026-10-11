@@ -38,6 +38,7 @@ from cyclerfinder.nbody.degenerate_family import (
     family_root_1d,
     family_root_nd,
     scaled_svd,
+    weak_direction_move,
 )
 from cyclerfinder.nbody.fold_tools import fold_supported, monitor_step
 from cyclerfinder.nbody.jovian import MU_JUPITER_KM3_S2 as MU_J
@@ -619,27 +620,23 @@ def stage_weakscale(t: Target) -> None:
         t.set_sigma(sg)
         z = t.scale(t.seed, sg)
         r, j = t.rj(z)
-        d = column_scales(j)
-        u, sv, vt = scaled_svd(j, d)
-        proj = float(u[:, -1] @ r)
-        move = proj / float(sv[-1])
-        dz = vt[-1] * (-move) / d
-        ratios = [
-            float(np.linalg.norm(dz[7 * k : 7 * k + 3]) / np.linalg.norm(z[7 * k : 7 * k + 3]))
-            for k in range(len(t.moons))
-        ]
+        wm = weak_direction_move(r, j, z, len(t.moons))
         rows.append(
             {
                 "sigma": sg,
-                "sv_min": float(sv[-1]),
-                "sv_next": float(sv[-2]),
-                "u_dot_r": proj,
-                "move_scaled": abs(move),
-                "move_over_offset_per_node": ratios,
+                "sv_min": wm.sv_min,
+                "sv_next": wm.sv_next,
+                "u_dot_r": wm.u_dot_r,
+                "move_scaled": wm.move_scaled,
+                "move_over_offset_per_node": wm.move_over_offset,
+                "epoch_moves_s": [float(wm.dz[7 * k + 6]) for k in range(len(t.moons))],
                 "residual_norm": float(np.linalg.norm(r)),
             }
         )
-        t.log(f"weakscale {sg}: sv {sv[-1]:.2e} u.r {proj:.3e} move/offset {max(ratios):.3g}")
+        t.log(
+            f"weakscale {sg}: sv {wm.sv_min:.2e} u.r {wm.u_dot_r:.3e} "
+            f"move/offset {max(wm.move_over_offset):.3g}"
+        )
     ok = [q["sigma"] for q in rows if max(q["move_over_offset_per_node"]) < 0.1]
     out = {"rows": rows, "start_sigma_proposed": max(ok) if ok else None}
     (t.out / "weakscale.json").write_text(json.dumps(out))

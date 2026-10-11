@@ -425,3 +425,32 @@ def family_root_nd(
             return res
     res.status = "Newton did not converge"
     return res
+
+
+@dataclass
+class WeakMove:
+    sv_min: float
+    sv_next: float
+    u_dot_r: float
+    move_scaled: float
+    dz: Arr
+    move_over_offset: list[float]
+
+
+def weak_direction_move(r: Arr, j: Arr, z: Arr, n_nodes: int, stride: int = 7) -> WeakMove:
+    """#1055 sec. 13.1: the residual's projection on the smallest column-scaled singular direction,
+    the Newton move it implies along that direction (dz, physical units), and that move's position
+    part per node against the node's moon-relative offset (z[stride k : stride k + 3])."""
+    d = column_scales(j)
+    u, sv, vt = scaled_svd(j, d)
+    proj = float(u[:, -1] @ r)
+    move = proj / float(sv[-1])
+    dz = np.asarray(vt[-1] * (-move) / d, dtype=np.float64)
+    ratios = [
+        float(
+            np.linalg.norm(dz[stride * k : stride * k + 3])
+            / np.linalg.norm(z[stride * k : stride * k + 3])
+        )
+        for k in range(n_nodes)
+    ]
+    return WeakMove(float(sv[-1]), float(sv[-2]), proj, abs(move), dz, ratios)

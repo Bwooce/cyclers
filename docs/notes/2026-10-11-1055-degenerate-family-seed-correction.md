@@ -953,3 +953,39 @@ PRE-REGISTERED reading of the start stage (lead launch 15:57; written before it 
   the move falls in proportion to sigma, the start is moved to the sigma at which the move is
   below 10 % of the node offsets, and the continuation goes up from there. Runtime: 3 Jacobians
   at 35-110 s each, so under 10 minutes.
+
+### 13.2 CORRECTION to sec. 13.1's prediction, and the small-sigma start acceptance (registered 16:2x AEDT, before the start result)
+
+Correction (found while writing the weakscale test). Sec. 13.1 predicted that a start at smaller
+sigma "should help" gc-1 e2, because the needed move along the weak direction, c sigma / eps,
+shrinks with sigma. That ignores the fact that the node offsets, and the flyby time scale
+(r_p / V_inf), ALSO scale with sigma. The move RELATIVE to them (move / offset, which is what
+decides whether Newton's linear model holds) is then INDEPENDENT of sigma when eps is fixed and the
+forcing is proportional to sigma. The new fast test `test_weak_direction_move_at_jovian_scale` (km
+scale, 7 unknowns per node, a weak direction of stiffness 2.7e-7 surviving column scaling) shows
+exactly this: the move falls by 4 from sigma 0.02 to 0.005, and move / offset is constant to 1e-6.
+So the PREDICTION IS WITHDRAWN. A smaller starting sigma should NOT help gc-1 e2 unless weakscale
+shows move / offset falling with sigma, which would mean the forcing grows faster than sigma.
+`weakscale` is the decider, and it is built and tested: `weak_direction_move` in
+`degenerate_family.py` (12 tests pass); the ideal gc-1 check gives u . r about 1e-13.
+
+Revised pre-registered reading, if the start STALLS:
+- (1) Run weakscale (sigma 0.02, 0.005, 0.00125). If move / offset FALLS with sigma, below 0.1 at
+  some sigma: the small-sigma start, with the acceptance below. If it is CONSTANT (my
+  expectation, about 0.6): the small-sigma plan is not used.
+- (2) Instead, the near-degenerate correction: `--stage fix` with the 1-d family scan FORCED along
+  the weak direction (q = 1 although it does not scale with sigma; amendment 13 if used, code
+  about 10 lines). A root of g along it is the continuous-gravity member. Amendment 10 then
+  decides whether it is gc-1's chain member (same periapses and turns in the limit) or a different
+  member, as for GanCal#1.
+
+Small-sigma start acceptance (the lead's request; applies only if (1) selects it):
+- Starting sigma s0 < 0.02, from the seed scaled to s0.
+- START: the floors, or the noise-floor rule scaled with sigma: dr < max(1e-3, 1e-2 (s0 / 0.02)) km,
+  dv < 1e-6 km/s, gauges 1e-7, ends 1e-6. Node offsets, and so the integration noise in position,
+  scale with sigma.
+- IDENTITY (amendment 10) at s0, against the chain tool's member: V_inf within 0.01 km/s; r_p / s0
+  within 5 %; turn within 0.2 deg or 5 %; node epoch within 60 s. Going down from s0 by halving
+  twice, the Cauchy limit and the Richardson limit apply as in amendment 2.
+- Then natural continuation UP from s0 to sigma = 1 (amendment 9 rules), with the down stage, IAS15
+  and the scan at the end.
