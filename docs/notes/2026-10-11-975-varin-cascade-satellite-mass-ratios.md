@@ -253,3 +253,37 @@ and compared by shape. It is reported, never used as a pass or fail.
 4. The k = 5-8 critical points.
 5. The loop command to the lead.
 6. The results and the literature step in a dated note.
+
+## 10. Control results so far (2026-10-11, 20:2x-21:2x AEDT): N1 is ambiguous, stopped for a ruling
+
+- **P1: PASS** (4fea9c2d, `data/975_varin/p1_control.json`). All 8 Table 1 orbits:
+  - (a) |y1(T/2)| <= 4.8e-9;
+  - (b) Jacobi with the mu(1 - mu) convention <= 6.8e-9;
+  - (c) Tr~ = 2 to 1.1e-5, and Tr~_v to the printed digit;
+  - (d) the critical-point solver returns to the printed values to <= 1.0e-8 relative.
+  - The half-period form of the solver (determinants of the half-residual Jacobian; the same conditions
+    as m_41 = m_14 = 0) also returns to the printed values. It is 2-3 times faster.
+- **N1** (`data/975_varin/curves/n1_a.jsonl`, `n1_b.jsonl`, `loops/n1_b_loop*.jsonl`). The y2-extremum curve
+  leaves the mu'_2 saddle in TWO directions, and both go up in mu. The pre-registration assumed one curve.
+  - Branch a (y2 increasing): folds at mu = 5.2720e-3. The fold, refined by the critical-point solver, is
+    Table 1's mu''_2 elliptic orbit to 1.0e-8 relative. As the control requires.
+  - Branch b (y2 decreasing): continues to the Earth-Moon mu (reached at T~ 2.049, x1 0.9102, y2 0.5073).
+    The N1 text "it must NOT reach 1.215e-2" is literally violated by this branch. My reading: from a saddle
+    the m_41 = 0 locus has two branches; one is the oval's extremum (it folds), the other runs along the
+    family-i piece. Reaching mu_M on it is expected and is not a closed i_2.
+  - The pre-registered failure condition is "the tracer returns a closed i_2 loop at Earth-Moon mu". From
+    branch b's endpoint the fixed-mu trace does NOT close.
+    - A first version reported "closed", but with a closure of 8.2e-4. Its closing step was inexact: a
+      projected step, not a landing. That run is kept as `n1_b_loop_inexact_closing.jsonl`, and the logic is
+      fixed.
+    - The fixed trace passes 6.3e-3 from its start at member 228 without landing on it (the landing
+      refinement fails to reach 1e-6). It then continued for 927 members without returning. So no closed loop
+      by the sec. 6 criterion.
+- **Disclosure:** before the controls finished I ran one exploratory k = 5 saddle solve (half form) from the
+  sec. 1 extrapolated seed, to time the solver. It converged in 11 s to mu = 5.0379e-5, T~ 5.2756,
+  Tr = 2.0000000003. This is not used, and it is not a result until P2/N1/N2 pass.
+- Runtime: curves take 4-7 minutes at k = 2. A loop trace at mu_M runs more than 900 members in 7 minutes
+  without closing. The k >= 5 critical points are much faster than the sec. 8 estimate.
+- **Ruling requested:** amend N1 to "the oval branch from mu'_k folds at mu''_k and reproduces Table 1's
+  elliptic orbit; any other branch that reaches the test mu must not yield a closed loop by the sec. 6
+  criterion" (passed on present evidence), or treat N1 as failed and stop.

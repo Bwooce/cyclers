@@ -394,6 +394,24 @@ def _loop_eval(p: Arr, mu: float) -> tuple[Arr, Arr]:
     return r, jac
 
 
+def _loop_step(p: Arr, t: Arr, step: float, mu: float, tol: float) -> Arr | None:
+    """One pseudo-arclength predictor-corrector step; None if the corrector does not converge."""
+    pp = p + step * t
+    pc = pp.copy()
+    for _ in range(10):
+        if pc[2] <= 0.0:
+            return None
+        try:
+            r, jac = _loop_eval(pc, mu)
+        except (RuntimeError, ValueError):
+            return None
+        if float(np.max(np.abs(r))) < tol:
+            return pc
+        g = np.concatenate([r, [float(t @ (pc - pp))]])
+        pc = pc + np.linalg.solve(np.vstack([jac, t]), -g)
+    return None
+
+
 def trace_loop(
     x1: float,
     y2: float,
@@ -428,35 +446,45 @@ def trace_loop(
     for n in range(n_done, max_members):
         if deadline is not None and time.time() > deadline:
             return members, "time budget", float("nan")
-        closing = n + 1 >= min_members and float(np.linalg.norm(p - p0)) < 2.0 * ds
-        step = float(t @ (p0 - p)) if closing else ds
-        ok = False
-        pc = p
-        while abs(step) >= ds_min:
-            pp = p + step * t
-            pc = pp.copy()
-            for _ in range(10):
-                r, jac = _loop_eval(pc, mu)
-                if float(np.max(np.abs(r))) < tol:
-                    ok = True
+        if n + 1 >= min_members and float(np.linalg.norm(p - p0)) < 2.0 * ds:
+            # try to land on the origin: repeated projected steps toward it, each corrected
+            pc, tc = p, t
+            for _ in range(6):
+                proj = float(tc @ (p0 - pc))
+                if abs(proj) > 2.0 * ds:
                     break
-                g = np.concatenate([r, [float(t @ (pc - pp))]])
-                pc = pc + np.linalg.solve(np.vstack([jac, t]), -g)
-            if ok or closing:
+                pc_new = _loop_step(pc, tc, proj, mu, tol)
+                if pc_new is None:
+                    break
+                pc = pc_new
+                tc = _tangent(_loop_eval(pc, mu)[1], tc)
+                if float(np.linalg.norm(pc - p0)) < 1e-9:
+                    break
+            dist = float(np.linalg.norm(pc - p0))
+            if dist < 1e-6:
+                m = LoopMember(float(pc[0]), float(pc[1]), 2.0 * math.pi * float(pc[2]), 0.0)
+                members.append(m)
+                if on_member is not None:
+                    on_member(m)
+                return members, "closed", dist
+            # passed near the origin without landing on it: keep tracing
+        step = ds
+        pc_ok = None
+        while abs(step) >= ds_min:
+            pc_ok = _loop_step(p, t, step, mu, tol)
+            if pc_ok is not None:
                 break
             step *= 0.5
             ds = step
-        if not ok:
+        if pc_ok is None:
             return members, "corrector failed", float("nan")
-        _, jac = _loop_eval(pc, mu)
+        _, jac = _loop_eval(pc_ok, mu)
         t = _tangent(jac, t)
-        p = pc
+        p = pc_ok
         m = LoopMember(float(p[0]), float(p[1]), 2.0 * math.pi * float(p[2]), 0.0)
         members.append(m)
         if on_member is not None:
             on_member(m)
-        if closing:
-            return members, "closed", float(np.linalg.norm(p - p0))
         ds = min(ds * 1.3, ds_max)
     return members, "max members", float("nan")
 
