@@ -789,3 +789,68 @@ lead's launch.
 Command (lead launch):
 
     uv run python scripts/run_1055_seedfix.py --target gancal1 --stage foldsqrt
+
+## 12.7 Member selection on GanCal#1: why the root is not the chain tool's member (analysis only, data on disk)
+
+Data: `data/1055_gancal1/fix_state.json` (the amendment-7 scan: path, g, complement), `fix.json`
+(the root) and the seed. Units: path in scaled arclength, g in weighted residual units, L = 4.59e5.
+
+1. WHERE THE CHAIN TOOL'S MEMBER SITS. The scan's base (path 0) is the chain tool's seed with its
+   complement rows converged at sigma 0.02. The base has G2 rp / sigma = 21,646 km (the seed
+   28,327 km). Converging the complement moves the non-degenerate coordinates too, at O(sigma).
+   At the base, g = -4.03. That is the same size as g anywhere on the scan (|g| 1.6 to 8.1 away
+   from the root): the chain tool's member is a clear NON-ROOT of the solvability function.
+2. THE SCAN, BOTH SIDES:
+   - + side: g = -4.03, -3.99, -3.91, -3.76, -3.47, -2.95, -2.19 and -1.65 at path 0 ... 4.36e5
+     (0.95 L), rising and roughly linear in path. The scan then STOPPED AT THE DOMAIN BOUND
+     (amendment 7c): a flyby node dropped below sigma (R + floor). On this side the family drives
+     G2's periapsis INTO Ganymede (sec. 11), so the bound is G2 reaching its floor. Extrapolating
+     the slope, g would cross zero near path 9e5 (about 2 L), past the bound. That root, if it
+     exists, is an impact-side member with G2 below its floor: outside the physical domain.
+   - - side: g = -4.07, -4.15, -4.32, -4.66, -5.36, -6.66, -8.07, -7.02, -1.65 and +3.67 at path
+     -4.6e3 ... -1.46e6. Exactly ONE sign change, between -1.17e6 and -1.46e6, refined to -1.26e6
+     (2.7 L). That root's member has G2 rp / sigma = 88,617 km and Callisto 53,086 km (base:
+     21,646 and 42,964).
+   - Resolution caveat: the samples double in spacing up to 2.9e5. A pair of roots between two
+     samples of one sign cannot be excluded. g is smooth and of one sign over each sampled
+     stretch, so nothing points to one.
+3. SO, within the scanned domain there is ONE physical solvability root, at -2.7 L. The chain
+   tool's member (path 0) is not a root. The other candidate root, on the + side, lies past the
+   G2 floor.
+
+What it means:
+- The chain tool chooses its member of the degenerate family through the ephemeris's weak symmetry
+  breaking (the fixed-leg crank solved for arrival at the moon, #942). Continuous gravity selects
+  members through the first-order solvability condition, which depends on the moons' gravity along
+  the legs. Nothing ties the two choices together. On GanCal#1@2013 they differ by 2.7 L, the
+  difference between G2 at about 28,000 km and at about 89,000 km.
+- This EXPLAINS the #1044 / #1046 negatives: every one of those formulations started from the chain
+  tool's member, which is not the limit of any continuous-gravity orbit. A solver can only crawl or
+  stall there. The out-of-plane mismatch they all met (#1046) is g, the residual's projection on
+  the null direction, which no formulation can remove at a non-root.
+- The chain tool's GanCal#1@2013 object, as such, is not the sigma -> 0 limit of a continuous-gravity
+  orbit within the scanned domain. Its family has one physical continuous-gravity member nearby,
+  which is not it.
+
+For the other gc rows:
+- The 16 rows reached from their RAW seeds (the 15 #1025 members, plus gc-1) did not use the
+  correction: their raw seed started and continued, with identity to the chain. Nothing here
+  changes them. In the coplanar ideal model, g vanishes by symmetry for gc-1 (sec. 1), and the
+  raw-seed starts show the chain members are roots (or so near one that Newton absorbs the
+  difference).
+- gc4-19 (corrected) passed amendment 10: there the root and the chain's member coincide in the
+  limit (sec. 10.1).
+- For any FUTURE row that needs the correction (the real-ephemeris rung of the gc rows, gc-1 e2):
+  amendment 10 decides. A FAIL is a finding about the row: its patched-conic object does not
+  continue into continuous gravity, and a nearby family member does instead. It then cannot be
+  reported as "the row's object exists". GanCal#1 shows the real-ephemeris chain tool can pick a
+  non-root, so expect amendment-10 failures on jup365 to be possible, not rare.
+
+Cheapest informative next step (PRE-REGISTERED here, not run): gc-1 e2 fix only. Run
+`--stage fix` (amendment 7) on gc-1 e2 and record where its chain-tool member sits relative to the
+roots: g at the base, the sign changes within 3 L on each side, the domain bounds, and the root
+member's periapses against the chain's. No start, neg or continuation unless the root passes
+amendment 10 against the chain tool's member. Runtime: the fix stage at about 5-7 times
+GanCal#1's cost per evaluation, so 3-6 h at the current load (lead launch). This answers the
+question that matters for the gc rows' real-ephemeris standing: does the gc-1 chain tool's member
+coincide with a continuous-gravity root on jup365?
