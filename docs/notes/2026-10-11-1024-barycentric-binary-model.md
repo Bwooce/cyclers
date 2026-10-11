@@ -92,6 +92,47 @@ Plan:
   - `primary_min_distance_km` with mass fraction 0 equals `leg_extent`'s r_min.
 - Driver `scripts/run_1024_barycentric.py` (declares #1024).
 
+## 3a. Amendment A1 (lead, 2026-10-11), before any edit to `two_working_body.py`
+
+The two edits are restated exactly, now that the lead has confirmed the file is pluto-smallmoons-sonnet's
+#1060 edit in progress. They are made only after that commit lands.
+
+1. `resonant_circle`: the 1:1 shortcut `vf2 = |V_body|^2` is used only when the body is Keplerian about
+   `mu` (`getattr(system, "is_keplerian", None)` is absent, or returns True). Otherwise the general
+   branch runs: `a_sc` from the period, `vf2 = mu (2/r - 1/a_sc)`.
+2. `half_rev_vectors`: raises `ValueError` ("half-rev legs need a Keplerian body circle (#1024)") for a
+   non-Keplerian body. The continuation EXCLUDES half-rev structures before solving. That is 48 of the
+   457 #998 gate-passers; the 17 of the 224 strong are:
+  - ps: `k4|HCharon/3,1,p|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l`
+  - ps: `k4|HCharon/3,1,p|LCharon>Styx/0s|LStyx>Charon/1l`
+  - ps: `k4|HCharon/3,1,p|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s`
+  - ps: `k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Styx/1l|LStyx>Charon/1h`
+  - ps: `k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Styx/0s|LStyx>Charon/1l`
+  - ps: `k6|RCharon/3:2|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l`
+  - ps: `k6|RCharon/2:1|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l`
+  - ps: `k6|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l`
+  - ps: `k6|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/0s`
+  - pn: `k4|HCharon/3,1,p|HCharon/3,1,p|LCharon>Nix/0s|LNix>Charon/0s`
+  - pn: `k5|HCharon/3,1,p|RCharon/2:1|LCharon>Nix/1l|LNix>Charon/0s`
+  - pn: `k5|HCharon/3,1,p|LCharon>Nix/1l|LNix>Charon/1h`
+  - pn: `k5|HCharon/3,1,p|LCharon>Nix/0s|LNix>Charon/1l`
+  - pk: `k3|HCharon/3,1,p|LCharon>Kerberos/0s|LKerberos>Charon/0s`
+  - pk: `k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Kerberos/0s|LKerberos>Charon/0s`
+  - ph: `k3|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s`
+  - ph: `k4|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s`
+
+3. Charon SOI diagnostic: as in sec. 3. If #1060's `sphere_of_influence_km` reads `a` from
+   `system.bodies`, then in the barycentric cells Charon's SOI uses 17,464.5 km (7,192 km) instead of
+   19,596 km (8,070 km). Both are reported. The "strong" count is given under each.
+
+REGRESSION TEST (new, pinned):
+- For the existing Keplerian systems, `resonant_circle` and `half_rev_vectors` must return
+  BIT-IDENTICAL results before and after the edits. The cells are ev, gc, vm and the #998 `pn` cell,
+  each over a grid of epochs, V_inf values and the catalogue's resonant and half-rev legs.
+- Expected values are recorded from the pre-edit code at its current commit into a test fixture, then
+  asserted with `==` (not a tolerance) against the edited code.
+- So the #973 and #998 numbers cannot move without the test failing.
+
 ## 4. Method: continue each #998 member, do not re-enumerate
 
 For each of the 457 #998 gate-passing cyclers (representative zero from
