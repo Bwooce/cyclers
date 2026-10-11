@@ -2963,6 +2963,15 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   take the SOI from `CircularSystem.bodies` (mu and semi-major axis are already there), or run one `assess` on a
   pilot zero before the sweep; a pilot reports a zero count and an assessment-error count, not only solver timing.
   Pairs with `#1037`.
+- `#1061` — registered 2026-10-11 (lead dispatch to v2-sweep-opus; IN PROGRESS, read-only sweep, no runs).
+  **SWEEP OF PAST V2 NEGATIVES AFTER THE V2-BALLISTIC DRIFT-RULE CHANGE.** The 2026-10-11 wording
+  (same-phase comparison, cycle i against cycle i+L over at least 2L cycles, no growth test; spec.md sec. 14
+  amendment of 2026-10-08, `#1007` note secs. 8.3-8.14) is a correctness fix, so every past V2 negative or
+  non-promotion is classified: (A) failed on the drift/growth reading or a window shorter than the geometric
+  repeat, (B) failed on continuity, flyby gate, re-fly, continuation or model mismatch, (C) V2-powered, out of
+  scope, (D) unclear. Also assesses whether the original 3-lap rotating-frame gate is shorter than each system's
+  geometric repeat. Output: `docs/notes/2026-10-11-1061-v2-negatives-sweep.md` with an (A)/(D) re-judgement list.
+  No re-judgement is run under this task.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
