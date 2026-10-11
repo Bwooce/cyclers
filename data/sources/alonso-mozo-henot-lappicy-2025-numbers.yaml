@@ -1,0 +1,46 @@
+# Alonso Mozo, Henot and Lappicy 2025, "A Practical Guide to Rigorously Locate Periodic Orbits in Discrete Dynamics", arXiv:2510.06373v1 [math.DS],
+# submitted 7 October 2025, DOI 10.48550/arXiv.2510.06373. 17 pages, md5 47f9aee19a5e864e6ee137d54e357fe7, arXiv PDF with a text layer.
+# The paper has NO numbered tables. This file holds the numbers that define the method and the worked example (Sec. 2.1), plus the example
+# counts. Witnesses: A = the text layer (pdftotext -layout); B = the same numbers re-derived by us in exact rational arithmetic
+# (`check_logistic_example.py` and `.out`, private papers directory) for the worked example. Counts and parameters: A only (one witness).
+# All values in `check:` fields are ours.
+
+method:
+  zero_finding_map: "F(x) = (f(x_{p-1}) - x_0, f(x_0) - x_1, ..., f(x_{p-2}) - x_{p-1}), x = (x_0, ..., x_{p-1}) in R^{np}  (Eq. 3)"
+  operator: "T(x) = x - A F(x), A a linear map with A approx DF(xbar)^-1  (Eqs. 4-5)"
+  bounds: "||A F(xbar)|| <= Y; ||I - A DF(xbar)|| <= Z1; ||A (DF(x) - DF(xbar))|| <= Z2 ||x - xbar|| on B_R(xbar)  (Eq. 6)"
+  conditions: "P(r) = Y + r (Z1 - 1) + r^2 Z2 / 2 <= 0 and Z1 + r Z2 < 1 for some r in [0, R]  (Eq. 7); then a unique zero of F lies in B_r(xbar) (Theorem 1)"
+  roots: "r_pm = (1 - Z1 +- sqrt((1 - Z1)^2 - 2 Y Z2)) / Z2  (Eq. 20)"
+  norms: "1-norm on R^{np}; operator norm = maximum absolute column sum  (Eq. 8)"
+  true_period_test: "the balls B_r(xbar_k), k = 0..p-1, pairwise disjoint (Eq. 9)"
+  stability: "Df^p(x*_0) = Df(x*_{p-1}) ... Df(x*_0)  (Eq. 10); n = 1: the eigenvalue by interval product; n > 1: Gershgorin disks; |lambda| = 1 is inconclusive"
+  period_doubling_curves: "F(w, alpha) = (F(x, beta, alpha), G(x, u, beta, alpha)), w = (x, u, beta) in R^p x R^{p-1} x R, G = (Dx f(x_{p-1}) u_{p-2} ... u_0 + 1, Dx f(x_0) - u_0, ...); uniform contraction over alpha in [-1, 1] (Theorem 2); Chebyshev interpolation with K nodes, alpha[k] = -cos(k pi / K)  (Eqs. 26-34)"
+  tools: "Julia; IntervalArithmetic.jl (Sanders and Benet, Ref. 27); code at github.com/luciaalonsomozo/PracticalGuide4PeriodicOrbitsDDS.jl (Ref. 24). Other libraries named in Sec. 1.1: INTLAB (Matlab), MPFI (C++)."
+
+logistic_worked_example:    # Sec. 2.1, pp.6-7; f(x) = mu x (1 - x), mu = 3.2, period 2
+  mu_bar: 3.2
+  xbar_two_digit: [0.51, 0.79]
+  xbar_refined: [0.513044509531044, 0.7994554904683129]
+  A_printed_eq16: [[2.10618055051, -1.1347955552327], [-1.1347955552327, 0.07262691553489]]
+  DF_printed_eq17: "[[-8/125, -1], [-1, -232/125]], inverse 125/13769 [[232, -125], [-125, 8]]"
+  Y_enclosure: [0.012775, 0.0127751]
+  Z1_enclosure: [0.0, 6.66134e-16]
+  Z2_enclosure: [20.7422, 20.7423]
+  Z2_formula: "2 mu ||A||  (Eq. 18; R = infinity because the map is quadratic)"
+  r_star: "2^-6 = 0.015625"
+  lambda_enclosure: [-0.0644712, 0.314457]
+  conclusion: "a true period-2 orbit within 1-norm distance r* of xbar; stable (|lambda| < 1); with the 16-digit xbar the error is of order 1e-12"
+  check: "Reproduced in exact rational arithmetic: Y = 0.0127750744, Z1 = 3.26e-16, Z2 = 20.742247; r- = 0.015158, r+ = 0.081264 (r* inside); P(r*) = -3.2e-4; lambda over the ball of radius r_m = [-0.0644712, 0.3144566]. All printed enclosures agree. True period-2 points at mu = 3.2: 0.5130445, 0.7994555; true lambda = 4 + 2 mu - mu^2 = 0.16, inside the enclosure."
+  erratum_candidate: "The printed A of Eq. (16) and DF of Eq. (17) are the matrices for the equation order (f(x_0) - x_1, f(x_1) - x_0), the row-swap of Eq. (13)-(14) as written. With Eq. (16) and Eq. (14) as printed, Z1 = 4.16 (contraction fails); with Eq. (16) and Eq. (17), Z1 = 1.9e-12. The printed enclosures in Eq. (19) come from A = inv(DF(xbar)) of Eq. (14) (code snippet), and reproduce. So Eqs. (16)-(17) carry a row-order slip; no result is affected."
+
+example_counts:
+  logistic_map: "8906 unstable and 372 stable orbits of periods p = 2..80 (text p.8); abstract: 'more than 80 x 10^2' periodic orbits of periods 1..80"
+  predator_prey: "820,921 unstable and 143,477 stable periodic orbits, periods 2..10, over b in [-20, -2], kappa in [-45, -5] (text p.9); abstract: 'over 80 x 10^4'"
+  predator_prey_map: "f(x) = beta + x - kappa / (1 + e^x), parameter region kappa < beta < 0; Z2 = (sqrt(3)/18) |kappa| ||A||, R = infinity (Eq. 25)"
+  period_doubling_windows: "Chebyshev K = 24 nodes, Taylor order N = 10, kappa in [-16, -13], then five more windows kappa in [-16 - 3j, -13 - 3j], j = 1..5 (covering [-31, -13]); four candidate curves, error at most 1e-4 per window; non-degeneracy of the eigenvalue crossing -1 is not verified (p.11-12)"
+  check: "Counts: 8906 + 372 = 9278 > 8000 and 820,921 + 143,477 = 964,398 > 800,000, consistent with the abstract's lower bounds."
+
+sup_bounds_used_for_the_sigmoid:    # printed Eqs. (53), (60), (61)
+  - "sup |h''(x)| = sqrt(3)/18, attained at x = ln(2 +- sqrt(3))"
+  - "sup |h'''(x)| = 1/8"
+  - "sup |h^(11)(x)| : the printed value is lost in the text layer; not transcribed"
