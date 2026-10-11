@@ -1,0 +1,66 @@
+# Hollister and Prussing, "Optimum Transfer to Mars via Venus", MIT Experimental Astronomy Laboratory report RE-16, April 1965 (NTRS 19660006110):
+#   the numbers printed ON FIGURES (the report has no tables).
+# Source: 42-page scan, Acrobat Capture 3.0 text layer (8,061 words, spaced-letter OCR), md5 8d7f904f1c9425c21a4114563d2140b4.
+#   PDF page n carries the printed page number n+1 for pp.14-19 (printed numbers are at the foot of each sheet).
+# Witnesses: A = the file's own text layer; B = a Tesseract (ocrmypdf --force-ocr -l eng) copy; C = page renders at 55 to 150 dpi (decides).
+#   Fig. 4 annotation values: A, B and C agree (1.07 and A = 60 deg: A and C, B missed them / the text layer misses A = 60 deg).
+#   Fig. 5 minimum-velocity labels: ONE witness (C, 130 dpi render, each label read once); no text layer holds them.
+#   Figs. 6, 7, 8 values: read from axes at 110 dpi, approximate (stated to 0.01 EMOS and 5 days).
+# Nothing here was computed by us except in `check:` fields.
+fig4:
+  caption: "Loci of constant delta-V (planar flyby, velocity units = fractions of circular satellite speed at one planet radius)"
+  A_deg: 60
+  V_HI: 0.741
+  V_HO: 1.07
+  contour_labels: [".19", ".21", ".23", ".25"]
+  common_peripoint_dV: 0.194
+  true_optimum_dV: 0.189
+  check:
+    method: "ours (independent): two-body hyperbolas, mu = 1, lengths in planet radii, speeds in surface circular speed; Battin injection velocity (the report's eq. 2 form) at every point of the plane; minimum of |V_out - V_in| over r > 1; common peripoint from e = 1 + r V_H^2 and asin(1/e_I) + asin(1/e_O) = A"
+    ours_true_optimum_dV: 0.1889
+    ours_optimum_position: "r = 1.194 planet radii"
+    ours_common_peripoint_r: 1.276
+    ours_common_peripoint_dV: 0.1921
+    verdict: "true optimum 0.1889 reproduces the printed 0.189. The printed common-peripoint 0.194 is 1 percent above our 0.1921; the printed ratio is 2.6 percent, ours 1.7 percent, and the text says the common-peripoint value is less than 3 percent above the optimum, which both satisfy. Cause of the 0.002 gap not established (the report prints no peripoint radius)."
+fig5:
+  caption: "Contours of 0.2 EMOS launch velocity (direct dashed, via Venus solid), Julian date at Earth against Julian date at Mars, a four-sheet fold-out (PDF pp.32-35, hand-numbered sheets 1 to 4), launch from a parking orbit"
+  units: "EMOS (Earth mean orbital speed)"
+  witness: "single (render)"
+  via_venus_minimum_launch_velocity_labels:
+    - {panel: "opposition Aug 1971", labels: [".123", ".142"]}
+    - {panel: "opposition Oct 1973", labels: [".131", ".161"]}
+    - {panel: "opposition Dec 1975", labels: [".197", ".109"]}
+    - {panel: "opposition Jan 1978", labels: [".149", ".107", ".143"]}
+    - {panel: "opposition Mar 1982", labels: [".132", ".170"]}
+    - {panel: "opposition May 1984", labels: [".129", ".124"]}
+    - {panel: "opposition Jul 1986", labels: [".176", ".123"]}
+  notes:
+    - "Two via-Venus pockets per panel: one on the outbound-Venus side (top strip, Julian date at Mars near the opposition) and one on the homebound side; the .197 near the edge of the Dec 1975 panel is a pocket cut by the sheet edge."
+    - "Panels at the Feb 1980 and later oppositions lie across sheet edges and are not fully legible; the table lists only the labels read in full. The text cites 1971 (both ways), 1973 (outbound only), 1975 (homebound only), 1978 (both), and shows 1984 in more detail (Fig. 9)."
+    - "Julian dates on the axes run from 2441000 (1971) in steps of 200 d to about 2447800 (1990)."
+fig6:
+  caption: "Total delta-V against trip time for arrival at Mars on Julian date 2442860 (1976)"
+  approximate_readings:
+    direct_minimum: "about 0.13 EMOS at about 185 d"
+    near_180deg_transfer_segment: "about 215 to 255 d (dashed), delta-V about 0.14 to 0.17"
+    direct_peak: "about 0.45 EMOS at about 370 d (cusp where direct and via-Venus curves meet)"
+    via_venus: "thick segment 'flyby requires thrust at Venus' from about 370 to about 425 d; minimum about 0.195 EMOS at about 440 d"
+fig7:
+  caption: "Total delta-V against trip time for arrival at Mars on Julian date 2441120 (1971)"
+  approximate_readings:
+    direct_minimum: "about 0.22 EMOS at about 215 d"
+    via_venus_minimum: "about 0.12 EMOS at about 315 d"
+    crossing: "curves cross at about 235 d, delta-V about 0.23"
+fig8:
+  caption: "delta-V against date at Venus for Earth launch on Julian date 2440860 and Mars arrival 2441120; curves total, at Earth, at Venus"
+  readings: "not read: the page was seen only at 55 dpi. The text says the pure-flyby date lies very close to the date of the overall optimum, and marks 'near 180 deg transfer from Venus to Mars' and 'pure flyby' on the plot; delta-V axis 0.10 to 0.30 EMOS, Julian date at Venus axis 2440900 to 2440980 (as printed on the axis)."
+fig9:
+  caption: "Contours for the 1984 opposition; shaded area = launch contour 0.2 EMOS and arrival hyperbolic velocity below 0.2 EMOS; dotted lines = probable contours with the optimum plane change"
+  labels: "not read; see the Fig. 5 May 1984 panel (.129, .124)"
+text_numbers:
+  - {page: 8, item: "Venus encounter delta-V potential", value: "above 20,000 ft/s (limit: circular satellite velocity at periapsis)"}
+  - {page: 25, item: "saving from thrust at Venus when a pure flyby exists", value: "'a few hundred feet per second'"}
+  - {page: 26, item: "stay time at Mars using Venus both ways in 1984", value: "'over a hundred days'"}
+  - {page: 20, item: "common-peripoint approximation accuracy", value: "'less than 3 percent' above the minimum delta-V (text layer reads '370', the digit and percent sign garbled; the Fig. 4 numbers give 2.6 percent)"}
+planet_constants:
+  stated: "none (no ephemeris source, elements or periods); units EMOS and planet radii / surface circular speed"
