@@ -89,3 +89,13 @@ is the mean sidereal period. None of these needs action.
 4 of the 28 compared moons are affected (all Pluto small moons); 0 of the 24 others exceed 0.5 percent;
 the 9 small-body moons are consistent by construction. Where there is no page and no kernel on disk (Mars,
 Uranus, Neptune, Earth), the check rests on the page values noted above.
+
+## Addendum 2026-10-11: the cause of the Pluto offset is sourced
+
+Brozovic and Jacobson (2024), Tables 10 and 11 (digest `docs/notes/2026-10-11-digest-brozovic-jacobson-2024-post-new-horizons-orbits-masses-pluto-satellites-aj.md`): the registry's a is the MEAN OSCULATING a, and its
+Kepler period reproduces the paper's osculating period (Table 10) to 0.05-0.1 percent; the printed periods are the
+precessing-ellipse (true mean-motion) periods of Table 11. The offsets in this note are the osculating-versus-mean
+difference, not a registry error. Where this note says the cause is "the binary quadrupole, remainder unexplained",
+read: the binary forces the osculating elements away from the mean ones, and the paper's tables give both. See
+`docs/notes/2026-10-11-1022-pluto-small-moon-registry-verification.md` sec. 5. The numbers and the options are
+unchanged; for option (a) the sourced period is Table 11's.

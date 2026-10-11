@@ -67,3 +67,30 @@ of the mean motion.
   moons. That affects phasing in those sweeps, not the registry's correctness against its source. Whether to
   store the fitted mean motion (or the period) for the small moons, so that sweeps use it, is a design
   decision; not made here.
+
+## 5. Addendum 2026-10-11: sourced explanation of the a-versus-period offset (replaces "unexplained" in sec. 3)
+
+The Brozovic and Jacobson (2024) digest (`docs/notes/2026-10-11-digest-brozovic-jacobson-2024-post-new-horizons-orbits-masses-pluto-satellites-aj.md`, section "Registry period question") settles it. The JPL SSD page
+pairs two different element sets:
+- the printed a (43200, 49300, 58300, 65200 km) are the paper's Table 10, MEAN OSCULATING a, rounded to 100 km
+  (43163, 49340, 58272, 65175 km);
+- the printed periods (20.16, 24.85, 32.17, 38.20 d) are Table 11, the PRECESSING-ELLIPSE periods, whose a
+  (42410, 48689, 57749, 64719 km) is not the Kepler radius of its mean motion (Kepler gives a period 0.87, 0.67,
+  0.45 and 0.36 percent too long for those a).
+Each table is consistent with itself: Table 10's Kepler period from its a, with the kernel GM_P + GM_C, matches its
+own period to 0.05 percent. So the registry (a from Table 10) reproduces the OSCULATING-mean periods (20.91, 25.49,
+32.78, 38.76 d against Table 10's 20.89, 25.51, 32.75, 38.74 d), and the 1.5-3.7 percent offset in sec. 3 is the
+difference between osculating-mean and precessing-ellipse (true mean-motion) periods, forced by the binary
+(Table 11's free eccentricities are below 1e-5 for Styx, Nix and Kerberos; the osculating 0.009-0.025 is forced).
+My quadrupole estimate (a fifth to two fifths of the offset) was a partial account of the same effect. The fitted
+periods used by #998 are the Table 11 periods to the printed digits.
+
+Consequence for the registry: it is not wrong against its source; it stores osculating-mean a. A period-based
+consumer must take the Table 11 period (or n), a sourced value, not a fit of ours. The 1022b/1022c notes carry
+the same correction.
+
+A second, separate observation from the same digest: the registry stores Styx 0.0003 and Kerberos 0.0002 km^3/s^2,
+the rounded 1-sigma upper bounds (Table 8), whereas PLU060 was integrated with held values 0.04e-3 and 0.06e-3
+(kernel 4.045e-5 and 6.038e-5). The registry values are 7.5 and 3.3 times the held ones. It does not matter for
+#998 (massless targets); it overstates the bending of any lane that uses these two as flyby bodies. Proposal only:
+a comment at the registry entries, or the held values with the bound as metadata. No registry change was made.

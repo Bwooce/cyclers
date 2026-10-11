@@ -156,3 +156,15 @@ C3 therefore needs a replacement negative that does not depend on Howett: use {p
 are all labelled (a negative that must stay "not published"), or the untopologied Pluto signature, which must
 change from "published" to "inconclusive" under rule U. Both are for gen2 to run with rule U; none is run here.
 Everything else of the gate's 26 controls and the #998 litcheck must be byte-identical after the anchor edits.
+
+## 9. Addendum 2026-10-11: Showalter-Hamilton, and the digests now held
+
+corpus-file-opus reports (message, 2026-10-11) that Brozovic and Jacobson (2024) (AJ 167:256, DOI
+10.3847/1538-3881/ad39f0), Jbara (2025) (arXiv:2510.13479) and Porter and Canup (2023) (PSJ 4:120) are filed and
+digested; Showalter-Hamilton (2015) and Brozovic et al. (2015) are still wanted (closed access). From the held
+Brozovic-Jacobson digest: the Styx-Nix-Hydra resonant argument circulates (period about 140 yr; it passes 180 deg in
+2010-2012 "by coincidence"), so the Laplace-like resonance Showalter and Hamilton describe is not supported with
+current masses. This does not change the {ephemeris} relabel (D3), which rests on the paper being about the moons'
+own motion, but the anchor's description should not call it an established resonance. The Jbara digest says the
+paper is an educational CR3BP note with no chaos indicator, no periodic orbit and no table: the tadpole anchor's
+{binary-coorbital} label stays, and its relevance to #998 is nil.

@@ -118,3 +118,13 @@ derives a Kepler radius from it (what #998 does), keeping the printed JPL a as t
   with the largest error (Styx, 3.6 percent; Styx-Nix 8.9 percent in synodic period).
 
 Not decided here; owner decision, registered under #1022 in OUTSTANDING.
+
+## Addendum 2026-10-11: the cause of the Pluto offset is sourced
+
+Brozovic and Jacobson (2024), Tables 10 and 11 (digest `docs/notes/2026-10-11-digest-brozovic-jacobson-2024-post-new-horizons-orbits-masses-pluto-satellites-aj.md`): the registry's a is the MEAN OSCULATING a, and its
+Kepler period reproduces the paper's osculating period (Table 10) to 0.05-0.1 percent; the printed periods are the
+precessing-ellipse (true mean-motion) periods of Table 11. The offsets in this note are the osculating-versus-mean
+difference, not a registry error. Where this note says the cause is "the binary quadrupole, remainder unexplained",
+read: the binary forces the osculating elements away from the mean ones, and the paper's tables give both. See
+`docs/notes/2026-10-11-1022-pluto-small-moon-registry-verification.md` sec. 5. The numbers and the options are
+unchanged; for option (a) the sourced period is Table 11's.

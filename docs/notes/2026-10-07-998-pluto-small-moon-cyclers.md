@@ -332,3 +332,32 @@ Strong-set restatement of sec. 6.1 (224): evaluable 207; gate pass at all five e
 valid real-ephemeris verdict in this model and must wait for a barycentric treatment of the half-rev return
 (#1024's option, which excludes them too). Nothing here is called novel; the literature step is unchanged
 (#1036).
+
+## 12. State of the 224 strong members after #1024 and #1064 (2026-10-11)
+
+Sources: sec. 3 and 11 of this note; `data/998_pluto_smallmoons/<cell>_gauntlet.json` (strong flag),
+`<cell>_realeph_all_n1_fix1064.json` (real-ephemeris step with Charon non-Keplerian, #1064), and
+`data/1024_barycentric/<cell>_continue.json` (barycentric model, #1024 note sec. 8; "continues" means the
+continuation reaches mass fraction 0.1088). Counts are of the 224 members that were strong in sec. 3.
+
+| Cell | Strong (sec. 3) | Half-rev Charon leg: refused in real-eph, excluded in barycentric | Evaluable in real-eph | Gate pass at all 5 epochs | Refit under 1 m/s at all 5 epochs | Barycentric: continues | Barycentric: folds or stops | Barycentric: gate pass at end | Barycentric: strong at end |
+|---|---|---|---|---|---|---|---|---|---|
+| Styx | 108 | 9 | 99 | 99 | 99 | 96 | 3 | 96 | 54 |
+| Nix | 46 | 4 | 42 | 41 | 42 | 42 | 0 | 41 (1 indeterminate) | 41 |
+| Kerberos | 41 | 2 | 39 | 39 | 39 | 39 | 0 | 39 | 36 |
+| Hydra | 29 | 2 | 27 | 27 | 25 | 27 | 0 | 27 | 24 |
+| all | 224 | 17 | 207 | 206 | 205 | 204 | 3 | 203 | 155 |
+
+Reading it:
+- The 17 half-rev members are the same set in both models: neither the real-ephemeris step nor the barycentric
+  model can evaluate a half-rev Charon return (both refuse a non-Keplerian Charon). They have no valid verdict
+  beyond the ideal model.
+- Of the 207 others: 206 pass the gate at all five real-ephemeris epochs; 204 continue in the barycentric model
+  (3 Styx members fold or stop, which is not a negative); 203 still pass at the end; 155 are still "strong" there
+  (48 lose the label on the Pluto-surface screen once Pluto moves; 20 other members become strong, outside this
+  table).
+- The two models answer different questions: the real-ephemeris step keeps the one-centre patched-conic dynamics
+  and uses the kernel body states; the barycentric model changes the dynamics (Charon about the barycentre, Pluto
+  moving) and keeps the ideal body motion. A member that passes both is the strongest present evidence in this
+  task. The overlap was not computed here.
+- Nothing is called novel and the literature step (#1036) is unchanged.
