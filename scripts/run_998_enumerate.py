@@ -95,6 +95,46 @@ def _preflight_998(**kwargs: Any) -> None:
     preflight_search(task_no=998, script_path=Path(__file__), **kwargs)
 
 
+def pilot_assess(cell: str, max_structures: int = 60) -> dict[str, int]:
+    """Solve and assess a few small structures of ``cell`` before a sweep (#1060).
+
+    A sweep whose assessment raises on every zero (the Kerberos KeyError of 2026-10-07) used to
+    run to the end before anyone saw it. Returns the counts; the caller refuses to sweep when
+    ``assess_errors`` is non-zero.
+    """
+    from cyclerfinder.search.two_working_body_enum import (
+        CatalogueSpec,
+        assess,
+        solve_structure,
+        structures,
+    )
+
+    system = pluto_system(CELLS[cell])
+    a, b = "Charon", CELLS[cell]
+    spec = {c: CatalogueSpec(generic_revs=(1,)) for c in (a, b)}
+    tried = zeros = errors = 0
+    for cyc in structures(
+        system, a, b, 3, max_returns={a: 1, b: 0}, spec=spec, transfer_revs=(0,), visits=1
+    ):
+        if tried >= max_structures or zeros >= 3:
+            break
+        tried += 1
+        for z in solve_structure(
+            system,
+            cyc,
+            phase_period_s=system.synodic_s(a, b),
+            n_phase=24,
+            n_split=10,
+            n_refine=60,
+        ):
+            zeros += 1
+            try:
+                assess(system, z)
+            except Exception:
+                errors += 1
+    return {"structures_tried": tried, "zeros": zeros, "assess_errors": errors}
+
+
 def cmd_enumerate(argv: list[str]) -> None:
     enum = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
     original = enum.cell_system
@@ -105,6 +145,14 @@ def cmd_enumerate(argv: list[str]) -> None:
         result: tuple[CircularSystem, str, str] = original(cell)
         return result
 
+    pre = argparse.ArgumentParser(add_help=False)
+    pre.add_argument("--cell", required=True)
+    cell = pre.parse_known_args(argv)[0].cell
+    if "--count-only" not in argv and cell in CELLS:
+        res = pilot_assess(cell)
+        print(f"pilot assess, cell {cell}: {res}", flush=True)
+        if res["assess_errors"]:
+            raise SystemExit(f"pilot: {res['assess_errors']} assessment errors; not sweeping")
     enum.cell_system = cell_system  # main() looks the cell up through the module global
     sys.argv = [sys.argv[0], *argv]
     enum.main(preflight=_preflight_998, x1=False)

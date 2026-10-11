@@ -1218,8 +1218,17 @@ def encounter_self_consistency(system: System, cycle: Cycle, x: Dates) -> float:
 
 
 def sphere_of_influence_km(system: System, code: str) -> float:
-    """Laplace sphere of influence ``a (m/M)^(2/5)`` of an encounter body."""
-    if code in PLANETS:
+    """Laplace sphere of influence ``a (m/M)^(2/5)`` of an encounter body.
+
+    ``a`` comes from the system's own constants when it carries them (``CircularSystem.bodies``
+    holds each body's circle radius), so a moon that is not in the registry no longer raises
+    (#1060); the registry is the fallback for systems that do not (e.g. mean-element systems).
+    The mass ratio always uses the system's own flyby-body GM and primary mu.
+    """
+    bodies = getattr(system, "bodies", None)
+    if isinstance(bodies, dict) and code in bodies:
+        a = float(bodies[code][0])
+    elif code in PLANETS:
         a = PLANETS[code].sma_au * AU_KM
     elif code in SATELLITES:
         a = SATELLITES[code].sma_km
