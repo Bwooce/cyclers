@@ -25,14 +25,14 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
-import os
 import re
-import signal
 import subprocess
 import sys
 import time
 from pathlib import Path
 from typing import Any
+
+from cyclerfinder.parallel.subprocess_group import run_group
 
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "data" / "1025_ev_realeph"
@@ -136,16 +136,8 @@ def run_route(
         # live log (gitignored under de440_shoot/), copied to the static tool.log at the end
         with (d / "tool.live.log").open("w") as live:
             # own process group: on a timeout the whole group is killed, so the python child of
-            # `uv run` cannot run on as an orphan and write a result later (sec. 11.6)
-            p = subprocess.Popen(
-                cmd, stdout=live, stderr=subprocess.STDOUT, cwd=REPO, start_new_session=True
-            )
-            try:
-                p.wait(timeout=TIMEOUT[0])
-            except subprocess.TimeoutExpired:
-                os.killpg(p.pid, signal.SIGKILL)
-                p.wait()
-                raise
+            # `uv run` cannot run on as an orphan and write a result later (sec. 11.6; #1068)
+            p = run_group(cmd, timeout=TIMEOUT[0], cwd=REPO, stdout=live, stderr=subprocess.STDOUT)
         (d / "tool.log").write_text((d / "tool.live.log").read_text())
     except subprocess.TimeoutExpired:
         (d / "tool.log").write_text(
@@ -167,7 +159,8 @@ def run_route(
 def _check(d: Path, key: str, n: int, real: str) -> tuple[float | None, float | None]:
     cl = d / "check.log"
     if not cl.exists():
-        p = subprocess.run(
+        # run_group: process-group kill on a timeout (#1068)
+        p = run_group(
             ["uv", "run", "python", str(CHECK_TOOL), "--cell", "ev", "--key", key,
              "--chain", str(d / "realeph_chain.json"), "--n-cycles", str(n), "--real", real],
             capture_output=True, text=True, timeout=TIMEOUT_S, cwd=REPO,
@@ -286,7 +279,8 @@ def _deb_eval(tag: str, key: str, n: int, route: str, ie: int) -> dict[str, Any]
     }
     cj = d / "closure_dv.json"
     if not cj.exists():
-        subprocess.run(
+        # run_group: process-group kill on a timeout (#1068)
+        run_group(
             ["uv", "run", "python", str(CLOSURE_TOOL), "--cell", "ev", "--key", key,
              "--n-cycles", str(n), "--real", "de440", "--chain", str(p), "--out", str(cj)],
             capture_output=True, text=True, timeout=TIMEOUT_S, cwd=REPO, check=True,
