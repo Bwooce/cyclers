@@ -473,6 +473,12 @@ def _perp_basis(w: Vec) -> tuple[Vec, Vec, Vec]:
     return w_hat, e1, e2
 
 
+def _is_keplerian(system: System, code: str) -> bool:
+    """False only for a body a system declares non-Keplerian about ``mu`` (#1024)."""
+    check = getattr(system, "is_keplerian", None)
+    return True if check is None else bool(check(code))
+
+
 def resonant_circle(
     system: System, leg: ResonantLeg, t_s: float, vinf: float
 ) -> tuple[float, float, Vec, Vec, Vec] | None:
@@ -485,10 +491,11 @@ def resonant_circle(
     r, w = system.state(leg.body, t_s)
     rn = float(np.linalg.norm(r))
     wn = float(np.linalg.norm(w))
-    if leg.body_revs == leg.sc_revs:
+    if leg.body_revs == leg.sc_revs and _is_keplerian(system, leg.body):
         # Same period as the body, so the same heliocentric speed at the same
         # point: |v_sc| = |V_P| (Menning 1968 p.18). Exact for any Keplerian body
-        # orbit, also when the model's period is set apart from its a.
+        # orbit, also when the model's period is set apart from its a. Not for a
+        # body that is not Keplerian about ``mu`` (#1024's barycentric secondary).
         vf2 = wn * wn
     else:
         a_body = (system.mu * (system.period_s(leg.body) / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
@@ -536,6 +543,8 @@ def half_rev_vectors(system: System, leg: HalfRevLeg, t_s: float, vinf: float) -
     The arrival V-infinity is the mirror image (radial part reversed) at the
     antipode; see :func:`half_rev_arrival`.
     """
+    if not _is_keplerian(system, leg.body):
+        raise ValueError(f"half-rev legs need a Keplerian body circle (#1024): {leg.body}")
     r, w = system.state(leg.body, t_s)
     rn = float(np.linalg.norm(r))
     big_w = float(np.linalg.norm(w))

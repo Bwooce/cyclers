@@ -103,3 +103,40 @@ def test_primary_min_distance_equals_r_min_at_mass_fraction_zero() -> None:
     r_min, _ = leg_extent(bary, cyc, x, flybys=fl)
     pa = primary_min_distance_km(bary, cyc, x, fl)
     assert abs(pa.min_km - r_min) < 1e-3 * r_min
+
+
+@pytest.mark.parametrize(("n", "m"), [(1, 1), (2, 1), (1, 2), (3, 2)])
+def test_full_rev_leg_returns_to_barycentric_charon(n: int, m: int) -> None:
+    """A full-rev n:m leg from the barycentric Charon re-flies (Kepler step and DOP853) back onto
+    Charon after n Charon periods; the 1:1 branch must not use the |v_sc| = |V_body| shortcut."""
+    from cyclerfinder.search.two_working_body import (
+        ResonantLeg,
+        fixed_duration_s,
+        kepler_step,
+        resonant_circle,
+        resonant_vec,
+    )
+    from cyclerfinder.search.two_working_body_refly import fly
+
+    bary = barycentric_binary(_pluto(), "Charon", GM_CHARON / MU_SYS)
+    leg = ResonantLeg("Charon", n, m)
+    t0 = 1.0e5
+    circ = resonant_circle(bary, leg, t0, 0.25)
+    assert circ is not None
+    r0, w0 = bary.state("Charon", t0)
+    dt = fixed_duration_s(bary, leg)
+    r_end, _ = bary.state("Charon", t0 + dt)
+    for phi in (0.3, 2.0, 4.5):
+        v0 = w0 + resonant_vec(circ, phi)
+        r1, _ = kepler_step(r0, v0, dt, MU_SYS)
+        r2, _ = fly(MU_SYS, r0, v0, dt)
+        assert float(np.linalg.norm(r1 - r_end)) < 1.0
+        assert float(np.linalg.norm(r2 - r_end)) < 1.0
+
+
+def test_half_rev_refuses_barycentric_charon() -> None:
+    from cyclerfinder.search.two_working_body import HalfRevLeg, half_rev_vectors
+
+    bary = barycentric_binary(_pluto(), "Charon", GM_CHARON / MU_SYS)
+    with pytest.raises(ValueError, match="#1024"):
+        half_rev_vectors(bary, HalfRevLeg("Charon", 3, 1, True, 0), 0.0, 0.25)
