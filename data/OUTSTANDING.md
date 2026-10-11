@@ -3057,6 +3057,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   `str(r.status) == ...`, `r.status.strip() in X`), `NamedExpr`/walrus aliases, tuple-unpack and getattr
   aliases, and its alias set is module-wide (per-function scoping). Source: the `#1045` A1 review (v3 note
   sec. 8, findings 2-3). The anchor part of `#1052` is rule U: `docs/notes/2026-10-11-1052-rule-u-untopologied-signatures.md`.
+- `#1067` — registered 2026-10-11 (from the Brozovic-Jacobson 2024 digest, `#1022d`; BACKLOG, small, Pluto). **STYX AND
+  KERBEROS REGISTRY GM ARE UPPER BOUNDS, NOT THE VALUES PLU060 USED.** `src/cyclerfinder/core/satellites.py` stores
+  0.0003 and 0.0002 km^3/s^2 (Table 8 1-sigma upper bounds, `#1037`); PLU060 was integrated with held values 0.04e-3
+  and 0.06e-3 (kernel 4.045e-5, 6.038e-5), so the registry values are 7.5 and 3.3 times larger. Two candidate fixes:
+  (a) a "held value used by PLU060" field beside the bound; (b) keep the bound and put the comment at the entry.
+  Consequence: bending overstated if either moon is ever a flyby body; no effect on `#998` (massless targets). No
+  action now. Source: `docs/notes/2026-10-11-1022-pluto-small-moon-registry-verification.md` sec. 5.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and

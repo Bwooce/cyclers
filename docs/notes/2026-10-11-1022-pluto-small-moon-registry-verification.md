@@ -94,3 +94,13 @@ the rounded 1-sigma upper bounds (Table 8), whereas PLU060 was integrated with h
 (kernel 4.045e-5 and 6.038e-5). The registry values are 7.5 and 3.3 times the held ones. It does not matter for
 #998 (massless targets); it overstates the bending of any lane that uses these two as flyby bodies. Proposal only:
 a comment at the registry entries, or the held values with the bound as metadata. No registry change was made.
+
+## 6. Owner decision (2026-10-11)
+
+Question as put (OUTSTANDING #1022, waiting on owner): "(a) store fitted periods plus a derived Kepler radius for
+the small moons, or (b) leave and document" (impact and options in
+`docs/notes/2026-10-11-1022b-registry-period-impact.md`).
+
+Owner decision, verbatim label: "Store the fitted period beside a". That is option (a). The sourced period is
+Brozovic and Jacobson (2024) Table 11 (sec. 5 above), not a fit of ours. Pre-registration of the change:
+`docs/notes/2026-10-11-1022d-fitted-periods-prereg.md`.
