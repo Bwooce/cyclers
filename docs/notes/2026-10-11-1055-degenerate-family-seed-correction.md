@@ -179,3 +179,18 @@ Tests (fast):
     Newton from it reaches the exact root to 1e-9;
   - the 2-d root is within 2e-3;
   - a seed already at the root is returned unchanged.
+
+### Amendment 2 (identity wording, before any run)
+
+The corrected member's patched-conic V_inf is not known independently: it is the sigma -> 0 limit
+of the corrected branch. So "within 0.01 km/s of the corrected member" (sec. 4) would be circular.
+Identity is instead:
+- (1) the branch converges going down at sigma 0.01, 0.005 and 0.0025 (the #1025 schedule for the
+  ideal model; the #1044 `stage_down` 0.01 / 0.005 for jup365), with the successive V_inf
+  differences shrinking (a Cauchy limit);
+- (2) the Richardson limit V(0) = 2 V(sigma_last) - V(2 sigma_last) is within 0.05 km/s of the chain
+  tool's V_inf at every node.
+I report the #1025 / #1044 identity numbers against the chain as they come out. Control A, gc-1
+with alpha* = 0, must also pass #1025's own identity gate unchanged.
+
+Driver: `scripts/run_1055_seedfix.py` (stages fix, start, neg, cont, down, ias15).
