@@ -675,3 +675,27 @@ Lead request (from #1061). sec. 8.14 ev-C passed at 1/5 under the final wording;
      move V1 -> V2.
    - If the branches are the SAME, the sec. 8.14 verdict stands (1/5): the drift is real.
 5. No catalogue edit until a window opens. Tool: `scripts/v2_samephase_1007.py --evc-branch`.
+
+### 8.16 Result of the sec. 8.15 ev-C check (2026-10-11 14:07 AEDT; `--evc-branch`, `data/1007_v2/evc_branch.{json,log}`)
+
+| Epoch (JD) | First 5 cycles of the 10-cycle chain against the 5-cycle chain: date / \|V_inf\| difference | Branch test | Seeded re-solve | Final-wording verdict |
+|---|---|---|---|---|
+| 2462579.6 | 13.15 d / 1.13 km/s | DIFFERENT | converges (2.1e-12) to the sec. 8.6 chain (0.0 d apart) | FAIL (D' 15.2 / 5.9 d) |
+| 2464912.8 | 38.33 d / 3.43 km/s | DIFFERENT | does not converge (7.3e-4) | FAIL |
+| 2467248.8 | 6.05 d / 0.47 km/s | DIFFERENT | converges to the sec. 8.6 chain (0.0 d apart) | PASS (D' 5.28 / 5.91 d) |
+| 2469586.5 | 23.55 d / 1.82 km/s | DIFFERENT | converges to the sec. 8.6 chain (0.0 d apart) | FAIL (D' 30.2 / 5.8 d) |
+| 2471918.9 | 27.60 d / 2.28 km/s | DIFFERENT | converges to the sec. 8.6 chain (0.0 d apart) | FAIL (D' 57.5 / 5.8 d) |
+
+**ev-C stays 1/5 — the sec. 8.14 verdict stands; ev-C stays V1.**
+
+- The branch test reads DIFFERENT at every epoch, so the expectation of sec. 8.15 item 4 was right on
+  that point. But the seeded re-solve does not reach another branch.
+- Started from the 5-cycle chain repeated one 16-yr period later, the LM solve returns to EXACTLY the
+  sec. 8.6 10-cycle chain at all 4 epochs where it converges.
+- So the 10-cycle ballistic chain at each epoch is the same solution from both seeds. Its first 5
+  cycles differ from the 5-cycle chain because the open chain's solution depends on its length: the
+  far-end magnitude closure moves with the length.
+- The same-phase drift belongs to the 10-cycle ballistic solution itself. It is not an artefact of
+  which branch the ramp continuation picked.
+- Not tested: other seeds that might reach a different 10-cycle solution. The pre-registered check
+  found none.

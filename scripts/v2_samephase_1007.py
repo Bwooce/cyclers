@@ -519,8 +519,70 @@ def final_ev() -> dict[str, Any]:
     return out
 
 
+def evc_branch() -> dict[str, Any]:
+    """Sec. 8.15: is ev-C's 10-cycle chain another branch than its 5-cycle rung (d) chain?"""
+    real = CHAIN.real_ephemeris("ev", "mean")
+    wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())["ev-C"]
+    key, xt = wb["key"], wb["x_days"]
+    circ, a, b = CHAIN.ENUM.cell_system("ev")
+    _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
+    nl = sum(isinstance(lg, LambertLeg) for lg in one.legs)
+    five = json.loads((REPO / "data" / "942_direct_route_and_gm_fix.json").read_text())[
+        "evC_standish_rerun"
+    ]["epochs"]
+    ten = json.loads((REPO / "data" / "1007_v2" / "ev10_evC" / "realeph_chain.json").read_text())
+    out: dict[str, Any] = {"rules": FINAL, "epochs": []}
+    for e5, e10 in zip(five, ten, strict=True):
+        assert abs(e5["epoch_jd"] - e10["epoch_jd"]) < 1e-6, (e5["epoch_jd"], e10["epoch_jd"])
+        lab = f"ev-C JD {e5['epoch_jd']:.1f}"
+        x5, v5, _, _ = legs_data("ev", key, 5, "ramp", e5["x0_days"], e5["final_y_dates"], real)
+        x10, v10, _, _ = legs_data(
+            "ev", key, 10, "ramp", e10["x0_days"], e10["final_y_dates"], real
+        )
+        dd = float(np.max(np.abs(x10[: 5 * nl] - x5)))
+        dv = float(max(abs(p - q) for p, q in zip(v10[: 5 * nl], v5, strict=True)))
+        same = dd <= 0.5 and dv <= 0.05
+        rec: dict[str, Any] = {"epoch_jd": e5["epoch_jd"], "max_date_diff_d": dd,
+                               "max_vinf_diff_kms": dv, "same_branch": same}  # fmt: skip
+        if same:
+            y10 = e10["final_y_dates"]
+            rec["judged"] = final_record(lab + " (sec. 8.6 chain)", "ev", key, xt, 10, "ramp",
+                                         e10["x0_days"], y10, real, nl, 5)  # fmt: skip
+        else:
+            y5 = np.asarray(e5["final_y_dates"], dtype=float)
+            p5 = float(y5[-1])
+            dates5 = np.concatenate([[e5["x0_days"]], y5[:-1]])
+            seed = np.concatenate([dates5[1:], dates5 + p5, [2 * p5]])
+            legs = one.legs * 10
+            x0 = float(e5["x0_days"])
+            sol = least_squares(
+                lambda yy, lg=legs, t0=x0: CHAIN.date_chain_residual(real, lg, t0 * DAY, yy),
+                seed, method="lm", xtol=1e-14, ftol=1e-14, gtol=1e-14, max_nfev=200 * len(seed),
+            )  # fmt: skip
+            res = float(np.max(np.abs(CHAIN.date_chain_residual(real, legs, x0 * DAY, sol.x))))
+            rec["resolve_residual_kms"] = res
+            rec["resolve_max_shift_from_seed_d"] = float(np.max(np.abs(sol.x - seed)))
+            if res < 1e-6:
+                rec["judged"] = final_record(lab + " (seeded re-solve)", "ev", key, xt, 10, "ramp",
+                                             x0, list(sol.x), real, nl, 5)  # fmt: skip
+                rec["resolved_y_days"] = sol.x.tolist()
+            else:
+                rec["judged"] = {"label": lab, "pass": False, "error": "re-solve not converged"}
+        print(f"{lab}: date diff {dd:.3f} d, V_inf diff {dv:.4f} km/s -> "
+              f"{'SAME' if same else 'DIFFERENT'} branch; judged "
+              f"{'PASS' if rec['judged']['pass'] else 'FAIL'}"
+              + ("" if same else f" (re-solve residual {rec['resolve_residual_kms']:.1e})"),
+              flush=True)  # fmt: skip
+        out["epochs"].append(rec)
+    k = sum(r["judged"]["pass"] for r in out["epochs"])
+    out["passes"] = k
+    print(f"ev-C: V2 (final wording, sec. 8.15) {'PASS' if k >= 3 else 'FAIL'} ({k}/5)", flush=True)
+    return out
+
+
 def main() -> None:
     for flag, fn, name in (
+        ("--evc-branch", evc_branch, "evc_branch"),
         ("--final-controls", final_controls, "final_controls"),
         ("--final-gc", final_gc, "final_gc"),
         ("--final-ev", final_ev, "final_ev"),

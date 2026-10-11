@@ -1,0 +1,15 @@
+ev-C JD 2462579.6 (seeded re-solve): n=10 cont=2.1e-12 gate=pass (0.896) refly=1.88e-01 km D=10.598/6.141 d W=1.267/0.907 km/s growth D 0.98 W 2.04 -> FAIL [1110]
+ev-C JD 2462579.6 (seeded re-solve): c1=1 (2.1e-12) c2=1 (0.896) c3=1 (1.9e-01 km) c4=0 D'=15.245/5.855 W'=0.9386/0.822 [slopes +4.5051 d, +0.00458 km/s per cycle] -> FAIL
+ev-C JD 2462579.6: date diff 13.149 d, V_inf diff 1.1262 km/s -> DIFFERENT branch; judged FAIL (re-solve residual 2.1e-12)
+ev-C JD 2464912.8: date diff 38.327 d, V_inf diff 3.4336 km/s -> DIFFERENT branch; judged FAIL (re-solve residual 7.3e-04)
+ev-C JD 2467248.8 (seeded re-solve): n=10 cont=1.9e-12 gate=pass (0.886) refly=1.37e-01 km D=7.770/6.141 d W=0.984/0.907 km/s growth D 1.08 W 1.33 -> FAIL [1110]
+ev-C JD 2467248.8 (seeded re-solve): c1=1 (1.9e-12) c2=1 (0.886) c3=1 (1.4e-01 km) c4=1 D'=5.278/5.909 W'=0.5709/0.834 [slopes +0.6687 d, -0.14784 km/s per cycle] -> PASS
+ev-C JD 2467248.8: date diff 6.048 d, V_inf diff 0.4681 km/s -> DIFFERENT branch; judged PASS (re-solve residual 1.9e-12)
+ev-C JD 2469586.5 (seeded re-solve): n=10 cont=2.3e-12 gate=pass (0.904) refly=6.58e-02 km D=19.950/6.141 d W=1.712/0.907 km/s growth D 0.93 W 1.16 -> FAIL [1110]
+ev-C JD 2469586.5 (seeded re-solve): c1=1 (2.3e-12) c2=1 (0.904) c3=1 (6.6e-02 km) c4=0 D'=30.153/5.823 W'=2.2062/0.736 [slopes +8.4843 d, +0.39413 km/s per cycle] -> FAIL
+ev-C JD 2469586.5: date diff 23.550 d, V_inf diff 1.8199 km/s -> DIFFERENT branch; judged FAIL (re-solve residual 2.3e-12)
+ev-C JD 2471918.9 (seeded re-solve): n=10 cont=2.2e-12 gate=pass (0.902) refly=1.82e-01 km D=39.618/6.141 d W=3.048/0.907 km/s growth D 2.02 W 1.88 -> FAIL [1110]
+ev-C JD 2471918.9 (seeded re-solve): c1=1 (2.2e-12) c2=1 (0.902) c3=1 (1.8e-01 km) c4=0 D'=57.472/5.757 W'=4.2024/0.603 [slopes +11.7243 d, +1.52561 km/s per cycle] -> FAIL
+ev-C JD 2471918.9: date diff 27.602 d, V_inf diff 2.2771 km/s -> DIFFERENT branch; judged FAIL (re-solve residual 2.2e-12)
+ev-C: V2 (final wording, sec. 8.15) FAIL (1/5)
+wrote data/1007_v2/evc_branch.json
