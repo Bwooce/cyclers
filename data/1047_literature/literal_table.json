@@ -1,0 +1,4706 @@
+{
+ "2:1 pro wE1 wM-1 sym": {
+  "origin": "#1000",
+  "n_candidates": 4,
+  "computed_pq": [
+   2,
+   1
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.3817786882533505,
+   2.4431193263551942
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "same p:q and sense; C 1.9521613046 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 1.9800000000000062 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.4599999999999964 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.469999999999996 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.659999999999992 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "same p:q and sense; C 2.5915243637421264 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "same p:q and sense; C 2.6695351808423595 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "same p:q and sense; C 2.6345741034127244 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "same p:q and sense; C 2.5131538804083853 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "same p:q and sense; C 2.339496998592055 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "same p:q and sense; C 2.0827953202657215 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "same p:q (sense not printed); C 2.0934 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "same p:q and sense; C 1.9521613046 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 1.9800000000000062 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.4599999999999964 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.469999999999996 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.659999999999992 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "same p:q and sense; C 2.5915243637421264 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "same p:q and sense; C 2.6695351808423595 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "same p:q and sense; C 2.6345741034127244 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "same p:q and sense; C 2.5131538804083853 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "same p:q and sense; C 2.339496998592055 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "same p:q and sense; C 2.0827953202657215 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "same p:q (sense not printed); C 2.0934 outside the family's computed range"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "2:3 ret wE-5 wM-2 sym": {
+  "origin": "#1000",
+  "n_candidates": 10,
+  "computed_pq": [
+   2,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   -0.12814791579310914,
+   0.19329382033262021
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "3:1 pro wE2 wM0 sym": {
+  "origin": "#1048",
+  "n_candidates": 18,
+  "computed_pq": [
+   3,
+   1
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.553017193579434,
+   2.998083293055253
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.5400000000000054 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 3.129999999999993 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.5400000000000054 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 3.129999999999993 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "3:1 ret wE-4 wM0 sym": {
+  "origin": "#1048",
+  "n_candidates": 17,
+  "computed_pq": [
+   3,
+   1
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   1.3198502717193428,
+   1.6514153558214475
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "same p:q, opposite sense"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "4:3 ret wE-7 wM-2 sym": {
+  "origin": "#1000",
+  "n_candidates": 4,
+  "computed_pq": [
+   4,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   0.3134077514800353,
+   0.3508244572121235
+  ],
+  "literal_members": [],
+  "same_pq_rows": [],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "5:2 pro wE3 wM-1 sym": {
+  "origin": "#1000",
+  "n_candidates": 11,
+  "computed_pq": [
+   5,
+   2
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.2194430846237623,
+   2.242054436953346
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "5:2 pro wE3 wM0 asym": {
+  "origin": "#1000",
+  "n_candidates": 3,
+  "computed_pq": [
+   5,
+   2
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.4779959266609635,
+   2.5916406776808047
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "5:2 ret wE-7 wM-1 sym": {
+  "origin": "#1000",
+  "n_candidates": 12,
+  "computed_pq": [
+   5,
+   2
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   1.147468447491562,
+   1.4186528445925433
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "5:2 ret wE-7 wM0 sym": {
+  "origin": "#1000",
+  "n_candidates": 26,
+  "computed_pq": [
+   5,
+   2
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   1.0093007493509631,
+   1.468844298264898
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.0996 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "5:3 ret wE-8 wM-2 asym": {
+  "origin": "#1000",
+  "n_candidates": 4,
+  "computed_pq": [
+   5,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   0.7281022900886889,
+   0.8643837604844151
+  ],
+  "literal_members": [],
+  "same_pq_rows": [],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:2 pro wE5 wM0 sym": {
+  "origin": "#1048",
+  "n_candidates": 15,
+  "computed_pq": [
+   7,
+   2
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.7418176736346886,
+   2.8182735169716935
+  ],
+  "literal_members": [],
+  "same_pq_rows": [],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 pro wE4 wM-1 asym": {
+  "origin": "#1000",
+  "n_candidates": 2,
+  "computed_pq": [
+   7,
+   3
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.4218739715910296,
+   2.547266749814082
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 pro wE4 wM-1 sym": {
+  "origin": "#1000",
+  "n_candidates": 50,
+  "computed_pq": [
+   7,
+   3
+  ],
+  "computed_sense": 1,
+  "pq_consistent": true,
+  "C_range": [
+   2.432306905715805,
+   2.467839513106526
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 ret wE-10 wM-1 asym": {
+  "origin": "#1000",
+  "n_candidates": 13,
+  "computed_pq": [
+   7,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   0.8815051764619035,
+   1.162752691482119
+  ],
+  "literal_members": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "LITERAL MEMBER (dT/T 4.7e-06, perigee 0.0%, periselene 0.0%)"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "LITERAL MEMBER (dT/T 4.7e-06, perigee 0.1%, periselene 0.1%)"
+   }
+  ],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q and sense; C inside the range but dT/T 2.2e-03, perigee 35%, periselene 60%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C 1.2892422741 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q and sense; C inside the range but dT/T 2.2e-03, perigee 35%, periselene 60%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "LITERAL MEMBER (dT/T 4.7e-06, perigee 0.0%, periselene 0.0%)"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "LITERAL MEMBER (dT/T 4.7e-06, perigee 0.1%, periselene 0.1%)"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C 1.2892422741 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 ret wE-10 wM-1 sym": {
+  "origin": "#1000",
+  "n_candidates": 70,
+  "computed_pq": [
+   7,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   0.8637311063253001,
+   1.3413266420288732
+  ],
+  "literal_members": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "LITERAL MEMBER (dT/T 1.1e-06, perigee 0.0%, periselene 0.0%)"
+   }
+  ],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.2e-03, perigee 69%, periselene 156%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.2e-03, perigee 69%, periselene 155%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.3e-02, perigee 330%, periselene 1024%"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "LITERAL MEMBER (dT/T 1.1e-06, perigee 0.0%, periselene 0.0%)"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.2e-03, perigee 69%, periselene 156%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.2e-03, perigee 69%, periselene 155%"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C inside the range but dT/T 1.3e-02, perigee 330%, periselene 1024%"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 ret wE-10 wM0 sym": {
+  "origin": "#1000",
+  "n_candidates": 1,
+  "computed_pq": [
+   7,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   1.1495000455146855,
+   1.1495000455146855
+  ],
+  "literal_members": [],
+  "same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q and sense; C 1.0215696153 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q and sense; C 1.06876239 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q and sense; C 1.06876239 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C 1.2892422741 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   }
+  ],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "same p:q and sense; C 1.0215696153 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "same p:q and sense; C 1.06876239 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "same p:q and sense; C 1.06876239 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "same p:q and sense; C 1.2892422741 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "same p:q (sense not printed); C 3.1858 outside the family's computed range"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "7:3 ret wE-9 wM0 sym": {
+  "origin": "#1000",
+  "n_candidates": 1,
+  "computed_pq": [
+   6,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   0.8362926469620096,
+   0.8362926469620096
+  ],
+  "literal_members": [],
+  "same_pq_rows": [],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ },
+ "8:3 ret wE-11 wM0 sym": {
+  "origin": "#1000",
+  "n_candidates": 2,
+  "computed_pq": [
+   8,
+   3
+  ],
+  "computed_sense": -1,
+  "pq_consistent": true,
+  "C_range": [
+   1.1745544398792602,
+   1.2801056853314745
+  ],
+  "literal_members": [],
+  "same_pq_rows": [],
+  "rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2b",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2c",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2d",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "1-2e",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1c",
+    "verdict": "p:q 0:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2a",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2c",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "3-2d",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3b",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3c",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "7-3d",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c254-em-cycler-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-31-c313-em-resonant-po-2013",
+    "verdict": "p:q 3:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "12a",
+    "verdict": "p:q 1:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "23a/b",
+    "verdict": "p:q 2:3 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "32a/b",
+    "verdict": "p:q 3:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "52a",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "54a/b",
+    "verdict": "p:q 5:4 differs"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "73a",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "5:2 PLPO",
+    "verdict": "p:q 5:2 differs"
+   },
+   {
+    "source": "Liang, Xu & Xu 2017",
+    "orbit": "7:3 PLPO",
+    "verdict": "p:q 7:3 differs"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "p:q 2:1 differs"
+   },
+   {
+    "source": "Hoelker & Winston 1968",
+    "orbit": "all 39 captions",
+    "verdict": "no n* of 5/2, 5/3 or 7/3 printed; mu = 1/80"
+   },
+   {
+    "source": "Genova & Aldrin 2015 (AAS 15-794)",
+    "orbit": "5 cyclers",
+    "verdict": "2:1, 3:1 and the Arenstorf 4-leaf; no C or state"
+   }
+  ]
+ }
+}
