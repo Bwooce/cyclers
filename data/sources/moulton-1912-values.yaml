@@ -1,0 +1,60 @@
+# Moulton 1912, every numerical value the paper prints. The paper has NO numbered tables; it is analytic. The numbers are
+# series coefficients, closed-form conditions and two numerical comparisons (Burrau, Darwin).
+# Source: F. R. Moulton, "Closed Orbits of Ejection and Related Periodic Orbits. Painleve's Theorem", Proceedings of the London
+#   Mathematical Society s2-11:367-397 (1912), doi 10.1112/plms/s2-11.1.367. Received and read 13 June 1912 (running heads
+#   "1912.]" and "[June 13,"; the file name says 1913, the paper says 1912). Moulton was a Research Associate of the Carnegie
+#   Institution, Chicago.
+# Local file: 31 pp., 400 dpi JBIG2 scan with a hidden OCR text layer from the source, md5 ef24c394f72c11783b719b00c4e97239
+#   (private corpus, papers/ directory). Journal page n = PDF page n - 366.
+# Witnesses: A = pdftotext -layout, B = pdftotext -raw (one OCR run, two extractors, so not independent of each other);
+#   C = page renders at 110 to 260 dpi read for every item here. Items whose digits were read on a render AND found in both
+#   layers are marked [3]; items found only in the render because the layer garbles the equation are marked [C]. C decides.
+# Our checks are in check_moulton.py/.out, filed beside the PDF. They are ours and never goldens.
+conventions:
+  model: "planar circular restricted problem in rotating axes, canonical units (G = 1, finite masses 1 - mu at (-mu, 0) and mu at (1 - mu, 0), angular rate 1, period 2 pi); U = (x^2 + y^2)/2 + (1 - mu)/r1 + mu/r2, r1^2 = (x + mu)^2 + y^2, r2^2 = (x - 1 + mu)^2 + y^2; integral (dx/dt)^2 + (dy/dt)^2 = 2U - C (eq. 17, 18)"
+  ejection_body: "ejection and collision are with the body of mass 1 - mu (the big body when mu is small). Moulton's proof is for mu small."
+  period_label: "section 12: P = 2 pi p/q (spacecraft period in fixed axes), rotating-frame period T = P q = 2 pi p; q spacecraft revolutions while the axes make p rotations"
+blocks:
+  - block: "Two-body ejection series (sec. 2, eqs. 6-9) [3]"
+    items:
+      - {quantity: "variable", value: "tau = (t - t_j)^(1/3)"}
+      - {quantity: "equation (7)", value: "tau xi'' - 2 xi' = -9(1 - mu) tau^5 / xi^2"}
+      - {quantity: "series (9)", value: "+-xi = c tau^2 + a tau^4 - (3/7)(a^2/c) tau^6 + (23/63)(a^3/c^2) tau^8 - (1894/4851)(a^4/c^3) tau^10 + (3293/7007)(a^5/c^4) tau^12 ..."}
+      - {quantity: "c, a", value: "c = [(9/2)(1 - mu)]^(1/3); a = arbitrary constant"}
+    note: "ours (check_moulton.out): all four printed coefficients reproduce exactly by solving (7) in rational arithmetic with c = a = 1. The next coefficient, not printed, is -2418092/3972969 (tau^14)."
+  - block: "Closed-orbit conditions (sec. 4, eq. 16; sec. 7, eq. 32) [3 for 16, C for 32]"
+    items:
+      - {quantity: "period from ejection to collision a multiple 2 j pi (eq. 16), j a positive integer", value: "(+-xi0)^(3/2) = 2 j sqrt(2(1 - mu)), or (-10 a)^(3/2) = 9 sqrt(1 - mu) / (2 j)"}
+      - {quantity: "a0 at mu = 0 (eq. 32)", value: "a0 = -(9^(2/3)/10)(2 j)^(-2/3), read on the page crop (the layer garbles it); consistent with the second form of (16) at mu = 0 (ours)"}
+      - {quantity: "linear dimensions of the Fig. 1 curves", value: "proportional to j^(2/3)"}
+  - block: "Jacobi constant of a closed ejection orbit (sec. 6, eqs. 29, 30; sec. 8, eq. 45) [3]"
+    items:
+      - {quantity: "C (eq. 29)", value: "C = -(20/9) c a + mu(2 + mu) = +-2(1 - mu)/xi0 + mu(2 + mu); sign + for xi0 positive"}
+      - {quantity: "Cbar (eq. 30, symmetric force function U + mu(1 - mu))", value: "Cbar = -(20/9) c a + 3 mu = +-2(1 - mu)/xi0 + 3 mu"}
+      - {quantity: "greatest-distance test (sec. 7, eq. 38)", value: "t - t1 = (sqrt(2)/8)[+pi - 4 sqrt(rho - rho^2) + 2 asin(-1 + 2 rho)] (+-xi0)^(3/2), xi = xi0 rho; for xi0 = 2 the value of t - t1 for xi = 1 is 0.18 pi, less than pi"}
+    note: "ours: eq. 38 at xi0 = 2, rho = 1/2 gives 0.1817 pi, so the printed 0.18 pi reproduces (the text layer misreads it as 0.187 pi)."
+  - block: "Jacobian of the existence proof (sec. 8, eqs. 43, 44) [3]"
+    items:
+      - {quantity: "dy/d delta at delta = 0", value: "(-1)^(j+1) 3 j pi xi0, not zero"}
+      - {quantity: "dx/da", value: "4 tau^3 [1 - (9/7)(a/c) tau^2 + (46/21)(a^2/c^2) tau^4 - (18,940/4851)(a^3/c^3) tau^6 + ...] at a = a0, tau = P/2"}
+  - block: "Burrau's orbit (sec. 8, p. 383; Burrau, Astron. Nachr. 135 no. 3280 and 136 no. 3251, 1894) [3]"
+    items:
+      - {quantity: "mass ratio", value: "mu = 0.5, j = 2, ejection in the positive direction"}
+      - {quantity: "Burrau's Jacobian constant", value: "-2 C_B = 2.2528"}
+      - {quantity: "Moulton's value", value: "xi0^(3/2) = 2 sqrt(2(1 - mu)) = 2, 'it is found that C = 2.38'"}
+      - {quantity: "greatest distances", value: "undisturbed orbit xi0 = 2 (reached at t - t1 = pi, on the negative half of the x axis); Burrau's computation 1.9972"}
+    note: "ours (check_moulton.out): I cannot reproduce C = 2.38 from the printed (45) with the printed inputs. With xi0 = 2 the right member gives 1.75, with xi0^(3/2) = 2 (xi0 = 1.587) it gives 1.88, with j = 2 (xi0 = 2.520) it gives 1.65. The xi0 that would give 2.38 is 0.885. The printed lines 'xi0^(3/2) = 2 sqrt(2(1 - mu)) = 2' and 'xi0 = 2' also disagree with each other. Not an erratum claim; the digits were read on a 260 dpi crop and are as printed."
+  - block: "Darwin's orbit (sec. 8, pp. 383-384; Darwin, Mon. Not. R. Astron. Soc. 70:134, 1909) [3]"
+    items:
+      - {quantity: "masses", value: "1 - mu = 10/11, mu = 1/11 (printed as the fractions)"}
+      - {quantity: "period", value: "pi (printed: the orbit 'having the period pi'); ejection toward mu, collision with 1 - mu going in the same direction"}
+      - {quantity: "Darwin's constant in Moulton's units", value: "C = 20/11 = 1.818"}
+      - {quantity: "xi0 from (16)", value: "xi0 = 2^(1/3) = 1.26; Darwin's greatest distance 1.3 (from his diagram)"}
+      - {quantity: "Moulton's constant from (30)", value: "Cbar = 1.716"}
+    note: "ours: Cbar = 2(1 - mu)/xi0 + 3 mu at mu = 1/11, xi0 = 2^(1/3) gives 1.7158, so the printed 1.716 reproduces. 20/11 = 1.8182 as printed."
+  - block: "Other numbers"
+    items:
+      - {quantity: "Fig. 2 limit", value: "mu = 1 - epsilon with epsilon very small, j = 1 and j = 2; loops around mu approach circles of radius j^(2/3), period 2 j pi, centre at mu"}
+      - {quantity: "periodic orbits with many near approaches (sec. 12)", value: "p = 1, q = 2 simplest; period commensurable with 2 pi"}
+      - {quantity: "convergence", value: "series converge for |tau| <= R, |mu| <= mu0, |a - a0| <= rho (no numerical radius printed)"}
+
