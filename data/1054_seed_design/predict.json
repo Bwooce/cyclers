@@ -1,0 +1,286 @@
+{
+ "rp_min_km": 8551.5781,
+ "band_km": [
+  20000.0,
+  60000.0
+ ],
+ "grid": {
+  "all": {
+   "n": 5256,
+   "impact": 0.59,
+   "impact@1": 0.286,
+   "impact@>1": 0.304,
+   "converged": 0.286,
+   "candidates_per_solve": 0.0405,
+   "n_candidates": 213,
+   "n_families": 15,
+   "families_lost_vs_all": []
+  },
+  "rp>=1.3floor": {
+   "n": 4536,
+   "impact": 0.535,
+   "impact@1": 0.197,
+   "impact@>1": 0.338,
+   "converged": 0.327,
+   "candidates_per_solve": 0.0467,
+   "n_candidates": 212,
+   "n_families": 15,
+   "families_lost_vs_all": []
+  },
+  "band": {
+   "n": 1445,
+   "impact": 0.606,
+   "impact@1": 0.32,
+   "impact@>1": 0.286,
+   "converged": 0.309,
+   "candidates_per_solve": 0.0609,
+   "n_candidates": 88,
+   "n_families": 9,
+   "families_lost_vs_all": [
+    "4:3 ret wE-7 wM-2 sym",
+    "5:2 ret wE-7 wM-1 sym",
+    "7:3 ret wE-10 wM-1 asym",
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym",
+    "8:3 ret wE-11 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & band": {
+   "n": 1217,
+   "impact": 0.539,
+   "impact@1": 0.213,
+   "impact@>1": 0.326,
+   "converged": 0.361,
+   "candidates_per_solve": 0.0715,
+   "n_candidates": 87,
+   "n_families": 9,
+   "families_lost_vs_all": [
+    "4:3 ret wE-7 wM-2 sym",
+    "5:2 ret wE-7 wM-1 sym",
+    "7:3 ret wE-10 wM-1 asym",
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym",
+    "8:3 ret wE-11 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & d>=5000": {
+   "n": 4201,
+   "impact": 0.504,
+   "impact@1": 0.153,
+   "impact@>1": 0.352,
+   "converged": 0.348,
+   "candidates_per_solve": 0.0498,
+   "n_candidates": 209,
+   "n_families": 13,
+   "families_lost_vs_all": [
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & 5000<=d<=60000": {
+   "n": 2111,
+   "impact": 0.586,
+   "impact@1": 0.256,
+   "impact@>1": 0.33,
+   "converged": 0.322,
+   "candidates_per_solve": 0.0947,
+   "n_candidates": 200,
+   "n_families": 12,
+   "families_lost_vs_all": [
+    "4:3 ret wE-7 wM-2 sym",
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & 5000<=d<=20000": {
+   "n": 894,
+   "impact": 0.65,
+   "impact@1": 0.315,
+   "impact@>1": 0.334,
+   "converged": 0.268,
+   "candidates_per_solve": 0.1264,
+   "n_candidates": 113,
+   "n_families": 10,
+   "families_lost_vs_all": [
+    "2:1 pro wE1 wM-1 sym",
+    "4:3 ret wE-7 wM-2 sym",
+    "7:3 pro wE4 wM-1 asym",
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym"
+   ]
+  },
+  "rp_floor_row (old 94%)": {
+   "n": 720,
+   "impact": 0.936,
+   "impact@1": 0.849,
+   "impact@>1": 0.087,
+   "converged": 0.031,
+   "candidates_per_solve": 0.0014,
+   "n_candidates": 1,
+   "n_families": 1,
+   "families_lost_vs_all": [
+    "2:1 pro wE1 wM-1 sym",
+    "4:3 ret wE-7 wM-2 sym",
+    "5:2 pro wE3 wM-1 sym",
+    "5:2 pro wE3 wM0 asym",
+    "5:2 ret wE-7 wM-1 sym",
+    "5:2 ret wE-7 wM0 sym",
+    "5:3 ret wE-8 wM-2 asym",
+    "7:3 pro wE4 wM-1 asym",
+    "7:3 pro wE4 wM-1 sym",
+    "7:3 ret wE-10 wM-1 asym",
+    "7:3 ret wE-10 wM-1 sym",
+    "7:3 ret wE-10 wM0 sym",
+    "7:3 ret wE-9 wM0 sym",
+    "8:3 ret wE-11 wM0 sym"
+   ]
+  },
+  "d<5000 (old 93%)": {
+   "n": 393,
+   "impact": 0.934,
+   "impact@1": 0.789,
+   "impact@>1": 0.145,
+   "converged": 0.053,
+   "candidates_per_solve": 0.0076,
+   "n_candidates": 3,
+   "n_families": 3,
+   "families_lost_vs_all": [
+    "2:1 pro wE1 wM-1 sym",
+    "2:3 ret wE-5 wM-2 sym",
+    "4:3 ret wE-7 wM-2 sym",
+    "5:2 pro wE3 wM-1 sym",
+    "5:2 pro wE3 wM0 asym",
+    "5:2 ret wE-7 wM-1 sym",
+    "5:2 ret wE-7 wM0 sym",
+    "5:3 ret wE-8 wM-2 asym",
+    "7:3 pro wE4 wM-1 asym",
+    "7:3 pro wE4 wM-1 sym",
+    "7:3 ret wE-10 wM-1 asym",
+    "8:3 ret wE-11 wM0 sym"
+   ]
+  }
+ },
+ "grid_combos_without_band_omega": 6,
+ "grid_combos": 146,
+ "gaps": {
+  "all": {
+   "n": 1728,
+   "impact": 0.156,
+   "impact@1": 0.133,
+   "impact@>1": 0.023,
+   "converged": 0.764,
+   "candidates_per_solve": 0.0289,
+   "n_candidates": 50,
+   "n_families": 3,
+   "families_lost_vs_all": []
+  },
+  "rp>=1.3floor": {
+   "n": 1512,
+   "impact": 0.056,
+   "impact@1": 0.032,
+   "impact@>1": 0.024,
+   "converged": 0.854,
+   "candidates_per_solve": 0.0331,
+   "n_candidates": 50,
+   "n_families": 3,
+   "families_lost_vs_all": []
+  },
+  "band": {
+   "n": 210,
+   "impact": 0.329,
+   "impact@1": 0.3,
+   "impact@>1": 0.029,
+   "converged": 0.41,
+   "candidates_per_solve": 0.1381,
+   "n_candidates": 29,
+   "n_families": 2,
+   "families_lost_vs_all": [
+    "7:2 pro wE5 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & band": {
+   "n": 162,
+   "impact": 0.148,
+   "impact@1": 0.111,
+   "impact@>1": 0.037,
+   "converged": 0.512,
+   "candidates_per_solve": 0.179,
+   "n_candidates": 29,
+   "n_families": 2,
+   "families_lost_vs_all": [
+    "7:2 pro wE5 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & d>=5000": {
+   "n": 1512,
+   "impact": 0.056,
+   "impact@1": 0.032,
+   "impact@>1": 0.024,
+   "converged": 0.854,
+   "candidates_per_solve": 0.0331,
+   "n_candidates": 50,
+   "n_families": 3,
+   "families_lost_vs_all": []
+  },
+  "rp>=1.3floor & 5000<=d<=60000": {
+   "n": 162,
+   "impact": 0.148,
+   "impact@1": 0.111,
+   "impact@>1": 0.037,
+   "converged": 0.512,
+   "candidates_per_solve": 0.179,
+   "n_candidates": 29,
+   "n_families": 2,
+   "families_lost_vs_all": [
+    "7:2 pro wE5 wM0 sym"
+   ]
+  },
+  "rp>=1.3floor & 5000<=d<=20000": {
+   "n": 0,
+   "impact": null,
+   "impact@1": null,
+   "impact@>1": null,
+   "converged": null,
+   "candidates_per_solve": null,
+   "n_candidates": 0,
+   "n_families": 0,
+   "families_lost_vs_all": [
+    "3:1 pro wE2 wM0 sym",
+    "3:1 ret wE-4 wM0 sym",
+    "7:2 pro wE5 wM0 sym"
+   ]
+  },
+  "rp_floor_row (old 94%)": {
+   "n": 216,
+   "impact": 0.856,
+   "impact@1": 0.838,
+   "impact@>1": 0.019,
+   "converged": 0.139,
+   "candidates_per_solve": 0.0,
+   "n_candidates": 0,
+   "n_families": 0,
+   "families_lost_vs_all": [
+    "3:1 pro wE2 wM0 sym",
+    "3:1 ret wE-4 wM0 sym",
+    "7:2 pro wE5 wM0 sym"
+   ]
+  },
+  "d<5000 (old 93%)": {
+   "n": 0,
+   "impact": null,
+   "impact@1": null,
+   "impact@>1": null,
+   "converged": null,
+   "candidates_per_solve": null,
+   "n_candidates": 0,
+   "n_families": 0,
+   "families_lost_vs_all": [
+    "3:1 pro wE2 wM0 sym",
+    "3:1 ret wE-4 wM0 sym",
+    "7:2 pro wE5 wM0 sym"
+   ]
+  }
+ },
+ "gaps_combos_without_band_omega": 30,
+ "gaps_combos": 48
+}
