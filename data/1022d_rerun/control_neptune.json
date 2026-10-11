@@ -1,0 +1,11 @@
+{
+ "tag": "neptune",
+ "rows": 8,
+ "new_vs_oldpath_bitwise_identical": true,
+ "new_vs_committed_rows": 8,
+ "new_vs_committed_identical_rows": 5,
+ "new_vs_committed_close_rows_1e-9": 7,
+ "new_vs_committed_phase_tie_rows": [
+  5
+ ]
+}
