@@ -197,3 +197,54 @@ The probe and the litcheck scripts re-run with U2 in place after the ruling.
    allowed only if the baseline citation is one of the 7 UNLABELLED anchors (U2 by design), or if
    item 1 applies. Anything else is a violation.
 4. The 1-3-body subset deviation (instead of 1-4) is accepted; reason in A1.
+
+## Results (2026-10-11 17:05 AEDT; rule U + U2 + the Aldrin fix)
+
+Probe: `scripts/probe_1052_rule_u.py --baseline 544a40d5` (`data/1052_rule_u_probe.{json,log}`).
+- 6244 shapes x 11 topologies = 68684 signatures (1-3-body subsets, A1/A2).
+- **STOP-RULE VIOLATIONS: 0.** Nothing moves toward not-found or known-architecture-new-system.
+- Changes, all published -> inconclusive:
+
+| Topology | Changes |
+|---|---|
+| none | 5985 |
+| repeated-moon | 62 |
+| halo | 60 |
+| nrho | 60 |
+| tulip | 60 |
+| transfer | 60 |
+| quasi-satellite | 60 |
+| pump-tour | 58 |
+| binary-coorbital | 56 |
+| resonant | 46 |
+| mga-tour | 6 |
+
+- Every topologied change is either U2 (the baseline citation was an unlabelled anchor) or a
+  single-body Sun E/M signature (the Aldrin fix), the two classes A2 allows.
+
+Controls and candidates:
+- `data/1025_litcheck_973_members.json` and `data/1047_literature/gate_results.json`:
+  BYTE-IDENTICAL.
+- `data/942_943_litcheck_scope.json`: every status identical. One not-found candidate's notes list the
+  10 newly tagged Earth-Mars anchors as "[n-bodies]" excluded, and the footprint count changed (A2
+  item 2).
+
+Spot cases:
+- The four positives stay published (Aldrin, Casoliva, R-S GanCal, R-S TitEnc).
+- The Jupiter negative stays known-architecture-new-system.
+- Untopologied Saturn (Titan,), Neptune (Triton,), Mars (Phobos,), Sun (Jupiter,), Uranus (Umbriel,
+  Titania), Pluto (Charon, Nix), Sun (E,), (M,) and (E, E): inconclusive.
+- Pluto (Charon, Nix) {pump-tour}: not published (U2).
+- The ev-A-like (E, V) two-body signature: still not-found (the F7 extension is single-body only).
+
+Tests:
+- New `tests/search/test_1052_rule_u.py`.
+- ONE existing test retrofitted: `test_literature_check.py::test_880_unlabelled_signature_keeps_the_
+  conservative_behaviour`.
+  - It pinned an untopologied Uranian signature at "published". Rule U makes it "inconclusive",
+    exactly as this pre-registration's problem table expects (Uranus).
+  - The test's own claim, "not novelty-claimable", is kept; the docstring records the change.
+- The 19 test files that use the literature gate: see the commit report. ruff clean; mypy src tests
+  clean (960 files).
+- The probe script's own status comparison was routed through `is_literature_fresh` (the F13
+  ratchet flagged it).

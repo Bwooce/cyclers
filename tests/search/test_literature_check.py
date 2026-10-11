@@ -649,8 +649,13 @@ def test_880_tour_anchor_does_not_flag_repeated_moon_candidate() -> None:
 
 
 def test_880_unlabelled_signature_keeps_the_conservative_behaviour() -> None:
-    """With no declared topology the scope filter cannot apply, so the same
-    tour anchor still flags the candidate (the pre-#880 behaviour, kept)."""
+    """With no declared topology the scope filter cannot apply, so the
+    candidate must not read as fresh (the pre-#880 conservative behaviour, kept).
+
+    #1052 rule U retrofit (lead ruling 2026-10-11): an untopologied signature can
+    be "published" only via a repeated-moon anchor. No Uranian anchor carries
+    that class (the tour anchors and Pergola are capped), so the conservative
+    reading is now "inconclusive" instead of a wrong-source "published"."""
     sig = CandidateSignature(
         primary="Uranus",
         sequence=("Umbriel", "Oberon", "Umbriel"),
@@ -659,7 +664,7 @@ def test_880_unlabelled_signature_keeps_the_conservative_behaviour() -> None:
         n_rev=(1, 1),
     )
     result = check_literature(sig, search=offline_corpus_search)
-    assert result.status == "published", result
+    assert result.status == "inconclusive", result
     assert not is_novelty_claimable(result.to_review_block())
 
 

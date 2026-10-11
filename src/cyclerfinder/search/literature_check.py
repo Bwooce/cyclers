@@ -608,6 +608,9 @@ def anchor_for_key(key: str, *, registry: dict[str, CorpusAnchor] | None = None)
 KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     CorpusAnchor(
         name="Aldrin Earth-Mars cycler",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: Aldrin's canonical paradigm IS the (k1, k2) repeated-encounter
@@ -634,6 +637,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: SnLm is the systematic catalogue of repeated-encounter
@@ -1577,10 +1583,13 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Sanaga-Park-Howell fidelity-transition framework (2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
-        # #1047 (#1052 Earth-Moon part): title-level only (Crossref: 'Systematic Numerical
-        # Transitions of Cislunar Trajectories Across Dynamical Models'); no digest in the corpus
-        # yet. Pre-registration:
-        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        # #1047 (#1052 Earth-Moon part): {model-transition} confirmed by the digest
+        # docs/notes/2026-10-11-digest-sanaga-park-howell-2026-systematic-numerical-transitions-
+        # cislunar-jas.md (f2219ff3): no cycler, resonant or repeated-moon content (the words occur
+        # only in two reference titles); body set Earth-Moon, the Sun a perturber in the
+        # higher-fidelity models. Under #1052 rule U it is capped for untopologied signatures.
+        # Pre-registration: docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-
+        # gate.md sec. 6.
         topology_label=frozenset({"model-transition"}),
         authors=("Sanaga", "Park", "Howell"),
         keywords=(
@@ -1752,6 +1761,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: Aldrin/purple cyclers + their precursor insertion trajectories
@@ -1770,6 +1782,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="McConaghy Earth-Mars cycler dissertation (2004)",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: McConaghy's PhD is the dissertation source for the SnLm
@@ -1799,6 +1814,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # -----------------------------------------------------------------------
     CorpusAnchor(
         name=("McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)"),
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: nPr family + S1L1 DE405 itinerary are repeated-encounter
@@ -1826,6 +1844,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name=("McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)"),
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #350: per-leg formal labels for repeated-encounter Earth-Mars cyclers.
@@ -1854,6 +1875,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Pisarevsky-Kogan-Guelman two-planet periodic trajectories (2008)",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #960: the published two-working-body Earth-Mars class (Mars also
@@ -1887,6 +1911,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Rall-Hollister Earth-Mars periodic swing-by orbits (1971)",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #960 / #942 R1(a) lead ruling 2026-10-05: Earth-Mars periodic orbits
@@ -1921,6 +1948,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name="Rall Earth-Mars free-fall periodic orbits, Sc.D. thesis (1969)",
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #960 / #942 R1(a): the thesis behind Rall & Hollister 1971, with the
@@ -1947,6 +1977,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     ),
     CorpusAnchor(
         name=("Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)"),
+        # #1052: an Earth-Mars cycler/periodic-orbit family with encounters at both planets;
+        # with the F7 single-body extension (rule-U pre-registration).
+        n_bodies_scope=2,
         primary="Sun",
         body_set=frozenset({"E", "M"}),
         # #364: establishment trajectories are precursor_mga (mga-tour) that
@@ -3265,8 +3298,18 @@ def _different_architecture_same_system(sig: CandidateSignature) -> list[CorpusA
         if a.primary == sig.primary
         and bool(seq_set)
         and seq_set <= a.body_set
-        and any(r.startswith("working-bodies") for r in _declared_scope_exclusions(sig, a))
+        and _f7_reason(sig, _declared_scope_exclusions(sig, a))
     ]
+
+
+def _f7_reason(sig: CandidateSignature, reasons: list[str]) -> bool:
+    """F7 escalates a working-bodies exclusion (#972, ruling (b)) and, since #1052, an
+    n-bodies exclusion of a SINGLE-body signature (e.g. Sun (E,) against the two-planet
+    Earth-Mars cycler anchors): without it that tag would send such a signature to
+    "not-found". Two-body signatures excluded from a three-body anchor are not escalated."""
+    if any(r.startswith("working-bodies") for r in reasons):
+        return True
+    return "n-bodies" in reasons and len(set(sig.sequence)) == 1
 
 
 def offline_corpus_search(query: str) -> list[SearchResult]:
@@ -3498,6 +3541,14 @@ TOUR_ONLY_CAP: float = MATCH_THRESHOLD - 0.01
 ``inconclusive``. A signature that declares a topology is filtered by #349 instead."""
 
 
+def _capped_untopologied(anchor: CorpusAnchor) -> bool:
+    """#1052 rule U (lead ruling 2026-10-11): for a signature with NO topology label, only
+    an anchor carrying the cycler class "repeated-moon" can make it "published"; every
+    other anchor's hit is capped at :data:`TOUR_ONLY_CAP`. G1' (:func:`_is_tour_only`) is
+    its special case: every tour-only anchor lacks "repeated-moon"."""
+    return "repeated-moon" not in anchor.topology_label
+
+
 def _is_tour_only(anchor: CorpusAnchor) -> bool:
     """An anchor with a tour label and no cycler-class label (#1045 A1 G1'; G1 required
     every label to be a tour label, which missed e.g. {"mga-tour", "pump-tour",
@@ -3584,7 +3635,10 @@ def check_literature(
                     off_footprint.add(source.name)
                     continue
             conf = _result_matches_fingerprint(sig, r)
-            if source is not None and not sig.topology_label and _is_tour_only(source):
+            if source is not None and (
+                not source.topology_label  # #1052 U2: an unlabelled anchor, any signature
+                or (not sig.topology_label and _capped_untopologied(source))  # rule U
+            ):
                 # #1045 G1: a tour-only anchor cannot make an untopologied
                 # signature "published"; at most "inconclusive".
                 conf = min(conf, TOUR_ONLY_CAP)

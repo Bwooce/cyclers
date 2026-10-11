@@ -1,0 +1,17 @@
+{
+ "n": 68684,
+ "changes": {
+  "none|published|inconclusive": 5985,
+  "repeated-moon|published|inconclusive": 62,
+  "resonant|published|inconclusive": 46,
+  "halo|published|inconclusive": 60,
+  "nrho|published|inconclusive": 60,
+  "tulip|published|inconclusive": 60,
+  "mga-tour|published|inconclusive": 6,
+  "pump-tour|published|inconclusive": 58,
+  "transfer|published|inconclusive": 60,
+  "quasi-satellite|published|inconclusive": 60,
+  "binary-coorbital|published|inconclusive": 56
+ },
+ "violations": []
+}

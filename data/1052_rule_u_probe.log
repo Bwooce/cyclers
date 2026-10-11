@@ -1,0 +1,28 @@
+shapes: 6244 x 11 topologies
+  0/6244 shapes, 0 checks, 0 violations, elapsed 0 s, ETA 0 s
+  500/6244 shapes, 5500 checks, 0 violations, elapsed 20 s, ETA 226 s
+  1000/6244 shapes, 11000 checks, 0 violations, elapsed 36 s, ETA 186 s
+  1500/6244 shapes, 16500 checks, 0 violations, elapsed 51 s, ETA 163 s
+  2000/6244 shapes, 22000 checks, 0 violations, elapsed 67 s, ETA 143 s
+  2500/6244 shapes, 27500 checks, 0 violations, elapsed 86 s, ETA 128 s
+  3000/6244 shapes, 33000 checks, 0 violations, elapsed 102 s, ETA 111 s
+  3500/6244 shapes, 38500 checks, 0 violations, elapsed 119 s, ETA 94 s
+  4000/6244 shapes, 44000 checks, 0 violations, elapsed 138 s, ETA 77 s
+  4500/6244 shapes, 49500 checks, 0 violations, elapsed 159 s, ETA 62 s
+  5000/6244 shapes, 55000 checks, 0 violations, elapsed 183 s, ETA 45 s
+  5500/6244 shapes, 60500 checks, 0 violations, elapsed 206 s, ETA 28 s
+  6000/6244 shapes, 66000 checks, 0 violations, elapsed 230 s, ETA 9 s
+signatures: 68684
+  ('binary-coorbital', 'published', 'inconclusive') 56
+  ('halo', 'published', 'inconclusive') 60
+  ('mga-tour', 'published', 'inconclusive') 6
+  ('none', 'published', 'inconclusive') 5985
+  ('nrho', 'published', 'inconclusive') 60
+  ('pump-tour', 'published', 'inconclusive') 58
+  ('quasi-satellite', 'published', 'inconclusive') 60
+  ('repeated-moon', 'published', 'inconclusive') 62
+  ('resonant', 'published', 'inconclusive') 46
+  ('transfer', 'published', 'inconclusive') 60
+  ('tulip', 'published', 'inconclusive') 60
+STOP-RULE VIOLATIONS: 0
+EXIT 0
