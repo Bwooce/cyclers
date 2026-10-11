@@ -577,3 +577,26 @@ To be filled against:
    a DIFFERENT member of the degenerate family? V_inf alone does not answer it, so I will also
    compare the limit's node epochs and G2 periapsis direction with the chain tool's, as was done for
    gc4-19 (sec. 10.1).
+
+### 12.2.2 Result UNDER THE ORIGINAL PRE-REGISTRATION: GanCal#1 FAILS #1044 criterion (ii)
+
+From `data/1055_gancal1/sigma_n1.json` (the lead's 14:38 continuation, stopped as foreseen):
+- Accepted points: sigma 0.02, 0.024, 0.0288, 0.03456, each at the floors or under the noise-floor
+  rule.
+- At sigma 0.041472, rungb's acceptance FAILED on the second Ganymede node (G2, t = 25.03 d from x0):
+  rp 3,646 km, rp/SOI 0.535 > 0.5 (altitude 3,537 km, floor ok, V_inf 3.0558 km/s).
+- Per point, as (V_inf km/s, rp km, rp/SOI):
+
+| sigma | G1 | G2 | C | G3 |
+|---|---|---|---|---|
+| 0.02 | 3.0976, 57, 0.011 | 3.0761, 1,772, 0.348 | 3.2533, 1,062, 0.135 | 3.1626, 62, 0.012 |
+| 0.024 | 3.0973, 69, 0.013 | 3.0723, 2,123, 0.388 | 3.2536, 1,215, 0.143 | 3.1623, 74, 0.014 |
+| 0.0288 | 3.0969, 83, 0.014 | 3.0677, 2,543, 0.432 | 3.2538, 1,386, 0.152 | 3.1619, 89, 0.015 |
+| 0.03456 | 3.0965, 99, 0.016 | 3.0623, 3,045, 0.480 | 3.2542, 1,576, 0.161 | 3.1615, 107, 0.017 |
+
+- G2's rp / sigma stays near 88,000 km (88,600 to 88,100 km), about 3.1 times the chain tool's G2
+  periapsis (28,327 km). G2's V_inf drifts down with sigma (3.0761 to 3.0623), while the other nodes
+  move by less than 1.2e-3.
+- Under the original pre-registration this is the GanCal#1 result: it fails (ii) at sigma 0.0415. It
+  says nothing about full-mass existence. The continued run under amendment 9 (lead relaunch 14:42:
+  cont --soi-limit inf, down, ias15, scan) is reported separately and labelled as such.
