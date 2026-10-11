@@ -108,21 +108,23 @@ witness counts.
   - B: macOS Vision, 300 dpi.
   - O: the ocrmypdf text layer.
   - C: our reading of the 300 dpi crops, which decides.
-- **Result:** no witness misread a digit. Where a witness dropped a line, C read the value on the crop. The dropped
-  lines were the Russian abstract, the p.74 figure labels, and three p.78 values in B.
+- **Result:** every occurrence of every printed value was read by C on a 300 dpi crop; the YAML holds C's reading.
+  The machine counts differ in about 15 places (listed in the YAML header). Each is a dropped, merged or double-counted
+  line, for example the Russian abstract, the p.74 figure labels, and three p.78 values in B. We did not compare
+  every machine reading digit by digit, so the counts locate the values and C decides.
 - **Independent check (ours; script beside the PDF).** This is a single-shooting symmetric family-h orbit at fixed C,
   with the 4x4 monodromy and a = (trace - 2)/2, rtol 1e-12.
 
 | Printed (paper III) | What it claims | Ours | Hénon 1973, six digits (held) |
 |---|---|---|---|
 | 3.4568... | C at L2/L3 | 3.4567962 | - |
-| 1.8669... | a = 0 on h | a = 0 at C = 1.866733 | not tabulated |
-| 1.5183... | a = -1/2 on h | a = -0.5 at C = 1.518282, x0 = -0.95497 | not tabulated (paper II: x0 = -0.955, a = -0.5) |
-| 1.2175... | h1, a = -1 | a = -1 at C = 1.216891, x0 = -1.0887 | h1 1.216891, x0 -1.088744 |
-| 1.0594... | h2, a = -1 | a = -0.99998, x0 = -1.21037 | h2 1.059408, x0 -1.210359 |
-| 0.9556... | h3, a = +1 (C extremum) | two roots, a = 1.084 and 0.918 (fold just below) | h3 0.955552 |
+| 1.8669... | a = 0 on h | a = 0 at C = 1.866733, x0 = -0.86088 | not tabulated |
+| 1.5183... | a = -1/2 on h | a = -0.5 at C = 1.518282, x0 = -0.95498 | not tabulated (paper II: x0 = -0.955, a = -0.5) |
+| 1.2175... | h1, a = -1 | a = -1 at C = 1.216891, x0 = -1.088744 | h1 1.216891, x0 -1.088744 |
+| 1.0594... | h2, a = -1 | at the printed C: a = -0.99998, x0 = -1.21037 | h2 1.059408, x0 -1.210359 |
+| 0.9556... | h3, a = +1 (C extremum) | at the printed C: two roots, a = 1.084 and 0.918 (fold just below) | h3 0.955552 |
 
-- **Our h1 equals Hénon 1973 to six digits.** It is a positive control for the method. The 1965-66 value 1.2175 is
+- **Our h1 (C and x0) equals Hénon 1973 to six digits.** It is a positive control for the method. The 1965-66 value 1.2175 is
   6e-4 high, as the Hénon 1973 digest already notes.
 - **Our a = 0 point is at C = 1.86673,** 1.7e-4 below the printed 1.8669. No higher-precision published value is held,
   so we report this and do not call it an erratum.

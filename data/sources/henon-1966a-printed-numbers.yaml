@@ -8,12 +8,16 @@
 # Witnesses (every value below): A = tesseract 5 -l fra --psm 6 on 300 dpi grey renders; B = macOS Vision
 #   (VNRecognizeTextRequest, .accurate, no language correction) on the same renders; O = the text layer of the ocrmypdf
 #   copy (a third machine reading, at the scan's own resolution); C = our reading of 300 dpi crops of the page image
-#   (decides). Per-value occurrence counts: witness.out next to the PDF in the private papers repository.
-#   A, B and O agree on every value except where a witness dropped a line (A: p.58 Russian 3,4568, p.65 Fig. 5 label,
-#   p.74 "2,85"; B: p.58, p.78 1,2175 / 0,9556 / 1,135; O: p.74 "2,85"). None of the three misread a digit. Every
-#   value marked here was read by C on the 300 dpi crop. Decimal commas are written as points; "..." is printed.
+#   (decides). Every occurrence of every value below was read by C on a 300 dpi crop (crops located from tesseract word
+#   boxes); the printed values are C's reading. Per-value occurrence counts of A, B and O:
+#   cyclers_pdf/papers/henon-1966a-...-witness.out. The machine counts differ from each other for: p.58 3,4568 (A=0 B=0 O=1);
+#   p.61 4.5/4,5 and p.71 3.5 (O=1, A=B=2; the counter normalises "." to "," so a label is counted under both spellings);
+#   p.65 4,5 (A=0); p.74 2,85 (A=0 O=0 B=2); p.75 1,5183 (B=1), 1,55 (B=1, O=1), 2,5 (B=2); p.76 1,23 (O=1);
+#   p.78 1,2175, 0,9556, 1,135 (B=0), 1,0594 (A=4 B=2 O=3), 1,07 (B=2), 0,97 (A=1). Each difference is a dropped,
+#   merged or double-counted line; we did not check every machine reading digit by digit, so the counts are a
+#   locator, and C decides. Decimal commas are written as points; "..." is printed.
 # No value here was computed by us. Values we computed are only in `check:` fields, marked "ours"; the script and its
-#   output are check_henon1966a.py/.out next to the PDF in the private papers repository.
+#   output are cyclers_pdf/papers/henon-1966a-...-check_henon1966a.py and .out.
 #
 # CONVENTIONS (eq. 2, p.59): mu = 1/2. M1 at x = -mu, M2 at x = 1 - mu, unit separation, unit angular rate.
 #   C = x^2 + y^2 + 2(1-mu)/r1 + 2mu/r2 - xdot^2 - ydot^2. There is no mu(1-mu) term, so C_Henon = C_std - 0.25.
@@ -61,16 +65,16 @@ values:
      note: "points 0-12 near x = -0.4, then points 13-18 at x down to -30 (escape to -infinity)"}
   - {page: "74", quantity: "C at which family h becomes unstable (critical orbit h1, a = -1, type 6)", printed: "1.2175...",
      witnesses: "A=1 B=1 O=1 C",
-     check: "ours: a = -1 at C = 1.216891 (x0 = -1.0887); Henon 1973 h1 = 1.216891, x0 = -1.088744"}
+     check: "ours: a = -1 at C = 1.216891, where x0 = -1.08874410; Henon 1973 h1 = 1.216891, x0 = -1.088744"}
   - {page: "75", quantity: "C values of Fig. 16", printed: "2.5; 2; 1.9", witnesses: "A B O C"}
   - {page: "75", quantity: "C values of Fig. 17", printed: "1.8669; 1.7; 1.6; 1.55; 1.5183", witnesses: "A B O C"}
   - {page: "76", quantity: "C values of Fig. 18", printed: "1.5; 1.4; 1.25; 1.23", witnesses: "A B O C"}
   - {page: "77", quantity: "C at which alpha0 = 2pi/4, a = 0 on family h (Moser fourth-order case; h stays stable; 4-periodic class alpha_4 bifurcates)",
      printed: "1.8669...", witnesses: "A=1 B=1 O=1 C",
-     check: "ours: a = 0 at C = 1.866733 (x0 near -0.861); 1.7e-4 below the print; no six-digit published comparator held"}
+     check: "ours: a = 0 at C = 1.866733, where x0 = -0.86088434; 1.7e-4 below the print; no six-digit published comparator held"}
   - {page: "77", quantity: "C at which alpha0 = 2pi/3, a = -1/2 on family h (Moser third-order case; h unstable; meets 3-periodic class i_3)",
      printed: "1.5183...", witnesses: "A=2 B=2 O=2 C",
-     check: "ours: a = -0.5 at C = 1.518282, x0 = -0.95497; paper II p.1004 prints the h/i_3 crossing at x0 = -0.955, C = 1.5183, a = -0.5"}
+     check: "ours: a = -0.5 at C = 1.518282, where x0 = -0.95497848; paper II p.1004 prints the h/i_3 crossing at x0 = -0.955, C = 1.5183, a = -0.5"}
   - {page: "77", quantity: "4-island chain of alpha_4 seen at", printed: "C = 2 (exterior) and C = 1.9 (interior)", witnesses: "C"}
   - {page: "77", quantity: "3-island chain of i_3 seen at", printed: "C = 1.55 and C = 1.5183; absorbed by C = 1.5", witnesses: "A B O C"}
   - {page: "78", quantity: "family h stable again from h2 (type 5) ...", printed: "1.0594...", witnesses: "A=4 B=2 O=3 C",
