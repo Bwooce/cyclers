@@ -368,7 +368,169 @@ def explore_c() -> dict[str, Any]:
     return out
 
 
+FINAL = "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic"
+
+
+def final_c4(x: np.ndarray, vdep: list[float], tof: list[float], n: int, nl: int,
+             period_d: float, big_l: int) -> dict[str, Any]:  # fmt: skip
+    """Criterion 4 under the final wording (sec. 8.4b): same-phase D' and W' over
+    i = 1 .. n-L-2 (the first and last cycle excluded), band only; slopes are diagnostics."""
+    p_mean = period_d / n
+    idx = list(range(1, n - big_l - 1))
+    assert n >= 2 * big_l and idx, (n, big_l)
+    d = [max(abs(x[(i + big_l) * nl + j] - x[i * nl + j] - big_l * p_mean) for j in range(nl))
+         for i in idx]  # fmt: skip
+    w = [max(abs(vdep[(i + big_l) * nl + j] - vdep[i * nl + j]) for j in range(nl)) for i in idx]
+    band_d, band_w = 0.05 * min(tof), 0.10 * min(vdep)
+    return {
+        "comparisons": idx, "Dprime_d": d, "Wprime_kms": w, "band_D_d": band_d,
+        "band_W_kms": band_w,
+        "slope_D_d_per_cycle": _slope(d) if len(d) > 1 else 0.0,
+        "slope_W_kms_per_cycle": _slope(w) if len(w) > 1 else 0.0,
+        "pass": bool(max(d) <= band_d and max(w) <= band_w),
+    }  # fmt: skip
+
+
+def final_record(label: str, cell: str, key: str, x_tpl: list[float], n: int, mode: str,
+                 x0: float, y: list[float], real: Any, nl: int, big_l: int,
+                 extra: dict[str, Any] | None = None) -> dict[str, Any]:  # fmt: skip
+    V2.RULES = "amended"
+    j = V2.judge(cell, key, x_tpl, n, mode, x0, y, real, label)
+    if j.get("error"):
+        rec = {"label": label, "pass": False, "error": j["error"], "rules": FINAL}
+        print(f"{label}: {j['error']} -> FAIL", flush=True)
+        return rec
+    x, v, t, c = legs_data(cell, key, n, mode, x0, y, real)
+    c4 = final_c4(x, v, t, n, nl, y[n * nl - 1], big_l)
+    rec = {
+        "label": label, "rules": FINAL,
+        "c1_continuity": j["c1_continuity"], "junction_kms": c,
+        "c2_gate": j["c2_gate"], "gate": j["gate"],
+        "c3_refly": j["c3_refly"], "refly_max_km": j["refly_max_km"],
+        "c4": c4,
+        "pass": bool(j["c1_continuity"] and j["c2_gate"] and j["c3_refly"] and c4["pass"]),
+    } | (extra or {})  # fmt: skip
+    print(
+        f"{label}: c1={int(j['c1_continuity'])} ({c:.1e}) c2={int(j['c2_gate'])} "
+        f"({j['gate'].get('worst_ratio', float('nan')):.3f}) c3={int(j['c3_refly'])} "
+        f"({j['refly_max_km']:.1e} km) c4={int(c4['pass'])} D'={max(c4['Dprime_d']):.3f}/"
+        f"{c4['band_D_d']:.3f} W'={max(c4['Wprime_kms']):.4f}/{c4['band_W_kms']:.3f} "
+        f"[slopes {c4['slope_D_d_per_cycle']:+.4f} d, {c4['slope_W_kms_per_cycle']:+.5f} km/s per "
+        f"cycle] -> {'PASS' if rec['pass'] else 'FAIL'}",
+        flush=True,
+    )
+    return rec
+
+
+def _hm_chain(n: int) -> tuple[float, list[float], dict[str, Any]]:
+    real_ev = CHAIN.real_ephemeris("ev", "mean")
+    key = "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+    t3 = load_table3()[1]
+    one_period = []
+    for k in range(5):
+        one_period += [t3[5 * k + 1].date, t3[5 * k + 4].date]
+    reps = n // 5
+    starts = [v + q * 5844.0 for q in range(reps) for v in one_period]
+    x0 = starts[0]
+    y_seed = np.array([*starts[1:], reps * 5844.0])
+    circ, a, b = CHAIN.ENUM.cell_system("ev")
+    _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
+    sol = least_squares(
+        lambda yy: CHAIN.date_chain_residual(real_ev, one.legs * n, x0 * DAY, yy),
+        y_seed, method="lm", xtol=1e-14, ftol=1e-14, gtol=1e-14, max_nfev=200 * len(y_seed),
+    )  # fmt: skip
+    return (
+        x0,
+        list(sol.x),
+        {"max_shift_from_print_d": float(np.max(np.abs(sol.x[:-1] - y_seed[:-1])))},
+    )
+
+
+def final_controls() -> dict[str, Any]:
+    out: dict[str, Any] = {"rules": FINAL}
+    real_ev = CHAIN.real_ephemeris("ev", "mean")
+    x0, y, extra = _hm_chain(10)
+    out["positive"] = final_record(
+        "CONTROL+ H&M orbit 1 (10 cycles)", "ev", "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+        [474.59719334719347, 1100.6183800415804], 10, "ramp", x0, y, real_ev, 2, 5, extra,
+    )  # fmt: skip
+    real_gc = CHAIN.real_ephemeris("gc", "spice")
+    g1 = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())["gc-1"]
+    e = json.loads((REPO / "data" / "943_gc1_realeph" / "e0" / "realeph_chain.json").read_text())[0]
+    y_bad = list(e["final_y"])
+    y_bad[0] += 0.05
+    out["negative"] = final_record("CONTROL- gc-1 e0 broken", "gc", g1["key"], g1["x_days"], 10,
+                                   "blend", e["x0_days"], y_bad, real_gc, 3, 4)  # fmt: skip
+    ok = out["positive"]["pass"] and not out["negative"]["pass"]
+    out["controls_ok"] = ok
+    print(f"CONTROLS {'behave' if ok else 'DO NOT behave: STOP'}", flush=True)
+    return out
+
+
+def final_gc() -> dict[str, Any]:
+    out: dict[str, Any] = {"rules": FINAL}
+    real_gc = CHAIN.real_ephemeris("gc", "spice")
+    wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())
+    g1, g2 = wb["gc-1"], wb["gc-2"]
+    rows = []
+    for i in range(5):
+        e = json.loads(
+            (REPO / "data" / "943_gc1_realeph" / f"e{i}" / "realeph_chain.json").read_text()
+        )[0]
+        rows.append(final_record(f"gc-1 JD {e['epoch_jd']:.1f}", "gc", g1["key"], g1["x_days"], 10,
+                                 "blend", e["x0_days"], e["final_y"], real_gc, 3, 4))  # fmt: skip
+    out["gc-1"] = rows
+    rows = []
+    for e in json.loads((REPO / "data" / "942_943_ladder_realeph_chains.json").read_text())["gc2"]:
+        xs = e["final_x_days"]
+        rows.append(final_record(f"gc-2 JD {e['epoch_jd']:.1f}", "gc", g2["key"], g2["x_days"], 10,
+                                 "blend", xs[0], list(xs[1:]), real_gc, 4, 4))  # fmt: skip
+    out["gc-2"] = rows
+    for name in ("gc-1", "gc-2"):
+        k = sum(r["pass"] for r in out[name])
+        print(f"{name}: V2 (final wording) {'PASS' if k >= 3 else 'FAIL'} ({k}/5)", flush=True)
+    return out
+
+
+def final_ev() -> dict[str, Any]:
+    out: dict[str, Any] = {"rules": FINAL}
+    real = CHAIN.real_ephemeris("ev", "mean")
+    wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())
+    for row, sub in (("ev-A", "ev10_evA"), ("ev-B", "ev10_evB"), ("ev-C", "ev10_evC")):
+        key, xt = wb[row]["key"], wb[row]["x_days"]
+        circ, a, b = CHAIN.ENUM.cell_system("ev")
+        _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
+        nl = sum(isinstance(lg, LambertLeg) for lg in one.legs)
+        rows = []
+        for e in json.loads((REPO / "data" / "1007_v2" / sub / "realeph_chain.json").read_text()):
+            conv = [st for st in e["steps"] if st.get("converged")]
+            if not (conv and conv[-1]["lambda"] >= 1.0):
+                lab = f"{row} JD {e['epoch_jd']:.1f}"
+                rows.append(
+                    {"label": lab, "pass": False, "error": "no 10-cycle chain", "rules": FINAL}
+                )
+                print(f"{row} JD {e['epoch_jd']:.1f}: no 10-cycle chain -> FAIL", flush=True)
+                continue
+            rows.append(final_record(f"{row} JD {e['epoch_jd']:.1f}", "ev", key, xt, 10, "ramp",
+                                     e["x0_days"], e["final_y_dates"], real, nl, 5))  # fmt: skip
+        out[row] = rows
+        k = sum(r["pass"] for r in rows)
+        print(f"{row}: V2 (final wording) {'PASS' if k >= 3 else 'FAIL'} ({k}/5)", flush=True)
+    return out
+
+
 def main() -> None:
+    for flag, fn, name in (
+        ("--final-controls", final_controls, "final_controls"),
+        ("--final-gc", final_gc, "final_gc"),
+        ("--final-ev", final_ev, "final_ev"),
+    ):
+        if flag in sys.argv:
+            r = fn()
+            path = REPO / "data" / "1007_v2" / f"{name}.json"
+            path.write_text(json.dumps(r, indent=1, default=float))
+            print("wrote", path.relative_to(REPO), flush=True)
+            return
     if "--explore-c" in sys.argv:
         r = explore_c()
         path = REPO / "data" / "1007_v2" / "explore_c_15cycles.json"

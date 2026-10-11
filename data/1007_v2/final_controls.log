@@ -1,0 +1,6 @@
+CONTROL+ H&M orbit 1 (10 cycles): n=10 cont=1.4e-12 gate=pass (0.894) refly=2.42e-04 km D=39.556/8.831 d W=3.729/0.299 km/s growth D 0.96 W 0.93 -> FAIL [1110]
+CONTROL+ H&M orbit 1 (10 cycles): c1=1 (1.4e-12) c2=1 (0.894) c3=1 (2.4e-04 km) c4=1 D'=2.093/7.524 W'=0.3006/0.454 [slopes -0.1286 d, +0.10412 km/s per cycle] -> PASS
+CONTROL- gc-1 e0 broken: n=10 cont=9.6e+00 gate=pass (0.758) refly=1.33e+04 km D=0.165/0.190 d W=0.262/0.181 km/s growth D 1.14 W 0.93 -> FAIL [0101]
+CONTROL- gc-1 e0 broken: c1=0 (2.3e-01) c2=1 (0.758) c3=0 (1.3e+04 km) c4=1 D'=0.035/0.185 W'=0.0072/0.175 [slopes -0.0013 d, -0.00031 km/s per cycle] -> FAIL
+CONTROLS behave
+wrote data/1007_v2/final_controls.json

@@ -569,3 +569,18 @@ Tool: `scripts/v2_samephase_1007.py --final-controls`.
     at the ends.
   - These show that the final wording still rejects chains.
 - If the positive fails or the negative passes: STOP and report.
+
+### 8.11 Result of the sec. 8.10 controls (2026-10-11 11:28 AEDT; `scripts/v2_samephase_1007.py --final-controls`, `data/1007_v2/final_controls.{json,log}`)
+
+| Control | Continuity | Gate | Re-fly | Criterion 4 | Verdict |
+|---|---|---|---|---|---|
+| POSITIVE, H&M orbit 1, 10 cycles (i = 1..3) | 1.4e-12 | pass (0.894) | 2.4e-4 km | D' 2.09 / 7.52 d; W' 0.301 / 0.454 km/s | **PASS** |
+| NEGATIVE, gc-1 e0 + 0.05 d | **2.3e-1** | pass | **1.3e4 km** | within band | **FAIL**, as required |
+
+- The positive's slope diagnostics are -0.13 d and +0.104 km/s per cycle, over 3 comparisons. They are
+  recorded, not judged.
+- The log also contains `judge`'s own one-line printout under the older sec. 2/7 rules ("FAIL [1110]"
+  for the positive). That line is not the final-wording verdict. Only criteria 1-3 are taken from
+  `judge`.
+
+The controls behave, so the re-judges proceed (secs. 8.12-8.14).
