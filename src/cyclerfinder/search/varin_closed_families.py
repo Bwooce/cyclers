@@ -526,3 +526,27 @@ def member_geometry(
         min_r2_km=float(np.min(r2)) * system.l_km,
         jacobi=float(cr3bp.jacobi_constant(s0, mu)),
     )
+
+
+def distance_to_loop(
+    point: Arr, members: list[Arr], mu: float, *, tol: float = 1e-10, max_refine: int = 8
+) -> float:
+    """Distance (in p = (x1(0), y2(0), T/2pi)) from ``point`` to the traced family through
+    ``members``: from the nearest member, repeated projected pseudo-arclength steps toward the
+    point, each corrected onto the family. Small (< 1e-6) when the point lies on that family."""
+    pts = np.asarray(members, dtype=float)
+    target = np.asarray(point, dtype=float)
+    i = int(np.argmin(np.linalg.norm(pts - target, axis=1)))
+    p = pts[i]
+    t = _tangent(_loop_eval(p, mu)[1], None)
+    best = float(np.linalg.norm(p - target))
+    for _ in range(max_refine):
+        nxt = _loop_step(p, t, float(t @ (target - p)), mu, tol)
+        if nxt is None:
+            break
+        p = nxt
+        t = _tangent(_loop_eval(p, mu)[1], t)
+        best = min(best, float(np.linalg.norm(p - target)))
+        if best < 1e-10:
+            break
+    return best

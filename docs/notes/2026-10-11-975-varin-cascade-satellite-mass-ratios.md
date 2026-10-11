@@ -287,3 +287,31 @@ and compared by shape. It is reported, never used as a pass or fail.
 - **Ruling requested:** amend N1 to "the oval branch from mu'_k folds at mu''_k and reproduces Table 1's
   elliptic orbit; any other branch that reaches the test mu must not yield a closed loop by the sec. 6
   criterion" (passed on present evidence), or treat N1 as failed and stop.
+
+### 10.1 Post-hoc amendment A1 to N1 and N2 (lead ruling (a), 2026-10-12)
+
+N1 (and N2 alike) now reads: "the oval branch from mu'_k folds at mu''_k and reproduces Table 1's elliptic
+orbit (to 1e-6 relative); any other branch that reaches the test mu must not yield a closed loop by the sec. 6
+criterion".
+- **Why:** a saddle of the characteristic surface emits two y2-extremum branches, both going up in mu. The
+  pre-registration assumed one. The real failure condition was always a closed i_k loop at the test mu, and
+  the fixed-mu trace does not produce one.
+- **The labelled false positive:** the first "closed" trace, with a closure of 8.2e-4 from an inexact closing
+  step, is kept as `loops/n1_b_loop_inexact_closing.jsonl`.
+- **N1 under A1: PASS.**
+- The exploratory k = 5 solve stays disclosed and unused until the controls pass.
+
+### 10.2 N2 (under A1): PASS; P2 curves done, loop traces to the lead
+
+- **N2, from the mu'_1 saddle toward the Pluto-Charon mu 0.10876:**
+  - Branch a folds at mu = 3.6678e-2. Refined, it is Table 1's mu''_1 elliptic orbit to 2.5e-9 relative.
+  - Branch b reaches the Pluto-Charon mu. Its fixed-mu trace does not close: 989 members, never back within
+    0.34 of its start, then the corrector failed.
+  - So **N2 passes** (`curves/n2_a.jsonl`, `n2_b.jsonl`, `loops/n2_b_loop.jsonl`).
+- **P2 curves:**
+  - `curves/p2_up.jsonl`: from the mu'_1 saddle, the oval branch (y2 increasing, the branch that folds in
+    N2), reaches mu_M at x1 0.738495, y2 1.229627, T~ 1.67547.
+  - `curves/p2_down.jsonl`: from the mu''_1 elliptic orbit downward, reaches mu_M at x1 0.326705,
+    y2 2.190603, T~ 2.02719.
+  - The two loop traces at mu_M and their comparison (`compare`: each start must lie on the other loop to
+    < 1e-6 after refinement) are handed to the lead.

@@ -176,7 +176,7 @@ def cmd_curve(name: str, start: str, y2_dir: float, mu_stop: float, max_s: float
     print(f"{name}: {why} ({len(pts)} points this call)", flush=True)
 
 
-def cmd_loop(name: str, curve: str, max_s: float) -> None:
+def cmd_loop(name: str, curve: str, max_s: float, max_members: int = 20000) -> None:
     """Closed-family trace at the mu of a curve's final point (which must have reached mu_stop)."""
     LOOPS.mkdir(parents=True, exist_ok=True)
     c = _jsonl(CURVES / f"{curve}.jsonl")
@@ -203,8 +203,18 @@ def cmd_loop(name: str, curve: str, max_s: float) -> None:
         if not old:
             _log(fh, {"p": origin.tolist(), "mu": mu, "curve": curve})
 
+        count = [len(old)]
+
         def cb(m: vcf.LoopMember) -> None:
             _log(fh, {"p": [m.x1, m.y2, m.t_full / (2 * math.pi)], "t": time.strftime("%H:%M:%S")})
+            count[0] += 1
+            if count[0] % 50 == 0:
+                d = float(np.linalg.norm(np.array([m.x1, m.y2, m.t_full / (2 * math.pi)]) - origin))
+                print(
+                    f"{time.strftime('%H:%M:%S')} {name}: {count[0]} members, x1 {m.x1:.5f} "
+                    f"y2 {m.y2:.5f} T~ {m.t_full / (2 * math.pi):.5f}, distance to start {d:.3e}",
+                    flush=True,
+                )
 
         members, why, closure = vcf.trace_loop(
             float(p_last[0]),
@@ -216,10 +226,29 @@ def cmd_loop(name: str, curve: str, max_s: float) -> None:
             n_done=max(len(old) - 1, 0),
             on_member=cb,
             deadline=t0 + max_s,
+            max_members=max_members,
         )
         if why != "time budget":
             _log(fh, {"end": why, "closure": closure, "t": time.strftime("%H:%M:%S")})
     print(f"{name}: {why} closure {closure:.2e} ({len(members)} members this call)", flush=True)
+
+
+def cmd_compare(loop_a: str, loop_b: str) -> None:
+    """P2: does each loop's start lie on the other loop (distance < 1e-6 after refinement)?"""
+    out: dict[str, Any] = {}
+    for a, b in ((loop_a, loop_b), (loop_b, loop_a)):
+        ra = _jsonl(LOOPS / f"{a}.jsonl")
+        rb = _jsonl(LOOPS / f"{b}.jsonl")
+        mu = float(ra[0]["mu"])
+        assert abs(mu - float(rb[0]["mu"])) < 1e-15
+        members = [np.array(r["p"]) for r in ra if "p" in r]
+        d = vcf.distance_to_loop(np.array(rb[0]["p"]), members, mu)
+        out[f"start of {b} on {a}"] = d
+        out[f"{a} end"] = [r for r in ra if "end" in r]
+        print(f"start of {b} on {a}: {d:.2e}", flush=True)
+    out["coincide"] = all(v < 1e-6 for k, v in out.items() if k.startswith("start"))
+    (OUT / f"compare_{loop_a}_{loop_b}.json").write_text(json.dumps(out, indent=1) + "\n")
+    print("coincide" if out["coincide"] else "DO NOT coincide", flush=True)
 
 
 def main() -> None:
@@ -232,10 +261,14 @@ def main() -> None:
     sp.add_argument("--y2-dir", type=float, default=1.0)
     sp.add_argument("--mu-stop", type=float, required=True)
     sp.add_argument("--max-seconds", type=float, default=420.0)
+    sp = sub.add_parser("compare")
+    sp.add_argument("--a", required=True)
+    sp.add_argument("--b", required=True)
     sp = sub.add_parser("loop")
     sp.add_argument("--name", required=True)
     sp.add_argument("--curve", required=True)
     sp.add_argument("--max-seconds", type=float, default=420.0)
+    sp.add_argument("--max-members", type=int, default=20000)
     args = ap.parse_args()
     preflight_search(
         task_no=975,
@@ -254,7 +287,9 @@ def main() -> None:
     elif args.cmd == "curve":
         cmd_curve(args.name, args.start, args.y2_dir, args.mu_stop, args.max_seconds)
     elif args.cmd == "loop":
-        cmd_loop(args.name, args.curve, args.max_seconds)
+        cmd_loop(args.name, args.curve, args.max_seconds, args.max_members)
+    elif args.cmd == "compare":
+        cmd_compare(args.a, args.b)
 
 
 if __name__ == "__main__":
