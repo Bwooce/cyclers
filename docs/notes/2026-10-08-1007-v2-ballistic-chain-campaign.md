@@ -635,3 +635,43 @@ Existing 10-cycle jup365 chains, no re-solve. L = 4, comparisons i = 1..4.
 - Window action:
   - ev-A V1 -> V2, with its slope diagnostics in the evidence;
   - ev-B and ev-C stay V1, with the reason recorded in their notes.
+
+### 8.14a Recorded limit: L is hard-coded (lead, from the #1061 sweep, 2026-10-11)
+
+- `scripts/v2_samephase_1007.py` hard-codes L (gc k = 3: 4; ev: 5). It does not determine L from the
+  definition in spec §14.
+- ev-B sits on the 0.02-rev edge: the #1061 sweep (`docs/notes/2026-10-11-1061-v2-negatives-sweep.md`)
+  finds a residual of 0.0201 at L = 5 for its k = 3 cycle. A strict reading of the 0.02 tolerance then
+  gives L = 49.
+- ev-B's verdict does not change: it fails the gate at 10 cycles regardless.
+- The L determination belongs in code, with the tolerance stated and the residual reported per row.
+  Before any further V2 judgement uses the same-phase metric, L must be computed, not typed.
+- The Russell ch. 4 Earth-Mars rows wait for the owner's decision on the L tolerance; they are not
+  touched here.
+
+### 8.15 ev-C: is the 10-cycle chain another branch? — PRE-REGISTERED (2026-10-11), before running
+
+Lead request (from #1061). sec. 8.14 ev-C passed at 1/5 under the final wording; secs. 8.6/8.14 said
+"not diagnosed".
+
+1. Branch check (on-disk only).
+   - Compare: at each of the 5 epochs, the FIRST 5 cycles of the 10-cycle chain
+     (`data/1007_v2/ev10_evC/`) against the stored 5-cycle rung (d) chain at the same epoch
+     (`data/942_direct_route_and_gm_fix.json` ["evC_standish_rerun"]).
+   - Measures: the Lambert-leg start dates and |V_inf,dep| per leg.
+   - SAME branch if the maximum date difference is <= 0.5 d and the maximum |V_inf| difference is
+     <= 0.05 km/s (the sec. 2 floors); otherwise DIFFERENT.
+   - The two chains differ in length, so their far-end constraints differ. This is why the tolerance
+     is a floor, not exact equality.
+2. Re-solve, only at epochs where the branches DIFFER.
+   - A direct LM solve of the 10-cycle date residual on Standish mean elements.
+   - Seed: the 5-cycle chain's dates followed by the same dates shifted by that chain's 16-yr
+     period; the chain-period seed is 2 x the 5-cycle period.
+3. Re-judge every epoch under the final wording (`final_record`, L = 5, i = 1..3), using the
+   re-solved chain where one exists and the sec. 8.6 chain elsewhere.
+4. Expected:
+   - The 4 failing epochs are DIFFERENT branches (D' 15-66 d is far beyond what 5 cycles of the
+     rung (d) chain suggest). The seeded re-solve converges and passes at >= 3 of 5, so ev-C would
+     move V1 -> V2.
+   - If the branches are the SAME, the sec. 8.14 verdict stands (1/5): the drift is real.
+5. No catalogue edit until a window opens. Tool: `scripts/v2_samephase_1007.py --evc-branch`.
