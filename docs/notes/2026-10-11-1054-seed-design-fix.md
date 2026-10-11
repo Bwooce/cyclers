@@ -225,7 +225,8 @@ row** (4.5 % per seed; old control 22 / 1,152 = 1.9 %; the F1+F2+F3 control 8 / 
 | E: F1 alone | **0.425** | 0.121 | 0.304 | **0.375** | 0.200 | 0.0750 (18) |
 
 Paired impact outcomes (A -> E): 99 impact in both, 118 in neither, **20 impact only in A, 3 impact
-only in E**. Two-sided sign test on the 23 discordant pairs: p about 3e-4. No seed dropped out
+only in E**. Two-sided sign test on the 23 discordant pairs: p = 2 x 2,048 / 2^23 = 4.9e-4
+(the e2a30f42 commit message says "p ~3e-4"; 4.9e-4 is the computed value). No seed dropped out
 (every F1 skeleton still crosses the lunar orbit).
 
 Against sec. 6:
