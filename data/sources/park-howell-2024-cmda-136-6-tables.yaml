@@ -1,0 +1,79 @@
+# Park and Howell 2024, Tables 3, 4, 7, 8, 9 and the other printed numbers.
+# Source: B. Park, K. C. Howell, "Assessment of dynamical models for transitioning from the Circular Restricted Three-Body Problem to an ephemeris model
+#   with applications", Celest. Mech. Dyn. Astron. 136:6 (2024), doi 10.1007/s10569-023-10178-9. Received 26 June 2023, accepted 29 December 2023, online 7 February 2024.
+# Local file: Springer PDF, 39 pp., Acrobat Distiller text layer, md5 069fe00c2da00b7449d19d345abe152e. PDF page n = journal page n ("Page n of 39").
+# Witnesses: A = text layer read once as a column dump; B = the same layer read a second time at digit level against the rows below; C = 130 dpi page renders of
+#   pp.17, 18 and 30 (decides). Tables 1, 2, 5 and 6 hold no numbers or only symbols and are described in the digest, not transcribed.
+#   Every cell below agrees in A, B and C.
+# Nothing here was computed by us except in `check:` fields (script: cyclers_pdf/papers/...-check.py).
+table_3:
+  caption: "Coefficients for the fitted function utilizing nu_1* (uniform time, 2^20 samples evenly spaced in T, 1550-01-01 to 2500-01-01; fit(x) = Q0 - or + Q1 cos/sin theta_1*)"
+  journal_page: 17
+  columns: [quantity, Q0, Q1, E_percent]
+  rows:
+    - {quantity: "l", Q0: "3.8500e5 km", Q1: "2.0905e4 km", E_percent: 27}
+    - {quantity: "b4", Q0: "1.9111e-8", Q1: "2.6925e-2", E_percent: 33}
+    - {quantity: "b5", Q0: "1.9938", Q1: "5.3735e-2", E_percent: 35}
+    - {quantity: "b12a", Q0: "3.1686e-3", Q1: "5.2889e-2", E_percent: 41}
+  note: "E = maximum relative error of the one-frequency fit, max(Delta/(Delta + Q1)), Delta the fit residual (p.17)."
+table_4:
+  caption: "Coefficients for the fitted function utilizing nu_1 (non-uniform time, 2^20 samples evenly spaced in t)"
+  journal_page: 18
+  columns: [quantity, Q0, Q1, E_percent]
+  rows:
+    - {quantity: "l", Q0: "3.8500e5 km", Q1: "2.0905e4 km", E_percent: 26}
+    - {quantity: "b4", Q0: "1.9111e-8", Q1: "2.6925e-2", E_percent: 30}
+    - {quantity: "b5", Q0: "1.9938", Q1: "5.3735e-2", E_percent: 32}
+    - {quantity: "b12a", Q0: "3.1686e-3", Q1: "5.2889e-2", E_percent: 39}
+  note: "Q0 and Q1 are identical to Table 3 in all four rows; only E changes."
+table_7:
+  caption: "Model parameters"
+  journal_page: 30
+  rows:
+    - {parameter: "mu", value: "0.0121506", models: "CR3BP, ER3BP, BCR4BP"}
+    - {parameter: "e", value: "0.055", models: "ER3BP"}
+    - {parameter: "mu_S", value: "3.2890056e5", models: "BCR4BP"}
+    - {parameter: "n_S", value: "0.0748013", models: "BCR4BP"}
+  check: "rho_S,4 from n_S = sqrt((mu_S + 1)/rho_S^3): 388.82 (COMPUTED); the text's 'about 389' agrees. nu_4 = 1 - n_S = 0.9251987 (printed 0.9252)."
+table_8:
+  caption: "Initial conditions for the sample sidereal resonant orbits in Fig. 15 (3:1 sidereal L2 southern halo and its ER3BP counterpart)"
+  journal_page: 30
+  rows:
+    - {item: "x_R", cr3bp: "1.0637859", er3bp: "1.0612434"}
+    - {item: "y_R", cr3bp: "0", er3bp: "0"}
+    - {item: "z_R", cr3bp: "-0.2004015", er3bp: "-0.1778929"}
+    - {item: "xdot_R or (dx/df)_R", cr3bp: "0", er3bp: "0"}
+    - {item: "ydot_R or (dy/df)_R", cr3bp: "-0.1776102", er3bp: "-0.2068254"}
+    - {item: "zdot_R or (dz/df)_R", cr3bp: "0", er3bp: "0"}
+    - {item: "Period (n.d.)", cr3bp: "2 pi/3", er3bp: "2 pi"}
+    - {item: "Reference epoch", cr3bp: "N/A", er3bp: "f_R = 180 deg"}
+  check: "ours: CR3BP column integrated in the CR3BP (mu = 0.0121506): first y = 0 crossing at t = 1.0471969 (half period pi/3 = 1.0471976), xdot = 1.4e-7 and zdot = -1.2e-7 there; full-period state error 8.1e-7; Jacobi constant 3.018703. ER3BP column integrated with the printed ER3BP equation (Omega_E, p.9) over 2 pi from f = 180 deg: state error 3.4e-5. Both close at the level of seven printed digits."
+table_9:
+  caption: "Initial conditions for the sample synodic resonant orbits in Fig. 15 (3:1 synodic L2 southern halo and its BCR4BP counterpart)"
+  journal_page: 30
+  rows:
+    - {item: "x_R", cr3bp: "1.0750359", bcr4bp: "1.0524406"}
+    - {item: "y_R", cr3bp: "0", bcr4bp: "0"}
+    - {item: "z_R", cr3bp: "-0.2021298", bcr4bp: "-0.2242797"}
+    - {item: "xdot_R", cr3bp: "0", bcr4bp: "0"}
+    - {item: "ydot_R", cr3bp: "-0.1921894", bcr4bp: "-0.1281807"}
+    - {item: "zdot_R", cr3bp: "0", bcr4bp: "0"}
+    - {item: "Period (n.d.)", cr3bp: "2 pi/(3 (1 - n_S)) = 2.2637247", bcr4bp: "2 pi/(1 - n_S) = 6.7911741"}
+    - {item: "Reference epoch", cr3bp: "N/A", bcr4bp: "theta_S,4,R = 0 deg"}
+  check: "ours: CR3BP column: first y = 0 crossing at t = 1.1318573 (half of 2.2637247 is 1.1318623), xdot = -6.1e-7, zdot = -2.9e-7 there; full-period state error 5.5e-6; Jacobi constant 3.015801. BCR4BP column integrated (Sun at rho_S,4 = 388.82, theta_S = (n_S - 1) t, theta_S(0) = 0, direct plus indirect solar terms): state error 3.6e-5 over 6.7911741. Periods: 2 pi/(3 (1 - n_S)) = 2.2637246, 2 pi/(1 - n_S) = 6.7911739 (printed 6.7911741; the last digit differs by 2e-7)."
+text_numbers:
+  - {page: 16, item: "frequencies in uniform time (Gomez et al. 2002)", value: "nu_1* about 0.9915 (anomalistic), nu_2* about 0.9250 (synodic); non-uniform time: nu_1 = 0.9896, nu_2 = 0.9234", note: "Sanaga-Park-Howell 2026 Table 2 gives nu_1 = 0.991548233570925 and nu_2 = 0.925198775804741 (same quantities, DE440 fit, uniform time)"}
+  - {page: 18, item: "solar distance from the barycentre", value: "rho_S* about 389 (n.d.); E for x_S and y_S: 17 and 15 percent (uniform), 10 and 9 percent (non-uniform)"}
+  - {page: 19, item: "Fig. 5 sample start epoch", value: "09/23/2000, 25 years"}
+  - {page: 20, item: "(C_S/C_P) extremes over 20 years from 09/23/2023", value: "max 0.97, min 0.17"}
+  - {page: 15, item: "linearised-minus-exact solar acceleration", value: "maximum discrepancy about 1e-4 n.d.; the acceleration exceeds 0.01 n.d. in the L4,5 regions (y-excursion about 0.87 n.d.); low-thrust comparison: Khon-1 about 0.01 n.d."}
+  - {page: 16, item: "Fig. 4 epochs", value: "09/23/2023, theta_S about -105 deg; 10/07/2023, theta_S about 85 deg"}
+  - {page: 23, item: "osculating lunar eccentricity range over all epochs", value: "about 0.035 to 0.091"}
+  - {page: 23, item: "nu_E at e = 0.055", value: "about 0.9994 (printed); COMPUTED 0.99943"}
+  - {page: 24, item: "Fig. 11, 12 reference epoch", value: "theta_1,R about 306 deg, 09/23/2023"}
+  - {page: 24, item: "e giving similar pulsation coefficients", value: "0.05 to 0.055; Peng and Bai (2018) used 0.0554"}
+  - {page: 27, item: "BCR4BP instantaneous values (Fig. 13)", value: "theta_S,4 about -105 deg, rho_S,4 about 389, n_S about 0.0748, nu_4 about 0.9252 against HFEM nu_2 about 0.9234"}
+  - {page: 28, item: "Fig. 14 sample orbit", value: "L2 southern halo family; one 3-D halo of period 14.8 d (Fig. 2a); the challenging region is periods between 9 and 10 d"}
+  - {page: 28, item: "Fig. 15 sample orbits", value: "periods about 9.1 d (3:1 sidereal) and 9.8 d (3:1 synodic)", check: "2 pi/3 x 4.348 d = 9.106 d; 2.2637247 x 4.348 d = 9.843 d (COMPUTED, characteristic time 4.348 d from Sanaga-Park-Howell 2026)"}
+  - {page: 30, item: "shooting setup", value: "12 revolutions of the CR3BP halo stacked from apolune, 5 segments per revolution equally divided in t, baseline epoch at apolune of the 7th revolution; for ER3BP and BCR4BP orbits 4 revolutions; Newton-Raphson minimum norm X_(i+1) = X_i - alpha J^T (J J^T)^-1 F, convergence |F| < 1e-10; 300 epochs from 01/01/2000 at fixed theta_1 = 180 deg (ER3BP) or theta_2 = 0 deg (BCR4BP); alpha = 1 (ER3BP, Fig. 18), alpha = 0.5 with a 100-iteration cap (BCR4BP, Fig. 17)"}
+  - {page: 31, item: "result", value: "ER3BP initial guess requires consistently fewer Newton iterations than the direct CR3BP guess for all 300 theta_2 values at theta_1 = 180 deg; BCR4BP initial guess requires more iterations or fails at many epochs; with theta_1 = 0 deg epochs the BCR4BP guess converges in fewer steps than the CR3BP. Iteration counts are plotted (Figs. 16 to 18), not tabulated."}
