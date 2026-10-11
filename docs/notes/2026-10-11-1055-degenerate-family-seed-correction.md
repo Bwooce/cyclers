@@ -869,3 +869,38 @@ records:
 Start, neg and continuation follow ONLY if the root passes amendment 10, on my call. A FAIL means
 gc-1's real-ephemeris chain-tool member does not continue into continuous gravity on jup365, and the
 row's data_gaps wording would then change (a lead / owner decision).
+
+### 12.8 foldsqrt (amendment 12, POST-HOC; lead launch 15:52 AEDT on fa6c247f): FOLD CONFIRMED
+
+From `data/1055_gancal1/foldsqrt.json` (all six fixed-sigma solves converged, amendment 11 rule):
+
+| sigma | d (r_p / sigma), nodes G1, G2, C, G3 (km) | d V_inf, same nodes (km/s) |
+|---|---|---|
+| 0.65 | 47, 33,494, 561, 37 | 0.0096, 0.0171, 0.0240, 0.0096 |
+| 0.69 | 35, 22,550, 416, 27 | 0.0068, 0.0052, 0.0177, 0.0068 |
+| 0.72 | 21, 12,785, 254, 16 | 0.0040, 0.0001, 0.0107, 0.0040 |
+
+- The two solutions are distinct at every sigma (G2 differs by 12,785-33,494 km in r_p / sigma).
+- The squared G2 separation is linear in sigma: R^2 = 0.9939. It vanishes at sigma_f = 0.73006,
+  0.0077 below the natural-stop square-root fit (0.73777), inside the registered 0.01 tolerance.
+- Under amendment 12: FOLD CONFIRMED (labelled post-hoc: the criterion was written after the
+  15:46 fold-test result). The fold location is bracketed by 0.730 (separation fit) and 0.7377
+  (natural-stop fit). The natural continuation's last point is 0.7374.
+
+FINAL GanCal#1@2013 verdict (#1055 jup365 target), all readings:
+- Under the ORIGINAL PRE-REGISTRATION, GanCal#1 FAILS #1044 criterion (ii) at sigma 0.0415 (G2
+  rp/SOI 0.535).
+- Under AMENDMENT 9 (0.5-SOI acceptance dropped, as #1043 did for weak flybys):
+  - the #1055-corrected seed STARTS, the first start under any formulation;
+  - it tracks at the floors to sigma 0.7374;
+  - the branch then FOLDS at sigma 0.730-0.738: the pre-registered two-solution rule leaves it
+    undecided, and the post-hoc amendment 12 confirms it;
+  - so there is NO full-mass orbit on the corrected branch.
+- Under AMENDMENT 10, that branch is a DIFFERENT member of the degenerate family (G2 periapsis
+  near 89,000 km against the chain tool's 28,327 km). The chain tool's own GanCal#1@2013 object is
+  therefore UNTESTED at full mass by this run. Per sec. 12.7 it is a NON-ROOT of the first-order
+  solvability condition, so it is not the small-mass limit of any continuous-gravity orbit within
+  the scanned domain.
+- Negative control (amendment 8, neg2): the "beyond" point fails as required; the "back" point is
+  still running. The start's dependence on the correction is conditional on it (sec. 12.3).
+- The jup365 lane is NOT validated on a full-revolution chain at full mass by GanCal#1.
