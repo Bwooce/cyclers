@@ -610,6 +610,41 @@ def stage_cont(t: Target) -> None:
     rb.stage_sigma(1)
 
 
+def stage_weakscale(t: Target) -> None:
+    """Sec. 13.1 (pre-registered): at sigma 0.02, 0.005 and 0.00125 from the scaled seed, the
+    residual's projection on the smallest singular direction, the implied Newton move along it,
+    and that move's size per node against the node's moon-relative offset (weakscale.json)."""
+    rows = []
+    for sg in (0.02, 0.005, 0.00125):
+        t.set_sigma(sg)
+        z = t.scale(t.seed, sg)
+        r, j = t.rj(z)
+        d = column_scales(j)
+        u, sv, vt = scaled_svd(j, d)
+        proj = float(u[:, -1] @ r)
+        move = proj / float(sv[-1])
+        dz = vt[-1] * (-move) / d
+        ratios = [
+            float(np.linalg.norm(dz[7 * k : 7 * k + 3]) / np.linalg.norm(z[7 * k : 7 * k + 3]))
+            for k in range(len(t.moons))
+        ]
+        rows.append(
+            {
+                "sigma": sg,
+                "sv_min": float(sv[-1]),
+                "sv_next": float(sv[-2]),
+                "u_dot_r": proj,
+                "move_scaled": abs(move),
+                "move_over_offset_per_node": ratios,
+                "residual_norm": float(np.linalg.norm(r)),
+            }
+        )
+        t.log(f"weakscale {sg}: sv {sv[-1]:.2e} u.r {proj:.3e} move/offset {max(ratios):.3g}")
+    ok = [q["sigma"] for q in rows if max(q["move_over_offset_per_node"]) < 0.1]
+    out = {"rows": rows, "start_sigma_proposed": max(ok) if ok else None}
+    (t.out / "weakscale.json").write_text(json.dumps(out))
+
+
 STAGES = {
     "fix": stage_fix,
     "start": stage_start,
@@ -621,6 +656,7 @@ STAGES = {
     "fold": stage_fold,
     "resume": stage_resume,
     "foldsqrt": stage_foldsqrt,
+    "weakscale": stage_weakscale,
 }
 
 
