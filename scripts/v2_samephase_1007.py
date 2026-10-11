@@ -279,7 +279,102 @@ def rejudge_gc() -> dict[str, Any]:
     return out
 
 
+def _slope(v: list[float]) -> float:
+    return float(np.polyfit(np.arange(len(v)), np.asarray(v), 1)[0])
+
+
+def explore_c() -> dict[str, Any]:
+    """Sec. 8.9 (EXPLORATORY data, not a verdict): option (C) evidence. H&M orbit 1 from its printed
+    dates over 15 cycles (48 yr); gc-1 / gc-2 slopes on their existing 10-cycle chains."""
+    V2.RULES = "amended"
+    out: dict[str, Any] = {"status": "exploratory data only, not a verdict (sec. 8.9)"}
+    real_ev = CHAIN.real_ephemeris("ev", "mean")
+    key = "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+    t3 = load_table3()[1]
+    one_period = []
+    for k in range(5):
+        one_period += [t3[5 * k + 1].date, t3[5 * k + 4].date]
+    starts = [v + q * 5844.0 for q in range(3) for v in one_period]
+    x0 = starts[0]
+    y_seed = np.array([*starts[1:], 3 * 5844.0])
+    circ, a, b = CHAIN.ENUM.cell_system("ev")
+    _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
+    sol = least_squares(
+        lambda yy: CHAIN.date_chain_residual(real_ev, one.legs * 15, x0 * DAY, yy),
+        y_seed, method="lm", xtol=1e-14, ftol=1e-14, gtol=1e-14, max_nfev=200 * len(y_seed),
+    )  # fmt: skip
+    j = V2.judge("ev", key, [474.59719334719347, 1100.6183800415804], 15, "ramp", x0,
+                 list(sol.x), real_ev, "H&M orbit 1, 15 cycles")  # fmt: skip
+    x, v, t, c = legs_data("ev", key, 15, "ramp", x0, list(sol.x), real_ev)
+    sp = same_phase("H&M 15", x, v, t, c, 15, 2, sol.x[-1], 5, 1, quiet=True)
+    hm = {
+        "max_shift_from_print_d": float(np.max(np.abs(sol.x[:-1] - y_seed[:-1]))),
+        "chain_period_d": float(sol.x[-1]),
+        "continuity_junction_kms": c,
+        "gate": j.get("gate"),
+        "refly_max_km": j.get("refly_max_km"),
+        "c1": j.get("c1_continuity"), "c2": j.get("c2_gate"), "c3": j.get("c3_refly"),
+        "Dprime_d": sp["Dprime_d"], "Wprime_kms": sp["Wprime_kms"],
+        "band_D_d": sp["band_D_d"], "band_W_kms": sp["band_W_kms"],
+        "slope_D_d_per_cycle": _slope(sp["Dprime_d"]),
+        "slope_W_kms_per_cycle": _slope(sp["Wprime_kms"]),
+    }  # fmt: skip
+    out["hm_orbit1_15"] = hm
+    print(
+        f"H&M 15 cycles: shift from print {hm['max_shift_from_print_d']:.2f} d, period "
+        f"{hm['chain_period_d']:.1f} d (3 x 5844 = 17532), c1={hm['c1']} c2={hm['c2']} "
+        f"({hm['gate']}) c3={hm['c3']} (re-fly {hm['refly_max_km']:.2e} km)",
+        flush=True,
+    )
+    print("  D' =", [round(q, 3) for q in hm["Dprime_d"]], "band", round(hm["band_D_d"], 3),
+          "slope", round(hm["slope_D_d_per_cycle"], 4), flush=True)  # fmt: skip
+    print("  W' =", [round(q, 3) for q in hm["Wprime_kms"]], "band", round(hm["band_W_kms"], 3),
+          "slope", round(hm["slope_W_kms_per_cycle"], 4), flush=True)  # fmt: skip
+    real_gc = CHAIN.real_ephemeris("gc", "spice")
+    wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())
+    for row, nl in (("gc-1", 3), ("gc-2", 4)):
+        recs = []
+        if row == "gc-1":
+            chains = []
+            for i in range(5):
+                e = json.loads(
+                    (REPO / "data" / "943_gc1_realeph" / f"e{i}" / "realeph_chain.json").read_text()
+                )[0]
+                chains.append((e["epoch_jd"], e["x0_days"], e["final_y"]))
+        else:
+            chains = [
+                (e["epoch_jd"], e["final_x_days"][0], list(e["final_x_days"][1:]))
+                for e in json.loads(
+                    (REPO / "data" / "942_943_ladder_realeph_chains.json").read_text()
+                )["gc2"]
+            ]
+        for jd, x0g, y in chains:
+            x, v, t, c = legs_data("gc", wb[row]["key"], 10, "blend", x0g, y, real_gc)
+            spg = same_phase(row, x, v, t, c, 10, nl, y[10 * nl - 1], 4, 1, quiet=True)
+            rec = {
+                "epoch_jd": jd, "Dprime_d": spg["Dprime_d"], "Wprime_kms": spg["Wprime_kms"],
+                "band_D_d": spg["band_D_d"], "band_W_kms": spg["band_W_kms"],
+                "slope_D_d_per_cycle": _slope(spg["Dprime_d"]),
+                "slope_W_kms_per_cycle": _slope(spg["Wprime_kms"]),
+            }  # fmt: skip
+            recs.append(rec)
+            print(
+                f"{row} JD {jd:.1f}: D' max {max(rec['Dprime_d']):.3f}/{rec['band_D_d']:.3f} slope "
+                f"{rec['slope_D_d_per_cycle']:+.4f}; W' max {max(rec['Wprime_kms']):.4f}/"
+                f"{rec['band_W_kms']:.3f} slope {rec['slope_W_kms_per_cycle']:+.5f}",
+                flush=True,
+            )
+        out[row] = recs
+    return out
+
+
 def main() -> None:
+    if "--explore-c" in sys.argv:
+        r = explore_c()
+        path = REPO / "data" / "1007_v2" / "explore_c_15cycles.json"
+        path.write_text(json.dumps(r, indent=1, default=float))
+        print("wrote", path.relative_to(REPO), flush=True)
+        return
     if "--rejudge-gc" in sys.argv:
         r = rejudge_gc()
         path = REPO / "data" / "1007_v2" / "rejudge_gc_final.json"

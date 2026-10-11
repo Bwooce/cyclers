@@ -1,0 +1,15 @@
+H&M orbit 1, 15 cycles: n=15 cont=9.1e-13 gate=pass (0.884) refly=3.26e-04 km D=39.396/8.831 d W=3.679/0.299 km/s growth D 1.01 W 1.04 -> FAIL [1110]
+H&M 15 cycles: shift from print 9.42 d, period 17524.7 d (3 x 5844 = 17532), c1=True c2=True ({'status': 'pass', 'worst_ratio': 0.8843041538223985}) c3=True (re-fly 3.26e-04 km)
+  D' = [np.float64(0.523), np.float64(1.752), np.float64(1.331), np.float64(0.468), np.float64(1.704), np.float64(1.043), np.float64(1.717), np.float64(0.961), np.float64(1.683)] band 7.454 slope 0.0603
+  W' = [0.04, 0.15, 0.111, 0.134, 0.072, 0.128, 0.106, 0.232, 0.176] band 0.452 slope 0.013
+gc-1 JD 2462511.7: D' max 0.035/0.185 slope -0.0012; W' max 0.0072/0.175 slope -0.00058
+gc-1 JD 2464840.9: D' max 0.037/0.186 slope -0.0022; W' max 0.0074/0.176 slope -0.00051
+gc-1 JD 2467182.8: D' max 0.016/0.185 slope +0.0012; W' max 0.0076/0.176 slope -0.00043
+gc-1 JD 2469524.7: D' max 0.030/0.185 slope -0.0020; W' max 0.0082/0.175 slope -0.00043
+gc-1 JD 2471854.0: D' max 0.013/0.186 slope -0.0009; W' max 0.0053/0.176 slope -0.00006
+gc-2 JD 2462511.3: D' max 0.057/0.125 slope +0.0002; W' max 0.0220/0.303 slope +0.00310
+gc-2 JD 2464840.6: D' max 0.040/0.128 slope -0.0007; W' max 0.0089/0.302 slope +0.00059
+gc-2 JD 2467182.5: D' max 0.046/0.126 slope -0.0010; W' max 0.0208/0.303 slope +0.00297
+gc-2 JD 2469524.3: D' max 0.014/0.129 slope +0.0010; W' max 0.0109/0.303 slope +0.00201
+gc-2 JD 2471853.7: D' max 0.037/0.127 slope -0.0003; W' max 0.0215/0.303 slope +0.00300
+wrote data/1007_v2/explore_c_15cycles.json

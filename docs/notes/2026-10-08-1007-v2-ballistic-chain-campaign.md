@@ -498,3 +498,37 @@ Diagnosis (for the owner; nothing changed):
   - (iii) both.
   - Any choice is a further change after seeing results, so it must be pre-registered and recorded as
     such.
+
+### 8.9 EXPLORATORY data for option (C) (2026-10-11) — data only, not a verdict
+
+Run: `scripts/v2_samephase_1007.py --explore-c` (`data/1007_v2/explore_c_15cycles.{json,log}`), under
+nice, about 1 min.
+
+**H&M orbit 1 from its printed dates over 15 cycles (48 yr, three H&M periods).**
+- It converges from the print (largest shift 9.42 d; chain period 17524.7 d against 3 x 5844).
+- Junction continuity 9.1e-13; gate passes (worst 0.884); re-fly 3.3e-4 km.
+- Same-phase comparisons, i = 1..9, L = 5:
+
+| Comparison i | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | Band | Fitted slope per cycle |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| D' (d) | 0.52 | 1.75 | 1.33 | 0.47 | 1.70 | 1.04 | 1.72 | 0.96 | 1.68 | 7.45 | +0.060 |
+| W' (km/s) | 0.040 | 0.150 | 0.111 | 0.134 | 0.072 | 0.128 | 0.106 | 0.232 | 0.176 | 0.452 | +0.013 |
+
+- W' does NOT keep rising as the 10-cycle chain suggested (0.07 -> 0.30). Over 48 yr it oscillates
+  between 0.04 and 0.23, with a slow upward trend of +0.013 km/s per cycle.
+  - Projected over the 15-cycle chain: 0.19, against 0.5 x band = 0.226.
+  - D' oscillates between 0.47 and 1.75 d, with slope +0.06 d per cycle (projected 0.9 against 3.7).
+- The 10-cycle chain is a different solution of the same printed seed. Its largest W' (0.30, 0.27)
+  were the comparisons that reach the chain's LAST cycles. The FAR end of an open chain is
+  constrained only by the magnitude closure, like the start.
+  - So option (b) skips one end (the start) but not the other.
+  - A symmetric option would skip both the first and the last cycle. Not applied; for the owner.
+
+**gc-1 and gc-2 on their existing 10-cycle chains** (L = 4, i = 1..5):
+- gc-1: D' <= 0.037 d (band 0.185), slopes -0.002 to +0.001 d per cycle; W' <= 0.0082 km/s
+  (band 0.175), slopes -0.0006 to -0.0001.
+- gc-2: D' <= 0.057 d (band 0.13), slopes -0.001 to +0.001; W' <= 0.022 km/s (band 0.30), slopes
+  +0.0006 to +0.0031 (projected over 10 cycles <= 0.031 km/s).
+- Both are far inside every band, with negligible trends.
+
+Exploratory only; no verdict, no spec or catalogue change.
