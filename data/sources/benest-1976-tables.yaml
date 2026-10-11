@@ -1,0 +1,93 @@
+# Benest 1976, Tables I-III: the averaged libration function F(Z), the B constants of Fig. 3, and the numerical
+#   verification cases of Fig. 4 (Hill's problem, retrograde satellites, family f).
+# Source: D. Benest, "Libration Effects for Retrograde Satellites in the Restricted Three-Body Problem. I: Circular
+#   Plane Hill's Case", Celestial Mechanics 13:203-215 (1976), doi 10.1007/BF01232724, ADS 1976CeMec..13..203B.
+#   Received 29 December 1974.
+# Local file: ADS JBIG2 scan, 13 pp., md5 db5e260a97857c480b77fa6c0adcd436; OCR copy (ocrmypdf --force-ocr -O 3 -l eng)
+#   md5 2d6beee2a0e70e4f2ab7bfa6a27a8f64. PDF page n = journal page 202 + n.
+# Tables: I p.210 (PDF p.8); II p.212 (PDF p.10); III p.213 (PDF p.11).
+# Witnesses: C = the 110 dpi page image, read cell by cell (decides); A = the OCR text layer of the -O 3 copy. A scripted
+#   search found 98 of the 103 numeric cells verbatim in the text layer. The other 5 are the V0 cells; their digits are in
+#   the text layer and the minus prints there as a dash and a space ("— 30.0022"), confirmed by eye. The layer also has a
+#   stray full stop after "2.748 553" in Table III b that is not on the page.
+# No value here was computed by us. Our values are only in `note:` fields, marked "ours", and in check_benest.out.
+#   Numbers are kept as printed (strings); the printed thin space in 6-decimal numbers is dropped.
+#
+# EQUATIONS, FRAME AND UNITS (sec. 2, pp.203-206, read on the page image)
+#   Circular plane Hill's case, rotating axes, origin at B2 (the small primary). Hill units (Henon 1969/1970 scaling).
+#   "x' = u, y' = v, u' = 2v + 3x - x/rho^3, v' = -2u - y/rho^3"  (1),  rho^2 = x^2 + y^2.
+#   Osculating "reference ellipse" (eqs. 4-6): x = X + (1/2) A cos(t - phi), y = Y - A sin(t - phi),
+#     u = -(1/2) A sin(t - phi), v = -(3/2) X - A cos(t - phi).
+#   Inversion (ours, from eqs. 5-6): X = 4x + 2v, A cos(t - phi) = -6x - 4v, A sin(t - phi) = -2u, Y = y + A sin(t - phi).
+#   Z = Y/A, W = X A^(1/2). Averaged integral (eq. 20): B(Z, W) = (3/4) W^2 + 4 F(Z) = const.
+#   F(Z) = 2 K[4(Z^2 - 3/4)]/pi (eq. 18), K(m) = complete elliptic integral of the first kind, parameter m (Milne-Thomson).
+#   Small-amplitude libration period (eq. 22): T = 2^(-1/2) pi^(3/2) [K(3/4) - E(3/4)]^(-1/2) A^(3/2) ~ 4.049378 A^(3/2).
+#   Table III initial state: x = X0 = 15, y = 0, u = 0, v = V0 (Hill coordinates; the u = 0, y = 0 start is our reading of
+#   "constant-abscissa section", confirmed: our A0 = |6 x0 + 4 V0| equals the printed A in all rows).
+conventions:
+  coordinates: "Hill's problem, rotating frame, origin at the small primary B2; Henon (1969) Hill scaling"
+  state_columns: "X0 = start x (y0 = 0, u0 = 0), V0 = start ydot"
+  B_bar: "printed B-bar is the mean of B_min and B_max (ours: (2.745789 + 2.748013)/2 = 2.746901)"
+  notes: "Table I: F(Z) to 6 decimals. Table III: T is the libration period of the guiding centre, not the 2 pi fast period."
+tables:
+  - table: "I"
+    caption: "The function F(Z)"
+    journal_page: "210"
+    columns: [Z, F]
+    rows:
+      - {Z: "0.000", F: "0.686440"}
+      - {Z: "0.050", F: "0.686943"}
+      - {Z: "0.100", F: "0.688459"}
+      - {Z: "0.150", F: "0.691016"}
+      - {Z: "0.200", F: "0.694663"}
+      - {Z: "0.250", F: "0.699469"}
+      - {Z: "0.300", F: "0.705534"}
+      - {Z: "0.350", F: "0.712988"}
+      - {Z: "0.400", F: "0.722007"}
+      - {Z: "0.450", F: "0.732824"}
+      - {Z: "0.500", F: "0.745749"}
+      - {Z: "0.550", F: "0.761208"}
+      - {Z: "0.600", F: "0.779791"}
+      - {Z: "0.650", F: "0.802346"}
+      - {Z: "0.700", F: "0.830146"}
+      - {Z: "0.750", F: "0.865206"}
+      - {Z: "0.800", F: "0.910978"}
+      - {Z: "0.850", F: "0.974082"}
+      - {Z: "0.900", F: "1.069759"}
+      - {Z: "0.950", F: "1.248106"}
+      - {Z: "0.990", F: "1.709916"}
+      - {Z: "0.995", F: "1.920888", note: "ours 1.920889"}
+      - {Z: "0.999", F: "2.423180", note: "ours 2.423181"}
+      - {Z: "1.000", F: "infinity"}
+    note: "ours: all 23 finite rows reproduced from eq. 18 with scipy ellipk, max |diff| 9.3e-7 (check_benest.out)"
+  - table: "II"
+    caption: "Values of B(W, Z) for each curve of Figure 3"
+    journal_page: "212"
+    columns: [curve, B]
+    rows:
+      - {curve: "1", B: "2.75"}
+      - {curve: "2", B: "2.80"}
+      - {curve: "3", B: "2.90"}
+      - {curve: "4", B: "3.05"}
+      - {curve: "5", B: "3.25"}
+      - {curve: "6", B: "3.50"}
+      - {curve: "7", B: "3.80"}
+      - {curve: "8", B: "4.15"}
+      - {curve: "9", B: "4.55"}
+      - {curve: "10", B: "5.00"}
+      - {curve: "11", B: "5.50"}
+      - {curve: "12", B: "6.05"}
+      - {curve: "13", B: "6.65"}
+      - {curve: "14", B: "7.30"}
+      - {curve: "15", B: "8.00"}
+    note: "p.212 text: B0 = 4F(0) ~ 2.745 760 is the periodic orbit (ours 2.745761)"
+  - table: "III"
+    caption: "Parameters of Figure 4, X0 = 15 (Hill's coordinates)"
+    journal_page: "213"
+    columns: [case, V0, A, B_min, B_bar, B_max, T]
+    rows:
+      - {case: "theoretical values for the periodic orbit", V0: "-30.0022", A: "30.0088", B_min: "", B_bar: "2.745760", B_max: "", T: "665.673", note: "ours: periodic family-f orbit at x0 = 15 has V0 = -30.002222, half period 3.140954, A = 30.00889, eq. 22 T = 665.676"}
+      - {case: "a", V0: "-30.005", A: "30.02", B_min: "2.745789", B_bar: "2.746900", B_max: "2.748013", T: "665.829", note: "ours (DOP853 rtol 1e-12, 0-1400): B_min 2.745789, B_max 2.748013, T 665.4 (2 libration half-cycles, 2 pi running mean)"}
+      - {case: "b", V0: "-30.01", A: "30.04", B_min: "2.748553", B_bar: "2.751666", B_max: "2.754779", T: "664.487", note: "ours: 2.748552, 2.754773, T 664.3"}
+      - {case: "c", V0: "-30.1", A: "30.4", B_min: "3.563967", B_bar: "3.620006", B_max: "3.676044", T: "452.2", note: "ours: 3.563981, 3.676042, T 452.18"}
+      - {case: "d", V0: "-30.2", A: "begin at 30.8", B_min: "6.440", B_bar: "", B_max: "up to 271", T: "", note: "escape orbit; ours: B at t = 0 is 6.441761 (A0 30.8, X0 -0.4, Z0 0), close to the printed 6.440, so 6.440 is probably the starting B (like begin at 30.8), not a window minimum; the last digit differs (6.442 against 6.440). B grows to 283 by t = 400, r reaches 1729"}
