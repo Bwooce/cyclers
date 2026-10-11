@@ -1256,6 +1256,11 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Braik-Ross orbital networks in the three-body problem (2026)",
         primary="Earth",  # Earth-Moon CR3BP family network
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): transfer network over 13 planar families (Secs. 2-7); Table
+        # 2 holds Lyapunov, cyclers C11a/C11b/C21/C32, resonant R21/R31/R52 and a DPO at C_J 3.1294.
+        # Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"transfer", "resonant", "repeated-moon"}),
         authors=("Braik", "Ross"),
         keywords=(
             "orbital network three-body problem",
@@ -1288,6 +1293,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): 4:1, 3:1, 2:1 resonant orbits (Table 6); 3:1-2:1
+        # heteroclinics (Table 1). Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant", "transfer"}),
         authors=("Kumar", "Rawat", "Rosengren", "Ross"),
         keywords=(
             "cislunar resonant transport",
@@ -1311,6 +1320,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): 4:1, 3:1, 2:1 interior resonant families; heteroclinic
+        # connections. Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant", "transfer"}),
         authors=("Kumar", "Rawat", "Rosengren", "Ross"),
         keywords=(
             "interior mean motion resonance Earth-Moon periodic orbit family",
@@ -1335,6 +1348,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): 1:3, 1:4 exterior resonant orbits; heteroclinics through
+        # L1-L2 tubes. Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant", "transfer"}),
         authors=("Rawat", "Kumar", "Rosengren", "Ross"),
         keywords=(
             "exterior mean motion resonance Earth-Moon",
@@ -1359,6 +1376,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): 2:1, 3:1 resonant orbits and widths; 3:1-2:1 heteroclinic
+        # transfer times. Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant", "transfer"}),
         authors=("Rawat", "Kumar", "Rosengren", "Ross"),
         keywords=(
             "resonance width chaotic zone cislunar transport",
@@ -1386,6 +1407,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Casoliva-Mondelo-Villac-Mease-Barrabes-Olle two classes of Earth-Moon cyclers (2010)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): Class 1 p-q resonant cyclers (sec. IV); Class 2 L1
+        # homoclinic cyclers (sec. V). Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant", "repeated-moon"}),
         authors=("Casoliva", "Mondelo", "Villac", "Mease", "Barrabes", "Olle"),
         keywords=(
             "two classes cycler trajectories Earth-Moon system",
@@ -1407,6 +1432,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): MMR widths (sec. 2.1.4), Kozai-Lidov, TLE case studies; no
+        # transfer design. Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"resonant"}),
         authors=("Rosengren", "Ross", "Kumar", "Rawat"),
         keywords=(
             "xGEO Laplace radius cislunar domain awareness",
@@ -1478,6 +1507,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): lobe-sequence transfers (Ch. 3-4); 7:2 and 3:1 unstable
+        # resonant orbits as manifold sources (Ch. 3.2). Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"transfer", "resonant"}),
         authors=("Hiraiwa", "Bando", "Sato", "Hokamoto"),
         keywords=(
             "lobe dynamics low-energy cislunar transfer",
@@ -1524,6 +1557,11 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Sanaga-Park-Howell fidelity-transition framework (2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #1047 (#1052 Earth-Moon part): title-level only (Crossref: 'Systematic Numerical
+        # Transitions of Cislunar Trajectories Across Dynamical Models'); no digest in the corpus
+        # yet. Pre-registration:
+        # docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md sec. 6.
+        topology_label=frozenset({"model-transition"}),
         authors=("Sanaga", "Park", "Howell"),
         keywords=(
             "fidelity transition framework CR3BP ephemeris",
