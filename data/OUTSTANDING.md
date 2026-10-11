@@ -3104,6 +3104,12 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
 - `#1070` — registered 2026-10-11 (papercut review; BACKLOG, small). **`scripts/commit.sh` WRAPPER** that commits by
   pathspec and prints `COMMITTED <hash> <subject>` on its own line, so a reported hash comes from tool output
   (seven invented hashes on 2026-10-11).
+- `#1072` — registered 2026-10-12 (lead ruling on `#1065`; BACKLOG). **SEED-GRID RECALL OF THE TWO-WORKING-BODY GENERATOR.**
+  `#1065` re-found 366 of the 383 `#1024`-continued barycentric members (95.6 %). All 17 misses are exact zeros
+  with real basins; 6 are reached at 96 or 384 phases, 11 not even at 384. So the limit is the 60-best-residual
+  seed selection in `solve_structure`, not grid density (`docs/notes/2026-10-11-1024-barycentric-binary-model.md`
+  sec. 10.2). Follow-up: a recall test against a known member set, then 384-phase or basin-aware seeding (e.g.
+  per-basin seed selection instead of global best residuals); re-check `#998`/`#973` recall the same way.
 - `#1071` — registered 2026-10-11 (papercut review, from twobody-ext's `#1024` entry; BACKLOG, small). **STABLE
   CANDIDATE IDS IN THE TWO-WORKING-BODY GAUNTLET JSONS** (cell + index, or key + a hash of x_days): a candidate's
   `key` is not unique (ps 183 candidates, 181 keys; pk 62, 56) and `#1024`'s first run was keyed on it. Grep the

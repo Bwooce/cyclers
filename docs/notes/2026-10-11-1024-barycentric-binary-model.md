@@ -456,10 +456,10 @@ zero line, settings the same. A cell that fails coverage is re-run before any an
 cd /Users/bruce/dev/cyclers
 for c in psb pnb pkb phb; do for i in $(seq 0 31); do echo "$c $i"; done; done |
   xargs -n2 -P2 sh -c 'mkdir -p data/1065_barycentric/$0 && uv run python scripts/run_1065_barycentric_enumerate.py enumerate --cell $0 --k 1,2,3,4,5,6 --out data/1065_barycentric/$0/s$1 --max-returns 2,0 --transfer-revs 0,1 --generic-revs 1,2 --n-phase 24 --n-split 10 --n-refine 60 --shard $1/32 --timing-pilot-s 3.4 > data/1065_barycentric/$0/s$1.log 2>&1'
-# after all 128 shards, per cell (psb shown):
-uv run python scripts/run_1065_barycentric_enumerate.py check data/1065_barycentric/psb/s*
-uv run python scripts/run_1065_barycentric_enumerate.py gauntlet --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_gauntlet.json
-uv run python scripts/run_1065_barycentric_enumerate.py controls --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_controls.json
+# after all 128 shards, per cell (psb shown). Glob fixed 2026-10-12 (sec. 10.1): s*/, not s*, which also matched the s*.log files
+uv run python scripts/run_1065_barycentric_enumerate.py check data/1065_barycentric/psb/s*/
+uv run python scripts/run_1065_barycentric_enumerate.py gauntlet --cell psb data/1065_barycentric/psb/s*/ --out data/1065_barycentric/psb_gauntlet.json
+uv run python scripts/run_1065_barycentric_enumerate.py controls --cell psb data/1065_barycentric/psb/s*/ --out data/1065_barycentric/psb_controls.json
 ```
 
 ## 10. #1065 results (enumeration: lead launch 2026-10-11 19:49-21:47 AEDT; check, controls, gauntlet: 2026-10-12 09:11-09:25 AEDT)
@@ -579,6 +579,16 @@ Against sec. 9.5:
 - The screen removes 7 strong cyclers (4 psb, 3 pnb).
 
 No catalogue edit. Nothing is called novel.
+
+**Lead ruling (2026-10-12), recorded:**
+- The proposed reading is accepted. The ideal-model record for #1036 is the union of the #1065
+  gate-passers (435; strong_1065 171 after the screen) and the 17 missed continued members, whose
+  #1024 assessment stands.
+- The pre-registered control FAIL stays on record as written. It is read as a seed-grid recall limit
+  (366/383 strict), not a model error.
+- The 97 new members may be used. Each carries the recall caveat and the deep-dip flag.
+- The recall follow-up (384-phase or basin-aware seeding) is registered as #1072 (backlog).
+- The sec. 9.7 glob slip is fixed in place (`s*/`).
 
 ### 10.4 For the lead
 

@@ -984,3 +984,11 @@ not reached. The machine load was low this time.
   `summary.json` was regenerated.
 - Window action: ev5-4 and ev5-5 join the V1 -> V2 promotions (six in all), with the e0 no-chain and
   the e1 band failure in their evidence.
+- Correction to the lead's message: the e2 chains of ev5-4 and ev5-5 are by S2, not S1. S1 at e2 is
+  the sec. 11.6 run, which did not converge.
+- data_gaps path convention (accepted by the lead, 2026-10-12): the V2 standing of these rows is
+  recorded under the path "validation_level.v2". The rows already have a "validation_level" entry
+  (the DE440 shoot), and no catalogue row repeats a path.
+- sec. 11.8's window action is replaced by this one: six promotions (ev5-4 to ev5-9). The k = 4 rows
+  get the "validation_level.v2" not-applicable entry. ev5-4 and ev5-5 get a "validation_level.v2"
+  entry recording the e0 no-chain (S2 and S3 not reached, no timeout) and the e1 date-band failure.
