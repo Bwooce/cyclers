@@ -1,0 +1,4283 @@
+{
+ "cell": "phb",
+ "n_structures": 3025,
+ "n_zeros": 1009,
+ "n_physical": 336,
+ "n_gate_passing": 52,
+ "charon_soi_km": 7190.523836300898,
+ "candidates": [
+  {
+   "index": 0,
+   "k": 4,
+   "key": "k4|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    4.94881866818529,
+    18.517584275943666,
+    28.87042454980787
+   ],
+   "residual_kms": 3.885780586188048e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.22093770482523542,
+   "max_turn_deg": 20.812939836599867,
+   "max_encounter_miss_km": 7.181714788154457e-10,
+   "vinf_kms": {
+    "Charon": 0.23423282539822848,
+    "Hydra": 0.08141831040269998
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 18.517584275943666,
+     "vinf_kms": 0.23423282539822848,
+     "turn_deg": 20.812939836599867,
+     "available_deg": 94.20275209730802,
+     "ratio": 0.22093770482523542,
+     "required_alt_km": 8166.218275686793,
+     "rmin_radii": 14.475607715654771,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 28.87042454980787,
+     "vinf_kms": 0.08141831040269998,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 35.62695666489122,
+     "vinf_kms": 0.2342328253982287,
+     "turn_deg": 20.812939836599778,
+     "available_deg": 94.202752097308,
+     "ratio": 0.22093770482523456,
+     "required_alt_km": 8166.218275686835,
+     "rmin_radii": 14.475607715654819,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1413.9153128587434,
+   "r_max_km": 66853.01347136393,
+   "pluto_min_distance_km": 2097.7076835125795,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 8772.218275686835,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.08095769074124433,
+   "lambert_time_fraction_inside_2a": 0.5942068013071372,
+   "cross_check": {
+    "max_arrival_miss_km": 6.467036821168705e-05,
+    "max_vinf_vector_error_kms": 8.598373791804934e-10,
+    "max_junction_mismatch_kms": 7.507788279959016e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.22093770541763905
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 1,
+   "k": 4,
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.9981907045381635,
+    7.444568692295936
+   ],
+   "residual_kms": 7.216449660063518e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6179295701122345,
+   "max_turn_deg": 50.32208600742037,
+   "max_encounter_miss_km": 7.147113759523269e-09,
+   "vinf_kms": {
+    "Hydra": 0.10833577674100436,
+    "Charon": 0.2830056969697542
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 7.444568692295936,
+     "vinf_kms": 0.10833577674100436,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 19.901888701244093,
+     "vinf_kms": 0.2830056969697542,
+     "turn_deg": 50.322086007420346,
+     "available_deg": 81.4366044956877,
+     "ratio": 0.6179295701122343,
+     "required_alt_km": 1185.0699383543174,
+     "rmin_radii": 2.955560954380062,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.289108701244093,
+     "vinf_kms": 0.2830056969697542,
+     "turn_deg": 50.32208600742037,
+     "available_deg": 81.4366044956877,
+     "ratio": 0.6179295701122345,
+     "required_alt_km": 1185.0699383543163,
+     "rmin_radii": 2.95556095438006,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 32.676328701244095,
+     "vinf_kms": 0.2830056969697538,
+     "turn_deg": 50.3220860074203,
+     "available_deg": 81.4366044956879,
+     "ratio": 0.6179295701122323,
+     "required_alt_km": 1185.0699383543297,
+     "rmin_radii": 2.955560954380074,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2068.970076935715,
+   "r_max_km": 72841.84482471201,
+   "pluto_min_distance_km": 644.2992837934476,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 1791.0699383543297,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.11846469029519875,
+   "lambert_time_fraction_inside_2a": 0.2256223467167323,
+   "cross_check": {
+    "max_arrival_miss_km": 1.7326996125944954e-05,
+    "max_vinf_vector_error_kms": 3.048880264242876e-10,
+    "max_junction_mismatch_kms": 1.2090239920325985e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6179295708206992
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 2,
+   "k": 4,
+   "key": "k4|RCharon/1:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.1067147962853587,
+    15.564034805233518
+   ],
+   "residual_kms": 1.942890293094024e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6586038666526608,
+   "max_turn_deg": 53.63446260792342,
+   "max_encounter_miss_km": 1.0195451833350494e-08,
+   "vinf_kms": {
+    "Hydra": 0.10833577674100435,
+    "Charon": 0.283005696969754
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 15.564034805233518,
+     "vinf_kms": 0.10833577674100435,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 21.010412792991293,
+     "vinf_kms": 0.283005696969754,
+     "turn_deg": 53.63446260792342,
+     "available_deg": 81.43660449568776,
+     "ratio": 0.6586038666526608,
+     "required_alt_km": 1005.6280657786597,
+     "rmin_radii": 2.6594522537601644,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.39763279299129,
+     "vinf_kms": 0.283005696969754,
+     "turn_deg": 53.6344626079234,
+     "available_deg": 81.43660449568776,
+     "ratio": 0.6586038666526607,
+     "required_alt_km": 1005.6280657786601,
+     "rmin_radii": 2.6594522537601653,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.78485279299129,
+     "vinf_kms": 0.28300569696975386,
+     "turn_deg": 53.63446260792341,
+     "available_deg": 81.43660449568782,
+     "ratio": 0.6586038666526604,
+     "required_alt_km": 1005.6280657786629,
+     "rmin_radii": 2.6594522537601675,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2068.970076935722,
+   "r_max_km": 72841.84482471192,
+   "pluto_min_distance_km": 644.2992837938515,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 1611.6280657786629,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.11846469029519915,
+   "lambert_time_fraction_inside_2a": 0.2256223467167323,
+   "cross_check": {
+    "max_arrival_miss_km": 5.230939060839505e-05,
+    "max_vinf_vector_error_kms": 1.2569196627994035e-10,
+    "max_junction_mismatch_kms": 5.870062769197659e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6586038667811139
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 3,
+   "k": 4,
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.1067147962853587,
+    15.564034805233518
+   ],
+   "residual_kms": 1.942890293094024e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6632284502749246,
+   "max_turn_deg": 54.01107299532698,
+   "max_encounter_miss_km": 1.0195451833350494e-08,
+   "vinf_kms": {
+    "Hydra": 0.10833577674100435,
+    "Charon": 0.283005696969754
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 15.564034805233518,
+     "vinf_kms": 0.10833577674100435,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 21.010412792991293,
+     "vinf_kms": 0.283005696969754,
+     "turn_deg": 54.011072995326934,
+     "available_deg": 81.43660449568776,
+     "ratio": 0.6632284502749244,
+     "required_alt_km": 986.6766881127178,
+     "rmin_radii": 2.6281793533213165,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.39763279299129,
+     "vinf_kms": 0.283005696969754,
+     "turn_deg": 54.01107299532695,
+     "available_deg": 81.43660449568776,
+     "ratio": 0.6632284502749246,
+     "required_alt_km": 986.6766881127171,
+     "rmin_radii": 2.628179353321315,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.78485279299129,
+     "vinf_kms": 0.28300569696975386,
+     "turn_deg": 54.01107299532698,
+     "available_deg": 81.43660449568782,
+     "ratio": 0.6632284502749245,
+     "required_alt_km": 986.6766881127187,
+     "rmin_radii": 2.6281793533213156,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2068.970076935722,
+   "r_max_km": 72841.84482471192,
+   "pluto_min_distance_km": 644.2992837938515,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 1592.6766881127187,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.11846469029519915,
+   "lambert_time_fraction_inside_2a": 0.2256223467167323,
+   "cross_check": {
+    "max_arrival_miss_km": 5.230939060839505e-05,
+    "max_vinf_vector_error_kms": 1.2569196627994035e-10,
+    "max_junction_mismatch_kms": 5.870062769197659e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6632284503064648
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 4,
+   "k": 5,
+   "key": "k5|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.768408753814844,
+    10.885959249038406
+   ],
+   "residual_kms": 2.498001805406602e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.011931842060334862,
+   "max_turn_deg": 1.6074211915141923,
+   "max_encounter_miss_km": 1.6148897364241874e-09,
+   "vinf_kms": {
+    "Hydra": 0.0978778956691693,
+    "Charon": 0.11202355323062507
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 10.885959249038406,
+     "vinf_kms": 0.0978778956691693,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.11608124969725,
+     "vinf_kms": 0.11202355323062507,
+     "turn_deg": 1.6074211915141923,
+     "available_deg": 134.71693502026466,
+     "ratio": 0.011931842060334862,
+     "required_alt_km": 593684.6916446222,
+     "rmin_radii": 980.6777089845231,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 17464.33843254092,
+   "r_max_km": 111966.18614987438,
+   "pluto_min_distance_km": 19595.70085132005,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 594290.6916446222,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.9999697272981779,
+   "lambert_time_fraction_inside_2a": 0.10337170427035029,
+   "cross_check": {
+    "max_arrival_miss_km": 8.373074370667828e-07,
+    "max_vinf_vector_error_kms": 5.6675819509588985e-12,
+    "max_junction_mismatch_kms": 1.4991619057269645e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.011931842039524269
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 5,
+   "k": 5,
+   "key": "k5|LCharon>Charon/1h|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.405851568395297,
+    11.420108487523922,
+    22.59186406427771,
+    34.13688493504407
+   ],
+   "residual_kms": 1.6375789613221059e-15,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.3067670377181416,
+   "max_turn_deg": 37.69679107073651,
+   "max_encounter_miss_km": 5.1974620110758146e-09,
+   "vinf_kms": {
+    "Charon": 0.14428128532530782,
+    "Hydra": 0.05987878837056275
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.420108487523922,
+     "vinf_kms": 0.14428128532530782,
+     "turn_deg": 0.4575298970515736,
+     "available_deg": 122.88409912336287,
+     "ratio": 0.0037232636306529874,
+     "required_alt_km": 1270823.2783734913,
+     "rmin_radii": 2098.068116127859,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.59186406427771,
+     "vinf_kms": 0.1442812853253082,
+     "turn_deg": 37.69679107073651,
+     "available_deg": 122.88409912336287,
+     "ratio": 0.3067670377181416,
+     "required_alt_km": 10073.528614621016,
+     "rmin_radii": 17.62298451257573,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.13688493504407,
+     "vinf_kms": 0.05987878837056275,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.753524064277705,
+     "vinf_kms": 0.1442812853253086,
+     "turn_deg": 37.23926117368628,
+     "available_deg": 122.8840991233625,
+     "ratio": 0.30304377408750044,
+     "required_alt_km": 10260.36164906166,
+     "rmin_radii": 17.931289849936665,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5926.259058435575,
+   "r_max_km": 68101.91854643363,
+   "pluto_min_distance_km": 3794.8783318860633,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1271429.2783734913,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.3393246000959443,
+   "lambert_time_fraction_inside_2a": 0.6117116456103521,
+   "cross_check": {
+    "max_arrival_miss_km": 7.89928071041375e-06,
+    "max_vinf_vector_error_kms": 9.641973001099442e-11,
+    "max_junction_mismatch_kms": 9.512612919593266e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.30676703775151937
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 6,
+   "k": 5,
+   "key": "k5|LCharon>Charon/1l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.974829932246433,
+    11.45568592503192,
+    18.773622428128846,
+    24.285884898523737
+   ],
+   "residual_kms": 5.273559366969494e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.32361445702084163,
+   "max_turn_deg": 33.577740696616736,
+   "max_encounter_miss_km": 1.824235081091397e-09,
+   "vinf_kms": {
+    "Charon": 0.20185128426106191,
+    "Hydra": 0.1019577208912745
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.45568592503192,
+     "vinf_kms": 0.20185128426106191,
+     "turn_deg": 0.573968396933677,
+     "available_deg": 103.75846927770051,
+     "ratio": 0.005531773945098404,
+     "required_alt_km": 516688.7300858879,
+     "rmin_radii": 853.6216668083938,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 18.773622428128846,
+     "vinf_kms": 0.20185128426106214,
+     "turn_deg": 33.00377229968242,
+     "available_deg": 103.75846927770041,
+     "ratio": 0.3180826830757374,
+     "required_alt_km": 5957.671723262673,
+     "rmin_radii": 10.831141457529162,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 24.285884898523737,
+     "vinf_kms": 0.1019577208912745,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.32250242812884,
+     "vinf_kms": 0.20185128426106194,
+     "turn_deg": 33.577740696616736,
+     "available_deg": 103.75846927770054,
+     "ratio": 0.32361445702084163,
+     "required_alt_km": 5805.3576241890305,
+     "rmin_radii": 10.57979805971784,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2145.7167275182933,
+   "r_max_km": 89806.34438252333,
+   "pluto_min_distance_km": 629.3427654920869,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 517294.7300858879,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.12285903523706689,
+   "lambert_time_fraction_inside_2a": 0.4274072735116931,
+   "cross_check": {
+    "max_arrival_miss_km": 1.5630415582053997e-05,
+    "max_vinf_vector_error_kms": 2.6706417881184714e-10,
+    "max_junction_mismatch_kms": 2.490042061431552e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3236144570171223
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 7,
+   "k": 5,
+   "key": "k5|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    6.444070732896678,
+    23.440974599365944,
+    32.892771127392415
+   ],
+   "residual_kms": 3.885780586188048e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.15523751448710174,
+   "max_turn_deg": 14.925444361764995,
+   "max_encounter_miss_km": 1.1127280195711683e-08,
+   "vinf_kms": {
+    "Charon": 0.22740158401159982,
+    "Hydra": 0.07999247182379751
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.440974599365944,
+     "vinf_kms": 0.22740158401159982,
+     "turn_deg": 0.3277275370369168,
+     "available_deg": 96.14586017482966,
+     "ratio": 0.0034086494877780885,
+     "required_alt_km": 714754.3337517758,
+     "rmin_radii": 1180.4625969501244,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 32.892771127392415,
+     "vinf_kms": 0.07999247182379751,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.40452322877909,
+     "vinf_kms": 0.22740158401159943,
+     "turn_deg": 14.925444361764995,
+     "available_deg": 96.14586017482978,
+     "ratio": 0.15523751448710174,
+     "required_alt_km": 13139.515060673066,
+     "rmin_radii": 22.68236808691925,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.79174322877909,
+     "vinf_kms": 0.22740158401159963,
+     "turn_deg": 14.597716824727978,
+     "available_deg": 96.14586017482978,
+     "ratio": 0.1518288649993226,
+     "required_alt_km": 13492.18796929275,
+     "rmin_radii": 23.264336582991294,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2622.9961139948414,
+   "r_max_km": 67239.62527742745,
+   "pluto_min_distance_km": 1321.4293719721363,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 715360.3337517758,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.15018700645014862,
+   "lambert_time_fraction_inside_2a": 0.21974838584227407,
+   "cross_check": {
+    "max_arrival_miss_km": 6.505774594450592e-05,
+    "max_vinf_vector_error_kms": 7.343143970866865e-10,
+    "max_junction_mismatch_kms": 7.332959239825243e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15523751448234238
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 8,
+   "k": 5,
+   "key": "k5|RCharon/1:2|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    6.444070732896678,
+    23.440974599365944,
+    32.892771127392415
+   ],
+   "residual_kms": 3.885780586188048e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.3782203340475491,
+   "max_turn_deg": 36.36431935261305,
+   "max_encounter_miss_km": 1.1127280195711683e-08,
+   "vinf_kms": {
+    "Charon": 0.22740158401159982,
+    "Hydra": 0.07999247182379751
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.440974599365944,
+     "vinf_kms": 0.22740158401159982,
+     "turn_deg": 0.3277275370369168,
+     "available_deg": 96.14586017482966,
+     "ratio": 0.0034086494877780885,
+     "required_alt_km": 714754.3337517758,
+     "rmin_radii": 1180.4625969501244,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 32.892771127392415,
+     "vinf_kms": 0.07999247182379751,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.40452322877909,
+     "vinf_kms": 0.22740158401159946,
+     "turn_deg": 36.36431935261305,
+     "available_deg": 96.14586017482974,
+     "ratio": 0.3782203340475491,
+     "required_alt_km": 3917.5889590147945,
+     "rmin_radii": 7.464668249199331,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.79174322877909,
+     "vinf_kms": 0.22740158401159966,
+     "turn_deg": 36.03659181557604,
+     "available_deg": 96.14586017482974,
+     "ratio": 0.37481168455977004,
+     "required_alt_km": 3975.3758514288966,
+     "rmin_radii": 7.5600261574734136,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 423.4054497656265,
+   "r_max_km": 67239.62527742745,
+   "pluto_min_distance_km": 340.17484439734835,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 715360.3337517758,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.02424326771804866,
+   "lambert_time_fraction_inside_2a": 0.21974838584227407,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00018903035667334247,
+    "max_vinf_vector_error_kms": 2.9943621075030797e-09,
+    "max_junction_mismatch_kms": 2.1576580799820277e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.37822033404278993
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 9,
+   "k": 5,
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.1096647707673348,
+    6.705651396997172
+   ],
+   "residual_kms": 2.7755575615628914e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6081524665255064,
+   "max_turn_deg": 41.02576756025284,
+   "max_encounter_miss_km": 9.696646764960173e-10,
+   "vinf_kms": {
+    "Hydra": 0.12333109383241733,
+    "Charon": 0.34693232460923956
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 6.705651396997172,
+     "vinf_kms": 0.12333109383241733,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 13.908457266649751,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 41.025767560252824,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6081524665255061,
+     "required_alt_km": 1028.080447979018,
+     "rmin_radii": 2.69650238940432,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.68289726664975,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 41.025767560252824,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6081524665255061,
+     "required_alt_km": 1028.080447979018,
+     "rmin_radii": 2.69650238940432,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.45733726664975,
+     "vinf_kms": 0.34693232460923973,
+     "turn_deg": 41.02576756025284,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6081524665255064,
+     "required_alt_km": 1028.0804479790168,
+     "rmin_radii": 2.696502389404315,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 6270.767215569419,
+   "r_max_km": 65124.472027086216,
+   "pluto_min_distance_km": 4935.517369677241,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1634.080447979018,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.35905038182376703,
+   "lambert_time_fraction_inside_2a": 0.15139603880999952,
+   "cross_check": {
+    "max_arrival_miss_km": 1.768792741563678e-05,
+    "max_vinf_vector_error_kms": 2.2740012432029194e-10,
+    "max_junction_mismatch_kms": 6.747979952592686e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6081524665263583
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 10,
+   "k": 5,
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.1096647707673348,
+    6.705651396997172
+   ],
+   "residual_kms": 2.7755575615628914e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6769778162482085,
+   "max_turn_deg": 45.66870326370978,
+   "max_encounter_miss_km": 9.696646764960173e-10,
+   "vinf_kms": {
+    "Hydra": 0.12333109383241733,
+    "Charon": 0.34693232460923956
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 6.705651396997172,
+     "vinf_kms": 0.12333109383241733,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 13.908457266649751,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 45.668703263709716,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6769778162482072,
+     "required_alt_km": 784.019149625902,
+     "rmin_radii": 2.293760972980036,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.07011726664975,
+     "vinf_kms": 0.3469323246092396,
+     "turn_deg": 45.66870326370976,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6769778162482079,
+     "required_alt_km": 784.0191496258997,
+     "rmin_radii": 2.293760972980032,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.45733726664976,
+     "vinf_kms": 0.34693232460923973,
+     "turn_deg": 45.66870326370978,
+     "available_deg": 67.45967470072272,
+     "ratio": 0.6769778162482085,
+     "required_alt_km": 784.0191496258985,
+     "rmin_radii": 2.293760972980029,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5449.919648903969,
+   "r_max_km": 65124.472027086216,
+   "pluto_min_distance_km": 3984.2020389402983,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1390.019149625902,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.3120504499017881,
+   "lambert_time_fraction_inside_2a": 0.15139603880999952,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0994527365286526e-05,
+    "max_vinf_vector_error_kms": 1.7949783959151768e-10,
+    "max_junction_mismatch_kms": 2.2167045976573263e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6769778162486606
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 11,
+   "k": 5,
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.1096647707673348,
+    6.705651396997172
+   ],
+   "residual_kms": 2.7755575615628914e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6798527830984781,
+   "max_turn_deg": 45.862647592204354,
+   "max_encounter_miss_km": 9.696646764960173e-10,
+   "vinf_kms": {
+    "Hydra": 0.12333109383241733,
+    "Charon": 0.34693232460923956
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 6.705651396997172,
+     "vinf_kms": 0.12333109383241733,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 13.908457266649751,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 45.862647592204354,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6798527830984781,
+     "required_alt_km": 774.9285078234036,
+     "rmin_radii": 2.278759913900006,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.07011726664975,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 45.862647592204354,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6798527830984781,
+     "required_alt_km": 774.9285078234036,
+     "rmin_radii": 2.278759913900006,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.45733726664976,
+     "vinf_kms": 0.34693232460923973,
+     "turn_deg": 45.862647592204354,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6798527830984781,
+     "required_alt_km": 774.9285078234036,
+     "rmin_radii": 2.278759913900003,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 9670.650562843259,
+   "r_max_km": 65124.472027086216,
+   "pluto_min_distance_km": 8954.995138450773,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1380.9285078234036,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.5537202478911986,
+   "lambert_time_fraction_inside_2a": 0.15139603880999952,
+   "cross_check": {
+    "max_arrival_miss_km": 6.711183984499322e-06,
+    "max_vinf_vector_error_kms": 7.815203698491134e-11,
+    "max_junction_mismatch_kms": 3.423361594201424e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6798527831622938
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 12,
+   "k": 5,
+   "key": "k5|RCharon/2:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.1096647707673348,
+    6.705651396997172
+   ],
+   "residual_kms": 2.7755575615628914e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6839573557826397,
+   "max_turn_deg": 46.13954073026336,
+   "max_encounter_miss_km": 9.696646764960173e-10,
+   "vinf_kms": {
+    "Hydra": 0.12333109383241733,
+    "Charon": 0.34693232460923956
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 6.705651396997172,
+     "vinf_kms": 0.12333109383241733,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 13.908457266649751,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 46.139540730263334,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6839573557826392,
+     "required_alt_km": 762.086343454381,
+     "rmin_radii": 2.25756822352208,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.68289726664975,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 46.13954073026336,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6839573557826397,
+     "required_alt_km": 762.0863434543794,
+     "rmin_radii": 2.257568223522078,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.45733726664975,
+     "vinf_kms": 0.34693232460923973,
+     "turn_deg": 46.13954073026336,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.6839573557826397,
+     "required_alt_km": 762.0863434543794,
+     "rmin_radii": 2.257568223522076,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 7947.149681666299,
+   "r_max_km": 65124.472027086216,
+   "pluto_min_distance_km": 6762.720809796417,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1368.086343454381,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.4550363662883644,
+   "lambert_time_fraction_inside_2a": 0.15139603880999952,
+   "cross_check": {
+    "max_arrival_miss_km": 5.253252547825247e-05,
+    "max_vinf_vector_error_kms": 8.001789422775494e-10,
+    "max_junction_mismatch_kms": 2.529172427045978e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.683957355783001
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 13,
+   "k": 5,
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    1.1096647707673348,
+    6.705651396997172
+   ],
+   "residual_kms": 2.7755575615628914e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.717103172362018,
+   "max_turn_deg": 48.37554673439805,
+   "max_encounter_miss_km": 9.696646764960173e-10,
+   "vinf_kms": {
+    "Hydra": 0.12333109383241733,
+    "Charon": 0.34693232460923956
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 6.705651396997172,
+     "vinf_kms": 0.12333109383241733,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 13.908457266649751,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 48.37554673439801,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.7171031723620175,
+     "required_alt_km": 663.935616123865,
+     "rmin_radii": 2.095603326937071,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.68289726664975,
+     "vinf_kms": 0.34693232460923956,
+     "turn_deg": 48.375546734398036,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.7171031723620178,
+     "required_alt_km": 663.9356161238641,
+     "rmin_radii": 2.0956033269370695,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.45733726664975,
+     "vinf_kms": 0.34693232460923973,
+     "turn_deg": 48.37554673439805,
+     "available_deg": 67.45967470072274,
+     "ratio": 0.717103172362018,
+     "required_alt_km": 663.9356161238636,
+     "rmin_radii": 2.095603326937067,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 11545.720893002228,
+   "r_max_km": 65124.472027086216,
+   "pluto_min_distance_km": 11672.896731750878,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1269.935616123865,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.6610826638198946,
+   "lambert_time_fraction_inside_2a": 0.15139603880999952,
+   "cross_check": {
+    "max_arrival_miss_km": 2.582494823424714e-06,
+    "max_vinf_vector_error_kms": 2.8931365922723463e-11,
+    "max_junction_mismatch_kms": 1.4440670881299411e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7171031724231143
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 14,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    7.528720442110486,
+    29.41730893702776,
+    34.90411418899953
+   ],
+   "residual_kms": 7.771561172376096e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.1816133904007216,
+   "max_turn_deg": 23.63540371156739,
+   "max_encounter_miss_km": 3.515548542715509e-08,
+   "vinf_kms": {
+    "Charon": 0.12426103831232557,
+    "Hydra": 0.07691545527957001
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 29.41730893702776,
+     "vinf_kms": 0.12426103831232557,
+     "turn_deg": 23.63540371156739,
+     "available_deg": 130.1413054368786,
+     "ratio": 0.1816133904007216,
+     "required_alt_km": 26074.620779556633,
+     "rmin_radii": 44.027427028971125,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.90411418899953,
+     "vinf_kms": 0.07691545527957001,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 53.545927437169375,
+     "vinf_kms": 0.12426103831232568,
+     "turn_deg": 23.635403711567182,
+     "available_deg": 130.1413054368786,
+     "ratio": 0.18161339040072,
+     "required_alt_km": 26074.620779556913,
+     "rmin_radii": 44.02742702897153,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 12846.469470497017,
+   "r_max_km": 81471.07028784465,
+   "pluto_min_distance_km": 10715.088743918875,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 26680.620779556913,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.7355606754173664,
+   "lambert_time_fraction_inside_2a": 0.3534657374563037,
+   "cross_check": {
+    "max_arrival_miss_km": 1.3756842134943968e-05,
+    "max_vinf_vector_error_kms": 1.4662670125814176e-10,
+    "max_junction_mismatch_kms": 1.3639722684644084e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.1816133903898016
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 15,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.8857329651517056,
+    29.89034769020534,
+    38.997964557566725
+   ],
+   "residual_kms": 1.97758476261356e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.1572008875616068,
+   "max_turn_deg": 19.75879161420328,
+   "max_encounter_miss_km": 2.597153872990385e-08,
+   "vinf_kms": {
+    "Charon": 0.136440459173611,
+    "Hydra": 0.050165149231519574
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 10.728687690205339,
+     "vinf_kms": 0.136440459173611,
+     "turn_deg": 4.395255206693385,
+     "available_deg": 125.69134895284749,
+     "ratio": 0.034968637406717976,
+     "required_alt_km": 142323.77466086525,
+     "rmin_radii": 235.85771396182386,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 29.89034769020534,
+     "vinf_kms": 0.13644045917361092,
+     "turn_deg": 15.363536407510281,
+     "available_deg": 125.69134895284758,
+     "ratio": 0.12223225015489195,
+     "required_alt_km": 36332.16217202184,
+     "rmin_radii": 60.95406299013495,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 38.997964557566725,
+     "vinf_kms": 0.050165149231519574,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.9029399602106,
+     "vinf_kms": 0.1364404591736109,
+     "turn_deg": 19.75879161420328,
+     "available_deg": 125.69134895284758,
+     "ratio": 0.1572008875616068,
+     "required_alt_km": 26912.752255534437,
+     "rmin_radii": 45.410482269858726,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 10483.86481251582,
+   "r_max_km": 64771.30847721369,
+   "pluto_min_distance_km": 9858.965065951683,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 142929.77466086525,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.6002831128185562,
+   "lambert_time_fraction_inside_2a": 0.4265781348272739,
+   "cross_check": {
+    "max_arrival_miss_km": 1.1062893868528653e-05,
+    "max_vinf_vector_error_kms": 1.224957473282186e-10,
+    "max_junction_mismatch_kms": 1.1738898741953108e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15720088755903713
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 16,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|LCharon>Hydra/1l|LHydra>Charon/0s",
+   "x_days": [
+    0.621761620538497,
+    10.496170375475554,
+    36.14581157376448
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.15750631032194395,
+   "max_turn_deg": 19.67371013945483,
+   "max_encounter_miss_km": 2.6258460795322162e-08,
+   "vinf_kms": {
+    "Charon": 0.138617109519653,
+    "Hydra": 0.05445581379324636
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 10.496170375475554,
+     "vinf_kms": 0.138617109519653,
+     "turn_deg": 19.67371013945483,
+     "available_deg": 124.90744084628504,
+     "ratio": 0.15750631032194395,
+     "required_alt_km": 26193.106110057168,
+     "rmin_radii": 44.222947376331895,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 36.14581157376448,
+     "vinf_kms": 0.05445581379324636,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.63896861559739,
+     "vinf_kms": 0.13861710951965336,
+     "turn_deg": 19.673710139454677,
+     "available_deg": 124.90744084628498,
+     "ratio": 0.15750631032194282,
+     "required_alt_km": 26193.10611005736,
+     "rmin_radii": 44.22294737633208,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 10318.926408608224,
+   "r_max_km": 66248.69151683045,
+   "pluto_min_distance_km": 11547.384360216616,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 26799.10611005736,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.5908391014456914,
+   "lambert_time_fraction_inside_2a": 0.3378576857441406,
+   "cross_check": {
+    "max_arrival_miss_km": 8.686284054018621e-07,
+    "max_vinf_vector_error_kms": 1.5176787957696174e-11,
+    "max_junction_mismatch_kms": 1.3331835635455036e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15750631034594248
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "model-invalid",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "LCharon>Hydra/1l",
+     "body": "Charon",
+     "min_km": 3605.1992933691618,
+     "t_days": 28.56756947298906,
+     "frac_of_leg": 0.7045478319875694,
+     "soi_km": 7190.523836300898
+    }
+   ],
+   "strong_1065": false
+  },
+  {
+   "index": 17,
+   "k": 6,
+   "key": "k6|RCharon/2:1|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.808789767407046,
+    22.514828007617275,
+    31.96588711538759
+   ],
+   "residual_kms": 7.771561172376096e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.15640028265860545,
+   "max_turn_deg": 18.690676830887842,
+   "max_encounter_miss_km": 7.630487102337164e-10,
+   "vinf_kms": {
+    "Charon": 0.15389623889934384,
+    "Hydra": 0.05558345630617009
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 22.514828007617275,
+     "vinf_kms": 0.15389623889934384,
+     "turn_deg": 18.690676830887842,
+     "available_deg": 119.50539035588784,
+     "ratio": 0.15640028265860545,
+     "required_alt_km": 22501.818578014216,
+     "rmin_radii": 38.131713825105926,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 31.96588711538759,
+     "vinf_kms": 0.05558345630617009,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.05155676246594,
+     "vinf_kms": 0.15389623889934295,
+     "turn_deg": 6.2110185853585715,
+     "available_deg": 119.50539035588815,
+     "ratio": 0.051972706560449715,
+     "required_alt_km": 77605.87621178573,
+     "rmin_radii": 129.0625019996464,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.82599676246594,
+     "vinf_kms": 0.15389623889934334,
+     "turn_deg": 12.479658245529135,
+     "available_deg": 119.50539035588815,
+     "ratio": 0.10442757609815423,
+     "required_alt_km": 36130.40977836281,
+     "rmin_radii": 60.621138248123174,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 8456.725547957385,
+   "r_max_km": 65384.50856610294,
+   "pluto_min_distance_km": 9173.893530367634,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 78211.87621178573,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.48421356312413905,
+   "lambert_time_fraction_inside_2a": 0.5287346183919969,
+   "cross_check": {
+    "max_arrival_miss_km": 1.6936000016760283e-05,
+    "max_vinf_vector_error_kms": 2.2537040665122873e-10,
+    "max_junction_mismatch_kms": 2.2294244228504567e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.15640028276138568
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 18,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.7038842665835316,
+    30.184362506793764,
+    39.63542161456406
+   ],
+   "residual_kms": 1.3877787807814457e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.3208100659909476,
+   "max_turn_deg": 38.33853216634632,
+   "max_encounter_miss_km": 6.318902211287772e-10,
+   "vinf_kms": {
+    "Charon": 0.15389623889934392,
+    "Hydra": 0.05558345630617013
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.409922506793766,
+     "vinf_kms": 0.15389623889934392,
+     "turn_deg": 19.647855335458523,
+     "available_deg": 119.50539035588783,
+     "ratio": 0.16440978333234244,
+     "required_alt_km": 21170.089955402247,
+     "rmin_radii": 35.93414184059776,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.184362506793764,
+     "vinf_kms": 0.153896238899344,
+     "turn_deg": 38.33853216634632,
+     "available_deg": 119.50539035588783,
+     "ratio": 0.3208100659909476,
+     "required_alt_km": 8557.167421392962,
+     "rmin_radii": 15.120738319130288,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 39.63542161456406,
+     "vinf_kms": 0.05558345630617013,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.72109126164242,
+     "vinf_kms": 0.15389623889934378,
+     "turn_deg": 18.690676830888023,
+     "available_deg": 119.5053903558879,
+     "ratio": 0.1564002826586069,
+     "required_alt_km": 22501.818578013965,
+     "rmin_radii": 38.13171382510553,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 4525.936046383676,
+   "r_max_km": 65384.50856610296,
+   "pluto_min_distance_km": 2741.9376271308565,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 23107.818578013965,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.25914517469716775,
+   "lambert_time_fraction_inside_2a": 0.5287346183919971,
+   "cross_check": {
+    "max_arrival_miss_km": 2.4706709132322253e-05,
+    "max_vinf_vector_error_kms": 3.9933972181551424e-10,
+    "max_junction_mismatch_kms": 3.932730807676421e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3208100657749203
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 19,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    6.92232655082482,
+    29.869206751416474,
+    34.76073096393852
+   ],
+   "residual_kms": 5.551115123125783e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.16139269051867225,
+   "max_turn_deg": 18.94874034443826,
+   "max_encounter_miss_km": 1.3203159990318095e-09,
+   "vinf_kms": {
+    "Charon": 0.15997125450615257,
+    "Hydra": 0.08544918843706407
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.094766751416476,
+     "vinf_kms": 0.15997125450615257,
+     "turn_deg": 8.518713583026065,
+     "available_deg": 117.40767369043891,
+     "ratio": 0.07255670191955933,
+     "required_alt_km": 51070.5948396864,
+     "rmin_radii": 85.27490897638016,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 29.869206751416474,
+     "vinf_kms": 0.1599712545061524,
+     "turn_deg": 10.430026761412813,
+     "available_deg": 117.40767369043907,
+     "ratio": 0.08883598859911802,
+     "required_alt_km": 40862.01554801923,
+     "rmin_radii": 68.42906856108766,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.76073096393852,
+     "vinf_kms": 0.08544918843706407,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.93953354588371,
+     "vinf_kms": 0.15997125450615302,
+     "turn_deg": 18.94874034443826,
+     "available_deg": 117.40767369043888,
+     "ratio": 0.16139269051867225,
+     "required_alt_km": 20435.461992397242,
+     "rmin_radii": 34.72188447590292,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 8726.538208073933,
+   "r_max_km": 82894.8638483692,
+   "pluto_min_distance_km": 9563.009493310381,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 51676.5948396864,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.499662444465995,
+   "lambert_time_fraction_inside_2a": 0.29013472664414125,
+   "cross_check": {
+    "max_arrival_miss_km": 1.3336736318276818e-05,
+    "max_vinf_vector_error_kms": 1.69624011769837e-10,
+    "max_junction_mismatch_kms": 1.6788501144837653e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.16139269052541497
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 20,
+   "k": 6,
+   "key": "k6|RCharon/2:3|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.913836746112979,
+    16.086276946704643,
+    34.26507952864983
+   ],
+   "residual_kms": 4.996003610813204e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.3519245354233589,
+   "max_turn_deg": 41.31864101864494,
+   "max_encounter_miss_km": 1.3854921207697495e-09,
+   "vinf_kms": {
+    "Charon": 0.15997125450615324,
+    "Hydra": 0.08544918843706416
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 16.086276946704643,
+     "vinf_kms": 0.15997125450615324,
+     "turn_deg": 18.94874034443844,
+     "available_deg": 117.40767369043878,
+     "ratio": 0.16139269051867391,
+     "required_alt_km": 20435.46199239693,
+     "rmin_radii": 34.721884475902435,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.26507952864983,
+     "vinf_kms": 0.08544918843706416,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 39.15660374117187,
+     "vinf_kms": 0.15997125450615338,
+     "turn_deg": 41.31864101864494,
+     "available_deg": 117.40767369043866,
+     "ratio": 0.3519245354233589,
+     "required_alt_km": 6999.385941555248,
+     "rmin_radii": 12.550141817747933,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.93104374117187,
+     "vinf_kms": 0.15997125450615313,
+     "turn_deg": 22.369900674206363,
+     "available_deg": 117.40767369043881,
+     "ratio": 0.1905318449046834,
+     "required_alt_km": 16621.78985900248,
+     "rmin_radii": 28.4286961369677,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 4199.244370135203,
+   "r_max_km": 82894.86384836963,
+   "pluto_min_distance_km": 2447.6221232112125,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 21041.46199239693,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.24043952560140408,
+   "lambert_time_fraction_inside_2a": 0.29013472664414136,
+   "cross_check": {
+    "max_arrival_miss_km": 3.1990263595272295e-05,
+    "max_vinf_vector_error_kms": 4.4369498595113107e-10,
+    "max_junction_mismatch_kms": 4.2536046906960223e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.35192453543063024
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 21,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.5260525678705035,
+    22.308842272444892,
+    26.556772058826233
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.23857352487457095,
+   "max_turn_deg": 26.67956975100588,
+   "max_encounter_miss_km": 3.18854107560621e-10,
+   "vinf_kms": {
+    "Charon": 0.17655981510105298,
+    "Hydra": 0.10304950299762705
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.921622272444893,
+     "vinf_kms": 0.17655981510105298,
+     "turn_deg": 8.170821023399636,
+     "available_deg": 111.82954925544463,
+     "ratio": 0.07306495535214566,
+     "required_alt_km": 43763.909308334965,
+     "rmin_radii": 73.2176721259653,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.308842272444892,
+     "vinf_kms": 0.176559815101053,
+     "turn_deg": 26.67956975100588,
+     "available_deg": 111.82954925544463,
+     "ratio": 0.23857352487457095,
+     "required_alt_km": 10741.9536595268,
+     "rmin_radii": 18.725996137833,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 26.556772058826233,
+     "vinf_kms": 0.10304950299762705,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.5432595629294,
+     "vinf_kms": 0.17655981510105284,
+     "turn_deg": 18.508748727606083,
+     "available_deg": 111.82954925544472,
+     "ratio": 0.16550856952242374,
+     "required_alt_km": 17154.42752263876,
+     "rmin_radii": 29.30763617597148,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5719.449226344474,
+   "r_max_km": 99474.07644338183,
+   "pluto_min_distance_km": 5500.860618163671,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 44369.909308334965,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.3274831225502854,
+   "lambert_time_fraction_inside_2a": 0.22026718458309602,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0840237835062565e-05,
+    "max_vinf_vector_error_kms": 1.361068876735124e-10,
+    "max_junction_mismatch_kms": 1.3563217216017165e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.23857352488867004
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 22,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.5260525678705035,
+    22.308842272444892,
+    26.556772058826233
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.46750770325252067,
+   "max_turn_deg": 52.28117572817756,
+   "max_encounter_miss_km": 3.18854107560621e-10,
+   "vinf_kms": {
+    "Charon": 0.17655981510105298,
+    "Hydra": 0.10304950299762705
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.921622272444893,
+     "vinf_kms": 0.17655981510105298,
+     "turn_deg": 33.77242700057129,
+     "available_deg": 111.82954925544463,
+     "ratio": 0.30199913373009524,
+     "required_alt_km": 7707.750897051559,
+     "rmin_radii": 13.719060886223694,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.308842272444892,
+     "vinf_kms": 0.176559815101053,
+     "turn_deg": 52.28117572817756,
+     "available_deg": 111.82954925544463,
+     "ratio": 0.46750770325252067,
+     "required_alt_km": 3715.6868562563577,
+     "rmin_radii": 7.131496462469236,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 26.556772058826233,
+     "vinf_kms": 0.10304950299762705,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.5432595629294,
+     "vinf_kms": 0.17655981510105284,
+     "turn_deg": 18.508748727606083,
+     "available_deg": 111.82954925544472,
+     "ratio": 0.16550856952242374,
+     "required_alt_km": 17154.42752263876,
+     "rmin_radii": 29.30763617597148,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1797.0021112135762,
+   "r_max_km": 99474.07644338183,
+   "pluto_min_distance_km": 148.21015197783979,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 17760.42752263876,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.10289240087997129,
+   "lambert_time_fraction_inside_2a": 0.22026718458309602,
+   "cross_check": {
+    "max_arrival_miss_km": 3.375876763361704e-05,
+    "max_vinf_vector_error_kms": 7.968763473063781e-10,
+    "max_junction_mismatch_kms": 7.152387848652353e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.4675077022329638
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 23,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    6.615973977973649,
+    30.07390169497532,
+    34.68359515755438
+   ],
+   "residual_kms": 1.6653345369377348e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.21127672252266216,
+   "max_turn_deg": 23.27438546890315,
+   "max_encounter_miss_km": 3.5550533847614757e-07,
+   "vinf_kms": {
+    "Charon": 0.1816561845217393,
+    "Hydra": 0.09126981023611175
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.68668169497532,
+     "vinf_kms": 0.1816561845217393,
+     "turn_deg": 5.000142542315526,
+     "available_deg": 110.16067075920616,
+     "ratio": 0.045389543362939835,
+     "required_alt_km": 69888.18151095431,
+     "rmin_radii": 116.32703219629424,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.07390169497532,
+     "vinf_kms": 0.18165618452173926,
+     "turn_deg": 23.27438546890315,
+     "available_deg": 110.1606707592062,
+     "ratio": 0.21127672252266216,
+     "required_alt_km": 12118.424147812666,
+     "rmin_radii": 20.99739958384928,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.68359515755438,
+     "vinf_kms": 0.09126981023611175,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.63318097303254,
+     "vinf_kms": 0.18165618452173934,
+     "turn_deg": 18.274242926587373,
+     "available_deg": 110.16067075920616,
+     "ratio": 0.16588717915972012,
+     "required_alt_km": 16426.2106432033,
+     "rmin_radii": 28.10595815710113,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5370.210168506821,
+   "r_max_km": 83739.89182997384,
+   "pluto_min_distance_km": 5032.333644609674,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 70494.18151095431,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.30748645982087563,
+   "lambert_time_fraction_inside_2a": 0.35386880022707173,
+   "cross_check": {
+    "max_arrival_miss_km": 1.4093720347328936e-05,
+    "max_vinf_vector_error_kms": 1.8731988813507293e-10,
+    "max_junction_mismatch_kms": 1.8727486228442558e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.21127672253778929
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 24,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    6.615973977973649,
+    30.07390169497532,
+    34.68359515755438
+   ],
+   "residual_kms": 1.6653345369377348e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.43851398770277994,
+   "max_turn_deg": 48.306995022632535,
+   "max_encounter_miss_km": 3.5550533847614757e-07,
+   "vinf_kms": {
+    "Charon": 0.1816561845217393,
+    "Hydra": 0.09126981023611175
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 23.68668169497532,
+     "vinf_kms": 0.1816561845217393,
+     "turn_deg": 30.03275209604504,
+     "available_deg": 110.16067075920616,
+     "ratio": 0.2726268085430589,
+     "required_alt_km": 8588.291081164545,
+     "rmin_radii": 15.172097493670867,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.07390169497532,
+     "vinf_kms": 0.18165618452173926,
+     "turn_deg": 48.306995022632535,
+     "available_deg": 110.1606707592062,
+     "ratio": 0.43851398770277994,
+     "required_alt_km": 4036.491557305455,
+     "rmin_radii": 7.660877157269728,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.68359515755438,
+     "vinf_kms": 0.09126981023611175,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 52.63318097303254,
+     "vinf_kms": 0.18165618452173934,
+     "turn_deg": 18.274242926587373,
+     "available_deg": 110.16067075920616,
+     "ratio": 0.16588717915972012,
+     "required_alt_km": 16426.2106432033,
+     "rmin_radii": 28.10595815710113,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1628.775142729468,
+   "r_max_km": 83739.89182997384,
+   "pluto_min_distance_km": 65.7310246133157,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 17032.2106432033,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.09326009350978148,
+   "lambert_time_fraction_inside_2a": 0.35386880022707173,
+   "cross_check": {
+    "max_arrival_miss_km": 3.984115761758542e-05,
+    "max_vinf_vector_error_kms": 8.434064996319784e-10,
+    "max_junction_mismatch_kms": 7.303763427390919e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.43851398649520107
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 25,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.6236625427263128,
+    11.18291986403977,
+    42.72652803400723
+   ],
+   "residual_kms": 4.579669976578771e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.16919854561470996,
+   "max_turn_deg": 18.24373650315257,
+   "max_encounter_miss_km": 1.3458161609319867e-09,
+   "vinf_kms": {
+    "Charon": 0.18890289425536944,
+    "Hydra": 0.11435911245791053
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 11.18291986403977,
+     "vinf_kms": 0.18890289425536944,
+     "turn_deg": 18.24373650315257,
+     "available_deg": 107.8244286135665,
+     "ratio": 0.16919854561470996,
+     "required_alt_km": 15175.537225177753,
+     "rmin_radii": 26.042140635606835,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 42.72652803400723,
+     "vinf_kms": 0.11435911245791053,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.64086953778521,
+     "vinf_kms": 0.1889028942553695,
+     "turn_deg": 18.243736503152405,
+     "available_deg": 107.82442861356648,
+     "ratio": 0.16919854561470846,
+     "required_alt_km": 15175.537225177912,
+     "rmin_radii": 26.042140635607097,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 6661.977014688851,
+   "r_max_km": 114896.66314266814,
+   "pluto_min_distance_km": 6881.1070394557355,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 15781.537225177912,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.3814501971762297,
+   "lambert_time_fraction_inside_2a": 0.17951080787172166,
+   "cross_check": {
+    "max_arrival_miss_km": 8.494763646429253e-06,
+    "max_vinf_vector_error_kms": 1.0821592842292568e-10,
+    "max_junction_mismatch_kms": 1.0800249583553523e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.16919854563382428
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 26,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.195473678309369,
+    22.510820448128143,
+    26.52041290417214
+   ],
+   "residual_kms": 3.0531133177191805e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.17404438086508306,
+   "max_turn_deg": 18.12020435872074,
+   "max_encounter_miss_km": 2.0151939910048702e-08,
+   "vinf_kms": {
+    "Charon": 0.20070575214084274,
+    "Hydra": 0.10945473973160555
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 22.510820448128143,
+     "vinf_kms": 0.20070575214084274,
+     "turn_deg": 18.120204358720617,
+     "available_deg": 104.11255030845993,
+     "ratio": 0.17404438086508206,
+     "required_alt_km": 13486.29853351699,
+     "rmin_radii": 23.254618042107243,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 26.52041290417214,
+     "vinf_kms": 0.10945473973160555,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.212680673368254,
+     "vinf_kms": 0.20070575214084263,
+     "turn_deg": 18.12020435872074,
+     "available_deg": 104.11255030846003,
+     "ratio": 0.17404438086508306,
+     "required_alt_km": 13486.298533516916,
+     "rmin_radii": 23.25461804210708,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5167.994561888599,
+   "r_max_km": 100466.63399462863,
+   "pluto_min_distance_km": 4829.21107496674,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 14092.29853351699,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.2959080375527474,
+   "lambert_time_fraction_inside_2a": 0.27587073355242125,
+   "cross_check": {
+    "max_arrival_miss_km": 1.511653486858938e-05,
+    "max_vinf_vector_error_kms": 1.922848677819606e-10,
+    "max_junction_mismatch_kms": 1.9175597221199325e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.17404438086169946
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 27,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    7.333928321128149,
+    38.21943464124913,
+    43.846049416217156
+   ],
+   "residual_kms": 3.885780586188048e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.20654477808469934,
+   "max_turn_deg": 20.387271382685825,
+   "max_encounter_miss_km": 2.1052058875132222e-07,
+   "vinf_kms": {
+    "Charon": 0.2186013155665025,
+    "Hydra": 0.0769655354382713
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 19.057774641249132,
+     "vinf_kms": 0.2186013155665025,
+     "turn_deg": 12.803781845452423,
+     "available_deg": 98.70630268040684,
+     "ratio": 0.12971595022567864,
+     "required_alt_km": 17086.32160759405,
+     "rmin_radii": 29.19525017754794,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.21943464124913,
+     "vinf_kms": 0.2186013155665027,
+     "turn_deg": 7.58348953723374,
+     "available_deg": 98.70630268040684,
+     "ratio": 0.07682882785902444,
+     "required_alt_km": 30748.27693575772,
+     "rmin_radii": 51.73973091709185,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 43.846049416217156,
+     "vinf_kms": 0.0769655354382713,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 53.35113531618705,
+     "vinf_kms": 0.21860131556650225,
+     "turn_deg": 20.387271382685825,
+     "available_deg": 98.70630268040698,
+     "ratio": 0.20654477808469934,
+     "required_alt_km": 9719.467061897889,
+     "rmin_radii": 17.03872452458395,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2319.9098253009506,
+   "r_max_km": 67107.89554718052,
+   "pluto_min_distance_km": 888.2870762252746,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 31354.27693575772,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.13283295008988422,
+   "lambert_time_fraction_inside_2a": 0.5228594068227038,
+   "cross_check": {
+    "max_arrival_miss_km": 5.237716940301907e-05,
+    "max_vinf_vector_error_kms": 7.619776237136536e-10,
+    "max_junction_mismatch_kms": 7.182140715489282e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.20654477807817775
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass, direction-dependent",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RCharon/3:2",
+     "body": "Charon",
+     "min_km": 1951.3443068564793,
+     "t_days": 27.35698030636075,
+     "frac_of_leg": 0.4331151719168182,
+     "soi_km": 7190.523836300898
+    }
+   ],
+   "strong_1065": false
+  },
+  {
+   "index": 28,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "x_days": [
+    4.252393050309855,
+    16.04378236845575,
+    27.605062711381848
+   ],
+   "residual_kms": 2.498001805406602e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.21194512272482108,
+   "max_turn_deg": 20.467444988880604,
+   "max_encounter_miss_km": 2.1866536860087797e-08,
+   "vinf_kms": {
+    "Charon": 0.2259299090446827,
+    "Hydra": 0.08710326172792204
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 16.04378236845575,
+     "vinf_kms": 0.2259299090446827,
+     "turn_deg": 20.467444988880604,
+     "available_deg": 96.56954935195422,
+     "ratio": 0.21194512272482108,
+     "required_alt_km": 9014.947992334086,
+     "rmin_radii": 15.876151802531496,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 27.605062711381848,
+     "vinf_kms": 0.08710326172792204,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.26960004536875,
+     "vinf_kms": 0.22592990904468258,
+     "turn_deg": 20.467444988880477,
+     "available_deg": 96.5695493519543,
+     "ratio": 0.2119451227248196,
+     "required_alt_km": 9014.947992334175,
+     "rmin_radii": 15.876151802531624,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2021.3483942901753,
+   "r_max_km": 71403.30547953736,
+   "pluto_min_distance_km": 492.6153662758261,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 9620.947992334175,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.11573797715960062,
+   "lambert_time_fraction_inside_2a": 0.3804703523965174,
+   "cross_check": {
+    "max_arrival_miss_km": 9.446032228844806e-05,
+    "max_vinf_vector_error_kms": 1.4068465319140304e-09,
+    "max_junction_mismatch_kms": 1.318074954737014e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.21194512268621815
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 29,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.10331323371522931,
+    24.8636840948388,
+    42.105359773944144
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.2281307881045037,
+   "max_turn_deg": 20.752998684598737,
+   "max_encounter_miss_km": 7.172527801494806e-09,
+   "vinf_kms": {
+    "Charon": 0.24591339278816396,
+    "Hydra": 0.11048038645711933
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 12.0892440948388,
+     "vinf_kms": 0.24591339278816396,
+     "turn_deg": 14.932200345415888,
+     "available_deg": 90.96974089745413,
+     "ratio": 0.16414469468752527,
+     "required_alt_km": 11141.867028956975,
+     "rmin_radii": 19.385919189697972,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 24.8636840948388,
+     "vinf_kms": 0.24591339278816376,
+     "turn_deg": 5.820798339182906,
+     "available_deg": 90.96974089745422,
+     "ratio": 0.06398609341697928,
+     "required_alt_km": 32194.269040217114,
+     "rmin_radii": 54.125856502008354,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 42.105359773944144,
+     "vinf_kms": 0.11048038645711933,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.120520228774126,
+     "vinf_kms": 0.24591339278816376,
+     "turn_deg": 20.752998684598737,
+     "available_deg": 90.96974089745422,
+     "ratio": 0.2281307881045037,
+     "required_alt_km": 7380.417447740203,
+     "rmin_radii": 13.178906679439253,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 1285.3383719968672,
+   "r_max_km": 85550.77086241542,
+   "pluto_min_distance_km": 480.3532574618594,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 32800.269040217114,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.07359565701823098,
+   "lambert_time_fraction_inside_2a": 0.4224767847976986,
+   "cross_check": {
+    "max_arrival_miss_km": 8.76113669951776e-05,
+    "max_vinf_vector_error_kms": 1.260536297404957e-09,
+    "max_junction_mismatch_kms": 1.1264947030742434e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.22813078809993714
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 30,
+   "k": 6,
+   "key": "k6|RCharon/2:3|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    5.2082187345387485,
+    17.194149595662314,
+    34.43582527476765
+   ],
+   "residual_kms": 3.3306690738754696e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.30131046955250534,
+   "max_turn_deg": 27.410135344881727,
+   "max_encounter_miss_km": 7.094517195922774e-09,
+   "vinf_kms": {
+    "Charon": 0.24591339278816315,
+    "Hydra": 0.11048038645711909
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 17.194149595662314,
+     "vinf_kms": 0.24591339278816315,
+     "turn_deg": 20.752998684598808,
+     "available_deg": 90.96974089745439,
+     "ratio": 0.2281307881045041,
+     "required_alt_km": 7380.4174477402075,
+     "rmin_radii": 13.178906679439267,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 34.43582527476765,
+     "vinf_kms": 0.11048038645711909,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.45098572959764,
+     "vinf_kms": 0.2459133927881631,
+     "turn_deg": 27.410135344881727,
+     "available_deg": 90.96974089745437,
+     "ratio": 0.30131046955250534,
+     "required_alt_km": 5044.795303333373,
+     "rmin_radii": 9.324744724972561,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 51.22542572959764,
+     "vinf_kms": 0.24591339278816304,
+     "turn_deg": 6.6571366602829,
+     "available_deg": 90.96974089745437,
+     "ratio": 0.07317968144800101,
+     "required_alt_km": 27857.145964817224,
+     "rmin_radii": 46.96888773072148,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 659.671027874547,
+   "r_max_km": 85550.77086241545,
+   "pluto_min_distance_km": 480.3532574618005,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 28463.145964817224,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.03777131669763717,
+   "lambert_time_fraction_inside_2a": 0.42247678479769857,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0001790867691808896,
+    "max_vinf_vector_error_kms": 2.5137178641331687e-09,
+    "max_junction_mismatch_kms": 2.029641871237331e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.3013104695469449
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass, direction-dependent",
+   "unscheduled_inside_soi": [
+    {
+     "leg": "RCharon/2:3",
+     "body": "Charon",
+     "min_km": 7178.005391098729,
+     "t_days": 44.21331981475744,
+     "frac_of_leg": 0.45108310698236515,
+     "soi_km": 7190.523836300898
+    }
+   ],
+   "strong_1065": false
+  },
+  {
+   "index": 31,
+   "k": 6,
+   "key": "k6|LCharon>Charon/2l|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.0302195128864233,
+    15.33601980866113,
+    18.673872544592058
+   ],
+   "residual_kms": 4.996003610813204e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.2570901222903147,
+   "max_turn_deg": 21.389314671789563,
+   "max_encounter_miss_km": 1.497621247265724e-07,
+   "vinf_kms": {
+    "Charon": 0.2758208979007055,
+    "Hydra": 0.13915074545389228
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 15.33601980866113,
+     "vinf_kms": 0.2758208979007055,
+     "turn_deg": 21.389314671789563,
+     "available_deg": 83.19773035712372,
+     "ratio": 0.2570901222903147,
+     "required_alt_km": 5514.581813596021,
+     "rmin_radii": 10.099969989432378,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 18.673872544592058,
+     "vinf_kms": 0.13915074545389228,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 49.04742650794532,
+     "vinf_kms": 0.2758208979007052,
+     "turn_deg": 21.389314671789354,
+     "available_deg": 83.19773035712385,
+     "ratio": 0.2570901222903118,
+     "required_alt_km": 5514.581813596119,
+     "rmin_radii": 10.099969989432523,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 447.02050065371134,
+   "r_max_km": 117768.36785807891,
+   "pluto_min_distance_km": 1575.3621484248747,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 6120.581813596119,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.02559541375483702,
+   "lambert_time_fraction_inside_2a": 0.2646921455808854,
+   "cross_check": {
+    "max_arrival_miss_km": 3.155484282182154e-05,
+    "max_vinf_vector_error_kms": 2.5740580090293707e-10,
+    "max_junction_mismatch_kms": 2.499031537261942e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.25709012228633416
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 32,
+   "k": 6,
+   "key": "k6|RCharon/3:2|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.3386370793674975,
+    5.459685486351891
+   ],
+   "residual_kms": 1.3877787807814457e-17,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.663884074839456,
+   "max_turn_deg": 55.2341527986377,
+   "max_encounter_miss_km": 5.8122333243483655e-11,
+   "vinf_kms": {
+    "Hydra": 0.0970775957782869,
+    "Charon": 0.27581783252304776
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 5.459685486351891,
+     "vinf_kms": 0.0970775957782869,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 14.41974407442639,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 55.2341527986377,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.663884074839456,
+     "required_alt_km": 1007.9335873522689,
+     "rmin_radii": 2.663256744805723,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.58140407442639,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 55.23415279863768,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.6638840748394558,
+     "required_alt_km": 1007.9335873522696,
+     "rmin_radii": 2.663256744805725,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.35584407442639,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 55.2341527986377,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.663884074839456,
+     "required_alt_km": 1007.9335873522689,
+     "rmin_radii": 2.663256744805723,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 6926.579482718458,
+   "r_max_km": 67369.24370455882,
+   "pluto_min_distance_km": 6344.8969442272655,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1613.9335873522696,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.3966007543427684,
+   "lambert_time_fraction_inside_2a": 0.14591298963543264,
+   "cross_check": {
+    "max_arrival_miss_km": 6.352712012238384e-06,
+    "max_vinf_vector_error_kms": 8.291037227173538e-11,
+    "max_junction_mismatch_kms": 5.800043778592112e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6638840748756204
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 33,
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.3386370793674975,
+    5.459685486351891
+   ],
+   "residual_kms": 1.3877787807814457e-17,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6778578427588203,
+   "max_turn_deg": 56.396749194126656,
+   "max_encounter_miss_km": 5.8122333243483655e-11,
+   "vinf_kms": {
+    "Hydra": 0.0970775957782869,
+    "Charon": 0.27581783252304776
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 5.459685486351891,
+     "vinf_kms": 0.0970775957782869,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 14.41974407442639,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 56.396749194126656,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.6778578427588203,
+     "required_alt_km": 950.8488897919976,
+     "rmin_radii": 2.5690575739141877,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.19418407442639,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 56.39674919412664,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.6778578427588202,
+     "required_alt_km": 950.8488897919983,
+     "rmin_radii": 2.5690575739141885,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.355844074426386,
+     "vinf_kms": 0.27581783252304776,
+     "turn_deg": 56.396749194126635,
+     "available_deg": 83.19849035691165,
+     "ratio": 0.6778578427588201,
+     "required_alt_km": 950.8488897919983,
+     "rmin_radii": 2.5690575739141885,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 11606.809464812613,
+   "r_max_km": 67369.24370455882,
+   "pluto_min_distance_km": 10888.434613076637,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1556.8488897919983,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.6645804615023103,
+   "lambert_time_fraction_inside_2a": 0.14591298963543264,
+   "cross_check": {
+    "max_arrival_miss_km": 9.430797533958216e-06,
+    "max_vinf_vector_error_kms": 1.0447382342435251e-10,
+    "max_junction_mismatch_kms": 4.999772817981807e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6778578428733957
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 34,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    7.618759346205531,
+    26.445130508050294,
+    50.137154129585426
+   ],
+   "residual_kms": 1.1102230246251565e-15,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.32891861122849303,
+   "max_turn_deg": 27.204568895574422,
+   "max_encounter_miss_km": 9.925166958240051e-10,
+   "vinf_kms": {
+    "Charon": 0.2777978510383177,
+    "Hydra": 0.1324908862203149
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 13.670690508050294,
+     "vinf_kms": 0.2777978510383177,
+     "turn_deg": 4.514909644961216,
+     "available_deg": 82.70912002810314,
+     "ratio": 0.05458780897955543,
+     "required_alt_km": 32923.010458002456,
+     "rmin_radii": 55.328400095713626,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 26.445130508050294,
+     "vinf_kms": 0.27779785103831794,
+     "turn_deg": 27.204568895574422,
+     "available_deg": 82.70912002810314,
+     "ratio": 0.32891861122849303,
+     "required_alt_km": 3865.099957166598,
+     "rmin_radii": 7.378052734598334,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 50.137154129585426,
+     "vinf_kms": 0.1324908862203149,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 53.63596634126442,
+     "vinf_kms": 0.2777978510383171,
+     "turn_deg": 22.68965925061373,
+     "available_deg": 82.70912002810341,
+     "ratio": 0.274330802248943,
+     "required_alt_km": 5008.283762962869,
+     "rmin_radii": 9.264494658354534,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 77.5943861266931,
+   "r_max_km": 102463.82928286605,
+   "pluto_min_distance_km": 138.0337712664861,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 33529.010458002456,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.004442884420425755,
+   "lambert_time_fraction_inside_2a": 0.23871491727839073,
+   "cross_check": {
+    "max_arrival_miss_km": 0.15622938335418432,
+    "max_vinf_vector_error_kms": 2.519274673112214e-06,
+    "max_junction_mismatch_kms": 1.9537847683603893e-06,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.32891464522049413
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 35,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    4.23300748865566,
+    23.059378650500417,
+    26.55819086217941
+   ],
+   "residual_kms": 6.661338147750939e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.27433080224894013,
+   "max_turn_deg": 22.68965925061343,
+   "max_encounter_miss_km": 3.86054522117478e-10,
+   "vinf_kms": {
+    "Charon": 0.27779785103831767,
+    "Hydra": 0.1324908862203149
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 10.284938650500418,
+     "vinf_kms": 0.27779785103831767,
+     "turn_deg": 15.741859032738327,
+     "available_deg": 82.70912002810317,
+     "ratio": 0.19032797141826088,
+     "required_alt_km": 8058.850103539229,
+     "rmin_radii": 14.29843251409113,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 23.059378650500417,
+     "vinf_kms": 0.27779785103831733,
+     "turn_deg": 6.947800217875175,
+     "available_deg": 82.70912002810334,
+     "ratio": 0.08400283083068003,
+     "required_alt_km": 20708.85794061012,
+     "rmin_radii": 35.173032905297134,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 26.55819086217941,
+     "vinf_kms": 0.1324908862203149,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.25021448371456,
+     "vinf_kms": 0.27779785103831756,
+     "turn_deg": 22.68965925061343,
+     "available_deg": 82.70912002810319,
+     "ratio": 0.27433080224894013,
+     "required_alt_km": 5008.283762962923,
+     "rmin_radii": 9.264494658354659,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 247.96775537149188,
+   "r_max_km": 102463.82928286618,
+   "pluto_min_distance_km": 339.0136397576696,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 21314.85794061012,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.01419808999209229,
+   "lambert_time_fraction_inside_2a": 0.23871491727839048,
+   "cross_check": {
+    "max_arrival_miss_km": 0.0011320245007066503,
+    "max_vinf_vector_error_kms": 1.7350944571007313e-08,
+    "max_junction_mismatch_kms": 1.409366939819634e-08,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.27433080224596146
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 36,
+   "k": 6,
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "x_days": [
+    1.4084458755981175,
+    13.128167636062386
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6188815809816169,
+   "max_turn_deg": 50.74070750920264,
+   "max_encounter_miss_km": 1.00589661734702e-09,
+   "vinf_kms": {
+    "Hydra": 0.10836738300883193,
+    "Charon": 0.2807394781291853
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 13.128167636062386,
+     "vinf_kms": 0.10836738300883193,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 34.65121287065701,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 50.74070750920263,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6188815809816169,
+     "required_alt_km": 1189.689136025382,
+     "rmin_radii": 2.9631833927811577,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.038432870657005,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 50.74070750920261,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6188815809816167,
+     "required_alt_km": 1189.689136025383,
+     "rmin_radii": 2.9631833927811595,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 47.42565287065701,
+     "vinf_kms": 0.2807394781291852,
+     "turn_deg": 50.74070750920264,
+     "available_deg": 81.98774865576397,
+     "ratio": 0.6188815809816169,
+     "required_alt_km": 1189.6891360253815,
+     "rmin_radii": 2.9631833927811577,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2216.6588880315358,
+   "r_max_km": 73463.36228244269,
+   "pluto_min_distance_km": 2357.821845307306,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1795.689136025383,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.12692102780417092,
+   "lambert_time_fraction_inside_2a": 0.1497450473596068,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00041417070629154473,
+    "max_vinf_vector_error_kms": 4.483373152125901e-09,
+    "max_junction_mismatch_kms": 4.2861887927792e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6188815802334707
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 37,
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "x_days": [
+    1.4084458755981175,
+    13.128167636062386
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6585342151442082,
+   "max_turn_deg": 53.991737712464136,
+   "max_encounter_miss_km": 1.00589661734702e-09,
+   "vinf_kms": {
+    "Hydra": 0.10836738300883193,
+    "Charon": 0.2807394781291853
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 13.128167636062386,
+     "vinf_kms": 0.10836738300883193,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 34.65121287065701,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 53.991737712464115,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6585342151442082,
+     "required_alt_km": 1013.4755680341618,
+     "rmin_radii": 2.672401927449111,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.038432870657005,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 53.991737712464094,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6585342151442078,
+     "required_alt_km": 1013.4755680341625,
+     "rmin_radii": 2.672401927449112,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 47.42565287065701,
+     "vinf_kms": 0.2807394781291852,
+     "turn_deg": 53.991737712464136,
+     "available_deg": 81.98774865576397,
+     "ratio": 0.6585342151442082,
+     "required_alt_km": 1013.4755680341607,
+     "rmin_radii": 2.67240192744911,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2216.6588880315358,
+   "r_max_km": 73463.36228244269,
+   "pluto_min_distance_km": 3031.0859942977795,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1619.4755680341625,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.12692102780417092,
+   "lambert_time_fraction_inside_2a": 0.1497450473596068,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00041417070629154473,
+    "max_vinf_vector_error_kms": 4.483373152125901e-09,
+    "max_junction_mismatch_kms": 4.2861887927792e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6585342150701273
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 38,
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "x_days": [
+    1.4084458755981175,
+    13.128167636062386
+   ],
+   "residual_kms": 4.163336342344337e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6623600247834056,
+   "max_turn_deg": 54.305407231567436,
+   "max_encounter_miss_km": 1.00589661734702e-09,
+   "vinf_kms": {
+    "Hydra": 0.10836738300883193,
+    "Charon": 0.2807394781291853
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 13.128167636062386,
+     "vinf_kms": 0.10836738300883193,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 34.65121287065701,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 54.30540723156739,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6623600247834052,
+     "required_alt_km": 997.6366612567319,
+     "rmin_radii": 2.646265117585365,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.038432870657005,
+     "vinf_kms": 0.2807394781291853,
+     "turn_deg": 54.305407231567436,
+     "available_deg": 81.98774865576394,
+     "ratio": 0.6623600247834056,
+     "required_alt_km": 997.6366612567301,
+     "rmin_radii": 2.646265117585362,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 47.42565287065701,
+     "vinf_kms": 0.2807394781291852,
+     "turn_deg": 54.30540723156743,
+     "available_deg": 81.98774865576397,
+     "ratio": 0.6623600247834053,
+     "required_alt_km": 997.6366612567313,
+     "rmin_radii": 2.646265117585365,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2216.6588880315358,
+   "r_max_km": 73463.36228244269,
+   "pluto_min_distance_km": 4348.039614610132,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1603.636661256732,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.12692102780417092,
+   "lambert_time_fraction_inside_2a": 0.1497450473596068,
+   "cross_check": {
+    "max_arrival_miss_km": 0.00041417070629154473,
+    "max_vinf_vector_error_kms": 4.483373152125901e-09,
+    "max_junction_mismatch_kms": 4.2861887927792e-09,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6623600247754217
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 39,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    2.8735534057599956,
+    15.419329414634294,
+    18.705684516190345
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.2855306183047858,
+   "max_turn_deg": 22.879811572990167,
+   "max_encounter_miss_km": 6.682898744778576e-10,
+   "vinf_kms": {
+    "Charon": 0.2884413630531126,
+    "Hydra": 0.14310576081949355
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.032109414634295,
+     "vinf_kms": 0.2884413630531126,
+     "turn_deg": 4.5833725982191025,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.057198600946331106,
+     "required_alt_km": 30010.8688698244,
+     "rmin_radii": 50.522885923802626,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 15.419329414634294,
+     "vinf_kms": 0.28844136305311274,
+     "turn_deg": 18.2964389747714,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.22833201735845887,
+     "required_alt_km": 6139.82203081819,
+     "rmin_radii": 11.13171952280228,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 18.705684516190345,
+     "vinf_kms": 0.14310576081949355,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.89076040081889,
+     "vinf_kms": 0.28844136305311296,
+     "turn_deg": 22.879811572990167,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.2855306183047858,
+     "required_alt_km": 4548.423576718096,
+     "rmin_radii": 8.505649466531493,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 113.41676012447242,
+   "r_max_km": 117932.61362305052,
+   "pluto_min_distance_km": 1721.7522782166495,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 30616.8688698244,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.006493995013369128,
+   "lambert_time_fraction_inside_2a": 0.20084891906675606,
+   "cross_check": {
+    "max_arrival_miss_km": 0.033897072076352786,
+    "max_vinf_vector_error_kms": 5.257573065263206e-07,
+    "max_junction_mismatch_kms": 4.2506952269150133e-07,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.2855306183029196
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 40,
+   "k": 6,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    2.8735534057599956,
+    15.419329414634294,
+    18.705684516190345
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.4742938312438772,
+   "max_turn_deg": 38.00556855695227,
+   "max_encounter_miss_km": 6.682898744778576e-10,
+   "vinf_kms": {
+    "Charon": 0.2884413630531126,
+    "Hydra": 0.14310576081949355
+   },
+   "flybys": [
+    {
+     "body": "Charon",
+     "t_days": 9.032109414634295,
+     "vinf_kms": 0.2884413630531126,
+     "turn_deg": 15.125756983961717,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.1887632129390866,
+     "required_alt_km": 7808.153238100893,
+     "rmin_radii": 13.884741316998173,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 15.419329414634294,
+     "vinf_kms": 0.28844136305311274,
+     "turn_deg": 38.00556855695227,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.4742938312438772,
+     "required_alt_km": 2035.2261079037962,
+     "rmin_radii": 4.358458923933652,
+     "status": "pass"
+    },
+    {
+     "body": "Hydra",
+     "t_days": 18.705684516190345,
+     "vinf_kms": 0.14310576081949355,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.89076040081889,
+     "vinf_kms": 0.28844136305311296,
+     "turn_deg": 22.879811572990167,
+     "available_deg": 80.13085149616923,
+     "ratio": 0.2855306183047858,
+     "required_alt_km": 4548.423576718096,
+     "rmin_radii": 8.505649466531493,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 113.41676012447242,
+   "r_max_km": 117932.61362305052,
+   "pluto_min_distance_km": 48.51432137005875,
+   "pluto_surface_clear": false,
+   "max_required_rp_charon_km": 8414.153238100893,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": false,
+   "rp_within_charon_soi_8070": false,
+   "r_min_over_a_charon": 0.006493995013369128,
+   "lambert_time_fraction_inside_2a": 0.20084891906675606,
+   "cross_check": {
+    "max_arrival_miss_km": 0.033897072076352786,
+    "max_vinf_vector_error_kms": 5.257573065263206e-07,
+    "max_junction_mismatch_kms": 4.2506952269150133e-07,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.47429341744192843
+   },
+   "pass": true,
+   "strong": false,
+   "strong_8070": false,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": false
+  },
+  {
+   "index": 41,
+   "k": 6,
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    2.3403569628598264,
+    19.021122789913335
+   ],
+   "residual_kms": 6.661338147750939e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6510653579445937,
+   "max_turn_deg": 52.17251609767355,
+   "max_encounter_miss_km": 2.9490179275514796e-08,
+   "vinf_kms": {
+    "Hydra": 0.12440658941110047,
+    "Charon": 0.2884278530214637
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 19.021122789913335,
+     "vinf_kms": 0.12440658941110047,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.80868395791872,
+     "vinf_kms": 0.2884278530214637,
+     "turn_deg": 52.17251609767354,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6510653579445934,
+     "required_alt_km": 1019.0369505156032,
+     "rmin_radii": 2.6815791262633715,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 35.583123957918716,
+     "vinf_kms": 0.2884278530214637,
+     "turn_deg": 52.17251609767338,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6510653579445915,
+     "required_alt_km": 1019.0369505156111,
+     "rmin_radii": 2.681579126263385,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.35756395791872,
+     "vinf_kms": 0.28842785302146406,
+     "turn_deg": 52.17251609767355,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6510653579445937,
+     "required_alt_km": 1019.0369505156016,
+     "rmin_radii": 2.6815791262633626,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 5926.0143639656035,
+   "r_max_km": 85848.83902658458,
+   "pluto_min_distance_km": 5131.086505840207,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1625.0369505156111,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.33931058942709735,
+   "lambert_time_fraction_inside_2a": 0.09312115873061068,
+   "cross_check": {
+    "max_arrival_miss_km": 3.10010094373264e-05,
+    "max_vinf_vector_error_kms": 4.235894015615415e-10,
+    "max_junction_mismatch_kms": 1.8081053321239438e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6510653579427337
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 42,
+   "k": 6,
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    2.3403569628598264,
+    19.021122789913335
+   ],
+   "residual_kms": 6.661338147750939e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6842733854735098,
+   "max_turn_deg": 54.833610455840585,
+   "max_encounter_miss_km": 2.9490179275514796e-08,
+   "vinf_kms": {
+    "Hydra": 0.12440658941110047,
+    "Charon": 0.28842785302146373
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 19.021122789913335,
+     "vinf_kms": 0.12440658941110047,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.80868395791872,
+     "vinf_kms": 0.28842785302146373,
+     "turn_deg": 54.833610455840585,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6842733854735098,
+     "required_alt_km": 888.4191905172136,
+     "rmin_radii": 2.4660382681802195,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.970343957918715,
+     "vinf_kms": 0.28842785302146373,
+     "turn_deg": 54.83361045584055,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6842733854735094,
+     "required_alt_km": 888.4191905172147,
+     "rmin_radii": 2.466038268180222,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.35756395791872,
+     "vinf_kms": 0.28842785302146406,
+     "turn_deg": 54.833610455840535,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6842733854735092,
+     "required_alt_km": 888.4191905172154,
+     "rmin_radii": 2.4660382681802173,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 9404.19261246014,
+   "r_max_km": 85848.83902658458,
+   "pluto_min_distance_km": 9301.8370509946,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1494.4191905172154,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.5384634498733264,
+   "lambert_time_fraction_inside_2a": 0.09312115873061068,
+   "cross_check": {
+    "max_arrival_miss_km": 3.330373815056891e-06,
+    "max_vinf_vector_error_kms": 3.460441897445451e-11,
+    "max_junction_mismatch_kms": 2.5499935496497983e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6842733854725489
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 43,
+   "k": 6,
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    2.3403569628598264,
+    19.021122789913335
+   ],
+   "residual_kms": 6.661338147750939e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6926485783647999,
+   "max_turn_deg": 55.504748738057614,
+   "max_encounter_miss_km": 2.9490179275514796e-08,
+   "vinf_kms": {
+    "Hydra": 0.12440658941110047,
+    "Charon": 0.28842785302146373
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 19.021122789913335,
+     "vinf_kms": 0.12440658941110047,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 22.80868395791872,
+     "vinf_kms": 0.28842785302146373,
+     "turn_deg": 55.504748738057614,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6926485783647999,
+     "required_alt_km": 857.5417346308416,
+     "rmin_radii": 2.4150853706779563,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 41.970343957918715,
+     "vinf_kms": 0.28842785302146373,
+     "turn_deg": 55.50474873805754,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.692648578364799,
+     "required_alt_km": 857.541734630845,
+     "rmin_radii": 2.415085370677962,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 48.35756395791872,
+     "vinf_kms": 0.28842785302146406,
+     "turn_deg": 55.504748738057614,
+     "available_deg": 80.13406866306268,
+     "ratio": 0.6926485783647999,
+     "required_alt_km": 857.5417346308416,
+     "rmin_radii": 2.415085370677951,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 4188.251780976404,
+   "r_max_km": 85848.83902658458,
+   "pluto_min_distance_km": 3236.088391383122,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1463.541734630845,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.23981011404791838,
+   "lambert_time_fraction_inside_2a": 0.09312115873061068,
+   "cross_check": {
+    "max_arrival_miss_km": 4.83452760895841e-06,
+    "max_vinf_vector_error_kms": 9.768915095280514e-11,
+    "max_junction_mismatch_kms": 1.4746759369188567e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6926485783638365
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 44,
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.19991953961073428,
+    3.987480707616119
+   ],
+   "residual_kms": 8.326672684688674e-17,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.7004773328553113,
+   "max_turn_deg": 56.13209868794648,
+   "max_encounter_miss_km": 8.85171006543421e-09,
+   "vinf_kms": {
+    "Hydra": 0.12440658941110047,
+    "Charon": 0.2884278530214641
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 3.987480707616119,
+     "vinf_kms": 0.12440658941110047,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 20.66824653466963,
+     "vinf_kms": 0.2884278530214641,
+     "turn_deg": 56.13209868794648,
+     "available_deg": 80.1340686630626,
+     "ratio": 0.7004773328553113,
+     "required_alt_km": 829.3781756331477,
+     "rmin_radii": 2.3686108508797807,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.442686534669626,
+     "vinf_kms": 0.28842785302146406,
+     "turn_deg": 56.13209868794648,
+     "available_deg": 80.1340686630626,
+     "ratio": 0.7004773328553113,
+     "required_alt_km": 829.3781756331477,
+     "rmin_radii": 2.3686108508797816,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.217126534669625,
+     "vinf_kms": 0.2884278530214641,
+     "turn_deg": 56.13209868794642,
+     "available_deg": 80.1340686630626,
+     "ratio": 0.7004773328553106,
+     "required_alt_km": 829.3781756331505,
+     "rmin_radii": 2.3686108508797856,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 11996.178999403084,
+   "r_max_km": 85848.83902658461,
+   "pluto_min_distance_km": 12760.0890627154,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1435.3781756331505,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.6868749073427075,
+   "lambert_time_fraction_inside_2a": 0.0931211587306107,
+   "cross_check": {
+    "max_arrival_miss_km": 2.095253812495503e-06,
+    "max_vinf_vector_error_kms": 1.9651630685797195e-11,
+    "max_junction_mismatch_kms": 8.946732243941824e-12,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7004773328781008
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 45,
+   "k": 6,
+   "key": "k6|RCharon/2:3|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.6503695439018764,
+    27.077747805359508
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.65767132687878,
+   "max_turn_deg": 51.579655913583935,
+   "max_encounter_miss_km": 1.1248924648919102e-09,
+   "vinf_kms": {
+    "Hydra": 0.13827613825447188,
+    "Charon": 0.29567757312058196
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 27.077747805359508,
+     "vinf_kms": 0.13827613825447188,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.505916538960776,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 51.57965591358393,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.6576713268787798,
+     "required_alt_km": 969.839197112173,
+     "rmin_radii": 2.6003947147065563,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 43.280356538960774,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 51.579655913583935,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.6576713268787799,
+     "required_alt_km": 969.839197112173,
+     "rmin_radii": 2.6003947147065563,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 49.66757653896077,
+     "vinf_kms": 0.2956775731205823,
+     "turn_deg": 51.579655913583935,
+     "available_deg": 78.42770971690992,
+     "ratio": 0.65767132687878,
+     "required_alt_km": 969.8391971121728,
+     "rmin_radii": 2.600394714706551,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 3274.6397716736988,
+   "r_max_km": 102550.80455878047,
+   "pluto_min_distance_km": 2244.7520338605814,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1575.839197112173,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.18749869353075155,
+   "lambert_time_fraction_inside_2a": 0.06872173727097058,
+   "cross_check": {
+    "max_arrival_miss_km": 2.400876784782601e-05,
+    "max_vinf_vector_error_kms": 3.174118703074291e-10,
+    "max_junction_mismatch_kms": 1.3848927560289326e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.65767132687683
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 46,
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    0.172221457745165,
+    3.60039019134643
+   ],
+   "residual_kms": 1.6653345369377348e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6778366213977768,
+   "max_turn_deg": 53.16117377847568,
+   "max_encounter_miss_km": 5.182037616395607e-10,
+   "vinf_kms": {
+    "Hydra": 0.1382761382544721,
+    "Charon": 0.29567757312058285
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 3.60039019134643,
+     "vinf_kms": 0.1382761382544721,
+     "turn_deg": 1.2074182697257333e-06
+    },
+    {
+     "body": "Charon",
+     "t_days": 27.027768452804054,
+     "vinf_kms": 0.29567757312058285,
+     "turn_deg": 53.16117377847563,
+     "available_deg": 78.42770971690973,
+     "ratio": 0.6778366213977761,
+     "required_alt_km": 892.6318750144735,
+     "rmin_radii": 2.4729898927631555,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 33.41498845280406,
+     "vinf_kms": 0.29567757312058285,
+     "turn_deg": 53.16117377847514,
+     "available_deg": 78.42770971690973,
+     "ratio": 0.6778366213977699,
+     "required_alt_km": 892.6318750144967,
+     "rmin_radii": 2.4729898927631946,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 46.18942845280406,
+     "vinf_kms": 0.29567757312058285,
+     "turn_deg": 53.16117377847568,
+     "available_deg": 78.42770971690973,
+     "ratio": 0.6778366213977768,
+     "required_alt_km": 892.6318750144712,
+     "rmin_radii": 2.4729898927631533,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 6098.637653423804,
+   "r_max_km": 102550.80455878018,
+   "pluto_min_distance_km": 5268.843002373414,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1498.6318750144967,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.34919462049713185,
+   "lambert_time_fraction_inside_2a": 0.06872173727097057,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0245847038399652e-05,
+    "max_vinf_vector_error_kms": 1.2998936584957306e-10,
+    "max_junction_mismatch_kms": 5.3485327278224304e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6778366213968586
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 47,
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.6503695439018764,
+    27.077747805359508
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.7026105130046296,
+   "max_turn_deg": 55.104133357976266,
+   "max_encounter_miss_km": 1.1248924648919102e-09,
+   "vinf_kms": {
+    "Hydra": 0.13827613825447188,
+    "Charon": 0.29567757312058196
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 27.077747805359508,
+     "vinf_kms": 0.13827613825447188,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.505916538960776,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 55.104133357976266,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.7026105130046296,
+     "required_alt_km": 804.1008328559847,
+     "rmin_radii": 2.3268990641187868,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 43.280356538960774,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 55.10413335797621,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.702610513004629,
+     "required_alt_km": 804.1008328559874,
+     "rmin_radii": 2.326899064118791,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 49.66757653896077,
+     "vinf_kms": 0.2956775731205823,
+     "turn_deg": 55.104133357976266,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.7026105130046296,
+     "required_alt_km": 804.1008328559847,
+     "rmin_radii": 2.326899064118782,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 9397.542016202686,
+   "r_max_km": 102550.80455878047,
+   "pluto_min_distance_km": 9224.195412295976,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1410.1008328559874,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.5380826513133565,
+   "lambert_time_fraction_inside_2a": 0.06872173727097058,
+   "cross_check": {
+    "max_arrival_miss_km": 3.2976498217488485e-06,
+    "max_vinf_vector_error_kms": 3.4409786399534213e-11,
+    "max_junction_mismatch_kms": 2.56145105126393e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.7026105130616485
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 48,
+   "k": 6,
+   "key": "k6|RCharon/2:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    3.6503695439018764,
+    27.077747805359508
+   ],
+   "residual_kms": 6.106226635438361e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.7181656639142887,
+   "max_turn_deg": 56.32408821812174,
+   "max_encounter_miss_km": 1.1248924648919102e-09,
+   "vinf_kms": {
+    "Hydra": 0.13827613825447188,
+    "Charon": 0.29567757312058196
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 27.077747805359508,
+     "vinf_kms": 0.13827613825447188,
+     "turn_deg": 0.0
+    },
+    {
+     "body": "Charon",
+     "t_days": 30.505916538960776,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 56.324088218121716,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.7181656639142885,
+     "required_alt_km": 751.7766296694767,
+     "rmin_radii": 2.240555494504087,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 43.280356538960774,
+     "vinf_kms": 0.29567757312058196,
+     "turn_deg": 56.32408821812172,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.7181656639142886,
+     "required_alt_km": 751.7766296694763,
+     "rmin_radii": 2.240555494504086,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 49.66757653896077,
+     "vinf_kms": 0.2956775731205823,
+     "turn_deg": 56.32408821812174,
+     "available_deg": 78.42770971690993,
+     "ratio": 0.7181656639142887,
+     "required_alt_km": 751.7766296694758,
+     "rmin_radii": 2.2405554945040804,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 4301.846086056884,
+   "r_max_km": 102550.80455878047,
+   "pluto_min_distance_km": 3303.138938288289,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1357.7766296694767,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.2463142748961932,
+   "lambert_time_fraction_inside_2a": 0.06872173727097058,
+   "cross_check": {
+    "max_arrival_miss_km": 6.127215013415184e-06,
+    "max_vinf_vector_error_kms": 1.137199235964642e-10,
+    "max_junction_mismatch_kms": 1.4828305250347285e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.718165663920802
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 49,
+   "k": 6,
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    4.944982116136802,
+    34.94332405615066
+   ],
+   "residual_kms": 2.498001805406602e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6492650651798961,
+   "max_turn_deg": 50.20281604224913,
+   "max_encounter_miss_km": 1.709478189724646e-07,
+   "vinf_kms": {
+    "Hydra": 0.14694144170729345,
+    "Charon": 0.3004658255638235
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 34.94332405615066,
+     "vinf_kms": 0.14694144170729345,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.1877491111957,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 50.20281604224911,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.6492650651798961,
+     "required_alt_km": 989.0991074828564,
+     "rmin_radii": 2.6321767450212152,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.57496911119569,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 50.20281604224888,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.6492650651798931,
+     "required_alt_km": 989.0991074828689,
+     "rmin_radii": 2.6321767450212357,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9621891111957,
+     "vinf_kms": 0.3004658255638234,
+     "turn_deg": 50.20281604224913,
+     "available_deg": 77.32252778507207,
+     "ratio": 0.6492650651798959,
+     "required_alt_km": 989.0991074828578,
+     "rmin_radii": 2.6321767450212157,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 2914.6673818927416,
+   "r_max_km": 118008.06573097815,
+   "pluto_min_distance_km": 1869.8637755089699,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1595.099107482869,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.16688746374758218,
+   "lambert_time_fraction_inside_2a": 0.05366749663063142,
+   "cross_check": {
+    "max_arrival_miss_km": 2.5689716278838062e-05,
+    "max_vinf_vector_error_kms": 3.960805140848649e-10,
+    "max_junction_mismatch_kms": 1.7728013501638884e-10,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6492650651777921
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 50,
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    4.944982116136802,
+    34.94332405615066
+   ],
+   "residual_kms": 2.498001805406602e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6909176556989659,
+   "max_turn_deg": 53.423499629980114,
+   "max_encounter_miss_km": 1.709478189724646e-07,
+   "vinf_kms": {
+    "Hydra": 0.14694144170729345,
+    "Charon": 0.3004658255638235
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 34.94332405615066,
+     "vinf_kms": 0.14694144170729345,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.1877491111957,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 53.42349962998011,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.6909176556989659,
+     "required_alt_km": 833.2922646725951,
+     "rmin_radii": 2.3750697436841506,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.57496911119569,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 53.423499629980086,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.6909176556989656,
+     "required_alt_km": 833.2922646725967,
+     "rmin_radii": 2.375069743684153,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9621891111957,
+     "vinf_kms": 0.3004658255638234,
+     "turn_deg": 53.423499629980114,
+     "available_deg": 77.32252778507207,
+     "ratio": 0.6909176556989655,
+     "required_alt_km": 833.2922646725974,
+     "rmin_radii": 2.3750697436841524,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 3625.2107279608786,
+   "r_max_km": 118008.06573097815,
+   "pluto_min_distance_km": 2550.2799842675095,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1439.2922646725974,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.2075716178451339,
+   "lambert_time_fraction_inside_2a": 0.05366749663063142,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0482521161926386e-05,
+    "max_vinf_vector_error_kms": 1.276669411248656e-10,
+    "max_junction_mismatch_kms": 5.3587245751884893e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6909176556976956
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  },
+  {
+   "index": 51,
+   "k": 6,
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "x_days": [
+    4.944982116136802,
+    34.94332405615066
+   ],
+   "residual_kms": 2.498001805406602e-16,
+   "status": "pass",
+   "status_hm_floor": "pass",
+   "worst_ratio": 0.6921137967970896,
+   "max_turn_deg": 53.51598828327468,
+   "max_encounter_miss_km": 1.709478189724646e-07,
+   "vinf_kms": {
+    "Hydra": 0.14694144170729345,
+    "Charon": 0.3004658255638235
+   },
+   "flybys": [
+    {
+     "body": "Hydra",
+     "t_days": 34.94332405615066,
+     "vinf_kms": 0.14694144170729345,
+     "turn_deg": 8.537736462515939e-07
+    },
+    {
+     "body": "Charon",
+     "t_days": 38.1877491111957,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 53.515988283274595,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.692113796797089,
+     "required_alt_km": 829.1062522991638,
+     "rmin_radii": 2.3681621325068707,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 44.57496911119569,
+     "vinf_kms": 0.3004658255638235,
+     "turn_deg": 53.515988283274496,
+     "available_deg": 77.32252778507201,
+     "ratio": 0.6921137967970876,
+     "required_alt_km": 829.1062522991679,
+     "rmin_radii": 2.368162132506878,
+     "status": "pass"
+    },
+    {
+     "body": "Charon",
+     "t_days": 50.9621891111957,
+     "vinf_kms": 0.3004658255638234,
+     "turn_deg": 53.51598828327468,
+     "available_deg": 77.32252778507207,
+     "ratio": 0.6921137967970896,
+     "required_alt_km": 829.1062522991617,
+     "rmin_radii": 2.368162132506866,
+     "status": "pass"
+    }
+   ],
+   "r_min_km": 8794.73047268076,
+   "r_max_km": 118008.06573097815,
+   "pluto_min_distance_km": 8494.640958534608,
+   "pluto_surface_clear": true,
+   "max_required_rp_charon_km": 1435.1062522991679,
+   "charon_soi_run_km": 7190.523836300898,
+   "rp_within_charon_soi": true,
+   "rp_within_charon_soi_8070": true,
+   "r_min_over_a_charon": 0.5035669840227684,
+   "lambert_time_fraction_inside_2a": 0.05366749663063142,
+   "cross_check": {
+    "max_arrival_miss_km": 1.0948603004450825e-05,
+    "max_vinf_vector_error_kms": 1.332761518087661e-10,
+    "max_junction_mismatch_kms": 5.575190309414779e-11,
+    "gate_status_integrated": "pass",
+    "worst_ratio_integrated": 0.6921137968106265
+   },
+   "pass": true,
+   "strong": true,
+   "strong_8070": true,
+   "unscheduled_status": "pass",
+   "unscheduled_inside_soi": [],
+   "strong_1065": true
+  }
+ ]
+}

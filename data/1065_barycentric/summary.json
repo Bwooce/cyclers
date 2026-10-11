@@ -1,0 +1,123 @@
+{
+ "psb": {
+  "cell": "psb",
+  "structures": 3462,
+  "zeros": 6363,
+  "physical": 1621,
+  "gate_passing": 181,
+  "reassess_pass": 181,
+  "strong_pre_screen": 54,
+  "strong_8070": 54,
+  "strong_1065": 50,
+  "pluto_surface_fail": 70,
+  "unscheduled": {
+   "pass": 157,
+   "model-invalid": 17,
+   "pass, direction-dependent": 5,
+   "reject: body impact": 2
+  },
+  "with_continued_parent": 128,
+  "new": 53,
+  "new_strong_1065": 5,
+  "strong_direction_dependent": 0,
+  "strong_rmin_over_aC": [
+   0.05657977796860071,
+   0.7655395152135208
+  ],
+  "strong_frac_inside_2a": [
+   0.07060349573981718,
+   0.5034266008733019
+  ],
+  "charon_soi_km": 7190.523836300898
+ },
+ "pnb": {
+  "cell": "pnb",
+  "structures": 3346,
+  "zeros": 3355,
+  "physical": 907,
+  "gate_passing": 128,
+  "reassess_pass": 128,
+  "strong_pre_screen": 59,
+  "strong_8070": 60,
+  "strong_1065": 56,
+  "pluto_surface_fail": 32,
+  "unscheduled": {
+   "pass": 112,
+   "model-invalid": 10,
+   "pass, direction-dependent": 5,
+   "reject: body impact": 1
+  },
+  "with_continued_parent": 111,
+  "new": 17,
+  "new_strong_1065": 1,
+  "strong_direction_dependent": 0,
+  "strong_rmin_over_aC": [
+   0.01750589143041466,
+   0.6484481219041629
+  ],
+  "strong_frac_inside_2a": [
+   0.06819134511446238,
+   0.42623419616132874
+  ],
+  "charon_soi_km": 7190.523836300898
+ },
+ "pkb": {
+  "cell": "pkb",
+  "structures": 3146,
+  "zeros": 1745,
+  "physical": 525,
+  "gate_passing": 74,
+  "reassess_pass": 74,
+  "strong_pre_screen": 43,
+  "strong_8070": 44,
+  "strong_1065": 43,
+  "pluto_surface_fail": 19,
+  "unscheduled": {
+   "pass": 70,
+   "pass, direction-dependent": 4
+  },
+  "with_continued_parent": 55,
+  "new": 19,
+  "new_strong_1065": 7,
+  "strong_direction_dependent": 0,
+  "strong_rmin_over_aC": [
+   0.17426897256500684,
+   0.8252147354124508
+  ],
+  "strong_frac_inside_2a": [
+   0.06310959754659329,
+   0.27316066359381175
+  ],
+  "charon_soi_km": 7190.523836300898
+ },
+ "phb": {
+  "cell": "phb",
+  "structures": 3025,
+  "zeros": 1009,
+  "physical": 336,
+  "gate_passing": 52,
+  "reassess_pass": 52,
+  "strong_pre_screen": 22,
+  "strong_8070": 22,
+  "strong_1065": 22,
+  "pluto_surface_fail": 14,
+  "unscheduled": {
+   "pass": 49,
+   "model-invalid": 1,
+   "pass, direction-dependent": 2
+  },
+  "with_continued_parent": 44,
+  "new": 8,
+  "new_strong_1065": 1,
+  "strong_direction_dependent": 0,
+  "strong_rmin_over_aC": [
+   0.02559541375483702,
+   0.6868749073427075
+  ],
+  "strong_frac_inside_2a": [
+   0.05366749663063142,
+   0.2646921455808854
+  ],
+  "charon_soi_km": 7190.523836300898
+ }
+}

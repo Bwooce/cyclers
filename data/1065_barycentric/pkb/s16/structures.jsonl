@@ -1,0 +1,98 @@
+{"key": "k1|LCharon>Charon/1h|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 1, "n_zeros": 0, "statuses": [], "secs": 1.670719861984253}
+{"key": "k2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.01918625831604004}
+{"key": "k2|LCharon>Charon/2l|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.11084818840026855}
+{"key": "k2|RCharon/1:2|LCharon>Charon/1l|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.07606196403503418}
+{"key": "k2|LCharon>Charon/1l|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.2698371410369873}
+{"key": "k2|LCharon>Charon/1h|LCharon>Charon/1l|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.2570359706878662}
+{"key": "k2|LCharon>Charon/2l|LCharon>Charon/2l|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 2, "n_zeros": 0, "statuses": [], "secs": 0.26842522621154785}
+{"key": "k3|RCharon/1:1|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.013136148452758789}
+{"key": "k3|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.01651287078857422}
+{"key": "k3|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.1426379680633545}
+{"key": "k3|RCharon/1:1|RCharon/2:3|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.01201486587524414}
+{"key": "k3|RCharon/1:1|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.14550399780273438}
+{"key": "k3|RCharon/2:1|LCharon>Charon/1h|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.09895181655883789}
+{"key": "k3|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.015320062637329102}
+{"key": "k3|RCharon/1:2|LCharon>Charon/2l|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.15075469017028809}
+{"key": "k3|RCharon/2:3|LCharon>Charon/1l|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.0983431339263916}
+{"key": "k3|LCharon>Charon/1l|RCharon/2:1|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.08992218971252441}
+{"key": "k3|LCharon>Charon/1l|LCharon>Charon/1l|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.33873605728149414}
+{"key": "k3|LCharon>Charon/1h|RCharon/1:1|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.10920381546020508}
+{"key": "k3|LCharon>Charon/1h|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.08558797836303711}
+{"key": "k3|LCharon>Charon/1h|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.4038989543914795}
+{"key": "k3|LCharon>Charon/2l|RCharon/2:3|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.1139228343963623}
+{"key": "k3|LCharon>Charon/2l|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.40909600257873535}
+{"key": "k3|LCharon>Charon/2h|RCharon/2:3|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.1057748794555664}
+{"key": "k3|LCharon>Charon/2h|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 3, "n_zeros": 0, "statuses": [], "secs": 0.4248628616333008}
+{"key": "k4|RCharon/2:1|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.016754865646362305}
+{"key": "k4|LCharon>Charon/1l|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.14145112037658691}
+{"key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 4, "n_zeros": 2, "statuses": ["indeterminate", "indeterminate"], "secs": 0.36063408851623535}
+{"key": "k4|RCharon/1:1|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.4046971797943115}
+{"key": "k4|RCharon/1:1|LCharon>Charon/2l|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.17693114280700684}
+{"key": "k4|RCharon/2:1|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.016150712966918945}
+{"key": "k4|RCharon/2:1|LCharon>Charon/2l|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.15346312522888184}
+{"key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.05977582931518555}
+{"key": "k4|RCharon/1:2|LCharon>Charon/1h|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.13975191116333008}
+{"key": "k4|RCharon/3:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.019360065460205078}
+{"key": "k4|RCharon/2:3|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.4188501834869385}
+{"key": "k4|RCharon/2:3|LCharon>Charon/1l|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.11625909805297852}
+{"key": "k4|LCharon>Charon/1l|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 4, "n_zeros": 4, "statuses": ["fail", "fail", "indeterminate", "indeterminate"], "secs": 1.7858538627624512}
+{"key": "k4|LCharon>Charon/1l|RCharon/3:2|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.10243010520935059}
+{"key": "k4|LCharon>Charon/1l|LCharon>Charon/2l|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.5359280109405518}
+{"key": "k4|LCharon>Charon/1h|RCharon/2:1|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.1117238998413086}
+{"key": "k4|LCharon>Charon/1h|LCharon>Charon/1l|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.6293179988861084}
+{"key": "k4|LCharon>Charon/1h|LCharon>Charon/2h|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.5196137428283691}
+{"key": "k4|LCharon>Charon/2l|RCharon/3:2|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.11705803871154785}
+{"key": "k4|LCharon>Charon/2l|LCharon>Charon/2l|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.4586479663848877}
+{"key": "k4|LCharon>Charon/2h|RCharon/2:1|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.14911198616027832}
+{"key": "k4|LCharon>Charon/2h|LCharon>Charon/1l|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 4, "n_zeros": 0, "statuses": [], "secs": 0.42401599884033203}
+{"key": "k5|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.07028031349182129}
+{"key": "k5|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 5, "n_zeros": 4, "statuses": ["indeterminate", "indeterminate", "indeterminate", "indeterminate"], "secs": 0.19643330574035645}
+{"key": "k5|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.17052984237670898}
+{"key": "k5|RCharon/1:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.0679631233215332}
+{"key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.1271350383758545}
+{"key": "k5|RCharon/1:1|LCharon>Charon/2h|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.29041099548339844}
+{"key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.014479875564575195}
+{"key": "k5|RCharon/2:1|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.1578819751739502}
+{"key": "k5|RCharon/1:2|RCharon/1:1|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.020823955535888672}
+{"key": "k5|RCharon/1:2|RCharon/2:3|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.01410984992980957}
+{"key": "k5|RCharon/1:2|LCharon>Charon/2h|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 5, "n_zeros": 6, "statuses": ["indeterminate", "indeterminate", "indeterminate", "fail", "indeterminate", "fail"], "secs": 1.6487009525299072}
+{"key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.014694929122924805}
+{"key": "k5|RCharon/3:2|LCharon>Charon/2l|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 6.982717037200928}
+{"key": "k5|RCharon/2:3|RCharon/2:1|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.013406991958618164}
+{"key": "k5|RCharon/2:3|LCharon>Charon/1l|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.17676997184753418}
+{"key": "k5|RCharon/2:3|LCharon>Charon/2h|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.16032934188842773}
+{"key": "k5|LCharon>Charon/1l|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.1502690315246582}
+{"key": "k5|LCharon>Charon/1l|LCharon>Charon/1h|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.4911479949951172}
+{"key": "k5|LCharon>Charon/1h|RCharon/2:1|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.1616201400756836}
+{"key": "k5|LCharon>Charon/1h|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.1340501308441162}
+{"key": "k5|LCharon>Charon/1h|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.541471004486084}
+{"key": "k5|LCharon>Charon/2l|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 6.7537219524383545}
+{"key": "k5|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.4678051471710205}
+{"key": "k5|LCharon>Charon/2h|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.15040326118469238}
+{"key": "k5|LCharon>Charon/2h|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.14494729042053223}
+{"key": "k5|LCharon>Charon/2h|LCharon>Charon/2h|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 5, "n_zeros": 0, "statuses": [], "secs": 0.45702290534973145}
+{"key": "k6|RCharon/2:1|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.023892879486083984}
+{"key": "k6|LCharon>Charon/1l|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 6, "n_zeros": 5, "statuses": ["indeterminate", "fail", "indeterminate", "indeterminate", "indeterminate"], "secs": 0.6187560558319092}
+{"key": "k6|LCharon>Charon/2h|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.21187686920166016}
+{"key": "k6|RCharon/1:1|RCharon/3:2|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.017717838287353516}
+{"key": "k6|RCharon/1:1|LCharon>Charon/2l|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 6, "n_zeros": 11, "statuses": ["indeterminate", "indeterminate", "indeterminate", "indeterminate", "indeterminate", "indeterminate", "fail", "fail", "indeterminate", "indeterminate", "indeterminate"], "secs": 0.9581010341644287}
+{"key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.020463943481445312}
+{"key": "k6|RCharon/2:1|LCharon>Charon/1l|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.7369997501373291}
+{"key": "k6|RCharon/2:1|LCharon>Charon/2h|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 6, "n_zeros": 1, "statuses": ["indeterminate"], "secs": 0.9574179649353027}
+{"key": "k6|RCharon/1:2|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.2668459415435791}
+{"key": "k6|RCharon/1:2|LCharon>Charon/1h|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.1522219181060791}
+{"key": "k6|RCharon/3:2|RCharon/2:1|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.015018939971923828}
+{"key": "k6|RCharon/3:2|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.013530969619750977}
+{"key": "k6|RCharon/3:2|LCharon>Charon/2h|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.16751503944396973}
+{"key": "k6|RCharon/2:3|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 6, "n_zeros": 2, "statuses": ["pass", "pass"], "secs": 0.26970601081848145}
+{"key": "k6|RCharon/2:3|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.15739202499389648}
+{"key": "k6|LCharon>Charon/1l|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.6864519119262695}
+{"key": "k6|LCharon>Charon/1l|RCharon/2:3|LCharon>Kerberos/1h|LKerberos>Charon/0s", "k": 6, "n_zeros": 2, "statuses": ["fail", "fail"], "secs": 1.254814863204956}
+{"key": "k6|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Kerberos/0s|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 1.4601631164550781}
+{"key": "k6|LCharon>Charon/1h|RCharon/1:2|LCharon>Kerberos/1h|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.1547541618347168}
+{"key": "k6|LCharon>Charon/1h|LCharon>Charon/1h|LCharon>Kerberos/1l|LKerberos>Charon/0s", "k": 6, "n_zeros": 3, "statuses": ["fail", "fail", "fail"], "secs": 1.2645750045776367}
+{"key": "k6|LCharon>Charon/2l|RCharon/1:1|LCharon>Kerberos/1h|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.19617033004760742}
+{"key": "k6|LCharon>Charon/2l|RCharon/2:3|LCharon>Kerberos/1l|LKerberos>Charon/1l", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.19624710083007812}
+{"key": "k6|LCharon>Charon/2l|LCharon>Charon/2h|LCharon>Kerberos/0s|LKerberos>Charon/0s", "k": 6, "n_zeros": 4, "statuses": ["fail", "fail", "indeterminate", "indeterminate"], "secs": 4.538608074188232}
+{"key": "k6|LCharon>Charon/2h|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/1h", "k": 6, "n_zeros": 0, "statuses": [], "secs": 0.19740509986877441}
+{"key": "k6|LCharon>Charon/2h|LCharon>Charon/1h|LCharon>Kerberos/0s|LKerberos>Charon/1l", "k": 6, "n_zeros": 1, "statuses": ["fail"], "secs": 0.8917961120605469}

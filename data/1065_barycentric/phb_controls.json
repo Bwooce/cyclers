@@ -1,0 +1,51 @@
+{
+ "cell": "phb",
+ "continued_members": 57,
+ "refound": 50,
+ "refound_same_verdict": 49,
+ "not_refound": [
+  {
+   "index": 12,
+   "key": "k5|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 21,
+   "key": "k5|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 22,
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 23,
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 24,
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 41,
+   "key": "k6|RCharon/1:1|LCharon>Charon/1l|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 42,
+   "key": "k6|LCharon>Charon/1l|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/1l",
+   "found": false,
+   "same_verdict": false
+  }
+ ],
+ "old_model_zeros_present": []
+}

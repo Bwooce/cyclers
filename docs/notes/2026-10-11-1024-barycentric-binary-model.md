@@ -461,3 +461,133 @@ uv run python scripts/run_1065_barycentric_enumerate.py check data/1065_barycent
 uv run python scripts/run_1065_barycentric_enumerate.py gauntlet --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_gauntlet.json
 uv run python scripts/run_1065_barycentric_enumerate.py controls --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_controls.json
 ```
+
+## 10. #1065 results (enumeration: lead launch 2026-10-11 19:49-21:47 AEDT; check, controls, gauntlet: 2026-10-12 09:11-09:25 AEDT)
+
+Data: `data/1065_barycentric/`:
+- per shard, `settings.json` and `structures.jsonl` (committed);
+- `<cell>_gauntlet.json`, `<cell>_controls.json` and `summary.json`;
+- `zeros_md5.txt`: 128 shards, 12,472 zero lines.
+The zeros and the shard logs are not committed. The full directory is archived at
+`~/dev/references/cyclers-runs/1065/` (24 MB; `diff -rq` clean at archive time).
+
+### 10.1 Logs and coverage
+
+- Every one of the 128 shard logs ends in `DONE ... structure_errors=0 zero_assessment_errors=0`.
+  No log contains a Traceback, an exception or a warning (grep over all 128).
+- The Tracebacks the lead saw come from the sec. 9.7 command, not from the run. That command's glob
+  `data/1065_barycentric/<cell>/s*` also matches the `s*.log` files, and `check` then fails on
+  `s0.log/settings.json` (NotADirectoryError). The fix is the glob `s*/`, used for every step below.
+  No shard needs a re-run.
+- `check` (`s*/`): psb 3,462, pnb 3,346, pkb 3,146 and phb 3,025 structures. Every structure was done
+  once, with no error lines, no duplicated zero line and none at the n_refine ceiling. All four cells
+  are OK. Total 12,979, as in sec. 9.1.
+
+### 10.2 Controls (sec. 9.4): both FAIL as pre-registered; examined one by one
+
+| Cell | Continued members | Re-found (key + Charon V_inf within 1e-4 km/s) | Same verdict | Old-model V_inf hit |
+|---|---|---|---|---|
+| psb | 140 | 135 | 135 | 1 (index 103) |
+| pnb | 127 | 124 | 124 | 0 |
+| pkb | 59 | 58 | 58 | 0 |
+| phb | 57 | 50 | 49 | 0 |
+| total | 383 | **367** (threshold 370) | **366** (1 change) | **1** |
+
+**Positive control: FAIL** (367 < 370, and one verdict change). **Negative control: FAIL by its
+literal criterion** (one continued member's #998 V_inf is present).
+
+Examination. Script: scratchpad `examine2.py`, run after the counted controls; the output is
+recorded below. For each of the 16 misses plus phb 26:
+1. Is the continued member an exact zero of the run's system?
+2. Does `solve_structure` reach it at n_phase 24 (the run), 96 and 384?
+3. Basin: from the member's dates perturbed by 0.05, 0.2, 0.5 and 1 d (8 random directions each),
+   how often does `correct_dates` return to it?
+
+| Member | 1024 pass | Residual at the member (km/s) | Grid finds it at n_phase 24 / 96 / 384 | Basin returns (of 8) at 0.05 / 0.2 / 0.5 / 1 d |
+|---|---|---|---|---|
+| psb 51 | yes | 5e-16 | no / no / no | 8 / 7 / 8 / 6 |
+| psb 81 | yes | 2e-15 | no / yes / yes | 8 / 8 / 8 / 6 |
+| psb 83 | yes | 2e-15 | no / yes / yes | 8 / 8 / 8 / 3 |
+| psb 93 | yes | 6e-16 | no / yes / yes | 8 / 8 / 8 / 8 |
+| psb 126 | yes | 3e-16 | no / yes / yes | 8 / 8 / 7 / 7 |
+| pnb 91 | yes | 4e-16 | no / no / no | 8 / 8 / 7 / 4 |
+| pnb 100 | no | 5e-16 | no / no / no | 8 / 8 / 8 / 6 |
+| pnb 106 | no | 2e-15 | no / no / no | 8 / 8 / 2 / 0 |
+| pkb 7 | no | 6e-15 | no / yes / no | 7 / 5 / 0 / 0 |
+| phb 12 | yes | 3e-16 | no / no / no | 8 / 8 / 7 / 5 |
+| phb 21 | no | 4e-16 | no / yes / yes | 6 / 1 / 0 / 1 |
+| phb 22 | yes | 2e-16 | no / no / no | 4 / 2 / 1 / 0 |
+| phb 23 | yes | 6e-17 | no / no / no | 2 / 5 / 1 / 0 |
+| phb 24 | yes | 2e-16 | no / no / no | 2 / 4 / 1 / 2 |
+| phb 41 | yes | 4e-16 | no / no / no | 8 / 8 / 6 / 2 |
+| phb 42 | yes | 3e-16 | no / no / no | 8 / 8 / 3 / 2 |
+| phb 26 (the verdict change) | yes | 7e-16 | no / no / no | 8 / 4 / 6 / 4 |
+
+Findings:
+- Every missed member is an exact zero of the barycentric system (residual <= 6e-15 km/s) with a real
+  basin. The misses are recall misses of the seed grid (24 phases x the simplex split, the 60
+  best-residual seeds refined), not model errors. Six are found at a finer phase grid; 11 are not
+  found even at 384 phases. The grid's seed choice, not its density, loses them.
+- **phb 26, the "verdict change", is a matching artefact.**
+  - The zero matched by key + V_inf has the member's Charon and Hydra V_inf to 1e-15, but other
+    dates (+2.46 d on the first three) and a failing gate (1.287 against the member's 0.311). It is
+    another zero of the same structure.
+  - The member itself is not found, so it is a 17th miss.
+  - Strict count: 366 of 383 re-found (95.6 %), all with the same verdict.
+- **psb 103, the negative-control hit, is a matching artefact too.**
+  - The zero within 1e-4 km/s of the #998 V_inf (0.173348 against 0.173356 km/s) has other dates
+    ([6.395, 27.725, 30.207] d against #998's [9.113, 23.141, 26.887]) and fails the gate (1.545).
+    It is an exact zero of the barycentric system (8e-16), a different solution of the same
+    structure.
+  - The continued member itself (V_inf 0.19193) is present.
+  - No #998 default-model solution is in the run: every zero in the run is a zero of the barycentric
+    system by construction.
+- Both artefacts come from the key + V_inf match rule: keys are not unique, and one structure carries
+  several zeros (papercut 2026-10-11-gauntlet-keys-not-unique). The sec. 9.4 rule should have matched
+  on dates (`_same`, modulo the phase period).
+- Reading:
+  - The run's recall of the known barycentric members is 95.6 %. All 17 missed members exist (the
+    sec. 8 continuation holds them).
+  - The ideal-model record for #1036 should be the union of the #1065 gate-passers and the 17 missed
+    continued members. The #1024 assessment of those 17 stands (`data/1024_barycentric/`).
+  - Whether the pre-registered FAIL blocks the use of the run's 97 new members is for the lead.
+
+### 10.3 Gauntlet (sec. 9.2): gate-passers and strong cyclers
+
+| Cell | Zeros | Physical cyclers | Gate-passing (pass def. 1-2) | of these with a #1024 parent / new | Pluto surface fails | Unscheduled screen: pass / direction-dependent / model-invalid / impact | strong (7,192 km SOI) | strong_8070 | **strong_1065** (with the screen) | new and strong_1065 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| psb | 6,363 | 1,621 | 181 | 128 / 53 | 70 | 157 / 5 / 17 / 2 | 54 | 54 | **50** | 5 |
+| pnb | 3,355 | 907 | 128 | 111 / 17 | 32 | 112 / 5 / 10 / 1 | 59 | 60 | **56** | 1 |
+| pkb | 1,745 | 525 | 74 | 55 / 19 | 19 | 70 / 4 / 0 / 0 | 43 | 44 | **43** | 7 |
+| phb | 1,009 | 336 | 52 | 44 / 8 | 14 | 49 / 2 / 1 / 0 | 22 | 22 | **22** | 1 |
+| total | 12,472 | 3,389 | **435** | 338 / **97** | 135 | 388 / 16 / 28 / 3 | 178 | 180 | **171** | **14** |
+
+- "With a #1024 parent" means a group containing a continued member, matched by dates (`_same`). 367
+  re-found members fall into 338 groups, because the merge by flyby sequence joins some.
+- No strong_1065 cyclers carries the direction-dependent flag: the 16 flagged gate-passers all fail
+  another strong filter.
+- Deep-dip flag (recorded, not gating) over the 171 strong_1065:
+  - r_min / a_C is 0.018-0.83. The lowest, pnb at 306 km from the barycentre, is at least
+    1,826 km from Pluto's centre on the opposite circle (638 km above its surface).
+  - The Lambert-leg time inside 2 a_C is 5-50 %.
+  - The patched conic about the 975.5 monopole is at its weakest there (sec. 8.5).
+
+Against sec. 9.5:
+- Gate-passers: expected at least 370-383 re-found plus new members. Got 435, with 97 new.
+- Strong: expected of order 175 plus new members before the unscheduled screen. Got 178 before the
+  screen (7,192 km), and 171 after.
+- The screen removes 7 strong cyclers (4 psb, 3 pnb).
+
+No catalogue edit. Nothing is called novel.
+
+### 10.4 For the lead
+
+1. FAIL as pre-registered, examined. Both controls fail. The examination finds recall misses of real
+   barycentric zeros (17 of 383) and two key + V_inf matching artefacts; it finds no model error.
+   - Proposed reading: use the run with the union rule of 10.2.
+   - The 97 new gate-passers (14 strong_1065) are members with no old-model parent.
+2. The sec. 9.7 glob is wrong (`s*` matches the logs). The fix is `s*/`. No re-run is needed.
+3. Possible follow-up, not proposed for now: seed-grid recall. 11 of the 17 misses are not reached
+   even at 384 phases, so the 60-best-seed selection is the limit. A recall test of the generator
+   against the #1024 continued set is cheap (scripted above), if anyone wants the generator's recall
+   on record.

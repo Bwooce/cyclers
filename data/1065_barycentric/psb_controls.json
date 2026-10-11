@@ -1,0 +1,45 @@
+{
+ "cell": "psb",
+ "continued_members": 140,
+ "refound": 135,
+ "refound_same_verdict": 135,
+ "not_refound": [
+  {
+   "index": 51,
+   "key": "k5|LCharon>Charon/2l|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1h",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 81,
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 83,
+   "key": "k5|RCharon/1:2|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 93,
+   "key": "k6|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Styx/0s|LStyx>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  },
+  {
+   "index": 126,
+   "key": "k6|LCharon>Charon/1l|LCharon>Charon/2h|LCharon>Styx/0s|LStyx>Charon/0s",
+   "found": false,
+   "same_verdict": false
+  }
+ ],
+ "old_model_zeros_present": [
+  {
+   "index": 103,
+   "key": "k6|RCharon/2:3|LCharon>Charon/2h|LCharon>Styx/0s|LStyx>Charon/1h",
+   "vinf_charon_998": 0.17335567459916046
+  }
+ ]
+}
