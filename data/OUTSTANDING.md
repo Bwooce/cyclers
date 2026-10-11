@@ -2963,7 +2963,18 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   take the SOI from `CircularSystem.bodies` (mu and semi-major axis are already there), or run one `assess` on a
   pilot zero before the sweep; a pilot reports a zero count and an assessment-error count, not only solver timing.
   Pairs with `#1037`.
-- `#1061` — registered 2026-10-11 (lead dispatch to v2-sweep-opus; IN PROGRESS, read-only sweep, no runs).
+- `#1061` — registered 2026-10-11 (lead dispatch to v2-sweep-opus). ✓ DONE 2026-10-11, read-only, no runs;
+  note `docs/notes/2026-10-11-1061-v2-negatives-sweep.md`. **RESULT:** 24 cases classified. No past negative
+  outside `#1007` failed only on the drift reading; the four A-in cases (H&M orbit 1, gc-1, gc-2, ev-A) were
+  already re-judged under the final wording. Every other negative fails continuity/closure, the `#888` turn
+  gate, Lambert feasibility, continuation, real instability or topology, or is powered. OPEN (D), priority
+  order: (1) ev-C 1/5 is "not diagnosed" in `#1007` secs. 8.6/8.14 (possible second branch at 10 cycles;
+  compare stored 10-cycle chains with the 5-cycle rung (d) chain); (2) the Russell ch. 4 Earth-Mars
+  free-return rows (June decline obsolete per `#830`; in the 2026-10-08 lane; no real-ephemeris chain; needs
+  the owner's Earth-Mars repeat tolerance first: L = 32-37 at 0.02 rev, 5-11 at 0.06); (3) Titania-Oberon
+  `#890`/`#895` waits for the owner's V2 ruling for unstable orbits. Instrument findings: `v2_moontour` drift
+  is an inertial offset against cycle 0, not rotating-frame; ev-B's L = 5 sits on the 0.02-rev edge
+  (verdict unchanged). Original entry text:
   **SWEEP OF PAST V2 NEGATIVES AFTER THE V2-BALLISTIC DRIFT-RULE CHANGE.** The 2026-10-11 wording
   (same-phase comparison, cycle i against cycle i+L over at least 2L cycles, no growth test; spec.md sec. 14
   amendment of 2026-10-08, `#1007` note secs. 8.3-8.14) is a correctness fix, so every past V2 negative or
