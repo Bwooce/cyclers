@@ -1,0 +1,1634 @@
+{
+ "probes": {
+  "C1 positive: #998 type {repeated-moon}, one": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "C2 negative: same, primary Jupiter": {
+   "status": "known-architecture-new-system",
+   "citation": "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal ",
+   "confidence": 0.0
+  },
+  "C3 negative: untopologied Pluto (Charon, Nix)": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: untopologied Pluto (Nix, Hydra)": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: {pump-tour} at Pluto": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: {mga-tour} (Charon, Nix), one": {
+   "status": "published",
+   "citation": "Stern, Tapley, Zangari et al., 'Game-Changer Pluto Orbiter' concept, DPS 2018 (SwRI); peer",
+   "confidence": 0.95
+  },
+  "diag: {mga-tour} (Charon, Nix), two": {
+   "status": "published",
+   "citation": "Stern, Tapley, Zangari et al., 'Game-Changer Pluto Orbiter' concept, DPS 2018 (SwRI); peer",
+   "confidence": 0.95
+  },
+  "diag: {resonant} (Charon, Nix)": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: {resonant} (Nix, Hydra)": {
+   "status": "published",
+   "citation": "Showalter & Hamilton, 'Resonant interactions and chaotic rotation of Pluto's small moons,'",
+   "confidence": 0.95
+  },
+  "diag: {repeated-moon} (Charon, Nix), two": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: {repeated-moon} (Nix, Hydra)": {
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  "diag: {binary-coorbital} (Charon,)": {
+   "status": "published",
+   "citation": "'Tadpole and horseshoe orbits in the Pluto-Charon CR3BP at L3/L4/L5,' arXiv:2510.13479 (20",
+   "confidence": 0.95
+  }
+ },
+ "members": [
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/2:3|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/1:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/1:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/1:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k3|RCharon/1:2|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|HCharon/3,1,p|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|HCharon/3,1,p|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|HCharon/3,1,p|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/2:3|LCharon>Styx/1l|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/2:1|LCharon>Styx/1l|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:3|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:3|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:3|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/2:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:2|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:2|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:3|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/2:1|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:1|LCharon>Styx/1h|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|HCharon/3,1,p|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Styx/1l|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Styx/1h|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/3:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/2:3|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/2:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ps",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Styx/0s|LStyx>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k3|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k3|RCharon/1:1|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k3|RCharon/1:1|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k3|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Nix/1h|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|LCharon>Charon/1l|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|HCharon/3,1,p|HCharon/3,1,p|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:2|RCharon/2:3|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/2:3|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:1|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:2|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:1|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Nix/1h|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|HCharon/3,1,p|RCharon/2:1|LCharon>Nix/1l|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:1|RCharon/2:3|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|HCharon/3,1,p|LCharon>Nix/1l|LNix>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/2:3|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:2|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|HCharon/3,1,p|LCharon>Nix/0s|LNix>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/3:2|RCharon/3:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/3:2|RCharon/2:3|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/3:2|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/2:3|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pn",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Nix/0s|LNix>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k3|HCharon/3,1,p|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:2|RCharon/1:1|LCharon>Kerberos/1l|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/1l",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:3|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|HCharon/3,1,p|HCharon/3,1,p|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:3|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:1|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/2:1|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/1l|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:3|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/2:3|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:3|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/2:1|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "pk",
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Kerberos/0s|LKerberos>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k3|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k4|HCharon/3,1,p|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k4|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k4|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k5|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:3|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:1|RCharon/3:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/1h",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/3:2|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/3:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:1|RCharon/2:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:3|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:1|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/2:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:1|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  },
+  {
+   "cell": "ph",
+   "key": "k6|RCharon/1:1|RCharon/1:1|LCharon>Hydra/0s|LHydra>Charon/0s",
+   "status": "inconclusive",
+   "citation": "Howett et al. Persephone Pluto-system orbiter (CR3BP periodic orbits) (Charon Hydra Kerber",
+   "confidence": 0.69
+  }
+ ]
+}

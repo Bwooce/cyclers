@@ -1202,6 +1202,12 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # "explicitly not a periodic cycler -- one-off sequential gravity
         # assists". Same label as the Uranian orbiter-tour concepts (#350).
         topology_label=frozenset({"mga-tour"}),
+        # #1052 (Pluto part): Charon is the working gravity-assist body and the small moons are
+        # only observed (digest 2026-06-23-digest-stern-2020-pluto-orbiter.md: "Charon = primary
+        # GA maneuvering body"; spec 2, satellites observed "at radial distance <10,000 km", is an
+        # observation range, not a flyby). So "one". Pre-registration:
+        # docs/notes/2026-10-11-1052-pluto-anchor-labels-prereg.md secs. 2, 7.
+        working_bodies_scope="one",
         authors=("Stern", "Tapley", "Zangari", "Finley", "Scherrer"),
         keywords=(
             "Charon gravity assist tour",
@@ -1220,7 +1226,13 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         body_set=frozenset({"Styx", "Nix", "Hydra"}),
         # #350: natural Laplace-like three-body resonance (Nature 2015) -- not
         # an engineered trajectory, observational dynamics paper.
-        topology_label=frozenset({"resonant"}),
+        # #1052 (Pluto part), lead ruling D3 2026-10-11: relabelled {"resonant"} -> {"ephemeris"}:
+        # the paper is about the moons' own motion (the 2026-06-15 Pluto review, class 3), like
+        # Brozovic et al. below (#881), so it must never match a spacecraft "resonant" candidate.
+        # Title-level grounding only (no digest yet; wanted-list row sent). Note: Brozovic and
+        # Jacobson (2024) find the Styx-Nix-Hydra argument circulates (period about 140 yr), so no
+        # established resonance is claimed here.
+        topology_label=frozenset({"ephemeris"}),
         authors=("Showalter", "Hamilton"),
         keywords=(
             "Styx Nix Hydra three-body resonance",
@@ -1244,7 +1256,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "Pluto satellite system orbit determination",
         ),
         citation="Brozovic et al., 'The orbits and masses of satellites of "
-        "Pluto,' Icarus 246:317-329 (2015); Brozovic et al., AJ 163:241 (2022)",
+        "Pluto,' Icarus 246:317-329 (2015); Brozovic et al., AJ 163:241 (2022) "
+        "[this second reference is UNVERIFIED (#1052, 2026-10-11); the JPL SSD Pluto pages "
+        "cite Brozovic & Jacobson, 'Post-New Horizons orbits and masses for the satellites of "
+        "Pluto,' AJ 167:256 (2024), doi 10.3847/1538-3881/ad39f0]",
         doi="10.1016/j.icarus.2014.03.015",
     ),
     CorpusAnchor(
@@ -1254,14 +1269,19 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # #350: Tadpole + horseshoe = coorbital binary topology (the L3/L4/L5
         # equilateral-Lagrange family for the Pluto-Charon binary).
         topology_label=frozenset({"binary-coorbital"}),
-        authors=("Pluto-Charon", "Charon"),  # arXiv preprint; authors not pinned in our notes
+        # #1052 (Pluto part), 2026-10-11: authors and title corrected to the arXiv record (abstract
+        # read 2026-10-11; digest 2026-10-11-digest-jbara-2025-pluto-charon-cr3bp-...-arxiv.md):
+        # Abdul Wahab Jbara (independent researcher). It was a placeholder before. The paper is an
+        # educational planar-CR3BP note (RK4 tadpole / horseshoe simulations, zero-velocity curves),
+        # not a periodic-orbit paper. Label unchanged.
+        authors=("Jbara",),
         keywords=(
             "Pluto-Charon tadpole horseshoe orbit",
             "Pluto-Charon L4 L5 L3 periodic orbit",
             "Pluto-Charon CR3BP coorbital",
         ),
-        citation="'Tadpole and horseshoe orbits in the Pluto-Charon CR3BP at "
-        "L3/L4/L5,' arXiv:2510.13479 (2025)",
+        citation="Jbara, A. W., 'Chaotic Dynamics and Zero-Velocity Structures in the "
+        "Pluto-Charon CR3BP,' arXiv:2510.13479 (2025; v2 2025-12-10)",
         doi=None,
     ),
     # -----------------------------------------------------------------------

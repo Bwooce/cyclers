@@ -182,3 +182,41 @@ ANY signature, with the same probe and stop rule. Controls as accepted:
   rule U and is expected to move to inconclusive under U2.
 Nothing is applied until the lead reports gen2's commit; then the anchor edits, C1-C3, the gate's 26 controls and the
 #998 litcheck, everything byte-identical except C3, the diagnostic and the Howett citations.
+
+## 11. Result (2026-10-11, after rule U / U2 at e3fba9f6 and the anchor edits)
+
+Edits in `src/cyclerfinder/search/literature_check.py`, as ruled: Showalter-Hamilton {resonant} to {ephemeris}; Stern
+`working_bodies_scope` "one"; the tadpole anchor's authors ("Jbara",) and citation (the arXiv:2510.13479 title);
+the Brozovic citation flags AJ 163:241 (2022) UNVERIFIED and names the JPL-cited Brozovic and Jacobson 2024 paper.
+Howett stays unlabelled (D1 (b)). Script `scripts/litcheck_1052_pluto.py`; data
+`data/1052_pluto/before_anchor_edits.json` (HEAD with rule U/U2, before my edits) and `after_anchor_edits.json`;
+test `tests/search/test_1052_pluto_anchors.py`.
+
+The sec. 8 expectations were written before rule U/U2 and are superseded: under U2 Howett (empty label) can only
+make a signature "inconclusive", so C1 reads inconclusive, not published. The controls as run:
+
+| Probe | Before my edits (rule U/U2 HEAD) | After | |
+|---|---|---|---|
+| C1 positive: #998 type {repeated-moon}, one working body | inconclusive, Howett | inconclusive, Howett | unchanged |
+| C2 wrong system (Jupiter) | known-architecture-new-system (Russell-Strange) | same | unchanged |
+| C3 untopologied Pluto (Charon, Nix) | inconclusive, Howett | inconclusive, Howett | unchanged (it moved from published at f03cc22f; that was rule U/U2's doing) |
+| diag: untopologied (Nix, Hydra) | inconclusive, Howett | same | unchanged |
+| diag: {pump-tour} at Pluto | inconclusive, Howett | same | unchanged (U2) |
+| diag: {mga-tour} (Charon, Nix), one working body | published, Stern | same | unchanged |
+| diag: {mga-tour} (Charon, Nix), two | published, Stern | inconclusive, Howett | CHANGED: Stern's scope "one" excludes it |
+| diag: {resonant} (Charon, Nix) | inconclusive, Howett | same | unchanged |
+| diag: {resonant} (Nix, Hydra) | published, Showalter-Hamilton | inconclusive, Howett | CHANGED: Showalter is {ephemeris} |
+| diag: {repeated-moon} (Charon, Nix), two | inconclusive, Howett | same | unchanged |
+| diag: {repeated-moon} (Nix, Hydra) | inconclusive, Howett | same | unchanged |
+| diag: {binary-coorbital} (Charon,) | published, tadpole anchor | published, tadpole anchor (new citation: Jbara) | citation only |
+
+- All 224 #998 strong signatures ({repeated-moon}, one working body, built from the gauntlet file's Charon-flyby
+  count and V_inf): inconclusive naming Howett before and after; 0 of 224 changed.
+- The gate's 26 controls, the negative and the five candidates (`scripts/litcheck_942_943_scope.py`): output
+  byte-identical to the committed `data/942_943_litcheck_scope.json` (git diff empty); no control unpublished, no
+  negative failed.
+- The 21 test files that import `KNOWN_CORPUS` or `literature_check` pass.
+
+Reading: after rule U/U2 and these edits the 224 #998 members read "inconclusive" through Howett, as the lead's
+ruling intended; nothing here makes any of them "published" or clears them. The literature step for #1036 is
+still a human comparison with Howett Figs. 13-14. The D1 option (a) label for Howett is not applied.
