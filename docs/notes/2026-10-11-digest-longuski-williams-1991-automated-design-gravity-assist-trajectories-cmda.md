@@ -87,8 +87,9 @@ None of the cycler kind. Three items touch repetition and are all one-way:
 - **Fig. 1 (page 208).** An Earth to Venus search: the Earth orbit with R1, the Venus orbit with a fan of target
   position vectors R2 at equal flight-time steps, and V-infinity at Earth.
 - **Fig. 2 (page 210).** Vis viva against flight time (0 to 225 days, log axis 1 to 10000 km2/s2) for the first leg of
-  Mariner Venus-Mercury: a Type 1 curve falling through the target vis viva line near 125 to 150 days and a Type 2 curve
-  that crosses it twice, near 150 days and again beyond 200 days.
+  Mariner Venus-Mercury, with a horizontal target vis viva line near 20 km2/s2. A Type 1 curve falls from about 10000 and
+  dips below the line at flight times of roughly 100 to 150 days. A Type 2 curve sits near 2000 to 3000, drops below
+  the line near 150 days and rises through it again near 175 days. The crossings are the Lambert solutions.
 - **Fig. 3 (page 213).** The solution tree for 20 August 1977: Earth, then Jupiter, Saturn, Uranus, Neptune and Pluto
   nodes with four-digit codes and arrival dates in parentheses. Solid lines have cumulative time below 20 years, dashed
   lines above. The labelled arrival dates were not transcribed.
@@ -98,7 +99,7 @@ None of the cycler kind. Three items touch repetition and are all one-way:
 - **Fig. 6 (page 216).** Flight time (1500 to 7500 days) against launch date, 1984 to 2050, for Jupiter-Uranus,
   Jupiter-Uranus-Neptune and Jupiter-Uranus-Neptune-Pluto. One filled square marks the 1995 four-planet case.
 - **Fig. 7 (page 217).** Jupiter-Uranus-Neptune-Pluto flight time against Earth launch date, March to April 1996, at
-  V-infinity 14 km/s. A U-shaped curve with its minimum of about 7400 days near 22 to 28 March.
+  V-infinity 14 km/s. A U-shaped curve with its minimum of about 7400 days in late March.
 - **Fig. 8 (page 218).** Jupiter-Pluto flight times (2500 to 7500 days) against launch date, 1982 to 2042, with groups of
   short flights (2500 to 4000 days) recurring about every 13 years.
 - **Fig. 9 (page 219).** Earth departure vis viva (7.5 to 12.5 km2/s2) for Mars trajectories, launch 2005 to 2015,
