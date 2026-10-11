@@ -1,7 +1,7 @@
 # #1024: a barycentric circular-model option for binaries in the two-working-body generator
 
-Status: PRE-REGISTRATION (secs. 1-7), written and committed before any code or run. Results follow in
-later sections. No catalogue edits. The #998 adjudication (#1036) is a later owner step. #949 (the
+Status: DONE. Pre-registration secs. 1-7 (with amendments 3a and 7a), committed before the code
+and runs; results sec. 8. No catalogue edits. The #998 adjudication (#1036) is a later owner step. #949 (the
 binary-star cases) is covered by the #1024 entry but is not run here.
 
 ## 1. The defect being fixed
