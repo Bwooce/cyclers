@@ -532,3 +532,40 @@ nice, about 1 min.
 - Both are far inside every band, with negligible trends.
 
 Exploratory only; no verdict, no spec or catalogue change.
+
+### 8.4b OWNER DECISION (2026-10-11), the meaning of "bounded", recorded
+
+The lead put options (A) band only, (B) growth relative to the band and (C) a growth test over >= 3L
+cycles to the owner, with the sec. 8.8-8.9 numbers and the both-ends finding. The owner asked for
+more information, then decided. Verbatim option label: **"Band only, ends skipped, slope as
+diagnostic"**.
+
+Final definition of criterion 4:
+- Same-phase dates D' and |V_inf| W' must lie within the band over a chain of >= 2L cycles.
+- The comparisons EXCLUDE the open chain's first and last cycle: i = 1 .. n-L-2, so neither cycle i
+  nor cycle i+L is the first or the last cycle.
+- There is NO growth test. The fitted slope of D' and W' over the comparisons is recorded as a
+  DIAGNOSTIC in the row evidence and handed to V3.
+- The offset against the ideal model is recorded, not banded.
+- Band: D' <= 0.05 x the chain's shortest Lambert-leg flight time; W' <= 0.10 x its smallest
+  |V_inf,dep|.
+
+Criteria 1-3 are as in sec. 7: junction-only continuity < 1e-6 km/s; the gate at every flyby; DOP853
+re-fly < 1 km. A row passes at >= 3 of 5 epochs.
+
+### 8.10 Controls under the final wording — PRE-REGISTERED (2026-10-11), before running
+
+Tool: `scripts/v2_samephase_1007.py --final-controls`.
+
+- POSITIVE: H&M orbit 1 from its printed dates, 10 cycles (L = 5, comparisons i = 1..3). It must
+  pass all four criteria.
+  - Expected PASS. The sec. 8.5 chain has W' 0.092 / 0.070 / 0.301 at i = 1..3 against a 0.454 band,
+    and D' 1.66-1.84 d against 7.52.
+- NEGATIVE: gc-1 epoch 0, the 2nd Lambert start + 0.05 d. It must fail; expected to fail continuity.
+- DISCRIMINATING cases, stated now (from the sec. 8.6 chains; the full ev judgement is sec. 8.13):
+  - ev-B at 10 cycles: expected FAIL at 5/5. The gate fails or is indeterminate at 3 epochs, there is
+    no chain at 1, and D' is over its band at the remaining one.
+  - ev-C at 10 cycles: expected FAIL. D' 7.6-66 d against about 5.8 d occurs throughout, not only
+    at the ends.
+  - These show that the final wording still rejects chains.
+- If the positive fails or the negative passes: STOP and report.
