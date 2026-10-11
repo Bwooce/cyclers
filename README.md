@@ -41,19 +41,22 @@ for the full taxonomy, V0–V5 gauntlet extension, and migration record.
 | Low-thrust (v2) — Sims-Flanagan model: leg model, feasibility/NLP constraints, two-phase DE+SLSQP solve, powered-maintenance evaluator (machinery only — no sourced powered rows exist) | ✓ done |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
-413-entry (as of 2026-10-11) published-cycler seed library (incl. the C21 3D out-of-plane `known-class-member` cycler — a computed member of the Antoniadou & Libert 2019 spatial-resonant class — Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 12 `mga_tour` rows (six Uranian two-moon `quasi_cycler` rows computed by this project in June-July 2026 were WITHDRAWN on 2026-10-04: a turn-angle check found that they are not ballistic trajectories, see `#888`), + the **first Pluto-Charon (3,2) cycler** and the binary (k₁,k₂)-cycler μ-family reproduced from Ross-Roberts-Tsoukkas 2026, the 5 rows added 2026-06-30 (4 still V1, the Pluto-Charon representative later promoted to V2 via #505 on 2026-07-01) that closed the long-open #315/#252/#255 binary-star thread) (a Uranus-Umbriel-Titania four-body torus-connection row added 2026-07-24 was WITHDRAWN on 2026-10-03: a review found its connection was not a trajectory of its own model, see `#882`) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+423-entry (as of 2026-10-11) published-cycler seed library (incl. the C21 3D out-of-plane `known-class-member` cycler — a computed member of the Antoniadou & Libert 2019 spatial-resonant class — Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 12 `mga_tour` rows (six Uranian two-moon `quasi_cycler` rows computed by this project in June-July 2026 were WITHDRAWN on 2026-10-04: a turn-angle check found that they are not ballistic trajectories, see `#888`), + the **first Pluto-Charon (3,2) cycler** and the binary (k₁,k₂)-cycler μ-family reproduced from Ross-Roberts-Tsoukkas 2026, the 5 rows added 2026-06-30 (4 still V1, the Pluto-Charon representative later promoted to V2 via #505 on 2026-07-01) that closed the long-open #315/#252/#255 binary-star thread) (a Uranus-Umbriel-Titania four-body torus-connection row added 2026-07-24 was WITHDRAWN on 2026-10-03: a review found its connection was not a trajectory of its own model, see `#882`) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
 broad classes, Niehoff VISIT, Jones VEM family, the 15-orbit Hollister–Menning Earth–Venus
 family, plus lunar and Jovian family seeds), + 9 Casoliva 2010 Table 3 Earth-Moon p:q
 resonant-family rows (3 `cycler` + 6 `resonant_po` since `#801` reclassified 7-3a on 2026-08-09, same-model CR3BP reproduction via `#780`'s
 gate module, added 2026-08-08/09 via `#797`/`#801`), + the Schwaniger 1963 retrograde Earth-Moon
-periodic free return (V0, added 2026-10-08 via `#970`). Twenty rows computed by this project's two-working-body
-generator were added on 2026-10-08 and 2026-10-11 (`#942`/`#943`/`#1025`): 19 are `candidate-novel` by the
-owner's rulings (gc-1 `ganymede-callisto-two-working-body-cycler-gc1-2026` at V2, marginal; ev-A, ev-B and ev-C
-on Earth-Venus; and 15 Ganymede-Callisto members `ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`,
-all V1) and one, gc-2, is `known-class-member` (V2); no row is `verified-novel`. Their evidence is patched
-conic plus chain-tool real ephemeris; the Ganymede-Callisto members' continuous-gravity standing is an
-ideal-model continuation (real-ephemeris continuous gravity untested), and ev-B's delta-v band is
-window-dependent. Every numerical value carries a source quote per [`data/README.md`](data/README.md)
+periodic free return (V0, added 2026-10-08 via `#970`). Thirty rows computed by this project's two-working-body
+generator were added on 2026-10-08 and 2026-10-11 (`#942`/`#943`/`#1025`): 29 are `candidate-novel` by the
+owner's rulings and one, gc-2, is `known-class-member` (V2); no row is `verified-novel`. The 29 are gc-1
+(`ganymede-callisto-two-working-body-cycler-gc1-2026`, V2), 15 more Ganymede-Callisto members
+(`ganymede-callisto-two-working-body-cycler-gc<k>-<n>-2026`, V1), and 13 Earth-Venus rows: ev-A (V2), ev-B and
+ev-C (V1), and ten `#973` members (`earth-venus-two-working-body-cycler-ev<k>-<n>-2026`, V1). Their evidence is
+patched conic plus chain-tool real ephemeris (for the ten Earth-Venus members, Standish chains at 4 or 5 of 5
+epochs and the DE440 blend; the DE440 shoot cannot judge them, `#1057`); the Ganymede-Callisto members'
+continuous-gravity standing is an ideal-model continuation (real-ephemeris continuous gravity untested), and
+ev-B's delta-v band is window-dependent. V2 uses the 2026-10-11 spec sec. 14 V2-ballistic wording (bounded
+drift judged by the same-phase band). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
 conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
 auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 
