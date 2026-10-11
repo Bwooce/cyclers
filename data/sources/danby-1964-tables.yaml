@@ -1,0 +1,194 @@
+# Danby 1964, two papers in AIAA Journal 2(1), January 1964: every printed table (formula tables).
+#   Paper A: J. M. A. Danby (Yale), "Matrix Methods in the Calculation and Analysis of Orbits", AIAA J. 2(1):13-16,
+#            DOI 10.2514/3.2206. Received 28 May 1963, revised 16 October 1963. Tables 1-2.
+#   Paper B: J. M. A. Danby, "The Matrizant of Keplerian Motion", AIAA J. 2(1):16-19, DOI 10.2514/3.2207. Same dates.
+#            Tables 1-4.
+# Local files: Paper A = 4 pp. (printed pp.13-16), md5 d4ef9a79e2ad878343dc17949abda3cc. Paper B = 4 pp. (printed pp.16-19),
+#   md5 1d6649b37dcf152d27502b891c3ca1b2. Printed p.16 is in both files: it ends paper A (section 4 and the references)
+#   and starts paper B. Both have a text layer (native text, not OCR).
+# Witnesses per formula: A = pdftotext raw order, B = pdftotext layout order, C = page render (150 dpi, then 260 to 600 dpi
+#   crops of every table). The text layer garbles every formula (fractions, exponents, tildes and signs drop out), so the
+#   formulas below were read from C. The independent witness is numerical: every table was evaluated at several orbits and
+#   compared with the 6 x 6 state-transition matrix integrated from the variational equations of two-body motion
+#   (DOP853, rtol and atol 1e-13). Where the printed formula and the numerical matrix agree to 1e-7 or better, the
+#   transcription and the printed formula are both confirmed. Where they differ, `printed` holds what is on the page and
+#   `numerically_consistent_form` holds the form that reproduces the matrix. Nothing under `ours:` is printed.
+# Notation as printed. Matrizant Omega(t,t0) = [[L, M], [P, Q]] (3 x 3 blocks): dr = L dr0 + M dr0', dr' = P dr0 + Q dr0'.
+#   Orbital reference system: x toward pericentre, y toward the point of true anomaly 90 deg, z along the angular momentum.
+#   Only l, m, p, q with subscripts 11 12 21 22 33 are non-zero (any quantity with only one 3 as a subscript is zero).
+#   a semi-major axis, e eccentricity, n mean motion (n^2 a^3 = mu), r = a(1 - e cosE), E eccentric anomaly measured from
+#   pericentre (the time origin T is a pericentre passage), C = cosE, S = sinE. Hyperbolic: ch = coshF, sh = sinhF, a < 0,
+#   r = a(1 - e ch), n1 with -n1^2 a^3 = mu. True anomaly f, s = sin f, c = cos f, q pericentre distance,
+#   nu = (mu/q^3)^(1/2), r = q(1 + e)/(1 + e c). Parabolic: w = tan(f/2). Formulas are written in ASCII; ^ is a power,
+#   sqrt(x) is a square root, [..] brackets are as printed.
+paper_B_table_1_elliptic_orbits_eccentric_anomaly:   # printed p.18; the 20 matrizant components Omega(t,T) with T = pericentre passage
+  l11: "a/(r(1-e)^2) [ C^2(1+e-e^2) + C(2+e+2e^2-e^3) - 2 - 5e + 2e^2 + 3ES ]"
+  l12: "a/(r(1-e)) (1-e^2)^(1/2) S(1-C)"
+  l21: "a/(r(1-e)^2) (1-e^2)^(1/2) [ SC(1+e) + S(2-e) - 3EC ]"
+  l22: "a/(r(1-e)) [ C^2 + C(-1-2e+e^2) + 1 ]"
+  l33: "(C-e)/(1-e)"
+  m11: "a/(nr) (1-e) S[ -C(1+e) + 2 ]"
+  m12: "a/(nr) (1-e^2)^(1/2)/(1-e) [ C^2(2-e) + 2C(1+e) - 4 - e + 3ES ]"
+  m21: "a/(nr) (1-e^2)^(1/2) (1-C)^2"
+  m22: "a/(nr) [ SC(2+e+e^2) + 2S - 3(1+e)EC ]"
+  m33: "S(1-e)/n"
+  p11: "n (a/r)^3 1/(1-e)^2 [ SC^2(e+e^2-e^3) + SC(-2-5e+2e^2) + S(1+e+3e^2-e^3) + 3E(C-e) ]"
+  p12: "n (a/r)^3 (1-e^2)^(1/2)/(1-e) [ eC^3 - 2C^2 + C + 1 - e ]"
+  p21: "n (a/r)^3 (1-e^2)^(1/2)/(1-e)^2 [ -C^3(e+e^2) + C^2(2+5e) - C(1+e) - 1 - 3e + e^2 + 3ES ]"
+  p22: "n (a/r)^3 1/(1-e) S[ eC^2 - 2C + 1 + e - e^2 ]"
+  p33: "-n (a/r) 1/(1-e) S"
+  q11: "(a/r)^3 (1-e) [ C^3(e+e^2) - 2C^2(1+e) + 2C + 1 - e ]"
+  q12: "(a/r)^3 (1-e^2)^(1/2)/(1-e) [ SC^2(2e-e^2) - SC(4+e) + S(1+2e+e^2) + 3E(C-e) ]"
+  q21: "(a/r)^3 (1-e^2)^(1/2) S[ eC^2 - 2C + 2 - e ]"
+  q22: "(a/r)^3 [ -C^3(2e+e^2+e^3) + C^2(4+5e+5e^2) - C(1+3e) - 2 - 3e - e^2 + 3(1+e)ES ]"
+  q33: "(a/r)(1-e)C"
+  note: "The l21 line carries a stray ink mark before S(2-e) in the scan (it prints as 'S(1+e) + [mark]S(2-e)'); read as a plus sign, and the numerical check confirms it."
+  ours:
+    numerical_check: "All 20 formulas reproduce the integrated state-transition matrix of the two-body problem to 9 digits at 4 test orbits (a, e, E) = (1, 0.3, 1.1), (2, 0.6, 2.5), (1.5, 0.1, 4.0) and (1, 0.3, 0.4), mu = 1. So the printed Table 1 is exact and the transcription has no slip."
+paper_B_table_2_nearly_circular_orbits:   # printed p.18; Bower's method; mu = k^2; the formulas build the full 3 x 3 blocks from the initial position and velocity
+  steps_as_printed:
+    - "mu = k^2"
+    - "tau = k(t - t0)"
+    - "r = a(1 - e cosE); r0 = a(1 - e cosE0)"
+    - "F = a(1 - cos dE); f = 1 - F/r0   (dE = E - E0)"
+    - "G = a^(1/2) sin dE; H = a^(1/2) e sinE"
+    - "J = a^(3/2) dE - aG; g = tau - J"
+    - "L = (1/r)[3J + 2FH + G r0]"
+    - "(2M) = (a/r0)[GL - 2F]; (2N) = a(-3J + FL); (3) = FG/(r r0)"
+    - "(2) = (2N)/r0^3 + (3); (1) = (1/r0^3)[G^2 r0/r + (2M) + F]; (4) = F^2/r"
+    - "r' = (k/r)H; F' = (k/r)G; f' = 1 - F'/r0; G' = (k/r) cos dE; H' = (k/r) e cosE"
+    - "J' = a(k/r) - aG; g' = k - J'"
+    - "L' = -r'L/r + (1/r)[3J' + 2F'H + 2FH' + G' r0]"
+    - "(2M)' = (a/r0)[GL' + G'L - 2F']; (2N)' = a(-3J' + F'L + FL')"
+    - "(3)' = -r'(3)/r + (FG' + F'G)/(r r0); (2)' = (2N)'/r0^3 + (3)'"
+    - "(1)' = (1/r0^3)[-G^2 r0 r'/r^2 + 2GG' r0/r + (2M)' + F']; (4)' = -F^2 r'/r^2 + 2FF'/r"
+    - "Phi0 = [[x0, x0'], [y0, y0'], [z0, z0']]; Phi0^T its transpose; I the identity"
+    - "L = f I + Phi0 [[(1), (3)], [(2), (4)]] Phi0^T"
+    - "M = g I + Phi0 [[(3), (2M)], [(4), (2N)]] Phi0^T"
+    - "P = f' I + Phi0 [[(1)', (3)'], [(2)', (4)']] Phi0^T"
+    - "Q = g' I + Phi0 [[(3)', (2M)'], [(4)', (2N)']] Phi0^T"
+  note: "Section 3 gives the starting values: e cosE0 = r0 r0'^2/mu - 1 and e sinE0 = r0 . r0'/(mu a)^(1/2) (r0 the length of the vector and r0 . r0' the dot product), and n(t - t0) = dE + e sinE0 (1 - cos dE) - e cosE0 sin dE. r = f r0 + g r0' and r' = f' r0 + g' r0'. These three relations were checked and are exact."
+  ours:
+    numerical_check: "For e = 0 the table as printed reproduces the matrix to 2e-13 except for the f' line (below). For e > 0 it does not: with three corrections it reproduces the 6 x 6 matrix of a rotated elliptic orbit to 1e-12 at 5 test cases (a, e, E0, E) = (1, 0.1, 0.5, 2.0), (1.3, 0.2, 0.9, 2.2), (1, 0, 0.3, 1.5), (2, 0.5, 3.0, 5.0), (1, 0.05, 0.2, 6.0), k = 1."
+    printed_values_that_do_not_reproduce_the_matrix:
+      - {item: "f'", printed: "1 - F'/r0", numerically_consistent_form: "-F'/r0 (the time derivative of f = 1 - F/r0)", effect: "adds a spurious identity to the P block; the error is 1.0 in every entry of the diagonal of P"}
+      - {item: "J'", printed: "a(k/r) - aG", numerically_consistent_form: "a(k/r) - aG' (the time derivative of J = a^(3/2) dE - aG; G' is defined three lines above)", effect: "wrong g' and so Q"}
+      - {item: "H in L and L'", printed: "H = a^(1/2) e sinE in L = (1/r)[3J + 2FH + G r0], and L' with 2F'H + 2FH'", numerically_consistent_form: "H0 = a^(1/2) e sinE0 (a constant) in L, and L' = -r'L/r + (1/r)[3J' + 2F'H0 + G' r0] with no 2FH' term; r' keeps H = a^(1/2) e sinE", effect: "L (and so (2M), (2N), (1), (2)) is wrong by terms of order e: 0.077 in L at (1, 0.1, 0.5, 2.0), 2.6 at (2, 0.5, 3.0, 5.0)"}
+    reading: "This is the one correction set that was found; it reproduces the exact matrix to 1e-12. It is not proved to be the only one. The printed text (section 3) calls the table Bower's method and says e cosE and e sinE are found from the initial data; it does not say H is evaluated at E0."
+paper_B_table_3_formulas_using_the_true_anomaly:   # printed p.19; valid for elliptic and hyperbolic orbits; T is the pericentre time; s = sin f, c = cos f
+  l11: "r/(q(1-e)) [ c^2 + c(2-e) - 2 ] + 3 nu/((1-e)(1+e)^(1/2)) s(t-T)"
+  l12: "r/(q(1+e)) s(1-c)"
+  l21: "r/(q(1-e)) s(c+2) - 3 nu/((1-e)(1+e)^(1/2)) (c+e)(t-T)"
+  l22: "r/(q(1+e)) [ c^2 - c(1-e) + 1 ]"
+  l33: "(r/q) c"
+  m11: "r/(nu q (1+e)^(3/2)) s(-c + 2 + e)"
+  m12: "r/(nu q (1-e)(e+1)^(1/2)) 2(c-1)(c+2) + 3/(1-e) s(t-T)"
+  m21: "r/(nu q (1+e)^(3/2)) (1-c)^2"
+  m22: "r/(nu q (1-e)(e+1)^(1/2)) 2s(c+1+e) - 3/(1-e) (c+e)(t-T)"
+  m33: "r/(nu q (e+1)^(1/2)) s"
+  p11: "nu/((1-e)(e+1)^(1/2)) s[ -ec^2 - 2c + 1 - e ] + 3 nu^2 q^2/(r^2 (1-e)) c(t-T)"
+  p12: "nu/(1+e)^(3/2) [ -ec^3 - 2c^2 + c + 1 + e ]"
+  p21: "nu/((1-e)(e+1)^(1/2)) [ ec^3 + 2c^2 - c - 1 - e ] + 3 nu^2 q^2/(r^2 (1-e)) s(t-T)"
+  p22: "nu/(1+e)^(3/2) s[ -ec^2 - 2c + 1 ]"
+  p33: "-nu/(1+e)^(1/2) s"
+  q11: "1/(1+e)^2 [ -ec^3 - 2c^2 + 2c + ec + (1+e)^2 ]"
+  q12: "1/(1-e^2) s[ -2ec^2 - 4c + 1 - e ] + 3 nu q^2/(r^2 (1-e)) (1+e)^(1/2) c(t-T)"
+  q21: "1/(1+e)^2 s(1-c)(ec + 2 + e)"
+  q22: "1/(1-e^2) [ 2ec^3 + 4c^2 - c(1+e) - 2 - e - e^2 ] + 3 nu q^2/(r^2 (1-e)) (1+e)^(1/2) s(t-T)"
+  q33: "(c + e)/(1+e)"
+  note: "Text: 'To make the formulas valid for all e without any changes, it is convenient to introduce the pericentron distance q and the quantity nu = (mu/q^3)^(1/2). Then if s = sin f, c = cos f, r = q(1+e)/(1+ec).' The m11 and m21 exponent prints as '3 2' in the m11 line in the scan (the slash is lost) and as 3/2 in m21. The time of flight (t - T) is the only place time appears; it comes from Kepler's equation or its hyperbolic form."
+  ours:
+    numerical_check: "All 20 formulas reproduce the integrated matrix to 1e-7 or better at 6 test orbits: elliptic (q, e, f) = (1, 0.3, 1.2), (1.3, 0.6, 2.2), (1, 0.2, 0.5); hyperbolic (0.8, 1.5, 1.0), (1.2, 2.5, 0.8), (1, 1.2, -0.6). mu = 1. So Table 3 is exact for both elliptic and hyperbolic reference orbits and the transcription has no slip."
+paper_B_table_4_parabolic_orbits:   # printed p.19; w = tan(f/2); nu = (mu/q^3)^(1/2)
+  l11: "(1 + 3w^2 + w^4 - w^6/5)/(1 + w^2)"
+  l12: "2w^3/(1 + w^2)"
+  l21: "2w^3 (1 + 3w^2/5)/(1 + w^2)"
+  l22: "(1 + w^4)/(1 + w^2)"
+  l33: "1 - w^2"
+  m11: "(2^(1/2)/nu) w(1 + 2w^2)/(1 + w^2)"
+  m12: "(2^(1/2)/nu) w^4 (1 - w^2/5)/(1 + w^2)"
+  m21: "(2^(1/2)/nu) w^4/(1 + w^2)"
+  m22: "(2^(1/2)/nu) w(1 + w^2 + 6w^4/5)/(1 + w^2)"
+  m33: "(2^(1/2)/nu) w"
+  p11: "2^(3/2) nu w(1 + w^2 + w^4/5 - w^6/5)/(1 + w^2)^3"
+  p12: "2^(1/2) nu w^2 (3 + w^2)/(1 + w^2)^3"
+  p21: "2^(1/2) nu w^2 (3 + 4w^2 + 9w^4/5)/(1 + w^2)^3"
+  p22: "2^(1/2) nu w(-1 + 2w^2 + w^4)/(1 + w^2)^3"
+  p33: "-2^(1/2) nu w/(1 + w^2)"
+  q11: "(1 + 5w^2 + 2w^4)/(1 + w^2)^3"
+  q12: "4w^2 (1 + w^2/5 - w^4/5)/(1 + w^2)^3"
+  q21: "2w^2 (2 + w^2)/(1 + w^2)^3"
+  q22: "(1 + 2w^2 + 7w^4 + (18/5)w^6)/(1 + w^2)^3"
+  q33: "1/(1 + w^2)"
+  note: "The scan prints q22's w^6 coefficient as a stacked '1 8 over 5' read as 18/5 (the numerical check confirms 18/5). Text of section 5: Kepler's equation in the nearly parabolic form (1/2)(mu/q^3)^(1/2)(e+1)^(1/2)(t-T) = w + w^3/3 + (1/3) lambda sigma w, with lambda = (1-e)/(1+e) and sigma = -6(w^2/3 + w^4/5) + 9 lambda(w^4/5 + w^6/7) - 12 lambda^2(w^6/7 + w^8/9) + ...; a typical component is l21 = r/(q(1+e)) 2w/(1+w^2)^2 [ lambda w^4(3 + w^2) - (1 - w^4 lambda) sigma ] (as printed in the text; the form was not checked)."
+  ours:
+    numerical_check: "18 of the 20 formulas reproduce the integrated matrix at 3 test orbits (q, f) = (1, 1.0), (0.7, 1.8), (1.5, 0.6), mu = 1. q12 and q21 do not as printed: they reproduce only with w^3 in place of the leading w^2 (q12 = 4w^3(1 + w^2/5 - w^4/5)/(1+w^2)^3 and q21 = 2w^3(2 + w^2)/(1+w^2)^3), after which all 20 agree to 1e-7. The scan prints w^2 in both (read at 600 dpi, so it is not a read error)."
+    printed_values_that_do_not_reproduce_the_matrix:
+      - {item: "q12", printed: "4w^2 (1 + w^2/5 - w^4/5)/(1+w^2)^3", numerically_consistent_form: "4w^3 (1 + w^2/5 - w^4/5)/(1+w^2)^3"}
+      - {item: "q21", printed: "2w^2 (2 + w^2)/(1+w^2)^3", numerically_consistent_form: "2w^3 (2 + w^2)/(1+w^2)^3"}
+    parabolic_time: "t - T = 2^(1/2)(w + w^3/3)/nu (Barker's equation; it follows from the printed nearly parabolic Kepler equation at e = 1) was used for the test."
+paper_A_table_1_elliptic_reference_orbit:   # printed p.14; scaled components (tilde) used in the eccentric-anomaly integral of Eq. 4; C = cosE, S = sinE
+  l11: "(1 + e - e^2)C^2 + (2 + e + 2e^2 - e^3)C - 2 - 5e + 2e^2 + 3ES"
+  l12: "(1-e^2)^(1/2) S(1-C)"
+  l21: "(1-e^2)^(1/2) [ (1+e)SC + (2-e)S - 3EC ]"
+  l22: "C^2 + (-1 - 2e + e^2)C + 1"
+  l33: "(1-e)^(3/2) (C-e)(1-eC)"
+  m11: "(1-e)^(1/2) S[ -(1+e)C + 2 ]"
+  m12: "(1+e)^(1/2) [ (2-e)C^2 + 2(1+e)C - 4 - e + 3ES ]"
+  m21: "(1+e)^(1/2) (1-C)^2"
+  m22: "(1-e)^(1/2) [ (2+e+e^2)SC + 2S - 3(1+e)EC ]"
+  m33: "(1-e)^(3/2) S(1-eC)"
+  p11: "n(a/r)^2 [ (e+e^2-e^3)SC^2 + (-2-5e+2e^2)SC + (1+e+3e^2-e^3)S + 3E(C-e) ]"
+  p12: "n(a/r)^2 (1-e^2)^(1/2) [ eC^3 - 2C^2 + C + 1 - e ]"
+  p21: "n(a/r)^2 (1-e^2)^(1/2) [ -(e+e^2)C^3 + (2+5e)C^2 - (1+e)C - 1 - 3e + e^2 + 3ES ]"
+  p22: "n(a/r)^2 S[ eC^2 - 2C + 1 + e - e^2 ]"
+  p33: "-n(1-e)^(3/2) S"
+  q11: "n(a/r)^2 (1-e)^(1/2) [ (e+e^2)C^3 - 2(1+e)C^2 + 2C + 1 - e ]"
+  q12: "n(a/r)^2 (1+e)^(1/2) [ (2e-e^2)SC^2 - (4+e)SC + (1+e)^2 S + 3E(C-e) ]"
+  q21: "n(a/r)^2 (1+e)^(1/2) S[ eC^2 - 2C + 2 - e ]"
+  q22: "n(a/r)^2 (1-e)^(1/2) [ -(2e+e^2+e^3)C^3 + (4+5e+5e^2)C^2 - (1+3e)C - 2 - 3e - e^2 + 3(1+e)ES ]"
+  q33: "n(1-e)^(3/2) C"
+  note: "The tildes of the scaled components (l~11 etc.) are lost in the text layer; the rendered table prints them. The scaled matrices are used in Eq. 4: [dr; dr'] = (a^2/(n r r0))(1-e)^(-3/2) [[L~, M~],[P~, Q~]](E) [ -M~^T(E0); L~^T(E0) ] dr0' + (a/(n^2 r))(1-e)^(-3/2) [[L~, M~],[P~, Q~]](E) integral_{E0}^{E} [ -M~^T(eta); L~^T(eta) ] f(eta) d(eta)."
+  ours:
+    relation_to_paper_B_table_1: "Each scaled component is the Table 1 component of paper B times a closed factor: l~ij = (r/a)(1-e)^k l_ij with k = 2, 1, 2, 1 for ij = 11, 12, 21, 22 and k = 5/2 for 33; p~ij = (r/a)(1-e)^k p_ij with the same k; m~ij = n(r/a)(1-e)^k m_ij and q~ij = n(r/a)(1-e)^k q_ij with k = -1/2, +1/2, -1/2, +1/2 for ij = 11, 12, 21, 22 and +1/2 for 33. Found numerically: the ratio to the integrated matrix is constant in E and equal to these powers at (a, e) = (1, 0.3) and (2, 0.3). So all 20 scaled formulas are correct as printed."
+    eq4_check: "With these matrices Eq. 4's first term (the response to dr0') reproduces the in-plane blocks of the integrated matrix Omega(t,t0)[:, 3:6] to 1e-12 at (a, e, E0, E) = (1, 0.1, 0.5, 2.0), (1.3, 0.4, 0.9, 2.2), (2, 0.5, 3.0, 5.0). The z entries (the 33 elements) come out low by a factor (1-e)^(3/2): the printed l~33, m~33, p~33, q~33 are normalised with (1-e)^(5/2) and (1-e)^(1/2) and the printed prefactor (1-e)^(-3/2) is that of the in-plane entries (powers 2 + (-1/2) = 3/2 and 1 + 1/2 = 3/2). So Eq. 4 as printed is exact in the orbit plane and not in the z direction unless the 33 entries carry an extra (1-e)^(-3/2). The paper does not say which is intended."
+paper_A_table_2_hyperbolic_reference_orbit:   # printed p.14; ch = coshF, sh = sinhF; a < 0; n1 with -n1^2 a^3 = mu
+  l11: "(-1 - e + e^2)ch^2 + (-2 - e - 2e^2 + e^3)ch + 2 + 5e - 2e^2 + 3F sh"
+  l12: "(e^2-1)^(1/2) sh(ch - 1)"
+  l21: "(e^2-1)^(1/2) [ (1+e)sh ch + (2-e)sh - 3F ch ]"
+  l22: "ch^2 + (-1 - 2e + e^2)ch + 1"
+  l33: "(e-1)^(3/2) (e - ch)(e ch - 1)"
+  m11: "(e-1)^(1/2) sh[ (1+e)ch - 2 ]"
+  m12: "(e+1)^(1/2) [ (-2+e)ch^2 - 2(1+e)ch + 4 + e + 3F sh ]"
+  m21: "(e+1)^(1/2) (ch - 1)^2"
+  m22: "(e-1)^(1/2) [ (2+e+e^2)sh ch + 2sh - 3(1+e)F ch ]"
+  m33: "(e-1)^(3/2) sh(e ch - 1)"
+  p11: "n1(a/r)^2 [ (-e - e^2 + e^3)ch^2 sh + (2 + 5e - 2e^2)ch sh + (-1 - e - 3e^2 + e^3)sh + 3F(e - ch) ]"
+  p12: "n1(a/r)^2 (e^2-1)^(1/2) [ e ch^3 - 2ch^2 + ch + 1 - e ]"
+  p21: "n1(a/r)^2 (e^2-1)^(1/2) [ (e+e^2)ch^3 - (2+5e)ch^2 + (1+e)ch + 1 + 3e - e^2 + 3F sh ]"
+  p22: "n1(a/r)^2 sh[ e ch^2 - 2ch + 1 + e - e^2 ]"
+  p33: "-n1(e-1)^(3/2) sh"
+  q11: "n1(a/r)^2 (e-1)^(1/2) [ (e+e^2)ch^3 - 2(1+e)ch^2 + 2ch + 1 - e ]"
+  q12: "n1(a/r)^2 (e+1)^(1/2) [ (-2e+e^2)sh ch^2 + (4+e)sh ch - (1+e)^2 sh + 3F(e - ch) ]"
+  q21: "n1(a/r)^2 (e+1)^(1/2) sh[ e ch^2 - 2ch + 2 - e ]"
+  q22: "n1(a/r)^2 (e-1)^(1/2) [ (2e+e^2+e^3)ch^3 - (4+5e+5e^2)ch^2 + (1+3e)ch + 2 + 3e + e^2 + 3(1+e)F sh ]"
+  q33: "n1(e-1)^(3/2) ch"
+  ours:
+    numerical_check: "Same scaling test as Table 1 at (a, e) = (-1, 1.6) and (-2, 1.6): the ratio of each printed scaled component to the integrated matrix, divided by r/a (negative for a < 0), is constant in F and equals -(e-1)^k with the same powers k as the elliptic table, with n replaced by n1 and (1-e) by (e-1). So all 20 hyperbolic scaled formulas are correct as printed. The 33 scaling inconsistency with Eq. 4 noted under Table 1 applies here too."
+equations_printed:
+  paper_A:
+    - {eq: 1, role: "General solution: [dr; dr'] = Omega(t,T) Omega^-1(t0,T) [dr0; dr0'] + PI, the homogeneous part plus the particular integral (from the paper's ref. 1, Danby 1962)"}
+    - {eq: 2, role: "Block structure Omega = [[L, M],[P, Q]] and its inverse [[Q^T, -M^T],[-P^T, L^T]]; T is taken as a pericentre passage"}
+    - {eq: 3, role: "Particular integral PI = [[L(t,T), M(t,T)],[P(t,T), Q(t,T)]] integral_{t0}^{t} [ -M^T(tau,T); L^T(tau,T) ] f(tau) dtau, with f(r,t) the disturbing force along the reference orbit"}
+    - {eq: 4, role: "The same in the eccentric anomaly with scaled components (see Table 1 note)"}
+    - {eq: 5, role: "Mean orbit: dr0' = M^-1(t1,t0) dr1, the velocity residual that makes a Keplerian arc pass through the true positions at t0 and t1. The printed 2 x 2 block matrix in the line above it is written [[P, M],[L, Q]] with L and P interchanged against the definition used everywhere else in the paper; with M in the correct place (dr1 = M dr0') the result dr0' = M^-1 dr1 is right."}
+    - {eq: 6, role: "Chain: Omega(ta,tb) as the product of the matrizants of the arcs between ta and tb, each built from its own reference orbit (page 16); valid if the axes keep their orientation in space"}
+    - {accuracy_rule: "A reference orbit is replaced when (dr)^2 exceeds the largest tolerable error (for example (dr)^2 < 5e-7 for six decimals); the paper's circumlunar test needed eight arcs for 1e-3 accuracy"}
+  paper_B:
+    - {eq: 1, role: "[dr; dr'] = Omega(t,t0) [dr0; dr0'] with dr, dr' residuals from the reference Keplerian orbit, to first order"}
+    - {eq: 2, role: "Omega = [[L, M],[P, Q]], 3 x 3 blocks"}
+    - {eq: 3, role: "Rotation matrix R (columns P, Q, R vectors) from the orbital reference system to another (cited to Danby's Fundamentals of Celestial Mechanics pp.161, 329)"}
+    - {eq: 4, role: "M1 = R^T M R (and likewise for L, P, Q): change of axes"}
+    - {eq: 5, role: "L(t,t0) = -dM/dt0; P(t,t0) = -d^2 M/(dt dt0); Q(t,t0) = dM/dt. They follow from the variational equations (our derivation: d Omega/d t0 = -Omega A(t0) with A = [[0, I],[G, 0]] gives dM/dt0 = -L, and dM/dt = Q because dr/dv0 differentiates to dv/dv0); the free particle (L = I, M = (t - t0) I) satisfies them"}
+    - {eq: 6, role: "Omega^-1(t,t0) = [[Q^T, -M^T],[-P^T, L^T]] from the canonical (symplectic) nature of the equations. Checked numerically on a rotated elliptic orbit: max difference 1.5e-13."}
+    - {eq: 7, role: "Omega(t,t0) = Omega(t,T) Omega^-1(t0,T) with T arbitrary (so every formula can be built from the pericentre-based ones of Tables 1, 3, 4)"}
