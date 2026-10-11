@@ -139,22 +139,47 @@ class Target:
 
 
 def stage_fix(t: Target) -> None:
-    t.set_sigma(SIGMA0 / 4)
-    _, j_lo = t.rj(t.scale(t.seed, SIGMA0 / 4))
+    """Detection, then the family root. Resumable (amendment 6): the detection and the 1-d family
+    state live in fix_state.json; a call stops after --max-wall seconds and the next continues."""
+    sp = t.out / "fix_state.json"
+    fs: dict[str, Any] = json.loads(sp.read_text()) if sp.exists() else {}
     t.set_sigma(SIGMA0)
     z0 = t.scale(t.seed, SIGMA0)
-    _, j_hi = t.rj(z0)
-    q = detect_degenerate(j_hi, j_lo, 4.0)
-    d = column_scales(j_hi)
-    s_hi = scaled_svd(j_hi, d)[1]
-    s_lo = scaled_svd(j_lo, column_scales(j_lo))[1]
-    t.log(f"detect: q {q}; sv(0.02) {s_hi[-4:].tolist()} sv(0.005) {s_lo[-4:].tolist()}")
-    rec: dict[str, Any] = {"q": q, "sv_hi": s_hi[-4:].tolist(), "sv_lo": s_lo[-4:].tolist()}
+    if "q" not in fs:
+        t.set_sigma(SIGMA0 / 4)
+        _, j_lo = t.rj(t.scale(t.seed, SIGMA0 / 4))
+        t.set_sigma(SIGMA0)
+        _, j_hi = t.rj(z0)
+        q = detect_degenerate(j_hi, j_lo, 4.0)
+        s_hi = scaled_svd(j_hi, column_scales(j_hi))[1]
+        s_lo = scaled_svd(j_lo, column_scales(j_lo))[1]
+        t.log(f"detect: q {q}; sv(0.02) {s_hi[-4:].tolist()} sv(0.005) {s_lo[-4:].tolist()}")
+        fs.update(q=q, sv_hi=s_hi[-4:].tolist(), sv_lo=s_lo[-4:].tolist(), family={})
+        sp.write_text(json.dumps(fs))
+    q = int(fs["q"])
+    rec: dict[str, Any] = {"q": q, "sv_hi": fs["sv_hi"], "sv_lo": fs["sv_lo"]}
     t0 = time.monotonic()
     if q == 0:
         rec.update(status="no degenerate direction (identity)", z_star=z0.tolist(), alpha_star=0.0)
     elif q == 1:
-        res = family_root_1d(t.rj, z0, TOL, log=t.log, g_floor=G_FLOOR)
+
+        def save(state: dict[str, Any]) -> None:
+            fs["family"] = state
+            sp.write_text(json.dumps(fs))
+
+        res = family_root_1d(
+            t.rj,
+            z0,
+            TOL,
+            log=t.log,
+            g_floor=G_FLOOR,
+            state=fs["family"],
+            save=save,
+            deadline=t0 + t.max_wall,
+        )
+        if res.status == "paused":
+            t.log(f"fix: paused in phase {fs['family'].get('phase')}; run the stage again")
+            return
         rec.update(status=res.status, alpha_star=res.alpha_star, newton_length=res.newton_length)
         rec["scan"] = res.scan
         rec["z_star"] = None if res.z_star is None else res.z_star.tolist()
@@ -163,6 +188,7 @@ def stage_fix(t: Target) -> None:
         rec.update(status=res.status, alpha_star=res.alpha_star, newton_length=res.newton_length)
         rec["scan"] = res.scan
         rec["z_star"] = None if res.z_star is None else res.z_star.tolist()
+    d = column_scales(t.rj(z0)[1])
     rec["wall_s"] = time.monotonic() - t0
     if rec["z_star"] is not None:
         zs = np.asarray(rec["z_star"])

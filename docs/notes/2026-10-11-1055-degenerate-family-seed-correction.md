@@ -278,3 +278,22 @@ The 8 tests pass.
 - Continuation (#1025 rules) is slow: a factor-1.2 step does not converge within the 25 + 15
   budget, and a 2.5 % step needs 8-12 Newton iterations (diagnostic, scratch). The run needs more
   than three 8-minute calls, so it goes to the lead (`--max-wall`).
+
+### Amendment 6: resumable family stage (12:45 AEDT; lead ruling: under-8-minute calls, checkpointed)
+
+`family_root_1d` keeps its whole state (frame vectors, scan position, bracket, secant) in a
+JSON-serialisable dict, saved after every step. `bordered_solve` takes a deadline and pauses after
+at least one step. Every call therefore makes progress, even one started past its deadline. The
+driver keeps the detection and the family state in `fix_state.json`, so `--stage fix` resumes. A
+test runs the toy with an already-past deadline (one step per call, state through JSON) and
+reaches the same root as an uninterrupted run: 9 tests pass. The method and the criteria are
+unchanged. The first GanCal#1 fix call (12:28-12:36, pre-amendment code) reached detection, q = 1
+(sv 1.27e-5 at 0.02, 3.18e-6 at 0.005), then hit the call limit with no state saved.
+
+Launch overlap (recorded): the lead launched gc4-19 cont and the GanCal#1 fix/start/neg loop at
+12:36. The GanCal#1 fix process loaded the driver before the amendment-6 edit: it is the
+uninterrupted, non-resumable family stage, and it writes `fix.json` when it ends. My own resumable
+fix call ran on the same target from 12:39 to 12:44, concurrently with it. It wrote only
+`fix_state.json` (paused in phase frame2), which the lead's process does not read. I make no further
+GanCal#1 calls while the lead's run is alive. `fix_state.json` stays: a valid partial state of the
+same method, used only if the stage is re-run.

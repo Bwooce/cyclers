@@ -152,3 +152,23 @@ def test_family_frame_converges_an_off_family_seed() -> None:
     r, _ = rj(fr.base.z)
     u = fr.u_n[:, 0]
     assert float(np.max(np.abs(r - u * float(u @ r)))) < 1e-6  # the residual lies along u
+
+
+def test_family_root_1d_resumes_from_its_state() -> None:
+    """Calls with an already-past deadline still progress one step each; the saved state carries
+    the run to the same root as an uninterrupted run (amendment 6)."""
+    import json
+
+    rj = toy1(0.02)
+    z0 = np.array([1.0e6, 3.0, 0.0])
+    full = family_root_1d(rj, z0, tol=1e-6)
+    state: dict = {}  # type: ignore[type-arg]
+    res = None
+    for _ in range(200):
+        state = json.loads(json.dumps(state))  # through JSON, as the driver stores it
+        res = family_root_1d(rj, z0, tol=1e-6, state=state, deadline=0.0)
+        if res.status != "paused":
+            break
+    assert res is not None and res.status == "root"
+    assert res.z_star is not None and full.z_star is not None
+    assert abs(res.z_star[2] - full.z_star[2]) < 1e-6 * W_ROOT

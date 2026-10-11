@@ -13,8 +13,10 @@ Variables are column-scaled with fixed scales ``d`` (the Jacobian column norms a
 
 from __future__ import annotations
 
+import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -73,6 +75,7 @@ class BorderedResult:
     iterations: int
     complement_norm: float
     g: Arr
+    paused: bool = False
 
 
 def bordered_solve(
@@ -85,6 +88,7 @@ def bordered_solve(
     alpha: Arr,
     tol: float,
     max_iter: int = 25,
+    deadline: float | None = None,
 ) -> BorderedResult:
     """Gauss-Newton on the complement rows (I - U U^T) r = 0 and the q arclength rows
     V^T (d * (z - z_ref)) = alpha. ``u_null`` (m x q) and ``v_null`` (n x q, scaled coordinates,
@@ -120,6 +124,10 @@ def bordered_solve(
                 break
         else:
             break
+        if deadline is not None and time.monotonic() > deadline:  # after at least one step
+            cn = float(np.max(np.abs(proj @ r)))
+            if cn >= tol:
+                return BorderedResult(z, False, it, cn, u_null.T @ r, paused=True)
     comp = proj @ r
     ok = float(np.max(np.abs(comp))) < tol
     return BorderedResult(z, ok, it, float(np.max(np.abs(comp))), u_null.T @ r)
@@ -174,74 +182,146 @@ def family_root_1d(
     h_frac: float = 0.01,
     log: Callable[[str], None] | None = None,
     g_floor: float = 0.0,
+    state: dict[str, Any] | None = None,
+    save: Callable[[dict[str, Any]], None] | None = None,
+    deadline: float | None = None,
 ) -> FamilyResult:
     """q = 1: converge the complement at the base, scan alpha both ways along the fixed null
-    direction for a sign change of g = u . r (the base's u), then a secant to |g| < 1e-3 |g(0)|.
+    direction for a sign change of g = u . r (the base's u), then a secant to
+    |g| < max(1e-3 |g(0)|, g_floor).
 
     The arclength alpha is in scaled units along v (the base's right null vector). The scan length
     is ``max_lengths`` times the Newton-step length L = |u . r| / s_min at the base; the first step
     is ``h_frac`` L, doubled after a corrector converging in 4 iterations or fewer, halved on
-    failure (down to 1e-4 L)."""
+    failure (down to 1e-4 L).
+
+    Resumable: ``state`` (a JSON-serialisable dict, mutated in place) holds the phase, the frame,
+    the scan position and the bracket; ``save`` is called after every step; past ``deadline``
+    (time.monotonic) the function returns with status "paused" and a later call with the same
+    ``state`` continues."""
     say = log or (lambda _m: None)
-    fr = family_frame(rj, z0, 1, tol)
-    d, u_n, v_n, big_l, base = fr.d, fr.u_n, fr.v_n, fr.big_l, fr.base
-    res = FamilyResult(None, None, "base complement did not converge", newton_length=big_l)
-    if not fr.converged:
-        return res
-    z0 = base.z  # arclength is measured from the base
-    g0 = float(base.g[0])
-    res.scan.append((0.0, g0, base.complement_norm))
-    say(f"family: L {big_l:.3e} g(0) {g0:.3e} comp {base.complement_norm:.2e}")
-    if abs(g0) <= tol:  # already solvable to the complement tolerance: no move
-        res.z_star, res.alpha_star, res.status = base.z, 0.0, "root at base"
-        return res
-    bracket: tuple[float, Arr, float, float, Arr, float] | None = None
-    for sgn in (1.0, -1.0):
-        a_prev, z_prev, g_prev = 0.0, base.z, g0
-        dzda = v_n[:, 0] / d  # dz per unit alpha (alpha = v . (d * dz))
-        h = h_frac * big_l
-        while abs(a_prev) < max_lengths * big_l and h >= 1e-4 * big_l:
-            a = a_prev + sgn * h
-            br = bordered_solve(
-                rj, z_prev + dzda * (a - a_prev), d, u_n, v_n, z0, np.array([a]), tol
-            )
+    st: dict[str, Any] = state if state is not None else {}
+    put = save or (lambda _s: None)
+    res = FamilyResult(None, None, "paused")
+
+    progressed = False
+
+    def late() -> bool:
+        return progressed and deadline is not None and time.monotonic() > deadline
+
+    def arr(key: str) -> Arr:
+        return np.asarray(st[key], dtype=np.float64)
+
+    if "phase" not in st:
+        _, j0 = rj(z0)
+        d = column_scales(j0)
+        u, _s, vt = scaled_svd(j0, d)
+        st.update(phase="frame1", d=d.tolist(), u=u[:, -1].tolist(), v=vt[-1].tolist())
+        st.update(z=np.asarray(z0, dtype=np.float64).tolist(), z_seed=list(map(float, z0)))
+        put(st)
+    while True:
+        ph = st["phase"]
+        d = arr("d")
+        u_n, v_n = arr("u")[:, None], arr("v")[:, None]
+        if ph in ("frame1", "frame2"):
+            zr = arr("z") if ph == "frame2" else arr("z_seed")
+            br = bordered_solve(rj, arr("z"), d, u_n, v_n, zr, np.zeros(1), tol, deadline=deadline)
+            st["z"] = br.z.tolist()
+            if br.paused:
+                put(st)
+                return res
             if not br.converged:
-                h *= 0.5
+                st["phase"] = "done"
+                st["status"] = "base complement did not converge"
+                put(st)
+                return FamilyResult(None, None, st["status"])
+            if ph == "frame1":
+                rb_, jb = rj(br.z)
+                d = column_scales(jb)
+                u, s_, vt = scaled_svd(jb, d)
+                st.update(d=d.tolist(), u=u[:, -1].tolist(), v=vt[-1].tolist())
+                st["big_l"] = abs(float(u[:, -1] @ rb_)) / float(s_[-1])
+                st["phase"] = "frame2"
+            else:
+                g0 = float(br.g[0])
+                st.update(base=br.z.tolist(), g0=g0, scan=[[0.0, g0, br.complement_norm]])
+                say(f"family: L {st['big_l']:.3e} g(0) {g0:.3e} comp {br.complement_norm:.2e}")
+                if abs(g0) <= tol:
+                    st.update(phase="done", status="root at base", z_star=br.z.tolist(), a_star=0.0)
+                else:
+                    st.update(phase="scan", sgn=1.0, a_prev=0.0, z_prev=br.z.tolist(), g_prev=g0)
+                    st.update(dzda=(v_n[:, 0] / d).tolist(), h=h_frac * st["big_l"])
+            put(st)
+        elif ph == "scan":
+            big_l = float(st["big_l"])
+            sgn, a_prev, h = float(st["sgn"]), float(st["a_prev"]), float(st["h"])
+            if abs(a_prev) >= max_lengths * big_l or h < 1e-4 * big_l:
+                if sgn > 0:
+                    st.update(sgn=-1.0, a_prev=0.0, z_prev=st["base"], g_prev=st["g0"])
+                    st.update(dzda=(v_n[:, 0] / d).tolist(), h=h_frac * big_l)
+                else:
+                    st.update(phase="done", status="no sign change of g within the scanned range")
+                put(st)
+                continue
+            if late():
+                return res
+            a = a_prev + sgn * h
+            z_prev = arr("z_prev")
+            pred = z_prev + arr("dzda") * (a - a_prev)
+            br = bordered_solve(rj, pred, d, u_n, v_n, arr("base"), np.array([a]), tol)
+            if not br.converged:
+                st["h"] = 0.5 * h
+                put(st)
+                progressed = True
                 continue
             g = float(br.g[0])
-            res.scan.append((a, g, br.complement_norm))
+            st["scan"].append([a, g, br.complement_norm])
             say(f"family: alpha {a:.4e} g {g:.4e} comp {br.complement_norm:.2e} it {br.iterations}")
-            if np.sign(g) != np.sign(g_prev):
-                bracket = (a_prev, z_prev, g_prev, a, br.z, g)
-                break
-            dzda = (br.z - z_prev) / (a - a_prev)
-            a_prev, z_prev, g_prev = a, br.z, g
-            if br.iterations <= 4:
-                h *= 2.0
-        if bracket is not None:
-            break
-    if bracket is None:
-        res.status = "no sign change of g within the scanned range"
-        return res
-    a_lo, z_lo, g_lo, a_hi, z_hi, g_hi = bracket
-    for _ in range(40):
-        a = a_hi - g_hi * (a_hi - a_lo) / (g_hi - g_lo)
-        w = (a - a_lo) / (a_hi - a_lo)
-        br = bordered_solve(rj, z_lo + w * (z_hi - z_lo), d, u_n, v_n, z0, np.array([a]), tol)
-        if not br.converged:
-            res.status = "secant corrector failed"
-            return res
-        g = float(br.g[0])
-        res.scan.append((a, g, br.complement_norm))
-        if abs(g) < max(1e-3 * abs(g0), g_floor):
-            res.z_star, res.alpha_star, res.status = br.z, a, "root"
-            return res
-        if np.sign(g) == np.sign(g_lo):
-            a_lo, z_lo, g_lo = a, br.z, g
-        else:
-            a_hi, z_hi, g_hi = a, br.z, g
-    res.status = "secant did not converge"
-    return res
+            if np.sign(g) != np.sign(float(st["g_prev"])):
+                st.update(phase="secant", lo=[a_prev, st["z_prev"], st["g_prev"]])
+                st["hi"] = [a, br.z.tolist(), g]
+            else:
+                st["dzda"] = ((br.z - z_prev) / (a - a_prev)).tolist()
+                st.update(a_prev=a, z_prev=br.z.tolist(), g_prev=g)
+                if br.iterations <= 4:
+                    st["h"] = 2.0 * h
+            put(st)
+            progressed = True
+        elif ph == "secant":
+            if late():
+                return res
+            a_lo, z_lo, g_lo = st["lo"]
+            a_hi, z_hi, g_hi = st["hi"]
+            z_lo, z_hi = np.asarray(z_lo), np.asarray(z_hi)
+            a = a_hi - g_hi * (a_hi - a_lo) / (g_hi - g_lo)
+            w = (a - a_lo) / (a_hi - a_lo)
+            br = bordered_solve(
+                rj, z_lo + w * (z_hi - z_lo), d, u_n, v_n, arr("base"), np.array([a]), tol
+            )
+            st["n_secant"] = int(st.get("n_secant", 0)) + 1
+            if not br.converged:
+                st.update(phase="done", status="secant corrector failed")
+            else:
+                g = float(br.g[0])
+                st["scan"].append([a, g, br.complement_norm])
+                say(f"family: secant alpha {a:.4e} g {g:.4e}")
+                if abs(g) < max(1e-3 * abs(float(st["g0"])), g_floor):
+                    st.update(phase="done", status="root", z_star=br.z.tolist(), a_star=a)
+                elif st["n_secant"] >= 40:
+                    st.update(phase="done", status="secant did not converge")
+                elif np.sign(g) == np.sign(g_lo):
+                    st["lo"] = [a, br.z.tolist(), g]
+                else:
+                    st["hi"] = [a, br.z.tolist(), g]
+            put(st)
+            progressed = True
+        else:  # done
+            out = FamilyResult(None, None, st["status"], newton_length=float(st.get("big_l", 0.0)))
+            out.scan = [(float(a), float(g), float(c)) for a, g, c in st.get("scan", [])]
+            if "z_star" in st:
+                out.z_star = arr("z_star")
+                out.alpha_star = float(st["a_star"])
+            return out
 
 
 def family_root_nd(
