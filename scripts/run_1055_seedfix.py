@@ -610,6 +610,20 @@ def stage_cont(t: Target) -> None:
     rb.stage_sigma(1)
 
 
+STAGES = {
+    "fix": stage_fix,
+    "start": stage_start,
+    "neg": stage_neg,
+    "cont": stage_cont,
+    "limit": stage_limit,
+    "neg2": stage_neg2,
+    "scan": stage_scan,
+    "fold": stage_fold,
+    "resume": stage_resume,
+    "foldsqrt": stage_foldsqrt,
+}
+
+
 def main() -> None:
     preflight_search(
         task_no=1055,
@@ -627,19 +641,7 @@ def main() -> None:
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
         "--stage",
-        choices=[
-            "fix",
-            "start",
-            "neg",
-            "cont",
-            "down",
-            "ias15",
-            "limit",
-            "neg2",
-            "scan",
-            "fold",
-            "resume",
-        ],
+        choices=[*STAGES, "down", "ias15"],  # one list: the dispatch table below
         required=True,
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
@@ -660,18 +662,7 @@ def main() -> None:
     if args.stage == "ias15":
         t.rb.stage_ias15(1)
         return
-    {
-        "fix": stage_fix,
-        "start": stage_start,
-        "neg": stage_neg,
-        "cont": stage_cont,
-        "limit": stage_limit,
-        "neg2": stage_neg2,
-        "scan": stage_scan,
-        "fold": stage_fold,
-        "resume": stage_resume,
-        "foldsqrt": stage_foldsqrt,
-    }[args.stage](t)
+    STAGES[args.stage](t)
 
 
 if __name__ == "__main__":
