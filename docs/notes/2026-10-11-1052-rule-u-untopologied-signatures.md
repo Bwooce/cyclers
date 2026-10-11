@@ -123,3 +123,63 @@ Tests:
 
 The remaining #1052 items (ratchet evasions: a Call with a status argument; NamedExpr; nits) become
 backlog #1066 (lead ruling).
+
+## Addendum A1 (2026-10-11, lead): rule U2, pre-registered before the U2 code
+
+**Origin.** pluto-smallmoons-sonnet's #1052 Pluto note (90a60537, sec. 8). Under the current code an
+anchor with NO topology label is unrestricted for a LABELLED signature too. Example: a {pump-tour}
+signature at Pluto still reads "published", citing Howett (empty label). This is the same
+false-published hole, on the topologied side.
+
+**Rule U2.** An anchor with NO topology label cannot make ANY signature "published":
+- its synthesised hit is capped at `TOUR_ONLY_CAP`, at most "inconclusive", naming the anchor;
+- the signature reads "inconclusive" unless a labelled anchor matches;
+- for untopologied signatures this is already rule U.
+
+If any control or candidate flips published -> inconclusive because it rested on an unlabelled
+anchor, the rule is NOT changed. The report names the anchor, and the fix is to label that anchor from
+its digest under its own pre-registration (as #1047 did).
+
+**Blast radius, stated before the run.** Computed with the baseline 544a40d5 code.
+- Unlabelled anchors (7 in `KNOWN_CORPUS`, 0 of the 3 in `KNOWN_CORPUS_3D`):
+  - Howett et al. Persephone (Pluto);
+  - Wallace Mars-Phobos (Mars);
+  - Koon-Lo-Marsden-Ross (Sun, Jupiter);
+  - Wilczak-Zgliczyński Sun-Jupiter-Oterma (Sun, Jupiter);
+  - Gurfil-Kasdin 2002 geocentric ER3BP catalogue (Sun, E);
+  - Gurfil-Kasdin 2002 out-of-ecliptic (Sun, E);
+  - Henon Sun-Earth DRO family f (Sun, E).
+- Catalogue rows that read "published" through one of them today: NONE, under the probe's
+  construction (each row with a sequence, primary inferred, unlabelled, topology none and
+  {repeated-moon}).
+- So U2 is expected to change no catalogue row's reading, no control and no candidate.
+- It changes labelled probe signatures at the systems of those anchors only. Example: Pluto
+  {pump-tour} goes from published (Howett) to inconclusive.
+
+## Findings of the first rule-U probe (before U2), reported for the lead's ruling
+
+Run: `scripts/probe_1052_rule_u.py --baseline 544a40d5`. 6244 shapes x 11 topologies = 68684
+signatures. The shapes are catalogue rows plus 1-3-body subsets: a DEVIATION from the 1-4 bodies
+pre-registered. A 26-body anchor makes k = 4 about 36k shapes, about 3 h; the 1-3 run takes about
+30 min.
+
+1. 5985 untopologied signatures go from published to inconclusive. This is the intended rule-U
+   effect.
+2. **Two TOPOLOGIED signatures change**: Sun (M,) and Sun (M, M) with {repeated-moon} go from
+   published (Aldrin) to inconclusive.
+   - This is the Aldrin single-body fix acting as designed: the n-bodies tag plus the F7 extension
+     do not look at topology.
+   - But it breaks this pre-registration's own stop rule ("topologied signatures must not change at
+     all"). The direction is conservative.
+   - Proposed resolution: the stop rule exempts SINGLE-body Sun E/M signatures (the fix's intended
+     target) and still forbids any move toward not-found. Lead ruling needed.
+3. **`data/942_943_litcheck_scope.json` is NOT byte-identical**, though every STATUS is unchanged.
+   - In one "not-found" candidate entry the notes now list the 10 newly tagged Earth-Mars anchors
+     among "excluded by declared scope [n-bodies]".
+   - The footprint-count sentence changed accordingly.
+   - The "byte-identical" expectation should have read "status-identical; notes may list the new
+     tags". Lead ruling needed.
+   - `data/1025_litcheck_973_members.json` and `data/1047_literature/gate_results.json` ARE
+     byte-identical.
+
+The probe and the litcheck scripts re-run with U2 in place after the ruling.
