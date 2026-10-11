@@ -698,3 +698,26 @@ limits stated. Proposed addition, for a later window, not applied now:
 The e2 crash is registered as `#1059`: a date guard in the chain tool, so an out-of-range trial step is
 a rejected step, not a crash. A correctness fix: e2 of step 1b is NOT RUN, not a negative, until it is
 re-run under the guard.
+
+## 10. Catalogue window patch for the 10 ev rows: PRE-REGISTERED expected ratchet deltas (2026-10-11, before the dry run)
+
+Owner decision 2026-10-11: "(a) 10 rows, Standish >= 4/5" (owner summary sec. 7). The rows are ev4-1,
+ev4-4, ev4-6, ev4-7, ev5-4, ev5-5, ev5-6, ev5-7, ev5-8, ev5-9.
+- Prerequisite: V1 evidence `54b2401f` (`scripts/writeback_1025_ev.py`, `data/1025_ev_writeback_v1.json`,
+  writeback test 31 rows).
+- Apply script: in the scratchpad (`window/apply_1025_ev_window.py`). Every edit asserts exactly one
+  match.
+- The same window applies the ev-A `data_gaps` clause of sec. 9.5. twobody-gen2's gc-1/gc-2 V2 notes
+  patch is separate and touches other rows.
+
+Expected deltas:
+- catalogue rows: 413 -> 423;
+- `our_status: candidate-novel`: 19 -> 29;
+- multi-arc (allowlist and census): 311 -> 321; single-ellipse 46 and non-keplerian 56 unchanged;
+- V1 map (`test_schema_v45_fields`): +10 entries, all V1. The V2 count is unchanged (10), as are V3;
+- validation tier census, "unvalidated": 134 -> 144 (this-project rows with no provenance-registry
+  tags, as for ev-B);
+- rediscovery, MULTI_ENCOUNTER_SEQUENCE: 225 -> 235 (all 10 are heliocentric with multi-encounter
+  sequences, like ev-B); NON_HELIOCENTRIC unchanged (111); other exclusion reasons unchanged.
+
+Any other ratchet that moves in the dry run is a surprise. It is reported, not absorbed.
