@@ -3042,6 +3042,7 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   224 strong) carry an `RCharon/1:1` leg. The 12 best (the `#998` sec. 6.1 real-ephemeris set) carry none and are
   unaffected. Fix: `is_keplerian` returns False for Charon in `EphSystem`, then re-run the sec. 6.1 real-ephemeris
   step for those 135 members. Source: `docs/notes/2026-10-11-1024-barycentric-binary-model.md` sec. 8.
+  **DONE 2026-10-11 (pluto-smallmoons-sonnet; `#998` note sec. 11):** `EphSystem.is_keplerian("Charon")` is False; a 1:1 leg re-flies onto Charon to 0.2 km (18,200-19,300 km before); all 457 re-run: 280 members unchanged bitwise, the 129 with a 1:1 leg and no half-rev keep their gate verdicts (strong 90 of 90 pass at all epochs; ratios -57 to +12 percent, median +0.3), the 12 best unchanged, and the 48 members with a half-rev Charon leg (17 strong) are now REFUSED by `half_rev_vectors`, so their earlier real-ephemeris pass is withdrawn (strong evaluable 207, 206 pass at all epochs).
 - `#1065` — registered 2026-10-11 (lead dispatch to twobody-ext-opus; launch by the lead after window 3's suite).
   **FULL RE-ENUMERATION OF THE `#998` PLUTO CELLS IN THE `#1024` BARYCENTRIC BINARY MODEL.** Cells psb, pnb, pkb, phb
   (Charon on its barycentric circle, Pluto on the opposite circle for the surface screen), the `#998` flags, no
