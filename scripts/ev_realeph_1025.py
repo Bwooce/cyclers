@@ -10,7 +10,8 @@ timeout; nothing in them is changed:
 
 Subcommands:
   control C1|C2|C3            the route controls (sec. 3)
-  run MEMBER std|de [--epochs 0,1,..]  the ladder for one member and model (resumable)
+  run MEMBER std|de [--epochs 0,1,..] [--n-cycles N]
+                              the ladder for one member and model (resumable)
   summary                     verdicts and bands for every member run so far
 
 Output: data/1025_ev_realeph/<member>/<route>/e<i>/ (realeph_chain.json, tool.log, check.log) and
@@ -343,11 +344,16 @@ def cmd_run(argv: list[str]) -> None:
     ap.add_argument("--epochs", default="0,1,2,3,4")
     ap.add_argument("--root", default=None, help="subdirectory of data/1025_ev_realeph")
     ap.add_argument("--timeout", type=int, default=TIMEOUT_S, help="seconds per epoch and route")
+    ap.add_argument(
+        "--n-cycles", type=int, default=None, help="chain length (the V2 10-cycle chains, sec. 11)"
+    )
     a = ap.parse_args(argv)
     if a.root:
         ROOT[0] = OUT / a.root
     TIMEOUT[0] = a.timeout
     key, xd, n = members()[a.member]
+    if a.n_cycles:
+        n = a.n_cycles
     if a.model == "deb":
         ladder_deb(a.member, key, xd, n, [int(v) for v in a.epochs.split(",")])
         return

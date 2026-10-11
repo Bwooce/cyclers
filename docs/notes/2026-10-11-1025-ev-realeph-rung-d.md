@@ -741,3 +741,104 @@ What was checked:
   miscount.
 
 The pre-registered deltas above are unchanged.
+
+## 11. V2-ballistic judgement of the 10 rows under the final spec sec. 14 wording: PRE-REGISTERED (2026-10-11 16:35 AEDT, before any 10-cycle chain or control is run)
+
+Lead order, 2026-10-11. Rows: ev4-1, 4-4, 4-6, 4-7; ev5-4, 5-5, 5-6, 5-7, 5-8, 5-9 (V1 since window 2).
+No catalogue edit here; a promotion goes into a later window.
+
+### 11.1 Criteria and L
+
+- The final wording (spec sec. 14; #1007 secs. 8.4b, 8.17): >= 3 continuous cycles (junction
+  |V_inf| continuity < 1e-6 km/s); same-phase drift inside the band (dates <= 5 % of the chain's
+  shortest Lambert leg, |V_inf| <= 10 % of its smallest departure |V_inf|) for i = 1 .. n-L-2 (first and
+  last cycle excluded); the demanded-turn gate passes at every flyby ("indeterminate" is not a pass);
+  DOP853 re-fly miss < 1 km; at >= 3 of 5 epochs. The slopes are recorded as diagnostics.
+- L from `cyclerfinder.verify.geometric_repeat.repeat_for_pair` at 0.02 rev (5721cc8b), computed:
+  **Earth-Venus k = 4: L = 38; k = 5: L = 1.** (k = 2: 5; k = 3: 49.)
+- **k = 4 rows (ev4-1, 4-4, 4-6, 4-7): NOT JUDGEABLE.** The wording needs a chain of >= 2L = 76
+  cycles (about 486 yr). Following #1007 sec. 8.17 (the Earth-Mars rows: "no such chain exists, so
+  nothing runs"), no chain is run for them. They stay V1; V2 is not reachable for them under this
+  wording. (The lead may order their 10-cycle chains as a diagnostic of criteria 1-3; none is run
+  now.)
+- **k = 5 rows: L = 1**, 10-cycle chains (10 x 7.99 yr = 80 yr), comparisons i = 1..7: cycle i+1
+  against cycle i. At k = 5 Earth and Venus advance 7.9933 and 12.9933 rev per cycle, 0.0067 rev
+  short of an integer, so the geometry rotates about 2.4 deg per cycle and about 19 deg over the
+  chain. The mean period P_mean takes out the uniform part.
+
+### 11.2 Chains and tools
+
+- Chains: `scripts/ev_realeph_1025.py run MEMBER std --n-cycles 10 --root v2_10cyc --timeout 150`.
+  This is the rung (d) Standish ladder (sec. 2: S1 direct; S2 ramp if S1 does not pass; S3 grow-chain
+  from 2 if S2 is not reached) at 10 cycles. The only code change is the `--n-cycles` override. The
+  5 standard epochs are the rung (d) epochs.
+- A route that times out (150 s) is re-run once alone with `--timeout 420` (the rung (d) value). A
+  timeout is never a fail; an epoch still without a chain after that is NO 10-CYCLE CHAIN, which
+  fails that epoch (as in #1007 sec. 8.13).
+- Judgement: `scripts/v2_ev10_1025.py` (new). It imports `final_record` and `final_controls` from
+  `scripts/v2_samephase_1007.py` without editing it (twobody-gen2-opus told). Mode "ramp" (Standish
+  date-chain residual), as for ev-A, whose chain was also a `--direct` one. Every route that reaches a
+  10-cycle lambda = 1 chain is judged; an epoch passes if any of them passes (the rung (d) rule "a
+  pass by any route counts"; the route is recorded).
+- Output: `data/1025_ev_realeph/v2_10cyc/`.
+
+### 11.3 Controls first (stop rule)
+
+`v2_ev10_1025.py controls` runs #1007's `final_controls` unchanged: the H&M orbit 1 10-cycle positive
+must PASS (sec. 8.11: D' 2.09 / 7.52 d, W' 0.301 / 0.454 km/s), and the broken gc-1 e0 negative must
+FAIL (continuity 2.3e-1, re-fly 1.3e4 km). If either does not behave, STOP and report; no row is
+judged.
+
+Note: the positive control is a k = 2 orbit with L = 5. No published k = 5 Earth-Venus member exists
+to control L = 1. So L = 1 (consecutive-cycle comparison) is controlled only through the code path,
+not through a published orbit of this period.
+
+### 11.4 Expected outcomes (NOT blind: the 2-cycle rung (d) results of sec. 6 are known)
+
+Sec. 6, 2 cycles, Standish (worst ratio at the passing epochs; all by S1):
+
+| Row | Siblings (shared Lambert legs and Venus block) | 2-cycle epochs | Expected at 10 cycles |
+|---|---|---|---|
+| ev5-9 | none (E 3:2, 3:2; no Venus return) | 5/5, 0.304-0.318 | PASS, 4-5/5 |
+| ev5-6 | ev5-7 (Venus 2:1, 2:1) | 4/5, 0.405-0.561; e1 not reached | PASS, 3-4/5 |
+| ev5-7 | ev5-6 | 4/5, 0.533-0.561; e1 not reached | PASS, 3-4/5 |
+| ev5-4 | ev5-5 (Venus 3:2, 3:2) | 4/5, 0.585-0.742; e1 not reached | PASS, 3-4/5 |
+| ev5-5 | ev5-4 | 4/5, 0.755-0.780; e1 not reached | PASS, 3/5; the least margin |
+| ev5-8 | none (E 2:1, 3:2; Venus 2:1) | 4/5, 0.602-0.797; e2 not reached | PASS, 3-4/5 |
+
+What should differ between siblings:
+- Siblings share the Lambert legs and the Venus block. They differ in the Earth block. At 2 cycles both
+  pairs had the same unreached epoch (e1), so reachability follows the shared Venus chain.
+  Expected: the same epochs reach a 10-cycle chain for both siblings.
+- The worst ratios differed (ev5-4 against ev5-5; ev5-6 against ev5-7), so the binding flyby is in the
+  Earth block. Expected: the sibling with the larger 2-cycle ratio (ev5-5, ev5-7) is the one that can
+  lose an epoch on the gate.
+- The drift (criterion 4) should be nearly the same for siblings, since D' and W' are read from the
+  Lambert legs they share.
+
+Failure modes, most likely first:
+1. No 10-cycle chain at an epoch (a fold or no convergence). The 80-yr chain from e0 passes through the
+   e1 geometry, where the 2-cycle chains of four rows were not reached.
+2. The gate failing at some flyby over 80 yr, with ratios drifting up with the real eccentricities.
+3. Drift outside the band, as for ev-C at 10 cycles (#1007 sec. 8.14). Not expected, since L = 1
+   compares neighbours only 2.4 deg apart in geometry. But ev-C shows that a 2-cycle pass does not
+   guarantee it.
+
+Model limit, recorded: the Standish mean elements are the same model used for every ev V2 chain. The
+k = 5 chains run to about 2110-2142, past the 1800-2050 span of the elements' fit. This is
+an ideal-ephemeris test of the multi-cycle structure, not a prediction of the real ephemeris in 2140.
+
+Rows that pass move V1 -> V2 in a later window, with the slopes in the evidence. Rows that fail or are
+not judgeable stay V1, with the reason. Nothing is called novel.
+
+### 11.5 Exact commands
+
+```
+cd /Users/bruce/dev/cyclers
+uv run python scripts/v2_ev10_1025.py controls
+# chains, 2 at a time, in calls under 8 min (one member-epoch per job):
+for m in ev5-4 ev5-5 ev5-6 ev5-7 ev5-8 ev5-9; do for e in 0 1 2 3 4; do echo "$m $e"; done; done |
+  xargs -n2 -P2 sh -c 'uv run python scripts/ev_realeph_1025.py run $0 std --epochs $1 --n-cycles 10 --root v2_10cyc --timeout 150'
+uv run python scripts/v2_ev10_1025.py judge
+uv run python scripts/v2_ev10_1025.py summary
+```
