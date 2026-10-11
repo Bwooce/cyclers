@@ -904,3 +904,52 @@ FINAL GanCal#1@2013 verdict (#1055 jup365 target), all readings:
 - Negative control (amendment 8, neg2): the "beyond" point fails as required; the "back" point is
   still running. The start's dependence on the correction is conditional on it (sec. 12.3).
 - The jup365 lane is NOT validated on a full-revolution chain at full mass by GanCal#1.
+
+### 13.1 gc-1 e2 fix result (15:50-15:57 AEDT): q = 0, a weak direction that does NOT scale with sigma
+
+From `data/1055_gc1e2/fix.json`:
+- Column-scaled singular values (smallest four):
+  - at sigma 0.02: 4.55e-4, 2.47e-4, 3.81e-5, 2.75e-7;
+  - at sigma 0.005: 4.54e-4, 2.47e-4, 3.80e-5, 2.66e-7.
+- The detection rule (sec. 2 item 1: a trailing singular value is degenerate if it drops by more
+  than 2.5 between sigma0 and sigma0 / 4, proportional-to-sigma being 4) sees a ratio of 1.04, so
+  q = 0, the seed is unchanged, and amendment 10 is trivially passed (the seed is the chain's member).
+
+Against my expectation. I expected gc-1 e2 to show the sigma-proportional direction that the
+ideal-model gc-1 has (3.2e-6, 9.9e-7 and 3.0e-7 at 0.02, 0.005 and 0.00125, sec. 1). It does not.
+Instead it has a VERY weak direction, 2.75e-7 (140 times below the next singular value), whose size
+is INDEPENDENT of sigma. In the ideal coplanar model the 1:1 Callisto return's family is exactly
+degenerate at sigma = 0. On jup365, Callisto's real eccentricity and inclination break that
+degeneracy by a fixed amount (INFERRED). The family is then nearly degenerate, with a strength set
+by the ephemeris, not by sigma. This is below the detection threshold by construction: the rule
+looks for a singular value that FALLS with sigma, and this one does not fall at all. A run at sigma
+0.0025 or 0.00125 would show the same 2.7e-7, by the evidence of 0.02 against 0.005.
+
+What it does to the #1046 / sec. 12.7 explanation for gc-1:
+- The sec. 12.7 mechanism (the chain member is a non-root of an exactly degenerate family) does NOT
+  apply to gc-1 e2 as stated: there is no exactly degenerate family, so there is no solvability
+  root to miss.
+- The mechanism that fits is its near-degenerate version. The ephemeris selects the chain's member
+  with a stiffness of about 2.7e-7. Continuous gravity forces the residual along that direction by
+  an amount proportional to sigma (u . r ~ c sigma). The Newton move needed along it is then about
+  c sigma / 2.7e-7. That is large at sigma 0.02, but it shrinks IN PROPORTION TO SIGMA, unlike
+  GanCal#1's O(1) move. So for gc-1 e2 a start at smaller sigma should help, which is the opposite
+  of GanCal#1.
+- So, for gc-1, the #1044/#1046 start failures are explained (INFERRED) by a near-degenerate,
+  ephemeris-stiffened direction with an O(sigma) forcing, not by a non-root. The out-of-plane
+  character of the stuck residual (#1046) fits: Callisto's real inclination is what breaks the
+  out-of-plane degeneracy.
+
+PRE-REGISTERED reading of the start stage (lead launch 15:57; written before it ends):
+- The start is plain rungb Newton from the UNCHANGED seed at sigma 0.02 (q = 0). Up to 40
+  iterations, with the noise-floor rule.
+- CONVERGED: the #1044 non-start was specific to its solver path (LM, then a stalled polish) or to
+  #1044's iteration budget, not to the problem. The continuation and the amendment-10 identity (to
+  the chain, trivial here) follow; I will give the commands.
+- STALL (no convergence in 40 iterations, residual on the weak direction): the same obstruction as
+  #1044, as the near-degenerate mechanism above predicts. The pre-registered next step is then
+  `--stage weakscale` (not yet built; about 30 min of code): the residual's projection on the
+  smallest singular direction and the implied Newton move at sigma 0.02, 0.005 and 0.00125. If
+  the move falls in proportion to sigma, the start is moved to the sigma at which the move is
+  below 10 % of the node offsets, and the continuation goes up from there. Runtime: 3 Jacobians
+  at 35-110 s each, so under 10 minutes.
