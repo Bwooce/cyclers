@@ -120,15 +120,19 @@ generator and the arms in `run_1054_seed_design.py`). F2 gives 7,252 seeds for t
 Against the pre-registered expectations (sec. 4):
 - B: impact@1 unchanged (as expected; F3 cannot act at iteration 1); impact@>1 falls by 38 % (expected
   at least a third: met); impact 0.392 (expected 0.45-0.57: lower than expected); converged 0.317 (in
-  range, but below A's 0.333); max iterations rise from 0.171 to 0.292. F3 turns later-iteration impacts
-  into max-iteration stalls, not into converged solves; candidates fall (10 against 14).
+  range, A's 0.333); max iterations rise from 0.171 to 0.292. F3 turns later-iteration impacts
+  into max-iteration stalls, not into converged solves. Candidates 10 against A's 14: a difference
+  under 1 sigma at these counts, so no detectable yield change.
 - C: impact 0.683 (expected 0.50-0.62: **missed**), impact@1 0.312 (expected 0.15-0.30: missed),
   converged 0.237 (expected 0.27-0.38: **missed**), candidates per solve 0.0583 (expected 0.05-0.10:
   met, equal to A).
 - D: impact 0.588 (expected <= 0.45: **missed**), converged 0.237 (expected >= 0.35: **missed**),
   candidates per solve 0.0583 (expected >= 0.05: met, equal to A).
-- **Falsification criterion met:** D's impact rate (0.588) is not below B's (0.392). The fix as
-  pre-registered does not do what it was meant to do.
+- **Falsification criterion met:** D's impact rate (0.588) is not below B's (0.392), a gap of about
+  4 sigma at n = 240. The fix as pre-registered does not do what it was meant to do.
+- Statistical weight: candidates per solve and family counts show no detectable difference between
+  any arm at n = 240 (counts 10-14). The converged gap (C and D 0.237 against A 0.333) is about
+  2 sigma: moderate evidence only.
 
 ### 5.3 Positive control (7:3 seeds at 7-3b's C, F1+F2+F3)
 
@@ -142,8 +146,15 @@ reorder): 27 converged, **8 converge onto the 7-3b row**. Pass (hard stop cleare
   helps and loses no family in the old records.
 - F2 as designed (log-spread targets from 5,000 km) oversamples close lunar passes. Close passes with a
   low perigee give first-arc Earth hits, and passes at 5,000 km give Moon hits. Under F2 the impact rate rises.
-- F3 lowers later-iteration impacts but does not raise convergence. The Newton direction itself leads
-  into the Earth, and a shorter step only stalls on that path.
+- F3 lowers later-iteration impacts but does not raise convergence. Hypothesis (not measured): B
+  averages 24.8 halvings per solve, which fits F3 often using its 10-halving budget within the
+  25-iteration cap, so the stalls may come from the limiter and max_it rather than from the Newton
+  direction. Untested check: rerun B's stalled seeds with a higher max_it.
 - Not tried (would need a new pre-registration): F1 alone at full grid scale; F2 with targets from
   20,000 km plus the uniform grid for far passes; a perigee floor that rises with the closeness of the
   lunar pass.
+
+### 5.5 Hand-off withdrawn
+
+The full F1+F2+F3 grid that sec. 4 handed to the lead is withdrawn: it is not worth the compute
+until a ruling on the design.
