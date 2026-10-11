@@ -3034,6 +3034,22 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   commit while it exists unless `CYCLERS_WINDOW_LEAD=1` is set, with a refusal text naming the lead and the
   reason. Companion rule for `docs/team/coordination.md`: never kill processes by command-line pattern on the
   shared machine (`docs/papercuts/2026-10-11-main-killed-sibling-pytest-by-pattern.md`).
+- `#1064` — registered 2026-10-11 (from `#1024`'s results, twobody-ext-opus; fix owned by pluto-smallmoons-sonnet). **THE
+  `#998` REAL-EPHEMERIS SYSTEM TAKES THE KEPLERIAN 1:1 SHORTCUT AT CHARON.** `realeph_998`'s `EphSystem` has no
+  `is_keplerian`, so `two_working_body.resonant_circle` treats a Charon 1:1 return as a Keplerian circle (`vf2 = wn*wn`).
+  In the real system Charon moves about the barycentre at a speed the conic about the system GM does not give, so the
+  1:1 return the conic makes is not the one the ephemeris needs. Affected: 135 of the 457 `#998` gate-passers (90 of the
+  224 strong) carry an `RCharon/1:1` leg. The 12 best (the `#998` sec. 6.1 real-ephemeris set) carry none and are
+  unaffected. Fix: `is_keplerian` returns False for Charon in `EphSystem`, then re-run the sec. 6.1 real-ephemeris
+  step for those 135 members. Source: `docs/notes/2026-10-11-1024-barycentric-binary-model.md` sec. 8.
+- `#1065` — registered 2026-10-11 (lead dispatch to twobody-ext-opus; launch by the lead after window 3's suite).
+  **FULL RE-ENUMERATION OF THE `#998` PLUTO CELLS IN THE `#1024` BARYCENTRIC BINARY MODEL.** Cells psb, pnb, pkb, phb
+  (Charon on its barycentric circle, Pluto on the opposite circle for the surface screen), the `#998` flags, no
+  half-rev returns at Charon (refused in the non-Keplerian model, `#1024` amendment A1): 12,979 structures (the `#998`
+  run had 26,831 with the half-revs). Pass definition with the `#973` amendment 2.6/2.7 screens, the moving-Pluto surface
+  screen and the deep-dip flag; controls: the 383 `#1024`-continued members re-found with the same verdict, and no
+  default-model zero present. Driver `scripts/run_1065_barycentric_enumerate.py`; pre-registration
+  `docs/notes/2026-10-11-1024-barycentric-binary-model.md` sec. 9.
 - `#1066` — registered 2026-10-11 (lead ruling on `#1052`; BACKLOG, small, twobody-gen2). **F13 STATUS-RATCHET
   EVASIONS AND NITS LEFT FROM `#1052`.** The widened F13 ratchet (`tests/search/test_972_literature_gate_v2.py`
   `_status_compare_violations_in`) still misses: a Call with a status-access argument (`fresh(r.status)`,

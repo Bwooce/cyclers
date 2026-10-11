@@ -361,3 +361,103 @@ misses by about 19,000 km in the barycentric circle.
 - No catalogue edit; nothing is called novel.
 - A full barycentric re-enumeration (about 27,000 structures; it would find members that do not
   continue from the old model) is offered as a lead launch.
+
+## 9. Pre-registration: #1065, full re-enumeration in the barycentric model (2026-10-11 16:20 AEDT, before any counted run)
+
+Sec. 4 continued the #998 members. It cannot find a barycentric member whose old-model parent did not
+exist or did not pass. This run enumerates the four #998 cells from the start with the option on.
+Driver: `scripts/run_1065_barycentric_enumerate.py` (subcommands enumerate, check, gauntlet, controls).
+The lead launches it after window 3's suite.
+
+### 9.1 Cells
+
+| cell | system | bodies | structures |
+|---|---|---|---|
+| psb | barycentric_binary(pluto_system("Styx"), "Charon", 106.1/975.5) | Charon, Styx | 3,462 |
+| pnb | same, Nix | Charon, Nix | 3,346 |
+| pkb | same, Kerberos | Charon, Kerberos | 3,146 |
+| phb | same, Hydra | Charon, Hydra | 3,025 |
+| total | | | 12,979 |
+
+- The systems are those of secs. 2 and 3: legs about the 975.5 monopole at the barycentre; Charon on
+  its 17,464.5 km circle at the kinematic speed; Pluto on the opposite 2,131.5 km circle, used only by the
+  surface screen. The small moons are on their #998 circles.
+- Flags are the #998 ones: k 1-6, max-returns 2,0 (the moon is massless), transfer-revs 0,1,
+  generic-revs 1,2, n-phase 24, n-split 10, n-refine 60.
+- One change: Charon's catalogue has no half-rev returns (`half_revs=()`). `half_rev_vectors` refuses
+  a non-Keplerian body (amendment A1). So the run has 12,979 structures, not the 26,831 of #998. The
+  48 half-rev gate-passers of #998 (17 of them strong) are outside this run.
+- Counts are from `enumerate --count-only` at the driver commit. All 383 continued keys of sec. 8
+  (psb 140, pnb 127, pkb 59, phb 57) are in the structure sets (checked with `structures()` before
+  this commit).
+
+### 9.2 Pass definition (fixed before the run)
+
+Per merged physical cycler (`scripts/analyse_942_enumeration.py` grouping), on its best member:
+1. Exact zero: date residual below 1e-8 km/s (the enumeration's acceptance).
+2. Gate: status "pass" under the #888/#937 demanded-turn gate (near-180 rule included), and the
+   independent DOP853 re-fly misses every encounter by less than 1 km (`is_pass`).
+3. #973 amendment 2.6/2.7 unscheduled-pass screen (`closest_unscheduled`, with the barycentric
+   states): an interior distance minimum inside a body's radius on a fixed-geometry leg is an impact
+   (reject); one inside the SOI is model-invalid (reject); on a free-direction full-rev leg it is a
+   "direction-dependent" flag and passes.
+4. Pluto surface: the minimum distance to the moving Pluto (`primary_min_distance_km`) above
+   1,188.3 km.
+5. Charon SOI: the largest demanded Charon periapsis inside the SOI of the run (7,192 km, #1060).
+   Reported both ways: `strong` with 7,192 km and `strong_8070` with the #998 value of 8,070 km.
+- "strong_1065" = 1-5 all true. The direction-dependent flag is carried in the record.
+- Deep-dip caveat, a flag that does not gate: `r_min_over_a_charon` and the fraction of Lambert-leg
+  time inside 2 a_C. The patched conic about the monopole is weakest inside the binary (sec. 8.5).
+
+### 9.3 Coverage
+
+`check` on each cell's shard directories: every structure done once without error, no duplicated
+zero line, settings the same. A cell that fails coverage is re-run before any analysis.
+
+### 9.4 Controls
+
+- Positive: each of the 383 sec. 8 continued members counts as re-found when a zero in the same cell
+  has the same key and a Charon V_inf within 1e-4 km/s of the continued value. "Same verdict" = the
+  zero's `is_pass` equals the continued member's `pass`. Expected: at least 370 of 383 re-found (the
+  phase grid is the #998 grid, and the zeros moved by at most 0.023 km/s in V_inf), and every re-found
+  member with the same verdict. FAIL if fewer than 370 are re-found or any re-found member changes
+  verdict. A miss is then examined one by one (seed grid against the moved zero) before the run's
+  members are used.
+- Negative: no zero in the run may sit at a #998 default-model solution: same key and Charon V_inf
+  within 1e-4 km/s of the #998 value, over all 457 sec. 8 records. For continued members the
+  V_inf moved 0.003-0.023 km/s, 30 times the tolerance. FAIL if any continued member's old zero is
+  present (the option was not on). A hit on a non-continued record is reported and examined.
+- `controls` writes both lists per cell.
+
+### 9.5 Expected result (written before the run)
+
+- Gate-passing physical cyclers: at least the re-found continued members (370-383), plus members
+  that have no old-model parent. No number is predicted for the new members.
+- Strong: of order 175 (sec. 8.2, 7,192 km SOI), plus new members, before the unscheduled-pass screen;
+  that screen may remove some. No number is predicted for it (it was not run on #998).
+- Nothing is called novel. No catalogue edit. #1036's adjudication takes this as the ideal-model
+  record for the non-half-rev members.
+
+### 9.6 Runtime and shards
+
+- Pilot (16:10-16:12 AEDT, load average 22-32, 20 random structures, seed 1065): 2.8 s per structure
+  wall in pnb, 3.4 s in psb (0.7-1.1 s CPU). #998 at its load: 0.6-1.9 s per structure by cell.
+- Estimate: 12,979 structures at about 3.1 s = 11.2 h serial, about 5.6 h on 2 workers at the
+  current load; about 2.3 h on 2 workers at the #998 rates.
+- Shards: 32 per cell, 128 in all, about 100 structures each, about 5-6 min each at the loaded rate
+  (under the 10-min tool limit of the coordination rule). A shard re-run resumes from its
+  `structures.jsonl`; `check` catches a duplicated zero line from a kill mid-structure.
+- Raw-shard rule (#973 k5): commit `settings.json` and `structures.jsonl` of each shard; archive the
+  zeros with md5s.
+
+### 9.7 Exact commands
+
+```
+cd /Users/bruce/dev/cyclers
+for c in psb pnb pkb phb; do for i in $(seq 0 31); do echo "$c $i"; done; done |
+  xargs -n2 -P2 sh -c 'mkdir -p data/1065_barycentric/$0 && uv run python scripts/run_1065_barycentric_enumerate.py enumerate --cell $0 --k 1,2,3,4,5,6 --out data/1065_barycentric/$0/s$1 --max-returns 2,0 --transfer-revs 0,1 --generic-revs 1,2 --n-phase 24 --n-split 10 --n-refine 60 --shard $1/32 --timing-pilot-s 3.4 > data/1065_barycentric/$0/s$1.log 2>&1'
+# after all 128 shards, per cell (psb shown):
+uv run python scripts/run_1065_barycentric_enumerate.py check data/1065_barycentric/psb/s*
+uv run python scripts/run_1065_barycentric_enumerate.py gauntlet --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_gauntlet.json
+uv run python scripts/run_1065_barycentric_enumerate.py controls --cell psb data/1065_barycentric/psb/s* --out data/1065_barycentric/psb_controls.json
+```
