@@ -122,12 +122,15 @@ def ramp(
     rejected = {"unconverged": 0, "jump": 0}
     while lam < 1.0:
         nxt = min(1.0, lam + dlam)
+        if 1.0 - nxt < 1e-9:  # amendment A2: ten steps of 0.1 sum to 0.9999999999999999
+            nxt = 1.0
         sysl = with_mass_fraction(sys0, secondary, a_rel, nxt * mass_fraction)
         sol = correct_dates(sysl, cyc, x, tol_kms=1e-8, max_nfev=80)
         ok = bool(sol.converged)
         reason = "unconverged"
         if ok:
-            scale = (nxt - lam) / 0.1
+            # the guard is per 0.1 of lambda, scaled to the step; the smallest legal step is 1/640
+            scale = max((nxt - lam) / 0.1, (1.0 / 640.0) / 0.1)
             v_new = _lambert_vinf(sysl, cyc, sol.x)
             date_jump = float(np.max(np.abs(sol.x - x))) / DAY
             v_jump = (
@@ -422,10 +425,18 @@ def cmd_realeph(argv: list[str]) -> None:
         old = json.loads(
             (REPO / "data" / "998_pluto_smallmoons" / f"{cell}_realeph_n1.json").read_text()
         )
-        cont = {r["key"]: r for r in json.loads((OUT_DIR / f"{cell}_continue.json").read_text())}
+        recs = json.loads((OUT_DIR / f"{cell}_continue.json").read_text())
         off = DRV998.pluto_system(moon)
         for cand in old["candidates"]:
-            r = cont.get(cand["key"])
+            # keys are not unique: match the #998 member by key and its ideal worst ratio
+            hits = [
+                x
+                for x in recs
+                if x["key"] == cand["key"]
+                and abs(x["worst_ratio_998"] - cand["ideal"]["worst_ratio"]) < 1e-9
+            ]
+            assert len(hits) == 1, (cell, cand["key"], len(hits))
+            r = hits[0]
             rec: dict[str, Any] = {"cell": cell, "key": cand["key"]}
             old_def = [e["residual_before_kms"] for e in cand["epochs"]]
             rec["defect_998_mps"] = [1e3 * v for v in old_def]
