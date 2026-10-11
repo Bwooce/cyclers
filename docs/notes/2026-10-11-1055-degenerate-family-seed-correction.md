@@ -854,3 +854,18 @@ amendment 10 against the chain tool's member. Runtime: the fix stage at about 5-
 GanCal#1's cost per evaluation, so 3-6 h at the current load (lead launch). This answers the
 question that matters for the gc rows' real-ephemeris standing: does the gc-1 chain tool's member
 coincide with a continuous-gravity root on jup365?
+
+## 13. gc-1 e2 on jup365: the fix stage (lead launch 15:50 AEDT)
+
+For the record: gc-1's catalogue row (ganymede-callisto-two-working-body-cycler-gc1-2026) carries,
+in its data_gaps, "Real-ephemeris continuous-gravity standing untested: the open-chain n-body
+formulation does not converge across a full-revolution return (#1044) ... obstruction: out-of-plane
+mismatch across the full-revolution leg (#1046)". This fix stage is the FIRST DIRECT TEST of that
+standing. Sec. 12.7 explains the #1044/#1046 obstruction as a start from a non-root. The test
+records:
+- g at the base (gc-1's chain-tool member);
+- the sign changes and domain bounds within 3 L on each side;
+- any root member's periapses, turns and epochs against the chain's (amendment 10).
+Start, neg and continuation follow ONLY if the root passes amendment 10, on my call. A FAIL means
+gc-1's real-ephemeris chain-tool member does not continue into continuous gravity on jup365, and the
+row's data_gaps wording would then change (a lead / owner decision).
