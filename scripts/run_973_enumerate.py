@@ -48,6 +48,7 @@ import numpy as np
 
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.core.satellites import PRIMARIES
+from cyclerfinder.data.candidate_ids import candidate_cid
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import (
     CircularSystem,
@@ -574,6 +575,8 @@ def cmd_gauntlet(argv: list[str]) -> None:
             "literature": "DEFERRED (#973 note; runs after #972 lands)",
         }
         rec |= screen_candidate(args.cell, rec)
+        # #1071: stable id (new writes only; committed files are addressed by index)
+        rec["cid"] = candidate_cid(args.cell, len(results), best["x_days"])
         results.append(rec)
         print(
             f"k={k} vinf={ {c: round(v, 3) for c, v in best['vinf_kms'].items()} } "

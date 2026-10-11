@@ -36,6 +36,7 @@ from typing import Any
 
 import numpy as np
 
+from cyclerfinder.data.candidate_ids import candidate_cid
 from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.search.two_working_body import CircularSystem, sphere_of_influence_km
 from cyclerfinder.search.two_working_body_binary import barycentric_binary
@@ -145,6 +146,8 @@ def cmd_gauntlet(argv: list[str]) -> None:
         _, cyc = ENUM.parse_cycle_key(best["key"], system, a, b)
         x = np.asarray(best["x_days"]) * DAY
         rec = {"index": idx, "k": k, "key": best["key"], "x_days": best["x_days"]}
+        # #1071: stable id (new writes only; committed files are addressed by index)
+        rec["cid"] = candidate_cid(args.cell, idx, best["x_days"])
         rec |= R1024.reassess(system, cyc, x)
         rec |= _unscheduled(system, cyc, x)
         rec["strong_1065"] = bool(
