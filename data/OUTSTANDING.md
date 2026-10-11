@@ -2490,6 +2490,7 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   The registry is in `src/cyclerfinder/core/satellites.py` (no Pluto small-moon entries under
   `src/cyclerfinder/data`). Expected values must come from the published source, not from our fit.
   **DONE 2026-10-11 (`#1037` registered Styx and Kerberos; note `docs/notes/2026-10-11-1022-pluto-small-moon-registry-verification.md`):** every registry value equals the JPL SSD page value and the plu060 fitted periods match the pages' printed periods; no registry data change. The page's a is not the Kepler radius of its own period (1.0-2.5 percent; a binary-quadrupole form explains about a fifth to two fifths of it, the rest unexplained), so the registry-derived mean motions of the small moons run 1.5-3.7 percent slow; whether to store fitted periods is an open design question, not decided.
+  **WAITING ON OWNER (2026-10-11):** (a) store fitted periods plus a derived Kepler radius for the small moons, or (b) leave and document; impact and options in `docs/notes/2026-10-11-1022b-registry-period-impact.md` (touches `#320`, `#492`, `#264/#282` Pluto rows and four consumers; `#998` unaffected).
 - `#1023` — registered 2026-10-07 (from `#968`; gate cleared by the fix `b9c27f77`, pinned test `8d79b3fa`);
   **DISPATCHED 2026-10-08 to jovian-nbody-opus**, with the seeding lesson: seed from a converged
   continuous-model solution, not from patched-conic periapsis states. **RE-RUN EVERY JOVIAN
