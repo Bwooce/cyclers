@@ -200,3 +200,46 @@ No catalogue edits.
 
 Count: 2 known-reproduction + 15 known-class-member + 1 unclassified orbit = 18. (The commit message
 of bba3eeb8 says "16 families known-class-member"; the correct number is 15.)
+
+## 9. Owner decision 2026-10-11 and the window patch for rows A, B, D (pre-registration)
+
+Owner decision (verbatim label): "Rows for A, B, D only". Three rows, our_status
+known-class-member (#875 (iii)), validation V1. The other 12 symmetric families and the two
+7:3 retrograde wM-1 families stay here as census.
+
+Rows (ids):
+- A: earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026
+- B: earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026
+- D: earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026
+
+Representative: the #1000 grid member that seeded each family's continuation, re-closed with
+`correct_periodic`. V1 evidence: `scripts/writeback_1047_rows.py`, `data/1047_rows/writeback_v1.json`,
+`tests/search/test_1047_rows_writeback_v1.py` (305adc7c).
+
+| row | C | T | k (Casoliva Eq. 8) | perigee alt (km) | periselene alt (km) | closure | Radau dJ | Radau arcs |
+|---|---|---|---|---|---|---|---|---|
+| A | 2.4818625406 | 12.7126038450 | -110.10 | 3,332 | 13,243 | 3.7e-11 | 1.9e-12 | 4.6e-11 |
+| B | 0.8604292804 | 18.8866755266 | 115.38 | 3,569 | 21,122 | 6.7e-11 | 2.3e-12 | 4.6e-10 |
+| D | 2.5472667556 | 18.6647180953 | 717.95 | 5,754 | 13,774 | 5.3e-12 | 2.3e-12 | 1.8e-11 |
+
+One deviation from the Casoliva rows' V1 recipe, stated in each row: `crosscheck_periodic`'s whole-period
+Radau closure (tolerance 1e-8) is 1.6e-9 for A but 6.4e-7 for B and 4.2e-8 for D. A plain DOP853
+run (without the STM) gives 9.9e-8, 7.1e-6 and 8.4e-7. These orbits have |lambda| of about 110-720,
+so a whole-period closure depends on the integrator's step sequence. The independent-integrator check is
+therefore made arc by arc (4p arcs, each Radau arc from the DOP853 node; <= 4.6e-10). This is the same
+reason #1000 used multiple shooting.
+
+Window patch (apply script in my scratchpad, one match asserted per edit):
+1. `data/catalogue.yaml`: the three rows inserted after casoliva-7-3c-em-cycler-2010 (rows generated
+   by `scripts/writeback_1047_rows.py --rows-only --rows-out`).
+2. `src/cyclerfinder/data/validate.py`: a `_V1_1047` evidence string and three `_LEVEL_EVIDENCE`
+   entries (V1).
+3. Ratchet deltas, pre-registered:
+   - `tests/data/test_cycler_class_census.py`: non-keplerian 56 -> 59 (expected dict and docstring).
+   - `tests/data/test_validation_tier_census.py`: unvalidated 144 -> 147 (this-project rows, no
+     provenance-registry tags).
+   - `tests/data/test_schema_v45_fields.py`: live V1 census + the three ids at V1.
+   - `tests/test_catalogue_rediscovery.py`: NON_HELIOCENTRIC 111 -> 114 (Earth primary).
+   - No other ratchet is expected to move. Catalogue 423 -> 426 rows; candidate-novel unchanged
+     (29); known-class-member +3.
+4. `tests/search/test_1047_rows_writeback_v1.py`: its catalogue check stops skipping and must pass.
