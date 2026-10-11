@@ -5,7 +5,7 @@ doi 10.1086/108730, ADS 1962AJ.....67..304H. Received January 20, 1962.
 - DOI checked on Crossref (2026-10-11): title "Preliminary study of orbits of interest for moon probes", AJ 67, p.304,
   author Su-Shu Huang, issued 1962-06.
 - Proposed filename: `cyclers_pdf/papers/huang-1962-preliminary-study-orbits-interest-moon-probes-aj-67-304-doi-10.1086-108730-ads-1962AJ-67-304H.pdf`.
-  - The file to file is the `ocrmypdf --force-ocr -l eng` copy, md5 04f53dd34001f5db62dcefd9d5e57f4c, 7.3 MB.
+  - The file to file is the `ocrmypdf --force-ocr -l eng` copy, md5 c1d56c4a06ee02cb1bf214f447ce1f8d (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original), 3.3 MB.
   - Source: ADS scan, 7 pp., md5 fd14a29869dc4329dab764a3ec0da68b, 0.56 MB (200 dpi colour JPX plus a 600 dpi JBIG2
     mask per page). PDF page n = journal page 303 + n.
   - Render check at 100 dpi (`render_check.out`). Dark-pixel fractions, original against OCR copy: p.1 0.0546/0.0606,

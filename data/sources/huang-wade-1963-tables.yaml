@@ -4,7 +4,7 @@
 #   The Astronomical Journal 68(6):388-391 (August 1963), doi 10.1086/108988, ADS 1963AJ.....68..388H.
 #   Received 11 October 1962.
 # Local file: ADS scan (200 dpi colour JPX plus 600 dpi JBIG2 mask per page), 4 pp., md5 439006dcdcb5f73b1f7241958455cbb3;
-#   OCR copy (ocrmypdf --force-ocr -l eng) md5 62cf94d76e7f18b35cf67552cadec8d1. PDF page n = journal page 387 + n.
+#   OCR copy (ocrmypdf --force-ocr -l eng) md5 55d2addd34f665383c91aaea9532176a (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original). PDF page n = journal page 387 + n.
 #   PDF page 1 also carries the end of Westerman's preceding paper (AJ 68:382-388).
 # Tables I-II p.389 (left column), III p.389 (right), IV p.390 (left), V-VI p.390 (right). No table on p.388 or p.391.
 # Transcribed from the page images (400 dpi crops; the image decides). Second witness: tesseract 5 psm 6 on 400 dpi

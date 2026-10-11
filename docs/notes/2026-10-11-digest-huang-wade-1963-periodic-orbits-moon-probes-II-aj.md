@@ -5,7 +5,7 @@ Su-Shu Huang and Clarence Wade, Jr. (Goddard Space Flight Center, NASA, Greenbel
 - DOI checked on Crossref (2026-10-11): AJ 68, p.388, authors Su-Shu Huang and Clarence Wade Jr., issued 1963-08.
   The Crossref title has a typo, "interst". The printed title is spelled correctly.
 - Proposed filename: `cyclers_pdf/papers/huang-wade-1963-preliminary-study-periodic-orbits-interest-moon-probes-II-aj-68-388-doi-10.1086-108988-ads-1963AJ-68-388H.pdf`.
-  - The file to file is the `ocrmypdf --force-ocr -l eng` copy, md5 62cf94d76e7f18b35cf67552cadec8d1, 4.5 MB.
+  - The file to file is the `ocrmypdf --force-ocr -l eng` copy, md5 55d2addd34f665383c91aaea9532176a (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original), 2.2 MB.
   - Source: ADS scan, 4 pp., md5 439006dcdcb5f73b1f7241958455cbb3, 0.38 MB. PDF page n = journal page 387 + n.
   - PDF page 1 also carries the end of Westerman's preceding paper (AJ 68:382-388: references and the last paragraph).
     It is part of the ADS scan, so keep it.

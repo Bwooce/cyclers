@@ -3,7 +3,7 @@
 # Source: Su-Shu Huang, "Preliminary Study of Orbits of Interest for Moon Probes", The Astronomical Journal 67(5):304-310
 #   (June 1962), doi 10.1086/108730, ADS 1962AJ.....67..304H. Received January 20, 1962.
 # Local file: ADS scan (200 dpi colour JPX plus 600 dpi JBIG2 mask per page), 7 pp., md5 fd14a29869dc4329dab764a3ec0da68b;
-#   OCR copy (ocrmypdf --force-ocr -l eng) md5 04f53dd34001f5db62dcefd9d5e57f4c. PDF page n = journal page 303 + n.
+#   OCR copy (ocrmypdf --force-ocr -l eng) md5 c1d56c4a06ee02cb1bf214f447ce1f8d (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original). PDF page n = journal page 303 + n.
 # Table I is on p.305 (left column). Eqs. (11) and (12) are on p.308. The other pages carry text and figures only
 #   (Figs. 1-4: orbit plots with encounter times; no numeric table). Every page was looked at on a page image.
 # Transcribed from the page images (400 dpi crops; the image decides). Second witness: tesseract 5 psm 6 on a 400 dpi

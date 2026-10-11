@@ -4,7 +4,7 @@ W. H. Jefferys (Yale University Observatory and Van Vleck Observatory), The Astr
 No. 1331, August 1965. Received 15 March 1965. DOI 10.1086/109752 (Crossref checked 2026-10-11: title, AJ 70, page
 393, author Jefferys, issued 1965-08). ADS 1965AJ.....70..393J.
 - Proposed filename: `cyclers_pdf/papers/jefferys-1965-doubly-symmetric-periodic-orbits-three-dimensional-restricted-problem-aj-70-393-doi-10.1086-109752-ads-1965AJ-70-393J.pdf`.
-  - File the `ocrmypdf --force-ocr -l eng` copy, md5 ea059e31da1114955a76f18474047b71 (1.5 MB; the source is 0.13 MB,
+  - File the `ocrmypdf --force-ocr -l eng` copy, md5 6a34954cf4e6c6cdf51f82835221f900 (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original) (0.64 MB); the source is 0.13 MB,
     because --force-ocr rasterizes the 200 dpi colour JPX pages; `-O 3` at filing would shrink it).
   - Source: ADS scan, 2 pp., md5 eb4d9790cd6a25296b19de4b5121d147, fetched 2026-10-11 from articles.adsabs.harvard.edu.
   - Render check, dark-pixel fraction at 100 dpi, original against OCR copy: p.1 0.042/0.045, p.2 0.015/0.016

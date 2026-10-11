@@ -2,7 +2,7 @@
 # Source: A. F. Schanzle, "Horseshoe-Shaped Orbits in the Jupiter-Sun Restricted Problem", The Astronomical Journal 72:149-157
 #   (March 1967), doi 10.1086/110211, ADS 1967AJ.....72..149S. Received 29 August 1966.
 # Local file: ADS 200 dpi JPX scan, 9 pp., md5 2135960a6c830510c7982c42cde74593; OCR copy (ocrmypdf --force-ocr -l eng, the scan
-#   is rasterised by it) md5 273e14b8ec9ce01538d5efcefd2a4a27. PDF page n = journal page 148 + n.
+#   is rasterised by it) md5 fee02673b9400da9a0238b2b6359db14 (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original). PDF page n = journal page 148 + n.
 # Tables: I and II p.156 (PDF p.8); III p.157 (PDF p.9). Caption values: Figs. 9-14 p.153, Figs. 15-20 p.154, Figs. 21-22 p.155.
 # Transcribed from the page images: every cell was read on 300-400 dpi renders of the original scan (witness C, decides).
 #   Witness A: tesseract 5.5.3, psm 6, on separate 400 dpi crops (NOT the OCR text layer). The scan is 200 dpi, so the

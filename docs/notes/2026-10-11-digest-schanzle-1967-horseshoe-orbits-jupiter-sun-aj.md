@@ -5,11 +5,11 @@ Laboratory, USAF Academy), The Astronomical Journal 72(2):149-157 (March 1967), 
 2026-10-11: title, author, AJ 72, page 149, March 1967 all match), ADS 1967AJ.....72..149S (stamped on the page images).
 Received 29 August 1966.
 - Proposed filename: `cyclers_pdf/papers/schanzle-1967-horseshoe-shaped-orbits-jupiter-sun-restricted-problem-aj-72-149-doi-10.1086-110211-ads-1967AJ-72-149S.pdf`.
-  - The file to file is an `ocrmypdf --force-ocr -l eng` copy, md5 273e14b8ec9ce01538d5efcefd2a4a27 (7,992,939 bytes).
+  - The file to file is an `ocrmypdf --force-ocr -l eng` copy, md5 fee02673b9400da9a0238b2b6359db14 (re-made 2026-10-11 with ocrmypdf --force-ocr -O 3; render-checked against the ADS original) (4,164,549 bytes).
   - The source is an ADS 200 dpi JPX scan, 9 pp., md5 2135960a6c830510c7982c42cde74593 (654,461 bytes).
-  - **Size note:** `--force-ocr` rasterised the JPX pages, so the OCR copy is 12 times larger than the source (8.0 MB against
+  - **Size note:** `--force-ocr` rasterised the JPX pages, so the first OCR copy was 12 times larger than the source (8.0 MB against
     0.65 MB). The pages stay legible. Dark-pixel fractions at 100 dpi, original against OCR copy: p.1 0.055/0.059,
-    p.5 0.031/0.033, p.9 0.042/0.045 (copy slightly darker, no blank pages). 8 MB is acceptable for filing; the source
+    p.5 0.031/0.033, p.9 0.042/0.045 (copy slightly darker, no blank pages). The filed copy is the -O 3 re-make (4.2 MB, 600 dpi 16-colour images, render-checked). 8 MB was acceptable for filing; the source
     JPX file could be kept instead if size matters.
   - PDF page n = journal page 148 + n.
 - **How it was read:** all nine pages were read on page images (the equations and the conclusions on 300 dpi crops; Tables
