@@ -599,3 +599,23 @@ Existing 10-cycle jup365 chains, no re-solve. L = 4, comparisons i = 1..4.
 - Systematic offset against the ideal model (recorded, not banded; sec. 7): gc-1 up to 0.079 km/s;
   gc-2 0.16-0.36 km/s.
 - Both rows keep V2. Their evidence text is updated in the next window.
+
+### 8.13 ev lane V2 judgement under the final wording — PRE-REGISTERED (2026-10-11), before running
+
+- Rows: ev-A, ev-B, ev-C.
+- Chains: the 10-cycle Standish chains of sec. 8.6 (`data/1007_v2/ev10_ev{A,B,C}/`), built today with
+  each row's rung (d) route at the 5 standard epochs: ev-A `--direct`; ev-B and ev-C the ramp
+  continuation. No re-solve.
+- Criteria: the final wording (sec. 8.4b), with L = 5 and comparisons i = 1..3. A row passes at >= 3 of
+  5 epochs (spec). An epoch with no 10-cycle chain at lambda = 1 fails.
+- Controls: those of sec. 8.11 (H&M orbit 1 positive PASS, negative FAIL), run today with the same
+  code.
+- Tool: `scripts/v2_samephase_1007.py --final-ev`.
+- Expected (NOT blind: the sec. 8.6 exploratory numbers are known):
+  - ev-A: PASS at 5/5. Gate pass everywhere; D' <= 1.53 d against 8.7; W' <= 0.078 against 0.49.
+    Re-fly not yet computed; expected well under 1 km, as at 5 cycles.
+  - ev-B: FAIL. The gate fails or is indeterminate at 3 epochs (1.011, 1.019, 0.9994), and there is no
+    chain at JD 2470059.7.
+  - ev-C: FAIL. D' is over its band (7.6-66 d against about 5.8) at every epoch.
+- Rows that pass move V1 -> V2 in the next window, with the slope diagnostics in the evidence. Rows that
+  fail stay V1, with the reason recorded.
