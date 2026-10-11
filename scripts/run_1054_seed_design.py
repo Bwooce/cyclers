@@ -371,6 +371,8 @@ def main() -> None:
     elif args.cmd == "control":
         c73b = sh.CONTROLS["casoliva-7-3b-em-cycler-2010"]
         seeds = [sd for sd in new_seeds()[0] if (sd["p"], sd["q"]) == (7, 3)]
+        # retrograde first: the 7-3b row is retrograde (all 22 old control hits were); order only
+        seeds.sort(key=lambda sd: sd["sense"])
         run_jobs("control", [(sd, DROP, c73b) for sd in seeds], args.max_seconds)
 
 

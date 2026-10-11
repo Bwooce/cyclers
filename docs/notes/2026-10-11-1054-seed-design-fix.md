@@ -88,3 +88,62 @@ Arm A (old seeds, old path) is the record itself; the reproduction test ties it 
   handed to the lead.
 - What would falsify the fix: D's impact rate not below C's and B's; or the control not recovered;
   or (full grid) a #1000 family lost.
+
+## 5. Results (2026-10-11, 12:03-13:05 AEDT; load average 35-69 during the runs)
+
+Code: b977513f (F3 in `run_1000_shooting.shoot`/`solve_values`, defaults keep the #1000 path; F1+F2
+generator and the arms in `run_1054_seed_design.py`). F2 gives 7,252 seeds for the PQ set (old grid:
+5,256 solved), no combination skipped. Data: `data/1054_seed_design/{arm_B,arm_C,arm_D,control}.jsonl`,
+`report.json`.
+
+### 5.1 Test (`tests/scripts/test_1054_seed_design.py`)
+
+- Reproduction: 20 of 20 old seeds give the recorded status and iteration count. Pass.
+- F3 helper: osculating perigee of a skeleton node equals r_p (rel 1e-12). Pass.
+- Skeleton-arc impact rate: old floor row **0.900** (>= 0.80: reproduces the 93-94 % bins); new
+  design **0.300**, above the pre-registered bound 0.25. **FAIL.** A larger diagnostic sample (400 new
+  seeds, seed 7) gives 0.32: 90 Earth hits and 37 Moon hits. The Earth hits concentrate in the lowest F1
+  rows (8,551 km: 26 of 60) and at the 10,000-20,000 km lunar-pass targets. A close lunar pass lowers
+  the perigee of a 8,551-13,000 km skeleton below the surface within one arc, so 1.3 x floor is not
+  enough when the pass is close. The Moon hits sit at the 5,000 km target (23 of 92).
+- The test file is held uncommitted (it fails as pre-registered); ruling requested.
+
+### 5.2 Pilot ablation (240 seeds per arm)
+
+| arm | impact | impact@1 | impact@>1 | converged | other (max iterations) | candidates per solve | families in the sample | mean step halvings |
+|---|---|---|---|---|---|---|---|---|
+| A: old seeds, old path (records) | 0.496 | 0.225 | 0.271 | 0.333 | 0.171 | 0.0583 (14) | 6 | 0 |
+| B: old seeds + F3 | 0.392 | 0.225 | 0.167 | 0.317 | 0.292 | 0.0417 (10) | 4 | 24.8 |
+| C: F1+F2, no F3 | 0.683 | 0.312 | 0.371 | 0.237 | 0.079 | 0.0583 (14) | 6 | 0 |
+| D: F1+F2+F3 | 0.588 | 0.312 | 0.275 | 0.237 | 0.175 | 0.0583 (14) | 6 | 16.7 |
+
+Against the pre-registered expectations (sec. 4):
+- B: impact@1 unchanged (as expected; F3 cannot act at iteration 1); impact@>1 falls by 38 % (expected
+  at least a third: met); impact 0.392 (expected 0.45-0.57: lower than expected); converged 0.317 (in
+  range, but below A's 0.333); max iterations rise from 0.171 to 0.292. F3 turns later-iteration impacts
+  into max-iteration stalls, not into converged solves; candidates fall (10 against 14).
+- C: impact 0.683 (expected 0.50-0.62: **missed**), impact@1 0.312 (expected 0.15-0.30: missed),
+  converged 0.237 (expected 0.27-0.38: **missed**), candidates per solve 0.0583 (expected 0.05-0.10:
+  met, equal to A).
+- D: impact 0.588 (expected <= 0.45: **missed**), converged 0.237 (expected >= 0.35: **missed**),
+  candidates per solve 0.0583 (expected >= 0.05: met, equal to A).
+- **Falsification criterion met:** D's impact rate (0.588) is not below B's (0.392). The fix as
+  pre-registered does not do what it was meant to do.
+
+### 5.3 Positive control (7:3 seeds at 7-3b's C, F1+F2+F3)
+
+721 of 1,070 seeds solved (all retrograde seeds of the F1 rows 0-2 and the prograde ones run before the
+reorder): 27 converged, **8 converge onto the 7-3b row**. Pass (hard stop cleared). Old control: 22 of
+1,152. The remaining 349 seeds are not run; the per-seed rate is not final.
+
+### 5.4 Reading
+
+- The 93-94 % bins are a seed-placement effect at iteration 1 (sec. 1). Removing the floor row (F1)
+  helps and loses no family in the old records.
+- F2 as designed (log-spread targets from 5,000 km) oversamples close lunar passes. Close passes with a
+  low perigee give first-arc Earth hits, and passes at 5,000 km give Moon hits. Under F2 the impact rate rises.
+- F3 lowers later-iteration impacts but does not raise convergence. The Newton direction itself leads
+  into the Earth, and a shorter step only stalls on that path.
+- Not tried (would need a new pre-registration): F1 alone at full grid scale; F2 with targets from
+  20,000 km plus the uniform grid for far passes; a perigee floor that rises with the closeness of the
+  lunar pass.

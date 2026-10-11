@@ -1,0 +1,78 @@
+{
+ "B": {
+  "n": 240,
+  "impact": 0.392,
+  "impact@1": 0.225,
+  "impact@>1": 0.167,
+  "converged": 0.317,
+  "other": 0.292,
+  "candidates_per_solve": 0.0417,
+  "families": [
+   "5:2 ret wE-7 wM0 sym",
+   "5:3 ret wE-8 wM-2 asym",
+   "7:3 pro wE4 wM-1 sym",
+   "7:3 ret wE-10 wM-1 sym"
+  ],
+  "steps_halved_mean": 24.77
+ },
+ "C": {
+  "n": 240,
+  "impact": 0.683,
+  "impact@1": 0.312,
+  "impact@>1": 0.371,
+  "converged": 0.237,
+  "other": 0.079,
+  "candidates_per_solve": 0.0583,
+  "families": [
+   "2:3 ret wE-5 wM-2 sym",
+   "5:2 pro wE3 wM-1 sym",
+   "5:2 ret wE-7 wM0 sym",
+   "5:3 ret wE-8 wM-2 asym",
+   "7:3 pro wE4 wM-1 sym",
+   "7:3 ret wE-10 wM-1 sym"
+  ],
+  "steps_halved_mean": 0.0
+ },
+ "D": {
+  "n": 240,
+  "impact": 0.588,
+  "impact@1": 0.312,
+  "impact@>1": 0.275,
+  "converged": 0.237,
+  "other": 0.175,
+  "candidates_per_solve": 0.0583,
+  "families": [
+   "2:3 ret wE-5 wM-2 sym",
+   "5:2 pro wE3 wM-1 sym",
+   "5:2 ret wE-7 wM0 sym",
+   "5:3 ret wE-8 wM-2 asym",
+   "7:3 pro wE4 wM-1 sym",
+   "7:3 ret wE-10 wM-1 sym"
+  ],
+  "steps_halved_mean": 16.74
+ },
+ "A (records, B's seeds)": {
+  "n": 240,
+  "impact": 0.496,
+  "impact@1": 0.225,
+  "impact@>1": 0.271,
+  "converged": 0.333,
+  "other": 0.171,
+  "candidates_per_solve": 0.0583,
+  "families": [
+   "5:2 pro wE3 wM-1 sym",
+   "5:2 ret wE-7 wM0 sym",
+   "5:3 ret wE-8 wM-2 asym",
+   "7:3 pro wE4 wM-1 asym",
+   "7:3 pro wE4 wM-1 sym",
+   "7:3 ret wE-10 wM-1 sym"
+  ],
+  "steps_halved_mean": 0.0
+ },
+ "control_7-3b": {
+  "n": 721,
+  "converged": 27,
+  "hits": 8,
+  "old_control": "22 of 1,152 seeds"
+ }
+}
