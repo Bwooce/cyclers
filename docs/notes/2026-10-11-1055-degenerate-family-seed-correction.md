@@ -560,3 +560,20 @@ To be filled against:
 - continuation: sigma = 1 at the floors (#1044 i); the floors at every point (ii, with amendment 9
   if accepted); identity going down (amendment 2: Cauchy limit, and a Richardson limit within
   0.05 km/s of the chain); IAS15 < 1e-2 km, < 1e-7 km/s (iv); the inside-body scan clean.
+
+### 12.2.1 Amendment 9 accepted by the lead (option (a)), on these terms, recorded before the relaunch
+
+1. Two readings, both kept here and in any row text:
+   - UNDER THE ORIGINAL PRE-REGISTRATION: the stop on the 0.5-SOI acceptance near sigma 0.03 means
+     GanCal#1 FAILS #1044 criterion (ii). The current run is left to reach that stop, so the
+     result is on disk (`sigma_n1.json` `acceptance_fail`).
+   - UNDER AMENDMENT 9: the continued run (0.5-SOI acceptance dropped, as #1043 did for weak
+     flybys) is labelled so in every statement of its result.
+2. Binding under amendment 9: the floors at every point, IAS15 (< 1e-2 km, < 1e-7 km/s), identity
+   (a Cauchy limit going down and a Richardson limit within 0.05 km/s of the chain tool's V_inf), and
+   the inside-body scan at sigma = 1. rp/SOI per node is recorded as a flag.
+3. The identity gate decides one more question, and I will state the answer: is the corrected member,
+   with G2's periapsis near 88,000 km at full scale, the chain tool's object (G2 at 28,327 km), or
+   a DIFFERENT member of the degenerate family? V_inf alone does not answer it, so I will also
+   compare the limit's node epochs and G2 periapsis direction with the chain tool's, as was done for
+   gc4-19 (sec. 10.1).
