@@ -1,0 +1,65 @@
+# Lam and Whiffen 2005, AAS 05-110, "Exploration of Distant Retrograde Orbits Around Europa": every printed number.
+# Source: Try Lam, Gregory J. Whiffen (JPL), AAS 05-110, AAS/AIAA Space Flight Mechanics Meeting, Copper Mountain, January 2005.
+# Local file: 19 pp., text layer present (a macOS Preview re-save, Quartz PDFContext), md5 8dfae1b0aee142e411e6073f0b0b8410.
+#   PDF page n = printed page n (the title page is p.1).
+# The paper has NO numbered tables. The numbers are in the text, the figure captions and the annotations of three figures.
+# Witnesses: A = pdftotext -layout; B = a page render (75 to 110 dpi) viewed for pp.5, 10, 12, 13, 14, 18. Text and caption numbers were read from A and
+#   confirmed in B where B shows them (Figs. 5, 11, 13-16, 22). The Fig. 22 annotation block is image text with no text-layer copy: ONE witness (B, 110 dpi).
+# No value here was computed by us; ours only in `check:` fields.
+constants:
+  - {name: "mu, Jupiter-Europa (Eq. 1, M1 Europa, M2 Jupiter)", value: "0.0000252803", page: 3,
+     check: "GM_Europa 3202.7 / (GM_Jupiter 126686534 + 3202.7) = 2.52799e-5; agrees to 5 digits (our GM values, standard)"}
+  - {name: "Europa orbital period about Jupiter", value: "3.55 d (Fig. 5 caption); '3.5 days' in text", page: 5,
+     check: "2 pi / sqrt((GM_J + GM_E)/a^3), a = 671100 km, gives 3.552 d"}
+  - {name: "35,000 km DRO in Hill units", value: "x = 1.76579", page: 7, note: "Fig. 8 caption. Implies a Hill length unit of 19,821 km.",
+     check: "(GM_Europa / n^2)^(1/3) with our constants = 19,696 km, which gives x = 1.7770. The printed 1.76579 is 0.6 percent lower; the paper does not state its unit. Unresolved."}
+  - {name: "L1 or L2 distance from Europa", value: "not printed as a number", page: 10,
+     note: "Fig. 11 draws a dashed line 'L2 Distance' near X about 13,800 km (read off the 75 dpi page image, approximate) and the text puts the instability neck at 'about 13,500 km'.",
+     check: "3^(-1/3) x 19,696 = 13,656 km"}
+hill_model:
+  - {eq: 2, text: "xi'' = 2 eta' + 3 xi - xi/r^3 ; eta'' = -2 xi' - eta/r^3 (Hill, centred on Europa, xi toward Jupiter)", page: 4}
+  - {eq: 3, text: "Gamma = 3 xi^2 + 2/r - xi'^2 - eta'^2 (as printed; the text layer drops a glyph, written here as the standard Hill Jacobi form)", page: 4,
+     note: "Larger DROs have Gamma toward minus infinity (printed: 'as Gamma -> -infinity, the orbit's Jacobi energy increases')."}
+  - {eq: 4, text: "xi = K1 cos t, eta = -2 K1 sin t, Gamma = -K1^2 (asymptotic family f, ellipse centred on M2, axis ratio 2:1, period 2 pi)", page: 6}
+  - {eq: 5, text: "xi0 = -(-Gamma)^(1/2)", page: 6}
+  - {eq: 6, text: "V_eta0 = -2 xi0", page: 6}
+  - {eq: 7, text: "xi'^2 <= 3 xi^2 + 2/xi - Gamma (Poincare section bound, Y = 0)", page: 7, note: "Printed with the text layer dropping a glyph; standard form."}
+orbit_sizes_and_figures:
+  - {fig: 1, text: "35,000 km DRO (X-axis size), inertial and L1-centred rotating frames", page: 2}
+  - {fig: 4, text: "near-periodic DROs integrated 20 d in Mystic, bodies Sun, Jupiter, Io, Europa, Ganymede, Callisto; (a) 10,000 km to 50,000 km in steps of 5,000 km; (b) 50,000 km to 150,000 km in steps of 25,000 km", page: 4}
+  - {fig: 5, text: "orbital period in the rotating frame versus DRO X-axis size, 0 to 100,000 km; approaches 3.55 d", page: 5, note: "Curve read in the render: about 0.5 d at the smallest size, rising monotonically; no values printed."}
+  - {fig: 7, text: "Poincare section Gamma = 1 (Hill), period-3 family g3 at the three corners, period-4 as four bands", page: 7}
+  - {fig: 8, text: "35,000 km DROs, varying Y-crossing velocity; quasi-periodic outermost curve X = 35,000 km, Vy = -0.816 km/s; Mystic limited to a few hundred days of propagation", page: 7}
+  - {fig: 10_11, text: "stability bounds (escape or collision within 200 d), Y-velocity at the Y = 0 crossing, inertial values", page: 9,
+     note: "Fig. 11 (viewed): X axis 5,000 to 40,000 km, Vy axis -0.40 to -0.90 km/s. Vertical lines labelled 5:2 at about 13,000 km, 3:2 at about 21,000 km, 4:3 at about 24,500 km (all read off a 75 dpi render, approximate). Near-periodic DRO Vy about -0.75 km/s at 5,000 km, about -0.58 at 13,000 km, about -0.87 at 40,000 km (approximate)."}
+  - {fig: 13a, text: "35,000 km out-of-plane DRO, Vy = -0.767 km/s, Vz = -0.55 km/s, propagated 200 d", page: 11}
+  - {fig: 13_second, text: "stability profile for 11,000 km (a) and 13,200 km (b) DROs, propagated 100 d; the instability neck is at about 13,500 km", page: 12,
+     note: "The paper has two figures numbered 13 (pp.11 and 12)."}
+  - {fig: 14, text: "'Red Sea Plot': orbital lifetime (colour scale 0 to 100 d) versus DRO periapsis 0 to 70,000 km and inclination 110 to 180 deg; stable (blue, at least 100 d) region at inclinations above about 135 to 165 deg depending on distance; the 'cliff' persists to 1,000-year propagations", page: 12}
+transfers:
+  - {fig: 15, kind: "impulsive Class A (family a Lyapunov transfer orbit, 2 X-axis crossings)", from: "600 km altitude circular parking orbit, 0 deg inclination", to: "20,000 km DRO", dv_km_s: "0.596", page: 13}
+  - {fig: 16a, kind: "impulsive Class B (asymptotic form of family g', 4 X-axis crossings)", from: "600 km circular, 0 deg", to: "6,000 km DRO", dv_km_s: "0.343", page: 14}
+  - {fig: 16b, kind: "impulsive Class C (8 X-axis crossings)", from: "600 km circular, 0 deg", to: "15,000 km DRO", dv_km_s: "0.566", page: 14,
+     note: "The caption reads 'Class C Class impulsive transfer ... Class B impulsive Delta-V = 0.566'; the second 'Class B' is a caption slip for Class C (the text says Class C has 8 crossings and the caption calls panel b Class C)."}
+  - {text: "Ocampo's results quoted: Delta-V difference between Class A and Class C goes to zero for large DROs while Class C takes nearly three times as long; Class B is the least preferable in Delta-V", page: 14}
+  - {fig: 18, text: "spiral-out from a 100 km altitude retrograde circular orbit (i = 180 deg), burn 90 d, acceleration 0.1915 mm/s^2; concentric DROs for nearly all thrust-to-mass up to about 0.4 mm/s^2", page: 16}
+  - {text: "spiral-out stays in the DRO family if initial radius < 6,000 km and acceleration < 0.5 mm/s^2; fails above 0.5 mm/s^2; works for initial inclinations as low as 145 deg; 155 deg gives escape if engine stops between 15,000 and 23,000 km; 140 deg never re-enters the stable region", page: "15-16"}
+  - {fig: 19, text: "phase-space plot, 100 km altitude at 155 deg inclination, 90 d burn, 0.1915 mm/s^2", page: 16}
+  - {fig: 20, text: "optimised transfers from a 100 km altitude 110 deg science orbit (axis label: '1,665 km 110 deg', i.e. 1,665 km orbit radius) to a 35,000 km planar DRO; accelerations 0.4069, 0.6103, 1.2207 mm/s^2; Delta-V axis about 1300 to 1800 m/s versus coast time over total flight time 0 to 0.7", page: 17,
+     note: "The text says 'circular science orbit at 100 km altitude with an inclination of 110 deg'; the axis label reads 1,665 km. 100 km altitude plus Europa's radius (1,560.8 km) is 1,661 km. Not reconciled by the paper. The Delta-V curve values are not readable to a stated precision."}
+  - {fig: 21, text: "optimised transfers from a 35,000 km planar DRO to a 5,000 km circular orbit at 125 deg; accelerations 0.15, 0.20, 0.25, 0.35, 0.60 mm/s^2 (legend order as printed); Delta-V axis about 600 to 1100 m/s", page: 17}
+  - fig: 22
+    text: "DRO-type capture (green) and spiral-in (blue) from a 30,000 km DRO at 175 deg to a 5,000 km circular orbit at 125 deg; annotation block on the plot (one witness)"
+    page: 18
+    annotation:
+      flight_time_d: "35"
+      coast_time_d: "5.909"
+      delta_v_m_s: "770.5463"
+      mass_start_kg: "18932.5114 (November 2, 2023 21:3:2)"
+      mass_end_kg: "18473.2966 (December 7, 2023 21:3:2)"
+      acceleration: "about 0.3 mm/s^2"
+      final_energy_Europa_km2_s2: "-0.3200"
+      final_semi_major_axis_km: "5001.92"
+      final_inclination_deg: "127.34"
+      final_eccentricity: "0.0003196"
+    check: "mass ratio 18473.2966 / 18932.5114 = 0.97574; Delta-V 770.5463 m/s then implies a specific impulse of v_e = dv / ln(m0/m1) = 770.5463 / 0.024554 = 31,381 m/s (3200 s) if all the mass was propellant burned in this leg. Ours, not printed; 3200 s is a typical value of an advanced electric thruster, so the numbers are consistent."
