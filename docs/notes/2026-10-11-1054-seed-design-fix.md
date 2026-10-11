@@ -208,3 +208,46 @@ checkpointed. At full scale the test is that none of the 15 #1000 families is lo
 skeleton's lunar pass gets closer: r_p,min(d) larger for smaller d. This is the principled form of
 F2. Sec. 5.1 shows that 8,551-13,000 km perigees with a close lunar pass give first-arc Earth hits.
 It is used only if F1 also fails.
+
+## 7. F1-alone results (2026-10-11, 14:06-14:58 AEDT; after window 2 went green)
+
+Pre-registration: sec. 6, committed in f048aa67 before any F1 run. Data:
+`data/1054_seed_design/{arm_E,control_f1}.jsonl`, `report.json`.
+
+**Positive control (hard stop):** 576 of 576 seeds solved, 106 converged, **26 converge onto the 7-3b
+row** (4.5 % per seed; old control 22 / 1,152 = 1.9 %; the F1+F2+F3 control 8 / 721). Pass.
+
+**Pilot, paired (240 seeds):**
+
+| arm | impact | impact@1 | impact@>1 | converged | other (max iterations) | candidates per solve |
+|---|---|---|---|---|---|---|
+| A: records | 0.496 | 0.225 | 0.271 | 0.333 | 0.171 | 0.0583 (14) |
+| E: F1 alone | **0.425** | 0.121 | 0.304 | **0.375** | 0.200 | 0.0750 (18) |
+
+Paired impact outcomes (A -> E): 99 impact in both, 118 in neither, **20 impact only in A, 3 impact
+only in E**. Two-sided sign test on the 23 discordant pairs: p about 3e-4. No seed dropped out
+(every F1 skeleton still crosses the lunar orbit).
+
+Against sec. 6:
+- E impact 0.425: inside the expected 0.38-0.50 (central 0.44); <= the 0.535 bound; below A's 0.496.
+  Criteria 1 and 2 not met.
+- E converged 0.375: inside the expected 0.35-0.40; above 0.273. Criterion 3 not met.
+- Control recovered. Criterion 4 not met.
+- **F1 is not falsified by the pilot.** The paired drop is as the records predicted, and it is
+  significant in the paired test (the unpaired 1.5-sigma power estimate of sec. 6 was conservative).
+- As expected, the drop is in the first-arc impacts (0.225 -> 0.121). The later-iteration impacts
+  are unchanged within noise (0.271 -> 0.304).
+- Candidates 18 against 14: no claim at these counts (sec. 5.2).
+
+**Two family keys absent from the #1000/#1048 records** appear among E's candidates (one orbit each;
+not examined, not called new):
+- "2:1 pro wE1 wM0 sym": C 2.1903, T 6.3805, perigee altitude 2,478 km, periselene altitude
+  4,376 km (the #1000 2:1 family is wM-1);
+- "7:3 pro wE3 wM0 asym": C 2.7518, T 19.9488, perigee altitude 35,678 km, periselene altitude
+  8,075 km (k_min 7).
+Both are for the full-grid family count and its literal and literature step.
+
+**Next (for the lead):** the full F1 grid (the #1000 PQ set, F1 rows x 36 omegas, about 5,256 seeds,
+checkpointed, Pool(2); hours) with the falsification test at full scale: none of the 15 #1000 families
+is lost. The command does not exist yet; it is a `grid-f1` subcommand of this script (to be added on
+request).

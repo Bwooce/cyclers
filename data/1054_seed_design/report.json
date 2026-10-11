@@ -51,6 +51,25 @@
   ],
   "steps_halved_mean": 16.74
  },
+ "E": {
+  "n": 240,
+  "impact": 0.425,
+  "impact@1": 0.121,
+  "impact@>1": 0.304,
+  "converged": 0.375,
+  "other": 0.2,
+  "candidates_per_solve": 0.075,
+  "families": [
+   "2:1 pro wE1 wM0 sym",
+   "5:2 pro wE3 wM-1 sym",
+   "5:2 ret wE-7 wM0 sym",
+   "5:3 ret wE-8 wM-2 asym",
+   "7:3 pro wE3 wM0 asym",
+   "7:3 pro wE4 wM-1 sym",
+   "7:3 ret wE-10 wM-1 sym"
+  ],
+  "steps_halved_mean": 0.0
+ },
  "A (records, B's seeds)": {
   "n": 240,
   "impact": 0.496,
@@ -73,6 +92,12 @@
   "n": 721,
   "converged": 27,
   "hits": 8,
+  "old_control": "22 of 1,152 seeds"
+ },
+ "control_f1_7-3b": {
+  "n": 576,
+  "converged": 106,
+  "hits": 26,
   "old_control": "22 of 1,152 seeds"
  }
 }
