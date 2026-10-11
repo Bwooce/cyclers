@@ -414,6 +414,12 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "earth-venus-two-working-body-cycler-ev5-7-2026": "V1",
         "earth-venus-two-working-body-cycler-ev5-8-2026": "V1",
         "earth-venus-two-working-body-cycler-ev5-9-2026": "V1",
+        # 2026-10-11 (#1047, owner decision "Rows for A, B, D only"): the #1000 asymmetric
+        # Earth-Moon resonant cyclers, each V1 (validate._V1_1047;
+        # tests/search/test_1047_rows_writeback_v1.py).
+        "earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026": "V1",
+        "earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026": "V1",
+        "earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

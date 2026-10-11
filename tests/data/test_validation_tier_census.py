@@ -253,7 +253,9 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # convention as the #942/#943 rows (no provenance-registry tags).
     # 134 -> 144 (2026-10-11, second window): +10 this-project rows (the #1025 ev members),
     # same convention (no provenance-registry tags).
-    "unvalidated": 144,
+    # 144 -> 147 (2026-10-11, #1047): +3 this-project CR3BP rows (#1000 families A, B, D),
+    # same convention (no provenance-registry tags).
+    "unvalidated": 147,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

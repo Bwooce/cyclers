@@ -635,11 +635,19 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # (genuine planar CR3BP periodic orbit, rotating-frame, Jacobi-constant
         # identity). non-keplerian 55->56.
         "schwaniger-1963-em-cislunar-retrograde-periodic-free-return",
+        # #1047 (2026-10-11, owner decision "Rows for A, B, D only"): the #1000 asymmetric
+        # Earth-Moon resonant cyclers A (5:2 pro), B (5:3 ret), D (7:3 pro), computed
+        # known-class members of the Casoliva 2010 Class 1 p-q resonant class (planar CR3BP
+        # periodic orbits). non-keplerian 56->59.
+        "earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026",
+        "earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026",
+        "earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026",
     ]
 )
 
 # #970 (2026-10-08): + schwaniger-1963-em-cislunar-retrograde-periodic-free-return: 55 -> 56.
-assert len(NON_KEPLERIAN_IDS) == 56
+# #1047 (2026-10-11): + the #1000 rows A, B, D: 56 -> 59.
+assert len(NON_KEPLERIAN_IDS) == 59
 
 
 # ---------------------------------------------------------------------------
@@ -779,6 +787,10 @@ def test_census_distribution() -> None:
 
     2026-10-11 (owner decision 2026-10-11) admitted the 10 #1025 Earth-Venus members with
     Standish >= 4/5 (this-project, V1): multi-arc 311->321.
+
+    2026-10-11 (#1047, owner decision "Rows for A, B, D only") admitted the #1000
+    asymmetric Earth-Moon resonant cyclers A (5:2 pro), B (5:3 ret), D (7:3 pro) as CR3BP
+    known-class-member rows (this-project, V1): non-keplerian 56->59.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
@@ -790,7 +802,9 @@ def test_census_distribution() -> None:
     # ev-C, ev-A): multi-arc 291 -> 295.
     # 2026-10-11: + ev-B and the 15 #1025 gc members: multi-arc 295 -> 311.
     # 2026-10-11 (second window): + the 10 #1025 ev members: multi-arc 311 -> 321.
-    expected = {"single-ellipse": 46, "multi-arc": 321, "non-keplerian": 56}
+    # 2026-10-11 (#1047, owner decision "Rows for A, B, D only"): + the three asymmetric
+    # Earth-Moon resonant cyclers A, B, D (CR3BP, known-class-member): non-keplerian 56 -> 59.
+    expected = {"single-ellipse": 46, "multi-arc": 321, "non-keplerian": 59}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

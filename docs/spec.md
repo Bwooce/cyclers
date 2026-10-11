@@ -475,7 +475,13 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 >   nor cycle i+L is the open chain's first or last cycle (both ends are constrained only by
 >   the magnitude closure). No growth test: the fitted slope over the comparisons is
 >   recorded as a diagnostic in the row evidence and handed to V3. The systematic offset
->   against the ideal model is recorded, not banded;
+>   against the ideal model is recorded, not banded. The geometric-repeat tolerance is **0.02 rev
+>   for every system** (owner decision 2026-10-11, #1007 note sec. 8.17): L is the smallest integer
+>   for which L P / T is within 0.02 rev of an integer for every encounter body, with P = k real
+>   synodic periods of the pair and T each body's real mean sidereal period. L is computed, not typed
+>   (`cyclerfinder.verify.geometric_repeat`, `GEOMETRIC_REPEAT_TOL_REV`). A chain shorter than 2L
+>   cycles is NOT JUDGEABLE for V2 (e.g. Earth-Venus k = 3: L = 49; Earth-Mars: L = 32-37, so 64-74
+>   cycles);
 > - **the demanded-turn gate passes at every flyby** (#888/#937; "indeterminate" is
 >   not a pass);
 > - **DOP853 re-fly** of every leg misses < 1 km;

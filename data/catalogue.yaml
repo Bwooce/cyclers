@@ -56636,6 +56636,435 @@
     "orbit_elements.cr3bp.mass_ratio": "cyclerfinder.core.cr3bp.cr3bp_system(\"Earth\",\"Moon\").mu, live-printed this session (#797) = 0.01215058439469525. Casoliva 2010 (Sec. II text) prints mu_EM=0.0121529529 -- see the field's own comment for the 1.95e-04 relative gap."
     "orbit_class": "data/README.md schema v4.7 cycler definition ('transports between encounters') + this row's own casoliva_periselene_km/DERIVE cross-check, both well inside the lunar SOI/Hill radius."
 
+- id: earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026
+  name: '#1000 family A: (5,2) prograde asymmetric resonant Earth-Moon cycler (CR3BP, C=2.4819, periselene
+    13,243 km alt; known-class member)'
+  source: this-project
+  our_status: known-class-member
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: Earth
+  bodies:
+  - E
+  - Moon
+  sequence_canonical: E-Moon
+  sense: n/a
+  period:
+    pair: E-Moon
+    k: 1
+    years: null
+    note: 'T = 12.712603845043912 TU nondim (about 2 pi x 2 = 12.5664: the p-q resonance); 55.204226 d
+      via this project''s registry t* (375190.2619 s). years: null (CR3BP, rotating-frame periodic orbit).'
+  vinf_kms_at_encounters:
+  - body: E
+    vinf_kms: null
+    note: 'CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf.'
+  - body: Moon
+    vinf_kms: null
+    note: Same -- Jacobi-constant model.
+  orbit_elements:
+    a_au: null
+    e: null
+    note: Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity
+      tuple below.
+    cr3bp:
+      family: '#1000 family A: (5,2) prograde asymmetric resonant Earth-Moon cycler (winding E 3, M 0);
+        member of the Casoliva 2010 Class 1 p-q resonant class'
+      mass_ratio: 0.01215058439469525
+      libration_point: null
+      jacobi_constant: 2.4818625405692707
+      period_nd: 12.712603845043912
+      stability_index: -110.09616505452868
+      state_nd:
+      - 0.007585052498738436
+      - 0.0657582830468676
+      - 3.851612367153725e-28
+      - -4.914147198955228
+      - 1.4748532286336935
+      - -1.622937209161151e-25
+      lunit_km: 384400.0
+      tunit_s: 375190.2618944357
+      perigee_km: 9710.076056145415
+      periselene_km: 14980.426718733912
+      apogee_km: 411731.2838999758
+      max_moon_distance_km: 795599.542131841
+      energy_regime: null
+      tof_days_bounds:
+      - 55.20422645812772
+      - 55.20422645812772
+  source_ephemeris: null
+  data_gaps:
+  - path: orbit_elements.cr3bp.state_nd
+    kind: derive
+    note: 'No published IC for this orbit or its family (#1047 literal table). state_nd DERIVED: the #1000
+      multiple-shooting grid member that seeded the family''s continuation, re-closed with cyclerfinder.search.cr3bp_periodic.correct_periodic
+      at the registry mu. Never a golden. This is why our_status is known-class-member, not known-reproduction.'
+    source_hint: scripts/run_1000_shooting.py; scripts/run_1000_continue.py; scripts/writeback_1047_rows.py;
+      data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  - path: orbit_elements.cr3bp.stability_index
+    kind: derive
+    note: 'Casoliva 2010 Eq. 6-8 convention, as on the casoliva-7-3b/7-3c rows: k = max(|k_par|, |k_perp|)
+      with its sign, from the full-period monodromy (earth_moon_resonant_families.planar_stability_index;
+      k_par -110.096, k_perp -8.418). The product of 20 per-arc STMs gives k_par -110.097. Not comparable
+      number-for-number with the Barden half-period nu rows.'
+    source_hint: src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index; data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  legs: []
+  corroborating_sources:
+  - authors:
+    - Casoliva, J.
+    - Mondelo, J. M.
+    - Villac, B. F.
+    - Mease, K. D.
+    - Barrabes, E.
+    - Olle, M.
+    year: 2010
+    title: Two Classes of Cycler Trajectories in the Earth-Moon System
+    venue: Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640
+    doi: 10.2514/1.46856
+    url: https://arc.aiaa.org/doi/10.2514/1.46856
+    note: 'The published CLASS source (not first_published): Class 1, near-Keplerian p-q resonant Earth-Moon
+      cyclers, including the asymmetric 7-3b/7-3c pair. Table 3 tabulates p-q = 1-2, 2-1, 3-2 and 7-3
+      only; it has no (5,2) prograde orbit.'
+  priority_date: '2026-10-08'
+  notes: 'KNOWN-CLASS MEMBER (spec sec. 16.4; #875 (iii); owner decision 2026-10-11, ''Rows for A, B,
+    D only''). #1000 family A: 5:2 prograde (inertial), winding about the Earth 3, about the Moon 0, asymmetric.
+    A computed member of the published class of near-Keplerian p-q resonant Earth-Moon cyclers (Casoliva
+    et al. 2010 Class 1, which includes the asymmetric 7-3b/7-3c pair); NOT a literal copy of any published
+    orbit and NOT novel.
+
+
+    FAMILY (#1000, #1048, #1050): full computed C range 2.4022-3.0968 (low end: Earth floor; high end:
+    loss of convergence, unexplained, 0.003 below Liang 2017''s 5:2 C); cycler-class candidates over C
+    2.4034-2.9423 (perigee 225-35,752 km alt, periselene 11,637-35,997 km alt, T 12.696-13.093, b -275
+    to -103 from arc STMs). This row is the #1000 grid member that seeded the continuation (data/1000_complement/continuation/5_2_pro_wE3_wM0_p.jsonl
+    (line 1, k = 0)), re-closed with correct_periodic.
+
+
+    LITERATURE (#1047, docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md): literal
+    table (every published Earth-Moon p:q orbit held as numbers: Casoliva 2010 Table 3, Vaquero 2013,
+    Newton 1959, Casoliva 2008 seeds, Liang 2017, Liang 2020, Hoelker-Winston 1968, Genova-Aldrin 2015)
+    has NO member of this family. The v3 literature gate returns ''published'' at class level (Earth primary,
+    Moon, topology resonant); the gate does not compare p:q, sense or symmetry. Restrepo & Russell 2018:
+    excluded by construction (their database holds planar axisymmetric orbits only; this orbit is asymmetric).
+    Franz & Russell 2022: excluded by construction (their database drops orbits that go more than about
+    350,000 km from the Moon; this orbit reaches 795,600 km).
+
+
+    VERIFICATION (V1; scripts/writeback_1047_rows.py, data/1047_rows/writeback_v1.json, tests/search/test_1047_rows_writeback_v1.py):
+    full-state single-shooting Newton closure 3.7e-11; independent Radau re-propagation keeps the Jacobi
+    constant to 1.9e-12 over one period and agrees with DOP853 arc by arc (20 arcs) to 4.6e-11. The orbit
+    is strongly unstable (k = -110.1), so a whole-period closure depends on the integrator''s step sequence:
+    9.9e-08 for a plain DOP853 run and 1.6e-09 for Radau (error amplification, not a closure failure;
+    the reason #1000 uses multiple shooting). Dense DOP853 re-propagation: perigee 3,332 km alt, periselene
+    13,243 km alt (inside the Hill radius 61,274 km: a lunar encounter every period, orbit_class cycler),
+    winding about the Earth 3 and about the Moon 0, no perpendicular x-axis crossing (asymmetric). NOT
+    V2 (an unstable orbit cannot satisfy V2-ballistic bounded drift).
+
+
+    MIRROR: the mirror image (x, -y, -vx, vy) of this orbit is a different orbit of the same C and period
+    (minimum state distance 0.099 nondim); it is not a separate row (owner decision: one row per family).
+
+
+    MODEL: planar CR3BP at this project''s registry mu, l* and t*. No ephemeris claim.
+
+    '
+- id: earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026
+  name: '#1000 family B: (5,3) retrograde asymmetric resonant Earth-Moon cycler (CR3BP, C=0.8604, periselene
+    21,122 km alt; known-class member)'
+  source: this-project
+  our_status: known-class-member
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: Earth
+  bodies:
+  - E
+  - Moon
+  sequence_canonical: E-Moon
+  sense: n/a
+  period:
+    pair: E-Moon
+    k: 1
+    years: null
+    note: 'T = 18.886675526609444 TU nondim (about 2 pi x 3 = 18.8496: the p-q resonance); 82.015009 d
+      via this project''s registry t* (375190.2619 s). years: null (CR3BP, rotating-frame periodic orbit).'
+  vinf_kms_at_encounters:
+  - body: E
+    vinf_kms: null
+    note: 'CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf.'
+  - body: Moon
+    vinf_kms: null
+    note: Same -- Jacobi-constant model.
+  orbit_elements:
+    a_au: null
+    e: null
+    note: Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity
+      tuple below.
+    cr3bp:
+      family: '#1000 family B: (5,3) retrograde asymmetric resonant Earth-Moon cycler (winding E -8, M
+        -2); member of the Casoliva 2010 Class 1 p-q resonant class'
+      mass_ratio: 0.01215058439469525
+      libration_point: null
+      jacobi_constant: 0.8604292803677112
+      period_nd: 18.886675526609444
+      stability_index: 115.37797628017142
+      state_nd:
+      - -0.033641946537662316
+      - -0.014412226713891843
+      - 1.0254698730196898e-27
+      - -4.840002086693564
+      - 7.217360627093654
+      - 1.9599251731971817e-24
+      lunit_km: 384400.0
+      tunit_s: 375190.2618944357
+      perigee_km: 9946.909318680542
+      periselene_km: 22859.262797621715
+      apogee_km: 579763.5794002323
+      max_moon_distance_km: 956712.3746696194
+      energy_regime: null
+      tof_days_bounds:
+      - 82.01500853175725
+      - 82.01500853175725
+  source_ephemeris: null
+  data_gaps:
+  - path: orbit_elements.cr3bp.state_nd
+    kind: derive
+    note: 'No published IC for this orbit or its family (#1047 literal table). state_nd DERIVED: the #1000
+      multiple-shooting grid member that seeded the family''s continuation, re-closed with cyclerfinder.search.cr3bp_periodic.correct_periodic
+      at the registry mu. Never a golden. This is why our_status is known-class-member, not known-reproduction.'
+    source_hint: scripts/run_1000_shooting.py; scripts/run_1000_continue.py; scripts/writeback_1047_rows.py;
+      data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  - path: orbit_elements.cr3bp.stability_index
+    kind: derive
+    note: 'Casoliva 2010 Eq. 6-8 convention, as on the casoliva-7-3b/7-3c rows: k = max(|k_par|, |k_perp|)
+      with its sign, from the full-period monodromy (earth_moon_resonant_families.planar_stability_index;
+      k_par 115.378, k_perp 0.300). The product of 20 per-arc STMs gives k_par 115.295. Not comparable
+      number-for-number with the Barden half-period nu rows.'
+    source_hint: src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index; data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  legs: []
+  corroborating_sources:
+  - authors:
+    - Casoliva, J.
+    - Mondelo, J. M.
+    - Villac, B. F.
+    - Mease, K. D.
+    - Barrabes, E.
+    - Olle, M.
+    year: 2010
+    title: Two Classes of Cycler Trajectories in the Earth-Moon System
+    venue: Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640
+    doi: 10.2514/1.46856
+    url: https://arc.aiaa.org/doi/10.2514/1.46856
+    note: 'The published CLASS source (not first_published): Class 1, near-Keplerian p-q resonant Earth-Moon
+      cyclers, including the asymmetric 7-3b/7-3c pair. Table 3 tabulates p-q = 1-2, 2-1, 3-2 and 7-3
+      only; it has no (5,3) retrograde orbit.'
+  priority_date: '2026-10-08'
+  notes: 'KNOWN-CLASS MEMBER (spec sec. 16.4; #875 (iii); owner decision 2026-10-11, ''Rows for A, B,
+    D only''). #1000 family B: 5:3 retrograde (inertial), winding about the Earth -8, about the Moon -2,
+    asymmetric. A computed member of the published class of near-Keplerian p-q resonant Earth-Moon cyclers
+    (Casoliva et al. 2010 Class 1, which includes the asymmetric 7-3b/7-3c pair); NOT a literal copy of
+    any published orbit and NOT novel.
+
+
+    FAMILY (#1000, #1048, #1050): full computed C range 0.0159-0.9418 (low end: loss of convergence, unexplained;
+    high end: Earth floor); cycler-class candidates over C 0.4203-0.9403 (perigee 200-35,530 km alt, periselene
+    13,265-22,444 km alt, T 18.877-19.241, b +97 to +149). This row is the #1000 grid member that seeded
+    the continuation (data/1000_complement/continuation/5_3_ret_wE-8_wM-2_p.jsonl (line 1, k = 0)), re-closed
+    with correct_periodic.
+
+
+    LITERATURE (#1047, docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md): literal
+    table (every published Earth-Moon p:q orbit held as numbers: Casoliva 2010 Table 3, Vaquero 2013,
+    Newton 1959, Casoliva 2008 seeds, Liang 2017, Liang 2020, Hoelker-Winston 1968, Genova-Aldrin 2015)
+    has NO member of this family. The v3 literature gate returns ''published'' at class level (Earth primary,
+    Moon, topology resonant); the gate does not compare p:q, sense or symmetry. Restrepo & Russell 2018:
+    excluded by construction (their database holds planar axisymmetric orbits only; this orbit is asymmetric).
+    Franz & Russell 2022: excluded by construction (their database drops orbits that go more than about
+    350,000 km from the Moon; this orbit reaches 956,712 km).
+
+
+    VERIFICATION (V1; scripts/writeback_1047_rows.py, data/1047_rows/writeback_v1.json, tests/search/test_1047_rows_writeback_v1.py):
+    full-state single-shooting Newton closure 6.7e-11; independent Radau re-propagation keeps the Jacobi
+    constant to 2.3e-12 over one period and agrees with DOP853 arc by arc (20 arcs) to 4.6e-10. The orbit
+    is strongly unstable (k = 115.4), so a whole-period closure depends on the integrator''s step sequence:
+    7.1e-06 for a plain DOP853 run and 6.4e-07 for Radau (error amplification, not a closure failure;
+    the reason #1000 uses multiple shooting). Dense DOP853 re-propagation: perigee 3,569 km alt, periselene
+    21,122 km alt (inside the Hill radius 61,274 km: a lunar encounter every period, orbit_class cycler),
+    winding about the Earth -8 and about the Moon -2, no perpendicular x-axis crossing (asymmetric). NOT
+    V2 (an unstable orbit cannot satisfy V2-ballistic bounded drift).
+
+
+    MIRROR: the mirror image (x, -y, -vx, vy) of this orbit is a different orbit of the same C and period
+    (minimum state distance 2.164 nondim); it is not a separate row (owner decision: one row per family).
+
+
+    MODEL: planar CR3BP at this project''s registry mu, l* and t*. No ephemeris claim.
+
+    '
+- id: earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026
+  name: '#1000 family D: (7,3) prograde asymmetric resonant Earth-Moon cycler (CR3BP, C=2.5473, periselene
+    13,774 km alt; known-class member)'
+  source: this-project
+  our_status: known-class-member
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: Earth
+  bodies:
+  - E
+  - Moon
+  sequence_canonical: E-Moon
+  sense: n/a
+  period:
+    pair: E-Moon
+    k: 1
+    years: null
+    note: 'T = 18.66471809530478 TU nondim (about 2 pi x 3 = 18.8496: the p-q resonance); 81.051163 d
+      via this project''s registry t* (375190.2619 s). years: null (CR3BP, rotating-frame periodic orbit).'
+  vinf_kms_at_encounters:
+  - body: E
+    vinf_kms: null
+    note: 'CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf.'
+  - body: Moon
+    vinf_kms: null
+    note: Same -- Jacobi-constant model.
+  orbit_elements:
+    a_au: null
+    e: null
+    note: Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity
+      tuple below.
+    cr3bp:
+      family: '#1000 family D: (7,3) prograde asymmetric resonant Earth-Moon cycler (winding E 4, M -1);
+        member of the Casoliva 2010 Class 1 p-q resonant class'
+      mass_ratio: 0.01215058439469525
+      libration_point: null
+      jacobi_constant: 2.547266755561992
+      period_nd: 18.66471809530478
+      stability_index: 717.9459021638613
+      state_nd:
+      - -0.040974445096916876
+      - -0.10961833976697322
+      - -1.262177556913857e-28
+      - 3.7357585350380034
+      - -0.9823084204834679
+      - -1.214525764207394e-26
+      lunit_km: 384400.0
+      tunit_s: 375190.2618944357
+      perigee_km: 12131.639769919791
+      periselene_km: 15511.829220989246
+      apogee_km: 429880.07538678125
+      max_moon_distance_km: 808186.8746068157
+      energy_regime: null
+      tof_days_bounds:
+      - 81.05116285142608
+      - 81.05116285142608
+  source_ephemeris: null
+  data_gaps:
+  - path: orbit_elements.cr3bp.state_nd
+    kind: derive
+    note: 'No published IC for this orbit or its family (#1047 literal table). state_nd DERIVED: the #1000
+      multiple-shooting grid member that seeded the family''s continuation, re-closed with cyclerfinder.search.cr3bp_periodic.correct_periodic
+      at the registry mu. Never a golden. This is why our_status is known-class-member, not known-reproduction.'
+    source_hint: scripts/run_1000_shooting.py; scripts/run_1000_continue.py; scripts/writeback_1047_rows.py;
+      data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  - path: orbit_elements.cr3bp.stability_index
+    kind: derive
+    note: 'Casoliva 2010 Eq. 6-8 convention, as on the casoliva-7-3b/7-3c rows: k = max(|k_par|, |k_perp|)
+      with its sign, from the full-period monodromy (earth_moon_resonant_families.planar_stability_index;
+      k_par 717.946, k_perp -1.888). The product of 28 per-arc STMs gives k_par 717.940. Not comparable
+      number-for-number with the Barden half-period nu rows.'
+    source_hint: src/cyclerfinder/search/earth_moon_resonant_families.py::planar_stability_index; data/1047_rows/writeback_v1.json.
+    todo_ref: '#1047'
+  legs: []
+  corroborating_sources:
+  - authors:
+    - Casoliva, J.
+    - Mondelo, J. M.
+    - Villac, B. F.
+    - Mease, K. D.
+    - Barrabes, E.
+    - Olle, M.
+    year: 2010
+    title: Two Classes of Cycler Trajectories in the Earth-Moon System
+    venue: Journal of Guidance, Control, and Dynamics 33(5), pp. 1623-1640
+    doi: 10.2514/1.46856
+    url: https://arc.aiaa.org/doi/10.2514/1.46856
+    note: 'The published CLASS source (not first_published): Class 1, near-Keplerian p-q resonant Earth-Moon
+      cyclers, including the asymmetric 7-3b/7-3c pair. Table 3 tabulates p-q = 1-2, 2-1, 3-2 and 7-3
+      only; it has no (7,3) prograde orbit.'
+  priority_date: '2026-10-08'
+  notes: 'KNOWN-CLASS MEMBER (spec sec. 16.4; #875 (iii); owner decision 2026-10-11, ''Rows for A, B,
+    D only''). #1000 family D: 7:3 prograde (inertial), winding about the Earth 4, about the Moon -1,
+    asymmetric. A computed member of the published class of near-Keplerian p-q resonant Earth-Moon cyclers
+    (Casoliva et al. 2010 Class 1, which includes the asymmetric 7-3b/7-3c pair); NOT a literal copy of
+    any published orbit and NOT novel.
+
+
+    FAMILY (#1000, #1048, #1050): full computed C range 2.4136-2.5601 (low end: Earth floor; high end:
+    loss of convergence, unexplained, the most fold-like stop); cycler-class candidates over C 2.4192-2.5601
+    (perigee 267-6,373 km alt, periselene 10,716-14,064 km alt, T 18.608-18.822, b +110 to +799). This
+    row is the #1000 grid member that seeded the continuation (data/1000_complement/continuation/7_3_pro_wE4_wM-1_p.jsonl
+    (line 1, k = 0)), re-closed with correct_periodic.
+
+
+    LITERATURE (#1047, docs/notes/2026-10-11-1047-earth-moon-families-literal-table-and-v3-gate.md): literal
+    table (every published Earth-Moon p:q orbit held as numbers: Casoliva 2010 Table 3, Vaquero 2013,
+    Newton 1959, Casoliva 2008 seeds, Liang 2017, Liang 2020, Hoelker-Winston 1968, Genova-Aldrin 2015)
+    has NO member of this family. The v3 literature gate returns ''published'' at class level (Earth primary,
+    Moon, topology resonant); the gate does not compare p:q, sense or symmetry. Restrepo & Russell 2018:
+    excluded by construction (their database holds planar axisymmetric orbits only; this orbit is asymmetric).
+    Franz & Russell 2022: excluded by construction (their database drops orbits that go more than about
+    350,000 km from the Moon; this orbit reaches 808,187 km).
+
+
+    VERIFICATION (V1; scripts/writeback_1047_rows.py, data/1047_rows/writeback_v1.json, tests/search/test_1047_rows_writeback_v1.py):
+    full-state single-shooting Newton closure 5.3e-12; independent Radau re-propagation keeps the Jacobi
+    constant to 2.3e-12 over one period and agrees with DOP853 arc by arc (28 arcs) to 1.8e-11. The orbit
+    is strongly unstable (k = 717.9), so a whole-period closure depends on the integrator''s step sequence:
+    8.4e-07 for a plain DOP853 run and 4.2e-08 for Radau (error amplification, not a closure failure;
+    the reason #1000 uses multiple shooting). Dense DOP853 re-propagation: perigee 5,754 km alt, periselene
+    13,774 km alt (inside the Hill radius 61,274 km: a lunar encounter every period, orbit_class cycler),
+    winding about the Earth 4 and about the Moon -1, no perpendicular x-axis crossing (asymmetric). NOT
+    V2 (an unstable orbit cannot satisfy V2-ballistic bounded drift).
+
+
+    MIRROR: the mirror image (x, -y, -vx, vy) of this orbit is a different orbit of the same C and period
+    (minimum state distance 0.105 nondim); it is not a separate row (owner decision: one row per family).
+
+
+    MODEL: planar CR3BP at this project''s registry mu, l* and t*. No ephemeris claim.
+
+    '
 - id: vaquero-21-c198-em-resonant-po-2013
   name: "Vaquero 2:1 resonant Earth-Moon periodic cycler family, C=1.98 printed-TOF family endpoint (6.39 d) (CR3BP, in-plane stable, vertically unstable, NO lunar encounter -- periselene 86,911 km, outside lunar SOI/Hill radius)"
   source: literature
@@ -57787,7 +58216,9 @@
     - At 4 epochs the ramp-continued 10-cycle chain drifts: same-phase dates 15-66 d against a band
       of about 5.8 d; slopes up to +11.7 d per cycle.
     - The 5-cycle rung (d) chains above pass the gate.
-    - Not diagnosed further (another branch at 10 cycles is possible).
+    - Diagnosed (sec. 8.16): not another branch. A direct solve seeded from the 5-cycle chain
+      repeated one 16-yr period later returns to the same 10-cycle solution; the open chain's
+      solution depends on its length, and the drift belongs to that 10-cycle ballistic solution.
     The row stays V1.
 
     Literature:
@@ -58039,10 +58470,14 @@
     - Method: 6.55a ramp continuation with the epoch-0 positive control passing (6.55b).
 
     V2-ballistic (#1007, final wording of 2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-
-    chain-campaign.md sec. 8.14): NOT earned, 0 of 5 Standish epochs at 10 cycles (48 yr). The gate
-    fails or is indeterminate at 3 epochs (worst 1.011, 1.019, 0.999), there is no 10-cycle chain
-    at 1, and the same-phase date drift exceeds its 2.0-d band at every epoch with a chain. The row
-    stays V1.
+    chain-campaign.md secs. 8.14, 8.17): NOT JUDGEABLE at 10 cycles.
+    - Its geometric repeat at the owner's 0.02-rev tolerance is L = 49 (residual 0.0201 rev at
+      L = 5), so V2 needs >= 98 cycles (470 yr); no such chain exists.
+    - The 10-cycle run of sec. 8.14 used a hard-coded L = 5, which the rule does not allow.
+    - ev-B's V1 standing for V2 purposes rests on the GATE FAILURE alone: at 10 cycles the gate fails
+      or is indeterminate at 3 of 5 epochs (worst 1.011, 1.019, 0.999), and there is no 10-cycle
+      chain at the 4th.
+    The row stays V1.
 
     Literature:
     - Scripted gate: literature_check v2/v3-A1 returns NOT-FOUND (necessary, not sufficient;
@@ -59504,7 +59939,13 @@
     Real ephemeris: untested. Rung (d) (the patched-conic chain tool) was not run for this member,
     and real-ephemeris continuous gravity is untested (lane limit, #1044/#1046).
 
-    Literature: literature_check v3-A1 (#1025): "published" via Campagnola et al. 2019 GCGC AS RUN; a signature-convention artefact (the cycle is G-G-C, not alternating; started at Callisto it reads "inconclusive" naming Russell-Strange 2009 Ganymede-Callisto, data/1025_litcheck_gc6-0_diagnostic.json; #1056). Resolving notes: as for gc-1 (docs/notes/2026-10-06-943-gc-prior-art-search.md)
+    Literature: literature_check v3-A1 with the #1056 closing-repeat flag (f03cc22f;
+    data/1025_litcheck_973_members.json): "inconclusive", naming the Russell-Strange 2009
+    Ganymede-Callisto ideal-model moon cycler (one working body; rule F7), like the other gc members.
+    The first #1025 run read "published" via Campagnola et al. 2019 GCGC. That was a
+    signature-convention artefact: the one-cycle list G-C-G was read as having a closing repeat, so
+    the G-G-C cycle looked alternating. It is corrected by #1056
+    (docs/notes/2026-10-11-1056-closing-repeat-flag.md). Resolving notes: as for gc-1 (docs/notes/2026-10-06-943-gc-prior-art-search.md)
     and docs/notes/2026-10-08-1025-literature-step.md. OWNER DECISION 2026-10-08: written
     candidate-novel as a member of gc-1's class, with gc-1's attribution (Hollister & Menning 1970
     method; Russell & Strange 2007/2009 model; Campagnola et al. 2019 nearest prior art). Wording:

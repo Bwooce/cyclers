@@ -355,7 +355,8 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 94 -> 96 (2026-10-08, #942/#943): +2 Jovian two-working-body generator rows (gc-1,
     # gc-2; primary Jupiter, so non-heliocentric).
     # 96 -> 111 (2026-10-11): + the 15 #1025 Jovian gc members (primary Jupiter).
-    ExclusionReason.NON_HELIOCENTRIC: 111,
+    # 111 -> 114 (2026-10-11, #1047): + the #1000 Earth-Moon rows A, B, D (primary Earth).
+    ExclusionReason.NON_HELIOCENTRIC: 114,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

@@ -570,6 +570,22 @@ _V2_1007: str = (
     "(_V1_942_943). "
 )
 
+# #1047 rows A, B, D (owner decision 2026-10-11, "Rows for A, B, D only"): the V1 evidence of the
+# re-closed #1000 representatives (tests/search/test_1047_rows_writeback_v1.py recomputes it).
+_V1_1047: str = (
+    "spec §14 V1 (#1047 writeback, 2026-10-11), the Casoliva Table 3 rows' CR3BP convention: "
+    "full-state single-shooting Newton closure (cr3bp_periodic.correct_periodic) of the #1000 "
+    "grid member that seeded the family's continuation, at the registry Earth-Moon mu; an "
+    "independent Radau re-propagation keeps the Jacobi constant to < 1e-8 over one period and "
+    "agrees with DOP853 arc by arc (4p arcs, each from the DOP853 node) to < 1e-8; dense "
+    "DOP853 re-propagation confirms perigee, periselene (inside the Hill radius: orbit_class "
+    "cycler), windings and asymmetry (scripts/writeback_1047_rows.py, "
+    "data/1047_rows/writeback_v1.json). Deviation from the Casoliva recipe: the whole-period "
+    "Radau closure is not the gate, because |lambda| ~ 1e2-1e3 makes it depend on the "
+    "integrator's step sequence (recorded per row). NOT V2 (an unstable orbit cannot satisfy "
+    "V2-ballistic bounded drift). "
+)
+
 _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ("aldrin-classic-em-k1-outbound", "V1"): (
         "spec §14 V1: real-DE440 Aldrin cycler — lamberthub izzo2015+gooding1990 "
@@ -1753,6 +1769,21 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         _V1_1025_EV + "Row: ev5-9 (lamberthub <= 1.3e-10 m/s; "
         "DOP853 re-fly 3.4e-02 km). Standish 5/5 epochs "
         "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-moon-5-2-prograde-asymmetric-cycler-1000a-2026", "V1"): (
+        _V1_1047 + "Row: #1000 family A (closure 3.7e-11; "
+        "Radau dJ 1.9e-12, arcs 4.6e-11; whole-period "
+        "Radau 1.6e-09, plain DOP853 9.9e-08)."
+    ),
+    ("earth-moon-5-3-retrograde-asymmetric-cycler-1000b-2026", "V1"): (
+        _V1_1047 + "Row: #1000 family B (closure 6.7e-11; "
+        "Radau dJ 2.3e-12, arcs 4.6e-10; whole-period "
+        "Radau 6.4e-07, plain DOP853 7.1e-06)."
+    ),
+    ("earth-moon-7-3-prograde-asymmetric-cycler-1000d-2026", "V1"): (
+        _V1_1047 + "Row: #1000 family D (closure 5.3e-12; "
+        "Radau dJ 2.3e-12, arcs 1.8e-11; whole-period "
+        "Radau 4.2e-08, plain DOP853 8.4e-07)."
     ),
 }
 
