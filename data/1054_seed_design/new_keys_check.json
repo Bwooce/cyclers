@@ -1,0 +1,538 @@
+{
+ "2:1 pro wE1 wM-1 sym": {
+  "n_members": 4,
+  "computed_pq": [
+   2,
+   1
+  ],
+  "sense": "pro",
+  "C_range": [
+   2.3817786882533505,
+   2.4431193263551942
+  ],
+  "T_range": [
+   6.042073343452232,
+   6.08461322020346
+  ],
+  "perigee_alt_km": [
+   28777.14496617189,
+   34958.33043531764
+  ],
+  "periselene_alt_km": [
+   49909.577363025215,
+   56478.095834935666
+  ],
+  "symmetric": true,
+  "a_literal_members": [],
+  "a_same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "same p:q and sense; C 1.9521613046 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 1.9800000000000062 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.4599999999999964 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.469999999999996 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.659999999999992 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "same p:q and sense; C 2.5915243637421264 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "same p:q and sense; C 2.6695351808423595 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "same p:q and sense; C 2.6345741034127244 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "same p:q and sense; C 2.5131538804083853 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "same p:q and sense; C 2.339496998592055 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "same p:q and sense; C 2.0827953202657215 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "same p:q (sense not printed); C 2.0934 outside the family's computed range"
+   }
+  ],
+  "b_rr": [
+   {
+    "C": 2.3817786882533505,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.4350024884392174,
+    "inside_J_range": true,
+    "n_match": 1,
+    "best": [
+     {
+      "file": "run20150707_100000_MoonA",
+      "row": 1868,
+      "J": 2.430687790961193,
+      "T": 6.051846234804408,
+      "mu": 0.01214374225526642,
+      "dmax_crossing": 0.0020405921058401777,
+      "b_h": -1.42649786583175,
+      "b_v": 2.366944991163251,
+      "Ncross": 3.0,
+      "Mrot": 1.0,
+      "Nrot": -1.0
+     }
+    ]
+   },
+   {
+    "C": 2.439711586427748,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.4431193263551942,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   }
+  ],
+  "c_fr_excluded_by_construction": true,
+  "max_moon_km": [
+   840168.9102982112,
+   845569.3134132382
+  ],
+  "d_997_same_key_C_overlap": [
+   {
+    "file": "F3-10_m.jsonl",
+    "C_range": [
+     2.339496998592055,
+     2.478469197463477
+    ]
+   },
+   {
+    "file": "F3-11_m.jsonl",
+    "C_range": [
+     2.0827953202657215,
+     2.47786207850488
+    ]
+   },
+   {
+    "file": "F3-6_m.jsonl",
+    "C_range": [
+     2.2297476925575355,
+     2.5915243637421264
+    ]
+   },
+   {
+    "file": "F3-7_m.jsonl",
+    "C_range": [
+     2.2274152773071796,
+     2.6695351808423595
+    ]
+   }
+  ],
+  "d_997_same_key_any_C": [
+   "F3-10_m.jsonl",
+   "F3-10_p.jsonl",
+   "F3-11_m.jsonl",
+   "F3-11_p.jsonl",
+   "F3-6_m.jsonl",
+   "F3-6_p.jsonl",
+   "F3-7_m.jsonl",
+   "F3-7_p.jsonl",
+   "F3-8_m.jsonl",
+   "F3-8_p.jsonl",
+   "F3-9_m.jsonl",
+   "F3-9_p.jsonl"
+  ],
+  "e_gate": {
+   "status": "published",
+   "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)"
+  },
+  "label": "known-class (matched: RR #997 F3-10_m.jsonl, F3-11_m.jsonl, F3-6_m.jsonl, F3-7_m.jsonl)",
+  "control": true,
+  "control_pass": true
+ },
+ "2:1 pro wE1 wM0 sym": {
+  "n_members": 2,
+  "computed_pq": [
+   2,
+   1
+  ],
+  "sense": "pro",
+  "C_range": [
+   2.1902816613302343,
+   2.1902816613302343
+  ],
+  "T_range": [
+   6.380505239078003,
+   6.380505239078003
+  ],
+  "perigee_alt_km": [
+   2478.114960395783,
+   2478.114960395783
+  ],
+  "periselene_alt_km": [
+   4376.387006285795,
+   4376.387006285795
+  ],
+  "symmetric": true,
+  "a_literal_members": [],
+  "a_same_pq_rows": [
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1a",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1b",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Casoliva et al. 2010 Table 3",
+    "orbit": "2-1d",
+    "verdict": "same p:q and sense; C 1.9521613046 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c198-em-resonant-po-2013",
+    "verdict": "same p:q and sense; C 1.9800000000000062 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c246-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.4599999999999964 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c247-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.469999999999996 outside the family's computed range"
+   },
+   {
+    "source": "Vaquero 2013 (catalogue row)",
+    "orbit": "vaquero-21-c266-em-cycler-2013",
+    "verdict": "same p:q and sense; C 2.659999999999992 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-1",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-2",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-3",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-4",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F2-5",
+    "verdict": "same p:q, opposite sense"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-6",
+    "verdict": "same p:q and sense; C 2.5915243637421264 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-7",
+    "verdict": "same p:q and sense; C 2.6695351808423595 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-8",
+    "verdict": "same p:q and sense; C 2.6345741034127244 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-9",
+    "verdict": "same p:q and sense; C 2.5131538804083853 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-10",
+    "verdict": "same p:q and sense; C 2.339496998592055 outside the family's computed range"
+   },
+   {
+    "source": "Newton 1959 Table 1 (registry mu, #997 seed)",
+    "orbit": "F3-11",
+    "verdict": "same p:q and sense; C 2.0827953202657215 outside the family's computed range"
+   },
+   {
+    "source": "Casoliva et al. 2008 Table 2 (seeds)",
+    "orbit": "21a",
+    "verdict": "same p:q; class-level only (mu = 1e-6 seed, not Earth-Moon)"
+   },
+   {
+    "source": "Liang, Xu, Peng & Xu 2020",
+    "orbit": "2:1 resonant cycler orbit",
+    "verdict": "same p:q (sense not printed); C 2.0934 outside the family's computed range"
+   }
+  ],
+  "b_rr": [
+   {
+    "C": 2.1902816613302343,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.1902816613302343,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   }
+  ],
+  "c_fr_excluded_by_construction": true,
+  "max_moon_km": [
+   812891.8929560463,
+   812891.8929560463
+  ],
+  "d_997_same_key_C_overlap": [],
+  "d_997_same_key_any_C": [],
+  "e_gate": {
+   "status": "published",
+   "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)"
+  },
+  "label": "known-class (class level only: v3 gate; no matching orbit held)"
+ },
+ "5:2 ret wE-6 wM0 sym": {
+  "n_members": 1,
+  "computed_pq": [
+   4,
+   2
+  ],
+  "sense": "ret",
+  "C_range": [
+   1.0956158501957733,
+   1.0956158501957733
+  ],
+  "T_range": [
+   11.973735534522076,
+   11.973735534522076
+  ],
+  "perigee_alt_km": [
+   19591.329754262122,
+   19591.329754262122
+  ],
+  "periselene_alt_km": [
+   6410.9937330904995,
+   6410.9937330904995
+  ],
+  "symmetric": true,
+  "a_literal_members": [],
+  "a_same_pq_rows": [],
+  "b_rr": [
+   {
+    "C": 1.0956158501957733,
+    "inside_J_range": false,
+    "n_match": 0,
+    "best": []
+   }
+  ],
+  "c_fr_excluded_by_construction": true,
+  "max_moon_km": [
+   785452.4368215887,
+   785452.4368215887
+  ],
+  "d_997_same_key_C_overlap": [],
+  "d_997_same_key_any_C": [],
+  "e_gate": {
+   "status": "published",
+   "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675"
+  },
+  "label": "known-class (class level only: v3 gate; no matching orbit held)"
+ },
+ "7:3 pro wE3 wM0 asym": {
+  "n_members": 2,
+  "computed_pq": [
+   6,
+   3
+  ],
+  "sense": "pro",
+  "C_range": [
+   2.7518283838619624,
+   2.7518283838619624
+  ],
+  "T_range": [
+   19.94884716074467,
+   19.94884716074467
+  ],
+  "perigee_alt_km": [
+   35678.44917699413,
+   35678.44917699413
+  ],
+  "periselene_alt_km": [
+   8074.528189670942,
+   8074.528189670942
+  ],
+  "symmetric": false,
+  "a_literal_members": [],
+  "a_same_pq_rows": [],
+  "b_rr": "asymmetric: outside RR by construction",
+  "c_fr_excluded_by_construction": true,
+  "max_moon_km": [
+   750045.2881981832,
+   750045.2881981832
+  ],
+  "d_997_same_key_C_overlap": [],
+  "d_997_same_key_any_C": [],
+  "e_gate": {
+   "status": "published",
+   "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675"
+  },
+  "label": "known-class (class level only: v3 gate; no matching orbit held)"
+ },
+ "8:3 pro wE5 wM0 sym": {
+  "n_members": 5,
+  "computed_pq": [
+   8,
+   3
+  ],
+  "sense": "pro",
+  "C_range": [
+   2.4744994688837623,
+   2.5335010440617722
+  ],
+  "T_range": [
+   18.93156059563318,
+   18.979460268914366
+  ],
+  "perigee_alt_km": [
+   4476.099461690276,
+   8089.392270723701
+  ],
+  "periselene_alt_km": [
+   16874.020778761882,
+   20708.827993562318
+  ],
+  "symmetric": true,
+  "a_literal_members": [],
+  "a_same_pq_rows": [],
+  "b_rr": [
+   {
+    "C": 2.4744994688837623,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.5110197463182917,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.524344286129452,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.524795154376193,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   },
+   {
+    "C": 2.5335010440617722,
+    "inside_J_range": true,
+    "n_match": 0,
+    "best": []
+   }
+  ],
+  "c_fr_excluded_by_construction": true,
+  "max_moon_km": [
+   772449.6012199633,
+   787292.0706734271
+  ],
+  "d_997_same_key_C_overlap": [],
+  "d_997_same_key_any_C": [],
+  "e_gate": {
+   "status": "published",
+   "citation": "Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport and Heteroclinic Pathways,' Advances in Space Research (2026); arXiv:2509.12675"
+  },
+  "label": "known-class (class level only: v3 gate; no matching orbit held)"
+ }
+}

@@ -297,3 +297,47 @@ and never "new" or "novel":
   Franz-Russell: maximum Moon distance against its cutoff of about 350,000 km;
 - the #997 families (`data/997_lineage/`, F1-F4): same p:q, sense and windings, and C overlap;
 - the v3 literature gate (class level; it does not compare p:q).
+
+## 9. Full F1 grid: result against the sec. 8 pre-registration (run by the lead, finished 2026-10-11 21:33 AEDT)
+
+Data: `data/1054_seed_design/grid_f1.jsonl` (5,256 seeds, all solved) and `grid_f1_report.json`.
+
+| | #1000 grid | F1 grid | expected (sec. 8) | criterion |
+|---|---|---|---|---|
+| impact | 0.590 | **0.537** | 0.48-0.56 | falsified if >= 0.590: **not met** |
+| impact@1 | 0.286 | 0.200 | (falls) | - |
+| impact@>1 | 0.304 | 0.338 | - | - |
+| converged | 0.286 | **0.328** | 0.30-0.36 | falsified if <= 0.286: **not met** |
+| other (max iterations) | 0.124 | 0.135 | - | - |
+| candidates per solve | 0.0405 | 0.0502 | 0.04-0.06 | reported only |
+| #1000 family keys found | 15 | **15 of 15** | - | falsified if any lost: **not met** |
+
+**F1 is not falsified at full scale.**
+- Impact and converged rates are inside their predicted ranges.
+- The drop is in first-arc impacts (0.286 -> 0.200), as in the pilot. Later-iteration impacts rise a little
+  (0.304 -> 0.338).
+- All 15 #1000 family keys are found, including the four 1-2-member keys flagged as at risk. Member counts
+  F1/#1000: 7:3 ret wE-10 wM0 1/1; "7:3 ret wE-9 wM0" 1/1; 8:3 ret 9/2; D 3/2. 12 of the 15 keys have as many
+  or more members than in #1000 (the exceptions: 2:3 ret 9/10; A and B equal).
+
+**Four family keys not in the #1000 grid**, checked as pre-registered (`scripts/run_1054_keys.py`,
+`data/1054_seed_design/new_keys_check.json`).
+- Positive control first: the #1000 key "2:1 pro wE1 wM-1 sym" gets its RR match and its #997 F3 families
+  through the same code path. PASS.
+
+| key (skeleton) | distinct orbits | computed (N : round(T/2pi)), sense | C | perigee / periselene alt (km) | (a) literal | (b) RR | (c) FR | (d) #997 | (e) v3 gate | label |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2:1 pro wE1 wM0 sym | 1 (the arm-E orbit, again in the grid) | 2:1 pro | 2.1903 | 2,478 / 4,376 | no member (Casoliva 2-1a/b opposite sense; 2-1d and Vaquero c198 C outside) | inside J range, no match | excluded by construction (max Moon 812,892 km) | no family with this p:q, sense and windings | published (class) | known-class (class level only) |
+| 5:2 ret wE-6 wM0 sym | 1 | **4:2** ret (5 perigees, k_min 5) | 1.0956 | 19,591 / 6,411 | no same-p:q row | below RR's J range | excluded (785,452 km) | none | published (class) | known-class (class level only) |
+| 7:3 pro wE3 wM0 asym | 1 (the arm-E orbit, again in the grid) | **6:3** pro (7 perigees, k_min 7) | 2.7518 | 35,678 / 8,075 | no same-p:q row | asymmetric: outside RR by construction | excluded (750,045 km) | none | published (class) | known-class (class level only) |
+| 8:3 pro wE5 wM0 sym | 5 | 8:3 pro | 2.4745-2.5335 | 4,476-8,089 / 16,874-20,709 | no same-p:q row | inside J range, no match (5 of 5) | excluded (772,450-787,292 km) | none | published (class) | known-class (class level only) |
+
+- None is known-reproduction.
+- None matches an RR record or a #997 family.
+- All four are Earth-Moon resonant periodic orbits with a lunar pass each period. That class is published
+  (Casoliva 2010 Class 1; the Kumar/Rawat/Rosengren/Ross papers). So under #875 (iii) each is a computed
+  known-class member, at a p:q, sense or winding not held as numbers in any source. Nothing is called new.
+- Two keys have an inertial revolution count that differs from their skeleton's p: the 5:2 ret wE-6 key
+  computes as 4:2 and the 7:3 pro wE3 key as 6:3. Their minimal period still has p perigees (k_min = p).
+  So the "p:q" label of these two depends on whether perigees or inertial revolutions are counted. This is
+  the same kind of case as #1047's "7:3 ret wE-9 wM0" (computes 6:3).
