@@ -153,8 +153,9 @@ filling a region), escape (distance grows without limit).
 
 Held status checked with `ls cyclers_pdf/papers | grep` and CORPUS_INDEX.
 - Hénon 1965a (I) and 1965b (II): HELD (`henon-1965a-...`, `henon-1965b-...`).
-- Hénon 1966a, 1966b (III and IV, Bull. Astr. Paris 1): not held. Wanted-list row 65 (also lists
-  Matukuma 1930-1957).
+- Hénon 1966a, 1966b (III and IV, Bull. Astr. Paris 1): HELD since 2026-10-11, with full English translations
+  (digests 2026-10-11-digest-henon-1966a-... and 2026-10-11-digest-henon-1966b-...). The wanted-list item
+  "Hill-problem and mu = 1/2 background cited by Hénon 1969" now asks only for Matukuma 1957.
 - Hénon 1969 (V): HELD (`henon-1969-numerical-exploration-restricted-problem-V-...`).
 - Hénon and Guyot 1970 (Sao Paulo symposium): HELD (`henon-guyot-1970-...`).
 - Matukuma 1957 (Sendai Astr. Rap. 51): not held; row 65.

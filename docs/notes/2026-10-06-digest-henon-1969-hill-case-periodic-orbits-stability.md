@@ -58,5 +58,6 @@ g').**
 
 - Hill 1886, Matukuma 1930-1957, Kevorkian 1962, Stumpff 1965, Szebehely 1967 (held), and Hénon
   1965a/b (1965b now held; 1965a on the wanted list) and 1966a/b.
-- Matukuma and Hénon 1966a/b (Bull. Astron. 1:57, 1:49) are not held. They are added to one
-  low-priority wanted row.
+- Hénon 1966a/b (papers III and IV, Bull. Astron. 1:57, 1:49) are HELD since 2026-10-11, with full English
+  translations (digests 2026-10-11-digest-henon-1966a-... and 2026-10-11-digest-henon-1966b-...). Matukuma 1930,
+  1932 and 1933 are also held (J-STAGE, 2026-10-11). Only Matukuma 1957 is still wanted.

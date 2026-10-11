@@ -158,7 +158,7 @@ witness counts.
 ## 4. Misprints in the original (marked in the translation)
 
 - **The Fig. 12 and Fig. 13 captions are interchanged (pp.72-73).** The text calls the C = 3 section Fig. 13 and the
-  M1/M2 orbit Fig. 12.
+  M1/M2 orbit Fig. 12. Hénon's own erratum at the end of paper IV (Bull. Astron. 1:66) confirms this.
 - **p.75:** "au voisinage du point n" should be "point h".
 - **p.57 résumé:** "les orbites demi-ergodiques" should be "semi-ergodiques". The English and German abstracts say
   semi-ergodic.
