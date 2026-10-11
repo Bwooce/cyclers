@@ -285,15 +285,32 @@ def _status_compare_violations_in(text: str, filename: str = "<src>") -> list[in
         if isinstance(node, ast.Assign) and _is_status_access(node.value):
             aliases |= {t.id for t in node.targets if isinstance(t, ast.Name)}
         elif (
-            isinstance(node, ast.AnnAssign)
+            # an annotated assignment, or (#1066-2) a walrus, from a status access
+            isinstance(node, (ast.AnnAssign, ast.NamedExpr))
             and node.value is not None
             and isinstance(node.target, ast.Name)
             and _is_status_access(node.value)
         ):
             aliases.add(node.target.id)
 
+    gate_helpers = {"is_literature_fresh", "is_novelty_claimable"}
+
     def is_status(x: ast.expr) -> bool:
-        return _is_status_access(x) or (isinstance(x, ast.Name) and x.id in aliases)
+        if _is_status_access(x) or (isinstance(x, ast.Name) and x.id in aliases):
+            return True
+        if isinstance(x, ast.NamedExpr):  # #1066-2
+            return is_status(x.value)
+        if isinstance(x, ast.Call):  # #1066-1
+            f = x.func
+            fname = (
+                f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else ""
+            )
+            if fname in gate_helpers:
+                return False
+            if any(is_status(a) for a in x.args):
+                return True
+            return isinstance(f, ast.Attribute) and is_status(f.value)
+        return False
 
     def is_other_ref(x: ast.expr) -> bool:
         if is_status(x):

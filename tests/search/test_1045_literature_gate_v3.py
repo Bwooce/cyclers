@@ -136,11 +136,20 @@ def test_g5_ratchet_flags_evasion_forms() -> None:
         "alias": "st = r.status\nok = st in FRESH\n",
         "attr_set": "ok = r.status in mod.OTHER_SET\n",
         "attr_const": "ok = r.status == consts.NOT_FOUND\n",
+        # #1066-1: a call wrapping a status access
+        "call_str": "ok = str(r.status) == consts.NOT_FOUND\n",
+        "call_method": "ok = r.status.strip() in WANT\n",
+        "call_helper": "ok = norm(r.status) != X\n",
+        # #1066-2: walrus
+        "walrus_inline": "ok = (st := r.status) in WANT\n",
+        "walrus_alias": "if (st := r.status):\n    ok = st == FOO\n",
     }
     for name, src in forms.items():
         assert flag(src), name
     assert not flag("ok = r.status in FRESH_STATUSES\n")
     assert not flag("ok = r.status in lc.FRESH_STATUSES\n")
+    assert not flag("ok = is_literature_fresh(r.status)\n")
+    assert not flag("ok = is_literature_fresh(r.status) == FLAG\n")
     assert not flag("ok = is_literature_fresh(r.status)\n")
 
 
