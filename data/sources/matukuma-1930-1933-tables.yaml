@@ -1,0 +1,102 @@
+# Matukuma 1930, 1932, 1933: Hill's-case periodic orbits. All printed numbers of the three notes.
+# Sources (J-STAGE, free):
+#   T. Matukuma (1930), "On the Periodic Orbits in Hill's Case", Proc. Imp. Acad. (Tokyo) 6(1):6-8, doi 10.2183/pjab1912.6.6.
+#     Rec. and Comm. by K. Hirayama, Jan. 12, 1930. J-STAGE PDF md5 baa6eb2b2c131423dca8d97b4aa4109c (3 pp).
+#   T. Matukuma (1932), "Periodic Orbits in Hill's Case. Second Paper (Retrograde Variational Orbits)",
+#     Proc. Imp. Acad. 8(5):147-150, doi 10.2183/pjab1912.8.147. Rec. May 12, 1932. md5 8a40fae6b8b980c47858c2a54832e2c2 (4 pp).
+#   T. Matukuma (1933), "Periodic Orbits in Hill's Case. Third Paper (Periodic Ejectional Orbit)",
+#     Proc. Imp. Acad. 9(8):364-366, doi 10.2183/pjab1912.9.364. Comm. Oct. 12, 1933. md5 c457bdeadc7d9239aff5e0dc0a603167 (3 pp).
+# PDF page n: 1930 = journal page 5 + n; 1932 = 146 + n; 1933 = 363 + n.
+# Transcribed from the page images (witness C, decides): 110 dpi overview and 400 dpi crops of every table.
+#   Witness A: tesseract 5, psm 6, digit whitelist, on separate 400 dpi crops (work/tess_t32.txt, tess_c32.txt, tess_t33a.txt,
+#   tess_t33b.txt). NOT the J-STAGE text layer. Disagreements and how the image settled them: conventions.notes.
+# No value here was computed by us. Values we computed are only in `ours:` fields and in work/*.out.
+# Numbers are strings, as printed (trailing zeros kept). The printed minus sign is "-".
+conventions:
+  problem: "Hill's problem (restricted three-body problem in Hill's limit), planar, rotating frame, origin at the attracting body."
+  equations_1930: "Darwin's intrinsic variables: dx/ds = -sin(phi), dy/ds = +cos(phi), dphi/ds = 1/R = (1/V^2){cos(theta - phi)/r^2 - 2V - 3x cos(phi)}"
+  equations_1932: "d2x/dt2 - 2n' dy/dt - 3n'^2 x = -mu x/r^3;  d2y/dt2 + 2n' dx/dt = -mu y/r^3   (1)"
+  units: "mu = n' = 1 in all comparisons. Then the equations are Henon's (1969) Hill equations x'' - 2y' - 3x = -x/r^3, y'' + 2x' = -y/r^3."
+  jacobi: "V^2 = 3x^2 + 2/r - 2C (1930 p.6; 1933 footnote 5). Matukuma's 2C equals Henon's (1969) Gamma. The libration points are at (+-3^(-1/3), 0), where 2C = 3^(4/3) = 4.3267."
+  sign_convention: "Matukuma prints positive x (distances). Henon 1969 lists family f with negative xi (start on the negative x axis). Compare |xi|."
+  families: "Matukuma family B (1930, 1933; looped direct variational orbits from Hill's cusped orbit 2C = 2.55788) = Henon family g. Matukuma family F (1930; oscillating satellites about the libration points) = Henon families a, c. The 1932 retrograde variational orbits = Henon family f. Henon 1969 p.224 maps Matukuma's later (1957) family names onto Stromgren's letters; we did not use that list."
+  parameters_1932: "lambda = n/n' (n = mean motion of the satellite in fixed axes); m = n'/(n - n') = 1/(lambda - 1); tau = (n - n')(t - t0). x(tau = 0) is the x-axis crossing, y(tau = 90 deg) the y-axis crossing. Half-period in t: T/2 = pi/(1 - lambda) (our reading, from tau = (n - n')(t - t0) with n' = 1)."
+  table2_1933: "Ejection orbits (not periodic) leaving the origin along the x axis with infinite speed. phi = angle of the normal with the x axis. Columns: -x and y at phi = 90, 60, 30, 0, -30, -60, -90 deg. x(-90 deg) = 0 would be the periodic ejectional orbit."
+  notes:
+    - "Witness comparison 1932 table: tesseract misreads (all settled on the image): '0.93219' for 0.33219; '1986' for 1.986; '-1266' for -126.6; '275' for -27.5; '61' for -6.1; '014' for 2.014. No image cell is in doubt."
+    - "Witness comparison 1932 c_j: all 13 cells agree."
+    - "Witness comparison 1933 Table 1: all 11 rows agree (tesseract '0.271807' = 0.27180 with footnote mark 7)."
+    - "Witness comparison 1933 Table 2: 7 tesseract misreads, image decides: 0.8235 (A: 0.8285), 1.1391 (1.1891), 0.733 (0.783), 5.7402 (6.7402), 20.374 (20.874), 351.28 (35.28), 0.000618 (0.000818). Our integration supports every image reading (work/g_and_ejection.out, extra_checks.out)."
+    - "Eq. (8) of 1932 prints '2 - 1.3892 lambda'. Eqs. (7) give 2 + 1.3892 lambda (= 2(1 + 0.0346 lambda)/(1 - 0.66 lambda) to first order), and the table follows the + sign (lambda = -1/10 gives 1.86). The printed minus is a sign slip (ours)."
+tables:
+  - table: "1930 orbits (text p.8 and figure p.7)"
+    columns: [orbit, family, two_C]
+    rows:
+      - {orbit: "B1", family: "B", two_C: "2.0"}
+      - {orbit: "B2", family: "B", two_C: "1.3", note: "Kelvin's graphical orbit is 'Orbit B2'"}
+      - {orbit: "B3", family: "B", two_C: "0.8"}
+      - {orbit: "B4", family: "B", two_C: "0.4"}
+      - {orbit: "cusped", family: "B limit", two_C: "2.5?778", note: "figure label; the third digit is hidden by orbit lines on the 400 dpi image, the visible digits are '2.5', then '778'. The 1933 text (Table 1) gives 2.55788 for Hill's cusped orbit, so the label may read 2.55778 (a one-digit difference) or the hidden digit may mislead; not settled"}
+      - {orbit: "F1", family: "F", two_C: "4.0"}
+      - {orbit: "F2", family: "F", two_C: "3.7"}
+      - {orbit: "F3", family: "F", two_C: "3.4"}
+    libration_ellipse: "xi^2/1 + eta^2/(3.208)^2 = (4.3267 - 2C)/39.665 (p.8); xi, eta relative to the libration point"
+    ours: "axis ratio 3.2080 reproduced (linear theory and corrected small orbits). Denominator: linear theory gives 35.166; corrected orbits give (4.326749 - Gamma)/A^2 = 35.150 at Gamma = 4.32. The printed 39.665 is not reproduced (lyap_check.out)."
+  - table: "1932 p.149 c_j (eq. 5, 'Laplace coefficients corresponding to the argument alpha = 1/3')"
+    columns: [j, c_j]
+    rows:
+      - {j: "0", c: "2.60205", ours: "2.6020650"}
+      - {j: "1", c: "1.24779", ours: "1.2477938"}
+      - {j: "2", c: "51243", note: "printed without '0.' (as the table prints, leading digits implied)", ours: "0.5124306"}
+      - {j: "3", c: "19781", ours: "0.1978128"}
+      - {j: "4", c: "7385", ours: "0.0738484"}
+      - {j: "5", c: "2699", ours: "0.0269964"}
+      - {j: "6", c: "972", ours: "0.0097277"}
+      - {j: "7", c: "0.00346", ours: "0.0034685"}
+      - {j: "8", c: "122", ours: "0.0012269"}
+      - {j: "9", c: "43", ours: "0.0004312"}
+      - {j: "10", c: "15", ours: "0.0001508"}
+      - {j: "11", c: "5", ours: "0.0000525"}
+      - {j: "12", c: "2.", ours: "0.0000182"}
+    ours: "c_j = b_{3/2}^(j)(1/3), Laplace coefficients (quad, extra_checks.out). Printed digits are truncated, not rounded, from j = 5 on; c0 is one unit low in the last place (2.60205 against 2.6020650)."
+  - table: "1932 p.150 (no number)"
+    columns: [lambda, m, two_C, x_tau0, y_tau90, ratio, remarks]
+    rows:
+      - {lambda: "-inf", m: "-0", two_C: "+inf", x_tau0: "0", y_tau90: "0", ratio: "1.00000", remarks: "Jackson"}
+      - {lambda: "-5", m: "-1/6", two_C: "+1.8851", x_tau0: "0.33219", y_tau90: "0.34771", ratio: "1.04672", remarks: "Jackson", ours: "f at Gamma = 1.8851: |xi| 0.332167, y 0.347684, ratio 1.04671, T/2 0.523559 (pi/6 = 0.523599)"}
+      - {lambda: "-4", m: "-1/5", two_C: "+1.4297", x_tau0: "0.38086", y_tau90: "0.40572", ratio: "1.06525", remarks: "Jackson", ours: "0.380854, 0.405703, 1.06525, T/2 0.628297 (pi/5 = 0.628319)"}
+      - {lambda: "-1", m: "-1/2", two_C: "-0.4188", x_tau0: "0.79827", y_tau90: "1.05476", ratio: "1.32130", remarks: "Jackson", ours: "0.801069, 1.061919, 1.32563, T/2 1.579542 (pi/2 = 1.570796)"}
+      - {lambda: "-1/10", m: "-10/11", two_C: "-5.2", x_tau0: "2.20", y_tau90: "4.11", ratio: "1.86", remarks: "present", ours: "f at Gamma = -5.2: 2.280074, 4.358822, 1.91170, T/2 2.970550 (pi/1.1 = 2.855993)"}
+      - {lambda: "-1/100", m: "-100/101", two_C: "-27.1", x_tau0: "5.18", y_tau90: "10.29", ratio: "1.986", remarks: "present", ours: "5.205758, 10.369739, 1.99197, T/2 3.126385 (3.110488)"}
+      - {lambda: "-1/1000", m: "-1000/1001", two_C: "-126.6", x_tau0: "11.25", y_tau90: "22.48", ratio: "1.9986", remarks: "present", ours: "11.251666, 22.494330, 1.99920, T/2 3.140080 (3.138454)"}
+      - {lambda: "0", m: "-1", two_C: "-inf", x_tau0: "inf", y_tau90: "inf", ratio: "2.0000", remarks: "present"}
+      - {lambda: "+1/1000", m: "-1000/999", two_C: "-126.8", x_tau0: "11.26", y_tau90: "22.55", ratio: "2.0014", remarks: "present", ours: "formula value; no symmetric orbit with T/2 = pi/(1 - lambda) > pi exists on family f"}
+      - {lambda: "+1/100", m: "-100/99", two_C: "-27.5", x_tau0: "5.27", y_tau90: "10.61", ratio: "2.014", remarks: "present", ours: "formula value; scan at Gamma = -27.49 finds no symmetric orbit with T/2 near 3.1733 (lampos_scan.out)"}
+      - {lambda: "+1/10", m: "-10/9", two_C: "-6.1", x_tau0: "2.60", y_tau90: "5.6", ratio: "2.14", remarks: "present", ours: "formula value; scan at Gamma = -6.05 finds no symmetric orbit with T/2 near 3.4907 (lampos_scan.out)"}
+    note: "The 'present researches' rows are values of the first-order formulas (6)', (7), (9), not integrations: with the real cube root of a negative number the formulas reproduce all six rows (2C -5.19, -27.07, -126.58, -126.78, -27.49, -6.05; hill_check.out)."
+  - table: "1933 Table 1 (p.364)"
+    columns: [two_C, x0]
+    rows:
+      - {two_C: "2.55788", x0: "0.27180", note: "footnote 7: Hill's cusped orbit", henon_1969_table1: "0.27180 (ref 1, Hill)", henon_exact: "0.271795", ours: "0.271795"}
+      - {two_C: "2.0", x0: "0.24", henon_1969_table1: "0.23 (ref 5, Matukuma 1957)", henon_exact: "0.221684", ours: "0.221684"}
+      - {two_C: "1.3", x0: "0.20", henon_1969_table1: "0.15778 (ref 5); 0.2 (ref 2, Kelvin)", henon_exact: "0.157138", ours: "0.157138"}
+      - {two_C: "0.8", x0: "0.15", henon_1969_table1: "0.13 (ref 5)", henon_exact: "0.113134", ours: "0.113134"}
+      - {two_C: "0.4", x0: "0.080", henon_1969_table1: "0.080 (ref 4, Matukuma 1933)", henon_exact: "0.081581", ours: "0.081581"}
+      - {two_C: "0.3", x0: "0.075", henon_1969_table1: "0.075 (ref 4)", henon_exact: "0.074512", ours: "0.074512"}
+      - {two_C: "0.0", x0: "0.060", henon_1969_table1: "0.05581 (ref 5)", henon_exact: "0.055875", ours: "0.055875"}
+      - {two_C: "-0.2", x0: "0.050", henon_1969_table1: "0.050 (ref 4)", henon_exact: "0.045770", ours: "0.045770"}
+      - {two_C: "-0.38", x0: "0.040", henon_1969_table1: "0.040 (ref 4)", henon_exact: "0.038220", ours: "0.038220"}
+      - {two_C: "-0.54", x0: "0.030", henon_1969_table1: "0.030 (ref 4)", henon_exact: "0.032613", ours: "0.032613"}
+      - {two_C: "-0.85", x0: "0.015", henon_1969_table1: "0.0150 (ref 5)", henon_exact: "0.024187", ours: "0.024187"}
+  - table: "1933 Table 2 (p.365, printed 'TALBE 2')"
+    columns: [phi_deg, two_C_0_mx, two_C_0_y, two_C_m3_mx, two_C_m3_y, two_C_m10_mx, two_C_m10_y, two_C_m30_mx, two_C_m30_y, two_C_m10000_mx, two_C_m10000_y]
+    rows:
+      - ["90",  "0.0000", "0.0000", "0.0000", "0.0000", "0.0000", "0.0000", "0.0000", "0.0000", "0.000", "0.000"]
+      - ["60",  "0.6196", "0.1427", "0.7647", "0.1892", "1.0349", "0.2746", "1.6039", "0.4417", "27.737", "7.846"]
+      - ["30",  "1.2378", "0.8235", "1.6544", "1.1652", "2.3646", "1.7205", "3.7397", "2.7649", "65.47", "48.82"]
+      - ["0",   "2.0442", "4.711", "2.6168", "5.544", "3.6630", "7.489", "5.7402", "11.565", "100.02", "200.05"]
+      - ["-30", "1.1391", "8.927", "1.627", "10.012", "2.3549", "13.290", "3.7364", "20.374", "65.47", "351.28"]
+      - ["-60", "0.5147", "9.640", "0.733", "11.00", "1.0267", "14.743", "1.5995", "22.701", "27.737", "392.3"]
+      - ["-90", "0.2663", "9.717", "0.186", "11.16", "0.1155", "15.003", "0.0633", "23.136", "0.000618", "400.1"]
+    note: "The -90 deg -x values are printed in bold ('black letters')."
+    ours: "Integrated from r0 = 1e-9 on the -x axis (g_and_ejection.out, extra_checks.out). phi = -90 deg: -x 0.2660 y 9.7142 (2C = 0); 0.1850, 11.1582 (-3); 0.1173, 15.0360 (-10); 0.0635, 23.1371 (-30); 0.000623, 400.0117 (-10000). Largest relative difference per column (all 12 non-trivial cells): 2C = 0 1.1e-3; -3 5.4e-3 (0.186 against 0.1850, 3 printed digits); -10 1.6e-2 (the whole column is off by 0.07 to 0.6 percent, worst at phi = -90: 0.1155 against 0.1173); -30 3.2e-3; -10000 8.1e-3 (only -x at -90, 0.000618 against 0.000623; the other cells within 3.4e-4)."
