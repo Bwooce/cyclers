@@ -479,6 +479,31 @@ def stage_fold(t: Target) -> None:
     t.log(f"fold: status {st['status']}")
 
 
+def stage_resume(t: Target) -> None:
+    """After a fold test whose status is "NOT A FOLD" (jup365): append the monitor points beyond
+    the natural stop to sigma_n1.json (as accepted points, in increasing sigma) and resume rungb's
+    natural continuation from them (factor 1.01, regrowing as usual). Use with --soi-limit inf."""
+    fold = json.loads((t.out / "fold.json").read_text())
+    assert fold["status"].startswith("NOT A FOLD"), fold["status"]
+    path = t.out / "sigma_n1.json"
+    rec = json.loads(path.read_text())
+    s_last = float(rec["points"][-1]["sigma"])
+    tail = [q for q in fold["mon"][2:] if q["sigma"] > s_last]
+    tail = sorted(tail, key=lambda q: q["sigma"])[-2:]
+    for q in tail:
+        z = np.asarray(q["z"])
+        t.set_sigma(q["sigma"])
+        rec["points"].append(
+            {"sigma": q["sigma"], "z": q["z"], **t.rb.describe(t.c, z, q["sigma"])}
+        )
+    rec["fac"] = 1.01
+    rec.pop("stopped_at", None)
+    rec["resumed_from_fold_test"] = [q["sigma"] for q in tail]
+    path.write_text(json.dumps(rec))
+    t.log(f"resume: appended monitor points {rec['resumed_from_fold_test']}; natural continuation")
+    t.rb.stage_sigma(1)
+
+
 def stage_limit(t: Target) -> None:
     """Ideal model: the branch's sigma -> 0 member. From the corrected start, converge going down
     (0.01, 0.005, 0.0025, 0.00125) at the floors and store every point's node epochs, V_inf and z;
@@ -553,7 +578,19 @@ def main() -> None:
     ap.add_argument("--target", choices=[*IDEAL, *REAL], required=True)
     ap.add_argument(
         "--stage",
-        choices=["fix", "start", "neg", "cont", "down", "ias15", "limit", "neg2", "scan", "fold"],
+        choices=[
+            "fix",
+            "start",
+            "neg",
+            "cont",
+            "down",
+            "ias15",
+            "limit",
+            "neg2",
+            "scan",
+            "fold",
+            "resume",
+        ],
         required=True,
     )
     ap.add_argument("--max-wall", type=float, default=430.0, help="ideal cont: seconds per call")
@@ -583,6 +620,7 @@ def main() -> None:
         "neg2": stage_neg2,
         "scan": stage_scan,
         "fold": stage_fold,
+        "resume": stage_resume,
     }[args.stage](t)
 
 

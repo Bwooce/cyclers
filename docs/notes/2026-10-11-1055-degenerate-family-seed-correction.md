@@ -722,3 +722,15 @@ row (the gc rows, gc-1 e2, and any later use):
   first-order solvability condition. When that condition's root differs from the chain tool's
   member, a "successful" closure validates a different orbit. Only a member-identity check makes
   "the row's object exists in continuous gravity" a true statement.
+
+### 12.5.3 Prepared (not run): resume toward sigma = 1 if the fold test reads "NOT A FOLD"
+
+`--stage resume` appends the monitor points beyond the natural stop to `sigma_n1.json` and resumes
+rungb's natural continuation (factor 1.01, regrowing), under amendment 9 (`--soi-limit inf`).
+The chain then runs down, ias15 and scan, with the amendment-10 member-identity check applied in
+the analysis:
+
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage resume --soi-limit inf && \
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage down && \
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage ias15 && \
+    uv run python scripts/run_1055_seedfix.py --target gancal1 --stage scan
