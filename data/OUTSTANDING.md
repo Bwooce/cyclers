@@ -3034,6 +3034,12 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   commit while it exists unless `CYCLERS_WINDOW_LEAD=1` is set, with a refusal text naming the lead and the
   reason. Companion rule for `docs/team/coordination.md`: never kill processes by command-line pattern on the
   shared machine (`docs/papercuts/2026-10-11-main-killed-sibling-pytest-by-pattern.md`).
+- `#1066` — registered 2026-10-11 (lead ruling on `#1052`; BACKLOG, small, twobody-gen2). **F13 STATUS-RATCHET
+  EVASIONS AND NITS LEFT FROM `#1052`.** The widened F13 ratchet (`tests/search/test_972_literature_gate_v2.py`
+  `_status_compare_violations_in`) still misses: a Call with a status-access argument (`fresh(r.status)`,
+  `str(r.status) == ...`, `r.status.strip() in X`), `NamedExpr`/walrus aliases, tuple-unpack and getattr
+  aliases, and its alias set is module-wide (per-function scoping). Source: the `#1045` A1 review (v3 note
+  sec. 8, findings 2-3). The anchor part of `#1052` is rule U: `docs/notes/2026-10-11-1052-rule-u-untopologied-signatures.md`.
 - `#944` — registered 2026-10-05, not dispatched (from `#938`, X2, rank 3 of 18). **FONT, NUNES &
   SIMO COMPLETE SECOND-SPECIES ENUMERATION AT EUROPA OR GANYMEDE.** (Perko 1982 I/II and 1983, the second-species
   existence papers, digested in `#960` batch 36, `293ecc7a`: they cover symmetric families only and
