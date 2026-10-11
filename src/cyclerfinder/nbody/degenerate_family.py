@@ -1,0 +1,279 @@
+"""Seed correction along a degenerate patched-conic family (#1055, Lyapunov-Schmidt reduction).
+
+A full-revolution (resonant) leg leaves a one-parameter family of patched-conic chains. In a
+continuous-gravity shooting problem scaled by the moon-mass factor sigma, the family shows as a
+singular value of the column-scaled Jacobian proportional to sigma, and the residual's projection
+on its left singular vector is also proportional to sigma. The Newton move along the family then
+stays O(1) as sigma -> 0, and a damped solver started from the seed stalls. The correction moves the
+seed ALONG the family, at fixed sigma, to the member where that projection vanishes.
+
+Formulation-agnostic: a residual function ``rj(z) -> (r, J)`` at fixed sigma (square system).
+Variables are column-scaled with fixed scales ``d`` (the Jacobian column norms at the base point).
+"""
+
+from __future__ import annotations
+
+from collections.abc import Callable
+from dataclasses import dataclass, field
+
+import numpy as np
+from numpy.typing import NDArray
+
+Arr = NDArray[np.float64]
+ResJac = Callable[[Arr], tuple[Arr, Arr]]
+
+
+def column_scales(j: Arr) -> Arr:
+    d = np.linalg.norm(j, axis=0)
+    d[d == 0.0] = 1.0
+    return np.asarray(d, dtype=np.float64)
+
+
+def scaled_svd(j: Arr, d: Arr) -> tuple[Arr, Arr, Arr]:
+    """(U, s, Vt) of J diag(1/d), singular values in descending order."""
+    u, s, vt = np.linalg.svd(j / d)
+    return u, s, vt
+
+
+def detect_degenerate(
+    j_hi: Arr,
+    j_lo: Arr,
+    sigma_ratio: float,
+    min_drop: float = 2.5,
+    max_other_change: float = 0.25,
+    q_max: int = 3,
+) -> int:
+    """Number of trailing singular values that fall with sigma.
+
+    ``j_hi`` and ``j_lo`` are the Jacobians at sigma and sigma / ``sigma_ratio`` (each scaled by
+    its own column norms). A trailing singular value is degenerate if it drops by more than
+    ``min_drop`` (proportional to sigma would be ``sigma_ratio``), and the first non-degenerate one
+    above them changes by less than ``max_other_change`` (relative).
+    """
+    s_hi = scaled_svd(j_hi, column_scales(j_hi))[1]
+    s_lo = scaled_svd(j_lo, column_scales(j_lo))[1]
+    q = 0
+    for i in range(1, q_max + 1):
+        if s_hi[-i] / s_lo[-i] > min_drop:
+            q = i
+        else:
+            break
+    if q == 0:
+        return 0
+    k = len(s_hi) - q - 1
+    if abs(s_lo[k] / s_hi[k] - 1.0) > max_other_change:
+        return 0
+    return q
+
+
+@dataclass
+class BorderedResult:
+    z: Arr
+    converged: bool
+    iterations: int
+    complement_norm: float
+    g: Arr
+
+
+def bordered_solve(
+    rj: ResJac,
+    z_pred: Arr,
+    d: Arr,
+    u_null: Arr,
+    v_null: Arr,
+    z_ref: Arr,
+    alpha: Arr,
+    tol: float,
+    max_iter: int = 25,
+) -> BorderedResult:
+    """Gauss-Newton on the complement rows (I - U U^T) r = 0 and the q arclength rows
+    V^T (d * (z - z_ref)) = alpha. ``u_null`` (m x q) and ``v_null`` (n x q, scaled coordinates)
+    are held fixed. Converged when the complement residual (max norm) is below ``tol`` and the
+    arclength rows hold to 1e-10 relative."""
+    z = np.asarray(z_pred, dtype=np.float64).copy()
+    proj = np.eye(len(u_null)) - u_null @ u_null.T
+    it = 0
+    r, j = rj(z)
+    for it in range(1, max_iter + 1):
+        comp = proj @ r
+        arc = v_null.T @ (d * (z - z_ref)) - alpha
+        scale = max(1.0, float(np.max(np.abs(alpha)))) if alpha.size else 1.0
+        if float(np.max(np.abs(comp))) < tol and float(np.max(np.abs(arc))) < 1e-10 * scale:
+            return BorderedResult(z, True, it - 1, float(np.max(np.abs(comp))), u_null.T @ r)
+        a = np.vstack([proj @ (j / d), v_null.T])
+        f = np.concatenate([comp, arc])
+        step = np.linalg.lstsq(a, -f, rcond=None)[0] / d
+        f0 = float(np.linalg.norm(f))
+        for lam in [0.5**i for i in range(10)]:
+            zt = z + lam * step
+            try:
+                rt, jt = rj(zt)
+            except RuntimeError:
+                continue
+            ft = np.concatenate([proj @ rt, v_null.T @ (d * (zt - z_ref)) - alpha])
+            if np.all(np.isfinite(ft)) and float(np.linalg.norm(ft)) < f0:
+                z, r, j = zt, rt, jt
+                break
+        else:
+            break
+    comp = proj @ r
+    arc = v_null.T @ (d * (z - z_ref)) - alpha
+    scale = max(1.0, float(np.max(np.abs(alpha)))) if alpha.size else 1.0
+    ok = float(np.max(np.abs(comp))) < tol and float(np.max(np.abs(arc))) < 1e-10 * scale
+    return BorderedResult(z, ok, it, float(np.max(np.abs(comp))), u_null.T @ r)
+
+
+@dataclass
+class FamilyResult:
+    z_star: Arr | None
+    alpha_star: float | None
+    status: str
+    scan: list[tuple[float, float, float]] = field(default_factory=list)  # (alpha, g, |comp|)
+    newton_length: float = 0.0
+
+
+def family_root_1d(
+    rj: ResJac,
+    z0: Arr,
+    tol: float,
+    max_lengths: float = 3.0,
+    h_frac: float = 0.01,
+    log: Callable[[str], None] | None = None,
+) -> FamilyResult:
+    """q = 1: converge the complement at the base, scan alpha both ways along the fixed null
+    direction for a sign change of g = u . r (the base's u), then a secant to |g| < 1e-3 |g(0)|.
+
+    The arclength alpha is in scaled units along v (the base's right null vector). The scan length
+    is ``max_lengths`` times the Newton-step length L = |u . r| / s_min at the base; the first step
+    is ``h_frac`` L, doubled after a corrector converging in 4 iterations or fewer, halved on
+    failure (down to 1e-4 L)."""
+    say = log or (lambda _m: None)
+    r0, j0 = rj(z0)
+    d = column_scales(j0)
+    u, s, vt = scaled_svd(j0, d)
+    u_n = u[:, -1:]
+    v_n = vt[-1:].T
+    big_l = abs(float(u_n[:, 0] @ r0)) / float(s[-1])
+    base = bordered_solve(rj, z0, d, u_n, v_n, z0, np.zeros(1), tol)
+    res = FamilyResult(None, None, "base complement did not converge", newton_length=big_l)
+    if not base.converged:
+        return res
+    g0 = float(base.g[0])
+    res.scan.append((0.0, g0, base.complement_norm))
+    say(f"family: L {big_l:.3e} g(0) {g0:.3e} comp {base.complement_norm:.2e}")
+    if abs(g0) <= tol:  # already solvable to the complement tolerance: no move
+        res.z_star, res.alpha_star, res.status = base.z, 0.0, "root at base"
+        return res
+    bracket: tuple[float, Arr, float, float, Arr, float] | None = None
+    for sgn in (1.0, -1.0):
+        a_prev, z_prev, g_prev = 0.0, base.z, g0
+        dzda = v_n[:, 0] / d  # dz per unit alpha (alpha = v . (d * dz))
+        h = h_frac * big_l
+        while abs(a_prev) < max_lengths * big_l and h >= 1e-4 * big_l:
+            a = a_prev + sgn * h
+            br = bordered_solve(
+                rj, z_prev + dzda * (a - a_prev), d, u_n, v_n, z0, np.array([a]), tol
+            )
+            if not br.converged:
+                h *= 0.5
+                continue
+            g = float(br.g[0])
+            res.scan.append((a, g, br.complement_norm))
+            say(f"family: alpha {a:.4e} g {g:.4e} comp {br.complement_norm:.2e} it {br.iterations}")
+            if np.sign(g) != np.sign(g_prev):
+                bracket = (a_prev, z_prev, g_prev, a, br.z, g)
+                break
+            dzda = (br.z - z_prev) / (a - a_prev)
+            a_prev, z_prev, g_prev = a, br.z, g
+            if br.iterations <= 4:
+                h *= 2.0
+        if bracket is not None:
+            break
+    if bracket is None:
+        res.status = "no sign change of g within the scanned range"
+        return res
+    a_lo, z_lo, g_lo, a_hi, z_hi, g_hi = bracket
+    for _ in range(40):
+        a = a_hi - g_hi * (a_hi - a_lo) / (g_hi - g_lo)
+        w = (a - a_lo) / (a_hi - a_lo)
+        br = bordered_solve(rj, z_lo + w * (z_hi - z_lo), d, u_n, v_n, z0, np.array([a]), tol)
+        if not br.converged:
+            res.status = "secant corrector failed"
+            return res
+        g = float(br.g[0])
+        res.scan.append((a, g, br.complement_norm))
+        if abs(g) < 1e-3 * abs(g0):
+            res.z_star, res.alpha_star, res.status = br.z, a, "root"
+            return res
+        if np.sign(g) == np.sign(g_lo):
+            a_lo, z_lo, g_lo = a, br.z, g
+        else:
+            a_hi, z_hi, g_hi = a, br.z, g
+    res.status = "secant did not converge"
+    return res
+
+
+def family_root_nd(
+    rj: ResJac,
+    z0: Arr,
+    q: int,
+    tol: float,
+    max_lengths: float = 3.0,
+    max_iter: int = 30,
+    log: Callable[[str], None] | None = None,
+) -> FamilyResult:
+    """q >= 1: damped Newton on the reduced equations g(alpha) = U^T r = 0, alpha in R^q (scaled
+    arclength along the base's q right null vectors). g's Jacobian by forward differences (step
+    1 % of L, the Newton-step length of the base); steps limited to L; stop at |g| < 1e-3 |g(0)|,
+    or when |alpha| exceeds ``max_lengths`` L."""
+    say = log or (lambda _m: None)
+    r0, j0 = rj(z0)
+    d = column_scales(j0)
+    u, s, vt = scaled_svd(j0, d)
+    u_n = u[:, -q:]
+    v_n = vt[-q:].T
+    big_l = float(np.linalg.norm((u_n.T @ r0) / s[-q:]))
+    res = FamilyResult(None, None, "base complement did not converge", newton_length=big_l)
+    alpha = np.zeros(q)
+    cur = bordered_solve(rj, z0, d, u_n, v_n, z0, alpha, tol)
+    if not cur.converged:
+        return res
+    g0n = float(np.linalg.norm(cur.g))
+    say(f"family nd: q {q} L {big_l:.3e} |g(0)| {g0n:.3e}")
+    if g0n <= tol:
+        res.z_star, res.alpha_star, res.status = cur.z, 0.0, "root at base"
+        return res
+    for _ in range(max_iter):
+        gn = float(np.linalg.norm(cur.g))
+        res.scan.append((float(np.linalg.norm(alpha)), gn, cur.complement_norm))
+        if gn < 1e-3 * g0n:
+            res.z_star, res.alpha_star, res.status = cur.z, float(np.linalg.norm(alpha)), "root"
+            return res
+        if float(np.linalg.norm(alpha)) > max_lengths * big_l:
+            res.status = "no root within the scanned range"
+            return res
+        h = 0.01 * big_l
+        jg = np.zeros((q, q))
+        for i in range(q):
+            da = np.zeros(q)
+            da[i] = h
+            b = bordered_solve(rj, cur.z + (v_n[:, i] * h) / d, d, u_n, v_n, z0, alpha + da, tol)
+            if not b.converged:
+                res.status = "finite-difference corrector failed"
+                return res
+            jg[:, i] = (b.g - cur.g) / h
+        step = np.linalg.lstsq(jg, -cur.g, rcond=None)[0]
+        if float(np.linalg.norm(step)) > big_l:
+            step *= big_l / float(np.linalg.norm(step))
+        for lam in [0.5**i for i in range(8)]:
+            a_new = alpha + lam * step
+            b = bordered_solve(rj, cur.z + (v_n @ (lam * step)) / d, d, u_n, v_n, z0, a_new, tol)
+            if b.converged and float(np.linalg.norm(b.g)) < gn:
+                alpha, cur = a_new, b
+                say(f"family nd: |alpha| {np.linalg.norm(alpha):.3e} |g| {np.linalg.norm(b.g):.3e}")
+                break
+        else:
+            res.status = "line search failed"
+            return res
+    res.status = "Newton did not converge"
+    return res

@@ -158,3 +158,24 @@ Tests (fast):
 ## 8. Results
 
 (pending)
+
+### Amendment 1 (implementation, before any run)
+
+- The null vectors u and v are taken at the BASE point (the seed with its complement converged) and
+  held fixed along the scan, instead of being recomputed at each point (sec. 2 item 2). With fixed
+  vectors the bordered system and g are the same function along the whole scan, so a sign change of
+  g is meaningful. The family is traced as a graph over the fixed arclength coordinate, which is
+  valid while it does not fold with respect to that coordinate within the scanned range. The
+  predictor is the secant along the traced family.
+- Root at base: if |g(0)| is already within the complement tolerance, the seed is returned
+  unchanged (positive control A is expected to take this path: its g is 1e-13).
+- q >= 2 (gc4-19): damped Newton on the q reduced equations, with the Jacobian of g by forward
+  differences (1 % of L) and steps capped at L, instead of coordinate scans followed by a refine.
+- Tests (`tests/nbody/test_1055_degenerate_family.py`, 7 fast tests, km and km/s magnitudes, the
+  lane's 1e3 velocity weight). Toys whose roots are set by construction:
+  - detection gives q = 1 and q = 2, and 0 for a well-conditioned toy;
+  - the bordered corrector holds the arclength row to 1e-12;
+  - the 1-d root is within 1e-3 of the constructed root (4e5 km, O(1) from the seed), and plain
+    Newton from it reaches the exact root to 1e-9;
+  - the 2-d root is within 2e-3;
+  - a seed already at the root is returned unchanged.
