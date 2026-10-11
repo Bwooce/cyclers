@@ -1,0 +1,88 @@
+# Ehricke 1966, "Interplanetary Maneuvers in Manned Helionautical Missions": Table 1, the Fig. 3 reference-mission labels, and the text numbers.
+# Source: K. A. Ehricke (General Dynamics/Convair), chapter in "Methods in Astrodynamics and Celestial Mechanics", Progress in Astronautics and Aeronautics
+#   (R. L. Duncombe and V. G. Szebehely, eds.), AIAA, 1966, pp. 325-352, doi 10.2514/5.9781600864919.0325.0352 (Crossref 2026-10-11: type book-chapter, issued 1966,
+#   pages 325-352; book doi 10.2514/4.864919). Presented as AIAA/ION Preprint 65-695, Monterey, 16-17 September 1965.
+# Local file: AIAA ARC download, 30 pp. (pp.29-30 blank), iText, text layer present, md5 7a623a631a5259b69fc26eae0f9406eb. PDF page n = journal page n + 324.
+# Witnesses: A = the text layer (pdftotext, read as a column dump); B = a 120 dpi render of PDF p.10 (journal p.334) read once, all cells; C = two 220 dpi half-page
+#   crops of the same page read a second time. Table 1: A, B, C agree on every cell except where A has OCR damage (listed under `text_layer_damage`).
+#   Fig. 3 labels: render at 110 dpi and two 300 dpi half crops (two reads); no text layer for them.
+# Nothing here was computed by us except in `check:` fields.
+table_1:
+  caption: "Change of Orbital Parameters Due to Perihelion Brake Maneuver: Mars-Earth 1974-1991"
+  journal_page: 334
+  columns:
+    1: "MaDD, Mars departure date (month-day-year)"
+    2: "T2, mono-elliptic return transfer time, d"
+    3: "T_MaPB, time from Mars departure to the perihelion brake maneuver, d"
+    4: "Delta T, extension of the flight time, d"
+    5: "Delta beta, change in path angle, deg"
+    6: "Delta i', change in inclination, deg"
+    7: "eta_PBEa, post-PB transfer angle, deg"
+    8: "R_P, perihelion distance of the mono-elliptic transfer path, AU"
+    9: "R_PB, distance of the PB maneuver, AU"
+    10: "R_P', perihelion distance of the post-PB orbit, AU"
+    11: "eta_O,PB, anomaly prior to PB, deg (the footnote says 'time anomaly', a slip for true anomaly)"
+    12: "eta_O,PB (second occurrence of the same symbol), true anomaly following PB, deg"
+    13: "eta_Ea, anomaly at Earth encounter without PB, deg"
+    14: "eta_EaPB, as column 13, with PB, deg"
+  rows:
+    # MaDD, T2, T_MaPB, dT, dBeta, dIprime, eta_PBEa, Rp, R_PB, Rp', eta_prior, eta_after, eta_Ea, eta_EaPB
+    - {MaDD: "3-14-74", T2: 220, T_MaPB: 170, dT: 30, dBeta: "+0.87", dIprime: "-0.14", eta_PBEa: "117.2", Rp: "0.500", R_PB: "0.5214", Rp_prime: "0.487", eta_prior: "27.9", eta_after: "41.5", eta_Ea: "115.1", eta_EaPB: "158.7"}
+    - {MaDD: "3-14-74", T2: 220, T_MaPB: 170, dT: 50, dBeta: "-0.02", dIprime: "-1.03", eta_PBEa: "137.5", Rp: "0.500", R_PB: "0.5214", Rp_prime: "0.491", eta_prior: "27.9", eta_after: "39.7", eta_Ea: "115.1", eta_EaPB: "177.2"}
+    - {MaDD: "4-12-76", T2: 230, T_MaPB: 180, dT: 30, dBeta: "+1.22", dIprime: "-1.74", eta_PBEa: "124.5", Rp: "0.470", R_PB: "0.4834", Rp_prime: "0.459", eta_prior: "22.9", eta_after: "34.9", eta_Ea: "116.9", eta_EaPB: "159.4"}
+    - {MaDD: "4-12-76", T2: 230, T_MaPB: 180, dT: 50, dBeta: "+0.21", dIprime: "-3.16", eta_PBEa: "144.8", Rp: "0.470", R_PB: "0.4834", Rp_prime: "0.463", eta_prior: "22.9", eta_after: "32.5", eta_Ea: "116.9", eta_EaPB: "177.3"}
+    - {MaDD: "5-18-78", T2: 240, T_MaPB: 190, dT: 30, dBeta: "+1.18", dIprime: "-3.0", eta_PBEa: "131.6", Rp: "0.422", R_PB: "0.432", Rp_prime: "0.415", eta_prior: "20.88", eta_after: "30.5", eta_Ea: "122.0", eta_EaPB: "162.1"}
+    - {MaDD: "5-18-78", T2: 240, T_MaPB: 190, dT: 50, dBeta: "-0.1", dIprime: "-4.8", eta_PBEa: "151.7", Rp: "0.422", R_PB: "0.432", Rp_prime: "0.419", eta_prior: "20.88", eta_after: "26.8", eta_Ea: "122.0", eta_EaPB: "178.6"}
+    - {MaDD: "7-12-80", T2: 210, T_MaPB: 160, dT: 30, dBeta: "+0.85", dIprime: "-2.09", eta_PBEa: "120.8", Rp: "0.488", R_PB: "0.505", Rp_prime: "0.478", eta_prior: "25.2", eta_after: "36.7", eta_Ea: "115.8", eta_EaPB: "157.5"}
+    - {MaDD: "7-12-80", T2: 210, T_MaPB: 160, dT: 50, dBeta: "-0.09", dIprime: "-2.32", eta_PBEa: "140.6", Rp: "0.488", R_PB: "0.505", Rp_prime: "0.482", eta_prior: "25.2", eta_after: "34.5", eta_Ea: "115.8", eta_EaPB: "175.1"}
+    - {MaDD: "9-9-82", T2: 200, T_MaPB: 150, dT: 30, dBeta: "+0.034", dIprime: "-0.60", eta_PBEa: "109.4", Rp: "0.530", R_PB: "0.565", Rp_prime: "0.518", eta_prior: "35.4", eta_after: "47.5", eta_Ea: "115.4", eta_EaPB: "156.9"}
+    - {MaDD: "9-9-82", T2: 200, T_MaPB: 150, dT: 50, dBeta: "-0.86", dIprime: "-0.04", eta_PBEa: "128.8", Rp: "0.530", R_PB: "0.565", Rp_prime: "0.523", eta_prior: "35.4", eta_after: "45.7", eta_Ea: "115.4", eta_EaPB: "174.7"}
+    - {MaDD: "9-27-84", T2: 210, T_MaPB: 160, dT: 30, dBeta: "-0.33", dIprime: "+0.43", eta_PBEa: "99.6", Rp: "0.625", R_PB: "0.666", Rp_prime: "0.611", eta_prior: "37.88", eta_after: "52.4", eta_Ea: "108.5", eta_EaPB: "152"}
+    - {MaDD: "9-27-84", T2: 210, T_MaPB: 160, dT: 50, dBeta: "-0.92", dIprime: "+1.08", eta_PBEa: "118.7", Rp: "0.625", R_PB: "0.666", Rp_prime: "0.614", eta_prior: "37.88", eta_after: "52.5", eta_Ea: "108.5", eta_EaPB: "171"}
+    - {MaDD: "10-27-86", T2: 200, T_MaPB: 150, dT: 30, dBeta: "+0.05", dIprime: "+1.01", eta_PBEa: "96.5", Rp: "0.714", R_PB: "0.736", Rp_prime: "0.700", eta_prior: "27.2", eta_after: "44.1", eta_Ea: "94.9", eta_EaPB: "140.6"}
+    - {MaDD: "10-27-86", T2: 200, T_MaPB: 150, dT: 50, dBeta: "-0.09", dIprime: "+1.60", eta_PBEa: "115.6", Rp: "0.714", R_PB: "0.736", Rp_prime: "0.697", eta_prior: "27.2", eta_after: "48", eta_Ea: "94.9", eta_EaPB: "163.5"}
+    - {MaDD: "12-5-88", T2: 240, T_MaPB: 190, dT: 30, dBeta: "-0.18", dIprime: "+1.89", eta_PBEa: "95.6", Rp: "0.696", R_PB: "0.728", Rp_prime: "0.678", eta_prior: "33.3", eta_after: "51.9", eta_Ea: "100.1", eta_EaPB: "147.6"}
+    - {MaDD: "12-5-88", T2: 240, T_MaPB: 190, dT: 50, dBeta: "-0.5", dIprime: "-1.93", eta_PBEa: "115.1", Rp: "0.696", R_PB: "0.728", Rp_prime: "0.677", eta_prior: "33.3", eta_after: "55.1", eta_Ea: "100.1", eta_EaPB: "170.0"}
+    - {MaDD: "2-23-91", T2: 240, T_MaPB: 190, dT: 30, dBeta: "+0.66", dIprime: "-0.15", eta_PBEa: "111.0", Rp: "0.562", R_PB: "0.585", Rp_prime: "0.547", eta_prior: "28.0", eta_after: "43.3", eta_Ea: "109.0", eta_EaPB: "154.4"}
+    - {MaDD: "2-23-91", T2: 240, T_MaPB: 190, dT: 50, dBeta: "+0.04", dIprime: "-0.93", eta_PBEa: "131.3", Rp: "0.562", R_PB: "0.585", Rp_prime: "0.550", eta_prior: "28.0", eta_after: "43.1", eta_Ea: "109.0", eta_EaPB: "174.4"}
+  footnote: "5 = change in path angle; 6 = change in inclination; 7 = post-PB transfer angle; 8 = perihelion distance of mono-elliptic transfer path; 9 = distance of PB maneuver; 10 = perihelion distance of post-PB orbit; 11 = time anomaly prior to PB; 12 = true anomaly following PB; 13 = time anomaly at earth encounter without PB; 14 = as 13, with PB"
+  text_layer_damage: "the text layer garbles several cells (for example 51.9 as '5L9', 35.4 as '35.^', and the minus sign of one 1988 inclination entry); the render decides. Every cell above is from the render and agrees across the two reads."
+  checks:
+    - "T_MaPB = T2 - 50 d in all 9 rows (COMPUTED): 220-50=170, 230-50=180, 240-50=190, 210-50=160, 200-50=150 (1982 and 1986), 210-50=160, 240-50=190 (1988 and 1991)."
+    - "eta_EaPB - eta_PBEa = eta_after (COMPUTED): the post-PB arc angle (col 7) plus the true anomaly following PB (col 12) gives the true anomaly at Earth encounter with PB (col 14). It holds exactly (to the printed digit) in 11 of 18 rows and within 0.2 deg in all 18 (largest differences 0.2 deg in the 9-27-84 and 12-5-88 dT = 50 rows). Example 1974, dT = 30: 158.7 - 117.2 = 41.5. A small rounding or typesetting scatter in the original, not a transcription error: the render shows each cell as transcribed."
+fig_3:
+  caption: "Mono-elliptic Mars round trip mission velocity profile, 1973 through 1990 (Ea dep r* = 1.1, n = 1; Ma capture r* = 1.3, n = 1; bars: 1 = Delta v1, 2 = Delta v2, 3 = Delta v3, 4 = v_E, in 10^3 fps; labels: T1 + T_cpt + T2 = mission period, days; calendar date of Earth departure = Julian date minus 2440000)"
+  journal_page: 345
+  groups:
+    - {group_year: 1973, earth_departure: "8-16", jd_minus_2440000: "1910.5", periods: "180 + 30 + 220 = 430"}
+    - {group_year: 1975, earth_departure: "10-5", jd_minus_2440000: "2691.5", periods: "160 + 30 + 230 = 420"}
+    - {group_year: 1977, earth_departure: "10-20", jd_minus_2440000: "3436.5", periods: "180 + 30 + 240 = 450"}
+    - {group_year: 1979, earth_departure: "11-25", jd_minus_2440000: "4202.5", periods: "200 + 30 + 210 = 440"}
+    - {group_year: 1982, earth_departure: "1-2", jd_minus_2440000: "4971.5", periods: "200 + 50 + 200 = 450"}
+    - {group_year: 1984, earth_departure: "2-10", jd_minus_2440000: "(none printed on this group)", periods: "180 + 50 + 210 = 440"}
+    - {group_year: 1986, earth_departure: "3-31", jd_minus_2440000: "5740.5", periods: "160 + 50 + 240 = 450"}
+    - {group_year: 1988, earth_departure: "5-9", jd_minus_2440000: "7290.5", periods: "160 + 50 + 240 = 450"}
+    - {group_year: 1990, earth_departure: "7-28", jd_minus_2440000: "8100.5", periods: "160 + 50 + 240 = 450"}
+  checks:
+    - "Each group's Earth departure + T1 + T_cpt equals the Mars departure date of Table 1 for the same mission in all 9 groups (COMPUTED): 8-16-73 + 210 d = 3-14-74; 10-5-75 + 190 = 4-12-76; 10-20-77 + 210 = 5-18-78; 11-25-79 + 230 = 7-12-80; 1-2-82 + 250 = 9-9-82; 2-10-84 + 230 = 9-27-84; 3-31-86 + 210 = 10-27-86; 5-9-88 + 210 = 12-5-88; 7-28-90 + 210 = 2-23-91."
+    - "The third term of each mission-period label equals T2 of Table 1, except 1986: the figure has the mono-elliptic reference T2 = 240 d while Table 1 has 200 d for the PB case, as the text (p.332-333) says (the 1986 PB case uses T2 = 220 or 200 d)."
+    - "JULIAN DATES, printed against calendar dates (COMPUTED): JD 2441910.5 = 1973-08-16 (agrees); 2443436.5 = 1977-10-20 (agrees); 2444202.5 = 1979-11-25 (agrees); 2444971.5 = 1982-01-02 (agrees); 2447290.5 = 1988-05-09 (agrees); 2448100.5 = 1990-07-28 (agrees); 2442691.5 = 1975-10-06, printed against 10-5 (one day off); 2445740.5 = 1984-02-10, but printed on the 1986 group whose date is 3-31-86 (JD 2446520.5). So the 5740.5 label belongs to the 1984 group (2-10), and the 1986 group's printed JD is a figure error."
+  bar_heights: "not read to a stated precision; the four bars of each group run from about 7 to about 72 thousand fps (v_E about 60 to 72 in 1973-1979, about 51 to 63 in 1982-1990); see the digest."
+text_numbers:
+  - {page: 331, item: "reference-mission capture orbit", value: "n = 1 and r* = 1.3 (Mars); Earth departure r* = 1.1, n = 1 (Fig. 3)"}
+  - {page: "331-332", item: "reference missions designed for solid-core-reactor and chemical vehicles returning to Earth at no more than 50,000 fps (15.3 km/s)", value: "dates 1973 to 1990"}
+  - {page: 332, item: "highest PB exchange ratio condition", value: "PB at T2 - 50 d, flight time extended by 30 to 50 d, so PB-to-Earth time 80 to 100 d"}
+  - {page: 332, item: "1986 mission Mars departure maneuver if T2 = 200 d", value: "Delta v0 = 22,810 fps (the reason T2 = 220 d is chosen)"}
+  - {page: 333, item: "PB delta-V range 1974-1991", value: "between 11,000 and 15,000 fps, against 13,000 to 29,000 fps for a geocentric retromaneuver to the same entry speed; entry speed reduced to between 50,000 and 40,000 fps"}
+  - {page: 328, item: "exchange ratios", value: "perihelion brake 1.5 to over 2; heliocentric retro or acceleration 1 to about 1.6 (35 to 65 deg from an apsis); planet approach less than 1 to about 1.2"}
+  - {page: 329, item: "typical return perihelion distance", value: "<= 0.65 AU"}
+  - {page: 335, item: "HEAR exchange-ratio examples", value: "17,500/23,600 = 0.74 (initiated 10 d before arrival, 20 d in the entry module) and 15,800/20,700 = 0.86 (initiated on day 180, 40 d)"}
+  - {page: 339, item: "entry velocity target", value: "44,000 fps (1.5 times the kinetic energy per unit mass of the Apollo mission); elliptic capture case 35,000 fps"}
+  - {page: "339-340", item: "payloads by maneuver (atmospheric-entry missions)", value: "Ea Dep 150,000 lb; Ma Ar 110,000; Ma Dep 70,000; PB 25,000; GEAR 16,000 (HEAR 16,500); capture-orbit missions GEAR/PB: 155,000/165,000; 115,000/125,000; 75,000/85,000; PB 35,000; Ea Ar 25,000/25,000"}
+  - {page: 340, item: "specific impulses", value: "C 450 s; S (solar heat exchange) 700 s; G (graphite solid-core) 800 s; NERVA II 250,000 lb thrust; nuclear pulse for Jupiter missions"}
+  - {page: 341, item: "HEAR versus PB, 1980 to 1986", value: "equal weight reduction only if HEAR is 30 d before arrival, extending the flight 9 to 25 d; 55 d in the entry module in 1980"}
+equations:
+  - {eq: 1, text: "da/dV = (R_P/2) [V/(K/R_P)] (n+1)^2", page: 329, check: "equals 2 a^2 V / K with a = R_P (n+1)/2 (COMPUTED); at eta = 0, R_P = 0.4 AU: n = 3 gives 1.25e7 s and n = 9 gives 8.5e7 s, agreeing with the Fig. 2 left-panel curves read at 75 dpi (about 1.2 and 8.5, units 10^7 s)"}
+  - {eq: 2, text: "dR_A/dV = R_P (n+1) [ 2V/(K/R_P) + 2/(V (e + cos eta)) ]", page: 330, check: "NOT reproduced by derivation: with R_A = a(1+e) and Eqs. 1 and 3 the derivative is R_P (n+1) [ n V/(K/R_P) + (e + cos eta)/V ]; at eta = 0 this equals R_P (n+1)^2 V/(K/R_P) = 4 a^2 V/K, the exact tangential-impulse change of aphelion distance at perihelion (R_P fixed). The printed form gives 1.80e7, 3.12e7 and 4.46e7 s for n = 3, 6, 9 (R_P = 0.4 AU, eta = 0) against 2.49e7, 8.15e7 and 1.70e8 s from the derivation. Fig. 2 middle panel read at 75 dpi (approximate): about 25, 45 and 68 (units 10^6 s) at eta = 0; those are 1.4, 1.45 and 1.5 times the printed-form values, nearly constant, and 1.0, 0.55 and 0.40 times the derived values. So the plotted curves look closer to the printed form up to an unexplained near-constant factor; the printed Eq. 2 and Fig. 2 middle panel are both unreliable for use as a control. Unresolved."}
+  - {eq: 3, text: "de/dV = 2 (e + cos eta)/V", page: 330, check: "equals the Gauss variational equation for tangential acceleration (COMPUTED by derivation)"}
+  - {note: "text-layer renderings of Eqs. 1 to 3 are garbled; the printed forms above were read on 120 dpi crops of pp.329 and 330"}
