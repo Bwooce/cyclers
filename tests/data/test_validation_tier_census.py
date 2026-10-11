@@ -251,7 +251,9 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # source-pair tier axis; their evidence lives on the validation_level axis.
     # 118 -> 134 (2026-10-11): +16 this-project rows (ev-B; the 15 #1025 gc members), same
     # convention as the #942/#943 rows (no provenance-registry tags).
-    "unvalidated": 134,
+    # 134 -> 144 (2026-10-11, second window): +10 this-project rows (the #1025 ev members),
+    # same convention (no provenance-registry tags).
+    "unvalidated": 144,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

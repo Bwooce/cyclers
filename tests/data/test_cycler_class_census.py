@@ -475,13 +475,26 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "ganymede-callisto-two-working-body-cycler-gc6-0-2026",
         "ganymede-callisto-two-working-body-cycler-gc6-1-2026",
         "ganymede-callisto-two-working-body-cycler-gc6-2-2026",
+        # 2026-10-11 (owner decision 2026-10-11, "(a) 10 rows, Standish >= 4/5"): the 10 #1025
+        # Earth-Venus members. multi-arc 311 -> 321.
+        "earth-venus-two-working-body-cycler-ev4-1-2026",
+        "earth-venus-two-working-body-cycler-ev4-4-2026",
+        "earth-venus-two-working-body-cycler-ev4-6-2026",
+        "earth-venus-two-working-body-cycler-ev4-7-2026",
+        "earth-venus-two-working-body-cycler-ev5-4-2026",
+        "earth-venus-two-working-body-cycler-ev5-5-2026",
+        "earth-venus-two-working-body-cycler-ev5-6-2026",
+        "earth-venus-two-working-body-cycler-ev5-7-2026",
+        "earth-venus-two-working-body-cycler-ev5-8-2026",
+        "earth-venus-two-working-body-cycler-ev5-9-2026",
     ]
 )
 
 # #942/#943 (2026-10-08): + the four two-working-body generator rows: 291 -> 295.
 # 2026-10-11: + ev-B and the 15 #1025 gc members: 295 -> 311.
-assert len(MULTI_ARC_ALLOWLIST) == 311, (
-    f"Allowlist must have 311 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+# 2026-10-11 (second window): + the 10 #1025 ev members: 311 -> 321.
+assert len(MULTI_ARC_ALLOWLIST) == 321, (
+    f"Allowlist must have 321 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -763,6 +776,9 @@ def test_census_distribution() -> None:
 
     2026-10-11 (owner decisions of 2026-10-08) admitted ev-B (#1008) and the 15 #1025
     Ganymede-Callisto members that exist at full mass (this-project, V1): multi-arc 295->311.
+
+    2026-10-11 (owner decision 2026-10-11) admitted the 10 #1025 Earth-Venus members with
+    Standish >= 4/5 (this-project, V1): multi-arc 311->321.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
@@ -773,7 +789,8 @@ def test_census_distribution() -> None:
     # #942/#943 (2026-10-08): + the four two-working-body generator rows (gc-1, gc-2,
     # ev-C, ev-A): multi-arc 291 -> 295.
     # 2026-10-11: + ev-B and the 15 #1025 gc members: multi-arc 295 -> 311.
-    expected = {"single-ellipse": 46, "multi-arc": 311, "non-keplerian": 56}
+    # 2026-10-11 (second window): + the 10 #1025 ev members: multi-arc 311 -> 321.
+    expected = {"single-ellipse": 46, "multi-arc": 321, "non-keplerian": 56}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

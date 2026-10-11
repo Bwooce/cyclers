@@ -466,9 +466,16 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 >
 > - **≥ 3 continuous cycles** solved ballistically in the real-ephemeris chain
 >   (|V∞| continuity at every junction < 1e-6 km/s);
-> - **bounded drift**: the per-cycle encounter-date offsets and |V∞| against the
->   ideal-model template oscillate within a band without lap-over-lap growth (metric
->   and thresholds pre-registered in the #1007 note);
+> - **bounded same-phase drift** (owner decisions 2026-10-11, #1007 note secs. 8.4a-8.4b,
+>   replacing the first wording of this bullet): with L the system's geometric repeat (the
+>   smallest L for which every encounter body's mean-anomaly advance over L cycles is within
+>   0.02 rev of an integer), the chain has ≥ 2L cycles, and the encounter dates and |V∞| of
+>   cycle i+L against cycle i stay within a band (dates ≤ 5 % of the chain's shortest Lambert
+>   leg; |V∞| ≤ 10 % of its smallest departure |V∞|) for every i such that neither cycle i
+>   nor cycle i+L is the open chain's first or last cycle (both ends are constrained only by
+>   the magnitude closure). No growth test: the fitted slope over the comparisons is
+>   recorded as a diagnostic in the row evidence and handed to V3. The systematic offset
+>   against the ideal model is recorded, not banded;
 > - **the demanded-turn gate passes at every flyby** (#888/#937; "indeterminate" is
 >   not a pass);
 > - **DOP853 re-fly** of every leg misses < 1 km;
@@ -478,6 +485,12 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 > through the same pipeline (Hollister 1H or a Hollister-Menning orbit for
 > Earth-Venus; R-S GanCal#1 at 2013 for Ganymede-Callisto), must pass. A **negative
 > control**, the same chain with one flyby's V∞ deliberately broken, must fail.
+> Controls used (#1007 note secs. 6, 8.11): Hollister-Menning 1970 orbit 1 solved from its
+> printed dates (Earth-Venus; Hollister 1H, which has no published epoch, could not be
+> continued to the real elements); R-S GanEur#316 (Ganymede-Callisto, under the sec. 7 rules;
+> under the same-phase wording its geometric repeat L of about 10 would need ≥ 20-cycle
+> chains, not run); R-S GanCal#1 at 2013 is reported only, its gate being indeterminate by
+> construction.
 
 > **Note — the V3 class-split (V3-ballistic / V3-powered), 2026-06-08.** V3 is
 > split for the same reason V2 is: a single ΔV bar cannot judge a ballistic and a

@@ -533,20 +533,41 @@ _V1_1025: str = (
     "model. NOT V2: no real-ephemeris chain has been run for these members. "
 )
 
-# #1007 V2-ballistic promotions (gc-1, gc-2; owner spec amendment 2026-10-08).
+# #1025 Earth-Venus members (owner decision 2026-10-11, "(a) 10 rows, Standish >= 4/5"): the spec
+# §14 V1 evidence of the #973 ideal-model zeros (tests/search/test_942_943_writeback_v1.py
+# recomputes it).
+_V1_1025_EV: str = (
+    "spec §14 V1 (#1025 ev writeback, 2026-10-11), assigned against the WRITTEN criteria. "
+    "CONSISTENCY gate: every Lambert leg of the #973 ideal-model zero "
+    "(data/973_ev/k*_gauntlet.json) re-solved with lamberthub izzo2015 + gooding1990 agrees "
+    "with the in-house solver to < 1e-3 m/s. Re-propagation gate: the #973 gauntlet's DOP853 "
+    "re-fly of every leg (Lambert and full-rev) meets the arrival body to < 1 km and the turn "
+    "gate passes on the integrated vectors (scripts/writeback_1025_ev.py, "
+    "data/1025_ev_writeback_v1.json). shared with primary path: the same inputs and ideal "
+    "circular-coplanar body states; only the Lambert algorithm and the integrator differ. "
+    "Companion (not gating): the #1025 rung (d) Standish chains (>= 4 of 5 epochs ballistic and "
+    "gate-passing) and the DE440 blend (data/1025_ev_realeph/). NOT V2: no multi-lap "
+    "bounded-drift campaign has been run. "
+)
+
+# #1007 V2-ballistic promotions (owner spec amendment 2026-10-08; same-phase drift wording
+# 2026-10-11).
 _V2_1007: str = (
     "spec §14 V2-ballistic under the owner amendment of 2026-10-08 for exact-commensurate "
-    "patched-conic multi-arc rows (#1007; docs/notes/2026-10-08-1007-v2-ballistic-chain- "
-    "campaign.md secs. 6-7; scripts/v2_chain_1007.py --rules amended; "
-    "data/1007_v2/v2_chain_gc_amended.json): >= 3 continuous ballistic cycles in the real- "
-    "ephemeris (NAIF jup365) patched-conic chain with junction |V_inf| continuity < 1e-6 km/s, "
-    "the demanded-turn gate passing at every flyby, DOP853 re-fly < 1 km and bounded drift "
-    "(date band; no lap-over-lap growth), at >= 3 of 5 epochs; positive control R-S GanEur#316 "
-    "3/5, broken-chain negative control fails. Criterion 1 and the drift reading were amended "
-    "AFTER seeing the results (lead: junction-only per the spec text; owner: growth-only "
-    "drift). INDEPENDENCE gate: real-ephemeris body states, not the ideal model the row was "
-    "found in. shared with primary path: the chain tool's Lambert solver and fixed-leg shoot, "
-    "and the cycle structure. Also carries the row's V1 evidence (_V1_942_943). "
+    "patched-conic multi-arc rows, with the same-phase drift wording of 2026-10-11 (#1007; "
+    "docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md secs. 8.4b, 8.11-8.14; "
+    "scripts/v2_samephase_1007.py --final-controls/--final-gc/--final-ev; "
+    "data/1007_v2/final_*.json): >= 3 of 5 epochs with a continuous ballistic real-ephemeris "
+    "patched-conic chain (NAIF jup365 for the Jovian rows, Standish J2000 mean elements for "
+    "Earth-Venus) of >= 2L cycles, junction |V_inf| continuity < 1e-6 km/s, the demanded-turn "
+    "gate passing at every flyby, DOP853 re-fly < 1 km, and same-phase date and |V_inf| drift "
+    "(cycle i+L against i, the chain's first and last cycle excluded) inside the band. Slopes "
+    "are diagnostics, not gates. Controls: Hollister-Menning 1970 orbit 1 from its printed "
+    "dates passes; a broken chain fails. The drift reading was settled by the owner AFTER the "
+    "first results (recorded in the note). INDEPENDENCE gate: real-ephemeris body states, not "
+    "the ideal model the row was found in. shared with primary path: the chain tool's Lambert "
+    "solver and fixed-leg shoot, and the cycle structure. Also carries the row's V1 evidence "
+    "(_V1_942_943). "
 )
 
 _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
@@ -1602,15 +1623,16 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ),
     ("ganymede-callisto-two-working-body-cycler-gc1-2026", "V2"): (
         _V2_1007
-        + "Row: gc-1 V2 3/5, MARGINAL (junction 8.6e-7; 2 epochs fail the D band). "
+        + "Row: gc-1 V2 5/5 (final wording; junction 8.6e-7); slopes dates -0.0023..+0.0001 "
+        "d, |V_inf| -0.0008..+0.0006 km/s per cycle; ideal-model offset <= 0.079 km/s. "
         + _V1_942_943
         + "Row: gc-1 (lamberthub <= 1.6e-10 m/s; DOP853 re-fly 2.0e-6 km). Real-ephemeris "
         "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 0.19 km "
         "(data/943_gc1_realeph/)."
     ),
     ("ganymede-callisto-two-working-body-cycler-gc2-2026", "V2"): (
-        _V2_1007
-        + "Row: gc-2 V2 5/5; |V_inf| offset 0.16-0.36 km/s, growth 1.0-2.0. "
+        _V2_1007 + "Row: gc-2 V2 5/5 (final wording); slopes dates -0.0005..+0.0006 d, |V_inf| "
+        "-0.0011..+0.0008 km/s per cycle; ideal-model offset 0.16-0.36 km/s. "
         + _V1_942_943
         + "Row: gc-2 (lamberthub <= 2.4e-9 m/s; DOP853 re-fly 6.1e-6 km). Real-ephemeris "
         "companion: NAIF jup365, 10 cycles, 5/5 epochs, re-fly <= 2.4e-5 km "
@@ -1622,8 +1644,11 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "companion: Standish mean elements and DE440, 5 cycles (16 yr), 5/5 epochs, re-fly "
         "<= 0.116 km (data/942_direct_route_and_gm_fix.json)."
     ),
-    ("earth-venus-two-working-body-cycler-eva-2026", "V1"): (
-        _V1_942_943
+    ("earth-venus-two-working-body-cycler-eva-2026", "V2"): (
+        _V2_1007 + "Row: ev-A V2 5/5 (final wording; Standish, 10 cycles = 32 yr, "
+        "data/1007_v2/ev10_evA/); slopes dates -0.07..+0.32 d, |V_inf| +0.0009..+0.0127 km/s "
+        "per cycle; DE440 stays near-ballistic (below). "
+        + _V1_942_943
         + "Row: ev-A (lamberthub <= 6.0e-10 m/s; DOP853 re-fly 6.6e-4 km). Real-ephemeris "
         "companion: Standish mean elements, 5 cycles, 5/5 epochs, re-fly <= 1.9e-3 km "
         "(data/942_direct_route_and_gm_fix.json); DE440 near-ballistic (1.56-2.53 m/s per "
@@ -1678,6 +1703,56 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     ),
     ("ganymede-callisto-two-working-body-cycler-gc6-2-2026", "V1"): (
         _V1_1025 + "Row: gc6-2 (lamberthub <= 5.3e-10 m/s; DOP853 re-fly 1.1e-04 km)."
+    ),
+    ("earth-venus-two-working-body-cycler-ev4-1-2026", "V1"): (
+        _V1_1025_EV + "Row: ev4-1 (lamberthub <= 5.0e-09 m/s; "
+        "DOP853 re-fly 2.3e-04 km). Standish 5/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev4-4-2026", "V1"): (
+        _V1_1025_EV + "Row: ev4-4 (lamberthub <= 9.5e-09 m/s; "
+        "DOP853 re-fly 3.5e-04 km). Standish 5/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev4-6-2026", "V1"): (
+        _V1_1025_EV + "Row: ev4-6 (lamberthub <= 9.5e-09 m/s; "
+        "DOP853 re-fly 2.5e-04 km). Standish 5/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev4-7-2026", "V1"): (
+        _V1_1025_EV + "Row: ev4-7 (lamberthub <= 9.5e-09 m/s; "
+        "DOP853 re-fly 2.5e-04 km). Standish 5/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-4-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-4 (lamberthub <= 4.2e-11 m/s; "
+        "DOP853 re-fly 1.1e-03 km). Standish 4/5 epochs "
+        "ballistic; DE440 blend minimax gate 4/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-5-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-5 (lamberthub <= 4.2e-11 m/s; "
+        "DOP853 re-fly 1.5e-02 km). Standish 4/5 epochs "
+        "ballistic; DE440 blend minimax gate 4/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-6-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-6 (lamberthub <= 8.9e-11 m/s; "
+        "DOP853 re-fly 7.0e-03 km). Standish 4/5 epochs "
+        "ballistic; DE440 blend minimax gate 4/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-7-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-7 (lamberthub <= 8.9e-11 m/s; "
+        "DOP853 re-fly 4.1e-03 km). Standish 4/5 epochs "
+        "ballistic; DE440 blend minimax gate 4/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-8-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-8 (lamberthub <= 5.4e-11 m/s; "
+        "DOP853 re-fly 7.7e-02 km). Standish 4/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
+    ),
+    ("earth-venus-two-working-body-cycler-ev5-9-2026", "V1"): (
+        _V1_1025_EV + "Row: ev5-9 (lamberthub <= 1.3e-10 m/s; "
+        "DOP853 re-fly 3.4e-02 km). Standish 5/5 epochs "
+        "ballistic; DE440 blend minimax gate 5/5."
     ),
 }
 

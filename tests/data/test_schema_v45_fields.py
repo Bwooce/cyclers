@@ -380,7 +380,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "ganymede-callisto-two-working-body-cycler-gc1-2026": "V2",
         "ganymede-callisto-two-working-body-cycler-gc2-2026": "V2",
         "earth-venus-venus-hosted-cycler-evc-2026": "V1",
-        "earth-venus-two-working-body-cycler-eva-2026": "V1",
+        # 2026-10-11 (#1007 final wording): ev-A V1 -> V2-ballistic (5/5 Standish, 10 cycles).
+        "earth-venus-two-working-body-cycler-eva-2026": "V2",
         # 2026-10-11 (owner decisions of 2026-10-08): ev-B (#1008) and the 15 #1025
         # Ganymede-Callisto members, each V1 (validate._V1_942_943 / _V1_1025;
         # tests/search/test_942_943_writeback_v1.py).
@@ -400,6 +401,19 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "ganymede-callisto-two-working-body-cycler-gc6-0-2026": "V1",
         "ganymede-callisto-two-working-body-cycler-gc6-1-2026": "V1",
         "ganymede-callisto-two-working-body-cycler-gc6-2-2026": "V1",
+        # 2026-10-11 (owner decision 2026-10-11, "(a) 10 rows, Standish >= 4/5"): the 10
+        # #1025 Earth-Venus members, each V1 (validate._V1_1025_EV;
+        # tests/search/test_942_943_writeback_v1.py).
+        "earth-venus-two-working-body-cycler-ev4-1-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev4-4-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev4-6-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev4-7-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-4-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-5-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-6-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-7-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-8-2026": "V1",
+        "earth-venus-two-working-body-cycler-ev5-9-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
@@ -415,7 +429,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # representatives, each #312-equivalent V4 (windowed); #566 gauntlet + #567
     # duty-cycle scan + #568 verdict; tests/verify/test_566_five_representatives_v4.py.
     # 8 -> 10 (2026-10-11, #1007): gc-1 and gc-2 V2-ballistic (owner spec amendment).
-    assert sum(1 for lvl in byid.values() if lvl == "V2") == 10
+    # 10 -> 11 (2026-10-11, #1007 final wording): + ev-A.
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 11
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     # 6 -> 0 (#888, 2026-10-04): all six Uranian V4 rows WITHDRAWN (not ballistic: the V4
     # gauntlet matched V-infinity magnitudes at the flybys and never the directions).

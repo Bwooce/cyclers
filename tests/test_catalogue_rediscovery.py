@@ -280,7 +280,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 222 -> 224 (2026-10-08, #942/#943): +2 heliocentric two-working-body generator rows
     # (ev-C V-V-E, ev-A V-V-V-E): multi-encounter sequences. Pure census shift.
     # 224 -> 225 (2026-10-11): + ev-B (V-V-V-E-E). Pure census shift.
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 225,
+    # 225 -> 235 (2026-10-11, second window): + the 10 #1025 ev members (V-V-V-E-E-E and
+    # shorter multi-encounter sequences). Pure census shift.
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 235,
     # #106: free_return_arcs[]-bearing SnLm rows; 12->13 (4.3.1-5) ->14 (2.5.1+0), #388
     ExclusionReason.DESCRIPTOR_CLOSABLE: 14,
     ExclusionReason.MISSING_LEG_TOFS: 15,

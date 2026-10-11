@@ -57381,7 +57381,7 @@
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
-  validation_level: V2   # spec §14 V2-ballistic under the 2026-10-08 owner amendment for exact-commensurate patched-conic multi-arc rows (#1007): 3 of 5 jup365 epochs, MARGINAL; see validate._LEVEL_EVIDENCE and docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md sec. 7.
+  validation_level: V2   # spec §14 V2-ballistic (owner amendment 2026-10-08; same-phase drift wording 2026-10-11; #1007): 5 of 5 jup365 epochs; see validate._LEVEL_EVIDENCE and docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md sec. 8.12.
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
   delta_v_kms:
@@ -57428,11 +57428,6 @@
     note: "Real-ephemeris continuous-gravity standing untested: the open-chain n-body formulation does not converge across a full-revolution return (#1044); the ideal-model continuous-gravity closure stands (#1034); the real-ephemeris pass is the patched-conic chain tool (rung (d)); obstruction: out-of-plane mismatch across the full-revolution leg (#1046)."
     source_hint: "docs/notes/2026-10-08-1034-gc1-continuous-sigma.md sec. 9; #1044 (f83eac79)"
     todo_ref: "#1044"
-  - path: "validation_level"
-    kind: "derive"
-    note: "V2 needs a multi-lap (>= 3 cycles) bounded-drift campaign; not run."
-    source_hint: "spec §14 V2"
-    todo_ref: "#942/#943 V2 campaign"
   legs: []
   first_published:
   corroborating_sources:
@@ -57494,15 +57489,19 @@
       same for the GanCal#1 control). The real-ephemeris pass is the patched-conic chain tool
       (rung (d)).
 
-    V2-ballistic (#1007; spec §14 owner amendment 2026-10-08 for exact-commensurate patched-conic
-    multi-arc rows; docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md secs. 6-7): PASS at 3
-    of 5 jup365 epochs (JD 2462511.7, 2464840.9, 2467182.8), 10 continuous cycles each. MARGINAL:
-    - junction |V_inf| continuity 8.6e-7 km/s against the 1e-6 criterion;
-    - epochs JD 2469524.7 and 2471854.0 fail the date-drift band (0.222 / 0.195 d against 0.190 d).
-    Rules as amended AFTER seeing the results (recorded as such): criterion 1 junction-only (lead,
-    the spec's own wording; the pre-registered mixed residual gave 0/5); drift judged by growth only
-    (owner decision 2026-10-08). Controls: R-S GanEur#316 passes 3/5; a broken chain fails. Systematic
-    real-versus-ideal |V_inf| offset: up to 0.079 km/s, no growth (ratio <= 1.13).
+    V2-ballistic (#1007; spec §14 owner amendment 2026-10-08, same-phase drift wording of
+    2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md secs. 8.4b, 8.11-8.12):
+    PASS at 5 of 5 jup365 epochs, 10 continuous cycles each (L = 4; the chain's first and last
+    cycle excluded from the comparisons).
+    - Junction |V_inf| continuity 8.6e-7 km/s against the 1e-6 criterion (a narrow margin).
+    - Same-phase drift: dates 0.013-0.037 d against a 0.185-d band; |V_inf| 0.005-0.008 km/s
+      against 0.175.
+    - Slope diagnostics (handed to V3): dates -0.0023 to +0.0001 d per cycle; |V_inf| -0.0008 to
+      +0.0006 km/s per cycle.
+    - Systematic real-versus-ideal |V_inf| offset (recorded, not banded): up to 0.079 km/s.
+    History: first promoted at 3/5 (MARGINAL) under the sec. 7 rules, which were amended after
+    seeing results (recorded as such); re-judged under the final owner wording. Controls:
+    Hollister-Menning 1970 orbit 1 from its printed dates passes; a broken chain fails.
 
     Literature:
     - Scripted gate (literature_check v2, #972; data/942_943_litcheck_scope.json): INCONCLUSIVE.
@@ -57545,7 +57544,7 @@
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
-  validation_level: V2   # spec §14 V2-ballistic under the 2026-10-08 owner amendment (#1007): 5 of 5 jup365 epochs; see validate._LEVEL_EVIDENCE and docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md sec. 7.
+  validation_level: V2   # spec §14 V2-ballistic (owner amendment 2026-10-08; same-phase drift wording 2026-10-11; #1007): 5 of 5 jup365 epochs; see validate._LEVEL_EVIDENCE and docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md sec. 8.12.
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
   delta_v_kms:
@@ -57588,11 +57587,6 @@
     note: "No full-mass counterpart on gc-2's own branch in continuous gravity: the branch FOLDS at sigma = 0.164 of the real moon masses (#1004). An isola or another seed is untested."
     source_hint: "docs/notes/2026-10-07-1004-gc2-gancal5-callisto-gm-continuation.md sec. 9; data/1004_gc2/"
     todo_ref: "#1033"
-  - path: "validation_level"
-    kind: "derive"
-    note: "V2 needs a multi-lap (>= 3 cycles) bounded-drift campaign; not run."
-    source_hint: "spec §14 V2"
-    todo_ref: "#942/#943 V2 campaign"
   legs: []
   first_published:
   corroborating_sources:
@@ -57650,12 +57644,17 @@
       so neither has a verdict. The real-ephemeris pass above is the patched-conic chain tool
       (rung (d)).
 
-    V2-ballistic (#1007; spec §14 owner amendment 2026-10-08; docs/notes/2026-10-08-1007-v2-
-    ballistic-chain-campaign.md secs. 6-7): PASS at 5 of 5 jup365 epochs, 10 continuous cycles each,
-    under the rules as amended after seeing the results (criterion 1 junction-only, lead; drift by
-    growth only, owner 2026-10-08). Under the pre-registered 10 % |V_inf| band it was 2/5. Systematic
-    real-versus-ideal |V_inf| offset (recorded, owner decision): 0.16-0.36 km/s, growth ratio 1.0-2.0.
-    Note: in continuous gravity gc-2's branch folds (#1004); V2 here is the patched-conic chain only.
+    V2-ballistic (#1007; spec §14 owner amendment 2026-10-08, same-phase drift wording of
+    2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md secs. 8.4b, 8.11-8.12):
+    PASS at 5 of 5 jup365 epochs, 10 continuous cycles each (L = 4; first and last cycle excluded).
+    - Junction continuity 9.2e-8 km/s; re-fly <= 2.4e-5 km.
+    - Same-phase drift: dates 0.012-0.057 d against a 0.13-d band; |V_inf| 0.005-0.006 km/s
+      against 0.30.
+    - Slope diagnostics (handed to V3): dates -0.0005 to +0.0006 d per cycle; |V_inf| -0.0011 to
+      +0.0008 km/s per cycle.
+    - Systematic real-versus-ideal |V_inf| offset (recorded, not banded): 0.16-0.36 km/s.
+    Under the sec. 2 pre-registered rules it was 2/5 (the 10 % band on that offset). Note: in
+    continuous gravity gc-2's branch folds (#1004); V2 here is the patched-conic chain only.
 
     Literature:
     - Scripted gate (literature_check v2, #972; data/942_943_litcheck_scope.json): INCONCLUSIVE.
@@ -57726,8 +57725,8 @@
   source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung on Standish J2000 mean elements and DE440"
   data_gaps:
   - path: "validation_level"
-    kind: "derive"
-    note: "V2 needs a multi-lap (>= 3 cycles) bounded-drift campaign; not run."
+    kind: "uncertain"
+    note: "V2 judged 2026-10-11 (#1007 final wording): 1 of 5 Standish epochs at 10 cycles; the 10-cycle chains drift at 4 epochs (same-phase dates 15-66 d against about 5.8 d). Not earned; cause not diagnosed."
     source_hint: "spec §14 V2"
     todo_ref: "#942/#943 V2 campaign"
   legs: []
@@ -57783,6 +57782,14 @@
     - #973 screen (data/973_screen_942_ev.json): passes r_min > solar radius, and no interior pass
       inside a planet's SOI.
 
+    V2-ballistic (#1007, final wording of 2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-
+    chain-campaign.md sec. 8.14): NOT earned, 1 of 5 Standish epochs at 10 cycles (32 yr).
+    - At 4 epochs the ramp-continued 10-cycle chain drifts: same-phase dates 15-66 d against a band
+      of about 5.8 d; slopes up to +11.7 d per cycle.
+    - The 5-cycle rung (d) chains above pass the gate.
+    - Not diagnosed further (another branch at 10 cycles is possible).
+    The row stays V1.
+
     Literature:
     - Scripted gate (literature_check v2, #972; data/942_943_litcheck_scope.json): INCONCLUSIVE.
       Named anchor: "Hollister / Hollister-Menning Earth-Venus periodic swing-by orbits (1969-1970)".
@@ -57809,7 +57816,7 @@
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
-  validation_level: V1   # spec §14 V1 (#942 writeback 2026-10-08); see validate._LEVEL_EVIDENCE. NOT V2 (no multi-lap campaign yet).
+  validation_level: V2   # spec §14 V2-ballistic (owner amendment 2026-10-08; same-phase drift wording 2026-10-11; #1007): 5 of 5 Standish epochs, 10 cycles (32 yr); see validate._LEVEL_EVIDENCE and docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md sec. 8.14.
   orbit_fidelity: circular-coplanar
   vinf_fidelity: circular-coplanar
   delta_v_kms:
@@ -57849,14 +57856,9 @@
   data_gaps:
   - path: "trajectory_regime"
     kind: "uncertain"
-    note: "On DE440 no gate-passing ballistic member was found: NEAR-BALLISTIC, 1.56-2.53 m/s of mid-course correction per 16-yr chain from the minimax solution. The DE440 shoot restarts used the old 0.3/0.6-rad perturbations (WEAK)."
-    source_hint: "data/942_evAB_de440_closure_dv.json; results note 6.24-6.25"
+    note: "On DE440 (astropy Earth, not the Earth-Moon barycentre) no gate-passing ballistic member was found: NEAR-BALLISTIC, 1.56-2.53 m/s of mid-course correction per 16-yr chain from the gate-passing minimax solution (6.25). The chain-tool shoot at today's settings (restarts 0.03/0.05 rad; #1057 step 1, 2026-10-11) closes ballistic 5-cycle chains at all 5 epochs, but every closure fails the #888 gate at Venus: best epoch JD 2467763.3, worst ratio 1.117, required periapsis 627 km below the surface (927 km below the 300-km floor). With the anchored shoot (#942 6.48 method; #1057 step 1b) the ballistic chain at JD 2462508.0 passes the gate for 1-3 cycles (6.4 yr; worst 0.757, lowest required periapsis altitude 3,109 km) and violates the Venus floor from 4 cycles on; at JD 2464843.6 it passes for 1 cycle only. Limits: the 1-3-cycle closures were not independently re-flown; one epoch; below the 5-cycle criterion."
+    source_hint: "data/942_evAB_de440_closure_dv.json; results note 6.24-6.25; docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 9.3, 9.5; data/1025_ev_realeph/control_1057/, control_1057b/"
     todo_ref: "#942"
-  - path: "validation_level"
-    kind: "derive"
-    note: "V2 needs a multi-lap (>= 3 cycles) bounded-drift campaign; not run."
-    source_hint: "spec §14 V2"
-    todo_ref: "#942/#943 V2 campaign"
   legs: []
   first_published:
   corroborating_sources:
@@ -57903,9 +57905,24 @@
       - From the minimax solution, the full-rev legs need 1.56-2.53 m/s of mid-course correction
         per 16-yr chain (max 0.91 m/s per leg; induced arrival |V_inf| change <= 1.70 m/s) (results
         note 6.24-6.25, data/942_evAB_de440_closure_dv.json).
-      - The DE440 shoot restarts used the old 0.3/0.6-rad perturbations (WEAK).
+      - DE440 shoot (#1057, 2026-10-11): at today's restarts every 5-cycle closure fails the gate at
+        Venus (best worst ratio 1.117, periapsis 627 km below the surface); the anchored shoot
+        passes for 1-3 cycles at one epoch only (see data_gaps).
     - #973 screen (data/973_screen_942_ev.json): passes. ev-A is not among the 9 ev gate-passers
       flagged "direction-dependent" (#1027).
+
+    V2-ballistic (#1007; spec §14 owner amendment 2026-10-08, same-phase drift wording of
+    2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-chain-campaign.md secs. 8.11, 8.13-8.14):
+    PASS at 5 of 5 Standish epochs, 10 continuous cycles each (32 yr; L = 5; first and last cycle
+    excluded).
+    - Junction continuity <= 1.8e-12 km/s; gate worst 0.580; re-fly <= 1.9e-3 km.
+    - Same-phase drift: dates 0.65-1.53 d against an 8.74-d band; |V_inf| 0.013-0.043 km/s
+      against 0.49.
+    - Slope diagnostics (handed to V3): dates -0.07 to +0.32 d per cycle; |V_inf| +0.0009 to
+      +0.0127 km/s per cycle.
+    - Positive control: Hollister-Menning 1970 orbit 1 from its printed dates passes.
+    - V2 is on Standish mean elements. On DE440 the row stays near-ballistic (see above and
+      data_gaps).
 
     Literature:
     - Scripted gate (literature_check v2, #972; data/942_943_litcheck_scope.json): NOT-FOUND
@@ -58020,6 +58037,12 @@
       turn-deficit price is 981.4 and 345.7 m/s per 7 cycles (beyond-bend; Oberth periapsis 2392.4 and
       813.7), with minimax full-rev directions: upper-bound style (6.57a, data/942_dv_band.json).
     - Method: 6.55a ramp continuation with the epoch-0 positive control passing (6.55b).
+
+    V2-ballistic (#1007, final wording of 2026-10-11; docs/notes/2026-10-08-1007-v2-ballistic-
+    chain-campaign.md sec. 8.14): NOT earned, 0 of 5 Standish epochs at 10 cycles (48 yr). The gate
+    fails or is indeterminate at 3 epochs (worst 1.011, 1.019, 0.999), there is no 10-cycle chain
+    at 1, and the same-phase date drift exceeds its 2.0-d band at every epoch with a chain. The row
+    stays V1.
 
     Literature:
     - Scripted gate: literature_check v2/v3-A1 returns NOT-FOUND (necessary, not sufficient;
@@ -59710,3 +59733,1219 @@
     candidate-novel as a member of gc-1's class, with gc-1's attribution (Hollister & Menning 1970
     method; Russell & Strange 2007/2009 model; Campagnola et al. 2019 nearest prior art). Wording:
     "first computed", never "new class".
+
+- id: earth-venus-two-working-body-cycler-ev4-1-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev4-1 (k = 4, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [365.25, 1095.75, 212.687, 224.702, 224.702, 212.687]   # DERIVED (this project): per-leg durations in cycle order (key k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 66.70
+    min_altitude_km: 6916
+  - body: "E"
+    turning_angle_deg: 79.94
+    min_altitude_km: 4129
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 4
+    years: 6.395
+    note: "DERIVED (this project): 4 Earth-Venus synodic periods = 2335.778 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 4.595
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k4_gauntlet.json). Earth turns 79.94 / 79.94 / 79.94 deg; largest demanded/available ratio 0.835 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 4.529
+    note: "DERIVED (this project). Venus turns 66.70 / 66.70 / 66.70 deg; largest ratio 0.732 at the 300-km floor (required altitude 6,916 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.672-1.641 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 5 of 5 epochs (0 fail, 0 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 308.4 m/s (above-low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 23.1 m/s (low-maintenance); range over the reached epochs 308.4-453.1 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.0727, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev4-1 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 4 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k4_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k4 ev cell (lead launch)"
+    cell_id: "ev k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev4-1 of the #973 Earth-Venus two-working-body set: both planets bend; k = 4
+    (2335.778 d, 6.395 yr); structure k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 438.527807, 1100.618380 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.835. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). No sibling among the 22 #973 ev members shares its transfer and Venus block.
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 5.0e-09 m/s on every Lambert leg;
+    #973 DOP853 re-fly 2.3e-04 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    3 cycles = 19.2 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 5/5 PASS. JD 2462949.8 PASS (route S1, worst 0.821, re-fly 6.1e-04 km); JD 2465278.7 PASS (route S1, worst 0.775, re-fly 3.5e-04 km); JD 2467618.4 PASS (route S1, worst 0.795, re-fly 6.9e-04 km); JD 2469954.5 PASS (route S1, worst 0.821, re-fly 5.7e-04 km); JD 2472285.3 PASS (route S1, worst 0.826, re-fly 1.3e-04 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 3.7e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462949.6 gate pass 0.819, closure E/V 132.9/9.7 m/s per chain; JD 2465278.5 gate pass 0.775, closure E/V 184.8/9.4 m/s per chain; JD 2467618.2 gate pass 0.795, closure E/V 184.4/9.4 m/s per chain; JD 2469954.2 gate pass 0.821, closure E/V 122.3/9.9 m/s per chain; JD 2472285.0 gate pass 0.826, closure E/V 140.2/8.6 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev4-4-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev4-4 (k = 4, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [730.5, 730.5, 245.574, 324.484, 224.702, 80.018]   # DERIVED (this project): per-leg durations in cycle order (key k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 76.86
+    min_altitude_km: 6077
+  - body: "E"
+    turning_angle_deg: 38.32
+    min_altitude_km: 11108
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 4
+    years: 6.395
+    note: "DERIVED (this project): 4 Earth-Venus synodic periods = 2335.778 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 6.830
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k4_gauntlet.json). Earth turns 38.32 / 0.00 / 38.32 deg; largest demanded/available ratio 0.557 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 4.038
+    note: "DERIVED (this project). Venus turns 68.45 / 8.40 / 76.86 deg; largest ratio 0.779 at the 300-km floor (required altitude 6,077 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.496-1.168 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 5 of 5 epochs (0 fail, 0 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 43.3 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 5.3 m/s (essentially-ballistic); range over the reached epochs 43.3-51.1 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 1 fail, 4 no closure of 5 epochs; best shoot residual 0.0039, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev4-4 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 4 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k4_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k4 ev cell (lead launch)"
+    cell_id: "ev k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev4-4 of the #973 Earth-Venus two-working-body set: both planets bend; k = 4
+    (2335.778 d, 6.395 yr); structure k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 325.344596, 570.918575, 1120.104121 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.779. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev4-6 and ev4-7: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 9.5e-09 m/s on every Lambert leg;
+    #973 DOP853 re-fly 3.5e-04 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    3 cycles = 19.2 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 5/5 PASS. JD 2462829.8 PASS (route S1, worst 0.919, re-fly 6.1e-04 km); JD 2465172.6 PASS (route S1, worst 0.945, re-fly 7.8e-04 km); JD 2467500.4 PASS (route S1, worst 0.981, re-fly 8.6e-04 km); JD 2469842.1 PASS (route S1, worst 0.830, re-fly 7.1e-04 km); JD 2472176.4 PASS (route S1, worst 0.774, re-fly 6.9e-04 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 5.0e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462829.6 gate pass 0.920, closure E/V 15.5/4.6 m/s per chain; JD 2465172.5 gate pass 0.946, closure E/V 16.3/2.8 m/s per chain; JD 2467500.2 gate pass 0.979, closure E/V 16.3/2.3 m/s per chain; JD 2469841.8 gate pass 0.831, closure E/V 18.4/3.6 m/s per chain; JD 2472176.2 gate pass 0.772, closure E/V 18.0/3.6 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev4-6-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev4-6 (k = 4, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [365.25, 1095.75, 245.574, 324.484, 224.702, 80.018]   # DERIVED (this project): per-leg durations in cycle order (key k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 76.86
+    min_altitude_km: 6077
+  - body: "E"
+    turning_angle_deg: 37.68
+    min_altitude_km: 11535
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 4
+    years: 6.395
+    note: "DERIVED (this project): 4 Earth-Venus synodic periods = 2335.778 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 6.830
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k4_gauntlet.json). Earth turns 23.78 / 37.68 / 37.68 deg; largest demanded/available ratio 0.548 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 4.038
+    note: "DERIVED (this project). Venus turns 68.45 / 8.40 / 76.86 deg; largest ratio 0.779 at the 300-km floor (required altitude 6,077 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.640-1.703 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 5 of 5 epochs (0 fail, 0 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 48.0 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 10.7 m/s (low-maintenance); range over the reached epochs 48.0-473.9 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.0026, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev4-6 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 4 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k4_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k4 ev cell (lead launch)"
+    cell_id: "ev k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev4-6 of the #973 Earth-Venus two-working-body set: both planets bend; k = 4
+    (2335.778 d, 6.395 yr); structure k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 325.344596, 570.918575, 1120.104121 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.779. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev4-4 and ev4-7: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 9.5e-09 m/s on every Lambert leg;
+    #973 DOP853 re-fly 2.5e-04 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    3 cycles = 19.2 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 5/5 PASS. JD 2462829.8 PASS (route S1, worst 0.919, re-fly 3.4e-04 km); JD 2465172.6 PASS (route S1, worst 0.945, re-fly 7.8e-04 km); JD 2467500.4 PASS (route S1, worst 0.981, re-fly 8.6e-04 km); JD 2469842.1 PASS (route S1, worst 0.830, re-fly 4.3e-04 km); JD 2472176.4 PASS (route S1, worst 0.774, re-fly 6.9e-04 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 5.0e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462829.6 gate pass 0.920, closure E/V 16.0/4.6 m/s per chain; JD 2465172.5 gate pass 0.946, closure E/V 55.4/2.8 m/s per chain; JD 2467500.2 gate pass 0.979, closure E/V 146.0/2.3 m/s per chain; JD 2469841.8 gate pass 0.831, closure E/V 199.5/3.6 m/s per chain; JD 2472176.2 gate pass 0.772, closure E/V 86.6/3.6 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev4-7-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev4-7 (k = 4, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [1095.75, 365.25, 245.574, 324.484, 224.702, 80.018]   # DERIVED (this project): per-leg durations in cycle order (key k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 76.86
+    min_altitude_km: 6077
+  - body: "E"
+    turning_angle_deg: 37.68
+    min_altitude_km: 11535
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 4
+    years: 6.395
+    note: "DERIVED (this project): 4 Earth-Venus synodic periods = 2335.778 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 6.830
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k4_gauntlet.json). Earth turns 37.68 / 37.68 / 23.78 deg; largest demanded/available ratio 0.548 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 4.038
+    note: "DERIVED (this project). Venus turns 68.45 / 8.40 / 76.86 deg; largest ratio 0.779 at the 300-km floor (required altitude 6,077 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.640-1.703 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 5 of 5 epochs (0 fail, 0 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 225.4 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 8.3 m/s (essentially-ballistic); range over the reached epochs 225.4-338.8 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.0020, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev4-7 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 4 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k4_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k4 ev cell (lead launch)"
+    cell_id: "ev k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev4-7 of the #973 Earth-Venus two-working-body set: both planets bend; k = 4
+    (2335.778 d, 6.395 yr); structure k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 325.344596, 570.918575, 1120.104121 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.779. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev4-4 and ev4-6: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 9.5e-09 m/s on every Lambert leg;
+    #973 DOP853 re-fly 2.5e-04 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    3 cycles = 19.2 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 5/5 PASS. JD 2462829.8 PASS (route S1, worst 0.919, re-fly 3.6e-04 km); JD 2465172.6 PASS (route S1, worst 0.945, re-fly 7.8e-04 km); JD 2467500.4 PASS (route S1, worst 0.981, re-fly 8.6e-04 km); JD 2469842.1 PASS (route S1, worst 0.830, re-fly 3.8e-04 km); JD 2472176.4 PASS (route S1, worst 0.774, re-fly 6.9e-04 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 5.0e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462829.6 gate pass 0.920, closure E/V 123.3/4.6 m/s per chain; JD 2465172.5 gate pass 0.946, closure E/V 125.6/2.8 m/s per chain; JD 2467500.2 gate pass 0.979, closure E/V 142.9/2.3 m/s per chain; JD 2469841.8 gate pass 0.831, closure E/V 93.1/3.6 m/s per chain; JD 2472176.2 gate pass 0.772, closure E/V 132.7/3.6 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-4-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-4 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [1095.75, 59.048, 674.105, 674.105, 416.713]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 54.55
+    min_altitude_km: 3506
+  - body: "E"
+    turning_angle_deg: 5.40
+    min_altitude_km: 52521
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 11.699
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 5.40 / 5.40 deg; largest demanded/available ratio 0.151 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 6.339
+    note: "DERIVED (this project). Venus turns 54.55 / 54.55 / 54.55 deg; largest ratio 0.801 at the 300-km floor (required altitude 3,506 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.713-1.855 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 4 of 5 epochs (0 fail, 1 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 4/5 with the minimax gate passing at 4/5; mid-course closure dV per 7 cycles at the best epoch 42.0 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 27.7 m/s (low-maintenance); range over the reached epochs 42.0-256.3 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.2086, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-4 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-4 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s. Ideal-model Lambert-leg
+    starts 572.610615, 1979.869251 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.801. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev5-5: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 4.2e-11 m/s on every Lambert leg;
+    #973 DOP853 re-fly 1.1e-03 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 4/5 PASS. JD 2463078.5 PASS (route S1, worst 0.619, re-fly 9.6e-04 km); epoch 1 NOT REACHED; JD 2467752.5 PASS (route S1, worst 0.742, re-fly 2.6e-03 km); JD 2470085.1 PASS (route S1, worst 0.589, re-fly 1.1e-03 km); JD 2472425.0 PASS (route S1, worst 0.585, re-fly 6.9e-03 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 3.3e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2463078.3 gate pass 0.628, closure E/V 4.1/7.9 m/s per chain; epoch 1 not reached; JD 2467752.3 gate pass 0.744, closure E/V 5.0/18.9 m/s per chain; JD 2470084.8 gate pass 0.589, closure E/V 4.2/18.8 m/s per chain; JD 2472424.8 gate pass 0.585, closure E/V 3.9/69.3 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-5-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-5 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [365.25, 730.5, 59.048, 674.105, 674.105, 416.713]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 54.55
+    min_altitude_km: 3506
+  - body: "E"
+    turning_angle_deg: 27.27
+    min_altitude_km: 3064
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 11.699
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 25.69 / 27.27 / 27.27 deg; largest demanded/available ratio 0.763 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 6.339
+    note: "DERIVED (this project). Venus turns 54.55 / 54.55 / 54.55 deg; largest ratio 0.801 at the 300-km floor (required altitude 3,506 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.645-2.320 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 4 of 5 epochs (0 fail, 1 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 4/5 with the minimax gate passing at 4/5; mid-course closure dV per 7 cycles at the best epoch 160.7 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 66.2 m/s (low-maintenance); range over the reached epochs 160.7-550.8 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.6610, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-5 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-5 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s. Ideal-model Lambert-leg
+    starts 572.610615, 1979.869251 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.801. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev5-4: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 4.2e-11 m/s on every Lambert leg;
+    #973 DOP853 re-fly 1.5e-02 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 4/5 PASS. JD 2463078.5 PASS (route S1, worst 0.772, re-fly 1.7e-02 km); epoch 1 NOT REACHED; JD 2467752.5 PASS (route S1, worst 0.780, re-fly 5.2e-03 km); JD 2470085.1 PASS (route S1, worst 0.755, re-fly 9.7e-03 km); JD 2472425.0 PASS (route S1, worst 0.765, re-fly 1.9e-03 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 3.2e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2463078.3 gate pass 0.774, closure E/V 115.4/7.9 m/s per chain; epoch 1 not reached; JD 2467752.3 gate pass 0.783, closure E/V 27.0/18.9 m/s per chain; JD 2470084.8 gate pass 0.756, closure E/V 61.6/18.8 m/s per chain; JD 2472424.8 gate pass 0.763, closure E/V 88.0/69.3 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-6-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-6 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [730.5, 730.5, 54.03, 449.404, 449.404, 505.885]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 36.78
+    min_altitude_km: 7354
+  - body: "E"
+    turning_angle_deg: 7.91
+    min_altitude_km: 24560
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 13.184
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 7.91 / 0.00 / 7.91 deg; largest demanded/available ratio 0.264 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 7.251
+    note: "DERIVED (this project). Venus turns 36.78 / 36.78 / 36.78 deg; largest ratio 0.622 at the 300-km floor (required altitude 7,354 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.719-2.390 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 4 of 5 epochs (0 fail, 1 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 4/5 with the minimax gate passing at 4/5; mid-course closure dV per 7 cycles at the best epoch 37.4 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 15.1 m/s (low-maintenance); range over the reached epochs 37.4-71.0 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.9856, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-6 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-6 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 576.759761, 1529.596490 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.622. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev5-7: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 8.9e-11 m/s on every Lambert leg;
+    #973 DOP853 re-fly 7.0e-03 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 4/5 PASS. JD 2463082.6 PASS (route S1, worst 0.436, re-fly 7.9e-03 km); epoch 1 NOT REACHED; JD 2467756.5 PASS (route S1, worst 0.561, re-fly 3.9e-03 km); JD 2470089.3 PASS (route S1, worst 0.416, re-fly 2.3e-02 km); JD 2472429.2 PASS (route S1, worst 0.405, re-fly 5.7e-03 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 7.8e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): epoch 0 not reached; JD 2465420.1 gate pass 0.539, closure E/V 6.4/4.3 m/s per chain; JD 2467756.3 gate pass 0.587, closure E/V 6.2/9.3 m/s per chain; JD 2470089.1 gate pass 0.415, closure E/V 5.7/7.5 m/s per chain; JD 2472428.9 gate pass 0.405, closure E/V 5.0/15.3 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-7-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-7 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [365.25, 1095.75, 54.03, 449.404, 449.404, 505.885]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 36.78
+    min_altitude_km: 7354
+  - body: "E"
+    turning_angle_deg: 16.21
+    min_altitude_km: 7588
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 13.184
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 16.21 / 16.21 / 5.05 deg; largest demanded/available ratio 0.541 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 7.251
+    note: "DERIVED (this project). Venus turns 36.78 / 36.78 / 36.78 deg; largest ratio 0.622 at the 300-km floor (required altitude 7,354 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.568-1.939 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 4 of 5 epochs (0 fail, 1 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 4/5 with the minimax gate passing at 4/5; mid-course closure dV per 7 cycles at the best epoch 299.0 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 53.7 m/s (low-maintenance); range over the reached epochs 299.0-403.5 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.3220, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-7 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-7 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 576.759761, 1529.596490 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.622. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). Shares its transfer and Venus block with ev5-6: identical ideal-model V_inf and identical real-ephemeris dates at every epoch; the members differ only in their Earth full-rev returns (docs/notes/2026-10-11-1025-ev-realeph-rung-d.md sec. 8).
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 8.9e-11 m/s on every Lambert leg;
+    #973 DOP853 re-fly 4.1e-03 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 4/5 PASS. JD 2463082.6 PASS (route S1, worst 0.547, re-fly 3.6e-03 km); epoch 1 NOT REACHED; JD 2467756.5 PASS (route S1, worst 0.561, re-fly 1.4e-02 km); JD 2470089.3 PASS (route S1, worst 0.533, re-fly 1.2e-02 km); JD 2472429.2 PASS (route S1, worst 0.544, re-fly 5.1e-02 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 7.0e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): epoch 0 not reached; JD 2465420.1 gate pass 0.539, closure E/V 86.5/4.3 m/s per chain; JD 2467756.3 gate pass 0.587, closure E/V 106.0/9.3 m/s per chain; JD 2470089.1 gate pass 0.531, closure E/V 84.2/7.5 m/s per chain; JD 2472428.9 gate pass 0.546, closure E/V 70.1/15.3 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-8-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-8 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [730.5, 1095.75, 593.155, 449.404, 50.913]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 45.45
+    min_altitude_km: 2121
+  - body: "E"
+    turning_angle_deg: 8.00
+    min_altitude_km: 19774
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 14.253
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 7.21 / 8.00 / 8.00 deg; largest demanded/available ratio 0.301 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 7.946
+    note: "DERIVED (this project). Venus turns 45.45 / 45.45 deg; largest ratio 0.855 at the 300-km floor (required altitude 2,121 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.684-2.422 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 4 of 5 epochs (0 fail, 1 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 57.6 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 44.8 m/s (low-maintenance); range over the reached epochs 57.6-180.0 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.4078, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-8 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-8 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s. Ideal-model Lambert-leg
+    starts 78.948906, 1121.507710 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.855. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). No sibling among the 22 #973 ev members shares its transfer and Venus block.
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 5.4e-11 m/s on every Lambert leg;
+    #973 DOP853 re-fly 7.7e-02 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 4/5 PASS. JD 2462588.2 PASS (route S1, worst 0.602, re-fly 5.7e-02 km); JD 2464921.1 PASS (route S1, worst 0.622, re-fly 3.9e-03 km); epoch 2 NOT REACHED; JD 2469594.9 PASS (route S1, worst 0.797, re-fly 1.5e-02 km); JD 2471927.3 PASS (route S1, worst 0.647, re-fly 1.8e-02 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 2.7e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462588.1 gate pass 0.602, closure E/V 3.6/17.6 m/s per chain; JD 2464921.0 gate pass 0.622, closure E/V 4.0/21.1 m/s per chain; JD 2467257.3 gate pass 0.709, closure E/V 4.6/13.9 m/s per chain; JD 2469594.7 gate pass 0.819, closure E/V 3.7/47.7 m/s per chain; JD 2471927.0 gate pass 0.648, closure E/V 3.6/12.8 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
+
+- id: earth-venus-two-working-body-cycler-ev5-9-2026
+  name: "Computed Earth-Venus two-working-body ballistic cycler ev5-9 (k = 5, both planets bend; #973/#1025)"
+  source: this-project
+  our_status: candidate-novel   # OWNER DECISION 2026-10-11 (#1025), option "(a) 10 rows, Standish >= 4/5": candidate-novel V1; literature_check v3-A1 returns not-found. docs/notes/2026-10-08-1025-owner-summary.md secs. 5-7.
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not applicable: no Earth-Mars outbound/inbound arc pair
+    transit_times_days: [1095.75, 1095.75, 48.768, 679.454]   # DERIVED (this project): per-leg durations in cycle order (key k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s)
+    turn_ratio: null   # not applicable; the demanded/available turn ratios are in vinf_kms_at_encounters notes
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#1025 writeback): lamberthub Izzo+Gooding agreement and the #973 independent DOP853 re-fly; see validate._LEVEL_EVIDENCE. NOT V2.
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  - body: "V"
+    turning_angle_deg: 4.05
+    min_altitude_km: 116733
+  - body: "E"
+    turning_angle_deg: 7.52
+    min_altitude_km: 18645
+  primary: "Sun"
+  bodies: ["E", "V"]
+  sequence_canonical: "V-E-E-E"
+  sense: "n/a"
+  period:
+    pair: "E-V"
+    k: 5
+    years: 7.994
+    note: "DERIVED (this project): 5 Earth-Venus synodic periods = 2919.722 d in the ideal model (Venus period 0.61520 yr, Earth 1 yr)."
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms: 15.068
+    note: "DERIVED (this project, #973 ideal-model zero; data/973_ev/k5_gauntlet.json). Earth turns 7.52 / 0.00 / 7.52 deg; largest demanded/available ratio 0.309 at the 200-km floor."
+  - body: "V"
+    vinf_kms: 8.497
+    note: "DERIVED (this project). Venus turns 4.05 deg; largest ratio 0.083 at the 300-km floor (required altitude 116,733 km)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg: 0.0
+    note: "Multi-arc. Distance from the Sun 0.653-2.448 AU (#973 extents, all legs, the full-revs included)."
+  source_ephemeris: "ideal circular-coplanar model; real-ephemeris patched-conic rung (d) on Standish J2000 mean elements and on DE440 (blend to lambda 1, closure dV; the DE440 shoot)"
+  data_gaps:
+  - path: "trajectory_regime"
+    kind: "uncertain"
+    note: "BAND AT THE BEST EPOCH, WINDOW-DEPENDENT. Standish: ballistic and gate-passing at 5 of 5 epochs (0 fail, 0 not reached), turn deficit 0 per 7 cycles at the passing epochs (strictly ballistic by construction). DE440 blend (no shoot; #942 6.18/6.24 reading): reaches lambda 1 at 5/5 with the minimax gate passing at 5/5; mid-course closure dV per 7 cycles at the best epoch 32.8 m/s (low-maintenance; the Earth legs are an UPPER BOUND, DE440's Earth carries the lunar reflex), of which the Venus legs plus turn deficit 0.0 m/s (strictly-ballistic); range over the reached epochs 32.8-41.3 m/s."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 6, 5a; data/1025_ev_realeph/summary.json; data/1025_ev_writeback_v1.json; band thresholds: docs/notes/2026-06-22-dv-band-definitions.md and cyclerfinder.verify.dv_band_acceptance"
+    todo_ref: "#1025"
+  - path: "validation_level"
+    kind: "unknown"
+    note: "DE440 ballistic closure untested in effect: the DE440 shoot found no gate-passing closure for this member (0 pass, 0 fail, 5 no closure of 5 epochs; best shoot residual 0.0008, the worst junction component, where 0.001 means a 1-m/s V_inf mismatch or a 1-km miss). The shoot route cannot judge a full-rev Earth-Venus chain on DE440: its control ev-A fails with both the free and the anchored shoot (#1057 steps 1 and 1b). The negative is conditional on the formulation (restart defect #1058, date guard #1059; backlog, low priority, owner 2026-10-11)."
+    source_hint: "docs/notes/2026-10-11-1025-ev-realeph-rung-d.md secs. 8, 9.3, 9.5; data/1025_ev_realeph/de440_shoot/"
+    todo_ref: "#1057"
+  legs: []
+  first_published:
+  corroborating_sources:
+  - authors: ["Hollister, W. M."]
+    year: 1969
+    title: "Periodic Orbits for Interplanetary Flight"
+    venue: "Journal of Spacecraft and Rockets 6(4):366-369"
+    doi: "10.2514/3.29664"
+    note: "CLASS source: the Earth-Venus two-working-body periodic orbits (orbits I-III)."
+  - authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets 7(10):1193-1199"
+    doi: "10.2514/3.30134"
+    note: "CLASS and METHOD source: orbits built from full-revolution (FR, 1:1) and symmetric (SY) returns only (Menning 1968 App. A-1). ev5-9 carries n:m full-revolution returns other than 1:1, outside those itineraries; structurally, no k = 4 or k = 5 one-visit structure equals an H&M orbit or a sub-period of one (data/973_ev/hm1970_subperiod_check.json; docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 2.2, 6.5)."
+  - authors: ["VanderVeen, A. A."]
+    year: 1969
+    title: "The 1978 Venus-Swingby-To-Mercury Mission"
+    venue: "Bellcomm Technical Memorandum TM-69-1013-2 (NASA-CR-103637, NTRS 19690023106)"
+    doi:
+    note: "PERIOD lineage only: names the Earth-Venus 8-yr (five-synodic-period) near repeat; not a cycler."
+  discovery_run:
+    finder: "#973 two-working-body k-extension (scripts/run_973_enumerate.py; the #942/#943 generator)"
+    discovery_date: "2026-10-08"
+    description: "Exact zero of the Hollister-Menning date residual in the Earth-Venus cell at k = 5 (Earth returns full-rev only), gate-passing at both planets, clean under the #973 amendment-2.6/2.7 screens"
+    task_chain: "#942 -> #971 -> #973 -> #1025"
+    evidence_files: ["docs/notes/2026-10-07-973-two-working-body-k-extension.md", "data/973_ev/k5_gauntlet.json", "data/973_ev/hm1970_subperiod_check.json", "data/1025_ev_writeback_v1.json", "data/1025_ev_realeph/summary.json", "data/1025_ev_realeph/de440_shoot/summary.json", "data/1025_litcheck_973_members.json"]
+    finder_version:
+    run_id: "#973 k5 ev cell (lead launch)"
+    cell_id: "ev k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s"
+  priority_date: "2026-10-08"
+  notes: |
+    Member ev5-9 of the #973 Earth-Venus two-working-body set: both planets bend; k = 5
+    (2919.722 d, 7.994 yr); structure k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s. Ideal-model Lambert-leg
+    starts 581.280585, 630.048277 d (model epoch: both planets at angle 0 at
+    t = 0). Worst demanded/available turn ratio 0.309. Enumeration, gauntlet and
+    screens: docs/notes/2026-10-07-973-two-working-body-k-extension.md secs. 13-14.
+
+    Family: the same two-working-body Earth-Venus class as ev-A
+    (earth-venus-two-working-body-cycler-eva-2026) and ev-B (earth-venus-two-working-body-cycler-evb-2026):
+    both planets bend, with returns outside the Hollister-Menning FR/SY itineraries. ev-C
+    (earth-venus-venus-hosted-cycler-evc-2026) is a different architecture (Earth massless). No sibling among the 22 #973 ev members shares its transfer and Venus block.
+    #1027 (direction-dependent tilted-circle flag) does not apply: the #973 screen status is "pass".
+
+    V1 evidence (data/1025_ev_writeback_v1.json): lamberthub <= 1.3e-10 m/s on every Lambert leg;
+    #973 DOP853 re-fly 3.4e-02 km, gate passes on the integrated vectors.
+
+    Real-ephemeris standing (#1025 rung (d), docs/notes/2026-10-11-1025-ev-realeph-rung-d.md; chains of
+    2 cycles = 16.0 yr; route controls Hollister 1H, ev-A and ev-B reproduce):
+    - Standish J2000 mean elements: 5/5 PASS. JD 2462505.4 PASS (route S1, worst 0.306, re-fly 2.1e-02 km); JD 2464841.2 PASS (route S1, worst 0.318, re-fly 2.9e-02 km); JD 2467760.9 PASS (route S1, worst 0.318, re-fly 6.5e-03 km); JD 2470093.9 PASS (route S1, worst 0.304, re-fly 1.3e-02 km); JD 2472433.7 PASS (route S1, worst 0.311, re-fly 6.2e-02 km).
+      Band at the best epoch: strictly-ballistic (turn deficit 5.3e-09 m/s per 7 cycles, numerical zero).
+    - DE440 blend (lambda 1, minimax directions, no shoot): JD 2462505.2 gate pass 0.306, closure E/V 10.8/0.0 m/s per chain; JD 2464841.0 gate pass 0.319, closure E/V 9.4/0.0 m/s per chain; JD 2467760.7 gate pass 0.315, closure E/V 11.8/0.0 m/s per chain; JD 2470093.7 gate pass 0.304, closure E/V 9.7/0.0 m/s per chain; JD 2472433.4 gate pass 0.310, closure E/V 10.8/0.0 m/s per chain.
+    - DE440 shoot (#1025 sec. 8): no gate-passing closure; the route cannot judge (#1057), see data_gaps.
+
+    Literature: literature_check v3-A1 (#1025) returns "not-found" (necessary, not
+    sufficient; data/1025_litcheck_973_members.json). The Hollister/H&M anchor is excluded on return
+    types. Human prior-art reading: docs/notes/2026-10-08-1025-literature-step.md sec. 5 (the ev-A/ev-B
+    search, docs/notes/2026-10-07-942-evAB-prior-art-search.md, applies; no new search was run).
+    OWNER DECISION 2026-10-11: candidate-novel V1 under option "(a) 10 rows, Standish >= 4/5",
+    attributed to Hollister 1969 and Hollister & Menning 1970. Wording: "first computed", never
+    "new class".
