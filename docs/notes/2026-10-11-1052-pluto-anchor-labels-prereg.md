@@ -168,3 +168,17 @@ current masses. This does not change the {ephemeris} relabel (D3), which rests o
 own motion, but the anchor's description should not call it an established resonance. The Jbara digest says the
 paper is an educational CR3BP note with no chaos indicator, no periodic orbit and no table: the tadpole anchor's
 {binary-coorbital} label stays, and its relevance to #998 is nil.
+
+## 10. Lead acceptance of the C3 replacement (2026-10-11)
+
+Lead: an empty-label anchor making a labelled pump-tour signature "published" is the same hole rule U closes for
+untopologied signatures. twobody-gen2-opus has been sent addendum U2: an unlabelled anchor caps at inconclusive for
+ANY signature, with the same probe and stop rule. Controls as accepted:
+- C1: positive #998-type {repeated-moon} signature; status judged.
+- C2: wrong system (Jupiter); not published.
+- C3 (replacement): the UNTOPOLOGIED Pluto signature; must move from "published" to "inconclusive naming Howett"
+  under rule U.
+- Recorded diagnostic, not a control: the labelled {pump-tour} signature at Pluto reads "published" (Howett) before
+  rule U and is expected to move to inconclusive under U2.
+Nothing is applied until the lead reports gen2's commit; then the anchor edits, C1-C3, the gate's 26 controls and the
+#998 litcheck, everything byte-identical except C3, the diagnostic and the Howett citations.
