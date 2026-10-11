@@ -1,0 +1,7 @@
+10:28:43 ev epoch 0 (JD 2462508.1) ramp lam=1.0000 conv=True res=6.8e-13 gate=pass worst=0.580 [elapsed 2s]
+10:28:45 ev epoch 1 (JD 2464843.8) ramp lam=1.0000 conv=True res=8.9e-13 gate=pass worst=0.580 [elapsed 3s]
+10:28:46 ev epoch 2 (JD 2467763.5) ramp lam=1.0000 conv=True res=1.1e-12 gate=pass worst=0.580 [elapsed 5s]
+10:28:48 ev epoch 3 (JD 2469516.7) ramp lam=1.0000 conv=True res=1.0e-12 gate=pass worst=0.580 [elapsed 7s]
+10:28:49 ev epoch 4 (JD 2472436.3) ramp lam=1.0000 conv=True res=1.3e-12 gate=pass worst=0.580 [elapsed 8s]
+DONE
+EXIT 0

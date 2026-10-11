@@ -1,0 +1,926 @@
+{
+ "status": "exploratory, under the draft metric, awaiting the owner",
+ "ev-A": [
+  {
+   "epoch_jd": 2462508.1337531363,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.5796881939264772,
+   "a": {
+    "label": "ev-A JD 2462508.1 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.6964207816272392e-12,
+    "Dprime_d": [
+     1.1858151493088371,
+     1.4627651234313817,
+     1.5338687182647845,
+     1.3232034509037476,
+     0.39812306169733347
+    ],
+    "Wprime_kms": [
+     0.05162018604459906,
+     0.005962350490005264,
+     0.013017484146097047,
+     0.007841854471644538,
+     0.07827758491394032
+    ],
+    "band_D_d": 8.730858229774844,
+    "band_W_kms": 0.4913275437594724,
+    "growth_D": 1.048609030728465,
+    "growth_W": 1.5164142346621858,
+    "drift_pass": true,
+    "continuity_pass": true,
+    "v2_draft_pass": true
+   },
+   "b": {
+    "label": "ev-A JD 2462508.1 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.6964207816272392e-12,
+    "Dprime_d": [
+     1.4627651234313817,
+     1.5338687182647845,
+     1.3232034509037476,
+     0.39812306169733347
+    ],
+    "Wprime_kms": [
+     0.005962350490005264,
+     0.013017484146097047,
+     0.007841854471644538,
+     0.07827758491394032
+    ],
+    "band_D_d": 8.730858229774844,
+    "band_W_kms": 0.4913275437594724,
+    "growth_D": 0.8626575632891479,
+    "growth_W": 6.013265238921748,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2464843.783979896,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.5797533570311678,
+   "a": {
+    "label": "ev-A JD 2464843.8 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.0462741784067475e-12,
+    "Dprime_d": [
+     0.4972118333189428,
+     0.5963978249692445,
+     1.2124072325586894,
+     0.9299150709139212,
+     0.6116191002165579
+    ],
+    "Wprime_kms": [
+     0.019991379241871776,
+     0.015613047546548131,
+     0.04294337787249969,
+     0.03179911112028755,
+     0.012911126533331263
+    ],
+    "band_D_d": 8.744749219980505,
+    "band_W_kms": 0.4916812392317523,
+    "growth_D": 2.0328833905811305,
+    "growth_W": 2.1480948039120356,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-A JD 2464843.8 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.0462741784067475e-12,
+    "Dprime_d": [
+     0.5963978249692445,
+     1.2124072325586894,
+     0.9299150709139212,
+     0.6116191002165579
+    ],
+    "Wprime_kms": [
+     0.015613047546548131,
+     0.04294337787249969,
+     0.03179911112028755,
+     0.012911126533331263
+    ],
+    "band_D_d": 8.744749219980505,
+    "band_W_kms": 0.4916812392317523,
+    "growth_D": 0.7669989471700933,
+    "growth_W": 0.7404892836958509,
+    "drift_pass": true,
+    "continuity_pass": true,
+    "v2_draft_pass": true
+   }
+  },
+  {
+   "epoch_jd": 2467763.5074703586,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.5797471013454695,
+   "a": {
+    "label": "ev-A JD 2467763.5 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.1670664434859646e-12,
+    "Dprime_d": [
+     0.5446468908266979,
+     0.6255679217210854,
+     1.245021556107531,
+     0.9875821774876385,
+     0.6440327792879543
+    ],
+    "Wprime_kms": [
+     0.022171556238594015,
+     0.014305056005648353,
+     0.041557014228299494,
+     0.02885924431715381,
+     0.016524640793311285
+    ],
+    "band_D_d": 8.74346738483067,
+    "band_W_kms": 0.4917988738936818,
+    "growth_D": 1.990226021631963,
+    "growth_W": 1.8743390757551437,
+    "drift_pass": true,
+    "continuity_pass": true,
+    "v2_draft_pass": true
+   },
+   "b": {
+    "label": "ev-A JD 2467763.5 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.1670664434859646e-12,
+    "Dprime_d": [
+     0.6255679217210854,
+     1.245021556107531,
+     0.9875821774876385,
+     0.6440327792879543
+    ],
+    "Wprime_kms": [
+     0.014305056005648353,
+     0.041557014228299494,
+     0.02885924431715381,
+     0.016524640793311285
+    ],
+    "band_D_d": 8.74346738483067,
+    "band_W_kms": 0.4917988738936818,
+    "growth_D": 0.7932249627671043,
+    "growth_W": 0.6944494173381023,
+    "drift_pass": true,
+    "continuity_pass": true,
+    "v2_draft_pass": true
+   }
+  },
+  {
+   "epoch_jd": 2469516.662149077,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.5796919819652381,
+   "a": {
+    "label": "ev-A JD 2469516.7 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.461053500406706e-12,
+    "Dprime_d": [
+     0.20793877442065423,
+     0.09317865067805542,
+     0.13265647337448172,
+     0.7383704947851584,
+     0.5215661783067844
+    ],
+    "Wprime_kms": [
+     0.021709042108128074,
+     0.013854318194476356,
+     0.015558320614285748,
+     0.039247208928490096,
+     0.02505206811550309
+    ],
+    "band_D_d": 8.7422670834288,
+    "band_W_kms": 0.4920235128534047,
+    "growth_D": 3.5509033697171644,
+    "growth_W": 1.8078738220234767,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-A JD 2469516.7 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.461053500406706e-12,
+    "Dprime_d": [
+     0.09317865067805542,
+     0.13265647337448172,
+     0.7383704947851584,
+     0.5215661783067844
+    ],
+    "Wprime_kms": [
+     0.013854318194476356,
+     0.015558320614285748,
+     0.039247208928490096,
+     0.02505206811550309
+    ],
+    "band_D_d": 8.7422670834288,
+    "band_W_kms": 0.4920235128534047,
+    "growth_D": 5.566034404523783,
+    "growth_W": 2.5225864604212527,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2472436.3025972205,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.5796631867760097,
+   "a": {
+    "label": "ev-A JD 2472436.3 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.7639223415244487e-12,
+    "Dprime_d": [
+     0.2608495245258382,
+     0.16770594612171408,
+     0.05433364269993035,
+     0.645317222137237,
+     0.5007717629850958
+    ],
+    "Wprime_kms": [
+     0.02169954196610213,
+     0.015024070640020426,
+     0.015567123058588095,
+     0.038316871377438666,
+     0.025007502113373548
+    ],
+    "band_D_d": 8.74116088479233,
+    "band_W_kms": 0.4923932147676013,
+    "growth_D": 2.4739060702152655,
+    "growth_W": 1.765791712898606,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-A JD 2472436.3 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.7639223415244487e-12,
+    "Dprime_d": [
+     0.16770594612171408,
+     0.05433364269993035,
+     0.645317222137237,
+     0.5007717629850958
+    ],
+    "Wprime_kms": [
+     0.015024070640020426,
+     0.015567123058588095,
+     0.038316871377438666,
+     0.025007502113373548
+    ],
+    "band_D_d": 8.74116088479233,
+    "band_W_kms": 0.4923932147676013,
+    "growth_D": 3.8479090161114042,
+    "growth_W": 2.461397088802478,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  }
+ ],
+ "ev-B": [
+  {
+   "epoch_jd": 2463053.9857117133,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "fail",
+   "worst_ratio": 1.0111426845975044,
+   "a": {
+    "label": "ev-B JD 2463054.0 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 2.3092638912203256e-12,
+    "Dprime_d": [
+     1.5170199606018286,
+     2.2108613119471556,
+     1.8212869228718773,
+     1.7543250782528048,
+     2.740331619499557
+    ],
+    "Wprime_kms": [
+     0.1840368337228302,
+     0.16588249769060504,
+     0.15799959359990012,
+     0.14428240235928946,
+     0.42649497903517997
+    ],
+    "band_D_d": 2.003873278198971,
+    "band_W_kms": 0.8167020817306634,
+    "growth_D": 1.2394859888728547,
+    "growth_W": 2.3174435813077796,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-B JD 2463054.0 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 2.3092638912203256e-12,
+    "Dprime_d": [
+     2.2108613119471556,
+     1.8212869228718773,
+     1.7543250782528048,
+     2.740331619499557
+    ],
+    "Wprime_kms": [
+     0.16588249769060504,
+     0.15799959359990012,
+     0.14428240235928946,
+     0.42649497903517997
+    ],
+    "band_D_d": 2.003873278198971,
+    "band_W_kms": 0.8167020817306634,
+    "growth_D": 1.2394859888728547,
+    "growth_W": 2.5710667790320776,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2465390.0917715104,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.9951411887794063,
+   "a": {
+    "label": "ev-B JD 2465390.1 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 6.334488489301293e-12,
+    "Dprime_d": [
+     6.432228211093388,
+     5.73047548201248,
+     6.270549362818201,
+     8.436754447231579,
+     14.35293954262852
+    ],
+    "Wprime_kms": [
+     1.3453049616084929,
+     0.5200481141868156,
+     0.16089020836814782,
+     0.8789846803025174,
+     2.6784777469466743
+    ],
+    "band_D_d": 2.0227495987379442,
+    "band_W_kms": 0.8070635556210478,
+    "growth_D": 2.2314101850233827,
+    "growth_W": 1.990981839347559,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-B JD 2465390.1 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 6.334488489301293e-12,
+    "Dprime_d": [
+     5.73047548201248,
+     6.270549362818201,
+     8.436754447231579,
+     14.35293954262852
+    ],
+    "Wprime_kms": [
+     0.5200481141868156,
+     0.16089020836814782,
+     0.8789846803025174,
+     2.6784777469466743
+    ],
+    "band_D_d": 2.0227495987379442,
+    "band_W_kms": 0.8070635556210478,
+    "growth_D": 2.2889445106254316,
+    "growth_W": 5.1504421877097535,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2467728.3170119263,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "fail",
+   "worst_ratio": 1.018819542496625,
+   "a": {
+    "label": "ev-B JD 2467728.3 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 3.4869884757426917e-12,
+    "Dprime_d": [
+     5.419301809013632,
+     4.694613919740732,
+     4.989474500262077,
+     7.271515757127418,
+     12.147493169422887
+    ],
+    "Wprime_kms": [
+     1.1886506337637677,
+     0.3497787235772858,
+     0.21048050744335534,
+     0.7708946555664795,
+     2.2813065443057496
+    ],
+    "band_D_d": 1.9722710027714019,
+    "band_W_kms": 0.8275493773640936,
+    "growth_D": 2.2415236496366777,
+    "growth_W": 1.9192405905528136,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-B JD 2467728.3 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 3.4869884757426917e-12,
+    "Dprime_d": [
+     4.694613919740732,
+     4.989474500262077,
+     7.271515757127418,
+     12.147493169422887
+    ],
+    "Wprime_kms": [
+     0.3497787235772858,
+     0.21048050744335534,
+     0.7708946555664795,
+     2.2813065443057496
+    ],
+    "band_D_d": 1.9722710027714019,
+    "band_W_kms": 0.8275493773640936,
+    "growth_D": 2.434623760234636,
+    "growth_W": 6.522142115947429,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2470059.6539020585,
+   "reached_lambda1": false,
+   "last_converged_lambda": 0.7187499999999999,
+   "gate": null,
+   "worst_ratio": null
+  },
+  {
+   "epoch_jd": 2472399.9507301715,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "indeterminate",
+   "worst_ratio": 0.9994100187937336,
+   "a": {
+    "label": "ev-B JD 2472400.0 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 2.7746693831431912e-12,
+    "Dprime_d": [
+     1.3462036287328374,
+     1.6780712851705175,
+     2.098445756093497,
+     1.4506322498727968,
+     1.9682896882604837
+    ],
+    "Wprime_kms": [
+     0.11571991419907768,
+     0.1352586625473755,
+     0.25968018888938715,
+     0.12283067715661389,
+     0.3579384822349887
+    ],
+    "band_D_d": 2.0168721447065474,
+    "band_W_kms": 0.8222337255922373,
+    "growth_D": 1.2505104965670533,
+    "growth_W": 2.6463257546230556,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-B JD 2472400.0 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 2.7746693831431912e-12,
+    "Dprime_d": [
+     1.6780712851705175,
+     2.098445756093497,
+     1.4506322498727968,
+     1.9682896882604837
+    ],
+    "Wprime_kms": [
+     0.1352586625473755,
+     0.25968018888938715,
+     0.12283067715661389,
+     0.3579384822349887
+    ],
+    "band_D_d": 2.0168721447065474,
+    "band_W_kms": 0.8222337255922373,
+    "growth_D": 0.9379750143862121,
+    "growth_W": 1.3783819388218923,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  }
+ ],
+ "ev-C": [
+  {
+   "epoch_jd": 2462579.6116172452,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.896163000897147,
+   "a": {
+    "label": "ev-C JD 2462579.6 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 1.9770851622524788e-12,
+    "Dprime_d": [
+     10.396479428627572,
+     6.234691872092299,
+     10.266933446835537,
+     15.244811849011967,
+     14.65747851659944
+    ],
+    "Wprime_kms": [
+     1.2136751964653545,
+     0.9294623703454103,
+     0.44417314950899645,
+     0.9386294830659203,
+     1.1946527123854214
+    ],
+    "band_D_d": 5.854913983802277,
+    "band_W_kms": 0.8215049599009069,
+    "growth_D": 1.466343674670688,
+    "growth_W": 0.9843265445851301,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-C JD 2462579.6 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 1.9770851622524788e-12,
+    "Dprime_d": [
+     6.234691872092299,
+     10.266933446835537,
+     15.244811849011967,
+     14.65747851659944
+    ],
+    "Wprime_kms": [
+     0.9294623703454103,
+     0.44417314950899645,
+     0.9386294830659203,
+     1.1946527123854214
+    ],
+    "band_D_d": 5.854913983802277,
+    "band_W_kms": 0.8215049599009069,
+    "growth_D": 1.484845687171636,
+    "growth_W": 1.285315845483298,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2464912.8403833564,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.9357841720713681,
+   "a": {
+    "label": "ev-C JD 2464912.8 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 3.888445121447148e-12,
+    "Dprime_d": [
+     26.280523033408826,
+     43.70036057244579,
+     60.81806210744617,
+     65.77456815643745,
+     50.71706770341916
+    ],
+    "Wprime_kms": [
+     3.387130311901542,
+     1.7482243709434453,
+     4.269266995051243,
+     5.269006749538111,
+     5.65471921015655
+    ],
+    "band_D_d": 5.684187260977924,
+    "band_W_kms": 0.5482312627234599,
+    "growth_D": 1.505126440487771,
+    "growth_W": 1.6694719982538786,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-C JD 2464912.8 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 3.888445121447148e-12,
+    "Dprime_d": [
+     43.70036057244579,
+     60.81806210744617,
+     65.77456815643745,
+     50.71706770341916
+    ],
+    "Wprime_kms": [
+     1.7482243709434453,
+     4.269266995051243,
+     5.269006749538111,
+     5.65471921015655
+    ],
+    "band_D_d": 5.684187260977924,
+    "band_W_kms": 0.5482312627234599,
+    "growth_D": 1.081497270337794,
+    "growth_W": 1.3245175850353856,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2467248.8484494914,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.8857966319652003,
+   "a": {
+    "label": "ev-C JD 2467248.8 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 2.6574298317427747e-12,
+    "Dprime_d": [
+     5.935740388314116,
+     3.940906271053791,
+     3.35839270874294,
+     5.278206874897478,
+     7.574981336286328
+    ],
+    "Wprime_kms": [
+     0.5417226881108945,
+     0.5708912844608367,
+     0.3755066702791652,
+     0.27520266053496023,
+     0.4678482452141335
+    ],
+    "band_D_d": 5.9093881305014655,
+    "band_W_kms": 0.8337410560581766,
+    "growth_D": 1.276164528893386,
+    "growth_W": 0.8195049704708323,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-C JD 2467248.8 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 2.6574298317427747e-12,
+    "Dprime_d": [
+     3.940906271053791,
+     3.35839270874294,
+     5.278206874897478,
+     7.574981336286328
+    ],
+    "Wprime_kms": [
+     0.5708912844608367,
+     0.3755066702791652,
+     0.27520266053496023,
+     0.4678482452141335
+    ],
+    "band_D_d": 5.9093881305014655,
+    "band_W_kms": 0.8337410560581766,
+    "growth_D": 1.9221419681876353,
+    "growth_W": 0.8195049704708323,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2469586.529881462,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.9042156256198531,
+   "a": {
+    "label": "ev-C JD 2469586.5 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 2.149391775674303e-12,
+    "Dprime_d": [
+     18.517821047104007,
+     13.184827012761161,
+     22.237009658672832,
+     30.15338553991205,
+     29.284996530464923
+    ],
+    "Wprime_kms": [
+     2.5146984577604874,
+     1.417995940041454,
+     1.1006661767169774,
+     2.206246177515217,
+     2.469102989637342
+    ],
+    "band_D_d": 5.823037973648421,
+    "band_W_kms": 0.736310551662558,
+    "growth_D": 1.6283441482240548,
+    "growth_W": 0.9818684152835759,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-C JD 2469586.5 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 2.149391775674303e-12,
+    "Dprime_d": [
+     13.184827012761161,
+     22.237009658672832,
+     30.15338553991205,
+     29.284996530464923
+    ],
+    "Wprime_kms": [
+     1.417995940041454,
+     1.1006661767169774,
+     2.206246177515217,
+     2.469102989637342
+    ],
+    "band_D_d": 5.823037973648421,
+    "band_W_kms": 0.736310551662558,
+    "growth_D": 1.3560000199105768,
+    "growth_W": 1.741262382997486,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  },
+  {
+   "epoch_jd": 2471918.8536285455,
+   "reached_lambda1": true,
+   "last_converged_lambda": 1.0,
+   "gate": "pass",
+   "worst_ratio": 0.9016944143418135,
+   "a": {
+    "label": "ev-C JD 2471918.9 (a)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 5,
+    "start_cycle": 0,
+    "junction_continuity_kms": 2.204458837695711e-12,
+    "Dprime_d": [
+     21.054522436090338,
+     34.02312378952047,
+     47.707658207567874,
+     57.47175322043768,
+     42.72436568506237
+    ],
+    "Wprime_kms": [
+     2.7686315726084088,
+     1.151203121631717,
+     3.224019370627552,
+     4.202426169451925,
+     4.276449636780129
+    ],
+    "band_D_d": 5.756949981303679,
+    "band_W_kms": 0.6026543729560546,
+    "growth_D": 1.6891968408303435,
+    "growth_W": 1.5446076968453988,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   },
+   "b": {
+    "label": "ev-C JD 2471918.9 (b)",
+    "status": "exploratory, under the draft metric, awaiting the owner",
+    "L": 5,
+    "cycles": 10,
+    "comparisons": 4,
+    "start_cycle": 1,
+    "junction_continuity_kms": 2.204458837695711e-12,
+    "Dprime_d": [
+     34.02312378952047,
+     47.707658207567874,
+     57.47175322043768,
+     42.72436568506237
+    ],
+    "Wprime_kms": [
+     1.151203121631717,
+     3.224019370627552,
+     4.202426169451925,
+     4.276449636780129
+    ],
+    "band_D_d": 5.756949981303679,
+    "band_W_kms": 0.6026543729560546,
+    "growth_D": 1.204665149783456,
+    "growth_W": 1.3264342254704637,
+    "drift_pass": false,
+    "continuity_pass": true,
+    "v2_draft_pass": false
+   }
+  }
+ ]
+}

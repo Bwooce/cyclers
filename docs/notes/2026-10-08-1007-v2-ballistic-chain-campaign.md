@@ -349,6 +349,18 @@ judged at its epoch.
   has ≥ 2L cycles, and the encounter dates and |V∞| of cycle i+L against cycle i stay within a band
   without growth. The systematic offset against the ideal model is recorded, not banded."
 
+**Wording options for the owner (added 2026-10-11 after the sec. 8.5 pre-check):**
+- (a) As drafted above: the comparisons run over i = 0 .. n-L-1.
+- (b) START-CYCLE REFINEMENT: the comparisons run over i = 1 .. n-L-1. Cycle 0 is the open chain's
+  start; its first departure leg has no incoming junction constraining |V_inf| and is tied only by the
+  magnitude closure at the chain's far end. Under (b) the chain needs >= 2L + 1 cycles; the existing
+  10-cycle gc chains (L = 4) still qualify, with 5 comparisons.
+  - Spec wording under (b): "... the encounter dates and |V∞| of cycle i+L against cycle i, for every
+    i except the open chain's first cycle, stay within a band without growth ...".
+  - Effect (sec. 8.5, exploratory): gc-2 goes from 2/5 under (a) to 5/5 under (b). Every gc-2 failure
+    under (a) is at i = 0 (W' 0.32-0.34 km/s), and all later comparisons are <= 0.022 km/s. gc-1 is
+    5/5 under both. The H&M positive control passes under both. The Earth-Venus rows are in sec. 8.6.
+
 **Effect on the gc rows already promoted to V2 (gc-1, gc-2; window of 2026-10-11).**
 - They would be RE-JUDGED under the new wording on their existing 10-cycle chains (L = 4, n = 10,
   6 comparisons each), before the wording takes effect. A row that then fails 3/5 goes back to V1 in the
@@ -396,3 +408,34 @@ Readings (exploratory):
     decision with the rest of sec. 8.4.
 - The H&M positive control passes with margin. The ev rows are not computed (they need new 10-cycle
   chains). Nothing here changes any row.
+
+### 8.6 EXPLORATORY: the ev rows under the draft metric (2026-10-11) — exploratory, under the draft metric, awaiting the owner
+
+New 10-cycle Standish chains at the 5 standard epochs, same routes as each row's rung (d): ev-A
+`--direct`; ev-C and ev-B ramp continuation. Data: `data/1007_v2/ev10_ev{A,B,C}/`.
+Judgement: `scripts/v2_samephase_1007.py --ev-rows` (`data/1007_v2/samephase_ev_rows_exploratory.{json,log}`),
+L = 5, the gate from the chain tool's minimax, re-fly not computed (exploratory).
+
+| Row | Option (a) | Option (b) | What fails |
+|---|---|---|---|
+| ev-A | 2/5 | 2/5 | only the GROWTH test, at tiny absolute drift: D' 0.65-1.53 d against an 8.7-d band, W' <= 0.078 against a 0.49-km/s band. Growth ratios 2.03-6.0 are ratios of maxima of 2-3 values each |
+| ev-B | 0/5 | 0/5 | at 10 cycles the gate fails or is indeterminate at 3 epochs (worst 1.011, 1.019, 0.9994); no 10-cycle chain at 1 epoch; D' 2.1-14.4 d against a 2.0-d band |
+| ev-C | 0/5 | 0/5 | D' 7.6-65.8 d against about 5.8 d; W' 0.57-5.7 km/s. Growth ratios 0.8-1.9, so large but NOT growing |
+
+Readings (exploratory; no row changes):
+- ev-A's failures are the growth test's small-sample fragility. With 4-5 comparisons the "halves" hold
+  2-3 values, and the drift itself is far inside the band.
+- ev-C's 10-cycle chains differ from cycle i to i+5 by up to 66 d, with no growth. Its 5-cycle chains
+  were not tested this way. A large constant same-phase offset suggests the 10-cycle continuation
+  landed on a chain whose two 16-yr halves differ (another branch?). Not diagnosed.
+- ev-B does not hold the gate over 10 cycles (48 yr).
+- The H&M positive control passes (sec. 8.5).
+
+### 8.4a OWNER DECISION (2026-10-11), recorded
+
+The lead put the sec. 8.4 question to the owner with options (a) as drafted and (b) the start-cycle
+refinement. The owner's answer, verbatim option label: **"Same-phase, skip start cycle"**, i.e.:
+- sec. 8.4 with option (b), comparing i = 1 .. n-L-1;
+- a pre-registered re-judge of gc-1 and gc-2 on their existing chains before the wording takes
+  effect;
+- the offset against the ideal model recorded, not banded.
