@@ -1,0 +1,36 @@
+# Howell 1987, Table 1 and the Fig. 6 caption: consecutive collision orbits, elliptic restricted problem, mu = 0.
+# Source: K. C. Howell, "Consecutive Collision Orbits in the Limiting Case mu = 0 of the Elliptic Restricted Problem",
+#   Celestial Mechanics 40:393-407 (1987), doi 10.1007/BF01235854, ADS 1987CeMec..40..393H. Received 26 May, accepted 14 July 1987.
+# Local file: ADS JBIG2 scan, 15 pp., md5 9eb7d308b53697e312d1152ca10c5273; OCR copy (ocrmypdf --force-ocr -O 3 -l eng)
+#   md5 0c9fec71df615396aede32e7e248cb32. PDF page n = journal page 392 + n.
+# Witnesses: C = the 110 dpi page image (decides); A = the OCR text layer. The 12 Table 1 cells and the 2 Fig. 6 numbers
+#   agree (the text layer drops the leading "." on 17697).
+# No value here was computed by us; ours only in `note:` fields and check_howell.out.
+#
+# MODEL (pp.394-396, read on the page image)
+#   mu = 0. M1 (mass 1) at the origin, inertial frame. M2 moves on a direct ellipse, semimajor axis 1, period 2 pi,
+#   eccentricity e_p. M3 meets M2 at Q and P, symmetric about the line of apsides, at M2 eccentric anomalies -gamma, +gamma.
+#   Sign flags: s0 = +1/-1 M3 periapsis on positive/negative x; s1 = +1/-1 M3 direct/retrograde; s2 = +1/-1 M3 at
+#   periapsis/apoapsis at t = 0; s3 = +1/-1 M2 at periapsis/apoapsis at t = 0; s = s0 s2.
+#   M2: x = s3 cos E_p - e_p, y = s3 (1 - e_p^2)^(1/2) sin E_p.  eta = M3 eccentric (hyperbolic) anomaly at collision.
+#   Timing condition eq. (5) (elliptic) and eq. (12) (hyperbolic). Eq. (4) as printed, t_c = gamma - e_p sin gamma, has no
+#   s3; eq. (5) as printed has (gamma - s3 e_p sin gamma). Ours: the s3 form is the correct time from M2's apse.
+#   Family rule (p.396): A families s = -s3; B families s = +s3; C families s = s3 (-1)^(i+j).
+conventions:
+  angles: "gamma/pi and eta/pi in units of pi (gamma is M2's eccentric anomaly at collision)"
+  table1_meaning: "parabolic M3 orbit (eta = 0), the end of family A0 where the elliptic and hyperbolic families meet"
+tables:
+  - table: "1"
+    caption: "Collision Points for M3 on a Parabolic Path (eta = 0)"
+    journal_page: "406"
+    columns: [e_p, s3, gamma_over_pi]
+    rows:
+      - {e_p: ".4", s3: "+1", gamma_over_pi: ".14432", note: "ours 0.14432350 (M3 pericentre on -x)"}
+      - {e_p: ".4", s3: "-1", gamma_over_pi: ".17697", note: "ours 0.17696715 (M3 pericentre on +x)"}
+      - {e_p: ".98", s3: "+1", gamma_over_pi: ".04581", note: "ours 0.04580529"}
+      - {e_p: ".98", s3: "-1", gamma_over_pi: ".19031", note: "ours 0.19031870; rounds to .19032, one unit off in the last printed digit"}
+  - table: "Fig. 6 caption"
+    journal_page: "401"
+    columns: [gamma_over_pi, eta_over_pi, type_s0s1s2s3]
+    rows:
+      - {gamma_over_pi: "2.36901", eta_over_pi: ".761903", type_s0s1s2s3: "-+-+", note: "ours: cos(gamma) = 0.400000 = s3 e_p with e_p = .4 (the s-independent case); eq. 5 at this gamma gives eta/pi = 0.761903, a = 1.81566"}
