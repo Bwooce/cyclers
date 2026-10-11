@@ -2565,6 +2565,16 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   DE440 shoot has ever closed a known full-rev cycler, so the shoot positive control `#1057` is RUNNING
   from the lead session since 10:22 AEDT 2026-10-11 (step 1, ev-A). The owner's adjudication of the 22
   (options (a)-(d), owner summary sec. 6) is asked after `#1057` step 1.
+  **`#1057` RESULTS 2026-10-11:** step 1 (`3ae396f7`, rung-d note sec. 9.3) and step 1b, the anchored shoot
+  (`2ebae89b`, sec. 9.5): ev-A FAILS. Its closures fail the gate at Venus, so neither shoot form can judge
+  the 22. **OWNER DECISIONS 2026-10-11 (verbatim option labels; owner summary sec. 7):**
+  - ev-22: "(a) 10 rows, Standish >= 4/5". The 10 are ev4-1, ev4-4, ev4-6, ev4-7, ev5-4, ev5-5, ev5-6,
+    ev5-7, ev5-8 and ev5-9, as candidate-novel V1 rows. The V1 evidence is `54b2401f`
+    (`scripts/writeback_1025_ev.py`, `data/1025_ev_writeback_v1.json`). The window patch is prepared by
+    twobody-ext-opus for the lead's window. That window also applies the ev-A `data_gaps` clause of
+    rung-d note sec. 9.5.
+  - The shoot line (`#1057`, `#1058`, `#1059`): "Backlog, low priority".
+  - `#1007`: "Same-phase, skip start cycle" (twobody-gen2-opus).
 - `#1026` — registered 2026-10-07 (from `#973`; BACKLOG, option). **RUN THE EUROPA-CALLISTO `ec` CELL AT
   k = 5**, beyond `#973`'s conditional negative at k = 1-4.
 - `#1027` — registered 2026-10-07 (GATED on `#972`; twobody lane, owner twobody-gen2-opus after its
@@ -2919,7 +2929,7 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
 - `#1056` — registered 2026-10-08 (from `#1025`; BACKLOG, small). **A CLOSING-REPEAT FLAG ON SIGNATURES (OR A
   ROTATED START IN `sig_of`)** so that `#972`'s F3 rule cannot read a consecutive-same-moon cycle (G G C) as
   alternating. Papercut `docs/papercuts/2026-10-08-twobody-ext-opus-closing-repeat-rule-vs-time-ordered-flybys.md`.
-- `#1057` — registered 2026-10-11 (from `#1025`; lead launch; small code change for step 2). **A POSITIVE CONTROL FOR
+- `#1057` — BACKLOG, LOW PRIORITY (owner decision 2026-10-11, "Backlog, low priority"; no runs). Registered 2026-10-11 (from `#1025`; lead launch; small code change for step 2). **A POSITIVE CONTROL FOR
   THE DE440 SHOOT** of full-rev Earth-Venus chains. `#1025`'s shoot (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md`
   sec. 8) found no gate-passing closure for the ten best ev members (0 PASS, 1 FAIL below the Earth's
   surface, 49 no closure), and no DE440 shoot has ever closed a known full-rev cycler with a gate pass.
@@ -2930,14 +2940,14 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   a new chain-tool option: does DE440's lunar reflex block the closure? Only a gate-passing closure in
   (2) gives the shoot a positive control. Also note: about half of all restarts die at the first LM step
   (481 of 920), the `#942` 6.34 defect.
-- `#1058` — registered 2026-10-11 (from `#1057`; small chain-tool change; NOT dispatched). **THE SHOOT RESTART
+- `#1058` — BACKLOG, LOW PRIORITY (owner decision 2026-10-11, "Backlog, low priority"; no runs). Registered 2026-10-11 (from `#1057`; small chain-tool change; NOT dispatched). **THE SHOOT RESTART
   DEFECT**: 481 of 920 restarts in `#1025`'s DE440 shoot ended at nfev <= 3. The proposed fix
   (`docs/notes/2026-10-11-1025-ev-realeph-rung-d.md` sec. 9.2) re-draws a restart's perturbation until
   `chain_eval` succeeds at the seed (<= 200 draws), with the same 20 LM runs per shoot. Pre-registered
   check: ev4-7 e2's nfev <= 3 count falls to about 0. If it does not, use a growing finite domain
   penalty instead. A correctness fix: the 49 NOT REACHED of `#1025` sec. 8 must be re-run under it
   before they count. Run it only after `#1057` shows the shoot can pass a known cycler.
-- `#1059` — registered 2026-10-11 (from `#1057` step 1b; DEFECT, small; NOT dispatched). **A DATE GUARD IN THE CHAIN
+- `#1059` — BACKLOG, LOW PRIORITY (owner decision 2026-10-11, "Backlog, low priority"; no runs). Registered 2026-10-11 (from `#1057` step 1b; DEFECT, small; NOT dispatched). **A DATE GUARD IN THE CHAIN
   TOOL'S SHOOT.** In `#1057` step 1b, ev-A e2 (DE440, anchored shoot) crashed: a solver trial step went
   outside DE440's date range (jplephem `OutOfRangeError`, "segment only covers dates 1549-12-31
   through 2650-01-25"), exit 1, no result. `scripts/run_942_realeph_chain.py` `_res` and `_safe_eval`
