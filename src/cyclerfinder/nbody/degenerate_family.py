@@ -87,39 +87,41 @@ def bordered_solve(
     max_iter: int = 25,
 ) -> BorderedResult:
     """Gauss-Newton on the complement rows (I - U U^T) r = 0 and the q arclength rows
-    V^T (d * (z - z_ref)) = alpha. ``u_null`` (m x q) and ``v_null`` (n x q, scaled coordinates)
-    are held fixed. Converged when the complement residual (max norm) is below ``tol`` and the
-    arclength rows hold to 1e-10 relative."""
-    z = np.asarray(z_pred, dtype=np.float64).copy()
+    V^T (d * (z - z_ref)) = alpha. ``u_null`` (m x q) and ``v_null`` (n x q, scaled coordinates,
+    orthonormal columns) are held fixed. The arclength rows are linear, so every iterate is
+    projected onto them exactly; the line search acts on the complement residual alone. Converged
+    when the complement residual (max norm) is below ``tol``."""
+
+    def onto(zz: Arr) -> Arr:
+        e = v_null.T @ (d * (zz - z_ref)) - alpha
+        return np.asarray(zz - (v_null @ e) / d, dtype=np.float64)
+
+    z = onto(np.asarray(z_pred, dtype=np.float64))
     proj = np.eye(len(u_null)) - u_null @ u_null.T
     it = 0
     r, j = rj(z)
     for it in range(1, max_iter + 1):
         comp = proj @ r
-        arc = v_null.T @ (d * (z - z_ref)) - alpha
-        scale = max(1.0, float(np.max(np.abs(alpha)))) if alpha.size else 1.0
-        if float(np.max(np.abs(comp))) < tol and float(np.max(np.abs(arc))) < 1e-10 * scale:
+        if float(np.max(np.abs(comp))) < tol:
             return BorderedResult(z, True, it - 1, float(np.max(np.abs(comp))), u_null.T @ r)
         a = np.vstack([proj @ (j / d), v_null.T])
-        f = np.concatenate([comp, arc])
+        f = np.concatenate([comp, np.zeros(v_null.shape[1])])
         step = np.linalg.lstsq(a, -f, rcond=None)[0] / d
-        f0 = float(np.linalg.norm(f))
+        f0 = float(np.linalg.norm(comp))
         for lam in [0.5**i for i in range(10)]:
-            zt = z + lam * step
+            zt = onto(z + lam * step)
             try:
                 rt, jt = rj(zt)
             except RuntimeError:
                 continue
-            ft = np.concatenate([proj @ rt, v_null.T @ (d * (zt - z_ref)) - alpha])
-            if np.all(np.isfinite(ft)) and float(np.linalg.norm(ft)) < f0:
+            ct = proj @ rt
+            if np.all(np.isfinite(ct)) and float(np.linalg.norm(ct)) < f0:
                 z, r, j = zt, rt, jt
                 break
         else:
             break
     comp = proj @ r
-    arc = v_null.T @ (d * (z - z_ref)) - alpha
-    scale = max(1.0, float(np.max(np.abs(alpha)))) if alpha.size else 1.0
-    ok = float(np.max(np.abs(comp))) < tol and float(np.max(np.abs(arc))) < 1e-10 * scale
+    ok = float(np.max(np.abs(comp))) < tol
     return BorderedResult(z, ok, it, float(np.max(np.abs(comp))), u_null.T @ r)
 
 
@@ -171,6 +173,7 @@ def family_root_1d(
     max_lengths: float = 3.0,
     h_frac: float = 0.01,
     log: Callable[[str], None] | None = None,
+    g_floor: float = 0.0,
 ) -> FamilyResult:
     """q = 1: converge the complement at the base, scan alpha both ways along the fixed null
     direction for a sign change of g = u . r (the base's u), then a secant to |g| < 1e-3 |g(0)|.
@@ -230,7 +233,7 @@ def family_root_1d(
             return res
         g = float(br.g[0])
         res.scan.append((a, g, br.complement_norm))
-        if abs(g) < 1e-3 * abs(g0):
+        if abs(g) < max(1e-3 * abs(g0), g_floor):
             res.z_star, res.alpha_star, res.status = br.z, a, "root"
             return res
         if np.sign(g) == np.sign(g_lo):
@@ -249,6 +252,7 @@ def family_root_nd(
     max_lengths: float = 3.0,
     max_iter: int = 30,
     log: Callable[[str], None] | None = None,
+    g_floor: float = 0.0,
 ) -> FamilyResult:
     """q >= 1: damped Newton on the reduced equations g(alpha) = U^T r = 0, alpha in R^q (scaled
     arclength along the base's q right null vectors). g's Jacobian by forward differences (step
@@ -270,7 +274,7 @@ def family_root_nd(
     for _ in range(max_iter):
         gn = float(np.linalg.norm(cur.g))
         res.scan.append((float(np.linalg.norm(alpha)), gn, cur.complement_norm))
-        if gn < 1e-3 * g0n:
+        if gn < max(1e-3 * g0n, g_floor):
             res.z_star, res.alpha_star, res.status = cur.z, float(np.linalg.norm(alpha)), "root"
             return res
         if float(np.linalg.norm(alpha)) > max_lengths * big_l:

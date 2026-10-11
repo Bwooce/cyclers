@@ -41,7 +41,8 @@ from cyclerfinder.nbody.degenerate_family import (
 
 ROOT = Path(__file__).resolve().parents[1]
 SIGMA0 = 0.02
-TOL = 1e-3  # complement rows, weighted (1e-3 km, 1e-6 km/s, gauge 1e-7)
+TOL = 3e-3  # complement rows, weighted (amendment 5: above the sigma-0.02 noise floor)
+G_FLOOR = 1e-3  # amendment 5: a root is |g| below the start's noise-floor rule (weighted)
 IDEAL = ("gc-1", "gc4-19")
 REAL = {"ganeur316": "968_rungb", "gancal1": "1044_gancal1", "gc1e2": "1044_gc1"}
 
@@ -152,12 +153,12 @@ def stage_fix(t: Target) -> None:
     if q == 0:
         rec.update(status="no degenerate direction (identity)", z_star=z0.tolist(), alpha_star=0.0)
     elif q == 1:
-        res = family_root_1d(t.rj, z0, TOL, log=t.log)
+        res = family_root_1d(t.rj, z0, TOL, log=t.log, g_floor=G_FLOOR)
         rec.update(status=res.status, alpha_star=res.alpha_star, newton_length=res.newton_length)
         rec["scan"] = res.scan
         rec["z_star"] = None if res.z_star is None else res.z_star.tolist()
     else:
-        res = family_root_nd(t.rj, z0, q, TOL, log=t.log)
+        res = family_root_nd(t.rj, z0, q, TOL, log=t.log, g_floor=G_FLOOR)
         rec.update(status=res.status, alpha_star=res.alpha_star, newton_length=res.newton_length)
         rec["scan"] = res.scan
         rec["z_star"] = None if res.z_star is None else res.z_star.tolist()

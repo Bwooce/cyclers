@@ -240,3 +240,22 @@ floors: control A met them.
   with its residual along u. 8 tests pass, and `mypy src tests` is clean.
 - Re-runs: gc4-19 fix again (its first run is VOID). gc-1's fix is re-run for the record; its
   result cannot change (g = 7e-14, root at base). Control B is q = 0 and does not use the frame.
+
+### Amendment 5: noise floor of the family stage (12:20 AEDT, before the gc4-19 re-run)
+
+The diagnostic at gc4-19's base (scratch, 12:05-12:15) showed the following:
+- With the seed's vectors, the complement converges to 6.3e-4 (weighted), and the whole residual is
+  then 8.2e-3, along u: g = (-1.2e-3, 8.1e-3).
+- Re-linearised there, the complement stalls at 1.45e-3. That is integration noise at sigma 0.02,
+  the level the #968 noise-floor rule was made for.
+- At the base the smallest singular values are 1.3e-5, 6.7e-6 and 3.9e-8.
+
+Changes:
+1. `bordered_solve` projects every iterate exactly onto the linear arclength rows, and its line
+   search acts on the complement alone. Before, a reduced line-search step left the arclength rows
+   just above their 1e-10 test, so a converged complement was reported as a failure.
+2. Complement tolerance TOL = 3e-3 (weighted), above that noise floor. Root criterion: |g| <
+   max(1e-3 |g(0)|, 1e-3), i.e. below the start's noise-floor rule in weighted units (1e-3 km,
+   1e-6 km/s). The pre-registered 1e-3 |g(0)| alone would ask for g below the noise when g(0) is
+   already small. The START criteria (sec. 4, amendment 3) are unchanged.
+The 8 tests pass.
