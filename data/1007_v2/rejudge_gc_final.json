@@ -1,0 +1,89 @@
+{
+ "rules": "final wording (owner 2026-10-11): same-phase option (b)",
+ "positive": {
+  "label": "CONTROL+ H&M orbit 1 (10 cycles)",
+  "c1_continuity": true,
+  "junction_kms": 1.3518075547835906e-12,
+  "c2_gate": true,
+  "gate": {
+   "status": "pass",
+   "worst_ratio": 0.8941188247045622
+  },
+  "c3_refly": true,
+  "refly_max_km": 0.00024206092422113866,
+  "c4_same_phase": {
+   "label": "H&M",
+   "status": "exploratory, under the draft metric, awaiting the owner",
+   "L": 5,
+   "cycles": 10,
+   "comparisons": 4,
+   "start_cycle": 1,
+   "junction_continuity_kms": 1.3518075547835906e-12,
+   "Dprime_d": [
+    2.0928528960985204,
+    1.8097595065910355,
+    1.835729580719999,
+    1.6603650744882543
+   ],
+   "Wprime_kms": [
+    0.09230232924404458,
+    0.06992647585121503,
+    0.3005502163240177,
+    0.2696361239190814
+   ],
+   "band_D_d": 7.524030414403658,
+   "band_W_kms": 0.45404928851897924,
+   "growth_D": 0.8771421938647247,
+   "growth_W": 3.256149858682027,
+   "drift_pass": false,
+   "continuity_pass": true
+  },
+  "pass": false
+ },
+ "negative": {
+  "label": "CONTROL- gc-1 e0 broken",
+  "c1_continuity": false,
+  "junction_kms": 0.22967847514754292,
+  "c2_gate": true,
+  "gate": {
+   "status": "pass",
+   "worst_ratio": 0.7583128384556385
+  },
+  "c3_refly": false,
+  "refly_max_km": 13320.074787664853,
+  "c4_same_phase": {
+   "label": "neg",
+   "status": "exploratory, under the draft metric, awaiting the owner",
+   "L": 4,
+   "cycles": 10,
+   "comparisons": 5,
+   "start_cycle": 1,
+   "junction_continuity_kms": 0.22967847514754292,
+   "Dprime_d": [
+    0.0350301308676535,
+    0.026041805492695858,
+    0.023943100826272712,
+    0.03148157421992437,
+    0.02619275792994813
+   ],
+   "Wprime_kms": [
+    0.007153166299735059,
+    0.00141058933503313,
+    0.005296783424312945,
+    0.004810230295642981,
+    0.0025336091549075235
+   ],
+   "band_D_d": 0.18500253754523066,
+   "band_W_kms": 0.1752155817509382,
+   "growth_D": 0.8986998746554545,
+   "growth_W": 0.7404809565952813,
+   "drift_pass": true,
+   "continuity_pass": false
+  },
+  "pass": false
+ },
+ "controls_ok": {
+  "positive": false,
+  "negative": true
+ }
+}

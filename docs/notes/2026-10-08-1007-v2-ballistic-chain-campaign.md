@@ -468,3 +468,33 @@ A row passes at >= 3 of 5 epochs.
   - gc-2: 5/5. W' after the start cycle is <= 0.022 km/s.
 - If a control misbehaves: STOP and report. If a row fails: it is demoted to V1 in the window, with the
   reason recorded.
+
+### 8.8 Result of the sec. 8.7 re-judge (2026-10-11 11:05 AEDT): the POSITIVE CONTROL FAILS -> STOP
+
+Run: `scripts/v2_samephase_1007.py --rejudge-gc` (`data/1007_v2/rejudge_gc_final.{json,log}`).
+
+- POSITIVE, H&M orbit 1 (10 cycles, L = 5, comparisons i = 1..4): criteria 1-3 pass (continuity, gate,
+  re-fly). Criterion 4 FAILS on the |V_inf| growth test alone:
+  - W' per comparison 0.092 / 0.070 / 0.301 / 0.270 km/s (band 0.454);
+  - second-half max / first-half max = 3.26 > 2, above the 0.05-km/s floor;
+  - D' 1.66-2.09 d against a 7.52-d band, growth 0.88 (passes).
+- NEGATIVE (gc-1 e0 + 0.05 d): fails continuity and re-fly, as required.
+- Per sec. 8.7: STOP. gc-1 and gc-2 were NOT re-judged; their V2 status is unchanged and nothing goes
+  to the window.
+
+Diagnosis (for the owner; nothing changed):
+- Under option (a) (with i = 0) the same chain gives W' 0.285 / 0.092 / 0.070 / 0.301 / 0.270. The
+  first-half max is then 0.285, and the growth ratio is 1.06 (pass).
+- The sequence rises, falls and rises again. That looks like oscillation of the same-phase difference
+  itself, not monotonic growth, but 4-5 comparisons cannot tell the two apart.
+- Skipping the start cycle removes the comparison that happened to carry the first large value, so the
+  half-max ratio flips. This is the same small-sample fragility that failed ev-A at 2-3 values per half
+  (sec. 8.6).
+- So the growth test as worded (the ratio of the maxima of two halves) is not robust at n = 2L to
+  2L + 1. Options for the owner:
+  - (i) require more comparisons: n >= 3L (ev: 15 cycles, 48 yr), so each half holds >= 4-5 values;
+  - (ii) replace the half-max ratio by a fitted linear trend of D'/W' over i, which must be
+    insignificant against the band (e.g. projected change over the chain < 0.5 x band);
+  - (iii) both.
+  - Any choice is a further change after seeing results, so it must be pre-registered and recorded as
+    such.

@@ -1,0 +1,6 @@
+H&M orbit 1: n=10 cont=1.4e-12 gate=pass (0.894) refly=2.42e-04 km D=39.556/8.831 d W=3.729/0.299 km/s growth D 0.96 W 0.93 -> FAIL [1110]
+CONTROL+ H&M orbit 1 (10 cycles): c1=True c2=True c3=True c4=False (D'=2.093/7.524 d W'=0.3006/0.454 km/s g=0.88/3.26) -> FAIL
+neg: n=10 cont=9.6e+00 gate=pass (0.758) refly=1.33e+04 km D=0.165/0.190 d W=0.262/0.181 km/s growth D 1.14 W 0.93 -> FAIL [0101]
+CONTROL- gc-1 e0 broken: c1=False c2=True c3=False c4=True (D'=0.035/0.185 d W'=0.0072/0.175 km/s g=0.90/0.74) -> FAIL
+STOP: a control did not behave; rows not judged
+wrote data/1007_v2/rejudge_gc_final.json

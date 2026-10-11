@@ -183,7 +183,109 @@ def ev_rows() -> dict[str, Any]:
     return res
 
 
+def _final(label: str, j: dict[str, Any], sp: dict[str, Any]) -> dict[str, Any]:
+    """Sec. 8.7: criteria 1-3 from judge (amended rules), criterion 4 = same-phase option (b)."""
+    ok = bool(
+        j.get("c1_continuity") and j.get("c2_gate") and j.get("c3_refly") and sp["drift_pass"]
+    )
+    rec = {
+        "label": label,
+        "c1_continuity": j.get("c1_continuity"),
+        "junction_kms": j.get("junction_vinf_max_kms", j.get("continuity_max")),
+        "c2_gate": j.get("c2_gate"),
+        "gate": j.get("gate"),
+        "c3_refly": j.get("c3_refly"),
+        "refly_max_km": j.get("refly_max_km"),
+        "c4_same_phase": sp,
+        "pass": ok,
+    }
+    print(
+        f"{label}: c1={j.get('c1_continuity')} c2={j.get('c2_gate')} c3={j.get('c3_refly')} "
+        f"c4={sp['drift_pass']} (D'={max(sp['Dprime_d']):.3f}/{sp['band_D_d']:.3f} d "
+        f"W'={max(sp['Wprime_kms']):.4f}/{sp['band_W_kms']:.3f} km/s "
+        f"g={sp['growth_D']:.2f}/{sp['growth_W']:.2f}) -> {'PASS' if ok else 'FAIL'}",
+        flush=True,
+    )
+    return rec
+
+
+def rejudge_gc() -> dict[str, Any]:
+    """Sec. 8.7: the final-wording re-judge of gc-1 and gc-2, controls first."""
+    V2.RULES = "amended"
+    out: dict[str, Any] = {"rules": "final wording (owner 2026-10-11): same-phase option (b)"}
+    # positive control: H&M orbit 1 from the printed dates, 10 cycles
+    real_ev = CHAIN.real_ephemeris("ev", "mean")
+    key = "k2|RE/1:1|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s"
+    t3 = load_table3()[1]
+    one_period = []
+    for k in range(5):
+        one_period += [t3[5 * k + 1].date, t3[5 * k + 4].date]
+    starts = one_period + [v + 5844.0 for v in one_period]
+    x0 = starts[0]
+    y_seed = np.array([*starts[1:], 2 * 5844.0])
+    circ, a, b = CHAIN.ENUM.cell_system("ev")
+    _, one = CHAIN.ENUM.parse_cycle_key(key, circ, a, b)
+    sol = least_squares(
+        lambda yy: CHAIN.date_chain_residual(real_ev, one.legs * 10, x0 * DAY, yy),
+        y_seed, method="lm", xtol=1e-14, ftol=1e-14, gtol=1e-14, max_nfev=200 * len(y_seed),
+    )  # fmt: skip
+    j = V2.judge("ev", key, [474.59719334719347, 1100.6183800415804], 10, "ramp", x0,
+                 list(sol.x), real_ev, "H&M orbit 1")  # fmt: skip
+    x, v, t, c = legs_data("ev", key, 10, "ramp", x0, list(sol.x), real_ev)
+    sp = same_phase("H&M", x, v, t, c, 10, 2, sol.x[-1], 5, 1, quiet=True)
+    out["positive"] = _final("CONTROL+ H&M orbit 1 (10 cycles)", j, sp)
+    # negative control
+    real_gc = CHAIN.real_ephemeris("gc", "spice")
+    wb = json.loads((REPO / "data" / "942_943_writeback_v1.json").read_text())
+    g1 = wb["gc-1"]
+    e = json.loads((REPO / "data" / "943_gc1_realeph" / "e0" / "realeph_chain.json").read_text())[0]
+    y_bad = list(e["final_y"])
+    y_bad[0] += 0.05
+    j = V2.judge("gc", g1["key"], g1["x_days"], 10, "blend", e["x0_days"], y_bad, real_gc, "neg")
+    x, v, t, c = legs_data("gc", g1["key"], 10, "blend", e["x0_days"], y_bad, real_gc)
+    sp = same_phase("neg", x, v, t, c, 10, 3, y_bad[29], 4, 1, quiet=True)
+    out["negative"] = _final("CONTROL- gc-1 e0 broken", j, sp)
+    pos_ok, neg_ok = out["positive"]["pass"], not out["negative"]["pass"]
+    out["controls_ok"] = {"positive": pos_ok, "negative": neg_ok}
+    if not (pos_ok and neg_ok):
+        print("STOP: a control did not behave; rows not judged", flush=True)
+        return out
+    rows = []
+    for i in range(5):
+        e = json.loads(
+            (REPO / "data" / "943_gc1_realeph" / f"e{i}" / "realeph_chain.json").read_text()
+        )[0]
+        lab = f"gc-1 JD {e['epoch_jd']:.1f}"
+        j = V2.judge("gc", g1["key"], g1["x_days"], 10, "blend", e["x0_days"], e["final_y"],
+                     real_gc, lab)  # fmt: skip
+        x, v, t, c = legs_data("gc", g1["key"], 10, "blend", e["x0_days"], e["final_y"], real_gc)
+        sp = same_phase(lab, x, v, t, c, 10, 3, e["final_y"][29], 4, 1, quiet=True)
+        rows.append(_final(lab, j, sp))
+    out["gc-1"] = rows
+    g2 = wb["gc-2"]
+    rows = []
+    for e in json.loads((REPO / "data" / "942_943_ladder_realeph_chains.json").read_text())["gc2"]:
+        xs = e["final_x_days"]
+        y = list(xs[1:])
+        lab = f"gc-2 JD {e['epoch_jd']:.1f}"
+        j = V2.judge("gc", g2["key"], g2["x_days"], 10, "blend", xs[0], y, real_gc, lab)
+        x, v, t, c = legs_data("gc", g2["key"], 10, "blend", xs[0], y, real_gc)
+        sp = same_phase(lab, x, v, t, c, 10, 4, y[39], 4, 1, quiet=True)
+        rows.append(_final(lab, j, sp))
+    out["gc-2"] = rows
+    for name in ("gc-1", "gc-2"):
+        k = sum(r["pass"] for r in out[name])
+        print(f"{name}: V2 (final wording) {'PASS' if k >= 3 else 'FAIL'} ({k}/5)", flush=True)
+    return out
+
+
 def main() -> None:
+    if "--rejudge-gc" in sys.argv:
+        r = rejudge_gc()
+        path = REPO / "data" / "1007_v2" / "rejudge_gc_final.json"
+        path.write_text(json.dumps(r, indent=1, default=float))
+        print("wrote", path.relative_to(REPO), flush=True)
+        return
     if "--ev-rows" in sys.argv:
         r = ev_rows()
         path = REPO / "data" / "1007_v2" / "samephase_ev_rows_exploratory.json"
