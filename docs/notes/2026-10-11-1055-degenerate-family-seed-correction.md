@@ -1071,3 +1071,53 @@ The row is prepared from the draft (`data/1055_gc4-19/gc4-19_row_draft.yaml`, e8
 - the member-identity pass (sec. 10.1, amendment 10).
 It is applied in catalogue window 4 by the lead. The writeback test's extension (gc4-19's V1
 evidence recomputed from the #973 gauntlet) is committed first, as its prerequisite.
+
+### 13.4 gc-1 e2 start (15:57-21:41 AEDT, 2026-10-11) and weakscale (2026-10-12 09:1x AEDT): reading
+
+Start (`start.json`): NOT converged after 40 plain rungb Newton iterations. |r| crawled from 2.77e3 to
+2.15e3, dr stayed near 1.75e3 km, dv fell from 1.31e-2 to 8.4e-3 km/s. A STALL, as #1044's
+plain-Newton attempt also was (#1044 amendment 2). By sec. 13.2 that calls for weakscale.
+
+Weakscale (`weakscale.json`, from the seed scaled to each sigma):
+
+| sigma | sv_min | sv_next | u . r | move (scaled) | move / offset, nodes G, C, C, G | epoch moves (s) | resid |
+|---|---|---|---|---|---|---|---|
+| 0.02 | 2.75e-7 | 3.81e-5 | -2.94e-2 | 1.07e5 | 0.0002, 0.0905, 0.0896, 0.0001 | 0.5, -0.4, -0.8, 0.5 | 2.77e3 |
+| 0.005 | 2.66e-7 | 3.80e-5 | +6.23e-3 | 2.35e4 | 0.0000, 0.0199, 0.0197, 0.0000 | 0, 0, 0.1, 0 | 8.19e2 |
+| 0.00125 | 4.36e-7 | 3.80e-5 | +1.42e-3 | 3.26e3 | 0.0000, 0.0028, 0.0027, 0.0000 | 0, 0, 0, 0 | 2.37e2 |
+
+Reading against sec. 13.2:
+- move / offset FALLS with sigma (0.0905, 0.0199, 0.0028), faster than the constant I expected in
+  sec. 13.2. That expectation was WRONG for gc-1 e2: the forcing along the weak direction falls
+  slightly faster than sigma, and the weak singular value rises at the smallest sigma.
+- The rule in sec. 13.2 then selects the small-sigma start at the largest sigma with move / offset
+  < 0.1. That is sigma 0.02 itself (0.0905), which is where the start just stalled. So the rule's
+  outcome is "no change", and the small-sigma plan as written cannot help.
+- More important: at sigma 0.02 the move the weak direction asks for is SMALL. It is 9 % of the
+  two Callisto nodes' offsets, with epoch moves under 1 s. So the weak direction is NOT what stalls
+  plain Newton from this seed. The stall is the strong nonlinearity of the seed defect itself
+  (dr 1.87e3 km against Callisto offsets of a few hundred km at sigma 0.02). #1044 amendment 2
+  documented the same thing: a full Newton step RAISES the residual on gc-1, and LM was needed.
+  That LM took gc-1 from 2.4e3 to 0.0155 and only then stalled, with the residual on the weak
+  direction (#1044 sec. 5; #1046 sec. 6.3).
+- So the plain-Newton start is not a fair test of gc-1 e2. The question that remains is the one
+  #1046 left: does the weak (out-of-plane) direction have a solvable point near the LM endpoint?
+
+Next step (registered here, before any run; lead launch):
+- The amendment-13 forced scan, `--stage fix --force-q 1`. It is not chosen by sec. 13.2's branch
+  condition, which pointed to a sigma-0.02 start that already failed. It is chosen because it does
+  the two things the evidence asks for:
+  - `family_frame` first converges the COMPLEMENT (every direction except the weak one) with the
+    bordered corrector. That is the stage where plain Newton fails and LM succeeded.
+  - it then traces the weak direction for a root of g within 3 L each side, with the domain
+    bounds.
+- Outcomes:
+  - (a) a root, then `start --force-q 1`, `neg2 --force-q 1`, and amendment 10 against the chain's
+    member before any continuation;
+  - (b) the complement does not converge ("base complement did not converge"): the seed defect is
+    beyond the bordered corrector too. Then the stop, with gc-1's real-ephemeris continuous-gravity
+    standing still untested;
+  - (c) no sign change within 3 L or at the bounds: gc-1's chain member has no solvable point along
+    its weak direction near the seed, a finding for the row's data_gaps (lead and owner).
+- Runtime: the frame stage plus the scan, at gc-1 e2's 35-110 s per evaluation, so 2-6 h,
+  resumable (`--max-wall 3600`, repeat until `fix_forced.json` exists).
