@@ -1,0 +1,33 @@
+ev-A JD 2462508.1: n=10 cont=1.7e-12 gate=pass (0.580) refly=1.90e-03 km D=7.392/8.779 d W=0.494/0.489 km/s growth D 0.82 W 1.25 -> PASS [1111]
+ev-A JD 2462508.1: c1=1 (1.7e-12) c2=1 (0.580) c3=1 (1.9e-03 km) c4=1 D'=1.534/8.731 W'=0.0130/0.491 [slopes -0.0698 d, +0.00094 km/s per cycle] -> PASS
+ev-A JD 2464843.8: n=10 cont=1.0e-12 gate=pass (0.580) refly=1.75e-03 km D=4.902/8.779 d W=0.527/0.489 km/s growth D 1.13 W 1.06 -> PASS [1111]
+ev-A JD 2464843.8: c1=1 (1.0e-12) c2=1 (0.580) c3=1 (1.8e-03 km) c4=1 D'=1.212/8.745 W'=0.0429/0.492 [slopes +0.1668 d, +0.00809 km/s per cycle] -> PASS
+ev-A JD 2467763.5: n=10 cont=1.2e-12 gate=pass (0.580) refly=1.75e-03 km D=5.207/8.779 d W=0.540/0.489 km/s growth D 1.25 W 1.06 -> PASS [1111]
+ev-A JD 2467763.5: c1=1 (1.2e-12) c2=1 (0.580) c3=1 (1.8e-03 km) c4=1 D'=1.245/8.743 W'=0.0416/0.492 [slopes +0.1810 d, +0.00728 km/s per cycle] -> PASS
+ev-A JD 2469516.7: n=10 cont=1.5e-12 gate=pass (0.580) refly=1.90e-03 km D=7.065/8.779 d W=0.550/0.489 km/s growth D 1.09 W 1.05 -> PASS [1111]
+ev-A JD 2469516.7: c1=1 (1.5e-12) c2=1 (0.580) c3=1 (1.9e-03 km) c4=1 D'=0.738/8.742 W'=0.0392/0.492 [slopes +0.3226 d, +0.01270 km/s per cycle] -> PASS
+ev-A JD 2472436.3: n=10 cont=1.8e-12 gate=pass (0.580) refly=1.84e-03 km D=7.128/8.779 d W=0.556/0.489 km/s growth D 1.07 W 1.04 -> PASS [1111]
+ev-A JD 2472436.3: c1=1 (1.8e-12) c2=1 (0.580) c3=1 (1.8e-03 km) c4=1 D'=0.645/8.741 W'=0.0383/0.492 [slopes +0.2388 d, +0.01165 km/s per cycle] -> PASS
+ev-A: V2 (final wording) PASS (5/5)
+ev-B JD 2463054.0: n=10 cont=2.3e-12 gate=fail (1.011) refly=1.59e-02 km D=12.512/2.505 d W=2.883/0.801 km/s growth D 1.17 W 1.06 -> FAIL [1010]
+ev-B JD 2463054.0: c1=1 (2.3e-12) c2=0 (1.011) c3=1 (1.6e-02 km) c4=0 D'=2.211/2.004 W'=0.1659/0.817 [slopes -0.2283 d, -0.01080 km/s per cycle] -> FAIL
+ev-B JD 2465390.1: n=10 cont=6.3e-12 gate=pass (0.995) refly=3.36e-02 km D=13.466/2.505 d W=2.695/0.801 km/s growth D 1.87 W 0.96 -> FAIL [1110]
+ev-B JD 2465390.1: c1=1 (6.3e-12) c2=1 (0.995) c3=1 (3.4e-02 km) c4=0 D'=8.437/2.023 W'=0.8790/0.807 [slopes +1.3531 d, +0.17947 km/s per cycle] -> FAIL
+ev-B JD 2467728.3: n=10 cont=3.5e-12 gate=fail (1.019) refly=1.76e-02 km D=8.851/2.505 d W=3.148/0.801 km/s growth D 1.49 W 0.96 -> FAIL [1010]
+ev-B JD 2467728.3: c1=1 (3.5e-12) c2=0 (1.019) c3=1 (1.8e-02 km) c4=0 D'=7.272/1.972 W'=0.7709/0.828 [slopes +1.2885 d, +0.21056 km/s per cycle] -> FAIL
+ev-B JD 2470059.7: no 10-cycle chain -> FAIL
+ev-B JD 2472400.0: n=10 cont=2.8e-12 gate=indeterminate (0.999) refly=5.71e-02 km D=11.996/2.505 d W=2.790/0.801 km/s growth D 1.13 W 1.05 -> FAIL [1010]
+ev-B JD 2472400.0: c1=1 (2.8e-12) c2=0 (0.999) c3=1 (5.7e-02 km) c4=0 D'=2.098/2.017 W'=0.2597/0.822 [slopes -0.1137 d, -0.00621 km/s per cycle] -> FAIL
+ev-B: V2 (final wording) FAIL (0/5)
+ev-C JD 2462579.6: n=10 cont=2.0e-12 gate=pass (0.896) refly=1.97e-01 km D=10.598/6.141 d W=1.267/0.907 km/s growth D 0.98 W 2.04 -> FAIL [1110]
+ev-C JD 2462579.6: c1=1 (2.0e-12) c2=1 (0.896) c3=1 (2.0e-01 km) c4=0 D'=15.245/5.855 W'=0.9386/0.822 [slopes +4.5051 d, +0.00458 km/s per cycle] -> FAIL
+ev-C JD 2464912.8: n=10 cont=3.9e-12 gate=pass (0.936) refly=3.51e-02 km D=37.734/6.141 d W=3.593/0.907 km/s growth D 0.94 W 0.68 -> FAIL [1110]
+ev-C JD 2464912.8: c1=1 (3.9e-12) c2=1 (0.936) c3=1 (3.5e-02 km) c4=0 D'=65.775/5.684 W'=5.2690/0.548 [slopes +11.0371 d, +1.76039 km/s per cycle] -> FAIL
+ev-C JD 2467248.8: n=10 cont=2.7e-12 gate=pass (0.886) refly=1.37e-01 km D=7.770/6.141 d W=0.984/0.907 km/s growth D 1.08 W 1.33 -> FAIL [1110]
+ev-C JD 2467248.8: c1=1 (2.7e-12) c2=1 (0.886) c3=1 (1.4e-01 km) c4=1 D'=5.278/5.909 W'=0.5709/0.834 [slopes +0.6687 d, -0.14784 km/s per cycle] -> PASS
+ev-C JD 2469586.5: n=10 cont=2.1e-12 gate=pass (0.904) refly=1.30e-01 km D=19.950/6.141 d W=1.712/0.907 km/s growth D 0.93 W 1.16 -> FAIL [1110]
+ev-C JD 2469586.5: c1=1 (2.1e-12) c2=1 (0.904) c3=1 (1.3e-01 km) c4=0 D'=30.153/5.823 W'=2.2062/0.736 [slopes +8.4843 d, +0.39413 km/s per cycle] -> FAIL
+ev-C JD 2471918.9: n=10 cont=2.2e-12 gate=pass (0.902) refly=1.86e-01 km D=39.618/6.141 d W=3.048/0.907 km/s growth D 2.02 W 1.88 -> FAIL [1110]
+ev-C JD 2471918.9: c1=1 (2.2e-12) c2=1 (0.902) c3=1 (1.9e-01 km) c4=0 D'=57.472/5.757 W'=4.2024/0.603 [slopes +11.7243 d, +1.52561 km/s per cycle] -> FAIL
+ev-C: V2 (final wording) FAIL (1/5)
+wrote data/1007_v2/final_ev.json

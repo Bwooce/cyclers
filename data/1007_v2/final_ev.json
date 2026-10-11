@@ -1,0 +1,519 @@
+{
+ "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+ "ev-A": [
+  {
+   "label": "ev-A JD 2462508.1",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.6964207816272392e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.5796881939265229
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0018981622892712518,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     1.4627651234313817,
+     1.5338687182647845,
+     1.3232034509037476
+    ],
+    "Wprime_kms": [
+     0.005962350490005264,
+     0.013017484146097047,
+     0.007841854471644538
+    ],
+    "band_D_d": 8.730858229774844,
+    "band_W_kms": 0.4913275437594724,
+    "slope_D_d_per_cycle": -0.06978083626381702,
+    "slope_W_kms_per_cycle": 0.0009397519908196379,
+    "pass": true
+   },
+   "pass": true
+  },
+  {
+   "label": "ev-A JD 2464843.8",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.0462741784067475e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.5797533570311677
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0017503117751397458,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     0.5963978249692445,
+     1.2124072325586894,
+     0.9299150709139212
+    ],
+    "Wprime_kms": [
+     0.015613047546548131,
+     0.04294337787249969,
+     0.03179911112028755
+    ],
+    "band_D_d": 8.744749219980505,
+    "band_W_kms": 0.4916812392317523,
+    "slope_D_d_per_cycle": 0.1667586229723384,
+    "slope_W_kms_per_cycle": 0.008093031786869714,
+    "pass": true
+   },
+   "pass": true
+  },
+  {
+   "label": "ev-A JD 2467763.5",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.1670664434859646e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.5797471013454939
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0017508334776304897,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     0.6255679217210854,
+     1.245021556107531,
+     0.9875821774876385
+    ],
+    "Wprime_kms": [
+     0.014305056005648353,
+     0.041557014228299494,
+     0.02885924431715381
+    ],
+    "band_D_d": 8.74346738483067,
+    "band_W_kms": 0.4917988738936818,
+    "slope_D_d_per_cycle": 0.18100712788327666,
+    "slope_W_kms_per_cycle": 0.007277094155752729,
+    "pass": true
+   },
+   "pass": true
+  },
+  {
+   "label": "ev-A JD 2469516.7",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.461053500406706e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.5796919819651362
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0018955065626352961,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     0.09317865067805542,
+     0.13265647337448172,
+     0.7383704947851584
+    ],
+    "Wprime_kms": [
+     0.013854318194476356,
+     0.015558320614285748,
+     0.039247208928490096
+    ],
+    "band_D_d": 8.7422670834288,
+    "band_W_kms": 0.4920235128534047,
+    "slope_D_d_per_cycle": 0.32259592205355136,
+    "slope_W_kms_per_cycle": 0.012696445367006865,
+    "pass": true
+   },
+   "pass": true
+  },
+  {
+   "label": "ev-A JD 2472436.3",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.7639223415244487e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.5796631867760627
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0018362076071486587,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     0.16770594612171408,
+     0.05433364269993035,
+     0.645317222137237
+    ],
+    "Wprime_kms": [
+     0.015024070640020426,
+     0.015567123058588095,
+     0.038316871377438666
+    ],
+    "band_D_d": 8.74116088479233,
+    "band_W_kms": 0.4923932147676013,
+    "slope_D_d_per_cycle": 0.23880563800776133,
+    "slope_W_kms_per_cycle": 0.011646400368709117,
+    "pass": true
+   },
+   "pass": true
+  }
+ ],
+ "ev-B": [
+  {
+   "label": "ev-B JD 2463054.0",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 2.3092638912203256e-12,
+   "c2_gate": false,
+   "gate": {
+    "status": "fail",
+    "worst_ratio": 1.0111426845975984
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.015881923895940567,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     2.2108613119471556,
+     1.8212869228718773,
+     1.7543250782528048
+    ],
+    "Wprime_kms": [
+     0.16588249769060504,
+     0.15799959359990012,
+     0.14428240235928946
+    ],
+    "band_D_d": 2.003873278198971,
+    "band_W_kms": 0.8167020817306634,
+    "slope_D_d_per_cycle": -0.2282681168471757,
+    "slope_W_kms_per_cycle": -0.010800047665657791,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-B JD 2465390.1",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 6.334488489301293e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.995141188779758
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.033604163532226304,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     5.73047548201248,
+     6.270549362818201,
+     8.436754447231579
+    ],
+    "Wprime_kms": [
+     0.5200481141868156,
+     0.16089020836814782,
+     0.8789846803025174
+    ],
+    "band_D_d": 2.0227495987379442,
+    "band_W_kms": 0.8070635556210478,
+    "slope_D_d_per_cycle": 1.3531394826095486,
+    "slope_W_kms_per_cycle": 0.17946828305785079,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-B JD 2467728.3",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 3.4869884757426917e-12,
+   "c2_gate": false,
+   "gate": {
+    "status": "fail",
+    "worst_ratio": 1.01881954249693
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0175734859596292,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     4.694613919740732,
+     4.989474500262077,
+     7.271515757127418
+    ],
+    "Wprime_kms": [
+     0.3497787235772858,
+     0.21048050744335534,
+     0.7708946555664795
+    ],
+    "band_D_d": 1.9722710027714019,
+    "band_W_kms": 0.8275493773640936,
+    "slope_D_d_per_cycle": 1.2884509186933422,
+    "slope_W_kms_per_cycle": 0.2105579659945968,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-B JD 2470059.7",
+   "pass": false,
+   "error": "no 10-cycle chain",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic"
+  },
+  {
+   "label": "ev-B JD 2472400.0",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 2.7746693831431912e-12,
+   "c2_gate": false,
+   "gate": {
+    "status": "indeterminate",
+    "worst_ratio": 0.9994100187937774
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.0571240917822734,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     1.6780712851705175,
+     2.098445756093497,
+     1.4506322498727968
+    ],
+    "Wprime_kms": [
+     0.1352586625473755,
+     0.25968018888938715,
+     0.12283067715661389
+    ],
+    "band_D_d": 2.0168721447065474,
+    "band_W_kms": 0.8222337255922373,
+    "slope_D_d_per_cycle": -0.11371951764886022,
+    "slope_W_kms_per_cycle": -0.006213992695380802,
+    "pass": false
+   },
+   "pass": false
+  }
+ ],
+ "ev-C": [
+  {
+   "label": "ev-C JD 2462579.6",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 1.9770851622524788e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.8961630008970591
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.19652655964695448,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     6.234691872092299,
+     10.266933446835537,
+     15.244811849011967
+    ],
+    "Wprime_kms": [
+     0.9294623703454103,
+     0.44417314950899645,
+     0.9386294830659203
+    ],
+    "band_D_d": 5.854913983802277,
+    "band_W_kms": 0.8215049599009069,
+    "slope_D_d_per_cycle": 4.505059988459833,
+    "slope_W_kms_per_cycle": 0.004583556360254785,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-C JD 2464912.8",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 3.888445121447148e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.9357841720712332
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.035068924816913316,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     43.70036057244579,
+     60.81806210744617,
+     65.77456815643745
+    ],
+    "Wprime_kms": [
+     1.7482243709434453,
+     4.269266995051243,
+     5.269006749538111
+    ],
+    "band_D_d": 5.684187260977924,
+    "band_W_kms": 0.5482312627234599,
+    "slope_D_d_per_cycle": 11.03710379199583,
+    "slope_W_kms_per_cycle": 1.7603911892973325,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-C JD 2467248.8",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 2.6574298317427747e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.8857966319653277
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.13653509776394784,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     3.940906271053791,
+     3.35839270874294,
+     5.278206874897478
+    ],
+    "Wprime_kms": [
+     0.5708912844608367,
+     0.3755066702791652,
+     0.27520266053496023
+    ],
+    "band_D_d": 5.9093881305014655,
+    "band_W_kms": 0.8337410560581766,
+    "slope_D_d_per_cycle": 0.6686503019218432,
+    "slope_W_kms_per_cycle": -0.14784431196293818,
+    "pass": true
+   },
+   "pass": true
+  },
+  {
+   "label": "ev-C JD 2469586.5",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 2.149391775674303e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.9042156256198318
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.12975320073738636,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     13.184827012761161,
+     22.237009658672832,
+     30.15338553991205
+    ],
+    "Wprime_kms": [
+     1.417995940041454,
+     1.1006661767169774,
+     2.206246177515217
+    ],
+    "band_D_d": 5.823037973648421,
+    "band_W_kms": 0.736310551662558,
+    "slope_D_d_per_cycle": 8.484279263575443,
+    "slope_W_kms_per_cycle": 0.3941251187368814,
+    "pass": false
+   },
+   "pass": false
+  },
+  {
+   "label": "ev-C JD 2471918.9",
+   "rules": "final wording (owner 2026-10-11): band only, ends skipped, slope as diagnostic",
+   "c1_continuity": true,
+   "junction_kms": 2.204458837695711e-12,
+   "c2_gate": true,
+   "gate": {
+    "status": "pass",
+    "worst_ratio": 0.901694414341798
+   },
+   "c3_refly": true,
+   "refly_max_km": 0.18568140345766276,
+   "c4": {
+    "comparisons": [
+     1,
+     2,
+     3
+    ],
+    "Dprime_d": [
+     34.02312378952047,
+     47.707658207567874,
+     57.47175322043768
+    ],
+    "Wprime_kms": [
+     1.151203121631717,
+     3.224019370627552,
+     4.202426169451925
+    ],
+    "band_D_d": 5.756949981303679,
+    "band_W_kms": 0.6026543729560546,
+    "slope_D_d_per_cycle": 11.724314715458597,
+    "slope_W_kms_per_cycle": 1.5256115239101042,
+    "pass": false
+   },
+   "pass": false
+  }
+ ]
+}

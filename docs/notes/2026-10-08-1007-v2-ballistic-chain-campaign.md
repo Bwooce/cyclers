@@ -619,3 +619,19 @@ Existing 10-cycle jup365 chains, no re-solve. L = 4, comparisons i = 1..4.
   - ev-C: FAIL. D' is over its band (7.6-66 d against about 5.8) at every epoch.
 - Rows that pass move V1 -> V2 in the next window, with the slope diagnostics in the evidence. Rows that
   fail stay V1, with the reason recorded.
+
+### 8.14 Result of the ev lane judgement (2026-10-11 11:29 AEDT; `--final-ev`, `data/1007_v2/final_ev.{json,log}`)
+
+| Row | Epochs passing | Detail | Slope diagnostics (per cycle) |
+|---|---|---|---|
+| ev-A | **5/5 PASS** | continuity <= 1.8e-12; gate 0.580; re-fly <= 1.9e-3 km; D' 0.65-1.53 d (band 8.74); W' 0.013-0.043 km/s (band 0.49) | D' -0.07 .. +0.32 d; W' +0.0009 .. +0.0127 km/s |
+| ev-B | **0/5 FAIL** | gate fails at 3 epochs (1.011, 1.019, 0.999); no 10-cycle chain at 1; D' over its 2.0-d band at every epoch with a chain | D' up to +1.35 d |
+| ev-C | **1/5 FAIL** | passes only at JD 2467248.8 (D' 5.28 / 5.91). Elsewhere D' 15-66 d against about 5.8 and W' 0.94-5.3 against 0.55-0.82 | D' +4.5 .. +11.7 d; W' up to +1.76 km/s |
+
+- All three as pre-registered.
+- ev-C's 10-cycle chains drift strongly at 4 epochs; its slope diagnostics are large. Its 5-cycle rung (d)
+  chains passed (6.23). Over 32 yr the ramp-continued chain does not stay in phase. Not diagnosed
+  further (another branch at 10 cycles is possible).
+- Window action:
+  - ev-A V1 -> V2, with its slope diagnostics in the evidence;
+  - ev-B and ev-C stay V1, with the reason recorded in their notes.
