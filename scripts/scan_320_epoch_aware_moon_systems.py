@@ -54,10 +54,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from cyclerfinder.core.lambert import lambert  # noqa: E402
-from cyclerfinder.core.satellites import PRIMARIES, SATELLITES  # noqa: E402
+from cyclerfinder.core.satellites import PRIMARIES, orbit_circle  # noqa: E402
 from cyclerfinder.search.discovery_campaign import (  # noqa: E402
     DAY_S,
-    _mean_motion_rad_day,
     _moon_state,
 )
 from cyclerfinder.search.physical_sanity import (  # noqa: E402
@@ -230,8 +229,9 @@ def _per_system_sweep(
     mu = PRIMARIES[primary]
     consts: dict[str, tuple[float, float]] = {}
     for m in moons:
-        sat = SATELLITES[m]
-        consts[m] = (sat.sma_km, _mean_motion_rad_day(mu, sat.sma_km))
+        # (sma_km, Kepler rate of sma_km) bit for bit for an ordinary moon; the Kepler radius of the
+        # sourced mean motion for the Pluto small moons (#1022d)
+        consts[m] = orbit_circle(m)
 
     cycles = _closed_length3_cycles(moons)
     n_cells = len(cycles) * len(nrev_grid) * len(nrev_grid)

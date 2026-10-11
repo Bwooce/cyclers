@@ -194,12 +194,22 @@ def moon_circular(
     massless: Sequence[str] = (),
     theta0_rad: dict[str, float] | None = None,
 ) -> CircularSystem:
-    """Planet-centred ideal model of moons on circles (registry sma, Kepler-III period)."""
+    """Planet-centred ideal model of moons on circles (registry sma, Kepler-III period).
+
+    A moon with a sourced mean motion (the Pluto small moons, #1022d) rides that period, on the
+    Kepler radius of it for ``primary_mu``.
+    """
     th = theta0_rad or {}
     bodies = {}
     for m in moons:
-        a = SATELLITES[m].sma_km
-        bodies[m] = (a, 2.0 * math.pi * math.sqrt(a**3 / primary_mu), th.get(m, 0.0))
+        n_sourced = SATELLITES[m].mean_motion_sourced_deg_day
+        if n_sourced is None:
+            a = SATELLITES[m].sma_km
+            bodies[m] = (a, 2.0 * math.pi * math.sqrt(a**3 / primary_mu), th.get(m, 0.0))
+        else:
+            period = 360.0 / n_sourced * 86400.0
+            a = (primary_mu * (period / (2.0 * math.pi)) ** 2) ** (1.0 / 3.0)
+            bodies[m] = (a, period, th.get(m, 0.0))
     return CircularSystem(primary_mu, bodies, frozenset(massless))
 
 

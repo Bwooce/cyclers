@@ -308,14 +308,11 @@ class RepeatedMoonTarget:
     # -- registry-derived per-moon constants (cached at construction time) --
     def _moon_consts(self) -> dict[str, tuple[float, float]]:
         """``{moon: (sma_km, mean_motion_rad_day)}`` from the satellites registry."""
-        from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+        from cyclerfinder.core.satellites import orbit_circle
 
-        mu = PRIMARIES[self.primary]
-        out: dict[str, tuple[float, float]] = {}
-        for m in self.moons:
-            sat = SATELLITES[m]
-            out[m] = (sat.sma_km, _mean_motion_rad_day(mu, sat.sma_km))
-        return out
+        # orbit_circle is (sma_km, Kepler rate of sma_km) bit for bit for a moon with no sourced
+        # mean motion, and (Kepler radius, sourced rate) for the Pluto small moons (#1022d).
+        return {m: orbit_circle(m) for m in self.moons}
 
     def _sequences(self) -> list[tuple[str, ...]]:
         """Deterministic bounded list of CLOSED repeated-moon cycle sequences.

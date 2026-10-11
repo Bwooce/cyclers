@@ -442,18 +442,15 @@ def legs_from_repeated_moon_candidate(
     feasible legs here too). The leg geometry is otherwise identical.
     """
     from cyclerfinder.core.lambert import lambert
-    from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+    from cyclerfinder.core.satellites import PRIMARIES, orbit_circle
 
     day_s = 86400.0
     km_m = 1000.0
     mu_km3_s2 = PRIMARIES[primary]
     mu_m3_s2 = mu_km3_s2 * (km_m**3)
-    consts: dict[str, tuple[float, float]] = {}
-    for m in sequence:
-        sat = SATELLITES[m]
-        sma_km = sat.sma_km
-        mean_motion = math.sqrt(mu_km3_s2 / (sma_km**3)) * day_s  # rad/day
-        consts[m] = (sma_km, mean_motion)
+    # (radius_km, rad/day): sma_km and its Kepler rate for an ordinary moon, bit for bit; the
+    # Kepler radius of the sourced rate for the Pluto small moons (#1022d)
+    consts: dict[str, tuple[float, float]] = {m: orbit_circle(m) for m in sequence}
     n_legs = len(sequence) - 1
     if len(n_rev) != n_legs:
         raise ValueError(f"n_rev length {len(n_rev)} != n_legs {n_legs}")
