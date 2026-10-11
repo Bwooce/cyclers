@@ -167,10 +167,12 @@ Added 2026-10-11: the adjudication of the 22 `#1025` Earth-Venus members, option
 `docs/notes/2026-10-08-1025-owner-summary.md` sec. 6 (to be asked after `#1057` step 1); and the `#1007`
 drift-metric wording (the sec. 8.4 DRAFT same-phase metric, cycle i against i + L, awaiting the owner).
 [Both DECIDED 2026-10-11: ev-22 option (a), ten rows (window 2); V2 bounded = band only, ends skipped,
-slope as diagnostic.] Added 2026-10-11: a catalogue row for gc4-19 (the 16th gc member that EXISTS in
-continuous gravity, `#1055`); whether the 15 known-class Earth-Moon families of `#1047` become catalogue
-rows (known-class-member, like gc-2) or stay in the note; and the Earth-Mars L tolerance for the Russell ch.
-4 re-judge (`#1061` D list item 2).
+slope as diagnostic.] Added and DECIDED 2026-10-11 14:10 AEDT (the owner's own answers, labels verbatim):
+the gc4-19 row (`#1055`): "Hold until GanCal#1 on jup365 reports"; the 15 known-class Earth-Moon families
+(`#1047`): "Rows for A, B, D only" (known-class-member V1; earthmoon-opus prepares the patch after `#1054` arm
+E); the Earth-Mars L rule for the Russell ch. 4 re-judge (`#1061` D item 2): "Set 0.02 rev now" (a strict
+tolerance for all systems; twobody-gen2-opus computes L in code first; ev-B's L is 49 under it, its verdict
+unchanged).
 
 **`#942`/`#943` two-working-body candidates (2026-10-06, owner rulings 2026-10-07; source `docs/notes/2026-10-05-942-943-two-working-body-generator.md` secs. 6.x and
 `docs/team/lead-log.md`):**
