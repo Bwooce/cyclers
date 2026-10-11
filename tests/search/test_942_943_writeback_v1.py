@@ -37,7 +37,7 @@ def _load(name: str, path: Path) -> Any:
     return mod
 
 
-ROWS = {
+ROWS: dict[str, tuple[Any, ...]] = {
     "ganymede-callisto-two-working-body-cycler-gc1-2026": (
         "gc",
         "data/943_cell_gc_gauntlet.json",
@@ -140,6 +140,68 @@ ROWS = {
         "data/973_gc/k6_gauntlet.json",
         {"Ganymede": 2.4676, "Callisto": 2.0120},
     ),
+    # owner decision 2026-10-11 (#1025, option "(a) 10 rows, Standish >= 4/5"): the 10 ev members.
+    # Siblings share their V_inf (one transfer and Venus block), so these entries also name the key.
+    "earth-venus-two-working-body-cycler-ev4-1-2026": (
+        "ev",
+        "data/973_ev/k4_gauntlet.json",
+        {"E": 4.5952, "V": 4.5292},
+        "k4|RE/1:1|RE/3:2|LE>V/0s|RV/1:1|RV/1:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev4-4-2026": (
+        "ev",
+        "data/973_ev/k4_gauntlet.json",
+        {"E": 6.8303, "V": 4.0384},
+        "k4|RE/2:3|RE/2:3|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev4-6-2026": (
+        "ev",
+        "data/973_ev/k4_gauntlet.json",
+        {"E": 6.8303, "V": 4.0384},
+        "k4|RE/1:1|RE/3:2|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev4-7-2026": (
+        "ev",
+        "data/973_ev/k4_gauntlet.json",
+        {"E": 6.8303, "V": 4.0384},
+        "k4|RE/3:2|RE/1:1|LE>V/0s|LV>V/1l|RV/1:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-4-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 11.6994, "V": 6.3389},
+        "k5|RE/3:2|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-5-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 11.6994, "V": 6.3389},
+        "k5|RE/1:1|RE/2:1|LE>V/0s|RV/3:2|RV/3:2|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-6-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 13.1844, "V": 7.2507},
+        "k5|RE/2:1|RE/2:1|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-7-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 13.1844, "V": 7.2507},
+        "k5|RE/1:1|RE/3:2|LE>V/0s|RV/2:1|RV/2:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-8-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 14.2526, "V": 7.9464},
+        "k5|RE/2:1|RE/3:2|LE>V/0s|RV/2:1|LV>E/0s",
+    ),
+    "earth-venus-two-working-body-cycler-ev5-9-2026": (
+        "ev",
+        "data/973_ev/k5_gauntlet.json",
+        {"E": 15.0679, "V": 8.4974},
+        "k5|RE/3:2|RE/3:2|LE>V/0s|LV>E/0s",
+    ),
 }
 
 
@@ -147,10 +209,13 @@ ROWS = {
 def test_writeback_row_v1_evidence(row_id: str) -> None:
     enum = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
     gauntlet = _load("gauntlet_942", REPO / "scripts" / "gauntlet_942.py")
-    cell, path, pick = ROWS[row_id]
+    cell, path, pick, *key = ROWS[row_id]
     g = json.loads((REPO / path).read_text())
     rows = [
-        c for c in g["candidates"] if all(abs(c["vinf_kms"][q] - v) < 2e-3 for q, v in pick.items())
+        c
+        for c in g["candidates"]
+        if all(abs(c["vinf_kms"][q] - v) < 2e-3 for q, v in pick.items())
+        and (not key or c["key"] == key[0])
     ]
     assert len(rows) == 1
     c = rows[0]
