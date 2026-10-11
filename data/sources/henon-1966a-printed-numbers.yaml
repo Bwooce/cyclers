@@ -1,0 +1,89 @@
+# Henon 1966a (paper III), the printed numbers of the paper. THE PAPER HAS NO NUMERIC TABLES: it prints 10 equations,
+#   21 figures and the numbers below, in the running text and in figure labels and captions.
+# Source: M. Henon, "Exploration numerique du probleme restreint. III. Masses egales, orbites non periodiques",
+#   Bulletin Astronomique (3e serie) 1, fasc. 1, pp. 57-79 (1966), doi 10.3406/bastr.1966.14442. Manuscript received
+#   29 November 1965. In French, with English, German and Russian abstracts.
+# Local file: Persee scan, 25 pp. (2 Persee cover pages + journal pp. 57-79), md5 d0922998ce5c30787f350ad413ccfe0b.
+#   PDF page n = journal page n + 54. OCR copy: ocrmypdf --force-ocr -l fra+eng.
+# Witnesses (every value below): A = tesseract 5 -l fra --psm 6 on 300 dpi grey renders; B = macOS Vision
+#   (VNRecognizeTextRequest, .accurate, no language correction) on the same renders; O = the text layer of the ocrmypdf
+#   copy (a third machine reading, at the scan's own resolution); C = our reading of 300 dpi crops of the page image
+#   (decides). Per-value occurrence counts: witness.out next to the PDF in the private papers repository.
+#   A, B and O agree on every value except where a witness dropped a line (A: p.58 Russian 3,4568, p.65 Fig. 5 label,
+#   p.74 "2,85"; B: p.58, p.78 1,2175 / 0,9556 / 1,135; O: p.74 "2,85"). None of the three misread a digit. Every
+#   value marked here was read by C on the 300 dpi crop. Decimal commas are written as points; "..." is printed.
+# No value here was computed by us. Values we computed are only in `check:` fields, marked "ours"; the script and its
+#   output are check_henon1966a.py/.out next to the PDF in the private papers repository.
+#
+# CONVENTIONS (eq. 2, p.59): mu = 1/2. M1 at x = -mu, M2 at x = 1 - mu, unit separation, unit angular rate.
+#   C = x^2 + y^2 + 2(1-mu)/r1 + 2mu/r2 - xdot^2 - ydot^2. There is no mu(1-mu) term, so C_Henon = C_std - 0.25.
+#   Section (eq. 1): y = 0, ydot > 0; points plotted in the plane (x, xdot) at fixed C.
+#   Stability index a = cos(alpha0) (eq. 7), alpha0 = rotation angle at the periodic orbit; a is paper II's index
+#   (half the trace of the 2x2 section map; for the 4x4 monodromy, a = (trace - 2)/2).
+# CLASSES: f, h = retrograde about M2, M1; g, i = direct about M2, M1 (p.59). alpha_4 = Bartlett's "class alpha"
+#   (4-periodic), named alpha_4 here (p.77). i_3 = the 3-periodic class of paper I Fig. 3. n'_2, b_2 = double-periodic
+#   classes of paper II.
+# ORBIT TYPES named (p.57): quasi-periodic (on invariant curves), semi-ergodic (filling an area of the section but not
+#   all of the accessible region), escape (C < 3.4568..., leaves to x -> -infinity).
+# MISPRINTS in the original (see the digest): captions of Figs. 12 and 13 interchanged (pp.72-73); p.75 "point n" for
+#   "point h"; p.57 resume "demi-ergodiques" for "semi-ergodiques"; Fig. 16 x labels lack minus signs.
+
+paper_ii_cross_check_note: >-
+  The critical-orbit C values quoted here are paper II's 4-digit values. Henon 1973 (A&A 28:415, Table 1, held, six
+  digits) gives the same orbits as: i1 3.738962, i14 3.566406, i15 3.445853, h1 1.216891, h2 1.059408, h3 0.955552,
+  b_2 7 1.133574, b_2 8 1.059408. Paper III's i15 (3.4473), h1 (1.2175) and b_2 7 (1.135) differ from the 1973 values
+  by 1.4e-3, 6.1e-4 and 1.4e-3; the others agree to the printed digits. Our integration gives h1 at C = 1.216891
+  (a = -1), equal to Henon 1973 to six digits, so the 1973 values supersede the 1965-66 ones.
+
+values:
+  - {page: "57", quantity: "C at which the Jacobi limit opens (escape possible)", printed: "3.4568...",
+     witnesses: "A=3 B=3 O=3 C",
+     check: "ours: C(L2) = C(L3) = 3.4567962241 in Henon's convention; C(L1) = 4.0000000000 exactly"}
+  - {page: "59", quantity: "number of separate accessible regions in (x, xdot)", printed: "C > 4: 4 regions; 3.4568... < C < 4: three; C < 3.4568...: one",
+     witnesses: "A=2 B=2 O=2 C"}
+  - {page: "59", quantity: "C of Fig. 2 (central region, four stable periodic orbits f, g, h, i)", printed: "4.5", witnesses: "A B O C"}
+  - {page: "64", quantity: "Fig. 4 ordinate range, alpha/2pi for the curves about h at C = 4.5", printed: "0.06 to 0.08",
+     witnesses: "A B O C", note: "read off the axis; the minimum alpha0/2pi at h is between 0.06 and 0.07 (figure, approximate)"}
+  - {page: "64", quantity: "interior island chain about i at C = 4.5 (Fig. 5)", printed: "9 islands", witnesses: "C"}
+  - {page: "64", quantity: "C above which the section looks like Fig. 2 (no semi-ergodic region)", printed: "4.5", witnesses: "A B O C"}
+  - {page: "66", quantity: "exterior island chain at C = 4 (Fig. 6): periodic orbit closing after six revolutions about M1", printed: "6", witnesses: "C"}
+  - {page: "67", quantity: "C at which the region of curves about i vanishes (critical orbit i1, type 1)", printed: "3.7388...",
+     witnesses: "A=1 B=1 O=1 C", check: "Henon 1973 i1 = 3.738962; paper II i1 = 3.7388"}
+  - {page: "69", quantity: "C values of Fig. 9 (curves about i)", printed: "3.9; 3.85; 3.8; 3.75", witnesses: "A B O C"}
+  - {page: "70", quantity: "second stable branch of class i begins (orbit i14)", printed: "3.5664...",
+     witnesses: "A=1 B=1 O=1 C", check: "Henon 1973 i14 = 3.566406"}
+  - {page: "70", quantity: "second stable branch of class i ends (orbit i15)", printed: "3.4473...",
+     witnesses: "A=1 B=1 O=1 C", check: "Henon 1973 i15 = 3.445853 (differs by 1.4e-3); paper II i15 = 3.4473"}
+  - {page: "70", quantity: "C of Fig. 11 (large semi-ergodic region, one orbit numbered)", printed: "3.5", witnesses: "A B O C"}
+  - {page: "72", quantity: "C of the section showing the 7-island interior chain about h", printed: "3", witnesses: "A B O C",
+     note: "the text calls it Fig. 13; printed on p.72 under the Fig. 12 caption (captions interchanged)"}
+  - {page: "74", quantity: "C of the escape-orbit example, Figs. 14-15", printed: "2.85", witnesses: "A=0 B=2 O=0 C",
+     note: "points 0-12 near x = -0.4, then points 13-18 at x down to -30 (escape to -infinity)"}
+  - {page: "74", quantity: "C at which family h becomes unstable (critical orbit h1, a = -1, type 6)", printed: "1.2175...",
+     witnesses: "A=1 B=1 O=1 C",
+     check: "ours: a = -1 at C = 1.216891 (x0 = -1.0887); Henon 1973 h1 = 1.216891, x0 = -1.088744"}
+  - {page: "75", quantity: "C values of Fig. 16", printed: "2.5; 2; 1.9", witnesses: "A B O C"}
+  - {page: "75", quantity: "C values of Fig. 17", printed: "1.8669; 1.7; 1.6; 1.55; 1.5183", witnesses: "A B O C"}
+  - {page: "76", quantity: "C values of Fig. 18", printed: "1.5; 1.4; 1.25; 1.23", witnesses: "A B O C"}
+  - {page: "77", quantity: "C at which alpha0 = 2pi/4, a = 0 on family h (Moser fourth-order case; h stays stable; 4-periodic class alpha_4 bifurcates)",
+     printed: "1.8669...", witnesses: "A=1 B=1 O=1 C",
+     check: "ours: a = 0 at C = 1.866733 (x0 near -0.861); 1.7e-4 below the print; no six-digit published comparator held"}
+  - {page: "77", quantity: "C at which alpha0 = 2pi/3, a = -1/2 on family h (Moser third-order case; h unstable; meets 3-periodic class i_3)",
+     printed: "1.5183...", witnesses: "A=2 B=2 O=2 C",
+     check: "ours: a = -0.5 at C = 1.518282, x0 = -0.95497; paper II p.1004 prints the h/i_3 crossing at x0 = -0.955, C = 1.5183, a = -0.5"}
+  - {page: "77", quantity: "4-island chain of alpha_4 seen at", printed: "C = 2 (exterior) and C = 1.9 (interior)", witnesses: "C"}
+  - {page: "77", quantity: "3-island chain of i_3 seen at", printed: "C = 1.55 and C = 1.5183; absorbed by C = 1.5", witnesses: "A B O C"}
+  - {page: "78", quantity: "family h stable again from h2 (type 5) ...", printed: "1.0594...", witnesses: "A=4 B=2 O=3 C",
+     check: "Henon 1973 h2 = 1.059408; ours at C = 1.0594: a = -0.99998, x0 = -1.21037 (1973: -1.210359)"}
+  - {page: "78", quantity: "... to h3 (type 1, extremum of C on the characteristic)", printed: "0.9556...", witnesses: "A=1 B=0 O=1 C",
+     check: "Henon 1973 h3 = 0.955552; ours at C = 0.9556: two h roots, a = +1.084 and +0.918, consistent with the fold (a = +1) just below 0.9556"}
+  - {page: "78", quantity: "double-periodic class b_2 stable from b_2 7", printed: "1.135...", witnesses: "A=1 B=0 O=1 C",
+     check: "Henon 1973 b_2 7 = 1.133574 (differs by 1.4e-3); paper II b_2 7 = 1.135"}
+  - {page: "78", quantity: "... to b_2 8 (= h2)", printed: "1.0594...", witnesses: "A B O C", check: "Henon 1973 b_2 8 = 1.059408"}
+  - {page: "78", quantity: "C values of Fig. 21", printed: "1.10; 1.07; 1.0594; 1; 0.97", witnesses: "A B O C"}
+  - {page: "79", quantity: "manuscript received", printed: "29 Novembre 1965", witnesses: "A=4 B=4 O=4 C"}
+
+equations_without_numbers_note: >-
+  Eqs. (1)-(10) (pp.58-75) carry no fitted or tabulated numbers; they are typeset in the English translation. Eq. (8)
+  was checked against (4)-(7) by us (both rows reproduce (4) with sin^2 alpha0 = -bc). Eq. (9): r^3 cos 3(theta - theta0)
+  = const (alpha0 = 2pi/3). Eq. (10): r^4 [1 + p cos 4(theta - theta0)] = const (alpha0 = 2pi/4; stable if |p| < 1).
