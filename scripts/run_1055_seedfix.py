@@ -33,6 +33,7 @@ from cyclerfinder.nbody.degenerate_family import (
     bordered_solve,
     column_scales,
     detect_degenerate,
+    family_frame,
     family_root_1d,
     family_root_nd,
     scaled_svd,
@@ -59,6 +60,7 @@ class Target:
 
     def __init__(self, name: str, out: Path) -> None:
         self.name, self.out = name, out
+        self.ckpt_tag = "start"
         out.mkdir(parents=True, exist_ok=True)
         if name in IDEAL:
             self.b = _load("run_1025_sigma_batch", ROOT / "scripts" / "run_1025_sigma_batch.py")
@@ -111,11 +113,21 @@ class Target:
         if hasattr(self, "p"):
             zz, info = self.b.solve(self.p, z, iters, 0, False)
             return zz, info, bool(self.b.converged(info))
-        zz, info = self.rb.newton(self.c, z, iters, f"{self.name} newton")
-        ends = max(info.get("end_asymptote_kms", [0.0]))
-        # amendment 3: the start may be noise-floor-limited, as rungb's own start (#1039, #1044)
-        noise = max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6
-        ok = (bool(self.rb.converged(info)) or noise) and ends < 1e-6
+        # amendment 3: the start may be noise-floor-limited, as rungb's own start (#1039, #1044).
+        # One rungb Newton iteration at a time, so that the rule is checked after each, and the
+        # iterate is checkpointed (a call stopped by the time limit resumes from it).
+        ck = self.out / f"newton_{self.ckpt_tag}.npy"
+        zz = np.load(ck) if ck.exists() else np.asarray(z, dtype=np.float64)
+        info: dict[str, Any] = {"dr": [np.inf], "dv": [np.inf]}
+        ok = False
+        for _ in range(iters):
+            zz, info = self.rb.newton(self.c, zz, 1, f"{self.name} newton")
+            np.save(ck, zz)
+            ends = max(info.get("end_asymptote_kms", [0.0]))
+            noise = max(info["dr"]) < 1e-2 and max(info["dv"]) < 1e-6
+            ok = (bool(self.rb.converged(info)) or noise) and ends < 1e-6
+            if ok:
+                break
         return zz, info, ok
 
     def vinf(self, z: Any, s: float) -> list[float]:
@@ -181,18 +193,17 @@ def stage_neg(t: Target) -> None:
         return
     t.set_sigma(SIGMA0)
     z0 = t.scale(t.seed, SIGMA0)
-    _, j0 = t.rj(z0)
-    d = column_scales(j0)
-    u, _, vt = scaled_svd(j0, d)
-    u_n, v_n = u[:, -1:], vt[-1:].T
+    fr = family_frame(t.rj, z0, 1, TOL)  # the same base and vectors as the fix stage
+    d, u_n, v_n, z_ref = fr.d, fr.u_n, fr.v_n, fr.base.z
     zs = np.asarray(rec["z_star"])
     big_l = float(rec["newton_length"])
     out = {}
     for lab, da in (("plus", 0.5 * big_l), ("minus", -0.5 * big_l)):
         a = float(rec["alpha_star"]) + da
-        br = bordered_solve(t.rj, zs + (v_n[:, 0] * da) / d, d, u_n, v_n, z0, np.array([a]), TOL)
+        br = bordered_solve(t.rj, zs + (v_n[:, 0] * da) / d, d, u_n, v_n, z_ref, np.array([a]), TOL)
         row: dict[str, Any] = {"alpha": a, "family_point": bool(br.converged)}
         if br.converged:
+            t.ckpt_tag = f"neg_{lab}"
             _, info, ok = t.newton(br.z, 40)
             row.update(started=ok, dr=max(info["dr"]), dv=max(info["dv"]))
         out[lab] = row

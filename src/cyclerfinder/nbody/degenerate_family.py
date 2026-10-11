@@ -124,6 +124,38 @@ def bordered_solve(
 
 
 @dataclass
+class FamilyFrame:
+    """The linearisation at the BASE: the seed with its complement rows converged (#1055
+    amendment 1). ``d`` column scales, ``u_n`` / ``v_n`` the q left / right null vectors (scaled),
+    ``big_l`` the Newton-step length along them, ``base`` the converged base point."""
+
+    base: BorderedResult
+    d: Arr
+    u_n: Arr
+    v_n: Arr
+    big_l: float
+    converged: bool
+
+
+def family_frame(rj: ResJac, z0: Arr, q: int, tol: float) -> FamilyFrame:
+    """Converge the complement at the seed with the seed's null vectors, then re-linearise at the
+    converged point and converge again with the base's own vectors (arclength rows about it)."""
+    _, j0 = rj(z0)
+    d = column_scales(j0)
+    u, s, vt = scaled_svd(j0, d)
+    first = bordered_solve(rj, z0, d, u[:, -q:], vt[-q:].T, z0, np.zeros(q), tol)
+    if not first.converged:
+        return FamilyFrame(first, d, u[:, -q:], vt[-q:].T, 0.0, False)
+    rb_, jb = rj(first.z)
+    d = column_scales(jb)
+    u, s, vt = scaled_svd(jb, d)
+    u_n, v_n = u[:, -q:], vt[-q:].T
+    base = bordered_solve(rj, first.z, d, u_n, v_n, first.z, np.zeros(q), tol)
+    big_l = float(np.linalg.norm((u_n.T @ rb_) / s[-q:]))
+    return FamilyFrame(base, d, u_n, v_n, big_l, base.converged)
+
+
+@dataclass
 class FamilyResult:
     z_star: Arr | None
     alpha_star: float | None
@@ -148,16 +180,12 @@ def family_root_1d(
     is ``h_frac`` L, doubled after a corrector converging in 4 iterations or fewer, halved on
     failure (down to 1e-4 L)."""
     say = log or (lambda _m: None)
-    r0, j0 = rj(z0)
-    d = column_scales(j0)
-    u, s, vt = scaled_svd(j0, d)
-    u_n = u[:, -1:]
-    v_n = vt[-1:].T
-    big_l = abs(float(u_n[:, 0] @ r0)) / float(s[-1])
-    base = bordered_solve(rj, z0, d, u_n, v_n, z0, np.zeros(1), tol)
+    fr = family_frame(rj, z0, 1, tol)
+    d, u_n, v_n, big_l, base = fr.d, fr.u_n, fr.v_n, fr.big_l, fr.base
     res = FamilyResult(None, None, "base complement did not converge", newton_length=big_l)
-    if not base.converged:
+    if not fr.converged:
         return res
+    z0 = base.z  # arclength is measured from the base
     g0 = float(base.g[0])
     res.scan.append((0.0, g0, base.complement_norm))
     say(f"family: L {big_l:.3e} g(0) {g0:.3e} comp {base.complement_norm:.2e}")
@@ -227,17 +255,13 @@ def family_root_nd(
     1 % of L, the Newton-step length of the base); steps limited to L; stop at |g| < 1e-3 |g(0)|,
     or when |alpha| exceeds ``max_lengths`` L."""
     say = log or (lambda _m: None)
-    r0, j0 = rj(z0)
-    d = column_scales(j0)
-    u, s, vt = scaled_svd(j0, d)
-    u_n = u[:, -q:]
-    v_n = vt[-q:].T
-    big_l = float(np.linalg.norm((u_n.T @ r0) / s[-q:]))
+    fr = family_frame(rj, z0, q, tol)
+    d, u_n, v_n, big_l, cur = fr.d, fr.u_n, fr.v_n, fr.big_l, fr.base
     res = FamilyResult(None, None, "base complement did not converge", newton_length=big_l)
     alpha = np.zeros(q)
-    cur = bordered_solve(rj, z0, d, u_n, v_n, z0, alpha, tol)
-    if not cur.converged:
+    if not fr.converged:
         return res
+    z0 = cur.z  # arclength is measured from the base
     g0n = float(np.linalg.norm(cur.g))
     say(f"family nd: q {q} L {big_l:.3e} |g(0)| {g0n:.3e}")
     if g0n <= tol:

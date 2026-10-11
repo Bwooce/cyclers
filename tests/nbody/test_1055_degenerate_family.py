@@ -29,16 +29,16 @@ def toy1(sigma: float, degenerate: bool = True):  # type: ignore[no-untyped-def]
         x, vy, w = z
         r = np.array(
             [
-                x - 1.0e6 - 1e-7 * w**2,
+                x - 1.0e6 - 1e-9 * w**2,
                 1e3 * (vy - 3.0 - 1e-6 * w),
-                f * 1e3 * (w - W_ROOT) / 1e5 * (1.0 + 0.1 * (vy - 3.0)),
+                f * (1e3 * (w - W_ROOT) / 1e5 + 1e-2 * (vy - 3.0 - 1e-6 * w)),
             ]
         )
         j = np.array(
             [
-                [1.0, 0.0, -2e-7 * w],
+                [1.0, 0.0, -2e-9 * w],
                 [0.0, 1e3, -1e-3],
-                [0.0, f * 1e3 * 0.1 * (w - W_ROOT) / 1e5, f * 1e3 / 1e5 * (1.0 + 0.1 * (vy - 3.0))],
+                [0.0, f * 1e-2, f * (1e3 / 1e5 - 1e-8)],
             ]
         )
         return r, j
@@ -53,7 +53,7 @@ def toy2(sigma: float):  # type: ignore[no-untyped-def]
         x, vy, w, u = z
         r = np.array(
             [
-                x - 1.0e6 - 1e-7 * w**2 - 5e-8 * u**2,
+                x - 1.0e6 - 1e-9 * w**2 - 5e-10 * u**2,
                 1e3 * (vy - 3.0 - 1e-6 * w + 2e-6 * u),
                 sigma * 1e3 * ((w - W_ROOT) + 0.2 * (u - U_ROOT)) / 1e5,
                 sigma * 1e3 * ((u - U_ROOT) - 0.1 * (w - W_ROOT)) / 1e5,
@@ -61,7 +61,7 @@ def toy2(sigma: float):  # type: ignore[no-untyped-def]
         )
         j = np.array(
             [
-                [1.0, 0.0, -2e-7 * w, -1e-7 * u],
+                [1.0, 0.0, -2e-9 * w, -1e-9 * u],
                 [0.0, 1e3, -1e-3, 2e-3],
                 [0.0, 0.0, sigma * 1e-2, sigma * 0.2e-2],
                 [0.0, 0.0, -sigma * 0.1e-2, sigma * 1e-2],
@@ -117,7 +117,7 @@ def test_family_root_1d_finds_the_solvability_root() -> None:
         r, j = rj(z)
         z = z + np.linalg.solve(j, -r)
     assert abs(z[2] - W_ROOT) < 1e-9 * W_ROOT
-    assert abs(z[0] - (1.0e6 + 1e-7 * W_ROOT**2)) < 1e-6
+    assert abs(z[0] - (1.0e6 + 1e-9 * W_ROOT**2)) < 1e-6
 
 
 def test_family_root_nd_two_directions() -> None:
@@ -133,8 +133,22 @@ def test_family_root_nd_two_directions() -> None:
 def test_well_conditioned_seed_needs_no_move() -> None:
     """A seed already at the root: g(0) = 0 within rounding, the root is the base."""
     rj = toy1(0.02)
-    z0 = np.array([1.0e6 + 1e-7 * W_ROOT**2, 3.0 + 1e-6 * W_ROOT, W_ROOT])
+    z0 = np.array([1.0e6 + 1e-9 * W_ROOT**2, 3.0 + 1e-6 * W_ROOT, W_ROOT])
     res = family_root_1d(rj, z0, tol=1e-6)
     assert res.status == "root at base"
     assert res.z_star is not None
     assert abs(res.z_star[2] - W_ROOT) < 1e-6 * W_ROOT
+
+
+def test_family_frame_converges_an_off_family_seed() -> None:
+    """A seed off the family (vy 10 m/s high): the frame's base has its complement converged (the
+    residual lies along the left null vector) and is linearised there (amendment 4)."""
+    from cyclerfinder.nbody.degenerate_family import family_frame
+
+    rj = toy1(0.02)
+    fr = family_frame(rj, np.array([1.0e6, 3.01, 0.0]), 1, 1e-6)
+    assert fr.converged
+    assert fr.base.complement_norm < 1e-6
+    r, _ = rj(fr.base.z)
+    u = fr.u_n[:, 0]
+    assert float(np.max(np.abs(r - u * float(u @ r)))) < 1e-6  # the residual lies along u

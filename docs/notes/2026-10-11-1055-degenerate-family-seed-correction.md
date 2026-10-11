@@ -217,3 +217,26 @@ floors: control A met them.
   - `data/1055_gc-1/`.
 - Control B (GanEur#316, jup365): detection q = 0 (sv_min 1.53e-5 at 0.02, 1.25e-5 at 0.005), so the
   corrected seed is the seed. The start runs under amendment 3.
+- Control B (GanEur#316, jup365): PASS. q = 0, so the seed is unchanged. The start (amendment 3)
+  converges at dr 3.0e-3 km and dv 5.1e-8 km/s, with V_inf 3.19029 / 3.19107 / 3.19554 / 3.77569 /
+  3.17503, equal to the #1039 (b') sigma-0.02 start to 1e-5. (Three calls: the first two hit the
+  470 s limit under machine load 35-146, then amendment 3's per-iteration checkpoint resumed.)
+
+### Amendment 4: implementation BUG found by the first gc4-19 run, and fixed (12:00-12:25 AEDT)
+
+- Run (12:00): gc4-19, detection q = 2 (sv 7.37e-6 and 3.70e-6 at 0.02; 1.84e-6 and 1.00e-6 at
+  0.005). The q-d Newton moved 4 steps of L = 2.6e3, and |g| fell only from 8.15e-3 to 7.72e-3:
+  "no root within the scanned range".
+- Cause: the code took the null vectors, the scales and L from the RAW seed. Amendment 1 registered
+  them at the BASE (the seed with its complement converged). The raw seed is far from the family
+  (|r| about 3.7e3), so its vectors and L do not describe the family the corrector then traces.
+  Fixed in `family_frame`: converge the complement with the seed's vectors, then re-linearise at
+  that point and converge again with the base's own vectors; the arclength is measured from the
+  base. The driver's negative-control stage uses the same frame.
+- Test toys: with base vectors, the original toy's curvature (x shifted by 1e-7 w^2 km, which is
+  16,000 km at the root) put the root 10 L away in the fixed-v coordinate. The toy curvature is now
+  1e-9 w^2 (160 km at the root), and the family row's vy coupling vanishes on the family, so the
+  root is exactly 4e5 km by construction. Added test: an off-family seed gives a converged base
+  with its residual along u. 8 tests pass, and `mypy src tests` is clean.
+- Re-runs: gc4-19 fix again (its first run is VOID). gc-1's fix is re-run for the record; its
+  result cannot change (g = 7e-14, root at base). Control B is q = 0 and does not use the frame.
