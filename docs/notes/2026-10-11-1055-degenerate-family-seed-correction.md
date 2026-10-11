@@ -3,6 +3,12 @@
 Status: PRE-REGISTRATION (written and committed before any #1055 corrector run). Lead ruling
 2026-10-11. No catalogue writes; nothing is called novel.
 
+How to read this driver's results: judge each stage by its output file in `data/1055_<target>/`,
+never by the exit code. fix -> `fix.json` (a paused call writes only `fix_state.json` and exits 0),
+start -> `start.json` (`converged`), neg -> `neg.json` (`started` must be false), ideal cont ->
+`<target>.json` (`outcome`), jup365 cont -> `sigma_n1.json`, limit -> `limit.json`. A stage that
+crashes leaves its file absent or unchanged.
+
 ## 1. What #1046 left, and what the premise check found (before any design)
 
 #1046 (secs. 6.3-9) located the stall of GanCal#1@2013 and gc-1 e2 on jup365: an out-of-plane
@@ -475,3 +481,8 @@ start along the near-null direction by an amount proportional to sigma: about 10
 Ganymede nodes at sigma 0.02. In the limit that move vanishes. The full-mass orbit therefore
 continues gc4-19's own #973 member. The caveat in sec. 10 reduces to "reached from the #1055
 corrected seed", and no separate #973 gate run of a new member is needed.
+
+Independent check (twobody-ext-opus, `docs/notes/2026-10-11-1055-gc4-19-973-gate.md`): from the
+limit x_days (3.498195, 36.485538), the #973 `correct_dates` lands on the gc4-19 gauntlet zero within
+1e-8 s (date residual 7.4e-5 km/s before correction), and it passes the full #973 gate (worst ratio
+0.899, both screens, DOP853 5.3e-5 km).
