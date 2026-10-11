@@ -1,0 +1,73 @@
+# Porter & Canup 2023, Table 3 (ICRF state vectors of the four small satellites), Table 4 (mean osculating elements
+#   integrated over 1000 yr), and the text/Figure 1 mass values for Styx, Nix, Kerberos and Hydra.
+# Source: S. B. Porter and R. M. Canup, "Orbits and Masses of the Small Satellites of Pluto",
+#   The Planetary Science Journal 4:120 (14 pp), 2023 July, doi 10.3847/psj/acde77.
+#   Received 2022 May 13, revised 2023 May 15, accepted 2023 May 22, published 2023 July 11. Open access, CC BY 4.0.
+# Local file: publisher PDF, 14 pp., text layer, md5 99f33bd5a57ded820339be48efb36f79. PDF page n = journal page n.
+# Tables: 3 p.11; 4 p.12. Figure 1 (corner plot with the mass summary printed in the figure) p.10.
+#   Tables 1 and 2 (HST and LORRI astrometry) are excerpts of machine-readable tables; they are not transcribed.
+# Witnesses: C = page images (pdftoppm -r 200, pages 10, 11, 12), read cell by cell (decides);
+#   A = the text layer (pdftotext -layout). Every number below was seen in both. No cell disagrees.
+#   Text-layer glyph losses: the degree sign prints as a stray mark in "0.0249" style values ("0 .0249"), and the
+#   minus sign of the exponents is a Unicode minus.
+# No value here was computed by us. Our values are only in `note:` fields marked "ours" and in
+#   porter-canup-2023-compare.py / .out. Numbers are kept as printed (strings).
+#
+# MODEL (sec. 3, p.7-10): Runge-Kutta-Nystrom integrator (PyNBody), Pluto, Charon and the four small moons only.
+#   NO solar or planetary perturbations. Pluto and Charon masses and states are PLU055, held fixed (not fitted).
+#   28 parameters: for each small moon ln(GM) plus a barycentric state at the epoch. emcee, 300 walkers. Absolute
+#   astrometry (HST 2005-2019 and New Horizons LORRI 2015 Feb-Jul, both registered to Gaia DR2).
+#   Priors: density 0.1-3.0 g/cm^3 with the Porter et al. 2021 volumes (the text prints "g m-3", a typo), and a
+#   stability check (sqrt(1-e^2) cos(I) must stay within 1e-3 of its start: 10 yr back, then 1000 yr forward).
+conventions:
+  frame: "ICRF, origin Pluto system barycentre"
+  time: "Table 3 epoch 2015-07-15 23:59:59.816 UTC = 2015-07-16 00:01:08.000 TDB = ET 490276868.000 s (as printed)"
+  units: "km, km/s, km^3/s^2, days, deg, g/cm^3"
+  pluto_charon: "Table 3 Pluto and Charon rows are PLU055 states, not fitted here; no Pluto or Charon GM is fitted or printed"
+  uncertainties: "1-sigma; Table 3 gives per-component sigmas for the four small moons; masses are MCMC mean and standard deviation; Styx and Kerberos limits are 1-sigma upper bounds of the posterior"
+  table4_definition: "mean of the osculating elements over a 1000 yr backward run of the whole MCMC cloud, sampled every 0.1 yr (10,000 samples of period); +- is the spread over the cloud, not the dispersion over time"
+  table4_columns: "T/T_PC = satellite period over the Pluto-Charon orbital period; a relative to the barycentre; I relative to the Pluto-Charon orbital plane"
+  figure1_precision: "Figure 1 prints Nix 1.74550 +- 0.34724 and Hydra 2.01140 +- 0.20175 (x1e-3); the text rounds to 1.74 +- 0.35 and 2.01 +- 0.20, the abstract to 1.8 +- 0.4 and 2.0 +- 0.2"
+tables:
+  - table: "3"
+    caption: "ICRF State Vectors of the Small Satellites of Pluto, Relative to the Pluto System Barycenter"
+    journal_page: "11"
+    epoch: "2015-07-15 23:59:59.816 UTC, 2015-07-16 00:01:08.000 TDB, 490276868.000 ET"
+    note: "The Pluto and Charon states are from the JPL PLU055 solution."
+    columns: [body, x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s]
+    rows:
+      - {body: Pluto, x: "67.8", y: "-253.8", z: "-2118.2", vx: "-0.017843", vy: "-0.016437", vz: "0.001400"}
+      - {body: Charon, x: "-554.9", y: "2076.5", z: "17330.3", vx: "0.145990", vy: "0.134489", vz: "-0.011457"}
+      - {body: Styx, x: "-30168.4", y: "-28721.6", z: "-4092.4", vx: "-0.010427", vy: "0.012730", vz: "0.150385", sigma_x: "6.0", sigma_y: "6.1", sigma_z: "6.3", sigma_vx: "0.000025", sigma_vy: "0.000033", sigma_vz: "0.000014"}
+      - {body: Nix, x: "34094.4", y: "29302.6", z: "-16558.3", vx: "-0.012886", vy: "-0.031895", vz: "-0.132617", sigma_x: "1.9", sigma_y: "2.2", sigma_z: "2.1", sigma_vx: "0.000006", sigma_vy: "0.000006", sigma_vz: "0.000003"}
+      - {body: Kerberos, x: "-28868.4", y: "-19795.9", z: "47919.3", vx: "0.087782", vy: "0.094671", vz: "0.076441", sigma_x: "4.2", sigma_y: "5.0", sigma_z: "3.9", sigma_vx: "0.000009", sigma_vy: "0.000009", sigma_vz: "0.000008"}
+      - {body: Hydra, x: "-22621.1", y: "-11900.4", z: "61826.5", vx: "0.096768", vy: "0.097875", vz: "0.045197", sigma_x: "2.1", sigma_y: "3.2", sigma_z: "1.2", sigma_vx: "0.000004", sigma_vy: "0.000004", sigma_vz: "0.000004"}
+  - table: "4"
+    caption: "Mean Osculating Orbital Elements of the Small Satellites, Integrated over 1000 yr"
+    journal_page: "12"
+    columns: [body, T_over_T_PC, a_km, e, I_deg]
+    rows:
+      - {body: Styx, T_over_T_PC: "3.269409 +- 0.000035", a_km: "43171.97 +- 0.31", e: "0.024767 +- 0.000008", I_deg: "0.0411 +- 0.0102"}
+      - {body: Nix, T_over_T_PC: "3.994111 +- 0.000003", a_km: "49337.76 +- 0.02", e: "0.015353 +- 0.000002", I_deg: "0.0249 +- 0.0031"}
+      - {body: Kerberos, T_over_T_PC: "5.127685 +- 0.000013", a_km: "58279.64 +- 0.10", e: "0.009901 +- 0.000006", I_deg: "0.4210 +- 0.0049"}
+      - {body: Hydra, T_over_T_PC: "6.065662 +- 0.000011", a_km: "65186.17 +- 0.08", e: "0.008572 +- 0.000006", I_deg: "0.2819 +- 0.0023"}
+masses:
+  units: "km^3/s^2 (GM)"
+  source: "Figure 1 (p.10) and text p.10; abstract p.1 for the rounded form"
+  rows:
+    - {body: Nix, figure1: "1.74550 +- 0.34724 x 10^-3", text: "(1.74 +- 0.35) x 10^-3", abstract: "(1.8 +- 0.4) x 10^-3", mass_kg_text: "(2.60 +- 0.52) x 10^16", density_g_cm3_figure1: "1.030 +- 0.203", density_text: "1.031 +- 0.204", positional_sigma_at_epoch_km: "4"}
+    - {body: Hydra, figure1: "2.01140 +- 0.20175 x 10^-3", text: "(2.01 +- 0.20) x 10^-3", abstract: "(2.0 +- 0.2) x 10^-3", mass_kg_text: "(3.01 +- 0.30) x 10^16", density_g_cm3_figure1: "1.220 +- 0.151", density_text: "1.220 +- 0.150", positional_sigma_at_epoch_km: "4"}
+    - {body: Kerberos, figure1: "<0.04568 (1-sigma) x 10^-3", text: "<0.05 x 10^-3", abstract: "5 x 10^-5", mass_kg_text: "<8 x 10^14", density_g_cm3_figure1: "<2.03", density_text: "<2.0", positional_sigma_at_epoch_km: "8"}
+    - {body: Styx, figure1: "<0.02602 (1-sigma) x 10^-3", text: "<0.03 x 10^-3", abstract: "3 x 10^-5", mass_kg_text: "<5 x 10^14", density_g_cm3_figure1: "<2.20", density_text: "<2.1", positional_sigma_at_epoch_km: "11"}
+  secondary_solution: "text p.10: a minor class near Nix 0.6e-3 and Hydra 1.0e-3 (0.4 and 0.6 g/cm^3), 87 of 11,400 cases (0.8 percent)"
+  starting_masses_PLU055_quoted_p3: "Nix 2.15e-3, Hydra 3.66e-3, Kerberos 0.454e-3, Styx 2e-20 km^3/s^2"
+text_values:
+  - {quantity: "reduced chi^2, HST, Table 3 solution", value: "Nix 0.053, Hydra 0.102, Kerberos 0.534, Styx 1.566", page: "11"}
+  - {quantity: "reduced chi^2, LORRI", value: "Nix 0.643, Hydra 0.576, Kerberos 0.841, Styx 0.613", page: "11"}
+  - {quantity: "reduced chi^2, HST against PLU055", value: "Nix 4.038, Hydra 0.521, Kerberos 1.840, Styx 4.272", page: "11"}
+  - {quantity: "reduced chi^2 averaged over all data (Figure 2 caption)", value: "Nix 0.376, Hydra 0.331, Kerberos 0.596, Styx 0.676", page: "12"}
+  - {quantity: "Kerberos e", value: "0.009901 +- 0.000006, below the Youdin 2012 limit of 0.02", page: "11"}
+  - {quantity: "Pluto-Charon period quoted in sec. 1", value: "6.3872273 +- 0.0000003 d (Buie et al. 2012)", page: "1"}
+  - {quantity: "period ratios quoted in sec. 1", value: "3.269 : 3.994 : 5.128 : 6.066 (to Pluto-Charon)", page: "1"}
+  - {quantity: "volumes used (Porter et al. 2021)", value: "Nix sphere D 36.5 +- 0.5 km; Hydra D 36.2 +- 1 km; Styx 10.5 +- 3 km; Kerberos 12 +- 3 km", page: "3"}
+  - {quantity: "Pluto and Charon densities quoted", value: "1.860 +- 0.013 and 1.702 +- 0.021 g/cm^3 (Stern et al. 2015)", page: "11"}
