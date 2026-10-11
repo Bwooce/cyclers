@@ -584,3 +584,18 @@ Tool: `scripts/v2_samephase_1007.py --final-controls`.
   `judge`.
 
 The controls behave, so the re-judges proceed (secs. 8.12-8.14).
+
+### 8.12 gc-1 and gc-2 re-judged under the final wording (2026-10-11 11:29 AEDT; `--final-gc`, `data/1007_v2/final_gc.{json,log}`)
+
+Existing 10-cycle jup365 chains, no re-solve. L = 4, comparisons i = 1..4.
+
+| Row | Epochs passing | Continuity | Gate (worst) | Re-fly | D' max / band (d) | W' max / band (km/s) | Slope diagnostics (per cycle) |
+|---|---|---|---|---|---|---|---|
+| gc-1 | **5/5 PASS** | 8.6e-7 | 0.755-0.761 | 0.19 km | 0.013-0.037 / 0.185 | 0.0053-0.0082 / 0.175 | D' -0.0023 .. +0.0001 d; W' -0.0008 .. +0.0006 km/s |
+| gc-2 | **5/5 PASS** | 9.2e-8 | 0.813-0.823 | <= 2.4e-5 km | 0.012-0.057 / 0.13 | 0.0045-0.0062 / 0.30 | D' -0.0005 .. +0.0006 d; W' -0.0011 .. +0.0008 km/s |
+
+- gc-1 is no longer marginal on drift. Its continuity margin is unchanged: 8.6e-7 against 1e-6.
+- gc-2's sec. 8.5 i = 0 failures are gone, because the start cycle is excluded.
+- Systematic offset against the ideal model (recorded, not banded; sec. 7): gc-1 up to 0.079 km/s;
+  gc-2 0.16-0.36 km/s.
+- Both rows keep V2. Their evidence text is updated in the next window.

@@ -1,0 +1,23 @@
+gc-1 JD 2462511.7: n=10 cont=1.6e-04 gate=pass (0.758) refly=1.88e-01 km D=0.165/0.190 d W=0.079/0.181 km/s growth D 1.14 W 0.93 -> PASS [1111]
+gc-1 JD 2462511.7: c1=1 (8.6e-07) c2=1 (0.758) c3=1 (1.9e-01 km) c4=1 D'=0.035/0.185 W'=0.0072/0.175 [slopes -0.0013 d, -0.00031 km/s per cycle] -> PASS
+gc-1 JD 2464840.9: n=10 cont=1.9e-04 gate=pass (0.756) refly=1.88e-01 km D=0.158/0.190 d W=0.073/0.181 km/s growth D 1.15 W 0.95 -> PASS [1111]
+gc-1 JD 2464840.9: c1=1 (8.6e-07) c2=1 (0.756) c3=1 (1.9e-01 km) c4=1 D'=0.037/0.186 W'=0.0074/0.176 [slopes -0.0023 d, -0.00080 km/s per cycle] -> PASS
+gc-1 JD 2467182.8: n=10 cont=1.8e-04 gate=pass (0.755) refly=1.88e-01 km D=0.132/0.190 d W=0.054/0.181 km/s growth D 1.04 W 1.13 -> PASS [1111]
+gc-1 JD 2467182.8: c1=1 (8.6e-07) c2=1 (0.755) c3=1 (1.9e-01 km) c4=1 D'=0.013/0.185 W'=0.0076/0.176 [slopes +0.0001 d, +0.00057 km/s per cycle] -> PASS
+gc-1 JD 2469524.7: n=10 cont=1.4e-04 gate=pass (0.761) refly=1.88e-01 km D=0.222/0.190 d W=0.068/0.181 km/s growth D 1.16 W 1.10 -> FAIL [1110]
+gc-1 JD 2469524.7: c1=1 (8.6e-07) c2=1 (0.761) c3=1 (1.9e-01 km) c4=1 D'=0.030/0.185 W'=0.0082/0.175 [slopes -0.0009 d, +0.00040 km/s per cycle] -> PASS
+gc-1 JD 2471854.0: n=10 cont=1.8e-04 gate=pass (0.757) refly=1.88e-01 km D=0.195/0.190 d W=0.071/0.181 km/s growth D 1.07 W 1.08 -> FAIL [1110]
+gc-1 JD 2471854.0: c1=1 (8.6e-07) c2=1 (0.757) c3=1 (1.9e-01 km) c4=1 D'=0.013/0.186 W'=0.0053/0.176 [slopes +0.0001 d, +0.00051 km/s per cycle] -> PASS
+gc-2 JD 2462511.3: n=10 cont=9.2e-08 gate=pass (0.819) refly=1.14e-05 km D=0.120/0.130 d W=0.358/0.304 km/s growth D 1.29 W 1.99 -> PASS [1111]
+gc-2 JD 2462511.3: c1=1 (9.2e-08) c2=1 (0.819) c3=1 (1.1e-05 km) c4=1 D'=0.057/0.125 W'=0.0058/0.303 [slopes +0.0002 d, -0.00114 km/s per cycle] -> PASS
+gc-2 JD 2464840.6: n=10 cont=9.3e-08 gate=pass (0.817) refly=1.21e-05 km D=0.102/0.130 d W=0.170/0.304 km/s growth D 1.63 W 1.00 -> PASS [1111]
+gc-2 JD 2464840.6: c1=1 (9.3e-08) c2=1 (0.817) c3=1 (1.2e-05 km) c4=1 D'=0.040/0.128 W'=0.0055/0.302 [slopes -0.0001 d, -0.00087 km/s per cycle] -> PASS
+gc-2 JD 2467182.5: n=10 cont=9.2e-08 gate=pass (0.814) refly=2.44e-05 km D=0.103/0.130 d W=0.340/0.304 km/s growth D 1.41 W 1.47 -> PASS [1111]
+gc-2 JD 2467182.5: c1=1 (9.2e-08) c2=1 (0.814) c3=1 (2.4e-05 km) c4=1 D'=0.046/0.126 W'=0.0052/0.303 [slopes -0.0003 d, -0.00086 km/s per cycle] -> PASS
+gc-2 JD 2469524.3: n=10 cont=9.2e-08 gate=pass (0.823) refly=6.32e-06 km D=0.038/0.130 d W=0.162/0.304 km/s growth D 1.01 W 1.21 -> PASS [1111]
+gc-2 JD 2469524.3: c1=1 (9.2e-08) c2=1 (0.823) c3=1 (6.3e-06 km) c4=1 D'=0.012/0.129 W'=0.0045/0.303 [slopes +0.0006 d, +0.00082 km/s per cycle] -> PASS
+gc-2 JD 2471853.7: n=10 cont=9.2e-08 gate=pass (0.813) refly=1.32e-05 km D=0.085/0.130 d W=0.346/0.304 km/s growth D 1.28 W 1.47 -> PASS [1111]
+gc-2 JD 2471853.7: c1=1 (9.2e-08) c2=1 (0.813) c3=1 (1.3e-05 km) c4=1 D'=0.037/0.127 W'=0.0062/0.303 [slopes -0.0005 d, -0.00110 km/s per cycle] -> PASS
+gc-1: V2 (final wording) PASS (5/5)
+gc-2: V2 (final wording) PASS (5/5)
+wrote data/1007_v2/final_gc.json
