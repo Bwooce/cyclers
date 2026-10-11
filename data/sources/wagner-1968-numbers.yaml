@@ -1,0 +1,45 @@
+# Wagner 1968, "The Restricted Problem of Three Bodies (III)", NASA Technical Report No. 4, Grant NsG 280-63, Department of Physics,
+# University of Illinois, Urbana, 1 June 1968 (NASA CR-95832, NTRS 19680020622). 24 PDF pages: cover (p.1), text pp.1-9 (PDF 2-10), references (PDF 12),
+# figure captions (PDF 13-14), Figs. 1-8 (PDF 15-22), "Final Report NsG 280-63" (PDF 23-24).
+# The report has NO tables. The numbers are in the text and in the figures. A table of initial and final conditions of 14 limiting orbits is in Bartlett 1964
+# (part I, not held) and is only cited here.
+# Local file: 24 pp. scan with a poor letter-spaced text layer; the filed copy is an ocrmypdf --redo-ocr -l eng copy, md5 03d6971426be365891d095cbb7d8b004
+# (4,321,069 bytes) of the received scan, md5 67aa8032872efc31697b079587e91cc9 (4,384,626 bytes).
+# Witnesses: A = the OCR text layer of the filed copy; B = the page images (90 dpi) read by eye for pp.2-10 and the reference and figure pages. A and B agree on all
+# numbers below (25 values compared after dropping whitespace), and the constants have an arithmetic witness C (ours, in `check:`). Figure shapes are not transcribed.
+# All values in `check:` fields are ours.
+setting:
+  - {item: "variables", value: "Thiele (regularised) coordinates (E, F); axis of symmetry the E or F axis; eta- and xi-axes of the inertial-barycentric rotating frame", page: 2}
+  - {item: "mass ratio parameter", value: "gamma = (m1 - m2) / (m1 + m2); gamma = 0 equal masses", page: 2}
+  - {item: "critical mass ratio", value: "gamma_0 = sqrt(23/27) = 0.922958; spiral motion near L4 for -gamma_0 < gamma < gamma_0, closed ellipses for gamma_0 <= |gamma| <= 1", page: 2,
+     check: "sqrt(23/27) = 0.9229582. In mu = m2 / (m1 + m2) terms mu = (1 - gamma) / 2, so gamma_0 corresponds to mu = 0.0385209, the Routh value (1 - sqrt(1 - 4/27)) / 2."}
+  - {item: "L4 in Thiele coordinates", value: "E = -pi/2, F = sinh^-1(sqrt 3) = 1.316958", page: 2, check: "asinh(sqrt 3) = 1.3169579"}
+  - {item: "energy parameter", value: "T = K - gamma^2, K the Jacobi constant; at L4 K = 11 + gamma^2 so T = 11 for every gamma (all periodic-asymptotic limiting orbits lie on the T = 11 line)", page: 3-4}
+  - {item: "slope of the outgoing spiral at E = -pi/2", value: "dF/dE = p - beta (p theta + 5/4) / (theta^2 + 4 q^2); theta = 2p + beta, beta^2 = 27 gamma^2 / 16, p^2 - q^2 = -1/2, 4 p q = sqrt((27/4)(1 - gamma^2) - 1)", page: 3,
+     note: "read from the page image; the text layer garbles the formula"}
+limiting_orbits_scan:
+  - {item: "number of Stromgren's limiting orbits symmetric about the xi-axis (E or F axis) at gamma = 0", value: 14, page: 2}
+  - {item: "orbits followed as functions of gamma (Fig. 1)", value: "10 of the 14 (the caption says 11)", page: 4, note: "text p.4 says 10 of the 14; Fig. 1 caption says 11 orbits; the figure is not counted here"}
+  - {item: "F_i spread at gamma = 0", value: "band of width about 0.015", page: 4}
+  - {item: "range scanned", value: "not much beyond |gamma| = 0.85 (accuracy difficulties)", page: 4}
+  - {item: "limiting orbits I and II merge", value: "gamma about -0.059", page: 5, check: "also the closing of classes (k) and (mu); the paper says both begin and end only on orbits I and II"}
+  - {item: "limiting orbits III and IV merge", value: "E about 0.75 at gamma about -0.24", page: 5, check: "closing of class (beta); the outermost member of the nested closed set for (beta) vanishes at gamma about -0.83"}
+  - {item: "orbits VIII and its conjugate VIII*", value: "merge at E about -2.27 at gamma about -0.70; below this the (g) class still exists with other termination properties", page: 6}
+  - {item: "orbits XI and XIV merge", value: "F about -0.35 at gamma about -0.582", page: 6, check: "class (alpha-delta) affected; touches the zero-velocity surface afterwards"}
+  - {item: "orbits V and VI", value: "span almost the whole gamma range, no conjugate partner down to gamma = -0.85", page: 6}
+eta_axis_symmetric_classes:
+  - {item: "Stromgren's second eta-axis limiting orbit", value: "eta_0 = 1.7008 at gamma = 0 (T = 11, small, encircles L1 then spirals into L4; its mirror image about the xi-axis spirals into L5, Fig. 4 orbit 1)", page: 7}
+  - {item: "Stromgren's first eta-axis limiting orbit", value: "eta_0 about 1.72025 at gamma = 0 (crosses the xi-axis outside the masses, turns to strike the eta-axis well above L4)", page: 8}
+  - {item: "extreme orbits of the simple class (Fig. 4)", value: "number 2 at T = 11.00; number 3 at T = 9.486659 (very near the minimum)", page: 7}
+  - {item: "hybrid class orbits, Figs. 6-7 (T values)", value: "orbit 2: 10.7753; 3: 10.57482; 4: 11.45292; 5: 12.45 (near the maximum); 6: 12.373; 7: 11.861; 8: 11.093; 9: 10.77264", page: 8-9,
+     note: "orbit 1 is Stromgren's second limiting orbit at T = 11.0, gamma = 0; maximum T of the hybrid class about 12.5 (Fig. 8)"}
+  - {item: "predictions not checked by the author", value: "that the simple class exists over most of -gamma_0 < gamma < gamma_0, and that the two-membered hybrid class exists over a wide range of gamma", page: 7-9}
+references_printed:
+  - {n: 1, text: "E. Stromgren, Fortgesetzte Untersuchungen ueber asymptotische Bahnen im Probleme Restreint, Mat. Fys. Medd. Dan. Vid. Selsk. 10, Nr. 7 (1930)"}
+  - {n: 2, text: "J. H. Bartlett, The Restricted Problem of Three Bodies, Mat. Fys. Skr. Dan. Vid. Selsk. 2, Nr. 7 (1964); also NASA Technical Report No. 1, Grant NsG 280-63 (1964)"}
+  - {n: 3, text: "J. H. Bartlett and C. A. Wagner, The Restricted Problem of Three Bodies (II), Mat. Fys. Skr. Dan. Vid. Selsk. 3, Nr. 1 (1965); also NASA Technical Report No. 2, Grant NsG 280-63 (1965)"}
+final_report_page:   # PDF pp.23-24, signed off as the grant final report
+  - "Technical Reports Nos. 1, 2 and 4: periodic solutions of the restricted 3-body problem; No. 3: stability of periodic solutions (a sequel to work published in the Communications of the Danish Academy)."
+  - "No. 1 (also Mat. Fys. Skr. Dan. Vid. Selsk. 2, 7 (1964)): most of the important classes of periodic solutions for equal masses. No. 2 (also Mat. Fys. Skr. 3, 1 (1965), co-author C. A. Wagner): extended to unequal masses over most of the allowed range. No. 4: how some limiting asymptotic orbits vary with mass ratio."
+  - "Motion under a periodic cubic force: periodic solutions located (Mat. Fys. Medd. Dan. Vid. Selsk. 36, 11 (1968)); with C. A. Wagner, detailed in Technical Report No. 3, intended to be recast as a journal article."
+  - "The grant was terminated on 31 August 1967 after two extensions; C. A. Wagner was the chief assistant."
