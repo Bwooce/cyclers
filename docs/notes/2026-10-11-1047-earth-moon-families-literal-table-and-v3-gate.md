@@ -126,3 +126,27 @@ Expected outcomes (written before the run):
 - tests/search -k literature and tests/scripts: green.
 - Families: the gate is class-level (it does not compare p:q), so every family with topology
   {"resonant"} is expected to return "published" (known-class) from a "resonant" Earth-Moon anchor.
+
+## 7. Rerun after the labels (3b434aec): negative controls pass, positive citation expectation FAILS
+
+| check | expected (sec. 6) | result |
+|---|---|---|
+| Casoliva 7-3b positive, {"resonant"} | published, citing Casoliva | published 0.95, citing **Braik & Ross** (FAIL on the citation) |
+| same, {"repeated-moon"} | published | published 0.95, Braik & Ross |
+| Jupiter negative | known-architecture-new-system | known-architecture-new-system (pass) |
+| pump-tour negative | not published | not-found (pass) |
+| 26 controls + negative + 5 candidates (litcheck_942_943_scope.py) | unchanged | output identical to the before-run (diff empty) |
+| tests/search -k literature | green | EXIT 0 |
+| tests/scripts | green | not completed in my session: two attempts (full, then a 10-file chunk) passed the 7.5-min limit under load (load average ~38, CI runner active). The one literature-related file, test_1038_scripts_import_without_literature_check.py, passes alone. Full run handed to the lead. |
+
+Cause of the citation failure (diagnosed, not fixed): `build_queries` adds a keyword query from the
+first in-footprint anchor, and the citation is the first anchor in corpus order that the hit
+corroborates. In-footprint order for this signature: Braik-Ross, the four Kumar/Rawat papers,
+Casoliva 2010, xGEO, Hiraiwa. Braik & Ross carries "resonant" honestly (its Table 2 holds the 2:1,
+3:1 and 5:2 resonant representatives), so it is the first match and it is cited for every Earth-Moon
+resonant signature. The citation reflects corpus order, not which paper is closest. The status
+("published") does not depend on it. I did not change a label or the order to make the control pass.
+
+Per the pre-registration this is a failed control, so the run stopped before the families
+(`data/1047_literature/gate_results.json`: controls_pass false, positive_cites_casoliva false). The
+families are not scored.

@@ -108,12 +108,19 @@ def main() -> None:
     neg_ok = neg1["status"] != "published" and neg2["status"] != "published"
     s73 = sig((7, 3), (t73 * 0.999, t73 * 1.001), "pump-tour")
     unlabelled = [a.name for a in _candidate_anchors(s73) if not a.topology_label]
+    s73r = sig((7, 3), (t73 * 0.999, t73 * 1.001), "resonant")
+    order = [a.name for a in _candidate_anchors(s73r)]
+    # Pre-registration (#1047 note sec. 6): the positive control must cite Casoliva 2010.
+    pos_cites_casoliva = "Casoliva" in (controls["positive_casoliva_7-3b"]["citation"] or "")
+    pos_ok = pos_ok and pos_cites_casoliva
     out: dict[str, Any] = {
         "controls": controls,
+        "positive_cites_casoliva": pos_cites_casoliva,
         "positive_pass": bool(pos_ok),
         "negative_pass": bool(neg_ok),
         "controls_pass": bool(pos_ok and neg_ok),
         "earth_moon_anchors_in_scope_with_no_topology_label": unlabelled,
+        "in_footprint_anchor_order_resonant": order,
     }
     if not out["controls_pass"]:
         OUT.write_text(json.dumps(out, indent=1) + "\n")

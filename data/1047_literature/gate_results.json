@@ -19,16 +19,18 @@
    "notes": "No published cycler matched the structural fingerprint, but the candidate's declared architecture (working bodies: one) is a published one at another system: Russell-Strange 2009 Ganymede-Io ideal-model moon cycler; Russell-Strange 2009 Ganymede-Europa ideal-model moon cycler; Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler. Spec sec. 16.4 #875 (ii): candidate-novel with a MANDATORY attribution to that architecture's source, wording 'first computed at <system>'. Corpus anchors consulted but excluded by declared scope (20): Aldrin Earth-Mars cycler [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992) [topology-label]; Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger) [topology-label]; Genova-Aldrin purple Earth-Mars cycler precursors (2015) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [topology-label]; McConaghy Earth-Mars cycler dissertation (2004) [topology-label]; McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004) [topology-label]; McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005) [topology-label]; Pisarevsky-Kogan-Guelman two-planet periodic trajectories (2008) [topology-label]; Rall Earth-Mars free-fall periodic orbits, Sc.D. thesis (1969) [topology-label]; Rall-Hollister Earth-Mars periodic swing-by orbits (1971) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015) [topology-label]; Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers [topology-label]; Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]."
   },
   "negative_tour_label": {
-   "status": "published",
-   "citation": "Braik & Ross, 'Orbital Networks in the Three-Body Problem,' arXiv:2605.31543 (2026)",
-   "confidence": 0.95,
-   "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+   "status": "not-found",
+   "citation": null,
+   "confidence": 0.0,
+   "notes": "No published cycler matched the structural fingerprint. NECESSARY-NOT-SUFFICIENT for novelty: absence of a hit is not evidence of absence; the human + V0-V5 gauntlet still govern. Corpus anchors consulted but excluded by declared scope (17): Aldrin Earth-Mars cycler [topology-label]; Ceriotti GTOC-style MGA chain optimisation (2010) [topology-label]; Genova-Aldrin purple Earth-Mars cycler precursors (2015) [topology-label]; Hughes-Edelman-Longuski fast Mars free returns via Venus gravity assist (2014) [topology-label]; Jones et al. VEM triple cyclers (Venus-Earth-Mars) [topology-label]; McConaghy Earth-Mars cycler dissertation (2004) [topology-label]; McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004) [topology-label]; McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005) [topology-label]; Pisarevsky-Kogan-Guelman two-planet periodic trajectories (2008) [topology-label]; Rall Earth-Mars free-fall periodic orbits, Sc.D. thesis (1969) [topology-label]; Rall-Hollister Earth-Mars periodic swing-by orbits (1971) [topology-label]; Restrepo-Russell JPL planar axisymmetric CR3BP database [topology-label]; Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015) [topology-label]; Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers [topology-label]; Tito-MacCallum 2018 Mars free-return mission design (2013) [topology-label]; Vasile-Campagnola MGA-DSM tour optimisation (2009) [topology-label]; Vasile-Conway MGA-DSM optimisation (2006) [topology-label]. 1 corpus anchor hit(s) outside the candidate's primary/body-set footprint were not scored."
   }
  },
- "positive_pass": true,
- "negative_pass": false,
+ "positive_cites_casoliva": false,
+ "positive_pass": false,
+ "negative_pass": true,
  "controls_pass": false,
- "earth_moon_anchors_in_scope_with_no_topology_label": [
+ "earth_moon_anchors_in_scope_with_no_topology_label": [],
+ "in_footprint_anchor_order_resonant": [
   "Braik-Ross orbital networks in the three-body problem (2026)",
   "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
   "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
@@ -36,7 +38,6 @@
   "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
   "Casoliva-Mondelo-Villac-Mease-Barrabes-Olle two classes of Earth-Moon cyclers (2010)",
   "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
-  "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
-  "Sanaga-Park-Howell fidelity-transition framework (2026)"
+  "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)"
  ]
 }
