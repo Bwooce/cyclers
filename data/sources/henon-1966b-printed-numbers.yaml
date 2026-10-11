@@ -1,0 +1,87 @@
+# Henon 1966b (paper IV), the printed numbers of the paper. THE PAPER HAS NO NUMERIC TABLES: it prints 15 equations,
+#   12 figures and the numbers below, in the running text and in figure labels and captions.
+# Source: M. Henon, "Exploration numerique du probleme restreint. IV. Masses egales, orbites non periodiques (Fin)",
+#   Bulletin Astronomique (3e serie) 1, fasc. 2, pp. 49-66 (1966), doi 10.3406/bastr.1966.14447. Manuscript received
+#   15 February 1966. In French, with English, German and Russian abstracts.
+# Local file: Persee scan, 20 pp. (2 Persee cover pages + journal pp. 49-66), md5 5f085fc52203785d6232e786d7969946.
+#   PDF page n = journal page n + 46. OCR copy: ocrmypdf --force-ocr -l fra+eng.
+#   Filed as cyclers_pdf/papers/henon-1966b-...-14447.pdf, with -french.pdf, -en-translation.pdf/.tex,
+#   -check_henon1966b.py/.out and -witness.py/.out beside it.
+# LABEL CLASH: in this paper's own bibliography "Henon 1966b" is C.R. Acad. Sci. 262:312 (force-free magnetic fields).
+#   The project's label "Henon 1966b" means THIS paper (IV).
+# Witnesses: A = tesseract 5 -l fra --psm 6 on 300 dpi grey renders; B = macOS Vision (.accurate, no language correction)
+#   on the same renders; O = the text layer of the ocrmypdf copy; C = our reading of 300 dpi crops (decides). Every
+#   value below was read by C on a 300 dpi crop, except the Fig. 1 panel label "C = 4.5" (read at 150 dpi; its caption
+#   value was read at 300 dpi). Occurrence counts of A, B and O are in witness.out; they differ where a witness dropped,
+#   merged or double-counted a line (for example p.55-57 figure labels: A finds one occurrence where B and O find two;
+#   p.63 3,4568: B = 0; p.64-65 exponents 333 and 48: only B reads them). The counts locate the values; C decides.
+#   Decimal commas are written as points; "..." is printed.
+# No value here was computed by us. Values we computed are only in `check:` fields, marked "ours", from
+#   check_henon1966b.out (same model and convention as the paper III check).
+#
+# CONVENTIONS: as in paper III (data/sources/henon-1966a-printed-numbers.yaml): mu = 1/2, M1 at x = -1/2, M2 at +1/2,
+#   C = x^2 + y^2 + 2(1-mu)/r1 + 2mu/r2 - v^2 (C_Henon = C_std - 0.25); section y = 0, ydot > 0.
+# CLASSES: l = direct (in fixed axes) orbits of large radius round both bodies, C > 0; m = retrograde (in fixed axes)
+#   orbits round both bodies, C < 0. Both are symmetric about the origin for mu = 1/2. New names in this paper:
+#   epsilon_2, epsilon'_2 (double-periodic, meet l at l1), zeta_2, zeta'_2 (asymmetric double-periodic, near l),
+#   eta_3 (3-periodic, its own origin mirror, meets l at a = -1/2), K = Kristiansson's (1933) asymmetric simple-periodic
+#   class (meets l at l2).
+# EQUATIONS (pp.51-52, 64-65): far-field two-body model in rotating axes (1); E and A in fixed axes (2); (3) rotation;
+#   (4) E, A in rotating axes; (5) C = 2A - 2E; (6) escape iff A - C/2 >= 0; (7) escape condition on the section;
+#   (8) x^2 >= C - 2/|x|; (9) x^2 >= C/2; (10) escape limit xdot^2 >= 2/|x| - C^2/(4x^2) for x < 0 (dashed curves of
+#   Figs. 1, 2, 8; invariant under C -> -C). (11) KAM Diophantine condition |alpha/2pi - m/n| >= eps n^(-5/2);
+#   (12)-(13) Arnold's 1963a bounds; (14) M < 10^-333; (15) Moser 1962, M < 10^-48. (5), (7), (10) and (14) checked by us.
+# MISPRINTS: p.64 "Arnold (1936b)" for 1963b; p.64 "Zlatousov" (bibliography: Zlatoustov; no year printed there);
+#   p.65 "ramarquable"; p.52 "l'etoile" (the star) for the third body. The p.66 ERRATUM confirms the paper III Fig. 12/13
+#   caption interchange.
+
+paper_ii_cross_check_note: >-
+  Henon 1973 (A&A 28:415, Table 1, held, six digits): l1 C = 3.427719, x0 = -2.131850 (type A-D, i.e. a tangent to -1);
+  l2 C = 3.302594, x0 = -1.907964 (type B); m1 C = -0.616363, x0 = -0.617017 (type C, extremum in C). Paper II prints
+  l1 3.428, l2 3.3026, m1 -0.6164 and the two Kristiansson orbits (x0, xdot0, C) = (-1.9095, 0.0208, 3.30) and
+  (-1.9149, 0.0440, 3.29). Paper IV quotes the paper II values; all agree with Henon 1973 to the printed digits.
+
+values:
+  - {page: "50", quantity: "C of Fig. 1 (left outer region; l stable, small region of curves, escape elsewhere)", printed: "4.5",
+     witnesses: "A=2 B=3 O=2 C (caption at 300 dpi, panel label at 150 dpi)",
+     check: "ours: family l at C = 4.5 has x0 = -4.539050, a = +0.7506 (stable); Fig. 1 shows l near x = -4.6"}
+  - {page: "52", quantity: "C of Fig. 2 (curves shrink; two semi-ergodic orbits inside the escape limit)", printed: "4", witnesses: "A B O C"}
+  - {page: "52", quantity: "C above which the outer left region looks like Fig. 1", printed: "4.5", witnesses: "A=1 B=1 O=1 C"}
+  - {page: "53", quantity: "C at which a on family l reaches -1 (l1; meets epsilon_2 and epsilon'_2; numerically unstable, yet closed curves surround l)",
+     printed: "3.428...", witnesses: "A=2 B=2 O=2 C",
+     check: "ours: minimum of a on l = -1.0000000 at C = 3.427719, x0 = -2.131850; Henon 1973 l1 3.427719, -2.131850"}
+  - {page: "53", quantity: "8 islands in two mirror chains of 4 (asymmetric 4-periodic nuclei)", printed: "C = 3.7", witnesses: "A=1 B=1 O=1 C",
+     check: "ours: at C = 3.7, l has x0 = -2.714600 and a = -0.2297 (l itself stable)"}
+  - {page: "53", quantity: "chain of 5 exterior islands; narrowing of Fig. 3", printed: "C = 3.5", witnesses: "A=2 B=2 O=2 C"}
+  - {page: "53", quantity: "C at which a = -1/2 on l (eta_3 is its own origin mirror, so Moser's 2pi/3 case applies; l unstable there)",
+     printed: "3.348...", witnesses: "A=1 B=1 O=1 C",
+     check: "ours: a = -1/2 at C = 3.348278, x0 = -1.980702"}
+  - {page: "53", quantity: "the paper III comparison case", printed: "III Fig. 21, C = 1.07", witnesses: "A=1 B=1 O=1 C"}
+  - {page: "54", quantity: "C at which l ceases to be stable (l2, type 4; meets Kristiansson's class K)", printed: "3.3026...",
+     witnesses: "A=1 B=1 O=1 C",
+     check: "ours: a = +1 at C = 3.302593, x0 = -1.907962; Henon 1973 l2 3.302594, -1.907964"}
+  - {page: "54", quantity: "C of the K islands (Fig. 7)", printed: "3.30", witnesses: "A=1 B=1 O=1 C",
+     check: "ours: at C = 3.30, l has a = +1.145 (unstable), x0 = -1.904277"}
+  - {page: "55", quantity: "C values of Fig. 4", printed: "3.9; 3.8; 3.7; 3.6; 3.5", witnesses: "A B O C"}
+  - {page: "56", quantity: "C values of Fig. 5", printed: "3.45; 3.428; 3.425; 3.4", witnesses: "A B O C",
+     check: "ours: a on l = -0.9826 (3.45), -0.999997 (3.428), -0.9613 (3.4)"}
+  - {page: "57", quantity: "C values of Fig. 6", printed: "3.38; 3.37; 3.36", witnesses: "A B O C"}
+  - {page: "58", quantity: "C values of Fig. 7", printed: "3.34; 3.33; 3.32; 3.31; 3.30", witnesses: "A B O C"}
+  - {page: "58", quantity: "family m stable from C = -infinity up to m1 (extremum in C)", printed: "-0.6164...",
+     witnesses: "A=1 B=1 O=1 C",
+     check: "ours: two m roots at C = -0.6165 (x0 = -0.619461, a = +0.900; x0 = -0.614627, a = +1.105), none at -0.6163, so the fold is between; Henon 1973 m1 -0.616363, x0 -0.617017"}
+  - {page: "59", quantity: "C of Fig. 8 (m region; whole plane accessible)", printed: "-4", witnesses: "A B O C",
+     check: "ours: m at C = -4 has x0 = -4.421023, a = +0.821; Fig. 8 shows m near x = -4.4"}
+  - {page: "60", quantity: "C values of Fig. 10", printed: "-3; -2.5; -2; -1.5", witnesses: "A B O C"}
+  - {page: "61", quantity: "C values of Fig. 11", printed: "-1; -0.8; -0.68", witnesses: "A B O C",
+     check: "ours: stable m at x0 = -0.864768 (C = -1), -0.754459 (C = -0.8)"}
+  - {page: "61", quantity: "m1, where the region of curves disappears", printed: "-0.6164...", witnesses: "A=1 B=1 O=1 C"}
+  - {page: "63", quantity: "C above which a semi-ergodic region exists round M1 and M2 (L2/L3 value)", printed: "3.4568...",
+     witnesses: "A=1 B=0 O=1 C", check: "ours (paper III check): 3.4567962"}
+  - {page: "64", quantity: "Arnold-bound perturbation size, eq. (14)", printed: "M < 10^-333", witnesses: "A=0 B=1 O=0 C",
+     check: "ours: n = 2, e^4 * 328^-4 = 4.7172e-9, to the power 8n+24 = 40: 10^-333.05"}
+  - {page: "65", quantity: "Moser-bound perturbation size, eq. (15)", printed: "M < 10^-48", witnesses: "A=0 B=1 O=0 C",
+     note: "not checkable from the paper (the Moser 1962 estimate is not given)"}
+  - {page: "66", quantity: "manuscript received", printed: "15 Fevrier 1966", witnesses: "A B O C"}
+  - {page: "66", quantity: "erratum to paper III", printed: "p.72 caption: fig. 13, C = 3; p.73 caption: fig. 12, semi-ergodic orbit",
+     witnesses: "A B O C"}
