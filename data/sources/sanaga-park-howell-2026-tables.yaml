@@ -1,0 +1,43 @@
+# Sanaga, Park and Howell 2026, Tables 2 and 3 plus the other printed numbers of the paper.
+# Source: R. R. Sanaga, B. Park, K. C. Howell, "Systematic Numerical Transitions of Cislunar Trajectories Across Dynamical
+#   Models", J. Astronaut. Sci. 73:10 (2026), doi 10.1007/s40295-026-00571-5. Published online 10 February 2026.
+# Local file: Springer PDF, 39 pp., text layer present, md5 f604075271d2bf0ddf8507f1cd97333e. PDF page n = journal page n.
+# Witnesses: A = pdftotext -layout read once; B = the same text read a second time at the digit level against the rows below;
+#   C = a 130 dpi render of pp.10 and 21 (decides). All 6 + 2 x 3 table cells agree in all three. Table 1 holds no numbers
+#   (it is the time-variable relation) and is not transcribed.
+# No value here was computed by us; ours only in `check:` fields.
+tables:
+  - table: "2"
+    caption: "Angular representation for JD0 = 2.2875165e+06 (Nov-28 1550)"
+    journal_page: "10"
+    columns: [number, frequency_nd, initial_phase_rad, meaning_of_theta_zero]
+    rows:
+      - {number: 1, frequency_nd: "0.991548233570925", initial_phase_rad: "3.207895704735595", meaning_of_theta_zero: "approx Moon at perigee",
+         check: "27.321662 / 27.554550 (sidereal / anomalistic month, d) = 0.9915481; agrees to 1.2e-7, the rounding of the day counts"}
+      - {number: 2, frequency_nd: "0.925198775804741", initial_phase_rad: "1.877120527070590", meaning_of_theta_zero: "approx Earth-Moon-Sun in a straight line",
+         check: "27.321662 / 29.530589 (sidereal / synodic month, d) = 0.9251987; agrees to 6e-8"}
+      - {number: 3, frequency_nd: "1.004021856216999", initial_phase_rad: "1.619525974729288", meaning_of_theta_zero: "approx local maximum in zeta (lunar out-of-plane position in the Sun-Earth rotating frame)",
+         check: "27.321662 / 27.212221 (sidereal / draconic month, d) = 1.0040218; agrees to 2e-8"}
+    note: "Eq. (10): theta_i = nu_i k (JD - JD0) + theta_i0, k converts ephemeris time to ndim time. Frequencies are in units of the sidereal rate (nu1 is the anomalistic/sidereal ratio, nu2 the synodic/sidereal ratio, nu3 the draconic/sidereal ratio), from DE440. The ratios are our identification, not printed; the check values are standard month lengths and are ours."
+  - table: "3"
+    caption: "Impact of t'* on the numerical transition process for the uniform ndim time, in terms of equivalent period for the halo orbits"
+    journal_page: "21"
+    unit: "days (average time between consecutive perilunes of the 15-year HFEM analog)"
+    columns: [test, cr3bp_period_d, hfem_tprime_star_1_over_4.330d, hfem_tprime_star_1_over_4.348d, hfem_tprime_star_1_over_4.366d]
+    rows:
+      - {test: 1, cr3bp_period_d: "14.1974", hfem_tprime_star_1_over_4.330d: "14.1405", hfem_tprime_star_1_over_4.348d: "14.2006", hfem_tprime_star_1_over_4.366d: "14.2571"}
+      - {test: 2, cr3bp_period_d: "14.50", hfem_tprime_star_1_over_4.330d: "14.4421", hfem_tprime_star_1_over_4.348d: "14.5028", hfem_tprime_star_1_over_4.366d: "14.5588"}
+    note: "Text p.18 gives 14.1678 d (non-uniform rate) and 14.1983 d (uniform rate, t'* = 1/4.348 d) for the halo of CR3BP period 14.1974 d; the 14.1983 value is not in Table 3 (Table 3 prints 14.2006 for the same case at 4.348 d). The two differ by 0.0023 d and the paper does not reconcile them; they are different runs (initial epoch 1 Jan 2025 on p.18, 1 Jan 2026 on p.20-21)."
+text_numbers:
+  - {where: "p.8 sec 2.4", name: "ER3BP eccentricity e", value: "0.055", note: "l* is the semi-minor axis (mean Earth-Moon distance), a = l*/sqrt(1-e^2); footnote 2 says the semi-major axis is the obvious alternative"}
+  - {where: "p.8 sec 2.5", name: "Hill parameter m", value: "0.080848933808312"}
+  - {where: "p.8 sec 2.5", name: "Sun-barycentre length l_SB*", value: "149598058.09228115 km"}
+  - {where: "p.12 eq 11", name: "MCI test state (J2000, km)", value: "R_Mc = [20000, 64177, 15938]", note: "R'_Mc = [0.02, 0.01, 0] km/s (the z entry is not printed; the printed velocity is 0.02 x + 0.01 y), epoch 2025 JAN 19, 10-day propagation"}
+  - {where: "p.13", name: "pul-rot state for the eq. 11 state (ndim)", value: "rho = [0.937090267094130, -0.158289097365981, -0.0427424365372180]", note: "rho_dot = [-0.161445581784592, 0.0422875877217298, -0.00349116306688774]"}
+  - {where: "p.18 sec 5.2", name: "L2 halo, apolune start", value: "period 14.19 d (CR3BP 14.1974 d), 3 patch points per rev, 386 revs for 15 y, epoch 1 Jan 2025 00:00 UTC", note: "uniform rate t'* = (4.3484 d)^-1; mean perilune interval 14.1678 d (non-uniform), 14.1983 d (uniform)"}
+  - {where: "p.20 sec 5.3", name: "second L2 halo", value: "period 14.765 d, 371 revs for 15 y, epoch 1 Jan 2026 00:00 UTC"}
+  - {where: "p.21 sec 5.4", name: "L1 Lyapunov orbit", value: "period 17.0855 d, 5 patch points per rev, perilune start, 15 y, epoch 1 Jan 2025", note: "monodromy eigenvalues [408.69, 0.002, 1, 1, 1.14, 0.87]; nearby orbit period 17.2594 d eigenvalues [393.55, 0.002, 1, 1, 0.99+0.12i, 0.99-0.12i]. Product of the first orbit's list = 408.69 x 0.002 x 1.14 x 0.87 = 0.81 (symplectic would give 1 up to the rounding of 0.002; the 0.002 is printed to one digit)"}
+  - {where: "p.24-26 sec 6", name: "Lunar free return trajectory (LFRT)", value: "perigee altitude 170 km, perilune altitude 1005.4 km (text p.25, 26) or 1000.5 km (captions of Figs. 13-16), tangential TLI 3.1587 km/s in the CR3BP", note: "the 1005.4 versus 1000.5 km difference is within the paper and unreconciled; Fig. 11 caption and p.25 say 1005.4, Figs. 13-16 captions say 1000.5"}
+  - {where: "p.27-28", name: "LFRT HFEM sweep", value: "7900+ days from 1 Jan 2025, one solution per 12 h", note: "I-QHR4BP grid 120 x 120 in (theta1, theta2) over [0, 2 pi]"}
+  - {where: "p.19", name: "I-QHR4BP initial epoch for the Fig. 6c, d MYTs", value: "theta1 about 278 deg, theta2 about 17.67 deg"}
+  - {where: "Fig. 15a axes (page render 70 dpi, read from the axis labels only)", name: "HFEM LFRT TLI dv and ToF ranges", value: "dv about 3.150 to 3.165 km/s, ToF about 5.6 to 6.4 d", note: "approximate, axis labels"}
