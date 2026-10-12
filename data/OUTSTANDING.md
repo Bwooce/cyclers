@@ -2712,6 +2712,10 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
 - `#1036` — registered 2026-10-08 (from `#998`; the v3 gate is usable here with LABELLED, TOPOLOGIED signatures only (`#1045` DONE; untopologied signatures can still read "published" via non-cycler anchors, `#1052`)). **`#998` LITERATURE STEP AND ADJUDICATION
   OF THE 224 "STRONG" PLUTO-CHARON CANDIDATES.** Architecture: Russell-Strange one-working-node at a new
   system, a `#875` (ii) candidate. Needs the `#1024` barycentric model or an n-body check before any row.
+  2026-10-12 OWNER DECISION (AskUserQuestion, verbatim): "(c) Hold for continuous gravity". No rows; the
+  gate for rows is a continuous-gravity check of the members that answers the deep-dip caveat (owner summary
+  `docs/notes/2026-10-12-1036-owner-summary.md` secs. 4 and 6). Follow-on: the Pluto continuous-gravity lane
+  build (`#1073`, pluto-nbody-opus, pre-registration first, positive control before any member).
 - `#1037` — registered 2026-10-08 (from `#998`; BACKLOG). **ADD STYX AND KERBEROS TO THE SATELLITE
   REGISTRY** (`src/cyclerfinder/core/satellites.py`) with sourced elements; the `#998` driver carried
   them in-process. Pairs with `#1022`.
