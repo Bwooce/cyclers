@@ -1,0 +1,41 @@
+{
+ "p2_up": {
+  "end_v1": "reached mu_stop",
+  "end_v2": "reached mu_stop",
+  "max_rel_diff": 4.3642488090071593e-13,
+  "pass": true
+ },
+ "p2_down": {
+  "end_v1": "reached mu_stop",
+  "end_v2": "reached mu_stop",
+  "max_rel_diff": 3.24362645968043e-13,
+  "pass": true
+ },
+ "n1_b": {
+  "end_v1": "reached mu_stop",
+  "end_v2": "reached mu_stop",
+  "max_rel_diff": 1.1962137187192032e-11,
+  "pass": true
+ },
+ "n2_b": {
+  "end_v1": "reached mu_stop",
+  "end_v2": "reached mu_stop",
+  "max_rel_diff": 3.89077605959157e-11,
+  "pass": true
+ },
+ "n1_a": {
+  "end_v2": "fold",
+  "converged": true,
+  "iterations": 3,
+  "max_rel_diff_to_table1": 1.0329618392502956e-08,
+  "pass": true
+ },
+ "n2_a": {
+  "end_v2": "fold",
+  "converged": true,
+  "iterations": 3,
+  "max_rel_diff_to_table1": 2.459854884354223e-09,
+  "pass": true
+ },
+ "all_pass": true
+}

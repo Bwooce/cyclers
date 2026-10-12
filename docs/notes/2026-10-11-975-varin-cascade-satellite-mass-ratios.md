@@ -451,3 +451,21 @@ All new traces get new names (`*_v2`). The committed traces stay as evidence.
     (n2_b_loop jumped at member 87, next to the N2-plus wall).
 - **Ruling requested from the lead** before any further N run (11.5 item 4: inconclusive goes to the lead).
   The cascade stays stopped.
+
+### 11.7 The six extremum curves under the guarded follower: unchanged (2026-10-12, 14:40-15:05 AEDT)
+
+`curves/*_v2.jsonl`, comparison `curves_v2_compare.json`. Same starts, directions and mu_stop as the
+committed curves.
+
+| curve | end (v1 / v2) | check | result |
+|---|---|---|---|
+| p2_up | reached mu_stop / same | v2 end against v1 end, max relative difference | 4.4e-13 |
+| p2_down | reached mu_stop / same | same | 3.2e-13 |
+| n1_b | reached mu_stop / same | same | 1.2e-11 |
+| n2_b | reached mu_stop / same | same | 3.9e-11 |
+| n1_a | fold / fold | fold refined by the critical-point solver (half form, 3 iterations) against Table 1 mu''_2 | 1.0e-8 |
+| n2_a | fold / fold | same, against Table 1 mu''_1 | 2.5e-9 |
+
+All six meet the 11.5 item 2 expectation. A2 rejected 0-6 steps per curve, all for the turn limit. The
+oval-branch parts of N1 and N2 (the folds at mu''_k) stand under A2. Only the b-branch traces at the test mu
+are open (sec. 11.6).
