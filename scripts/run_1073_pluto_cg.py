@@ -944,6 +944,195 @@ def cmd_n2(argv: list[str]) -> None:
     log(f"N2 stage {rec['stage']} outcome {rec.get('outcome')}")
 
 
+BEST12 = [  # #998 sec. 6 table: (cell, key, ideal worst ratio as printed)
+    ("ps", "k4|RCharon/1:2|RCharon/1:2|LCharon>Styx/1h|LStyx>Charon/1h", 0.479),
+    ("ps", "k3|RCharon/1:2|RCharon/2:3|LCharon>Styx/0s|LStyx>Charon/0s", 0.482),
+    ("ps", "k5|RCharon/2:3|RCharon/1:2|LCharon>Styx/1l|LStyx>Charon/1h", 0.488),
+    ("pn", "k4|LCharon>Charon/1l|LCharon>Nix/0s|LNix>Charon/0s", 0.359),
+    ("pn", "k4|RCharon/1:2|RCharon/1:2|LCharon>Nix/1l|LNix>Charon/0s", 0.481),
+    ("pn", "k3|RCharon/1:2|RCharon/1:2|LCharon>Nix/0s|LNix>Charon/0s", 0.505),
+    ("pk", "k6|RCharon/1:2|RCharon/1:2|LCharon>Kerberos/1l|LKerberos>Charon/0s", 0.510),
+    ("pk", "k6|RCharon/2:1|RCharon/2:1|LCharon>Kerberos/0s|LKerberos>Charon/0s", 0.533),
+    ("pk", "k6|RCharon/2:1|RCharon/3:2|LCharon>Kerberos/0s|LKerberos>Charon/0s", 0.512),
+    ("ph", "k4|RCharon/1:2|RCharon/1:2|LCharon>Hydra/0s|LHydra>Charon/0s", 0.538),
+    ("ph", "k6|RCharon/1:2|RCharon/1:2|LCharon>Hydra/1h|LHydra>Charon/0s", 0.540),
+    ("ph", "k5|RCharon/2:3|RCharon/2:3|LCharon>Hydra/0s|LHydra>Charon/0s", 0.541),
+]
+
+
+def cmd_best12(argv: list[str]) -> None:
+    """Sec. 8.2: the 12 best of #998 sec. 6 located in #1065 by DATES (not key + V_inf)."""
+    ap = argparse.ArgumentParser(prog="best12")
+    ap.parse_args(argv)
+    r1065 = _load(
+        "run_1065_barycentric_enumerate", REPO / "scripts" / "run_1065_barycentric_enumerate.py"
+    )
+    out = []
+    for old, key, ratio in BEST12:
+        cell = old + "b"
+        moon = r1065.CELLS[cell]
+        system = r1065.bary_system(moon)
+        syn = system.synodic_s("Charon", moon) / DAY
+        cont = json.loads((REPO / "data" / "1024_barycentric" / f"{old}_continue.json").read_text())
+        cands = [r for r in cont if r["key"] == key and abs(r["worst_ratio_998"] - ratio) < 6e-4]
+        rec: dict[str, Any] = {"cell": cell, "key": key, "ratio_998": ratio, "n_1024": len(cands)}
+        if len(cands) != 1:
+            out.append(rec | {"found": False, "why": f"{len(cands)} #1024 records"})
+            continue
+        c = cands[0]
+        rec |= {"index_1024": c["index"], "outcome_1024": c["outcome"]}
+        if c["outcome"] != "CONTINUES":
+            out.append(rec | {"found": False, "why": "did not continue in #1024"})
+            continue
+        xc = np.asarray(c["x_days"])
+        _n, _zeros, _groups, passing = r1065.ANALYSE.collect(
+            sorted(p for p in (ARCHIVE_1065 / cell).glob("s*") if p.is_dir())
+        )
+        order = sorted(passing.items(), key=lambda kv: (kv[0][0], kv[0][1]))
+        hit = None
+        for idx, (_gk, g) in enumerate(order):
+            for z in g["members"]:
+                if z["key"] != key or len(z["x_days"]) != len(xc):
+                    continue
+                d = np.asarray(z["x_days"]) - xc
+                m = round(float(d[0]) / syn)
+                if np.all(np.abs(d - m * syn) < 1e-3):
+                    hit = (idx, z)
+                    break
+            if hit:
+                break
+        if hit is None:
+            out.append(rec | {"found": False, "why": "no #1065 gate-passing group holds the zero"})
+            continue
+        gaunt = json.loads(
+            (REPO / "data" / "1065_barycentric" / f"{cell}_gauntlet.json").read_text()
+        )
+        gc = next(g for g in gaunt["candidates"] if g["index"] == hit[0])
+        rec |= {
+            "found": True,
+            "index_1065": hit[0],
+            "representative_key": gc["key"],
+            "representative_worst_ratio": gc["worst_ratio"],
+            "strong_1065": gc.get("strong_1065"),
+            "representative_is_member": gc["key"] == key
+            and np.allclose(np.asarray(gc["x_days"]), np.asarray(hit[1]["x_days"])),
+            "member_worst_ratio_1065": hit[1]["worst_ratio"],
+        }
+        out.append(rec)
+        log(f"best12 {cell} {key}: {rec}")
+    _save(OUT / "best12.json", {"members": out})
+    log(f"best12: {sum(r.get('strong_1065') is True for r in out)} of 12 in strong_1065")
+
+
+H1_SIGMAS = (1e-4, 1e-5)  # amendment 13.3
+
+
+def _h1_solve(prob: Problem, sg: float, free_bz: bool) -> dict[str, Any]:
+    ch = prob.chain(sg, free_bz)
+    t0 = time.time()
+    z, info, stats = solve(ch, prob.seed_z(sg, free_bz), 40, 200)
+    out: dict[str, Any] = {
+        "sigma": sg,
+        "free_bz": free_bz,
+        "converged": bool(converged(info)),
+        "dr": max(info["dr"]),
+        "dv": max(info["dv"]),
+        "gauge": max((abs(g) for g in info["gauge"]), default=0.0),
+        "stats": {k: v for k, v in stats.items() if k != "norms"},
+        "norm_first_last": [stats["norms"][0], stats["norms"][-1]] if stats["norms"] else None,
+        "secs": time.time() - t0,
+        "nodes": ch.describe(z) if np.all(np.isfinite(z)) else None,
+        "z": z.tolist(),
+    }
+    try:
+        r, j, _ = ch.residual_and_jac(z)
+    except RuntimeError as exc:
+        out["jac_error"] = str(exc)
+        return out
+    n_leg = len(ch.specs)
+    oop = np.zeros(len(r), dtype=bool)
+    for k in range(n_leg):
+        oop[6 * k + 2] = oop[6 * k + 5] = True
+    out["residual_sq_out_of_plane"] = float(np.sum(r[oop] ** 2))
+    out["residual_sq_in_plane"] = float(np.sum(r[~oop] ** 2))
+    d = np.linalg.norm(j, axis=0)
+    d[d == 0.0] = 1.0
+    sv = np.linalg.svd(j / d, compute_uv=False)
+    out["n_rows"], out["n_unknowns"] = j.shape
+    out["singular_values_smallest8"] = sorted(sv.tolist())[:8]
+    return out
+
+
+def cmd_h1(argv: list[str]) -> None:
+    """The H1 test (sec. 4.2, amendment 13.3) on one spatial member; also the planar reference."""
+    ap = argparse.ArgumentParser(prog="h1")
+    ap.add_argument("--cell", required=True)
+    ap.add_argument("--index", type=int, required=True)
+    ap.add_argument("--max-wall", type=float, default=420.0)
+    args = ap.parse_args(argv)
+    global _LOGF
+    tag = f"h1_{args.cell}_{args.index}"
+    LIVE.mkdir(parents=True, exist_ok=True)
+    _LOGF = LIVE / f"{tag}.live.log"
+    _preflight(f"pluto-cg-{tag}", 1)
+    deadline = time.monotonic() + args.max_wall
+    path = OUT / f"{tag}.json"
+    rec: dict[str, Any] = json.loads(path.read_text()) if path.exists() else {"runs": {}}
+    prob = member_problem(args.cell, args.index)
+    rec["meta"] = prob.meta
+    cont = json.loads((REPO / "data" / "1024_barycentric" / "ph_continue.json").read_text())
+    r26 = next(r for r in cont if r["index"] == 26)
+    ref = zero_problem("phb", r26["key"], r26["x_days"], "phb26_ref", {"role": "planar reference"})
+    jobs = []
+    for sg in H1_SIGMAS:
+        jobs += [(f"strict_{sg:g}", prob, sg, False), (f"m2_{sg:g}", prob, sg, True)]
+        jobs += [(f"phb26_strict_{sg:g}", ref, sg, False)]
+    for name, pr, sg, fb in jobs:
+        if name in rec["runs"]:
+            continue
+        if time.monotonic() > deadline:
+            break
+        rec["runs"][name] = _h1_solve(pr, sg, fb)
+        rr = rec["runs"][name]
+        log(
+            f"{tag} {name}: converged={rr['converged']} dr={rr['dr']:.3e} dv={rr['dv']:.3e} "
+            f"oop/in {rr.get('residual_sq_out_of_plane', float('nan')):.3e}/"
+            f"{rr.get('residual_sq_in_plane', float('nan')):.3e} "
+            f"b_z {[n.get('b_z_km') for n in (rr['nodes'] or []) if n['kind'] == 'pin']} "
+            f"({rr['secs']:.0f}s)"
+        )
+        _save(path, rec)
+    runs = rec["runs"]
+    if all(f"{p}_{sg:g}" in runs for sg in H1_SIGMAS for p in ("strict", "m2", "phb26_strict")):
+        strict = [runs[f"strict_{sg:g}"] for sg in H1_SIGMAS]
+        m2 = [runs[f"m2_{sg:g}"] for sg in H1_SIGMAS]
+        ref_ok = all(runs[f"phb26_strict_{sg:g}"]["converged"] for sg in H1_SIGMAS)
+        bz = [
+            next(n["b_z_km"] for n in r["nodes"] if n["kind"] == "pin") if r["nodes"] else None
+            for r in m2
+        ]
+        if any(r["converged"] for r in strict):
+            verdict = "REFUTED"
+        else:
+            oop_major = all(
+                r.get("residual_sq_out_of_plane", 0.0)
+                > 0.5
+                * (r.get("residual_sq_out_of_plane", 0.0) + r.get("residual_sq_in_plane", 0.0))
+                for r in strict
+            )
+            m2_ok = all(r["converged"] for r in m2) and all(b not in (None, 0.0) for b in bz)
+            ratio = abs(bz[0] / bz[1]) if m2_ok and bz[1] else None
+            sup = oop_major and m2_ok and ratio is not None and 5.0 <= ratio <= 20.0 and ref_ok
+            verdict = "SUPPORTED" if sup else "INCONCLUSIVE"
+            rec["bz_ratio"] = ratio
+            rec["oop_major"] = oop_major
+        rec["b_z_km"] = bz
+        rec["phb26_reference_converged"] = ref_ok
+        rec["verdict"] = verdict
+        _save(path, rec)
+        log(f"{tag}: H1 {verdict} b_z {bz} ratio {rec.get('bz_ratio')} ref_ok {ref_ok}")
+
+
 def cmd_member(argv: list[str]) -> None:
     ap = argparse.ArgumentParser(prog="member")
     ap.add_argument("--cell", required=True)
@@ -962,7 +1151,15 @@ def cmd_member(argv: list[str]) -> None:
 
 
 def main() -> None:
-    cmds = {"pc1": cmd_pc1, "pc2": cmd_pc2, "member": cmd_member, "n1": cmd_n1, "n2": cmd_n2}
+    cmds = {
+        "pc1": cmd_pc1,
+        "pc2": cmd_pc2,
+        "member": cmd_member,
+        "n1": cmd_n1,
+        "n2": cmd_n2,
+        "best12": cmd_best12,
+        "h1": cmd_h1,
+    }
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: {Path(__file__).name} {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

@@ -480,3 +480,37 @@ Changes:
 
 Both #1025 and #968 started at 0.02 because the Jovian moon-mass coefficients are small. Charon is 11 percent of
 the system, so the start has to be lower here.
+
+### 13.3 Amendment: the H1 test (2026-10-12 15:05 AEDT, before any H1 run)
+
+**12 best located by dates** (`best12` subcommand, `data/1073_pluto_cg/best12.json`): 9 are in strong_1065.
+- psb 8, pnb 10 (planar), pnb 12, pnb 2, pkb 52, pkb 59, pkb 46, phb 36, phb 9.
+- Styx k4 did not continue in #1024. psb 63 and phb 1 are not strong_1065.
+- This agrees with #1036's count of 9.
+- **The H1 members (sec. 8.2 rule, lowest worst ratio among the spatial best):** pkb 46 (0.545) and psb 8
+  (0.558).
+
+**Sigmas.** The registered H1 sigmas (0.02 and 0.005) sit in the seed-basin problem of 13.2: a stall there
+cannot be told apart from a start-basin failure. The test runs instead at **sigma = 1e-4 and 1e-5**, where the
+planar phb 26 converges from the seed in 4 Newton steps (14-16 s, measured 2026-10-12 14:56).
+
+At each sigma, three things are recorded:
+1. **Strict (M1)** solve from the scaled seed: 40 Newton steps, then 200 trf. Recorded: converged, the
+   residual norm, its split into out-of-plane rows (the z and v_z match components) and in-plane rows, and the
+   eight smallest singular values of the column-scaled Jacobian at the end point.
+2. **M2 diagnostic** (free b_z) solve, the same budget. Recorded: converged and b_z.
+3. **Planar check of the method:** the same strict solve for the planar phb 26 at that sigma (the positive
+   reference for the solver at that sigma).
+
+Verdict:
+- **H1 REFUTED** if the strict solve converges to the floors at either sigma for either member.
+- **H1 SUPPORTED** if all of these hold:
+  - the strict solve fails at both sigmas for both members;
+  - the strict residual floor is mostly out-of-plane (more than half of its squared norm);
+  - the M2 solve converges at both sigmas with b_z != 0, and |b_z(1e-4)| / |b_z(1e-5)| is in [5, 20] (b_z
+    proportional to sigma: the miss is set by the field);
+  - phb 26 converges strictly at both sigmas.
+- **Otherwise INCONCLUSIVE**, reported with every number.
+
+Cost: about 6 solves of up to 240 evaluations at 2-3 s, so up to about 1 h per member at the current load. This
+is a lead launch.
