@@ -449,3 +449,34 @@ below-surface) continuous orbit, which the lane's rules allow, and would not sto
 
 N2 note, for the record: phb 26 (a #1065 seed-grid miss, #1024 continued member) has no resonant leg. It is
 planar, so it is not affected by H1.
+
+### 13.2 Amendment: lower start sigmas (2026-10-12 15:00 AEDT, before any member or N2 run)
+
+Measured on N2's member phb 26 (planar; `k6|LCharon>Charon/2l|LCharon>Charon/1h|LCharon>Hydra/0s|LHydra>Charon/0s`).
+The worst leg is the 2-revolution Charon-to-Charon leg. Its largest mid-leg position defect at the scaled seed:
+
+| sigma | defect (km) |
+|---|---|
+| 0.02 | 23,241 |
+| 0.005 | 9,320 |
+| 0.00125 | 3,054 |
+| 3e-4 | 899 |
+| 1e-5 | 43 |
+
+- The defect falls with sigma, so the seed is consistent.
+- The coefficient is about 1e6 km per unit sigma: the leg shadows Charon for about 16 d. At the registered start
+  sigmas the correction lies outside Newton's basin; 40 Newton steps reduce it by only 10 percent.
+- A NO START there would come from where the solve started, not from the member.
+
+Changes:
+- **Start sigmas:** 0.02, 0.005, 0.00125, 3e-4, 1e-4, 3e-5, 1e-5, in that order; the first that converges is
+  used. NO START only after all seven.
+- **Identity ladder:** halving from the start sigma down to min(0.00125, start / 4), so there are always at least
+  two halvings below the start. The identity rule of sec. 6.2 is unchanged; its "<= 0.0025" condition is then met
+  by construction.
+- **Upward continuation:** unchanged (factor 1.2). From 1e-5 it takes about 60 steps.
+- **Cost, measured:** 2.6 s per residual plus Jacobian at load 46-58, for a 4-node k6 member. That is about 30-60
+  min per member, so every member run is a lead launch.
+
+Both #1025 and #968 started at 0.02 because the Jovian moon-mass coefficients are small. Charon is 11 percent of
+the system, so the start has to be lower here.

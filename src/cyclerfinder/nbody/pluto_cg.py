@@ -510,7 +510,8 @@ def solve(
     for _ in range(newton_iters):
         try:
             r, j, info = ch.residual_and_jac(z)
-        except RuntimeError:
+        except RuntimeError as exc:
+            stats["error"] = f"newton iterate {stats['newton']}: {exc}"
             return z, BAD_INFO, stats
         stats["newton"] += 1
         stats["norms"].append(float(np.linalg.norm(r)))
@@ -571,7 +572,8 @@ def solve(
             z = np.asarray(sol.x)
         except _DoneError:
             z = np.asarray(cache["done"])
-        except RuntimeError:
+        except RuntimeError as exc:
+            stats["error"] = f"trf: {exc}"
             return z, BAD_INFO, stats
     try:
         r, _, info = ch.residual_and_jac(z, False)

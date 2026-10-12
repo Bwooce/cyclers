@@ -59,6 +59,7 @@ R_CHARON = 606.0
 R_PLUTO = 1188.3  # Nimmo et al. 2017, as scripts/gauntlet_998.py
 PLUTO_FLAG_KM = R_PLUTO + 100.0  # Stern et al. 2020 design floor (flag only)
 LADDER_MIN = 0.00125
+START_SIGMAS = (0.02, 0.005, 0.00125, 3e-4, 1e-4, 3e-5, 1e-5)  # amendment 13.2
 _LOGF: Path | None = None
 
 
@@ -623,9 +624,11 @@ def run_problem(
         t_stage = time.time()
         if st == "start":
             tries = rec.setdefault("start_tries", [])
-            for sg in (0.02, 0.005, 0.00125)[len(tries) :]:
+            for sg in START_SIGMAS[len(tries) :]:
                 ch = prob.chain(sg, free_bz)
-                z, info, stats = solve(ch, prob.seed_z(sg, free_bz), 40, 200)
+                z, info, stats = solve(
+                    ch, prob.seed_z(sg, free_bz), 40, 60
+                )  # the #1025 start budget
                 tries.append(
                     {
                         "sigma": sg,
@@ -641,7 +644,7 @@ def run_problem(
                 )
                 log(
                     f"{prob.tag}: start sigma={sg}: converged={converged(info)} "
-                    f"dr={max(info['dr']):.3e} "
+                    f"dr={max(info['dr']):.3e} err={stats.get('error')} "
                     f"dv={max(info['dv']):.3e} ({time.time() - t_stage:.0f}s)"
                 )
                 if converged(info):
@@ -653,11 +656,11 @@ def run_problem(
                 if time.monotonic() > deadline:
                     break
             else:
-                finish("NO START", reason="no convergence at sigma 0.02, 0.005, 0.00125")
+                finish("NO START", reason=f"no convergence at sigma {START_SIGMAS}")
         elif st == "ladder":
             lad = rec["ladder"]
             last = lad[-1]
-            if last["sigma"] <= LADDER_MIN * 1.0001:
+            if last["sigma"] <= min(LADDER_MIN, lad[0]["sigma"] / 4.0) * 1.0001:
                 rec["stage"] = "identity"
                 continue
             sg = last["sigma"] / 2.0
