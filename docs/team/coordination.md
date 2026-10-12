@@ -27,6 +27,13 @@ commit's file list against its author's ownership (`~/.claude/skills/team-lead/s
 ## Shared resources
 - Machine CPU: only ONE full-suite pytest run at a time on Shed-Air, counting the cyclers CI runner (it runs on this Mac). Do a local full run only while no cyclers CI run is in progress, and do not push while a local full run is going. The offgridgate project also has a CI runner here (next-server, playwright), and its runs add load that we cannot schedule. Any pytest-timeout seen under heavy load is suspect until it has been re-run alone.
 
+## Handoff artifacts live in the repository
+
+Anything another agent or the lead must consume later (a catalogue apply script, a patch, a review draft, a
+command list) is written under the repository, committed when it can be and otherwise left untracked at a repo
+path (for example `scripts/window4/`), never only in the session scratchpad. The scratchpad dies with the
+session process: on 2026-10-12 both window-4 apply scripts were lost that way and had to be rebuilt.
+
 ## Catalogue windows (#1063 lock; replaces the "hold commits" message)
 A "hold commits" message does not reach a teammate in the middle of a long turn, so on 2026-10-11 four agents committed inside window 3. The window is now a lock that git enforces:
 - The lead opens a window with `scripts/window.sh open "<reason>"`. This writes `.git/CYCLERS_WINDOW_OPEN` (one line, `lead <ISO time> <reason>`; inside `.git`, so never tracked).
