@@ -1288,3 +1288,27 @@ What it means:
   `inclination_deg` corrected or annotated (7.08 deg on the 2:1 leg). Whether the owner decision
   ("candidate-novel V1 row, like the 15") still holds is the lead's and owner's call. Messages sent
   to the lead and window4-opus at 14:10 AEDT.
+
+### 13.6 Instrument gate for amendment 14 on gc-1 e2 (registered 2026-10-12 about 14:18 AEDT: AFTER the sigma-0.01 point, BEFORE the sigma-0.005 result)
+
+What I had seen when writing this: the sigma-0.02 start (floors, dr 6.2e-4 km) and the sigma-0.01 down point
+(`down_forced.json`, accepted on the sec. 13.2 scaled noise rule at dr 4.1e-3 km). From 0.02 to 0.01 the epoch
+shifts halve (104 -> 56 s, 839 -> 455 s, 497 -> 268 s), the V_inf deviations halve, and every V_inf angle off
+the Callisto -> Callisto leg halves (ratios 0.54-0.55). The C -> C leg's angle (C1 out, C2 in) falls only from
+0.62 to 0.45 deg (ratio 0.73).
+
+The amendment-14 verdict rule of sec. 13.5 is UNCHANGED: the Richardson limit from the two smallest converged
+sigmas must be below 0.1 deg at every node; above it reads "a crank-sibling continues". Nothing below softens
+that reading.
+
+What is added is an INSTRUMENT GATE, because the C -> C crank lies along the weakest singular direction (sv
+about 2.7e-7), which a noise-rule-accepted point pins least:
+- For each down point, the crank RESOLUTION is reported: the residual's projection on the weakest left
+  singular vector, converted to a move along the weakest right singular vector (u . r / sv_min), and that
+  move's effect on the C -> C leg's V_inf angle (deg). Computed in scratch on copies; no file of the running
+  downj stage is touched.
+- Amendment 14 is judged only on points whose crank resolution is below 0.03 deg. A point above it is first
+  polished (more Newton iterations from its stored z, towards the floors), and the polished point replaces it.
+- Diagnostic only (no verdict weight): the signed pump and crank of the C -> C leg's V_inf about Callisto's
+  jup365 velocity at each point, to show which component carries any part that does not halve.
+- No extra sigma is added (no 0.00125): the registered schedule 0.01, 0.005, 0.0025 stands.
