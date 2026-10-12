@@ -442,11 +442,11 @@ def _point(ch: Chain, z: Arr, info: dict[str, Any], scan: bool = True) -> dict[s
     return q
 
 
-def _impact(q: dict[str, Any]) -> str | None:
+def _impact(q: dict[str, Any], r_primary: float = R_PLUTO) -> str | None:
     if any(n.get("impact") for n in q["nodes"]):
-        return "Charon"
-    if "closest" in q and q["closest"]["primary"] <= R_PLUTO:
-        return "Pluto"
+        return "secondary"
+    if "closest" in q and q["closest"]["primary"] <= r_primary:
+        return "primary"
     return None
 
 
@@ -651,7 +651,7 @@ def run_problem(
                 finish("IDENTITY FAIL")
             else:
                 rec["stage"], rec["fac"] = "up", 1.2
-                imp = _impact(rec["points"][0])
+                imp = _impact(rec["points"][0], prob.model.primary_radius_km)
                 if imp:
                     finish("IMPACT", sigma_i=rec["points"][0]["sigma"], body=imp)
         elif st == "up":
@@ -679,7 +679,7 @@ def run_problem(
             z, info, _ = solve(ch, zs, 25, 15, accept_noise=sg < 1.0)
             if converged(info) or (sg < 1.0 and noise_ok(info)):
                 q = _point(ch, z, info)
-                imp = _impact(q)
+                imp = _impact(q, prob.model.primary_radius_km)
                 if imp:
                     pts.append(q)
                     finish("IMPACT", sigma_i=sg, body=imp)
@@ -707,8 +707,8 @@ def run_problem(
                 log(f"{prob.tag}: monitor passed the stop at {sf:.6f}; resume")
             elif up[-1]["sigma"] < 0.91 * sf:
                 rec["stage"] = "fold_checks"
-            elif _impact(up[-1]):
-                finish("IMPACT", sigma_i=up[-1]["sigma"], body=_impact(up[-1]), on="monitor branch")
+            elif _impact(up[-1], prob.model.primary_radius_km):
+                finish("IMPACT", sigma_i=up[-1]["sigma"], on="monitor branch")
             elif not monitor_step(prob, rec, free_bz):
                 finish(
                     "NUMERICAL STOP",
@@ -743,6 +743,87 @@ def run_problem(
     return rec
 
 
+GANCAL5_KEY = "k3|LGanymede>Ganymede/1l|LGanymede>Callisto/1h|LCallisto>Ganymede/0s"
+PC2_REF_968 = {"vinf_g": 3.0403, "callisto_speed": 3.2513, "rp_g": 3210.5}  # #968 sec. 4.7, s_G = 1
+PC2_TOL_KMS = 8.5e-3  # 10 mu v_G (#1024 sec. 5)
+
+
+def pc2_problem() -> Problem:
+    """GanCal#5 in the R-S Jupiter-Ganymede binary, Callisto massless (the gc1 cell)."""
+    from cyclerfinder.search.two_working_body import correct_dates, cycle_flybys
+    from cyclerfinder.search.two_working_body_binary import barycentric_binary
+
+    enum = _load("run_942_enumerate", REPO / "scripts" / "run_942_enumerate.py")
+    r1024 = _load("run_1024_barycentric", REPO / "scripts" / "run_1024_barycentric.py")
+    system, a, b = enum.cell_system("gc1")
+    _, cyc = enum.parse_cycle_key(GANCAL5_KEY, system, a, b)
+    g = json.loads((REPO / "data" / "943_cell_gc_gauntlet.json").read_text())["candidates"]
+    c = next(c for c in g if c["key"] == GANCAL5_KEY)
+    x_gc = np.asarray(c["x_days"]) * DAY
+    sol = correct_dates(system, cyc, x_gc, tol_kms=1e-10)
+    assert sol.converged, "GanCal#5 gc1 zero"
+    gm_g = system.body("Ganymede").mu_km3_s2
+    mu_s = gm_g / (system.mu + gm_g)
+    a_rel = system.bodies["Ganymede"][0]
+    sys0 = barycentric_binary(system, "Ganymede", 0.0)
+    rr = r1024.ramp(sys0, "Ganymede", a_rel, mu_s, cyc, sol.x)
+    assert rr["outcome"] == "CONTINUES", rr["outcome"]
+    sys1 = barycentric_binary(system, "Ganymede", mu_s)
+    x = np.asarray(rr["x"])
+    fl = cycle_flybys(sys1, cyc, x)
+    assert fl is not None
+    model = BinaryCG(
+        gm_total=system.mu,
+        gm_secondary=mu_s * system.mu,
+        a_rel_km=a_rel,
+        period_s=system.bodies["Ganymede"][1],
+        secondary_radius_km=system.body("Ganymede").radius_km,
+        primary_radius_km=71492.0,
+        targets={"Callisto": sys1.bodies["Callisto"]},
+    )
+    meta = {
+        "key": GANCAL5_KEY,
+        "x_days_gc": c["x_days"],
+        "x_days_gc1": (sol.x / DAY).tolist(),
+        "x_days_bary": (x / DAY).tolist(),
+        "mass_fraction": mu_s,
+        "vinf_gc_kms": c["vinf_kms"],
+        "callisto_turn_deg": [f.turn_deg for f in fl if f.body == "Callisto"],
+    }
+    return problem_from_flybys("pc2_gancal5", model, "Ganymede", list(fl), cyc.period_s, meta)
+
+
+def cmd_pc2(argv: list[str]) -> None:
+    ap = argparse.ArgumentParser(prog="pc2")
+    ap.add_argument("--max-wall", type=float, default=420.0)
+    args = ap.parse_args(argv)
+    global _LOGF
+    LIVE.mkdir(parents=True, exist_ok=True)
+    _LOGF = LIVE / "pc2_gancal5.live.log"
+    _preflight("pluto-cg-pc2-gancal5", 1)
+    prob = pc2_problem()
+    log(f"PC2 seed: ref {prob.ref} meta {prob.meta}")
+    path = OUT / "pc2_gancal5.json"
+    rec = run_problem(prob, path, time.monotonic() + args.max_wall)
+    if rec["stage"] == "done" and rec.get("full_mass"):
+        fm = rec["full_mass"]
+        vg = [n["vinf_kms"] for n in fm if n["kind"] == "flyby"]
+        rpg = [n["rp_km"] for n in fm if n["kind"] == "flyby"]
+        vc = [n["vinf_kms"] for n in fm if n["kind"] == "pin"]
+        crit = {
+            "identity": rec["identity"]["verdict"] == "PASS",
+            "vinf_g": all(abs(v - PC2_REF_968["vinf_g"]) <= PC2_TOL_KMS for v in vg),
+            "callisto": all(abs(v - PC2_REF_968["callisto_speed"]) <= PC2_TOL_KMS for v in vc),
+            "rp_g": all(abs(r - PC2_REF_968["rp_g"]) <= 0.01 * PC2_REF_968["rp_g"] for r in rpg),
+            "refly": bool(rec.get("refly_pass")),
+        }
+        rec["pc2"] = {"vinf_g": vg, "rp_g": rpg, "callisto": vc, "criteria": crit,
+                      "pass": all(crit.values())}  # fmt: skip
+        _save(path, rec)
+        log(f"PC2: {rec['pc2']}")
+    log(f"PC2 stage {rec['stage']} outcome {rec.get('outcome')}")
+
+
 def cmd_member(argv: list[str]) -> None:
     ap = argparse.ArgumentParser(prog="member")
     ap.add_argument("--cell", required=True)
@@ -761,7 +842,7 @@ def cmd_member(argv: list[str]) -> None:
 
 
 def main() -> None:
-    cmds = {"pc1": cmd_pc1, "member": cmd_member}
+    cmds = {"pc1": cmd_pc1, "pc2": cmd_pc2, "member": cmd_member}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: {Path(__file__).name} {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])
