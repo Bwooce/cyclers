@@ -1312,3 +1312,37 @@ about 2.7e-7), which a noise-rule-accepted point pins least:
 - Diagnostic only (no verdict weight): the signed pump and crank of the C -> C leg's V_inf about Callisto's
   jup365 velocity at each point, to show which component carries any part that does not halve.
 - No extra sigma is added (no 0.00125): the registered schedule 0.01, 0.005, 0.0025 stands.
+
+### 14.2 Amendment-14 limit check of the #1025 EXISTS members (PRE-REGISTERED 2026-10-12 about 14:30 AEDT, before any of these runs; lead GO)
+
+Disclosed first: before the lead's go, two scratch down solves were run (sec. 14.1): gc4-1 (max angle 0.66 ->
+0.37 -> 0.20 deg at 0.02 / 0.01 / 0.005) and gc5-0 (0.48 -> 0.26 -> 0.14; gc5-0 is an IMPACT member, not a row).
+Nothing else below 0.02 has been looked at.
+
+Members: the 16 #1025 EXISTS members (gc-1 and the 15 rows: gc4-1, gc4-2, gc4-6, gc4-8, gc4-10, gc4-25,
+gc4-28, gc4-38, gc4-41, gc5-3, gc5-5, gc5-6, gc6-0, gc6-1, gc6-2). gc-1 is included as a control (its seed is
+a root by symmetry, sec. 1); gc4-1 is re-run formally. One member per call, in this session.
+
+Procedure (`scripts/check_1055_vinf_direction.py --down`): from each member's committed sigma-0.02 point
+(`data/1025_sigma/<m>.json`), the #1025 solver (`solve`, 40 + 60 iterations, the floors) at sigma 0.01, 0.005
+and 0.0025, each from the previous point with its offsets scaled (as `stage_limit`). At each converged point,
+every node's V_inf in and out angle against the chain tool's seed (as sec. 14.1). Output
+`data/1055_vinf_limit/<m>.json`.
+
+Criteria, per member:
+- COUNTED directions: every node's in or out angle that is at least 0.02 deg at sigma 0.02 (smaller ones are
+  O(sigma) offsets already at the noise; they still enter the limit test).
+- PASS: (i) amendment 14, the Richardson limit 2 theta(0.0025) - theta(0.005) is below 0.1 deg for every
+  direction; and (ii) every counted direction's ratio theta(s) / theta(2 s) lies in 0.35-0.65 at each halving
+  (proportional to sigma is 0.5).
+- CRANK-SIBLING: any direction's Richardson limit is 0.1 deg or more, with its last ratio above 0.65 (the angle
+  is not going to zero). Meaning for the row: the continuous-gravity EXISTS result attaches to a crank-sibling
+  of the chain tool's member, as for gc4-19; its data_gaps would need the sentence "the continuous-gravity
+  limit is a crank-sibling of the #973 member (#1055 amendment 14)", for the owner to decide, and the row
+  would be reported to the lead as gc4-19's was.
+- IRREGULAR: (i) passes but some counted ratio is outside 0.35-0.65. Reported as passing amendment 14, with the
+  ratios; no row change proposed.
+- UNDECIDED: the solver does not converge at 0.005 (fewer than three points). If only 0.0025 fails, the limit
+  uses 0.01 and 0.005 and this is said.
+Expected: all 16 PASS (0.85), since all started from raw seeds with V_inf identity, and the 0.02 screen shows
+no angle above 0.66 deg.
