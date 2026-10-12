@@ -1401,3 +1401,25 @@ Proposed data_gaps sentences (for the owner; the lead lands rows):
 - gc6-2 (path "notes", kind "unknown", todo_ref "#1055"): "Amendment-14 identity (V_inf direction in the
   small-mass limit) undecided: the ideal-model down solve from sigma 0.02 did not converge at 0.01 (#1055
   sec. 14.2.1)."
+
+### 13.7 PAUSED 2026-10-12 about 15:10 AEDT (owner pause; the lead stopped the three gc-1 e2 runs at their checkpoints)
+
+Stop point: downj sigma 0.02 (start, floors) and 0.01 (scaled noise rule, dr 4.1e-3 km) accepted; 0.005 iterating
+at dr 2.84e-3 km against its band 2.5e-3 km after 3 iterations (checkpoint `newton_downj_forced_0.005.npy` / `.it`);
+0.0025 not started. C -> C crank offset -0.596 -> -0.444 deg (ratio 0.75), no amendment-14 verdict yet.
+neg2 (beyond point, +0.5 L) |r| 8.2e-3 and negbase |r| 1.6e-2, both stalling (checkpoints `newton_neg2_forced_0.5.npy`,
+`newton_negbase_forced.npy`; their iteration counts are not stored, so a restart gets a fresh 40-iteration budget
+from the checkpoint). Snapshot commits: a5e3b9e7 and the commit of this section.
+
+Resume (lead launch, from /Users/bruce/dev/cyclers, detached; downj as looped resumable calls, repeated until a call
+logs "downj: limit" or "ok=False", as the fix stage was looped):
+
+    uv run python scripts/run_1055_seedfix.py --target gc1e2 --stage downj --force-q 1 --max-wall 3600
+    uv run python scripts/run_1055_seedfix.py --target gc1e2 --stage neg2 --force-q 1
+    uv run python scripts/run_1055_seedfix.py --target gc1e2 --stage negbase --force-q 1
+
+Then `uv run python scripts/check_1055_crank_resolution.py 0.005 0.0025` (sec. 13.6 gate) and the amendment-14
+verdict; no continuation until identity reads STANDS.
+
+Follow-on registered (lead-approved for the resume; sec. 14.2.1): gc6-2's amendment-14 down solve with factor-sqrt(2)
+steps (0.01414, 0.01, 0.00707, 0.005, 0.00354, 0.0025), judged by the sec. 14.2 rule at 0.01 / 0.005 / 0.0025.
