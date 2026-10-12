@@ -1121,3 +1121,107 @@ Next step (registered here, before any run; lead launch):
     its weak direction near the seed, a finding for the row's data_gaps (lead and owner).
 - Runtime: the frame stage plus the scan, at gc-1 e2's 35-110 s per evaluation, so 2-6 h,
   resumable (`--max-wall 3600`, repeat until `fix_forced.json` exists).
+
+### 13.5 gc-1 e2 forced scan (amendment 13) result: where the root sits, and pre-registrations (jovian-1055-opus, 2026-10-12 13:46 AEDT)
+
+Author change: jovian-nbody-opus died in the 13:14 AEDT Mac reboot; jovian-1055-opus continues #1055 from here.
+
+ORDER OF EVENTS, stated plainly. The lead launched `--stage start --force-q 1` at 13:42:27. Its first
+log line (13:42:48) is the residual AT z* before any Newton step: |r| 1.30e-3, dr 1.21e-3 km,
+dv 1.01e-8 km/s, which already meets the noise-floor rule. `start_forced.json` appeared at about
+13:45, BEFORE this section was written. So the start's outcome is NOT pre-registered here; I had seen
+the 13:42:48 line, and a "converged" prediction made after it would not be blind. I have not read
+`start_forced.json` while writing this section. Everything below that is labelled PRE-REGISTERED
+concerns stages that have not run (the down/identity stage and the negative controls).
+
+Fix result (`fix_forced.json`, lead's looped resumable calls 13:22-13:40, after the 09:18 run was
+killed by the restart):
+- q = 1 by declaration (detection q = 0, as sec. 13.1). L (Newton-step length along the weak
+  direction, at the base) = 1.056e4 scaled. Base g(0) = +1.60e-2, complement 1.9e-3 (below TOL 3e-3).
+- + direction: g rises monotonically, 0.0160 -> 0.0945 at path 5.4e4 (5.1 L). No sign change. The scan
+  went past 3 L before the next doubling ended it; no domain bound.
+- - direction: g falls almost linearly, 0.0159, 0.0155, 0.0149, 0.0136, 0.0110, 0.0059 and -0.0045 at
+  path -1.1e2 ... -1.34e4. One sign change; the secant root is alpha* = -10,476 (0.99 L), g = 9.8e-6
+  (criterion |g| < 1e-3). g is close to linear in path over the whole - side (slope about 1.5e-6 per
+  unit), which is what a near-degenerate direction with a fixed stiffness predicts: one root, near
+  the linear estimate g(0)/slope.
+- Inside the physical domain by a wide margin: every node's d / sigma is above 4,100 km at the root,
+  against R + floor = 2,731 km (Ganymede) and 2,610 km (Callisto). No domain bound on either side.
+
+Two different moves, measured from `fix_state_forced.json` (z_seed = the chain seed scaled to 0.02,
+base = the seed with its complement converged, z* = the root). Nodes G1, C1, C2, G2:
+
+| quantity | chain (seed) | base | z* |
+|---|---|---|---|
+| r_p / sigma (km) | 4,927 / 4,173 / 4,116 / 5,086 | 4,918 / 4,176 / 4,142 / 5,105 | 4,918 / 4,180 / 4,140 / 5,105 |
+| V_inf (km/s) | 2.38795 / 1.85599 / 1.85557 / 2.43230 | 2.38353 / 1.85765 / 1.85825 / 2.42788 | same as base to 1e-5 |
+| turn (deg) | 30.178 / 38.912 / 39.296 / 28.641 | 30.306 / 38.847 / 39.045 / 28.636 | 30.306 / 38.821 / 39.062 / 28.636 |
+| epoch shift from chain (s) | 0 | +104 / +839 / +497 / +104 | +104 / +839 / +497 / +104 (moves < 0.1 s) |
+| angle of V_inf in, out from the chain's (deg) | 0 | (0, 0.13) / (0.14, 0.31) / (0.30, 0.09) / (0.005, 0) | (0, 0.13) / (0.14, 0.62) / (0.62, 0.09) / (0.005, 0) |
+
+- SEED -> BASE (complement convergence, sigma 0.02): scaled distance 2.87e4. It carries all the
+  epoch shifts (Callisto +839 s and +497 s, Ganymede +104 s) and the V_inf magnitude changes
+  (up to 4.4e-3 km/s). These are the O(sigma) offsets of a sigma-0.02 point, of the same kind as
+  gc4-19's -600 s at sigma 0.02 that fell to -9 s in the limit (sec. 10.1). This is the step plain
+  Newton could not take (sec. 13.4) and LM took in #1044.
+- BASE -> z* (the family move, 0.99 L): it touches ONLY the two Callisto nodes. Each Callisto flyby
+  plane turns by about 0.55 deg (0.76 km and 8.4e-3 km/s at sigma 0.02), r_p / sigma moves by 2-4 km
+  (0.1 %), turns by 0.03 deg, V_inf by < 1e-5, epochs by < 0.1 s; the Ganymede nodes do not move
+  (< 1e-3 deg). Physically it is the CRANK of the Callisto -> Callisto 1:1 return leg: the leg's
+  V_inf vector (C1 outbound, C2 inbound) turns from 0.31 to 0.62 deg off the chain tool's, at fixed
+  magnitude. That is the out-of-plane direction #1046 found the residual stuck on.
+
+Against amendment 10 at sigma 0.02 (indicative only; amendment 10 is judged in the limit going down):
+V_inf within 0.0045 km/s (band 0.01), r_p / sigma within 0.6 % (band 5 %), turns within 0.25 deg
+(band 0.2 deg or 5 %, i.e. about 1.5-2.0 deg here). Epochs: +839 s and +497 s at Callisto, which
+amendment 10 judges only in the limit (60 s).
+
+A GAP IN AMENDMENT 10 for this family, registered now: the family move here changes none of
+amendment 10's four quantities (V_inf, r_p / sigma, turn, epoch) by more than 0.1 %; it rotates the
+Callisto leg's V_inf direction (the crank). So amendment 10 alone cannot tell gc-1's chain member
+from a crank-sibling. I add a fifth quantity, PRE-REGISTERED here (amendment 14), before any down
+run: per node, the angle between the converged V_inf in and out vectors and the chain tool's vectors
+(`seed_chain.json` vinf_in / vinf_out). Its Richardson limit must be below 0.1 deg at every node,
+and the angles must fall going down (a Cauchy limit). The 0.1 deg band is about one sixth of the
+z* crank offset at sigma 0.02 (0.62 deg), so a sibling whose crank offset does not shrink with sigma
+fails it clearly.
+
+PRE-REGISTERED readings (written before the down stage and the negative controls run):
+1. IDENTITY (amendment 10 plus amendment 14), from a new jup365 down stage on the forced start
+   (`--stage downj --force-q 1`, sigma 0.01, 0.005 and 0.0025; the Richardson limit from the two
+   smallest converged; acceptance the floors, else the sec. 13.2 sigma-scaled noise rule, recorded
+   per point):
+   - gc-1 STANDS on jup365 at small sigma (its chain member continues into continuous gravity):
+     every node passes amendment 10 and amendment 14 in the limit. In particular the Callisto epoch
+     offsets fall about in proportion to sigma (about 420 s at 0.01, 210 s at 0.005, 105 s at
+     0.0025) to a limit within 60 s, and the crank angle falls to below 0.1 deg.
+   - A SIBLING MEMBER continues, not gc-1's: any node fails either amendment in the limit, e.g. a
+     Callisto epoch or crank offset that does not shrink with sigma. Reported as "a crank-sibling of
+     gc-1's chain member continues; gc-1's chain member does not", as GanCal#1 (sec. 12.7).
+   - NO DECISION: the down stage does not converge at 0.01 and 0.005 (floors or the scaled noise
+     rule) within 40 iterations each. Then gc-1's real-ephemeris standing stays untested.
+   - My expectation (0.65): STANDS. Reason: weakscale (sec. 13.4) shows the weak-direction move
+     relative to the node offsets falling faster than sigma (0.09, 0.02, 0.003), so the crank
+     offset should vanish in the limit.
+2. NEGATIVE CONTROLS:
+   - `--stage neg2 --force-q 1` (amendment 8 procedure: the local frame at the root, +-0.5 L, then
+     +-0.25 L). Here, unlike GanCal#1, the family is near-degenerate with a fixed stiffness, and
+     the root is only 0.99 L from the base. Points 0.5 L off the root may START. Two readings, both
+     fixed now:
+     - both fail: the start depends on the root selection (as GanCal#1);
+     - either starts: under sec. 3 item 3 the start is NOT shown to depend on the correction. The
+       reading I register for that case: what fixed the start is the bordered complement solve
+       (the seed -> base step), not the root selection along the weak direction, consistent with
+       sec. 13.4. The gc-1 verdict then rests on the identity stage only, and the 1-d root is
+       reported as not necessary.
+   - `--stage negbase --force-q 1` (new, registered now): Newton (40) from the BASE itself
+     (complement converged, g = 1.6e-2, 1 L from the root). It discriminates most cleanly: if the
+     base starts, the root selection is not needed; if it fails, it is.
+3. CONTINUATION (sec. 9 commands, with `--soi-limit inf` per amendment 9 if a weak flyby passes
+   0.5 SOI) runs only after identity reads STANDS.
+
+Note on the driver: rungb's `stage_down` reads point 0 of `sigma_n1.json`, which only `stage_cont`
+writes (and `stage_cont` then runs the whole continuation). So the sec. 13.3 item 3 plan ("rungb's
+stage_down after a start") cannot run before a continuation. `downj` does the same down-going
+Newton from `start_forced.json`, writes `down_forced.json` and records per node V_inf, r_p, turn,
+epoch and the V_inf in/out angles against the chain. It does not create `sigma_n1.json`.
