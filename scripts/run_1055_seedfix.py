@@ -649,6 +649,179 @@ def stage_weakscale(t: Target) -> None:
     (t.out / "weakscale.json").write_text(json.dumps(out))
 
 
+def _member_rows(t: Target, z: Any, s: float) -> list[dict[str, Any]]:
+    """Per flyby node at sigma s, against the chain tool's member (amendments 10 and 14):
+    V_inf, r_p / sigma, turn, epoch shift, and the angles of the V_inf in / out vectors."""
+    seed = json.loads((t.out / "seed_chain.json").read_text())["flybys"]
+    t.set_sigma(s)
+    desc = t.rb.describe(t.c, z, s)["nodes"]
+    rows = []
+    for k, n in enumerate(desc):
+        moon = t.moons[k]
+        r, v = np.asarray(z[7 * k : 7 * k + 3]), np.asarray(z[7 * k + 3 : 7 * k + 6])
+        mu = t.c.mus[moon]
+        e = 1.0 + n["rp_km"] * n["vinf_kms"] ** 2 / mu
+        ang = []
+        for which, key in (("in", "vinf_in"), ("out", "vinf_out")):
+            a = t.rb.asymptote(mu, r, v, which)
+            b = np.asarray(seed[k][key], dtype=np.float64)
+            cosv = float(a @ b) / (float(np.linalg.norm(a)) * float(np.linalg.norm(b)))
+            ang.append(float(np.degrees(np.arccos(np.clip(cosv, -1.0, 1.0)))))
+        rows.append(
+            {
+                "moon": moon,
+                "vinf_kms": n["vinf_kms"],
+                "rp_over_sigma_km": n["rp_km"] / s,
+                "turn_deg": float(np.degrees(2.0 * np.arcsin(1.0 / e))),
+                "epoch_shift_s": float(z[7 * k + 6] - t.seed[7 * k + 6]),
+                "vinf_in_angle_deg": ang[0],
+                "vinf_out_angle_deg": ang[1],
+                "floor_ok": n["floor_ok"],
+            }
+        )
+    return rows
+
+
+def _chain_rows(t: Target) -> list[dict[str, Any]]:
+    seed = json.loads((t.out / "seed_chain.json").read_text())["flybys"]
+    return [
+        {
+            "vinf_kms": float(t.chain_vinf[k]),
+            "rp_over_sigma_km": float(np.linalg.norm(t.seed[7 * k : 7 * k + 3])),
+            "turn_deg": float(seed[k]["turn_deg"]),
+        }
+        for k in range(len(t.moons))
+    ]
+
+
+def stage_downj(t: Target) -> None:
+    """Sec. 13.5 (jup365): from start{tag}.json, Newton going down at sigma 0.01, 0.005, 0.0025
+    (one rungb iteration at a time, checkpointed; the floors, else the sec. 13.2 sigma-scaled noise
+    rule, recorded); per point the member rows (_member_rows); the Richardson limit from the two
+    smallest converged sigmas; amendment 10 and amendment 14 judged on it (down{tag}.json).
+    Resumable per iteration; does NOT create sigma_n1.json."""
+    path = t.out / f"down{t.fix_tag}.json"
+    st = json.loads((t.out / f"start{t.fix_tag}.json").read_text())
+    assert st["converged"]
+    rec: dict[str, Any] = json.loads(path.read_text()) if path.exists() else {}
+    if "points" not in rec:
+        z0 = np.asarray(st["z"])
+        rec = {
+            "chain": _chain_rows(t),
+            "points": [
+                {
+                    "sigma": SIGMA0,
+                    "z": z0.tolist(),
+                    "accept": "start",
+                    "nodes": _member_rows(t, z0, SIGMA0),
+                }
+            ],
+        }
+        path.write_text(json.dumps(rec))
+    deadline = time.monotonic() + t.max_wall
+    for sg in (0.01, 0.005, 0.0025):
+        if any(abs(p["sigma"] - sg) < 1e-12 for p in rec["points"]) or rec.get("stopped"):
+            continue
+        prev = rec["points"][-1]
+        ck = t.out / f"newton_downj{t.fix_tag}_{sg}.npy"
+        it_path = t.out / f"newton_downj{t.fix_tag}_{sg}.it"
+        t.set_sigma(sg)
+        zz = np.load(ck) if ck.exists() else t.scale(np.asarray(prev["z"]), sg / prev["sigma"])
+        n_it = int(it_path.read_text()) if it_path.exists() else 0
+        ok, how, info = False, "", {"dr": [np.inf], "dv": [np.inf]}
+        while n_it < 40:
+            if time.monotonic() > deadline:
+                t.log(f"downj: paused at sigma {sg} after {n_it} iterations; run the stage again")
+                return
+            zz, info = t.rb.newton(t.c, zz, 1, f"{t.name} downj sigma={sg}")
+            n_it += 1
+            np.save(ck, zz)
+            it_path.write_text(str(n_it))
+            ends = max(info.get("end_asymptote_kms", [0.0]))
+            if bool(t.rb.converged(info)) and ends < 1e-6:
+                ok, how = True, "floors"
+            elif (
+                max(info["dr"]) < max(1e-3, 1e-2 * sg / SIGMA0)
+                and max(info["dv"]) < 1e-6
+                and max(abs(g) for g in info["gauge"]) < 1e-7
+                and ends < 1e-6
+            ):
+                ok, how = True, "scaled noise rule"
+            if ok:
+                break
+        t.log(
+            f"downj sigma={sg}: ok={ok} ({how}) it {n_it} dr {max(info['dr']):.2e} "
+            f"dv {max(info['dv']):.2e}"
+        )
+        if not ok:
+            rec["stopped"] = {"sigma": sg, "dr": max(info["dr"]), "dv": max(info["dv"])}
+            path.write_text(json.dumps(rec))
+            break
+        rec["points"].append(
+            {
+                "sigma": sg,
+                "z": zz.tolist(),
+                "accept": how,
+                "it": n_it,
+                "nodes": _member_rows(t, zz, sg),
+            }
+        )
+        path.write_text(json.dumps(rec))
+    pts = rec["points"]
+    if len(pts) >= 3:
+        a, b = pts[-1]["nodes"], pts[-2]["nodes"]
+        keys = (
+            "vinf_kms",
+            "rp_over_sigma_km",
+            "turn_deg",
+            "epoch_shift_s",
+            "vinf_in_angle_deg",
+            "vinf_out_angle_deg",
+        )
+        lim = [{k: 2.0 * x[k] - y[k] for k in keys} for x, y in zip(a, b, strict=True)]
+        a10 = []
+        for k, (lm, ch) in enumerate(zip(lim, rec["chain"], strict=True)):
+            dturn = abs(lm["turn_deg"] - ch["turn_deg"])
+            a10.append(
+                {
+                    "dvinf": abs(lm["vinf_kms"] - ch["vinf_kms"]),
+                    "drp_frac": abs(lm["rp_over_sigma_km"] / ch["rp_over_sigma_km"] - 1.0),
+                    "dturn": dturn,
+                    "depoch_s": abs(lm["epoch_shift_s"]),
+                    "pass10": bool(
+                        abs(lm["vinf_kms"] - ch["vinf_kms"]) < 0.01
+                        and abs(lm["rp_over_sigma_km"] / ch["rp_over_sigma_km"] - 1.0) < 0.05
+                        and dturn < max(0.2, 0.05 * ch["turn_deg"])
+                        and abs(lm["epoch_shift_s"]) < 60.0
+                    ),
+                    "pass14": bool(
+                        max(abs(lm["vinf_in_angle_deg"]), abs(lm["vinf_out_angle_deg"])) < 0.1
+                    ),
+                    "node": k,
+                }
+            )
+        rec.update(limit=lim, judged=a10, sigmas_used=[pts[-2]["sigma"], pts[-1]["sigma"]])
+        rec["amendment10"] = all(x["pass10"] for x in a10)
+        rec["amendment14"] = all(x["pass14"] for x in a10)
+        path.write_text(json.dumps(rec))
+        t.log(
+            f"downj: limit from {rec['sigmas_used']}: amendment 10 {rec['amendment10']}, "
+            f"amendment 14 {rec['amendment14']}"
+        )
+
+
+def stage_negbase(t: Target) -> None:
+    """Sec. 13.5 (registered): Newton (40) from the family BASE (the seed with its complement
+    converged, fix_state{tag}.json), at sigma0. Starting means the 1-d root is not needed."""
+    fz = json.loads((t.out / f"fix_state{t.fix_tag}.json").read_text())["family"]
+    t.set_sigma(SIGMA0)
+    t.ckpt_tag = f"negbase{t.fix_tag}"
+    _, info, ok = t.newton(np.asarray(fz["base"]), 40)
+    out = {"started": ok, "dr": max(info["dr"]), "dv": max(info["dv"])}
+    (t.out / f"negbase{t.fix_tag}.json").write_text(json.dumps(out))
+    t.log(f"negbase: {out}")
+
+
 STAGES = {
     "fix": stage_fix,
     "start": stage_start,
@@ -661,6 +834,8 @@ STAGES = {
     "resume": stage_resume,
     "foldsqrt": stage_foldsqrt,
     "weakscale": stage_weakscale,
+    "downj": stage_downj,
+    "negbase": stage_negbase,
 }
 
 
