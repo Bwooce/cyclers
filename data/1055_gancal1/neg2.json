@@ -1,0 +1,1 @@
+{"frame": "local at the root, + = beyond the root", "tried": [{"side": "beyond", "frac_L": 0.5, "offset": [229283.5192004716], "family_point": true, "started": false, "dr": 5.0526116804181225, "dv": 0.011753180927422635}, {"side": "back", "frac_L": -0.5, "offset": [-229283.5192004716], "family_point": true, "started": false, "dr": 2.7116319175161485, "dv": 0.00890157068947333}]}

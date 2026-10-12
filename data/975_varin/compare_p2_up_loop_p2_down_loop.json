@@ -1,0 +1,13 @@
+{
+ "start of p2_down_loop on p2_up_loop": 7.758677320459008e-11,
+ "p2_up_loop end": [],
+ "start of p2_up_loop on p2_down_loop": 8.590214537539798e-13,
+ "p2_down_loop end": [
+  {
+   "end": "closed",
+   "closure": 1.6060319118252732e-13,
+   "t": "09:24:51"
+  }
+ ],
+ "coincide": true
+}
