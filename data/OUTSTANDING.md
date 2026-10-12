@@ -87,7 +87,10 @@ criteria 1-3 at 5/5). No row has changed level yet (V2 count still 11); promotio
 depends on the correction), tracks to sigma 0.7374 and FOLDS (amendment 12, R^2 0.994): no full-mass orbit
 on that branch, and it is a different member of the degenerate family (G2 periapsis about 89,000 km against
 28,327 km); the chain tool's own GanCal#1@2013 object is a non-root. The jup365 lane is NOT validated on a
-full-revolution chain at full mass. gc4-19 passes the member-identity check on its own `#973` member.
+full-revolution chain at full mass. gc4-19 passed amendment-10 identity on its own `#973` member, but under
+amendment 14 (V_inf direction, 2026-10-12) its continuous-gravity limit is a CRANK-SIBLING of that member (`#1055`
+sec. 14.1: 2:1 Ganymede leg 6.04 deg off); so is gc4-1 (sec. 14.2.1, 0.16 deg); gc6-2 undecided; the other 12 gc
+rows and gc-1 pass. gc-1 e2 on jup365 STARTED from the amendment-13 root (sec. 13.5); identity verdict pending.
 **`#1075` CI failures after the macOS 27.0.1 update (registered 2026-10-12, numerics-drift-opus):** 12 tests fail on OS arithmetic, not code or load; per-test causes and fixes in `docs/notes/2026-10-12-1075-os-update-numerics-drift.md`. Status: diagnosis done, fixes in progress, two rulings asked (saddle branch / #347, grid-seeded Newton).
 **`#1073` Pluto continuous-gravity lane (registered 2026-10-12, pluto-nbody-opus; origin: owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"):** no Pluto-Charon rows until a continuous-gravity check (Pluto and Charon massive, small moon passive, sigma-homotopy from the barycentric patched-conic zero) answers the deep-dip caveat. Status: pre-registration note first, build on the lead's go.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
@@ -189,8 +192,9 @@ the gc4-19 row (`#1055`): "Hold until GanCal#1 on jup365 reports"; the 15 known-
 E); the Earth-Mars L rule for the Russell ch. 4 re-judge (`#1061` D item 2): "Set 0.02 rev now" (a strict
 tolerance for all systems; twobody-gen2-opus computes L in code first; ev-B's L is 49 under it, its verdict
 unchanged). Added and DECIDED 2026-10-11 evening (verbatim labels): gc4-19 (`#1055` sec. 14):
-"Candidate-novel V1 row, like the 15" (supersedes "Hold"; row prepared from the draft, applied in catalogue
-window 4); the Pluto small-moon periods (`#1022`): "Store the fitted period beside a" (pre-registered as
+"Candidate-novel V1 row, like the 15" (supersedes "Hold"); SUPERSEDED 2026-10-12 14:10 by "Hold gc4-19 out of
+window 4 (Recommended)" after the crank-sibling finding (`#1055` sec. 14.1); the row returns to the owner at the
+resume with the parked script `scripts/window4/apply_gc4_19_v2.py`; the Pluto small-moon periods (`#1022`): "Store the fitted period beside a" (pre-registered as
 `#1022d`, `b99ffb56`; Brozovic-Jacobson 2024 Table 11 mean motions; `#1067` registered); the `#1052` gate
 rules (rule U, rule U2 and the Aldrin single-body fix, lead ruling on gate semantics) confirmed by the owner.
 **Corpus intake 2026-10-11 (`#960`):** 47 new digests and 40 new `data/sources` tables committed today
@@ -2826,6 +2830,9 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   pass; IAS15 re-fly 1.0e-6 km; identity at sigma 0.01 / 0.005: 0.0044 / 0.0023 km/s. So the fold at
   0.505 was the vector end pins.
 - `#1044` — registered and DISPATCHED 2026-10-08 (jovian-nbody-opus, about 1 h; from `#1039`). **A SECOND
+  **EXPLAINED 2026-10-12 (`#1055` secs. 12.7 and 13.5):** the chain tool's member is a non-root of the
+  continuous-gravity solvability condition (GanCal#1) or sits at a near-degenerate crank (gc-1 e2); the stall was g
+  itself, not an out-of-plane mismatch. `#1046`'s premise is disproved by `#1055` sec. 1.
   REAL-EPHEMERIS CONTROL UNDER FORMULATION (b'): GanCal#1 AT 2013; THEN gc-1 ITSELF AT ONE EPOCH UNDER
   (b').** Either it validates the jup365 lane, or it establishes that the chain tool's patched-conic
   real-ephemeris passes do not survive continuous gravity at these altitudes; in that case the finding
@@ -2883,6 +2890,9 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   across v2, v3 and A1; candidates md5-identical). The review's remaining findings widen `#1052`. **The v3
   gate is usable for `#1025`, `#1036` and `#1047` with LABELLED, TOPOLOGIED signatures only.**
 - `#1046` — ✓ CLOSED 2026-10-08, NO VERDICT (jovian-nbody-opus; apojove form `bc55a16a`..`e5f0902a`, crank form
+  **EXPLAINED 2026-10-12 (`#1055` secs. 12.7 and 13.5):** the chain tool's member is a non-root of the
+  continuous-gravity solvability condition (GanCal#1) or sits at a near-degenerate crank (gc-1 e2); the stall was g
+  itself, not an out-of-plane mismatch. `#1046`'s premise is disproved by `#1055` sec. 1.
   `e3ae1b2b`, `8aedacd2`). Registered 2026-10-08 (from `#1044`). **A FULL-REV-AWARE OPEN-CHAIN FORMULATION FOR
   THE JOVIAN n-BODY LANE:** a node at the resonant leg's apojove, or the return parametrised by its
   V_inf direction on the resonant circle. Control: GanCal#1@2013, then gc-1. **RESULT:** the EGGIE control
@@ -3002,6 +3012,14 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   `#973` gauntlet member to within 14 s; `fd5ee948`: through the `#973` gate). A gc4-19 catalogue row awaits
   the owner. GanCal#1 is running under amendment 7 (`47a5b62e`: pseudo-arclength family stage after a
   chord-scan crash round the weak G2 flyby).
+  **PROGRESS 2026-10-12 (jovian-1055-opus, paused 15:10):** GanCal#1@2013 on jup365 is a NON-ROOT of the
+  solvability condition (secs. 12.3 FINAL, 12.7, 12.8: the sibling branch starts and folds at sigma 0.73), which
+  explains `#1044` and `#1046`. gc-1 e2: q = 0, plain start stalled 6 h, the amendment-13 forced scan found the
+  root alpha* = -10476 (sec. 13.5, a crank of the C-C 1:1 leg) and the start CONVERGED in one iteration; downj
+  identity 0.02 and 0.01 accepted, 0.005 iterating, C-C crank offset ratio 0.75 (not halving), verdict pending
+  under amendment 14 (sec. 13.6 gate; resume commands sec. 13.7). Amendment 14 (V_inf direction): gc4-19 and gc4-1
+  are CRANK-SIBLINGS of their chain-tool members, gc6-2 undecided, 12 rows + gc-1 pass (secs. 14.1-14.2.1);
+  inclination_deg wrong (0.0) for gc4-1 (4.11), gc5-6 (5.68) and the gc4-19 draft (7.08): window-4 corrections.
 - `#1056` — registered 2026-10-08 (from `#1025`; BACKLOG, small). **A CLOSING-REPEAT FLAG ON SIGNATURES (OR A
   ROTATED START IN `sig_of`)** so that `#972`'s F3 rule cannot read a consecutive-same-moon cycle (G G C) as
   alternating. Papercut `docs/papercuts/2026-10-08-twobody-ext-opus-closing-repeat-rule-vs-time-ordered-flybys.md`.
