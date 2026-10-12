@@ -88,6 +88,7 @@ depends on the correction), tracks to sigma 0.7374 and FOLDS (amendment 12, R^2 
 on that branch, and it is a different member of the degenerate family (G2 periapsis about 89,000 km against
 28,327 km); the chain tool's own GanCal#1@2013 object is a non-root. The jup365 lane is NOT validated on a
 full-revolution chain at full mass. gc4-19 passes the member-identity check on its own `#973` member.
+**`#1073` Pluto continuous-gravity lane (registered 2026-10-12, pluto-nbody-opus; origin: owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"):** no Pluto-Charon rows until a continuous-gravity check (Pluto and Charon massive, small moon passive, sigma-homotopy from the barycentric patched-conic zero) answers the deep-dip caveat. Status: pre-registration note first, build on the lead's go.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
 rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
 torus row on 2026-10-03 (`#882`); `europa-3-4-crnbp-torus-jupiter-2026` is `known-class-member`. Older
@@ -3110,6 +3111,7 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   seed selection in `solve_structure`, not grid density (`docs/notes/2026-10-11-1024-barycentric-binary-model.md`
   sec. 10.2). Follow-up: a recall test against a known member set, then 384-phase or basin-aware seeding (e.g.
   per-basin seed selection instead of global best residuals); re-check `#998`/`#973` recall the same way.
+- `#1073` — registered 2026-10-12 (owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"; pluto-nbody-opus; IN PROGRESS). **PLUTO CONTINUOUS-GRAVITY LANE.** The analogue of the Jovian lane for the `#1065` strong_1065 Pluto-Charon one-working-body members: Pluto and Charon as massive bodies, the small moon passive, a sigma-homotopy from the barycentric patched-conic zero, a positive and a negative control, the 12 best (`#998` sec. 6.1) first. Answers the deep-dip caveat (`docs/notes/2026-10-12-1036-owner-summary.md` sec. 4). Pre-registration: `docs/notes/2026-10-12-1073-pluto-continuous-gravity-lane-prereg.md`.
 - `#1071` — registered 2026-10-11 (papercut review, from twobody-ext's `#1024` entry; BACKLOG, small). **STABLE
   CANDIDATE IDS IN THE TWO-WORKING-BODY GAUNTLET JSONS** (cell + index, or key + a hash of x_days): a candidate's
   `key` is not unique (ps 183 candidates, 181 keys; pk 62, 56) and `#1024`'s first run was keyed on it. Grep the
