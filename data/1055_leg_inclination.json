@@ -1,0 +1,364 @@
+{
+ "gc4-19": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Ganymede",
+    "inclination_deg": 7.080197331853134
+   },
+   {
+    "leg": "Ganymede3 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 7.080197331853134
+ },
+ "gc-1": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc-2": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-1": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Ganymede",
+    "inclination_deg": 4.112646710664882
+   },
+   {
+    "leg": "Ganymede3 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 4.112646710664882
+ },
+ "gc4-2": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-6": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-8": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-10": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-25": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-28": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-38": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc4-41": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc5-3": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc5-5": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc5-6": {
+  "legs": [
+   {
+    "leg": "Callisto0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Ganymede",
+    "inclination_deg": 5.681929490405157
+   },
+   {
+    "leg": "Ganymede3 -> Callisto",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 5.681929490405157
+ },
+ "gc6-0": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede2 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc6-1": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ },
+ "gc6-2": {
+  "legs": [
+   {
+    "leg": "Ganymede0 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto1 -> Callisto",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Callisto2 -> Ganymede",
+    "inclination_deg": 0.0
+   },
+   {
+    "leg": "Ganymede3 -> Ganymede",
+    "inclination_deg": 0.0
+   }
+  ],
+  "max_deg": 0.0
+ }
+}
