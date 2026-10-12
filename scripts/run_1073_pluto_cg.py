@@ -395,6 +395,38 @@ def pluto_model(system: Any, moon: str) -> BinaryCG:
     )
 
 
+def zero_problem(
+    cell: str, key: str, x_days: list[float], tag: str, meta: dict[str, Any]
+) -> Problem:
+    """Any zero of a #1065 barycentric cell (key + dates), minimax cranks."""
+    r1065 = _load(
+        "run_1065_barycentric_enumerate", REPO / "scripts" / "run_1065_barycentric_enumerate.py"
+    )
+    from cyclerfinder.search.two_working_body import cycle_flybys, date_residual
+
+    moon = r1065.CELLS[cell]
+    system = r1065.bary_system(moon)
+    _, cyc = r1065.ENUM.parse_cycle_key(key, system, "Charon", moon)
+    x = np.asarray(x_days) * DAY
+    res = date_residual(system, cyc, x)
+    assert res is not None and float(np.max(np.abs(res))) < 1e-8, "not a zero of the cell"
+    fl = cycle_flybys(system, cyc, x)
+    assert fl is not None
+    meta = dict(meta) | {
+        "cell": cell,
+        "key": key,
+        "x_days": list(x_days),
+        "residual_kms": float(np.max(np.abs(res))),
+        "max_out_of_plane": max(
+            max(abs(f.vinf_in[2]), abs(f.vinf_out[2])) / float(np.linalg.norm(f.vinf_in))
+            for f in fl
+        ),
+    }
+    return problem_from_flybys(
+        tag, pluto_model(system, moon), "Charon", list(fl), cyc.period_s, meta
+    )
+
+
 def member_problem(cell: str, index: int) -> Problem:
     r1065 = _load(
         "run_1065_barycentric_enumerate", REPO / "scripts" / "run_1065_barycentric_enumerate.py"
@@ -573,7 +605,7 @@ def direct_sigma1(prob: Problem, rec: dict[str, Any], free_bz: bool) -> None:
 
 
 def run_problem(
-    prob: Problem, path: Path, deadline: float, free_bz: bool = False
+    prob: Problem, path: Path, deadline: float, free_bz: bool = False, stop_before: str = ""
 ) -> dict[str, Any]:
     rec: dict[str, Any] = (
         json.loads(path.read_text())
@@ -586,7 +618,7 @@ def run_problem(
         rec.update(stage="done", outcome=outcome, **kw)
         log(f"{prob.tag}: {outcome} {kw}")
 
-    while time.monotonic() < deadline and rec["stage"] != "done":
+    while time.monotonic() < deadline and rec["stage"] not in ("done", stop_before):
         st = rec["stage"]
         t_stage = time.time()
         if st == "start":
@@ -824,6 +856,91 @@ def cmd_pc2(argv: list[str]) -> None:
     log(f"PC2 stage {rec['stage']} outcome {rec.get('outcome')}")
 
 
+ARCHIVE_1065 = Path.home() / "dev" / "references" / "cyclers-runs" / "1065"
+
+
+def _archive_zeros(cell: str) -> list[dict[str, Any]]:
+    out = []
+    for f in sorted(ARCHIVE_1065.glob(f"{cell}/s*/zeros.jsonl")):
+        out += [json.loads(line) for line in f.read_text().splitlines() if line.strip()]
+    if not out:
+        raise SystemExit(f"no archived zeros for {cell} under {ARCHIVE_1065}")
+    return out
+
+
+def cmd_n1(argv: list[str]) -> None:
+    """N1 (sec. 7.3). ``--rule literal``: the pnb zero with the lowest worst ratio above 1.
+    ``--rule surface`` (amendment N1', sec. 13 of the note): the planar pnb zero with the lowest
+    worst ratio among those whose demanded Charon periapsis is below Charon's surface."""
+    ap = argparse.ArgumentParser(prog="n1")
+    ap.add_argument("--rule", choices=("literal", "surface"), required=True)
+    ap.add_argument("--max-wall", type=float, default=420.0)
+    args = ap.parse_args(argv)
+    global _LOGF
+    tag = f"n1_{args.rule}"
+    LIVE.mkdir(parents=True, exist_ok=True)
+    _LOGF = LIVE / f"{tag}.live.log"
+    _preflight(f"pluto-cg-{tag}", 1)
+    zs = [z for z in _archive_zeros("pnb") if z.get("worst_ratio") and z["worst_ratio"] > 1.0]
+    if args.rule == "surface":
+        zs = [
+            z
+            for z in zs
+            if "|R" not in z["key"]
+            and min(f.get("required_alt_km", 1e9) for f in z["flybys"]) < 0.0
+        ]
+    z = min(zs, key=lambda z: (z["worst_ratio"], z["key"], z["x_days"]))
+    meta = {
+        "control": "N1",
+        "rule": args.rule,
+        "worst_ratio": z["worst_ratio"],
+        "status": z["status"],
+        "min_required_alt_km": min(f.get("required_alt_km", 1e9) for f in z["flybys"]),
+    }
+    prob = zero_problem("pnb", z["key"], z["x_days"], tag, meta)
+    log(f"N1 {args.rule}: {meta} key {z['key']} x {z['x_days']}")
+    rec = run_problem(prob, OUT / f"{tag}.json", time.monotonic() + args.max_wall)
+    out = str(rec.get("outcome", ""))
+    rec["n1_pass"] = bool(rec["stage"] == "done" and not out.startswith("EXISTS"))
+    _save(OUT / f"{tag}.json", rec)
+    log(f"N1 {args.rule}: stage {rec['stage']} outcome {out} n1_pass {rec['n1_pass']}")
+
+
+PHB26_SIBLING_X = [2.916392406234328, 14.076985016951722, 29.77193940129323, 36.245124314650546]
+
+
+def cmd_n2(argv: list[str]) -> None:
+    """N2 (sec. 7.3): phb 26 (the #1024 continued member, a #1065 seed-grid miss) through the start
+    and the identity ladder; identity against its sibling zero (#1065 sec. 10.2) must FAIL."""
+    ap = argparse.ArgumentParser(prog="n2")
+    ap.add_argument("--max-wall", type=float, default=420.0)
+    args = ap.parse_args(argv)
+    global _LOGF
+    LIVE.mkdir(parents=True, exist_ok=True)
+    _LOGF = LIVE / "n2_phb26.live.log"
+    _preflight("pluto-cg-n2-phb26", 1)
+    cont = json.loads((REPO / "data" / "1024_barycentric" / "ph_continue.json").read_text())
+    r26 = next(r for r in cont if r["index"] == 26)
+    prob = zero_problem("phb", r26["key"], r26["x_days"], "n2_phb26", {"control": "N2"})
+    sib = zero_problem("phb", r26["key"], PHB26_SIBLING_X, "phb26_sibling", {})
+    path = OUT / "n2_phb26.json"
+    rec = run_problem(prob, path, time.monotonic() + args.max_wall, stop_before="up")
+    if rec.get("identity"):
+        other = identity_check(rec["ladder"], sib.ref)
+        ok = other.get("ok") or {}
+        rec["n2"] = {
+            "own_verdict": rec["identity"]["verdict"],
+            "sibling_verdict": other["verdict"],
+            "sibling_ok": ok,
+            "sibling_ref": sib.ref,
+            "sibling_meta": sib.meta,
+            "pass": bool(other["verdict"] == "FAIL" and not ok.get("epoch", True)),
+        }
+        _save(path, rec)
+        log(f"N2: own {rec['n2']['own_verdict']}, sibling {other['verdict']} ok={ok}")
+    log(f"N2 stage {rec['stage']} outcome {rec.get('outcome')}")
+
+
 def cmd_member(argv: list[str]) -> None:
     ap = argparse.ArgumentParser(prog="member")
     ap.add_argument("--cell", required=True)
@@ -842,7 +959,7 @@ def cmd_member(argv: list[str]) -> None:
 
 
 def main() -> None:
-    cmds = {"pc1": cmd_pc1, "pc2": cmd_pc2, "member": cmd_member}
+    cmds = {"pc1": cmd_pc1, "pc2": cmd_pc2, "member": cmd_member, "n1": cmd_n1, "n2": cmd_n2}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         raise SystemExit(f"usage: {Path(__file__).name} {{{','.join(cmds)}}} ...")
     cmds[sys.argv[1]](sys.argv[2:])

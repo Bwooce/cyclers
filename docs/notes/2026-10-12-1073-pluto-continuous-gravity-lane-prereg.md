@@ -421,3 +421,31 @@ Continuous Pluto gravity acts hardest exactly there, so IMPACT is a live outcome
 
 Code reuse: `degenerate_family.py`, `fold_tools.py` and the #1025 driver's functions are imported, not edited (the
 Jovian lane files are owned elsewhere).
+
+## 13. Amendments (each written before the run it covers)
+
+### 13.1 Amendment N1' (2026-10-12 14:40 AEDT, before either N1 run)
+
+The sec. 7.3 N1 selection is mis-specified. The worst ratio is demanded turn over the turn available at the
+100 km floor, not at the surface. So the lowest ratio above 1 in pnb (1.0029, status "indeterminate", key
+`k6|LCharon>Charon/1h|RCharon/1:1|LCharon>Nix/0s|LNix>Charon/1l`) has its demanded periapsis about 5 km below the
+floor, about 95 km above Charon's surface. Two consequences:
+- The lane is not built to reject that case. Its impact rule is the surface (sec. 6.1 item 5), and the floor is
+  only a flag.
+- The zero is spatial, so under H1 it would end as NO START for a reason unrelated to the gate.
+
+So the literal N1 cannot show what N1 was meant to show: that the lane does not close a flyby that needs a
+periapsis inside the body.
+- **N1 as registered** is run anyway (`n1 --rule literal`) and recorded. Its literal criterion (no EXISTS) is
+  judged as written.
+- **N1' (added)** is the planar pnb zero with the lowest worst ratio among those whose demanded Charon periapsis
+  is below Charon's surface (`required_alt_km < 0` at some Charon flyby; `n1 --rule surface`).
+  - Expected: IMPACT (secondary) at the first converged point, because the sigma-scaled periapsis is below
+    sigma x 606 km in the limit; or NO START.
+  - FAIL if it ends as EXISTS or EXISTS-SIBLING.
+
+N1' is the control the lane is judged by. A literal-N1 EXISTS would be reported as a below-floor (not
+below-surface) continuous orbit, which the lane's rules allow, and would not stop the lane.
+
+N2 note, for the record: phb 26 (a #1065 seed-grid miss, #1024 continued member) has no resonant leg. It is
+planar, so it is not affected by H1.
