@@ -2986,8 +2986,13 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   pilot (`e2a30f42`) nor in the full grid (`00c1358f`, `58fd4b4a`: impact 0.537 < 0.590, converged 0.328 > 0.286,
   all 15 `#1000` family keys found; four new keys known-class at class level only). F1 is now the default seed
   design of `scripts/run_1000_shooting.py` (`--seed-design legacy` reproduces the committed `#1000`/`#1048`
-  records bit-for-bit; tests in `tests/scripts/test_1054_seed_design.py`). Note:
+  records: status and iteration count exactly, converged C and T within a derived rounding bound, not
+  bit-for-bit; tests in `tests/scripts/test_1054_seed_design.py`). Note:
   `docs/notes/2026-10-11-1054-seed-design-fix.md` secs. 6-10.
+  **AMENDED 2026-10-12 (earthmoon-1054-opus):** two exact C/T equalities failed after the macOS 27.0.1 update
+  (09:38 AEDT, same code; the free-C landing point drifts along the solution family by rounding noise over the
+  last step's smallest singular value, about 4e-8). Replaced by fixed derived bounds with a wrong-row positive
+  control; note sec. 10.1, `scripts/probe_1054_float_sensitivity.py`.
 - `#1055` — registered 2026-10-08 (from `#1046`; BACKLOG). **A SEED CORRECTED WITH THE OUT-OF-PLANE ROWS** for
   the Jovian n-body lane's full-revolution legs, to remove the out-of-plane inconsistency that stalls
   GanCal#1@2013 and gc-1 under every formulation (`#1046`).
@@ -3116,6 +3121,17 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   sec. 10.2). Follow-up: a recall test against a known member set, then 384-phase or basin-aware seeding (e.g.
   per-basin seed selection instead of global best residuals); re-check `#998`/`#973` recall the same way.
 - `#1073` — registered 2026-10-12 (owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"; pluto-nbody-opus; IN PROGRESS). **PLUTO CONTINUOUS-GRAVITY LANE.** The analogue of the Jovian lane for the `#1065` strong_1065 Pluto-Charon one-working-body members: Pluto and Charon as massive bodies, the small moon passive, a sigma-homotopy from the barycentric patched-conic zero, a positive and a negative control, the 12 best (`#998` sec. 6.1) first. Answers the deep-dip caveat (`docs/notes/2026-10-12-1036-owner-summary.md` sec. 4). Pre-registration: `docs/notes/2026-10-12-1073-pluto-continuous-gravity-lane-prereg.md`.
+- `#1074` — registered 2026-10-12 (lead condition on the `#1054` float-test amendment; earthmoon-1054-opus;
+  BACKLOG, small). **BITWISE FLOAT GOLDENS THAT AN OS MATH-LIBRARY CHANGE COULD FLIP.** The 2026-10-12 scan found no
+  other test comparing an iterative solver's float output with a committed record by `==` (the `#1054` pair was the
+  only one, fixed with derived bounds, note `docs/notes/2026-10-11-1054-seed-design-fix.md` sec. 10.1). Remaining
+  bitwise stored-value checks are closed-form, with no near-singular solve to amplify a last-bit change:
+  `tests/search/test_1024_keplerian_regression.py` (459 Keplerian cells vs a fixture), the `#1022d` registry fixture
+  (`tests/core/data/registry_before_1022d.json` in `tests/core/test_satellites_pluto_small_moons.py` and
+  `tests/search/test_1022d_orbit_circle_consumers.py`), and derived constants such as `tests/core/test_bcr4bp.py`
+  lines 187-190. All pass after the macOS 27.0.1 update. Task: decide per test whether bitwise is the claim (same-process
+  or closed-form identity) or a last-bit tolerance with a stated reason; act only on the next real failure if the
+  owner prefers.
 - `#1071` — registered 2026-10-11 (papercut review, from twobody-ext's `#1024` entry; BACKLOG, small). **STABLE
   CANDIDATE IDS IN THE TWO-WORKING-BODY GAUNTLET JSONS** (cell + index, or key + a hash of x_days): a candidate's
   `key` is not unique (ps 183 candidates, 181 keys; pk 62, 56) and `#1024`'s first run was keyed on it. Grep the

@@ -355,10 +355,92 @@ Change:
 - `solve_seed` keeps its 6-tuple signature for the legacy path. A 7th element names the design.
 
 Expected (written before the change):
-- the existing reproduction tests pass bit-for-bit through the legacy path (`tests/scripts/test_1054_seed_design.py`:
+- the existing reproduction tests pass bit-for-bit (amended in sec. 10.1: status, iteration count and
+  halving count exactly; C and T of a converged seed within a derived rounding bound) through the legacy path (`tests/scripts/test_1054_seed_design.py`:
   20 #1000 seeds, status and iteration count; the F3 opt-in seeds);
-- new tests also pass bit-for-bit:
+- new tests also pass bit-for-bit (amended in sec. 10.1, as above):
   - 3 #1048 gaps seeds reproduce `gaps.jsonl`;
   - a legacy 7-tuple gives the same record as the 6-tuple;
   - an f1 seed reproduces its arm E record.
 - `RP_NEW == RP_F1` exactly.
+
+### 10.1 Amendment 2026-10-12 (earthmoon-1054-opus): "bit-for-bit" is not the true claim for C and T
+
+**What failed.** At 13:40 AEDT the lead found two tests failing at HEAD and at c27609de: the gaps seed
+(3, 1, 1, 7, 0) gives C = 3.031273325802236 against the record's 3.03127351391098 (relative 6e-8), and
+the arm-E seed (7, 3, -1, 3, 11) gives C = 1.0102884633985827 against 1.0102884649803734 (relative
+1.6e-9). Status and iteration count are equal. The other 30 tests pass.
+
+**Cause: the operating system changed, not the code.**
+- `/Library/Receipts/InstallHistory.plist` records "macOS 27.0.1" installed 2026-10-11 22:38:16 UTC
+  (2026-10-12 09:38 AEDT). The machine booted at 09:36:48 AEDT. c27609de was committed at 09:26.
+- earthmoon-opus's transcript shows this file's 32 tests passing at 09:25:54 AEDT, before the update.
+- The numpy 2.4.6 and scipy 1.17.1 wheels are unchanged (installed 2026-07-13). numpy's BLAS and
+  LAPACK are Apple Accelerate, which ships with the OS, as does libm. The two were not separated.
+- The scripts as they were at the records' own producing commits (c4acd7fa for `gaps.jsonl`,
+  e2a30f42 for `arm_E.jsonl`), run today, give today's values bit-for-bit. So the legacy and F1 paths
+  are the paths that made the records, and no later commit changed them.
+- The divergence is already in the Newton output (s0 differs by 4e-8 for the gaps seed), not in the
+  post-processing.
+- The same environment class was seen before in `#584` (two tests flipped on the new M3/Accelerate Mac).
+
+**Mechanism.** With C free, the shooting system (4n continuity rows and 1 perigee-phase row, 5n
+unknowns) has a family of solutions. The stopping rule (residual below 1e-10) does not constrain the
+landing point along the family, so the tolerance cannot be derived from the stopping criterion. Each
+step is the minimum-norm least-squares solution, and the smallest singular value it keeps collapses at
+the last step (Jacobi-integral redundancy). Rounding noise in the residual, divided by that singular
+value, moves the landing point along the family, and later steps never remove it.
+
+| seed | smallest kept singular value, steps 1-5 | arc rounding noise | record vs now, C | 1-ulp ensemble max, C (20 seed / 20 step perturbations) |
+|---|---|---|---|---|
+| gaps (3, 1, 1, 7, 0), legacy | 6.5e-2, 5.1e-2, 6.2e-3, 1.6e-4, 3.8e-8 | 2.55e-14 | 1.88e-7 | 2.20e-7 / 1.92e-7 |
+| arm E (7, 3, -1, 3, 11), F1 | 6.4e-2, 3.5e-2, 4.0e-3, 4.0e-5, 7.0e-8 | 6.21e-14 | 1.58e-9 | 6.27e-9 / 6.47e-9 |
+
+The recorded differences lie inside the spread that 1-ulp perturbations of the seed or of each step
+produce today.
+
+**Derived bound (adopted).** |dx| <= sum over steps of sqrt(4n) eps / sigma_min,k;
+|dC| <= |grad C(s0)| (|dx| + eps); |dT| <= sqrt(n) |dx| when k_min = p. eps is the arc end point's
+ROUNDING noise: max |arc(s + d) - arc(s) - Phi d| over 1-ulp perturbations d at the converged nodes.
+Both environments run the same algorithm and essentially the same integrator steps, so the truncation
+error (what rtol = atol = 1e-12 controls) is common to both and cancels; only rounding differs.
+
+| seed | C bound | T bound | test constant (C, T) | record vs now (C, T) |
+|---|---|---|---|---|
+| gaps | 3.22e-6 | 3.99e-6 | 3.3e-6, 4.0e-6 | 1.88e-7, 1.06e-7 |
+| arm E | 1.36e-5 | 1.25e-5 | 1.4e-5, 1.3e-5 | 1.58e-9, 8.8e-10 |
+
+The constants are fixed in the test and never recomputed from the solve under test, so a regression
+that lowered sigma_min cannot widen its own tolerance. The test also asserts k_min, sheet and symmetry
+exactly, and k_min = p (the T bound's premise).
+
+**Rejected bound.** With eps at the truncation scale (atol + rtol max|y|, 1.8e-12 and 2.5e-12) the
+C bounds are 2.3e-4 and 5.4e-4. That fails the positive control below.
+
+**Positive control** (`scripts/probe_1054_float_sensitivity.py control --tol-c 3.3e-6 1.4e-5`): the
+same seeds solved on a neighbouring perigee row (legacy or F1) or a neighbouring omega must be
+rejected. All are, by status or by C. The arm-E seed on legacy row 4 (19,018 km against F1 row 3,
+16,943 km) converges with the same status and iteration count and |dC| = 1.8e-4. The adopted bound
+rejects it; the truncation-scale bound would have accepted it.
+
+**Discrete fields are stable.** 1-ulp seed perturbations (5 each) of every seed in the test file
+(20 reproduction, 3 gaps, 3 F3, 2 arm E; 140 solves) change no status, iteration count or halving
+count (`... stable --n 5`).
+
+**The true claim of sec. 10**: the legacy path reproduces the committed #1000/#1048 records' status
+and iteration count exactly, and their converged C and T to within the derived rounding bound; F1
+does the same for its arm-E record. Bit-for-bit equality held on the machine that made the records
+until the OS update, and it is not a property the code can promise across OS math libraries.
+
+**Other tests.** In this file only these two compared floats from converged solves. No
+tests/scripts/test_1000_*.py exists; the #1000/#1048 regression coverage is this file. Elsewhere,
+stored-value bitwise comparisons are of closed-form (non-iterative) values
+(`tests/search/test_1024_keplerian_regression.py`, the #1022d registry fixture). They pass after the
+update and have no amplification by a near-singular solve. They are listed for follow-up as `#1074`:
+`tests/search/test_1024_keplerian_regression.py`, the #1022d registry fixture (used by
+`tests/core/test_satellites_pluto_small_moons.py` and `tests/search/test_1022d_orbit_circle_consumers.py`) and
+derived constants in `tests/core/test_bcr4bp.py`. The scan covered `== rec[`, `== r["`, `["C"] ==` and
+`== <float literal with 7+ decimals>` over tests/; the literal matches are transcribed constants, not solver output.
+The lead's brief asked for eps from the integrator rtol; that bound fails the positive control above, so the
+adopted eps is the measured rounding noise, with the reason stated (lead informed 2026-10-12).
+

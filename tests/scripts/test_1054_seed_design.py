@@ -17,6 +17,15 @@ F3 (the osculating-perigee step limit, opt-in, default off): the helper's oscula
 skeleton node equals the skeleton's r_p, and three arm-B seeds re-solved with F3 on give their
 recorded status, iteration count and halving count (regression against
 data/1054_seed_design/arm_B.jsonl, not a golden).
+
+Sec. 10 (amended 2026-10-12, sec. 10.1): the legacy path reproduces three #1048 gaps records and an
+F1 seed its arm E record: status, iteration count, k_min, sheet and symmetry exactly; C and T of a
+converged seed within a DERIVED rounding bound, not bit-for-bit. With C free the shooting system has
+a family of solutions, so the stopping rule does not fix the landing point along the family; the
+smallest singular value at the last Newton step (about 4e-8) amplifies the arc end points' rounding
+noise into C. After the macOS 27.0.1 update (2026-10-12 09:38 AEDT) the same code lands 1.9e-7
+(gaps) and 1.6e-9 (arm E) away from the records in C. Bound and positive control:
+scripts/probe_1054_float_sensitivity.py.
 """
 
 from __future__ import annotations
@@ -117,6 +126,32 @@ def test_f3_opt_in_reproduces_arm_b(seed: tuple[int, int, int, int, int]) -> Non
 # --- sec. 10: F1 is the default seed design; the legacy path reproduces the committed records ---
 
 GAPS_SEEDS = [(3, 1, 1, 0, 0), (3, 1, 1, 0, 1), (3, 1, 1, 7, 0)]
+ARM_E_SEEDS = [(2, 1, 1, 0, 24), (7, 3, -1, 3, 11)]
+
+# Rounding-drift bounds (|C - C_rec|, |T - T_rec|) for the converged seeds, note sec. 10.1, from
+# `scripts/probe_1054_float_sensitivity.py bound` (2026-10-12, rounded up). Derivation:
+# |dx| <= sum over Newton steps of sqrt(4n) eps / sigma_min,k (minimum-norm step, error along the
+# solution family never removed), with eps the arc end point's ROUNDING noise (1-ulp probe at the
+# converged nodes: 2.55e-14 gaps, 6.21e-14 arm E); truncation error (rtol = atol = 1e-12) is common
+# to both runs and cancels. |dC| <= |grad C(s0)| (|dx| + eps), |dT| <= sqrt(n) |dx| (k_min = p).
+# Fixed constants, never recomputed from the solve under test. Positive control: the arm-E seed on
+# the legacy row 4 converges with the same status and it at |dC| = 1.8e-4 and is rejected here; the
+# truncation-scale bound (5.4e-4) would have accepted it.
+DRIFT_TOL = {
+    (3, 1, 1, 7, 0): (3.3e-6, 4.0e-6),
+    (7, 3, -1, 3, 11): (1.4e-5, 1.3e-5),
+}
+
+
+def _assert_same_orbit(
+    out: dict[str, Any], rec: dict[str, Any], seed: tuple[int, int, int, int, int]
+) -> None:
+    for key in ("k_min", "sheet", "symmetric"):
+        assert out[key] == rec[key], key
+    assert rec["k_min"] == seed[0]  # T = sum of the p durations, the bound's premise
+    tol_c, tol_t = DRIFT_TOL[seed]
+    assert abs(out["C"] - rec["C"]) <= tol_c
+    assert abs(out["T"] - rec["T"]) <= tol_t
 
 
 @pytest.mark.parametrize("seed", GAPS_SEEDS)
@@ -130,8 +165,7 @@ def test_legacy_gaps_seed_reproduces_1048_record(seed: tuple[int, int, int, int,
     out = sh.solve_seed((*seed, None, "legacy"))
     assert (out["status"], out["it"]) == (rec["status"], rec["it"])
     if rec["status"] == "converged":
-        assert out["C"] == rec["C"]
-        assert out["T"] == rec["T"]
+        _assert_same_orbit(out, rec, seed)
     assert "seed_design" not in out
 
 
@@ -146,7 +180,7 @@ def test_f1_rows_are_the_1054_rows() -> None:
     assert sh.SEED_DESIGNS["legacy"] is sh.RP
 
 
-@pytest.mark.parametrize("seed", [(2, 1, 1, 0, 24), (7, 3, -1, 3, 11)])
+@pytest.mark.parametrize("seed", ARM_E_SEEDS)
 def test_f1_seed_reproduces_arm_e_record(seed: tuple[int, int, int, int, int]) -> None:
     path = REPO / "data" / "1054_seed_design" / "arm_E.jsonl"
     recs = {
@@ -158,5 +192,4 @@ def test_f1_seed_reproduces_arm_e_record(seed: tuple[int, int, int, int, int]) -
     assert out["seed_design"] == "f1"
     assert (out["status"], out["it"]) == (rec["status"], rec["it"])
     if rec["status"] == "converged":
-        assert out["C"] == rec["C"]
-        assert out["T"] == rec["T"]
+        _assert_same_orbit(out, rec, seed)
