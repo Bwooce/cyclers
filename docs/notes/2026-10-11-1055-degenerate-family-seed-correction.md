@@ -1225,3 +1225,66 @@ writes (and `stage_cont` then runs the whole continuation). So the sec. 13.3 ite
 stage_down after a start") cannot run before a continuation. `downj` does the same down-going
 Newton from `start_forced.json`, writes `down_forced.json` and records per node V_inf, r_p, turn,
 epoch and the V_inf in/out angles against the chain. It does not create `sigma_n1.json`.
+
+### 14.1 CORRECTION to sec. 10.1 and to the gc4-19 row draft: the limit is a CRANK-SIBLING of the chain tool's member (jovian-1055-opus, 2026-10-12 14:15 AEDT)
+
+Found while registering amendment 14 for gc-1 e2 (sec. 13.5). Script: `scripts/check_1055_vinf_direction.py`
+(read-only; output `data/1055_vinf_direction.json`). It takes the two-body V_inf in / out asymptotes
+of each branch node at its sigma, compares them with the same asymptotes of the chain tool's seed
+at sigma = 1, and gives the pump and crank of each vector about the moon's velocity (crank 0 =
+radially outward in the moons' plane, 90 = towards +z).
+
+gc4-19 (`data/1055_gc4-19/limit.json`, the #1055-corrected branch going down):
+
+| sigma | angle to the chain's V_inf, nodes C1 in/out, C2 in/out, G1 in/out, G2 in/out (deg) | 2:1 Ganymede leg crank (deg) |
+|---|---|---|
+| chain (sigma 1) | 0 | 90.000 (pump 41.764) |
+| 0.02 | 0.03/0.04, 0.03/0.04, 0.16/**5.51**, **5.56**/0.32 | 82.12 |
+| 0.01 | 0.02/0.02, 0.02/0.03, 0.11/**6.00**, **6.03**/0.20 | 81.23 |
+| 0.005 | 0.01/0.01, 0.01/0.01, 0.06/**6.04**, **6.05**/0.11 | 81.07 |
+| 0.0025 | 0.005/0.006, 0.006/0.007, 0.03/**6.04**, **6.04**/0.06 | 81.00 |
+| Richardson limit | 0/0, 0/0, 0.002/**6.04**, **6.04**/0.008 | about 80.9 |
+
+- On every leg except the 2:1 Ganymede resonant leg (G1 outbound, G2 inbound), the angle falls in
+  proportion to sigma, to 0 in the limit. On the 2:1 leg it does NOT: it grows from 5.5 to 6.04 deg,
+  and the limit is 6.04 deg. The pump angle on that leg is the chain's (41.765 against 41.764). The
+  crank is about 81 deg against the chain's 90.0 deg.
+- Why amendment 10 passed (sec. 12.5.2): the Callisto -> Ganymede Lambert leg arrives at Ganymede with
+  pump 0.51 deg, almost along the moon's velocity, and the Ganymede -> Callisto leg leaves the same
+  way. The turn at each Ganymede node is then the angle between a vector near the cone's axis and a
+  vector on the 2:1 resonance cone, which hardly depends on the crank. Turns 41.70 / 41.87 against
+  41.77 / 41.77, r_p / sigma within 0.4 %, V_inf within 1e-4, epochs within 14 s: all inside the
+  amendment-10 bands. The family move is the crank of the 2:1 leg.
+- So sec. 10.1's statement "the limit member IS the chain tool's member" is TRUE in epochs, V_inf
+  magnitudes, turns and periapses, and FALSE in the 2:1 leg's crank: about 81 deg against 90 deg,
+  a 6.04 deg difference in the leg's V_inf direction. The independent #973 gate check
+  (`2026-10-11-1055-gc4-19-973-gate.md`) corrected the DATES from the limit and so landed on the #973
+  zero; the #973 date-residual formulation does not carry the crank, so it could not see this. Under
+  amendment 14 (limit angle < 0.1 deg), gc4-19 FAILS: it is a crank-sibling of the chain tool's
+  member, in the same degenerate patched-conic family, with the same row-level quantities (V_inf,
+  epochs, turns to 0.1 deg, periapses to 0.4 %).
+- Leg inclination: the chain's 2:1 Ganymede leg (pump 41.76 deg, crank 90 deg, V_inf 2.3565 km/s,
+  Ganymede circular speed 10.88 km/s) is inclined 7.08 deg to the moons' plane; the crank-81 member's
+  is 6.99 deg. The row draft's `orbit_elements.inclination_deg: 0.0` is therefore wrong for that leg
+  (the cycle is not coplanar).
+
+The 15 #1025 members and gc-1 (raw-seed starts), screened at their sigma-0.02 points (the #1025
+identity stage did not store z below 0.02): the largest angle at any node is 0.001-0.66 deg (gc4-1
+0.66, gc5-0 0.48, gc5-3 0.48; all others <= 0.37), against gc4-19's 5.5 deg. Going down in the ideal
+model (scratch solves, 14:11-14:13), gc4-1's largest angle falls 0.66 -> 0.37 -> 0.20 and gc5-0's
+0.48 -> 0.26 -> 0.14 at sigma 0.02 / 0.01 / 0.005: in proportion to sigma, so not crank-siblings. No
+other member shows gc4-19's signature. (gc-2 FOLDS and is not a row of the 15.)
+
+What it means:
+- gc4-19's continuous-gravity EXISTS result (sec. 10) stands for the crank-81 member of gc4-19's
+  family. The chain tool's own member (crank 90) is, like GanCal#1@2013's (sec. 12.7), a member that
+  continuous gravity does not select in the limit. Unlike GanCal#1, the two members agree in every
+  quantity the row records.
+- Amendment 10 is insufficient when a Lambert leg arrives near a resonance cone's axis. Amendment 14
+  (V_inf direction) closes that gap; it is part of the acceptance from sec. 13.5 on.
+- The row draft (`data/1055_gc4-19/gc4-19_row_draft.yaml`) needs, at least: the data_gaps notes clause
+  "The branch's sigma -> 0 limit is this #973 member" qualified to a crank-sibling (same epochs,
+  V_inf, turns and periapses; 2:1-leg crank about 81 deg against the chain tool's 90 deg); and
+  `inclination_deg` corrected or annotated (7.08 deg on the 2:1 leg). Whether the owner decision
+  ("candidate-novel V1 row, like the 15") still holds is the lead's and owner's call. Messages sent
+  to the lead and window4-opus at 14:10 AEDT.
