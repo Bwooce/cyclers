@@ -1,0 +1,32 @@
+{
+ "member": "gc6-2",
+ "moons": [
+  "Ganymede",
+  "Callisto",
+  "Callisto",
+  "Ganymede"
+ ],
+ "points": [
+  {
+   "sigma": 0.02,
+   "converged": true,
+   "angles": [
+    0.2548244208281192,
+    0.07694061502136774,
+    0.027744855248811224,
+    0.01058103781498891,
+    0.010581037677208577,
+    0.027744848142072176,
+    0.07694061188076136,
+    0.25482441358240715
+   ]
+  },
+  {
+   "sigma": 0.01,
+   "converged": false,
+   "angles": null,
+   "z": null
+  }
+ ],
+ "verdict": "UNDECIDED"
+}

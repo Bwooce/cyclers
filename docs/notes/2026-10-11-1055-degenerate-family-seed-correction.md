@@ -1346,3 +1346,58 @@ Criteria, per member:
   uses 0.01 and 0.005 and this is said.
 Expected: all 16 PASS (0.85), since all started from raw seeds with V_inf identity, and the 0.02 screen shows
 no angle above 0.66 deg.
+
+### 14.2.1 Results of the amendment-14 limit check (2026-10-12 14:31-15:05 AEDT; `data/1055_vinf_limit/`)
+
+One member per call, in the order gc-1, gc4-1, gc4-2, gc4-6, gc4-8, gc4-10, gc4-25, gc4-28, gc4-38, gc4-41,
+gc5-3, gc5-5, gc5-6, gc6-0, gc6-1, gc6-2, then gc4-1 again with the states stored (identical numbers).
+
+| member | largest V_inf-direction angle at sigma 0.02 / 0.01 / 0.005 / 0.0025 (deg) | Richardson limit, largest (deg) | verdict (sec. 14.2 rule) |
+|---|---|---|---|
+| gc-1 (control) | 0.165 / 0.089 / 0.048 / 0.025 | 0.003 | PASS |
+| gc4-1 | 0.660 / 0.368 / 0.202 / 0.156 | 0.163 | CRANK-SIBLING |
+| gc4-2 | 0.223 / 0.123 / 0.068 / no convergence | 0.012 (from 0.01, 0.005) | PASS |
+| gc4-6 | 0.370 / 0.192 / 0.098 / 0.050 | 0.003 | PASS |
+| gc4-8 | 0.111 / 0.059 / 0.031 / 0.016 | 0.002 | PASS |
+| gc4-10 | 0.223 / 0.112 / 0.056 / 0.028 | 0.001 | PASS |
+| gc4-25 | 0.015 / 0.008 / 0.004 / 0.002 | 0.000 | PASS |
+| gc4-28 | 0.001 / 0.001 / 0.000 / 0.000 | 0.000 | PASS |
+| gc4-38 | 0.006 / 0.003 / 0.001 / no convergence | 0.000 (from 0.01, 0.005) | PASS |
+| gc4-41 | 0.005 / 0.003 / 0.001 / 0.001 | 0.000 | PASS |
+| gc5-3 | 0.479 / 0.265 / 0.146 / 0.079 | 0.013 | PASS |
+| gc5-5 | 0.102 / 0.055 / 0.030 / 0.016 | 0.002 | PASS |
+| gc5-6 | 0.169 / 0.094 / 0.052 / no convergence | 0.010 (from 0.01, 0.005) | PASS |
+| gc6-0 | 0.230 / 0.113 / 0.054 / 0.026 | 0.013 | IRREGULAR (passes amendment 14) |
+| gc6-1 | 0.201 / 0.111 / 0.061 / no convergence | 0.011 (from 0.01, 0.005) | PASS |
+| gc6-2 | 0.255 / no convergence at 0.01 | - | UNDECIDED |
+
+- gc6-0 IRREGULAR: the two Callisto-node directions (small angles) have ratios 1.30, 0.82, 0.70; their limit is
+  0.013 deg, so amendment 14 passes. No row change proposed.
+- gc6-2 UNDECIDED: the #1025 solver from the sigma-0.02 point scaled by 1/2 did not converge at 0.01 (40 + 60).
+  Its sigma-0.02 angles (largest 0.25 deg) look like the O(sigma) offsets of the passing members, but that is
+  not a limit. A follow-up (not run, not registered): the same down solve with factor-sqrt(2) steps.
+- gc4-1 CRANK-SIBLING. Per direction (nodes C, C, G, G): every Callisto direction and the inbound Ganymede
+  direction halve (ratios 0.51-0.56). The Ganymede -> Ganymede resonant leg (G2 outbound, G3 inbound) does not:
+  0.129, 0.071, 0.074, 0.116 deg and 0.310, 0.195, 0.149, 0.156 deg; ratios 0.55, 1.03, 1.58 and 0.63, 0.77,
+  1.05. Richardson limits 0.158 and 0.163 deg (band 0.1). After the O(sigma) part decays, a crank offset of the
+  resonant leg of about 0.1-0.2 deg (in V_inf direction) remains and is, if anything, still growing at 0.0025;
+  0.16 deg is a lower estimate. This is the leg that is inclined 4.11 deg in the chain-tool member
+  (`data/1055_leg_inclination.json`), the same structure as gc4-19 (7.08 deg, 6.04 deg offset).
+- RESOLUTION DIAGNOSTIC for gc4-1 (NOT pre-registered; lead-approved, `scripts/diag_1055_gc4_1_crank_resolution.py`,
+  `data/1055_vinf_limit/gc4-1_resolution.txt`): at each of 0.01 / 0.005 / 0.0025 the Newton move along each of
+  the three weakest directions (sv down to 7.0e-7 at 0.0025) changes the angles by at most 7e-6 deg, and a
+  10 + 10 iteration polish leaves them unchanged to 1e-4 deg. The 0.16 deg is resolved, so the lead's
+  alternative "unresolved at the ladder's floor" does not apply. VERDICT gc4-1: CRANK-SIBLING.
+- gc5-6, whose chain-tool member also has an inclined resonant Ganymede leg (5.68 deg), PASSES: there the
+  continuous-gravity limit is the chain tool's member.
+
+Proposed data_gaps sentences (for the owner; the lead lands rows):
+- gc4-1 (path "notes", kind "uncertain", todo_ref "#1055"): "Continuous-gravity limit (ideal model): going down
+  from sigma 0.02 to 0.0025, the V_inf direction on the Ganymede -> Ganymede resonant leg stays 0.12-0.16 deg
+  off the #973 member's (Richardson limit 0.16 deg against the 0.1 deg identity band; resolved to 1e-5 deg),
+  while every other direction falls in proportion to sigma. The EXISTS result therefore attaches to a
+  crank-sibling of the #973 member in the same degenerate patched-conic family, with the row's V_inf, epochs,
+  turns and periapses (#1055 amendment 14, secs. 14.1-14.2.1)."
+- gc6-2 (path "notes", kind "unknown", todo_ref "#1055"): "Amendment-14 identity (V_inf direction in the
+  small-mass limit) undecided: the ideal-model down solve from sigma 0.02 did not converge at 0.01 (#1055
+  sec. 14.2.1)."

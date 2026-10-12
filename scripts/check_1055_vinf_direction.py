@@ -124,7 +124,84 @@ def member(name: str) -> dict[str, Any]:
     return out
 
 
+def _mx(a: list[float] | None) -> float | None:
+    return round(max(a), 4) if a else None
+
+
+def down(name: str) -> dict[str, Any]:
+    """Sec. 14.2: the #1025 solver going down (0.01, 0.005, 0.0025) from the committed sigma-0.02
+    point, the angles at each converged point, the Richardson limit, ratios and the verdict."""
+    p = B.build(name)
+    moons = list(p.moons)
+    chain = vinf_vectors(moons, np.asarray(p.seed), 1.0)
+    q = json.loads((ROOT / "data" / "1025_sigma" / f"{name}.json").read_text())["points"][0]
+    z, s_prev = np.asarray(q["z"]), float(q["sigma"])
+
+    def angles(zz: Any, s: float) -> list[float]:
+        vv = vinf_vectors(moons, zz, s)
+        return [_ang(vv[k][j], chain[k][j]) for k in range(len(moons)) for j in (0, 1)]
+
+    pts = [{"sigma": s_prev, "converged": True, "angles": angles(z, s_prev)}]
+    for sg in (0.01, 0.005, 0.0025):
+        p.set_sigma(sg)
+        zn, info = B.solve(p, B.scale_offsets(p, z, sg / s_prev), 40, 60, False)
+        ok = bool(B.converged(info))
+        pts.append(
+            {
+                "sigma": sg,
+                "converged": ok,
+                "angles": angles(zn, sg) if ok else None,
+                "z": zn.tolist() if ok else None,
+            }
+        )
+        if not ok:
+            break
+        z, s_prev = zn, sg
+    good = [x for x in pts if x["converged"]]
+    out: dict[str, Any] = {"member": name, "moons": moons, "points": pts}
+    if len(good) < 3:
+        out["verdict"] = "UNDECIDED"
+        return out
+    a, b = good[-1]["angles"], good[-2]["angles"]
+    lim = [2 * x - y for x, y in zip(a, b, strict=True)]
+    counted = [i for i, x in enumerate(good[0]["angles"]) if x >= 0.02]
+    ratios = {
+        i: [good[n]["angles"][i] / good[n - 1]["angles"][i] for n in range(1, len(good))]
+        for i in counted
+    }
+    lim_ok = all(x < 0.1 for x in lim)
+    band_ok = all(0.35 <= r <= 0.65 for rs in ratios.values() for r in rs)
+    if lim_ok and band_ok:
+        verdict = "PASS"
+    elif lim_ok:
+        verdict = "IRREGULAR"
+    elif any(lim[i] >= 0.1 and ratios.get(i, [1.0])[-1] > 0.65 for i in range(len(lim))):
+        verdict = "CRANK-SIBLING"
+    else:
+        verdict = "FAIL (limit >= 0.1 deg, last ratio <= 0.65)"
+    out.update(
+        limit_deg=lim,
+        ratios={str(k): v for k, v in ratios.items()},
+        sigmas_for_limit=[good[-2]["sigma"], good[-1]["sigma"]],
+        verdict=verdict,
+    )
+    return out
+
+
 def main() -> None:
+    if sys.argv[1:2] == ["--down"]:
+        odir = ROOT / "data" / "1055_vinf_limit"
+        odir.mkdir(exist_ok=True)
+        for name in sys.argv[2:]:
+            r = down(name)
+            (odir / f"{name}.json").write_text(json.dumps(r, indent=1))
+            print(
+                f"{name}: {r['verdict']} limit max {max(r.get('limit_deg', [float('nan')])):.4f} "
+                f"max angle per sigma "
+                f"{[(x['sigma'], _mx(x['angles'])) for x in r['points']]}",
+                flush=True,
+            )
+        return
     names = sys.argv[1:] or sorted(
         f.stem
         for f in (ROOT / "data" / "1025_sigma").glob("*.json")
