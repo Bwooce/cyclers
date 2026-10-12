@@ -469,3 +469,36 @@ committed curves.
 All six meet the 11.5 item 2 expectation. A2 rejected 0-6 steps per curve, all for the turn limit. The
 oval-branch parts of N1 and N2 (the folds at mu''_k) stand under A2. Only the b-branch traces at the test mu
 are open (sec. 11.6).
+
+### 11.8 Correction to 11.6: the four stalls are of two kinds (2026-10-12, 15:05-15:10 AEDT)
+
+The 11.6 table gave min r1 and min r2 from 200,001 time samples. Near P1 those samples are 1.5e-3 to 2e-3
+apart in position, so the near-P1 values were upper bounds. Event-located periapses (DOP853 rtol 3e-14,
+atol 1e-16; `data/975_varin/live/v2_periapsis.log`, not tracked) for the last members:
+
+| trace | true periapsis at the stall | trend along the last 60 members | kind |
+|---|---|---|---|
+| N1 plus | r1 5.27e-5 (about 20 km from Earth's centre, inside the Earth) | r1 0.26 -> 1.1e-4 -> 5.3e-5, then flat as the steps shrink | collision type |
+| N2 minus | r1 1.45e-4 (inside Pluto) | r1 0.17 -> 3.0e-4 -> 1.45e-4, then flat | collision type |
+| N1 minus | r2 5.85e-3, r1 1.83e-2 | r2 levels off at 5.85e-3 | sensitivity type (largest Jacobian singular value 2e6) |
+| N2 plus | r1 1.06e-2, r2 6.97e-2 | r1 levels off at 1.06e-2 | sensitivity type (largest Jacobian singular value 7e4) |
+
+- **Diagnostic, not pre-registered:** the last member of each sensitivity-type stall was re-corrected with
+  the project's multiple-shooting corrector (`cr3bp_multiple_shooting.correct_multiple_shooting`; 8, 16 and
+  32 nodes from one DOP853 rtol 1e-13 arc). All six runs converge in 2 iterations to a full-state closure of
+  1e-13 to 9e-13, and the node moves by 2e-13 to 4e-12. So these members are periodic orbits to 1e-13. The
+  tracer stalls because its single-shooting half-period residual carries the integration error times the
+  sensitivity (1e-12 x 1e4-1e6), not because the family ends.
+- **Independent residual check on P2 v2:** every member's half residual, recomputed with the plain
+  propagation (no STM; the tracer used the STM-augmented one), is at most 9.0e-11 (up) and 9.2e-11 (down). The
+  P2 PASS stands.
+- **For the resume (lead ruling 14:45: (c) rejected; (a) diagnostic only; (b) regularised propagation for the
+  verdict):**
+  - Regularisation (Levi-Civita) is what can carry the two collision-type traces through or into their
+    collision orbits.
+  - The two sensitivity-type traces need a symmetric multiple-shooting corrector inside the tracer (sec. 4.3
+    already names multiple shooting; its |Tr| > 1e4 threshold would need an amendment, since |Tr| is 20-600
+    at these stalls). Regularisation alone does not fix them.
+  - The cascade at T~ 5-9 will meet both kinds.
+- Housekeeping at the pause: the scripts preflight tests pass after the check script was added. Nothing was
+  running for #975 at 15:10.
