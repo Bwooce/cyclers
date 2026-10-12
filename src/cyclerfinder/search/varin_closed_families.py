@@ -285,6 +285,23 @@ _SCALE = np.array([1.0, 1.0, 2.0 * math.pi, 1.0])  # q = (x1, y2, T/2pi, log mu)
 #: entries, so its integration noise is about 100 times the state's
 DET_TOL_FACTOR = 100.0
 
+#: Tool amendment A2 (#975 note sec. 11.4): a predictor-corrector step is accepted only if the
+#: corrected point lies within MAX_DISP_FRAC |step| of the predictor and the tangent turns by at
+#: most MAX_TURN_DEG; otherwise the step is halved. Without it a 0.02 step at a hairpin of the i_1
+#: oval at the Earth-Moon mu landed 1.02 away on another family (the 3-fold cover of a T~ 1 orbit).
+MAX_DISP_FRAC = 0.5
+MAX_TURN_DEG = 10.0
+_COS_MAX_TURN = math.cos(math.radians(MAX_TURN_DEG))
+
+
+def _step_ok(corrected: Arr, predicted: Arr, step: float, t_old: Arr, t_new: Arr) -> str | None:
+    """None if the step passes the A2 acceptance test, else the reason ("displacement", "turn")."""
+    if float(np.linalg.norm(corrected - predicted)) > MAX_DISP_FRAC * abs(step):
+        return "displacement"
+    if float(t_old @ t_new) < _COS_MAX_TURN:
+        return "turn"
+    return None
+
 
 def _ext_ok(f: Arr, tol: float) -> bool:
     return bool(max(abs(f[0]), abs(f[1])) < tol and abs(f[2]) < DET_TOL_FACTOR * tol)
@@ -307,6 +324,8 @@ def follow_extremum_curve(
     rel_step: float = 1e-7,
     on_point: Callable[[CurvePoint], None] | None = None,
     deadline: float | None = None,
+    guard: bool = True,
+    stats: dict[str, int] | None = None,
 ) -> tuple[list[CurvePoint], str]:
     """Pseudo-arclength continuation of x2 = y1 = m_41 = 0 in w = (x1, y2, T, log mu).
 
@@ -315,7 +334,8 @@ def follow_extremum_curve(
     ``mu_stop`` (the last point is then corrected at mu = mu_stop), at a fold in mu (the mu
     component of the tangent changes sign; returned as "fold"), or after max_steps. ``on_point`` is
     called with every new point (for checkpoints). ``deadline`` (time.time()) stops it with
-    "time budget"."""
+    "time budget". ``guard`` applies the A2 step acceptance (:func:`_step_ok`); ``stats`` counts the
+    rejections by reason."""
     q = np.asarray(w0, dtype=float) / _SCALE
 
     def steps_at(v: Arr) -> Arr:
@@ -334,6 +354,7 @@ def follow_extremum_curve(
         ok = False
         qc = q
         fresh = False
+        jac_new: Arr | None = None
         while ds >= ds_min:
             qp = q + ds * t
             qc = qp.copy()
@@ -345,6 +366,15 @@ def follow_extremum_curve(
                     break
                 g = np.concatenate([f, [float(t @ (qc - qp))]])
                 qc = qc + np.linalg.solve(ja, -g)
+            if ok and guard:
+                jac_new = _fd_jac(_ext_q, qc, steps_at(qc))
+                why_not = _step_ok(qc, qp, ds, t, _tangent(jac_new, t))
+                if why_not is not None:
+                    ok = False
+                    if stats is not None:
+                        stats[why_not] = stats.get(why_not, 0) + 1
+                    ds *= 0.5
+                    continue
             if ok:
                 break
             if not fresh:
@@ -354,7 +384,7 @@ def follow_extremum_curve(
                 ds *= 0.5
         if not ok:
             return pts, "corrector failed"
-        jac = _fd_jac(_ext_q, qc, steps_at(qc))
+        jac = jac_new if jac_new is not None else _fd_jac(_ext_q, qc, steps_at(qc))
         t_new = _tangent(jac, t)
         if t_new[3] * t[3] < 0.0 and t[3] * side > 0.0:
             pts.append(CurvePoint((qc * _SCALE).tolist(), math.exp(qc[3]), 0.0))
@@ -412,6 +442,26 @@ def _loop_step(p: Arr, t: Arr, step: float, mu: float, tol: float) -> Arr | None
     return None
 
 
+def _accepted_step(
+    p: Arr, t: Arr, step: float, mu: float, tol: float, guard: bool, stats: dict[str, int] | None
+) -> tuple[Arr, Arr] | None:
+    """One loop step and the tangent there (oriented along ``t``), or None if the corrector fails
+    or (with ``guard``) the A2 acceptance test rejects the step."""
+    pc = _loop_step(p, t, step, mu, tol)
+    if pc is None:
+        if stats is not None:
+            stats["corrector"] = stats.get("corrector", 0) + 1
+        return None
+    tn = _tangent(_loop_eval(pc, mu)[1], t)
+    if guard:
+        why_not = _step_ok(pc, p + step * t, step, t, tn)
+        if why_not is not None:
+            if stats is not None:
+                stats[why_not] = stats.get(why_not, 0) + 1
+            return None
+    return pc, tn
+
+
 def trace_loop(
     x1: float,
     y2: float,
@@ -429,6 +479,9 @@ def trace_loop(
     origin: Arr | None = None,
     n_done: int = 0,
     deadline: float | None = None,
+    guard: bool = True,
+    start_tangent: Arr | None = None,
+    stats: dict[str, int] | None = None,
 ) -> tuple[list[LoopMember], str, float]:
     """Pseudo-arclength continuation of the symmetric family through (x1, y2, T) at fixed mu, in
     p = (x1(0), y2(0), T/2pi), with the analytic half-period Jacobian.
@@ -437,11 +490,21 @@ def trace_loop(
     at least ``min_members`` members (closure = the distance of the corrected final member from the
     start in p), "corrector failed", "time budget" or "max members" (closure = nan). To resume a
     checkpointed trace, pass the last member as the start, the first member as ``origin`` (in p) and
-    the number of members already traced as ``n_done``."""
+    the number of members already traced as ``n_done``.
+
+    ``guard`` applies the A2 step acceptance (#975 note sec. 11.4) to every step, the closing
+    landing included. A closure also needs the closing tangent to point the same way as the start
+    tangent (dot > 0), so a trace that doubles back is not "closed"; ``start_tangent`` gives it on a
+    resume (default: the tangent at the start of this call when it is not a resume, else no check).
+    ``stats`` counts rejected steps by reason."""
     p = np.array([x1, y2, t_full / (2.0 * math.pi)])
     p0 = p.copy() if origin is None else np.asarray(origin, dtype=float)
     _, jac = _loop_eval(p, mu)
     t = _tangent(jac, np.asarray(direction, dtype=float))
+    if start_tangent is not None:
+        t_start: Arr | None = np.asarray(start_tangent, dtype=float)
+    else:
+        t_start = t.copy() if origin is None else None
     members = [LoopMember(x1, y2, t_full, float(np.max(np.abs(_loop_eval(p, mu)[0]))))]
     for n in range(n_done, max_members):
         if deadline is not None and time.time() > deadline:
@@ -453,15 +516,15 @@ def trace_loop(
                 proj = float(tc @ (p0 - pc))
                 if abs(proj) > 2.0 * ds:
                     break
-                pc_new = _loop_step(pc, tc, proj, mu, tol)
-                if pc_new is None:
+                acc = _accepted_step(pc, tc, proj, mu, tol, guard, stats)
+                if acc is None:
                     break
-                pc = pc_new
-                tc = _tangent(_loop_eval(pc, mu)[1], tc)
+                pc, tc = acc
                 if float(np.linalg.norm(pc - p0)) < 1e-9:
                     break
             dist = float(np.linalg.norm(pc - p0))
-            if dist < 1e-6:
+            forward = t_start is None or float(tc @ t_start) > 0.0
+            if dist < 1e-6 and forward:
                 m = LoopMember(float(pc[0]), float(pc[1]), 2.0 * math.pi * float(pc[2]), 0.0)
                 members.append(m)
                 if on_member is not None:
@@ -469,18 +532,16 @@ def trace_loop(
                 return members, "closed", dist
             # passed near the origin without landing on it: keep tracing
         step = ds
-        pc_ok = None
+        acc = None
         while abs(step) >= ds_min:
-            pc_ok = _loop_step(p, t, step, mu, tol)
-            if pc_ok is not None:
+            acc = _accepted_step(p, t, step, mu, tol, guard, stats)
+            if acc is not None:
                 break
             step *= 0.5
             ds = step
-        if pc_ok is None:
+        if acc is None:
             return members, "corrector failed", float("nan")
-        _, jac = _loop_eval(pc_ok, mu)
-        t = _tangent(jac, t)
-        p = pc_ok
+        p, t = acc
         m = LoopMember(float(p[0]), float(p[1]), 2.0 * math.pi * float(p[2]), 0.0)
         members.append(m)
         if on_member is not None:

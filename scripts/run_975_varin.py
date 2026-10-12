@@ -168,15 +168,23 @@ def cmd_curve(name: str, start: str, y2_dir: float, mu_stop: float, max_s: float
                 flush=True,
             )
 
+        stats: dict[str, int] = {}
         pts, why = vcf.follow_extremum_curve(
-            w0, direction=direction, mu_stop=mu_stop, on_point=cb, deadline=t0 + max_s
+            w0,
+            direction=direction,
+            mu_stop=mu_stop,
+            on_point=cb,
+            deadline=t0 + max_s,
+            stats=stats,
         )
         if why != "time budget":
-            _log(fh, {"end": why, "t": time.strftime("%H:%M:%S")})
-    print(f"{name}: {why} ({len(pts)} points this call)", flush=True)
+            _log(fh, {"end": why, "rejected": stats, "t": time.strftime("%H:%M:%S")})
+    print(f"{name}: {why} ({len(pts)} points this call; A2 rejections {stats})", flush=True)
 
 
-def cmd_loop(name: str, curve: str, max_s: float, max_members: int = 20000) -> None:
+def cmd_loop(
+    name: str, curve: str, max_s: float, max_members: int = 20000, x1_dir: float = 1.0
+) -> None:
     """Closed-family trace at the mu of a curve's final point (which must have reached mu_stop)."""
     LOOPS.mkdir(parents=True, exist_ok=True)
     c = _jsonl(CURVES / f"{curve}.jsonl")
@@ -192,18 +200,21 @@ def cmd_loop(name: str, curve: str, max_s: float, max_members: int = 20000) -> N
         return
     w = start["w"]
     origin = np.array([w[0], w[1], w[2] / (2 * math.pi)])
+    start_tangent = None
     if len(old) >= 2:
         p_last = np.array(old[-1]["p"])
         direction = p_last - np.array(old[-2]["p"])
+        start_tangent = np.array(old[1]["p"]) - np.array(old[0]["p"])
     else:
         p_last = origin
-        direction = np.array([1.0, 0.0, 0.0])
+        direction = np.array([math.copysign(1.0, x1_dir), 0.0, 0.0])
     t0 = time.time()
     with f.open("a") as fh:
         if not old:
             _log(fh, {"p": origin.tolist(), "mu": mu, "curve": curve})
 
         count = [len(old)]
+        stats: dict[str, int] = {}
 
         def cb(m: vcf.LoopMember) -> None:
             _log(fh, {"p": [m.x1, m.y2, m.t_full / (2 * math.pi)], "t": time.strftime("%H:%M:%S")})
@@ -212,7 +223,8 @@ def cmd_loop(name: str, curve: str, max_s: float, max_members: int = 20000) -> N
                 d = float(np.linalg.norm(np.array([m.x1, m.y2, m.t_full / (2 * math.pi)]) - origin))
                 print(
                     f"{time.strftime('%H:%M:%S')} {name}: {count[0]} members, x1 {m.x1:.5f} "
-                    f"y2 {m.y2:.5f} T~ {m.t_full / (2 * math.pi):.5f}, distance to start {d:.3e}",
+                    f"y2 {m.y2:.5f} T~ {m.t_full / (2 * math.pi):.5f}, distance to start {d:.3e}, "
+                    f"A2 rejections {stats}",
                     flush=True,
                 )
 
@@ -227,10 +239,17 @@ def cmd_loop(name: str, curve: str, max_s: float, max_members: int = 20000) -> N
             on_member=cb,
             deadline=t0 + max_s,
             max_members=max_members,
+            start_tangent=start_tangent,
+            stats=stats,
         )
+        rec = {"end": why, "closure": closure, "rejected": stats, "t": time.strftime("%H:%M:%S")}
         if why != "time budget":
-            _log(fh, {"end": why, "closure": closure, "t": time.strftime("%H:%M:%S")})
-    print(f"{name}: {why} closure {closure:.2e} ({len(members)} members this call)", flush=True)
+            _log(fh, rec)
+    print(
+        f"{name}: {why} closure {closure:.2e} ({len(members)} members this call; "
+        f"A2 rejections this call {stats})",
+        flush=True,
+    )
 
 
 def cmd_compare(loop_a: str, loop_b: str) -> None:
@@ -269,6 +288,7 @@ def main() -> None:
     sp.add_argument("--curve", required=True)
     sp.add_argument("--max-seconds", type=float, default=420.0)
     sp.add_argument("--max-members", type=int, default=20000)
+    sp.add_argument("--x1-dir", type=float, default=1.0, help="start direction in x1(0) (A2 v2)")
     args = ap.parse_args()
     preflight_search(
         task_no=975,
@@ -287,7 +307,7 @@ def main() -> None:
     elif args.cmd == "curve":
         cmd_curve(args.name, args.start, args.y2_dir, args.mu_stop, args.max_seconds)
     elif args.cmd == "loop":
-        cmd_loop(args.name, args.curve, args.max_seconds, args.max_members)
+        cmd_loop(args.name, args.curve, args.max_seconds, args.max_members, args.x1_dir)
     elif args.cmd == "compare":
         cmd_compare(args.a, args.b)
 

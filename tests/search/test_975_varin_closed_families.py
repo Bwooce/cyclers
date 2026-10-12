@@ -126,3 +126,30 @@ def test_loop_tracer_closes_on_a_small_oval() -> None:
     assert why == "closed"
     assert closure < 1e-6
     assert len(members) >= 20
+
+
+#: Committed members 64 and 65 of data/975_varin/loops/p2_up_loop.jsonl (i_1 at the Earth-Moon mu of
+#: the P2 curve end), p = (x1(0), y2(0), T/2pi); member 65 sits at the oval's hairpin (#975 note
+#: sec. 11.2).
+_MU_EM_P2 = 0.01215058439469525
+_UP_64 = [0.33323878351423125, 2.1668537174022484, 2.035542608069052]
+_UP_65 = [0.32822603452771587, 2.1856692375299507, 2.0308441981041976]
+
+
+def test_a2_guard_rejects_the_p2_up_corrector_jump() -> None:
+    """Tool amendment A2 (#975 note sec. 11.4): from member 65 the unguarded 0.02 step lands on
+    another family more than 0.5 away (the jump that broke the lead's P2 up trace); the guarded
+    step rejects it, and a smaller guarded step lands within 0.5 |step| of its predictor."""
+    p = np.array(_UP_65)
+    t = vcf._tangent(vcf._loop_eval(p, _MU_EM_P2)[1], p - np.array(_UP_64))
+    jumped = vcf._loop_step(p, t, 0.02, _MU_EM_P2, 1e-10)
+    assert jumped is not None
+    assert float(np.linalg.norm(jumped - p)) > 0.5
+    stats: dict[str, int] = {}
+    assert vcf._accepted_step(p, t, 0.02, _MU_EM_P2, 1e-10, True, stats) is None
+    assert stats == {"displacement": 1}
+    acc = vcf._accepted_step(p, t, 0.0025, _MU_EM_P2, 1e-10, True, None)
+    assert acc is not None
+    pc, tn = acc
+    assert float(np.linalg.norm(pc - (p + 0.0025 * t))) <= vcf.MAX_DISP_FRAC * 0.0025
+    assert float(tn @ t) >= math.cos(math.radians(vcf.MAX_TURN_DEG))
