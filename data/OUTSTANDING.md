@@ -88,6 +88,7 @@ depends on the correction), tracks to sigma 0.7374 and FOLDS (amendment 12, R^2 
 on that branch, and it is a different member of the degenerate family (G2 periapsis about 89,000 km against
 28,327 km); the chain tool's own GanCal#1@2013 object is a non-root. The jup365 lane is NOT validated on a
 full-revolution chain at full mass. gc4-19 passes the member-identity check on its own `#973` member.
+**`#1075` CI failures after the macOS 27.0.1 update (registered 2026-10-12, numerics-drift-opus):** 12 tests fail on OS arithmetic, not code or load; per-test causes and fixes in `docs/notes/2026-10-12-1075-os-update-numerics-drift.md`. Status: diagnosis done, fixes in progress, two rulings asked (saddle branch / #347, grid-seeded Newton).
 **`#1073` Pluto continuous-gravity lane (registered 2026-10-12, pluto-nbody-opus; origin: owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"):** no Pluto-Charon rows until a continuous-gravity check (Pluto and Charon massive, small moon passive, sigma-homotopy from the barycentric patched-conic zero) answers the deep-dip caveat. Status: pre-registration note first, build on the lead's go.
 **Earlier notice (2026-10-07, `#911`):** no catalogue row was novel then. The six Uranian (1,1) quasi-cycler
 rows (`#312` and its family) were WITHDRAWN on 2026-10-04 (`#888`, upheld by `#937`), and the Umbriel
@@ -3121,6 +3122,16 @@ candidate-novel V1 with its band flagged (row in the next window). All other row
   sec. 10.2). Follow-up: a recall test against a known member set, then 384-phase or basin-aware seeding (e.g.
   per-basin seed selection instead of global best residuals); re-check `#998`/`#973` recall the same way.
 - `#1073` — registered 2026-10-12 (owner decision on `#1036`, verbatim "(c) Hold for continuous gravity"; pluto-nbody-opus; IN PROGRESS). **PLUTO CONTINUOUS-GRAVITY LANE.** The analogue of the Jovian lane for the `#1065` strong_1065 Pluto-Charon one-working-body members: Pluto and Charon as massive bodies, the small moon passive, a sigma-homotopy from the barycentric patched-conic zero, a positive and a negative control, the 12 best (`#998` sec. 6.1) first. Answers the deep-dip caveat (`docs/notes/2026-10-12-1036-owner-summary.md` sec. 4). Pre-registration: `docs/notes/2026-10-12-1073-pluto-continuous-gravity-lane-prereg.md`.
+- `#1075` — registered 2026-10-12 (lead brief; numerics-drift-opus; IN PROGRESS). **TWELVE CI FAILURES AFTER THE
+  macOS 27.0.1 UPDATE** (CI run 38180601249, push 983ba9c1; the `#1054` pair is `#1074`'s). Note:
+  `docs/notes/2026-10-12-1075-os-update-numerics-drift.md`. No code change since ada736b9 touches the modules;
+  no clock or pool in them, so not contention; all reproduce alone with CI's values. Per test:
+  free_return degenerate = arccos floor (one ulp, fix: atan2); saddle branch i124 x3 = the seed is O(1) off
+  any orbit (eps^2 coupling), the recorded branch is a distant planar orbit, #347 Phase 1 PASS questioned
+  (ruling asked); Jovian Table-3 x2 = hit re-found 3.1e-8 from the stored crossing, grid-seeded Newton misses
+  it (ruling asked); Saturn tertiary x3 = Newton tol below the map's 6.9e-8 noise (fix: 3 sigma); Saturn
+  natural multiple shooting = Jacobi drift bound from one walk (fix: the project's 1e-6 same-energy tol);
+  Saturn find_homoclinic and symmetric seed = grid-seeded Newton (pending).
 - `#1074` — registered 2026-10-12 (lead condition on the `#1054` float-test amendment; earthmoon-1054-opus;
   BACKLOG, small). **BITWISE FLOAT GOLDENS THAT AN OS MATH-LIBRARY CHANGE COULD FLIP.** The 2026-10-12 scan found no
   other test comparing an iterative solver's float output with a committed record by `==` (the `#1054` pair was the
