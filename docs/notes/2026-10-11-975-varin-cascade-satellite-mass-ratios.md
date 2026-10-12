@@ -415,3 +415,39 @@ All new traces get new names (`*_v2`). The committed traces stay as evidence.
      state, and sent to the lead for a ruling. Not read as a pass.
 5. **The cascade (sec. 4.2-4.3) stays stopped** until P2, N1 and N2 have their v2 verdicts. The exploratory
    k = 5 solve (sec. 10) stays disclosed and unused.
+
+### 11.6 v2 results (2026-10-12, 13:49-14:40 AEDT; A2 code deae8e75; machine load 18-45 on 8 cores)
+
+- **P1 re-run: PASS, identical.** `p1_control.json` differed from the committed file only in the "seconds"
+  timings, so the committed file is kept.
+- **P2 v2: PASS** (`loops/p2_up_loop_v2.jsonl`, `loops/p2_down_loop_v2.jsonl`, `p2_v2_coincidence.json`,
+  check `scripts/check_975_p2_coincidence.py`):
+
+| trace | members | closure | A2 rejections (displacement / turn / corrector) | metric 1 max | metric 2 max (n checked, n skipped) | max member half residual |
+|---|---|---|---|---|---|---|
+| up v2 | 175 | 8.7e-13 | 1 / 27 / 4 | 1.2e-10 | 2.8e-10 (124, 51) | 9.4e-11 |
+| down v2 | 174 | 8.4e-14 | 2 / 29 / 3 | 1.2e-10 | 6.1e-11 (123, 51) | 9.5e-11 |
+
+  - Both close with a forward closing tangent. No doubling-back pair. Member counts are inside the
+    pre-registered 130-250.
+  - Both independent starts (the mu'_1 saddle continued up, the mu''_1 elliptic orbit continued down) meet
+    the same closed oval at the Earth-Moon mu. The P2 wording is met in both halves.
+- **N1 v2 and N2 v2: INCONCLUSIVE by the 11.5 rule.** No trace closed. No trace reached an open end as
+  defined (crossing within 0.02 of a primary). Each ended with "corrector failed" (step below 1e-6):
+
+| trace | members | end state p | min r1 / min r2 along the orbit (nondim) | half residual recomputed without STM | residual at DOP853 tol 1e-10 / 1e-12 / 1e-13 / 3e-14 (y1) |
+|---|---|---|---|---|---|
+| N1 plus | 371 | (0.98546, -0.68719, 0.99133) | 9.3e-4 / 1.5e-2 | 1.3e-8 | 1.8e-6 / 1.3e-8 / 3.5e-9 / 1.5e-9 |
+| N1 minus | 124 | (0.99416, -1.29735, 2.04247) | 2.0e-2 / 5.9e-3 (at member 114) | 4.9e-8 (member 114) | 1.8e-5 / 4.9e-8 / 2.4e-8 / 4.6e-9 |
+| N2 plus | 131 | (0.93033, -1.01781, 2.01318) | 1.1e-2 / 7.0e-2 | 1.1e-7 | 2.7e-5 / 1.1e-7 / -6.1e-9 / -1.0e-8 |
+| N2 minus | 62 | (0.88504, -0.71673, 0.95147) | 3.8e-4 / 1.2e-1 | 2.3e-9 | 3.6e-7 / 2.3e-9 / -3.4e-9 / -2.4e-9 |
+
+  - At every stall the integration error of the half-period map (1e-9 to 1e-7) is above the corrector's
+    1e-10 target. Each stall is a precision wall. In three of the four the orbit passes within 1e-3 to 2e-2
+    of P1 or P2 mid-orbit, and the half-residual Jacobian is large (largest singular value up to 2e6).
+  - These are not shown to be family ends. The 11.5 open-end test looks only at the crossing, so it cannot
+    see a mid-orbit close pass.
+  - The v1 traces went "further" only because they jumped to other families at or near the same places
+    (n2_b_loop jumped at member 87, next to the N2-plus wall).
+- **Ruling requested from the lead** before any further N run (11.5 item 4: inconclusive goes to the lead).
+  The cascade stays stopped.

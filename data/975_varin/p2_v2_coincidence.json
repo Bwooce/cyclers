@@ -1,0 +1,49 @@
+{
+ "p2_up_loop_v2 on p2_down_loop_v2": {
+  "members": 175,
+  "end": [
+   {
+    "end": "closed",
+    "closure": 8.692728452622987e-13,
+    "rejected": {
+     "displacement": 1,
+     "turn": 27,
+     "corrector": 4
+    },
+    "t": "13:50:19"
+   }
+  ],
+  "doubling_back_pairs": [],
+  "metric1_max": 1.2398259236513282e-10,
+  "metric1_argmax": 84,
+  "metric2_max": 2.8229330740977855e-10,
+  "metric2_nan": 0,
+  "metric2_n": 124,
+  "metric2_skipped_small_T_component": 51,
+  "max_half_residual": 9.430477926342107e-11
+ },
+ "p2_down_loop_v2 on p2_up_loop_v2": {
+  "members": 174,
+  "end": [
+   {
+    "end": "closed",
+    "closure": 8.402989401642324e-14,
+    "rejected": {
+     "displacement": 2,
+     "turn": 29,
+     "corrector": 3
+    },
+    "t": "13:51:28"
+   }
+  ],
+  "doubling_back_pairs": [],
+  "metric1_max": 1.240180765605134e-10,
+  "metric1_argmax": 3,
+  "metric2_max": 6.104978821566385e-11,
+  "metric2_nan": 0,
+  "metric2_n": 123,
+  "metric2_skipped_small_T_component": 51,
+  "max_half_residual": 9.521327476447183e-11
+ },
+ "P2_pass": true
+}
