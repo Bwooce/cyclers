@@ -315,3 +315,103 @@ criterion".
     y2 2.190603, T~ 2.02719.
   - The two loop traces at mu_M and their comparison (`compare`: each start must lie on the other loop to
     < 1e-6 after refinement) are handed to the lead.
+
+## 11. P2 as traced, a tracer defect, N1 and N2 reopened (earthmoon-975-opus, 2026-10-12, 13:40-14:00 AEDT)
+
+Owner of this section: earthmoon-975-opus (took over #975 from earthmoon-opus after the session restart).
+Written before any code change and before any re-run. Evidence: the committed traces under `loops/`.
+
+### 11.1 P2 as traced by the lead (launched 09:20 AEDT)
+
+- `loops/p2_down_loop.jsonl` closed: 129 members, closure 1.6e-13.
+- `loops/p2_up_loop.jsonl` did not close: 500 members, then killed by the session restart.
+- `compare`: the start of each lies on the other trace (7.8e-11 and 8.6e-13).
+- **The P2 wording is "both traces close and each start lies on the other's trace".** As traced, the second
+  half passes and the first half FAILS. P2 is not passed on this evidence.
+
+### 11.2 Why the up trace left the oval: a corrector jump at member 66
+
+- Distance of each up member to the down family, by correction onto the down family (`distance_to_loop`,
+  seeded from the three nearest down members): members 0-65 lie on it to <= 2e-11. From member 66 on, the
+  distance is 1.02 and grows.
+- The step from member 65 to member 66 is 1.02 in p = (x1(0), y2(0), T~). The step size was 0.02. T~ jumps
+  from 2.031 to 2.984.
+- Member 65 (0.3282, 2.1857, 2.0308) is next to the down start (0.3267, 2.1906, 2.0272). There the oval has a
+  hairpin: x1(0) is at its minimum and y2(0) at its maximum on the oval, so the tangent is nearly pure T. A
+  0.02 predictor step overshoots the turn. The corrector then converges on the pseudo-arclength hyperplane to
+  a solution on another family.
+- That family is the 3-fold cover of a T~ ~ 1 orbit near P1: member 66 at T/3 also has zero half residuals
+  (8e-12). The trace then followed it toward the P1 collision (x1 -> 0, y2 -> infinity, T~ -> 3), which is
+  the steady y2 rise in the lead's log.
+- **Cause: a tracer defect.** `trace_loop` accepts any corrector landing. It has no limit on the distance
+  from the predictor and no limit on the tangent turn per step. It is not a bifurcation of the oval, not a
+  sign convention and not a genuine second branch through the start.
+
+### 11.3 The same defect in the N1 and N2 b-loop traces: N1 and N2 are REOPENED
+
+The same scan (step length against the 0.02 cap, chord turn angle) on every committed trace:
+
+| trace | jumps (member: step length) | landing |
+|---|---|---|
+| `p2_up_loop` | 66: 1.02 | 3-fold cover of a T~ 1 orbit (T~ 2.03 -> 2.98) |
+| `p2_down_loop` | none (65: 0.0203, the y2-min tip) | - |
+| `n1_b_loop` | 347: 0.066; 682: 2.00 | 682: a T~ 3.005 orbit at the same (x1, y2) as a T~ 1.006 member |
+| `n2_b_loop` | 87: 1.53 | a T~ 0.500 orbit (T~ 2.00 -> 0.50) |
+| `n1_b_loop_inexact_closing` | none | - |
+| the six extremum curves | none (max chord turn 22 deg) | - |
+
+- N1 and N2 passed under A1 because their b-branch traces did not close. Those traces jumped families, so
+  "did not close" is not established. **N1 and N2 are reopened.** The A1 PASS lines in sec. 10.1 and 10.2 are
+  withdrawn until the v2 re-traces below.
+- The near-return of `n1_b_loop` at member 228 (6.3e-3 from its start) was checked: the family through
+  members 200-260 passes 8.17e-4 from the N1 start at its closest, and its tangent there is antiparallel to
+  the start tangent (dot -0.95). It is a different branch passing near the start, not a closure. It does not
+  fail N1. The same 8.17e-4 is the "closure" of `n1_b_loop_inexact_closing`.
+- The extremum curves (`curves/*.jsonl`) show no jump, but the follower has the same missing check.
+
+### 11.4 Tool amendment A2 (pre-registered; tracer code changes after this commit)
+
+- **Loop tracer:** a predictor-corrector step is accepted only if (a) the corrector converges (as now), (b) the
+  corrected point lies within 0.5 |step| of the predictor, and (c) the tangent at the corrected point turns by
+  at most 10 deg from the previous tangent. A rejected step is halved, as a failed corrector is now. The
+  landing refinement at closure uses the same accepted-step test.
+- **Closure test:** as now (back within 1e-6 of the start after at least 20 members), plus the closing
+  tangent points the same way as the start tangent (dot > 0). This rejects a doubling-back. The analysis also
+  checks that no member j coincides with member n - j.
+- **Extremum-curve follower:** the same tests (b) and (c), in q = (x1, y2, T~, log mu).
+- The unguarded step stays available for `distance_to_loop` and for a regression test built from committed
+  up member 65 and its tangent: the unguarded 0.02 step lands about 1.0 away; the guarded step rejects it.
+- If the 0.5 or 10 deg values make a trace stall (step below ds_min), the change is written here as an
+  amendment before any result is read.
+
+### 11.5 Re-runs and their expected results (pre-registered)
+
+All new traces get new names (`*_v2`). The committed traces stay as evidence.
+
+1. **P1:** re-run (`p1`). It does not call the tracer. It is re-run because the module changed. Expected:
+   identical to `p1_control.json` (pass, same numbers to the printed digits).
+2. **The six extremum curves** (`n1_a`, `n1_b`, `n2_a`, `n2_b`, `p2_up`, `p2_down` as `*_v2`) under the
+   guarded follower. Expected: the same end type ("fold" or "reached mu_stop"). A "reached mu_stop" end equal
+   to the committed end to 1e-8 relative. A fold end, refined by the critical-point solver, gives Table 1's
+   elliptic orbit to 1e-6 relative, as in sec. 10.
+3. **P2 v2:** `p2_up_loop_v2` and `p2_down_loop_v2` from the committed curve ends, same start directions as the
+   lead's runs. Expected for each: it closes (closure < 1e-6, closing tangent dot > 0) after about 130-250
+   members (more than 129 because the guard shortens steps at the two tips).
+   - Coincidence, metric 1 (all members): each member of one trace lies within 1e-5 of the other trace's
+     family by orthogonal correction (`distance_to_loop` seeded from the three nearest members).
+   - Coincidence, metric 2 (the "matched T" wording): for each member whose unit tangent has |T component|
+     >= 0.1, (x1(0), y2(0)) corrected at fixed T onto the other family, starting from the nearest member of
+     the other trace, lies within 1e-5. Members with a smaller T component are near a T extremum, where fixed-T
+     correction is ill-conditioned; they are covered by metric 1 only, and their count is reported.
+   - P2 passes if both traces close and both metrics hold. Otherwise P2 fails and the task stops.
+4. **N1 v2 and N2 v2:** from each b-curve end at the test mu (`curves/n1_b.jsonl` at mu_M, `curves/n2_b.jsonl`
+   at mu_PC), a guarded trace in each direction (the lead's direction, x1 increasing, and the opposite), at
+   most 1500 members each.
+   - **FAIL (hard stop):** either direction closes by the 11.4 test.
+   - **PASS:** both directions reach an open end. An open end is a collision limit: the crossing's distance to
+     P1 (|x1(0)|) or to P2 (|x1(0) - 1|) falls below 0.02 and the speed |y2(0) - x1(0)| rises monotonically over
+     the last 100 members.
+   - **Inconclusive** (budget spent, or the corrector fails at ds_min): reported as inconclusive with the end
+     state, and sent to the lead for a ruling. Not read as a pass.
+5. **The cascade (sec. 4.2-4.3) stays stopped** until P2, N1 and N2 have their v2 verdicts. The exploratory
+   k = 5 solve (sec. 10) stays disclosed and unused.
