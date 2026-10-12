@@ -1,0 +1,95 @@
+diff --git a/tests/search/test_saturn_titan_resonant_connections.py b/tests/search/test_saturn_titan_resonant_connections.py
+index 2a179020..d8987723 100644
+--- a/tests/search/test_saturn_titan_resonant_connections.py
++++ b/tests/search/test_saturn_titan_resonant_connections.py
+@@ -14,6 +14,8 @@ must run in CI, not be silently skipped
+ 
+ from __future__ import annotations
+ 
++import inspect
++
+ import numpy as np
+ import pytest
+ 
+@@ -254,6 +256,23 @@ _MIRROR_B_TAU = {"tau_u": 24.00623677219259, "tau_s": 2.1347309142886957}
+ _TERTIARY = {"branch_u": +1, "branch_s": -1, "k_u": 4, "k_s": 4}
+ _TERTIARY_TAU = {"tau_u": 3.570427157637045, "tau_s": 23.179487310480308}
+ 
++# Newton tolerance per hit. The section-gap map is noisy: integration error is amplified by
++# the manifold's instability, so ||R|| cannot be driven below the map's own noise. For the
++# tertiary hit that noise was measured (#1075, docs/notes/2026-10-12-1075-os-update-numerics-
++# drift.md sec. 6.3; scripts/probe_1075_connection_hits.py tertiary_floor): 13-point line fits
++# through the phases at steps 1e-11..1e-9 leave a fit-residual std of up to sigma = 6.9e-8 (x,
++# along tau_s). The tolerance is k * sigma with k = 3 fixed before the re-run: 2e-7. Under the
++# old 1e-9 the tertiary hit converged only by luck and stopped converging after the macOS 27.0.1
++# update (Newton stalls at 3.4e-9, 4e-9 from the stored crossing). The other three hits keep
++# 1e-9 (not measured; they pass). Identity, ghost margin, Radau and re-approach bounds are
++# unchanged for every hit.
++_DEFAULT_NEWTON_TOL = 1e-9
++_TERTIARY_NEWTON_TOL = 2e-7
++
++
++def _newton_tol(hit: dict[str, int]) -> float:
++    return _TERTIARY_NEWTON_TOL if hit is _TERTIARY else _DEFAULT_NEWTON_TOL
++
+ 
+ def _correct_known_hit(
+     system: cr3bp.CR3BPSystem,
+@@ -277,7 +296,7 @@ def _correct_known_hit(
+         x_sign_u=None,
+         x_sign_s=None,
+         max_time_factor=3.0,
+-        tol=1e-9,
++        tol=_newton_tol(hit),
+         max_iter=60,
+         fd_step=1e-7,
+     )
+@@ -304,7 +323,9 @@ def test_known_hit_converges_with_real_ghost_margin(
+ ) -> None:
+     conn = _correct_known_hit(system, node, hit, tau)
+     assert conn.converged, f"{name}: expected convergence; notes={conn.notes}"
+-    assert conn.residual < 1e-8, f"{name}: residual={conn.residual:.3e}"
++    # 1e-8 for the hits at the 1e-9 Newton tol; the tertiary hit's bound is its measured
++    # 3-sigma noise floor (see _TERTIARY_NEWTON_TOL).
++    assert conn.residual < max(1e-8, _newton_tol(hit)), f"{name}: residual={conn.residual:.3e}"
+     assert abs(float(conn.crossing_xv[0]) - expect_x) < 1e-5
+     assert abs(float(conn.crossing_xv[1]) - expect_xdot) < 1e-5
+ 
+@@ -343,7 +364,7 @@ def test_known_hit_independent_radau_crosscheck(
+     cycle = assemble_cycle(
+         system,
+         [node],
+-        tol=1e-9,
++        tol=_newton_tol(hit),
+         connection_kwargs={
+             "epsilon": stc.EPSILON,
+             "branch_u": hit["branch_u"],
+@@ -962,7 +983,14 @@ def test_attempt_chain_closure_natural_multiple_shooting_progress_wrong_energy(
+     assert res.closure_residual < seed_residual  # genuine, real progress
+     assert res.closure_residual > 1e-3  # honestly nowhere near converged
+     jac_first_node = cr3bp.jacobi_constant(res.nodes[0], system.mu)
+-    assert abs(jac_first_node - node.jacobi) > 1e-3  # the Jacobi-drift invalidation
++    # The Jacobi-drift invalidation: the result is off the node's energy by more than the
++    # project's own same-energy tolerance (correct_connection's jacobi_tol default, 1e-6), far
++    # above DOP853's Jacobi conservation at rtol 1e-12. The earlier 1e-3 was read off one
++    # 40-iteration walk (3.01 -> 2.976); a non-converged walk's endpoint is arithmetic-dependent,
++    # and after the macOS 27.0.1 update the same walk ends 6.29e-5 off (#1075 note sec. 6.5).
++    same_energy_tol = inspect.signature(correct_connection).parameters["jacobi_tol"].default
++    assert same_energy_tol == 1e-6
++    assert abs(jac_first_node - node.jacobi) > same_energy_tol
+ 
+ 
+ @pytest.mark.timeout(1200)
+@@ -982,7 +1010,11 @@ def test_find_symmetric_chain_seed_finds_new_closer_near_perpendicular_candidate
+     slowdown (mirrors `#784`'s own identical fix for a Neptune-Triton scan).
+     """
+     _sys, target65, _row = stc.resonant_chain_target_point(system)
+-    result = stc.find_symmetric_chain_seed(system, node, target65)
++    # tol = 3 sigma of the section-gap map's measured noise at this (4,4) hit, sigma = 2.5e-9
++    # (#1075 note sec. 6.6; probe_1075_connection_hits.py symmetric_floor). The function's 1e-9
++    # default is below that noise: after the macOS 27.0.1 update Newton stalls at 1.09e-9 on the
++    # same hit and the scan returned nothing.
++    result = stc.find_symmetric_chain_seed(system, node, target65, tol=7.5e-9)
+     assert result.dist_to_65 < 0.02  # materially closer than the 0.094 candidate
+     assert abs(float(result.candidate.connection.crossing_xv[1])) < 1e-6  # near-perpendicular
+     # k_u == k_s is the meaningful invariant (the on-axis-symmetry signature this

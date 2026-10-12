@@ -145,6 +145,26 @@ def tertiary_floor() -> None:
     _floor(system, node, node, 3.5704271625549313, 23.17948731233368, kw)
 
 
+def symmetric_floor() -> None:
+    """Noise floor at the #782 near-perpendicular (k_u = k_s = 4, branch -1/-1) hit behind
+    test 9 (find_symmetric_chain_seed), at the phases today's Newton stalls at (saturn_scans)."""
+    system = stf.saturn_titan_system()
+    _s, node, _r = stc.build_34_node(system)
+    kw = dict(
+        k_u=4,
+        k_s=4,
+        epsilon=stc.EPSILON,
+        branch_u=-1,
+        branch_s=-1,
+        max_time=3.0 * node.period,
+        ydot_sign_u=stc.SECTION_YDOT_SIGN,
+        ydot_sign_s=stc.SECTION_YDOT_SIGN,
+        x_sign_u=None,
+        x_sign_s=None,
+    )
+    _floor(system, node, node, 3.188855090798739, 22.951944857171487, kw)
+
+
 def jovian_floor() -> None:
     system = jrc.jupiter_europa_system()
     _s, n34 = jrc.build_3_4_lo_node(system)
@@ -242,6 +262,44 @@ def jovian_legs(n: int) -> None:
     _show("newton from refined leg phases", conn, t0, (float(ref[0]), float(ref[1])))
 
 
+def saturn_scans() -> None:
+    """Per-combo correct_connection runs behind tests 8 and 9 (find_homoclinic with the tests'
+    settings), printing residual and crossing for each combination, converged or not."""
+    system = stf.saturn_titan_system()
+    _s, node, _r = stc.build_34_node(system)
+    common = dict(
+        epsilon=stc.EPSILON,
+        ydot_sign_u=stc.SECTION_YDOT_SIGN,
+        ydot_sign_s=stc.SECTION_YDOT_SIGN,
+        x_sign_u=None,
+        x_sign_s=None,
+        max_time_factor=3.0,
+    )
+    runs = [
+        ("test8", +1, ku, ks, dict(scan_n=8, max_iter=20, tol=1e-7, fd_step=1e-6))
+        for ku in (4, 5)
+        for ks in (4, 5)
+    ] + [
+        ("test9", -1, ku, ks, dict(scan_n=12, max_iter=40, tol=1e-9, fd_step=1e-6))
+        for ku in (4, 5)
+        for ks in (4, 5)
+    ]
+    for tag, br, ku, ks, kw in runs:
+        t0 = time.time()
+        c = correct_connection(
+            system,
+            node,
+            node,
+            k_u=ku,
+            k_s=ks,
+            branch_u=br,
+            branch_s=br,
+            **common,
+            **kw,  # type: ignore[arg-type]
+        )
+        _show(f"{tag} branch={br:+d} k=({ku},{ks})", c, t0, (float("nan"), float("nan")))
+
+
 def jovian_grid(top: int) -> None:
     """Rank the scan_n=8 grid cells by section gap; Newton (test settings) from the best ``top``."""
     from cyclerfinder.genome.heteroclinic_cycle import _connection_residual
@@ -310,17 +368,20 @@ if __name__ == "__main__":
             "tertiary_floor",
             "jovian_legs",
             "jovian_floor",
+            "saturn_scans",
+            "symmetric_floor",
         ],
     )
     ap.add_argument("--variants", action="store_true")
     a = ap.parse_args()
-    if a.case == "jovian_grid":
-        jovian_grid(4)
-    elif a.case == "jovian_legs":
-        jovian_legs(160)
-    elif a.case == "jovian_floor":
-        jovian_floor()
-    elif a.case == "tertiary_floor":
-        tertiary_floor()
-    else:
-        {"jovian": jovian, "tertiary": tertiary}[a.case](a.variants)
+    cases = {
+        "jovian": lambda: jovian(a.variants),
+        "tertiary": lambda: tertiary(a.variants),
+        "jovian_grid": lambda: jovian_grid(4),
+        "jovian_legs": lambda: jovian_legs(160),
+        "saturn_scans": saturn_scans,
+        "jovian_floor": jovian_floor,
+        "tertiary_floor": tertiary_floor,
+        "symmetric_floor": symmetric_floor,
+    }
+    cases[a.case]()

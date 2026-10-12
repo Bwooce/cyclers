@@ -159,7 +159,35 @@ that. The integrator's Jacobi conservation at rtol 1e-12 is far below 1e-6, so t
 integration error alone. The other assertions (progress below the seed residual, residual > 1e-3) are
 unchanged.
 
-### 6.6 Tests 8-9 (Saturn scans): pending (sec. 7)
+### 6.6 Tests 8-9 (Saturn scans)
+Per-combination runs behind the two scans (`probe_1075_connection_hits.py saturn_scans`, the tests' settings):
+
+| Test | Combination | Today |
+|---|---|---|
+| 8 (branch +1, scan_n 8, tol 1e-7, max_iter 20) | (4,4) (4,5) (5,4) | stall at 2.4e-2, 6.5e-2, 6.3e-2 |
+| 8 | (5,5), the primary hit | stalls at 1.25e-2 at (-1.6723, 0.0017), near the primary hit (-1.67320084, ~0) |
+| 9 (branch -1, scan_n 12, tol 1e-9, fd_step 1e-6) | (4,4), the #782 near-perpendicular hit | stalls at 1.09e-9 against tol 1e-9, xv = (0.9492672648843903, -4.3e-11) |
+| 9 | (4,5), (5,4) | converge (5.2e-10, 9.3e-10); not near-perpendicular, so the test rejects them |
+| 9 | (5,5) | stalls at 1.2e-2 |
+
+Test 8 is grid-seeded Newton, the same class as the Jovian tests (ruling, sec. 7). The primary hit
+still converges from its stored phases (test_known_hit_*[primary] pass).
+
+Test 9 is the tertiary class: the (4,4) hit is found and Newton stalls just above a tol that sits
+below the map's noise. Measured at the stall phases (`symmetric_floor`): fit-residual std up to
+sigma = 2.5e-9 (xdot, along tau_u; 0.4-2.5e-9 over both phases and all three steps).
+
+**Fix (test only, pre-registered, same rule as sec. 6.3):** pass tol = 3 * sigma = 7.5e-9 to
+`find_symmetric_chain_seed` in test 9. The test's own checks are unchanged (dist_to_65 < 0.02,
+|xdot| < 1e-6, k_u == k_s, branch -1, residual < 1e-7). Expected: test 9 passes on the (4,4) hit.
+The function's src default (1e-9) and the `near65_symmetric_seed_xv` fixture's 1e-9 (fd_step 1e-7;
+it converges today) are below the same floor; they are left alone and recorded here as latent.
+
+### 6.7 Speed of the runs
+Wall times vary about fivefold with load (the same corrector call took 26 s at 14:40 and 5 s at
+15:13). The worktree at ada736b9 and the main checkout give bit-identical values for the saddle
+corrector call (`scratchpad/numerics-drift-opus/time_one.py`): lambda, v[2], residual and final x0
+agree to every printed digit.
 
 ## 7. Open for the lead
 1. Tests 1-3: the ruling on sec. 6.2 (narrow the claim and record the #347 consequence, or register a

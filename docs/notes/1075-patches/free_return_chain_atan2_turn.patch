@@ -1,0 +1,19 @@
+diff --git a/src/cyclerfinder/search/free_return_chain.py b/src/cyclerfinder/search/free_return_chain.py
+index 5449f106..8a0940aa 100644
+--- a/src/cyclerfinder/search/free_return_chain.py
++++ b/src/cyclerfinder/search/free_return_chain.py
+@@ -260,8 +260,12 @@ def _intermediate_turn_geometry(
+     continuity = abs(vin_mag - vout_mag)
+     mu_planet = PLANETS[body].mu_km3_s2
+     rp_min = SAFE_PERIHELION_KM[body]
+-    cos_arg = float(np.dot(v_in, v_out)) / (vin_mag * vout_mag)
+-    turn = float(np.arccos(np.clip(cos_arg, -1.0, 1.0)))
++    # atan2(|a x b|, a . b), not arccos of the cosine: arccos cannot resolve angles below
++    # sqrt(2 * 2**-52) rad = 1.2e-6 deg (one ulp under 1.0 already maps there), which made the
++    # degenerate coincident-arc turn depend on the platform's last-bit rounding (#1075).
++    turn = float(
++        np.arctan2(float(np.linalg.norm(np.cross(v_in, v_out))), float(np.dot(v_in, v_out)))
++    )
+     v_mean = 0.5 * (vin_mag + vout_mag)
+     max_turn = max_bend(mu_planet, rp_min, v_mean)
+     # Bend feasibility at the matched magnitude (the continuity term is handled by
